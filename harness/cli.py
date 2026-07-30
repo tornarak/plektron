@@ -25,7 +25,8 @@ from .detectors import suggest_lexicon
 from .emit import emit, emit_lines
 from .lines import page_lines, write_line_crops, alto_for_lines
 from .normalize import scan, convert
-from .review import (group_spans, page_spans, render_queue_html, serve, summary)
+from .review import (group_spans, page_spans, render_queue_html, restore, serve,
+                     summary)
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
 from .validate import validate
@@ -108,6 +109,16 @@ def main(argv=None):
                     help="serve the review page on 127.0.0.1 and accept saves "
                          "into review/decisions/PP-NNN.json")
     rv.add_argument("--port", type=int, default=8731)
+
+    rs = add("restore", help="write adjudicated review decisions into "
+                        "gt/ocr/ as ground truth, keeping the recognizer geometry")
+    rs.add_argument("ref", metavar="PP-NNN",
+                    help="page ref: part and scan index, e.g. 1-074")
+    rs.add_argument("--from", dest="alto_dir", default="end-of-eval",
+                    help="ALTO providing the line geometry (default end-of-eval)")
+    rs.add_argument("--force", action="store_true",
+                    help="overwrite a target that already holds text — only 1-048 "
+                         "and 2-030 do, and they are the surviving hand-keyed pages")
 
     nz = add("normalize", help="NFD conformance and lookalike census across "
                         "the corpus stores (keying spec section 1) — --check "
@@ -196,6 +207,9 @@ def main(argv=None):
             # verbose nested form (see emit.py).
             print(emit(summary(spans, n), getattr(a, "json", False)))
             out(spans if a.spans else group_spans(spans))
+            return 0
+        if a.cmd == "restore":
+            out(restore(a.ref, a.alto_dir, a.root, a.force))
             return 0
         if a.cmd == "normalize":
             if a.check:

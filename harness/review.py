@@ -40,6 +40,7 @@ import difflib
 import json
 import unicodedata
 from pathlib import Path
+from lxml import etree
 
 from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES
@@ -278,6 +279,81 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
     tmp.replace(p)
     return {"path": str(p), "lines": len(out),
             "edited": sum(1 for v in out.values() if v["edited"])}
+
+
+def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
+            force: bool = False) -> dict:
+    """Write adjudicated text into `gt/ocr/chukchi-<ref>.xml`, keeping the geometry.
+
+    The recognizer ALTO in `alto_dir` is the skeleton, because the 18 shells in
+    `gt/ocr/` carry no `TextLine` at all — there is no geometry there to fill in.
+    Every line has exactly one `String` whose box mirrors the `TextLine`'s, so this
+    only sets `@CONTENT`; nothing structural moves.
+
+    Writes `gt/ocr/` by name, never `ocr/`. They are the same inode — `ocr/*.xml`
+    are symlinks — and naming the real store is what stops the next reader
+    reasoning about the wrong one.
+
+    Refuses rather than guesses, in three cases, because the whole point of this
+    function is to put back something that was destroyed by a write nobody had to
+    confirm:
+
+      * the target already holds text, without `force`. `1-048` and `2-030` are the
+        only surviving hand-keyed pages in the repo.
+      * any line lacks a decision. A partial restore yields ground truth with
+        invisible holes, which is worse than no ground truth.
+      * a line does not have exactly one `String`. Unexpected shape, so it stops.
+    """
+    ref = norm_ref(ref)
+    dec = load_decisions(ref, root)
+    if not dec:
+        raise ValueError(f"no decisions for {ref}: adjudicate it first "
+                         f"(harness review {ref} --serve)")
+
+    src = alto_for_lines(ref, alto_dir, root)
+    tree = etree.parse(str(src))
+    lines = list(tree.iter("{*}TextLine"))
+
+    missing = [i for i in range(len(lines)) if i not in dec]
+    if missing:
+        raise ValueError(f"{ref}: {len(missing)} of {len(lines)} lines have no "
+                         f"decision (indices {missing[:12]}…); refusing a partial "
+                         "restore — ground truth with holes is worse than none")
+
+    target = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
+    if target.exists() and not force:
+        existing = sum(len(s.get("CONTENT") or "")
+                       for s in etree.parse(str(target)).getroot().iter("{*}String"))
+        if existing:
+            raise ValueError(
+                f"{target} already holds {existing} characters of text. Refusing to "
+                "overwrite hand-keyed ground truth; pass force=True if that is "
+                "genuinely what you want")
+
+    for i, tl in enumerate(lines):
+        strings = tl.findall("{*}String")
+        if len(strings) != 1:
+            raise ValueError(f"{ref} line {i} ({tl.get('ID')}) has {len(strings)} "
+                             "String elements, expected exactly 1 — not guessing")
+        strings[0].set("CONTENT", _nfd(dec[i]["text"]))
+
+    target.parent.mkdir(parents=True, exist_ok=True)
+    tmp = target.with_suffix(".xml.tmp")
+    tree.write(str(tmp), xml_declaration=True, encoding="UTF-8", standalone=None)
+    tmp.replace(target)
+
+    # Verify against the source rather than trusting the write: geometry identical,
+    # text exactly what was adjudicated.
+    a = page_lines(src)
+    b = page_lines(target)
+    geom = ("line_id", "block_id", "hpos", "vpos", "width", "height",
+            "baseline", "points")
+    drift = [x["index"] for x, y in zip(a, b) if any(x[k] != y[k] for k in geom)]
+    wrong = [y["index"] for y in b if y["text"] != _nfd(dec[y["index"]]["text"])]
+    return {"path": str(target), "lines": len(lines),
+            "chars": sum(len(y["text"]) for y in b),
+            "geometry_drift": drift, "text_mismatch": wrong,
+            "edited_by_human": sum(1 for v in dec.values() if v.get("edited"))}
 
 
 def _data_uri(path: Path) -> str:
