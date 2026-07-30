@@ -1,0 +1,2516 @@
+{
+  "source": {
+    "what": "Authorities Quoted, Bogoras, The Chukchee, part 1 front matter",
+    "refs": [
+      "1-023",
+      "1-024",
+      "1-025",
+      "1-026",
+      "1-027",
+      "1-028",
+      "1-029"
+    ],
+    "printed_folios": [
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
+    "toc_id": "front.authorities-quoted",
+    "read_from": "scans at 300 dpi, directly",
+    "count": 73,
+    "closing_note": "For other authorities see references in the text.",
+    "caveats": [
+      "The list is explicitly OPEN. The section closes on folio 9 with an asterism and the line recorded in closing_note, so a citation in the body with no entry here is expected and is not a reconciliation failure. This is unlike data/loi.json, where a figure outside 1-302 is a defect.",
+      "`printed` is the record. The parsed fields (author, title, title_en, year, place, container) are a derived convenience and may flatten what the block actually says; when they disagree with `printed`, `printed` wins.",
+      "Russian entries are in pre-1918 orthography. The letters ъ ѣ і ѳ and endings -аго/-яго are NOT misspellings and must never be 'corrected'. The collation licence to fix European-language orthography does not reach them.",
+      "Most entries in Russian are printed twice: the original, then Bogoras's own English rendering in square brackets. One work, two `printed` blocks, kind `entry` and kind `translation`. The brackets are retained in the text.",
+      "A repeated author is printed as a long rule, not a name. The rule is not reproduced in `text`; its presence is recorded as author_printed: \"rule\", and `author` carries the inherited name. Where the block opens '[———— Title', the bracket is kept and the rule dropped.",
+      "cited_as is the load-bearing field: it is the only witness to what a body-text short citation resolves to. It is structured (name, volume, short_title) rather than a string, because the surface form in the body is NOT the form printed here and a string would bake in typography that the text does not reproduce.",
+      "The small caps are this page's setting only, and are deliberately NOT carried into cited_as. In the body the citation is set upper-and-lower: the footnote reads 'Dall, I, p. 375.' where the entry prints 'DALL, I'. cited_as.name holds the upper-and-lower form; match it case-insensitively anyway.",
+      "Punctuation before the volume numeral is inconsistent in the body — 'Maydell I, p. 331.' against 'Krasheninnikoff, II, p. 49.' — so the comma cannot be relied on to delimit the volume. This is why volume is its own field.",
+      "A siglum printed over several volumes (Krasheninnikoff, Maydell, Slunin, Nordenskiöld — each set as 'NAME, I, II') is split into one cited_as entry per volume, since the body cites them singly. 47 printed sigla, 51 cited_as entries.",
+      "Most references in the body are not sigla at all. They are indirect prose — 'Krause reports that…' — where only the name appears, with no volume, no short title, and no footnote. A resolver keyed solely on the footnote form will miss the majority of citations; cited_as.name is the field that reaches them, and it is ambiguous by construction where two works share a name (Hooper, Krause, Adler, Jackson, Kyber, Dall, Argentoff, Mason, Hough, Boas, Bogoras, Murdoch, Jochelson, Maydell, Neimann, Sarytcheff, Wrangell).",
+      "Ordering follows the print and is roughly but not strictly chronological (maydell1871 is set among the 1893 entries, murdoch1884 after murdoch1888). Do not sort by year and call it the printed order.",
+      "Curly quotation marks and apostrophes reproduce the print, per the corpus rule. The exact form of the closing mark on the Russian quoted title in melikoff1896 is not resolvable at this magnification; see that record's note.",
+      "doi and url are null throughout: no external identifier has been looked up yet. These are the enrichment slots."
+    ]
+  },
+  "authorities": [
+    {
+      "key": "steller1774",
+      "cited_as": [
+        {
+          "name": "Steller",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Georg Wilhelm Steller",
+      "author_printed": "named",
+      "title": "Beschreibung von dem Lande Kamtschatka",
+      "title_en": null,
+      "lang": "de",
+      "year": 1774,
+      "place": "Frankfurt und Leipzig",
+      "container": null,
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "de",
+          "kind": "entry",
+          "text": "GEORG WILHELM STELLER. Beschreibung von dem Lande Kamtschatka. Frankfurt und Leipzig, 1774. [Cited, STELLER.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "sauer1802",
+      "cited_as": [
+        {
+          "name": "Sauer",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Martin Sauer",
+      "author_printed": "named",
+      "title": "An Account of a Geographical and Astronomical Expedition to the Northern Part of Russia, performed by Commodore Joseph Billings in the Years 1785, etc., to 1794",
+      "title_en": null,
+      "lang": "en",
+      "year": 1802,
+      "place": "London",
+      "container": null,
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "en",
+          "kind": "entry",
+          "text": "MARTIN SAUER. An Account of a Geographical and Astronomical Expedition to the Northern Part of Russia, performed by Commodore Joseph Billings in the Years 1785, etc., to 1794. London, 1802. [Cited, SAUER.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "sarytcheff1802",
+      "cited_as": [],
+      "author": "Gavriil Sarychev",
+      "author_printed": "named",
+      "title": "Путешествіе флота капитана Сарычева по Сѣверо-Востооной части Сибири, Ледовитому Морю и Восточному Океану, впродолженіе восьми лѣтъ при Географической, Астрономической и Морской экспедиціи, ывшей подъ начальствомъ флота капитана Биллингса съ 1785 по 1793 годъ",
+      "title_en": "Journey in the North-Eastern Part of Siberia, the Arctic Sea, and the East Ocean during eight years with the Geographical, Astronomical, and Naval Expedition, under the Command of Captain Billings, from 1785 till 1793",
+      "lang": "ru",
+      "year": 1802,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Г. Сарычевъ. Путешествіе флота капитана Сарычева по Сѣверо-Востооной части Сибири, Ледовитому Морю и Восточному Океану, впродолженіе восьми лѣтъ при Географической, Астрономической и Морской экспедиціи, ывшей подъ начальствомъ флота капитана Биллингса съ 1785 по 1793 годъ. Томъ II. С.-Петербургъ, 1802."
+        },
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[G. SARYTCHEFF. Journey in the North-Eastern Part of Siberia, the Arctic Sea, and the East Ocean during eight years with the Geographical, Astronomical, and Naval Expedition, under the Command of Captain Billings, from 1785 till 1793. Vol. II. St. Petersburg, 1802.]"
+        }
+      ],
+      "note": "MISPRINT (two, both recorded as printed): 'Сѣверо-Востооной' for Сѣверо-Восточной, and 'ывшей' for бывшей. The English block renders both correctly, so the print itself supplies the correction.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "sarytcheff1811",
+      "cited_as": [],
+      "author": "Gavriil Sarychev",
+      "author_printed": "named",
+      "title": "Путешествіе капитана Биллингса чрезъ чукотскую землю отъ Берингова пролива до Нижне-Колымскаго Острога",
+      "title_en": "Journey of Captain Billings through the Chukchee Land from Bering Strait to the Fort of Nishne-Kolymsk",
+      "lang": "ru",
+      "year": 1811,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Г. Сарычевъ. Путешествіе капитана Биллингса чрезъ чукотскую землю отъ Берингова пролива до Нижне-Колымскаго Острога. С.-Петербургъ 1811."
+        },
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[G. SARYTCHEFF. Journey of Captain Billings through the Chukchee Land from Bering Strait to the Fort of Nishne-Kolymsk. St. Petersburg, 1811.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "krasheninnikoff1819",
+      "cited_as": [
+        {
+          "name": "Krasheninnikoff",
+          "volume": "I",
+          "short_title": null
+        },
+        {
+          "name": "Krasheninnikoff",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Stepan Krasheninnikov",
+      "author_printed": "named",
+      "title": "Описаніе земли Камчатки",
+      "title_en": "Description of the Land Kamtchatka",
+      "lang": "ru",
+      "year": 1819,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "С. Крашенинниковъ. Описаніе земли Камчатки. С.-Петербургъ 1819. Томы I, II."
+        },
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[S. KRASHENINNIKOFF. Description of the Land Kamtchatka. Vols. I, II. St. Petersburg, 1819.] [Cited, KRASHENINNIKOFF, I, II.]"
+        }
+      ],
+      "note": "One printed siglum over two volumes, split into two cited_as entries.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "kotzebue1821",
+      "cited_as": [],
+      "author": "Otto von Kotzebue",
+      "author_printed": "named",
+      "title": "Entdeckungs Reise in die Südsee und nach der Beringstrasse",
+      "title_en": null,
+      "lang": "de",
+      "year": 1821,
+      "place": "Weimar",
+      "container": null,
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "de",
+          "kind": "entry",
+          "text": "OTTO VON KOTZEBUE. Entdeckungs Reise in die Südsee und nach der Beringstrasse. Parts I, II, III. Weimar, 1821."
+        }
+      ],
+      "note": "The volume designation is set in English ('Parts') inside an otherwise German entry, as printed.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "kyber1823",
+      "cited_as": [
+        {
+          "name": "Kyber",
+          "volume": "I",
+          "short_title": null
+        }
+      ],
+      "author": "Dr. Kyber",
+      "author_printed": "named",
+      "title": "Выписка изъ письма отъ 1 Октября 1822 г.",
+      "title_en": "Summary of a Letter from Nishne-Kolymsk, dated October 1, 1822",
+      "lang": "ru",
+      "year": 1823,
+      "place": null,
+      "container": "Сибирскій Вѣстникъ / Siberian Messenger",
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Д-ръ Киберъ. Выписка изъ письма отъ 1 Октября 1822 г., въ Сибирскомъ Вѣстникѣ, 1823 г., часть II, стр. 46-50."
+        },
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Dr. KYBER. Summary of a Letter from Nishne-Kolymsk, dated October 1, 1822, in the Siberian Messenger, 1823, Part II, pp. 46-50.] [Cited, KYBER, I.]"
+        }
+      ],
+      "note": "The English block supplies 'from Nishne-Kolymsk', which the Russian does not.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "kyber1824",
+      "cited_as": [
+        {
+          "name": "Kyber",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Dr. Kyber",
+      "author_printed": "named",
+      "title": "Извлеченіе изъ дневныхъ записокъ",
+      "title_en": "Summary of the Daily Notes",
+      "lang": "ru",
+      "year": 1824,
+      "place": null,
+      "container": "Сибирскій Вѣстникъ / Siberian Messenger",
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Д-ръ Киберъ. Извлеченіе изъ дневныхъ записокъ. Въ Сибирскомъ Вѣстникѣ, 1824 г., часть I, книга вторая, стр. 1-58."
+        },
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Dr. KYBER. Summary of the Daily Notes in the Siberian Messenger, 1824, Part I, Book 2, pp. 1-58.] [Cited, KYBER, II.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "lutke1834",
+      "cited_as": [],
+      "author": "Fyodor Litke",
+      "author_printed": "named",
+      "title": "Путешествіе вокругъ свѣта. Историческое Отдѣленіе",
+      "title_en": "Journey around the World. Historical Section",
+      "lang": "ru",
+      "year": 1834,
+      "year_printed": "1834, 1835, 1836",
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-023",
+      "folio": "3",
+      "printed": [
+        {
+          "ref": "1-023",
+          "folio": "3",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Ѳ. Литке. Путешествіе вокругъ свѣта. Историческое Отдѣленіе. I, II, III части. С.-Петербургъ 1834, 1835, 1836."
+        },
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[TH. LÜTKE. Journey around the World. Historical Section. Parts I, II, III. St. Petersburg, 1834, 1835, 1836.]"
+        }
+      ],
+      "note": "The only entry whose two blocks straddle a page break: the Russian closes folio 3, the English opens folio 4. The initial is Ѳ (fita), rendered TH. in the English block.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "wrangell1839",
+      "cited_as": [],
+      "author": "Ferdinand von Wrangell",
+      "author_printed": "named",
+      "title": "Von dem Verkehr der Völker der Nord-West-Küste von Amerika untereinander und mit Tschuktschen",
+      "title_en": null,
+      "lang": "de",
+      "year": 1839,
+      "place": "St. Petersburg",
+      "container": "Beiträge zur Kenntniss des Russischen Reiches und der angränzenden Länder Asiens",
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "de",
+          "kind": "entry",
+          "text": "FERDINAND VON WRANGELL. Von dem Verkehr der Völker der Nord-West-Küste von Amerika untereinander und mit Tschuktschen (Beiträge zur Kenntniss des Russischen Reiches und der angränzenden Länder Asiens, Vol. I, pp. 57-65). St. Petersburg, 1839."
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "wrangell1840",
+      "cited_as": [
+        {
+          "name": "Wrangell",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Ferdinand von Wrangell",
+      "author_printed": "named",
+      "title": "Narrative of an Expedition to the Polar Sea in the Years 1820, 1821, 1822, & 1823",
+      "title_en": null,
+      "lang": "en",
+      "year": 1840,
+      "place": "London",
+      "container": null,
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "en",
+          "kind": "entry",
+          "text": "FERDINAND VON WRANGELL. Narrative of an Expedition to the Polar Sea in the Years 1820, 1821, 1822, & 1823. Edited by Major Edward Sabine, R. A., F. R. S. London, 1840. [Cited, WRANGELL.]"
+        }
+      ],
+      "note": "The author's name is set in full a second time rather than as a repetition rule, though it directly follows wrangell1839.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "hooper1853",
+      "cited_as": [
+        {
+          "name": "Hooper",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "William Hulme Hooper",
+      "author_printed": "named",
+      "title": "Ten Months among the Tents of the Tuski, with Incidents of an Arctic Boat Expedition in Search of Sir John Franklin, as far as the Mackenzie River and Cape Bathurst",
+      "title_en": null,
+      "lang": "en",
+      "year": 1853,
+      "place": "London",
+      "container": null,
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "en",
+          "kind": "entry",
+          "text": "WILLIAM HULME HOOPER. Ten Months among the Tents of the Tuski, with Incidents of an Arctic Boat Expedition in Search of Sir John Franklin, as far as the Mackenzie River and Cape Bathurst. London, 1853. [Cited, HOOPER.]"
+        }
+      ],
+      "note": "Different person from hooper1881 (C. L. Hooper), and the bare siglum HOOPER is assigned to this one.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "argentoff1857a",
+      "cited_as": [
+        {
+          "name": "Argentoff",
+          "volume": "I",
+          "short_title": null
+        }
+      ],
+      "author": "A. Argentov",
+      "author_printed": "named",
+      "title": "Описаніе Николаевскаго Чаунскаго прихода",
+      "title_en": "A Description of the St. Nicholas Chaun Parish",
+      "lang": "ru",
+      "year": 1857,
+      "place": null,
+      "container": "Записки Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "А. Аргентовъ. Описаніе Николаевскаго Чаунскаго прихода. Въ Запискахъ Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества, 1857, № 3, стр. 79-106."
+        },
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[A. ARGENTOFF. A Description of the St. Nicholas Chaun Parish (Memoirs of the Siberian Section of the Imperial Russian Geographical Society, 1857, No. 3, pp. 79-106).] [Cited, ARGENTOFF, I.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "argentoff1857b",
+      "cited_as": [
+        {
+          "name": "Argentoff",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "A. Argentov",
+      "author_printed": "rule",
+      "title": "Путевыя Замѣтки священника миссіонера въ приполярной мѣстности",
+      "title_en": "Notes of a Travelling Missionary in the Polar Country",
+      "lang": "ru",
+      "year": 1857,
+      "place": null,
+      "container": "Записки Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Путевыя Замѣтки священника миссіонера въ приполярной мѣстности. Записки Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества, 1857, Томъ IV."
+        },
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Notes of a Travelling Missionary in the Polar Country (Memoirs of the East Siberian Section of the Imperial Russian Geographical Society, 1857, Vol. IV.] [Cited, ARGENTOFF, II.]"
+        }
+      ],
+      "note": "VERBATIM: the English block opens a parenthesis before 'Memoirs' and never closes it before the bracket. Recorded as printed.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "neimann1871",
+      "cited_as": [],
+      "author": "K. K. Neimann",
+      "author_printed": "named",
+      "title": "Историческій обзоръ дѣйствій Чукотской Экспедиціи",
+      "title_en": "An Historical Review of the Doings of the Chukchee Expedition",
+      "lang": "ru",
+      "year": 1871,
+      "place": null,
+      "container": "Записки Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "К. К. Нейманъ. Историческій обзоръ дѣйствій Чукотской Экспедиціи. Въ Запискахъ Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества. 1871, № 3, стр. 7-28; № 4-5, стр. 6-31."
+        },
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[K. K. NEIMANN. An Historical Review of the Doings of the Chukchee Expedition (Memoirs of the East Siberian Section of the Imperial Russian Geographical Society, 1871, No. 3, pp. 7-28; No. 4-5, pp. 6-31).]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "neimann1872",
+      "cited_as": [],
+      "author": "K. K. Neimann",
+      "author_printed": "rule",
+      "title": "Нѣсколько словъ о торговлѣ и промышленности сѣверныхъ округовъ Якутской Области",
+      "title_en": "A Few Words on Trade and Industries in the Northern Districts of the Yakutsk Province",
+      "lang": "ru",
+      "year": 1872,
+      "place": null,
+      "container": "Извѣстія Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Нѣсколько словъ о торговлѣ и промышленности сѣверныхъ округовъ Якутской Области. Перепечатано изъ Извѣстій Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества. Томъ III, № № 1 и 2, 1872."
+        },
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[A Few Words on Trade and Industries in the Northern Districts of the Yakutsk Province (Reprint from the Memoirs of the Siberian Section of the Imperial Russian Geographical Society, Vol. III, Nos. 1, 2, 1872).]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "middendorff1875",
+      "cited_as": [
+        {
+          "name": "Middendorff",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Alexander Theodor von Middendorff",
+      "author_printed": "named",
+      "title": "Reise in den äussersten Norden und Osten Sibiriens",
+      "title_en": null,
+      "lang": "de",
+      "year": 1875,
+      "place": "St. Petersburg",
+      "container": null,
+      "in": null,
+      "ref": "1-024",
+      "folio": "4",
+      "printed": [
+        {
+          "ref": "1-024",
+          "folio": "4",
+          "lang": "de",
+          "kind": "entry",
+          "text": "A. TH. VON MIDDENDORFF. Reise in den äussersten Norden und Osten Sibiriens, Vol. I, Parts 1, 2, pp. 1-1615. St. Petersburg, 1875. [Cited, MIDDENDORFF.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "dall1870",
+      "cited_as": [
+        {
+          "name": "Dall",
+          "volume": "I",
+          "short_title": null
+        }
+      ],
+      "author": "William Healey Dall",
+      "author_printed": "named",
+      "title": "Alaska and its Resources",
+      "title_en": null,
+      "lang": "en",
+      "year": 1870,
+      "place": "Boston",
+      "container": null,
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "en",
+          "kind": "entry",
+          "text": "W. H. DALL. Alaska and its Resources. Boston, 1870. [Cited, DALL, I.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "dall1877",
+      "cited_as": [
+        {
+          "name": "Dall",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "William Healey Dall",
+      "author_printed": "rule",
+      "title": "Tribes of the Extreme North-West and Adjacent Countries",
+      "title_en": null,
+      "lang": "en",
+      "year": 1877,
+      "place": null,
+      "container": "Contributions to North American Ethnology",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "en",
+          "kind": "entry",
+          "text": "Tribes of the Extreme North-West and Adjacent Countries (Contributions to North American Ethnology, Vol. I, 1877). [Cited, DALL, II.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "nordquist1880",
+      "cited_as": [],
+      "author": "Oscar Nordquist",
+      "author_printed": "named",
+      "title": "О численности и нынѣшнемъ положеніи чукчей, живущихъ по берегу Ледовитаго моря",
+      "title_en": "The Number and the Modern Condition of the Chukchee living on the Arctic Shore",
+      "lang": "ru",
+      "year": 1880,
+      "place": null,
+      "container": "Географическія Извѣстія Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "О. Нордквистъ. О численности и нынѣшнемъ положеніи чукчей, живущихъ по берегу Ледовитаго моря. Въ Географическихъ Извѣстіяхъ Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества. Томъ XVI, выпускъ второй, 1880 г."
+        },
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[O. NORDQUIST. The Number and the Modern Condition of the Chukchee living on the Arctic Shore (Geographical Bulletin of the Siberian Section of the Imperial Russian Geographical Society, Vol. XVI, Part II, 1880).]"
+        }
+      ],
+      "note": "Same author as the Vega sub-entries nordquist1882a-c, where he is set in Swedish.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "hooper1881",
+      "cited_as": [],
+      "author": "Calvin L. Hooper",
+      "author_printed": "named",
+      "title": "Report of the Cruise of the U. S. Revenue Steamer “Corwin” in the Arctic Ocean",
+      "title_en": null,
+      "lang": "en",
+      "year": 1881,
+      "place": "Washington",
+      "container": null,
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "en",
+          "kind": "entry",
+          "text": "C. L. HOOPER, U. S. R. M. Report of the Cruise of the U. S. Revenue Steamer “Corwin” in the Arctic Ocean. Washington, 1881."
+        }
+      ],
+      "note": "Different person from hooper1853, which holds the bare siglum HOOPER.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "stein1881",
+      "cited_as": [],
+      "author": "J. von Stein",
+      "author_printed": "named",
+      "title": "Die Tschuktschen am Ufer des Eismeeres",
+      "title_en": null,
+      "lang": "de",
+      "year": 1881,
+      "place": null,
+      "container": "Petermann’s Geographische Mittheilungen",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "de",
+          "kind": "entry",
+          "text": "J. v. STEIN. Die Tschuktschen am Ufer des Eismeeres (Petermann’s Geographische Mittheilungen, 1881, pp. 41-45)."
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "krause1881",
+      "cited_as": [
+        {
+          "name": "Krause",
+          "volume": "I",
+          "short_title": null
+        }
+      ],
+      "author": "Aurel Krause and Arthur Krause",
+      "author_printed": "named",
+      "title": "Die wissenschaftliche Expedition der Bremer geographischen Gesellschaft nach den Küstengebieten an der Beringsstrasse",
+      "title_en": null,
+      "lang": "de",
+      "year": 1881,
+      "place": "Bremen",
+      "container": "Deutsche Geographische Blätter",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "de",
+          "kind": "entry",
+          "text": "AUREL and ARTHUR KRAUSE. Die wissenschaftliche Expedition der Bremer geographischen Gesellschaft nach den Küstengebieten an der Beringsstrasse (Deutsche Geographische Blätter, Vol. IV, pp. 245-281). Bremen 1881. [Cited, KRAUSE, I.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "krause1882",
+      "cited_as": [
+        {
+          "name": "Krause",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Aurel Krause and Arthur Krause",
+      "author_printed": "rule",
+      "title": "Die Expedition der Bremer geographischen Gesellschaft nach der Tschuktschen-Halbinsel",
+      "title_en": null,
+      "lang": "de",
+      "year": 1882,
+      "place": "Bremen",
+      "container": "Deutsche Geographische Blätter",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "de",
+          "kind": "entry",
+          "text": "Die Expedition der Bremer geographischen Gesellschaft nach der Tschuktschen-Halbinsel (Deutsche Geographische Blätter, Vol. V, pp. 1-35, 111-133). Bremen, 1882. [Cited, KRAUSE, II.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "nordenskiold1882",
+      "cited_as": [
+        {
+          "name": "Nordenskiöld",
+          "volume": "I",
+          "short_title": null
+        },
+        {
+          "name": "Nordenskiöld",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Adolf Erik Nordenskiöld",
+      "author_printed": "named",
+      "title": "Die Umsegelung Asiens und Europas auf der Vega. Autorisirte Deutsche Ausgabe",
+      "title_en": null,
+      "lang": "de",
+      "year": 1882,
+      "place": "Leipzig",
+      "container": null,
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "de",
+          "kind": "entry",
+          "text": "FREIHERR ADOLF ERIK VON NORDENSKIÖLD. Die Umsegelung Asiens und Europas auf der Vega. Autorisirte Deutsche Ausgabe. Leipzig, F. A. Brockhaus, 1882, Vols. I, II. [Cited, NORDENSKIÖLD, I, II]."
+        }
+      ],
+      "note": "VERBATIM: the closing bracket precedes the full stop here ('II].') where every other siglum sets it after ('II.]').",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "gilder1883",
+      "cited_as": [
+        {
+          "name": "Gilder",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "William Henry Gilder",
+      "author_printed": "named",
+      "title": "Ice-Pack and Tundra. The Search for the Jeannette and a Sledge Journey through Siberia",
+      "title_en": null,
+      "lang": "en",
+      "year": 1883,
+      "place": "New York",
+      "container": null,
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "en",
+          "kind": "entry",
+          "text": "W. H. GILDER. Ice-Pack and Tundra. The Search for the Jeannette and a Sledge Journey through Siberia. New York, 1883. [Cited, GILDER.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "krause1883",
+      "cited_as": [
+        {
+          "name": "Krause",
+          "volume": "III",
+          "short_title": null
+        }
+      ],
+      "author": "Aurel Krause",
+      "author_printed": "named",
+      "title": "Die Bevölkerungsverhältnisse der Tschuktschen-Halbinsel",
+      "title_en": null,
+      "lang": "de",
+      "year": 1883,
+      "place": "Bremen",
+      "container": "Deutsche Geographische Blätter",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "de",
+          "kind": "entry",
+          "text": "AUREL KRAUSE. Die Bevölkerungsverhältnisse der Tschuktschen-Halbinsel (Deutsche Geographische Blätter, Vol. VI, pp. 248-278). Bremen, 1883. [Cited, KRAUSE, III.]"
+        }
+      ],
+      "note": "Aurel Krause alone, where KRAUSE I and II are the two brothers. The siglum series runs on regardless.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "morse1885",
+      "cited_as": [],
+      "author": "Edward Sylvester Morse",
+      "author_printed": "named",
+      "title": "Ancient and Modern Methods of Arrow-Release",
+      "title_en": null,
+      "lang": "en",
+      "year": 1885,
+      "place": "Salem, Mass.",
+      "container": "Bulletin of the Essex Institute",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "en",
+          "kind": "entry",
+          "text": "E. S. MORSE. Ancient and Modern Methods of Arrow-Release (Bulletin of the Essex Institute, Salem, Mass., October-December, 1885)."
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "ratzel1886",
+      "cited_as": [
+        {
+          "name": "Ratzel",
+          "volume": null,
+          "short_title": "Stäbchenpanzer"
+        }
+      ],
+      "author": "Friedrich Ratzel",
+      "author_printed": "named",
+      "title": "Über die Stäbchenpanzer und ihre Verbreitung im nordpazifischen Gebiet (mit drei Tafeln)",
+      "title_en": null,
+      "lang": "de",
+      "year": 1886,
+      "place": "München",
+      "container": "Sitzungsberichte der philosophisch-philologischen und historischen Classe der k. Akademie der Wissenschaften zu München",
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "de",
+          "kind": "entry",
+          "text": "RATZEL. Über die Stäbchenpanzer und ihre Verbreitung im nordpazifischen Gebiet (mit drei Tafeln). (Sitzungsberichte der philosophisch-philologischen und historischen Classe der k. Akademie der Wissenschaften zu München, 1886, pp. 181-216.) [Cited, RATZEL, Stäbchenpanzer.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "vega1882",
+      "cited_as": [],
+      "author": "A. E. Nordenskiöld (ed.)",
+      "author_printed": "named",
+      "title": "Vega Expeditionens vetenskapliga iakttagelser",
+      "title_en": null,
+      "lang": "sv",
+      "year": 1882,
+      "year_printed": "1882-87",
+      "place": "Stockholm",
+      "container": null,
+      "in": null,
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "sv",
+          "kind": "entry",
+          "text": "VEGA EXPEDITIONENS vetenskapliga iakttagelser utgifna af A. E. Nordenskiöld, Vols. I, II. Stockholm, 1882-87. 8°."
+        }
+      ],
+      "note": "A collective work. The five entries that follow it are set at a deeper indent and are its contents; they carry in: \"vega1882\" and their volume/page references are internal to it. The group straddles the folio 5/6 break.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "almquist1882",
+      "cited_as": [],
+      "author": "Ernst Almquist",
+      "author_printed": "named",
+      "title": "Studier öfver Tschuktschernas färgsinne",
+      "title_en": null,
+      "lang": "sv",
+      "year": 1882,
+      "place": null,
+      "container": null,
+      "in": "vega1882",
+      "ref": "1-025",
+      "folio": "5",
+      "printed": [
+        {
+          "ref": "1-025",
+          "folio": "5",
+          "lang": "sv",
+          "kind": "entry",
+          "text": "E. ALMQUIST. Studier öfver Tschuktschernas färgsinne, Vol. I, pp. 185-194."
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "kjellmann1882",
+      "cited_as": [],
+      "author": "Frans Reinhold Kjellman",
+      "author_printed": "named",
+      "title": "Om Tschuktschernas hushallväxter",
+      "title_en": null,
+      "lang": "sv",
+      "year": 1882,
+      "place": null,
+      "container": null,
+      "in": "vega1882",
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "sv",
+          "kind": "entry",
+          "text": "F. R. KJELLMANN. Om Tschuktschernas hushallväxter, Vol. I, pp. 353-372."
+        }
+      ],
+      "note": "MISPRINT, recorded as printed: 'hushallväxter' for hushållsväxter, and the surname is KJELLMANN where the botanist signs Kjellman.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "nordquist1882a",
+      "cited_as": [],
+      "author": "Oscar Nordquist",
+      "author_printed": "named",
+      "title": "Tschuktschisk ordlista",
+      "title_en": null,
+      "lang": "sv",
+      "year": 1882,
+      "place": null,
+      "container": null,
+      "in": "vega1882",
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "sv",
+          "kind": "entry",
+          "text": "O. NORDQUIST. Tschuktschisk ordlista, Vol. I, pp. 373-399."
+        }
+      ],
+      "note": "A Chukchee word-list, and so of direct interest to the transcription track.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "nordquist1882b",
+      "cited_as": [],
+      "author": "Oscar Nordquist",
+      "author_printed": "rule",
+      "title": "Anteckningar och studier till Sibiriska Ishofkusten däggdjursfauna",
+      "title_en": null,
+      "lang": "sv",
+      "year": 1882,
+      "place": null,
+      "container": null,
+      "in": "vega1882",
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "sv",
+          "kind": "entry",
+          "text": "Anteckningar och studier till Sibiriska Ishofkusten däggdjursfauna, Vol. II, pp. 61-117."
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "nordquist1882c",
+      "cited_as": [],
+      "author": "Oscar Nordquist",
+      "author_printed": "rule",
+      "title": "Bidrag till kännedomen on Tschuktscherna",
+      "title_en": null,
+      "lang": "sv",
+      "year": 1882,
+      "place": null,
+      "container": null,
+      "in": "vega1882",
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "sv",
+          "kind": "entry",
+          "text": "Bidrag till kännedomen on Tschuktscherna, Vol. II, pp. 227-246."
+        }
+      ],
+      "note": "MISPRINT, recorded as printed: 'on' for om.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "resin1888",
+      "cited_as": [
+        {
+          "name": "Resin",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "A. A. Resin",
+      "author_printed": "named",
+      "title": "Очеркъ инородцевъ русскаго побережья Тихаго океана",
+      "title_en": "Sketch of the Natives of the Russian Pacific Coast",
+      "lang": "ru",
+      "year": 1888,
+      "place": null,
+      "container": "Извѣстія Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "А. А. Ресинъ. Очеркъ инородцевъ русскаго побережья Тихаго океана. Въ Извѣстіяхъ Императорскаго Русскаго Географическаго Общества. Томъ XXIV, 1888, Вып. III, стр. 120-199."
+        },
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[A. A. RESIN. Sketch of the Natives of the Russian Pacific Coast (Publications of the Imperial Russian Geographical Society, Vol. XXIV, 1888, Part III, pp. 120-199).] [Cited, RESIN.]"
+        }
+      ],
+      "note": "The English renders Извѣстія as 'Publications' here, where the same word is 'Bulletin(s)' at nordquist1880 and jochelson1898a. The renderings are not standardized.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "murdoch1888",
+      "cited_as": [],
+      "author": "John Murdoch",
+      "author_printed": "named",
+      "title": "On the Siberian Origin of some Customs of the Western Eskimo",
+      "title_en": null,
+      "lang": "en",
+      "year": 1888,
+      "place": "Washington",
+      "container": "American Anthropologist",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "en",
+          "kind": "entry",
+          "text": "JOHN MURDOCH. On the Siberian Origin of some Customs of the Western Eskimo (American Anthropologist, Vol. I, pp. 328-336). Washington, 1888."
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "murdoch1884",
+      "cited_as": [],
+      "author": "John Murdoch",
+      "author_printed": "rule",
+      "title": "A Study of the Eskimo Bows in the U. S. National Museum",
+      "title_en": null,
+      "lang": "en",
+      "year": 1884,
+      "place": null,
+      "container": "Report of the Smithsonian Institution",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "en",
+          "kind": "entry",
+          "text": "A Study of the Eskimo Bows in the U. S. National Museum (Report of the Smithsonian Institution, 1884, Part II, pp. 307-316)."
+        }
+      ],
+      "note": "Out of chronological order: 1884 set after murdoch1888. The author-repetition rule fixes the position, so the sequence is by author, not by date.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "murdoch1892",
+      "cited_as": [
+        {
+          "name": "Murdoch",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "John Murdoch",
+      "author_printed": "rule",
+      "title": "Ethnological Results of the Point Barrow Expedition",
+      "title_en": null,
+      "lang": "en",
+      "year": 1892,
+      "place": "Washington",
+      "container": "Ninth Annual Report of the Bureau of Ethnology",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "en",
+          "kind": "entry",
+          "text": "Ethnological Results of the Point Barrow Expedition (Ninth Annual Report of the Bureau of Ethnology, pp. 1-441). Washington, Government Printing Office, 1892. [Cited, MURDOCH.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "shklowsky1892",
+      "cited_as": [],
+      "author": "Isaak Shklovsky",
+      "author_printed": "named",
+      "title": "Очерки крайняго Сѣверовостока",
+      "title_en": "Sketches of the Extreme North-East",
+      "lang": "ru",
+      "year": 1892,
+      "place": "Иркутскъ",
+      "container": "Записки Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "И. Шкловскій. Очерки крайняго Сѣверовостока. Часть I. Въ запискахъ Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества. Томъ II, часть I. Иркутскъ 1892."
+        },
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[I. SHKLOWSKY. Sketches of the Extreme North-East, Part I (Memoirs of the East Siberian Section of the Imperial Russian Geographical Society, Vol. II, Part I). Irkutsk, 1892.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "dyachkoff1893",
+      "cited_as": [
+        {
+          "name": "Dyachkoff",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Grigory Dyachkov",
+      "author_printed": "named",
+      "title": "Анадырскій край. Рукопись Жителя села Маркова",
+      "title_en": "The Country of Anadyr. The Manuscript of the Inhabitant of the Village Markova",
+      "lang": "ru",
+      "year": 1893,
+      "place": "Владивостокъ",
+      "container": "Записки Общества Изученія Амурскаго Края",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Г. Дьячковъ. Анадырскій край. Рукопись Жителя села Маркова. Въ Запискахъ Общества Изученія Амурскаго Края. Владивостокъ 1893."
+        },
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[G. DYACHKOFF. The Country of Anadyr. The Manuscript of the Inhabitant of the Village Markova (Memoirs of the Society for the Investigation of the Amur Country). Vladivostok, 1893.] [Cited, DYACHKOFF.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "maydell1871",
+      "cited_as": [],
+      "author": "Gerhard von Maydell",
+      "author_printed": "named",
+      "title": "Отвѣты Чукотской Экспедиціи на вопросы Академика Бера",
+      "title_en": "The Answers of the Chukchee Expeditions to the Questions of Mr. Baer of the Academy of Sciences",
+      "lang": "ru",
+      "year": 1871,
+      "place": null,
+      "container": "Извѣстія Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Гергардъ фонъ Майдель. Отвѣты Чукотской Экспедиціи на вопросы Академика Бера. Въ Извѣстіяхъ Восточно-Сибирскаго Отдѣла Императорскаго Русскаго Общества. 1871 г. Томъ II. № № 1 и 2."
+        },
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[GERHARD VON MAYDELL. The Answers of the Chukchee Expeditions to the Questions of Mr. Baer of the Academy of Sciences (Memoirs of the East Siberian Section of the Imperial Russian Geographical Society, Vol. II, 1871, Nos. 1, 2).]"
+        }
+      ],
+      "note": "Two disagreements between the witnesses, both recorded as printed. The Russian omits Географическаго from the society's name where the English has 'Geographical Society'; and the English sets 'Chukchee Expeditions' plural where the Russian Экспедиціи is singular. The container field takes the English reading. Also out of order: 1871 set among the 1893 entries.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "maydell1893",
+      "cited_as": [
+        {
+          "name": "Maydell",
+          "volume": "I",
+          "short_title": null
+        },
+        {
+          "name": "Maydell",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Gerhard von Maydell",
+      "author_printed": "rule",
+      "title": "Reisen und Forschungen in Yakutskischen Gebiet Ostsibiriens",
+      "title_en": null,
+      "lang": "de",
+      "year": 1893,
+      "place": "St. Petersburg",
+      "container": "Beiträge zur Kenntniss des Russischen Reiches, Vierte Folge",
+      "in": null,
+      "ref": "1-026",
+      "folio": "6",
+      "printed": [
+        {
+          "ref": "1-026",
+          "folio": "6",
+          "lang": "de",
+          "kind": "entry",
+          "text": "Reisen und Forschungen in Yakutskischen Gebiet Ostsibiriens, Parts I, II (Beiträge zur Kenntniss des Russischen Reiches, Vierte Folge). St. Petersburg, 1893. [Cited, MAYDELL, I, II.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "anon1894",
+      "cited_as": [],
+      "author": null,
+      "author_printed": "named",
+      "title": "Подъ сѣвернымъ полярнымъ кругомъ. Очерки Колымскаго края",
+      "title_en": "Under the Arctic Polar Circle. Sketches of the Kolyma Country",
+      "lang": "ru",
+      "year": 1894,
+      "year_printed": "1894, 1895",
+      "place": null,
+      "container": "Православный Благовѣстникъ / Orthodox Messenger",
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Подъ сѣвернымъ полярнымъ кругомъ. Очерки Колымскаго края. Въ Православномъ Благовѣстникѣ. 1894, № № 1, 3, 18. 1895, № 14."
+        },
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Under the Arctic Polar Circle. Sketches of the Kolyma Country. (Orthodox Messenger, 1894, Nos. 1, 3, 18; 1895, No. 4.)]"
+        }
+      ],
+      "note": "Anonymous — the only entry in the list with no author at all. The two witnesses disagree on the 1895 issue number: the Russian sets № 14, the English No. 4. Unadjudicated; both recorded as printed.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "melikoff1896",
+      "cited_as": [
+        {
+          "name": "Melikoff",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "D. I. Melikoff",
+      "author_printed": "named",
+      "title": "Отчетъ старшаго Совѣтника Якутскаго Областнаго Правленія Д. И. Меликова по командировкѣ его въ Колымскій округъ въ 1893 году",
+      "title_en": "Report of the Senior Counsellor of the Yakutsk Province Regency, D. I. Melikoff, on his Revision of the Kolyma District in 1893",
+      "lang": "ru",
+      "year": 1896,
+      "place": null,
+      "container": "Памятная Книжка Якутской Области / Note-Book of the Yakutsk Province",
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Отчетъ старшаго Совѣтника Якутскаго Областнаго Правленія Д. И. Меликова по командировкѣ его въ Колымскій округъ въ 1893 году. Рукопись. Извлеченіе было напечатано въ Памятной Книжкѣ Якутской Области за 1896 годъ подъ заглавіемъ: „Важнѣйшіе промыслы и занятія жителей Колымскаго Округа,” стр. 115-146."
+        },
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Report of the Senior Counsellor of the Yakutsk Province Regency, D. I. Melikoff, on his Revision of the Kolyma District in 1893. Manuscript. Part of it was published in the Note-Book of the Yakutsk Province for 1896, under the title “Chief Pursuits and Occupations of the Inhabitants of the Kolyma District,” pp. 115-146.]"
+        }
+      ],
+      "note": "UNRESOLVED, quotation marks: the Russian quoted title opens with a clearly low „ and closes with a high double mark whose exact form (” vs \") is not separable at this magnification. Recorded as „…” pending a magnified look. The name is a manuscript report, not a publication; only an extract was printed.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "olsufyeff1896",
+      "cited_as": [],
+      "author": "A. V. Olsufyev",
+      "author_printed": "named",
+      "title": "Общій очеркъ Анадырской Округи",
+      "title_en": "A General Sketch of the Anadyr District",
+      "lang": "ru",
+      "year": 1896,
+      "place": "С.-Петербургъ",
+      "container": "Записки Приамурскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "А. В. Олсуфьевъ. Общій очеркъ Анадырской Округи. Въ Запискахъ Приамурскаго Отдѣла Императорскаго Русскаго Географическаго Общества. Томъ II. Выпускъ I. С.-Петербургъ 1896."
+        },
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[A. V. OLSUFYEFF. A General Sketch of the Anadyr District (Memoirs of the Amur Section of the Imperial Russian Geographical Society, Vol. II, Part I). St. Petersburg, 1896.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "sieroszevsky1896",
+      "cited_as": [
+        {
+          "name": "Sieroszevsky",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Wacław Sieroszewski",
+      "author_printed": "named",
+      "title": "Якуты. Опытъ Этнографическаго Изслѣдованія",
+      "title_en": "The Yakut. An Ethnographical Study",
+      "lang": "ru",
+      "year": 1896,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "В. Л. Сѣрошевскій. Якуты. Опытъ Этнографическаго Изслѣдованія. Изданіе Императорскаго Русскаго Географическаго Общества. Томъ I. С.-Петербургъ 1896."
+        },
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[V. L. SIEROSZEVSKY. The Yakut. An Ethnographical Study. Edition of the Imperial Russian Geographical Society, Vol. I. St. Petersburg, 1896.] [Cited, SIEROSZEVSKY.]"
+        }
+      ],
+      "note": "The parsed author is the Polish form of the name; the print gives only the Russified В. Л. Сѣрошевскій / V. L. SIEROSZEVSKY.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "hough1892",
+      "cited_as": [
+        {
+          "name": "Hough",
+          "volume": null,
+          "short_title": "Fire-Making"
+        }
+      ],
+      "author": "Walter Hough",
+      "author_printed": "named",
+      "title": "The Methods of Fire-Making",
+      "title_en": null,
+      "lang": "en",
+      "year": 1892,
+      "place": "Washington",
+      "container": "Report of the U. S. National Museum for 1890",
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "entry",
+          "text": "W. HOUGH. The Methods of Fire-Making (Report of the U. S. National Museum for 1890). Washington, 1892. [Cited, HOUGH, Fire-Making.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "hough1895",
+      "cited_as": [
+        {
+          "name": "Hough",
+          "volume": null,
+          "short_title": "Armour"
+        }
+      ],
+      "author": "Walter Hough",
+      "author_printed": "rule",
+      "title": "Primitive American Armour",
+      "title_en": null,
+      "lang": "en",
+      "year": 1895,
+      "place": "Washington",
+      "container": "Report of the U. S. National Museum for 1893",
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "entry",
+          "text": "Primitive American Armour (Report of the U. S. National Museum for 1893). Washington, 1895. [Cited, HOUGH, Armour.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "hough1898",
+      "cited_as": [
+        {
+          "name": "Hough",
+          "volume": null,
+          "short_title": "Lamp"
+        }
+      ],
+      "author": "Walter Hough",
+      "author_printed": "rule",
+      "title": "The Lamp of the Eskimo",
+      "title_en": null,
+      "lang": "en",
+      "year": 1898,
+      "place": "Washington",
+      "container": "Report of the U. S. National Museum for 1896",
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "entry",
+          "text": "The Lamp of the Eskimo (Report of the U. S. National Museum for 1896). Washington, 1898. [Cited, HOUGH, Lamp.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "gondatti1898",
+      "cited_as": [
+        {
+          "name": "Gondatti",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Nikolai Gondatti",
+      "author_printed": "named",
+      "title": "Поѣздка изъ С. Маркова на р. Анадырѣ въ бухту Провидѣнія (Беринговъ проливъ)",
+      "title_en": "A Trip from Markova Village on the Anadyr River to Providence Bay (Bering Strait)",
+      "lang": "ru",
+      "year": 1898,
+      "place": "Хабаровскъ",
+      "container": "Записки Приамурскаго Отдѣла Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-027",
+      "folio": "7",
+      "printed": [
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Н. Л. Гондатти. Поѣздка изъ С. Маркова на р. Анадырѣ въ бухту Провидѣнія (Беринговъ проливъ). Въ запискахъ Приамурскаго Отдѣла Императорскаго Русскаго Географическаго Общества. Томъ IV, вып. I. Хабаровскъ 1898."
+        },
+        {
+          "ref": "1-027",
+          "folio": "7",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[N. GONDATTI. A Trip from Markova Village on the Anadyr River to Providence Bay (Bering Strait) (Memoirs of the Amur Section of the Imperial Russian Geographical Society, Vol. IV, Part I). Khabarovsk, 1898.] [Cited, GONDATTI.]"
+        }
+      ],
+      "note": "The collector of the Gondatti collection described in bogoras1901.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "schrenck1899",
+      "cited_as": [
+        {
+          "name": "Schrenck",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Leopold von Schrenck",
+      "author_printed": "named",
+      "title": "Объ инородцахъ Амурскаго края",
+      "title_en": "The natives of the Amur country",
+      "lang": "ru",
+      "year": 1899,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Л. Шренкъ. Объ инородцахъ Амурскаго края. Изданіе Императорской Академіи Наукъ. Томъ II. С.-Петербургъ 1899 г."
+        },
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[L. SCHRENCK. The natives of the Amur country. Edition of the Imperial Academy of Sciences, Vol. II. St. Petersburg, 1899.] [Cited, SCHRENCK, II.]"
+        }
+      ],
+      "note": "VERBATIM: the English title is set in lower case ('The natives of the Amur country') where the list elsewhere capitalizes. The siglum is SCHRENCK, II though only Vol. II is entered.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "jochelson1898a",
+      "cited_as": [],
+      "author": "Waldemar Jochelson",
+      "author_printed": "named",
+      "title": "По рѣкамъ Ясачной и Коркодону",
+      "title_en": "On the Rivers Yassachnaya and Korkodon",
+      "lang": "ru",
+      "year": 1898,
+      "place": null,
+      "container": "Извѣстія Императорскаго Русскаго Географическаго Общества",
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "В. И. Іохельсонъ. По рѣкамъ Ясачной и Коркодону. Въ Извѣстіяхъ Императорскаго Русскаго Географическаго Общества. 1898 г. Выпускъ III."
+        },
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[W. I. JOCHELSON. On the Rivers Yassachnaya and Korkodon (Bulletins of the Imperial Russian Geographical Society, 1898, Part III).]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "jochelson1898b",
+      "cited_as": [],
+      "author": "Waldemar Jochelson",
+      "author_printed": "rule",
+      "title": "Очеркъ звѣропромышленности и торговли мѣхами въ Колымскомъ Округѣ",
+      "title_en": "Sketch of the Hunting Pursuits and Peltry Trade in the Kolyma Country",
+      "lang": "ru",
+      "year": 1898,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Очеркъ звѣропромышленности и торговли мѣхами въ Колымскомъ Округѣ. С.-Петербургъ 1898."
+        },
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Sketch of the Hunting Pursuits and Peltry Trade in the Kolyma Country. St. Petersburg, 1898.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "jochelson1900",
+      "cited_as": [
+        {
+          "name": "Jochelson",
+          "volume": null,
+          "short_title": "Yukaghir Materials"
+        }
+      ],
+      "author": "Waldemar Jochelson",
+      "author_printed": "rule",
+      "title": "Матеріалы для изученія юкагирскаго языка и фольклора, собранные въ Колымскомъ Округѣ",
+      "title_en": "Materials for the Study of the Yukaghir Language and Folk-Lore, collected in the Kolyma District",
+      "lang": "ru",
+      "year": 1900,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Матеріалы для изученія юкагирскаго языка и фольклора, собранные въ Колымскомъ Округѣ. Изданіе Императорской Академіи Наукъ. Вып. I. С.-Петербургъ 1900."
+        },
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Materials for the Study of the Yukaghir Language and Folk-Lore, collected in the Kolyma District. Edition of the Imperial Academy of Sciences. St. Petersburg, 1900.] [Cited, Jochelson, Yukaghir Materials.]"
+        }
+      ],
+      "note": "VERBATIM: 'Jochelson' is set upper-and-lower in the siglum where every other siglum uses small caps. The exact companion to bogoras1900, which is the same series for Chukchee.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "nelson1899",
+      "cited_as": [
+        {
+          "name": "Nelson",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Edward William Nelson",
+      "author_printed": "named",
+      "title": "The Eskimo about Bering Strait",
+      "title_en": null,
+      "lang": "en",
+      "year": 1899,
+      "place": "Washington",
+      "container": "Eighteenth Annual Report of the Bureau of Ethnology",
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "entry",
+          "text": "EDWARD WILLIAM NELSON. The Eskimo about Bering Strait (Eighteenth Annual Report of the Bureau of Ethnology, pp. 1-518). Washington, Government Printing Office, 1899. [Cited, NELSON.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "kroeber1899",
+      "cited_as": [
+        {
+          "name": "Kroeber",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Alfred Louis Kroeber",
+      "author_printed": "named",
+      "title": "The Eskimo of Smith Sound",
+      "title_en": null,
+      "lang": "en",
+      "year": 1899,
+      "place": null,
+      "container": "Bulletin American Museum of Natural History",
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "entry",
+          "text": "A. L. KROEBER. The Eskimo of Smith Sound (Bulletin American Museum of Natural History, Vol. XII, 1899). [Cited, KROEBER.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "slunin1900",
+      "cited_as": [
+        {
+          "name": "Slunin",
+          "volume": "I",
+          "short_title": null
+        },
+        {
+          "name": "Slunin",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "N. V. Slunin",
+      "author_printed": "named",
+      "title": "Охотско-Камчатскій Край",
+      "title_en": "Country of Okhotsk and Kamchatka",
+      "lang": "ru",
+      "year": 1900,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Д-ръ Н. В. Слюнинъ. Охотско-Камчатскій Край. Томъ I, II. С.-Петербургъ 1900."
+        },
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[N. V. SLUNIN. Country of Okhotsk and Kamchatka, Vols. I, II. St. Petersburg, 1900.] [Cited, SLUNIN, I, II.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "teit1900",
+      "cited_as": [
+        {
+          "name": "Teit",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "James Teit",
+      "author_printed": "named",
+      "title": "The Thompson Indians of British Columbia",
+      "title_en": null,
+      "lang": "en",
+      "year": 1900,
+      "place": null,
+      "container": "Memoirs American Museum of Natural History, Vol. II (Publications of the Jesup North Pacific Expedition, Vol. I, Part IV)",
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "entry",
+          "text": "JAMES TEIT. The Thompson Indians of British Columbia, edited by Franz Boas (Memoirs American Museum of Natural History, Vol. II, being Vol. I, Part IV, of the Publications of the Jesup North Pacific Expedition, April, 1900). [Cited, TEIT.]"
+        }
+      ],
+      "note": "A sister volume in the same Jesup series as this book; cf. laufer1902.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "boas1888",
+      "cited_as": [
+        {
+          "name": "Boas",
+          "volume": null,
+          "short_title": "Central Eskimo"
+        }
+      ],
+      "author": "Franz Boas",
+      "author_printed": "named",
+      "title": "The Central Eskimo",
+      "title_en": null,
+      "lang": "en",
+      "year": 1888,
+      "place": "Washington",
+      "container": "Sixth Annual Report of the Bureau of American Ethnology",
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "entry",
+          "text": "FRANZ BOAS. The Central Eskimo (Sixth Annual Report of the Bureau of American Ethnology, pp. 399-669). Washington, Government Printing Office, 1888. [Cited, BOAS, Central Eskimo.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "boas1901",
+      "cited_as": [
+        {
+          "name": "Boas",
+          "volume": null,
+          "short_title": "Baffin-Land Eskimo"
+        }
+      ],
+      "author": "Franz Boas",
+      "author_printed": "rule",
+      "title": "The Eskimo of Baffin Land and Hudson Bay",
+      "title_en": null,
+      "lang": "en",
+      "year": 1901,
+      "place": null,
+      "container": "Bulletin American Museum of Natural History",
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "entry",
+          "text": "The Eskimo of Baffin Land and Hudson Bay (Bulletin American Museum of Natural History, Vol. XV, Part I, 1901). [Cited, BOAS, Baffin-Land Eskimo.]"
+        }
+      ],
+      "note": "The title sets 'Baffin Land' open; the siglum sets 'Baffin-Land' hyphenated. Both as printed.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "bogdanovitch1901",
+      "cited_as": [
+        {
+          "name": "Bogdanovitch",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Karl Bogdanovich",
+      "author_printed": "named",
+      "title": "Очерки Чукотскаго полуострова",
+      "title_en": "Sketches of the Chukchee Peninsula",
+      "lang": "ru",
+      "year": 1901,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-028",
+      "folio": "8",
+      "printed": [
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "К. И. Богдановичъ. Очерки Чукотскаго полуострова. С.-Петербургъ 1901."
+        },
+        {
+          "ref": "1-028",
+          "folio": "8",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[C. I. BOGDANOVITCH. Sketches of the Chukchee Peninsula. St. Petersburg, 1901.] [Cited, BOGDANOVITCH.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "jackson1900",
+      "cited_as": [
+        {
+          "name": "Jackson",
+          "volume": "I",
+          "short_title": null
+        }
+      ],
+      "author": "Sheldon Jackson",
+      "author_printed": "named",
+      "title": "Ninth Annual Report on Introduction of Domestic Reindeer into Alaska, 1899",
+      "title_en": null,
+      "lang": "en",
+      "year": 1900,
+      "place": "Washington",
+      "container": null,
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "entry",
+          "text": "Sheldon Jackson, LL. D. Ninth Annual Report on Introduction of Domestic Reindeer into Alaska, 1899. Washington, Government Printing Office, 1900. [Cited, JACKSON, I.]"
+        }
+      ],
+      "note": "VERBATIM: the author's name is set upper-and-lower roman, not small caps, alone in the whole list.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "jackson1902",
+      "cited_as": [
+        {
+          "name": "Jackson",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Sheldon Jackson",
+      "author_printed": "rule",
+      "title": "Eleventh Annual Report on Introduction of Domestic Reindeer into Alaska, 1901",
+      "title_en": null,
+      "lang": "en",
+      "year": 1902,
+      "place": "Washington",
+      "container": null,
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "entry",
+          "text": "Eleventh Annual Report on Introduction of Domestic Reindeer into Alaska, 1901. Washington, Government Printing Office, 1902. [Cited, JACKSON, II.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "bogoras1900",
+      "cited_as": [
+        {
+          "name": "Bogoras",
+          "volume": null,
+          "short_title": "Chukchee Materials"
+        }
+      ],
+      "author": "Waldemar Bogoras",
+      "author_printed": "named",
+      "title": "Матеріалы по изученію чукотскаго языка и фольклора, собранные въ Колымскомъ Округѣ",
+      "title_en": "Materials for the Study of the Chukchee Language and Folk-Lore collected in the Kolyma District",
+      "lang": "ru",
+      "year": 1900,
+      "place": "С.-Петербургъ",
+      "container": null,
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "В. Г. Богоразъ. Матеріалы по изученію чукотскаго языка и фольклора, собранные въ Колымскомъ Округѣ. Изданіе Императорской Академіи Наукъ. Вып. I. С.-Петербургъ 1900."
+        },
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[W. BOGORAS. Materials for the Study of the Chukchee Language and Folk-Lore collected in the Kolyma District. Edition of the Imperial Academy of Sciences, Part I. St. Petersburg, 1900.] [Cited, BOGORAS, Chukchee Materials.]"
+        }
+      ],
+      "note": "The author's own earlier work. This is the source of much of the Chukchee notation this edition transcribes, so it is the highest-value entry in the list for the Tier-1 track.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "bogoras1901",
+      "cited_as": [
+        {
+          "name": "Bogoras",
+          "volume": null,
+          "short_title": "Chukchee Material Life"
+        }
+      ],
+      "author": "Waldemar Bogoras",
+      "author_printed": "rule",
+      "title": "Очеркъ Матеріальнаго быта оленныхъ чукчей, составленный на основаніи коллекцій Н. Л. Гондатти",
+      "title_en": "Sketch of the Material Life of the Reindeer Chukchee, composed on the basis of the Gondatti collection deposited in the Ethnographical Museum of the Imperial Academy of Sciences",
+      "lang": "ru",
+      "year": 1901,
+      "place": "С.-Петербургъ",
+      "container": "Сборникъ Музея по Антропологіи и Этнографіи",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "ru",
+          "kind": "entry",
+          "text": "Очеркъ Матеріальнаго быта оленныхъ чукчей, составленный на основаніи коллекцій Н. Л. Гондатти. Въ Сборникѣ Музея по Антропологіи и Этнографіи. С.-Петербургъ 1901."
+        },
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "translation",
+          "text": "[Sketch of the Material Life of the Reindeer Chukchee, composed on the basis of the Gondatti collection deposited in the Ethnographical Museum of the Imperial Academy of Sciences (Publications of the Museum of Anthropology and Ethnography, St. Petersburg, 1901).] [Cited, BOGORAS, Chukchee Material Life.]"
+        }
+      ],
+      "note": "The English block supplies 'deposited in the Ethnographical Museum of the Imperial Academy of Sciences', which the Russian does not. The collection is Gondatti's; see gondatti1898.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "bogoras1902",
+      "cited_as": [
+        {
+          "name": "Bogoras",
+          "volume": null,
+          "short_title": "Anthropologist"
+        }
+      ],
+      "author": "Waldemar Bogoras",
+      "author_printed": "rule",
+      "title": "The Folk-Lore of Northeastern Asia as compared with that of Northwestern America",
+      "title_en": null,
+      "lang": "en",
+      "year": 1902,
+      "place": null,
+      "container": "American Anthropologist",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "entry",
+          "text": "The Folk-Lore of Northeastern Asia as compared with that of Northwestern America (American Anthropologist, Vol. IV, October-December, 1902). [Cited, BOGORAS, Anthropologist.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "adler1901",
+      "cited_as": [
+        {
+          "name": "Adler",
+          "volume": "I",
+          "short_title": null
+        }
+      ],
+      "author": "Bruno Adler",
+      "author_printed": "named",
+      "title": "Der Nordasiatische Pfeil",
+      "title_en": null,
+      "lang": "de",
+      "year": 1901,
+      "place": null,
+      "container": "Internationales Archiv für Ethnographie, Supplement to Band XIV",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "de",
+          "kind": "entry",
+          "text": "BRUNO ADLER. Der Nordasiatische Pfeil (Internationales Archiv für Ethnographie, Supplement to Band XIV, 1901). [Cited, ADLER I.]"
+        }
+      ],
+      "note": "VERBATIM: the siglum sets 'ADLER I' with no comma, where its own sequel sets 'ADLER, II'.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "adler1902",
+      "cited_as": [
+        {
+          "name": "Adler",
+          "volume": "II",
+          "short_title": null
+        }
+      ],
+      "author": "Bruno Adler",
+      "author_printed": "rule",
+      "title": "Die Bogen Nord-Asiens",
+      "title_en": null,
+      "lang": "de",
+      "year": 1902,
+      "place": null,
+      "container": "Internationales Archiv für Ethnographie, Band XV, Heft I",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "de",
+          "kind": "entry",
+          "text": "Die Bogen Nord-Asiens (Internationales Archiv für Ethnographie, Band XV, Heft I, 1902). [Cited, ADLER, II.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "mason1892",
+      "cited_as": [
+        {
+          "name": "Mason",
+          "volume": null,
+          "short_title": "Woman’s Knife"
+        }
+      ],
+      "author": "Otis Tufton Mason",
+      "author_printed": "named",
+      "title": "The Ulu, or Woman’s knife, of the Eskimo",
+      "title_en": null,
+      "lang": "en",
+      "year": 1892,
+      "place": "Washington",
+      "container": "Report of the U. S. National Museum for 1890",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "entry",
+          "text": "O. T. MASON. The Ulu, or Woman’s knife, of the Eskimo (Report of the U. S. National Museum for 1890). Washington, 1892. [Cited, MASON, Woman’s Knife.]"
+        }
+      ],
+      "note": "Same volume of the same series as hough1892.",
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "mason1894",
+      "cited_as": [],
+      "author": "Otis Tufton Mason",
+      "author_printed": "rule",
+      "title": "North American Bows, Arrows and Quivers",
+      "title_en": null,
+      "lang": "en",
+      "year": 1894,
+      "place": "Washington",
+      "container": "Smithsonian Report for 1893",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "entry",
+          "text": "North American Bows, Arrows and Quivers (Smithsonian Report for 1893, pp. 631-679). Washington, 1894."
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "mason1902",
+      "cited_as": [
+        {
+          "name": "Mason",
+          "volume": null,
+          "short_title": "Traps"
+        }
+      ],
+      "author": "Otis Tufton Mason",
+      "author_printed": "rule",
+      "title": "Traps of the American Indians",
+      "title_en": null,
+      "lang": "en",
+      "year": 1902,
+      "place": "Washington",
+      "container": "Smithsonian Report for 1901",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "entry",
+          "text": "Traps of the American Indians (Smithsonian Report for 1901, pp. 401-473). Washington, 1902. [Cited, MASON, Traps.]"
+        }
+      ],
+      "note": null,
+      "doi": null,
+      "url": null
+    },
+    {
+      "key": "laufer1902",
+      "cited_as": [
+        {
+          "name": "Laufer",
+          "volume": null,
+          "short_title": null
+        }
+      ],
+      "author": "Berthold Laufer",
+      "author_printed": "named",
+      "title": "The Decorative Art of the Amur Tribes",
+      "title_en": null,
+      "lang": "en",
+      "year": 1902,
+      "place": null,
+      "container": "Memoirs American Museum of Natural History, Vol. VII (Publications of the Jesup North Pacific Expedition, Vol. IV, Part I)",
+      "in": null,
+      "ref": "1-029",
+      "folio": "9",
+      "printed": [
+        {
+          "ref": "1-029",
+          "folio": "9",
+          "lang": "en",
+          "kind": "entry",
+          "text": "BERTHOLD LAUFER. The Decorative Art of the Amur Tribes (Memoirs American Museum of Natural History, Vol. VII, being Vol. IV, Part I, of the Publications of the Jesup North Pacific Expedition, 1902). [Cited, LAUFER.]"
+        }
+      ],
+      "note": "The last entry. A sister volume in the same Jesup series as this book; cf. teit1900.",
+      "doi": null,
+      "url": null
+    }
+  ]
+}

@@ -65,8 +65,9 @@ identity and never mint an index entry unreviewed.
 **NFD, corpus-wide** (`keying_spec.md` §1). This was declared long before anything
 enforced it, and the corpus had drifted: `data/readings.md` held both encodings of
 the same glyph — `ê` 17 precomposed against 13 decomposed, `ñ` 16/8, `ä` 2/2 — so
-exact comparison between stores silently failed. `harness normalize --check` is now
-the gate (277 distinct files, currently clean); `harness normalize` converts.
+exact comparison between stores silently failed. `harness normalize` (bare, or
+`--check`) is now the gate (277 distinct files, currently clean); `harness
+normalize --convert` writes the fixes.
 
 **Never NFKC.** It has compatibility decompositions for two inventory glyphs and
 destroys them: `ᵋ` U+1D4B → plain U+025B (113 occurrences), `˙` U+02D9 → space +
@@ -81,7 +82,21 @@ this way; the spec's "run unscoped" was the stale half.
 
 Note U+0027 is *itself* the spirant and pause mark, not merely a lookalike for
 U+02CA. That is why the review page's notation keyboard is a toggled mode rather
-than a remap.
+than a remap. The keyboard's palette also carries a dedicated curly-quote pair
+(“ ”) now, click-to-insert independent of the mode toggle — added after `1-100`
+keyed 16 glosses with straight `"..."`, the same slip the two hand-keyed pages
+(`1-048`, `2-030`) turned out to have made throughout.
+
+**Two more corpus-wide, content-scoped lookalike traps** live in `normalize.py`
+alongside `ġ`: `U+0131` (plain dotless ı) traps `U+026A` (the only licensed
+dotless small-cap, §2.3 — U+0131 has no legitimate reading anywhere in this
+corpus), and `U+0022` (straight quote) traps curly `“ ”` in `text` fields and
+non-`@note` prose (English prose reproduces the print's curly quotes, per
+above). Both report-only, same tier as every lookalike — a human ruling, not an
+auto-fix. `harness normalize` also now **checks by default**; `--convert` is
+required to write anything, corpus-wide or scoped by `--path` alike, and gained
+a `spacing` rule (§2.9: collapses runs of 2+ spaces, strips space before
+`;`/`:`/`,`) that blocks like NFD does, since neither is a judgement call.
 
 `keying_spec.md` §2.6 records **mark–base licensing**, editor-supplied: the breve
 U+0306 sits on `u` and `i`, never on the obscure-vowel series `ᴀ ᴇ ɪ ä`, since the
@@ -130,7 +145,7 @@ Layout, all at the repo root:
     ocr/    20 ALTOs — the pilot selection. **Symlinks into gt/ocr/**, not copies.
     gt/     ocr/ (the 20 real files), seg/ (train, eval, .lst manifests).
     tei/    1 page.
-    data/   readings.md  loi.json  toc.json  lexicon_extra.txt
+    data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
     end-of-eval/  18 pages of stock-CATMuS output over the refs gt/ocr/ lost.
                   Machine output, never ground truth. Supplies the line geometry
                   the restore builds on, since the shells have none.
@@ -145,8 +160,9 @@ Layout, all at the repo root:
 
 - `ocr/` **20 refs** — the pilot selection, scattered across all three parts
   (`harness pages` lists them). Intended as hand-keyed ground truth, not
-  recognizer output. **17 of the 20 are currently empty shells** — see the loss
-  below; `1-048`, `2-030` and the restored `1-074` are the only ones with text.
+  recognizer output. **11 of the 20 are currently empty shells** — see the loss
+  below; `1-048`, `2-030` (never lost) and the restored `1-074`, `1-073`,
+  `1-052`, `1-053`, `1-151`, `1-100`, `2-040` are the ones with text.
   **`ocr/*.xml` are symlinks into `gt/ocr/`** — one store under two names, so the
   two can never disagree, and a tool walking both sees each file twice. Anything
   iterating the corpus must dedupe by real path: without it a writer processes the
@@ -197,12 +213,13 @@ stateless steps, so a fresh session resumes wherever the last stopped:
     harness zoom PP-NNN --only …        magnification, when the sheets leave a doubt
     (a reading proposal is authored)    review/PP-NNN/proposal.json
     harness review PP-NNN --serve       adjudicate in the browser
-    harness restore PP-NNN              -> gt/ocr/, real ground truth
+    harness restore PP-NNN              preview: edits, drift, mismatch
+    harness restore PP-NNN --commit     -> gt/ocr/, real ground truth
 
 Every one of those reads and writes under **`review/PP-NNN/`**, and none needs telling
 where: the page's own directory is the default for the images as well as the two JSON
 files, so `--out` exists only for a one-off outside the pass. Finishing with a page is
-`rm -r review/PP-NNN/{crops,sheets,zoom}` — which is the other half of why the layout
+`harness clean PP-NNN` — which is the other half of why the layout
 is per-page rather than per-kind (`harness/paths.py` records the reasoning).
 
 `end-of-eval/` supplies the geometry, since the shells have none. `restore` refuses
@@ -217,16 +234,6 @@ line polygon can exclude printed text**: `1-074` prints `5.` and `9.` outside th
 boxes, `1-073` the same with its `5.` and its folio `51` outside *every* box on the
 page. The omission is horizontal, so no vertical padding reaches it; `--margins`
 widens to the PrintSpace, which is where the excluded material sits.
-
-**Done: `1-074`** (32 lines, 1911 chars) and **`1-073`** (47 lines, 3031 chars), both
-zero geometry drift.
-**Proposed, awaiting adjudication:** `1-151` (40 lines).
-**Remaining 15:** `1-052 1-053 1-100 1-101 2-034 2-040 2-244 2-245
-3-003 3-004 3-005 3-006 3-028 3-119 3-135`. `1-151` is the natural first, being the
-one page with committed TEI to compare against — but the urgency is gone: it used to
-be the page that would clear a standing `validate` failure, and that failure was the
-old verbatim-substring firewall rather than anything about the page. `validate 1-151`
-passes now. Order is a free choice.
 
 **Restoring these is not, in itself, the point any more.** Recognition fine-tuning is
 off the table, so there is no model waiting to train on them, and gloss review will run
@@ -266,13 +273,32 @@ if you ever need it.
                                       recognizer, as *measurement*; --serve runs
                                       the line-based browser review on 127.0.0.1
                                       and saves to review/PP-NNN/decision.json
-    uv run harness restore PP-NNN     adjudicated decisions -> gt/ocr/
-    uv run harness normalize --check  NFD + lookalike gate; exit 1 on drift;
-                                      --path FILE scopes to one file instead of
-                                      the whole corpus (repeatable)
+    uv run harness restore PP-NNN     preview only (edits, drift, mismatch);
+                                      --commit required to write gt/ocr/
+    uv run harness clean PP-NNN       rm review/PP-NNN/{crops,sheets,zoom} —
+                                      the regenerable images, once restored
+    uv run harness normalize          NFD + §2.9 spacing + lookalike gate; exit 1
+                                      on drift; --path FILE scopes to one file
+                                      instead of the whole corpus (repeatable).
+                                      Report only — bare form and --check are the
+                                      same thing; --convert is required to write,
+                                      scoped or not.
     uv run harness proposal-check PP-NNN   a proposal's `resolved` field against
                                       the codepoints its `text` actually has;
-                                      --fix applies the one unambiguous swap
+                                      --fix applies the one unambiguous swap;
+                                      --codepoints LINE names every non-ASCII
+                                      character in that line's field (--field,
+                                      default text) — the answer to "is this
+                                      really U+026A or did I type U+0131"
+                                      without a hand-rolled ord() loop; --set
+                                      LINE writes one line's field (--field,
+                                      value from --value or stdin), NFD-
+                                      normalizing on write so it can't produce
+                                      the mismatch a hand-typed `Edit` risks
+                                      against this file's own NFD form (a
+                                      precomposed ñ you type vs. the file's
+                                      n+U+0303 are invisible to each other
+                                      under exact string match)
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -283,6 +309,18 @@ degrades to the verbose nested form.
 
 Every verb that names a page takes a `PP-NNN` ref and rejects a bare integer,
 `state` included.
+
+**No ad-hoc Python for anything the harness already does.** Not `python3 -c
+"...ord(ch)..."` to check a character's codepoint (`proposal-check
+--codepoints`), not a crop script to magnify a glyph (`harness zoom` — see
+`rebuild-groundtruth`'s SKILL.md on why 4× is already the ceiling and a
+hand-rolled crop cannot see past it), not a heredoc to patch one field of a
+JSON file (`proposal-check --set` — a hand-typed `Edit` can silently fail to
+match this file's own NFD form). A one-off script is a tell that a tool is
+missing or that an existing one is being under-used; the fix is to reach for
+the verb, or extend it, not to route around it. This has been stated and not
+followed more than once in this project's own history — see
+`rebuild-groundtruth`'s SKILL.md for the concrete cases.
 
 **Doc precedence.** This file is authoritative on the project — the invariants, the
 data layout, what is settled and what is open. It is deliberately **not** the place
@@ -310,10 +348,11 @@ the human keying track.
 2. **Recognition** — CATMuS. `models/` holds only stock CATMuS (large + tiny); the fine-tune referred to in earlier drafts is not in the repo. Establish which model actually produced a given page before drawing conclusions from it — and note the fine-tune is no longer the plan: measured against a human key it reads **0% of the inventory** (see Collation), and its competence ceiling would be the same 20 pages it trained on, so agreement with it would be the editor's own judgement laundered through a checkpoint. Stock CATMuS is retained as a cheap second witness to geometry and English.
 
    **Consequence worth stating because it reads as success: a detector census over
-   "the 20 GT pages" was really a census over two.** 17 of the 20 are empty shells,
-   so they report zero flags because there is nothing to flag, not because they are
-   clean. Any baseline taken before the rebuild is worthless for the same reason —
-   `1-074` went from 0 flags to 15 `inventory_glyph` the moment it was restored.
+   "the 20 GT pages" was really a census over two.** At the start of the rebuild, 17
+   of the 20 were empty shells (11 still are), so they reported zero flags because
+   there was nothing to flag, not because they were clean. Any baseline taken before
+   a page's own rebuild is worthless for the same reason — `1-074` went from 0 flags
+   to 15 `inventory_glyph` the moment it was restored.
 3. **Collation** — An LLM (usually Sonnet-class) receives 1) the image of the original scan, 2) the OCR plaintext for that page, and 3) a machine-generated summary with useful contextual data (relevant TOC entries, list of page figures, etc.). It outputs TEI for that page. Built by `harness context`; gated by `harness validate`. Everything the model receives is deterministic and precomputed — it never re-derives ToC ids, figure zones, or detector flags.
 4. **Annotation** — TBD
 5. **Compilation** — TBD
@@ -385,7 +424,12 @@ that hardcodes them fails silently rather than loudly.
 `harness context` surfaces these as `figures_on_page` — zone id, type, bbox, and
 the caption `text` pulled from `data/readings.md`. The collation pass anchors
 `<figure facs>` against those zone ids and the validator rejects any that match
-no supplied zone. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
+no supplied zone. A Tier-1 span may optionally also carry `@facs` pointing at
+the OCR line(s) it was read from (`harness context`'s `ocr_lines` field
+supplies the ids, sourced from `ocr/` — resolve one with `harness zoom PP-NNN
+--only <index> --from gt/ocr`, not zoom's default store); `validate.py` checks
+it resolves the same way it checks `<figure facs>`. See `transcriber_harness.md`
+for the full rule. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
 `1-151`, `2-030`, `3-006` — so the figure path is thinly exercised, and thinner
 than that for captions: `3-006` is one of the two zone-with-no-caption pages, and
 `2-030` is fig. 213's 27-line Chukchee gloss list, i.e. the least typical caption
@@ -432,13 +476,85 @@ the **lookalike**, not the glyph; they are trap detectors and correctly matched.
 here previously called the inventory glyph "dot-above g" while its own example
 encoded U+0323, which cost a session's worth of chasing the wrong codepoint.
 
-Two things still want a human, and both are firewalled. Whether the U+0323
+One thing still wants a human, and it is firewalled. Whether the U+0323
 canonicalization was made against the printed p. 10 key or inherited from whatever
 the recognizer emitted — if the latter, the OCR chose the orthography and the
-validator has been enforcing it. And `data/readings.md` line 1267 (`2-030`) carries
-the corpus's one dot-*above* g in `tñaˊɪrġɪn`; that block holds both a human key and
-a machine attempt, so which witness typed it decides whether the trap caught a
-model reaching for a lookalike. `harness normalize --check` reports it.
+validator has been enforcing it.
+
+`data/readings.md` line 1267 (`2-030`)'s dot-*above* g in `tñaˊɪrġɪn` — the corpus's
+one instance — is resolved, not open: the file is model-authored throughout, so
+there was no second witness to weigh, and dot-above-g has no legitimate reading in
+this project's inventory regardless of who typed it. Converted to `g̣` (dot below,
+matching every other instance corpus-wide). `harness normalize` now reports zero
+lookalikes corpus-wide.
+
+# Authorities Quoted
+
+`data/authorities.json` — the book's own bibliography, read from scans `1-023`…`1-029`
+(printed folios 3–9, ToC `front.authorities-quoted`): **73 works**, one record each,
+keyed with a BibTeX-style moniker (`bogoras1900`, `krause1882`, `nordquist1882a`). The
+third apparatus store alongside `loi.json` and `toc.json`, and apparatus for the same
+reason — reachable without parsing TEI, and the annotation pass is its consumer.
+
+**The payload is `cited_as`.** The book cites in short form and this list is the only
+witness to what those resolve to. It is **structured — `{name, volume, short_title}` —
+not a string**, because the surface form in the body is not the form printed here:
+
+- **The small caps are the bibliography page's setting and do not survive into the
+  text.** The entry prints `DALL, I`; the footnote reads `Dall, I, p. 375.` `name`
+  holds the upper-and-lower form. Match case-insensitively regardless.
+- **The comma before the volume is not reliable.** `Maydell I, p. 331.` against
+  `Krasheninnikoff, II, p. 49.` in the same apparatus. Hence `volume` as its own field,
+  and hence a siglum printed over several volumes (`KRASHENINNIKOFF, I, II` and three
+  others) splits into one entry per volume — 47 printed sigla, 51 `cited_as` entries.
+- **Most references are not sigla at all.** They are indirect prose — "Krause reports
+  that…" — carrying the name alone, no volume, no short title, no footnote. A resolver
+  keyed on the footnote form misses the majority. `name` is what reaches them, and it
+  is ambiguous by construction wherever two works share it, which is most of the list.
+
+**`printed` is the record; the parsed fields are convenience** and lose to it on
+disagreement. Three properties of the print any consumer must know:
+
+- **Most Russian entries are printed twice** — the original, then Bogoras's own English
+  rendering in brackets. One work, two `printed` blocks (`entry` and `translation`),
+  and the two **disagree** often enough to matter: `anon1894` sets № 14 against No. 4
+  for the same issue; `maydell1871` drops Географическаго from the society name the
+  English spells out. Both recorded, unadjudicated, per the `readings.md` habit.
+- **Repeated authors print as a long rule.** The rule is not reproduced in `text`;
+  `author_printed` is `"named"` or `"rule"` and `author` carries the inherited name.
+- **Order is the print's and is not chronological.** `murdoch1884` follows
+  `murdoch1888` because the rule binds it to its author; `maydell1871` sits among the
+  1893 entries. Sorting by year does not reproduce the page.
+
+**The list is explicitly open** — the sharpest difference from `loi.json`. Folio 9
+closes with an asterism and "For other authorities see references in the text", so a
+body citation with no entry here is expected and is *not* a reconciliation failure,
+where a figure outside LoI 1–302 would be a defect.
+
+**Pre-1918 Russian orthography is not a misspelling** — `ъ ѣ і ѳ`, the `-аго/-яго`
+genitives. The collation licence to correct European-language spelling does not reach
+it, and neither does it reach the print's own errors, recorded as printed and
+adjudicated in `note`: `sarytcheff1802`'s *Сѣверо-Востооной* and *ывшей*,
+`kjellmann1882`'s *hushallväxter*, `nordquist1882c`'s *kännedomen on*.
+
+`doi` and `url` are null on every record — enrichment slots, nothing looked up yet.
+
+One reading is unresolved and flagged in the file: `melikoff1896`'s Russian quoted
+title opens with a clear low `„` and closes with a mark whose exact form is not
+separable at this magnification. That is a **tooling gap** as much as a reading one —
+these pages have no ALTO, so `harness zoom` and `harness lines` cannot reach them, and
+no verb magnifies an arbitrary region of a page outside the pilot 20.
+
+**It also exposed a live bug.** Cyrillic `й` is `и` + U+0306 by *canonical*
+decomposition, so corpus-wide NFD turns every Russian word into base+mark sequences —
+and `detectors.unlicensed_marks` reported all 72 as errors, because `MARK_LICENSE` was
+written for the Tier-1 Latin notation but runs over every character in the corpus.
+`и`/`И` are now licensed breve bases. Deliberately as allow-list entries and **not** as
+a "consult the table only for Latin bases" script test: the script test states the
+scope more honestly but decides it by inference, and its corner cases are unbounded —
+each one a silent skip in place of a loud error. The comment carries the nuance; the
+code stays dumb. Note `ё` = `е` + U+0308 needs no entry only because U+0308 has no
+licensing table yet; give it one and this recurs.
 
 # Collation
 
@@ -552,9 +668,10 @@ TBD
 
 ## Open
 
-- **15 ground-truth pages to rebuild.** The loop works — `/rebuild-groundtruth PP-NNN`.
+- **11 ground-truth pages to rebuild.** The loop works — `/rebuild-groundtruth PP-NNN`.
   The bottleneck is the reading pass, roughly 45 lines and 5 sheet images per page, so
-  plan on 3–4 pages per session rather than one long push.
+  plan on 3–4 pages per session rather than one long push. Done so far: `1-074`,
+  `1-073`, `1-052`, `1-053`, `1-151`, `1-100`, `2-040`.
 - **The corpus teiHeader does not exist**, and it is now load-bearing: it is where the
   three `respStmt` provenance ranks are declared, so every `@resp` in the corpus is a
   pointer with nothing yet to resolve against. Harmless while pages are validated
@@ -579,16 +696,50 @@ TBD
   `1-151`'s TEI body, and fragments of `1-048` and `1-052` were read openly in
   session; `1-074`'s proposal was also amended in place before the decision store
   existed, so its `edited` count says 1 where the page had 2 errors. Those five are
-  spent, and `1-073` is now used up by being done. The 15 remaining refs are the clean
-  set — read each into a proposal *before* opening any existing transcription of it.
-- **Error profile so far, two pages.** `1-074`: 32 lines, 2 errors, both a dropped
-  U+0323 under a `g` — caused by the tooling (4 px crop padding excluded a mark below
-  a descender), so it measured the instrument rather than the reading. `1-073`, the
-  first blind page: 47 lines, 3 errors, all one class — the caron over `j` keyed as a
-  breve. Clean on everything `1-074` warned about, so the second profile is not a
-  resolution failure but an **inference** failure, and the two together say the classes
-  to watch are different in kind. The rebuild skill carries both, with the reasoning.
-  Now unrepresentable: `detectors.MARK_LICENSE`.
+  spent, and `1-073`, `1-052`, `1-053`, `1-151`, `1-100`, `2-040` are now used up by
+  being done. The 11 remaining refs are the clean set — read each into a proposal
+  *before* opening any existing transcription of it.
+- **Error profile so far.** `1-074`: 32 lines, 2 errors, both a dropped U+0323 under a
+  `g` — caused by the tooling (4 px crop padding excluded a mark below a descender),
+  so it measured the instrument rather than the reading. `1-073`, the first blind
+  page: 47 lines, 3 errors, all one class — the caron over `j` keyed as a breve. Clean
+  on everything `1-074` warned about, so the second profile is not a resolution
+  failure but an **inference** failure, and the two together say the classes to watch
+  are different in kind. `1-100`: 59 lines, 2 errors, both again a dropped U+0323
+  under a `g` (same class as `1-074`, not the instrument this time — the reading
+  itself missed both), on a page dense with two-column notated glosses. `2-040`:
+  45 lines, 6 errors, all the same dropped-U+0323-under-`g` class again — the
+  page's dense-English-with-embedded-glosses register (not a gazetteer or a
+  gloss list, just ordinary prose citing native terms) apparently gave no more
+  protection than `1-074`'s or `1-100`'s did, and the miss was systematic rather
+  than scattered: every `g` in the recurring root `-rgɪn`/`-mgɪñ` was read plain
+  across all five repetitions of the word `vaˊɪrg̣ɪn`/`vaˊɪrg̣ɪt` plus `Kêrg̣-`,
+  `G̣ɪrg̣oˊl`, `Ñaˊrg̣ɪnên`, `Yag̣taˊč`, `tɵmg̣ɪñ` ×2 and `tɵmg̣aˊ` — the same
+  reading error made consistently rather than caught on repetition. The lines
+  had been zoomed at 4x and 6x already, for an unrelated question (confirming
+  the barred-o `ɵ` in `tɵmgɪñ`); the zoom did not prompt the per-`g` dot-below
+  check the skill already prescribes. Third occurrence of this exact class
+  (`1-074`, `1-100`, `2-040`) — the skill's existing instruction ("every `g`/`G`
+  in a Tier-1 span gets a deliberate look for U+0323... independent of whether
+  the line gets zoomed at all") is evidently not sufficient on its own; it
+  keeps being stated and keeps being skipped in practice. The rebuild skill
+  carries all four, with the reasoning. Now unrepresentable:
+  `detectors.MARK_LICENSE`.
+- **`1-048` and `2-030` — the two pages never lost — needed a correction pass too.**
+  Both were assumed authoritative as the only surviving hand-keyed ground truth, but
+  `normalize.py`'s new straight-quote lookalike check (see below) found every gloss in
+  both keyed with straight `"..."` instead of the curly `“…”` the book prints
+  throughout. Fixing that surfaced real content errors sitting underneath the style
+  slip, only visible once the quotes were being checked line-by-line against the
+  raster: `2-030`'s fig. 213 compass-gloss list had a missing open-quote before
+  "night", a stray extra paren around "light" (should be `[light]`), and three
+  substituted letters (`Wit`→`it`, `tsun`→`sun`, `bas`→`has`); `1-048` had one
+  straight-vs-curly mismatched pair. All raster-verified via `harness zoom --from
+  gt/ocr` before touching the files. `data/readings.md` carries the same fig. 213
+  block a second time (the caption store mirrors the page) and got the identical
+  fix. Lesson: "hand-keyed" and "never re-examined" are different properties, and a
+  new mechanical check earns its keep by finding drift in the pages everyone already
+  trusted, not only the freshly rebuilt ones.
 - **Review can miss what review is for.** Two of `1-073`'s three identical errors were
   corrected in the pass and the third was not — one page, one form, three occurrences,
   and the inconsistency survived because nothing compared them to each other. Which is
