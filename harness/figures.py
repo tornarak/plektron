@@ -301,13 +301,20 @@ def caption_crops(ref: str, root: Path = Path("."), scans: str = "scans"):
         yield blk["zone_id"], crop
 
 
-def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "sheet"):
+def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "sheet",
+                   sheet_w: int = SHEET_W):
     """Tile (label, image) pairs into indexed composite sheets.
 
     Each strip gets its index drawn in the left margin and a rule beneath it, so
     a reading can be keyed back to a zone without relying on order alone. Strips
     wider than the sheet are scaled down; nothing is scaled up, since upsampling
     print costs legibility for no gain.
+
+    `sheet_w` is a parameter and not the constant because the caller may know that
+    no strip should be scaled at all. Downscaling is cheap for a caption, where the
+    reading is of ordinary words; it is not cheap for a body line, where the whole
+    question is whether a dot sits under a `g` — see `lines.write_line_sheets`,
+    which sizes the sheet to the widest crop for exactly that reason.
     """
     from PIL import Image, ImageDraw, ImageFont
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -321,20 +328,20 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
         chunk = items[start:start + per_sheet]
         scaled = []
         for label, im in chunk:
-            avail = SHEET_W - LABEL_W - 20
+            avail = sheet_w - LABEL_W - 20
             if im.width > avail:
                 h = max(1, round(im.height * avail / im.width))
                 im = im.resize((avail, h), Image.LANCZOS)
             scaled.append((label, im))
         height = sum(im.height + GUTTER for _, im in scaled) + GUTTER
-        sheet = Image.new("L", (SHEET_W, height), 255)
+        sheet = Image.new("L", (sheet_w, height), 255)
         draw = ImageDraw.Draw(sheet)
         y = GUTTER
         for label, im in scaled:
             sheet.paste(im.convert("L"), (LABEL_W, y))
             draw.text((10, y + 4), label.split(":")[0], fill=0, font=font)
             y += im.height + GUTTER
-            draw.line([(0, y - GUTTER // 2), (SHEET_W, y - GUTTER // 2)], fill=180, width=1)
+            draw.line([(0, y - GUTTER // 2), (sheet_w, y - GUTTER // 2)], fill=180, width=1)
         n = len(sheets) + 1
         path = out_dir / f"{prefix}-{n:03d}.png"
         sheet.save(path)

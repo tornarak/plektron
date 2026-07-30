@@ -418,17 +418,42 @@ LANGUAGE SPANS AND THE FIREWALL — read this twice
   definition languages it does. Accordingly:
   - Confirmed OCR slips in Tier-2 text are corrected under the same rules
     as English prose below (image-confirmed, reading not in doubt).
-  - Russian specifically carries a MODERNIZATION LICENSE: pre-reform
-    orthography (ѣ, і, ъ-finals, ѳ) may be lossily replaced with
-    post-reform spelling, PROVIDED (a) the word is glossed or its sense is
-    otherwise explicit in the surrounding English, and (b) you are certain
-    of the meaning. Most instances are trivial ethnonyms and realia —
-    "chukcha", "nerpa" — where this is safe. If either condition fails,
-    reproduce what is printed and move on; unmodernized Russian is not
-    an error and needs no flag. Note the draft cannot help you here either:
-    CATMuS lost every one of the 29 Cyrillic characters on the one page
-    where this was measured, so Russian is read off the image like the
-    Tier-1 forms are, even though it carries no `@resp`.
+  - Russian specifically carries a MODERNIZATION LICENSE. The book is
+    1904–1909, so ALL of its Russian is pre-1918 orthography; you may
+    lossily replace it with post-reform spelling PROVIDED (a) the word is
+    glossed or its sense is otherwise explicit in the surrounding English,
+    and (b) you are certain of the meaning. Most instances are trivial
+    ethnonyms and realia — "chukcha", "nerpa" — where this is safe. If
+    either condition fails, reproduce what is printed and move on;
+    unmodernized Russian is not an error and needs no flag.
+
+    The closed list of what you will meet, because you cannot decide to
+    modernize a character you did not notice (keying spec §2.7 has the
+    confusability notes):
+
+      і U+0456 -> и      decimal i; before a vowel or й (Россія)
+      ѣ U+0463 -> е      yat; frequent — хлѣбъ, бѣлый, дѣло
+      ѳ U+0473 -> ф      fita; Greek loans only — ариѳметика
+      ѵ U+0475 -> и      izhitsa; church-Greek only, very rare — мѵро
+      ъ U+044A -> ---    hard sign, WORD-FINAL ONLY (лахтакъ -> лахтак)
+
+    Uppercase forms are U+0406 U+0462 U+0472 U+0474 U+042A. The hard sign
+    is the one to be careful with: U+044A is live modern Russian as a
+    separator (объект), so only its word-final position is pre-reform and
+    only that position is dropped.
+
+    Three of these are CROSS-SCRIPT LOOKALIKES — і against Latin `i`, ѵ
+    against Latin `v`, ѳ against `o` — and і/`i` are the same letterform in
+    a serif face. Inside a Cyrillic word the Cyrillic codepoint is always
+    the right answer; a Latin letter mixed into Cyrillic is a defect no
+    grep here catches, since the lookalike census is scoped to Tier-1.
+
+    The draft cannot help you with any of this: CATMuS lost every one of
+    the 29 Cyrillic characters on the one page where this was measured, so
+    Russian is read off the image exactly as the Tier-1 forms are, even
+    though it carries no `@resp`. What Russian does have that Tier-1 lacks
+    is a competent reader downstream and a dictionary — which is why the
+    license exists at all, and why it stops at "certain of the meaning".
   - Latin stays as printed: era-standard usage and the author's own
     idiosyncrasies are not mistakes. Latin excerpts translating brief
     passages are very likely doing the era-standard job of moving explicit

@@ -23,7 +23,8 @@ from pathlib import Path
 from .context import build_context, all_refs
 from .detectors import suggest_lexicon
 from .emit import emit, emit_lines
-from .lines import page_lines, write_line_crops, alto_for_lines
+from .lines import (alto_for_lines, page_lines, write_line_crops,
+                    write_line_sheets)
 from .normalize import scan, convert
 from .review import (group_spans, page_spans, render_queue_html, restore, serve,
                      summary)
@@ -95,6 +96,13 @@ def main(argv=None):
                     help="ALTO directory to read (default end-of-eval)")
     ln.add_argument("--crops", type=Path, default=None,
                     help="also write one PNG per line under this directory")
+    ln.add_argument("--sheets", type=Path, default=None,
+                    help="compose the line crops into labelled contact sheets here, "
+                         "index drawn in the margin, nothing downscaled — the reading "
+                         "pass's instrument; emits the sheet/lines map instead of the "
+                         "line table")
+    ln.add_argument("--per-sheet", type=int, default=8,
+                    help="lines per contact sheet (default 8)")
     ln.add_argument("--full", action="store_true",
                     help="include baseline and polygon points, which are long "
                          "enough to make the table unreadable by default")
@@ -185,6 +193,13 @@ def main(argv=None):
             out(suggest_lexicon(a.root))
             return 0
         if a.cmd == "lines":
+            if a.sheets:
+                # The sheet map is its own table — a different key set from the line
+                # records, so it cannot be merged into one emit without collapsing
+                # both to the verbose nested form.
+                out(write_line_sheets(a.ref, a.sheets, a.alto_dir, a.root,
+                                      per_sheet=a.per_sheet))
+                return 0
             recs = (write_line_crops(a.ref, a.crops, a.alto_dir, a.root) if a.crops
                     else page_lines(alto_for_lines(a.ref, a.alto_dir, a.root)))
             if not a.full:

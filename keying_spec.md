@@ -26,8 +26,8 @@ harness (rev 2) governs the collation pass.
   them would reject correct text. `validate.py`'s `FORBIDDEN_PROSE` and its
   scoped greps are the enforcement.
 - **Keying reproduces print.** The collation pass may modernize glossed Russian
-  (harness rev 2); ground truth does not — pre-reform Cyrillic sorts
-  (і U+0456, ѣ U+0463) are keyed as printed.
+  (harness rev 2); ground truth does not — pre-reform Cyrillic sorts are keyed as
+  printed. See §2.7 for the closed list and what each is confusable with.
 - **Two-tier settlement.** SETTLED rows carry the editor's stamp or the key's
   authority and are law, stated flat. PROPOSED rows are the best available
   disposition, awaiting the stamp; they enter force via changelog, not by
@@ -137,6 +137,42 @@ interpreting the text — nothing here may be extended by analogy. The breve is
 "productive" as a length mark (§2.1), so further bases may be licensed, but only
 on attestation the editor has stamped, never on symmetry.
 
+### 2.7 Pre-reform Russian sorts (SETTLED)
+
+The book is 1904–1909, so its Russian is pre-1918 orthography throughout. Four
+letters were abolished by the reform and one position of a surviving letter
+changed; all five are keyed **as printed** in ground truth. The closed list, so
+that nothing is dropped by not having been looked for:
+
+| Printed | Codepoints (lc / UC) | Name | Reform sent it to | Watch for |
+|---|---|---|---|---|
+| **і** | U+0456 / U+0406 | decimal i | и U+0438 | **Latin `i` U+0069.** Identical letterform in a serif face — this is the one real trap, and no magnification resolves it. Position decides: pre-reform і appears before another vowel or before й (сіянie, Россія), so і inside a Cyrillic word is U+0456, never Latin. |
+| **ѣ** | U+0463 / U+0462 | yat | е U+0435 | ь U+044C and ъ U+044A — same ascender-plus-bowl skeleton, ѣ adding the crossbar. Common, so expect it: хлѣбъ, бѣлый, дѣло, сѣверъ. |
+| **ѳ** | U+0473 / U+0472 | fita | ф U+0444 | Latin `o`/`0` and Greek θ. Greek loans only, so rare here: ариѳметика, Ѳеодоръ. The hazard is reflex, not eyesight — reading it and keying the modern ф. |
+| **ѵ** | U+0475 / U+0474 | izhitsa | и U+0438 | **Latin `v` U+0076**, and Cyrillic у. Nearly extinct by 1900 and confined to church-Greek words (мѵро, сѵнодъ), so any ѵ-shape wants a second look before it is keyed as one. |
+| **ъ** *word-final* | U+044A / U+042A | hard sign | dropped in this position only | ь U+044C. Distinguished by the ascender alone. |
+
+Two consequences the table exists to prevent.
+
+**The hard sign is not an abolished character** and must not be treated as one.
+U+044A is live modern Russian as a separator (объектъ → объект); only its
+*word-final* occurrence after a consonant is the pre-reform marker. So a grep for
+the bare character is not a pre-reform detector — the position is the signal, which
+is why this row reads "word-final" and the others do not. `1-151` prints **лахтакъ**
+(glossed "ground-seal" / "thong-seal"), keyed with the ъ.
+
+**Three of the five are cross-script lookalikes**, і and ѵ against Latin `i` and
+`v` and ѳ against `o`. §3's table traps Latin-for-notation confusions inside Tier-1
+spans; this is the same hazard one script over, and it is *not* covered there, since
+Russian is Tier-2 and outside those greps. Nothing mechanical catches a Latin `i`
+sitting in a Cyrillic word today.
+
+Orthographic, not glyphic, and therefore outside this table but worth knowing when
+reading: pre-reform adjectival genitives in **-аго / -яго** (русскаго), and
+**-ыя / -ія** where modern Russian has -ые / -ие. These are spellings rather than
+sorts, so they raise no keying question — they only stop a correct reading from
+looking like a misreading.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
@@ -207,6 +243,16 @@ printed shape alone (greyscale fallback per F11).
 
 ## 7. Changelog
 
+- **Rev 2.4 (2026-07-29):** §2.7 added — the closed list of pre-reform Russian
+  sorts, with codepoints, what each was reformed to, and what each is confusable
+  with. §1 had named only two of the five. Prompted by `1-151`'s **лахтакъ**,
+  whose word-final ъ the committed TEI had modernized away (licensed, since the
+  word is glossed) but which ground truth keys as printed. The list cannot come
+  from a corpus census — the recognizer is Latin-only and lost all Cyrillic, so
+  every instance in the book is currently unwitnessed, and a character nobody
+  looked for is a character silently dropped. Records that ъ is *not* an
+  abolished sort and only its word-final position is the marker, and that
+  і/ѵ/ѳ are cross-script lookalikes outside §3's Tier-1 scope.
 - **Rev 2.3 (2026-07-29):** §1 ASCII policy narrowed from corpus-wide to
   Tier-1, and the greps with it. This had been decided, implemented in
   `validate.py` (`FORBIDDEN_PROSE` minus the four curly quotes) and written into

@@ -167,6 +167,37 @@ def line_crops(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
         yield rec, img.crop(box)
 
 
+def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
+                      root: Path = Path("."), scans: str = "scans",
+                      per_sheet: int = 8) -> list[dict]:
+    """Compose the page's line crops into labelled contact sheets.
+
+    The reading pass wants a handful of images rather than forty, because reading
+    forty separate crops means forty re-orientations — the same context-switch cost
+    that made review line-based rather than span-based. The label drawn in the margin
+    is the `page_lines` index, so a reading keys straight back to the ALTO line.
+
+    **Nothing is downscaled.** The sheet is sized to the widest crop on the page, not
+    to `figures.SHEET_W`. A body line runs ~1770 px against that constant's 1800 less
+    the label margin, so the default would have resampled every full-measure line by
+    about 0.95 — invisible on ordinary words and exactly the wrong trade here, where
+    the question being asked of the image is whether a dot sits below a `g`.
+    """
+    from .figures import compose_sheets, LABEL_W
+    items = [(str(rec["index"]), crop)
+             for rec, crop in line_crops(ref, alto_dir, root, scans)]
+    if not items:
+        return []
+    width = max(im.width for _, im in items) + LABEL_W + 20
+    sheets, index = compose_sheets(items, out_dir / norm_ref(ref),
+                                  per_sheet=per_sheet, prefix="lines",
+                                  sheet_w=width)
+    # One flat record per sheet, `lines` as a joined string rather than a list:
+    # a nested value de-tabularizes the whole TOON table (see the module docstring).
+    return [{"sheet": str(out_dir / norm_ref(ref) / e["sheet"]),
+             "lines": " ".join(e["items"])} for e in index]
+
+
 def write_line_crops(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
                      root: Path = Path("."), scans: str = "scans") -> list[dict]:
     """Crop every line to `out_dir/<ref>/<index>-<line_id>.png`. Returns the records.
