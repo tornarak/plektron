@@ -95,6 +95,23 @@ def classify(catmus: str, claude: str) -> str:
     return " ".join(tags)
 
 
+def tier1_glyphs(text: str) -> str:
+    """The distinct inventory glyphs in a line, in order of first appearance.
+
+    Used to flag a line as *probably* carrying transcribed notation, which is the
+    line the reviewer's attention is worth most on: a misread English word is
+    checkable against a dictionary and a second witness, a misread Chukchee form
+    against neither (`keying_spec.md` section 1, and CLAUDE.md's Collation notes).
+
+    **This is a floor and must be labelled as one wherever it is shown.** Four
+    inventory members are unmarked ASCII — `c` for English *sh*, plain `s`, `j`, `x`
+    — so a line of pure Tier-1 in those letters produces no glyph here at all. An
+    unflagged line is "nothing detected", never "no notation present", and a UI that
+    lets the two read alike would turn the flag into an invitation to skip lines.
+    """
+    return "".join(dict.fromkeys(c for c in text if c in INVENTORY_CHARS))
+
+
 def load_proposal(ref: str, root: Path = Path(".")) -> dict[int, dict]:
     """`review/proposals/<ref>.json` -> `{index: record}`.
 
@@ -418,6 +435,23 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          # still a line somebody has to look at.
          ".agree{opacity:.62}",
          ".agree:focus-within{opacity:1}",
+         # A Tier-1 line is where the reviewer is the only witness there will ever
+         # be, so it is marked in three redundant ways — rule, tint, and a badge
+         # naming the glyphs — rather than by one colour a reader can scroll past.
+         # It also overrides `.agree`: agreement with CATMuS is no evidence at all
+         # about a glyph, so a dimmed Tier-1 line would be dimmed for a reason that
+         # does not apply to the part of it that matters.
+         ".t1{border-left:5px solid #b8860b;padding-left:.7rem;"
+         "background:linear-gradient(90deg,#fdf6e3,transparent 45%)}",
+         ".t1.agree{opacity:1}",
+         ".badge{display:inline-block;font:11px ui-monospace,monospace;"
+         "background:#b8860b;color:#fff;border-radius:3px;padding:.05rem .35rem;"
+         "margin-right:.4rem;letter-spacing:.04em}",
+         ".t1glyphs{font-size:1.05rem;color:#7a4a00;letter-spacing:.12em}",
+         ".jump{font:12px ui-monospace,monospace;margin:.5rem 0 0}",
+         ".jump a{color:#8a5a00;margin-right:.45rem;text-decoration:none;"
+         "border-bottom:1px dotted #b8860b}",
+         ".floor{color:#8a2b2b;font-size:.8rem;margin-top:.35rem;max-width:80ch}",
          ".cp{font:12px ui-monospace,monospace;color:#036;margin:.2rem 0}",
          ".tags{font:11px ui-monospace,monospace;color:#666}",
          ".ref{font:13px ui-monospace,monospace;color:#777;margin-top:.2rem}",
@@ -463,6 +497,12 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
          ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
          ".note{color:#d9b26a}"
+         ".t1{border-color:#d1a02a;background:linear-gradient(90deg,#2a2211,"
+         "transparent 45%)}"
+         ".badge{background:#d1a02a;color:#161616}"
+         ".t1glyphs{color:#e8c874}"
+         ".jump a{color:#e0b552;border-color:#8a6a1e}"
+         ".floor{color:#e88d8d}"
          "textarea{background:#111;color:#eee;border-color:#444}"
          "#st{color:#bbb}"
          "#pal{background:#1b1b1b;border-color:#444}"
@@ -492,9 +532,16 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
         css.append(f".c{idx}{{background-image:url({_data_uri(path)});"
                    f"width:{round(w * scale)}px;height:{round(ht * scale)}px}}")
     h += ["<style>", "\n".join(css), "</style>"]
+    # Computed over the text on screen — saved edits included — not over the
+    # proposal alone, so a glyph the reviewer has just typed flags its line at once.
+    t1 = {idx: tier1_glyphs(_nfd((saved.get(idx) or prop[idx])["text"]))
+          for idx in sorted(recs) if idx in prop}
+    t1 = {k: v for k, v in t1.items() if v}
+
     h += [
          f"<h1>{ref} — {summ['lines']} lines, "
-         f"{summ['lines'] - summ['lines_identical']} differing from catmus</h1>",
+         f"{summ['lines'] - summ['lines_identical']} differing from catmus, "
+         f"{len(t1)} carrying notation</h1>",
          "<div class=sum>"
          f"{summ['spans']} differing spans in {summ['classes']} substitution "
          f"classes · {summ['inventory_spans']} touch inventory glyphs · "
@@ -503,6 +550,15 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          "only: it is a witness to geometry and English, and produced no inventory "
          "glyph anywhere in this book, so on a glyph the image is the sole witness "
          "— and a line the two agree on can still have both of them wrong.</div>"]
+    if t1:
+        h.append("<div class=jump><b>Tier-1 lines:</b> " + " ".join(
+            f"<a href='#l{i}'>{i}</a>" for i in t1) + "</div>")
+    h.append(
+        "<div class=floor>Notation flags are a <b>floor, not a census</b>: four "
+        "inventory members are unmarked ASCII (<code>c</code> for English "
+        "<i>sh</i>, plain <code>s</code>, <code>j</code>, <code>x</code>), so a "
+        "Tier-1 form spelled only in those raises no flag. An unflagged line means "
+        "nothing was detected, not that the line is English.</div>")
 
     differing = {s["index"] for s in spans}
     for idx in sorted(recs):
@@ -516,8 +572,15 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
         full = _nfd(saved[idx]["text"]) if idx in saved else proposed
         marks = codepoints("".join(dict.fromkeys(c for c in full if ord(c) > 127)))
         agree = idx not in differing
-        h.append(f"<div class='ln{' agree' if agree else ''}'>")
-        h.append(f"<div class=tags>line {idx} · {_esc(rec['line_id'])}"
+        glyphs = t1.get(idx, "")
+        cls = "ln" + (" agree" if agree else "") + (" t1" if glyphs else "")
+        h.append(f"<div class='{cls}' id='l{idx}'"
+                 + (" data-t1=1" if glyphs else "") + ">")
+        h.append("<div class=tags>"
+                 + (f"<span class=badge>TIER 1</span>"
+                    f"<span class=t1glyphs>{_esc(glyphs)}</span> · "
+                    if glyphs else "")
+                 + f"line {idx} · {_esc(rec['line_id'])}"
                  + ("" if agree else " · differs from catmus")
                  + (" · <b>edited</b>" if full != proposed else "") + "</div>")
         h.append(f"<div class='crop c{idx}' role=img "
@@ -554,8 +617,14 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
         pal.append("</div></div>")
     pal.append("</div>")
     pal.append("<div id=pctl><span id=kb>kbd off</span>"
-               "<span id=st>no changes</span><button id=sv>Save</button>"
-               "<div class=tags>ctrl-space toggles · off = plain typing</div></div>")
+               "<span id=st>no changes</span>"
+               # Notation lines are the ones worth walking deliberately, so they get
+               # their own traversal rather than only a colour to spot while scrolling.
+               f"<div><button id=t1p>&uarr;</button>"
+               f"<button id=t1n>&darr; tier-1 ({len(t1)})</button>"
+               "<button id=sv>Save</button></div>"
+               "<div class=tags>ctrl-space toggles kbd · off = plain typing · "
+               "alt-j / alt-k walk tier-1 lines</div></div>")
     pal.append("</div>")
     h += pal
     # Autosave on a debounce *and* an explicit button, plus a beforeunload guard.
@@ -614,6 +683,24 @@ for(const t of document.querySelectorAll('textarea')){
     st.textContent='unsaved…';clearTimeout(timer);timer=setTimeout(save,1200)});
 }
 sv.addEventListener('click',save);
+// Tier-1 traversal. Focuses the field rather than only scrolling: the point of
+// arriving at the line is to key it.
+const T1=[...document.querySelectorAll('.ln[data-t1]')];
+let t1i=-1;
+function goT1(d){
+  if(!T1.length) return;
+  t1i=(t1i+d+T1.length*2)%T1.length;
+  const el=T1[t1i];
+  el.scrollIntoView({block:'center',behavior:'smooth'});
+  const t=el.querySelector('textarea'); if(t){t.focus();last=t}
+}
+document.getElementById('t1n').addEventListener('click',()=>goT1(1));
+document.getElementById('t1p').addEventListener('click',()=>goT1(-1));
+addEventListener('keydown',e=>{
+  if(!e.altKey||e.ctrlKey||e.metaKey) return;
+  if(e.key==='j'){e.preventDefault();goT1(1)}
+  else if(e.key==='k'){e.preventDefault();goT1(-1)}
+});
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 </script>""")
     return "\n".join(h)

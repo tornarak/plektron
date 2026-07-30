@@ -199,6 +199,29 @@ notation keyboard (`?`) and universal in `data/readings.md`. It was, until this
 revision, in no normative document — practice without a rule, which is how a pass
 talks itself into reading them.
 
+### 2.9 Spacing before punctuation — English, not French (SETTLED, editor ruling)
+
+**The book sets French spacing and the corpus does not reproduce it.** Brill puts a
+thin space before `;` and `:` — `purpose ; but`, `substance ;”`, `solstices ; but`
+on `1-073` alone, and the gap is unambiguous at 2× and consistent across every
+occurrence. Key **English spacing**: `purpose; but`, no space.
+
+This is the one place the "reproduce the print" rule for English prose is
+deliberately overridden, so it needs saying plainly rather than being left to each
+pass to rediscover. The reason it is not a loss: a thin space before a semicolon is
+a *typesetting* convention with no lexical content, it survives nowhere in the
+book's own meaning, and reproducing it would put a space inside every affected token
+for every downstream consumer — tokenizers, the lexicon check, search — in exchange
+for information a reader can recover from the facsimile at any time. Curly quotes
+are reproduced because conflating `’` with a true apostrophe destroys a distinction
+the notation uses; a thin space destroys nothing.
+
+It is also not a licence to normalize spacing generally. Word spacing in justified
+setting varies wildly on these pages and is likewise not reproduced, but **an
+interword space that is present is keyed and one that is absent is not** — `i. e.,`
+keeps its space because the print has one, and nothing here permits closing it up
+to `i.e.,`.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
@@ -269,6 +292,13 @@ printed shape alone (greyscale fallback per F11).
 
 ## 7. Changelog
 
+- **Rev 2.6 (2026-07-29):** §2.9 added — the book's French spacing before `;` and
+  `:` is **not** reproduced; key English spacing. Editor's ruling, prompted by a
+  reading pass on `1-073` confirming the thin space at 2× on three lines and then
+  asking whether to key it. Stated as an explicit, bounded override of "English
+  prose reproduces the print", with the reason (no lexical content, and it would put
+  a space inside a token for every downstream consumer) and the limit (an interword
+  space that is present is still keyed; `i. e.,` does not close up).
 - **Rev 2.5 (2026-07-29):** §2.8 added — museum catalogue numbers are keyed as
   the literal `(??/????)` by the keying and collation passes, and never read.
   Editor's ruling, prompted by a reading pass on `1-151` starting to resolve the

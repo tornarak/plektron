@@ -301,8 +301,32 @@ def caption_crops(ref: str, root: Path = Path("."), scans: str = "scans"):
         yield blk["zone_id"], crop
 
 
+def _chunk_sheets(items, per_sheet: int, max_h: int | None):
+    """Split (label, image) pairs into sheet-sized runs, in order.
+
+    `per_sheet` alone cannot express what a magnified sheet needs. Every viewer
+    downscales an image to fit *both* its dimensions, so a sheet taller than the
+    display resamples the whole thing down and cancels the magnification it was
+    built to deliver — a strip enlarged 3× and then fitted into a 2000 px box has
+    been enlarged by rather less. So the packing constraint is total height, and a
+    count cap only bounds it when every strip is the same height, which line crops
+    are not.
+    """
+    run, used = [], GUTTER
+    for label, im in items:
+        cost = im.height + GUTTER
+        if run and (len(run) >= per_sheet
+                    or (max_h is not None and used + cost > max_h)):
+            yield run
+            run, used = [], GUTTER
+        run.append((label, im))
+        used += cost
+    if run:
+        yield run
+
+
 def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "sheet",
-                   sheet_w: int = SHEET_W):
+                   sheet_w: int = SHEET_W, max_h: int | None = None):
     """Tile (label, image) pairs into indexed composite sheets.
 
     Each strip gets its index drawn in the left margin and a rule beneath it, so
@@ -315,6 +339,8 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
     reading is of ordinary words; it is not cheap for a body line, where the whole
     question is whether a dot sits under a `g` — see `lines.write_line_sheets`,
     which sizes the sheet to the widest crop for exactly that reason.
+
+    `max_h` caps a sheet's height as well as its strip count; see `_chunk_sheets`.
     """
     from PIL import Image, ImageDraw, ImageFont
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -324,8 +350,7 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
         font = ImageFont.load_default()
 
     sheets, index = [], []
-    for start in range(0, len(items), per_sheet):
-        chunk = items[start:start + per_sheet]
+    for chunk in _chunk_sheets(items, per_sheet, max_h):
         scaled = []
         for label, im in chunk:
             avail = sheet_w - LABEL_W - 20

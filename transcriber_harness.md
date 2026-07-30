@@ -577,6 +577,14 @@ LANGUAGE SPANS AND THE FIREWALL — read this twice
   longer contains the four curly quotes.) What stays forbidden in prose is
   the set with no legitimate English use at all — U+00B4, U+02BC, U+02BB,
   U+2010.
+  ONE BOUNDED EXCEPTION to reproducing the print: the book sets FRENCH
+  SPACING, a thin space before `;` and `:` (`purpose ; but`). Key ENGLISH
+  SPACING — `purpose; but`, no space (keying spec §2.9, editor's ruling). It is
+  the only such override, and it is narrow: a thin space before punctuation has
+  no lexical content and would put a space inside a token for every tokenizer
+  downstream, whereas a curly quote carries a distinction the notation uses.
+  This licenses nothing else about spacing. An interword space that is present
+  is keyed; `i. e.,` keeps its space and never closes up to `i.e.,`.
   Inside Tier-1 spans, U+0027 and U+002D are the only apostrophe and hyphen,
   because there U+0027 IS the spirant and pause mark. A curly quote inside a
   Tier-1 span is a lookalike and lands in the WORKLIST for a human ruling —

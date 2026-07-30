@@ -23,8 +23,9 @@ from pathlib import Path
 from .context import build_context, all_refs
 from .detectors import suggest_lexicon
 from .emit import emit, emit_lines
-from .lines import (alto_for_lines, page_lines, write_line_crops,
-                    write_line_sheets)
+from .lines import (ZOOM, ZOOM_CLIENT_W, ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines,
+                    page_lines, parse_selection, write_line_crops,
+                    write_line_sheets, write_line_zoom)
 from .normalize import scan, convert
 from .review import (group_spans, page_spans, render_queue_html, restore, serve,
                      summary)
@@ -103,9 +104,55 @@ def main(argv=None):
                          "line table")
     ln.add_argument("--per-sheet", type=int, default=8,
                     help="lines per contact sheet (default 8)")
+    ln.add_argument("--margins", action="store_true",
+                    help="widen every crop to the PrintSpace margins — a line "
+                         "polygon can exclude printed text that belongs to the "
+                         "line, and what it excludes sits in the margin (list "
+                         "numbers, the folio)")
     ln.add_argument("--full", action="store_true",
                     help="include baseline and polygon points, which are long "
                          "enough to make the table unreadable by default")
+
+    zm = add("zoom", help="magnify selected lines — overlapping strips at an "
+                        "integer scale, packed into as few sheets as the height "
+                        "budget allows, for the second look a contact sheet leaves "
+                        "open")
+    zm.add_argument("ref", metavar="PP-NNN",
+                    help="page ref: part and scan index, e.g. 1-073")
+    zm.add_argument("--only", default=None, metavar="SPEC",
+                    help="line indices to magnify, e.g. 7,20,22-26 "
+                         "(default every line on the page)")
+    zm.add_argument("--zoom", type=int, default=ZOOM,
+                    help=f"display px per source px, as delivered (default {ZOOM}). "
+                         "Higher wraps each line into more strips, and a form seen "
+                         "only in halves is the risk being traded against — escalate "
+                         "for one question, not by default. --zoom 1 wraps least")
+    zm.add_argument("--window", type=int, default=None,
+                    help="source px per strip; derived from --zoom so that the "
+                         "delivered scale really is --zoom. Overriding it upward "
+                         "makes the sheet exceed the client width, and the scale is "
+                         "then whatever the client's fitting leaves")
+    zm.add_argument("--client-w", type=int, default=ZOOM_CLIENT_W,
+                    help=f"px the reading client shows per image (default "
+                         f"{ZOOM_CLIENT_W}); every sheet is padded to exactly this, "
+                         "so the scale does not vary with how long the lines are")
+    zm.add_argument("--overlap", type=int, default=ZOOM_OVERLAP,
+                    help=f"px shared by consecutive strips (default "
+                         f"{ZOOM_OVERLAP}), so no glyph is only ever seen cut")
+    zm.add_argument("--sheet-h", type=int, default=ZOOM_SHEET_H,
+                    help=f"max sheet height in px (default {ZOOM_SHEET_H}) — a "
+                         "taller sheet gets fitted to the display, undoing the zoom")
+    zm.add_argument("--margins", action="store_true",
+                    help="widen to the PrintSpace margins, to catch text a line "
+                         "polygon excludes")
+    zm.add_argument("--smooth", action="store_true",
+                    help="Lanczos instead of nearest-neighbour: better for "
+                         "comparing letterforms, worse for deciding whether a "
+                         "faint mark is present, since it invents greys")
+    zm.add_argument("--out", type=Path, default=Path("review/zoom"),
+                    help="output directory (default review/zoom)")
+    zm.add_argument("--from", dest="alto_dir", default="end-of-eval",
+                    help="ALTO providing the line geometry (default end-of-eval)")
 
     rv = add("review", help="span-level diff between a reading proposal and the "
                         "recognizer output, grouped by substitution class — the "
@@ -192,15 +239,25 @@ def main(argv=None):
         if a.cmd == "lexicon":
             out(suggest_lexicon(a.root))
             return 0
+        if a.cmd == "zoom":
+            out(write_line_zoom(
+                a.ref, a.out,
+                only=parse_selection(a.only) if a.only else None,
+                zoom=a.zoom, window=a.window, overlap=a.overlap,
+                sheet_h=a.sheet_h, client_w=a.client_w,
+                alto_dir=a.alto_dir, root=a.root,
+                margins=a.margins, smooth=a.smooth))
+            return 0
         if a.cmd == "lines":
             if a.sheets:
                 # The sheet map is its own table — a different key set from the line
                 # records, so it cannot be merged into one emit without collapsing
                 # both to the verbose nested form.
                 out(write_line_sheets(a.ref, a.sheets, a.alto_dir, a.root,
-                                      per_sheet=a.per_sheet))
+                                      per_sheet=a.per_sheet, margins=a.margins))
                 return 0
-            recs = (write_line_crops(a.ref, a.crops, a.alto_dir, a.root) if a.crops
+            recs = (write_line_crops(a.ref, a.crops, a.alto_dir, a.root,
+                                     margins=a.margins) if a.crops
                     else page_lines(alto_for_lines(a.ref, a.alto_dir, a.root)))
             if not a.full:
                 # Drop the two long geometry strings. Dropped from every record,
