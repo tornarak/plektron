@@ -37,6 +37,37 @@ identity and never mint an index entry unreviewed.
   every session.
 - GPU: Turing card, ~100× over CPU. Torch CUDA build verified in the uv env.
 
+# Encoding
+
+**NFD, corpus-wide** (`keying_spec.md` §1). This was declared long before anything
+enforced it, and the corpus had drifted: `data/readings.md` held both encodings of
+the same glyph — `ê` 17 precomposed against 13 decomposed, `ñ` 16/8, `ä` 2/2 — so
+exact comparison between stores silently failed. `harness normalize --check` is now
+the gate (277 distinct files, currently clean); `harness normalize` converts.
+
+**Never NFKC.** It has compatibility decompositions for two inventory glyphs and
+destroys them: `ᵋ` U+1D4B → plain U+025B (113 occurrences), `˙` U+02D9 → space +
+combining dot. Any `normalize()` call must name its form.
+
+**The ASCII policy is scoped to Tier-1**, amended from corpus-wide (`keying_spec.md`
+§1, rev 2.2). Inside `ckt`/`kpy`/`ypk`, U+0027 and U+002D are the only apostrophe and
+hyphen. English prose reproduces the print, **curly quotes included** — the book sets
+them, and conflation with a true apostrophe is a hazard only where apostrophes are
+phonetically load-bearing. `validate.py:190` had already scoped the lookalike greps
+this way; the spec's "run unscoped" was the stale half.
+
+Note U+0027 is *itself* the spirant and pause mark, not merely a lookalike for
+U+02CA. That is why the review page's notation keyboard is a toggled mode rather
+than a remap.
+
+`keying_spec.md` §2.6 records **mark–base licensing**, editor-supplied: the breve
+U+0306 sits on `u` and `i`, never on the obscure-vowel series `ᴀ ᴇ ɪ ä`, since the
+p. 10 key already glosses that series as short. It exists because `1-074`'s
+`Am-g̣roˊkĭ` is unresolvable from the raster at any magnification — `i` drops its dot
+under an above-diacritic, so printed `ĭ` and a hypothetical `ɪ̆` are the same
+letterform, and only the constraint separates them. Consequence: `ɪ` + U+0306
+anywhere is an error, not a reading.
+
 # Source rasters
 
 AMNH Digital Library PDFs (`M11Pt01–03`).
@@ -77,22 +108,29 @@ Layout, all at the repo root:
     gt/     ocr/ (the 20 real files), seg/ (train, eval, .lst manifests).
     tei/    1 page.
     data/   readings.md  loi.json  toc.json  lexicon_extra.txt
+    end-of-eval/  18 pages of stock-CATMuS output over the refs gt/ocr/ lost.
+                  Machine output, never ground truth. Supplies the line geometry
+                  the restore builds on, since the shells have none.
+    review/ proposals/ (a reading, not truth) and decisions/ (adjudicated) are
+            tracked; crops/ and the generated HTML are derived and ignored.
     models/ blla, CATMuS print (large + tiny), LADaS medium, orli, plates-seg.
-    pdfs/   the three AMNH source PDFs.
-    harness/  tools/
-    scans-w-figs/  scans-w-ocr/   symlinks into scans/, for eyeballing a subset.
+    pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
+    scans-w-figs/  scans-w-ocr/   symlinks into scans/. Derived, and ignored:
+            they point *into* an ignored tree, so a clone gets dangling links.
+    harness/  tools/  concordance.md  keying_spec.md  transcriber_harness.md
 
-- `ocr/` **20 pages** — the pilot selection, scattered across all three parts
-  (`harness pages` lists them). **These are hand-keyed and verified: ground
-  truth, not recognizer output.** Nothing regenerates them.
+- `ocr/` **20 refs** — the pilot selection, scattered across all three parts
+  (`harness pages` lists them). Intended as hand-keyed ground truth, not
+  recognizer output. **17 of the 20 are currently empty shells** — see the loss
+  below; `1-048`, `2-030` and the restored `1-074` are the only ones with text.
   **`ocr/*.xml` are symlinks into `gt/ocr/`** — one store under two names, so the
   two can never disagree, and a tool walking both sees each file twice. Anything
   iterating the corpus must dedupe by real path: without it a writer processes the
   file under the first name, meets it again under the second, finds it already done
   and skips silently, so the report undercounts exactly what it touched.
   `harness/normalize.py:scoped_files` does this and says why.
-  `tei/` holds **one** page, `1-151` — collated, uncommitted, with two open comments.
-  It does **not** currently validate; see the caveat under Recognition below.
+  `tei/` holds **one** page, `1-151` — collated, committed, with two open comments.
+  It does **not** currently validate, for a reason external to the file; see Open.
 - **Figure captions live in `data/readings.md`, not in `fig/`.** All **395** are
   read by hand off the 300 dpi scans, one block per FigDesc zone, keyed
   `<ref>|<zone-id suffix>`. `fig/` carries **no `TextLine` at all** — the lines
@@ -107,7 +145,59 @@ Layout, all at the repo root:
 - **eScriptorium holds nothing right now** — the projects were exported and
   deleted. The repo is the system of record; re-import when keying resumes.
   `tools/make_mets.py fig` rebuilds the manifest first.
-- The repo has **no commits yet**. Everything is untracked.
+- **The repo is now under git**, branch `main`, baseline commit `0aa81ab`. Which is
+  the point of the next entry: before that commit, everything was untracked.
+
+## The ground-truth loss, and the rebuild
+
+**17 of the 20 `gt/ocr/` ALTOs are ~1977-byte export shells** — `alto`,
+`Description`, 15 `OtherTag`s, `Layout`, `Page`, `PrintSpace`, and no `TextBlock`
+or `TextLine` whatsoever. An archive extraction over the directory replaced the
+hand-keyed transcription; all 18 originals shared the mtime
+`2026-07-29 22:42:18.000000000`, whole-second and identical across the batch,
+which no script here produces. There is no copy anywhere in the repo, and
+`gt/seg/` is text-free by design rather than a backup.
+
+The root cause is worth stating because it is a design fault, not an accident: the
+*role* of those files — machine output versus human ground truth — lived only in
+the directory name, and `ocr/` is symlinks into `gt/ocr/`, so anything extracted
+into one wrote through to the other. Nothing in an ALTO says which it is; the
+`Description` block of a hand-keyed page and of an empty shell are byte-identical.
+
+**The rebuild loop**, three steps per page, all stateless so a fresh session
+resumes wherever the last stopped:
+
+    harness lines PP-NNN --crops DIR    line identity + crops off the scan
+    (a reading proposal is authored)    review/proposals/PP-NNN.json
+    harness review PP-NNN --serve       adjudicate in the browser
+    harness restore PP-NNN              -> gt/ocr/, real ground truth
+
+`end-of-eval/` supplies the geometry, since the shells have none. `restore`
+refuses three ways rather than guessing: a target that already holds text (without
+`--force`), any line lacking a decision (a partial restore is ground truth with
+invisible holes), or a line without exactly one `String`.
+
+The review page is one entry per line in reading order — crop, editable field in
+**DejaVu Sans** (its single-storey `g` leaves clean space under the bowl for a dot
+below; Charis SIL matches Bogoras's serif letterforms better but crowds that dot),
+the non-ASCII codepoints spelled out, CATMuS greyed as reference. Lines the two
+agree on are dimmed, never hidden. The codepoint line is not decoration: a
+combining mark that a terminal fails to render looks exactly like its absence, and
+that is how a U+0323 was mis-keyed once already. A notation keyboard sits fixed at
+the bottom carrying the whole `keying_spec` inventory — 40 buttons, ctrl-space
+toggles, postfix combining-mark keys so `ä ë ê ḷ ʟ̣ š ŭ x˙` need no binding each.
+
+Two things the pass must not lose. **A line polygon can exclude printed text** —
+`1-074`'s lines 6 and 10 print `5.` and `9.` outside their boxes, so neither the
+crop nor CATMuS has them; the page is the witness, the polygon only supplies the
+line's identity. And `context._lines_from_alto` **drops empty lines**, so its index
+is not the ALTO's; join crops through `harness lines` and never through
+`detector_flags`' line numbers.
+
+**Done: `1-074`.** 32 lines, 1911 chars, zero geometry drift.
+**Remaining 17:** `1-052 1-053 1-073 1-100 1-101 1-151 2-034 2-040 2-244 2-245
+3-003 3-004 3-005 3-006 3-028 3-119 3-135`. Do `1-151` first — it is the one page
+with committed TEI, and restoring it clears the FIREWALL failure described below.
 
 # Harness
 
@@ -125,6 +215,16 @@ if you ever need it.
     uv run harness toc-search TEXT    ToC entries matching a heading you've read
     uv run harness toc-near FOLIO     ToC entries around a folio you now know
     uv run harness lexicon            frequent lexicon misses, to whitelist
+    uv run harness lines PP-NNN       per-line id + geometry + text, ALTO order,
+                                      empties kept; --crops DIR writes line PNGs,
+                                      --from DIR picks the store, --full adds
+                                      baseline/polygon
+    uv run harness review PP-NNN      span diff of a proposal against the
+                                      recognizer, as *measurement*; --serve runs
+                                      the line-based browser review on 127.0.0.1
+                                      and saves to review/decisions/
+    uv run harness restore PP-NNN     adjudicated decisions -> gt/ocr/
+    uv run harness normalize --check  NFD + lookalike gate; exit 1 on drift
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -146,21 +246,13 @@ work. `keying_spec.md` governs the human keying track.
 ## Pages
 
 1. **Segmentation** — LADaS D-FINE (medium). These regions have **no semantic value** and are only used to impose a reasonable reading order and make the OCR plaintext more coherent. Semantic "segmentins" are the preserve of the **Collation** stage.
-2. **Recognition** — CATMuS, fine-tuned on the selection of pages densest with Americanist notation. **Caveat**: the 20 pages in `ocr/` are hand-keyed and verified rather than recognizer output, and `models/` currently holds only stock CATMuS (large + tiny) — the fine-tune is not in the repo. Establish which model actually produced a given page before drawing conclusions from it.
+2. **Recognition** — CATMuS. `models/` holds only stock CATMuS (large + tiny); the fine-tune referred to in earlier drafts is not in the repo. Establish which model actually produced a given page before drawing conclusions from it — and note the fine-tune is no longer the plan: measured against a human key it reads **0% of the inventory** (see Collation), and its competence ceiling would be the same 20 pages it trained on, so agreement with it would be the editor's own judgement laundered through a checkpoint. Stock CATMuS is retained as a cheap second witness to geometry and English.
 
-   **Second caveat, and the load-bearing one right now: 18 of those 20 ALTOs contain
-   no text at all.** Only `1-048` (48 lines) and `2-030` (32 lines) carry
-   `TextLine`/`String`; the rest are ~1977-byte export shells — `alto`,
-   `Description`, 15 `OtherTag`s, `Layout`, `Page`, `PrintSpace`, and nothing else.
-   All 18 share the mtime `2026-07-29 22:42:18.000000000`, whole-second and identical,
-   which is an archive extraction rather than anything a script here did.
-
-   Two consequences worth stating because both read as success. A detector census over
-   "the 20 GT pages" is really a census over two — the other 18 report zero flags
-   because there is nothing to flag, not because they are clean. And `harness validate
-   1-151` **FAILS** with four FIREWALL errors: the TEI's Tier-1 spans cannot be
-   verbatim substrings of an empty draft. That is the firewall working correctly on a
-   missing witness, not a defect in the TEI.
+   **Consequence worth stating because it reads as success: a detector census over
+   "the 20 GT pages" was really a census over two.** 17 of the 20 are empty shells,
+   so they report zero flags because there is nothing to flag, not because they are
+   clean. Any baseline taken before the rebuild is worthless for the same reason —
+   `1-074` went from 0 flags to 15 `inventory_glyph` the moment it was restored.
 3. **Collation** — An LLM (usually Sonnet-class) receives 1) the image of the original scan, 2) the OCR plaintext for that page, and 3) a machine-generated summary with useful contextual data (relevant TOC entries, list of page figures, etc.). It outputs TEI for that page. Built by `harness context`; gated by `harness validate`. Everything the model receives is deterministic and precomputed — it never re-derives ToC ids, figure zones, or detector flags.
 4. **Annotation** — TBD
 5. **Compilation** — TBD
@@ -313,9 +405,29 @@ Process and rules: `transcriber_harness.md`. Loop: `/transcribe-page PP-NNN`.
   cannot do otherwise, since `lexicon_miss` only ever tests ASCII components, so a
   Tier-1 form listed there is inert by construction rather than by discipline.
 
-**Outstanding:** the density count — fraction of lines containing non-English spans,
-by stratum, extrapolated to 730 pp. It no longer chooses the architecture; it sizes
-the human keying budget, which is worth knowing before the pilot rather than during.
+**The density count, measured** (it was outstanding; these are the numbers, from
+`1-048` and `2-030` — the two densest pages in the selection, so a ceiling and not
+an average). Inventory glyphs are **3.3% of characters** but fall in **43.8% of
+lines** — 1.2%/29% on `1-048`, 9.0%/66% on `2-030`.
+
+That asymmetry decides tool shape, and got it wrong once. The 3.3% argues for
+reviewing spans; the 44% says those lines get opened anyway, and once a line is
+open reading the rest of it is nearly free. The expensive act is re-orienting to a
+different line, not reading characters in one already in front of you. **So review
+is line-based.** The span diff survives as measurement only (`harness review`
+without `--serve`).
+
+**What CATMuS can and cannot read**, measured against the human-collated
+`tei/chukchi-1-151.xml`: aggregate CER 8.6%, but that number is a blend of two
+unrelated things. The human text carries 41 non-ASCII characters; CATMuS produced
+13, and **not one is an inventory glyph** — its 13 are curly quotes, em dashes and
+a combining circumflex. It lost all 29 Cyrillic characters, all 5 × U+02CA, all
+3 × `ɪ`, and the single `ᵋ`. Its ASCII is ~91% right and its inventory is 0%
+right, so it is a witness to line geometry and to English and to nothing else. All
+four Tier-1 spans in that TEI fail the firewall's verbatim-substring test against
+it. Its substitutions are worth knowing when adjudicating: `'` `’` `/` for `ˊ`,
+`i` `I` **`r`** for `ɪ`, `f` for `ᵋ`, dropped combining tildes, and one U+0301 —
+the corpus's only combining acute, and a pair `LOOKALIKE_GREPS` does not trap.
 
 ## Cross-page state
 
@@ -360,14 +472,44 @@ TBD
 
 ## Open
 
-- **Nothing is committed.** An initial commit before the pilot would be worth
-  having, if only so the collation loop's per-page commits have a baseline.
+- **17 ground-truth pages to rebuild.** The loop works; see "The ground-truth loss"
+  above. The bottleneck is the reading pass, roughly 45 lines and 5 sheet images per
+  page, so plan on 3–4 pages per session rather than one long push.
+- **`harness validate 1-151` FAILS**, four FIREWALL errors, and this is the firewall
+  working rather than a defect. Its four Tier-1 spans cannot be verbatim substrings
+  of a draft that does not contain them — the ALTO is a shell, and even the
+  `end-of-eval/` CATMuS text for that page contains no inventory glyph at all. It
+  clears when `1-151` is restored, not before.
+- **The firewall rule needs re-anchoring to provenance, and is currently ambiguous
+  in a way that matters.** `validate.py` requires every Tier-1 span to be a verbatim
+  substring of `catmus_draft`. That is exactly right when the draft is a human key —
+  it denies a model the chance to normalise `ʟ` to `L` or complete toward a plausible
+  form. It is unsatisfiable when the draft is real recognizer output, since CATMuS
+  emits no inventory glyph. And if an LLM reading ever becomes the draft, the check
+  compares a TEI against its own source and passes unconditionally — a firewall
+  degraded to a tautology, which is worse than none because the PASS still reads as
+  verified. The field is named `catmus_draft` and `transcriber_harness.md:28`
+  documents it as "raw HTR text", while the enforcement assumes human authority;
+  there is **no provenance field in the context contract at all**. Three witness
+  states are wanted where the code has one: human-keyed (substring test binds),
+  machine-proposed (test is worthless; require an explicit unverified mark that a
+  ratified build refuses to emit), and absent (not a TEI defect). **Provenance
+  belongs in the TEI, not in `ocr/`** — that store is machine garbage by design.
 - The continuation pass (`boundaries.json` from ALTO geometry) is specified but
   unwritten; `boundary_in` is `"unknown"` for every page until it exists.
-- One page (`1-151`) has been through the loop and passes, so the validator's
-  rules have met real model output exactly once. The pilot protocol — 3 keyed
-  pages first, measuring first-pass failure modes, firewall trips, `<unclear>`
-  false positives and question rate — is still the intended next move, and is
-  not written down anywhere yet.
 - The 20 OCR'd pages are scattered across all three parts, so most have no
   transcribed neighbour and will start with `expected_folio: null`.
+- **Eval contamination, which limits what can be measured.** A blind accuracy figure
+  for an LLM reading needs pages the model has not seen. `2-030`'s ground truth,
+  `1-151`'s TEI body, and fragments of `1-048` and `1-052` were read openly in
+  session; `1-074`'s proposal was also amended in place before `review/decisions/`
+  existed, so its `edited` count says 1 where the page had 2 errors. Those four are
+  spent. The 16 untouched refs are the clean set — read them into a proposal
+  *before* looking at any existing transcription of them.
+- **First measured error profile, one page, instrument since fixed.** `1-074`: 32
+  lines, 2 errors, **both a dropped U+0323 under a `g`**. Cause was the tooling —
+  crops were padded 4 px vertically, which excludes a mark sitting below a
+  descender, so the dot was not in the image that was read. Padding is now 10 top /
+  18 bottom and all three dots on that page are visible. One page where the
+  instrument was broken measures the instrument, not the reading; dot-below-`g`
+  is nevertheless the class to check hardest when adjudicating.
