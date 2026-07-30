@@ -108,6 +108,30 @@ F10); diphthongs compose productively from any vowel + i/u, the ᵉi row adding
 the rising case — prominence on the closing element, opening element cast
 superscript.
 
+### 2.6 Mark–base licensing (editor-supplied)
+
+Which bases a mark may sit on. Recorded because these decide cases the raster
+cannot: `i` loses its dot under any above-diacritic, so printed **ĭ** is a dotless
+i with a breve — the same letterform a small-cap **ɪ** carrying a breve would
+present. No magnification separates them; only the constraint does.
+
+| Mark | Licensed on | Never on |
+|---|---|---|
+| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ") | the obscure-vowel series **ᴀ ᴇ ɪ ä** |
+
+The exclusion is not arbitrary, and the reason is book-internal: the p. 10 key
+glosses ᴀ ᴇ ɪ jointly as "obscure vowels (**short**)" (§2.3) and ä as their long
+counterpart (§2.2). The series already encodes length, so a length mark on any
+member would be either redundant or contradictory. In the editor's phrasing,
+**none of the schwas are shortened**.
+
+Consequence for keying and for triage: a breve above a dotless i-form is **ĭ**,
+never ɪ̆, and `ɪ` + U+0306 anywhere in the corpus is an error rather than a
+reading. Note this is a *licensing* rule about the notation, not a rule for
+interpreting the text — nothing here may be extended by analogy. The breve is
+"productive" as a length mark (§2.1), so further bases may be licensed, but only
+on attestation the editor has stamped, never on symmetry.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
@@ -178,6 +202,13 @@ printed shape alone (greyscale fallback per F11).
 
 ## 7. Changelog
 
+- **Rev 2.2 (2026-07-29):** §2.6 added — mark–base licensing, editor-supplied.
+  Breve licensed on `u` and `i`, never on the obscure-vowel series ᴀ ᴇ ɪ ä,
+  since the p. 10 key already glosses that series as short. Prompted by a real
+  ambiguity: `1-074`'s *Am-g̣roˊkĭ* is unresolvable from the raster because `i`
+  drops its dot under an above-mark, so ĭ and ɪ̆ are the same letterform. The
+  same page also cost a missed U+0323 on the `g`, which the rule does not help
+  with — that one is a looking failure, not a licensing question.
 - **Rev 2.1 (2026-07-29):** U+2018 added to the U+0027 lookalike row — surfaced by validator testing; the printed spirant mark's turned-comma shape (F10) makes it the likeliest OCR emission, and A.0 had omitted it.
 - **Rev 2 (2026-07-29):** Part II (comparanda) excised to `concordance.md`.
   The firewall is context hygiene, not just provenance: interpretation loaded
