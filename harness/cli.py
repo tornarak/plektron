@@ -56,6 +56,11 @@ def main(argv=None):
         p = add(name)
         p.add_argument("ref", metavar="PP-NNN",
                        help="page ref: part and scan index, e.g. 1-048")
+        if name == "validate":
+            p.add_argument("--ratified", action="store_true",
+                           help="expect human-ratified provenance (resp='#ed') on "
+                                "Tier-1 spans instead of the collation pass's "
+                                "'#llm'; a remaining '#llm' becomes a worklist line")
 
     add("pages")
 
@@ -160,7 +165,7 @@ def main(argv=None):
             return 0
         if a.cmd == "validate":
             ctx = build_context(a.ref, a.root)
-            rep = validate(Path(ctx["output_path"]), ctx)
+            rep = validate(Path(ctx["output_path"]), ctx, ratified=a.ratified)
             # The gate's default face is the rendered report — it is read by a
             # human deciding whether to commit. --json is for anything that
             # needs the verdict as data; the exit code is the contract either way.

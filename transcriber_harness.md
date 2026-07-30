@@ -25,7 +25,7 @@ data rows, which is why every list below has one fixed key set.
 ```
 page_ref: 2-176
 page_image: scans/chukchi-2-176.png
-catmus_draft: "<raw HTR text for this page>"
+catmus_draft: "<raw HTR text for this page — machine output, no authority>"
 
 expected_folio: 538
 folio_basis:
@@ -68,7 +68,7 @@ invents a zone. `foreign_terms_nearby` is
 recomputed each call from the `<foreign>` spans of committed TEI on the
 physically neighbouring pages; it exists so a term keyed two ways across a
 spread is *visible*, and it licenses nothing — this page's Tier-1 content comes
-from this page's draft and the firewall check enforces exactly that.
+from this page, and a form on a neighbour is never a target to harmonize toward.
 `detector_flags` are the apostrophe-adjacency, dot-above-g, word-medial-caps,
 inventory-glyph and lexicon-miss checks; `balance_flags` are the paragraph-level
 quote/bracket-balance checks, kept in a separate list only because they are a
@@ -238,8 +238,32 @@ STRUCTURE (mechanical — use the supplied values, do not re-derive them)
   using geometry this call does not have access to. If you find yourself
   wanting to mark something as continuing or not-yet-finished, don't; just
   emit the element and move on.
-- teiHeader: use the minimal template exactly, changing only the page
-  number (the printed folio, per above; omitted where the page has none).
+- teiHeader: use this template exactly, changing only the page number (the
+  printed folio, per above; omitted where the page has none — then the
+  sourceDesc reads "see corpus teiHeader" alone).
+
+      <teiHeader>
+        <fileDesc>
+          <titleStmt>
+            <title>see corpus teiHeader</title>
+          </titleStmt>
+          <publicationStmt>
+            <p>see corpus teiHeader</p>
+          </publicationStmt>
+          <sourceDesc>
+            <p>see corpus teiHeader; page {folio}</p>
+          </sourceDesc>
+        </fileDesc>
+      </teiHeader>
+
+  **No `respStmt` here.** The provenance ranks that `@resp` points at are
+  declared once, in the corpus teiHeader, and never repeated per page. `@resp`
+  is a URI reference resolved against the document being processed, and a page
+  file is a fragment rather than a standalone document — it already defers
+  title, publication and source the same way. So `resp="#llm"` on this page is
+  a dangling pointer read alone and a resolving one read as assembled, which is
+  true of the whole header and is not a defect to fix here. One declaration
+  cannot drift from itself; 730 copies can.
 
 HEADINGS — milestone vs. local caption, fully specified
 - The model does not construct milestone content. If the body contains
@@ -400,8 +424,11 @@ LANGUAGE SPANS AND THE FIREWALL — read this twice
     otherwise explicit in the surrounding English, and (b) you are certain
     of the meaning. Most instances are trivial ethnonyms and realia —
     "chukcha", "nerpa" — where this is safe. If either condition fails,
-    reproduce the draft verbatim and move on; unmodernized Russian is not
-    an error and needs no flag.
+    reproduce what is printed and move on; unmodernized Russian is not
+    an error and needs no flag. Note the draft cannot help you here either:
+    CATMuS lost every one of the 29 Cyrillic characters on the one page
+    where this was measured, so Russian is read off the image like the
+    Tier-1 forms are, even though it carries no `@resp`.
   - Latin stays as printed: era-standard usage and the author's own
     idiosyncrasies are not mistakes. Latin excerpts translating brief
     passages are very likely doing the era-standard job of moving explicit
@@ -412,14 +439,94 @@ LANGUAGE SPANS AND THE FIREWALL — read this twice
     were wrong.
 - THE FIREWALL, restated wide: inside ANY element bearing a Tier-1 xml:lang
   ("ckt", "kpy", "ypk") — <foreign>, <term>, <unclear>, anything a later
-  pass wraps a form in — reproduce the draft's characters EXACTLY.
-  Character-for-character. You do not correct spelling, normalize a mark,
-  fix what looks like a typo, standardize a variant spelling against
-  `foreign_terms_nearby`, or harmonize toward a form you've seen on an
-  adjacent page. `foreign_terms_nearby` is read-only reference for spotting
-  POSSIBLE variants to flag — never a target to correct toward. If you notice
-  a likely variant, note it in a comment; do not silently normalize the text
-  to match it.
+  pass wraps a form in — what you emit is a PROPOSAL and is marked as one.
+  It is never an adopted glyph identity, no matter how confident the reading
+  or how clean the image.
+
+  "Proposal" describes its AUTHORITY, not the care owed to it. It is not a
+  licence to guess, to approximate, or to leave a mark for someone else to
+  catch. The standard is every mark on the form read and accounted for,
+  character by character, at magnification where the letterform is small or
+  the mark sits under a descender.
+
+  There IS a repair pass — that is what marking the span `#llm` is for, since
+  a query over the corpus returns precisely the forms awaiting a human. But it
+  finds the span, not the error. Repair is one editor back at the raster with
+  no second witness available: the recognizer reads none of this notation,
+  there is no dictionary and no fluent reader to check a Chukchee form
+  against. So the pass is single-witness, paid for in the scarcest resource
+  on the project, and every avoidable slip is a line of it spent for nothing.
+
+  The slips that survive it are the ones with no internal signal. A dropped
+  mark inside an otherwise plausible form reads as correct in the TEI, so
+  nothing draws the eye to it. `1-074` is the measurement: two dropped U+0323
+  under a `g`, both missed by the reader's own second look, both caught only by
+  the editor at the page. Where you cannot settle a letterform, <unclear> is
+  the answer; the likelier form is never the answer.
+
+  The firewall is a rule about HIERARCHIES OF PROVENANCE, not about matching
+  an upstream file. It used to be stated as "reproduce the draft's characters
+  exactly", and that was wrong in a way worth knowing, because it will read
+  as the safe formulation: `catmus_draft` is stock CATMuS, which produces
+  ZERO inventory glyphs (measured against a human key — 0% of the inventory,
+  all of U+02CA, ɪ and ᵋ lost, all Cyrillic lost). Obeying the old rule
+  literally meant emitting Tier-1 spans you could see were wrong, and the
+  validator's substring check enforced it; both are gone. The draft is a
+  witness to line geometry and to English, and to nothing else.
+
+  PROVENANCE IS AN ATTRIBUTE, and it is not optional. Every element bearing a
+  Tier-1 xml:lang carries `@resp`, pointing at a rank declared once in the
+  corpus teiHeader — never in the page file, see the teiHeader item above.
+  Three ranks, strictly ordered:
+
+  | @resp   | rank | meaning | who may create it |
+  |---|---|---|---|
+  | `#ed`   | ratified | a human keyed or confirmed this span against the page; an ADOPTED glyph identity | a human, by an explicit act |
+  | `#llm`  | proposed | a model read this span off the page image; a reading, not an identity | this pass |
+  | `#htr`  | unexamined | recognizer output nobody has looked at | the import that made the draft |
+
+  YOU EMIT `resp="#llm"`. Always, on every Tier-1 element, including
+  <unclear>, including a span you consider beyond doubt, including a bare
+  ASCII form with no inventory glyph in it at all. You never emit `#ed` and
+  you never emit `#htr`. Emitting `#ed` is precisely the promotion this
+  firewall exists to prevent, and it is the one breach that is mechanically
+  detectable rather than a matter of judgment — so the gate detects it, and
+  a Tier-1 element with no `@resp` at all is an ERROR too. Absent provenance
+  is not a small omission: to anything downstream that does not check, an
+  unmarked span is indistinguishable from a ratified one, which is the
+  fluent-nonsense failure with the error signal filed off.
+
+  Rank only ever rises by a human act. Nothing this pass does, and no amount
+  of downstream processing, moves `#llm` to `#ed`.
+
+  `@resp` and <unclear> are orthogonal and answer different questions.
+  `@resp` says WHO READ IT; <unclear> says WHETHER THE IMAGE DECIDED. So
+  `<unclear xml:lang="ckt" resp="#llm" reason="...">` is the ordinary case for
+  an ambiguous letterform, and a confident reading is still `resp="#llm"`
+  without <unclear>. Confidence is not authority.
+
+  Tier-2 spans (ru, la, de, …) do not require `@resp`. The asymmetry is the
+  point of calling this a hierarchy: a misread Russian or Latin word is an
+  ordinary error that any reader of the language catches, whereas a misread
+  Chukchee form is unfalsifiable — there is no competent reader and no
+  dictionary to check it against, which is why this project exists.
+
+  What the rule forbids, and still does:
+    - PROMOTION. A reading of yours may not be presented as ratified, and
+      nothing downstream may treat it as one. Rank is carried by the span's
+      provenance, and provenance only ever moves up by a human act.
+    - ORIGINATION by inference. You do not derive a glyph from what the
+      notation "should" contain, from a form on an adjacent page, from
+      `foreign_terms_nearby`, or from any pattern across the corpus. Only the
+      image in front of you, plus book-internal apparatus (the p. 10 key, the
+      List of Illustrations, the printed ToC) which IS evidence and binds.
+    - NORMALIZATION. You do not correct a Tier-1 spelling, regularize a mark,
+      fix what looks like a typo, or harmonize a variant.
+      `foreign_terms_nearby` is read-only reference for spotting POSSIBLE
+      variants to flag. If you notice one, note it in a comment.
+  So: read the form character by character off the image, key exactly what is
+  there, mark it unratified — and where the letterform genuinely does not
+  decide, say so with <unclear> instead of choosing the likelier form.
 - SMALL CAPS, two regimes. Inside Tier-1 spans, ᴀ ᴇ ɪ ʟ are CHARACTERS of
   the notation (the schwa class and a lateral sort), reproduced at their
   codepoints, never case-folded, never rendered as <hi> — the
@@ -436,22 +543,31 @@ LANGUAGE SPANS AND THE FIREWALL — read this twice
   break across lines: never join, never discard. A line-end hyphen inside
   a Tier-1 span is an anomaly — reproduce the draft as-is and add a
   comment flagging it for a human join decision.
-- CODEPOINT HYGIENE, corpus policy. In English and Tier-2 prose, normalize
-  all apostrophes and quotation marks to ASCII — U+2019 and kin → U+0027,
-  curly doubles → U+0022 — unconditionally, no image check needed: this is
-  codepoint policy, not a reading, and there is nothing to be wrong about.
-  Inside Tier-1 spans the firewall governs: reproduce whatever codepoints
-  the draft contains, including forbidden lookalikes — the corpus-wide
-  greps and the keying pilot resolve those, not this pass.
-- If a detector_flags entry overlaps a Tier-1 span, or your own reading of
-  the page image visibly disagrees with the draft there, do not resolve it.
-  Wrap it in <unclear reason="...">, describing in plain terms what the
-  disagreement is (e.g., "draft shows plain case where scan appears to show
-  small caps") — never asserting which reading is correct. This is exactly
-  the layer your own doctrine reserves for editorial judgment; ground truth
-  itself carries no uncertainty markup, this file does.
-- This rule has no exceptions for confidence level. Even if you are quite
-  sure the draft is wrong, you propose via <unclear>, you do not correct.
+- CODEPOINT HYGIENE, two scopes. In English and Tier-2 prose, REPRODUCE THE
+  PRINT, curly quotes included. The book sets them; nothing about an
+  apostrophe in English prose is load-bearing, so there is no conflation
+  hazard to protect against and normalizing would discard a real feature of
+  the setting. (This is a change: the policy was corpus-wide ASCII and is now
+  scoped — keying spec §1, rev 2.3. The gate agrees: `FORBIDDEN_PROSE` no
+  longer contains the four curly quotes.) What stays forbidden in prose is
+  the set with no legitimate English use at all — U+00B4, U+02BC, U+02BB,
+  U+2010.
+  Inside Tier-1 spans, U+0027 and U+002D are the only apostrophe and hyphen,
+  because there U+0027 IS the spirant and pause mark. A curly quote inside a
+  Tier-1 span is a lookalike and lands in the WORKLIST for a human ruling —
+  do not resolve it yourself, and equally do not import one from the draft.
+- Where your reading of the image does not decide a Tier-1 character, wrap it
+  in <unclear reason="...">, describing in plain terms what is ambiguous
+  (e.g., "breve or caron; i loses its dot under an above-mark") without
+  asserting which reading is correct. That is the honest output for an
+  ambiguous letterform, and it is what a later human pass adjudicates.
+  A disagreement with `catmus_draft` is NOT by itself a reason for <unclear>
+  — the draft has no vote on any non-ASCII character, so disagreement there
+  is the expected case rather than a signal. A detector_flags entry
+  overlapping a Tier-1 span is likewise information, not a verdict.
+- No exception for confidence level, in either direction. Being sure does not
+  let you present a reading as ratified; being unsure does not let you pick
+  the plausible form and move on.
 
 ENGLISH PROSE — where fixing is licensed
 - Confirmed OCR slips in ordinary English text may be corrected directly, no

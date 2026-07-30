@@ -25,9 +25,37 @@ three parts you meant.
    first. The page decides.
 2. Read the page image at `page_image` with the Read tool. Read draft and
    image **together**; the draft is a starting point, not a source of truth.
+   On any non-ASCII character it is not even that — stock CATMuS reads 0% of
+   the notation's inventory, so there the image is the only witness.
 3. Draft the TEI to `output_path` per the harness rules. All of them. The
-   firewall rules especially: no character inside a Tier-1 `xml:lang` element
-   is ever altered, no matter how obviously wrong.
+   firewall rules especially: a Tier-1 span is your reading of the page,
+   emitted as an unratified proposal — never normalized toward a plausible
+   form, never harmonized against a neighbouring page, and never presented as
+   an adopted glyph identity. Do not reproduce the draft's Tier-1 characters
+   in place of your own reading; it has no vote there.
+
+   Being unratified is about the span's *authority*, not the care it is owed.
+   Read every mark, at magnification where one sits under a descender. There is
+   a repair pass — marking the span `#llm` is what makes it findable — but it
+   locates the span, not the error, and it is one editor at the raster with no
+   second witness to consult. A dropped mark inside a plausible form reads as
+   correct in the TEI and nothing flags it; that is the class that survives.
+   Where the letterform does not decide, `<unclear>`; never the likelier form.
+
+   **Provenance is an attribute you must write.** Every element bearing a
+   Tier-1 `xml:lang` (`ckt`, `kpy`, `ypk`) carries `@resp`, and from this pass
+   it is always `resp="#llm"`:
+
+       <foreign xml:lang="ckt" resp="#llm">keliˊlɪn</foreign>
+
+   Three ranks, declared once in the corpus teiHeader and never in the page
+   file (the attribute is all you write) — `#ed` ratified (a human keyed it
+   against the page), `#llm` proposed (you read it), `#htr` unexamined
+   (recognizer output). **You emit `#llm` only.** On every Tier-1
+   element, `<unclear>` included, however certain you are: certainty is not
+   authority, and rank rises only by a human act. Claiming `#ed`, or omitting
+   `@resp` so that nothing downstream can tell, are both gate errors —
+   an unmarked span reads as ratified to any consumer that does not check.
 4. `uv run harness validate PP-NNN`. ERRORS: fix and re-run — do not
    argue with the gate; if you believe the gate itself is wrong, that is a
    question for the human, not a license. WORKLIST lines are expected on

@@ -1,8 +1,16 @@
 """The gate. Mechanizes every checkable item of harness rev 2's self-check.
 
 Exit contract: ERRORS block (the model must fix and re-run); WARNINGS accompany
-(human review queue); WORKLIST is the Tier-1 lookalike census — by design not a
-failure (keying spec §4, two-scope dashboards).
+(human review queue); WORKLIST is the Tier-1 lookalike census plus the page's
+provenance state — by design not a failure (keying spec §4, two-scope dashboards).
+
+The firewall here is a **provenance** check and not a text-agreement one. Every
+Tier-1 span declares its rank in `@resp`, the collation pass may only ever claim
+`#llm`, and `--ratified` switches the expectation for a page a human has been
+through. What this file deliberately does *not* do is compare Tier-1 text against
+`catmus_draft`; see the long comment at the old check's site for why that was
+unsatisfiable against real recognizer output and a tautology against a model's own
+reading.
 """
 from __future__ import annotations
 import re, unicodedata
@@ -15,6 +23,17 @@ from .state import load_toc
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 TIER1 = {"ckt", "kpy", "ypk"}
+# Provenance ranks, strictly ordered, declared as respStmt/@xml:id in every page's
+# teiHeader (the template in transcriber_harness.md). Rank answers *who read this*,
+# which is a different question from whether the image decided — that one is
+# <unclear>. A confident reading is still only proposed; certainty is not authority.
+RESP_RANKS = {
+    "#ed": "ratified — a human keyed or confirmed it against the page",
+    "#llm": "proposed — a model read it off the page image",
+    "#htr": "unexamined — recognizer output nobody has looked at",
+}
+PROPOSED = "#llm"
+RATIFIED = "#ed"
 # The four curly quotes are deliberately absent. Under the Tier-1-scoped ASCII policy
 # (keying spec section 1) English prose reproduces the print, curly quotes included, so
 # forbidding them here would reject correct text. What remains is the set with no
@@ -53,8 +72,8 @@ class Report:
         for label, items in (("ERROR", self.errors), ("WARN", self.warnings)):
             out += [f"{label}: {i}" for i in items]
         if self.worklist:
-            out.append(f"WORKLIST ({len(self.worklist)} Tier-1 lookalike hits — "
-                       "to-key census, not defects):")
+            out.append(f"WORKLIST ({len(self.worklist)} items — Tier-1 lookalike "
+                       "census and provenance state, not defects):")
             out += [f"  {i}" for i in self.worklist]
         # key=value, not a Python repr: the gate's output is read by a human at
         # a terminal and grepped by whatever comes after it, and a
@@ -72,7 +91,19 @@ def _lang_of(el, default="en") -> str:
     return default
 
 
-def validate(tei_path: Path, ctx: dict | None = None) -> Report:
+def validate(tei_path: Path, ctx: dict | None = None,
+             ratified: bool = False) -> Report:
+    """Gate one page's TEI. `ratified` switches which provenance rank is expected.
+
+    Default is the collation pass's own self-check, where a Tier-1 span may only
+    claim `#llm` and anything higher is the promotion the firewall forbids. With
+    `ratified` the page has been through a human, so `#ed` is what is expected and
+    a remaining `#llm` becomes a worklist line rather than passing unremarked.
+
+    Two modes rather than one permissive rule, because a single rule accepting both
+    ranks would make the distinction unfalsifiable — which is the failure the old
+    substring test had. Neither mode is silent about the other's state.
+    """
     r = Report()
     try:
         tree = etree.parse(str(tei_path))
@@ -170,24 +201,68 @@ def validate(tei_path: Path, ctx: dict | None = None) -> Report:
             if facs not in zones:
                 r.errors.append(f"<figure facs='#{facs}'> matches no supplied zone")
 
-    # THE check: Tier-1 content is a function of the draft, not a composition.
-    # Every element bearing a Tier-1 xml:lang must reproduce draft text verbatim
-    # (whitespace-joined, NFD both sides). Everything else in this file is
-    # structure; this is the firewall.
-    draft_norm = ""
-    if ctx is not None:
-        draft_norm = " ".join(unicodedata.normalize("NFD",
-                              ctx.get("catmus_draft", "")).split())
+    # THE check, re-anchored: provenance rank, not agreement with an upstream file.
+    # Every Tier-1 element declares who read it, and this pass may only ever claim
+    # the proposed rank. `#ed` is a human's to write; `#htr` belongs to the import.
+    # Both the missing case and the over-claim are errors, and the missing case is
+    # the more dangerous of the two — an unmarked span is indistinguishable from a
+    # ratified one to every consumer that does not check, so silence here would
+    # launder a model reading into an adopted glyph identity.
     for el in root.iter():
         if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
             continue
-        span = " ".join("".join(el.itertext()).split())
-        span = unicodedata.normalize("NFD", span)
-        if span and ctx is not None and span not in draft_norm:
+        name = etree.QName(el).localname
+        span = " ".join("".join(el.itertext()).split())[:40]
+        resp = el.get("resp")
+        if resp is None:
             r.errors.append(
-                f"FIREWALL: <{etree.QName(el).localname} xml:lang="
-                f"'{el.get(XML_LANG)}'> content {span[:50]!r} is not a verbatim "
-                "substring of the draft — Tier-1 spans are reproduced, never composed")
+                f"PROVENANCE: <{name} xml:lang='{el.get(XML_LANG)}'> {span!r} carries "
+                f"no @resp — every Tier-1 span states who read it; use resp='{PROPOSED}'")
+        elif resp not in RESP_RANKS:
+            r.errors.append(
+                f"PROVENANCE: <{name}> resp={resp!r} is not a declared rank "
+                f"({', '.join(sorted(RESP_RANKS))})")
+        elif not ratified and resp != PROPOSED:
+            r.errors.append(
+                f"PROVENANCE: <{name}> {span!r} claims resp={resp!r} "
+                f"({RESP_RANKS[resp]}) — this pass may only emit {PROPOSED!r}; "
+                "rank rises by a human act, never by a pass asserting it")
+        elif ratified and resp != RATIFIED:
+            r.worklist.append(
+                f"unratified: <{name}> {span!r} still at resp={resp!r} "
+                f"({RESP_RANKS[resp]}) — needs a reading against the page")
+
+    # Deliberately no check that `@resp` resolves to a <respStmt> in this file. The
+    # ranks are declared once in the corpus teiHeader; a page file is a fragment that
+    # already defers title, publication and source the same way, so a pointer that
+    # dangles when the page is read alone is the normal state and not a defect.
+    # `RESP_RANKS` above is the closed set, and membership in it is the real check.
+
+    # The verbatim-substring test against `catmus_draft` used to live here, and is
+    # gone. It enforced the *canonicity of the upstream* — every Tier-1 span had to
+    # appear character-for-character in whatever `ocr/` happened to hold — and that
+    # is not what the firewall is about. The firewall is a rule about **hierarchies
+    # of provenance**: a glyph identity may not be *originated* by a model reading a
+    # scan, and a lower-authority witness may not be promoted to a higher one. It
+    # says nothing about whether some particular upstream file agrees.
+    #
+    # Anchored to an upstream instead, it was one of three things depending on what
+    # the draft happened to be, and never the intended one:
+    #
+    #   * draft is a human key      -> the test binds, but only incidentally; what
+    #                                  binds is the human's authority, not the bytes.
+    #   * draft is recognizer output -> unsatisfiable. CATMuS emits no inventory
+    #                                  glyph at all (0% of the inventory, measured),
+    #                                  so every Tier-1 span fails on a correct TEI.
+    #   * draft is an LLM reading    -> tautology. The check compares a TEI against
+    #                                  its own source and passes unconditionally,
+    #                                  while still rendering as a verified PASS.
+    #
+    # The replacement belongs in the TEI, not here: each Tier-1 span carries its own
+    # provenance, and a ratified build refuses to emit a span whose provenance is
+    # machine-proposed. Until that exists this file makes no provenance claim, and
+    # the count below is a worklist item rather than a verdict — which is the honest
+    # state, where a PASS on an unsatisfiable or tautological test was not.
 
     # language codes + two-scope codepoint hygiene
     tier1_spans = 0
@@ -218,6 +293,16 @@ def validate(tei_path: Path, ctx: dict | None = None) -> Report:
         v = el.get(XML_LANG)
         if v and v not in TIER1 and len(v) not in (2, 3):
             r.warnings.append(f"suspicious xml:lang '{v}'")
+
+    # One summary line for the page's provenance state, so a PASS never reads as
+    # "these forms are settled". In the default mode every span is by construction a
+    # proposal, and saying so once is cheaper than a human inferring it from a rank
+    # they'd have to go look up.
+    if tier1_spans and not ratified:
+        r.worklist.append(
+            f"{tier1_spans} Tier-1 span(s) at {PROPOSED} — proposals, not adopted "
+            "glyph identities; each needs a human reading against the page before "
+            "anything downstream may treat it as settled")
 
     r.metrics = {
         "tier1_spans": tier1_spans,

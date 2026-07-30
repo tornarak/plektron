@@ -16,9 +16,32 @@ error signal. Every design decision below follows from it. Prefer mechanical,
 auditable rules over judgement; prefer "unresolved" over a confident guess; prefer
 two independent witnesses to one confident one wherever a second is cheap.
 
-**Firewall.** No non-English glyph identification may originate from a model's reading
-of a scan, or from inference about what Bogoras's system "should" contain. Book-internal apparatus (the p. 10 key, the List of Illustrations, the printed TOC) is *not* subject to this —
-it is evidence, and it binds.
+**Firewall.** A rule about **hierarchies of provenance**, not about agreement with any
+upstream file. No non-English glyph identity may be *adopted* on a model's authority: a
+model may read a scan and propose, but the reading carries its rank with it and rank rises
+only by a human act. Nothing may promote a proposal, and nothing may infer a glyph from
+what Bogoras's system "should" contain, from a neighbouring page, or from any corpus-wide
+pattern. Book-internal apparatus (the p. 10 key, the List of Illustrations, the printed
+TOC) is *not* subject to this — it is evidence, and it binds.
+
+In the TEI this is `@resp` on every element bearing a Tier-1 `xml:lang`, pointing at one
+of three ranks: `#ed` ratified (a human keyed or confirmed it against the page), `#llm`
+proposed (a model read it), `#htr` unexamined (recognizer output). The ranks are declared
+once in the corpus teiHeader and never in a page file — `@resp` is a pointer resolved
+against the assembled document, and a page file is a fragment that already defers title,
+publication and source the same way. The collation pass may emit `#llm` and nothing else;
+`harness validate` errors on a higher claim and on a missing `@resp` equally, because an
+unmarked span is indistinguishable from a ratified one to anything that does not check.
+`--ratified` switches the expectation for a page a human has been through.
+
+**What the firewall is not**, since it was stated the other way for most of this project's
+life: it is *not* "reproduce the draft verbatim". That version enforced the canonicity of
+whatever `ocr/` happened to hold, and was one of three things depending on what that was —
+incidentally right over a human key, **unsatisfiable** over real recognizer output (CATMuS
+emits 0% of the inventory, so every correct TEI failed), and a **tautology** over a
+model's own reading, where it compared a file against its own source and rendered the
+result as a verified PASS. Removed from `validate.py`, `transcriber_harness.md` and the
+skill; the long comment at the old check's site records the reasoning.
 
 **LLM remit.** Models triage, propose, and restructure. They never originate a glyph
 identity and never mint an index entry unreviewed.
@@ -196,8 +219,18 @@ is not the ALTO's; join crops through `harness lines` and never through
 
 **Done: `1-074`.** 32 lines, 1911 chars, zero geometry drift.
 **Remaining 17:** `1-052 1-053 1-073 1-100 1-101 1-151 2-034 2-040 2-244 2-245
-3-003 3-004 3-005 3-006 3-028 3-119 3-135`. Do `1-151` first — it is the one page
-with committed TEI, and restoring it clears the FIREWALL failure described below.
+3-003 3-004 3-005 3-006 3-028 3-119 3-135`. `1-151` is the natural first, being the
+one page with committed TEI to compare against — but the urgency is gone: it used to
+be the page that would clear a standing `validate` failure, and that failure was the
+old verbatim-substring firewall rather than anything about the page. `validate 1-151`
+passes now. Order is a free choice.
+
+**Restoring these is not, in itself, the point any more.** Recognition fine-tuning is
+off the table, so there is no model waiting to train on them, and gloss review will run
+off TEI provenance attributes rather than ALTO ground truth. What the exercise is for is
+the *correction workflow* — the crops, the review page, the keyboard, the decision log
+and the error profile it yields. Judge a session by whether the loop got better, not by
+the page count.
 
 # Harness
 
@@ -389,7 +422,25 @@ Process and rules: `transcriber_harness.md`. Loop: `/transcribe-page PP-NNN`.
 - Join hyphenated words (in **European languages** - hyphens are load-bearing in Americanist notation).
 - Resolve basic textual features like small-caps and footnotes.
 
-**[Mis]transcriptions of Chukchi, Koryak, and "Eskimo" (Yupik) words** should be **reproduced verbatim** and enclosed in appropriate `xml:lang` tags.
+**Chukchi, Koryak and "Eskimo" (Yupik) forms are keyed character by character from the
+page**, enclosed in the appropriate `xml:lang` tag with a `@resp` rank. Every mark is
+read and accounted for; where the letterform does not decide, `<unclear>` says so.
+
+The prohibition on correcting these forms is **not** a lowered bar. It raises it, and the
+repair pass is the reason rather than the exception. `@resp` exists so that every
+unratified span is *findable* — a query over the corpus returns exactly the Tier-1 forms
+awaiting a human, which is the whole design. What it cannot do is tell that human which
+character is wrong. Repair means one editor back at the raster at magnification, with no
+second witness available: CATMuS reads 0% of the inventory, there is no dictionary and no
+competent second reader for these forms. So the pass is single-witness and paid for in the
+scarcest resource here, and its input quality sets its cost.
+
+The error class that survives review is the one with no internal signal. A dropped mark
+inside an otherwise plausible form reads as correct in the TEI, so nothing flags it and
+only re-collation against the page finds it. `1-074` is the measurement: two dropped U+0323
+under a `g`, neither caught by my own re-read, both caught by the editor. "Don't normalize"
+therefore means *read harder*, not *worry less* — an unexpected form sends you back to the
+raster to settle what is on the paper, never to file the oddity as authorial and move on.
 
 **Transcription Detection** (speculative, mechanical, no judgement): inventory-glyph match ∪ word-medial
   `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **English-lexicon miss**. The
@@ -423,9 +474,10 @@ unrelated things. The human text carries 41 non-ASCII characters; CATMuS produce
 13, and **not one is an inventory glyph** — its 13 are curly quotes, em dashes and
 a combining circumflex. It lost all 29 Cyrillic characters, all 5 × U+02CA, all
 3 × `ɪ`, and the single `ᵋ`. Its ASCII is ~91% right and its inventory is 0%
-right, so it is a witness to line geometry and to English and to nothing else. All
-four Tier-1 spans in that TEI fail the firewall's verbatim-substring test against
-it. Its substitutions are worth knowing when adjudicating: `'` `’` `/` for `ˊ`,
+right, so it is a witness to line geometry and to English and to nothing else. That
+0% is what killed the old verbatim-substring firewall: all four Tier-1 spans in that
+TEI failed it, on a page whose readings are correct. Its substitutions are worth
+knowing when adjudicating: `'` `’` `/` for `ˊ`,
 `i` `I` **`r`** for `ɪ`, `f` for `ᵋ`, dropped combining tildes, and one U+0301 —
 the corpus's only combining acute, and a pair `LOOKALIKE_GREPS` does not trap.
 
@@ -475,26 +527,21 @@ TBD
 - **17 ground-truth pages to rebuild.** The loop works; see "The ground-truth loss"
   above. The bottleneck is the reading pass, roughly 45 lines and 5 sheet images per
   page, so plan on 3–4 pages per session rather than one long push.
-- **`harness validate 1-151` FAILS**, four FIREWALL errors, and this is the firewall
-  working rather than a defect. Its four Tier-1 spans cannot be verbatim substrings
-  of a draft that does not contain them — the ALTO is a shell, and even the
-  `end-of-eval/` CATMuS text for that page contains no inventory glyph at all. It
-  clears when `1-151` is restored, not before.
-- **The firewall rule needs re-anchoring to provenance, and is currently ambiguous
-  in a way that matters.** `validate.py` requires every Tier-1 span to be a verbatim
-  substring of `catmus_draft`. That is exactly right when the draft is a human key —
-  it denies a model the chance to normalise `ʟ` to `L` or complete toward a plausible
-  form. It is unsatisfiable when the draft is real recognizer output, since CATMuS
-  emits no inventory glyph. And if an LLM reading ever becomes the draft, the check
-  compares a TEI against its own source and passes unconditionally — a firewall
-  degraded to a tautology, which is worse than none because the PASS still reads as
-  verified. The field is named `catmus_draft` and `transcriber_harness.md:28`
-  documents it as "raw HTR text", while the enforcement assumes human authority;
-  there is **no provenance field in the context contract at all**. Three witness
-  states are wanted where the code has one: human-keyed (substring test binds),
-  machine-proposed (test is worthless; require an explicit unverified mark that a
-  ratified build refuses to emit), and absent (not a TEI defect). **Provenance
-  belongs in the TEI, not in `ocr/`** — that store is machine garbage by design.
+- **The corpus teiHeader does not exist**, and it is now load-bearing: it is where the
+  three `respStmt` provenance ranks are declared, so every `@resp` in the corpus is a
+  pointer with nothing yet to resolve against. Harmless while pages are validated
+  individually (`validate` deliberately does not check local resolution), and a hard
+  requirement before any assembly step. Ranks are `#ed` / `#llm` / `#htr`, defined in
+  `validate.RESP_RANKS`, which is the operative definition until the header lands.
+- **The ratified build does not exist.** The `--ratified` mode of `validate` reports an
+  unratified span as a worklist line, which is the right shape for a page in progress
+  but is not a gate: nothing yet *refuses* to publish a `#llm` span. Until it does,
+  provenance is recorded and inspectable but not enforced downstream.
+- **No page has been through the collation pass under the new rule.** `1-151` was
+  retrofitted by hand — its four `resp="#llm"` attributes were added after the fact, not
+  emitted by a pass reading the amended harness. So the instruction has not been tested
+  on a model that only ever saw the provenance version, and the first page transcribed
+  after this is also a test of whether the rule reads as intended.
 - The continuation pass (`boundaries.json` from ALTO geometry) is specified but
   unwritten; `boundary_in` is `"unknown"` for every page until it exists.
 - The 20 OCR'd pages are scattered across all three parts, so most have no

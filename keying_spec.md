@@ -15,11 +15,16 @@ harness (rev 2) governs the collation pass.
   binds.
 - **NFD, corpus-wide.** One conversion point; verified at export:
   `python3 -c "import unicodedata,sys; print(unicodedata.is_normalized('NFD', open(sys.argv[1]).read()))"`
-- **ASCII policy, corpus-wide.** U+0027 and U+002D are the only apostrophe and
-  hyphen; English prose keys them like everything else. U+2019 and friends are
-  forbidden everywhere; the lookalike greps run unscoped. Rationale: ASCII is
-  what every keyboard emits, hence drift-proof; a modifier-letter codepoint
-  invites corpus-wide conflation with true apostrophes at every entry point.
+- **ASCII policy, scoped to Tier-1.** Inside `ckt`/`kpy`/`ypk`, U+0027 and U+002D
+  are the only apostrophe and hyphen, and the lookalike greps (§3) run there.
+  Rationale: ASCII is what every keyboard emits, hence drift-proof; a
+  modifier-letter codepoint invites conflation with a true apostrophe at every
+  entry point — and inside a Tier-1 span the apostrophe is phonetically
+  load-bearing, since U+0027 *is* the spirant and pause mark rather than a
+  lookalike for one. English prose reproduces the print, **curly quotes
+  included**: the book sets them, nothing there is load-bearing, and forbidding
+  them would reject correct text. `validate.py`'s `FORBIDDEN_PROSE` and its
+  scoped greps are the enforcement.
 - **Keying reproduces print.** The collation pass may modernize glossed Russian
   (harness rev 2); ground truth does not — pre-reform Cyrillic sorts
   (і U+0456, ѣ U+0463) are keyed as printed.
@@ -202,6 +207,13 @@ printed shape alone (greyscale fallback per F11).
 
 ## 7. Changelog
 
+- **Rev 2.3 (2026-07-29):** §1 ASCII policy narrowed from corpus-wide to
+  Tier-1, and the greps with it. This had been decided, implemented in
+  `validate.py` (`FORBIDDEN_PROSE` minus the four curly quotes) and written into
+  `CLAUDE.md` at rev 2.2, but never landed here — so the normative spec said
+  "forbidden everywhere" while the gate accepted them, and `CLAUDE.md` cited a
+  §1 revision that did not exist. The doctrine is the scoped one; this entry is
+  the spec catching up to its own enforcement.
 - **Rev 2.2 (2026-07-29):** §2.6 added — mark–base licensing, editor-supplied.
   Breve licensed on `u` and `i`, never on the obscure-vowel series ᴀ ᴇ ɪ ä,
   since the p. 10 key already glosses that series as short. Prompted by a real
