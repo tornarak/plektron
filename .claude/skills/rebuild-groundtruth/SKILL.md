@@ -9,9 +9,14 @@ You produce a **proposal**: your reading of every line, keyed by ALTO line index
 A human adjudicates it in the browser and `restore` writes `gt/ocr/`. You never
 write ground truth directly.
 
-`keying_spec.md` governs what the characters are. Read §2 before your first page of
-a session; it is the inventory, and §2.6's mark–base licensing decides cases the
-raster cannot.
+`keying_spec.md` governs what the characters are. **Read the whole file with the Read
+tool before your first page of a session — not `grep`.** It is short enough to read
+whole, and it is dense enough that a grep for a term you already suspect will find
+that term and miss the rest of the inventory next to it: the mark you didn't know to
+search for, the licensing note that would have overridden your first guess, the
+changelog entry recording that someone already made your mistake. A page keyed
+against a partial reading of the spec is not different in kind from a page keyed
+against no spec at all.
 
 **The deliverable is the workflow, not the page count.** Recognition fine-tuning is
 off the table and gloss review runs off TEI provenance, so these ALTOs train nothing.
@@ -23,20 +28,32 @@ by whether the loop got better.
 Refs are part + scan index (`1-073`), never a bare page number. Every step is
 stateless, so a fresh session resumes wherever the last one stopped.
 
-    uv run harness lines PP-NNN --sheets review/sheets   contact sheets, one call
+    uv run harness lines PP-NNN --sheets                 contact sheets, one call
     uv run harness zoom  PP-NNN --only 7,20,22-26        the closer look
-    (author review/proposals/PP-NNN.json)                your reading
+    (author review/PP-NNN/proposal.json)                 your reading
+    uv run harness proposal-check PP-NNN --fix           catch a mistyped mark
+    uv run harness normalize --path review/PP-NNN/proposal.json
+    uv run harness normalize --check --path review/PP-NNN/proposal.json
     uv run harness review PP-NNN --serve                 human adjudicates
     uv run harness restore PP-NNN                        -> gt/ocr/
+
+Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.json`,
+`decision.json`, and the derived `sheets/ crops/ zoom/`. No verb needs telling where;
+`--out` is for a one-off outside the pass. When a page is done, the images go with
+`rm -r review/PP-NNN/{crops,sheets,zoom}`, leaving the two authored files.
 
 1. **Read the whole page image first** (`scans/chukchi-PP-NNN.png`) for orientation:
    where the running title, folio, footnotes and any figure sit. ALTO order is not
    reading order — a running title often lands mid-sequence.
 2. **`uv run harness lines PP-NNN`** for the line table, then `--sheets` for the
-   crops. The table's `index` is the key for everything downstream.
-3. **`uv run harness zoom`** for whatever the sheets leave open. Select every line you
-   mean to look at in **one call**; running it once per doubt costs more than the look
-   is worth.
+   crops. The table's `index` is the key for everything downstream. **Read every
+   sheet in full before zooming into anything.** The sheets are cheap and the plain
+   read is what tells you which lines actually hold a doubt; zooming ahead of that
+   either wastes a call on a line that turns out to be fine or, worse, anchors a
+   reading before you've seen the word in its plain context.
+3. **`uv run harness zoom`** only for what the plain sheets left open, once you've
+   read all of them. Select every line you mean to look at in **one call**; running
+   it once per doubt costs more than the look is worth.
 4. **Author the proposal.** One entry per line index, every line present.
 5. **Start the review server yourself** and hand the human a URL — don't ask them to
    run a command. It serves on loopback only and blocks, so run it in the background:
@@ -46,9 +63,11 @@ stateless, so a fresh session resumes wherever the last one stopped.
    Then tell them `http://127.0.0.1:8731/` and report what you flagged and why. Use
    `--port` if 8731 is taken. Stop it when the pass is done; leaving a server bound to
    a page you have already restored is how a later save lands on stale text.
-6. **`uv run harness restore PP-NNN`** once they have saved. `review/decisions/PP-NNN.json`
-   appearing (or changing) is the signal; the server prints one line per save. Read
-   that line: it reports lines edited *and* lines changed, and a large `changed` after
+6. **`uv run harness restore PP-NNN`** once they have saved. `review/PP-NNN/decision.json`
+   appearing (or changing) is the signal; the server prints one line per save. **When
+   told a save happened, read that file** rather than re-deriving your own view of
+   what went wrong — it already holds the adjudicated answer.
+   Read that line: it reports lines edited *and* lines changed, and a large `changed` after
    light editing means a bulk overwrite, not work — see the browser warning below.
 
 ## The instrument
@@ -99,10 +118,19 @@ to the raster there. See `keying_spec.md` §2.8; those are keyed `(??/????)` any
 4. **Old-style figures.** The numeral 1 is x-height and dotless and is easily taken
    for `ɪ`; zero is small and round. CATMuS reads `20th` as `zoth`.
 5. **Text outside the polygons** — see `--margins` above.
+6. **Word stress (U+02CA ˊ) keyed as apostrophe (U+0027 ').** These are visually
+   **distinct** printed symbols, not a shape call — read which one is actually on the
+   page, the same as any other glyph. What makes this class worth naming: **every
+   multisyllabic Chukchi/Eskimo/Koryak word carries a stress mark** (culminative, ≤1
+   per word), so a native word of more than one syllable almost certainly has one
+   somewhere, and a raised mark you're about to key as a plain apostrophe out of habit
+   is far more likely the stress mark. On `1-052`, essentially every native word on
+   the page (~40) was keyed `'` without this expectation in mind, and the actual
+   symbol printed throughout was the stress mark.
 
 ## The proposal file
 
-`review/proposals/PP-NNN.json`. Every line index present, `text` mandatory:
+`review/PP-NNN/proposal.json`. Every line index present, `text` mandatory:
 
 ```json
 {"lines": {"22": {"text": "2. Čačanloˊrg̣ɪn (“cold udder [month]”).",
@@ -114,16 +142,24 @@ to the raster there. See `keying_spec.md` §2.8; those are keyed `(??/????)` any
   read, not afterwards: a combining mark that fails to render looks exactly like its
   absence, and that is how a U+0323 was mis-keyed once already. It also catches your
   own typing, since the field and the character can disagree.
+- **Run `uv run harness proposal-check PP-NNN --fix` right after authoring.** It
+  cross-checks every line's `text` against the codepoints its own `resolved` field
+  names, and fixes the one unambiguous case — a single mark in `text` that `resolved`
+  doesn't mention, paired with a single codepoint `resolved` names that `text` doesn't
+  contain. This is exactly the ring-below-for-dot-below, diaeresis-for-caron class of
+  typo that hand-typing a combining sequence produces, caught mechanically instead of
+  by re-reading your own output and hoping to notice. Whatever it can't resolve
+  unambiguously it still reports — read those by hand, since a guess there is exactly
+  what the firewall's reasoning forbids. Re-run without `--fix` afterward: zero output
+  is the signal you're done.
 - **`note`** for anything an adjudicator would otherwise have to rediscover: material
   outside a polygon, a small-cap flattening, a speck you decided was not ink.
-- A **`contamination`** block, always. Say whether the page is blind. Five refs are
-  spent — `1-048`, `1-052`, `2-030`, `1-151`, and `1-074` (amended in place) — because
-  their transcriptions were read openly, so agreement there measures nothing. On a
-  clean ref, read into the proposal *before* opening any existing transcription of it.
-- Flag rather than resolve. Where the letterform does not decide, say so and let the
-  human rule.
-- **NFD.** Your output will likely be composed, so run `uv run harness normalize`
-  after writing, then `--check`, which exits 1 on NFD drift and on an unlicensed mark.
+- A **`contamination`** block, always. Say whether the page is blind.
+- **NFD.** Your output will likely be composed, so run
+  `uv run harness normalize --path review/PP-NNN/proposal.json`, then the same with
+  `--check`, which exits 1 on NFD drift and on an unlicensed mark. Scope to the one
+  file with `--path` — bare `normalize` walks and rewrites the whole corpus, which is
+  the wrong blast radius for a single page's proposal.
 
 Once adjudicated, **do not rewrite a proposal's `text` fields** without recording the
 original error count somewhere explicit. `edited` is computed against the proposal, so

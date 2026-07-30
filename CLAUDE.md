@@ -134,8 +134,9 @@ Layout, all at the repo root:
     end-of-eval/  18 pages of stock-CATMuS output over the refs gt/ocr/ lost.
                   Machine output, never ground truth. Supplies the line geometry
                   the restore builds on, since the shells have none.
-    review/ proposals/ (a reading, not truth) and decisions/ (adjudicated) are
-            tracked; crops/ and the generated HTML are derived and ignored.
+    review/ one directory per page, PP-NNN/. proposal.json (a reading, not truth)
+            and decision.json (adjudicated) are tracked; crops/ sheets/ zoom/ and
+            review.html are derived and ignored. See harness/paths.py.
     models/ blla, CATMuS print (large + tiny), LADaS medium, orli, plates-seg.
     pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
     scans-w-figs/  scans-w-ocr/   symlinks into scans/. Derived, and ignored:
@@ -192,11 +193,17 @@ into one wrote through to the other. Nothing in an ALTO says which it is; the
 carries the instrument mechanics, the error classes and the proposal contract. Four
 stateless steps, so a fresh session resumes wherever the last stopped:
 
-    harness lines PP-NNN --sheets DIR   line identity + contact sheets
+    harness lines PP-NNN --sheets       line identity + contact sheets
     harness zoom PP-NNN --only …        magnification, when the sheets leave a doubt
-    (a reading proposal is authored)    review/proposals/PP-NNN.json
+    (a reading proposal is authored)    review/PP-NNN/proposal.json
     harness review PP-NNN --serve       adjudicate in the browser
     harness restore PP-NNN              -> gt/ocr/, real ground truth
+
+Every one of those reads and writes under **`review/PP-NNN/`**, and none needs telling
+where: the page's own directory is the default for the images as well as the two JSON
+files, so `--out` exists only for a one-off outside the pass. Finishing with a page is
+`rm -r review/PP-NNN/{crops,sheets,zoom}` — which is the other half of why the layout
+is per-page rather than per-kind (`harness/paths.py` records the reasoning).
 
 `end-of-eval/` supplies the geometry, since the shells have none. `restore` refuses
 four ways rather than guessing: a target that already holds text (without `--force`),
@@ -258,9 +265,14 @@ if you ever need it.
     uv run harness review PP-NNN      span diff of a proposal against the
                                       recognizer, as *measurement*; --serve runs
                                       the line-based browser review on 127.0.0.1
-                                      and saves to review/decisions/
+                                      and saves to review/PP-NNN/decision.json
     uv run harness restore PP-NNN     adjudicated decisions -> gt/ocr/
-    uv run harness normalize --check  NFD + lookalike gate; exit 1 on drift
+    uv run harness normalize --check  NFD + lookalike gate; exit 1 on drift;
+                                      --path FILE scopes to one file instead of
+                                      the whole corpus (repeatable)
+    uv run harness proposal-check PP-NNN   a proposal's `resolved` field against
+                                      the codepoints its `text` actually has;
+                                      --fix applies the one unambiguous swap
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -565,7 +577,7 @@ TBD
 - **Eval contamination, which limits what can be measured.** A blind accuracy figure
   for an LLM reading needs pages the model has not seen. `2-030`'s ground truth,
   `1-151`'s TEI body, and fragments of `1-048` and `1-052` were read openly in
-  session; `1-074`'s proposal was also amended in place before `review/decisions/`
+  session; `1-074`'s proposal was also amended in place before the decision store
   existed, so its `edited` count says 1 where the page had 2 errors. Those five are
   spent, and `1-073` is now used up by being done. The 15 remaining refs are the clean
   set — read each into a proposal *before* opening any existing transcription of it.

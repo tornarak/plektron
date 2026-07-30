@@ -54,14 +54,16 @@ from .detectors import unlicensed_marks
 # prose and would fail a gate meant for the text itself.
 SCOPE_GLOBS = ("ocr/*.xml", "gt/ocr/*.xml", "gt/seg/*.xml", "fig/*.xml", "tei/*.xml",
                "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
-               # The review stores. Both are authored text — a proposal is somebody's
-               # reading and a decision is an editorial act — so both can carry an
-               # inventory glyph and both must be NFD. They were outside the scope
-               # until a proposal for `1-151` keyed ê precomposed twice, inside a
-               # Tier-1 form, with the same file's own note correctly describing it as
-               # e+U+0302. `save_decisions` normalizes on write, so `decisions/` was
-               # safe by accident; nothing normalized a hand-authored proposal.
-               "review/proposals/*.json", "review/decisions/*.json")
+               # The review stores, one directory per page. Both files are authored
+               # text — a proposal is somebody's reading and a decision is an editorial
+               # act — so both can carry an inventory glyph and both must be NFD. They
+               # were outside the scope until a proposal for `1-151` keyed ê precomposed
+               # twice, inside a Tier-1 form, with the same file's own note correctly
+               # describing it as e+U+0302. `save_decisions` normalizes on write, so the
+               # decision was safe by accident; nothing normalized a hand-authored
+               # proposal. Named individually rather than as `review/*/*.json`, so a
+               # future derived JSON in the page directory is not swept in silently.
+               "review/*/proposal.json", "review/*/decision.json")
 
 # Codepoints with no legitimate use in English prose *or* in the transcription system,
 # so their presence is a defect regardless of which one a given span is. The curly
@@ -160,14 +162,24 @@ def _precomposed(text: str) -> str:
                     for c, n in sorted(counts.items(), key=lambda kv: -kv[1]))
 
 
-def scan(root: Path = Path(".")) -> dict:
+def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
     """Per-file conformance, without writing anything.
 
     `delta` is the codepoint count NFD would add, which is the honest size of the
     change: it is never a character *identity* change, only a representation one.
+
+    `paths`, when given, scopes the walk to those files instead of the whole
+    corpus glob — a per-page loop step (a proposal just authored) has no business
+    rewriting 283 files to check or convert one of them, even though `scoped_files`
+    would find it eventually. The files still have to already be in scope (an
+    arbitrary path is not silently accepted), so this narrows, it does not widen.
     """
     files, offenders, worklist, unlicensed = 0, [], [], []
-    for p in scoped_files(root):
+    universe = scoped_files(root)
+    if paths is not None:
+        wanted = {p.resolve() for p in paths}
+        universe = [p for p in universe if p.resolve() in wanted]
+    for p in universe:
         rel = str(p.relative_to(root))
         try:
             text = p.read_text(encoding="utf-8")
@@ -193,8 +205,12 @@ def scan(root: Path = Path(".")) -> dict:
             "unlicensed_marks": unlicensed, "lookalikes": worklist}
 
 
-def convert(root: Path = Path("."), dry_run: bool = False) -> dict:
+def convert(root: Path = Path("."), dry_run: bool = False,
+            paths: list[Path] | None = None) -> dict:
     """Rewrite non-conformant files to NFD.
+
+    `paths` scopes to specific files, same contract as `scan`'s — see there for why
+    a per-page step should not default to walking the whole corpus.
 
     Operates on **raw file source, never a parsed tree**. Every XML syntax character
     is ASCII and therefore NFD-invariant, so this cannot perturb element order,
@@ -221,7 +237,11 @@ def convert(root: Path = Path("."), dry_run: bool = False) -> dict:
     pass must never share a run with a coordinate migration.
     """
     changed, failed = [], []
-    for p in scoped_files(root):
+    universe = scoped_files(root)
+    if paths is not None:
+        wanted = {p.resolve() for p in paths}
+        universe = [p for p in universe if p.resolve() in wanted]
+    for p in universe:
         try:
             before = p.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):

@@ -23,20 +23,25 @@ models/
 ocr300/
 figs-ocr300/
 
-# `review/` is mostly derived — line crops and generated HTML, regenerable from
-# the ALTO and the rasters. But `review/proposals/` and `review/decisions/` are
-# authored: a reading proposal is somebody's (or something's) transcription of a
-# page, and an adjudication is an editorial act. Losing either is the failure this
-# repo already suffered once. Note `review/*` rather than `review/`, because git
-# will not descend into an excluded directory and the negations below would never
-# be consulted.
-review/*
-!review/proposals/
-!review/decisions/
+# `review/PP-NNN/` is one directory per page, holding both the authored files —
+# `proposal.json` (somebody's, or something's, reading) and `decision.json` (an
+# editorial act) — and the derived images, which are regenerable from the ALTO and
+# the rasters. Losing an authored one is the failure this repo already suffered once.
+#
+# So the derived names are listed and everything else is tracked, which is the
+# reverse of the earlier `review/*` + negate-two-directories rule, deliberately. Under
+# that rule a *new* authored file needed a matching negation or it was silently
+# ignored, i.e. untracked and losable — the exact failure mode. Under this one a
+# forgotten entry commits a few PNGs: noise, and visible. `harness/paths.py:DERIVED`
+# is the list these mirror; keep the two in step.
+review/*/crops/
+review/*/sheets/
+review/*/zoom/
+review/*/review.html
 # The save writes temp-then-rename and keeps one .prev alongside, as insurance
 # against an interrupted write. Neither belongs in history — git is the history.
-review/decisions/*.prev
-review/decisions/*.tmp
+review/*/*.prev
+review/*/*.tmp
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and

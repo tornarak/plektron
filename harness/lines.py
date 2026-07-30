@@ -232,7 +232,11 @@ def line_crops(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
 def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
                       root: Path = Path("."), scans: str = "scans",
                       per_sheet: int = 8, margins: bool = False) -> list[dict]:
-    """Compose the page's line crops into labelled contact sheets.
+    """Compose the page's line crops into labelled contact sheets, in `out_dir` itself.
+
+    `out_dir` is the destination, not a parent to hang a per-ref directory off — the
+    per-ref directory is `paths.sheets_dir(ref)` and the caller has already resolved
+    it. Same for `write_line_zoom` and `write_line_crops`.
 
     The reading pass wants a handful of images rather than forty, because reading
     forty separate crops means forty re-orientations — the same context-switch cost
@@ -251,12 +255,12 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
     if not items:
         return []
     width = max(im.width for _, im in items) + LABEL_W + 20
-    sheets, index = compose_sheets(items, out_dir / norm_ref(ref),
+    sheets, index = compose_sheets(items, out_dir,
                                   per_sheet=per_sheet, prefix="lines",
                                   sheet_w=width)
     # One flat record per sheet, `lines` as a joined string rather than a list:
     # a nested value de-tabularizes the whole TOON table (see the module docstring).
-    return [{"sheet": str(out_dir / norm_ref(ref) / e["sheet"]),
+    return [{"sheet": str(out_dir / e["sheet"]),
              "lines": " ".join(e["items"])} for e in index]
 
 
@@ -343,28 +347,26 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
     # by a content-dependent factor on arrival, so `zoom` would mean a different
     # magnification on every selection. Padding costs white pixels and buys a number
     # that is the same every time.
-    d = out_dir / norm_ref(ref)
-    sheets, index = compose_sheets(strips, d, per_sheet=len(strips),
+    sheets, index = compose_sheets(strips, out_dir, per_sheet=len(strips),
                                   sheet_w=client_w, max_h=sheet_h,
                                   prefix=f"zoom{zoom}")
-    return [{"sheet": str(d / e["sheet"]), "zoom": zoom, "margins": margins,
+    return [{"sheet": str(out_dir / e["sheet"]), "zoom": zoom, "margins": margins,
              "strips": " ".join(e["items"])} for e in index]
 
 
 def write_line_crops(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
                      root: Path = Path("."), scans: str = "scans",
                      margins: bool = False) -> list[dict]:
-    """Crop every line to `out_dir/<ref>/<index>-<line_id>.png`. Returns the records.
+    """Crop every line to `out_dir/<index>-<line_id>.png`. Returns the records.
 
     Filenames lead with the zero-padded index so a directory listing is reading
     order — which is what makes `sxiv` over the directory a usable review view.
     """
     ref = norm_ref(ref)
-    d = out_dir / ref
-    d.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
     out = []
     for rec, crop in line_crops(ref, alto_dir, root, scans, margins):
-        path = d / f"{rec['index']:03d}-{rec['line_id']}.png"
+        path = out_dir / f"{rec['index']:03d}-{rec['line_id']}.png"
         crop.save(path)
         out.append({**rec, "crop": str(path)})
     return out

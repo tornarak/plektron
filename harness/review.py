@@ -46,6 +46,7 @@ from .context import norm_ref
 from .detectors import (DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES,
                         unlicensed_marks)
 from .lines import alto_for_lines, page_lines
+from .paths import crops_dir, decisions_path, proposal_path
 
 CONTEXT_CHARS = 24
 
@@ -114,13 +115,14 @@ def tier1_glyphs(text: str) -> str:
 
 
 def load_proposal(ref: str, root: Path = Path(".")) -> dict[int, dict]:
-    """`review/proposals/<ref>.json` -> `{index: record}`.
+    """`review/<ref>/proposal.json` -> `{index: record}`.
 
-    A proposal, never ground truth: no glyph identity in it is adopted. Kept out
-    of any directory named for truth precisely so the distinction cannot be lost
-    to a path, which is how 18 pages of real ground truth were lost.
+    A proposal, never ground truth: no glyph identity in it is adopted. The word is
+    in the filename precisely so the distinction cannot be lost to a path, which is
+    how 18 pages of real ground truth were lost — it used to be carried by the
+    `review/proposals/` directory instead, which said the same thing.
     """
-    p = root / "review" / "proposals" / f"{norm_ref(ref)}.json"
+    p = proposal_path(ref, root)
     doc = json.loads(p.read_text(encoding="utf-8"))
     return {int(k): v for k, v in doc["lines"].items()}
 
@@ -245,10 +247,6 @@ PALETTE = [(label, [unicodedata.normalize("NFD", g) for g in glyphs])
            for label, glyphs in PALETTE]
 
 
-def decisions_path(ref: str, root: Path = Path(".")) -> Path:
-    return root / "review" / "decisions" / f"{norm_ref(ref)}.json"
-
-
 def load_decisions(ref: str, root: Path = Path(".")) -> dict[int, dict]:
     """Adjudicated lines saved so far, `{index: record}`. Empty if none."""
     p = decisions_path(ref, root)
@@ -285,7 +283,7 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
     of transcription once.
 
     `.prev` is one deep and that is not enough on its own, so every save also appends
-    to an **append-only journal**, `<ref>.jsonl`, recording only the lines that differ
+    to an **append-only journal**, `decision.jsonl`, recording only the lines that differ
     from the proposal. Two saves in a row destroy `.prev`; nothing destroys the
     journal. This is not hypothetical: Firefox restores textarea values across a
     crash-and-reopen and restores them *by position*, so reopening this page refilled
@@ -310,7 +308,9 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
     changed = sorted(int(k) for k, v in out.items()
                      if int(k) in before and before[int(k)]["text"] != v["text"])
     doc = {"ref": ref,
-           "proposal": f"review/proposals/{ref}.json",
+           # Repo-relative regardless of `root`: the field records which reading was
+           # adjudicated, and an absolute path names a machine rather than a file.
+           "proposal": proposal_path(ref).as_posix(),
            "saved_at": stamp,
            "lines": out}
     p = decisions_path(ref, root)
@@ -468,7 +468,7 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
     """
     from .lines import write_line_crops
     ref = norm_ref(ref)
-    crops = crops or (root / "review" / "crops")
+    crops = crops or crops_dir(ref, root)
     recs = {r["index"]: r for r in write_line_crops(ref, crops, alto_dir, root)}
     prop = load_proposal(ref, root)
     saved = load_decisions(ref, root)
@@ -536,7 +536,7 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          "#st{color:#555;min-width:13ch;text-align:right}",
          "#st.bad{color:#b00;font-weight:600}",
          "#kb{font:12px ui-monospace,monospace;color:#777;border:1px solid #bbb;"
-         "border-radius:3px;padding:.1rem .4rem}",
+         "border-radius:3px;padding:.1rem .4rem;cursor:pointer;user-select:none}",
          "#kb.on{color:#fff;background:#1a7f37;border-color:#1a7f37;font-weight:700}",
          "#pctl button{font:inherit;padding:.25rem .9rem}",
          # The mode has to be unmissable, since with it on every letter key means
@@ -705,6 +705,7 @@ document.addEventListener('mousedown',e=>{
 for(const b of document.querySelectorAll('.pk')){
   b.addEventListener('click',()=>{ if(last) insert(last,b.dataset.ins) });
 }
+kb.addEventListener('click',()=>setKbd(!kbdOn));
 addEventListener('keydown',e=>{
   if(e.ctrlKey&&e.code==='Space'){e.preventDefault();setKbd(!kbdOn);return}
   if(!kbdOn||!last||document.activeElement!==last) return;
@@ -827,8 +828,11 @@ def serve(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
             self.wfile.write(body)
 
     srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    print(f"review {norm_ref(ref)} -> http://127.0.0.1:{port}/   (ctrl-c to stop)")
+    url = f"http://127.0.0.1:{port}/"
+    print(f"review {norm_ref(ref)} -> {url}   (ctrl-c to stop)")
     print(f"decisions -> {decisions_path(ref, root)}")
+    import webbrowser
+    webbrowser.open(url)
     try:
         srv.serve_forever()
     except KeyboardInterrupt:

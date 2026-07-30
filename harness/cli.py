@@ -27,6 +27,8 @@ from .lines import (ZOOM, ZOOM_CLIENT_W, ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_li
                     page_lines, parse_selection, write_line_crops,
                     write_line_sheets, write_line_zoom)
 from .normalize import scan, convert
+from .paths import crops_dir, html_path, proposal_path, sheets_dir, zoom_dir
+from .proposal_check import check as check_proposal, fix as fix_proposal
 from .review import (group_spans, page_spans, render_queue_html, restore, serve,
                      summary)
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
@@ -95,13 +97,18 @@ def main(argv=None):
                     help="page ref: part and scan index, e.g. 1-048")
     ln.add_argument("--from", dest="alto_dir", default="end-of-eval",
                     help="ALTO directory to read (default end-of-eval)")
-    ln.add_argument("--crops", type=Path, default=None,
-                    help="also write one PNG per line under this directory")
-    ln.add_argument("--sheets", type=Path, default=None,
-                    help="compose the line crops into labelled contact sheets here, "
-                         "index drawn in the margin, nothing downscaled — the reading "
-                         "pass's instrument; emits the sheet/lines map instead of the "
-                         "line table")
+    ln.add_argument("--crops", action="store_true",
+                    help="also write one PNG per line, into review/PP-NNN/crops/")
+    ln.add_argument("--sheets", action="store_true",
+                    help="compose the line crops into labelled contact sheets in "
+                         "review/PP-NNN/sheets/, index drawn in the margin, nothing "
+                         "downscaled — the reading pass's instrument; emits the "
+                         "sheet/lines map instead of the line table")
+    ln.add_argument("--out", type=Path, default=None,
+                    help="write the images somewhere other than the page's own "
+                         "review/PP-NNN/ subdirectory — for a one-off comparison, "
+                         "not for the pass, whose files the other verbs expect to "
+                         "find in the default place")
     ln.add_argument("--per-sheet", type=int, default=8,
                     help="lines per contact sheet (default 8)")
     ln.add_argument("--margins", action="store_true",
@@ -149,8 +156,8 @@ def main(argv=None):
                     help="Lanczos instead of nearest-neighbour: better for "
                          "comparing letterforms, worse for deciding whether a "
                          "faint mark is present, since it invents greys")
-    zm.add_argument("--out", type=Path, default=Path("review/zoom"),
-                    help="output directory (default review/zoom)")
+    zm.add_argument("--out", type=Path, default=None,
+                    help="output directory (default review/PP-NNN/zoom)")
     zm.add_argument("--from", dest="alto_dir", default="end-of-eval",
                     help="ALTO providing the line geometry (default end-of-eval)")
 
@@ -161,13 +168,16 @@ def main(argv=None):
                     help="page ref: part and scan index, e.g. 1-074")
     rv.add_argument("--from", dest="alto_dir", default="end-of-eval",
                     help="recognizer ALTO directory (default end-of-eval)")
-    rv.add_argument("--html", type=Path, default=None,
-                    help="write the browser review page here instead of a table")
+    rv.add_argument("--html", action="store_true",
+                    help="write the browser review page to review/PP-NNN/review.html "
+                         "instead of emitting a table. No destination knob: the page "
+                         "embeds its crops as data URIs, so where it sits is nobody's "
+                         "business but the pass's, and --serve is the usual route")
     rv.add_argument("--spans", action="store_true",
                     help="every span individually, not grouped by class")
     rv.add_argument("--serve", action="store_true",
                     help="serve the review page on 127.0.0.1 and accept saves "
-                         "into review/decisions/PP-NNN.json")
+                         "into review/PP-NNN/decision.json")
     rv.add_argument("--port", type=int, default=8731)
 
     rs = add("restore", help="write adjudicated review decisions into "
@@ -187,6 +197,24 @@ def main(argv=None):
                     help="report only; exit 1 if any file is not NFD")
     nz.add_argument("--dry-run", action="store_true",
                     help="with no --check: name the files that would change")
+    nz.add_argument("--path", type=Path, action="append", default=None,
+                    help="scope to this file instead of the whole corpus "
+                         "(repeatable) — for checking/converting one just-authored "
+                         "file, e.g. a proposal, without touching the other 280+")
+
+    pc = add("proposal-check", help="cross-check a reading proposal's `resolved` "
+                        "field against the codepoints its `text` actually contains "
+                        "— catches a mistyped combining mark (ring below for dot "
+                        "below, diaeresis for caron) before it reaches review")
+    pc.add_argument("ref", metavar="PP-NNN",
+                    help="page ref: part and scan index, e.g. 1-052")
+    pc.add_argument("--path", type=Path, default=None,
+                    help="proposal file (default review/PP-NNN/proposal.json)")
+    pc.add_argument("--fix", action="store_true",
+                    help="apply the one unambiguous correction (a single mark "
+                         "the resolved field names but the text doesn't contain, "
+                         "swapped for the single mark text has that resolved "
+                         "doesn't) and write the file back")
 
     lx = add("lexicon", help="frequency-ranked lexicon_miss tokens "
                         "across every OCR'd page, for bulk approval into "
@@ -236,12 +264,20 @@ def main(argv=None):
         if a.cmd == "toc-near":
             out(toc_window(load_toc(a.root), a.folio, [], span=a.span))
             return 0
+        if a.cmd == "proposal-check":
+            path = a.path or proposal_path(a.ref, a.root)
+            if a.fix:
+                out(fix_proposal(path))
+                return 0
+            mismatches = check_proposal(path)
+            out(mismatches)
+            return 1 if mismatches else 0
         if a.cmd == "lexicon":
             out(suggest_lexicon(a.root))
             return 0
         if a.cmd == "zoom":
             out(write_line_zoom(
-                a.ref, a.out,
+                a.ref, a.out or zoom_dir(a.ref, a.root),
                 only=parse_selection(a.only) if a.only else None,
                 zoom=a.zoom, window=a.window, overlap=a.overlap,
                 sheet_h=a.sheet_h, client_w=a.client_w,
@@ -253,10 +289,12 @@ def main(argv=None):
                 # The sheet map is its own table — a different key set from the line
                 # records, so it cannot be merged into one emit without collapsing
                 # both to the verbose nested form.
-                out(write_line_sheets(a.ref, a.sheets, a.alto_dir, a.root,
+                out(write_line_sheets(a.ref, a.out or sheets_dir(a.ref, a.root),
+                                      a.alto_dir, a.root,
                                       per_sheet=a.per_sheet, margins=a.margins))
                 return 0
-            recs = (write_line_crops(a.ref, a.crops, a.alto_dir, a.root,
+            recs = (write_line_crops(a.ref, a.out or crops_dir(a.ref, a.root),
+                                     a.alto_dir, a.root,
                                      margins=a.margins) if a.crops
                     else page_lines(alto_for_lines(a.ref, a.alto_dir, a.root)))
             if not a.full:
@@ -272,10 +310,11 @@ def main(argv=None):
                 serve(a.ref, a.alto_dir, a.root, a.port)
                 return 0
             if a.html:
-                a.html.parent.mkdir(parents=True, exist_ok=True)
-                a.html.write_text(
+                dest = html_path(a.ref, a.root)
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_text(
                     render_queue_html(a.ref, a.alto_dir, a.root), encoding="utf-8")
-                print(f"{a.html}: review page for {a.ref}")
+                print(f"{dest}: review page for {a.ref}")
                 return 0
             spans = page_spans(a.ref, a.alto_dir, a.root)
             n = len(page_lines(alto_for_lines(a.ref, a.alto_dir, a.root)))
@@ -290,7 +329,7 @@ def main(argv=None):
             return 0
         if a.cmd == "normalize":
             if a.check:
-                rep = scan(a.root)
+                rep = scan(a.root, paths=a.path)
                 out(rep)
                 # NFD drift and an unlicensed mark both block: each is an error with
                 # no reading to adjudicate. The lookalike census does not — it is a
@@ -298,7 +337,7 @@ def main(argv=None):
                 # which is firewalled, same contract as validate's WORKLIST.
                 return 1 if (rep["nfd_offenders"]
                              or rep["unlicensed_marks"]) else 0
-            out(convert(a.root, dry_run=a.dry_run))
+            out(convert(a.root, dry_run=a.dry_run, paths=a.path))
             return 0
     except (ValueError, FileNotFoundError, KeyError) as e:
         print(f"ERROR: {e}", file=sys.stderr)
