@@ -4,6 +4,14 @@
   "status": "PROPOSAL — not ground truth. No glyph identity here is adopted; every",
   "status_cont": "non-English form awaits human ratification against the p. 10 key.",
   "keyed_by": "index into harness.lines.page_lines(end-of-eval/chukchi-1-074.xml)",
+  "accuracy": {
+    "lines": 32,
+    "reading_errors": 2,
+    "both": "a dropped U+0323 under a g — line 5 Am-g̣roˊkĭ, line 11 Ñerg̣eˊrɪk",
+    "cause": "line crops were generated at PAD_Y=4, which excludes a dot sitting below a g descender; the segmentation box does not contain it and polygon and rectangle bounds are identical, so nothing but padding recovers it. Padding is now 10 top / 18 bottom.",
+    "bookkeeping": "line 5 was amended in place before the decisions file existed, so only line 11 shows as edited in review/decisions/1-074.json. The true count for this page is 2, not 1 — do not read the edited flag as the error rate for 1-074.",
+    "not_errors": "the two clipped list numbers on lines 6 and 10 were recovered off the page and are correct here; they are absent from the CATMuS text, not from this reading."
+  },
   "notes": [
     "Lines 6 and 10 print '5.' and '9.' but the ALTO polygons start right of them",
     "(hpos 804/800 against numbered siblings at 752/760), so the numbers are absent",

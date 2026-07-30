@@ -28,14 +28,25 @@ from lxml import etree
 from .context import norm_ref
 from .figures import _bbox, _scale_for
 
-# Padding around a line crop, in raster pixels. Kept deliberately tight on the
-# vertical: the polygon already follows the ink, and this book's gloss lists are set
-# at a 21 px line pitch (`2-030`), so generous padding pulls a legible sliver of the
-# neighbouring line into the crop. That is worse than a tight crop here — whoever
-# reads this is transcribing it, and a partial neighbour invites absorbing its text.
-# Horizontal padding is safe and stays wider.
+# Padding around a line crop, in raster pixels, asymmetric on the vertical.
+#
+# This was 4 briefly, tightened from 14 to stop a sliver of the neighbouring line
+# bleeding in on `2-030`'s 21 px-pitch gloss list. That was the wrong trade and it
+# cost two real errors on `1-074` alone: the segmentation box excludes a U+0323 sitting
+# under a `g` descender (line 11's `Ñerg̣eˊrɪk`, line 5's `Am-g̣roˊkĭ`), so at 4 the dot
+# was simply not in the image, and both readings dropped it. Polygon and rectangle
+# bounds are identical on these lines, so no choice of box recovers it — only padding.
+#
+# The harm is asymmetric, which is what the earlier reasoning missed. A bled
+# neighbour is clipped, obviously partial, and announces itself. A clipped diacritic
+# is invisible: the reader sees a well-formed glyph that is missing a mark, with
+# nothing to indicate anything was lost. So pad generously and accept the bleed.
+#
+# Bottom exceeds top because a below-mark sits under the descender, further outside
+# the box than an above-mark sits over the ascender.
 PAD_X = 8
-PAD_Y = 4
+PAD_TOP = 10
+PAD_BOTTOM = 18
 
 LINE_KEYS = ("index", "line_id", "block_id", "text",
              "hpos", "vpos", "width", "height", "baseline", "points")
@@ -122,9 +133,9 @@ def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int]) -> tuple | 
                rec["hpos"] + rec["width"], rec["vpos"] + rec["height"])
     x0, y0, x1, y1 = src
     box = (max(0, round(x0 * sx) - PAD_X),
-           max(0, round(y0 * sy) - PAD_Y),
+           max(0, round(y0 * sy) - PAD_TOP),
            min(size[0], round(x1 * sx) + PAD_X),
-           min(size[1], round(y1 * sy) + PAD_Y))
+           min(size[1], round(y1 * sy) + PAD_BOTTOM))
     return box if box[2] > box[0] and box[3] > box[1] else None
 
 
