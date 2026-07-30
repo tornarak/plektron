@@ -210,6 +210,19 @@ that is how a U+0323 was mis-keyed once already. A notation keyboard sits fixed 
 the bottom carrying the whole `keying_spec` inventory — 40 buttons, ctrl-space
 toggles, postfix combining-mark keys so `ä ë ê ḷ ʟ̣ š ŭ x˙` need no binding each.
 
+**The browser is not a trusted source of the text in its own fields.** Firefox restores
+textarea values across a crash-and-reopen and restores them **by position**, so
+reopening the review page after a crash refilled `1-073`'s 47 fields with `1-151`'s
+text; one keystroke then let the autosave debounce write all of them, and the file
+reported 38 lines edited. Nothing could have caught it downstream — well-formed
+payload, real transcription, plausible counts, just of the wrong page. Three guards
+now: the server-rendered text lives in `data-text` and is **assigned by script on
+load**, after any restore (`autocomplete=off` alone is advisory); every save appends to
+an **append-only** `review/decisions/<ref>.jsonl`, because `.json.prev` is one deep and
+a second bad save destroys it; and the save response reports how many lines *changed*,
+shown in red past three, since "38 changed" after one keystroke is the only signal that
+does not require knowing whose text it is.
+
 **Lines carrying notation are flagged** — rule, tint and a badge naming the glyphs
 found, an index of them at the top, and alt-j/alt-k to walk them — because that is
 where the reviewer is the only witness there will ever be. The flag overrides the
@@ -255,11 +268,9 @@ less, **lower** the zoom — `--zoom 1` puts nearly any line in one strip and sa
 At the 2× default a list line is one strip and a full-measure line three. Escalate to
 6× for one question, such as one mark's shape, and take the wrapping there.
 
-**Done: `1-074`.** 32 lines, 1911 chars, zero geometry drift.
-**Proposed, awaiting adjudication:** `1-151` (40 lines) and `1-073` (47 lines).
-`1-073` is the first page read under blind conditions — no existing transcription of
-it was consulted and none is committed — so its edit count is a usable accuracy
-figure, and amending its proposal in place would spend it the way `1-074`'s was.
+**Done: `1-074`** (32 lines, 1911 chars) and **`1-073`** (47 lines, 3031 chars), both
+zero geometry drift.
+**Proposed, awaiting adjudication:** `1-151` (40 lines).
 **Remaining 15:** `1-052 1-053 1-100 1-101 2-034 2-040 2-244 2-245
 3-003 3-004 3-005 3-006 3-028 3-119 3-135`. `1-151` is the natural first, being the
 one page with committed TEI to compare against — but the urgency is gone: it used to
@@ -609,3 +620,21 @@ TBD
   18 bottom and all three dots on that page are visible. One page where the
   instrument was broken measures the instrument, not the reading; dot-below-`g`
   is nevertheless the class to check hardest when adjudicating.
+- **First blind error profile.** `1-073`: 47 lines, **3 errors, all one class** — the
+  caron over `j` keyed as a breve, three times. Clean on everything the previous page
+  warned about: six dot-below-`g`/`G̣` all correct, 16 `ɪ`/`i` correct, the old-style
+  figures correct, and both pieces of printed text outside the line polygons recovered.
+  So the error was not a resolution failure. It was an **inference** failure — the mark
+  does look rounder than the page's `č`, and I took a shape difference for evidence of
+  a sort the inventory has never attested, then defended it *as* rigour by citing the
+  firewall. That inverts the firewall: it forbids adopting a glyph on a model's
+  authority, and book-internal apparatus binds. Two consequences worth carrying: a
+  detailed, self-consistent note citing its own magnification is not evidence of care,
+  it is what a confident guess looks like; and **more magnification does not settle a
+  question that is not optical** — all three were examined at 6×, twice, which only
+  made the wrong answer more confident. Now unrepresentable: `detectors.MARK_LICENSE`.
+- **Review can miss what review is for.** Two of `1-073`'s three identical errors were
+  corrected in the pass and the third was not — one page, one form, three occurrences,
+  and the inconsistency survived because nothing compared them to each other. Which is
+  the argument for the licensing gate being a gate rather than a worklist line: it
+  catches what a human pass *missed*, not only what it never saw.

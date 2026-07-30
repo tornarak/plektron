@@ -122,7 +122,21 @@ present. No magnification separates them; only the constraint does.
 
 | Mark | Licensed on | Never on |
 |---|---|---|
-| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ") | the obscure-vowel series **ᴀ ᴇ ɪ ä** |
+| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ") | **everything else.** The obscure-vowel series **ᴀ ᴇ ɪ ä** for the reason below; `j` because the marked sort is **ǰ**, j+U+030C (§2.2), and a breve there is a misread caron |
+
+**The list is closed, and enforced as such.** `detectors.MARK_LICENSE` holds the
+allow-list, `harness normalize --check` exits 1 on a violation, `harness validate`
+raises it as an ERROR, and `harness restore` refuses to write. Not a worklist item:
+an unlicensed mark is a sequence the notation does not contain, so unlike a lookalike
+there is no reading for a human to weigh, and nothing is pre-empted by refusing it.
+No tool rewrites one, though — choosing the intended glyph is adopting a glyph
+identity, which is the editor's act.
+
+`j` is why this is code and not just a table. `1-073` sets ǰ three times, in `Neǰ-`,
+`Ñeˊrg̣eǰ-` and `Quˊuleǰ-`; a reading pass took the mark for a breve on the grounds
+that it looked rounder than the č on the same page, and review corrected two of the
+three and missed the third. One page, one form, three occurrences, and the
+inconsistency survived a human pass because nothing compared them to each other.
 
 The exclusion is not arbitrary, and the reason is book-internal: the p. 10 key
 glosses ᴀ ᴇ ɪ jointly as "obscure vowels (**short**)" (§2.3) and ä as their long
@@ -292,6 +306,17 @@ printed shape alone (greyscale fallback per F11).
 
 ## 7. Changelog
 
+- **Rev 2.7 (2026-07-29):** §2.6's breve licence made a **closed** allow-list and
+  enforced in code (`detectors.MARK_LICENSE`; `normalize --check` exits 1, `validate`
+  errors, `restore` refuses). `j` added to the never-on column: the marked sort is
+  **ǰ** = j+U+030C, already in §2.2. Prompted by a reading pass on `1-073` keying all
+  three of its ǰ as breves, on the reasoning that the mark looked rounder than the
+  page's č — a real observation, an invalid inference, and then defended on firewall
+  grounds, which inverts the rule: the firewall forbids *adopting* a glyph on a
+  model's authority, not proposing one the inventory has never attested. Review
+  corrected two of the three and missed the third, so the gate exists to catch what a
+  human pass can miss rather than what it never saw. No tool rewrites an offender —
+  naming it is mechanical, choosing the glyph is the editor's.
 - **Rev 2.6 (2026-07-29):** §2.9 added — the book's French spacing before `;` and
   `:` is **not** reproduced; key English spacing. Editor's ruling, prompted by a
   reading pass on `1-073` confirming the thin space at 2× on three lines and then

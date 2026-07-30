@@ -292,10 +292,12 @@ def main(argv=None):
             if a.check:
                 rep = scan(a.root)
                 out(rep)
-                # Only non-conformance blocks. The lookalike census is a to-key
-                # worklist needing a human ruling on what the page prints, which is
-                # firewalled — same contract as validate's WORKLIST.
-                return 1 if rep["nfd_offenders"] else 0
+                # NFD drift and an unlicensed mark both block: each is an error with
+                # no reading to adjudicate. The lookalike census does not — it is a
+                # to-key worklist needing a human ruling on what the page prints,
+                # which is firewalled, same contract as validate's WORKLIST.
+                return 1 if (rep["nfd_offenders"]
+                             or rep["unlicensed_marks"]) else 0
             out(convert(a.root, dry_run=a.dry_run))
             return 0
     except (ValueError, FileNotFoundError, KeyError) as e:

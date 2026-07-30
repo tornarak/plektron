@@ -43,7 +43,8 @@ from pathlib import Path
 from lxml import etree
 
 from .context import norm_ref
-from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES
+from .detectors import (DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES,
+                        unlicensed_marks)
 from .lines import alto_for_lines, page_lines
 
 CONTEXT_CHARS = 24
@@ -261,6 +262,15 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
                    stamp: str | None = None) -> dict:
     """Write adjudicated lines, recording for each whether it differs from the proposal.
 
+    **Every line's full text is stored, not just the edited ones**, and the apparent
+    redundancy against the proposal is the point. `restore` builds ground truth from
+    this file alone and refuses on any missing line, so if an unedited line carried
+    only a flag, the content of `gt/ocr/` would depend on the proposal still being
+    byte-identical — and a proposal is a model's output, rewritten whenever a reading
+    is revised. Then correcting a proposal would silently change what the stored
+    "unedited" resolved to, which is a way to alter ground truth without touching it.
+    `edited` is the derived field here; the text is the substance.
+
     `edited` is computed here rather than trusted from the client, because it is the
     eval's primary signal — the fraction of proposed lines a human let stand — and a
     number the thing being measured gets to report about itself is worthless.
@@ -270,12 +280,26 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
     would reintroduce exactly the mixed-encoding drift `harness normalize` exists to
     remove.
 
-    Written temp-then-rename so an interrupted save cannot truncate the file, and
-    the previous version is kept alongside. Cheap, and this repo has already lost
-    18 pages of transcription once.
+    Written temp-then-rename so an interrupted save cannot truncate the file, and the
+    previous version is kept alongside. Cheap, and this repo has already lost 18 pages
+    of transcription once.
+
+    `.prev` is one deep and that is not enough on its own, so every save also appends
+    to an **append-only journal**, `<ref>.jsonl`, recording only the lines that differ
+    from the proposal. Two saves in a row destroy `.prev`; nothing destroys the
+    journal. This is not hypothetical: Firefox restores textarea values across a
+    crash-and-reopen and restores them *by position*, so reopening this page refilled
+    `1-073`'s fields with `1-151`'s text, and one keystroke autosaved all 47 lines.
+    `.prev` happened to still hold the real pass. A third save would have taken it.
+
+    `changed` is returned so the page can show it, because that incident was invisible
+    at every layer that could have caught it — well-formed payload, real transcription,
+    plausible counts. A save reporting 38 changed lines after one keystroke is the one
+    signal that does not require knowing which page's text it is.
     """
     ref = norm_ref(ref)
     prop = load_proposal(ref, root)
+    before = load_decisions(ref, root)
     out = {}
     for k, v in lines.items():
         idx = int(k)
@@ -283,6 +307,8 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
         proposed = _nfd(prop[idx]["text"]) if idx in prop else None
         out[str(idx)] = {"text": text, "edited": proposed is not None
                          and text != proposed}
+    changed = sorted(int(k) for k, v in out.items()
+                     if int(k) in before and before[int(k)]["text"] != v["text"])
     doc = {"ref": ref,
            "proposal": f"review/proposals/{ref}.json",
            "saved_at": stamp,
@@ -294,8 +320,18 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
     tmp = p.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
     tmp.replace(p)
+
+    # Appended after the write succeeds, and only the edited lines: a full snapshot per
+    # autosave would grow without bound over a session, and the edited set is what a
+    # recovery actually needs.
+    with p.with_suffix(".jsonl").open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"saved_at": stamp, "changed": changed,
+                             "edited": {k: v["text"] for k, v in out.items()
+                                        if v["edited"]}},
+                            ensure_ascii=False) + "\n")
     return {"path": str(p), "lines": len(out),
-            "edited": sum(1 for v in out.values() if v["edited"])}
+            "edited": sum(1 for v in out.values() if v["edited"]),
+            "changed": len(changed)}
 
 
 def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
@@ -320,6 +356,11 @@ def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
       * any line lacks a decision. A partial restore yields ground truth with
         invisible holes, which is worse than no ground truth.
       * a line does not have exactly one `String`. Unexpected shape, so it stops.
+      * any adjudicated line carries a mark on a base its licence does not cover
+        (`detectors.MARK_LICENSE`, keying spec §2.6). This one catches what a human
+        pass can miss rather than what it never saw: `1-073` prints the same ǰ three
+        times, review corrected two and left the third, and the page read as done.
+        A restore is the last point at which that is still cheap to fix.
     """
     ref = norm_ref(ref)
     dec = load_decisions(ref, root)
@@ -336,6 +377,16 @@ def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
         raise ValueError(f"{ref}: {len(missing)} of {len(lines)} lines have no "
                          f"decision (indices {missing[:12]}…); refusing a partial "
                          "restore — ground truth with holes is worse than none")
+
+    bad = [f"line {i}: {h['mark']} on {h['base']} (licensed on "
+           f"{h['licensed_on']}) in {h['context']!r}"
+           for i in sorted(dec) for h in unlicensed_marks(dec[i]["text"])]
+    if bad:
+        raise ValueError(
+            f"{ref}: {len(bad)} unlicensed mark(s) in the adjudicated text; "
+            "refusing to write. These are sequences the notation does not contain "
+            "(keying spec 2.6), not readings to weigh, so re-key them in "
+            f"harness review {ref} --serve:\n  " + "\n  ".join(bad))
 
     target = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
     if target.exists() and not force:
@@ -585,8 +636,11 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
                  + (" · <b>edited</b>" if full != proposed else "") + "</div>")
         h.append(f"<div class='crop c{idx}' role=img "
                  f"aria-label='scan of line {idx}'></div>")
-        h.append(f"<textarea data-line='{idx}' rows=1 spellcheck=false>"
-                 f"{_esc(full)}</textarea>")
+        # The value is carried in `data-text` and assigned by script on load, not
+        # written as element content — see SESSION-RESTORE below. `autocomplete=off`
+        # asks the browser not to restore it; the JS assignment is what guarantees it.
+        h.append(f"<textarea data-line='{idx}' rows=1 spellcheck=false "
+                 f"autocomplete=off data-text=\"{_esc(full)}\"></textarea>")
         if marks:
             h.append(f"<div class=cp>{_esc(marks)}</div>")
         h.append(f"<div class=ref>catmus: {_esc(rec['text']) or '(empty)'}</div>")
@@ -673,10 +727,25 @@ async function save(){
     if(!r.ok) throw new Error(await r.text());
     const j=await r.json();
     dirty=false;
-    st.textContent=`saved · ${j.edited}/${j.lines} lines edited`;
+    st.textContent=`saved · ${j.edited}/${j.lines} edited · ${j.changed} changed`;
+    // A save that moved many lines at once is the only visible sign of a bulk
+    // overwrite — a browser session-restore looks like ordinary work otherwise.
+    if(j.changed>3) st.className='bad';
   }catch(e){ st.textContent='SAVE FAILED: '+e.message; st.className='bad'; }
 }
+// SESSION-RESTORE GUARD. Firefox restores textarea values across a crash-and-reopen,
+// and it restores them BY POSITION, so reopening this page after a crash refilled
+// 1-073's fields with 1-151's text — then one keystroke made the debounce save all 47
+// of them, and the file said 38 lines edited. Nothing in the page or the server could
+// tell that from real work: the payload was well-formed and the text was real
+// transcription, just of a different page.
+//
+// So the server-rendered text is authoritative and is assigned here, after any restore
+// has happened. `autocomplete=off` alone is advisory; this is not. Values are compared
+// before overwriting only to keep `dirty` honest — an assignment is not an edit.
 for(const t of document.querySelectorAll('textarea')){
+  const want=t.dataset.text;
+  if(t.value!==want) t.value=want;
   grow(t);
   t.addEventListener('focus',()=>{last=t});
   t.addEventListener('input',()=>{grow(t);dirty=true;st.className='';

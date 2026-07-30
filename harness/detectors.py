@@ -36,6 +36,57 @@ INVENTORY_CHARS = set("ᴀᴇɪʟᵋᵉɵˊ˙") | {"\u0323", "\u030C", "\u0303",
 # which is where that trap belongs anyway, since U+0121 is not an apostrophe
 # lookalike and flagging it here would duplicate the hit under a misleading name.
 LOOKALIKES = set("\u00B4\u2019\u02BC\u02BB\u00B7\u02E2\u2091\u04E9\u2010")
+
+# Mark\u2013base licensing (keying spec \u00A72.6), as a **closed allow-list per mark**: the
+# mark may sit on these bases and nowhere else. Closed rather than a deny-list because
+# the spec says so outright \u2014 the breve is productive as a length mark, so further
+# bases may be licensed, but "only on attestation the editor has stamped, never on
+# symmetry". A deny-list would silently admit every base nobody had thought of.
+#
+# Unlike everything else in this module this is **not triage**. A detector answers
+# "worth a look"; this answers "impossible", so it is reported as an error and not a
+# flag, and it is the one check here that can block a write. The distinction matters
+# because an unlicensed mark has no reading to adjudicate: `\u026A` + breve is not a hard
+# case between two glyphs, it is a sequence the notation does not contain.
+#
+# Only marks the spec actually rules on appear. The others (U+0302, U+0303, U+030C,
+# U+0323, U+0308, U+0304) have no licensing table yet, and inventing one by analogy
+# from the corpus is precisely what \u00A72.6's last paragraph forbids.
+#
+# `j` is why this exists as code. `1-073` prints \u01F0 three times in `Ne\u01F0-`, `\u00D1e\u02CArg\u0323e\u01F0-`
+# and `Qu\u02CAule\u01F0-`; a reading pass took the mark for a breve, and review corrected two
+# of the three and missed the third \u2014 one page, one form, three occurrences, and the
+# inconsistency survived a human pass because nothing compared them. Breve-on-j is now
+# unrepresentable rather than merely wrong.
+MARK_LICENSE = {
+    "\u0306": set("ui"),  # breve, a length mark: \u016D (\u00A72.2) and \u012D (\u00A72.6)
+}
+
+
+def unlicensed_marks(text: str) -> list[dict]:
+    """Every combining mark sitting on a base its licence does not cover.
+
+    Assumes NFD, so a base is simply the character before the mark. A mark in
+    initial position has no base at all and is reported the same way \u2014 it cannot be
+    licensed by anything, and it is a real corruption rather than a keying choice.
+    """
+    text = unicodedata.normalize("NFD", text)
+    out = []
+    for i, ch in enumerate(text):
+        allowed = MARK_LICENSE.get(ch)
+        if allowed is None:
+            continue
+        base = text[i - 1] if i else ""
+        if base in allowed:
+            continue
+        out.append({
+            "mark": f"U+{ord(ch):04X} {unicodedata.name(ch, 'UNNAMED')}",
+            "base": (f"{base!r} (U+{ord(base):04X})" if base else "(nothing \u2014 "
+                     "mark in initial position)"),
+            "licensed_on": " ".join(sorted(allowed)),
+            "context": text[max(0, i - 12):i + 8],
+        })
+    return out
 # There is deliberately no SMART_QUOTES detector. Curly quotes are what the book
 # prints, and under the Tier-1-scoped ASCII policy (keying spec section 1) English
 # prose reproduces them, so a flag here fires on correct text: the noise this

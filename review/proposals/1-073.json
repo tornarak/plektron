@@ -7,7 +7,7 @@
   "contamination": {
     "clean": true,
     "why": "1-073 is not among the four refs CLAUDE.md records as spent (1-048, 1-052, 2-030, 1-151, plus 1-074 whose proposal was amended in place). No transcription of this page was consulted: the reading was taken off the raster before anything else was opened, and there is no committed TEI for it. This is the first page of the rebuild read under those conditions.",
-    "consequence": "Adjudication of this page yields a usable blind accuracy figure. Record the edit count before amending anything, since amending in place is exactly what spent 1-074's."
+    "consequence": "Adjudication of this page yields a usable blind accuracy figure. It came back with three errors, all one class — see measurement below."
   },
   "notes": [
     "ALTO order is not reading order. Line 6 is the running title at vpos 614, above",
@@ -24,6 +24,9 @@
     "print — trailing on lines 1, 10 and 39, leading on 44, 45 and 46. The ALTO",
     "carries no markup and note-anchoring is a collation concern.",
     "Curly quotes reproduced as printed (ASCII policy is Tier-1-scoped, keying spec 1).",
+    "Semicolons are keyed with ENGLISH spacing. The book sets a thin space before ';'",
+    "on lines 11, 13 and 40, clear at 2x; keying spec 2.9 (editor's ruling) does not",
+    "reproduce it.",
     "Line 32 ends with a soft hyphen breaking 'expla-nation' across lines. Keyed as",
     "U+002D as printed; joining is a collation concern, and English is where joining",
     "is licensed at all.",
@@ -77,22 +80,22 @@
     "26": {"text": "6. Taˊwtɪñ-yêˊᵋlhɪn (“making-leaves month”).",
            "resolved": "Taˊwtɪñ = T, a, U+02CA, w, t, U+026A, n+U+0303."},
     "27": {"text": "7. Om-yêˊᵋlhɪn (“warm month”) or Aˊno-yêˊᵋlhɪn (“summer month”)."},
-    "28": {"text": "8. Nej̆-iˊᵋlhɪn (“rubbing-off-velvet [antlers] month”) or Eleˊ-yiˊᵋlhɪn (“midsummer month”).",
-           "resolved": "Nej̆ = N, e, j+U+0306. See the j-mark note below — this is the first of three.",
+    "28": {"text": "8. Neǰ-iˊᵋlhɪn (“rubbing-off-velvet [antlers] month”) or Eleˊ-yiˊᵋlhɪn (“midsummer month”).",
+           "resolved": "Neǰ = N, e, j+U+030C. CORRECTED from a breve — see corrected_after_review.",
            "note": "The i after the hyphen is dotted; the sort after lh is U+026A."},
-    "29": {"text": "9. Ñeˊrg̣ej̆-iˊᵋlhɪn (“light-frost month”).",
-           "resolved": "Ñ = N+U+0303. rg̣ej̆ = r, g+U+0323, e, j+U+0306 — this line carries BOTH a dot-below g and the j-mark, and both are clear at 6x."},
+    "29": {"text": "9. Ñeˊrg̣eǰ-iˊᵋlhɪn (“light-frost month”).",
+           "resolved": "Ñ = N+U+0303. rg̣eǰ = r, g+U+0323, e, j+U+030C — this line carries both a dot-below g and the caron. CORRECTED from a breve."},
     "30": {"text": "10. G̣ɪthaˊ-êˊᵋlhɪn (“autumn month”), called also ɪlv-eiˊñe-yiˊᵋlhɪn (“wild-reindeer rutting month”).",
            "resolved": "G̣ɪ = G+U+0323 then U+026A: dot below the capital and a dotless sort after it. ɪlv- opens with U+026A, as ɪnp- does on line 20."},
     "31": {"text": "11. Yaraˊučɪn, probably from Yaˊraw (“muscles of the back”), because it is supposed that the",
-           "resolved": "učɪn = u, c+U+030C, U+026A, n. The caron over the c is a sharp wedge — compare the j-mark note."},
+           "resolved": "učɪn = u, c+U+030C, U+026A, n."},
     "32": {"text": "muscles of a reindeer’s back strengthen in mid-winter. The same name, with the same expla-",
            "note": "line-final hyphen, U+002D, breaking expla-nation across lines 32/33"},
     "33": {"text": "nation, was found among the Koryak of the western shore of Kamchatka in the form"},
     "34": {"text": "yaraˊwučɪn. This month is also called by the Chukchee Tuˊr-eᵋče (“new-snow cover”).",
-           "resolved": "Tuˊr-eᵋče = T, u, U+02CA, r, U+002D, e, U+1D4B, c+U+030C, e. The raised sort is U+1D4B and the following č takes a caron; both appear in this one strip, alongside wučɪn's caron."},
-    "35": {"text": "12. Quˊulej̆-iˊᵋlhɪn (“shrinking [days] month”).",
-           "resolved": "Quˊulej̆ = Q, u, U+02CA, u, l, e, j+U+0306. Third and last occurrence of the j-mark."},
+           "resolved": "Tuˊr-eᵋče = T, u, U+02CA, r, U+002D, e, U+1D4B, c+U+030C, e."},
+    "35": {"text": "12. Quˊuleǰ-iˊᵋlhɪn (“shrinking [days] month”).",
+           "resolved": "Quˊuleǰ = Q, u, U+02CA, u, l, e, j+U+030C. CORRECTED from a breve."},
     "36": {"text": "The Maritime Chukchee use the same table of months. The Koryak in"},
     "37": {"text": "different localities have different systems of names, but for the third and the"},
     "38": {"text": "fourth month most of them have names signifying “false reindeer-birth month”"},
@@ -109,19 +112,29 @@
     "46": {"text": "3 See p. 13.",
            "note": "footnote; leading 3 is the superscript marker"}
   },
-  "flagged_for_ratification": {
+  "corrected_after_review": {
     "j_mark": {
-      "where": "lines 28 Nej̆-, 29 Ñeˊrg̣ej̆-, 35 Quˊulej̆-",
-      "keyed_as": "j + U+0306 COMBINING BREVE",
-      "why": "The mark over this j is a shallow smooth arc. The caron the same page sets over c is a sharp wedge with a visible apex — and the two can be compared WITHOUT crossing images: line 34's strip 34.1 holds Tuˊr-eᵋče's caron and line 35's strip 35.0 holds Quˊulej̆'s mark, and at 2x and again at 6x they are not the same mark. All three j occurrences take the arc, all four č occurrences (22 twice, 31, 34 twice) take the wedge.",
-      "against": "keying_spec 2.2 lists ǰ (j + U+030C, caron) in the marked-sorts row and no breve-on-j; review.PALETTE offers ǰ and J̌ and no j̆. So either the inventory is missing a sort or this reading is wrong.",
-      "needs": "The printed p. 10 key, which is book-internal apparatus and binds. That decides it; I cannot, and inferring the glyph from what the system 'should' contain is exactly what the firewall forbids. Keyed as the letterform reads and flagged rather than filed to the nearest inventory member — a silent normalization to ǰ would leave no trace that the question was ever open.",
-      "note": "keying_spec 2.6 licenses U+0306 on u and i and is silent on j; it is a rule about the obscure-vowel series, so it neither permits nor forbids this."
+      "where": "lines 28, 29, 35",
+      "proposed": "j + U+0306 COMBINING BREVE — wrong, all three occurrences",
+      "correct": "j + U+030C COMBINING CARON, i.e. the sort keying spec 2.2 already listed. Editor's ruling.",
+      "what_the_reasoning_was": "The mark looked a shallow arc where the caron over c on the same page is a sharp wedge, and I treated that difference as evidence of two distinct sorts. The observation was real; the inference was not. A caron cut small over a descender letter rounds off, and 'these two marks do not look identical' does not establish that the notation contains both.",
+      "why_it_was_worse_than_a_slip": "It was then defended on firewall grounds — do not infer a glyph from what the system should contain — which inverts the rule. The firewall forbids ADOPTING a glyph identity on a model's authority. It does not license proposing a sort the inventory has never attested and treating the inventory as the weaker witness. Book-internal apparatus binds; a model's impression of a mark's curvature does not.",
+      "error_class": "A plausible reading carrying no error signal, dressed as rigour. The note was detailed, self-consistent and cited its own magnification, which made a guess read as an established finding — the failure mode CLAUDE.md's governing principle names.",
+      "caught_by": "The editor, on review. Two of the three were corrected in the pass (29, 35); line 28 was missed. One page, one form, three occurrences, and the internal inconsistency survived a human pass because nothing compared them to each other.",
+      "now_enforced": "detectors.MARK_LICENSE, a closed allow-list per mark. harness normalize --check exits 1, harness validate raises an ERROR, harness restore refuses to write. keying spec 2.6 (rev 2.7) records that the list is closed and why j is on it. No tool rewrites an offender: naming the occurrence is mechanical, choosing the glyph is the editor's act."
     }
+  },
+  "measurement": {
+    "note": "Recorded explicitly because it can no longer be recovered from a diff: this file's line texts have been corrected since adjudication, so comparing it against review/decisions/1-073.json understates the error count. Git history holds the proposal as first submitted (commit 11ef3ef). There is NO review/decisions/1-073.jsonl for this page — the save journal was added in response to this same session's autofill incident, so it starts with the next page, and this record is all there is for 1-073.",
+    "lines": 47,
+    "errors_in_the_blind_reading": 3,
+    "error_classes": 1,
+    "detail": "All three the same misread mark, j+U+0306 for j+U+030C, on lines 28, 29 and 35. No errors in the English prose, the dot-below-g class 1-074 flagged as highest-risk (six occurrences: lines 13, 22, 23, 24, 29, 30), the ɪ/i distinction (16 occurrences), the old-style figures, or the two pieces of printed text the line polygons exclude (the folio, line 25's leading number).",
+    "caveat": "A naive 'edited lines' count on this page reads 2, not 3, because line 28 was missed in review."
   },
   "instrument": {
     "worked": "harness zoom, new this session, replaces the ad-hoc per-page crop scripts. Deriving the box from the same line_box the crops and the review page use means a zoom is the same region enlarged rather than a second guess at where the line is, and --margins recovered two things vertical padding cannot reach: the folio 51, which sits in no line polygon at all, and line 25's stranded '5.'.",
-    "cost": "Wrapping. A line sliced into strips is a line read in halves, and the first pass at 3x with a hand-set 440 px window put a body line across five strips and needed four invocations to cover nine lines. Window is now derived from the zoom to fill the display and the default is 2x, so the same nine lines came back as three sheets in one call. Escalate to 6x for one question — the shape of one mark — not as a working default.",
-    "still_open": "Nothing on this page needed the raster outside harness zoom. Whether the dot-below g would have survived at 2x alone is untested: I read all four occurrences at 6x because 1-074's error profile says this is the class to check hardest, and that was the right order of operations rather than a measurement of what 2x can do."
+    "cost": "Wrapping. A line sliced into strips is a line read in halves, and the first cut put a body line across five strips and needed four invocations to cover nine lines. The window is now derived from the zoom against the client width and every sheet is padded to it, so the delivered scale is exactly --zoom and does not vary with how long the selected lines are.",
+    "did_not_help": "6x magnification did not settle the one thing it was used for. All three j occurrences were examined at 6x, twice, and the extra resolution produced a confident wrong answer rather than an uncertain right one — the question was never about resolving the mark's shape but about whether a shape difference licenses a new sort, and no magnification answers that. Worth remembering before reaching for a higher zoom to settle a question that is not optical."
   }
 }

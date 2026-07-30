@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from lxml import etree
 
+from .detectors import unlicensed_marks
 from .state import load_toc
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -284,7 +285,16 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     r.worklist.append(
                         f"[{lang}] <{etree.QName(el).localname}> "
                         f"{msg} in {own_text.strip()[:40]!r}")
-        else:
+        # Not scoped to Tier-1, unlike the greps above. A licensing violation is an
+        # impossible sequence rather than a notation question, so it is wrong in a
+        # Latin binomial and in Russian prose for the same reason it is wrong in a
+        # Chukchee form — and an ERROR, not a worklist line, since there is no reading
+        # for a human to choose between.
+        for h in unlicensed_marks(own_text):
+            r.errors.append(
+                f"MARK LICENCE: {h['mark']} on {h['base']} — licensed only on "
+                f"{h['licensed_on']} (keying spec 2.6) in {h['context']!r}")
+        if lang not in TIER1:
             bad = sorted({c for c in own_text if c in FORBIDDEN_PROSE})
             if bad:
                 r.errors.append(

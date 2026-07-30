@@ -13,10 +13,23 @@ U+02D9 (11) folds to space + combining dot. A `normalize()` call here without an
 explicit form, or with the "more thorough" one, is a silent corpus-wide glyph
 substitution. Name the form every time.
 
-Two rules, both mechanical:
+Three rules, all mechanical:
 
   nfd          every scoped file is NFD-conformant.
+  marks        every combining mark sits on a base its licence covers (§2.6).
   lookalikes   no scoped file carries a lookalike with no legitimate English use.
+
+The middle one **blocks**, alongside `nfd`, where the third only reports — and the
+split is the difference between an error and a question. A lookalike needs a human
+ruling on what the page prints, so it is firewalled and can only ever be a worklist
+line. An unlicensed mark has no such ruling available: `ɪ` + breve or `j` + breve is
+not a hard choice between two glyphs, it is a sequence the notation does not contain,
+so nothing is being pre-empted by refusing it. See `detectors.MARK_LICENSE` for why
+`j` is the reason this is enforced in code rather than trusted to a spec table.
+
+Note what `convert` does **not** do with it: nothing. Fixing an unlicensed mark means
+choosing a different glyph, and a tool that picks the intended one is a tool adopting
+a glyph identity on its own authority. The gate names the occurrence; a human keys it.
 
 The second rule is *unscoped* by necessity, and that needs saying because the ASCII
 policy is not. Under the Tier-1-scoped policy the four curly quotes are legitimate in
@@ -33,6 +46,8 @@ prints, and that is firewalled — see `keying_spec.md` section 1.
 from __future__ import annotations
 import unicodedata
 from pathlib import Path
+
+from .detectors import unlicensed_marks
 
 # Directories whose XML is corpus, and the individual data files. Root-level *.md are
 # excluded deliberately: CLAUDE.md and transcriber_harness.md quote glyph examples in
@@ -151,7 +166,7 @@ def scan(root: Path = Path(".")) -> dict:
     `delta` is the codepoint count NFD would add, which is the honest size of the
     change: it is never a character *identity* change, only a representation one.
     """
-    files, offenders, worklist = 0, [], []
+    files, offenders, worklist, unlicensed = 0, [], [], []
     for p in scoped_files(root):
         rel = str(p.relative_to(root))
         try:
@@ -169,7 +184,13 @@ def scan(root: Path = Path(".")) -> dict:
         # drift this verb exists to remove.
         for h in _lookalikes(nfd):
             worklist.append({"path": rel, **h})
-    return {"files": files, "nfd_offenders": offenders, "lookalikes": worklist}
+        # Reported per line, since a path plus a context string is not enough to find
+        # one occurrence in a 54 KB store.
+        for lineno, line in enumerate(nfd.splitlines(), start=1):
+            for h in unlicensed_marks(line):
+                unlicensed.append({"path": rel, "line": lineno, **h})
+    return {"files": files, "nfd_offenders": offenders,
+            "unlicensed_marks": unlicensed, "lookalikes": worklist}
 
 
 def convert(root: Path = Path("."), dry_run: bool = False) -> dict:
