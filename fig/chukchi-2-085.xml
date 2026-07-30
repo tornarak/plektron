@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-2-085.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT77" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT78" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
+    <OtherTag ID="LT10" LABEL="default" DESCRIPTION="line type default"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2550"
+          HEIGHT="3525"
+          PHYSICAL_IMG_NR="205"
+          ID="eSc_dummypage_">
+      <PrintSpace HPOS="0"
+                  VPOS="0"
+                  WIDTH="2550"
+                  HEIGHT="3525">
+        <TextBlock HPOS="1036.0"
+                   VPOS="2491.0"
+                   WIDTH="1046.0"
+                   HEIGHT="102.0"
+                   ID="eSc_textblock_caf7f738"
+                   TAGREFS="BT77">
+          <Shape><Polygon POINTS="2082 2593 2080 2491 1036 2491 1036 2591"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="414.0"
+                   VPOS="500.0"
+                   WIDTH="14.0"
+                   HEIGHT="38.0"
+                   ID="eSc_textblock_b90f8626"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="428 522 414 538 414 500 418 500"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="1864.0"
+                   VPOS="908.0"
+                   WIDTH="304.0"
+                   HEIGHT="1581.0"
+                   ID="eSc_textblock_1d4dcdbc"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="2168 908 2168 2489 1864 2489 1864 908"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="966.0"
+                   VPOS="1322.0"
+                   WIDTH="886.0"
+                   HEIGHT="1163.0"
+                   ID="eSc_textblock_38899688"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="966 1322 966 2485 1852 2485 1852 1322"/></Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

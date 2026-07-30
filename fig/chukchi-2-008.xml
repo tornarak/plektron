@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-2-008.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT77" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT78" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
+    <OtherTag ID="LT10" LABEL="default" DESCRIPTION="line type default"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2550"
+          HEIGHT="3525"
+          PHYSICAL_IMG_NR="162"
+          ID="eSc_dummypage_">
+      <PrintSpace HPOS="0"
+                  VPOS="0"
+                  WIDTH="2550"
+                  HEIGHT="3525">
+        <TextBlock HPOS="326.0"
+                   VPOS="2613.0"
+                   WIDTH="1054.0"
+                   HEIGHT="84.0"
+                   ID="eSc_textblock_c651f709"
+                   TAGREFS="BT77">
+          <Shape><Polygon POINTS="326 2697 326 2613 1380 2613 1380 2697"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="322.0"
+                   VPOS="2019.0"
+                   WIDTH="1058.0"
+                   HEIGHT="596.0"
+                   ID="eSc_textblock_e8d64925"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="322 2019 322 2615 1380 2615 1376 2019"/></Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

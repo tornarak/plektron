@@ -1,0 +1,33 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Derived rasters. `scans/` is exactly `pdftoppm -r <dpi>` over `pdfs/` —
+# verified pixel-identical — so it is regenerable, not source. Keeping it out
+# matters: it is 212 MB at 150 dpi and grows with every re-render, and git
+# would keep each generation forever.
+scans/
+
+# Downloaded model weights (675 MB), not authored here.
+models/
+
+# Transient working dirs: recognition output kept only for comparison, and
+# the sxiv review gates.
+ocr300/
+figs-ocr300/
+review/
+
+# Symlink farms pointing *into* `scans/`, which is ignored above — so committing
+# them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and
+# `ocr/` listings, i.e. derived by the same argument that keeps `scans/` out.
+# `ocr/` is deliberately NOT here: its symlinks resolve inside the repo, into
+# `gt/ocr/`.
+scans-w-figs/
+scans-w-ocr/

@@ -1,0 +1,51 @@
+# Terms a general English dictionary cannot be expected to carry, added so the
+# lexicon_miss detector reports transcription candidates rather than vocabulary.
+#
+# Scope: this file suppresses `lexicon_miss` and NOTHING ELSE. The inventory,
+# apostrophe-adjacency, dot-above-g and smart-quote detectors never consult it.
+# A term listed here is still flagged if it carries a marked glyph, which is
+# what keeps a whitelist from becoming a hole in the firewall.
+#
+# Do NOT add Chukchi, Koryak or Yupik forms. Those are the signal.
+# Matching is case-folded, on hyphen/apostrophe-split components of a token.
+#
+# One term per line; `#` starts a comment. Seed the list from real counts with
+#     uv run harness lexicon --suggest
+
+# --- proper names
+Bogoras
+Nordquist
+Pavlutsky
+Argentoff
+
+# --- ethnonyms
+Chukchee
+Chukchi
+Koryak
+Russianized
+Cossacks
+Kamchadal
+Yukaghir
+Tungus
+Yakut
+Lamut
+Kerek
+Namollo
+Aiwan
+
+# --- toponyms
+Anadyr
+
+# --- humanities terms
+weregild
+
+# --- zoological and botanical genus/species epithets seen in the pilot pages
+Phoca
+hispida
+ochotensis
+macrodens
+Histriophoca
+fasciata
+Erignathus
+barbatus
+Pallas

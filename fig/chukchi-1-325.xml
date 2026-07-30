@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-1-325.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT77" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT78" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
+    <OtherTag ID="LT10" LABEL="default" DESCRIPTION="line type default"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2824"
+          HEIGHT="3897"
+          PHYSICAL_IMG_NR="143"
+          ID="eSc_dummypage_">
+      <PrintSpace HPOS="0"
+                  VPOS="0"
+                  WIDTH="2824"
+                  HEIGHT="3897">
+        <TextBlock HPOS="346.0"
+                   VPOS="1826.0"
+                   WIDTH="864.0"
+                   HEIGHT="68.0"
+                   ID="eSc_textblock_b1e5ae04"
+                   TAGREFS="BT77">
+          <Shape><Polygon POINTS="1192 1826 1210 1886 380 1894 346 1876 358 1826"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="1432.0"
+                   VPOS="1818.0"
+                   WIDTH="1102.0"
+                   HEIGHT="76.0"
+                   ID="eSc_textblock_2018825c"
+                   TAGREFS="BT77">
+          <Shape><Polygon POINTS="2534 1818 2534 1894 1436 1894 1432 1818"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="362.0"
+                   VPOS="3359.0"
+                   WIDTH="890.0"
+                   HEIGHT="76.0"
+                   ID="eSc_textblock_5f1031a6"
+                   TAGREFS="BT77">
+          <Shape><Polygon POINTS="1236 3359 1252 3435 362 3435 368 3359"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="1732.0"
+                   VPOS="3359.0"
+                   WIDTH="604.0"
+                   HEIGHT="76.0"
+                   ID="eSc_textblock_c1ce2333"
+                   TAGREFS="BT77">
+          <Shape><Polygon POINTS="2328 3359 2336 3435 1766 3435 1732 3409 1744 3359"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="1508.0"
+                   VPOS="1975.0"
+                   WIDTH="1034.0"
+                   HEIGHT="1386.0"
+                   ID="eSc_textblock_589d0c78"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="2542 1975 2534 3349 1510 3361 1508 1977"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="1436.0"
+                   VPOS="420.0"
+                   WIDTH="1100.0"
+                   HEIGHT="1392.0"
+                   ID="eSc_textblock_400fc6e9"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="2530 422 2536 1812 1436 1808 1440 420"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="312.0"
+                   VPOS="1977.0"
+                   WIDTH="950.0"
+                   HEIGHT="1382.0"
+                   ID="eSc_textblock_bd790b1a"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="1262 1977 1260 3359 312 3355 314 1979"/></Shape>
+        </TextBlock>
+        <TextBlock HPOS="216.0"
+                   VPOS="420.0"
+                   WIDTH="1130.0"
+                   HEIGHT="1408.0"
+                   ID="eSc_textblock_6fa0c9fa"
+                   TAGREFS="BT78">
+          <Shape><Polygon POINTS="1346 420 1340 1828 226 1816 216 426"/></Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>
