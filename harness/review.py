@@ -165,6 +165,41 @@ def group_spans(spans: list[dict]) -> list[dict]:
     return out
 
 
+# The notation keyboard, as a toggled mode. Off by default, so U+0027 — which is
+# itself the spirant and pause mark (keying spec 2.1), not merely a lookalike for
+# U+02CA — stays typeable. That is why this is a mode and not a remap.
+#
+# The first block is the editor's existing bindings, reproduced key for key so
+# muscle memory survives. Note `r`/`R` is deliberately asymmetric (ṛ vs ř) and is
+# left as found rather than regularised.
+KBD_GLYPHS = {
+    "a": "ᴀ", "e": "ᴇ", "i": "ɪ", "c": "č", "g": "g̣", "j": "ǰ",
+    "l": "ʟ", "n": "ñ", "r": "ṛ", "R": "ř",
+    "'": "ˊ", "<": "ᵋ", ">": "˙", "?": "(??/????)",
+    # Atomics the editor's list flagged as having no key.
+    "o": "ɵ", ";": "ᵉ",
+    # Capitals, likewise unreachable before. Composed, so they are NFD by
+    # construction rather than by remembering to normalize.
+    "C": "Č", "G": "G̣", "N": "Ñ", "L": "ʟ̣",
+}
+
+# Postfix combining marks: they attach to whatever precedes the caret, so one key
+# each reaches every marked sort in keying spec 2.2 — ä ë ê ḷ ʟ̣ š ŭ x˙ and both
+# length marks — instead of a binding per glyph. This is also exactly the corpus's
+# own encoding, so what is typed is what is stored.
+KBD_MARKS = {
+    ".": "̣", "^": "̂", "~": "̃",
+    ":": "̈", '"': "̌", "-": "̄", "=": "̆",
+}
+
+# Decomposed at the source, not left to the save to fix. Seven of the literals above
+# are precomposed if written naively (č U+010D, ñ U+00F1, ṛ U+1E5B, ř U+0159, ǰ, Č,
+# Ñ), so typing them would put precomposed characters on screen and in the palette's
+# codepoint tooltips while the entire corpus is NFD. `save_decisions` would still
+# normalize the file, which is exactly what makes the discrepancy easy to miss.
+KBD_GLYPHS = {k: unicodedata.normalize("NFD", v) for k, v in KBD_GLYPHS.items()}
+
+
 def decisions_path(ref: str, root: Path = Path(".")) -> Path:
     return root / "review" / "decisions" / f"{norm_ref(ref)}.json"
 
@@ -297,13 +332,35 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          "border-radius:6px;padding:.5rem .7rem;box-shadow:0 2px 10px #0003;"
          "display:flex;gap:.6rem;align-items:center;font-size:.85rem}",
          "#st{color:#555;min-width:13ch}#st.bad{color:#b00;font-weight:600}",
+         "#kb{font:12px ui-monospace,monospace;color:#777;border:1px solid #bbb;"
+         "border-radius:3px;padding:.1rem .4rem}",
+         "#kb.on{color:#fff;background:#1a7f37;border-color:#1a7f37;font-weight:700}",
          "#bar button{font:inherit;padding:.25rem .8rem}",
+         # The mode has to be unmissable, since with it on every letter key means
+         # something else. A badge alone is too easy to lose track of.
+         "body.kbdon textarea:focus{outline-color:#1a7f37;border-color:#1a7f37;"
+         "background:#f2fbf4}",
+         "#pal{position:sticky;top:0;background:#fff;border-bottom:1px solid #ccc;"
+         "padding:.5rem 0 .6rem;margin-bottom:.6rem;z-index:5}",
+         ".phead{font-size:.8rem;color:#555;margin-bottom:.35rem}",
+         ".pgrid{display:flex;flex-wrap:wrap;gap:.25rem}",
+         ".pk{font:inherit;min-width:2.9rem;padding:.2rem .3rem;cursor:pointer;"
+         "display:flex;flex-direction:column;align-items:center;line-height:1.15;"
+         "background:#fafafa;border:1px solid #bbb;border-radius:4px}",
+         ".pk b{font-size:1.15rem;font-weight:500}",
+         ".pk span{font:10px ui-monospace,monospace;color:#888}",
+         ".pk.mk{background:#eef3ff}",
          "body{padding-bottom:4rem}",
          "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
          ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
          ".note{color:#d9b26a}"
          "textarea{background:#111;color:#eee;border-color:#444}"
          "#bar{background:#1e1e1e;border-color:#555}#st{color:#bbb}"
+         "#pal{background:#161616;border-color:#333}"
+         ".pk{background:#222;border-color:#444;color:#eee}"
+         ".pk.mk{background:#1b2436}"
+         "#kb{color:#aaa;border-color:#555}"
+         "body.kbdon textarea:focus{background:#0f1a12}"
          ".crop{filter:invert(1) hue-rotate(180deg)}}",
          "</style>"]
 
@@ -365,13 +422,58 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
                 h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")
         h.append("</div>")
 
-    h.append("<div id=bar><span id=st>no changes</span>"
-             "<button id=sv>Save</button></div>")
+    # Palette: every glyph reachable by click, so nothing depends on recalling a
+    # binding, and the legend doubles as the documentation of what the mode does.
+    pal = ["<div id=pal><div class=phead>notation keyboard "
+           "<span class=tags>ctrl-space toggles · off = plain typing, "
+           "so U+0027 stays reachable</span></div><div class=pgrid>"]
+    for key, glyph in KBD_GLYPHS.items():
+        pal.append(f"<button class=pk data-ins='{_esc(glyph)}' "
+                   f"title='{_esc(codepoints(glyph))}'>"
+                   f"<b>{_esc(glyph)}</b><span>{_esc(key)}</span></button>")
+    for key, mark in KBD_MARKS.items():
+        pal.append(f"<button class='pk mk' data-ins='{_esc(mark)}' "
+                   f"title='{_esc(codepoints(mark))} — attaches to the character "
+                   f"before the caret'><b>◌{_esc(mark)}</b>"
+                   f"<span>{_esc(key)}</span></button>")
+    pal.append("</div></div>")
+    h += pal
+
+    h.append("<div id=bar><span id=kb>kbd off</span>"
+             "<span id=st>no changes</span><button id=sv>Save</button></div>")
     # Autosave on a debounce *and* an explicit button, plus a beforeunload guard.
     # Belt and braces on purpose: the alternative to a save that fires by itself is
     # a reviewer who closes the tab on forty adjudicated lines.
+    h.append("<script>const GL=" + json.dumps(KBD_GLYPHS, ensure_ascii=False)
+             + ",MK=" + json.dumps(KBD_MARKS, ensure_ascii=False) + ";</script>")
     h.append("""<script>
 const st=document.getElementById('st'), sv=document.getElementById('sv');
+const kb=document.getElementById('kb');
+let kbdOn=false, last=null;
+function setKbd(v){kbdOn=v;kb.textContent='kbd '+(v?'ON':'off');
+  kb.className=v?'on':'';document.body.classList.toggle('kbdon',v)}
+function insert(el,s){
+  const a=el.selectionStart,b=el.selectionEnd;
+  el.setRangeText(s,a,b,'end');
+  el.dispatchEvent(new Event('input',{bubbles:true}));
+}
+// Click-to-insert targets whichever field was last focused, so the palette works
+// without stealing the caret.
+document.addEventListener('mousedown',e=>{
+  if(e.target.closest('#pal')) e.preventDefault();
+});
+for(const b of document.querySelectorAll('.pk')){
+  b.addEventListener('click',()=>{ if(last) insert(last,b.dataset.ins) });
+}
+addEventListener('keydown',e=>{
+  if(e.ctrlKey&&e.code==='Space'){e.preventDefault();setKbd(!kbdOn);return}
+  if(!kbdOn||!last||document.activeElement!==last) return;
+  if(e.ctrlKey||e.altKey||e.metaKey) return;
+  const g=Object.prototype.hasOwnProperty.call(GL,e.key)?GL[e.key]
+        :(Object.prototype.hasOwnProperty.call(MK,e.key)?MK[e.key]:null);
+  if(g===null) return;
+  e.preventDefault(); insert(last,g);
+});
 let dirty=false, timer=null;
 const grow=t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'};
 function collect(){const o={};for(const t of document.querySelectorAll('textarea'))
@@ -390,6 +492,7 @@ async function save(){
 }
 for(const t of document.querySelectorAll('textarea')){
   grow(t);
+  t.addEventListener('focus',()=>{last=t});
   t.addEventListener('input',()=>{grow(t);dirty=true;st.className='';
     st.textContent='unsaved…';clearTimeout(timer);timer=setTimeout(save,1200)});
 }
