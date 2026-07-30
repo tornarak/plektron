@@ -199,6 +199,32 @@ KBD_MARKS = {
 # normalize the file, which is exactly what makes the discrepancy easy to miss.
 KBD_GLYPHS = {k: unicodedata.normalize("NFD", v) for k, v in KBD_GLYPHS.items()}
 
+# The palette is the whole keying-spec inventory, not just what has a binding —
+# grouped as the spec groups it so the panel reads as the inventory rather than as a
+# pile of characters. Bindings are a shortcut for the frequent ones; the button is
+# the guarantee that nothing is unreachable.
+#
+# The ASCII row earns its place despite being typeable: U+0027 is the spirant *and*
+# pause mark, U+002D the connector hyphen, U+0021 increased articulation (2.1). They
+# look like ordinary punctuation and are not, and clicking them works even with the
+# mode on, which is otherwise the one way to reach U+0027 without toggling.
+PALETTE = [
+    ("small caps (2.3)", ["ᴀ", "ᴇ", "ɪ", "ʟ", "ʟ̣"]),
+    ("modifiers (2.1)", ["ˊ", "ᵋ", "ᵉ", "˙"]),
+    ("combining marks", list(KBD_MARKS.values())),
+    ("marked sorts (2.2)",
+     ["ñ", "č", "š", "ř", "ǰ", "ê", "ë", "ä", "ŭ", "ṛ", "ḷ", "ɵ", "x˙", "g̣"]),
+    # Convenience only, and labelled so it cannot be mistaken for inventory: the
+    # spec lists no capital rows. G̣ is attested (1-074's G̣ɪthaˊk) and Č occurs in the
+    # corpus; Š Ř J̌ are here because a base plus a mark key produces them anyway, not
+    # because anything has licensed them.
+    ("capitals (composed, not spec rows)", ["Ñ", "Č", "Š", "Ř", "J̌", "G̣"]),
+    ("ascii, special function", ["'", "-", "!"]),
+    ("catalogue placeholder", ["(??/????)"]),
+]
+PALETTE = [(label, [unicodedata.normalize("NFD", g) for g in glyphs])
+           for label, glyphs in PALETTE]
+
 
 def decisions_path(ref: str, root: Path = Path(".")) -> Path:
     return root / "review" / "decisions" / f"{norm_ref(ref)}.json"
@@ -328,36 +354,44 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          "textarea{font:17px/1.4 var(--f);width:100%;border:1px solid #bbb;"
          "border-radius:4px;padding:.35rem .5rem;resize:vertical;overflow:hidden}",
          "textarea:focus{outline:2px solid #47f;border-color:#47f}",
-         "#bar{position:fixed;right:1rem;bottom:1rem;background:#fff;border:1px solid #999;"
-         "border-radius:6px;padding:.5rem .7rem;box-shadow:0 2px 10px #0003;"
-         "display:flex;gap:.6rem;align-items:center;font-size:.85rem}",
-         "#st{color:#555;min-width:13ch}#st.bad{color:#b00;font-weight:600}",
+         # Fixed to the bottom, full width, always visible. It is the reference for
+         # what the mode does as much as it is an input device, so hiding it behind a
+         # scroll position would defeat both jobs.
+         "#pal{position:fixed;left:0;right:0;bottom:0;z-index:5;background:#fff;"
+         "border-top:1px solid #999;box-shadow:0 -2px 10px #0002;"
+         "display:flex;gap:.9rem;align-items:flex-start;padding:.5rem .8rem}",
+         "#pgroups{display:flex;flex-wrap:wrap;gap:.35rem .9rem;flex:1}",
+         ".pgrp{display:flex;flex-direction:column;gap:.15rem}",
+         ".plabel{font:10px ui-monospace,monospace;color:#888;letter-spacing:.02em}",
+         ".pkeys{display:flex;flex-wrap:wrap;gap:.2rem}",
+         ".pk{font:inherit;min-width:2.5rem;padding:.15rem .25rem;cursor:pointer;"
+         "display:flex;flex-direction:column;align-items:center;line-height:1.1;"
+         "background:#fafafa;border:1px solid #bbb;border-radius:4px}",
+         ".pk b{font-size:1.15rem;font-weight:500}",
+         ".pk span{font:10px ui-monospace,monospace;color:#888;min-height:1em}",
+         ".pk.mk{background:#eef3ff}",
+         "#pctl{display:flex;flex-direction:column;gap:.3rem;align-items:flex-end;"
+         "border-left:1px solid #ddd;padding-left:.9rem;font-size:.85rem}",
+         "#st{color:#555;min-width:13ch;text-align:right}",
+         "#st.bad{color:#b00;font-weight:600}",
          "#kb{font:12px ui-monospace,monospace;color:#777;border:1px solid #bbb;"
          "border-radius:3px;padding:.1rem .4rem}",
          "#kb.on{color:#fff;background:#1a7f37;border-color:#1a7f37;font-weight:700}",
-         "#bar button{font:inherit;padding:.25rem .8rem}",
+         "#pctl button{font:inherit;padding:.25rem .9rem}",
          # The mode has to be unmissable, since with it on every letter key means
          # something else. A badge alone is too easy to lose track of.
          "body.kbdon textarea:focus{outline-color:#1a7f37;border-color:#1a7f37;"
          "background:#f2fbf4}",
-         "#pal{position:sticky;top:0;background:#fff;border-bottom:1px solid #ccc;"
-         "padding:.5rem 0 .6rem;margin-bottom:.6rem;z-index:5}",
-         ".phead{font-size:.8rem;color:#555;margin-bottom:.35rem}",
-         ".pgrid{display:flex;flex-wrap:wrap;gap:.25rem}",
-         ".pk{font:inherit;min-width:2.9rem;padding:.2rem .3rem;cursor:pointer;"
-         "display:flex;flex-direction:column;align-items:center;line-height:1.15;"
-         "background:#fafafa;border:1px solid #bbb;border-radius:4px}",
-         ".pk b{font-size:1.15rem;font-weight:500}",
-         ".pk span{font:10px ui-monospace,monospace;color:#888}",
-         ".pk.mk{background:#eef3ff}",
-         "body{padding-bottom:4rem}",
+         # Clear of the fixed panel. Generous: the panel wraps on a narrow window.
+         "body{padding-bottom:15rem}",
          "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
          ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
          ".note{color:#d9b26a}"
          "textarea{background:#111;color:#eee;border-color:#444}"
-         "#bar{background:#1e1e1e;border-color:#555}#st{color:#bbb}"
-         "#pal{background:#161616;border-color:#333}"
-         ".pk{background:#222;border-color:#444;color:#eee}"
+         "#st{color:#bbb}"
+         "#pal{background:#1b1b1b;border-color:#444}"
+         "#pctl{border-color:#3a3a3a}"
+         ".pk{background:#242424;border-color:#484848;color:#eee}"
          ".pk.mk{background:#1b2436}"
          "#kb{color:#aaa;border-color:#555}"
          "body.kbdon textarea:focus{background:#0f1a12}"
@@ -422,25 +456,32 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
                 h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")
         h.append("</div>")
 
-    # Palette: every glyph reachable by click, so nothing depends on recalling a
-    # binding, and the legend doubles as the documentation of what the mode does.
-    pal = ["<div id=pal><div class=phead>notation keyboard "
-           "<span class=tags>ctrl-space toggles · off = plain typing, "
-           "so U+0027 stays reachable</span></div><div class=pgrid>"]
-    for key, glyph in KBD_GLYPHS.items():
-        pal.append(f"<button class=pk data-ins='{_esc(glyph)}' "
-                   f"title='{_esc(codepoints(glyph))}'>"
-                   f"<b>{_esc(glyph)}</b><span>{_esc(key)}</span></button>")
-    for key, mark in KBD_MARKS.items():
-        pal.append(f"<button class='pk mk' data-ins='{_esc(mark)}' "
-                   f"title='{_esc(codepoints(mark))} — attaches to the character "
-                   f"before the caret'><b>◌{_esc(mark)}</b>"
-                   f"<span>{_esc(key)}</span></button>")
-    pal.append("</div></div>")
-    h += pal
+    # Fixed to the bottom of the viewport, and the save controls live in the same
+    # panel: two floating widgets competing for the corner is one too many.
+    binding = {g: k for k, g in KBD_GLYPHS.items()}
+    binding.update({m: k for k, m in KBD_MARKS.items()})
 
-    h.append("<div id=bar><span id=kb>kbd off</span>"
-             "<span id=st>no changes</span><button id=sv>Save</button></div>")
+    pal = ["<div id=pal>", "<div id=pgroups>"]
+    for label, glyphs in PALETTE:
+        pal.append(f"<div class=pgrp><div class=plabel>{_esc(label)}</div>"
+                   "<div class=pkeys>")
+        for g in glyphs:
+            key = binding.get(g, "")
+            combining = len(g) == 1 and unicodedata.category(g) == "Mn"
+            shown = ("◌" + g) if combining else g
+            tip = codepoints(g) + (
+                " — attaches to the character before the caret" if combining else "")
+            pal.append(f"<button class='pk{' mk' if combining else ''}' "
+                       f"data-ins='{_esc(g)}' title='{_esc(tip)}'>"
+                       f"<b>{_esc(shown)}</b>"
+                       f"<span>{_esc(key) or '&nbsp;'}</span></button>")
+        pal.append("</div></div>")
+    pal.append("</div>")
+    pal.append("<div id=pctl><span id=kb>kbd off</span>"
+               "<span id=st>no changes</span><button id=sv>Save</button>"
+               "<div class=tags>ctrl-space toggles · off = plain typing</div></div>")
+    pal.append("</div>")
+    h += pal
     # Autosave on a debounce *and* an explicit button, plus a beforeunload guard.
     # Belt and braces on purpose: the alternative to a save that fires by itself is
     # a reviewer who closes the tab on forty adjudicated lines.
