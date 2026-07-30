@@ -187,11 +187,25 @@ _FONT_STACK = "'DejaVu Sans', 'Charis SIL', 'Noto Sans', sans-serif"
 
 def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
                       root: Path = Path("."), crops: Path | None = None) -> str:
-    """Self-contained review page for one ref. Crops embedded, no external refs.
+    """Self-contained review page for one ref: one entry per line, reading order.
 
-    Every span appears. Grouping is stacking only: nothing is pre-accepted, no
-    class is marked safe, and the two witnesses are shown in a fixed order with no
-    visual precedence, because the tool has no opinion about which is right.
+    **The unit is the line, not the span.** An earlier version grouped by
+    substitution class on the grounds that glyphs are 3.3% of characters, but that
+    measures the wrong cost: the expensive act is re-orienting to a different line,
+    not reading the characters in a line you already have open. Since 44% of lines
+    need some attention, those lines get opened regardless, and once open the rest
+    of the line is nearly free. Span-grouping also scattered one line's corrections
+    across the queue, so their sum could not be seen.
+
+    It organised around the wrong thing besides. The spans are diffs against
+    CATMuS, which reads no inventory glyph at all, so a class like `'` -> `ˊ`
+    describes the recognizer's failure modes rather than the text. `group_spans`
+    survives as *measurement* for the eval, not as the review unit.
+
+    Reading order, not difference-first: consecutive lines carry each other's
+    context, and a line the two witnesses agree on can still have both of them
+    wrong — CATMuS agreeing about ASCII is weak evidence and it has no vote on a
+    glyph whatsoever. So every line is present; agreement only sets emphasis.
     """
     from .lines import write_line_crops
     ref = norm_ref(ref)
@@ -199,7 +213,6 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
     recs = {r["index"]: r for r in write_line_crops(ref, crops, alto_dir, root)}
     prop = load_proposal(ref, root)
     spans = page_spans(ref, alto_dir, root)
-    groups = group_spans(spans)
     summ = summary(spans, len(recs))
 
     h = [f"<title>review {ref}</title>", "<style>",
@@ -207,78 +220,90 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          "body{font:15px var(--f);margin:0;padding:1.5rem;max-width:1100px}",
          "h1{font-size:1.1rem;margin:0 0 .3rem}",
          ".sum{color:#555;font-size:.85rem;margin-bottom:1.4rem}",
-         ".cls{border:1px solid #ccc;border-radius:6px;margin:0 0 1.1rem;padding:.7rem .9rem}",
-         ".sub{font-size:1.5rem;letter-spacing:.02em}",
-         ".arrow{color:#888;padding:0 .5rem}",
-         ".cp{font:12px ui-monospace,monospace;color:#036;margin:.25rem 0}",
+         ".ln{border-top:1px solid #ddd;padding:.7rem 0}",
+         # Agreement is de-emphasis, never omission: CATMuS agreeing about ASCII is
+         # weak evidence, and on a glyph it has no vote at all, so a quiet line is
+         # still a line somebody has to look at.
+         ".agree{opacity:.62}",
+         ".agree:focus-within{opacity:1}",
+         ".cp{font:12px ui-monospace,monospace;color:#036;margin:.2rem 0}",
          ".tags{font:11px ui-monospace,monospace;color:#666}",
-         ".inst{border-top:1px solid #eee;padding:.55rem 0;display:flex;gap:.8rem;align-items:flex-start}",
+         ".ref{font:13px ui-monospace,monospace;color:#777;margin-top:.2rem}",
+         ".note{font-size:12px;color:#7a4a00;margin-top:.2rem;max-width:70ch}",
          # Crops are emitted as one CSS rule per line and referenced by class, not
-         # inlined per instance. A line with six queued spans would otherwise embed
-         # its own image six times; on 1-074 that was 676 KB against 60.
+         # inlined per occurrence. Inlining embedded a line's image once per queue
+         # entry; on 1-074 that was 676 KB against 209.
          ".crop{border:1px solid #ddd;background-repeat:no-repeat;"
-         "background-size:contain;background-color:#fff;max-width:640px}",
-         ".ctx{font-size:1.05rem}",
-         ".hit{background:#ffe9a8;outline:1px solid #d9a400}",
-         "textarea{font:15px var(--f);width:100%;min-height:2.4rem}",
+         "background-size:contain;background-color:#fff;margin:.2rem 0}",
+         "textarea{font:17px/1.4 var(--f);width:100%;border:1px solid #bbb;"
+         "border-radius:4px;padding:.35rem .5rem;resize:vertical;overflow:hidden}",
+         "textarea:focus{outline:2px solid #47f;border-color:#47f}",
          "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
-         ".cls{border-color:#3a3a3a}.cp{color:#8ec7ff}.inst{border-color:#2a2a2a}"
-         ".hit{background:#5c4a00;outline-color:#c9a227}"
+         ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
+         ".note{color:#d9b26a}"
+         "textarea{background:#111;color:#eee;border-color:#444}"
          ".crop{filter:invert(1) hue-rotate(180deg)}}",
          "</style>"]
 
     # One rule per unique line crop, scaled down to fit the column while keeping
     # aspect ratio, so the div reserves the right height before the image paints.
     from PIL import Image
-    used = sorted({int(p.split(":")[0]) for g in groups for p in g["instances"].split()})
+    # Every rendered line needs a rule, not only the differing ones. Deriving this
+    # from the span instances left the agreeing lines as empty bordered boxes.
     css = []
-    for idx in used:
-        rec = recs.get(idx)
-        if rec is None:
+    for idx in sorted(recs):
+        rec = recs[idx]
+        if idx not in prop:
             continue
         path = Path(rec["crop"])
         w, ht = Image.open(path).size
-        scale = min(1.0, 640 / w)
+        # Full column width. Never upscaled past 1:1 — a magnified bitonal crop
+        # invents smoothness, and the reviewer should see the raster it is.
+        scale = min(1.0, 1040 / w)
         css.append(f".c{idx}{{background-image:url({_data_uri(path)});"
                    f"width:{round(w * scale)}px;height:{round(ht * scale)}px}}")
     h += ["<style>", "\n".join(css), "</style>"]
     h += [
-         f"<h1>{ref} — {len(groups)} substitution classes, {summ['spans']} spans</h1>",
+         f"<h1>{ref} — {summ['lines']} lines, "
+         f"{summ['lines'] - summ['lines_identical']} differing from catmus</h1>",
          "<div class=sum>"
-         f"{summ['lines_identical']}/{summ['lines']} lines already identical · "
-         f"{summ['inventory_spans']} spans touch inventory glyphs · "
-         f"{summ['non_ascii_spans']} non-ASCII · "
+         f"{summ['spans']} differing spans in {summ['classes']} substitution "
+         f"classes · {summ['inventory_spans']} touch inventory glyphs · "
          f"{summ['lookalikes_in_proposal']} lookalike traps in the proposal<br>"
-         "CATMuS is a witness to geometry and English only; it produced no "
-         "inventory glyph anywhere in this book, so a non-ASCII span has one "
-         "witness — the image.</div>"]
+         "Every line is listed, in reading order. CATMuS is shown for reference "
+         "only: it is a witness to geometry and English, and produced no inventory "
+         "glyph anywhere in this book, so on a glyph the image is the sole witness "
+         "— and a line the two agree on can still have both of them wrong.</div>"]
 
-    for g in groups:
-        h.append("<div class=cls>")
-        h.append(f"<div class=sub>{_esc(g['catmus']) or '∅'}"
-                 f"<span class=arrow>→</span>{_esc(g['claude']) or '∅'}"
-                 f" <span class=tags>×{g['n']}</span></div>")
-        h.append(f"<div class=cp>catmus: {_esc(g['catmus_cp']) or '(nothing)'}</div>")
-        h.append(f"<div class=cp>claude: {_esc(g['claude_cp']) or '(nothing)'}</div>")
-        h.append(f"<div class=tags>{_esc(g['classes'])}</div>")
-        for pair in g["instances"].split():
-            idx, at = (int(x) for x in pair.split(":"))
-            rec = recs.get(idx)
-            if rec is None:
-                continue
-            full = _nfd(prop[idx]["text"])
-            a, b = at, at + len(g["claude"])
-            ctx = (_esc(full[:a]) + "<span class=hit>"
-                   + (_esc(full[a:b]) or "‸") + "</span>" + _esc(full[b:]))
-            h.append("<div class=inst>")
-            h.append(f"<div><div class=tags>line {idx}</div>"
-                     f"<div class='crop c{idx}' role=img "
-                     f"aria-label='scan of line {idx}'></div></div>")
-            h.append(f"<div style='flex:1'><div class=ctx>{ctx}</div>"
-                     f"<textarea data-line='{idx}' spellcheck=false>{_esc(full)}</textarea>"
-                     "</div>")
-            h.append("</div>")
+    differing = {s["index"] for s in spans}
+    for idx in sorted(recs):
+        rec = recs[idx]
+        mine = prop.get(idx)
+        if mine is None:
+            continue
+        full = _nfd(mine["text"])
+        marks = codepoints("".join(dict.fromkeys(c for c in full if ord(c) > 127)))
+        agree = idx not in differing
+        h.append(f"<div class='ln{' agree' if agree else ''}'>")
+        h.append(f"<div class=tags>line {idx} · {_esc(rec['line_id'])}"
+                 + ("" if agree else " · differs from catmus") + "</div>")
+        h.append(f"<div class='crop c{idx}' role=img "
+                 f"aria-label='scan of line {idx}'></div>")
+        h.append(f"<textarea data-line='{idx}' rows=1 spellcheck=false>"
+                 f"{_esc(full)}</textarea>")
+        if marks:
+            h.append(f"<div class=cp>{_esc(marks)}</div>")
+        h.append(f"<div class=ref>catmus: {_esc(rec['text']) or '(empty)'}</div>")
+        for key in ("note", "resolved", "corrected"):
+            if mine.get(key):
+                h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")
         h.append("</div>")
+
+    # Grow the textareas to their content on load, so nothing is hidden behind a
+    # scrollbar the reviewer has to notice.
+    h.append("<script>for(const t of document.querySelectorAll('textarea')){"
+             "const f=e=>{e.style.height='auto';e.style.height=e.scrollHeight+'px'};"
+             "f(t);t.addEventListener('input',()=>f(t));}</script>")
     return "\n".join(h)
 
 
