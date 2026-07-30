@@ -38,7 +38,15 @@ from pathlib import Path
 # excluded deliberately: CLAUDE.md and transcriber_harness.md quote glyph examples in
 # prose and would fail a gate meant for the text itself.
 SCOPE_GLOBS = ("ocr/*.xml", "gt/ocr/*.xml", "gt/seg/*.xml", "fig/*.xml", "tei/*.xml",
-               "data/readings.md", "data/*.json", "data/lexicon_extra.txt")
+               "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
+               # The review stores. Both are authored text — a proposal is somebody's
+               # reading and a decision is an editorial act — so both can carry an
+               # inventory glyph and both must be NFD. They were outside the scope
+               # until a proposal for `1-151` keyed ê precomposed twice, inside a
+               # Tier-1 form, with the same file's own note correctly describing it as
+               # e+U+0302. `save_decisions` normalizes on write, so `decisions/` was
+               # safe by accident; nothing normalized a hand-authored proposal.
+               "review/proposals/*.json", "review/decisions/*.json")
 
 # Codepoints with no legitimate use in English prose *or* in the transcription system,
 # so their presence is a defect regardless of which one a given span is. The curly

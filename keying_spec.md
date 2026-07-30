@@ -173,6 +173,32 @@ reading: pre-reform adjectival genitives in **-аго / -яго** (русска�
 sorts, so they raise no keying question — they only stop a correct reading from
 looking like a misreading.
 
+### 2.8 Museum catalogue numbers — deferred, not discarded (SETTLED)
+
+Figure captions carry AMNH accession numbers set as stacked fractions
+(`70/7867`, `70/7749`). **The keying and collation passes never read them. They
+are keyed as the fixed literal `(??/????)`**, whatever the printed digits.
+
+This is a statement about *which pass* does the work, not about the numbers being
+unimportant. The AMNH catalogue is a live external resource, and an annotation
+pass may well resolve figures against accession records — in which case the right
+way to obtain the number is to query the catalogue, where it is authoritative and
+checkable, rather than to transcribe digits off a raster and hope. Transcribing
+here would produce an unverified string that *looks* resolved and so never gets
+looked up.
+
+The raster argues for deferral on its own. The denominator sits below the line's
+segmentation box in small type, so a line crop clips it: `1-151` line 37 reads
+`1887`/`1749` off the crop against `7867`/`7749` off the full page. Two readings
+of the same digits, from the same page, differing in the first digit — and the
+first reading would have been unfalsifiable within the corpus.
+
+So `(??/????)` is not a gap in the reading; it *is* the reading, and it is the
+marker that makes the deferred work findable later. The token is already in the
+notation keyboard (`?`) and universal in `data/readings.md`. It was, until this
+revision, in no normative document — practice without a rule, which is how a pass
+talks itself into reading them.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
@@ -243,6 +269,16 @@ printed shape alone (greyscale fallback per F11).
 
 ## 7. Changelog
 
+- **Rev 2.5 (2026-07-29):** §2.8 added — museum catalogue numbers are keyed as
+  the literal `(??/????)` by the keying and collation passes, and never read.
+  Editor's ruling, prompted by a reading pass on `1-151` starting to resolve the
+  digits off the raster. The convention was already universal in
+  `data/readings.md` and had a keyboard binding, but appeared in no normative
+  document — practice without a rule. Framed as *deferral*: the AMNH catalogue is
+  live, so a later pass may resolve these by querying it, which is a lookup rather
+  than a transcription. First draft of this section said the numbers resolve
+  against nothing and were unfalsifiable — wrong on both counts, and it would have
+  licensed dropping them permanently.
 - **Rev 2.4 (2026-07-29):** §2.7 added — the closed list of pre-reform Russian
   sorts, with codepoints, what each was reformed to, and what each is confusable
   with. §1 had named only two of the five. Prompted by `1-151`'s **лахтакъ**,
