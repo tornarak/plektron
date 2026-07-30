@@ -22,7 +22,17 @@ models/
 # the sxiv review gates.
 ocr300/
 figs-ocr300/
-review/
+
+# `review/` is mostly derived — line crops and generated HTML, regenerable from
+# the ALTO and the rasters. But `review/proposals/` and `review/decisions/` are
+# authored: a reading proposal is somebody's (or something's) transcription of a
+# page, and an adjudication is an editorial act. Losing either is the failure this
+# repo already suffered once. Note `review/*` rather than `review/`, because git
+# will not descend into an excluded directory and the negations below would never
+# be consulted.
+review/*
+!review/proposals/
+!review/decisions/
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and

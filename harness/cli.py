@@ -25,6 +25,7 @@ from .detectors import suggest_lexicon
 from .emit import emit, emit_lines
 from .lines import page_lines, write_line_crops, alto_for_lines
 from .normalize import scan, convert
+from .review import (group_spans, page_spans, render_queue_html, summary)
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
 from .validate import validate
@@ -91,6 +92,18 @@ def main(argv=None):
     ln.add_argument("--full", action="store_true",
                     help="include baseline and polygon points, which are long "
                          "enough to make the table unreadable by default")
+
+    rv = add("review", help="span-level diff between a reading proposal and the "
+                        "recognizer output, grouped by substitution class — the "
+                        "queue for rebuilding ground truth")
+    rv.add_argument("ref", metavar="PP-NNN",
+                    help="page ref: part and scan index, e.g. 1-074")
+    rv.add_argument("--from", dest="alto_dir", default="end-of-eval",
+                    help="recognizer ALTO directory (default end-of-eval)")
+    rv.add_argument("--html", type=Path, default=None,
+                    help="write the browser review page here instead of a table")
+    rv.add_argument("--spans", action="store_true",
+                    help="every span individually, not grouped by class")
 
     nz = add("normalize", help="NFD conformance and lookalike census across "
                         "the corpus stores (keying spec section 1) — --check "
@@ -161,6 +174,21 @@ def main(argv=None):
                 drop = ("baseline", "points")
                 recs = [{k: v for k, v in r.items() if k not in drop} for r in recs]
             out(recs)
+            return 0
+        if a.cmd == "review":
+            if a.html:
+                a.html.parent.mkdir(parents=True, exist_ok=True)
+                a.html.write_text(
+                    render_queue_html(a.ref, a.alto_dir, a.root), encoding="utf-8")
+                print(f"{a.html}: review page for {a.ref}")
+                return 0
+            spans = page_spans(a.ref, a.alto_dir, a.root)
+            n = len(page_lines(alto_for_lines(a.ref, a.alto_dir, a.root)))
+            # Two calls, two tables. Summary and queue have different key sets, so
+            # emitting them as one list would collapse the whole thing to the
+            # verbose nested form (see emit.py).
+            print(emit(summary(spans, n), getattr(a, "json", False)))
+            out(spans if a.spans else group_spans(spans))
             return 0
         if a.cmd == "normalize":
             if a.check:
