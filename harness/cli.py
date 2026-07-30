@@ -25,7 +25,7 @@ from .detectors import suggest_lexicon
 from .emit import emit, emit_lines
 from .lines import page_lines, write_line_crops, alto_for_lines
 from .normalize import scan, convert
-from .review import (group_spans, page_spans, render_queue_html, summary)
+from .review import (group_spans, page_spans, render_queue_html, serve, summary)
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
 from .validate import validate
@@ -104,6 +104,10 @@ def main(argv=None):
                     help="write the browser review page here instead of a table")
     rv.add_argument("--spans", action="store_true",
                     help="every span individually, not grouped by class")
+    rv.add_argument("--serve", action="store_true",
+                    help="serve the review page on 127.0.0.1 and accept saves "
+                         "into review/decisions/PP-NNN.json")
+    rv.add_argument("--port", type=int, default=8731)
 
     nz = add("normalize", help="NFD conformance and lookalike census across "
                         "the corpus stores (keying spec section 1) — --check "
@@ -176,6 +180,9 @@ def main(argv=None):
             out(recs)
             return 0
         if a.cmd == "review":
+            if a.serve:
+                serve(a.ref, a.alto_dir, a.root, a.port)
+                return 0
             if a.html:
                 a.html.parent.mkdir(parents=True, exist_ok=True)
                 a.html.write_text(

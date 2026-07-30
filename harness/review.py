@@ -165,6 +165,60 @@ def group_spans(spans: list[dict]) -> list[dict]:
     return out
 
 
+def decisions_path(ref: str, root: Path = Path(".")) -> Path:
+    return root / "review" / "decisions" / f"{norm_ref(ref)}.json"
+
+
+def load_decisions(ref: str, root: Path = Path(".")) -> dict[int, dict]:
+    """Adjudicated lines saved so far, `{index: record}`. Empty if none."""
+    p = decisions_path(ref, root)
+    if not p.exists():
+        return {}
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    return {int(k): v for k, v in doc.get("lines", {}).items()}
+
+
+def save_decisions(ref: str, lines: dict, root: Path = Path("."),
+                   stamp: str | None = None) -> dict:
+    """Write adjudicated lines, recording for each whether it differs from the proposal.
+
+    `edited` is computed here rather than trusted from the client, because it is the
+    eval's primary signal — the fraction of proposed lines a human let stand — and a
+    number the thing being measured gets to report about itself is worthless.
+
+    NFD on the way in. Browsers submit whatever normal form the keyboard produced,
+    and this corpus is NFD by policy (keying spec section 1); an unnormalized save
+    would reintroduce exactly the mixed-encoding drift `harness normalize` exists to
+    remove.
+
+    Written temp-then-rename so an interrupted save cannot truncate the file, and
+    the previous version is kept alongside. Cheap, and this repo has already lost
+    18 pages of transcription once.
+    """
+    ref = norm_ref(ref)
+    prop = load_proposal(ref, root)
+    out = {}
+    for k, v in lines.items():
+        idx = int(k)
+        text = _nfd(v if isinstance(v, str) else v.get("text", ""))
+        proposed = _nfd(prop[idx]["text"]) if idx in prop else None
+        out[str(idx)] = {"text": text, "edited": proposed is not None
+                         and text != proposed}
+    doc = {"ref": ref,
+           "proposal": f"review/proposals/{ref}.json",
+           "saved_at": stamp,
+           "lines": out}
+    p = decisions_path(ref, root)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    if p.exists():
+        p.with_suffix(".json.prev").write_bytes(p.read_bytes())
+    tmp = p.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp.replace(p)
+    return {"path": str(p), "lines": len(out),
+            "edited": sum(1 for v in out.values() if v["edited"])}
+
+
 def _data_uri(path: Path) -> str:
     import base64
     return ("data:image/png;base64,"
@@ -212,6 +266,7 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
     crops = crops or (root / "review" / "crops")
     recs = {r["index"]: r for r in write_line_crops(ref, crops, alto_dir, root)}
     prop = load_proposal(ref, root)
+    saved = load_decisions(ref, root)
     spans = page_spans(ref, alto_dir, root)
     summ = summary(spans, len(recs))
 
@@ -238,10 +293,17 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          "textarea{font:17px/1.4 var(--f);width:100%;border:1px solid #bbb;"
          "border-radius:4px;padding:.35rem .5rem;resize:vertical;overflow:hidden}",
          "textarea:focus{outline:2px solid #47f;border-color:#47f}",
+         "#bar{position:fixed;right:1rem;bottom:1rem;background:#fff;border:1px solid #999;"
+         "border-radius:6px;padding:.5rem .7rem;box-shadow:0 2px 10px #0003;"
+         "display:flex;gap:.6rem;align-items:center;font-size:.85rem}",
+         "#st{color:#555;min-width:13ch}#st.bad{color:#b00;font-weight:600}",
+         "#bar button{font:inherit;padding:.25rem .8rem}",
+         "body{padding-bottom:4rem}",
          "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
          ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
          ".note{color:#d9b26a}"
          "textarea{background:#111;color:#eee;border-color:#444}"
+         "#bar{background:#1e1e1e;border-color:#555}#st{color:#bbb}"
          ".crop{filter:invert(1) hue-rotate(180deg)}}",
          "</style>"]
 
@@ -281,12 +343,16 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
         mine = prop.get(idx)
         if mine is None:
             continue
-        full = _nfd(mine["text"])
+        proposed = _nfd(mine["text"])
+        # Saved work wins on reload, so a session can be resumed. The proposal is
+        # still what `edited` is measured against, server-side.
+        full = _nfd(saved[idx]["text"]) if idx in saved else proposed
         marks = codepoints("".join(dict.fromkeys(c for c in full if ord(c) > 127)))
         agree = idx not in differing
         h.append(f"<div class='ln{' agree' if agree else ''}'>")
         h.append(f"<div class=tags>line {idx} · {_esc(rec['line_id'])}"
-                 + ("" if agree else " · differs from catmus") + "</div>")
+                 + ("" if agree else " · differs from catmus")
+                 + (" · <b>edited</b>" if full != proposed else "") + "</div>")
         h.append(f"<div class='crop c{idx}' role=img "
                  f"aria-label='scan of line {idx}'></div>")
         h.append(f"<textarea data-line='{idx}' rows=1 spellcheck=false>"
@@ -299,12 +365,100 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
                 h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")
         h.append("</div>")
 
-    # Grow the textareas to their content on load, so nothing is hidden behind a
-    # scrollbar the reviewer has to notice.
-    h.append("<script>for(const t of document.querySelectorAll('textarea')){"
-             "const f=e=>{e.style.height='auto';e.style.height=e.scrollHeight+'px'};"
-             "f(t);t.addEventListener('input',()=>f(t));}</script>")
+    h.append("<div id=bar><span id=st>no changes</span>"
+             "<button id=sv>Save</button></div>")
+    # Autosave on a debounce *and* an explicit button, plus a beforeunload guard.
+    # Belt and braces on purpose: the alternative to a save that fires by itself is
+    # a reviewer who closes the tab on forty adjudicated lines.
+    h.append("""<script>
+const st=document.getElementById('st'), sv=document.getElementById('sv');
+let dirty=false, timer=null;
+const grow=t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'};
+function collect(){const o={};for(const t of document.querySelectorAll('textarea'))
+  o[t.dataset.line]=t.value;return o}
+async function save(){
+  st.textContent='saving…';
+  try{
+    const r=await fetch('/save',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({lines:collect()})});
+    if(!r.ok) throw new Error(await r.text());
+    const j=await r.json();
+    dirty=false;
+    st.textContent=`saved · ${j.edited}/${j.lines} lines edited`;
+  }catch(e){ st.textContent='SAVE FAILED: '+e.message; st.className='bad'; }
+}
+for(const t of document.querySelectorAll('textarea')){
+  grow(t);
+  t.addEventListener('input',()=>{grow(t);dirty=true;st.className='';
+    st.textContent='unsaved…';clearTimeout(timer);timer=setTimeout(save,1200)});
+}
+sv.addEventListener('click',save);
+addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+</script>""")
     return "\n".join(h)
+
+
+def serve(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
+          port: int = 8731) -> None:
+    """Serve one page's review at 127.0.0.1 and accept saves.
+
+    Loopback only, and no path routing beyond the two endpoints it needs: this
+    holds unpublished editorial work and has no business being reachable.
+    """
+    import json as _json
+    import time
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *a):  # one line per save is enough; GETs are noise
+            pass
+
+        def do_GET(self):
+            if self.path not in ("/", "/index.html"):
+                self.send_error(404)
+                return
+            body = render_queue_html(ref, alto_dir, root).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_POST(self):
+            if self.path != "/save":
+                self.send_error(404)
+                return
+            try:
+                n = int(self.headers.get("Content-Length") or 0)
+                payload = _json.loads(self.rfile.read(n) or b"{}")
+                res = save_decisions(ref, payload.get("lines") or {}, root,
+                                     stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
+            except Exception as e:  # report it to the page, never a blank failure
+                msg = _json.dumps({"error": str(e)}).encode("utf-8")
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(msg)))
+                self.end_headers()
+                self.wfile.write(msg)
+                return
+            print(f"saved {res['path']}: {res['edited']}/{res['lines']} edited")
+            body = _json.dumps(res).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+    srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    print(f"review {norm_ref(ref)} -> http://127.0.0.1:{port}/   (ctrl-c to stop)")
+    print(f"decisions -> {decisions_path(ref, root)}")
+    try:
+        srv.serve_forever()
+    except KeyboardInterrupt:
+        print("\nstopped")
+    finally:
+        srv.server_close()
 
 
 def summary(spans: list[dict], n_lines: int) -> dict:

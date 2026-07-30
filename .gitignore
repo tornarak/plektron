@@ -33,6 +33,10 @@ figs-ocr300/
 review/*
 !review/proposals/
 !review/decisions/
+# The save writes temp-then-rename and keeps one .prev alongside, as insurance
+# against an interrupted write. Neither belongs in history — git is the history.
+review/decisions/*.prev
+review/decisions/*.tmp
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and
