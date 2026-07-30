@@ -187,86 +187,29 @@ the directory name, and `ocr/` is symlinks into `gt/ocr/`, so anything extracted
 into one wrote through to the other. Nothing in an ALTO says which it is; the
 `Description` block of a hand-keyed page and of an empty shell are byte-identical.
 
-**The rebuild loop**, three steps per page, all stateless so a fresh session
-resumes wherever the last stopped:
+**The rebuild loop is `/rebuild-groundtruth PP-NNN`** — the skill
+(`.claude/skills/rebuild-groundtruth/SKILL.md`) is normative for how the pass runs and
+carries the instrument mechanics, the error classes and the proposal contract. Four
+stateless steps, so a fresh session resumes wherever the last stopped:
 
-    harness lines PP-NNN --crops DIR    line identity + crops off the scan
+    harness lines PP-NNN --sheets DIR   line identity + contact sheets
+    harness zoom PP-NNN --only …        magnification, when the sheets leave a doubt
     (a reading proposal is authored)    review/proposals/PP-NNN.json
     harness review PP-NNN --serve       adjudicate in the browser
     harness restore PP-NNN              -> gt/ocr/, real ground truth
 
-`end-of-eval/` supplies the geometry, since the shells have none. `restore`
-refuses three ways rather than guessing: a target that already holds text (without
-`--force`), any line lacking a decision (a partial restore is ground truth with
-invisible holes), or a line without exactly one `String`.
+`end-of-eval/` supplies the geometry, since the shells have none. `restore` refuses
+four ways rather than guessing: a target that already holds text (without `--force`),
+any line lacking a decision, a line without exactly one `String`, or any unlicensed
+mark in the adjudicated text.
 
-The review page is one entry per line in reading order — crop, editable field in
-**DejaVu Sans** (its single-storey `g` leaves clean space under the bowl for a dot
-below; Charis SIL matches Bogoras's serif letterforms better but crowds that dot),
-the non-ASCII codepoints spelled out, CATMuS greyed as reference. Lines the two
-agree on are dimmed, never hidden. The codepoint line is not decoration: a
-combining mark that a terminal fails to render looks exactly like its absence, and
-that is how a U+0323 was mis-keyed once already. A notation keyboard sits fixed at
-the bottom carrying the whole `keying_spec` inventory — 40 buttons, ctrl-space
-toggles, postfix combining-mark keys so `ä ë ê ḷ ʟ̣ š ŭ x˙` need no binding each.
-
-**The browser is not a trusted source of the text in its own fields.** Firefox restores
-textarea values across a crash-and-reopen and restores them **by position**, so
-reopening the review page after a crash refilled `1-073`'s 47 fields with `1-151`'s
-text; one keystroke then let the autosave debounce write all of them, and the file
-reported 38 lines edited. Nothing could have caught it downstream — well-formed
-payload, real transcription, plausible counts, just of the wrong page. Three guards
-now: the server-rendered text lives in `data-text` and is **assigned by script on
-load**, after any restore (`autocomplete=off` alone is advisory); every save appends to
-an **append-only** `review/decisions/<ref>.jsonl`, because `.json.prev` is one deep and
-a second bad save destroys it; and the save response reports how many lines *changed*,
-shown in red past three, since "38 changed" after one keystroke is the only signal that
-does not require knowing whose text it is.
-
-**Lines carrying notation are flagged** — rule, tint and a badge naming the glyphs
-found, an index of them at the top, and alt-j/alt-k to walk them — because that is
-where the reviewer is the only witness there will ever be. The flag overrides the
-agreement dimming, since CATMuS agreeing about a line's English says nothing about
-its glyphs. It is computed from `detectors.INVENTORY_CHARS` over the text on screen,
-so a glyph just typed flags its line at once. **The page states, in the header, that
-this is a floor and not a census**: `c` (English *sh*), plain `s`, `j` and `x` are
-inventory members in unmarked ASCII, so a form spelled only in those raises nothing.
-An unflagged line means nothing was detected, never that the line is English — and a
-UI letting those two read alike would turn the flag into a licence to skip lines.
-
-Two things the pass must not lose. **A line polygon can exclude printed text** —
-`1-074`'s lines 6 and 10 print `5.` and `9.` outside their boxes, `1-073` does the
-same with its `5.` and strands the folio `51` outside *every* box on the page. So
-neither the crop nor CATMuS has them; the page is the witness, the polygon only
-supplies the line's identity. **`--margins` is the mechanical check** — it widens a
-crop to the PrintSpace, which is where the excluded material sits, and vertical
-padding cannot reach any of it because the omission is horizontal. And
-`context._lines_from_alto` **drops empty lines**, so its index is not the ALTO's;
-join crops through `harness lines` and never through `detector_flags`' line numbers.
-
-**The reading pass's magnifier is `harness zoom`, not an ad-hoc crop script.** It
-takes its box from the same `line_box` the crops and the review page use, so a zoom
-is the *same* region enlarged rather than a second guess at where the line is, and
-hand-typed pixel bounds — unauditable, and wrong the moment a digit is fat-fingered
-— never enter it. Two things it got wrong first and now encodes: the strip width is
-**derived** from the scale rather than set beside it (hand-setting the two separately
-is how a line ends up wrapped into five strips when two would do); and strips from
-every selected line are **packed into shared sheets**, because what a reader pays
-scales with the number of images, not their size. Select every line you mean to look
-at in one call.
-
-**`--zoom N` means N display px per source px, delivered**, and the arithmetic is
-built to keep that true. A client shows ~1450 px per image whatever you send, so
-*source px per image × display px per source px is a constant* — zoom picks a point
-on that curve and cannot buy detail. Two consequences worth stating because the
-obvious move is wrong in both. Building the sheet wider than the client does not
-reduce wrapping, it makes the scale untrue; and untrue *variably*, because a sheet
-sized to its widest strip is fitted by an amount depending on how long the selected
-lines are, so one `--zoom 2` delivers 1.6× on a list and 1.0× on prose. Hence every
-sheet is padded to exactly `ZOOM_CLIENT_W` and nothing is fitted on arrival. To wrap
-less, **lower** the zoom — `--zoom 1` puts nearly any line in one strip and says 1×.
-At the 2× default a list line is one strip and a full-measure line three. Escalate to
-6× for one question, such as one mark's shape, and take the wrapping there.
+Two invariants that bind anything touching lines, not just this pass.
+`context._lines_from_alto` **drops empty lines**, so its index is not the ALTO's —
+join through `harness lines`, never through `detector_flags`' line numbers. And **a
+line polygon can exclude printed text**: `1-074` prints `5.` and `9.` outside their
+boxes, `1-073` the same with its `5.` and its folio `51` outside *every* box on the
+page. The omission is horizontal, so no vertical padding reaches it; `--margins`
+widens to the PrintSpace, which is where the excluded material sits.
 
 **Done: `1-074`** (32 lines, 1911 chars) and **`1-073`** (47 lines, 3031 chars), both
 zero geometry drift.
@@ -306,7 +249,7 @@ if you ever need it.
                                       --sheets DIR labelled contact sheets,
                                       --from DIR picks the store, --full adds
                                       baseline/polygon, --margins widens to the
-                                      PrintSpace (see below)
+                                      PrintSpace
     uv run harness zoom PP-NNN        magnified lines: --only 7,20,22-26 selects,
                                       --zoom N scales (default 2), overlapping
                                       strips packed into as few sheets as fit.
@@ -329,11 +272,24 @@ degrades to the verbose nested form.
 Every verb that names a page takes a `PP-NNN` ref and rejects a bare integer,
 `state` included.
 
-**Doc precedence.** This file is authoritative on the project. Below it:
-`transcriber_harness.md` (repo root) is the normative rule set for the collation
-pass itself — the output contract, the firewall rules, the per-element
-specifications — and `.claude/skills/transcribe-page/SKILL.md` only sequences the
-work. `keying_spec.md` governs the human keying track.
+**Doc precedence.** This file is authoritative on the project — the invariants, the
+data layout, what is settled and what is open. It is deliberately **not** the place
+for how a pass is run; that belongs to the skill for that pass, and detail that
+accumulated here has been moved out rather than duplicated.
+
+Two passes, two skills, and they are not the same job:
+
+| pass | skill | normative rules | output |
+|---|---|---|---|
+| collation (OCR → TEI) | `transcribe-page` | `transcriber_harness.md` | `tei/` |
+| ground-truth rebuild (raster → ALTO) | `rebuild-groundtruth` | its own SKILL.md | `gt/ocr/` |
+
+`transcriber_harness.md` is the normative rule set for collation — output contract,
+firewall rules, per-element specifications — and `transcribe-page` only sequences it.
+`rebuild-groundtruth` carries its own rules, since the reading loop has no separate
+harness document. `keying_spec.md` governs the character inventory for both, and binds
+the human keying track.
+
 # Current pipeline
 
 ## Pages
@@ -584,9 +540,9 @@ TBD
 
 ## Open
 
-- **17 ground-truth pages to rebuild.** The loop works; see "The ground-truth loss"
-  above. The bottleneck is the reading pass, roughly 45 lines and 5 sheet images per
-  page, so plan on 3–4 pages per session rather than one long push.
+- **15 ground-truth pages to rebuild.** The loop works — `/rebuild-groundtruth PP-NNN`.
+  The bottleneck is the reading pass, roughly 45 lines and 5 sheet images per page, so
+  plan on 3–4 pages per session rather than one long push.
 - **The corpus teiHeader does not exist**, and it is now load-bearing: it is where the
   three `respStmt` provenance ranks are declared, so every `@resp` in the corpus is a
   pointer with nothing yet to resolve against. Harmless while pages are validated
@@ -610,31 +566,20 @@ TBD
   for an LLM reading needs pages the model has not seen. `2-030`'s ground truth,
   `1-151`'s TEI body, and fragments of `1-048` and `1-052` were read openly in
   session; `1-074`'s proposal was also amended in place before `review/decisions/`
-  existed, so its `edited` count says 1 where the page had 2 errors. Those four are
-  spent. The 16 untouched refs are the clean set — read them into a proposal
-  *before* looking at any existing transcription of them.
-- **First measured error profile, one page, instrument since fixed.** `1-074`: 32
-  lines, 2 errors, **both a dropped U+0323 under a `g`**. Cause was the tooling —
-  crops were padded 4 px vertically, which excludes a mark sitting below a
-  descender, so the dot was not in the image that was read. Padding is now 10 top /
-  18 bottom and all three dots on that page are visible. One page where the
-  instrument was broken measures the instrument, not the reading; dot-below-`g`
-  is nevertheless the class to check hardest when adjudicating.
-- **First blind error profile.** `1-073`: 47 lines, **3 errors, all one class** — the
-  caron over `j` keyed as a breve, three times. Clean on everything the previous page
-  warned about: six dot-below-`g`/`G̣` all correct, 16 `ɪ`/`i` correct, the old-style
-  figures correct, and both pieces of printed text outside the line polygons recovered.
-  So the error was not a resolution failure. It was an **inference** failure — the mark
-  does look rounder than the page's `č`, and I took a shape difference for evidence of
-  a sort the inventory has never attested, then defended it *as* rigour by citing the
-  firewall. That inverts the firewall: it forbids adopting a glyph on a model's
-  authority, and book-internal apparatus binds. Two consequences worth carrying: a
-  detailed, self-consistent note citing its own magnification is not evidence of care,
-  it is what a confident guess looks like; and **more magnification does not settle a
-  question that is not optical** — all three were examined at 6×, twice, which only
-  made the wrong answer more confident. Now unrepresentable: `detectors.MARK_LICENSE`.
+  existed, so its `edited` count says 1 where the page had 2 errors. Those five are
+  spent, and `1-073` is now used up by being done. The 15 remaining refs are the clean
+  set — read each into a proposal *before* opening any existing transcription of it.
+- **Error profile so far, two pages.** `1-074`: 32 lines, 2 errors, both a dropped
+  U+0323 under a `g` — caused by the tooling (4 px crop padding excluded a mark below
+  a descender), so it measured the instrument rather than the reading. `1-073`, the
+  first blind page: 47 lines, 3 errors, all one class — the caron over `j` keyed as a
+  breve. Clean on everything `1-074` warned about, so the second profile is not a
+  resolution failure but an **inference** failure, and the two together say the classes
+  to watch are different in kind. The rebuild skill carries both, with the reasoning.
+  Now unrepresentable: `detectors.MARK_LICENSE`.
 - **Review can miss what review is for.** Two of `1-073`'s three identical errors were
   corrected in the pass and the third was not — one page, one form, three occurrences,
   and the inconsistency survived because nothing compared them to each other. Which is
   the argument for the licensing gate being a gate rather than a worklist line: it
-  catches what a human pass *missed*, not only what it never saw.
+  catches what a human pass *missed*, not only what it never saw. Same argument applies
+  to any future check; prefer refusing to reporting where no reading is being pre-empted.
