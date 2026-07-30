@@ -23,6 +23,7 @@ from pathlib import Path
 from .context import build_context, all_refs
 from .detectors import suggest_lexicon
 from .emit import emit, emit_lines
+from .lines import page_lines, write_line_crops, alto_for_lines
 from .normalize import scan, convert
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
@@ -77,6 +78,19 @@ def main(argv=None):
     tn.add_argument("folio", type=int)
     tn.add_argument("--span", type=int, default=WINDOW,
                     help=f"folios either side of the target (default {WINDOW})")
+
+    ln = add("lines", help="per-line records for one page — line id, geometry "
+                        "and text, in ALTO order with empties kept, which is the "
+                        "join detector_flags' line numbers cannot supply")
+    ln.add_argument("ref", metavar="PP-NNN",
+                    help="page ref: part and scan index, e.g. 1-048")
+    ln.add_argument("--from", dest="alto_dir", default="end-of-eval",
+                    help="ALTO directory to read (default end-of-eval)")
+    ln.add_argument("--crops", type=Path, default=None,
+                    help="also write one PNG per line under this directory")
+    ln.add_argument("--full", action="store_true",
+                    help="include baseline and polygon points, which are long "
+                         "enough to make the table unreadable by default")
 
     nz = add("normalize", help="NFD conformance and lookalike census across "
                         "the corpus stores (keying spec section 1) — --check "
@@ -136,6 +150,17 @@ def main(argv=None):
             return 0
         if a.cmd == "lexicon":
             out(suggest_lexicon(a.root))
+            return 0
+        if a.cmd == "lines":
+            recs = (write_line_crops(a.ref, a.crops, a.alto_dir, a.root) if a.crops
+                    else page_lines(alto_for_lines(a.ref, a.alto_dir, a.root)))
+            if not a.full:
+                # Drop the two long geometry strings. Dropped from every record,
+                # never some — a ragged key set collapses the table to the
+                # verbose nested form (see emit.py).
+                drop = ("baseline", "points")
+                recs = [{k: v for k, v in r.items() if k not in drop} for r in recs]
+            out(recs)
             return 0
         if a.cmd == "normalize":
             if a.check:
