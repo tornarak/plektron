@@ -713,8 +713,6 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     css = []
     for idx in order:
         rec = recs[idx]
-        if idx not in prop:
-            continue
         path = Path(rec["crop"])
         w, ht = Image.open(path).size
         # Full column width. Never upscaled past 1:1 — a magnified bitonal crop
@@ -763,8 +761,14 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     for idx in order:
         rec = recs[idx]
         mine = prop.get(idx)
+        # A line in the ALTO with no proposal entry used to be skipped in silence,
+        # which is the same class of defect as a hole in ground truth: the queue
+        # rendered as complete while a line was unreachable, the human could never
+        # adjudicate it, and `restore` would then refuse the page forever. It
+        # happens for real — a line recovered by `--adopt-gap` has geometry before
+        # it has any reading. Render it empty and say so.
         if mine is None:
-            continue
+            mine = {"text": ""}
         proposed = _nfd(mine["text"])
         # Saved work wins on reload, so a session can be resumed. The proposal is
         # still what `edited` is measured against, server-side.
@@ -780,6 +784,10 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                     f"<span class=t1glyphs>{_esc(glyphs)}</span> · "
                     if glyphs else "")
                  + f"line {idx} · {_esc(rec['line_id'])}"
+                 + (" · <b>NO PROPOSAL — key from the scan</b>"
+                    if idx not in prop else "")
+                 + (" · recovered line (segmenter missed it)"
+                    if (rec["line_id"] or "").startswith("gap_") else "")
                  + ("" if agree else " · differs from catmus")
                  + f"<span class=editflag id='ef{idx}' "
                    f"style='display:{'inline' if full != proposed else 'none'}'>"
@@ -830,7 +838,11 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                # their own traversal rather than only a colour to spot while scrolling.
                f"<span><button id=t1p>&uarr;</button>"
                f"<button id=t1n>&darr; tier-1 ({len(t1)})</button>"
-               "<button id=sv>Save</button></span></div>"
+               "<button id=sv>Save</button>"
+               # Stops the server from the page, so finishing a review does not
+               # leave a process bound to a page that is about to be restored.
+               "<button id=dn title='save if needed, then stop the server'>"
+               "Done</button></span></div>"
                "<div class=tags>alt-p shows/hides the keyboard panel (overrides "
                "kbd on/off) · ctrl-space toggles kbd · off = plain typing · "
                "alt-j / alt-k walk tier-1 lines</div></div>")
@@ -843,6 +855,7 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
              + ",MK=" + json.dumps(KBD_MARKS, ensure_ascii=False) + ";</script>")
     h.append("""<script>
 const st=document.getElementById('st'), sv=document.getElementById('sv');
+const dn=document.getElementById('dn');
 const kb=document.getElementById('kb');
 let kbdOn=false, last=null;
 function setKbd(v){kbdOn=v;kb.textContent='kbd '+(v?'ON':'off');
@@ -958,6 +971,29 @@ async function save(){
     }
   }catch(e){ st.textContent='SAVE FAILED: '+e.message; st.className='bad'; }
 }
+// Finish the session from the page. **Always saves**, and refuses to stop if that
+// save fails — the server is the only thing holding the decisions, so stopping on
+// a failed save would discard them silently.
+//
+// Unconditional, not gated on `dirty`, and that distinction is the whole point:
+// "I changed nothing" is an adjudication, not an absence of one. It means every
+// proposed line was read and accepted, and `save_decisions` stores every line's
+// full text for exactly that reason. Gating on `dirty` was the first version of
+// this button and it silently did nothing on a page reviewed without edits —
+// including one whose ALTO had just gained a recovered line, so `decision.json`
+// stayed a line short and `restore` would have refused it forever.
+async function done(){
+  await save();
+  if(st.className==='bad'){
+    st.textContent='NOT stopping — save failed, your work is still here';
+    return;
+  }
+  try{ await fetch('/done',{method:'POST'}); }catch(e){}
+  dirty=false;
+  document.body.innerHTML='<div style="font:15px var(--f);padding:2rem">'+
+    '<b>Review server stopped.</b><br>Decisions are saved. '+
+    'You can close this tab.</div>';
+}
 // SESSION-RESTORE GUARD. Firefox restores textarea values across a crash-and-reopen,
 // and it restores them BY POSITION, so reopening this page after a crash refilled
 // 1-073's fields with 1-151's text — then one keystroke made the debounce save all 47
@@ -978,6 +1014,7 @@ for(const t of document.querySelectorAll('textarea')){
     clearTimeout(timer);timer=setTimeout(save,1200)});
 }
 sv.addEventListener('click',save);
+dn.addEventListener('click',done);
 // Tier-1 traversal. Focuses the field rather than only scrolling: the point of
 // arriving at the line is to key it.
 const T1=[...document.querySelectorAll('.ln[data-t1]')];
@@ -1028,6 +1065,24 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             self.wfile.write(body)
 
         def do_POST(self):
+            if self.path == "/done":
+                # The page asks the server to stop, so nobody has to hunt the
+                # process afterwards. A server left bound to a page that has since
+                # been restored is how a later save lands on stale text — the
+                # rebuild skill warns about exactly that, and telling a human to
+                # remember it is a worse fix than a button.
+                #
+                # Shut down from another thread: `shutdown()` blocks until the
+                # serve loop exits, and the serve loop is what is running this
+                # handler, so calling it inline would deadlock.
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", "2")
+                self.end_headers()
+                self.wfile.write(b"{}")
+                import threading
+                threading.Thread(target=srv.shutdown, daemon=True).start()
+                return
             if self.path != "/save":
                 self.send_error(404)
                 return
@@ -1058,7 +1113,7 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
 
     srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     url = f"http://127.0.0.1:{port}/"
-    print(f"review {norm_ref(ref)} -> {url}   (ctrl-c to stop)")
+    print(f"review {norm_ref(ref)} -> {url}   (Done button on the page, or ctrl-c)")
     print(f"decisions -> {decisions_path(ref, root)}")
     import webbrowser
     webbrowser.open(url)
@@ -1066,6 +1121,11 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
         srv.serve_forever()
     except KeyboardInterrupt:
         print("\nstopped")
+    else:
+        # Reached when the page's Done button called `/done`. Printing it matters:
+        # the process exiting is the signal that the review is finished and the
+        # page is ready to `restore`, so whoever is driving does not have to ask.
+        print("done — server stopped from the page")
     finally:
         srv.server_close()
 
