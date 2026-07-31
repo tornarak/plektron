@@ -73,6 +73,43 @@ def _bbox(el) -> dict | None:
     return vals
 
 
+def zones(ref: str, root: Path = Path(".")) -> list[dict]:
+    """Every declared zone on one page: `{id, label, hpos, vpos, width, height}`.
+
+    **The one reader.** Three callers need exactly this — `context._figures_on_page`
+    (to hand the model figure geometry and its caption), `lines.line_gaps` (to mask
+    figures out of the dropped-line detector), and `lines`' caption-line marking.
+    Three independent walks of the same encoding is precisely the drift that
+    produced three near-identical lookalike tables; one reader with three callers
+    is the fix.
+
+    Zone type comes from `OtherTag/@LABEL` via `TAGREFS`, **never from the tag ID**:
+    eScriptorium assigns those per export (`BT55`/`BT56` in one, `BT68`/`BT69` in
+    the next), so code that hardcodes them fails silently rather than loudly.
+
+    Empty when the page has no figure ALTO — 580 of the 832 pages, so absence is
+    the ordinary case and never an error.
+
+    Flat scalars, not a nested `bbox`: a nested value de-tabularizes the whole TOON
+    table, which is exactly why the page context currently emits in the verbose
+    form (see `lines.py`'s module docstring).
+    """
+    p = alto_for(ref, root)
+    if not p.exists():
+        return []
+    tree = etree.parse(str(p))
+    labels = _labels(tree)
+    out = []
+    for blk in tree.iter("{*}TextBlock"):
+        bb = _bbox(blk)
+        if bb is None:
+            continue
+        out.append({"id": blk.get("ID"), "label": _block_label(blk, labels),
+                    "hpos": bb["HPOS"], "vpos": bb["VPOS"],
+                    "width": bb["WIDTH"], "height": bb["HEIGHT"]})
+    return out
+
+
 def fig_refs(root: Path = Path(".")) -> list[str]:
     """Every ref with a figure-track ALTO, in (part, scan index) order."""
     refs = []

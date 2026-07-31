@@ -6,10 +6,23 @@ and discards `@ID`**, so index *i* in `catmus_draft` is not the *i*-th `TextLine
 in the ALTO, and the `line` field on every `detector_flags` record inherits that
 offset. Nothing may join a detector flag to a crop except through `page_lines`.
 
-That reader is deliberately left alone: changing it would move `catmus_draft`,
-and with it the firewall's substring test and every detector line number.
+That reader used to be described here as "deliberately left alone: changing it
+would move `catmus_draft`, and with it the firewall's substring test and every
+detector line number." Half of that is spent — the verbatim-substring test was
+removed (see the comment at its old site in `validate.validate`). The live half
+still binds, and is now satisfied differently: `_lines_from_alto` delegates its
+*order* to `page_lines`, so `catmus_draft` and `detector_flags` cannot disagree
+with each other or with `ocr_lines`. It still drops empty lines, so its indices
+are still not the ALTO's.
 
-Two rules here, both about not losing the join:
+**Order is presentation; `index` is identity.** `page_lines` returns lines in
+reading order — banded rows, left to right — while `index` stays the position
+ALTO document order assigned. The two genuinely diverge: 18 of the 20 restored
+pages reorder, 524 positions in all. Since `proposal.json` and `decision.json`
+are keyed by `index` and `restore` joins on it, anything that renumbers would
+silently mis-map every adjudicated page.
+
+Three rules here, all about not losing the join:
 
   * Empty lines are **kept**. A segmenter emits them, and dropping them silently
     renumbers everything after. `text` is `""`, position is preserved.
@@ -19,6 +32,10 @@ Two rules here, both about not losing the join:
     carries a nested `bbox` and that is exactly why the page context emits in the
     verbose form. So geometry is flattened to `hpos`/`vpos`/`width`/`height`, and
     `baseline`/`points` stay the space-separated strings ALTO already uses.
+  * Every record carries **every** key, `None` where it does not apply. The same
+    encoder rule from the other side: a ragged key set is what silently degrades
+    the table to the nested form, so `in_figdesc`/`in_graphic`/`figdesc_straddle`
+    are present on every line, not only on the ones inside a figure.
 """
 from __future__ import annotations
 import unicodedata
@@ -139,8 +156,133 @@ def _line_text(tl) -> str:
     return unicodedata.normalize("NFD", text)
 
 
-def page_lines(alto_path: Path) -> list[dict]:
-    """One flat record per `TextLine`, document order, empties included.
+def reading_order(recs: list[dict]) -> list[dict]:
+    """Order line records the way a human reads them: banded rows, left to right.
+
+    **A plain `sort(key=(vpos, hpos))` is wrong**, and wrong worst on the layout
+    this exists for. Baselines wobble a few pixels across a row, so on `3-005`'s
+    two-column kinship table strict sorting puts the gloss *before* its headword
+    on four rows of six -- `Mother-in-law.` at vpos 2378 ahead of its own
+    `Ñaw-mataˊlɪn` at 2382. That is worse than the segmenter's own order.
+
+    So: group lines into rows whose `vpos` differs by no more than half the
+    page's *median line height*, then order each row by `hpos`. The tolerance is
+    derived from the page rather than tuned -- on these scans it lands near 30 px
+    against a row pitch of ~44 and an observed wobble of <=6, so there is wide
+    margin on both sides, and a page set in a different size carries its own
+    threshold with it.
+
+    Each line is compared against the **band's first** `vpos`, never the previous
+    line's, so a skewed scan cannot accumulate drift and swallow a genuine row.
+
+    Records with no geometry sort last, in index order: they cannot be placed, and
+    guessing a position for them would be worse than admitting it.
+    """
+    placed = [r for r in recs if r.get("vpos") is not None]
+    unplaced = [r for r in recs if r.get("vpos") is None]
+    heights = sorted(r["height"] for r in placed if r.get("height"))
+    tol = (heights[len(heights) // 2] / 2) if heights else 0
+
+    out: list[dict] = []
+    band: list[dict] = []
+    for r in sorted(placed, key=lambda r: r["vpos"]):
+        if band and r["vpos"] - band[0]["vpos"] > tol:
+            out += sorted(band, key=lambda r: (r["hpos"] if r["hpos"] is not None else 0))
+            band = []
+        band.append(r)
+    out += sorted(band, key=lambda r: (r["hpos"] if r["hpos"] is not None else 0))
+    out += sorted(unplaced, key=lambda r: r["index"])
+    for rank, r in enumerate(out):
+        r["y_rank"] = rank
+    return out
+
+
+# A line this much inside a `GraphicZone-FigDesc` is that caption, not body text.
+# Fraction of the *line's* area, so a caption line inside a large zone still scores
+# ~1.0 and a body line merely adjacent to one scores ~0.
+FIGDESC_INSIDE = 0.85
+# Below this, an overlap is zone-edge noise rather than contact: `2-030`'s line 29
+# clips its GraphicZone by 0.08 and is wholly a caption line, nothing straddling.
+FIGDESC_TOUCH = 0.05
+
+
+def _overlap_fraction(rec: dict, z: dict) -> float:
+    """Share of a line's box lying inside a zone. 2D, and that matters.
+
+    A Y-only test calls `1-151`'s entire left-hand text column "inside" the figure
+    that sits beside it in the right margin — 14 body lines misread as caption at
+    the first attempt. Both axes, always.
+    """
+    if rec.get("hpos") is None or rec.get("vpos") is None:
+        return 0.0
+    area = (rec.get("width") or 0) * (rec.get("height") or 0)
+    if not area:
+        return 0.0
+    ox = max(0, min(rec["hpos"] + rec["width"], z["hpos"] + z["width"])
+             - max(rec["hpos"], z["hpos"]))
+    oy = max(0, min(rec["vpos"] + rec["height"], z["vpos"] + z["height"])
+             - max(rec["vpos"], z["vpos"]))
+    return ox * oy / area
+
+
+def mark_figure_overlap(recs: list[dict], ref: str, root: Path = Path(".")) -> list[dict]:
+    """Tag each line with the figure zone it falls in, if any. Mutates and returns.
+
+    Three outcomes, and the distinction between the first two is the whole point:
+
+      * `in_figdesc` — the line is a **caption**, ≥`FIGDESC_INSIDE` inside a
+        `GraphicZone-FigDesc`. The project already holds a human reading of every
+        caption in `data/readings.md`, and `harness context` hands it to collation
+        from there, so a line segment over one is a redundant second witness —
+        machine-rank, on the 812 pages not yet keyed by hand.
+      * `in_graphic` — the line lies inside a plain `GraphicZone`. **Flagged, never
+        suppressed.** `3-006`'s `CONSANGUINITY.` sits wholly inside a caption-less
+        oversized zone and is a genuine section heading; a rule keyed on "inside a
+        figure" rather than on `FigDesc` would delete it.
+      * `figdesc_straddle` — a partial overlap with a caption zone, i.e. one
+        `TextLine` running from a wrapped caption into body text. A known segmenter
+        failure, reported for a human rather than silently split in the store.
+
+    Every record gets all three keys, `None` when they do not apply: a ragged key
+    set silently degrades the TOON table to its verbose nested form (see the module
+    docstring), so absent must still be present.
+    """
+    from .figures import zones as _zones
+    zs = _zones(ref, root)
+    figdesc = [z for z in zs if "FigDesc" in (z["label"] or "")]
+    graphic = [z for z in zs if "Graphic" in (z["label"] or "") and z not in figdesc]
+    for rec in recs:
+        rec["in_figdesc"] = None
+        rec["in_graphic"] = None
+        rec["figdesc_straddle"] = None
+        for z in figdesc:
+            f = _overlap_fraction(rec, z)
+            if f >= FIGDESC_INSIDE:
+                rec["in_figdesc"] = z["id"]
+                break
+            if f > FIGDESC_TOUCH:
+                rec["figdesc_straddle"] = z["id"]
+        if rec["in_figdesc"] is None:
+            for z in graphic:
+                if _overlap_fraction(rec, z) >= FIGDESC_INSIDE:
+                    rec["in_graphic"] = z["id"]
+                    break
+    return recs
+
+
+def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
+    """One flat record per `TextLine`, **reading order**, empties included.
+
+    `index` is assigned from ALTO **document order, before the reorder**, and is
+    the record's identity: `proposal.json` and `decision.json` are keyed by it and
+    `restore` joins on it. Measured over the 20 restored pages, 18 change order
+    under a reading-order sort (524 positions in all; `1-101` moves every one of
+    its 59), so renumbering would silently mis-map every adjudicated page. Output
+    is reordered; identities never move -- which means the labels appear out of
+    numeric sequence, and that is the tell that `index` means identity rather than
+    position.
+
+    `y_rank` is the reading position, supplied so no caller re-derives it.
 
     `line_id` is the ALTO `@ID`. eScriptorium and kraken both write one; where a
     file omits it the index stands in as `line-<n>`, so the join never silently
@@ -164,7 +306,20 @@ def page_lines(alto_path: Path) -> list[dict]:
             "points": (tl.find("{*}Shape/{*}Polygon").get("POINTS")
                        if tl.find("{*}Shape/{*}Polygon") is not None else None),
         })
-    return out
+    # Figure-zone marking needs the page's ref and the repo root. Both are derivable
+    # from the ALTO's own location (`<root>/<store>/chukchi-<ref>.xml`) so that every
+    # caller gets the marking without having to remember to ask — the failure mode
+    # §1 hit, where three consumers each had to opt in to reading order. Where the
+    # derivation does not hold (a `--out` path, a tmp_path fixture) no figure ALTO is
+    # found and every record carries the keys with `None`, which is exactly right:
+    # a page with no figure ALTO has no figure.
+    try:
+        ref = norm_ref(alto_path.stem)
+        mark_figure_overlap(out, ref, root if root is not None else alto_path.parent.parent)
+    except ValueError:
+        for rec in out:
+            rec["in_figdesc"] = rec["in_graphic"] = rec["figdesc_straddle"] = None
+    return reading_order(out)
 
 
 def _poly_bounds(points: str) -> tuple[int, int, int, int] | None:
@@ -255,6 +410,178 @@ def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."
         if box is None:
             continue
         yield rec, img.crop(box)
+
+
+# A band of ink shorter than this is a rule, a speck or a stray descender, not a
+# dropped line of type.
+#
+# Measured against *ink height*, which is not the same quantity as a `TextLine`
+# box height -- an earlier version of this comment derived the number from "the
+# shortest TextLine is 44 px" and was wrong twice over (the true minimum across
+# the restored pages is 38, and a box is not its ink). The honest derivation is
+# narrower than it looks: the smallest confirmed dropped line in the corpus,
+# `3-005`'s centred small-caps `AFFINITY.`, yields **23 px of ink**, and the
+# footnote rules this must not report yield 1-4. So 20 sits in the gap between
+# them, and a floor of 30 -- which would look conservative -- would have missed a
+# real finding. Treat it as measured, not as safe.
+MIN_BAND_H = 20
+# A row counts as inked when this share of the measured text column is dark. Low,
+# because a line of type is mostly white space between letters — the job here is
+# to separate "some type on this row" from "blank paper", not to measure density.
+ROW_INK_FRACTION = 0.005
+# Rows within this many px of an existing TextLine are treated as already covered.
+# Ascenders and descenders overshoot a line's own box routinely (CLAUDE.md: a line
+# polygon can exclude printed text), and without the slack every page reports its
+# own lines back as gaps.
+COVER_PAD = 6
+
+
+def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
+              scans: str = "scans") -> list[dict]:
+    """Bands of ink on the page that no `TextLine` covers — dropped lines.
+
+    The segmentation this corpus was built from **drops whole printed lines**, and
+    nothing detected it. `gt/fig/` had its lines stripped for exactly this reason
+    (CLAUDE.md), and `1-053` reached restored ground truth missing two lines of
+    body text — found only because the footnote-marker check reported a marker
+    with no reference, and traced by hand from there. A dropped line is invisible
+    to every text-level check by construction: the text that is there is correct,
+    so nothing disagrees with anything.
+
+    Measured, never inferred. Row-wise ink over the raster, masked by the existing
+    line boxes, contiguous runs above `MIN_BAND_H` reported with the column extent
+    of their own ink. The numbers a repair needs come from the page rather than
+    from interpolation between its neighbours.
+
+    Report-only, and it will have false positives by design: running heads,
+    folios, figure labels and plate captions are ink that legitimately has no
+    `TextLine` in an OCR store. A band is a place to look, not a verdict.
+    """
+    from PIL import Image
+    ref = norm_ref(ref)
+    alto = alto_for_lines(ref, alto_dir, root)
+    page = etree.parse(str(alto)).find(".//{*}Page")
+    img = Image.open(root / scans / f"chukchi-{ref}.png").convert("L")
+    w, h = img.size
+    sx, sy = _scale_for(page, img.size)
+
+    recs = page_lines(alto)
+    # Column window from the page's own lines, so the margins (and the scanner's
+    # dark gutter) never register as ink. Falls back to the full width if a page
+    # somehow has no geometry to measure.
+    lefts = [r["hpos"] * sx for r in recs if r.get("hpos") is not None]
+    rights = [(r["hpos"] + r["width"]) * sx for r in recs
+              if r.get("hpos") is not None and r.get("width") is not None]
+    x0, x1 = (int(min(lefts)), int(max(rights))) if lefts else (0, w)
+    x0, x1 = max(0, x0), min(w, x1)
+
+    covered = bytearray(h)
+    for r in recs:
+        if r.get("vpos") is None or r.get("height") is None:
+            continue
+        top = max(0, int(r["vpos"] * sy) - COVER_PAD)
+        bot = min(h, int((r["vpos"] + r["height"]) * sy) + COVER_PAD)
+        for y in range(top, bot):
+            covered[y] = 1
+
+    # Figures are ink with no TextLine by construction, so without this every
+    # illustrated page reports its own artwork as dropped text: `2-030` returned 2
+    # bands and `3-006` returned 12, all of them graphics. Masking the declared
+    # zones takes both to zero, verified per band on both axes. `gt/fig/` covers
+    # 252 of 832 pages; on the rest there is nothing to mask and nothing is lost,
+    # since a page with no figure ALTO has no figure.
+    from .figures import zones as _zones
+    for z in _zones(ref, root):
+        top = max(0, int(z["vpos"] * sy) - COVER_PAD)
+        bot = min(h, int((z["vpos"] + z["height"]) * sy) + COVER_PAD)
+        for y in range(top, bot):
+            covered[y] = 1
+
+    band = img.crop((x0, 0, x1, h)).point(lambda v: 255 if v < 128 else 0)
+    # One dark-pixel count per row, from the histogram of each row strip.
+    cols = x1 - x0
+    threshold = max(1, int(cols * ROW_INK_FRACTION))
+    inked = [0] * h
+    px = band.load()
+    for y in range(h):
+        if covered[y]:
+            continue
+        n = 0
+        for x in range(0, cols, 2):        # every other column: 2x faster, same verdict
+            if px[x, y]:
+                n += 1
+                if n * 2 >= threshold:
+                    break
+        inked[y] = 1 if n * 2 >= threshold else 0
+
+    out, y = [], 0
+    while y < h:
+        if not inked[y]:
+            y += 1
+            continue
+        start = y
+        while y < h and inked[y]:
+            y += 1
+        if y - start < MIN_BAND_H:
+            continue
+        # Column extent of this band's own ink, so the report carries geometry a
+        # repair can use rather than the measuring window's width.
+        strip = band.crop((0, start, cols, y))
+        bbox = strip.getbbox()
+        if bbox is None:
+            continue
+        out.append({"vpos": start, "height": y - start,
+                    "hpos": x0 + bbox[0], "width": bbox[2] - bbox[0]})
+    return out
+
+
+def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
+               root: Path = Path("."), scans: str = "scans") -> dict:
+    """The page with every line box and every figure zone painted out.
+
+    The inverse of `line_gaps`, and a check on it: that verb reports what it
+    thinks was missed, this one shows the whole page with everything *accounted
+    for* erased, so what remains is uncovered by construction and a human can see
+    it at a glance rather than trusting a threshold. `MIN_BAND_H` and
+    `ROW_INK_FRACTION` cannot hide anything here — nothing is measured, only
+    covered.
+
+    Intended corpus-wide once auto-segmentation and OCR land over all 832 pages,
+    which is when "did the segmenter miss anything substantial?" stops being
+    answerable by reading twenty pages.
+
+    Boxes are painted, not polygons: a polygon follows the ink and would leave a
+    fringe of stray pixels around every line that reads as residue. The point is
+    to make what is left *conspicuous*, so covering generously is right.
+    """
+    from PIL import Image, ImageDraw
+    from .figures import zones as _zones
+    ref = norm_ref(ref)
+    alto = alto_for_lines(ref, alto_dir, root)
+    page = etree.parse(str(alto)).find(".//{*}Page")
+    img = Image.open(root / scans / f"chukchi-{ref}.png").convert("RGB")
+    sx, sy = _scale_for(page, img.size)
+    d = ImageDraw.Draw(img)
+
+    n_lines = n_zones = 0
+    for rec in page_lines(alto, root):
+        if rec.get("hpos") is None or rec.get("vpos") is None:
+            continue
+        d.rectangle([rec["hpos"] * sx, rec["vpos"] * sy,
+                     (rec["hpos"] + rec["width"]) * sx,
+                     (rec["vpos"] + rec["height"]) * sy], fill=(255, 214, 214))
+        n_lines += 1
+    for z in _zones(ref, root):
+        d.rectangle([z["hpos"] * sx, z["vpos"] * sy,
+                     (z["hpos"] + z["width"]) * sx,
+                     (z["vpos"] + z["height"]) * sy], fill=(214, 229, 255))
+        n_zones += 1
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"chukchi-{ref}.png"
+    img.save(path)
+    return {"ref": ref, "path": str(path), "lines_blotted": n_lines,
+            "zones_blotted": n_zones}
 
 
 LINE_SHEET_H = 2000
@@ -394,16 +721,22 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
 def write_line_crops(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                      root: Path = Path("."), scans: str = "scans",
                      margins: bool = False) -> list[dict]:
-    """Crop every line to `out_dir/<index>-<line_id>.png`. Returns the records.
+    """Crop every line to `out_dir/<y_rank>-<index>-<line_id>.png`. Returns the records.
 
-    Filenames lead with the zero-padded index so a directory listing is reading
-    order — which is what makes `sxiv` over the directory a usable review view.
+    Filenames lead with the zero-padded **reading position**, so a directory
+    listing — and `sxiv` over it — really is reading order. They used to lead with
+    `index`, on the stated grounds that index order *was* reading order; that was
+    wrong on 18 of the 20 restored pages, because ALTO document order is not
+    reading order (a running head routinely lands mid-sequence, a folio last).
+    `index` stays in the name straight after it, because it is the identity every
+    other artefact is keyed by and a filename that cannot be joined back to a
+    decision is a filename that has to be re-derived.
     """
     ref = norm_ref(ref)
     out_dir.mkdir(parents=True, exist_ok=True)
     out = []
     for rec, crop in line_crops(ref, alto_dir, root, scans, margins):
-        path = out_dir / f"{rec['index']:03d}-{rec['line_id']}.png"
+        path = out_dir / f"{rec['y_rank']:03d}-{rec['index']:03d}-{rec['line_id']}.png"
         crop.save(path)
         out.append({**rec, "crop": str(path)})
     return out

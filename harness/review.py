@@ -556,11 +556,25 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     context, and a line the two witnesses agree on can still have both of them
     wrong — CATMuS agreeing about ASCII is weak evidence and it has no vote on a
     glyph whatsoever. So every line is present; agreement only sets emphasis.
+
+    **"Reading order" was a claim this function did not honour** until the ordering
+    work: it iterated `sorted(recs)`, i.e. the segmenter's index order, which is
+    not reading order on 18 of the 20 restored pages — a running head lands
+    mid-sequence, a folio last. It now walks `y_rank`. The consequence on screen is
+    that the line labels are *not* consecutive, and that is correct: the label is
+    the identity `decision.json` is keyed by, not a position in the queue.
     """
     from .lines import write_line_crops
     ref = norm_ref(ref)
     crops = crops or crops_dir(ref, root)
     recs = {r["index"]: r for r in write_line_crops(ref, crops, alto_dir, root)}
+    # Reading order, not index order. `recs` is keyed by `index` because that is the
+    # identity the client submits and `save_decisions` stores under; but iterating
+    # `sorted(recs)` would walk the *segmenter's* order, which is not reading order on
+    # 18 of the 20 restored pages — a running head lands mid-sequence, a folio last.
+    # The queue's whole premise is that consecutive lines carry each other's context,
+    # so it must walk the page as a reader does. Order here, identity everywhere else.
+    order = sorted(recs, key=lambda i: recs[i]["y_rank"])
     prop = load_proposal(ref, root)
     saved = load_decisions(ref, root)
     spans = page_spans(ref, alto_dir, root)
@@ -697,7 +711,7 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     # Every rendered line needs a rule, not only the differing ones. Deriving this
     # from the span instances left the agreeing lines as empty bordered boxes.
     css = []
-    for idx in sorted(recs):
+    for idx in order:
         rec = recs[idx]
         if idx not in prop:
             continue
@@ -712,7 +726,7 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     # Computed over the text on screen — saved edits included — not over the
     # proposal alone, so a glyph the reviewer has just typed flags its line at once.
     t1 = {idx: tier1_glyphs(_nfd((saved.get(idx) or prop[idx])["text"]))
-          for idx in sorted(recs) if idx in prop}
+          for idx in order if idx in prop}
     t1 = {k: v for k, v in t1.items() if v}
 
     h += [
@@ -734,7 +748,7 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     # reason: "38 lines edited" told a reader nothing about *which* 38 until the
     # session-restore incident forced the question. `editjump` is rewritten by
     # `save()` after every save, so this list never goes stale without a reload.
-    edited_now = [idx for idx in sorted(recs) if idx in prop
+    edited_now = [idx for idx in order if idx in prop
                  and idx in saved and _nfd(saved[idx]["text"]) != _nfd(prop[idx]["text"])]
     h.append("<div class='jump edit' id=editjump>" + _edit_jump_inner(edited_now)
              + "</div>")
@@ -746,7 +760,7 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         "nothing was detected, not that the line is English.</div>")
 
     differing = {s["index"] for s in spans}
-    for idx in sorted(recs):
+    for idx in order:
         rec = recs[idx]
         mine = prop.get(idx)
         if mine is None:

@@ -224,13 +224,53 @@ The rebuild ran as `/rebuild-groundtruth PP-NNN` and its skill remains normative
 for the pass — which is now a *revision* loop rather than a restoration one, since
 every page has text. `restore` reports which of the two it did.
 
-Two invariants from that work bind anything touching lines, not just that pass.
+Three invariants from that work bind anything touching lines, not just that pass.
 `context._lines_from_alto` **drops empty lines**, so its index is not the ALTO's —
 join through `harness lines`, never through `detector_flags`' line numbers. And **a
 line polygon can exclude printed text**: `1-074` prints `5.` and `9.` outside their
 boxes, `1-073` the same with its `5.` and its folio `51` outside *every* box on the
 page. The omission is horizontal, so no vertical padding reaches it; `--margins`
 widens to the PrintSpace, which is where the excluded material sits.
+
+Third, and newest: **line output is in reading order, but `index` is an identity,
+not a position.** `page_lines` returns banded rows left-to-right while `index`
+stays what ALTO document order assigned — and the two genuinely diverge, on 18 of
+the 20 restored pages, 524 positions in all (`1-101` reorders all 59). Since
+`proposal.json`, `decision.json` and `restore` all join on `index`, anything that
+renumbers to match the display would silently mis-map every adjudicated page. The
+visible consequence is that line labels are *not* consecutive in any listing, sheet
+or review queue; that is the tell, not a bug. Sorting is banded rather than a plain
+`(vpos, hpos)` because baselines wobble a few pixels across a row: a strict sort
+puts the gloss before its headword on four of `3-005`'s six two-column rows, i.e.
+it fails worst on the layout it exists for.
+
+## Dropped lines
+
+**The segmenter drops whole printed lines, and nothing text-level can see it.**
+Whatever text is present is correct, so no lookalike grep, lexicon miss, mark
+licence or CER figure disagrees with anything — the page simply has less on it than
+the paper does. `1-053` reached restored ground truth missing a two-line closing
+paragraph, found only because the footnote-marker check reported a marker whose
+body reference did not exist.
+
+`harness lines PP-NNN --gaps` is the detector: row-wise ink off the raster, masked
+by the existing line boxes *and* by `gt/fig/` zones, contiguous bands reported with
+measured geometry. Over the 20 restored pages it reports **three** pages and is
+silent on the other seventeen:
+
+- `1-053` — two body lines, a whole closing paragraph;
+- `1-048` — the centred `CHUKCHEE.` heading;
+- `3-005` — the centred `AFFINITY.` heading.
+
+**The two headings are a class, not accidents** — short, centred, small-caps
+section headings — so expect the same across the remaining 812 pages. Figure zones
+must be masked or every illustrated page reports its own artwork (`3-006` gave 12
+bands, `2-030` two; both go to zero). It is report-only and deliberately **not**
+folded into `normalize`: reading rasters costs 0.27 s/page against that gate's
+0.83 s for the whole corpus, so it belongs in the per-page loop and in deliberate
+sweeps. `--blot` is the visual counterpart — the page with every line box and zone
+painted out, so what remains is uncovered by construction and no threshold can
+hide it.
 
 **The page count was never the point.** Recognition fine-tuning is off the table, so
 no model waits to train on these, and gloss review runs off TEI provenance rather
@@ -266,14 +306,17 @@ if you ever need it.
                                       --native --marks --suffixes --digraphs
                                       invert it into corpus-frequency reports
                                       over restored ground truth
-    uv run harness lines PP-NNN       per-line id + geometry + text, ALTO order,
-                                      empties kept; --crops and --sheets write
-                                      PNGs and labelled contact sheets into the
-                                      page's own review/PP-NNN/ (both are flags,
+    uv run harness lines PP-NNN       per-line id + geometry + text, **reading
+                                      order**, empties kept; --crops and --sheets
+                                      write PNGs and labelled contact sheets into
+                                      the page's own review/PP-NNN/ (both are flags,
                                       not paths — `--out` is the one-off escape),
                                       --from DIR picks the store, --full adds
                                       baseline/polygon, --margins widens to the
-                                      PrintSpace
+                                      PrintSpace, --gaps reports ink no TextLine
+                                      covers (the dropped-line detector), --blot
+                                      writes the page with lines and figure zones
+                                      painted out into scans-blotted/
     uv run harness zoom PP-NNN        magnified lines: --only 7,20,22-26 selects,
                                       --zoom N scales (default 2), overlapping
                                       strips packed into as few sheets as fit.
@@ -287,7 +330,8 @@ if you ever need it.
                                       --commit required to write gt/ocr/
     uv run harness clean PP-NNN       rm review/PP-NNN/{crops,sheets,zoom} —
                                       the regenerable images, once restored
-    uv run harness normalize          NFD + §2.9 spacing + lookalike gate; exit 1
+    uv run harness normalize          NFD + §2.9 spacing + lookalike + footnote-
+                                      marker gate; exit 1
                                       on drift; --path FILE scopes to one file
                                       instead of the whole corpus (repeatable).
                                       Report only — bare form and --check are the

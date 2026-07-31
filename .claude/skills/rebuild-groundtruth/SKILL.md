@@ -28,6 +28,7 @@ by whether the loop got better.
 Refs are part + scan index (`1-073`), never a bare page number. Every step is
 stateless, so a fresh session resumes wherever the last one stopped.
 
+    uv run harness lines PP-NNN --gaps                   did the segmenter drop a line?
     uv run harness lines PP-NNN --sheets                 contact sheets, one call
     uv run harness zoom  PP-NNN --only 7,20,22-26        the closer look
     (author review/PP-NNN/proposal.json)                 your reading
@@ -48,9 +49,24 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
 `--out` is for a one-off outside the pass. When a page is done, the images go with
 `uv run harness clean PP-NNN`, leaving the two authored files.
 
+0. **`uv run harness lines PP-NNN --gaps` before anything else.** It reports ink on
+   the raster that no `TextLine` covers — i.e. lines the segmenter dropped. This is
+   the one defect class no later step can catch: whatever text is present is
+   correct, so nothing disagrees with anything, and the page is simply short. Three
+   of the 20 restored pages turned out to be missing a line, and all three were
+   found this way or by accident, never by review. Costs 0.27 s.
+
+   Expect a false positive on a page whose figure zones are not in `gt/fig/`, and
+   read a hit as "look here", not "a line is missing" — a band is measured, its
+   meaning is not. If one is real, it needs the repair path, not a proposal entry:
+   `restore` only writes into lines that already exist.
 1. **Read the whole page image first** (`scans/chukchi-PP-NNN.png`) for orientation:
    where the running title, folio, footnotes and any figure sit. ALTO order is not
-   reading order — a running title often lands mid-sequence.
+   reading order — a running title often lands mid-sequence, which is why `harness
+   lines` now emits in reading order while keeping the segmenter's index as the
+   label. **Line labels are therefore not consecutive**, and that is the tell that
+   the index is an identity: it is what `proposal.json` and `decision.json` are
+   keyed by, and what `restore` joins on.
 2. **`uv run harness lines PP-NNN`** for the line table, then `--sheets` for the
    crops. The table's `index` is the key for everything downstream. **Read every
    sheet in full before zooming into anything.** The sheets are cheap and the plain

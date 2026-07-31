@@ -48,10 +48,12 @@ from .detectors import (digraph_frequency, mark_base_frequency, suffix_frequency
 from .emit import emit, emit_lines
 from .lines import (DEFAULT_ALTO_DIR, LINE_SHEET_H, ZOOM, ZOOM_CLIENT_W,
                     ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines,
-                    page_lines, parse_selection, write_line_crops,
+                    line_gaps, page_lines, parse_selection, write_blot,
+                    write_line_crops,
                     write_line_sheets, write_line_zoom)
 from .normalize import scan, convert
-from .paths import clean, crops_dir, html_path, proposal_path, sheets_dir, zoom_dir
+from .paths import (clean, crops_dir, ensure_page_link, html_path, proposal_path,
+                    sheets_dir, zoom_dir)
 from .proposal_check import (check as check_proposal, fix as fix_proposal,
                              line_codepoints, replace_in_field,
                              set_field as set_proposal_field)
@@ -151,6 +153,19 @@ def main(argv=None):
     ln.add_argument("--from", dest="alto_dir", default=DEFAULT_ALTO_DIR,
                     help=f"ALTO directory to read (default {DEFAULT_ALTO_DIR}, the "
                          "read view over every OCR store)")
+    ln.add_argument("--blot", action="store_true",
+                    help="write the page to scans-blotted/ with every line box and "
+                         "figure zone painted out, so whatever remains is uncovered "
+                         "by construction. The visual counterpart to --gaps, and a "
+                         "check on it: nothing is thresholded here, only covered")
+    ln.add_argument("--gaps", action="store_true",
+                    help="bands of ink on the raster that no TextLine covers — the "
+                         "dropped-line detector. The segmentation this corpus was "
+                         "built from drops whole printed lines and nothing else "
+                         "notices, because the text that IS there is correct. "
+                         "Measured off the page, so the geometry a repair needs "
+                         "comes with the report. Expect running heads and folios "
+                         "among the hits: a band is a place to look, not a verdict")
     ln.add_argument("--crops", action="store_true",
                     help="also write one PNG per line, into review/PP-NNN/crops/")
     ln.add_argument("--sheets", action="store_true",
@@ -490,6 +505,20 @@ def main(argv=None):
             else:
                 out(suggest_lexicon(a.root))
             return 0
+        # The page's own raster, linked into its working directory the first time a
+        # verb materializes that directory. Convenience only — `harness clean` leaves
+        # it, and it is keyed to the ref rather than to `--out`, which exists
+        # precisely to write somewhere that is not the page's directory. Guarded on
+        # the verb actually writing there, so a bare `harness lines PP-NNN` (which
+        # only prints a table) does not conjure a directory as a side effect.
+        writes_review_dir = (
+            a.cmd == "zoom"
+            or (a.cmd == "lines" and (getattr(a, "crops", False) or getattr(a, "sheets", False)))
+            or (a.cmd == "review" and (getattr(a, "serve", False) or getattr(a, "html", False)))
+        )
+        if writes_review_dir and not getattr(a, "out", None):
+            ensure_page_link(a.ref, a.root)
+
         if a.cmd == "zoom":
             out(write_line_zoom(
                 a.ref, a.out or zoom_dir(a.ref, a.root),
@@ -500,6 +529,13 @@ def main(argv=None):
                 margins=a.margins, smooth=a.smooth))
             return 0
         if a.cmd == "lines":
+            if a.blot:
+                out(write_blot(a.ref, a.out or (a.root / "scans-blotted"),
+                               a.alto_dir, a.root))
+                return 0
+            if a.gaps:
+                out(line_gaps(a.ref, a.alto_dir, a.root))
+                return 0
             if a.sheets:
                 # The sheet map is its own table — a different key set from the line
                 # records, so it cannot be merged into one emit without collapsing

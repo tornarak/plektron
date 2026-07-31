@@ -82,15 +82,33 @@ ALTO_STRING = ".//{*}TextLine"
 
 
 def _lines_from_alto(path: Path) -> list[str]:
-    """ALTO -> plaintext lines. Namespace-agnostic (eScriptorium exports ALTO 4)."""
-    tree = etree.parse(str(path))
-    lines = []
-    for tl in tree.iter("{*}TextLine"):
-        parts = [s.get("CONTENT", "") for s in tl.iter("{*}String")]
-        txt = " ".join(p for p in parts if p)
-        if txt.strip():
-            lines.append(txt)
-    return lines
+    """ALTO -> plaintext lines, in **reading order**, empties dropped.
+
+    Order comes from `lines.page_lines` rather than a second walk of the tree.
+    This reader produces `catmus_draft`, and `_ocr_lines` beside it in the same
+    page context is built from `page_lines` directly: if one were in segmenter
+    order and the other in reading order, the two halves of a single contract
+    would disagree silently, which is worse than either order alone. Deriving
+    both from one banded source makes that impossible by construction instead of
+    by two implementations agreeing.
+
+    `lines.py`'s module docstring used to say this reader was "deliberately left
+    alone: changing it would move `catmus_draft`, and with it the firewall's
+    substring test and every detector line number." Half of that is spent -- the
+    verbatim-substring test is gone (see the comment at its old site in
+    `validate.validate`). The live half stands: `catmus_draft` and
+    `detector_flags`' line numbers must agree *with each other*, and they still
+    do, because `build_context` derives both from this one call.
+
+    Empty lines are still dropped, so index *i* here is **not** the *i*-th
+    `TextLine` -- unchanged, and still the reason nothing may join a detector
+    flag to a crop except through `page_lines`.
+
+    Imported locally: `lines` imports `norm_ref` from this module, so a
+    module-level import here would be circular.
+    """
+    from .lines import page_lines
+    return [rec["text"] for rec in page_lines(path) if rec["text"].strip()]
 
 
 def _draft_text(lines: list[str]) -> str:
@@ -125,39 +143,81 @@ def _figures_on_page(figs_path: Path, root: Path = Path(".")) -> list[dict]:
     """
     if not figs_path.exists():
         return []
-    from .figures import readings_for
+    ref = norm_ref(figs_path.stem)
+    from .figures import readings_for, zones
     try:
-        by_zone = readings_for(norm_ref(figs_path.stem), root)
+        by_zone = readings_for(ref, root)
     except (ValueError, OSError):
         by_zone = {}
-    tree = etree.parse(str(figs_path))
-    labels = {t.get("ID"): t.get("LABEL", "") for t in tree.iter("{*}OtherTag")}
     out = []
-    for blk in tree.iter():
-        tag = etree.QName(blk).localname if isinstance(blk.tag, str) else ""
-        if tag not in ("TextBlock", "ComposedBlock", "Illustration", "GraphicalElement"):
+    for z in zones(ref, root):
+        # Only figure zones. The store also holds an eScriptorium `dummyblock` with
+        # no geometry (`1-037`) and one degenerate 1x1 unlabelled box (`2-094`,
+        # residue from deleting the phantom captions CLAUDE.md's figure-track note
+        # describes); neither is a figure and neither may reach the model.
+        if "Graphic" not in z["label"]:
             continue
-        refs = (blk.get("TAGREFS") or "").split()
-        zone_types = [labels.get(r, "") for r in refs]
-        if any("Graphic" in z for z in zone_types) or tag == "Illustration":
-            bbox = None
-            if blk.get("HPOS") is not None:
-                bbox = {}
-                for k in ("HPOS", "VPOS", "WIDTH", "HEIGHT"):
-                    raw = blk.get(k)
-                    if raw is None:
-                        continue
-                    try:
-                        bbox[k] = round(float(raw))
-                    except ValueError:
-                        continue
-            zid = blk.get("ID") or ""
-            reading = by_zone.get(zid[-8:])
+        zid = z["id"] or ""
+        reading = by_zone.get(zid[-8:])
+        out.append({
+            "zone_id": z["id"],
+            "zone_type": z["label"],
+            "bbox": {"HPOS": z["hpos"], "VPOS": z["vpos"],
+                     "WIDTH": z["width"], "HEIGHT": z["height"]},
+            "text": reading["text"] if reading else "",
+        })
+    return out
+
+
+def _figure_line_warnings(recs: list[dict], figures: list[dict]) -> list[dict]:
+    """Lines the segmenter ran across a figure boundary, and lines inside artwork.
+
+    Two segmenter failures the collation pass has to be told about rather than
+    left to infer:
+
+      * `straddles_caption` — one `TextLine` spanning the end of a wrapped caption
+        and the start of body text. The caption's own reading is attached, so the
+        model can see which half is already accounted for.
+      * `inside_graphic` — a line wholly inside a plain `GraphicZone`. Usually the
+        zone is simply drawn too large: `3-006`'s `CONSANGUINITY.` is a real
+        section heading sitting inside caption-less artwork. Reported, never
+        suppressed — the alternative deletes headings.
+
+    **The split is geometric, and only geometric.** A page's ALTO carries one
+    `String` per `TextLine` with no word- or glyph-level boxes (and `restore`
+    requires exactly one), so the pixel boundary between caption and body cannot be
+    mapped to a character offset in the line's text. `caption_side` and `body_side`
+    are therefore the two *boxes*; the text is handed over whole and the division
+    is left to the reader, who can see the page. Splitting the string at a
+    proportional index would be a fabricated position — the shape of guess this
+    project exists to refuse.
+
+    Empty on all 20 restored pages: no real straddle occurs in the pilot set, so
+    this ships exercised only by fixture. Threshold and shape want revisiting the
+    first time a genuine one turns up.
+    """
+    by_zone = {f["zone_id"]: f for f in figures}
+    out = []
+    for r in recs:
+        zid = r.get("figdesc_straddle")
+        if zid:
+            z = by_zone.get(zid, {})
+            bb = z.get("bbox") or {}
+            cut = bb.get("VPOS")
             out.append({
-                "zone_id": blk.get("ID"),
-                "zone_type": next((z for z in zone_types if z), tag),
-                "bbox": bbox,
-                "text": reading["text"] if reading else "",
+                "kind": "straddles_caption", "index": r["index"],
+                "line_id": r["line_id"], "zone_id": zid,
+                "caption_side": f"{r['hpos']},{r['vpos']},{r['width']},"
+                                f"{max(0, (cut or r['vpos']) - r['vpos'])}",
+                "body_side": f"{r['hpos']},{cut},{r['width']},"
+                             f"{max(0, r['vpos'] + r['height'] - (cut or r['vpos']))}",
+                "caption": (z.get("text") or "")[:200],
+            })
+        elif r.get("in_graphic"):
+            out.append({
+                "kind": "inside_graphic", "index": r["index"],
+                "line_id": r["line_id"], "zone_id": r["in_graphic"],
+                "caption_side": "", "body_side": "", "caption": "",
             })
     return out
 
@@ -203,9 +263,26 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         raise FileNotFoundError(f"no {ocr} — {ref} has no OCR yet")
 
     state = entry_state(ref, root)
-    lines = _lines_from_alto(ocr)
+    # The draft is assembled here, not inside `_lines_from_alto`, because that
+    # reader is shared with `detectors.suggest_lexicon` and the corpus frequency
+    # tables. Excluding caption lines there would silently move published numbers:
+    # `2-030`'s caption alone carries 10 of the corpus's 109 U+0323 marks — 9.2% of
+    # them, from 2.0% of its characters — and keying_spec section 5.1 cites those
+    # tables for the "~90% of g's carry the dot" prior. Same reader, two consumers,
+    # and only one of them wants the exclusion.
+    from .lines import page_lines
+    recs = page_lines(ocr, root)
+    # A caption is text the project already has a *human* reading of
+    # (`data/readings.md`, all 395), and it reaches the model below as
+    # `figures_on_page[].text`. Leaving the line segment in the draft too would
+    # hand the model the same caption twice, from two witnesses of different rank,
+    # and invite it to reconcile them. Marked lines are excluded from the draft
+    # only — they stay in `gt/ocr/`, in the review queue, and in `ocr_lines`, the
+    # last because that is what a `@facs` pointer resolves against.
+    lines = [r["text"] for r in recs if r["text"].strip() and not r["in_figdesc"]]
     draft = _draft_text(lines)
     detected = detect_all(draft.split("\n"), root)
+    figures = _figures_on_page(root / FIGDIR / f"{stem}.xml", root)
 
     return {
         "page_ref": ref,
@@ -227,7 +304,11 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         "toc_window": toc_window(load_toc(root), state["expected_folio"],
                                  state["believed_open"]),
         "boundary_in": state["boundary_in"],
-        "figures_on_page": _figures_on_page(root / FIGDIR / f"{stem}.xml", root),
+        "figures_on_page": figures,
+        # Segmenter faults where a line meets a figure: a line running from a
+        # wrapped caption into body text, or a line sitting inside artwork. Both
+        # are reported rather than acted on — see `_figure_line_warnings`.
+        "figure_line_warnings": _figure_line_warnings(recs, figures),
         "ocr_lines": _ocr_lines(ocr),
         # Foreign spans already committed on the physically neighbouring pages,
         # recomputed from the TEI each call. For cross-checking a term keyed two
