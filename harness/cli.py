@@ -322,6 +322,15 @@ def main(argv=None):
     zo.add_argument("--port", type=int, default=8732,
                     help="port for --serve (default 8732; `review --serve` holds "
                          "8731, so both can run at once)")
+    zo.add_argument("--itinerary", metavar="LST", default=None,
+                    help="a work-list to walk instead of scan order: an .lst file "
+                         "in gt/seg's format, or a directory taken to mean every "
+                         "page file in it (so `--itinerary gt/seg` is that whole "
+                         "selection, which was chosen for heterogeneity). With "
+                         "--serve the arrow keys follow it and the ref may be "
+                         "omitted, in which case the session opens at the first "
+                         "page on the list not yet keyed. Without --serve it "
+                         "scopes the sweep to the same pages")
     zo.add_argument("--ink", action="store_true",
                     help="with the corpus sweep: also read every raster and report "
                          "ink no zone accounts for. Off by default because it costs "
@@ -664,13 +673,22 @@ def main(argv=None):
         if a.cmd == "zones":
             from . import zones as zmod
             from .zones_config import load_config
+            itin = zmod.load_itinerary(a.itinerary, a.root) if a.itinerary else None
             if a.serve:
-                if not a.ref:
+                start = a.ref
+                if not start and itin:
+                    # Resume: the first page on the list nobody has keyed. Falls
+                    # back to the head of the list once it is finished, so the
+                    # session still opens rather than refusing.
+                    start = next((r for r in itin
+                                  if not zmod.has_zones(r, a.root)), itin[0])
+                if not start:
                     print("zones --serve needs a ref to start at, e.g. "
-                          "`harness zones 1-048 --serve`", file=sys.stderr)
+                          "`harness zones 1-048 --serve` — or an --itinerary to "
+                          "take one from", file=sys.stderr)
                     return 2
                 from .zones_ui import serve as serve_zones
-                serve_zones(a.ref, a.root, a.port)
+                serve_zones(start, a.root, a.port, itin, a.itinerary or "")
                 return 0
             if a.blot:
                 rep = zmod.blot_all(a.root) if not a.ref else zmod.blot_one(a.ref, a.root)
@@ -685,7 +703,7 @@ def main(argv=None):
                 rep = zmod.validate_page(a.ref, a.root, cfg, ink=True)
                 out(rep)
                 return 1 if rep["errors"] else 0
-            summary_, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink)
+            summary_, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink, refs=itin)
             out(summary_)
             if rows:
                 out(rows)

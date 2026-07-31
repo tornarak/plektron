@@ -121,6 +121,55 @@ def raster_size(ref: str, root: Path = Path(".")) -> tuple[int, int]:
         return im.size
 
 
+def load_itinerary(path: str | Path, root: Path = Path(".")) -> list[str]:
+    """A work-list of refs, from an `.lst` file or a directory of page files.
+
+    The editor's prev/next walk `all_scans` by default, which is right for keying a
+    part straight through and wrong for everything else. A training set wants a
+    *chosen* sequence — `gt/seg/`'s 122 pages were selected for heterogeneity, and
+    stepping to them through 700 scans nobody means to key is not navigation.
+
+    Accepts either a list file in `gt/seg/`'s format (`chukchi-1-019.xml` per line,
+    bare refs and paths also read) or a directory, which is taken to mean every page
+    file in it. The second is there because "everything in `gt/seg/`" is the obvious
+    itinerary and spans two list files, and making that a shell incantation would be
+    the kind of friction this tool exists to remove.
+
+    **An unparseable line is an error, never a skip.** `lines.parse_selection` takes
+    the same position for the same reason: a silently dropped entry means a page
+    reported as covered was never visited, and the report cannot tell you so.
+    """
+    p = Path(path)
+    if not p.exists():
+        p = root / path
+    if not p.exists():
+        raise ValueError(f"no itinerary at {path}")
+
+    if p.is_dir():
+        names = sorted(q.name for q in p.glob("chukchi-*.xml"))
+    else:
+        names = [ln.strip() for ln in p.read_text(encoding="utf-8").splitlines()
+                 if ln.strip() and not ln.startswith("#")]
+
+    out: list[str] = []
+    for i, name in enumerate(names, start=1):
+        stem = Path(name).stem.replace("chukchi-", "")
+        try:
+            ref = norm_ref(stem)
+        except ValueError as e:
+            raise ValueError(f"{p}:{i}: {name!r} is not a page ref — {e}") from e
+        if ref not in out:
+            out.append(ref)
+    out.sort(key=parse_ref)
+
+    missing = [r for r in out if not scan_for(r, root).exists()]
+    if missing:
+        raise ValueError(
+            f"{p}: no raster for {', '.join(missing[:6])}"
+            + (f" and {len(missing) - 6} more" if len(missing) > 6 else ""))
+    return out
+
+
 def zone_refs(root: Path = Path(".")) -> list[str]:
     """Every ref with a zone file, in (part, scan index) order."""
     out = []
@@ -930,7 +979,8 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
 
 def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
-                    ink: bool = False) -> tuple[dict, list[dict]]:
+                    ink: bool = False,
+                    refs: list[str] | None = None) -> tuple[dict, list[dict]]:
     """Every keyed page, one flat record each, plus a summary.
 
     Two returns rather than one nested object because TOON collapses a uniform
@@ -941,6 +991,11 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
     List-valued fields are joined into strings here for the same reason. The counts
     are what a sweep is for; `harness zones PP-NNN` is where a page's own findings
     are read in full.
+
+    `refs` scopes it to a work-list. A page on the list that has not been keyed is
+    **reported as a row with no zones**, not omitted: "still to do" is the answer an
+    itinerary is being asked for, and a sweep that silently listed only finished
+    pages would report a half-done selection as complete.
     """
     cfg = cfg or zc.load_config(root)
     splits = load_splits(root)
@@ -950,7 +1005,7 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
         for name in _read_lst(_lst_path(root, s)):
             seen[name] = seen.get(name, 0) + 1
     dup = sorted(n for n, c in seen.items() if c > 1)
-    for ref in zone_refs(root):
+    for ref in (refs if refs is not None else zone_refs(root)):
         r = validate_page(ref, root, cfg, ink=ink)
         n_err += len(r["errors"])
         n_warn += len(r["warnings"])
@@ -961,10 +1016,14 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                       or "; ".join(sorted({w["rule"] for w in r["warnings"]}))
                       or "",
         })
+    # Counted off the reported rows rather than off the split files, so a scoped
+    # sweep reports its own scope. Over the whole store the two agree.
     summary = {"pages": len(rows),
-               "train": sum(1 for v in splits.values() if v == "train"),
-               "eval": sum(1 for v in splits.values() if v == "eval"),
-               "exempt": sum(1 for v in splits.values() if v == "exempt"),
+               "keyed": sum(1 for r in rows if r["split"]),
+               "todo": sum(1 for r in rows if not r["split"]),
+               "train": sum(1 for r in rows if r["split"] == "train"),
+               "eval": sum(1 for r in rows if r["split"] == "eval"),
+               "exempt": sum(1 for r in rows if r["split"] == "exempt"),
                "zones": sum(r["zones"] for r in rows),
                "errors": n_err, "warnings": n_warn,
                "ink_checked": ink,

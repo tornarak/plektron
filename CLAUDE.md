@@ -349,6 +349,15 @@ is also not judged by the layout warnings, which describe a text page and would 
 permanent known-false noise on a plate — but its mechanical errors still stand, or
 the mark would hide a mistake rather than describe a plate.
 
+**The training selection is `gt/seg/`'s 122 pages plus the first two chapters.** The
+old attempt's page set was chosen for heterogeneity and that choice is still good
+even though its labels are not, so `harness zones --serve --itinerary gt/seg` walks
+it — 16 of the 122 are already keyed as part of the run below, leaving 106. Together
+with the two chapters that is the sample the first training run is meant to have.
+An itinerary is a **work-list, not a filter**: a page not on it still opens and
+still saves, it simply has no neighbours, and a scoped sweep reports the unkeyed
+entries as rows so "how much is left" has an answer.
+
 **Where it stands: 75 pages, the first two chapters of part 1.** 45 text pages
 carrying 282 zones, 30 marked exempt (the covers, front matter and plates of
 `1-001`…`1-030`). `harness zones --ink` over the lot returns 4 errors and 3 warnings
@@ -550,9 +559,14 @@ if you ever need it.
                                       full. Exit 1 on an error, never on a
                                       warning. --serve opens the editor at that
                                       ref and keeps serving, the arrow keys
-                                      walking the corpus from there; --blot
-                                      writes the figure-blotted training rasters;
-                                      --assemble lays out bogoras-seg/ for ketos
+                                      walking the corpus from there.
+                                      --itinerary LST replaces scan order with a
+                                      work-list — an .lst in gt/seg's format, or
+                                      a directory meaning every page in it — and
+                                      with --serve resumes at its first unkeyed
+                                      page. --blot writes the figure-blotted
+                                      training rasters; --assemble lays out
+                                      bogoras-seg/ for ketos
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page

@@ -63,7 +63,8 @@ def _resolve_column(z: dict, windows: list[dict], tol: float) -> int | None:
     return best if best is not None and best_off <= tol else None
 
 
-def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0) -> dict:
+def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
+               itinerary: list[str] | None = None) -> dict:
     """Everything the editor needs for one page, resolved server-side.
 
     The columns come from `zones.measure_frame` — read off this page's own ink
@@ -73,7 +74,11 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0) -> dict:
     cannot read; it is UI state and reaches no file.
     """
     ref = norm_ref(ref)
-    scans = all_scans(root)
+    # The itinerary replaces scan order as the sequence the arrow keys walk. A page
+    # reached by URL that is not on the list still opens and still saves — it simply
+    # has no neighbours, which is the honest answer rather than silently splicing it
+    # into a work-list nobody put it on.
+    scans = itinerary or all_scans(root)
     try:
         i = scans.index(ref)
     except ValueError:
@@ -108,6 +113,11 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0) -> dict:
         "prev": scans[i - 1] if i > 0 else None,
         "next": scans[i + 1] if 0 <= i < len(scans) - 1 else None,
         "index": i + 1, "total": len(scans),
+        "on_list": i >= 0,
+        # How much of the work-list is behind you. The count is what a sweep is
+        # for, and it is not derivable from the position when the list is not
+        # being walked in order.
+        "done": sum(1 for r in scans if zn.has_zones(r, root)),
     }
 
 
@@ -865,9 +875,12 @@ requestAnimationFrame(centreColumn);
 """
 
 
-def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0) -> str:
+def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
+                itinerary: list[str] | None = None,
+                itinerary_name: str = "") -> str:
     """The whole editor, as one string. No static files, as in `review.py`."""
-    st = page_state(ref, root, cfg, nudge)
+    st = page_state(ref, root, cfg, nudge, itinerary)
+    st["itinerary"] = itinerary_name
     acts = {k: v for k, v in (cfg.get("actions") or {}).items()
             if not k.startswith("_")}
     pretty = {"cancel": "cancel / break chain", "undo": "undo last zone",
@@ -888,7 +901,13 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0) -> str:
 
     h.append("<div id='bar'>")
     h.append(f"<b>{st['ref']}</b>")
-    h.append(f"<span class='pill'>{st['index']}/{st['total']}</span>")
+    if itinerary_name:
+        h.append(f"<span class='pill' title='itinerary: {itinerary_name}'>"
+                 + (f"{st['index']}/{st['total']}" if st["on_list"]
+                    else f"off-list · {st['total']}")
+                 + f" · {st['done']} done</span>")
+    else:
+        h.append(f"<span class='pill'>{st['index']}/{st['total']}</span>")
     h.append("<span><i id='swatch'></i><span id='cur'></span></span>")
     h.append("<span class='pill' id='anchor'></span>")
     h.append("<span class='pill' id='col'></span>")
@@ -952,7 +971,8 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0) -> str:
 
 # ---------------------------------------------------------------- the server
 
-def serve(ref: str, root: Path = Path("."), port: int = PORT) -> None:
+def serve(ref: str, root: Path = Path("."), port: int = PORT,
+          itinerary: list[str] | None = None, itinerary_name: str = "") -> None:
     """Serve the editor on 127.0.0.1 and accept saves.
 
     Loopback only and 404 on anything unrouted, as `review.serve` is: this holds
@@ -992,7 +1012,8 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT) -> None:
                 except ValueError:
                     nudge = 0
                 try:
-                    body = render_html(r, root, cfg, nudge).encode("utf-8")
+                    body = render_html(r, root, cfg, nudge, itinerary,
+                                       itinerary_name).encode("utf-8")
                 except Exception as e:
                     self._send(500, "text/plain; charset=utf-8",
                                str(e).encode("utf-8"))
@@ -1041,6 +1062,9 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT) -> None:
     srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     url = f"http://127.0.0.1:{port}/?ref={start}"
     print(f"zones {start} -> {url}   (Done button on the page, or ctrl-c)")
+    if itinerary:
+        done = sum(1 for r in itinerary if zn.has_zones(r, root))
+        print(f"itinerary {itinerary_name}: {len(itinerary)} pages, {done} keyed")
     print(f"store -> {zn.zone_dir(root)}")
     webbrowser.open(url)
     try:
