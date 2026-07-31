@@ -250,6 +250,46 @@ characters to one and strips any space immediately before `;`/`:`/`,`,
 corpus-wide, and `--check` exits 1 on drift — the same enforcement tier as NFD, not
 the lookalike worklist, because there is no reading to adjudicate.
 
+### 2.10 Footnote markers — the superscript sort, never the ASCII digit (SETTLED)
+
+The book anchors footnotes with a raised digit, printed twice: once at the
+reference in the body, once opening the note at the foot. **Key the actual
+Unicode superscript** — `¹` U+00B9, `²` U+00B2, `³` U+00B3, `⁴`–`⁹`
+U+2074–U+2079 — never the plain ASCII digit.
+
+This is the nastiest shape of error the project has, and it is worth saying why
+rather than just stating the rule. A marker keyed `1` instead of `¹` is the
+*right number*. It reads as correct in every view, and no check in §3, no
+lexicon lookup and no mark licence can see it: the character is ASCII, it is not
+a lookalike for anything, and it sits in a legitimate position. Nothing flags it.
+
+**Counting is the only mechanical witness**, and two invariants hold with no
+reading required, because numbering restarts on every page (confirmed across all
+20 restored pages — each begins again at 1):
+
+1. the marker values present form a **continuous run 1..N**, no gaps;
+2. each value occurs **at least twice** (reference + opener).
+
+`detectors.footnote_report` implements both, `harness normalize` reports them
+corpus-wide, and `harness proposal-check` reports them per proposal. **Report-only
+in both**, at the `lookalikes` tier rather than the blocking one: a note whose
+reference and text straddle a page seam breaks the pairing with nothing miskeyed,
+so a hit is a page to look at. A proposal that fails either invariant carries a
+page-level `footnotes` explanation instead.
+
+A third check closes a hole the two invariants cannot see. They count
+superscripts, so a page that keys *every* marker as ASCII has none, hence no gaps
+and no singletons, and passes vacuously. So a line opening with a **bare digit
+then a space** is flagged too. Numbered lists do not collide — the book sets
+those as digit + **period** (`2. Čačanloˊrg̣ɪn`), which the rule deliberately
+does not match. Measured over the restored corpus: 9 lines match, 8 are this
+defect and 1 is a wrapped body line beginning with a numeral (`1-053`,
+`"2 houses)."`).
+
+**Found by the check, in restored ground truth**: `1-048` (6 markers, one of them
+absent altogether), `1-053`, `1-073` (3), `1-151`, `2-034`. Four of those five
+were invisible to the counting invariants alone.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
@@ -473,6 +513,20 @@ what recurs, not the instance.
    printed letter was plain "e"; ɛ appears nowhere in this file's inventory. If a
    candidate codepoint isn't already catalogued (proposed or settled), the reading
    is wrong far more often than the inventory is incomplete — see item 0.
+
+   **`1-048` adds the case where the shape argument is good and still wrong.** The
+   page prints `reindeér-breeding`, and at 4x the mark over the second `e` is a
+   solid tapered wedge at type weight and slant — categorically unlike the round
+   artifact dots littering that page, and so read as ink from the forme rather than
+   dirt. The editor's ruling: **a serendipitously shaped smudge.** The lesson is not
+   that the observation was careless, it is that *shape quality at magnification
+   cannot by itself separate a sort from a smudge*, so it is not evidence strong
+   enough to adopt an uncatalogued codepoint on. What worked was suspending
+   judgement: the proposal keyed it as printed but said in `note` that U+0301 is
+   catalogued nowhere here and would be the corpus's first combining acute, which
+   is what put the call in front of a human instead of into the corpus. Where a
+   mark makes no lexical sense **and** its codepoint is uncatalogued, the disposition
+   is to flag loudly, whatever the raster seems to show.
 10. **No small-caps "o" exists in this notation.** §2.3 licenses small-cap base
     codepoints only for ᴀ ᴇ ɪ ʟ. A lowercase "o" sitting immediately beside a
     small-cap ᴇ or ʟ can read as small-cap height at 4x zoom purely from kerning —

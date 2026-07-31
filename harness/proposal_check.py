@@ -35,7 +35,7 @@ from pathlib import Path
 
 from .codepoints import non_ascii
 from .detectors import (INVENTORY_CHARS, MEDIAL_CAPS, apostrophe_flags,
-                        suffix_mark_flags)
+                        footnote_report, suffix_mark_flags)
 
 HEX_RE = re.compile(r"U\+([0-9A-Fa-f]{4,6})")
 # The trigger set is `detectors.INVENTORY_CHARS` itself, not a re-derived Unicode
@@ -88,12 +88,37 @@ def set_field(path: Path, line: str, field: str, value: str) -> dict:
     instead of Edit sidesteps the mismatch by construction: whatever comes in,
     NFD goes out, same as `normalize.py`'s one conversion point.
     """
-    data = json.loads(path.read_text(encoding="utf-8"))
+    _src = path.read_text(encoding="utf-8")
+    data = json.loads(_src)
     rec = data.setdefault("lines", {}).setdefault(line, {})
     rec[field] = unicodedata.normalize("NFD", value)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-                    encoding="utf-8")
+    _write_json(path, data, _src)
     return {"path": str(path), "line": line, "field": field}
+
+
+def _write_json(path: Path, data: dict, original: str) -> None:
+    """Serialize back in the indentation the file already used.
+
+    These editors are aimed at `proposal.json`, which this module also authors
+    at `indent=2` — but `--path` lets them target `decision.json`, which
+    `review.save_decisions` writes at `indent=1`. Imposing this module's own
+    format on a file it does not own turned a 10-line correction across four
+    pages into a 716-line diff, which is the same failure `migrate_coords.py`
+    documents for attribute number formatting: gratuitous reformatting buries
+    the change that matters, and a diff nobody can read is a diff nobody checks.
+
+    Falls back to `indent=2` when the original has no indented line to measure
+    (a fresh or single-line file), so an authored proposal keeps its own shape.
+    """
+    indent = 2
+    for ln in original.splitlines()[1:]:
+        stripped = ln.lstrip(" ")
+        if stripped and stripped != ln:
+            indent = len(ln) - len(stripped)
+            break
+    trailing = "\n" if original.endswith("\n") else ""
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=indent) + trailing,
+                    encoding="utf-8")
 
 
 def _parse_which(which: str, count: int) -> list[int]:
@@ -135,7 +160,8 @@ def replace_in_field(path: Path, line: str, field: str, old: str, new: str,
     Raises ValueError if `old` doesn't occur, or `which` names an occurrence
     that doesn't exist — never silently replaces fewer than asked.
     """
-    data = json.loads(path.read_text(encoding="utf-8"))
+    _src = path.read_text(encoding="utf-8")
+    data = json.loads(_src)
     rec = data.get("lines", {}).get(line)
     if rec is None:
         raise KeyError(f"no line {line!r} in {path}")
@@ -164,8 +190,7 @@ def replace_in_field(path: Path, line: str, field: str, old: str, new: str,
         p = positions[idx]
         new_text = new_text[:p] + new_n + new_text[p + len(old_n):]
     rec[field] = unicodedata.normalize("NFD", new_text)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-                    encoding="utf-8")
+    _write_json(path, data, _src)
     return {"path": str(path), "line": line, "field": field, "old": old,
             "new": new, "which": which, "occurrences": len(positions),
             "replaced": len(selected)}
@@ -219,6 +244,7 @@ def check(path: Path) -> list[dict]:
     }
     data = json.loads(path.read_text(encoding="utf-8"))
     out = []
+    out += _footnote_issues(data)
     for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
@@ -249,6 +275,46 @@ def check(path: Path) -> list[dict]:
     return out
 
 
+def _footnote_issues(data: dict) -> list[dict]:
+    """`detectors.footnote_report` turned into proposal-check's issue records.
+
+    The contract the editor set: markers may pass **unexplained** so long as
+    they form a continuous run from 1 and each occurs at least twice; a page
+    that fails either wants a written reason instead. Both failure modes have
+    legitimate causes — a note whose reference and text straddle a page seam
+    breaks the pairing without anything being miskeyed — so this reports and
+    asks, and never refuses. That is a weaker tier than `restore`'s mark-licence
+    refusal on purpose: an unlicensed mark is a sequence the notation does not
+    contain, whereas an unpaired marker may simply be a page boundary.
+
+    The explanation goes in a page-level `footnotes` key (a sibling of
+    `contamination`, same shape of claim: something about the page as a whole
+    that the line records cannot carry). Its presence downgrades the issue to
+    an `explained` record rather than deleting it, so the reason still reaches
+    the adjudicator instead of vanishing into a silent pass.
+    """
+    texts = [rec.get("text", "") for _, rec in
+             sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0]))]
+    rep = footnote_report(texts)
+    problems = []
+    if rep["gaps"]:
+        problems.append(f"marker run has gaps: missing {rep['gaps']} from 1..{max(rep['counts'])}")
+    if rep["singletons"]:
+        problems.append(f"marker(s) {rep['singletons']} occur once; each is printed "
+                        "twice (body reference + note opener)")
+    for op in rep["ascii_openers"]:
+        problems.append(f"line {op['line']} opens with bare ASCII {op['digit']!r} — "
+                        f"footnote markers are keyed as the superscript digit, never "
+                        f"the plain one: {op['text']!r}")
+    if not problems:
+        return []
+    explained = (data.get("footnotes") or {}).get("note") if \
+        isinstance(data.get("footnotes"), dict) else data.get("footnotes")
+    rec = {"line": "-", "issue": "footnote markers", "detail": "; ".join(problems)}
+    rec["explained"] = str(explained) if explained else ""
+    return [rec]
+
+
 def fix(path: Path) -> dict:
     """Apply the one unambiguous class of correction: a single wrong mark.
 
@@ -269,7 +335,8 @@ def fix(path: Path) -> dict:
     slip; 'A' vs 'ᴀ' vs a genuine capital is not), so the swap itself is left
     to a human — `check()` still flags it via the same mismatch report.
     """
-    data = json.loads(path.read_text(encoding="utf-8"))
+    _src = path.read_text(encoding="utf-8")
+    data = json.loads(_src)
     changed = []
     for idx, rec in data.get("lines", {}).items():
         text = rec.get("text", "")
@@ -294,6 +361,5 @@ def fix(path: Path) -> dict:
         changed.append({"line": idx,
                         "replaced": f"U+{ord(wrong):04X}", "with": f"U+{ord(right):04X}"})
     if changed:
-        path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-                        encoding="utf-8")
+        _write_json(path, data, _src)
     return {"path": str(path), "changed": changed}

@@ -373,6 +373,65 @@ def suffix_mark_flags(text: str) -> list[dict]:
     return out
 
 
+# Footnote markers. The book sets them as raised digits, and keying_spec's
+# working rule (`rebuild-groundtruth`'s SKILL.md, from `2-244` line 1) is the
+# actual Unicode superscript, never the plain ASCII digit. A plain digit is the
+# nastiest shape of error this project has: it is the *right number*, so it
+# reads as correct, and no lookalike grep, lexicon check or mark licence
+# touches it. Only counting finds it.
+SUPERSCRIPT_DIGITS = {"¹": 1, "²": 2, "³": 3,
+                      "⁴": 4, "⁵": 5, "⁶": 6,
+                      "⁷": 7, "⁸": 8, "⁹": 9}
+# A line opening with a bare digit then a space: the shape of a footnote whose
+# marker was keyed ASCII. Measured over the 20 restored pages: 9 lines match,
+# 8 are exactly this defect and 1 is a wrapped body line that happens to begin
+# with a numeral (`1-053`, "2 houses)."). Numbered lists do NOT collide — the
+# book sets those as digit + PERIOD (27 in the same corpus, e.g. "2. Cacanlorgin"),
+# which this deliberately does not match. Report-only, like everything here.
+ASCII_FOOTNOTE_OPENER = re.compile(r"^([1-9])\s+(?=\S)")
+
+
+def footnote_report(texts: list[str]) -> dict:
+    """Page-level footnote-marker consistency. Counting, never judgement.
+
+    A page's footnote markers are printed twice — once at the reference in the
+    body, once opening the note at the foot — and numbering restarts on every
+    page (confirmed across all 20 restored pages: each begins again at 1). So
+    two mechanical invariants hold with no reading required:
+
+      * the marker values present form a continuous run 1..N, no gaps;
+      * each value occurs at least twice.
+
+    Both are *report-only* and both have legitimate exceptions at a page seam,
+    where a note's reference and its text can fall on different pages — hence
+    `harness proposal-check`'s contract of "passes unexplained if clean,
+    otherwise wants an explanation" rather than a refusal.
+
+    `ascii_openers` closes a hole the two invariants cannot see by themselves.
+    They are computed over superscripts, so a page that keys *every* marker as
+    a plain ASCII digit has zero superscripts, no gaps and no singletons, and
+    passes vacuously — which is precisely the state 4 of the 5 defective pages
+    in the corpus were in (`1-053`, `1-073`, `1-151`, and `1-048` before its
+    revision). Only `2-034`, which keyed the body marker and not the opener,
+    was visible to counting alone.
+
+    Returns counts and offenders; the caller decides what is an issue.
+    """
+    counts: dict[int, int] = {}
+    for text in texts:
+        for ch in text:
+            n = SUPERSCRIPT_DIGITS.get(ch)
+            if n is not None:
+                counts[n] = counts.get(n, 0) + 1
+    gaps = sorted(set(range(1, max(counts) + 1)) - set(counts)) if counts else []
+    singletons = sorted(n for n, c in counts.items() if c < 2)
+    openers = [{"line": i, "digit": int(m.group(1)), "text": t[:60]}
+               for i, t in enumerate(texts)
+               if (m := ASCII_FOOTNOTE_OPENER.match(t))]
+    return {"counts": {n: counts[n] for n in sorted(counts)},
+            "gaps": gaps, "singletons": singletons, "ascii_openers": openers}
+
+
 def detect_all(lines: list[str], root: Path = Path(".")) -> dict[str, list[dict]]:
     """Token-level flags and paragraph-level balance flags, kept apart.
 

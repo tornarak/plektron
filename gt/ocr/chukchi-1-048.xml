@@ -40,7 +40,7 @@
           </TextLine>
           <TextLine ID="eSc_line_cc9ec05e" TAGREFS="LT9" BASELINE="724 1022 1042 1016" HPOS="722.0" VPOS="988.0" WIDTH="320.0" HEIGHT="48.0">
             <Shape><Polygon POINTS="724 1022 724 1036 1042 1032 1042 1016 1036 988 722 990 724 1022"/></Shape>
-            <String CONTENT="also accurate.1" HPOS="722.0" VPOS="988.0" WIDTH="320.0" HEIGHT="48.0" WC="0.9998375262532916"/>
+            <String CONTENT="also accurate.¹" HPOS="722.0" VPOS="988.0" WIDTH="320.0" HEIGHT="48.0" WC="0.9998375262532916"/>
           </TextLine>
         </TextBlock>
         <TextBlock HPOS="724.0" VPOS="1038.0" WIDTH="1780.0" HEIGHT="562.0" ID="eSc_textblock_7bced8d8" TAGREFS="BT72">
@@ -100,7 +100,7 @@
           <Shape><Polygon POINTS="728 1794 728 1995 2500 1995 2500 1794"/></Shape>
           <TextLine ID="eSc_line_904657e4" TAGREFS="LT9" BASELINE="728 1832 2496 1826" HPOS="726.0" VPOS="1800.0" WIDTH="1770.0" HEIGHT="50.0">
             <Shape><Polygon POINTS="2480 1808 2460 1808 2438 1808 2416 1808 2394 1806 2372 1806 2350 1806 2330 1806 2308 1802 2286 1802 2264 1802 2242 1802 2220 1800 2200 1800 2178 1800 2156 1800 726 1800 728 1832 728 1850 2494 1846 2496 1826 2492 1808 2480 1808"/></Shape>
-            <String CONTENT="Veᵋñ, in Anadyr Bay, near the mouth of the Anadyr River.2 The Russians subsequently founded" HPOS="726.0" VPOS="1800.0" WIDTH="1770.0" HEIGHT="50.0"/>
+            <String CONTENT="Veᵋñ, in Anadyr Bay, near the mouth of the Anadyr River.² The Russians subsequently founded" HPOS="726.0" VPOS="1800.0" WIDTH="1770.0" HEIGHT="50.0"/>
           </TextLine>
           <TextLine ID="eSc_line_bc4a6d96" TAGREFS="LT9" BASELINE="804 1878 2494 1878" HPOS="804.0" VPOS="1850.0" WIDTH="1690.0" HEIGHT="48.0">
             <Shape><Polygon POINTS="804 1878 804 1898 2492 1898 2494 1878 2492 1850 804 1850 804 1878"/></Shape>
@@ -119,7 +119,7 @@
           <Shape><Polygon POINTS="722 2009 722 2301 2496 2301 2496 2009"/></Shape>
           <TextLine ID="eSc_line_76cce8fe" TAGREFS="LT9" BASELINE="724 2045 2496 2045" HPOS="724.0" VPOS="2015.0" WIDTH="1772.0" HEIGHT="52.0">
             <Shape><Polygon POINTS="724 2045 724 2067 2496 2067 2496 2045 2496 2017 724 2015 724 2045"/></Shape>
-            <String CONTENT="Mɪˊs˙qᴀn (“hill”), on the west point of the long, narrow island Mɪˊs˙qᴀn, 3 in Holy Cross Bay; and" HPOS="724.0" VPOS="2015.0" WIDTH="1772.0" HEIGHT="52.0"/>
+            <String CONTENT="Mɪˊs˙qᴀn (“hill”), on the west point of the long, narrow island Mɪˊs˙qᴀn, ³ in Holy Cross Bay; and" HPOS="724.0" VPOS="2015.0" WIDTH="1772.0" HEIGHT="52.0"/>
           </TextLine>
           <TextLine ID="eSc_line_c1ffde60" TAGREFS="LT9" BASELINE="806 2093 2494 2087" HPOS="804.0" VPOS="2061.0" WIDTH="1690.0" HEIGHT="50.0">
             <Shape><Polygon POINTS="806 2093 806 2111 2492 2107 2494 2087 2488 2061 804 2063 806 2093"/></Shape>
@@ -157,7 +157,7 @@
           <Shape><Polygon POINTS="722 2451 722 2591 2504 2591 2504 2451"/></Shape>
           <TextLine ID="eSc_line_6e0a253c" TAGREFS="LT9" BASELINE="824 2485 2496 2485" HPOS="824.0" VPOS="2459.0" WIDTH="1672.0" HEIGHT="46.0">
             <Shape><Polygon POINTS="824 2485 824 2505 2496 2505 2496 2485 2496 2459 824 2459 824 2485"/></Shape>
-            <String CONTENT="In his statistics, Krause gives for the large village Uñiˊsak (Indian Point) only 13 houses “from personal" HPOS="824.0" VPOS="2459.0" WIDTH="1672.0" HEIGHT="46.0"/>
+            <String CONTENT="¹ In his statistics, Krause gives for the large village Uñiˊsak (Indian Point) only 13 houses “from personal" HPOS="824.0" VPOS="2459.0" WIDTH="1672.0" HEIGHT="46.0"/>
           </TextLine>
           <TextLine ID="eSc_line_e99a6f3c" TAGREFS="LT9" BASELINE="726 2527 2494 2527" HPOS="726.0" VPOS="2501.0" WIDTH="1768.0" HEIGHT="44.0">
             <Shape><Polygon POINTS="726 2527 726 2545 2492 2545 2494 2527 2492 2501 726 2501 726 2527"/></Shape>
@@ -172,7 +172,7 @@
           <Shape><Polygon POINTS="720 2587 720 2759 2504 2759 2504 2587"/></Shape>
           <TextLine ID="eSc_line_4399f659" TAGREFS="LT9" BASELINE="834 2611 2494 2611" HPOS="834.0" VPOS="2585.0" WIDTH="1660.0" HEIGHT="46.0">
             <Shape><Polygon POINTS="834 2611 834 2627 2492 2631 2494 2611 2494 2585 834 2585 834 2611"/></Shape>
-            <String CONTENT="2 On the Middle Anadyr live about ten Chukchee families scattered in five or six places. Of these," HPOS="834.0" VPOS="2585.0" WIDTH="1660.0" HEIGHT="46.0" WC="0.9997265424047198"/>
+            <String CONTENT="² On the Middle Anadyr live about ten Chukchee families scattered in five or six places. Of these," HPOS="834.0" VPOS="2585.0" WIDTH="1660.0" HEIGHT="46.0" WC="0.9997265424047198"/>
           </TextLine>
           <TextLine ID="eSc_line_c472bf2d" TAGREFS="LT9" BASELINE="726 2655 2494 2651" HPOS="724.0" VPOS="2625.0" WIDTH="1770.0" HEIGHT="48.0">
             <Shape><Polygon POINTS="726 2655 726 2673 2492 2669 2494 2651 2488 2625 724 2627 726 2655"/></Shape>
@@ -191,7 +191,7 @@
           <Shape><Polygon POINTS="718 2759 724 3273 2508 3273 2508 2747"/></Shape>
           <TextLine ID="eSc_line_8c7035cb" TAGREFS="LT9" BASELINE="834 2781 2496 2781" HPOS="834.0" VPOS="2755.0" WIDTH="1662.0" HEIGHT="46.0">
             <Shape><Polygon POINTS="834 2781 834 2801 2496 2801 2496 2781 2496 2755 834 2755 834 2781"/></Shape>
-            <String CONTENT="3 Long, narrow islands or spits, consisting of sand cast up by the waves, are met with everywhere on" HPOS="834.0" VPOS="2755.0" WIDTH="1662.0" HEIGHT="46.0" WC="0.9995955634117126"/>
+            <String CONTENT="³ Long, narrow islands or spits, consisting of sand cast up by the waves, are met with everywhere on" HPOS="834.0" VPOS="2755.0" WIDTH="1662.0" HEIGHT="46.0" WC="0.9995955634117126"/>
           </TextLine>
           <TextLine ID="eSc_line_fb758073" TAGREFS="LT9" BASELINE="728 2825 2496 2825" HPOS="728.0" VPOS="2799.0" WIDTH="1768.0" HEIGHT="44.0">
             <Shape><Polygon POINTS="728 2825 728 2843 2494 2843 2496 2825 2494 2799 728 2799 728 2825"/></Shape>

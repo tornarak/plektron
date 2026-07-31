@@ -13,13 +13,20 @@ U+02D9 (11) folds to space + combining dot. A `normalize()` call here without an
 explicit form, or with the "more thorough" one, is a silent corpus-wide glyph
 substitution. Name the form every time.
 
-Four rules, all mechanical:
+Five rules, all mechanical:
 
   nfd          every scoped file is NFD-conformant.
   marks        every combining mark sits on a base its licence covers (§2.6).
   lookalikes   no scoped file carries a lookalike with no legitimate English use.
   spacing      no run of 2+ spaces survives between non-space characters, and no
                space sits immediately before `;`, `:`, or `,` (§2.9).
+  footnotes    a page's footnote markers form a continuous run from 1, each occurs
+               at least twice (body reference + note opener), and no line opens
+               with a bare ASCII digit where a superscript was meant.
+
+`footnotes` reports alongside `lookalikes` and for a related reason: both of its
+invariants break legitimately at a page seam, where a note's reference and its text
+land on different pages, so a hit is a page to look at rather than a proven defect.
 
 `spacing` blocks alongside `nfd` and `marks`, where `lookalikes` only reports — same
 split as below: a lookalike needs a human ruling on what the page prints, so it is
@@ -62,7 +69,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from .detectors import apostrophe_flags, unlicensed_marks
+from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
 
 # §2.9: sentence-ending double space and thin space before ;/:/, are typesetting
 # artifacts with no lexical content — mechanical, print-invariant, corpus-wide.
@@ -352,6 +359,61 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
     return hits
 
 
+def _footnote_hits(p: Path, root: Path) -> list[dict]:
+    """Page-level footnote-marker consistency, per file. Report-only.
+
+    Scoped to OCR ALTO and adjudicated proposals — the stores that hold a
+    page's running text in line order. `gt/fig/` is excluded because it carries
+    no `TextLine` at all (CLAUDE.md), `gt/seg/` because it is geometry, and the
+    `data/` apparatus because a marker there is a citation, not a note anchor.
+
+    Rides on `normalize` rather than a verb of its own because everything this
+    needs is already here — the corpus walk, the dedupe by real path, the
+    report-only tier, and an ALTO parse in document order — and because the
+    skill already mandates `normalize --check` before a commit, so a check
+    living here is one nobody has to remember to run separately.
+
+    Blocking tier: **none**. This sits with `lookalikes`, not with `nfd`/
+    `spacing`/`marks`. Both invariants have a legitimate exception at a page
+    seam, where a note's reference and its text fall on different pages and the
+    pairing breaks with nothing miskeyed — so a hit is a page to look at, not a
+    proven defect. See `detectors.footnote_report` for the rule itself.
+    """
+    rel = str(p.relative_to(root))
+    texts: list[str] = []
+    if p.suffix == ".json" and p.name in ("proposal.json", "decision.json"):
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return []
+        texts = [rec.get("text", "") for _, rec in
+                 sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0]))]
+    elif p.suffix == ".xml" and p.parent.name == "ocr":
+        from lxml import etree
+        try:
+            root_el = etree.parse(str(p)).getroot()
+        except (etree.XMLSyntaxError, OSError):
+            return []
+        texts = [" ".join(s.get("CONTENT") or "" for s in tl.findall("{*}String"))
+                 for tl in root_el.iter("{*}TextLine")]
+    else:
+        return []
+
+    rep = footnote_report(texts)
+    hits = []
+    if rep["gaps"]:
+        hits.append({"path": rel, "trap": "marker run has gaps",
+                     "line": "-", "token": f"missing {rep['gaps']} from 1..{max(rep['counts'])}"})
+    if rep["singletons"]:
+        hits.append({"path": rel, "trap": "marker printed twice, keyed once",
+                     "line": "-", "token": f"{rep['singletons']} occurs once "
+                                           "(body reference + note opener expected)"})
+    for op in rep["ascii_openers"]:
+        hits.append({"path": rel, "trap": "bare ASCII digit where a superscript was meant",
+                     "line": op["line"], "token": op["text"]})
+    return hits
+
+
 def _token_at(line: str, pos: int) -> str:
     """The whitespace-delimited token containing `pos`, capped for display."""
     left = line.rfind(" ", 0, pos) + 1
@@ -409,7 +471,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
     in scope (an arbitrary path is not silently accepted), so this narrows, it
     does not widen.
     """
-    files, offenders, worklist, unlicensed, spacing = 0, [], [], [], []
+    files, offenders, worklist, unlicensed, spacing, footnotes = 0, [], [], [], [], []
     universe = scoped_files(root, include_path_only=paths is not None)
     if paths is not None:
         universe = _filter_scoped(universe, paths)
@@ -439,9 +501,10 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
                 unlicensed.append({"path": rel, "line": lineno, **h})
         for h in _spacing_hits(text):
             spacing.append({"path": rel, **h})
+        footnotes += _footnote_hits(p, root)
     return {"files": files, "nfd_offenders": offenders,
             "unlicensed_marks": unlicensed, "lookalikes": worklist,
-            "spacing_offenders": spacing}
+            "spacing_offenders": spacing, "footnote_markers": footnotes}
 
 
 def convert(root: Path = Path("."), dry_run: bool = False,
