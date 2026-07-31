@@ -12,42 +12,121 @@
 # One term per line; `#` starts a comment. Seed the list from real counts with
 #     uv run harness lexicon --suggest
 
-# --- proper names
-Bogoras
-Nordquist
-Pavlutsky
+### --- Proper Nouns (Author / Source)
+Adler
+Almquist
 Argentoff
+Argentov
+Boas
+Bogdanovich
+Bogoras
+Dall
+Dyachkov
+Gilder
+Gondatti
+Hooper
+Hough
+Jackson
+Jochelson
+Kjellman
+Kotzebue
+Krasheninnikov
 Krause
+Kroeber
+Kyber
+Laufer
+Litke
+Mason
+Maydell
+Melikoff
+Middendorff
+Morse
+Murdoch
+Neimann
+Nelson
+Nordenskiöld
+Nordquist
+Olsufyev
+Ratzel
+Resin
+Sarychev
+Sauer
+Schrenck
+Shklovsky
+Sieroszewski
+Slunin
+Stein
+Steller
+Teit
+Wrangell
 
-# --- ethnonyms
+### --- Proper Nouns (Ethnicities)
+Aiwan
+Chaun
 Chukchee
 Chukchi
-Koryak
-Russianized
 Cossacks
 Kamchadal
-Yukaghir
+Kerek
+Koryak
+Lamut
+# Mentioned in passing
+Manitou
+Namollo
+Russianized
 Tungus
 Yakut
-Lamut
-Kerek
-Namollo
-Aiwan
+Yukaghir
 
-# --- toponyms
+### --- Proper Nouns (Toponyms)
+## Rivers
 Anadyr
 Anui
+## Islands
+# "Diomede Islands"
+Diomede
+## Bays
+# "Karagha Bay"
+Karagha
+## Settlements
+Chikayeva 
+# "Mariinsky Post"
+Mariinsky
 
-# --- humanities terms
+### --- Proper Nouns (Persons)
+Pavlutsky
+
+### --- Proper Nouns (Anthropology)
+# The "Wakan Tanka" of the Lakota, not the African one
+Wakanda
+
+### --- anthropology
 weregild
 
-# --- zoological and botanical genus/species epithets seen in the pilot pages
+### --- biology
+# "membrum virile"
+membrum
+
+### --- Taxonomic Names
+## Genus
 Phoca
+Erignathus
+Histriophoca
+## Species
 hispida
 ochotensis
 macrodens
-Histriophoca
 fasciata
-Erignathus
 barbatus
 Pallas
+
+### --- Idiosyncratic Terms
+augmentative
+corralful
+cosmogonical
+grayling
+lanceolate
+
+### --- Repeated Publisher Marks
+# "JESUP NORTH PACIFIC EXPED."
+Exped
