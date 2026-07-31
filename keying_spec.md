@@ -277,14 +277,32 @@ reference and text straddle a page seam breaks the pairing with nothing miskeyed
 so a hit is a page to look at. A proposal that fails either invariant carries a
 page-level `footnotes` explanation instead.
 
-A third check closes a hole the two invariants cannot see. They count
-superscripts, so a page that keys *every* marker as ASCII has none, hence no gaps
-and no singletons, and passes vacuously. So a line opening with a **bare digit
-then a space** is flagged too. Numbered lists do not collide — the book sets
-those as digit + **period** (`2. Čačanloˊrg̣ɪn`), which the rule deliberately
-does not match. Measured over the restored corpus: 9 lines match, 8 are this
-defect and 1 is a wrapped body line beginning with a numeral (`1-053`,
-`"2 houses)."`).
+A third check catches the **half-open pairing** — one marker keyed as a
+superscript, another on the same page as a plain digit. A line opening with a
+bare digit then a space is flagged, **but only once a superscript has already
+appeared earlier in reading order**. The superscript is what establishes the
+page's own convention; against it a bare digit is an inconsistency rather than a
+guess. `2-034` is the case: body reference `dances.¹`, opener `1 See Chapter XIV.`
+
+The condition is not a softening. Without it the rule fires on ordinary prose —
+`1-053` wraps "…Nordquist, / 2 houses)." onto its own line mid-gazetteer, on a
+page that prints no footnote 2 at all, and that hit would report forever. A
+permanent known-false hit is precisely the noise that buries real signal.
+
+Numbered lists do not collide either way: the book sets those as digit +
+**period** (`2. Čačanloˊrg̣ɪn`, 27 in the restored corpus), which the rule
+deliberately does not match.
+
+**Position on the page is not used, and must not be.** "Openers sit at the foot"
+is tempting and wrong — some pages are half footnotes, and the scan is not
+consistent enough to carry that kind of geometric judgement.
+
+**Known limit.** A page keying *every* marker as ASCII has no superscript to
+establish a convention, so it has no gaps, no singletons and no flagged opener,
+and passes clean. That was `1-073` and `1-151` before repair, and it is what a
+freshly recognized page looks like, since CATMuS emits plain digits. Catching
+that case needs a witness this check does not have; do not close it by dropping
+the prior-superscript condition.
 
 **Found by the check, in restored ground truth**: `1-048` (6 markers, one of them
 absent altogether), `1-053`, `1-073` (3), `1-151`, `2-034`. Four of those five

@@ -62,17 +62,31 @@ def test_more_than_two_occurrences_is_fine():
     assert rep["gaps"] == list(range(1, 6))  # 1..5 genuinely missing here
 
 
-def test_all_ascii_markers_pass_the_counting_rules_vacuously():
-    """The hole `ascii_openers` exists to close.
+def test_half_open_pairing_is_what_ascii_openers_catches():
+    """One marker keyed as a superscript, the next as a plain digit.
 
-    `1-053`, `1-073`, `1-151` and pre-revision `1-048` keyed BOTH instances as
-    plain digits. Zero superscripts means no gaps and no singletons, so the two
-    counting invariants report a clean page over text that is wrong throughout.
+    The superscript is what proves the page's own convention, so against it a bare
+    digit is an inconsistency rather than a guess. `2-034` exactly: body reference
+    `dances.¹`, opener `1 See Chapter XIV.`
     """
-    texts = ["also accurate.1", "1 Compare Melikoff, p. 136."]
-    rep = footnote_report(texts)
-    assert rep["gaps"] == [] and rep["singletons"] == []      # vacuous pass ...
-    assert [o["digit"] for o in rep["ascii_openers"]] == [1]  # ... caught here
+    rep = footnote_report(["ceremonial dances.¹ The woman", "1 See Chapter XIV."])
+    assert [o["digit"] for o in rep["ascii_openers"]] == [1]
+
+
+def test_an_all_ascii_page_is_a_known_limit_not_a_catch():
+    """Stated because it is not obvious, and because an earlier version of this
+    check claimed the opposite.
+
+    With no superscript anywhere there is nothing to prove a convention against:
+    no gaps, no singletons, and no opener flagged. That was `1-073` and `1-151`
+    before repair, and it is what a freshly recognized page looks like, since
+    CATMuS emits plain digits. Catching it needs a witness this function has not
+    got — do not "fix" it by dropping the prior-superscript condition, which would
+    fire on ordinary prose (see the next test).
+    """
+    rep = footnote_report(["also accurate.1", "1 Compare Melikoff, p. 136."])
+    assert rep["gaps"] == [] and rep["singletons"] == []
+    assert rep["ascii_openers"] == []
 
 
 def test_numbered_list_items_do_not_collide():
@@ -86,12 +100,24 @@ def test_numbered_list_items_do_not_collide():
     assert rep["ascii_openers"] == []
 
 
-def test_wrapped_body_line_beginning_with_a_numeral_is_the_known_false_positive():
-    """`1-053`'s "2 houses)." — a continuation of "...with 2 houses)." wrapped
-    onto its own line. 1 of 9 matches corpus-wide. Report-only precisely so a
-    shape like this costs an explanation, not a refusal."""
-    rep = footnote_report(["2 houses)."])
-    assert [o["digit"] for o in rep["ascii_openers"]] == [2]
+def test_wrapped_body_line_beginning_with_a_numeral_is_not_flagged():
+    """`1-053`'s "2 houses)." — the continuation of "...Nordquist, / 2 houses)."
+    wrapped onto its own line, mid-gazetteer, on a page that prints no footnote 2
+    at all. Ordinary prose, and the reason the prior-superscript condition exists:
+    without it this reported forever, and a permanent known-false hit is precisely
+    the noise that buries real signal."""
+    assert footnote_report(["2 houses)."])["ascii_openers"] == []
+
+
+def test_a_bare_digit_before_the_first_superscript_is_not_flagged():
+    """Order matters, not just presence. `1-053`'s false hit sits at vpos 1152 and
+    its real opener at 3155, so the bare digit comes first in reading order and
+    nothing has yet established the page's convention.
+
+    Position on the page is deliberately NOT the test — some pages are half
+    footnotes, and the scan does not support that kind of geometric judgement."""
+    rep = footnote_report(["2 houses).", "¹ Besides these, there are about 400"])
+    assert rep["ascii_openers"] == []
 
 
 def _proposal(tmp_path, lines, footnotes=None):
@@ -174,7 +200,8 @@ def test_footnote_markers_do_not_gate_the_exit_code(tmp_path):
     p.parent.mkdir(parents=True)
     p.write_text(
         '<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#"><Layout><Page>'
-        '<TextLine ID="l0"><String CONTENT="1 See Chapter XIV."/></TextLine>'
+        '<TextLine ID="l0"><String CONTENT="ceremonial dances.¹ The woman"/></TextLine>'
+        '<TextLine ID="l1"><String CONTENT="1 See Chapter XIV."/></TextLine>'
         "</Page></Layout></alto>", encoding="utf-8")
     rep = N.scan(tmp_path)
     assert rep["footnote_markers"], "the defect must be reported"

@@ -407,13 +407,30 @@ def footnote_report(texts: list[str]) -> dict:
     `harness proposal-check`'s contract of "passes unexplained if clean,
     otherwise wants an explanation" rather than a refusal.
 
-    `ascii_openers` closes a hole the two invariants cannot see by themselves.
-    They are computed over superscripts, so a page that keys *every* marker as
-    a plain ASCII digit has zero superscripts, no gaps and no singletons, and
-    passes vacuously — which is precisely the state 4 of the 5 defective pages
-    in the corpus were in (`1-053`, `1-073`, `1-151`, and `1-048` before its
-    revision). Only `2-034`, which keyed the body marker and not the opener,
-    was visible to counting alone.
+    `ascii_openers` catches the **half-open pairing**: a page that keyed one
+    marker as a superscript and another as a plain digit. That is why a bare-digit
+    line only counts once a superscript has already appeared earlier in reading
+    order — the superscript is what proves this page's own convention, and against
+    it a bare digit is an inconsistency rather than a guess. `2-034` is the case:
+    body reference `dances.¹`, opener `1 See Chapter XIV.`
+
+    **Without that condition the rule fires on ordinary prose.** `1-053` wraps
+    "…Nordquist, / 2 houses)." onto its own line, which is a body continuation
+    beginning with a numeral and no kind of footnote — and the page prints no
+    footnote 2 at all. A permanent known-false hit is exactly the noise that
+    buries real signal, so the condition is not a softening of the check.
+
+    Deliberately **not** keyed on position. "Openers sit at the foot of the page"
+    is false often enough to be useless here: some pages are half footnotes, and
+    the scan is not consistent enough to support that kind of geometric judgement.
+
+    Known limit, stated because it is not obvious: a page that keys *every* marker
+    as ASCII has no superscript to trip the condition, no gaps and no singletons,
+    and so passes clean. That was the state of `1-073` and `1-151` before repair —
+    and is what a freshly recognized page looks like, since CATMuS emits plain
+    digits. Catching that case needs a witness this function does not have.
+
+    `texts` must be in **reading order**; "earlier" is meaningless otherwise.
 
     Returns counts and offenders; the caller decides what is an issue.
     """
@@ -425,9 +442,14 @@ def footnote_report(texts: list[str]) -> dict:
                 counts[n] = counts.get(n, 0) + 1
     gaps = sorted(set(range(1, max(counts) + 1)) - set(counts)) if counts else []
     singletons = sorted(n for n, c in counts.items() if c < 2)
-    openers = [{"line": i, "digit": int(m.group(1)), "text": t[:60]}
-               for i, t in enumerate(texts)
-               if (m := ASCII_FOOTNOTE_OPENER.match(t))]
+
+    openers = []
+    seen_superscript = False
+    for i, t in enumerate(texts):
+        if (m := ASCII_FOOTNOTE_OPENER.match(t)) and seen_superscript:
+            openers.append({"line": i, "digit": int(m.group(1)), "text": t[:60]})
+        if any(ch in SUPERSCRIPT_DIGITS for ch in t):
+            seen_superscript = True
     return {"counts": {n: counts[n] for n in sorted(counts)},
             "gaps": gaps, "singletons": singletons, "ascii_openers": openers}
 
