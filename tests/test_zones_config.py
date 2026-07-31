@@ -37,8 +37,9 @@ def base_cfg() -> dict:
         "auto_select": {"fresh_page": "RunningTitleZone", "after": {}},
         "columns": {"parts": {"1": {"measure": 1778, "fallback_x0": 500}},
                     "anchor": {"band_top": 0.12, "band_bottom": 0.88,
-                               "ink_fraction": 0.04, "ink_pad_left": 17,
-                               "ink_pad_right": 11, "min_detected_width": 0.6},
+                               "ink_row_share": 0.02, "max_run_gap_px": 30,
+                               "min_run_px": 40, "min_run_share": 0.6,
+                               "ink_pad_left": 17, "ink_pad_right": 11},
                     "overrides": {}},
         "width_tolerance_px": 24, "min_zone_h_px": 30, "max_overlap_px": 8,
     }

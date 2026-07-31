@@ -199,6 +199,41 @@ def _content_rows(arr, width: int, cfg: dict) -> tuple[int, int] | None:
 CONTENT_MIN_RUN = 4
 
 
+def _column_runs(col, n_rows: int, a: dict) -> list[tuple[int, int]]:
+    """Contiguous runs of inked columns in the profile, small gaps bridged.
+
+    **Runs, not outermost columns, and that is the whole robustness of the anchor.**
+    Density cannot tell a text column from a mark in the margin: `1-033` carries a
+    long stroke in its left margin whose densest column holds 774 inked rows —
+    *more than any column of type on the same page* — and thresholding on density
+    duly took it for the edge of the measure and put the column 52 px too far left.
+
+    Width can tell them apart, decisively. Summed down the page nearly every column
+    inside the measure carries something, so the text block is one wide run;
+    a margin mark is a narrow run with white paper between it and the block. Over
+    all 20 ground-truth pages this yields exactly one run, 1741-1765 px wide. On
+    `1-033` it yields two: a 10 px smudge and the real 1746 px block.
+
+    `max_run_gap_px` bridges the white space that does occur inside a measure
+    without bridging the margin, which is far wider than any of it.
+    """
+    import numpy as np
+    inked = col > max(3, n_rows * a["ink_row_share"])
+    idx = np.flatnonzero(inked)
+    if not len(idx):
+        return []
+    gap = int(a["max_run_gap_px"])
+    runs, start, prev = [], int(idx[0]), int(idx[0])
+    for i in idx[1:]:
+        i = int(i)
+        if i - prev > gap:
+            runs.append((start, prev))
+            start = i
+        prev = i
+    runs.append((start, prev))
+    return runs
+
+
 def measure_frame(ref: str, root: Path = Path("."),
                   cfg: dict | None = None) -> dict:
     """Where this page's text column sits, and how far down the leaf it runs.
@@ -267,13 +302,18 @@ def measure_frame(ref: str, root: Path = Path("."),
 
     band = arr[int(h * a["band_top"]):int(h * a["band_bottom"]), :] < 128
     col = band.sum(axis=0)
-    if col.max() > 0:
-        on = np.flatnonzero(col > max(3, col.max() * a["ink_fraction"]))
-    else:
-        on = np.array([], dtype=int)
+    runs = _column_runs(col, band.shape[0], a)
+    # Specks out by absolute width, then take the SPAN of what survives — not the
+    # widest single run. A sparse page fragments: `1-022` yields nine runs whose
+    # widest is 863 px against a 1778 px measure, and demanding one run as wide as
+    # the measure sent it to the fallback with the column 245 px out. Its span,
+    # 766..2502, is the measure.
+    keep = [r for r in runs if r[1] - r[0] >= a["min_run_px"]]
+    wide = keep if keep and (keep[-1][1] - keep[0][0]) >= measure * a["min_run_share"] \
+        else []
 
-    if len(on) and (on[-1] - on[0]) >= measure * a["min_detected_width"]:
-        x0 = int(on[0]) - int(a["ink_pad_left"])
+    if wide:
+        x0 = int(wide[0][0]) - int(a["ink_pad_left"])
         # The width is the invariant, so it is taken from the config and the
         # measurement is used only to place it. Letting a page's own ink set the
         # width too would make every short last line and every wide running head a
@@ -281,7 +321,8 @@ def measure_frame(ref: str, root: Path = Path("."),
         x0 = max(0, min(x0, w - measure))
         return {"ref": ref, "columns": [{"x0": x0, "x1": x0 + measure}],
                 "measured": True, "source": "ink", "content": content,
-                "detected": {"x0": int(on[0]), "x1": int(on[-1])}}
+                "detected": {"x0": int(wide[0][0]), "x1": int(wide[-1][1])},
+                "runs_rejected": len(runs) - len(wide)}
 
     x0 = int(spec["fallback_x0"])
     return {"ref": ref, "columns": [{"x0": x0, "x1": x0 + measure}],

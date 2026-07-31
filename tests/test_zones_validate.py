@@ -106,6 +106,45 @@ def test_the_same_page_shifted_anchors_to_where_it_moved(tmp_path):
         == V0 + 200
 
 
+def test_a_margin_mark_does_not_move_the_anchor(tmp_path):
+    """`1-033`'s left margin carries a long stroke whose densest column holds 774
+    inked rows — more than any column of type on that page — and thresholding on
+    density took it for the edge of the measure and put the column 52 px out.
+    Width is what tells them apart: the mark is a narrow run, the text block a
+    wide one."""
+    from PIL import Image, ImageDraw
+    d = tmp_path / "scans"; d.mkdir(parents=True, exist_ok=True)
+    im = Image.new("L", (2824, 3897), 255)
+    dr = ImageDraw.Draw(im)
+    for y0, y1 in BODY:
+        dr.rectangle([INK0, y0, INK1, y1], fill=0)
+    # A dense mark, far denser than any text column, well left of the measure.
+    dr.rectangle([INK0 - 340, 700, INK0 - 330, 3200], fill=0)
+    im.save(d / "chukchi-1-048.png")
+    m = zn.measure_frame("1-048", tmp_path, cfg_for())
+    assert m["columns"] == [{"x0": V0, "x1": V1}]
+    assert m["runs_rejected"] == 1
+
+
+def test_a_sparse_page_anchors_on_its_span_not_one_run(tmp_path):
+    """`1-022` is a chapter opening: nine runs, widest 863 px against a 1778 px
+    measure. Demanding a single run as wide as the measure sent it to the
+    fallback with the column 245 px out — but its span *is* the measure."""
+    from PIL import Image, ImageDraw
+    d = tmp_path / "scans"; d.mkdir(parents=True, exist_ok=True)
+    im = Image.new("L", (2824, 3897), 255)
+    dr = ImageDraw.Draw(im)
+    # Three short, widely separated blocks spanning the measure — no one of them
+    # is wide enough on its own.
+    for x0, x1 in ((INK0, INK0 + 300), (INK0 + 700, INK0 + 1100), (INK1 - 200, INK1)):
+        for y0, y1 in BODY[:12]:
+            dr.rectangle([x0, y0, x1, y1], fill=0)
+    im.save(d / "chukchi-1-048.png")
+    m = zn.measure_frame("1-048", tmp_path, cfg_for())
+    assert m["measured"] is True and m["source"] == "ink"
+    assert m["columns"] == [{"x0": V0, "x1": V1}]
+
+
 def test_too_little_ink_falls_back_and_says_so(tmp_path):
     """1-330's widest ink run is 80 px against a 1778 px measure. Refusing and
     reporting beats drawing a guide somewhere plausible."""

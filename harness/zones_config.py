@@ -135,8 +135,8 @@ def load_config(root: Path = Path(".")) -> dict:
             if not isinstance(v, (int, float)) or v <= 0:
                 raise ConfigError(f"{p}: part {part} needs a positive {field}")
     anchor = (cfg.get("columns") or {}).get("anchor") or {}
-    for field in ("band_top", "band_bottom", "ink_fraction", "ink_pad_left",
-                  "ink_pad_right", "min_detected_width"):
+    for field in ("band_top", "band_bottom", "ink_row_share", "max_run_gap_px",
+                  "min_run_px", "min_run_share", "ink_pad_left", "ink_pad_right"):
         if not isinstance(anchor.get(field), (int, float)):
             raise ConfigError(f"{p}: columns.anchor.{field} must be a number")
     if not 0 <= anchor["band_top"] < anchor["band_bottom"] <= 1:

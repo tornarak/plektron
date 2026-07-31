@@ -277,11 +277,24 @@ The second attempt narrows the claim until it is checkable. Three things change:
   position wanders. A per-part constant column was therefore wrong by ~104 px on
   `1-048` (it predicted 618..2410 where the page sets 722..2498), and verso/recto
   could not rescue it because parity explains only part of the drift. **The column
-  is anchored per page off the raster's own ink profile** (`zones.measure_columns`),
-  calibrated against those 20 ground-truth pages, where it lands within 15 px every
-  time. That removes the verso/recto distinction entirely — there was nothing left
-  for it to do — and leaves a manual ±4 px nudge as the escape hatch for a page too
-  blank to measure, plus per-ref `overrides` for two-column settings.
+  is anchored per page off the raster's own ink profile** (`zones.measure_frame`).
+  That removes the verso/recto distinction entirely — there was nothing left for it
+  to do — and leaves a manual ±4 px nudge as the escape hatch for a page too blank
+  to measure, plus per-ref `overrides` for two-column settings.
+
+  **The anchor reads runs of inked columns, never the outermost inked column, and
+  both halves of that were learned the hard way.** Density cannot find the edge:
+  `1-033` carries a long stroke in its left margin whose densest column holds 774
+  inked rows, *more than any column of type on the same page*, and a density
+  threshold duly took it for the measure and put the column 52 px out. Width can —
+  the stroke is a 10 px run against the block's 1746. But the surviving runs must
+  then be **spanned, not picked from**: `1-022` is a chapter opening that fragments
+  into nine runs whose widest is 863 px against a 1778 px measure, and demanding one
+  run as wide as the measure sent it to the fallback 245 px out. So: drop runs under
+  `min_run_px` as specks, take the span of the rest, believe it if it reaches
+  `min_run_share` of the measure. Calibrated against **both** witnesses — 7 px
+  worst-case over the 20 line-precise `gt/ocr` pages, 11 px over the 45 keyed by
+  hand — because either alone would have missed one of the two failures.
 - **Training runs on figure-blotted rasters** (`harness zones --blot`,
   `scans-fig-blotted/`, painted **white** — `lines --blot`'s conspicuous pink and
   blue are for a human and would be a feature the model could key on). Whether a
@@ -347,11 +360,8 @@ is worth:
   Binarization noise, not type. Report-only earns its keep here; any of them as an
   error would have blocked a correctly keyed page. All three are now ruled in
   `_ink_exempt.json` and still report, flagged and carrying their reason.
-- `1-033`'s four `column-position` errors — **the anchor is wrong, not the zones**.
-  That page's margin smudge sits left of the text, so the ink profile measured the
-  column 52 px too far left and the editor's own reading is the right one. The
-  column anchor is currently vulnerable to any dense mark in the margin; a fix is
-  open (see Open).
+- `1-033`'s four `column-position` errors were **the anchor's fault, not the
+  zones'**, and fixing them rebuilt the anchor. See below; the sweep is now clean.
 
 A caution recorded because it was nearly acted on: reading `1-035`'s band off a
 downscaled crop, this assistant concluded the footnotes zone had clipped a second
@@ -932,15 +942,6 @@ TBD
 
 ## Open
 
-- **The column anchor is fooled by ink in the margin.** `zones.measure_frame` takes
-  the text column's left edge from the outermost inked column of the page, so any
-  dense mark outside the measure moves it: `1-033`'s margin smudge dragged the
-  anchor 52 px left and the validator then reported four `column-position` errors
-  against zones that are correct. The measurement needs to require ink over a
-  minimum *share of the band's rows* — a smudge is tall in pixels but short in rows,
-  where a column's edge is inked down the whole page — and `columns.anchor.ink_fraction`
-  is the knob. Any change is re-calibrated against the 20 `gt/ocr` pages, where the
-  current settings land within 15 px on every one.
 - **The corpus teiHeader does not exist**, and it is now load-bearing: it is where the
   three `respStmt` provenance ranks are declared, so every `@resp` in the corpus is a
   pointer with nothing yet to resolve against. Harmless while pages are validated
