@@ -54,6 +54,12 @@ review/*/review.html
 review/*/*.prev
 review/*/*.tmp
 review/*/*.jsonl
+# `page.png` is a symlink to the page's raster, put there so opening a page's own
+# directory shows the page. Same disposition as the three above — ignored, and NOT
+# in `DERIVED`, so `harness clean` leaves it once the images are gone. It cannot be
+# tracked: `scans/` is derived and ignored, so a committed link would dangle in
+# every clone, exactly as `scans-w-figs/` would.
+review/*/*.png
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and
@@ -71,3 +77,8 @@ review/*/*.jsonl
 # property whose absence caused the ground-truth loss.
 scans-w-figs/
 scans-w-ocr/
+# `harness lines PP-NNN --blot`: each page with every line box and figure zone
+# painted out, so whatever is left is uncovered by construction. Derived from
+# `scans/` and the ALTO stores, regenerable, and one PNG per page across 832 pages
+# — nothing here belongs in history.
+scans-blotted/

@@ -6,6 +6,7 @@ was generated:
     review/1-074/proposal.json     a reading. Authored. Never truth.
     review/1-074/decision.json     the adjudication. Authored.
     review/1-074/decision.jsonl    the append-only save journal.
+    review/1-074/page.png          symlink to the raster. Ignored, never cleaned.
     review/1-074/sheets/           labelled contact sheets. Derived.
     review/1-074/crops/            one PNG per line. Derived.
     review/1-074/zoom/             magnified strips. Derived.
@@ -20,6 +21,14 @@ and the flags are overrides rather than ceremony.
 What the split did buy was a trivially legible gitignore: two whole directories
 tracked, three ignored. That is now a per-name matter, and `DERIVED` below is the
 list the ignore rules and `clean()` both read off — keep the two in step.
+
+Three dispositions, not two, and `DERIVED` is only one of them: **tracked** (the
+authored files), **derived** (ignored, and removed by `clean`), and **ignored but
+kept** — `*.prev`/`*.tmp`/`*.jsonl`, which are recovery data for before a commit
+exists, and `page.png`, which is a convenience symlink into an already-ignored
+tree. `.gitignore` spells the third group with `review/*/*`-shaped patterns, which
+is exactly what keeps `tests/test_layout.py`'s `DERIVED == gitignored` invariant
+true over a set that is deliberately not all of what is ignored.
 
 The distinction the old layout carried in its directory names — proposal is not
 ground truth — is carried by the filenames instead, and it has to be carried
@@ -68,6 +77,44 @@ def zoom_dir(ref: str, root: Path = Path(".")) -> Path:
 
 def html_path(ref: str, root: Path = Path(".")) -> Path:
     return review_dir(ref, root) / "review.html"
+
+
+def page_link(ref: str, root: Path = Path(".")) -> Path:
+    return review_dir(ref, root) / "page.png"
+
+
+def ensure_page_link(ref: str, root: Path = Path(".")) -> Path | None:
+    """Symlink the page's raster into its own review directory, for a human.
+
+    Third category, alongside `*.prev` / `*.tmp` / `*.jsonl`: **ignored but not
+    derived.** Not in `DERIVED`, so `harness clean` leaves it when the images
+    go — it costs nothing to keep and the point of it is to be there whenever
+    someone opens the directory. Not tracked either, and that one is not a
+    preference: `scans/` is itself derived and gitignored, so a committed link
+    would dangle in every clone — the same reason `scans-w-figs/` is ignored
+    (CLAUDE.md, "Where things stand").
+
+    The link is **relative**, so it survives the repo being moved or cloned to
+    a different path, and it is only created when the target actually exists —
+    a dangling link inside a page's working directory would read as a missing
+    scan rather than as an absent convenience.
+
+    Returns the link path, or None if there was no raster to point at.
+    """
+    d = review_dir(ref, root)
+    target = root / "scans" / f"chukchi-{norm_ref(ref)}.png"
+    if not target.exists():
+        return None
+    link = page_link(ref, root)
+    if link.is_symlink() or link.exists():
+        return link
+    d.mkdir(parents=True, exist_ok=True)
+    # Relative to the link's own directory, not to `root` — `os.path.relpath`
+    # against the parent is what makes `review/1-048/page.png` resolve through
+    # `../../scans/`, which is the form that survives a clone.
+    import os
+    link.symlink_to(os.path.relpath(target.resolve(), link.parent.resolve()))
+    return link
 
 
 def clean(ref: str, root: Path = Path(".")) -> dict:
