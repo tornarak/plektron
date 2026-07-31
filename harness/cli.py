@@ -48,7 +48,8 @@ from .detectors import (digraph_frequency, mark_base_frequency, suffix_frequency
 from .emit import emit, emit_lines
 from .lines import (DEFAULT_ALTO_DIR, LINE_SHEET_H, ZOOM, ZOOM_CLIENT_W,
                     ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines,
-                    line_gaps, page_lines, parse_selection, write_blot,
+                    adopt_gaps, line_gaps, page_lines, parse_selection,
+                    write_blot,
                     write_line_crops,
                     write_line_sheets, write_line_zoom)
 from .normalize import scan, convert
@@ -153,6 +154,12 @@ def main(argv=None):
     ln.add_argument("--from", dest="alto_dir", default=DEFAULT_ALTO_DIR,
                     help=f"ALTO directory to read (default {DEFAULT_ALTO_DIR}, the "
                          "read view over every OCR store)")
+    ln.add_argument("--adopt-gap", metavar="VPOS[,VPOS...]", default=None,
+                    help="materialize the named --gaps bands as empty TextLines in "
+                         "gt/ocr/, so a dropped line can be keyed. Geometry only, "
+                         "never CONTENT: text still arrives via decision.json -> "
+                         "restore. Each VPOS must match a measured band; naming "
+                         "which bands are real lines is the human call")
     ln.add_argument("--blot", action="store_true",
                     help="write the page to scans-blotted/ with every line box and "
                          "figure zone painted out, so whatever remains is uncovered "
@@ -529,6 +536,10 @@ def main(argv=None):
                 margins=a.margins, smooth=a.smooth))
             return 0
         if a.cmd == "lines":
+            if a.adopt_gap:
+                out(adopt_gaps(a.ref, [int(v) for v in a.adopt_gap.split(",")],
+                               a.alto_dir, a.root))
+                return 0
             if a.blot:
                 out(write_blot(a.ref, a.out or (a.root / "scans-blotted"),
                                a.alto_dir, a.root))

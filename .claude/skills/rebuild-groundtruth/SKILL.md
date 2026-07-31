@@ -29,6 +29,7 @@ Refs are part + scan index (`1-073`), never a bare page number. Every step is
 stateless, so a fresh session resumes wherever the last one stopped.
 
     uv run harness lines PP-NNN --gaps                   did the segmenter drop a line?
+    uv run harness lines PP-NNN --adopt-gap VPOS         only if it did; see below
     uv run harness lines PP-NNN --sheets                 contact sheets, one call
     uv run harness zoom  PP-NNN --only 7,20,22-26        the closer look
     (author review/PP-NNN/proposal.json)                 your reading
@@ -58,8 +59,35 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
 
    Expect a false positive on a page whose figure zones are not in `gt/fig/`, and
    read a hit as "look here", not "a line is missing" — a band is measured, its
-   meaning is not. If one is real, it needs the repair path, not a proposal entry:
-   `restore` only writes into lines that already exist.
+   meaning is not. Running heads, folios and figure labels are all legitimately
+   uncovered ink.
+
+   **If a band is a real dropped line**, it cannot be fixed by keying alone:
+   `restore` only writes `CONTENT` into lines that already exist, so the line has
+   to be created first.
+
+       uv run harness lines PP-NNN --adopt-gap 3018,3076
+
+   appends an empty `TextLine` per named band, taking its geometry from the
+   measurement. Then key those indices in the proposal exactly like any other line
+   and run the loop out normally. Four things to know:
+
+   - it writes **geometry only** — the `String` is empty, and text still arrives
+     through `decision.json` → `restore`. Do not be tempted to put text here;
+   - **the `VPOS` must be a measured band.** A hand-entered number is refused, and
+     so is a band overlapping an existing line;
+   - the new lines get a **`gap_` id prefix** and take the **highest indices**, so
+     nothing is renumbered and the recovery stays visible in the ALTO. They still
+     *display* in reading position;
+   - **which bands are real lines is your call, and it is the only judgement in
+     the step.** Name them one at a time and say why in the proposal's
+     `segmenter_missed` block, which carries the measured geometry and the band it
+     came from, parallel to `lines`.
+
+   Between adopting and adjudicating, `restore` refuses the page ("N lines have no
+   decision"). That is correct — a partial restore is ground truth with invisible
+   holes — but it does mean a repair is one uninterrupted sequence, not two
+   sessions.
 1. **Read the whole page image first** (`scans/chukchi-PP-NNN.png`) for orientation:
    where the running title, folio, footnotes and any figure sit. ALTO order is not
    reading order — a running title often lands mid-sequence, which is why `harness
@@ -118,9 +146,29 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
        uv run harness review PP-NNN --serve        (run_in_background: true)
 
    Then tell them `http://127.0.0.1:8731/` and report what you flagged and why. Use
-   `--port` if 8731 is taken. Stop it when the pass is done; leaving a server bound to
-   a page you have already restored is how a later save lands on stale text.
-6. **`uv run harness restore PP-NNN`** once they have saved. `review/PP-NNN/decision.json`
+   `--port` if 8731 is taken.
+
+   **Do not manage the server's lifetime by hand.** The page has a **Done** button:
+   it always saves first — including when nothing was edited, because "I changed
+   nothing" is an adjudication and not the absence of one — refuses to stop if that
+   save fails (the server is the only thing holding the decisions at that moment),
+   stops the server, and replaces the page with a confirmation. So the background task **exiting is the
+   signal that the review is finished** — you get the completion notification, and
+   `restore` follows from it without asking "have you saved yet?".
+
+   Never `pkill` it. Reaching for that means the human has to be interrupted to
+   confirm a kill, and it was how this loop used to leave a server bound to a page
+   that had since been restored — which is how a later save lands on stale text.
+   Foreground is not an option either: a review can easily outlast the maximum
+   command timeout, so background plus the Done button is the whole mechanism.
+6. **`uv run harness restore PP-NNN`** once they have saved — and **run it; a save is
+   not the end of the pass.** `--adopt-gap` and the review server both leave the ALTO
+   holding geometry with no text, so a page can sit adjudicated-but-unwritten and look
+   finished from the outside: `harness normalize` will keep reporting it, correctly,
+   and the ground truth is simply not there yet. Saving is the human's step; writing
+   it is yours. The server exiting (step 5) is the cue.
+
+   `review/PP-NNN/decision.json`
    appearing (or changing) is the signal; the server prints one line per save, naming
    the actual edited/changed line numbers, not just a count. **When told a save
    happened, read that file** rather than re-deriving your own view of what went
@@ -317,6 +365,11 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
   line (retyping risks an NFD-vs-precomposed mismatch that silently passes a
   `repr()` eyeball check — verify with an in-string `.replace()`, not by comparing
   to a literal you typed).
+
+  `--adopt-gap` is the one *tool* besides `restore` that writes there, and it is
+  not an exception to this rule: it writes **geometry only, never `CONTENT`**, so
+  text still reaches ground truth by exactly one path. If you ever find yourself
+  wanting it to write text, that is the rule catching you, not a limitation.
 - Normalize a Tier-1 form toward a plausible shape, harmonize it against a
   neighbouring page, or propose a sort the inventory has never attested.
 - Take CATMuS as a witness to any glyph. It reads 0% of the inventory. It is evidence

@@ -244,6 +244,35 @@ or review queue; that is the tell, not a bug. Sorting is banded rather than a pl
 puts the gloss before its headword on four of `3-005`'s six two-column rows, i.e.
 it fails worst on the layout it exists for.
 
+## Footnote markers
+
+**The book anchors footnotes with a raised digit; the corpus keys the Unicode
+superscript, never the plain ASCII one** (`keying_spec.md` §2.10). A marker keyed
+`1` for `¹` is the *right number*, so it reads as correct everywhere and no
+lookalike grep, lexicon lookup or mark licence can see it. Five of the 20 restored
+pages carried the defect; 16 markers were corrected.
+
+Counting is the only mechanical witness, and numbering restarts every page, so two
+invariants hold with no reading required: the markers form a **continuous run from
+1**, and each occurs **at least twice** (body reference + note opener). A third
+check catches the **half-open pairing** — a line opening with a bare digit, *but
+only once a superscript has appeared earlier in reading order*. The superscript is
+what establishes the page's own convention; against it a bare digit is an
+inconsistency rather than a guess. Without that condition the rule fires on
+ordinary prose (`1-053` wraps "…Nordquist, / 2 houses)." mid-gazetteer on a page
+with no footnote 2 at all), and a permanent known-false hit is exactly the noise
+that buries real signal. Position on the page is deliberately **not** used: some
+pages are half footnotes and the scan will not carry that judgement.
+
+Report-only, in `normalize`'s `footnote_markers` bucket at the `lookalikes` tier —
+both counting invariants break legitimately at a page seam, where a note's
+reference and its text land on different pages with nothing miskeyed.
+
+**Known limit**: a page keying *every* marker as ASCII has no superscript to
+establish a convention, so it passes clean. That is what a freshly recognized page
+looks like, since CATMuS emits plain digits — so this is a consistency gate on
+human-keyed text, not a net for machine output.
+
 ## Dropped lines
 
 **The segmenter drops whole printed lines, and nothing text-level can see it.**
@@ -255,12 +284,15 @@ body reference did not exist.
 
 `harness lines PP-NNN --gaps` is the detector: row-wise ink off the raster, masked
 by the existing line boxes *and* by `gt/fig/` zones, contiguous bands reported with
-measured geometry. Over the 20 restored pages it reports **three** pages and is
-silent on the other seventeen:
+measured geometry. It found **three** of the 20 restored pages and was silent on
+the other seventeen. All three are now repaired and the corpus reports **zero**:
 
-- `1-053` — two body lines, a whole closing paragraph;
-- `1-048` — the centred `CHUKCHEE.` heading;
-- `3-005` — the centred `AFFINITY.` heading.
+- `1-053` — two body lines, a whole closing paragraph. Its `¹` body reference was
+  on one of them, which is why the footnote check saw an unpaired marker;
+- `1-048` — the centred `CHUKCHEE.` heading, on a page that had been revised and
+  restored the same day without anyone noticing;
+- `3-005` — the centred `AFFINITY.` heading, 23 px of ink and the smallest
+  confirmed dropped line in the corpus.
 
 **The two headings are a class, not accidents** — short, centred, small-caps
 section headings — so expect the same across the remaining 812 pages. Figure zones
@@ -271,6 +303,32 @@ folded into `normalize`: reading rasters costs 0.27 s/page against that gate's
 sweeps. `--blot` is the visual counterpart — the page with every line box and zone
 painted out, so what remains is uncovered by construction and no threshold can
 hide it.
+
+**Repair needs a second writer into `gt/ocr/`, and that is worth stating plainly.**
+`restore` only writes `CONTENT` into lines that already exist, so a dropped line
+has to be *created* before it can be keyed. `harness lines PP-NNN --adopt-gap VPOS`
+does that, and it is the one tool besides `restore` that writes into the ground
+truth store. What keeps it inside the rule rather than an exception to it:
+
+- **geometry only, never `CONTENT`** — every `String` it creates is empty, and text
+  still arrives solely through `decision.json` → `restore`;
+- the target is resolved to `gt/ocr/` **explicitly**, never through the `ocr/` view;
+- a `VPOS` that is not a measured band is refused, so geometry can never be
+  hand-entered; and a band overlapping an existing line is refused rather than
+  duplicated;
+- the new `TextBlock`/`TextLine` carry a **`gap_` id prefix**, so a recovered line
+  is identifiable from the ALTO alone — provenance travelling with the data, as
+  everywhere else here;
+- it appends at the end of `PrintSpace`, so the new line takes the highest index
+  and nothing is renumbered. Output is in reading order anyway, so it still
+  *displays* in its right place.
+
+Between `--adopt-gap` and adjudication the page holds geometry with no text, and
+`restore` refuses it ("N lines have no decision"). That is correct — a partial
+restore is ground truth with invisible holes — but it means a repair is one
+uninterrupted sequence, and that **a save is not the end of it**: the page can sit
+adjudicated-but-unwritten, looking finished from outside, with `normalize`
+correctly continuing to report it.
 
 **The page count was never the point.** Recognition fine-tuning is off the table, so
 no model waits to train on these, and gloss review runs off TEI provenance rather
@@ -314,9 +372,11 @@ if you ever need it.
                                       --from DIR picks the store, --full adds
                                       baseline/polygon, --margins widens to the
                                       PrintSpace, --gaps reports ink no TextLine
-                                      covers (the dropped-line detector), --blot
-                                      writes the page with lines and figure zones
-                                      painted out into scans-blotted/
+                                      covers (the dropped-line detector),
+                                      --adopt-gap VPOS materializes a measured band
+                                      as an empty TextLine so it can be keyed,
+                                      --blot writes the page with lines and figure
+                                      zones painted out into scans-blotted/
     uv run harness zoom PP-NNN        magnified lines: --only 7,20,22-26 selects,
                                       --zoom N scales (default 2), overlapping
                                       strips packed into as few sheets as fit.
