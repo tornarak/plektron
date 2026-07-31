@@ -37,21 +37,6 @@
                    TAGREFS="BT78">
           <Shape><Polygon POINTS="458 938 458 2543 2212 2543 2212 938"/></Shape>
         </TextBlock>
-        <TextBlock ID="eSc_dummyblock_">
-          <TextLine ID="eSc_line_d7feb86a"
-                    BASELINE="971 3058 1767 3066" 
-                    HPOS="971"
-                    VPOS="3058"
-                    WIDTH="796"
-                    HEIGHT="8">
-            <String CONTENT=""
-                    HPOS="971"
-                    VPOS="3058"
-                    WIDTH="796"
-                    HEIGHT="8"
-                    ></String>
-          </TextLine>
-        </TextBlock>
       </PrintSpace>
     </Page>
   </Layout>
