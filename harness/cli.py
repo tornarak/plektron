@@ -26,6 +26,13 @@ index (see context.py), so a bare integer would silently name the wrong page.
                                      marks and the top suffixes stripped
   uv run harness normalize        -> NFD + §2.9 spacing + lookalike gate,
                                      report only; --convert required to write
+  uv run harness figures          -> reconcile gt/fig/ zone geometry against
+                                     data/readings.md captions, both directions;
+                                     exit 1 if `missing` or `orphan` is non-empty
+
+The line verbs (`lines`, `zoom`, `review`, `restore`) read ALTO from `ocr/` unless
+`--from` says otherwise. That is the read view over every OCR store, not a store
+itself; writes always name `gt/ocr/`. See lines.DEFAULT_ALTO_DIR.
 
 Output is TOON (see emit.py). `--json` on any verb restores indented JSON for
 anything that needs to parse it as a contract.
@@ -35,11 +42,12 @@ import argparse, sys
 from pathlib import Path
 from .authorities import (load as load_authorities, parse_citation as authority_parse,
                           record as authority_record, search as authority_search, sigla)
-from .context import build_context, all_refs
+from .context import build_context, all_refs, norm_ref
 from .detectors import (digraph_frequency, mark_base_frequency, suffix_frequency,
                         suggest_lexicon, suggest_native_forms)
 from .emit import emit, emit_lines
-from .lines import (LINE_SHEET_H, ZOOM, ZOOM_CLIENT_W, ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines,
+from .lines import (DEFAULT_ALTO_DIR, LINE_SHEET_H, ZOOM, ZOOM_CLIENT_W,
+                    ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines,
                     page_lines, parse_selection, write_line_crops,
                     write_line_sheets, write_line_zoom)
 from .normalize import scan, convert
@@ -55,8 +63,13 @@ from .validate import validate
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="harness")
-    ap.add_argument("--root", type=Path, default=Path("."))
+    # The module docstring is a worked usage summary and was visible only to
+    # someone reading the source. Raw formatting because it is already laid out.
+    ap = argparse.ArgumentParser(
+        prog="harness", description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--root", type=Path, default=Path("."),
+                    help="repo root; every path resolves against it (default .)")
     ap.add_argument("--json", action="store_true",
                     help="indented JSON instead of TOON")
 
@@ -74,8 +87,28 @@ def main(argv=None):
     # Verbs that name a page all take the ref the same way and reject a bare
     # integer identically — `state` included, since a seam record belongs to
     # one page as much as a context does.
+    #
+    # These carried no `help=` for most of the project's life, purely because they
+    # were written before the habit set in. argparse omits a helpless subparser
+    # from the listing entirely, so the four most load-bearing verbs in the
+    # collation loop appeared only as bare names inside the brace list.
+    PAGE_VERB_HELP = {
+        "context": "the whole per-page input contract for the collation pass, on "
+                   "stdout — seam state, ToC neighbourhood, figure zones and their "
+                   "captions, OCR line ids, detector flags. Deterministic and "
+                   "precomputed: the pass consumes this and never re-derives it",
+        "validate": "the gate on one page's TEI. Exit 1 on FAIL. Checks the output "
+                    "contract, that every @facs resolves against a supplied zone or "
+                    "OCR line, and that every Tier-1 span carries a @resp rank — an "
+                    "unmarked span being indistinguishable from a ratified one to "
+                    "anything that does not look",
+        "state": "one page's seam record — the folio predicted for it, what that "
+                 "prediction rests on, and which headings are believed open. "
+                 "expected_folio is null wherever the chain of transcribed pages "
+                 "breaks, which means read it off the image, not that anything failed",
+    }
     for name in ("context", "validate", "state"):
-        p = add(name)
+        p = add(name, help=PAGE_VERB_HELP[name])
         p.add_argument("ref", metavar="PP-NNN",
                        help="page ref: part and scan index, e.g. 1-048")
         if name == "validate":
@@ -84,7 +117,9 @@ def main(argv=None):
                                 "Tier-1 spans instead of the collation pass's "
                                 "'#llm'; a remaining '#llm' becomes a worklist line")
 
-    add("pages")
+    add("pages", help="every ref with OCR present, i.e. workable now. Sparse by "
+                      "construction — a pilot selection scattered through the "
+                      "volume, not a prefix of it")
 
     lg = add("ledger", help="the seam table across every scan — "
                         "folio, heading fold, boundary")
@@ -113,8 +148,9 @@ def main(argv=None):
                         "join detector_flags' line numbers cannot supply")
     ln.add_argument("ref", metavar="PP-NNN",
                     help="page ref: part and scan index, e.g. 1-048")
-    ln.add_argument("--from", dest="alto_dir", default="end-of-eval",
-                    help="ALTO directory to read (default end-of-eval)")
+    ln.add_argument("--from", dest="alto_dir", default=DEFAULT_ALTO_DIR,
+                    help=f"ALTO directory to read (default {DEFAULT_ALTO_DIR}, the "
+                         "read view over every OCR store)")
     ln.add_argument("--crops", action="store_true",
                     help="also write one PNG per line, into review/PP-NNN/crops/")
     ln.add_argument("--sheets", action="store_true",
@@ -180,16 +216,19 @@ def main(argv=None):
                          "faint mark is present, since it invents greys")
     zm.add_argument("--out", type=Path, default=None,
                     help="output directory (default review/PP-NNN/zoom)")
-    zm.add_argument("--from", dest="alto_dir", default="end-of-eval",
-                    help="ALTO providing the line geometry (default end-of-eval)")
+    zm.add_argument("--from", dest="alto_dir", default=DEFAULT_ALTO_DIR,
+                    help=f"ALTO providing the line geometry (default {DEFAULT_ALTO_DIR})")
 
-    rv = add("review", help="span-level diff between a reading proposal and the "
-                        "recognizer output, grouped by substitution class — the "
-                        "queue for rebuilding ground truth")
+    rv = add("review", help="adjudicate a reading proposal in the browser "
+                        "(--serve); bare, a span-level diff of the proposal "
+                        "against a second witness, grouped by substitution class")
     rv.add_argument("ref", metavar="PP-NNN",
                     help="page ref: part and scan index, e.g. 1-074")
-    rv.add_argument("--from", dest="alto_dir", default="end-of-eval",
-                    help="recognizer ALTO directory (default end-of-eval)")
+    rv.add_argument("--from", dest="alto_dir", default=DEFAULT_ALTO_DIR,
+                    help=f"ALTO directory to read (default {DEFAULT_ALTO_DIR}). For "
+                         "the bare span diff this must name a genuine second "
+                         "witness: diffing a proposal against the ground truth it "
+                         "produced compares a file with itself")
     rv.add_argument("--html", action="store_true",
                     help="write the browser review page to review/PP-NNN/review.html "
                          "instead of emitting a table. No destination knob: the page "
@@ -204,24 +243,35 @@ def main(argv=None):
 
     rs = add("restore", help="preview (default) or write adjudicated review "
                         "decisions into gt/ocr/ as ground truth, keeping the "
-                        "recognizer geometry — --commit required to write")
+                        "source geometry — --commit required to write. Reports "
+                        "mode=restoration (filled from another store) or "
+                        "mode=revision (the finished page re-edited in place)")
     rs.add_argument("ref", metavar="PP-NNN",
                     help="page ref: part and scan index, e.g. 1-074")
-    rs.add_argument("--from", dest="alto_dir", default="end-of-eval",
-                    help="ALTO providing the line geometry (default end-of-eval)")
+    rs.add_argument("--from", dest="alto_dir", default=DEFAULT_ALTO_DIR,
+                    help=f"ALTO providing the line geometry (default {DEFAULT_ALTO_DIR})")
     rs.add_argument("--force", action="store_true",
-                    help="overwrite a target that already holds text — only 1-048 "
-                         "and 2-030 do, and they are the surviving hand-keyed pages")
+                    help="overwrite a target that already holds text. Every page in "
+                         "gt/ocr/ does now that the rebuild is complete, so this is "
+                         "how a revision says it meant it — required for one")
     rs.add_argument("--commit", action="store_true",
                     help="actually write gt/ocr/ — bare form only previews the "
                          "report (edits, geometry_drift, text_mismatch) and writes "
                          "nothing, same contract as normalize's --convert")
 
-    cl = add("clean", help="remove review/PP-NNN/{crops,sheets,zoom} — the "
-                        "regenerable working images — leaving proposal.json and "
+    cl = add("clean", help="remove a page's derived working files (crops, sheets, "
+                        "zoom, review.html) — leaving proposal.json and "
                         "decision.json in place; run once a page is restored")
     cl.add_argument("ref", metavar="PP-NNN",
                     help="page ref: part and scan index, e.g. 1-053")
+
+    add("figures", help="reconcile the figure track — gt/fig/ zone geometry "
+                        "against data/readings.md caption text, in both "
+                        "directions. `missing` (a zone whose caption was never "
+                        "read) and `orphan` (a reading whose zone is gone) must "
+                        "both be empty; a total that merely matches is not "
+                        "coverage, which is how two absent pages once went "
+                        "unnoticed by cancelling against two zone-only ones")
 
     nz = add("normalize", help="NFD conformance, §2.9 spacing, and lookalike "
                         "census across the corpus stores — bare form (or "
@@ -482,8 +532,25 @@ def main(argv=None):
                     render_queue_html(a.ref, a.alto_dir, a.root), encoding="utf-8")
                 print(f"{dest}: review page for {a.ref}")
                 return 0
+            # The bare span diff measures a proposal against a *second witness*. If
+            # the store it is pointed at resolves to the ground truth the proposal
+            # itself produced, the diff compares a file with its own source and
+            # reports a clean 40/40 — the shape of verification without the
+            # substance, which is exactly the fault that killed the old verbatim
+            # firewall (CLAUDE.md, "What the firewall is not"). So refuse rather
+            # than print a reassuring table: there is nothing here to measure.
+            src = alto_for_lines(a.ref, a.alto_dir, a.root)
+            gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(a.ref)}.xml"
+            if src.exists() and gt.exists() and src.resolve() == gt.resolve():
+                print(f"ERROR: {src} resolves to the ground truth for {a.ref} "
+                      f"({gt}), so a proposal diff against it would compare that "
+                      "reading with itself and report no differences. The span "
+                      "diff needs an independent witness — name one with --from, "
+                      f"or use `harness review {a.ref} --serve` to adjudicate.",
+                      file=sys.stderr)
+                return 1
             spans = page_spans(a.ref, a.alto_dir, a.root)
-            n = len(page_lines(alto_for_lines(a.ref, a.alto_dir, a.root)))
+            n = len(page_lines(src))
             # Two calls, two tables. Summary and queue have different key sets, so
             # emitting them as one list would collapse the whole thing to the
             # verbose nested form (see emit.py).
@@ -496,6 +563,14 @@ def main(argv=None):
         if a.cmd == "clean":
             out(clean(a.ref, a.root))
             return 0
+        if a.cmd == "figures":
+            from .figures import reconcile
+            rep = reconcile(a.root)
+            out(rep)
+            # Exit non-zero on a real reconciliation failure, so this can gate.
+            # The counts alone never decide it: 250 pages was once the expected
+            # total *and* wrong in two compensating directions at the same time.
+            return 1 if (rep["missing"] or rep["orphan"]) else 0
         if a.cmd == "normalize":
             # Bare form and --check are the same thing: report only. --convert is
             # the only way to write, scoped or not — no more bare-form write, which

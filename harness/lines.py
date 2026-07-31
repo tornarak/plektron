@@ -89,18 +89,39 @@ LINE_KEYS = ("index", "line_id", "block_id", "text",
              "hpos", "vpos", "width", "height", "baseline", "points")
 
 
-def alto_for_lines(ref: str, alto_dir: str = "end-of-eval",
+# The store a verb reads when none is named. `ocr/` is the *read view* over every
+# OCR store the project has: today a symlink farm into `gt/ocr/`, and the place a
+# raw-recognizer sibling (`htr/`, the `#htr` rank) links in beside it if one is ever
+# produced again. It is the default because a reader almost always wants "whatever
+# this page's OCR currently is", not a named generation of it.
+#
+# This replaced `end-of-eval/`, the stock-CATMuS output, which was deleted once the
+# ground-truth rebuild finished. Four verbs defaulted to it by name and died with an
+# OSError the moment it went; hence one constant rather than eight literals.
+DEFAULT_ALTO_DIR = "ocr"
+
+
+def alto_for_lines(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                    root: Path = Path(".")) -> Path:
     """Path to one page's ALTO in whichever store is being read.
 
-    Takes the directory as an argument rather than hardcoding it, because the
-    two callers want different stores for the same ref: the review pass reads the
-    recognizer output in `end-of-eval/`, the verifier reads the restored ground
-    truth in `gt/ocr/`. Note `figures.alto_for` is not this — it is hardwired to
-    `fig/` and answers a different question.
+    Takes the directory as an argument rather than hardcoding it, because callers
+    want different stores for the same ref: an inspection reads the current OCR
+    through `ocr/`, while a comparison against a specific generation names that
+    generation. Note `figures.alto_for` is not this — it is hardwired to `gt/fig/`
+    and answers a different question.
 
-    Never resolve to `ocr/`. Those are symlinks into `gt/ocr/`, so naming them
-    means a reader of this code has to know that to know what is being touched.
+    **Reads may resolve through `ocr/`; writes may not.** The earlier rule here
+    forbade `ocr/` outright, on the grounds that its entries are symlinks into
+    `gt/ocr/` and naming them hides what is being touched. That is right about
+    *writing* — `restore` still names `gt/ocr/` explicitly, and the loss this repo
+    suffered came from a write landing in a store nobody meant to touch. It is
+    wrong about reading: resolving a page to its current OCR is the whole purpose
+    of a union view, and a read cannot destroy anything.
+
+    The consequence a caller must know: under the default, this can resolve to the
+    same real file another part of the same verb writes. `restore` handles that
+    case by name — see its `mode` field.
     """
     return root / alto_dir / f"chukchi-{norm_ref(ref)}.xml"
 
@@ -207,18 +228,18 @@ def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int],
     return box if box[2] > box[0] and box[3] > box[1] else None
 
 
-def line_crops(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
+def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
                scans: str = "scans", margins: bool = False):
     """Yield `(record, PIL.Image)` per line on one page, cropped from the raster.
 
     `_scale_for` is used rather than assuming the two spaces agree. They do agree
-    for `end-of-eval/` today — every page's `Page/@WIDTH|@HEIGHT` matches its
+    across the current stores — every page's `Page/@WIDTH|@HEIGHT` matches its
     raster exactly — but the reason the primitive exists (no page is exactly ×2,
     see CLAUDE.md) applies the moment anything is re-rendered, and a silently
     mis-scaled crop looks like a recognition error rather than a geometry one.
 
-    No rotate-if-tall heuristic. `caption_crops` has one because captions are
-    sometimes set vertically beside a figure; a text line never is, so the test
+    No rotate-if-tall heuristic. Captions are sometimes set vertically beside a
+    figure and wanted one; a text line never is, so the test
     could only ever misfire here.
     """
     from PIL import Image
@@ -239,7 +260,7 @@ def line_crops(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
 LINE_SHEET_H = 2000
 
 
-def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
+def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                       root: Path = Path("."), scans: str = "scans",
                       per_sheet: int = 8, margins: bool = False,
                       sheet_h: int | None = LINE_SHEET_H) -> list[dict]:
@@ -308,7 +329,7 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
                     zoom: int = ZOOM, window: int | None = None,
                     overlap: int = ZOOM_OVERLAP, sheet_h: int = ZOOM_SHEET_H,
                     client_w: int = ZOOM_CLIENT_W,
-                    alto_dir: str = "end-of-eval", root: Path = Path("."),
+                    alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
                     scans: str = "scans", margins: bool = False,
                     smooth: bool = False) -> list[dict]:
     """Magnified lines, sliced into overlapping strips and packed into few sheets.
@@ -370,7 +391,7 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
              "strips": " ".join(e["items"])} for e in index]
 
 
-def write_line_crops(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
+def write_line_crops(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                      root: Path = Path("."), scans: str = "scans",
                      margins: bool = False) -> list[dict]:
     """Crop every line to `out_dir/<index>-<line_id>.png`. Returns the records.

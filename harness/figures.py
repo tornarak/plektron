@@ -1,7 +1,7 @@
-"""The figure-caption track: `fig/` for geometry, `data/readings.md` for text.
+"""The figure-caption track: `gt/fig/` for geometry, `data/readings.md` for text.
 
 **The two are separate stores and neither substitutes for the other.** The 252
-figure ALTOs in `fig/` carry `GraphicZone` blocks (the images) and
+figure ALTOs in `gt/fig/` carry `GraphicZone` blocks (the images) and
 `GraphicZone-FigDesc` blocks (where a caption sits) — 414 and 395 of them
 respectively — and **no `TextLine` at all**: every line was stripped, because the
 exported line segmentation dropped whole printed lines and a line-level witness
@@ -10,12 +10,12 @@ lives only in `data/readings.md`, one block per FigDesc zone, keyed
 `<ref>|<zone-id suffix>` and read by hand off the 300 dpi scans.
 
 Anything that wants caption text must go through `readings()`. Reading
-`String/@CONTENT` out of `fig/` returns the empty string for every zone on every
+`String/@CONTENT` out of `gt/fig/` returns the empty string for every zone on every
 page — not an error, just nothing, which is the worst possible failure here.
 
 There is no longer a keyed/unkeyed boundary. All 395 captions in
 `data/readings.md` are hand-read, so the old `KEYED_COUNT = 50` marker is gone;
-`fig/` and `data/readings.md` reconcile 1:1 in both directions, and that
+`gt/fig/` and `data/readings.md` reconcile 1:1 in both directions, and that
 reconciliation is the check worth running — `reconcile()` below.
 
 Zone types are read from `OtherTag/@LABEL`, never from the tag ID. The IDs are
@@ -32,7 +32,13 @@ from .context import norm_ref, parse_ref
 GRAPHIC = "GraphicZone"
 FIGDESC = "GraphicZone-FigDesc"
 
-FIGDIR = "fig"
+# Under `gt/` because the figure track is human-reviewed throughout: all 395 captions
+# were read by hand off the 300 dpi scans, and the zone geometry was corrected by hand
+# until `reconcile()` came back empty in both directions. It sits beside `gt/ocr/` and
+# `gt/seg/` for the same reason they do — `gt/` is what a human has been through, and a
+# store's rank should be readable from where it lives rather than from a doc that says
+# so. It was a bare top-level `fig/` while that was still an open question.
+FIGDIR = "gt/fig"
 READINGS = "data/readings.md"
 
 
@@ -103,7 +109,7 @@ _HDR = re.compile(r"^## (\S+?)\|(\S+)$", re.M)
 def readings(root: Path = Path(".")) -> dict[str, dict]:
     """`data/readings.md` parsed to `{"<ref>|<zone-suffix>": record}`.
 
-    **This is the only source of caption text.** `fig/` carries no `TextLine`.
+    **This is the only source of caption text.** `gt/fig/` carries no `TextLine`.
 
     `lines` preserves the printed line breaks and the printed hyphenation —
     hyphens are load-bearing in Americanist notation, so joining is a rendering
@@ -156,35 +162,8 @@ def readings_for(ref: str, root: Path = Path(".")) -> dict[str, dict]:
             if r["ref"] == ref}
 
 
-def caption_blocks(path: Path, root: Path = Path(".")) -> list[dict]:
-    """FigDesc zones on one page, in document order, with their reading.
-
-    Geometry comes from the ALTO, text from `data/readings.md`. A zone with no
-    reading is a reconciliation failure, not an empty caption, so it is reported
-    with `reading: None` rather than an empty string — see `reconcile()`.
-    """
-    tree = etree.parse(str(path))
-    labels = _labels(tree)
-    try:
-        ref = norm_ref(Path(path).stem)
-        by_zone = readings_for(ref, root)
-    except ValueError:
-        by_zone = {}
-    out = []
-    for blk in tree.iter("{*}TextBlock"):
-        if _block_label(blk, labels) != FIGDESC:
-            continue
-        zid = blk.get("ID") or ""
-        out.append({
-            "zone_id": zid,
-            "bbox": _bbox(blk),
-            "reading": by_zone.get(zid[-8:]),
-        })
-    return out
-
-
 def reconcile(root: Path = Path(".")) -> dict:
-    """Cross-check `fig/` against `data/readings.md` in both directions.
+    """Cross-check `gt/fig/` against `data/readings.md` in both directions.
 
     Empty `missing` and `orphan` lists is the invariant. `missing` means a zone
     whose caption was never read; `orphan` means a reading whose zone is gone —
@@ -222,23 +201,16 @@ def reconcile(root: Path = Path(".")) -> dict:
     }
 
 
-def graphic_zones(path: Path) -> list[dict]:
-    """GraphicZone blocks — geometry only; these never carry text."""
-    tree = etree.parse(str(path))
-    labels = _labels(tree)
-    return [{"zone_id": blk.get("ID"), "bbox": _bbox(blk)}
-            for blk in tree.iter("{*}TextBlock")
-            if _block_label(blk, labels) == GRAPHIC]
-
-
-def snapshot(root: Path = Path(".")) -> dict:
-    """Every FigDesc zone with its reading, keyed by ref. Geometry + text."""
-    out = {}
-    for ref in fig_refs(root):
-        blocks = caption_blocks(alto_for(ref, root), root)
-        if blocks:
-            out[ref] = blocks
-    return out
+# `graphic_zones`, `snapshot` and `caption_crops` lived here and were removed: no
+# caller anywhere in the package, the tools, or the skills, and `caption_crops` was
+# referenced only inside a comment in `lines.py`. They were written against a figure
+# build that does not exist yet; when it does, it will want its own crop geometry
+# rather than these, and git has them either way. `caption_blocks` went with them —
+# `snapshot` and `caption_crops` were its only callers.
+#
+# `fig_refs` and `alto_for` look like they belong to the same dead cluster and do
+# not: `reconcile()` above calls both, and `reconcile` is reachable as
+# `harness figures`.
 
 
 # ---------------------------------------------------------------------------
@@ -252,7 +224,6 @@ def snapshot(root: Path = Path(".")) -> dict:
 # crop would reproduce the loss. This is the path back to the page when a reading
 # is in doubt.
 
-PAD = 12          # px of margin around a zone crop, at the raster's resolution
 SHEET_W = 1800    # composite sheet width
 GUTTER = 14       # vertical space between strips
 LABEL_W = 90      # left margin reserved for the index number
@@ -270,35 +241,6 @@ def _scale_for(alto_page, image_size) -> tuple[float, float]:
     aw = float(alto_page.get("WIDTH"))
     ah = float(alto_page.get("HEIGHT"))
     return image_size[0] / aw, image_size[1] / ah
-
-
-def caption_crops(ref: str, root: Path = Path("."), scans: str = "scans"):
-    """(zone_id, PIL.Image) per FigDesc zone on one page, cropped from the raster."""
-    from PIL import Image
-    ref = norm_ref(ref)
-    alto = alto_for(ref, root)
-    tree = etree.parse(str(alto))
-    page = tree.find(".//{*}Page")
-    img = Image.open(root / scans / f"chukchi-{ref}.png")
-    sx, sy = _scale_for(page, img.size)
-
-    for blk in caption_blocks(alto, root):
-        bb = blk["bbox"]
-        if not bb:
-            continue
-        box = (max(0, round(bb["HPOS"] * sx) - PAD),
-               max(0, round(bb["VPOS"] * sy) - PAD),
-               min(img.size[0], round((bb["HPOS"] + bb["WIDTH"]) * sx) + PAD),
-               min(img.size[1], round((bb["VPOS"] + bb["HEIGHT"]) * sy) + PAD))
-        crop = img.crop(box)
-        # Some captions are set vertically beside their figure (`1-192`'s
-        # Fig. 66, `1-202`'s Fig. 82). Left as-is they are unreadable in a
-        # composite and eat a whole sheet's height, so rotate them upright.
-        # Threshold is deliberately lax: printed captions are wide and short,
-        # so anything markedly taller than it is wide is set vertically.
-        if crop.height > crop.width * 1.8:
-            crop = crop.rotate(-90, expand=True)
-        yield blk["zone_id"], crop
 
 
 def _chunk_sheets(items, per_sheet: int, max_h: int | None):

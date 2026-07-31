@@ -17,7 +17,7 @@ Attribute number formatting is preserved: eScriptorium writes `Page/@WIDTH` as
 `"1412"` but `TextBlock/@HPOS` as `"365.0"`, and a diff full of gratuitous
 `1412` -> `1412.0` churn would bury the changes that matter.
 
-HISTORICAL. This has run; `fig/` and `ocr/` are already in 300 dpi space (`1-116`
+HISTORICAL. This has run; the figure and OCR stores are already in 300 dpi space (`1-116`
 is 2824x3897 in both the ALTO and the raster). It is kept because the reasoning
 above is the reasoning any future re-render needs, and because re-running it on
 already-migrated files would scale them a second time. Check a Page/@WIDTH
@@ -28,7 +28,10 @@ import argparse, hashlib, sys, tarfile, time
 from pathlib import Path
 from lxml import etree
 
-DIRS = ("fig", "ocr", "gt/ocr", "gt/seg")
+# `gt/fig` was a top-level `fig/` when this ran; the store moved under `gt/` once
+# the figure track was wholly human-reviewed. Named here in its current place so a
+# reader checking what this touched can find it, not because it should run again.
+DIRS = ("gt/fig", "ocr", "gt/ocr", "gt/seg")
 
 # Attributes carrying an x-coordinate or a width, and a y-coordinate or height.
 X_ATTRS = ("HPOS", "WIDTH")

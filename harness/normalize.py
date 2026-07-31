@@ -108,7 +108,7 @@ def _spacing_hits(text: str) -> list[dict]:
 # Directories whose XML is corpus, and the individual data files. Root-level *.md are
 # excluded deliberately: CLAUDE.md and transcriber_harness.md quote glyph examples in
 # prose and would fail a gate meant for the text itself.
-SCOPE_GLOBS = ("ocr/*.xml", "gt/ocr/*.xml", "gt/seg/*.xml", "fig/*.xml", "tei/*.xml",
+SCOPE_GLOBS = ("ocr/*.xml", "gt/ocr/*.xml", "gt/seg/*.xml", "gt/fig/*.xml", "tei/*.xml",
                "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
                # decision.json is an editorial act — the adjudicated record that
                # `restore` actually writes to gt/ocr/ — so it stays in the default

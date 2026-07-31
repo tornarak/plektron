@@ -18,6 +18,13 @@ scans/
 # Downloaded model weights (675 MB), not authored here.
 models/
 
+# Working directory for recognition runs — checkpoints written mid-training, of
+# which `checkpoint_abort.ckpt` is one. Only a *trained* model is worth keeping,
+# and those live in `models/`, ignored just above for their size. An aborted run's
+# checkpoint has no consumer at all now that recognition fine-tuning is off the
+# plan (CLAUDE.md, "Recognition").
+bogoras-rec/
+
 # Transient working dirs: recognition output kept only for comparison, and
 # the sxiv review gates.
 ocr300/
@@ -51,7 +58,16 @@ review/*/*.jsonl
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and
 # `ocr/` listings, i.e. derived by the same argument that keeps `scans/` out.
-# `ocr/` is deliberately NOT here: its symlinks resolve inside the repo, into
-# `gt/ocr/`.
+#
+# `ocr/` is deliberately NOT here, and the reason is worth stating in full since
+# half of it used to be missing. Its symlinks resolve *inside* the repo, into
+# `gt/ocr/`, so a clone gets working links rather than dangling ones — that is the
+# half that was already written down. The other half is what `ocr/` is *for*: it is
+# the read view over every OCR store, the stable name by which a page's current OCR
+# is reached whatever produced it, and `harness`'s default `--from`
+# (`lines.DEFAULT_ALTO_DIR`). Raw recognizer output, if any is produced again, links
+# in beside the ground truth from its own real store rather than displacing it — so
+# a file's rank stays readable from where its link points, which is precisely the
+# property whose absence caused the ground-truth loss.
 scans-w-figs/
 scans-w-ocr/

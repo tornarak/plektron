@@ -2,11 +2,11 @@
 """Remove TextLine elements from GraphicZone TextBlocks in ALTO exports.
 
 SUPERSEDED by `strip_lines.py`, and kept only for the tag-ID lesson below. The
-distinction it draws is gone: `fig/` now holds no TextLine in *any* block, and
-caption text lives in `data/readings.md`. Do not point this at `fig/` expecting
+distinction it draws is gone: `gt/fig/` now holds no TextLine in *any* block, and
+caption text lives in `data/readings.md`. Do not point this at `gt/fig/` expecting
 it to preserve captions — there are none left to preserve. Note also that its
 `main()` globs `*.xml`, which would try to parse the METS manifest sitting in
-`fig/`; `strip_lines.py` globs `chukchi-*.xml` instead.
+`gt/fig/`; `strip_lines.py` globs `chukchi-*.xml` instead.
 
 GraphicZone blocks hold figure geometry; any TextLine inside one is a
 segmentation artifact. GraphicZone-FigDesc blocks were left untouched.

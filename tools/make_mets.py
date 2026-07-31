@@ -7,7 +7,7 @@ one `div TYPE="page"` per file, in filename order — which for `chukchi-PP-NNN`
 is page order. No image fileGrp: on import the pages are matched to images
 already in the document, exactly as on a round-trip of an export.
 
-    uv run python tools/make_mets.py fig
+    uv run python tools/make_mets.py gt/fig
 
 Then zip the directory contents (the manifest at the zip root, not the
 directory) and import that.

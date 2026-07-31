@@ -45,7 +45,7 @@ from lxml import etree
 from .context import norm_ref
 from .detectors import (DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES,
                         unlicensed_marks)
-from .lines import alto_for_lines, page_lines
+from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines
 from .paths import crops_dir, decisions_path, proposal_path
 
 CONTEXT_CHARS = 24
@@ -145,7 +145,7 @@ def line_spans(catmus: str, claude: str) -> list[dict]:
     return out
 
 
-def page_spans(ref: str, alto_dir: str = "end-of-eval",
+def page_spans(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                root: Path = Path(".")) -> list[dict]:
     """Every differing span on one page, one flat record each."""
     ref = norm_ref(ref)
@@ -358,18 +358,38 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
             "changed": len(changed), "changed_lines": changed}
 
 
-def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
+def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             force: bool = False, commit: bool = False) -> dict:
     """Write adjudicated text into `gt/ocr/chukchi-<ref>.xml`, keeping the geometry.
 
-    The recognizer ALTO in `alto_dir` is the skeleton, because the 18 shells in
-    `gt/ocr/` carry no `TextLine` at all — there is no geometry there to fill in.
-    Every line has exactly one `String` whose box mirrors the `TextLine`'s, so this
-    only sets `@CONTENT`; nothing structural moves.
+    The ALTO in `alto_dir` is the skeleton: every line has exactly one `String`
+    whose box mirrors the `TextLine`'s, so this only sets `@CONTENT`; nothing
+    structural moves.
+
+    **Two modes, and the returned `mode` field says which one ran.** They differ
+    only in whether the geometry source and the write target are the same file:
+
+      * `restoration` — the source is some other store, and `gt/ocr/` is being
+        filled in from it. This is what the ground-truth rebuild did, page by
+        page, when `gt/ocr/` held export shells with no `TextLine` at all.
+      * `revision` — the source resolves to the target. Under the default store
+        that is the ordinary case now that the rebuild is complete: `ocr/<ref>` is
+        a symlink onto `gt/ocr/<ref>`, so re-adjudicating a finished page reads
+        its own geometry and writes its own text back.
+
+    Revision is *safe* rather than merely tolerated, and it is worth saying why,
+    because "reads the file it writes" is normally a bug. `etree.parse` builds the
+    whole tree in memory before anything is written; the write goes to a `.tmp`
+    sibling; and the post-write verification below re-reads `src`, which the
+    `tmp.replace(target)` has not yet touched. So the source is never observed
+    half-written. The `mode` field exists because the operation is nonetheless a
+    different act in the two cases — one reconstructs, the other edits in place —
+    and a caller that cannot tell them apart cannot report honestly on either.
 
     Writes `gt/ocr/` by name, never `ocr/`. They are the same inode — `ocr/*.xml`
     are symlinks — and naming the real store is what stops the next reader
-    reasoning about the wrong one.
+    reasoning about the wrong one. Reads are the other way round: see
+    `lines.alto_for_lines` on why resolving *through* `ocr/` is fine.
 
     `commit` gates the actual write, same contract as `normalize`'s `--convert`:
     every check below still runs and the full report — including `edits`, so a
@@ -384,8 +404,10 @@ def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
     function is to put back something that was destroyed by a write nobody had to
     confirm:
 
-      * the target already holds text, without `force`. `1-048` and `2-030` are the
-        only surviving hand-keyed pages in the repo.
+      * the target already holds text, without `force`. Since the rebuild finished
+        every page in `gt/ocr/` holds text, so this is now the guard that separates
+        a deliberate `revision` from an accidental overwrite — `force` is how a
+        caller says which it meant, and it is required for every revision.
       * any line lacks a decision. A partial restore yields ground truth with
         invisible holes, which is worse than no ground truth.
       * a line does not have exactly one `String`. Unexpected shape, so it stops.
@@ -422,6 +444,12 @@ def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
             f"harness review {ref} --serve:\n  " + "\n  ".join(bad))
 
     target = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
+    # Same real file, reached under two names, is `revision`; anything else is a
+    # `restoration` from a separate store. Compared by resolved path rather than by
+    # directory name, since `ocr/` reaches `gt/ocr/` by symlink and a name test
+    # would call that a restoration.
+    mode = ("revision" if target.exists() and src.exists()
+            and src.resolve() == target.resolve() else "restoration")
     if target.exists() and not force:
         existing = sum(len(s.get("CONTENT") or "")
                        for s in etree.parse(str(target)).getroot().iter("{*}String"))
@@ -465,12 +493,14 @@ def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
 
     if not commit:
         tmp.unlink()
-        return {"path": str(target), "lines": len(lines),
+        return {"path": str(target), "source": str(src), "mode": mode,
+                "lines": len(lines),
                 "chars": sum(len(y["text"]) for y in b),
                 "geometry_drift": drift, "text_mismatch": wrong,
                 "edited_by_human": len(edits), "edits": edits, "commit": False}
     tmp.replace(target)
-    return {"path": str(target), "lines": len(lines),
+    return {"path": str(target), "source": str(src), "mode": mode,
+            "lines": len(lines),
             "chars": sum(len(y["text"]) for y in b),
             "geometry_drift": drift, "text_mismatch": wrong,
             "edited_by_human": len(edits), "edits": edits, "commit": True}
@@ -505,7 +535,7 @@ def _edit_jump_inner(idxs: list[int]) -> str:
 _FONT_STACK = "'DejaVu Serif', 'Charis SIL', 'Noto Sans', sans-serif"
 
 
-def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
+def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                       root: Path = Path("."), crops: Path | None = None) -> str:
     """Self-contained review page for one ref: one entry per line, reading order.
 
@@ -957,7 +987,7 @@ addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='
     return "\n".join(h)
 
 
-def serve(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
+def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
           port: int = 8731) -> None:
     """Serve one page's review at 127.0.0.1 and accept saves.
 

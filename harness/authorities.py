@@ -42,39 +42,61 @@ TIERS = ("key", "siglum", "author", "title", "printed")
 _ROMAN = {"i": 1, "ii": 2, "iii": 3, "iv": 4, "v": 5,
           "vi": 6, "vii": 7, "viii": 8, "ix": 9, "x": 10}
 
-# A page locator, in the only form the book's footnotes set it.
-_PAGE_RE = re.compile(r"^pp?\.\s*[\d\s,\-–]+$", re.I)
+# A page locator, in the forms the book's footnotes set it. Matched *anywhere* in
+# the query and removed before anything else is looked at, which is what lets the
+# rest be tokenized freely: `p. 375` has to stop being two tokens before a bare
+# integer may be read as a volume, or the page number becomes the volume.
+_PAGE_RE = re.compile(r"\bpp?\.\s*[\d]+(?:\s*[-–,]\s*\d+)*", re.I)
+
+# Above this, a bare integer is much likelier a year than a volume. The book runs
+# to three volumes and cites no higher than X; `Bogoras 1902` is a plausible query
+# and reading 1902 as a volume would silently return nothing.
+_MAX_VOLUME = 20
 
 
 def parse_citation(query: str) -> tuple[str, int | None]:
     """Split a footnote-form citation into search text and a volume.
 
-    `Dall, I, p. 375.` is the form a caller copies out of the body, and fed
-    whole it matches nothing: the page locator is not in the store and the
-    volume lives in its own field. This is the *only* parsing done to a query,
-    and it is deliberately shallow — a comma-separated segment that is exactly a
-    roman numeral or a bare integer becomes the volume, a segment opening `p.`
-    or `pp.` is dropped, everything else is search text in the order given. A
-    short-title siglum (`Hough, Lamp`) survives untouched, since neither
-    segment is either of those things.
+    `Dall, I, p. 375.` is the form a caller copies out of the body, and fed whole
+    it matches nothing: the page locator is not in the store and the volume lives
+    in its own field.
+
+    **Commas are separators, not signal.** The print is inconsistent about the one
+    before a volume — `Maydell I, p. 331.` sits in the same apparatus as
+    `Krasheninnikoff, II, p. 49.` — so this splits on commas *and* whitespace alike
+    and asks the same question of every token. An earlier version split on commas
+    only, which meant `Maydell I` was a single token, was not a bare numeral, and
+    kept its volume in the search text. That happened to resolve anyway, because
+    the match is by word set, but it made the `volume` field depend on a
+    typographic accident, and a caller filtering on it would have been quietly
+    wrong for half the citations in the book.
+
+    So: the page locator goes first, wherever it sits; then a token that is exactly
+    a roman numeral or a small integer becomes the volume (the first such token —
+    a citation names one work); everything else is search text in the order given.
+    A short-title siglum (`Hough, Lamp`) survives untouched, since neither token is
+    a numeral.
+
+    Deliberately still shallow. Resolving a citation properly — deciding *which*
+    Krause, against a body that mostly refers to authors in prose — is the
+    annotation pass's job and wants a reader, not a regex. This only has to stop
+    the obvious noise from reaching a word-set match.
 
     The CLI echoes what this took, on stderr, because a query silently rewritten
     is a query whose empty result you cannot explain.
     """
     vol = None
     keep = []
-    for seg in query.split(","):
-        s = seg.strip().rstrip(".")
+    for tok in re.split(r"[,\s]+", _PAGE_RE.sub(" ", query)):
+        s = tok.strip().rstrip(".")
         if not s:
             continue
-        if _PAGE_RE.match(s):
-            continue
         v = _volume(s)
-        if v is not None and vol is None:
+        if v is not None and vol is None and v <= _MAX_VOLUME:
             vol = v
             continue
         keep.append(s)
-    return ", ".join(keep), vol
+    return " ".join(keep), vol
 
 
 def load(root: Path = Path(".")) -> list[dict]:

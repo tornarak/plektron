@@ -1,7 +1,7 @@
 """Assemble the per-page input contract (harness rev 2, 'Input contract').
 
 Everything here is deterministic. The model consumes this; it never re-derives it.
-Repo layout assumed:  scans/chukchi-PP-NNN.png   fig/chukchi-PP-NNN.xml
+Repo layout assumed:  scans/chukchi-PP-NNN.png   gt/fig/chukchi-PP-NNN.xml
                       ocr/chukchi-PP-NNN.xml     tei/chukchi-PP-NNN.xml
                       data/toc.json              data/readings.md
                       data/lexicon_extra.txt     boundaries.json (optional)
@@ -110,7 +110,7 @@ def _figures_on_page(figs_path: Path, root: Path = Path(".")) -> list[dict]:
     included so a page with a figure never needs a second, redundant read of the
     ALTO just to place it.
 
-    `text` comes from **`data/readings.md`**, not from the ALTO. `fig/` carries no
+    `text` comes from **`data/readings.md`**, not from the ALTO. `gt/fig/` carries no
     `TextLine` — the lines were stripped, because the exported line segmentation
     dropped whole printed lines. Reading `String/@CONTENT` here used to be the
     source, and after the strip it returned `""` for every zone on every page:
@@ -182,6 +182,20 @@ def _ocr_lines(ocr_path: Path) -> list[dict]:
 
 
 def build_context(ref: str, root: Path = Path(".")) -> dict:
+    """The whole per-page input contract for the collation pass, as one dict.
+
+    Everything a model needs to produce this page's TEI and nothing it would have
+    to re-derive: the ref and stem, the seam state folded forward from committed
+    TEI, a ToC neighbourhood, the figure zones with their captions, the OCR line
+    ids a Tier-1 span may cite in `@facs`, and the detector flags. Deterministic
+    and precomputed by design — a pass that re-derived any of this could disagree
+    with the validator that checks it.
+
+    Imported locally, not at module scope: `figures` imports `norm_ref` from here,
+    so a top-level import would close a cycle. Three other call sites in this
+    package do the same for the same reason.
+    """
+    from .figures import FIGDIR
     ref = norm_ref(ref)
     stem = stem_for(ref, root)
     ocr = root / "ocr" / f"{stem}.xml"
@@ -213,7 +227,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         "toc_window": toc_window(load_toc(root), state["expected_folio"],
                                  state["believed_open"]),
         "boundary_in": state["boundary_in"],
-        "figures_on_page": _figures_on_page(root / "fig" / f"{stem}.xml", root),
+        "figures_on_page": _figures_on_page(root / FIGDIR / f"{stem}.xml", root),
         "ocr_lines": _ocr_lines(ocr),
         # Foreign spans already committed on the physically neighbouring pages,
         # recomputed from the TEI each call. For cross-checking a term keyed two

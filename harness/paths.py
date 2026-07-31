@@ -32,9 +32,14 @@ from pathlib import Path
 
 from .context import norm_ref
 
-# Subdirectories of `review/<ref>/` that any verb may recreate from the ALTO and the
-# rasters. The gitignore rules mirror this; so does whatever cleans a finished page up.
-DERIVED = ("crops", "sheets", "zoom")
+# Everything under `review/<ref>/` that any verb may recreate from the ALTO and the
+# rasters. The gitignore rules mirror this; so does `clean` below. `tests/test_layout.py`
+# holds the two to each other, because they drifted while each file's comment claimed
+# the other mirrored it — `.gitignore` listed `review.html` and this tuple did not, so
+# `clean` left a stale page behind on every finished ref.
+#
+# `review.html` is a file where the rest are directories; `clean` handles both.
+DERIVED = ("crops", "sheets", "zoom", "review.html")
 
 
 def review_dir(ref: str, root: Path = Path(".")) -> Path:
@@ -69,15 +74,22 @@ def clean(ref: str, root: Path = Path(".")) -> dict:
     """Remove a page's derived working images, leaving the two authored files
     (`proposal.json`, `decision.json`) untouched.
 
-    Reads `DERIVED` rather than naming `crops`/`sheets`/`zoom` again, so a
-    third derived subdirectory only ever needs adding in one place.
+    Reads `DERIVED` rather than naming the entries again, so a further derived
+    name only ever needs adding in one place.
     """
     import shutil
     d = review_dir(ref, root)
     removed = []
     for name in DERIVED:
         p = d / name
-        if p.exists():
+        if not p.exists():
+            continue
+        # `review.html` is a file; the rest are directories. Branch on what is
+        # actually there rather than on the name, so adding either kind to
+        # DERIVED needs no change here.
+        if p.is_dir():
             shutil.rmtree(p)
-            removed.append(name)
+        else:
+            p.unlink()
+        removed.append(name)
     return {"ref": norm_ref(ref), "removed": removed}
