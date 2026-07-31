@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-1-045.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
+    <OtherTag ID="BT5" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+        <TextBlock HPOS="407" VPOS="615" WIDTH="1778" HEIGHT="90" ID="mz_1-045_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="407 615 2185 615 2185 705 407 705"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="407" VPOS="730" WIDTH="1778" HEIGHT="1351" ID="mz_1-045_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="407 730 2185 730 2185 2081 407 2081"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="407" VPOS="2102" WIDTH="1778" HEIGHT="911" ID="mz_1-045_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="407 2102 2185 2102 2185 3013 407 3013"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="407" VPOS="3045" WIDTH="1778" HEIGHT="225" ID="mz_1-045_004" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="407 3045 2185 3045 2185 3270 407 3270"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="407" VPOS="3287" WIDTH="1778" HEIGHT="62" ID="mz_1-045_005" TAGREFS="BT5">
+          <Shape>
+            <Polygon POINTS="407 3287 2185 3287 2185 3349 407 3349"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>
