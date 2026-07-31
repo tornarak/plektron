@@ -1,0 +1,114 @@
+{
+  "_about": "Page-zone segmentation: the seven types, their keys, and the text-column geometry the UI draws against. Read by harness/zones_config.py; consumed by both `harness zones` (validation) and the browser UI (drawing + client-side order warnings). Editing this file changes both, which is the point — none of it is hardcoded.",
+
+  "_provenance": {
+    "measure": "The text measure is a property of the book and is stable: over the 20 pages with line-precise ground truth in gt/ocr, the body column runs 1774-1797 px wide, median ~1780, across all three parts. So a fixed-width column is a real constraint rather than an approximation imposed on the page.",
+    "anchor": "Where that column SITS is not stable, and this is the finding that shaped the design. Measured over the rasters, the left edge of the text drifts 399-760 px within part 1, 342-462 within part 2 and 310-546 within part 3 — up to 236 px inside a single part, and up to 170 px between pages of the same scan-index parity. That is scan registration, not typography: the width barely moves while the position wanders. A per-part constant column was therefore wrong by ~100 px on most pages (it put 1-048's column at 618..2410 where the page actually sets 722..2498), and verso/recto could not rescue it because parity explains only part of the drift. The column is now anchored PER PAGE off the raster's own ink profile.",
+    "calibration": "ink_pad_left / ink_pad_right convert the measured ink edge into the text-column edge, and are calibrated against the 20 gt/ocr pages: the ink profile lands a mean +17 px inside the true left edge (max 23) and -11 px inside the true right (max 25), because a line box carries a little air beyond its ink. Applying those two offsets reproduces the true column on all 20 within ~20 px.",
+    "overrides": "Pages the anchor cannot serve — two-column settings above all, and near-blank plates where there is not enough ink to measure. 1-330 is the worked example of the second kind: its widest ink run is 80 px, so detection is refused and the fallback applies."
+  },
+
+  "_shape_fields": "Three optional fields on a type, all about saving keystrokes on a shape the book repeats. `default_height` makes the zone one click instead of two — the height is known, so only the top is in question. `gap_after` is the dead space the chain skips once that type is committed, for the predictable whitespace the page leaves below it. `chain_after` (default true) says whether the chain should carry on at all: a type that ends the column, or whose neighbours are unpredictable, leaves the next top unset rather than guessing it. The first two are editor-measured and are off (null / 0) wherever the shape genuinely varies, which is every body type.",
+
+  "types": [
+    {"label": "RunningTitleZone", "key": "r", "color": "#d1495b", "rank": 0, "max_per_page": 1,
+     "default_height": 90, "gap_after": 25,
+     "name": "running title / page number",
+     "description": "The head line, printed folio included. The old SegmOnto scheme split the folio out as NumberingZone; a fixed-width vertical partition cannot express that split, and the two are always on one line here, so they are one zone. Height and the gap below it are editor-measured: the head is a single line of a fixed size, and the drop to the text proper is the same on every ordinary page, so this zone costs one click and leaves the chain sitting where the body starts."},
+    {"label": "MainZone-P", "key": "p", "color": "#2e86ab", "rank": 10, "max_per_page": null,
+     "name": "paragraph start",
+     "description": "A paragraph that begins on this page — its first line is indented."},
+    {"label": "MainZone-Continued", "key": "c", "color": "#6a9fb5", "rank": 10, "max_per_page": null,
+     "name": "paragraph continuation",
+     "description": "Body text continuing a paragraph opened earlier — no opening indent. The commonest type at the top of a page, which is why it is what auto-select falls to after the running title."},
+    {"label": "MainZone-Quote", "key": "q", "color": "#8f5fd1", "rank": 10, "max_per_page": null,
+     "name": "block quote",
+     "description": "Quoted matter set as its own block, normally in smaller type and inset from the measure. New label — the rest of this vocabulary is SegmOnto and already appears in gt/seg, this one follows its MainZone-<subtype> pattern."},
+    {"label": "MarginTextZone-Notes", "key": "f", "color": "#e07a1f", "rank": 20, "max_per_page": 1,
+     "chain_after": false,
+     "name": "footnotes section",
+     "description": "The whole footnote apparatus below the rule, as one zone rather than one per note. max_per_page 1 accordingly."},
+    {"label": "QuireMarksZone", "key": "m", "color": "#3f8f5f", "rank": 30, "max_per_page": 1,
+     "chain_after": false,
+     "name": "publisher mark",
+     "description": "The printer's signature line at the very foot of a gathering's first page — \"9-JESUP NORTH PACIFIC EXPED., VOL. VII.\" Below the footnotes, hence rank 30."},
+    {"label": "MainZone-Other", "key": "o", "color": "#777777", "rank": null, "max_per_page": null,
+     "chain_after": false,
+     "name": "other",
+     "description": "Anything the six above do not cover: tables, verse, headings, captions on a text page. rank null means it takes part in no ordering rule — a catch-all that warned about its own position would warn constantly."}
+  ],
+
+  "order_rules": [
+    {"id": "title-first", "severity": "warn",
+     "description": "If a RunningTitleZone is present it is the topmost zone on the page."},
+    {"id": "rank-monotone", "severity": "warn",
+     "description": "Read top to bottom, the ranks of the zones that have one never decrease: running title, then body, then footnotes, then the signature line. Types with rank null are skipped entirely."},
+    {"id": "max-per-page", "severity": "warn",
+     "description": "No type occurs more often than its own max_per_page, where it declares one."}
+  ],
+
+  "auto_select": {
+    "_about": "What the editor selects next, with no keystroke. A page opens with its running title; below that the first block is almost always the paragraph carried over from the previous page, so the title hands off to `continuation`; and a continuation can only be closed once, so it hands off to `paragraph start`, which then repeats for as many paragraphs as the page holds. The commonest page is therefore keyed with three type keys pressed in total, most of them never pressed at all.",
+    "fresh_page": "RunningTitleZone",
+    "after": {
+      "RunningTitleZone": "MainZone-Continued",
+      "MainZone-Continued": "MainZone-P"
+    }
+  },
+
+  "view": {
+    "_about": "The editor's default framing. `column_margin` is the share of the text-column width left as breathing room either side when the page is first sized — the column is what is being judged, so it gets the viewport, not the leaf. The view is also cropped vertically to the page's own inked band plus `content_pad_px`, which is what takes an ordinary leaf from three screens to two: the top and bottom of a scan are blank paper and scrolling through them is time spent on nothing. That pad is not only cosmetic — it is the strip a pointer overshoots into, and overshooting the top or bottom of the view is how a zone is run to the first or last line of the page without pixel-hunting the boundary, so it has to be wide enough to aim at. `content_ink_fraction` is the share of the page width a row must be dark to count as printed, taken from the width rather than from the densest row so that one black photograph cannot raise the bar above the type beside it. Hovering within `edge_band_px` of the top or bottom of the view jumps a whole screen, instantly, keeping `edge_overlap_px` of what was already showing. It fires once per entry into the band — the cursor has to leave and come back — so a jump can never run away.",
+    "column_margin": 0.15,
+    "edge_band_px": 80,
+    "edge_overlap_px": 140,
+    "content_pad_px": 55,
+    "content_ink_fraction": 0.004
+  },
+
+  "actions": {
+    "_about": "Every common action is bound here, alongside the type keys above, and the loader refuses a config where the two collide — a keystroke bound twice would silently do only one of its jobs. Values are KeyboardEvent.key: one character for a letter, or the browser's own name for a special key. Navigation and cycling deliberately sit on non-letter keys so the letter space stays free for types.",
+    "cancel": "Escape",
+    "undo": "u",
+    "delete": "x",
+    "anchor_left": ",",
+    "anchor_right": ".",
+    "anchor_reset": "v",
+    "cycle_column": "Tab",
+    "toggle_split": "t",
+    "toggle_chain": "\\",
+    "exempt": "e",
+    "ink_exempt": "i",
+    "save": "s",
+    "done": "D",
+    "prev_page": "ArrowLeft",
+    "next_page": "ArrowRight",
+    "nudge_back": "[",
+    "nudge_forward": "]",
+    "zoom_in": "+",
+    "zoom_out": "-"
+  },
+
+  "columns": {
+    "_about": "The measure is configured; the position is measured off each page. See _provenance.anchor for why that split exists.",
+    "parts": {
+      "1": {"measure": 1778, "fallback_x0": 500},
+      "2": {"measure": 1776, "fallback_x0": 390},
+      "3": {"measure": 1782, "fallback_x0": 380}
+    },
+    "anchor": {
+      "band_top": 0.12,
+      "band_bottom": 0.88,
+      "ink_fraction": 0.04,
+      "ink_pad_left": 17,
+      "ink_pad_right": 11,
+      "min_detected_width": 0.6
+    },
+    "overrides": {
+      "_about": "Per-ref column windows for pages the anchor cannot serve — two-column settings, and plates with too little ink to measure. A ref listed here replaces the measured column for that page entirely; the UI's column cycle walks whatever list it finds. Keyed PP-NNN, same as everything else."
+    }
+  },
+
+  "width_tolerance_px": 40,
+  "min_zone_h_px": 30,
+  "max_overlap_px": 8
+}

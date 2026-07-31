@@ -144,12 +144,18 @@ and nothing infers it.
 Layout, all at the repo root:
 
     scans/  832 rasters, all three parts, 300 dpi. Derived; not in git.
+    scans-fig-blotted/  the same pages with figure zones painted white, the
+            segmenter's training input. Derived; the 580 figure-less pages are
+            symlinks into scans/, so a clone gets dangling links. Ignored.
     ocr/    the read view over every OCR store — symlinks, currently all into
             gt/ocr/. The harness's default --from. Never written through.
     gt/     what a human has been through. ocr/ (20 pages of ground truth),
-            fig/ (252 figure ALTOs + METS, geometry only), seg/ (segmentation).
+            fig/ (252 figure ALTOs + METS, geometry only), seg/ (the first
+            segmentation attempt, 122 pages, kept read-only), zones/ (the
+            current one — seven types, fixed-width bands; empty so far).
     tei/    1 page.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
+            zones_config.json
     review/ one directory per page, PP-NNN/. proposal.json (a reading, not truth)
             and decision.json (adjudicated) are tracked; crops/ sheets/ zoom/ and
             review.html are derived and ignored. See harness/paths.py.
@@ -243,6 +249,126 @@ or review queue; that is the tell, not a bug. Sorting is banded rather than a pl
 `(vpos, hpos)` because baselines wobble a few pixels across a row: a strict sort
 puts the gloss before its headword on four of `3-005`'s six two-column rows, i.e.
 it fails worst on the layout it exists for.
+
+## Page segmentation, second attempt
+
+**The first attempt is `gt/seg/` and it is not being extended.** 122 pages under the
+full SegmOnto vocabulary, free polygons drawn around ink — and the faults recorded
+throughout this file are its faults: whole printed lines dropped, captions found
+where none exist, line polygons excluding their own text. The regions were only ever
+used to impose a reading order, and CLAUDE.md has always said they carry no semantic
+value.
+
+The second attempt narrows the claim until it is checkable. Three things change:
+
+- **Seven types, not fifteen** — running title / page number, paragraph start,
+  paragraph continuation, block quote, footnotes section, publisher mark, other.
+- **Zones are fixed-width bands of the text column, forming a vertical partition.**
+  The measure is a property of the book — 1774–1797 px over the 20 line-precise
+  pages in `gt/ocr/`, all three parts — so an editor supplies a top and a bottom
+  and never an x. A whole class of error becomes unrepresentable rather than merely
+  rare.
+
+  **Where that column sits is *not* stable, and this is the finding the design
+  turns on.** Measured off the rasters, the text's left edge drifts 399–760 px
+  within part 1, 342–462 within part 2 and 310–546 within part 3 — up to 236 px
+  inside one part, and up to 170 px between pages of the same scan-index parity.
+  That is scan registration, not typography: the width barely moves while the
+  position wanders. A per-part constant column was therefore wrong by ~104 px on
+  `1-048` (it predicted 618..2410 where the page sets 722..2498), and verso/recto
+  could not rescue it because parity explains only part of the drift. **The column
+  is anchored per page off the raster's own ink profile** (`zones.measure_columns`),
+  calibrated against those 20 ground-truth pages, where it lands within 15 px every
+  time. That removes the verso/recto distinction entirely — there was nothing left
+  for it to do — and leaves a manual ±4 px nudge as the escape hatch for a page too
+  blank to measure, plus per-ref `overrides` for two-column settings.
+- **Training runs on figure-blotted rasters** (`harness zones --blot`,
+  `scans-fig-blotted/`, painted **white** — `lines --blot`'s conspicuous pink and
+  blue are for a human and would be a feature the model could key on). Whether a
+  paragraph wraps around an illustration is a fact about the ink and not about the
+  coding, so the figures come out before the segmenter ever sees the page. The
+  declared box is painted and **not a pixel more**: 24 pages in a 40-page sample
+  keep ink just outside a zone, but that ink is a few pixels of photograph edge on
+  a plate like `1-167` and **body text set hard against an inset figure** on
+  `1-283`, so a pad would erase text on every page of the second kind to tidy a
+  sliver on the first.
+
+Store is `gt/zones/`, ALTO in the eScriptorium dialect so it goes straight into
+`ketos segtrain` and back into the GUI if ever wanted — the import/export loop being
+the friction this replaces. It is **a separate store from `gt/seg/`, permanently**:
+the label sets and the geometry regimes differ and nothing in an ALTO says which
+scheme produced it, which is the same missing internal witness that cost 18 pages of
+transcription. Blocks carry an `mz_` id prefix for the same reason.
+
+**Every domain-knowledge assumption is a warning, and configurable.** `title-first`,
+`rank-monotone` (running title → body → footnotes → signature line) and
+`max-per-page` live in `data/zones_config.json` as declarative ranks, are exemptible
+per page in `gt/zones/_rule_exempt.json`, and an exempted rule still reports — flagged,
+never hidden, since the exemption file is exactly where a wrong call would hide.
+Nothing in that config can refuse a save. What *can* is mechanical only: a width no
+configured column offers, a zone shorter than a mis-click, two zones overlapping in
+both axes, a label nobody declared, a polygon that is not its own bounding box.
+
+**The two column checks are split by what they cost.** The **width** is knowable
+from the config alone, so the corpus sweep tests it over every page for nothing and
+it is what catches a hand-sized zone. The **position** needs the raster, so it waits
+for `--ink` — and it is skipped where a per-ref override supplies its own columns,
+since a two-column page's ~870 px columns are not the part measure and condemning
+them would be the check misreading its own exception.
+
+**The partition check is the one that reads the page.** `uncovered-ink` measures ink
+no zone and no figure accounts for, through the same `lines.ink_bands` the
+dropped-line detector uses, and it exists because a missing *zone* is invisible to
+everything that reads only the file — exactly as a dropped *line* was. Adjacent
+bands merge: an under-segmented `1-048` reported 38 of them, one per line of body
+text, for a single missing region, and 38 lines of correct output is how a real
+signal gets buried. It costs a raster read, so a single page always runs it and the
+corpus sweep needs `--ink`.
+
+**Three splits, not two.** `_train.lst`, `_eval.lst` and `_exempt.lst`, marked in the
+editor and defaulting to train. `exempt` is the plates, maps, foldouts and blanks —
+pages a human has ruled *not a text page*, which is a different statement from
+"keyed and holds nothing" and a very different one from "not reached yet". They are
+kept out of training and eval alike: a plate is neither an example of the layout nor
+a fair test of it, and one in eval would report a model wrong about a page that has
+no right answer. On a contradiction the most exclusionary list wins. An exempt page
+is also not judged by the layout warnings, which describe a text page and would be
+permanent known-false noise on a plate — but its mechanical errors still stand, or
+the mark would hide a mistake rather than describe a plate.
+
+**Where it stands: 75 pages, the first two chapters of part 1.** 45 text pages
+carrying 282 zones, 30 marked exempt (the covers, front matter and plates of
+`1-001`…`1-030`). `harness zones --ink` over the lot returns 4 errors and 3 warnings
+on 3 pages, and reading them against the scans is instructive about what each check
+is worth:
+
+- All three `uncovered-ink` bands — `1-033`, `1-035`, `1-036` — are **artifacts**: a
+  margin smudge, the tail of an ink stain below a footnote zone, and a gutter blob.
+  Binarization noise, not type. Report-only earns its keep here; any of them as an
+  error would have blocked a correctly keyed page. All three are now ruled in
+  `_ink_exempt.json` and still report, flagged and carrying their reason.
+- `1-033`'s four `column-position` errors — **the anchor is wrong, not the zones**.
+  That page's margin smudge sits left of the text, so the ink profile measured the
+  column 52 px too far left and the editor's own reading is the right one. The
+  column anchor is currently vulnerable to any dense mark in the margin; a fix is
+  open (see Open).
+
+A caution recorded because it was nearly acted on: reading `1-035`'s band off a
+downscaled crop, this assistant concluded the footnotes zone had clipped a second
+footnote line and proposed extending it. The zone was correct — both notes sat
+inside it and the band below was the stain's tail. **A band's reported width is the
+bbox of ink across its rows and can span the measure while containing almost
+nothing**, so it reads as a line of type in a thumbnail. Judge these at full
+resolution against the zone edges, or not at all.
+
+**Ink a human has ruled is not type goes in `gt/zones/_ink_exempt.json`**, scoped to
+a band and carrying its reason (`{y0, y1, note}`) — `i` over the band in the editor.
+Scoped rather than per-page because exempting a page's ink check would hide the next
+genuinely dropped zone on it, and that check is the only thing that can see one. The
+reason is required and is the record: this is where "the tool complained and I made
+it stop" would otherwise be indistinguishable from a ruling. A matched band still
+reports, flagged and carrying its note; a region that matches nothing any more
+reports as `stale-ink-exemption`.
 
 ## Footnote markers
 
@@ -407,6 +533,16 @@ if you ever need it.
     uv run harness figures            reconcile gt/fig/ zone geometry against
                                       data/readings.md captions, both ways;
                                       exit 1 if `missing` or `orphan` is non-empty
+    uv run harness zones              the seven-type page segmentation in
+                                      gt/zones/. Bare, it sweeps every keyed page
+                                      (add --ink to read the rasters too); with a
+                                      ref, that page's errors and warnings in
+                                      full. Exit 1 on an error, never on a
+                                      warning. --serve opens the editor at that
+                                      ref and keeps serving, the arrow keys
+                                      walking the corpus from there; --blot
+                                      writes the figure-blotted training rasters;
+                                      --assemble lays out bogoras-seg/ for ketos
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -796,6 +932,15 @@ TBD
 
 ## Open
 
+- **The column anchor is fooled by ink in the margin.** `zones.measure_frame` takes
+  the text column's left edge from the outermost inked column of the page, so any
+  dense mark outside the measure moves it: `1-033`'s margin smudge dragged the
+  anchor 52 px left and the validator then reported four `column-position` errors
+  against zones that are correct. The measurement needs to require ink over a
+  minimum *share of the band's rows* — a smudge is tall in pixels but short in rows,
+  where a column's edge is inked down the whole page — and `columns.anchor.ink_fraction`
+  is the knob. Any change is re-calibrated against the 20 `gt/ocr` pages, where the
+  current settings land within 15 px on every one.
 - **The corpus teiHeader does not exist**, and it is now load-bearing: it is where the
   three `respStmt` provenance ranks are declared, so every `@resp` in the corpus is a
   pointer with nothing yet to resolve against. Harmless while pages are validated

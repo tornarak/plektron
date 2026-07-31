@@ -436,6 +436,62 @@ ROW_INK_FRACTION = 0.005
 COVER_PAD = 6
 
 
+def ink_bands(img, x0: int, x1: int, covered: bytearray,
+              min_h: int = MIN_BAND_H,
+              fraction: float = ROW_INK_FRACTION) -> list[dict]:
+    """Contiguous bands of ink in `img`'s `x0..x1` window that `covered` does not mask.
+
+    The measuring core of `line_gaps`, extracted because `zones.validate_page` asks
+    the same question of a page with different boxes drawn on it — "is there ink
+    here that nothing accounts for?" — and two implementations of one threshold is
+    how the answers start disagreeing. `MIN_BAND_H` and `ROW_INK_FRACTION` are
+    derived at their definitions above and both callers inherit the derivation.
+
+    `img` is greyscale (mode `"L"`); `covered` is one byte per image row, non-zero
+    where something already accounts for that row. Returns `{vpos, height, hpos,
+    width}` in **raster** coordinates, each band carrying the extent of its own ink
+    rather than of the measuring window — a repair needs the geometry of what was
+    found, not of where it was looked for.
+    """
+    h = img.size[1]
+    x0, x1 = max(0, x0), min(img.size[0], x1)
+    cols = x1 - x0
+    if cols <= 0:
+        return []
+    band = img.crop((x0, 0, x1, h)).point(lambda v: 255 if v < 128 else 0)
+    threshold = max(1, int(cols * fraction))
+    inked = [0] * h
+    px = band.load()
+    for y in range(h):
+        if covered[y]:
+            continue
+        n = 0
+        for x in range(0, cols, 2):        # every other column: 2x faster, same verdict
+            if px[x, y]:
+                n += 1
+                if n * 2 >= threshold:
+                    break
+        inked[y] = 1 if n * 2 >= threshold else 0
+
+    out, y = [], 0
+    while y < h:
+        if not inked[y]:
+            y += 1
+            continue
+        start = y
+        while y < h and inked[y]:
+            y += 1
+        if y - start < min_h:
+            continue
+        strip = band.crop((0, start, cols, y))
+        bbox = strip.getbbox()
+        if bbox is None:
+            continue
+        out.append({"vpos": start, "height": y - start,
+                    "hpos": x0 + bbox[0], "width": bbox[2] - bbox[0]})
+    return out
+
+
 def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
               scans: str = "scans") -> list[dict]:
     """Bands of ink on the page that no `TextLine` covers — dropped lines.
@@ -497,42 +553,9 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
         for y in range(top, bot):
             covered[y] = 1
 
-    band = img.crop((x0, 0, x1, h)).point(lambda v: 255 if v < 128 else 0)
-    # One dark-pixel count per row, from the histogram of each row strip.
-    cols = x1 - x0
-    threshold = max(1, int(cols * ROW_INK_FRACTION))
-    inked = [0] * h
-    px = band.load()
-    for y in range(h):
-        if covered[y]:
-            continue
-        n = 0
-        for x in range(0, cols, 2):        # every other column: 2x faster, same verdict
-            if px[x, y]:
-                n += 1
-                if n * 2 >= threshold:
-                    break
-        inked[y] = 1 if n * 2 >= threshold else 0
-
-    out, y = [], 0
-    while y < h:
-        if not inked[y]:
-            y += 1
-            continue
-        start = y
-        while y < h and inked[y]:
-            y += 1
-        if y - start < MIN_BAND_H:
-            continue
-        # Column extent of this band's own ink, so the report carries geometry a
-        # repair can use rather than the measuring window's width.
-        strip = band.crop((0, start, cols, y))
-        bbox = strip.getbbox()
-        if bbox is None:
-            continue
-        out.append({"vpos": start, "height": y - start,
-                    "hpos": x0 + bbox[0], "width": bbox[2] - bbox[0]})
-    return out
+    # The measuring itself is `ink_bands`, shared with `zones.validate_page` so the
+    # two detectors cannot drift apart on a threshold.
+    return ink_bands(img, x0, x1, covered)
 
 
 GAP_ID_PREFIX = "gap_"
@@ -692,6 +715,77 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     img.save(path)
     return {"ref": ref, "path": str(path), "lines_blotted": n_lines,
             "zones_blotted": n_zones}
+
+
+def write_fig_blot(ref: str, out_dir: Path, root: Path = Path("."),
+                   scans: str = "scans") -> dict:
+    """The page with its figures painted out in white — the segmenter's training input.
+
+    Sibling of `write_blot` and deliberately not a mode of it, because the two have
+    opposite audiences. That one paints in conspicuous pink and blue so a *human*
+    can see what is left uncovered; this one has to look like blank paper, since a
+    model trained on filled blue boxes would learn a feature that exists nowhere at
+    inference time. Same geometry, same per-axis `_scale_for`, opposite colour, and
+    the reason is worth keeping written down.
+
+    Why blot at all: a paragraph that wraps around an illustration is still one
+    paragraph, and its zone is still the full measure. Leaving the figure in teaches
+    the model that a body zone sometimes stops halfway down the page for reasons it
+    can see — which is true of the ink and false of the coding.
+
+    Boxes rather than polygons, as in `write_blot`: covering generously is right
+    when the alternative is a fringe of stray figure pixels the model can key on.
+
+    **The declared box is painted and not a pixel more, and that is a measured
+    decision rather than a default.** Over a 40-page sample, 24 pages keep some ink
+    within 12 px outside a zone, and the two kinds are not the same thing: on plate
+    pages like `1-167` it is a few pixels of the photograph's own edge overhanging
+    its box, while on `1-283` it is **body text set hard against an inset figure**.
+    A 12 px pad would erase that text on every page like the second, which is a far
+    larger confound than the sliver it would tidy on pages like the first. The
+    geometry in `gt/fig/` is human-reviewed and reconciled; widening it here would
+    be inventing it.
+
+    Returns `painted: 0` for the 580 pages with no figure ALTO. The caller links
+    those instead of copying — see `zones.blot_all`.
+    """
+    from PIL import Image, ImageDraw
+    from .figures import zones as _zones
+    ref = norm_ref(ref)
+    src = root / scans / f"chukchi-{ref}.png"
+    zs = _zones(ref, root)
+    img = Image.open(src)
+    # The figure ALTOs record geometry in the same raster space, but the ratio is
+    # taken per page and per axis anyway — no page in this corpus is a clean x2 of
+    # its 150 dpi predecessor, and assuming 1.0 is the same class of error.
+    if zs:
+        alto = _figure_alto_page(ref, root)
+        sx, sy = _scale_for(alto, img.size) if alto is not None else (1.0, 1.0)
+        # The source mode is kept, never normalized to "L". The 580 figure-less
+        # pages reach the trainer as symlinks to the untouched scan, so converting
+        # here would hand `ketos segtrain` a corpus that is RGB on one page and
+        # greyscale on the next — a difference correlated with "has a figure",
+        # which is precisely the thing being blotted out.
+        white = 255 if img.mode in ("L", "1") else (255,) * len(img.getbands())
+        d = ImageDraw.Draw(img)
+        for z in zs:
+            d.rectangle([z["hpos"] * sx, z["vpos"] * sy,
+                         (z["hpos"] + z["width"]) * sx,
+                         (z["vpos"] + z["height"]) * sy], fill=white)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"chukchi-{ref}.png"
+    img.save(path)
+    img.close()
+    return {"ref": ref, "path": str(path), "painted": len(zs)}
+
+
+def _figure_alto_page(ref: str, root: Path):
+    """The `Page` element of this ref's figure ALTO, or None if it has none."""
+    from .figures import alto_for as _fig_alto
+    p = _fig_alto(ref, root)
+    if not p.exists():
+        return None
+    return etree.parse(str(p)).find(".//{*}Page")
 
 
 LINE_SHEET_H = 2000

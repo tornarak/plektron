@@ -73,41 +73,64 @@ def _bbox(el) -> dict | None:
     return vals
 
 
-def zones(ref: str, root: Path = Path(".")) -> list[dict]:
-    """Every declared zone on one page: `{id, label, hpos, vpos, width, height}`.
+def read_blocks(path: Path, with_points: bool = False) -> list[dict]:
+    """Every `TextBlock` in any ALTO here: `{id, label, hpos, vpos, width, height}`.
 
-    **The one reader.** Three callers need exactly this — `context._figures_on_page`
-    (to hand the model figure geometry and its caption), `lines.line_gaps` (to mask
-    figures out of the dropped-line detector), and `lines`' caption-line marking.
-    Three independent walks of the same encoding is precisely the drift that
-    produced three near-identical lookalike tables; one reader with three callers
-    is the fix.
+    **The one reader of this encoding**, and it is store-agnostic on purpose —
+    `zones()` below binds it to `gt/fig/`, `zones.py` binds it to `gt/zones/`, and
+    neither walks the tree itself. Four callers now depend on the two properties
+    below, and four independent walks is precisely the drift that produced three
+    near-identical lookalike tables.
 
     Zone type comes from `OtherTag/@LABEL` via `TAGREFS`, **never from the tag ID**:
     eScriptorium assigns those per export (`BT55`/`BT56` in one, `BT68`/`BT69` in
     the next), so code that hardcodes them fails silently rather than loudly.
+    `tools/strip_graphiczone_lines.py` records what that cost when it happened.
 
-    Empty when the page has no figure ALTO — 580 of the 832 pages, so absence is
-    the ordinary case and never an error.
+    A missing file returns `[]` rather than raising: absence is the ordinary case
+    for both stores it serves — 580 of the 832 pages have no figure ALTO, and the
+    zone store starts empty.
 
     Flat scalars, not a nested `bbox`: a nested value de-tabularizes the whole TOON
     table, which is exactly why the page context currently emits in the verbose
     form (see `lines.py`'s module docstring).
+
+    `with_points` adds the block's raw `Shape/Polygon@POINTS` string, and is off by
+    default so that every existing caller's record shape is untouched — the field
+    would otherwise surface as noise in `harness context`'s figure list. The one
+    caller that wants it is `zones.validate_page`, which has to know whether a block
+    is really the rectangle its bbox implies; asking here keeps this the only walk
+    of the encoding rather than buying that one check a second one.
     """
-    p = alto_for(ref, root)
-    if not p.exists():
+    if not Path(path).exists():
         return []
-    tree = etree.parse(str(p))
+    tree = etree.parse(str(path))
     labels = _labels(tree)
     out = []
     for blk in tree.iter("{*}TextBlock"):
         bb = _bbox(blk)
         if bb is None:
             continue
-        out.append({"id": blk.get("ID"), "label": _block_label(blk, labels),
-                    "hpos": bb["HPOS"], "vpos": bb["VPOS"],
-                    "width": bb["WIDTH"], "height": bb["HEIGHT"]})
+        rec = {"id": blk.get("ID"), "label": _block_label(blk, labels),
+               "hpos": bb["HPOS"], "vpos": bb["VPOS"],
+               "width": bb["WIDTH"], "height": bb["HEIGHT"]}
+        if with_points:
+            poly = blk.find("{*}Shape/{*}Polygon")
+            rec["points"] = "" if poly is None else (poly.get("POINTS") or "")
+        out.append(rec)
     return out
+
+
+def zones(ref: str, root: Path = Path(".")) -> list[dict]:
+    """Every declared zone on one page of the **figure** track.
+
+    Three callers need exactly this — `context._figures_on_page` (to hand the model
+    figure geometry and its caption), `lines.line_gaps` (to mask figures out of the
+    dropped-line detector), and `lines`' caption-line marking. The walk itself is
+    `read_blocks`; what this adds is the binding to `gt/fig/`, which is the part a
+    caller must not have to know.
+    """
+    return read_blocks(alto_for(ref, root))
 
 
 def fig_refs(root: Path = Path(".")) -> list[str]:

@@ -29,6 +29,13 @@ index (see context.py), so a bare integer would silently name the wrong page.
   uv run harness figures          -> reconcile gt/fig/ zone geometry against
                                      data/readings.md captions, both directions;
                                      exit 1 if `missing` or `orphan` is non-empty
+  uv run harness zones            -> sweep gt/zones/; with a ref, that page's
+                                     errors and warnings in full
+  uv run harness zones 1-048 --serve -> the segmentation editor: two clicks a
+                                     zone, x from data/zones_config.json, arrow
+                                     keys walk the corpus
+  uv run harness zones --blot     -> the figure-blotted training rasters
+  uv run harness zones --assemble -> bogoras-seg/, ready for ketos segtrain
 
 The line verbs (`lines`, `zoom`, `review`, `restore`) read ALTO from `ocr/` unless
 `--from` says otherwise. That is the read view over every OCR store, not a store
@@ -294,6 +301,42 @@ def main(argv=None):
                         "both be empty; a total that merely matches is not "
                         "coverage, which is how two absent pages once went "
                         "unnoticed by cancelling against two zone-only ones")
+
+    zo = add("zones", help="the seven-type page segmentation in gt/zones/ — a "
+                        "vertical partition of the text column, two clicks per "
+                        "zone, x taken from data/zones_config.json and never from "
+                        "the pointer. Bare form sweeps every keyed page; with a "
+                        "ref it reports that page's errors and warnings in full. "
+                        "Errors are mechanical (a width no column offers, two "
+                        "zones on top of each other) and set the exit code; the "
+                        "ordering assumptions are warnings, configurable and "
+                        "exemptible, because a page that breaks them is the "
+                        "interesting page rather than the rejected one")
+    zo.add_argument("ref", metavar="PP-NNN", nargs="?",
+                    help="page ref, e.g. 1-048. Omit to sweep the whole store")
+    zo.add_argument("--serve", action="store_true",
+                    help="open the segmentation editor on 127.0.0.1 at the given "
+                         "ref and keep serving — the session steps through pages "
+                         "with the arrow keys and saves into gt/zones/, so the ref "
+                         "is where to start, not the only page reachable")
+    zo.add_argument("--port", type=int, default=8732,
+                    help="port for --serve (default 8732; `review --serve` holds "
+                         "8731, so both can run at once)")
+    zo.add_argument("--ink", action="store_true",
+                    help="with the corpus sweep: also read every raster and report "
+                         "ink no zone accounts for. Off by default because it costs "
+                         "~0.27 s a page against ~1 ms for the file-level checks; "
+                         "always on for a single page, where it is the check that "
+                         "catches a dropped zone")
+    zo.add_argument("--blot", action="store_true",
+                    help="write the figure-blotted raster used for training — "
+                         "gt/fig/ zones painted white so paragraph wrap around an "
+                         "illustration cannot shape what the model learns. With a "
+                         "ref, one page; bare, all 832")
+    zo.add_argument("--assemble", action="store_true",
+                    help="build bogoras-seg/ from the train/eval marks: each page's "
+                         "zone ALTO beside its blotted raster, ready for ketos "
+                         "segtrain. Reports the invocation; runs nothing")
 
     nz = add("normalize", help="NFD conformance, §2.9 spacing, and lookalike "
                         "census across the corpus stores — bare form (or "
@@ -618,6 +661,35 @@ def main(argv=None):
             # The counts alone never decide it: 250 pages was once the expected
             # total *and* wrong in two compensating directions at the same time.
             return 1 if (rep["missing"] or rep["orphan"]) else 0
+        if a.cmd == "zones":
+            from . import zones as zmod
+            from .zones_config import load_config
+            if a.serve:
+                if not a.ref:
+                    print("zones --serve needs a ref to start at, e.g. "
+                          "`harness zones 1-048 --serve`", file=sys.stderr)
+                    return 2
+                from .zones_ui import serve as serve_zones
+                serve_zones(a.ref, a.root, a.port)
+                return 0
+            if a.blot:
+                rep = zmod.blot_all(a.root) if not a.ref else zmod.blot_one(a.ref, a.root)
+                out(rep)
+                return 0
+            if a.assemble:
+                rep = zmod.assemble(a.root)
+                out(rep)
+                return 1 if rep["missing_blot"] else 0
+            cfg = load_config(a.root)
+            if a.ref:
+                rep = zmod.validate_page(a.ref, a.root, cfg, ink=True)
+                out(rep)
+                return 1 if rep["errors"] else 0
+            summary_, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink)
+            out(summary_)
+            if rows:
+                out(rows)
+            return 1 if summary_["errors"] else 0
         if a.cmd == "normalize":
             # Bare form and --check are the same thing: report only. --convert is
             # the only way to write, scoped or not — no more bare-form write, which

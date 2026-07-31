@@ -77,8 +77,31 @@ review/*/*.png
 # property whose absence caused the ground-truth loss.
 scans-w-figs/
 scans-w-ocr/
+# `gt/zones/` is tracked — the page ALTOs, the three split lists, `_rule_exempt.json`
+# and `_ink_exempt.json`
+# are the authored record. What is ignored is the recovery data beside them, the
+# same third disposition `review/*/` already carries: `.prev` is one save deep and
+# `_journal.jsonl` is the append-only log that survives the two saves which destroy
+# it. Both matter only before a commit exists, which is exactly when git cannot
+# help. Same reasoning as `review/*/*.prev` above; see harness/zones.py.
+gt/zones/*.prev
+gt/zones/*.tmp
+gt/zones/_journal.jsonl
 # `harness lines PP-NNN --blot`: each page with every line box and figure zone
 # painted out, so whatever is left is uncovered by construction. Derived from
 # `scans/` and the ALTO stores, regenerable, and one PNG per page across 832 pages
 # — nothing here belongs in history.
 scans-blotted/
+# `harness zones --blot`: the segmenter's training input — each page with its
+# figure zones painted **white**, so a paragraph wrapping around an illustration
+# cannot shape what the model learns about zone geometry. Distinct from
+# `scans-blotted/` above, which paints in conspicuous colours for a human to read;
+# this one has to look like blank paper. Derived and rebuilt in one command, and
+# the 580 figure-less pages here are symlinks into the already-ignored `scans/`,
+# so a tracked copy would dangle in every clone exactly as `scans-w-figs/` would.
+scans-fig-blotted/
+# `harness zones --assemble`: symlink farm pairing each zone ALTO with its blotted
+# raster for `ketos segtrain`, plus the two .lst files it reads. Entirely derived
+# from `gt/zones/` and `scans-fig-blotted/`; the trained model is the artifact
+# worth keeping and that lives in `models/`, as `bogoras-rec/` already establishes.
+bogoras-seg/

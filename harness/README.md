@@ -17,10 +17,21 @@ is the source of record and is deliberately verbose. For the project's rules,
 | `ocr/` | the **read view** over every OCR store — symlinks, currently all into `gt/ocr/` | nothing |
 | `gt/ocr/` | 20 pages of human ground truth | `restore --commit` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
-| `gt/seg/` | segmentation ground truth, text-free by design | by hand |
+| `gt/seg/` | the **first** segmentation attempt: 122 pages, full SegmOnto vocabulary, free polygons. Kept, read-only | by hand, via eScriptorium |
+| `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json` | `zones --serve` |
 | `tei/` | the collation output, and the system of record for seam state | the collation pass |
-| `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` | by hand |
+| `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` | by hand |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `review --serve`, `lines`, `zoom` |
+| `scans-fig-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones --blot` |
+| `bogoras-seg/` | symlink farm pairing each zone ALTO with its blotted raster for `ketos segtrain`. Derived, ignored | `zones --assemble` |
+
+**`gt/seg/` and `gt/zones/` are two schemes, not one store in two states.** The label
+sets differ and so does the geometry regime — free polygons drawn around ink against
+fixed-width bands of a configured column — and *nothing in an ALTO says which scheme
+produced it*. That is the same absence of an internal witness that lost 18 pages of
+transcription when a file's role lived only in the directory holding it, so the role
+lives in the directory again and the two do not alias. Blocks written by `zones`
+also carry an `mz_` id prefix, so a file identifies itself even out of context.
 
 **Reads may resolve through `ocr/`; writes may not.** `ocr/*.xml` are symlinks, so
 naming them on a write hides which real store is being touched — and a write landing
@@ -67,7 +78,34 @@ persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),
 
 **`figures.py`** — the figure track: `gt/fig/` geometry against `data/readings.md`
 text, reconciled by `reconcile()` (the `figures` verb). Also the generic sheet
-compositor `lines.py` reuses.
+compositor `lines.py` reuses, and `read_blocks` — **the one reader of the
+`OtherTag/@LABEL` + `TAGREFS` zone encoding**, store-agnostic, with `zones()` and
+`zones.read_zones` as its two bindings.
+
+**`zones_config.py`** — loads and checks `data/zones_config.json`: the seven types
+with their keys and colours, the per-part text measure and anchor calibration, the
+declarative order rules. `order_warnings` is pure and is transcribed into the
+editor's JS, with `tests/test_zones_order.py` holding the two together. Every rule
+here is a *warning* — nothing in this config can refuse a save.
+
+**`zones.py`** — the `gt/zones/` store: the ALTO writer (eScriptorium dialect, no
+`TextLine`, `mz_` ids, atomic with a `.prev` and a journal), the split lists, the
+exemptions, `validate_page`/`validate_corpus`, the blot sweep and the segtrain
+assembly. **Errors are mechanical and set the exit code; the ordering assumptions
+are warnings.**
+
+Two exemption sidecars, and they answer different questions. `_rule_exempt.json`
+says a page arranges itself unusually and the order rules may stop saying so.
+`_ink_exempt.json` says a particular *band* of ink is not type — a smudge, a gutter
+blob, offset from the facing page — and carries the reason as a required field. The
+second is scoped to a band and never to a page, because the ink check is the only
+thing that can see a dropped zone and a page-wide suppression would hide the next
+one. Both keep reporting what they excuse, flagged.
+
+**`zones_ui.py`** — the segmentation editor. Same server shape as `review.serve`,
+with a `GET /page/<ref>.png` route because a full page as a data URI is ~10 MB of
+markup. The client sends a column index and never an x — the geometry is re-measured
+server-side on save, so a zone of the wrong measure has no field to travel in.
 
 **`authorities.py`** — search over the book's own 73-work bibliography. Returns every
 hit ranked and resolves nothing: 51 sigla share 34 names, so one answer would be
@@ -98,14 +136,35 @@ field-editing verbs. **`codepoints.py`**, **`emit.py`** — one job each.
 - **Keep one fixed key set across a list of records.** The TOON encoder collapses a
   uniform list to a header plus rows; one ragged record de-tabularizes the whole
   table into the verbose nested form.
+- **Resolve a zone's type by `OtherTag/@LABEL`, never by tag ID.** eScriptorium
+  assigns those per export (`BT55`/`BT56` in one, `BT68`/`BT69` in the next), so
+  hardcoding them fails silently rather than loudly — see
+  `tools/strip_graphiczone_lines.py`, where it "quietly became a no-op that
+  reported success". `figures.read_blocks` is the only place that does this.
+- **An empty zone file is a claim, not an absence.** A plate has no text column, so
+  zero zones is its correct segmentation; a page nobody opened is also zero zones.
+  Only the file's existence separates them (`zones.has_zones`), which is why the
+  editor never writes one on navigation and only an explicit save can make one.
+- **Overlap tests need both axes.** Two-column pages put zones side by side at the
+  same height on purpose. A y-only test reports every row of `3-005` as a
+  collision, which is the mirror of the bug that made `lines` read 14 body lines of
+  `1-151` as caption.
+- **The text measure is constant; its position on the raster is not.** The column
+  is ~1780 px wide everywhere, but its left edge drifts up to 236 px inside a
+  single part — scan registration, not typography. Anything drawing or checking a
+  column must anchor per page (`zones.measure_columns`), never from a per-part
+  constant, and never from scan-index parity: parity explains only part of the
+  drift, which is why verso/recto is not a concept in this code.
 
 ## Tests
 
 `uv run pytest`. Fixtures live in `tmp_path`, not the live corpus — a test asserting
 over `gt/ocr/` or `data/` fails the day the corpus legitimately changes, which trains
-everyone to ignore it. The two exceptions are explicit and are facts about the
-printed book rather than about any code: the citation-resolution tests, and the
-`DERIVED`-versus-`.gitignore` check.
+everyone to ignore it. The exceptions are explicit and are facts about the printed
+book or about committed configuration rather than about any code: the
+citation-resolution tests, the `DERIVED`-versus-`.gitignore` check, and the
+`data/zones_config.json` checks — that file is data two modules trust, and nothing
+else would notice a stray comma in it.
 
 ## No ad-hoc Python
 
