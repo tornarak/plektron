@@ -537,7 +537,39 @@ it, and neither does it reach the print's own errors, recorded as printed and
 adjudicated in `note`: `sarytcheff1802`'s *Сѣверо-Востооной* and *ывшей*,
 `kjellmann1882`'s *hushallväxter*, `nordquist1882c`'s *kännedomen on*.
 
-`doi` and `url` are null on every record — enrichment slots, nothing looked up yet.
+**`doi` and `url` are filled where a copy was located, and carry provenance.** Both
+hold `{url, provenance}` rather than a bare string, `#llm` on every one of them,
+because a model proposed every match — the same rank the corpus uses for a model's
+reading of a scan, and for the same reason: a plausible-but-wrong DOI is fluent
+nonsense with no error signal. Ratifying one means a human opening the link.
+
+Coverage, from a sweep of Crossref and the Internet Archive over all 73: **13 DOIs
+and 31 scans, 37 records touched**, 36 with nothing located. Nine of the 13 DOIs are
+BHL title DOIs (`10.5962/bhl.title.*`); the rest are AnthroSource (`murdoch1888`,
+`bogoras1902`), USGS (`dall1877`) and Brill (`adler1901`).
+
+Three properties of that number:
+
+- **A miss is not an absence from the web.** The 36 are overwhelmingly Russian journal
+  articles in Imperial Geographical Society proceedings, plus the German journal
+  articles (*Petermanns*, *Deutsche Geographische Blätter*, the Munich
+  *Sitzungsberichte*) and four Smithsonian annual-report chapters. Those live on
+  prlib.ru, elib.rgo.ru, MDZ and DigiZeitschriften — none with an open search API, so
+  they are hand work against library catalogues, not another sweep.
+- **The near-misses are the hazard, and three were caught only by checking what the
+  identifier resolves *to*.** `lutke1834`'s only scan is the 1835 *отделение
+  мореходное* where the entry is the 1834 *историческое*; `schrenck1899` is Vol. II
+  and only Vols I and III are scanned; `sarytcheff1802`'s top Crossref hit is the 1806
+  English translation. All three would have looked right sitting in the field. A
+  resolving identifier is not a match — compare the title, year *and volume* returned.
+- **Two recorded matches are a different imprint of the same text**, kept deliberately
+  and worth knowing: `nordquist1882b`'s DOI is the 1880 separate printing against the
+  1882 Vega volume, and `murdoch1884`'s scan is the 1890 separate issue of the 1884
+  Smithsonian report chapter.
+
+Modern facsimile reprints have DOIs (`sauer1802`, `wrangell1840`, `hooper1853` are all
+in the Cambridge Library Collection) and are **not** recorded — they name a 2013–14
+edition, not the work Bogoras cites.
 
 One reading is unresolved and flagged in the file: `melikoff1896`'s Russian quoted
 title opens with a clear low `„` and closes with a mark whose exact form is not
