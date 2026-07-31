@@ -149,7 +149,7 @@ recoverable — cite none, mint fresh.
 
 ## 6. Pipeline notes
 
-The charter owns the detector formula and its floor caveat. Two additions from
+`CLAUDE.md` owns the detector formula and its floor caveat. Two additions from
 this evidence set: OCR-side risk runs opposite the keyer-side one — a
 recognizer launders ᵉ/ᵋ to plain `e`, invisible except via lexicon miss; and
 the unmarked ASCII sorts of spec §2.4 are undetectable by construction, one

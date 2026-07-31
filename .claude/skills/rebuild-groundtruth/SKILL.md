@@ -36,8 +36,12 @@ stateless, so a fresh session resumes wherever the last one stopped.
     uv run harness normalize --path review/PP-NNN/proposal.json
     uv run harness review PP-NNN --serve                 human adjudicates
     uv run harness normalize --path review/PP-NNN/decision.json   same gate, post-adjudication
-    uv run harness restore PP-NNN                        preview: edits, drift, mismatch
-    uv run harness restore PP-NNN --commit                -> gt/ocr/
+    uv run harness restore PP-NNN --force                preview: edits, drift, mismatch
+    uv run harness restore PP-NNN --force --commit        -> gt/ocr/
+
+`--force` is in both lines because every page now holds text; see "Review and
+restore" below. The ALTO verbs read `ocr/` by default — the read view over every OCR
+store — so no `--from` is needed to reach a page's current geometry.
 
 Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.json`,
 `decision.json`, and the derived `sheets/ crops/ zoom/`. No verb needs telling where;
@@ -247,9 +251,8 @@ collation-side analogue since collation works from the full page image.
   needed the same `ı`-for-`ɪ` swap corrected on 33 occurrences across nine words,
   by a single scoped substitution, not by hand-fixing each). Follow with the same
   command minus `--convert` (or `--check`), which exits 1 on drift. Scope to the
-  one file with `--path` — a per-page step has no business touching the other
-  280+ corpus files, and `normalize` never writes at all unless `--convert` is
-  given.
+  one file with `--path` — a per-page step has no business touching the rest of
+  the corpus, and `normalize` never writes at all unless `--convert` is given.
 - **Run the same `normalize --path` check against `decision.json` too, once it
   exists** (after the human's review pass, before `restore`/`--commit`). The
   adjudicator can introduce the identical drift classes typing corrections in the
@@ -274,6 +277,16 @@ unlicensed mark in the adjudicated text. The last catches what a human pass *mis
 rather than what it never saw — on `1-073` review corrected two of three identical
 errors and left the third, and the page read as done.
 
+**This is now a revision pass, and `restore` says so.** Every page in `gt/ocr/` holds
+text, so the rebuild it was written for is finished and the first refusal above fires
+every time; `--force` is how a revision states its intent, and is required for one.
+The report's `mode` field distinguishes the two cases: `restoration` when the
+geometry came from some other store, `revision` when the source resolves to the
+target — which under the default store it does, `ocr/<ref>` being a symlink onto
+`gt/ocr/<ref>`. Reading a file you are about to write is safe here (the tree is
+parsed whole before any write, and the write goes to a `.tmp` sibling), but it is a
+different act from reconstruction and the report names which one ran.
+
 Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
 
 ## What you never do
@@ -284,10 +297,10 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
   blanket ban on ever touching an already-restored file: `1-048` and `2-030` (the
   two pages that predate the pipeline entirely) got a direct, surgical
   straight-quote/content fix this way, each character raster-verified first via
-  `harness zoom --from gt/ocr` and each edit a targeted substring replace, never a
-  hand-retyped line (retyping risks an NFD-vs-precomposed mismatch that silently
-  passes a `repr()` eyeball check — verify with an in-string `.replace()`, not by
-  comparing to a literal you typed).
+  `harness zoom` and each edit a targeted substring replace, never a hand-retyped
+  line (retyping risks an NFD-vs-precomposed mismatch that silently passes a
+  `repr()` eyeball check — verify with an in-string `.replace()`, not by comparing
+  to a literal you typed).
 - Normalize a Tier-1 form toward a plausible shape, harmonize it against a
   neighbouring page, or propose a sort the inventory has never attested.
 - Take CATMuS as a witness to any glyph. It reads 0% of the inventory. It is evidence

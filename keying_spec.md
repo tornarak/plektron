@@ -2,8 +2,9 @@
 
 **Authority.** The printed key (Part 1, p. 10 — book-internal apparatus,
 firewall-clean, binds) as corrected by the editor's corpus-scale collation
-from hand-corrected OCR. The charter outranks this file; the transcriber
-harness (rev 2) governs the collation pass.
+from hand-corrected OCR. `CLAUDE.md` outranks this file on project invariants;
+`transcriber_harness.md` governs the collation pass. This file is normative for
+the character inventory, and binds both passes and the human keying track.
 
 ---
 
@@ -102,7 +103,7 @@ genuinely threatens:
 
 `c` = English *sh*; `j` = French *jour*; `x` = *Bach*; plain `s`; `h` (a
 licensed sort in native words — editor, corpus scale). All invisible to any
-glyph-pattern detector by construction (charter, detector section).
+glyph-pattern detector by construction (`CLAUDE.md`, "Transcription Detection").
 
 ### 2.5 Series structure (key doctrine, stated outright)
 

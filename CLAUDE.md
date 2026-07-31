@@ -34,14 +34,19 @@ publication and source the same way. The collation pass may emit `#llm` and noth
 unmarked span is indistinguishable from a ratified one to anything that does not check.
 `--ratified` switches the expectation for a page a human has been through.
 
-**What the firewall is not**, since it was stated the other way for most of this project's
-life: it is *not* "reproduce the draft verbatim". That version enforced the canonicity of
-whatever `ocr/` happened to hold, and was one of three things depending on what that was —
-incidentally right over a human key, **unsatisfiable** over real recognizer output (CATMuS
-emits 0% of the inventory, so every correct TEI failed), and a **tautology** over a
-model's own reading, where it compared a file against its own source and rendered the
-result as a verified PASS. Removed from `validate.py`, `transcriber_harness.md` and the
-skill; the long comment at the old check's site records the reasoning.
+**What the firewall is not** — stated because it was stated the other way for most of
+this project's life: it is *not* "reproduce the draft verbatim". That version enforced
+the canonicity of whatever `ocr/` happened to hold, and so was **unsatisfiable** over
+real recognizer output (CATMuS emits 0% of the inventory, so every correct TEI failed)
+and a **tautology** over a model's own reading, comparing a file against its own source
+and rendering the result as a verified PASS. Removed from `validate.py`,
+`transcriber_harness.md` and the skill; the comment at the old check's site records why.
+
+That tautology is a live hazard, not a closed one, and it recurs wherever a check's
+two inputs can turn out to be the same file. `harness review`'s span diff now refuses
+rather than reporting a clean 40/40 when the store it is pointed at resolves to the
+ground truth the proposal produced. **A comparison whose witnesses may be one witness
+must say so.**
 
 **LLM remit.** Models triage, propose, and restructure. They never originate a glyph
 identity and never mint an index entry unreviewed.
@@ -62,49 +67,48 @@ identity and never mint an index entry unreviewed.
 
 # Encoding
 
-**NFD, corpus-wide** (`keying_spec.md` §1). This was declared long before anything
-enforced it, and the corpus had drifted: `data/readings.md` held both encodings of
-the same glyph — `ê` 17 precomposed against 13 decomposed, `ñ` 16/8, `ä` 2/2 — so
-exact comparison between stores silently failed. `harness normalize` (bare, or
-`--check`) is now the gate (277 distinct files, currently clean); `harness
-normalize --convert` writes the fixes.
+**NFD, corpus-wide** (`keying_spec.md` §1). Declared long before anything enforced
+it, so the corpus had drifted — `data/readings.md` held both encodings of the same
+glyph and exact comparison between stores silently failed. `harness normalize`
+(bare, or `--check`) is the gate; `--convert` writes the fixes. It reports a file
+count, and the count moves as stores are added, so read it rather than a number
+written down here.
 
 **Never NFKC.** It has compatibility decompositions for two inventory glyphs and
 destroys them: `ᵋ` U+1D4B → plain U+025B (113 occurrences), `˙` U+02D9 → space +
 combining dot. Any `normalize()` call must name its form.
 
 **The ASCII policy is scoped to Tier-1**, amended from corpus-wide (`keying_spec.md`
-§1, rev 2.2). Inside `ckt`/`kpy`/`ypk`, U+0027 and U+002D are the only apostrophe and
-hyphen. English prose reproduces the print, **curly quotes included** — the book sets
-them, and conflation with a true apostrophe is a hazard only where apostrophes are
-phonetically load-bearing. `validate.py:190` had already scoped the lookalike greps
-this way; the spec's "run unscoped" was the stale half.
+§1). Inside `ckt`/`kpy`/`ypk`, U+0027 and U+002D are the only apostrophe and hyphen.
+English prose reproduces the print, **curly quotes included** — the book sets them,
+and conflation with a true apostrophe is a hazard only where apostrophes are
+phonetically load-bearing. `validate.LOOKALIKE_GREPS` is applied only inside Tier-1
+spans for exactly this reason, and `normalize.LOOKALIKE_CHARS` deliberately omits
+the curly quotes because it runs over whole files. **The two are not copies and must
+not be merged** — `tests/test_lookalike_scope.py` holds them apart, and exists
+because a consolidation was nearly carried out on the strength of an audit that
+mistook the difference for drift.
 
 Note U+0027 is *itself* the spirant and pause mark, not merely a lookalike for
 U+02CA. That is why the review page's notation keyboard is a toggled mode rather
-than a remap. The keyboard's palette also carries a dedicated curly-quote pair
-(“ ”) now, click-to-insert independent of the mode toggle — added after `1-100`
-keyed 16 glosses with straight `"..."`, the same slip the two hand-keyed pages
-(`1-048`, `2-030`) turned out to have made throughout.
+than a remap, and why its palette carries a dedicated curly-quote pair.
 
-**Two more corpus-wide, content-scoped lookalike traps** live in `normalize.py`
-alongside `ġ`: `U+0131` (plain dotless ı) traps `U+026A` (the only licensed
-dotless small-cap, §2.3 — U+0131 has no legitimate reading anywhere in this
-corpus), and `U+0022` (straight quote) traps curly `“ ”` in `text` fields and
-non-`@note` prose (English prose reproduces the print's curly quotes, per
-above). Both report-only, same tier as every lookalike — a human ruling, not an
-auto-fix. `harness normalize` also now **checks by default**; `--convert` is
-required to write anything, corpus-wide or scoped by `--path` alike, and gained
-a `spacing` rule (§2.9: collapses runs of 2+ spaces, strips space before
-`;`/`:`/`,`) that blocks like NFD does, since neither is a judgement call.
+**Two more corpus-wide lookalike traps** live in `normalize.py` alongside `ġ`:
+`U+0131` (plain dotless ı) traps `U+026A`, the only licensed dotless small-cap
+(§2.3 — U+0131 has no legitimate reading anywhere here), and `U+0022` traps curly
+`“ ”` in `text` fields and non-`@note` prose. Both report-only, like every
+lookalike — a human ruling, not an auto-fix. `normalize` **checks by default**;
+`--convert` is required to write anything, and the `spacing` rule (§2.9: collapse
+runs of 2+ spaces, strip space before `;`/`:`/`,`) blocks like NFD does, since
+neither is a judgement call.
 
 `keying_spec.md` §2.6 records **mark–base licensing**, editor-supplied: the breve
 U+0306 sits on `u` and `i`, never on the obscure-vowel series `ᴀ ᴇ ɪ ä`, since the
-p. 10 key already glosses that series as short. It exists because `1-074`'s
-`Am-g̣roˊkĭ` is unresolvable from the raster at any magnification — `i` drops its dot
-under an above-diacritic, so printed `ĭ` and a hypothetical `ɪ̆` are the same
-letterform, and only the constraint separates them. Consequence: `ɪ` + U+0306
-anywhere is an error, not a reading.
+p. 10 key already glosses that series as short. It exists because `i` **drops its
+dot under an above-diacritic**, so printed `ĭ` and a hypothetical `ɪ̆` are the same
+letterform at any magnification and only the constraint separates them (`1-074`'s
+`Am-g̣roˊkĭ`). Consequence: `ɪ` + U+0306 anywhere is an error, not a reading. This
+is the one detector that blocks a write rather than raising a flag.
 
 # Source rasters
 
@@ -118,12 +122,11 @@ box; the covers `1-001`/`1-002` and the foldout `1-361` have no master and are
 RGB at 150). The figure *photographs* are separate embedded JPEGs already at
 150 dpi, so nothing is recoverable there — only the text gains.
 
-Rendering at 300 dpi is **not** a clean ×2 of the old 150 dpi rasters: across
-the 832 pages, 205 come out one pixel short on width, 627 one pixel short on
-height, and **none is exactly double**. Anything mapping between the two spaces
-must take the ratio from the two rasters, per page and per axis. Do not compute
-it as `ceil(pt/72*dpi)` either — that predicts 2782 for the covers where poppler
-renders 2781, because `667.44/72*300` is `2781.0000000000005`.
+Rendering at 300 dpi is **not** a clean ×2 of the old 150 dpi rasters — across the
+832 pages, **none** is exactly double, and most are a pixel short on one axis. So
+anything mapping between the two spaces must **take the ratio from the two rasters,
+per page and per axis**. Computing it as `ceil(pt/72*dpi)` fails too, on float
+error: it predicts 2782 for the covers where poppler renders 2781.
 
 **Page refs are `PP-NNN`** — part, and scan index within that part (`1-048`) —
 everywhere: filenames, CLI, `boundaries.json`, commit messages. NNN is a *scan
@@ -141,93 +144,87 @@ and nothing infers it.
 Layout, all at the repo root:
 
     scans/  832 rasters, all three parts, 300 dpi. Derived; not in git.
-    fig/    252 figure-track ALTOs + METS.xml. Geometry only.
-    ocr/    20 ALTOs — the pilot selection. **Symlinks into gt/ocr/**, not copies.
-    gt/     ocr/ (the 20 real files), seg/ (train, eval, .lst manifests).
+    ocr/    the read view over every OCR store — symlinks, currently all into
+            gt/ocr/. The harness's default --from. Never written through.
+    gt/     what a human has been through. ocr/ (20 pages of ground truth),
+            fig/ (252 figure ALTOs + METS, geometry only), seg/ (segmentation).
     tei/    1 page.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
-    end-of-eval/  18 pages of stock-CATMuS output over the refs gt/ocr/ lost.
-                  Machine output, never ground truth. Supplies the line geometry
-                  the restore builds on, since the shells have none.
     review/ one directory per page, PP-NNN/. proposal.json (a reading, not truth)
             and decision.json (adjudicated) are tracked; crops/ sheets/ zoom/ and
             review.html are derived and ignored. See harness/paths.py.
     models/ blla, CATMuS print (large + tiny), LADaS medium, orli, plates-seg.
     pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
+    bogoras-rec/  working dir for recognition runs. Ignored; only trained models
+            are kept, and those live in models/.
     scans-w-figs/  scans-w-ocr/   symlinks into scans/. Derived, and ignored:
             they point *into* an ignored tree, so a clone gets dangling links.
-    harness/  tools/  concordance.md  keying_spec.md  transcriber_harness.md
+    harness/  tools/  tests/  concordance.md  keying_spec.md  transcriber_harness.md
 
-- `ocr/` **20 refs** — the pilot selection, scattered across all three parts
-  (`harness pages` lists them). Intended as hand-keyed ground truth, not
-  recognizer output. **11 of the 20 are currently empty shells** — see the loss
-  below; `1-048`, `2-030` (never lost) and the restored `1-074`, `1-073`,
-  `1-052`, `1-053`, `1-151`, `1-100`, `2-040` are the ones with text.
-  **`ocr/*.xml` are symlinks into `gt/ocr/`** — one store under two names, so the
-  two can never disagree, and a tool walking both sees each file twice. Anything
-  iterating the corpus must dedupe by real path: without it a writer processes the
-  file under the first name, meets it again under the second, finds it already done
-  and skips silently, so the report undercounts exactly what it touched.
-  `harness/normalize.py:scoped_files` does this and says why.
-  `tei/` holds **one** page, `1-151` — collated, committed, with two open comments.
-  It does **not** currently validate, for a reason external to the file; see Open.
-- **Figure captions live in `data/readings.md`, not in `fig/`.** All **395** are
-  read by hand off the 300 dpi scans, one block per FigDesc zone, keyed
-  `<ref>|<zone-id suffix>`. `fig/` carries **no `TextLine` at all** — the lines
+- **The ground-truth rebuild is finished.** All **20** pilot pages in `gt/ocr/`
+  carry text — the pilot selection is scattered across all three parts, and
+  `harness pages` lists it. `tei/` holds **one** page, `1-151` — collated,
+  committed, validating, with two open comments.
+- **`ocr/*.xml` are symlinks into `gt/ocr/`**, and `ocr/` is a *view*, not a
+  store: the stable name a page's current OCR is reached by, whatever produced
+  it, and the harness's default `--from`. Raw recognizer output, if any is
+  produced again, links in beside the ground truth from its own real store, so a
+  file's rank stays readable from where its link points. **Reads may resolve
+  through `ocr/`; writes never do** — `restore` names `gt/ocr/`.
+  Two names over one inode means a tool walking both sees each file twice, so
+  anything iterating the corpus must **dedupe by real path**: without it a writer
+  processes the file under the first name, meets it again under the second, finds
+  it already done and skips silently, so the report undercounts exactly what it
+  touched. `harness/normalize.py:scoped_files` does this and says why.
+- **Figure captions live in `data/readings.md`, not in `gt/fig/`.** All **395**
+  are read by hand off the 300 dpi scans, one block per FigDesc zone, keyed
+  `<ref>|<zone-id suffix>`. `gt/fig/` carries **no `TextLine` at all** — the lines
   were stripped, because the exported line segmentation dropped whole printed
   lines and a line-level witness in the ALTO would then disagree silently with
-  the readings. There is no keyed/unkeyed boundary any more; the old
-  `KEYED_COUNT = 50` marker is gone from `harness/figures.py`.
-  **Consequence for code**: reading `String/@CONTENT` out of `fig/` returns `""`
-  for every zone on every page. Not an error — nothing, which is worse. Go
-  through `figures.readings()`, and check the two stores agree with
-  `figures.reconcile()` (invariant: `missing` and `orphan` both empty).
+  the readings. **Consequence for code**: reading `String/@CONTENT` out of
+  `gt/fig/` returns `""` for every zone on every page. Not an error — nothing,
+  which is worse. Go through `figures.readings()`, and check the two stores agree
+  with `harness figures` (invariant: `missing` and `orphan` both empty; it exits
+  1 if either is not).
 - **eScriptorium holds nothing right now** — the projects were exported and
   deleted. The repo is the system of record; re-import when keying resumes.
-  `tools/make_mets.py fig` rebuilds the manifest first.
-- **The repo is now under git**, branch `main`, baseline commit `0aa81ab`. Which is
-  the point of the next entry: before that commit, everything was untracked.
+  `tools/make_mets.py gt/fig` rebuilds the manifest first.
+- **The harness has tests**: `uv run pytest`, over the pure logic — ref parsing,
+  the mark licence, the spacing and NFD rules, the folio fold, the layout lists,
+  citation parsing, and the lookalike *scopes*. Fixtures live in `tmp_path`, not
+  the live corpus. See `harness/README.md`.
+- `tools/` holds four scripts, none of them part of a loop. `make_mets.py <dir>`
+  is live — it rebuilds a METS manifest before an eScriptorium import.
+  `migrate_coords.py` (150→300 dpi) and the two `strip_*_lines.py` (which produced
+  the line-free `gt/fig/`) are **spent one-shot migrations**, kept for the
+  reasoning in their docstrings; re-running either would corrupt what it already
+  converted, and both say so at the top.
 
-## The ground-truth loss, and the rebuild
+**The frontier is collation.** `tei/` holds 1 page of 832. The apparatus stores are
+done and reconciled — `loi.json`, `toc.json`, `authorities.json`, `readings.md`,
+and the 20 pilot ground-truth pages — so what is left is the pass that consumes
+them. The first page transcribed from here is also the first test of the provenance
+rule (see Open), since `1-151` was retrofitted by hand rather than emitted by a pass
+that had read it.
 
-**17 of the 20 `gt/ocr/` ALTOs are ~1977-byte export shells** — `alto`,
-`Description`, 15 `OtherTag`s, `Layout`, `Page`, `PrintSpace`, and no `TextBlock`
-or `TextLine` whatsoever. An archive extraction over the directory replaced the
-hand-keyed transcription; all 18 originals shared the mtime
-`2026-07-29 22:42:18.000000000`, whole-second and identical across the batch,
-which no script here produces. There is no copy anywhere in the repo, and
-`gt/seg/` is text-free by design rather than a backup.
+## The ground-truth loss
 
-The root cause is worth stating because it is a design fault, not an accident: the
-*role* of those files — machine output versus human ground truth — lived only in
-the directory name, and `ocr/` is symlinks into `gt/ocr/`, so anything extracted
-into one wrote through to the other. Nothing in an ALTO says which it is; the
+Rebuilt and closed, but the design fault it exposed still governs the store layout.
+An archive extraction over `gt/ocr/` replaced 17 of the 20 hand-keyed pages with
+~1977-byte export shells, and there was no copy anywhere in the repo. **The cause
+was that a file's role — machine output or human ground truth — lived only in the
+directory name**, while `ocr/` symlinks into `gt/ocr/`, so anything written into
+one wrote through to the other. Nothing in an ALTO says which it is: the
 `Description` block of a hand-keyed page and of an empty shell are byte-identical.
 
-**The rebuild loop is `/rebuild-groundtruth PP-NNN`** — the skill
-(`.claude/skills/rebuild-groundtruth/SKILL.md`) is normative for how the pass runs and
-carries the instrument mechanics, the error classes and the proposal contract. Four
-stateless steps, so a fresh session resumes wherever the last stopped:
+Hence the current rule, which is the whole lesson: **`gt/` is what a human has been
+through, `ocr/` is only a view over it, and nothing writes through a view.**
 
-    harness lines PP-NNN --sheets       line identity + contact sheets
-    harness zoom PP-NNN --only …        magnification, when the sheets leave a doubt
-    (a reading proposal is authored)    review/PP-NNN/proposal.json
-    harness review PP-NNN --serve       adjudicate in the browser
-    harness restore PP-NNN              preview: edits, drift, mismatch
-    harness restore PP-NNN --commit     -> gt/ocr/, real ground truth
+The rebuild ran as `/rebuild-groundtruth PP-NNN` and its skill remains normative
+for the pass — which is now a *revision* loop rather than a restoration one, since
+every page has text. `restore` reports which of the two it did.
 
-Every one of those reads and writes under **`review/PP-NNN/`**, and none needs telling
-where: the page's own directory is the default for the images as well as the two JSON
-files, so `--out` exists only for a one-off outside the pass. Finishing with a page is
-`harness clean PP-NNN` — which is the other half of why the layout
-is per-page rather than per-kind (`harness/paths.py` records the reasoning).
-
-`end-of-eval/` supplies the geometry, since the shells have none. `restore` refuses
-four ways rather than guessing: a target that already holds text (without `--force`),
-any line lacking a decision, a line without exactly one `String`, or any unlicensed
-mark in the adjudicated text.
-
-Two invariants that bind anything touching lines, not just this pass.
+Two invariants from that work bind anything touching lines, not just that pass.
 `context._lines_from_alto` **drops empty lines**, so its index is not the ALTO's —
 join through `harness lines`, never through `detector_flags`' line numbers. And **a
 line polygon can exclude printed text**: `1-074` prints `5.` and `9.` outside their
@@ -235,12 +232,10 @@ boxes, `1-073` the same with its `5.` and its folio `51` outside *every* box on 
 page. The omission is horizontal, so no vertical padding reaches it; `--margins`
 widens to the PrintSpace, which is where the excluded material sits.
 
-**Restoring these is not, in itself, the point any more.** Recognition fine-tuning is
-off the table, so there is no model waiting to train on them, and gloss review will run
-off TEI provenance attributes rather than ALTO ground truth. What the exercise is for is
-the *correction workflow* — the crops, the review page, the keyboard, the decision log
-and the error profile it yields. Judge a session by whether the loop got better, not by
-the page count.
+**The page count was never the point.** Recognition fine-tuning is off the table, so
+no model waits to train on these, and gloss review runs off TEI provenance rather
+than ALTO ground truth. The deliverable was the *correction workflow* — the crops,
+the review page, the keyboard, the decision log and the error profile it yields.
 
 # Harness
 
@@ -267,10 +262,15 @@ if you ever need it.
                                       (one row per cited_as, so the collisions
                                       show), --key one record in full, --unlocated
                                       the 36 with no copy located
-    uv run harness lexicon            frequent lexicon misses, to whitelist
+    uv run harness lexicon            frequent lexicon misses, to whitelist;
+                                      --native --marks --suffixes --digraphs
+                                      invert it into corpus-frequency reports
+                                      over restored ground truth
     uv run harness lines PP-NNN       per-line id + geometry + text, ALTO order,
-                                      empties kept; --crops DIR writes line PNGs,
-                                      --sheets DIR labelled contact sheets,
+                                      empties kept; --crops and --sheets write
+                                      PNGs and labelled contact sheets into the
+                                      page's own review/PP-NNN/ (both are flags,
+                                      not paths — `--out` is the one-off escape),
                                       --from DIR picks the store, --full adds
                                       baseline/polygon, --margins widens to the
                                       PrintSpace
@@ -294,34 +294,15 @@ if you ever need it.
                                       same thing; --convert is required to write,
                                       scoped or not.
     uv run harness proposal-check PP-NNN   a proposal's `resolved` field against
-                                      the codepoints its `text` actually has;
-                                      --fix applies the one unambiguous swap;
-                                      --codepoints LINE names every non-ASCII
-                                      character in that line's field (--field,
-                                      default text) — the answer to "is this
-                                      really U+026A or did I type U+0131"
-                                      without a hand-rolled ord() loop; --set
-                                      LINE writes one line's field (--field,
-                                      value from --value or stdin), NFD-
-                                      normalizing on write so it can't produce
-                                      the mismatch a hand-typed `Edit` risks
-                                      against this file's own NFD form (a
-                                      precomposed ñ you type vs. the file's
-                                      n+U+0303 are invisible to each other
-                                      under exact string match); --replace
-                                      LINE --old X --new Y (--field, --which)
-                                      swaps one or more occurrences of one
-                                      string for another inside a field
-                                      instead of rewriting the whole thing —
-                                      the safer move once a line has already
-                                      been authored and only a character or
-                                      two need correcting, since retyping a
-                                      long field with --set risks a second,
-                                      unrelated slip while fixing the first;
-                                      --which selects "all" (default),
-                                      "first", "last", an occurrence number,
-                                      or an inclusive range ("2:4"), 1-based
-                                      left to right
+                                      the codepoints its `text` actually has.
+                                      Also the field editors — --codepoints,
+                                      --set, --replace/--which — which exist so
+                                      that inspecting or patching a proposal
+                                      never needs ad-hoc Python. `--help` for
+                                      the full contract
+    uv run harness figures            reconcile gt/fig/ zone geometry against
+                                      data/readings.md captions, both ways;
+                                      exit 1 if `missing` or `orphan` is non-empty
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -350,18 +331,19 @@ data layout, what is settled and what is open. It is deliberately **not** the pl
 for how a pass is run; that belongs to the skill for that pass, and detail that
 accumulated here has been moved out rather than duplicated.
 
-Two passes, two skills, and they are not the same job:
+| document | owns |
+|---|---|
+| `CLAUDE.md` | project invariants, data layout, what is settled and what is open |
+| `keying_spec.md` | the character inventory. Binds both passes and the human keying track |
+| `transcriber_harness.md` | the collation rule set — output contract, firewall rules, per-element specs |
+| `.claude/skills/transcribe-page/` | sequences collation; carries no rules of its own |
+| `.claude/skills/rebuild-groundtruth/` | the raster→ALTO reading loop, rules included — it has no separate harness doc |
+| `harness/README.md` | the package: module responsibilities, stores, caller invariants |
+| `concordance.md` | the evidence set behind the spec — aligned pairs, flag register, per-glyph attestation |
 
-| pass | skill | normative rules | output |
-|---|---|---|---|
-| collation (OCR → TEI) | `transcribe-page` | `transcriber_harness.md` | `tei/` |
-| ground-truth rebuild (raster → ALTO) | `rebuild-groundtruth` | its own SKILL.md | `gt/ocr/` |
-
-`transcriber_harness.md` is the normative rule set for collation — output contract,
-firewall rules, per-element specifications — and `transcribe-page` only sequences it.
-`rebuild-groundtruth` carries its own rules, since the reading loop has no separate
-harness document. `keying_spec.md` governs the character inventory for both, and binds
-the human keying track.
+Two passes, and they are not the same job: collation (OCR → TEI, output `tei/`) and
+the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
+*revision* pass rather than a rebuild, every page having been restored.
 
 # Current pipeline
 
@@ -394,27 +376,27 @@ the human keying track.
 
 # Figure track
 
-The 252 pages with figures have been segmented to isolate `GraphicZone`s and `GraphicZone-FigDesc`s — **414 zones and 395 captions** as of the current export in `fig/`, one `data/readings.md` block per caption, reconciled in both directions. Figure images will be auto-generated by the build. Specifics TBD
+The 252 pages with figures have been segmented to isolate `GraphicZone`s and
+`GraphicZone-FigDesc`s — **414 zones and 395 captions** in `gt/fig/`, one
+`data/readings.md` block per caption, reconciled in both directions by `harness
+figures`. Figure images will be auto-generated by the build. Specifics TBD.
 
-The count was 250 pages until `1-301` (fig. 168) and `2-262` (fig. 301) turned up
-missing. It is worth knowing why that went unnoticed: 250 also happened to be the
-page count the List of Illustrations implies (215 distinct text-figure folios + 35
-plate leaves), so the two absences cancelled exactly against `3-006`/`3-007`, which
-carry a zone and no caption and are therefore not LoI pages at all. **A total that
-matches is not coverage.** The check that would have caught it is the per-entry
-one, and it now passes: every LoI text-figure **1–302** has a reading, no reading
-cites a figure number outside the LoI, and all **35 plates I–XXXV** are located.
-91 LoI plate segments map to 93 caption blocks, and all four deviations are known
-— Plate II (the LoI makes the shared "Anui Fair" its own segment where the page
-prints it twice) and Plates XXXII/XXXIII/XXXIV (four printed figures against three
-segments, two figures sharing a caption on each).
+**A total that matches is not coverage**, and this track is where that was learned:
+the count sat at 250 pages while two were missing, because 250 was also what the
+List of Illustrations implies, and the two absences cancelled exactly against
+`3-006`/`3-007`, which carry a zone and no caption and are not LoI pages at all.
+Only the per-entry check catches that. It now passes: every LoI text-figure
+**1–302** has a reading, no reading cites a figure number outside the LoI, and all
+**35 plates I–XXXV** are located. 91 LoI plate segments map to 93 caption blocks,
+and all four deviations are known — Plate II (the LoI makes the shared "Anui Fair"
+its own segment where the page prints it twice) and Plates XXXII/XXXIII/XXXIV (four
+printed figures against three segments, two sharing a caption on each).
 
 Figure images are cropped from `scans/`. Note that the ~300 dpi master is the
 *text* layer only — the photographs are embedded JPEGs already at their native
 150 dpi, so re-rendering the page at 300 dpi upsamples them and adds no detail.
-Their bboxes matched the embedded JPEG dimensions exactly at 150 dpi (`1-116`'s
-zones were 418×233 and 508×640, and the page carries JPEGs of exactly those
-sizes), which is a free check on the segmentation if ever needed.
+Their bboxes matched the embedded JPEG dimensions exactly at 150 dpi, which is a
+free check on the segmentation if ever needed.
 
 **GraphicZone↔FigDesc pairing is not in the data.** Pair by geometry and record
 the result; never re-derive it per consumer. **17 of the 252 pages are not 1:1,
@@ -428,15 +410,13 @@ lettered (`1-276` fig. 138 *a, b, c*; `2-085` fig. 253 *a, b*) or numbered
 (`1-237` "Figs. 2, 3"), and `3-006`/`3-007` carry a zone with no caption at all.
 Nothing will make these 1:1 and nothing should try.
 
-**Caption-heavy is now empty, and that is a result, not a given.** It was 5
-pages. All five were the segmenter finding captions that do not exist — clipped
-slivers of body text on `2-122`, an unlabelled graphic on `1-235`, and on `2-094`
-the short parallel strokes of the *cheek line-work* in fig. 260's facial-painting
-drawing, which at zone level look like a short line of type. Those boxes were
-deleted from `fig/` and their `data/readings.md` entries with them. So a
-caption-heavy page appearing in future means a new segmentation fault, not a
-feature of the book — which is exactly the signal it should be, and was not while
-noise was sitting in the same bucket.
+**Caption-heavy is now empty, and that is a result, not a given.** All 5 such pages
+were the segmenter finding captions that do not exist — clipped slivers of body
+text, an unlabelled graphic, and on `2-094` the parallel strokes of the cheek
+line-work in fig. 260, which at zone level look like a short line of type. Those
+boxes and their readings were deleted. So **a caption-heavy page appearing in
+future means a new segmentation fault, not a feature of the book** — which is
+exactly the signal it should be, and was not while noise sat in the same bucket.
 
 Encoding confirmed against real exports: eScriptorium writes zone types as
 `OtherTag/@LABEL` referenced by `TAGREFS`, labels exactly `GraphicZone` and
@@ -491,25 +471,17 @@ reachable by reading one. The same applies to the Tier-1 forms in
 `1-049`'s Plate I caption prints `Nuˊnlig̣ren` with a **dotted g** where the LoI
 sets `Nuˊnligren` plain. Recorded as printed, not adjudicated.
 
-**The dot is encoded *below*, and the naming used to say otherwise.** The canonical
-form is `g` + U+0323 COMBINING DOT BELOW — 35 occurrences, it is what
-`detectors.INVENTORY_CHARS` carries, and `validate.py` declares the precomposed
-U+0121 (dot *above*) a trap for it. So `DOT_ABOVE_G` and the `dot_above_g` flag name
-the **lookalike**, not the glyph; they are trap detectors and correctly matched. Text
-here previously called the inventory glyph "dot-above g" while its own example
-encoded U+0323, which cost a session's worth of chasing the wrong codepoint.
+**The dot is encoded *below*.** The canonical form is `g` + U+0323 COMBINING DOT
+BELOW; the precomposed U+0121 (dot *above*) is a **trap** for it. So `DOT_ABOVE_G`
+and the `dot_above_g` flag name the lookalike, not the glyph — they are trap
+detectors and correctly matched. Documentation here once called the inventory glyph
+"dot-above g" while its own example encoded U+0323, which cost a session's worth of
+chasing the wrong codepoint; hence the emphasis.
 
-One thing still wants a human, and it is firewalled. Whether the U+0323
+One thing still wants a human, and it is firewalled: whether the U+0323
 canonicalization was made against the printed p. 10 key or inherited from whatever
-the recognizer emitted — if the latter, the OCR chose the orthography and the
+the recognizer emitted. If the latter, the OCR chose the orthography and the
 validator has been enforcing it.
-
-`data/readings.md` line 1267 (`2-030`)'s dot-*above* g in `tñaˊɪrġɪn` — the corpus's
-one instance — is resolved, not open: the file is model-authored throughout, so
-there was no second witness to weigh, and dot-above-g has no legitimate reading in
-this project's inventory regardless of who typed it. Converted to `g̣` (dot below,
-matching every other instance corpus-wide). `harness normalize` now reports zero
-lookalikes corpus-wide.
 
 # Authorities Quoted
 
@@ -533,9 +505,11 @@ not a string**, because the surface form in the body is not the form printed her
   text.** The entry prints `DALL, I`; the footnote reads `Dall, I, p. 375.` `name`
   holds the upper-and-lower form. Match case-insensitively regardless.
 - **The comma before the volume is not reliable.** `Maydell I, p. 331.` against
-  `Krasheninnikoff, II, p. 49.` in the same apparatus. Hence `volume` as its own field,
-  and hence a siglum printed over several volumes (`KRASHENINNIKOFF, I, II` and three
-  others) splits into one entry per volume — 47 printed sigla, 51 `cited_as` entries.
+  `Krasheninnikoff, II, p. 49.` in the same apparatus, so the comma carries no
+  information: `authorities.parse_citation` splits on commas and whitespace alike and
+  asks the same question of every token. Hence `volume` as its own field, and hence a
+  siglum printed over several volumes splits into one entry per volume — 47 printed
+  sigla, 51 `cited_as` entries.
 - **Most references are not sigla at all.** They are indirect prose — "Krause reports
   that…" — carrying the name alone, no volume, no short title, no footnote. A resolver
   keyed on the footnote form misses the majority. `name` is what reaches them, and it
@@ -579,43 +553,35 @@ BHL title DOIs (`10.5962/bhl.title.*`); the rest are AnthroSource (`murdoch1888`
 
 Three properties of that number:
 
-- **A miss is not an absence from the web.** The 36 are overwhelmingly Russian journal
-  articles in Imperial Geographical Society proceedings, plus the German journal
-  articles (*Petermanns*, *Deutsche Geographische Blätter*, the Munich
-  *Sitzungsberichte*) and four Smithsonian annual-report chapters. Those live on
-  prlib.ru, elib.rgo.ru, MDZ and DigiZeitschriften — none with an open search API, so
-  they are hand work against library catalogues, not another sweep.
-- **The near-misses are the hazard, and three were caught only by checking what the
-  identifier resolves *to*.** `lutke1834`'s only scan is the 1835 *отделение
-  мореходное* where the entry is the 1834 *историческое*; `schrenck1899` is Vol. II
-  and only Vols I and III are scanned; `sarytcheff1802`'s top Crossref hit is the 1806
-  English translation. All three would have looked right sitting in the field. A
-  resolving identifier is not a match — compare the title, year *and volume* returned.
-- **Two recorded matches are a different imprint of the same text**, kept deliberately
-  and worth knowing: `nordquist1882b`'s DOI is the 1880 separate printing against the
-  1882 Vega volume, and `murdoch1884`'s scan is the 1890 separate issue of the 1884
-  Smithsonian report chapter.
-
-Modern facsimile reprints have DOIs (`sauer1802`, `wrangell1840`, `hooper1853` are all
-in the Cambridge Library Collection) and are **not** recorded — they name a 2013–14
-edition, not the work Bogoras cites.
+- **A miss is not an absence from the web.** The 36 are overwhelmingly Russian and
+  German journal articles plus four Smithsonian annual-report chapters, living on
+  prlib.ru, elib.rgo.ru, MDZ and DigiZeitschriften — none with an open search API,
+  so they are hand work against library catalogues, not another sweep.
+- **A resolving identifier is not a match: compare the title, year *and* volume it
+  returns.** Three near-misses were caught only this way and all three would have
+  looked right sitting in the field — `lutke1834` (the scan is a different 1835
+  section), `schrenck1899` (Vol. II, and only I and III are scanned),
+  `sarytcheff1802` (the top Crossref hit is the 1806 English translation).
+- **Two recorded matches are a different imprint of the same text**, deliberately:
+  `nordquist1882b`'s DOI is the 1880 separate printing, `murdoch1884`'s scan the
+  1890 separate issue. Modern facsimile reprints, by contrast, are **not** recorded
+  — a Cambridge Library Collection DOI names a 2013–14 edition, not Bogoras's source.
 
 One reading is unresolved and flagged in the file: `melikoff1896`'s Russian quoted
-title opens with a clear low `„` and closes with a mark whose exact form is not
-separable at this magnification. That is a **tooling gap** as much as a reading one —
-these pages have no ALTO, so `harness zoom` and `harness lines` cannot reach them, and
-no verb magnifies an arbitrary region of a page outside the pilot 20.
+title closes with a mark whose form is not separable at this magnification. That is
+a **tooling gap** as much as a reading one — these pages have no ALTO, so `harness
+zoom` and `harness lines` cannot reach them, and no verb magnifies an arbitrary
+region of a page outside the pilot 20.
 
-**It also exposed a live bug.** Cyrillic `й` is `и` + U+0306 by *canonical*
-decomposition, so corpus-wide NFD turns every Russian word into base+mark sequences —
-and `detectors.unlicensed_marks` reported all 72 as errors, because `MARK_LICENSE` was
-written for the Tier-1 Latin notation but runs over every character in the corpus.
-`и`/`И` are now licensed breve bases. Deliberately as allow-list entries and **not** as
-a "consult the table only for Latin bases" script test: the script test states the
-scope more honestly but decides it by inference, and its corner cases are unbounded —
-each one a silent skip in place of a loud error. The comment carries the nuance; the
-code stays dumb. Note `ё` = `е` + U+0308 needs no entry only because U+0308 has no
-licensing table yet; give it one and this recurs.
+**Cyrillic `й` is `и` + U+0306 by canonical decomposition**, so corpus-wide NFD turns
+every Russian word into base+mark sequences and `unlicensed_marks` once reported all
+72 as errors — `MARK_LICENSE` is written for the Tier-1 Latin notation but runs over
+every character in the corpus. `и`/`И` are licensed breve bases, as allow-list
+entries and deliberately **not** as a "consult the table only for Latin bases" script
+test: that states the scope more honestly but decides it by inference, and each
+unbounded corner case would be a silent skip in place of a loud error. Note `ё` =
+`е` + U+0308 needs no entry only because U+0308 has no licensing table yet; give it
+one and this recurs. Regression test: `tests/test_marks.py`.
 
 # Collation
 
@@ -661,30 +627,27 @@ raster to settle what is on the paper, never to file the oddity as authorial and
   cannot do otherwise, since `lexicon_miss` only ever tests ASCII components, so a
   Tier-1 form listed there is inert by construction rather than by discipline.
 
-**The density count, measured** (it was outstanding; these are the numbers, from
-`1-048` and `2-030` — the two densest pages in the selection, so a ceiling and not
-an average). Inventory glyphs are **3.3% of characters** but fall in **43.8% of
-lines** — 1.2%/29% on `1-048`, 9.0%/66% on `2-030`.
+**Density, measured** on `1-048` and `2-030` — the two densest pages, so a ceiling
+and not an average. Inventory glyphs are **3.3% of characters** but fall in **43.8%
+of lines**.
 
-That asymmetry decides tool shape, and got it wrong once. The 3.3% argues for
-reviewing spans; the 44% says those lines get opened anyway, and once a line is
-open reading the rest of it is nearly free. The expensive act is re-orienting to a
+That asymmetry decides tool shape, and it was got wrong once. The 3.3% argues for
+reviewing spans; the 44% says those lines get opened anyway, and once a line is open
+reading the rest of it is nearly free — the expensive act is re-orienting to a
 different line, not reading characters in one already in front of you. **So review
-is line-based.** The span diff survives as measurement only (`harness review`
-without `--serve`).
+is line-based**, and the span diff survives only as measurement.
 
 **What CATMuS can and cannot read**, measured against the human-collated
-`tei/chukchi-1-151.xml`: aggregate CER 8.6%, but that number is a blend of two
-unrelated things. The human text carries 41 non-ASCII characters; CATMuS produced
-13, and **not one is an inventory glyph** — its 13 are curly quotes, em dashes and
-a combining circumflex. It lost all 29 Cyrillic characters, all 5 × U+02CA, all
-3 × `ɪ`, and the single `ᵋ`. Its ASCII is ~91% right and its inventory is 0%
-right, so it is a witness to line geometry and to English and to nothing else. That
-0% is what killed the old verbatim-substring firewall: all four Tier-1 spans in that
-TEI failed it, on a page whose readings are correct. Its substitutions are worth
-knowing when adjudicating: `'` `’` `/` for `ˊ`,
-`i` `I` **`r`** for `ɪ`, `f` for `ᵋ`, dropped combining tildes, and one U+0301 —
-the corpus's only combining acute, and a pair `LOOKALIKE_GREPS` does not trap.
+`tei/chukchi-1-151.xml`: aggregate CER 8.6%, but that blends two unrelated things.
+Its ASCII is ~91% right and **its inventory is 0% right** — of the human text's 41
+non-ASCII characters it produced 13, not one an inventory glyph, losing all the
+Cyrillic, all 5 × U+02CA, all 3 × `ɪ` and the single `ᵋ`. So it is a witness to line
+geometry and to English and to nothing else. That 0% is what killed the old
+verbatim-substring firewall: all four Tier-1 spans in that TEI failed it, on a page
+whose readings are correct. Its substitutions are worth knowing when adjudicating:
+`'` `’` `/` for `ˊ`, `i` `I` **`r`** for `ɪ`, `f` for `ᵋ`, dropped combining tildes,
+and one U+0301 — the corpus's only combining acute, and a pair `LOOKALIKE_GREPS`
+does not trap.
 
 ## Cross-page state
 
@@ -745,4 +708,16 @@ TBD
   on a model that only ever saw the provenance version, and the first page transcribed
   after this is also a test of whether the rule reads as intended.
 - The continuation pass (`boundaries.json` from ALTO geometry) is specified but
-  unwritten; `boundary_in` is `"unknown"` for every page until it exists.
+  unwritten; `boundary_in` is `"unknown"` for every page until it exists. Note
+  `transcriber_harness.md` still specifies it at length as though it were live,
+  inside a document whose own scope statement excludes it.
+- **`data/toc.json` (315 entries) records no provenance.** `loi.json` and
+  `authorities.json` both name the scans they were read from; this one does not,
+  and the printed ToC's scan range is not recoverable from the file. Someone who
+  knows should write it down — every other apparatus store is auditable back to a
+  page and this one is not.
+- **`harness review`'s bare span diff has no second witness left.** `end-of-eval/`
+  was the recognizer store and is deleted, so the diff now refuses rather than
+  compare a proposal against the ground truth it produced. The `--serve` review
+  page is unaffected and remains the correction loop. If a second witness is ever
+  wanted again, it links into `ocr/` from its own store.

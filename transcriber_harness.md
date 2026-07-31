@@ -9,8 +9,8 @@ the apostrophe encoding without knowing what's Chukchi — but treat every
 language-spans pass to confirm or correct, not a final answer. Nothing here
 mints an authority-file id.
 
-Chukchi ground truth does not exist yet for most of the corpus (that's the
-keying pilot, still gated on spec closure). This pass runs anyway, on
+Chukchi ground truth exists for the 20 pilot pages and for no others — the
+pilot is complete, the rest of the corpus has none. This pass runs anyway, on
 whatever transcript currently exists — CATMuS draft, partially hand-corrected,
 doesn't matter, treat identically. Every `<foreign>`/`<unclear>` span it
 produces is provisional by construction and gets revisited once real keying
@@ -601,7 +601,7 @@ LANGUAGE SPANS AND THE FIREWALL — read this twice
   apostrophe in English prose is load-bearing, so there is no conflation
   hazard to protect against and normalizing would discard a real feature of
   the setting. (This is a change: the policy was corpus-wide ASCII and is now
-  scoped — keying spec §1, rev 2.3. The gate agrees: `FORBIDDEN_PROSE` no
+  scoped — keying spec §1. The gate agrees: `FORBIDDEN_PROSE` no
   longer contains the four curly quotes.) What stays forbidden in prose is
   the set with no legitimate English use at all — U+00B4, U+02BC, U+02BB,
   U+2010.
@@ -656,8 +656,11 @@ SELF-CHECK BEFORE EMITTING
 - Did I modify a single character inside any element bearing a Tier-1
   xml:lang? Case-fold a small cap there? Join or discard a hyphen there?
   (All: should always be no.)
-- Is every apostrophe and quotation mark in English/Tier-2 prose ASCII
-  (U+0027 / U+0022)?
+- Does English/Tier-2 prose REPRODUCE the print's quotation marks, curly
+  ones included? (Only U+00B4, U+02BC, U+02BB and U+2010 are forbidden
+  there — the marks with no legitimate English use at all.) Inside a
+  Tier-1 span the rule is the opposite: U+0027 is the only apostrophe,
+  and a curly quote there is an error.
 - Every Russian modernization: was the word glossed or its sense explicit,
   and the meaning certain? If either was doubtful, did it stay verbatim?
 - Every <milestone>: is its n= copied verbatim from a toc_window id, with no
