@@ -8,7 +8,13 @@ description: Produce the TEI page file for one page of Bogoras from its CATMuS d
 You are the driver. The scripts are your instruments and your gate; the human
 is your court of appeal. **Read `transcriber_harness.md` (repo root) in full
 before your first page of a session** — its prompt section is the normative rule set;
-this skill only sequences the work.
+this skill only sequences the work. **Read `keying_spec.md` in full too, not just
+for §2.1's hyphen note** — it governs the Tier-1 character inventory this pass
+reads off the raster the same way the ground-truth rebuild does, and its §5 is a
+checklist of misreading classes measured across both passes: a dropped mark under
+a `g`, `ɪ` vs `i`, `ä` vs plain `a`, stress mark vs plain apostrophe, and others.
+Run it per line against every Tier-1 span before emitting it, the same discipline
+the rebuild pass uses.
 
 ## Loop, per page ref PP-NNN
 

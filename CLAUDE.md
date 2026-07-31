@@ -257,6 +257,16 @@ if you ever need it.
                                       --untranscribed for bare refs to work on
     uv run harness toc-search TEXT    ToC entries matching a heading you've read
     uv run harness toc-near FOLIO     ToC entries around a folio you now know
+    uv run harness authority TEXT     works in data/authorities.json matching a
+                                      citation read in the body — the siglum, a
+                                      bare name in prose, a title, or a string
+                                      off the printed entry, ranked by which of
+                                      those caught it and never collapsed to one.
+                                      A footnote form ("Dall, I, p. 375.") goes
+                                      in whole. --sigla is the resolution table
+                                      (one row per cited_as, so the collisions
+                                      show), --key one record in full, --unlocated
+                                      the 36 with no copy located
     uv run harness lexicon            frequent lexicon misses, to whitelist
     uv run harness lines PP-NNN       per-line id + geometry + text, ALTO order,
                                       empties kept; --crops DIR writes line PNGs,
@@ -298,7 +308,20 @@ if you ever need it.
                                       against this file's own NFD form (a
                                       precomposed ñ you type vs. the file's
                                       n+U+0303 are invisible to each other
-                                      under exact string match)
+                                      under exact string match); --replace
+                                      LINE --old X --new Y (--field, --which)
+                                      swaps one or more occurrences of one
+                                      string for another inside a field
+                                      instead of rewriting the whole thing —
+                                      the safer move once a line has already
+                                      been authored and only a character or
+                                      two need correcting, since retyping a
+                                      long field with --set risks a second,
+                                      unrelated slip while fixing the first;
+                                      --which selects "all" (default),
+                                      "first", "last", an occurrence number,
+                                      or an inclusive range ("2:4"), 1-based
+                                      left to right
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -495,6 +518,12 @@ lookalikes corpus-wide.
 keyed with a BibTeX-style moniker (`bogoras1900`, `krause1882`, `nordquist1882a`). The
 third apparatus store alongside `loi.json` and `toc.json`, and apparatus for the same
 reason — reachable without parsing TEI, and the annotation pass is its consumer.
+
+`harness authority` is the reader. It searches `cited_as`, then `author`, then the
+titles, then the printed blocks, reports which of those caught each hit, and
+**returns all of them** — 51 sigla over 34 names means a single answer would be
+manufactured, and no hit at all is a legitimate outcome on an open list. It
+resolves nothing; a human reads the candidates.
 
 **The payload is `cited_as`.** The book cites in short form and this list is the only
 witness to what those resolve to. It is **structured — `{name, volume, short_title}` —
@@ -700,10 +729,6 @@ TBD
 
 ## Open
 
-- **11 ground-truth pages to rebuild.** The loop works — `/rebuild-groundtruth PP-NNN`.
-  The bottleneck is the reading pass, roughly 45 lines and 5 sheet images per page, so
-  plan on 3–4 pages per session rather than one long push. Done so far: `1-074`,
-  `1-073`, `1-052`, `1-053`, `1-151`, `1-100`, `2-040`.
 - **The corpus teiHeader does not exist**, and it is now load-bearing: it is where the
   three `respStmt` provenance ranks are declared, so every `@resp` in the corpus is a
   pointer with nothing yet to resolve against. Harmless while pages are validated
@@ -721,60 +746,3 @@ TBD
   after this is also a test of whether the rule reads as intended.
 - The continuation pass (`boundaries.json` from ALTO geometry) is specified but
   unwritten; `boundary_in` is `"unknown"` for every page until it exists.
-- The 20 OCR'd pages are scattered across all three parts, so most have no
-  transcribed neighbour and will start with `expected_folio: null`.
-- **Eval contamination, which limits what can be measured.** A blind accuracy figure
-  for an LLM reading needs pages the model has not seen. `2-030`'s ground truth,
-  `1-151`'s TEI body, and fragments of `1-048` and `1-052` were read openly in
-  session; `1-074`'s proposal was also amended in place before the decision store
-  existed, so its `edited` count says 1 where the page had 2 errors. Those five are
-  spent, and `1-073`, `1-052`, `1-053`, `1-151`, `1-100`, `2-040` are now used up by
-  being done. The 11 remaining refs are the clean set — read each into a proposal
-  *before* opening any existing transcription of it.
-- **Error profile so far.** `1-074`: 32 lines, 2 errors, both a dropped U+0323 under a
-  `g` — caused by the tooling (4 px crop padding excluded a mark below a descender),
-  so it measured the instrument rather than the reading. `1-073`, the first blind
-  page: 47 lines, 3 errors, all one class — the caron over `j` keyed as a breve. Clean
-  on everything `1-074` warned about, so the second profile is not a resolution
-  failure but an **inference** failure, and the two together say the classes to watch
-  are different in kind. `1-100`: 59 lines, 2 errors, both again a dropped U+0323
-  under a `g` (same class as `1-074`, not the instrument this time — the reading
-  itself missed both), on a page dense with two-column notated glosses. `2-040`:
-  45 lines, 6 errors, all the same dropped-U+0323-under-`g` class again — the
-  page's dense-English-with-embedded-glosses register (not a gazetteer or a
-  gloss list, just ordinary prose citing native terms) apparently gave no more
-  protection than `1-074`'s or `1-100`'s did, and the miss was systematic rather
-  than scattered: every `g` in the recurring root `-rgɪn`/`-mgɪñ` was read plain
-  across all five repetitions of the word `vaˊɪrg̣ɪn`/`vaˊɪrg̣ɪt` plus `Kêrg̣-`,
-  `G̣ɪrg̣oˊl`, `Ñaˊrg̣ɪnên`, `Yag̣taˊč`, `tɵmg̣ɪñ` ×2 and `tɵmg̣aˊ` — the same
-  reading error made consistently rather than caught on repetition. The lines
-  had been zoomed at 4x and 6x already, for an unrelated question (confirming
-  the barred-o `ɵ` in `tɵmgɪñ`); the zoom did not prompt the per-`g` dot-below
-  check the skill already prescribes. Third occurrence of this exact class
-  (`1-074`, `1-100`, `2-040`) — the skill's existing instruction ("every `g`/`G`
-  in a Tier-1 span gets a deliberate look for U+0323... independent of whether
-  the line gets zoomed at all") is evidently not sufficient on its own; it
-  keeps being stated and keeps being skipped in practice. The rebuild skill
-  carries all four, with the reasoning. Now unrepresentable:
-  `detectors.MARK_LICENSE`.
-- **`1-048` and `2-030` — the two pages never lost — needed a correction pass too.**
-  Both were assumed authoritative as the only surviving hand-keyed ground truth, but
-  `normalize.py`'s new straight-quote lookalike check (see below) found every gloss in
-  both keyed with straight `"..."` instead of the curly `“…”` the book prints
-  throughout. Fixing that surfaced real content errors sitting underneath the style
-  slip, only visible once the quotes were being checked line-by-line against the
-  raster: `2-030`'s fig. 213 compass-gloss list had a missing open-quote before
-  "night", a stray extra paren around "light" (should be `[light]`), and three
-  substituted letters (`Wit`→`it`, `tsun`→`sun`, `bas`→`has`); `1-048` had one
-  straight-vs-curly mismatched pair. All raster-verified via `harness zoom --from
-  gt/ocr` before touching the files. `data/readings.md` carries the same fig. 213
-  block a second time (the caption store mirrors the page) and got the identical
-  fix. Lesson: "hand-keyed" and "never re-examined" are different properties, and a
-  new mechanical check earns its keep by finding drift in the pages everyone already
-  trusted, not only the freshly rebuilt ones.
-- **Review can miss what review is for.** Two of `1-073`'s three identical errors were
-  corrected in the pass and the third was not — one page, one form, three occurrences,
-  and the inconsistency survived because nothing compared them to each other. Which is
-  the argument for the licensing gate being a gate rather than a worklist line: it
-  catches what a human pass *missed*, not only what it never saw. Same argument applies
-  to any future check; prefer refusing to reporting where no reading is being pre-empted.

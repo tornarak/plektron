@@ -44,8 +44,8 @@ harness (rev 2) governs the collation pass.
 | rising-diphthong onglide | **U+1D49** ᵉ | Key: "a diphthong with an accent on *i*." Licensed only immediately before `i`; the key's any-V + i/u doctrine predicts siblings, but the license extends on attestation, never on symmetry. |
 | velar g, dot below | **g + U+0323** g̣ | Pairs proportionally with q (q : k :: g̣ : g). |
 | long rounded mid vowel | **U+0275** ɵ | Key: "between *o* and *u*, long." |
-| spirant mark | **U+0027** ' | After b p d t g k only. |
-| pause mark | **U+0027** ' | V_V only; key specimen *yiñe'a*. |
+| spirant mark | **U+0027** ' | After b p d t g k only. **Zero confirmed instances corpus-wide as of 11/20 pilot pages restored** — every candidate examined so far has turned out to be stress (U+02CA) on closer reading. Documented in the p. 10 key, licensed, and not to be ruled out by fiat — but it has never once been the right call in practice. Do not propose it. |
+| pause mark | **U+0027** ' | V_V only; key specimen *yiñe'a*. **Zero confirmed instances corpus-wide** — same status as spirant, above: real per the key, unattested in restored text, and every V_V-position candidate found so far was stress. Do not propose it. |
 | palatalization mark, postposed | **U+02D9** ˙ | After the full seven-member series n x d t s č ǰ. |
 | connector hyphen | **U+002D** - | Forms essentially never break across lines; residual line-end joins go to LLM triage in context, human-confirmed — a join question, not a glyph identity. |
 | length marks | **U+0304** ◌̄ , **U+0306** ◌̆ | Combining, NFD; both productive. Breve doubles as the ŭ sort's mark — one shape, two functions; interpretation is downstream, not a keying problem. |
@@ -236,6 +236,19 @@ interword space that is present is keyed and one that is absent is not** — `i.
 keeps its space because the print has one, and nothing here permits closing it up
 to `i.e.,`.
 
+**Sentence spacing is the same case as the semicolon, not the general one.** The
+book sets a double space after a sentence-ending period (period-space-space), a
+typesetting convention exactly as lexically empty as the thin space before
+`;`/`:`/`,` — it survives nowhere in the book's meaning, and unlike interword
+justification gaps it is not variable page-to-page evidence of anything, just a
+fixed compositor habit. Key single-space, same reasoning as the semicolon rule.
+French spacing before a comma is the same case again wherever it turns up. All of
+this is mechanical and print-invariant, so none of it is left to per-page
+judgement: `harness normalize` collapses a run of 2+ spaces between two non-space
+characters to one and strips any space immediately before `;`/`:`/`,`,
+corpus-wide, and `--check` exits 1 on drift — the same enforcement tier as NFD, not
+the lookalike worklist, because there is no reading to adjudicate.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
@@ -270,106 +283,206 @@ verbatim (harness rev 2) and will trip scripts 2 and 5 inside those spans *by
 design*. GT: zero tolerance. Collation output: that noise **is the to-key
 worklist**, not a defect.
 
-**One residual shape judgement** the scripts cannot make: in V_V position both
-stress and pause are licensed, and there the keyer decides U+02CA vs U+0027 by
-printed shape alone (greyscale fallback per F11).
+**U+0027 (spirant or pause) is not a live candidate in practice.** Both are licensed
+by the printed key, both are named in §2.1, and neither has ever once been the correct
+reading anywhere in the restored corpus — every raised mark examined in a licensing
+environment that superficially fits spirant or pause has turned out, on adjudication,
+to be stress. Do not propose U+0027 in a Tier-1 span. Read every raised mark as stress
+(U+02CA) by default, full stop, including in V_V position, including immediately after
+b/p/d/t/g/k. This is not a 99%-vs-1% weighing exercise to perform per instance — it is
+the working assumption, and a proposal should default to it without restating the
+V_V-or-post-consonant environment check as if it were live evidence for apostrophe.
+The check for the environment still matters for *validation* (script 2, below) — an
+`U+0027` that turns up unlicensed is still a real error to catch — but that is a
+different question from what a *model* should ever propose from a raster reading.
+If an apostrophe is ever genuinely confirmed by a human against the raster, that
+page is the corpus's first attested instance and the note should say so explicitly,
+because it would be a surprising, citable finding — not a routine call.
 
-## 5. Open questions, keying-side
+## 5. Reading discipline — recurring misreading classes
 
-- **F4** — lateral/rhotic deployment. The key gives four laterals and three
-  rhotics; corpus-scale hand-correction has produced no confident sighting of
-  the four-way lateral contrast in running Chukchi text — informative about
-  the print, not the reader: these distinctions live in letter bodies at
-  running-text size, the least legible stratum, unlike the self-announcing
-  added marks. Standing hypothesis, tested not assumed: the key describes the
-  full Jesup phonetic apparatus while Chukchi running text deploys a subset,
-  the extra sorts earning their keep in Koryak/Itelmen material. Resolution is
-  validation script 7; zero Chukchi tokens for ḷ and ʟ̣ closes F4 as "key ≠
-  deployed inventory." Downstream analysis depends on this; that dependency is
-  not this file's concern.
-- **F10** — the spirant series prints as `b' p' d' ' g' k'` on the p. 10 scan
-  (the printed mark is turned-comma-shaped; it keys U+0027 per §2.1): the
-  fourth member is a floating mark where `t'` should sit. Completeness rests
-  on Sievers and stop-inventory symmetry, not legible print. Closable cheaply
-  if `t'` appears legible anywhere in the hand-corrected corpus; otherwise
-  greyscale master.
-- **F11** — mark legibility, the standing print-vs-scan file. Load-bearing:
-  (a) does the print obey its own licensing (compliance greps over drafts and
-  GT); (b) stress vs U+0027 distinguishability at working zoom, especially
-  V_V; (c) ᵉ/ᵋ bowl-closure and crossbar legibility. Two confirmed
-  casualties: the ᵉi key row collated as "ᵋiᵋ" at working zoom (string
-  retired); the `s˙` sort read as apostrophe-shaped from the scan. Greyscale
-  fallback whenever bitonal fails.
-- **Ģ (U+0122)** — inherited-unverified: reported inventory candidate from a
-  p. 669 incantation, transmitted through lost documents. Verify against the
-  page before admitting a row; do not key on report.
+Shared by both passes: collation keys Tier-1 spans character-by-character off
+the raster exactly as the ground-truth rebuild does (transcriber harness rev
+2), so a misreading class caught in one is worth guarding against in the
+other. Below is the checklist form; each has been the *actual, corrected*
+error at least once, more than once for several — this is not a hypothetical
+list of things that could go wrong, it is a record of things that did, kept
+general on purpose rather than tied to a specific page, because the class is
+what recurs, not the instance.
 
-## 7. Changelog
+0. **Prefer the spec over a confident-sounding raster impression.** A reading
+   that contradicts this file is not evidence the inventory is incomplete —
+   magnification cannot settle a question that isn't optical, and a detailed,
+   self-consistent note citing its own close reading is exactly what a
+   confident guess looks like. If a reading and the spec disagree, the spec
+   wins and the disagreement gets flagged for a human, not resolved by
+   further zooming. Citing the firewall to justify a novel sort inverts it —
+   the firewall forbids *adopting* a glyph on a model's authority; it does not
+   forbid the printed key or an editor ruling from binding.
+1. **Dropped marks below the baseline.** `g̣` / `G̣` (g + U+0323) is the
+   single most repeated miss in this project's keying history — corrected
+   after the fact more than once, on more than one page, including at least
+   one case where the same session had already flagged the class as
+   "check hardest" and missed it anyway. Treat any bare Tier-1 `g`/`G` as
+   suspect by default rather than as the resting state: `harness lexicon
+   --marks` gives a live bare-vs-marked frequency count per base letter from
+   restored ground truth, and **roughly 90% of `g`'s in the corpus carry the
+   dot** — the dotted form is the a priori assumption for any Tier-1 `g`, bare
+   is the exception that needs a reason. A number is not a licence to guess
+   *which* a given instance is — shape still decides — but it is reason
+   enough to look hard at every `g` before accepting a line, independent of
+   whether that line otherwise seemed to need zooming. `3-004` restated this
+   at scale: `-g̣ɪ`/`-g̣ɪn`/`-g̣ɪt` are common **noun-forming suffixes**, not
+   merely a kinship-vocabulary pattern — they turn up equally outside that
+   register (`va'ɪrg̣ɪn`, "spirit") — so a reading that ends a word in plain
+   `-git`/`-gin`/`-gɪn` should be treated as presumptively wrong on the
+   suffix's own strength, before even looking at the raster, whatever the
+   word means. On `3-004` the proposal bare-keyed the suffix across nearly every
+   headword on it, the single largest error class on the page.
 
-- **Rev 2.7 (2026-07-29):** §2.6's breve licence made a **closed** allow-list and
-  enforced in code (`detectors.MARK_LICENSE`; `normalize --check` exits 1, `validate`
-  errors, `restore` refuses). `j` added to the never-on column: the marked sort is
-  **ǰ** = j+U+030C, already in §2.2. Prompted by a reading pass on `1-073` keying all
-  three of its ǰ as breves, on the reasoning that the mark looked rounder than the
-  page's č — a real observation, an invalid inference, and then defended on firewall
-  grounds, which inverts the rule: the firewall forbids *adopting* a glyph on a
-  model's authority, not proposing one the inventory has never attested. Review
-  corrected two of the three and missed the third, so the gate exists to catch what a
-  human pass can miss rather than what it never saw. No tool rewrites an offender —
-  naming it is mechanical, choosing the glyph is the editor's.
-- **Rev 2.6 (2026-07-29):** §2.9 added — the book's French spacing before `;` and
-  `:` is **not** reproduced; key English spacing. Editor's ruling, prompted by a
-  reading pass on `1-073` confirming the thin space at 2× on three lines and then
-  asking whether to key it. Stated as an explicit, bounded override of "English
-  prose reproduces the print", with the reason (no lexical content, and it would put
-  a space inside a token for every downstream consumer) and the limit (an interword
-  space that is present is still keyed; `i. e.,` does not close up).
-- **Rev 2.5 (2026-07-29):** §2.8 added — museum catalogue numbers are keyed as
-  the literal `(??/????)` by the keying and collation passes, and never read.
-  Editor's ruling, prompted by a reading pass on `1-151` starting to resolve the
-  digits off the raster. The convention was already universal in
-  `data/readings.md` and had a keyboard binding, but appeared in no normative
-  document — practice without a rule. Framed as *deferral*: the AMNH catalogue is
-  live, so a later pass may resolve these by querying it, which is a lookup rather
-  than a transcription. First draft of this section said the numbers resolve
-  against nothing and were unfalsifiable — wrong on both counts, and it would have
-  licensed dropping them permanently.
-- **Rev 2.4 (2026-07-29):** §2.7 added — the closed list of pre-reform Russian
-  sorts, with codepoints, what each was reformed to, and what each is confusable
-  with. §1 had named only two of the five. Prompted by `1-151`'s **лахтакъ**,
-  whose word-final ъ the committed TEI had modernized away (licensed, since the
-  word is glossed) but which ground truth keys as printed. The list cannot come
-  from a corpus census — the recognizer is Latin-only and lost all Cyrillic, so
-  every instance in the book is currently unwitnessed, and a character nobody
-  looked for is a character silently dropped. Records that ъ is *not* an
-  abolished sort and only its word-final position is the marker, and that
-  і/ѵ/ѳ are cross-script lookalikes outside §3's Tier-1 scope.
-- **Rev 2.3 (2026-07-29):** §1 ASCII policy narrowed from corpus-wide to
-  Tier-1, and the greps with it. This had been decided, implemented in
-  `validate.py` (`FORBIDDEN_PROSE` minus the four curly quotes) and written into
-  `CLAUDE.md` at rev 2.2, but never landed here — so the normative spec said
-  "forbidden everywhere" while the gate accepted them, and `CLAUDE.md` cited a
-  §1 revision that did not exist. The doctrine is the scoped one; this entry is
-  the spec catching up to its own enforcement.
-- **Rev 2.2 (2026-07-29):** §2.6 added — mark–base licensing, editor-supplied.
-  Breve licensed on `u` and `i`, never on the obscure-vowel series ᴀ ᴇ ɪ ä,
-  since the p. 10 key already glosses that series as short. Prompted by a real
-  ambiguity: `1-074`'s *Am-g̣roˊkĭ* is unresolvable from the raster because `i`
-  drops its dot under an above-mark, so ĭ and ɪ̆ are the same letterform. The
-  same page also cost a missed U+0323 on the `g`, which the rule does not help
-  with — that one is a looking failure, not a licensing question.
-- **Rev 2.1 (2026-07-29):** U+2018 added to the U+0027 lookalike row — surfaced by validator testing; the printed spirant mark's turned-comma shape (F10) makes it the likeliest OCR emission, and A.0 had omitted it.
-- **Rev 2 (2026-07-29):** Part II (comparanda) excised to `concordance.md`.
-  The firewall is context hygiene, not just provenance: interpretation loaded
-  into a keying session primes the keyer. Detector notes returned to the
-  charter's remit; concordance-side flags (F2, F3, F9) and the closed-flag
-  register travel with the concordance. F10 gains a prose record of the
-  printed mark's shape (this file must pass its own §3 greps, so the shape is
-  described, never keyed).
-- **Rev 1 (2026-07-29):** document created as sole successor to Appendix A
-  rev 6 and the propagation payload. A.0 table entered as §2.1; p. 10
-  collation rows as §2.2/§2.5; ˢ→ᵋ correction absorbed; Q1/Q2 closures
-  absorbed (§2.1, §4); stress-mark-absent note recorded; small-cap base
-  codepoints entered as PROPOSED (§2.3); Ģ demoted to inherited-unverified
-  (§6). **Nothing blocks p. 10 hand-keying** except the §2.3 stamp, which
-  blocks only the small-cap rows' citability, not the keying itself.
+   **Fourth occurrence, `3-005`:** a dense kinship-terms page read several `-mgɪn`/
+   `-mgälqäl` clusters as bare `g` after a genuine 4x look that seemed to show no
+   dot — and was still wrong, per the human reviewer, on more than one of them. The
+   lesson isn't "look harder," it's that **the 90% figure is a real prior to weight
+   against your own raster impression**, not a nudge to double-check once and then
+   trust what you saw. A "no dot" reading at ordinary magnification should be held
+   to a higher bar of confidence than a "dot" reading, precisely because the base
+   rate runs the other way.
+
+   **Now enforced mechanically, not just measured.** `detectors.SUFFIX_MARK_DROPS`
+   (a table, not a one-off regex, so a newly measured skew for a different
+   base+mark+suffix combination is a data row to add) flags any token ending in
+   `-gɪ`/`-gɪn`/`-gɪt` with a bare `g` — covering `-rgɪn`, `-ɪrgɪn`, `-mgɪn`, and
+   every other consonant-before-g variant uniformly, since the check is on `g`
+   itself and never on what precedes it. `harness proposal-check PP-NNN` runs it
+   unconditionally (same tier as the apostrophe checks — not gated on `resolved`),
+   and it also feeds `harness context`'s detector flags for the collation pass.
+   Report-only: a hit names a dot-prone shape, not a certain error.
+
+   **Measured, not asserted.** `harness lexicon --suffixes` (weighted suffix
+   frequency, length 2-8) and `harness lexicon --digraphs` (weighted
+   digraph/trigraph frequency, the corpus's own top 12 suffixes additionally
+   stripped so the count reflects stems rather than the suffix family
+   re-appearing under every rank) exist to check a claim like this one
+   against the actual restored corpus rather than an impression from the
+   pages read most recently. Both strip diacritics and the stress mark
+   first, so a circumflex or `ˊ` sitting at a boundary doesn't fracture one
+   real affix into several accidental variants (mark-stripped, so the `g̣`
+   dot is folded into the plain `gɪn` row below rather than hidden in a
+   separate one). **Snapshot at 11/20 pilot pages restored — recompute
+   before citing, same floor caveat as `--marks`/`--native`; do not treat
+   this table as final:**
+
+   | Suffix | Weighted count | | Digraph | Count | | Trigraph | Count |
+   |---|---|---|---|---|---|---|---|
+   | `-ɪn` | 89 | | `ne` | 34 | | `gɪn` | 10 |
+   | `-hɪn` | 28 | | `ɪn` | 32 | | `ini` | 9 |
+   | `-en` | 27 | | `en` | 31 | | `ute` | 9 |
+   | `-gɪn` | 21 | | `na` | 29 | | `Nut` | 8 |
+   | `-lɪn` | 21 | | `an` | 27 | | `erg` | 8 |
+   | `-lhɪn` | 20 | | `el` | 27 | | `enu` | 7 |
+   | `-rgɪn` | 16 | | `in` | 26 | | `m-g` | 7 |
+   | `-ak` | 15 | | `et` | 25 | | `nel` | 7 |
+   | `-an` | 12 | | `te` | 24 | | | |
+   | `-un` / `-ut` | 11 | | `ɪt` | 24 | | | |
+   | `-ɪrgɪn` | 11 | | | | | | |
+
+   `-hɪn`/`-lɪn`/`-lhɪn` together are comparably common to the `-g̣ɪn` family
+   (`-gɪn`/`-rgɪn`/`-ɪrgɪn`, mark-stripped so the dot doesn't split the row)
+   — a second noun-forming suffix family worth the same "assume it, don't
+   bare-key it" discipline as `-g̣ɪn`. `g̣` itself (marks *not* stripped for
+   this one figure) is corpus-wide the 6th most common digraph.
+2. **`ɪ` (U+026A) vs `i`, two sub-cases, neither caught by shape alone.**
+   - `ɪ` vs `ĭ` (dotless i + breve) is a §2.6 licensing fact, not a shape
+     call: the breve is licensed on `i` and never on the obscure-vowel series
+     (`ɪ` included), so a dotless vowel carrying a genuine breve is `ĭ`, full
+     stop. Check §2.6 as a rule lookup whenever a breve is in play, not by
+     eye — this has been keyed wrong in both directions.
+   - Word-initial capital-shaped letter vs. small-cap ɪ: a capital-looking
+     letter opening a Tier-1 word is not automatically ASCII `I`. It needs
+     the same scrutiny as a medial occurrence, and has been misread as plain
+     `I` at word-initial position specifically, more than once.
+3. **`ä` (a + U+0308) vs. plain `a`.** The long counterpart of the
+   obscure-vowel series (§2.2). Any bare `a` in a Tier-1 form is a candidate
+   for `ä`, not a default reading just because plain `a` is the more common
+   letter generally — the diaeresis is small and easy to read past on a
+   contact sheet rather than a close zoom, and has been missed that way more
+   than once on the same page.
+4. **Old-style figures.** The numeral `1` is x-height and dotless and is easy
+   to take for `ɪ`; `0` is small and round. A recognizer witness (CATMuS)
+   reads `20th` as `zoth` — evidence of how easily this class slips past a
+   plausible-looking read, not evidence for the glyph itself, since a
+   recognizer is not a witness to Tier-1 identity at all.
+5. **Word stress (U+02CA ˊ) keyed as a plain apostrophe (U+0027 ').** These
+   are visually distinct printed symbols — read which one is actually on the
+   page rather than defaulting to habit. **Every multisyllabic Chukchi/Koryak/
+   Yupik word carries a stress mark, full stop** (culminative, ≤1 per word,
+   §2.1) — not "usually," not "often," every one. Treat this as load-bearing
+   enough to check by itself, independent of every other class in this list:
+   **a multisyllabic Tier-1 word with no stress mark anywhere in it is not a
+   plausible reading, it is a red flag.** Before accepting one, ask explicitly
+   where its stress mark is. If the only raised mark in the word is currently
+   keyed as `'`, that apostrophe is far more likely `ˊ` misread than a genuine
+   spirant or pause — check the environment (§2.1: spirant is only after
+   b/p/d/t/g/k, pause is only V_V) and if neither licenses it, it is not
+   apostrophe. This has been gotten wrong at the scale of a whole page in one
+   pass, and separately, on two different hand-keyed pages, at the scale of a
+   single missed word each — different failure modes, same root cause: the
+   check not being run as a real per-word gate.
+
+   **A new failure mode on `3-004`, worse than not running the check: running
+   it correctly in `resolved` and then not applying it to `text`.** Every
+   `resolved` field on that page's proposal reasoned out "post-vowel,
+   pre-consonant-not-in-b/p/d/t/g/k, not V_V → this is stress U+02CA, not
+   apostrophe" correctly — and `text` kept the literal `'` anyway, on 33 of
+   71 lines. `proposal-check` reported the exact signature of this
+   (`in_resolved_not_text: U+02CA` — resolved names the codepoint, text
+   doesn't contain it) on nearly every affected line, and it was dismissed as
+   narrative-formatting noise rather than treated as what it was: the same
+   diff class repeating across many lines is the tool reporting something
+   systematic, not a prose-style mismatch. **After writing `resolved`, re-read
+   `text` character by character against what `resolved` just concluded —
+   reasoning about a mark and typing that mark are two different acts, and
+   nothing enforces that the second followed the first.**
+6. **Straight quotes for English glosses.** The book sets curly `“…”`
+   throughout, never straight `"..."` (§1) — print reproduction, not a
+   stylistic option. This has slipped through in bulk more than once,
+   including in hand-keyed pages assumed authoritative for years before a
+   mechanical check caught it. `harness normalize` flags a straight quote
+   left in text as a worklist lookalike; it does not auto-fix, since pairing
+   an open quote to its close can require reading across lines.
+7. **Medial ASCII capital where a small-cap was meant.** Typing a plain
+   `A`/`E`/`I`/`L` mid-word instead of the small-cap `ᴀ`/`ᴇ`/`ɪ`/`ʟ` (§2.3).
+   `harness proposal-check` folds this into its consistency check
+   (`detectors.MEDIAL_CAPS`) but never auto-corrects it, even when it looks
+   like the one clean unambiguous swap on a line — which small-cap an ASCII
+   capital was meant to be is a reading judgement, not a shape slip, so it
+   only ever surfaces as a flag for a human to resolve.
+8. **Any raised mark defaults to stress (U+02CA), never apostrophe (U+0027) —
+   see §4.** `3-005` (a kinship-terms page) flagged half a dozen marks — in V_V
+   position, and once after a bare consonant — as open "human calls" between stress
+   and apostrophe. All were stress. Apostrophe is licensed by the printed key and has
+   never once been the right reading anywhere in the restored corpus; don't reason
+   about the licensing environment as if it were live evidence for apostrophe, and
+   don't re-litigate this per page. Read the mark as stress and move on.
+9. **Inventing a codepoint the inventory doesn't catalogue.** A mark that looks
+   unusual at 4x is not licence to reach for whatever Unicode Latin/IPA letter
+   resembles it — check §2.1-2.4 first. `3-005` proposed U+025B (full-size LATIN
+   SMALL LETTER OPEN E, "ɛ") in two ordinary English-register words where the
+   printed letter was plain "e"; ɛ appears nowhere in this file's inventory. If a
+   candidate codepoint isn't already catalogued (proposed or settled), the reading
+   is wrong far more often than the inventory is incomplete — see item 0.
+10. **No small-caps "o" exists in this notation.** §2.3 licenses small-cap base
+    codepoints only for ᴀ ᴇ ɪ ʟ. A lowercase "o" sitting immediately beside a
+    small-cap ᴇ or ʟ can read as small-cap height at 4x zoom purely from kerning —
+    that is a rendering artifact, not a second sort. `3-005` proposed a
+    small-cap-vs-lowercase-o distinction inside a single word (`ᴇʟO'o`) on this
+    basis; there is no such distinction to make — it is plain lowercase `o`
+    throughout.
+
+**On repetition.** More than one of the classes above has been named as "the
+one to check hardest" and then missed again on a later page, sometimes in the
+very same session that had just re-stated the rule. The lesson is not that
+the checklist is wrong; it's that stating a class once is not the same as
+checking for it on every line, every time — treat this list as a per-line
+pass over any Tier-1 span, not as background awareness to keep in mind.

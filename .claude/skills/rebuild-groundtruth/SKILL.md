@@ -32,15 +32,17 @@ stateless, so a fresh session resumes wherever the last one stopped.
     uv run harness zoom  PP-NNN --only 7,20,22-26        the closer look
     (author review/PP-NNN/proposal.json)                 your reading
     uv run harness proposal-check PP-NNN --fix           catch a mistyped mark
+    uv run harness normalize --convert --path review/PP-NNN/proposal.json
     uv run harness normalize --path review/PP-NNN/proposal.json
-    uv run harness normalize --check --path review/PP-NNN/proposal.json
     uv run harness review PP-NNN --serve                 human adjudicates
-    uv run harness restore PP-NNN                        -> gt/ocr/
+    uv run harness normalize --path review/PP-NNN/decision.json   same gate, post-adjudication
+    uv run harness restore PP-NNN                        preview: edits, drift, mismatch
+    uv run harness restore PP-NNN --commit                -> gt/ocr/
 
 Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.json`,
 `decision.json`, and the derived `sheets/ crops/ zoom/`. No verb needs telling where;
 `--out` is for a one-off outside the pass. When a page is done, the images go with
-`rm -r review/PP-NNN/{crops,sheets,zoom}`, leaving the two authored files.
+`uv run harness clean PP-NNN`, leaving the two authored files.
 
 1. **Read the whole page image first** (`scans/chukchi-PP-NNN.png`) for orientation:
    where the running title, folio, footnotes and any figure sit. ALTO order is not
@@ -53,7 +55,42 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    reading before you've seen the word in its plain context.
 3. **`uv run harness zoom`** only for what the plain sheets left open, once you've
    read all of them. Select every line you mean to look at in **one call**; running
-   it once per doubt costs more than the look is worth.
+   it once per doubt costs more than the look is worth. **`--zoom 2` (the tool's own
+   default) is the ordinary case** — not a call per line, and not an escalating
+   series at several multipliers on the same lines. Escalate to `--zoom 4` only for
+   one specific, nameable doubt the 2× pass left open (does this `g` carry a dot
+   below; caron or breve; which small-cap; `a` or `ä`) — never as the default first
+   call. If a doubt survives a 4× look, that *is* the answer: write it in `note` for
+   the human. There is no tool above 4×, and there must never be an ad-hoc one —
+   see "The instrument" below.
+
+   `--only` takes the `index` column from `harness lines`, not the printed
+   item/number in the running text — conflating them wastes a call (`1-101`: zoomed
+   ALTO index 19 meaning to inspect printed item "19.", a different line entirely).
+
+   **Do NOT zoom by a factor of more than 4.** The smallest characters in the
+   typeset are about 100 pixels tall by that point. There's no "detail"
+   to be gleaned in higher levels, just increasing amounts of interpolation noise.
+
+   **A page-wide reflex to zoom every Tier-1 line is still over-zooming**, even
+   selected in one call. `1-053` (43 lines, dense gazetteer) got a 2× pass over
+   nearly every notated line and read cleanly off the *sheets* alone before that —
+   the 2× pass mostly confirmed what a careful sheet read already settled. `1-101`
+   repeated this at larger scale (a dozen calls across five zoom levels over a
+   59-line page) and it produced no benefit: every one of that page's real errors
+   (see `keying_spec.md` §5) survived anyway, because the calls mostly
+   re-confirmed already-legible text rather than targeting the classes that
+   actually bite. Zoom earns its cost on a specific, nameable doubt (does this g
+   carry a dot below; is this a caron or a breve; which small-cap is this; is this
+   `a` or `ä`), not as a blanket second pass over every line merely because it has
+   a mark.
+
+   **`keying_spec.md` §5's classes are checklist items, not background awareness**
+   — its own closing note names the actual lesson: a class named once and ranked
+   "check hardest" has still been missed again on a later page, because naming it
+   is not the same as checking every line for it. Run §5 as a checklist against
+   every Tier-1 line, zoomed or not; zooming is for a doubt that checklist reading
+   leaves open, not a substitute for it.
 4. **Author the proposal.** One entry per line index, every line present.
 5. **Start the review server yourself** and hand the human a URL — don't ask them to
    run a command. It serves on loopback only and blocks, so run it in the background:
@@ -64,11 +101,21 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    `--port` if 8731 is taken. Stop it when the pass is done; leaving a server bound to
    a page you have already restored is how a later save lands on stale text.
 6. **`uv run harness restore PP-NNN`** once they have saved. `review/PP-NNN/decision.json`
-   appearing (or changing) is the signal; the server prints one line per save. **When
-   told a save happened, read that file** rather than re-deriving your own view of
-   what went wrong — it already holds the adjudicated answer.
+   appearing (or changing) is the signal; the server prints one line per save, naming
+   the actual edited/changed line numbers, not just a count. **When told a save
+   happened, read that file** rather than re-deriving your own view of what went
+   wrong — it already holds the adjudicated answer. Bare `restore` only previews —
+   `edits` (the proposal-vs-decision diff, so no ad-hoc script needed),
+   `geometry_drift`, `text_mismatch` — and writes nothing; re-run with `--commit`
+   once the preview looks right to actually write `gt/ocr/`.
    Read that line: it reports lines edited *and* lines changed, and a large `changed` after
    light editing means a bulk overwrite, not work — see the browser warning below.
+
+   **Read `edits` as the page's error profile, not only as a save-check.** It is the
+   full proposal-vs-decision diff, which means it names exactly which class from
+   `keying_spec.md` §5 (if any) each miss belonged to. A recurring class is the
+   signal to strengthen that checklist further — §5's own text is itself the
+   record of past diffs doing exactly that.
 
 ## The instrument
 
@@ -85,7 +132,13 @@ To wrap **less**, lower the zoom (`--zoom 1` puts nearly any line in one strip).
 the 2× default a list line is one strip and a full-measure line three.
 
 Wrapping is the cost that matters: a form seen only in halves is a reading assembled
-from halves. Escalate to 6× for one specific question and take the wrapping there.
+from halves. Escalate to 4× for one specific question and take the wrapping there —
+4× is the ceiling stated above, not a soft default; there is no higher tier to
+escalate to. `2-245` treated this line as license for repeated 6× calls (39 wrapped
+strips) chasing a shape question further zooming could never answer — past 4× there
+is no more source detail to buy, only interpolation. A doubt that survives one 4×
+look is the proposal's answer: flag it in `note` for the human, don't spend more
+calls on it.
 
 **`--margins` widens a crop to the PrintSpace, and it belongs on every page.** A line
 polygon can exclude printed text belonging to the line, and what it excludes sits in
@@ -100,33 +153,18 @@ above-mark sits over the ascender, and this padding was 4 px when `1-074` lost t
 dots to it. It still clips anything two-deck — a stacked catalogue fraction — so go
 to the raster there. See `keying_spec.md` §2.8; those are keyed `(??/????)` anyway.
 
-## Error classes, in the order they actually bite
+## Error classes
 
-1. **Inference, not resolution.** The one measured error on a blind page was a mark
-   read as a breve because it looked rounder than the page's `č`. The observation was
-   real; the conclusion — that the notation contains both sorts — did not follow. More
-   magnification cannot settle a question that is not optical, and examining it at 6×
-   twice only made the wrong answer more confident. **If your reading contradicts
-   `keying_spec.md`, say so plainly and prefer the spec.** A detailed, self-consistent
-   note citing its own magnification is what a confident guess looks like. Citing the
-   firewall to justify a novel sort inverts it: the firewall forbids *adopting* a glyph
-   on a model's authority, and book-internal apparatus binds.
-2. **Dropped marks below the baseline.** `g̣` / `G̣` (g + U+0323) is the class to check
-   hardest; it cost `1-074` both its errors. Check every `g` in a Tier-1 form.
-3. **`ɪ` (U+026A) vs `i`.** Dotless and x-height versus dotted. Both occur inside one
-   word — `Imlɪˊrɪlɪn` is all `ɪ`, `yuˊᵋtir` is `i`.
-4. **Old-style figures.** The numeral 1 is x-height and dotless and is easily taken
-   for `ɪ`; zero is small and round. CATMuS reads `20th` as `zoth`.
-5. **Text outside the polygons** — see `--margins` above.
-6. **Word stress (U+02CA ˊ) keyed as apostrophe (U+0027 ').** These are visually
-   **distinct** printed symbols, not a shape call — read which one is actually on the
-   page, the same as any other glyph. What makes this class worth naming: **every
-   multisyllabic Chukchi/Eskimo/Koryak word carries a stress mark** (culminative, ≤1
-   per word), so a native word of more than one syllable almost certainly has one
-   somewhere, and a raised mark you're about to key as a plain apostrophe out of habit
-   is far more likely the stress mark. On `1-052`, essentially every native word on
-   the page (~40) was keyed `'` without this expectation in mind, and the actual
-   symbol printed throughout was the stress mark.
+**The checklist itself now lives in `keying_spec.md` §5** — moved there because it
+governs the same misreading classes the collation pass hits keying Tier-1 spans off
+the raster, not just this one. Read it in full alongside the rest of the spec before
+a page's first line, and run it as a **per-line pass over every Tier-1 line**, zoomed
+or not: a class named once is not the same as checked for on every line, and more
+than one of §5's classes has been re-stated as "the one to watch" and then missed
+again on a later page regardless. The `--margins` polygon-exclusion issue above is
+the one class that stays here rather than in the spec — it's an ALTO segmentation
+artifact of this pass's per-line crops, not a glyph-reading question, and has no
+collation-side analogue since collation works from the full page image.
 
 ## The proposal file
 
@@ -138,6 +176,10 @@ to the raster there. See `keying_spec.md` §2.8; those are keyed `(??/????)` any
                   "note": "…"}}}
 ```
 
+- **Don't reproduce a line's dot-leader typography** (`Term . . . . . . . Gloss`-style
+  list filler). It carries no semantic content and isn't worth matching dot-for-dot —
+  key the actual word and drop the separator run. `3-005`, a dense kinship-terms table,
+  is the page that raised this.
 - **`resolved` spells the codepoints out** for any line with notation. Write it as you
   read, not afterwards: a combining mark that fails to render looks exactly like its
   absence, and that is how a U+0323 was mis-keyed once already. It also catches your
@@ -152,14 +194,68 @@ to the raster there. See `keying_spec.md` §2.8; those are keyed `(??/????)` any
   unambiguously it still reports — read those by hand, since a guess there is exactly
   what the firewall's reasoning forbids. Re-run without `--fix` afterward: zero output
   is the signal you're done.
+- **`uv run harness proposal-check PP-NNN --codepoints LINE` names every non-ASCII
+  character in one line's field** (`--field text|resolved|note`, default `text`) —
+  glyph, codepoint, Unicode name. Use it to settle a doubt about what you actually
+  typed, before `resolved` even exists to cross-check against. This is what a
+  hand-rolled `python3 -c "...ord(ch)..."` loop was standing in for; it existed
+  because this exact doubt — "is this really U+026A or did I type U+0131" — comes up
+  on essentially every notated line, which is the definition of a recurring op that
+  belongs in the tool rather than in a fresh one-liner each time.
+- **`uv run harness proposal-check PP-NNN --set LINE --field FIELD [--value TEXT]`
+  writes one line's field**, value from `--value` or stdin, NFD-normalizing on write.
+  Reach for this instead of `Edit` when a targeted text replacement in
+  `proposal.json` keeps silently failing to match: the file has already been through
+  `normalize --convert` and holds NFD (`ñ` as `n`+U+0303), and a character you type
+  by hand in an `Edit` call is ordinary NFC (`ñ` as one codepoint) — the two compare
+  unequal even though they render identically, so the edit's `old_string` never
+  matches and the tool reports a mismatch with no visible cause. `--set` sidesteps
+  the whole class by construction, the same way `normalize.py` has one conversion
+  point rather than trusting every writer to remember it.
+- **`uv run harness proposal-check PP-NNN --replace LINE --old X --new Y [--field
+  FIELD] [--which all|first|last|N|N:M]`** swaps one or more occurrences of one
+  string for another inside a single field, instead of retyping the whole thing.
+  Reach for this over `--set` once a line is already written and only a character
+  or two turns out wrong (an apostrophe that should have been U+02CA, say) —
+  `--set` requires resending the entire field, and resending a 70-character line
+  by hand to fix one glyph is exactly the situation that produces the *second*,
+  unrelated slip while fixing the first, on a page that is otherwise clean.
+  `--which` is 1-based, left to right: `all` (default) touches every occurrence,
+  `first`/`last` the obvious ones, a bare number one specific occurrence, `N:M`
+  an inclusive run. NFD both ends, same as `--set`, and refuses (rather than
+  silently doing less than asked) if `--old` doesn't occur or `--which` names an
+  occurrence that doesn't exist.
 - **`note`** for anything an adjudicator would otherwise have to rediscover: material
   outside a polygon, a small-cap flattening, a speck you decided was not ink.
 - A **`contamination`** block, always. Say whether the page is blind.
-- **NFD.** Your output will likely be composed, so run
-  `uv run harness normalize --path review/PP-NNN/proposal.json`, then the same with
-  `--check`, which exits 1 on NFD drift and on an unlicensed mark. Scope to the one
-  file with `--path` — bare `normalize` walks and rewrites the whole corpus, which is
-  the wrong blast radius for a single page's proposal.
+- **Footnote markers are keyed as the actual Unicode superscript digit** — `¹`
+  U+00B9, `²` U+00B2, `³` U+00B3, `⁴`–`⁹` U+2074–U+2079 — never the plain ASCII
+  digit. `2-244` line 1 got this wrong: `funeral.1` proposed, `funeral.¹`
+  adjudicated. A plain digit reads as correct (it's the right number) so nothing
+  mechanical catches it; only a raster comparison or a human pass does.
+- **Run `uv run harness normalize --convert --path review/PP-NNN/proposal.json`
+  before serving the proposal, always — never skip it and never substitute a
+  manual fix.** This is not only NFD/§2.9 spacing cleanup (composed input, French-
+  spacing artifacts copied from the OCR text). It exists because your own output is
+  probabilistic: the exact mistake `proposal-check --fix` and `normalize` catch
+  mechanically — a wrong-but-visually-identical codepoint (`ı` U+0131 typed where
+  the licensed `ɪ` U+026A was meant, a precomposed accented letter where NFD wants
+  it decomposed) — is a mistake *you* are equally likely to make again if you "fix"
+  it by hand or with an ad-hoc script, since it is the same generative process
+  producing the same slip. A tool that mechanically re-derives the correct form
+  cannot repeat that class of error; a re-read or a hand edit can, and has (`2-244`
+  needed the same `ı`-for-`ɪ` swap corrected on 33 occurrences across nine words,
+  by a single scoped substitution, not by hand-fixing each). Follow with the same
+  command minus `--convert` (or `--check`), which exits 1 on drift. Scope to the
+  one file with `--path` — a per-page step has no business touching the other
+  280+ corpus files, and `normalize` never writes at all unless `--convert` is
+  given.
+- **Run the same `normalize --path` check against `decision.json` too, once it
+  exists** (after the human's review pass, before `restore`/`--commit`). The
+  adjudicator can introduce the identical drift classes typing corrections in the
+  browser — composed accents, French spacing, a stray lookalike — and `decision.json`,
+  not `proposal.json`, is what `restore` actually writes to `gt/ocr/`. Cheap
+  insurance for the file that becomes ground truth.
 
 Once adjudicated, **do not rewrite a proposal's `text` fields** without recording the
 original error count somewhere explicit. `edited` is computed against the proposal, so
@@ -182,8 +278,16 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
 
 ## What you never do
 
-- Write `gt/ocr/` or `ocr/` yourself. `ocr/*.xml` are symlinks into `gt/ocr/`, one
-  store under two names, and an unconfirmed write into it destroyed 18 pages once.
+- Write `gt/ocr/` or `ocr/` yourself **as a shortcut for the proposal → review →
+  restore pipeline**. `ocr/*.xml` are symlinks into `gt/ocr/`, one store under two
+  names, and an unconfirmed write into it destroyed 18 pages once. This is not a
+  blanket ban on ever touching an already-restored file: `1-048` and `2-030` (the
+  two pages that predate the pipeline entirely) got a direct, surgical
+  straight-quote/content fix this way, each character raster-verified first via
+  `harness zoom --from gt/ocr` and each edit a targeted substring replace, never a
+  hand-retyped line (retyping risks an NFD-vs-precomposed mismatch that silently
+  passes a `repr()` eyeball check — verify with an in-string `.replace()`, not by
+  comparing to a literal you typed).
 - Normalize a Tier-1 form toward a plausible shape, harmonize it against a
   neighbouring page, or propose a sort the inventory has never attested.
 - Take CATMuS as a witness to any glyph. It reads 0% of the inventory. It is evidence
@@ -194,3 +298,26 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
   `harness/review.py`. If a save reports many lines changed after one keystroke, stop
   and recover from `.json.prev` or `<ref>.jsonl`.
 - Commit a page without running `uv run harness normalize --check`.
+- Reach for a hand-rolled crop (a `python3 -c "...PIL..."` one-liner, or any script
+  outside the harness) to re-check a glyph. `harness zoom --zoom 4` already delivers
+  every pixel of source detail there is — past it there is only interpolation, so an
+  ad-hoc crop cannot see more than the tool already showed. Doing it anyway is a tell
+  that you're fretting past the point of a real doubt: stop, and if the doubt is
+  real, write it in `note` instead. If a genuine gap in the tool's coverage forces
+  this, the fix belongs in `harness zoom` itself (an option, e.g.), not a one-off
+  script and not a workaround repeated next session.
+- Write a `python3 -c "..."` one-liner to inspect or edit `proposal.json`/
+  `decision.json` — `proposal-check --codepoints LINE` names a line's non-ASCII
+  characters, `proposal-check --set LINE --field FIELD` writes one, and both exist
+  precisely because the hand-rolled versions were written more than once in the same
+  session (`3-003`: an `ord(ch)` loop to catch a typed `ı` where `ɪ` was meant, then
+  a second `ord()` dump trying to work out why a hand-typed `Edit` kept failing to
+  match — the cause was NFC-vs-NFD, invisible to eye and to `Edit`'s diff both).
+  Two different failure modes, same root cause: a one-off script standing in for a
+  question the harness should already answer. Note what this does *not* license:
+  the `ı`-for-`ɪ` class is already caught by `normalize --check` (report-only, same
+  as every lookalike — see keying_spec.md §3), so seeing it there is not licence to
+  write a bulk auto-replace tool for it, and a stress-mark-vs-apostrophe mixup is
+  *never* a candidate for automation at all — which mark is meant depends on the
+  licensing environment around each occurrence (§2.1), a reading judgement no script
+  should make.

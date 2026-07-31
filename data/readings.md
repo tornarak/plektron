@@ -4,7 +4,7 @@ Read directly from the 300 dpi scans, one block per FigDesc zone, cropped from
 the zone box. These replace the automatic line segmentation and its OCR, both of
 which are unreliable — the segmentation drops whole lines.
 
-Format: `## <ref>|<zone-id suffix>`, then the caption's printed lines, one per
+Format: `## <ref>|<zone-id suffix>`, then the caption’s printed lines, one per
 line, hyphenation kept as printed. `@note:` records anything uncertain or
 structural. AMNH catalogue numbers are kept as the placeholder `(??/????)` with
 any printed sub-letter retained; their denominators are not legible at this
@@ -16,7 +16,7 @@ they close the question and nothing downstream should reopen it:
 - `VERBATIM` — the page was re-examined and reads exactly as recorded. What
   looked like a defect is what the printer set. Do not normalise.
 - `MISPRINT` — the page was re-examined and the reading stands, but the printed
-  form is an error of the book's own. Recorded as printed, flagged as wrong.
+  form is an error of the book’s own. Recorded as printed, flagged as wrong.
   Which witness carries the error is named in the note: usually the caption, in
   a few cases the List of Illustrations.
 
@@ -44,7 +44,7 @@ Fig. 3. Street in Village Uñiˊsak.
 
 ## 1-081|dda11749
 Fig. 1. Anui Fair: Chukchee before the Closed Gate of the Fort in the Morning.
-@note: plate page — Plate II, first segment. The List of Illustrations splits this plate into three segments ("Anui Fair; Chukchee before the Closed Gate of the Fort; Inside of the Fort") where the page prints two captions, each opening "Anui Fair:". Same content, segmented differently — not a missing caption.
+@note: plate page — Plate II, first segment. The List of Illustrations splits this plate into three segments (“Anui Fair; Chukchee before the Closed Gate of the Fort; Inside of the Fort”) where the page prints two captions, each opening “Anui Fair:”. Same content, segmented differently — not a missing caption.
 
 ## 1-081|47f28468
 Fig. 2. Anui Fair: Inside of the Fort.
@@ -121,8 +121,8 @@ Each Other. Length,
 12.5 cm.
 
 ## 1-117|a2505612
-Fig. 16, a (??/????),
-b (??/????), c (??/????),
+Fig. 16, a (??/????),
+b (??/????), c (??/????),
 d (??/????). Whips.
 Total lengths, a,
 122 cm.; d, 171 cm.
@@ -140,7 +140,7 @@ Fig. 19 (??/????). Kamchadal Dog-Sledge. (From a model.)
 
 ## 1-123|d66ce75c
 Chukchee driving Reindeer.
-@note: plate page with a single image — no "Fig." number is printed at all. Plate V.
+@note: plate page with a single image — no “Fig.” number is printed at all. Plate V.
 
 ## 1-128|7395c79c
 Fig. 20, a, Dog, showing Harness of Northwestern Siberia (from Nordenskiöld, I, p. 353);
@@ -175,7 +175,7 @@ Fig. 2. Driftwood on the Tundra near the Mouth of the Kolyma River.
 
 ## 1-141|c2b75655
 Chukchee Dog-Teams under Way.
-@note: plate page with a single image — no "Fig." number is printed at all. Plate VIII.
+@note: plate page with a single image — no “Fig.” number is printed at all. Plate VIII.
 
 ## 1-143|06ea8938
 Fig. 22, a (??/????), Sled from Mariinsky Post (length, 45 cm.); b (??/????), Small
@@ -189,7 +189,7 @@ Fig. 23 (??/????). Details of attaching Dog-Harness.
 Fig. 24. Method of tying Loops in Dog-Strap.
 
 ## 1-144|f8770d73
-Fig. 25, a (??/????) “Oblique" Dog-Harness; b, c (??/????), Chukchee Dog-Harness; d. Dog, showing Best Style
+Fig. 25, a (??/????) “Oblique” Dog-Harness; b, c (??/????), Chukchee Dog-Harness; d. Dog, showing Best Style
 of Dog-Harness (from a photograph). Length, 117 cm.
 
 ## 1-145|24b412f3
@@ -205,7 +205,7 @@ Height, 13 cm.
 Fig. 28 (??/????). Groin-Protector for Dog. Total length, 115 cm.
 
 ## 1-148|beac7ada
-Fig. 29, a (??/????), b (??/????). Dog-Whips.
+Fig. 29, a (??/????), b (??/????). Dog-Whips.
 Length of Handles 45cm.; 68 cm. Eskimo,
 Indian Point.
 
@@ -220,7 +220,7 @@ Harpoon-Heads of Stone. Length,
 
 ## 1-152|1bf4b7f3
 Fig. 32. Harpoon-Heads. 1/2 nat. size. Koryak and Kamchadal. a, c,
-f, h, from Lesna; b, d, e, Pallan; g, Baron Korff's Bay; i, Kavran. a, (??/????)
+f, h, from Lesna; b, d, e, Pallan; g, Baron Korff’s Bay; i, Kavran. a, (??/????)
 b, (??/????); c, (??/????); d, (??/????); e, (??/????); f, (??/????); g, (??/????); h, (??/????); i, (??/????).
 
 ## 1-153|eea0cfb9
@@ -244,7 +244,7 @@ Fig. 2. Chukchee (Kaˊka) in Armor.
 @note: plate page — Plate IX, second segment. Human-keyed.
 
 ## 1-157|2780a380
-Fig. 36, a (??/????), Seal-Hunter's Cap, in Imitation of a
+Fig. 36, a (??/????), Seal-Hunter’s Cap, in Imitation of a
 Seal-Muzzle (width of front part below, 10 cm,); b (??/????),
 c (??/????), Ice-Scratchers used in sealing (length, 23 cm., 28 cm.).
 
@@ -436,7 +436,7 @@ f, (??/???? d); g, (??/???? j); h, (??/???? d); i, (??/???? b); j, (??/???? i); 
 ## 1-199|c761031c
 Fig. 75, a (??/???? b), b (??/???? h), c (??/???? g). Methods of
 feathering Arrows. Thickness, 75 cm.
-@note: MISPRINT — "Thickness, 75 cm." is what the caption prints, and it is wrong: the dimension is impossible for arrow feathering. Recorded as printed.
+@note: MISPRINT — “Thickness, 75 cm.” is what the caption prints, and it is wrong: the dimension is impossible for arrow feathering. Recorded as printed.
 
 ## 1-199|ef6ddeb8
 Fig. 76 (??/???? a). Quiver. Length, 83 cm.
@@ -470,7 +470,7 @@ Fig. 82 (??/????). Lance. a, Sheep-horn Point-Protector. Total length of lance, 
 Fig. 83, a (??/????), b (??/????).
 Skin Knife-Scabbards, with Knives.
 1 nat. size.
-@note: MISPRINT — the caption prints a bare "1 nat. size". The denominator was lost in printing; the reading is correct, the page is not.
+@note: MISPRINT — the caption prints a bare “1 nat. size”. The denominator was lost in printing; the reading is correct, the page is not.
 
 ## 1-205|2fd04bf2
 Fig. 84, a (??/????), Chukchee Man dressed in a Suit of Right-handed Iron Armor, Front View; b (??/????), Koryak
@@ -507,7 +507,7 @@ Fig. 90, a, Gilyak Helmet with Neck-Protector (reproduced
 from Schrenck, II, Plate xliv); b, Portion of Chukchee Helmet
 with Neck-Protector (reproduced from Bogoras, Chukchee
 Material Life, Plate xii). 1/8 nat. size.
-@note: "xliv" and "xii" are printed as small capitals.
+@note: “xliv” and “xii” are printed as small capitals.
 
 ## 1-210|4c93d12b
 Fig. 91, a (??/???? b), b, c (??/???? c), Arm-Guards; d (??/???? f), Greave. 1/8 nat. size.
@@ -530,7 +530,7 @@ Fig. 1. Woman splitting a Walrus-Hide.
 
 ## 1-215|3a9d96f5
 Fig 2. Sleeping-Room of Reindeer Chukchee (without the Outer Tent).
-@note: plate page — Plate XIII, second segment. "Fig" is printed without its full stop.
+@note: plate page — Plate XIII, second segment. “Fig” is printed without its full stop.
 
 ## 1-217|bfec6361
 Fig. 93 (??/????). Snow-scraper for Camping-Places. Length, 92 cm.
@@ -544,7 +544,7 @@ Fig. 95 (??/????). Snow-Beater for Tent-Covering. Length, 69 cm.
 
 ## 1-219|851471ef
 Interior of Sleeping-Room of Reindeer Chukchee.
-@note: plate page with a single image — no "Fig." number is printed at all. Plate XIV.
+@note: plate page with a single image — no “Fig.” number is printed at all. Plate XIV.
 
 ## 1-221|c963a415
 Fig. 96 (??/????). Urine-Vessel. Length, 33 cm.
@@ -755,7 +755,7 @@ Wooden Fire-Drill.
 Fig. 132, a (??/????), b (??/????), c (??/???? a), Crooked Knives (length, 31 cm., 18 cm., 16 cm.; d (??/????), Long
 Crooked Knife of Russianized Natives in Markova (length, 68 cm.); e (??/????), Knife for hollowing out Spoons
 (length, 21 cm.).
-@note: the parenthesis opened before "length, 31 cm." is not closed in the printed text.
+@note: the parenthesis opened before “length, 31 cm.” is not closed in the printed text.
 
 ## 1-271|7b740992
 Fig. 133 (??/????). Knife for carving Ivory.
@@ -881,18 +881,18 @@ Fig. 156 (??/????). Pouch. Height, 10 cm.
 
 ## 1-285|c2d5c7bd
 Fig. 157, a (??/????), b (??/????), c (??/????).
-Combs. Length, 13 cm , 10 cm., 13 cm.
+Combs. Length, 13 cm, 10 cm., 13 cm.
 a, c, Chukchee; b, Eskimo, Euˊnmun.
 @note: Human-keyed.
 
 ## 1-287|aadf87a1
 Figs. 2-4. Ornaments of the Covering of the Family Sledge.
 Cat. Nos. (??/????) a (??/????) (??/????).
-@note: plate page — Plate XXI, second segment; one caption covers three figures. The catalogue numbers here are printed in the spelled-out "Cat. Nos." form rather than as a bare parenthesised fraction.
+@note: plate page — Plate XXI, second segment; one caption covers three figures. The catalogue numbers here are printed in the spelled-out “Cat. Nos.” form rather than as a bare parenthesised fraction.
 
 ## 1-287|e2dae98f
 Fig. 1. Covering of the Family Sledge. Cat. No. (??/????).
-@note: plate page — Plate XXI, first segment. Spelled-out "Cat. No." form.
+@note: plate page — Plate XXI, first segment. Spelled-out “Cat. No.” form.
 
 ## 1-289|7ab2a7cc
 Fig. 158, a (??/????), b (??/????), c (??/???? f). Fringed Bands for Family Sledge Cover. Width of
@@ -907,7 +907,7 @@ Length, 10 cm.
 
 ## 1-291|7c031119
 Embroidered Quivers. Cat. Nos. (??/????) a (??/????) (??/????) (??/????) a.
-@note: plate page — Plate XXII, a single image with no "Fig." number printed. Spelled-out "Cat. Nos." form.
+@note: plate page — Plate XXII, a single image with no “Fig.” number printed. Spelled-out “Cat. Nos.” form.
 
 ## 1-293|538892e6
 Fig. 161 (??/????).
@@ -933,7 +933,7 @@ Fig. 165, a, (??/????), b (??/???? a), Bone Eyes; c (??/????), Iron Toggle;
 d (??/????), Bone Toggle; e (??/???? c), Leather Trace and Wooden Toggle;
 f (??/???? c), Two Ends of Trace combined with a Loop. a-e, 2/5 nat.
 size; f, 1/4 nat. size.
-@note: VERBATIM — re-examined; "a-e, 2/5 nat. size" is the printed fraction.
+@note: VERBATIM — re-examined; “a-e, 2/5 nat. size” is the printed fraction.
 
 ## 1-295|574bce2c
 Fig. 166 (??/????). Fire-drill Apparatus. 1/6 nat. size.
@@ -965,7 +965,7 @@ Fig. 1. Maritime Chukchee Man in Usual Clothing.
 ## 1-305|2f6267a7
 Fig. 169 (??/????). Trousers of Reindeer-
 leg Skin. Length, front, 68 m.; back, 83 cm.
-@note: MISPRINT — "68 m." is what the caption prints; the parallel measurement is "83 cm.", so the unit is wrong in the book. Recorded as printed.
+@note: MISPRINT — “68 m.” is what the caption prints; the parallel measurement is “83 cm.”, so the unit is wrong in the book. Recorded as printed.
 
 ## 1-306|e0aee491
 Fig. 170 (??/????). Seal-skin Trousers trimmed with Tassels. a, Front; b, Back.
@@ -1003,7 +1003,7 @@ Fig. 179. Woman’s Frock.
 
 ## 1-315|3711a22a
 Fig. 1. Seal-skin Overcoat. Eskimo. Cat. No. (??/????).
-@note: plate page — Plate XXV, first segment. Spelled-out "Cat. No." form.
+@note: plate page — Plate XXV, first segment. Spelled-out “Cat. No.” form.
 
 ## 1-315|41804163
 Fig. 2. Overcoat of a Chukchee Woman, with Tassels. Cat. No. (??/????)
@@ -1023,7 +1023,7 @@ Mitten. Eskimo.
 
 ## 1-321|bbac2c57
 Fig. 2. Overcoat made of Seal-Guts. Cat. No. (??/????).
-@note: plate page — Plate XXVI, second segment. Spelled-out "Cat. No." form.
+@note: plate page — Plate XXVI, second segment. Spelled-out “Cat. No.” form.
 
 ## 1-321|a4ce0e4b
 Fig. 1. Chukchee Boy’s Garment.
@@ -1119,7 +1119,7 @@ Staff of Snowshoe-Runner;
 b (??/????), Staff of Foot-
 Racer. Length of Staffs,
 about 125 cm.).
-@note: the closing parenthesis after "125 cm." has no opening partner in the printed text.
+@note: the closing parenthesis after “125 cm.” has no opening partner in the printed text.
 
 ## 1-341|0336d2ae
 Fig. 195 (??/???? b). Ice-Creeper.
@@ -1127,7 +1127,7 @@ Length, 10 cm.
 
 ## 1-345|4b1ef7c8
 Fig. 2. Maritime Chukchee travelling on Snowshoes.
-@note: plate page — Plate XXX, second segment. The List of Illustrations gives this as "travelling on Snowshoe" (singular).
+@note: plate page — Plate XXX, second segment. The List of Illustrations gives this as “travelling on Snowshoe” (singular).
 
 ## 1-345|5c2e64ab
 Fig. 1. Foot-Race in Uñiˊsak.
@@ -1223,61 +1223,32 @@ Fig. 212. Chukchee Sketches representing Shamanistic “Spirits.”
 ## 2-030|fc8e95b7
 Fig. 213. Directions of the Compass.
 
-tiˊrkɪ-reˊiᵋ or têrk-amêčaˊtyêᵋ ("sun has come in" or
-  "sun has gone out of sight"),
-aᵋčoˊpta ("it is still day").
-em-g̣iˊthilɪ-neˊlyi ("twilight has come").
-g̣itg̣iluweˊtyiᵋ ("twilight has become narrow").
-g̣êˊthêlu-waiñeˊeᵋ ("twilight has been extinguished").
-aiˊvêčha ("in the evening”) or tun-nɪkiruˊiᵋ (night
-  recently came").
-em-g̣ɪnuˊn-nɪkiˊtä neˊlyiᵋ ("midnight has come").
-em-g̣ɪnuˊn-nikiˊtä halaˊêᵋ ("midnight has passed by").
-eimeˊwkwiᵋ ("[dawn] has approached").
-ɪˊprɪñgêᵋ ("(light) has burst forth").
-tñeˊiᵋ ("it has dawned") or tñaˊɪrg̣ɪn ("morning-dawn").
------
-totɪntoˊêᵋ ("darkness has gone"),
-tañ-ɪrg̣ɪroˊêᵋ (Wit has well dawned").
-tirk-iini'ɪᵋ ("tsun has risen").
-têˊrkɪ-g̣ɪrg̣olaˊtyêᵋ ("sun has ascended").
-tɪˊrkɪ-keulkeˊtyiᵋ ("sun has climbed [towards the top]")
-am-gɪnoˊt-aᵋloˊwtɪ tɪleˊhtɪ neˊlyiᵋ ("to the mid-day it
-has gradually approached")
-am-gɪnoˊt-aᵋloˊ neˊlyiᵋ ("mid-day has come").
-am-gɪnoˊt-aᵋloˊ halaˊêᵋ ("mid-day bas passed by").
-t-arkɪčhaweˊtɪ neˊlyɪᵋ ("sun descending has come").
-t-arkɪčhaˊwkwê or tirk-iwtɪtviˊiᵋ ("sun has descended"
-or "sun has become low").
-
-**AI INITIAL ATTEMPT:**
-
 tiˊrkɪ-reˊiᵋ or têrk-amêčaˊtyêᵋ (“sun has come in” or
-  “sun has gone out of sight”).
+  “sun has gone out of sight”),
 aᵋčoˊpta (“it is still day”).
-em-gîˊthilɪ-neˊlyi (“twilight has come”).
-gitgiluweˊtyiᵋ (“twilight has become narrow”).
-gêˊthêlu-waiñeˊeᵋ (“twilight has been extinguished”).
-aiˊvêcha (“in the evening”) or tun-nɪkiruˊiᵋ (“night
+em-g̣iˊthilɪ-neˊlyi (“twilight has come”).
+g̣itg̣iluweˊtyiᵋ (“twilight has become narrow”).
+g̣êˊthêlu-waiñeˊeᵋ (“twilight has been extinguished”).
+aiˊvêčha (“in the evening”) or tun-nɪkiruˊiᵋ (“night
   recently came”).
-em-gɪnuˊn-nɪkiˊtä neˊlyiᵋ (“midnight has come”).
-em-gɪnuˊn-nɪkiˊtä halaˊêᵋ (“midnight has passed by”).
+em-g̣ɪnuˊn-nɪkiˊtä neˊlyiᵋ (“midnight has come”).
+em-g̣ɪnuˊn-nikiˊtä halaˊêᵋ (“midnight has passed by”).
 eimeˊwkwiᵋ (“[dawn] has approached”).
 ɪˊprɪñgêᵋ (“[light] has burst forth”).
-tñeˊiᵋ (“it has dawned”) or tñaˊɪrġɪn (“morning-dawn”).
+tñeˊiᵋ (“it has dawned”) or tñaˊɪrg̣ɪn (“morning-dawn”).
 -----
-totɪntoˊêᵋ (“darkness has gone”).
-tañ-ɪrgɪroˊêᵋ (“it has well dawned”).
+totɪntoˊêᵋ (“darkness has gone”),
+tañ-ɪrg̣ɪroˊêᵋ (“it has well dawned”).
 tirk-iiniˊɪᵋ (“sun has risen”).
-têˊrkɪ-gɪrgolaˊtyêᵋ (“sun has ascended”).
-tiˊrkɪ-keulkeˊtyiᵋ (“sun has climbed [towards the top]”).
+têˊrkɪ-g̣ɪrg̣olaˊtyêᵋ (“sun has ascended”).
+tɪˊrkɪ-keulkeˊtyiᵋ (“sun has climbed [towards the top]”)
 am-gɪnoˊt-aᵋloˊwtɪ tɪleˊhtɪ neˊlyiᵋ (“to the mid-day it
-  has gradually approached”).
+has gradually approached”)
 am-gɪnoˊt-aᵋloˊ neˊlyiᵋ (“mid-day has come”).
 am-gɪnoˊt-aᵋloˊ halaˊêᵋ (“mid-day has passed by”).
-t-arkɪčaweˊʊ neˊlyɪᵋ (“sun descending has come”).
-t-arkɪčaˊwkwê or tirk-iwtɪtviˊiᵋ (“sun has descended”
-  or “sun has become low”).
+t-arkɪčhaweˊtɪ neˊlyɪᵋ (“sun descending has come”).
+t-arkɪčhaˊwkwê or tirk-iwtɪtviˊiᵋ (“sun has descended”
+or “sun has become low”).
 
 @note: Human-keyed. Original AI key provided for comparison (it's actually very good!)
 
@@ -1290,7 +1261,7 @@ Constellations.
 
 ## 2-035|041b4430
 Fig. 216. Chukchee Constellations.
-@note: MISPRINT (in the List of Illustrations) — the LoI gives 214-216 as a single entry, "Chukchee Constellations". The page prints three separate captions, and the three captions are right.
+@note: MISPRINT (in the List of Illustrations) — the LoI gives 214-216 as a single entry, “Chukchee Constellations”. The page prints three separate captions, and the three captions are right.
 
 ## 2-036|2fce38a5
 Fig. 217. Chukchee Sketch representing Stars.
@@ -1327,7 +1298,7 @@ Fig. 225. Chukchee Sketches representing the
 
 ## 2-046|25e8b995
 Fig. 226 (??/????). Image of a Helping “Spirit.” Length 20 cm.
-@note: the catalogue fraction is printed without enclosing parentheses. "Length 20 cm." is printed without a comma.
+@note: the catalogue fraction is printed without enclosing parentheses. “Length 20 cm.” is printed without a comma.
 
 ## 2-047|e0a164e1
 Fig. 227. The Winds of the Kolyma Country.
@@ -1351,7 +1322,7 @@ yahnaˊihɪn (“counter-wind”).
 ## 2-049|347402a0
 Fig. 230. Chukchee Sketch illustrating the Paths followed by
 Mushroom-Men.
-@note: the List of Illustrations gives fig. 230 the same caption as fig. 200 ("Chukchee Sketch illustrating the Paths followed by Mushroom-Men", folios 282 and 323); the printed under-figure caption here confirms the repetition is in the book, not in the LoI transcription.
+@note: the List of Illustrations gives fig. 230 the same caption as fig. 200 (“Chukchee Sketch illustrating the Paths followed by Mushroom-Men”, folios 282 and 323); the printed under-figure caption here confirms the repetition is in the book, not in the LoI transcription.
 
 ## 2-050|b19cb162
 Fig. 231. Chukchee Sketch representing Killer-Whales hunting Walrus.
@@ -1365,7 +1336,7 @@ Fig. 233. Shaman’s Plank with Representation of Mammoth.
 ## 2-055|5f601a11
 Fig. 234 (??/????). Carving representing a Triton.
 Length, 7 cm.
-@note: MISPRINT (in the List of Illustrations) — the LoI gives fig. 234's folio as "39". The figure sits on scan 2-055, between fig. 233 (folio 327) and fig. 235 (335), so the LoI has dropped a digit from 329. The caption itself is sound.
+@note: MISPRINT (in the List of Illustrations) — the LoI gives fig. 234's folio as “39”. The figure sits on scan 2-055, between fig. 233 (folio 327) and fig. 235 (335), so the LoI has dropped a digit from 329. The caption itself is sound.
 
 ## 2-061|b92e61a5
 Fig. 235. Chukchee Sketch representing the Aurora Borealis.
@@ -1387,11 +1358,11 @@ Length, 19 cm.
 
 ## 2-068|580750c2
 Fig. 239 (??/???? a). Wooden Figure re-
-presenting a "Guardian." Length, 6cm.
+presenting a “Guardian.” Length, 6cm.
 
 ## 2-068|44f33841
 Fig. 240 (??/????). Leather Ornament re-
-presenting a "Guardian." Length, 25cm.
+presenting a “Guardian.” Length, 25cm.
 
 ## 2-069|34a1ead8
 Fig. 241. Tattoo-Marks representing
@@ -1438,7 +1409,7 @@ Fig. 2. Ceremonial Fall Slaughtering.
 
 ## 2-079|5f06fc8f
 Fig. 4. Ceremonial of Heads.
-@note: plate page — Plate XXXII. The plate carries four figures where the List of Illustrations gives three segments ("Fire-Board used as Guardian; Ceremonial Fall Slaughtering; Ceremonial of Heads") — figs. 2 and 3 are both "Ceremonial Fall Slaughtering".
+@note: plate page — Plate XXXII. The plate carries four figures where the List of Illustrations gives three segments (“Fire-Board used as Guardian; Ceremonial Fall Slaughtering; Ceremonial of Heads”) — figs. 2 and 3 are both “Ceremonial Fall Slaughtering”.
 
 ## 2-079|9b2a4cf4
 Fig. 1. Fire-Board used as Guardian.
@@ -1546,7 +1517,7 @@ from Net (natural size).
 
 ## 2-123|ae1d1f87
 Fig. 273. Chukchee Sketch representing Ceremonial of Kereˊtkun.
-@note: "Kereˊtkun" is a Tier-1 form read off the scan — a proposal for keying.
+@note: “Kereˊtkun” is a Tier-1 form read off the scan — a proposal for keying.
 
 ## 2-123|7f9f679e
 Fig. 274, a (??/????), Ceremonial Paddle (length, 69 cm.); b (??/????), Ceremonial Plank (length, 47 cm.).
@@ -1562,7 +1533,7 @@ Fig. 277 (??/????). Ceremonial Paddle of the Eskimo of Indian Point. Length, 33 
 
 ## 2-125|1b74ad63
 Fig. 278 (??/????). Ceremonial Paddle of the Eskimo of Indian Point. Length, 54 cm.
-@note: the List of Illustrations gives 277 and 278 as a single combined entry, "Ceremonial Paddle"; the page prints them as two captions.
+@note: the List of Illustrations gives 277 and 278 as a single combined entry, “Ceremonial Paddle”; the page prints them as two captions.
 
 ## 2-125|5df11bdd
 Fig. 279 (??/????).
@@ -1598,7 +1569,7 @@ Fig. 286. Chukchee Sketch representing a Shaman praying to the Moon.
 
 ## 2-181|95b04fab
 Fig. 4. Divination.
-@note: plate page — Plate XXXIII. The plate carries four figures where the List of Illustrations gives three segments ("Transformed Shaman; Tossing on Walrus-Hide; Divination") — figs. 1 and 2 are both "Transformed Shaman".
+@note: plate page — Plate XXXIII. The plate carries four figures where the List of Illustrations gives three segments (“Transformed Shaman; Tossing on Walrus-Hide; Divination”) — figs. 1 and 2 are both “Transformed Shaman”.
 
 ## 2-181|935e84da
 Fig. 2. Transformed Shaman.
@@ -1610,7 +1581,7 @@ Fig. 1. Transformed Shaman.
 
 ## 2-181|58ac377f
 Fig. 3. Tossing on Walrus-Hide.
-@note: plate page — Plate XXXIII, second segment. The List of Illustrations gives "Tossing on Walrus-Hide"; the earlier ALTO OCR read this as "Tossingon".
+@note: plate page — Plate XXXIII, second segment. The List of Illustrations gives “Tossing on Walrus-Hide”; the earlier ALTO OCR read this as “Tossingon”.
 
 ## 2-188|068ba959
 Fig. 287 (??/????). Shaman’s Coat. Length, 72 cm.
@@ -1618,7 +1589,7 @@ Fig. 287 (??/????). Shaman’s Coat. Length, 72 cm.
 ## 2-189|4f1ff654
 Fig. 288. (??/????). Shaman’s Cap. Length,
 including tassel, 89 cM.
-@note: MISPRINT — "cM." is what the caption prints, with a capital M, unlike every other measurement in the volume. A compositor's error. Recorded as printed.
+@note: MISPRINT — “cM.” is what the caption prints, with a capital M, unlike every other measurement in the volume. A compositor's error. Recorded as printed.
 
 ## 2-192|85ea1437
 Fig. 289. Chukchee Sketch representing the Treat-
@@ -1664,7 +1635,7 @@ Divination. Lamut. Length, 20 cm.
 
 ## 2-255|7d83cceb
 Fig. 2. Disposal of the Dead.
-@note: plate page — Plate XXXIV. The plate carries four figures where the List of Illustrations gives three segments; figs. 1 and 2 are both "Disposal of the Dead".
+@note: plate page — Plate XXXIV. The plate carries four figures where the List of Illustrations gives three segments; figs. 1 and 2 are both “Disposal of the Dead”.
 
 ## 2-255|8989dbe9
 Fig. 4. Pile of Antlers.
@@ -1688,14 +1659,14 @@ Fig. 301. Chukchee Sketch representing the Fate of the Soul
 ## 3-164|7caf3619
 Fig. 302. Envelope officially seated.
 @note: MISPRINT — verified at magnification, the printed under-figure caption
-reads "seated"; the List of Illustrations (scan 1-018) reads "sealed". Adjudicated
-in favour of the LoI: "seated" is a compositor's error for "sealed". The caption is
+reads “seated”; the List of Illustrations (scan 1-018) reads “sealed”. Adjudicated
+in favour of the LoI: “seated” is a compositor’s error for “sealed”. The caption is
 recorded as printed and is not normalised — the correction belongs in an editorial
 apparatus, not in the reading.
 
 ## 3-167|f4bf5887
 Fig. 1. Tower in Sredne-Kolymsk.
-@note: plate page — Plate XXXV, first segment. Printed entirely in small capitals, unlike every other caption in the volume: "FIG. 1. TOWER IN SREDNE-KOLYMSK."
+@note: plate page — Plate XXXV, first segment. Printed entirely in small capitals, unlike every other caption in the volume: “FIG. 1. TOWER IN SREDNE-KOLYMSK.”
 
 ## 3-167|5f7d0fdd
 Fig. 2. Father Victor,

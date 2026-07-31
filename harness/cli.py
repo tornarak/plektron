@@ -11,8 +11,21 @@ index (see context.py), so a bare integer would silently name the wrong page.
   uv run harness ledger           -> the whole seam table
   uv run harness toc-search TEXT  -> ToC entries matching a heading
   uv run harness toc-near FOLIO   -> ToC entries around a known folio
+  uv run harness authority TEXT   -> works in data/authorities.json matching a
+                                     citation read in the body; --sigla for the
+                                     whole resolution table, --key for one record
   uv run harness lexicon          -> frequent lexicon misses, to whitelist
-  uv run harness normalize --check -> NFD + lookalike gate; exit 1 on drift
+  uv run harness lexicon --native -> inverted: frequent native word forms,
+                                     from restored ground truth, for spotting
+                                     a likely misspelling by comparison
+  uv run harness lexicon --marks  -> bare-vs-marked frequency per base letter,
+                                     same corpus (e.g. plain g vs dotted g̣)
+  uv run harness lexicon --suffixes -> weighted suffix frequency (len 2-8),
+                                     marks stripped, same corpus
+  uv run harness lexicon --digraphs -> weighted digraph/trigraph frequency,
+                                     marks and the top suffixes stripped
+  uv run harness normalize        -> NFD + §2.9 spacing + lookalike gate,
+                                     report only; --convert required to write
 
 Output is TOON (see emit.py). `--json` on any verb restores indented JSON for
 anything that needs to parse it as a contract.
@@ -20,15 +33,20 @@ anything that needs to parse it as a contract.
 from __future__ import annotations
 import argparse, sys
 from pathlib import Path
+from .authorities import (load as load_authorities, parse_citation as authority_parse,
+                          record as authority_record, search as authority_search, sigla)
 from .context import build_context, all_refs
-from .detectors import suggest_lexicon
+from .detectors import (digraph_frequency, mark_base_frequency, suffix_frequency,
+                        suggest_lexicon, suggest_native_forms)
 from .emit import emit, emit_lines
-from .lines import (ZOOM, ZOOM_CLIENT_W, ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines,
+from .lines import (LINE_SHEET_H, ZOOM, ZOOM_CLIENT_W, ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines,
                     page_lines, parse_selection, write_line_crops,
                     write_line_sheets, write_line_zoom)
 from .normalize import scan, convert
-from .paths import crops_dir, html_path, proposal_path, sheets_dir, zoom_dir
-from .proposal_check import check as check_proposal, fix as fix_proposal
+from .paths import clean, crops_dir, html_path, proposal_path, sheets_dir, zoom_dir
+from .proposal_check import (check as check_proposal, fix as fix_proposal,
+                             line_codepoints, replace_in_field,
+                             set_field as set_proposal_field)
 from .review import (group_spans, page_spans, render_queue_html, restore, serve,
                      summary)
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
@@ -109,8 +127,12 @@ def main(argv=None):
                          "review/PP-NNN/ subdirectory — for a one-off comparison, "
                          "not for the pass, whose files the other verbs expect to "
                          "find in the default place")
-    ln.add_argument("--per-sheet", type=int, default=8,
-                    help="lines per contact sheet (default 8)")
+    ln.add_argument("--per-sheet", type=int, default=40,
+                    help="lines per contact sheet, upper bound only — --sheet-h "
+                         "packs by height first (default 40)")
+    ln.add_argument("--sheet-h", type=int, default=LINE_SHEET_H,
+                    help=f"max contact-sheet height in px (default {LINE_SHEET_H}); "
+                         "fewer, fuller sheets for the same lines")
     ln.add_argument("--margins", action="store_true",
                     help="widen every crop to the PrintSpace margins — a line "
                          "polygon can exclude printed text that belongs to the "
@@ -180,8 +202,9 @@ def main(argv=None):
                          "into review/PP-NNN/decision.json")
     rv.add_argument("--port", type=int, default=8731)
 
-    rs = add("restore", help="write adjudicated review decisions into "
-                        "gt/ocr/ as ground truth, keeping the recognizer geometry")
+    rs = add("restore", help="preview (default) or write adjudicated review "
+                        "decisions into gt/ocr/ as ground truth, keeping the "
+                        "recognizer geometry — --commit required to write")
     rs.add_argument("ref", metavar="PP-NNN",
                     help="page ref: part and scan index, e.g. 1-074")
     rs.add_argument("--from", dest="alto_dir", default="end-of-eval",
@@ -189,23 +212,44 @@ def main(argv=None):
     rs.add_argument("--force", action="store_true",
                     help="overwrite a target that already holds text — only 1-048 "
                          "and 2-030 do, and they are the surviving hand-keyed pages")
+    rs.add_argument("--commit", action="store_true",
+                    help="actually write gt/ocr/ — bare form only previews the "
+                         "report (edits, geometry_drift, text_mismatch) and writes "
+                         "nothing, same contract as normalize's --convert")
 
-    nz = add("normalize", help="NFD conformance and lookalike census across "
-                        "the corpus stores (keying spec section 1) — --check "
-                        "reports and exits 1 on drift, bare form converts")
-    nz.add_argument("--check", action="store_true",
-                    help="report only; exit 1 if any file is not NFD")
+    cl = add("clean", help="remove review/PP-NNN/{crops,sheets,zoom} — the "
+                        "regenerable working images — leaving proposal.json and "
+                        "decision.json in place; run once a page is restored")
+    cl.add_argument("ref", metavar="PP-NNN",
+                    help="page ref: part and scan index, e.g. 1-053")
+
+    nz = add("normalize", help="NFD conformance, §2.9 spacing, and lookalike "
+                        "census across the corpus stores — bare form (or "
+                        "--check) only reports; --convert is required to write")
+    nz_mode = nz.add_mutually_exclusive_group()
+    nz_mode.add_argument("--check", action="store_true",
+                    help="report only; exit 1 on drift (this is also the default "
+                         "with neither flag — bare `normalize` never writes)")
+    nz_mode.add_argument("--convert", action="store_true",
+                    help="write the fixes. Required to touch any file — there is "
+                         "no bare-form write any more, scoped or not")
     nz.add_argument("--dry-run", action="store_true",
-                    help="with no --check: name the files that would change")
+                    help="with --convert: name the files that would change, write nothing")
     nz.add_argument("--path", type=Path, action="append", default=None,
-                    help="scope to this file instead of the whole corpus "
-                         "(repeatable) — for checking/converting one just-authored "
-                         "file, e.g. a proposal, without touching the other 280+")
+                    help="scope to this file or directory instead of the whole "
+                         "corpus (repeatable) — for checking/converting one "
+                         "just-authored file, e.g. a proposal, or a whole page "
+                         "directory like review/1-052, without touching the "
+                         "other 280+ corpus files")
 
     pc = add("proposal-check", help="cross-check a reading proposal's `resolved` "
                         "field against the codepoints its `text` actually contains "
                         "— catches a mistyped combining mark (ring below for dot "
-                        "below, diaeresis for caron) before it reaches review")
+                        "below, diaeresis for caron) before it reaches review. Also "
+                        "flags a straight apostrophe anywhere (never a genuine "
+                        "reading, corpus-wide) and a bare suffix matching a known "
+                        "dot-prone shape (keying_spec.md §5.1, e.g. -gɪn/-gɪt/-gɪ "
+                        "missing g's dot-below), unconditionally")
     pc.add_argument("ref", metavar="PP-NNN",
                     help="page ref: part and scan index, e.g. 1-052")
     pc.add_argument("--path", type=Path, default=None,
@@ -215,12 +259,92 @@ def main(argv=None):
                          "the resolved field names but the text doesn't contain, "
                          "swapped for the single mark text has that resolved "
                          "doesn't) and write the file back")
+    pc.add_argument("--codepoints", metavar="LINE", default=None,
+                    help="name every non-ASCII character in one line's field "
+                         "instead of running the resolved/text check — a spot "
+                         "check while authoring, before resolved is even written")
+    pc.add_argument("--field", default="text", choices=("text", "resolved", "note"),
+                    help="field to inspect, with --codepoints (default text)")
+    pc.add_argument("--set", metavar="LINE", default=None,
+                    help="set one line's field (see --field) instead of checking "
+                         "— value comes from --value or stdin, and is NFD-"
+                         "normalized on write, so it never fights an Edit-tool "
+                         "exact-match failure against the file's own NFD form "
+                         "(a precomposed ñ typed by hand vs. the file's n+U+0303)")
+    pc.add_argument("--value", default=None,
+                    help="the replacement text for --set; omit to read stdin")
+    pc.add_argument("--replace", metavar="LINE", default=None,
+                    help="replace occurrence(s) of --old with --new in one "
+                         "line's field (see --field) instead of checking — "
+                         "the surgical alternative to --set for a single "
+                         "wrong character in an otherwise-correct line: --set "
+                         "retypes the whole field, which risks a second, "
+                         "unrelated slip while fixing the first")
+    pc.add_argument("--old", default=None,
+                    help="text to find, with --replace")
+    pc.add_argument("--new", default=None,
+                    help="text to substitute, with --replace")
+    pc.add_argument("--which", default="all",
+                    help="with --replace: which occurrence(s) of --old to "
+                         "replace — \"all\" (default), \"first\", \"last\", "
+                         "an occurrence number (\"3\"), or an inclusive range "
+                         "(\"2:4\"), all 1-based, left to right")
+
+    au = add("authority", help="works in data/authorities.json matching a "
+                        "citation read in the body — the siglum (Dall, I), a "
+                        "bare name in prose (Krause reports…), a title, or any "
+                        "string off the printed entry. Every match is returned "
+                        "and ranked, never resolved to one: 51 sigla share 34 "
+                        "names, so a single answer would be manufactured. No "
+                        "hit is a legitimate outcome — the list is open")
+    au.add_argument("query", nargs="?", default="",
+                    help="a citation or a name as read off the page, not a "
+                         "sentence: matching is word-set containment, so 'Krause' "
+                         "finds the prose reference and 'Krause reports' finds "
+                         "nothing. A footnote form ('Dall, I, p. 375.') is "
+                         "accepted whole — the volume and page locator are lifted "
+                         "out and the lift is echoed on stderr. Omit to list all 73")
+    au.add_argument("--volume", default=None,
+                    help="volume the citation names (II or 2, either form); "
+                         "normally read out of the query itself. Excludes on "
+                         "contradiction, not absence — a work whose every siglum "
+                         "names a different volume drops out, one with no siglum "
+                         "or no recorded volume stays in")
+    au.add_argument("--sigla", action="store_true",
+                    help="the resolution table instead: one row per cited_as "
+                         "entry rather than per work, so the collisions are "
+                         "visible at once; QUERY, if given, restricts to that name")
+    au.add_argument("--key", default=None,
+                    help="one work in full, printed blocks included — printed is "
+                         "the record and the parsed fields lose to it")
+    au.add_argument("--unlocated", action="store_true",
+                    help="only works with neither doi nor url — the 36 with no "
+                         "copy located, i.e. the worklist")
 
     lx = add("lexicon", help="frequency-ranked lexicon_miss tokens "
                         "across every OCR'd page, for bulk approval into "
-                        "data/lexicon_extra.txt")
-    lx.add_argument("--suggest", action="store_true",
-                    help="accepted for symmetry; this is the only mode")
+                        "data/lexicon_extra.txt; --native inverts to the most "
+                        "frequent native (Tier-1) word forms in restored ground "
+                        "truth, for spotting a likely misspelling by comparison; "
+                        "--marks gives the bare-vs-marked frequency per base "
+                        "letter over the same corpus; --suffixes and --digraphs "
+                        "mine the same corpus for common affixes and n-grams")
+    lx.add_argument("--native", action="store_true",
+                    help="invert: most frequent native (Tier-1) word forms in "
+                         "restored gt/ocr/, not English-lexicon misses")
+    lx.add_argument("--marks", action="store_true",
+                    help="bare-vs-marked frequency per base letter across the "
+                         "native corpus — e.g. is a bare g or a dotted g̣ the "
+                         "more likely reading, prior to the raster")
+    lx.add_argument("--suffixes", action="store_true",
+                    help="weighted suffix frequency (length 2-8) over the "
+                         "native corpus, diacritics and stress marks stripped "
+                         "before counting")
+    lx.add_argument("--digraphs", action="store_true",
+                    help="weighted digraph/trigraph frequency over the native "
+                         "corpus, with marks and the corpus's own top suffixes "
+                         "stripped first so stems aren't drowned by the "
+                         "suffix family repeating itself")
 
     a = ap.parse_args(argv)
     out = lambda obj: print(emit(obj, a.json))
@@ -266,14 +390,55 @@ def main(argv=None):
             return 0
         if a.cmd == "proposal-check":
             path = a.path or proposal_path(a.ref, a.root)
+            if a.set is not None:
+                value = a.value if a.value is not None else sys.stdin.read().rstrip("\n")
+                out(set_proposal_field(path, a.set, a.field, value))
+                return 0
+            if a.replace is not None:
+                if a.old is None or a.new is None:
+                    print("--replace requires --old and --new", file=sys.stderr)
+                    return 2
+                out(replace_in_field(path, a.replace, a.field, a.old, a.new, a.which))
+                return 0
+            if a.codepoints is not None:
+                out(line_codepoints(path, a.codepoints, a.field))
+                return 0
             if a.fix:
                 out(fix_proposal(path))
                 return 0
             mismatches = check_proposal(path)
             out(mismatches)
             return 1 if mismatches else 0
+        if a.cmd == "authority":
+            works = load_authorities(a.root)
+            if a.key:
+                out(authority_record(works, a.key))
+            elif a.sigla:
+                out(sigla(works, a.query or None))
+            else:
+                # A footnote-form query carries a volume and a page locator that
+                # are not searchable text; parse_citation lifts them out. Echoed
+                # on stderr rather than folded into the payload, so stdout stays
+                # the same bare table every other verb emits — but echoed at all,
+                # because a silently rewritten query is an unexplainable miss.
+                q, vol = authority_parse(a.query)
+                if a.volume is None and vol is not None:
+                    print(f"note: read volume {vol} out of the query; "
+                          f"searching {q!r}", file=sys.stderr)
+                out(authority_search(works, q, volume=a.volume or vol,
+                                     unlocated=a.unlocated))
+            return 0
         if a.cmd == "lexicon":
-            out(suggest_lexicon(a.root))
+            if a.marks:
+                out(mark_base_frequency(a.root))
+            elif a.suffixes:
+                out(suffix_frequency(a.root))
+            elif a.digraphs:
+                out(digraph_frequency(a.root))
+            elif a.native:
+                out(suggest_native_forms(a.root))
+            else:
+                out(suggest_lexicon(a.root))
             return 0
         if a.cmd == "zoom":
             out(write_line_zoom(
@@ -291,7 +456,8 @@ def main(argv=None):
                 # both to the verbose nested form.
                 out(write_line_sheets(a.ref, a.out or sheets_dir(a.ref, a.root),
                                       a.alto_dir, a.root,
-                                      per_sheet=a.per_sheet, margins=a.margins))
+                                      per_sheet=a.per_sheet, margins=a.margins,
+                                      sheet_h=a.sheet_h))
                 return 0
             recs = (write_line_crops(a.ref, a.out or crops_dir(a.ref, a.root),
                                      a.alto_dir, a.root,
@@ -325,18 +491,25 @@ def main(argv=None):
             out(spans if a.spans else group_spans(spans))
             return 0
         if a.cmd == "restore":
-            out(restore(a.ref, a.alto_dir, a.root, a.force))
+            out(restore(a.ref, a.alto_dir, a.root, a.force, a.commit))
+            return 0
+        if a.cmd == "clean":
+            out(clean(a.ref, a.root))
             return 0
         if a.cmd == "normalize":
-            if a.check:
+            # Bare form and --check are the same thing: report only. --convert is
+            # the only way to write, scoped or not — no more bare-form write, which
+            # used to rewrite the whole corpus on a habit-driven omission of --check.
+            if not a.convert:
                 rep = scan(a.root, paths=a.path)
                 out(rep)
-                # NFD drift and an unlicensed mark both block: each is an error with
-                # no reading to adjudicate. The lookalike census does not — it is a
-                # to-key worklist needing a human ruling on what the page prints,
-                # which is firewalled, same contract as validate's WORKLIST.
-                return 1 if (rep["nfd_offenders"]
-                             or rep["unlicensed_marks"]) else 0
+                # NFD drift, an unlicensed mark, and §2.9 spacing drift all block:
+                # each is an error with no reading to adjudicate. The lookalike
+                # census does not — it is a to-key worklist needing a human ruling
+                # on what the page prints, which is firewalled, same contract as
+                # validate's WORKLIST.
+                return 1 if (rep["nfd_offenders"] or rep["unlicensed_marks"]
+                             or rep["spacing_offenders"]) else 0
             out(convert(a.root, dry_run=a.dry_run, paths=a.path))
             return 0
     except (ValueError, FileNotFoundError, KeyError) as e:

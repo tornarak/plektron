@@ -162,6 +162,25 @@ def _figures_on_page(figs_path: Path, root: Path = Path(".")) -> list[dict]:
     return out
 
 
+def _ocr_lines(ocr_path: Path) -> list[dict]:
+    """OCR lines with their ALTO ids, for optional @facs citation on a Tier-1 span.
+
+    Deliberately not `catmus_draft`: that reader (`_lines_from_alto`) drops
+    empty lines and discards `@ID`, so its indices don't join back to a real
+    ALTO line. This calls the ID-preserving reader instead, and only the
+    fields the model can usefully cite — no geometry; it never sees pixels
+    here, only proposes a pointer a human later resolves with `harness zoom`.
+
+    Reads the same `ocr/{stem}.xml` the draft already reads — not a second
+    ALTO store — since a facs pointer must resolve in the ALTO the model
+    actually saw.
+    """
+    from .lines import page_lines  # local: lines.py imports context at module
+                                    # level, so this avoids a cycle.
+    return [{"index": r["index"], "line_id": r["line_id"], "text": r["text"]}
+            for r in page_lines(ocr_path)]
+
+
 def build_context(ref: str, root: Path = Path(".")) -> dict:
     ref = norm_ref(ref)
     stem = stem_for(ref, root)
@@ -195,6 +214,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
                                  state["believed_open"]),
         "boundary_in": state["boundary_in"],
         "figures_on_page": _figures_on_page(root / "fig" / f"{stem}.xml", root),
+        "ocr_lines": _ocr_lines(ocr),
         # Foreign spans already committed on the physically neighbouring pages,
         # recomputed from the TEI each call. For cross-checking a term keyed two
         # ways — never a source to copy from; this page's draft is the only

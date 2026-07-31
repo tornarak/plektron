@@ -183,6 +183,27 @@ def apostrophe_licensing(text: str) -> list[dict]:
 MEDIAL_CAPS = re.compile(r"(?<!^)(?<!\s)[AEIL]")
 DOT_ABOVE_G = re.compile(r"\u0121|g\u0307")
 TOKEN = re.compile(r"[^\s]+")
+# keying_spec.md section 5.1: base letter + combining mark pairs known,
+# corpus-wide (`harness lexicon --marks`), to have a strong bare-vs-marked
+# skew inside a specific suffix family -- a bare reading there is
+# presumptively suspect before the raster is even consulted. A table rather
+# than one regex per class, so a newly measured skew is a data row to add,
+# not new code.
+#
+# Each entry: (mark codepoint, base letter, suffix continuations that base
+# must be immediately followed by). `g` + U+0323 (dot below) before
+# `-\u026a`/`-\u026an`/`-\u026at` is the only class measured strongly enough to encode so
+# far -- dropped dot-below under g is the single most repeated miss in this
+# project's keying history, and specifically recurs in this noun-forming
+# suffix family, not merely a kinship-vocabulary pattern (`va'\u026arg\u0323\u026an`,
+# "spirit", takes the same one). It covers `-g\u026a`/`-g\u026an`/`-g\u026at`, `-rg\u026an`,
+# `-\u026arg\u026an`, `-mg\u026an`, ... uniformly, since the check is on `g` itself and
+# what precedes it is not consulted. `3-005` is the page that showed a bare
+# `g` in this exact position accepted at face value more than once in one
+# session, after which this table replaced a single hardcoded regex.
+SUFFIX_MARK_DROPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ("\u0323", "g", ("\u026a", "\u026an", "\u026at")),
+)
 # Punctuation stripped from a token's *edges* before lexicon lookup. Internal
 # hyphens and apostrophes are load-bearing in English too ("sea-mammals",
 # "don't"), so they survive to the split below instead of being deleted.
@@ -308,6 +329,50 @@ def apostrophe_flags(text: str) -> list[dict]:
     return out
 
 
+def _suffix_mark_drop(core: str) -> str | None:
+    """`core` (already NFD, edge-punctuation stripped) against every
+    `SUFFIX_MARK_DROPS` entry. Returns the expected marked form on a hit,
+    `None` otherwise.
+
+    Checks each token ending in one of a table entry's suffix continuations,
+    immediately preceded by the bare base letter (not base+mark) — under
+    NFD, a genuinely marked instance has the combining mark sitting between
+    base and continuation, so the character immediately before the
+    continuation is the mark, not the base, and this naturally skips it
+    without a separate "already marked" branch. Longest continuation wins
+    per entry, so `-ɪn` is not double-reported as also matching the bare
+    `-ɪ` shape.
+    """
+    for mark, base, continuations in SUFFIX_MARK_DROPS:
+        for cont in sorted(continuations, key=len, reverse=True):
+            if not core.endswith(cont):
+                continue
+            i = len(core) - len(cont)
+            if i >= 1 and core[i - 1] == base:
+                return f"{base}{mark}{cont}"
+            break
+    return None
+
+
+def suffix_mark_flags(text: str) -> list[dict]:
+    """Every token matching a `SUFFIX_MARK_DROPS` entry, unmarked.
+
+    NFD-normalized first, so the mark and its base are adjacent codepoints
+    rather than a precomposed form. Report-only, like every detector in this
+    module — a hit names a shape keying_spec.md §5.1 calls dot-prone
+    corpus-wide, not a certain error; shape still decides, on the raster,
+    not this table.
+    """
+    nfd = unicodedata.normalize("NFD", text)
+    out = []
+    for m in TOKEN.finditer(nfd):
+        tok = m.group()
+        expected = _suffix_mark_drop(tok.strip(EDGE_PUNCT))
+        if expected:
+            out.append({"token": tok, "expected": expected})
+    return out
+
+
 def detect_all(lines: list[str], root: Path = Path(".")) -> dict[str, list[dict]]:
     """Token-level flags and paragraph-level balance flags, kept apart.
 
@@ -336,6 +401,8 @@ def detect_all(lines: list[str], root: Path = Path(".")) -> dict[str, list[dict]
                 hits.append("apostrophe_adjacency")
             if DOT_ABOVE_G.search(tok):
                 hits.append("dot_above_g")
+            if _suffix_mark_drop(tok.strip(EDGE_PUNCT)):
+                hits.append("suffix_mark_drop")
             if MEDIAL_CAPS.search(tok):
                 hits.append("word_medial_caps")
             if "'" in tok and "inventory_glyph" in hits:

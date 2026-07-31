@@ -25,7 +25,7 @@ the terminal is not:
     cannot silently lose a mark. This is not hypothetical: a missing U+0323 in a
     terminal is exactly how `1-074`'s `Am-g̣roˊkĭ` was first mis-keyed.
   * the browser view stacks the scan crop above the same line rendered in DejaVu
-    Sans, whose single-storey `g` leaves clean space under the bowl for a dot
+    Serif, whose single-storey `g` leaves clean space under the bowl for a dot
     below. Charis SIL is the closer match to Bogoras's serif letterforms and is
     better for comparing *shapes*, but it crowds that dot against the descender,
     and confirming a mark exists is this tool's job.
@@ -242,6 +242,26 @@ PALETTE = [
     ("capitals (composed, not spec rows)", ["Ñ", "Č", "Š", "Ř", "J̌", "G̣"]),
     ("ascii, special function", ["'", "-", "!"]),
     ("catalogue placeholder", ["(??/????)"]),
+    # Not Tier-1 notation — English prose reproduces the print, curly quotes
+    # included (keying spec section 1). Straight U+0022 has no legitimate
+    # reading anywhere in this corpus (normalize.py's quote check), and a bare
+    # keyboard makes it the path of least resistance: shift-' is one keystroke,
+    # a curly quote is not on any physical key at all. `1-048` and `2-030` —
+    # both hand-keyed before this button existed — carry the straight-quote
+    # slip throughout, which is the button's whole reason for being here.
+    #
+    # U+2019 belongs in this row for the identical reason, not in the ASCII
+    # row above: it is the *English* possessive/elision apostrophe the book
+    # sets ("cliff's end," "don't"), and inside a Tier-1 span it is instead
+    # the lookalike trap for the spirant/pause U+0027 (validate.py's
+    # LOOKALIKE_GREPS, "U+2019 traps U+0027") — never something to type there.
+    # A corpus-wide check turned up several already-restored English glosses
+    # ("cliff's end," "man's name," "Kihiˊni' Island") carrying a straight
+    # U+0027 where the print sets curly ’, the same slip 1-048/2-030 made
+    # with the double-quote pair — this button exists so the fix, and every
+    # future gloss, has an easy key to reach for instead of the bare
+    # apostrophe already under the fingers.
+    ("curly quotes (English prose)", ["“", "”", "’"]),
 ]
 PALETTE = [(label, [unicodedata.normalize("NFD", g) for g in glyphs])
            for label, glyphs in PALETTE]
@@ -329,13 +349,17 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
                              "edited": {k: v["text"] for k, v in out.items()
                                         if v["edited"]}},
                             ensure_ascii=False) + "\n")
+    # Counts alone are what "38 lines edited" is: a symptom without a location. Both
+    # line-index lists are returned alongside their counts so the terminal print and
+    # the page's status line can name the lines, not just tally them.
+    edited_lines = sorted(int(k) for k, v in out.items() if v["edited"])
     return {"path": str(p), "lines": len(out),
-            "edited": sum(1 for v in out.values() if v["edited"]),
-            "changed": len(changed)}
+            "edited": len(edited_lines), "edited_lines": edited_lines,
+            "changed": len(changed), "changed_lines": changed}
 
 
 def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
-            force: bool = False) -> dict:
+            force: bool = False, commit: bool = False) -> dict:
     """Write adjudicated text into `gt/ocr/chukchi-<ref>.xml`, keeping the geometry.
 
     The recognizer ALTO in `alto_dir` is the skeleton, because the 18 shells in
@@ -346,6 +370,15 @@ def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
     Writes `gt/ocr/` by name, never `ocr/`. They are the same inode — `ocr/*.xml`
     are symlinks — and naming the real store is what stops the next reader
     reasoning about the wrong one.
+
+    `commit` gates the actual write, same contract as `normalize`'s `--convert`:
+    every check below still runs and the full report — including `edits`, so a
+    dry run answers "what would restore change" without needing a hand-rolled
+    diff script — comes back either way, but without `commit` nothing on disk
+    changes. Ground truth is the one thing in this repo an accidental write has
+    already destroyed once (see CLAUDE.md, "The ground-truth loss"); a bare call
+    defaulting to write was the wrong default for the same reason `normalize`'s
+    was.
 
     Refuses rather than guesses, in three cases, because the whole point of this
     function is to put back something that was destroyed by a write nobody had to
@@ -405,23 +438,42 @@ def restore(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
                              "String elements, expected exactly 1 — not guessing")
         strings[0].set("CONTENT", _nfd(dec[i]["text"]))
 
+    # Always written to a scratch path and verified from there — `commit` only
+    # gates the final `tmp.replace(target)` below, so dry-run and real-write share
+    # one code path rather than a preview implementation drifting from the real one.
     target.parent.mkdir(parents=True, exist_ok=True)
     tmp = target.with_suffix(".xml.tmp")
     tree.write(str(tmp), xml_declaration=True, encoding="UTF-8", standalone=None)
-    tmp.replace(target)
 
     # Verify against the source rather than trusting the write: geometry identical,
     # text exactly what was adjudicated.
     a = page_lines(src)
-    b = page_lines(target)
+    b = page_lines(tmp)
     geom = ("line_id", "block_id", "hpos", "vpos", "width", "height",
             "baseline", "points")
     drift = [x["index"] for x, y in zip(a, b) if any(x[k] != y[k] for k in geom)]
     wrong = [y["index"] for y in b if y["text"] != _nfd(dec[y["index"]]["text"])]
+    # `edits` names what changed, not just how many lines did — "edited_by_human: 2"
+    # used to be the whole answer, and finding out *what* meant hand-rolling a
+    # proposal-vs-decision diff script each time. `load_proposal` can be missing a
+    # line decisions has (a line added after the proposal was authored, in theory),
+    # so `.get` rather than assuming symmetry.
+    prop = load_proposal(ref, root)
+    edits = [{"line": i, "proposal": prop[i]["text"] if i in prop else "(gone from proposal)",
+             "decision": v["text"]}
+            for i, v in sorted(dec.items()) if v.get("edited")]
+
+    if not commit:
+        tmp.unlink()
+        return {"path": str(target), "lines": len(lines),
+                "chars": sum(len(y["text"]) for y in b),
+                "geometry_drift": drift, "text_mismatch": wrong,
+                "edited_by_human": len(edits), "edits": edits, "commit": False}
+    tmp.replace(target)
     return {"path": str(target), "lines": len(lines),
             "chars": sum(len(y["text"]) for y in b),
             "geometry_drift": drift, "text_mismatch": wrong,
-            "edited_by_human": sum(1 for v in dec.values() if v.get("edited"))}
+            "edited_by_human": len(edits), "edits": edits, "commit": True}
 
 
 def _data_uri(path: Path) -> str:
@@ -435,13 +487,22 @@ def _esc(s: str) -> str:
              .replace('"', "&quot;"))
 
 
-# DejaVu Sans first, deliberately. Its single-storey `g` has a short descender, so
+def _edit_jump_inner(idxs: list[int]) -> str:
+    """The 'Edited lines' jump-list body, for the initial server render. `save()`'s
+    JS rebuilds the same markup client-side after each save, so the list stays
+    current without a reload — keep the two in sync if this format changes."""
+    if not idxs:
+        return "<b>Edited lines:</b> none yet"
+    return "<b>Edited lines:</b> " + " ".join(f"<a href='#l{i}'>{i}</a>" for i in idxs)
+
+
+# DejaVu Serif first, deliberately. Its single-storey `g` has a short descender, so
 # a U+0323 below the bowl stays legible; Charis SIL matches Bogoras's serif
 # letterforms far better and is the right choice for comparing *shapes*, but it
 # crowds that dot. Confirming a mark exists is this view's job. No webfont: the
 # font is installed locally and a CSS reference cannot silently substitute the way
 # a missing glyph in a terminal does.
-_FONT_STACK = "'DejaVu Sans', 'Charis SIL', 'Noto Sans', sans-serif"
+_FONT_STACK = "'DejaVu Serif', 'Charis SIL', 'Noto Sans', sans-serif"
 
 
 def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
@@ -502,6 +563,14 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          ".jump{font:12px ui-monospace,monospace;margin:.5rem 0 0}",
          ".jump a{color:#8a5a00;margin-right:.45rem;text-decoration:none;"
          "border-bottom:1px dotted #b8860b}",
+         ".jump.edit a{color:#1a7f37;border-color:#1a7f37}",
+         ".editflag{color:#1a7f37}",
+         # Transient — added to a just-saved line's own textarea (not just the
+         # row) so it is unmissable which field a save just touched, not only a
+         # count in the status bar. A thin outline on the row read as too subtle;
+         # this is the same idea moved onto the textbox itself and made bolder.
+         # Removed by the same timeout that adds it (see `save()`), not by CSS.
+         "textarea.justsaved{outline:3px solid #1a7f37;outline-offset:1px}",
          ".floor{color:#8a2b2b;font-size:.8rem;margin-top:.35rem;max-width:80ch}",
          ".cp{font:12px ui-monospace,monospace;color:#036;margin:.2rem 0}",
          ".tags{font:11px ui-monospace,monospace;color:#666}",
@@ -518,10 +587,19 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          # Fixed to the bottom, full width, always visible. It is the reference for
          # what the mode does as much as it is an input device, so hiding it behind a
          # scroll position would defeat both jobs.
+         #
+         # #pctl and #pgroups stack (column), #pctl on top — not side by side. Side
+         # by side, #pctl's status text (the growing "saved · N/M edited (...line
+         # numbers...)" list) competed with #pgroups for horizontal space: as that
+         # text grew wide it starved #pgroups's width, which made the wrapped key
+         # rows pile up vertically instead, and #pal's height (shared by both flex
+         # children) grew with them — on a long session the keyboard could end up
+         # consuming the whole viewport for a reason that had nothing to do with the
+         # keyboard. Stacked, #pctl's width no longer bounds #pgroups's at all.
          "#pal{position:fixed;left:0;right:0;bottom:0;z-index:5;background:#fff;"
          "border-top:1px solid #999;box-shadow:0 -2px 10px #0002;"
-         "display:flex;gap:.9rem;align-items:flex-start;padding:.5rem .8rem}",
-         "#pgroups{display:flex;flex-wrap:wrap;gap:.35rem .9rem;flex:1}",
+         "display:flex;flex-direction:column}",
+         "#pgroups{display:flex;flex-wrap:wrap;gap:.35rem .9rem;padding:.5rem .8rem}",
          ".pgrp{display:flex;flex-direction:column;gap:.15rem}",
          ".plabel{font:10px ui-monospace,monospace;color:#888;letter-spacing:.02em}",
          ".pkeys{display:flex;flex-wrap:wrap;gap:.2rem}",
@@ -531,20 +609,34 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          ".pk b{font-size:1.15rem;font-weight:500}",
          ".pk span{font:10px ui-monospace,monospace;color:#888;min-height:1em}",
          ".pk.mk{background:#eef3ff}",
-         "#pctl{display:flex;flex-direction:column;gap:.3rem;align-items:flex-end;"
-         "border-left:1px solid #ddd;padding-left:.9rem;font-size:.85rem}",
-         "#st{color:#555;min-width:13ch;text-align:right}",
-         "#st.bad{color:#b00;font-weight:600}",
-         "#kb{font:12px ui-monospace,monospace;color:#777;border:1px solid #bbb;"
-         "border-radius:3px;padding:.1rem .4rem;cursor:pointer;user-select:none}",
+         # order:-1 puts this ahead of #pgroups regardless of DOM position (pgroups
+         # is emitted first, since the palette-group loop is simplest that way).
+         "#pctl{order:-1;display:flex;flex-direction:column;gap:.3rem;"
+         "padding:.5rem .8rem;border-bottom:1px solid #ddd;font-size:.85rem}",
+         # kb / st / the button group are the three controls worth a glance at
+         # once — same row, same box model, so the eye reads them as one strip
+         # rather than a badge, a caption and a toolbar stacked by accident.
+         ".pctlrow{display:flex;align-items:stretch;justify-content:space-between;"
+         "gap:.4rem;width:100%}",
+         ".pctlrow>span{display:flex;gap:.4rem}",
+         "#kb,#st,#pctl button{font:12px ui-monospace,monospace;border:1px solid #bbb;"
+         "border-radius:3px;padding:.25rem .5rem;line-height:1.1}",
+         "#st{color:#555;min-width:13ch;text-align:right;border-color:#ddd}",
+         "#st.bad{color:#b00;font-weight:600;border-color:#b00}",
+         "#kb{color:#777;cursor:pointer;user-select:none}",
          "#kb.on{color:#fff;background:#1a7f37;border-color:#1a7f37;font-weight:700}",
-         "#pctl button{font:inherit;padding:.25rem .9rem}",
+         "#pctl button{cursor:pointer}",
          # The mode has to be unmissable, since with it on every letter key means
          # something else. A badge alone is too easy to lose track of.
          "body.kbdon textarea:focus{outline-color:#1a7f37;border-color:#1a7f37;"
          "background:#f2fbf4}",
-         # Clear of the fixed panel. Generous: the panel wraps on a narrow window.
-         "body{padding-bottom:15rem}",
+         # The glyph grid is only worth the screen space while a line is actually
+         # being keyed. Retracted by default; #pgroups reappears (and the page
+         # regains its clearance below) on the kbd toggle or the alt-p override —
+         # never gone, since #pctl (status, save, the shortcut hint) stays put
+         # either way, now as the bar above rather than a sidebar beside it.
+         "#pgroups{display:none}", "body.palopen #pgroups{display:flex}",
+         "body{padding-bottom:2.6rem}", "body.palopen{padding-bottom:16rem}",
          "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
          ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
          ".note{color:#d9b26a}"
@@ -553,11 +645,15 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
          ".badge{background:#d1a02a;color:#161616}"
          ".t1glyphs{color:#e8c874}"
          ".jump a{color:#e0b552;border-color:#8a6a1e}"
+         ".jump.edit a{color:#4fd47a;border-color:#1a7f37}"
+         ".editflag{color:#4fd47a}"
+         "textarea.justsaved{outline-color:#4fd47a}"
          ".floor{color:#e88d8d}"
          "textarea{background:#111;color:#eee;border-color:#444}"
-         "#st{color:#bbb}"
+         "#st{color:#bbb;border-color:#444}"
          "#pal{background:#1b1b1b;border-color:#444}"
          "#pctl{border-color:#3a3a3a}"
+         "#pctl button{border-color:#555;background:#242424;color:#eee}"
          ".pk{background:#242424;border-color:#484848;color:#eee}"
          ".pk.mk{background:#1b2436}"
          "#kb{color:#aaa;border-color:#555}"
@@ -604,6 +700,14 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
     if t1:
         h.append("<div class=jump><b>Tier-1 lines:</b> " + " ".join(
             f"<a href='#l{i}'>{i}</a>" for i in t1) + "</div>")
+    # Edited lines get the same jump-list treatment as Tier-1, and for the same
+    # reason: "38 lines edited" told a reader nothing about *which* 38 until the
+    # session-restore incident forced the question. `editjump` is rewritten by
+    # `save()` after every save, so this list never goes stale without a reload.
+    edited_now = [idx for idx in sorted(recs) if idx in prop
+                 and idx in saved and _nfd(saved[idx]["text"]) != _nfd(prop[idx]["text"])]
+    h.append("<div class='jump edit' id=editjump>" + _edit_jump_inner(edited_now)
+             + "</div>")
     h.append(
         "<div class=floor>Notation flags are a <b>floor, not a census</b>: four "
         "inventory members are unmarked ASCII (<code>c</code> for English "
@@ -633,14 +737,20 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
                     if glyphs else "")
                  + f"line {idx} · {_esc(rec['line_id'])}"
                  + ("" if agree else " · differs from catmus")
-                 + (" · <b>edited</b>" if full != proposed else "") + "</div>")
+                 + f"<span class=editflag id='ef{idx}' "
+                   f"style='display:{'inline' if full != proposed else 'none'}'>"
+                   " · <b>edited</b></span>" + "</div>")
         h.append(f"<div class='crop c{idx}' role=img "
                  f"aria-label='scan of line {idx}'></div>")
         # The value is carried in `data-text` and assigned by script on load, not
         # written as element content — see SESSION-RESTORE below. `autocomplete=off`
         # asks the browser not to restore it; the JS assignment is what guarantees it.
+        # `data-proposed` is what the live edited-flag toggle (on input, and after
+        # a save) compares the current value against — the same comparison
+        # `save_decisions` makes server-side, just available to the page too.
         h.append(f"<textarea data-line='{idx}' rows=1 spellcheck=false "
-                 f"autocomplete=off data-text=\"{_esc(full)}\"></textarea>")
+                 f"autocomplete=off data-text=\"{_esc(full)}\" "
+                 f"data-proposed=\"{_esc(proposed)}\"></textarea>")
         if marks:
             h.append(f"<div class=cp>{_esc(marks)}</div>")
         h.append(f"<div class=ref>catmus: {_esc(rec['text']) or '(empty)'}</div>")
@@ -670,14 +780,15 @@ def render_queue_html(ref: str, alto_dir: str = "end-of-eval",
                        f"<span>{_esc(key) or '&nbsp;'}</span></button>")
         pal.append("</div></div>")
     pal.append("</div>")
-    pal.append("<div id=pctl><span id=kb>kbd off</span>"
-               "<span id=st>no changes</span>"
+    pal.append("<div id=pctl><div class=pctlrow>"
+               "<span><span id=kb>kbd off</span><span id=st>no changes</span></span>"
                # Notation lines are the ones worth walking deliberately, so they get
                # their own traversal rather than only a colour to spot while scrolling.
-               f"<div><button id=t1p>&uarr;</button>"
+               f"<span><button id=t1p>&uarr;</button>"
                f"<button id=t1n>&darr; tier-1 ({len(t1)})</button>"
-               "<button id=sv>Save</button></div>"
-               "<div class=tags>ctrl-space toggles kbd · off = plain typing · "
+               "<button id=sv>Save</button></span></div>"
+               "<div class=tags>alt-p shows/hides the keyboard panel (overrides "
+               "kbd on/off) · ctrl-space toggles kbd · off = plain typing · "
                "alt-j / alt-k walk tier-1 lines</div></div>")
     pal.append("</div>")
     h += pal
@@ -691,7 +802,7 @@ const st=document.getElementById('st'), sv=document.getElementById('sv');
 const kb=document.getElementById('kb');
 let kbdOn=false, last=null;
 function setKbd(v){kbdOn=v;kb.textContent='kbd '+(v?'ON':'off');
-  kb.className=v?'on':'';document.body.classList.toggle('kbdon',v)}
+  kb.className=v?'on':'';document.body.classList.toggle('kbdon',v);syncPal()}
 function insert(el,s){
   const a=el.selectionStart,b=el.selectionEnd;
   el.setRangeText(s,a,b,'end');
@@ -706,6 +817,47 @@ for(const b of document.querySelectorAll('.pk')){
   b.addEventListener('click',()=>{ if(last) insert(last,b.dataset.ins) });
 }
 kb.addEventListener('click',()=>setKbd(!kbdOn));
+// Retract the glyph grid except while it's actually wanted: kbd mode is on, or
+// the reviewer pinned it open (alt-p) to browse without keeping a caret in a
+// field. Visibility is a pure function of those two toggles — SOLELY the
+// shortcuts (ctrl-space, alt-p) — and never of focus. It used to also require
+// a focused textarea, on the theory that plain typing in an ordinary English
+// line shouldn't pop the grid; in practice that made the panel jump open the
+// instant a field was focused whenever kbd mode was already on, which is the
+// opposite of "no keyboard until you asked for it", and no different from a
+// docked-vs-undocked distinction if a focus event overrides it either way. So
+// focus no longer participates at all: turn kbd mode on and the panel is
+// open, everywhere, until you turn it off. #pctl (status/save/hint) is
+// unaffected — see the CSS.
+//
+// palOverride is a tri-state, not a bool ORed with kbdOn: null means "follow
+// kbdOn", true/false means alt-p has said otherwise and wins regardless of
+// kbdOn. The OR version couldn't represent "kbd mode on, panel hidden" at
+// all — kbdOn=true forced the OR to true no matter what alt-p did, which is
+// exactly the state a reviewer wants when they know the mode they're in and
+// don't need the grid on screen to use it. alt-p flips whatever is currently
+// showing, so it always does something visible, and the override sticks
+// until alt-p is pressed again — toggling kbd mode itself doesn't clear it.
+let palOverride=null;
+const syncPal=()=>document.body.classList.toggle(
+  'palopen', palOverride===null?kbdOn:palOverride);
+document.addEventListener('focusin',e=>{
+  // The panel occupying 16rem when kbd mode is on can cover the very field
+  // just focused, if it was near the bottom of the page. scrollIntoView
+  // (nearest, not goT1's center) nudges just enough to clear it without
+  // recentering on an ordinary tab/click. Scroll-only now — it no longer
+  // toggles the panel itself, since that depends only on kbdOn/palOverride.
+  if(e.target.tagName==='TEXTAREA'&&kbdOn){
+    e.target.scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+});
+addEventListener('keydown',e=>{
+  if(e.altKey&&!e.ctrlKey&&!e.metaKey&&e.key==='p'){
+    e.preventDefault();
+    const shown=palOverride===null?kbdOn:palOverride;
+    palOverride=!shown;syncPal();
+  }
+});
 addEventListener('keydown',e=>{
   if(e.ctrlKey&&e.code==='Space'){e.preventDefault();setKbd(!kbdOn);return}
   if(!kbdOn||!last||document.activeElement!==last) return;
@@ -719,6 +871,21 @@ let dirty=false, timer=null;
 const grow=t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'};
 function collect(){const o={};for(const t of document.querySelectorAll('textarea'))
   o[t.dataset.line]=t.value;return o}
+// Live edited-flag, kept in sync with typing rather than only with the last save,
+// so a line that was reverted back to its proposed text stops claiming "edited"
+// before the next save round-trips. `ef{idx}` is the same span the server rendered.
+function refreshEditFlag(t){
+  const ef=document.getElementById('ef'+t.dataset.line);
+  if(ef) ef.style.display=(t.value!==t.dataset.proposed)?'inline':'none';
+}
+function rebuildEditJump(){
+  const idxs=[...document.querySelectorAll('textarea')]
+    .filter(t=>t.value!==t.dataset.proposed)
+    .map(t=>parseInt(t.dataset.line,10)).sort((a,b)=>a-b);
+  document.getElementById('editjump').innerHTML=idxs.length
+    ? '<b>Edited lines:</b> '+idxs.map(i=>`<a href='#l${i}'>${i}</a>`).join(' ')
+    : '<b>Edited lines:</b> none yet';
+}
 async function save(){
   st.textContent='saving…';
   try{
@@ -728,10 +895,23 @@ async function save(){
     if(!r.ok) throw new Error(await r.text());
     const j=await r.json();
     dirty=false;
-    st.textContent=`saved · ${j.edited}/${j.lines} edited · ${j.changed} changed`;
+    const editedTxt=j.edited_lines.length?` (lines ${j.edited_lines.join(',')})`:'';
+    const changedTxt=j.changed_lines.length?` (lines ${j.changed_lines.join(',')})`:'';
+    st.textContent=`saved · ${j.edited}/${j.lines} edited${editedTxt} · `+
+                   `${j.changed} changed${changedTxt}`;
     // A save that moved many lines at once is the only visible sign of a bulk
     // overwrite — a browser session-restore looks like ordinary work otherwise.
     if(j.changed>3) st.className='bad';
+    rebuildEditJump();
+    // Flash exactly the textboxes this save touched — the status line names them
+    // too, but the field itself changing color is what actually catches the eye,
+    // rather than something you have to go read.
+    for(const i of j.changed_lines){
+      const box=document.querySelector(`textarea[data-line='${i}']`);
+      if(!box) continue;
+      box.classList.add('justsaved');
+      setTimeout(()=>box.classList.remove('justsaved'),2500);
+    }
   }catch(e){ st.textContent='SAVE FAILED: '+e.message; st.className='bad'; }
 }
 // SESSION-RESTORE GUARD. Firefox restores textarea values across a crash-and-reopen,
@@ -750,7 +930,8 @@ for(const t of document.querySelectorAll('textarea')){
   grow(t);
   t.addEventListener('focus',()=>{last=t});
   t.addEventListener('input',()=>{grow(t);dirty=true;st.className='';
-    st.textContent='unsaved…';clearTimeout(timer);timer=setTimeout(save,1200)});
+    st.textContent='unsaved…';refreshEditFlag(t);rebuildEditJump();
+    clearTimeout(timer);timer=setTimeout(save,1200)});
 }
 sv.addEventListener('click',save);
 // Tier-1 traversal. Focuses the field rather than only scrolling: the point of
@@ -819,7 +1000,11 @@ def serve(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
                 self.end_headers()
                 self.wfile.write(msg)
                 return
-            print(f"saved {res['path']}: {res['edited']}/{res['lines']} edited")
+            edited_str = ",".join(map(str, res["edited_lines"])) or "none"
+            changed_str = f" · changed this save: {','.join(map(str, res['changed_lines']))}" \
+                if res["changed_lines"] else ""
+            print(f"saved {res['path']}: {res['edited']}/{res['lines']} edited "
+                  f"(lines {edited_str}){changed_str}")
             body = _json.dumps(res).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")

@@ -14,13 +14,12 @@ The earlier layout was parallel by kind — `review/proposals/<ref>.json` agains
 `review/crops/<ref>/…` — which had two costs. Every verb in the loop had to be told
 where to put its images (`--sheets DIR`, `--out DIR`), because there was no directory
 that was *the page's*; and finishing with a page meant deleting from three trees or
-from none, so nothing was ever deleted. Per-ref, the ephemera are one `rm -r
-review/<ref>/{crops,sheets,zoom}` away, and the flags are overrides rather than
-ceremony.
+from none, so nothing was ever deleted. Per-ref, the ephemera are one `harness clean <ref>` away (see `clean` below),
+and the flags are overrides rather than ceremony.
 
 What the split did buy was a trivially legible gitignore: two whole directories
 tracked, three ignored. That is now a per-name matter, and `DERIVED` below is the
-list the ignore rules mirror — keep the two in step.
+list the ignore rules and `clean()` both read off — keep the two in step.
 
 The distinction the old layout carried in its directory names — proposal is not
 ground truth — is carried by the filenames instead, and it has to be carried
@@ -64,3 +63,21 @@ def zoom_dir(ref: str, root: Path = Path(".")) -> Path:
 
 def html_path(ref: str, root: Path = Path(".")) -> Path:
     return review_dir(ref, root) / "review.html"
+
+
+def clean(ref: str, root: Path = Path(".")) -> dict:
+    """Remove a page's derived working images, leaving the two authored files
+    (`proposal.json`, `decision.json`) untouched.
+
+    Reads `DERIVED` rather than naming `crops`/`sheets`/`zoom` again, so a
+    third derived subdirectory only ever needs adding in one place.
+    """
+    import shutil
+    d = review_dir(ref, root)
+    removed = []
+    for name in DERIVED:
+        p = d / name
+        if p.exists():
+            shutil.rmtree(p)
+            removed.append(name)
+    return {"ref": norm_ref(ref), "removed": removed}

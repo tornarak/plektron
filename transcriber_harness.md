@@ -44,6 +44,11 @@ figures_on_page[2]{zone_id,zone_type,bbox,text}:
   eSc_textblock_78034cff,GraphicZone,...,
   eSc_textblock_d2082379,GraphicZone-FigDesc,...,Fig. 291. Wooden Amulet.
 
+ocr_lines[3]{index,line_id,text}:
+  0,eSc_line_2905eed4,VI. — HUNTING AND FISHING; WAR.
+  1,eSc_line_2b719d88,SEAL-HUNTING. — The Maritime Chukchee support themselves almost
+  2,eSc_line_a36bfcd9,
+
 foreign_terms_nearby[2]{term,lang,ref}:
   Miˊrg̣ɪn,ckt,2-175
   ᴇʟɪˊhɪn,ckt,2-177
@@ -64,7 +69,13 @@ ids, `eSc_textblock_…`, never minted here — with the zone's bounding box and
 zone's text. A page contributes two kinds of zone: `GraphicZone`, which is
 geometry and carries no text ever, and `GraphicZone-FigDesc`, which carries the
 printed caption. The model anchors `<figure>` against a GraphicZone and never
-invents a zone. `foreign_terms_nearby` is
+invents a zone. `ocr_lines` is every `TextLine` from the same OCR ALTO the
+`catmus_draft` above was built from, in document order, empty lines included,
+each carrying its real ALTO `@ID` as `line_id`. It exists so a Tier-1 span can
+optionally cite which line(s) it was read from (see the PROVENANCE section
+below) — never use these ids for anything else, and never infer text from
+`line_id` that isn't already visible in `catmus_draft` or the image.
+`foreign_terms_nearby` is
 recomputed each call from the `<foreign>` spans of committed TEI on the
 physically neighbouring pages; it exists so a term keyed two ways across a
 spread is *visible*, and it licenses nothing — this page's Tier-1 content comes
@@ -530,6 +541,23 @@ LANGUAGE SPANS AND THE FIREWALL — read this twice
   an ambiguous letterform, and a confident reading is still `resp="#llm"`
   without <unclear>. Confidence is not authority.
 
+  USE `@facs` TO FLAG A SPAN WORTH A SECOND LOOK. Set it on any Tier-1
+  element whose reading took real deliberation — a hard letterform, a mark
+  you went back to the image to settle, a form you'd want re-checked before
+  it's ratified — and point it at the `line_id`(s) in `ocr_lines` you actually
+  read from: `facs="#eSc_line_e5fa4af8"`, or `facs="#id1 #id2"` for a reading
+  you checked against how the same mark prints on a neighbouring line (not for
+  a form split across a line break, which essentially never happens here, see
+  keying_spec.md §2.1 on the connector hyphen). It's what turns a flagged span
+  into a one-command raster lookup for whoever reviews it next:
+  `harness zoom PP-NNN --only <index> --from gt/ocr` (the `--from` matters —
+  `zoom`'s default store is a different ALTO than the one these ids come
+  from). Reserve it for the spans that actually earned it, the same judgment
+  call as leaving a comment — a `@facs` on every span stops meaning anything.
+  It's a pointer, not a rank: it never substitutes for `@resp`, and citing a
+  line doesn't make a reading any more authoritative than an uncited one.
+  Never invent a `line_id`; omit `@facs` rather than guess.
+
   Tier-2 spans (ru, la, de, …) do not require `@resp`. The asymmetry is the
   point of calling this a hierarchy: a misread Russian or Latin word is an
   ordinary error that any reader of the language catches, whereas a misread
@@ -645,6 +673,9 @@ SELF-CHECK BEFORE EMITTING
   every orphan foot-text a <note> without n= plus the fixed comment?
 - Does every <figure> point at a supplied zone_id, with orphans (either
   direction) commented rather than invented?
+- Does every Tier-1 @facs, where present, point at a real line_id from
+  ocr_lines — and is it present only on spans that actually warranted a
+  closer look, not blanket-applied?
 - For every detector_flags entry: did I either confirm-and-fix against the
   image, or leave it untouched and note why?
 - Is there any <lb/> anywhere? (Should always be no.)
@@ -669,3 +700,6 @@ SELF-CHECK BEFORE EMITTING
   pass mints those, deterministically.
 - **Does not require Chukchi ground truth to exist.** Runs on whatever draft
   is current; output is expected to be patched once real keying lands.
+- **`@facs` review is a separate, later pass.** This pass proposes the
+  pointer; resolving it into a crop and acting on what's found is someone
+  else's next step.

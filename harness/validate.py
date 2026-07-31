@@ -202,6 +202,24 @@ def validate(tei_path: Path, ctx: dict | None = None,
             if facs not in zones:
                 r.errors.append(f"<figure facs='#{facs}'> matches no supplied zone")
 
+    # Tier-1 @facs (optional): if a span cites an OCR line, the line must be
+    # real. Mirrors the <figure facs> check above — a dangling citation is
+    # strictly worse than none, so it errors rather than warns.
+    if ctx is not None:
+        line_ids = {l["line_id"] for l in ctx.get("ocr_lines", [])}
+        for el in root.iter():
+            if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+                continue
+            facs = el.get("facs")
+            if facs is None:
+                continue
+            name = etree.QName(el).localname
+            for tok in facs.split():
+                lid = tok.lstrip("#")
+                if lid not in line_ids:
+                    r.errors.append(f"<{name} facs='#{lid}'> matches no "
+                                    "supplied OCR line")
+
     # THE check, re-anchored: provenance rank, not agreement with an upstream file.
     # Every Tier-1 element declares who read it, and this pass may only ever claim
     # the proposed rank. `#ed` is a human's to write; `#htr` belongs to the import.

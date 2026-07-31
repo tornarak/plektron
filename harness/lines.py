@@ -106,9 +106,16 @@ def alto_for_lines(ref: str, alto_dir: str = "end-of-eval",
 
 
 def _line_text(tl) -> str:
-    """`String/@CONTENT` joined, NFD. `""` for a line the segmenter left empty."""
+    """`String/@CONTENT` joined, NFD. `""` for a line the segmenter left empty.
+
+    `¬` is substituted to `-`: a recurring CATMuS mis-recognition of the printed
+    line-final hyphen (22 occurrences across 12 end-of-eval files), never a real
+    character in this corpus's witness or ground truth. Mechanical, not a reading
+    — the glyph it stands in for is unambiguous, unlike anything in keying_spec.md.
+    """
     parts = [s.get("CONTENT") or "" for s in tl.iter("{*}String")]
-    return unicodedata.normalize("NFD", " ".join(p for p in parts if p))
+    text = " ".join(p for p in parts if p).replace("¬", "-")
+    return unicodedata.normalize("NFD", text)
 
 
 def page_lines(alto_path: Path) -> list[dict]:
@@ -229,9 +236,13 @@ def line_crops(ref: str, alto_dir: str = "end-of-eval", root: Path = Path("."),
         yield rec, img.crop(box)
 
 
+LINE_SHEET_H = 2000
+
+
 def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
                       root: Path = Path("."), scans: str = "scans",
-                      per_sheet: int = 8, margins: bool = False) -> list[dict]:
+                      per_sheet: int = 8, margins: bool = False,
+                      sheet_h: int | None = LINE_SHEET_H) -> list[dict]:
     """Compose the page's line crops into labelled contact sheets, in `out_dir` itself.
 
     `out_dir` is the destination, not a parent to hang a per-ref directory off — the
@@ -248,6 +259,11 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
     the label margin, so the default would have resampled every full-measure line by
     about 0.95 — invisible on ordinary words and exactly the wrong trade here, where
     the question being asked of the image is whether a dot sits below a `g`.
+
+    `sheet_h` packs by total height rather than a fixed line count (`per_sheet` is
+    still an upper bound, raised well past what height alone would ever hit) — a page
+    of short list lines like `1-053` fits far more than 8 per sheet before 2000px
+    fills, and fewer, fuller sheets is fewer re-orientations for the same read.
     """
     from .figures import compose_sheets, LABEL_W
     items = [(str(rec["index"]), crop)
@@ -257,7 +273,7 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = "end-of-eval",
     width = max(im.width for _, im in items) + LABEL_W + 20
     sheets, index = compose_sheets(items, out_dir,
                                   per_sheet=per_sheet, prefix="lines",
-                                  sheet_w=width)
+                                  sheet_w=width, max_h=sheet_h)
     # One flat record per sheet, `lines` as a joined string rather than a list:
     # a nested value de-tabularizes the whole TOON table (see the module docstring).
     return [{"sheet": str(out_dir / e["sheet"]),

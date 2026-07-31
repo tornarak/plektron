@@ -1,0 +1,203 @@
+{
+  "contamination": {
+    "blind": true,
+    "note": "1-052 is listed in CLAUDE.md as a 'spent' ref because a past session read its transcription openly. This session is fresh (post-/clear) and had no exposure to any existing transcription of this page before authoring this proposal — no gt/ocr file holds text for it (empty shell) and no reading was opened. Treating this read as blind."
+  },
+  "lines": {
+    "0": {
+      "text": "30",
+      "note": "folio number, running head area."
+    },
+    "1": {
+      "text": "Kihi'ni (Eskimo, Ki'hi ¹), on an island of the same name: 3 houses (not mentioned in the Register).",
+      "resolved": "Kihi'ni, Ki'hi: plain ASCII + apostrophe (U+0027). Superscript ¹ is a footnote marker (footnote 44 on this page).",
+      "note": "Tier-1 forms, no unusual marks."
+    },
+    "2": {
+      "text": "The people from here northward are Chukchee."
+    },
+    "3": {
+      "text": "Ye'rgɪn (Eskimo, Ya'rga), on the southwestern end of the island Kihi'ni: 3 houses (not mentioned",
+      "resolved": "Ye'rgɪn: dotless i U+0131 in -rgɪn.",
+      "note": "Tier-1 forms."
+    },
+    "4": {
+      "text": "in the Register)."
+    },
+    "5": {
+      "text": "Ala'yon (“the summer place”): 3 houses (Register, 5 houses, 26 inhabitants).",
+      "note": "Tier-1 form Ala'yon, plain ASCII."
+    },
+    "6": {
+      "text": "Ilhi'nin: 2 houses (Register, 5 houses, 28 inhabitants).",
+      "note": "Tier-1 form Ilhi'nin, plain ASCII."
+    },
+    "7": {
+      "text": "Če'win (Eskimo, Ca'vik, “knife”): 2 houses (Register, 2 houses, 8 inhabitants).",
+      "resolved": "Če'win: C + U+030C (caron) + e'win.",
+      "note": "Tier-1 forms."
+    },
+    "8": {
+      "text": "Nɪgčɪ'en (Eskimo, Nɪxcɪ'ṛak, “one with seals”): 2 houses (Register, 2 houses, 12 inhabitants).",
+      "resolved": "Nɪgčɪ'en: N + dotless-i U+0131 + g + č(c+U+030C) + dotless-i + 'en. Nɪxcɪ'ṛak: same dotless-i pattern, then r + COMBINING DOT BELOW U+0323 + ak -- the r takes the dot-below rhotic mark (keying_spec §2.5 series r ř ṛ).",
+      "note": "Checked r under magnification: a dot sits below the r, matching the third rhotic in the closed r/ř/ṛ series, not a cedilla or comma."
+    },
+    "9": {
+      "text": "Yanřa'kê-not (“separate land”): 2 houses (not mentioned in the Register).",
+      "resolved": "Yanřa'kê-not: r + U+030C (caron) on the r -- same caron as Č/č elsewhere, not a breve (breve is licensed only on u/i per §2.6). kê: e + U+0302 (circumflex).",
+      "note": "The mark over r reads as a caron under magnification, matching Č's caron shape on this same page, not rounder like a breve."
+    },
+    "10": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "running head, page 30."
+    },
+    "11": {
+      "text": "Meči'wmɪn (Eskimo, Me'sik), on the bay of the same name: 6 houses (Register, 2 houses, 18",
+      "resolved": "Meči'wmɪn: M + e + č(c+U+030C) + i'wmɪn (dotless-i U+0131 twice: wmɪn).",
+      "note": "Tier-1 forms; wraps onto line 12."
+    },
+    "12": {
+      "text": "inhabitants)."
+    },
+    "13": {
+      "text": "A'grɪtkɪn, on the Meči'wmɪn spit: 2 houses (not mentioned in the Register).",
+      "resolved": "A'grɪtkɪn: dotless-i U+0131 in grɪtkɪn (x2). Meči'wmɪn: c+U+030C (č).",
+      "note": "Tier-1 form, no g-dot (plain g, not g+U+0323)."
+    },
+    "14": {
+      "text": "Lu'ᵋren (Eskimo, Nu'kak): 10 houses (Register, 21 houses, 115 inhabitants).",
+      "resolved": "Lu'ᵋren: U+1D4B MODIFIER LETTER SMALL REVERSED OPEN E between the apostrophe and 'ren'.",
+      "note": "Confirmed under magnification -- small reversed-epsilon shape, matches ᵋ used elsewhere in the corpus (e.g. Nunä'ᵋmun, line 21)."
+    },
+    "15": {
+      "text": "Ku'kun: 1 house. All the other inhabitants have become reindeer-breeders. (Register, 3 houses,",
+      "note": "Tier-1 form Ku'kun, plain ASCII."
+    },
+    "16": {
+      "text": "23 inhabitants)."
+    },
+    "17": {
+      "text": "Aka'nên (Eskimo, Aka'nik): 7 houses (Register, 10 houses, 42 inhabitants).",
+      "resolved": "Aka'nên: e + U+0302 (circumflex).",
+      "note": "Confirmed circumflex under magnification, distinct from the caron on Č/ř on this page."
+    },
+    "18": {
+      "text": "Ya'nřa-ñai (“separate peak”): 15 houses (Register, 28 houses, 101 inhabitants, which number seems",
+      "resolved": "Ya'řa-ñai: r + U+030C caron (same as line 9's r); ñai: n + U+0303 (tilde).",
+      "note": "Same ř form as line 9's Yanřa'kê-not, different word (peak vs. land)."
+    },
+    "19": {
+      "text": "to me rather too large)."
+    },
+    "20": {
+      "text": "Nute'-pɪ'nmɪn (“tongue of land”): 2 houses (not mentioned in the Register).",
+      "resolved": "pɪ'nmɪn: dotless-i U+0131 (x2).",
+      "note": "Tier-1 form, hyphen U+002D is load-bearing (Nute'-pɪ'nmɪn)."
+    },
+    "21": {
+      "text": "Nunä'ᵋmun (Eskimo, Nuna'mo, “land's end”): 11 houses (Register, 13 houses, 63 inhabitants).",
+      "resolved": "Nunä'ᵋmun: a + U+0308 (diaeresis) on ä; U+1D4B ᵋ before 'mun', same glyph as line 14.",
+      "note": "Confirmed umlaut and reversed-epsilon under magnification."
+    },
+    "22": {
+      "text": "Či'ñin (Eskimo, Si'nik): 5 houses (Register, 4 houses, 17 inhabitants).",
+      "resolved": "Či'ñin: C + U+030C caron; n + U+0303 tilde.",
+      "note": "Tier-1 forms."
+    },
+    "23": {
+      "text": "Puo'ten (Eskimo, Puwu'xtak): 6 houses (Register, 17 houses, 40 inhabitants).",
+      "note": "Tier-1 forms, plain ASCII."
+    },
+    "24": {
+      "text": "ᴇnmɪta'hɪn (“cliff's end”): 6 houses (Register, 8 houses, 42 inhabitants). The people are Nᴇ'ᴇkalɪt",
+      "resolved": "Initial letter of the paragraph: small-cap obscure-vowel U+1D07 (ᴇ), printed enlarged since it opens the sentence. Nᴇ'ᴇkalɪt: same U+1D07 lowercase, dotless-i U+0131 in -kalɪt.",
+      "note": "FLAG: this is the first attestation in the rebuilt corpus of this obscure-vowel series opening a word/sentence, so it is printed at a visibly larger size than its mid-word occurrences (e.g. Nᴇ'ᴇkalɪt right after it on the same line). I read the enlarged initial as the same ᴇ codepoint sized up for sentence-initial position (matching how 'N' of Nᴇ'ᴇkan is a full capital next to its own small-cap ᴇ), not a distinct letter (e.g. turned-E U+018E / open-E U+0190). No attestation anywhere in keying_spec.md or the corpus of a separate turned-e/open-e series -- only ᴀ ᴇ ɪ ä are named. Please confirm against the raster at magnification; this is a proposal, not an adopted identity. Compare the attested small-cap U+1D00 (ᴀ) mid-word on 1-048 (Mɪˊs˙qᴀn) -- same series, different member, not present on this line."
+    },
+    "25": {
+      "text": "Eskimo."
+    },
+    "26": {
+      "text": "Nᴇ'ᴇkan (Eskimo, Nabu'qak), on East Cape: 48 houses (Register, 50 houses, 299 inhabitants). The",
+      "resolved": "Nᴇ'ᴇkan: U+1D07 (ᴇ) x2, same series as line 24, mid-size (not sentence-initial).",
+      "note": "See flag on line 24 -- same series."
+    },
+    "27": {
+      "text": "people are Nᴇ'ᴇkalɪt Eskimo.",
+      "resolved": "Nᴇ'ᴇkalɪt: U+1D07 (ᴇ) x2, dotless-i U+0131 in -kalɪt."
+    },
+    "28": {
+      "text": "The villages on the Arctic coast are as follows: —"
+    },
+    "29": {
+      "text": "Uwe'len (Eskimo, U'lak, “carving-knife”): 30 houses (Register, 38 houses, 231 inhabitants; Nordquist,",
+      "note": "Tier-1 forms, plain ASCII."
+    },
+    "30": {
+      "text": "40 houses). Half of the people are Chukchee, and half Nᴇ'ᴇkalɪt Eskimo.",
+      "resolved": "Nᴇ'ᴇkalɪt: U+1D07 (ᴇ) x2, dotless-i U+0131 in -kalɪt.",
+      "note": "See flag on line 24."
+    },
+    "31": {
+      "text": "Tu'ñqen (Eskimo, To'ñqak): 4 houses (Register, 2 houses, 17 inhabitants; Nordquist, 5 houses;",
+      "resolved": "ñqen/ñqak: n + U+0303 tilde.",
+      "note": "Tier-1 forms."
+    },
+    "32": {
+      "text": "Krause, 10 houses). From here westward all the villages belong to the Chukchee tribe."
+    },
+    "33": {
+      "text": "Inčo'wɪn (Eskimo, Inčo'ṛvik): 18 houses (Register, 19 houses, 142 inhabitants; Nordquist, 33 houses).",
+      "resolved": "Inčo'wɪn: c + U+030C caron, dotless-i U+0131. Inčo'ṛvik: r + COMBINING DOT BELOW U+0323, same as line 8's Nɪxcɪ'ṛak.",
+      "note": "Same dot-below rhotic as line 8, confirmed."
+    },
+    "34": {
+      "text": "Iñe'ᵋen (Eskimo, Iñe'rñɪk): 3 houses (Register, 3 houses, 21 inhabitants; Nordquist, 5 houses).",
+      "resolved": "Iñe'ᵋen: n + U+0303 tilde, U+1D4B ᵋ before 'en'. Iñe'rñɪk: plain r, n+U+0303 tilde, dotless-i U+0131 in -ñɪk.",
+      "note": "Same reversed-epsilon as lines 14/21."
+    },
+    "35": {
+      "text": "Ot-ᴇnmɪta'hɪn (“cliff's end of U'ten”): 1 house. All the rest of the inhabitants had turned reindeer-",
+      "resolved": "Ot-ᴇnmɪta'hɪn: U+1D07 (ᴇ) mid-line, normal small-cap size (post-hyphen, not sentence-initial); dotless-i U+0131 x2 in -nmɪta'hɪn.",
+      "note": "Compare directly against line 24's initial glyph; this occurrence is unambiguously the small-cap ᴇ."
+    },
+    "36": {
+      "text": "breeders. (Register, 2 houses, 27 inhabitants; Nordquist, 8 houses.)"
+    },
+    "37": {
+      "text": "U'ten (Eskimo, U'tak), 12 houses (Register, 8 houses, 64 inhabitants; Nordquist, 20 houses).",
+      "note": "Tier-1 forms, plain ASCII."
+    },
+    "38": {
+      "text": "Ču'lpen (Eskimo, Ču'lpak), called in the Register and by Lieut. Nordquist Ču'tpen: 12 houses",
+      "resolved": "Ču'lpen/Ču'lpak/Ču'tpen: C + U+030C caron.",
+      "note": "Tier-1 forms."
+    },
+    "39": {
+      "text": "(Register, 4 houses, 32 inhabitants; Nordquist, 15 houses)."
+    },
+    "40": {
+      "text": "I'ᵋčen (Eskimo, I'čak): 11 houses (Register, 11 houses, 78 inhabitants; Nordquist, 13 houses).",
+      "resolved": "I'ᵋčen: U+1D4B ᵋ then č(c+U+030C)en. I'čak: c + U+030C caron.",
+      "note": "Same reversed-epsilon as lines 14/21/34."
+    },
+    "41": {
+      "text": "Čei'tun (Eskimo, Ča'xtuk): 16 houses (Register, 8 houses, 56 inhabitants; Nordquist, 18 houses).",
+      "resolved": "Čei'tun/Ča'xtuk: C + U+030C caron.",
+      "note": "Tier-1 forms."
+    },
+    "42": {
+      "text": "Čêča'ñɪn (Eskimo, Čeča'ñɪk): 10 houses (Register, 11 houses, 77 inhabitants; Nordquist, 11 houses).",
+      "resolved": "Čêča'ñɪn: C+U+030C caron, e+U+0302 circumflex (ê), c+U+030C caron, n+U+0303 tilde, dotless-i U+0131. Čeča'ñɪk: same pattern without the circumflex, dotless-i in -ñɪk.",
+      "note": "Confirmed circumflex on the first form's ê, plain e in the second (Eskimo) form -- checked they are not both circumflex."
+    },
+    "43": {
+      "text": "Iqä'lurun (Eskimo, Iqa'luwhak): 10 houses (Register, 7 houses, 48 inhabitants; Nordquist, 5 houses).",
+      "resolved": "Iqä'lurun: a + U+0308 diaeresis. Iqa'luwhak: plain a, no diaeresis.",
+      "note": "Confirmed the Eskimo form's a carries no umlaut, unlike the Chukchee form's ä."
+    },
+    "44": {
+      "text": "¹ Cape Prince of Wales is called by the same name (cf. p. 21).",
+      "note": "footnote, keyed to line 1's superscript 1."
+    }
+  }
+}

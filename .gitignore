@@ -39,9 +39,14 @@ review/*/sheets/
 review/*/zoom/
 review/*/review.html
 # The save writes temp-then-rename and keeps one .prev alongside, as insurance
-# against an interrupted write. Neither belongs in history — git is the history.
+# against an interrupted write, plus an append-only .jsonl journal of every
+# save for mid-session incident recovery (the Firefox session-restore bug
+# review.py's docstring describes). None of the three belongs in history —
+# they're forensic/recovery data for *before* a commit happens, not authored
+# content, and git already is the durable record once one does.
 review/*/*.prev
 review/*/*.tmp
+review/*/*.jsonl
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and
