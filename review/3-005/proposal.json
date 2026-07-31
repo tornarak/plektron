@@ -1,4 +1,9 @@
 {
+  "segmenter_missed": {
+    "67": {"band_vpos": 2261, "hpos": 1178, "vpos": 2261, "width": 163, "height": 23,
+           "source": "harness lines 3-005 --gaps", "adopted_as": "gap_line_3-005-2261",
+           "why": "centred small-caps heading above the kinship table it labels; same class as 1-048 CHUKCHEE. Its 23px of ink is the corpus's smallest confirmed dropped line, and what MIN_BAND_H is calibrated against"}
+  },
   "contamination": {
     "blind": true,
     "note": "3-005 not previously read or discussed in this session; first-look reading off the raster."
@@ -256,6 +261,11 @@
       "text": "Sometimes they say also ᴇndêw-mataˊlɪn (“wife’s uncle”) and ᴇččaiˊñaw-mataˊlɪn (“wife’s aunt”).",
       "resolved": "mata + ˊ(U+02CA stress, post-a pre-l) + lɪn(ɪ=U+026A) (both instances); ᴇ(U+1D07)č(U+030C)č(U+030C)ai + ˊ(stress, post-i pre-ñ) + ñ(n+U+0303)aw-mataˊlɪn; ê(U+0302) in ᴇndêw",
       "note": "'Eččai' confirmed double-č (both carons) at 4x, not 'Eccai'."
+    },
+    "67": {
+      "text": "AFFINITY.",
+      "resolved": "U+0049 = the two ASCII I in \"AFFINITY.\" — MEDIAL_CAPS hits only. Small caps flattened to ASCII capitals, as elsewhere on the page. No notation on this line.",
+      "note": "Recovered line: centred small-caps heading dropped by the segmenter, immediately above the AFFINITY kinship table it labels. Same class as 1-048 CHUKCHEE."
     }
   }
 }

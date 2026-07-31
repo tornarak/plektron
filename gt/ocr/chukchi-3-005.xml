@@ -326,7 +326,7 @@
             <String CONTENT="Sometimes they say also ᴇndêw-mataˊlɪn (“wife’s uncle”) and ᴇččaiˊñaw-mataˊlɪn (“wife’s aunt”)." HPOS="376.0" VPOS="3052.0" WIDTH="1509.0" HEIGHT="58.0" WC="0.9535500182933414"/>
           </TextLine>
         </TextBlock>
-      </PrintSpace>
+      <TextBlock HPOS="1178" VPOS="2261" WIDTH="163" HEIGHT="23" ID="gap_textblock_3-005-2261"><Shape><Polygon POINTS="1178 2261 1341 2261 1341 2284 1178 2284"/></Shape><TextLine ID="gap_line_3-005-2261" BASELINE="1178 2284 1341 2284" HPOS="1178" VPOS="2261" WIDTH="163" HEIGHT="23"><Shape><Polygon POINTS="1178 2261 1341 2261 1341 2284 1178 2284"/></Shape><String CONTENT="AFFINITY." HPOS="1178" VPOS="2261" WIDTH="163" HEIGHT="23"/></TextLine></TextBlock></PrintSpace>
     </Page>
   </Layout>
 </alto>

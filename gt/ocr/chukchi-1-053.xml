@@ -278,7 +278,7 @@
         <TextBlock HPOS="2058.0" VPOS="622.0" WIDTH="72.0" HEIGHT="70.0" ID="eSc_textblock_b9ee6590" TAGREFS="BT70">
           <Shape><Polygon POINTS="2058 622 2058 692 2130 692 2130 622"/></Shape>
         </TextBlock>
-      </PrintSpace>
+      <TextBlock HPOS="482" VPOS="3018" WIDTH="1636" HEIGHT="52" ID="gap_textblock_1-053-3018"><Shape><Polygon POINTS="482 3018 2118 3018 2118 3070 482 3070"/></Shape><TextLine ID="gap_line_1-053-3018" BASELINE="482 3070 2118 3070" HPOS="482" VPOS="3018" WIDTH="1636" HEIGHT="52"><Shape><Polygon POINTS="482 3018 2118 3018 2118 3070 482 3070"/></Shape><String CONTENT="In summing up the whole population, we obtain in round numbers, for" HPOS="482" VPOS="3018" WIDTH="1636" HEIGHT="52"/></TextLine></TextBlock><TextBlock HPOS="374" VPOS="3076" WIDTH="1742" HEIGHT="47" ID="gap_textblock_1-053-3076"><Shape><Polygon POINTS="374 3076 2116 3076 2116 3123 374 3123"/></Shape><TextLine ID="gap_line_1-053-3076" BASELINE="374 3123 2116 3123" HPOS="374" VPOS="3076" WIDTH="1742" HEIGHT="47"><Shape><Polygon POINTS="374 3076 2116 3076 2116 3123 374 3123"/></Shape><String CONTENT="the Chukchee on the Pacific shore, 1100; for the Eskimo, 1200;¹ for the" HPOS="374" VPOS="3076" WIDTH="1742" HEIGHT="47"/></TextLine></TextBlock></PrintSpace>
     </Page>
   </Layout>
 </alto>

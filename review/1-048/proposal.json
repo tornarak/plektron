@@ -1,4 +1,9 @@
 {
+  "segmenter_missed": {
+    "48": {"band_vpos": 1721, "hpos": 1522, "vpos": 1721, "width": 189, "height": 28,
+           "source": "harness lines 1-048 --gaps", "adopted_as": "gap_line_1-048-1721",
+           "why": "centred small-caps section heading; short and centred, the class the segmenter systematically drops"}
+  },
   "contamination": {
     "blind": false,
     "detail": "NOT a blind read. 1-048 is one of the two pages that predate this pipeline; gt/ocr/chukchi-1-048.xml already held hand-keyed text and I read it (via `harness lines`) before reading the raster. This is a revision pass, so the proposal is that text as re-checked against the 300 dpi scan, not an independent reading. Treat agreement between proposal and existing GT as weak evidence: on any line I did not flag, the two witnesses are not independent.",
@@ -191,6 +196,11 @@
       "text": "of Mɪˊs˙qᴀn, Rêˊtkên, and Yanřaˊkê-not are situated on sandy spits which lie at the entrance to the bays.",
       "resolved": "Mɪˊs˙qᴀn = M, U+026A, U+02CA, s, U+02D9, q, U+1D00, n; Rêˊtkên = R, e+U+0302, U+02CA, t, k, e+U+0302, n; Yanřaˊkê-not = Y, a, n, r+U+030C, a, U+02CA, k, e+U+0302, -, n, o, t",
       "note": "ř is the third rhotic, r + U+030C (§2.2/§2.5). The hyphen in Yanřaˊkê-not is a connector inside a Tier-1 form (U+002D, §2.1) and must not be joined away."
+    },
+    "48": {
+      "text": "CHUKCHEE.",
+      "resolved": "U+0045 = the two ASCII E in \"CHUKCHEE.\" — MEDIAL_CAPS hits only, since that check sees word-medial A/E/I/L. The heading is set in small caps and flattened to ASCII capitals as the running title is (line 15), so these are the flattening, not small-cap sorts. No notation on this line.",
+      "note": "Recovered line: a centred small-caps section heading the segmenter dropped. Sits between \"The villages on the Pacific coast are as follows: —\" (16) and the first entry (17). Found by harness lines --gaps AFTER this page had already been revised and restored, which is the point of the detector: nothing text-level could see it."
     }
   }
 }

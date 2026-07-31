@@ -1,7 +1,7 @@
 {
  "ref": "1-053",
  "proposal": "review/1-053/proposal.json",
- "saved_at": "2026-07-30T10:21:45-0400",
+ "saved_at": "2026-07-31T16:05:23-0400",
  "lines": {
   "0": {
    "text": "Keˊñičvun (signifying, with a slight modification of the last vowel, “curve”): 11 houses (Nordquist,",
@@ -169,10 +169,18 @@
   },
   "41": {
    "text": "¹ Besides these, there are about 400 inhabitants on the Diomede Islands and on St. Lawrence Island;",
-   "edited": false
+   "edited": true
   },
   "42": {
    "text": "so that the whole number of Eskimo in Asia, in round numbers, is 1600.",
+   "edited": false
+  },
+  "43": {
+   "text": "In summing up the whole population, we obtain in round numbers, for",
+   "edited": false
+  },
+  "44": {
+   "text": "the Chukchee on the Pacific shore, 1100; for the Eskimo, 1200;¹ for the",
    "edited": false
   }
  }
