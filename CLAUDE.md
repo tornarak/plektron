@@ -391,8 +391,8 @@ reports as `stale-ink-exemption`.
 
 **The page list (`l` in the editor) carries the ink verdict, and it is cached rather
 than recomputed.** Every other column costs ~1 ms and is read straight off the files;
-this one opens the raster and costs ~0.27 s, which over a 122-page itinerary is half
-a minute before the table appears. But the editor **already runs the check** on every
+this one opens the raster and costs ~0.20 s, which over a 122-page itinerary is most
+of a minute before the table appears. But the editor **already runs the check** on every
 page it opens and every page it saves, and so does `harness zones --ink` — the answer
 was being computed and thrown away. It now lands in `gt/zones/_ink_cache.json`
 (derived, gitignored), stamped with the mtimes of the page's ALTO and of
@@ -404,6 +404,25 @@ saves ago, drawn in the same column as a live one, is exactly the fluent nonsens
 this project is organised against. And a page nobody has checked reads `?`, never
 blank: blank is indistinguishable from clean. Going and getting the missing ones is
 an explicit button, because it is the only slow thing the list can do.
+
+**What the raster check actually costs is the PNG decode**, and that is worth writing
+down because it is not where the work looks like it is. Measuring — the column
+anchor's ink profile, the row bands, the merge — is ~0.02 s. Inflating a 2824×3897
+RGB PNG is ~0.16 s, eight times the rest put together. Two consequences, both taken:
+`validate_page` decodes **once** and hands the same boolean ink mask to the anchor and
+to the band detector, where it used to read the file twice; and `lines.ink_bands` is
+vectorised, since a Python loop over 11 M pixels was the only thing that had ever made
+the measuring itself visible. Together, ~0.58 s → ~0.20 s a page, with every verdict
+over the keyed corpus unchanged and the 20 ground-truth pages still reporting zero
+gaps. The sampling in `ink_bands` — every other column — is kept for exactly that
+reason: vectorising made it free to drop, but dropping it would move a threshold
+calibrated against the sampled count.
+
+The remaining 0.16 s is inherent to the format, not to the check. `scans/` is
+`pdftoppm`'s RGB output while the pages' channels are identical everywhere tested;
+regenerating it as greyscale would cut the decode to ~0.05 s and the tree to a third
+of its size. That is a corpus-wide change to a derived store with several consumers,
+so it is recorded here rather than done.
 
 ## Footnote markers
 
@@ -459,7 +478,7 @@ the other seventeen. All three are now repaired and the corpus reports **zero**:
 section headings — so expect the same across the remaining 812 pages. Figure zones
 must be masked or every illustrated page reports its own artwork (`3-006` gave 12
 bands, `2-030` two; both go to zero). It is report-only and deliberately **not**
-folded into `normalize`: reading rasters costs 0.27 s/page against that gate's
+folded into `normalize`: reading rasters costs ~0.19 s/page against that gate's
 0.83 s for the whole corpus, so it belongs in the per-page loop and in deliberate
 sweeps. `--blot` is the visual counterpart — the page with every line box and zone
 painted out, so what remains is uncovered by construction and no threshold can

@@ -436,10 +436,34 @@ ROW_INK_FRACTION = 0.005
 COVER_PAD = 6
 
 
-def ink_bands(img, x0: int, x1: int, covered: bytearray,
+def ink_mask(src) -> "object":
+    """The page as a boolean array, True where the paper is dark.
+
+    The one decode, in one place. Every caller of `ink_bands` and every anchor
+    measurement wants the same `< 128` mask off the same raster, and the decode is
+    what the check actually costs — ~0.16 s of PNG inflate against ~0.02 s for all
+    the measuring put together, on a 2824x3897 leaf. So the mask is a value that
+    gets passed around rather than something each measurement re-derives: a page
+    validated with `ink=True` used to decode its raster twice, once for the column
+    anchor and once for the ink bands.
+
+    Accepts a path or an open PIL image, and returns the array unchanged if handed
+    one, so a caller that already has the page never re-reads it.
+    """
+    import numpy as np
+    if isinstance(src, np.ndarray):
+        return src
+    from PIL import Image
+    if hasattr(src, "convert"):
+        return np.asarray(src.convert("L")) < 128
+    with Image.open(src) as im:
+        return np.asarray(im.convert("L")) < 128
+
+
+def ink_bands(ink, x0: int, x1: int, covered,
               min_h: int = MIN_BAND_H,
               fraction: float = ROW_INK_FRACTION) -> list[dict]:
-    """Contiguous bands of ink in `img`'s `x0..x1` window that `covered` does not mask.
+    """Contiguous bands of ink in the `x0..x1` window that `covered` does not mask.
 
     The measuring core of `line_gaps`, extracted because `zones.validate_page` asks
     the same question of a page with different boxes drawn on it — "is there ink
@@ -447,48 +471,44 @@ def ink_bands(img, x0: int, x1: int, covered: bytearray,
     how the answers start disagreeing. `MIN_BAND_H` and `ROW_INK_FRACTION` are
     derived at their definitions above and both callers inherit the derivation.
 
-    `img` is greyscale (mode `"L"`); `covered` is one byte per image row, non-zero
-    where something already accounts for that row. Returns `{vpos, height, hpos,
-    width}` in **raster** coordinates, each band carrying the extent of its own ink
-    rather than of the measuring window — a repair needs the geometry of what was
-    found, not of where it was looked for.
+    `ink` is an `ink_mask` array; `covered` is one entry per image row, true where
+    something already accounts for that row. Returns `{vpos, height, hpos, width}`
+    in **raster** coordinates, each band carrying the extent of its own ink rather
+    than of the measuring window — a repair needs the geometry of what was found,
+    not of where it was looked for.
+
+    Still counts **every other column**, as the original per-pixel loop did, so that
+    vectorising this changed no verdict anywhere in the corpus. Sampling costs
+    nothing to undo now, but undoing it would move a threshold that was calibrated
+    against the sampled count, and the two dropped headings this exists to catch —
+    `1-048`'s and `3-005`'s 23 px `AFFINITY.` — sit close enough to it to care.
     """
-    h = img.size[1]
-    x0, x1 = max(0, x0), min(img.size[0], x1)
+    import numpy as np
+    ink = ink_mask(ink)
+    h, w = ink.shape
+    x0, x1 = max(0, x0), min(w, x1)
     cols = x1 - x0
     if cols <= 0:
         return []
-    band = img.crop((x0, 0, x1, h)).point(lambda v: 255 if v < 128 else 0)
+    band = ink[:, x0:x1]
     threshold = max(1, int(cols * fraction))
-    inked = [0] * h
-    px = band.load()
-    for y in range(h):
-        if covered[y]:
-            continue
-        n = 0
-        for x in range(0, cols, 2):        # every other column: 2x faster, same verdict
-            if px[x, y]:
-                n += 1
-                if n * 2 >= threshold:
-                    break
-        inked[y] = 1 if n * 2 >= threshold else 0
+    rows = (band[:, ::2].sum(axis=1) * 2 >= threshold)
+    rows &= ~np.asarray(covered, dtype=bool)[:h]
 
-    out, y = [], 0
-    while y < h:
-        if not inked[y]:
-            y += 1
+    # Run boundaries from a single diff over the row mask, padded either end so a
+    # band running to the top or bottom of the page is not lost.
+    edges = np.flatnonzero(np.diff(np.concatenate(
+        ([0], rows.view(np.int8), [0]))))
+    out = []
+    for start, end in zip(edges[::2], edges[1::2]):
+        if end - start < min_h:
             continue
-        start = y
-        while y < h and inked[y]:
-            y += 1
-        if y - start < min_h:
+        nz = np.flatnonzero(band[start:end].any(axis=0))
+        if not len(nz):
             continue
-        strip = band.crop((0, start, cols, y))
-        bbox = strip.getbbox()
-        if bbox is None:
-            continue
-        out.append({"vpos": start, "height": y - start,
-                    "hpos": x0 + bbox[0], "width": bbox[2] - bbox[0]})
+        out.append({"vpos": int(start), "height": int(end - start),
+                    "hpos": x0 + int(nz[0]),
+                    "width": int(nz[-1] - nz[0]) + 1})
     return out
 
 
@@ -531,14 +551,14 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     x0, x1 = (int(min(lefts)), int(max(rights))) if lefts else (0, w)
     x0, x1 = max(0, x0), min(w, x1)
 
-    covered = bytearray(h)
+    import numpy as np
+    covered = np.zeros(h, dtype=bool)
     for r in recs:
         if r.get("vpos") is None or r.get("height") is None:
             continue
         top = max(0, int(r["vpos"] * sy) - COVER_PAD)
         bot = min(h, int((r["vpos"] + r["height"]) * sy) + COVER_PAD)
-        for y in range(top, bot):
-            covered[y] = 1
+        covered[top:bot] = True
 
     # Figures are ink with no TextLine by construction, so without this every
     # illustrated page reports its own artwork as dropped text: `2-030` returned 2
@@ -550,12 +570,11 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     for z in _zones(ref, root):
         top = max(0, int(z["vpos"] * sy) - COVER_PAD)
         bot = min(h, int((z["vpos"] + z["height"]) * sy) + COVER_PAD)
-        for y in range(top, bot):
-            covered[y] = 1
+        covered[top:bot] = True
 
     # The measuring itself is `ink_bands`, shared with `zones.validate_page` so the
     # two detectors cannot drift apart on a threshold.
-    return ink_bands(img, x0, x1, covered)
+    return ink_bands(ink_mask(img), x0, x1, covered)
 
 
 GAP_ID_PREFIX = "gap_"

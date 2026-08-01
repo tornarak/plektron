@@ -221,7 +221,7 @@ def has_zones(ref: str, root: Path = Path(".")) -> bool:
 
 # ------------------------------------------------------------ column anchoring
 
-def _content_rows(arr, width: int, cfg: dict) -> tuple[int, int] | None:
+def _content_rows(ink, width: int, cfg: dict) -> tuple[int, int] | None:
     """First and last row of real ink on the page, or None if there is none.
 
     A run of `CONTENT_MIN_RUN` consecutive inked rows is required at each end, so a
@@ -231,7 +231,7 @@ def _content_rows(arr, width: int, cfg: dict) -> tuple[int, int] | None:
     photograph raise the bar above every line of type on the same page.
     """
     import numpy as np
-    row = (arr < 128).sum(axis=1)
+    row = ink.sum(axis=1)
     inked = row > max(3, int(width * cfg["view"]["content_ink_fraction"]))
     if not inked.any():
         return None
@@ -287,7 +287,7 @@ def _column_runs(col, n_rows: int, a: dict) -> list[tuple[int, int]]:
 
 
 def measure_frame(ref: str, root: Path = Path("."),
-                  cfg: dict | None = None) -> dict:
+                  cfg: dict | None = None, ink=None) -> dict:
     """Where this page's text column sits, and how far down the leaf it runs.
 
     Both measurements come off one raster read, because the editor needs both on
@@ -330,8 +330,7 @@ def measure_frame(ref: str, root: Path = Path("."),
     reporting `measured: false` so the editor can say so rather than quietly draw a
     guide in the wrong place.
     """
-    from PIL import Image
-    import numpy as np
+    from .lines import ink_mask
     cfg = cfg or zc.load_config(root)
     ref = norm_ref(ref)
     spec = zc.part_spec(cfg, ref)
@@ -339,11 +338,12 @@ def measure_frame(ref: str, root: Path = Path("."),
     measure = int(spec["measure"])
     pad = int(cfg["view"]["content_pad_px"])
 
-    with Image.open(scan_for(ref, root)) as im:
-        arr = np.asarray(im.convert("L"))
-    h, w = arr.shape
+    # `ink` lets a caller that has already decoded the page hand it over. The decode
+    # is the cost of this whole check — see `lines.ink_mask`.
+    ink = ink_mask(ink if ink is not None else scan_for(ref, root))
+    h, w = ink.shape
 
-    rows = _content_rows(arr, w, cfg)
+    rows = _content_rows(ink, w, cfg)
     content = ({"y0": max(0, rows[0] - pad), "y1": min(h, rows[1] + pad)}
                if rows else {"y0": 0, "y1": h})
 
@@ -352,7 +352,7 @@ def measure_frame(ref: str, root: Path = Path("."),
         return {"ref": ref, "columns": over, "measured": False,
                 "source": "override", "content": content}
 
-    band = arr[int(h * a["band_top"]):int(h * a["band_bottom"]), :] < 128
+    band = ink[int(h * a["band_top"]):int(h * a["band_bottom"]), :]
     col = band.sum(axis=0)
     runs = _column_runs(col, band.shape[0], a)
     # Specks out by absolute width, then take the SPAN of what survives — not the
@@ -382,15 +382,15 @@ def measure_frame(ref: str, root: Path = Path("."),
 
 
 def measure_columns(ref: str, root: Path = Path("."),
-                    cfg: dict | None = None) -> dict:
+                    cfg: dict | None = None, ink=None) -> dict:
     """Back-compatible name for the horizontal half of `measure_frame`."""
-    return measure_frame(ref, root, cfg)
+    return measure_frame(ref, root, cfg, ink)
 
 
 def page_windows(ref: str, root: Path = Path("."),
-                 cfg: dict | None = None) -> list[dict]:
+                 cfg: dict | None = None, ink=None) -> list[dict]:
     """Just the windows, for callers that do not care how they were arrived at."""
-    return measure_frame(ref, root, cfg)["columns"]
+    return measure_frame(ref, root, cfg, ink)["columns"]
 
 
 # ---------------------------------------------------------------- split marking
@@ -548,7 +548,7 @@ def cached_ink(ref: str, root: Path = Path(".")) -> dict | None:
 def record_ink(ref: str, report: dict, root: Path = Path(".")) -> dict:
     """Reduce one `validate_page(ink=True)` result to a verdict, and store it.
 
-    The ink pass is ~0.27 s of raster work against ~1 ms for every other check, so
+    The ink pass is ~0.20 s of raster work against ~1 ms for every other check, so
     a list of 122 pages cannot run it on render. But the editor **already runs it**
     on every page it opens and every page it saves, and the corpus sweep runs it
     under `--ink`; the answer is being computed and thrown away. So it is written
@@ -845,7 +845,7 @@ def _position_error(z: dict, windows: list[dict], tol: float) -> str | None:
 
 def uncovered_ink(ref: str, zones: list[dict], root: Path = Path("."),
                   cfg: dict | None = None,
-                  windows: list[dict] | None = None) -> list[dict]:
+                  windows: list[dict] | None = None, ink=None) -> list[dict]:
     """Bands of ink inside the text column that no zone and no figure accounts for.
 
     The partition check, and the only one that consults the page rather than the
@@ -864,28 +864,25 @@ def uncovered_ink(ref: str, zones: list[dict], root: Path = Path("."),
     a page's own lines, and it carries the same limitation — this finds dropped
     *body* material, not everything on the leaf.
     """
-    from PIL import Image
-    from .lines import COVER_PAD, ink_bands
+    import numpy as np
+    from .lines import COVER_PAD, ink_bands, ink_mask
     from .figures import zones as fig_zones
 
     cfg = cfg or zc.load_config(root)
     ref = norm_ref(ref)
-    windows = windows or page_windows(ref, root, cfg)
-    with Image.open(scan_for(ref, root)) as im:
-        img = im.convert("L")
-    w, h = img.size
+    ink = ink_mask(ink if ink is not None else scan_for(ref, root))
+    h = ink.shape[0]
+    windows = windows or page_windows(ref, root, cfg, ink)
 
-    covered = bytearray(h)
+    covered = np.zeros(h, dtype=bool)
     for box in list(zones) + [{"y0": z["vpos"], "y1": z["vpos"] + z["height"]}
                               for z in fig_zones(ref, root)]:
-        top = max(0, int(box["y0"]) - COVER_PAD)
-        bot = min(h, int(box["y1"]) + COVER_PAD)
-        for y in range(top, bot):
-            covered[y] = 1
+        covered[max(0, int(box["y0"]) - COVER_PAD):
+                min(h, int(box["y1"]) + COVER_PAD)] = True
 
     x0 = min(int(win["x0"]) for win in windows)
     x1 = max(int(win["x1"]) for win in windows)
-    return _merge_bands(ink_bands(img, x0, x1, covered))
+    return _merge_bands(ink_bands(ink, x0, x1, covered))
 
 
 def _merge_bands(bands: list[dict]) -> list[dict]:
@@ -939,7 +936,7 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     configurable in `data/zones_config.json`, exemptible per page, and a page that
     breaks them is the interesting page rather than the rejected one.
 
-    `ink` is the raster read — ~0.27 s, against ~1 ms for everything else — so the
+    `ink` is the raster read — ~0.20 s, against ~1 ms for everything else — so the
     corpus sweep leaves it off by default and says so in its report. The UI turns it
     on, since a save is already a round trip and a dropped zone is exactly what an
     editor cannot see by looking at their own work.
@@ -961,8 +958,16 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     over = zc.override_windows(cfg, ref)
     # The measured column needs the raster, so it is only consulted when the ink
     # pass is running anyway. An override is free and always applies.
+    #
+    # **One decode for both.** The anchor and the ink bands are two measurements
+    # over the same mask, and reading the PNG twice was most of what this check
+    # cost — 0.16 s of inflate against ~0.02 s of measuring.
+    page_ink = None
+    if ink and zones:
+        from .lines import ink_mask
+        page_ink = ink_mask(scan_for(ref, root))
     windows = over if over is not None else (
-        page_windows(ref, root, cfg) if ink and zones else None)
+        page_windows(ref, root, cfg, page_ink) if page_ink is not None else None)
 
     for z in zones:
         where = f"{z['label']} at y={z['y0']}"
@@ -1043,7 +1048,7 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
     bands = []
     if ink and zones:
-        bands = uncovered_ink(ref, zones, root, cfg, windows)
+        bands = uncovered_ink(ref, zones, root, cfg, windows, page_ink)
         regions = load_ink_exempt(root).get(ref, [])
         for b in bands:
             excuse = _ink_excuse(b, regions)

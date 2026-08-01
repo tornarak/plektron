@@ -334,7 +334,7 @@ def main(argv=None):
     zo.add_argument("--ink", action="store_true",
                     help="with the corpus sweep: also read every raster and report "
                          "ink no zone accounts for. Off by default because it costs "
-                         "~0.27 s a page against ~1 ms for the file-level checks; "
+                         "~0.20 s a page against ~1 ms for the file-level checks; "
                          "always on for a single page, where it is the check that "
                          "catches a dropped zone")
     zo.add_argument("--blot", action="store_true",

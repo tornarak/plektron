@@ -1081,7 +1081,7 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     one keystroke and leave in one click.
 
     Rendered without the raster (`ink=False`), because this is a list of 122 pages
-    and the ink pass is ~0.27 s each — half a minute before anything appeared. The
+    and the ink pass is ~0.20 s each — most of a minute before anything appeared. The
     ink column is therefore **read from the cache** every keyed page has already
     filled in by being opened. That check is the only one that can see a zone that
     was never drawn, so a list silent about it would be silent about exactly the
@@ -1139,7 +1139,7 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     h.append("<span class='chip' data-state='err'>has errors</span>")
     h.append("<span class='chip' data-ink='ink'>uncovered ink</span>")
     if n_unknown:
-        # Explicit, because it is ~0.27 s a page of raster work and the only slow
+        # Explicit, because it is ~0.20 s a page of raster work and the only slow
         # thing this list can do. Everything else here is already paid for.
         h.append(f"<span class='chip' id='inkrun'>check ink · {n_unknown} "
                  f"page{'' if n_unknown == 1 else 's'}</span>")
