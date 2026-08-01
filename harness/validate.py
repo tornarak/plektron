@@ -1,4 +1,5 @@
-"""The gate. Mechanizes every checkable item of harness rev 2's self-check.
+"""The gate. Mechanizes every checkable item of the collation pass's self-check
+(`.claude/skills/transcribe-page/SKILL.md`).
 
 Exit contract: ERRORS block (the model must fix and re-run); WARNINGS accompany
 (human review queue); WORKLIST is the Tier-1 lookalike census plus the page's

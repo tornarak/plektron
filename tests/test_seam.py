@@ -297,6 +297,75 @@ def test_prev_and_next_are_still_refused(tmp_path):
                for e in gate(tmp_path, "1-010").errors)
 
 
+# ------------------------------------------------- the ledger's boundary column
+
+def scans(tmp_path: Path, *refs):
+    """`build_ledger` walks physical scan order, so the rasters must exist."""
+    d = tmp_path / "scans"
+    d.mkdir(parents=True, exist_ok=True)
+    for r in refs:
+        (d / f"chukchi-{r}.png").write_bytes(b"")
+
+
+def boundary(tmp_path: Path, ref: str) -> str:
+    from harness.state import build_ledger
+    return build_ledger(tmp_path)[ref]["boundary"]
+
+
+def test_a_marked_part_reads_open(tmp_path):
+    scans(tmp_path, "1-010", "1-011")
+    two_pages(tmp_path)
+    seam.set_seam("1-011", True, tmp_path, commit=True)
+    assert boundary(tmp_path, "1-010") == "open"
+
+
+def test_a_linked_list_reads_open_though_it_carries_no_part(tmp_path):
+    """The half of the derivation that is easy to omit. TEI's att.fragmentable
+    excludes <list>, so a run-on list is spelled with @next and a derivation
+    testing only @part would call this a clean break — which is precisely what
+    1-100 is not."""
+    scans(tmp_path, "1-010", "1-011")
+    page(tmp_path, "1-010",
+         '<pb n="1"/><list next="#list-1-011-1"><item>a</item></list>')
+    page(tmp_path, "1-011", '<pb n="2"/><list><item>b</item></list>')
+    assert boundary(tmp_path, "1-010") == "open"
+
+
+def test_both_pages_collated_and_unmarked_reads_closed(tmp_path):
+    scans(tmp_path, "1-010", "1-011")
+    two_pages(tmp_path)
+    assert boundary(tmp_path, "1-010") == "closed"
+
+
+def test_an_uncollated_successor_reads_unknown_not_closed(tmp_path):
+    """`seam` refuses unless both pages exist, so nothing could have adjudicated
+    this gap. Reporting "closed" would put a verdict nobody made in the ledger —
+    the same defect as a zone page saved empty."""
+    scans(tmp_path, "1-010", "1-011")
+    page(tmp_path, "1-010", '<pb n="1"/><p>a</p>')
+    assert boundary(tmp_path, "1-010") == "unknown"
+
+
+def test_an_uncollated_page_reads_unknown(tmp_path):
+    scans(tmp_path, "1-010", "1-011")
+    page(tmp_path, "1-011", '<pb n="2"/><p>b</p>')
+    assert boundary(tmp_path, "1-010") == "unknown"
+
+
+def test_the_last_scan_of_a_part_has_no_gap_after_it(tmp_path):
+    scans(tmp_path, "1-010", "1-011")
+    two_pages(tmp_path)
+    assert boundary(tmp_path, "1-011") == "unknown"
+
+
+def test_entry_state_no_longer_carries_boundary_in(tmp_path):
+    """It duplicated `prev_tail["part"]` — same fact, same file, two names."""
+    from harness.state import entry_state
+    scans(tmp_path, "1-010", "1-011")
+    two_pages(tmp_path)
+    assert "boundary_in" not in entry_state("1-011", tmp_path)
+
+
 # ------------------------------------------------------ no space before a <note>
 
 def test_a_space_before_a_note_is_an_error(tmp_path):

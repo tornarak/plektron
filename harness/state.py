@@ -8,11 +8,17 @@ facts forward. Three seam facts, three producers, one table keyed by PP-NNN ref:
                None = page carries no printed folio (plate, blank, title).
   toc_window   the ToC entries *surrounding* this page's folio, each marked
                open / starts-here — a neighbourhood, not a resolution.
-  boundary     element left open across the gap *after* this page, from
-               `boundaries.json` — ALTO geometry, computed by the separate
-               continuation pass (transcriber_harness.md, "The continuation
-               patch step"). Absent = not yet computed, which is not the same
-               as null (= clean break).
+  boundary     whether an element runs across the gap *after* this page, read
+               off the committed TEI: the last top-level body element carries
+               `@part` of I or M, or carries `@next`. Written by `harness seam`
+               from the page on the far side of the gap, which is the only one
+               holding both witnesses.
+
+               Three states. A mark says "open". Absence of a mark says nothing
+               on its own, so it resolves by whether the *next* page is collated:
+               if it is, that pass had both witnesses and its silence is the
+               `--fresh` verdict ("closed"); if it is not, nothing has been in a
+               position to look ("unknown").
 
 The folio is the reason this exists. NNN is a scan index, not a folio, and the
 two are not derivable from each other (see context.py); so the only way to know
@@ -68,9 +74,21 @@ def _tei_facts(tei_path: Path) -> dict | None:
     if pb is None:
         return None
     n = pb.get("n")
+    # The gap *after* this page, read off the page's own last top-level element.
+    # Two spellings, because TEI's att.fragmentable covers <p> and <quote> but not
+    # <list>/<table>: a fragmentable element left open carries @part of I or M, a
+    # non-fragmentable one carries @next at its link. Testing only @part would
+    # report a page ending in a run-on list as a clean break — which is exactly
+    # what 1-100 is not.
+    from .seam import body_elements
+    els = body_elements(tree.getroot())
+    last = els[-1] if els else None
+    open_after = last is not None and (
+        last.get("part") in ("I", "M") or last.get("next") is not None)
     return {
         "folio": int(n) if n is not None and n.isdigit() else None,
         "folio_raw": n,
+        "marked_open": open_after,
         "milestones": [ms.get("n") for ms in tree.iter(f"{{{TEI_NS}}}milestone")
                        if ms.get("n")],
     }
@@ -138,7 +156,6 @@ def build_ledger(root: Path = Path(".")) -> dict[str, dict]:
 
     toc = load_toc(root)
     levels = {e["id"]: e.get("level", 0) for e in toc if e.get("id")}
-    boundaries = load_boundaries(root)
 
     ledger: dict[str, dict] = {}
     open_h: dict[int, str] = {}
@@ -158,9 +175,41 @@ def build_ledger(root: Path = Path(".")) -> dict[str, dict]:
             "transcribed": facts is not None,
             "open_in": entry,
             "open_out": [open_h[k] for k in sorted(open_h)],
-            "boundary": boundaries.get(ref, "unknown"),
+            "marked_open": bool(facts and facts["marked_open"]),
         }
+
+    # Three states, not two, and the third is the one that matters.
+    #
+    # A mark says "open". *Absence* of a mark says nothing by itself — it is
+    # equally "a human ruled this a clean break" and "nobody has looked", and
+    # collapsing those two into "closed" would put a verdict nobody made into the
+    # ledger. That is the same defect as a zone page saved with nothing on it,
+    # where an empty save erased the difference between having made a judgement
+    # and not; see CLAUDE.md on `exempt`.
+    #
+    # What separates them here is *who could have written it*. A seam is recorded
+    # by the page after the gap, and `harness seam` refuses unless the predecessor
+    # is collated too — so a gap is adjudicable only when **both** its pages exist.
+    # Until then nothing has been in a position to look, and the honest answer is
+    # "unknown". Once both exist, the pass had both witnesses in front of it and
+    # the absence of a mark is its `--fresh` verdict.
+    for ref, row in ledger.items():
+        nxt = _next_scan(ref, ledger)
+        adjudicable = row["transcribed"] and nxt and ledger[nxt]["transcribed"]
+        row["boundary"] = (
+            "open" if row["marked_open"]
+            else "closed" if adjudicable
+            else "unknown")
+        del row["marked_open"]
     return ledger
+
+
+def _next_scan(ref: str, ledger: dict) -> str | None:
+    """The following scan in the same part. Gaps never cross a part boundary."""
+    from .context import parse_ref
+    part, idx = parse_ref(ref)
+    nxt = f"{part}-{idx + 1:03d}"
+    return nxt if nxt in ledger else None
 
 
 def ledger_rows(root: Path = Path("."), part: int | None = None) -> list[dict]:
@@ -285,7 +334,11 @@ def entry_state(ref: str, root: Path = Path(".")) -> dict:
         "basis_folio": ledger[basis_ref]["folio"] if basis_ref else None,
         "expected_folio": expected,
         "believed_open": ledger[ref]["open_in"],
-        "boundary_in": ledger[prior_ref]["boundary"] if prior_ref else None,
+        # No `boundary_in`. It said whether the gap before this page was open, and
+        # `context`'s `prev_tail` now carries the same fact as `part` on the actual
+        # element — read off the same file, one field instead of two. Two names for
+        # one fact is the drift shape this project avoids; the ledger's `boundary`
+        # column remains, for the gap *after* each page.
     }
 
 
@@ -353,12 +406,9 @@ def toc_search(toc: list[dict], query: str, folio: int | None = None,
     return out
 
 
-def load_boundaries(root: Path = Path(".")) -> dict:
-    """`boundaries.json`: ref -> {"open": "p"|"quote"|"table"|"note"|None}.
-
-    Keyed by PP-NNN ref, one record per inter-page gap, naming the element left
-    open across the gap immediately following that ref. Produced by the
-    continuation pass from ALTO geometry; absent until that pass has run.
-    """
-    p = root / "boundaries.json"
-    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+# `load_boundaries` lived here and read a `boundaries.json` that never existed,
+# because the geometry pass that was to write it was never built. Every ledger row
+# therefore read `boundary=unknown` — a column that looked like a pending
+# measurement and was in fact a dead field. The fact now comes off the committed
+# TEI, where `harness seam` puts it, which is what "the committed TEI is the
+# record" already promised.

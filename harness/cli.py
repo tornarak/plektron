@@ -156,8 +156,11 @@ def main(argv=None):
                       "construction — a pilot selection scattered through the "
                       "volume, not a prefix of it")
 
-    lg = add("ledger", help="the seam table across every scan — "
-                        "folio, heading fold, boundary")
+    lg = add("ledger", help="the seam table across every scan — folio, heading "
+                        "fold, and whether an element runs across the gap after "
+                        "each page. That last is read off the committed TEI's "
+                        "@part/@next, where `harness seam` puts it; 'unknown' "
+                        "means the page is not collated, not that it is closed")
     lg.add_argument("--part", type=int, default=None,
                     help="restrict to one part")
     lg.add_argument("--untranscribed", action="store_true",

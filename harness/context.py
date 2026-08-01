@@ -1,10 +1,10 @@
-"""Assemble the per-page input contract (harness rev 2, 'Input contract').
+"""Assemble the per-page input contract for the collation pass.
 
 Everything here is deterministic. The model consumes this; it never re-derives it.
 Repo layout assumed:  scans/chukchi-PP-NNN.png   gt/fig/chukchi-PP-NNN.xml
                       ocr/chukchi-PP-NNN.xml     tei/chukchi-PP-NNN.xml
                       data/toc.json              data/readings.md
-                      data/lexicon_extra.txt     boundaries.json (optional)
+                      data/lexicon_extra.txt
 
 PAGE REFS. A page is identified by its **PP-NNN** ref — part, and scan index
 within that part — and by nothing else. NNN is a scan index, *not* a printed
@@ -304,7 +304,6 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # milestone fold believes; it informs, it does not decide.
         "toc_window": toc_window(load_toc(root), state["expected_folio"],
                                  state["believed_open"]),
-        "boundary_in": state["boundary_in"],
         # The end of the previous page's committed TEI, so the pass can see
         # whether this page opens mid-element instead of inferring it. Null when
         # the predecessor is not collated — then the seam is genuinely unknown and
