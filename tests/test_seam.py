@@ -341,7 +341,7 @@ def test_a_neighbours_gloss_travels_with_its_term(tmp_path):
          ' (<gloss target="#term-1-010-1">“reindeer”</gloss>).</item></list>')
     got = foreign_terms_nearby("1-011", tmp_path)
     assert got == [{"term": "qoˊra", "lang": "ckt", "gloss": "“reindeer”",
-                    "ref": "1-010"}]
+                    "scope": "", "ref": "1-010"}]
 
 
 def test_an_unglossed_foreign_span_still_appears(tmp_path):

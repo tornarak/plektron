@@ -288,7 +288,8 @@ def test_the_glossary_resolves_a_pair(tmp_path):
     glossed(tmp_path)
     got = ids.glossary(tmp_path)
     assert got["pairs"] == [{"term": "a", "lang": "ckt", "gloss": "“g”",
-                             "supplied": False, "ref": "1-100"}]
+                             "supplied": False, "scope": "",
+                             "scope_supplied": False, "ref": "1-100"}]
 
 
 def test_a_gloss_is_read_through_its_trailing_text(tmp_path):
@@ -327,3 +328,161 @@ def test_an_undeclared_gloss_type_is_refused(tmp_path):
          '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
          '<gloss type="editorial" target="#term-1-100-1">g</gloss></item></list>')
     assert any("only declared value" in e for e in gate(tmp_path, "1-100").errors)
+
+
+# ------------------------------------------------------------- the list scope
+
+# A gloss list whose entries share a frame states it once, on the list, and the
+# glosses do not repeat it. These pin the resolution — including across a seam,
+# which is the only place in the harness that *traverses* @prev rather than
+# checking one hop of it.
+
+HEAD = '<head><supplied reason="context" resp="#llm">of a reindeer</supplied></head>'
+
+
+def scoped(tmp_path, ref="1-100", head=HEAD, attrs="", body=None):
+    page(tmp_path, ref,
+         f'<pb n="1"/><list{attrs}>{head}' + (body or
+         f'<item n="1"><term xml:id="term-{ref}-1" xml:lang="ckt" resp="#llm">a</term>'
+         f' (<gloss target="#term-{ref}-1">“g”</gloss>).</item>') + '</list>')
+
+
+def only(tmp_path, ref="1-100"):
+    return ids.page_glossary(tree(tmp_path, ref), ref, tmp_path)["pairs"][0]
+
+
+def test_a_list_head_scopes_its_own_glosses(tmp_path):
+    scoped(tmp_path)
+    got = only(tmp_path)
+    assert got["scope"] == "of a reindeer" and got["scope_supplied"] is True
+
+
+def test_a_list_with_no_head_has_no_scope(tmp_path):
+    """The ordinary case: a self-sufficient list frames nothing."""
+    scoped(tmp_path, head="")
+    got = only(tmp_path)
+    assert got["scope"] == "" and got["scope_supplied"] is False
+
+
+def test_a_printed_head_scopes_but_is_not_supplied(tmp_path):
+    """`scope_supplied` is constant-true across the corpus today because no gloss
+    list carries a printed head. It is a column rather than a worklist line
+    precisely so that the day one appears, it starts varying by itself."""
+    scoped(tmp_path, head="<head>COLORS OF REINDEER</head>")
+    got = only(tmp_path)
+    assert got["scope"] == "COLORS OF REINDEER"
+    assert got["scope_supplied"] is False
+
+
+def test_a_part_supplied_head_is_not_wholly_supplied(tmp_path):
+    """Loose text beside the <supplied> means part of the head is something else.
+    Checked through the children's tails, not just their tags — reporting this as
+    wholly supplied would misstate provenance in the field that exists to state it."""
+    scoped(tmp_path,
+           head='<head><supplied reason="context" resp="#llm">of a reindeer'
+                "</supplied>, roughly</head>")
+    got = only(tmp_path)
+    assert got["scope"] == "of a reindeer, roughly"
+    assert got["scope_supplied"] is False
+
+
+def test_a_sub_entry_list_inherits_its_parents_scope(tmp_path):
+    """A nested sub-entry list carries no head of its own."""
+    scoped(tmp_path, body=
+           '<item n="1"><list><item n="1a">'
+           '<term xml:id="term-1-100-1" xml:lang="ckt" resp="#llm">a</term>'
+           ' (<gloss target="#term-1-100-1">“g”</gloss>).</item></list></item>')
+    assert only(tmp_path)["scope"] == "of a reindeer"
+
+
+def test_an_inner_head_wins_over_the_outer_one(tmp_path):
+    scoped(tmp_path, body=
+           '<item n="1"><list><head><supplied reason="context" resp="#llm">'
+           'by age</supplied></head><item n="1a">'
+           '<term xml:id="term-1-100-1" xml:lang="ckt" resp="#llm">a</term>'
+           ' (<gloss target="#term-1-100-1">“g”</gloss>).</item></list></item>')
+    assert only(tmp_path)["scope"] == "by age"
+
+
+def test_a_continuation_list_inherits_across_the_seam(tmp_path):
+    """1-100 ends a gloss list, 1-101 resumes it. The frame is on the first page
+    only — restating it on the second would be the duplication this avoids."""
+    scoped(tmp_path, "1-100",
+           attrs=' xml:id="list-1-100-1" next="#list-1-101-1"')
+    scoped(tmp_path, "1-101", head="",
+           attrs=' xml:id="list-1-101-1" prev="#list-1-100-1"')
+    got = only(tmp_path, "1-101")
+    assert got["scope"] == "of a reindeer" and got["scope_supplied"] is True
+
+
+def test_the_scope_travels_the_whole_chain(tmp_path):
+    """Three pages: the middle list carries the link and no head."""
+    scoped(tmp_path, "1-100", attrs=' xml:id="list-1-100-1" next="#list-1-101-1"')
+    scoped(tmp_path, "1-101", head="",
+           attrs=' xml:id="list-1-101-1" prev="#list-1-100-1" next="#list-1-102-1"')
+    scoped(tmp_path, "1-102", head="",
+           attrs=' xml:id="list-1-102-1" prev="#list-1-101-1"')
+    assert only(tmp_path, "1-102")["scope"] == "of a reindeer"
+
+
+def test_a_pointer_into_an_uncollated_page_yields_no_scope(tmp_path):
+    """Honest null, the same shape `prev_tail` and the ledger use."""
+    scoped(tmp_path, "1-101", head="",
+           attrs=' xml:id="list-1-101-1" prev="#list-1-100-1"')
+    assert only(tmp_path, "1-101")["scope"] == ""
+
+
+def test_a_cycle_terminates(tmp_path):
+    """validate checks one hop of @prev, so it cannot see a cycle. Nothing else
+    traverses these pointers, which makes this the one place that could hang."""
+    scoped(tmp_path, "1-100", head="",
+           attrs=' xml:id="list-1-100-1" prev="#list-1-101-1"')
+    scoped(tmp_path, "1-101", head="",
+           attrs=' xml:id="list-1-101-1" prev="#list-1-100-1"')
+    assert only(tmp_path, "1-101")["scope"] == ""
+
+
+# ------------------------------------------------------------- <supplied>
+
+def supplied(tmp_path, attrs):
+    page(tmp_path, "1-100",
+         f'<pb n="1"/><list><head><supplied {attrs}>of a reindeer</supplied></head>'
+         '<item><term xml:id="term-1-100-1">a</term>'
+         '<gloss target="#term-1-100-1">g</gloss></item></list>')
+    return gate(tmp_path, "1-100").errors
+
+
+def test_supplied_text_must_say_who_wrote_it(tmp_path):
+    assert any("without @resp" in e for e in supplied(tmp_path, 'reason="context"'))
+
+
+def test_supplied_text_must_say_why(tmp_path):
+    assert any("without @reason" in e for e in supplied(tmp_path, 'resp="#llm"'))
+
+
+def test_an_undeclared_supplied_rank_is_refused(tmp_path):
+    assert any("not a declared rank" in e for e in
+               supplied(tmp_path, 'reason="context" resp="#editor"'))
+
+
+def test_an_undeclared_supplied_reason_is_refused(tmp_path):
+    """A required attribute with a free value guarantees a string, not a
+    distinction, and drifts on the first typo."""
+    assert any("not a declared reason" in e for e in
+               supplied(tmp_path, 'reason="frame" resp="#llm"'))
+
+
+def test_a_human_may_ratify_supplied_english(tmp_path):
+    """The #llm-only rule does NOT extend here. It exists because this pass may not
+    promote a *glyph identity*, and supplied English contains none."""
+    assert not supplied(tmp_path, 'reason="context" resp="#ed"')
+
+
+def test_an_undeclared_gloss_rank_is_refused(tmp_path):
+    """Asking who and never checking the answer parses is half the rule — this
+    branch was missing while the type/resp pairing above has long existed."""
+    page(tmp_path, "1-100",
+         '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
+         '<gloss type="supplied" resp="#editor" target="#term-1-100-1">g</gloss>'
+         '</item></list>')
+    assert any("not a declared rank" in e for e in gate(tmp_path, "1-100").errors)

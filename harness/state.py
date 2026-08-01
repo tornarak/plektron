@@ -276,8 +276,8 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
         # reading only <foreign> made every term on a neighbouring page invisible
         # here, which is most of what a page like 1-100 contains.
         from .ids import page_glossary
-        glosses = {g["term"]: g["gloss"] for g in
-                   page_glossary(tree.getroot(), nref)["pairs"]}
+        glosses = {g["term"]: (g["gloss"], g["scope"]) for g in
+                   page_glossary(tree.getroot(), nref, root)["pairs"]}
         for el in list(tree.iter(f"{{{TEI_NS}}}foreign")) + \
                   list(tree.iter(f"{{{TEI_NS}}}term")):
             term = " ".join("".join(el.itertext()).split())
@@ -291,12 +291,20 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
             if not term or key in seen:
                 continue
             seen.add(key)
-            # The gloss where the page linked one. Still read-only reference: it
-            # says what the neighbour's editor understood the form to mean, which
-            # is exactly the context that makes a variant spelling worth a second
-            # look — and exactly as unlicensed to copy from as the term itself.
-            out.append({"term": term, "lang": lang,
-                        "gloss": glosses.get(term, ""), "ref": nref})
+            # The gloss where the page linked one, plus the frame the gloss list
+            # supplies for all its entries — without which "white mixed with
+            # brown" says nothing about what is white. Still read-only reference:
+            # it says what the neighbour's editor understood the form to mean,
+            # which is exactly the context that makes a variant spelling worth a
+            # second look — and exactly as unlicensed to copy from as the term.
+            #
+            # `scope` carries no provenance flag here, deliberately: this record
+            # already drops the gloss's own type="supplied", so marking the frame
+            # as authored while the gloss beside it says nothing would be
+            # incoherent. `harness lexicon --glosses` is the export that keeps both.
+            gloss, scope = glosses.get(term, ("", ""))
+            out.append({"term": term, "lang": lang, "gloss": gloss,
+                        "scope": scope, "ref": nref})
     return out
 
 

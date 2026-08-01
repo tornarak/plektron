@@ -503,7 +503,12 @@ def main(argv=None):
                          "dictionary the <gloss target> links make queryable. "
                          "Pairs come from @target and never from containment, so "
                          "terms nobody has linked are reported as a count rather "
-                         "than guessed at")
+                         "than guessed at. `scope` is the frame the entry's gloss "
+                         "list supplies once as a supplied <head> and its glosses "
+                         "never repeat — without which “white mixed with brown” "
+                         "says nothing about what is white. It can arrive from the "
+                         "previous page: a list running across a seam carries no "
+                         "second head, so the scope resolves back through @prev")
     lx.add_argument("--native", action="store_true",
                     help="invert: most frequent native (Tier-1) word forms in "
                          "restored gt/ocr/, not English-lexicon misses")

@@ -624,7 +624,9 @@ if you ever need it.
                                       the term↔gloss dictionary from committed
                                       TEI, resolved through @target and never
                                       through containment — terms nobody linked
-                                      are a count, not a guess
+                                      are a count, not a guess. Each pair also
+                                      carries the `scope` its gloss list frames
+                                      it with, followed across a seam via @prev
     uv run harness lines PP-NNN       per-line id + geometry + text, **reading
                                       order**, empties kept; --crops and --sheets
                                       write PNGs and labelled contact sheets into
@@ -1080,6 +1082,35 @@ TBD beyond the per-page output contract in the collation skill (`<pb>` first, no
 figures anchored to supplied zones). **Assembly is still unsettled**; the
 corpus teiHeader is not, and is `tei/corpus-header.xml`.
 
+**A gloss list's shared frame lives on the list, once.** The prose introducing a
+gloss list routinely supplies a frame the entries never repeat — `1-100` announces
+"the following colors of reindeer-skin", and `Qeˊñu` is then glossed `“white mixed
+with brown”`, which in a dictionary says nothing about what is white. That frame is
+written as a **supplied `<head>`** on the list (`<supplied reason="context"
+resp="#llm">`), never copied into the glosses, and `harness lexicon --glosses`
+resolves it into a `scope` column beside every entry.
+
+A continuation list carries no head of its own: the scope resolves back through the
+`@prev` the seam wrote, which makes `ids.list_scope` **the only thing in the harness
+that traverses those pointers** rather than checking one hop. `validate` cannot see
+a cycle in them for the same reason, so the walk is capped.
+
+`<supplied>` is gated like a supplied gloss and for the same reason — unmarked, it
+is indistinguishable from transcription — with two deliberate differences. `@reason`
+is required from a closed set (`context`, `ellipsis`), because a required attribute
+with a free value guarantees a string rather than a distinction. And the
+`#llm`-only rule does **not** extend to it: that exists because a pass may not
+promote a *glyph identity*, and supplied English contains none, so a human writing
+one and marking it `#ed` is legitimate.
+
+Two consequences worth knowing. The head is the list's first child and TEI orders it
+before the items, so it is the first thing `seam._fragment` elides from `prev_tail`
+— the next page's pass meets the frame through `foreign_terms_nearby`'s `scope`
+instead. And `<head>` on a `<list>` means the list's *heading*, which "of a
+reindeer" is not; it is the only conformant slot (`<desc>` is not permitted there,
+and `<note>` is already claimed by footnotes), so **a renderer must check for
+`<supplied>` before printing a list head as a caption**.
+
 **The id scheme is settled and is `harness/ids.py`** — `{kind}-{PP-NNN}-{ordinal}`,
 where the ordinal is the element's *position* among same-kind elements in document
 order rather than a tally of ids minted. That distinction is the whole design: ids
@@ -1168,8 +1199,9 @@ TBD
   passes need their own scheme, over finished TEI.
 - **Nothing validates the TEI against the TEI schema.** `harness validate` checks
   *project* rules; there is no RELAX NG, no `tei_all`, no schema anywhere in the
-  repo. That now covers six attribute usages nobody checks for conformance —
-  `@part`, `xml:id`, `@target`, `@prev`, `@next`, and `@type` on `<gloss>`. It
+  repo. That now covers eight attribute usages nobody checks for conformance —
+  `@part`, `xml:id`, `@target`, `@prev`, `@next`, `@type` on `<gloss>`, and
+  `@reason`/`@resp` on `<supplied>`. It
   needs no new dependency (`lxml` has `etree.RelaxNG`); what it needs is a
   committed schema and an assembly step, since a page file is a fragment and will
   not validate standalone.

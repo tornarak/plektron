@@ -57,6 +57,12 @@ ID_RE = re.compile(r"^(term|list|table)-(\d+)-(\d{3})-(\d+)$")
 IN_FILE_POINTERS = ("target",)
 CROSS_FILE_POINTERS = ("prev", "next")
 
+# A run-on list could in principle chain across a whole chapter. The cap is a
+# runaway guard, not a limit anyone should hit: it also terminates a corpus whose
+# @prev pointers form a cycle, which validate cannot see because it only ever
+# checks one hop.
+SCOPE_HOPS = 16
+
 
 def localname(el) -> str:
     return etree.QName(el).localname
@@ -179,7 +185,101 @@ def text_of(el) -> str:
     return " ".join("".join(copy.itertext()).split())
 
 
-def page_glossary(root_el, ref: str) -> dict:
+def _head_of(list_el) -> tuple[str, bool] | None:
+    """A list's `<head>` as (text, wholly_supplied), or None if it has none.
+
+    "Wholly supplied" means no non-whitespace text anywhere in the head outside a
+    `<supplied>` — which is why this checks `head.text` and every child's `.tail`
+    and not merely that the children are all `<supplied>`. A head reading
+    `<supplied>of a reindeer</supplied>, roughly` is part editorial and part
+    something else, and reporting it as wholly supplied would misstate provenance
+    in the one field that exists to state it.
+    """
+    for ch in list_el:
+        if not isinstance(ch.tag, str) or ch.tag != f"{{{TEI_NS}}}head":
+            continue
+        loose = (ch.text or "") + "".join(g.tail or "" for g in ch)
+        supplied = (not loose.strip()
+                    and len(ch) > 0
+                    and all(isinstance(g.tag, str)
+                            and g.tag == f"{{{TEI_NS}}}supplied" for g in ch))
+        return text_of(ch), supplied
+    return None
+
+
+def list_scope(el, ref: str, root: Path = Path("."),
+               cache: dict | None = None) -> tuple[str, bool]:
+    """The frame a glossed term inherits from the list it sits in.
+
+    A gloss list whose entries share a frame does not repeat it per entry — the
+    frame is stated once by the prose introducing the list, and `Qeˊñu` glossed
+    "white mixed with brown" means nothing without it. So the frame is written once
+    as a supplied `<head>` and resolved here, rather than duplicated into every
+    gloss. See the collation skill, "Glosses, and linking them to their terms".
+
+    Two resolutions, in order:
+
+    - **Up the ancestor lists, innermost first.** A sub-entry list nested in an
+      `<item>` normally carries no head of its own and inherits its parent's.
+    - **Across the seam, via `@prev`.** A list running onto the next page is the
+      same list and carries no second head, so the continuation resolves back
+      through the link `harness seam` wrote. This is the only place in the harness
+      that *traverses* those pointers rather than checking one hop of them.
+
+    The target page comes from the id itself (`parse_id(prev)["ref"]`) rather than
+    from `prev_ref(ref)`. The two must agree and `validate` enforces it, so reading
+    the id means a corpus that has drifted resolves to nothing instead of quietly
+    resolving to the wrong page.
+
+    Returns `("", False)` when nothing supplies a frame, which is the ordinary case
+    for a self-sufficient list.
+    """
+    from .seam import tei_path
+
+    cache = {} if cache is None else cache
+    lists, node = [], el
+    while node is not None:
+        if isinstance(node.tag, str) and localname(node) == "list":
+            lists.append(node)
+        node = node.getparent()
+    if not lists:
+        return "", False
+
+    for lst in lists:                      # innermost first
+        got = _head_of(lst)
+        if got is not None:
+            return got
+
+    seen, cur, hops = set(), lists[-1], 0
+    while hops < SCOPE_HOPS:
+        hops += 1
+        prev = (cur.get("prev") or "").lstrip("#")
+        if not prev or prev in seen:
+            break
+        seen.add(prev)
+        parsed = parse_id(prev)
+        if parsed is None:
+            break
+        pref = parsed["ref"]
+        if pref not in cache:
+            path = tei_path(pref, root)
+            try:
+                cache[pref] = etree.parse(str(path)).getroot()
+            except (etree.XMLSyntaxError, OSError):
+                cache[pref] = None
+        if cache[pref] is None:
+            break
+        cur = ids_in(cache[pref]).get(prev)
+        if cur is None:
+            break
+        got = _head_of(cur)
+        if got is not None:
+            return got
+    return "", False
+
+
+def page_glossary(root_el, ref: str, root: Path = Path("."),
+                  cache: dict | None = None) -> dict:
     """Resolved term↔gloss pairs on one page, plus what is *not* resolved.
 
     Pairs come from `@target` and from nothing else. Falling back to containment
@@ -199,11 +299,14 @@ def page_glossary(root_el, ref: str) -> dict:
         if term is None or localname(term) != "term":
             continue
         seen_terms.add(target)
+        scope, scope_supplied = list_scope(gl, ref, root, cache)
         linked.append({
             "term": text_of(term),
             "lang": term.get("{http://www.w3.org/XML/1998/namespace}lang") or "",
             "gloss": text_of(gl),
             "supplied": gl.get("type") == "supplied",
+            "scope": scope,
+            "scope_supplied": scope_supplied,
             "ref": norm_ref(ref),
         })
     unlinked = sum(1 for t in root_el.iter(f"{{{TEI_NS}}}term")
@@ -216,7 +319,10 @@ def glossary(root: Path = Path(".")) -> dict:
     from .context import all_refs, norm_ref as _n
     from .seam import tei_path
 
-    pairs, unlinked, pages = [], 0, 0
+    # One cache across the whole sweep, so a run-on list resolving its scope back
+    # through @prev reuses the page this loop has already parsed rather than
+    # reading it again per gloss.
+    pairs, unlinked, pages, cache = [], 0, 0, {}
     for p in sorted((root / "tei").glob("chukchi-*.xml")):
         try:
             ref = _n(p.stem)
@@ -226,7 +332,8 @@ def glossary(root: Path = Path(".")) -> dict:
             tree = etree.parse(str(p))
         except (etree.XMLSyntaxError, OSError):
             continue
-        got = page_glossary(tree.getroot(), ref)
+        cache[ref] = tree.getroot()
+        got = page_glossary(tree.getroot(), ref, root, cache)
         pairs += got["pairs"]
         unlinked += got["unlinked_terms"]
         pages += 1

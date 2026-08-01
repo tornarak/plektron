@@ -127,7 +127,9 @@ lives on, and the gate checks it.
   exists so a Tier-1 span can cite which line it was read from. Never use these
   ids for anything else, and never infer text from a `line_id`.
 - **`foreign_terms_nearby`** is recomputed each call from committed TEI on the
-  physically neighbouring pages, and now carries each term's gloss. It exists so
+  physically neighbouring pages, and carries each term's gloss plus the `scope`
+  its gloss list supplies — without which "white mixed with brown" says nothing
+  about what is white. It exists so
   a term keyed two ways across a spread is *visible*. It licenses nothing: this
   page's Tier-1 content comes from this page, and a form on a neighbour is never
   a target to harmonize toward.
@@ -327,6 +329,37 @@ this English sentence", not "a model read this glyph off the scan". The firewall
 subject is glyph identity and does not reach English. What does carry over is the
 **origination** rule: a supplied gloss is drawn from *this page's prose* or from
 book-internal apparatus, never from world knowledge about Chukchi.
+
+### The frame a gloss list shares — write it once, on the list
+
+A gloss list's entries routinely share a frame their glosses never repeat, because
+the prose introducing the list already said it. `1-100` announces "the following
+colors of reindeer-skin" and then glosses `Qeˊñu` as `“white mixed with brown”` —
+which, standing alone in a dictionary, says nothing about what is white.
+
+Write that frame **once, as a supplied `<head>` on the list**:
+
+    <list type="gloss">
+      <head><supplied reason="context" resp="#llm">of a reindeer</supplied></head>
+
+Never into the individual glosses. Twenty-seven copies of one fact is twenty-seven
+things to drift, and `harness lexicon --glosses` resolves the head for every entry
+anyway — it is what puts the `scope` column beside each gloss.
+
+- **A continuation list inherits and must not restate it.** `1-101`'s colour list
+  carries no head; the scope resolves back through the `@prev` the seam wrote. If
+  you find yourself typing the same frame onto a second page, the link is doing its
+  job and you are undoing it.
+- **Same origination rule as a supplied gloss**: from this page's prose or from
+  book-internal apparatus, never from world knowledge. And it is a judgement, so it
+  is `#llm` — `1-100`'s lead-in says *reindeer-skin* while the entries gloss leg
+  stockings and a neck pattern, i.e. the animal; choosing "of a reindeer" over the
+  print's own phrase is exactly the sort of call that has to stay findable.
+- **`@reason` is required and closed**: `context` for a frame the surrounding prose
+  supplies, `ellipsis` for a word the sentence itself omits. The gate errors on
+  anything else, and on a `<supplied>` with no `@resp`.
+- Most gloss lists need none of this. A list whose glosses stand on their own gets
+  no head, and that is the ordinary case.
 
 # Language spans and the firewall — read this twice
 
@@ -612,6 +645,8 @@ identity is a different scheme and does not exist yet.
 - Does every `<figure>` point at a supplied zone id, with orphans commented?
 - Does every `@facs` point at a real `line_id`, and only on spans that earned it?
 - Does every `<gloss>` carry a `@target`, and every supplied one a `@resp`?
+- Every `<supplied>`: `@resp` and a declared `@reason`? A frame shared by a gloss
+  list written once on the list, and never restated on a continuation?
 - Is there any `<lb/>`? Any hand-written `@part`/`@prev`/`@next`? (Always no.)
 - For every `detector_flags` entry: did I confirm-and-fix against the image, or
   leave it untouched and note why?

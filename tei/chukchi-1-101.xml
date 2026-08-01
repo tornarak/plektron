@@ -37,6 +37,13 @@
       <p>The name of the reindeer is generally taken from its color or from some peculiar feature of its antlers. Examples of such names are The-quite-Black-One, One-with-a-Cross-Branch-over-the-Forehead, etc. Some breeders give real names to a few reindeer of their herds: e. g., Young-Lamut-Reindeer (<foreign xml:lang="ckt" resp="#llm">Tor-waˊwaq</foreign>), — though this name was given to a Chukchee reindeer partly for the purpose of increasing its agility through the force of the word, — Mushroom-Eater (<foreign xml:lang="ckt" resp="#llm">Poˊñolɪn</foreign>), etc.<!-- Tor-waˊwaq breaks at the line end on the hyphen ("(Tor-" / "waˊwaq)"), so the page gives no mid-line witness for it. Retained as a connector rather than joined, per the Tier-1 hyphen rule, and the same page sets tur-rewkuteˊtɪlɪn with the cognate prefix hyphenated mid-line. resolved: keep the hyphen per editor --></p>
       <p>The term of a reindeer’s life is from twelve to fifteen years, though some animals live considerably longer. According to age, they are classified as follows: —</p>
       <list type="gloss">
+        <!-- the local case, against the colour list above, which inherits its frame
+             from 1-100. Drawn from the paragraph immediately above ("The term of a
+             reindeer's life… According to age, they are classified as follows"):
+             without it the glosses "fawn", "doe" and "buck" are generic. Follows
+             the pattern the editor ruled on for the colour list rather than having
+             been ruled on itself. -->
+        <head><supplied reason="context" resp="#llm">of a reindeer, by age</supplied></head>
         <item><term xml:lang="ckt" resp="#llm" xml:id="term-1-101-13">Qäyūˊ</term> (<gloss target="#term-1-101-13">“fawn”</gloss>), both male and female.</item>
         <item><term xml:lang="ckt" resp="#llm" xml:id="term-1-101-14">Qliˊkin</term> (<gloss target="#term-1-101-14">“male fawn”</gloss>) and <term xml:lang="ckt" resp="#llm" xml:id="term-1-101-15">ečveˊk</term> (<gloss target="#term-1-101-15">“female fawn”</gloss>).</item>
         <item><term xml:lang="ckt" resp="#llm">Pêˊêčvak</term> (both male and female), less than one year old.</item>

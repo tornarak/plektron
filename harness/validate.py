@@ -38,6 +38,12 @@ RESP_RANKS = {
 }
 PROPOSED = "#llm"
 RATIFIED = "#ed"
+# Why a <supplied> stands where it does. Closed, and extended only here — a required
+# attribute with a free value guarantees a string rather than a distinction.
+#   context   the frame the surrounding prose supplies and the entries do not repeat
+#             (a gloss list's shared "of a reindeer", written once as its <head>)
+#   ellipsis  a word the sentence itself omits and the reader restores from it
+SUPPLIED_REASONS = {"context", "ellipsis"}
 # The four curly quotes are deliberately absent. Under the Tier-1-scoped ASCII policy
 # (keying spec section 1) English prose reproduces the print, curly quotes included, so
 # forbidding them here would reject correct text. What remains is the set with no
@@ -262,6 +268,43 @@ def _check_ids(r: Report, root, ctx: dict | None) -> None:
         elif kind not in (None, "supplied"):
             r.errors.append(
                 f"<gloss type={kind!r}> — the only declared value is 'supplied'")
+        # Asking *who* and never checking the answer parses is half the rule. This
+        # was missing while the branches above have existed: `resp="#editor"` sailed
+        # through, naming a rank nothing declares.
+        if resp is not None and resp not in RESP_RANKS:
+            r.errors.append(
+                f"<gloss> resp={resp!r} is not a declared rank "
+                f"({', '.join(sorted(RESP_RANKS))})")
+
+    # `<supplied>` is editorial text standing in the reading text, so the same
+    # question applies to it as to a supplied gloss and to a Tier-1 span: unmarked,
+    # it is indistinguishable from transcription.
+    #
+    # Two differences from the Tier-1 rule, both deliberate. The `#llm`-only
+    # restriction does NOT extend here — that exists because this pass may not
+    # promote a *glyph identity*, and supplied English contains none, so a human
+    # writing one and marking it `#ed` is legitimate. And `@reason` is required from
+    # a closed set: a required attribute with a free value guarantees a string
+    # rather than a distinction, and drifts on the first typo.
+    for sup in root.iter(f"{{{TEI_NS}}}supplied"):
+        span = " ".join("".join(sup.itertext()).split())[:40]
+        resp, why = sup.get("resp"), sup.get("reason")
+        if resp is None:
+            r.errors.append(
+                f"<supplied> {span!r} without @resp — text standing in the reading "
+                "text that is not on the page was authored by someone")
+        elif resp not in RESP_RANKS:
+            r.errors.append(
+                f"<supplied> resp={resp!r} is not a declared rank "
+                f"({', '.join(sorted(RESP_RANKS))})")
+        if why is None:
+            r.errors.append(
+                f"<supplied> {span!r} without @reason — why it was supplied is the "
+                f"record; declared values are {', '.join(sorted(SUPPLIED_REASONS))}")
+        elif why not in SUPPLIED_REASONS:
+            r.errors.append(
+                f"<supplied reason={why!r}> is not a declared reason "
+                f"({', '.join(sorted(SUPPLIED_REASONS))})")
 
     if not ref:
         return
