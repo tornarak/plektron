@@ -21,7 +21,7 @@
       <!-- the list is set in two columns, 1-8 left and 9-14 right; the OCR line
            order interleaves them, so ocr_lines runs 32,33,34,48,35,… against the
            single 1-14 sequence printed. Typography, not structure. -->
-      <list type="gloss">
+      <list type="gloss" xml:id="list-1-100-1" next="#list-1-101-1">
         <item n="1"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-1">Teñ-uweˊlᴇ</term> (<gloss target="#term-1-100-1">“quite black” [chestnut brown]</gloss>).</item>
         <item n="2"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_8fe715d3" xml:id="term-1-100-2">Uuˊrg̣ɪlɪn</term> (<gloss target="#term-1-100-2">“black hair tipped”</gloss>).</item>
         <item n="3"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-3">Čêvaˊro</term> (<gloss target="#term-1-100-3">“gray”</gloss>).</item>
