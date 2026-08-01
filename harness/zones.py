@@ -40,6 +40,7 @@ Three files sit beside the pages, all tracked:
 whatever last ran the check, stamped with the mtimes it was true for.
 """
 from __future__ import annotations
+import os
 import json
 import time
 from pathlib import Path
@@ -517,22 +518,35 @@ def set_split(ref: str, split: str, root: Path = Path(".")) -> dict:
     return {"ref": ref, "split": split}
 
 
-def _independent(ref: str, root: Path) -> bool:
-    """Whether this page is something other than the model's own word.
+NUDGE_PX = 20
 
-    True when no prediction exists for the page, or when the human file differs
-    from it. **It is a floor, not a proof**: a page adopted and then corrected reads
-    independent, which is right for the purpose here — a human ruled on it — but it
-    is not the same as a page keyed from blank, and nothing in the store can tell
-    those apart. What it does catch is the case that makes an eval page worthless,
-    the prediction ratified unchanged.
 
-    This is a *store* fact and deliberately so. Git knows which pages predate the
-    adoption pass and would answer more sharply, but that answer expires the moment
-    a file is touched, and there is no such history at all for the next volume.
+def page_departure(ref: str, root: Path) -> tuple[str, int]:
+    """How far this page's gt departs from the prediction it may have come from.
+
+    Returns a kind and the largest edge move in pixels, `10**9` where the shapes do
+    not correspond at all. The kinds, weakest claim first:
+
+        identical           the prediction ratified with nothing changed
+        geometry only       same zones, same labels, edges moved
+        a label differs     a human retyped something
+        zone count differs  a human added, removed or split a zone
+        no prediction       nothing to have copied
+
+    **The distinction this exists to draw is structural against cosmetic**, and it
+    was not drawn at first: the original test asked only whether the two files
+    differed, which a 5 px nudge satisfies exactly as a redrawn page does. Over the
+    eval set that mislabelled 98 tidy-ups as independent judgements and reported the
+    set 0% contaminated when about half of it is the model's own segmentation with
+    the edges pulled straight. A threshold that any real edit clears is not a
+    threshold; `NUDGE_PX` is where a boundary correction starts.
+
+    A store fact, deliberately. Git knows which pages predate the adoption pass and
+    would answer more sharply, but that answer expires the moment a file is touched,
+    and there is no such history at all for the next volume.
     """
     if not has_zones(ref, root, MZDIR):
-        return True
+        return ("no prediction", 10**9)
     # Keyword, not positional: `read_zones`'s third parameter is `with_points`, and
     # passing the store there reads *gt both times* and reports every page identical
     # — a comparison whose two witnesses are one witness, in the function written to
@@ -541,7 +555,26 @@ def _independent(ref: str, root: Path) -> bool:
     def key(store):
         return [(z["label"], z["y0"], z["y1"])
                 for z in read_zones(ref, root, store=store)]
-    return key(ZONEDIR) != key(MZDIR)
+    g, m = key(ZONEDIR), key(MZDIR)
+    if len(g) != len(m):
+        return ("zone count differs", 10**9)
+    if [z[0] for z in g] != [z[0] for z in m]:
+        return ("a label differs", 10**9)
+    shift = max((max(abs(a[1] - b[1]), abs(a[2] - b[2]))
+                 for a, b in zip(g, m)), default=0)
+    return ("identical" if shift == 0 else "geometry only", shift)
+
+
+def _independent(ref: str, root: Path, nudge_px: int = NUDGE_PX) -> bool:
+    """Whether a human's ruling on this page went beyond straightening the edges.
+
+    The criterion `--remark-eval` selects on. A page whose every boundary moved less
+    than `nudge_px` is **not** counted: as evidence about a model it is that model's
+    own output, and a held-out set made of those measures how well the model agrees
+    with itself.
+    """
+    kind, shift = page_departure(ref, root)
+    return kind != "identical" and shift > nudge_px
 
 
 def _spread(items: list, k: int) -> list:
@@ -556,6 +589,28 @@ def _spread(items: list, k: int) -> list:
     if k >= len(items):
         return list(items)
     return [items[i * len(items) // k] for i in range(k)]
+
+
+def set_splits(mapping: dict[str, str], root: Path = Path(".")) -> dict:
+    """Assign many pages at once, rewriting each list exactly once.
+
+    `set_split` rewrites all three files per call, so a corpus-wide reassignment
+    through it is quadratic and — worse — leaves the lists in a valid-looking
+    intermediate state after every page. Pages not named keep whatever they had.
+    """
+    for split in mapping.values():
+        if split not in SPLITS:
+            raise ValueError(f"split must be one of {', '.join(SPLITS)}, not {split!r}")
+    current = load_splits(root)
+    current.update({norm_ref(r): s for r, s in mapping.items()})
+    zone_dir(root).mkdir(parents=True, exist_ok=True)
+    counts = {}
+    for split in SPLITS:
+        refs = sorted((r for r, s in current.items() if s == split), key=parse_ref)
+        counts[split] = len(refs)
+        _lst_path(root, split).write_text(
+            "".join(f"chukchi-{r}.xml\n" for r in refs), encoding="utf-8")
+    return counts
 
 
 def remark_eval(root: Path = Path("."), fraction: float = 0.20,
@@ -1453,7 +1508,7 @@ def blot_one(ref: str, root: Path = Path(".")) -> dict:
     no figure at all, and copying them would duplicate roughly 1.5 GB of identical
     pixels for nothing. The whole directory is gitignored and rebuildable in one
     command, so a link that dangles in a fresh clone is the disposition already
-    chosen for `scans-w-figs/` and for `review/*/page.png` — and it dangles loudly,
+    chosen for `scans/w-figs/` and for `review/*/page.png` — and it dangles loudly,
     which is the right failure for a derived tree.
     """
     from .lines import write_fig_blot
@@ -3198,7 +3253,7 @@ def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
     return hit
 
 
-def assemble(root: Path = Path(".")) -> dict:
+def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
     """Lay out `bogoras-seg/` for `ketos segtrain`, and report the invocation.
 
     ketos resolves a page's image through the ALTO's own
@@ -3319,7 +3374,22 @@ def assemble(root: Path = Path(".")) -> dict:
                       for ref in zone_refs(root)
                       if splits.get(ref, DEFAULT_SPLIT) != "exempt"
                       for z in read_zones(ref, root)})
-    base, resize, why = _base_and_resize(root, classes)
+    _dev, _wrk = _runtime_flags()
+    if scratch:
+        # No `-i`, so `ketos segtrain` builds the network from its default VGSL spec
+        # with random weights. Verified against `ketos segtrain --help` for kraken
+        # 7.0.3: `-i/--load` is optional and `-s/--spec` carries the default.
+        #
+        # This is the one configuration in which the permutation cannot arise even
+        # in principle. `--resize` is what renumbers an existing output layer, and
+        # there is no existing output layer — the class map is built once, from this
+        # data, by the run that uses it. `--score` afterwards is still the rule, but
+        # here it is confirmation rather than the only line of defence.
+        base, resize, why = "", "", (
+            "from scratch: no base model, kraken's default segmentation spec, "
+            "random init. Nothing is renumbered because nothing is being reused")
+    else:
+        base, resize, why = _base_and_resize(root, classes)
     return {"dir": str(work),
             "train": counts["train"], "eval": counts["eval"],
             "exempt_skipped": exempted,
@@ -3327,17 +3397,21 @@ def assemble(root: Path = Path(".")) -> dict:
             "merged": " ".join(f"{k}->{v}" for k, v in sorted(merges.items())),
             "merged_pages": merged_pages,
             "classes": " ".join(classes),
-            "base": base, "resize": resize or "(none needed)",
+            "base": base or "(none — from scratch)",
+            "resize": resize or "(none needed)",
             "resize_why": why,
             "note": ("region-only — gt/zones/ carries no TextLine, so there is no "
                      "baseline head to train. Flags verified against `ketos --help` "
                      "for kraken 7.0.3: -s is group-level here and means --spec on "
-                     "segtrain. Nothing machine-specific is included; add -d and "
-                     "--workers before the subcommand to suit. Re-verify after any "
+                     "segtrain, and -d/--workers are group-level too. Those two are "
+                     "read off this machine so the command runs as printed — it "
+                     "once did not, and trained on one worker. Re-verify after any "
                      "kraken upgrade."),
             "command": SEGTRAIN_CMD.format(
-                work=WORKDIR, base=base, out=f"{WORKDIR}/{_next_run(root)}",
-                resize=(f" --resize {resize}" if resize else ""))}
+                work=WORKDIR, out=f"{WORKDIR}/{_next_run(root)}",
+                device=_dev, workers=_wrk,
+                load=("" if not base else
+                      f" -i {base}" + (f" --resize {resize}" if resize else "")))}
 
 
 def _base_and_resize(root: Path, classes: list[str]) -> tuple[str, str, str]:
@@ -3395,8 +3469,34 @@ def _next_run(root: Path) -> str:
 # so a `harness` change and a flag change are the same edit. Paths are relative to
 # the repo root, which is the cwd the command assumes.
 SEGTRAIN_CMD = (
-    "uv run ketos -s 42 segtrain"
-    " -f alto -i {base}{resize}"
+    "uv run ketos -s 42 -d {device} --workers {workers} segtrain"
+    " -f alto{load}"
     " -t {work}/train.lst -e {work}/eval.lst"
     " -o {out} --augment -q early -N 200 --min-epochs 15 --lag 15"
 )
+
+
+def _runtime_flags() -> tuple[str, int]:
+    """The device and worker count for the reported command, read off this machine.
+
+    These used to be omitted on the grounds that the command should carry nothing
+    machine-specific — and the note told the reader to add them by hand. That is a
+    command which does not work until edited, and it duly got run with kraken's
+    default **single** data-loading worker, which on this corpus is the difference
+    between an evening and a week. A reported command is for running; if it needs a
+    machine's details then it needs them derived, not deferred to whoever reads it.
+
+    Derived rather than pinned for the same reason the column measure is: the two
+    facts live in the machine, and a number written down here is wrong on the next
+    one. Falls back to CPU only when torch says there is no GPU.
+    """
+    device = "cpu"
+    try:
+        import torch
+        if torch.cuda.is_available():
+            device = "cuda:0"
+    except Exception:
+        pass
+    # Leave the main process and one core to spare; kraken's loader saturates the
+    # rest. `cpu_count` can return None on exotic platforms.
+    return device, max(1, (os.cpu_count() or 4) - 2)

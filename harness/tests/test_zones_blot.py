@@ -240,15 +240,26 @@ def test_the_seed_precedes_the_subcommand(tmp_path):
     assert "-s 42" in head and " -s " not in tail
 
 
-def test_nothing_about_a_particular_machine_is_baked_in(tmp_path):
-    """The device and the worker count describe whoever is running, not what this
-    corpus needs. kraken's own defaults run anywhere."""
+def test_the_command_runs_as_printed(tmp_path):
+    """Reversed on purpose. This used to assert that `-d` and `--workers` were
+    *absent*, on the grounds that they describe whoever is running rather than what
+    the corpus needs, with the note telling the reader to add them by hand.
+
+    That is a command which does not work until edited, and it was duly run once
+    with kraken's default single data-loading worker — the difference between an
+    evening and a week on this corpus. A reported command is for running. What must
+    not be baked in is a *literal*: the values are read off the machine, so the
+    template carries placeholders and the next machine gets its own answer.
+    """
     keyed(tmp_path, "1-048")
     zn.blot_all(tmp_path)
     rep = zn.assemble(tmp_path)
-    for flag in ("--device", "-d ", "cuda", "--workers", "--precision"):
-        assert flag not in rep["command"]
-    assert "-d" in rep["note"]          # said, rather than chosen for the operator
+    dev, wrk = zn._runtime_flags()
+    assert f"-d {dev}" in rep["command"] and f"--workers {wrk}" in rep["command"]
+    # Placeholders in the template, never a machine's answer written down.
+    for literal in ("cuda:0", "cpu", "--workers 1", "--workers 14"):
+        assert literal not in zn.SEGTRAIN_CMD
+    assert wrk >= 1 and dev in ("cpu", "cuda:0")
 
 
 def test_the_command_fine_tunes_blla_rather_than_starting_over(tmp_path):

@@ -398,6 +398,11 @@ def main(argv=None):
                          "rather than taken off the front. Additive: a page a human "
                          "already marked eval or exempt is never touched. Reports "
                          "without writing unless --commit")
+    zo.add_argument("--scratch", action="store_true",
+                    help="with --assemble, train from random init: no -i, kraken's "
+                         "default segmentation spec. The one configuration in which "
+                         "the class-map permutation cannot arise, there being no "
+                         "output layer to renumber")
     zo.add_argument("--assemble", action="store_true",
                     help="build bogoras-seg/ from the train/eval marks: each page's "
                          "zone ALTO beside its blotted raster, ready for ketos "
@@ -897,7 +902,7 @@ def main(argv=None):
                 out(zmod.remark_eval(a.root, a.remark_eval, commit=a.commit))
                 return 0
             if a.assemble:
-                rep = zmod.assemble(a.root)
+                rep = zmod.assemble(a.root, scratch=a.scratch)
                 out(rep)
                 return 1 if rep["missing_blot"] else 0
             if a.predict:
