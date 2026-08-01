@@ -313,6 +313,19 @@ the label sets and the geometry regimes differ and nothing in an ALTO says which
 scheme produced it, which is the same missing internal witness that cost 18 pages of
 transcription. Blocks carry an `mz_` id prefix for the same reason.
 
+**An empty page saves only if it is marked `exempt`**, and this is the three-split
+distinction enforced rather than merely declared. In the store a text page with no
+zones and a page nobody has reached are byte-identical — `zone_refs` finds both, the
+sweep counts both as keyed, the list draws both as done — so an empty save does not
+record a judgement, it erases the difference between having made one and not.
+`exempt` is how a human says "I looked at this and it is not a text page"; that is a
+statement and it saves. "Nothing here" is not, and `save_zones` refuses it, including
+when it arrives as zero zones over a page that had some. The refusal only guards
+writes, so `validate_page` also reports an `empty-page` **error** for a page already
+in that state — it is the one defect that makes a page look *finished*, and every
+other check is silent on it by construction. `1-075` was found this way: an ordinary
+text page, chapter opening `III. — TRADE.`, saved with nothing on it.
+
 **Every domain-knowledge assumption is a warning, and configurable.** `title-first`,
 `rank-monotone` (running title → body → footnotes → signature line) and
 `max-per-page` live in `data/zones_config.json` as declarative ranks, are exemptible

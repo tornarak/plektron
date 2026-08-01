@@ -21,6 +21,7 @@ editor's view, it reaches no file — nothing in `gt/zones/` records it.
 from __future__ import annotations
 from pathlib import Path
 
+import pytest
 from PIL import Image
 
 from harness import zones as zn
@@ -218,10 +219,21 @@ def test_save_carries_split_and_exemptions_through(tmp_path):
     assert zn.load_exempt(tmp_path) == {"1-048": ["rank-monotone"]}
 
 
-def test_saving_no_zones_writes_the_empty_record(tmp_path):
+def test_saving_no_zones_writes_the_empty_record_when_exempt(tmp_path):
+    """A plate saves as zero zones — but only once a human has marked it one."""
     scans(tmp_path, "1-001")
-    ui.save_payload({"ref": "1-001", "zones": []}, tmp_path, cfg())
+    ui.save_payload({"ref": "1-001", "zones": [], "split": "exempt"},
+                    tmp_path, cfg())
     assert zn.has_zones("1-001", tmp_path) and zn.read_zones("1-001", tmp_path) == []
+
+
+def test_saving_no_zones_on_a_text_page_is_refused(tmp_path):
+    """The editor gets the message back and shows it, rather than writing a page
+    that reads as finished and holds nothing."""
+    scans(tmp_path, "1-001")
+    with pytest.raises(ValueError, match="no zones"):
+        ui.save_payload({"ref": "1-001", "zones": []}, tmp_path, cfg())
+    assert zn.has_zones("1-001", tmp_path) is False
 
 
 def test_a_full_page_round_trips_through_state_and_back(tmp_path):

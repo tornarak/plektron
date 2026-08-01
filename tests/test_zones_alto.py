@@ -126,7 +126,7 @@ def test_saving_an_empty_page_is_a_record(tmp_path):
     """A plate's correct segmentation is zero zones, and that has to be sayable."""
     make_scan(tmp_path, "1-001")
     assert zn.has_zones("1-001", tmp_path) is False
-    zn.save_zones("1-001", [], tmp_path)
+    zn.save_zones("1-001", [], tmp_path, split="exempt")
     assert zn.has_zones("1-001", tmp_path) is True
     assert zn.read_zones("1-001", tmp_path) == []
 
@@ -289,5 +289,5 @@ def test_save_can_set_split_and_exempt_together(tmp_path):
 def test_zone_refs_lists_keyed_pages_in_page_order(tmp_path):
     for ref in ("3-005", "1-048", "1-151"):
         make_scan(tmp_path, ref, (2481, 3508) if ref.startswith("3") else (2824, 3897))
-        zn.save_zones(ref, [], tmp_path)
+        zn.save_zones(ref, [], tmp_path, split="exempt")
     assert zn.zone_refs(tmp_path) == ["1-048", "1-151", "3-005"]

@@ -215,6 +215,11 @@ def has_zones(ref: str, root: Path = Path(".")) -> bool:
     segmentation is zero zones; an empty file is that record. A page nobody has
     opened is also zero zones. Only the file's existence separates "looked at,
     holds nothing" from "not looked at", which is why navigation never writes one.
+
+    That separation lives outside the store, though, which is why an empty file is
+    only allowed to mean the first when the page is marked `exempt` — see
+    `save_zones`. A file is a weak witness: it survives a `cp -r`, and the loss this
+    project has already paid for was exactly a role that lived nowhere but a path.
     """
     return alto_for(ref, root).exists()
 
@@ -738,8 +743,26 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
 
     `zones` carry resolved coordinates — the caller has already turned a side and a
     column index into an x-pair. Nothing below knows what a side is.
+
+    **An empty page is refused unless it is marked `exempt`**, and this is the same
+    distinction the three splits exist to draw. A text page with no zones and a page
+    nobody has reached are byte-identical in this store — `zone_refs` finds both,
+    the sweep counts both as keyed, the list draws both as done — so an empty save
+    does not record a judgement, it erases the difference between having made one
+    and not. `exempt` is how a human says "I looked at this and it is not a text
+    page"; that is a statement, and it saves. "Nothing here" is not.
+
+    Mechanical, like every other refusal here: it needs no reading of the page, and
+    no layout rule can be configured to allow it.
     """
     ref = norm_ref(ref)
+    effective = split or load_splits(root).get(ref) or DEFAULT_SPLIT
+    if not zones and effective != "exempt":
+        raise ValueError(
+            f"{ref} has no zones and is marked {effective!r} — an empty text page "
+            "is indistinguishable from one nobody has reached, so it would be "
+            "counted as keyed while recording nothing. Mark it exempt if it is a "
+            "plate, map, foldout or blank; otherwise key it.")
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
     size = raster_size(ref, root)
     tree = build_alto(ref, zones, size)
@@ -953,6 +976,16 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
     def err(rule: str, detail: str):
         errors.append({"rule": rule, "detail": detail})
+
+    # `save_zones` refuses to write this, but a page can already be in the state —
+    # it predates the refusal, or arrived by hand — and it is the one defect that
+    # makes a page *look finished*. Everything downstream counts it as keyed.
+    if has_zones(ref, root) and not zones \
+            and load_splits(root).get(ref) != "exempt":
+        err("empty-page",
+            "keyed with no zones and not marked exempt — indistinguishable from a "
+            "page nobody has reached, while counting as done. Mark it exempt if it "
+            "is a plate, map, foldout or blank; otherwise key it.")
 
     measure = int(zc.part_spec(cfg, ref)["measure"])
     over = zc.override_windows(cfg, ref)

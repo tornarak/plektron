@@ -228,12 +228,48 @@ def test_a_page_never_keyed_reports_nothing_and_says_so(tmp_path):
     assert r["errors"] == [] and r["warnings"] == []
 
 
-def test_saved_empty_page_is_keyed_and_clean(tmp_path):
-    """A plate has no text column; zero zones is its correct segmentation."""
+def test_an_exempt_empty_page_is_keyed_and_clean(tmp_path):
+    """A plate has no text column; zero zones is its correct segmentation, and the
+    `exempt` mark is what makes that a statement rather than an absence."""
     make_scan(tmp_path)
-    zn.save_zones("1-048", [], tmp_path)
+    zn.save_zones("1-048", [], tmp_path, split="exempt")
     r = zn.validate_page("1-048", tmp_path, cfg_for())
     assert r["keyed"] is True and r["errors"] == [] and r["warnings"] == []
+
+
+def test_an_empty_text_page_cannot_be_saved(tmp_path):
+    """It would count as keyed everywhere while recording nothing — the one defect
+    that makes a page look *finished*."""
+    make_scan(tmp_path)
+    with pytest.raises(ValueError, match="no zones"):
+        zn.save_zones("1-048", [], tmp_path)
+    assert zn.has_zones("1-048", tmp_path) is False
+
+
+def test_clearing_a_kept_page_is_refused_too(tmp_path):
+    """Saving zero over a page that had zones is the same erasure, arrived at from
+    the other side — and it would take the previous state with it."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    with pytest.raises(ValueError, match="no zones"):
+        zn.save_zones("1-048", [], tmp_path)
+    assert len(zn.read_zones("1-048", tmp_path)) == 3
+
+
+def test_marking_it_exempt_is_how_an_empty_page_is_saved(tmp_path):
+    make_scan(tmp_path)
+    zn.save_zones("1-048", [], tmp_path, split="exempt")
+    assert zn.load_splits(tmp_path) == {"1-048": "exempt"}
+
+
+def test_an_empty_page_already_in_the_store_is_an_error(tmp_path):
+    """The refusal only guards new writes; a page can predate it or arrive by
+    hand, and that page is invisible to every other check."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", [], tmp_path, split="exempt")
+    zn.set_split("1-048", "train", tmp_path)
+    r = zn.validate_page("1-048", tmp_path, cfg_for(), ink=False)
+    assert "empty-page" in rules(r["errors"])
 
 
 # ------------------------------------------------------------------- errors
