@@ -33,13 +33,6 @@ models/*
 !models/bogoras-seg/
 models/bogoras-seg/*.bak
 
-# Working directory for recognition runs — checkpoints written mid-training, of
-# which `checkpoint_abort.ckpt` is one. Only a *trained* model is worth keeping,
-# and those live in `models/`, ignored just above for their size. An aborted run's
-# checkpoint has no consumer at all now that recognition fine-tuning is off the
-# plan (CLAUDE.md, "Recognition").
-bogoras-rec/
-
 # Transient working dirs: recognition output kept only for comparison, and
 # the sxiv review gates.
 ocr300/
@@ -73,7 +66,7 @@ review/*/*.jsonl
 # directory shows the page. Same disposition as the three above — ignored, and NOT
 # in `DERIVED`, so `harness clean` leaves it once the images are gone. It cannot be
 # tracked: `scans/` is derived and ignored, so a committed link would dangle in
-# every clone, exactly as `scans-w-figs/` would.
+# every clone, exactly as `scans/w-figs/` would.
 review/*/*.png
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
@@ -90,8 +83,8 @@ review/*/*.png
 # in beside the ground truth from its own real store rather than displacing it — so
 # a file's rank stays readable from where its link points, which is precisely the
 # property whose absence caused the ground-truth loss.
-scans-w-figs/
-scans-w-ocr/
+scans/w-figs/
+scans/w-ocr/
 # `gt/zones/` is tracked — the page ALTOs, the three split lists, `_rule_exempt.json`
 # and `_ink_exempt.json`
 # are the authored record. What is ignored is the recovery data beside them, the
@@ -118,7 +111,7 @@ scans-blotted/
 # `scans-blotted/` above, which paints in conspicuous colours for a human to read;
 # this one has to look like blank paper. Derived and rebuilt in one command, and
 # the 580 figure-less pages here are symlinks into the already-ignored `scans/`,
-# so a tracked copy would dangle in every clone exactly as `scans-w-figs/` would.
+# so a tracked copy would dangle in every clone exactly as `scans/w-figs/` would.
 scans-fig-blotted/
 # Training scratch: `--assemble`'s symlink farm, its two .lst files, and whatever
 # checkpoints a run writes. **Pure scratch, and that is a property worth keeping** —
@@ -127,9 +120,15 @@ scans-fig-blotted/
 # may clobber it freely. It used to be both the input and the only record of a past
 # run, which meant preparing the next run destroyed the ability to interpret the
 # model you already had.
+#
+# `bogoras-rec/` and `log/` live here for the same reason and used to be ignored by
+# name at the repo root. Only a *trained* model is worth keeping and those live in
+# `models/`; a run's mid-training checkpoints — `checkpoint_abort.ckpt` among them —
+# have no consumer at all now that recognition fine-tuning is off the plan
+# (CLAUDE.md, "Recognition").
 train/
 # `harness zones --predict`: what the trained segmenter emitted, one raw ALTO per
-# page. Derived in the strong sense — regenerable from `models/zones-seg.safetensors`
+# page. Derived in the strong sense — regenerable from `models/bogoras-seg/zones-seg.safetensors`
 # and `scans-fig-blotted/`, both of which are kept — and it is not a record of
 # anybody's judgement, which is the property that decides this. A prediction a human
 # has been through stops living here: it is corrected in the editor and saved into
@@ -140,7 +139,7 @@ train/
 # the whole reason that paragraph above spells `ocr/` out. `ocr/`'s links resolve
 # inside tracked `gt/ocr/`, so a clone gets working links; half of this farm points
 # into the ignored `mz/zones/` above, so a committed copy would dangle on clone
-# exactly as `scans-w-figs/` would. Rebuilt in one command.
+# exactly as `scans/w-figs/` would. Rebuilt in one command.
 #
 # **Both patterns are anchored with a leading slash, and that is not tidiness.** A
 # bare `zones/` is a match on any directory of that name at any depth, so it silently

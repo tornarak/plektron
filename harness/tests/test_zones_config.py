@@ -11,17 +11,24 @@ all after a commit.
 The shipped config is tested too, not just synthetic ones. It is data under version
 control that two modules trust, and nothing else would notice a stray comma.
 """
+
 from __future__ import annotations
 import json
 from pathlib import Path
 
 import pytest
 
-from harness.zones_config import (ConfigError, load_config, override_windows,
-                                  part_spec, rank_of, types_by_key,
-                                  types_by_label)
+from harness.zones_config import (
+    ConfigError,
+    load_config,
+    override_windows,
+    part_spec,
+    rank_of,
+    types_by_key,
+    types_by_label,
+)
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parent.parent.parent
 
 
 def base_cfg() -> dict:
@@ -31,24 +38,37 @@ def base_cfg() -> dict:
             {"label": "RunningTitleZone", "key": "r", "rank": 0, "max_per_page": 1},
             {"label": "MainZone-P", "key": "p", "rank": 10, "max_per_page": None},
         ],
-        "order_rules": [{"id": "title-first", "severity": "warn"},
-                        {"id": "rank-monotone", "severity": "warn"},
-                        {"id": "max-per-page", "severity": "warn"}],
+        "order_rules": [
+            {"id": "title-first", "severity": "warn"},
+            {"id": "rank-monotone", "severity": "warn"},
+            {"id": "max-per-page", "severity": "warn"},
+        ],
         "auto_select": {"fresh_page": "RunningTitleZone", "after": {}},
-        "columns": {"parts": {"1": {"measure": 1778, "fallback_x0": 500}},
-                    "anchor": {"band_top": 0.12, "band_bottom": 0.88,
-                               "ink_row_share": 0.02, "max_run_gap_px": 30,
-                               "min_run_px": 40, "min_run_share": 0.6,
-                               "ink_pad_left": 17, "ink_pad_right": 11},
-                    "overrides": {}},
-        "width_tolerance_px": 24, "min_zone_h_px": 30, "max_overlap_px": 8,
+        "columns": {
+            "parts": {"1": {"measure": 1778, "fallback_x0": 500}},
+            "anchor": {
+                "band_top": 0.12,
+                "band_bottom": 0.88,
+                "ink_row_share": 0.02,
+                "max_run_gap_px": 30,
+                "min_run_px": 40,
+                "min_run_share": 0.6,
+                "ink_pad_left": 17,
+                "ink_pad_right": 11,
+            },
+            "overrides": {},
+        },
+        "width_tolerance_px": 24,
+        "min_zone_h_px": 30,
+        "max_overlap_px": 8,
     }
 
 
 def write(tmp_path: Path, cfg: dict) -> Path:
     (tmp_path / "data").mkdir(exist_ok=True)
     (tmp_path / "data" / "zones_config.json").write_text(
-        json.dumps(cfg), encoding="utf-8")
+        json.dumps(cfg), encoding="utf-8"
+    )
     return tmp_path
 
 
@@ -175,8 +195,7 @@ def test_a_named_key_may_carry_a_shift_prefix(tmp_path):
     different action here, so the modifier has to be expressible."""
     cfg = base_cfg()
     cfg["actions"] = {"sel_up": "ArrowUp", "nudge_back": "Shift+ArrowUp"}
-    assert load_config(write(tmp_path, cfg))["actions"]["nudge_back"] \
-        == "Shift+ArrowUp"
+    assert load_config(write(tmp_path, cfg))["actions"]["nudge_back"] == "Shift+ArrowUp"
 
 
 def test_shift_on_a_printable_key_refused(tmp_path):
@@ -199,8 +218,7 @@ def test_the_shipped_auto_select_chain_keys_an_ordinary_page():
     for _ in range(4):
         seq.append(cur)
         cur = a["after"].get(cur, cur)
-    assert seq == ["RunningTitleZone", "MainZone-Continued",
-                   "MainZone-P", "MainZone-P"]
+    assert seq == ["RunningTitleZone", "MainZone-Continued", "MainZone-P", "MainZone-P"]
 
 
 def test_running_title_is_a_one_click_type():
@@ -231,8 +249,12 @@ def test_the_chain_stops_after_the_types_that_end_a_column():
 def test_the_chain_continues_after_the_title_and_body_types():
     """Absent means true — the common case needs no declaration."""
     by = types_by_label(load_config(REPO))
-    for label in ("RunningTitleZone", "MainZone-P", "MainZone-Continued",
-                  "MainZone-Quote"):
+    for label in (
+        "RunningTitleZone",
+        "MainZone-P",
+        "MainZone-Continued",
+        "MainZone-Quote",
+    ):
         assert by[label].get("chain_after", True) is True, label
 
 
@@ -248,8 +270,13 @@ def test_body_types_declare_no_fixed_shape():
     """A default height on a paragraph would be a guess about the page, and the
     editor would place it on one click without anyone having judged it."""
     by = types_by_label(load_config(REPO))
-    for label in ("MainZone-P", "MainZone-Continued", "MainZone-Quote",
-                  "MarginTextZone-Notes", "MainZone-Other"):
+    for label in (
+        "MainZone-P",
+        "MainZone-Continued",
+        "MainZone-Quote",
+        "MarginTextZone-Notes",
+        "MainZone-Other",
+    ):
         assert not by[label].get("default_height"), label
 
 
@@ -304,7 +331,7 @@ def test_shipped_actions_do_not_collide_with_shipped_types():
 def test_action_underscore_keys_are_documentation_not_bindings(tmp_path):
     cfg = base_cfg()
     cfg["actions"] = {"_about": "p", "undo": "u"}
-    load_config(write(tmp_path, cfg))   # the "_about" value must not collide
+    load_config(write(tmp_path, cfg))  # the "_about" value must not collide
 
 
 def test_part_spec_resolves_by_part():
@@ -328,9 +355,12 @@ def test_override_replaces_the_measured_column():
     and offering both would let the wrong one be picked by a keystroke."""
     cfg = base_cfg()
     cfg["columns"]["overrides"]["3-005"] = {
-        "columns": [{"x0": 300, "x1": 1200}, {"x0": 1300, "x1": 2200}]}
-    assert override_windows(cfg, "3-005") == [{"x0": 300, "x1": 1200},
-                                              {"x0": 1300, "x1": 2200}]
+        "columns": [{"x0": 300, "x1": 1200}, {"x0": 1300, "x1": 2200}]
+    }
+    assert override_windows(cfg, "3-005") == [
+        {"x0": 300, "x1": 1200},
+        {"x0": 1300, "x1": 2200},
+    ]
 
 
 def test_override_is_looked_up_by_normalized_ref():

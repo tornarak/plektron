@@ -32,7 +32,7 @@ Three decisions worth naming because their opposites are the obvious choice:
 - **Order rules warn in the browser and again on the server.** The client copy is
   what makes a violation visible at the keystroke rather than at the save; the
   server's `zones.validate_page` is the one that counts, and its result replaces
-  the client's on every save. `tests/test_zones_order.py` is what holds the two
+  the client's on every save. `harness/tests/test_zones_order.py` is what holds the two
   transcriptions together.
 """
 from __future__ import annotations
@@ -527,7 +527,7 @@ function yAt(ev) {
 }
 
 // ---- the order rules, transcribed from zones_config.order_warnings.
-// Held to that function by tests/test_zones_order.py; a rule added there has to
+// Held to that function by harness/tests/test_zones_order.py; a rule added there has to
 // be added here, and the shapes are the same so the banner reads identically
 // whether it came from the browser or from the save.
 function orderWarnings() {

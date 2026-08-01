@@ -14,6 +14,7 @@ than listing only the finished ones: "how much is left" is the question an itine
 is being asked, and a sweep that omitted them would call a half-done selection
 complete.
 """
+
 from __future__ import annotations
 from pathlib import Path
 
@@ -24,7 +25,7 @@ from harness import zones as zn
 from harness import zones_config as zc
 from harness import zones_ui as ui
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parent.parent.parent
 
 
 def cfg():
@@ -71,8 +72,9 @@ def test_bare_refs_and_paths_are_read_too(tmp_path):
 def test_blank_lines_and_comments_are_ignored(tmp_path):
     make_scan(tmp_path, "1-019")
     p = tmp_path / "work.lst"
-    p.write_text("# the heterogeneous selection\n\nchukchi-1-019.xml\n\n",
-                 encoding="utf-8")
+    p.write_text(
+        "# the heterogeneous selection\n\nchukchi-1-019.xml\n\n", encoding="utf-8"
+    )
     assert zn.load_itinerary(p, tmp_path) == ["1-019"]
 
 
@@ -107,12 +109,13 @@ def test_a_missing_itinerary_is_refused(tmp_path):
 
 # ------------------------------------------------------------- navigation
 
+
 def test_the_arrow_keys_follow_the_list_not_scan_order(tmp_path):
     for r in ("1-005", "1-006", "1-007", "1-019"):
         make_scan(tmp_path, r)
     itin = ["1-005", "1-019"]
     st = ui.page_state("1-005", tmp_path, cfg(), itinerary=itin)
-    assert st["next"] == "1-019"          # not 1-006
+    assert st["next"] == "1-019"  # not 1-006
     assert (st["index"], st["total"]) == (1, 2)
     assert st["on_list"] is True
 
@@ -131,8 +134,7 @@ def test_progress_counts_the_keyed_pages_on_the_list(tmp_path):
     for r in ("1-005", "1-019", "1-020"):
         make_scan(tmp_path, r)
     zn.save_zones("1-019", [], tmp_path, split="exempt")
-    st = ui.page_state("1-005", tmp_path, cfg(),
-                       itinerary=["1-005", "1-019", "1-020"])
+    st = ui.page_state("1-005", tmp_path, cfg(), itinerary=["1-005", "1-019", "1-020"])
     assert st["done"] == 1 and st["total"] == 3
 
 
@@ -144,14 +146,16 @@ def test_without_an_itinerary_navigation_is_scan_order(tmp_path):
 
 # ------------------------------------------------------------- scoped sweep
 
+
 def test_a_scoped_sweep_reports_unkeyed_pages_as_rows(tmp_path):
     """'How much is left' is what an itinerary is asked. A sweep listing only
     finished pages would call a half-done selection complete."""
     for r in ("1-005", "1-019", "1-020"):
         make_scan(tmp_path, r)
     zn.save_zones("1-019", [], tmp_path, split="exempt")
-    summary, rows = zn.validate_corpus(tmp_path, cfg(),
-                                       refs=["1-005", "1-019", "1-020"])
+    summary, rows = zn.validate_corpus(
+        tmp_path, cfg(), refs=["1-005", "1-019", "1-020"]
+    )
     assert summary["pages"] == 3
     assert summary["keyed"] == 1 and summary["todo"] == 2
     assert [r["ref"] for r in rows] == ["1-005", "1-019", "1-020"]
@@ -160,6 +164,7 @@ def test_a_scoped_sweep_reports_unkeyed_pages_as_rows(tmp_path):
 
 
 # -------------------------------------------------------------- the list view
+
 
 def test_the_list_shows_every_page_on_the_itinerary(tmp_path):
     """Counts never say *which* page, and on a keying sweep that is the whole
@@ -178,15 +183,16 @@ def test_the_list_states_each_page(tmp_path):
         make_scan(tmp_path, r)
     zn.save_zones("1-019", [], tmp_path, split="exempt")
     h = ui.render_list_html(tmp_path, cfg(), ["1-005", "1-019"], "work")
-    assert h.count("s-todo") == 2      # the style rule, plus 1-005's row
-    assert h.count("s-ok") == 2        # the style rule, plus 1-019's row
+    assert h.count("s-todo") == 2  # the style rule, plus 1-005's row
+    assert h.count("s-ok") == 2  # the style rule, plus 1-019's row
 
 
 def test_the_list_marks_the_page_you_came_from(tmp_path):
     for r in ("1-005", "1-019"):
         make_scan(tmp_path, r)
-    h = ui.render_list_html(tmp_path, cfg(), ["1-005", "1-019"], "work",
-                            current="1-019")
+    h = ui.render_list_html(
+        tmp_path, cfg(), ["1-005", "1-019"], "work", current="1-019"
+    )
     assert "class='here'" in h
 
 
@@ -200,8 +206,11 @@ def test_the_list_falls_back_to_the_store_with_no_itinerary(tmp_path):
 def keyed(tmp_path, ref="1-019"):
     """A page with a zone on it. The ink column only speaks about those: an exempt
     page is `skip` by construction, and a page with no zones cannot be saved."""
-    zn.save_zones(ref, [{"label": "MainZone-P", "x0": 500, "y0": 600,
-                         "x1": 2278, "y1": 1200}], tmp_path)
+    zn.save_zones(
+        ref,
+        [{"label": "MainZone-P", "x0": 500, "y0": 600, "x1": 2278, "y1": 1200}],
+        tmp_path,
+    )
 
 
 def test_the_list_shows_the_recorded_ink_verdict(tmp_path):
@@ -209,9 +218,15 @@ def test_the_list_shows_the_recorded_ink_verdict(tmp_path):
     reads what keying already wrote down."""
     make_scan(tmp_path, "1-019")
     keyed(tmp_path)
-    zn.record_ink("1-019", {"ink_checked": True, "uncovered": [
-        {"vpos": 3400, "height": 60, "exempted": False}], "warnings": []},
-        tmp_path)
+    zn.record_ink(
+        "1-019",
+        {
+            "ink_checked": True,
+            "uncovered": [{"vpos": 3400, "height": 60, "exempted": False}],
+            "warnings": [],
+        },
+        tmp_path,
+    )
     h = ui.render_list_html(tmp_path, cfg(), ["1-019"], "work")
     assert "<th>ink</th>" in h
     assert "data-ref='1-019' data-ink='ink'" in h and "1 band" in h
@@ -224,7 +239,7 @@ def test_an_unchecked_page_reads_as_unknown_not_clean(tmp_path):
     keyed(tmp_path)
     h = ui.render_list_html(tmp_path, cfg(), ["1-019"], "work")
     assert "data-ref='1-019' data-ink='unknown'" in h
-    assert "check ink · 1 page" in h      # the explicit, and only, way to run it
+    assert "check ink · 1 page" in h  # the explicit, and only, way to run it
 
 
 def test_a_page_still_to_do_is_never_queued_for_a_check(tmp_path):

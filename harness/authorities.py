@@ -100,9 +100,20 @@ def parse_citation(query: str) -> tuple[str, int | None]:
 
 
 def load(root: Path = Path(".")) -> list[dict]:
+    """The bibliography, or an error — never an empty list.
+
+    It used to return `[]` for a missing file, and that is the project's own
+    failure mode aimed at an apparatus store: "no such authority" and "you are
+    not standing in the repo" become the same answer, and the search reports a
+    confident nothing. The store is committed and required, so its absence is a
+    broken tree, not a legitimate state.
+    """
     p = root / "data/authorities.json"
     if not p.exists():
-        return []
+        raise FileNotFoundError(
+            f"{p} — the bibliography is committed and required; "
+            "a missing one means the wrong root, not an empty list"
+        )
     return json.loads(p.read_text(encoding="utf-8"))["authorities"]
 
 

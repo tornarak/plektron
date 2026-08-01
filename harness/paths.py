@@ -27,7 +27,7 @@ authored files), **derived** (ignored, and removed by `clean`), and **ignored bu
 kept** — `*.prev`/`*.tmp`/`*.jsonl`, which are recovery data for before a commit
 exists, and `page.png`, which is a convenience symlink into an already-ignored
 tree. `.gitignore` spells the third group with `review/*/*`-shaped patterns, which
-is exactly what keeps `tests/test_layout.py`'s `DERIVED == gitignored` invariant
+is exactly what keeps `harness/tests/test_layout.py`'s `DERIVED == gitignored` invariant
 true over a set that is deliberately not all of what is ignored.
 
 The distinction the old layout carried in its directory names — proposal is not
@@ -42,7 +42,7 @@ from pathlib import Path
 from .context import norm_ref
 
 # Everything under `review/<ref>/` that any verb may recreate from the ALTO and the
-# rasters. The gitignore rules mirror this; so does `clean` below. `tests/test_layout.py`
+# rasters. The gitignore rules mirror this; so does `clean` below. `harness/tests/test_layout.py`
 # holds the two to each other, because they drifted while each file's comment claimed
 # the other mirrored it — `.gitignore` listed `review.html` and this tuple did not, so
 # `clean` left a stale page behind on every finished ref.
@@ -91,7 +91,7 @@ def ensure_page_link(ref: str, root: Path = Path(".")) -> Path | None:
     go — it costs nothing to keep and the point of it is to be there whenever
     someone opens the directory. Not tracked either, and that one is not a
     preference: `scans/` is itself derived and gitignored, so a committed link
-    would dangle in every clone — the same reason `scans-w-figs/` is ignored
+    would dangle in every clone — the same reason `scans/w-figs/` is ignored
     (CLAUDE.md, "Where things stand").
 
     The link is **relative**, so it survives the repo being moved or cloned to

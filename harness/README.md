@@ -130,7 +130,7 @@ compositor `lines.py` reuses, and `read_blocks` — **the one reader of the
 **`zones_config.py`** — loads and checks `data/zones_config.json`: the seven types
 with their keys and colours, the per-part text measure and anchor calibration, the
 declarative order rules. `order_warnings` is pure and is transcribed into the
-editor's JS, with `tests/test_zones_order.py` holding the two together. Every rule
+editor's JS, with `harness/tests/test_zones_order.py` holding the two together. Every rule
 here is a *warning* — nothing in this config can refuse a save.
 
 **`zones.py`** — the zone stores: the ALTO writer (eScriptorium dialect, no
@@ -221,7 +221,7 @@ field-editing verbs. **`codepoints.py`**, **`emit.py`** — one job each.
 - **Reading `String/@CONTENT` out of `gt/fig/` returns `""` for every zone.** Not an
   error — nothing, which is worse. Caption text comes from `figures.readings()`.
 - **The three lookalike tables differ by scope and must not be merged.** See
-  `tests/test_lookalike_scope.py`, which exists because a consolidation was very
+  `harness/tests/test_lookalike_scope.py`, which exists because a consolidation was very
   nearly carried out on the strength of an audit that called the difference drift.
 - **Keep one fixed key set across a list of records.** The TOON encoder collapses a
   uniform list to a header plus rows; one ragged record de-tabularizes the whole

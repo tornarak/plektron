@@ -16,6 +16,7 @@ Deliberately narrow. It checks that named paths **exist**, not that what they sa
 about each other is true — no test can do the second, and pretending otherwise
 would be worse than not testing.
 """
+
 from __future__ import annotations
 
 import re
@@ -23,7 +24,7 @@ from pathlib import Path
 
 import pytest
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parent.parent.parent
 
 # Documents whose business is pointing at other files. Not every markdown file in
 # the repo: a page of prose that happens to mention a filename is not making a
@@ -51,19 +52,24 @@ PATH_RE = re.compile(r"`((?:[\w.\-]+/)+[\w.\-]+)`")
 # draw, and for the same reason.
 EXPECTED_ABSENT = {
     # Derived stores, regenerable and gitignored.
-    "scans/chukchi-PP-NNN.png", "gt/fig/chukchi-PP-NNN.xml",
-    "ocr/chukchi-PP-NNN.xml", "tei/chukchi-PP-NNN.xml",
+    "scans/chukchi-PP-NNN.png",
+    "gt/fig/chukchi-PP-NNN.xml",
+    "ocr/chukchi-PP-NNN.xml",
+    "tei/chukchi-PP-NNN.xml",
     "gt/zones/_ink_cache.json",
     # Placeholders in worked examples, not files.
-    "review/PP-NNN/proposal.json", "review/PP-NNN/decision.json",
-    "tei/chukchi-1-100.xml", "data/zones_config.json",
+    "review/PP-NNN/proposal.json",
+    "review/PP-NNN/decision.json",
+    "tei/chukchi-1-100.xml",
+    "data/zones_config.json",
 }
 
 
 def named_paths(doc: str) -> set[str]:
     text = (REPO / doc).read_text(encoding="utf-8")
-    return {m.group(1) for m in PATH_RE.finditer(text)
-            if _looks_like_a_path(m.group(1))}
+    return {
+        m.group(1) for m in PATH_RE.finditer(text) if _looks_like_a_path(m.group(1))
+    }
 
 
 def _looks_like_a_path(tok: str) -> bool:
@@ -76,8 +82,8 @@ def _looks_like_a_path(tok: str) -> bool:
     is missing.
     """
     if not any("a" <= c.lower() <= "z" for c in tok):
-        return False                      # a fraction, or Cyrillic
-    return "." not in tok.split("/", 1)[0]   # a domain, not a directory
+        return False  # a fraction, or Cyrillic
+    return "." not in tok.split("/", 1)[0]  # a domain, not a directory
 
 
 @pytest.mark.parametrize("doc", DOCS)
@@ -88,21 +94,25 @@ def test_the_document_itself_exists(doc):
 @pytest.mark.parametrize("doc", DOCS)
 def test_every_path_it_names_resolves(doc):
     missing = sorted(
-        p for p in named_paths(doc)
-        if p not in EXPECTED_ABSENT
-        and "PP-NNN" not in p
-        and not (REPO / p).exists())
+        p
+        for p in named_paths(doc)
+        if p not in EXPECTED_ABSENT and "PP-NNN" not in p and not (REPO / p).exists()
+    )
     assert not missing, (
         f"{doc} names paths that do not exist: {missing}. Either the file moved "
         "and the reference did not, or it never existed. If it is deliberately "
-        "absent, add it to EXPECTED_ABSENT with a reason.")
+        "absent, add it to EXPECTED_ABSENT with a reason."
+    )
 
 
 def test_the_deleted_collation_doc_is_named_nowhere():
     """It was cited from nine places, including a committed TEI artifact. A
     tracked file citing a deleted one is the state this test exists to prevent."""
-    offenders = [d for d in DOCS if "transcriber_harness.md" in
-                 (REPO / d).read_text(encoding="utf-8")]
+    offenders = [
+        d
+        for d in DOCS
+        if "transcriber_harness.md" in (REPO / d).read_text(encoding="utf-8")
+    ]
     assert not offenders, f"transcriber_harness.md still cited in {offenders}"
 
 

@@ -10,14 +10,23 @@ is deliberately the reverse of the earlier rule. Under the old one a newly autho
 file needed a matching negation or it was silently untracked and losable — the exact
 failure this repo has already suffered once.
 """
+
 from pathlib import Path
 
 import pytest
 
-from harness.paths import (DERIVED, crops_dir, decisions_path, html_path,
-                           proposal_path, review_dir, sheets_dir, zoom_dir)
+from harness.paths import (
+    DERIVED,
+    crops_dir,
+    decisions_path,
+    html_path,
+    proposal_path,
+    review_dir,
+    sheets_dir,
+    zoom_dir,
+)
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parent.parent.parent
 
 
 def gitignored_review_names():
@@ -26,7 +35,7 @@ def gitignored_review_names():
     for line in (REPO / ".gitignore").read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if line.startswith("review/*/") and not line.startswith("review/*/*"):
-            out.add(line[len("review/*/"):].rstrip("/"))
+            out.add(line[len("review/*/") :].rstrip("/"))
     return out
 
 
@@ -50,22 +59,28 @@ def test_authored_files_are_not_in_derived():
     assert "decision.json" not in DERIVED
 
 
-@pytest.mark.parametrize("builder,expected", [
-    (proposal_path, "proposal.json"),
-    (decisions_path, "decision.json"),
-    (html_path, "review.html"),
-])
+@pytest.mark.parametrize(
+    "builder,expected",
+    [
+        (proposal_path, "proposal.json"),
+        (decisions_path, "decision.json"),
+        (html_path, "review.html"),
+    ],
+)
 def test_file_builders_land_in_the_pages_own_directory(builder, expected, tmp_path):
     p = builder("1-48", tmp_path)
     assert p.parent == tmp_path / "review" / "1-048"
     assert p.name == expected
 
 
-@pytest.mark.parametrize("builder,expected", [
-    (crops_dir, "crops"),
-    (sheets_dir, "sheets"),
-    (zoom_dir, "zoom"),
-])
+@pytest.mark.parametrize(
+    "builder,expected",
+    [
+        (crops_dir, "crops"),
+        (sheets_dir, "sheets"),
+        (zoom_dir, "zoom"),
+    ],
+)
 def test_dir_builders_land_in_the_pages_own_directory(builder, expected, tmp_path):
     p = builder("1-48", tmp_path)
     assert p == tmp_path / "review" / "1-048" / expected
@@ -82,6 +97,7 @@ def test_builders_reject_a_bare_integer():
 
 
 # --- the third disposition: ignored, but never cleaned ----------------------
+
 
 def test_page_link_is_not_derived():
     """`page.png` is ignored but must survive `harness clean`. Putting it in
@@ -104,6 +120,7 @@ def test_page_link_is_gitignored_by_a_star_shaped_rule():
 def test_page_link_is_relative_and_points_at_the_raster(tmp_path):
     """Relative, so it survives a clone to a different path."""
     from harness.paths import ensure_page_link, page_link
+
     scan = tmp_path / "scans" / "chukchi-1-048.png"
     scan.parent.mkdir(parents=True)
     scan.write_bytes(b"\x89PNG")
@@ -111,6 +128,7 @@ def test_page_link_is_relative_and_points_at_the_raster(tmp_path):
     assert link == page_link("1-048", tmp_path)
     assert link.is_symlink()
     import os
+
     assert not os.path.isabs(os.readlink(link))
     assert link.resolve() == scan.resolve()
 
@@ -119,12 +137,14 @@ def test_no_link_is_made_without_a_raster(tmp_path):
     """A dangling link inside a page's directory reads as a missing scan, which
     is worse than an absent convenience."""
     from harness.paths import ensure_page_link
+
     assert ensure_page_link("1-048", tmp_path) is None
     assert not (tmp_path / "review" / "1-048").exists()
 
 
 def test_clean_leaves_the_link_and_the_authored_files(tmp_path):
     from harness.paths import clean as clean_page, ensure_page_link, review_dir
+
     scan = tmp_path / "scans" / "chukchi-1-048.png"
     scan.parent.mkdir(parents=True)
     scan.write_bytes(b"\x89PNG")

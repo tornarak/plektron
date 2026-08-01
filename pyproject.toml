@@ -20,6 +20,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["harness"]
+# `harness/tests/` sits inside the package so a test lives beside what it covers,
+# but it is not part of what `harness` ships — and its fixtures reach for the repo
+# (`Path(__file__).parent.parent.parent`), which does not exist in an installed tree.
+exclude = ["harness/tests"]
 
 [dependency-groups]
 dev = [

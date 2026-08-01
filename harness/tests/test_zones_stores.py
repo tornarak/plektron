@@ -14,6 +14,7 @@ would be a claim about work nobody has done, drawn in the same column as one abo
 work someone has. Each of those fails silently and each looks like success — which
 is the failure mode this repo is organised against, so it is the one worth testing.
 """
+
 from __future__ import annotations
 from pathlib import Path
 
@@ -22,7 +23,7 @@ import pytest
 from harness import zones as zn
 from harness import zones_config as zc
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parent.parent.parent
 
 # The shipped config, so these tests bind the numbers actually in use —
 # `min_zone_h_px` above all, which is what separates a zone from a sliver.
@@ -41,17 +42,30 @@ ALTO = """<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
-def write_page(root: Path, ref: str, store: str, label="MainZone-P",
-               bid="mz_x", x0=700, y0=600, x1=2478, y1=900):
+def write_page(
+    root: Path,
+    ref: str,
+    store: str,
+    label="MainZone-P",
+    bid="mz_x",
+    x0=700,
+    y0=600,
+    x1=2478,
+    y1=900,
+):
     d = root / store
     d.mkdir(parents=True, exist_ok=True)
     (d / f"chukchi-{ref}.xml").write_text(
-        ALTO.format(label=label, bid=bid, x0=x0, y0=y0, x1=x1, y1=y1,
-                    w=x1 - x0, h=y1 - y0), encoding="utf-8")
+        ALTO.format(
+            label=label, bid=bid, x0=x0, y0=y0, x1=x1, y1=y1, w=x1 - x0, h=y1 - y0
+        ),
+        encoding="utf-8",
+    )
 
 
 def make_scan(root: Path, ref: str):
     from PIL import Image, ImageDraw
+
     d = root / "scans"
     d.mkdir(parents=True, exist_ok=True)
     im = Image.new("L", (2824, 3897), 255)
@@ -63,13 +77,16 @@ def make_scan(root: Path, ref: str):
 
 # ------------------------------------------------------- the store parameter
 
+
 def test_each_store_answers_for_itself(tmp_path):
     """The bare minimum: the same ref in both stores reads back differently."""
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P")
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone")
     assert zn.read_zones("1-048", tmp_path)[0]["label"] == "MainZone-P"
-    assert zn.read_zones("1-048", tmp_path, store=zn.MZDIR)[0]["label"] \
+    assert (
+        zn.read_zones("1-048", tmp_path, store=zn.MZDIR)[0]["label"]
         == "RunningTitleZone"
+    )
     assert zn.zone_refs(tmp_path) == ["1-048"]
     assert zn.zone_refs(tmp_path, zn.MZDIR) == ["1-048"]
 
@@ -100,13 +117,16 @@ def test_zone_refs_dedupes_by_real_path(tmp_path):
     """A symlink farm must not double-count. The README's invariant is
     unconditional and the store parameter is what first makes a farm reachable."""
     import os
+
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     view = tmp_path / zn.VIEWDIR
     view.mkdir(parents=True)
     for name in ("chukchi-1-048.xml", "chukchi-1-049.xml"):
         (view / name).symlink_to(
-            os.path.relpath((tmp_path / zn.ZONEDIR / "chukchi-1-048.xml").resolve(),
-                            view.resolve()))
+            os.path.relpath(
+                (tmp_path / zn.ZONEDIR / "chukchi-1-048.xml").resolve(), view.resolve()
+            )
+        )
     # Two names, one inode: one ref, not two.
     assert zn.zone_refs(tmp_path, zn.VIEWDIR) == ["1-048"]
 
@@ -120,14 +140,26 @@ def test_a_broken_link_is_skipped_not_raised(tmp_path):
 
 # --------------------------------------------------------------- the sidecars
 
+
 def test_the_sidecars_take_no_store(tmp_path):
     """They record human judgements about *pages*, and there is no such thing as
     the machine store's opinion of which pages are held out. Enforced by signature
     rather than by convention, so nobody can parameterise them 'for symmetry'."""
     import inspect
-    for fn in (zn.load_splits, zn.set_split, zn.load_exempt, zn.set_exempt,
-               zn.load_ink_exempt, zn.set_ink_exempt, zn.ink_stamp,
-               zn.load_ink_cache, zn.cached_ink, zn.record_ink, zn.save_zones):
+
+    for fn in (
+        zn.load_splits,
+        zn.set_split,
+        zn.load_exempt,
+        zn.set_exempt,
+        zn.load_ink_exempt,
+        zn.set_ink_exempt,
+        zn.ink_stamp,
+        zn.load_ink_cache,
+        zn.cached_ink,
+        zn.record_ink,
+        zn.save_zones,
+    ):
         assert "store" not in inspect.signature(fn).parameters, fn.__name__
 
 
@@ -140,11 +172,14 @@ def test_a_split_marked_once_is_read_by_both_stores(tmp_path):
     make_scan(tmp_path, "1-048")
     cfg = zc.load_config(REPO)
     for store in (zn.ZONEDIR, zn.MZDIR):
-        assert zn.validate_page("1-048", tmp_path, cfg, ink=False,
-                                store=store)["split"] == "exempt"
+        assert (
+            zn.validate_page("1-048", tmp_path, cfg, ink=False, store=store)["split"]
+            == "exempt"
+        )
 
 
 # ------------------------------------------------------------- the ink cache
+
 
 def test_a_machine_sweep_never_writes_the_ink_cache(tmp_path):
     """The cache is keyed by ref alone and feeds the editor's page list, which
@@ -170,24 +205,32 @@ def test_a_human_sweep_still_writes_it(tmp_path):
 
 # ---------------------------------------------------------------- the view
 
+
 def test_the_human_file_wins(tmp_path):
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-048", zn.MZDIR)
     write_page(tmp_path, "1-102", zn.MZDIR)
     rep = zn.link_view(tmp_path)
-    assert rep == {"dir": str(tmp_path / zn.VIEWDIR), "from_gt": 1,
-                   "from_mz": 1, "removed": 0}
+    assert rep == {
+        "dir": str(tmp_path / zn.VIEWDIR),
+        "from_gt": 1,
+        "from_mz": 1,
+        "removed": 0,
+    }
     view = tmp_path / zn.VIEWDIR
-    assert (view / "chukchi-1-048.xml").resolve() \
-        == (tmp_path / zn.ZONEDIR / "chukchi-1-048.xml").resolve()
-    assert (view / "chukchi-1-102.xml").resolve() \
-        == (tmp_path / zn.MZDIR / "chukchi-1-102.xml").resolve()
+    assert (view / "chukchi-1-048.xml").resolve() == (
+        tmp_path / zn.ZONEDIR / "chukchi-1-048.xml"
+    ).resolve()
+    assert (view / "chukchi-1-102.xml").resolve() == (
+        tmp_path / zn.MZDIR / "chukchi-1-102.xml"
+    ).resolve()
 
 
 def test_the_links_are_relative(tmp_path):
     """So the farm survives a clone or a move, as `paths.ensure_page_link` and
     `assemble` already require of theirs."""
     import os
+
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     zn.link_view(tmp_path)
     target = os.readlink(tmp_path / zn.VIEWDIR / "chukchi-1-048.xml")
@@ -212,15 +255,18 @@ def test_a_page_promoted_to_gt_reroutes_its_link(tmp_path):
     resolving to the machine's word."""
     write_page(tmp_path, "1-102", zn.MZDIR)
     zn.link_view(tmp_path)
-    assert (tmp_path / zn.VIEWDIR / "chukchi-1-102.xml").resolve() \
-        == (tmp_path / zn.MZDIR / "chukchi-1-102.xml").resolve()
+    assert (tmp_path / zn.VIEWDIR / "chukchi-1-102.xml").resolve() == (
+        tmp_path / zn.MZDIR / "chukchi-1-102.xml"
+    ).resolve()
     write_page(tmp_path, "1-102", zn.ZONEDIR)
     zn.link_view(tmp_path)
-    assert (tmp_path / zn.VIEWDIR / "chukchi-1-102.xml").resolve() \
-        == (tmp_path / zn.ZONEDIR / "chukchi-1-102.xml").resolve()
+    assert (tmp_path / zn.VIEWDIR / "chukchi-1-102.xml").resolve() == (
+        tmp_path / zn.ZONEDIR / "chukchi-1-102.xml"
+    ).resolve()
 
 
 # ---------------------------------------------------------------- the predictor
+
 
 def test_predict_refuses_a_page_with_no_blot(tmp_path):
     """Predicting off the plain scan asks the model a different question than the
@@ -244,6 +290,7 @@ def test_predict_all_skips_exempt_pages(tmp_path):
         return {"ref": ref, "zones": 0}
 
     import harness.zones as mod
+
     real_predict, real_load = mod.predict, mod.load_segmenter
     mod.predict = fake_predict
     mod.load_segmenter = lambda *a, **k: (object(), "sha")
@@ -252,12 +299,13 @@ def test_predict_all_skips_exempt_pages(tmp_path):
     finally:
         mod.predict, mod.load_segmenter = real_predict, real_load
 
-    assert called == []                       # neither: 1-102 has no blot either
+    assert called == []  # neither: 1-102 has no blot either
     assert rep["exempt_skipped"] == 1
     assert rep["skipped_no_blot"] == "1-102"
 
 
 # ----------------------------------------------------------------- the editor
+
 
 def test_a_page_with_no_ground_truth_opens_on_the_prediction(tmp_path):
     """And the bands it opens on are the configured column's, not kraken's. The
@@ -265,20 +313,24 @@ def test_a_page_with_no_ground_truth_opens_on_the_prediction(tmp_path):
     the column — where a *stored* zone matching no column is a finding worth
     keeping, a predicted one has nothing to lose by being snapped."""
     from harness import zones_ui as ui
+
     write_page(tmp_path, "1-102", zn.MZDIR, x0=812, y0=700, x1=2301, y1=980)
     make_scan(tmp_path, "1-102")
     st = ui.page_state("1-102", tmp_path, zc.load_config(REPO))
     assert st["keyed"] is False and st["proposal"] == "mz"
     z = st["zones"][0]
-    assert (z["y0"], z["y1"]) == (700, 980)          # y is the model's
-    assert (z["x0"], z["x1"]) == (st["columns"][0]["x0"],
-                                  st["columns"][0]["x1"])   # x is the page's
+    assert (z["y0"], z["y1"]) == (700, 980)  # y is the model's
+    assert (z["x0"], z["x1"]) == (
+        st["columns"][0]["x0"],
+        st["columns"][0]["x1"],
+    )  # x is the page's
 
 
 def test_ground_truth_wins_in_the_editor_too(tmp_path):
     """The precedence is the store rule, so it cannot hold in the view and not
     here — this is the surface that reads from both."""
     from harness import zones_ui as ui
+
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P")
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone")
     make_scan(tmp_path, "1-048")
@@ -292,6 +344,7 @@ def test_the_selector_shows_each_store_on_a_page_that_has_both(tmp_path):
     this, the machine's reading of the 117 pages that also have gt is unreachable
     from the one surface built for looking at zones."""
     from harness import zones_ui as ui
+
     cfg = zc.load_config(REPO)
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P", y0=600, y1=900)
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone", y0=610, y1=880)
@@ -299,7 +352,7 @@ def test_the_selector_shows_each_store_on_a_page_that_has_both(tmp_path):
     seen = {s: ui.page_state("1-048", tmp_path, cfg, store=s) for s in ui.STORES}
     assert seen["gt"]["shown"] == "gt"
     assert seen["mz"]["shown"] == "mz"
-    assert seen["zones"]["shown"] == "gt"          # the view's own rule
+    assert seen["zones"]["shown"] == "gt"  # the view's own rule
     assert seen["gt"]["zones"][0]["label"] == "MainZone-P"
     assert seen["mz"]["zones"][0]["label"] == "RunningTitleZone"
     assert seen["mz"]["proposal"] == "mz" and seen["gt"]["proposal"] == ""
@@ -319,17 +372,19 @@ def test_an_empty_store_is_an_answer_not_an_error(tmp_path):
     to the other store — a selector that silently redirected would make the two
     indistinguishable, which is the whole thing these stores are kept apart for."""
     from harness import zones_ui as ui
+
     cfg = zc.load_config(REPO)
     write_page(tmp_path, "1-102", zn.MZDIR)
     make_scan(tmp_path, "1-102")
     gt = ui.page_state("1-102", tmp_path, cfg, store="gt")
     assert gt["shown"] == "" and gt["zones"] == [] and gt["present"]["gt"] is None
-    assert gt["present"]["mz"] == 1               # still says where to look
+    assert gt["present"]["mz"] == 1  # still says where to look
     assert ui.page_state("1-102", tmp_path, cfg, store="mz")["shown"] == "mz"
 
 
 def test_an_unknown_store_is_refused(tmp_path):
     from harness import zones_ui as ui
+
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     make_scan(tmp_path, "1-048")
     with pytest.raises(ValueError, match="store must be one of"):
@@ -340,17 +395,24 @@ def test_the_selector_is_orthogonal_to_the_itinerary(tmp_path):
     """Two independent axes — the itinerary picks the pages, the store picks whose
     reading of them. Neighbours must not change when the store does."""
     from harness import zones_ui as ui
+
     cfg = zc.load_config(REPO)
     for r in ("1-048", "1-102", "1-103"):
         write_page(tmp_path, r, zn.MZDIR)
         make_scan(tmp_path, r)
     write_page(tmp_path, "1-102", zn.ZONEDIR)
     itin = ["1-048", "1-102", "1-103"]
-    nav = {s: ui.page_state("1-102", tmp_path, cfg, itinerary=itin, store=s)
-           for s in ui.STORES}
+    nav = {
+        s: ui.page_state("1-102", tmp_path, cfg, itinerary=itin, store=s)
+        for s in ui.STORES
+    }
     for st in nav.values():
-        assert (st["prev"], st["next"], st["index"], st["total"]) \
-            == ("1-048", "1-103", 2, 3)
+        assert (st["prev"], st["next"], st["index"], st["total"]) == (
+            "1-048",
+            "1-103",
+            2,
+            3,
+        )
 
 
 def test_an_undeclared_label_is_dropped_and_named(tmp_path):
@@ -358,6 +420,7 @@ def test_an_undeclared_label_is_dropped_and_named(tmp_path):
     label an error, so quietly renaming one would hide a model trained against a
     different class map behind a page that looks ordinary."""
     from harness import zones_ui as ui
+
     write_page(tmp_path, "1-102", zn.MZDIR, label="NoSuchZone")
     make_scan(tmp_path, "1-102")
     st = ui.page_state("1-102", tmp_path, zc.load_config(REPO))
@@ -369,6 +432,7 @@ def test_the_banner_marks_a_proposal_and_only_a_proposal(tmp_path):
     already done — the one confusion the two stores exist to prevent, arriving
     through the single surface that reads from both."""
     from harness import zones_ui as ui
+
     cfg = zc.load_config(REPO)
     write_page(tmp_path, "1-102", zn.MZDIR)
     write_page(tmp_path, "1-048", zn.ZONEDIR)
@@ -382,15 +446,20 @@ def test_the_page_list_separates_predicted_from_untouched(tmp_path):
     """Two kinds of "to do", and the difference is the whole review queue."""
     from harness import zones_ui as ui
     import re
+
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-102", zn.MZDIR)
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
-    html = ui.render_list_html(tmp_path, zc.load_config(REPO),
-                               itinerary=["1-048", "1-102", "1-103"])
-    states = {ref: re.search(rf"<a href='/\?ref={ref}'>.*?<i class='dot s-(\w+)'",
-                             html, re.S).group(1)
-              for ref in ("1-048", "1-102", "1-103")}
+    html = ui.render_list_html(
+        tmp_path, zc.load_config(REPO), itinerary=["1-048", "1-102", "1-103"]
+    )
+    states = {
+        ref: re.search(
+            rf"<a href='/\?ref={ref}'>.*?<i class='dot s-(\w+)'", html, re.S
+        ).group(1)
+        for ref in ("1-048", "1-102", "1-103")
+    }
     assert states == {"1-048": "ok", "1-102": "proposed", "1-103": "todo"}
 
 
@@ -400,17 +469,24 @@ def test_the_page_list_counts_both_stores_per_page(tmp_path):
     "is there anything to compare against" is what sends you to a page."""
     from harness import zones_ui as ui
     import re
+
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-048", zn.MZDIR)
     write_page(tmp_path, "1-102", zn.MZDIR)
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
-    html = ui.render_list_html(tmp_path, zc.load_config(REPO),
-                               itinerary=["1-048", "1-102", "1-103"])
-    cells = {ref: re.search(
-        rf"<a href='/\?ref={ref}'>.*?<td class='num'>(\d*)</td>"
-        rf"<td class='num dim mz'>(\d*)</td>", html, re.S).groups()
-        for ref in ("1-048", "1-102", "1-103")}
+    html = ui.render_list_html(
+        tmp_path, zc.load_config(REPO), itinerary=["1-048", "1-102", "1-103"]
+    )
+    cells = {
+        ref: re.search(
+            rf"<a href='/\?ref={ref}'>.*?<td class='num'>(\d*)</td>"
+            rf"<td class='num dim mz'>(\d*)</td>",
+            html,
+            re.S,
+        ).groups()
+        for ref in ("1-048", "1-102", "1-103")
+    }
     # gt keyed and predicted; predicted only; neither.
     assert cells["1-048"][0] and cells["1-048"][1]
     assert cells["1-102"] == ("", cells["1-048"][1])
@@ -421,6 +497,7 @@ def test_the_list_can_widen_to_every_scan(tmp_path):
     """The pages worth predicting are precisely the ones neither store has heard
     of, so the default view cannot show one."""
     from harness import zones_ui as ui
+
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
@@ -430,6 +507,7 @@ def test_the_list_can_widen_to_every_scan(tmp_path):
 
 
 # ------------------------------------------------------- what a sweep leaves alone
+
 
 def test_a_page_with_a_prediction_is_left_alone_unless_forced(tmp_path):
     """The mz file records the sha of the model that wrote it, and that is the
@@ -465,12 +543,14 @@ def test_a_sweep_reports_what_it_skipped_rather_than_omitting_it(tmp_path):
 
 # ----------------------------------------------------------------- the scoring
 
+
 def frozen_split(root: Path, train: list[str], evl: list[str]):
     d = root / zn.WORKDIR
     d.mkdir(parents=True, exist_ok=True)
     for name, refs in (("train", train), ("eval", evl)):
         (d / f"{name}.lst").write_text(
-            "".join(f"{zn.WORKDIR}/chukchi-{r}.xml\n" for r in refs), encoding="utf-8")
+            "".join(f"{zn.WORKDIR}/chukchi-{r}.xml\n" for r in refs), encoding="utf-8"
+        )
 
 
 def multi_page(root: Path, ref: str, store: str, zones: list[tuple[str, int, int]]):
@@ -484,7 +564,8 @@ def multi_page(root: Path, ref: str, store: str, zones: list[tuple[str, int, int
             f'<TextBlock ID="b{i}" HPOS="700" VPOS="{y0}" WIDTH="1778" '
             f'HEIGHT="{y1 - y0}" TAGREFS="{seen[label]}">'
             f'<Shape><Polygon POINTS="700 {y0} 2478 {y0} 2478 {y1} 700 {y1}"/>'
-            f'</Shape></TextBlock>')
+            f"</Shape></TextBlock>"
+        )
     d = root / store
     d.mkdir(parents=True, exist_ok=True)
     (d / f"chukchi-{ref}.xml").write_text(
@@ -492,24 +573,31 @@ def multi_page(root: Path, ref: str, store: str, zones: list[tuple[str, int, int
         '<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">'
         f'<Tags>{"".join(tags)}</Tags><Layout>'
         f'<Page WIDTH="2824" HEIGHT="3897"><PrintSpace>{"".join(blocks)}'
-        '</PrintSpace></Page></Layout></alto>', encoding="utf-8")
+        "</PrintSpace></Page></Layout></alto>",
+        encoding="utf-8",
+    )
 
 
-PERM = {"MainZone-P": "MarginTextZone-Notes",
-        "MarginTextZone-Notes": "RunningTitleZone",
-        "RunningTitleZone": "MainZone-P"}
+PERM = {
+    "MainZone-P": "MarginTextZone-Notes",
+    "MarginTextZone-Notes": "RunningTitleZone",
+    "RunningTitleZone": "MainZone-P",
+}
 
 
 def permuted_corpus(tmp_path: Path, refs: list[str]):
     """Ground truth, and a prediction of it with the labels consistently rotated —
     the fault the real run had, reproduced small."""
-    truth = [("RunningTitleZone", 600, 700),
-             ("MainZone-P", 720, 1500),
-             ("MarginTextZone-Notes", 1550, 2000)]
+    truth = [
+        ("RunningTitleZone", 600, 700),
+        ("MainZone-P", 720, 1500),
+        ("MarginTextZone-Notes", 1550, 2000),
+    ]
     for r in refs:
         multi_page(tmp_path, r, zn.ZONEDIR, truth)
-        multi_page(tmp_path, r, zn.MZDIR,
-                   [(PERM[lbl], y0, y1) for lbl, y0, y1 in truth])
+        multi_page(
+            tmp_path, r, zn.MZDIR, [(PERM[lbl], y0, y1) for lbl, y0, y1 in truth]
+        )
 
 
 def test_score_refuses_without_the_frozen_split(tmp_path):
@@ -545,8 +633,12 @@ def test_an_exempt_page_is_not_scored(tmp_path):
     multi_page(tmp_path, "1-048", zn.MZDIR, [("MainZone-P", 600, 900)])
     # A plate: ruled exempt, so no zones — and the model covered it in guesses.
     multi_page(tmp_path, "1-083", zn.ZONEDIR, [])
-    multi_page(tmp_path, "1-083", zn.MZDIR,
-               [("MainZone-P", 100 * i, 100 * i + 80) for i in range(1, 9)])
+    multi_page(
+        tmp_path,
+        "1-083",
+        zn.MZDIR,
+        [("MainZone-P", 100 * i, 100 * i + 80) for i in range(1, 9)],
+    )
     zn.set_split("1-083", "exempt", tmp_path)
     frozen_split(tmp_path, ["1-048"], [])
     rep = zn.score(tmp_path, CFG)
@@ -564,9 +656,16 @@ def test_score_reports_both_directions(tmp_path):
     both are reported, and the sliver-filtered row beside the raw one."""
     truth = [("RunningTitleZone", 600, 700), ("MainZone-P", 720, 1500)]
     multi_page(tmp_path, "1-048", zn.ZONEDIR, truth)
-    multi_page(tmp_path, "1-048", zn.MZDIR,
-               truth + [("QuireMarksZone", 2000, 2007),      # a 7 px sliver
-                        ("QuireMarksZone", 2100, 2105)])     # and another
+    multi_page(
+        tmp_path,
+        "1-048",
+        zn.MZDIR,
+        truth
+        + [
+            ("QuireMarksZone", 2000, 2007),  # a 7 px sliver
+            ("QuireMarksZone", 2100, 2105),
+        ],
+    )  # and another
     frozen_split(tmp_path, ["1-048"], [])
     by = {(r["split"], r["counting"]): r for r in zn.score(tmp_path, CFG)["splits"]}
     raw = by[("trained-on", "as emitted")]
@@ -585,7 +684,7 @@ def test_the_permutation_test_separates_relabelling_from_a_weak_model(tmp_path):
     frozen_split(tmp_path, ["1-048", "1-052"], ["1-053"])
     p = zn.score(tmp_path, CFG)["permutation"]
     assert p["bijective"] is True
-    assert p["holds_out"] == 100.0          # derived on train, perfect on eval
+    assert p["holds_out"] == 100.0  # derived on train, perfect on eval
     assert "MainZone-P->MarginTextZone-Notes" in p["map"]
 
 
@@ -609,10 +708,18 @@ def test_a_correct_model_is_not_reported_as_a_relabelling(tmp_path):
 def test_a_diffuse_error_is_not_reported_as_a_permutation(tmp_path):
     """The other half. A model that is merely wrong must not be dressed up as a
     relabelling, or `--remap-model` would rename channels on noise."""
-    multi_page(tmp_path, "1-048", zn.ZONEDIR,
-               [("MainZone-P", 600, 700), ("MainZone-P", 720, 900)])
-    multi_page(tmp_path, "1-048", zn.MZDIR,
-               [("RunningTitleZone", 600, 700), ("MainZone-Other", 720, 900)])
+    multi_page(
+        tmp_path,
+        "1-048",
+        zn.ZONEDIR,
+        [("MainZone-P", 600, 700), ("MainZone-P", 720, 900)],
+    )
+    multi_page(
+        tmp_path,
+        "1-048",
+        zn.MZDIR,
+        [("RunningTitleZone", 600, 700), ("MainZone-Other", 720, 900)],
+    )
     multi_page(tmp_path, "1-052", zn.ZONEDIR, [("MainZone-P", 600, 700)])
     multi_page(tmp_path, "1-052", zn.MZDIR, [("QuireMarksZone", 600, 700)])
     frozen_split(tmp_path, ["1-048"], ["1-052"])
@@ -624,16 +731,25 @@ def test_a_diffuse_error_is_not_reported_as_a_permutation(tmp_path):
 def test_remap_refuses_when_the_evidence_is_thin(tmp_path):
     """`--remap-model` writes a model file, so its refusals are the safety. A
     non-bijective or poorly-holding map must not reach the weights."""
-    multi_page(tmp_path, "1-048", zn.ZONEDIR,
-               [("MainZone-P", 600, 700), ("RunningTitleZone", 720, 900)])
-    multi_page(tmp_path, "1-048", zn.MZDIR,
-               [("MainZone-Other", 600, 700), ("MainZone-Other", 720, 900)])
+    multi_page(
+        tmp_path,
+        "1-048",
+        zn.ZONEDIR,
+        [("MainZone-P", 600, 700), ("RunningTitleZone", 720, 900)],
+    )
+    multi_page(
+        tmp_path,
+        "1-048",
+        zn.MZDIR,
+        [("MainZone-Other", 600, 700), ("MainZone-Other", 720, 900)],
+    )
     frozen_split(tmp_path, ["1-048"], [])
     with pytest.raises(ValueError, match="refusing to rewrite"):
         zn.remap_model(tmp_path, zn.DEFAULT_MODEL, commit=False, cfg=CFG)
 
 
 # ------------------------------------------------------------ un-keying a page
+
 
 def test_a_page_keyed_then_emptied_can_only_be_withdrawn(tmp_path):
     """The corner case the store could not express. `save_zones` refuses an empty
@@ -642,11 +758,14 @@ def test_a_page_keyed_then_emptied_can_only_be_withdrawn(tmp_path):
     nothing", which already means something else, and marking it exempt, which
     claims it is a plate."""
     make_scan(tmp_path, "1-048")
-    zn.save_zones("1-048", [{"label": "MainZone-P", "x0": 700, "y0": 600,
-                             "x1": 2478, "y1": 900}], tmp_path)
+    zn.save_zones(
+        "1-048",
+        [{"label": "MainZone-P", "x0": 700, "y0": 600, "x1": 2478, "y1": 900}],
+        tmp_path,
+    )
     assert zn.has_zones("1-048", tmp_path)
     with pytest.raises(ValueError, match="delete"):
-        zn.save_zones("1-048", [], tmp_path)      # and the refusal names the way out
+        zn.save_zones("1-048", [], tmp_path)  # and the refusal names the way out
     rep = zn.delete_zones("1-048", tmp_path, commit=True)
     assert rep["zones"] == 1 and not zn.has_zones("1-048", tmp_path)
 
@@ -655,8 +774,12 @@ def test_deleting_takes_the_marks_with_it(tmp_path):
     """A ref left in `_train.lst` naming a file that no longer exists is a dangling
     claim of exactly the kind `harness figures` exists to catch elsewhere."""
     make_scan(tmp_path, "1-048")
-    zn.save_zones("1-048", [{"label": "MainZone-P", "x0": 700, "y0": 600,
-                             "x1": 2478, "y1": 900}], tmp_path, split="eval")
+    zn.save_zones(
+        "1-048",
+        [{"label": "MainZone-P", "x0": 700, "y0": 600, "x1": 2478, "y1": 900}],
+        tmp_path,
+        split="eval",
+    )
     zn.set_exempt("1-048", ["title-first"], tmp_path)
     zn.set_ink_exempt("1-048", [{"y0": 10, "y1": 20, "note": "smudge"}], tmp_path)
     zn.delete_zones("1-048", tmp_path, commit=True)
@@ -669,10 +792,13 @@ def test_deleting_is_previewed_journalled_and_recoverable(tmp_path):
     """Same durability shape as a save, because this is the more dangerous
     direction: `.prev` one deep, the journal permanent, `--commit` required."""
     make_scan(tmp_path, "1-048")
-    zn.save_zones("1-048", [{"label": "MainZone-P", "x0": 700, "y0": 600,
-                             "x1": 2478, "y1": 900}], tmp_path)
+    zn.save_zones(
+        "1-048",
+        [{"label": "MainZone-P", "x0": 700, "y0": 600, "x1": 2478, "y1": 900}],
+        tmp_path,
+    )
     assert zn.delete_zones("1-048", tmp_path)["committed"] is False
-    assert zn.has_zones("1-048", tmp_path)                 # preview wrote nothing
+    assert zn.has_zones("1-048", tmp_path)  # preview wrote nothing
     zn.delete_zones("1-048", tmp_path, commit=True)
     assert (tmp_path / zn.ZONEDIR / "chukchi-1-048.xml.prev").exists()
     log = (tmp_path / zn.ZONEDIR / zn.JOURNAL).read_text(encoding="utf-8")
@@ -683,6 +809,7 @@ def test_deleting_is_previewed_journalled_and_recoverable(tmp_path):
 
 # --------------------------------------------------------- paragraph splitting
 
+
 def ruled_page(root: Path, ref: str, lines, w=2824, h=3897):
     """A raster of black bars standing in for lines of type.
 
@@ -690,7 +817,9 @@ def ruled_page(root: Path, ref: str, lines, w=2824, h=3897):
     so a test can put a paragraph opening exactly where it means to.
     """
     from PIL import Image, ImageDraw
-    d = root / "scans"; d.mkdir(parents=True, exist_ok=True)
+
+    d = root / "scans"
+    d.mkdir(parents=True, exist_ok=True)
     im = Image.new("L", (w, h), 255)
     dr = ImageDraw.Draw(im)
     for y, ind, wid in lines:
@@ -702,15 +831,20 @@ def test_an_indented_line_inside_a_zone_is_a_paragraph_start(tmp_path):
     """The check the segmenter cannot do: two abutting MainZone-P rectangles
     rasterize to one target, so the boundary is destroyed before the network sees
     it. 42% of gt boundaries are same-label, so this is nearly half of them."""
-    ruled_page(tmp_path, "1-048",
-               [(600, 120, 1600),    # the zone's own first line — never reported
-                (700, 15, 1600),     # continuing
-                (800, 122, 1600),    # a new paragraph
-                (900, 15, 1600)])
+    ruled_page(
+        tmp_path,
+        "1-048",
+        [
+            (600, 120, 1600),  # the zone's own first line — never reported
+            (700, 15, 1600),  # continuing
+            (800, 122, 1600),  # a new paragraph
+            (900, 15, 1600),
+        ],
+    )
     multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 580, 1000)])
     hits = zn.paragraph_starts("1-048", tmp_path, CFG)
     assert len(hits) == 1
-    assert hits[0]["zone"] == 1 and hits[0]["index"] == 3   # both 1-based
+    assert hits[0]["zone"] == 1 and hits[0]["index"] == 3  # both 1-based
     # `indent` is measured **against the margin the page's body sets**, not against
     # the column edge — so a line drawn 122 px in, over body lines at 15 px, reads
     # ~107 rather than 122. That is the unit, and it is what makes the check
@@ -722,26 +856,22 @@ def test_an_indented_line_inside_a_zone_is_a_paragraph_start(tmp_path):
 def test_a_speck_in_the_margin_is_not_a_line(tmp_path):
     """Five of the first twenty hits were 4-21 px specks far to the right. A run
     that narrow is dirt, and `min_line_w_px` is why it no longer reports."""
-    ruled_page(tmp_path, "1-048",
-               [(600, 120, 1600), (700, 15, 1600), (800, 1400, 12)])
+    ruled_page(tmp_path, "1-048", [(600, 120, 1600), (700, 15, 1600), (800, 1400, 12)])
     multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 580, 900)])
     assert zn.paragraph_starts("1-048", tmp_path, CFG) == []
 
 
 def test_only_the_configured_labels_are_examined(tmp_path):
     """An indent means something else inside a footnote or a running title."""
-    ruled_page(tmp_path, "1-048",
-               [(600, 120, 1600), (700, 15, 1600), (800, 122, 1600)])
-    multi_page(tmp_path, "1-048", zn.ZONEDIR,
-               [("MarginTextZone-Notes", 580, 900)])
+    ruled_page(tmp_path, "1-048", [(600, 120, 1600), (700, 15, 1600), (800, 122, 1600)])
+    multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MarginTextZone-Notes", 580, 900)])
     assert zn.paragraph_starts("1-048", tmp_path, CFG) == []
 
 
 def test_splitting_cuts_at_the_opening_line(tmp_path):
     """The new zone begins where its first line begins — which is how the editor
     draws one, and how gt records its 561 abutting pairs."""
-    ruled_page(tmp_path, "1-048",
-               [(600, 120, 1600), (700, 15, 1600), (800, 122, 1600)])
+    ruled_page(tmp_path, "1-048", [(600, 120, 1600), (700, 15, 1600), (800, 122, 1600)])
     zones = [{"label": "MainZone-P", "x0": 700, "x1": 2478, "y0": 580, "y1": 900}]
     out = zn.split_at_paragraphs(zones, "1-048", tmp_path, CFG)
     assert [(z["y0"], z["y1"]) for z in out] == [(580, 800), (800, 900)]
@@ -763,12 +893,17 @@ def test_a_sliver_never_folds_across_a_label(tmp_path):
     why it is asserted — applied to a decoder's output, where adjacent bands really
     do differ, merging a sliver sideways would silently retype a strip of page."""
     segs = [[100, 118, "MainZone-P"], [118, 600, "MarginTextZone-Notes"]]
-    assert zn._consolidate(segs, 30, "down") == segs      # left standing, reported
+    assert zn._consolidate(segs, 30, "down") == segs  # left standing, reported
     # With a match on the far side only, preference gives way to correctness.
-    segs = [[100, 560, "MainZone-P"], [560, 578, "MainZone-P"],
-            [578, 900, "MarginTextZone-Notes"]]
+    segs = [
+        [100, 560, "MainZone-P"],
+        [560, 578, "MainZone-P"],
+        [578, 900, "MarginTextZone-Notes"],
+    ]
     assert zn._consolidate(segs, 30, "down") == [
-        [100, 578, "MainZone-P"], [578, 900, "MarginTextZone-Notes"]]
+        [100, 578, "MainZone-P"],
+        [578, 900, "MarginTextZone-Notes"],
+    ]
 
 
 def test_a_zone_with_one_paragraph_is_returned_unchanged(tmp_path):
@@ -779,20 +914,22 @@ def test_a_zone_with_one_paragraph_is_returned_unchanged(tmp_path):
 
 # ------------------------------------------------------------ the DP decoder
 
+
 def test_the_decoder_cannot_emit_a_sliver_or_an_overlap(tmp_path):
     """The mechanical rules built in rather than checked afterwards. One label per
     row makes an overlap unrepresentable; the minimum duration makes a sliver
     unrepresentable. The blob decode produces both and has them filtered out."""
     import numpy as np
+
     n, k = 300, 3
     rows = np.full((n, k), 0.01)
-    rows[0:100, 0] = 0.9           # a real band
-    rows[100:104, 1] = 0.9         # a 4-row sliver: must not survive
-    rows[104:300, 2] = 0.9         # another real band
-    rows[50:60, 2] = 0.9           # class 2 also confident inside class 0's band
+    rows[0:100, 0] = 0.9  # a real band
+    rows[100:104, 1] = 0.9  # a 4-row sliver: must not survive
+    rows[104:300, 2] = 0.9  # another real band
+    rows[50:60, 2] = 0.9  # class 2 also confident inside class 0's band
     segs = zn._segmental_decode(rows, min_len=20)
     labelled = [s for s in segs if s[2] is not None]
-    assert all(j - i >= 20 for i, j, _ in labelled)          # no sliver
+    assert all(j - i >= 20 for i, j, _ in labelled)  # no sliver
     # A partition: segments tile the page in order and never overlap.
     assert segs[0][0] == 0 and segs[-1][1] == n
     for a, b in zip(segs, segs[1:]):
@@ -803,9 +940,10 @@ def test_the_decoder_merges_a_fragmented_band(tmp_path):
     """Most of the residual precision gap is one true band arriving as two. Adjacent
     runs of one label are one band, so the DP needs no rule against splitting."""
     import numpy as np
+
     rows = np.full((200, 2), 0.01)
     rows[0:90, 0] = 0.9
-    rows[90:95, 0] = 0.55          # a dip in confidence, not a boundary
+    rows[90:95, 0] = 0.55  # a dip in confidence, not a boundary
     rows[95:200, 0] = 0.9
     segs = [s for s in zn._segmental_decode(rows, min_len=10) if s[2] is not None]
     assert len(segs) == 1 and segs[0] == (0, 200, 0)
@@ -818,26 +956,34 @@ def test_the_decoder_does_not_enforce_the_order_rules(tmp_path):
     unfalsifiable and silently normalise exactly what it exists to surface. So a
     footnotes-then-title page must still decode as what it is."""
     import numpy as np
+
     rows = np.full((200, 2), 0.01)
-    rows[0:100, 1] = 0.9           # class 1 on top...
-    rows[100:200, 0] = 0.9         # ...class 0 below, whatever their ranks
+    rows[0:100, 1] = 0.9  # class 1 on top...
+    rows[100:200, 0] = 0.9  # ...class 0 below, whatever their ranks
     segs = [s for s in zn._segmental_decode(rows, min_len=10) if s[2] is not None]
     assert [s[2] for s in segs] == [1, 0]
 
 
 # ------------------------------------------------------------ the train merge
 
+
 def test_a_train_merge_folds_the_training_copy_and_not_the_store(tmp_path):
     """`train_merges` narrows what the *segmenter* is asked to learn. The keyed
     file keeps the distinction, because a human drew it and it is evidence — the
     fold is a statement about a model's capacity, not about the book."""
     from harness import zones_config as zcm
-    multi_page(tmp_path, "1-048", zn.ZONEDIR,
-               [("MainZone-Quote", 600, 900), ("MainZone-P", 950, 1400)])
+
+    multi_page(
+        tmp_path,
+        "1-048",
+        zn.ZONEDIR,
+        [("MainZone-Quote", 600, 900), ("MainZone-P", 950, 1400)],
+    )
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "data").mkdir(parents=True, exist_ok=True)
     import json, shutil
+
     cfg = json.loads((REPO / "data/zones_config.json").read_text(encoding="utf-8"))
     (tmp_path / "data/zones_config.json").write_text(json.dumps(cfg), encoding="utf-8")
 
@@ -860,6 +1006,7 @@ def test_no_merge_declared_keeps_assemble_on_symlinks(tmp_path):
     """The fold is opt-in. With none declared the training set stays the symlink
     farm it was, so the cheap path is not paid for by pages nobody folds."""
     import json
+
     multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 600, 900)])
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
@@ -874,6 +1021,7 @@ def test_no_merge_declared_keeps_assemble_on_symlinks(tmp_path):
 
 # --------------------------------------------------------------- the ignores
 
+
 def test_the_derived_stores_are_ignored_and_gt_is_not():
     """The one that has to be a test rather than a reading of the file.
 
@@ -886,9 +1034,15 @@ def test_the_derived_stores_are_ignored_and_gt_is_not():
     means.
     """
     import subprocess
+
     def ignored(p):
-        return subprocess.run(["git", "check-ignore", "-q", p],
-                              cwd=REPO, capture_output=True).returncode == 0
+        return (
+            subprocess.run(
+                ["git", "check-ignore", "-q", p], cwd=REPO, capture_output=True
+            ).returncode
+            == 0
+        )
+
     assert ignored("mz/zones/chukchi-1-048.xml")
     assert ignored("zones/chukchi-1-048.xml")
     assert not ignored("gt/zones/chukchi-9-999.xml")
@@ -913,6 +1067,7 @@ def test_load_segmenter_names_the_default_when_it_is_absent(tmp_path):
 
 # ------------------------------------------------------------ the eval re-mark
 
+
 def _mk(root, ref, store, labels=("MainZone-P",), y=600):
     make_scan(root, ref)
     write_page(root, ref, store)
@@ -925,8 +1080,12 @@ def test_remark_eval_never_touches_a_human_marked_page(tmp_path):
     already stopped from committing against the frozen lists."""
     for r in ("1-001", "1-002", "1-003", "1-004"):
         make_scan(tmp_path, r)
-        zn.save_zones(r, [{"label": "MainZone-P", "x0": 0, "y0": 600,
-                           "x1": 100, "y1": 900}], tmp_path, split="train")
+        zn.save_zones(
+            r,
+            [{"label": "MainZone-P", "x0": 0, "y0": 600, "x1": 100, "y1": 900}],
+            tmp_path,
+            split="train",
+        )
     zn.set_split("1-001", "eval", tmp_path)
     zn.set_split("1-002", "exempt", tmp_path)
     zn.remark_eval(tmp_path, 1.0, commit=True)
@@ -939,8 +1098,12 @@ def test_remark_eval_never_touches_a_human_marked_page(tmp_path):
 def test_remark_eval_reports_without_writing_unless_committed(tmp_path):
     for r in ("1-001", "1-002"):
         make_scan(tmp_path, r)
-        zn.save_zones(r, [{"label": "MainZone-P", "x0": 0, "y0": 600,
-                           "x1": 100, "y1": 900}], tmp_path, split="train")
+        zn.save_zones(
+            r,
+            [{"label": "MainZone-P", "x0": 0, "y0": 600, "x1": 100, "y1": 900}],
+            tmp_path,
+            split="train",
+        )
     rep = zn.remark_eval(tmp_path, 0.5)
     assert rep["moved"] == 1 and rep["committed"] is False
     assert all(v == "train" for v in zn.load_splits(tmp_path).values())
@@ -954,8 +1117,12 @@ def test_remark_eval_quotas_are_per_part(tmp_path):
         for i in range(1, n + 1):
             r = f"{part}-{i:03d}"
             make_scan(tmp_path, r)
-            zn.save_zones(r, [{"label": "MainZone-P", "x0": 0, "y0": 600,
-                               "x1": 100, "y1": 900}], tmp_path, split="train")
+            zn.save_zones(
+                r,
+                [{"label": "MainZone-P", "x0": 0, "y0": 600, "x1": 100, "y1": 900}],
+                tmp_path,
+                split="train",
+            )
     rep = zn.remark_eval(tmp_path, 0.2)
     assert {p["part"]: p["quota"] for p in rep["parts"]} == {"1": 2, "2": 2}
 
@@ -965,9 +1132,13 @@ def test_independent_compares_the_two_stores_not_one_of_them_twice(tmp_path):
     reads gt both times and calls every page identical. The guard against the
     one-witness comparison had the one-witness comparison in it."""
     make_scan(tmp_path, "1-048")
-    zn.save_zones("1-048", [{"label": "MainZone-P", "x0": 0, "y0": 600,
-                             "x1": 100, "y1": 900}], tmp_path, split="train")
-    assert zn._independent("1-048", tmp_path) is True      # no prediction at all
+    zn.save_zones(
+        "1-048",
+        [{"label": "MainZone-P", "x0": 0, "y0": 600, "x1": 100, "y1": 900}],
+        tmp_path,
+        split="train",
+    )
+    assert zn._independent("1-048", tmp_path) is True  # no prediction at all
     # Identical where it counts. x is not compared and must not be: both stores take
     # it from the same configured column, so a difference there is never a human's
     # ruling — the y-pair and the label are the whole content of a band.
