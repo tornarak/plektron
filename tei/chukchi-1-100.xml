@@ -22,20 +22,20 @@
            order interleaves them, so ocr_lines runs 32,33,34,48,35,… against the
            single 1-14 sequence printed. Typography, not structure. -->
       <list type="gloss">
-        <item n="1"><term xml:lang="ckt" resp="#llm">Teñ-uweˊlᴇ</term> (<gloss>“quite black” [chestnut brown]</gloss>).</item>
-        <item n="2"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_8fe715d3">Uuˊrg̣ɪlɪn</term> (<gloss>“black hair tipped”</gloss>).</item>
-        <item n="3"><term xml:lang="ckt" resp="#llm">Čêvaˊro</term> (<gloss>“gray”</gloss>).</item>
-        <item n="4"><term xml:lang="ckt" resp="#llm">Êlhɪ-čêvaˊro</term> (<gloss>“gray with white”</gloss>) or <term xml:lang="ckt" resp="#llm" facs="#eSc_line_f0880439">yiᵋlɪ-luᵋˊ</term> (<gloss>“moon-faced,” since the white is usually on the face</gloss>).</item>
-        <item n="5"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_37cf16de">ɪᵋˊpɪrg̣ɪn</term> (<gloss>“yellowish hair tipped” [on brown ground]</gloss>).</item>
-        <item n="6"><term xml:lang="ckt" resp="#llm">Uuᵋplɪˊlᴇ</term> (<gloss>“black yellowish” [somewhat lighter than the preceding one]</gloss>).</item>
-        <item n="7"><term xml:lang="ckt" resp="#llm">ɪᵋplɪˊlᴇ</term> (<gloss>“yellowish” [on gray ground]</gloss>).</item>
-        <item n="8"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_0d82d41c">Ilh-ɪᵋplɪˊlᴇ</term> (<gloss>“whitish yellow”</gloss>).</item>
-        <item n="9"><term xml:lang="ckt" resp="#llm">Čêˊčhên-yaˊqɪlhɪn</term> (<gloss>“under-leg grayish” [light-gray spots under the legs and on the groins, body brown]</gloss>).<!-- "light-gray" breaks at the line end ("[light-" / "gray spots"), so the hyphen may be the break rather than the compound. Retained because it stands attributive before a noun, but the page gives no mid-line witness for it hyphenated and item 10 sets "belly light gray" open: needs a human call on hyphenated vs. open --></item>
-        <item n="10"><term xml:lang="ckt" resp="#llm">Uw-yaˊqᴀčhɪn</term> (<gloss>“black, under-leg grayish” [same as before, belly light gray, white spot on the forehead]</gloss>).</item>
-        <item n="11"><term xml:lang="ckt" resp="#llm">Yaˊqɪlhɪn</term> (<gloss>“under-leg grayish” [same as before, brown parts less extended]</gloss>).</item>
-        <item n="12"><term xml:lang="ckt" resp="#llm">Yɪˊhɪlhɪn</term> (<gloss>“whitish” [with brown stripe along the back]</gloss>).</item>
-        <item n="13"><term xml:lang="ckt" resp="#llm">Êˊlhar</term> (<gloss>“white fox”</gloss>).</item>
-        <item n="14"><term xml:lang="ckt" resp="#llm">Ilhɪ-lileˊ</term> (<gloss>“white-eyed” [albino]<note n="1" place="bottom">Albinos have pink eyes. Their velvet is rosy on account of the transparency of the skin. They are weak and sleepy, though very tame. The Chukchee usually kill them at an early age, as, on the whole, they do not like anything abnormal among their reindeer.</note></gloss>).</item>
+        <item n="1"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-1">Teñ-uweˊlᴇ</term> (<gloss target="#term-1-100-1">“quite black” [chestnut brown]</gloss>).</item>
+        <item n="2"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_8fe715d3" xml:id="term-1-100-2">Uuˊrg̣ɪlɪn</term> (<gloss target="#term-1-100-2">“black hair tipped”</gloss>).</item>
+        <item n="3"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-3">Čêvaˊro</term> (<gloss target="#term-1-100-3">“gray”</gloss>).</item>
+        <item n="4"><term xml:id="term-1-100-4" xml:lang="ckt" resp="#llm">Êlhɪ-čêvaˊro</term> (<gloss target="#term-1-100-4">“gray with white”</gloss>) or <term xml:id="term-1-100-5" xml:lang="ckt" resp="#llm" facs="#eSc_line_f0880439">yiᵋlɪ-luᵋˊ</term> (<gloss target="#term-1-100-5">“moon-faced,” since the white is usually on the face</gloss>).</item>
+        <item n="5"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_37cf16de" xml:id="term-1-100-6">ɪᵋˊpɪrg̣ɪn</term> (<gloss target="#term-1-100-6">“yellowish hair tipped” [on brown ground]</gloss>).</item>
+        <item n="6"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-7">Uuᵋplɪˊlᴇ</term> (<gloss target="#term-1-100-7">“black yellowish” [somewhat lighter than the preceding one]</gloss>).</item>
+        <item n="7"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-8">ɪᵋplɪˊlᴇ</term> (<gloss target="#term-1-100-8">“yellowish” [on gray ground]</gloss>).</item>
+        <item n="8"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_0d82d41c" xml:id="term-1-100-9">Ilh-ɪᵋplɪˊlᴇ</term> (<gloss target="#term-1-100-9">“whitish yellow”</gloss>).</item>
+        <item n="9"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-10">Čêˊčhên-yaˊqɪlhɪn</term> (<gloss target="#term-1-100-10">“under-leg grayish” [light-gray spots under the legs and on the groins, body brown]</gloss>).<!-- "light-gray" breaks at the line end ("[light-" / "gray spots"), so the hyphen may be the break rather than the compound. Retained because it stands attributive before a noun, but the page gives no mid-line witness for it hyphenated and item 10 sets "belly light gray" open: needs a human call on hyphenated vs. open --></item>
+        <item n="10"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-11">Uw-yaˊqᴀčhɪn</term> (<gloss target="#term-1-100-11">“black, under-leg grayish” [same as before, belly light gray, white spot on the forehead]</gloss>).</item>
+        <item n="11"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-12">Yaˊqɪlhɪn</term> (<gloss target="#term-1-100-12">“under-leg grayish” [same as before, brown parts less extended]</gloss>).</item>
+        <item n="12"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-13">Yɪˊhɪlhɪn</term> (<gloss target="#term-1-100-13">“whitish” [with brown stripe along the back]</gloss>).</item>
+        <item n="13"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-14">Êˊlhar</term> (<gloss target="#term-1-100-14">“white fox”</gloss>).</item>
+        <item n="14"><term xml:lang="ckt" resp="#llm" xml:id="term-1-100-15">Ilhɪ-lileˊ</term> (<gloss target="#term-1-100-15">“white-eyed” [albino]<note n="1" place="bottom">Albinos have pink eyes. Their velvet is rosy on account of the transparency of the skin. They are weak and sleepy, though very tame. The Chukchee usually kill them at an early age, as, on the whole, they do not like anything abnormal among their reindeer.</note></gloss>).</item>
       </list>
     </body>
   </text>

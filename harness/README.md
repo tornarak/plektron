@@ -54,6 +54,16 @@ the validator that checks it.
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is
 the answer, not a failure. Also `toc_window`/`toc_search`/`toc_near`.
 
+**`ids.py`** — structural ids, `{kind}-{PP-NNN}-{ordinal}`. The ordinal is the
+element's **position** among same-kind elements in document order, not a tally of
+ids minted — so ids are sparse, every one is verifiable by counting the tree alone,
+and adding a referrer to one element never renumbers another. Kinds are exactly
+what something can point at (`term`, `list`, `table`); a kind no referrer can name
+would be dead surface in the gate. `--pair` links a `<gloss>` to its `<term>` where
+containment decides and **refuses where it does not** — two pairs in one item is an
+editorial question, not a branch to pick. Note the trap the ordinal creates: it is
+not the printed item number, since `1-100`'s item 4 holds two terms.
+
 **`seam.py`** — page seams. A gap carries one fact — is an element open across it —
 and that fact lands on two elements, one per page. The page *after* the gap writes
 both, because it is the only place both witnesses exist: it holds the predecessor's

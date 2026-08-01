@@ -582,6 +582,14 @@ if you ever need it.
                                       validate enforces. Two files hold one fact and
                                       a page never resolves @resp locally, so
                                       without this they drift silently. Exit 1 on FAIL
+    uv run harness ids PP-NNN         structural ids against the scheme
+                                      {kind}-{PP-NNN}-{ordinal}, the ordinal being
+                                      the element's *position* among same-kind
+                                      elements — so every id is recomputable from
+                                      the tree. --pair links each <gloss> to its
+                                      <term> where containment decides and refuses
+                                      where it does not; --fix renumbers, repairing
+                                      a neighbour's inbound @prev/@next too
     uv run harness seam PP-NNN        --continues / --fresh: does an element run
                                       across the gap BEFORE this page. Writes
                                       @part on this page's first top-level element
@@ -1058,10 +1066,24 @@ jumping around gives nulls until gaps fill. Both are fine.
 
 TBD beyond the per-page output contract in `transcriber_harness.md` (`<pb>`
 first, no `<div>`, no `<lb/>`, minimal teiHeader, footnotes anchored at their
-markers, figures anchored to supplied zones). **Assembly and the id-minting
-scheme are still unsettled**; the corpus teiHeader is not, and is
-`tei/corpus-header.xml`. No pass to date mints an `xml:id` — the continuation and
-annotation passes will, deterministically.
+markers, figures anchored to supplied zones). **Assembly is still unsettled**; the
+corpus teiHeader is not, and is `tei/corpus-header.xml`.
+
+**The id scheme is settled and is `harness/ids.py`** — `{kind}-{PP-NNN}-{ordinal}`,
+where the ordinal is the element's *position* among same-kind elements in document
+order rather than a tally of ids minted. That distinction is the whole design: ids
+are sparse (only where something points at one), every id is a total function of
+the tree and so recomputable without reference to any other file, and adding a
+referrer to one element never renumbers another. The blanket ban it replaced was a
+real concern about *arbitrary* ids generalised into a prohibition, and it gated
+three unrelated things at once; what replaces it is a check, because **a checkable
+rule beats a prohibition — it does not depend on the pass behaving.**
+
+Two consequences worth knowing before writing one. The ordinal is **not** the
+printed item number: `1-100`'s item 4 holds two `<term>`s, so item 5's term is
+`term-1-100-6`. And an id names the page it lives on — checked, because `prev_tail`
+now hands the pass the previous page's markup with its ids in it, and a copy-paste
+would otherwise import a foreign id in silence.
 
 **The header is a fragment, like the page files.** A bare `<teiHeader>` in the TEI
 namespace, not a valid TEI document standalone — `teiCorpus` requires at least one
@@ -1126,10 +1148,22 @@ TBD
   it. `harness context` does not yet supply the previous page's tail, and the
   English-correction licence still permits completing a sentence or capitalising a
   first word at a page edge, which would destroy the seam's own text witness.
-- **Run-on lists and tables have no markup yet.** TEI's `att.fragmentable` covers
-  `p` and `quote` but not `list`/`table`, so those need `prev`/`next` pointers and
-  therefore `xml:id`s. `harness seam` refuses them by name rather than guessing;
-  the id scheme is the blocker, and it is also what term↔gloss linking needs.
+- **A note running across a page seam has no markup.** `<note>` is nested rather
+  than a top-level body element, so `seam`'s two-sided-edge machinery does not
+  reach it, and the pilot set has no attested instance — so it is deliberately
+  unresolved rather than built for. The orphan-foot-text comment names no pass.
+- **Corpus-stable identity is not settled**, and the id scheme deliberately does
+  not provide it: ordinals move when content is inserted, so a pointer held
+  outside the page would break silently. These ids are stable within a page file's
+  current version and nothing outside the corpus may cite one. The annotation
+  passes need their own scheme, over finished TEI.
+- **Nothing validates the TEI against the TEI schema.** `harness validate` checks
+  *project* rules; there is no RELAX NG, no `tei_all`, no schema anywhere in the
+  repo. That now covers six attribute usages nobody checks for conformance —
+  `@part`, `xml:id`, `@target`, `@prev`, `@next`, and `@type` on `<gloss>`. It
+  needs no new dependency (`lxml` has `etree.RelaxNG`); what it needs is a
+  committed schema and an assembly step, since a page file is a fragment and will
+  not validate standalone.
 - **`data/toc.json` (315 entries) records no provenance.** `loi.json` and
   `authorities.json` both name the scans they were read from; this one does not,
   and the printed ToC's scan range is not recoverable from the file. Someone who

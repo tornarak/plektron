@@ -184,6 +184,134 @@ def check_corpus_header(root: Path) -> Report:
     return r
 
 
+def _check_ids(r: Report, root, ctx: dict | None) -> None:
+    """The id scheme, checked rather than prohibited.
+
+    The blanket ban that stood here ("this pass mints no ids") was a real concern
+    about *arbitrary* ids generalised into a prohibition on all of them, and it
+    blocked three unrelated things at once. What replaces it is a shape check: an
+    id is a pure function of the element's kind, the page's ref and the element's
+    position among same-kind elements, so the gate can recompute what every id
+    *must* be and compare. A checkable rule beats a prohibition, because it does
+    not depend on the pass behaving.
+    """
+    from . import ids as idmod
+    from .seam import body_elements, next_ref, prev_ref, tei_path
+
+    ref = (ctx or {}).get("page_ref")
+    croot = Path((ctx or {}).get("root", "."))
+    present = idmod.ids_in(root)
+    canonical = idmod.canonical_map(root, ref) if ref else {}
+    want = {el: i for el, i in canonical.items()}
+    referenced = idmod.referenced_ids(root)
+
+    for ident, el in present.items():
+        name = etree.QName(el).localname
+        parsed = idmod.parse_id(ident)
+        if parsed is None:
+            r.errors.append(
+                f'xml:id="{ident}" on <{name}> is not of the scheme '
+                f"{{kind}}-{{PP-NNN}}-{{ordinal}}, kinds {list(idmod.KINDS)}")
+            continue
+        if ref and parsed["ref"] != ref:
+            # The one that matters most now that `prev_tail` hands over the
+            # previous page's markup with its ids in it: a copy-paste would
+            # otherwise import a foreign id silently.
+            r.errors.append(
+                f'xml:id="{ident}" embeds ref {parsed["ref"]}, but this is {ref} '
+                "— an id names the page it lives on")
+        elif ref and want.get(el) != ident:
+            r.errors.append(
+                f'xml:id="{ident}" on <{name}> should be "{want.get(el)}" — the '
+                "ordinal is the element's position among same-kind elements in "
+                "document order, not a counter of the ids minted")
+        if ident not in referenced and not _referenced_by_neighbour(
+                ident, ref, croot, tei_path, prev_ref, next_ref, idmod):
+            r.errors.append(
+                f'xml:id="{ident}" on <{name}> has no referrer — nothing in this '
+                "page or either neighbour points at it. Ids are minted where "
+                "something needs to name them, never in advance")
+
+    for p in idmod.pointers_in(root, idmod.IN_FILE_POINTERS):
+        if p["id"] not in present:
+            r.errors.append(
+                f'@{p["attr"]}="#{p["id"]}" on '
+                f'<{etree.QName(p["el"]).localname}> resolves to nothing in this page')
+
+    # A supplied gloss is not on the page. It is drawn from this page's prose or
+    # from book-internal apparatus, so it is authored English rather than
+    # transcribed English, and the two must not be indistinguishable in the file.
+    #
+    # Both states are marked by a *present* attribute, so neither can be reached by
+    # omission: `type="supplied"` requires `@resp`, and a gloss without `@type` is
+    # transcription and must not carry one. Note `@resp` means something different
+    # here than on a Tier-1 span — "a model authored this English sentence", not "a
+    # model read this glyph off the scan". The firewall's subject is glyph identity
+    # and does not reach English; what carries over is the rank's actual question,
+    # how far this has been checked.
+    for gl in root.iter(f"{{{TEI_NS}}}gloss"):
+        kind, resp = gl.get("type"), gl.get("resp")
+        if kind == "supplied" and resp is None:
+            r.errors.append(
+                '<gloss type="supplied"> without @resp — a gloss not on the page '
+                "was authored by someone, and who is the whole question")
+        elif kind is None and resp is not None:
+            r.errors.append(
+                f"<gloss resp={resp!r}> without type='supplied' — a gloss "
+                "reproducing the print is transcription and carries no rank")
+        elif kind not in (None, "supplied"):
+            r.errors.append(
+                f"<gloss type={kind!r}> — the only declared value is 'supplied'")
+
+    if not ref:
+        return
+    for p in idmod.pointers_in(root, idmod.CROSS_FILE_POINTERS):
+        parsed = idmod.parse_id(p["id"])
+        expect = prev_ref(ref) if p["attr"] == "prev" else next_ref(ref)
+        if parsed is None:
+            r.errors.append(f'@{p["attr"]}="#{p["id"]}" is not a scheme id')
+            continue
+        if parsed["ref"] != expect:
+            r.errors.append(
+                f'@{p["attr"]}="#{p["id"]}" names page {parsed["ref"]}, but '
+                f'@{p["attr"]} from {ref} must name {expect}')
+            continue
+        npath = tei_path(expect, croot)
+        if not Path(npath).exists():
+            # Honest null, same shape as `prev_tail`: the neighbour is not
+            # collated, so the pointer is unresolvable rather than wrong.
+            r.warnings.append(
+                f'@{p["attr"]}="#{p["id"]}" cannot be resolved — {expect} is not '
+                "collated yet")
+            continue
+        target = idmod.ids_in(etree.parse(str(npath)).getroot())
+        if p["id"] not in target:
+            r.errors.append(
+                f'@{p["attr"]}="#{p["id"]}" matches no xml:id in {expect}')
+
+
+def _referenced_by_neighbour(ident, ref, croot, tei_path, prev_ref, next_ref,
+                             idmod) -> bool:
+    """Is this id named by `@prev`/`@next` on either adjacent page?
+
+    Read both, never just one. A list spanning three pages leaves the middle
+    element referenced from both sides, and checking a single neighbour would
+    report a live id as unreferenced.
+    """
+    if not ref:
+        return False
+    for cand in (prev_ref(ref), next_ref(ref)):
+        if not cand:
+            continue
+        p = Path(tei_path(cand, croot))
+        if not p.exists():
+            continue
+        if ident in idmod.referenced_ids(etree.parse(str(p)).getroot(),
+                                         idmod.CROSS_FILE_POINTERS):
+            return True
+    return False
+
+
 def _lang_of(el, default="en") -> str:
     while el is not None:
         v = el.get(XML_LANG)
@@ -274,12 +402,16 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     "top-level element of <body> — nothing in the middle of a "
                     "page spans either gap")
         for att in ("prev", "next"):
-            if el.get(att) is not None:
-                r.errors.append(f"@{att} on <{name}> — carries an id, and the "
-                                "id-minting scheme is unsettled")
-        if el.get("{http://www.w3.org/XML/1998/namespace}id"):
-            r.errors.append(f"xml:id on <{etree.QName(el).localname}> — "
-                            "this pass mints no ids")
+            if el.get(att) is not None and id(el) not in edge:
+                r.errors.append(
+                    f"@{att} on <{name}>, which is neither the first nor the last "
+                    "top-level element of <body> — only those touch a gap")
+            if el.get(att) is not None and el.get("part") is not None:
+                r.errors.append(
+                    f"<{name}> carries both @part and @{att} — one gap, two "
+                    "spellings; a fragmentable element is parted, a linkable one "
+                    "is linked, never both")
+    _check_ids(r, root, ctx)
     # No whitespace immediately before a <note>.
     #
     # The element stands in for the printed marker, and the book sets a thin space

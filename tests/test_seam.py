@@ -21,6 +21,7 @@ from harness import seam
 from harness.validate import validate
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
+XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
 
 
 def page(tmp_path: Path, ref: str, body: str) -> Path:
@@ -127,23 +128,42 @@ def test_fresh_leaves_the_other_gap_alone(tmp_path):
 
 # ------------------------------------------------------------------- refusals
 
-def test_a_list_cannot_carry_part_and_is_refused_not_guessed(tmp_path):
-    """TEI has no @part for <list>/<table>; a run-on list needs prev/next
-    pointers, which need the unsettled id scheme. Refused, with the reason."""
+def test_a_run_on_list_is_linked_rather_than_parted(tmp_path):
+    """TEI's att.fragmentable omits <list>, so the same fact is spelled as a
+    @prev/@next pair. Ids are minted from the canonical position, never invented."""
     page(tmp_path, "1-010", '<pb n="1"/><list><item>x</item></list>')
     page(tmp_path, "1-011", '<pb n="2"/><list><item>y</item></list>')
-    out = seam.set_seam("1-011", True, tmp_path, commit=True)
-    assert out["changes"] == []
-    assert {r["side"] for r in out["refused"]} == {"prev-last", "this-first"}
-    assert all("att.fragmentable" in r["why"] for r in out["refused"])
+    seam.set_seam("1-011", True, tmp_path, commit=True)
+    a = etree.parse(str(tmp_path / "tei" / "chukchi-1-010.xml")).getroot()
+    b = etree.parse(str(tmp_path / "tei" / "chukchi-1-011.xml")).getroot()
+    ea, eb = seam.body_elements(a)[-1], seam.body_elements(b)[0]
+    assert ea.get(XML_ID) == "list-1-010-1" and eb.get(XML_ID) == "list-1-011-1"
+    assert ea.get("next") == "#list-1-011-1"
+    assert eb.get("prev") == "#list-1-010-1"
+    assert ea.get("part") is None and eb.get("part") is None
 
 
-def test_one_side_can_be_refused_while_the_other_is_written(tmp_path):
+def test_mixed_kinds_are_refused_on_continues(tmp_path):
+    """A <p> ending one page and a <list> opening the next are two elements, not
+    one carrying across. Refuse naming both rather than parting the half that
+    happens to be fragmentable — a half-written seam is worse than none."""
     page(tmp_path, "1-010", '<pb n="1"/><p>a</p>')
     page(tmp_path, "1-011", '<pb n="2"/><list><item>y</item></list>')
     out = seam.set_seam("1-011", True, tmp_path, commit=True)
-    assert part_of(tmp_path, "1-010", -1) == "I"
-    assert [r["side"] for r in out["refused"]] == ["this-first"]
+    assert out["changes"] == []
+    assert len(out["refused"]) == 1
+    assert "cannot be one element carrying across" in out["refused"][0]["why"]
+    assert part_of(tmp_path, "1-010", -1) is None
+
+
+def test_mixed_kinds_are_fine_on_fresh(tmp_path):
+    """The ordinary clean break: a page ends with a list, the next opens with a
+    paragraph. Refusing here would fire on normal pages."""
+    page(tmp_path, "1-010", '<pb n="1"/><list><item>x</item></list>')
+    page(tmp_path, "1-011", '<pb n="2"/><p>b</p>')
+    out = seam.set_seam("1-011", False, tmp_path, commit=True)
+    assert out["refused"] == [] or all(
+        "cannot be one element" not in r["why"] for r in out["refused"])
 
 
 def test_an_uncollated_predecessor_is_refused(tmp_path):
@@ -291,9 +311,19 @@ def test_a_terminal_stop_does_not_settle_the_seam(tmp_path):
     assert t["ends_sentence"] is True and t["element"] == "list"
 
 
-def test_prev_and_next_are_still_refused(tmp_path):
-    page(tmp_path, "1-010", '<pb n="1"/><p next="#x">a</p>')
-    assert any("id-minting scheme is unsettled" in e
+def test_part_and_next_together_are_refused(tmp_path):
+    """One gap, two spellings. A fragmentable element is parted, a linkable one
+    is linked, never both — otherwise the same fact can disagree with itself."""
+    page(tmp_path, "1-010",
+         '<pb n="1"/><list xml:id="list-1-010-1" part="I" next="#list-1-011-1">'
+         '<item>x</item></list>')
+    assert any("one gap, two" in e for e in gate(tmp_path, "1-010").errors)
+
+
+def test_prev_next_in_the_middle_of_a_page_is_refused(tmp_path):
+    page(tmp_path, "1-010",
+         '<pb n="1"/><p>a</p><list next="#x"><item>y</item></list><p>c</p>')
+    assert any("neither the first nor the last" in e
                for e in gate(tmp_path, "1-010").errors)
 
 

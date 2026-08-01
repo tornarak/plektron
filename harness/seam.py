@@ -47,6 +47,12 @@ def tei_path(ref: str, root: Path = Path(".")) -> Path:
 # unsettled decision. Reported rather than guessed at.
 FRAGMENTABLE = {"p", "quote", "ab", "l", "lg", "sp"}
 
+# The elements TEI leaves out of att.fragmentable but which do run across a page
+# break in this book. They carry the same single fact as `@part`, spelled as a
+# `@prev`/`@next` pair — which needs ids, which is why the id scheme and this
+# branch landed together.
+LINKABLE = {"list", "table"}
+
 # bit pair -> @part value. (begins_before, runs_past)
 PART_OF_BITS = {(False, False): None, (True, False): "F",
                 (False, True): "I", (True, True): "M"}
@@ -93,6 +99,17 @@ def prev_ref(ref: str) -> str | None:
     """The preceding scan in the same part. Gaps never cross a part boundary."""
     part, idx = parse_ref(ref)
     return f"{part}-{idx - 1:03d}" if idx > 1 else None
+
+
+def next_ref(ref: str) -> str:
+    """The following scan in the same part.
+
+    No upper bound is checked here: a part's last scan has no successor *file*,
+    which every caller discovers by the path not existing. Encoding the per-part
+    maxima (362/268/202) in a second place would be one more fact to drift.
+    """
+    part, idx = parse_ref(ref)
+    return f"{part}-{idx + 1:03d}"
 
 
 def _load(path: Path):
@@ -241,9 +258,31 @@ def set_seam(ref: str, open_gap: bool, root: Path = Path("."),
     if not tels:
         raise ValueError(f"{pref} has no top-level body element to mark")
 
+    earlier, later = tels[-1], hels[0]
+    ename, lname = etree.QName(earlier).localname, etree.QName(later).localname
+
+    # Non-fragmentable elements are linked rather than parted, and the link is a
+    # pair — so both sides must be the same kind before anything is written.
+    if open_gap and {ename, lname} & LINKABLE and ename != lname:
+        out["refused"].append({
+            "side": "both", "ref": ref, "element": f"{pref}:{ename} / {ref}:{lname}",
+            "part": None,
+            "why": f"the gap is declared open but <{ename}> ends {pref} while "
+                   f"<{lname}> opens {ref} — two different elements cannot be one "
+                   "element carrying across. This is an editorial question, not a "
+                   "branch to pick"})
+        return out
+
+    if open_gap and ename == lname and ename in LINKABLE:
+        return _link(out, ref, pref, htree, ttree, here, there,
+                     earlier, later, commit)
+    if not open_gap and ename in LINKABLE and lname in LINKABLE:
+        return _unlink(out, ref, pref, htree, ttree, here, there,
+                       earlier, later, root, commit)
+
     for label, tree, path, el, kwargs in (
-            ("prev-last", ttree, there, tels[-1], {"runs_past": open_gap}),
-            ("this-first", htree, here, hels[0], {"begins_before": open_gap})):
+            ("prev-last", ttree, there, earlier, {"runs_past": open_gap}),
+            ("this-first", htree, here, later, {"begins_before": open_gap})):
         name = etree.QName(el).localname
         before = el.get("part")
         if name not in FRAGMENTABLE:
@@ -251,8 +290,8 @@ def set_seam(ref: str, open_gap: bool, root: Path = Path("."),
                 "side": label, "ref": pref if label == "prev-last" else ref,
                 "element": name, "part": before,
                 "why": f"<{name}> is not in TEI att.fragmentable and cannot carry "
-                       "@part; a run-on list or table needs prev/next pointers, "
-                       "which needs the unsettled xml:id scheme"})
+                       f"@part, and <{name}> is not linkable either — only "
+                       f"{sorted(LINKABLE)} are"})
             continue
         after = _apply(el, **kwargs)
         out["changes"].append({
@@ -262,3 +301,76 @@ def set_seam(ref: str, open_gap: bool, root: Path = Path("."),
             _save(tree, path)
 
     return out
+
+
+def _link(out, ref, pref, htree, ttree, here, there, earlier, later, commit):
+    """Join two same-kind non-fragmentable elements across a gap.
+
+    Same single fact as `@part`, spelled differently only because TEI's
+    att.fragmentable omits <list> and <table>. Ids are minted from the canonical
+    position so they are recomputable, never invented.
+    """
+    from .ids import canonical_map, XML_ID
+
+    eid = canonical_map(ttree.getroot(), pref)[earlier]
+    lid = canonical_map(htree.getroot(), ref)[later]
+    earlier.set(XML_ID, eid)
+    later.set(XML_ID, lid)
+    earlier.set("next", f"#{lid}")
+    later.set("prev", f"#{eid}")
+    out["changes"] += [
+        {"side": "prev-last", "ref": pref, "element": etree.QName(earlier).localname,
+         "from": None, "to": f'xml:id={eid} next=#{lid}'},
+        {"side": "this-first", "ref": ref, "element": etree.QName(later).localname,
+         "from": None, "to": f'xml:id={lid} prev=#{eid}'}]
+    if commit:
+        _save(ttree, there)
+        _save(htree, here)
+    return out
+
+
+def _unlink(out, ref, pref, htree, ttree, here, there, earlier, later, root, commit):
+    """Clear a link, and drop each id that no longer has anything pointing at it.
+
+    The sweep reads **both** of an element's gaps, not just the one being edited.
+    A list spanning three pages leaves the middle element carrying `@prev` *and*
+    `@next`; clearing the earlier gap must not delete an id the later gap still
+    names. Same reason `@part` sets one bit and leaves the other alone.
+    """
+    from .ids import XML_ID
+
+    earlier.attrib.pop("next", None)
+    later.attrib.pop("prev", None)
+    for el, tree, path, side, eref in (
+            (earlier, ttree, there, "prev-last", pref),
+            (later, htree, here, "this-first", ref)):
+        dropped = None
+        if el.get(XML_ID) and not _referenced(el, eref, root):
+            dropped = el.get(XML_ID)
+            el.attrib.pop(XML_ID, None)
+        out["changes"].append({
+            "side": side, "ref": eref, "element": etree.QName(el).localname,
+            "from": "linked", "to": f"unlinked, id {dropped} dropped" if dropped
+                                    else "unlinked, id kept (still referenced)"})
+        if commit:
+            _save(tree, path)
+    return out
+
+
+def _referenced(el, ref: str, root: Path) -> bool:
+    """Does anything still point at this element's id — here or in either neighbour?"""
+    from .ids import XML_ID, pointers_in
+
+    ident = el.get(XML_ID)
+    if not ident:
+        return False
+    for cand in (ref, prev_ref(ref), next_ref(ref)):
+        if not cand:
+            continue
+        path = tei_path(cand, root)
+        if not path.exists():
+            continue
+        for p in pointers_in(etree.parse(str(path)).getroot()):
+            if p["id"] == ident and p["el"] is not el:
+                return True
+    return False

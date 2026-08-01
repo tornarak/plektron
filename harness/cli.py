@@ -71,6 +71,7 @@ from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
 from .validate import validate, check_corpus_header
 from .seam import set_seam
+from .ids import fix_page as fix_ids, pair_glosses
 
 
 def main(argv=None):
@@ -127,6 +128,22 @@ def main(argv=None):
                            help="expect human-ratified provenance (resp='#ed') on "
                                 "Tier-1 spans instead of the collation pass's "
                                 "'#llm'; a remaining '#llm' becomes a worklist line")
+
+    idp = add("ids", help="check one page's structural ids against the scheme "
+                          "{kind}-{PP-NNN}-{ordinal}, where the ordinal is the "
+                          "element's position among same-kind elements in document "
+                          "order — so every id is recomputable from the tree alone. "
+                          "--fix renumbers, repairing any inbound @prev/@next from "
+                          "a neighbour in the same write")
+    idp.add_argument("ref", metavar="PP-NNN", help="page ref, e.g. 1-100")
+    idp.add_argument("--fix", action="store_true",
+                     help="write the canonical ids (and neighbours' pointers); "
+                          "without it, report what would change")
+    idp.add_argument("--pair", action="store_true",
+                     help="link each <gloss> to its <term> where containment "
+                          "decides — one of each in a container. Where it does "
+                          "not (two pairs in one item), report and write nothing: "
+                          "choosing would be inference. Add --fix to write")
 
     sm = add("seam", help="record whether an element runs across the gap BEFORE "
                           "this page, writing @part on this page's first "
@@ -534,6 +551,10 @@ def main(argv=None):
             else:
                 print(rep.render())
             return 0 if rep.ok else 1
+        if a.cmd == "ids":
+            fn = pair_glosses if a.pair else fix_ids
+            out(fn(a.ref, a.root, commit=a.fix))
+            return 0
         if a.cmd == "seam":
             out(set_seam(a.ref, a.open_gap, a.root, commit=a.commit))
             return 0
