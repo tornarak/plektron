@@ -809,7 +809,16 @@ function below(i) {
 function stepSel(d) {
   if (!S.zones.length) return;
   const o = byY(), cur = target();
-  if (cur < 0) { S.sel = d > 0 ? o[0] : o[o.length - 1]; }
+  // **From no selection, either arrow starts at the top.** A page arrives with
+  // nothing selected, and the direction of the first keypress is not a statement
+  // about where to begin — walking a page always begins at its head, so `ArrowUp`
+  // on arrival must not land on the footnotes. The selection is not carried across
+  // a page: `nav` is a real navigation and the state is rebuilt from the server,
+  // so this *is* the reset, applied where it is observable rather than as a flag
+  // set on load. Setting `S.sel` at load time instead would break keying — a type
+  // key retypes the selected zone, so a page would open with `p` meaning "relabel
+  // the running title" rather than "the next zone is a paragraph".
+  if (cur < 0) { S.sel = o[0]; }
   else {
     const k = o.indexOf(cur);
     S.sel = o[Math.min(o.length - 1, Math.max(0, k + d))];
