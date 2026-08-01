@@ -82,13 +82,27 @@ def _snap_column(z: dict, windows: list[dict]) -> int:
     return best
 
 
-# `split` is not a store. It is `gt/zones/` with the paragraph rule applied,
+# `paras` is not a store. It is `gt/zones/` with the paragraph rule applied,
 # computed on open and written nowhere — which is what it always should have been.
 # Persisting it into `mz/` made that store mean three things at once (raw kraken, DP
 # decode, and this), so `--diff` over the corpus reported 507 invented regions that
 # were nothing of the kind. A proposal derived from ground truth is not machine
 # output, and giving it a slot in the machine store made the store's name a lie.
-STORES = ("gt", "mz", "zones", "split")
+#
+# It was called `split` until the name was read back cold and meant nothing: the
+# topbar already carries a `split` pill two places to its left, and that one is the
+# train/eval/exempt mark. Two unrelated things under one word in one strip of UI.
+STORES = ("gt", "mz", "zones", "paras")
+
+# What the selector is offering, in the pill's tooltip. The store names are short
+# enough to be cryptic, and three of the four are not directories.
+STORE_HELP = {
+    "gt": "gt/zones/ — what a human has been through. A save always lands here",
+    "mz": "mz/zones/ — what the segmenter emitted, shown as an unsaved proposal",
+    "zones": "the view: the human file wherever there is one, the machine's otherwise",
+    "paras": "gt with the paragraph rule applied — a proposal, computed live and "
+             "stored nowhere",
+}
 
 # What each name resolves to. `zones` is the view and resolves by the same rule
 # `link_view` writes — the human file wherever there is one — computed rather than
@@ -110,8 +124,8 @@ def effective_store(ref: str, root: Path, store: str) -> str:
             if zn.has_zones(ref, root, STORE_DIR[s]):
                 return s
         return ""
-    if store == "split":
-        return "split" if zn.has_zones(ref, root, zn.ZONEDIR) else ""
+    if store == "paras":
+        return "paras" if zn.has_zones(ref, root, zn.ZONEDIR) else ""
     return store if zn.has_zones(ref, root, STORE_DIR[store]) else ""
 
 
@@ -220,7 +234,7 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         zones, dropped, short = _machine_proposal(
             ref, root, windows, set(zc.types_by_label(cfg)),
             int(cfg["min_zone_h_px"]))
-    elif shown == "split":
+    elif shown == "paras":
         # gt with the paragraph rule applied, computed here and stored nowhere.
         for z in zn.split_at_paragraphs(zn.read_zones(ref, root), ref, root, cfg):
             zones.append({"label": z["label"], "y0": z["y0"], "y1": z["y1"],
@@ -255,9 +269,9 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
             "mz": (len(zn.read_zones(ref, root, store=zn.MZDIR))
                    if zn.has_zones(ref, root, zn.MZDIR) else None),
         },
-        # How many zones the split would make of this page — so the pill says
-        # whether the rule would change anything before you switch to it.
-        "split_zones": (len(zn.split_at_paragraphs(
+        # How many zones the paragraph rule would make of this page — so the pill
+        # says whether it would change anything before you switch to it.
+        "paras_zones": (len(zn.split_at_paragraphs(
             zn.read_zones(ref, root), ref, root, cfg)) if keyed else "—"),
         "proposal": "mz" if shown == "mz" else "",
         "proposal_dropped": dropped,
@@ -317,6 +331,12 @@ def save_payload(payload: dict, root: Path, cfg: dict) -> dict:
     res["errors"] = check["errors"]
     res["warnings"] = check["warnings"]
     res["uncovered"] = check["uncovered"]
+    # So the topbar can redraw the store selector against what is now on disk rather
+    # than leave the counts as they were when the page was served. The `paras` count
+    # is derived from `gt`, so a save moves it too, and a stale proposal count sitting
+    # beside a fresh one is the kind of thing this project reads as a live number.
+    res["paras_zones"] = len(zn.split_at_paragraphs(
+        zn.read_zones(ref, root), ref, root, cfg))
     return res
 
 
@@ -928,7 +948,7 @@ async function post(path, body) {
 // work — indistinguishable acts, one of which is the thing the two stores exist to
 // keep apart. Once adopted the page has gt of its own, so it never asks again.
 function confirmAdoption() {
-  if (!ST.proposal && ST.shown !== 'split') return true;
+  if (!ST.proposal && ST.shown !== 'paras') return true;
   const src = ST.proposal ? 'the segmenter' : 'the paragraph rule';
   return confirm(
     `Adopt ${S.zones.length} zones proposed by ${src} as ground truth for `
@@ -959,11 +979,39 @@ async function save() {
   S.dirty = false;
   S.issues = res.errors.map(e => ({...e, kind: 'e', exempted: false}))
              .concat(res.warnings.map(w => ({...w, kind: 'w'})));
-  say(`saved ${res.zones} zones` +
+  // What is on screen is now ground truth, and the topbar has to say so. Before
+  // this, adopting a proposal left the selector reading `gt —` and the banner still
+  // claiming a machine proposal, so the one act the store split exists to make
+  // visible was the one act with no visible outcome — and pressing `s` again
+  // re-asked to adopt something already adopted.
+  ST.keyed = true;
+  ST.proposal = '';
+  ST.shown = 'gt';
+  if (ST.present) ST.present.gt = res.zones;
+  ST.paras_zones = res.paras_zones;
+  renderStores();
+  say(`saved ${res.zones} zones to gt` +
       (res.errors.length ? ` · ${res.errors.length} error(s)` : ''),
       res.errors.length ? 'bad' : 'ok');
   render();
   return res;
+}
+
+// The selector, redrawn from `ST` after a write. Server-rendered on load; this is
+// the same rule applied to the one thing that can change without a navigation.
+function renderStores() {
+  const n = {
+    gt: ST.present && ST.present.gt != null ? String(ST.present.gt) : '—',
+    mz: ST.present && ST.present.mz != null ? String(ST.present.mz) : '—',
+    zones: ST.keyed ? '→gt' : (ST.present && ST.present.mz != null ? '→mz' : '—'),
+    paras: ST.paras_zones == null ? '—' : String(ST.paras_zones),
+  };
+  for (const k in n) {
+    const el = document.querySelector('#store-' + k + ' .n');
+    if (el) el.textContent = n[k];
+  }
+  const p = document.getElementById('proposal');
+  if (p && !ST.proposal) p.remove();
 }
 async function nav(ref) {
   if (!ref) return;
@@ -1074,10 +1122,17 @@ window.addEventListener('keydown', async e => {
       let res;
       try { res = await post('/predict', {ref: ST.ref}); }
       catch (err) { say('segmenter: ' + err.message, 'bad'); break; }
-      // Straight to the machine view, since the whole point was to look at it.
-      // Writes `mz/zones/`; `gt` is untouched until you adopt.
+      // Reload so the prediction is on screen, since the whole point was to look at
+      // it. Writes `mz/zones/`; `gt` is untouched until you adopt.
+      //
+      // **Staying put where the view already answers `mz`.** On an unkeyed page the
+      // view falls through to the machine store by its own rule, so pinning `mz`
+      // adds nothing and costs the thing the view is for: navigate on to a keyed
+      // neighbour with `mz` pinned and it opens blank, or worse, on that page's
+      // prediction instead of the work already done. Pin only from a store that
+      // would otherwise keep showing something else.
       say(`segmented: ${res.zones} zones`, 'ok');
-      await navStore('mz');
+      await navStore(ST.store === 'zones' && !ST.keyed ? 'zones' : 'mz');
       return;
     }
     case 'delete_page': {
@@ -1096,6 +1151,9 @@ window.addEventListener('keydown', async e => {
       // follow or a second `X` would ask to delete what is not there, and `save`
       // would think there was something to overwrite.
       ST.keyed = false;
+      if (ST.present) ST.present.gt = null;
+      ST.paras_zones = null;
+      renderStores();
       S.zones = []; S.dirty = false; S.issues = []; S.split = 'train';
       break;
     }
@@ -1104,7 +1162,7 @@ window.addEventListener('keydown', async e => {
     // third every time you wanted the previous one back.
     case 'cycle_store':
     case 'cycle_store_back': {
-      const order = ['zones', 'gt', 'mz', 'split'];
+      const order = ['zones', 'gt', 'mz', 'paras'];
       const i = order.indexOf(ST.store);
       const step = a === 'cycle_store' ? 1 : order.length - 1;
       await navStore(order[(i + step) % order.length]);
@@ -1193,7 +1251,7 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
     st["itinerary"] = itinerary_name
     acts = {k: v for k, v in (cfg.get("actions") or {}).items()
             if not k.startswith("_")}
-    pretty = {"cycle_store": "show gt / mz / split / the view",
+    pretty = {"cycle_store": "show gt / mz / paras / the view",
               "cycle_store_back": "…and back",
               "segment_page": "run the segmenter on this page (asks)",
               "delete_page": "un-key this page (types the ref)",
@@ -1237,14 +1295,15 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
     for name in STORES:
         if name == "zones":
             n = f"→{st.get('view')}" if st.get("view") else "—"
-        elif name == "split":
-            n = str(st.get("split_zones", "—"))
+        elif name == "paras":
+            n = str(st.get("paras_zones", "—"))
         else:
             c = (st.get("present") or {}).get(name)
             n = "—" if c is None else str(c)
         klass = "pill store on" if name == sel else "pill store"
-        h.append(f"<span class='{klass}' data-store='{name}' "
-                 f"title='press / to cycle · {name} store'>{name} {n}</span>")
+        h.append(f"<span class='{klass}' id='store-{name}' data-store='{name}' "
+                 f"title='press / to cycle · {STORE_HELP[name]}'>{name} "
+                 f"<span class='n'>{n}</span></span>")
     # Only ever set when the machine store is what answered. An unlabelled proposal
     # would look exactly like a page someone had already keyed, which is the one
     # confusion the two stores exist to prevent.

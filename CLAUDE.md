@@ -533,7 +533,7 @@ Four properties worth knowing before touching any of it:
   is how a check ends up compared against its own input, and checking through the
   view would blend ratified and unratified pages under one verdict.
 - **The editor is the only route from one store to the other.** `/` and `?` cycle a
-  store selector — `zones` (the view, default), `gt`, `mz`, and `split` (gt with the
+  store selector — `zones` (the view, default), `gt`, `mz`, and `paras` (gt with the
   paragraph rule applied, computed on open and stored nowhere) — **orthogonal to the
   itinerary**: the itinerary picks the pages, the selector picks whose reading of
   them you see. A pinned store holding nothing reports **nothing shown** rather than

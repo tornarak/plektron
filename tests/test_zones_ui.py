@@ -236,6 +236,28 @@ def test_saving_no_zones_on_a_text_page_is_refused(tmp_path):
     assert zn.has_zones("1-001", tmp_path) is False
 
 
+def test_save_reports_the_counts_the_topbar_redraws_itself_from(tmp_path):
+    """The selector is server-rendered on load, so a save has to hand back what
+    changed or the pills go on reading `gt —` over a page that now has ground
+    truth — the one act the store split exists to make visible, invisible."""
+    scans(tmp_path, "1-048")
+    res = ui.save_payload({"ref": "1-048", "zones": [
+        {"label": "MainZone-P", "y0": 600, "y1": 900, "column": 0}]},
+        tmp_path, cfg())
+    assert res["zones"] == 1
+    # Derived from gt, so it moves when gt moves and cannot be left as served.
+    assert isinstance(res["paras_zones"], int)
+
+
+def test_every_store_pill_carries_a_count_the_client_can_replace(tmp_path):
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    for name in ui.STORES:
+        assert f"id='store-{name}'" in html
+    # `split` is the train/eval/exempt mark and nothing else in this UI.
+    assert "data-store='paras'" in html and "data-store='split'" not in html
+
+
 def test_a_full_page_round_trips_through_state_and_back(tmp_path):
     """Open, save, reopen: the geometry the editor gets back is what it sent."""
     scans(tmp_path, "1-048")
