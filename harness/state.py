@@ -299,7 +299,7 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
             # second look — and exactly as unlicensed to copy from as the term.
             #
             # `scope` carries no provenance flag here, deliberately: this record
-            # already drops the gloss's own type="supplied", so marking the frame
+            # already drops whether the gloss is itself supplied, so marking the frame
             # as authored while the gloss beside it says nothing would be
             # incoherent. `harness lexicon --glosses` is the export that keeps both.
             gloss, scope = glosses.get(term, ("", ""))

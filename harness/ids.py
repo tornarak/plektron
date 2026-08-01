@@ -50,8 +50,13 @@ from .context import norm_ref
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
 
-KINDS = ("term", "list", "table")
-ID_RE = re.compile(r"^(term|list|table)-(\d+)-(\d{3})-(\d+)$")
+# The kind set is exactly what something can point *at*. `name` earns its place the
+# same way the others did, by acquiring a referrer: a glossed proper noun —
+# `Young-Lamut-Reindeer (Tor-waˊwaq)` on 1-101 — is a <gloss target> away from a
+# <name>, and nothing about the containment says which gloss belongs to which name
+# any more than it does for a term.
+KINDS = ("term", "name", "list", "table")
+ID_RE = re.compile(r"^(term|name|list|table)-(\d+)-(\d{3})-(\d+)$")
 # Attributes that name an id. `target` resolves inside the page; `prev`/`next`
 # resolve into the adjacent one.
 IN_FILE_POINTERS = ("target",)
@@ -185,25 +190,26 @@ def text_of(el) -> str:
     return " ".join("".join(copy.itertext()).split())
 
 
-def _head_of(list_el) -> tuple[str, bool] | None:
-    """A list's `<head>` as (text, wholly_supplied), or None if it has none.
+def wholly_supplied(el) -> bool:
+    """Is every word of this element editorial rather than transcribed?
 
-    "Wholly supplied" means no non-whitespace text anywhere in the head outside a
-    `<supplied>` — which is why this checks `head.text` and every child's `.tail`
-    and not merely that the children are all `<supplied>`. A head reading
-    `<supplied>of a reindeer</supplied>, roughly` is part editorial and part
-    something else, and reporting it as wholly supplied would misstate provenance
-    in the one field that exists to state it.
+    No non-whitespace text anywhere outside a `<supplied>` — which means checking
+    `el.text` and every child's `.tail`, not merely that the children are all
+    `<supplied>`. `<supplied>of a reindeer</supplied>, roughly` is part editorial
+    and part something else, and reporting it as wholly supplied would misstate
+    provenance in the one field that exists to state it.
     """
+    loose = (el.text or "") + "".join(g.tail or "" for g in el)
+    return (not loose.strip() and len(el) > 0
+            and all(isinstance(g.tag, str)
+                    and g.tag == f"{{{TEI_NS}}}supplied" for g in el))
+
+
+def _head_of(list_el) -> tuple[str, bool] | None:
+    """A list's `<head>` as (text, wholly_supplied), or None if it has none."""
     for ch in list_el:
-        if not isinstance(ch.tag, str) or ch.tag != f"{{{TEI_NS}}}head":
-            continue
-        loose = (ch.text or "") + "".join(g.tail or "" for g in ch)
-        supplied = (not loose.strip()
-                    and len(ch) > 0
-                    and all(isinstance(g.tag, str)
-                            and g.tag == f"{{{TEI_NS}}}supplied" for g in ch))
-        return text_of(ch), supplied
+        if isinstance(ch.tag, str) and ch.tag == f"{{{TEI_NS}}}head":
+            return text_of(ch), wholly_supplied(ch)
     return None
 
 
@@ -294,21 +300,40 @@ def page_glossary(root_el, ref: str, root: Path = Path("."),
     by_id = ids_in(root_el)
     linked, seen_terms = [], set()
     for gl in root_el.iter(f"{{{TEI_NS}}}gloss"):
-        target = (gl.get("target") or "").lstrip("#")
-        term = by_id.get(target)
-        if term is None or localname(term) != "term":
-            continue
-        seen_terms.add(target)
-        scope, scope_supplied = list_scope(gl, ref, root, cache)
-        linked.append({
-            "term": text_of(term),
-            "lang": term.get("{http://www.w3.org/XML/1998/namespace}lang") or "",
-            "gloss": text_of(gl),
-            "supplied": gl.get("type") == "supplied",
-            "scope": scope,
-            "scope_supplied": scope_supplied,
-            "ref": norm_ref(ref),
-        })
+        # `@target` is a space-separated URI list in TEI, and one printed span
+        # routinely glosses two terms: 1-101's age list sets "from one to two years
+        # old" once for the male and female forms it follows. `pointers_in` has
+        # always split it; reading the attribute whole here silently dropped every
+        # such gloss, which is the same defect as pairing by containment — a gap in
+        # the dictionary invisible from inside the dictionary.
+        for target in (gl.get("target") or "").split():
+            target = target.lstrip("#")
+            term = by_id.get(target)
+            if term is None or localname(term) not in ("term", "name"):
+                continue
+            seen_terms.add(target)
+            scope, scope_supplied = list_scope(gl, ref, root, cache)
+            linked.append({
+                "term": text_of(term),
+                # Which element was glossed, so a proper name is separable from a
+                # common noun without re-parsing the TEI. That separation is the
+                # point of marking names: an index of toponyms is this filtered.
+                "kind": localname(term),
+                "lang": term.get(
+                    "{http://www.w3.org/XML/1998/namespace}lang") or "",
+                "gloss": text_of(gl),
+                # What kind of gloss the *book* says it is: unmarked is the sense,
+                # `literal` the "literally, …" rendering it routinely prints beside
+                # it. Distinct from `supplied`, which is who wrote it.
+                "type": gl.get("type") or "",
+                "supplied": wholly_supplied(gl),
+                "scope": scope,
+                "scope_supplied": scope_supplied,
+                "ref": norm_ref(ref),
+            })
+    # Counts <term> only, deliberately. An unlinked term is a gap in the dictionary,
+    # since a gloss-list headword exists to be glossed; an unlinked <name> is the
+    # ordinary case, because most proper nouns on a page are never glossed at all.
     unlinked = sum(1 for t in root_el.iter(f"{{{TEI_NS}}}term")
                    if t.get(XML_ID) not in seen_terms)
     return {"pairs": linked, "unlinked_terms": unlinked}

@@ -314,15 +314,47 @@ Link every glossed term, so the corpus is uniformly queryable rather than linked
 only where containment happened to be ambiguous. `harness lexicon --glosses` is
 what reads them.
 
+**Give the gloss its full printed extent, not just the quoted core.** Bogoras's
+explanation routinely runs past the quotation marks, and stopping at them produces
+an entry that says nothing:
+
+    Ñireqäˊulɪn ([“one of the second time”] male) … from four to five years old
+
+`[“one of the second time”]`, `male` and `from four to five years old` are all part
+of what the page says the word means. Mark each printed span as its own `<gloss>`
+rather than forcing them into one.
+
+**One gloss may reach two terms.** `@target` is a URI *list*, and the age range
+above is printed once for the male and female forms together:
+
+    <gloss target="#term-1-101-23 #term-1-101-24">from four to five years old</gloss>
+
+Do not duplicate the text into two glosses — the page sets it once.
+
+**A term often carries a sense gloss *and* a literal one, and the page says which.**
+`1-039`: `Pnauˊkulɪt (“file-mongers,” from pnauˊkun, “file” [literally,
+“whetting-stone”])`. Two declared kinds, both cued in the print:
+
+- **`type="literal"`** — the rendering introduced by the word *literally*.
+- **`type="etymon"`** — the form a word derives from, cued by *from*, together with
+  whatever translation the print runs into it. One element for both, because the
+  printed instances are too varied to split the form from its gloss without
+  imposing a structure the page does not have.
+
+An unmarked `<gloss>` is the ordinary sense gloss. Type only what the page cues:
+a bracketed gloss with no *literally* beside it is not evidenced as literal.
+
 **A gloss may also be supplied rather than printed.** Where the surrounding prose
 explains a form the page does not gloss in place, you may write one — but it must
-say so, because it is authored English rather than transcribed English:
+say so, because it is authored English rather than transcribed English. That is
+what `<supplied>` is for, the same element a list's supplied scope uses:
 
-    <gloss type="supplied" resp="#llm" target="#term-1-100-1">…</gloss>
+    <gloss target="#term-1-100-1"><supplied reason="context" resp="#llm">…</supplied></gloss>
 
-`type="supplied"` **requires** `@resp`; a gloss with no `@type` is transcription
-and **must not** carry one. Two states, each marked by a *present* attribute, so
-neither is reachable by omission.
+A `<gloss>` itself **never carries `@resp`** — a gloss reproducing the print is
+transcription and has no rank. `<supplied>` requires `@resp` and a declared
+`@reason`, so nothing is reachable by omission, and `@type` stays free to say what
+kind of gloss the *book* printed.
 
 `@resp` means something different here than on a Tier-1 span: "a model authored
 this English sentence", not "a model read this glyph off the scan". The firewall's
@@ -360,6 +392,52 @@ anyway — it is what puts the `scope` column beside each gloss.
   anything else, and on a `<supplied>` with no `@resp`.
 - Most gloss lists need none of this. A list whose glosses stand on their own gets
   no head, and that is the ordinary case.
+
+## Proper names — Tier-1 only, category never identity
+
+A Tier-1 form the page identifies as a name gets `<name>` instead of `<foreign>`:
+
+    <gloss target="#name-1-101-1">Mushroom-Eater</gloss>
+      (<name xml:id="name-1-101-1" xml:lang="ckt" resp="#llm">Poˊñolɪn</name>)
+
+`<foreign>` asserts only "not the surrounding language", which `xml:lang` already
+says, and TEI treats it as the fallback where nothing more specific fits. Keep
+`xml:lang` and `@resp` on the `<name>` — it is a Tier-1 span like any other and the
+gate treats it as one. A name that is also a gloss-list headword stays a `<term>`
+with the `<name>` inside it, since `<term>` carries the id and the gloss link.
+
+**`@type` only where the page says**, from a closed set:
+
+    anthroponym  a person          zoonym    an individual animal
+    ethnonym     a people          mythonym  a mythological or supernatural being
+    toponym      a place           hydronym  a river, bay or other water
+
+The evidence is usually the gloss or the sentence around it — a form glossed "a
+village" is a `toponym`, one the page calls a reindeer's name a `zoonym`. Where the
+page does not say, **leave it untyped**. That is a real state, not an unfinished
+one, and one XPath finds every name still awaiting a type.
+
+**First ask whether it is a name at all.** `keˊlᴇ` (plural `keˊlet`) and `reˊkkeñ`
+are *kinds* of evil spirit — common nouns, and so `<term>`, not `<name>`. Being
+Tier-1, capitalized and otherworldly makes a form none of a proper noun. This matters
+more than the type does: a wrong `@type` is a mislabel, but a `<name>` around a
+common noun invents an entity that is not in the book.
+
+**Then take the type from the page, never from the form.** Forms that look alike
+differ entirely in class — among one group of otherworldly-looking spans, one is a
+god, one a village, one a person, and the rest are common nouns. Nothing in the
+shape of a word says which, and guessing from it is the firewall's failure mode one
+category over from glyphs.
+
+**Only Tier-1 names.** English and Latin proper nouns — `Chukchee`, `Lamut`,
+`Anadyr`, `Phoca hispida` — are left bare. Not because they do not matter, but
+because they are a string match anything can find over finished TEI, whereas
+"this Chukchee form is a village" is recoverable only by reading the page. Marking
+them here would buy automatable coverage with thousands of hand judgements.
+
+**Never `@ref`, `@key` or `@nymRef`.** Which village `Uñiˊsak` is, and whether this
+name is that one, belongs to the annotation pass, which runs over finished TEI with
+the whole corpus in view. The gate errors on all three.
 
 # Language spans and the firewall — read this twice
 
@@ -597,7 +675,9 @@ You mint `xml:id` on elements something points at. The scheme is
 checks it, so it is a rule the gate enforces rather than one you have to be
 careful about.
 
-- **Kinds are `term`, `list`, `table`** — exactly what something can point at.
+- **Kinds are `term`, `name`, `list`, `table`** — exactly what something can point
+  at. `name` is there because a glossed proper noun is a `<gloss target>` away from
+  a `<name>`, and containment decides that pairing no better than it does a term's.
 - **The ordinal is a position, not a counter**: the element's 1-based index among
   *all* same-kind elements on the page in document order, whether or not that
   element carries an id. So ids are sparse, and adding one never renumbers
@@ -644,7 +724,13 @@ identity is a different scheme and does not exist yet.
   orphan foot-text a `<note>` without `@n` plus the fixed comment?
 - Does every `<figure>` point at a supplied zone id, with orphans commented?
 - Does every `@facs` point at a real `line_id`, and only on spans that earned it?
-- Does every `<gloss>` carry a `@target`, and every supplied one a `@resp`?
+- Does every `<gloss>` carry a `@target` and no `@resp`, span its full printed
+  extent rather than stopping at the quotation marks, and name both terms in one
+  `@target` where the page prints a gloss once for a pair? Is `type="literal"` or
+  `"etymon"` written only where the page cues it?
+- Every Tier-1 name the page identifies as one: `<name>` rather than `<foreign>`,
+  typed only where the page says, and carrying no `@ref`/`@key`? Every English or
+  Latin proper noun left bare? (Both: always.)
 - Every `<supplied>`: `@resp` and a declared `@reason`? A frame shared by a gloss
   list written once on the list, and never restated on a continuation?
 - Is there any `<lb/>`? Any hand-written `@part`/`@prev`/`@next`? (Always no.)
@@ -679,7 +765,10 @@ stays a comment** — durable in the file — never a silent decision.
   failure mode that matters; "unresolved" is a valid deliverable.
 - Write `@part`, `@prev` or `@next` by hand — `harness seam` writes those, from
   the page that holds both witnesses.
-- Mint an entity id, or emit `<lb/>`, or a `<div>`.
+- Mint an entity id — which is *not* the same act as marking a name. Writing
+  `<name type="toponym">` records what the page says the form is; writing `@ref` or
+  `@key` says which entity it denotes, and only the annotation pass does that.
+- Emit `<lb/>`, or a `<div>`.
 - Edit anything under `ocr/`, `scans/`, `gt/`, or `data/`.
 - Copy `expected_folio` into `<pb n=>` because it was supplied.
 - Copy a Tier-1 form or an `xml:id` out of `prev_tail` or `foreign_terms_nearby`.

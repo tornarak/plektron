@@ -1095,7 +1095,25 @@ A continuation list carries no head of its own: the scope resolves back through 
 that traverses those pointers** rather than checking one hop. `validate` cannot see
 a cycle in them for the same reason, so the walk is capped.
 
-`<supplied>` is gated like a supplied gloss and for the same reason — unmarked, it
+**`@type` on `<gloss>` says what kind of gloss the book printed, not who wrote it.**
+A term routinely carries a sense gloss *and* a literal one and the page cues which
+— `1-039`: `Pnauˊkulɪt (“file-mongers,” from pnauˊkun, “file” [literally,
+“whetting-stone”])`. Two declared kinds, `literal` (cued by *literally*) and
+`etymon` (cued by *from*, holding the source form together with whatever
+translation the print runs into it, because the instances are too varied to split
+those apart without inventing structure). Unmarked is the ordinary sense gloss.
+
+Provenance moved off that attribute to make room: **a gloss nobody printed is
+`<supplied>` inside the gloss**, which is the TEI idiom and the same mechanism the
+scope above uses, so one attribute carries one axis. A `<gloss>` never carries
+`@resp`. Two related rules the pages taught: a gloss spans its **full printed
+extent** rather than stopping at the quotation marks (`Ñireqäˊulɪn ([“one of the
+second time”] male) … from four to five years old` is three glosses, not one), and
+`@target` is a **URI list**, since the age range there is printed once for the male
+and female forms — `page_glossary` read the attribute whole and silently dropped
+every such gloss until this was fixed.
+
+`<supplied>` is gated for the reason the old rule existed — unmarked, authored text
 is indistinguishable from transcription — with two deliberate differences. `@reason`
 is required from a closed set (`context`, `ellipsis`), because a required attribute
 with a free value guarantees a string rather than a distinction. And the
@@ -1110,6 +1128,53 @@ instead. And `<head>` on a `<list>` means the list's *heading*, which "of a
 reindeer" is not; it is the only conformant slot (`<desc>` is not permitted there,
 and `<note>` is already claimed by footnotes), so **a renderer must check for
 `<supplied>` before printing a list head as a caption**.
+
+**Proper names are marked by category, never by identity, and only in Tier-1.** A
+Chukchee form the page identifies as a name gets `<name>` in place of `<foreign>`,
+keeping its `xml:lang` and `@resp` so the existing provenance and lookalike checks
+reach it unchanged. `@type` is written only where the page says — a closed set
+`anthroponym ethnonym toponym hydronym zoonym mythonym`, usually evidenced by the
+gloss or the sentence around it — and **untyped is a real state rather than an
+unfinished one**, findable by one XPath. `zoonym` is there because a herding people
+names its reindeer and `1-101` is a whole paragraph about the practice; `mythonym`
+rather than `theonym` because the book names supernatural beings that are not gods.
+
+Two things the gate cannot check and the pass has to hold to. **A generic noun is
+not a name**: `keˊlᴇ`/`keˊlet` and `reˊkkeñ` are *kinds* of evil spirit, hence common
+nouns and `<term>`, and being Tier-1, capitalized and otherworldly makes a form none
+of a proper noun. That distinction outranks the type, since a wrong `@type` is a
+mislabel where a spurious `<name>` invents an entity. And **a type comes from the
+page, never from the form** — among one otherworldly-looking group of spans, one is
+a god, one a village, one a person and the rest common nouns, with nothing in the
+shape of the words to separate them. `tier1_spans` flags keying risk and carries no
+class information, so it cannot be mined for this.
+
+The scope is the decision worth recording. English and Latin proper nouns —
+`Chukchee`, `Anadyr`, `Phoca hispida` — are **not** marked here. They are a string
+match anything can find over finished TEI, and `data/lexicon_extra.txt` already
+holds the seed lists (ethnonyms, toponyms sub-typed by comment heading, genus and
+species, and `Pallas` under a `## Authorities` heading distinguishing the describing
+authority from the name). Hand-marking them per page would buy automatable coverage
+with thousands of judgements and the errors in them. **The binomials are the natural
+first target for that automated pass**, being a more regular pattern than the
+ethnonyms; its two wrinkles are trinomials and abbreviated genus (`P. hispida`),
+both easier with a whole page in view than a line.
+
+Hence no `taxon` in the type set: a declared type nothing writes is dead surface in
+the gate. TEI has no biological-nomenclature element at all — checked against the
+element index; `<taxonomy>`/`<category>` classify *texts* — so `<name type="taxon">`
+is what that pass would use if it ever wants one.
+
+**`@ref`, `@key` and `@nymRef` are gate errors.** Identity resolution is the
+annotation pass's, over finished TEI with the whole corpus in view, and this makes
+the deferral checkable rather than a line in a skill's never-do list.
+
+**`name` is a fourth id kind**, alongside `term`, `list` and `table`, earning its
+place the same way they did — by acquiring a referrer. `1-101` glosses two reindeer
+names in running prose (`Mushroom-Eater (Poˊñolɪn)`), and containment decides that
+pairing no better than it decides a term's. `harness lexicon --glosses` carries a
+`kind` column so a proper name is separable from a common noun without re-parsing:
+an index of toponyms is that column filtered.
 
 **The id scheme is settled and is `harness/ids.py`** — `{kind}-{PP-NNN}-{ordinal}`,
 where the ordinal is the element's *position* among same-kind elements in document
@@ -1196,12 +1261,15 @@ TBD
   not provide it: ordinals move when content is inserted, so a pointer held
   outside the page would break silently. These ids are stable within a page file's
   current version and nothing outside the corpus may cite one. The annotation
-  passes need their own scheme, over finished TEI.
+  passes need their own scheme, over finished TEI. What has changed is the *scope*
+  of what is deferred: a Tier-1 name's **category** is now recorded by the
+  collation pass, because only a reader of the page can see it, and only the
+  **identity** waits — `@ref`/`@key` are gate errors until that scheme exists.
 - **Nothing validates the TEI against the TEI schema.** `harness validate` checks
   *project* rules; there is no RELAX NG, no `tei_all`, no schema anywhere in the
-  repo. That now covers eight attribute usages nobody checks for conformance —
-  `@part`, `xml:id`, `@target`, `@prev`, `@next`, `@type` on `<gloss>`, and
-  `@reason`/`@resp` on `<supplied>`. It
+  repo. That now covers nine attribute usages nobody checks for conformance —
+  `@part`, `xml:id`, `@target` (including its list-valued form), `@prev`, `@next`,
+  `@type` on `<gloss>`, `@reason`/`@resp` on `<supplied>`, and `@type` on `<name>`. It
   needs no new dependency (`lxml` has `etree.RelaxNG`); what it needs is a
   committed schema and an assembly step, since a page file is a fragment and will
   not validate standalone.

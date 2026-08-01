@@ -17,7 +17,7 @@ import pytest
 from lxml import etree
 
 from harness import ids, seam
-from harness.validate import validate
+from harness.validate import NAME_TYPES, validate
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
@@ -251,28 +251,48 @@ def test_pair_does_not_collapse_containers(tmp_path):
 
 # ------------------------------------------------------- supplied glosses
 
-def test_a_supplied_gloss_must_say_who_wrote_it(tmp_path):
-    page(tmp_path, "1-100",
-         '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
-         '<gloss type="supplied" target="#term-1-100-1">g</gloss></item></list>')
-    assert any("without @resp" in e for e in gate(tmp_path, "1-100").errors)
-
-
 def test_a_printed_gloss_carries_no_rank(tmp_path):
-    """Both states are marked by a *present* attribute, so neither is reachable by
-    omission."""
+    """Provenance left @type when the literal/sense distinction needed it. A gloss
+    reproducing the print is transcription; authored text goes in <supplied>, which
+    already forces @resp and @reason."""
     page(tmp_path, "1-100",
          '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
          '<gloss resp="#llm" target="#term-1-100-1">g</gloss></item></list>')
     assert any("carries no rank" in e for e in gate(tmp_path, "1-100").errors)
 
 
-def test_a_supplied_gloss_with_a_rank_passes(tmp_path):
+def test_a_supplied_gloss_is_one_holding_supplied_text(tmp_path):
     page(tmp_path, "1-100",
          '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
-         '<gloss type="supplied" resp="#llm" target="#term-1-100-1">g</gloss>'
+         '<gloss target="#term-1-100-1"><supplied reason="context" resp="#llm">g'
+         '</supplied></gloss></item></list>')
+    rep = gate(tmp_path, "1-100")
+    assert not rep.errors
+    assert ids.glossary(tmp_path)["pairs"][0]["supplied"] is True
+
+
+def test_a_literal_gloss_says_so(tmp_path):
+    """The book cues it: `[literally, “whetting-stone”]` beside the sense gloss.
+    A term routinely carries both, and the distinction is printed, not inferred."""
+    page(tmp_path, "1-100",
+         '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
+         '(<gloss target="#term-1-100-1">“file”</gloss>'
+         ' [<gloss type="literal" target="#term-1-100-1">“whetting-stone”</gloss>])'
          '</item></list>')
     assert not gate(tmp_path, "1-100").errors
+    assert sorted(g["type"] for g in ids.glossary(tmp_path)["pairs"]) == [
+        "", "literal"]
+
+
+def test_one_gloss_may_reach_two_terms(tmp_path):
+    """TEI's @target is a URI *list*, and one printed span routinely glosses both
+    forms in an entry — 1-101 sets "from one to two years old" once for the male
+    and female. Reading the attribute whole dropped every such gloss."""
+    page(tmp_path, "1-100",
+         '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term> and '
+         '<term xml:id="term-1-100-2">b</term>, '
+         '<gloss target="#term-1-100-1 #term-1-100-2">young</gloss>.</item></list>')
+    assert [g["term"] for g in ids.glossary(tmp_path)["pairs"]] == ["a", "b"]
 
 
 # ------------------------------------------------------------ the glossary
@@ -287,9 +307,10 @@ def glossed(tmp_path, ref="1-100", extra=""):
 def test_the_glossary_resolves_a_pair(tmp_path):
     glossed(tmp_path)
     got = ids.glossary(tmp_path)
-    assert got["pairs"] == [{"term": "a", "lang": "ckt", "gloss": "“g”",
-                             "supplied": False, "scope": "",
-                             "scope_supplied": False, "ref": "1-100"}]
+    assert got["pairs"] == [{"term": "a", "kind": "term", "lang": "ckt",
+                             "gloss": "“g”", "type": "", "supplied": False,
+                             "scope": "", "scope_supplied": False,
+                             "ref": "1-100"}]
 
 
 def test_a_gloss_is_read_through_its_trailing_text(tmp_path):
@@ -327,7 +348,7 @@ def test_an_undeclared_gloss_type_is_refused(tmp_path):
     page(tmp_path, "1-100",
          '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
          '<gloss type="editorial" target="#term-1-100-1">g</gloss></item></list>')
-    assert any("only declared value" in e for e in gate(tmp_path, "1-100").errors)
+    assert any("not a declared kind" in e for e in gate(tmp_path, "1-100").errors)
 
 
 # ------------------------------------------------------------- the list scope
@@ -478,11 +499,94 @@ def test_a_human_may_ratify_supplied_english(tmp_path):
     assert not supplied(tmp_path, 'reason="context" resp="#ed"')
 
 
-def test_an_undeclared_gloss_rank_is_refused(tmp_path):
-    """Asking who and never checking the answer parses is half the rule — this
-    branch was missing while the type/resp pairing above has long existed."""
-    page(tmp_path, "1-100",
-         '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'
-         '<gloss type="supplied" resp="#editor" target="#term-1-100-1">g</gloss>'
-         '</item></list>')
-    assert any("not a declared rank" in e for e in gate(tmp_path, "1-100").errors)
+def test_the_declared_gloss_kinds_are_what_the_book_cues(tmp_path):
+    """`literal` is cued by the word "literally"; `etymon` by "from". Provenance is
+    deliberately absent — it lives in <supplied>, so @type carries one axis."""
+    from harness.validate import GLOSS_TYPES
+    assert GLOSS_TYPES == {"literal", "etymon"}
+
+
+# ------------------------------------------------------------- proper names
+
+# The pass marks *category* and never identity. Scoped to Tier-1 names, because a
+# Chukchee form glossed "a village" is a fact only a reader of the page can record,
+# while an English ethnonym or a Latin binomial is a string match anything can find
+# over finished TEI.
+
+def named(tmp_path, span):
+    page(tmp_path, "1-101", f'<pb n="1"/><p>They went to {span}.</p>')
+    return gate(tmp_path, "1-101")
+
+
+def test_a_name_is_a_kind_something_can_point_at(tmp_path):
+    """`name` joined KINDS the same way the others earned it — by acquiring a
+    referrer. A glossed proper noun is a <gloss target> away from a <name>."""
+    assert ids.parse_id("name-1-101-1") == {
+        "kind": "name", "ref": "1-101", "ordinal": 1}
+
+
+def test_a_glossed_name_reaches_the_dictionary_as_a_name(tmp_path):
+    """1-101's `Young-Lamut-Reindeer (Tor-waˊwaq)`. `kind` is what separates a
+    proper noun from a common one without re-parsing the TEI — an index of
+    toponyms is that column filtered."""
+    page(tmp_path, "1-101",
+         '<pb n="1"/><p>e. g., <gloss target="#name-1-101-1">Mushroom-Eater</gloss>'
+         ' (<name xml:id="name-1-101-1" xml:lang="ckt" resp="#llm">a</name>).</p>')
+    got = ids.glossary(tmp_path)["pairs"][0]
+    assert got["kind"] == "name" and got["gloss"] == "Mushroom-Eater"
+
+
+def test_an_unglossed_name_is_not_an_unlinked_term(tmp_path):
+    """Most proper nouns are never glossed, so counting them as dictionary gaps
+    would make the gap count meaningless."""
+    page(tmp_path, "1-101", '<pb n="1"/><p>To <name>Karagha</name>.</p>')
+    assert ids.glossary(tmp_path)["unlinked_terms"] == 0
+
+
+def test_an_untyped_name_passes(tmp_path):
+    """"Mark all, type only what's evidenced" — untyped is the designed outcome
+    where the page does not say what the name is, not an unfinished state."""
+    assert not named(tmp_path, "<name>Karagha</name>").errors
+
+
+def test_an_undeclared_name_type_is_refused(tmp_path):
+    assert any("not a declared type" in e for e in
+               named(tmp_path, '<name type="village">Karagha</name>').errors)
+
+
+def test_the_declared_types_are_the_six(tmp_path):
+    """`zoonym` because a herding people names its reindeer; `mythonym` rather than
+    `theonym` because the book names supernatural beings that are not gods."""
+    assert NAME_TYPES == {"anthroponym", "ethnonym", "toponym", "hydronym",
+                          "zoonym", "mythonym"}
+
+
+def test_taxon_is_not_a_declared_type(tmp_path):
+    """Binomials are Latin in English prose and out of this pass's scope: they are
+    a more regular pattern than ethnonyms, and lexicon_extra.txt already holds the
+    genus and species lists an automated pass would need. A type nothing writes is
+    dead surface in the gate."""
+    assert "taxon" not in NAME_TYPES
+
+
+@pytest.mark.parametrize("attr", ["ref", "key", "nymRef"])
+def test_a_name_may_not_resolve_an_identity(tmp_path, attr):
+    """The deferral made mechanical. It was prose in the skill's never-do list, and
+    a checkable rule does not depend on the pass behaving."""
+    rep = named(tmp_path, f'<name {attr}="#x">Karagha</name>')
+    assert any("resolves an identity" in e for e in rep.errors)
+
+
+def test_a_tier1_name_needs_its_rank_like_any_other_span(tmp_path):
+    """No new provenance code: validate identifies a Tier-1 span by xml:lang on any
+    element, so <name> lands on the existing rule."""
+    rep = named(tmp_path, '<name xml:lang="ckt">Karagha</name>')
+    assert any("carries no @resp" in e for e in rep.errors)
+
+
+def test_names_are_counted_and_never_put_on_the_worklist(tmp_path):
+    """Under "type only what's evidenced" an untyped name is the normal outcome, so
+    a worklist line would be permanently non-empty — the noise that buries signal."""
+    rep = named(tmp_path, '<name>Karagha</name> and <name type="hydronym">Anui</name>')
+    assert rep.metrics["names"] == 2 and rep.metrics["names_untyped"] == 1
+    assert not [w for w in rep.worklist if "name" in w.lower()]

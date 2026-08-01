@@ -44,6 +44,67 @@ RATIFIED = "#ed"
 #             (a gloss list's shared "of a reindeer", written once as its <head>)
 #   ellipsis  a word the sentence itself omits and the reader restores from it
 SUPPLIED_REASONS = {"context", "ellipsis"}
+# What kind of gloss the *book* prints. Unmarked is the ordinary sense gloss; the
+# other two are cued in the print itself, so this is evidence and not judgement.
+#
+#   literal  the rendering Bogoras introduces with the word "literally". A term
+#            routinely carries this *and* a sense gloss — 1-039 sets `Pnauˊkulɪt
+#            (“file-mongers,” from pnauˊkun, “file” [literally, “whetting-stone”])`.
+#   etymon   the form a word derives from, cued with "from", together with whatever
+#            translation the print runs into it. One element for both, because the
+#            printed instances are too varied to split the form from its gloss
+#            without imposing a structure the page does not have.
+#
+# Provenance is deliberately *not* here. A gloss nobody printed is `<supplied>`
+# inside the gloss — the TEI idiom, and the same mechanism a list's supplied scope
+# uses — so `@type` carries one axis and `<supplied>` the other.
+GLOSS_TYPES = {"literal", "etymon"}
+# What a <name> may be, where the page says. Closed, extended only here and only on
+# attestation — "type only what's evidenced" means most names carry none of these,
+# and an untyped <name> is the designed outcome rather than an unfinished one.
+#
+# **Scoped to Tier-1 names**, and that scope is the point rather than a limitation.
+# A Chukchee form glossed "a village" or "personal name" is a fact only a reader of
+# the page can record, and it is unrecoverable later without re-reading; an English
+# ethnonym or a Latin binomial is a string match anything can find over finished TEI,
+# so asking a per-page pass to mark every "Chukchee" and "Phoca" buys automatable
+# coverage at the price of thousands of hand judgements and the errors in them. Hence
+# no `taxon`: the binomials are Latin in English prose and out of scope, and a type
+# nothing can carry is dead surface in the gate.
+#
+# One element with @type rather than TEI's <persName>/<placeName>/<geogName>,
+# because the untyped state has to be expressible in the *same* element: typing a
+# name later is then adding an attribute, not changing an element and moving the
+# span in every diff. The specific elements also cannot say "this is a name and I do
+# not know which kind", which is the state that has to stay findable.
+#   zoonym    an individual animal's name. A herding people names its reindeer, so
+#             this is common rather than exotic — 1-101 is a whole paragraph about
+#             the practice.
+#   mythonym  a mythological or supernatural being. Broader than `theonym`, which
+#             is the narrower class of gods, because the book names beings that are
+#             not gods at all.
+#
+# Two rules this table cannot enforce and the pass has to hold to:
+#
+# **A generic noun is not a name.** `keˊlᴇ` (plural `keˊlet`) and `reˊkkeñ` are
+# *kinds* of evil spirit, so they are common nouns and belong in `<term>`. Being
+# Tier-1, capitalized and otherworldly makes a form none of a proper noun. Get this
+# one right first: a wrong `@type` is a mislabel, but a `<name>` around a common
+# noun invents a whole entity that is not there.
+#
+# **A type comes from the page, never from the form.** Forms that look alike differ
+# entirely in class — among `loi.json`'s otherworldly-looking group, one is a god,
+# one a village, one a person, the rest common nouns — and nothing in the shape of a
+# word says which. `tier1_spans` flags keying risk and carries no class information,
+# so it cannot be mined for this; inferring class from shape is the firewall's
+# failure mode one category over from glyphs.
+NAME_TYPES = {"anthroponym", "ethnonym", "toponym", "hydronym",
+              "zoonym", "mythonym"}
+# Identity is the annotation pass's, over finished TEI. These attributes are how TEI
+# spells it, so refusing them is the deferral made mechanical rather than left as a
+# line in a skill's never-do list — a checkable rule does not depend on the pass
+# behaving.
+NAME_IDENTITY_ATTRS = ("ref", "key", "nymRef")
 # The four curly quotes are deliberately absent. Under the Tier-1-scoped ASCII policy
 # (keying spec section 1) English prose reproduces the print, curly quotes included, so
 # forbidding them here would reject correct text. What remains is the set with no
@@ -255,26 +316,24 @@ def _check_ids(r: Report, root, ctx: dict | None) -> None:
     # model read this glyph off the scan". The firewall's subject is glyph identity
     # and does not reach English; what carries over is the rank's actual question,
     # how far this has been checked.
+    # `@type` on <gloss> says what *kind* of gloss the book prints, and provenance
+    # is no longer on it: a gloss nobody printed is `<supplied>` inside the gloss,
+    # which is the TEI idiom and the same mechanism a list's supplied scope uses. So
+    # one attribute carries one axis, and the <supplied> rule below already forces
+    # @resp and @reason, which is what the old `type="supplied"` pairing existed to
+    # guarantee.
     for gl in root.iter(f"{{{TEI_NS}}}gloss"):
         kind, resp = gl.get("type"), gl.get("resp")
-        if kind == "supplied" and resp is None:
+        if kind is not None and kind not in GLOSS_TYPES:
             r.errors.append(
-                '<gloss type="supplied"> without @resp — a gloss not on the page '
-                "was authored by someone, and who is the whole question")
-        elif kind is None and resp is not None:
+                f"<gloss type={kind!r}> is not a declared kind "
+                f"({', '.join(sorted(GLOSS_TYPES))}); an unmarked <gloss> is the "
+                "ordinary sense gloss")
+        if resp is not None:
             r.errors.append(
-                f"<gloss resp={resp!r}> without type='supplied' — a gloss "
-                "reproducing the print is transcription and carries no rank")
-        elif kind not in (None, "supplied"):
-            r.errors.append(
-                f"<gloss type={kind!r}> — the only declared value is 'supplied'")
-        # Asking *who* and never checking the answer parses is half the rule. This
-        # was missing while the branches above have existed: `resp="#editor"` sailed
-        # through, naming a rank nothing declares.
-        if resp is not None and resp not in RESP_RANKS:
-            r.errors.append(
-                f"<gloss> resp={resp!r} is not a declared rank "
-                f"({', '.join(sorted(RESP_RANKS))})")
+                f"<gloss resp={resp!r}> — a gloss reproducing the print is "
+                "transcription and carries no rank; wrap authored text in "
+                "<supplied> instead, which states who wrote it and why")
 
     # `<supplied>` is editorial text standing in the reading text, so the same
     # question applies to it as to a supplied gloss and to a Tier-1 span: unmarked,
@@ -656,11 +715,38 @@ def validate(tei_path: Path, ctx: dict | None = None,
             "glyph identities; each needs a human reading against the page before "
             "anything downstream may treat it as settled")
 
+    # Proper nouns. The pass marks *category* and never identity: which village
+    # Uñiˊsak is, or whether this Allen is that Allen, is the annotation pass's,
+    # over finished TEI and with the whole corpus in view.
+    names = untyped = 0
+    for el in root.iter(q("name")):
+        names += 1
+        kind = el.get("type")
+        if kind is None:
+            untyped += 1
+        elif kind not in NAME_TYPES:
+            r.errors.append(
+                f"<name type={kind!r}> is not a declared type "
+                f"({', '.join(sorted(NAME_TYPES))})")
+        for attr in NAME_IDENTITY_ATTRS:
+            if el.get(attr) is not None:
+                r.errors.append(
+                    f"<name @{attr}> resolves an identity, which this pass does "
+                    "not do — mark what the page says the name is and leave "
+                    "@ref/@key for the annotation pass over finished TEI")
+
     r.metrics = {
         "tier1_spans": tier1_spans,
         "unclear": len(root.findall(f".//{q('unclear')}")),
         "comments": sum(1 for _ in root.iter(etree.Comment)),
         "notes": sum(1 for _ in root.iter(q("note"))),
+        # Reported, never put on the worklist. Under "type only what's evidenced"
+        # an untyped name is the designed outcome on most pages, so a worklist line
+        # would be permanently non-empty — the noise that buries real signal, and
+        # exactly what the footnote-marker rule's prior-superscript condition exists
+        # to avoid. Unlike the Tier-1 census above, this count trends nowhere.
+        "names": names,
+        "names_untyped": untyped,
         "worklist": len(r.worklist),
     }
     return r
