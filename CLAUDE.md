@@ -467,6 +467,17 @@ so it is recorded here rather than done.
 
 ## Footnote markers
 
+**In TEI, no whitespace immediately before a `<note>`.** The element stands in for
+the printed marker, and the book sets a thin space before the raised digit
+(`1-100`: `[albino] ¹)`). That is the same class of thing as the French spacing
+before `;`/`:` that §2.9 already overrides — a typesetting convention with no
+lexical content, which survives nowhere in the book's meaning and which leaves a
+stray space in the reading text of every consumer that strips the marker. Key it
+tight. `harness validate` errors on it; it is a question about where an element
+sits rather than about a character sequence, so `normalize` — which runs over whole
+files as text and cannot see that the space precedes a `<note>` rather than a word
+— is the wrong place for it.
+
 **The book anchors footnotes with a raised digit; the corpus keys the Unicode
 superscript, never the plain ASCII one** (`keying_spec.md` §2.10). A marker keyed
 `1` for `¹` is the *right number*, so it reads as correct everywhere and no
@@ -571,6 +582,12 @@ if you ever need it.
                                       validate enforces. Two files hold one fact and
                                       a page never resolves @resp locally, so
                                       without this they drift silently. Exit 1 on FAIL
+    uv run harness seam PP-NNN        --continues / --fresh: does an element run
+                                      across the gap BEFORE this page. Writes
+                                      @part on this page's first top-level element
+                                      and the previous page's last. The page after
+                                      the gap writes both ends, being the only one
+                                      holding both witnesses; --commit to write
     uv run harness state PP-NNN       one page's seam record
     uv run harness ledger             the whole seam table; --part N to scope,
                                       --untranscribed for bare refs to work on
@@ -1006,10 +1023,24 @@ entry into it):
   carries no printed number (plate, blank, chapter opening), so it doesn't
   advance the count.
 - **open headings** — the fold over committed `<milestone>`s; resets at each part.
-- **boundary** — which element is left open across the gap after this page.
-  Geometry-derived from ALTO by a separate continuation pass, keyed by ref in
-  `boundaries.json`, not yet built. The per-page pass never writes
-  `@part`/`@prev`/`@next`.
+- **boundary** — whether an element carries across the gap, recorded as `@part` on
+  the two elements it lands on, one per page. `harness seam PP-NNN --continues`
+  writes both. **There is no `boundaries.json`** — the committed TEI is the record,
+  not a materialization of a sidecar, and the I/M/F arithmetic reads back out of
+  the files it wrote to. See below.
+
+`harness context` supplies **`prev_tail`** — the previous page's last top-level
+element, as **markup, not a text excerpt**. The markup is where the witnesses are:
+`<item n="14">` is what settles whether the list resuming at 15 on the next page is
+the same list, and a flattened tail throws it away along with every `xml:lang`/
+`@resp` in play at the seam. Trimmed by dropping whole leading children so the
+fragment always parses, with the elision stated rather than implied. `null` when
+the predecessor is not collated — the same case `harness seam` refuses.
+
+`ends_sentence` rides along as a **hint, never a verdict**, and the live seam says
+why: `1-100` closes its numbered list at item 14 with a full stop and `1-101`
+resumes it at 15. Absence of a terminal stop is positive evidence; presence of one
+is only the lack of it.
 
 The next page's context is built from that ledger. `expected_folio` is the last
 numbered predecessor's folio plus one and is **null wherever the chain breaks** —
@@ -1087,10 +1118,18 @@ TBD
   emitted by a pass reading the amended harness. So the instruction has not been tested
   on a model that only ever saw the provenance version, and the first page transcribed
   after this is also a test of whether the rule reads as intended.
-- The continuation pass (`boundaries.json` from ALTO geometry) is specified but
-  unwritten; `boundary_in` is `"unknown"` for every page until it exists. Note
-  `transcriber_harness.md` still specifies it at length as though it were live,
-  inside a document whose own scope statement excludes it.
+- **`transcriber_harness.md` is stale and needs rewriting as a proper skill.** It
+  predates the harness and most of this project's tooling. Two of its load-bearing
+  claims are now known wrong — that text content cannot decide a page boundary, and
+  the blanket `xml:id` ban — and it still specifies the geometry-derived
+  continuation pass at length, inside a document whose own scope statement excludes
+  it. `harness context` does not yet supply the previous page's tail, and the
+  English-correction licence still permits completing a sentence or capitalising a
+  first word at a page edge, which would destroy the seam's own text witness.
+- **Run-on lists and tables have no markup yet.** TEI's `att.fragmentable` covers
+  `p` and `quote` but not `list`/`table`, so those need `prev`/`next` pointers and
+  therefore `xml:id`s. `harness seam` refuses them by name rather than guessing;
+  the id scheme is the blocker, and it is also what term↔gloss linking needs.
 - **`data/toc.json` (315 entries) records no provenance.** `loi.json` and
   `authorities.json` both name the scans they were read from; this one does not,
   and the printed ToC's scan range is not recoverable from the file. Someone who

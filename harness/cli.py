@@ -70,6 +70,7 @@ from .review import (group_spans, page_spans, render_queue_html, restore, serve,
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
 from .validate import validate, check_corpus_header
+from .seam import set_seam
 
 
 def main(argv=None):
@@ -126,6 +127,23 @@ def main(argv=None):
                            help="expect human-ratified provenance (resp='#ed') on "
                                 "Tier-1 spans instead of the collation pass's "
                                 "'#llm'; a remaining '#llm' becomes a worklist line")
+
+    sm = add("seam", help="record whether an element runs across the gap BEFORE "
+                          "this page, writing @part on this page's first "
+                          "top-level element and the previous page's last. The "
+                          "page after the gap writes both ends, because it is the "
+                          "only one holding both witnesses. Preview unless "
+                          "--commit")
+    sm.add_argument("ref", metavar="PP-NNN",
+                    help="the page AFTER the gap, e.g. 1-100 for the 1-099/1-100 seam")
+    g = sm.add_mutually_exclusive_group(required=True)
+    g.add_argument("--continues", dest="open_gap", action="store_true",
+                   help="an element carries across: this page opens mid-element")
+    g.add_argument("--fresh", dest="open_gap", action="store_false",
+                   help="clean break: this page opens a new element. Clears the "
+                        "claim on both sides if one was recorded")
+    sm.add_argument("--commit", action="store_true",
+                    help="write both files; without it, report what would change")
 
     add("header", help="the gate on the corpus teiHeader — that it exists, and "
                        "that the provenance ranks it declares are exactly the ones "
@@ -513,6 +531,9 @@ def main(argv=None):
             else:
                 print(rep.render())
             return 0 if rep.ok else 1
+        if a.cmd == "seam":
+            out(set_seam(a.ref, a.open_gap, a.root, commit=a.commit))
+            return 0
         if a.cmd == "header":
             rep = check_corpus_header(a.root)
             if getattr(a, "json", False):

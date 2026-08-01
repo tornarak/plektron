@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>see corpus teiHeader</title>
+      </titleStmt>
+      <publicationStmt>
+        <p>see corpus teiHeader</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>see corpus teiHeader; page 74</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <pb n="74"/>
+      <p>come to the herd, fighting with their tame rivals, and seeking for some doe that is still rutting. During this time the herdsmen visit the herd as little as possible, even at the risk of losing some animals. When visiting the herd, they are careful to keep on the windward side of the shy guest, in order not to frighten him away. The visits of wild bucks are considered as blessings, obvious tokens that Providence looks favorably on the herd: therefore the herdsmen, with special charms and incantations, strive to allure and to detain as long as possible the wild reindeer. After the crossing, the herdsmen try to kill the wild buck as speedily as they can, since its escape is interpreted as the recall of the blessing. If several bucks that have crossed with the herd should make good their escape, they will induce the herd the next spring to return the visit, and will keep them afterward. The offspring of the cross between tame and wild reindeer is highly valued by the Chukchee. They trace the lineage of such blood for three or four generations. All cross-breeds are broken for the harness, and used especially in racing, because they are swifter and have more mettle than any tame reindeer. The offspring of the wild buck and the tame doe is called <foreign xml:lang="ckt" resp="#llm">rɪteˊqäu</foreign>; and that of the <foreign xml:lang="ckt" resp="#llm">rɪteˊqäu</foreign> buck and the tame doe, <foreign xml:lang="ckt" resp="#llm" facs="#eSc_line_b36654ad">ɪˊčve-teiˊkɪn</foreign> (“wild reindeer made”). Sometimes the Chukchee buck, when roaming about free, will cross with a wild doe. The offspring, when caught young, can be broken, and is prized more highly than any other reindeer. The Chukchee assert that the first cross-bred generation of <foreign xml:lang="ckt" resp="#llm">rɪteˊqäu</foreign> is better and even more docile than the second, in which the innate wildness returns. The crossing between the Lamut and the Chukchee reindeer does not attract any special attention.</p>
+      <p>The tame reindeer shows considerable variety in color, ranging from spotless snow-white to dark gray and hazel-nut brown (usually called by the natives black). It is darkest shortly after shedding its hair, and lightest in the spring, before shedding. Fawns are darker than the old ones, and white fawns are therefore much valued. The Chukchee distinguish the following colors of reindeer-skin: —</p>
+      <!-- the list is set in two columns, 1-8 left and 9-14 right; the OCR line
+           order interleaves them, so ocr_lines runs 32,33,34,48,35,… against the
+           single 1-14 sequence printed. Typography, not structure. -->
+      <list type="gloss">
+        <item n="1"><term xml:lang="ckt" resp="#llm">Teñ-uweˊlᴇ</term> (<gloss>“quite black” [chestnut brown]</gloss>).</item>
+        <item n="2"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_8fe715d3">Uuˊrg̣ɪlɪn</term> (<gloss>“black hair tipped”</gloss>).</item>
+        <item n="3"><term xml:lang="ckt" resp="#llm">Čêvaˊro</term> (<gloss>“gray”</gloss>).</item>
+        <item n="4"><term xml:lang="ckt" resp="#llm">Êlhɪ-čêvaˊro</term> (<gloss>“gray with white”</gloss>) or <term xml:lang="ckt" resp="#llm" facs="#eSc_line_f0880439">yiᵋlɪ-luᵋˊ</term> (<gloss>“moon-faced,” since the white is usually on the face</gloss>).</item>
+        <item n="5"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_37cf16de">ɪᵋˊpɪrg̣ɪn</term> (<gloss>“yellowish hair tipped” [on brown ground]</gloss>).</item>
+        <item n="6"><term xml:lang="ckt" resp="#llm">Uuᵋplɪˊlᴇ</term> (<gloss>“black yellowish” [somewhat lighter than the preceding one]</gloss>).</item>
+        <item n="7"><term xml:lang="ckt" resp="#llm">ɪᵋplɪˊlᴇ</term> (<gloss>“yellowish” [on gray ground]</gloss>).</item>
+        <item n="8"><term xml:lang="ckt" resp="#llm" facs="#eSc_line_0d82d41c">Ilh-ɪᵋplɪˊlᴇ</term> (<gloss>“whitish yellow”</gloss>).</item>
+        <item n="9"><term xml:lang="ckt" resp="#llm">Čêˊčhên-yaˊqɪlhɪn</term> (<gloss>“under-leg grayish” [light-gray spots under the legs and on the groins, body brown]</gloss>).<!-- "light-gray" breaks at the line end ("[light-" / "gray spots"), so the hyphen may be the break rather than the compound. Retained because it stands attributive before a noun, but the page gives no mid-line witness for it hyphenated and item 10 sets "belly light gray" open: needs a human call on hyphenated vs. open --></item>
+        <item n="10"><term xml:lang="ckt" resp="#llm">Uw-yaˊqᴀčhɪn</term> (<gloss>“black, under-leg grayish” [same as before, belly light gray, white spot on the forehead]</gloss>).</item>
+        <item n="11"><term xml:lang="ckt" resp="#llm">Yaˊqɪlhɪn</term> (<gloss>“under-leg grayish” [same as before, brown parts less extended]</gloss>).</item>
+        <item n="12"><term xml:lang="ckt" resp="#llm">Yɪˊhɪlhɪn</term> (<gloss>“whitish” [with brown stripe along the back]</gloss>).</item>
+        <item n="13"><term xml:lang="ckt" resp="#llm">Êˊlhar</term> (<gloss>“white fox”</gloss>).</item>
+        <item n="14"><term xml:lang="ckt" resp="#llm">Ilhɪ-lileˊ</term> (<gloss>“white-eyed” [albino]<note n="1" place="bottom">Albinos have pink eyes. Their velvet is rosy on account of the transparency of the skin. They are weak and sleepy, though very tame. The Chukchee usually kill them at an early age, as, on the whole, they do not like anything abnormal among their reindeer.</note></gloss>).</item>
+      </list>
+    </body>
+  </text>
+</TEI>

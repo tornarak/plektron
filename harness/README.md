@@ -19,7 +19,7 @@ is the source of record and is deliberately verbose. For the project's rules,
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
 | `gt/seg/` | the **first** segmentation attempt: 122 pages, full SegmOnto vocabulary, free polygons. Kept, read-only | by hand, via eScriptorium |
 | `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json` | `zones --serve` |
-| `tei/` | the collation output, and the system of record for seam state | the collation pass |
+| `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `seam --commit` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` | by hand |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `review --serve`, `lines`, `zoom` |
 | `scans-fig-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones --blot` |
@@ -54,9 +54,22 @@ the validator that checks it.
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is
 the answer, not a failure. Also `toc_window`/`toc_search`/`toc_near`.
 
-**`validate.py`** — the gate. One 240-line `validate()` plus `Report`. Exit 1 on FAIL.
-`RESP_RANKS` is the operative definition of the three provenance ranks until the
-corpus teiHeader exists.
+**`seam.py`** — page seams. A gap carries one fact — is an element open across it —
+and that fact lands on two elements, one per page. The page *after* the gap writes
+both, because it is the only place both witnesses exist: it holds the predecessor's
+tail, its own opening text and its own first-line indent. `@part` is two independent
+bits (begins-before, runs-past) spelled as nothing/`I`/`M`/`F`, and `set_seam` sets
+one bit per side, which is what makes the operation order-independent and reversible.
+**No sidecar**: the committed TEI is the record, and the I/M/F arithmetic reads back
+out of the files it wrote to. Also `tail()`, which `context` surfaces as `prev_tail`
+— the previous page's last element as *markup*, since a flattened excerpt loses the
+`@n` and `xml:lang` that are the seam's actual witnesses.
+
+**`validate.py`** — the gate. `validate()` plus `Report`; exit 1 on FAIL. Also
+`check_corpus_header()`, behind `harness header`, which holds `RESP_RANKS` and
+`tei/corpus-header.xml` to each other: two files carry one fact, and per-page
+validation deliberately never resolves `@resp` locally, so nothing else could notice
+them drifting apart.
 
 **`detectors.py`** — two jobs, deliberately: (a) speculative triage, `detect_all`,
 whose output is a flag meaning "worth a look"; (b) the corpus-frequency mining behind

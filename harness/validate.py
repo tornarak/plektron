@@ -241,17 +241,65 @@ def validate(tei_path: Path, ctx: dict | None = None,
                 f"{basis.get('basis_folio')}) — mismatch comment required "
                 "(harness: folio wins, the prediction is only a prediction)")
 
-    # forbidden structure
+    # forbidden structure.
+    #
+    # @part used to be banned outright, on the grounds that continuation was a
+    # later pass's job. The ban was too wide: a gap's two ends are one fact, and
+    # the page *after* the gap is the only place both witnesses exist — it holds
+    # the previous page's tail, its own opening text and its own first-line
+    # indent. So `harness seam` writes @part on both sides, and the TEI is the
+    # record rather than a materialization of some sidecar.
+    #
+    # What is checked here is therefore the *shape*: a legal I/M/F value, on a
+    # direct child of <body>, and only on the first or last of them. An element
+    # in the middle of a page cannot span either gap, so @part there is always
+    # wrong. @prev/@next stay banned — they carry ids, and the id scheme is
+    # unsettled; a run-on <list> or <table> is refused by `seam` for that reason
+    # rather than given a pointer that resolves to nothing.
+    from .seam import body_elements
+    spanning = body_elements(root)
+    edge = {id(el) for el in (spanning[:1] + spanning[-1:])}
     for el in root.iter():
         if not isinstance(el.tag, str):
             continue
-        for att in ("part", "prev", "next"):
+        name = etree.QName(el).localname
+        if el.get("part") is not None:
+            if el.get("part") not in ("I", "M", "F"):
+                r.errors.append(
+                    f"@part={el.get('part')!r} on <{name}> — TEI allows I, M or F")
+            elif id(el) not in edge:
+                r.errors.append(
+                    f"@part on <{name}>, which is neither the first nor the last "
+                    "top-level element of <body> — nothing in the middle of a "
+                    "page spans either gap")
+        for att in ("prev", "next"):
             if el.get(att) is not None:
-                r.errors.append(f"@{att} on <{etree.QName(el).localname}> — "
-                                "continuation is the patch pass's job")
+                r.errors.append(f"@{att} on <{name}> — carries an id, and the "
+                                "id-minting scheme is unsettled")
         if el.get("{http://www.w3.org/XML/1998/namespace}id"):
             r.errors.append(f"xml:id on <{etree.QName(el).localname}> — "
                             "this pass mints no ids")
+    # No whitespace immediately before a <note>.
+    #
+    # The element stands in for the printed marker, and the book sets a thin space
+    # before the raised digit ("[albino] ¹)"). That is the same class of thing as
+    # the French spacing before `;` and `:` which keying spec 2.9 already
+    # overrides: a typesetting convention with no lexical content, which survives
+    # nowhere in the book's meaning and which puts a stray space into the reading
+    # text of every consumer that strips the marker. Key it tight.
+    #
+    # Checked here rather than in `normalize` because it is a question about where
+    # an element sits, not about a character sequence — `normalize` runs over whole
+    # files as text and cannot see that the space precedes a <note> rather than a
+    # word.
+    for note in root.iter(q("note")):
+        prev = note.getprevious()
+        before = prev.tail if prev is not None else note.getparent().text
+        if before and before != before.rstrip():
+            r.errors.append(
+                f"space before <note n={note.get('n')!r}> — the marker sets tight "
+                "against the character it anchors to; the print's thin space is "
+                "typesetting, like the French spacing at keying spec 2.9")
     if root.find(f".//{q('lb')}") is not None:
         r.errors.append("<lb/> present — ALTO holds the line record")
     if root.find(f".//{q('div')}") is not None:

@@ -256,6 +256,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     package do the same for the same reason.
     """
     from .figures import FIGDIR
+    from .seam import tail as seam_tail
     ref = norm_ref(ref)
     stem = stem_for(ref, root)
     ocr = root / "ocr" / f"{stem}.xml"
@@ -304,6 +305,13 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         "toc_window": toc_window(load_toc(root), state["expected_folio"],
                                  state["believed_open"]),
         "boundary_in": state["boundary_in"],
+        # The end of the previous page's committed TEI, so the pass can see
+        # whether this page opens mid-element instead of inferring it. Null when
+        # the predecessor is not collated — then the seam is genuinely unknown and
+        # `harness seam` will refuse it too. About 70% of text pages open
+        # mid-paragraph (measured over the keyed zone corpus), so this is the
+        # common case, not an edge one.
+        "prev_tail": seam_tail(ref, root),
         "figures_on_page": figures,
         # Segmenter faults where a line meets a figure: a line running from a
         # wrapped caption into body text, or a line sitting inside artwork. Both
