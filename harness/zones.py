@@ -1265,13 +1265,22 @@ def assemble(root: Path = Path(".")) -> dict:
     - **`--suppress-regions` / `--suppress-baselines` are gone.** Region-only is not
       a flag any more; it follows from the data, and `gt/zones/` carries no
       `TextLine` at all, so there is nothing for a baseline head to learn.
-    - **`-i models/blla.mlmodel --resize both`** rather than training from scratch.
-      blla is the stock layout model and `both` sets the output layer to exactly the
-      training data's classes — dropping blla's single `text` region class for these
-      seven and keeping the features underneath. 115 pages is not enough to learn a
-      convolutional stack from nothing, and `models/plates-seg-best.safetensors` is
-      the same size as blla, so the one segmentation model this project has already
-      trained was made the same way.
+    - **`-i models/blla.mlmodel --resize new`** rather than training from scratch.
+      blla is the stock layout model and `new` sets the output layer to exactly the
+      training data's classes — dropping blla's single `text` region class and its
+      `default` baseline for these seven regions, keeping the features underneath.
+      115 pages is not enough to learn a convolutional stack from nothing, and
+      `models/plates-seg-best.safetensors` is the same size as blla, so the one
+      segmentation model this project has already trained was made the same way.
+    - **`--resize`'s own `--help` lists two values the code rejects.** It advertises
+      `add|union|both|new|fail`; `kraken/train/blla.py` implements `fail`, `union`
+      and `new`, and anything else falls into an `else` whose `ValueError` crashes
+      on a wrong attribute — so `--resize both` fails with an unreadable
+      `AttributeError: 'BLLASegmentationModel' object has no attribute 'resize'`
+      after the data has loaded. `both` is also exactly what the help *describes*
+      as fitting the layer to the training classes, which is what `new` does. This
+      is the concrete case for the rule above the whole file: verify against the
+      source, not the help, and never against a tutorial.
 
     Output goes to `bogoras-seg/`, not `models/`: segtrain writes a checkpoint per
     epoch, and this repo keeps only the trained model, in `models/`, by hand.
@@ -1304,7 +1313,22 @@ def assemble(root: Path = Path(".")) -> dict:
             if link.is_symlink() or link.exists():
                 link.unlink()
             link.symlink_to(os.path.relpath(target.resolve(), work.resolve()))
-        listed[split].append(str((work / f"chukchi-{ref}.xml").resolve()))
+        # The work-dir path, **unresolved and relative to the root** — and both
+        # halves of that are load-bearing.
+        #
+        # `.resolve()` here followed the symlink straight back to `gt/zones/`, so
+        # the lists named the real ALTO, kraken looked for the raster beside *it*,
+        # and the blot links this function exists to make were never read. It failed
+        # loudly ("All 115 samples in dataset invalid") only because `gt/zones/`
+        # holds no PNGs; had a scan ever been copied in there, the whole set would
+        # have trained unblotted and looked fine.
+        #
+        # Relative because an absolute path records this machine. The lists sit in a
+        # gitignored directory so nothing was committed, but the reported command
+        # already assumes the repo root as cwd, and a path that only works on one
+        # filesystem is not something to leave lying around on the strength of a
+        # `.gitignore` line.
+        listed[split].append(f"{WORKDIR}/chukchi-{ref}.xml")
         counts[split] += 1
 
     for split in ("train", "eval"):
@@ -1334,7 +1358,7 @@ def assemble(root: Path = Path(".")) -> dict:
 # each flag is what it is.
 SEGTRAIN_CMD = (
     "uv run ketos -s 42 segtrain"
-    " -f alto -i models/blla.mlmodel --resize both"
+    " -f alto -i models/blla.mlmodel --resize new"
     " -t {work}/train.lst -e {work}/eval.lst"
     " -o {work}/zones-seg --augment -q early -N 200 --min-epochs 15 --lag 15"
 )

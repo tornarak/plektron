@@ -157,6 +157,37 @@ def test_assembly_splits_by_the_marks(tmp_path):
     assert "chukchi-1-151.xml" in (work / "eval.lst").read_text()
 
 
+def test_the_lists_name_the_work_dir_copy_not_the_store(tmp_path):
+    """kraken reads the raster from `filename.parent / fileName`, so the path in
+    the list decides which image is trained on.
+
+    Resolving it followed the symlink back to `gt/zones/` — the lists named the
+    real ALTO, kraken looked for the raster beside *that*, and the blot links this
+    whole function exists to make were never read. It failed loudly only because
+    `gt/zones/` holds no PNGs; one scan copied in there and the entire set would
+    have trained unblotted, teaching exactly the figure-shaped body zone the blot
+    prevents.
+    """
+    keyed(tmp_path, "1-048")
+    zn.blot_all(tmp_path)
+    rep = zn.assemble(tmp_path)
+    line = (Path(rep["dir"]) / "train.lst").read_text().strip()
+    assert line == "bogoras-seg/chukchi-1-048.xml"
+    assert "gt/zones" not in line
+
+
+def test_the_lists_hold_no_absolute_path(tmp_path):
+    """An absolute path records the machine it was assembled on. The directory is
+    gitignored, so nothing leaks, but a `.gitignore` line is not a reason to write
+    one down."""
+    keyed(tmp_path, "1-048")
+    zn.blot_all(tmp_path)
+    rep = zn.assemble(tmp_path)
+    for split in ("train", "eval"):
+        for line in (Path(rep["dir"]) / f"{split}.lst").read_text().split():
+            assert not Path(line).is_absolute()
+
+
 def test_assembly_leaves_exempt_pages_out_of_both_lists(tmp_path):
     """A plate is neither an example of the layout nor a fair test of it —
     letting one into eval would report a model wrong about a page with no right
@@ -221,12 +252,20 @@ def test_nothing_about_a_particular_machine_is_baked_in(tmp_path):
 
 
 def test_the_command_fine_tunes_blla_rather_than_starting_over(tmp_path):
-    """115 pages will not teach a convolutional stack from nothing, and `both`
-    is what replaces blla's single `text` region class with these seven."""
+    """115 pages will not teach a convolutional stack from nothing, and `new`
+    is what replaces blla's `text` region and `default` baseline with these seven
+    regions.
+
+    **Not `both`**, which `--help` both lists and describes as doing exactly this:
+    kraken 7.0.3 implements only `fail`, `union` and `new`, and `both` falls into
+    an `else` whose ValueError crashes on a wrong attribute — so it fails after
+    the data has loaded, with an AttributeError naming neither the flag nor the
+    problem.
+    """
     keyed(tmp_path, "1-048")
     zn.blot_all(tmp_path)
     cmd = zn.assemble(tmp_path)["command"]
-    assert "-i models/blla.mlmodel" in cmd and "--resize both" in cmd
+    assert "-i models/blla.mlmodel" in cmd and "--resize new" in cmd
 
 
 def test_assembly_reports_the_classes_the_model_will_carry(tmp_path):
