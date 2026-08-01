@@ -174,6 +174,19 @@ def rank_of(cfg: dict, label: str) -> int | None:
     return None if t is None else t.get("rank")
 
 
+def train_merges(cfg: dict) -> dict[str, str]:
+    """`{label: label it is folded into}` for training, empty if none declared.
+
+    **Training only.** The editor offers every declared type, `gt/zones/` stores
+    what was keyed, and every check reads the keyed label — a distinction a human
+    drew is evidence, and it is not destroyed because a model finds it hard. This
+    only ever narrows what `harness zones --assemble` asks the segmenter to learn.
+    """
+    raw = cfg.get("train_merges") or {}
+    return {k: v["into"] for k, v in raw.items()
+            if not k.startswith("_") and isinstance(v, dict) and "into" in v}
+
+
 def part_spec(cfg: dict, ref: str) -> dict:
     part, _ = parse_ref(ref)
     spec = ((cfg.get("columns") or {}).get("parts") or {}).get(str(part))

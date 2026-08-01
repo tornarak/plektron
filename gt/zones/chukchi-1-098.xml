@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-1-098.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+        <TextBlock HPOS="877" VPOS="612" WIDTH="1778" HEIGHT="90" ID="mz_1-098_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="877 612 2655 612 2655 702 877 702"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="877" VPOS="727" WIDTH="1778" HEIGHT="300" ID="mz_1-098_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="877 727 2655 727 2655 1027 877 1027"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="877" VPOS="1027" WIDTH="1778" HEIGHT="1677" ID="mz_1-098_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="877 1027 2655 1027 2655 2704 877 2704"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="877" VPOS="2704" WIDTH="1778" HEIGHT="187" ID="mz_1-098_004" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="877 2704 2655 2704 2655 2891 877 2891"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="877" VPOS="2937" WIDTH="1778" HEIGHT="328" ID="mz_1-098_005" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="877 2937 2655 2937 2655 3265 877 3265"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

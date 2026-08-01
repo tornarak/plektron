@@ -16,7 +16,22 @@ wheels/
 scans/
 
 # Downloaded model weights (675 MB), not authored here.
-models/
+#
+# `models/*` rather than `models/`, and that is not a style choice: git does not
+# descend into an excluded *directory*, so a `!models/bogoras-seg/` negation under
+# `models/` never fires. Excluding the contents instead leaves the directory
+# readable and the negation working.
+models/*
+# — except the models this project trains, which are small, ours, and meaningless
+# without the corpus they were fitted to. Each carries the split it trained on as
+# `<model>.train.lst` / `.eval.lst` — verbatim copies of what `--assemble` wrote,
+# not a re-encoding — plus a small `<model>.json` for the few facts that are not
+# lists: a digest of `gt/zones/` at the time, the merges in force, and the score.
+# Paths in it are repo-relative, since a record of one machine's filesystem is no
+# record. `.bak` is `--remap-model`'s one-deep undo and stays out, like
+# `gt/zones/*.prev`.
+!models/bogoras-seg/
+models/bogoras-seg/*.bak
 
 # Working directory for recognition runs — checkpoints written mid-training, of
 # which `checkpoint_abort.ckpt` is one. Only a *trained* model is worth keeping,
@@ -105,8 +120,31 @@ scans-blotted/
 # the 580 figure-less pages here are symlinks into the already-ignored `scans/`,
 # so a tracked copy would dangle in every clone exactly as `scans-w-figs/` would.
 scans-fig-blotted/
-# `harness zones --assemble`: symlink farm pairing each zone ALTO with its blotted
-# raster for `ketos segtrain`, plus the two .lst files it reads. Entirely derived
-# from `gt/zones/` and `scans-fig-blotted/`; the trained model is the artifact
-# worth keeping and that lives in `models/`, as `bogoras-rec/` already establishes.
-bogoras-seg/
+# Training scratch: `--assemble`'s symlink farm, its two .lst files, and whatever
+# checkpoints a run writes. **Pure scratch, and that is a property worth keeping** —
+# the split a model trained on travels in that model's own manifest under
+# `models/bogoras-seg/`, so nothing here is read once training ends and `--assemble`
+# may clobber it freely. It used to be both the input and the only record of a past
+# run, which meant preparing the next run destroyed the ability to interpret the
+# model you already had.
+train/
+# `harness zones --predict`: what the trained segmenter emitted, one raw ALTO per
+# page. Derived in the strong sense — regenerable from `models/zones-seg.safetensors`
+# and `scans-fig-blotted/`, both of which are kept — and it is not a record of
+# anybody's judgement, which is the property that decides this. A prediction a human
+# has been through stops living here: it is corrected in the editor and saved into
+# the tracked `gt/zones/`, so what is worth keeping is kept by being promoted.
+/mz/zones/
+# `harness zones --link`: the read view over both zone stores, one name per page,
+# the human file winning. **Ignored where `ocr/` is tracked**, and the difference is
+# the whole reason that paragraph above spells `ocr/` out. `ocr/`'s links resolve
+# inside tracked `gt/ocr/`, so a clone gets working links; half of this farm points
+# into the ignored `mz/zones/` above, so a committed copy would dangle on clone
+# exactly as `scans-w-figs/` would. Rebuilt in one command.
+#
+# **Both patterns are anchored with a leading slash, and that is not tidiness.** A
+# bare `zones/` is a match on any directory of that name at any depth, so it silently
+# swallows the *tracked* `gt/zones/` — a newly keyed page would then never be added,
+# and `git status` would say nothing, which is the failure this repo has already paid
+# for once in a different costume. Verified with `git check-ignore -v`.
+/zones/

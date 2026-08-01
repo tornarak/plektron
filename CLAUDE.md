@@ -152,7 +152,11 @@ Layout, all at the repo root:
     gt/     what a human has been through. ocr/ (20 pages of ground truth),
             fig/ (252 figure ALTOs + METS, geometry only), seg/ (the first
             segmentation attempt, 122 pages, kept read-only), zones/ (the
-            current one — seven types, fixed-width bands; 181 pages, 961 zones).
+            current one — seven types, fixed-width bands; 181 pages, 969 zones).
+    mz/zones/  what the trained segmenter emitted, raw. Derived; ignored.
+    zones/  the read view over both zone stores — symlinks, the human file
+            always winning. Derived; ignored, unlike ocr/, because half its
+            links point into the ignored mz/. Never written through.
     tei/    1 page, plus corpus-header.xml — the corpus teiHeader, gated by
             `harness header`. Not a valid TEI document on its own: a bare
             <teiHeader>, a fragment like the page files, spliced in by an
@@ -162,7 +166,8 @@ Layout, all at the repo root:
     review/ one directory per page, PP-NNN/. proposal.json (a reading, not truth)
             and decision.json (adjudicated) are tracked; crops/ sheets/ zoom/ and
             review.html are derived and ignored. See harness/paths.py.
-    models/ blla, CATMuS print (large + tiny), LADaS medium, orli, plates-seg.
+    models/ blla, CATMuS print (large + tiny), LADaS medium, orli, plates-seg,
+            zones-seg (this project's own, trained on gt/zones/).
     pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
     bogoras-rec/  working dir for recognition runs. Ignored; only trained models
             are kept, and those live in models/.
@@ -380,19 +385,29 @@ is the sample the first training run was meant to have. An itinerary is a
 still saves, it simply has no neighbours, and a scoped sweep reports the unkeyed
 entries as rows so "how much is left" has an answer.
 
-**Where it stands: 181 pages keyed** — `gt/seg`'s heterogeneous 122 plus the first
-two chapters, which is the sample the first `ketos segtrain` run was meant to have.
-**148 text pages carrying 961 zones**, 33 marked exempt, across all three parts (113
-of part 1, 28 of part 2, 40 of part 3). `harness zones --ink` takes 31 s and returns
-**6 errors on 2 pages, 3 warnings on 3**.
+**Where it stands: 345 pages keyed** — `gt/seg`'s heterogeneous 122, then part 1
+straight through to `1-359`. **271 text pages carrying 1692 zones**, 74 marked
+exempt, weighted heavily to part 1 (274 pages, against 31 and 40). The splits are
+**211 train / 60 eval**; the eval set was grown from 34 during the third training
+run, which breaks comparability with the first two runs' headline figures and was a
+deliberate trade for a better final estimate.
+
+Read the class distribution against the earlier one below: `MainZone-Quote` has not
+moved at all — **25 instances at 181 pages and 25 at 345** — while everything else
+roughly doubled. That is the fact behind `train_merges`.
+
+    MainZone-P            884    MainZone-Other         60
+    RunningTitleZone      261    QuireMarksZone         47
+    MainZone-Continued    250    MainZone-Quote         25
+    MarginTextZone-Notes  165
 
 The class distribution is the thing to read here, because it settles a question this
 design was open on:
 
-    MainZone-P            489    MainZone-Other         53
-    RunningTitleZone      141    QuireMarksZone         25
+    MainZone-P            494    MainZone-Other         54
+    RunningTitleZone      141    QuireMarksZone         26
     MainZone-Continued    124    MainZone-Quote         25
-    MarginTextZone-Notes  104
+    MarginTextZone-Notes  105
 
 `MainZone-Quote` was **zero** at 75 pages, and a class with no instances cannot be in
 a class map — the open question was whether to fold it into `MainZone-Other` before
@@ -470,6 +485,142 @@ The remaining 0.16 s is inherent to the format, not to the check. `scans/` is
 regenerating it as greyscale would cut the decode to ~0.05 s and the tree to a third
 of its size. That is a corpus-wide change to a derived store with several consumers,
 so it is recorded here rather than done.
+
+### The model exists, and so does a second store
+
+`ketos segtrain` has run, three times. The installed model is
+`models/bogoras-seg/zones-seg.safetensors`; the accuracy stays out of the filename,
+since a default path that changes every retrain is a default nobody can use.
+`harness zones --predict` runs it.
+
+**Two directories, and the split between them is the point.** `train/bogoras-seg/`
+is scratch — the symlink farm, the two `.lst` files, each run's checkpoints — and
+**nothing reads it once training ends**, so `--assemble` may clobber it freely.
+`models/bogoras-seg/` is tracked and holds the artifacts: the weights, the split
+they saw as `<model>.train.lst`/`.eval.lst`, and a small `<model>.json` for the few
+facts that are not lists. They used to be one directory, and the `.lst` files were
+both the *next* run's input and the only record of what a *past* run consumed —
+so preparing a run destroyed the ability to interpret the model already installed,
+and `--score` would read whichever lists happened to be lying there regardless of
+which model it was scoring. Nothing detected that.
+
+**Its output does not go in `gt/zones/`, and this is the store rule rather than a
+preference.** Three directories, and the third is a view:
+
+    gt/zones/     what a human has been through. Tracked.
+    mz/zones/     what the model emitted. Derived, ignored.
+    zones/        the read view over both, the human file always winning.
+                  Derived, ignored.
+
+Exactly the shape `ocr/` has over `gt/ocr/`, and for the reason that layout was
+adopted: a file's role must not live only in the directory holding it, so the two
+real stores never alias and the view is the only thing that joins them. **Reads may
+resolve through `zones/`; writes name `gt/zones/`.** `save_zones` takes no store
+argument at all — there is no parameter in which a caller could name somewhere else.
+
+Four properties worth knowing before touching any of it:
+
+- **`mz/` holds raw kraken output** — free polygons at whatever x the model drew, its
+  own ids, its own ALTO dialect. Snapping to a configured band is a human act and
+  happens in the editor. A store that normalised its own contents could no longer
+  tell you what the model did, which is the only question it exists to answer.
+- **A prediction is measured, never gated.** `harness zones --from mz` runs the same
+  checks and always exits 0; `--from gt` (the default) is unchanged and still gates.
+  A raw polygon fails the fixed-measure width check by construction, so gating there
+  would be permanent known-false noise — and a machine store could then block a build
+  that has nothing to do with it. `--from` takes a closed set of two and deliberately
+  **not** a free directory path, unlike `lines`/`zoom`/`review`/`restore`: a free path
+  is how a check ends up compared against its own input, and checking through the
+  view would blend ratified and unratified pages under one verdict.
+- **The editor is the only route from one store to the other.** `/` and `?` cycle a
+  store selector — `zones` (the view, default), `gt`, `mz`, and `split` (gt with the
+  paragraph rule applied, computed on open and stored nowhere) — **orthogonal to the
+  itinerary**: the itinerary picks the pages, the selector picks whose reading of
+  them you see. A pinned store holding nothing reports **nothing shown** rather than
+  falling back, because "the model produced nothing here" and "nobody has keyed this"
+  are both answers and a selector that silently redirected would merge them. `mz`
+  shows as an *unsaved proposal*, opening clean so navigating past it writes nothing;
+  promoting it takes an edit or an explicit save, and the save goes to `gt/zones/`
+  whichever store was on screen — the shape `proposal.json` → `decision.json` →
+  `restore` already has.
+- **A prediction never satisfies `has_zones` on the default store.** Otherwise
+  `--predict` over an itinerary would mark the whole list keyed in one command and
+  leave the next session with nowhere to resume.
+
+**The sidecars stay `gt/`-only** — the three split lists, `_rule_exempt.json`,
+`_ink_exempt.json`, `_ink_cache.json`. They record judgements about *pages*, not
+about a store's files: an ink exemption rules that some mark on the paper is not
+type, which is true whoever's zones are being measured against it, and there is no
+such thing as the machine store's opinion of which pages are held out. The cache is
+the sharper case — keyed by ref alone, so a machine verdict landing in it would sit
+in the page list's column indistinguishable from one about work a human has done.
+
+Three things about kraken 7.0.3 that cost time and will cost it again after an
+upgrade, all recorded in `zones.load_segmenter`:
+`TorchVGSLModel.load_model` is **CoreML-only** and fails a safetensors file inside
+protobuf with `Wire format was corrupt`, which reads as a damaged model rather than
+the wrong reader; its deprecation notice names `kraken.registry.load_model`, which
+**does not exist in this version**; and `ketos segtrain` does not write the
+`hyper_params` key that `blla.segment` then reads unguarded, so every model this
+project trains raises `KeyError: 'hyper_params'` on its first inference —
+`models/plates-seg-best.safetensors` is missing it identically. The working path is
+`kraken.models.loaders.load_models`, plus setting that key empty to restore the
+`padding = (0, 0)` the guarded branch would have given.
+
+### A `class_mapping` that has been through `--resize` is not trustworthy
+
+The first trained model **scored 0.2% label agreement on its own training data** —
+below the ~14% of guessing among seven classes, which is the signature of a wrong
+mapping rather than a weak model. The geometry was right throughout; every name was
+wrong, a clean permutation. Nothing else could see it: the ALTO is well-formed, the
+boxes are right, and the editor draws confident coloured bands with the wrong names
+on them. Fluent nonsense arriving in the one place nothing was checking.
+
+The invariants that follow, mechanism aside:
+
+- **`--install` refuses a permuted map**, so the check is a precondition of the
+  artifact existing rather than something to remember; `--remap-model` repairs one.
+- **The repair is a rename, not a retrain.** Both `--resize` branches assign class
+  indices by iterating a `set`, and Python randomises string hashing per process, so
+  a retrain is a lottery — `union` is not the fix it looks like.
+- **Omitting `--resize` is the only reliable escape**, which `--assemble` now derives:
+  when the data's class set already matches the model's, nothing is renumbered.
+- **The mechanism is unproven.** The set iteration is a real hazard sitting in the
+  code but has not been shown to be the cause. What is proven is the permutation,
+  its bijectivity, and that it holds out on pages it was not derived from.
+
+The diagnosis, the cycle it formed, and how `--remap-model` inverts it are in the
+skill.
+
+### Two structural facts about this store
+
+**A page is a chain, and that licenses exact search.** Over the keyed corpus a page
+is at most 13 bands, 545 boundaries abut exactly, 482 leave a small gap, and **2
+overlap in the whole corpus**. So the decode is a dynamic program rather than
+blob-wise thresholding, and the mechanical rules are built into it rather than
+checked afterwards — an overlap and a sliver become unrepresentable. That also
+settles the RL question: over a chain both the argmax and the normaliser are exactly
+computable, so learning structure here would be a semi-Markov CRF, never policy
+gradient.
+
+**But the order rules are deliberately *not* built in.** `rank-monotone`,
+`title-first` and `max-per-page` are warnings because the book breaks its own
+conventions, and a decoder that could not violate them would make the warning
+unfalsifiable — silently normalising exactly the pages it exists to surface. The line
+is this file's own error/warning split: **a decoder may enforce what `validate_page`
+calls an error, never what it calls a warning.** A test asserts it.
+
+**Adjacent same-label zones are 42% of all boundaries** — 596 of 1405, 561 abutting,
+568 paragraph-to-paragraph — and **no model trained on this store can produce them**:
+two abutting `MainZone-P` rectangles rasterize into one continuous target, so the
+boundary is destroyed before the network sees it. Recovering it is therefore a
+separate mechanism reading the ink, not something a better model would fix. `harness
+zones --paragraphs`; the calibration and the failure modes are in the skill.
+
+That check's `false_positive` count is a **worklist, not a rate**, and the reason is
+the firewall's: gt cannot arbitrate, being the thing the rule corrects. Of the first
+twenty found, fifteen were keying slips and were fixed. A precision computed against
+a reference the tool is repairing is the comparison-with-one-witness problem again.
 
 ## Footnote markers
 
@@ -684,7 +835,31 @@ if you ever need it.
                                       with --serve resumes at its first unkeyed
                                       page. --blot writes the figure-blotted
                                       training rasters; --assemble lays out
-                                      bogoras-seg/ for ketos
+                                      train/bogoras-seg/ for ketos and reports the
+                                      invocation, omitting --resize when the class
+                                      sets already match; --install CHECKPOINT
+                                      scores a run, refuses a permuted class map,
+                                      and writes it to models/bogoras-seg/ with the
+                                      split it saw beside it.
+                                      --predict runs the trained segmenter into
+                                      mz/zones/ (--model, --device); --link
+                                      rebuilds zones/, the view over both stores;
+                                      --from gt|mz picks which store is checked —
+                                      gt gates, mz is measurement and exits 0.
+                                      --score compares against gt per split, never
+                                      blended, with the confusion matrix and a
+                                      held-out permutation test; with --model it
+                                      segments in memory and writes nothing, which
+                                      is how a checkpoint is measured before it is
+                                      installed. --remap-model (--commit) renames
+                                      the output channels when that test says the
+                                      labels are shuffled rather than the model
+                                      weak. --decode dp swaps blob vectorisation
+                                      for a segmental DP over the page.
+                                      --paragraphs audits the paragraph rule both
+                                      ways; --diff reports gt against mz; --lines
+                                      dumps a page's lines of type. A page's zones
+                                      now print by default
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -719,6 +894,7 @@ accumulated here has been moved out rather than duplicated.
 | `keying_spec.md` | the character inventory. Binds both passes and the human keying track |
 | `.claude/skills/transcribe-page/` | the OCR→TEI collation loop, rules included — it has no separate harness doc |
 | `.claude/skills/rebuild-groundtruth/` | the raster→ALTO reading loop, rules included — it has no separate harness doc |
+| `.claude/skills/train-zones/` | the segmenter's train→score→install loop, and the judgement in it: reading a train/eval gap, when a class is too rare to keep, why the ketos metric is not the number |
 | `harness/README.md` | the package: module responsibilities, stores, caller invariants |
 | `concordance.md` | the evidence set behind the spec — aligned pairs, flag register, per-glyph attestation |
 
@@ -1283,3 +1459,36 @@ TBD
   compare a proposal against the ground truth it produced. The `--serve` review
   page is unaffected and remains the correction loop. If a second witness is ever
   wanted again, it links into `ocr/` from its own store.
+- **The segmenter is measured, and this is where it stands.** Run 3 —
+  `models/bogoras-seg/zones-seg.safetensors`, 211 train / 60 eval — scores **94.7%
+  recall and 90.8% precision on held-out pages**, median boundary error 6 px, with
+  the segmental DP decode and the paragraph split. Trained-on is 97.0 / 94.2, so the
+  gap is ~2 points either way: ordinary generalisation. Strip the 25 `MainZone-Quote`
+  rows (the fold working as designed) and the residual is **30 zones of 1692**,
+  two-thirds of it `MainZone-P` ↔ `MainZone-Continued` — whether a paragraph opens or
+  resumes, which is an indent question no structural change reaches.
+  **`unseen` is now zero pages**: everything keyed is in the frozen split, so eval is
+  the only held-out evidence until more is keyed.
+- **The decode matters more than the model did.** Same weights: blob vectorisation
+  gave 61.3% precision, the segmental DP 80.1%, and the DP plus the paragraph split
+  90.8%. Two of those three gains cost no training at all.
+- **The 271-page corpus is heavily part 1** — 274 of 345 keyed pages, and the last
+  121 were a contiguous run of ordinary prose that moved like-for-like eval by 0.2
+  points. Parts 2 and 3 have 31 and 40 keyed pages between them. If a future run is
+  flat, the question is which *kind* of page is missing, not how many.
+- **Why `--resize` shuffled the class names is not established.** The permutation is
+  measured, bijective and corrected; the *mechanism* is not proven. Both branches
+  assign new class indices by iterating a `set` difference and Python randomises
+  string hashing per process, which would do it — but the tail of the `new` branch
+  stores the mapping from the same dict the dataset was backfilled with, which
+  should be self-consistent. Until someone reads it properly, the standing rule is
+  the empirical one: **`--score` after every training run**, and never trust a
+  `class_mapping` that has been through `--resize`. See "`--resize` shuffled the
+  class names".
+- **`models/bogoras-seg/zones-seg.safetensors` carries a hand-corrected
+  `class_mapping`.** The
+  weights are `ketos segtrain`'s; the names on the output channels were rewritten by
+  `--remap-model` from a permutation measured against `gt/zones/`. `.bak` holds the
+  original. Anything retrained from this checkpoint inherits the corrected map, which
+  is the intent — but a future run under `--resize` can permute it again, and only
+  `--score` will say so.

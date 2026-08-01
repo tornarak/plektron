@@ -63,6 +63,102 @@ def _resolve_column(z: dict, windows: list[dict], tol: float) -> int | None:
     return best if best is not None and best_off <= tol else None
 
 
+def _snap_column(z: dict, windows: list[dict]) -> int:
+    """Which configured column a *predicted* region is offering itself as.
+
+    Deliberately not `_resolve_column`. That one asks whether a stored zone still
+    matches a column within tolerance and answers `null` when it does not, because a
+    stored zone whose x means nothing is a finding and snapping it would repair the
+    symptom. A prediction is the opposite case: kraken's x is not a claim about the
+    column at all — the model was never shown that the measure is fixed — so there is
+    no finding to lose, and every region has to land in some column for a human to
+    see and rule on it. Widest horizontal overlap, falling back to the first column.
+    """
+    best, best_ov = 0, -1
+    for i, w in enumerate(windows):
+        ov = min(z["x1"], w["x1"]) - max(z["x0"], w["x0"])
+        if ov > best_ov:
+            best, best_ov = i, ov
+    return best
+
+
+# `split` is not a store. It is `gt/zones/` with the paragraph rule applied,
+# computed on open and written nowhere — which is what it always should have been.
+# Persisting it into `mz/` made that store mean three things at once (raw kraken, DP
+# decode, and this), so `--diff` over the corpus reported 507 invented regions that
+# were nothing of the kind. A proposal derived from ground truth is not machine
+# output, and giving it a slot in the machine store made the store's name a lie.
+STORES = ("gt", "mz", "zones", "split")
+
+# What each name resolves to. `zones` is the view and resolves by the same rule
+# `link_view` writes — the human file wherever there is one — computed rather than
+# read off the farm, so the editor does not silently depend on `--link` having been
+# run since the last prediction.
+STORE_DIR = {"gt": zn.ZONEDIR, "mz": zn.MZDIR}
+
+
+def effective_store(ref: str, root: Path, store: str) -> str:
+    """Which real store answers for this page under the selected name.
+
+    Returns `"gt"`, `"mz"`, or `""` when the selection has nothing for the page —
+    and that third case is a state worth drawing rather than an error. Asking for
+    `mz` on a page nobody has predicted is a fair question with the answer "nothing
+    here", and it is exactly the question a reviewer walking an itinerary is asking.
+    """
+    if store == "zones":
+        for s in ("gt", "mz"):
+            if zn.has_zones(ref, root, STORE_DIR[s]):
+                return s
+        return ""
+    if store == "split":
+        return "split" if zn.has_zones(ref, root, zn.ZONEDIR) else ""
+    return store if zn.has_zones(ref, root, STORE_DIR[store]) else ""
+
+
+def _machine_proposal(ref: str, root: Path, windows: list[dict],
+                      labels: set[str],
+                      min_h: int = 0) -> tuple[list[dict], list[str], int]:
+    """`mz/zones/`'s regions as unsaved bands, plus the labels that were dropped.
+
+    What comes back is a *proposal*: y from each predicted polygon's bounding box,
+    x from the page's configured column, which is exactly the geometry two clicks
+    would have produced. The editor shows it, the human corrects it, and the save
+    goes to `gt/zones/` through the same `save_zones` every other page uses.
+    Nothing here writes, and nothing here can reach a human's file.
+
+    A label the config does not declare is **dropped and returned**, not mapped to
+    something plausible: `validate_page` calls an undeclared label an error, so
+    quietly renaming one would hide a model trained against a different class map
+    behind a page that looks ordinary.
+
+    Regions shorter than `min_zone_h_px` are dropped too, and counted. This is the
+    store's own rule that a zone thinner than a mis-click is not a zone — the same
+    one `validate_page` errors on — and the model leans on it hard: **over half its
+    raw output falls under it**, median predicted height 24 px against a 30 px floor,
+    with a lower quartile of 7. Measured over the held-out pages, dropping them costs
+    **nothing** in recall (93.9% either way, no zone goes missing) and removes
+    **every** spurious region, 26 to 0. Keeping them would hand the editor 2.5 bands
+    to delete for every one worth looking at, on a page where each is already an
+    error the gate would raise.
+
+    The slivers stay in `mz/zones/` regardless: that store holds what the model
+    emitted, and this is the proposal built from it.
+    """
+    out, dropped, short = [], [], 0
+    for z in zn.read_zones(ref, root, store=zn.MZDIR):
+        if z["y1"] - z["y0"] < min_h:
+            short += 1
+            continue
+        if z["label"] not in labels:
+            dropped.append(z["label"])
+            continue
+        col = _snap_column(z, windows)
+        out.append({"label": z["label"], "y0": z["y0"], "y1": z["y1"],
+                    "column": col,
+                    "x0": windows[col]["x0"], "x1": windows[col]["x1"]})
+    return sorted(out, key=lambda z: z["y0"]), sorted(set(dropped)), short
+
+
 def _uncovered(ref: str, root: Path, cfg: dict) -> list[dict]:
     """The page's uncovered-ink bands, recording the verdict on the way past.
 
@@ -76,7 +172,7 @@ def _uncovered(ref: str, root: Path, cfg: dict) -> list[dict]:
 
 
 def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
-               itinerary: list[str] | None = None) -> dict:
+               itinerary: list[str] | None = None, store: str = "zones") -> dict:
     """Everything the editor needs for one page, resolved server-side.
 
     The columns come from `zones.measure_frame` — read off this page's own ink
@@ -84,6 +180,17 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
     book while its position drifts up to 236 px inside a single part. `nudge`
     carries a manual correction across navigation for the rare page the anchor
     cannot read; it is UI state and reaches no file.
+
+    `store` is **which store is being looked at, and it is orthogonal to the
+    itinerary**: the itinerary chooses the pages, this chooses whose reading of them
+    you see. `zones` (the default) is the view — the human file wherever there is
+    one, the machine's otherwise — and `gt`/`mz` pin one store, including onto a page
+    that has nothing in it, because "the model produced nothing here" and "nobody has
+    keyed this" are both answers rather than errors.
+
+    Whatever is selected, **a save writes `gt/zones/`**. Showing `mz` shows it as a
+    *proposal* — snapped to the configured column, opening clean — so the only route
+    from a prediction to ground truth is a human editing or explicitly saving it.
     """
     ref = norm_ref(ref)
     # The itinerary replaces scan order as the sequence the arrow keys walk. A page
@@ -98,11 +205,27 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
     m = zn.measure_frame(ref, root, cfg)
     windows = [{"x0": w["x0"] + nudge, "x1": w["x1"] + nudge} for w in m["columns"]]
     tol = cfg["width_tolerance_px"]
-    zones = []
-    for z in zn.read_zones(ref, root):
-        zones.append({"label": z["label"], "y0": z["y0"], "y1": z["y1"],
-                      "column": _resolve_column(z, windows, tol),
-                      "x0": z["x0"], "x1": z["x1"]})
+    if store not in STORES:
+        raise ValueError(f"store must be one of {', '.join(STORES)}, not {store!r}")
+    keyed = zn.has_zones(ref, root)
+    shown = effective_store(ref, root, store)
+
+    zones, dropped, short = [], [], 0
+    if shown == "gt":
+        for z in zn.read_zones(ref, root):
+            zones.append({"label": z["label"], "y0": z["y0"], "y1": z["y1"],
+                          "column": _resolve_column(z, windows, tol),
+                          "x0": z["x0"], "x1": z["x1"]})
+    elif shown == "mz":
+        zones, dropped, short = _machine_proposal(
+            ref, root, windows, set(zc.types_by_label(cfg)),
+            int(cfg["min_zone_h_px"]))
+    elif shown == "split":
+        # gt with the paragraph rule applied, computed here and stored nowhere.
+        for z in zn.split_at_paragraphs(zn.read_zones(ref, root), ref, root, cfg):
+            zones.append({"label": z["label"], "y0": z["y0"], "y1": z["y1"],
+                          "column": _resolve_column(z, windows, tol),
+                          "x0": z["x0"], "x1": z["x1"]})
     w, h = zn.raster_size(ref, root)
     return {
         "ref": ref,
@@ -113,7 +236,32 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         "content": m["content"],
         "anchor": {"measured": m["measured"], "source": m["source"], "nudge": nudge},
         "zones": zones,
-        "keyed": zn.has_zones(ref, root),
+        "keyed": keyed,
+        # Which store was asked for, which one answered, and what each holds. The
+        # HUD draws all three: an unmarked proposal would be indistinguishable from
+        # work someone had already done, which is the confusion the two stores exist
+        # to prevent, arriving through the one surface that reads from both. And the
+        # presence counts are what make the selector navigable — you can see there is
+        # something in `mz` before switching to it, rather than switching to find out.
+        "store": store,
+        "shown": shown,
+        # What the *view* resolves to, which is not the same as what the current
+        # selection resolved to and must not be drawn from it: with `mz` pinned on a
+        # page that has both, `shown` is `mz` while the view still answers `gt`. The
+        # pill reports the store rule, not the thing being looked at.
+        "view": effective_store(ref, root, "zones"),
+        "present": {
+            "gt": len(zn.read_zones(ref, root)) if keyed else None,
+            "mz": (len(zn.read_zones(ref, root, store=zn.MZDIR))
+                   if zn.has_zones(ref, root, zn.MZDIR) else None),
+        },
+        # How many zones the split would make of this page — so the pill says
+        # whether the rule would change anything before you switch to it.
+        "split_zones": (len(zn.split_at_paragraphs(
+            zn.read_zones(ref, root), ref, root, cfg)) if keyed else "—"),
+        "proposal": "mz" if shown == "mz" else "",
+        "proposal_dropped": dropped,
+        "proposal_short": short,
         "split": zn.load_splits(root).get(ref, zn.DEFAULT_SPLIT),
         "exempt": zn.load_exempt(root).get(ref, []),
         # Ink no zone accounts for, shown as the page is keyed rather than only
@@ -176,7 +324,7 @@ def save_payload(payload: dict, root: Path, cfg: dict) -> dict:
 
 CSS = """
 :root{--bg:#f6f5f3;--fg:#1c1b19;--dim:#6b675f;--line:#d8d4cc;--accent:#2e86ab;
-      --warn:#a8620a;--warnbg:#fdf3e2;--err:#a4232b;--errbg:#fbeceb}
+      --warn:#a8620a;--warnbg:rgba(0.9, 0.4, 0.4, 0.4);--err:#a4232b;--errbg:#fbeceb}
 @media(prefers-color-scheme:dark){:root{--bg:#16161a;--fg:#e8e6e1;--dim:#9a958c;
       --line:#33323a;--accent:#6ab6d8;--warn:#e0a250;--warnbg:#2f2517;
       --err:#e08b8b;--errbg:#2e1a1a}}
@@ -192,6 +340,11 @@ body{margin:0;background:var(--bg);color:var(--fg);
       font-size:12px}
 .pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .pill.off{background:var(--warn);border-color:var(--warn);color:#fff}
+/* The store selector reads as one control: three adjacent pills, clickable, the
+   selected one lit. `—` means that store holds nothing for this page, which is an
+   answer and is why the pill still draws rather than being hidden. */
+.pill.store{cursor:pointer;font-variant-numeric:tabular-nums}
+.pill.store+.pill.store{margin-left:-1px}
 #cur{font-weight:600}
 #swatch{display:inline-block;width:11px;height:11px;border-radius:2px;
         vertical-align:-1px;margin-right:5px}
@@ -252,7 +405,13 @@ for (const [name, k] of Object.entries(CFG.actions || {}))
 let S = {
   zones: ST.zones.map(z => ({...z})),
   cur: null, col: 0, pending: null, hoverY: null, inside: false,
-  hover: -1, sel: -1, nearEdge: false,
+  hover: -1, sel: -1, nearEdge: null,
+  // A machine proposal opens **clean**, and that is load-bearing rather than
+  // incidental. Navigation saves whatever is dirty on the way out, so a proposal
+  // marked dirty on arrival would let the arrow keys walk an itinerary promoting
+  // predictions into ground truth unread — the one thing the two stores exist to
+  // stop. Clean means passing through a page writes nothing; promoting it takes an
+  // edit or an explicit save, which is a human act either way.
   chain: true, dirty: false, split: ST.split, exempt: ST.exempt.slice(),
   issues: [], drag: null, nudge: ST.anchor.nudge || 0,
   ink: (ST.uncovered || []).map(b => ({...b})),
@@ -497,7 +656,13 @@ function bar() {
   // existed before this line did, and were undiscoverable for want of it.
   const tgt = document.getElementById('target');
   const i = target();
-  if (i >= 0) {
+  // The boundary case first, because on a partition it is the commonest one and it
+  // now *overrides* selecting. Saying so is what keeps the override from reading as
+  // the editor ignoring the click.
+  if (S.nearEdge !== null && S.pending === null) {
+    tgt.textContent = `edge at ${S.nearEdge} · click starts a zone here`;
+    tgt.className = 'sel';
+  } else if (i >= 0) {
     const z = S.zones[i], t = T[z.label];
     tgt.textContent = `#${i + 1} ${t ? t.name : z.label} · ` +
       (S.sel === i ? 'press a type key to change it · Esc deselects'
@@ -580,6 +745,26 @@ function nearestEdge(i, y) {
   const z = S.zones[i];
   return Math.abs(y - z.y0) <= Math.abs(y - z.y1) ? 'y0' : 'y1';
 }
+// The exact y of an existing boundary within grabbing distance, or null.
+//
+// Separate from `edgesAt` and deliberately stingier. That one collects every edge
+// on a boundary so a shift-drag moves both sides together; this one answers "is the
+// click *on* a boundary", and it has to leave a zone's middle clickable or a zone
+// becomes impossible to select. Hence the per-zone cap: the grab band is never more
+// than a third of the zone's height, so even at `min_zone_h_px` the middle third
+// still selects. Returns the boundary's own coordinate, not the click's, so a new
+// zone starts flush against the old one and the partition stays a partition.
+function anchorAt(y) {
+  const snap = 10 * pxPerScreen();
+  let best = null;
+  S.zones.forEach(z => {
+    const band = Math.min(snap, (z.y1 - z.y0) / 3);
+    for (const e of [z.y0, z.y1])
+      if (Math.abs(y - e) <= band &&
+          (best === null || Math.abs(e - y) < Math.abs(best - y))) best = e;
+  });
+  return best;
+}
 // What an edit acts on: the zone clicked, or failing that the one under the
 // cursor. One rule, so `x`, the nudges and a retype never disagree about their
 // subject — and a selection survives the pointer wandering off the zone.
@@ -624,7 +809,9 @@ ov.addEventListener('mousemove', e => {
   S.hoverY = yAt(e);
   S.inside = true;
   S.hover = hit(S.hoverY);
-  S.nearEdge = S.drag ? S.nearEdge : edgesAt(S.hoverY).length > 0;
+  // Holds the boundary's coordinate rather than a boolean: the status line names
+  // it, and a click will anchor there exactly. It was a bool that nothing read.
+  S.nearEdge = S.drag ? S.nearEdge : anchorAt(S.hoverY);
   edgeScroll(e.clientY);
   if (S.drag) {
     // Move every edge that was on this boundary, together, so the partition
@@ -664,7 +851,7 @@ ov.addEventListener('mouseleave', e => {
   const [vt, vb] = visibleBand();
   if (raw < vt) S.hoverY = Math.round(vt);
   else if (raw > vb) S.hoverY = Math.round(vb);
-  S.inside = false; S.hover = -1; S.nearEdge = false;
+  S.inside = false; S.hover = -1; S.nearEdge = null;
   edgeStop(); render();
 });
 // Right-click cancels a half-placed zone and breaks the chain. Chaining is right
@@ -698,6 +885,19 @@ ov.addEventListener('click', e => {
   // "select", so the primary flow is never interrupted by landing on a zone —
   // and with chain mode a click lands on an existing boundary constantly.
   if (S.pending === null) {
+    // **A click on an existing boundary starts a zone there, it does not select.**
+    // `hit` is inclusive of both edges, so before this the commonest act on a
+    // partition — carry on from where the last zone stopped — landed inside the
+    // zone above and selected it, and the anchor had to be placed by eye just below
+    // the line instead. Anchoring on the boundary's own coordinate also means the
+    // new zone butts exactly against the old one rather than a pixel or two off.
+    const at = anchorAt(y);
+    if (at !== null) {
+      S.sel = -1;
+      const ah = autoH();
+      if (ah) { place(at, at + ah); return; }
+      S.pending = at; render(); return;
+    }
     const i = hit(y);
     if (i >= 0) { S.sel = (S.sel === i ? -1 : i); render(); return; }
     S.sel = -1;
@@ -722,7 +922,31 @@ async function post(path, body) {
   if (!r.ok) throw new Error((await r.json()).error || r.statusText);
   return r.json();
 }
+// Writing `gt/zones/` from a view that is not `gt` is an **adoption**, not a save,
+// and it asks. Without this, `s` while looking at a machine proposal silently turned
+// the model's word into ground truth with the same keystroke that saves your own
+// work — indistinguishable acts, one of which is the thing the two stores exist to
+// keep apart. Once adopted the page has gt of its own, so it never asks again.
+function confirmAdoption() {
+  if (!ST.proposal && ST.shown !== 'split') return true;
+  const src = ST.proposal ? 'the segmenter' : 'the paragraph rule';
+  return confirm(
+    `Adopt ${S.zones.length} zones proposed by ${src} as ground truth for `
+    + `${ST.ref}?\n\nThis writes gt/zones/, which is the tracked record of what a `
+    + `human has been through. Nothing else writes there.`);
+}
+
 async function save() {
+  // Caught here rather than as a 500 from the server, because the remedy is a
+  // choice between three different statements and the page is where they are made.
+  // Reachable in one obvious way: key a page, then delete every zone on it.
+  if (!S.zones.length && S.split !== 'exempt') {
+    say('no zones: press ' + (CFG.actions.toggle_split || 't') + ' for exempt if '
+        + 'this is a plate, or ' + (CFG.actions.delete_page || 'X')
+        + ' to un-key the page', 'bad');
+    return;
+  }
+  if (!confirmAdoption()) { say('not adopted', 'bad'); return; }
   const res = await post('/save', {
     ref: ST.ref, split: S.split, exempt: S.exempt, nudge: S.nudge,
     ink_exempt: S.inkEx,
@@ -749,7 +973,20 @@ async function nav(ref) {
     say('not saved: ' + err.message, 'bad'); return; } }
   // The nudge rides along: a page needing one usually has neighbours that do too,
   // and the next page re-measures its own anchor regardless.
-  location = `/?ref=${ref}` + (S.nudge ? `&nudge=${S.nudge}` : '');
+  location = `/?ref=${ref}` + (S.nudge ? `&nudge=${S.nudge}` : '') +
+    (ST.store !== 'zones' ? `&store=${ST.store}` : '');
+}
+
+// Switching store is a navigation, not a client-side toggle: the zones, the
+// proposal snapping and the presence counts are all resolved server-side, and
+// re-deriving any of them here would be a second implementation of the store rule.
+// It saves first for the same reason `nav` does — and a proposal is never dirty on
+// arrival, so cycling away from one still writes nothing.
+async function navStore(name) {
+  if (S.dirty) { try { await save(); } catch (err) {
+    say('not saved: ' + err.message, 'bad'); return; } }
+  location = `/?ref=${ST.ref}` + (S.nudge ? `&nudge=${S.nudge}` : '') +
+    (name !== 'zones' ? `&store=${name}` : '');
 }
 
 // ---- keys
@@ -822,6 +1059,57 @@ window.addEventListener('keydown', async e => {
       S.dirty = true; S.issues = [];
       break; }
     case 'toggle_chain': S.chain = !S.chain; break;
+    case 'segment_page': {
+      // Asks, for two reasons. It is shift+s, one key from `save`, and the two do
+      // opposite things — one writes what you keyed into gt, the other replaces
+      // this page's machine prediction. And it overwrites: any existing mz for the
+      // page goes, including one you may have been comparing against.
+      const had = ST.present && ST.present.mz;
+      if (!confirm(
+        `Run the segmenter on ${ST.ref}?\n\n`
+        + `Writes mz/zones/`
+        + (had ? `, replacing the ${had} zones already predicted for it` : '')
+        + `. gt/zones/ is untouched.`)) { say('not segmented', 'bad'); break; }
+      say('segmenting…');
+      let res;
+      try { res = await post('/predict', {ref: ST.ref}); }
+      catch (err) { say('segmenter: ' + err.message, 'bad'); break; }
+      // Straight to the machine view, since the whole point was to look at it.
+      // Writes `mz/zones/`; `gt` is untouched until you adopt.
+      say(`segmented: ${res.zones} zones`, 'ok');
+      await navStore('mz');
+      return;
+    }
+    case 'delete_page': {
+      if (!ST.keyed) { say('nothing keyed for this page', 'bad'); break; }
+      // Typed, not pressed. The other destructive key here (`x`) removes one zone
+      // and is undoable in the session; this removes the page from the tracked
+      // store along with its split and every exemption, so it asks for the ref
+      // itself rather than a click that a mis-hit could supply.
+      const t = prompt(
+        `Un-key ${ST.ref}? This deletes it from gt/zones/ and drops its split and `
+        + `exemptions. Type the ref to confirm:`);
+      if (t !== ST.ref) { say('not deleted', 'bad'); break; }
+      const res = await post('/delete', {ref: ST.ref});
+      say(`deleted ${ST.ref} (was ${res.zones} zones)`, 'ok');
+      // `ST` is the page as it was served; the file is gone now, so the flag has to
+      // follow or a second `X` would ask to delete what is not there, and `save`
+      // would think there was something to overwrite.
+      ST.keyed = false;
+      S.zones = []; S.dirty = false; S.issues = []; S.split = 'train';
+      break;
+    }
+    // Forward on `/`, back on `?`. One direction only meant that comparing two
+    // stores — the thing the selector exists for — cost a full lap through the
+    // third every time you wanted the previous one back.
+    case 'cycle_store':
+    case 'cycle_store_back': {
+      const order = ['zones', 'gt', 'mz', 'split'];
+      const i = order.indexOf(ST.store);
+      const step = a === 'cycle_store' ? 1 : order.length - 1;
+      await navStore(order[(i + step) % order.length]);
+      return;
+    }
     case 'exempt': {
       const f = orderWarnings().find(w => !w.exempted);
       if (f) { S.exempt.push(f.rule); S.dirty = true;
@@ -876,6 +1164,8 @@ document.querySelectorAll('.tk').forEach(el =>
 document.getElementById('btnsave').addEventListener('click',
   () => save().catch(err => say(err.message, 'bad')));
 document.getElementById('btndone').addEventListener('click', done);
+document.querySelectorAll('.pill.store').forEach(el =>
+  el.addEventListener('click', () => navStore(el.dataset.store)));
 window.addEventListener('resize', render);
 window.addEventListener('beforeunload', e => {
   if (S.dirty) { e.preventDefault(); e.returnValue = ''; }
@@ -897,13 +1187,17 @@ requestAnimationFrame(centreColumn);
 
 def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
                 itinerary: list[str] | None = None,
-                itinerary_name: str = "") -> str:
+                itinerary_name: str = "", store: str = "zones") -> str:
     """The whole editor, as one string. No static files, as in `review.py`."""
-    st = page_state(ref, root, cfg, nudge, itinerary)
+    st = page_state(ref, root, cfg, nudge, itinerary, store)
     st["itinerary"] = itinerary_name
     acts = {k: v for k, v in (cfg.get("actions") or {}).items()
             if not k.startswith("_")}
-    pretty = {"cancel": "cancel / break chain", "undo": "undo last zone",
+    pretty = {"cycle_store": "show gt / mz / split / the view",
+              "cycle_store_back": "…and back",
+              "segment_page": "run the segmenter on this page (asks)",
+              "delete_page": "un-key this page (types the ref)",
+              "cancel": "cancel / break chain", "undo": "undo last zone",
               "delete": "delete zone under cursor",
               "anchor_left": "nudge column left 4 px",
               "anchor_right": "nudge column right 4 px",
@@ -934,6 +1228,37 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
     h.append("<span class='pill' id='col'></span>")
     h.append("<span class='pill' id='split'></span>")
     h.append("<span class='pill' id='chain'></span>")
+    # The store selector: which store is being looked at, what each holds, and which
+    # one answered. Three facts rather than one, because the useful question at a
+    # glance is "is there anything in the other store" — visible here instead of
+    # discovered by switching. `/` cycles.
+    sel = st.get("store", "zones")
+    shown = st.get("shown", "")
+    for name in STORES:
+        if name == "zones":
+            n = f"→{st.get('view')}" if st.get("view") else "—"
+        elif name == "split":
+            n = str(st.get("split_zones", "—"))
+        else:
+            c = (st.get("present") or {}).get(name)
+            n = "—" if c is None else str(c)
+        klass = "pill store on" if name == sel else "pill store"
+        h.append(f"<span class='{klass}' data-store='{name}' "
+                 f"title='press / to cycle · {name} store'>{name} {n}</span>")
+    # Only ever set when the machine store is what answered. An unlabelled proposal
+    # would look exactly like a page someone had already keyed, which is the one
+    # confusion the two stores exist to prevent.
+    if st.get("proposal"):
+        dropped = st.get("proposal_dropped") or []
+        short = st.get("proposal_short") or 0
+        h.append("<span class='pill on' id='proposal' title='"
+                 "predicted by the segmenter, not yet ruled on — correct it and "
+                 "save, and it becomes ground truth'>machine proposal"
+                 + (f" · {short} sliver(s) under the minimum height dropped"
+                    if short else "")
+                 + (f" · {len(dropped)} label(s) dropped: {', '.join(dropped)}"
+                    if dropped else "")
+                 + "</span>")
     h.append("<span id='count'></span>")
     h.append("<span id='target'></span>")
     h.append("<span id='msg'></span>")
@@ -1040,6 +1365,9 @@ td.ref a:hover{text-decoration:underline}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;
      margin-right:7px;vertical-align:-1px}
 .s-todo{background:transparent;border:1px solid var(--dim)}
+/* Hollow like `todo`, because it is one — nothing is keyed here. Coloured, because
+   a page with a prediction waiting is a different piece of work from a blank one. */
+.s-proposed{background:transparent;border:1px solid var(--warn)}
 .s-ok{background:#3f8f5f}
 .s-warn{background:var(--warn)}
 .s-err{background:var(--err)}
@@ -1051,6 +1379,8 @@ td.ink{font-size:12px;color:var(--dim);white-space:nowrap;cursor:help}
 td.ink[data-ink="ink"]{color:var(--warn);font-weight:600}
 td.ink[data-ink="unknown"]{opacity:.5}
 #inkrun{margin-left:auto}
+td.pick,th.pick{width:1%;padding-right:0}
+td.pick input,th.pick input{cursor:pointer;margin:0}
 /* One bar per zone, in reading order: the page's composition at a glance, which
    a count cannot give. Hover names the type. */
 .z{display:inline-block;width:7px;height:15px;border-radius:2px;margin-right:2px;
@@ -1090,7 +1420,13 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     drawing; a stale verdict rendered as a live one is not.
     """
     by_label = zc.types_by_label(cfg)
-    refs = itinerary if itinerary is not None else zn.zone_refs(root)
+    # Unscoped, the universe is **both stores**, not just the keyed one. A page with
+    # a prediction and no ground truth is the only kind of work this list exists to
+    # queue, and enumerating `gt/zones/` alone would mean the `proposed` state could
+    # never appear on the default view — a column that cannot display its own value.
+    # An itinerary still overrides it outright: a work-list is a work-list.
+    refs = itinerary if itinerary is not None else sorted(
+        set(zn.zone_refs(root)) | set(zn.zone_refs(root, zn.MZDIR)), key=parse_ref)
     rows = []
     n_keyed = n_err = n_warn = 0
     for ref in refs:
@@ -1100,7 +1436,11 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
         n_err += len(r["errors"])
         n_warn += len(r["warnings"])
         if not keyed:
-            state = "todo"
+            # Two kinds of "to do", and the difference is the whole review queue:
+            # a page with a prediction waiting to be ruled on, and a page nobody and
+            # nothing has touched. One file-existence test, ~1 ms, same as every
+            # other column here bar the ink verdict.
+            state = "proposed" if zn.has_zones(ref, root, zn.MZDIR) else "todo"
         elif r["errors"]:
             state = "err"
         elif r["warnings"]:
@@ -1112,7 +1452,7 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
         labels = [z["label"] for z in zn.read_zones(ref, root)]
         # An unkeyed page and one ruled not-a-text-page are settled without asking:
         # neither can have ink left over, so neither is ever queued for a check.
-        if state == "todo" or r["split"] == "exempt":
+        if state in ("todo", "proposed") or r["split"] == "exempt":
             ink = {"state": "skip"}
         else:
             ink = zn.cached_ink(ref, root) or {"state": "unknown"}
@@ -1125,8 +1465,12 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
          f"<title>zones · {itinerary_name or 'store'}</title>",
          f"<style>{CSS}{LIST_CSS}</style></head><body>"]
     h.append("<div id='head'>")
-    h.append(f"<h1>{itinerary_name or 'gt/zones'} — {len(rows)} pages</h1>")
-    h.append(f"<p>{n_keyed} keyed · {len(rows) - n_keyed} to do · "
+    n_prop_h = sum(1 for r in rows if r[1] == "proposed")
+    h.append(f"<h1>{itinerary_name or ('gt/zones + mz/zones' if n_prop_h else 'gt/zones')}"
+             f" — {len(rows)} pages</h1>")
+    n_prop = sum(1 for r in rows if r[1] == "proposed")
+    h.append(f"<p>{n_keyed} keyed · {len(rows) - n_keyed} to do"
+             + (f" ({n_prop} predicted)" if n_prop else "") + " · "
              f"{n_err} error{'' if n_err == 1 else 's'} · "
              f"{n_warn} warning{'' if n_warn == 1 else 's'} · "
              f"<span id='inkprog'>{n_ink} with uncovered ink, {n_unknown} "
@@ -1135,7 +1479,11 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     # Filter chips. Types carry their own colour so the strip in each row and the
     # chip that selects it are recognisably the same thing.
     h.append("<div id='filters'>")
+    h.append("<span class='chip' id='segrun' title='run the segmenter on the "
+             "checked pages — shift-click a checkbox to take a range. Writes "
+             "mz/zones/; gt is untouched'>segment selected</span>")
     h.append("<span class='chip' data-state='todo'>still to do</span>")
+    h.append("<span class='chip' data-state='proposed'>machine proposal</span>")
     h.append("<span class='chip' data-state='err'>has errors</span>")
     h.append("<span class='chip' data-ink='ink'>uncovered ink</span>")
     if n_unknown:
@@ -1150,6 +1498,7 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     h.append("</div></div>")
 
     h.append("<div id='wrapl'><table><thead><tr>"
+             "<th class='pick'><input type='checkbox' id='pickall'></th>"
              "<th>page</th><th>status</th><th>split</th><th>zones</th>"
              "<th>composition</th><th>ink</th><th>findings</th>"
              "</tr></thead><tbody>")
@@ -1163,6 +1512,7 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
             f"{by_label.get(l, {}).get('name', l)}\"></i>" for l in labels)
         h.append(f"<tr{here} data-state='{state}' data-ink='{ink['state']}' "
                  f"data-labels=\"{' '.join(sorted(set(labels)))}\">"
+                 f"<td class='pick'><input type='checkbox' data-ref='{ref}'></td>"
                  f"<td class='ref'><a href='/?ref={ref}'>{ref}</a></td>"
                  f"<td><i class='dot s-{state}'></i>{state}</td>"
                  f"<td>{split}</td>"
@@ -1176,7 +1526,9 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     back = f"/?ref={current}" if current else "/"
     h.append("<script>" + r"""
 const rows = [...document.querySelectorAll('tbody tr')];
-const chips = [...document.querySelectorAll('.chip:not(#inkrun)')];
+// The two action buttons are chips for styling only — they select nothing, so they
+// must not join the filter set or clicking one would silently narrow the table.
+const chips = [...document.querySelectorAll('.chip:not(#inkrun):not(#segrun)')];
 const on = new Set();
 
 // Any-of, not all-of: the question a filter answers here is "which pages have a
@@ -1204,6 +1556,66 @@ for (const c of chips) {
     apply();
   });
 }
+// ---- selection, and the segmenter over it
+//
+// Shift-click extends from the last box touched, over the rows *as filtered* — so a
+// range means what it looks like on screen rather than what the unfiltered table
+// would have given. `anchor` is the last plain click; shift without one behaves as a
+// plain click, which is what every list in every file manager does.
+const boxes = () => [...document.querySelectorAll("tbody tr:not([hidden]) td.pick input")];
+let anchor = null;
+document.querySelector('tbody').addEventListener('click', e => {
+  const box = e.target.closest("td.pick input");
+  if (!box) return;
+  const all = boxes();
+  if (e.shiftKey && anchor && all.includes(anchor)) {
+    const [a, b] = [all.indexOf(anchor), all.indexOf(box)].sort((x, y) => x - y);
+    for (let i = a; i <= b; i++) all[i].checked = box.checked;
+  }
+  anchor = box;
+  countPicked();
+});
+const pickall = document.getElementById('pickall');
+if (pickall) pickall.addEventListener('change', () => {
+  boxes().forEach(b => { b.checked = pickall.checked; });
+  anchor = null; countPicked();
+});
+const segrun = document.getElementById('segrun');
+function picked() { return boxes().filter(b => b.checked); }
+function countPicked() {
+  const n = picked().length;
+  if (segrun) segrun.textContent = n ? `segment ${n} selected` : 'segment selected';
+}
+
+// Sequential, and for the same reason as the ink pass below: this is GPU work in
+// the process serving the editor. The model is loaded once server-side and stays
+// resident, which is what makes a bulk run worth doing at all — paying the ~5 s load
+// per page is the friction this replaces.
+if (segrun) segrun.addEventListener('click', async () => {
+  if (segrun.dataset.busy) return;
+  const todo = picked();
+  if (!todo.length) { segrun.textContent = 'nothing selected'; return; }
+  segrun.dataset.busy = '1'; segrun.classList.add('on');
+  let done = 0, failed = 0;
+  for (const box of todo) {
+    try {
+      const r = await (await fetch('/predict', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ref: box.dataset.ref})})).json();
+      if (r.error) throw new Error(r.error);
+      const row = box.closest('tr');
+      row.title = `segmenter: ${r.zones} zones`;
+      box.checked = false;
+    } catch (e) { failed++; box.closest('tr').title = 'segmenter: ' + e.message; }
+    segrun.textContent = `segmenting · ${++done}/${todo.length}`
+                       + (failed ? ` · ${failed} failed` : '');
+  }
+  segrun.classList.remove('on');
+  delete segrun.dataset.busy;
+  segrun.textContent = `segmented ${done - failed}`
+                     + (failed ? ` · ${failed} failed` : '') + ' — reload to see';
+});
+
 // The ink pass, on demand and one page at a time. Sequential rather than parallel:
 // it is CPU-bound raster work in the same process that serves the editor, and a
 // burst of it would make the next page open slowly. Only the pages whose verdict
@@ -1271,6 +1683,9 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
     root = Path(root)
     cfg = zc.load_config(root)
     start = norm_ref(ref)
+    # Loaded on first use and kept — see the `/predict` route. A list holding one
+    # slot rather than a global, so it dies with the server.
+    segmenter: list = [None]
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *a):    # one line per save is enough
@@ -1292,9 +1707,12 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                     nudge = int((q.get("nudge") or ["0"])[0])
                 except ValueError:
                     nudge = 0
+                sel = (q.get("store") or ["zones"])[0]
+                if sel not in STORES:
+                    sel = "zones"
                 try:
                     body = render_html(r, root, cfg, nudge, itinerary,
-                                       itinerary_name).encode("utf-8")
+                                       itinerary_name, sel).encode("utf-8")
                 except Exception as e:
                     self._send(500, "text/plain; charset=utf-8",
                                str(e).encode("utf-8"))
@@ -1353,6 +1771,44 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                 # From another thread: `shutdown()` blocks until the serve loop
                 # exits, and the serve loop is what is running this handler.
                 threading.Thread(target=srv.shutdown, daemon=True).start()
+                return
+            if self.path == "/predict":
+                # One page per call, but the **model stays resident** between them —
+                # loading it costs ~5 s, and a bulk run that paid that per page is
+                # the clunkiness this replaces. The client drives the loop so it can
+                # show progress, exactly as the ink runner does.
+                try:
+                    n = int(self.headers.get("Content-Length") or 0)
+                    payload = _json.loads(self.rfile.read(n) or b"{}")
+                    r = norm_ref(payload.get("ref", ""))
+                    if segmenter[0] is None:
+                        segmenter[0] = zn.load_segmenter(zn.DEFAULT_MODEL, root)
+                    net, sha = segmenter[0]
+                    res = zn.predict_dp(r, root, net=net, sha=sha,
+                                        model_path=zn.DEFAULT_MODEL, cfg=cfg)
+                except Exception as e:
+                    self._send(500, "application/json",
+                               _json.dumps({"error": str(e)}).encode("utf-8"))
+                    return
+                print(f"segmented {res['ref']}: {res['zones']} zones -> mz/zones/")
+                self._send(200, "application/json",
+                           _json.dumps(res, ensure_ascii=False).encode("utf-8"))
+                return
+            if self.path == "/delete":
+                # The only route that removes keyed work. Confirmed on the page and
+                # journalled here; `.prev` keeps it one deep either way.
+                try:
+                    n = int(self.headers.get("Content-Length") or 0)
+                    payload = _json.loads(self.rfile.read(n) or b"{}")
+                    res = zn.delete_zones(payload.get("ref", ""), root, commit=True)
+                except Exception as e:
+                    self._send(500, "application/json",
+                               _json.dumps({"error": str(e)}).encode("utf-8"))
+                    return
+                print(f"deleted {res['path']}: was {res['zones']} zones "
+                      f"[{res['split'] or 'unmarked'}]")
+                self._send(200, "application/json",
+                           _json.dumps(res, ensure_ascii=False).encode("utf-8"))
                 return
             if self.path != "/save":
                 self.send_error(404)

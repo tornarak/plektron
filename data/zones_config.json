@@ -75,6 +75,10 @@
     "anchor_right": ".",
     "anchor_reset": "v",
     "cycle_column": "Tab",
+    "cycle_store": "/",
+    "cycle_store_back": "?",
+    "delete_page": "X",
+    "segment_page": "S",
     "toggle_split": "t",
     "toggle_chain": "\\",
     "exempt": "e",
@@ -114,5 +118,23 @@
 
   "width_tolerance_px": 40,
   "min_zone_h_px": 30,
-  "max_overlap_px": 8
+  "max_overlap_px": 8,
+
+  "paragraph_split": {
+    "_about": "Splitting one body band back into its paragraphs, off the raster. The segmenter cannot do this and never will: two adjacent MainZone-P zones abut, so they rasterize into one continuous training target and the boundary is destroyed before the network ever sees it. 42% of all consecutive zone pairs in gt/zones/ are same-label (596 of 1405, 561 abutting, 568 paragraph-to-paragraph), so this is not an edge case — it is nearly half the boundaries in the corpus. The ink still knows: a paragraph's first line is indented. Calibrated over 60 pages, 177 true starts against 1280 mid-paragraph lines: at 40 px it finds 96.6% of starts with 0.4% false, and the false rate is flat from 30 to 80 px, so the remainder is a separate population rather than a threshold artifact. The ragged right margin was measured too and rejected: paragraphs that happen to end flush make its p10 (24 px) overlap the mid-line p90 (21 px). min_line_w_px exists because five of the first twenty false hits were 4-21 px specks in the right margin — dirt, not type.",
+    "indent_px": 40,
+    "labels": ["MainZone-P"],
+    "min_line_h_px": 6,
+    "min_line_w_px": 50,
+    "_consolidate_about": "A cut lands at the top of the opening line, so whatever sat above it — the whitespace between paragraphs, or a speck the line detector mistook for a line — is left as its own sliver. Those are invisible in the editor and are not zones: `min_zone_h_px` already says a band that short cannot be one. So a fragment under that height is folded into a neighbour, **and only into one carrying the same label**. `down` gives it to the paragraph below, which is right when the sliver is leading whitespace; `up` gives it to the one above; where only one side matches, that side wins regardless. Where neither matches the sliver stays and `validate_page` reports it as min-height, which is a finding about the decode rather than something to paper over.",
+    "consolidate": "down"
+  },
+
+  "train_merges": {
+    "_about": "Classes the *segmenter* is not asked to tell apart, applied by `harness zones --assemble` when it builds the training copies and nowhere else. The editor still offers every type, `gt/zones/` still stores what was keyed, and every check still reads the keyed label — a distinction a human drew is evidence and is not destroyed to suit a model. Read the measurement before adding one, and record it here: this file is where a fold has to be arguable.",
+    "MainZone-Quote": {
+      "into": "MainZone-Other",
+      "why": "Block quote and 'other' are set at the same size with the same measure, and the model cannot separate them: of 31 MainZone-Quote regions it drew over the held-out pages, 6 were right and 23 were really MainZone-Other, while 15 of MainZone-Other's misses were really Quote — 38 zones swapped, the largest single error in the matrix. Folding them for training raises held-out precision 61.3% -> 78.2% and recall 93.9% -> 94.9%. Quote was also the class this design was already unsure of: zero instances at 75 pages, 25 at 181, joint-smallest either way."
+    }
+  }
 }

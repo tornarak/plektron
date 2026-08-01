@@ -172,7 +172,7 @@ def test_the_lists_name_the_work_dir_copy_not_the_store(tmp_path):
     zn.blot_all(tmp_path)
     rep = zn.assemble(tmp_path)
     line = (Path(rep["dir"]) / "train.lst").read_text().strip()
-    assert line == "bogoras-seg/chukchi-1-048.xml"
+    assert line == f"{zn.WORKDIR}/chukchi-1-048.xml"
     assert "gt/zones" not in line
 
 

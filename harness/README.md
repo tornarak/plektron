@@ -19,11 +19,15 @@ is the source of record and is deliberately verbose. For the project's rules,
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
 | `gt/seg/` | the **first** segmentation attempt: 122 pages, full SegmOnto vocabulary, free polygons. Kept, read-only | by hand, via eScriptorium |
 | `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json` | `zones --serve` |
+| `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones --predict` |
+| `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones --link` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `seam --commit` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` | by hand |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `review --serve`, `lines`, `zoom` |
 | `scans-fig-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones --blot` |
-| `bogoras-seg/` | symlink farm pairing each zone ALTO with its blotted raster for `ketos segtrain`. Derived, ignored | `zones --assemble` |
+| `train/bogoras-seg/` | training scratch: the symlink farm, its two `.lst` files, and each run's checkpoints. Derived, ignored, **read by nothing once training ends** | `zones --assemble`, `ketos segtrain` |
+| `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `zones --install --commit` |
+| `models/` (rest) | downloaded third-party weights, 675 MB, ignored | not authored here |
 
 **`gt/seg/` and `gt/zones/` are two schemes, not one store in two states.** The label
 sets differ and so does the geometry regime — free polygons drawn around ink against
@@ -38,6 +42,24 @@ naming them on a write hides which real store is being touched — and a write l
 in a store nobody meant to touch is how this repo lost its ground truth once. Reading
 is the opposite case: resolving a page to its current OCR is the entire purpose of a
 union view. `lines.DEFAULT_ALTO_DIR` is that default; `restore` names `gt/ocr/`.
+
+**The same rule, again, for zones: reads may resolve through `zones/`; writes name
+`gt/zones/`.** `save_zones` takes no store parameter at all, which is the strongest
+form of that — there is no argument in which a caller could name somewhere else. The
+predictor writes `mz/zones/` through its own path and never touches `gt/`, and the
+one route from one store to the other is a human in the editor: a page with no
+ground truth of its own opens on the machine's reading as an *unsaved proposal*,
+labelled as one, and saving it writes `gt/zones/` through the same `save_zones` every
+other page uses. That is the shape `proposal.json` → `decision.json` → `restore`
+already has on the OCR side.
+
+`zones --from` deliberately offers `gt` and `mz` and **not** the view, and refuses a
+free directory path where `lines`/`zoom`/`review`/`restore` accept one. Two reasons,
+both about what an exit code means: a free path is how a check ends up compared
+against its own input by typo, and checking through the view would blend ratified and
+unratified pages under one verdict. Over `gt/` errors gate; over `mz/` the identical
+report is measurement and always exits 0, because nothing there is ratified and a raw
+predicted polygon fails the fixed-measure width check by construction.
 
 ## Modules
 
@@ -111,11 +133,48 @@ declarative order rules. `order_warnings` is pure and is transcribed into the
 editor's JS, with `tests/test_zones_order.py` holding the two together. Every rule
 here is a *warning* — nothing in this config can refuse a save.
 
-**`zones.py`** — the `gt/zones/` store: the ALTO writer (eScriptorium dialect, no
+**`zones.py`** — the zone stores: the ALTO writer (eScriptorium dialect, no
 `TextLine`, `mz_` ids, atomic with a `.prev` and a journal), the split lists, the
-exemptions, `validate_page`/`validate_corpus`, the blot sweep and the segtrain
-assembly. **Errors are mechanical and set the exit code; the ordering assumptions
-are warnings.**
+exemptions, `validate_page`/`validate_corpus`, the blot sweep, the segtrain
+assembly, the predictor and the view. **Errors are mechanical and set the exit code;
+the ordering assumptions are warnings.**
+
+`zone_dir`/`alto_for` take a `store`, defaulting to `gt/zones/`, and the **default is
+the design**: every sidecar reader calls `zone_dir(root)` bare and so keeps resolving
+to the human store without a line of change. That is not an accident to tidy up
+later — a split, a rule exemption and an ink ruling are statements about a *page*, and
+there is no such thing as the machine store's opinion of which pages are held out.
+`_ink_cache.json` is gt-only for a sharper version of the same reason: it is keyed by
+ref alone, so a machine verdict landing there would sit in the page list's column
+indistinguishable from one about work a human has actually done.
+
+Two things `mz/zones/` deliberately does not do. It is **not normalised** — free
+polygons at whatever x kraken drew, kraken's own ids, kraken's own dialect — because
+a store that tidied its contents could no longer tell you what the model did;
+snapping to a configured band is a human act and happens in the editor. And its
+blocks carry **no `mz_` prefix** despite the store's name, which is the near-collision
+worth knowing about: `mz_` marks a band a human drew against a configured column, so
+a predicted block keeping kraken's id is precisely what makes the two distinguishable
+from the bytes alone.
+
+`score` and `remap_model` exist because the first trained model scored **0.2% label
+agreement on its own training data** — below the ~14% that guessing among seven
+classes gives, which is the signature of a wrong mapping rather than a weak model.
+`--resize` had permuted the class names while the geometry was learned correctly.
+`score` establishes which of the two it is by deriving a 1-1 map on the training
+pages and testing it on the held-out ones (93.9%, so: relabelling); `remap_model`
+renames the output channels, refusing unless the map is bijective, holds out, and
+covers every declared class. **Run `--score` after every training run** — nothing
+else can see this fault, because the ALTO is well-formed and the boxes are right.
+
+`load_segmenter` exists mostly to hold two findings about kraken 7.0.3 that cost time
+to establish: `TorchVGSLModel.load_model` is CoreML-only and fails inside protobuf on
+a safetensors file (`Wire format was corrupt`, which reads as a damaged model rather
+than the wrong reader), its deprecation notice names a `kraken.registry.load_model`
+that **does not exist in this version**, and `ketos segtrain` does not write the
+`hyper_params` key that `blla.segment` then reads unguarded — so every model this
+project trains raises `KeyError: 'hyper_params'` on its first inference. See the
+docstring; re-verify after any kraken upgrade.
 
 Two exemption sidecars, and they answer different questions. `_rule_exempt.json`
 says a page arranges itself unusually and the order rules may stop saying so.
@@ -124,6 +183,14 @@ blob, offset from the facing page — and carries the reason as a required field
 second is scoped to a band and never to a page, because the ink check is the only
 thing that can see a dropped zone and a page-wide suppression would hide the next
 one. Both keep reporting what they excuse, flagged.
+
+The editor's **store selector** (`/`, or the three HUD pills) is orthogonal to the
+itinerary: the itinerary chooses the pages, the selector chooses whose reading of
+them is drawn — `zones` (the view, default), `gt`, `mz`. `page_state(store=...)`
+resolves it server-side, including the snapping and the presence counts, so the
+client never re-derives the store rule. The `zones` pill reports what the *view*
+resolves to, which is deliberately not an echo of the current selection: with `mz`
+pinned on a page that has both, `shown` is `mz` while the view still answers `gt`.
 
 **`zones_ui.py`** — the segmentation editor. Same server shape as `review.serve`,
 with a `GET /page/<ref>.png` route because a full page as a data URI is ~10 MB of
