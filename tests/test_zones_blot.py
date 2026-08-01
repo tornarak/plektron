@@ -194,5 +194,46 @@ def test_assembly_reports_a_command_it_does_not_run(tmp_path):
     keyed(tmp_path, "1-048")
     zn.blot_all(tmp_path)
     rep = zn.assemble(tmp_path)
-    assert "ketos segtrain" in rep["command"]
+    assert "ketos" in rep["command"] and "segtrain" in rep["command"]
     assert "ketos --help" in rep["note"]
+    assert Path(rep["dir"]).name in rep["command"]      # the lists it just wrote
+
+
+def test_the_seed_precedes_the_subcommand(tmp_path):
+    """kraken 7's `-s` is on the `ketos` group and means the seed; on `segtrain`
+    the same letter is the VGSL spec, so putting it after would silently train a
+    different network rather than fail."""
+    keyed(tmp_path, "1-048")
+    zn.blot_all(tmp_path)
+    head, tail = zn.assemble(tmp_path)["command"].split("segtrain", 1)
+    assert "-s 42" in head and " -s " not in tail
+
+
+def test_nothing_about_a_particular_machine_is_baked_in(tmp_path):
+    """The device and the worker count describe whoever is running, not what this
+    corpus needs. kraken's own defaults run anywhere."""
+    keyed(tmp_path, "1-048")
+    zn.blot_all(tmp_path)
+    rep = zn.assemble(tmp_path)
+    for flag in ("--device", "-d ", "cuda", "--workers", "--precision"):
+        assert flag not in rep["command"]
+    assert "-d" in rep["note"]          # said, rather than chosen for the operator
+
+
+def test_the_command_fine_tunes_blla_rather_than_starting_over(tmp_path):
+    """115 pages will not teach a convolutional stack from nothing, and `both`
+    is what replaces blla's single `text` region class with these seven."""
+    keyed(tmp_path, "1-048")
+    zn.blot_all(tmp_path)
+    cmd = zn.assemble(tmp_path)["command"]
+    assert "-i models/blla.mlmodel" in cmd and "--resize both" in cmd
+
+
+def test_assembly_reports_the_classes_the_model_will_carry(tmp_path):
+    """What the output layer gets resized to. Reading it off the report beats
+    reading it out of the checkpoint afterwards."""
+    keyed(tmp_path, "1-048")
+    keyed(tmp_path, "1-049", "exempt")
+    zn.blot_all(tmp_path)
+    rep = zn.assemble(tmp_path)
+    assert rep["classes"] == "MainZone-P"

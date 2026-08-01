@@ -1249,10 +1249,32 @@ def assemble(root: Path = Path(".")) -> dict:
     figure-shaped body zone the blot exists to prevent, and the resulting model
     would look fine everywhere except the 252 pages that matter.
 
-    The `ketos segtrain` command line is *reported, not run*. Its flags moved across
-    the 3→5→6→7 majors and this repo's own rule is to verify them against
-    `ketos --help` at the moment of use rather than trust anything written down —
-    including this docstring.
+    The `ketos segtrain` command line is *reported, not run*, and the reported form
+    is **verified against `ketos --help` in this environment** (kraken 7.0.3) rather
+    than remembered. Four things about it are not what a 4.x-era tutorial or an
+    earlier draft of this function would give you:
+
+    - **`-s` means two different things at the two levels** — the seed on the group,
+      the VGSL spec on `segtrain`. `ketos segtrain -s 42` would be read as a network
+      architecture. The seed is worth setting: without it the run is not repeatable,
+      and `-r/--deterministic` seeds 42 by itself if none is given.
+    - **Anything about a particular machine is left off deliberately.** `-d/--device`
+      and `--workers` are also group-level options and also go before the subcommand,
+      but they describe whoever is running rather than what this corpus needs, so
+      they are the operator's to add. The defaults (`auto`, one worker) run anywhere.
+    - **`--suppress-regions` / `--suppress-baselines` are gone.** Region-only is not
+      a flag any more; it follows from the data, and `gt/zones/` carries no
+      `TextLine` at all, so there is nothing for a baseline head to learn.
+    - **`-i models/blla.mlmodel --resize both`** rather than training from scratch.
+      blla is the stock layout model and `both` sets the output layer to exactly the
+      training data's classes — dropping blla's single `text` region class for these
+      seven and keeping the features underneath. 115 pages is not enough to learn a
+      convolutional stack from nothing, and `models/plates-seg-best.safetensors` is
+      the same size as blla, so the one segmentation model this project has already
+      trained was made the same way.
+
+    Output goes to `bogoras-seg/`, not `models/`: segtrain writes a checkpoint per
+    epoch, and this repo keeps only the trained model, in `models/`, by hand.
     """
     import os
     splits = load_splits(root)
@@ -1289,12 +1311,30 @@ def assemble(root: Path = Path(".")) -> dict:
         (work / f"{split}.lst").write_text(
             "".join(p + "\n" for p in sorted(listed[split])), encoding="utf-8")
 
+    classes = sorted({z["label"] for ref in zone_refs(root)
+                      if splits.get(ref, DEFAULT_SPLIT) != "exempt"
+                      for z in read_zones(ref, root)})
     return {"dir": str(work),
             "train": counts["train"], "eval": counts["eval"],
             "exempt_skipped": exempted,
             "missing_blot": " ".join(missing),
-            "note": ("region-only, as models/plates-seg-best.safetensors was — no "
-                     "baseline head. Verify every flag against `ketos --help` "
-                     "before running; the CLI was reorganized across majors 3-7."),
-            "command": (f"ketos segtrain -f alto -t {work}/train.lst "
-                        f"-e {work}/eval.lst -o {root}/models/zones-seg --device cuda:0")}
+            "classes": " ".join(classes),
+            "note": ("region-only — gt/zones/ carries no TextLine, so there is no "
+                     "baseline head to train. Flags verified against `ketos --help` "
+                     "for kraken 7.0.3: -s is group-level here and means --spec on "
+                     "segtrain. Nothing machine-specific is included; add -d and "
+                     "--workers before the subcommand to suit. Re-verify after any "
+                     "kraken upgrade."),
+            "command": SEGTRAIN_CMD.format(work=work)}
+
+
+# The invocation `--assemble` reports. A template rather than a string built at the
+# call site, so the one place it is written down is the one place it is read — and
+# so a `harness` change and a flag change are the same edit. See `assemble` for why
+# each flag is what it is.
+SEGTRAIN_CMD = (
+    "uv run ketos -s 42 segtrain"
+    " -f alto -i models/blla.mlmodel --resize both"
+    " -t {work}/train.lst -e {work}/eval.lst"
+    " -o {work}/zones-seg --augment -q early -N 200 --min-epochs 15 --lag 15"
+)
