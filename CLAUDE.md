@@ -152,7 +152,7 @@ Layout, all at the repo root:
     gt/     what a human has been through. ocr/ (20 pages of ground truth),
             fig/ (252 figure ALTOs + METS, geometry only), seg/ (the first
             segmentation attempt, 122 pages, kept read-only), zones/ (the
-            current one — seven types, fixed-width bands; empty so far).
+            current one — seven types, fixed-width bands; 181 pages, 961 zones).
     tei/    1 page.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
             zones_config.json
@@ -365,25 +365,50 @@ the mark would hide a mistake rather than describe a plate.
 **The training selection is `gt/seg/`'s 122 pages plus the first two chapters.** The
 old attempt's page set was chosen for heterogeneity and that choice is still good
 even though its labels are not, so `harness zones --serve --itinerary gt/seg` walks
-it — 16 of the 122 are already keyed as part of the run below, leaving 106. Together
-with the two chapters that is the sample the first training run is meant to have.
-An itinerary is a **work-list, not a filter**: a page not on it still opens and
+it. **That itinerary is now walked** — see below; together with the two chapters it
+is the sample the first training run was meant to have. An itinerary is a
+**work-list, not a filter**: a page not on it still opens and
 still saves, it simply has no neighbours, and a scoped sweep reports the unkeyed
 entries as rows so "how much is left" has an answer.
 
-**Where it stands: 75 pages, the first two chapters of part 1.** 45 text pages
-carrying 282 zones, 30 marked exempt (the covers, front matter and plates of
-`1-001`…`1-030`). `harness zones --ink` over the lot returns 4 errors and 3 warnings
-on 3 pages, and reading them against the scans is instructive about what each check
-is worth:
+**Where it stands: 181 pages keyed** — `gt/seg`'s heterogeneous 122 plus the first
+two chapters, which is the sample the first `ketos segtrain` run was meant to have.
+**148 text pages carrying 961 zones**, 33 marked exempt, across all three parts (113
+of part 1, 28 of part 2, 40 of part 3). `harness zones --ink` takes 31 s and returns
+**6 errors on 2 pages, 3 warnings on 3**.
+
+The class distribution is the thing to read here, because it settles a question this
+design was open on:
+
+    MainZone-P            489    MainZone-Other         53
+    RunningTitleZone      141    QuireMarksZone         25
+    MainZone-Continued    124    MainZone-Quote         25
+    MarginTextZone-Notes  104
+
+`MainZone-Quote` was **zero** at 75 pages, and a class with no instances cannot be in
+a class map — the open question was whether to fold it into `MainZone-Other` before
+training. It now sits level with `QuireMarksZone`, so it stays. The book answered;
+nothing was decided.
+
+What the findings are worth, read against the scans:
 
 - All three `uncovered-ink` bands — `1-033`, `1-035`, `1-036` — are **artifacts**: a
   margin smudge, the tail of an ink stain below a footnote zone, and a gutter blob.
   Binarization noise, not type. Report-only earns its keep here; any of them as an
   error would have blocked a correctly keyed page. All three are now ruled in
-  `_ink_exempt.json` and still report, flagged and carrying their reason.
+  `_ink_exempt.json` and still report, flagged and carrying their reason. `1-033`'s
+  is now **stale** — the band no longer occurs since the anchor was rebuilt — and
+  says so, which is the other half of that mechanism working.
 - `1-033`'s four `column-position` errors were **the anchor's fault, not the
-  zones'**, and fixing them rebuilt the anchor. See below; the sweep is now clean.
+  zones'**, and fixing them rebuilt the anchor. See below.
+- `1-137` is the anchor's fault too, and is **left standing**. Its column is 68 px
+  out because fig. 21's photographic background extends left of the measure and sits
+  near enough the block that `max_run_gap_px` bridges it into one 1817 px run —
+  wider than the 1778 px measure, which is the tell nothing currently reads. Masking
+  `gt/fig/` zones out of the anchor band fixes this page and breaks others: over the
+  148 keyed pages, 5 better, **21 worse**, and `1-153` ceases to be measurable. A
+  per-ref `overrides` entry would silence it, at the cost of switching off the width
+  check on the one page whose column is known wrong. So it reports.
 
 A caution recorded because it was nearly acted on: reading `1-035`'s band off a
 downscaled crop, this assistant concluded the footnotes zone had clipped a second
