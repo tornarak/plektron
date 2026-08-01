@@ -1792,17 +1792,50 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
             "labels": " ".join(sorted(regions))}
 
 
+def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
+                 splits: dict | None = None, single: bool = False) -> str:
+    """Why this page should not be predicted, or `""` to go ahead.
+
+    One rule, in one place, because there are two callers — the CLI sweep and the
+    editor's bulk button — and a client that decided for itself would be a second
+    copy of it, drifting from this one the moment either changed.
+
+    **`exempt` is refused outright, `force` or not.** A human has ruled the page not
+    a text page — a plate, a map, a foldout, a blank — so a prediction there
+    manufactures zones for a page with no right answer and then sits in the store
+    looking like any other reading. `assemble` keeps them out of training and eval on
+    the same grounds. `single` is the override, and it is a separate flag from
+    `force` because the two excuse different things — one says "I mean this page
+    even though it is a plate", the other "replace what is there". Naming a ref on
+    the command line, or pressing the key on the page itself, is `single`.
+
+    **An existing prediction is kept unless `force`.** The reason is not politeness
+    about GPU time: an mz file records the sha256 of the model that wrote it, which
+    is the only thing in the store saying *which* model spoke. Re-predicting
+    everything after a retrain, unasked, would replace that record page by page and
+    leave nothing able to tell you the store had ever held two models' output. Skip
+    by default and the sha stays true to the file it is on.
+    """
+    if not single and (splits if splits is not None
+                       else load_splits(root)).get(ref) == "exempt":
+        return "ruled not a text page"
+    if not force and has_zones(ref, root, MZDIR):
+        return "already predicted"
+    if not (blot_dir(root) / f"chukchi-{ref}.png").exists():
+        return "no blotted raster"
+    return ""
+
+
 def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 model_path: str | Path = DEFAULT_MODEL,
-                device: str = "auto", decode: str = "raw") -> dict:
+                device: str = "auto", decode: str = "raw",
+                force: bool = False) -> dict:
     """Predict over a work-list, or over every page that has a blotted raster.
 
-    **Pages marked `exempt` are skipped and counted.** A human has ruled them not
-    text pages — plates, maps, foldouts, blanks — so a prediction there manufactures
-    zones for a page with no right answer, and would then sit in the store looking
-    like any other reading. `assemble` keeps them out of training and eval on the
-    same grounds. Naming a single ref on the command line overrides this: asking for
-    one page is itself the request.
+    What is skipped and why is `predict_skip`'s; this loops and reports. A sweep is
+    therefore **resumable by construction** — run it again and it picks up the pages
+    that have nothing, which over 832 pages of GPU work is the difference between an
+    interruption costing minutes and costing the run.
 
     The model is loaded once for the whole run, which is most of why this exists as
     a sweep rather than a shell loop over the single-page form.
@@ -1815,13 +1848,17 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
         refs = all_scans(root)
 
     started = time.monotonic()
-    done, no_blot, exempted = 0, [], 0
+    done, no_blot, exempted, already = 0, [], 0, 0
     zones = 0
     for ref in refs:
-        if splits.get(ref) == "exempt":
+        why = predict_skip(ref, root, force, splits)
+        if why == "ruled not a text page":
             exempted += 1
             continue
-        if not (blot_dir(root) / f"chukchi-{ref}.png").exists():
+        if why == "already predicted":
+            already += 1
+            continue
+        if why:
             no_blot.append(ref)
             continue
         fn = predict_dp if decode == "dp" else predict
@@ -1831,6 +1868,7 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     return {"dir": str(mz_dir(root)), "decoder": decode,
             "predicted": done, "zones": zones,
             "exempt_skipped": exempted,
+            "already_predicted": already,
             "skipped_no_blot": " ".join(no_blot),
             "model": str(model_path), "sha256": sha,
             "elapsed_s": round(time.monotonic() - started, 1)}

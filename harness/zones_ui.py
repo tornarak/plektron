@@ -1209,7 +1209,10 @@ window.addEventListener('keydown', async e => {
         + `. gt/zones/ is untouched.`)) { say('not segmented', 'bad'); break; }
       say('segmenting…');
       let res;
-      try { res = await post('/predict', {ref: ST.ref}); }
+      // `single` and `force` both: the dialog above already said it replaces what
+      // is there, and asking for this one page is what excuses a page ruled exempt.
+      try { res = await post('/predict',
+                             {ref: ST.ref, force: true, single: true}); }
       catch (err) { say('segmenter: ' + err.message, 'bad'); break; }
       // Reload so the prediction is on screen, since the whole point was to look at
       // it. Writes `mz/zones/`; `gt` is untouched until you adopt.
@@ -1550,14 +1553,21 @@ td.pick input,th.pick input{cursor:pointer;margin:0}
 #shown{color:var(--dim);font-size:12px;margin-left:4px}
 #head{position:sticky;top:0;background:var(--bg);padding:14px 16px 10px;
       border-bottom:1px solid var(--line);z-index:5}
-#head h1{margin:0 0 4px;font-size:15px}
+#head h1{margin:0 0 4px;font-size:15px;display:flex;align-items:center;gap:10px}
+/* The scope link sits in the title because it changes what the title names — the
+   universe of rows, not which of them are shown. It is not a filter. */
+#scope{font-weight:400;text-decoration:none;color:inherit}
+/* The force box is a control, not a selector; it never lights and never filters. */
+#force{cursor:pointer}
+#force input{cursor:pointer;margin:0}
 #head p{margin:0;color:var(--dim);font-size:12px}
 #wrapl{padding:0 16px 40px}
 """
 
 
 def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
-                     itinerary_name: str = "", current: str = "") -> str:
+                     itinerary_name: str = "", current: str = "",
+                     scope: str = "stores") -> str:
     """Every page in the work-list with its status, as one table.
 
     The counts alone never say *which* page, and a keying sweep is exactly the case
@@ -1573,6 +1583,13 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     fault the partition exists to catch — but a page whose verdict is not on hand
     reads `?`, and going and getting it is a button. Unknown is a state worth
     drawing; a stale verdict rendered as a live one is not.
+
+    `scope="all"` widens the universe from "pages either store holds" to **every
+    scan in the corpus**, which is what a whole-book segmentation run needs: the
+    pages worth predicting are precisely the ones neither store has ever heard of,
+    so the default view cannot show one. It costs a `validate_page` per row, but
+    without the raster — over the 832 pages that is a stat and a parse each for the
+    few that have files, and nothing at all for the rest.
     """
     by_label = zc.types_by_label(cfg)
     # Unscoped, the universe is **both stores**, not just the keyed one. A page with
@@ -1580,8 +1597,13 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     # queue, and enumerating `gt/zones/` alone would mean the `proposed` state could
     # never appear on the default view — a column that cannot display its own value.
     # An itinerary still overrides it outright: a work-list is a work-list.
-    refs = itinerary if itinerary is not None else sorted(
-        set(zn.zone_refs(root)) | set(zn.zone_refs(root, zn.MZDIR)), key=parse_ref)
+    if itinerary is not None:
+        refs = itinerary
+    elif scope == "all":
+        refs = all_scans(root)
+    else:
+        refs = sorted(set(zn.zone_refs(root)) | set(zn.zone_refs(root, zn.MZDIR)),
+                      key=parse_ref)
     rows = []
     n_keyed = n_err = n_warn = 0
     for ref in refs:
@@ -1629,9 +1651,27 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
          f"<title>zones · {itinerary_name or 'store'}</title>",
          f"<style>{CSS}{LIST_CSS}</style></head><body>"]
     h.append("<div id='head'>")
-    n_prop_h = sum(1 for r in rows if r[1] == "proposed")
-    h.append(f"<h1>{itinerary_name or ('gt/zones + mz/zones' if n_prop_h else 'gt/zones')}"
-             f" — {len(rows)} pages</h1>")
+    # Named for what it enumerates. Keyed off the mz *column* rather than off the
+    # `proposed` state, which only ever fires where there is no ground truth — with
+    # a prediction over the whole corpus that count is zero and the heading would
+    # have read `gt/zones` over a table half of which is the machine's.
+    title = (itinerary_name or ("every scan" if scope == "all" else
+             "gt/zones + mz/zones" if n_mz_rows else "gt/zones"))
+    h.append(f"<h1>{title} — {len(rows)} pages")
+    # The scope toggle is a link, not a filter chip: it changes what the server
+    # enumerates, and a page in neither store has no row to hide or show. Absent
+    # under an itinerary, which overrides the universe outright.
+    if itinerary is None:
+        other = "stores" if scope == "all" else "all"
+        h.append(f"<a class='chip' id='scope' href='/list?scope={other}"
+                 + (f"&ref={current}" if current else "") + "' title='"
+                 + ("back to the pages either store holds"
+                    if scope == "all" else
+                    "every scan in the corpus, including pages neither store has "
+                    "heard of — what a whole-book segmentation run needs")
+                 + "'>" + ("just the stores" if scope == "all"
+                           else f"all {len(all_scans(root))} scans") + "</a>")
+    h.append("</h1>")
     n_prop = sum(1 for r in rows if r[1] == "proposed")
     h.append(f"<p>{n_keyed} keyed · {len(rows) - n_keyed} to do"
              + (f" ({n_prop} predicted)" if n_prop else "")
@@ -1647,6 +1687,15 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     h.append("<span class='chip' id='segrun' title='run the segmenter on the "
              "checked pages — shift-click a checkbox to take a range. Writes "
              "mz/zones/; gt is untouched'>segment selected</span>")
+    # Off by default, and the default is the safe one: a page that already has a
+    # prediction is left alone. Over a whole-book run the pages worth the GPU time
+    # are the ones with nothing, and re-predicting the rest would overwrite the very
+    # files someone may be comparing against — including, after a retrain, replacing
+    # output whose ProcessingStep records a *different* model sha, which is the one
+    # thing in the store that says which model spoke.
+    h.append("<label class='chip' id='force' title='by default a page that already "
+             "has mz is skipped; tick this to re-run the segmenter over it'>"
+             "<input type='checkbox' id='forcebox'> overwrite existing mz</label>")
     h.append("<span class='chip' data-state='todo'>still to do</span>")
     h.append("<span class='chip' data-state='proposed'>machine proposal</span>")
     h.append("<span class='chip' data-state='err'>has errors</span>")
@@ -1698,9 +1747,12 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
     back = f"/?ref={current}" if current else "/"
     h.append("<script>" + r"""
 const rows = [...document.querySelectorAll('tbody tr')];
-// The two action buttons are chips for styling only — they select nothing, so they
-// must not join the filter set or clicking one would silently narrow the table.
-const chips = [...document.querySelectorAll('.chip:not(#inkrun):not(#segrun)')];
+// A chip is a filter **iff it carries the attribute that says what it selects**.
+// Several chips here are buttons or links wearing the same style, and the rule used
+// to be a growing list of `:not(#id)` — which fails open: add another and it joins
+// the filter set with an undefined key, hiding every row in the table.
+const chips = [...document.querySelectorAll(
+  '#filters .chip[data-state], #filters .chip[data-ink], #filters .chip[data-label]')];
 const on = new Set();
 
 // Any-of, not all-of: the question a filter answers here is "which pages have a
@@ -1767,15 +1819,36 @@ if (segrun) segrun.addEventListener('click', async () => {
   if (segrun.dataset.busy) return;
   const todo = picked();
   if (!todo.length) { segrun.textContent = 'nothing selected'; return; }
+  // Asks once, before any of it. A whole-book run is a quarter of an hour of GPU
+  // and 832 files, and the count is the only thing that distinguishes it from the
+  // three-page run this button was built for.
+  const force = !!(document.getElementById('forcebox') || {}).checked;
+  const over = todo.filter(b => b.closest('tr').dataset.mz === 'y').length;
+  if (todo.length > 20 && !confirm(
+      `Segment ${todo.length} pages?\n\n`
+      + (force
+         ? `${over} of them already have a prediction and it will be replaced.\n\n`
+         : over ? `${over} already have one and will be skipped.\n\n` : '')
+      + `Writes mz/zones/. gt/zones/ is untouched. The tab has to stay open.`)) {
+    segrun.textContent = 'not run'; return;
+  }
   segrun.dataset.busy = '1'; segrun.classList.add('on');
-  let done = 0, failed = 0;
+  let done = 0, failed = 0, skipped = 0;
   for (const box of todo) {
     try {
       const r = await (await fetch('/predict', {
         method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ref: box.dataset.ref})})).json();
+        body: JSON.stringify({ref: box.dataset.ref, force})})).json();
       if (r.error) throw new Error(r.error);
       const row = box.closest('tr');
+      // The server decides what to skip, so the reason comes back rather than being
+      // re-derived here — a client that decided for itself would be a second copy of
+      // the rule, and the CLI sweep uses the first one.
+      if (r.skipped) {
+        skipped++;
+        row.title = 'skipped: ' + r.skipped;
+        box.checked = false;
+      } else {
       row.title = `segmenter: ${r.zones} zones`;
       // The count is in hand, so the column it belongs in is filled now rather than
       // left for a reload. An unkeyed row also stops being `todo` — that state is
@@ -1788,14 +1861,17 @@ if (segrun) segrun.addEventListener('click', async () => {
         if (st) st.innerHTML = "<i class='dot s-proposed'></i>proposed";
       }
       box.checked = false;
+      }
     } catch (e) { failed++; box.closest('tr').title = 'segmenter: ' + e.message; }
     segrun.textContent = `segmenting · ${++done}/${todo.length}`
+                       + (skipped ? ` · ${skipped} skipped` : '')
                        + (failed ? ` · ${failed} failed` : '');
   }
   segrun.classList.remove('on');
   delete segrun.dataset.busy;
-  segrun.textContent = `segmented ${done - failed}`
-                     + (failed ? ` · ${failed} failed` : '') + ' — reload to see';
+  segrun.textContent = `segmented ${done - failed - skipped}`
+                     + (skipped ? ` · ${skipped} skipped` : '')
+                     + (failed ? ` · ${failed} failed` : '');
 });
 
 // The ink pass, on demand and one page at a time. Sequential rather than parallel:
@@ -1904,9 +1980,11 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
             if u.path == "/list":
                 q = parse_qs(u.query)
                 cur = (q.get("ref") or [""])[0]
+                sc = (q.get("scope") or ["stores"])[0]
                 try:
                     body = render_list_html(root, cfg, itinerary, itinerary_name,
-                                            norm_ref(cur) if cur else "")
+                                            norm_ref(cur) if cur else "",
+                                            "all" if sc == "all" else "stores")
                 except Exception as e:
                     self._send(500, "text/plain; charset=utf-8",
                                str(e).encode("utf-8"))
@@ -1963,6 +2041,15 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                     n = int(self.headers.get("Content-Length") or 0)
                     payload = _json.loads(self.rfile.read(n) or b"{}")
                     r = norm_ref(payload.get("ref", ""))
+                    # The same rule the CLI sweep uses, asked here so a bulk run
+                    # through the browser and one through the terminal cannot
+                    # disagree about what they left alone.
+                    why = zn.predict_skip(r, root, bool(payload.get("force")),
+                                          single=bool(payload.get("single")))
+                    if why:
+                        self._send(200, "application/json", _json.dumps(
+                            {"ref": r, "skipped": why}).encode("utf-8"))
+                        return
                     if segmenter[0] is None:
                         segmenter[0] = zn.load_segmenter(zn.DEFAULT_MODEL, root)
                     net, sha = segmenter[0]

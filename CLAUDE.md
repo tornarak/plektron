@@ -842,7 +842,11 @@ if you ever need it.
                                       and writes it to models/bogoras-seg/ with the
                                       split it saw beside it.
                                       --predict runs the trained segmenter into
-                                      mz/zones/ (--model, --device); --link
+                                      mz/zones/ (--model, --device), skipping a
+                                      page that already has one unless --force,
+                                      so a sweep resumes and a retrain cannot
+                                      silently replace the model sha each file
+                                      records; --link
                                       rebuilds zones/, the view over both stores;
                                       --from gt|mz picks which store is checked —
                                       gt gates, mz is measurement and exits 0.

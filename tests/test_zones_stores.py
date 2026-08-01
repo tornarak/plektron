@@ -417,6 +417,52 @@ def test_the_page_list_counts_both_stores_per_page(tmp_path):
     assert cells["1-103"] == ("", "")
 
 
+def test_the_list_can_widen_to_every_scan(tmp_path):
+    """The pages worth predicting are precisely the ones neither store has heard
+    of, so the default view cannot show one."""
+    from harness import zones_ui as ui
+    write_page(tmp_path, "1-048", zn.ZONEDIR)
+    for r in ("1-048", "1-102", "1-103"):
+        make_scan(tmp_path, r)
+    cfg = zc.load_config(REPO)
+    assert ui.render_list_html(tmp_path, cfg).count("<tr ") == 1
+    assert ui.render_list_html(tmp_path, cfg, scope="all").count("<tr ") == 3
+
+
+# ------------------------------------------------------- what a sweep leaves alone
+
+def test_a_page_with_a_prediction_is_left_alone_unless_forced(tmp_path):
+    """The mz file records the sha of the model that wrote it, and that is the
+    store's only witness to which model spoke. Replacing it unasked after a retrain
+    would leave nothing able to say the store had held two models' output."""
+    make_scan(tmp_path, "1-048")
+    write_page(tmp_path, "1-048", zn.MZDIR)
+    (tmp_path / zn.blot_dir(tmp_path).name).mkdir(exist_ok=True)
+    (zn.blot_dir(tmp_path) / "chukchi-1-048.png").write_bytes(b"")
+    assert zn.predict_skip("1-048", tmp_path) == "already predicted"
+    assert zn.predict_skip("1-048", tmp_path, force=True) == ""
+
+
+def test_an_exempt_page_is_refused_even_under_force(tmp_path):
+    """`force` says "replace what is there"; it does not say "this plate has a right
+    answer after all". Only naming the page does that."""
+    make_scan(tmp_path, "1-001")
+    (tmp_path / zn.blot_dir(tmp_path).name).mkdir(exist_ok=True)
+    (zn.blot_dir(tmp_path) / "chukchi-1-001.png").write_bytes(b"")
+    zn.save_zones("1-001", [], tmp_path, split="exempt")
+    assert zn.predict_skip("1-001", tmp_path) == "ruled not a text page"
+    assert zn.predict_skip("1-001", tmp_path, force=True) == "ruled not a text page"
+    assert zn.predict_skip("1-001", tmp_path, single=True) == ""
+
+
+def test_a_sweep_reports_what_it_skipped_rather_than_omitting_it(tmp_path):
+    make_scan(tmp_path, "1-048")
+    write_page(tmp_path, "1-048", zn.MZDIR)
+    assert zn.predict_skip("1-048", tmp_path) == "already predicted"
+    # No blot, so even forced it is a gap in the run and says so.
+    assert zn.predict_skip("1-048", tmp_path, force=True) == "no blotted raster"
+
+
 # ----------------------------------------------------------------- the scoring
 
 def frozen_split(root: Path, train: list[str], evl: list[str]):

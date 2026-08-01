@@ -403,7 +403,15 @@ def main(argv=None):
                          "is the request); with --itinerary, that list; bare, every "
                          "page that has a blotted raster and is not marked exempt. "
                          "Input is always the blotted raster, since that is what "
-                         "the model was trained on")
+                         "the model was trained on. A page that already has a "
+                         "prediction is left alone unless --force, so a sweep is "
+                         "resumable and a retrain cannot silently replace the model "
+                         "sha each file records")
+    zo.add_argument("--force", action="store_true",
+                    help="with --predict, re-run over pages that already have one. "
+                         "What you want after installing a new model, and only "
+                         "then — the mz file's sha256 is the store's only witness "
+                         "to which model wrote it")
     zo.add_argument("--model", default=None,
                     help=f"the segmentation model for --predict "
                          f"(default {ZONES_MODEL})")
@@ -896,7 +904,8 @@ def main(argv=None):
                     out(rep)
                     return 0
                 rep = zmod.predict_all(a.root, refs=itin, model_path=model,
-                                       device=a.device, decode=a.decode)
+                                       device=a.device, decode=a.decode,
+                                       force=a.force)
                 out(rep)
                 # Same contract as `--assemble`'s missing_blot: a page the model was
                 # asked about and could not be shown is a gap in the run, not a
