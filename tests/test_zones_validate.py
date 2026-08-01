@@ -530,3 +530,124 @@ def test_corpus_reports_a_ref_in_both_lists(tmp_path):
     (zn.zone_dir(tmp_path) / zn.EVAL_LST).write_text("chukchi-1-048.xml\n")
     summary, _ = zn.validate_corpus(tmp_path, cfg_for())
     assert summary["in_both_lists"] == "chukchi-1-048.xml"
+
+
+# --------------------------------------------------------- the ink verdict
+#
+# `record_ink` reduces the full finding to the four states the page list draws,
+# and caches it — the check is the only one that opens a raster, so it is written
+# down by whoever ran it rather than run again by whoever wants to look. The
+# distinction that has to survive the reduction is ruled-not-type against clean:
+# a page whose bands are all excused must still say so, or `_ink_exempt.json`
+# becomes the one place a wrong call is invisible.
+
+def verdict(tmp_path):
+    r = zn.validate_page("1-048", tmp_path, cfg_for(), ink=True)
+    return zn.record_ink("1-048", r, tmp_path)
+
+
+def test_a_page_with_unaccounted_ink_reads_as_ink(tmp_path):
+    make_scan(tmp_path)
+    zn.save_zones("1-048", [zone("MainZone-Continued", 560, 1500)], tmp_path)
+    r = verdict(tmp_path)
+    assert r["state"] == "ink" and r["bands"] >= 1 and "y=" in r["note"]
+
+
+def test_a_covered_page_reads_as_clean(tmp_path):
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    r = verdict(tmp_path)
+    assert r["state"] == "clean" and r["bands"] == 0
+
+
+def test_a_ruled_band_reads_as_ruled_and_keeps_its_reason(tmp_path):
+    """Not `clean`. The row has to stay distinguishable from a page where nothing
+    was ever found, since that difference is the whole record."""
+    make_scan(tmp_path, ink=BODY + [(3500, 3560)])
+    zn.save_zones("1-048", [zone("MainZone-P", 560, 3340)], tmp_path)
+    b = zn.validate_page("1-048", tmp_path, cfg_for(), ink=True)["uncovered"][0]
+    zn.set_ink_exempt("1-048", [{"y0": b["vpos"], "y1": b["vpos"] + b["height"],
+                                 "note": "gutter blob"}], tmp_path)
+    r = verdict(tmp_path)
+    assert r["state"] == "ruled" and r["ruled"] == 1 and r["bands"] == 0
+    assert "gutter blob" in r["note"]
+
+
+def test_an_unkeyed_page_is_skipped_rather_than_called_clean(tmp_path):
+    make_scan(tmp_path)
+    assert verdict(tmp_path)["state"] == "skip"
+
+
+def test_a_page_ruled_not_a_text_page_is_skipped(tmp_path):
+    """`exempt` says a human ruled this a plate. Uncovered ink on a plate is the
+    plate."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", [zone("MainZone-Other", 560, 1500)], tmp_path)
+    zn.set_split("1-048", "exempt", tmp_path)
+    assert verdict(tmp_path)["state"] == "skip"
+
+
+def test_an_exemption_matching_nothing_is_reported_as_stale(tmp_path):
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    zn.set_ink_exempt("1-048", [{"y0": 3500, "y1": 3560, "note": "smudge"}],
+                      tmp_path)
+    r = verdict(tmp_path)
+    assert r["stale"] == 1 and r["state"] == "clean"
+
+
+# ------------------------------------------------------------- the cache
+
+def test_a_recorded_verdict_is_read_back(tmp_path):
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    verdict(tmp_path)
+    assert zn.cached_ink("1-048", tmp_path)["state"] == "clean"
+
+
+def test_a_page_never_checked_has_no_verdict(tmp_path):
+    """None, and the list draws that as `?`. A page nothing has read is not a
+    clean page."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    assert zn.cached_ink("1-048", tmp_path) is None
+
+
+def test_rekeying_the_page_discards_the_verdict(tmp_path):
+    """The whole hazard the cache introduces: a verdict about the page as it was,
+    rendered in the same column as a live one, is fluent nonsense."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    verdict(tmp_path)
+    zn.save_zones("1-048", [zone("MainZone-Continued", 560, 1500)], tmp_path,
+                  stamp="later")
+    assert zn.cached_ink("1-048", tmp_path) is None
+
+
+def test_ruling_a_band_discards_the_verdict_too(tmp_path):
+    """`_ink_exempt.json` is written without touching the ALTO, so its mtime has
+    to be part of what the verdict is stamped against."""
+    make_scan(tmp_path, ink=BODY + [(3500, 3560)])
+    zn.save_zones("1-048", [zone("MainZone-P", 560, 3340)], tmp_path)
+    verdict(tmp_path)
+    b = zn.validate_page("1-048", tmp_path, cfg_for(), ink=True)["uncovered"][0]
+    zn.set_ink_exempt("1-048", [{"y0": b["vpos"], "y1": b["vpos"] + b["height"],
+                                 "note": "smudge"}], tmp_path)
+    assert zn.cached_ink("1-048", tmp_path) is None
+
+
+def test_the_ink_sweep_fills_the_cache(tmp_path):
+    """122 rasters read and nothing kept would make the list ask for the same
+    work over again."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    zn.validate_corpus(tmp_path, cfg_for(), ink=True)
+    assert zn.cached_ink("1-048", tmp_path)["state"] == "clean"
+
+
+def test_a_sweep_without_the_raster_records_nothing(tmp_path):
+    """It did not look at the page, so it has nothing to say about its ink."""
+    make_scan(tmp_path)
+    zn.save_zones("1-048", covering(), tmp_path)
+    zn.validate_corpus(tmp_path, cfg_for(), ink=False)
+    assert zn.cached_ink("1-048", tmp_path) is None

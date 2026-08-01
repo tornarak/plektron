@@ -87,6 +87,11 @@ scans-w-ocr/
 gt/zones/*.prev
 gt/zones/*.tmp
 gt/zones/_journal.jsonl
+# Derived, and disposable in a stronger sense than the two above: the uncovered-ink
+# verdict per page, written by whatever last read the raster, stamped with the
+# mtimes it was true for. Deleting it costs one re-check; committing it would put a
+# claim about a page's ink in history with nothing to hold it accountable.
+gt/zones/_ink_cache.json
 # `harness lines PP-NNN --blot`: each page with every line box and figure zone
 # painted out, so whatever is left is uncovered by construction. Derived from
 # `scans/` and the ALTO stores, regenerable, and one PNG per page across 832 pages

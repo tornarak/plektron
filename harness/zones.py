@@ -35,7 +35,9 @@ Three files sit beside the pages, all tracked:
     gt/zones/_ink_exempt.json  {ref: [{y0,y1,note}]} — bands of ink ruled not type,
                                each with the reason it was ruled so
 
-`_journal.jsonl` and the `.prev`/`.tmp` pairs are recovery data and ignored.
+`_journal.jsonl` and the `.prev`/`.tmp` pairs are recovery data and ignored. So is
+`_ink_cache.json`, which is derived: the uncovered-ink verdict per page, written by
+whatever last ran the check, stamped with the mtimes it was true for.
 """
 from __future__ import annotations
 import json
@@ -87,6 +89,7 @@ RULE_EXEMPT_JSON = "_rule_exempt.json"
 # ink check would hide the next genuinely dropped zone on it — and the whole value
 # of the check is that a dropped zone is invisible to everything else.
 INK_EXEMPT_JSON = "_ink_exempt.json"
+INK_CACHE_JSON = "_ink_cache.json"      # derived; ignored, like the journal
 JOURNAL = "_journal.jsonl"
 
 # What a page saved with no explicit mark becomes. Held out has to be a deliberate
@@ -496,6 +499,101 @@ def load_ink_exempt(root: Path = Path(".")) -> dict[str, list[dict]]:
     except json.JSONDecodeError:
         return {}
     return {k: list(v) for k, v in data.items() if not k.startswith("_")}
+
+
+def ink_stamp(ref: str, root: Path = Path(".")) -> list[int]:
+    """What a cached ink verdict is only valid for: this page's zones, and the
+    exemption ledger — the two files that can change the answer. The ledger is
+    written without touching the ALTO, so its mtime has to be in here too.
+
+    `mtime_ns`, not `mtime`: an integer compares exactly through JSON, and two
+    saves a few milliseconds apart have to be distinguishable or the second one
+    inherits the first one's verdict.
+    """
+    out = []
+    for p in (alto_for(ref, root), zone_dir(root) / INK_EXEMPT_JSON):
+        try:
+            out.append(p.stat().st_mtime_ns)
+        except OSError:
+            out.append(0)
+    return out
+
+
+def load_ink_cache(root: Path = Path(".")) -> dict[str, dict]:
+    p = zone_dir(root) / INK_CACHE_JSON
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    return {k: v for k, v in data.items() if not k.startswith("_")}
+
+
+def cached_ink(ref: str, root: Path = Path(".")) -> dict | None:
+    """This page's stored verdict, or None if it was never asked or has gone stale.
+
+    None rather than the stale record, and that is the whole discipline of the
+    thing: a verdict about a page as it was two saves ago, rendered in the same
+    column as a live one, is exactly the fluent nonsense this project is organised
+    against. Unknown is a state the list can draw; wrong is not.
+    """
+    ref = norm_ref(ref)
+    hit = load_ink_cache(root).get(ref)
+    if hit and hit.get("stamp") == ink_stamp(ref, root):
+        return hit
+    return None
+
+
+def record_ink(ref: str, report: dict, root: Path = Path(".")) -> dict:
+    """Reduce one `validate_page(ink=True)` result to a verdict, and store it.
+
+    The ink pass is ~0.27 s of raster work against ~1 ms for every other check, so
+    a list of 122 pages cannot run it on render. But the editor **already runs it**
+    on every page it opens and every page it saves, and the corpus sweep runs it
+    under `--ink`; the answer is being computed and thrown away. So it is written
+    here instead, and the list is a reader of what keying already produced rather
+    than a job that recomputes it.
+
+    Four states, and the one that must survive the reduction is `ruled` against
+    `clean`: a page whose bands were all excused has to stay distinguishable from
+    one where nothing was ever found, since that difference is the record that
+    `_ink_exempt.json` exists to keep.
+    """
+    ref = norm_ref(ref)
+    if not report.get("ink_checked"):
+        # Not keyed, or ruled not a text page. Uncovered ink is a statement about
+        # nothing here, and caching "clean" would be a claim.
+        rec = {"state": "skip", "bands": 0, "ruled": 0, "stale": 0, "note": ""}
+    else:
+        live = [b for b in report["uncovered"] if not b.get("exempted")]
+        ruled = [b for b in report["uncovered"] if b.get("exempted")]
+        stale = [w for w in report["warnings"]
+                 if w["rule"] == "stale-ink-exemption"]
+        rec = {"state": "ink" if live else ("ruled" if ruled else "clean"),
+               "bands": len(live), "ruled": len(ruled), "stale": len(stale),
+               "note": "; ".join(
+                   [f"y={b['vpos']}..{b['vpos'] + b['height']}" for b in live]
+                   + [f"y={b['vpos']}..{b['vpos'] + b['height']} ruled: {b['note']}"
+                      for b in ruled] + [w["detail"] for w in stale])}
+    rec["stamp"] = ink_stamp(ref, root)
+
+    data = load_ink_cache(root)
+    data[ref] = rec
+    p = zone_dir(root) / INK_CACHE_JSON
+    p.parent.mkdir(parents=True, exist_ok=True)
+    doc = {"_about": ("Derived and disposable: the uncovered-ink verdict for each "
+                      "page, cached because it is the one check that reads the "
+                      "raster. `stamp` is the mtime of the page's ALTO and of "
+                      "_ink_exempt.json; an entry whose stamp no longer matches is "
+                      "unknown, not stale-but-usable. Delete this file freely — "
+                      "keying refills it.")}
+    doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
+    tmp = p.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n",
+                   encoding="utf-8")
+    tmp.replace(p)
+    return dict(rec, ref=ref)
 
 
 def set_ink_exempt(ref: str, regions: list[dict],
@@ -1007,6 +1105,10 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
     dup = sorted(n for n, c in seen.items() if c > 1)
     for ref in (refs if refs is not None else zone_refs(root)):
         r = validate_page(ref, root, cfg, ink=ink)
+        if ink:
+            # A sweep that read 122 rasters and kept nothing would make the page
+            # list ask for the same work again.
+            record_ink(ref, r, root)
         n_err += len(r["errors"])
         n_warn += len(r["warnings"])
         rows.append({

@@ -159,6 +159,82 @@ def test_a_scoped_sweep_reports_unkeyed_pages_as_rows(tmp_path):
     assert len({frozenset(r) for r in rows}) == 1
 
 
+# -------------------------------------------------------------- the list view
+
+def test_the_list_shows_every_page_on_the_itinerary(tmp_path):
+    """Counts never say *which* page, and on a keying sweep that is the whole
+    question — the ref with the error, the ones still to do."""
+    for r in ("1-005", "1-019", "1-020"):
+        make_scan(tmp_path, r)
+    zn.save_zones("1-019", [], tmp_path)
+    h = ui.render_list_html(tmp_path, cfg(), ["1-005", "1-019", "1-020"], "work")
+    for r in ("1-005", "1-019", "1-020"):
+        assert f"/?ref={r}" in h
+    assert "3 pages" in h and "1 keyed" in h and "2 to do" in h
+
+
+def test_the_list_states_each_page(tmp_path):
+    for r in ("1-005", "1-019"):
+        make_scan(tmp_path, r)
+    zn.save_zones("1-019", [], tmp_path)
+    h = ui.render_list_html(tmp_path, cfg(), ["1-005", "1-019"], "work")
+    assert h.count("s-todo") == 2      # the style rule, plus 1-005's row
+    assert h.count("s-ok") == 2        # the style rule, plus 1-019's row
+
+
+def test_the_list_marks_the_page_you_came_from(tmp_path):
+    for r in ("1-005", "1-019"):
+        make_scan(tmp_path, r)
+    h = ui.render_list_html(tmp_path, cfg(), ["1-005", "1-019"], "work",
+                            current="1-019")
+    assert "class='here'" in h
+
+
+def test_the_list_falls_back_to_the_store_with_no_itinerary(tmp_path):
+    make_scan(tmp_path, "1-019")
+    zn.save_zones("1-019", [], tmp_path)
+    h = ui.render_list_html(tmp_path, cfg())
+    assert "1 pages" in h and "/?ref=1-019" in h
+
+
+def test_the_list_shows_the_recorded_ink_verdict(tmp_path):
+    """The check the list most needs is the one it cannot afford to run — so it
+    reads what keying already wrote down."""
+    make_scan(tmp_path, "1-019")
+    zn.save_zones("1-019", [], tmp_path)
+    zn.record_ink("1-019", {"ink_checked": True, "uncovered": [
+        {"vpos": 3400, "height": 60, "exempted": False}], "warnings": []},
+        tmp_path)
+    h = ui.render_list_html(tmp_path, cfg(), ["1-019"], "work")
+    assert "<th>ink</th>" in h
+    assert "data-ref='1-019' data-ink='ink'" in h and "1 band" in h
+
+
+def test_an_unchecked_page_reads_as_unknown_not_clean(tmp_path):
+    """A page nothing has read the raster of is not a clean page, and the column
+    has to say which it is or it is worse than absent."""
+    make_scan(tmp_path, "1-019")
+    zn.save_zones("1-019", [], tmp_path)
+    h = ui.render_list_html(tmp_path, cfg(), ["1-019"], "work")
+    assert "data-ref='1-019' data-ink='unknown'" in h
+    assert "check ink · 1 page" in h      # the explicit, and only, way to run it
+
+
+def test_a_page_still_to_do_is_never_queued_for_a_check(tmp_path):
+    """It has no zones, so there is nothing for ink to be left over from — and a
+    fresh itinerary is nearly all such pages."""
+    make_scan(tmp_path, "1-005")
+    h = ui.render_list_html(tmp_path, cfg(), ["1-005"], "work")
+    assert "data-ref='1-005' data-ink='skip'" in h
+    assert "check ink" not in h
+
+
+def test_the_ink_filter_is_offered(tmp_path):
+    make_scan(tmp_path, "1-005")
+    h = ui.render_list_html(tmp_path, cfg(), ["1-005"], "work")
+    assert "data-ink='ink'>uncovered ink" in h
+
+
 def test_an_unscoped_sweep_still_reports_only_keyed_pages(tmp_path):
     for r in ("1-005", "1-019"):
         make_scan(tmp_path, r)

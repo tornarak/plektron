@@ -63,6 +63,18 @@ def _resolve_column(z: dict, windows: list[dict], tol: float) -> int | None:
     return best if best is not None and best_off <= tol else None
 
 
+def _uncovered(ref: str, root: Path, cfg: dict) -> list[dict]:
+    """The page's uncovered-ink bands, recording the verdict on the way past.
+
+    The raster read is happening anyway — every page the editor opens pays for it.
+    Throwing the answer away and making the page list ask for it again is the only
+    reason that list would ever be slow, so it is written down instead.
+    """
+    r = zn.validate_page(ref, root, cfg, ink=True)
+    zn.record_ink(ref, r, root)
+    return r["uncovered"]
+
+
 def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
                itinerary: list[str] | None = None) -> dict:
     """Everything the editor needs for one page, resolved server-side.
@@ -106,9 +118,9 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         "exempt": zn.load_exempt(root).get(ref, []),
         # Ink no zone accounts for, shown as the page is keyed rather than only
         # after a save. Skipped on a page with no zones, where every mark on the
-        # leaf is uncovered and the answer would be noise.
-        "uncovered": (zn.validate_page(ref, root, cfg, ink=True)["uncovered"]
-                      if zones else []),
+        # leaf is uncovered and the answer would be noise. Recorded on the way past,
+        # so the page list is a reader of work already done rather than a job.
+        "uncovered": _uncovered(ref, root, cfg) if zones else [],
         "ink_exempt": zn.load_ink_exempt(root).get(ref, []),
         "prev": scans[i - 1] if i > 0 else None,
         "next": scans[i + 1] if 0 <= i < len(scans) - 1 else None,
@@ -153,6 +165,7 @@ def save_payload(payload: dict, root: Path, cfg: dict) -> dict:
                         exempt=payload.get("exempt") or [])
     zn.set_ink_exempt(ref, payload.get("ink_exempt") or [], root)
     check = zn.validate_page(ref, root, cfg, ink=True)
+    zn.record_ink(ref, check, root)
     res["errors"] = check["errors"]
     res["warnings"] = check["warnings"]
     res["uncovered"] = check["uncovered"]
@@ -833,6 +846,13 @@ window.addEventListener('keydown', async e => {
       }
       S.dirty = true; S.issues = [];
       break; }
+    case 'page_list':
+      // Save first: the list reports what is on disk, so walking to it with
+      // unsaved work would show this page as it was before the last few zones.
+      if (S.dirty) { try { await save(); } catch (err) {
+        say('not saved: ' + err.message, 'bad'); return; } }
+      location = `/list?ref=${ST.ref}`;
+      return;
     case 'zoom_in': zoom += 1; localStorage.setItem('zonesZoom', zoom); break;
     case 'zoom_out': zoom -= 1; localStorage.setItem('zonesZoom', zoom); break;
     case 'save': try { await save(); } catch (err) { say(err.message, 'bad'); } return;
@@ -891,6 +911,7 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
               "cycle_column": "cycle column", "toggle_split": "train / eval / exempt",
               "toggle_chain": "chain mode", "exempt": "exempt the order warning",
               "ink_exempt": "rule ink under cursor not type",
+              "page_list": "the whole list and its statuses",
               "save": "save", "done": "save and stop server",
               "prev_page": "previous page", "next_page": "next page",
               "nudge_back": "nudge edge up", "nudge_forward": "nudge edge down",
@@ -969,6 +990,266 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
     return "\n".join(h)
 
 
+def ink_state(ref: str, root: Path, cfg: dict, recheck: bool = False) -> dict:
+    """One page's uncovered-ink verdict, from the cache or by reading the raster.
+
+    The cache is the point. This is the one check that opens the page image — ~0.27
+    s against ~1 ms for everything else — but the editor already runs it on every
+    page it opens and every page it saves, so by the time a list of keyed pages is
+    worth looking at, the answers exist. The list reads them; only a page nobody has
+    been through since it changed costs anything, and that one is asked for
+    explicitly.
+    """
+    if not recheck:
+        hit = zn.cached_ink(ref, root)
+        if hit is not None:
+            return dict(hit, ref=norm_ref(ref))
+    return zn.record_ink(ref, zn.validate_page(ref, root, cfg, ink=True), root)
+
+
+def _esc(s: str) -> str:
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;").replace('"', "&quot;"))
+
+
+def _ink_cell(ink: dict) -> str:
+    """The verdict in one cell. `?` is not a failure — it is a page whose zones
+    changed since anything last read its raster, which is exactly what the check
+    button is for."""
+    s = ink["state"]
+    if s == "ink":
+        n = ink.get("bands", 0)
+        txt = f"{n} band" + ("" if n == 1 else "s")
+    elif s == "ruled":
+        txt = f"{ink.get('ruled', 0)} ruled"
+    else:
+        txt = {"clean": "—", "skip": "·", "unknown": "?"}.get(s, s)
+    return txt + (" · stale" if ink.get("stale") else "")
+
+
+LIST_CSS = """
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{position:sticky;top:0;background:var(--bg);text-align:left;font-weight:600;
+   font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);
+   padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:5px 10px;border-bottom:1px solid var(--line)}
+tr:hover td{background:var(--line)}
+tr.here td{background:var(--line);font-weight:600}
+td.ref a{color:var(--fg);text-decoration:none;font-weight:600}
+td.ref a:hover{text-decoration:underline}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;
+     margin-right:7px;vertical-align:-1px}
+.s-todo{background:transparent;border:1px solid var(--dim)}
+.s-ok{background:#3f8f5f}
+.s-warn{background:var(--warn)}
+.s-err{background:var(--err)}
+td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim)}
+td.detail{color:var(--dim);font-size:12px}
+/* `unknown` is its own state and looks like one: a blank cell would read as
+   "clean" where it means "nothing has read this page's raster since it changed". */
+td.ink{font-size:12px;color:var(--dim);white-space:nowrap;cursor:help}
+td.ink[data-ink="ink"]{color:var(--warn);font-weight:600}
+td.ink[data-ink="unknown"]{opacity:.5}
+#inkrun{margin-left:auto}
+/* One bar per zone, in reading order: the page's composition at a glance, which
+   a count cannot give. Hover names the type. */
+.z{display:inline-block;width:7px;height:15px;border-radius:2px;margin-right:2px;
+   vertical-align:-2px;cursor:help}
+#filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{display:flex;align-items:center;gap:6px;padding:2px 9px;border-radius:11px;
+      border:1px solid var(--line);font-size:12px;cursor:pointer;user-select:none}
+.chip:hover{background:var(--line)}
+.chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip i{display:inline-block;width:9px;height:9px;border-radius:2px}
+.chip.on i{outline:1px solid var(--bg)}
+#shown{color:var(--dim);font-size:12px;margin-left:4px}
+#head{position:sticky;top:0;background:var(--bg);padding:14px 16px 10px;
+      border-bottom:1px solid var(--line);z-index:5}
+#head h1{margin:0 0 4px;font-size:15px}
+#head p{margin:0;color:var(--dim);font-size:12px}
+#wrapl{padding:0 16px 40px}
+"""
+
+
+def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
+                     itinerary_name: str = "", current: str = "") -> str:
+    """Every page in the work-list with its status, as one table.
+
+    The counts alone never say *which* page, and a keying sweep is exactly the case
+    where that is the question — the ref with an error, the four still to do. So the
+    same information `harness zones` prints goes on a page the editor can reach in
+    one keystroke and leave in one click.
+
+    Rendered without the raster (`ink=False`), because this is a list of 122 pages
+    and the ink pass is ~0.27 s each — half a minute before anything appeared. The
+    ink column is therefore **read from the cache** every keyed page has already
+    filled in by being opened. That check is the only one that can see a zone that
+    was never drawn, so a list silent about it would be silent about exactly the
+    fault the partition exists to catch — but a page whose verdict is not on hand
+    reads `?`, and going and getting it is a button. Unknown is a state worth
+    drawing; a stale verdict rendered as a live one is not.
+    """
+    by_label = zc.types_by_label(cfg)
+    refs = itinerary if itinerary is not None else zn.zone_refs(root)
+    rows = []
+    n_keyed = n_err = n_warn = 0
+    for ref in refs:
+        r = zn.validate_page(ref, root, cfg, ink=False)
+        keyed = r["keyed"]
+        n_keyed += bool(keyed)
+        n_err += len(r["errors"])
+        n_warn += len(r["warnings"])
+        if not keyed:
+            state = "todo"
+        elif r["errors"]:
+            state = "err"
+        elif r["warnings"]:
+            state = "warn"
+        else:
+            state = "ok"
+        detail = "; ".join(sorted({e["rule"] for e in r["errors"]})) \
+            or "; ".join(sorted({w["rule"] for w in r["warnings"]})) or ""
+        labels = [z["label"] for z in zn.read_zones(ref, root)]
+        # An unkeyed page and one ruled not-a-text-page are settled without asking:
+        # neither can have ink left over, so neither is ever queued for a check.
+        if state == "todo" or r["split"] == "exempt":
+            ink = {"state": "skip"}
+        else:
+            ink = zn.cached_ink(ref, root) or {"state": "unknown"}
+        rows.append((ref, state, r["split"] or "", r["zones"], detail, labels, ink))
+
+    n_ink = sum(1 for r in rows if r[6]["state"] == "ink")
+    n_unknown = sum(1 for r in rows if r[6]["state"] == "unknown")
+
+    h = ["<!doctype html><html><head><meta charset='utf-8'>",
+         f"<title>zones · {itinerary_name or 'store'}</title>",
+         f"<style>{CSS}{LIST_CSS}</style></head><body>"]
+    h.append("<div id='head'>")
+    h.append(f"<h1>{itinerary_name or 'gt/zones'} — {len(rows)} pages</h1>")
+    h.append(f"<p>{n_keyed} keyed · {len(rows) - n_keyed} to do · "
+             f"{n_err} error{'' if n_err == 1 else 's'} · "
+             f"{n_warn} warning{'' if n_warn == 1 else 's'} · "
+             f"<span id='inkprog'>{n_ink} with uncovered ink, {n_unknown} "
+             f"unchecked</span> — press <kbd>Esc</kbd> or click a ref to go back"
+             "<span id='shown'></span></p>")
+    # Filter chips. Types carry their own colour so the strip in each row and the
+    # chip that selects it are recognisably the same thing.
+    h.append("<div id='filters'>")
+    h.append("<span class='chip' data-state='todo'>still to do</span>")
+    h.append("<span class='chip' data-state='err'>has errors</span>")
+    h.append("<span class='chip' data-ink='ink'>uncovered ink</span>")
+    if n_unknown:
+        # Explicit, because it is ~0.27 s a page of raster work and the only slow
+        # thing this list can do. Everything else here is already paid for.
+        h.append(f"<span class='chip' id='inkrun'>check ink · {n_unknown} "
+                 f"page{'' if n_unknown == 1 else 's'}</span>")
+    for t in cfg["types"]:
+        h.append(f"<span class='chip' data-label=\"{t['label']}\">"
+                 f"<i style='background:{t.get('color', '#999')}'></i>"
+                 f"{t.get('name', t['label'])}</span>")
+    h.append("</div></div>")
+
+    h.append("<div id='wrapl'><table><thead><tr>"
+             "<th>page</th><th>status</th><th>split</th><th>zones</th>"
+             "<th>composition</th><th>ink</th><th>findings</th>"
+             "</tr></thead><tbody>")
+    for ref, state, split, nz, detail, labels, ink in rows:
+        here = " class='here'" if ref == current else ""
+        # One bar per zone, in reading order. A count says how many; this says
+        # what kind and in what order, which is what a glance down the list is for.
+        strip = "".join(
+            f"<i class='z' style='background:"
+            f"{by_label.get(l, {}).get('color', '#999')}' title=\""
+            f"{by_label.get(l, {}).get('name', l)}\"></i>" for l in labels)
+        h.append(f"<tr{here} data-state='{state}' data-ink='{ink['state']}' "
+                 f"data-labels=\"{' '.join(sorted(set(labels)))}\">"
+                 f"<td class='ref'><a href='/?ref={ref}'>{ref}</a></td>"
+                 f"<td><i class='dot s-{state}'></i>{state}</td>"
+                 f"<td>{split}</td>"
+                 f"<td class='num'>{nz or ''}</td>"
+                 f"<td>{strip}</td>"
+                 f"<td class='ink' data-ref='{ref}' data-ink='{ink['state']}' "
+                 f"title=\"{_esc(ink.get('note', ''))}\">"
+                 f"{_ink_cell(ink)}</td>"
+                 f"<td class='detail'>{detail}</td></tr>")
+    h.append("</tbody></table></div>")
+    back = f"/?ref={current}" if current else "/"
+    h.append("<script>" + r"""
+const rows = [...document.querySelectorAll('tbody tr')];
+const chips = [...document.querySelectorAll('.chip:not(#inkrun)')];
+const on = new Set();
+
+// Any-of, not all-of: the question a filter answers here is "which pages have a
+// block quote", not "which have every type I clicked". Selecting two widens the
+// set, which is what the chips look like they do.
+function apply() {
+  let shown = 0;
+  for (const tr of rows) {
+    const labels = new Set((tr.dataset.labels || '').split(' ').filter(Boolean));
+    const hit = !on.size || [...on].some(k =>
+      k.startsWith('state:') ? tr.dataset.state === k.slice(6) :
+      k.startsWith('ink:') ? tr.dataset.ink === k.slice(4) : labels.has(k));
+    tr.style.display = hit ? '' : 'none';
+    if (hit) shown++;
+  }
+  document.getElementById('shown').textContent =
+    on.size ? ` · showing ${shown} of ${rows.length}` : '';
+}
+for (const c of chips) {
+  const key = c.dataset.state ? 'state:' + c.dataset.state
+            : c.dataset.ink ? 'ink:' + c.dataset.ink : c.dataset.label;
+  c.addEventListener('click', () => {
+    on.has(key) ? on.delete(key) : on.add(key);
+    c.classList.toggle('on', on.has(key));
+    apply();
+  });
+}
+// The ink pass, on demand and one page at a time. Sequential rather than parallel:
+// it is CPU-bound raster work in the same process that serves the editor, and a
+// burst of it would make the next page open slowly. Only the pages whose verdict
+// is not on hand are asked — everything else was answered when it was keyed.
+const runner = document.getElementById('inkrun');
+const prog = document.getElementById('inkprog');
+if (runner) runner.addEventListener('click', async () => {
+  if (runner.dataset.busy) return;
+  runner.dataset.busy = '1';
+  runner.classList.add('on');
+  const todo = [...document.querySelectorAll("td.ink[data-ink='unknown']")];
+  let done = 0;
+  for (const td of todo) {
+    let r;
+    try {
+      r = await (await fetch('/ink?ref=' + td.dataset.ref)).json();
+    } catch (e) {
+      td.textContent = '!'; td.title = String(e); continue;
+    }
+    td.dataset.ink = r.state;
+    td.parentElement.dataset.ink = r.state;
+    td.textContent = r.state === 'ink' ? r.bands + (r.bands === 1 ? ' band' : ' bands')
+                   : r.state === 'ruled' ? r.ruled + ' ruled'
+                   : ({clean: '—', skip: '·'})[r.state] || r.state;
+    if (r.stale) td.textContent += ' · stale';
+    td.title = r.note || '';
+    runner.textContent = `checking ink · ${++done}/${todo.length}`;
+    apply();
+  }
+  const n = document.querySelectorAll("tr[data-ink='ink']").length;
+  prog.textContent = `${n} with uncovered ink, 0 unchecked`;
+  runner.remove();
+});
+
+addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    // Esc clears a filter first, and only leaves the list once it is unfiltered —
+    // otherwise the one keystroke both discards the filter and the page.
+    if (on.size) { on.clear(); chips.forEach(c => c.classList.remove('on')); apply(); }
+    else location = 'BACKURL';
+  }
+});
+""".replace("BACKURL", back) + "</script></body></html>")
+    return "\n".join(h)
+
+
 # ---------------------------------------------------------------- the server
 
 def serve(ref: str, root: Path = Path("."), port: int = PORT,
@@ -1019,6 +1300,37 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                                str(e).encode("utf-8"))
                     return
                 self._send(200, "text/html; charset=utf-8", body)
+                return
+            if u.path == "/list":
+                q = parse_qs(u.query)
+                cur = (q.get("ref") or [""])[0]
+                try:
+                    body = render_list_html(root, cfg, itinerary, itinerary_name,
+                                            norm_ref(cur) if cur else "")
+                except Exception as e:
+                    self._send(500, "text/plain; charset=utf-8",
+                               str(e).encode("utf-8"))
+                    return
+                self._send(200, "text/html; charset=utf-8", body.encode("utf-8"))
+                return
+            if u.path == "/ink":
+                q = parse_qs(u.query)
+                try:
+                    r = norm_ref((q.get("ref") or [""])[0])
+                except ValueError:
+                    self.send_error(404)
+                    return
+                # One page, the slow way if the cache cannot answer. The list drives
+                # this itself, one call at a time, and only for the pages it drew
+                # as unknown.
+                try:
+                    rec = ink_state(r, root, cfg)
+                except Exception as e:
+                    self._send(500, "application/json",
+                               _json.dumps({"error": str(e)}).encode("utf-8"))
+                    return
+                self._send(200, "application/json",
+                           _json.dumps(rec, ensure_ascii=False).encode("utf-8"))
                 return
             if u.path.startswith("/page/") and u.path.endswith(".png"):
                 # Through norm_ref, so the path cannot name a file outside `scans/`.

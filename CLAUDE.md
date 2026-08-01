@@ -389,6 +389,22 @@ it stop" would otherwise be indistinguishable from a ruling. A matched band stil
 reports, flagged and carrying its note; a region that matches nothing any more
 reports as `stale-ink-exemption`.
 
+**The page list (`l` in the editor) carries the ink verdict, and it is cached rather
+than recomputed.** Every other column costs ~1 ms and is read straight off the files;
+this one opens the raster and costs ~0.27 s, which over a 122-page itinerary is half
+a minute before the table appears. But the editor **already runs the check** on every
+page it opens and every page it saves, and so does `harness zones --ink` — the answer
+was being computed and thrown away. It now lands in `gt/zones/_ink_cache.json`
+(derived, gitignored), stamped with the mtimes of the page's ALTO and of
+`_ink_exempt.json`, the two files that can change it.
+
+Two properties follow, and the second is the point. An entry whose stamp no longer
+matches is **unknown, not stale-but-usable** — a verdict about the page as it was two
+saves ago, drawn in the same column as a live one, is exactly the fluent nonsense
+this project is organised against. And a page nobody has checked reads `?`, never
+blank: blank is indistinguishable from clean. Going and getting the missing ones is
+an explicit button, because it is the only slow thing the list can do.
+
 ## Footnote markers
 
 **The book anchors footnotes with a raised digit; the corpus keys the Unicode
