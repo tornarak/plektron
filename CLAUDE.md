@@ -153,7 +153,10 @@ Layout, all at the repo root:
             fig/ (252 figure ALTOs + METS, geometry only), seg/ (the first
             segmentation attempt, 122 pages, kept read-only), zones/ (the
             current one — seven types, fixed-width bands; 181 pages, 961 zones).
-    tei/    1 page.
+    tei/    1 page, plus corpus-header.xml — the corpus teiHeader, gated by
+            `harness header`. Not a valid TEI document on its own: a bare
+            <teiHeader>, a fragment like the page files, spliced in by an
+            assembly step that does not exist yet.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
             zones_config.json
     review/ one directory per page, PP-NNN/. proposal.json (a reading, not truth)
@@ -563,6 +566,11 @@ if you ever need it.
     uv run harness pages              refs with OCR present
     uv run harness context PP-NNN     the input contract, on stdout
     uv run harness validate PP-NNN    the gate; exit 1 on FAIL
+    uv run harness header             the gate on tei/corpus-header.xml — that the
+                                      ranks it declares are exactly the ones
+                                      validate enforces. Two files hold one fact and
+                                      a page never resolves @resp locally, so
+                                      without this they drift silently. Exit 1 on FAIL
     uv run harness state PP-NNN       one page's seam record
     uv run harness ledger             the whole seam table; --part N to scope,
                                       --untranscribed for bare refs to work on
@@ -1019,9 +1027,39 @@ jumping around gives nulls until gaps fill. Both are fine.
 
 TBD beyond the per-page output contract in `transcriber_harness.md` (`<pb>`
 first, no `<div>`, no `<lb/>`, minimal teiHeader, footnotes anchored at their
-markers, figures anchored to supplied zones). The corpus-level teiHeader,
-assembly, and id-minting scheme are unsettled. No pass to date mints an
-`xml:id` — the continuation and annotation passes will, deterministically.
+markers, figures anchored to supplied zones). **Assembly and the id-minting
+scheme are still unsettled**; the corpus teiHeader is not, and is
+`tei/corpus-header.xml`. No pass to date mints an `xml:id` — the continuation and
+annotation passes will, deterministically.
+
+**The header is a fragment, like the page files.** A bare `<teiHeader>` in the TEI
+namespace, not a valid TEI document standalone — `teiCorpus` requires at least one
+`TEI` child, so there is no conformant container for a header alone and inventing
+one would mean settling the assembly scheme by accident. `harness header` gates it,
+and what it checks is the *correspondence* with `validate.RESP_RANKS` rather than
+the prose: exactly those three ranks, declared as `respStmt/@xml:id`, no more and
+no fewer. Two files held one fact and nothing linked them — per-page validation
+deliberately never resolves `@resp` locally, so either could have been renamed and
+every page would have gone on passing.
+
+**Licence: two, because this is not one work.** The transcribed text is **CC0** —
+a faithful transcription of a 1904 book carries no fresh copyright (EU DSM Art. 14;
+US law has never protected slavish reproduction), so licensing it CC BY would assert
+a right the edition does not hold, which is the provenance overclaim pointed at the
+law instead of at the glyphs. The apparatus — `loi.json`, `toc.json`,
+`authorities.json` and their research, the TEI structure, the adjudications, the
+annotation layer — is original editorial work and is **CC BY 4.0**. Scopes are
+stated on each `<licence>`; where a reuse cannot separate them, treat it as CC BY.
+`harness header` errors on a settled `@status` granting no `<licence>` at all, that
+being the one licence state that reads as finished while saying nothing.
+
+**Bibliographic detail in the header was read off the rasters, and the witnesses
+disagree.** The title page (`1-005`) gives the Jesup series as Volume VII and names
+no Memoirs volume; "Volume XI" comes off the parts' archival sheets and off the AMNH
+catalogue. Both series statements are recorded, since dropping either makes a
+citation in it unresolvable. `@source` in the header points at the catalogue record,
+`@resp` only ever at a model's reading of a raster — the rank machinery is about
+reading pages and says nothing about a catalogue's authority.
 
 ## Annotation passes
 
@@ -1029,12 +1067,17 @@ TBD
 
 ## Open
 
-- **The corpus teiHeader does not exist**, and it is now load-bearing: it is where the
-  three `respStmt` provenance ranks are declared, so every `@resp` in the corpus is a
-  pointer with nothing yet to resolve against. Harmless while pages are validated
-  individually (`validate` deliberately does not check local resolution), and a hard
-  requirement before any assembly step. Ranks are `#ed` / `#llm` / `#htr`, defined in
-  `validate.RESP_RANKS`, which is the operative definition until the header lands.
+- **No part is named by a part title page** — the surrogate has none. Parts II and III
+  are named by librarian typescript over an archival sheet that contradicts itself
+  (typed 1907/1909 against a printed 1904 imprint), and part I only by the AMNH
+  catalogue record, which is its single witness. The catalogue corroborates II and III,
+  so those are settled; part I is not, and a copy with part title pages would beat all
+  of it. See the teiHeader's `listBibl`, where `@source` points at the catalogue and
+  `@resp` is reserved for the model's reading of the rasters.
+- **The AMNH catalogue record independently corroborates two apparatus stores**, having
+  been consulted for neither: `"Authorities quoted": p. 3-9` against
+  `data/authorities.json`'s folios 3–9, and `35 pl.` against `data/loi.json`'s plates
+  I–XXXV. Cheap second witnesses, and both agree.
 - **The ratified build does not exist.** The `--ratified` mode of `validate` reports an
   unratified span as a worklist line, which is the right shape for a page in progress
   but is not a gate: nothing yet *refuses* to publish a `#llm` span. Until it does,

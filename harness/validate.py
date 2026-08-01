@@ -24,8 +24,10 @@ from .state import load_toc
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 TIER1 = {"ckt", "kpy", "ypk"}
-# Provenance ranks, strictly ordered, declared as respStmt/@xml:id in every page's
-# teiHeader (the template in transcriber_harness.md). Rank answers *who read this*,
+# Provenance ranks, strictly ordered, declared as respStmt/@xml:id once in the corpus
+# teiHeader and never in a page file — a page is a fragment and defers. `harness header`
+# (check_corpus_header below) is what holds this dict and that file together; without
+# it the two could drift and every page would go on passing. Rank answers *who read this*,
 # which is a different question from whether the image decided — that one is
 # <unclear>. A confident reading is still only proposed; certainty is not authority.
 RESP_RANKS = {
@@ -81,6 +83,104 @@ class Report:
         # single-quoted dict serves neither.
         out.append("METRICS: " + " ".join(f"{k}={v}" for k, v in self.metrics.items()))
         return "\n".join(out)
+
+
+CORPUS_HEADER = Path("tei") / "corpus-header.xml"
+
+
+def check_corpus_header(root: Path) -> Report:
+    """Gate the corpus teiHeader — the one place the provenance ranks are declared.
+
+    `RESP_RANKS` above is the closed set every page is validated against, and the
+    header is what a `@resp` pointer actually resolves to once a page fragment is
+    assembled. Two files, one fact, and nothing until now held them together: the
+    ranks could be renamed in either place and every page would go on passing,
+    because per-page validation deliberately does not check that `@resp` resolves
+    locally (a page file is a fragment and defers by design).
+
+    So this checks the *correspondence*, not the header's prose: exactly the ranks
+    Python knows about, declared as `respStmt/@xml:id`, no more and no fewer. A
+    rank declared here and absent from `RESP_RANKS` is the worse direction — it is
+    a rank the corpus advertises and the gate would reject on sight.
+    """
+    r = Report()
+    path = root / CORPUS_HEADER
+    if not path.exists():
+        r.errors.append(
+            f"no corpus teiHeader at {CORPUS_HEADER} — every @resp in the corpus "
+            "is a pointer with nothing to resolve against, and no assembly step "
+            "can run")
+        return r
+    try:
+        doc = etree.parse(str(path))
+    except etree.XMLSyntaxError as e:
+        # lxml enforces xml:id uniqueness during parsing, so a duplicated rank
+        # never reaches the checks below — it arrives here instead. Worth naming
+        # separately: a repeated xml:id is not a malformed document, it is two
+        # ranks answering to one @resp, which is the specific failure this gate
+        # exists to catch.
+        if "already defined" in str(e):
+            r.errors.append(
+                f"{CORPUS_HEADER} declares the same xml:id twice — @resp would be "
+                f"ambiguous, and the ranks are what it points at: {e}")
+        else:
+            r.errors.append(f"{CORPUS_HEADER} is not well-formed XML: {e}")
+        return r
+
+    q = lambda t: f"{{{TEI_NS}}}{t}"
+    root_el = doc.getroot()
+    if etree.QName(root_el).localname != "teiHeader":
+        r.errors.append(
+            f"{CORPUS_HEADER} root is <{etree.QName(root_el).localname}>, not "
+            "<teiHeader> — it is a fragment spliced in by assembly, like a page file")
+
+    XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
+    declared = [s.get(XML_ID) for s in root_el.iter(q("respStmt"))]
+    if any(d is None for d in declared):
+        r.errors.append(
+            "a <respStmt> carries no xml:id — a rank nothing can point at")
+        declared = [d for d in declared if d is not None]
+    # No duplicate check here: lxml refuses a repeated xml:id at parse time, so it
+    # is handled above and a check at this point would be dead code reading as live.
+
+    want = {k.lstrip("#") for k in RESP_RANKS}
+    have = set(declared)
+    for missing in sorted(want - have):
+        r.errors.append(
+            f"rank '#{missing}' is in RESP_RANKS but no <respStmt xml:id=\"{missing}\"> "
+            f"declares it — pages may emit it and it would resolve to nothing")
+    for extra in sorted(have - want):
+        r.errors.append(
+            f"<respStmt xml:id=\"{extra}\"> declares a rank RESP_RANKS does not "
+            f"know — validate would reject resp='#{extra}' on every page that used it")
+
+    for name in ("titleStmt", "publicationStmt", "sourceDesc"):
+        if root_el.find(f".//{q(name)}") is None:
+            r.errors.append(
+                f"no <{name}> — page fragments defer to it by name "
+                "(\"see corpus teiHeader\") and would resolve to nothing")
+
+    # Neither branch is an error. The licence is an editorial decision, and a header
+    # that says it is undecided is doing its job; what would be wrong is a plausible
+    # licence nobody chose. But a *settled* status with no <licence> under it is the
+    # worse of the two states and the only one that reads as finished — it asserts
+    # the terms exist while naming none, which is the same shape as an empty zone
+    # page: indistinguishable from done, to anything that does not look inside.
+    avail = root_el.find(f".//{q('availability')}")
+    if avail is not None:
+        status = avail.get("status")
+        if status in (None, "unknown"):
+            r.worklist.append(
+                "publicationStmt/availability is unsettled — the source is public "
+                "domain but this edition's licence has not been chosen")
+        elif avail.find(q("licence")) is None:
+            r.errors.append(
+                f"availability claims status={status!r} but grants no <licence> — "
+                "a settled status with no terms under it reads as decided and says "
+                "nothing")
+
+    r.metrics = {"ranks": len(have), "path": str(CORPUS_HEADER)}
+    return r
 
 
 def _lang_of(el, default="en") -> str:

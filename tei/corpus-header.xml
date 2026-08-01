@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The corpus teiHeader.
+
+  Every page file in tei/ is a *fragment*: its own teiHeader defers title,
+  publication and source to this one, and declares no respStmt at all. This is
+  where those deferrals resolve, and it is the only place the three provenance
+  ranks are declared. `@resp` in a page file is a pointer with nothing to resolve
+  against until this document is spliced in by the assembly step.
+
+  Not itself a valid TEI document — a bare <teiHeader> in the TEI namespace, for
+  the same reason the page files are fragments. `teiCorpus` requires at least one
+  `TEI` child, so there is no conformant standalone container for a header alone,
+  and pretending otherwise would mean inventing an assembly scheme that has not
+  been settled. See CLAUDE.md, "Open".
+
+  Bibliographic detail here is read off the rasters, not recalled. The witnesses
+  and their disagreements are recorded in the notes below; nothing is adjudicated
+  that the book does not adjudicate itself.
+-->
+<teiHeader xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+  <fileDesc>
+
+    <titleStmt>
+      <title type="main">The Chukchee</title>
+      <title type="sub">an annotated digital edition</title>
+      <author>
+        <persName>
+          <forename>Waldemar</forename>
+          <surname>Bogoras</surname>
+        </persName>
+      </author>
+      <editor role="series">
+        <persName>
+          <forename>Franz</forename>
+          <surname>Boas</surname>
+        </persName>
+      </editor>
+
+      <!--
+        The provenance ranks. Strictly ordered: #htr < #llm < #ed. Rank answers
+        *who read this*, which is a different question from whether the letterform
+        decided — that one is <unclear>. A confident reading is still only
+        proposed; certainty is not authority.
+
+        These xml:ids are the referents of every @resp in the corpus, and the set
+        is closed: harness/validate.py's RESP_RANKS is the same three, and it
+        rejects a fourth. Rank rises only by a human act, so no pass may promote
+        a span it did not itself ratify — the collation pass may emit #llm and
+        nothing else.
+
+        #ed carries no personal name yet. Left open deliberately rather than
+        filled with a plausible one; it wants the editor's own decision.
+      -->
+      <respStmt xml:id="ed">
+        <resp>ratified — keyed, or confirmed against the page, by a human editor</resp>
+        <name type="role">human editor</name>
+      </respStmt>
+      <respStmt xml:id="llm">
+        <resp>proposed — read off the page image by a language model. Carries no
+          authority over glyph identity; a reading awaiting ratification.</resp>
+        <name type="role">language model, collation pass</name>
+      </respStmt>
+      <respStmt xml:id="htr">
+        <resp>unexamined — handwritten-text-recognition output nobody has looked at</resp>
+        <name type="role">recognizer</name>
+      </respStmt>
+    </titleStmt>
+
+    <publicationStmt>
+      <!--
+        Two licences, because this is not one work.
+
+        The page transcriptions reproduce a book published 1904-1909 whose term
+        has long expired, and a faithful transcription of a public-domain text
+        attracts no fresh copyright of its own — that is the substance of the EU
+        DSM Directive's Article 14 on reproductions of public-domain material, and
+        US law has never protected slavish reproduction either. Licensing them CC
+        BY would assert a right this edition does not hold, which is the same
+        overclaim the provenance ranks exist to prevent, pointed at the law
+        instead of at the glyphs. So: CC0, which asserts nothing.
+
+        The apparatus is a different matter and plainly original — the located
+        copies in authorities.json, the List of Illustrations reconciliation, the
+        adjudicated readings, the TEI structure, the annotation layer to come.
+        That is editorial work, and CC BY 4.0 asks only for attribution.
+
+        Scope is stated on each licence rather than left to be inferred, since the
+        two live in the same files and a reuser has to be able to tell which
+        covers what.
+      -->
+      <authority>(no distribution venue settled)</authority>
+      <availability status="free">
+        <licence target="https://creativecommons.org/publicdomain/zero/1.0/">
+          <p>CC0 1.0 Universal. Applies to the transcribed text of the source: the
+            contents of <gi>p</gi>, <gi>note</gi>, <gi>foreign</gi> and other
+            text-bearing elements in the page files, and the caption readings in
+            data/readings.md. The underlying work is in the public domain and this
+            edition asserts no new right over its reproduction.</p>
+        </licence>
+        <licence target="https://creativecommons.org/licenses/by/4.0/">
+          <p>Creative Commons Attribution 4.0 International. Applies to the
+            editorial apparatus: the TEI encoding and structural decisions, the
+            provenance and adjudication notes, data/loi.json, data/toc.json,
+            data/authorities.json and their research, the indices, and the
+            annotation layer.</p>
+        </licence>
+        <p>The two are separable in principle and interleaved in practice. Where a
+          reuse cannot separate them, treat it as CC BY: attribution costs the
+          reuser nothing the CC0 grant was meant to save them.</p>
+      </availability>
+    </publicationStmt>
+
+    <sourceDesc>
+
+      <!--
+        The volume, as its own title page sets it (scan 1-005).
+
+        Two series statements, both correct and neither derivable from the other:
+        the Jesup North Pacific Expedition numbers this volume VII, the Memoirs of
+        the American Museum of Natural History number it XI. Only the first is on
+        the title page; the second is witnessed by the archival sheets described
+        below. Recording one and dropping the other would make a citation in
+        either series unresolvable.
+
+        The title page dates the whole 1904-1909 and names no single year.
+      -->
+      <biblStruct>
+        <monogr>
+          <title level="m">The Chukchee</title>
+          <author>
+            <persName>
+              <forename>Waldemar</forename>
+              <surname>Bogoras</surname>
+            </persName>
+          </author>
+          <editor role="series">
+            <persName>
+              <forename>Franz</forename>
+              <surname>Boas</surname>
+            </persName>
+          </editor>
+          <imprint>
+            <pubPlace>Leiden</pubPlace>
+            <publisher>E. J. Brill Ltd, Printers &amp; Publishers</publisher>
+            <pubPlace>New York</pubPlace>
+            <publisher>G. E. Stechert, American Agents</publisher>
+            <date from="1904" to="1909">1904-1909</date>
+          </imprint>
+        </monogr>
+        <series>
+          <title level="s">The Jesup North Pacific Expedition</title>
+          <biblScope unit="volume" n="7">Volume VII</biblScope>
+        </series>
+        <series>
+          <title level="s">Memoir of the American Museum of Natural History</title>
+          <biblScope unit="volume" n="11">Volume XI</biblScope>
+          <note source="#amnh-dl">The title page (scan 1-005) sets "Memoir of the
+            American Museum of Natural History / New York" above "Volume VII",
+            with no Memoirs volume number anywhere on it. "Volume XI" is read off
+            the archival cover sheets of parts 2 and 3 (scans 2-001, 3-001), which
+            reproduce the Memoirs series title page — a degraded photocopy, so a
+            weak witness on its own. The AMNH catalogue record independently gives
+            both statements ("Memoirs of the AMNH ; v. 11; Publications of the
+            Jesup North Pacific Expedition ; v. 7"), which is why both are here
+            rather than only the one the title page carries.</note>
+        </series>
+      </biblStruct>
+
+      <!--
+        The three parts, and the witness problem behind them.
+
+        None of the three is named by a part title page, because the surrogate has
+        none. Part 1's PDF opens with the book's own front matter (1-003
+        half-title, 1-005 title page), which names the volume and not the part.
+        Parts 2 and 3 open instead with an *archival cover sheet*: a heavily
+        degraded photocopy of the Memoirs Volume XI title page, dated 1904 in its
+        printed imprint, with the part designation and year added later in
+        typescript — so that sheet contradicts itself, and it is a librarian's
+        typewriter rather than the book. It also sets "Chuckchee" where the title
+        page sets "Chukchee".
+
+        The AMNH catalogue record is the second witness, and it is what makes
+        these entries recordable at all, its description note reading (with the
+        catalogue's own double-hyphen separators respelled, since an XML comment
+        may not contain them): "pt. 1. Material culture. 1904 / pt. 2. Religion.
+        1907 / pt. 3. Social organization. 1909." For parts 2 and 3 it
+        agrees with the typescript against the sheet's own 1904 imprint, which
+        settles that reading. For part 1 it is the *only* witness in this corpus.
+
+        Both are external to the print. `@source` therefore points at the
+        catalogue, and `@resp` is used only where a model read a raster — the rank
+        machinery is about reading pages and says nothing about a catalogue's
+        authority. Neither is print evidence, and a part title page would beat
+        both.
+
+        Scan ranges are repo facts and carry no rank.
+      -->
+      <listBibl type="parts">
+        <bibl n="1">
+          <biblScope unit="part" n="1">Part I</biblScope>
+          <title level="a" source="#amnh-dl">Material culture</title>
+          <date source="#amnh-dl" when="1904">1904</date>
+          <extent>scans 1-001 to 1-362</extent>
+          <note>No archival sheet and no part title page in the surrogate; the
+            volume front matter stands in its place. Single-witness: the catalogue
+            record alone, with nothing in the scans to corroborate it.</note>
+        </bibl>
+        <bibl n="2">
+          <biblScope unit="part" n="2">Part II</biblScope>
+          <title level="a" source="#amnh-dl" resp="#llm">Religion</title>
+          <date source="#amnh-dl" resp="#llm" when="1907">1907</date>
+          <extent>scans 2-001 to 2-268</extent>
+          <note resp="#llm">Typescript on the archival sheet (scan 2-001) reads
+            "Part II. — The Chuckchee - Religion by W. Bogoras 1907"; the printed
+            imprint on the same sheet reads 1904. The catalogue agrees with the
+            typescript, so the 1904 on that sheet is the volume's date carried by
+            the reused title page and not this part's.</note>
+        </bibl>
+        <bibl n="3">
+          <biblScope unit="part" n="3">Part III</biblScope>
+          <title level="a" source="#amnh-dl" resp="#llm">Social organization</title>
+          <date source="#amnh-dl" resp="#llm" when="1909">1909</date>
+          <extent>scans 3-001 to 3-202</extent>
+          <note resp="#llm">Typescript on the archival sheet (scan 3-001) reads
+            "Part III. — The Chuckchee - Social Organization by W. Bogoras 1909";
+            the printed imprint on the same sheet reads 1904. Same two-witness
+            agreement as part II.</note>
+        </bibl>
+      </listBibl>
+
+      <!--
+        The digital surrogate everything here was actually read from. Distinct
+        from the print above, because the two are distinct objects and the
+        archival sheets belong to this one, not to the book.
+      -->
+      <bibl type="surrogate" xml:id="amnh-dl">
+        <title>The Chukchee. Memoirs of the AMNH ; v. 11; Publications of the
+          Jesup North Pacific Expedition ; v. 7.</title>
+        <author>Bogoras, Waldemar, 1865-1936.</author>
+        <publisher>Leiden, E.J. Brill ltd.; New York, G.E. Stechert</publisher>
+        <date when="1904">1904</date>
+        <extent>3 v. : illus., 35 pl., fold. map. 36 cm.</extent>
+        <idno type="handle">http://hdl.handle.net/2246/5745</idno>
+        <ref target="https://digitallibrary.amnh.org/items/91a87fd0-5989-4f79-b2ff-a939ef5533aa"
+             >AMNH Digital Library item</ref>
+        <idno type="local">M11Pt01</idno>
+        <idno type="local">M11Pt02</idno>
+        <idno type="local">M11Pt03</idno>
+        <note>One catalogue record, three PDF bitstreams — the parts are not
+          separately catalogued, which is why part designations have to come from
+          this record's description note rather than from a per-part entry.</note>
+        <note>The record corroborates two apparatus stores independently of the
+          pages they were read from: "Authorities quoted": p. 3-9 against
+          data/authorities.json's folios 3-9, and "35 pl." against data/loi.json's
+          plates I-XXXV. Neither was consulted when those files were built.</note>
+        <note>832 pages. Each PDF carries a bitonal JBIG2 text master at
+          approximately 300 dpi; figure photographs are separate embedded JPEGs at
+          150 dpi and gain nothing from re-rendering. Rasters in scans/ are exactly
+          `pdftoppm -r 300` over these files and are derived, not source.</note>
+        <note>The record carries no rights statement, so it settles nothing about
+          this edition's licence. The 1904 date on it is the volume's, not any
+          part's.</note>
+      </bibl>
+
+    </sourceDesc>
+  </fileDesc>
+
+  <encodingDesc>
+
+    <projectDesc>
+      <p>A proof of concept for an open ethnographic-atlas effort: web and epub
+        editions of public-domain ethnographies with annotated entities, indices
+        for toponyms, species and transcribed forms, and linkage to D-PLACE.</p>
+      <p>The failure mode this edition is organised against is fluent nonsense —
+        plausible output carrying no error signal. Hence mechanical, auditable
+        rules over judgement; "unresolved" in preference to a confident guess; and
+        two independent witnesses to one confident one wherever a second is
+        cheap.</p>
+    </projectDesc>
+
+    <editorialDecl>
+      <normalization method="markup">
+        <p>Unicode Normalization Form D (NFD), corpus-wide. Never NFKC: it has
+          compatibility decompositions for two inventory glyphs and destroys them
+          (U+1D4B to U+025B; U+02D9 to space plus combining dot).</p>
+        <p>Runs of two or more spaces are collapsed, and space before a semicolon,
+          colon or comma is stripped. Neither is a judgement call; both are
+          enforced rather than reported.</p>
+      </normalization>
+      <correction>
+        <p>Misspellings and orthographic errors in English, Russian and other
+          European languages are corrected silently, and hyphenated words broken
+          across lines are joined. Pre-1918 Russian orthography is not a
+          misspelling and is not touched, nor are the source's own errors, which
+          are recorded as printed and adjudicated in a note.</p>
+        <p>Forms in Chukchi, Koryak and Yupik are <emph>never</emph> corrected,
+          normalized or emended. They are keyed character by character from the
+          page, every mark read and accounted for; where the letterform does not
+          decide, <gi>unclear</gi> says so. Hyphens are load-bearing in Americanist
+          notation and are not joined.</p>
+      </correction>
+      <interpretation>
+        <p>The character inventory, the mark-base licensing rules and the
+          lookalike register are specified in keying_spec.md. The per-element
+          output contract for the collation pass is in transcriber_harness.md. The
+          evidence behind the inventory — aligned pairs, flag register, per-glyph
+          attestation — is in concordance.md.</p>
+      </interpretation>
+    </editorialDecl>
+
+    <appInfo>
+      <!--
+        Software that produced or gates corpus content. The specific model behind
+        a #llm span is deliberately not encoded in the rank: the rank is a closed
+        set of three and answers "how far has this been checked", not "which
+        version of what read it". Model identity belongs in revisionDesc.
+      -->
+      <application ident="kraken" version="7.0.3">
+        <label>kraken</label>
+        <desc>Layout segmentation and text recognition. Produces ALTO in
+          gt/ and ocr/; all such output is rank #htr until a human reaches it.</desc>
+      </application>
+      <application ident="catmus-print" version="stock">
+        <label>CATMuS print</label>
+        <desc>Recognition model. Measured against human-collated text it reads
+          approximately 91% of ASCII and <emph>0%</emph> of the Americanist
+          inventory, so it is a witness to line geometry and to English and to
+          nothing else.</desc>
+      </application>
+      <application ident="harness" version="0">
+        <label>harness</label>
+        <desc>The project toolchain. `harness validate` is the gate on page files;
+          `harness normalize` is the gate on encoding.</desc>
+      </application>
+    </appInfo>
+
+  </encodingDesc>
+
+  <profileDesc>
+    <langUsage>
+      <!--
+        The three Tier-1 languages are what @resp is for: a query over the corpus
+        for a Tier-1 xml:lang not at #ed returns exactly the forms awaiting a
+        human. English and Russian carry no such requirement.
+      -->
+      <language ident="en" usage="90">English — the text as printed, curly quotes
+        included.</language>
+      <language ident="ru">Russian, largely in pre-1918 orthography.</language>
+      <language ident="ckt">Chukchi. Tier-1: keyed character by character, never
+        normalized, always carrying a rank in @resp.</language>
+      <language ident="kpy">Koryak. Tier-1, as above.</language>
+      <language ident="ypk">Yupik (the book's "Eskimo"). Tier-1, as above.</language>
+      <language ident="la">Latin, in binomials.</language>
+      <language ident="de">German, in quoted titles and citations.</language>
+      <language ident="fr">French, in quoted titles and citations.</language>
+      <language ident="sv">Swedish, in quoted titles and citations.</language>
+    </langUsage>
+  </profileDesc>
+
+  <revisionDesc>
+    <change when="2026-07-31" who="#ed">Corpus header written. Bibliographic detail
+      read off scans 1-003, 1-005, 2-001 and 3-001; the parts' designations and
+      years recorded at #llm because their only witness is librarian typescript
+      over a contradicting imprint.</change>
+  </revisionDesc>
+
+</teiHeader>

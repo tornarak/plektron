@@ -69,7 +69,7 @@ from .review import (group_spans, page_spans, render_queue_html, restore, serve,
                      summary)
 from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
-from .validate import validate
+from .validate import validate, check_corpus_header
 
 
 def main(argv=None):
@@ -126,6 +126,13 @@ def main(argv=None):
                            help="expect human-ratified provenance (resp='#ed') on "
                                 "Tier-1 spans instead of the collation pass's "
                                 "'#llm'; a remaining '#llm' becomes a worklist line")
+
+    add("header", help="the gate on the corpus teiHeader — that it exists, and "
+                       "that the provenance ranks it declares are exactly the ones "
+                       "validate enforces on every page. Two files hold one fact; "
+                       "without this they can drift apart silently, because a page "
+                       "is a fragment and never resolves @resp locally. Exit 1 on "
+                       "FAIL")
 
     add("pages", help="every ref with OCR present, i.e. workable now. Sparse by "
                       "construction — a pilot selection scattered through the "
@@ -500,6 +507,14 @@ def main(argv=None):
             # The gate's default face is the rendered report — it is read by a
             # human deciding whether to commit. --json is for anything that
             # needs the verdict as data; the exit code is the contract either way.
+            if getattr(a, "json", False):
+                out({"ok": rep.ok, "errors": rep.errors, "warnings": rep.warnings,
+                     "worklist": rep.worklist, "metrics": rep.metrics})
+            else:
+                print(rep.render())
+            return 0 if rep.ok else 1
+        if a.cmd == "header":
+            rep = check_corpus_header(a.root)
             if getattr(a, "json", False):
                 out({"ok": rep.ok, "errors": rep.errors, "warnings": rep.warnings,
                      "worklist": rep.worklist, "metrics": rep.metrics})
