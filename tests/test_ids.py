@@ -275,6 +275,53 @@ def test_a_supplied_gloss_with_a_rank_passes(tmp_path):
     assert not gate(tmp_path, "1-100").errors
 
 
+# ------------------------------------------------------------ the glossary
+
+def glossed(tmp_path, ref="1-100", extra=""):
+    page(tmp_path, ref,
+         '<pb n="1"/><list><item n="1">'
+         '<term xml:id="term-1-100-1" xml:lang="ckt" resp="#llm">a</term>'
+         f' (<gloss target="#term-1-100-1">“g”{extra}</gloss>).</item></list>')
+
+
+def test_the_glossary_resolves_a_pair(tmp_path):
+    glossed(tmp_path)
+    got = ids.glossary(tmp_path)
+    assert got["pairs"] == [{"term": "a", "lang": "ckt", "gloss": "“g”",
+                             "supplied": False, "ref": "1-100"}]
+
+
+def test_a_gloss_is_read_through_its_trailing_text(tmp_path):
+    """Every <gloss> in a gloss list is followed by `).`, so serializing with the
+    tail attached and re-parsing fails as "extra content" — the normal case on a
+    real page and the absent one in a hand-written fixture, which is how it
+    reached the live corpus with the tests green."""
+    glossed(tmp_path)
+    assert ids.glossary(tmp_path)["pairs"][0]["gloss"] == "“g”"
+
+
+def test_a_footnote_inside_a_gloss_is_not_the_definition(tmp_path):
+    """1-100 anchors a note inside the gloss for Ilhɪ-lileˊ. Read naively, the
+    whole note on albino reindeer becomes the dictionary entry."""
+    glossed(tmp_path, extra='<note n="1" place="bottom">Albinos have pink '
+                            'eyes.</note>')
+    assert ids.glossary(tmp_path)["pairs"][0]["gloss"] == "“g”"
+
+
+def test_text_after_a_note_survives(tmp_path):
+    glossed(tmp_path, extra='<note n="1" place="bottom">N.</note> and more')
+    assert ids.glossary(tmp_path)["pairs"][0]["gloss"] == "“g” and more"
+
+
+def test_the_glossary_never_pairs_by_containment(tmp_path):
+    """Falling back to containment would re-introduce the inference `--pair`
+    refuses, silently, in a report someone would read as the dictionary."""
+    page(tmp_path, "1-100",
+         '<pb n="1"/><list><item n="1"><term>a</term><gloss>g</gloss></item></list>')
+    got = ids.glossary(tmp_path)
+    assert got["pairs"] == [] and got["unlinked_terms"] == 1
+
+
 def test_an_undeclared_gloss_type_is_refused(tmp_path):
     page(tmp_path, "1-100",
          '<pb n="1"/><list><item><term xml:id="term-1-100-1">a</term>'

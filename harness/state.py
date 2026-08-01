@@ -271,7 +271,15 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
             tree = etree.parse(str(p))
         except (etree.XMLSyntaxError, OSError):
             continue
-        for el in tree.iter(f"{{{TEI_NS}}}foreign"):
+        # <term> as well as <foreign>. A gloss list's headwords are Tier-1 by the
+        # same rule and are worth seeing keyed two ways for the same reason;
+        # reading only <foreign> made every term on a neighbouring page invisible
+        # here, which is most of what a page like 1-100 contains.
+        from .ids import page_glossary
+        glosses = {g["term"]: g["gloss"] for g in
+                   page_glossary(tree.getroot(), nref)["pairs"]}
+        for el in list(tree.iter(f"{{{TEI_NS}}}foreign")) + \
+                  list(tree.iter(f"{{{TEI_NS}}}term")):
             term = " ".join("".join(el.itertext()).split())
             lang = el.get("{http://www.w3.org/XML/1998/namespace}lang") or ""
             # Dedup on the normalized form, emit the term verbatim. Two spellings
@@ -283,7 +291,12 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
             if not term or key in seen:
                 continue
             seen.add(key)
-            out.append({"term": term, "lang": lang, "ref": nref})
+            # The gloss where the page linked one. Still read-only reference: it
+            # says what the neighbour's editor understood the form to mean, which
+            # is exactly the context that makes a variant spelling worth a second
+            # look — and exactly as unlicensed to copy from as the term itself.
+            out.append({"term": term, "lang": lang,
+                        "gloss": glosses.get(term, ""), "ref": nref})
     return out
 
 

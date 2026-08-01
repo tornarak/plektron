@@ -614,7 +614,11 @@ if you ever need it.
     uv run harness lexicon            frequent lexicon misses, to whitelist;
                                       --native --marks --suffixes --digraphs
                                       invert it into corpus-frequency reports
-                                      over restored ground truth
+                                      over restored ground truth; --glosses is
+                                      the term↔gloss dictionary from committed
+                                      TEI, resolved through @target and never
+                                      through containment — terms nobody linked
+                                      are a count, not a guess
     uv run harness lines PP-NNN       per-line id + geometry + text, **reading
                                       order**, empties kept; --crops and --sheets
                                       write PNGs and labelled contact sheets into

@@ -128,27 +128,14 @@ TAIL_CHARS = 600
 
 
 def _running_text(el) -> str:
-    """The element's text with <note> subtrees removed.
+    """The element's text with `<note>` subtrees removed — see `ids.text_of`.
 
     A footnote is anchored inside the running text but is not part of it, so
-    including it would put the note's last sentence at the end of the tail and
+    leaving it in would put the note's last sentence at the end of the tail and
     make `ends_sentence` describe the wrong thing entirely.
     """
-    copy = etree.fromstring(etree.tostring(el))
-    for note in list(copy.iter(_q("note"))):
-        parent = note.getparent()
-        # lxml's remove() takes the element's tail with it, and a note is anchored
-        # mid-paragraph far more often than at the end — dropping the tail would
-        # silently truncate the paragraph at the marker, so the reported tail and
-        # `ends_sentence` would both describe a sentence that is not the last one.
-        if note.tail:
-            prev = note.getprevious()
-            if prev is not None:
-                prev.tail = (prev.tail or "") + note.tail
-            else:
-                parent.text = (parent.text or "") + note.tail
-        parent.remove(note)
-    return " ".join("".join(copy.itertext()).split())
+    from .ids import text_of
+    return text_of(el)
 
 
 def _ser(el) -> str:

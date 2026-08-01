@@ -71,7 +71,7 @@ from .state import (build_ledger, entry_state, ledger_rows, load_toc,
                     toc_window, toc_search, WINDOW)
 from .validate import validate, check_corpus_header
 from .seam import set_seam
-from .ids import fix_page as fix_ids, pair_glosses
+from .ids import fix_page as fix_ids, glossary, pair_glosses
 
 
 def main(argv=None):
@@ -498,6 +498,12 @@ def main(argv=None):
                         "--marks gives the bare-vs-marked frequency per base "
                         "letter over the same corpus; --suffixes and --digraphs "
                         "mine the same corpus for common affixes and n-grams")
+    lx.add_argument("--glosses", action="store_true",
+                    help="the corpus's term↔gloss pairs from committed TEI — the "
+                         "dictionary the <gloss target> links make queryable. "
+                         "Pairs come from @target and never from containment, so "
+                         "terms nobody has linked are reported as a count rather "
+                         "than guessed at")
     lx.add_argument("--native", action="store_true",
                     help="invert: most frequent native (Tier-1) word forms in "
                          "restored gt/ocr/, not English-lexicon misses")
@@ -619,6 +625,8 @@ def main(argv=None):
                 out(suffix_frequency(a.root))
             elif a.digraphs:
                 out(digraph_frequency(a.root))
+            elif a.glosses:
+                out(glossary(a.root))
             elif a.native:
                 out(suggest_native_forms(a.root))
             else:

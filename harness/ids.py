@@ -148,6 +148,95 @@ def renumber(root_el, ref: str) -> dict:
     return moves
 
 
+def text_of(el) -> str:
+    """The element's running text, with `<note>` subtrees removed.
+
+    A footnote is anchored *inside* the text it belongs to but is not part of it,
+    so a bare `itertext()` walks into it: `1-100`'s `<gloss>` for `Ilhɪ-lileˊ`
+    came back as `“white-eyed” [albino]` followed by the whole note on albino
+    reindeer, which in a glossary reads as the definition.
+
+    Removing the element is not enough — lxml's `remove()` takes its `.tail` with
+    it, and a note is anchored mid-text far more often than at the end, so the
+    naive version silently truncates everything after the marker. Both halves of
+    this were learned once already, on `seam.tail`, which is why there is one
+    implementation and two callers.
+    """
+    # with_tail=False, or the serialization carries the text *following* the
+    # element and re-parsing it fails as "extra content at the end of the
+    # document". Every <gloss> in a gloss list is followed by `).`, so this is the
+    # normal case on a real page and the absent one in a hand-written fixture.
+    copy = etree.fromstring(etree.tostring(el, with_tail=False))
+    for note in list(copy.iter(f"{{{TEI_NS}}}note")):
+        parent = note.getparent()
+        if note.tail:
+            prev = note.getprevious()
+            if prev is not None:
+                prev.tail = (prev.tail or "") + note.tail
+            else:
+                parent.text = (parent.text or "") + note.tail
+        parent.remove(note)
+    return " ".join("".join(copy.itertext()).split())
+
+
+def page_glossary(root_el, ref: str) -> dict:
+    """Resolved term↔gloss pairs on one page, plus what is *not* resolved.
+
+    Pairs come from `@target` and from nothing else. Falling back to containment
+    here would re-introduce the inference `pair_glosses` refuses — and worse,
+    silently, in a report someone would read as the corpus's dictionary.
+
+    So unlinked terms are counted rather than guessed at. A page collated before
+    the scheme, or an item whose pairing a human has not written yet, shows up as
+    a number instead of vanishing: the gap in the dictionary is visible in the
+    dictionary, which is the only place anyone would look for it.
+    """
+    by_id = ids_in(root_el)
+    linked, seen_terms = [], set()
+    for gl in root_el.iter(f"{{{TEI_NS}}}gloss"):
+        target = (gl.get("target") or "").lstrip("#")
+        term = by_id.get(target)
+        if term is None or localname(term) != "term":
+            continue
+        seen_terms.add(target)
+        linked.append({
+            "term": text_of(term),
+            "lang": term.get("{http://www.w3.org/XML/1998/namespace}lang") or "",
+            "gloss": text_of(gl),
+            "supplied": gl.get("type") == "supplied",
+            "ref": norm_ref(ref),
+        })
+    unlinked = sum(1 for t in root_el.iter(f"{{{TEI_NS}}}term")
+                   if t.get(XML_ID) not in seen_terms)
+    return {"pairs": linked, "unlinked_terms": unlinked}
+
+
+def glossary(root: Path = Path(".")) -> dict:
+    """Every resolved term↔gloss pair in the committed TEI, corpus-wide."""
+    from .context import all_refs, norm_ref as _n
+    from .seam import tei_path
+
+    pairs, unlinked, pages = [], 0, 0
+    for p in sorted((root / "tei").glob("chukchi-*.xml")):
+        try:
+            ref = _n(p.stem)
+        except ValueError:
+            continue
+        try:
+            tree = etree.parse(str(p))
+        except (etree.XMLSyntaxError, OSError):
+            continue
+        got = page_glossary(tree.getroot(), ref)
+        pairs += got["pairs"]
+        unlinked += got["unlinked_terms"]
+        pages += 1
+    return {"pages": pages, "pairs": pairs,
+            # Not a defect on its own — a page may simply carry no gloss list —
+            # but a rising count means terms are being written without their
+            # glosses being linked, which is invisible in any per-page view.
+            "unlinked_terms": unlinked}
+
+
 def pair_glosses(ref: str, root: Path = Path("."), commit: bool = False) -> dict:
     """Link each `<gloss>` to the `<term>` it glosses, where containment decides.
 

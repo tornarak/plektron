@@ -327,6 +327,32 @@ def test_prev_next_in_the_middle_of_a_page_is_refused(tmp_path):
                for e in gate(tmp_path, "1-010").errors)
 
 
+def test_a_neighbours_gloss_travels_with_its_term(tmp_path):
+    """`foreign_terms_nearby` read only <foreign>, so every headword in a
+    neighbouring gloss list was invisible to it — which is most of what a page
+    like 1-100 contains. Still read-only reference: the gloss says what the
+    neighbour's editor understood the form to mean, which is what makes a variant
+    spelling worth a second look, and is exactly as unlicensed to copy as the term."""
+    from harness.state import foreign_terms_nearby
+    scans(tmp_path, "1-010", "1-011")
+    page(tmp_path, "1-010",
+         '<pb n="1"/><list><item n="1">'
+         '<term xml:id="term-1-010-1" xml:lang="ckt" resp="#llm">qoˊra</term>'
+         ' (<gloss target="#term-1-010-1">“reindeer”</gloss>).</item></list>')
+    got = foreign_terms_nearby("1-011", tmp_path)
+    assert got == [{"term": "qoˊra", "lang": "ckt", "gloss": "“reindeer”",
+                    "ref": "1-010"}]
+
+
+def test_an_unglossed_foreign_span_still_appears(tmp_path):
+    """One fixed key set across the list, or TOON degrades to the nested form."""
+    from harness.state import foreign_terms_nearby
+    scans(tmp_path, "1-010", "1-011")
+    page(tmp_path, "1-010",
+         '<pb n="1"/><p><foreign xml:lang="ckt" resp="#llm">qoˊra</foreign></p>')
+    assert foreign_terms_nearby("1-011", tmp_path)[0]["gloss"] == ""
+
+
 # ------------------------------------------------- the ledger's boundary column
 
 def scans(tmp_path: Path, *refs):
