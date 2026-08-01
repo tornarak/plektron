@@ -303,7 +303,8 @@
       <interpretation>
         <p>The character inventory, the mark-base licensing rules and the
           lookalike register are specified in keying_spec.md. The per-element
-          output contract for the collation pass is in transcriber_harness.md. The
+          output contract for the collation pass is in
+          .claude/skills/transcribe-page/SKILL.md. The
           evidence behind the inventory — aligned pairs, flag register, per-glyph
           attestation — is in concordance.md.</p>
       </interpretation>

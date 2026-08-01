@@ -40,7 +40,7 @@ the canonicity of whatever `ocr/` happened to hold, and so was **unsatisfiable**
 real recognizer output (CATMuS emits 0% of the inventory, so every correct TEI failed)
 and a **tautology** over a model's own reading, comparing a file against its own source
 and rendering the result as a verified PASS. Removed from `validate.py`,
-`transcriber_harness.md` and the skill; the comment at the old check's site records why.
+`validate.py` and the collation skill; the comment at the old check's site records why.
 
 That tautology is a live hazard, not a closed one, and it recurs wherever a check's
 two inputs can turn out to be the same file. `harness review`'s span diff now refuses
@@ -168,7 +168,7 @@ Layout, all at the repo root:
             are kept, and those live in models/.
     scans-w-figs/  scans-w-ocr/   symlinks into scans/. Derived, and ignored:
             they point *into* an ignored tree, so a clone gets dangling links.
-    harness/  tools/  tests/  concordance.md  keying_spec.md  transcriber_harness.md
+    harness/  tools/  tests/  concordance.md  keying_spec.md
 
 - **The ground-truth rebuild is finished.** All **20** pilot pages in `gt/ocr/`
   carry text — the pilot selection is scattered across all three parts, and
@@ -709,8 +709,7 @@ accumulated here has been moved out rather than duplicated.
 |---|---|
 | `CLAUDE.md` | project invariants, data layout, what is settled and what is open |
 | `keying_spec.md` | the character inventory. Binds both passes and the human keying track |
-| `transcriber_harness.md` | the collation rule set — output contract, firewall rules, per-element specs |
-| `.claude/skills/transcribe-page/` | sequences collation; carries no rules of its own |
+| `.claude/skills/transcribe-page/` | the OCR→TEI collation loop, rules included — it has no separate harness doc |
 | `.claude/skills/rebuild-groundtruth/` | the raster→ALTO reading loop, rules included — it has no separate harness doc |
 | `harness/README.md` | the package: module responsibilities, stores, caller invariants |
 | `concordance.md` | the evidence set behind the spec — aligned pairs, flag register, per-glyph attestation |
@@ -738,11 +737,11 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
 
 ## Final Product
 
-1. **Original Scan Page** - `scans/chukchi-1-123.png`
-2. **Figure geometry** - `fig/chukchi-1-123.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks. No lines, no text.
+1. **Original Scan Page** - `scans/chukchi-PP-NNN.png`
+2. **Figure geometry** - `gt/fig/chukchi-PP-NNN.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks. No lines, no text.
 3. **Figure captions** - `data/readings.md`, keyed `1-123|<zone-id suffix>`. The only caption store.
-4. **OCR transcript** - `ocr/chukchi-1-123.xml`. ALTO XML files containing (useless) segments and text lines, which will be dumted to plain text
-5. **TEI** - `tei/chukchi-1-123.xml`. Also the system of record for seam state:
+4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`. ALTO XML files containing (useless) segments and text lines, which will be dumted to plain text
+5. **TEI** - `tei/chukchi-PP-NNN.xml`. Also the system of record for seam state:
    its `<pb>` is where the printed folio enters the project, and `harness ledger`
    folds the committed files into the per-ref ledger the next page is built from.
 6. ???
@@ -805,8 +804,8 @@ no supplied zone. A Tier-1 span may optionally also carry `@facs` pointing at
 the OCR line(s) it was read from (`harness context`'s `ocr_lines` field
 supplies the ids, sourced from `ocr/` — resolve one with `harness zoom PP-NNN
 --only <index> --from gt/ocr`, not zoom's default store); `validate.py` checks
-it resolves the same way it checks `<figure facs>`. See `transcriber_harness.md`
-for the full rule. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
+it resolves the same way it checks `<figure facs>`. See the collation skill's
+"`@facs` — flagging a span worth a second look" for the full rule. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
 `1-151`, `2-030`, `3-006` — so the figure path is thinly exercised, and thinner
 than that for captions: `3-006` is one of the two zone-with-no-caption pages, and
 `2-030` is fig. 213's 27-line Chukchee gloss list, i.e. the least typical caption
@@ -959,7 +958,9 @@ one and this recurs. Regression test: `tests/test_marks.py`.
 
 # Collation
 
-Process and rules: `transcriber_harness.md`. Loop: `/transcribe-page PP-NNN`.
+Process and rules: `.claude/skills/transcribe-page/SKILL.md`, which carries both —
+it has no separate harness doc, the same shape as `rebuild-groundtruth`. Loop:
+`/transcribe-page PP-NNN`.
 
 **The LLM has the authority to:**
 
@@ -1068,9 +1069,9 @@ jumping around gives nulls until gaps fill. Both are fine.
 
 ## TEI
 
-TBD beyond the per-page output contract in `transcriber_harness.md` (`<pb>`
-first, no `<div>`, no `<lb/>`, minimal teiHeader, footnotes anchored at their
-markers, figures anchored to supplied zones). **Assembly is still unsettled**; the
+TBD beyond the per-page output contract in the collation skill (`<pb>` first, no
+`<div>`, no `<lb/>`, minimal teiHeader, footnotes anchored at their markers,
+figures anchored to supplied zones). **Assembly is still unsettled**; the
 corpus teiHeader is not, and is `tei/corpus-header.xml`.
 
 **The id scheme is settled and is `harness/ids.py`** — `{kind}-{PP-NNN}-{ordinal}`,
@@ -1144,14 +1145,12 @@ TBD
   emitted by a pass reading the amended harness. So the instruction has not been tested
   on a model that only ever saw the provenance version, and the first page transcribed
   after this is also a test of whether the rule reads as intended.
-- **`transcriber_harness.md` is stale and needs rewriting as a proper skill.** It
-  predates the harness and most of this project's tooling. Two of its load-bearing
-  claims are now known wrong — that text content cannot decide a page boundary, and
-  the blanket `xml:id` ban — and it still specifies the geometry-derived
-  continuation pass at length, inside a document whose own scope statement excludes
-  it. `harness context` does not yet supply the previous page's tail, and the
-  English-correction licence still permits completing a sentence or capitalising a
-  first word at a page edge, which would destroy the seam's own text witness.
+- **The skill's page-edge prohibition is untested.** The English-correction licence
+  used to permit completing a sentence or capitalising a first word at a page edge,
+  which destroys the seam's own text witness invisibly. It is now forbidden in
+  prose, and prose is all it is: unlike the provenance rank, nothing mechanical can
+  see a page whose opening word was quietly capitalised. The first pages collated
+  under it are the only evidence it reads as intended.
 - **A note running across a page seam has no markup.** `<note>` is nested rather
   than a top-level body element, so `seam`'s two-sided-edge machinery does not
   reach it, and the pilot set has no attested instance — so it is deliberately

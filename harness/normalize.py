@@ -112,9 +112,12 @@ def _spacing_hits(text: str) -> list[dict]:
                             "token": _token_at(line, m.start())})
     return hits
 
-# Directories whose XML is corpus, and the individual data files. Root-level *.md are
-# excluded deliberately: CLAUDE.md and transcriber_harness.md quote glyph examples in
-# prose and would fail a gate meant for the text itself.
+# Directories whose XML is corpus, and the individual data files. Prose that *quotes*
+# glyph examples is out of scope, and by two different mechanisms worth seeing
+# together: root-level *.md (CLAUDE.md, keying_spec.md) are excluded by not being
+# listed, and `.claude/skills/*/SKILL.md` — which now carries the collation rules and
+# the same kind of examples — is outside every glob here to begin with. Either would
+# fail a gate meant for the corpus text itself.
 SCOPE_GLOBS = ("ocr/*.xml", "gt/ocr/*.xml", "gt/seg/*.xml", "gt/fig/*.xml", "tei/*.xml",
                "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
                # decision.json is an editorial act — the adjudicated record that

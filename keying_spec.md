@@ -3,7 +3,7 @@
 **Authority.** The printed key (Part 1, p. 10 — book-internal apparatus,
 firewall-clean, binds) as corrected by the editor's corpus-scale collation
 from hand-corrected OCR. `CLAUDE.md` outranks this file on project invariants;
-`transcriber_harness.md` governs the collation pass. This file is normative for
+`.claude/skills/transcribe-page/SKILL.md` governs the collation pass. This file is normative for
 the character inventory, and binds both passes and the human keying track.
 
 ---
