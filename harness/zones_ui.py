@@ -1107,7 +1107,11 @@ window.addEventListener('keydown', async e => {
     render(); e.preventDefault(); return;
   }
   if (KEY[k]) { S.cur = KEY[k]; S.issues = []; render(); e.preventDefault(); return; }
-  const a = ACT[k] || ACT[k.toLowerCase()];
+  // A named key carries its shift as a prefix, since it has no case to carry it in.
+  // Looked up before the bare name, so `Shift+ArrowUp` cannot fall through to
+  // whatever plain `ArrowUp` does — the two are a selection and a resize.
+  const a = (e.shiftKey && k.length > 1 && ACT['Shift+' + k])
+          || ACT[k] || ACT[k.toLowerCase()];
   if (!a) return;
   e.preventDefault();
   switch (a) {
@@ -1353,7 +1357,8 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
               "page_list": "the whole list and its statuses",
               "save": "save", "done": "save and stop server",
               "prev_page": "previous page", "next_page": "next page",
-              "nudge_back": "nudge edge up", "nudge_forward": "nudge edge down",
+              "nudge_back": "resize: edge up 2 px",
+              "nudge_forward": "resize: edge down 2 px",
               "zoom_in": "zoom in", "zoom_out": "zoom out"}
 
     h = ["<!doctype html><html><head><meta charset='utf-8'>",

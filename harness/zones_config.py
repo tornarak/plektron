@@ -108,6 +108,18 @@ def load_config(root: Path = Path(".")) -> dict:
     for name, key in actions.items():
         if not isinstance(key, str) or not key:
             raise ConfigError(f"{p}: action {name!r} has no key")
+        # Shift is expressed by the character for a printable key — `X` against `x`,
+        # which is how `delete_page` and `save` already sit next to each other. A
+        # named key has no case to carry it, so it takes a prefix instead. Refused on
+        # a printable one because `Shift+a` names an event that never arrives:
+        # KeyboardEvent.key for that press is `A`, and the binding would be dead.
+        if key.startswith("Shift+"):
+            bare = key[len("Shift+"):]
+            if len(bare) < 2:
+                raise ConfigError(
+                    f"{p}: action {name!r} binds {key!r}, but the shift of a "
+                    f"printable key is already in the character — write "
+                    f"{bare.upper()!r}")
         if key in seen_key:
             raise ConfigError(
                 f"{p}: key {key!r} is bound to both a type and the {name!r} action")

@@ -170,6 +170,25 @@ def test_two_actions_on_one_key_refused(tmp_path):
         load_config(write(tmp_path, cfg))
 
 
+def test_a_named_key_may_carry_a_shift_prefix(tmp_path):
+    """`Shift+ArrowUp` is to `ArrowUp` what `X` is to `x` — and the two are a
+    different action here, so the modifier has to be expressible."""
+    cfg = base_cfg()
+    cfg["actions"] = {"sel_up": "ArrowUp", "nudge_back": "Shift+ArrowUp"}
+    assert load_config(write(tmp_path, cfg))["actions"]["nudge_back"] \
+        == "Shift+ArrowUp"
+
+
+def test_shift_on_a_printable_key_refused(tmp_path):
+    """KeyboardEvent.key for that press is `A`, so the binding would be dead —
+    a shortcut that silently never fires, which is what the collision check
+    exists to keep out of this file."""
+    cfg = base_cfg()
+    cfg["actions"] = {"undo": "Shift+a"}
+    with pytest.raises(ConfigError, match="already in the character"):
+        load_config(write(tmp_path, cfg))
+
+
 def test_the_shipped_auto_select_chain_keys_an_ordinary_page():
     """Title, then the paragraph carried over from the previous page, then
     paragraph starts for as many as the page holds. A continuation can only be

@@ -67,7 +67,7 @@
   },
 
   "actions": {
-    "_about": "Every common action is bound here, alongside the type keys above, and the loader refuses a config where the two collide — a keystroke bound twice would silently do only one of its jobs. Values are KeyboardEvent.key: one character for a letter, or the browser's own name for a special key. Navigation and cycling deliberately sit on non-letter keys so the letter space stays free for types.",
+    "_about": "Every common action is bound here, alongside the type keys above, and the loader refuses a config where the two collide — a keystroke bound twice would silently do only one of its jobs. Values are KeyboardEvent.key: one character for a letter, or the browser's own name for a special key. Navigation and cycling deliberately sit on non-letter keys so the letter space stays free for types. A named key may carry a `Shift+` prefix — `Shift+ArrowUp` is to `ArrowUp` what `X` is to `x`, and it is only permitted there, since for a printable character the shift is already in the character and `Shift+a` would never fire.",
     "cancel": "Escape",
     "undo": "u",
     "delete": "x",
@@ -91,8 +91,8 @@
     "done": "D",
     "prev_page": "ArrowLeft",
     "next_page": "ArrowRight",
-    "nudge_back": "[",
-    "nudge_forward": "]",
+    "nudge_back": "Shift+ArrowUp",
+    "nudge_forward": "Shift+ArrowDown",
     "zoom_in": "+",
     "zoom_out": "-"
   },
