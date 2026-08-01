@@ -886,6 +886,25 @@ function edgesAt(y) {
   });
   return out;
 }
+// The edges that *are* this boundary, rather than the ones near enough to grab.
+//
+// `edgesAt`'s window answers "which boundary did the pointer mean", and is
+// generous on purpose — 10 screen pixels, so tens of page pixels at working zoom.
+// The keyboard already knows which edge it holds, so reusing that window there
+// swept up the neighbour across a small gap and carried it along: nearly half the
+// boundaries in this store leave a gap of a few pixels, so a resize translated the
+// pair and the gap survived every keypress, which is not what "resize" means.
+//
+// Coincident edges still move together, and must: they are one boundary, and moving
+// only one side of it opens an overlap in a store whose partition check refuses one.
+function edgesSharing(y) {
+  const out = [];
+  S.zones.forEach((z, i) => {
+    if (Math.abs(y - z.y0) <= 1) out.push({i, edge: 'y0'});
+    if (Math.abs(y - z.y1) <= 1) out.push({i, edge: 'y1'});
+  });
+  return out;
+}
 
 ov.addEventListener('mousemove', e => {
   S.hoverY = yAt(e);
@@ -1280,13 +1299,14 @@ window.addEventListener('keydown', async e => {
       const i = target();
       if (i < 0) break;
       const d = a === 'nudge_back' ? -2 : 2;
-      // Nudge the whole shared boundary, exactly as a drag does, so keyboard and
-      // mouse cannot leave the partition in two different states. With a zone
-      // selected but the cursor elsewhere, the bottom edge is the one meant.
+      // A shared boundary moves whole, so the partition never opens an overlap —
+      // but only edges that genuinely coincide are shared. A neighbour across a gap
+      // stays put, which is what lets a nudge close one. With a zone selected but
+      // the cursor elsewhere, the bottom edge is the one meant.
       const edge = S.hoverY === null || S.hover !== i
                  ? 'y1' : nearestEdge(i, S.hoverY);
       const at = S.zones[i][edge];
-      for (const g of edgesAt(at)) {
+      for (const g of edgesSharing(at)) {
         const z = S.zones[g.i];
         if (g.edge === 'y0') z.y0 = Math.min(z.y0 + d, z.y1 - 4);
         else z.y1 = Math.max(z.y1 + d, z.y0 + 4);
