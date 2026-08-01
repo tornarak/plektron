@@ -172,8 +172,8 @@ Layout, all at the repo root:
 
 - **The ground-truth rebuild is finished.** All **20** pilot pages in `gt/ocr/`
   carry text — the pilot selection is scattered across all three parts, and
-  `harness pages` lists it. `tei/` holds **one** page, `1-151` — collated,
-  committed, validating, with two open comments.
+  `harness pages` lists it. `tei/` holds **three** pages — `1-151`, and the
+  adjacent pair `1-100`/`1-101`, which is the corpus's only collated seam.
 - **`ocr/*.xml` are symlinks into `gt/ocr/`**, and `ocr/` is a *view*, not a
   store: the stable name a page's current OCR is reached by, whatever produced
   it, and the harness's default `--from`. Raw recognizer output, if any is
@@ -209,12 +209,18 @@ Layout, all at the repo root:
   reasoning in their docstrings; re-running either would corrupt what it already
   converted, and both say so at the top.
 
-**The frontier is collation.** `tei/` holds 1 page of 832. The apparatus stores are
+**The frontier is collation.** `tei/` holds 3 pages of 832. The apparatus stores are
 done and reconciled — `loi.json`, `toc.json`, `authorities.json`, `readings.md`,
 and the 20 pilot ground-truth pages — so what is left is the pass that consumes
-them. The first page transcribed from here is also the first test of the provenance
-rule (see Open), since `1-151` was retrofitted by hand rather than emitted by a pass
-that had read it.
+them.
+
+`1-100`/`1-101` are the corpus's only **adjacent** pair, and adjacency is what makes
+them worth more than two pages. The seam between them is a live run-on: `1-100` ends
+`<item n="14">`, `1-101` opens at 15, and a `<list>` is not fragmentable, so `harness
+seam --continues` linked `list-1-100-1` ↔ `list-1-101-1` rather than writing `@part`.
+That is also the first time the ledger's `boundary` column has held a value other
+than `unknown` — and it reads `open` off `@next`, which is exactly what a
+`@part`-only derivation would have missed.
 
 ## The ground-truth loss
 
@@ -1140,17 +1146,17 @@ TBD
   unratified span as a worklist line, which is the right shape for a page in progress
   but is not a gate: nothing yet *refuses* to publish a `#llm` span. Until it does,
   provenance is recorded and inspectable but not enforced downstream.
-- **No page has been through the collation pass under the new rule.** `1-151` was
-  retrofitted by hand — its four `resp="#llm"` attributes were added after the fact, not
-  emitted by a pass reading the amended harness. So the instruction has not been tested
-  on a model that only ever saw the provenance version, and the first page transcribed
-  after this is also a test of whether the rule reads as intended.
-- **The skill's page-edge prohibition is untested.** The English-correction licence
-  used to permit completing a sentence or capitalising a first word at a page edge,
-  which destroys the seam's own text witness invisibly. It is now forbidden in
-  prose, and prose is all it is: unlike the provenance rank, nothing mechanical can
-  see a page whose opening word was quietly capitalised. The first pages collated
-  under it are the only evidence it reads as intended.
+- **The skill's page-edge prohibition is still untested, and `1-101` did not test
+  it.** The English-correction licence used to permit completing a sentence or
+  capitalising a first word at a page edge, which destroys the seam's own text
+  witness invisibly. It is now forbidden in prose, and prose is all it is: unlike
+  the provenance rank, nothing mechanical can see a page whose opening word was
+  quietly capitalised. `1-101` opens on a numbered list item resuming at 15, so
+  nothing there tempts a completion — the rule was written for a page opening
+  lowercase mid-sentence, which is what `1-100` does, and `1-100` was collated
+  before the rule existed. **A page opening mid-sentence, collated after it, is
+  the evidence still wanted.** 69.8% of text pages qualify, so the next one in
+  scan order will probably do.
 - **A note running across a page seam has no markup.** `<note>` is nested rather
   than a top-level body element, so `seam`'s two-sided-edge machinery does not
   reach it, and the pilot set has no attested instance — so it is deliberately
