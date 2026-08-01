@@ -249,6 +249,18 @@ def test_save_reports_the_counts_the_topbar_redraws_itself_from(tmp_path):
     assert isinstance(res["paras_zones"], int)
 
 
+def test_the_new_editor_actions_are_bound_and_documented(tmp_path):
+    """A key in the config that no `case` handles is a key that does nothing, and
+    the help would still list it."""
+    scans(tmp_path, "1-048")
+    c = cfg()
+    html = ui.render_html("1-048", tmp_path, c)
+    for act in ("merge_down", "sel_up", "sel_down"):
+        assert act in c["actions"], act
+        assert f"case '{act}':" in html, act
+        assert f"<kbd>{c['actions'][act]}</kbd>" in html, act
+
+
 def test_every_store_pill_carries_a_count_the_client_can_replace(tmp_path):
     scans(tmp_path, "1-048")
     html = ui.render_html("1-048", tmp_path, cfg())

@@ -790,6 +790,59 @@ function anchorAt(y) {
 // subject — and a selection survives the pointer wandering off the zone.
 function target() { return S.sel >= 0 ? S.sel : S.hover; }
 
+// ---- keyboard selection
+//
+// `S.zones` is in the order the zones were drawn, which on a revised page is not
+// the order they sit in. Everything the arrows do is in **reading order**, since
+// that is the only order visible on screen; the array index is an identity, as it
+// is everywhere else in this project.
+function byY() {
+  return S.zones.map((z, i) => i).sort((a, b) => S.zones[a].y0 - S.zones[b].y0);
+}
+function below(i) {
+  const o = byY(), k = o.indexOf(i);
+  return k >= 0 && k < o.length - 1 ? o[k + 1] : -1;
+}
+// Clamped at both ends rather than wrapped. Wrapping would throw the view a whole
+// leaf on a keypress that looks like a step, and the stop is the tell that you are
+// at the end — the same reason the page arrows do not wrap round the corpus.
+function stepSel(d) {
+  if (!S.zones.length) return;
+  const o = byY(), cur = target();
+  if (cur < 0) { S.sel = d > 0 ? o[0] : o[o.length - 1]; }
+  else {
+    const k = o.indexOf(cur);
+    S.sel = o[Math.min(o.length - 1, Math.max(0, k + d))];
+  }
+  S.hover = -1;
+  revealZone(S.sel);
+}
+// Page-wise, like the edge hover, and for the same reason: at this zoom the leaf is
+// about two screens, so the movement wanted is "show me the other half", and a
+// smooth scroll would be a thing to wait for. Steps until the zone is on screen —
+// bounded, since a zone taller than the viewport can never satisfy the test, and
+// then its top edge is the one to show.
+function revealZone(i) {
+  const z = S.zones[i];
+  if (!z) return;
+  const step = Math.max(80, wrap.clientHeight - VIEW.edge_overlap_px);
+  const pad = VIEW.edge_overlap_px / 2;
+  for (let n = 0; n < 40; n++) {
+    // Re-read every pass: both rects are live, so a scroll above is already in
+    // them, and the loop is over "is it on screen yet" rather than over arithmetic
+    // predicting where it landed.
+    const r = img.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+    if (!r.height) return;
+    const s = r.height / ST.page.h;
+    const top = r.top + z.y0 * s, bot = r.top + z.y1 * s;
+    const was = wrap.scrollTop;
+    if (top < w.top + pad) wrap.scrollTop -= step;
+    else if (bot > w.bottom - pad && top > w.top + pad) wrap.scrollTop += step;
+    else break;
+    if (wrap.scrollTop === was) break;   // hit an end; nothing more to show
+  }
+}
+
 function esc(s) {
   return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 }
@@ -1074,6 +1127,38 @@ window.addEventListener('keydown', async e => {
       // either would point at a different zone than the one that was targeted.
       S.sel = -1; S.hover = -1; S.dirty = true; S.issues = [];
       break; }
+    // Absorb the zone below into this one. The commonest correction on a machine
+    // page by a long way — 42% of gt boundaries are same-label, so the paragraph
+    // rule and the decoder both over-split, and re-drawing the pair by hand is four
+    // clicks for a boundary that just needs to go.
+    //
+    // **The surviving label is this zone's**, always, including where the two
+    // differ. The alternative is to refuse a mixed merge, which would be the tool
+    // declining exactly the case worth having it for — `MainZone-P` swallowing the
+    // `MainZone-Continued` under it is a paragraph the decoder split in two.
+    case 'merge_down': {
+      const i = target();
+      if (i < 0) { say('nothing selected to merge', 'bad'); break; }
+      const j = below(i);
+      if (j < 0) { say('nothing below this zone', 'bad'); break; }
+      const a1 = S.zones[i], b1 = S.zones[j];
+      // Across columns the union is not a band of anything: on a two-column page
+      // the zone below in reading order can be the head of the other column, and
+      // merging them would produce geometry that means nothing on the paper.
+      if (a1.column !== b1.column) {
+        say('the zone below is in another column', 'bad'); break;
+      }
+      const label = a1.label;
+      a1.y0 = Math.min(a1.y0, b1.y0); a1.y1 = Math.max(a1.y1, b1.y1);
+      S.zones.splice(j, 1);
+      // The array shifted under the selection if the absorbed zone sat earlier in
+      // it — the drawing order and the reading order are not the same list.
+      S.sel = j < i ? i - 1 : i;
+      S.hover = -1; S.dirty = true; S.issues = [];
+      say(b1.label === label ? 'merged' : `merged as ${label}`, 'ok');
+      break; }
+    case 'sel_up': stepSel(-1); break;
+    case 'sel_down': stepSel(1); break;
     case 'ink_exempt': {
       if (S.hoverY === null) break;
       const b = inkAt(S.hoverY);
@@ -1257,6 +1342,8 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
               "delete_page": "un-key this page (types the ref)",
               "cancel": "cancel / break chain", "undo": "undo last zone",
               "delete": "delete zone under cursor",
+              "merge_down": "absorb the zone below (keeps this label)",
+              "sel_up": "select the zone above", "sel_down": "select the zone below",
               "anchor_left": "nudge column left 4 px",
               "anchor_right": "nudge column right 4 px",
               "anchor_reset": "reset to measured anchor",
@@ -1431,6 +1518,10 @@ td.ref a:hover{text-decoration:underline}
 .s-warn{background:var(--warn)}
 .s-err{background:var(--err)}
 td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim)}
+th.num{text-align:right}
+/* The machine count reads as the fainter of the pair on purpose: the two columns
+   are not equals, one being a tracked human ruling and the other a proposal. */
+td.num.dim{opacity:.6}
 td.detail{color:var(--dim);font-size:12px}
 /* `unknown` is its own state and looks like one: a blank cell would read as
    "clean" where it means "nothing has read this page's raster since it changed". */
@@ -1515,10 +1606,19 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
             ink = {"state": "skip"}
         else:
             ink = zn.cached_ink(ref, root) or {"state": "unknown"}
-        rows.append((ref, state, r["split"] or "", r["zones"], detail, labels, ink))
+        # Both stores, per page, as counts. The `proposed` state only ever names a
+        # page with *no* ground truth, so until this column existed a prediction
+        # sitting beside keyed work was invisible in the list — and "is there
+        # anything to compare against" is the question that sends you to a page.
+        # One parse each, in a loop that already parses gt and validates it.
+        n_mz = (len(zn.read_zones(ref, root, store=zn.MZDIR))
+                if zn.has_zones(ref, root, zn.MZDIR) else None)
+        rows.append((ref, state, r["split"] or "", r["zones"], n_mz,
+                     detail, labels, ink))
 
-    n_ink = sum(1 for r in rows if r[6]["state"] == "ink")
-    n_unknown = sum(1 for r in rows if r[6]["state"] == "unknown")
+    n_ink = sum(1 for r in rows if r[7]["state"] == "ink")
+    n_unknown = sum(1 for r in rows if r[7]["state"] == "unknown")
+    n_mz_rows = sum(1 for r in rows if r[4] is not None)
 
     h = ["<!doctype html><html><head><meta charset='utf-8'>",
          f"<title>zones · {itinerary_name or 'store'}</title>",
@@ -1529,7 +1629,8 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
              f" — {len(rows)} pages</h1>")
     n_prop = sum(1 for r in rows if r[1] == "proposed")
     h.append(f"<p>{n_keyed} keyed · {len(rows) - n_keyed} to do"
-             + (f" ({n_prop} predicted)" if n_prop else "") + " · "
+             + (f" ({n_prop} predicted)" if n_prop else "")
+             + (f" · {n_mz_rows} with mz" if n_mz_rows else "") + " · "
              f"{n_err} error{'' if n_err == 1 else 's'} · "
              f"{n_warn} warning{'' if n_warn == 1 else 's'} · "
              f"<span id='inkprog'>{n_ink} with uncovered ink, {n_unknown} "
@@ -1558,10 +1659,12 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
 
     h.append("<div id='wrapl'><table><thead><tr>"
              "<th class='pick'><input type='checkbox' id='pickall'></th>"
-             "<th>page</th><th>status</th><th>split</th><th>zones</th>"
+             "<th>page</th><th>status</th><th>split</th>"
+             "<th class='num' title='zones in gt/zones/'>gt</th>"
+             "<th class='num' title='zones in mz/zones/'>mz</th>"
              "<th>composition</th><th>ink</th><th>findings</th>"
              "</tr></thead><tbody>")
-    for ref, state, split, nz, detail, labels, ink in rows:
+    for ref, state, split, nz, n_mz, detail, labels, ink in rows:
         here = " class='here'" if ref == current else ""
         # One bar per zone, in reading order. A count says how many; this says
         # what kind and in what order, which is what a glance down the list is for.
@@ -1569,13 +1672,18 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
             f"<i class='z' style='background:"
             f"{by_label.get(l, {}).get('color', '#999')}' title=\""
             f"{by_label.get(l, {}).get('name', l)}\"></i>" for l in labels)
+        # A keyed page holding nothing prints `0`, not blank: that is a plate a human
+        # ruled on, and blank is what a page nobody has reached looks like.
+        gt_cell = "" if state in ("todo", "proposed") else str(nz)
         h.append(f"<tr{here} data-state='{state}' data-ink='{ink['state']}' "
+                 f"data-mz='{'y' if n_mz is not None else 'n'}' "
                  f"data-labels=\"{' '.join(sorted(set(labels)))}\">"
                  f"<td class='pick'><input type='checkbox' data-ref='{ref}'></td>"
                  f"<td class='ref'><a href='/?ref={ref}'>{ref}</a></td>"
                  f"<td><i class='dot s-{state}'></i>{state}</td>"
                  f"<td>{split}</td>"
-                 f"<td class='num'>{nz or ''}</td>"
+                 f"<td class='num'>{gt_cell}</td>"
+                 f"<td class='num dim mz'>{'' if n_mz is None else n_mz}</td>"
                  f"<td>{strip}</td>"
                  f"<td class='ink' data-ref='{ref}' data-ink='{ink['state']}' "
                  f"title=\"{_esc(ink.get('note', ''))}\">"
@@ -1664,6 +1772,16 @@ if (segrun) segrun.addEventListener('click', async () => {
       if (r.error) throw new Error(r.error);
       const row = box.closest('tr');
       row.title = `segmenter: ${r.zones} zones`;
+      // The count is in hand, so the column it belongs in is filled now rather than
+      // left for a reload. An unkeyed row also stops being `todo` — that state is
+      // "nobody and nothing has touched this", and something just has.
+      const cell = row.querySelector('td.mz');
+      if (cell) { cell.textContent = r.zones; row.dataset.mz = 'y'; }
+      if (row.dataset.state === 'todo') {
+        row.dataset.state = 'proposed';
+        const st = row.children[2];
+        if (st) st.innerHTML = "<i class='dot s-proposed'></i>proposed";
+      }
       box.checked = false;
     } catch (e) { failed++; box.closest('tr').title = 'segmenter: ' + e.message; }
     segrun.textContent = `segmenting · ${++done}/${todo.length}`

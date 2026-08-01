@@ -394,6 +394,29 @@ def test_the_page_list_separates_predicted_from_untouched(tmp_path):
     assert states == {"1-048": "ok", "1-102": "proposed", "1-103": "todo"}
 
 
+def test_the_page_list_counts_both_stores_per_page(tmp_path):
+    """`proposed` only ever names a page with *no* ground truth, so without its own
+    column a prediction sitting beside keyed work is invisible in the list — and
+    "is there anything to compare against" is what sends you to a page."""
+    from harness import zones_ui as ui
+    import re
+    write_page(tmp_path, "1-048", zn.ZONEDIR)
+    write_page(tmp_path, "1-048", zn.MZDIR)
+    write_page(tmp_path, "1-102", zn.MZDIR)
+    for r in ("1-048", "1-102", "1-103"):
+        make_scan(tmp_path, r)
+    html = ui.render_list_html(tmp_path, zc.load_config(REPO),
+                               itinerary=["1-048", "1-102", "1-103"])
+    cells = {ref: re.search(
+        rf"<a href='/\?ref={ref}'>.*?<td class='num'>(\d*)</td>"
+        rf"<td class='num dim mz'>(\d*)</td>", html, re.S).groups()
+        for ref in ("1-048", "1-102", "1-103")}
+    # gt keyed and predicted; predicted only; neither.
+    assert cells["1-048"][0] and cells["1-048"][1]
+    assert cells["1-102"] == ("", cells["1-048"][1])
+    assert cells["1-103"] == ("", "")
+
+
 # ----------------------------------------------------------------- the scoring
 
 def frozen_split(root: Path, train: list[str], evl: list[str]):
