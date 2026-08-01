@@ -8,31 +8,31 @@
   </Description>
   <Tags>
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
-    <OtherTag ID="BT2" LABEL="MainZone-Quote" DESCRIPTION="block type MainZone-Quote"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
     <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
     <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
       <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="397" VPOS="456" WIDTH="1782" HEIGHT="90" ID="mz_3-189_001" TAGREFS="BT1">
+        <TextBlock HPOS="393" VPOS="456" WIDTH="1782" HEIGHT="90" ID="mz_3-189_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="397 456 2179 456 2179 546 397 546"/>
+            <Polygon POINTS="393 456 2175 456 2175 546 393 546"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="397" VPOS="575" WIDTH="1782" HEIGHT="1558" ID="mz_3-189_002" TAGREFS="BT2">
+        <TextBlock HPOS="393" VPOS="575" WIDTH="1782" HEIGHT="1558" ID="mz_3-189_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="397 575 2179 575 2179 2133 397 2133"/>
+            <Polygon POINTS="393 575 2175 575 2175 2133 393 2133"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="397" VPOS="2157" WIDTH="1782" HEIGHT="852" ID="mz_3-189_003" TAGREFS="BT3">
+        <TextBlock HPOS="393" VPOS="2157" WIDTH="1782" HEIGHT="852" ID="mz_3-189_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="397 2157 2179 2157 2179 3009 397 3009"/>
+            <Polygon POINTS="393 2157 2175 2157 2175 3009 393 3009"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="397" VPOS="3050" WIDTH="1782" HEIGHT="68" ID="mz_3-189_004" TAGREFS="BT4">
+        <TextBlock HPOS="393" VPOS="3050" WIDTH="1782" HEIGHT="68" ID="mz_3-189_004" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="397 3050 2179 3050 2179 3118 397 3118"/>
+            <Polygon POINTS="393 3050 2175 3050 2175 3118 393 3118"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-3-184.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
+        <TextBlock HPOS="513" VPOS="452" WIDTH="1782" HEIGHT="94" ID="mz_3-184_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="513 452 2295 452 2295 546 513 546"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="513" VPOS="569" WIDTH="1782" HEIGHT="600" ID="mz_3-184_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="513 569 2295 569 2295 1169 513 1169"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="513" VPOS="1169" WIDTH="1782" HEIGHT="969" ID="mz_3-184_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="513 1169 2295 1169 2295 2138 513 2138"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="513" VPOS="2138" WIDTH="1782" HEIGHT="785" ID="mz_3-184_004" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="513 2138 2295 2138 2295 2923 513 2923"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="513" VPOS="2986" WIDTH="1782" HEIGHT="124" ID="mz_3-184_005" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="513 2986 2295 2986 2295 3110 513 3110"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

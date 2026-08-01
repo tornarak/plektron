@@ -14,29 +14,29 @@
   <Layout>
     <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
       <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="374" VPOS="440" WIDTH="1782" HEIGHT="90" ID="mz_3-025_001" TAGREFS="BT1">
+        <TextBlock HPOS="378" VPOS="440" WIDTH="1782" HEIGHT="90" ID="mz_3-025_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="374 440 2156 440 2156 530 374 530"/>
+            <Polygon POINTS="378 440 2160 440 2160 530 378 530"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="374" VPOS="555" WIDTH="1782" HEIGHT="2167" ID="mz_3-025_002" TAGREFS="BT2">
+        <TextBlock HPOS="378" VPOS="555" WIDTH="1782" HEIGHT="2167" ID="mz_3-025_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="374 555 2156 555 2156 2722 374 2722"/>
+            <Polygon POINTS="378 555 2160 555 2160 2722 378 2722"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="374" VPOS="2722" WIDTH="1782" HEIGHT="116" ID="mz_3-025_003" TAGREFS="BT2">
+        <TextBlock HPOS="378" VPOS="2722" WIDTH="1782" HEIGHT="116" ID="mz_3-025_003" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="374 2722 2156 2722 2156 2838 374 2838"/>
+            <Polygon POINTS="378 2722 2160 2722 2160 2838 378 2838"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="374" VPOS="2838" WIDTH="1782" HEIGHT="139" ID="mz_3-025_004" TAGREFS="BT2">
+        <TextBlock HPOS="378" VPOS="2838" WIDTH="1782" HEIGHT="139" ID="mz_3-025_004" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="374 2838 2156 2838 2156 2977 374 2977"/>
+            <Polygon POINTS="378 2838 2160 2838 2160 2977 378 2977"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="374" VPOS="3031" WIDTH="1782" HEIGHT="68" ID="mz_3-025_005" TAGREFS="BT3">
+        <TextBlock HPOS="378" VPOS="3031" WIDTH="1782" HEIGHT="68" ID="mz_3-025_005" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="374 3031 2156 3031 2156 3099 374 3099"/>
+            <Polygon POINTS="378 3031 2160 3031 2160 3099 378 3099"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

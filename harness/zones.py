@@ -517,6 +517,113 @@ def set_split(ref: str, split: str, root: Path = Path(".")) -> dict:
     return {"ref": ref, "split": split}
 
 
+def _independent(ref: str, root: Path) -> bool:
+    """Whether this page is something other than the model's own word.
+
+    True when no prediction exists for the page, or when the human file differs
+    from it. **It is a floor, not a proof**: a page adopted and then corrected reads
+    independent, which is right for the purpose here — a human ruled on it — but it
+    is not the same as a page keyed from blank, and nothing in the store can tell
+    those apart. What it does catch is the case that makes an eval page worthless,
+    the prediction ratified unchanged.
+
+    This is a *store* fact and deliberately so. Git knows which pages predate the
+    adoption pass and would answer more sharply, but that answer expires the moment
+    a file is touched, and there is no such history at all for the next volume.
+    """
+    if not has_zones(ref, root, MZDIR):
+        return True
+    # Keyword, not positional: `read_zones`'s third parameter is `with_points`, and
+    # passing the store there reads *gt both times* and reports every page identical
+    # — a comparison whose two witnesses are one witness, in the function written to
+    # find exactly that. It failed loudly only because `--diff` had already counted
+    # 241 differing pages and this said 1.
+    def key(store):
+        return [(z["label"], z["y0"], z["y1"])
+                for z in read_zones(ref, root, store=store)]
+    return key(ZONEDIR) != key(MZDIR)
+
+
+def _spread(items: list, k: int) -> list:
+    """`k` items spread evenly through the sequence, not the first `k`.
+
+    Held-out pages taken off the front of a list are a contiguous run of the book,
+    and a contiguous run is one chapter, one layout, one typesetter's habits. Even
+    spacing is the cheapest way to make the sample look like the volume.
+    """
+    if k <= 0 or not items:
+        return []
+    if k >= len(items):
+        return list(items)
+    return [items[i * len(items) // k] for i in range(k)]
+
+
+def remark_eval(root: Path = Path("."), fraction: float = 0.20,
+                commit: bool = False) -> dict:
+    """Move a fraction of `train` into `eval`, per part, independent pages first.
+
+    **Additive: nothing already in `eval` or `exempt` is touched.** A page a human
+    put in the held-out set is a judgement, and re-deriving the whole split would
+    silently overwrite every one of them — the same reason `--assemble` stopped
+    being allowed to rewrite the frozen lists.
+
+    Three properties, in the order they matter:
+
+    - **Stratified by part**, proportionally to each part's own `train` count. An
+      eval set drawn globally lands where the pages are, and by page count this
+      corpus is three volumes that were keyed in very different ways; a model
+      measured on one of them says nothing about reuse on the others.
+    - **Independent pages first** (`_independent`), so a held-out page is as far as
+      the store can tell not the model's own output handed back to it. Where a part
+      has too few, the rest are filled from the remainder rather than the quota
+      being quietly shortened — and the report says how many of each went in, since
+      that ratio is what the resulting eval figure has to be read against.
+    - **Spread, not taken off the front** (`_spread`), within each of those two
+      groups.
+
+    Reports without writing unless `commit`.
+    """
+    splits = load_splits(root)
+    train = sorted((r for r, s in splits.items() if s == "train"), key=parse_ref)
+    target = round(fraction * len(train))
+
+    by_part: dict[str, list[str]] = {}
+    for ref in train:
+        by_part.setdefault(ref.split("-")[0], []).append(ref)
+
+    # Largest-remainder, so the per-part quotas sum to the target exactly rather
+    # than drifting a page or two under it through independent rounding.
+    exact = {p: target * len(rs) / len(train) for p, rs in by_part.items()}
+    quota = {p: int(v) for p, v in exact.items()}
+    for p in sorted(exact, key=lambda p: -(exact[p] - quota[p]))[:target - sum(quota.values())]:
+        quota[p] += 1
+
+    picked, rows = [], []
+    for part in sorted(by_part):
+        indep = [r for r in by_part[part] if _independent(r, root)]
+        rest = [r for r in by_part[part] if r not in set(indep)]
+        take = _spread(indep, quota[part])
+        fill = _spread(rest, quota[part] - len(take))
+        picked += take + fill
+        rows.append({"part": part, "train": len(by_part[part]),
+                     "quota": quota[part], "independent": len(take),
+                     "filled": len(fill), "pool_independent": len(indep)})
+
+    if commit:
+        for ref in picked:
+            set_split(ref, "eval", root)
+
+    after = load_splits(root)
+    return {"committed": commit, "fraction": fraction,
+            "moved": len(picked),
+            "eval_before": sum(1 for s in splits.values() if s == "eval"),
+            "eval_after": sum(1 for s in after.values() if s == "eval")
+                          if commit else
+                          sum(1 for s in splits.values() if s == "eval") + len(picked),
+            "parts": rows,
+            "refs": " ".join(sorted(picked, key=parse_ref))}
+
+
 # ------------------------------------------------------------------ exemptions
 
 def load_exempt(root: Path = Path(".")) -> dict[str, list[str]]:
@@ -1278,6 +1385,7 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
     cfg = cfg or zc.load_config(root)
     splits = load_splits(root)
     rows, n_err, n_warn = [], 0, 0
+    labels: dict[str, int] = {}
     seen: dict[str, int] = {}
     for s in SPLITS:
         for name in _read_lst(_lst_path(root, s)):
@@ -1299,6 +1407,8 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
             record_ink(ref, r, root)
         n_err += len(r["errors"])
         n_warn += len(r["warnings"])
+        for z in read_zones(ref, root, store=store):
+            labels[z["label"]] = labels.get(z["label"], 0) + 1
         rows.append({
             "ref": ref, "split": r["split"] or "", "zones": r["zones"],
             "errors": len(r["errors"]), "warnings": len(r["warnings"]),
@@ -1317,6 +1427,12 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                "zones": sum(r["zones"] for r in rows),
                "errors": n_err, "warnings": n_warn,
                "ink_checked": ink,
+               # The class distribution, because it is read before every training
+               # run — a class with no instances cannot be in a class map, and one
+               # that has stopped growing while the rest doubled is the argument for
+               # folding it. It had been counted by hand twice, which is the tell.
+               "labels": " ".join(f"{k}:{v}" for k, v in
+                                  sorted(labels.items(), key=lambda kv: -kv[1])),
                "in_both_lists": " ".join(dup)}
     return summary, rows
 

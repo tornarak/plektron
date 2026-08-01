@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-1-317.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+        <TextBlock HPOS="444" VPOS="624" WIDTH="1778" HEIGHT="95" ID="mz_1-317_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="444 624 2222 624 2222 719 444 719"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="444" VPOS="745" WIDTH="1778" HEIGHT="491" ID="mz_1-317_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="444 745 2222 745 2222 1236 444 1236"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="444" VPOS="1236" WIDTH="1778" HEIGHT="2037" ID="mz_1-317_003" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="444 1236 2222 1236 2222 3273 444 3273"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

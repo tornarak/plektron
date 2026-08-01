@@ -8,46 +8,46 @@
   </Description>
   <Tags>
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
-    <OtherTag ID="BT2" LABEL="MainZone-Quote" DESCRIPTION="block type MainZone-Quote"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
     <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
     <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
       <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="517" VPOS="445" WIDTH="1782" HEIGHT="90" ID="mz_3-116_001" TAGREFS="BT1">
+        <TextBlock HPOS="513" VPOS="445" WIDTH="1782" HEIGHT="90" ID="mz_3-116_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="517 445 2299 445 2299 535 517 535"/>
+            <Polygon POINTS="513 445 2295 445 2295 535 513 535"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="517" VPOS="560" WIDTH="1782" HEIGHT="165" ID="mz_3-116_002" TAGREFS="BT2">
+        <TextBlock HPOS="513" VPOS="560" WIDTH="1782" HEIGHT="165" ID="mz_3-116_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="517 560 2299 560 2299 725 517 725"/>
+            <Polygon POINTS="513 560 2295 560 2295 725 513 725"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="517" VPOS="738" WIDTH="1782" HEIGHT="611" ID="mz_3-116_003" TAGREFS="BT3">
+        <TextBlock HPOS="513" VPOS="738" WIDTH="1782" HEIGHT="611" ID="mz_3-116_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="517 738 2299 738 2299 1349 517 1349"/>
+            <Polygon POINTS="513 738 2295 738 2295 1349 513 1349"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="517" VPOS="1349" WIDTH="1782" HEIGHT="415" ID="mz_3-116_004" TAGREFS="BT3">
+        <TextBlock HPOS="513" VPOS="1349" WIDTH="1782" HEIGHT="415" ID="mz_3-116_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="517 1349 2299 1349 2299 1764 517 1764"/>
+            <Polygon POINTS="513 1349 2295 1349 2295 1764 513 1764"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="517" VPOS="1764" WIDTH="1782" HEIGHT="1026" ID="mz_3-116_005" TAGREFS="BT3">
+        <TextBlock HPOS="513" VPOS="1764" WIDTH="1782" HEIGHT="1026" ID="mz_3-116_005" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="517 1764 2299 1764 2299 2790 517 2790"/>
+            <Polygon POINTS="513 1764 2295 1764 2295 2790 513 2790"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="517" VPOS="2790" WIDTH="1782" HEIGHT="241" ID="mz_3-116_006" TAGREFS="BT3">
+        <TextBlock HPOS="513" VPOS="2790" WIDTH="1782" HEIGHT="241" ID="mz_3-116_006" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="517 2790 2299 2790 2299 3031 517 3031"/>
+            <Polygon POINTS="513 2790 2295 2790 2295 3031 513 3031"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="517" VPOS="3050" WIDTH="1782" HEIGHT="57" ID="mz_3-116_007" TAGREFS="BT4">
+        <TextBlock HPOS="513" VPOS="3050" WIDTH="1782" HEIGHT="57" ID="mz_3-116_007" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="517 3050 2299 3050 2299 3107 517 3107"/>
+            <Polygon POINTS="513 3050 2295 3050 2295 3107 513 3107"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

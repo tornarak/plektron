@@ -909,3 +909,77 @@ def test_load_segmenter_names_the_default_when_it_is_absent(tmp_path):
     it, since nothing else in the repo produces that file."""
     with pytest.raises(FileNotFoundError, match="zones-seg"):
         zn.load_segmenter(zn.DEFAULT_MODEL, tmp_path)
+
+
+# ------------------------------------------------------------ the eval re-mark
+
+def _mk(root, ref, store, labels=("MainZone-P",), y=600):
+    make_scan(root, ref)
+    write_page(root, ref, store)
+    return ref
+
+
+def test_remark_eval_never_touches_a_human_marked_page(tmp_path):
+    """A page a human put in the held-out set is a judgement. Re-deriving the whole
+    split would overwrite every one of them silently — the fault `--assemble` was
+    already stopped from committing against the frozen lists."""
+    for r in ("1-001", "1-002", "1-003", "1-004"):
+        make_scan(tmp_path, r)
+        zn.save_zones(r, [{"label": "MainZone-P", "x0": 0, "y0": 600,
+                           "x1": 100, "y1": 900}], tmp_path, split="train")
+    zn.set_split("1-001", "eval", tmp_path)
+    zn.set_split("1-002", "exempt", tmp_path)
+    zn.remark_eval(tmp_path, 1.0, commit=True)
+    s = zn.load_splits(tmp_path)
+    assert s["1-001"] == "eval" and s["1-002"] == "exempt"
+    # Everything that *was* train moved; nothing else did.
+    assert s["1-003"] == "eval" and s["1-004"] == "eval"
+
+
+def test_remark_eval_reports_without_writing_unless_committed(tmp_path):
+    for r in ("1-001", "1-002"):
+        make_scan(tmp_path, r)
+        zn.save_zones(r, [{"label": "MainZone-P", "x0": 0, "y0": 600,
+                           "x1": 100, "y1": 900}], tmp_path, split="train")
+    rep = zn.remark_eval(tmp_path, 0.5)
+    assert rep["moved"] == 1 and rep["committed"] is False
+    assert all(v == "train" for v in zn.load_splits(tmp_path).values())
+
+
+def test_remark_eval_quotas_are_per_part(tmp_path):
+    """An eval set drawn globally lands where the pages are. By page count this
+    corpus is three volumes keyed in very different ways, so a model measured on
+    one of them says nothing about reuse on the others."""
+    for part, n in (("1", 10), ("2", 10)):
+        for i in range(1, n + 1):
+            r = f"{part}-{i:03d}"
+            make_scan(tmp_path, r)
+            zn.save_zones(r, [{"label": "MainZone-P", "x0": 0, "y0": 600,
+                               "x1": 100, "y1": 900}], tmp_path, split="train")
+    rep = zn.remark_eval(tmp_path, 0.2)
+    assert {p["part"]: p["quota"] for p in rep["parts"]} == {"1": 2, "2": 2}
+
+
+def test_independent_compares_the_two_stores_not_one_of_them_twice(tmp_path):
+    """`read_zones`'s third positional is `with_points`, so passing the store there
+    reads gt both times and calls every page identical. The guard against the
+    one-witness comparison had the one-witness comparison in it."""
+    make_scan(tmp_path, "1-048")
+    zn.save_zones("1-048", [{"label": "MainZone-P", "x0": 0, "y0": 600,
+                             "x1": 100, "y1": 900}], tmp_path, split="train")
+    assert zn._independent("1-048", tmp_path) is True      # no prediction at all
+    # Identical where it counts. x is not compared and must not be: both stores take
+    # it from the same configured column, so a difference there is never a human's
+    # ruling — the y-pair and the label are the whole content of a band.
+    write_page(tmp_path, "1-048", zn.MZDIR, y0=600, y1=900)
+    assert zn._independent("1-048", tmp_path) is False
+    write_page(tmp_path, "1-048", zn.MZDIR, y0=600, y1=1500)
+    assert zn._independent("1-048", tmp_path) is True
+
+
+def test_spread_takes_a_sample_not_a_prefix(tmp_path):
+    """Held-out pages off the front of a list are a contiguous run of the book, and
+    a contiguous run is one chapter, one layout, one typesetter's habits."""
+    got = zn._spread(list(range(100)), 4)
+    assert got == [0, 25, 50, 75]
+    assert zn._spread([1, 2], 5) == [1, 2] and zn._spread([1, 2], 0) == []

@@ -392,6 +392,12 @@ def main(argv=None):
                          "gt/fig/ zones painted white so paragraph wrap around an "
                          "illustration cannot shape what the model learns. With a "
                          "ref, one page; bare, all 832")
+    zo.add_argument("--remark-eval", type=float, metavar="FRACTION", default=None,
+                    help="move this fraction of the train set into eval — "
+                         "stratified per part, independent pages first, spread "
+                         "rather than taken off the front. Additive: a page a human "
+                         "already marked eval or exempt is never touched. Reports "
+                         "without writing unless --commit")
     zo.add_argument("--assemble", action="store_true",
                     help="build bogoras-seg/ from the train/eval marks: each page's "
                          "zone ALTO beside its blotted raster, ready for ketos "
@@ -886,6 +892,9 @@ def main(argv=None):
             if a.blot:
                 rep = zmod.blot_all(a.root) if not a.ref else zmod.blot_one(a.ref, a.root)
                 out(rep)
+                return 0
+            if a.remark_eval is not None:
+                out(zmod.remark_eval(a.root, a.remark_eval, commit=a.commit))
                 return 0
             if a.assemble:
                 rep = zmod.assemble(a.root)

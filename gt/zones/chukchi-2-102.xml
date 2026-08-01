@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-2-102.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="378" VPOS="439" WIDTH="1776" HEIGHT="94" ID="mz_2-102_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="378 439 2154 439 2154 533 378 533"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="378" VPOS="572" WIDTH="1776" HEIGHT="779" ID="mz_2-102_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="378 572 2154 572 2154 1351 378 1351"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="378" VPOS="1351" WIDTH="1776" HEIGHT="360" ID="mz_2-102_003" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="378 1351 2154 1351 2154 1711 378 1711"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="378" VPOS="1711" WIDTH="1776" HEIGHT="480" ID="mz_2-102_004" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="378 1711 2154 1711 2154 2191 378 2191"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="378" VPOS="2191" WIDTH="1776" HEIGHT="598" ID="mz_2-102_005" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="378 2191 2154 2191 2154 2789 378 2789"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="378" VPOS="2789" WIDTH="1776" HEIGHT="297" ID="mz_2-102_006" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="378 2789 2154 2789 2154 3086 378 3086"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

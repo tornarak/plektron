@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+    <sourceImageInformation>
+      <fileName>chukchi-2-238.png</fileName>
+    </sourceImageInformation>
+  </Description>
+  <Tags>
+    <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
+    <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
+    <OtherTag ID="BT3" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/>
+    <OtherTag ID="BT4" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/>
+    <OtherTag ID="BT5" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
+  </Tags>
+  <Layout>
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="328" VPOS="470" WIDTH="1776" HEIGHT="94" ID="mz_2-238_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="328 470 2104 470 2104 564 328 564"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="588" WIDTH="1776" HEIGHT="117" ID="mz_2-238_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="328 588 2104 588 2104 705 328 705"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="705" WIDTH="1776" HEIGHT="243" ID="mz_2-238_003" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="328 705 2104 705 2104 948 328 948"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="948" WIDTH="1776" HEIGHT="84" ID="mz_2-238_004" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="328 948 2104 948 2104 1032 328 1032"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="1032" WIDTH="1776" HEIGHT="106" ID="mz_2-238_005" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="328 1032 2104 1032 2104 1138 328 1138"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="1159" WIDTH="1776" HEIGHT="846" ID="mz_2-238_006" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="328 1159 2104 1159 2104 2005 328 2005"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="2005" WIDTH="1776" HEIGHT="94" ID="mz_2-238_007" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="328 2005 2104 2005 2104 2099 328 2099"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="2107" WIDTH="1776" HEIGHT="86" ID="mz_2-238_008" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="328 2107 2104 2107 2104 2193 328 2193"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="2209" WIDTH="1776" HEIGHT="360" ID="mz_2-238_009" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="328 2209 2104 2209 2104 2569 328 2569"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="2569" WIDTH="1776" HEIGHT="79" ID="mz_2-238_010" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="328 2569 2104 2569 2104 2648 328 2648"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="2656" WIDTH="1776" HEIGHT="258" ID="mz_2-238_011" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="328 2656 2104 2656 2104 2914 328 2914"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="2914" WIDTH="1776" HEIGHT="63" ID="mz_2-238_012" TAGREFS="BT4">
+          <Shape>
+            <Polygon POINTS="328 2914 2104 2914 2104 2977 328 2977"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="328" VPOS="3016" WIDTH="1776" HEIGHT="102" ID="mz_2-238_013" TAGREFS="BT5">
+          <Shape>
+            <Polygon POINTS="328 3016 2104 3016 2104 3118 328 3118"/>
+          </Shape>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

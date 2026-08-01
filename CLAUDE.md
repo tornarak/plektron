@@ -385,34 +385,43 @@ is the sample the first training run was meant to have. An itinerary is a
 still saves, it simply has no neighbours, and a scoped sweep reports the unkeyed
 entries as rows so "how much is left" has an answer.
 
-**Where it stands: 345 pages keyed** — `gt/seg`'s heterogeneous 122, then part 1
-straight through to `1-359`. **271 text pages carrying 1692 zones**, 74 marked
-exempt, weighted heavily to part 1 (274 pages, against 31 and 40). The splits are
-**211 train / 60 eval**; the eval set was grown from 34 during the third training
-run, which breaks comparability with the first two runs' headline figures and was a
-deliberate trade for a better final estimate.
+**The store is complete: all 832 pages keyed**, **716 text pages carrying 4593
+zones**, 116 marked exempt. The splits are **525 train / 191 eval**.
 
-Read the class distribution against the earlier one below: `MainZone-Quote` has not
-moved at all — **25 instances at 181 pages and 25 at 345** — while everything else
-roughly doubled. That is the fact behind `train_merges`.
+That eval set was rebuilt, and how is the point. The whole-book pass left it at 60 —
+every new page defaults to `train`, so it had not grown since run 3 while the corpus
+more than doubled, and it was 45/5/10 across parts over a corpus that is 259/260/197.
+A model measured almost entirely on part 1 and then reused on another Jesup volume is
+being asked a question its eval set never covered. `harness zones --remark-eval
+0.20 --commit` moved 131 pages, and three properties of how it chose them are the
+reason to trust the resulting figure more than the old one: **additive** (a page a
+human marked is never re-derived), **stratified per part**, and **independent pages
+first** — a held-out page whose gt is the prediction ratified unchanged measures
+nothing, and all 131 came from pages a human demonstrably changed.
 
-    MainZone-P            884    MainZone-Other         60
-    RunningTitleZone      261    QuireMarksZone         47
-    MainZone-Continued    250    MainZone-Quote         25
-    MarginTextZone-Notes  165
+**Most of those pages were adopted from `mz/`, not keyed from blank**, and that fact
+governs how the numbers below may be read. See "the `unseen` row is not held-out
+evidence" in Open.
 
-The class distribution is the thing to read here, because it settles a question this
-design was open on:
+`harness zones` reports the class distribution in its summary (`labels`), so read it
+from there rather than from a table here, which goes stale. As of the complete store:
 
-    MainZone-P            494    MainZone-Other         54
-    RunningTitleZone      141    QuireMarksZone         26
-    MainZone-Continued    124    MainZone-Quote         25
-    MarginTextZone-Notes  105
+    MainZone-P           2500    MainZone-Other        166
+    RunningTitleZone      694    QuireMarksZone        111
+    MainZone-Continued    641    MainZone-Quote          0
+    MarginTextZone-Notes  476
 
-`MainZone-Quote` was **zero** at 75 pages, and a class with no instances cannot be in
-a class map — the open question was whether to fold it into `MainZone-Other` before
-training. It now sits level with `QuireMarksZone`, so it stays. The book answered;
-nothing was decided.
+**`MainZone-Quote` is withdrawn, and the store now holds none**, which is worth
+recording because the reasoning reversed twice. It was zero at 75 pages, level with
+`QuireMarksZone` at 25 by 345 — "the book answered; nothing was decided" — and then
+in the whole-book pass an editor retyped every instance to `MainZone-Other`, the
+distinction not being worth drawing. No model ever saw it: `train_merges` folded it
+from the start, and that entry is now a no-op, as is the type's declaration in
+`data/zones_config.json`. Both are dead surface and can go.
+
+The one live consequence is good: with Quote gone the store's class set is exactly
+the six the installed model carries, so **`--assemble` reports `resize: (none
+needed)`** and the `--resize` permutation lottery cannot recur on the next run.
 
 What the findings are worth, read against the scans:
 
@@ -841,6 +850,10 @@ if you ever need it.
                                       scores a run, refuses a permuted class map,
                                       and writes it to models/bogoras-seg/ with the
                                       split it saw beside it.
+                                      --remark-eval F moves fraction F of train into
+                                      eval — additive, stratified per part, pages
+                                      the model did not dictate first, spread rather
+                                      than off the front; --commit to write.
                                       --predict runs the trained segmenter into
                                       mz/zones/ (--model, --device), skipping a
                                       page that already has one unless --force,
@@ -1471,8 +1484,26 @@ TBD
   rows (the fold working as designed) and the residual is **30 zones of 1692**,
   two-thirds of it `MainZone-P` ↔ `MainZone-Continued` — whether a paragraph opens or
   resumes, which is an indent question no structural change reaches.
-  **`unseen` is now zero pages**: everything keyed is in the frozen split, so eval is
-  the only held-out evidence until more is keyed.
+  `eval` still reads **95.7 / 91.5** against the complete store, so nothing about the
+  model moved; only the corpus around it did.
+- **The `unseen` row is not held-out evidence, and it reads exactly like it is.**
+  After the whole-book pass `--score` reports 435 `unseen` pages at **99.1% recall,
+  96.5% precision — better than the pages the model trained on**, which is not a
+  thing a held-out set does. The reason is that those pages were **adopted from
+  `mz/`**: the editor's promote loop is how the book was keyed, so gt on most of them
+  is the model's own output with corrections. `--diff` puts a number on it — **507 of
+  748 pages are identical between the two stores**. The tell inside `--score` is the
+  median boundary error, **0 px** against 6 px on both other splits: independent
+  keying cannot land on the model's edges exactly.
+  This is the comparison-with-one-witness problem in a third place, after the
+  verbatim firewall and `review`'s span diff, and the shape is the same — **two
+  inputs that can turn out to be one**. It is worse here in one respect: `harness
+  review` could detect its collapse from the paths, and this cannot. Nothing in a
+  `gt/zones/` ALTO records whether a human drew the page or ratified a proposal, so
+  `--score` has no way to refuse. That is the missing-internal-witness fault the
+  store layout exists to prevent, arriving through provenance the *editor* did not
+  write down rather than through a directory name. Until a save records which it was,
+  **`eval` is the only trustworthy row**, and it is 60 pages.
 - **The decode matters more than the model did.** Same weights: blob vectorisation
   gave 61.3% precision, the segmental DP 80.1%, and the DP plus the paragraph split
   90.8%. Two of those three gains cost no training at all.
