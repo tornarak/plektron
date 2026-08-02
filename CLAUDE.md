@@ -201,8 +201,15 @@ Layout, all at the repo root:
   processes the file under the first name, meets it again under the second, finds
   it already done and skips silently, so the report undercounts exactly what it
   touched. `harness/normalize.py:scoped_files` does this and says why.
-  **The corpus gate names the stores, not the view**, and that is the same rule as
-  `zones check --store mz`: a machine store may be measured and may not gate.
+  **Anything that gates or publishes a number names the stores, not the view**,
+  which is the same rule as `zones check --store mz`: a machine store may be
+  measured and may not decide. Three places apply it — `normalize`'s scope, and
+  both readers behind `lexicon`. `lexicon misses` is the sharpest: every recognizer
+  error is a token no dictionary carries, i.e. a `lexicon_miss`, so walking the
+  view would fill the approval list with CATMuS's misreadings and invite them into
+  a committed human-edited file that suppresses the very detector meant to catch
+  them. `harness ocr pages` deliberately does *not* apply it — a machine-read page
+  is workable, which is what that verb reports — and takes `--from` to narrow.
   `normalize`'s scope listed `ocr/*.xml` while the view was an alias for `gt/ocr/`
   and nothing else; the moment `ocr predict` existed, one predicted page put **978
   `spacing` hits** into a corpus-wide gate — and not even over text, but over the

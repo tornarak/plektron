@@ -156,11 +156,14 @@ view over every OCR store. Exactly two actions write `gt/ocr/` — `restore`
 require `--commit`.
 
 ### ocr pages
-**Does** every ref with OCR present. Sparse by construction.
-**Reads** `ocr/`.
+**Does** every ref with OCR present — i.e. workable now.
+**Reads** the `--from` directory.
 **Writes** —
 **Exit** always 0.
+**Note** through the view by default, so a page only the recognizer has read counts. That is deliberate: a machine-read page *is* workable. It was sparse by construction while `gt/ocr/` was the only store under the view and is not any more, so narrow it when the question is narrower.
 ```
+--from DIR  ALTO directory to read [ocr, the view]. `gt/ocr` is what a human has
+            been through; `mz/ocr` is what the recognizer has read
 --root --json
 ```
 
@@ -546,7 +549,7 @@ dictionary, which reads committed TEI instead. All report-only, all exit 0.
 
 ### lexicon misses
 **Does** frequency-ranked `lexicon_miss` tokens, for bulk approval into `data/lexicon_extra.txt` — which suppresses `lexicon_miss` and nothing else.
-**Reads** `ocr/`, `data/lexicon_extra.txt`.
+**Reads** `gt/ocr/`, `data/lexicon_extra.txt`. **Named, not the view**: every recognizer error in `mz/ocr/` is a token no dictionary carries, i.e. a `lexicon_miss`, and this list feeds a committed human-edited file that suppresses the detector meant to catch them.
 **Writes** — **Exit** 0.
 ```
 --root --json

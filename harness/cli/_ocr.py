@@ -60,9 +60,10 @@ def register(sub, common):
     act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
     add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
 
-    p = add("pages", help="every ref with OCR present, i.e. workable now. Sparse "
-            "by construction — a pilot selection scattered through the volume, "
-            "not a prefix of it")
+    p = _from(add("pages", help="every ref with OCR present, i.e. workable now. "
+              "Through the view by default, so a machine-read page counts — that "
+              "is what makes it workable. Narrow it with --from: `gt/ocr` is what "
+              "a human has been through, `mz/ocr` what the recognizer has read"))
     p.set_defaults(func=run_pages)
 
     p = _from(_ref(add("lines", help="per-line records for one page — line id, "
@@ -231,7 +232,7 @@ def register(sub, common):
 
 
 def run_pages(a) -> int:
-    out(a, all_refs(a.root))
+    out(a, all_refs(a.root, a.alto_dir))
     return 0
 
 

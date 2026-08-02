@@ -504,7 +504,7 @@ def detect_all(lines: list[str], root: Path = Path(".")) -> dict[str, list[dict]
 
 
 def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
-    """Frequency-ranked `lexicon_miss` tokens across every OCR'd page.
+    """Frequency-ranked `lexicon_miss` tokens across every hand-keyed page.
 
     Terms get approved into `data/lexicon_extra.txt` in bulk from a real count,
     rather than one page at a time as they happen to surface. Tokens already in
@@ -512,13 +512,22 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
 
     Judgement about what belongs in the file stays with the human: this only
     says what is frequent, not what is English.
+
+    **`gt/ocr/` by name, not the `ocr/` view.** This used to walk the view, which
+    was an alias for the ground truth and nothing else; since `ocr predict` it also
+    resolves into `mz/ocr/`, and every recognizer error there is a token no
+    dictionary carries — i.e. a `lexicon_miss`. Walking the view would fill this
+    list with CATMuS's misreadings and invite them into a **committed, human-edited
+    file** that suppresses the very detector meant to catch them. The same rule as
+    `normalize`'s scope and `zones check --store mz`: a machine store is measured,
+    never allowed to decide.
     """
     from .context import all_refs, stem_for, _lines_from_alto, _draft_text
 
     counts: dict[str, int] = {}
     where: dict[str, str] = {}
-    for ref in all_refs(root):
-        ocr = root / "ocr" / f"{stem_for(ref, root)}.xml"
+    for ref in all_refs(root, "gt/ocr"):
+        ocr = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         if not ocr.exists():
             continue
         draft = _draft_text(_lines_from_alto(ocr))
@@ -546,16 +555,21 @@ _MARKS_AFTER = {"̣", "̌", "̃", "̂", "̈", "̆",
 def _restored_refs(root: Path = Path(".")) -> list[str]:
     """Refs whose `gt/ocr/` ALTO actually holds text — shells excluded.
 
-    `all_refs` walks `ocr/*.xml`, which is only ever a symlink into `gt/ocr/`
-    (CLAUDE.md, "`ocr/*.xml` are symlinks into `gt/ocr/`"), so this reads
-    `gt/ocr/` by name rather than double-counting the same file under both
-    names. Also the one filter that knows which of the 20 pilot refs are
-    still empty export shells (CLAUDE.md, "The ground-truth loss").
+    `gt/ocr/` by name, at both steps. That used to be phrased as avoiding a
+    double count — the view was an alias for this store and nothing else — and
+    since `ocr predict` it is the stronger point: the view also resolves into
+    `mz/ocr/`, and a recognizer's reading is not restored ground truth however much
+    text it holds. Every frequency table this feeds (`lexicon native`, `marks`,
+    `suffixes`, `digraphs`) is cited by `keying_spec.md` §5.1, so blending ranks
+    here would move published numbers silently.
+
+    Also the one filter that knows which of the 20 pilot refs are still empty
+    export shells (CLAUDE.md, "The ground-truth loss").
     """
     from .context import all_refs, stem_for
 
     out = []
-    for ref in all_refs(root):
+    for ref in all_refs(root, "gt/ocr"):
         p = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         if not p.exists():
             continue
