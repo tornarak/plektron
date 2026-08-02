@@ -1,0 +1,167 @@
+{
+  "contamination": {
+    "blind": true,
+    "note": "2-031 not previously read this session; first read off scans/chukchi-2-031.png and review/2-031/sheets."
+  },
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "running title"
+    },
+    "1": {
+      "text": "305",
+      "note": "folio number"
+    },
+    "2": {
+      "text": "leap over a chasm bristling with projecting knives. The shaman performs"
+    },
+    "3": {
+      "text": "this feat backwards. Then a huge kettle filled with boiling water is placed"
+    },
+    "4": {
+      "text": "by the side of a larch-tree. A thin pole with a sharp end protrudes from"
+    },
+    "5": {
+      "text": "the water. The competitors have to catch the end of a rope which hangs"
+    },
+    "6": {
+      "text": "from the larch-tree. Then they must jump into the kettle, alighting on the"
+    },
+    "7": {
+      "text": "end of the pole, and finally land safely on the ground. Other trials follow."
+    },
+    "8": {
+      "text": "The shaman overpowers his supernatural competitors, robs them of the",
+      "note": "printed 'of' is followed by a small raised ink speck (not an apostrophe or period — it sits above the baseline, off to the right of the f); read as a printer's artifact and dropped, not keyed."
+    },
+    "9": {
+      "text": "woman, and finally kills them.¹",
+      "note": "footnote marker keyed as superscript 1 (U+00B9), matching the raised digit on the page."
+    },
+    "10": {
+      "text": "The “directions” of the evening are classed together as “Darkness”"
+    },
+    "11": {
+      "text": "(Wuˊs˙quus˙). They are not given separate sacrifices, except in special cases.",
+      "resolved": "Wuˊs˙quus˙ = W u U+02CA(stress, on u) s U+02D9(palatalization, after s) q u u s U+02D9(palatalization, after final s)"
+    },
+    "12": {
+      "text": "After the usual sacrifice to the Dawn, the Chukchee man will often sprinkle"
+    },
+    "13": {
+      "text": "a few drops of blood in the four principal “directions.” The darkness and"
+    },
+    "14": {
+      "text": "the midnight “directions” are frequently confused with the nadir (notaˊs˙qa-vaˊ-",
+      "resolved": "notaˊs˙qa-vaˊ- = n o t a U+02CA(stress, on a) s U+02D9(palatalization, after s) q a - v a U+02CA(stress, on a) - (word continues on next line, hyphen is the printed line-end break)"
+    },
+    "15": {
+      "text": "ɪrg̣ɪn). Notaˊs˙qa-vaˊɪrg̣ɪn signifies literally “earth-being,” and the sacrifice in",
+      "resolved": "ɪrg̣ɪn = U+026A(ɪ, small-cap i) r g+U+0323(dot below) U+026A(ɪ) n — continuation of notaˊs˙qa-vaˊ- from line 14. Notaˊs˙qa-vaˊɪrg̣ɪn = N o t a U+02CA(stress) s U+02D9(palatalization) q a - v a U+02CA(stress) U+026A(ɪ) r g+U+0323 U+026A(ɪ) n, sentence-initial capital N as printed.",
+      "note": "Both instances of this compound (line 14-15 split, and the repeat later on this same line) read the -irgin root with a small-cap ɪ in BOTH vowel positions and a dotted g̣, matching the corpus-attested form 'vaˊɪrg̣ɪn' (\"spirit\") cited from 3-004 in CLAUDE.md. The second ɪ (before final n) was harder to distinguish from a plain i at the line-wrapped first occurrence (ɪrg̣ɪn)., ) specifically — read as ɪ there too for consistency with the unambiguous second occurrence on the same textual line, but flagging since it was the less certain of the two reads."
+    },
+    "16": {
+      "text": "that “direction” is sometimes meant as a sacrifice to the earth.²",
+      "note": "footnote marker keyed as superscript 2 (U+00B2)."
+    },
+    "17": {
+      "text": "Sun and Moon. — The Sun is generally described as a separate",
+      "note": "'Sun and Moon' is printed in italic as a section heading; not reproduced as a separate markup here."
+    },
+    "18": {
+      "text": "vaˊɪrg̣in. He is represented as a man in bright garments wandering around",
+      "resolved": "vaˊɪrgin. = v a U+02CA(stress) U+026A(ɪ) r g+U+0323(dot below) U+026A(ɪ) n",
+      "note": "At this occurrence (the term's first formal introduction in running text) the printed R and N are set visibly taller/small-capital-styled, unlike the plain lowercase r/n at every other occurrence of this word on the page (lines 14-15, and the footnote at line 43). No small-cap R or N sort is licensed in keying_spec.md §2.3 (only ᴀ ᴇ ɪ ʟ), so they are keyed as plain ASCII r/n per the word's phonemic identity elsewhere on the page rather than invented as a new sort. Flagging the print's typographic emphasis here for the adjudicator to confirm this disposition."
+    },
+    "19": {
+      "text": "the sky, drawn by dogs or reindeer. His reindeer are sometimes described"
+    },
+    "20": {
+      "text": "as having antlers of copper. He descended to earth along one of his own"
+    },
+    "21": {
+      "text": "rays, and married a girl, whom he carried with him to heaven by the same"
+    },
+    "22": {
+      "text": "road.³ He also brought to men a herd of white reindeer. The brown and",
+      "note": "footnote marker keyed as superscript 3 (U+00B3)."
+    },
+    "23": {
+      "text": "the gray reindeer come from under the ground, somewhere beyond the limits"
+    },
+    "24": {
+      "text": "of the peltry-bearing country (äviˊɪ-nuˊtenut), at the place where the sky",
+      "resolved": "äviˊɪ-nuˊtenut = a+U+0308(ä) v i U+02CA(stress, on i) U+026A(ɪ) - n u U+02CA(stress, on u) t e n u t"
+    },
+    "25": {
+      "text": "touches the earth. There a large hole is bored through the ground, and"
+    },
+    "26": {
+      "text": "through that hole herds of reindeer pass continually, followed by wolves. In"
+    },
+    "27": {
+      "text": "this way the number of reindeer on earth increases."
+    },
+    "28": {
+      "text": "The Sun goes down every evening to his wife, whose name is Walking-"
+    },
+    "29": {
+      "text": "around-Woman (Kavraˊ-ñña). According to another somewhat disconnected",
+      "resolved": "Kavraˊ-ñña = K a v r a U+02CA(stress, on second a) - n+U+0303(ñ) n+U+0303(ñ) a"
+    },
+    "30": {
+      "text": "version, Sun’s wife is called Rejoicing-Woman (Koˊrg̣ɪ-ña). This name was",
+      "resolved": "Koˊrg̣ɪ-ña = K o U+02CA(stress, on o) r g+U+0323(dot below) U+026A(ɪ) - n+U+0303(ñ) a",
+      "note": "the g in this word carries a visible dot below, matching the corpus's strong prior for dotted g."
+    },
+    "31": {
+      "text": "given to her because she bore a son to her husband, and then said to him,"
+    },
+    "32": {
+      "text": "“Rejoice, I have a son!” The son was soon stolen by Stuck-Staff-Woman"
+    },
+    "33": {
+      "text": "(Uˊnpiñe), who may sometimes be heard weeping in the open on very dark",
+      "resolved": "Uˊnpiñe = U U+02CA(stress, on U) n p i n+U+0303(ñ) e — plain ASCII i, not small-cap ɪ (checked closely against the ɪ elsewhere on this page; this one is clearly x-height with a dot, not the taller ɪ letterform)."
+    },
+    "34": {
+      "text": "nights at the end of summer. The Sun-People sought for the lost boy, but"
+    },
+    "35": {
+      "text": "the thief destroyed all traces of herself by sticking her magic staff across her"
+    },
+    "36": {
+      "text": "trail. This is how she received the name of Stuck-Staff-Woman. This episode"
+    },
+    "37": {
+      "text": "seems to be a fragment of some old tale."
+    },
+    "38": {
+      "text": "The Moon is also considered a man, and to a certain extent holds a",
+      "note": "printed 'to' is followed by a small low-set ink speck before 'a' — no sense reading as a period there ('and to. a certain extent' is not grammatical); read as a printer's artifact and dropped, not keyed."
+    },
+    "39": {
+      "text": "position in contrast to that of the Sun. He is called the Sun of the keˊlᴇ.",
+      "resolved": "keˊlᴇ = k e U+02CA(stress, on e) l U+1D07(ᴇ, small-cap e)"
+    },
+    "40": {
+      "text": "The suns of lower worlds are often quite similar to our moon. Shamans"
+    },
+    "41": {
+      "text": "apply to the Moon for evil spells and incantations. A person who looks too"
+    },
+    "42": {
+      "text": "¹ Bogoras, Chukchee Materials, p. 227.",
+      "note": "Note rewritten in adjudication: the reader's original note claimed this opener was keyed as a plain ASCII digit \"per the precedent recorded for 2-034 in keying_spec.md §2.10\", and said the half-open-pairing check flagging it would be correct. All three parts are wrong. §2.10 is marked SETTLED and says key the Unicode superscript and never the ASCII digit; gt/ocr/chukchi-2-034.xml keys its own opener \"¹ See Chapter XIV.\", the opposite of the cited precedent; and the half-open pairing is the defect that check exists to catch, not a sanctioned pattern. The text itself is right — U+00B9, as verified — so the note described output the reader did not produce. Recorded because a confident rationale attached to correct text is how correct text gets undone at review."
+    },
+    "43": {
+      "text": "² For the keˊlet who are called notaˊs˙qa-vaˊɪrg̣ɪt, compare p. 293.",
+      "resolved": "keˊlet = k e U+02CA(stress) l e t, plain e (not small-cap ᴇ) unlike the singular keˊlᴇ on line 39 — read as printed, a plausible singular/plural distinction. notaˊs˙qa-vaˊɪrg̣ɪt = n o t a U+02CA(stress) s U+02D9(palatalization) q a - v a U+02CA(stress) U+026A(ɪ) r g+U+0323(dot below) U+026A(ɪ) t, no hyphen before the root (unlike the line 14/15 line-wrap occurrence).",
+      "note": "Footnote opener ² = U+00B2, superscript, per keying_spec.md §2.10. The reader's original note here cited line 42's plain-ASCII reasoning, which was wrong and is corrected there; the keyed text was always the superscript."
+    },
+    "44": {
+      "text": "³ From tales.",
+      "note": "Footnote opener ³ = U+00B3, superscript, per keying_spec.md §2.10. Same correction as lines 42 and 43 — the note, not the text, was at fault."
+    }
+  }
+}

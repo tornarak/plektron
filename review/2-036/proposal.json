@@ -1,0 +1,157 @@
+{
+  "contamination": {
+    "blind": true,
+    "note": "2-036 not in the read-openly/spent list in CLAUDE.md; first read this session. Full page image and sheets read before any zoom; mz/ocr/ text used only for line geometry and as an English/ASCII cross-check, never as a source for a non-ASCII glyph."
+  },
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "running title"
+    },
+    "1": {
+      "text": "310",
+      "note": "folio number"
+    },
+    "2": {
+      "text": "“melotamkin,” which, with a proper change of vowels in the root,¹ must be",
+      "note": "footnote marker keyed as superscript U+00B9; confirmed raised at 4x. 'melotamkin' is the author's spelling of a misheard form and carries no marks in print — contrast with the corrected form on the next line, which does."
+    },
+    "3": {
+      "text": "read miluteˊmkɪn (“group of hares”). I have never heard Cassiopeia spoken",
+      "resolved": "miluteˊmkɪn = m i l u t e U+02CA(stress) m k U+026A(ɪ) n"
+    },
+    "4": {
+      "text": "of as hares instead of reindeer."
+    },
+    "5": {
+      "text": "Two small stars near Pehiˊttin are called “reindeer-dam” (veñkeˊnřu), the",
+      "resolved": "Pehiˊttin = P e h i U+02CA(stress) t t i n; veñkeˊnřu = v e n+U+0303(ñ) k e U+02CA(stress) n r+U+030C(ř) u"
+    },
+    "6": {
+      "text": "second star being a reindeer-calf. They are approaching Pehiˊttin to be",
+      "resolved": "Pehiˊttin = P e h i U+02CA(stress) t t i n"
+    },
+    "7": {
+      "text": "sacrificed."
+    },
+    "8": {
+      "text": "",
+      "note": "Emptied in adjudication. The reader keyed \".\" and asked for a human check; at 4x the mark is a small comma-shaped ink blob to the right of \"sacrificed.\", with no letterform, and the ALTO box is 14x41 px — too tall and narrow for a period. Keying it \".\" would put a character the page does not set into gt/ocr/. Left as an empty line rather than deleted, since the geometry is the segmenter's record of what it found and only text is a reading. Note the batch was inconsistent here: 2-031 met the same class twice (its lines 8 and 38) and dropped the speck from within the line, which is the same ruling reached a different way. Worth confirming the empty line survives restore as intended."
+    },
+    "9": {
+      "text": "The Chukchee sketch (Fig. 217) represents the starry sky. Pebbly River"
+    },
+    "10": {
+      "text": "flows across it. The"
+    },
+    "11": {
+      "text": "Polar Star (a) is below"
+    },
+    "12": {
+      "text": "it, exactly in the mid-"
+    },
+    "13": {
+      "text": "dle. Below the Polar"
+    },
+    "14": {
+      "text": "Star, on the right, are"
+    },
+    "15": {
+      "text": "(b) the Elks (Twins);"
+    },
+    "16": {
+      "text": "and on the left (c),"
+    },
+    "17": {
+      "text": "the Elk-Hunter (Lynx)."
+    },
+    "18": {
+      "text": "Above Pebbly River,"
+    },
+    "19": {
+      "text": "on the left, is Ursa"
+    },
+    "20": {
+      "text": "Major (d) with its eight"
+    },
+    "21": {
+      "text": "stars; and above, in a"
+    },
+    "22": {
+      "text": "vertical row, three stars"
+    },
+    "23": {
+      "text": "(e) which represent Pehiˊttin (Eagle).² The group on the right hand repre-",
+      "resolved": "Pehiˊttin = P e h i U+02CA(stress) t t i n",
+      "note": "footnote marker keyed as superscript U+00B2; confirmed raised at 4x, immediately after the closing paren and period."
+    },
+    "24": {
+      "text": "sents Orion (f) and the Pleiades (g); three stars a little above that group"
+    },
+    "25": {
+      "text": "represent Corona Borealis (h). The stars i and j represent the “Heads.”",
+      "note": "mz/ocr/ misread the italic star label 'j' as '7'; confirmed 'j' against the full-page raster."
+    },
+    "26": {
+      "text": "The Moon is in the first quarter."
+    },
+    "27": {
+      "text": "In another sketch representing the sky (Fig. 218) the Polar Star is"
+    },
+    "28": {
+      "text": "placed in the middle. Four lines extend from it in the main directions of"
+    },
+    "29": {
+      "text": "the compass. The Dawn, the Evening, and the Darkness have worlds of"
+    },
+    "30": {
+      "text": "their own, represented as large mountains. The Dawn (in the left-hand"
+    },
+    "31": {
+      "text": "corner, below) has rays around his head. He holds in his left hand a tray,"
+    },
+    "32": {
+      "text": "which was offered to him with a sacrifice, and in his right hand a fox, which"
+    },
+    "33": {
+      "text": "he is going to give in exchange. From his left, another fox is approaching;"
+    },
+    "34": {
+      "text": "and on his right a dog which had been sacrificed by men sits looking up at"
+    },
+    "35": {
+      "text": "him. These two animals are also to be exchanged. Two other sacrificial"
+    },
+    "36": {
+      "text": "trays lie on the ground. The Evening and his family (in the opposite corner,"
+    },
+    "37": {
+      "text": "above) are celebrating the feast of the sea-god. They wear ceremonial head-"
+    },
+    "38": {
+      "text": "bands. A large wand stands in their midst. The Darkness is shown in"
+    },
+    "39": {
+      "text": "the lower right-hand corner, in the form of a human being coming out of"
+    },
+    "40": {
+      "text": "the trees with many branches. The Sun and the new Moon stand opposite"
+    },
+    "41": {
+      "text": "each other. Among the stars can be discerned the outlines of Orion and of",
+      "note": "mz/ocr/ inserted several spurious commas and periods on this line ('cach other. Among the stars, can be discerned the, outlines, of. Orion'); the raster carries none of them, confirmed on the plain sheet and again at the full-page read."
+    },
+    "42": {
+      "text": "¹ Compare p. 19, Footnote 2.",
+      "note": "footnote opener; the leading digit is raised in the raster, matching the superscript body reference on line 2. The 'Footnote 2' inside the sentence is ordinary baseline prose, not a marker."
+    },
+    "43": {
+      "text": "² The man who drew the sketch could give no reasons why he put in Pehiˊttin three stars instead of",
+      "resolved": "Pehiˊttin = P e h i U+02CA(stress) t t i n",
+      "note": "footnote opener; the leading digit is raised in the raster, matching the superscript body reference on line 23."
+    },
+    "44": {
+      "text": "two (see p. 307). Perhaps it was only an accidental mistake."
+    }
+  }
+}

@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-035.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-035.png; regions_from: zones/chukchi-2-035.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-035_r1" HPOS="395" VPOS="470" WIDTH="1776" HEIGHT="94" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="395 470 2171 470 2171 564 395 564"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l1" HPOS="963" VPOS="483" WIDTH="617" HEIGHT="53" BASELINE="965 515 1580 520" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="967 495 965 515 963 530 1576 536 1580 520 1578 487 979 483 967 495"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l2" HPOS="2060" VPOS="491" WIDTH="94" HEIGHT="59" BASELINE="2064 528 2154 522" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2140 491 2060 493 2064 528 2064 542 2123 550 2125 550 2126 550 2154 536 2154 522 2152 515 2140 491"/>
+                        </Shape>
+                        <String CONTENT="309"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r2" HPOS="395" VPOS="580" WIDTH="1776" HEIGHT="117" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="395 580 2171 580 2171 697 395 697"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l3" HPOS="385" VPOS="583" WIDTH="1765" HEIGHT="69" BASELINE="387 626 2150 622" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="387 626 387 642 687 642 746 652 748 652 881 642 961 652 963 652 965 652 967 652 983 642 1288 650 1290 650 1511 640 1605 650 1607 650 1723 640 1743 650 1745 650 1747 652 1872 652 1872 650 1874 650 1876 650 1889 640 1954 650 1956 650 1958 650 1960 650 1974 640 1985 650 1987 650 1989 650 1991 652 2128 652 2128 650 2130 650 2132 650 2150 638 2150 622 2142 583 2105 593 2070 583 2068 583 2066 583 2064 583 2042 593 2019 583 2017 583 2015 583 2013 583 1989 593 1864 583 1862 583 1860 583 1833 593 1788 583 1786 583 1784 583 1760 593 1694 583 1692 583 1690 583 1688 583 1674 593 1647 583 1645 583 1643 583 1568 593 1537 583 1535 583 1533 583 1531 583 1529 583 1513 595 1400 595 1376 583 1374 583 1372 583 1257 595 1194 585 1192 585 1190 585 1163 595 1112 585 1110 585 1108 585 1081 595 1055 585 1053 585 1051 585 942 595 893 585 891 585 804 595 695 585 693 585 628 595 524 585 522 585 385 597 387 626"/>
+                        </Shape>
+                        <String CONTENT="constellation Lynx. One of the hunters has a dog tied behind his sledge.¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l4" HPOS="393" VPOS="648" WIDTH="1675" HEIGHT="58" BASELINE="393 689 2068 689" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="393 689 393 706 2068 706 2068 689 2068 658 2046 648 2044 648 2042 648 1995 658 1901 648 1899 648 1835 658 1801 648 1799 648 1797 648 1711 658 1237 648 1235 648 1233 648 1231 648 1218 659 1018 659 936 648 934 648 830 658 763 648 761 648 759 648 757 648 742 659 644 659 546 648 544 648 479 658 393 648 393 689"/>
+                        </Shape>
+                        <String CONTENT="The relative positions of these constellations are represented in Fig. 216."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r3" HPOS="395" VPOS="697" WIDTH="1776" HEIGHT="79" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="395 697 2171 697 2171 776 395 776"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l5" HPOS="493" VPOS="708" WIDTH="1389" HEIGHT="57" BASELINE="493 748 1882 748" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="493 748 493 763 1880 765 1882 748 1882 720 1684 708 1682 708 1578 718 1545 708 1543 708 1541 708 1539 708 1515 720 1353 720 1323 708 1322 708 1320 708 1261 718 1229 708 1227 708 1226 708 1149 718 1122 708 1120 708 1118 708 1116 708 1085 720 916 720 883 708 881 708 879 708 877 708 853 718 806 708 804 708 742 718 685 708 683 708 603 718 511 708 509 708 507 708 505 708 493 716 493 748"/>
+                        </Shape>
+                        <String CONTENT="Corona Borealis is supposed to be the paw of a polar bear."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r4" HPOS="395" VPOS="1880" WIDTH="1776" HEIGHT="130" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="395 1880 2171 1880 2171 2010 395 2010"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l6" HPOS="505" VPOS="1878" WIDTH="1236" HEIGHT="60" BASELINE="507 1925 1741 1919" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1739 1903 1737 1901 1725 1885 1690 1880 1680 1880 1670 1880 1647 1887 1637 1880 1621 1880 1602 1880 1600 1880 1541 1887 1525 1880 1523 1880 1504 1880 1492 1889 1392 1889 1374 1878 1367 1878 1357 1878 1314 1889 1286 1878 1284 1878 1282 1878 1133 1889 1106 1878 1104 1878 1102 1878 1100 1878 1079 1889 1059 1878 1057 1878 1055 1878 1053 1878 953 1887 918 1878 916 1878 914 1878 912 1878 910 1878 893 1891 832 1880 830 1880 828 1880 802 1889 755 1880 754 1880 752 1880 730 1891 577 1891 566 1881 566 1880 564 1880 562 1880 515 1880 513 1880 511 1880 509 1880 509 1881 507 1881 505 1881 507 1925 507 1938 1739 1934 1741 1919 1739 1905 1739 1903"/>
+                        </Shape>
+                        <String CONTENT="The constellation Dolphin is considered a seal, with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l7" HPOS="393" VPOS="1938" WIDTH="1346" HEIGHT="63" BASELINE="395 1987 1739 1979" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="395 1987 395 2001 1737 1995 1739 1979 1735 1950 1572 1938 1570 1938 1525 1948 1498 1938 1496 1938 1494 1938 1492 1938 1490 1938 1478 1950 1306 1950 1280 1940 1278 1940 1276 1940 1184 1950 1137 1940 1135 1940 1133 1940 1132 1940 1122 1950 1096 1940 1094 1940 1092 1940 1030 1952 826 1942 824 1942 822 1942 783 1952 734 1942 732 1942 730 1942 699 1954 540 1954 513 1944 511 1944 509 1944 507 1944 505 1944 493 1954 432 1946 430 1946 428 1946 393 1956 395 1987"/>
+                        </Shape>
+                        <String CONTENT="star ζ representing its head, and four other stars its flippers."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r5" HPOS="395" VPOS="2010" WIDTH="1776" HEIGHT="178" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="395 2010 2171 2010 2171 2188 395 2188"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l8" HPOS="505" VPOS="1997" WIDTH="1232" HEIGHT="71" BASELINE="507 2044 1737 2038" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="507 2044 507 2058 734 2068 736 2068 738 2068 740 2068 740 2066 750 2058 812 2058 853 2068 855 2068 857 2068 922 2056 977 2066 979 2066 1735 2056 1737 2038 1735 2009 1705 1997 1703 1997 1701 1997 1369 2007 1351 1997 1349 1997 1347 1997 1345 1997 1343 1997 1341 1997 1320 2009 887 2001 885 2001 883 2001 881 2001 881 2003 871 2011 822 2001 820 2001 575 2011 517 2001 515 2001 513 2001 511 2001 511 2003 509 2003 505 2005 507 2044"/>
+                        </Shape>
+                        <String CONTENT="The Milky Way is supposed to be a river, called Pebbly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l9" HPOS="395" VPOS="2058" WIDTH="1346" HEIGHT="60" BASELINE="397 2107 1741 2101" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="397 2107 397 2118 1739 2115 1741 2101 1739 2071 1686 2058 1684 2058 1682 2058 1680 2058 1649 2069 1631 2058 1629 2058 1627 2058 1625 2058 1623 2058 1592 2071 1429 2071 1390 2058 1388 2058 1386 2058 1384 2058 1382 2058 1369 2069 1269 2060 1267 2060 1265 2060 1233 2071 1180 2060 1179 2060 1177 2060 1137 2071 1124 2060 1122 2060 1120 2060 1118 2060 1116 2060 1090 2071 1063 2060 1061 2060 1059 2060 1057 2060 1034 2071 1014 2060 1012 2060 1010 2060 1008 2060 898 2071 848 2060 846 2060 844 2060 842 2060 799 2071 783 2062 781 2062 779 2062 777 2062 656 2071 569 2062 567 2062 566 2062 564 2062 550 2073 407 2062 405 2062 403 2062 401 2062 401 2064 399 2064 395 2066 397 2107"/>
+                        </Shape>
+                        <String CONTENT="River (Čig̣eiˊ-veˊem), which is believed to flow toward the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l10" HPOS="397" VPOS="2124" WIDTH="876" HEIGHT="55" BASELINE="399 2163 1273 2160" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="399 2163 399 2179 1271 2179 1273 2160 1269 2132 491 2124 489 2124 397 2134 399 2163"/>
+                        </Shape>
+                        <String CONTENT="west and to contain numerous islands."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r6" HPOS="395" VPOS="2188" WIDTH="1776" HEIGHT="123" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="395 2188 2171 2188 2171 2311 395 2311"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l11" HPOS="505" VPOS="2179" WIDTH="1236" HEIGHT="59" BASELINE="507 2222 1741 2218" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="507 2222 507 2238 1739 2234 1741 2218 1737 2191 1605 2179 1604 2179 1553 2189 1519 2179 1517 2179 1515 2179 1513 2179 1470 2189 1425 2179 1423 2179 1367 2189 1333 2179 1331 2179 1329 2179 1327 2179 1325 2179 1310 2189 1263 2179 1261 2179 1259 2179 1257 2179 1243 2191 1120 2191 1073 2181 1071 2181 1069 2181 1039 2191 998 2181 996 2181 994 2181 992 2181 969 2193 769 2193 732 2181 730 2181 728 2181 726 2181 703 2191 634 2181 632 2181 575 2191 517 2181 515 2181 513 2181 511 2181 511 2183 505 2187 507 2222"/>
+                        </Shape>
+                        <String CONTENT="The five large stars in the constellation Cassiopeia are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l12" HPOS="395" VPOS="2238" WIDTH="1259" HEIGHT="59" BASELINE="397 2285 1654 2277" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="395 2279 397 2285 397 2297 1654 2297 1654 2277 1651 2250 1582 2250 1572 2240 1572 2238 1570 2238 1568 2238 1566 2238 1564 2238 1545 2248 1249 2240 1247 2240 1245 2240 1243 2240 1229 2250 1049 2240 1047 2240 1045 2240 998 2252 973 2242 971 2242 969 2242 820 2252 710 2242 708 2242 642 2254 622 2244 620 2244 618 2244 483 2254 413 2244 411 2244 409 2244 407 2244 399 2248 395 2279"/>
+                        </Shape>
+                        <String CONTENT="five reindeer-bucks standing in the middle of the river."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r7" HPOS="395" VPOS="2851" WIDTH="1776" HEIGHT="118" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="395 2851 2171 2851 2171 2969 395 2969"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l13" HPOS="507" VPOS="2837" WIDTH="1655" HEIGHT="65" BASELINE="509 2888 2162 2878" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="509 2888 509 2902 2160 2892 2162 2878 2154 2837 2132 2847 1925 2837 1923 2837 1827 2849 1670 2839 1668 2839 1666 2839 1629 2849 1594 2839 1592 2839 1590 2839 1588 2839 1586 2839 1570 2849 1476 2841 1474 2841 1472 2841 1451 2851 1349 2841 1347 2841 1161 2853 1120 2843 1118 2843 1116 2843 1114 2843 1075 2853 507 2851 509 2888"/>
+                        </Shape>
+                        <String CONTENT="In general, the names of constellations given by Lieutenant Nordquist²"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l14" HPOS="397" VPOS="2900" WIDTH="1773" HEIGHT="61" BASELINE="399 2945 2170 2939" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="399 2945 399 2961 2168 2957 2170 2939 2168 2912 2138 2900 2136 2900 2134 2900 2132 2900 2105 2910 1862 2900 1860 2900 1792 2910 1743 2900 1741 2900 1739 2900 1719 2910 1647 2900 1645 2900 1574 2912 1549 2902 1547 2902 1545 2902 1543 2902 1515 2912 1492 2902 1490 2902 1488 2902 1486 2902 1459 2912 1300 2902 1298 2902 1296 2902 1255 2912 1157 2902 1155 2902 1057 2912 1004 2902 1002 2902 1000 2902 998 2902 981 2914 942 2904 940 2904 938 2904 936 2904 906 2914 877 2904 875 2904 873 2904 599 2914 560 2904 558 2904 556 2904 554 2904 519 2914 421 2904 419 2904 417 2904 415 2904 397 2914 399 2945"/>
+                        </Shape>
+                        <String CONTENT="differ from mine only in the method of transcription; but he calls Cassiopeia"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r8" HPOS="395" VPOS="2984" WIDTH="1776" HEIGHT="133" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="395 2984 2171 2984 2171 3117 395 3117"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l15" HPOS="513" VPOS="2982" WIDTH="1657" HEIGHT="55" BASELINE="515 3013 2170 3006" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="515 3013 515 3027 736 3037 738 3037 2170 3021 2170 3006 2164 2982 513 2988 515 3013"/>
+                        </Shape>
+                        <String CONTENT="¹ Both drivers are called “elk-hunters” (g̣uˊpkᴀ-velerkileˊlɪt). The driver without a dog, however, is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l16" HPOS="399" VPOS="3031" WIDTH="872" HEIGHT="39" BASELINE="399 3055 1271 3055" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="399 3055 399 3070 1271 3070 1271 3055 1271 3031 399 3031 399 3055"/>
+                        </Shape>
+                        <String CONTENT="often called also the “mouse-driver” (compare p. 287)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-035_l17" HPOS="503" VPOS="3066" WIDTH="948" HEIGHT="47" BASELINE="505 3094 1451 3098" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="505 3094 503 3109 1447 3113 1451 3098 1449 3070 505 3066 505 3094"/>
+                        </Shape>
+                        <String CONTENT="² Vega Expeditionens Vetenskapliga jakttagelser, I, p. 397."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-035_r9" HPOS="395" VPOS="3144" WIDTH="1776" HEIGHT="60" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="395 3144 2171 3144 2171 3204 395 3204"/>
+                    </Shape>
+                    <TextLine ID="mz_2-035_l18" HPOS="399" VPOS="3143" WIDTH="693" HEIGHT="47" BASELINE="401 3176 1092 3168" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="401 3176 401 3190 1092 3186 1092 3168 1086 3143 399 3149 401 3176"/>
+                        </Shape>
+                        <String CONTENT="40—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

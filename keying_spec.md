@@ -282,7 +282,32 @@ superscript, another on the same page as a plain digit. A line opening with a
 bare digit then a space is flagged, **but only once a superscript has already
 appeared earlier in reading order**. The superscript is what establishes the
 page's own convention; against it a bare digit is an inconsistency rather than a
-guess. `2-034` is the case: body reference `dances.¹`, opener `1 See Chapter XIV.`
+guess.
+
+`2-034` was **the defect this check was written against, and it has since been
+repaired**: it printed body reference `dances.¹` against opener `1 See Chapter
+XIV.`, and `gt/ocr/chukchi-2-034.xml` now keys `¹ See Chapter XIV.` like every
+other opener in the store. Both halves of that sentence are here because the
+first half alone misled a reader. In a 2026-08 batch a page was keyed with plain
+ASCII openers and the proposal justified them as "the precedent recorded for
+2-034 in keying_spec.md §2.10" — reading a *worked example of the error* as a
+*sanctioned convention*, and predicting that the detector would flag its own
+output and that this would be correct behaviour. **A detector firing on your
+output is the rule working, never a convention you have joined.**
+
+So, stated once and scoped precisely: **there is no plain-digit convention for
+footnote markers anywhere in this corpus, and no page is a precedent for one.** A
+marker is the superscript sort, at the reference and at the opener alike.
+
+That is a rule about **markers**, and it must not be read as a rule about digits.
+A plain ASCII digit is entirely ordinary wherever it is not a footnote marker —
+a quantity in running prose (`1-053`'s "…Nordquist, / 2 houses)."), a numbered
+list item (`2. Čačanloˊrg̣ɪn`), a folio, a page cross-reference, a catalogue
+number. **A line beginning with a plain digit is not by itself anything**, which
+is exactly why the third check above waits for a superscript to appear first;
+without that condition it would fire forever on the settlement lists it was
+found on. The error in the batch above was not keying a digit — it was keying a
+*footnote opener* as one and calling that sanctioned.
 
 The condition is not a softening. Without it the rule fires on ordinary prose —
 `1-053` wraps "…Nordquist, / 2 houses)." onto its own line mid-gazetteer, on a
@@ -307,6 +332,39 @@ the prior-superscript condition.
 **Found by the check, in restored ground truth**: `1-048` (6 markers, one of them
 absent altogether), `1-053`, `1-073` (3), `1-151`, `2-034`. Four of those five
 were invisible to the counting invariants alone.
+
+### 2.11 The dash — em, U+2014, and only that (SETTLED, measured)
+
+The book sets **one dash: `—` U+2014**. Measured over `gt/ocr/`: **36
+occurrences across 18 pages, zero U+2013 en dashes, and zero double-hyphen `--`
+sequences.** There is no second dash to choose between, so this is a lookup and
+not a judgement.
+
+It is written down because it was not, and the cost showed up immediately. A
+reader keying `2-035`'s signature line had no rule to reach for and went hunting
+through the ground-truth store for precedent, settling it against
+`gt/ocr/chukchi-3-119.xml` and `chukchi-3-135.xml`. The reading it arrived at was
+correct and the two files do attest it — but **a reader who must derive a
+convention from other pages is doing corpus archaeology in the middle of a
+single-page pass**, and the next one may sample two pages that disagree, or one
+that was wrong. A settled sort belongs in this file, where it costs one look.
+
+Do not key `-` U+002D or `--` for a dash: inside Tier-1 the hyphen is
+load-bearing (§2.1) and a dash spelled as one is unrecoverable.
+
+**Spacing reproduces the print** and is not normalized, the same position §2.9
+takes. Three forms occur, and all three are as-set:
+
+- **Run-in section heading** — `LANGUAGE. — The Chukchee language is rich…`,
+  `VI. — HUNTING AND FISHING; WAR.` Spaced both sides. This is how the book marks
+  a heading that shares its line with the text, so the dash is structural and a
+  collation pass reads a heading off it.
+- **List introduction** — `The villages on the Arctic coast are as follows: —`,
+  trailing at the line end. Spaced left, nothing right.
+- **Quire mark / signature line** — `82—JESUP NORTH PACIFIC EXPED., VOL. VII.`
+  **Unspaced**, unlike the other two. Attested on `3-119` and `3-135`; the number
+  is the signature, not a folio, and `harness tei context` reads that zone for
+  the printed folio, so a mis-keyed dash there is not merely cosmetic.
 
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
@@ -408,6 +466,47 @@ what recurs, not the instance.
    to a higher bar of confidence than a "dot" reading, precisely because the base
    rate runs the other way.
 
+   **Fifth occurrence — and the method, because emphasis has now demonstrably
+   failed.** A 2026-08 batch of five parallel readers dropped the dot **five
+   times across three of the five pages** (`2-033`: `Attɪˊg̣ɪtkɪ` ×2 and
+   `vaˊɪrg̣ɪt` ×2; `2-035`: `Čig̣eiˊ-veˊem`). One of those readers quoted the 90%
+   prior *and* named `vaˊɪrg̣ɪn/vaˊɪrg̣ɪt` as the documented trap in its own note,
+   then keyed bare twice on the page it was writing about. Everything above was
+   read and restated correctly and changed nothing, so the defect is not in how
+   loudly this is stated.
+
+   **The reason is optical, and it is the whole point: the dotted and undotted
+   sorts are the same letterform.** Both close their tail; they differ by the dot
+   and by nothing else. So there is no "shape of an undotted `g`" to recognize —
+   *absence is not observable in isolation*, and a reader inspecting one `g`, at
+   any magnification, is asking a question the image cannot answer. That is why
+   "look hard at every `g`" has now failed five times: it names the target and
+   omits the instrument.
+
+   **So where you can, don't inspect a `g` — contrast it.** A plain `g` in the
+   English prose of the *same line* settles in seconds what a 4x stare does not:
+   both corrections above went that way after their readers had looked hard and
+   got it wrong (`danger`/`ger.` on `2-033`, `representing` on `2-035`). Same
+   line where possible, since inking varies down a page. Naming the contrast word
+   in `note` costs nothing and makes the reading checkable, where "confirmed at
+   4x" — what both wrong readings said — is not.
+
+   **This is a technique, not a requirement.** Plenty of lines offer no
+   neighbouring `g`, and a pass that demanded one would stall or invent one. Use
+   it when it is there and say so; otherwise read and flag as usual. The same
+   applies to every absence-shaped call here — `ä` vs `a` (§5.3), `ɪ` vs `i` vs
+   `r` (§5.2).
+
+   **The systematic net is distributional, and it needs no raster.** `harness
+   lexicon marks` reports bare-vs-marked share per base letter over the ground
+   truth: `g̣` is **93.2%** of Tier-1 `g` (109 dotted, 8 bare corpus-wide), `ñ`
+   26.2% of `n`, `ä` 14.3% of `a`. A page whose own distribution departs sharply
+   from those is worth re-reading before it is accepted, whatever its notes say —
+   `2-033`'s reader produced **four bare `g` and no dotted one**, which against a
+   93.2% base rate is visible without opening a scan. Cheap enough to run over a
+   whole multi-page batch at once, and unlike every check above it does not
+   depend on the reader having remembered anything.
+
    **Now enforced mechanically, not just measured.** `detectors.SUFFIX_MARK_DROPS`
    (a table, not a one-off regex, so a newly measured skew for a different
    base+mark+suffix combination is a data row to add) flags any token ending in
@@ -461,6 +560,35 @@ what recurs, not the instance.
      letter opening a Tier-1 word is not automatically ASCII `I`. It needs
      the same scrutiny as a medial occurrence, and has been misread as plain
      `I` at word-initial position specifically, more than once.
+   - **`ɪ` keyed as `r`, arriving from the recognizer.** CATMuS substitutes
+     `i`, `I` and **`r`** for `ɪ`, and `r` is the one that gets through: a
+     2026-08 reader keyed `2-033`'s `Attɪˊg̣ɪtkɪ` as `Attrˊgɪtkɪ`, taking the
+     machine's letter. **The standing "CATMuS is not a witness to any non-ASCII
+     glyph" rule does not reach this, and that scoping is the hole** — the
+     recognizer's error *is* ASCII, so a prohibition worded around non-ASCII
+     characters reads as licensing exactly the substitution that bites. The rule
+     wanted is: CATMuS is not a witness to what any character is wherever an
+     inventory glyph could stand. Optically the two are easy once contrasted
+     (§5.1): `r` carries a shoulder, `ɪ` is a bare stem with serifs top and
+     bottom, and English prose on the same line supplies a real `r` to hold it
+     against.
+
+   **This is now the leading residual class, and the tell is that the reader
+   reports checking it.** Four instances over two 2026-08 batches survived into
+   adjudication and were caught by the human, not by the pass: `2-047` lines 15
+   and 17 (`empeiˊkɪn`, `hɪshoˊlan`), `2-031` line 33 (`Uˊnpɪñe`), `2-035` line
+   14 (`velerkileˊlɪt`). **Every one was on a line whose reader had explicitly
+   narrated the check** — `2-031`'s wrote "checked closely against the ɪ
+   elsewhere on the page and read as plain ASCII i (x-height, dotted)" and was
+   wrong. A confident negative here carries no more weight than an unexamined
+   one, exactly as §5.1's bare-`g` reading does; both are absence claims about a
+   small feature, and neither is settled by having looked once.
+
+   **The distributional prior runs against `i`.** Over the ground truth, Tier-1
+   `ɪ` outnumbers `i` **470 to 247**, near 2:1 — so in a Tier-1 form `ɪ` is the
+   likelier sort, and a page keying mostly `i` is the case wanting a second look.
+   Same instrument as §5.1: cheap, needs no raster, and does not depend on the
+   reader having remembered anything.
 3. **`ä` (a + U+0308) vs. plain `a`.** The long counterpart of the
    obscure-vowel series (§2.2). Any bare `a` in a Tier-1 form is a candidate
    for `ä`, not a default reading just because plain `a` is the more common
@@ -569,6 +697,32 @@ what recurs, not the instance.
     small-cap-vs-lowercase-o distinction inside a single word (`ᴇʟO'o`) on this
     basis; there is no such distinction to make — it is plain lowercase `o`
     throughout.
+
+11. **A note that describes a keying decision the text does not show.** The
+    inverse of §5.5's failure, and worse, because the text is *right* and the note
+    argues it wrong. `2-031` keyed its three footnote openers correctly as `¹ ² ³`
+    and attached notes claiming plain ASCII digits had been keyed, justified "per
+    the precedent recorded for 2-034 in keying_spec.md §2.10", and predicting the
+    half-open-pairing check would flag the page and that this was expected. Almost
+    certainly the text was repaired mid-pass and the note never re-read. Left
+    standing it is worse than a wrong character: **an adjudicator reading a
+    confident rationale beside correct text is being argued into breaking it**, and
+    the note is the more persuasive of the two.
+
+    Two rules follow, both cheap. **Before the proposal is final, re-read every
+    `note` against its own `text`** — a note describing a decision the text does
+    not exhibit is a defect regardless of which one is right, because they cannot
+    both be. And **a note citing a section of this file must quote the sentence it
+    relies on.** Both readers in that batch cited §2.10 and reached opposite
+    conclusions after reading it in full; neither could have quoted a sentence
+    supporting a plain-digit opener, because there is none. Quotation is the check
+    that "I read it" is not.
+
+    A caution on where the blame sat, since the first diagnosis was wrong: that
+    reader was not inventing the precedent. §2.10 named `2-034` and printed its
+    defective opener as a worked example, so a *record of the error* read as a
+    *statement of the convention* — the passage has since been rewritten. **When a
+    reader misapplies a rule, read the rule before concluding it was ignored.**
 
 **On repetition.** More than one of the classes above has been named as "the
 one to check hardest" and then missed again on a later page, sometimes in the

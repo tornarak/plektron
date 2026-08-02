@@ -150,7 +150,7 @@ Layout, all at the repo root:
     ocr/    the read view over both OCR stores — symlinks, the human file always
             winning. The harness's default --from. Derived; ignored, since half
             its links point into the ignored mz/. Never written through.
-    gt/     what a human has been through. ocr/ (25 pages of ground truth),
+    gt/     what a human has been through. ocr/ (30 pages of ground truth),
             fig/ (252 figure ALTOs + METS, geometry only), seg/ (the first
             segmentation attempt, 122 pages, kept read-only), zones/ (the
             current one — seven types, fixed-width bands; 181 pages, 969 zones).
@@ -182,9 +182,18 @@ Layout, all at the repo root:
             harness/tests/, beside the package they cover.
 
 - **The ground-truth rebuild is finished, and the store has outgrown it.** All 20
-  pilot pages carry text, and `gt/ocr/` now holds **25** — the balance restored
+  pilot pages carry text, and `gt/ocr/` now holds **30** — the balance restored
   from `mz/ocr/` predictions rather than from eScriptorium shells, which is the
-  standing route now that the shells are gone. `harness ocr pages` lists the store;
+  standing route now that the shells are gone. **The reading half now fans out to
+  a subagent per page** (`.claude/skills/rebuild-groundtruth/dispatch.md`), each
+  stopping at a normalized `proposal.json`, with one `harness ocr review` server
+  over the whole batch; `2-045`–`2-047` and `2-031`–`2-036` went that way.
+  What that measured is worth carrying: **the residual error classes are §5.1's
+  dropped `g̣` and §5.2's `ɪ`-as-`i`, they survive readers who explicitly report
+  checking them, and the only safeguard that does not depend on a reader
+  remembering anything is distributional** — `harness lexicon marks` puts `g̣` at
+  93.9% of Tier-1 `g` and `ɪ` at nearly 2:1 over `i`, so a page against the grain
+  is visible without opening a scan. `harness ocr pages` lists the store;
   the pending-work list is the pages with a prediction and no ground truth, which
   is `--store mz --show-store` filtered on `view: mz`. `tei/` holds **three**
   pages — `1-151`, and the adjacent pair `1-100`/`1-101`, which is the corpus's

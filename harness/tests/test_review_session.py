@@ -271,6 +271,43 @@ def test_adjudicatedness_comes_from_the_disk_not_the_process(two):
         assert s.post("/done", {"ref": "2-046"})["next"] is None
 
 
+def test_the_page_links_to_its_own_full_scan(two):
+    """The crops say what a line sets; only the sheet says what is around it.
+
+    A reviewer settling a speck, a dropped line or a run-in heading needs the whole
+    page, and hunting for it by hand — in a gitignored `scans/` that is nowhere
+    near the review — was the alternative.
+    """
+    with Session(["2-046", "2-047"], two) as s:
+        html = s.get("/p/2-046")
+        assert "href='/scan/2-046'" in html
+        assert "target=_blank" in html
+
+
+def test_the_scan_route_serves_the_raster_and_only_for_queued_refs(two):
+    """A route rather than a data URI, because the sheet is megabytes and the
+    review page is reloaded constantly to carry something opened occasionally."""
+    with Session(["2-046"], two) as s:
+        with urllib.request.urlopen(s.base + "/scan/2-046", timeout=5) as r:
+            assert r.headers["Content-Type"] == "image/png"
+            assert r.read()[:8] == b"\x89PNG\r\n\x1a\n"
+        # Same containment rule the page route has: a ref nobody queued is not
+        # reachable, so one session cannot be used to browse the corpus.
+        with pytest.raises(Exception) as e:
+            s.get("/scan/2-047")
+        assert "404" in str(e.value)
+
+
+def test_the_static_render_points_at_the_file_on_disk(tmp_path):
+    """`--html` is opened off the filesystem, where `/scan/…` means nothing — and
+    a browser will not follow file:// from an http origin, so the two cases cannot
+    share one href. The relative path is computed, never spelled."""
+    _page(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path)
+    assert "/scan/2-046" not in html
+    assert "../../scans/chukchi-2-046.png" in html
+
+
 def test_a_repeated_ref_is_queued_once(two):
     """`review 2-046 2-046` is a typo, and a strip that showed it twice would make
     its own "n/2 adjudicated" count a lie."""

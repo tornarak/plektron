@@ -14,19 +14,44 @@ ref.
 
 **Predict first, in the parent.** A page with nothing in `mz/ocr/` has no line
 indices, so an agent sent at it has nothing to key against and will either stall or
-invent a numbering. `harness ocr predict` also wants the GPU, and three agents
-racing for it is slower than one loop. Check the pages are text pages with zones
-before spending the prediction:
+invent a numbering. `harness ocr predict` also wants the GPU, and five agents racing
+for it is slower than one loop. Survey the batch across four stores first —
+`gt/zones/`, `gt/fig/`, `gt/ocr/`, `mz/ocr/` — because each answers a different
+question about the dispatch:
 
-    ls gt/zones/chukchi-PP-NNN.xml gt/fig/chukchi-PP-NNN.xml
-    uv run harness ocr predict PP-NNN
+- **`gt/zones/`** — is it a text page at all, and does it have the zones `predict`
+  needs. No zones, no dispatch.
+- **`gt/ocr/`** — **a page already in the ground-truth store is not a restoration
+  candidate and must be dropped from the batch or dispatched knowingly.** A named
+  range will contain one sooner or later: `2-031`–`2-035` contained `2-034`, one of
+  the 20 pilot pages, fully keyed. Sending a reader at it puts it on the *revision*
+  branch (`--store gt`, `--force` at restore), and worse, every ALTO verb it runs
+  then hands it the keyed human text — so its proposal is no longer an independent
+  reading and the two witnesses the span diff exists to compare have collapsed into
+  one. Substitute the next page with zones and no gt, and say in the report that you
+  did and why.
+- **`gt/fig/`** — decides whether the agent's `ocr gaps` result means anything, and
+  the *figure track is complete at 252 pages*, so absence is information rather than
+  a gap in the segmentation: no figure ALTO means the page has no figures, so every
+  band `gaps` reports is a genuine candidate. Where one exists the figures are
+  masked and a band is meaningful too — what the agent must be told either way is
+  *which* of those two situations it is in, or it will read artwork as a dropped
+  line, or discount a real one as artwork.
+- **`mz/ocr/`** — whether the prediction is already spent.
 
-`gt/fig/` is what decides whether the agent's `ocr gaps` result means anything: with
-no figure ALTO the page reports its own artwork as uncovered ink, and the agent has
-to be told so or it will read a false positive as a dropped line.
+**Predict the batch in one process, not one call per page.** `predict` loads blla
+*and* CATMuS large and initializes CUDA before it reads a line, and a shell loop over
+five refs pays all of that five times: measured, 25 s for a standalone page against
+~17 s each when four go through `--itinerary`. Write the refs one per line to a
+scratch `.lst` and hand it over:
 
-**Give each agent one ref and say so twice.** Three agents in one repo is safe only
-because they touch disjoint `review/PP-NNN/` directories. The prompt names the ref
+    uv run harness ocr predict --itinerary <scratch>/batch.lst
+
+It is on the GPU by default — `--device auto` resolves to `cuda:0` — so a slow run is
+the load being paid repeatedly, not the device being wrong. Check before blaming it.
+
+**Give each agent one ref and say so twice.** Several agents in one repo are safe
+only because they touch disjoint `review/PP-NNN/` directories. The prompt names the ref
 in the first line and repeats "do not touch any other page".
 
 ## What the prompt has to carry, and why each clause is there
@@ -89,6 +114,48 @@ corpus-wide attestation. `2-045`'s reader asserted the apostrophe/pause mark was
 zero-attested and used that to license reading every raised mark as stress; the
 premise held (599 U+02CA against 0 U+0027 in `gt/ocr/`) but it was a claim doing
 real work in a reading, and unchecked it is a doctrine applied on faith.
+
+## Check the batch distributionally, before the human sees it
+
+**Run `harness lexicon marks` and compare the batch against it.** It reports
+bare-vs-marked share per base letter over the ground truth, and the two figures
+that matter are stable: **`g̣` is 93.9% of Tier-1 `g`** (123 dotted against 8 bare
+corpus-wide), and **`ɪ` outnumbers Tier-1 `i` 470 to 247**. A page keying four
+bare `g` and no dotted one — which `2-033` did — is visible against that without
+opening a scan.
+
+This is the only check in the loop that needs neither a raster nor a reader's
+cooperation, and it is the one that would have caught the most. Every other
+safeguard here asks somebody to remember something, and the record is that they
+remember it, restate it correctly, and get it wrong anyway. Cheap enough to run
+across a whole batch at once, which is the natural moment: a single page is a
+small sample and a five-page batch is not.
+
+What it cannot do is decide. An outlier is a page to re-read, never a page to
+correct by ratio — the count is a prompt to look, and the raster still rules.
+
+## What the 2026-08 five-page batch produced
+
+Worth keeping because the *shape* recurred rather than the instances.
+
+- **Dropped `g̣`, five times across three of the five readers.** One quoted §5.1's
+  90% prior and named `vaˊɪrg̣ɪt` as the documented trap in the same note it keyed
+  bare in, twice. Emphasis had already been tried; §5.1 now carries the contrast
+  technique and the distributional check instead.
+- **`ɪ` keyed as `i` or `r`, four times over two batches**, every one on a line
+  whose reader reported checking it. See §5.2.
+- **A note arguing against its own correct text.** `2-031` keyed its footnote
+  openers correctly and attached notes claiming plain ASCII digits, citing "the
+  precedent recorded for 2-034 in keying_spec.md §2.10". **The reader was not
+  inventing that** — §2.10 printed `2-034`'s defective opener as a worked example,
+  and a record of the error read as a statement of the convention. The section has
+  been rewritten. **When a reader misapplies a rule, read the rule before
+  concluding it was ignored**; the first diagnosis here was "fabricated" and it
+  was wrong.
+- **A reader groping through `gt/ocr/` for a convention the spec did not state**
+  (the em dash in a signature line). Its answer was right and its method was not.
+  keying_spec.md §2.11 now states the dash; a reader reduced to corpus archaeology
+  mid-pass is a gap in the spec, and it should report one.
 
 ## What to ask for back
 
@@ -166,10 +233,35 @@ gap check matters more than usual here").
         verb: `proposal codepoints`, `proposal set`, `proposal replace`,
         `ocr zoom`. If you reach for a script, you are routing around a tool that
         exists.
-      - Never take the CATMuS machine text in mz/ocr/ as a witness to any
-        non-ASCII glyph — it reads 0% of the transcription inventory. It is
-        evidence about line geometry and English only. Your proposal must be YOUR
-        reading of the raster, never seeded from the machine text.
+      - Never take the CATMuS machine text in mz/ocr/ as a witness to what any
+        character is, anywhere an inventory glyph could stand. It reads 0% of the
+        transcription inventory, and **its errors arrive as ASCII** — it
+        substitutes ' ’ / for ˊ, and i I **r** for ɪ — so "it is only wrong about
+        non-ASCII" is false, and is how its `r` got keyed into a Chukchee name.
+        It is evidence about line geometry and English prose, nothing else.
+      - Marks that are simply present or absent — the dot under `g`, ä vs a, ɪ vs
+        i vs r — often will not resolve by staring at the glyph, because the two
+        sorts are the same letterform. Where the line offers a plain English
+        counterpart, read the two together; that settles in seconds what a 4x
+        look does not, and naming the contrast word in your note makes the
+        reading checkable. Not every line offers one — this is a technique, not a
+        requirement, so use it when it is there and otherwise read and flag as
+        usual. What is *not* acceptable is a confident negative: keying_spec.md
+        §5.1 and §5.2 record that "checked at 4x, no dot / plain i" has been
+        wrong nine times across two batches, every time from a reader who
+        reported having checked.
+      - Read only your own page. Do not open another page's proposal.json,
+        decision.json or gt/ocr/ file for evidence — a convention derived from a
+        neighbouring page is what the firewall forbids, and the settled answers
+        are all in keying_spec.md. If you find yourself hunting the corpus for a
+        precedent, the rule is missing from the spec: say so in your report.
+      - A note citing keying_spec.md should quote the sentence it relies on. Two
+        readers have now cited the same section for opposite conclusions after
+        reading it in full.
+      - Before you finish, re-read every note against its own text. A note
+        describing a keying decision the text does not exhibit is a defect even
+        when the text is the right one — worse then, because it argues the
+        adjudicator into undoing correct work.
       - Footnote and raised markers are keyed as the Unicode superscript (¹
         U+00B9 etc.), never the ASCII digit.
       - Prefer "unclear, flagged in `note`" over a confident guess. A doubt that

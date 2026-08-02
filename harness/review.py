@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import difflib
 import json
+import os
 import unicodedata
 from pathlib import Path
 
@@ -46,8 +47,8 @@ from lxml import etree
 
 from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
-from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines
-from .paths import crops_dir, decisions_path, proposal_path
+from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
+from .paths import crops_dir, decisions_path, html_path, proposal_path
 
 CONTEXT_CHARS = 24
 
@@ -587,7 +588,8 @@ _FONT_STACK = "'DejaVu Serif', 'Charis SIL', 'Noto Sans', sans-serif"
 
 def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                       root: Path = Path("."), crops: Path | None = None,
-                      queue: list[dict] | None = None) -> str:
+                      queue: list[dict] | None = None,
+                      scan_href: str | None = None) -> str:
     """Self-contained review page for one ref: one entry per line, reading order.
 
     `queue` is the session's other pages — `[{"ref", "done"}, …]` in the order the
@@ -660,6 +662,11 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          # shows what was actually written rather than what the page remembers.
          ".q a.done{color:#137333;border-color:#b7dfc0;background:#f2fbf5}",
          ".q .qlab{color:#777;margin-right:.5rem}",
+         # Sits in the h1 but must not read as part of the count — normal weight,
+         # normal size, so the heading still scans as one sentence about the page.
+         "a.scan{font-size:.85rem;font-weight:400;margin-left:.6rem;"
+         "color:#1a56b8;text-decoration:none;white-space:nowrap}",
+         "a.scan:hover{text-decoration:underline}",
          ".sum{color:#555;font-size:.85rem;margin-bottom:1.4rem}",
          ".ln{border-top:1px solid #ddd;padding:.7rem 0}",
          # Agreement is de-emphasis, never omission: CATMuS agreeing about ASCII is
@@ -817,10 +824,22 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         done_n = sum(1 for q in queue if q["done"])
         cells.append(f"<span class=qlab>&nbsp;{done_n}/{len(queue)} adjudicated</span>")
         h.append("<div class=q>" + "".join(cells) + "</div>")
+    # The whole page, one click away. The crops answer "what does this line set";
+    # they cannot answer "what is around it", and a reviewer settling a speck, a
+    # dropped line or a heading has to see the sheet. Groping for the file by hand
+    # was the alternative, and `scans/` is gitignored and not where the review is.
+    #
+    # Default is the on-disk relative path, computed rather than spelled, so the
+    # `--html` file works opened straight off the filesystem; `serve` overrides it
+    # with a route, since a browser will not follow file:// from an http origin.
+    if scan_href is None:
+        scan_href = os.path.relpath(raster_path(ref, root), html_path(ref, root).parent)
     h += [
          f"<h1>{ref} — {summ['lines']} lines, "
          f"{summ['lines'] - summ['lines_identical']} differing from catmus, "
-         f"{len(t1)} carrying notation</h1>",
+         f"{len(t1)} carrying notation "
+         f"<a class=scan href='{scan_href}' target=_blank rel=noopener>full scan ↗</a>"
+         "</h1>",
          "<div class=sum>"
          f"{summ['spans']} differing spans in {summ['classes']} substitution "
          f"classes · {summ['inventory_spans']} touch inventory glyphs · "
@@ -1226,6 +1245,29 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
                 # every one of them already has decisions — a session opened over
                 # finished work must still show something rather than 404.
                 cur = next((r for r in queue if not _done(r)), queue[0])
+            elif self.path.startswith("/scan/"):
+                # The page raster, straight off disk. Not a data URI like the
+                # crops: a 2824x3897 sheet base64'd into every render would cost
+                # megabytes on a page the reviewer reloads constantly, to carry
+                # something they open occasionally and in another tab.
+                r = self.path[6:]
+                if r not in queue:
+                    self.send_error(404)
+                    return
+                try:
+                    png = raster_path(r, root).read_bytes()
+                except FileNotFoundError:
+                    # scans/ is derived and gitignored, so this is the ordinary
+                    # state of a clone rather than a broken link. Say which.
+                    self.send_error(404, f"no raster for {r} — scans/ is derived; "
+                                         "render it with pdftoppm over pdfs/")
+                    return
+                self.send_response(200)
+                self.send_header("Content-Type", "image/png")
+                self.send_header("Content-Length", str(len(png)))
+                self.end_headers()
+                self.wfile.write(png)
+                return
             elif self.path.startswith("/p/"):
                 cur = self.path[3:]
                 # Only refs this session was asked for. Not a security boundary —
@@ -1237,8 +1279,8 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
             else:
                 self.send_error(404)
                 return
-            body = render_queue_html(cur, alto_dir, root,
-                                     queue=_state()).encode("utf-8")
+            body = render_queue_html(cur, alto_dir, root, queue=_state(),
+                                     scan_href=f"/scan/{cur}").encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))

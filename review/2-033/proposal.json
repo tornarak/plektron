@@ -1,0 +1,172 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "307"
+    },
+    "2": {
+      "text": "this shape escape from danger. Finally Attɪˊg̣ɪtkɪ, in his turn, begins to",
+      "resolved": "Attɪˊg̣ɪtkɪ = A-t-t + ɪ (U+026A, small-cap) + U+02CA (stress, postposed) + g + U+0323 (combining dot below) + ɪ (U+026A) + t-k + ɪ (U+026A)",
+      "note": "Corrected in adjudication, twice over, against this line's own contrast. (a) The reader keyed ASCII r after \"Att\"; the letterform has no arm, where the genuine r of \"danger\"/\"ger.\" on this same line plainly does. r is CATMuS's documented substitution for ɪ, so the machine text was the source. (b) The reader read the g bare; a dot sits below it, and the English g's of \"danger\"/\"ger.\" at the same size show a plain open descender with nothing beneath. Both settled on 2-033's own raster at 4x, not by importing 2-032's reading of the same name."
+    },
+    "3": {
+      "text": "perform. He lifts his staff, and touches the competitors one by one. Half"
+    },
+    "4": {
+      "text": "of the body of each is burned, shrunken, or weakened. They fly away ter-"
+    },
+    "5": {
+      "text": "rified, and Attɪˊg̣ɪtkɪ carries off the bride.¹",
+      "resolved": "Attɪˊg̣ɪtkɪ, same form as line 2. Footnote reference marker ¹ = U+00B9 (superscript one), not ASCII 1.",
+      "note": "Second occurrence. Corrected in adjudication alongside line 2 — ASCII r → ɪ (U+026A) and a dot below the g — but settled on this line's own letterforms, not carried across from line 2 by symmetry."
+    },
+    "6": {
+      "text": "Stars and Constellations. — Stars and constellations also belong to"
+    },
+    "7": {
+      "text": "the vaˊɪrg̣ɪt. The most important is the Polar Star, which is called in the",
+      "resolved": "vaˊɪrg̣ɪt = v-a + U+02CA (stress) + ɪ (U+026A, small-cap) + r + g + U+0323 (combining dot below) + ɪ (U+026A) + t",
+      "note": "Mark in V_V position (a_ɪ); read as stress (U+02CA) per the standing default, not pause — that part stands. The g was corrected in adjudication: a dot sits below it at 4x, and the r immediately before shows a clear arm where the small-cap ɪ after the stress mark shows none, so the two sorts are separable on this line. keying_spec.md §5 item 1 names this exact family (vaˊɪrg̣ɪn/vaˊɪrg̣ɪt) as the dropped-dot trap; the reader cited the prior and read bare regardless, here and on line 36."
+    },
+    "8": {
+      "text": "Chukchee language Iluˊkälin eˊñer or Iluˊk-eˊñer (“motionless star”), or Äᵋlqeˊp-",
+      "resolved": "Iluˊkälin = I-l-u + U+02CA (stress) + k + ä (a+U+0308) + l-i-n. eˊñer = e + U+02CA (stress) + ñ (n+U+0303) + e-r. Iluˊk-eˊñer = same eˊñer, prefixed Iluˊk (I-l-u + U+02CA + k) + hyphen. Äᵋlqeˊp- = Ä (A+U+0308) + ᵋ (U+1D4B, laryngeal superscript) + l-q-e + U+02CA (stress) + p + hyphen (word continues on line 9).",
+      "note": "The raised mark between Ä and l read as ᵋ (U+1D4B) rather than ᵉ (U+1D49): per keying_spec.md §2.1/§2.6, ᵉ is licensed only immediately before i, and this sits before l — so under the disjoint-environment rule it cannot be ᵉ, and ᵋ is the only licensed candidate in this position. Shape at 4x (a small closed loop rather than a small 'e') is consistent with that reading."
+    },
+    "9": {
+      "text": "eˊñer (“nail star”), or Unp-eˊñer (“the pole-stuck star”). This latter name",
+      "resolved": "Line-initial eˊñer completes Äᵋlqeˊp-eˊñer begun on line 8. Unp-eˊñer = U-n-p + hyphen + e + U+02CA (stress) + ñ (n+U+0303) + e-r."
+    },
+    "10": {
+      "text": "occurs throughout Asia. It suggests the existence of a simile in which all"
+    },
+    "11": {
+      "text": "other stars move around the Polar Star as horses or reindeer move around"
+    },
+    "12": {
+      "text": "a pole to which they are tethered. The house of the Polar Star stands in"
+    },
+    "13": {
+      "text": "the zenith. Directly under it is a hole through which it is possible to pass"
+    },
+    "14": {
+      "text": "from one world to another. Through a series of these holes the Polar Star"
+    },
+    "15": {
+      "text": "can be seen in all the lower and higher worlds, while the other constellations"
+    },
+    "16": {
+      "text": "change with the different worlds. Carrying this idea further, the house of"
+    },
+    "17": {
+      "text": "the Polar Star is supposed to be higher than that of any other star. It is"
+    },
+    "18": {
+      "text": "made of a material similar to ice,² and on the top of it is set the beacon-",
+      "resolved": "Footnote reference marker ² = U+00B2 (superscript two), not ASCII 2."
+    },
+    "19": {
+      "text": "lamp of the star."
+    },
+    "20": {
+      "text": "Next in importance to the Polar Star are Arcturus and Vega, which are"
+    },
+    "21": {
+      "text": "called “Heads” (Leˊutti). Arcturus is called “Front Head” (Yanoʟaˊut), and",
+      "resolved": "Leˊutti = L-e + U+02CA (stress) + u-t-t-i. Yanoʟaˊut = Y-a-n-o + ʟ (U+029F, small-cap) + a + U+02CA (stress) + u-t.",
+      "note": "Both raised marks sit in V_V position (e_u, a_u); read as stress per keying_spec.md §4/§5 item 8 default, not pause."
+    },
+    "22": {
+      "text": "Vega is called “Rear Head” (Yaaʟaˊut). They are said to be brothers or",
+      "resolved": "Yaaʟaˊut = Y-a-a + ʟ (U+029F, small-cap) + a + U+02CA (stress) + u-t.",
+      "note": "Mark again in V_V position (a_u); stress by default."
+    },
+    "23": {
+      "text": "cousins. In the night-time, when travelling through the open tundra, the"
+    },
+    "24": {
+      "text": "Chukchee find their direction by comparing the position of both “Heads” to"
+    },
+    "25": {
+      "text": "each other and to the Polar Star. The “Front Head,” Arcturus, is often"
+    },
+    "26": {
+      "text": "called the “chief” or the “guide” of the stars."
+    },
+    "27": {
+      "text": "The stars Altair and Tarared of the constellation Eagle are combined"
+    },
+    "28": {
+      "text": "by the Chukchee into a separate constellation, and are called Pehiˊttin. This",
+      "resolved": "Pehiˊttin = P-e-h-i + U+02CA (stress) + t-t-i-n."
+    },
+    "29": {
+      "text": "constellation is believed to usher in the light of the new year, because it"
+    },
+    "30": {
+      "text": "begins to appear above the horizon at the time of the winter solstice. The"
+    },
+    "31": {
+      "text": "Reindeer Chukchee and most of the families of the Maritime Chukchee sacri-"
+    },
+    "32": {
+      "text": "fice to Pehiˊttin at the time of his first appearance. I was told, both on the",
+      "resolved": "Pehiˊttin, same form as line 28."
+    },
+    "33": {
+      "text": "Kolyma and the Anadyr, that Pehiˊttin was a forefather of the tribe, who,",
+      "resolved": "Pehiˊttin, same form as line 28."
+    },
+    "34": {
+      "text": "after death, ascended to heaven; but I could not procure any further details."
+    },
+    "35": {
+      "text": "Other stars and constellations known to the Chukchee are not considered"
+    },
+    "36": {
+      "text": "special vaˊɪrg̣ɪt. The principal ones are described below.",
+      "resolved": "vaˊɪrg̣ɪt, same form as line 7: v-a + U+02CA + ɪ (U+026A) + r + g + U+0323 + ɪ (U+026A) + t.",
+      "note": "Second occurrence. Dot below the g confirmed on this line at 4x and corrected in adjudication, as on line 7."
+    },
+    "37": {
+      "text": "Orion, which is called Rulteˊnnin, is said to be an archer with a",
+      "resolved": "Rulteˊnnin = R-u-l-t-e + U+02CA (stress) + n-n-i-n."
+    },
+    "38": {
+      "text": "crooked back. His name is derived from the same root as the adjective ni-",
+      "note": "Line-final hyphen on a Tier-1 word (\"ni-\"), continued on line 39 as \"ruˊltᴀ-qin\" — the full form is \"ni-ruˊltᴀ-qin\", already carrying an internal connector hyphen before \"qin\". Whether the \"ni-\" hyphen is itself part of the word or a line-break artifact is a join question per keying_spec.md §2.1 (\"residual line-end joins go to LLM triage in context, human-confirmed\"), not resolved here since this pass is per-line."
+    },
+    "39": {
+      "text": "ruˊltᴀ-qin (“crooked”). Star λ of the constellation forms his head; α and γ,",
+      "resolved": "ruˊltᴀ-qin = r-u + U+02CA (stress) + l-t + ᴀ (U+1D00, small-cap) + hyphen + q-i-n. λ = U+03BB GREEK SMALL LETTER LAMDA. α = U+03B1 GREEK SMALL LETTER ALPHA. γ = U+03B3 GREEK SMALL LETTER GAMMA — Bayer star-designation letters, ordinary scientific usage, not Tier-1 notation."
+    },
+    "40": {
+      "text": "his shoulders; χ and β, his feet. Orion’s belt is the crooked back of",
+      "resolved": "χ = U+03C7 GREEK SMALL LETTER CHI. β = U+03B2 GREEK SMALL LETTER BETA — Bayer designations, continuing line 39. Orion’s = curly apostrophe U+2019 (English possessive, as printed)."
+    },
+    "41": {
+      "text": "¹ Bogoras, Chukchee Materials, p. 235.",
+      "resolved": "Footnote opener marker ¹ = U+00B9 (superscript one)."
+    },
+    "42": {
+      "text": "² Tin-wuˊrrɪn (“similar to ice”). The Chukchee use the same word (tiˊntin) for “ice” and “glass.” The",
+      "resolved": "Footnote opener marker ² = U+00B2 (superscript two). Tin-wuˊrrɪn = T-i-n + hyphen + w-u + U+02CA (stress) + r-r + ɪ (U+026A, small-cap) + n. tiˊntin = t-i + U+02CA (stress) + n-t-i-n."
+    },
+    "43": {
+      "text": "term “similar to ice” is also applied to rock-crystal."
+    }
+  },
+  "contamination": {
+    "blind": true,
+    "note": "Read fresh off scans/chukchi-2-033.png (sheets + selective 2x/4x zoom crops). mz/ocr/chukchi-2-033.xml (CATMuS) was never consulted as a source for any glyph or word — used only as the line-index/geometry witness the harness verbs join on, per rebuild-groundtruth SKILL.md. No other page's proposal or decision was consulted."
+  },
+  "footnotes": {
+    "markers": [
+      1,
+      2
+    ],
+    "note": "Both markers appear exactly twice each (body reference + note opener), continuous run 1..2, all keyed as Unicode superscripts (U+00B9, U+00B2) per keying_spec.md §2.10. No half-open pairing."
+  }
+}

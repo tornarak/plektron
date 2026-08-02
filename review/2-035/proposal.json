@@ -1,0 +1,73 @@
+{
+  "contamination": {
+    "blind": true,
+    "note": "2-035 not in the read-openly/spent list in CLAUDE.md; first read this session."
+  },
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "running title"
+    },
+    "1": {
+      "text": "309",
+      "note": "folio number"
+    },
+    "2": {
+      "text": "constellation Lynx. One of the hunters has a dog tied behind his sledge.¹",
+      "note": "footnote marker keyed as superscript U+00B9, matching the raised digit seen at 4x; sentence spacing normalized to single space per keying_spec.md §2.9"
+    },
+    "3": {
+      "text": "The relative positions of these constellations are represented in Fig. 216."
+    },
+    "4": {
+      "text": "Corona Borealis is supposed to be the paw of a polar bear."
+    },
+    "5": {
+      "text": "The constellation Dolphin is considered a seal, with the"
+    },
+    "6": {
+      "text": "star ζ representing its head, and four other stars its flippers.",
+      "note": "ζ is a Greek star-designation letter (cf. the ε η α β γ ϰ λ μ θ letters on the preceding page, 2-034), prose, not Tier-1"
+    },
+    "7": {
+      "text": "The Milky Way is supposed to be a river, called Pebbly"
+    },
+    "8": {
+      "text": "River (Čig̣eiˊ-veˊem), which is believed to flow toward the",
+      "resolved": "Čig̣eiˊ-veˊem = Č (C+U+030C) + i + g + U+0323 (combining dot below) + e-i + U+02CA (stress) + hyphen + v-e + U+02CA (stress) + e-m",
+      "note": "Adjudication changed the g here. The reader recorded \"no dot visible under the initial g\"; at 4x a distinct mark sits below the g's tail, and the contrast is on the page — \"representing\" on line 6, same size and typeface, shows a plain open hook with nothing beneath it. Read as g + U+0323. The two raised marks stay stress (U+02CA) per the standing default; neither sits in a licensed spirant/pause environment. Flagged for confirmation: 4x is the zoom ceiling, so this is the best look available and worth a human eye at the review page."
+    },
+    "9": {
+      "text": "west and to contain numerous islands."
+    },
+    "10": {
+      "text": "The five large stars in the constellation Cassiopeia are"
+    },
+    "11": {
+      "text": "five reindeer-bucks standing in the middle of the river."
+    },
+    "12": {
+      "text": "In general, the names of constellations given by Lieutenant Nordquist²",
+      "note": "footnote marker keyed as superscript U+00B2, matching the raised digit seen at 4x"
+    },
+    "13": {
+      "text": "differ from mine only in the method of transcription; but he calls Cassiopeia"
+    },
+    "14": {
+      "text": "¹ Both drivers are called “elk-hunters” (g̣uˊpkᴀ-velerkileˊlit). The driver without a dog, however, is",
+      "resolved": "g̣uˊpkᴀ-velerkileˊlit = g+U+0323(g̣) u U+02CA(stress) p k U+1D00(ᴀ, small-cap) - v e l e r k i l e U+02CA(stress) l i t",
+      "note": "footnote opener; the '1' is raised/small at 4x, matching the body reference on line 2 — keyed as superscript U+00B9, not the ASCII digit. The dot below the initial 'g' is clearly visible at 4x (g̣, per the ~90% dotted-g prior). The capital after 'pk' is distinctly shorter than the true caps on this page ('B' of 'Both') and matches ascender/x-height, read as small-cap ᴀ (U+1D00) rather than ASCII 'A'. Both raised marks (after 'u', after the second 'e' in 'kile') sit in vowel-before-consonant position and are keyed as stress per the standing default, not apostrophe. Final 'lit' is plain ASCII (dotted lowercase i, not small-cap ɪ)."
+    },
+    "15": {
+      "text": "often called also the “mouse-driver” (compare p. 287)."
+    },
+    "16": {
+      "text": "² Vega Expeditionens Vetenskapliga jakttagelser, I, p. 397.",
+      "note": "footnote opener, superscript U+00B2 matching line 12's body reference. Bibliographic title (Swedish/Norwegian), Tier-2, keyed as printed."
+    },
+    "17": {
+      "text": "40—JESUP NORTH PACIFIC EXPED., VOL. VII.",
+      "note": "quire mark / signature line; em dash U+2014 per gt/ocr/chukchi-3-119.xml and chukchi-3-135.xml convention"
+    }
+  }
+}
