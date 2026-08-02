@@ -27,6 +27,7 @@ import pytest
 from conftest import write_scan
 
 from harness import farms as F
+from harness.context import all_refs
 
 REPO = Path(__file__).resolve().parent.parent.parent
 
@@ -137,6 +138,37 @@ def test_require_is_silent_about_a_missing_store(tmp_path):
     assert F.require(tmp_path, "mz/ocr") == tmp_path / "mz/ocr"
 
 
+def test_the_same_function_refuses_a_farm_and_tolerates_a_store(tmp_path):
+    """The asymmetry, in one place, over one function — because that is what shows
+    the scope is the registry and not the call site.
+
+    `harness ocr pages --store mz` reaches `all_refs(root, "mz/ocr")` through the
+    very same `_refs_under` that `harness ocr pages` reaches as `all_refs(root,
+    "ocr")`. A blanket refusal in that function would refuse a clone for having
+    predicted nothing yet, which is not a defect but the ordinary starting state.
+
+    Keep both halves here together. Read alone, either looks like an inconsistency
+    worth tidying away — the `test_lookalike_scope.py` situation, where a
+    consolidation was nearly carried out on an audit that mistook a real
+    distinction for drift.
+    """
+    with pytest.raises(FileNotFoundError, match="views build"):
+        all_refs(tmp_path, F.OCR_VIEW)          # a farm: never built
+    assert all_refs(tmp_path, "mz/ocr") == []   # a store: nothing predicted yet
+    assert all_refs(tmp_path, "gt/ocr") == []   # a store: nothing keyed yet
+
+
+def test_the_store_enumerators_stay_permissive(tmp_path):
+    """`zone_refs`/`ocr_refs` only ever walk stores, so nothing there should refuse.
+    Five tests failed when a draft of the guard reached them, and every one was a
+    fixture legitimately describing a corpus with no predictions in it."""
+    from harness.zones import zone_refs, MZDIR as ZMZ
+    from harness.recognize import ocr_refs, MZDIR as OMZ
+
+    assert zone_refs(tmp_path, ZMZ) == []
+    assert ocr_refs(tmp_path, OMZ) == []
+
+
 def test_farm_for_matches_the_path_exactly_never_a_parent(tmp_path):
     """`scans/` and `scans/w-figs/` are both registered and are different farms;
     `gt/ocr/` is inside no farm at all. A prefix match would fold a store into a
@@ -209,6 +241,26 @@ def test_METS_is_not_a_page(tmp_path):
     (tmp_path / "gt" / "ocr" / "METS").write_text("<x/>")
     pngs, xmls = F._w_ocr_wanted(tmp_path)
     assert set(xmls) == {"chukchi-1-048.xml"}
+
+
+def test_a_view_builds_from_gt_alone_when_the_machine_store_is_absent(tmp_path):
+    """The shape of a fresh clone, and a bug the clone simulation actually caught.
+
+    `mz/ocr/` absent means nothing has been predicted — a legitimate empty, not a
+    missing input — so the view must build gt-only rather than be skipped. The first
+    version of `FARMS` listed both stores as required reads and duly skipped the two
+    farms a clone most needs, on the grounds that the machine had not spoken yet.
+    That contradicted this module's own store rule while stating it in the docstring
+    directly above.
+    """
+    (tmp_path / "gt" / "ocr").mkdir(parents=True)
+    (tmp_path / "gt" / "ocr" / "chukchi-1-048.xml").write_text("<x/>")
+
+    rep = F.build("ocr", tmp_path)
+    assert rep["skipped"] == ""
+    assert rep["linked"] == 1
+    assert (tmp_path / F.OCR_VIEW / "chukchi-1-048.xml").readlink() == \
+        Path("../gt/ocr/chukchi-1-048.xml")
 
 
 def test_a_builder_whose_source_is_absent_is_skipped_with_a_row(tmp_path):

@@ -20,6 +20,7 @@ import re, unicodedata
 from pathlib import Path
 from lxml import etree
 
+from . import farms
 from .detectors import detect_all
 from .state import entry_state, foreign_terms_nearby, load_toc, toc_window
 
@@ -81,6 +82,26 @@ def stem_for(ref: str, root: Path = Path(".")) -> str:
 
 
 def _refs_under(root: Path, pattern: str) -> list[str]:
+    """Every ref matching `pattern`, in (part, scan index) order.
+
+    **Refuses when the directory is a derived tree that was never built**, and this
+    is the one place in the harness that distinguishes absent from empty.
+    `Path.glob()` on a missing directory returns empty *silently*, so a fresh clone
+    used to run `harness ocr pages`, walk an `ocr/` nobody had built, and report zero
+    workable pages with exit 0. Blank was indistinguishable from clean — the same
+    fault the zone store's `exempt` mark exists to separate.
+
+    **The refusal is scoped by the registry, not by this function**, and the line is
+    stores. A missing `mz/ocr/` means nothing has been predicted: a true statement
+    about the corpus, and the ordinary state of a clone. A missing `ocr/` means
+    nobody built the view: a statement about this working copy. `farms.require`
+    raises only for a registered farm path, so `--store mz` over an empty machine
+    store still answers "none" — which is the answer — while the view says it was
+    never built. See `harness/farms.py` on where that line falls.
+    """
+    d, _, _ = pattern.rpartition("/")
+    if d:
+        farms.require(root, d)
     refs = []
     for p in root.glob(pattern):
         try:

@@ -45,12 +45,18 @@ def register(sub, common):
 def run_check(a) -> int:
     rows = F.survey(a.root)
     out(a, rows)
-    # A gate, not measurement: every `absent` and every `stale` here names a real
-    # defect in this working copy with a one-command fix, and `views check` is what
-    # a fresh clone runs to find out what it lacks. `?` is deliberately not a
-    # failure — it means no verdict was available, which is a report about the
-    # check's reach rather than about the tree.
-    return 1 if any(r["state"] in ("absent", "stale") for r in rows) else 0
+    # A gate, not measurement — but **only over the farms `build` can actually
+    # fix**. `scans/` and `train/bogoras-seg/` are reported and never built here,
+    # so gating on them would fail a fresh clone for lacking rasters that
+    # `views build` has no way to produce: an exit code demanding a fix that the
+    # named command does not perform, which teaches the reader to ignore it. Their
+    # rows still print their state, and the `builder` column still says what would
+    # make them — the report keeps the information, the gate keeps its meaning.
+    #
+    # `?` is not a failure either. It says no verdict was available, which is a
+    # report about the check's reach rather than about the tree.
+    return 1 if any(r["state"] in ("absent", "stale")
+                    for r in rows if r["farm"] in F.BUILDABLE) else 0
 
 
 def run_build(a) -> int:

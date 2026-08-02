@@ -92,11 +92,19 @@ class Farm:
 
 
 FARMS = (
-    Farm("ocr", OCR_VIEW, "view", ("gt/ocr", "mz/ocr"),
+    # **The views read no directory they require**, and that is the store rule
+    # again rather than an oversight. A view is built from whichever of its two
+    # stores exist; with `mz/` absent it is the gt-only view, which is exactly
+    # right on a fresh clone where nothing has been predicted. Listing the stores
+    # here would skip the two farms a clone most needs, on the grounds that the
+    # machine had not spoken yet — which is a legitimate empty, not a missing input.
+    Farm("ocr", OCR_VIEW, "view", (),
          "harness views build --only ocr", "membership"),
-    Farm("zones", ZONES_VIEW, "view", ("gt/zones", "mz/zones"),
+    Farm("zones", ZONES_VIEW, "view", (),
          "harness views build --only zones", "membership"),
-    Farm("w-figs-blotted", FIGS_BLOT, "raster", (SCANS, "gt/fig"),
+    # `scans/` only. `blot_one` already tolerates a page with no figure ALTO — it
+    # links instead of painting — so `gt/fig/` is not a precondition; the pixels are.
+    Farm("w-figs-blotted", FIGS_BLOT, "raster", (SCANS,),
          "harness views build --only w-figs-blotted", "membership"),
     Farm("w-figs", W_FIGS, "select", ("gt/fig",),
          "harness views build --only w-figs", "membership"),

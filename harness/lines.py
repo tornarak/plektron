@@ -118,6 +118,24 @@ LINE_KEYS = ("index", "line_id", "block_id", "text",
 DEFAULT_ALTO_DIR = "ocr"
 
 
+def raster_path(ref: str, root: Path = Path("."), scans: str = "scans") -> Path:
+    """One page's raster, refusing early and by name.
+
+    Four call sites here open a page with `Image.open`, and on a fresh clone every
+    one of them raised `FileNotFoundError: 'scans/chukchi-1-048.png'` — accurate,
+    but it reads as a missing *page* when the truth is that `scans/` was never
+    rendered, and the two want completely different things from the reader. This
+    separates them: `farms.require` speaks first when the whole tree is gone, and
+    the per-page message stands when only the page is.
+    """
+    from . import farms
+    farms.require(root, scans)
+    p = root / scans / f"chukchi-{norm_ref(ref)}.png"
+    if not p.exists():
+        raise FileNotFoundError(f"no raster for {norm_ref(ref)} at {p}")
+    return p
+
+
 def alto_for_lines(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                    root: Path = Path(".")) -> Path:
     """Path to one page's ALTO in whichever store is being read.
@@ -139,7 +157,15 @@ def alto_for_lines(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     The consequence a caller must know: under the default, this can resolve to the
     same real file another part of the same verb writes. `restore` handles that
     case by name — see its `mode` field.
+
+    Refuses when `alto_dir` is a **derived tree that was never built**, so the
+    default path on a fresh clone names the missing view rather than letting lxml
+    raise `Error reading file 'ocr/chukchi-1-048.xml'` — loud enough, but blaming
+    the page for a directory nobody made. A store that merely holds nothing is not
+    an error and is not touched; see `farms.require`.
     """
+    from . import farms
+    farms.require(root, alto_dir)
     return root / alto_dir / f"chukchi-{norm_ref(ref)}.xml"
 
 
@@ -412,7 +438,7 @@ def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."
     ref = norm_ref(ref)
     alto = alto_for_lines(ref, alto_dir, root)
     page = etree.parse(str(alto)).find(".//{*}Page")
-    img = Image.open(root / scans / f"chukchi-{ref}.png")
+    img = Image.open(raster_path(ref, root, scans))
     sx, sy = _scale_for(page, img.size)
     wide = printspace_x(page) if margins else None
 
@@ -548,7 +574,7 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     ref = norm_ref(ref)
     alto = alto_for_lines(ref, alto_dir, root)
     page = etree.parse(str(alto)).find(".//{*}Page")
-    img = Image.open(root / scans / f"chukchi-{ref}.png").convert("L")
+    img = Image.open(raster_path(ref, root, scans)).convert("L")
     w, h = img.size
     sx, sy = _scale_for(page, img.size)
 
@@ -654,7 +680,7 @@ def adopt_gaps(ref: str, vpos_list: list[int], alto_dir: str = DEFAULT_ALTO_DIR,
     ps = tree.getroot().find(".//{*}PrintSpace")
     if ps is None:
         raise ValueError(f"{target}: no PrintSpace to append to")
-    img = Image.open(root / scans / f"chukchi-{ref}.png")
+    img = Image.open(raster_path(ref, root, scans))
     sx, sy = _scale_for(page, img.size)
 
     existing = page_lines(target, root)
@@ -741,7 +767,7 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     ref = norm_ref(ref)
     alto = alto_for_lines(ref, alto_dir, root)
     page = etree.parse(str(alto)).find(".//{*}Page")
-    img = Image.open(root / scans / f"chukchi-{ref}.png").convert("RGB")
+    img = Image.open(raster_path(ref, root, scans)).convert("RGB")
     sx, sy = _scale_for(page, img.size)
     d = ImageDraw.Draw(img)
 
