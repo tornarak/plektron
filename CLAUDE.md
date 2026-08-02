@@ -390,27 +390,30 @@ still saves, it simply has no neighbours, and a scoped sweep reports the unkeyed
 entries as rows so "how much is left" has an answer.
 
 **The store is complete: all 832 pages keyed**, **716 text pages carrying 4593
-zones**, 116 marked exempt. The splits are **525 train / 191 eval**.
+zones**, 116 marked exempt. The splits are **578 train / 138 eval**.
 
-That eval set was rebuilt, and how is the point. The whole-book pass left it at 60 —
-every new page defaults to `train`, so it had not grown since run 3 while the corpus
-more than doubled, and it was 45/5/10 across parts over a corpus that is 259/260/197.
-A model measured almost entirely on part 1 and then reused on another Jesup volume is
-being asked a question its eval set never covered. `harness zones remark-eval
-0.20 --commit` moved 131 pages, and three properties of how it chose them are the
-reason to trust the resulting figure more than the old one: **additive** (a page a
-human marked is never re-derived), **stratified per part**, and **independent pages
-first** — a held-out page whose gt is the prediction ratified unchanged measures
-nothing, and all 131 came from pages a human demonstrably changed.
+That eval set was rebuilt twice, and the second rebuild is the point. `remark-eval
+0.20` first grew it 60 → 191, stratified per part, taking "independent pages first"
+— but it decided independence by asking whether a page's gt **differed** from `mz/`,
+and a 5 px nudge satisfies that exactly as a redrawn page does. It counted 98
+tidy-ups as independent judgements and pronounced the set 0% contaminated when about
+half of it was the segmenter's own output with the edges pulled straight.
 
-**Most of those pages were adopted from `mz/`, not keyed from blank**, and that fact
-governs how the numbers below may be read. See "the `unseen` row is not held-out
+**Similarity cannot settle provenance**, so the split was rebuilt from git instead:
+310 pages are byte-identical to their pre-adoption state, 237 of them not exempt,
+and eval is drawn only from those. Every eval page's labels predate the segmenter.
+Holding out all 237 starved part 1 down to 60 training pages, so its clean pool was
+sampled evenly to 100 — eval is **100/26/12 by part**, and part 1's share is high on
+purpose, it being by far the densest in figures and irregular setting.
+
+**Most pages in the store were adopted from `mz/`, not keyed from blank**, and that
+fact governs how the numbers below may be read. See "the `unseen` row is not held-out
 evidence" in Open.
 
 `harness zones check` reports the class distribution in its summary (`labels`), so read it
 from there rather than from a table here, which goes stale. As of the complete store:
 
-    MainZone-P           2500    MainZone-Other        166
+    MainZone-P           2500    MainZone-Other        171
     RunningTitleZone      694    QuireMarksZone        111
     MainZone-Continued    641    MainZone-Quote          0
     MarginTextZone-Notes  476
@@ -424,7 +427,7 @@ from the start, and that entry is now a no-op, as is the type's declaration in
 `data/zones_config.json`. Both are dead surface and can go.
 
 The one live consequence is good: with Quote gone the store's class set is exactly
-the six the installed model carries, so **`--assemble` reports `resize: (none
+the six the installed model carries, so **`zones assemble` reports `resize: (none
 needed)`** and the `--resize` permutation lottery cannot recur on the next run.
 
 What the findings are worth, read against the scans:
@@ -508,13 +511,13 @@ since a default path that changes every retrain is a default nobody can use.
 
 **Two directories, and the split between them is the point.** `train/bogoras-seg/`
 is scratch — the symlink farm, the two `.lst` files, each run's checkpoints — and
-**nothing reads it once training ends**, so `--assemble` may clobber it freely.
+**nothing reads it once training ends**, so `zones assemble` may clobber it freely.
 `models/bogoras-seg/` is tracked and holds the artifacts: the weights, the split
 they saw as `<model>.train.lst`/`.eval.lst`, and a small `<model>.json` for the few
 facts that are not lists. They used to be one directory, and the `.lst` files were
 both the *next* run's input and the only record of what a *past* run consumed —
 so preparing a run destroyed the ability to interpret the model already installed,
-and `--score` would read whichever lists happened to be lying there regardless of
+and `zones score` would read whichever lists happened to be lying there regardless of
 which model it was scoring. Nothing detected that.
 
 **Its output does not go in `gt/zones/`, and this is the store rule rather than a
@@ -557,7 +560,7 @@ Four properties worth knowing before touching any of it:
   whichever store was on screen — the shape `proposal.json` → `decision.json` →
   `restore` already has.
 - **A prediction never satisfies `has_zones` on the default store.** Otherwise
-  `--predict` over an itinerary would mark the whole list keyed in one command and
+  `zones predict` over an itinerary would mark the whole list keyed in one command and
   leave the next session with nowhere to resume.
 
 **The sidecars stay `gt/`-only** — the three split lists, `_rule_exempt.json`,
@@ -591,18 +594,18 @@ on them. Fluent nonsense arriving in the one place nothing was checking.
 
 The invariants that follow, mechanism aside:
 
-- **`--install` refuses a permuted map**, so the check is a precondition of the
-  artifact existing rather than something to remember; `--remap-model` repairs one.
+- **`zones install` refuses a permuted map**, so the check is a precondition of the
+  artifact existing rather than something to remember; `zones remap` repairs one.
 - **The repair is a rename, not a retrain.** Both `--resize` branches assign class
   indices by iterating a `set`, and Python randomises string hashing per process, so
   a retrain is a lottery — `union` is not the fix it looks like.
-- **Omitting `--resize` is the only reliable escape**, which `--assemble` now derives:
+- **Omitting `--resize` is the only reliable escape**, which `zones assemble` now derives:
   when the data's class set already matches the model's, nothing is renumbered.
 - **The mechanism is unproven.** The set iteration is a real hazard sitting in the
   code but has not been shown to be the cause. What is proven is the permutation,
   its bijectivity, and that it holds out on pages it was not derived from.
 
-The diagnosis, the cycle it formed, and how `--remap-model` inverts it are in the
+The diagnosis, the cycle it formed, and how `zones remap` inverts it are in the
 skill.
 
 ### Two structural facts about this store
@@ -1394,12 +1397,12 @@ TBD
   `eval` still reads **95.7 / 91.5** against the complete store, so nothing about the
   model moved; only the corpus around it did.
 - **The `unseen` row is not held-out evidence, and it reads exactly like it is.**
-  After the whole-book pass `--score` reports 435 `unseen` pages at **99.1% recall,
+  After the whole-book pass `zones score` reports 435 `unseen` pages at **99.1% recall,
   96.5% precision — better than the pages the model trained on**, which is not a
   thing a held-out set does. The reason is that those pages were **adopted from
   `mz/`**: the editor's promote loop is how the book was keyed, so gt on most of them
-  is the model's own output with corrections. `--diff` puts a number on it — **507 of
-  748 pages are identical between the two stores**. The tell inside `--score` is the
+  is the model's own output with corrections. `zones diff` puts a number on it — **507 of
+  748 pages are identical between the two stores**. The tell inside `zones score` is the
   median boundary error, **0 px** against 6 px on both other splits: independent
   keying cannot land on the model's edges exactly.
   This is the comparison-with-one-witness problem in a third place, after the
@@ -1407,30 +1410,47 @@ TBD
   inputs that can turn out to be one**. It is worse here in one respect: `harness
   review` could detect its collapse from the paths, and this cannot. Nothing in a
   `gt/zones/` ALTO records whether a human drew the page or ratified a proposal, so
-  `--score` has no way to refuse. That is the missing-internal-witness fault the
+  `zones score` has no way to refuse. That is the missing-internal-witness fault the
   store layout exists to prevent, arriving through provenance the *editor* did not
-  write down rather than through a directory name. Until a save records which it was,
-  **`eval` is the only trustworthy row**, and it is 60 pages.
+  write down rather than through a directory name.
+  **That row is now 0 pages** — the whole book is split, so nothing lands in it — and
+  the eval set it contaminated was rebuilt from git rather than from similarity (see
+  "Where things stand"). The underlying gap is unchanged: nothing in a saved page
+  says whether a human drew it or ratified a proposal, so this recurs the moment a
+  page is keyed and left unsplit.
+- **A bare `harness zones score` may attribute one run's split to another's
+  predictions, and only `split_from` says so.** With no `--model` it takes the split
+  from `train/bogoras-seg/*.lst` — which `zones assemble` rewrites whenever the next
+  run is prepared — while `mz/zones/` still holds the *installed* model's output. So
+  after an assemble the rows are labelled with the next run's split: currently 577
+  "trained-on" pages against a model that trained on 211, and an "eval" row holding
+  pages it did train on. The report names its source and nothing refuses. Pass
+  `--model` for any statement about an installed model; a manifest cannot be
+  mis-attributed and a working directory can. This is the same two-inputs-that-may-be-one
+  shape as the rows above, arriving through a *stale* witness rather than a doubled one.
 - **The decode matters more than the model did.** Same weights: blob vectorisation
   gave 61.3% precision, the segmental DP 80.1%, and the DP plus the paragraph split
   90.8%. Two of those three gains cost no training at all.
-- **The 271-page corpus is heavily part 1** — 274 of 345 keyed pages, and the last
-  121 were a contiguous run of ordinary prose that moved like-for-like eval by 0.2
-  points. Parts 2 and 3 have 31 and 40 keyed pages between them. If a future run is
-  flat, the question is which *kind* of page is missing, not how many.
+- **Part 1's overrepresentation survives the whole-book pass, deliberately.** It was
+  an artifact when the corpus was 345 pages (274 of them part 1); now the store is
+  complete and the skew lives in the eval set instead, 100/26/12 by part, because
+  part 1 is by far the densest in figures and irregular setting. Volume is no longer
+  the lever: run 3 added 121 pages of contiguous ordinary prose over run 2 and moved
+  like-for-like eval by 0.2 points. If a future run is flat, the question is which
+  *kind* of page is missing, not how many.
 - **Why `--resize` shuffled the class names is not established.** The permutation is
   measured, bijective and corrected; the *mechanism* is not proven. Both branches
   assign new class indices by iterating a `set` difference and Python randomises
   string hashing per process, which would do it — but the tail of the `new` branch
   stores the mapping from the same dict the dataset was backfilled with, which
   should be self-consistent. Until someone reads it properly, the standing rule is
-  the empirical one: **`--score` after every training run**, and never trust a
+  the empirical one: **`zones score` after every training run**, and never trust a
   `class_mapping` that has been through `--resize`. See "`--resize` shuffled the
   class names".
 - **`models/bogoras-seg/zones-seg.safetensors` carries a hand-corrected
   `class_mapping`.** The
   weights are `ketos segtrain`'s; the names on the output channels were rewritten by
-  `--remap-model` from a permutation measured against `gt/zones/`. `.bak` holds the
+  `zones remap` from a permutation measured against `gt/zones/`. `.bak` holds the
   original. Anything retrained from this checkpoint inherits the corrected map, which
   is the intent — but a future run under `--resize` can permute it again, and only
-  `--score` will say so.
+  `zones score` will say so.
