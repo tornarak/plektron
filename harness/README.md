@@ -18,7 +18,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 |---|---|---|
 | `scans/` | 832 rasters at 300 dpi. **Derived** from `pdfs/`, not in git | `pdftoppm` |
 | `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored; nothing rebuilds it automatically, so `ocr pages --show-store` reports what each link *actually* reaches | `ocr link`, and `ocr predict` for the page it wrote |
-| `gt/ocr/` | 20 pages of human ground truth | `ocr restore --commit`, `ocr adopt-gap --commit` (geometry only) |
+| `gt/ocr/` | 21 pages of human ground truth | `ocr restore --commit`, `ocr adopt-gap --commit` (geometry only) |
 | `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, structured by the zones. Derived, ignored | `ocr predict` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
 | `gt/seg/` | the **first** segmentation attempt: 122 pages, full SegmOnto vocabulary, free polygons. Kept, read-only | by hand, via eScriptorium |
@@ -28,7 +28,9 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` | by hand |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
-| `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot` |
+| `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build` |
+| `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build` |
+| `scans/w-ocr/` | raster beside ALTO for every page a human has been through. Membership is `gt/ocr/`; the ALTO link points at the `ocr/` **view**, so promoting a page needs no rebuild. Derived, ignored | `views build` |
 | `train/bogoras-seg/` | training scratch: the symlink farm, its two `.lst` files, and each run's checkpoints. Derived, ignored, **read by nothing once training ends** | `zones assemble`, `ketos segtrain` |
 | `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `zones install --commit` |
 | `models/` (rest) | downloaded third-party weights, 675 MB, ignored | not authored here |
@@ -68,7 +70,7 @@ predicted polygon fails the fixed-measure width check by construction.
 ## Modules
 
 **`cli/`** — the two-tier parser, one module per group: `_tei _ocr _proposal _zones
-_lexicon _find _corpus`, each exposing `register(subparsers, common)` and one
+_lexicon _find _corpus _views`, each exposing `register(subparsers, common)` and one
 `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
 running anything), and the rename trap. `_common.py` holds the `--root`/`--json`
@@ -87,6 +89,27 @@ It was one module and a 1,000-line `main` until the reorganization, with `zones`
 alone accounting for 38% of the dispatch. The module docstring is still the parser
 `description`, so it reaches `--help`; keep it current. Action help is prose, not
 labels, because these encode judgements a one-word gloss cannot carry.
+
+**`farms.py`** — the derived trees as a declared set. `FARMS` names each one once
+(path, kind, what its builder must read, what builds it, how deep a check can look);
+`relink`/`rebuild` are the linking every builder shares, replacing five verbatim
+copies of the same three lines and collapsing `recognize.link_view` and
+`zones.link_view`, which were identical and each called the other its twin in a
+docstring. `survey` is what `views check` prints.
+
+Two things a caller must know. **`relink(resolve=False)` is a bug class with a
+name**: resolving a target that is itself a symlink follows it to the far end, which
+is what once sent `zones assemble`'s .lst paths back into `gt/zones/` so the blot
+links were never read. `scans/w-ocr/` needs the unresolved form for the same reason,
+and a test for it must assert on `readlink` — resolved, the link opens the same bytes
+and any content-based check passes.
+
+And **`require` is the scope of the absence rule, not a general guard.** It raises
+only for a registered farm path. A store that holds nothing is a record that is
+empty, which is a true statement about the corpus and the ordinary state of a fresh
+clone; a farm that does not exist is a question nobody asked. `context._refs_under`
+routes both through this, which is why `harness ocr pages` refuses on a clone while
+`--store mz` still answers `[0]`.
 
 **`context.py`** — the `PP-NNN` contract (`parse_ref`, `norm_ref`, `stem_for`) and
 `build_context`, the per-page input the collation pass consumes. Everything in it is
