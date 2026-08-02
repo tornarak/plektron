@@ -1224,7 +1224,7 @@ Fig. 212. Chukchee Sketches representing Shamanistic “Spirits.”
 Fig. 213. Directions of the Compass.
 
 tiˊrkɪ-reˊiᵋ or têrk-amêčaˊtyêᵋ (“sun has come in” or
-  “sun has gone out of sight”),
+  “sun has gone out of sight”).
 aᵋčoˊpta (“it is still day”).
 em-g̣iˊthilɪ-neˊlyi (“twilight has come”).
 g̣itg̣iluweˊtyiᵋ (“twilight has become narrow”).
@@ -1232,25 +1232,25 @@ g̣êˊthêlu-waiñeˊeᵋ (“twilight has been extinguished”).
 aiˊvêčha (“in the evening”) or tun-nɪkiruˊiᵋ (“night
   recently came”).
 em-g̣ɪnuˊn-nɪkiˊtä neˊlyiᵋ (“midnight has come”).
-em-g̣ɪnuˊn-nikiˊtä halaˊêᵋ (“midnight has passed by”).
+em-g̣ɪnuˊn-nɪkiˊtä halaˊêᵋ (“midnight has passed by”).
 eimeˊwkwiᵋ (“[dawn] has approached”).
-ɪˊprɪñgêᵋ (“[light] has burst forth”).
+ɪˊprɪñg̣êᵋ (“[light] has burst forth”).
 tñeˊiᵋ (“it has dawned”) or tñaˊɪrg̣ɪn (“morning-dawn”).
 -----
-totɪntoˊêᵋ (“darkness has gone”),
+totɪntoˊêᵋ (“darkness has gone”).
 tañ-ɪrg̣ɪroˊêᵋ (“it has well dawned”).
 tirk-iiniˊɪᵋ (“sun has risen”).
 têˊrkɪ-g̣ɪrg̣olaˊtyêᵋ (“sun has ascended”).
-tɪˊrkɪ-keulkeˊtyiᵋ (“sun has climbed [towards the top]”)
+tiˊrkɪ-keulkeˊtyiᵋ (“sun has climbed [towards the top]”).
 am-gɪnoˊt-aᵋloˊwtɪ tɪleˊhtɪ neˊlyiᵋ (“to the mid-day it
-has gradually approached”)
+has gradually approached”).
 am-gɪnoˊt-aᵋloˊ neˊlyiᵋ (“mid-day has come”).
 am-gɪnoˊt-aᵋloˊ halaˊêᵋ (“mid-day has passed by”).
 t-arkɪčhaweˊtɪ neˊlyɪᵋ (“sun descending has come”).
 t-arkɪčhaˊwkwê or tirk-iwtɪtviˊiᵋ (“sun has descended”
 or “sun has become low”).
 
-@note: Human-keyed. Original AI key provided for comparison (it's actually very good!)
+@note: Human-keyed. Original AI key provided for comparison (it's actually very good!) — CORRECTED 2026-08-02 in six places, editor-ratified against the raster at 4x. Three glyphs: `nikiˊtä` → `nɪkiˊtä` (§5.2, the printed sort is dotless and matches the line above it), `ɪˊprɪñgêᵋ` → `ɪˊprɪñg̣êᵋ` (§5.1, the g carries a dot below), and `tɪˊrkɪ-keulke…` → `tiˊrkɪ-keulke…` plus its terminal period (§5.2, dotted i, matching `tiˊrkɪ-reˊiᵋ` above). Three terminal stops, every one a period in the print and read here as a comma or as nothing: after `out of sight”)`, after `darkness has gone”)`, and after `gradually approached”)`. Found by a revision pass over `gt/ocr/chukchi-2-030.xml`, which carried all six identically. Worth recording why the two stores agreed. That gt was hand-corrected from CATMuS; the commas are the recognizer's, surviving the correction pass, and this caption block descends from the same output. So they are not two witnesses but one, and nothing in either file recorded the shared ancestor — which is why their agreement read as corroboration. Same rule as `ocr review`'s span diff and `zones score`'s `unseen` row: a comparison whose witnesses may be one witness must say so. Only a fresh read of the raster could separate them, and that is what found all six.
 
 ## 2-035|d9a5677a
 Fig. 214. Chukchee Constellations.
