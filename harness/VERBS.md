@@ -659,3 +659,39 @@ rather than belonging to one store.
 ```
 --root --json
 ```
+
+---
+
+## views
+
+The derived trees git does not carry: the read views over the paired stores
+(`ocr/`, `zones/`), the scan farms (`scans/w-figs/`, `scans/w-ocr/`), and the
+segmenter's blotted rasters (`scans/w-figs-blotted/`). A fresh clone has none of
+them.
+
+`ocr link` and `zones link` are the same act said from inside those groups, and
+call the same functions. Two spellings, one implementation.
+
+### views check
+**Does** one row per derived tree: whether it exists, whether its membership still matches whatever decides it, and **how deep that comparison went**.
+**Reads** every farm directory, plus the stores that decide each one's membership. Tests directories itself rather than going through a guarded enumerator — the verb that reports absence has to be callable in its presence.
+**Writes** —
+**Exit** 1 if any farm is `absent` or `stale`; 0 otherwise. A gate rather than measurement: each is a real defect in this working copy with a one-command fix.
+```
+--root --json
+```
+**Note** four states, and the fourth is the point. `absent` is the directory not existing; `stale` is membership disagreeing with the criterion, or a link pointing nowhere; `ok` is neither; **`?` is no verdict available** — `scans/` and `train/bogoras-seg/` have no criterion the harness can compute, and reporting `ok` there would be a clean bill of health nobody issued. `?` does not gate: it describes the check's reach, not the tree.
+**Note** `verified` says how deep the comparison went, and `membership` is not a hedge. For `scans/w-figs-blotted/` content freshness is not merely unchecked but **uncheckable**: a figure ALTO corrected after the blot was written leaves a raster that still shows the figure, so an mtime test would report success over exactly the failure it exists to catch (`zones blot` refuses one for this reason). `state: ok` must not be read as "up to date".
+**Note** `dangling` counts links whose target has gone. On a machine without `scans/` the two selection farms report their whole membership as dangling, which is correct and deliberate — see `views build`.
+
+### views build
+**Does** rebuilds the derived trees, in dependency order (`w-ocr` links into the `ocr/` view, so it follows it).
+**Reads** the stores that decide each farm's membership; `scans/` and `gt/fig/` for the blot.
+**Writes** `ocr/`, `zones/`, `scans/w-figs-blotted/`, `scans/w-figs/`, `scans/w-ocr/` — all derived. Writes on invocation with no `--commit`, like every other derived output: there the write *is* the action, and no authored store is touched.
+**Exit** always 0.
+```
+--only FARM  rebuild just this one, repeatable [all of: ocr, zones, w-figs-blotted, w-figs, w-ocr]
+--root --json
+```
+**Note** **a farm whose builder must *read* an absent tree is skipped with a row**, never attempted and never silently dropped. The distinction is between what a builder opens and what its links merely point at: the blot builder reads pixels out of `scans/`, so with no `scans/` it cannot run; `w-figs` and `w-ocr` need only their tracked membership sources and build fine, leaving raster links that dangle — this repo's stated disposition for a link into an ignored tree. Hence exit 0 on a clone: building what can be built is the success case, and `views check` is what says what is still missing.
+**Note** `scans/` and `train/bogoras-seg/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `zones assemble` clobbers by design.

@@ -15,6 +15,7 @@ touches, the action names what it does to it:
               marks, suffixes, digraphs, glosses
     find      apparatus lookups — toc, folio, authority
     corpus    whole-corpus gates — normalize, figures
+    views     the derived trees git does not carry — check, build
 
 It was one tier for most of this project's life, and grew to 21 verbs whose
 flags formed subcommands nobody had named: `zones` alone carried 21 of them,
@@ -56,10 +57,10 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import _corpus, _find, _lexicon, _ocr, _proposal, _tei, _zones
+from . import _corpus, _find, _lexicon, _ocr, _proposal, _tei, _views, _zones
 from ._common import check_renamed, die_renamed, globals_parser, walk_surface
 
-GROUPS = (_tei, _ocr, _proposal, _zones, _lexicon, _find, _corpus)
+GROUPS = (_tei, _ocr, _proposal, _zones, _lexicon, _find, _corpus, _views)
 
 
 def build_parser() -> argparse.ArgumentParser:
