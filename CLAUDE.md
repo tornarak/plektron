@@ -188,6 +188,14 @@ Layout, all at the repo root:
   a subagent per page** (`.claude/skills/rebuild-groundtruth/dispatch.md`), each
   stopping at a normalized `proposal.json`, with one `harness ocr review` server
   over the whole batch; `2-045`–`2-047` and `2-031`–`2-036` went that way.
+  **`2-030` is the one page with ground truth and no `proposal.json`** — it was
+  adjudicated by the eScriptorium route before the review loop existed. Since
+  `restore` refuses a decision set that does not cover every line, that page cannot
+  be revised at all until someone reads it: there is no patch path, and the whole
+  of its text predates every detector now in the loop. It is also the densest
+  Tier-1 page in the pilot set (fig. 213's 27-line gloss list), so it is the worst
+  page to have unexamined. A `gt`-with-no-proposal page is invisible to
+  `ocr pages`, which reports the store rather than the review directory.
   What that measured is worth carrying: **the residual error classes are §5.1's
   dropped `g̣` and §5.2's `ɪ`-as-`i`, they survive readers who explicitly report
   checking them, and the only safeguard that does not depend on a reader
