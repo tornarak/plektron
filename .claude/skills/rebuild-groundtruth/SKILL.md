@@ -45,21 +45,33 @@ stateless, so a fresh session resumes wherever the last one stopped.
     uv run harness ocr zoom  PP-NNN --only 7,20,22-26        the closer look
     (author review/PP-NNN/proposal.json)                 your reading
     uv run harness proposal fix PP-NNN                   catch a mistyped mark
-    uv run harness corpus normalize --commit --path review/PP-NNN/proposal.json
-    uv run harness corpus normalize --path review/PP-NNN/proposal.json
+    uv run harness corpus normalize --commit review/PP-NNN/proposal.json
+    uv run harness corpus normalize review/PP-NNN/proposal.json
     uv run harness ocr review PP-NNN --serve                 human adjudicates
-    uv run harness corpus normalize --path review/PP-NNN/decision.json   same gate, post-adjudication
+    uv run harness corpus normalize review/PP-NNN/decision.json   same gate, post-adjudication
     uv run harness ocr restore PP-NNN --force                preview: edits, drift, mismatch
     uv run harness ocr restore PP-NNN --force --commit        -> gt/ocr/
     uv run harness ocr clean PP-NNN                          drop the derived images
+
+**Most of these take several refs**, so a batch is one invocation rather than a
+loop — `ocr gaps 2-031 2-032 2-033`, `ocr clean` over the whole pass at the end.
+One ref emits exactly what it always did and several pool into one table with
+`ref` first, so nothing above changes shape when you widen it. The exceptions are
+the ones whose flags name something only one page has: `adopt-gap` (its VPOS is a
+band on that page's raster), `zoom --only` (a line index is an identity, so the
+same numbers name unrelated lines on the next page), and `--out` anywhere.
+`corpus normalize` takes refs *and* paths in one list — `corpus normalize 2-031
+2-032` covers both pages' proposals and decisions together.
 
 **`restore --commit` re-points `ocr/` for that page itself**, and reports which
 store the view now names in its `view` field — so a restoration needs no relink
 step after it, the same way `ocr predict` has always relinked what it wrote. If
 you ever do need the whole farm rebuilt, that is `ocr link`, and it is **not**
-`views build all`: the latter repaints 252 page composites on the way past, a
-corpus-level sweep in the same class as a bare `corpus normalize` against
-`normalize --path`, and it has no business in a per-page loop.
+`views build --all`: the latter repaints 252 page composites on the way past, a
+corpus-level sweep in the same class as `corpus normalize --all` against naming
+your page, and it has no business in a per-page loop. **`--all` is the tell**:
+every verb that can sweep the corpus now spells it that way, and nothing in this
+loop wants one.
 
 That is the loop for a page **that already has ground truth** — a revision, which
 is what all 20 pilot pages now take, hence `--force` in both restore lines. A page
@@ -245,8 +257,10 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    and on the last page stops the server and replaces the page with a confirmation.
    So the background task **exiting is the signal that the review is finished** —
    you get the completion notification, and `restore` follows from it without asking
-   "have you saved yet?". Restore each ref separately: `restore` is per page, and a
-   batch review does not change that.
+   "have you saved yet?". `restore` takes the whole batch — `ocr restore 2-046
+   2-047 --force --commit` — and with more than one ref it dry-runs every page
+   before writing any, so an unadjudicated line on the second cannot arrive with
+   the first already replaced.
 
    Never `pkill` it. Reaching for that means the human has to be interrupted to
    confirm a kill, and it was how this loop used to leave a server bound to a page
@@ -377,7 +391,7 @@ collation-side analogue since collation works from the full page image.
   marks are present*, never *whether the letters are*. For the latter go back to the
   raster and read the word, or use `ocr zoom` — and be most suspicious precisely
   when a check comes back clean on a line you opened because something looked wrong.
-- **`uv run harness proposal check PP-NNN --set LINE --field FIELD [--value TEXT]`
+- **`uv run harness proposal set PP-NNN LINE --field FIELD [--value TEXT]`
   writes one line's field**, value from `--value` or stdin, NFD-normalizing on write.
   Reach for this instead of `Edit` when a targeted text replacement in
   `proposal.json` keeps silently failing to match: the file has already been through
@@ -387,7 +401,7 @@ collation-side analogue since collation works from the full page image.
   matches and the tool reports a mismatch with no visible cause. `--set` sidesteps
   the whole class by construction, the same way `normalize.py` has one conversion
   point rather than trusting every writer to remember it.
-- **`uv run harness proposal check PP-NNN --replace LINE --old X --new Y [--field
+- **`uv run harness proposal replace PP-NNN LINE --old X --new Y [--field
   FIELD] [--which all|first|last|N|N:M]`** swaps one or more occurrences of one
   string for another inside a single field, instead of retyping the whole thing.
   Reach for this over `--set` once a line is already written and only a character
@@ -408,7 +422,7 @@ collation-side analogue since collation works from the full page image.
   digit. `2-244` line 1 got this wrong: `funeral.1` proposed, `funeral.¹`
   adjudicated. A plain digit reads as correct (it's the right number) so nothing
   mechanical catches it; only a raster comparison or a human pass does.
-- **Run `uv run harness corpus normalize --commit --path review/PP-NNN/proposal.json`
+- **Run `uv run harness corpus normalize --commit review/PP-NNN/proposal.json`
   before serving the proposal, always — never skip it and never substitute a
   manual fix.** This is not only NFD/§2.9 spacing cleanup (composed input, French-
   spacing artifacts copied from the OCR text). It exists because your own output is
@@ -421,10 +435,12 @@ collation-side analogue since collation works from the full page image.
   cannot repeat that class of error; a re-read or a hand edit can, and has (`2-244`
   needed the same `ı`-for-`ɪ` swap corrected on 33 occurrences across nine words,
   by a single scoped substitution, not by hand-fixing each). Follow with the same
-  command minus `--convert` (or `--check`), which exits 1 on drift. Scope to the
-  one file with `--path` — a per-page step has no business touching the rest of
-  the corpus, and `normalize` never writes at all unless `--convert` is given.
-- **Run the same `normalize --path` check against `decision.json` too, once it
+  command minus `--commit`, which exits 1 on drift. **Name the file** — or the
+  page, `corpus normalize PP-NNN` covering its proposal and decision together. A
+  per-page step has no business touching the rest of the corpus, `normalize`
+  never writes at all unless `--commit` is given, and the corpus form is now
+  `--all`, which is not yours to type here.
+- **Run the same scoped `normalize` check against `decision.json` too, once it
   exists** (after the human's review pass, before `restore`/`--commit`). The
   adjudicator can introduce the identical drift classes typing corrections in the
   browser — composed accents, French spacing, a stray lookalike — and `decision.json`,
@@ -517,15 +533,17 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
   reads as exempt, and it is how a session acquires its first `python3` invocation.
   It is also answered for free — `proposal fix PP-NNN` reads the file and fails
   loudly on anything malformed, so running the step you were going to run anyway
-  *is* the parse check. `proposal codepoints LINE` names a line's non-ASCII
-  characters, `proposal set LINE --field FIELD` writes one, and both exist
-  precisely because the hand-rolled versions were written more than once in the same
-  session (`3-003`: an `ord(ch)` loop to catch a typed `ı` where `ɪ` was meant, then
-  a second `ord()` dump trying to work out why a hand-typed `Edit` kept failing to
-  match — the cause was NFC-vs-NFD, invisible to eye and to `Edit`'s diff both).
+  *is* the parse check. `proposal codepoints PP-NNN` names every non-ASCII
+  character on the page — `--line N` for one line — and `proposal set LINE
+  --field FIELD` writes one, and both exist precisely because the hand-rolled
+  versions were written more than once in the same session (`3-003`: an `ord(ch)`
+  loop to catch a typed `ı` where `ɪ` was meant, then a second `ord()` dump
+  trying to work out why a hand-typed `Edit` kept failing to match — the cause
+  was NFC-vs-NFD, invisible to eye and to `Edit`'s diff both). The page-wide form
+  is what those dumps were reaching for both times.
   Two different failure modes, same root cause: a one-off script standing in for a
   question the harness should already answer. Note what this does *not* license:
-  the `ı`-for-`ɪ` class is already caught by bare `corpus normalize` (report-only, same
+  the `ı`-for-`ɪ` class is already caught by `corpus normalize` (report-only, same
   as every lookalike — see keying_spec.md §3), so seeing it there is not licence to
   write a bulk auto-replace tool for it, and a stress-mark-vs-apostrophe mixup is
   *never* a candidate for automation at all — which mark is meant depends on the

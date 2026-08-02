@@ -42,10 +42,18 @@ question about the dispatch:
 **Predict the batch in one process, not one call per page.** `predict` loads blla
 *and* CATMuS large and initializes CUDA before it reads a line, and a shell loop over
 five refs pays all of that five times: measured, 25 s for a standalone page against
-~17 s each when four go through `--itinerary`. Write the refs one per line to a
-scratch `.lst` and hand it over:
+~17 s each when they go through one process. Name them:
 
-    uv run harness ocr predict --itinerary <scratch>/batch.lst
+    uv run harness ocr predict 2-031 2-032 2-033 2-035 2-036
+
+Several refs route through the sweep for exactly this reason, and they carry the
+single-page override with them — a page a human ruled *not a text page* is still
+predicted when you name it, and refused loudly rather than dropped in silence.
+
+This used to want a scratch `.lst` file written only to be handed to `--itinerary`,
+because the verb took one ref. `--itinerary` remains for a file-based work-list
+(`gt/seg`), and it is exclusive with named refs: three ways of saying what to work
+on, one per invocation.
 
 It is on the GPU by default — `--device auto` resolves to `cuda:0` — so a slow run is
 the load being paid repeatedly, not the device being wrong. Check before blaming it.
@@ -69,8 +77,10 @@ dispatch that produced this file.
 - **Name the deliverable and where it stops.** "Your deliverable is
   `review/PP-NNN/proposal.json`, normalized and clean. STOP THERE." Then bar the
   rest by name: no `--serve`, no `restore`, no `gt/ocr/` write, no `views build`, no
-  bare `corpus normalize`, no git commit. A prohibition that names the verb is
-  checkable; "don't overstep" is not.
+  `--all` form of anything, no git commit. A prohibition that names the verb is
+  checkable; "don't overstep" is not. `--all` is worth naming as a class now that
+  every corpus-wide form is spelled that way: one flag stands between a per-page
+  job and a corpus sweep, and an agent has no business on the far side of it.
 - **Bar ad-hoc Python and shell listing, and list the verbs that replace them.**
   This is the clause that needed sending twice. Both readers hit permission prompts
   reaching for `ls` and `python3` — and not to edit anything, but to check that
@@ -255,15 +265,16 @@ gap check matters more than usual here").
         `contamination` block.
       - `uv run harness proposal fix PP-NNN`, then re-run it without `--fix` until
         it is silent.
-      - `uv run harness corpus normalize --commit --path
+      - `uv run harness corpus normalize --commit
         review/PP-NNN/proposal.json`, then the same command without `--commit` —
         it must exit 0.
 
     **Do NOT** run `harness ocr review --serve`, do NOT run `harness ocr restore`,
     do NOT write into gt/ocr/ (except via `adopt-gap`, which writes geometry
-    only), do NOT run `views build` or a bare `corpus normalize`, and do NOT
-    commit anything to git. A human adjudicates your proposal afterwards; that
-    step is not yours.
+    only), do NOT run `views build`, do NOT run any `--all` form of anything —
+    every verb that can sweep the corpus now says so with that flag, and none of
+    them is yours — and do NOT commit anything to git. A human adjudicates your
+    proposal afterwards; that step is not yours.
 
     Hard rules that override any instinct:
       - No ad-hoc Python and no shell listing. No `python3 -c`, no heredoc

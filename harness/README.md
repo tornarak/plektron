@@ -74,16 +74,35 @@ _lexicon _find _corpus _views`, each exposing `register(subparsers, common)` and
 `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
 running anything), and the rename trap. `_common.py` holds the `--root`/`--json`
-parent, the `out` printer, `walk_surface`, and the two rename tables.
+parent, the `out` printer, the two walkers, the three rename tables, and the
+multi-ref machinery:
 
-Three things about it that are load-bearing rather than stylistic. **The globals
+| helper | what it is for |
+|---|---|
+| `refs_arg(p, all_=…)` | the `PP-NNN [PP-NNN ...]` positional. `nargs` is `+`, or `*` with a `--all` whose help must name *what it enumerates* — "every page" is four different sets here |
+| `page_refs(a)` | the refs named, `[]` for `--all`. **Parses every one before the caller does any work**, and holds the three-way exclusion between refs, `--all` and `--itinerary` |
+| `one_page_only(a, …)` | refuses a per-page flag given several refs. `--out` is why it exists: nothing errored before, the second page overwrote the first's images |
+| `out_per_ref(a, pairs)` | one ref emits what it always did; several pool with `ref` first. **Refuses a list-valued field** rather than degrading the whole table |
+| `out_report_per_ref` | the same for a report *with* list fields: counts in the row, each list its own ref-keyed table |
+| `walk_positionals` | `walk_surface` sees only `option_strings`, so it cannot see a positional at all; the plural gate needs this second walk |
+
+Four things about it that are load-bearing rather than stylistic. **The globals
 parent attaches to every *action* parser**, not to the group parsers: with two tiers
 the last parser to run is the action's, so a group-tier registration would make
 `harness zones predict --json` a parse error. **The rename trap consults the
 parser's own action names** before matching a retired flag, because `--ink` is both
 a retired `zones` flag and a live `zones check` flag, and a positional trap would
-reject the correct new spelling. And **`build_parser` takes no side effects**, so
-the gate test can build it in-process.
+reject the correct new spelling. **A retired positional *value* needs its own
+table** (`RENAMED_VALUES`), the flag scan only looking at tokens that begin with
+`-`. And **`build_parser` takes no side effects**, so the gate test can build it
+in-process.
+
+**`out_per_ref`'s one-pair shortcut is correct at the top level and wrong in a
+sub-table**, which is worth knowing before reusing it. At the top level the count
+decides the shape because the caller named one page. Inside `out_report_per_ref`
+the caller named several and the rows are a *subset* of them, so dropping the `ref`
+column would leave a table whose rows belong to a page it does not name. `_pool`
+is the unconditional form and is what the sub-tables use.
 
 It was one module and a 1,000-line `main` until the reorganization, with `zones`
 alone accounting for 38% of the dispatch. The module docstring is still the parser
@@ -205,6 +224,18 @@ persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),
 because it reads *both* `proposal.json` and `decision.json`, and only this module
 owns both — it is the pass's own error profile, which `restore` had been computing
 per page and discarding.
+
+**`restore_skip` is `predict_skip`'s shape and exists for the same reason**: one
+rule in one place, with two callers (`--all` and the multi-ref loop) that would
+otherwise each grow a copy of it. It answers a sharper question than `restore`'s
+own `force` guard can, and has to — every page in `gt/ocr/` holds text, so that
+guard would refuse the whole store and a sweep refusing everything is not a sweep.
+The question is *is this decision newer than the ground truth it produced*: if not,
+the page was restored since it was adjudicated; if so, that adjudication is the
+human's own latest act and the sweep carries `force` on its behalf, the timestamps
+establishing the intent the flag would. Deliberately not keyed on the *proposal*'s
+mtime — a proposal is a reading, not an adjudication, and re-authoring one licenses
+no write.
 
 **`figures.py`** — the figure track: `gt/fig/` geometry against `data/readings.md`
 text, reconciled by `reconcile()` (the `figures` verb). Also the generic sheet

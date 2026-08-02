@@ -47,12 +47,20 @@ rejects a bare integer rather than guess which of the three parts you meant.
     (read the page image with the Read tool)       the only witness that matters
     uv run harness ocr zoom PP-NNN --only 7,20 --store gt    the closer look
     (author tei/chukchi-PP-NNN.xml)                your reading
-    uv run harness corpus normalize --path tei/chukchi-PP-NNN.xml  NFD + spacing
+    uv run harness corpus normalize PP-NNN             NFD + spacing
     uv run harness tei ids PP-NNN                      the id scheme
     uv run harness tei validate PP-NNN                 the gate; exit 1 on FAIL
     uv run harness tei seam PP-NNN --continues|--fresh --commit   the gap behind you
 
 Then re-read your own output once against the image before declaring done.
+
+**`tei context` is one of four actions in the whole CLI that takes exactly one
+ref**, and this is why: its payload is a page's collation prompt, built to be
+handed to one model for one page, so a merged stream of them is not consumable by
+the thing it exists for. Everything else above takes as many refs as you like —
+`tei validate` prints one report per ref under a `# REF` line and exits on the
+worst of them, `normalize` and `ids` pool into one table. The pass itself is still
+strictly per page: one page per task, fresh read, nothing carried in your head.
 
 `--store gt` on `zoom` matters: its default store is a different ALTO from the
 one `ocr_lines` ids come from.

@@ -248,7 +248,9 @@ Layout, all at the repo root:
   view would fill the approval list with CATMuS's misreadings and invite them into
   a committed human-edited file that suppresses the very detector meant to catch
   them. `harness ocr pages` deliberately does *not* apply it — a machine-read page
-  is workable, which is what that verb reports — and takes `--from` to narrow.
+  is workable, which is what that verb reports — and takes `--store` to narrow.
+  `ocr lines --all` and `ocr gaps --all` read the view for the same reason:
+  neither gates and neither publishes a rate.
   `normalize`'s scope listed `ocr/*.xml` while the view was an alias for `gt/ocr/`
   and nothing else; the moment `ocr predict` existed, one predicted page put **978
   `spacing` hits** into a corpus-wide gate — and not even over text, but over the
@@ -817,11 +819,13 @@ the review page, the keyboard, the decision log and the error profile it yields.
 Seven directories are **derived**: git carries none of them and a fresh clone has
 none of them. `harness/farms.py` is the one declaration — `harness views check`
 reports them, `harness views build` rebuilds them. **Both name their farms and
-neither has a default**: `views build all` is a corpus-level sweep costing 252
+neither has a default**: `views build --all` is a corpus-level sweep costing 252
 repainted page composites, and nothing at the call site said so, so the caller
 who wanted one view relinked after a `restore` was the one paying for it. In a
 per-page loop reach for the per-domain spelling — `ocr link`, `zones link` —
-the same way a per-page normalize takes `--path` rather than sweeping the corpus.
+the same way a per-page normalize names its page rather than sweeping the corpus.
+(That "everything" was spelled `all`, a *value* of the FARM positional, until the
+CLI settled on `--all` for every corpus form; the old spelling is trapped.)
 
     ocr/  zones/                 the read views over the paired stores
     scans/w-figs-blotted/        the segmenter's training rasters
@@ -908,7 +912,7 @@ action or flag present in one and not the other, in both directions. That gate
 is the first thing ever to pin this CLI — no test touched it before, which is
 how one tier grew to 21 verbs carrying subcommands nobody had named.
 
-Four conventions hold across every group, and the reference states them once:
+Six conventions hold across every group, and the reference states them once:
 
 - **Report by default; `--commit` writes.** The only write-enable, gating
   exactly the authored stores (`gt/`, `tei/`, `models/`, the split and exemption
@@ -918,6 +922,23 @@ Four conventions hold across every group, and the reference states them once:
 - **Exit 0 clean, 1 a documented gate failed, 2 usage error.** Measurement never
   gates: `zones check --store mz`, `zones score`, `zones diff`,
   `zones paragraphs`, and everything under `find` and `lexicon` always exit 0.
+  With several refs the exit is the **worst across them**, so one dirty page
+  fails the batch.
+- **Refs are plural.** `REF [REF ...]` everywhere, so a batch is one invocation
+  rather than a shell loop. **One ref emits exactly what it always did**; several
+  pool into one table with `ref` as the first field, which is why every example
+  written down in this repo is still literally correct. Four actions are singular
+  and say why in their VERBS.md entry (`ocr adopt-gap`, `tei context`, `proposal
+  set`/`replace`), and a flag naming something only one page has — `ocr zoom
+  --only`, `--out`, `zones check --lines`, `proposal --path` — refuses a second
+  ref rather than picking one.
+- **A corpus run is `--all`, never an omission.** Its help names *what it
+  enumerates*, because "every page" is four different sets here. Naming nothing
+  is a usage error; refs, `--all` and `--itinerary` are three ways of saying the
+  same thing and exactly one may be used. `--all` does not clobber prior work
+  without `--force`. Six plural actions deliberately have no corpus form and say
+  so. Two tables in `test_cli_surface.py` hold both lists by name, so an omission
+  is a decision on the record rather than something nobody got round to.
 - **One meaning per flag name.** `--from DIR` is a source ALTO directory and
   lives only in `ocr`; `--store gt|mz` is a closed set and lives only in
   `zones`; `--force` overwrites existing output; `--out` redirects a write.
@@ -934,8 +955,9 @@ anything that needs to parse the output as a contract. Anything emitting a list
 of records keeps one fixed key set across them, because a ragged list silently
 degrades to the verbose nested form.
 
-Every action that names a page takes a `PP-NNN` ref and rejects a bare integer,
-`tei state` included.
+Every action that names a page takes `PP-NNN` refs and rejects a bare integer,
+`tei state` included. Every ref is parsed before any work is done, so a typo in
+the fifth cannot leave four pages written.
 
 **No ad-hoc Python for anything the harness already does.** Not `python3 -c
 "...ord(ch)..."` to check a character's codepoint (`harness proposal

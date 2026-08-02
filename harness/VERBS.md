@@ -389,7 +389,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 ```
 
 ### ocr predict [REF ...]
-**Does** zones to text in one pass — baseline segmentation, then recognition, structured by the zones the `zones/` view supplies. `blla`'s own regions are discarded and the seven declared zone types replace them, so a line arrives knowing whether it sits in a running title, a paragraph, a footnote or a signature line. Bare, it sweeps every page with zones and is resumable.
+**Does** zones to text in one pass — baseline segmentation, then recognition, structured by the zones the `zones/` view supplies. `blla`'s own regions are discarded and the seven declared zone types replace them, so a line arrives knowing whether it sits in a running title, a paragraph, a footnote or a signature line. `--all` sweeps every page with zones and is resumable.
 **Reads** `scans/w-figs-blotted/`, `zones/`, the two models, the split marks. A page with no blot is refused.
 **Writes** `mz/ocr/` (derived), and relinks that page in `ocr/`. **Never `gt/ocr/`.** One `<String CONTENT>` per `TextLine`, the shape `gt/ocr/` has — the two stores sit under one view and a consumer reads either without asking which.
 **Exit** always 0 — a skipped page is reported, not a failure.

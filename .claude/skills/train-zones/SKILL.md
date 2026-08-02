@@ -34,8 +34,10 @@ permuted class map**, and copies the split beside the weights. Preview first;
 
 **The store is complete** — 832 pages keyed, 716 of them text pages carrying 4593
 zones, 116 ruled exempt. Splits **578 train / 138 eval**. Class distribution is in
-`zones check`'s `labels` summary; read it there rather than from any table, which
-goes stale.
+`zones check --all`'s `labels` summary; read it there rather than from any table,
+which goes stale. (`--all` is the corpus form of every sweeping verb now — the
+bare invocation that used to sweep is a usage error, so that a 832-page walk is
+never something you did by leaving an argument off.)
 
 The installed model is run 3: trained on 211 pages, held out on 60, and its
 manifest records **95.2% recall / 80.1% precision on eval** at `>=30px` with the
@@ -275,8 +277,9 @@ adjacent bands differ, an unguarded merge would retype a strip of page.
 
 ## Reading the line detector
 
-`zones check REF --lines` dumps a page's lines of type — **single page only**; the
-sweep does not offer it. A line here is a run of inked rows bounded by a blank one,
+`zones check REF --lines` dumps a page's lines of type — **one page only**, and it
+refuses a second ref rather than picking one; the sweep does not offer it either.
+A line here is a run of inked rows bounded by a blank one,
 so **nothing accumulates** — but `h` is the tell for the two ways it fails, against
 a 49 px median (p90 52):
 
