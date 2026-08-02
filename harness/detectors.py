@@ -168,19 +168,32 @@ def apostrophe_licensing(text: str) -> list[dict]:
 # Tier-1 span U+2019 traps U+0027, and it can only be enforced where the language is
 # known. The draft plaintext carries no markup, so it lives in
 # validate.LOOKALIKE_GREPS against the TEI instead.
-# Word-*medial*, which means not the first character of a whitespace-delimited
-# token — excluding that position is required, or every capitalised English
-# word beginning A/E/I/L ("English", "Iron", "Later") fires, which is both noise
-# and, because a hit used to suppress the lexicon check, a mask over real
-# signal. No lowercase-neighbor requirement beyond that: a capital sitting
-# right after a stress mark, hyphen, or apostrophe inside a token is exactly as
-# sketchy as one after a lowercase letter — 2-034’s "Lo" in a stressed,
-# hyphenated Tier-1 compound (corrected to small-cap ʟ by review) was missed
-# by the old lowercase-only version because the preceding character was a
-# stress mark, not a letter. Trade-off worth naming: this also fires on a
-# capital right after an opening paren/quote glued to the same token
-# ("(In fact…"), which the old rule happened to dodge.
-MEDIAL_CAPS = re.compile(r"(?<!^)(?<!\s)[AEIL]")
+# Word-*medial*: an ASCII capital A/E/I/L inside a token, where a small-cap
+# ᴀ/ᴇ/ɪ/ʟ was meant (keying spec §5.7). The first character of a token is
+# excluded, or every capitalised English word beginning A/E/I/L ("English",
+# "Iron", "Later") fires — noise, and, because a hit used to suppress the
+# lexicon check, a mask over real signal.
+#
+# **A Tier-1-exclusive character counts as word-internal and as a lowercase
+# neighbour**, and that is what the two branches below are for. `2-034`'s `Lo`,
+# in a stressed hyphenated compound and corrected to small-cap ʟ by review, sits
+# immediately after a stress mark: not a letter, so a plain `(?<=[a-z])` missed
+# it. The stress mark is not a word boundary — it is part of the word, and it
+# occurs nowhere but inside a Tier-1 form, so it stands in for a lowercase letter
+# exactly.
+#
+# **This replaces a rule that had widened to `(?<!^)(?<!\s)[AEIL]`**, which
+# caught the `ˊLo` case by dropping the neighbour requirement altogether and so
+# fired on **every all-caps English word in the corpus** — `BOGORAS, THE
+# CHUKCHEE.` is the running title of ~694 pages, and every one of them reported
+# two hits. That is precisely the failure this module's own docstring names:
+# a detector firing on ordinary English buries the real hits. An all-caps token
+# cannot fire here again, because neither branch admits an uppercase ASCII
+# neighbour on the deciding side — and no Tier-1 form in the restored corpus is
+# fully uppercase, so nothing is given up.
+_T1 = "".join(sorted(INVENTORY_CHARS))
+MEDIAL_CAPS = re.compile(
+    rf"(?<=[a-z{_T1}])[AEIL]|(?<=[A-Za-z{_T1}])[AEIL](?=[a-z{_T1}])")
 DOT_ABOVE_G = re.compile(r"\u0121|g\u0307")
 TOKEN = re.compile(r"[^\s]+")
 # keying_spec.md section 5.1: base letter + combining mark pairs known,

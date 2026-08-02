@@ -93,3 +93,50 @@ def test_dot_above_g_is_the_trap_not_the_glyph():
     """The inventory glyph is `g` + U+0323, dot *below*. Dot above is the lookalike,
     and the naming used to say the opposite."""
     assert all("U+0323" in m for m in LOOKALIKE_SEQS.values())
+
+
+# --- MEDIAL_CAPS: the small-cap slip, without the English --------------------
+
+def test_medial_caps_does_not_fire_on_all_caps_english():
+    """The regression this test exists for, and it was live corpus-wide.
+
+    `MEDIAL_CAPS` looks for an ASCII A/E/I/L where a small-cap ᴀ/ᴇ/ɪ/ʟ was meant
+    (keying_spec §5.7). It had widened to `(?<!^)(?<!\\s)[AEIL]` — any such
+    capital not at a token start — which catches the `ˊLo` case by dropping the
+    neighbour requirement entirely, and thereby fires on every all-caps English
+    word in the book. `BOGORAS, THE CHUKCHEE.` is the running title of ~694
+    pages; each reported two hits, forever.
+
+    That is the exact failure `detectors.py`'s own docstring forbids: a detector
+    firing on ordinary English buries the real hits, and here a hit also used to
+    suppress the lexicon check, so it masked them outright.
+    """
+    from harness.detectors import MEDIAL_CAPS as M
+    for s in ("BOGORAS, THE CHUKCHEE.", "THE SENSES.", "AFFINITY.",
+              "VI. — HUNTING AND FISHING; WAR."):
+        assert not M.search(s), f"fires on all-caps English: {s!r}"
+
+
+def test_medial_caps_still_catches_a_capital_after_a_stress_mark():
+    """Why the rule was widened in the first place — `2-034`'s `Lo`, corrected to
+    small-cap ʟ by review, sits straight after U+02CA.
+
+    The fix is not to drop the neighbour requirement but to say what a neighbour
+    is: **a Tier-1-exclusive character is word-internal and stands in for a
+    lowercase letter**, because it occurs nowhere but inside a Tier-1 form. So
+    the narrow rule reaches this case without reaching English.
+    """
+    from harness.detectors import MEDIAL_CAPS as M
+    assert M.search("kaˊLo"), "capital after a stress mark must still fire"
+    assert M.search("vaˊgLɪñɪn")
+    assert M.search("ᴇʟɪAn"), "capital after a small-cap must still fire"
+    assert M.search("ñeEr"), "capital after a lowercase letter must still fire"
+
+
+def test_medial_caps_leaves_ordinary_english_alone():
+    """Word-initial A/E/I/L, and a capital after a hyphen or an opening paren:
+    all ordinary English, none of them a small-cap slip."""
+    from harness.detectors import MEDIAL_CAPS as M
+    for s in ("English Iron Later Above", "(In fact", "Reindeer-Eater",
+              "Qɪˊmɪqäi"):
+        assert not M.search(s), f"fires on ordinary text: {s!r}"
