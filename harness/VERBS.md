@@ -362,6 +362,41 @@ patching a proposal never needs ad-hoc Python: a hand-typed `Edit` can silently
 fail to match this file's own NFD form. They write without `--commit` — a
 proposal is a working file of a live pass, not an authored store.
 
+### proposal marks REF [REF ...]
+**Does** asks whether a batch's character distribution is plausible, before a human opens it — three arms over the Tier-1 tokens of each page's proposal.
+**Reads** `review/PP-NNN/proposal.json` (or `decision.json` under `--decisions`), `gt/ocr/` for the prior, `data/marks_config.json`.
+**Writes** —
+**Exit** always 0 — measurement. An outlier is a page to re-read, never a page to correct by ratio. Refuses (exit 2) only when a named ref has no source file.
+**Note** takes several refs, like `ocr review`, and "batch" means only that — the refs you pass. Most pages of this book carry a handful of Tier-1 terms, so a coordinator hands it every ref of a pass at once and gets a sample worth holding against the corpus. `dispatch.md` used to prescribe eyeballing `lexicon marks` here; this is that comparison computed, and `lexicon marks` could not do it — corpus-wide only, and grouped by base letter, so it cannot express `ɪ`/`i`, which is not a mark on a base.
+
+**The three arms are not equally strong.** `rare[]{ref,form,count,lines,position,corpus_pct,corpus_n,spec}` lists every occurrence of a form whose confusable the corpus almost never sets — bare `g` at 6.1% of Tier-1 `g`, 8 occurrences on 4 pages. Deterministic, no statistics. **One row per (ref, form) carrying a count**, because a keyer repeats a slip along a page (13 dropped dots on `2-040`, 14 on `3-004`, then a tail of 1–3): four bare `g` on a page is one finding of weight four, not four independent hits. Which contrasts can reach this arm is **derived from the prior at run time**, not declared — plain `i` at ~34% of its axis never qualifies and does not need to.
+
+`conflict[]{fold,batch_forms,store_forms,refs,in_batch}` finds one word spelled two ways. Fold collapses every contrast axis then casefolds; a bucket whose **casefolded** spellings differ is a hit. That suppresses `äˊmmê`/`Äˊmmê` while catching `Iᵋplɪˊlɪ`/`ɪᵋplɪˊlɪ`, because `casefold("I")` is `"i"` but `casefold("ɪ")` is `"ɪ"` — U+026A has no case mapping. Scoped to folds the batch touches: the store carries 3 standing `i`/`ɪ` inconsistencies of its own (`2-030` ×2, `3-028` ×1) and re-reporting them every run would bury the batch's news. `in_batch` separates the batch disagreeing with itself from the batch disagreeing with ground truth.
+
+`ratio[]{scope,contrast,position,types,expected_pct,prior_pct,gt_min_pct,gt_max_pct,band_n,outside}` points and never decides. **Types, not tokens** — the marks are lexical, not independent, and a per-character binomial flags 19 page-base cells over 29 already-adjudicated pages (`2-036`'s 10% `ɪ`-share is `Pehiˊttin` ×4). `outside` is a rank against the band, never a p-value.
+
+**`scope: ALL` is the refs you passed, pooled — nothing more**, and it is emitted only when you passed more than one. Most pages of this book carry a handful of Tier-1 terms, so one page is rarely a sample worth a verdict; pooling a coordinator's returned jobs gives a body of native text large enough to hold against the ground-truth corpus. Over a single ref it would restate that ref's own row, so it is absent, and that ref's rows are shown however thin they are — a table that is silently empty says nothing and looks clean.
+
+**Read the per-ref rows against `ALL`, and `ALL` against `prior_pct`.** They answer different questions. One job adrift while the others sit on the prior is that reader, on that page. *Every* job leaning the same way, so that `ALL` itself parts from the prior, is **systemic** — the prompt or the keying spec, not anyone's reading. That second finding is the one nothing else in the loop can see, and it is why the pooled row exists.
+
+The band is the **per-page** spread over ground-truth pages clearing `--min-types`, and it is a fixed property of the store: it does not move with how many refs you passed. It is the right reference for a per-ref row and a conservative one for `ALL`, since a pooled share is a weighted mean of its members and varies less than any of them — `ALL` outside it is a strong signal, not a marginal one. `band_n` says how many pages it came from, which is not always many: the `g` axis clears `min_types` on 6 pages of the store. A band of fewer than two is no band, and `outside` reads `?` — as it does under `--min-types`, and never blank, since an uncomputed verdict must not draw in the same column as a computed one.
+
+`prior_pct` is the whole prior pooled, by the same type-level rule as `expected_pct` so the two columns are in one unit. `rare`'s `corpus_pct` is deliberately *occurrence*-level: "how often does the corpus set a bare `g`" is a different question, and 6.1% is the figure `keying_spec.md` §5.1 publishes.
+
+**`position` is why the small caps are split into two contrasts each.** Word-medially an ASCII cap is essentially never right — 2 in the store against 509 medial small caps — and `detectors.MEDIAL_CAPS` already says so with a sharper claim than a share could. Word-initially both are ordinary: 63 ASCII caps (`Alaˊyon`, `Ilhiˊnin`) against 55 small caps (`ɪnp-luˊwleñ-yiˊᵋlhɪn`, `ᴇnmɪtaˊhɪn`), and frequency is the only handle. So `smallcap-i` (lowercase) counts everywhere and `smallcap-I` (uppercase) counts word-initial only.
+
+**The prior is leave-one-out and density-selected**, and `prior_note` says the second half in every report. Leave-one-out unconditionally: after `restore` a page's ground truth *is* the adjudicated descendant of its own proposal, so a prior containing the page under test compares a proposal against its own output — the two-witnesses-that-are-one failure in a fourth place. Density-selected: `gt/ocr/`'s pages were chosen for Tier-1 density (median 13 types, range 2–56), so it is a prior about dense pages, not a population estimate.
+
+**A page whose reading degraded to ASCII contributes no tokens and every arm goes silent on it**, which is why `pages[]{ref,source,tokens,types}` carries one row per ref whether or not anything was found. `types: 0` beside a page whose zones promise Tier-1 content is itself the finding.
+```
+--decisions      read decision.json instead of proposal.json — the last state
+                 before restore writes [off]
+--min-types N    types a scope needs before ratio judges it [data/marks_config.json]
+--rare-max PCT   a confusable at or below this share of its axis is rare enough
+                 to list every occurrence [data/marks_config.json]
+--root --json
+```
+
 ### proposal check REF
 **Does** cross-checks `resolved` against the codepoints `text` actually contains; flags a straight apostrophe and a dot-prone bare suffix.
 **Reads** `review/PP-NNN/proposal.json`.

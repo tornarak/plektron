@@ -1,0 +1,70 @@
+{
+  "_provenance": "Contrast pairs and thresholds for harness proposal marks. Priors are NOT here: they are derived from gt/ocr/ at run time (detectors.native_corpus), so the check recalibrates as the store grows rather than carrying a number that goes stale unnoticed. Shares quoted in comments were measured 2026-08-02 over 29 Tier-1-carrying pages.",
+  "contrasts": [
+    {
+      "name": "g-dot",
+      "expected": "g̣",
+      "confusable": "g",
+      "position": "any",
+      "spec": "5.1",
+      "note": "bare g is 6.1% of Tier-1 g (8 occurrences, 4 pages). The leading dropped-mark class; census ranks it second overall and first among classes still live."
+    },
+    {
+      "name": "caron-c",
+      "expected": "č",
+      "confusable": "c",
+      "position": "any",
+      "spec": "2.2",
+      "note": "bare c is 1.9% (2 occurrences, 1 page)."
+    },
+    {
+      "name": "smallcap-i",
+      "expected": "ɪ",
+      "confusable": "i",
+      "position": "any",
+      "spec": "5.2",
+      "note": "470 ɪ against 250 Tier-1 i. Contentious at any position, and the leading live class in the census since 2026-07-31."
+    },
+    {
+      "name": "smallcap-I",
+      "expected": "ɪ",
+      "confusable": "I",
+      "position": "initial",
+      "spec": "5.2",
+      "note": "word-INITIAL only. 16 initial ASCII I against 24 initial ɪ, so genuinely contentious there; word-medial ASCII caps already belong to detectors.MEDIAL_CAPS (2 in the corpus against 446 medial ɪ) and a share would add nothing to a claim that sharp."
+    },
+    {
+      "name": "smallcap-e",
+      "expected": "ᴇ",
+      "confusable": "e",
+      "position": "any",
+      "spec": "2.3"
+    },
+    {
+      "name": "smallcap-E",
+      "expected": "ᴇ",
+      "confusable": "E",
+      "position": "initial",
+      "spec": "2.3",
+      "note": "word-INITIAL only, as smallcap-I. 12 initial E against 31 initial ᴇ."
+    },
+    {
+      "name": "smallcap-a",
+      "expected": "ᴀ",
+      "confusable": "A",
+      "position": "initial",
+      "spec": "2.3",
+      "note": "word-INITIAL only. 28 initial A against 0 initial ᴀ — the prior will read 100% ASCII, which is the corpus speaking and not a rule to hardcode."
+    },
+    {
+      "name": "smallcap-l",
+      "expected": "ʟ",
+      "confusable": "L",
+      "position": "initial",
+      "spec": "2.3",
+      "note": "word-INITIAL only. 7 initial L against 0 initial ʟ."
+    }
+  ],
+  "rare_max_pct": 10.0,
+  "min_types": 5
+}

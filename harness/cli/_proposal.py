@@ -16,6 +16,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from ..marks import marks as marks_report
 from ..paths import proposal_path
 from ..proposal_check import _parse_which, line_codepoints, replace_in_field
 from ..proposal_check import check as check_proposal
@@ -111,6 +112,31 @@ def register(sub, common):
                         "left to right")
     p.set_defaults(func=run_replace)
 
+    p = add("marks", help="is the character distribution of these readings "
+            "plausible — before a human opens them. Three arms: `rare` lists a "
+            "form the corpus almost never sets (a bare g is 6.1%% of Tier-1 g); "
+            "`conflict` finds one word spelled two ways across the refs and the "
+            "store; `ratio` compares the expected-form share, in types, against a "
+            "leave-one-out prior. Pass every ref of a pass together: most pages "
+            "carry a handful of Tier-1 terms, so pooling gives a sample worth "
+            "holding against the corpus, and one job adrift reads differently "
+            "from every job leaning the same way — the second is the prompt or "
+            "the spec. Always exits 0")
+    p.add_argument("ref", metavar="PP-NNN", nargs="+",
+                   help=REF_HELP + ". Pass several: they are reported "
+                        "individually and pooled as scope=ALL")
+    p.add_argument("--decisions", action="store_true",
+                   help="read decision.json instead of proposal.json — the last "
+                        "state before restore writes; the pair of runs brackets "
+                        "the adjudication")
+    p.add_argument("--min-types", type=int, default=None, metavar="N",
+                   help="types a scope needs before ratio judges it; under this "
+                        "the row reads outside=? [data/marks_config.json]")
+    p.add_argument("--rare-max", type=float, default=None, metavar="PCT",
+                   help="a confusable at or below this share of its axis is rare "
+                        "enough to list every occurrence [data/marks_config.json]")
+    p.set_defaults(func=run_marks)
+
 
 def _path(a) -> Path:
     return a.path or proposal_path(a.ref, a.root)
@@ -140,4 +166,10 @@ def run_set(a) -> int:
 
 def run_replace(a) -> int:
     out(a, replace_in_field(_path(a), a.line, a.field, a.old, a.new, a.which))
+    return 0
+
+
+def run_marks(a) -> int:
+    out(a, marks_report(a.ref, a.root, decisions=a.decisions,
+                        min_types=a.min_types, rare_max=a.rare_max))
     return 0
