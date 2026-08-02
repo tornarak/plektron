@@ -147,16 +147,17 @@ Layout, all at the repo root:
     scans-fig-blotted/  the same pages with figure zones painted white, the
             segmenter's training input. Derived; the 580 figure-less pages are
             symlinks into scans/, so a clone gets dangling links. Ignored.
-    ocr/    the read view over every OCR store — symlinks, currently all into
-            gt/ocr/. The harness's default --from. Never written through.
+    ocr/    the read view over both OCR stores — symlinks, the human file always
+            winning. The harness's default --from. Derived; ignored, since half
+            its links point into the ignored mz/. Never written through.
     gt/     what a human has been through. ocr/ (20 pages of ground truth),
             fig/ (252 figure ALTOs + METS, geometry only), seg/ (the first
             segmentation attempt, 122 pages, kept read-only), zones/ (the
             current one — seven types, fixed-width bands; 181 pages, 969 zones).
-    mz/zones/  what the trained segmenter emitted, raw. Derived; ignored.
+    mz/     what the models emitted, raw. zones/ (the segmenter) and ocr/ (lines
+            and text). Derived; ignored.
     zones/  the read view over both zone stores — symlinks, the human file
-            always winning. Derived; ignored, unlike ocr/, because half its
-            links point into the ignored mz/. Never written through.
+            always winning. Derived; ignored. Never written through.
     tei/    1 page, plus corpus-header.xml — the corpus teiHeader, gated by
             `harness tei header`. Not a valid TEI document on its own: a bare
             <teiHeader>, a fragment like the page files, spliced in by an
@@ -183,17 +184,29 @@ Layout, all at the repo root:
   carry text — the pilot selection is scattered across all three parts, and
   `harness ocr pages` lists it. `tei/` holds **three** pages — `1-151`, and the
   adjacent pair `1-100`/`1-101`, which is the corpus's only collated seam.
-- **`ocr/*.xml` are symlinks into `gt/ocr/`**, and `ocr/` is a *view*, not a
-  store: the stable name a page's current OCR is reached by, whatever produced
-  it, and the harness's default `--from`. Raw recognizer output, if any is
-  produced again, links in beside the ground truth from its own real store, so a
-  file's rank stays readable from where its link points. **Reads may resolve
-  through `ocr/`; writes never do** — `restore` names `gt/ocr/`.
+- **`ocr/` is a *view* over two stores, not a store**: the stable name a page's
+  current OCR is reached by, whatever produced it, and the harness's default
+  `--from`. `gt/ocr/` is what a human has been through, `mz/ocr/` is what the
+  models emitted, and the link points at the human file wherever one exists — so
+  a file's rank stays readable from where its link points. **Reads may resolve
+  through `ocr/`; writes never do** — `restore` and `adopt-gap` name `gt/ocr/`,
+  `ocr predict` names `mz/ocr/`, and `ocr link` rebuilds the farm. Exactly the
+  shape `zones/` has over `gt/zones/` and `mz/zones/`.
+  **The view stopped being tracked when it acquired the second store.** Its links
+  used to resolve inside tracked `gt/ocr/`, so a clone got working ones; now half
+  point into the ignored `mz/ocr/` and a committed copy would dangle exactly as
+  `scans/w-figs/` would. One command rebuilds it.
   Two names over one inode means a tool walking both sees each file twice, so
   anything iterating the corpus must **dedupe by real path**: without it a writer
   processes the file under the first name, meets it again under the second, finds
   it already done and skips silently, so the report undercounts exactly what it
   touched. `harness/normalize.py:scoped_files` does this and says why.
+  **The corpus gate names the stores, not the view**, and that is the same rule as
+  `zones check --store mz`: a machine store may be measured and may not gate.
+  `normalize`'s scope listed `ocr/*.xml` while the view was an alias for `gt/ocr/`
+  and nothing else; the moment `ocr predict` existed, one predicted page put **978
+  `spacing` hits** into a corpus-wide gate — and not even over text, but over the
+  whitespace kraken sets inside `<SP>` attributes.
 - **Figure captions live in `data/readings.md`, not in `gt/fig/`.** All **395**
   are read by hand off the 300 dpi scans, one block per FigDesc zone, keyed
   `<ref>|<zone-id suffix>`. `gt/fig/` carries **no `TextLine` at all** — the lines
@@ -752,7 +765,7 @@ touches; the action names what it does to it.
 
     tei       context validate ids pair seam state ledger header
     ocr       pages lines gaps adopt-gap crops sheets zoom blot review
-              restore clean
+              restore clean predict link
     proposal  check fix codepoints set replace
     zones     check edit predict score assemble install remap remark-eval
               delete diff paragraphs link blot
@@ -833,8 +846,34 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
 
 ## Pages
 
-1. **Segmentation** — LADaS D-FINE (medium). These regions have **no semantic value** and are only used to impose a reasonable reading order and make the OCR plaintext more coherent. Semantic "segmentins" are the preserve of the **Collation** stage.
-2. **Recognition** — CATMuS. `models/` holds only stock CATMuS (large + tiny); the fine-tune referred to in earlier drafts is not in the repo. Establish which model actually produced a given page before drawing conclusions from it — and note the fine-tune is no longer the plan: measured against a human key it reads **0% of the inventory** (see Collation), and its competence ceiling would be the same 20 pages it trained on, so agreement with it would be the editor's own judgement laundered through a checkpoint. Stock CATMuS is retained as a cheap second witness to geometry and English.
+1. **Zoning** — this project's own segmenter (`harness zones predict` →
+   `mz/zones/`), corrected in the editor into `gt/zones/`, read through `zones/`.
+   **These regions carry semantic value**, which is the difference from the old
+   pipeline: seven declared types, a vertical partition of a measured column. The
+   LADaS regions they replaced had none and existed only to impose a reading order.
+2. **Lines + recognition, one pass** — `harness ocr predict` → `mz/ocr/`, linked
+   into `ocr/`. `blla` finds baselines off the **plain** scan; **its regions are
+   discarded and the zones replace them**, so a line arrives already knowing
+   whether it sits in a running title, a paragraph, a footnote or a signature
+   line, and the collation pass gets that structure instead of re-deriving it.
+   Reading order is zone order, then down the page — so in this store, unlike
+   `gt/ocr/`, document order *is* reading order.
+
+   Recognition is stock CATMuS; the fine-tune referred to in earlier drafts is not
+   in the repo and is no longer the plan. Measured against a human key it reads
+   **0% of the inventory** (see Collation), and its competence ceiling would be the
+   same 20 pages it trained on, so agreement with it would be the editor's own
+   judgement laundered through a checkpoint. It is retained as a cheap second
+   witness to geometry and English, and to nothing else — establish which model
+   produced a page before drawing any conclusion from it. The `Processing` block
+   names both models and both sha256s.
+
+   **A line `blla` finds outside every zone is kept, not dropped**, assigned to no
+   region and counted as `lines_outside_zones`. Artwork produces these and they are
+   visible junk; a dropped line is invisible, and that asymmetry is the whole
+   reason for the rule. A high count on an ordinary text page means the artwork was
+   mis-zoned or a zone is missing — the same finding `zones check --ink` reaches
+   from the other side.
 
    **Consequence worth stating because it reads as success: a detector census over
    "the 20 GT pages" was really a census over two.** At the start of the rebuild, 17
@@ -851,7 +890,10 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
 1. **Original Scan Page** - `scans/chukchi-PP-NNN.png`
 2. **Figure geometry** - `gt/fig/chukchi-PP-NNN.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks. No lines, no text.
 3. **Figure captions** - `data/readings.md`, keyed `1-123|<zone-id suffix>`. The only caption store.
-4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`. ALTO XML files containing (useless) segments and text lines, which will be dumted to plain text
+4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`, the view: `gt/ocr/` where a human
+   has been through the page, `mz/ocr/` otherwise. ALTO carrying the zones as
+   regions and the lines within them, dumped to plain text for the collation pass.
+   The regions are no longer useless — they are the seven declared types.
 5. **TEI** - `tei/chukchi-PP-NNN.xml`. Also the system of record for seam state:
    its `<pb>` is where the printed folio enters the project, and `harness tei ledger`
    folds the committed files into the per-ref ledger the next page is built from.
