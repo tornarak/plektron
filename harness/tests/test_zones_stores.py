@@ -510,7 +510,7 @@ def test_a_page_with_a_prediction_is_left_alone_unless_forced(tmp_path):
     would leave nothing able to say the store had held two models' output."""
     make_scan(tmp_path, "1-048")
     write_page(tmp_path, "1-048", zn.MZDIR)
-    (tmp_path / zn.blot_dir(tmp_path).name).mkdir(exist_ok=True)
+    zn.blot_dir(tmp_path).mkdir(parents=True, exist_ok=True)
     (zn.blot_dir(tmp_path) / "chukchi-1-048.png").write_bytes(b"")
     assert zn.predict_skip("1-048", tmp_path) == "already predicted"
     assert zn.predict_skip("1-048", tmp_path, force=True) == ""
@@ -520,7 +520,7 @@ def test_an_exempt_page_is_refused_even_under_force(tmp_path):
     """`force` says "replace what is there"; it does not say "this plate has a right
     answer after all". Only naming the page does that."""
     make_scan(tmp_path, "1-001")
-    (tmp_path / zn.blot_dir(tmp_path).name).mkdir(exist_ok=True)
+    zn.blot_dir(tmp_path).mkdir(parents=True, exist_ok=True)
     (zn.blot_dir(tmp_path) / "chukchi-1-001.png").write_bytes(b"")
     zn.save_zones("1-001", [], tmp_path, split="exempt")
     assert zn.predict_skip("1-001", tmp_path) == "ruled not a text page"

@@ -188,15 +188,15 @@ def register(sub, common):
                    help="output directory (default review/PP-NNN/zoom)")
     p.set_defaults(func=run_zoom)
 
-    p = _store(_ref(add("blot", help="write the page to scans-blotted/ with every "
+    p = _store(_ref(add("blot", help="write the page to scans/w-blotted/ with every "
               "line box and figure zone painted out, so whatever remains is "
               "uncovered by construction. The visual counterpart to `gaps`, and "
               "a check on it: nothing is thresholded here, only covered. Not to "
               "be confused with `zones blot`, which paints figures white for the "
               "segmenter to train on")))
     p.add_argument("--out", type=Path, default=None,
-                   help="output directory (default scans-blotted/ at the root — "
-                        "a corpus-level destination, unlike the other image "
+                   help="output directory (default scans/w-blotted/ — a "
+                        "corpus-level destination, unlike the other image "
                         "actions, because the blotted page is not review material)")
     p.set_defaults(func=run_blot)
 
@@ -342,7 +342,7 @@ def run_zoom(a) -> int:
 
 
 def run_blot(a) -> int:
-    out(a, write_blot(a.ref, a.out or (a.root / "scans-blotted"),
+    out(a, write_blot(a.ref, a.out or (a.root / "scans" / "w-blotted"),
                       _alto_dir(a), a.root))
     return 0
 

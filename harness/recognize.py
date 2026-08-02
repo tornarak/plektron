@@ -35,7 +35,7 @@ the store looking like any other, with nothing in it saying the zones were missi
 
 ## The blotted raster, for both steps
 
-Input is `scans-fig-blotted/`, the same page `zones predict` reads, and a page with
+Input is `scans/w-figs-blotted/`, the same page `zones predict` reads, and a page with
 no blot is **refused** as it refuses one. Artwork otherwise raises baselines that
 are not type, and every one is a spurious line a downstream consumer has to be told
 to ignore.

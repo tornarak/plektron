@@ -144,7 +144,7 @@ and nothing infers it.
 Layout, all at the repo root:
 
     scans/  832 rasters, all three parts, 300 dpi. Derived; not in git.
-    scans-fig-blotted/  the same pages with figure zones painted white, the
+    scans/w-figs-blotted/  the same pages with figure zones painted white, the
             segmenter's training input. Derived; the 580 figure-less pages are
             symlinks into scans/, so a clone gets dangling links. Ignored.
     ocr/    the read view over both OCR stores — symlinks, the human file always
@@ -334,7 +334,7 @@ The second attempt narrows the claim until it is checkable. Three things change:
   worst-case over the 20 line-precise `gt/ocr` pages, 11 px over the 45 keyed by
   hand — because either alone would have missed one of the two failures.
 - **Training runs on figure-blotted rasters** (`harness zones blot`,
-  `scans-fig-blotted/`, painted **white** — `lines --blot`'s conspicuous pink and
+  `scans/w-figs-blotted/`, painted **white** — `lines --blot`'s conspicuous pink and
   blue are for a human and would be a feature the model could key on). Whether a
   paragraph wraps around an illustration is a fact about the ink and not about the
   coding, so the figures come out before the segmenter ever sees the page. The
@@ -857,7 +857,7 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
    pipeline: seven declared types, a vertical partition of a measured column. The
    LADaS regions they replaced had none and existed only to impose a reading order.
 2. **Lines + recognition, one pass** — `harness ocr predict` → `mz/ocr/`, linked
-   into `ocr/`. `blla` finds baselines off `scans-fig-blotted/`, the same raster
+   into `ocr/`. `blla` finds baselines off `scans/w-figs-blotted/`, the same raster
    `zones predict` reads, so artwork raises no baselines; **its regions are
    discarded and the zones replace them**, so a line arrives already knowing
    whether it sits in a running title, a paragraph, a footnote or a signature

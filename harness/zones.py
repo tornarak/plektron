@@ -60,7 +60,7 @@ SCANS = "scans"
 # `zones/` is a symlink farm over both in which the human file always wins — the same
 # shape as `ocr/` over `gt/ocr/`, and the same rule: **reads may resolve through the
 # view; writes never do.** Both are derived and gitignored, `mz/` because it is
-# regenerable from `models/` and `scans-fig-blotted/`, the view because half its
+# regenerable from `models/` and `scans/w-figs-blotted/`, the view because half its
 # links point into `mz/` and a committed farm would dangle on clone.
 MZDIR = "mz/zones"
 VIEWDIR = "zones"
@@ -1495,7 +1495,7 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
 
 # ------------------------------------------------------- the blotted corpus
 
-BLOTDIR = "scans-fig-blotted"
+BLOTDIR = "scans/w-figs-blotted"
 
 
 def blot_dir(root: Path = Path(".")) -> Path:
@@ -1905,7 +1905,7 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     bytes — the property whose absence, when a file's role lived only in the
     directory holding it, cost this project 18 pages of transcription. `imagename`
     is set to the bare `chukchi-PP-NNN.png` the gt store writes, rather than the
-    `scans-fig-blotted/...` path kraken would otherwise record, so the two stores
+    `scans/w-figs-blotted/...` path kraken would otherwise record, so the two stores
     name a page's raster the same way.
     """
     # **The refusal comes before the imports**, because `from kraken import blla`
@@ -2061,7 +2061,7 @@ def _para_ink(ref: str, root: Path = Path(".")):
     run reports the leftmost ink of all of them, which is never an indent. That is
     not a limit of the indent rule; it is reading the wrong raster.
 
-    `scans-fig-blotted/` is also what the segmenter is trained and predicted on, so
+    `scans/w-figs-blotted/` is also what the segmenter is trained and predicted on, so
     reading it here makes the check and the decoder see the same page.
     """
     from .lines import ink_mask

@@ -253,11 +253,11 @@ require `--commit`.
 ### ocr blot REF
 **Does** the page with every line box and figure zone painted out, so what remains is uncovered by construction. The visual counterpart to `gaps`. See `zones blot` for the other recipe.
 **Reads** the `--store` store, or the view, `scans/`, `gt/fig/`.
-**Writes** `scans-blotted/` (derived), or `--out`.
+**Writes** `scans/w-blotted/` (derived), or `--out`.
 **Exit** always 0.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
---out PATH  output directory [scans-blotted/ — corpus-level, unlike the other image actions]
+--out PATH  output directory [scans/w-blotted/ — corpus-level, unlike the other image actions]
 --root --json
 ```
 
@@ -301,7 +301,7 @@ require `--commit`.
 
 ### ocr predict [REF]
 **Does** zones to text in one pass — baseline segmentation, then recognition, structured by the zones the `zones/` view supplies. `blla`'s own regions are discarded and the seven declared zone types replace them, so a line arrives knowing whether it sits in a running title, a paragraph, a footnote or a signature line. Bare, it sweeps every page with zones and is resumable.
-**Reads** `scans-fig-blotted/`, `zones/`, the two models, the split marks. A page with no blot is refused.
+**Reads** `scans/w-figs-blotted/`, `zones/`, the two models, the split marks. A page with no blot is refused.
 **Writes** `mz/ocr/` (derived), and relinks that page in `ocr/`. **Never `gt/ocr/`.** One `<String CONTENT>` per `TextLine`, the shape `gt/ocr/` has — the two stores sit under one view and a consumer reads either without asking which.
 **Exit** always 0 — a skipped page is reported, not a failure.
 **Note** the input is the blotted raster, as `zones predict`'s is, so artwork raises no baselines. Nothing is lost to it: the blot fills the *declared* figure box and not a pixel more — the pad was rejected precisely because body text sits hard against an inset figure on pages like `1-283` — so the type survives and only the pictures go. Captions go too and should: they live in `data/readings.md`. A line whose baseline still falls in no zone is **kept, assigned to no region, and counted as `lines_outside_zones`** rather than dropped, because a hole in a page is invisible and junk is not.
@@ -433,7 +433,7 @@ opinion of which pages are held out.
 
 ### zones predict [REF]
 **Does** runs the trained segmenter into `mz/zones/`. Input is always the blotted raster, since that is what the model was trained on.
-**Reads** `models/bogoras-seg/`, `scans-fig-blotted/`, the split marks.
+**Reads** `models/bogoras-seg/`, `scans/w-figs-blotted/`, the split marks.
 **Writes** `mz/zones/` (derived) — never `gt/`.
 **Exit** 1 if any swept page lacked a blot. A single ref exits 0.
 **Note** an exempt mark does not stop a named ref — naming a page is the request — but an existing prediction does, unless `--force`: the mz file's sha256 is the store's only witness to which model wrote it.
@@ -460,7 +460,7 @@ opinion of which pages are held out.
 
 ### zones assemble
 **Does** lays out `train/bogoras-seg/` from the split marks and reports the ketos invocation. Runs nothing.
-**Reads** `gt/zones/`, `scans-fig-blotted/`, the split lists.
+**Reads** `gt/zones/`, `scans/w-figs-blotted/`, the split lists.
 **Writes** `train/bogoras-seg/` — pure scratch, clobbered freely, because the split a model trained on travels in that model's own manifest.
 **Exit** 1 if any listed page has no blotted raster.
 ```
@@ -523,7 +523,7 @@ opinion of which pages are held out.
 
 ### zones paragraphs [REF]
 **Does** audits the paragraph-boundary rule both ways. `false_negative` is a recall figure; `false_positive` is a **worklist, not a precision figure**, since gt cannot arbitrate a rule that corrects it.
-**Reads** `gt/zones/`, `scans-fig-blotted/`, `data/zones_config.json`.
+**Reads** `gt/zones/`, `scans/w-figs-blotted/`, `data/zones_config.json`.
 **Writes** —
 **Exit** always 0 — measurement.
 ```
@@ -543,7 +543,7 @@ opinion of which pages are held out.
 ### zones blot [REF]
 **Does** the figure-blotted training raster — `gt/fig/` zones painted **white**, the declared box and not a pixel more. Distinct from `ocr blot`, which paints in conspicuous colours for a human; this one has to look like blank paper.
 **Reads** `scans/`, `gt/fig/`.
-**Writes** `scans-fig-blotted/` (derived).
+**Writes** `scans/w-figs-blotted/` (derived).
 **Exit** always 0.
 ```
 --root --json
