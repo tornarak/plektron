@@ -89,6 +89,15 @@ RENAMED_FLAGS = {
     ("zones", "--ink"): "zones check --ink",
     ("zones", "--lines"): "zones check --lines",
     ("zones", "--from"): "zones check --store gt|mz",
+    # `--from DIR` across the whole `ocr` group became `--store gt|mz`, the same
+    # closed set `zones` has had, once `mz/ocr/` gave the group a second real
+    # store. It was never used as a free path — only ever `gt/ocr`, `mz/ocr` or
+    # the view — so nothing was given up, and the view stopped being nameable,
+    # which is the point.
+    # `{action}` is filled in from what was actually typed. A group-wide flag
+    # rename has no single action to name, and the alternative — picking one as an
+    # exemplar — points the reader at a command they did not run.
+    ("ocr", "--from"): "ocr {action} --store gt|mz (omit for the ocr/ view)",
     ("lexicon", "--native"): "lexicon native",
     ("lexicon", "--marks"): "lexicon marks",
     ("lexicon", "--suffixes"): "lexicon suffixes",
@@ -118,34 +127,46 @@ def walk_surface(parser) -> dict[tuple[str, str], set[str]]:
     return surface
 
 
-def check_renamed(argv: list[str], actions: dict[str, set[str]]) -> str | None:
+def check_renamed(argv: list[str], surface: dict[tuple[str, str], set[str]]
+                  ) -> str | None:
     """The new spelling for a retired one, or None if nothing matched.
 
-    Runs before argparse, so a retired verb never reaches the `invalid choice`
-    path. Only the first match is reported: someone typing two retired flags
-    wants to be told where the command went, not given a list.
+    Runs before argparse, so a retired spelling never reaches the `invalid choice`
+    or `unrecognized arguments` path. Only the first match is reported: someone
+    typing two retired flags wants to be told where the command went, not given a
+    list.
 
-    **The flag table is consulted only when no action was named**, and that
-    condition is load-bearing rather than an optimization. `--ink` and `--lines`
-    are retired spellings under `zones` *and* live flags of `zones check`, so a
-    trap that scanned regardless would reject `zones check --ink` — the correct
-    new form — and tell the user to type what they had just typed. Old-form
-    commands are `harness GROUP [REF] --flag`, so the tell is that the token
-    after the group is a flag, or a ref, or absent: anything but an action name.
+    **A retired flag is reported even when a live action was named, but only if it
+    is not a flag of that action** — and that qualification is the whole
+    subtlety. `--ink` and `--lines` are retired spellings under `zones` *and* live
+    flags of `zones check`, so a trap that scanned unconditionally would reject
+    `zones check --ink`, the correct new form, and tell the user to type what they
+    had just typed.
+
+    It used to skip the flag table entirely once an action was named, which was
+    the cheap way to get that right and gave up the case that matters more as the
+    CLI ages: a flag retired *within* a surviving action. `ocr lines --from` is
+    exactly that — the action is right, the flag is not — and under the old rule
+    it fell through to argparse's bare "unrecognized arguments: --from", which
+    names the problem and not the fix. Asking the parser itself which flags an
+    action really has is what makes the narrow test possible.
     """
     if not argv:
         return None
     head = argv[0]
     if head in RENAMED_VERBS:
         return RENAMED_VERBS[head]
-    if len(argv) > 1 and argv[1] in actions.get(head, ()):
-        return None
+    actions = {a for (g, a) in surface if g == head}
+    named = argv[1] if len(argv) > 1 and argv[1] in actions else None
+    live = surface.get((head, named), set()) if named else set()
     for tok in argv[1:]:
         if not tok.startswith("-"):
             continue
         flag = tok.split("=", 1)[0]
+        if flag in live:
+            continue
         if (head, flag) in RENAMED_FLAGS:
-            return RENAMED_FLAGS[(head, flag)]
+            return RENAMED_FLAGS[(head, flag)].format(action=named or "<action>")
     return None
 
 

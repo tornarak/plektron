@@ -33,11 +33,15 @@ caught exception. Measurement never gates: `zones check --store mz`, `zones
 score`, `zones diff`, `zones paragraphs`, and everything under `find` and
 `lexicon` always exit 0.
 
-**One meaning per flag name.** `--from DIR` is a source ALTO directory and
-appears only in `ocr`. `--store gt|mz` is a closed set of two and appears only
-in `zones` — closed *because* it gates, and the `zones/` view is deliberately
-not offered, since checking through it would blend ratified and unratified pages
-under one exit code. `--force` overwrites existing output. `--out` redirects a
+**One meaning per flag name.** `--store gt|mz` names one of a group's two real
+stores. A closed set of two, **never a free path and never the read view** — the
+view is not a store, and naming it would blend a ratified page and an unratified
+one under one exit code, which is the whole reason the set is closed. Omitting
+the flag is how a caller asks for the view, i.e. "whatever is current for this
+page". It appears in `zones` and in `ocr`; `ocr review` is the only action with a
+store *default* (`mz`), because its bare diff needs an independent witness and
+the view stops being one as soon as the page has ground truth. `--force`
+overwrites existing output. `--out` redirects a
 write. `--commit` writes. An action name reused across groups means the same
 kind of act: `ocr blot` and `zones blot` both paint a page's raster, and the
 group carries which recipe.
@@ -157,55 +161,55 @@ require `--commit`.
 
 ### ocr pages
 **Does** every ref with OCR present — i.e. workable now.
-**Reads** the `--from` directory.
+**Reads** the `--store` store, or the view.
 **Writes** —
 **Exit** always 0.
 **Note** through the view by default, so a page only the recognizer has read counts. That is deliberate: a machine-read page *is* workable. It was sparse by construction while `gt/ocr/` was the only store under the view and is not any more, so narrow it when the question is narrower.
 ```
---from DIR  ALTO directory to read [ocr, the view]. `gt/ocr` is what a human has
-            been through; `mz/ocr` is what the recognizer has read
+--store {gt,mz}  which store to read [omit: the ocr/ view, which resolves per page
+                 to the human file where there is one]
 --root --json
 ```
 
 ### ocr lines REF
 **Does** per-line id, geometry and text, in reading order, empties kept. `index` is an identity, not a position.
-**Reads** the `--from` store.
+**Reads** the `--store` store, or the view.
 **Writes** —
 **Exit** always 0.
 ```
---from DIR  ALTO directory [ocr]
+--store {gt,mz}  which store to read [omit: the ocr/ view]
 --full      include baseline and polygon points [off]
 --root --json
 ```
 
 ### ocr gaps REF
 **Does** bands of ink no TextLine covers — the dropped-line detector. A band is a place to look, not a verdict.
-**Reads** the `--from` store, `scans/`, `gt/fig/`.
+**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`.
 **Writes** —
 **Exit** always 0.
 ```
---from DIR  ALTO directory [ocr]
+--store {gt,mz}  which store to read [omit: the ocr/ view]
 --root --json
 ```
 
 ### ocr adopt-gap REF VPOS[,VPOS...]
 **Does** materializes measured `gaps` bands as empty TextLines so a dropped line can be keyed. Geometry only, never CONTENT. Refuses an unmeasured vpos and a band overlapping an existing line.
-**Reads** the `--from` store, `scans/`.
+**Reads** the `--store` store, or the view, `scans/`.
 **Writes** `gt/ocr/` under `--commit`, resolved explicitly and never through the view.
 **Exit** always 0; exit 2 on an unmeasured vpos or an overlap.
 ```
---from DIR  ALTO directory [ocr]
+--store {gt,mz}  which store to read [omit: the ocr/ view]
 --commit    actually write gt/ocr/ [off — reports the lines it would create]
 --root --json
 ```
 
 ### ocr crops REF
 **Does** one PNG per line.
-**Reads** the `--from` store, `scans/`.
+**Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/crops/` (derived), or `--out`.
 **Exit** always 0.
 ```
---from DIR  ALTO directory [ocr]
+--store {gt,mz}  which store to read [omit: the ocr/ view]
 --margins   widen to the PrintSpace margins [off]
 --out PATH  write elsewhere; also suppresses the page.png link [review/PP-NNN/crops]
 --root --json
@@ -213,11 +217,11 @@ require `--commit`.
 
 ### ocr sheets REF
 **Does** labelled contact sheets, index in the margin, nothing downscaled. Emits the sheet/lines map, not the line table.
-**Reads** the `--from` store, `scans/`.
+**Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/sheets/` (derived), or `--out`.
 **Exit** always 0.
 ```
---from DIR    ALTO directory [ocr]
+--store {gt,mz}  which store to read [omit: the ocr/ view]
 --per-sheet N lines per sheet, upper bound only [40]
 --height N    max sheet height in px [2000]
 --margins     widen to the PrintSpace margins [off]
@@ -227,11 +231,11 @@ require `--commit`.
 
 ### ocr zoom REF
 **Does** magnified lines — overlapping strips at an integer scale, packed into as few sheets as the height budget allows.
-**Reads** the `--from` store, `scans/`.
+**Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/zoom/` (derived), or `--out`.
 **Exit** always 0.
 ```
---from DIR    ALTO directory [ocr]
+--store {gt,mz}  which store to read [omit: the ocr/ view]
 --only SPEC   line indices, e.g. 7,20,22-26 [every line]
 --zoom N      display px per source px, as delivered [2]
 --window N    source px per strip [derived from --zoom; overriding upward breaks the scale]
@@ -246,36 +250,39 @@ require `--commit`.
 
 ### ocr blot REF
 **Does** the page with every line box and figure zone painted out, so what remains is uncovered by construction. The visual counterpart to `gaps`. See `zones blot` for the other recipe.
-**Reads** the `--from` store, `scans/`, `gt/fig/`.
+**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`.
 **Writes** `scans-blotted/` (derived), or `--out`.
 **Exit** always 0.
 ```
---from DIR  ALTO directory [ocr]
+--store {gt,mz}  which store to read [omit: the ocr/ view]
 --out PATH  output directory [scans-blotted/ — corpus-level, unlike the other image actions]
 --root --json
 ```
 
 ### ocr review REF
 **Does** adjudicate a reading proposal in the browser (`--serve`); bare, a span-level diff against a second witness.
-**Reads** the `--from` store, `review/PP-NNN/proposal.json`, `scans/`.
+**Reads** the `--store` store, or the view, `review/PP-NNN/proposal.json`, `scans/`.
 **Writes** `review/PP-NNN/decision.json` under `--serve`; `review/PP-NNN/review.html` under `--html`. Bare mode writes nothing.
-**Exit** 1 if the bare diff's `--from` resolves to the ground truth the proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40.
+**Exit** 1 if the bare diff's source resolves to the ground truth the proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40.
 ```
 --serve   serve on 127.0.0.1, accept saves  }
 --html    write review.html                 } mutually exclusive
 --spans   bare diff: every span, ungrouped  }
 --port N  port for --serve [8731]
---from DIR  ALTO directory; for the bare diff this must name a genuine second witness [ocr]
+--store {gt,mz}  which store to read [mz — the bare diff needs an independent
+                 witness, and the view is not one once the page has ground truth]
 --root --json
 ```
 
 ### ocr restore REF
 **Does** writes adjudicated decisions into `gt/ocr/`, keeping the source geometry. Reports `mode=restoration` or `mode=revision`.
-**Reads** `review/PP-NNN/decision.json`, the `--from` store.
+**Reads** `review/PP-NNN/decision.json`, the `--store` store, or the view.
 **Writes** `gt/ocr/` under `--commit`.
 **Exit** always 0 — `geometry_drift` and `text_mismatch` are reported, not gated.
+**Note** the view is the right default here rather than a convenience: it resolves to `gt/ocr/` for a keyed page (source is the target — a `revision`, which needs `--force`) and to `mz/ocr/` for a predicted one (source ≠ target, target absent — a `restoration`, which does not). That is the correct source in both cases without the caller choosing, and `mode` reports which ran.
 ```
---from DIR  ALTO providing the line geometry [ocr]
+--store {gt,mz}  which store supplies the line geometry [omit: the ocr/ view,
+                 which is gt for a keyed page and mz for a predicted one]
 --force     overwrite a target that already holds text; every page does, so a revision needs it [off]
 --commit    actually write gt/ocr/ [off — previews the report]
 --root --json

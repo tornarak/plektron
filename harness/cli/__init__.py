@@ -38,9 +38,10 @@ Four conventions hold across every group:
   - **Exit 0 clean, 1 a documented gate failed, 2 usage error.** Measurement
     never gates: `zones check --store mz`, `zones score`, `zones diff`,
     `zones paragraphs`, and everything under `find` and `lexicon` always exit 0.
-  - **One meaning per flag name.** `--from DIR` is a source ALTO directory and
-    lives only in `ocr`; `--store gt|mz` is a closed set and lives only in
-    `zones`; `--force` overwrites existing output; `--out` redirects a write.
+  - **One meaning per flag name.** `--store gt|mz` names one of a group's two
+    real stores — a closed set, never a free path, and never the read view,
+    which is what omitting it selects; `--force` overwrites existing output;
+    `--out` redirects a write.
   - **`--json` swaps the serializer, not the payload** — except on `tei
     validate` and `tei header`, where it swaps a rendered human report for the
     structured verdict. The exit code is the contract either way.
@@ -84,15 +85,14 @@ def main(argv=None):
     ap = build_parser()
 
     # The rename trap runs before parsing, so a retired spelling gets told where
-    # its command went rather than `invalid choice`. It reads the parser's own
-    # action names to tell an old form from a new one — `--ink` is both a
-    # retired `zones` flag and a live `zones check` flag. Skipped when the user
-    # is asking for help, which is the one case where the listing itself answers.
+    # its command went rather than `invalid choice` or `unrecognized arguments`.
+    # It is handed the parser's own surface — action names *and* each action's
+    # real flags — because both are needed to tell an old form from a new one:
+    # `--ink` is a retired `zones` flag and a live `zones check` flag, while
+    # `--from` is retired under a live `ocr lines`. Skipped when the user is
+    # asking for help, which is the one case where the listing itself answers.
     if not any(t in ("-h", "--help") for t in argv):
-        actions = {}
-        for (gname, aname) in walk_surface(ap):
-            actions.setdefault(gname, set()).add(aname)
-        new = check_renamed(argv, actions)
+        new = check_renamed(argv, walk_surface(ap))
         if new:
             return die_renamed(new)
 

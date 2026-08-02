@@ -142,7 +142,20 @@ def test_renamed_tables_point_at_real_actions(parser_surface):
     because it reads as authoritative.
     """
     live = {f"{g} {a}" for g, a in parser_surface}
+    by_group: dict[str, set[str]] = {}
+    for g, a in parser_surface:
+        by_group.setdefault(g, set()).add(a)
     for old, new in list(RENAMED_VERBS.items()) + list(RENAMED_FLAGS.items()):
+        if "{action}" in new:
+            # A flag retired across a whole group has no single action to name, so
+            # the entry is a template the trap fills from what was typed. What is
+            # checkable is the group, and that *every* action in it would produce a
+            # real command — which is the same guarantee, quantified.
+            group = new.split()[0]
+            assert group in by_group, f"rename for {old!r} names group {group!r}"
+            for a in by_group[group]:
+                assert f"{group} {a}" in live
+            continue
         head = " ".join(new.split()[:2])
         assert head in live, f"rename for {old!r} points at {head!r}, which does not exist"
 
@@ -163,16 +176,34 @@ def test_the_trap_does_not_fire_on_a_valid_new_command(parser_surface):
     just typed. This is the regression that condition exists for.
     """
     from harness.cli._common import check_renamed
-    actions = {}
-    for g, a in parser_surface:
-        actions.setdefault(g, set()).add(a)
-    assert check_renamed(["zones", "check", "--ink"], actions) is None
-    assert check_renamed(["zones", "check", "--lines", "1-048"], actions) is None
-    assert check_renamed(["zones", "check", "--store", "mz"], actions) is None
+    s = parser_surface
+    assert check_renamed(["zones", "check", "--ink"], s) is None
+    assert check_renamed(["zones", "check", "--lines", "1-048"], s) is None
+    assert check_renamed(["zones", "check", "--store", "mz"], s) is None
+    assert check_renamed(["ocr", "lines", "--store", "mz"], s) is None
     # ...while the old forms still route.
-    assert check_renamed(["zones", "--ink"], actions) == "zones check --ink"
-    assert check_renamed(["zones", "1-048", "--serve"], actions) == "zones edit [REF]"
-    assert check_renamed(["validate", "1-101"], actions) == "tei validate REF"
+    assert check_renamed(["zones", "--ink"], s) == "zones check --ink"
+    assert check_renamed(["zones", "1-048", "--serve"], s) == "zones edit [REF]"
+    assert check_renamed(["validate", "1-101"], s) == "tei validate REF"
+
+
+def test_a_flag_retired_under_a_live_action_is_still_caught(parser_surface):
+    """The case the trap used to give up on.
+
+    `--from` is retired across the whole `ocr` group while every action it sat on
+    is still live, so the old "skip the flag table once an action is named" rule
+    let it fall through to argparse's bare `unrecognized arguments: --from` —
+    which names the problem and not the fix. The action typed is echoed back, so
+    the message is about the command that was actually run.
+    """
+    from harness.cli._common import check_renamed
+    s = parser_surface
+    assert check_renamed(["ocr", "lines", "1-048", "--from", "gt/ocr"], s) == \
+        "ocr lines --store gt|mz (omit for the ocr/ view)"
+    assert check_renamed(["ocr", "review", "1-048", "--from", "mz/ocr"], s) == \
+        "ocr review --store gt|mz (omit for the ocr/ view)"
+    # No action named: the placeholder degrades rather than crashing.
+    assert "<action>" in check_renamed(["ocr", "--from", "gt/ocr"], s)
 
 
 def test_write_enable_is_commit_everywhere(parser_surface):
@@ -190,18 +221,29 @@ def test_write_enable_is_commit_everywhere(parser_surface):
         assert not overlap, f"{key[0]} {key[1]} still carries {sorted(overlap)}"
 
 
-def test_from_and_store_do_not_mix(parser_surface):
-    """`--from` is a free ALTO directory; `--store` is a closed set of two.
+def test_the_source_flag_is_always_a_closed_set(parser_surface):
+    """One spelling for "which store", and it can never be a free path.
 
-    They were the same flag name for two incompatible types, which is how a
-    check ends up compared against its own input by typo. The rule is now that
-    `--from` lives only in `ocr` and `--store` only in `zones`, and no action
-    carries both.
+    `--from DIR` and `--store gt|mz` coexisted as two names for one job with
+    incompatible types, `--from` free and `--store` closed. `--from` is gone: it
+    was never pointed at anything but `gt/ocr`, `mz/ocr` or the view, so the free
+    path bought nothing and cost the guarantee — a free path is how a check ends
+    up compared against its own input.
+
+    **The view is deliberately not a value.** It is not a store; omitting the flag
+    is how a caller says "whatever is current for this page". Letting it be named
+    here would put a ratified and an unratified page under one verdict, which is
+    the reason `zones check --store` was closed in the first place.
     """
-    for (group, action), flags in parser_surface.items():
-        assert not ({"--from", "--store"} <= flags), \
-            f"{group} {action} carries both --from and --store"
-        if "--from" in flags:
-            assert group == "ocr", f"--from outside the ocr group: {group} {action}"
-        if "--store" in flags:
-            assert group == "zones", f"--store outside zones: {group} {action}"
+    ap = build_parser()
+    for group_act in ap._subparsers._group_actions:
+        for gname, gparser in group_act.choices.items():
+            for act_act in gparser._subparsers._group_actions:
+                for aname, sub in act_act.choices.items():
+                    assert "--from" not in {o for act in sub._actions
+                                            for o in act.option_strings}, \
+                        f"{gname} {aname} still carries the retired --from"
+                    for act in sub._actions:
+                        if "--store" in act.option_strings:
+                            assert tuple(act.choices or ()) == ("gt", "mz"), \
+                                f"{gname} {aname}: --store is not the closed pair"

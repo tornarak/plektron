@@ -8,7 +8,7 @@ Three stores and a view, and the split between them is the point:
 
 `--store` picks which of the two real stores an action reads. It is a closed set
 of two and deliberately not a free directory path, unlike the `ocr` group's
-`--from`: a free path is how a check ends up compared against its own input, and
+a free path: that is how a check ends up compared against its own input, and
 checking through the view would blend ratified and unratified pages under one
 exit code. The view is not offered for the same reason.
 

@@ -1,10 +1,21 @@
 """`harness ocr` — the ALTO stores, the line instruments, and the correction loop.
 
-Reads resolve through `ocr/`, the read view over every OCR store and this
-group's default `--from`. Writes name `gt/ocr/` explicitly and there are exactly
-two of them: `restore`, which fills text into lines that already exist, and
-`adopt-gap`, which creates an empty line so a dropped one can be keyed. Both
-require `--commit`.
+Reads resolve through `ocr/`, the read view over both OCR stores, which is this
+group's unnamed default — it resolves per page to the human file where there is
+one and the machine file otherwise, i.e. "whatever is current". `--store gt|mz`
+names a real store instead, a closed set exactly as `zones check --store` is and
+for its reason: a free path is how a check ends up compared against its own
+input. **The view is not a value in that set.** It is not a store, and letting it
+be named as one is the category error the three-store layout exists to prevent.
+
+`review` is the only action with a store default (`mz`), because it is the only
+one where the view is actively wrong: its bare diff needs an independent witness,
+and the view resolves to the ground truth the proposal produced as soon as the
+page has any.
+
+Writes name `gt/ocr/` explicitly and there are exactly two of them: `restore`,
+which fills text into lines that already exist, and `adopt-gap`, which creates an
+empty line so a dropped one can be keyed. Both require `--commit`.
 
 The old `lines` verb carried six modes on one parser — a table, a gap detector,
 a geometry writer, and three image writers — selected by if-chain precedence, so
@@ -31,8 +42,16 @@ from ..review import (group_spans, page_spans, render_queue_html, restore, serve
                       summary)
 
 REF_HELP = "page ref: part and scan index, e.g. 1-048"
-FROM_HELP = (f"ALTO directory to read (default {DEFAULT_ALTO_DIR}, the read view "
-             "over every OCR store)")
+# **A closed set of the two real stores, and the view is not a value in it** —
+# `zones check --store` exactly, and for its reason: a free path is how a check ends
+# up compared against its own input, and naming the view as if it were a store is
+# the category error the three-store layout exists to prevent. Omitting the flag
+# reads through the view, which resolves per page to gt-if-it-exists-else-mz; that
+# is "whatever is current for this page", not a store, and it stays unnamed.
+STORE_HELP = ("which store to read: 'gt' is what a human has been through, 'mz' "
+              "what the recognizer read. Omit to read through the ocr/ view, which "
+              "resolves per page to the human file where there is one")
+STORES = {"gt": "gt/ocr", "mz": "mz/ocr"}
 MARGINS_HELP = ("widen to the PrintSpace margins — a line polygon can exclude "
                 "printed text that belongs to the line, and what it excludes "
                 "sits in the margin (list numbers, the folio)")
@@ -46,10 +65,20 @@ def _ref(p):
     return p
 
 
-def _from(p):
-    p.add_argument("--from", dest="alto_dir", default=DEFAULT_ALTO_DIR,
-                   help=FROM_HELP)
+def _store(p, default=None):
+    """`--store gt|mz`, resolved to a directory on the namespace as `alto_dir`.
+
+    `default` is the store a bare invocation reads; `None` means the view. Only
+    `review` sets one, because only there is the view actively wrong — see its
+    registration.
+    """
+    p.add_argument("--store", choices=("gt", "mz"), default=default,
+                   help=STORE_HELP + (f" [default: {default}]" if default else ""))
     return p
+
+
+def _alto_dir(a) -> str:
+    return STORES.get(getattr(a, "store", None), DEFAULT_ALTO_DIR)
 
 
 def register(sub, common):
@@ -60,13 +89,12 @@ def register(sub, common):
     act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
     add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
 
-    p = _from(add("pages", help="every ref with OCR present, i.e. workable now. "
+    p = _store(add("pages", help="every ref with OCR present, i.e. workable now. "
               "Through the view by default, so a machine-read page counts — that "
-              "is what makes it workable. Narrow it with --from: `gt/ocr` is what "
-              "a human has been through, `mz/ocr` what the recognizer has read"))
+              "is what makes it workable. Narrow it with --store"))
     p.set_defaults(func=run_pages)
 
-    p = _from(_ref(add("lines", help="per-line records for one page — line id, "
+    p = _store(_ref(add("lines", help="per-line records for one page — line id, "
               "geometry and text, in reading order with empties kept, which is "
               "the join detector_flags' line numbers cannot supply. `index` is "
               "an identity, not a position: it stays what ALTO document order "
@@ -76,7 +104,7 @@ def register(sub, common):
                         "enough to make the table unreadable by default")
     p.set_defaults(func=run_lines)
 
-    p = _from(_ref(add("gaps", help="bands of ink on the raster that no TextLine "
+    p = _store(_ref(add("gaps", help="bands of ink on the raster that no TextLine "
               "covers — the dropped-line detector. The segmentation this corpus "
               "was built from drops whole printed lines and nothing else "
               "notices, because the text that IS there is correct. Measured off "
@@ -85,7 +113,7 @@ def register(sub, common):
               "to look, not a verdict")))
     p.set_defaults(func=run_gaps)
 
-    p = _from(_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
+    p = _store(_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
               "empty TextLines in gt/ocr/, so a dropped line can be keyed. "
               "Geometry only, never CONTENT: text still arrives via "
               "decision.json -> restore. Each VPOS must match a measured band; "
@@ -98,12 +126,12 @@ def register(sub, common):
                         "the ground-truth store and gates like `restore` does")
     p.set_defaults(func=run_adopt_gap)
 
-    p = _from(_ref(add("crops", help="one PNG per line, into review/PP-NNN/crops/")))
+    p = _store(_ref(add("crops", help="one PNG per line, into review/PP-NNN/crops/")))
     p.add_argument("--margins", action="store_true", help=MARGINS_HELP)
     p.add_argument("--out", type=Path, default=None, help=OUT_HELP)
     p.set_defaults(func=run_crops)
 
-    p = _from(_ref(add("sheets", help="compose the line crops into labelled "
+    p = _store(_ref(add("sheets", help="compose the line crops into labelled "
               "contact sheets in review/PP-NNN/sheets/, index drawn in the "
               "margin, nothing downscaled — the reading pass's instrument; emits "
               "the sheet/lines map instead of the line table")))
@@ -117,7 +145,7 @@ def register(sub, common):
     p.add_argument("--out", type=Path, default=None, help=OUT_HELP)
     p.set_defaults(func=run_sheets)
 
-    p = _from(_ref(add("zoom", help="magnify selected lines — overlapping strips "
+    p = _store(_ref(add("zoom", help="magnify selected lines — overlapping strips "
               "at an integer scale, packed into as few sheets as the height "
               "budget allows, for the second look a contact sheet leaves open")))
     p.add_argument("--only", default=None, metavar="SPEC",
@@ -154,7 +182,7 @@ def register(sub, common):
                    help="output directory (default review/PP-NNN/zoom)")
     p.set_defaults(func=run_zoom)
 
-    p = _from(_ref(add("blot", help="write the page to scans-blotted/ with every "
+    p = _store(_ref(add("blot", help="write the page to scans-blotted/ with every "
               "line box and figure zone painted out, so whatever remains is "
               "uncovered by construction. The visual counterpart to `gaps`, and "
               "a check on it: nothing is thresholded here, only covered. Not to "
@@ -166,9 +194,16 @@ def register(sub, common):
                         "actions, because the blotted page is not review material)")
     p.set_defaults(func=run_blot)
 
-    p = _from(_ref(add("review", help="adjudicate a reading proposal in the "
+    # **The one action with a store default, and `mz` is it.** The bare diff needs
+    # an *independent* witness; the view stops being one the moment the page has
+    # ground truth, because it then resolves to the very file the proposal
+    # produced. The runtime refusal below still catches that, but a default nobody
+    # has to think about beats an error after the fact — and `mz/ocr/` is a
+    # different inode by construction.
+    p = _store(_ref(add("review", help="adjudicate a reading proposal in the "
               "browser (--serve); bare, a span-level diff of the proposal "
-              "against a second witness, grouped by substitution class")))
+              "against a second witness, grouped by substitution class")),
+               default="mz")
     mx = p.add_mutually_exclusive_group()
     mx.add_argument("--serve", action="store_true",
                     help="serve the review page on 127.0.0.1 and accept saves "
@@ -185,7 +220,7 @@ def register(sub, common):
     p.add_argument("--port", type=int, default=8731, help="port for --serve")
     p.set_defaults(func=run_review)
 
-    p = _from(_ref(add("restore", help="preview (default) or write adjudicated "
+    p = _store(_ref(add("restore", help="preview (default) or write adjudicated "
               "review decisions into gt/ocr/ as ground truth, keeping the source "
               "geometry — --commit required to write. Reports mode=restoration "
               "(filled from another store) or mode=revision (the finished page "
@@ -232,12 +267,12 @@ def register(sub, common):
 
 
 def run_pages(a) -> int:
-    out(a, all_refs(a.root, a.alto_dir))
+    out(a, all_refs(a.root, _alto_dir(a)))
     return 0
 
 
 def run_lines(a) -> int:
-    recs = page_lines(alto_for_lines(a.ref, a.alto_dir, a.root))
+    recs = page_lines(alto_for_lines(a.ref, _alto_dir(a), a.root))
     if not a.full:
         # Drop the two long geometry strings. Dropped from every record, never
         # some — a ragged key set collapses the table to the verbose nested
@@ -249,13 +284,13 @@ def run_lines(a) -> int:
 
 
 def run_gaps(a) -> int:
-    out(a, line_gaps(a.ref, a.alto_dir, a.root))
+    out(a, line_gaps(a.ref, _alto_dir(a), a.root))
     return 0
 
 
 def run_adopt_gap(a) -> int:
     out(a, adopt_gaps(a.ref, [int(v) for v in a.vpos.split(",")],
-                      a.alto_dir, a.root, commit=a.commit))
+                      _alto_dir(a), a.root, commit=a.commit))
     return 0
 
 
@@ -271,14 +306,14 @@ def _page_link(a) -> None:
 def run_crops(a) -> int:
     _page_link(a)
     out(a, write_line_crops(a.ref, a.out or crops_dir(a.ref, a.root),
-                            a.alto_dir, a.root, margins=a.margins))
+                            _alto_dir(a), a.root, margins=a.margins))
     return 0
 
 
 def run_sheets(a) -> int:
     _page_link(a)
     out(a, write_line_sheets(a.ref, a.out or sheets_dir(a.ref, a.root),
-                             a.alto_dir, a.root, per_sheet=a.per_sheet,
+                             _alto_dir(a), a.root, per_sheet=a.per_sheet,
                              margins=a.margins, sheet_h=a.sheet_h))
     return 0
 
@@ -290,27 +325,27 @@ def run_zoom(a) -> int:
         only=parse_selection(a.only) if a.only else None,
         zoom=a.zoom, window=a.window, overlap=a.overlap,
         sheet_h=a.sheet_h, client_w=a.client_w,
-        alto_dir=a.alto_dir, root=a.root,
+        alto_dir=_alto_dir(a), root=a.root,
         margins=a.margins, smooth=a.smooth))
     return 0
 
 
 def run_blot(a) -> int:
     out(a, write_blot(a.ref, a.out or (a.root / "scans-blotted"),
-                      a.alto_dir, a.root))
+                      _alto_dir(a), a.root))
     return 0
 
 
 def run_review(a) -> int:
     if a.serve:
         _page_link(a)
-        serve(a.ref, a.alto_dir, a.root, a.port)
+        serve(a.ref, _alto_dir(a), a.root, a.port)
         return 0
     if a.html:
         _page_link(a)
         dest = html_path(a.ref, a.root)
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(render_queue_html(a.ref, a.alto_dir, a.root),
+        dest.write_text(render_queue_html(a.ref, _alto_dir(a), a.root),
                         encoding="utf-8")
         print(f"{dest}: review page for {a.ref}")
         return 0
@@ -320,16 +355,16 @@ def run_review(a) -> int:
     # 40/40 — the shape of verification without the substance, which is exactly
     # the fault that killed the old verbatim firewall (CLAUDE.md, "What the
     # firewall is not"). So refuse rather than print a reassuring table.
-    src = alto_for_lines(a.ref, a.alto_dir, a.root)
+    src = alto_for_lines(a.ref, _alto_dir(a), a.root)
     gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(a.ref)}.xml"
     if src.exists() and gt.exists() and src.resolve() == gt.resolve():
         print(f"ERROR: {src} resolves to the ground truth for {a.ref} ({gt}), so "
               "a proposal diff against it would compare that reading with itself "
               "and report no differences. The span diff needs an independent "
-              f"witness — name one with --from, or use `harness ocr review "
+              f"witness — `--store mz` is one, or use `harness ocr review "
               f"{a.ref} --serve` to adjudicate.", file=sys.stderr)
         return 1
-    spans = page_spans(a.ref, a.alto_dir, a.root)
+    spans = page_spans(a.ref, _alto_dir(a), a.root)
     n = len(page_lines(src))
     # Two calls, two tables. Summary and queue have different key sets, so
     # emitting them as one list would collapse the whole thing to the verbose
@@ -340,7 +375,7 @@ def run_review(a) -> int:
 
 
 def run_restore(a) -> int:
-    out(a, restore(a.ref, a.alto_dir, a.root, a.force, a.commit))
+    out(a, restore(a.ref, _alto_dir(a), a.root, a.force, a.commit))
     return 0
 
 
