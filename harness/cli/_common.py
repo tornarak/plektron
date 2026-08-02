@@ -47,6 +47,125 @@ def out(a, obj) -> None:
     print(emit(obj, getattr(a, "json", False)))
 
 
+REF_HELP = "page ref: part and scan index, e.g. 1-048"
+
+ALL_HELP = ("Required for a corpus-wide run: naming nothing is a usage error "
+            "rather than a silent sweep, because the cost of a sweep should be "
+            "at the call site and not inferred from an omission")
+
+
+def add_all(p, what: str):
+    """`--all`, whose help states *what it enumerates* rather than "everything".
+
+    The parameter is mandatory for that reason. "Every page" is four different
+    sets in this repo — the 832 scans, the pages with zones, the pages a store
+    holds, the review directories — and which one a sweep walks is the whole
+    content of the flag.
+    """
+    p.add_argument("--all", action="store_true", help=f"{what}. {ALL_HELP}")
+    return p
+
+
+def refs_arg(p, *, all_: str | None = None, extra: str = ""):
+    """The `PP-NNN [PP-NNN ...]` positional, plus `--all` where there is a corpus form.
+
+    `nargs` is `+` when the action must name pages and `*` when `--all` is the
+    other way to say what to work on. There is deliberately no third case: a bare
+    `*` with no `--all` would be a sweep spelled as an omission, which is what
+    this replaced.
+    """
+    p.add_argument("ref", metavar="PP-NNN", nargs="*" if all_ else "+",
+                   help=REF_HELP + ". Several may be given" + extra)
+    if all_:
+        add_all(p, all_)
+    return p
+
+
+def page_refs(a) -> list[str]:
+    """The refs this invocation names, normalized — `[]` when it named `--all`.
+
+    **Every ref is parsed before the caller does any work**, which is the whole
+    point of routing through here: `ocr review` already checked all its refs
+    before emitting anything (a refusal arriving after pages of reassuring output
+    is worse than no check), and a write verb has the sharper version of the same
+    problem — a typo in the fifth ref must not leave four pages written.
+
+    It also holds the three-way exclusion. Refs, `--all` and `--itinerary` are
+    three ways of naming a work-list and exactly one may be used, so a caller
+    cannot silently prefer one over another; and an action that has `--all` and
+    was given none of the three is a usage error rather than a sweep.
+
+    Returning `[]` for `--all` is safe only because of that error: an empty list
+    out of here means the corpus was asked for, never that nothing was named.
+    """
+    from ..context import norm_ref
+
+    refs = getattr(a, "ref", None)
+    refs = [refs] if isinstance(refs, str) else list(refs or [])
+    given = [name for name, v in (("refs", refs),
+                                  ("--all", getattr(a, "all", False)),
+                                  ("--itinerary", getattr(a, "itinerary", None)))
+             if v]
+    if len(given) > 1:
+        raise ValueError(
+            f"{' and '.join(given)} are three ways of naming the same thing — "
+            "one per invocation")
+    if not given and hasattr(a, "all"):
+        raise ValueError("nothing named: give one or more PP-NNN refs, or --all "
+                         "for the whole corpus")
+    return [norm_ref(r) for r in refs]
+
+
+def one_page_only(a, flags: dict[str, str], refs: list[str]) -> None:
+    """Refuse a flag that names something only one page has, given several refs.
+
+    A plural positional silently widens every flag beside it, and some of them
+    name a thing that exists per page: `--only` is that page's line indices,
+    `--out` is one directory that N pages of images would collide in, `--path` is
+    one file. Refusing is the point — `--out` in particular had no error at all,
+    the second page simply overwrote the first's sheets.
+
+    `flags` maps the attribute name to the spelling to print.
+    """
+    if len(refs) <= 1:
+        return
+    for attr, spelling in flags.items():
+        if getattr(a, attr, None):
+            raise ValueError(f"{spelling} names one page's own — give one ref, "
+                             f"not {len(refs)}")
+
+
+def out_per_ref(a, pairs) -> None:
+    """Emit one payload per ref: as-is for one, pooled with a `ref` column for N.
+
+    One ref emits exactly what the single-ref form always emitted, so every
+    example in VERBS.md and in the skills stays literally correct; several pool
+    into one table whose first field is `ref`. That is the shape `emit`'s own
+    docstring argues for — a list of records carrying `ref` as a field rather
+    than a dict keyed by ref — and it is what `proposal marks` already does.
+
+    **A list-valued field is refused rather than pooled.** TOON collapses a
+    uniform record list to a header and rows, but a record holding a nested list
+    degrades the *whole outer table* to the verbose form, so one page's `edits`
+    would cost the pooled table its shape. The fix is always the same and the
+    error says it: emit that field as its own ref-keyed table, one more call
+    here. Two key sets, two tables — the same rule `out` states.
+    """
+    if len(pairs) == 1:
+        out(a, pairs[0][1])
+        return
+    rows = []
+    for ref, payload in pairs:
+        for item in (payload if isinstance(payload, list) else [payload]):
+            for k, v in item.items():
+                if isinstance(v, list):
+                    raise ValueError(
+                        f"cannot pool {ref}: field {k!r} is a list, which would "
+                        "degrade the table — emit it as its own ref-keyed table")
+            rows.append({"ref": ref, **item})
+    out(a, rows)
+
+
 # Retired tier-1 verbs -> where each went. Keys are what `argv[1]` used to be.
 RENAMED_VERBS = {
     "context": "tei context REF",
@@ -125,6 +244,29 @@ def walk_surface(parser) -> dict[tuple[str, str], set[str]]:
                         flags.update(o for o in act.option_strings
                                      if o.startswith("--") and o != "--help")
                     surface[(gname, aname)] = flags
+    return surface
+
+
+def walk_positionals(parser) -> dict[tuple[str, str], dict[str, object]]:
+    """`{(group, action): {positional name: nargs}}` for the whole parser.
+
+    A separate walk from `walk_surface` because that one collects
+    `option_strings` and a positional has none — deliberately, since the VERBS.md
+    gate is about flags and pinning a metavar there would be a style gate wearing
+    a correctness gate's clothes. What *is* a correctness question is whether a
+    ref positional is plural, and only this sees it.
+
+    `nargs` is `None` for a plain single-value positional, which is what argparse
+    stores; the gate reads that as "singular" rather than special-casing it.
+    """
+    surface = {}
+    for group_act in parser._subparsers._group_actions:
+        for gname, gparser in group_act.choices.items():
+            for act_act in gparser._subparsers._group_actions:
+                for aname, aparser in act_act.choices.items():
+                    surface[(gname, aname)] = {
+                        act.dest: act.nargs for act in aparser._actions
+                        if not act.option_strings}
     return surface
 
 

@@ -25,9 +25,8 @@ from __future__ import annotations
 
 import sys
 
-from ._common import out
+from ._common import REF_HELP, out
 
-REF_HELP = "page ref, e.g. 1-048"
 ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file in gt/seg's "
              "format, or a directory taken to mean every page file in it (so "
              "`--itinerary gt/seg` is that whole selection, chosen for "

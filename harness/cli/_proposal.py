@@ -22,9 +22,8 @@ from ..proposal_check import _parse_which, line_codepoints, replace_in_field
 from ..proposal_check import check as check_proposal
 from ..proposal_check import fix as fix_proposal
 from ..proposal_check import set_field as set_proposal_field
-from ._common import out
+from ._common import REF_HELP, out
 
-REF_HELP = "page ref: part and scan index, e.g. 1-052"
 PATH_HELP = "proposal file (default review/PP-NNN/proposal.json)"
 FIELD_HELP = ("which field of the line to act on (default text). Applies to "
               "codepoints, set and replace alike")

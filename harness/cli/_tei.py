@@ -17,9 +17,7 @@ from ..ids import pair_glosses
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
 from ..validate import check_corpus_header, validate
-from ._common import out
-
-REF_HELP = "page ref: part and scan index, e.g. 1-048"
+from ._common import REF_HELP, out
 
 
 def register(sub, common):

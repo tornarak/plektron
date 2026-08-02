@@ -58,9 +58,8 @@ from ..review import (
     serve,
     summary,
 )
-from ._common import out
+from ._common import REF_HELP, out
 
-REF_HELP = "page ref: part and scan index, e.g. 1-048"
 # **A closed set of the two real stores, and the view is not a value in it** —
 # `zones check --store` exactly, and for its reason: a free path is how a check ends
 # up compared against its own input, and naming the view as if it were a store is
