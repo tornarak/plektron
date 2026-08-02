@@ -1,0 +1,84 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "321"
+    },
+    "2": {
+      "text": "The apparent difference which exists between the wind systems of the"
+    },
+    "3": {
+      "text": "peninsula and of the Kolyma country can be explained, to a considerable"
+    },
+    "4": {
+      "text": "degree, by the different position of land and sea in the two countries. Thus,"
+    },
+    "5": {
+      "text": "the sea-winds (añqaiˊhɪt) which on the Arctic Sea come from the north, on",
+      "resolved": "añqaiˊhɪt = a, ñ=n+U+0303, q, a, i, ˊ=U+02CA, h, ɪ=U+026A, t",
+      "note": "Raised mark between i and h is post-vocalic, pre-consonantal (not V_V, not post-b/p/d/t/g/k), so keyed as stress U+02CA per keying_spec §4/§5.8, not apostrophe."
+    },
+    "6": {
+      "text": "the Pacific come from the east. Near the mouth of Kolyma River the wind"
+    },
+    "7": {
+      "text": "qêraˊlhɪn comes from the large open tundra of the west: on the Pacific, near",
+      "resolved": "qêraˊlhɪn = q, ê=e+U+0302, r, a, ˊ=U+02CA, l, h, ɪ=U+026A, n",
+      "note": "Raised mark after a, before l: not a licensed apostrophe environment, keyed as stress U+02CA."
+    },
+    "8": {
+      "text": "Indian Point, it is of the same nature, but comes from the southwest. The"
+    },
+    "9": {
+      "text": "wind qaačhêˊhɪn, which, near the mouth of Kolyma River, comes along the",
+      "resolved": "qaačhêˊhɪn = q, a, a, č=c+U+030C, h, ê=e+U+0302, ˊ=U+02CA, h, ɪ=U+026A, n",
+      "note": "Confirmed caron on c (č) and circumflex on ê at 4x. Raised mark after ê, before h: stress U+02CA, not apostrophe (h not in b/p/d/t/g/k list)."
+    },
+    "10": {
+      "text": "seashore from the northeast, on the Pacific, near Indian Point, also comes"
+    },
+    "11": {
+      "text": "along the seashore, but from west-southwest."
+    },
+    "12": {
+      "text": "The Koryak names of winds as diagrammed for me in the village of Vaˊikenan, on Penshina",
+      "resolved": "Vaˊikenan = V, a, ˊ=U+02CA, i, k, e, n, a, n",
+      "note": "English-register proper name carrying a Tier-1-style stress mark; keyed as printed. Raised mark after a, before i: V_V position, still defaults to stress per keying_spec §4 (V_V does not license apostrophe/pause by default)."
+    },
+    "13": {
+      "text": "Bay, are for the most part identical with those of the Pacific-coast Chukchee. Thus, qeyaˊlhɪn,",
+      "resolved": "qeyaˊlhɪn = q, e, y, a, ˊ=U+02CA, l, h, ɪ=U+026A, n",
+      "note": "Raised mark after a, before l: stress U+02CA."
+    },
+    "14": {
+      "text": "corresponding to the Chukchee qêraˊlhɪn, signifies “southwest;” eñeˊneñe signifies “southeast;” but",
+      "resolved": "qêraˊlhɪn = q, ê=e+U+0302, r, a, ˊ=U+02CA, l, h, ɪ=U+026A, n; eñeˊneñe = e, ñ=n+U+0303, e, ˊ=U+02CA, n, e, ñ=n+U+0303, e",
+      "note": "Curly quotes reproduced as printed. Both raised marks are post-vocalic/pre-consonantal, not V_V or post-b/p/d/t/g/k: stress U+02CA."
+    },
+    "15": {
+      "text": "empeiˊkin, probably corresponding to yamwaˊihɪn of the Kolyma, which refers to the same wind,",
+      "resolved": "empeiˊkin = e, m, p, e, i, ˊ=U+02CA, k, i, n; yamwaˊihɪn = y, a, m, w, a, ˊ=U+02CA, i, h, ɪ=U+026A, n",
+      "note": "empeiˊkin: mark after i, before k, not licensed for apostrophe -> stress. Both i's in -kin read dotted (plain i) at 4x, unlike the -hɪn suffix pattern. yamwaˊihɪn: mark after a, before i is V_V position but still defaults to stress per keying_spec §4; the second i (in -hɪn) is dotless ɪ matching the corpus's established -hɪn suffix pattern, the first i (in -i-, before h) read dotted/plain at 4x."
+    },
+    "16": {
+      "text": "signifies “northeast.”"
+    },
+    "17": {
+      "text": "Other winds among the Koryak of that village are hishoˊlan (“up-[stream wind]”) for the east",
+      "resolved": "hishoˊlan = h, i, s, h, o, ˊ=U+02CA, l, a, n",
+      "note": "Mark after o, before l: stress U+02CA. Both i's in hisho read dotted/plain."
+    },
+    "18": {
+      "text": "wind, ˙eˊwtelan (“down-[stream wind]”) for the south-southwest wind, onm-eˊwtelan (“inner down-",
+      "resolved": "eˊwtelan = e, ˊ=U+02CA, w, t, e, l, a, n (both occurrences); the first occurrence is preceded by a raised dot keyed U+02D9, position unlicensed — see note",
+      "note": "FLAG FOR HUMAN — the one thing on this page needing a ruling. The first ˙eˊwtelan carries a small raised dot immediately BEFORE its initial e, mid-x-height, same weight as the stress mark, confirmed at 4x. The second occurrence in the same line, onm-eˊwtelan, has no such dot. That contrast is on the paper and is the finding; what the dot MEANS is not proposed here. keying_spec §2.1 catalogues a raised dot as U+02D9, the palatalization mark, but licenses it only POSTPOSED after n x d t s č ǰ — so the letterform is inventory, the position is not. Keyed U+02D9 because it is the catalogued sort whose shape this is; the environment is the open question and only a human may settle it. An earlier draft of this proposal keyed U+00B7 as a \"closest visual match\": that is wrong and was corrected — §2.7 lists U+00B7 as a lookalike TRAP for U+02D9, i.e. a character with no legitimate reading anywhere in the corpus, and it is zero-attested across gt/ocr. Separately, both eˊwtelan stress marks sit after e and before w, not a licensed apostrophe environment, so U+02CA."
+    }
+  },
+  "segmenter_missed": {},
+  "contamination": {
+    "blind": true,
+    "note": "Proposal authored solely from scans/chukchi-2-047.png and its line crops/zooms; mz/ocr/chukchi-2-047.xml's CATMuS text was not read as a witness to any glyph, only used for line geometry via harness ocr lines/sheets/zoom."
+  }
+}

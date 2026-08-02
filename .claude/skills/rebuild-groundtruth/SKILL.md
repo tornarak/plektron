@@ -23,6 +23,17 @@ off the table and gloss review runs off TEI provenance, so these ALTOs train not
 What the exercise yields is the correction loop and the error profile. Judge a session
 by whether the loop got better.
 
+**Running several pages at once: `dispatch.md`, beside this file.** The reading half
+parallelises — one agent per page, each stopping at a normalized proposal — and the
+adjudication half does not, so the human still takes the pages one at a time. That
+file holds the dispatch prompt, what each of its clauses is there to prevent, and the
+two things the parent must do rather than delegate: `ocr predict` before dispatching
+(an agent sent at a page with no `mz/ocr/` has no line indices to key against), and
+checking the returned Tier-1 dispositions against the raster afterwards. It also
+records the failure the prompt did *not* prevent — an agent that must fill a
+mandatory `text` field will emit a character, and "closest visual match" is the
+reasoning that produces a lookalike trap.
+
 ## Loop, per page ref PP-NNN
 
 Refs are part + scan index (`1-073`), never a bare page number. Every step is
@@ -463,8 +474,19 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
   real, write it in `note` instead. If a genuine gap in the tool's coverage forces
   this, the fix belongs in `harness ocr zoom` itself (an option, e.g.), not a one-off
   script and not a workaround repeated next session.
+- Shell out to `ls`, `cat`, `find` or `stat` to see what is on disk. **Glob** answers
+  "does `review/PP-NNN/proposal.json` exist", **Read** answers "what is in it". A
+  shell listing is a subprocess, a permission prompt and a wall of text for a
+  question two file tools answer directly, and it is the first step of the slide
+  into the next bullet.
 - Write a `python3 -c "..."` one-liner to inspect or edit `proposal.json`/
-  `decision.json` — `proposal codepoints LINE` names a line's non-ASCII
+  `decision.json` — **including merely to check that the file exists or that it
+  parses.** That last one is not a smaller version of the rule, it is where the rule
+  gets broken in practice: it feels like verification rather than editing, so it
+  reads as exempt, and it is how a session acquires its first `python3` invocation.
+  It is also answered for free — `proposal fix PP-NNN` reads the file and fails
+  loudly on anything malformed, so running the step you were going to run anyway
+  *is* the parse check. `proposal codepoints LINE` names a line's non-ASCII
   characters, `proposal set LINE --field FIELD` writes one, and both exist
   precisely because the hand-rolled versions were written more than once in the same
   session (`3-003`: an `ord(ch)` loop to catch a typed `ı` where `ɪ` was meant, then

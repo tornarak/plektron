@@ -1,0 +1,162 @@
+{
+  "contamination": {
+    "blind": true,
+    "note": "2-045 not in the read-openly/spent list in CLAUDE.md; first read this session."
+  },
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "running title"
+    },
+    "1": {
+      "text": "319",
+      "note": "folio number"
+    },
+    "2": {
+      "text": "his wife. The wives of “house-spirits” are also supposed to have clandestine"
+    },
+    "3": {
+      "text": "lovers among the “reˊkkeñ-spirits” that roam about.",
+      "resolved": "reˊkkeñ = r e U+02CA(stress) k k e n+U+0303(ñ)"
+    },
+    "4": {
+      "text": "Another man, of the Kolyma country, called his “house-spirit” Wolvaˊᵋ-",
+      "resolved": "Wolvaˊᵋ = W o l v a U+02CA(stress) U+1D4B(ᵋ, laryngeal/glottalization)",
+      "note": "Stress U+02CA immediately followed by U+1D4B ᵋ on the same vowel, per §2.1's ‘glottalization of the stressed vowel’ — the same pairing pattern as review/2-034's Cêˊmaˊᵋqɪm. Compound continues as laˊul on the next line (hyphen at line-end, keyed as printed)."
+    },
+    "5": {
+      "text": "laˊul (“motionless man”), and his wife Wuˊlve-ñeˊut (“motionless woman”).",
+      "resolved": "laˊul = l a U+02CA(stress) u l; Wuˊlve-ñeˊut = W u U+02CA(stress) l v e - n+U+0303(ñ) e U+02CA(stress) u t",
+      "note": "Wuˊlve-ñeˊut is a hyphenated compound; each half carries its own stress mark, consistent with culminativity per word."
+    },
+    "6": {
+      "text": "“House-spirits” live in the dark storage-place in the rear of the tent"
+    },
+    "7": {
+      "text": "(yaˊñan). At night they come out around the corners of the sleeping-room.",
+      "resolved": "yaˊñan = y a U+02CA(stress) n+U+0303(ñ) a n"
+    },
+    "8": {
+      "text": "They receive a small share of every larger sacrifice, which is placed on"
+    },
+    "9": {
+      "text": "the ground, near the corners of the sleeping-room."
+    },
+    "10": {
+      "text": "Some of the “Beings” have so-called “assistants” (vɪˊyolɪt). For instance,",
+      "resolved": "vɪˊyolɪt = v U+026A(ɪ) U+02CA(stress) y o l U+026A(ɪ) t"
+    },
+    "11": {
+      "text": "the Creator, or the Spirit of the Zenith, has an “assistant,” who was described"
+    },
+    "12": {
+      "text": "to me as having a raven’s head. This feature is evidently connected with"
+    },
+    "13": {
+      "text": "the Raven myth.¹ The “assistant” receives a part of the sacrifices that are",
+      "resolved": "footnote marker = U+00B9 (¹), superscript, tight against the period per §2.10/CLAUDE.md footnote-marker rule",
+      "note": "Body reference for the note keyed at line 43. Confirmed superscript at 4x, not ASCII 1."
+    },
+    "14": {
+      "text": "directed upward. On account of his beak he is called “Raven’s-Beak”"
+    },
+    "15": {
+      "text": "(Valvɪyaˊk). In one sketch (Fig. 225, a) he is represented as having a",
+      "resolved": "Valvɪyaˊk = V a l v U+026A(ɪ) y a U+02CA(stress) k"
+    },
+    "16": {
+      "text": "raven’s beak painted on his face. On"
+    },
+    "17": {
+      "text": "another sketch made on a board with a"
+    },
+    "18": {
+      "text": "sharp instrument (Fig. 225, b) he is repre-"
+    },
+    "19": {
+      "text": "sented as having a raven’s head and feet,"
+    },
+    "20": {
+      "text": "one wing, and one human hand."
+    },
+    "21": {
+      "text": "The Raven mentioned in different in-"
+    },
+    "22": {
+      "text": "cantations is also supposed to be Valvɪyaˊk,",
+      "resolved": "Valvɪyaˊk = V a l v U+026A(ɪ) y a U+02CA(stress) k",
+      "note": "Same name as line 15, in the oblique/unmarked form (no parentheses)."
+    },
+    "23": {
+      "text": "“assistant” to the Creator or to the Zenith."
+    },
+    "24": {
+      "text": "According to the shamans, he usually as-"
+    },
+    "25": {
+      "text": "sumes the shape of a raven, and lives in"
+    },
+    "26": {
+      "text": "the region of the sky, near the Polar Star. This region abounds with worms"
+    },
+    "27": {
+      "text": "of a peculiar kind (not the one mentioned on p. 311), which form a part of"
+    },
+    "28": {
+      "text": "his food. When called by shamans to cure their patients, he devours the"
+    },
+    "29": {
+      "text": "disease as a bird devours worms. One of the shamans, however, distinguished"
+    },
+    "30": {
+      "text": "between this Raven and the Raven who restored to the earth the sources"
+    },
+    "31": {
+      "text": "of light. The latter was called by him a very mighty “Being,” who had dea-"
+    },
+    "32": {
+      "text": "lings with mankind only at the time of the creation, but, after that, transfor-"
+    },
+    "33": {
+      "text": "med himself into thunder, and became invisible."
+    },
+    "34": {
+      "text": "Kereˊtkun has an “assistant,” who has a wife of his own. I could not",
+      "resolved": "Kereˊtkun = K e r e U+02CA(stress) t k u n"
+    },
+    "35": {
+      "text": "ascertain his name, perhaps he has none. He is always mentioned as Kereˊt-",
+      "resolved": "Kereˊt- = K e r e U+02CA(stress) t - (line-end hyphenation of Kereˊtkun’s, continues ‘kun’s’ on line 36)"
+    },
+    "36": {
+      "text": "kun’s “assistant.” He supervises the construction of Kereˊtkun’s boats. Special",
+      "resolved": "kun’s = continuation of Kereˊtkun’s (line 35 hyphen break) = K e r e U+02CA(stress) t k u n + curly apostrophe (English possessive, not Tier-1 notation)",
+      "note": "Both occurrences of Kereˊtkun’s carry the internal U+02CA stress consistently — checked against each other per §2.6's j/1-073 lesson (an inconsistency across occurrences of the same form on one page is the tell)."
+    },
+    "37": {
+      "text": "sacrifices and ceremonials are made for him. These will be described later."
+    },
+    "38": {
+      "text": "Even keˊlet and other spirits occasionally have “assistants.” In one of",
+      "resolved": "keˊlet = k e U+02CA(stress) l e t"
+    },
+    "39": {
+      "text": "the sketches, such an “assistant” is represented crawling on his knees toward"
+    },
+    "40": {
+      "text": "a victim that he wants to kill for his master."
+    },
+    "41": {
+      "text": "The name vɪˊyolɪn is also applied in incantations to various “spirits” who",
+      "resolved": "vɪˊyolɪn = v U+026A(ɪ) U+02CA(stress) y o l U+026A(ɪ) n"
+    },
+    "42": {
+      "text": "are called to give help. For instance, the man repeating an incantation says,"
+    },
+    "43": {
+      "text": "¹ See Bogoras, American Anthropologist, Vol. IV, p. 636.",
+      "resolved": "footnote opener marker = U+00B9 (¹), superscript, confirmed at 4x — not ASCII 1",
+      "note": "Pairs with the body reference at line 13. Only value on the page (1..1, continuous, occurs twice) — satisfies both counting invariants."
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "contamination": {
+    "blind": true,
+    "note": "2-046 not previously read or discussed this session; clean page, first read off the raster."
+  },
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "running title"
+    },
+    "1": {
+      "text": "320",
+      "note": "folio number"
+    },
+    "2": {
+      "text": "“I want to employ you as an ‘assistant.’ To be sure, whom else can I"
+    },
+    "3": {
+      "text": "employ? You are the best for me.” From this point of view, every pro-"
+    },
+    "4": {
+      "text": "tecting or helping “spirit,” or even its image or a protecting amulet, would"
+    },
+    "5": {
+      "text": "be called vɪˊyolɪn.¹ Fig. 226, for example, is an image of a helping “spirit”",
+      "resolved": "vɪˊyolɪn = v U+026A U+02CA(stress) y o l U+026A n",
+      "note": "vɪˊyolɪn: stress default reading — raised mark postposed to vowel ɪ, not b/p/d/t/g/k-adjacent nor V_V, so not spirant/pause (keying_spec §4). Ends in -lɪn suffix (§5.1 table). Both ɪ confirmed x-height/dotless at 2x zoom. Trailing ¹ after the period is the footnote marker (U+00B9, superscript as printed), not part of the Chukchee word — pairs with the opener on line 43."
+    },
+    "6": {
+      "text": "belonging to Tɪwlɪlkuˊt, a Chukchee",
+      "resolved": "Tɪwlɪlkuˊt = T U+026A w l U+026A l k u U+02CA(stress) t",
+      "note": "Proper name (a Chukchee man of the Anadyr). Stress on u before final t, same environment test as line 5. Both ɪ confirmed x-height against the full-height T."
+    },
+    "7": {
+      "text": "of the Anadyr. It has a human"
+    },
+    "8": {
+      "text": "face, and is arranged to be used"
+    },
+    "9": {
+      "text": "like a divining-stone; that is, it"
+    },
+    "10": {
+      "text": "can be suspended and used for"
+    },
+    "11": {
+      "text": "foretelling the future by the way it"
+    },
+    "12": {
+      "text": "swings. The owner called the image"
+    },
+    "13": {
+      "text": "his “assistant” for hunting walrus."
+    },
+    "14": {
+      "text": "He said that the “assistant” lived"
+    },
+    "15": {
+      "text": "in the region of the sky, and that"
+    },
+    "16": {
+      "text": "his name was Teˊgret (“the descen-",
+      "resolved": "Teˊgret = T e U+02CA(stress) g r e t",
+      "note": "Name of the 'assistant' spirit. Stress on e before g, same default-reading test."
+    },
+    "17": {
+      "text": "ding one”)."
+    },
+    "18": {
+      "text": "System of Winds. — The winds",
+      "note": "italic in print (section heading); text keyed plain, em dash as printed"
+    },
+    "19": {
+      "text": "also are classed with the “Beings,”"
+    },
+    "20": {
+      "text": "and some of them are mentioned"
+    },
+    "21": {
+      "text": "in incantations. The Maritime"
+    },
+    "22": {
+      "text": "Chukchee, moreover, instead of"
+    },
+    "23": {
+      "text": "saying, “to sacrifice to all direc-"
+    },
+    "24": {
+      "text": "tions,” say, “to sacrifice to all the"
+    },
+    "25": {
+      "text": "winds.”"
+    },
+    "26": {
+      "text": "The chief wind is qeêraˊlhɪn.",
+      "resolved": "qêraˊlhɪn = q e+U+0302 r a U+02CA(stress) l h U+026A n",
+      "note": "Stress on a before l, same default-reading test. Ends in -lhɪn suffix, comparable frequency to -gɪn family per keying_spec §5.1 table — corroborates ɪ at word end."
+    },
+    "27": {
+      "text": "In the Kolyma country it is the"
+    },
+    "28": {
+      "text": "west wind; in the Chukchee Penin-"
+    },
+    "29": {
+      "text": "sula, the southwest wind. In both"
+    },
+    "30": {
+      "text": "cases it is the most violent wind"
+    },
+    "31": {
+      "text": "of the country. The names of the winds in the Kolyma country are given"
+    },
+    "32": {
+      "text": "in Fig. 227."
+    },
+    "33": {
+      "text": "The names of the winds on the Chukchee Peninsula are given in Fig. 228."
+    },
+    "34": {
+      "text": "The sketch (Fig. 229) represents the system of winds at the mouth of the"
+    },
+    "35": {
+      "text": "Anadyr River, and is copied from a drawing made by a native. It is identical"
+    },
+    "36": {
+      "text": "with the system of winds on the Chukchee Peninsula, though the man who"
+    },
+    "37": {
+      "text": "drew it could, of course, represent only the approximate direction of each"
+    },
+    "38": {
+      "text": "wind. The directions of the winds on the Chukchee Peninsula are much"
+    },
+    "39": {
+      "text": "more accurately observed, because many of the Maritime Chukchee and the"
+    },
+    "40": {
+      "text": "Asiatic Eskimo are well acquainted with the use of the compass, and carry,"
+    },
+    "41": {
+      "text": "on their travelling-expeditions in winter and in summer, compasses bought from"
+    },
+    "42": {
+      "text": "whalers."
+    },
+    "43": {
+      "text": "¹ Compare Chapter XIII.",
+      "note": "footnote opener; ¹ U+00B9 superscript, pairs with the body reference on line 5 (values 1..1, each occurring twice) — satisfies keying_spec §2.10"
+    }
+  }
+}
