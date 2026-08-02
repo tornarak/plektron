@@ -14,7 +14,7 @@ gitignored, and absent on a fresh clone.
 from __future__ import annotations
 
 from .. import farms as F
-from ._common import out
+from ._common import add_all, out
 
 
 def register(sub, common):
@@ -49,22 +49,36 @@ def _farm_arg(p, pool):
     place that rule broke, in the group whose whole subject is telling two similar
     things apart.
 
-    `all` is a choice rather than the default, and it is required on both actions
-    for one reason each. On `build` it is cost: repainting the blot tree is 252
-    page composites, and nothing about a bare `views build` says so. On `check` it
-    is symmetry — a selector that meant "everything" on one action and had to be
-    spelled on the other is a difference a caller has to remember, and the two
-    actions are otherwise typed one after the other.
+    "Everything" is `--all` and must be *said*, never implied by a bare
+    invocation, and it is required on both actions for one reason each. On `build`
+    it is cost: repainting the blot tree is 252 page composites, and nothing about
+    a bare `views build` says so. On `check` it is symmetry — a selector that meant
+    "everything" on one action and had to be spelled on the other is a difference
+    a caller has to remember, and the two actions are otherwise typed one after
+    the other.
+
+    That argument is unchanged; only its spelling is. `all` used to be a *choice*
+    of the positional, which made this the one place in the CLI where "everything"
+    was not `--all`.
     """
-    p.add_argument("farm", nargs="+", choices=(*pool, F.ALL), metavar="FARM",
+    p.add_argument("farm", nargs="*", choices=pool, metavar="FARM",
                    help=f"which trees, space-separated. "
-                        f"One or more of: {', '.join(pool)} — or `{F.ALL}` for "
-                        f"every one of them, which must be said rather than "
-                        f"implied by a bare invocation")
+                        f"One or more of: {', '.join(pool)}")
+    add_all(p, "every farm this action handles")
+
+
+def _farms(a) -> list[str]:
+    """The farms named, or every one under `--all`. The same two rules every ref
+    positional keeps: one way of saying what to work on, and never nothing."""
+    if a.farm and a.all:
+        raise ValueError("farms and --all: name one or the other, not both")
+    if not a.farm and not a.all:
+        raise ValueError("nothing named: give one or more farms, or --all")
+    return a.farm or [F.ALL]
 
 
 def run_check(a) -> int:
-    wanted = F.select(a.farm)
+    wanted = F.select(_farms(a))
     rows = [r for r in F.survey(a.root) if r["farm"] in wanted]
     out(a, rows)
     # A gate, not measurement — but **only over the farms `build` can actually
@@ -82,7 +96,7 @@ def run_check(a) -> int:
 
 
 def run_build(a) -> int:
-    out(a, [F.build(n, a.root) for n in F.select(a.farm, buildable_only=True)])
+    out(a, [F.build(n, a.root) for n in F.select(_farms(a), buildable_only=True)])
     # Always 0. On a machine with no `scans/`, building what can be built *is* the
     # success case; `views check` remains the verb that says what is still missing.
     return 0

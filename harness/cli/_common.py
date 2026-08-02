@@ -261,6 +261,24 @@ RENAMED_FLAGS = {
     ("lexicon", "--suffixes"): "lexicon suffixes",
     ("lexicon", "--digraphs"): "lexicon digraphs",
     ("lexicon", "--glosses"): "lexicon glosses",
+    # A required *file* argument spelled as a flag was the smell that prompted the
+    # plural pass; the scope is now a positional taking refs and paths alike.
+    ("corpus", "--path"): "corpus normalize REF|PATH [REF|PATH ...]  (or --all)",
+    # `--all` is a real flag on `tei validate`, `ids` and `pair`, and
+    # `check_renamed` skips a flag the named action genuinely has — so this fires
+    # only on the three that do not, and the message must read sensibly for all
+    # of them, which is why it names the corpus form rather than a substitute.
+    ("tei", "--all"): "tei ledger  (the corpus form of `state`; `context` and "
+                      "`seam` have none by design)",
+}
+
+# Retired *positional values*, keyed by group and value. The flag table cannot
+# reach these: `check_renamed` scans tokens beginning with `-`, and `all` was a
+# `choices=` value of `views`' FARM positional. One entry today, and it needs the
+# table rather than a special case because a bare `invalid choice: 'all'` names
+# the problem and not the fix.
+RENAMED_VALUES = {
+    ("views", "all"): "views {action} --all",
 }
 
 
@@ -331,6 +349,13 @@ def check_renamed(argv: list[str], surface: dict[tuple[str, str], set[str]]
     it fell through to argparse's bare "unrecognized arguments: --from", which
     names the problem and not the fix. Asking the parser itself which flags an
     action really has is what makes the narrow test possible.
+
+    **Positional values get the same treatment**, through `RENAMED_VALUES`. A
+    retired `choices=` value is invisible to the flag scan, which only looks at
+    tokens beginning with `-`, and argparse's own `invalid choice: 'all'` names
+    the problem without the fix — the same gap the flag table exists to close.
+    Only tokens after the action are considered, so a group or action that
+    happened to share the word is not caught by accident.
     """
     if not argv:
         return None
@@ -342,6 +367,8 @@ def check_renamed(argv: list[str], surface: dict[tuple[str, str], set[str]]
     live = surface.get((head, named), set()) if named else set()
     for tok in argv[1:]:
         if not tok.startswith("-"):
+            if named and tok != named and (head, tok) in RENAMED_VALUES:
+                return RENAMED_VALUES[(head, tok)].format(action=named)
             continue
         flag = tok.split("=", 1)[0]
         if flag in live:

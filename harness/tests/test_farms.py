@@ -337,13 +337,19 @@ def test_a_bare_build_is_a_usage_error_not_a_build_of_everything():
 
     Rebuilding the blot tree repaints 252 page composites, and nothing at the call
     site says so — the caller who wanted one view relinked after a `restore` was
-    the one paying for it. Exit 2 is argparse's, i.e. the harness's usage-error
-    code, and deliberately not the 1 that means a documented gate failed.
+    the one paying for it. Exit 2 is the harness's usage-error code, and
+    deliberately not the 1 that means a documented gate failed.
+
+    The message is the handler's rather than argparse's since the FARM positional
+    became `nargs="*"` beside `--all`, which is the spelling the rest of the CLI
+    uses for "everything". Asserting on the *word* would pin whichever of the two
+    happens to answer; what the test is for is that a bare invocation refuses and
+    that the refusal names the flag that would not have.
     """
     r = subprocess.run(["uv", "run", "harness", "views", "build"],
                        cwd=REPO, capture_output=True, text=True)
     assert r.returncode == 2
-    assert "required" in r.stderr
+    assert "--all" in r.stderr
 
 
 def test_check_gates_only_over_the_farms_it_was_asked_about(tmp_path):
