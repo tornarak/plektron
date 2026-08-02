@@ -545,6 +545,23 @@ what recurs, not the instance.
    is what put the call in front of a human instead of into the corpus. Where a
    mark makes no lexical sense **and** its codepoint is uncatalogued, the disposition
    is to flag loudly, whatever the raster seems to show.
+
+   **`1-060` is the second instance, and it makes this a class rather than an
+   anecdote.** The page prints `“Chief of the Chaun Chukchee”` and CATMuS read a
+   combining acute over the `e`; at 4x the mark is an irregular blob touching the
+   `f`'s ascender with a stray dot below it — unlike `1-048`'s, the shape argument
+   here runs *against* the mark, and the same page supplies a control in the clean
+   tapered ˊ of `tɪkêˊ-vaˊg̣lɪñɪn` on line 23. Keyed `Chief`, flagged in `note`,
+   and the editor's ruling was the same: **another conveniently diacritic-shaped
+   smudge.**
+
+   Two things worth carrying forward. The disposition is the same whichever way the
+   shape argument points — key the letter, flag the mark, let a human rule — because
+   the codepoint being uncatalogued is what decides it, not the ink. And it is the
+   *second witness* that made this one cheap: the recognizer saw a mark and the
+   reading pass did not, so the span diff surfaced it as a disagreement instead of
+   the pass having to remember to look. A page with no second witness gets no such
+   prompt, which is an argument for reading against `mz/ocr/` rather than alone.
 10. **No small-caps "o" exists in this notation.** §2.3 licenses small-cap base
     codepoints only for ᴀ ᴇ ɪ ʟ. A lowercase "o" sitting immediately beside a
     small-cap ᴇ or ʟ can read as small-cap height at 4x zoom purely from kerning —

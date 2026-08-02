@@ -1,0 +1,150 @@
+{
+  "ref": "1-060",
+  "source": "claude-opus-5 reading of scans/chukchi-1-060.png via mz/ocr line crops and 2x/4x zoom",
+  "status": "PROPOSAL — not ground truth. No glyph identity here is adopted; every",
+  "status_cont": "non-English form awaits human ratification against the p. 10 key.",
+  "keyed_by": "index into harness.lines.page_lines over mz/ocr/chukchi-1-060.xml",
+  "notes": "Ordinary prose page; Tier-1 confined to lines 23, 29, 32. Geometry is the segmenter's (mz/ocr), 43 lines, zero gaps and zero uncovered ink.",
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "resolved": "No Tier-1 span on this line. The running title is English set in caps; every capital in it is ordinary ASCII."
+    },
+    "1": {
+      "text": "Maritime Chukchee the men who seem to be quite decrepit almost always"
+    },
+    "2": {
+      "text": "prove to have become so rather from the hardships of life than from old age."
+    },
+    "3": {
+      "text": "Such men are speedily carried away by disease. Therefore the really old men,"
+    },
+    "4": {
+      "text": "in my opinion, are not numerous."
+    },
+    "5": {
+      "text": "THE SENSES. — Of the special senses, smell seems to be more developed",
+      "note": "Small-cap run-in heading keyed as plain capitals, per gt/ocr practice (1-048 'BOGORAS, THE CHUKCHEE.', 3-005 'AFFINITY.'). The small-cap sorts in keying_spec 2.3 are Tier-1 notation and must not be used for English.",
+      "resolved": "No Tier-1 span on this line. THE SENSES. is a small-cap run-in heading, keyed as plain ASCII capitals per gt/ocr practice (1-048, 3-005)."
+    },
+    "6": {
+      "text": "than with civilized races, since the Chukchee assert that every man has a"
+    },
+    "7": {
+      "text": "smell peculiar to himself, and that his clothes, etc., can be ascertained from"
+    },
+    "8": {
+      "text": "it. I was told that in olden times, during the wars among the Koryak, the"
+    },
+    "9": {
+      "text": "invading Chukchee parties, finding an old camping-place, were able to ascertain,"
+    },
+    "10": {
+      "text": "from the odor of broken bones and other remains, whether they belonged to"
+    },
+    "11": {
+      "text": "the Koryak or to their own tribe. Accordingly mutual sniffing has the same"
+    },
+    "12": {
+      "text": "value as kissing, as is the case with many other primitive tribes. The Chuk-"
+    },
+    "13": {
+      "text": "chee father, when leaving his family for a trip, will perhaps kiss his wife; but",
+      "note": "Print sets a thin space before the semicolon (French spacing); keyed English per keying_spec 2.9. The example is described rather than quoted, since quoting it puts the offending sequence in the file and trips the same rule."
+    },
+    "14": {
+      "text": "he will usually apply his nose to the nape of his children’s necks, and inhale"
+    },
+    "15": {
+      "text": "the odor of their fur shirts."
+    },
+    "16": {
+      "text": "I must note, too, the sensitiveness of the Chukchee to unfamiliar odors."
+    },
+    "17": {
+      "text": "Every time that I happened to open my small chest of medicines in a Chuk-"
+    },
+    "18": {
+      "text": "chee sleeping-room, the inmates complained loudly of the offensive smell which"
+    },
+    "19": {
+      "text": "came from it, and sometimes I was obliged to go away to the outer tent"
+    },
+    "20": {
+      "text": "with my patients. Similar complaint was made against some wild onions that"
+    },
+    "21": {
+      "text": "I brought in, though the Russianized natives use them for food and even"
+    },
+    "22": {
+      "text": "store them in large quantities for winter use. The Chukchee name for them"
+    },
+    "23": {
+      "text": "is tɪkêˊ-vaˊg̣lɪñɪn (“smell-grass”).",
+      "note": "Tier-1. g̣ (g + U+0323) confirmed at 4x: a clear dot below the bowl, and the same line's English '-grass' two strips down has none — same page, same font, an internal control. Both raised marks read as stress U+02CA per keying_spec 4/5.8. Two stresses in one hyphenated compound is one per element and is well attested: 83 such forms in restored gt (Neˊte-keˊñičvun, Nuteˊ-pɪˊnmɪn). First vowel dotless and x-height → ɪ; ê is e + U+0302.",
+      "resolved": "tɪkêˊ-vaˊg̣lɪñɪn. U+026A (dotless, x-height; contrast the dotted i opening the line). U+0302 on e. U+0303 on n. U+0323 below g — confirmed at 4x, with the English word grass on the same line as an internal control showing a bare g. Both raised marks are U+02CA stress: keying_spec 4 says read every raised mark as stress; one stress per element of a hyphenated compound is attested 83 times in restored gt. Re-read against text: text carries U+026A, U+02CA twice, U+0302, U+0303, U+0323, and no apostrophe."
+    },
+    "24": {
+      "text": "The taboo against bringing into a Chukchee sleeping-room any objects"
+    },
+    "25": {
+      "text": "connected with the hearths and households of other families is founded, in the"
+    },
+    "26": {
+      "text": "minds of the people, chiefly upon their unfamiliar odor. I have had some"
+    },
+    "27": {
+      "text": "curious experiences regarding this idiosyncrasy. In 1896, while travelling among"
+    },
+    "28": {
+      "text": "the Anui Chukchee, I happened to procure a document of the year 1789;"
+    },
+    "29": {
+      "text": "acknowledging the loyal faith of a certain Qɪˊmɪqäi, evidently a rich reindeer-",
+      "note": "Tier-1 name. CATMuS read 'Or'miqäi'; the page sets a capital Q. ɪ twice (dotless, x-height) and a dotted final i — the contrast is visible in one word at 2x. Raised mark = stress U+02CA (keying_spec 4). Same form recurs at line 32 and the two were read independently and agree.",
+      "resolved": "Qɪˊmɪqäi. Capital Q, not the Or that CATMuS produced. U+026A twice (dotless, x-height); the final i IS dotted and is plain ASCII i — the contrast sits inside the one word at 2x, which settles keying_spec 5.2 here. U+0308 on a. Raised mark is U+02CA stress (keying_spec 4). Re-read against text: text carries U+026A, U+02CA, U+0308, and no apostrophe."
+    },
+    "30": {
+      "text": "owner (the document calls him, with the usual misapprehension of the Chuk-"
+    },
+    "31": {
+      "text": "chee social organization, “Chief of the Chaun Chukchee”). This document",
+      "note": "'Chief' keyed plain. At 4x the mark on the e is an irregular blob touching the f's ascender, with a second stray dot below the e — categorically unlike the clean tapered ˊ on line 23 of this page. Combining acute U+0301 is catalogued nowhere in keying_spec, and 1-048's 'reindeér' was ruled a smudge by the editor on the same shape argument (5.9). Flagging rather than adopting."
+    },
+    "32": {
+      "text": "had been preserved in the family of Qɪˊmɪqäi for more than a century, and",
+      "note": "Second occurrence of the line-29 name, read independently; identical.",
+      "resolved": "Second occurrence of the line-29 name, read independently from its own zoom strip before comparing: Qɪˊmɪqäi, identical — U+026A twice, U+02CA, U+0308. Recorded because two readings of one form on one page that agree are the only internal witness available for a Tier-1 name."
+    },
+    "33": {
+      "text": "had gradually come to be considered, along with the fire-drills and strings"
+    },
+    "34": {
+      "text": "of amulets, a part of their sacred possessions. The family became extinct,"
+    },
+    "35": {
+      "text": "and I was able to acquire it, together with a curious wooden case adorned"
+    },
+    "36": {
+      "text": "with beads and tassels, for a moderate price. When I brought it to the tent"
+    },
+    "37": {
+      "text": "in which I was temporarily living, my host warned me against taking it into"
+    },
+    "38": {
+      "text": "the inner room; but as it was bitterly cold outside, and as I wished to examine"
+    },
+    "39": {
+      "text": "the paper, I took it in. No sooner had I produced the fatal wooden case"
+    },
+    "40": {
+      "text": "from my bag, than the mistress of the house, a sickly woman of thirty, who"
+    },
+    "41": {
+      "text": "sat opposite me, nursing a child on her lap, moaned and fell senseless. We"
+    },
+    "42": {
+      "text": "had much trouble in reviving her, and afterwards I had to expiate my offence"
+    }
+  }
+}
