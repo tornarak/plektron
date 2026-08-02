@@ -211,3 +211,50 @@ def test_the_writer_asks_for_line_level_serialization(tmp_path):
     assert "sub_line_segmentation=False" in src, (
         "the writer must turn off sub-line segmentation, or mz/ocr/ diverges in "
         "shape from gt/ocr/ and inflates ~45x")
+
+
+# --- ocr pages --show-store -------------------------------------------------
+
+def test_presence_reports_both_stores(store):
+    from harness.recognize import presence
+    R.link_view(store)
+    got = {r["ref"]: r for r in presence(["1-048", "1-060", "1-100"], store)}
+    assert (got["1-048"]["gt"], got["1-048"]["mz"]) == (True, False)
+    assert (got["1-060"]["gt"], got["1-060"]["mz"]) == (False, True)
+    assert (got["1-100"]["gt"], got["1-100"]["mz"]) == (True, True)
+
+
+def test_presence_keeps_one_key_set(store):
+    """Ragged records collapse the TOON table to the verbose nested form, which
+    is the whole reason this verb is worth a flag rather than a shell join."""
+    from harness.recognize import presence
+    rows = presence(["1-048", "1-060", "1-100"], store)
+    assert {frozenset(r) for r in rows} == {frozenset({"ref", "gt", "mz", "view"})}
+
+
+def test_view_is_read_off_the_farm_not_derived(store):
+    """The column's justification. `ocr/` is derived and nothing rebuilds it
+    automatically, so a page restored into `gt/ocr/` since the last `ocr link`
+    still points at the machine file — a stale view reading as current.
+
+    Derived from gt/mz this could never disagree with itself and would report
+    nothing. Read off the link it reports the truth, which is the finding.
+    """
+    from harness.recognize import presence
+    R.link_view(store)                       # 1-060 exists only in mz -> view: mz
+    assert presence(["1-060"], store)[0]["view"] == "mz"
+
+    _alto(store / R.GTDIR / "chukchi-1-060.xml", "human")   # restored, farm stale
+    row = presence(["1-060"], store)[0]
+    assert (row["gt"], row["mz"]) == (True, True)
+    assert row["view"] == "mz", "a stale farm must report as stale, not as the rule"
+
+    R.link_view(store)                       # ...and relinking is what fixes it
+    assert presence(["1-060"], store)[0]["view"] == "gt"
+
+
+def test_no_link_reads_empty_rather_than_guessing(store):
+    """A farm that was never built for a page is not the same as one pointing at
+    a store, so it is not reported as one."""
+    from harness.recognize import presence
+    assert presence(["1-048"], store)[0]["view"] == ""

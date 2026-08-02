@@ -115,6 +115,41 @@ def has_text(ref: str, root: Path = Path("."), store: str = MZDIR) -> bool:
     return alto_for(ref, root, store).exists()
 
 
+def presence(refs: list[str], root: Path = Path(".")) -> list[dict]:
+    """Per ref: which real stores hold it, and which one the view actually reaches.
+
+    `{ref, gt, mz, view}`, one fixed key set so the table stays tabular.
+
+    **`view` is read off the farm, not derived from `gt`/`mz`.** Deriving it would
+    restate the rule (`gt` if present, else `mz`) and could never disagree with
+    itself; reading the link can, and a disagreement is exactly the finding worth
+    having — `ocr/` is a derived farm that nothing rebuilds automatically, so a
+    page restored into `gt/ocr/` since the last `ocr link` still points at the
+    machine file. That is a stale view reading as current, which is the shape of
+    error this project is organised against, and here it costs one column to see.
+
+    `""` means no live link: either the farm was never built for that page or its
+    link dangles. `?` means the link resolves outside both stores, which should be
+    impossible and is therefore worth saying rather than rounding off.
+    """
+    out = []
+    for ref in refs:
+        ref = norm_ref(ref)
+        paths = {k: alto_for(ref, root, d) for k, d in (("gt", GTDIR), ("mz", MZDIR))}
+        link = root / VIEWDIR / f"chukchi-{ref}.xml"
+        view = ""
+        if link.exists():                       # follows the link: a dangling one is not a view
+            try:
+                real = link.resolve()
+                view = next((k for k, p in paths.items()
+                             if p.exists() and p.resolve() == real), "?")
+            except OSError:
+                view = ""
+        out.append({"ref": ref, "gt": paths["gt"].exists(),
+                    "mz": paths["mz"].exists(), "view": view})
+    return out
+
+
 def ocr_refs(root: Path = Path("."), store: str = MZDIR) -> list[str]:
     """Every ref with a page in this store, in (part, scan index) order.
 

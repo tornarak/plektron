@@ -17,7 +17,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | path | what | written by |
 |---|---|---|
 | `scans/` | 832 rasters at 300 dpi. **Derived** from `pdfs/`, not in git | `pdftoppm` |
-| `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored | `ocr link`, and `ocr predict` for the page it wrote |
+| `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored; nothing rebuilds it automatically, so `ocr pages --show-store` reports what each link *actually* reaches | `ocr link`, and `ocr predict` for the page it wrote |
 | `gt/ocr/` | 20 pages of human ground truth | `ocr restore --commit`, `ocr adopt-gap --commit` (geometry only) |
 | `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, structured by the zones. Derived, ignored | `ocr predict` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |

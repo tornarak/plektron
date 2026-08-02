@@ -165,9 +165,11 @@ require `--commit`.
 **Writes** —
 **Exit** always 0.
 **Note** through the view by default, so a page only the recognizer has read counts. That is deliberate: a machine-read page *is* workable. It was sparse by construction while `gt/ocr/` was the only store under the view and is not any more, so narrow it when the question is narrower.
+**Note** `--show-store` turns the bare list into `{ref, gt, mz, view}`. `--store` still picks the rows; the flag adds the columns. **`view` is read off the farm, not derived** from `gt`/`mz` — derived it would restate the rule and could never disagree with itself, whereas `ocr/` is derived output that nothing rebuilds automatically, so a page restored into `gt/ocr/` since the last `ocr link` shows `view: mz` and says so. `""` is no live link; `?` is a link resolving outside both stores.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view, which resolves per page
                  to the human file where there is one]
+--show-store     a row per ref — which stores hold it, which the view reaches [off]
 --root --json
 ```
 

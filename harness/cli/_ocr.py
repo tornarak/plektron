@@ -92,6 +92,12 @@ def register(sub, common):
     p = _store(add("pages", help="every ref with OCR present, i.e. workable now. "
               "Through the view by default, so a machine-read page counts — that "
               "is what makes it workable. Narrow it with --store"))
+    p.add_argument("--show-store", action="store_true",
+                   help="a row per ref instead of a bare list: which real stores "
+                        "hold the page, and which one the ocr/ view actually "
+                        "reaches. `view` is read off the farm rather than derived, "
+                        "so a page restored since the last `ocr link` shows up as "
+                        "still pointing at mz")
     p.set_defaults(func=run_pages)
 
     p = _store(_ref(add("lines", help="per-line records for one page — line id, "
@@ -267,7 +273,12 @@ def register(sub, common):
 
 
 def run_pages(a) -> int:
-    out(a, all_refs(a.root, _alto_dir(a)))
+    refs = all_refs(a.root, _alto_dir(a))
+    if a.show_store:
+        from ..recognize import presence
+        out(a, presence(refs, a.root))
+        return 0
+    out(a, refs)
     return 0
 
 
