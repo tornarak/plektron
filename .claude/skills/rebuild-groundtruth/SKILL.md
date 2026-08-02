@@ -41,9 +41,49 @@ stateless, so a fresh session resumes wherever the last one stopped.
     uv run harness ocr restore PP-NNN --force                preview: edits, drift, mismatch
     uv run harness ocr restore PP-NNN --force --commit        -> gt/ocr/
 
-`--force` is in both lines because every page now holds text; see "Review and
-restore" below. The ALTO verbs read `ocr/` by default — the read view over every OCR
-store — so no `--from` is needed to reach a page's current geometry.
+That is the loop for a page **that already has ground truth** — a revision, which
+is what all 20 pilot pages now take, hence `--force` in both restore lines. A page
+that has none starts one step earlier and drops the `--force`; see next.
+
+## Two sources, and knowing which one you are on
+
+The pass was built for a one-off: `gt/ocr/` held eScriptorium export shells, and
+every page's geometry was already there waiting to be filled. **That source is
+gone** — eScriptorium holds nothing, the repo is the system of record — and for the
+812 pages with no ground truth the standing source is now `mz/ocr/`, written by
+`harness ocr predict` from the zones.
+
+    harness ocr pages --from gt/ocr     has ground truth  -> revision, --force
+    harness ocr pages --from mz/ocr     has a prediction  -> restoration
+
+**Nothing in `restore` changes between them.** Its `restoration` mode is defined by
+the geometry source and the write target being different files, not by which store
+the source is, so a prediction is a legitimate source the same way an export shell
+was. On a page with no ground truth:
+
+    uv run harness ocr predict PP-NNN                    if mz/ocr/ has nothing yet
+    uv run harness ocr lines PP-NNN --from mz/ocr        the geometry you will key
+    …the loop above, every ALTO verb carrying --from mz/ocr…
+    uv run harness ocr restore PP-NNN --from mz/ocr --commit
+
+No `--force`: the target does not exist, so there is no hand-keyed text to
+overwrite, and the guard that demands it is the one protecting exactly that.
+
+**`--from mz/ocr` explicitly, not the default view.** Two reasons, and the second
+is the one that bites. The view resolves to `gt/ocr/` the moment the page *has*
+ground truth, so a second run of the same command silently changes what it reads.
+And the bare span diff (`harness ocr review PP-NNN --spans`) needs an **independent
+witness**: pointed at the view it would compare the proposal with the ground truth
+that proposal produced and report a clean 40/40 — the shape of verification with
+none of the substance. It refuses when it detects that, but the refusal fires after
+you have typed the wrong thing, and `mz/ocr/` is the right thing.
+
+**What `mz/` supplies is geometry, and a second reading — never the proposal.**
+Your proposal is your own reading of the raster, authored from crops and zoom as it
+always was. Seeding it from the machine text would collapse the two witnesses the
+diff exists to compare, and on Tier-1 forms it would seed from a source measured at
+**0% of the inventory**. The machine's text is what you diff *against*, after you
+have read the line yourself.
 
 Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.json`,
 `decision.json`, and the derived `sheets/ crops/ zoom/`. No verb needs telling where;
@@ -341,15 +381,25 @@ unlicensed mark in the adjudicated text. The last catches what a human pass *mis
 rather than what it never saw — on `1-073` review corrected two of three identical
 errors and left the third, and the page read as done.
 
-**This is now a revision pass, and `restore` says so.** Every page in `gt/ocr/` holds
-text, so the rebuild it was written for is finished and the first refusal above fires
-every time; `--force` is how a revision states its intent, and is required for one.
-The report's `mode` field distinguishes the two cases: `restoration` when the
-geometry came from some other store, `revision` when the source resolves to the
-target — which under the default store it does, `ocr/<ref>` being a symlink onto
-`gt/ocr/<ref>`. Reading a file you are about to write is safe here (the tree is
-parsed whole before any write, and the write goes to a `.tmp` sibling), but it is a
-different act from reconstruction and the report names which one ran.
+**Which pass you are on is a property of the page, and `restore` says which it
+did.** The report's `mode` field: `restoration` when the geometry came from some
+other store, `revision` when the source resolves to the target.
+
+- A page **with** ground truth, read through the default view: `ocr/<ref>` is a
+  symlink onto `gt/ocr/<ref>`, so the source *is* the target — `revision`, and the
+  first refusal above fires every time. `--force` is how a revision states its
+  intent and is required for one. Reading a file you are about to write is safe
+  here (the tree is parsed whole before any write, and the write goes to a `.tmp`
+  sibling), but it is a different act from reconstruction and the report names it.
+- A page **without**, read `--from mz/ocr`: source and target are different files
+  and the target does not exist — `restoration`, no `--force`, and `restore`
+  creates `gt/ocr/<ref>.xml` from the prediction's geometry plus your adjudicated
+  text. This is the same mode the original rebuild ran in; only the store the
+  geometry comes from has changed.
+
+Note the mode follows the *source*, not the history: restoring a second time from
+`mz/ocr` still reports `restoration` and now needs `--force`, because the target
+holds text even though the source is still a different file.
 
 Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
 

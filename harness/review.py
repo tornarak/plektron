@@ -123,6 +123,18 @@ def load_proposal(ref: str, root: Path = Path(".")) -> dict[int, dict]:
     `review/proposals/` directory instead, which said the same thing.
     """
     p = proposal_path(ref, root)
+    if not p.exists():
+        # The ordinary state of most of the corpus, not a broken install: 812 pages
+        # have a prediction and no reading. A bare FileNotFoundError names the path
+        # and not the act, which is the wrong error for the commonest case in the
+        # pass — so say what is missing and who writes it.
+        raise ValueError(
+            f"no proposal for {ref} at {p}. A proposal is *your reading of the "
+            f"raster*, authored line by line — start with `harness ocr lines "
+            f"{ref} --store mz` and the crops, per the rebuild-groundtruth "
+            "skill. It is never seeded from the recognizer: that would collapse "
+            "the two witnesses the span diff compares, and CATMuS reads 0% of the "
+            "transcription inventory.")
     doc = json.loads(p.read_text(encoding="utf-8"))
     return {int(k): v for k, v in doc["lines"].items()}
 

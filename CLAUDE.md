@@ -872,14 +872,24 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
    inset figure on `1-283`. Figure captions do go, and should — they live in
    `data/readings.md` and are not body text.
 
-   **The printer's zones are dropped from the collation draft, not from the store**
-   (`context.APPARATUS_ZONES`: running title, quire marks, and the old vocabulary's
-   numbering zone). The filter sits at the consumer rather than at `ocr predict`
-   because those zones **carry the printed folio**, and the folio is where page
-   numbering enters the project; dropping it at write time would take the OCR's
-   only record of it and cost a re-run of the page. An *unlabelled* block is kept,
-   since a store may label none and treating blank as apparatus would empty the
-   draft for every page of it.
+   **A store keeps every line the page sets; a consumer filters by zone label.**
+   That rule has now been derived three times from scratch — for `mz/ocr/`, for
+   `catmus_draft`/`ocr_lines`, and for the reading proposal — so it is stated here
+   once. **Which side a thing is on is decided by what it writes, not by what it
+   looks like**: the proposal → `decision.json` → `restore` chain *writes*
+   `gt/ocr/`, so it is a store path and keys the apparatus like everything else.
+   The 20 restored pages carry **49 apparatus lines and all 49 are keyed**; a
+   proposal that omitted them could not restore anyway, since `restore` refuses a
+   partial rather than admit ground truth with invisible holes.
+
+   So `context.APPARATUS_ZONES` — running title, quire marks, and the old
+   vocabulary's numbering zone — leave the **collation draft, not the store**. The
+   filter sits at the consumer rather than at `ocr predict` because those zones
+   **carry the printed folio**, and the folio is where page numbering enters the
+   project; dropping it at write time would take the OCR's only record of it and
+   cost a re-run of the page. An *unlabelled* block is kept, since a store may
+   label none and treating blank as apparatus would empty the draft for every page
+   of it.
 
    They leave **`ocr_lines`** as well, and for a sharper reason than the draft's:
    that list is the set of `@facs` pointer targets, and a running head, a folio or
@@ -1469,11 +1479,15 @@ TBD
   and the printed ToC's scan range is not recoverable from the file. Someone who
   knows should write it down — every other apparatus store is auditable back to a
   page and this one is not.
-- **`harness ocr review`'s bare span diff has no second witness left.** `end-of-eval/`
-  was the recognizer store and is deleted, so the diff now refuses rather than
-  compare a proposal against the ground truth it produced. The `--serve` review
-  page is unaffected and remains the correction loop. If a second witness is ever
-  wanted again, it links into `ocr/` from its own store.
+- **The span diff's second witness is back, and it is `mz/ocr/`.** `end-of-eval/`
+  was the recognizer store, it was deleted, and the diff refused rather than
+  compare a proposal against the ground truth it produced. This entry used to say
+  "if a second witness is ever wanted again, it links into `ocr/` from its own
+  store" — which is exactly what `ocr predict` built. `harness ocr review REF
+  --spans --from mz/ocr` is an independent witness by inode, where `--from ocr`
+  stops being one the moment the page has ground truth and the view points at it.
+  Name the store, not the view: the refusal catches the collapse, but only after
+  you have typed the wrong thing.
 - **The segmenter is measured, and this is where it stands.** Run 3 —
   `models/bogoras-seg/zones-seg.safetensors`, 211 train / 60 eval — scores **94.7%
   recall and 90.8% precision on held-out pages**, median boundary error 6 px, with
