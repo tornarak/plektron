@@ -7,6 +7,15 @@ dependencies = [
     "chocomufin>=1.0.2",
     "kraken>=7.0.3",
     "lxml>=6.1.1",
+    # **Declared because the harness imports them directly**, not because anything
+    # new needs them. `numpy` is imported at ten sites across `lines.py` and
+    # `zones.py` (the ink mask, the row bands, the column anchor) and `pillow` at a
+    # dozen more; both were reaching us only as transitive dependencies of kraken,
+    # so a kraken release that dropped either would have broken the harness with an
+    # ImportError that named neither this project nor the reason. Found by `ty`,
+    # which could not type an array it had no declared package for.
+    "numpy>=2.4",
+    "pillow>=11.0",
     "tensorboard>=2.21.0",
     "toon-format>=0.9.0b1",
 ]
@@ -89,17 +98,30 @@ ignore = [
 #
 # `uv run ty check harness/` — **run by hand, and deliberately not a gate.**
 #
-# 89 diagnostics today, of which roughly three quarters are missing third-party
-# stubs rather than anything about this code: `lxml.etree` (20 — lxml ships none),
-# `PIL.Image.LANCZOS` (16), and numpy arrays reaching us through kraken as bare
-# `object`, which accounts for most of the 37 `not-subscriptable`. Gating on that
-# would mean either 89 permanent known-false failures or a suppression list long
-# enough that a real finding would land in it unnoticed — and a check nobody can
-# act on is worse than no check, because it reads as coverage.
+# 71 diagnostics, down from 91 after one pass through them. What that pass found
+# is recorded here because the residue looks like neglect and is not.
 #
-# It is installed and configured so the real findings are reachable by hand; today
-# they are one `Path = None` default and some loose test annotations. Revisit when
-# `ty` reaches 1.0 (it is 0.0.65) or when `lxml-stubs` closes the biggest gap.
+# **Fixed**: numpy and pillow were imported directly at 20+ sites and declared
+# nowhere (see `dependencies` above); `@prev` on the first scan of a part reported
+# "must name None"; a parameter rebound to a different type than its annotation;
+# `Path = None` as a default; the legacy `Image.LANCZOS` aliases; two
+# `log_message` overrides narrower than the base class; and two `min`-by-hand loops
+# carrying a `None` through paired variables.
+#
+# **What remains is overwhelmingly not about this code.** `lxml` ships no stubs
+# (22); the rest is `dict[str, str | int]` records whose values ty cannot narrow —
+# `-r["n"]` where `n` is always an int — and tests subscripting a `X | None`
+# return. Fixing those properly means TypedDicts through the record-passing layer,
+# which is a real design change and not a lint fix.
+#
+# `lxml-stubs` was tried and removed: it trades 22 low-information warnings for
+# ~30 `_Element | None` narrowing complaints, and every one sampled was already
+# guarded in a way ty cannot see. It would need ~30 asserts through the XML code
+# to buy nothing.
+#
+# Gating would mean permanent known-false failures or a suppression list long
+# enough that a real finding lands in it unnoticed — and a check nobody can act on
+# is worse than no check, because it reads as coverage. Revisit at `ty` 1.0.
 [tool.ty.rules]
 unresolved-import = "warn"
 unresolved-attribute = "warn"

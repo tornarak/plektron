@@ -239,14 +239,15 @@ def order_warnings(cfg: dict, zones: list[dict],
     validation would be worse than one that does nothing. `zones.validate_page`
     reports unknown rule ids separately so the typo is still visible.
     """
-    exempt = set(exempt or ())
+    exempted = set(exempt or ())
     ranks = {t["label"]: t.get("rank") for t in cfg["types"]}
     enabled = {r["id"] for r in (cfg.get("order_rules") or [])}
     ordered = sorted(zones, key=lambda z: (z.get("y0", 0), z.get("y1", 0)))
     out: list[dict] = []
 
     def warn(rule: str, detail: str):
-        out.append({"rule": rule, "detail": detail, "exempted": rule in exempt})
+        out.append({"rule": rule, "detail": detail,
+                    "exempted": rule in exempted})
 
     if "title-first" in enabled:
         titles = [i for i, z in enumerate(ordered) if ranks.get(z["label"]) == 0]

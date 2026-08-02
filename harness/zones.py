@@ -47,11 +47,15 @@ import time
 from functools import lru_cache
 from itertools import pairwise
 from pathlib import Path
+from typing import TYPE_CHECKING, cast
 
 from lxml import etree
 
 from . import farms
 from . import zones_config as zc
+
+if TYPE_CHECKING:
+    from kraken.lib.vgsl import TorchVGSLModel
 from .context import norm_ref, parse_ref
 from .figures import read_blocks
 
@@ -798,7 +802,8 @@ def record_ink(ref: str, report: dict, root: Path = Path(".")) -> dict:
     if not report.get("ink_checked"):
         # Not keyed, or ruled not a text page. Uncovered ink is a statement about
         # nothing here, and caching "clean" would be a claim.
-        rec = {"state": "skip", "bands": 0, "ruled": 0, "stale": 0, "note": ""}
+        rec: dict[str, object] = {
+            "state": "skip", "bands": 0, "ruled": 0, "stale": 0, "note": ""}
     else:
         live = [b for b in report["uncovered"] if not b.get("exempted")]
         ruled = [b for b in report["uncovered"] if b.get("exempted")]
@@ -1147,13 +1152,15 @@ def _width_error(z: dict, measure: int, tol: float) -> str | None:
 
 def _position_error(z: dict, windows: list[dict], tol: float) -> str | None:
     """Whether this zone sits on the page's own measured column."""
-    best, best_off = None, None
-    for w in windows:
-        off = max(abs(z["x0"] - w["x0"]), abs(z["x1"] - w["x1"]))
-        if best_off is None or off < best_off:
-            best, best_off = w, off
-    if best is None:
+    # Emptiness is checked once, up front, rather than carried as a `None` through
+    # two variables that are only ever set together. The old form was correct and
+    # `ty` still flagged it, because nothing in the code said the two move as a
+    # pair — and a reader has no better way of knowing it than the checker did.
+    if not windows:
         return "no column could be measured or configured for this page"
+    offs = [max(abs(z["x0"] - w["x0"]), abs(z["x1"] - w["x1"])) for w in windows]
+    best_off = min(offs)
+    best = windows[offs.index(best_off)]
     if best_off <= tol:
         return None
     return (f"x {z['x0']}..{z['x1']} is {best_off:.0f} px off the column measured "
@@ -1627,7 +1634,7 @@ def _model_sha256(p: Path) -> str:
 
 
 def load_segmenter(model_path: str | Path = DEFAULT_MODEL,
-                   root: Path = Path(".")) -> tuple[object, str]:
+                   root: Path = Path(".")) -> tuple[TorchVGSLModel, str]:
     """The trained region model, plus the sha256 that will travel in every file.
 
     Loaded through `kraken.models.loaders.load_models`, and that choice is not
@@ -1661,7 +1668,14 @@ def load_segmenter(model_path: str | Path = DEFAULT_MODEL,
     models = load_models(p)
     if not models:
         raise ValueError(f"{p} holds no model")
-    net = models[0]
+    # **`cast`, because kraken's own annotations disagree with each other.**
+    # `load_models` is declared to return `BaseModel`, while `blla.segment`
+    # demands `TorchVGSLModel`; at runtime it is the latter, which is why
+    # `.user_metadata` below resolves at all. Naming the real type here is what
+    # lets the three `segment(...)` call sites type-check, and confines the
+    # library's imprecision to one line instead of spreading `object` through
+    # every caller.
+    net = cast("TorchVGSLModel", models[0])
     net.user_metadata.setdefault("hyper_params", {})
     return net, _model_sha256(p)
 

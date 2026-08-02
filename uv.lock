@@ -624,6 +624,8 @@ dependencies = [
     { name = "chocomufin" },
     { name = "kraken" },
     { name = "lxml" },
+    { name = "numpy" },
+    { name = "pillow" },
     { name = "tensorboard" },
     { name = "toon-format" },
 ]
@@ -640,6 +642,8 @@ requires-dist = [
     { name = "chocomufin", specifier = ">=1.0.2" },
     { name = "kraken", specifier = ">=7.0.3" },
     { name = "lxml", specifier = ">=6.1.1" },
+    { name = "numpy", specifier = ">=2.4" },
+    { name = "pillow", specifier = ">=11.0" },
     { name = "tensorboard", specifier = ">=2.21.0" },
     { name = "toon-format", specifier = ">=0.9.0b1" },
 ]

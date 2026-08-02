@@ -41,11 +41,15 @@ from __future__ import annotations
 
 import unicodedata
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from lxml import etree
 
 from .context import norm_ref
 from .figures import _bbox, _scale_for
+
+if TYPE_CHECKING:
+    import numpy as np
 
 # Padding around a line crop, in raster pixels, asymmetric on the vertical.
 #
@@ -331,6 +335,10 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
     for i, tl in enumerate(tree.iter("{*}TextLine")):
         bb = _bbox(tl) or {}
         blk = tl.getparent()
+        # Bound once. It used to be `find(...)`ed twice on the same line — once for
+        # the guard and once for the value — which parses the XPath and walks the
+        # subtree twice for every line in the corpus.
+        poly = tl.find("{*}Shape/{*}Polygon")
         out.append({
             "index": i,
             "line_id": tl.get("ID") or f"line-{i}",
@@ -342,8 +350,7 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
             "width": bb.get("WIDTH"),
             "height": bb.get("HEIGHT"),
             "baseline": tl.get("BASELINE"),
-            "points": (tl.find("{*}Shape/{*}Polygon").get("POINTS")
-                       if tl.find("{*}Shape/{*}Polygon") is not None else None),
+            "points": (poly.get("POINTS") if poly is not None else None),
         })
     # Figure-zone marking needs the page's ref and the repo root. Both are derivable
     # from the ALTO's own location (`<root>/<store>/chukchi-<ref>.xml`) so that every
@@ -475,7 +482,7 @@ ROW_INK_FRACTION = 0.005
 COVER_PAD = 6
 
 
-def ink_mask(src) -> object:
+def ink_mask(src) -> np.ndarray:
     """The page as a boolean array, True where the paper is dark.
 
     The one decode, in one place. Every caller of `ink_bands` and every anchor
@@ -972,7 +979,8 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
     from .figures import compose_sheets
     window = window or zoom_window(zoom, client_w)
     step = max(1, window - overlap)
-    resample = Image.LANCZOS if smooth else Image.NEAREST
+    resample = (Image.Resampling.LANCZOS if smooth
+                else Image.Resampling.NEAREST)
     strips, seen = [], []
     for rec, crop in line_crops(ref, alto_dir, root, scans, margins=margins):
         if only is not None and rec["index"] not in only:

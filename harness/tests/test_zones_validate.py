@@ -46,7 +46,7 @@ V1 = V0 + 1778  # part 1's measure
 BODY = [(y, y + 32) for y in range(600, 3300, 60)]
 
 
-def cfg_for(_tmp_path: Path = None) -> dict:
+def cfg_for(_tmp_path: Path | None = None) -> dict:
     """The shipped config, so these tests bind the numbers actually in use."""
     return zc.load_config(REPO)
 

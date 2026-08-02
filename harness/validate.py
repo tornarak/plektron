@@ -375,6 +375,15 @@ def _check_ids(r: Report, root, ctx: dict | None) -> None:
         if parsed is None:
             r.errors.append(f'@{p["attr"]}="#{p["id"]}" is not a scheme id')
             continue
+        # `prev_ref` is None on the first scan of a part, which has no predecessor
+        # at all. Without this the next branch compares a ref against None, takes
+        # the mismatch path, and reports "must name None" — a true statement about
+        # the variable and nonsense about the book. Found by `ty`.
+        if expect is None:
+            r.errors.append(
+                f'@{p["attr"]}="#{p["id"]}" cannot resolve — {ref} is the first '
+                "scan of its part and has no predecessor")
+            continue
         if parsed["ref"] != expect:
             r.errors.append(
                 f'@{p["attr"]}="#{p["id"]}" names page {parsed["ref"]}, but '

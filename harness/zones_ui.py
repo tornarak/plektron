@@ -56,12 +56,11 @@ def _resolve_column(z: dict, windows: list[dict], tol: float) -> int | None:
     somewhere plausible, and `validate_page` has already raised against it.
     Guessing here would repair the symptom and lose the finding.
     """
-    best, best_off = None, None
-    for i, w in enumerate(windows):
-        off = max(abs(z["x0"] - w["x0"]), abs(z["x1"] - w["x1"]))
-        if best_off is None or off < best_off:
-            best, best_off = i, off
-    return best if best is not None and best_off <= tol else None
+    if not windows:
+        return None
+    offs = [max(abs(z["x0"] - w["x0"]), abs(z["x1"] - w["x1"])) for w in windows]
+    best_off = min(offs)
+    return offs.index(best_off) if best_off <= tol else None
 
 
 def _snap_column(z: dict, windows: list[dict]) -> int:
@@ -1975,7 +1974,8 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
     segmenter: list = [None]
 
     class Handler(BaseHTTPRequestHandler):
-        def log_message(self, *a):    # one line per save is enough
+        # Silence the per-request log; see `review.serve` on the signature.
+        def log_message(self, format: str, *args) -> None:
             pass
 
         def _send(self, code, ctype, body):

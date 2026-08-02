@@ -1075,7 +1075,10 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
     class Handler(BaseHTTPRequestHandler):
-        def log_message(self, *a):  # one line per save is enough; GETs are noise
+        # Silence the per-request log: one line per save is enough, GETs are noise.
+        # Signature matches the base class rather than `*a` — an override that
+        # narrows is a real incompatibility even when the body ignores everything.
+        def log_message(self, format: str, *args) -> None:
             pass
 
         def do_GET(self):

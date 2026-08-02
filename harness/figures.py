@@ -361,7 +361,7 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
             avail = sheet_w - LABEL_W - 20
             if im.width > avail:
                 h = max(1, round(im.height * avail / im.width))
-                im = im.resize((avail, h), Image.LANCZOS)
+                im = im.resize((avail, h), Image.Resampling.LANCZOS)
             scaled.append((label, im))
         height = sum(im.height + GUTTER for _, im in scaled) + GUTTER
         sheet = Image.new("L", (sheet_w, height), 255)

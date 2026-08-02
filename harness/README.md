@@ -382,9 +382,21 @@ U+026A, `ᵋ` U+1D4B. 152 hits, all on glyphs the project exists to transcribe. 
 scoped detector in `normalize.py`/`validate.py` is the real one, and burying it under
 an unscoped duplicate is the noise-over-signal failure CLAUDE.md opens with.
 
-`ty check harness/` reports 89 diagnostics of which roughly three quarters are
-missing third-party stubs — `lxml` ships none (20), `PIL.Image` constants (16), and
-numpy arriving through kraken as bare `object` (most of the 37 `not-subscriptable`).
-Gating on that would mean permanent known-false failures or a suppression list long
-enough for a real finding to land in unnoticed. Run it by hand; revisit when `ty`
-reaches 1.0 (it is 0.0.65) or when `lxml-stubs` closes the largest gap.
+`ty check harness/` reports 71 diagnostics, down from 91 after one pass. The best
+thing it found is not a type error at all: **`numpy` and `pillow` were imported
+directly at twenty-odd sites and declared as dependencies nowhere**, reaching the
+harness only through kraken — so a kraken release that dropped either would have
+broken it with an ImportError naming neither this project nor the reason. It also
+found `@prev` on the first scan of a part reporting `must name None`, a parameter
+rebound to a type its annotation forbade, and the legacy `Image.LANCZOS` aliases.
+
+What remains is mostly not about this code: `lxml` ships no stubs (22), and the
+rest is `dict[str, str | int]` records whose values ty cannot narrow (`-r["n"]`
+where `n` is always an int) plus tests subscripting an `X | None` return. Fixing
+those means TypedDicts through the record-passing layer — a design change, not a
+lint fix. `lxml-stubs` was tried and removed: it trades 22 low-information warnings
+for ~30 `_Element | None` complaints, every sampled one already guarded in a way ty
+cannot see.
+
+So it stays a hand tool. Gating would mean permanent known-false failures or a
+suppression list long enough to hide a real finding. Revisit at `ty` 1.0.

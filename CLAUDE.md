@@ -240,10 +240,13 @@ Layout, all at the repo root:
   (ambiguous-unicode) fire 152 times on the transcription inventory itself** —
   `ˊ` U+02CA, `ɪ` U+026A, `ᵋ` U+1D4B are the subject matter, not confusables, and
   an unscoped second lookalike detector would bury the scoped one that exists.
-  `ty` stays out because ~three quarters of its 89 diagnostics are missing
-  third-party stubs (`lxml` ships none, PIL, numpy via kraken); gating would mean
-  permanent known-false failures or a suppression list long enough to hide a real
-  finding. Run it by hand: `uv run ty check harness/`.
+  `ty` stays out because most of its remaining 71 diagnostics are missing
+  third-party stubs (`lxml` ships none) or `dict[str, str | int]` records it cannot
+  narrow; gating would mean permanent known-false failures or a suppression list
+  long enough to hide a real finding. Run it by hand: `uv run ty check harness/`.
+  **It earned its place on the first pass**: `numpy` and `pillow` were imported at
+  twenty-odd sites and declared nowhere, arriving only through kraken — one
+  upstream drop from an ImportError naming neither this project nor the reason.
 - `tools/` holds four scripts, none of them part of a loop. `make_mets.py <dir>`
   is live — it rebuilds a METS manifest before an eScriptorium import.
   `migrate_coords.py` (150→300 dpi) and the two `strip_*_lines.py` (which produced
