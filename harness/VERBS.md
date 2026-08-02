@@ -287,10 +287,11 @@ require `--commit`.
 
 ### ocr predict [REF]
 **Does** zones to text in one pass — baseline segmentation, then recognition, structured by the zones the `zones/` view supplies. `blla`'s own regions are discarded and the seven declared zone types replace them, so a line arrives knowing whether it sits in a running title, a paragraph, a footnote or a signature line. Bare, it sweeps every page with zones and is resumable.
-**Reads** `scans/` (the **plain** raster, not the blot — see the note), `zones/`, the two models, the split marks.
+**Reads** `scans-fig-blotted/`, `zones/`, the two models, the split marks. A page with no blot is refused.
 **Writes** `mz/ocr/` (derived), and relinks that page in `ocr/`. **Never `gt/ocr/`.**
 **Exit** always 0 — a skipped page is reported, not a failure.
-**Note** the input is `scans/`, where `zones predict` reads `scans-fig-blotted/`. Blotting paints the *declared* figure box and body text set against an inset figure sits inside it; zone geometry can afford that trade and characters cannot. The cost is lines found in artwork: those are **kept, assigned to no region, and counted as `lines_outside_zones`** rather than dropped, because a hole in a page is invisible and junk is not.
+**Note** the input is the blotted raster, as `zones predict`'s is, so artwork raises no baselines. Nothing is lost to it: the blot fills the *declared* figure box and not a pixel more — the pad was rejected precisely because body text sits hard against an inset figure on pages like `1-283` — so the type survives and only the pictures go. Captions go too and should: they live in `data/readings.md`. A line whose baseline still falls in no zone is **kept, assigned to no region, and counted as `lines_outside_zones`** rather than dropped, because a hole in a page is invisible and junk is not.
+**Note** the zone label reaches the ALTO as `OtherTag/@LABEL` via `TAGREFS`, and `harness ocr lines` surfaces it as `zone`. That is what lets `tei context` drop the running head and the signature line from the collation draft while the store keeps every line the page sets — including the folio, which shares the running-title zone.
 **Note** stock CATMuS reads ~91% of the ASCII and **0% of the transcription inventory**. This store is a witness to line geometry and to English, and to nothing else.
 ```
 --force          re-run over pages already in mz/ocr/ [off] — the file records both

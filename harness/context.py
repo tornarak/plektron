@@ -25,6 +25,12 @@ from .state import entry_state, foreign_terms_nearby, load_toc, toc_window
 
 REF_RE = re.compile(r"^(?:chukchi-)?(\d+)-(\d+)$")
 
+# Zones whose text the printer set rather than the author: the running head with
+# its folio, and the signature line at the foot of a gathering. `build_context`
+# keeps them out of the collation draft; see the comment at the exclusion for why
+# there and not at the point the page is recognized.
+APPARATUS_ZONES = frozenset({"RunningTitleZone", "QuireMarksZone"})
+
 
 def parse_ref(ref: str) -> tuple[int, int]:
     """'1-048' | '1-48' | 'chukchi-1-048' -> (1, 48). Anything else is an error.
@@ -280,7 +286,22 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     # and invite it to reconcile them. Marked lines are excluded from the draft
     # only — they stay in `gt/ocr/`, in the review queue, and in `ocr_lines`, the
     # last because that is what a `@facs` pointer resolves against.
-    lines = [r["text"] for r in recs if r["text"].strip() and not r["in_figdesc"]]
+    # The running head with its folio, and the printer's signature line at the foot
+    # of a gathering: the printer's text, not the author's, and now identifiable
+    # because `ocr predict` writes the zones in as the ALTO's regions. Excluded on
+    # the same terms as a caption — from the draft only. They stay in the store, in
+    # `ocr_lines`, and one field away in `harness ocr lines PP-NNN`.
+    #
+    # **Excluded here and not in `ocr predict`**, because the running head shares
+    # its zone with the printed folio, and the folio is where page numbering enters
+    # the project (`<pb n>`). Dropping it at write time would take the OCR's only
+    # record of it and cost a re-run of the page to get back.
+    #
+    # An unlabelled block is *kept*: `gt/ocr/` and `gt/seg/` label none, so treating
+    # blank as apparatus would empty the draft for every ground-truth page.
+    lines = [r["text"] for r in recs
+             if r["text"].strip() and not r["in_figdesc"]
+             and r["zone"] not in APPARATUS_ZONES]
     draft = _draft_text(lines)
     detected = detect_all(draft.split("\n"), root)
     figures = _figures_on_page(root / FIGDIR / f"{stem}.xml", root)

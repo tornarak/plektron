@@ -333,9 +333,7 @@ The second attempt narrows the claim until it is checkable. Three things change:
   coding, so the figures come out before the segmenter ever sees the page. The
   declared box is painted and **not a pixel more**: 24 pages in a 40-page sample
   keep ink just outside a zone, but that ink is a few pixels of photograph edge on
-  a plate like `1-167` and **body text set hard against an inset figure** on
-  `1-283`, so a pad would erase text on every page of the second kind to tidy a
-  sliver on the first.
+  a plate like `1-167`.
 
 Store is `gt/zones/`, ALTO in the eScriptorium dialect so it goes straight into
 `ketos segtrain` and back into the GUI if ever wanted — the import/export loop being
@@ -852,12 +850,29 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
    pipeline: seven declared types, a vertical partition of a measured column. The
    LADaS regions they replaced had none and existed only to impose a reading order.
 2. **Lines + recognition, one pass** — `harness ocr predict` → `mz/ocr/`, linked
-   into `ocr/`. `blla` finds baselines off the **plain** scan; **its regions are
+   into `ocr/`. `blla` finds baselines off `scans-fig-blotted/`, the same raster
+   `zones predict` reads, so artwork raises no baselines; **its regions are
    discarded and the zones replace them**, so a line arrives already knowing
    whether it sits in a running title, a paragraph, a footnote or a signature
    line, and the collation pass gets that structure instead of re-deriving it.
-   Reading order is zone order, then down the page — so in this store, unlike
-   `gt/ocr/`, document order *is* reading order.
+   The label travels in the ALTO as `OtherTag/@LABEL` via `TAGREFS` and surfaces
+   as `zone` in `harness ocr lines`. Reading order is zone order, then down the
+   page — so in this store, unlike `gt/ocr/`, document order *is* reading order.
+
+   **Nothing is lost to the blot**, and that is a property of how it paints rather
+   than a cost accepted: it fills the *declared* figure box and not a pixel more,
+   the pad having been rejected precisely because body text sits hard against an
+   inset figure on `1-283`. Figure captions do go, and should — they live in
+   `data/readings.md` and are not body text.
+
+   **The running title and the quire marks are dropped from the collation draft,
+   not from the store** (`context.APPARATUS_ZONES`). They are the printer's text,
+   not the author's. The filter sits at the consumer rather than at `ocr predict`
+   because the running head **shares its zone with the printed folio**, and the
+   folio is where page numbering enters the project; dropping it at write time
+   would take the OCR's only record of it and cost a re-run of the page. An
+   *unlabelled* block is kept, since `gt/ocr/` and `gt/seg/` label none and
+   treating blank as apparatus would empty the draft for every ground-truth page.
 
    Recognition is stock CATMuS; the fine-tune referred to in earlier drafts is not
    in the repo and is no longer the plan. Measured against a human key it reads

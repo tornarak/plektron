@@ -131,3 +131,63 @@ def test_nothing_here_can_name_the_ground_truth_store():
     import inspect
     params = inspect.signature(R.predict).parameters
     assert "store" not in params and "out" not in params and "alto_dir" not in params
+
+
+# --- the zone labels, and what reads them ----------------------------------
+
+def _zoned_alto(p: Path) -> Path:
+    """An `ocr predict`-shaped page: blocks tagged through TAGREFS -> OtherTag."""
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        f'<alto xmlns="{ALTO_NS}"><Layout><Page><PrintSpace>'
+        '<TextBlock ID="mz_r1" TAGREFS="TYPE_1"><TextLine ID="l1">'
+        '<String CONTENT="BOGORAS, THE CHUKCHEE."/></TextLine>'
+        '<TextLine ID="l2"><String CONTENT="223"/></TextLine></TextBlock>'
+        '<TextBlock ID="mz_r2" TAGREFS="TYPE_2"><TextLine ID="l3">'
+        '<String CONTENT="Scissors used throughout northeastern Asia"/>'
+        '</TextLine></TextBlock>'
+        '<TextBlock ID="mz_r3" TAGREFS="TYPE_3"><TextLine ID="l4">'
+        '<String CONTENT="9-JESUP NORTH PACIFIC EXPED."/></TextLine></TextBlock>'
+        "</PrintSpace></Page></Layout>"
+        '<Tags><OtherTag ID="TYPE_1" TYPE="type" LABEL="RunningTitleZone"/>'
+        '<OtherTag ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>'
+        '<OtherTag ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/></Tags>'
+        "</alto>", encoding="utf-8")
+    return p
+
+
+def test_page_lines_carries_the_zone_label(tmp_path):
+    """Resolved through TAGREFS to `OtherTag/@LABEL`, never from the tag ID —
+    those are assigned per export and hardcoding one fails silently."""
+    from harness.lines import page_lines
+    p = _zoned_alto(tmp_path / "mz" / "ocr" / "chukchi-1-283.xml")
+    zones = {r["line_id"]: r["zone"] for r in page_lines(p, tmp_path)}
+    assert zones == {"l1": "RunningTitleZone", "l2": "RunningTitleZone",
+                     "l3": "MainZone-P", "l4": "QuireMarksZone"}
+
+
+def test_an_unlabelled_block_reads_empty_not_missing(tmp_path):
+    """`gt/ocr/` labels no block. The key must still be present and falsy, or the
+    draft filter below would have to special-case a whole store — and a ragged key
+    set collapses the TOON table for every consumer of `ocr lines`."""
+    from harness.lines import page_lines
+    p = _alto(tmp_path / R.GTDIR / "chukchi-1-048.xml", "plain")
+    recs = page_lines(p, tmp_path)
+    assert all("zone" in r for r in recs)
+    assert all(r["zone"] == "" for r in recs)
+
+
+def test_apparatus_zones_leave_the_draft_but_not_the_store(tmp_path, monkeypatch):
+    """The running head, its folio and the signature line are the printer's text.
+    Dropped from `catmus_draft`; still in the file and still in `page_lines`, which
+    is what keeps the folio one field away instead of a re-run away."""
+    from harness import context as C
+    from harness.lines import page_lines
+    p = _zoned_alto(tmp_path / "mz" / "ocr" / "chukchi-1-283.xml")
+    recs = page_lines(p, tmp_path)
+    kept = [r["text"] for r in recs
+            if r["text"].strip() and r["zone"] not in C.APPARATUS_ZONES]
+    assert kept == ["Scissors used throughout northeastern Asia"]
+    # ...and nothing was removed from the page itself.
+    assert len(recs) == 4
+    assert any(r["text"] == "223" for r in recs), "the folio must survive in the store"

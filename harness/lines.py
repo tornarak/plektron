@@ -287,8 +287,18 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
     `line_id` is the ALTO `@ID`. eScriptorium and kraken both write one; where a
     file omits it the index stands in as `line-<n>`, so the join never silently
     falls back to position alone without saying so.
+
+    `zone` is the containing block's declared type, resolved through `TAGREFS` to
+    `OtherTag/@LABEL` — **never from the tag ID**, which is assigned per export.
+    It is `""` wherever the store does not label its blocks, which is every page of
+    `gt/ocr/` and `gt/seg/`: those blocks came from a segmentation whose regions
+    carried no semantic value. `mz/ocr/` labels every one, because `ocr predict`
+    writes the zones in as the regions, and that field is what lets a consumer drop
+    the running title and the signature line without a second walk of the tree.
     """
+    from .figures import _block_label, _labels
     tree = etree.parse(str(alto_path))
+    labels = _labels(tree)
     out = []
     for i, tl in enumerate(tree.iter("{*}TextLine")):
         bb = _bbox(tl) or {}
@@ -297,6 +307,7 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
             "index": i,
             "line_id": tl.get("ID") or f"line-{i}",
             "block_id": (blk.get("ID") if blk is not None else None),
+            "zone": (_block_label(blk, labels) if blk is not None else ""),
             "text": _line_text(tl),
             "hpos": bb.get("HPOS"),
             "vpos": bb.get("VPOS"),

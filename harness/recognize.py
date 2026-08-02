@@ -33,26 +33,33 @@ points. A page with no zones at all is refused rather than recognized flat: the
 structure is what this pass exists to apply, and a page without it would land in
 the store looking like any other, with nothing in it saying the zones were missing.
 
-## The plain scan, not the blot
+## The blotted raster, for both steps
 
-`zones predict` reads `scans-fig-blotted/` because that is what the segmenter was
-trained on. This reads `scans/`, and the difference is not an oversight. Blotting
-paints the *declared* figure box, and body text set hard against an inset figure
-sits inside that box on pages like `1-283` — erasing it costs real type to tidy a
-sliver of photograph edge. Zone geometry can afford that trade; the characters
-cannot.
+Input is `scans-fig-blotted/`, the same page `zones predict` reads, and a page with
+no blot is **refused** as it refuses one. Artwork otherwise raises baselines that
+are not type, and every one is a spurious line a downstream consumer has to be told
+to ignore.
 
-The cost is that `blla` finds "lines" in artwork. **Those are kept, not dropped.**
-A line whose baseline falls in no zone is assigned to no region, counted, and
-reported as `lines_outside_zones`. Dropping them would be quieter and is exactly
-the failure that cost this project a two-line paragraph on `1-053` and 18 pages
-before that: whatever text is present reads as correct, so no detector disagrees
-with anything and the page simply has less on it than the paper does. Junk in a
-draft is visible to the human reading it. A hole is not.
+**Nothing is lost to the blot, and that is a property of how it paints rather than
+an acceptable cost.** It fills the *declared* figure box and not a pixel more — the
+pad was considered and rejected precisely because body text sits hard against an
+inset figure on pages like `1-283`, and padding would have erased it. So the type
+survives; only the pictures go. Figure captions go too, since `gt/fig/` declares
+`GraphicZone-FigDesc` as well, and they should: captions live in `data/readings.md`
+and are not body text.
 
-That count is therefore a **signal, not noise**. High on a plate is expected; high
-on an ordinary text page means either the artwork was mis-zoned or a zone is
-missing, which is what `zones check --ink` exists to catch from the other side.
+**A line whose baseline still falls in no zone is kept, not dropped.** It is
+assigned to no region, counted, and reported as `lines_outside_zones`. Blotting
+makes this rare rather than impossible — an undeclared figure, a plate, a smudge —
+and dropping the remainder would be quieter and is exactly the failure that cost
+this project a two-line paragraph on `1-053` and 18 pages before that: whatever
+text is present reads as correct, so no detector disagrees with anything and the
+page simply has less on it than the paper does. Junk in a draft is visible to the
+human reading it. A hole is not.
+
+That count is therefore a **signal, not noise**. Non-zero on an ordinary text page
+means either a figure is undeclared or a zone is missing, which is what
+`zones check --ink` catches from the other side.
 """
 from __future__ import annotations
 
@@ -201,9 +208,13 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     from kraken.containers import ProcessingStep
 
     ref = norm_ref(ref)
-    scan = root / "scans" / f"chukchi-{ref}.png"
-    if not scan.exists():
-        raise FileNotFoundError(f"no raster for {ref} at {scan}")
+    blot = Z.blot_dir(root) / f"chukchi-{ref}.png"
+    if not blot.exists():
+        raise FileNotFoundError(
+            f"no blotted raster for {ref} at {blot} — run `harness zones blot` "
+            "first. Falling back to `scans/` would put a page in the store whose "
+            "lines were found under different conditions from every other one, "
+            "with nothing in the file saying so.")
 
     zs = Z.read_zones(ref, root, store=Z.VIEWDIR)
     if not zs:
@@ -223,7 +234,7 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
         raise ValueError("predict(rec_net=...) needs the model's sha256 too")
     dev = _resolve_device(device)
 
-    with Image.open(scan) as src:
+    with Image.open(blot) as src:
         page = src.convert("RGB")
     size = page.size
 
@@ -238,10 +249,17 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     for i, z in enumerate(zs, 1):
         rid = f"{ID_PREFIX}{ref}_r{i}"
         x0, y0, x1, y1 = z["x0"], z["y0"], z["x1"], z["y1"]
+        # **`tags` is `{key: [{"type": label}]}`, not `{key: label}`**, and the
+        # difference is silent. `serialization.serialize` builds its typology with
+        # `for t in v if 'type' in t` — handed a bare string, that iterates
+        # *characters*, matches none, and writes `TAGREFS=""` with a single
+        # `OtherTag LABEL="default"`. Geometry, ids and reading order all survive,
+        # so the file looks structured and carries no labels at all: the one thing
+        # this pass exists to put in it, absent, with nothing saying so.
         regions.setdefault(z["label"], []).append(
             containers.Region(id=rid,
                               boundary=[(x0, y0), (x1, y0), (x1, y1), (x0, y1)],
-                              tags={"type": z["label"]}))
+                              tags={"type": [{"type": z["label"]}]}))
         bands.append((rid, y0, y1))
 
     order = {rid: i for i, (rid, _, _) in enumerate(bands)}
@@ -284,7 +302,8 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
         ProcessingStep(id="harness-ocr-predict-lines", category="processing",
                        description="baseline segmentation, harness ocr predict",
                        settings={"model": str(seg_model), "sha256": seg_sha,
-                                 "device": dev, "input": f"scans/chukchi-{ref}.png",
+                                 "device": dev,
+                                 "input": f"{Z.BLOTDIR}/chukchi-{ref}.png",
                                  "regions_from": f"{Z.VIEWDIR}/chukchi-{ref}.xml"}),
         ProcessingStep(id="harness-ocr-predict-text", category="processing",
                        description="recognition, harness ocr predict",

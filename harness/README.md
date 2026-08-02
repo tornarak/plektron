@@ -146,14 +146,19 @@ role must not live only in the directory holding it.
 
 Three caller invariants. **It cannot name `gt/ocr/`** — there is no `store`, `out`
 or `alto_dir` parameter, the property `save_zones` has and for the reason this
-project lost 18 pages. **The input is `scans/`, not the blot**, unlike `zones
-predict`: blotting paints the declared figure box and body text set against an
-inset figure sits inside it, a trade zone geometry can afford and characters
-cannot. And **what gets serialized is the `ocr_record` list from `rpred`, never the
-lines with `text` set on them** — `serialization.serialize` reads
-`record.prediction` and nothing else, so the obvious spelling writes `CONTENT=""`
-on every line: a well-formed page with no words on it, which is the `gt/fig/`
-failure exactly.
+project lost 18 pages. **`tags` on a `Region` is `{key: [{"type": label}]}`, never
+`{key: label}`** — `serialize` builds its typology with `for t in v if 'type' in t`,
+so a bare string iterates characters, matches none, and writes `TAGREFS=""` against
+a lone `OtherTag LABEL="default"`: geometry, ids and reading order all correct, and
+the labels — the one thing the pass exists to add — silently absent. And **what
+gets serialized is the `ocr_record` list from `rpred`, never the lines with `text`
+set on them**: `serialization.serialize` reads `record.prediction` and nothing else,
+so the obvious spelling writes `CONTENT=""` on every line, a well-formed page with
+no words on it, which is the `gt/fig/` failure exactly.
+
+Both of those were found by reading a written page back through `harness ocr lines`
+rather than by trusting what the writer reported about itself; neither raised an
+error, and the file looked right from the outside in both cases.
 
 **`review.py`** — the largest, and it does four things: span diffing, decision
 persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),
