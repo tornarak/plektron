@@ -310,9 +310,29 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
                        settings={"model": str(rec_model), "sha256": rec_sha,
                                  "device": dev}),
     ]
+    # **`sub_line_segmentation=False`, and it is not a size optimization.**
+    # `serialize` defaults it True, which makes the ALTO template walk each
+    # record's per-character `cuts` and emit a `<String>` per word, an `<SP>` per
+    # space and a `<Glyph>` per character: 3375 glyphs and 681 strings on `1-048`
+    # where the store's other pages carry 49 strings, one per line, and a 30 KB
+    # file becomes 1.4 MB.
+    #
+    # The size is the symptom. The reason to turn it off is that **this store must
+    # be shaped like the one beside it**: `gt/ocr/` descends from eScriptorium
+    # exports, one `<String CONTENT>` per `TextLine`, and `ocr/` is a view under
+    # which a consumer reads either without asking which. `lines.page_lines` joins
+    # a line's text by concatenating its `String`s, so both forms happen to read
+    # alike today — which is precisely how a divergence like this survives: it
+    # costs nothing until something reads `String/@CONTENT` expecting a line and
+    # gets a word.
+    #
+    # Nothing is lost that this project uses. The per-glyph boxes and confidences
+    # are kraken's own recognition detail; the corpus addresses text at the line,
+    # `restore` writes at the line, and review crops at the line.
     xml = serialization.serialize(
         dataclasses.replace(bound, lines=records),
-        image_size=size, template="alto", processing_steps=steps)
+        image_size=size, template="alto", processing_steps=steps,
+        sub_line_segmentation=False)
 
     out = mz_dir(root)
     out.mkdir(parents=True, exist_ok=True)

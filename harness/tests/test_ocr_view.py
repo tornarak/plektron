@@ -191,3 +191,23 @@ def test_apparatus_zones_leave_the_draft_but_not_the_store(tmp_path, monkeypatch
     # ...and nothing was removed from the page itself.
     assert len(recs) == 4
     assert any(r["text"] == "223" for r in recs), "the folio must survive in the store"
+
+
+def test_the_writer_asks_for_line_level_serialization(tmp_path):
+    """`serialize`'s `sub_line_segmentation` defaults **True**, and handed
+    `ocr_record`s that emits a `<String>` per word, an `<SP>` per space and a
+    `<Glyph>` per character — 3375 glyphs on `1-048` where `gt/ocr/` carries 49
+    strings, and 30 KB becomes 1.4 MB.
+
+    Asserted at the call site rather than over a written file because writing one
+    needs two models and a GPU. The property that matters is not the size: `ocr/`
+    is a view under which a consumer reads either store without asking which, so
+    the two must be the same shape. They read alike today only because
+    `page_lines` concatenates a line's `String`s — which is exactly how this kind
+    of divergence survives unnoticed until something expects a line and gets a word.
+    """
+    import inspect
+    src = inspect.getsource(R.predict)
+    assert "sub_line_segmentation=False" in src, (
+        "the writer must turn off sub-line segmentation, or mz/ocr/ diverges in "
+        "shape from gt/ocr/ and inflates ~45x")
