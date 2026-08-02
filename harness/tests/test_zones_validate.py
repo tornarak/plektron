@@ -33,6 +33,8 @@ from lxml import etree
 from harness import zones as zn
 from harness import zones_config as zc
 
+from conftest import write_scan
+
 REPO = Path(__file__).resolve().parent.parent.parent
 
 # The synthetic page's ink runs here, so the anchor has something real to measure.
@@ -58,15 +60,8 @@ def make_scan(
     page: a blank fixture would exercise only the fallback and never the path every
     real page takes.
     """
-    from PIL import Image, ImageDraw
-
-    d = tmp_path / "scans"
-    d.mkdir(parents=True, exist_ok=True)
-    im = Image.new("L", size, 255)
-    dr = ImageDraw.Draw(im)
-    for y0, y1 in ink:
-        dr.rectangle([INK0, y0, INK1, y1], fill=0)
-    im.save(d / f"chukchi-{ref}.png")
+    write_scan(tmp_path, ref, size,
+               ink=tuple((INK0, y0, INK1, y1) for y0, y1 in ink))
 
 
 def zone(label, y0, y1, x0=V0, x1=V1):

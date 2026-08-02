@@ -29,6 +29,8 @@ from harness import zones as zn
 from harness import zones_config as zc
 from harness import zones_ui as ui
 
+from conftest import write_scan
+
 REPO = Path(__file__).resolve().parent.parent.parent
 
 # The synthetic page's ink, and the column the anchor derives from it.
@@ -48,11 +50,8 @@ def make_scan(tmp_path: Path, ref: str = "1-048", size=(2824, 3897), shift=0):
 
     d = tmp_path / "scans"
     d.mkdir(parents=True, exist_ok=True)
-    im = Image.new("L", size, 255)
-    dr = ImageDraw.Draw(im)
-    for y0, y1 in BODY:
-        dr.rectangle([INK0 + shift, y0, INK1 + shift, y1], fill=0)
-    im.save(d / f"chukchi-{ref}.png")
+    write_scan(tmp_path, ref, size,
+               ink=tuple((INK0 + shift, y0, INK1 + shift, y1) for y0, y1 in BODY))
 
 
 def scans(tmp_path: Path, *refs):

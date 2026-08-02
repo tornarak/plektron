@@ -24,16 +24,13 @@ from lxml import etree
 
 from harness import zones as zn
 
+from conftest import write_scan
+
 
 def make_scan(tmp_path: Path, ref: str = "1-048",
               size: tuple[int, int] = (2824, 3897)) -> Path:
     """A raster of the right dimensions. Page dims are read from it, not assumed."""
-    from PIL import Image
-    d = tmp_path / "scans"
-    d.mkdir(parents=True, exist_ok=True)
-    p = d / f"chukchi-{ref}.png"
-    Image.new("L", size, 255).save(p)
-    return p
+    return write_scan(tmp_path, ref, size)
 
 
 def sample() -> list[dict]:

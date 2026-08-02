@@ -65,6 +65,7 @@ from __future__ import annotations
 
 import dataclasses
 import os
+from functools import lru_cache
 from pathlib import Path
 
 from .context import norm_ref, parse_ref
@@ -161,7 +162,11 @@ def load_recognizer(model_path: str | Path = DEFAULT_REC_MODEL,
     return lm.load_any(str(p), device=device), Z._model_sha256(p)
 
 
+@lru_cache(maxsize=4)
 def _resolve_device(device: str) -> str:
+    """Cached: `torch.cuda.is_available()` initializes CUDA and costs ~1 s, and a
+    GPU does not appear part-way through a process. `zones._runtime_flags` is
+    cached for the same reason."""
     if device != "auto":
         return device
     try:
@@ -203,10 +208,9 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     absent because it reads as recorded; `zones.predict` refuses the same omission
     on the same grounds.
     """
-    from PIL import Image
-    from kraken import blla, rpred, serialization, containers
-    from kraken.containers import ProcessingStep
-
+    # Both refusals precede the imports: `from kraken import ...` pulls in torch and
+    # costs ~1.9 s, and neither a page without a blot nor a page without zones ever
+    # reaches a model. `zones.predict` orders itself the same way and says why.
     ref = norm_ref(ref)
     blot = Z.blot_dir(root) / f"chukchi-{ref}.png"
     if not blot.exists():
@@ -223,6 +227,10 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
             f"edit {ref}`, or run `harness zones predict {ref}`. Recognizing it "
             "flat would put a page in the store with no structure and nothing in "
             "it saying the structure was missing.")
+
+    from PIL import Image
+    from kraken import blla, rpred, serialization, containers
+    from kraken.containers import ProcessingStep
 
     if seg_net is None:
         seg_net, seg_sha = Z.load_segmenter(seg_model, root)

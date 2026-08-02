@@ -25,6 +25,8 @@ from harness import zones as zn
 from harness import zones_config as zc
 from harness import zones_ui as ui
 
+from conftest import write_scan
+
 REPO = Path(__file__).resolve().parent.parent.parent
 
 
@@ -33,9 +35,7 @@ def cfg():
 
 
 def make_scan(tmp_path: Path, ref: str, size=(2824, 3897)):
-    d = tmp_path / "scans"
-    d.mkdir(parents=True, exist_ok=True)
-    Image.new("L", size, 255).save(d / f"chukchi-{ref}.png")
+    write_scan(tmp_path, ref, size)
 
 
 def lst(tmp_path: Path, name: str, refs) -> Path:

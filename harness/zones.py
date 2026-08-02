@@ -50,6 +50,7 @@ from lxml import etree
 from .context import norm_ref, parse_ref
 from .figures import read_blocks
 from . import zones_config as zc
+from functools import lru_cache
 
 ZONEDIR = "gt/zones"
 SCANS = "scans"
@@ -206,7 +207,7 @@ def zone_refs(root: Path = Path("."), store: str = ZONEDIR) -> list[str]:
 
     Deduped by **real path**, not by name, in the `seen`-set form
     `normalize.scoped_files` uses. Neither caller here points this at `zones/` — the
-    `--from` flag deliberately offers only the two real stores, and `link_view`
+    `--store` flag deliberately offers only the two real stores, and `link_view`
     enumerates them directly — so this is not fixing a live miscount. It is here
     because the `store` parameter makes a symlink farm reachable for the first time
     and the README's dedupe-by-real-path rule is unconditional; the failure it
@@ -1907,10 +1908,10 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     `scans-fig-blotted/...` path kraken would otherwise record, so the two stores
     name a page's raster the same way.
     """
-    from PIL import Image
-    from kraken import blla, serialization
-    from kraken.containers import ProcessingStep
-
+    # **The refusal comes before the imports**, because `from kraken import blla`
+    # pulls in torch and costs ~1.9 s, and a page with no blot never needs either.
+    # Cheap-check-then-load rather than load-then-check is worth stating as a habit:
+    # the check is what the caller most often hits.
     ref = norm_ref(ref)
     blot = blot_dir(root) / f"chukchi-{ref}.png"
     if not blot.exists():
@@ -1918,6 +1919,10 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
             f"no blotted raster for {ref} at {blot} — run `harness zones blot` "
             "first. Predicting off the plain scan would ask the model a different "
             "question than the one it was trained on.")
+
+    from PIL import Image
+    from kraken import blla, serialization
+    from kraken.containers import ProcessingStep
 
     if net is None:
         net, sha = load_segmenter(model_path, root)
@@ -3476,6 +3481,10 @@ SEGTRAIN_CMD = (
 )
 
 
+# Cached because `torch.cuda.is_available()` initializes CUDA and costs ~1 s, and
+# the answer cannot change inside one process: a GPU does not appear mid-run. The
+# suite called this once per `assemble` test and paid for it every time.
+@lru_cache(maxsize=1)
 def _runtime_flags() -> tuple[str, int]:
     """The device and worker count for the reported command, read off this machine.
 

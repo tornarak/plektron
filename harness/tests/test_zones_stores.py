@@ -23,6 +23,8 @@ import pytest
 from harness import zones as zn
 from harness import zones_config as zc
 
+from conftest import write_scan
+
 REPO = Path(__file__).resolve().parent.parent.parent
 
 # The shipped config, so these tests bind the numbers actually in use —
@@ -64,15 +66,8 @@ def write_page(
 
 
 def make_scan(root: Path, ref: str):
-    from PIL import Image, ImageDraw
-
-    d = root / "scans"
-    d.mkdir(parents=True, exist_ok=True)
-    im = Image.new("L", (2824, 3897), 255)
-    dr = ImageDraw.Draw(im)
-    for y in range(600, 3300, 60):
-        dr.rectangle([739, y, 2489, y + 32], fill=0)
-    im.save(d / f"chukchi-{ref}.png")
+    write_scan(root, ref,
+               ink=tuple((739, y, 2489, y + 32) for y in range(600, 3300, 60)))
 
 
 # ------------------------------------------------------- the store parameter
