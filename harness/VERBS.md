@@ -285,6 +285,33 @@ require `--commit`.
 --root --json
 ```
 
+### ocr predict [REF]
+**Does** zones to text in one pass — baseline segmentation, then recognition, structured by the zones the `zones/` view supplies. `blla`'s own regions are discarded and the seven declared zone types replace them, so a line arrives knowing whether it sits in a running title, a paragraph, a footnote or a signature line. Bare, it sweeps every page with zones and is resumable.
+**Reads** `scans/` (the **plain** raster, not the blot — see the note), `zones/`, the two models, the split marks.
+**Writes** `mz/ocr/` (derived), and relinks that page in `ocr/`. **Never `gt/ocr/`.**
+**Exit** always 0 — a skipped page is reported, not a failure.
+**Note** the input is `scans/`, where `zones predict` reads `scans-fig-blotted/`. Blotting paints the *declared* figure box and body text set against an inset figure sits inside it; zone geometry can afford that trade and characters cannot. The cost is lines found in artwork: those are **kept, assigned to no region, and counted as `lines_outside_zones`** rather than dropped, because a hole in a page is invisible and junk is not.
+**Note** stock CATMuS reads ~91% of the ASCII and **0% of the transcription inventory**. This store is a witness to line geometry and to English, and to nothing else.
+```
+--force          re-run over pages already in mz/ocr/ [off] — the file records both
+                 models' sha256, the store's only witness to what produced it
+--itinerary LST  recognize over a work-list [every page with zones]
+--seg-model PATH baseline segmentation model [models/blla.mlmodel]
+--rec-model PATH recognition model [models/catmus-print-fondue-large.mlmodel]
+--device DEV     torch device [auto]
+--root --json
+```
+
+### ocr link
+**Does** rebuilds `ocr/`, the read view over `gt/ocr/` and `mz/ocr/`, the human file winning wherever it exists. `zones link`'s twin — the same shape over the same three-store layout.
+**Reads** `gt/ocr/`, `mz/ocr/`.
+**Writes** `ocr/` (derived). Relative links; a link whose target has gone is removed and counted rather than left to dangle.
+**Exit** always 0.
+**Note** `from_gt`/`from_mz` is the number worth reading: how much of the corpus is still only the machines' word.
+```
+--root --json
+```
+
 ---
 
 ## proposal

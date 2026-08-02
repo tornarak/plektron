@@ -26,6 +26,7 @@ from ..lines import (DEFAULT_ALTO_DIR, LINE_SHEET_H, ZOOM, ZOOM_CLIENT_W,
 from ..context import all_refs
 from ..paths import (clean, crops_dir, ensure_page_link, html_path, sheets_dir,
                      zoom_dir)
+from ..recognize import DEFAULT_REC_MODEL, DEFAULT_SEG_MODEL
 from ..review import (group_spans, page_spans, render_queue_html, restore, serve,
                       summary)
 
@@ -202,6 +203,32 @@ def register(sub, common):
              "decision.json in place; run once a page is restored"))
     p.set_defaults(func=run_clean)
 
+    p = add("predict", help="zones to text in one pass — baseline segmentation "
+            "and recognition over scans/, structured by the zones/ view, written "
+            "to mz/ocr/ and linked into ocr/. Never gt/ocr/. Bare, it sweeps "
+            "every page with zones and resumes where it stopped")
+    p.add_argument("ref", metavar="PP-NNN", nargs="?", help=REF_HELP)
+    p.add_argument("--force", action="store_true",
+                   help="re-run over pages already in mz/ocr/ — the file records "
+                        "both models' sha256, which is the store's only witness "
+                        "to what produced it, so a rerun replaces that record")
+    p.add_argument("--itinerary", metavar="LST",
+                   help="recognize over a work-list rather than the whole store")
+    p.add_argument("--seg-model", default=DEFAULT_SEG_MODEL,
+                   help=f"the baseline segmentation model [{DEFAULT_SEG_MODEL}]")
+    p.add_argument("--rec-model", default=DEFAULT_REC_MODEL,
+                   help=f"the recognition model [{DEFAULT_REC_MODEL}]. Stock "
+                        "CATMuS reads ~91%% of the ASCII and 0%% of the "
+                        "transcription inventory — a witness to geometry and to "
+                        "English, and to nothing else")
+    p.add_argument("--device", default="auto", help="torch device [auto]")
+    p.set_defaults(func=run_predict)
+
+    p = add("link", help="rebuild ocr/, the read view over gt/ocr/ and mz/ocr/, "
+            "the human file winning wherever it exists. Derived: the links are "
+            "relative and a stale one is removed rather than left to dangle")
+    p.set_defaults(func=run_link)
+
 
 def run_pages(a) -> int:
     out(a, all_refs(a.root))
@@ -318,4 +345,42 @@ def run_restore(a) -> int:
 
 def run_clean(a) -> int:
     out(a, clean(a.ref, a.root))
+    return 0
+
+
+def run_predict(a) -> int:
+    """One page, or a resumable sweep. Imported here because both models pull in
+    torch, and paying that on `harness ocr pages` would be the whole group slow
+    for one action's sake."""
+    from ..recognize import predict, predict_all, predict_skip
+    from ..zones import load_itinerary
+
+    if a.ref:
+        # A named ref is `single`: it overrides the exempt skip, because naming
+        # the page is the request. It does not override an existing file — that
+        # is what `--force` is for, and the two excuse different things.
+        why = predict_skip(a.ref, a.root, a.force, single=True)
+        if why:
+            print(f"{norm_ref(a.ref)}: {why}", file=sys.stderr)
+            return 0
+        out(a, predict(a.ref, a.root, seg_model=a.seg_model,
+                       rec_model=a.rec_model, device=a.device))
+        return 0
+
+    refs = load_itinerary(a.itinerary, a.root) if a.itinerary else None
+    rep = predict_all(a.root, refs, a.seg_model, a.rec_model, a.device, a.force)
+    pages, skips = rep.pop("pages"), rep.pop("skips")
+    print(emit(rep, getattr(a, "json", False)))
+    # Three tables, three key sets. Emitting them as one list would collapse the
+    # whole thing to the verbose nested form (see emit.py).
+    if pages:
+        print(emit(pages, getattr(a, "json", False)))
+    if skips:
+        print(emit(skips, getattr(a, "json", False)))
+    return 0
+
+
+def run_link(a) -> int:
+    from ..recognize import link_view
+    out(a, link_view(a.root))
     return 0

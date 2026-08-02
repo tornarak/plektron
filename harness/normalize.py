@@ -118,7 +118,18 @@ def _spacing_hits(text: str) -> list[dict]:
 # listed, and `.claude/skills/*/SKILL.md` — which now carries the collation rules and
 # the same kind of examples — is outside every glob here to begin with. Either would
 # fail a gate meant for the corpus text itself.
-SCOPE_GLOBS = ("ocr/*.xml", "gt/ocr/*.xml", "gt/seg/*.xml", "gt/fig/*.xml", "tei/*.xml",
+#
+# **`ocr/` is deliberately absent, and `gt/ocr/` is what stands in its place.** The
+# view used to be listed first, on the reasoning that it and `gt/ocr/` were one
+# store under two names and the dedupe below would fold them together. That stopped
+# being true when `ocr predict` gave the view a second real store to resolve into:
+# a link now reaches `mz/ocr/`, raw recognizer output, and the corpus gate would
+# then **block on a machine store** — which is the thing `zones check --store mz`
+# exists to prevent on the other side of the house. It is not a near miss. One
+# predicted page contributes 978 `spacing` hits, and they are not even text: they
+# are the whitespace kraken sets inside `<SP>` attributes. Naming the real store
+# keeps every gt page in scope, since the view never held anything else.
+SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/seg/*.xml", "gt/fig/*.xml", "tei/*.xml",
                "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
                # decision.json is an editorial act — the adjudicated record that
                # `restore` actually writes to gt/ocr/ — so it stays in the default
@@ -173,16 +184,21 @@ LOOKALIKE_SEQS = {"ġ": "g+U+0307 (or U+0121) traps g+U+0323"}
 def scoped_files(root: Path = Path("."), include_path_only: bool = False) -> list[Path]:
     """Distinct corpus files, one entry per inode.
 
-    **`ocr/*.xml` are symlinks into `gt/ocr/`** — one store under two names, not two
-    copies. Deduplicating by real path is therefore load-bearing rather than tidy:
-    without it `scan` reports the same file twice under both names (inflating the
-    offender count by the size of the overlap), and `convert` writes it via the first
-    name, then reaches the second, finds it already conformant and silently skips —
-    so the report undercounts exactly the files that were touched twice. Both
-    failures are quiet, and the second is the sort that reads as "nothing to do".
+    Deduplicating by real path is load-bearing rather than tidy wherever two globs
+    can reach one inode: without it `scan` reports the same file twice under both
+    names (inflating the offender count by the size of the overlap), and `convert`
+    writes it via the first name, then reaches the second, finds it already
+    conformant and silently skips — so the report undercounts exactly the files that
+    were touched twice. Both failures are quiet, and the second is the sort that
+    reads as "nothing to do".
 
-    The first name encountered wins, so `ocr/…` is what gets reported: glob order
-    follows SCOPE_GLOBS.
+    The overlap this was written for was `ocr/*.xml` against `gt/ocr/*.xml`, and
+    **that glob is gone** — see SCOPE_GLOBS on why a view with two real stores under
+    it cannot gate the corpus. The dedupe stays: it is unconditional in the README's
+    rule, the failure it prevents is a silent undercount, and the next store added
+    here will not announce that it aliases another.
+
+    The first name encountered wins; glob order follows SCOPE_GLOBS.
 
     `include_path_only` adds `PATH_ONLY_GLOBS` (currently just `proposal.json`) to
     the walk — set only when the caller was given an explicit `--path`, so a bare

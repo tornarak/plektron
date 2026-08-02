@@ -178,7 +178,12 @@ def test_normalize_scopes_the_check_to_stores_holding_running_text(tmp_path):
 def test_normalize_reads_ocr_alto_in_document_order(tmp_path):
     """The real shape: one String per TextLine, CONTENT carrying the text."""
     from harness.normalize import _footnote_hits
-    p = tmp_path / "ocr" / "chukchi-2-034.xml"
+    # `gt/ocr/`, not the `ocr/` view: since `ocr predict` gave the view a second
+    # real store to resolve into, the corpus sweep names the stores rather than the
+    # view (normalize.SCOPE_GLOBS). That is the right home for this fixture anyway
+    # — a page keying its marker as a superscript is by definition human-keyed, and
+    # CATMuS emits plain digits, so this check never had a machine page to run on.
+    p = tmp_path / "gt" / "ocr" / "chukchi-2-034.xml"
     p.parent.mkdir(parents=True)
     p.write_text(
         '<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#"><Layout><Page>'
@@ -196,7 +201,12 @@ def test_footnote_markers_do_not_gate_the_exit_code(tmp_path):
     Both invariants break legitimately at a page seam, where a note's reference
     and its text land on different pages — so this reports and never refuses."""
     from harness import normalize as N
-    p = tmp_path / "ocr" / "chukchi-2-034.xml"
+    # `gt/ocr/`, not the `ocr/` view: since `ocr predict` gave the view a second
+    # real store to resolve into, the corpus sweep names the stores rather than the
+    # view (normalize.SCOPE_GLOBS). That is the right home for this fixture anyway
+    # — a page keying its marker as a superscript is by definition human-keyed, and
+    # CATMuS emits plain digits, so this check never had a machine page to run on.
+    p = tmp_path / "gt" / "ocr" / "chukchi-2-034.xml"
     p.parent.mkdir(parents=True)
     p.write_text(
         '<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#"><Layout><Page>'
