@@ -16,7 +16,7 @@ from pathlib import Path
 import pytest
 from lxml import etree
 
-from harness import ids, seam
+from harness import ids
 from harness.validate import NAME_TYPES, validate
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"

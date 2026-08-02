@@ -24,7 +24,11 @@ already-migrated files would scale them a second time. Check a Page/@WIDTH
 against its raster before pointing this at anything.
 """
 from __future__ import annotations
-import argparse, hashlib, sys, tarfile, time
+import argparse
+import hashlib
+import sys
+import tarfile
+import time
 from pathlib import Path
 from lxml import etree
 

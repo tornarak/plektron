@@ -22,6 +22,7 @@ it as a fact rather than a starting guess would be inventing evidence.
 """
 from __future__ import annotations
 import json
+from itertools import pairwise
 from pathlib import Path
 
 from .context import norm_ref, parse_ref
@@ -256,7 +257,7 @@ def order_warnings(cfg: dict, zones: list[dict],
 
     if "rank-monotone" in enabled:
         ranked = [z for z in ordered if ranks.get(z["label"]) is not None]
-        for a, b in zip(ranked, ranked[1:]):
+        for a, b in pairwise(ranked):
             if ranks[b["label"]] < ranks[a["label"]]:
                 warn("rank-monotone",
                      f"{b['label']} (rank {ranks[b['label']]}) at y={b.get('y0')} "

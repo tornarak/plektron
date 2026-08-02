@@ -30,7 +30,9 @@ capital letter sitting where a small-cap belongs is closer to a reading
 judgement, so it stays a `check()` flag for a human to resolve.
 """
 from __future__ import annotations
-import json, re, unicodedata
+import json
+import re
+import unicodedata
 from pathlib import Path
 
 from .codepoints import non_ascii

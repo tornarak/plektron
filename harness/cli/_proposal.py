@@ -41,7 +41,7 @@ def _which(v: str) -> str:
         import argparse
         raise argparse.ArgumentTypeError(
             f"{v!r}: expected all, first, last, an occurrence number (3), or an "
-            f"inclusive range (2:4), all 1-based — {e}")
+            f"inclusive range (2:4), all 1-based — {e}") from e
     return v
 
 

@@ -14,7 +14,7 @@ unsatisfiable against real recognizer output and a tautology against a model's o
 reading.
 """
 from __future__ import annotations
-import re, unicodedata
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 from lxml import etree
@@ -263,13 +263,13 @@ def _check_ids(r: Report, root, ctx: dict | None) -> None:
     not depend on the pass behaving.
     """
     from . import ids as idmod
-    from .seam import body_elements, next_ref, prev_ref, tei_path
+    from .seam import next_ref, prev_ref, tei_path
 
     ref = (ctx or {}).get("page_ref")
     croot = Path((ctx or {}).get("root", "."))
     present = idmod.ids_in(root)
     canonical = idmod.canonical_map(root, ref) if ref else {}
-    want = {el: i for el, i in canonical.items()}
+    want = dict(canonical)
     referenced = idmod.referenced_ids(root)
 
     for ident, el in present.items():
@@ -589,7 +589,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # real. Mirrors the <figure facs> check above — a dangling citation is
     # strictly worse than none, so it errors rather than warns.
     if ctx is not None:
-        line_ids = {l["line_id"] for l in ctx.get("ocr_lines", [])}
+        line_ids = {ln["line_id"] for ln in ctx.get("ocr_lines", [])}
         for el in root.iter():
             if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
                 continue
@@ -699,7 +699,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
             bad = sorted({c for c in own_text if c in FORBIDDEN_PROSE})
             if bad:
                 r.errors.append(
-                    f"non-ASCII quote/apostrophe {['U+%04X' % ord(c) for c in bad]} "
+                    f"non-ASCII quote/apostrophe {[f'U+{ord(c):04X}' for c in bad]} "
                     f"in {lang!r} prose: {own_text.strip()[:60]!r}")
         v = el.get(XML_LANG)
         if v and v not in TIER1 and len(v) not in (2, 3):

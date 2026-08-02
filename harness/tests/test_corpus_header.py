@@ -145,7 +145,7 @@ def test_the_committed_header_grants_both_licences():
     from lxml import etree
 
     doc = etree.parse(str(REPO / CORPUS_HEADER))
-    targets = [l.get("target") for l in doc.getroot().iter(f"{{{TEI_NS}}}licence")]
+    targets = [c.get("target") for c in doc.getroot().iter(f"{{{TEI_NS}}}licence")]
     assert any("publicdomain/zero" in t for t in targets)
     assert any("licenses/by/4.0" in t for t in targets)
 

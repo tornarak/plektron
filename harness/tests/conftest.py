@@ -20,14 +20,14 @@ those thresholds were never written for.
 """
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cache
 from io import BytesIO
 from pathlib import Path
 
 A4_300 = (2824, 3897)
 
 
-@lru_cache(maxsize=None)
+@cache
 def _png(mode: str, size: tuple[int, int], ink: tuple[tuple[int, int, int, int], ...]
          ) -> bytes:
     """One encoded page. Cached for the session on exactly what it depends on.

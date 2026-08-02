@@ -23,7 +23,8 @@ per-export (`BT55`/`BT56` in one export, `BT68`/`BT69` in the next) and code
 that hardcodes them fails silently rather than loudly.
 """
 from __future__ import annotations
-import re, unicodedata
+import re
+import unicodedata
 from pathlib import Path
 from lxml import etree
 
@@ -202,7 +203,7 @@ def readings(root: Path = Path(".")) -> dict[str, dict]:
         cut = re.search(r"^\*\*.*\*\*\s*$", body, re.M)
         if cut:
             body, aside = body[:cut.start()], body[cut.start():].strip()
-        lines = [l for l in body.strip().split("\n") if l.strip()]
+        lines = [ln for ln in body.strip().split("\n") if ln.strip()]
         out[f"{m.group(1)}|{m.group(2)}"] = {
             "ref": m.group(1),
             "zone_suffix": m.group(2),

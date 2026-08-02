@@ -341,8 +341,7 @@ def page_glossary(root_el, ref: str, root: Path = Path("."),
 
 def glossary(root: Path = Path(".")) -> dict:
     """Every resolved term↔gloss pair in the committed TEI, corpus-wide."""
-    from .context import all_refs, norm_ref as _n
-    from .seam import tei_path
+    from .context import norm_ref as _n
 
     # One cache across the whole sweep, so a run-on list resolving its scope back
     # through @prev reuses the page this loop has already parsed rather than
@@ -405,8 +404,8 @@ def pair_glosses(ref: str, root: Path = Path("."), commit: bool = False) -> dict
         if parent is None or parent in seen:
             continue
         seen[parent] = True
-        terms = [e for e in parent.iter(f"{{{TEI_NS}}}term")]
-        glosses = [e for e in parent.iter(f"{{{TEI_NS}}}gloss")]
+        terms = list(parent.iter(f"{{{TEI_NS}}}term"))
+        glosses = list(parent.iter(f"{{{TEI_NS}}}gloss"))
         where = parent.get("n") or localname(parent)
         if len(terms) != 1 or len(glosses) != 1:
             out["ambiguous"].append({

@@ -28,4 +28,80 @@ exclude = ["harness/tests"]
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
+    "ruff>=0.16.1",
+    "ty>=0.0.65",
 ]
+
+# ---------------------------------------------------------------------- ruff
+#
+# `uv run ruff check harness/ tools/` — a gate, and `harness/tests/test_lint.py`
+# holds it to that.
+#
+# **The rule set is pinned explicitly and never inherited.** Ruff's default
+# selection is documented as `E4,E7,E9,F` and is not: 0.16.1 turns on isort,
+# bugbear, flake8-bandit and much of RUF besides, so a bare `ruff check` here
+# reports 161 findings. A gate whose meaning changes when a dev dependency is
+# upgraded is a gate nobody can act on, so `select` is a closed list and
+# everything absent from it is absent on purpose.
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B", "UP", "C4"]
+ignore = [
+    # `add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)` is
+    # the registration idiom in all seven `cli/` modules and is named as such in
+    # `harness/README.md`. A `def` per module says the same thing in four lines.
+    "E731",
+]
+
+# What is deliberately NOT selected, and why. Each was measured against the tree
+# before being dropped — none is off because it was noisy in the abstract.
+#
+# RUF001/002/003 (ambiguous-unicode-character, 152 hits) — the sharpest case, and
+#   it would be actively harmful. They flag characters that resemble ASCII, which
+#   in this corpus is a description of the subject matter: `ˊ` U+02CA, `ɪ` U+026A,
+#   `ᵋ` U+1D4B are inventory glyphs, not confusables. The project already has a
+#   lookalike detector, and its whole design is that it is *scoped* — Tier-1 spans
+#   only, `LOOKALIKE_GREPS` against `LOOKALIKE_CHARS`, held apart by
+#   `test_lookalike_scope.py` because a consolidation was once nearly carried out
+#   on an audit that mistook the difference for drift. An unscoped second detector
+#   firing on the glyphs themselves would bury the real one.
+# I001 (unsorted-imports, 68) — no correctness content, and 68 files touched for
+#   ordering alone. Imports here are placed with comments explaining the placement.
+# E501 (line-too-long) — `line-length` is set to 100 rather than 88 because the
+#   prose in this package's docstrings is the documentation, wrapped to ~85. At 88
+#   it reports 67 lines; at 100, three. Those three are fixed.
+# ISC (implicit-str-concat, 17) — every hit is a CSS rule or a prose message
+#   deliberately wrapped across lines. ISC004 is a good missing-comma detector in
+#   general; here it is 17 false positives and nothing else.
+# BLE001 (blind-except, 14) — the broad catches are deliberate fallbacks around
+#   model loading and third-party IO, each with a message saying what it fell back
+#   to.
+# S (flake8-bandit) — `try/except/pass` around ref parsing is the idiom for "this
+#   filename is not a page", not a swallowed error.
+# PERF401 (17) / SIM — style, not correctness.
+[tool.ruff.lint.per-file-ignores]
+# Tests monkeypatch module attributes and bind loop variables they do not use, both
+# of which are the point rather than an oversight.
+"harness/tests/*" = ["B007"]
+
+# ------------------------------------------------------------------------ ty
+#
+# `uv run ty check harness/` — **run by hand, and deliberately not a gate.**
+#
+# 89 diagnostics today, of which roughly three quarters are missing third-party
+# stubs rather than anything about this code: `lxml.etree` (20 — lxml ships none),
+# `PIL.Image.LANCZOS` (16), and numpy arrays reaching us through kraken as bare
+# `object`, which accounts for most of the 37 `not-subscriptable`. Gating on that
+# would mean either 89 permanent known-false failures or a suppression list long
+# enough that a real finding would land in it unnoticed — and a check nobody can
+# act on is worse than no check, because it reads as coverage.
+#
+# It is installed and configured so the real findings are reachable by hand; today
+# they are one `Path = None` default and some loose test annotations. Revisit when
+# `ty` reaches 1.0 (it is 0.0.65) or when `lxml-stubs` closes the biggest gap.
+[tool.ty.rules]
+unresolved-import = "warn"
+unresolved-attribute = "warn"

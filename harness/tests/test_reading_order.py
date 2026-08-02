@@ -12,7 +12,7 @@ layouts this exists for.
 """
 from pathlib import Path
 
-from harness.lines import mark_figure_overlap, reading_order, _overlap_fraction
+from harness.lines import reading_order, _overlap_fraction
 
 
 def rec(index, hpos, vpos, width=100, height=44, text=""):
@@ -130,7 +130,7 @@ def test_every_record_carries_every_key(monkeypatch):
     recs = [rec(0, 100, 100), rec(1, 100, 200)]
     L.mark_figure_overlap(recs, "1-048", Path("."))
     for r in recs:
-        assert set(("in_figdesc", "in_graphic", "figdesc_straddle")) <= set(r)
+        assert {"in_figdesc", "in_graphic", "figdesc_straddle"} <= set(r)
 
 
 def test_straddle_is_a_partial_overlap(monkeypatch):

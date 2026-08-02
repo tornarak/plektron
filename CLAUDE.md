@@ -232,6 +232,18 @@ Layout, all at the repo root:
   the mark licence, the spacing and NFD rules, the folio fold, the layout lists,
   citation parsing, and the lookalike *scopes*. Fixtures live in `tmp_path`, not
   the live corpus. See `harness/README.md`.
+- **`ruff` is a gate and runs inside the suite** (`test_lint.py`); `ty` is
+  installed and **is not**. The rule set is pinned in `pyproject.toml` rather than
+  inherited, because ruff's default selection has changed between releases and a
+  gate whose meaning moves on a dependency upgrade cannot be acted on. Two rules
+  are off by name and the reason is this project's: **`RUF001`–`003`
+  (ambiguous-unicode) fire 152 times on the transcription inventory itself** —
+  `ˊ` U+02CA, `ɪ` U+026A, `ᵋ` U+1D4B are the subject matter, not confusables, and
+  an unscoped second lookalike detector would bury the scoped one that exists.
+  `ty` stays out because ~three quarters of its 89 diagnostics are missing
+  third-party stubs (`lxml` ships none, PIL, numpy via kraken); gating would mean
+  permanent known-false failures or a suppression list long enough to hide a real
+  finding. Run it by hand: `uv run ty check harness/`.
 - `tools/` holds four scripts, none of them part of a loop. `make_mets.py <dir>`
   is live — it rebuilds a METS manifest before an eScriptorium import.
   `migrate_coords.py` (150→300 dpi) and the two `strip_*_lines.py` (which produced

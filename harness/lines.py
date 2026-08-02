@@ -473,7 +473,7 @@ ROW_INK_FRACTION = 0.005
 COVER_PAD = 6
 
 
-def ink_mask(src) -> "object":
+def ink_mask(src) -> object:
     """The page as a boolean array, True where the paper is dark.
 
     The one decode, in one place. Every caller of `ink_bands` and every anchor
@@ -537,7 +537,7 @@ def ink_bands(ink, x0: int, x1: int, covered,
     edges = np.flatnonzero(np.diff(np.concatenate(
         ([0], rows.view(np.int8), [0]))))
     out = []
-    for start, end in zip(edges[::2], edges[1::2]):
+    for start, end in zip(edges[::2], edges[1::2], strict=True):
         if end - start < min_h:
             continue
         nz = np.flatnonzero(band[start:end].any(axis=0))
@@ -964,7 +964,7 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
     is rather than whether a mark is present.
     """
     from PIL import Image
-    from .figures import compose_sheets, LABEL_W
+    from .figures import compose_sheets
     window = window or zoom_window(zoom, client_w)
     step = max(1, window - overlap)
     resample = Image.LANCZOS if smooth else Image.NEAREST

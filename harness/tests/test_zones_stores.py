@@ -16,6 +16,7 @@ is the failure mode this repo is organised against, so it is the one worth testi
 """
 
 from __future__ import annotations
+from itertools import pairwise
 from pathlib import Path
 
 import pytest
@@ -927,7 +928,7 @@ def test_the_decoder_cannot_emit_a_sliver_or_an_overlap(tmp_path):
     assert all(j - i >= 20 for i, j, _ in labelled)  # no sliver
     # A partition: segments tile the page in order and never overlap.
     assert segs[0][0] == 0 and segs[-1][1] == n
-    for a, b in zip(segs, segs[1:]):
+    for a, b in pairwise(segs):
         assert a[1] == b[0]
 
 
@@ -966,7 +967,6 @@ def test_a_train_merge_folds_the_training_copy_and_not_the_store(tmp_path):
     """`train_merges` narrows what the *segmenter* is asked to learn. The keyed
     file keeps the distinction, because a human drew it and it is evidence — the
     fold is a statement about a model's capacity, not about the book."""
-    from harness import zones_config as zcm
 
     multi_page(
         tmp_path,
@@ -977,7 +977,7 @@ def test_a_train_merge_folds_the_training_copy_and_not_the_store(tmp_path):
     (tmp_path / zn.BLOTDIR).mkdir(parents=True, exist_ok=True)
     (tmp_path / zn.BLOTDIR / "chukchi-1-048.png").write_bytes(b"x")
     (tmp_path / "data").mkdir(parents=True, exist_ok=True)
-    import json, shutil
+    import json
 
     cfg = json.loads((REPO / "data/zones_config.json").read_text(encoding="utf-8"))
     (tmp_path / "data/zones_config.json").write_text(json.dumps(cfg), encoding="utf-8")

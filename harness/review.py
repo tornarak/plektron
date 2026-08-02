@@ -489,9 +489,21 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     # text exactly what was adjudicated.
     a = page_lines(src)
     b = page_lines(tmp)
+    # **Length first, and then `strict`.** Bare `zip` stops at the shorter side, so
+    # a write that dropped a line would have been verified over the common prefix
+    # and reported clean — a check that cannot see the one failure this repo has
+    # already paid for twice, sitting inside the function whose whole job is to
+    # verify the write. Ruff's B905 found it; the count guard is what gives the
+    # failure a message, and `strict=True` is what makes the guard impossible to
+    # drift away from.
+    if len(a) != len(b):
+        raise ValueError(
+            f"{ref}: the written page has {len(b)} lines where the source has "
+            f"{len(a)} — the write lost or gained lines and was not committed")
     geom = ("line_id", "block_id", "hpos", "vpos", "width", "height",
             "baseline", "points")
-    drift = [x["index"] for x, y in zip(a, b) if any(x[k] != y[k] for k in geom)]
+    drift = [x["index"] for x, y in zip(a, b, strict=True)
+             if any(x[k] != y[k] for k in geom)]
     wrong = [y["index"] for y in b if y["text"] != _nfd(dec[y["index"]]["text"])]
     # `edits` names what changed, not just how many lines did — "edited_by_human: 2"
     # used to be the whole answer, and finding out *what* meant hand-rolling a

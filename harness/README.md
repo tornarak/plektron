@@ -329,7 +329,7 @@ field-editing verbs. **`codepoints.py`**, **`emit.py`** — one job each.
 
 ## Tests
 
-`uv run pytest`. Fixtures live in `tmp_path`, not the live corpus — a test asserting
+`uv run pytest`, which also runs `ruff check` (`test_lint.py`). Fixtures live in `tmp_path`, not the live corpus — a test asserting
 over `gt/ocr/` or `data/` fails the day the corpus legitimately changes, which trains
 everyone to ignore it. The exceptions are explicit and are facts about the printed
 book or about committed configuration rather than about any code: the
@@ -354,3 +354,36 @@ file's own NFD form. This has been stated and not followed more than once here, 
 part of why is that the surface was hard to search: 21 verbs, most carrying several
 unnamed modes. `harness/VERBS.md` is the answer to "is there already a verb for
 this", and it is one file to scan.
+
+
+## Lint and types
+
+`ruff` gates; `ty` does not. Both are dev dependencies and both are configured in
+`pyproject.toml`, where the reasoning lives beside the settings.
+
+Ruff's **rule set is pinned, never inherited** — its default selection is documented
+as `E4,E7,E9,F` and is not; 0.16.1 also turns on isort, bugbear, flake8-bandit and
+much of RUF, reporting 161 findings here against the pinned set's zero. A gate whose
+meaning changes when a dev dependency is upgraded is one nobody can act on, the same
+argument that makes `zones score` demand `--model` rather than read whichever `.lst`
+files are lying around.
+
+What it earned on the first run, which is the case for keeping it: `B905` found
+`restore`'s post-write verification comparing source against written page with a bare
+`zip`, so a write that **dropped a line** would have been checked over the common
+prefix and reported clean — the repo's cardinal failure inside the function meant to
+catch it. And `F821` caught two undefined names introduced while fixing other ruff
+findings in the same sitting.
+
+`RUF001`–`003` are off by name and `test_lint.py` asserts they stay off. They flag
+characters resembling ASCII, which here describes the inventory: `ˊ` U+02CA, `ɪ`
+U+026A, `ᵋ` U+1D4B. 152 hits, all on glyphs the project exists to transcribe. The
+scoped detector in `normalize.py`/`validate.py` is the real one, and burying it under
+an unscoped duplicate is the noise-over-signal failure CLAUDE.md opens with.
+
+`ty check harness/` reports 89 diagnostics of which roughly three quarters are
+missing third-party stubs — `lxml` ships none (20), `PIL.Image` constants (16), and
+numpy arriving through kraken as bare `object` (most of the 37 `not-subscriptable`).
+Gating on that would mean permanent known-false failures or a suppression list long
+enough for a real finding to land in unnoticed. Run it by hand; revisit when `ty`
+reaches 1.0 (it is 0.0.65) or when `lxml-stubs` closes the largest gap.

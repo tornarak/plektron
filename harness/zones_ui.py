@@ -1415,7 +1415,6 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
     # glance is "is there anything in the other store" — visible here instead of
     # discovered by switching. `/` cycles.
     sel = st.get("store", "zones")
-    shown = st.get("shown", "")
     for name in STORES:
         if name == "zones":
             n = f"→{st.get('view')}" if st.get("view") else "—"
@@ -1753,8 +1752,8 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
         # what kind and in what order, which is what a glance down the list is for.
         strip = "".join(
             f"<i class='z' style='background:"
-            f"{by_label.get(l, {}).get('color', '#999')}' title=\""
-            f"{by_label.get(l, {}).get('name', l)}\"></i>" for l in labels)
+            f"{by_label.get(lab, {}).get('color', '#999')}' title=\""
+            f"{by_label.get(lab, {}).get('name', lab)}\"></i>" for lab in labels)
         # A keyed page holding nothing prints `0`, not blank: that is a plate a human
         # ruled on, and blank is what a page nobody has reached looks like.
         gt_cell = "" if state in ("todo", "proposed") else str(nz)

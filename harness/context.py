@@ -16,9 +16,9 @@ needed it comes from state.py, which knows it only because a transcribed page
 recorded one.
 """
 from __future__ import annotations
-import re, unicodedata
+import re
+import unicodedata
 from pathlib import Path
-from lxml import etree
 
 from . import farms
 from .detectors import detect_all

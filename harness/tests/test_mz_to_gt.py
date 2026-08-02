@@ -106,7 +106,9 @@ def test_the_machine_geometry_does_survive(page):
     restore("1-060", "mz/ocr", page, commit=True)
     src = page_lines(page / "mz" / "ocr" / "chukchi-1-060.xml")
     out = page_lines(page / "gt" / "ocr" / "chukchi-1-060.xml")
-    for a, b in zip(src, out):
+    # `strict`: a restore that changed the line count must fail here rather
+    # than be checked over the common prefix and pass.
+    for a, b in zip(src, out, strict=True):
         assert (a["line_id"], a["vpos"], a["baseline"]) == \
                (b["line_id"], b["vpos"], b["baseline"])
 
@@ -144,7 +146,6 @@ def test_mz_satisfies_the_span_diffs_second_witness_rule(page):
     the proposal produced. `mz/ocr/` is a different inode from `gt/ocr/`, so it is
     an independent witness — which is what the view is not, once the view starts
     resolving into `gt/`."""
-    import os
     restore("1-060", "mz/ocr", page, commit=True)
     gt = page / "gt" / "ocr" / "chukchi-1-060.xml"
     mz = page / "mz" / "ocr" / "chukchi-1-060.xml"

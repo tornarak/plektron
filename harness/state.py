@@ -40,7 +40,9 @@ to visible neighbours is correctable by looking at the page, where a wrong
 resolved set is just an answer. Marks inform; they do not decide.
 """
 from __future__ import annotations
-import json, re, unicodedata
+import json
+import re
+import unicodedata
 from pathlib import Path
 from lxml import etree
 

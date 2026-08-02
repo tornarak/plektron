@@ -23,7 +23,8 @@ outright. Hence the word-boundary guard on MEDIAL_CAPS, the edge-only
 punctuation stripping in `lexicon_miss`, and the whitelist.
 """
 from __future__ import annotations
-import re, unicodedata
+import re
+import unicodedata
 from pathlib import Path
 from lxml import etree
 

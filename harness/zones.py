@@ -52,6 +52,7 @@ from .context import norm_ref, parse_ref
 from .figures import read_blocks
 from . import zones_config as zc
 from functools import lru_cache
+from itertools import pairwise
 
 ZONEDIR = "gt/zones"
 # Aliased from `farms.py`, which is the one declaration of every derived path. The
@@ -567,7 +568,7 @@ def page_departure(ref: str, root: Path) -> tuple[str, int]:
     if [z[0] for z in g] != [z[0] for z in m]:
         return ("a label differs", 10**9)
     shift = max((max(abs(a[1] - b[1]), abs(a[2] - b[2]))
-                 for a, b in zip(g, m)), default=0)
+                 for a, b in zip(g, m, strict=True)), default=0)
     return ("identical" if shift == 0 else "geometry only", shift)
 
 
@@ -1444,7 +1445,6 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
     pages would report a half-done selection as complete.
     """
     cfg = cfg or zc.load_config(root)
-    splits = load_splits(root)
     rows, n_err, n_warn = [], 0, 0
     labels: dict[str, int] = {}
     seen: dict[str, int] = {}
@@ -1773,7 +1773,7 @@ def _dp_zones(ref: str, root: Path, cfg: dict, net, page,
     hm = rets["heatmap"]
     sx, sy = rets["scale"]
     labels = sorted(rets["cls_map"]["regions"], key=rets["cls_map"]["regions"].get)
-    idxs = [rets["cls_map"]["regions"][l] for l in labels]
+    idxs = [rets["cls_map"]["regions"][lab] for lab in labels]
 
     windows = page_windows(ref, root, cfg)
     if len(windows) > 1:
@@ -1814,9 +1814,7 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     provenance and a `dp_` id prefix, so which decode produced a file is readable
     from the file rather than from what was running at the time.
     """
-    import numpy as np
     from PIL import Image
-    from kraken.blla import compute_segmentation_map
     from kraken.containers import ProcessingStep
 
     cfg = cfg or zc.load_config(root)
@@ -2249,7 +2247,7 @@ def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
         if z["label"] not in labels:
             continue
         rows = by_zone[zi - 1]
-        for li, (ly0, ly1, left, right) in enumerate(rows, start=1):
+        for li, (ly0, _ly1, left, right) in enumerate(rows, start=1):
             if li == 1:
                 continue                     # the zone's own head, already a boundary
             if left >= indent:
@@ -2284,7 +2282,7 @@ def split_at_paragraphs(zones: list[dict], ref: str, root: Path = Path("."),
             out.append(z)
             continue
         edges = [z["y0"], *cuts, z["y1"]]
-        segs = [[a, b, z["label"]] for a, b in zip(edges, edges[1:]) if b > a]
+        segs = [[a, b, z["label"]] for a, b in pairwise(edges) if b > a]
         for a, b, _lab in _consolidate(segs, min_h, direction):
             out.append({**z, "y0": a, "y1": b})
     return out
@@ -2514,7 +2512,6 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
 
     Report only, exit 0. Reads a raster per page.
     """
-    from .lines import ink_mask
     cfg = cfg or zc.load_config(root)
     spec = cfg.get("paragraph_split") or {}
     labels = set(spec.get("labels") or [])
@@ -2544,7 +2541,7 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
         figs = _figure_rects(ref, root)
         tol = int(cfg.get("min_zone_h_px", 30))
         by_zone = _page_lines(zones, ink, figs, min_h, min_w)
-        line_heights.extend(l[1] - l[0] for v in by_zone.values() for l in v)
+        line_heights.extend(ln[1] - ln[0] for v in by_zone.values() for ln in v)
 
         zi = 0
         for run in _same_label_runs(zones):
@@ -2578,7 +2575,7 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
                     # never enters that dict — and every one of the 29 misses
                     # therefore reported -1, which read as a line-detection failure.
                     # `1-056` is the counter-example: indent 36 against a 40 floor.
-                    ln = next((l for l in mlines if abs(l[0] - w) <= tol), None)
+                    ln = next((c for c in mlines if abs(c[0] - w) <= tol), None)
                     rows.append({"kind": "false_negative", "ref": ref, "zone": first,
                                  "label": run[0]["label"],
                                  "index": want.index(w) + 2, "y": w,
@@ -2828,7 +2825,7 @@ def score(root: Path = Path("."), cfg: dict | None = None,
     # would describe output nobody would ever be shown.
     min_h = int(cfg["min_zone_h_px"])
     rows = []
-    for k, v in buckets.items():
+    for k in buckets:
         refs_k = [r for r in both
                   if {"train": "trained-on", "eval": "eval"}.get(
                       frozen.get(r), "unseen") == k]

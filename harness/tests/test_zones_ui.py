@@ -23,7 +23,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from PIL import Image
 
 from harness import zones as zn
 from harness import zones_config as zc
@@ -46,7 +45,6 @@ def cfg():
 
 def make_scan(tmp_path: Path, ref: str = "1-048", size=(2824, 3897), shift=0):
     """A page with real ink, because the column is measured off the page now."""
-    from PIL import ImageDraw
 
     d = tmp_path / "scans"
     d.mkdir(parents=True, exist_ok=True)
