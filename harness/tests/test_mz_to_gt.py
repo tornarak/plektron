@@ -7,7 +7,7 @@ standing source for an un-keyed page is now `mz/ocr/`, written by `ocr predict`.
 
 **Nothing in `restore` had to change for that**, which is the thing worth pinning.
 Its `restoration` mode is defined by the geometry source and the write target
-being different files, not by which store the source is, so naming `--from mz/ocr`
+being different files, not by which store the source is, so naming `--store mz`
 is the flow. What these tests hold is that it stays true: that a page with no
 ground truth at all can be built from a prediction plus an adjudication, that the
 machine's *geometry* survives while the machine's *text* does not reach `gt/`

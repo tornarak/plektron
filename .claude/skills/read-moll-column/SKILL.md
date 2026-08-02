@@ -83,6 +83,21 @@ block is a continuation, and where any section headings fall. It is produced by
     uv run python scratch/chukchi/entry_bounds.py --split-l 209 --split-r 31 \
         --context moll-042-R
 
+You may also be given the crop from **`moll-marked/`** instead of `moll-cols/`,
+which is the same image with the measurement drawn on it: alternating entries
+**inverted** (white on black), each numbered in a strip added on the left, an
+opening continuation in pink and marked `c`, a section heading in amber and
+marked `§`, and the neighbouring column faded out. The numbering matches the
+context block and `moll-bounds.md`.
+
+Two things follow. **Read the inverted bands exactly as carefully as the
+upright ones** — inversion changes no letterform, and an entry is not less
+important for being one of the black ones. And **the bands are the tool's
+opinion of where the entries divide, not the page's.** If a boundary falls in
+the wrong place — a headword swallowed into the band above it, or one entry
+drawn as two — record what the page shows and write it up in `disagrees:`.
+Still echo the *original* filename in `source:`, not the marked one.
+
 **It is measured off the ink and has read no character.** That is what makes it
 worth having: it cannot have made the same mistake you are about to make, so
 where it and you agree, two unrelated methods agree. Use it as a prior — it

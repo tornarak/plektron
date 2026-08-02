@@ -1077,7 +1077,7 @@ the caption `text` pulled from `data/readings.md`. The collation pass anchors
 no supplied zone. A Tier-1 span may optionally also carry `@facs` pointing at
 the OCR line(s) it was read from (`harness tei context`'s `ocr_lines` field
 supplies the ids, sourced from `ocr/` — resolve one with `harness ocr zoom PP-NNN
---only <index> --from gt/ocr`, not zoom's default store); `validate.py` checks
+--only <index> --store gt`, not zoom's default store); `validate.py` checks
 it resolves the same way it checks `<figure facs>`. See the collation skill's
 "`@facs` — flagging a span worth a second look" for the full rule. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
 `1-151`, `2-030`, `3-006` — so the figure path is thinly exercised, and thinner
@@ -1549,7 +1549,7 @@ TBD
   compare a proposal against the ground truth it produced. This entry used to say
   "if a second witness is ever wanted again, it links into `ocr/` from its own
   store" — which is exactly what `ocr predict` built. `harness ocr review REF
-  --spans --from mz/ocr` is an independent witness by inode, where `--from ocr`
+  --spans --store mz` is an independent witness by inode, where the bare view
   stops being one the moment the page has ground truth and the view points at it.
   Name the store, not the view: the refusal catches the collapse, but only after
   you have typed the wrong thing.

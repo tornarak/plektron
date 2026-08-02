@@ -45,7 +45,7 @@ rejects a bare integer rather than guess which of the three parts you meant.
 
     uv run harness tei context PP-NNN                  the input contract
     (read the page image with the Read tool)       the only witness that matters
-    uv run harness ocr zoom PP-NNN --only 7,20 --from gt/ocr    the closer look
+    uv run harness ocr zoom PP-NNN --only 7,20 --store gt    the closer look
     (author tei/chukchi-PP-NNN.xml)                your reading
     uv run harness corpus normalize --path tei/chukchi-PP-NNN.xml  NFD + spacing
     uv run harness tei ids PP-NNN                      the id scheme
@@ -54,7 +54,7 @@ rejects a bare integer rather than guess which of the three parts you meant.
 
 Then re-read your own output once against the image before declaring done.
 
-`--from gt/ocr` on `zoom` matters: its default store is a different ALTO from the
+`--store gt` on `zoom` matters: its default store is a different ALTO from the
 one `ocr_lines` ids come from.
 
 # The input contract
@@ -589,7 +589,7 @@ letterform, a mark you went back to the image to settle — pointing at the
 `line_id`(s) in `ocr_lines` you actually read from: `facs="#eSc_line_e5fa4af8"`,
 or several ids for a reading checked against how the same mark prints on a
 neighbouring line. It turns a flagged span into a one-command raster lookup:
-`harness ocr zoom PP-NNN --only <index> --from gt/ocr`.
+`harness ocr zoom PP-NNN --only <index> --store gt`.
 
 Reserve it for spans that earned it — a `@facs` on every span stops meaning
 anything. It is a pointer, not a rank: it never substitutes for `@resp`, and

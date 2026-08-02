@@ -53,23 +53,39 @@ gone** — eScriptorium holds nothing, the repo is the system of record — and 
 812 pages with no ground truth the standing source is now `mz/ocr/`, written by
 `harness ocr predict` from the zones.
 
-    harness ocr pages --from gt/ocr     has ground truth  -> revision, --force
-    harness ocr pages --from mz/ocr     has a prediction  -> restoration
+    harness ocr pages --store gt     has ground truth  -> revision, --force
+    harness ocr pages --store mz     has a prediction  -> restoration
+
+**Neither of those is the pending-work list**, and the difference is the one worth
+typing. `--store mz` is every page the recognizer has read, restored or not — it
+includes the ones already done, so on a corpus where most pages are predicted it
+answers a question nobody asked. What is workable *next* is the set difference,
+and `--show-store` puts both stores in the row so one filter finds it:
+
+    uv run harness ocr pages --store mz --show-store | rg mz
+
+    [4]{ref,gt,mz,view}:
+      1-283,false,true,mz
+
+`view: mz` is the column that means "no ground truth here" — read off the farm
+rather than derived, so it is also the tell when a page *was* restored and `ocr
+link` has not run since. A `gt,mz` row that still reads `view: mz` is a stale
+view, not pending work; the fix is `harness views build`, not a keying session.
 
 **Nothing in `restore` changes between them.** Its `restoration` mode is defined by
 the geometry source and the write target being different files, not by which store
 the source is, so a prediction is a legitimate source the same way an export shell
 was. On a page with no ground truth:
 
-    uv run harness ocr predict PP-NNN                    if mz/ocr/ has nothing yet
-    uv run harness ocr lines PP-NNN --from mz/ocr        the geometry you will key
-    …the loop above, every ALTO verb carrying --from mz/ocr…
-    uv run harness ocr restore PP-NNN --from mz/ocr --commit
+    uv run harness ocr predict PP-NNN                 if mz/ocr/ has nothing yet
+    uv run harness ocr lines PP-NNN --store mz        the geometry you will key
+    …the loop above, every ALTO verb carrying --store mz…
+    uv run harness ocr restore PP-NNN --store mz --commit
 
 No `--force`: the target does not exist, so there is no hand-keyed text to
 overwrite, and the guard that demands it is the one protecting exactly that.
 
-**`--from mz/ocr` explicitly, not the default view.** Two reasons, and the second
+**`--store mz` explicitly, not the default view.** Two reasons, and the second
 is the one that bites. The view resolves to `gt/ocr/` the moment the page *has*
 ground truth, so a second run of the same command silently changes what it reads.
 And the bare span diff (`harness ocr review PP-NNN --spans`) needs an **independent
@@ -391,7 +407,7 @@ other store, `revision` when the source resolves to the target.
   intent and is required for one. Reading a file you are about to write is safe
   here (the tree is parsed whole before any write, and the write goes to a `.tmp`
   sibling), but it is a different act from reconstruction and the report names it.
-- A page **without**, read `--from mz/ocr`: source and target are different files
+- A page **without**, read `--store mz`: source and target are different files
   and the target does not exist — `restoration`, no `--force`, and `restore`
   creates `gt/ocr/<ref>.xml` from the prediction's geometry plus your adjudicated
   text. This is the same mode the original rebuild ran in; only the store the
