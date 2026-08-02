@@ -12,6 +12,7 @@ what the first recorded, which is invisible in a single-page view and produces a
 corpus where long elements lose one of their two ends.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
 import pytest

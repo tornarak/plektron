@@ -11,6 +11,7 @@ that leave the file. Both are cases where a wrong answer is well-formed XML that
 resolves to nothing, which is this project's defining failure shape.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
 import pytest

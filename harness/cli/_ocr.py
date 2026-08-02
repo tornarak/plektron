@@ -24,22 +24,33 @@ They are six actions now, and a flag that does not apply is a parse error rather
 than a no-op.
 """
 from __future__ import annotations
-from pathlib import Path
-import sys
 
-from ._common import out
-from ..context import norm_ref
+import sys
+from pathlib import Path
+
+from ..context import all_refs, norm_ref
 from ..emit import emit
-from ..lines import (DEFAULT_ALTO_DIR, LINE_SHEET_H, ZOOM, ZOOM_CLIENT_W,
-                     ZOOM_OVERLAP, ZOOM_SHEET_H, alto_for_lines, adopt_gaps,
-                     line_gaps, page_lines, parse_selection, write_blot,
-                     write_line_crops, write_line_sheets, write_line_zoom)
-from ..context import all_refs
-from ..paths import (clean, crops_dir, ensure_page_link, html_path, sheets_dir,
-                     zoom_dir)
+from ..lines import (
+    DEFAULT_ALTO_DIR,
+    LINE_SHEET_H,
+    ZOOM,
+    ZOOM_CLIENT_W,
+    ZOOM_OVERLAP,
+    ZOOM_SHEET_H,
+    adopt_gaps,
+    alto_for_lines,
+    line_gaps,
+    page_lines,
+    parse_selection,
+    write_blot,
+    write_line_crops,
+    write_line_sheets,
+    write_line_zoom,
+)
+from ..paths import clean, crops_dir, ensure_page_link, html_path, sheets_dir, zoom_dir
 from ..recognize import DEFAULT_REC_MODEL, DEFAULT_SEG_MODEL
-from ..review import (group_spans, page_spans, render_queue_html, restore, serve,
-                      summary)
+from ..review import group_spans, page_spans, render_queue_html, restore, serve, summary
+from ._common import out
 
 REF_HELP = "page ref: part and scan index, e.g. 1-048"
 # **A closed set of the two real stores, and the view is not a value in it** —

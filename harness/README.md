@@ -362,8 +362,9 @@ this", and it is one file to scan.
 `pyproject.toml`, where the reasoning lives beside the settings.
 
 Ruff's **rule set is pinned, never inherited** — its default selection is documented
-as `E4,E7,E9,F` and is not; 0.16.1 also turns on isort, bugbear, flake8-bandit and
-much of RUF, reporting 161 findings here against the pinned set's zero. A gate whose
+as `E4,E7,E9,F` and is not; 0.16.1 also turns on flake8-bandit, implicit-str-concat
+and much of RUF, reporting 161 findings here against the pinned set's zero — most of
+them things this codebase does on purpose. A gate whose
 meaning changes when a dev dependency is upgraded is one nobody can act on, the same
 argument that makes `zones score` demand `--model` rather than read whichever `.lst`
 files are lying around.

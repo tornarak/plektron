@@ -14,9 +14,11 @@ unsatisfiable against real recognizer output and a tautology against a model's o
 reading.
 """
 from __future__ import annotations
+
 import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
+
 from lxml import etree
 
 from .detectors import unlicensed_marks

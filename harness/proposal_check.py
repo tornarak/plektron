@@ -30,14 +30,20 @@ capital letter sitting where a small-cap belongs is closer to a reading
 judgement, so it stays a `check()` flag for a human to resolve.
 """
 from __future__ import annotations
+
 import json
 import re
 import unicodedata
 from pathlib import Path
 
 from .codepoints import non_ascii
-from .detectors import (INVENTORY_CHARS, MEDIAL_CAPS, apostrophe_flags,
-                        footnote_report, suffix_mark_flags)
+from .detectors import (
+    INVENTORY_CHARS,
+    MEDIAL_CAPS,
+    apostrophe_flags,
+    footnote_report,
+    suffix_mark_flags,
+)
 
 HEX_RE = re.compile(r"U\+([0-9A-Fa-f]{4,6})")
 # The trigger set is `detectors.INVENTORY_CHARS` itself, not a re-derived Unicode

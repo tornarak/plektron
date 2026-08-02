@@ -229,6 +229,7 @@ def test_replace_preserves_the_files_own_indentation(tmp_path):
     pages into a 716-line diff — reformatting that buries the change under noise
     nobody can review. Measured from the file, not assumed."""
     import json as _j
+
     from harness.proposal_check import replace_in_field
 
     for indent in (1, 2, 4):

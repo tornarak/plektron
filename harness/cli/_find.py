@@ -13,14 +13,16 @@ was supplied, which is the opaque flag interaction this CLI was reorganized to
 remove.
 """
 from __future__ import annotations
+
 import sys
 
+from ..authorities import load as load_authorities
+from ..authorities import parse_citation as authority_parse
+from ..authorities import record as authority_record
+from ..authorities import search as authority_search
+from ..authorities import sigla
+from ..state import WINDOW, load_toc, toc_search, toc_window
 from ._common import out
-from ..authorities import (load as load_authorities,
-                           parse_citation as authority_parse,
-                           record as authority_record,
-                           search as authority_search, sigla)
-from ..state import load_toc, toc_search, toc_window, WINDOW
 
 
 def register(sub, common):

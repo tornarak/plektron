@@ -64,6 +64,7 @@ Reported as worklist, never as error. Each one needs a human ruling on what the 
 prints, and that is firewalled — see `keying_spec.md` section 1.
 """
 from __future__ import annotations
+
 import json
 import re
 import unicodedata

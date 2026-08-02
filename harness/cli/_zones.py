@@ -22,6 +22,7 @@ all: there is no parameter in which a caller could name somewhere else. The only
 route from `mz/` to `gt/` is a human in the editor.
 """
 from __future__ import annotations
+
 import sys
 
 from ._common import out

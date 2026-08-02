@@ -162,8 +162,10 @@ def test_the_store_enumerators_stay_permissive(tmp_path):
     """`zone_refs`/`ocr_refs` only ever walk stores, so nothing there should refuse.
     Five tests failed when a draft of the guard reached them, and every one was a
     fixture legitimately describing a corpus with no predictions in it."""
-    from harness.zones import zone_refs, MZDIR as ZMZ
-    from harness.recognize import ocr_refs, MZDIR as OMZ
+    from harness.recognize import MZDIR as OMZ
+    from harness.recognize import ocr_refs
+    from harness.zones import MZDIR as ZMZ
+    from harness.zones import zone_refs
 
     assert zone_refs(tmp_path, ZMZ) == []
     assert ocr_refs(tmp_path, OMZ) == []

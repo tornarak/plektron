@@ -17,6 +17,7 @@ geometry is contrived to be found by `line_gaps`: a page whose ink sits where no
 TextLine covers it.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
 import pytest

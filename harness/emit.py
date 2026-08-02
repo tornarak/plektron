@@ -22,6 +22,7 @@ change before 1.0. Anything that needs to parse harness output as a contract
 should pass it; the human- and model-facing default is TOON.
 """
 from __future__ import annotations
+
 import json
 
 from toon_format import encode

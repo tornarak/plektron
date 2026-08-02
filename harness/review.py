@@ -36,15 +36,16 @@ the human-collated `1-151` it produced 13 non-ASCII characters where the human h
 witness — the image — and is queued unconditionally.
 """
 from __future__ import annotations
+
 import difflib
 import json
 import unicodedata
 from pathlib import Path
+
 from lxml import etree
 
 from .context import norm_ref
-from .detectors import (DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES,
-                        unlicensed_marks)
+from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines
 from .paths import crops_dir, decisions_path, proposal_path
 

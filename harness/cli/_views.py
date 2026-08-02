@@ -13,8 +13,8 @@ gitignored, and absent on a fresh clone.
 """
 from __future__ import annotations
 
-from ._common import out
 from .. import farms as F
+from ._common import out
 
 
 def register(sub, common):

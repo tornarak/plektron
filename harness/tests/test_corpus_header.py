@@ -13,9 +13,10 @@ that would go on passing anyway.
 """
 
 from __future__ import annotations
+
 from pathlib import Path
 
-from harness.validate import RESP_RANKS, CORPUS_HEADER, check_corpus_header
+from harness.validate import CORPUS_HEADER, RESP_RANKS, check_corpus_header
 
 REPO = Path(__file__).resolve().parent.parent.parent
 TEI_NS = "http://www.tei-c.org/ns/1.0"

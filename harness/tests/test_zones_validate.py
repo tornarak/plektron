@@ -25,15 +25,15 @@ with itself perfectly.
 """
 
 from __future__ import annotations
+
 from pathlib import Path
 
 import pytest
+from conftest import write_scan
 from lxml import etree
 
 from harness import zones as zn
 from harness import zones_config as zc
-
-from conftest import write_scan
 
 REPO = Path(__file__).resolve().parent.parent.parent
 

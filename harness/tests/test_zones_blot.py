@@ -14,6 +14,7 @@ would train part of the set on unblotted pages and produce a model that looks fi
 everywhere except the 252 pages that matter.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
 from PIL import Image

@@ -6,10 +6,11 @@ holds `gt/fig/` geometry and `data/readings.md` captions against each other.
 Not a miscellaneous bin.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
+from ..normalize import convert, scan
 from ._common import out
-from ..normalize import scan, convert
 
 
 def register(sub, common):

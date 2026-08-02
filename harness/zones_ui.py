@@ -36,6 +36,7 @@ Three decisions worth naming because their opposites are the obvious choice:
   transcriptions together.
 """
 from __future__ import annotations
+
 import json
 from pathlib import Path
 

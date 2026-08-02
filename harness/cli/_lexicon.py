@@ -10,10 +10,15 @@ letting the group heading imply one store. All are report-only and exit 0.
 """
 from __future__ import annotations
 
-from ._common import out
-from ..detectors import (digraph_frequency, mark_base_frequency,
-                         suffix_frequency, suggest_lexicon, suggest_native_forms)
+from ..detectors import (
+    digraph_frequency,
+    mark_base_frequency,
+    suffix_frequency,
+    suggest_lexicon,
+    suggest_native_forms,
+)
 from ..ids import glossary
+from ._common import out
 
 
 def register(sub, common):

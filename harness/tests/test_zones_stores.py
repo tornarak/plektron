@@ -16,15 +16,15 @@ is the failure mode this repo is organised against, so it is the one worth testi
 """
 
 from __future__ import annotations
+
 from itertools import pairwise
 from pathlib import Path
 
 import pytest
+from conftest import write_scan
 
 from harness import zones as zn
 from harness import zones_config as zc
-
-from conftest import write_scan
 
 REPO = Path(__file__).resolve().parent.parent.parent
 
@@ -440,8 +440,9 @@ def test_the_banner_marks_a_proposal_and_only_a_proposal(tmp_path):
 
 def test_the_page_list_separates_predicted_from_untouched(tmp_path):
     """Two kinds of "to do", and the difference is the whole review queue."""
-    from harness import zones_ui as ui
     import re
+
+    from harness import zones_ui as ui
 
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-102", zn.MZDIR)
@@ -463,8 +464,9 @@ def test_the_page_list_counts_both_stores_per_page(tmp_path):
     """`proposed` only ever names a page with *no* ground truth, so without its own
     column a prediction sitting beside keyed work is invisible in the list — and
     "is there anything to compare against" is what sends you to a page."""
-    from harness import zones_ui as ui
     import re
+
+    from harness import zones_ui as ui
 
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-048", zn.MZDIR)

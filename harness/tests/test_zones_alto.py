@@ -16,15 +16,15 @@ Only the file's existence separates them, which is why `has_zones` asks about th
 file and why the UI never writes one on navigation.
 """
 from __future__ import annotations
+
 import json
 from pathlib import Path
 
 import pytest
+from conftest import write_scan
 from lxml import etree
 
 from harness import zones as zn
-
-from conftest import write_scan
 
 
 def make_scan(tmp_path: Path, ref: str = "1-048",

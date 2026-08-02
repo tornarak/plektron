@@ -16,15 +16,15 @@ complete.
 """
 
 from __future__ import annotations
+
 from pathlib import Path
 
 import pytest
+from conftest import write_scan
 
 from harness import zones as zn
 from harness import zones_config as zc
 from harness import zones_ui as ui
-
-from conftest import write_scan
 
 REPO = Path(__file__).resolve().parent.parent.parent
 

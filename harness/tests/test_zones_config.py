@@ -13,6 +13,7 @@ control that two modules trust, and nothing else would notice a stray comma.
 """
 
 from __future__ import annotations
+
 import json
 from pathlib import Path
 

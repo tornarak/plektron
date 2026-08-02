@@ -23,9 +23,11 @@ per-export (`BT55`/`BT56` in one export, `BT68`/`BT69` in the next) and code
 that hardcodes them fails silently rather than loudly.
 """
 from __future__ import annotations
+
 import re
 import unicodedata
 from pathlib import Path
+
 from lxml import etree
 
 from .context import norm_ref, parse_ref

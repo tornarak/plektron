@@ -297,7 +297,7 @@ def _link(out, ref, pref, htree, ttree, here, there, earlier, later, commit):
     att.fragmentable omits <list> and <table>. Ids are minted from the canonical
     position so they are recomputable, never invented.
     """
-    from .ids import canonical_map, XML_ID
+    from .ids import XML_ID, canonical_map
 
     eid = canonical_map(ttree.getroot(), pref)[earlier]
     lid = canonical_map(htree.getroot(), ref)[later]

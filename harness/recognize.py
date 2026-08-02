@@ -68,8 +68,8 @@ from functools import lru_cache
 from pathlib import Path
 
 from . import farms as F
-from .context import norm_ref, parse_ref
 from . import zones as Z
+from .context import norm_ref, parse_ref
 
 # The machine store, its human counterpart, and the view over both. `lines.py`
 # spells the view `DEFAULT_ALTO_DIR = "ocr"`; these are the two real stores it
@@ -263,9 +263,9 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
             "flat would put a page in the store with no structure and nothing in "
             "it saying the structure was missing.")
 
-    from PIL import Image
-    from kraken import blla, rpred, serialization, containers
+    from kraken import blla, containers, rpred, serialization
     from kraken.containers import ProcessingStep
+    from PIL import Image
 
     if seg_net is None:
         seg_net, seg_sha = Z.load_segmenter(seg_model, root)

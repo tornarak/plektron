@@ -16,6 +16,7 @@ needed it comes from state.py, which knows it only because a transcribed page
 recorded one.
 """
 from __future__ import annotations
+
 import re
 import unicodedata
 from pathlib import Path

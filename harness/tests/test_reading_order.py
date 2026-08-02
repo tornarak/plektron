@@ -12,7 +12,7 @@ layouts this exists for.
 """
 from pathlib import Path
 
-from harness.lines import reading_order, _overlap_fraction
+from harness.lines import _overlap_fraction, reading_order
 
 
 def rec(index, hpos, vpos, width=100, height=44, text=""):

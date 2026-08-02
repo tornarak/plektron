@@ -143,7 +143,8 @@ def test_no_link_is_made_without_a_raster(tmp_path):
 
 
 def test_clean_leaves_the_link_and_the_authored_files(tmp_path):
-    from harness.paths import clean as clean_page, ensure_page_link, review_dir
+    from harness.paths import clean as clean_page
+    from harness.paths import ensure_page_link, review_dir
 
     scan = tmp_path / "scans" / "chukchi-1-048.png"
     scan.parent.mkdir(parents=True)

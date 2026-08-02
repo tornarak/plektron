@@ -38,8 +38,10 @@ Three rules here, all about not losing the join:
     are present on every line, not only on the ones inside a figure.
 """
 from __future__ import annotations
+
 import unicodedata
 from pathlib import Path
+
 from lxml import etree
 
 from .context import norm_ref
@@ -763,6 +765,7 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     to make what is left *conspicuous*, so covering generously is right.
     """
     from PIL import Image, ImageDraw
+
     from .figures import zones as _zones
     ref = norm_ref(ref)
     alto = alto_for_lines(ref, alto_dir, root)
@@ -825,6 +828,7 @@ def write_fig_blot(ref: str, out_dir: Path, root: Path = Path("."),
     those instead of copying — see `zones.blot_all`.
     """
     from PIL import Image, ImageDraw
+
     from .figures import zones as _zones
     ref = norm_ref(ref)
     src = root / scans / f"chukchi-{ref}.png"
@@ -892,7 +896,7 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     of short list lines like `1-053` fits far more than 8 per sheet before 2000px
     fills, and fewer, fuller sheets is fewer re-orientations for the same read.
     """
-    from .figures import compose_sheets, LABEL_W
+    from .figures import LABEL_W, compose_sheets
     items = [(str(rec["index"]), crop)
              for rec, crop in line_crops(ref, alto_dir, root, scans, margins)]
     if not items:
@@ -964,6 +968,7 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
     is rather than whether a mark is present.
     """
     from PIL import Image
+
     from .figures import compose_sheets
     window = window or zoom_window(zoom, client_w)
     step = max(1, window - overlap)

@@ -10,6 +10,7 @@ than in another one-off snippet next session. Exposed as `proposal-check
 think it does"), just with names instead of a resolved-field cross-check.
 """
 from __future__ import annotations
+
 import unicodedata
 
 

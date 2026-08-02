@@ -7,15 +7,17 @@ The last three read the committed TEI and nothing else — there is no
 `boundaries.json`, the files are the record.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
-from ._common import out
 from ..context import build_context
 from ..emit import emit_lines
-from ..ids import fix_page as fix_ids, pair_glosses
+from ..ids import fix_page as fix_ids
+from ..ids import pair_glosses
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
-from ..validate import validate, check_corpus_header
+from ..validate import check_corpus_header, validate
+from ._common import out
 
 REF_HELP = "page ref: part and scan index, e.g. 1-048"
 

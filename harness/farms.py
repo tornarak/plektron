@@ -324,12 +324,12 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
     and computing one anyway would be inventing a verdict.
     """
     if name == "ocr":
-        from .recognize import ocr_refs, GTDIR, MZDIR
+        from .recognize import GTDIR, MZDIR, ocr_refs
         gt, mz = set(ocr_refs(root, GTDIR)), set(ocr_refs(root, MZDIR))
         return {f"chukchi-{r}.xml": root / (GTDIR if r in gt else MZDIR)
                 / f"chukchi-{r}.xml" for r in gt | mz}
     if name == "zones":
-        from .zones import zone_refs, ZONEDIR, MZDIR
+        from .zones import MZDIR, ZONEDIR, zone_refs
         gt, mz = set(zone_refs(root, ZONEDIR)), set(zone_refs(root, MZDIR))
         return {f"chukchi-{r}.xml": root / (ZONEDIR if r in gt else MZDIR)
                 / f"chukchi-{r}.xml" for r in gt | mz}

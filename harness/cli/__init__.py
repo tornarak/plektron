@@ -53,6 +53,7 @@ one fixed key set across them, because a ragged list degrades to the verbose
 nested form — which is also why several actions print two tables rather than one.
 """
 from __future__ import annotations
+
 import argparse
 import sys
 from pathlib import Path

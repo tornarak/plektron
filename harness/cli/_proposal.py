@@ -12,14 +12,16 @@ not an authored store; and the pass that runs these is mid-page with the raster
 open, which is the human act a gate would otherwise be asking for twice.
 """
 from __future__ import annotations
-from pathlib import Path
-import sys
 
-from ._common import out
+import sys
+from pathlib import Path
+
 from ..paths import proposal_path
-from ..proposal_check import (check as check_proposal, fix as fix_proposal,
-                              line_codepoints, replace_in_field,
-                              set_field as set_proposal_field, _parse_which)
+from ..proposal_check import _parse_which, line_codepoints, replace_in_field
+from ..proposal_check import check as check_proposal
+from ..proposal_check import fix as fix_proposal
+from ..proposal_check import set_field as set_proposal_field
+from ._common import out
 
 REF_HELP = "page ref: part and scan index, e.g. 1-052"
 PATH_HELP = "proposal file (default review/PP-NNN/proposal.json)"

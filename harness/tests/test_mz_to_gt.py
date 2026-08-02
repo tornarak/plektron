@@ -19,6 +19,7 @@ span diff has no second witness left ... If a second witness is ever wanted agai
 it links into `ocr/` from its own store." That is exactly what `mz/ocr/` is.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
 import pytest
@@ -152,7 +153,7 @@ def test_mz_satisfies_the_span_diffs_second_witness_rule(page):
     assert mz.resolve() != gt.resolve(), "the diff would compare a file with itself"
 
     # ...and the view, which points at gt once gt exists, is *not* independent.
-    from harness.recognize import link_one, VIEWDIR
+    from harness.recognize import VIEWDIR, link_one
     link_one("1-060", page)
     view = page / VIEWDIR / "chukchi-1-060.xml"
     assert view.resolve() == gt.resolve()

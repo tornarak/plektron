@@ -15,6 +15,7 @@ and `harness tei context` key against survive.
 """
 import sys
 from pathlib import Path
+
 from lxml import etree
 
 

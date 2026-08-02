@@ -14,6 +14,7 @@ and both are silent in every report that would otherwise look complete.
 Fixtures live in `tmp_path`, per the suite's rule.
 """
 from __future__ import annotations
+
 from pathlib import Path
 
 import pytest

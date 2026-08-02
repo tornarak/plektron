@@ -382,7 +382,7 @@ def pair_glosses(ref: str, root: Path = Path("."), commit: bool = False) -> dict
     this exists to retrofit pages written before the scheme, and to save 30 hand
     edits on a file whose Tier-1 spans must not be retyped.
     """
-    from .seam import tei_path, _save
+    from .seam import _save, tei_path
 
     ref = norm_ref(ref)
     path = tei_path(ref, root)
@@ -434,7 +434,7 @@ def fix_page(ref: str, root: Path = Path("."), commit: bool = False) -> dict:
     organised against. So both neighbours are read, and either repaired in the same
     write or named in `blocked` if this is a preview.
     """
-    from .seam import tei_path, prev_ref, next_ref, _save
+    from .seam import _save, next_ref, prev_ref, tei_path
 
     ref = norm_ref(ref)
     path = tei_path(ref, root)

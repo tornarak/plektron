@@ -28,6 +28,7 @@ concession is `printed`, which is a case-folded substring test, because that
 tier's job is to find a string the caller copied off the page verbatim.
 """
 from __future__ import annotations
+
 import json
 import re
 import unicodedata

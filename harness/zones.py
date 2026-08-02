@@ -40,19 +40,20 @@ Three files sit beside the pages, all tracked:
 whatever last ran the check, stamped with the mtimes it was true for.
 """
 from __future__ import annotations
-import os
+
 import json
+import os
 import time
+from functools import lru_cache
+from itertools import pairwise
 from pathlib import Path
 
 from lxml import etree
 
 from . import farms
+from . import zones_config as zc
 from .context import norm_ref, parse_ref
 from .figures import read_blocks
-from . import zones_config as zc
-from functools import lru_cache
-from itertools import pairwise
 
 ZONEDIR = "gt/zones"
 # Aliased from `farms.py`, which is the one declaration of every derived path. The
@@ -1181,8 +1182,9 @@ def uncovered_ink(ref: str, zones: list[dict], root: Path = Path("."),
     *body* material, not everything on the leaf.
     """
     import numpy as np
-    from .lines import COVER_PAD, ink_bands, ink_mask
+
     from .figures import zones as fig_zones
+    from .lines import COVER_PAD, ink_bands, ink_mask
 
     cfg = cfg or zc.load_config(root)
     ref = norm_ref(ref)
@@ -1814,8 +1816,8 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     provenance and a `dp_` id prefix, so which decode produced a file is readable
     from the file rather than from what was running at the time.
     """
-    from PIL import Image
     from kraken.containers import ProcessingStep
+    from PIL import Image
 
     cfg = cfg or zc.load_config(root)
     ref = norm_ref(ref)
@@ -1920,9 +1922,9 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
             "first. Predicting off the plain scan would ask the model a different "
             "question than the one it was trained on.")
 
-    from PIL import Image
     from kraken import blla, serialization
     from kraken.containers import ProcessingStep
+    from PIL import Image
 
     if net is None:
         net, sha = load_segmenter(model_path, root)
@@ -2704,8 +2706,8 @@ def predicted_zones(refs: list[str], root: Path = Path("."),
     if model_path is None:
         return {r: read_zones(r, root, store=MZDIR) for r in refs}
 
-    from PIL import Image
     from kraken import blla
+    from PIL import Image
     cfg = cfg or zc.load_config(root)
     net, _ = load_segmenter(model_path, root)
     if device == "auto":

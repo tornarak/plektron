@@ -19,6 +19,7 @@ and a human's memory. argparse's own error for a retired spelling is
 thing went. These two tables do.
 """
 from __future__ import annotations
+
 import argparse
 import sys
 from pathlib import Path

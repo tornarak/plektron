@@ -23,9 +23,11 @@ outright. Hence the word-boundary guard on MEDIAL_CAPS, the edge-only
 punctuation stripping in `lexicon_miss`, and the whitelist.
 """
 from __future__ import annotations
+
 import re
 import unicodedata
 from pathlib import Path
+
 from lxml import etree
 
 # Marked inventory glyphs (keying spec §2), NFD bases + combiners + atomics.
@@ -536,7 +538,7 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
     `normalize`'s scope and `zones check --store mz`: a machine store is measured,
     never allowed to decide.
     """
-    from .context import all_refs, stem_for, _lines_from_alto, _draft_text
+    from .context import _draft_text, _lines_from_alto, all_refs, stem_for
 
     counts: dict[str, int] = {}
     where: dict[str, str] = {}

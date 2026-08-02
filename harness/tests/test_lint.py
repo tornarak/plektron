@@ -12,8 +12,8 @@ failure this repo has already paid for twice, sitting inside the function whose
 entire job is to verify the write.
 
 **The rule set is pinned because ruff's default moves.** It is documented as
-`E4,E7,E9,F`; 0.16.1 additionally enables isort, bugbear, flake8-bandit and much of
-RUF, and reports 161 findings on this tree where the pinned selection reports none.
+`E4,E7,E9,F`; 0.16.1 additionally enables flake8-bandit, implicit-str-concat and much
+of RUF, and reports 161 findings on this tree where the pinned selection reports none.
 A gate that changes meaning when a dev dependency is upgraded cannot be acted on —
 the same reason `zones score` must be told which model it is scoring rather than
 reading whichever lists are lying around. So `select` is asserted to be an explicit

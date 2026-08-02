@@ -21,6 +21,7 @@ anchored to a printed folio at all (see the file's own `_provenance`), so treati
 it as a fact rather than a starting guess would be inventing evidence.
 """
 from __future__ import annotations
+
 import json
 from itertools import pairwise
 from pathlib import Path

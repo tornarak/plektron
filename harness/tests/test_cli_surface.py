@@ -22,6 +22,7 @@ Generation would guarantee agreement about the one thing that is already
 checkable and lose the part that is worth writing down.
 """
 from __future__ import annotations
+
 import re
 from pathlib import Path
 

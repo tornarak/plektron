@@ -19,6 +19,7 @@ than compared whole.
 """
 import sys
 from pathlib import Path
+
 from lxml import etree
 
 GRAPHIC = "GraphicZone"
