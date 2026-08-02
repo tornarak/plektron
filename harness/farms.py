@@ -208,3 +208,183 @@ def rebuild(dirpath: Path, wanted: dict[str, Path], pattern: str,
     for name, target in wanted.items():
         relink(dirpath / name, target, resolve=resolve)
     return {"dir": str(dirpath), "linked": len(wanted), "removed": removed}
+
+
+# ----------------------------------------------------------- the two selections
+
+def _w_figs_wanted(root: Path) -> dict[str, Path]:
+    """The pages that have a figure ALTO, raster only."""
+    from .figures import fig_refs
+    return {f"chukchi-{ref}.png": root / SCANS / f"chukchi-{ref}.png"
+            for ref in fig_refs(root)}
+
+
+def _w_ocr_wanted(root: Path) -> tuple[dict[str, Path], dict[str, Path]]:
+    """The pages a human has been through, raster and ALTO, as two sweeps.
+
+    **Membership is `gt/ocr/`, not the `ocr/` view, and the hand-made farm is the
+    evidence.** The name reads as "pages with OCR" and that is what an earlier draft
+    of this builder selected. The directory refutes it: it held exactly the 20 gt
+    pages and none of the `mz`-only ones, and the single entry it lacked was the page
+    that had entered *gt* that morning. View membership would also destroy the farm's
+    point — after a corpus `ocr predict` sweep every page has OCR, so the selection
+    would be all 832 pages, which is no selection. "The raster beside the pages a
+    human has been through" stays meaningful however much the machine reads.
+
+    The ALTO link points at the **view** rather than at `gt/ocr/` directly, as the
+    hand-made farm did. That is legal — reads may resolve through the view — and it
+    is why `relink` is called with `resolve=False` for it: resolved, the link would
+    quietly become a link into `gt/ocr/`, every entry would still work, and the
+    property that the farm follows the view would be gone with nothing to show it.
+
+    Two sweeps rather than one because the farm holds two kinds of file and a single
+    prune pattern would have each kind deleting the other's entries.
+    """
+    from .context import norm_ref, parse_ref
+    refs = []
+    for p in (root / "gt" / "ocr").glob("chukchi-*.xml"):
+        try:
+            refs.append(norm_ref(p.stem))
+        except ValueError:      # `gt/ocr/METS` is not a page
+            continue
+    refs = sorted(set(refs), key=parse_ref)
+    return (
+        {f"chukchi-{r}.png": root / SCANS / f"chukchi-{r}.png" for r in refs},
+        {f"chukchi-{r}.xml": root / OCR_VIEW / f"chukchi-{r}.xml" for r in refs},
+    )
+
+
+def build_w_figs(root: Path = Path(".")) -> dict:
+    """`scans/w-figs/`: the raster of every page carrying a figure ALTO."""
+    rep = rebuild(root / W_FIGS, _w_figs_wanted(root), "chukchi-*.png")
+    return {"farm": "w-figs", **rep}
+
+
+def build_w_ocr(root: Path = Path(".")) -> dict:
+    """`scans/w-ocr/`: raster beside ALTO for every page a human has been through."""
+    pngs, xmls = _w_ocr_wanted(root)
+    a = rebuild(root / W_OCR, pngs, "chukchi-*.png")
+    b = rebuild(root / W_OCR, xmls, "chukchi-*.xml", resolve=False)
+    return {"farm": "w-ocr", "dir": a["dir"], "linked": a["linked"] + b["linked"],
+            "removed": a["removed"] + b["removed"]}
+
+
+def build(name: str, root: Path = Path(".")) -> dict:
+    """Rebuild one farm by name. Builders are imported lazily; see the module head.
+
+    A farm whose `reads` are not all present is **skipped with a row**, never
+    attempted and never silently dropped. The blot builder opens pixels out of
+    `scans/`, so on a clone it cannot run and saying so is the whole of the correct
+    behaviour; the two selections only need their tracked membership sources, and
+    their raster links are allowed to dangle.
+    """
+    farm = BY_NAME[name]
+    missing = [d for d in farm.reads if not (root / d).is_dir()]
+    if missing:
+        return {"farm": name, "dir": farm.path, "linked": 0, "removed": 0,
+                "skipped": f"no {missing[0]}/"}
+
+    if name == "ocr":
+        from .recognize import link_view
+        rep = link_view(root)
+        return {"farm": name, "dir": rep["dir"],
+                "linked": rep["from_gt"] + rep["from_mz"],
+                "removed": rep["removed"], "skipped": ""}
+    if name == "zones":
+        from .zones import link_view
+        rep = link_view(root)
+        return {"farm": name, "dir": rep["dir"],
+                "linked": rep["from_gt"] + rep["from_mz"],
+                "removed": rep["removed"], "skipped": ""}
+    if name == "w-figs-blotted":
+        from .zones import blot_all
+        rep = blot_all(root)
+        return {"farm": name, "dir": rep["dir"], "linked": rep["total"],
+                "removed": 0, "skipped": ""}
+    rep = build_w_figs(root) if name == "w-figs" else build_w_ocr(root)
+    return {**rep, "skipped": ""}
+
+
+# ------------------------------------------------------------------ the survey
+
+def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
+    """What this farm's directory *should* hold, or None if that is not knowable.
+
+    None is a real answer and is why `survey` can report `?`. For `scans/` there is
+    no criterion in this repo at all, and for `train/` the criterion is whatever the
+    last `zones assemble` was asked for — neither is a set this module can compute,
+    and computing one anyway would be inventing a verdict.
+    """
+    if name == "ocr":
+        from .recognize import ocr_refs, GTDIR, MZDIR
+        gt, mz = set(ocr_refs(root, GTDIR)), set(ocr_refs(root, MZDIR))
+        return {f"chukchi-{r}.xml": root / (GTDIR if r in gt else MZDIR)
+                / f"chukchi-{r}.xml" for r in gt | mz}
+    if name == "zones":
+        from .zones import zone_refs, ZONEDIR, MZDIR
+        gt, mz = set(zone_refs(root, ZONEDIR)), set(zone_refs(root, MZDIR))
+        return {f"chukchi-{r}.xml": root / (ZONEDIR if r in gt else MZDIR)
+                / f"chukchi-{r}.xml" for r in gt | mz}
+    if name == "w-figs-blotted":
+        # Globbed here rather than through `context.all_scans`, deliberately: that
+        # one is guarded, and `scans/` is a registered farm, so it refuses when the
+        # directory is absent. The blot farm can outlive `scans/` (its 252 painted
+        # pages are real files), and a survey that raised while describing that
+        # situation would be the report failing on exactly the machine it is for.
+        return {p.name: p for p in (root / SCANS).glob("chukchi-*.png")}
+    if name == "w-figs":
+        return _w_figs_wanted(root)
+    if name == "w-ocr":
+        pngs, xmls = _w_ocr_wanted(root)
+        return {**pngs, **xmls}
+    return None
+
+
+def survey(root: Path = Path(".")) -> list[dict]:
+    """One fixed-key record per farm — what `harness views check` prints.
+
+    Tests directories itself and never goes through a guarded enumerator: the verb
+    that reports absence has to be callable in its presence.
+
+    Three states, and the third is the one worth having. `absent` is the directory
+    not existing; `stale` is membership disagreeing with the criterion, or a link
+    pointing nowhere; `ok` is neither. What `ok` deliberately does **not** mean is
+    "up to date" — the `verified` column says how deep the comparison went, and for
+    the painted raster it says `membership`, because content freshness there is not
+    merely unchecked but *uncheckable* (`zones.blot_all` refuses an mtime test as
+    unsound, and it is right to). A verdict that let a membership check imply a
+    content check would be the fluent nonsense this project is organised against.
+    """
+    rows = []
+    for farm in FARMS:
+        d = root / farm.path
+        present = d.is_dir()
+        wanted = _wanted_for(farm.name, root) if present else None
+        entries = missing = extra = dangling = 0
+
+        if present:
+            have = {p.name for p in d.iterdir() if not p.is_dir()}
+            entries = len(have)
+            dangling = sum(1 for p in d.iterdir()
+                           if p.is_symlink() and not p.exists())
+            if wanted is not None:
+                missing = len(set(wanted) - have)
+                extra = len(have - set(wanted))
+
+        if not present:
+            state = "absent"
+        elif wanted is None:
+            # Nothing to compare against, so no verdict is available. Not `ok`:
+            # that would be a clean bill of health nobody issued.
+            state = "?"
+        elif missing or extra or dangling:
+            state = "stale"
+        else:
+            state = "ok"
+
+        rows.append({"farm": farm.name, "kind": farm.kind, "path": farm.path,
+                     "state": state, "entries": entries, "missing": missing,
+                     "extra": extra, "dangling": dangling,
+                     "verified": farm.verified if wanted is not None else "none",
+                     "builder": farm.builder})
+    return rows
