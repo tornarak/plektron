@@ -58,7 +58,7 @@ def _notation_codepoints(text: str) -> list[int]:
     licensing problem.
 
     Also counts a word-medial ASCII A/E/I/L (`detectors.MEDIAL_CAPS`, the same
-    check `harness context` already runs over OCR text) as a codepoint present.
+    check `harness tei context` already runs over OCR text) as a codepoint present.
     This is what `1-100` line 37 needed and did not have: a plain 'A' typed for
     small-cap ᴀ is invisible to every check above (ASCII, not a combining mark),
     so on a line that *also* had an unrelated ı-for-ɪ slip, `fix()`'s "exactly

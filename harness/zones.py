@@ -986,7 +986,7 @@ def save_zones(ref: str, zones: list[dict], root: Path = Path("."),
             "counted as keyed while recording nothing. Three ways out, and they say "
             "different things: mark it exempt if it is a plate, map, foldout or "
             "blank; key it if it is a text page; or **delete it** — `harness zones "
-            f"{ref} --delete --commit`, or `X` in the editor — if it should not be "
+            f"delete {ref} --commit`, or `X` in the editor — if it should not be "
             "in the store at all. That third one is reachable from here: a page "
             "keyed and then emptied has no other way to be withdrawn.")
     stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
@@ -1035,7 +1035,7 @@ def delete_zones(ref: str, root: Path = Path("."), commit: bool = False,
 
     Removes the marks too, or the page would keep a split and its exemptions while
     having no zones — a ref in `_train.lst` naming a file that does not exist is the
-    kind of dangling claim `harness figures` exists to catch elsewhere.
+    kind of dangling claim `harness corpus figures` exists to catch elsewhere.
 
     Same durability shape as a save, because this is the more dangerous direction:
     `.prev` keeps the file one deep, the journal records the act, and `--commit` is
@@ -1429,7 +1429,7 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
     `cli` already does for `lines`.
 
     List-valued fields are joined into strings here for the same reason. The counts
-    are what a sweep is for; `harness zones PP-NNN` is where a page's own findings
+    are what a sweep is for; `harness zones check PP-NNN` is where a page's own findings
     are read in full.
 
     `refs` scopes it to a work-list. A page on the list that has not been keyed is
@@ -1651,7 +1651,7 @@ def load_segmenter(model_path: str | Path = DEFAULT_MODEL,
     if not p.exists():
         raise FileNotFoundError(
             f"no segmentation model at {p} — train one with `harness zones "
-            f"--assemble` and the ketos command it reports, then put the result at "
+            f"assemble` and the ketos command it reports, then put the result at "
             f"{DEFAULT_MODEL}")
     models = load_models(p)
     if not models:
@@ -1821,7 +1821,7 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     blot = blot_dir(root) / f"chukchi-{ref}.png"
     if not blot.exists():
         raise FileNotFoundError(
-            f"no blotted raster for {ref} at {blot} — run `harness zones --blot` "
+            f"no blotted raster for {ref} at {blot} — run `harness zones blot` "
             "first. Predicting off the plain scan would ask the model a different "
             "question than the one it was trained on.")
     if net is None:
@@ -1853,7 +1853,7 @@ def predict_dp(ref: str, root: Path = Path("."), net=None, sha: str = "",
     step = ProcessingStep(
         id="harness-zones-predict",
         category="processing",
-        description="region segmentation, harness zones --predict --decode dp",
+        description="region segmentation, harness zones predict --decode dp",
         settings={"model": str(model_path), "sha256": sha, "device": device,
                   "decoder": "segmental-dp + paragraph-split",
                   "paragraph_cuts": split_added,
@@ -1915,7 +1915,7 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     blot = blot_dir(root) / f"chukchi-{ref}.png"
     if not blot.exists():
         raise FileNotFoundError(
-            f"no blotted raster for {ref} at {blot} — run `harness zones --blot` "
+            f"no blotted raster for {ref} at {blot} — run `harness zones blot` "
             "first. Predicting off the plain scan would ask the model a different "
             "question than the one it was trained on.")
 
@@ -1945,7 +1945,7 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     step = ProcessingStep(
         id="harness-zones-predict",
         category="processing",
-        description="region segmentation, harness zones --predict",
+        description="region segmentation, harness zones predict",
         settings={"model": str(model_path), "sha256": sha, "device": device,
                   "input": f"{BLOTDIR}/chukchi-{ref}.png"})
     xml = serialization.serialize(seg, image_size=size, template="alto",

@@ -331,8 +331,8 @@
       </application>
       <application ident="harness" version="0">
         <label>harness</label>
-        <desc>The project toolchain. `harness validate` is the gate on page files;
-          `harness normalize` is the gate on encoding.</desc>
+        <desc>The project toolchain. `harness tei validate` is the gate on page files;
+          `harness corpus normalize` is the gate on encoding.</desc>
       </application>
     </appInfo>
 

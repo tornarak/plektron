@@ -15,7 +15,7 @@ The earlier layout was parallel by kind — `review/proposals/<ref>.json` agains
 `review/crops/<ref>/…` — which had two costs. Every verb in the loop had to be told
 where to put its images (`--sheets DIR`, `--out DIR`), because there was no directory
 that was *the page's*; and finishing with a page meant deleting from three trees or
-from none, so nothing was ever deleted. Per-ref, the ephemera are one `harness clean <ref>` away (see `clean` below),
+from none, so nothing was ever deleted. Per-ref, the ephemera are one `harness ocr clean <ref>` away (see `clean` below),
 and the flags are overrides rather than ceremony.
 
 What the split did buy was a trivially legible gitignore: two whole directories
@@ -87,7 +87,7 @@ def ensure_page_link(ref: str, root: Path = Path(".")) -> Path | None:
     """Symlink the page's raster into its own review directory, for a human.
 
     Third category, alongside `*.prev` / `*.tmp` / `*.jsonl`: **ignored but not
-    derived.** Not in `DERIVED`, so `harness clean` leaves it when the images
+    derived.** Not in `DERIVED`, so `harness ocr clean` leaves it when the images
     go — it costs nothing to keep and the point of it is to be there whenever
     someone opens the directory. Not tracked either, and that one is not a
     preference: `scans/` is itself derived and gitignored, so a committed link

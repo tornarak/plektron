@@ -229,7 +229,7 @@ def list_scope(el, ref: str, root: Path = Path("."),
       `<item>` normally carries no head of its own and inherits its parent's.
     - **Across the seam, via `@prev`.** A list running onto the next page is the
       same list and carries no second head, so the continuation resolves back
-      through the link `harness seam` wrote. This is the only place in the harness
+      through the link `harness tei seam` wrote. This is the only place in the harness
       that *traverses* those pointers rather than checking one hop of them.
 
     The target page comes from the id itself (`parse_id(prev)["ref"]`) rather than

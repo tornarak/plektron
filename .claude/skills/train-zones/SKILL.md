@@ -8,10 +8,10 @@ description: Train, evaluate and install the page-segmentation model from gt/zon
 Four commands, in order. Everything that used to be a rule you had to remember is
 now a refusal, so this file is mostly about the judgement the tooling cannot make.
 
-    uv run harness zones --assemble          lay out train/bogoras-seg/, report the command
+    uv run harness zones assemble          lay out train/bogoras-seg/, report the command
     <the reported ketos invocation>          the only slow step
-    uv run harness zones --install CKPT      preview: scores it, refuses a permuted map
-    uv run harness zones --install CKPT --commit
+    uv run harness zones install CKPT      preview: scores it, refuses a permuted map
+    uv run harness zones install CKPT --commit
 
 `--assemble` computes the base model and whether `--resize` is needed, and reports
 the invocation to run. **Run what it prints.** It is not a fixed template: it picks
@@ -48,7 +48,7 @@ comparable across runs whose class count differs** — run 2's 0.6204 and run 3'
 0.6336 have different denominators. `val_accuracy` ~0.99 is meaningless: the page is
 overwhelmingly background.
 
-The number that means something is `harness zones --score`, per split:
+The number that means something is `harness zones score`, per split:
 
     trained-on   the model saw these pages; agreement is the editor's judgement read back
     eval         the honest figure

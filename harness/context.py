@@ -229,7 +229,7 @@ def _ocr_lines(ocr_path: Path) -> list[dict]:
     empty lines and discards `@ID`, so its indices don't join back to a real
     ALTO line. This calls the ID-preserving reader instead, and only the
     fields the model can usefully cite — no geometry; it never sees pixels
-    here, only proposes a pointer a human later resolves with `harness zoom`.
+    here, only proposes a pointer a human later resolves with `harness ocr zoom`.
 
     Reads the same `ocr/{stem}.xml` the draft already reads — not a second
     ALTO store — since a facs pointer must resolve in the ALTO the model
@@ -307,7 +307,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # The end of the previous page's committed TEI, so the pass can see
         # whether this page opens mid-element instead of inferring it. Null when
         # the predecessor is not collated — then the seam is genuinely unknown and
-        # `harness seam` will refuse it too. About 70% of text pages open
+        # `harness tei seam` will refuse it too. About 70% of text pages open
         # mid-paragraph (measured over the keyed zone corpus), so this is the
         # common case, not an edge one.
         "prev_tail": seam_tail(ref, root),

@@ -2,12 +2,15 @@
 
 The console script (`harness`, `[project.scripts]`) run from the repo root; every
 path resolves against the cwd unless `--root` says otherwise. `uv run python -m
-harness <verb>` is the same thing.
+harness <group> <action>` is the same thing.
 
 This file covers **structure**: what each module owns, which stores it touches, and
-the invariants that bind a caller. For what a verb *does*, `harness <verb> --help`
-is the source of record and is deliberately verbose. For the project's rules,
-`CLAUDE.md` governs; for the character inventory, `keying_spec.md`.
+the invariants that bind a caller. For what an action *does* — what it reads, what
+it writes, what its exit code means — **`harness/VERBS.md` is the source of record**,
+held against the argparse tree by `harness/tests/test_cli_surface.py`; `harness <group>
+<action> --help` carries the same contract per flag and is deliberately verbose. For
+the project's rules, `CLAUDE.md` governs; for the character inventory,
+`keying_spec.md`.
 
 ## Stores, and which are writable
 
@@ -15,18 +18,18 @@ is the source of record and is deliberately verbose. For the project's rules,
 |---|---|---|
 | `scans/` | 832 rasters at 300 dpi. **Derived** from `pdfs/`, not in git | `pdftoppm` |
 | `ocr/` | the **read view** over every OCR store — symlinks, currently all into `gt/ocr/` | nothing |
-| `gt/ocr/` | 20 pages of human ground truth | `restore --commit` |
+| `gt/ocr/` | 20 pages of human ground truth | `ocr restore --commit` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
 | `gt/seg/` | the **first** segmentation attempt: 122 pages, full SegmOnto vocabulary, free polygons. Kept, read-only | by hand, via eScriptorium |
-| `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json` | `zones --serve` |
-| `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones --predict` |
-| `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones --link` |
-| `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `seam --commit` |
+| `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json` | `zones edit` |
+| `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
+| `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |
+| `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` | by hand |
-| `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `review --serve`, `lines`, `zoom` |
-| `scans-fig-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones --blot` |
-| `train/bogoras-seg/` | training scratch: the symlink farm, its two `.lst` files, and each run's checkpoints. Derived, ignored, **read by nothing once training ends** | `zones --assemble`, `ketos segtrain` |
-| `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `zones --install --commit` |
+| `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
+| `scans-fig-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot` |
+| `train/bogoras-seg/` | training scratch: the symlink farm, its two `.lst` files, and each run's checkpoints. Derived, ignored, **read by nothing once training ends** | `zones assemble`, `ketos segtrain` |
+| `models/bogoras-seg/` | the models this project trains — **tracked**, each with the split it saw as `<model>.train.lst`/`.eval.lst` and a small `<model>.json` | `zones install --commit` |
 | `models/` (rest) | downloaded third-party weights, 675 MB, ignored | not authored here |
 
 **`gt/seg/` and `gt/zones/` are two schemes, not one store in two states.** The label
@@ -63,9 +66,26 @@ predicted polygon fails the fixed-measure width check by construction.
 
 ## Modules
 
-**`cli.py`** — argparse, and the dispatch chain. The module docstring is the parser
-`description`, so it reaches `--help`; keep it current. Verb help is prose, not
-labels, because these verbs encode judgements a one-word gloss cannot carry.
+**`cli/`** — the two-tier parser, one module per group: `_tei _ocr _proposal _zones
+_lexicon _find _corpus`, each exposing `register(subparsers, common)` and one
+`run_*` handler per action, which returns the exit code. `__init__.py` holds
+`main`, `build_parser` (separate so the surface test can walk the tree without
+running anything), and the rename trap. `_common.py` holds the `--root`/`--json`
+parent, the `out` printer, `walk_surface`, and the two rename tables.
+
+Three things about it that are load-bearing rather than stylistic. **The globals
+parent attaches to every *action* parser**, not to the group parsers: with two tiers
+the last parser to run is the action's, so a group-tier registration would make
+`harness zones predict --json` a parse error. **The rename trap consults the
+parser's own action names** before matching a retired flag, because `--ink` is both
+a retired `zones` flag and a live `zones check` flag, and a positional trap would
+reject the correct new spelling. And **`build_parser` takes no side effects**, so
+the gate test can build it in-process.
+
+It was one module and a 1,000-line `main` until the reorganization, with `zones`
+alone accounting for 38% of the dispatch. The module docstring is still the parser
+`description`, so it reaches `--help`; keep it current. Action help is prose, not
+labels, because these encode judgements a one-word gloss cannot carry.
 
 **`context.py`** — the `PP-NNN` contract (`parse_ref`, `norm_ref`, `stem_for`) and
 `build_context`, the per-page input the collation pass consumes. Everything in it is
@@ -98,7 +118,7 @@ out of the files it wrote to. Also `tail()`, which `context` surfaces as `prev_t
 `@n` and `xml:lang` that are the seam's actual witnesses.
 
 **`validate.py`** — the gate. `validate()` plus `Report`; exit 1 on FAIL. Also
-`check_corpus_header()`, behind `harness header`, which holds `RESP_RANKS` and
+`check_corpus_header()`, behind `harness tei header`, which holds `RESP_RANKS` and
 `tei/corpus-header.xml` to each other: two files carry one fact, and per-page
 validation deliberately never resolves `@resp` locally, so nothing else could notice
 them drifting apart.
@@ -256,10 +276,20 @@ citation-resolution tests, the `DERIVED`-versus-`.gitignore` check, and the
 `data/zones_config.json` checks — that file is data two modules trust, and nothing
 else would notice a stray comma in it.
 
+`test_cli_surface.py` is the other exception and is the newest: it builds the real
+parser and holds it against `VERBS.md` in both directions. Until it existed **nothing
+tested the CLI at all** — every other test imports module functions directly, so a
+verb could be renamed or a documented mode could vanish with a green suite
+throughout. That is not a hypothetical: it is how the surface this file describes
+drifted into needing a reorganization.
+
 ## No ad-hoc Python
 
-If a one-off script is the answer, a verb is missing or an existing one is being
-under-used. `proposal-check --codepoints` instead of `python3 -c "...ord(ch)..."`;
-`harness zoom` instead of a crop script; `proposal-check --set` instead of a heredoc
-patching one JSON field — a hand-typed `Edit` can silently fail to match the file's
-own NFD form. This has been stated and not followed more than once here.
+If a one-off script is the answer, an action is missing or an existing one is being
+under-used. `harness proposal codepoints` instead of `python3 -c "...ord(ch)..."`;
+`harness ocr zoom` instead of a crop script; `harness proposal set` instead of a
+heredoc patching one JSON field — a hand-typed `Edit` can silently fail to match the
+file's own NFD form. This has been stated and not followed more than once here, and
+part of why is that the surface was hard to search: 21 verbs, most carrying several
+unnamed modes. `harness/VERBS.md` is the answer to "is there already a verb for
+this", and it is one file to scan.

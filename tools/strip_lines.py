@@ -11,7 +11,7 @@ This subsumes `strip_graphiczone_lines.py`, which removed lines from
 `GraphicZone` blocks only. Zone labels are irrelevant now: no block keeps lines.
 
 Blocks themselves are never touched, so the zone ids that `data/readings.md`
-and `harness context` key against survive.
+and `harness tei context` key against survive.
 """
 import sys
 from pathlib import Path

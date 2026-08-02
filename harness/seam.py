@@ -203,7 +203,7 @@ def tail(ref: str, root: Path = Path(".")) -> dict | None:
     return {
         "ref": pref,
         "element": etree.QName(el).localname,
-        # A verdict already recorded for this gap, if `harness seam` has run.
+        # A verdict already recorded for this gap, if `harness tei seam` has run.
         "part": el.get("part"),
         "ends_sentence": bool(stripped) and stripped[-1] in ".!?",
         "elided_children": elided,

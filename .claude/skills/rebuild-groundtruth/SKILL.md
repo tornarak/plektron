@@ -28,18 +28,18 @@ by whether the loop got better.
 Refs are part + scan index (`1-073`), never a bare page number. Every step is
 stateless, so a fresh session resumes wherever the last one stopped.
 
-    uv run harness lines PP-NNN --gaps                   did the segmenter drop a line?
-    uv run harness lines PP-NNN --adopt-gap VPOS         only if it did; see below
-    uv run harness lines PP-NNN --sheets                 contact sheets, one call
-    uv run harness zoom  PP-NNN --only 7,20,22-26        the closer look
+    uv run harness ocr gaps PP-NNN                   did the segmenter drop a line?
+    uv run harness ocr adopt-gap PP-NNN VPOS         only if it did; see below
+    uv run harness ocr sheets PP-NNN                 contact sheets, one call
+    uv run harness ocr zoom  PP-NNN --only 7,20,22-26        the closer look
     (author review/PP-NNN/proposal.json)                 your reading
-    uv run harness proposal-check PP-NNN --fix           catch a mistyped mark
-    uv run harness normalize --convert --path review/PP-NNN/proposal.json
-    uv run harness normalize --path review/PP-NNN/proposal.json
-    uv run harness review PP-NNN --serve                 human adjudicates
-    uv run harness normalize --path review/PP-NNN/decision.json   same gate, post-adjudication
-    uv run harness restore PP-NNN --force                preview: edits, drift, mismatch
-    uv run harness restore PP-NNN --force --commit        -> gt/ocr/
+    uv run harness proposal fix PP-NNN                   catch a mistyped mark
+    uv run harness corpus normalize --commit --path review/PP-NNN/proposal.json
+    uv run harness corpus normalize --path review/PP-NNN/proposal.json
+    uv run harness ocr review PP-NNN --serve                 human adjudicates
+    uv run harness corpus normalize --path review/PP-NNN/decision.json   same gate, post-adjudication
+    uv run harness ocr restore PP-NNN --force                preview: edits, drift, mismatch
+    uv run harness ocr restore PP-NNN --force --commit        -> gt/ocr/
 
 `--force` is in both lines because every page now holds text; see "Review and
 restore" below. The ALTO verbs read `ocr/` by default — the read view over every OCR
@@ -48,9 +48,9 @@ store — so no `--from` is needed to reach a page's current geometry.
 Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.json`,
 `decision.json`, and the derived `sheets/ crops/ zoom/`. No verb needs telling where;
 `--out` is for a one-off outside the pass. When a page is done, the images go with
-`uv run harness clean PP-NNN`, leaving the two authored files.
+`uv run harness ocr clean PP-NNN`, leaving the two authored files.
 
-0. **`uv run harness lines PP-NNN --gaps` before anything else.** It reports ink on
+0. **`uv run harness ocr gaps PP-NNN` before anything else.** It reports ink on
    the raster that no `TextLine` covers — i.e. lines the segmenter dropped. This is
    the one defect class no later step can catch: whatever text is present is
    correct, so nothing disagrees with anything, and the page is simply short. Three
@@ -66,7 +66,7 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    `restore` only writes `CONTENT` into lines that already exist, so the line has
    to be created first.
 
-       uv run harness lines PP-NNN --adopt-gap 3018,3076
+       uv run harness ocr adopt-gap PP-NNN 3018,3076
 
    appends an empty `TextLine` per named band, taking its geometry from the
    measurement. Then key those indices in the proposal exactly like any other line
@@ -95,13 +95,13 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    label. **Line labels are therefore not consecutive**, and that is the tell that
    the index is an identity: it is what `proposal.json` and `decision.json` are
    keyed by, and what `restore` joins on.
-2. **`uv run harness lines PP-NNN`** for the line table, then `--sheets` for the
-   crops. The table's `index` is the key for everything downstream. **Read every
+2. **`uv run harness ocr lines PP-NNN`** for the line table, then `ocr sheets
+   PP-NNN` for the crops. The table's `index` is the key for everything downstream. **Read every
    sheet in full before zooming into anything.** The sheets are cheap and the plain
    read is what tells you which lines actually hold a doubt; zooming ahead of that
    either wastes a call on a line that turns out to be fine or, worse, anchors a
    reading before you've seen the word in its plain context.
-3. **`uv run harness zoom`** only for what the plain sheets left open, once you've
+3. **`uv run harness ocr zoom`** only for what the plain sheets left open, once you've
    read all of them. Select every line you mean to look at in **one call**; running
    it once per doubt costs more than the look is worth. **`--zoom 2` (the tool's own
    default) is the ordinary case** — not a call per line, and not an escalating
@@ -112,7 +112,7 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    the human. There is no tool above 4×, and there must never be an ad-hoc one —
    see "The instrument" below.
 
-   `--only` takes the `index` column from `harness lines`, not the printed
+   `--only` takes the `index` column from `harness ocr lines`, not the printed
    item/number in the running text — conflating them wastes a call (`1-101`: zoomed
    ALTO index 19 meaning to inspect printed item "19.", a different line entirely).
 
@@ -143,7 +143,7 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
 5. **Start the review server yourself** and hand the human a URL — don't ask them to
    run a command. It serves on loopback only and blocks, so run it in the background:
 
-       uv run harness review PP-NNN --serve        (run_in_background: true)
+       uv run harness ocr review PP-NNN --serve        (run_in_background: true)
 
    Then tell them `http://127.0.0.1:8731/` and report what you flagged and why. Use
    `--port` if 8731 is taken.
@@ -161,10 +161,10 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    that had since been restored — which is how a later save lands on stale text.
    Foreground is not an option either: a review can easily outlast the maximum
    command timeout, so background plus the Done button is the whole mechanism.
-6. **`uv run harness restore PP-NNN`** once they have saved — and **run it; a save is
+6. **`uv run harness ocr restore PP-NNN`** once they have saved — and **run it; a save is
    not the end of the pass.** `--adopt-gap` and the review server both leave the ALTO
    holding geometry with no text, so a page can sit adjudicated-but-unwritten and look
-   finished from the outside: `harness normalize` will keep reporting it, correctly,
+   finished from the outside: `harness corpus normalize` will keep reporting it, correctly,
    and the ground truth is simply not there yet. Saving is the human's step; writing
    it is yours. The server exiting (step 5) is the cue.
 
@@ -187,7 +187,7 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
 
 ## The instrument
 
-`harness zoom` exists so that magnifying a line is never an ad-hoc crop script.
+`harness ocr zoom` exists so that magnifying a line is never an ad-hoc crop script.
 Hand-typed pixel bounds are unauditable and name the wrong region the moment a digit
 is mistyped; the verb takes its box from the same `line_box` the crops and the review
 page use, so a zoom is the *same* region enlarged.
@@ -252,7 +252,7 @@ collation-side analogue since collation works from the full page image.
   read, not afterwards: a combining mark that fails to render looks exactly like its
   absence, and that is how a U+0323 was mis-keyed once already. It also catches your
   own typing, since the field and the character can disagree.
-- **Run `uv run harness proposal-check PP-NNN --fix` right after authoring.** It
+- **Run `uv run harness proposal fix PP-NNN` right after authoring.** It
   cross-checks every line's `text` against the codepoints its own `resolved` field
   names, and fixes the one unambiguous case — a single mark in `text` that `resolved`
   doesn't mention, paired with a single codepoint `resolved` names that `text` doesn't
@@ -262,7 +262,7 @@ collation-side analogue since collation works from the full page image.
   unambiguously it still reports — read those by hand, since a guess there is exactly
   what the firewall's reasoning forbids. Re-run without `--fix` afterward: zero output
   is the signal you're done.
-- **`uv run harness proposal-check PP-NNN --codepoints LINE` names every non-ASCII
+- **`uv run harness proposal codepoints PP-NNN LINE` names every non-ASCII
   character in one line's field** (`--field text|resolved|note`, default `text`) —
   glyph, codepoint, Unicode name. Use it to settle a doubt about what you actually
   typed, before `resolved` even exists to cross-check against. This is what a
@@ -270,17 +270,17 @@ collation-side analogue since collation works from the full page image.
   because this exact doubt — "is this really U+026A or did I type U+0131" — comes up
   on essentially every notated line, which is the definition of a recurring op that
   belongs in the tool rather than in a fresh one-liner each time.
-- **`uv run harness proposal-check PP-NNN --set LINE --field FIELD [--value TEXT]`
+- **`uv run harness proposal check PP-NNN --set LINE --field FIELD [--value TEXT]`
   writes one line's field**, value from `--value` or stdin, NFD-normalizing on write.
   Reach for this instead of `Edit` when a targeted text replacement in
   `proposal.json` keeps silently failing to match: the file has already been through
-  `normalize --convert` and holds NFD (`ñ` as `n`+U+0303), and a character you type
+  `corpus normalize --commit` and holds NFD (`ñ` as `n`+U+0303), and a character you type
   by hand in an `Edit` call is ordinary NFC (`ñ` as one codepoint) — the two compare
   unequal even though they render identically, so the edit's `old_string` never
   matches and the tool reports a mismatch with no visible cause. `--set` sidesteps
   the whole class by construction, the same way `normalize.py` has one conversion
   point rather than trusting every writer to remember it.
-- **`uv run harness proposal-check PP-NNN --replace LINE --old X --new Y [--field
+- **`uv run harness proposal check PP-NNN --replace LINE --old X --new Y [--field
   FIELD] [--which all|first|last|N|N:M]`** swaps one or more occurrences of one
   string for another inside a single field, instead of retyping the whole thing.
   Reach for this over `--set` once a line is already written and only a character
@@ -301,11 +301,11 @@ collation-side analogue since collation works from the full page image.
   digit. `2-244` line 1 got this wrong: `funeral.1` proposed, `funeral.¹`
   adjudicated. A plain digit reads as correct (it's the right number) so nothing
   mechanical catches it; only a raster comparison or a human pass does.
-- **Run `uv run harness normalize --convert --path review/PP-NNN/proposal.json`
+- **Run `uv run harness corpus normalize --commit --path review/PP-NNN/proposal.json`
   before serving the proposal, always — never skip it and never substitute a
   manual fix.** This is not only NFD/§2.9 spacing cleanup (composed input, French-
   spacing artifacts copied from the OCR text). It exists because your own output is
-  probabilistic: the exact mistake `proposal-check --fix` and `normalize` catch
+  probabilistic: the exact mistake `proposal fix` and `corpus normalize` catch
   mechanically — a wrong-but-visually-identical codepoint (`ı` U+0131 typed where
   the licensed `ɪ` U+026A was meant, a precomposed accented letter where NFD wants
   it decomposed) — is a mistake *you* are equally likely to make again if you "fix"
@@ -330,7 +330,7 @@ revising it retroactively erases the measurement — which is how `1-074`'s was 
 
 ## Review and restore
 
-The human's pass runs at `uv run harness review PP-NNN --serve`. Lines carrying
+The human's pass runs at `uv run harness ocr review PP-NNN --serve`. Lines carrying
 notation are flagged conspicuously and walkable with alt-j/alt-k; that flag is a
 **floor, not a census**, since `c` (English *sh*), plain `s`, `j` and `x` are inventory
 members in unmarked ASCII. An unflagged line means nothing was detected.
@@ -361,7 +361,7 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
   blanket ban on ever touching an already-restored file: `1-048` and `2-030` (the
   two pages that predate the pipeline entirely) got a direct, surgical
   straight-quote/content fix this way, each character raster-verified first via
-  `harness zoom` and each edit a targeted substring replace, never a hand-retyped
+  `harness ocr zoom` and each edit a targeted substring replace, never a hand-retyped
   line (retyping risks an NFD-vs-precomposed mismatch that silently passes a
   `repr()` eyeball check — verify with an in-string `.replace()`, not by comparing
   to a literal you typed).
@@ -375,29 +375,29 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
 - Take CATMuS as a witness to any glyph. It reads 0% of the inventory. It is evidence
   about line geometry and about English, and nothing else.
 - Join crops through `detector_flags` line numbers. `context._lines_from_alto` drops
-  empty lines, so its index is not the ALTO's; join through `harness lines`.
+  empty lines, so its index is not the ALTO's; join through `harness ocr lines`.
 - Trust the browser for the text in its own fields — see the session-restore guards in
   `harness/review.py`. If a save reports many lines changed after one keystroke, stop
   and recover from `.json.prev` or `<ref>.jsonl`.
-- Commit a page without running `uv run harness normalize --check`.
+- Commit a page without running `uv run harness corpus normalize`.
 - Reach for a hand-rolled crop (a `python3 -c "...PIL..."` one-liner, or any script
-  outside the harness) to re-check a glyph. `harness zoom --zoom 4` already delivers
+  outside the harness) to re-check a glyph. `harness ocr zoom --zoom 4` already delivers
   every pixel of source detail there is — past it there is only interpolation, so an
   ad-hoc crop cannot see more than the tool already showed. Doing it anyway is a tell
   that you're fretting past the point of a real doubt: stop, and if the doubt is
   real, write it in `note` instead. If a genuine gap in the tool's coverage forces
-  this, the fix belongs in `harness zoom` itself (an option, e.g.), not a one-off
+  this, the fix belongs in `harness ocr zoom` itself (an option, e.g.), not a one-off
   script and not a workaround repeated next session.
 - Write a `python3 -c "..."` one-liner to inspect or edit `proposal.json`/
-  `decision.json` — `proposal-check --codepoints LINE` names a line's non-ASCII
-  characters, `proposal-check --set LINE --field FIELD` writes one, and both exist
+  `decision.json` — `proposal codepoints LINE` names a line's non-ASCII
+  characters, `proposal set LINE --field FIELD` writes one, and both exist
   precisely because the hand-rolled versions were written more than once in the same
   session (`3-003`: an `ord(ch)` loop to catch a typed `ı` where `ɪ` was meant, then
   a second `ord()` dump trying to work out why a hand-typed `Edit` kept failing to
   match — the cause was NFC-vs-NFD, invisible to eye and to `Edit`'s diff both).
   Two different failure modes, same root cause: a one-off script standing in for a
   question the harness should already answer. Note what this does *not* license:
-  the `ı`-for-`ɪ` class is already caught by `normalize --check` (report-only, same
+  the `ı`-for-`ɪ` class is already caught by bare `corpus normalize` (report-only, same
   as every lookalike — see keying_spec.md §3), so seeing it there is not licence to
   write a bulk auto-replace tool for it, and a stress-mark-vs-apostrophe mixup is
   *never* a candidate for automation at all — which mark is meant depends on the

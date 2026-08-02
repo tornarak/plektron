@@ -1601,7 +1601,7 @@ def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
 
     The counts alone never say *which* page, and a keying sweep is exactly the case
     where that is the question — the ref with an error, the four still to do. So the
-    same information `harness zones` prints goes on a page the editor can reach in
+    same information `harness zones check` prints goes on a page the editor can reach in
     one keystroke and leave in one click.
 
     Rendered without the raster (`ink=False`), because this is a list of 122 pages

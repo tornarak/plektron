@@ -10,7 +10,7 @@ facts forward. Three seam facts, three producers, one table keyed by PP-NNN ref:
                open / starts-here — a neighbourhood, not a resolution.
   boundary     whether an element runs across the gap *after* this page, read
                off the committed TEI: the last top-level body element carries
-               `@part` of I or M, or carries `@next`. Written by `harness seam`
+               `@part` of I or M, or carries `@next`. Written by `harness tei seam`
                from the page on the far side of the gap, which is the only one
                holding both witnesses.
 
@@ -188,7 +188,7 @@ def build_ledger(root: Path = Path(".")) -> dict[str, dict]:
     # and not; see CLAUDE.md on `exempt`.
     #
     # What separates them here is *who could have written it*. A seam is recorded
-    # by the page after the gap, and `harness seam` refuses unless the predecessor
+    # by the page after the gap, and `harness tei seam` refuses unless the predecessor
     # is collated too — so a gap is adjudicable only when **both** its pages exist.
     # Until then nothing has been in a position to look, and the honest answer is
     # "unknown". Once both exist, the pass had both witnesses in front of it and
@@ -301,7 +301,7 @@ def foreign_terms_nearby(ref: str, root: Path = Path("."),
             # `scope` carries no provenance flag here, deliberately: this record
             # already drops whether the gloss is itself supplied, so marking the frame
             # as authored while the gloss beside it says nothing would be
-            # incoherent. `harness lexicon --glosses` is the export that keeps both.
+            # incoherent. `harness lexicon glosses` is the export that keeps both.
             gloss, scope = glosses.get(term, ("", ""))
             out.append({"term": term, "lang": lang, "gloss": gloss,
                         "scope": scope, "ref": nref})
@@ -431,5 +431,5 @@ def toc_search(toc: list[dict], query: str, folio: int | None = None,
 # because the geometry pass that was to write it was never built. Every ledger row
 # therefore read `boundary=unknown` — a column that looked like a pending
 # measurement and was in fact a dead field. The fact now comes off the committed
-# TEI, where `harness seam` puts it, which is what "the committed TEI is the
+# TEI, where `harness tei seam` puts it, which is what "the committed TEI is the
 # record" already promised.

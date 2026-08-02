@@ -97,7 +97,7 @@ def read_blocks(path: Path, with_points: bool = False) -> list[dict]:
 
     `with_points` adds the block's raw `Shape/Polygon@POINTS` string, and is off by
     default so that every existing caller's record shape is untouched — the field
-    would otherwise surface as noise in `harness context`'s figure list. The one
+    would otherwise surface as noise in `harness tei context`'s figure list. The one
     caller that wants it is `zones.validate_page`, which has to know whether a block
     is really the rectangle its bbox implies; asking here keeps this the only walk
     of the encoding rather than buying that one check a second one.
@@ -183,7 +183,7 @@ def readings(root: Path = Path(".")) -> dict[str, dict]:
     different transcriptions of one caption, presented as the caption.
     """
     # NFD on read, matching the corpus form (keying spec section 1). The file is
-    # hand-maintained and nothing but `harness normalize` writes it, so it can drift
+    # hand-maintained and nothing but `harness corpus normalize` writes it, so it can drift
     # between edits; folding here means a caption's normal form cannot depend on
     # which session keyed it. NFD, never NFKC — NFKC rewrites U+1D4B and U+02D9,
     # which are inventory glyphs.
@@ -270,7 +270,7 @@ def reconcile(root: Path = Path(".")) -> dict:
 #
 # `fig_refs` and `alto_for` look like they belong to the same dead cluster and do
 # not: `reconcile()` above calls both, and `reconcile` is reachable as
-# `harness figures`.
+# `harness corpus figures`.
 
 
 # ---------------------------------------------------------------------------

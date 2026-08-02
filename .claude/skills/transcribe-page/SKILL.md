@@ -43,14 +43,14 @@ Refs are part + scan index (`1-100`), never a bare page number. NNN is a scan
 index, not a printed folio, and neither is derivable from the other — so the CLI
 rejects a bare integer rather than guess which of the three parts you meant.
 
-    uv run harness context PP-NNN                  the input contract
+    uv run harness tei context PP-NNN                  the input contract
     (read the page image with the Read tool)       the only witness that matters
-    uv run harness zoom PP-NNN --only 7,20 --from gt/ocr    the closer look
+    uv run harness ocr zoom PP-NNN --only 7,20 --from gt/ocr    the closer look
     (author tei/chukchi-PP-NNN.xml)                your reading
-    uv run harness normalize --path tei/chukchi-PP-NNN.xml  NFD + spacing
-    uv run harness ids PP-NNN                      the id scheme
-    uv run harness validate PP-NNN                 the gate; exit 1 on FAIL
-    uv run harness seam PP-NNN --continues|--fresh --commit   the gap behind you
+    uv run harness corpus normalize --path tei/chukchi-PP-NNN.xml  NFD + spacing
+    uv run harness tei ids PP-NNN                      the id scheme
+    uv run harness tei validate PP-NNN                 the gate; exit 1 on FAIL
+    uv run harness tei seam PP-NNN --continues|--fresh --commit   the gap behind you
 
 Then re-read your own output once against the image before declaring done.
 
@@ -59,7 +59,7 @@ one `ocr_lines` ids come from.
 
 # The input contract
 
-`harness context PP-NNN`, emitted as TOON. Everything in it is **precomputed by
+`harness tei context PP-NNN`, emitted as TOON. Everything in it is **precomputed by
 deterministic script**. You consume it; you never re-derive it. Do not
 recalculate a ToC id, a figure zone, or a detector flag that was handed to you.
 
@@ -95,7 +95,7 @@ the same list, and a flattened tail throws that away along with every `xml:lang`
 and `@resp` in play at the seam. Trimmed by dropping whole leading children so it
 always parses, with `elided_children` saying how many went.
 
-`null` when the predecessor is not collated — the same case `harness seam`
+`null` when the predecessor is not collated — the same case `harness tei seam`
 refuses. `part` on it is a verdict already recorded for this gap, if `seam` has
 run.
 
@@ -154,8 +154,8 @@ Read three things together:
 
 Then record it:
 
-    uv run harness seam PP-NNN --continues --commit
-    uv run harness seam PP-NNN --fresh --commit
+    uv run harness tei seam PP-NNN --continues --commit
+    uv run harness tei seam PP-NNN --fresh --commit
 
 **You do not write `@part`, `@prev` or `@next` by hand.** The verb writes both
 ends of the gap — this page's first top-level element and the previous page's
@@ -196,7 +196,7 @@ has none, and then the sourceDesc reads "see corpus teiHeader" alone):
 
 **No `respStmt` here.** The provenance ranks are declared once, in
 `tei/corpus-header.xml`, and never repeated per page. That file exists and
-`harness header` gates it, holding it and `validate.RESP_RANKS` to each other. A
+`harness tei header` gates it, holding it and `validate.RESP_RANKS` to each other. A
 page file remains a *fragment*: it defers title, publication and source the same
 way, so `resp="#llm"` resolves against the assembled document and not against the
 page read alone. That is not a defect to fix here. One declaration cannot drift
@@ -311,7 +311,7 @@ belongs to which.
       (<gloss target="#term-1-100-1">“quite black” [chestnut brown]</gloss>)
 
 Link every glossed term, so the corpus is uniformly queryable rather than linked
-only where containment happened to be ambiguous. `harness lexicon --glosses` is
+only where containment happened to be ambiguous. `harness lexicon glosses` is
 what reads them.
 
 **Give the gloss its full printed extent, not just the quoted core.** Bogoras's
@@ -375,7 +375,7 @@ Write that frame **once, as a supplied `<head>` on the list**:
       <head><supplied reason="context" resp="#llm">of a reindeer</supplied></head>
 
 Never into the individual glosses. Twenty-seven copies of one fact is twenty-seven
-things to drift, and `harness lexicon --glosses` resolves the head for every entry
+things to drift, and `harness lexicon glosses` resolves the head for every entry
 anyway — it is what puts the `scope` column beside each gloss.
 
 - **A continuation list inherits and must not restate it.** `1-101`'s colour list
@@ -589,7 +589,7 @@ letterform, a mark you went back to the image to settle — pointing at the
 `line_id`(s) in `ocr_lines` you actually read from: `facs="#eSc_line_e5fa4af8"`,
 or several ids for a reading checked against how the same mark prints on a
 neighbouring line. It turns a flagged span into a one-command raster lookup:
-`harness zoom PP-NNN --only <index> --from gt/ocr`.
+`harness ocr zoom PP-NNN --only <index> --from gt/ocr`.
 
 Reserve it for spans that earned it — a `@facs` on every span stops meaning
 anything. It is a pointer, not a rank: it never substitutes for `@resp`, and
@@ -671,7 +671,7 @@ touching them.
 # Structural ids
 
 You mint `xml:id` on elements something points at. The scheme is
-`{kind}-{PP-NNN}-{ordinal}` — `term-1-100-4`, `list-1-100-1` — and `harness ids`
+`{kind}-{PP-NNN}-{ordinal}` — `term-1-100-4`, `list-1-100-1` — and `harness tei ids`
 checks it, so it is a rule the gate enforces rather than one you have to be
 careful about.
 
@@ -690,7 +690,7 @@ careful about.
 - **An id names the page it lives on.** `prev_tail` hands you the previous page's
   markup with its ids in it; copying one in is an error the gate catches.
 
-`harness ids PP-NNN --pair` links glosses to terms where containment decides, and
+`harness tei pair PP-NNN` links glosses to terms where containment decides, and
 refuses where it does not — useful for a dense gloss list, but the ambiguous items
 are yours to write.
 
@@ -763,7 +763,7 @@ stays a comment** — durable in the file — never a silent decision.
 
 - Answer your own question by picking the plausible option. Fluent nonsense is the
   failure mode that matters; "unresolved" is a valid deliverable.
-- Write `@part`, `@prev` or `@next` by hand — `harness seam` writes those, from
+- Write `@part`, `@prev` or `@next` by hand — `harness tei seam` writes those, from
   the page that holds both witnesses.
 - Mint an entity id — which is *not* the same act as marking a name. Writing
   `<name type="toponym">` records what the page says the form is; writing `@ref` or
@@ -785,8 +785,8 @@ contamination.
     git add tei/chukchi-PP-NNN.xml && git commit -m "tei: PP-NNN collation pass"
 
 What *does* carry across pages carries through the committed file, not through
-your head. `harness ledger` folds every committed `<pb>`, milestone and seam mark
-into the table the next page's context is built from, and `harness seam` wrote
+your head. `harness tei ledger` folds every committed `<pb>`, milestone and seam mark
+into the table the next page's context is built from, and `harness tei seam` wrote
 into the previous page's file directly. **So the commit is the handoff.**
 
 Working in scan order gives each page a live `expected_folio` and a resolvable

@@ -252,9 +252,9 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
     Every occurrence is its own record, not one per line/field — a line with
     two straight quotes (a whole gloss) previously reported as a single hit,
     which undercounts exactly the thing a reader needs to go fix each of. XML
-    hits are keyed by **ALTO order index**, the same index `harness lines`
-    and `harness zoom --only` use — not the opaque `TextLine/@ID` — so a hit
-    is directly actionable (`harness zoom PP-NNN --only <index>`) rather than
+    hits are keyed by **ALTO order index**, the same index `harness ocr lines`
+    and `harness ocr zoom --only` use — not the opaque `TextLine/@ID` — so a hit
+    is directly actionable (`harness ocr zoom PP-NNN --only <index>`) rather than
     requiring a second lookup to translate the id into something zoomable.
 
     `note`/`resolved` fields and `@note:`-prefixed `readings.md` lines are

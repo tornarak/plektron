@@ -126,8 +126,8 @@ present. No magnification separates them; only the constraint does.
 | breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ") | **everything else.** The obscure-vowel series **ᴀ ᴇ ɪ ä** for the reason below; `j` because the marked sort is **ǰ**, j+U+030C (§2.2), and a breve there is a misread caron |
 
 **The list is closed, and enforced as such.** `detectors.MARK_LICENSE` holds the
-allow-list, `harness normalize --check` exits 1 on a violation, `harness validate`
-raises it as an ERROR, and `harness restore` refuses to write. Not a worklist item:
+allow-list, `harness corpus normalize` exits 1 on a violation, `harness tei validate`
+raises it as an ERROR, and `harness ocr restore` refuses to write. Not a worklist item:
 an unlicensed mark is a sequence the notation does not contain, so unlike a lookalike
 there is no reading for a human to weigh, and nothing is pre-empted by refusing it.
 No tool rewrites one, though — choosing the intended glyph is adopting a glyph
@@ -245,7 +245,7 @@ justification gaps it is not variable page-to-page evidence of anything, just a
 fixed compositor habit. Key single-space, same reasoning as the semicolon rule.
 French spacing before a comma is the same case again wherever it turns up. All of
 this is mechanical and print-invariant, so none of it is left to per-page
-judgement: `harness normalize` collapses a run of 2+ spaces between two non-space
+judgement: `harness corpus normalize` collapses a run of 2+ spaces between two non-space
 characters to one and strips any space immediately before `;`/`:`/`,`,
 corpus-wide, and `--check` exits 1 on drift — the same enforcement tier as NFD, not
 the lookalike worklist, because there is no reading to adjudicate.
@@ -270,8 +270,8 @@ reading required, because numbering restarts on every page (confirmed across all
 1. the marker values present form a **continuous run 1..N**, no gaps;
 2. each value occurs **at least twice** (reference + opener).
 
-`detectors.footnote_report` implements both, `harness normalize` reports them
-corpus-wide, and `harness proposal-check` reports them per proposal. **Report-only
+`detectors.footnote_report` implements both, `harness corpus normalize` reports them
+corpus-wide, and `harness proposal check` reports them per proposal. **Report-only
 in both**, at the `lookalikes` tier rather than the blocking one: a note whose
 reference and text straddle a page seam breaks the pairing with nothing miskeyed,
 so a hit is a page to look at. A proposal that fails either invariant carries a
@@ -383,7 +383,7 @@ what recurs, not the instance.
    after the fact more than once, on more than one page, including at least
    one case where the same session had already flagged the class as
    "check hardest" and missed it anyway. Treat any bare Tier-1 `g`/`G` as
-   suspect by default rather than as the resting state: `harness lexicon
+   suspect by default rather than as the resting state: `harness lexicon misses
    --marks` gives a live bare-vs-marked frequency count per base letter from
    restored ground truth, and **roughly 90% of `g`'s in the corpus carry the
    dot** — the dotted form is the a priori assumption for any Tier-1 `g`, bare
@@ -413,13 +413,13 @@ what recurs, not the instance.
    base+mark+suffix combination is a data row to add) flags any token ending in
    `-gɪ`/`-gɪn`/`-gɪt` with a bare `g` — covering `-rgɪn`, `-ɪrgɪn`, `-mgɪn`, and
    every other consonant-before-g variant uniformly, since the check is on `g`
-   itself and never on what precedes it. `harness proposal-check PP-NNN` runs it
+   itself and never on what precedes it. `harness proposal check PP-NNN` runs it
    unconditionally (same tier as the apostrophe checks — not gated on `resolved`),
-   and it also feeds `harness context`'s detector flags for the collation pass.
+   and it also feeds `harness tei context`'s detector flags for the collation pass.
    Report-only: a hit names a dot-prone shape, not a certain error.
 
-   **Measured, not asserted.** `harness lexicon --suffixes` (weighted suffix
-   frequency, length 2-8) and `harness lexicon --digraphs` (weighted
+   **Measured, not asserted.** `harness lexicon suffixes` (weighted suffix
+   frequency, length 2-8) and `harness lexicon digraphs` (weighted
    digraph/trigraph frequency, the corpus's own top 12 suffixes additionally
    stripped so the count reflects stems rather than the suffix family
    re-appearing under every rank) exist to check a claim like this one
@@ -494,7 +494,7 @@ what recurs, not the instance.
    `resolved` field on that page's proposal reasoned out "post-vowel,
    pre-consonant-not-in-b/p/d/t/g/k, not V_V → this is stress U+02CA, not
    apostrophe" correctly — and `text` kept the literal `'` anyway, on 33 of
-   71 lines. `proposal-check` reported the exact signature of this
+   71 lines. `proposal check` reported the exact signature of this
    (`in_resolved_not_text: U+02CA` — resolved names the codepoint, text
    doesn't contain it) on nearly every affected line, and it was dismissed as
    narrative-formatting noise rather than treated as what it was: the same
@@ -507,12 +507,12 @@ what recurs, not the instance.
    throughout, never straight `"..."` (§1) — print reproduction, not a
    stylistic option. This has slipped through in bulk more than once,
    including in hand-keyed pages assumed authoritative for years before a
-   mechanical check caught it. `harness normalize` flags a straight quote
+   mechanical check caught it. `harness corpus normalize` flags a straight quote
    left in text as a worklist lookalike; it does not auto-fix, since pairing
    an open quote to its close can require reading across lines.
 7. **Medial ASCII capital where a small-cap was meant.** Typing a plain
    `A`/`E`/`I`/`L` mid-word instead of the small-cap `ᴀ`/`ᴇ`/`ɪ`/`ʟ` (§2.3).
-   `harness proposal-check` folds this into its consistency check
+   `harness proposal check` folds this into its consistency check
    (`detectors.MEDIAL_CAPS`) but never auto-corrects it, even when it looks
    like the one clean unambiguous swap on a line — which small-cap an ASCII
    capital was meant to be is a reading judgement, not a shape slip, so it

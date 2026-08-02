@@ -30,7 +30,7 @@ proposed (a model read it), `#htr` unexamined (recognizer output). The ranks are
 once in the corpus teiHeader and never in a page file — `@resp` is a pointer resolved
 against the assembled document, and a page file is a fragment that already defers title,
 publication and source the same way. The collation pass may emit `#llm` and nothing else;
-`harness validate` errors on a higher claim and on a missing `@resp` equally, because an
+`harness tei validate` errors on a higher claim and on a missing `@resp` equally, because an
 unmarked span is indistinguishable from a ratified one to anything that does not check.
 `--ratified` switches the expectation for a page a human has been through.
 
@@ -43,7 +43,7 @@ and rendering the result as a verified PASS. Removed from `validate.py`,
 `validate.py` and the collation skill; the comment at the old check's site records why.
 
 That tautology is a live hazard, not a closed one, and it recurs wherever a check's
-two inputs can turn out to be the same file. `harness review`'s span diff now refuses
+two inputs can turn out to be the same file. `harness ocr review`'s span diff now refuses
 rather than reporting a clean 40/40 when the store it is pointed at resolves to the
 ground truth the proposal produced. **A comparison whose witnesses may be one witness
 must say so.**
@@ -69,7 +69,7 @@ identity and never mint an index entry unreviewed.
 
 **NFD, corpus-wide** (`keying_spec.md` §1). Declared long before anything enforced
 it, so the corpus had drifted — `data/readings.md` held both encodings of the same
-glyph and exact comparison between stores silently failed. `harness normalize`
+glyph and exact comparison between stores silently failed. `harness corpus normalize`
 (bare, or `--check`) is the gate; `--convert` writes the fixes. It reports a file
 count, and the count moves as stores are added, so read it rather than a number
 written down here.
@@ -135,7 +135,7 @@ index*, not a printed folio. Part 1 runs 001–362, part 2 001–268, part 3
 plates and front matter unpaginated. **Neither is derivable from the other**, so
 a bare page number names no page and the harness rejects one. The folio is known
 only where a transcribed page recorded one, and propagates from there via the
-seam ledger (`harness/state.py`, `harness ledger`) — which is exactly the
+seam ledger (`harness/state.py`, `harness tei ledger`) — which is exactly the
 book-internal-evidence rule applied to pagination: the page says what page it is,
 and nothing infers it.
 
@@ -158,7 +158,7 @@ Layout, all at the repo root:
             always winning. Derived; ignored, unlike ocr/, because half its
             links point into the ignored mz/. Never written through.
     tei/    1 page, plus corpus-header.xml — the corpus teiHeader, gated by
-            `harness header`. Not a valid TEI document on its own: a bare
+            `harness tei header`. Not a valid TEI document on its own: a bare
             <teiHeader>, a fragment like the page files, spliced in by an
             assembly step that does not exist yet.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
@@ -181,7 +181,7 @@ Layout, all at the repo root:
 
 - **The ground-truth rebuild is finished.** All **20** pilot pages in `gt/ocr/`
   carry text — the pilot selection is scattered across all three parts, and
-  `harness pages` lists it. `tei/` holds **three** pages — `1-151`, and the
+  `harness ocr pages` lists it. `tei/` holds **three** pages — `1-151`, and the
   adjacent pair `1-100`/`1-101`, which is the corpus's only collated seam.
 - **`ocr/*.xml` are symlinks into `gt/ocr/`**, and `ocr/` is a *view*, not a
   store: the stable name a page's current OCR is reached by, whatever produced
@@ -202,7 +202,7 @@ Layout, all at the repo root:
   the readings. **Consequence for code**: reading `String/@CONTENT` out of
   `gt/fig/` returns `""` for every zone on every page. Not an error — nothing,
   which is worse. Go through `figures.readings()`, and check the two stores agree
-  with `harness figures` (invariant: `missing` and `orphan` both empty; it exits
+  with `harness corpus figures` (invariant: `missing` and `orphan` both empty; it exits
   1 if either is not).
 - **eScriptorium holds nothing right now** — the projects were exported and
   deleted. The repo is the system of record; re-import when keying resumes.
@@ -250,7 +250,7 @@ every page has text. `restore` reports which of the two it did.
 
 Three invariants from that work bind anything touching lines, not just that pass.
 `context._lines_from_alto` **drops empty lines**, so its index is not the ALTO's —
-join through `harness lines`, never through `detector_flags`' line numbers. And **a
+join through `harness ocr lines`, never through `detector_flags`' line numbers. And **a
 line polygon can exclude printed text**: `1-074` prints `5.` and `9.` outside their
 boxes, `1-073` the same with its `5.` and its folio `51` outside *every* box on the
 page. The omission is horizontal, so no vertical padding reaches it; `--margins`
@@ -313,7 +313,7 @@ The second attempt narrows the claim until it is checkable. Three things change:
   `min_run_share` of the measure. Calibrated against **both** witnesses — 7 px
   worst-case over the 20 line-precise `gt/ocr` pages, 11 px over the 45 keyed by
   hand — because either alone would have missed one of the two failures.
-- **Training runs on figure-blotted rasters** (`harness zones --blot`,
+- **Training runs on figure-blotted rasters** (`harness zones blot`,
   `scans-fig-blotted/`, painted **white** — `lines --blot`'s conspicuous pink and
   blue are for a human and would be a feature the model could key on). Whether a
   paragraph wraps around an illustration is a fact about the ink and not about the
@@ -382,7 +382,7 @@ the mark would hide a mistake rather than describe a plate.
 
 **The training selection is `gt/seg/`'s 122 pages plus the first two chapters.** The
 old attempt's page set was chosen for heterogeneity and that choice is still good
-even though its labels are not, so `harness zones --serve --itinerary gt/seg` walks
+even though its labels are not, so `harness zones edit --itinerary gt/seg` walks
 it. **That itinerary is now walked** — see below; together with the two chapters it
 is the sample the first training run was meant to have. An itinerary is a
 **work-list, not a filter**: a page not on it still opens and
@@ -396,7 +396,7 @@ That eval set was rebuilt, and how is the point. The whole-book pass left it at 
 every new page defaults to `train`, so it had not grown since run 3 while the corpus
 more than doubled, and it was 45/5/10 across parts over a corpus that is 259/260/197.
 A model measured almost entirely on part 1 and then reused on another Jesup volume is
-being asked a question its eval set never covered. `harness zones --remark-eval
+being asked a question its eval set never covered. `harness zones remark-eval
 0.20 --commit` moved 131 pages, and three properties of how it chose them are the
 reason to trust the resulting figure more than the old one: **additive** (a page a
 human marked is never re-derived), **stratified per part**, and **independent pages
@@ -407,7 +407,7 @@ nothing, and all 131 came from pages a human demonstrably changed.
 governs how the numbers below may be read. See "the `unseen` row is not held-out
 evidence" in Open.
 
-`harness zones` reports the class distribution in its summary (`labels`), so read it
+`harness zones check` reports the class distribution in its summary (`labels`), so read it
 from there rather than from a table here, which goes stale. As of the complete store:
 
     MainZone-P           2500    MainZone-Other        166
@@ -468,7 +468,7 @@ reports as `stale-ink-exemption`.
 than recomputed.** Every other column costs ~1 ms and is read straight off the files;
 this one opens the raster and costs ~0.20 s, which over a 122-page itinerary is most
 of a minute before the table appears. But the editor **already runs the check** on every
-page it opens and every page it saves, and so does `harness zones --ink` — the answer
+page it opens and every page it saves, and so does `harness zones check --ink` — the answer
 was being computed and thrown away. It now lands in `gt/zones/_ink_cache.json`
 (derived, gitignored), stamped with the mtimes of the page's ALTO and of
 `_ink_exempt.json`, the two files that can change it.
@@ -504,7 +504,7 @@ so it is recorded here rather than done.
 `ketos segtrain` has run, three times. The installed model is
 `models/bogoras-seg/zones-seg.safetensors`; the accuracy stays out of the filename,
 since a default path that changes every retrain is a default nobody can use.
-`harness zones --predict` runs it.
+`harness zones predict` runs it.
 
 **Two directories, and the split between them is the point.** `train/bogoras-seg/`
 is scratch — the symlink farm, the two `.lst` files, each run's checkpoints — and
@@ -537,7 +537,7 @@ Four properties worth knowing before touching any of it:
   own ids, its own ALTO dialect. Snapping to a configured band is a human act and
   happens in the editor. A store that normalised its own contents could no longer
   tell you what the model did, which is the only question it exists to answer.
-- **A prediction is measured, never gated.** `harness zones --from mz` runs the same
+- **A prediction is measured, never gated.** `harness zones check --store mz` runs the same
   checks and always exits 0; `--from gt` (the default) is unchanged and still gates.
   A raw polygon fails the fixed-measure width check by construction, so gating there
   would be permanent known-false noise — and a machine store could then block a build
@@ -643,7 +643,7 @@ the printed marker, and the book sets a thin space before the raised digit
 before `;`/`:` that §2.9 already overrides — a typesetting convention with no
 lexical content, which survives nowhere in the book's meaning and which leaves a
 stray space in the reading text of every consumer that strips the marker. Key it
-tight. `harness validate` errors on it; it is a question about where an element
+tight. `harness tei validate` errors on it; it is a question about where an element
 sits rather than about a character sequence, so `normalize` — which runs over whole
 files as text and cannot see that the space precedes a `<note>` rather than a word
 — is the wrong place for it.
@@ -684,7 +684,7 @@ the paper does. `1-053` reached restored ground truth missing a two-line closing
 paragraph, found only because the footnote-marker check reported a marker whose
 body reference did not exist.
 
-`harness lines PP-NNN --gaps` is the detector: row-wise ink off the raster, masked
+`harness ocr gaps PP-NNN` is the detector: row-wise ink off the raster, masked
 by the existing line boxes *and* by `gt/fig/` zones, contiguous bands reported with
 measured geometry. It found **three** of the 20 restored pages and was silent on
 the other seventeen. All three are now repaired and the corpus reports **zero**:
@@ -708,7 +708,7 @@ hide it.
 
 **Repair needs a second writer into `gt/ocr/`, and that is worth stating plainly.**
 `restore` only writes `CONTENT` into lines that already exist, so a dropped line
-has to be *created* before it can be keyed. `harness lines PP-NNN --adopt-gap VPOS`
+has to be *created* before it can be keyed. `harness ocr adopt-gap PP-NNN VPOS`
 does that, and it is the one tool besides `restore` that writes into the ground
 truth store. What keeps it inside the rule rather than an exception to it:
 
@@ -741,146 +741,48 @@ the review page, the keyboard, the decision log and the error profile it yields.
 
 The collation loop runs in Claude Code. `harness/` is a small package exposed as
 a console script, run from the repo root — all paths resolve relative to the cwd
-unless `--root` says otherwise. `uv run python -m harness <verb>` is equivalent
-if you ever need it.
+unless `--root` says otherwise. `uv run python -m harness <group> <action>` is
+equivalent if you ever need it.
 
-    uv run harness pages              refs with OCR present
-    uv run harness context PP-NNN     the input contract, on stdout
-    uv run harness validate PP-NNN    the gate; exit 1 on FAIL
-    uv run harness header             the gate on tei/corpus-header.xml — that the
-                                      ranks it declares are exactly the ones
-                                      validate enforces. Two files hold one fact and
-                                      a page never resolves @resp locally, so
-                                      without this they drift silently. Exit 1 on FAIL
-    uv run harness ids PP-NNN         structural ids against the scheme
-                                      {kind}-{PP-NNN}-{ordinal}, the ordinal being
-                                      the element's *position* among same-kind
-                                      elements — so every id is recomputable from
-                                      the tree. --pair links each <gloss> to its
-                                      <term> where containment decides and refuses
-                                      where it does not; --fix renumbers, repairing
-                                      a neighbour's inbound @prev/@next too
-    uv run harness seam PP-NNN        --continues / --fresh: does an element run
-                                      across the gap BEFORE this page. Writes
-                                      @part on this page's first top-level element
-                                      and the previous page's last. The page after
-                                      the gap writes both ends, being the only one
-                                      holding both witnesses; --commit to write
-    uv run harness state PP-NNN       one page's seam record
-    uv run harness ledger             the whole seam table; --part N to scope,
-                                      --untranscribed for bare refs to work on
-    uv run harness toc-search TEXT    ToC entries matching a heading you've read
-    uv run harness toc-near FOLIO     ToC entries around a folio you now know
-    uv run harness authority TEXT     works in data/authorities.json matching a
-                                      citation read in the body — the siglum, a
-                                      bare name in prose, a title, or a string
-                                      off the printed entry, ranked by which of
-                                      those caught it and never collapsed to one.
-                                      A footnote form ("Dall, I, p. 375.") goes
-                                      in whole. --sigla is the resolution table
-                                      (one row per cited_as, so the collisions
-                                      show), --key one record in full, --unlocated
-                                      the 36 with no copy located
-    uv run harness lexicon            frequent lexicon misses, to whitelist;
-                                      --native --marks --suffixes --digraphs
-                                      invert it into corpus-frequency reports
-                                      over restored ground truth; --glosses is
-                                      the term↔gloss dictionary from committed
-                                      TEI, resolved through @target and never
-                                      through containment — terms nobody linked
-                                      are a count, not a guess. Each pair also
-                                      carries the `scope` its gloss list frames
-                                      it with, followed across a seam via @prev
-    uv run harness lines PP-NNN       per-line id + geometry + text, **reading
-                                      order**, empties kept; --crops and --sheets
-                                      write PNGs and labelled contact sheets into
-                                      the page's own review/PP-NNN/ (both are flags,
-                                      not paths — `--out` is the one-off escape),
-                                      --from DIR picks the store, --full adds
-                                      baseline/polygon, --margins widens to the
-                                      PrintSpace, --gaps reports ink no TextLine
-                                      covers (the dropped-line detector),
-                                      --adopt-gap VPOS materializes a measured band
-                                      as an empty TextLine so it can be keyed,
-                                      --blot writes the page with lines and figure
-                                      zones painted out into scans-blotted/
-    uv run harness zoom PP-NNN        magnified lines: --only 7,20,22-26 selects,
-                                      --zoom N scales (default 2), overlapping
-                                      strips packed into as few sheets as fit.
-                                      The window is derived from --zoom, so it
-                                      never needs setting; --margins here too
-    uv run harness review PP-NNN      span diff of a proposal against the
-                                      recognizer, as *measurement*; --serve runs
-                                      the line-based browser review on 127.0.0.1
-                                      and saves to review/PP-NNN/decision.json
-    uv run harness restore PP-NNN     preview only (edits, drift, mismatch);
-                                      --commit required to write gt/ocr/
-    uv run harness clean PP-NNN       rm review/PP-NNN/{crops,sheets,zoom} —
-                                      the regenerable images, once restored
-    uv run harness normalize          NFD + §2.9 spacing + lookalike + footnote-
-                                      marker gate; exit 1
-                                      on drift; --path FILE scopes to one file
-                                      instead of the whole corpus (repeatable).
-                                      Report only — bare form and --check are the
-                                      same thing; --convert is required to write,
-                                      scoped or not.
-    uv run harness proposal-check PP-NNN   a proposal's `resolved` field against
-                                      the codepoints its `text` actually has.
-                                      Also the field editors — --codepoints,
-                                      --set, --replace/--which — which exist so
-                                      that inspecting or patching a proposal
-                                      never needs ad-hoc Python. `--help` for
-                                      the full contract
-    uv run harness figures            reconcile gt/fig/ zone geometry against
-                                      data/readings.md captions, both ways;
-                                      exit 1 if `missing` or `orphan` is non-empty
-    uv run harness zones              the seven-type page segmentation in
-                                      gt/zones/. Bare, it sweeps every keyed page
-                                      (add --ink to read the rasters too); with a
-                                      ref, that page's errors and warnings in
-                                      full. Exit 1 on an error, never on a
-                                      warning. --serve opens the editor at that
-                                      ref and keeps serving, the arrow keys
-                                      walking the corpus from there.
-                                      --itinerary LST replaces scan order with a
-                                      work-list — an .lst in gt/seg's format, or
-                                      a directory meaning every page in it — and
-                                      with --serve resumes at its first unkeyed
-                                      page. --blot writes the figure-blotted
-                                      training rasters; --assemble lays out
-                                      train/bogoras-seg/ for ketos and reports the
-                                      invocation, omitting --resize when the class
-                                      sets already match; --install CHECKPOINT
-                                      scores a run, refuses a permuted class map,
-                                      and writes it to models/bogoras-seg/ with the
-                                      split it saw beside it.
-                                      --remark-eval F moves fraction F of train into
-                                      eval — additive, stratified per part, pages
-                                      the model did not dictate first, spread rather
-                                      than off the front; --commit to write.
-                                      --predict runs the trained segmenter into
-                                      mz/zones/ (--model, --device), skipping a
-                                      page that already has one unless --force,
-                                      so a sweep resumes and a retrain cannot
-                                      silently replace the model sha each file
-                                      records; --link
-                                      rebuilds zones/, the view over both stores;
-                                      --from gt|mz picks which store is checked —
-                                      gt gates, mz is measurement and exits 0.
-                                      --score compares against gt per split, never
-                                      blended, with the confusion matrix and a
-                                      held-out permutation test; with --model it
-                                      segments in memory and writes nothing, which
-                                      is how a checkpoint is measured before it is
-                                      installed. --remap-model (--commit) renames
-                                      the output channels when that test says the
-                                      labels are shuffled rather than the model
-                                      weak. --decode dp swaps blob vectorisation
-                                      for a segmental DP over the page.
-                                      --paragraphs audits the paragraph rule both
-                                      ways; --diff reports gt against mz; --lines
-                                      dumps a page's lines of type. A page's zones
-                                      now print by default
+**Two tiers: a group, then an action.** The group names what the command
+touches; the action names what it does to it.
+
+    tei       context validate ids pair seam state ledger header
+    ocr       pages lines gaps adopt-gap crops sheets zoom blot review
+              restore clean
+    proposal  check fix codepoints set replace
+    zones     check edit predict score assemble install remap remark-eval
+              delete diff paragraphs link blot
+    lexicon   misses native marks suffixes digraphs glosses
+    find      toc folio authority
+    corpus    normalize figures
+
+**`harness/VERBS.md` is the reference** — one entry per action: what it does,
+what it reads, what it writes, what its exit code means, and every flag with
+its default. It is not duplicated here, and it cannot go stale unnoticed:
+`harness/tests/test_cli_surface.py` walks the argparse tree and fails on any
+action or flag present in one and not the other, in both directions. That gate
+is the first thing ever to pin this CLI — no test touched it before, which is
+how one tier grew to 21 verbs carrying subcommands nobody had named.
+
+Four conventions hold across every group, and the reference states them once:
+
+- **Report by default; `--commit` writes.** The only write-enable, gating
+  exactly the authored stores (`gt/`, `tei/`, `models/`, the split and exemption
+  sidecars). It replaced `--convert`, `--fix`, and — on `ocr adopt-gap`, which
+  writes `gt/ocr/` — nothing at all. Derived output still writes on invocation,
+  because there the write *is* the action and the same command rebuilds it.
+- **Exit 0 clean, 1 a documented gate failed, 2 usage error.** Measurement never
+  gates: `zones check --store mz`, `zones score`, `zones diff`,
+  `zones paragraphs`, and everything under `find` and `lexicon` always exit 0.
+- **One meaning per flag name.** `--from DIR` is a source ALTO directory and
+  lives only in `ocr`; `--store gt|mz` is a closed set and lives only in
+  `zones`; `--force` overwrites existing output; `--out` redirects a write.
+- **Argument validation is argparse's**, not an if-chain's. A wrong combination
+  is rejected rather than silently ignored.
+
+Old spellings do not fail obscurely: the CLI traps every retired verb and flag
+cluster before parsing and prints the new spelling.
 
 Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
 lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
@@ -889,15 +791,15 @@ anything that needs to parse the output as a contract. Anything emitting a list
 of records keeps one fixed key set across them, because a ragged list silently
 degrades to the verbose nested form.
 
-Every verb that names a page takes a `PP-NNN` ref and rejects a bare integer,
-`state` included.
+Every action that names a page takes a `PP-NNN` ref and rejects a bare integer,
+`tei state` included.
 
 **No ad-hoc Python for anything the harness already does.** Not `python3 -c
-"...ord(ch)..."` to check a character's codepoint (`proposal-check
---codepoints`), not a crop script to magnify a glyph (`harness zoom` — see
+"...ord(ch)..."` to check a character's codepoint (`harness proposal
+codepoints`), not a crop script to magnify a glyph (`harness ocr zoom` — see
 `rebuild-groundtruth`'s SKILL.md on why 4× is already the ceiling and a
 hand-rolled crop cannot see past it), not a heredoc to patch one field of a
-JSON file (`proposal-check --set` — a hand-typed `Edit` can silently fail to
+JSON file (`harness proposal set` — a hand-typed `Edit` can silently fail to
 match this file's own NFD form). A one-off script is a tell that a tool is
 missing or that an existing one is being under-used; the fix is to reach for
 the verb, or extend it, not to route around it. This has been stated and not
@@ -916,6 +818,7 @@ accumulated here has been moved out rather than duplicated.
 | `.claude/skills/transcribe-page/` | the OCR→TEI collation loop, rules included — it has no separate harness doc |
 | `.claude/skills/rebuild-groundtruth/` | the raster→ALTO reading loop, rules included — it has no separate harness doc |
 | `.claude/skills/train-zones/` | the segmenter's train→score→install loop, and the judgement in it: reading a train/eval gap, when a class is too rare to keep, why the ketos metric is not the number |
+| `harness/VERBS.md` | the CLI surface: every action, what it reads and writes, its exit contract, its flags. Gated against the parser by `test_cli_surface.py` |
 | `harness/README.md` | the package: module responsibilities, stores, caller invariants |
 | `concordance.md` | the evidence set behind the spec — aligned pairs, flag register, per-glyph attestation |
 
@@ -936,7 +839,7 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
    there was nothing to flag, not because they were clean. Any baseline taken before
    a page's own rebuild is worthless for the same reason — `1-074` went from 0 flags
    to 15 `inventory_glyph` the moment it was restored.
-3. **Collation** — An LLM (usually Sonnet-class) receives 1) the image of the original scan, 2) the OCR plaintext for that page, and 3) a machine-generated summary with useful contextual data (relevant TOC entries, list of page figures, etc.). It outputs TEI for that page. Built by `harness context`; gated by `harness validate`. Everything the model receives is deterministic and precomputed — it never re-derives ToC ids, figure zones, or detector flags.
+3. **Collation** — An LLM (usually Sonnet-class) receives 1) the image of the original scan, 2) the OCR plaintext for that page, and 3) a machine-generated summary with useful contextual data (relevant TOC entries, list of page figures, etc.). It outputs TEI for that page. Built by `harness tei context`; gated by `harness tei validate`. Everything the model receives is deterministic and precomputed — it never re-derives ToC ids, figure zones, or detector flags.
 4. **Annotation** — TBD
 5. **Compilation** — TBD
 
@@ -947,7 +850,7 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
 3. **Figure captions** - `data/readings.md`, keyed `1-123|<zone-id suffix>`. The only caption store.
 4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`. ALTO XML files containing (useless) segments and text lines, which will be dumted to plain text
 5. **TEI** - `tei/chukchi-PP-NNN.xml`. Also the system of record for seam state:
-   its `<pb>` is where the printed folio enters the project, and `harness ledger`
+   its `<pb>` is where the printed folio enters the project, and `harness tei ledger`
    folds the committed files into the per-ref ledger the next page is built from.
 6. ???
 7. PROFIT!
@@ -1002,12 +905,12 @@ Encoding confirmed against real exports: eScriptorium writes zone types as
 assigned per export (`BT55`/`BT56` in one, `BT68`/`BT69` in the next), so code
 that hardcodes them fails silently rather than loudly.
 
-`harness context` surfaces these as `figures_on_page` — zone id, type, bbox, and
+`harness tei context` surfaces these as `figures_on_page` — zone id, type, bbox, and
 the caption `text` pulled from `data/readings.md`. The collation pass anchors
 `<figure facs>` against those zone ids and the validator rejects any that match
 no supplied zone. A Tier-1 span may optionally also carry `@facs` pointing at
-the OCR line(s) it was read from (`harness context`'s `ocr_lines` field
-supplies the ids, sourced from `ocr/` — resolve one with `harness zoom PP-NNN
+the OCR line(s) it was read from (`harness tei context`'s `ocr_lines` field
+supplies the ids, sourced from `ocr/` — resolve one with `harness ocr zoom PP-NNN
 --only <index> --from gt/ocr`, not zoom's default store); `validate.py` checks
 it resolves the same way it checks `<figure facs>`. See the collation skill's
 "`@facs` — flagging a span worth a second look" for the full rule. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
@@ -1069,7 +972,7 @@ keyed with a BibTeX-style moniker (`bogoras1900`, `krause1882`, `nordquist1882a`
 third apparatus store alongside `loi.json` and `toc.json`, and apparatus for the same
 reason — reachable without parsing TEI, and the annotation pass is its consumer.
 
-`harness authority` is the reader. It searches `cited_as`, then `author`, then the
+`harness find authority` is the reader. It searches `cited_as`, then `author`, then the
 titles, then the printed blocks, reports which of those caught each hit, and
 **returns all of them** — 51 sigla over 34 names means a single answer would be
 manufactured, and no hit at all is a legitimate outcome on an open list. It
@@ -1148,7 +1051,7 @@ Three properties of that number:
 One reading is unresolved and flagged in the file: `melikoff1896`'s Russian quoted
 title closes with a mark whose form is not separable at this magnification. That is
 a **tooling gap** as much as a reading one — these pages have no ALTO, so `harness
-zoom` and `harness lines` cannot reach them, and no verb magnifies an arbitrary
+zoom` and `harness ocr lines` cannot reach them, and no verb magnifies an arbitrary
 region of a page outside the pilot 20.
 
 **Cyrillic `й` is `и` + U+0306 by canonical decomposition**, so corpus-wide NFD turns
@@ -1202,7 +1105,7 @@ raster to settle what is on the paper, never to file the oddity as authorial and
   A floor is not licence for noise above it: a detector firing on ordinary English
   buries the real hits, and where a hit suppresses a later check it masks them.
   `data/lexicon_extra.txt` (committed, human-editable, seeded from real counts via
-  `harness lexicon`) holds the Latin binomials, ethnonyms and coinages no general
+  `harness lexicon misses`) holds the Latin binomials, ethnonyms and coinages no general
   dictionary carries. **It suppresses `lexicon_miss` and nothing else** — and it
   cannot do otherwise, since `lexicon_miss` only ever tests ASCII components, so a
   Tier-1 form listed there is inert by construction rather than by discipline.
@@ -1234,7 +1137,7 @@ does not trap.
 The collation pass is strictly per-page — one page per task, fresh read, no
 impressions carried in the model's head. What legitimately crosses a page
 boundary crosses through the **committed TEI**, folded forward by
-`harness ledger` into a per-ref table (`harness state PP-NNN` for one page's
+`harness tei ledger` into a per-ref table (`harness tei state PP-NNN` for one page's
 entry into it):
 
 - **folio** — from the page's `<pb n>`. `<pb/>` with no `@n` asserts the page
@@ -1242,18 +1145,18 @@ entry into it):
   advance the count.
 - **open headings** — the fold over committed `<milestone>`s; resets at each part.
 - **boundary** — whether an element carries across the gap, recorded as `@part` on
-  the two elements it lands on, one per page. `harness seam PP-NNN --continues`
+  the two elements it lands on, one per page. `harness tei seam PP-NNN --continues`
   writes both. **There is no `boundaries.json`** — the committed TEI is the record,
   not a materialization of a sidecar, and the I/M/F arithmetic reads back out of
   the files it wrote to. See below.
 
-`harness context` supplies **`prev_tail`** — the previous page's last top-level
+`harness tei context` supplies **`prev_tail`** — the previous page's last top-level
 element, as **markup, not a text excerpt**. The markup is where the witnesses are:
 `<item n="14">` is what settles whether the list resuming at 15 on the next page is
 the same list, and a flattened tail throws it away along with every `xml:lang`/
 `@resp` in play at the seam. Trimmed by dropping whole leading children so the
 fragment always parses, with the elision stated rather than implied. `null` when
-the predecessor is not collated — the same case `harness seam` refuses.
+the predecessor is not collated — the same case `harness tei seam` refuses.
 
 `ends_sentence` rides along as a **hint, never a verdict**, and the live seam says
 why: `1-100` closes its numbered list at item 14 with a full stop and `1-101`
@@ -1284,7 +1187,7 @@ gloss list routinely supplies a frame the entries never repeat — `1-100` annou
 "the following colors of reindeer-skin", and `Qeˊñu` is then glossed `“white mixed
 with brown”`, which in a dictionary says nothing about what is white. That frame is
 written as a **supplied `<head>`** on the list (`<supplied reason="context"
-resp="#llm">`), never copied into the glosses, and `harness lexicon --glosses`
+resp="#llm">`), never copied into the glosses, and `harness lexicon glosses`
 resolves it into a `scope` column beside every entry.
 
 A continuation list carries no head of its own: the scope resolves back through the
@@ -1369,7 +1272,7 @@ the deferral checkable rather than a line in a skill's never-do list.
 **`name` is a fourth id kind**, alongside `term`, `list` and `table`, earning its
 place the same way they did — by acquiring a referrer. `1-101` glosses two reindeer
 names in running prose (`Mushroom-Eater (Poˊñolɪn)`), and containment decides that
-pairing no better than it decides a term's. `harness lexicon --glosses` carries a
+pairing no better than it decides a term's. `harness lexicon glosses` carries a
 `kind` column so a proper name is separable from a common noun without re-parsing:
 an index of toponyms is that column filtered.
 
@@ -1392,7 +1295,7 @@ would otherwise import a foreign id in silence.
 **The header is a fragment, like the page files.** A bare `<teiHeader>` in the TEI
 namespace, not a valid TEI document standalone — `teiCorpus` requires at least one
 `TEI` child, so there is no conformant container for a header alone and inventing
-one would mean settling the assembly scheme by accident. `harness header` gates it,
+one would mean settling the assembly scheme by accident. `harness tei header` gates it,
 and what it checks is the *correspondence* with `validate.RESP_RANKS` rather than
 the prose: exactly those three ranks, declared as `respStmt/@xml:id`, no more and
 no fewer. Two files held one fact and nothing linked them — per-page validation
@@ -1407,7 +1310,7 @@ law instead of at the glyphs. The apparatus — `loi.json`, `toc.json`,
 `authorities.json` and their research, the TEI structure, the adjudications, the
 annotation layer — is original editorial work and is **CC BY 4.0**. Scopes are
 stated on each `<licence>`; where a reuse cannot separate them, treat it as CC BY.
-`harness header` errors on a settled `@status` granting no `<licence>` at all, that
+`harness tei header` errors on a settled `@status` granting no `<licence>` at all, that
 being the one licence state that reads as finished while saying nothing.
 
 **Bibliographic detail in the header was read off the rasters, and the witnesses
@@ -1462,7 +1365,7 @@ TBD
   of what is deferred: a Tier-1 name's **category** is now recorded by the
   collation pass, because only a reader of the page can see it, and only the
   **identity** waits — `@ref`/`@key` are gate errors until that scheme exists.
-- **Nothing validates the TEI against the TEI schema.** `harness validate` checks
+- **Nothing validates the TEI against the TEI schema.** `harness tei validate` checks
   *project* rules; there is no RELAX NG, no `tei_all`, no schema anywhere in the
   repo. That now covers nine attribute usages nobody checks for conformance —
   `@part`, `xml:id`, `@target` (including its list-valued form), `@prev`, `@next`,
@@ -1475,7 +1378,7 @@ TBD
   and the printed ToC's scan range is not recoverable from the file. Someone who
   knows should write it down — every other apparatus store is auditable back to a
   page and this one is not.
-- **`harness review`'s bare span diff has no second witness left.** `end-of-eval/`
+- **`harness ocr review`'s bare span diff has no second witness left.** `end-of-eval/`
   was the recognizer store and is deleted, so the diff now refuses rather than
   compare a proposal against the ground truth it produced. The `--serve` review
   page is unaffected and remains the correction loop. If a second witness is ever

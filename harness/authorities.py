@@ -274,4 +274,4 @@ def record(works: list[dict], key: str) -> dict:
         if w["key"] == key:
             return w
     raise KeyError(f"no authority with key {key!r}; "
-                   f"try `harness authority {key}` to search")
+                   f"try `harness find authority {key}` to search")

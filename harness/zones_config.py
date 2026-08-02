@@ -192,7 +192,7 @@ def train_merges(cfg: dict) -> dict[str, str]:
     **Training only.** The editor offers every declared type, `gt/zones/` stores
     what was keyed, and every check reads the keyed label — a distinction a human
     drew is evidence, and it is not destroyed because a model finds it hard. This
-    only ever narrows what `harness zones --assemble` asks the segmenter to learn.
+    only ever narrows what `harness zones assemble` asks the segmenter to learn.
     """
     raw = cfg.get("train_merges") or {}
     return {k: v["into"] for k, v in raw.items()

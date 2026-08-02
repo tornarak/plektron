@@ -184,7 +184,7 @@ MEDIAL_CAPS = re.compile(r"(?<!^)(?<!\s)[AEIL]")
 DOT_ABOVE_G = re.compile(r"\u0121|g\u0307")
 TOKEN = re.compile(r"[^\s]+")
 # keying_spec.md section 5.1: base letter + combining mark pairs known,
-# corpus-wide (`harness lexicon --marks`), to have a strong bare-vs-marked
+# corpus-wide (`harness lexicon marks`), to have a strong bare-vs-marked
 # skew inside a specific suffix family -- a bare reading there is
 # presumptively suspect before the raster is even consulted. A table rather
 # than one regex per class, so a newly measured skew is a data row to add,
@@ -404,7 +404,7 @@ def footnote_report(texts: list[str]) -> dict:
 
     Both are *report-only* and both have legitimate exceptions at a page seam,
     where a note's reference and its text can fall on different pages — hence
-    `harness proposal-check`'s contract of "passes unexplained if clean,
+    `harness proposal check`'s contract of "passes unexplained if clean,
     otherwise wants an explanation" rather than a refusal.
 
     `ascii_openers` catches the **half-open pairing**: a page that keyed one

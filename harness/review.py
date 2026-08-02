@@ -295,7 +295,7 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
 
     NFD on the way in. Browsers submit whatever normal form the keyboard produced,
     and this corpus is NFD by policy (keying spec section 1); an unnormalized save
-    would reintroduce exactly the mixed-encoding drift `harness normalize` exists to
+    would reintroduce exactly the mixed-encoding drift `harness corpus normalize` exists to
     remove.
 
     Written temp-then-rename so an interrupted save cannot truncate the file, and the
@@ -421,7 +421,7 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     dec = load_decisions(ref, root)
     if not dec:
         raise ValueError(f"no decisions for {ref}: adjudicate it first "
-                         f"(harness review {ref} --serve)")
+                         f"(harness ocr review {ref} --serve)")
 
     src = alto_for_lines(ref, alto_dir, root)
     tree = etree.parse(str(src))
@@ -441,7 +441,7 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             f"{ref}: {len(bad)} unlicensed mark(s) in the adjudicated text; "
             "refusing to write. These are sequences the notation does not contain "
             "(keying spec 2.6), not readings to weigh, so re-key them in "
-            f"harness review {ref} --serve:\n  " + "\n  ".join(bad))
+            f"harness ocr review {ref} --serve:\n  " + "\n  ".join(bad))
 
     target = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
     # Same real file, reached under two names, is `revision`; anything else is a

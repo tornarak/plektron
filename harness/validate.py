@@ -26,7 +26,7 @@ TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 TIER1 = {"ckt", "kpy", "ypk"}
 # Provenance ranks, strictly ordered, declared as respStmt/@xml:id once in the corpus
-# teiHeader and never in a page file — a page is a fragment and defers. `harness header`
+# teiHeader and never in a page file — a page is a fragment and defers. `harness tei header`
 # (check_corpus_header below) is what holds this dict and that file together; without
 # it the two could drift and every page would go on passing. Rank answers *who read this*,
 # which is a different question from whether the image decided — that one is
@@ -478,7 +478,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # later pass's job. The ban was too wide: a gap's two ends are one fact, and
     # the page *after* the gap is the only place both witnesses exist — it holds
     # the previous page's tail, its own opening text and its own first-line
-    # indent. So `harness seam` writes @part on both sides, and the TEI is the
+    # indent. So `harness tei seam` writes @part on both sides, and the TEI is the
     # record rather than a materialization of some sidecar.
     #
     # What is checked here is therefore the *shape*: a legal I/M/F value, on a
