@@ -1,0 +1,207 @@
+"""The CLI surface, held against `harness/VERBS.md`.
+
+**Nothing pinned this CLI until now, and that is why it needed reorganizing.**
+Every other test in this suite imports module functions directly; not one built
+the parser, called `main`, or shelled out to the binary. So a verb could be
+renamed, a flag could grow a second meaning, and a documented mode could stop
+existing, with a green suite throughout. The surface drifted into 21 top-level
+verbs whose flags formed subcommands nobody had named — `zones` alone carried
+21 of them — and no mechanism could have reported it.
+
+This is the `harness header` shape applied to the CLI: two files hold one fact
+(the parser and VERBS.md), a page never resolves the correspondence locally, so
+without a gate they drift silently. The assertion runs **both directions** —
+an action or flag in the parser and not the reference is undocumented, one in
+the reference and not the parser is a lie about what the tool does, and both
+are the same defect wearing different clothes.
+
+The reference is hand-written rather than generated on purpose. What it has to
+carry — which store an action reads, which it writes, what its exit code means
+— does not live in argparse and would bloat `--help` past usefulness if it did.
+Generation would guarantee agreement about the one thing that is already
+checkable and lose the part that is worth writing down.
+"""
+from __future__ import annotations
+import re
+from pathlib import Path
+
+import pytest
+
+from harness.cli import build_parser
+from harness.cli._common import RENAMED_FLAGS, RENAMED_VERBS, walk_surface
+
+VERBS_MD = Path(__file__).resolve().parent.parent / "VERBS.md"
+
+# `### group action [ARGS]` — the heading form every entry uses. Positionals are
+# part of the heading and deliberately not checked here: argparse's metavar and
+# the reference's prose spelling are allowed to differ (`REF` vs `PP-NNN`), and
+# pinning them would be a style gate wearing a correctness gate's clothes.
+_HEADING = re.compile(r"^### (\w+) ([\w-]+)", re.M)
+# The fenced block under each heading, one flag per line, `--name ... [default]`.
+_FENCE = re.compile(r"^```\n(.*?)^```", re.M | re.S)
+# Anchored at line start, so a flag *named inside another flag's help* is not
+# mistaken for a flag of its own — `--window`'s note mentions `--zoom`, and an
+# unanchored search would document it twice and miss nothing in return.
+_FLAG = re.compile(r"^(--[\w-]+)", re.M)
+# `--root` and `--json` are on every action by construction and share one
+# trailing line in each fence rather than being restated twice per entry. They
+# have their own assertion (test_every_action_takes_the_globals); comparing them
+# per action would be 40 repetitions of a fact one test already holds.
+GLOBALS = {"--root", "--json"}
+
+
+def _documented() -> dict[tuple[str, str], set[str]]:
+    """`{(group, action): {flags}}` as VERBS.md declares it."""
+    text = VERBS_MD.read_text(encoding="utf-8")
+    entries = {}
+    marks = [(m.start(), m.group(1), m.group(2)) for m in _HEADING.finditer(text)]
+    for i, (pos, group, action) in enumerate(marks):
+        end = marks[i + 1][0] if i + 1 < len(marks) else len(text)
+        block = text[pos:end]
+        fence = _FENCE.search(block)
+        flags = set(_FLAG.findall(fence.group(1))) if fence else set()
+        entries[(group, action)] = flags
+    return entries
+
+
+@pytest.fixture(scope="module")
+def parser_surface():
+    return walk_surface(build_parser())
+
+
+@pytest.fixture(scope="module")
+def doc_surface():
+    return _documented()
+
+
+def test_verbs_md_exists_and_parses():
+    """A reference nobody can parse is a reference nothing can gate."""
+    assert VERBS_MD.exists(), f"{VERBS_MD} is missing"
+    assert _documented(), "no `### group action` headings found — the format moved"
+
+
+def test_every_action_is_documented(parser_surface, doc_surface):
+    undocumented = sorted(set(parser_surface) - set(doc_surface))
+    assert not undocumented, (
+        "actions exist in the CLI but not in harness/VERBS.md: "
+        + ", ".join(f"{g} {a}" for g, a in undocumented))
+
+
+def test_every_documented_action_exists(parser_surface, doc_surface):
+    """The direction that catches a rename nobody propagated — and the one a
+    generated reference could never fail."""
+    phantom = sorted(set(doc_surface) - set(parser_surface))
+    assert not phantom, (
+        "harness/VERBS.md documents actions the CLI does not have: "
+        + ", ".join(f"{g} {a}" for g, a in phantom))
+
+
+def test_flags_match_both_directions(parser_surface, doc_surface):
+    problems = []
+    for key in sorted(set(parser_surface) & set(doc_surface)):
+        real = parser_surface[key] - GLOBALS
+        documented = doc_surface[key] - GLOBALS
+        missing, phantom = real - documented, documented - real
+        if missing:
+            problems.append(f"{key[0]} {key[1]}: undocumented {sorted(missing)}")
+        if phantom:
+            problems.append(f"{key[0]} {key[1]}: documented but absent {sorted(phantom)}")
+    assert not problems, "\n".join(problems)
+
+
+def test_every_action_takes_the_globals(parser_surface):
+    """`--root`/`--json` are attached to every *action* parser, not to the group.
+
+    With two tiers the last parser to run is the action's, so a group-tier
+    registration would leave `harness zones predict --json` a parse error while
+    `harness zones --json predict` worked — a distinction no user should have to
+    hold. Asserted here because it is invisible until someone types it that way.
+    """
+    for key, flags in parser_surface.items():
+        assert {"--root", "--json"} <= flags, f"{key[0]} {key[1]} is missing a global"
+
+
+def test_every_action_has_help():
+    """argparse omits a helpless subparser from the listing entirely, which is how
+    four load-bearing verbs once appeared as bare names inside a brace list."""
+    ap = build_parser()
+    for group_act in ap._subparsers._group_actions:
+        for gname, gparser in group_act.choices.items():
+            for act_act in gparser._subparsers._group_actions:
+                assert act_act.choices, f"group {gname} has no actions"
+                for aname, sub in act_act.choices.items():
+                    assert (sub.description or "").strip() or (sub.format_usage()), \
+                        f"{gname} {aname} has no help"
+
+
+def test_renamed_tables_point_at_real_actions(parser_surface):
+    """Every rename target must name something that exists.
+
+    The trap's whole job is to send someone to the right spelling; a stale entry
+    sends them to another dead one, which is worse than argparse's own error
+    because it reads as authoritative.
+    """
+    live = {f"{g} {a}" for g, a in parser_surface}
+    for old, new in list(RENAMED_VERBS.items()) + list(RENAMED_FLAGS.items()):
+        head = " ".join(new.split()[:2])
+        assert head in live, f"rename for {old!r} points at {head!r}, which does not exist"
+
+
+def test_no_renamed_verb_is_also_a_live_group(parser_surface):
+    """A retired top-level verb cannot also be a live group name, or the trap
+    would shadow the group and the group would be unreachable."""
+    groups = {g for g, _ in parser_surface}
+    clash = groups & set(RENAMED_VERBS)
+    assert not clash, f"these are both retired verbs and live groups: {sorted(clash)}"
+
+
+def test_the_trap_does_not_fire_on_a_valid_new_command(parser_surface):
+    """`--ink` is a retired `zones` flag *and* a live `zones check` flag.
+
+    A trap that scanned flags regardless of position would reject `zones check
+    --ink` — the correct new spelling — and tell the user to type what they had
+    just typed. This is the regression that condition exists for.
+    """
+    from harness.cli._common import check_renamed
+    actions = {}
+    for g, a in parser_surface:
+        actions.setdefault(g, set()).add(a)
+    assert check_renamed(["zones", "check", "--ink"], actions) is None
+    assert check_renamed(["zones", "check", "--lines", "1-048"], actions) is None
+    assert check_renamed(["zones", "check", "--store", "mz"], actions) is None
+    # ...while the old forms still route.
+    assert check_renamed(["zones", "--ink"], actions) == "zones check --ink"
+    assert check_renamed(["zones", "1-048", "--serve"], actions) == "zones edit [REF]"
+    assert check_renamed(["validate", "1-101"], actions) == "tei validate REF"
+
+
+def test_write_enable_is_commit_everywhere(parser_surface):
+    """One write-enable flag, CLI-wide.
+
+    There used to be four idioms — `--commit`, `--convert`, `--fix`, and simply
+    writing on invocation — with no rule saying which applied where, so the only
+    way to know whether a command was about to touch `gt/` was to read its
+    source. `--convert` and `--fix` are gone as write-enables; anything else
+    claiming the role would be a fifth.
+    """
+    retired = {"--convert", "--dry-run"}
+    for key, flags in parser_surface.items():
+        overlap = flags & retired
+        assert not overlap, f"{key[0]} {key[1]} still carries {sorted(overlap)}"
+
+
+def test_from_and_store_do_not_mix(parser_surface):
+    """`--from` is a free ALTO directory; `--store` is a closed set of two.
+
+    They were the same flag name for two incompatible types, which is how a
+    check ends up compared against its own input by typo. The rule is now that
+    `--from` lives only in `ocr` and `--store` only in `zones`, and no action
+    carries both.
+    """
+    for (group, action), flags in parser_surface.items():
+        assert not ({"--from", "--store"} <= flags), \
+            f"{group} {action} carries both --from and --store"
+        if "--from" in flags:
+            assert group == "ocr", f"--from outside the ocr group: {group} {action}"
+        if "--store" in flags:
+            assert group == "zones", f"--store outside zones: {group} {action}"

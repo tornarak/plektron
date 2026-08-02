@@ -232,7 +232,7 @@ def mark_figure_overlap(recs: list[dict], ref: str, root: Path = Path(".")) -> l
 
       * `in_figdesc` — the line is a **caption**, ≥`FIGDESC_INSIDE` inside a
         `GraphicZone-FigDesc`. The project already holds a human reading of every
-        caption in `data/readings.md`, and `harness context` hands it to collation
+        caption in `data/readings.md`, and `harness tei context` hands it to collation
         from there, so a line segment over one is a redundant second witness —
         machine-rank, on the 812 pages not yet keyed by hand.
       * `in_graphic` — the line lies inside a plain `GraphicZone`. **Flagged, never
@@ -581,8 +581,16 @@ GAP_ID_PREFIX = "gap_"
 
 
 def adopt_gaps(ref: str, vpos_list: list[int], alto_dir: str = DEFAULT_ALTO_DIR,
-               root: Path = Path("."), scans: str = "scans") -> dict:
+               root: Path = Path("."), scans: str = "scans",
+               commit: bool = False) -> dict:
     """Materialize measured gap bands as empty `TextLine`s in `gt/ocr/`.
+
+    **Preview unless `commit`.** This is one of exactly two writers into the
+    ground-truth store, and for most of its life it was the only one that wrote
+    on invocation with no gate at all — `restore` next to it has always required
+    `--commit`. Every refusal below (an unmeasured vpos, a band overlapping an
+    existing line) is raised before anything is written either way, so the
+    preview is a real rehearsal rather than a cheaper check.
 
     A dropped line cannot be repaired by `restore`, which only writes `CONTENT`
     into lines that already exist. Something has to create the line first, and the
@@ -626,7 +634,7 @@ def adopt_gaps(ref: str, vpos_list: list[int], alto_dir: str = DEFAULT_ALTO_DIR,
             raise ValueError(
                 f"{ref}: no measured gap band at vpos={v}. "
                 f"Available: {sorted(bands) or 'none'} "
-                "(run `harness lines PP-NNN --gaps`; a band must be measured, "
+                "(run `harness ocr gaps PP-NNN`; a band must be measured, "
                 "never hand-entered)")
         wanted.append(bands[v])
 
@@ -679,9 +687,20 @@ def adopt_gaps(ref: str, vpos_list: list[int], alto_dir: str = DEFAULT_ALTO_DIR,
         added.append({"vpos": b["vpos"], "line_id": tl.get("ID"),
                       "hpos": x, "y": y, "width": w, "height": h})
 
+    if not commit:
+        # The tree was built and every guard passed; it simply is not written.
+        # `new_indices` is null rather than guessed: an index is assigned by
+        # document order in the file that does not exist yet, and inventing one
+        # here would be a number to key against that nothing produced.
+        return {"ref": ref, "path": str(target), "committed": False,
+                "lines_before": len(existing),
+                "lines_after": len(existing) + len(added), "added": added,
+                "new_indices": None}
+
     tree.write(str(target), xml_declaration=True, encoding="UTF-8", standalone=None)
     after = page_lines(target, root)
-    return {"ref": ref, "path": str(target), "lines_before": len(existing),
+    return {"ref": ref, "path": str(target), "committed": True,
+            "lines_before": len(existing),
             "lines_after": len(after), "added": added,
             "new_indices": [r["index"] for r in after
                             if (r["line_id"] or "").startswith(GAP_ID_PREFIX)]}
