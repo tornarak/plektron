@@ -25,11 +25,33 @@ from .state import entry_state, foreign_terms_nearby, load_toc, toc_window
 
 REF_RE = re.compile(r"^(?:chukchi-)?(\d+)-(\d+)$")
 
-# Zones whose text the printer set rather than the author: the running head with
-# its folio, and the signature line at the foot of a gathering. `build_context`
-# keeps them out of the collation draft; see the comment at the exclusion for why
-# there and not at the point the page is recognized.
-APPARATUS_ZONES = frozenset({"RunningTitleZone", "QuireMarksZone"})
+# **Where a folio may be printed, in the order it is looked for.** Three places,
+# because the book puts the number in three, and the order is the order of
+# confidence rather than of frequency:
+#
+#   RunningTitleZone  the ordinary page. Head line, folio bare beside the head.
+#   QuireMarksZone    a chapter opening. No running title at all, the number set
+#                     at the **foot** of the page and **in brackets** — `1-151`
+#                     reads `[115]` at vpos 3231 of a 3897 px page, and its
+#                     collated TEI gives `<pb n="115"/>`.
+#   NumberingZone     the old full-SegmOnto vocabulary `gt/ocr/` descends from,
+#                     which split the folio out of the head as its own zone. The
+#                     current scheme cannot express that split — a fixed-width
+#                     vertical partition has nowhere to put it, and the two are on
+#                     one printed line (`data/zones_config.json`). Last because it
+#                     is the store-specific spelling, not a place on the page: it
+#                     appears at the head on `1-048` and at the foot on `1-151`.
+#
+# Reading all three matters because the two stores speak different vocabularies for
+# the same ink, and `gt/ocr/` — which speaks the old one — is where the collation
+# frontier is.
+FOLIO_ZONES = ("RunningTitleZone", "QuireMarksZone", "NumberingZone")
+
+# Zones whose text the printer set rather than the author: the head line, the
+# signature line at the foot of a gathering, and the folio in whichever of them it
+# lands. `build_context` keeps them out of the collation draft; see the comment at
+# the exclusion for why there and not at the point the page is recognized.
+APPARATUS_ZONES = frozenset(FOLIO_ZONES)
 
 
 def parse_ref(ref: str) -> tuple[int, int]:
@@ -115,6 +137,118 @@ def _lines_from_alto(path: Path) -> list[str]:
     """
     from .lines import page_lines
     return [rec["text"] for rec in page_lines(path) if rec["text"].strip()]
+
+
+# A folio is a number standing **alone** on its line, optionally in brackets.
+# Arabic for the body, roman for the front matter (part 1's is printed xii-xvii).
+#
+# **Deliberately strict about everything else**: no other punctuation, no digits
+# embedded in words, nothing repaired. A recognizer's `2S` for `28` must fail this
+# and fall through, leaving the line for a human to read — the alternative is a
+# plausible page number with no error signal, which is the failure this project is
+# organised against.
+#
+# The brackets are captured rather than tolerated. `1-151` prints `[115]` at the
+# foot of a chapter opening and its collated TEI reads `<pb n="115"/>`, so the
+# editor read through them — but whether a bracketed folio is the printer's or
+# supplied is a judgement about the book, and `bracketed` carries it forward
+# instead of discarding it at the point the number is parsed.
+_FOLIO_RE = re.compile(r"^(\[)?(\d{1,4}|[ivxlcdm]{1,7}|[IVXLCDM]{1,7})(?(1)\])$")
+
+
+def _folio_in(lines: list[dict]) -> tuple[str, bool] | None:
+    """First line that is nothing but a page number. `(folio, bracketed)`."""
+    for r in lines:
+        m = _FOLIO_RE.match((r["text"] or "").strip())
+        if m:
+            return m.group(2), bool(m.group(1))
+    return None
+
+
+def _running_title(recs: list[dict], ref: str, root: Path) -> dict | None:
+    """The page's own statement of what page it is.
+
+    `{text, folio, folio_from, bracketed, lines}`, or null where the page carries
+    none of the three zones a folio can print in — a plate, a blank, a page nobody
+    has segmented.
+
+    **The folio is looked for in `FOLIO_ZONES` order, and `folio_from` says which
+    one answered.** That order is confidence, not frequency: the head line of an
+    ordinary page first; then the bracketed number at the foot of a chapter
+    opening; then the old vocabulary's dedicated zone, last because it names a
+    store's spelling rather than a place on the page.
+
+    **`text` is the running title and only ever that** — the head line with any
+    folio token taken out of it. It is `""` on a page that has no running title,
+    which a chapter opening does not: `1-151` has no head at all and still yields a
+    folio, from the quire marks. So `text` and `folio` are independent, and neither
+    being empty says anything about the other.
+
+    Where nothing parses, `folio` is null and the lines are still in `text` — the
+    caller has what the page holds and reads the number itself, the same "null
+    means go and look" contract `expected_folio` keeps.
+
+    This is also where the running title *goes*. `build_context` drops all three
+    zones from `catmus_draft` as the printer's text; promoting them here means the
+    information is restructured rather than discarded, and the folio in particular
+    is the part the project needs — `<pb n>` is where page numbering enters the
+    corpus.
+
+    Two lines in the head is the ordinary case, not one: the title and the number
+    sit on one printed line with a wide gap and the segmenter splits them.
+    """
+    by_zone = {z: [r for r in recs if r.get("zone") == z] for z in FOLIO_ZONES}
+    if not any(by_zone.values()):
+        # A store whose blocks carry no label at all: fall back to the zone store's
+        # bands and take the lines inside them geometrically.
+        for z in FOLIO_ZONES:
+            by_zone[z] = _lines_in_zone(recs, ref, root, z)
+    if not any(by_zone.values()):
+        return None
+
+    folio = bracketed = None
+    source = ""
+    for z in FOLIO_ZONES:
+        hit = _folio_in(by_zone[z])
+        if hit:
+            folio, bracketed = hit
+            source = z
+            break
+
+    head = sorted(by_zone["RunningTitleZone"], key=lambda r: r.get("hpos") or 0)
+    text = " ".join(t for t in ((r["text"] or "").strip() for r in head)
+                    if t and not _FOLIO_RE.match(t))
+    return {"text": text, "folio": folio, "folio_from": source or None,
+            "bracketed": bracketed, "lines": sum(len(v) for v in by_zone.values())}
+
+
+def _lines_in_zone(recs: list[dict], ref: str, root: Path,
+                   label: str) -> list[dict]:
+    """Lines whose vertical midpoint falls in a zone of this label.
+
+    Geometry rather than a label on the block, for the store whose blocks carry
+    none. Reads `zones/` — the view, so a human-keyed page answers from
+    `gt/zones/` and a machine-keyed one from `mz/zones/`, which is what the view
+    is for. Silent `[]` when the page has no zones: absence of a segmentation is
+    not an error here, it is the ordinary state of a page nobody has reached.
+    """
+    try:
+        from .zones import VIEWDIR, read_zones
+        bands = [(z["y0"], z["y1"]) for z in read_zones(ref, root, store=VIEWDIR)
+                 if z["label"] == label]
+    except Exception:
+        return []
+    if not bands:
+        return []
+    out = []
+    for r in recs:
+        v, h = r.get("vpos"), r.get("height")
+        if v is None or h is None:
+            continue
+        mid = v + h / 2
+        if any(y0 <= mid <= y1 for y0, y1 in bands):
+            out.append(r)
+    return out
 
 
 def _draft_text(lines: list[str]) -> str:
@@ -240,11 +374,29 @@ def _ocr_lines(ocr_path: Path) -> list[dict]:
     Reads the same `ocr/{stem}.xml` the draft already reads — not a second
     ALTO store — since a facs pointer must resolve in the ALTO the model
     actually saw.
+
+    **`APPARATUS_ZONES` are omitted here as well as from the draft**, and for a
+    sharper reason than there. The draft excludes them because they are the
+    printer's text; this list excludes them because **nothing in the TEI can ever
+    point at one**. `@facs` cites the line a Tier-1 span was read from, and a
+    running head, a folio and a signature line are not in the body at all — so
+    every one of them in this list is a pointer target that would be a mistake to
+    use, offered to a pass that is choosing among them.
+
+    A caption line stays, and the difference is worth keeping straight: a caption
+    is excluded from the *draft* only, because the project already has a human
+    reading of it in `data/readings.md` and showing the model two witnesses of
+    different rank invites it to reconcile them. It remains citable, so it remains
+    here.
+
+    Omitting records cannot disturb the rest: `index` is an identity assigned by
+    ALTO document order, never a position in this list.
     """
     from .lines import page_lines  # local: lines.py imports context at module
                                     # level, so this avoids a cycle.
     return [{"index": r["index"], "line_id": r["line_id"], "text": r["text"]}
-            for r in page_lines(ocr_path)]
+            for r in page_lines(ocr_path)
+            if r["zone"] not in APPARATUS_ZONES]
 
 
 def build_context(ref: str, root: Path = Path(".")) -> dict:
@@ -321,6 +473,11 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         "folio_basis": {"prior_ref": state["prior_ref"],
                         "basis_ref": state["basis_ref"],
                         "basis_folio": state["basis_folio"]},
+        # What the page itself says it is, off its running title — the second
+        # witness to `expected_folio` above, which is a prediction from the
+        # preceding page and knows nothing about this one. Cheap, independent, and
+        # the two disagreeing is the signal.
+        "running_title": _running_title(recs, ref, root),
         # A neighbourhood with marks, not a resolution. `open` is what the
         # milestone fold believes; it informs, it does not decide.
         "toc_window": toc_window(load_toc(root), state["expected_folio"],

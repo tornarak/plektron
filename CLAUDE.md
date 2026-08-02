@@ -865,14 +865,38 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
    inset figure on `1-283`. Figure captions do go, and should — they live in
    `data/readings.md` and are not body text.
 
-   **The running title and the quire marks are dropped from the collation draft,
-   not from the store** (`context.APPARATUS_ZONES`). They are the printer's text,
-   not the author's. The filter sits at the consumer rather than at `ocr predict`
-   because the running head **shares its zone with the printed folio**, and the
-   folio is where page numbering enters the project; dropping it at write time
-   would take the OCR's only record of it and cost a re-run of the page. An
-   *unlabelled* block is kept, since `gt/ocr/` and `gt/seg/` label none and
-   treating blank as apparatus would empty the draft for every ground-truth page.
+   **The printer's zones are dropped from the collation draft, not from the store**
+   (`context.APPARATUS_ZONES`: running title, quire marks, and the old vocabulary's
+   numbering zone). The filter sits at the consumer rather than at `ocr predict`
+   because those zones **carry the printed folio**, and the folio is where page
+   numbering enters the project; dropping it at write time would take the OCR's
+   only record of it and cost a re-run of the page. An *unlabelled* block is kept,
+   since a store may label none and treating blank as apparatus would empty the
+   draft for every page of it.
+
+   They leave **`ocr_lines`** as well, and for a sharper reason than the draft's:
+   that list is the set of `@facs` pointer targets, and a running head, a folio or
+   a signature line is never in the TEI body, so citing one is a mistake by
+   construction. A **caption** is different and stays — it is dropped from the
+   draft only, because the project already holds a human reading of it in
+   `data/readings.md`, and it remains legitimately citable.
+
+   **They leave the draft and arrive as `running_title`**, a `tei context` field
+   carrying `{text, folio, folio_from, bracketed, lines}` — restructured rather
+   than discarded. That folio is the **second witness** to `expected_folio`, which
+   is a prediction from the preceding transcribed page and knows nothing about this
+   one; the two disagreeing is the signal, and a second witness this cheap is what
+   the governing principle asks for.
+
+   **The book prints the number in three places and the corpus spells them in two
+   vocabularies**, so it is looked for in order of confidence: the head line of an
+   ordinary page; then a **bracketed** number at the *foot* of a chapter opening,
+   which is `QuireMarksZone` in the current scheme (`1-151` reads `[115]` at vpos
+   3231 of a 3897 px page, and its collated TEI gives `<pb n="115"/>`); then
+   `NumberingZone`, the full-SegmOnto zone `gt/ocr/` descends from, last because it
+   names a store's spelling rather than a place on the page — it appears at the
+   head on `1-048` and at the foot on `1-151`. `folio_from` records which answered.
+   Nothing is repaired: `2S` for `28` leaves `folio` null and stays in `text`.
 
    Recognition is stock CATMuS; the fine-tune referred to in earlier drafts is not
    in the repo and is no longer the plan. Measured against a human key it reads

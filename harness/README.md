@@ -93,6 +93,13 @@ labels, because these encode judgements a one-word gloss cannot carry.
 deterministic and precomputed: a pass that re-derived any of it could disagree with
 the validator that checks it.
 
+Also `_running_title`, the page's own folio, read from the three zones a number can
+print in — `FOLIO_ZONES`, in order of confidence — and the second witness to
+`state.py`'s prediction. `APPARATUS_ZONES` is the same three, kept out of
+`catmus_draft`; the exclusion lives in `build_context` and **not** in
+`_lines_from_alto`, which also feeds the lexicon frequency tables that
+`keying_spec.md` §5.1 cites. Same reader, two consumers, one exclusion.
+
 **`state.py`** — derived seam state. Folio comes from a committed TEI's `<pb n>` and
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is
 the answer, not a failure. Also `toc_window`/`toc_search`/`toc_near`.
@@ -156,9 +163,17 @@ set on them**: `serialization.serialize` reads `record.prediction` and nothing e
 so the obvious spelling writes `CONTENT=""` on every line, a well-formed page with
 no words on it, which is the `gt/fig/` failure exactly.
 
-Both of those were found by reading a written page back through `harness ocr lines`
-rather than by trusting what the writer reported about itself; neither raised an
-error, and the file looked right from the outside in both cases.
+Third, **`serialize`'s `sub_line_segmentation` defaults to `True`** and must be
+turned off: handed `ocr_record`s it emits a `<String>` per word, an `<SP>` per space
+and a `<Glyph>` per character, which is 3375 glyphs and a 1.4 MB file where
+`gt/ocr/` holds 49 strings in 30 KB. The size is the symptom; the rule is that the
+two stores sit under one view, so they must be the same shape. They read alike
+either way — `page_lines` concatenates a line's `String`s — which is how the
+divergence survives until something reads `String/@CONTENT` expecting a line.
+
+All three were found by reading a written page back rather than by trusting what
+the writer reported about itself; none raised an error, and the file looked right
+from the outside in every case.
 
 **`review.py`** — the largest, and it does four things: span diffing, decision
 persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),

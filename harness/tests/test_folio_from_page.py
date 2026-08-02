@@ -1,0 +1,138 @@
+"""The folio the page itself states, and where it is looked for.
+
+`expected_folio` is a prediction from the preceding transcribed page and knows
+nothing about this one. This is the second witness — the page's own statement —
+and the two disagreeing is the signal the pair exists to raise.
+
+The three zones are tested separately because the book prints the number in three
+places and the corpus spells them in two vocabularies. Verified against the three
+collated pages: `1-100`/`1-101` extract 74/75 and `1-151` extracts 115 through its
+brackets, each matching the `<pb n>` a human wrote.
+"""
+from __future__ import annotations
+
+from harness.context import FOLIO_ZONES, _folio_in, _running_title
+
+
+def _line(text, zone, hpos=0, vpos=0, height=50):
+    return {"text": text, "zone": zone, "hpos": hpos, "vpos": vpos,
+            "height": height}
+
+
+def test_the_ordinary_page_reads_its_head_line(tmp_path):
+    recs = [_line("BOGORAS, THE CHUKCHEE.", "RunningTitleZone", hpos=1305),
+            _line("223", "RunningTitleZone", hpos=2044),
+            _line("Scissors used throughout", "MainZone-P", vpos=700)]
+    rep = _running_title(recs, "1-283", tmp_path)
+    assert rep["folio"] == "223"
+    assert rep["folio_from"] == "RunningTitleZone"
+    assert rep["bracketed"] is False
+    assert rep["text"] == "BOGORAS, THE CHUKCHEE.", "the folio leaves the title"
+
+
+def test_a_chapter_opening_reads_its_bracketed_quire_mark(tmp_path):
+    """`1-151`: no running title at all, the number set at the foot in brackets,
+    and the collated TEI reads `<pb n="115"/>`. `text` is empty and `folio` is
+    not — the two are independent."""
+    recs = [_line("[115]", "QuireMarksZone", vpos=3231)]
+    rep = _running_title(recs, "1-151", tmp_path)
+    assert rep["folio"] == "115"
+    assert rep["folio_from"] == "QuireMarksZone"
+    assert rep["bracketed"] is True
+    assert rep["text"] == ""
+
+
+def test_the_old_vocabulary_is_read_too(tmp_path):
+    """`gt/ocr/` descends from the full-SegmOnto scheme, which split the folio out
+    as `NumberingZone`. That store is where the collation frontier is, so a rule
+    knowing only the current spelling would find the head and never the number."""
+    recs = [_line("28", "NumberingZone", hpos=726),
+            _line("BOGORAS, THE CHUKCHEE.", "RunningTitleZone", hpos=1308)]
+    rep = _running_title(recs, "1-048", tmp_path)
+    assert rep["folio"] == "28"
+    assert rep["folio_from"] == "NumberingZone"
+    assert rep["text"] == "BOGORAS, THE CHUKCHEE."
+
+
+def test_the_running_title_wins_over_the_other_two(tmp_path):
+    """Precedence is confidence, not frequency. A page offering a number in more
+    than one place is answered from the head line."""
+    recs = [_line("223", "RunningTitleZone", hpos=2044),
+            _line("[9]", "QuireMarksZone", vpos=3231),
+            _line("7", "NumberingZone", hpos=100)]
+    rep = _running_title(recs, "1-283", tmp_path)
+    assert (rep["folio"], rep["folio_from"]) == ("223", "RunningTitleZone")
+    assert FOLIO_ZONES[0] == "RunningTitleZone"
+
+
+def test_an_unparseable_number_yields_null_and_keeps_the_line(tmp_path):
+    """A recognizer's `2S` for `28` must not become a page number. Null, and the
+    text stays where a human can read it — the `expected_folio` contract."""
+    recs = [_line("BOGORAS, THE CHUKCHEE.", "RunningTitleZone", hpos=1305),
+            _line("2S", "RunningTitleZone", hpos=2044)]
+    rep = _running_title(recs, "1-283", tmp_path)
+    assert rep["folio"] is None and rep["folio_from"] is None
+    assert "2S" in rep["text"], "an unread number is not silently dropped"
+
+
+def test_a_number_inside_a_line_is_not_a_folio(tmp_path):
+    """Only a line that is *nothing but* a number counts. The signature line
+    `9-JESUP NORTH PACIFIC EXPED.` opens with a digit and is not a folio."""
+    assert _folio_in([_line("9-JESUP NORTH PACIFIC EXPED.", "QuireMarksZone")]) is None
+    assert _folio_in([_line("Fig. 151, c", "MainZone-P")]) is None
+
+
+def test_roman_numerals_parse():
+    """Part 1's front matter is printed xii-xvii."""
+    assert _folio_in([_line("xiv", "RunningTitleZone")]) == ("xiv", False)
+    assert _folio_in([_line("XIV", "RunningTitleZone")]) == ("XIV", False)
+
+
+def test_a_half_open_bracket_does_not_parse():
+    """`[115` is a recognizer dropping a character, not a page number."""
+    assert _folio_in([_line("[115", "QuireMarksZone")]) is None
+    assert _folio_in([_line("115]", "QuireMarksZone")]) is None
+
+
+def test_a_page_with_none_of_the_three_zones_is_null(tmp_path):
+    """A plate carries no folio anywhere, and that is a real state rather than a
+    failure to find one."""
+    assert _running_title([_line("body", "MainZone-P")], "1-167", tmp_path) is None
+
+
+# --- what a @facs pointer may cite -----------------------------------------
+
+def test_ocr_lines_omits_what_no_facs_could_point_at(tmp_path):
+    """`ocr_lines` is the set of pointer targets offered to the collation pass.
+
+    The running head, the folio and the signature line are never in the TEI body,
+    so a `@facs` citing one would be a mistake by construction — a stronger reason
+    than the draft's, which drops them merely as the printer's text.
+
+    Asserted through the real reader over a real file, because the filter reads
+    `zone`, which only exists once the ALTO carries labels.
+    """
+    from harness.context import _ocr_lines
+    ns = "http://www.loc.gov/standards/alto/ns-v4#"
+    p = tmp_path / "ocr" / "chukchi-1-283.xml"
+    p.parent.mkdir(parents=True)
+    p.write_text(
+        f'<alto xmlns="{ns}"><Layout><Page><PrintSpace>'
+        '<TextBlock ID="r1" TAGREFS="T1"><TextLine ID="l1">'
+        '<String CONTENT="BOGORAS, THE CHUKCHEE."/></TextLine>'
+        '<TextLine ID="l2"><String CONTENT="223"/></TextLine></TextBlock>'
+        '<TextBlock ID="r2" TAGREFS="T2"><TextLine ID="l3">'
+        '<String CONTENT="Scissors used throughout"/></TextLine></TextBlock>'
+        '<TextBlock ID="r3" TAGREFS="T3"><TextLine ID="l4">'
+        '<String CONTENT="9-JESUP NORTH PACIFIC EXPED."/></TextLine></TextBlock>'
+        "</PrintSpace></Page></Layout>"
+        f'<Tags><OtherTag ID="T1" TYPE="type" LABEL="RunningTitleZone"/>'
+        '<OtherTag ID="T2" TYPE="type" LABEL="MainZone-P"/>'
+        '<OtherTag ID="T3" TYPE="type" LABEL="QuireMarksZone"/></Tags>'
+        "</alto>", encoding="utf-8")
+
+    got = _ocr_lines(p)
+    assert [r["line_id"] for r in got] == ["l3"]
+    # `index` is an identity from ALTO document order, not a position in this
+    # list, so dropping records must not renumber the survivor.
+    assert got[0]["index"] == 2
