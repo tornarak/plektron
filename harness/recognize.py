@@ -64,10 +64,10 @@ means either a figure is undeclared or a zone is missing, which is what
 from __future__ import annotations
 
 import dataclasses
-import os
 from functools import lru_cache
 from pathlib import Path
 
+from . import farms as F
 from .context import norm_ref, parse_ref
 from . import zones as Z
 
@@ -76,7 +76,7 @@ from . import zones as Z
 # resolves to, and the reason a writer must never take the view's name.
 GTDIR = "gt/ocr"
 MZDIR = "mz/ocr"
-VIEWDIR = "ocr"
+VIEWDIR = F.OCR_VIEW
 
 # Stock blla, named explicitly rather than left to kraken's bundled default, so a
 # sha256 can travel in the file. A default nobody can point at is a provenance
@@ -477,19 +477,18 @@ def link_one(ref: str, root: Path = Path(".")) -> str:
     target = alto_for(ref, root, store)
     if not target.exists():
         return ""
-    link = view / f"chukchi-{ref}.xml"
-    if link.is_symlink() or link.exists():
-        link.unlink()
-    link.symlink_to(os.path.relpath(target.resolve(), view.resolve()))
+    F.relink(view / f"chukchi-{ref}.xml", target)
     return store
 
 
 def link_view(root: Path = Path(".")) -> dict:
     """Rebuild `ocr/`: one name per page, the human file winning wherever it exists.
 
-    `zones.link_view`'s twin, and deliberately so — the two stores-plus-a-view
-    layouts should be one shape, since the whole argument for the layout is that a
-    file's role must not live only in the directory holding it.
+    `zones.link_view`'s twin, and now literally so: both call `farms.rebuild`. The
+    two stores-plus-a-view layouts should be one shape, since the whole argument for
+    the layout is that a file's role must not live only in the directory holding it
+    — and while "twin" was only a claim in two docstrings, the two copies were free
+    to drift apart without anything noticing.
 
     Links are relative, so the farm survives a clone or a move; a link whose target
     has gone is removed and counted rather than left to dangle, since a dangling
@@ -498,9 +497,6 @@ def link_view(root: Path = Path(".")) -> dict:
     `from_gt`/`from_mz` is the number worth reading: how much of the corpus is still
     only the machines' word.
     """
-    view = root / VIEWDIR
-    view.mkdir(parents=True, exist_ok=True)
-
     gt = set(ocr_refs(root, GTDIR))
     mz = set(ocr_refs(root, MZDIR))
     wanted = {}
@@ -508,17 +504,6 @@ def link_view(root: Path = Path(".")) -> dict:
         store = GTDIR if ref in gt else MZDIR
         wanted[f"chukchi-{ref}.xml"] = alto_for(ref, root, store)
 
-    removed = 0
-    for p in view.glob("chukchi-*.xml"):
-        if p.name not in wanted:
-            p.unlink()
-            removed += 1
-
-    for name, target in wanted.items():
-        link = view / name
-        if link.is_symlink() or link.exists():
-            link.unlink()
-        link.symlink_to(os.path.relpath(target.resolve(), view.resolve()))
-
-    return {"dir": str(view), "from_gt": len(gt), "from_mz": len(mz - gt),
-            "removed": removed}
+    rep = F.rebuild(root / VIEWDIR, wanted, "chukchi-*.xml")
+    return {"dir": rep["dir"], "from_gt": len(gt), "from_mz": len(mz - gt),
+            "removed": rep["removed"]}

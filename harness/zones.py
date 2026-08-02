@@ -47,13 +47,18 @@ from pathlib import Path
 
 from lxml import etree
 
+from . import farms
 from .context import norm_ref, parse_ref
 from .figures import read_blocks
 from . import zones_config as zc
 from functools import lru_cache
 
 ZONEDIR = "gt/zones"
-SCANS = "scans"
+# Aliased from `farms.py`, which is the one declaration of every derived path. The
+# name stays because 68 call sites across the package spell it — and note `VIEWDIR`
+# is a different *value* here and in `recognize.py`, so there was never one constant
+# to hoist. What is hoisted is the value.
+SCANS = farms.SCANS
 
 # The machine store and the view joining the two. `mz/zones/` holds what the trained
 # segmenter emitted, raw: free polygons at whatever x kraken drew, kraken's own ids.
@@ -63,7 +68,7 @@ SCANS = "scans"
 # regenerable from `models/` and `scans/w-figs-blotted/`, the view because half its
 # links point into `mz/` and a committed farm would dangle on clone.
 MZDIR = "mz/zones"
-VIEWDIR = "zones"
+VIEWDIR = farms.ZONES_VIEW
 
 # Provenance travelling with the data, as with `lines.GAP_ID_PREFIX`. A block whose
 # id starts with this was drawn in this tool against a configured column; one whose
@@ -1495,7 +1500,7 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
 
 # ------------------------------------------------------- the blotted corpus
 
-BLOTDIR = "scans/w-figs-blotted"
+BLOTDIR = farms.FIGS_BLOT
 
 
 def blot_dir(root: Path = Path(".")) -> Path:
@@ -1513,7 +1518,6 @@ def blot_one(ref: str, root: Path = Path(".")) -> dict:
     which is the right failure for a derived tree.
     """
     from .lines import write_fig_blot
-    import os
     ref = norm_ref(ref)
     src = scan_for(ref, root)
     if not src.exists():
@@ -1522,9 +1526,7 @@ def blot_one(ref: str, root: Path = Path(".")) -> dict:
     out.mkdir(parents=True, exist_ok=True)
     if not (root / "gt" / "fig" / f"chukchi-{ref}.xml").exists():
         link = out / f"chukchi-{ref}.png"
-        if link.is_symlink() or link.exists():
-            link.unlink()
-        link.symlink_to(os.path.relpath(src.resolve(), out.resolve()))
+        farms.relink(link, src)
         return {"ref": ref, "path": str(link), "action": "linked", "painted": 0}
     rep = write_fig_blot(ref, out, root)
     return {"ref": ref, "path": rep["path"], "action": "painted",
@@ -3192,15 +3194,15 @@ def link_view(root: Path = Path(".")) -> dict:
 
     Links are relative, so the farm survives a clone or a move; a link whose target
     has gone is removed and counted rather than left to dangle, since a dangling
-    entry here would read as a missing page rather than as a stale link.
+    entry here would read as a missing page rather than as a stale link. The linking
+    itself is `farms.rebuild`, shared with `recognize.link_view` — the two were
+    line-for-line identical and each said in its docstring that it was the other's
+    twin, which is a comment doing a function's job.
 
     The `from_gt`/`from_mz` split is the number worth reading: it is how much of the
-    corpus is still only the machine's word.
+    corpus is still only the machine's word. That part *is* this function's own —
+    the shared mechanic counts links, not provenance.
     """
-    import os
-    view = root / VIEWDIR
-    view.mkdir(parents=True, exist_ok=True)
-
     gt = set(zone_refs(root, ZONEDIR))
     mz = set(zone_refs(root, MZDIR))
     wanted = {}
@@ -3208,20 +3210,9 @@ def link_view(root: Path = Path(".")) -> dict:
         store = ZONEDIR if ref in gt else MZDIR
         wanted[f"chukchi-{ref}.xml"] = alto_for(ref, root, store)
 
-    removed = 0
-    for p in view.glob("chukchi-*.xml"):
-        if p.name not in wanted:
-            p.unlink()
-            removed += 1
-
-    for name, target in wanted.items():
-        link = view / name
-        if link.is_symlink() or link.exists():
-            link.unlink()
-        link.symlink_to(os.path.relpath(target.resolve(), view.resolve()))
-
-    return {"dir": str(view), "from_gt": len(gt), "from_mz": len(mz - gt),
-            "removed": removed}
+    rep = farms.rebuild(root / VIEWDIR, wanted, "chukchi-*.xml")
+    return {"dir": rep["dir"], "from_gt": len(gt), "from_mz": len(mz - gt),
+            "removed": rep["removed"]}
 
 
 # --------------------------------------------------------- segtrain assembly
@@ -3232,7 +3223,7 @@ def link_view(root: Path = Path(".")) -> dict:
 # to remember. It used to be both the training input *and* the only record of what a
 # past run consumed, which meant preparing a new run destroyed the ability to
 # interpret the model you already had.
-WORKDIR = "train/bogoras-seg"
+WORKDIR = farms.TRAIN_WORK
 
 
 def _write_merged(src: Path, dest: Path, merges: dict[str, str]) -> bool:
