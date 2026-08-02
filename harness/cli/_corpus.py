@@ -52,7 +52,14 @@ def _targets(a) -> list[Path] | None:
     """The scope: `None` for the whole corpus, else the paths the targets name.
 
     A token matching `PP-NNN` expands to that page's files; anything else is a
-    path taken as given. **A named ref covers its own `proposal.json`**, which
+    path. **A relative path is taken against `--root`, not the cwd**, which is a
+    change from the `--path` flag it replaces and the only coherent reading of a
+    mixed list: a ref means "this page of this corpus" and is root-relative by
+    construction, so having `1-052` and `data/readings.md` resolve against
+    different bases in one argument list would be a trap. The two agree wherever
+    `--root` is left at its default, which is everywhere outside the tests.
+
+    **A named ref covers its own `proposal.json`**, which
     the corpus sweep deliberately does not (`normalize.PATH_ONLY_GLOBS`): naming
     a page is the same explicit act `--path review/PP-NNN/proposal.json` was, so
     the mid-pass protection that exists for a proposal being authored survives,
@@ -76,7 +83,8 @@ def _targets(a) -> list[Path] | None:
         try:
             parse_ref(t)
         except ValueError:
-            paths.append(Path(t))
+            p = Path(t)
+            paths.append(p if p.is_absolute() else a.root / p)
             continue
         ref = norm_ref(t)
         paths += [a.root / "gt" / d / f"chukchi-{ref}.xml"

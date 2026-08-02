@@ -29,7 +29,12 @@ from pathlib import Path
 import pytest
 
 from harness.cli import build_parser
-from harness.cli._common import RENAMED_FLAGS, RENAMED_VERBS, walk_surface
+from harness.cli._common import (
+    RENAMED_FLAGS,
+    RENAMED_VERBS,
+    walk_positionals,
+    walk_surface,
+)
 
 VERBS_MD = Path(__file__).resolve().parent.parent / "VERBS.md"
 
@@ -220,6 +225,107 @@ def test_write_enable_is_commit_everywhere(parser_surface):
     for key, flags in parser_surface.items():
         overlap = flags & retired
         assert not overlap, f"{key[0]} {key[1]} still carries {sorted(overlap)}"
+
+
+# **The four actions that may name only one page, and why.** Held by name so a
+# new singular verb fails the suite rather than passing on the reviewer noticing.
+# Every other ref-taking action takes as many as you like.
+SINGLE_REF_OK = {
+    ("ocr", "adopt-gap"):
+        "its second positional is a VPOS measured on that page's own raster, so a "
+        "ref list would carry a band list belonging to one of them",
+    ("tei", "context"):
+        "the payload is one page's collation prompt, built to hand to one model "
+        "for one page; a merged stream is not consumable by what it exists for",
+    ("proposal", "set"):
+        "LINE/--field/--value name one entry of one proposal",
+    ("proposal", "replace"):
+        "the same; a line index is an identity belonging to exactly one page",
+}
+
+# **Plural actions that deliberately have no corpus form.** The rule is that a
+# plural ref positional carries `--all` unless it is here — so an omission is a
+# decision on the record rather than something nobody got round to.
+NO_ALL_OK = {
+    ("ocr", "crops"):
+        "expensive in time and disk, and written per page by a pass working on "
+        "that page; a corpus form is a great many bytes nobody asked for",
+    ("ocr", "sheets"): "the same as crops",
+    ("ocr", "zoom"): "magnifies selected lines *of* a page",
+    ("zones", "delete"):
+        "un-keying the whole ground-truth store must not be one flag away from a "
+        "command someone types. `ocr clean` has --all because it deletes only "
+        "derived output; this deletes authored work",
+    ("tei", "state"):
+        "`tei ledger` IS the corpus form, and a second spelling of one report is "
+        "how two answers to one question start to drift",
+    ("tei", "seam"):
+        "--continues/--fresh asserts something about THIS seam; a corpus-wide "
+        "'everything continues' is not a claim anyone could mean",
+}
+
+
+def test_a_ref_positional_is_plural_unless_declared_otherwise():
+    """Naming several pages is the rule; naming one is the exception.
+
+    A shell loop over a single-ref verb was the whole friction this replaced, and
+    the fix does not hold by itself — the next action added would be written
+    singular unless something failed. So the exemptions are a table with reasons
+    and everything else must be `+` or `*`.
+
+    `walk_surface` cannot see this: it collects `option_strings`, and a positional
+    has none. Hence the second walk.
+    """
+    for key, positionals in walk_positionals(build_parser()).items():
+        nargs = positionals.get("ref")
+        if nargs is None and "ref" not in positionals:
+            continue                       # takes no ref at all
+        if key in SINGLE_REF_OK:
+            assert nargs is None, \
+                f"{key[0]} {key[1]} is listed as single-ref but takes {nargs!r}"
+            continue
+        assert nargs in ("+", "*"), \
+            (f"{key[0]} {key[1]} takes one ref. Make it plural, or add it to "
+             f"SINGLE_REF_OK with the reason.")
+
+
+def test_a_plural_action_has_a_corpus_form_unless_declared_otherwise(parser_surface):
+    """`--all` where a plural action could sweep, and a named reason where not.
+
+    The companion to the rule above and the more easily forgotten half: a plural
+    positional whose corpus form was simply never written looks exactly like one
+    where the absence was decided. Single-ref actions are exempt by construction —
+    there is nothing for `--all` to mean beside a positional that takes one page.
+    """
+    positionals = walk_positionals(build_parser())
+    for key, flags in parser_surface.items():
+        if positionals.get(key, {}).get("ref") not in ("+", "*"):
+            continue
+        if key in NO_ALL_OK:
+            assert "--all" not in flags, \
+                f"{key[0]} {key[1]} is listed as having no corpus form but has --all"
+            continue
+        assert "--all" in flags, \
+            (f"{key[0]} {key[1]} is plural but has no --all. Add one, or add it "
+             f"to NO_ALL_OK with the reason.")
+
+
+def test_a_star_positional_always_has_all():
+    """`nargs="*"` and no `--all` is a sweep spelled as an omission.
+
+    That is the shape this pass removed — `zones check` bare walked 832 pages and
+    nothing at the call site said so — and it is worth a gate of its own, because
+    the way it would come back is someone widening a `+` to `*` for convenience
+    and not noticing that the empty case now means something.
+    """
+    surface = walk_surface(build_parser())
+    for key, positionals in walk_positionals(build_parser()).items():
+        for name, nargs in positionals.items():
+            if nargs == "*":
+                assert "--all" in surface[key], \
+                    (f"{key[0]} {key[1]}: {name} accepts nothing at all but the "
+                     f"action has no --all, so an empty invocation means a sweep "
+                     f"nobody asked for")
 
 
 def test_the_source_flag_is_always_a_closed_set(parser_surface):

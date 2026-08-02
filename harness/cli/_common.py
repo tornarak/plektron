@@ -161,7 +161,12 @@ def out_report_per_ref(a, pairs) -> None:
         found = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
         if found:
             print(f"# {key}")
-            out_per_ref(a, found)
+            # **Pooled even when one page contributed**, unlike a top-level table.
+            # There the count decides the shape because the caller named one page;
+            # here the caller named several and the rows are a *subset* of them, so
+            # dropping the `ref` column would leave a table whose rows belong to a
+            # page it does not name — findable only by elimination.
+            _pool(a, found)
 
 
 def out_per_ref(a, pairs) -> None:
@@ -188,6 +193,11 @@ def out_per_ref(a, pairs) -> None:
     if len(pairs) == 1 and not getattr(a, "all", False):
         out(a, pairs[0][1])
         return
+    _pool(a, pairs)
+
+
+def _pool(a, pairs) -> None:
+    """Flatten `[(ref, payload)]` into one table with `ref` first, unconditionally."""
     rows = []
     for ref, payload in pairs:
         for item in (payload if isinstance(payload, list) else [payload]):
