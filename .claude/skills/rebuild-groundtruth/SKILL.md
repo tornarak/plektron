@@ -40,6 +40,15 @@ stateless, so a fresh session resumes wherever the last one stopped.
     uv run harness corpus normalize --path review/PP-NNN/decision.json   same gate, post-adjudication
     uv run harness ocr restore PP-NNN --force                preview: edits, drift, mismatch
     uv run harness ocr restore PP-NNN --force --commit        -> gt/ocr/
+    uv run harness ocr clean PP-NNN                          drop the derived images
+
+**`restore --commit` re-points `ocr/` for that page itself**, and reports which
+store the view now names in its `view` field — so a restoration needs no relink
+step after it, the same way `ocr predict` has always relinked what it wrote. If
+you ever do need the whole farm rebuilt, that is `ocr link`, and it is **not**
+`views build all`: the latter repaints 252 page composites on the way past, a
+corpus-level sweep in the same class as a bare `corpus normalize` against
+`normalize --path`, and it has no business in a per-page loop.
 
 That is the loop for a page **that already has ground truth** — a revision, which
 is what all 20 pilot pages now take, hence `--force` in both restore lines. A page
@@ -70,7 +79,7 @@ and `--show-store` puts both stores in the row so one filter finds it:
 `view: mz` is the column that means "no ground truth here" — read off the farm
 rather than derived, so it is also the tell when a page *was* restored and `ocr
 link` has not run since. A `gt,mz` row that still reads `view: mz` is a stale
-view, not pending work; the fix is `harness views build`, not a keying session.
+view, not pending work; the fix is `harness ocr link`, not a keying session.
 
 **Nothing in `restore` changes between them.** Its `restoration` mode is defined by
 the geometry source and the write target being different files, not by which store

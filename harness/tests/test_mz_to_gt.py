@@ -157,3 +157,39 @@ def test_mz_satisfies_the_span_diffs_second_witness_rule(page):
     link_one("1-060", page)
     view = page / VIEWDIR / "chukchi-1-060.xml"
     assert view.resolve() == gt.resolve()
+
+
+def test_a_committed_restore_repoints_the_view_itself(page):
+    """The promotion is the write **and** the relink, and `restore` does both.
+
+    `link_one`'s docstring has always said promoting a page is "a matter of
+    `restore` writing `gt/ocr/` and this relinking", and `ocr predict` has always
+    paired the two for what it writes into `mz/ocr/`. `restore` did not, so a page
+    restored from a prediction came back with `gt/ocr/` written and `ocr/` still
+    naming `mz/ocr/` — a view one save out of date, visible only to whoever thought
+    to run `ocr pages --show-store`, and indistinguishable there from a page still
+    genuinely awaiting a keying session.
+    """
+    from harness.recognize import VIEWDIR
+    view = page / VIEWDIR / "chukchi-1-060.xml"
+    gt = page / "gt" / "ocr" / "chukchi-1-060.xml"
+
+    # A preview must leave the disk alone — including the view.
+    rep = restore("1-060", "mz/ocr", page, commit=False)
+    assert rep["view"] == ""
+    assert not gt.exists()
+
+    rep = restore("1-060", "mz/ocr", page, commit=True)
+    assert rep["view"] == "gt/ocr"
+    assert view.resolve() == gt.resolve()
+
+
+def test_the_restore_report_has_one_key_set_either_way(page):
+    """`view` is `""` on a preview, never absent.
+
+    A record list whose keys vary degrades TOON to the verbose nested form, and a
+    caller should not have to know which branch produced a report to know which
+    keys it has.
+    """
+    assert (set(restore("1-060", "mz/ocr", page, commit=False))
+            == set(restore("1-060", "mz/ocr", page, commit=True)))

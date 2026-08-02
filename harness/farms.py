@@ -34,6 +34,7 @@ underneath all of it.
 from __future__ import annotations
 
 import os
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -99,17 +100,17 @@ FARMS = (
     # here would skip the two farms a clone most needs, on the grounds that the
     # machine had not spoken yet — which is a legitimate empty, not a missing input.
     Farm("ocr", OCR_VIEW, "view", (),
-         "harness views build --only ocr", "membership"),
+         "harness views build ocr", "membership"),
     Farm("zones", ZONES_VIEW, "view", (),
-         "harness views build --only zones", "membership"),
+         "harness views build zones", "membership"),
     # `scans/` only. `blot_one` already tolerates a page with no figure ALTO — it
     # links instead of painting — so `gt/fig/` is not a precondition; the pixels are.
     Farm("w-figs-blotted", FIGS_BLOT, "raster", (SCANS,),
-         "harness views build --only w-figs-blotted", "membership"),
+         "harness views build w-figs-blotted", "membership"),
     Farm("w-figs", W_FIGS, "select", ("gt/fig",),
-         "harness views build --only w-figs", "membership"),
+         "harness views build w-figs", "membership"),
     Farm("w-ocr", W_OCR, "select", ("gt/ocr",),
-         "harness views build --only w-ocr", "membership"),
+         "harness views build w-ocr", "membership"),
     # Reported, never built here. `scans/` has no builder in this repo — it is
     # `pdftoppm` over `pdfs/`, whose three entries are symlinks pointing outside the
     # repo, so on a clone the rasters cannot be regenerated at all. `train/` is
@@ -124,9 +125,36 @@ FARMS = (
 BY_NAME = {f.name: f for f in FARMS}
 BY_PATH = {f.path: f for f in FARMS}
 
+#: Every registered farm, in registry order.
+NAMES = tuple(f.name for f in FARMS)
+
 #: The farms `views build` will actually rebuild, in dependency order. `w-ocr`
 #: links into the `ocr/` view, so it must follow it.
 BUILDABLE = tuple(f.name for f in FARMS if f.kind in ("view", "select", "raster"))
+
+#: The token that asks for every farm. Spelled out rather than implied by a bare
+#: invocation, because `views build` is the most expensive command in the harness
+#: — repainting `scans/w-figs-blotted/` is 252 page composites — and the cost is
+#: invisible at the call site. Nothing about typing `harness views build` suggests
+#: a corpus-wide raster pass, so the default was a trap for exactly the caller who
+#: wanted one farm relinked. Making `all` explicit costs three characters and
+#: removes the only way to start that pass by accident.
+ALL = "all"
+
+
+def select(names: Iterable[str], *, buildable_only: bool = False) -> tuple[str, ...]:
+    """Expand a CLI farm selection into registry order, `all` included.
+
+    Order is the registry's, never the caller's: `w-ocr` links into the `ocr/`
+    view, so a build that took `w-ocr ocr` at face value would link the farm
+    against a view it is about to rewrite. Duplicates collapse for the same
+    reason — asking for a farm twice is a typo, not a request to build it twice.
+    """
+    pool = BUILDABLE if buildable_only else NAMES
+    wanted = set(names)
+    if ALL in wanted:
+        return tuple(pool)
+    return tuple(n for n in pool if n in wanted)
 
 
 def farm_for(dirpath: str | Path) -> Farm | None:

@@ -45,6 +45,13 @@ appear on your crop that are not yours to read.
 - **A large centred capital** appearing part-way down is a letter-section
   heading — the book starting а, or к', or ю. It is also split by the cut, so
   you may be looking at half of one. It is not an entry and has no gloss.
+- **A quire mark** — a signature number like `10-561` — sits at the foot of a
+  few pages, flush left and set apart from the type above it. It is a
+  printer's mark and **not a headword**, however much it looks like one when
+  numbered. Nothing detects these: they are left to you deliberately, because
+  the alternative is another rule in an already brittle geometric detector,
+  and a Cyrillic-free run of digits and a hyphen is exactly the call a reader
+  can make and a threshold cannot. Give it no row and mention it in `note:`.
 
 ## What is an entry
 

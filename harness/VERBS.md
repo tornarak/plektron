@@ -279,7 +279,7 @@ require `--commit`.
 ### ocr restore REF
 **Does** writes adjudicated decisions into `gt/ocr/`, keeping the source geometry. Reports `mode=restoration` or `mode=revision`.
 **Reads** `review/PP-NNN/decision.json`, the `--store` store, or the view.
-**Writes** `gt/ocr/` under `--commit`.
+**Writes** `gt/ocr/` under `--commit`, **and relinks that page in `ocr/`** — the promotion is the write plus the relink, the same pairing `ocr predict` has for what it writes into `mz/ocr/`. The `view` field reports which store the view now names, `""` on a preview.
 **Exit** always 0 — `geometry_drift` and `text_mismatch` are reported, not gated.
 **Note** the view is the right default here rather than a convenience: it resolves to `gt/ocr/` for a keyed page (source is the target — a `revision`, which needs `--force`) and to `mz/ocr/` for a predicted one (source ≠ target, target absent — a `restoration`, which does not). That is the correct source in both cases without the caller choosing, and `mode` reports which ran.
 ```
@@ -672,26 +672,31 @@ them.
 `ocr link` and `zones link` are the same act said from inside those groups, and
 call the same functions. Two spellings, one implementation.
 
-### views check
-**Does** one row per derived tree: whether it exists, whether its membership still matches whatever decides it, and **how deep that comparison went**.
-**Reads** every farm directory, plus the stores that decide each one's membership. Tests directories itself rather than going through a guarded enumerator — the verb that reports absence has to be callable in its presence.
+### views check FARM...
+**Does** one row per **named** derived tree: whether it exists, whether its membership still matches whatever decides it, and **how deep that comparison went**.
+**Reads** the named farms' directories, plus the stores that decide each one's membership. Tests directories itself rather than going through a guarded enumerator — the verb that reports absence has to be callable in its presence.
 **Writes** —
-**Exit** 1 if any farm is `absent` or `stale`; 0 otherwise. A gate rather than measurement: each is a real defect in this working copy with a one-command fix.
+**Exit** 1 if any *named* farm is `absent` or `stale`; 0 otherwise. A gate rather than measurement: each is a real defect in this working copy with a one-command fix. Scoping the selection scopes the gate — asking about `ocr` and getting exit 1 for a blot tree nobody mentioned would make the code unreadable.
 ```
+FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
+              w-ocr, scans, train — or `all`. Required; there is no default
 --root --json
 ```
+**Note** the selector is a **positional, not `--only`**, because `--only` already means "line indices" throughout `ocr` and the harness holds to one meaning per flag name. `all` is required rather than implied for symmetry with `build`, where the cost is real — a selector meaning "everything" on one action and needing to be spelled on the other is a difference the caller has to carry between two commands usually typed in sequence.
 **Note** four states, and the fourth is the point. `absent` is the directory not existing; `stale` is membership disagreeing with the criterion, or a link pointing nowhere; `ok` is neither; **`?` is no verdict available** — `scans/` and `train/bogoras-seg/` have no criterion the harness can compute, and reporting `ok` there would be a clean bill of health nobody issued. `?` does not gate: it describes the check's reach, not the tree.
 **Note** `verified` says how deep the comparison went, and `membership` is not a hedge. For `scans/w-figs-blotted/` content freshness is not merely unchecked but **uncheckable**: a figure ALTO corrected after the blot was written leaves a raster that still shows the figure, so an mtime test would report success over exactly the failure it exists to catch (`zones blot` refuses one for this reason). `state: ok` must not be read as "up to date".
 **Note** `dangling` counts links whose target has gone. On a machine without `scans/` the two selection farms report their whole membership as dangling, which is correct and deliberate — see `views build`.
 
-### views build
-**Does** rebuilds the derived trees, in dependency order (`w-ocr` links into the `ocr/` view, so it follows it).
-**Reads** the stores that decide each farm's membership; `scans/` and `gt/fig/` for the blot.
-**Writes** `ocr/`, `zones/`, `scans/w-figs-blotted/`, `scans/w-figs/`, `scans/w-ocr/` — all derived. Writes on invocation with no `--commit`, like every other derived output: there the write *is* the action, and no authored store is touched.
-**Exit** always 0.
+### views build FARM...
+**Does** rebuilds the **named** derived trees, in dependency order (`w-ocr` links into the `ocr/` view, so it follows it) — registry order, never the order they were typed.
+**Reads** the stores that decide each named farm's membership; `scans/` and `gt/fig/` for the blot.
+**Writes** the named farms among `ocr/`, `zones/`, `scans/w-figs-blotted/`, `scans/w-figs/`, `scans/w-ocr/` — all derived. Writes on invocation with no `--commit`, like every other derived output: there the write *is* the action, and no authored store is touched.
+**Exit** always 0 — a bare invocation naming no farm is a usage error (2), not a build of everything.
 ```
---only FARM  rebuild just this one, repeatable [all of: ocr, zones, w-figs-blotted, w-figs, w-ocr]
+FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
+              w-ocr — or `all`. Required; there is no default
 --root --json
 ```
+**Note** **`all` must be said, and this verb is why.** Rebuilding `scans/w-figs-blotted/` repaints 252 page composites and is by a wide margin the most expensive thing in the harness — a cost entirely invisible at the call site, since nothing about `harness views build` suggests a corpus-wide raster pass. The caller who wanted one view relinked after a `restore` was the one paying it. **Prefer the per-domain spelling in a per-page loop**: `ocr link` and `zones link` relink one view and are what a page-level pass wants; `views build all` is for a deliberate corpus-level sweep, like `corpus normalize` over the whole tree rather than `--path`.
 **Note** **a farm whose builder must *read* an absent tree is skipped with a row**, never attempted and never silently dropped. The distinction is between what a builder opens and what its links merely point at: the blot builder reads pixels out of `scans/`, so with no `scans/` it cannot run; `w-figs` and `w-ocr` need only their tracked membership sources and build fine, leaving raster links that dangle — this repo's stated disposition for a link into an ignored tree. Hence exit 0 on a clone: building what can be built is the success case, and `views check` is what says what is still missing.
 **Note** `scans/` and `train/bogoras-seg/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `zones assemble` clobbers by design.

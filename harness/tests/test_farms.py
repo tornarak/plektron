@@ -305,3 +305,56 @@ def test_every_farm_is_gitignored():
         r = subprocess.run(["git", "check-ignore", "-q", probe],
                            cwd=REPO, capture_output=True)
         assert r.returncode == 0, f"{farm.path} is a farm but is not gitignored"
+
+
+# ---------------------------------------------------------- the farm selector
+
+def test_all_expands_to_the_pool_it_was_asked_about():
+    """`all` means every farm of the *asked* kind, which is not one set.
+
+    `check` reports `scans/` and `train/` and `build` cannot make either, so an
+    `all` that meant the same thing on both would either hand `build` two farms it
+    has no builder for or hide two from `check`.
+    """
+    assert F.select([F.ALL]) == F.NAMES
+    assert F.select([F.ALL], buildable_only=True) == F.BUILDABLE
+    assert "scans" in F.select([F.ALL]) and "scans" not in F.BUILDABLE
+
+
+def test_a_selection_comes_back_in_registry_order():
+    """Dependency order is the registry's and survives however it was typed.
+
+    `w-ocr` links into the `ocr/` view, so honouring the caller's order would build
+    the selection farm against a view about to be rewritten under it — a stale farm
+    produced by the command whose job is to un-stale one.
+    """
+    assert F.select(["w-ocr", "ocr"], buildable_only=True) == ("ocr", "w-ocr")
+    assert F.select(["ocr", "ocr"], buildable_only=True) == ("ocr",)
+
+
+def test_a_bare_build_is_a_usage_error_not_a_build_of_everything():
+    """The expensive default, removed.
+
+    Rebuilding the blot tree repaints 252 page composites, and nothing at the call
+    site says so — the caller who wanted one view relinked after a `restore` was
+    the one paying for it. Exit 2 is argparse's, i.e. the harness's usage-error
+    code, and deliberately not the 1 that means a documented gate failed.
+    """
+    r = subprocess.run(["uv", "run", "harness", "views", "build"],
+                       cwd=REPO, capture_output=True, text=True)
+    assert r.returncode == 2
+    assert "required" in r.stderr
+
+
+def test_check_gates_only_over_the_farms_it_was_asked_about(tmp_path):
+    """Scoping the selection scopes the exit code.
+
+    Asking about `ocr` and being failed for a blot tree nobody named would make the
+    code unreadable — and unreadable is how an exit code stops being acted on.
+    """
+    (tmp_path / "gt" / "ocr").mkdir(parents=True)
+    (tmp_path / "gt" / "ocr" / "chukchi-1-048.xml").write_text("<x/>")
+    F.build("ocr", tmp_path)                        # ocr/ is now ok; nothing else exists
+    rows = {r["farm"]: r for r in F.survey(tmp_path)}
+    assert rows["ocr"]["state"] == "ok"
+    assert rows["w-figs"]["state"] == "absent"      # would gate, if asked about

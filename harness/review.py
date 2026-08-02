@@ -522,13 +522,38 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
                 "lines": len(lines),
                 "chars": sum(len(y["text"]) for y in b),
                 "geometry_drift": drift, "text_mismatch": wrong,
-                "edited_by_human": len(edits), "edits": edits, "commit": False}
+                # `view` is "" here, not absent: one fixed key set across both
+                # branches, since a caller reading the report should not have to
+                # know which one produced it to know which keys exist.
+                "edited_by_human": len(edits), "edits": edits, "commit": False,
+                "view": ""}
     tmp.replace(target)
+    # **The promotion is the write plus the relink, and it was only ever half
+    # wired.** `recognize.link_one`'s own docstring says so — "promoting a page is a
+    # matter of `restore` writing `gt/ocr/` and this relinking, never of moving
+    # anything" — and `ocr predict` has always paired the two, relinking each page it
+    # writes into `mz/ocr/`. `restore` did not, so a page that had no ground truth
+    # came back from a restoration with `gt/ocr/` written and `ocr/` still pointing
+    # at the prediction: the view silently one save out of date, and `ocr pages
+    # --show-store` reporting a `gt,mz` row that still reads `view: mz`.
+    #
+    # Relinking here is not a write *through* the view — the rule the store layout
+    # exists for — it is a rebuild *of* the view, from the same registry `views
+    # build` uses, after the authored write has already landed. It is gated on
+    # `commit` because a preview must leave the disk alone, and it is a per-page
+    # relink rather than a farm sweep because the page is what changed.
+    #
+    # Imported here rather than at module scope: there is no cycle (`recognize` does
+    # not import this module), but it pulls `zones`, and `restore` should not cost a
+    # segmenter import to write a line of text.
+    from .recognize import link_one
+    view = link_one(ref, root)
     return {"path": str(target), "source": str(src), "mode": mode,
             "lines": len(lines),
             "chars": sum(len(y["text"]) for y in b),
             "geometry_drift": drift, "text_mismatch": wrong,
-            "edited_by_human": len(edits), "edits": edits, "commit": True}
+            "edited_by_human": len(edits), "edits": edits, "commit": True,
+            "view": view}
 
 
 def _data_uri(path: Path) -> str:

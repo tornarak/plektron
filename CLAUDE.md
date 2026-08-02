@@ -177,7 +177,7 @@ Layout, all at the repo root:
     scans/w-figs/  scans/w-ocr/   symlink farms over scans/ — the pages with a
             figure ALTO, and the raster beside its ALTO for every page a human
             has been through. Derived, and ignored: they point *into* an ignored
-            tree, so a clone gets dangling links. `harness views build`.
+            tree, so a clone gets dangling links. `harness views build w-figs`.
     harness/  tools/  concordance.md  keying_spec.md — the tests live in
             harness/tests/, beside the package they cover.
 
@@ -778,7 +778,12 @@ the review page, the keyboard, the decision log and the error profile it yields.
 
 Seven directories are **derived**: git carries none of them and a fresh clone has
 none of them. `harness/farms.py` is the one declaration — `harness views check`
-reports them, `harness views build` rebuilds them.
+reports them, `harness views build` rebuilds them. **Both name their farms and
+neither has a default**: `views build all` is a corpus-level sweep costing 252
+repainted page composites, and nothing at the call site said so, so the caller
+who wanted one view relinked after a `restore` was the one paying for it. In a
+per-page loop reach for the per-domain spelling — `ocr link`, `zones link` —
+the same way a per-page normalize takes `--path` rather than sweeping the corpus.
 
     ocr/  zones/                 the read views over the paired stores
     scans/w-figs-blotted/        the segmenter's training rasters
