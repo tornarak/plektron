@@ -295,6 +295,48 @@ def _conflicts(batch: dict, prior: dict, contrasts: list[dict]) -> list[dict]:
     return out
 
 
+def _rare(batch: dict, prior_tokens: list[str], contrasts: list[dict],
+          rare_max: float) -> list[dict]:
+    """Occurrences of a form whose confusable the corpus almost never sets.
+
+    **Which contrasts this arm can reach is derived, never declared**: exactly
+    those whose confusable sits at or under `rare_max` of its axis. Bare `g` at
+    6.1% qualifies; plain `i` at ~35% never can, and need not — `ratio` and
+    `conflict` carry that one. The division moves with the store rather than with
+    a constant somebody would have to remember to revisit.
+
+    One row per `(ref, form)` carrying a count, because a keyer repeats a slip
+    along a page — 13 dropped dots on `2-040`, 14 on `3-004`, then a tail of 1-3.
+    Four bare `g` on one page is one finding of weight four, and four rows would
+    read as four independent signals.
+
+    `corpus_pct` is *occurrence*-level, unlike `ratio`'s type-level `prior_pct`:
+    "how often does the corpus set a bare `g`" is a different question, and 6.1%
+    is the figure `keying_spec.md` §5.1 publishes.
+    """
+    out = []
+    for c in contrasts:
+        exp_n, conf_n = _axis_counts(prior_tokens, c)
+        axis_n = exp_n + conf_n
+        if not axis_n:
+            continue
+        conf_pct = round(100 * conf_n / axis_n, 1)
+        if conf_pct > rare_max:
+            continue
+        for ref, toks in batch.items():
+            forms: dict[str, list[str]] = {}
+            for line, tok in toks:
+                if sites(tok, c)[1]:
+                    forms.setdefault(tok, []).append(line)
+            for tok, lines in sorted(forms.items()):
+                out.append({
+                    "ref": ref, "form": unicodedata.normalize("NFC", tok),
+                    "count": len(lines), "lines": " ".join(lines),
+                    "position": c["position"], "corpus_pct": conf_pct,
+                    "corpus_n": axis_n, "spec": c.get("spec", "")})
+    return out
+
+
 def _ratio_rows(c: dict, batch: dict, prior: dict, min_types: int) -> list[dict]:
     """Expected-form share, in **types**, against the leave-one-out prior.
 
@@ -424,37 +466,63 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
             prior.setdefault(ref, []).append(_nfd(tok))
     prior_tokens = [t for toks in prior.values() for t in toks]
 
-    rare, ratio = [], []
-    for c in contrasts:
-        exp_n, conf_n = _axis_counts(prior_tokens, c)
-        axis_n = exp_n + conf_n
-        conf_pct = round(100 * conf_n / axis_n, 1) if axis_n else 0.0
-
-        # Which contrasts the `rare` arm can reach is derived, never declared: it
-        # is exactly those whose confusable the corpus almost never sets. Plain
-        # `i` at ~35% of its axis can never qualify, and does not need to — it is
-        # `ratio` and `conflict` that carry that one.
-        if axis_n and conf_pct <= rare_max:
-            for ref in refs:
-                forms: dict[str, list[str]] = {}
-                for line, tok in batch[ref]:
-                    if sites(tok, c)[1]:
-                        forms.setdefault(tok, []).append(line)
-                for tok, lines in sorted(forms.items()):
-                    # One row per (ref, form) carrying a count, because a keyer
-                    # repeats a slip along a page — 13 dropped dots on `2-040`, 14
-                    # on `3-004`, then a tail of 1-3. Four bare `g` on one page is
-                    # one finding of weight four, not four independent hits.
-                    rare.append({
-                        "ref": ref, "form": unicodedata.normalize("NFC", tok),
-                        "count": len(lines), "lines": " ".join(lines),
-                        "position": c["position"], "corpus_pct": conf_pct,
-                        "corpus_n": axis_n, "spec": c.get("spec", "")})
-
-        ratio += _ratio_rows(c, batch, prior, min_types)
+    rare = _rare(batch, prior_tokens, contrasts, rare_max)
+    ratio = [r for c in contrasts for r in _ratio_rows(c, batch, prior, min_types)]
 
     return {"refs": " ".join(refs),
             "source": "decisions" if decisions else "proposals",
             "prior_pages": len(prior), "prior_note": PRIOR_NOTE,
             "pages": pages, "rare": rare,
             "conflict": _conflicts(batch, prior, contrasts), "ratio": ratio}
+
+
+def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
+    """The two deterministic arms over one file, as `proposal_check` issue records.
+
+    Only `rare` and `conflict`, and only these because they are the arms that need
+    no sample: each is a statement about a form, not about a distribution. `ratio`
+    is deliberately absent — one page is a poor sample and it is the arm that
+    cannot decide, so folding it into a per-page gate would be asserting exactly
+    what `marks` refuses to.
+
+    `line` carries the first line the form appears on and the detail names the
+    rest, because an issue record addresses a line while the finding is about a
+    page: a form repeated down the page is one slip, and one row per occurrence
+    would report a keyer's single habit as several independent faults.
+
+    Returns nothing rather than raising when the config is absent — a reader
+    running `proposal check` on a clone that has no `data/marks_config.json`
+    should get the checks that do not need it, not a traceback.
+    """
+    try:
+        cfg = load_config(root)
+    except MarksConfigError:
+        return []
+    ref = norm_ref(ref)
+    batch = {ref: page_tokens(path)}
+    prior: dict[str, list[str]] = {}
+    for r, tok in native_corpus(root):
+        if r != ref:          # leave-one-out, as everywhere here
+            prior.setdefault(r, []).append(_nfd(tok))
+    prior_tokens = [t for toks in prior.values() for t in toks]
+
+    out = []
+    for hit in _rare(batch, prior_tokens, cfg["contrasts"], cfg["rare_max_pct"]):
+        lines = hit["lines"].split()
+        where = f" (and lines {' '.join(lines[1:])})" if len(lines) > 1 else ""
+        out.append({
+            "line": lines[0] if lines else "-",
+            "issue": f"rare form: {hit['form']!r} sets a character the corpus "
+                     f"sets in only {hit['corpus_pct']}% of {hit['corpus_n']} "
+                     f"(keying_spec §{hit['spec']}) — check for a dropped mark",
+            "token": hit["form"],
+            "detail": f"{hit['count']} occurrence(s) on this page{where}"})
+    for hit in _conflicts(batch, prior, cfg["contrasts"]):
+        out.append({
+            "line": "-",
+            "issue": "one word, two spellings" + (
+                "" if hit["in_batch"] else " — the other is adjudicated ground truth"),
+            "token": hit["batch_forms"],
+            "detail": f"against {hit['store_forms'] or '(this page only)'} "
+                      f"on {hit['refs']}"})
+    return out

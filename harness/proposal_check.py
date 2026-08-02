@@ -219,9 +219,22 @@ def line_codepoints(path: Path, line: str, field: str = "text") -> list[dict]:
     return non_ascii(rec.get(field, ""))
 
 
-def check(path: Path) -> list[dict]:
+def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[dict]:
     """Per-line mismatches between what `text` contains and what `resolved` claims,
     plus apostrophe hits independent of `resolved` entirely.
+
+    Given a `ref`, also runs the two deterministic arms of `marks.page_issues` —
+    a form whose confusable the corpus almost never sets, and one word spelled two
+    ways against the store. Those need the corpus, which is why they arrive with a
+    `root` rather than out of the file; without a `ref` they are skipped, since
+    leave-one-out cannot be applied to a page that has not said which it is.
+
+    **Overlap with `suffix_mark_flags` is wanted, not deduplicated.** A bare `-gɪn`
+    produces both that flag and a rare-form issue on the same line. They are
+    independent witnesses reaching one defect from different directions — the
+    suffix table from a measured shape, the rare form from a corpus share — and
+    this project's governing principle asks for a second witness wherever one is
+    cheap. Suppressing either would buy a shorter report with a blind spot in it.
 
     Five shapes, in order of how actionable they are: a straight apostrophe
     anywhere in `text` (`detectors.apostrophe_flags` — not gated on
@@ -253,6 +266,10 @@ def check(path: Path) -> list[dict]:
     data = json.loads(path.read_text(encoding="utf-8"))
     out = []
     out += _footnote_issues(data)
+    if ref is not None:
+        from .marks import page_issues
+
+        out += page_issues(path, ref, root)
     for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")

@@ -456,6 +456,75 @@ def test_the_shipped_config_loads_and_is_nfd():
     assert cfg["contrasts"][0]["expected"] == G_DOT
 
 
+# --- folded into `proposal check` ---------------------------------------------
+
+def test_check_gates_on_a_rare_form(tmp_path):
+    """The reader's own gate, so a slip is caught before the report is written."""
+    from harness.proposal_check import check
+
+    _config(tmp_path)
+    _proposal(tmp_path, "1-001", ["vaˊɪrgɪt"])
+    _gt(tmp_path, "1-002", ["vaˊɪrg̣ɪt"] * 20)
+    issues = check(tmp_path / "review/1-001/proposal.json", "1-001", tmp_path)
+    assert [i for i in issues if i["issue"].startswith("rare form")]
+
+
+def test_check_without_a_ref_skips_the_corpus_arms(tmp_path):
+    """Leave-one-out cannot be applied to a page that has not said which it is."""
+    from harness.proposal_check import check
+
+    _config(tmp_path)
+    _proposal(tmp_path, "1-001", ["vaˊɪrgɪt"])
+    _gt(tmp_path, "1-002", ["vaˊɪrg̣ɪt"] * 20)
+    assert not [i for i in check(tmp_path / "review/1-001/proposal.json")
+                if i["issue"].startswith("rare form")]
+
+
+def test_check_leaves_the_suffix_witness_alone(tmp_path):
+    """Overlap is wanted, not deduplicated.
+
+    A bare `-gɪn` produces both a `suffix_mark_flags` hit and a rare-form issue on
+    the same line. They reach one defect from different directions — a measured
+    shape and a corpus share — and this project asks for a second witness wherever
+    one is cheap. Suppressing either buys a shorter report with a blind spot.
+    """
+    from harness.proposal_check import check
+
+    _config(tmp_path)
+    _proposal(tmp_path, "1-001", ["vaˊɪrgɪn"])
+    _gt(tmp_path, "1-002", ["vaˊɪrg̣ɪn"] * 20)
+    issues = check(tmp_path / "review/1-001/proposal.json", "1-001", tmp_path)
+    on_line_0 = [i["issue"] for i in issues if i["line"] == "0"]
+    assert any(i.startswith("rare form") for i in on_line_0)
+    assert any(i.startswith("bare suffix") for i in on_line_0)
+
+
+def test_check_reports_a_repeated_form_once_naming_the_other_lines(tmp_path):
+    """An issue record addresses a line; the finding is about a page.
+
+    One row per occurrence would report a keyer's single habit as several
+    independent faults — the same reasoning as `rare`'s grouping.
+    """
+    from harness.proposal_check import check
+
+    _config(tmp_path)
+    _proposal(tmp_path, "1-001", ["vaˊɪrgɪt", "x", "vaˊɪrgɪt"])
+    _gt(tmp_path, "1-002", ["vaˊɪrg̣ɪt"] * 20)
+    rare = [i for i in check(tmp_path / "review/1-001/proposal.json", "1-001",
+                             tmp_path) if i["issue"].startswith("rare form")]
+    assert len(rare) == 1
+    assert rare[0]["line"] == "0"
+    assert "lines 2" in rare[0]["detail"]
+
+
+def test_check_survives_a_clone_with_no_marks_config(tmp_path):
+    """The checks that need no corpus must still run where the config is absent."""
+    from harness.proposal_check import check
+
+    _proposal(tmp_path, "1-001", ["a'b"])
+    assert check(tmp_path / "review/1-001/proposal.json", "1-001", tmp_path)
+
+
 def test_every_cell_is_scalar_so_the_toon_tables_stay_tabular(tmp_path):
     _config(tmp_path)
     _proposal(tmp_path, "1-001", ["vaˊɪrgɪt neˊlyiᵋ neˊlyɪᵋ"])

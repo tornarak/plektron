@@ -143,7 +143,7 @@ def _path(a) -> Path:
 
 
 def run_check(a) -> int:
-    mismatches = check_proposal(_path(a))
+    mismatches = check_proposal(_path(a), a.ref, a.root)
     out(a, mismatches)
     return 1 if mismatches else 0
 

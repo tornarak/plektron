@@ -398,10 +398,13 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ```
 
 ### proposal check REF
-**Does** cross-checks `resolved` against the codepoints `text` actually contains; flags a straight apostrophe and a dot-prone bare suffix.
-**Reads** `review/PP-NNN/proposal.json`.
+**Does** cross-checks `resolved` against the codepoints `text` actually contains; flags a straight apostrophe, a dot-prone bare suffix, and — via `marks` — a rare form or a word spelled two ways against the store.
+**Reads** `review/PP-NNN/proposal.json`, plus `gt/ocr/` and `data/marks_config.json` for the two corpus arms.
 **Writes** —
 **Exit** 1 on any mismatch.
+**Note** the corpus arms are `proposal marks`'s two **deterministic** ones, run over the single page so a reader catches its own slip before writing its report. `ratio` is deliberately not among them: one page is a poor sample and it is the arm that cannot decide, so folding it into a per-page gate would assert exactly what `marks` refuses to. A repeated form is one issue naming its other lines, not one issue per occurrence — a keyer's single habit is one fault. The prior is leave-one-out here too, so a revision is not checked against its own descendant. Where `data/marks_config.json` is absent (a fresh clone), the arms are skipped and the rest still runs.
+
+**Overlap with the suffix check is wanted, not deduplicated**: a bare `-gɪn` yields both a `bare suffix` and a `rare form` issue on the same line. They reach one defect from different directions — a measured shape and a corpus share — and a second witness this cheap is what the governing principle asks for.
 ```
 --path FILE  proposal file [review/PP-NNN/proposal.json]
 --root --json
