@@ -422,7 +422,8 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
 def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 seg_model: str | Path = DEFAULT_SEG_MODEL,
                 rec_model: str | Path = DEFAULT_REC_MODEL,
-                device: str = "auto", force: bool = False) -> dict:
+                device: str = "auto", force: bool = False,
+                named: bool = False) -> dict:
     """Recognize over a work-list, or over every page that has zones.
 
     What is skipped and why is `predict_skip`'s; this loops and reports. A sweep is
@@ -431,7 +432,16 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     interruption costing minutes and costing the run.
 
     Both models load once for the whole sweep, which is most of why this exists as
-    a sweep rather than a shell loop over the single-page form.
+    a sweep rather than a shell loop over the single-page form. It is also why
+    several refs typed on the command line come *here* rather than looping the
+    single-page form: naming two pages should not cost two model loads.
+
+    **`named` is `predict_skip`'s `single`, and it has to travel.** A ref a human
+    typed means that page even if it is ruled exempt; without this the moment a
+    two-page invocation started routing through the sweep, a named plate would
+    have been dropped in silence by the very command that named it. It defaults
+    off because a corpus sweep is exactly the case where the exempt ruling should
+    hold.
     """
     if refs is None:
         refs = Z.zone_refs(root, Z.VIEWDIR)
@@ -443,7 +453,7 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     # actually do rather than a property the docstring claims.
     todo, skipped = [], []
     for ref in refs:
-        why = predict_skip(ref, root, force)
+        why = predict_skip(ref, root, force, single=named)
         (skipped.append({"ref": ref, "why": why}) if why else todo.append(ref))
 
     done = []

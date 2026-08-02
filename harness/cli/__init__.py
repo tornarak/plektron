@@ -101,6 +101,11 @@ def main(argv=None):
     a = ap.parse_args(argv)
     try:
         return a.func(a)
-    except (ValueError, FileNotFoundError, KeyError) as e:
+    except (ValueError, FileNotFoundError, KeyError, OSError) as e:
+        # `OSError` covers the parsers, which raise it rather than
+        # `FileNotFoundError` for a missing file — `etree.parse` on an absent ALTO
+        # is the common one. It reached the user as a twenty-line traceback while
+        # every action named one page; naming several makes a mid-list absence
+        # ordinary, and a traceback there says nothing a message could not.
         print(f"ERROR: {e}", file=sys.stderr)
         return 2

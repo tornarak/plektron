@@ -108,8 +108,8 @@ def page_refs(a) -> list[str]:
              if v]
     if len(given) > 1:
         raise ValueError(
-            f"{' and '.join(given)} are three ways of naming the same thing — "
-            "one per invocation")
+            f"{' and '.join(given)}: refs, --all and --itinerary are three ways "
+            "of naming a work-list, and exactly one may be used")
     if not given and hasattr(a, "all"):
         raise ValueError("nothing named: give one or more PP-NNN refs, or --all "
                          "for the whole corpus")
@@ -150,8 +150,13 @@ def out_per_ref(a, pairs) -> None:
     would cost the pooled table its shape. The fix is always the same and the
     error says it: emit that field as its own ref-keyed table, one more call
     here. Two key sets, two tables — the same rule `out` states.
+
+    **`--all` always pools, even where it happened to match one page.** The shape
+    a caller gets should follow what it asked for, not what the store happened to
+    contain — a sweep whose output changed schema on the day the corpus held one
+    matching page would be a trap with a long fuse.
     """
-    if len(pairs) == 1:
+    if len(pairs) == 1 and not getattr(a, "all", False):
         out(a, pairs[0][1])
         return
     rows = []
@@ -209,6 +214,10 @@ RENAMED_FLAGS = {
     ("zones", "--ink"): "zones check --ink",
     ("zones", "--lines"): "zones check --lines",
     ("zones", "--from"): "zones check --store gt|mz",
+    # The one action whose ref was a flag. Every other action in the CLI names a
+    # page positionally, and once they all took several it was the odd one out
+    # rather than the concise one.
+    ("ocr", "--ref"): "ocr corrections PP-NNN [PP-NNN ...]  (or --all)",
     # `--from DIR` across the whole `ocr` group became `--store gt|mz`, the same
     # closed set `zones` has had, once `mz/ocr/` gave the group a second real
     # store. It was never used as a free path — only ever `gt/ocr`, `mz/ocr` or

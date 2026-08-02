@@ -498,6 +498,41 @@ def corrections(root: Path = Path("."), refs: list[str] | None = None,
             "changes": changes, "by_page": by_page}
 
 
+def restore_skip(ref: str, root: Path = Path("."), force: bool = False) -> str:
+    """Why this page should not be restored in a sweep, or `""` to go ahead.
+
+    One rule in one place, `predict_skip`'s shape and its reasoning: the callers
+    are `--all` and the multi-ref loop, and a CLI that decided for itself would
+    be a second copy of this, drifting from it the moment either changed.
+
+    **The mtime test is what lets a sweep run at all.** `restore` refuses a target
+    already holding text unless `force`, which is right for a named page — every
+    page in `gt/ocr/` holds text now, so overwriting one is a deliberate act. Over
+    a whole store that guard would refuse everything, so the sweep asks a sharper
+    question instead: *is this decision newer than the ground truth it produced?*
+    If it is not, the page has already been restored since it was adjudicated and
+    there is nothing to write. If it is, the adjudication is the human's own
+    latest act on that page and the sweep restores it — passing `force` on its
+    behalf, which is the same intent the flag carries, established by the
+    timestamps rather than by typing it.
+
+    `force` here means the other thing `--all --force` means: ignore the mtime
+    test and restore every page that has a decision at all.
+
+    Deliberately **not** an `mtime >` on the *proposal*: a proposal is a reading,
+    not an adjudication, and re-authoring one does not license a write.
+    """
+    dec = decisions_path(ref, root)
+    if not dec.exists():
+        return "no decisions"
+    if force:
+        return ""
+    target = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
+    if target.exists() and target.stat().st_mtime >= dec.stat().st_mtime:
+        return "ground truth is already newer than the decision"
+    return ""
+
+
 def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             force: bool = False, commit: bool = False) -> dict:
     """Write adjudicated text into `gt/ocr/chukchi-<ref>.xml`, keeping the geometry.

@@ -17,6 +17,39 @@ it does to it. Every action that names a page takes a `PP-NNN` ref — part, and
 scan index within that part — and rejects a bare integer, because the printed
 folio is not derivable from the scan index.
 
+**Refs are plural.** `REF [REF ...]` everywhere, so a batch is one invocation
+rather than a shell loop. Four actions are singular and say why in their entry:
+`ocr adopt-gap` (its `VPOS` is measured on that page's raster), `tei context`
+(the payload is one page's collation prompt), `proposal set` and `proposal
+replace` (their flags name one entry of one proposal). A flag that names
+something only one page has — `ocr zoom --only`, `--out`, `zones check --lines`,
+`proposal --path` — refuses a second ref rather than picking one.
+
+**One ref emits what it always did; several pool.** The records gain `ref` as
+their first field and land in one table, which is the shape `emit.py` argues
+for. An action emitting two tables emits two pooled tables; a list-valued field
+becomes its own ref-keyed table, since a nested list degrades the whole outer
+table to the verbose form. `tei validate` is the exception and prints one
+rendered report per ref, `# REF` separated, because prose does not pool. The
+aggregating actions — `ocr corrections`, `proposal marks`, `zones diff`, `zones
+paragraphs`, `corpus normalize` — take refs as a *scope* and return one report
+however many were named. **Exit is the worst across refs**, and every ref is
+parsed before any work is done, so a typo in the fifth cannot leave four pages
+written.
+
+**A corpus run is `--all`, never an omission.** Where an action has a
+corpus-wide form, the flag says so and its help names *what it enumerates* —
+"every page" is four different sets here. Naming nothing is a usage error.
+`--all`, refs and `--itinerary` are three ways of naming a work-list and exactly
+one may be used. Six actions are plural but deliberately have no `--all`, each
+saying why: `ocr crops`, `ocr sheets`, `ocr zoom`, `zones delete`, `tei state`,
+`tei seam`. **`--all` does not clobber prior work without `--force`** — `ocr
+predict` and `zones predict` skip what a store already holds, `ocr restore`
+skips a page whose ground truth is newer than its decision, `ocr blot` a page
+whose blot is newer than its ALTO. `zones blot` deliberately has no such test:
+freshness there is *uncheckable*, so an mtime comparison would report success
+over the one failure it exists to catch.
+
 **Report by default; `--commit` writes.** It is the only write-enable, and it
 gates exactly the authored stores: `gt/`, `tei/`, `models/`, and the split and
 exemption sidecars. Derived output writes on invocation — crops, sheets, zoom,
@@ -173,24 +206,27 @@ require `--commit`.
 --root --json
 ```
 
-### ocr lines REF
+### ocr lines [REF ...]
 **Does** per-line id, geometry and text, in reading order, empties kept. `index` is an identity, not a position.
 **Reads** the `--store` store, or the view.
 **Writes** —
 **Exit** always 0.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
+--all       every page the store read holds
 --full      include baseline and polygon points [off]
 --root --json
 ```
 
-### ocr gaps REF
+### ocr gaps [REF ...]
 **Does** bands of ink no TextLine covers — the dropped-line detector. A band is a place to look, not a verdict.
 **Reads** the `--store` store, or the view, `scans/`, `gt/fig/`.
 **Writes** —
 **Exit** always 0.
+**Note** `--all` is the corpus dropped-line sweep, at a raster read per page. It reads through the view unless `--store` narrows it, which is `ocr pages`' rule — a machine-read page is workable, and this verb neither gates nor publishes a rate.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
+--all       every page the store read holds
 --root --json
 ```
 
@@ -199,17 +235,19 @@ require `--commit`.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `gt/ocr/` under `--commit`, resolved explicitly and never through the view.
 **Exit** always 0; exit 2 on an unmeasured vpos or an overlap.
+**Note** **one of the four singular actions**: `VPOS` is a band measured on *that* page's raster, so a ref list would carry a band list belonging to one of them. `test_cli_surface.py` holds the exemption by name.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --commit    actually write gt/ocr/ [off — reports the lines it would create]
 --root --json
 ```
 
-### ocr crops REF
+### ocr crops REF [REF ...]
 **Does** one PNG per line.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/crops/` (derived), or `--out`.
-**Exit** always 0.
+**Exit** always 0; exit 2 for `--out` with more than one ref, since one destination cannot hold two pages' images without the second overwriting the first.
+**Note** **no `--all`, deliberately.** Crops are expensive in time and disk and are written per page by a pass that is working on that page; a corpus form would be a great many bytes nobody asked for. `zones delete` and `ocr sheets` carry the same declared absence, and `test_cli_surface.py` holds all six by name.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --margins   widen to the PrintSpace margins [off]
@@ -217,11 +255,12 @@ require `--commit`.
 --root --json
 ```
 
-### ocr sheets REF
+### ocr sheets REF [REF ...]
 **Does** labelled contact sheets, index in the margin, nothing downscaled. Emits the sheet/lines map, not the line table.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/sheets/` (derived), or `--out`.
-**Exit** always 0.
+**Exit** always 0; exit 2 for `--out` with more than one ref.
+**Note** no `--all`, for `crops`' reason.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --per-sheet N lines per sheet, upper bound only [40]
@@ -231,11 +270,12 @@ require `--commit`.
 --root --json
 ```
 
-### ocr zoom REF
+### ocr zoom REF [REF ...]
 **Does** magnified lines — overlapping strips at an integer scale, packed into as few sheets as the height budget allows.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/zoom/` (derived), or `--out`.
-**Exit** always 0.
+**Exit** always 0; exit 2 for `--only` or `--out` with more than one ref.
+**Note** no `--all`. `--only` is the sharper of the two per-page flags: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --only SPEC   line indices, e.g. 7,20,22-26 [every line]
@@ -250,23 +290,26 @@ require `--commit`.
 --root --json
 ```
 
-### ocr blot REF
+### ocr blot [REF ...]
 **Does** the page with every line box and figure zone painted out, so what remains is uncovered by construction. The visual counterpart to `gaps`. See `zones blot` for the other recipe.
 **Reads** the `--store` store, or the view, `scans/`, `gt/fig/`.
 **Writes** `scans/w-blotted/` (derived), or `--out`.
-**Exit** always 0.
+**Exit** always 0; exit 2 for `--out` with more than one ref.
+**Note** `--all` skips a page whose blot is already newer than its ALTO, and `--force` repaints it; naming a page always repaints it, since naming it is the request. **The mtime test is honest here in a way `zones blot`'s could not be**: this paints boxes read out of the ALTO, so an ALTO newer than the blot is exactly the change that matters — where a figure ALTO corrected after a `zones blot` leaves a raster whose staleness nothing can see, which is why that verb has no such test at all.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
+--all       every page the store read holds
+--force     repaint pages whose blot is newer than their ALTO [off — only --all skips]
 --out PATH  output directory [scans/w-blotted/ — corpus-level, unlike the other image actions]
 --root --json
 ```
 
-### ocr review REF [REF ...]
+### ocr review [REF ...]
 **Does** adjudicate reading proposals in the browser (`--serve`); bare, a span-level diff of each against a second witness.
 **Reads** the `--store` store, or the view, `review/PP-NNN/proposal.json`, `scans/`.
 **Writes** `review/PP-NNN/decision.json` under `--serve`; `review/PP-NNN/review.html` under `--html`. Bare mode writes nothing.
 **Exit** 1 if any ref's bare diff source resolves to the ground truth that proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40. Checked over every ref before the first table prints, so the refusal cannot arrive after pages of reassuring output.
-**Note** the **only action taking more than one ref**, because it is the only one whose cost is a human's attention rather than a process's. `--serve` runs one server over the whole batch, one page on screen at a time, reached by navigation — never several pages merged into one document, since a field belonging to a page other than the one you think you are keying is this pass's oldest failure. **Adjudicated-ness is read off the disk** (`decision.json` exists), never held in the process, so a reload, a second tab or a restart cannot contradict it; a re-run therefore resumes the batch rather than restarting it, and a page that already carried decisions shows done and stays reachable from the strip. `Done` advances to the next unadjudicated page and stops the server only on the last one. A single ref renders and behaves exactly as before — no strip, no navigation.
+**Note** the **first action to take more than one ref**, for a reason the rest of the CLI has since caught up with: its cost is a human's attention rather than a process's. `--all` is the pending-adjudication queue — every page holding a proposal and no decision. The bare span diff pools across refs into two tables rather than printing a `# REF`-separated pair per ref, which is what it did while it stood alone: a pooled table parses as one document, and the separated form parsed as nothing. `--serve` runs one server over the whole batch, one page on screen at a time, reached by navigation — never several pages merged into one document, since a field belonging to a page other than the one you think you are keying is this pass's oldest failure. **Adjudicated-ness is read off the disk** (`decision.json` exists), never held in the process, so a reload, a second tab or a restart cannot contradict it; a re-run therefore resumes the batch rather than restarting it, and a page that already carried decisions shows done and stays reachable from the strip. `Done` advances to the next unadjudicated page and stops the server only on the last one. A single ref renders and behaves exactly as before — no strip, no navigation.
 
 Each line carries a **`+ note` button** and, once asked for, a note field: the adjudicator's own record, saved into `decision.json` as `note` beside `text`. **Opt-in in both places** — a field on all 45 lines would be 45 empty boxes competing with the 45 that matter, and an empty `note` written on every line would make "which lines were remarked on" unfindable, the key existing being the only way anyone asks. Distinct from `proposal.json`'s `note`, which is the reader's account of its own work; these live in different files so a human ruling is never mistaken for a model's. A note is not an edit, so a page saved with only notes reports `0/N edited` and `restore` is a no-op on it.
 
@@ -275,13 +318,14 @@ The header links to the **full page scan**, new tab — the crops say what a lin
 --serve   serve on 127.0.0.1, accept saves  }
 --html    write review.html per ref         } mutually exclusive
 --spans   bare diff: every span, ungrouped  }
+--all     every page with a proposal and no decision
 --port N  port for --serve [8731]
 --store {gt,mz}  which store to read [mz — the bare diff needs an independent
                  witness, and the view is not one once the page has ground truth]
 --root --json
 ```
 
-### ocr restore REF
+### ocr restore [REF ...]
 **Does** writes adjudicated decisions into `gt/ocr/`, keeping the source geometry. Reports `mode=restoration` or `mode=revision`.
 **Reads** `review/PP-NNN/decision.json`, the `--store` store, or the view.
 **Writes** `gt/ocr/` under `--commit`, **and relinks that page in `ocr/`** — the promotion is the write plus the relink, the same pairing `ocr predict` has for what it writes into `mz/ocr/`. The `view` field reports which store the view now names, `""` on a preview.
@@ -290,21 +334,28 @@ The header links to the **full page scan**, new tab — the crops say what a lin
 **A revision is a whole-page act, and the second refusal is why.** `decision.json` must cover every line, so there is no path that edits one word of a finished page: revising `gt/ocr/` means a `proposal.json` for the whole page, adjudicated, then `restore --force`. That is deliberate — a partial write is ground truth with invisible holes — but it means a page carrying ground truth and **no proposal** cannot enter the loop at all. One page is in that state: `2-030`, adjudicated by the eScriptorium route before this pass existed. Every other page in `gt/ocr/` has one.
 **Note** the view is the right default here rather than a convenience: it resolves to `gt/ocr/` for a keyed page (source is the target — a `revision`, which needs `--force`) and to `mz/ocr/` for a predicted one (source ≠ target, target absent — a `restoration`, which does not). That is the correct source in both cases without the caller choosing, and `mode` reports which ran.
 
+**`--all` is every page holding a `decision.json`, and it asks a sharper question than `--force` does.** Every page in `gt/ocr/` holds text, so the bare guard would refuse the whole store and a sweep that refuses everything is not a sweep. So it skips a page whose ground truth is **already newer than its decision** — that page has been restored since it was adjudicated and there is nothing to write — and restores the rest, carrying `force` on the adjudicator's behalf: the timestamps establish the same intent the flag does. `--force` under `--all` means the other half, *ignore the mtime test*, which is the same "do it anyway" the flag always meant. A skipped page is named in a `skipped` table, never silently. Deliberately not keyed on the *proposal*'s mtime: a proposal is a reading, not an adjudication, and re-authoring one licenses no write.
+
+With more than one ref and `--commit`, **every page is checked before any page is written** — a dry pass runs the whole refusal set first, so an unadjudicated line on the fourth page cannot arrive with three pages of ground truth already replaced.
+
 Two tables describe what the human did, and they are separate because a note is not an edit. `edits[]{line,proposal,decision}` is the text that changed; `notes[]{line,note}` is every line the adjudicator remarked on, **edited or not** — the commonest note sits on a line whose text nobody touched (`2-036`'s speck, ruled "ink smudge" and left empty), so a list keyed on `edited` showed it nowhere and the ruling appeared in no report about the page. Neither table gates, and the note never reaches the ALTO: `decision.json` is its record.
 ```
 --store {gt,mz}  which store supplies the line geometry [omit: the ocr/ view,
                  which is gt for a keyed page and mz for a predicted one]
---force     overwrite a target that already holds text; every page does, so a revision needs it [off]
+--all       every page holding a decision.json, skipping those whose ground
+            truth is already newer than it
+--force     overwrite a target that already holds text; every page does, so a revision needs it [off].
+            Under --all it carries the same intent one step further: ignore the mtime skip too
 --commit    actually write gt/ocr/ [off — previews the report]
 --root --json
 ```
 
-### ocr corrections
+### ocr corrections [REF ...]
 **Does** aggregates the character-level `proposal.json` → `decision.json` corrections across every adjudicated page — what readers actually get wrong, ranked.
 **Reads** every `review/*/` holding both files.
 **Writes** —
 **Exit** always 0 — measurement.
-**Note** takes no ref, like `pages`; `--ref` scopes it. It sits in this group rather than under `proposal` because it reads *both* files, and `review`/`restore` own the other one. `restore` computes this same diff per page (`edits`) and discards it, so the pass's own error profile was the one thing in the loop with no record.
+**Note** **an aggregate**: refs *scope* it and do not multiply it, so there is one report whether one page was named or forty, and `--all` is every page with both files. Its ref used to be a repeatable `--ref` flag, the one place in the CLI where naming a page was not a positional. It sits in this group rather than under `proposal` because it reads *both* files, and `review`/`restore` own the other one. `restore` computes this same diff per page (`edits`) and discards it, so the pass's own error profile was the one thing in the loop with no record.
 
 Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks as an insert of the mark itself rather than as a replacement of its whole word — which is what makes the ranking legible: 37 dropped dots-below across eight pages collapse to one row instead of scattering over 37 nothing can match. An edit of 12 characters or more on either side reports as `<Nch> -> <Mch>`, since a whole-line retype would otherwise mint a row nothing will ever match again.
 
@@ -312,22 +363,24 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 
 **It undercounts by construction**: `proposal set`/`replace` overwrite the proposal in place, so a reader error a coordinator repaired *before* adjudication leaves no diff at all (`2-033`'s four bare `g` went that way). It measures what reached the adjudicator, never what the reader first wrote — and the earlier the loop catches a slip, the less of it appears here, which is the intended direction rather than a gap to close.
 ```
---ref PP-NNN  restrict to this page; repeatable [every page with both files]
+--all         every review/ page holding both files
 --since DATE  only pages whose saved_at sorts at or after this
 --min N       drop changes seen fewer than N times [1]
 --root --json
 ```
 
-### ocr clean REF
+### ocr clean [REF ...]
 **Does** removes a page's derived working files, leaving `proposal.json` and `decision.json` and the `page.png` link.
 **Reads** `review/PP-NNN/`.
 **Writes** deletes `crops/`, `sheets/`, `zoom/`, `review.html`.
 **Exit** always 0.
+**Note** no `--commit`, `--all` included: it removes only derived, regenerable output, which is the same reason `crops` writes without one. The verb that deletes an *authored* file is `zones delete`, and that one has no `--all` at all.
 ```
+--all       every review/ page
 --root --json
 ```
 
-### ocr predict [REF]
+### ocr predict [REF ...]
 **Does** zones to text in one pass — baseline segmentation, then recognition, structured by the zones the `zones/` view supplies. `blla`'s own regions are discarded and the seven declared zone types replace them, so a line arrives knowing whether it sits in a running title, a paragraph, a footnote or a signature line. Bare, it sweeps every page with zones and is resumable.
 **Reads** `scans/w-figs-blotted/`, `zones/`, the two models, the split marks. A page with no blot is refused.
 **Writes** `mz/ocr/` (derived), and relinks that page in `ocr/`. **Never `gt/ocr/`.** One `<String CONTENT>` per `TextLine`, the shape `gt/ocr/` has — the two stores sit under one view and a consumer reads either without asking which.
@@ -335,7 +388,9 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 **Note** the input is the blotted raster, as `zones predict`'s is, so artwork raises no baselines. Nothing is lost to it: the blot fills the *declared* figure box and not a pixel more — the pad was rejected precisely because body text sits hard against an inset figure on pages like `1-283` — so the type survives and only the pictures go. Captions go too and should: they live in `data/readings.md`. A line whose baseline still falls in no zone is **kept, assigned to no region, and counted as `lines_outside_zones`** rather than dropped, because a hole in a page is invisible and junk is not.
 **Note** the zone label reaches the ALTO as `OtherTag/@LABEL` via `TAGREFS`, and `harness ocr lines` surfaces it as `zone`. That is what lets `tei context` drop the running head and the signature line from the collation draft while the store keeps every line the page sets — including the folio, which shares the running-title zone.
 **Note** stock CATMuS reads ~91% of the ASCII and **0% of the transcription inventory**. This store is a witness to line geometry and to English, and to nothing else.
+**Note** **several named refs go through the sweep, not a loop over the single-page form** — both models load once, which is most of the cost (~25 s standalone against ~17 s each in one process), and that is the whole reason to name them together. The single-page override travels with them: a named ref means *that page* even where a human ruled it exempt, so a named plate is refused loudly rather than dropped in silence by the command that named it. `--all` is the other case and there the exempt ruling holds.
 ```
+--all            every page with zones
 --force          re-run over pages already in mz/ocr/ [off] — the file records both
                  models' sha256, the store's only witness to what produced it
 --itinerary LST  recognize over a work-list [every page with zones]

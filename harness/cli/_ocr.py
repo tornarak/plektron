@@ -58,7 +58,7 @@ from ..review import (
     serve,
     summary,
 )
-from ._common import REF_HELP, out
+from ._common import REF_HELP, one_page_only, out, out_per_ref, page_refs, refs_arg
 
 # **A closed set of the two real stores, and the view is not a value in it** —
 # `zones check --store` exactly, and for its reason: a free path is how a check ends
@@ -78,7 +78,14 @@ OUT_HELP = ("write the images somewhere other than the page's own review/PP-NNN/
             "files the other actions expect to find in the default place")
 
 
-def _ref(p):
+def _one_ref(p):
+    """The singular ref positional — `adopt-gap` only, and it earns it.
+
+    Its second positional is a VPOS measured on *that* page's raster, so a ref
+    list would carry a band list belonging to one of them. Everything else in
+    this group takes as many refs as you like; `test_cli_surface.py` holds this
+    exemption by name so a new singular verb cannot slip in beside it.
+    """
     p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
     return p
 
@@ -118,26 +125,29 @@ def register(sub, common):
                         "still pointing at mz")
     p.set_defaults(func=run_pages)
 
-    p = _store(_ref(add("lines", help="per-line records for one page — line id, "
+    p = _store(refs_arg(add("lines", help="per-line records for a page — line id, "
               "geometry and text, in reading order with empties kept, which is "
               "the join detector_flags' line numbers cannot supply. `index` is "
               "an identity, not a position: it stays what ALTO document order "
-              "assigned, so labels are not consecutive in a banded listing")))
+              "assigned, so labels are not consecutive in a banded listing"),
+              all_="every page the store read holds"))
     p.add_argument("--full", action="store_true",
                    help="include baseline and polygon points, which are long "
                         "enough to make the table unreadable by default")
     p.set_defaults(func=run_lines)
 
-    p = _store(_ref(add("gaps", help="bands of ink on the raster that no TextLine "
+    p = _store(refs_arg(add("gaps", help="bands of ink on the raster that no TextLine "
               "covers — the dropped-line detector. The segmentation this corpus "
               "was built from drops whole printed lines and nothing else "
               "notices, because the text that IS there is correct. Measured off "
               "the page, so the geometry a repair needs comes with the report. "
               "Expect running heads and folios among the hits: a band is a place "
-              "to look, not a verdict")))
+              "to look, not a verdict"),
+              all_="every page the store read holds — the corpus dropped-line "
+                   "sweep, at a raster read per page"))
     p.set_defaults(func=run_gaps)
 
-    p = _store(_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
+    p = _store(_one_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
               "empty TextLines in gt/ocr/, so a dropped line can be keyed. "
               "Geometry only, never CONTENT: text still arrives via "
               "decision.json -> restore. Each VPOS must match a measured band; "
@@ -150,12 +160,17 @@ def register(sub, common):
                         "the ground-truth store and gates like `restore` does")
     p.set_defaults(func=run_adopt_gap)
 
-    p = _store(_ref(add("crops", help="one PNG per line, into review/PP-NNN/crops/")))
+    # **No `--all` on the image writers, and the absence is deliberate.** Crops and
+    # sheets are expensive in time and disk and are called per page by a reading
+    # pass that is working on that page; a corpus form would be a lot of bytes
+    # nobody asked for. `--out` is why they still need `one_page_only`: with a
+    # second ref and one destination, the second page silently overwrote the first.
+    p = _store(refs_arg(add("crops", help="one PNG per line, into review/PP-NNN/crops/")))
     p.add_argument("--margins", action="store_true", help=MARGINS_HELP)
     p.add_argument("--out", type=Path, default=None, help=OUT_HELP)
     p.set_defaults(func=run_crops)
 
-    p = _store(_ref(add("sheets", help="compose the line crops into labelled "
+    p = _store(refs_arg(add("sheets", help="compose the line crops into labelled "
               "contact sheets in review/PP-NNN/sheets/, index drawn in the "
               "margin, nothing downscaled — the reading pass's instrument; emits "
               "the sheet/lines map instead of the line table")))
@@ -169,7 +184,7 @@ def register(sub, common):
     p.add_argument("--out", type=Path, default=None, help=OUT_HELP)
     p.set_defaults(func=run_sheets)
 
-    p = _store(_ref(add("zoom", help="magnify selected lines — overlapping strips "
+    p = _store(refs_arg(add("zoom", help="magnify selected lines — overlapping strips "
               "at an integer scale, packed into as few sheets as the height "
               "budget allows, for the second look a contact sheet leaves open")))
     p.add_argument("--only", default=None, metavar="SPEC",
@@ -206,12 +221,16 @@ def register(sub, common):
                    help="output directory (default review/PP-NNN/zoom)")
     p.set_defaults(func=run_zoom)
 
-    p = _store(_ref(add("blot", help="write the page to scans/w-blotted/ with every "
+    p = _store(refs_arg(add("blot", help="write the page to scans/w-blotted/ with every "
               "line box and figure zone painted out, so whatever remains is "
               "uncovered by construction. The visual counterpart to `gaps`, and "
               "a check on it: nothing is thresholded here, only covered. Not to "
               "be confused with `zones blot`, which paints figures white for the "
-              "segmenter to train on")))
+              "segmenter to train on"),
+              all_="every page the store read holds"))
+    p.add_argument("--force", action="store_true",
+                   help="repaint pages whose blot is already newer than their "
+                        "ALTO. Only --all skips those; naming a page means it")
     p.add_argument("--out", type=Path, default=None,
                    help="output directory (default scans/w-blotted/ — a "
                         "corpus-level destination, unlike the other image "
@@ -224,19 +243,18 @@ def register(sub, common):
     # produced. The runtime refusal below still catches that, but a default nobody
     # has to think about beats an error after the fact — and `mz/ocr/` is a
     # different inode by construction.
-    # **The one action taking more than one ref**, and the reason is that it is the
-    # only one whose cost is a human's attention rather than a process's. Standing a
-    # server up per page made the reviewer wait on the tooling between pages, which
-    # got worse the moment the reading half started fanning out to an agent per
-    # page. The other actions stay single-ref: they are cheap, and a sweep over
-    # several is a shell loop nobody needs help writing.
+    # **The first action to take more than one ref**, for a reason the rest of the
+    # group has since caught up with: standing a server up per page made the
+    # reviewer wait on the tooling between pages, which got worse the moment the
+    # reading half started fanning out to an agent per page.
     p = _store(add("review", help="adjudicate reading proposals in the browser "
               "(--serve), one or more pages in one session; bare, a span-level "
               "diff of each proposal against a second witness, grouped by "
               "substitution class"), default="mz")
-    p.add_argument("ref", metavar="PP-NNN", nargs="+",
-                   help=REF_HELP + ". Several may be given: --serve walks them in "
-                        "the order named, one page on screen at a time")
+    refs_arg(p, all_="every page holding a proposal and no decision — the "
+                     "pending-adjudication queue",
+             extra=": --serve walks them in the order named, one page on screen "
+                   "at a time")
     mx = p.add_mutually_exclusive_group()
     mx.add_argument("--serve", action="store_true",
                     help="serve the review page on 127.0.0.1 and accept saves "
@@ -253,15 +271,19 @@ def register(sub, common):
     p.add_argument("--port", type=int, default=8731, help="port for --serve")
     p.set_defaults(func=run_review)
 
-    p = _store(_ref(add("restore", help="preview (default) or write adjudicated "
+    p = _store(refs_arg(add("restore", help="preview (default) or write adjudicated "
               "review decisions into gt/ocr/ as ground truth, keeping the source "
               "geometry — --commit required to write. Reports mode=restoration "
               "(filled from another store) or mode=revision (the finished page "
-              "re-edited in place)")))
+              "re-edited in place)"),
+              all_="every page holding an adjudicated decision.json, skipping "
+                   "those whose ground truth is already newer than it"))
     p.add_argument("--force", action="store_true",
                    help="overwrite a target that already holds text. Every page "
                         "in gt/ocr/ does now that the rebuild is complete, so "
-                        "this is how a revision says it meant it — required for one")
+                        "this is how a revision says it meant it — required for "
+                        "one. Under --all it carries the same intent one step "
+                        "further and ignores the mtime skip as well")
     p.add_argument("--commit", action="store_true",
                    help="actually write gt/ocr/ — bare form only previews the "
                         "report (edits, geometry_drift, text_mismatch)")
@@ -271,10 +293,8 @@ def register(sub, common):
             "character-level proposal->decision corrections, aggregated across "
             "every adjudicated page. The pass's own error profile, which nothing "
             "recorded — restore computes this diff per page and discards it. "
-            "Takes no ref, like `pages`; --ref scopes it. Always exits 0")
-    p.add_argument("--ref", metavar="PP-NNN", action="append", default=None,
-                   help="restrict to this page; repeatable (default: every "
-                        "review/ page holding both files)")
+            "An aggregate: refs scope it, they do not multiply it. Always exits 0")
+    refs_arg(p, all_="every review/ page holding both files")
     p.add_argument("--since", metavar="DATE", default=None,
                    help="only pages whose decision.json saved_at sorts at or "
                         "after this (e.g. 2026-07-31). The store spans this "
@@ -286,16 +306,22 @@ def register(sub, common):
                    help="drop changes seen fewer than N times [1]")
     p.set_defaults(func=run_corrections)
 
-    p = _ref(add("clean", help="remove a page's derived working files (crops, "
+    # No `--commit`, `--all` included: it removes only derived, regenerable output,
+    # which is the same reason `crops` writes without one. The verb that deletes an
+    # authored file is `zones delete`, and that one has no `--all` at all.
+    p = refs_arg(add("clean", help="remove a page's derived working files (crops, "
              "sheets, zoom, review.html) — leaving proposal.json and "
-             "decision.json in place; run once a page is restored"))
+             "decision.json in place; run once a page is restored"),
+             all_="every review/ page")
     p.set_defaults(func=run_clean)
 
     p = add("predict", help="zones to text in one pass — baseline segmentation "
             "and recognition over scans/, structured by the zones/ view, written "
-            "to mz/ocr/ and linked into ocr/. Never gt/ocr/. Bare, it sweeps "
-            "every page with zones and resumes where it stopped")
-    p.add_argument("ref", metavar="PP-NNN", nargs="?", help=REF_HELP)
+            "to mz/ocr/ and linked into ocr/. Never gt/ocr/. --all sweeps every "
+            "page with zones and resumes where it stopped")
+    refs_arg(p, all_="every page with zones",
+             extra=", and several go through one process — both models load once, "
+                   "which is most of the cost")
     p.add_argument("--force", action="store_true",
                    help="re-run over pages already in mz/ocr/ — the file records "
                         "both models' sha256, which is the store's only witness "
@@ -328,20 +354,36 @@ def run_pages(a) -> int:
     return 0
 
 
+def _store_refs(a) -> list[str]:
+    """The pages this invocation works on: the ones named, or the store's own.
+
+    `--all` here reads through whatever `--store` resolved to, which is the view
+    unless one was named — the `ocr pages` rule, that a machine-read page is
+    workable and that is what these verbs report. Neither of them gates and
+    neither publishes a rate, so the "name the store, not the view" rule does not
+    reach them; `--store` narrows either.
+    """
+    return page_refs(a) or all_refs(a.root, _alto_dir(a))
+
+
 def run_lines(a) -> int:
-    recs = page_lines(alto_for_lines(a.ref, _alto_dir(a), a.root))
-    if not a.full:
-        # Drop the two long geometry strings. Dropped from every record, never
-        # some — a ragged key set collapses the table to the verbose nested
-        # form (see emit.py).
-        drop = ("baseline", "points")
-        recs = [{k: v for k, v in r.items() if k not in drop} for r in recs]
-    out(a, recs)
+    pairs = []
+    for r in _store_refs(a):
+        recs = page_lines(alto_for_lines(r, _alto_dir(a), a.root))
+        if not a.full:
+            # Drop the two long geometry strings. Dropped from every record, never
+            # some — a ragged key set collapses the table to the verbose nested
+            # form (see emit.py).
+            drop = ("baseline", "points")
+            recs = [{k: v for k, v in rec.items() if k not in drop} for rec in recs]
+        pairs.append((r, recs))
+    out_per_ref(a, pairs)
     return 0
 
 
 def run_gaps(a) -> int:
-    out(a, line_gaps(a.ref, _alto_dir(a), a.root))
+    out_per_ref(a, [(r, line_gaps(r, _alto_dir(a), a.root))
+                    for r in _store_refs(a)])
     return 0
 
 
@@ -365,46 +407,98 @@ def _page_link(a, ref: str | None = None) -> None:
 
 
 def run_crops(a) -> int:
-    _page_link(a)
-    out(a, write_line_crops(a.ref, a.out or crops_dir(a.ref, a.root),
-                            _alto_dir(a), a.root, margins=a.margins))
+    refs = page_refs(a)
+    one_page_only(a, {"out": "--out"}, refs)
+    pairs = []
+    for r in refs:
+        _page_link(a, r)
+        pairs.append((r, write_line_crops(r, a.out or crops_dir(r, a.root),
+                                          _alto_dir(a), a.root, margins=a.margins)))
+    out_per_ref(a, pairs)
     return 0
 
 
 def run_sheets(a) -> int:
-    _page_link(a)
-    out(a, write_line_sheets(a.ref, a.out or sheets_dir(a.ref, a.root),
-                             _alto_dir(a), a.root, per_sheet=a.per_sheet,
-                             margins=a.margins, sheet_h=a.sheet_h))
+    refs = page_refs(a)
+    one_page_only(a, {"out": "--out"}, refs)
+    pairs = []
+    for r in refs:
+        _page_link(a, r)
+        pairs.append((r, write_line_sheets(r, a.out or sheets_dir(r, a.root),
+                                           _alto_dir(a), a.root,
+                                           per_sheet=a.per_sheet,
+                                           margins=a.margins, sheet_h=a.sheet_h)))
+    out_per_ref(a, pairs)
     return 0
 
 
 def run_zoom(a) -> int:
-    _page_link(a)
-    out(a, write_line_zoom(
-        a.ref, a.out or zoom_dir(a.ref, a.root),
-        only=parse_selection(a.only) if a.only else None,
-        zoom=a.zoom, window=a.window, overlap=a.overlap,
-        sheet_h=a.sheet_h, client_w=a.client_w,
-        alto_dir=_alto_dir(a), root=a.root,
-        margins=a.margins, smooth=a.smooth))
+    refs = page_refs(a)
+    # `--only` is that page's own line indices — an identity, not a position, so
+    # the same numbers name unrelated lines on the next page.
+    one_page_only(a, {"out": "--out", "only": "--only"}, refs)
+    pairs = []
+    for r in refs:
+        _page_link(a, r)
+        pairs.append((r, write_line_zoom(
+            r, a.out or zoom_dir(r, a.root),
+            only=parse_selection(a.only) if a.only else None,
+            zoom=a.zoom, window=a.window, overlap=a.overlap,
+            sheet_h=a.sheet_h, client_w=a.client_w,
+            alto_dir=_alto_dir(a), root=a.root,
+            margins=a.margins, smooth=a.smooth)))
+    out_per_ref(a, pairs)
     return 0
 
 
 def run_blot(a) -> int:
-    out(a, write_blot(a.ref, a.out or (a.root / "scans" / "w-blotted"),
-                      _alto_dir(a), a.root))
+    refs = _store_refs(a)
+    one_page_only(a, {"out": "--out"}, refs)
+    dest = a.out or (a.root / "scans" / "w-blotted")
+    pairs, skipped = [], []
+    for r in refs:
+        # Named pages are always repainted; only a sweep skips. The test is
+        # honest here in a way `zones blot`'s cannot be — this paints boxes read
+        # out of the ALTO, so an ALTO newer than the blot is exactly the change
+        # that matters, where a figure ALTO corrected after a `zones blot` leaves
+        # a raster whose staleness nothing can see.
+        if getattr(a, "all", False) and not a.force:
+            src = alto_for_lines(r, _alto_dir(a), a.root)
+            painted = dest / f"chukchi-{r}.png"
+            if painted.exists() and src.exists() and \
+                    painted.stat().st_mtime >= src.stat().st_mtime:
+                skipped.append(r)
+                continue
+        pairs.append((r, write_blot(r, dest, _alto_dir(a), a.root)))
+    out_per_ref(a, pairs)
+    if skipped:
+        out(a, {"skipped_fresh": len(skipped), "refs": " ".join(skipped)})
     return 0
 
 
+def _pending_review(root: Path) -> list[str]:
+    """Pages holding a proposal and no decision — the adjudication queue.
+
+    Not a farm and not a store: `review/` is authored working state, so an empty
+    answer here is a true statement (nothing is waiting) rather than a tree
+    nobody built.
+    """
+    from ..paths import decisions_path, proposal_path
+    refs = [d.name for d in sorted((root / "review").glob("*"))
+            if proposal_path(d.name, root).exists()
+            and not decisions_path(d.name, root).exists()]
+    return [norm_ref(r) for r in refs]
+
+
 def run_review(a) -> int:
+    refs = page_refs(a) or _pending_review(a.root)
     if a.serve:
-        for r in a.ref:
+        for r in refs:
             _page_link(a, r)
-        serve(a.ref, _alto_dir(a), a.root, a.port)
+        serve(refs, _alto_dir(a), a.root, a.port)
         return 0
     if a.html:
-        for r in a.ref:
+        for r in refs:
             _page_link(a, r)
             dest = html_path(r, a.root)
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -422,7 +516,7 @@ def run_review(a) -> int:
     # Checked for **every** ref before any table is printed. A collapsed witness
     # part-way down a batch would otherwise arrive after several pages of
     # reassuring output, which is where it is least likely to be read.
-    for r in a.ref:
+    for r in refs:
         src = alto_for_lines(r, _alto_dir(a), a.root)
         gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(r)}.xml"
         if src.exists() and gt.exists() and src.resolve() == gt.resolve():
@@ -432,29 +526,82 @@ def run_review(a) -> int:
                   f"independent witness — `--store mz` is one, or use `harness "
                   f"ocr review {r} --serve` to adjudicate.", file=sys.stderr)
             return 1
-    for r in a.ref:
-        # Named only in a batch. One ref prints exactly what it always did — the
-        # header would be the only line of output that is not a table, and a
-        # caller parsing single-page output should not have to learn it.
-        if len(a.ref) > 1:
-            print(f"# {r}")
+    # Two key sets, two tables — and pooled across refs rather than printed as N
+    # `# ref`-separated pairs, which is what this did while it was the only
+    # multi-ref action. A pooled table parses as one document; the separated form
+    # did not parse as anything.
+    sums, queues = [], []
+    for r in refs:
         spans = page_spans(r, _alto_dir(a), a.root)
         n = len(page_lines(alto_for_lines(r, _alto_dir(a), a.root)))
-        # Two calls, two tables. Summary and queue have different key sets, so
-        # emitting them as one list would collapse the whole thing to the verbose
-        # nested form (see emit.py).
-        print(emit(summary(spans, n), getattr(a, "json", False)))
-        out(a, spans if a.spans else group_spans(spans))
+        sums.append((r, summary(spans, n)))
+        queues.append((r, spans if a.spans else group_spans(spans)))
+    out_per_ref(a, sums)
+    out_per_ref(a, queues)
     return 0
 
 
 def run_restore(a) -> int:
-    out(a, restore(a.ref, _alto_dir(a), a.root, a.force, a.commit))
+    from ..review import restore_skip
+
+    refs = page_refs(a)
+    sweep = getattr(a, "all", False)
+    if sweep:
+        from ..paths import decisions_path
+        refs = [norm_ref(d.name) for d in sorted((a.root / "review").glob("*"))
+                if decisions_path(d.name, a.root).exists()]
+    # **Every page is checked before any page is written.** `restore` with
+    # `commit=False` runs the whole of its refusal set and touches nothing, so a
+    # dry pass over the list is exactly the up-front validation a multi-ref write
+    # needs: an unadjudicated line on the fourth page must not arrive with three
+    # pages of ground truth already replaced.
+    if a.commit and len(refs) > 1:
+        for r in refs:
+            if not (sweep and restore_skip(r, a.root, a.force)):
+                restore(r, _alto_dir(a), a.root, a.force or sweep, commit=False)
+    pairs, skipped = [], []
+    for r in refs:
+        # A sweep asks `restore_skip` and carries `force` on the adjudicator's
+        # behalf where it says go: every page in gt/ocr/ holds text, so the bare
+        # guard would refuse the whole store and a sweep that refuses everything
+        # is not a sweep. A named ref keeps the guard exactly as it was.
+        if sweep:
+            why = restore_skip(r, a.root, a.force)
+            if why:
+                skipped.append({"ref": r, "why": why})
+                continue
+        pairs.append((r, restore(r, _alto_dir(a), a.root,
+                                 a.force or sweep, a.commit)))
+    # `edits`, `geometry_drift`, `text_mismatch` and `notes` are lists, and a list
+    # in a pooled row degrades the whole table (see `out_per_ref`). One ref still
+    # gets the report exactly as it always looked; a batch gets a row of counts
+    # per page and then each list as its own ref-keyed table, which is also the
+    # more useful shape — the whole batch's corrections in one place.
+    if len(pairs) == 1 and not sweep:
+        rep = pairs[0][1]
+        out(a, {k: v for k, v in rep.items() if k != "edits"})
+        if rep.get("edits"):
+            out(a, rep["edits"])
+    else:
+        listy = [k for k, v in (pairs[0][1].items() if pairs else ())
+                 if isinstance(v, list)]
+        out_per_ref(a, [(r, {k: (len(v) if k in listy else v)
+                             for k, v in rep.items()}) for r, rep in pairs])
+        for key in listy:
+            rows = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
+            if rows:
+                print(f"# {key}")
+                out_per_ref(a, rows)
+    if skipped:
+        out(a, skipped)
     return 0
 
 
 def run_corrections(a) -> int:
-    rep = corrections(a.root, refs=a.ref, since=a.since)
+    # An aggregate: refs *scope* it rather than multiplying it, so there is one
+    # report whether one page was named or forty.
+    refs = page_refs(a) or None
+    rep = corrections(a.root, refs=refs, since=a.since)
     if a.min > 1:
         rep["changes"] = [c for c in rep["changes"] if c["count"] >= a.min]
     out(a, rep)
@@ -462,7 +609,11 @@ def run_corrections(a) -> int:
 
 
 def run_clean(a) -> int:
-    out(a, clean(a.ref, a.root))
+    refs = page_refs(a)
+    if not refs:
+        refs = [norm_ref(d.name) for d in sorted((a.root / "review").glob("*"))
+                if d.is_dir()]
+    out_per_ref(a, [(r, clean(r, a.root)) for r in refs])
     return 0
 
 
@@ -473,20 +624,27 @@ def run_predict(a) -> int:
     from ..recognize import predict, predict_all, predict_skip
     from ..zones import load_itinerary
 
-    if a.ref:
+    named = page_refs(a)
+    if len(named) == 1:
         # A named ref is `single`: it overrides the exempt skip, because naming
         # the page is the request. It does not override an existing file — that
         # is what `--force` is for, and the two excuse different things.
-        why = predict_skip(a.ref, a.root, a.force, single=True)
+        ref = named[0]
+        why = predict_skip(ref, a.root, a.force, single=True)
         if why:
-            print(f"{norm_ref(a.ref)}: {why}", file=sys.stderr)
+            print(f"{ref}: {why}", file=sys.stderr)
             return 0
-        out(a, predict(a.ref, a.root, seg_model=a.seg_model,
+        out(a, predict(ref, a.root, seg_model=a.seg_model,
                        rec_model=a.rec_model, device=a.device))
         return 0
 
-    refs = load_itinerary(a.itinerary, a.root) if a.itinerary else None
-    rep = predict_all(a.root, refs, a.seg_model, a.rec_model, a.device, a.force)
+    # Several named refs go through the sweep too, and that is the point of
+    # naming them together: both models load once, which is most of the cost.
+    # `named=` carries the single-page override with them, or a page a human
+    # ruled exempt would be skipped in silence by the very command that named it.
+    refs = named or (load_itinerary(a.itinerary, a.root) if a.itinerary else None)
+    rep = predict_all(a.root, refs, a.seg_model, a.rec_model, a.device, a.force,
+                      named=bool(named))
     pages, skips = rep.pop("pages"), rep.pop("skips")
     print(emit(rep, getattr(a, "json", False)))
     # Three tables, three key sets. Emitting them as one list would collapse the
