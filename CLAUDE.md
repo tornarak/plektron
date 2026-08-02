@@ -188,14 +188,25 @@ Layout, all at the repo root:
   a subagent per page** (`.claude/skills/rebuild-groundtruth/dispatch.md`), each
   stopping at a normalized `proposal.json`, with one `harness ocr review` server
   over the whole batch; `2-045`–`2-047` and `2-031`–`2-036` went that way.
-  **`2-030` is the one page with ground truth and no `proposal.json`** — it was
-  adjudicated by the eScriptorium route before the review loop existed. Since
-  `restore` refuses a decision set that does not cover every line, that page cannot
-  be revised at all until someone reads it: there is no patch path, and the whole
-  of its text predates every detector now in the loop. It is also the densest
-  Tier-1 page in the pilot set (fig. 213's 27-line gloss list), so it is the worst
-  page to have unexamined. A `gt`-with-no-proposal page is invisible to
-  `ocr pages`, which reports the store rather than the review directory.
+  **`2-030` was the one page with ground truth and no `proposal.json`**, and is
+  not any more — it was adjudicated by the eScriptorium route before the review
+  loop existed, which left it unrevisable: `restore` refuses a decision set that
+  does not cover every line, so there was no patch path and the whole of its text
+  predated every detector now in the loop. It was also the densest Tier-1 page in
+  the pilot set (fig. 213's 27-line gloss list), i.e. the worst page to have
+  unexamined. Read through in 2026-08 and corrected in six places. **Every page in
+  `gt/ocr/` now has a proposal**, so the state is closed rather than merely rare —
+  but the shape that produced it is not, and a `gt`-with-no-proposal page is
+  invisible to `ocr pages`, which reports the store rather than the review
+  directory.
+  What that page settled is worth more than its six corrections: **`gt/ocr/` and
+  `data/readings.md` are not independent witnesses on a figure page.** This
+  ground truth was hand-corrected from CATMuS and the caption block descends from
+  the same recognizer pass, so three commas the machine invented sat in both files
+  corroborating each other, and only a fresh raster read separated them. Nothing
+  in either file records the shared ancestor. Same fault as the verbatim firewall,
+  `review`'s span diff and `zones score`'s `unseen` row — two inputs that turn out
+  to be one — arriving through provenance nobody wrote down.
   What that measured is worth carrying: **the residual error classes are §5.1's
   dropped `g̣` and §5.2's `ɪ`-as-`i`, they survive readers who explicitly report
   checking them, and the only safeguard that does not depend on a reader
