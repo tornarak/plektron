@@ -383,6 +383,121 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
             "changed": len(changed), "changed_lines": changed}
 
 
+# Longer than this on either side of an opcode and the change is a rewrite rather
+# than a character slip, so it is reported by size instead of by content. Without
+# the cap a whole-line retype mints a row nothing else will ever match, and the
+# table stops being a frequency ranking and becomes a list of one-offs — the same
+# failure `zones check`'s adjacent-band merge exists to prevent, where 38 rows for
+# one missing region buried the finding.
+_CORRECTION_MAX_RUN = 12
+
+
+def _describe(old: str, new: str) -> str:
+    if len(old) >= _CORRECTION_MAX_RUN or len(new) >= _CORRECTION_MAX_RUN:
+        return f"<{len(old)}ch> -> <{len(new)}ch>"
+    return f"{old!r} -> {new!r}"
+
+
+def corrections(root: Path = Path("."), refs: list[str] | None = None,
+                since: str | None = None) -> dict:
+    """Character-level proposal->decision corrections, aggregated across pages.
+
+    What the adjudicator changed is the only record of what readers actually get
+    wrong, and until now it was computed per page (`restore`'s `edits`) and thrown
+    away with the process. It lives here rather than in `proposal_check` because
+    it reads *both* files, and only this module owns both.
+
+    Opcodes come from `difflib` over **NFD** text, so a dropped combining mark
+    ranks as an insert of the mark itself rather than as a replacement of its host
+    word. That is what makes the ranking legible at all: 37 dropped dots-below
+    across eight pages collapse to one row, where a word-level diff would scatter
+    them over 37 rows nothing could ever match.
+
+    **Scopable, and that is not a convenience.** The store spans this project's
+    own history: pages keyed before a rule existed carry error classes that rule
+    has since made impossible, so a bare aggregate reads as a live error profile
+    when it is partly archaeology. The leading class is 117 straight apostrophes
+    across exactly two pages, keyed before a bare apostrophe became its own
+    unconditional error (`detectors.apostrophe_flags`); it cannot recur in that
+    form. Scoped to 2026-07-31 the only recurring class left is `i` -> `ɪ`, four
+    times on three pages. `since` filters on `decision.json`'s own `saved_at`.
+
+    **A structural undercount, stated rather than fixed.** A coordinator repair via
+    `proposal_check.set_field`/`replace_in_field` overwrites `proposal.json` in
+    place, so a reader error corrected *before* adjudication leaves no
+    proposal->decision diff at all — `2-033`'s four bare `g` went exactly that way
+    and are invisible here. This measures what reached the adjudicator, never what
+    the reader first wrote, and the earlier the loop catches a slip the less of it
+    appears. That is the intended direction of travel, not a defect to repair.
+    """
+    want = {norm_ref(r) for r in refs} if refs else None
+    counts: dict[str, int] = {}
+    pages: dict[str, set[str]] = {}
+    stamps: dict[str, list[str]] = {}
+    by_page: list[dict] = []
+    skipped_unstamped: list[str] = []
+    for d in sorted((root / "review").glob("*/")):
+        ref = d.name
+        if want is not None and ref not in want:
+            continue
+        p, dc = d / "proposal.json", d / "decision.json"
+        if not (p.exists() and dc.exists()):
+            continue
+        doc = json.loads(dc.read_text(encoding="utf-8"))
+        saved_at = doc.get("saved_at") or ""
+        if since is not None:
+            # An unstamped page is *excluded and counted*, never silently dropped:
+            # dropped, it is indistinguishable from a page with nothing to report,
+            # which is the blank-vs-`?` rule `_ink_cache.json` states for the zone
+            # editor's page list — a missing verdict must not draw in the same
+            # column as a clean one.
+            if not saved_at:
+                skipped_unstamped.append(ref)
+                continue
+            if saved_at < since:
+                continue
+        prop = json.loads(p.read_text(encoding="utf-8")).get("lines", {})
+        dec = doc.get("lines", {})
+        here: dict[str, int] = {}
+        changed = 0
+        for idx, rec in dec.items():
+            before = _nfd((prop.get(idx) or {}).get("text", ""))
+            after = _nfd(rec.get("text", ""))
+            if before == after:
+                continue
+            changed += 1
+            sm = difflib.SequenceMatcher(None, before, after, autojunk=False)
+            for tag, i1, i2, j1, j2 in sm.get_opcodes():
+                if tag == "equal":
+                    continue
+                key = _describe(before[i1:i2], after[j1:j2])
+                here[key] = here.get(key, 0) + 1
+        for key, n in here.items():
+            counts[key] = counts.get(key, 0) + n
+            pages.setdefault(key, set()).add(ref)
+            if saved_at:
+                stamps.setdefault(key, []).append(saved_at)
+        top = max(here.items(), key=lambda kv: (kv[1], kv[0])) if here else ("", 0)
+        by_page.append({"ref": ref, "saved_at": saved_at, "lines": len(dec),
+                        "changed": changed, "top_change": top[0], "top_count": top[1]})
+    changes = []
+    for key, n in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0])):
+        seen = sorted(stamps.get(key, []))
+        changes.append({"change": key, "count": n,
+                        # Space-joined, never a nested list: TOON collapses a record
+                        # list to a header plus rows only while every cell is scalar
+                        # (`emit.py`), and one list-valued cell degrades the whole
+                        # table to the verbose form.
+                        "pages": " ".join(sorted(pages[key])),
+                        "first_seen": seen[0] if seen else "",
+                        "last_seen": seen[-1] if seen else ""})
+    return {"pages_read": len(by_page),
+            "lines": sum(r["lines"] for r in by_page),
+            "changed": sum(r["changed"] for r in by_page),
+            "skipped_unstamped": " ".join(skipped_unstamped),
+            "changes": changes, "by_page": by_page}
+
+
 def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             force: bool = False, commit: bool = False) -> dict:
     """Write adjudicated text into `gt/ocr/chukchi-<ref>.xml`, keeping the geometry.

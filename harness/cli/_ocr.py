@@ -49,7 +49,15 @@ from ..lines import (
 )
 from ..paths import clean, crops_dir, ensure_page_link, html_path, sheets_dir, zoom_dir
 from ..recognize import DEFAULT_REC_MODEL, DEFAULT_SEG_MODEL
-from ..review import group_spans, page_spans, render_queue_html, restore, serve, summary
+from ..review import (
+    corrections,
+    group_spans,
+    page_spans,
+    render_queue_html,
+    restore,
+    serve,
+    summary,
+)
 from ._common import out
 
 REF_HELP = "page ref: part and scan index, e.g. 1-048"
@@ -260,6 +268,25 @@ def register(sub, common):
                         "report (edits, geometry_drift, text_mismatch)")
     p.set_defaults(func=run_restore)
 
+    p = add("corrections", help="what readers actually get wrong: the "
+            "character-level proposal->decision corrections, aggregated across "
+            "every adjudicated page. The pass's own error profile, which nothing "
+            "recorded — restore computes this diff per page and discards it. "
+            "Takes no ref, like `pages`; --ref scopes it. Always exits 0")
+    p.add_argument("--ref", metavar="PP-NNN", action="append", default=None,
+                   help="restrict to this page; repeatable (default: every "
+                        "review/ page holding both files)")
+    p.add_argument("--since", metavar="DATE", default=None,
+                   help="only pages whose decision.json saved_at sorts at or "
+                        "after this (e.g. 2026-07-31). The store spans this "
+                        "project's own history and its oldest error classes are "
+                        "ones later rules made impossible, so an unscoped run is "
+                        "partly archaeology; a page with no saved_at is excluded "
+                        "and named in skipped_unstamped rather than dropped")
+    p.add_argument("--min", type=int, default=1, metavar="N",
+                   help="drop changes seen fewer than N times [1]")
+    p.set_defaults(func=run_corrections)
+
     p = _ref(add("clean", help="remove a page's derived working files (crops, "
              "sheets, zoom, review.html) — leaving proposal.json and "
              "decision.json in place; run once a page is restored"))
@@ -424,6 +451,14 @@ def run_review(a) -> int:
 
 def run_restore(a) -> int:
     out(a, restore(a.ref, _alto_dir(a), a.root, a.force, a.commit))
+    return 0
+
+
+def run_corrections(a) -> int:
+    rep = corrections(a.root, refs=a.ref, since=a.since)
+    if a.min > 1:
+        rep["changes"] = [c for c in rep["changes"] if c["count"] >= a.min]
+    out(a, rep)
     return 0
 
 

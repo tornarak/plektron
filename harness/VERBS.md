@@ -297,6 +297,25 @@ Two tables describe what the human did, and they are separate because a note is 
 --root --json
 ```
 
+### ocr corrections
+**Does** aggregates the character-level `proposal.json` → `decision.json` corrections across every adjudicated page — what readers actually get wrong, ranked.
+**Reads** every `review/*/` holding both files.
+**Writes** —
+**Exit** always 0 — measurement.
+**Note** takes no ref, like `pages`; `--ref` scopes it. It sits in this group rather than under `proposal` because it reads *both* files, and `review`/`restore` own the other one. `restore` computes this same diff per page (`edits`) and discards it, so the pass's own error profile was the one thing in the loop with no record.
+
+Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks as an insert of the mark itself rather than as a replacement of its whole word — which is what makes the ranking legible: 37 dropped dots-below across eight pages collapse to one row instead of scattering over 37 nothing can match. An edit of 12 characters or more on either side reports as `<Nch> -> <Mch>`, since a whole-line retype would otherwise mint a row nothing will ever match again.
+
+**The store spans this project's own history, so an unscoped run is not an error profile.** The leading class — 117 `'`→`ˊ` — is two pages keyed before a bare apostrophe became its own unconditional error, and cannot recur in that form; `--since 2026-07-31` leaves `i`→`ɪ` as the only recurring class, four times on three pages, which is the live picture and matches what CLAUDE.md claims about the residual. A page whose `decision.json` carries no `saved_at` is **excluded under `--since` and named in `skipped_unstamped`** rather than dropped, since a missing verdict must not draw in the same column as a clean one.
+
+**It undercounts by construction**: `proposal set`/`replace` overwrite the proposal in place, so a reader error a coordinator repaired *before* adjudication leaves no diff at all (`2-033`'s four bare `g` went that way). It measures what reached the adjudicator, never what the reader first wrote — and the earlier the loop catches a slip, the less of it appears here, which is the intended direction rather than a gap to close.
+```
+--ref PP-NNN  restrict to this page; repeatable [every page with both files]
+--since DATE  only pages whose saved_at sorts at or after this
+--min N       drop changes seen fewer than N times [1]
+--root --json
+```
+
 ### ocr clean REF
 **Does** removes a page's derived working files, leaving `proposal.json` and `decision.json` and the `page.png` link.
 **Reads** `review/PP-NNN/`.
