@@ -1,33 +1,33 @@
 {
   "name": "zones-seg",
   "model": "models/bogoras-seg/zones-seg.safetensors",
-  "installed_from": "train/bogoras-seg/zones-seg/best_0.6336.safetensors",
-  "sha256": "498b9205caeefb337ebecc88f6cd8b7a2c0d51062b32015f7ab8ecb1b6af36c6",
+  "installed_from": "train/bogoras-seg/zones-seg/best_0.6443.safetensors",
+  "sha256": "234fae9da9d2826abc4a8d9729d05622ff0a85ccb12842f2aeb19ad5a29f4b63",
   "train_merges": {
     "MainZone-Quote": "MainZone-Other"
   },
-  "corpus_digest": "a32a4b044801a4f2",
+  "corpus_digest": "b45966214c311137",
   "kraken": "7.0.3",
   "score": {
     "trained-on/as emitted": {
-      "pages": 211,
-      "recall": 97.3,
-      "precision": 62.5
+      "pages": 578,
+      "recall": 99.6,
+      "precision": 92.3
     },
     "trained-on/>=30px": {
-      "pages": 211,
-      "recall": 97.3,
-      "precision": 82.1
+      "pages": 578,
+      "recall": 99.6,
+      "precision": 97.2
     },
     "eval/as emitted": {
-      "pages": 60,
-      "recall": 95.2,
-      "precision": 55.2
+      "pages": 138,
+      "recall": 97.8,
+      "precision": 79.2
     },
     "eval/>=30px": {
-      "pages": 60,
-      "recall": 95.2,
-      "precision": 80.1
+      "pages": 138,
+      "recall": 97.8,
+      "precision": 91.2
     }
   }
 }
