@@ -217,10 +217,19 @@ def register(sub, common):
     # produced. The runtime refusal below still catches that, but a default nobody
     # has to think about beats an error after the fact — and `mz/ocr/` is a
     # different inode by construction.
-    p = _store(_ref(add("review", help="adjudicate a reading proposal in the "
-              "browser (--serve); bare, a span-level diff of the proposal "
-              "against a second witness, grouped by substitution class")),
-               default="mz")
+    # **The one action taking more than one ref**, and the reason is that it is the
+    # only one whose cost is a human's attention rather than a process's. Standing a
+    # server up per page made the reviewer wait on the tooling between pages, which
+    # got worse the moment the reading half started fanning out to an agent per
+    # page. The other actions stay single-ref: they are cheap, and a sweep over
+    # several is a shell loop nobody needs help writing.
+    p = _store(add("review", help="adjudicate reading proposals in the browser "
+              "(--serve), one or more pages in one session; bare, a span-level "
+              "diff of each proposal against a second witness, grouped by "
+              "substitution class"), default="mz")
+    p.add_argument("ref", metavar="PP-NNN", nargs="+",
+                   help=REF_HELP + ". Several may be given: --serve walks them in "
+                        "the order named, one page on screen at a time")
     mx = p.add_mutually_exclusive_group()
     mx.add_argument("--serve", action="store_true",
                     help="serve the review page on 127.0.0.1 and accept saves "
@@ -316,13 +325,17 @@ def run_adopt_gap(a) -> int:
     return 0
 
 
-def _page_link(a) -> None:
+def _page_link(a, ref: str | None = None) -> None:
     """The page's own raster, linked into its working directory the first time an
     action materializes that directory. Convenience only — `ocr clean` leaves it,
     and it is keyed to the ref rather than to `--out`, which exists precisely to
-    write somewhere that is not the page's directory."""
+    write somewhere that is not the page's directory.
+
+    `ref` is passed explicitly by the actions that take more than one: `a.ref` is a
+    list there, and linking against it would name a directory after the whole
+    session."""
     if not getattr(a, "out", None):
-        ensure_page_link(a.ref, a.root)
+        ensure_page_link(ref or a.ref, a.root)
 
 
 def run_crops(a) -> int:
@@ -360,16 +373,18 @@ def run_blot(a) -> int:
 
 def run_review(a) -> int:
     if a.serve:
-        _page_link(a)
+        for r in a.ref:
+            _page_link(a, r)
         serve(a.ref, _alto_dir(a), a.root, a.port)
         return 0
     if a.html:
-        _page_link(a)
-        dest = html_path(a.ref, a.root)
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(render_queue_html(a.ref, _alto_dir(a), a.root),
-                        encoding="utf-8")
-        print(f"{dest}: review page for {a.ref}")
+        for r in a.ref:
+            _page_link(a, r)
+            dest = html_path(r, a.root)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(render_queue_html(r, _alto_dir(a), a.root),
+                            encoding="utf-8")
+            print(f"{dest}: review page for {r}")
         return 0
     # The bare span diff measures a proposal against a *second witness*. If the
     # store it is pointed at resolves to the ground truth the proposal itself
@@ -377,22 +392,33 @@ def run_review(a) -> int:
     # 40/40 — the shape of verification without the substance, which is exactly
     # the fault that killed the old verbatim firewall (CLAUDE.md, "What the
     # firewall is not"). So refuse rather than print a reassuring table.
-    src = alto_for_lines(a.ref, _alto_dir(a), a.root)
-    gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(a.ref)}.xml"
-    if src.exists() and gt.exists() and src.resolve() == gt.resolve():
-        print(f"ERROR: {src} resolves to the ground truth for {a.ref} ({gt}), so "
-              "a proposal diff against it would compare that reading with itself "
-              "and report no differences. The span diff needs an independent "
-              f"witness — `--store mz` is one, or use `harness ocr review "
-              f"{a.ref} --serve` to adjudicate.", file=sys.stderr)
-        return 1
-    spans = page_spans(a.ref, _alto_dir(a), a.root)
-    n = len(page_lines(src))
-    # Two calls, two tables. Summary and queue have different key sets, so
-    # emitting them as one list would collapse the whole thing to the verbose
-    # nested form (see emit.py).
-    print(emit(summary(spans, n), getattr(a, "json", False)))
-    out(a, spans if a.spans else group_spans(spans))
+    #
+    # Checked for **every** ref before any table is printed. A collapsed witness
+    # part-way down a batch would otherwise arrive after several pages of
+    # reassuring output, which is where it is least likely to be read.
+    for r in a.ref:
+        src = alto_for_lines(r, _alto_dir(a), a.root)
+        gt = a.root / "gt" / "ocr" / f"chukchi-{norm_ref(r)}.xml"
+        if src.exists() and gt.exists() and src.resolve() == gt.resolve():
+            print(f"ERROR: {src} resolves to the ground truth for {r} ({gt}), so "
+                  "a proposal diff against it would compare that reading with "
+                  "itself and report no differences. The span diff needs an "
+                  f"independent witness — `--store mz` is one, or use `harness "
+                  f"ocr review {r} --serve` to adjudicate.", file=sys.stderr)
+            return 1
+    for r in a.ref:
+        # Named only in a batch. One ref prints exactly what it always did — the
+        # header would be the only line of output that is not a table, and a
+        # caller parsing single-page output should not have to learn it.
+        if len(a.ref) > 1:
+            print(f"# {r}")
+        spans = page_spans(r, _alto_dir(a), a.root)
+        n = len(page_lines(alto_for_lines(r, _alto_dir(a), a.root)))
+        # Two calls, two tables. Summary and queue have different key sets, so
+        # emitting them as one list would collapse the whole thing to the verbose
+        # nested form (see emit.py).
+        print(emit(summary(spans, n), getattr(a, "json", False)))
+        out(a, spans if a.spans else group_spans(spans))
     return 0
 
 

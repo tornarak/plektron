@@ -150,7 +150,7 @@ Layout, all at the repo root:
     ocr/    the read view over both OCR stores — symlinks, the human file always
             winning. The harness's default --from. Derived; ignored, since half
             its links point into the ignored mz/. Never written through.
-    gt/     what a human has been through. ocr/ (20 pages of ground truth),
+    gt/     what a human has been through. ocr/ (25 pages of ground truth),
             fig/ (252 figure ALTOs + METS, geometry only), seg/ (the first
             segmentation attempt, 122 pages, kept read-only), zones/ (the
             current one — seven types, fixed-width bands; 181 pages, 969 zones).
@@ -181,10 +181,14 @@ Layout, all at the repo root:
     harness/  tools/  concordance.md  keying_spec.md — the tests live in
             harness/tests/, beside the package they cover.
 
-- **The ground-truth rebuild is finished.** All **20** pilot pages in `gt/ocr/`
-  carry text — the pilot selection is scattered across all three parts, and
-  `harness ocr pages` lists it. `tei/` holds **three** pages — `1-151`, and the
-  adjacent pair `1-100`/`1-101`, which is the corpus's only collated seam.
+- **The ground-truth rebuild is finished, and the store has outgrown it.** All 20
+  pilot pages carry text, and `gt/ocr/` now holds **25** — the balance restored
+  from `mz/ocr/` predictions rather than from eScriptorium shells, which is the
+  standing route now that the shells are gone. `harness ocr pages` lists the store;
+  the pending-work list is the pages with a prediction and no ground truth, which
+  is `--store mz --show-store` filtered on `view: mz`. `tei/` holds **three**
+  pages — `1-151`, and the adjacent pair `1-100`/`1-101`, which is the corpus's
+  only collated seam.
 - **`ocr/` is a *view* over two stores, not a store**: the stable name a page's
   current OCR is reached by, whatever produced it, and the harness's default
   `--from`. `gt/ocr/` is what a human has been through, `mz/ocr/` is what the

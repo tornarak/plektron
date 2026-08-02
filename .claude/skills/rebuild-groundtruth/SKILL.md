@@ -224,13 +224,29 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    Then tell them `http://127.0.0.1:8731/` and report what you flagged and why. Use
    `--port` if 8731 is taken.
 
+   **Several pages go in one server**, and after a fan-out (`dispatch.md`) that is
+   the normal shape:
+
+       uv run harness ocr review 2-046 2-047 --serve      (run_in_background: true)
+
+   One page is on screen at a time, reached by navigation — the pages are never
+   merged into one document, because a field belonging to a page other than the one
+   the reviewer thinks they are keying is this pass's oldest and worst failure.
+   **Done** advances to the next page still wanting a decision and stops the server
+   only on the last one, so the task exiting still means *the whole batch is
+   adjudicated*. A page counts as adjudicated when its `decision.json` exists, read
+   off the disk per request, so re-running the same command resumes the batch
+   instead of restarting it.
+
    **Do not manage the server's lifetime by hand.** The page has a **Done** button:
    it always saves first — including when nothing was edited, because "I changed
    nothing" is an adjudication and not the absence of one — refuses to stop if that
    save fails (the server is the only thing holding the decisions at that moment),
-   stops the server, and replaces the page with a confirmation. So the background task **exiting is the
-   signal that the review is finished** — you get the completion notification, and
-   `restore` follows from it without asking "have you saved yet?".
+   and on the last page stops the server and replaces the page with a confirmation.
+   So the background task **exiting is the signal that the review is finished** —
+   you get the completion notification, and `restore` follows from it without asking
+   "have you saved yet?". Restore each ref separately: `restore` is per page, and a
+   batch review does not change that.
 
    Never `pkill` it. Reaching for that means the human has to be interrupted to
    confirm a kill, and it was how this loop used to leave a server bound to a page
@@ -346,6 +362,21 @@ collation-side analogue since collation works from the full page image.
   because this exact doubt — "is this really U+026A or did I type U+0131" — comes up
   on essentially every notated line, which is the definition of a recurring op that
   belongs in the tool rather than in a fresh one-liner each time.
+
+  **It answers a question about the non-ASCII characters, and that is not the same
+  as "the line is right".** `2-046` line 26 was proposed `qeêraˊlhɪn` for printed
+  `qêraˊlhɪn`; the pass noticed the odd look of `qeêra` in a terminal dump, ran
+  `codepoints`, found exactly the three non-ASCII characters it expected — the
+  circumflex, the stress mark, the small-cap — and recorded a note explaining that
+  the appearance was just NFD rendering. Every word of that was true and the line
+  still carried a spurious ASCII `e`, because a census of non-ASCII characters
+  cannot see an ASCII one. The check confirmed a real invariant that was not the
+  one in doubt, and wrote up the all-clear.
+
+  So when the tool disagrees with your eye about a form, `codepoints` settles *which
+  marks are present*, never *whether the letters are*. For the latter go back to the
+  raster and read the word, or use `ocr zoom` — and be most suspicious precisely
+  when a check comes back clean on a line you opened because something looked wrong.
 - **`uv run harness proposal check PP-NNN --set LINE --field FIELD [--value TEXT]`
   writes one line's field**, value from `--value` or stdin, NFD-normalizing on write.
   Reach for this instead of `Edit` when a targeted text replacement in

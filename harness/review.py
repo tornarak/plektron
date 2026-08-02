@@ -586,8 +586,22 @@ _FONT_STACK = "'DejaVu Serif', 'Charis SIL', 'Noto Sans', sans-serif"
 
 
 def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
-                      root: Path = Path("."), crops: Path | None = None) -> str:
+                      root: Path = Path("."), crops: Path | None = None,
+                      queue: list[dict] | None = None) -> str:
     """Self-contained review page for one ref: one entry per line, reading order.
+
+    `queue` is the session's other pages — `[{"ref", "done"}, …]` in the order the
+    reviewer asked for them — and it only ever adds a nav strip and changes what
+    the Done button says. **A one-page session passes `None` and renders byte-for-
+    byte what it always did**, which is the property that keeps the multi-page work
+    from being a rewrite of the single-page page: the queue is a frame around this
+    function, never a mode inside it.
+
+    The strip is the only thing that knows a session spans pages. Everything below
+    it — the line list, the crops, the keyboard, the save payload — is still about
+    one ref, because a review *is* one page at a time and pretending otherwise is
+    how a reviewer keys 1-073's text into 1-151's fields (see the session-restore
+    guard). Pages are reached by navigation, never merged into one document.
 
     **The unit is the line, not the span.** An earlier version grouped by
     substitution class on the grounds that glyphs are 3.3% of characters, but that
@@ -634,6 +648,18 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          f":root{{--f:{_FONT_STACK}}}",
          "body{font:15px var(--f);margin:0;padding:1.5rem;max-width:1100px}",
          "h1{font-size:1.1rem;margin:0 0 .3rem}",
+         # The session strip. Deliberately plain and above everything: it is the
+         # only thing on the page that is not about the page, and a reviewer who
+         # loses track of which ref they are keying is the failure it prevents.
+         ".q{margin:0 0 1rem;font:12px ui-monospace,monospace}",
+         ".q a,.q span.cur{display:inline-block;padding:.15rem .5rem;margin-right:.3rem;"
+         "border:1px solid #ccc;border-radius:3px;text-decoration:none;color:#333}",
+         ".q span.cur{background:#333;color:#fff;border-color:#333}",
+         # Done is a fact about the file on disk, not about this tab's history —
+         # it is recomputed server-side per request, so a reload after a save
+         # shows what was actually written rather than what the page remembers.
+         ".q a.done{color:#137333;border-color:#b7dfc0;background:#f2fbf5}",
+         ".q .qlab{color:#777;margin-right:.5rem}",
          ".sum{color:#555;font-size:.85rem;margin-bottom:1.4rem}",
          ".ln{border-top:1px solid #ddd;padding:.7rem 0}",
          # Agreement is de-emphasis, never omission: CATMuS agreeing about ASCII is
@@ -777,6 +803,20 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
           for idx in order if idx in prop}
     t1 = {k: v for k, v in t1.items() if v}
 
+    # The strip, only when there is a session to describe. One page passes `None`
+    # and gets nothing — a nav bar over a queue of one is furniture that says
+    # "there is somewhere else to be" when there is not.
+    if queue and len(queue) > 1:
+        cells = ["<span class=qlab>this session:</span>"]
+        for q in queue:
+            cls = "done" if q["done"] else ""
+            if q["ref"] == ref:
+                cells.append(f"<span class=cur>{q['ref']}</span>")
+            else:
+                cells.append(f"<a class='{cls}' href='/p/{q['ref']}'>{q['ref']}</a>")
+        done_n = sum(1 for q in queue if q["done"])
+        cells.append(f"<span class=qlab>&nbsp;{done_n}/{len(queue)} adjudicated</span>")
+        h.append("<div class=q>" + "".join(cells) + "</div>")
     h += [
          f"<h1>{ref} — {summ['lines']} lines, "
          f"{summ['lines'] - summ['lines_identical']} differing from catmus, "
@@ -882,6 +922,14 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                        f"<span>{_esc(key) or '&nbsp;'}</span></button>")
         pal.append("</div></div>")
     pal.append("</div>")
+    # Is there another page waiting after this one? Only pages *other* than this
+    # one count: re-opening a page already marked done and pressing Done again
+    # must not claim there is somewhere to go when this was the last of them.
+    pending = [q["ref"] for q in (queue or [])
+               if q["ref"] != ref and not q["done"]]
+    dn_label = f"Done → next ({len(pending)} left)" if pending else "Done"
+    dn_title = ("save, mark this page adjudicated, and open the next one"
+                if pending else "save if needed, then stop the server")
     pal.append("<div id=pctl><div class=pctlrow>"
                "<span><span id=kb>kbd off</span><span id=st>no changes</span></span>"
                # Notation lines are the ones worth walking deliberately, so they get
@@ -891,8 +939,15 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                "<button id=sv>Save</button>"
                # Stops the server from the page, so finishing a review does not
                # leave a process bound to a page that is about to be restored.
-               "<button id=dn title='save if needed, then stop the server'>"
-               "Done</button></span></div>"
+               #
+               # With a queue, "finish this page" and "finish the session" stop
+               # being the same act, and the button says which one it is about to
+               # do rather than leaving the reviewer to infer it from how many
+               # pages they remember keying. The server still decides — this label
+               # is rendered from the same `done` state the strip is, and the POST
+               # response is what actually navigates.
+               f"<button id=dn title='{_esc(dn_title)}'>{_esc(dn_label)}</button>"
+               "</span></div>"
                "<div class=tags>alt-p shows/hides the keyboard panel (overrides "
                "kbd on/off) · ctrl-space toggles kbd · off = plain typing · "
                "alt-j / alt-k walk tier-1 lines</div></div>")
@@ -901,8 +956,15 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     # Autosave on a debounce *and* an explicit button, plus a beforeunload guard.
     # Belt and braces on purpose: the alternative to a save that fires by itself is
     # a reviewer who closes the tab on forty adjudicated lines.
+    # `REF` travels in every save and every done. The server could track a "current
+    # page" instead, but that is state the browser can contradict — a second tab,
+    # a back button, a reload after navigating — and the failure it would produce
+    # is one page's adjudicated text written into another page's decision.json.
+    # That is the session-restore incident again, so the payload says which page
+    # it is about and the server writes where it is told.
     h.append("<script>const GL=" + json.dumps(KBD_GLYPHS, ensure_ascii=False)
-             + ",MK=" + json.dumps(KBD_MARKS, ensure_ascii=False) + ";</script>")
+             + ",MK=" + json.dumps(KBD_MARKS, ensure_ascii=False)
+             + ",REF=" + json.dumps(ref) + ";</script>")
     h.append("""<script>
 const st=document.getElementById('st'), sv=document.getElementById('sv');
 const dn=document.getElementById('dn');
@@ -998,7 +1060,7 @@ async function save(){
   try{
     const r=await fetch('/save',{method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({lines:collect()})});
+      body:JSON.stringify({ref:REF,lines:collect()})});
     if(!r.ok) throw new Error(await r.text());
     const j=await r.json();
     dirty=false;
@@ -1038,8 +1100,18 @@ async function done(){
     st.textContent='NOT stopping — save failed, your work is still here';
     return;
   }
-  try{ await fetch('/done',{method:'POST'}); }catch(e){}
+  // The server decides what happens next, not the page. It knows which refs are
+  // still unadjudicated *on disk*, which is the only account of that fact that
+  // survives a reload, a second tab, or a page opened out of order.
+  let next=null;
+  try{
+    const r=await fetch('/done',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ref:REF})});
+    if(r.ok) next=(await r.json()).next;
+  }catch(e){}
   dirty=false;
+  if(next){ location.href='/p/'+next; return; }
   document.body.innerHTML='<div style="font:15px var(--f);padding:2rem">'+
     '<b>Review server stopped.</b><br>Decisions are saved. '+
     'You can close this tab.</div>';
@@ -1088,16 +1160,57 @@ addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='
     return "\n".join(h)
 
 
-def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
-          port: int = 8731) -> None:
-    """Serve one page's review at 127.0.0.1 and accept saves.
+def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
+          root: Path = Path("."), port: int = 8731) -> None:
+    """Serve a session's reviews at 127.0.0.1 and accept saves.
 
-    Loopback only, and no path routing beyond the two endpoints it needs: this
-    holds unpublished editorial work and has no business being reachable.
+    Loopback only, and no path routing beyond the endpoints it needs: this holds
+    unpublished editorial work and has no business being reachable.
+
+    **One server, several pages, one page at a time.** A batch is normal now that
+    the reading half of the pass fans out to one agent per page, and standing a
+    server up and tearing it down per page made the human's half the part that
+    waited on the machine's. What it is deliberately *not* is one document holding
+    several pages: the reviewer sees exactly one ref's lines, reached by
+    navigation, because a field belonging to a different page than the one you
+    think you are keying is this file's oldest and worst failure.
+
+    **Adjudicated-ness is read off the disk, never held in memory.** A page is done
+    when its `decision.json` exists, which is a fact `save_decisions` establishes
+    and a reload, a second tab, a back button or a restart cannot contradict. The
+    alternative — a set of finished refs in this process — is state the browser can
+    disagree with, and the disagreement would express itself as the server writing
+    one page's adjudicated text into another page's file.
+
+    Two consequences, both wanted. A session re-run after finishing two of three
+    pages opens the third, so the batch resumes rather than restarting. And a page
+    that already carried decisions before the session is shown done and is still
+    reachable from the strip — visible, not hidden, since "already adjudicated" is
+    an answer and silently re-queuing it would discard the earlier one.
     """
     import json as _json
     import time
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    queue = [norm_ref(r) for r in ([refs] if isinstance(refs, str) else refs)]
+    # Order is the caller's, duplicates dropped: `review 2-045 2-045` is a typo,
+    # and a queue that showed the page twice would make "2/3 adjudicated" a lie.
+    queue = list(dict.fromkeys(queue))
+
+    def _done(r: str) -> bool:
+        return decisions_path(r, root).exists()
+
+    def _state() -> list[dict]:
+        return [{"ref": r, "done": _done(r)} for r in queue]
+
+    def _next_after(cur: str) -> str | None:
+        """The next page still wanting a decision — never `cur` itself.
+
+        Walks the caller's order rather than resuming after `cur`'s position, so a
+        page reached out of order from the strip still hands back to the front of
+        what is left instead of skipping everything before it.
+        """
+        return next((r for r in queue if r != cur and not _done(r)), None)
 
     class Handler(BaseHTTPRequestHandler):
         # Silence the per-request log: one line per save is enough, GETs are noise.
@@ -1107,10 +1220,25 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             pass
 
         def do_GET(self):
-            if self.path not in ("/", "/index.html"):
+            if self.path in ("/", "/index.html"):
+                # Bare `/` is "wherever this session is up to": the first page
+                # still wanting a decision, falling back to the first page when
+                # every one of them already has decisions — a session opened over
+                # finished work must still show something rather than 404.
+                cur = next((r for r in queue if not _done(r)), queue[0])
+            elif self.path.startswith("/p/"):
+                cur = self.path[3:]
+                # Only refs this session was asked for. Not a security boundary —
+                # it is loopback — but a URL naming a page nobody queued would
+                # render a review whose Done button belongs to another session.
+                if cur not in queue:
+                    self.send_error(404)
+                    return
+            else:
                 self.send_error(404)
                 return
-            body = render_queue_html(ref, alto_dir, root).encode("utf-8")
+            body = render_queue_html(cur, alto_dir, root,
+                                     queue=_state()).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -1118,21 +1246,36 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             self.wfile.write(body)
 
         def do_POST(self):
+            n = int(self.headers.get("Content-Length") or 0)
+            raw = self.rfile.read(n) or b"{}"
             if self.path == "/done":
-                # The page asks the server to stop, so nobody has to hunt the
-                # process afterwards. A server left bound to a page that has since
-                # been restored is how a later save lands on stale text — the
-                # rebuild skill warns about exactly that, and telling a human to
-                # remember it is a worse fix than a button.
+                # The page has finished with *one* ref. Whether that ends the
+                # session depends on what is left, and the answer comes from the
+                # disk rather than from the page — `save` has already written this
+                # page's decisions, so it is done by definition of the file.
+                try:
+                    cur = norm_ref((_json.loads(raw) or {}).get("ref") or queue[0])
+                except Exception:
+                    cur = queue[0]
+                nxt = _next_after(cur) if cur in queue else None
+                body = _json.dumps({"next": nxt}).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                if nxt:
+                    print(f"{cur} adjudicated -> next {nxt}")
+                    return
+                # Last one. Stop, so nobody has to hunt the process afterwards: a
+                # server left bound to a page that has since been restored is how a
+                # later save lands on stale text — the rebuild skill warns about
+                # exactly that, and telling a human to remember it is a worse fix
+                # than a button.
                 #
                 # Shut down from another thread: `shutdown()` blocks until the
                 # serve loop exits, and the serve loop is what is running this
                 # handler, so calling it inline would deadlock.
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.send_header("Content-Length", "2")
-                self.end_headers()
-                self.wfile.write(b"{}")
                 import threading
                 threading.Thread(target=srv.shutdown, daemon=True).start()
                 return
@@ -1140,9 +1283,16 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
                 self.send_error(404)
                 return
             try:
-                n = int(self.headers.get("Content-Length") or 0)
-                payload = _json.loads(self.rfile.read(n) or b"{}")
-                res = save_decisions(ref, payload.get("lines") or {}, root,
+                payload = _json.loads(raw)
+                # The page says which ref it is; refuse anything else rather than
+                # fall back to a "current page", which is the assumption that would
+                # write one page's text into another's file.
+                cur = norm_ref(payload.get("ref") or "")
+                if cur not in queue:
+                    raise ValueError(
+                        f"save names {cur or '(no ref)'}, which is not in this "
+                        f"review session ({', '.join(queue)})")
+                res = save_decisions(cur, payload.get("lines") or {}, root,
                                      stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
             except Exception as e:  # report it to the page, never a blank failure
                 msg = _json.dumps({"error": str(e)}).encode("utf-8")
@@ -1166,8 +1316,15 @@ def serve(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
 
     srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     url = f"http://127.0.0.1:{port}/"
-    print(f"review {norm_ref(ref)} -> {url}   (Done button on the page, or ctrl-c)")
-    print(f"decisions -> {decisions_path(ref, root)}")
+    print(f"review {' '.join(queue)} -> {url}   "
+          "(Done button on the page, or ctrl-c)")
+    for r in queue:
+        # Say which pages arrive already adjudicated *before* the reviewer meets a
+        # strip full of green. A resumed session is the ordinary case; a page
+        # unexpectedly carrying decisions is a question, and it should be asked
+        # here rather than discovered by the reviewer wondering what they missed.
+        print(f"decisions -> {decisions_path(r, root)}"
+              f"{'   (already present)' if _done(r) else ''}")
     import webbrowser
     webbrowser.open(url)
     try:

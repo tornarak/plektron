@@ -5,6 +5,13 @@ not. One agent per page, each stopping at a normalized `proposal.json`; the huma
 then reviews the pages one at a time. `2-045`/`2-046`/`2-047` were run this way,
 three Sonnet readers at once.
 
+**Hand the whole batch to one server**: `harness ocr review 2-046 2-047 --serve`.
+One page on screen at a time, Done advancing to the next and stopping the server
+only on the last, so the background task exiting still means the batch is finished.
+A server per page put the human's half back to waiting on the tooling between
+pages, which is what fanning the reading out was meant to stop. `restore` stays per
+ref.
+
 **Predict first, in the parent.** A page with nothing in `mz/ocr/` has no line
 indices, so an agent sent at it has nothing to key against and will either stall or
 invent a numbering. `harness ocr predict` also wants the GPU, and three agents

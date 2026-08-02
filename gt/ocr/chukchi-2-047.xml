@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-047.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-047.png; regions_from: zones/chukchi-2-047.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-047_r1" HPOS="458" VPOS="470" WIDTH="1776" HEIGHT="86" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="458 470 2234 470 2234 556 458 556"/>
+                    </Shape>
+                    <TextLine ID="mz_2-047_l1" HPOS="1041" VPOS="483" WIDTH="615" HEIGHT="51" BASELINE="1041 517 1656 517" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1652 483 1041 483 1041 517 1041 534 1656 534 1656 517 1656 487 1652 483"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l2" HPOS="2142" VPOS="485" WIDTH="75" HEIGHT="57" BASELINE="2146 526 2217 520" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2201 485 2193 485 2142 489 2146 526 2146 542 2217 542 2217 520 2211 485 2201 485"/>
+                        </Shape>
+                        <String CONTENT="321"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-047_r2" HPOS="458" VPOS="588" WIDTH="1776" HEIGHT="422" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="458 588 2234 588 2234 1010 458 1010"/>
+                    </Shape>
+                    <TextLine ID="mz_2-047_l3" HPOS="569" VPOS="581" WIDTH="1665" HEIGHT="65" BASELINE="571 622 2234 626" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="571 589 571 622 569 634 656 646 658 646 2232 638 2234 626 2234 597 2193 583 2191 583 2189 583 2091 595 1974 585 1972 585 1893 595 1878 583 1876 583 1874 583 1872 583 1774 595 1707 583 1705 583 1703 583 1672 595 1478 583 1476 583 1474 583 1443 595 1392 581 1390 581 1388 581 1327 593 1273 581 1271 581 1161 593 1020 593 1006 581 1004 581 1002 581 940 581 938 581 936 581 934 581 916 593 573 585 571 589"/>
+                        </Shape>
+                        <String CONTENT="The apparent difference which exists between the wind systems of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l4" HPOS="460" VPOS="646" WIDTH="1774" HEIGHT="60" BASELINE="460 685 2234 685" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2228 656 2205 646 2203 646 2056 646 2054 646 2052 646 2032 656 1668 646 1666 646 1558 656 1506 646 1504 646 1502 646 1480 658 1141 658 996 646 994 646 992 646 959 656 908 646 906 646 904 646 885 656 848 646 846 646 844 646 842 646 802 656 765 646 763 646 761 646 669 656 656 646 654 646 652 646 542 646 540 646 460 656 460 685 460 706 2232 699 2234 685 2234 673 2228 656"/>
+                        </Shape>
+                        <String CONTENT="peninsula and of the Kolyma country can be explained, to a considerable"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l5" HPOS="456" VPOS="703" WIDTH="1772" HEIGHT="64" BASELINE="458 742 2228 746" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="458 742 456 753 507 765 509 767 2226 767 2228 746 2226 716 1974 705 1972 705 1700 714 1668 705 1666 705 1664 705 1662 705 1629 714 1596 705 1594 705 1592 705 1496 714 1463 705 1461 705 1459 705 1394 714 1300 703 1298 703 1220 712 1141 703 1139 703 1077 712 898 703 897 703 820 712 757 703 755 703 754 703 726 712 665 703 663 703 661 703 634 712 495 703 493 703 491 703 458 710 458 742"/>
+                        </Shape>
+                        <String CONTENT="degree, by the different position of land and sea in the two countries. Thus,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l6" HPOS="456" VPOS="763" WIDTH="1774" HEIGHT="55" BASELINE="458 802 2230 806" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="458 802 456 814 2226 818 2230 806 2228 777 2121 765 2119 765 2040 775 1797 765 1795 765 1794 765 1792 765 1776 777 1605 777 1557 765 1555 765 1553 765 1525 775 1511 765 1510 765 1508 765 1408 765 1406 765 1404 765 1367 775 1333 763 1331 763 1329 763 1327 763 1290 775 1184 775 1169 763 1167 763 1165 763 1163 763 1053 773 1016 763 1014 763 1012 763 458 771 458 802"/>
+                        </Shape>
+                        <String CONTENT="the sea-winds (añqaiˊhɪt) which on the Arctic Sea come from the north, on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l7" HPOS="458" VPOS="824" WIDTH="1774" HEIGHT="55" BASELINE="458 863 2232 863" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="458 863 458 877 2228 879 2232 863 2228 828 1985 834 1888 824 1886 824 1795 834 1652 824 1651 824 1598 834 1568 824 1566 824 1564 824 1423 834 1370 824 1369 824 1288 834 1226 824 1224 824 1222 824 1220 824 1204 836 1047 836 998 824 996 824 916 834 865 824 863 824 861 824 859 824 844 836 699 836 632 824 630 824 628 824 626 824 613 834 558 824 556 824 554 824 534 834 477 824 475 824 473 824 472 824 458 832 458 863"/>
+                        </Shape>
+                        <String CONTENT="the Pacific come from the east. Near the mouth of Kolyma River the wind"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l8" HPOS="456" VPOS="883" WIDTH="1776" HEIGHT="55" BASELINE="458 924 2232 920" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="458 924 458 938 2230 936 2232 920 2228 894 1954 883 1952 883 1950 883 1909 893 1886 883 1884 883 1882 883 1880 883 1858 894 1625 894 1519 883 1517 883 1461 893 1402 883 1400 883 1314 894 840 885 838 885 836 885 834 885 818 896 656 896 497 885 495 885 493 885 456 896 458 924"/>
+                        </Shape>
+                        <String CONTENT="qêraˊlhɪn comes from the large open tundra of the west: on the Pacific, near"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l9" HPOS="460" VPOS="943" WIDTH="1772" HEIGHT="57" BASELINE="462 981 2232 985" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="462 981 460 996 2228 1000 2232 985 2232 955 2191 943 2189 943 2187 943 2115 953 1944 943 1942 943 1833 953 1782 943 1780 943 1698 953 1651 943 1649 943 1647 943 1645 943 1629 955 1461 955 1388 943 1386 943 1384 943 1347 953 462 943 462 981"/>
+                        </Shape>
+                        <String CONTENT="Indian Point, it is of the same nature, but comes from the southwest. The"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-047_r3" HPOS="458" VPOS="2546" WIDTH="1776" HEIGHT="186" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="458 2546 2234 2546 2234 2732 458 2732"/>
+                    </Shape>
+                    <TextLine ID="mz_2-047_l10" HPOS="456" VPOS="2543" WIDTH="1772" HEIGHT="61" BASELINE="458 2590 2228 2585" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2219 2553 2177 2543 2175 2543 2173 2543 2146 2553 2034 2543 2032 2543 2030 2543 2007 2555 1770 2555 1692 2543 1690 2543 1633 2555 1459 2545 1457 2545 1406 2555 1374 2545 1372 2545 1370 2545 1239 2555 1180 2545 1179 2545 1177 2545 1175 2545 1159 2557 1045 2557 989 2547 987 2547 585 2557 497 2547 495 2547 493 2547 456 2559 458 2590 458 2604 2226 2598 2228 2585 2224 2565 2219 2553"/>
+                        </Shape>
+                        <String CONTENT="wind qaačhêˊhɪn, which, near the mouth of Kolyma River, comes along the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l11" HPOS="454" VPOS="2606" WIDTH="1774" HEIGHT="57" BASELINE="456 2649 2228 2645" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 2649 456 2663 2226 2659 2228 2645 2224 2618 1660 2606 1658 2606 1656 2606 1654 2606 1639 2618 1496 2618 1431 2606 1429 2606 1427 2606 1425 2606 1412 2616 1351 2606 1349 2606 1347 2606 1345 2606 1331 2618 1286 2608 1284 2608 1282 2608 1245 2618 1002 2608 1000 2608 887 2618 828 2608 826 2608 824 2608 781 2618 687 2608 685 2608 683 2608 646 2618 548 2608 546 2608 454 2620 456 2649"/>
+                        </Shape>
+                        <String CONTENT="seashore from the northeast, on the Pacific, near Indian Point, also comes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l12" HPOS="454" VPOS="2669" WIDTH="1030" HEIGHT="55" BASELINE="456 2710 1484 2704" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 2710 456 2724 1482 2718 1484 2704 1480 2677 797 2669 795 2669 793 2669 767 2679 483 2671 481 2671 479 2671 454 2679 456 2710"/>
+                        </Shape>
+                        <String CONTENT="along the seashore, but from west-southwest."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-047_r4" HPOS="458" VPOS="2765" WIDTH="1776" HEIGHT="250" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="458 2765 2234 2765 2234 3015 458 3015"/>
+                    </Shape>
+                    <TextLine ID="mz_2-047_l13" HPOS="560" VPOS="2765" WIDTH="1668" HEIGHT="56" BASELINE="562 2806 2228 2800" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="562 2806 562 2821 2226 2816 2228 2800 2224 2774 1672 2765 1670 2765 1668 2765 1629 2776 560 2776 562 2806"/>
+                        </Shape>
+                        <String CONTENT="The Koryak names of winds as diagrammed for me in the village of Vaˊikenan, on Penshina"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l14" HPOS="458" VPOS="2823" WIDTH="1768" HEIGHT="47" BASELINE="458 2853 2226 2853" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="458 2853 458 2865 2222 2870 2226 2853 2224 2825 458 2823 458 2853"/>
+                        </Shape>
+                        <String CONTENT="Bay, are for the most part identical with those of the Pacific-coast Chukchee. Thus, qeyaˊlhɪn,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l15" HPOS="456" VPOS="2868" WIDTH="1772" HEIGHT="46" BASELINE="458 2900 2228 2896" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="458 2900 458 2914 2226 2910 2228 2896 2222 2868 456 2870 458 2900"/>
+                        </Shape>
+                        <String CONTENT="corresponding to the Chukchee qêraˊlhɪn, signifies “southwest;” eñeˊneñe signifies “southeast;” but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l16" HPOS="458" VPOS="2908" WIDTH="1768" HEIGHT="56" BASELINE="460 2947 2226 2943" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="460 2947 460 2962 2222 2964 2226 2943 2222 2917 1412 2908 1410 2908 1261 2917 554 2910 552 2910 458 2919 460 2947"/>
+                        </Shape>
+                        <String CONTENT="empeiˊkɪn, probably corresponding to yamwaˊihɪn of the Kolyma, which refers to the same wind,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l17" HPOS="458" VPOS="2957" WIDTH="352" HEIGHT="52" BASELINE="458 2992 810 2992" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="458 2992 458 3009 810 3009 810 2992 808 2957 458 2964 458 2992"/>
+                        </Shape>
+                        <String CONTENT="signifies “northeast.”"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-047_r5" HPOS="458" VPOS="3015" WIDTH="1776" HEIGHT="95" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="458 3015 2234 3015 2234 3110 458 3110"/>
+                    </Shape>
+                    <TextLine ID="mz_2-047_l18" HPOS="562" VPOS="3011" WIDTH="1666" HEIGHT="44" BASELINE="562 3039 2228 3039" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="562 3039 562 3055 2228 3055 2228 3039 2228 3011 562 3011 562 3039"/>
+                        </Shape>
+                        <String CONTENT="Other winds among the Koryak of that village are hɪshoˊlan (“up-[stream wind]”) for the east"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-047_l19" HPOS="458" VPOS="3056" WIDTH="1766" HEIGHT="47" BASELINE="460 3086 2224 3082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="460 3086 460 3103 2222 3100 2224 3082 2219 3056 458 3058 460 3086"/>
+                        </Shape>
+                        <String CONTENT="wind, eˊwtelan (“down-[stream wind]”) for the south-southwest wind, onm-eˊwtelan (“inner down-"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

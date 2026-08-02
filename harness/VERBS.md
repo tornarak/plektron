@@ -261,14 +261,15 @@ require `--commit`.
 --root --json
 ```
 
-### ocr review REF
-**Does** adjudicate a reading proposal in the browser (`--serve`); bare, a span-level diff against a second witness.
+### ocr review REF [REF ...]
+**Does** adjudicate reading proposals in the browser (`--serve`); bare, a span-level diff of each against a second witness.
 **Reads** the `--store` store, or the view, `review/PP-NNN/proposal.json`, `scans/`.
 **Writes** `review/PP-NNN/decision.json` under `--serve`; `review/PP-NNN/review.html` under `--html`. Bare mode writes nothing.
-**Exit** 1 if the bare diff's source resolves to the ground truth the proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40.
+**Exit** 1 if any ref's bare diff source resolves to the ground truth that proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40. Checked over every ref before the first table prints, so the refusal cannot arrive after pages of reassuring output.
+**Note** the **only action taking more than one ref**, because it is the only one whose cost is a human's attention rather than a process's. `--serve` runs one server over the whole batch, one page on screen at a time, reached by navigation — never several pages merged into one document, since a field belonging to a page other than the one you think you are keying is this pass's oldest failure. **Adjudicated-ness is read off the disk** (`decision.json` exists), never held in the process, so a reload, a second tab or a restart cannot contradict it; a re-run therefore resumes the batch rather than restarting it, and a page that already carried decisions shows done and stays reachable from the strip. `Done` advances to the next unadjudicated page and stops the server only on the last one. A single ref renders and behaves exactly as before — no strip, no navigation.
 ```
 --serve   serve on 127.0.0.1, accept saves  }
---html    write review.html                 } mutually exclusive
+--html    write review.html per ref         } mutually exclusive
 --spans   bare diff: every span, ungrouped  }
 --port N  port for --serve [8731]
 --store {gt,mz}  which store to read [mz — the bare diff needs an independent
