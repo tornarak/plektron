@@ -198,9 +198,13 @@ All three were found by reading a written page back rather than by trusting what
 the writer reported about itself; none raised an error, and the file looked right
 from the outside in every case.
 
-**`review.py`** — the largest, and it does four things: span diffing, decision
+**`review.py`** — the largest, and it does five things: span diffing, decision
 persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),
-`restore`, and a ~450-line embedded browser app in `render_queue_html`.
+`restore`, `corrections`, and a ~450-line embedded browser app in
+`render_queue_html`. `corrections` lives here rather than in `proposal_check`
+because it reads *both* `proposal.json` and `decision.json`, and only this module
+owns both — it is the pass's own error profile, which `restore` had been computing
+per page and discarding.
 
 **`figures.py`** — the figure track: `gt/fig/` geometry against `data/readings.md`
 text, reconciled by `reconcile()` (the `figures` verb). Also the generic sheet
@@ -282,9 +286,21 @@ server-side on save, so a zone of the wrong measure has no field to travel in.
 hit ranked and resolves nothing: 51 sigla share 34 names, so one answer would be
 manufactured, and no hit at all is legitimate because the list is explicitly open.
 
+**`marks.py`** — is a reading's character distribution plausible, before a human
+opens it. Three arms of unequal strength: `rare` (a form whose character the corpus
+almost never sets), `conflict` (one word spelled two ways against the store), and
+`ratio`, which points and never decides. Two properties bind callers. The prior is
+**leave-one-out unconditionally** — after `restore` a page's gt *is* the adjudicated
+descendant of its own proposal, so including it is the two-witnesses-that-are-one
+collapse — and it is drawn from **density-selected** pages, which every report states
+in `prior_note`. `is_medial` generalises `detectors.MEDIAL_CAPS` to the small caps
+rather than copying its lookbehind class; the two agree on every live position and a
+test holds them together.
+
 **`paths.py`** — the `review/<ref>/` layout authority, and `DERIVED`.
 **`proposal_check.py`** — a proposal's `resolved` field against its `text`, plus the
-field-editing verbs. **`codepoints.py`**, **`emit.py`** — one job each.
+field-editing verbs; `check` also runs `marks`' two deterministic arms when given a
+ref. **`codepoints.py`**, **`emit.py`** — one job each.
 
 ## Invariants that bind callers
 

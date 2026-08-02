@@ -427,6 +427,17 @@ list of things that could go wrong, it is a record of things that did, kept
 general on purpose rather than tied to a specific page, because the class is
 what recurs, not the instance.
 
+**`harness ocr corrections` is the standing way to ask which of these are still
+live**, aggregating what adjudicators actually changed across every reviewed
+page. Two cautions before believing a number out of it. It spans this project's
+own history, so an unscoped run reports classes later rules made impossible —
+its top entry is 117 straight apostrophes on two pages keyed before a bare one
+became an unconditional error; use `--since` a date after the rule you care
+about. And it undercounts by construction: a repair made with `proposal
+set`/`replace` before adjudication leaves no diff at all, so it measures what
+reached the adjudicator, not what the reader wrote. As of 2026-08-02, scoped
+past 2026-07-31, the only class recurring across pages is §5.2's `i`→`ɪ`.
+
 0. **Prefer the spec over a confident-sounding raster impression.** A reading
    that contradicts this file is not evidence the inventory is incomplete —
    magnification cannot settle a question that isn't optical, and a detailed,
@@ -499,13 +510,27 @@ what recurs, not the instance.
 
    **The systematic net is distributional, and it needs no raster.** `harness
    lexicon marks` reports bare-vs-marked share per base letter over the ground
-   truth: `g̣` is **93.2%** of Tier-1 `g` (109 dotted, 8 bare corpus-wide), `ñ`
-   26.2% of `n`, `ä` 14.3% of `a`. A page whose own distribution departs sharply
+   truth: `g̣` is **93.9%** of Tier-1 `g` (123 dotted, 8 bare corpus-wide), `ñ`
+   25.9% of `n`, `ä` 14.0% of `a`. A page whose own distribution departs sharply
    from those is worth re-reading before it is accepted, whatever its notes say —
    `2-033`'s reader produced **four bare `g` and no dotted one**, which against a
-   93.2% base rate is visible without opening a scan. Cheap enough to run over a
-   whole multi-page batch at once, and unlike every check above it does not
-   depend on the reader having remembered anything.
+   93.9% base rate is visible without opening a scan. Unlike every check above it
+   does not depend on the reader having remembered anything.
+
+   **`harness proposal marks` is that comparison computed**, and it is what to
+   run rather than reading the table by eye. Its `rare` arm names every
+   occurrence of a form whose character the corpus almost never sets — bare `g`
+   at 6.1% of the `g` axis qualifies, and which contrasts qualify is derived from
+   the store at run time rather than declared. Its `conflict` arm catches the
+   same class from the other side, by finding one word spelled two ways against
+   adjudicated ground truth; that is how `2-040`'s `vaˊɪrgɪt` shows against
+   `2-033`'s `vaˊɪrg̣ɪt`. Both also run inside `harness proposal check`, so a
+   reader meets them on its own page before anyone else sees it.
+
+   Pass a whole pass's refs at once. Most pages carry only a handful of Tier-1
+   terms, so one page is rarely a sample worth a verdict, and the pooled `ALL`
+   row against the per-page rows separates one reader's slip from a lean shared
+   by every job — which is the prompt or this spec, not a reading.
 
    **Now enforced mechanically, not just measured.** `detectors.SUFFIX_MARK_DROPS`
    (a table, not a one-off regex, so a newly measured skew for a different
@@ -557,9 +582,28 @@ what recurs, not the instance.
      stop. Check §2.6 as a rule lookup whenever a breve is in play, not by
      eye — this has been keyed wrong in both directions.
    - Word-initial capital-shaped letter vs. small-cap ɪ: a capital-looking
-     letter opening a Tier-1 word is not automatically ASCII `I`. It needs
-     the same scrutiny as a medial occurrence, and has been misread as plain
-     `I` at word-initial position specifically, more than once.
+     letter opening a Tier-1 word is not automatically ASCII `I`. It has been
+     misread as plain `I` at word-initial position specifically, more than
+     once — `1-101`'s `Iᵋplɪˊlɪ` twice on one page, both corrected at
+     adjudication to `ɪᵋplɪˊlɪ`.
+
+     **Position decides whether the question is contentious, and it decides it
+     the opposite way from the medial case.** Measured over the ground truth:
+     word-*medially* an ASCII capital is essentially never right — **2**
+     occurrences against **509** medial small caps — and
+     `detectors.MEDIAL_CAPS` already refuses one with a sharper claim than any
+     frequency could. Word-*initially* both are ordinary: **63** ASCII capitals
+     (`Alaˊyon`, `Ilhiˊnin`, `Enuˊrmin`, `Luˊᵋren`) against **55** small caps
+     (`ɪnp-luˊwleñ-yiˊᵋlhɪn`, `ᴇnmɪtaˊhɪn`). So nothing mechanical settles a
+     word-initial one; it is a reading, and the frequency arms of `harness
+     proposal marks` are the only handle there is. That is exactly why
+     `MEDIAL_CAPS` was blind to `1-101`'s pair.
+
+     Note this holds for `ᴇ`/`E` too (12 initial `E` against 31 initial `ᴇ`),
+     and that `ᴀ` and `ʟ` are attested word-initially **only** as ASCII in the
+     store so far — 28 `A` and 7 `L` against none of either small cap. That is
+     the corpus speaking rather than a rule, and it is thin enough that a
+     genuine word-initial `ᴀ` should be read, not argued away.
    - **`ɪ` keyed as `r`, arriving from the recognizer.** CATMuS substitutes
      `i`, `I` and **`r`** for `ɪ`, and `r` is the one that gets through: a
      2026-08 reader keyed `2-033`'s `Attɪˊg̣ɪtkɪ` as `Attrˊgɪtkɪ`, taking the

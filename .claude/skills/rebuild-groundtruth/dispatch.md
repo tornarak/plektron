@@ -117,22 +117,64 @@ real work in a reading, and unchecked it is a doctrine applied on faith.
 
 ## Check the batch distributionally, before the human sees it
 
-**Run `harness lexicon marks` and compare the batch against it.** It reports
-bare-vs-marked share per base letter over the ground truth, and the two figures
-that matter are stable: **`g̣` is 93.9% of Tier-1 `g`** (123 dotted against 8 bare
-corpus-wide), and **`ɪ` outnumbers Tier-1 `i` 470 to 247**. A page keying four
-bare `g` and no dotted one — which `2-033` did — is visible against that without
-opening a scan.
+**Run `harness proposal marks` over every ref of the pass at once**, the moment
+the subagents return:
+
+    uv run harness proposal marks 2-031 2-032 2-033 2-035 2-036
 
 This is the only check in the loop that needs neither a raster nor a reader's
 cooperation, and it is the one that would have caught the most. Every other
 safeguard here asks somebody to remember something, and the record is that they
-remember it, restate it correctly, and get it wrong anyway. Cheap enough to run
-across a whole batch at once, which is the natural moment: a single page is a
-small sample and a five-page batch is not.
+remember it, restate it correctly, and get it wrong anyway.
 
-What it cannot do is decide. An outlier is a page to re-read, never a page to
-correct by ratio — the count is a prompt to look, and the raster still rules.
+It used to say "run `harness lexicon marks` and compare by eye". That verb is
+corpus-wide only and groups by base letter, so it cannot express `ɪ`/`i` at all —
+not a mark on a base — and the comparison was left to a human holding five pages
+in their head.
+
+**Pass every ref together, and read the rows against each other.** Most pages of
+this book carry only a handful of Tier-1 terms, so one page is rarely a sample
+worth a verdict; the pass pooled is. `scope: ALL` is exactly the refs you passed,
+pooled, and the contrast between it and the per-ref rows is the finding:
+
+- **one job adrift, the rest on the prior** — that reader, on that page. Re-read it.
+- **every job leaning the same way, so `ALL` itself parts from `prior_pct`** —
+  **systemic**. That is the dispatch prompt or the keying spec, not anyone's
+  reading, and nothing else in the loop can see it. Fix the instructions before
+  sending the next batch, or the next batch reproduces it.
+
+Three arms, and only the first two are decisive. `rare` lists a form whose
+character the corpus almost never sets — bare `g` at 6.1% of Tier-1 `g` — so
+`2-033`'s four bare `g` would have been named without opening a scan. `conflict`
+finds one word spelled two ways against the store, which is how `2-040`'s
+`vaˊɪrgɪt` shows up against `2-033`'s adjudicated `vaˊɪrg̣ɪt`. `ratio` is the
+weak one: it counts types rather than characters, because `2-036`'s 10% `ɪ`-share
+is one word four times, and it reports a rank rather than a probability.
+
+**Check `pages` first.** A reading degraded all the way to ASCII carries no
+Tier-1 tokens, so every arm goes silent on it and the report looks clean. `types:
+0` beside a page whose zones promise Tier-1 content is itself the finding.
+
+**The two deterministic arms also run inside `harness proposal check`**, so a
+reader that ran its own check should not be shipping either class. If one arrives
+anyway, that is worth noting in the pass's report — it means the reader skipped
+its gate, which is a different problem from misreading a glyph.
+
+What none of it can do is decide. An outlier is a page to re-read, never a page
+to correct by ratio — the number is a prompt to look, and the raster still rules.
+The prior is drawn from `gt/ocr/`, whose pages were selected for Tier-1 density,
+and every report says so in `prior_note`.
+
+**And ask what the readers get wrong across passes**, which is a different
+question from what this batch did:
+
+    uv run harness ocr corrections --since <a date after the last rule change>
+
+Unscoped it is partly archaeology — its top class is 117 straight apostrophes on
+two pages keyed before a bare apostrophe became its own unconditional error. It
+also undercounts by construction: a repair you make with `proposal set`/`replace`
+before adjudication leaves no proposal→decision diff at all, so what it measures
+is what reached the adjudicator, not what the reader wrote.
 
 ## What the 2026-08 five-page batch produced
 

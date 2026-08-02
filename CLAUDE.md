@@ -193,7 +193,24 @@ Layout, all at the repo root:
   checking them, and the only safeguard that does not depend on a reader
   remembering anything is distributional** — `harness lexicon marks` puts `g̣` at
   93.9% of Tier-1 `g` and `ɪ` at nearly 2:1 over `i`, so a page against the grain
-  is visible without opening a scan. `harness ocr pages` lists the store;
+  is visible without opening a scan.
+  **That claim is now measured rather than asserted, and computed rather than
+  eyeballed.** `harness ocr corrections` aggregates what adjudicators actually
+  changed across all 29 reviewed pages: scoped past 2026-07-31 the only class
+  recurring across pages is `i`→`ɪ`. And `harness proposal marks` runs the
+  comparison `dispatch.md` used to ask a coordinator to do by eye — pass a whole
+  pass's refs, since most pages carry a handful of Tier-1 terms and one page is
+  rarely a sample worth a verdict. Its `scope: ALL` row against the per-ref rows
+  is what separates **one reader's slip from a lean every job shares**, and the
+  second is the dispatch prompt or the keying spec rather than anybody's reading
+  — the one finding nothing else in the loop can reach.
+  Two of its three arms are deterministic and also run inside `harness proposal
+  check`, so a reader meets them on its own page. Its prior is leave-one-out
+  (after `restore` a page's gt **is** the adjudicated descendant of its own
+  proposal, so including it would be the two-witnesses-that-are-one collapse in
+  a fourth place) and drawn from density-selected pages, which every report
+  states in `prior_note`.
+  `harness ocr pages` lists the store;
   the pending-work list is the pages with a prediction and no ground truth, which
   is `--store mz --show-store` filtered on `view: mz`. `tei/` holds **three**
   pages — `1-151`, and the adjacent pair `1-100`/`1-101`, which is the corpus's
@@ -852,8 +869,8 @@ touches; the action names what it does to it.
 
     tei       context validate ids pair seam state ledger header
     ocr       pages lines gaps adopt-gap crops sheets zoom blot review
-              restore clean predict link
-    proposal  check fix codepoints set replace
+              restore corrections clean predict link
+    proposal  check marks fix codepoints set replace
     zones     check edit predict score assemble install remap remark-eval
               delete diff paragraphs link blot
     views     check build
