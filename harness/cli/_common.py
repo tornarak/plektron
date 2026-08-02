@@ -135,40 +135,6 @@ def one_page_only(a, flags: dict[str, str], refs: list[str]) -> None:
                              f"not {len(refs)}")
 
 
-def out_report_per_ref(a, pairs) -> None:
-    """A per-page *report* — a dict with list fields — for one ref or many.
-
-    One ref prints the report exactly as the single-ref form always did, list
-    fields and all. Several cannot: a list inside a pooled record degrades the
-    whole table (see `out_per_ref`), so the row carries each list's **length** and
-    every non-empty list becomes its own ref-keyed table under a `# field` line.
-
-    A count is not a summary standing in for the detail — the detail follows,
-    keyed by ref, so nothing is lost and the row stays scannable. Three reports
-    have this shape (`ocr restore`, `zones check`, `tei state`) and wrote it out
-    separately before; a fourth would have made it four.
-    """
-    if len(pairs) == 1 and not getattr(a, "all", False):
-        out(a, pairs[0][1])
-        return
-    if not pairs:
-        out(a, [])
-        return
-    listy = [k for k, v in pairs[0][1].items() if isinstance(v, list)]
-    out_per_ref(a, [(r, {k: (len(v) if k in listy else v) for k, v in rep.items()})
-                    for r, rep in pairs])
-    for key in listy:
-        found = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
-        if found:
-            print(f"# {key}")
-            # **Pooled even when one page contributed**, unlike a top-level table.
-            # There the count decides the shape because the caller named one page;
-            # here the caller named several and the rows are a *subset* of them, so
-            # dropping the `ref` column would leave a table whose rows belong to a
-            # page it does not name — findable only by elimination.
-            _pool(a, found)
-
-
 def out_per_ref(a, pairs) -> None:
     """Emit one payload per ref: as-is for one, pooled with a `ref` column for N.
 
@@ -178,12 +144,22 @@ def out_per_ref(a, pairs) -> None:
     docstring argues for — a list of records carrying `ref` as a field rather
     than a dict keyed by ref — and it is what `proposal marks` already does.
 
-    **A list-valued field is refused rather than pooled.** TOON collapses a
-    uniform record list to a header and rows, but a record holding a nested list
+    **A list-valued field is split out, not pooled into the row.** TOON collapses
+    a uniform record list to a header and rows, but a record holding a nested list
     degrades the *whole outer table* to the verbose form, so one page's `edits`
-    would cost the pooled table its shape. The fix is always the same and the
-    error says it: emit that field as its own ref-keyed table, one more call
-    here. Two key sets, two tables — the same rule `out` states.
+    would cost the pooled table its shape. Instead the row carries each list's
+    **length** and every non-empty list becomes its own ref-keyed table under a
+    `# field` line. A count is not a summary standing in for the detail — the
+    detail follows, keyed by ref, so nothing is lost and the row stays scannable.
+    Two key sets, two tables, which is the rule `out` states.
+
+    **This used to raise instead**, on the reasoning that a caller should be made
+    to think about the shape rather than have it chosen for them. That was the
+    wrong trade: the split is exactly what the thinking caller writes, so refusing
+    bought nothing and left every plural verb whose payload happened to hold a
+    list broken until someone ran it with two refs. `ocr clean` was found that
+    way, in use, after its tests passed — the guard fired correctly and the bug
+    was that there was anything for it to fire on.
 
     **`--all` always pools, even where it happened to match one page.** The shape
     a caller gets should follow what it asked for, not what the store happened to
@@ -193,7 +169,44 @@ def out_per_ref(a, pairs) -> None:
     if len(pairs) == 1 and not getattr(a, "all", False):
         out(a, pairs[0][1])
         return
-    _pool(a, pairs)
+    if not pairs:
+        out(a, [])
+        return
+    first = pairs[0][1]
+    listy = ([k for k, v in first.items() if isinstance(v, list)]
+             if isinstance(first, dict) else [])
+    if not listy:
+        _pool(a, pairs)
+        return
+
+    # **Which treatment a list field gets is decided per field over every page,
+    # never per cell.** A list of **records** becomes a count, the records
+    # following in their own table; a list of **scalars** is space-joined into the
+    # cell — the convention `corrections`' `pages` and `marks`' `refs` already use,
+    # since a table of one bare column is worse than a string. An *empty* list
+    # cannot say which it is, so a per-cell rule would print `errors: ""` beside
+    # `warnings: 1` in the same row and make the column mean two things.
+    tabular = {k for k in listy
+               if any(isinstance(rep.get(k) or [None], list)
+                      and rep.get(k) and isinstance(rep[k][0], dict)
+                      for _, rep in pairs)}
+
+    def _cell(key, v):
+        if key not in listy:
+            return v
+        return len(v) if key in tabular else " ".join(map(str, v))
+
+    _pool(a, [(r, {k: _cell(k, v) for k, v in rep.items()}) for r, rep in pairs])
+    for key in tabular:
+        found = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
+        if found:
+            print(f"# {key}")
+            # **Pooled even when one page contributed.** At the top level the count
+            # decides the shape because the caller named one page; here the caller
+            # named several and these rows are a *subset* of them, so dropping the
+            # `ref` column would leave a table whose rows belong to a page it does
+            # not name — findable only by elimination.
+            _pool(a, found)
 
 
 def _pool(a, pairs) -> None:

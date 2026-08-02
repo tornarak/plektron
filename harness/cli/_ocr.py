@@ -63,7 +63,6 @@ from ._common import (
     one_page_only,
     out,
     out_per_ref,
-    out_report_per_ref,
     page_refs,
     refs_arg,
 )
@@ -591,7 +590,7 @@ def run_restore(a) -> int:
         if rep.get("edits"):
             out(a, rep["edits"])
     else:
-        out_report_per_ref(a, pairs)
+        out_per_ref(a, pairs)
     if skipped:
         out(a, skipped)
     return 0
@@ -613,6 +612,8 @@ def run_clean(a) -> int:
     if not refs:
         refs = [norm_ref(d.name) for d in sorted((a.root / "review").glob("*"))
                 if d.is_dir()]
+    # `removed` is a list, so this is the splitting emitter: a count per page and
+    # the names in their own ref-keyed table.
     out_per_ref(a, [(r, clean(r, a.root)) for r in refs])
     return 0
 

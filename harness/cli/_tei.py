@@ -17,7 +17,7 @@ from ..ids import pair_glosses
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
 from ..validate import check_corpus_header, validate
-from ._common import REF_HELP, out, out_report_per_ref, page_refs, refs_arg
+from ._common import REF_HELP, out, out_per_ref, page_refs, refs_arg
 
 
 def register(sub, common):
@@ -166,7 +166,7 @@ def run_header(a) -> int:
 
 
 def run_state(a) -> int:
-    out_report_per_ref(a, [(r, entry_state(r, a.root)) for r in page_refs(a)])
+    out_per_ref(a, [(r, entry_state(r, a.root)) for r in page_refs(a)])
     return 0
 
 
@@ -181,7 +181,7 @@ def _write_all(a, fn) -> int:
     if a.commit and len(refs) > 1:
         for r in refs:
             fn(r, a.root, commit=False)
-    out_report_per_ref(a, [(r, fn(r, a.root, commit=a.commit)) for r in refs])
+    out_per_ref(a, [(r, fn(r, a.root, commit=a.commit)) for r in refs])
     return 0
 
 
@@ -198,7 +198,7 @@ def run_seam(a) -> int:
     if a.commit and len(refs) > 1:
         for r in refs:
             set_seam(r, a.open_gap, a.root, commit=False)
-    out_report_per_ref(a, [(r, set_seam(r, a.open_gap, a.root, commit=a.commit))
+    out_per_ref(a, [(r, set_seam(r, a.open_gap, a.root, commit=a.commit))
                            for r in refs])
     return 0
 

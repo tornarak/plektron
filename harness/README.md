@@ -82,8 +82,7 @@ multi-ref machinery:
 | `refs_arg(p, all_=…)` | the `PP-NNN [PP-NNN ...]` positional. `nargs` is `+`, or `*` with a `--all` whose help must name *what it enumerates* — "every page" is four different sets here |
 | `page_refs(a)` | the refs named, `[]` for `--all`. **Parses every one before the caller does any work**, and holds the three-way exclusion between refs, `--all` and `--itinerary` |
 | `one_page_only(a, …)` | refuses a per-page flag given several refs. `--out` is why it exists: nothing errored before, the second page overwrote the first's images |
-| `out_per_ref(a, pairs)` | one ref emits what it always did; several pool with `ref` first. **Refuses a list-valued field** rather than degrading the whole table |
-| `out_report_per_ref` | the same for a report *with* list fields: counts in the row, each list its own ref-keyed table |
+| `out_per_ref(a, pairs)` | one ref emits what it always did; several pool with `ref` first. A list-valued field is **split out**, never left in the row: a list of records becomes a count with its own ref-keyed table, a list of scalars is space-joined into the cell |
 | `walk_positionals` | `walk_surface` sees only `option_strings`, so it cannot see a positional at all; the plural gate needs this second walk |
 
 Four things about it that are load-bearing rather than stylistic. **The globals
@@ -99,10 +98,21 @@ in-process.
 
 **`out_per_ref`'s one-pair shortcut is correct at the top level and wrong in a
 sub-table**, which is worth knowing before reusing it. At the top level the count
-decides the shape because the caller named one page. Inside `out_report_per_ref`
-the caller named several and the rows are a *subset* of them, so dropping the `ref`
+decides the shape because the caller named one page. In a split-out sub-table the
+caller named several and the rows are a *subset* of them, so dropping the `ref`
 column would leave a table whose rows belong to a page it does not name. `_pool`
 is the unconditional form and is what the sub-tables use.
+
+**Which treatment a list field gets is decided per field over every page, never
+per cell.** An empty list cannot say whether it would have held records or
+scalars, so a per-cell rule prints `errors: ""` beside `warnings: 1` in one row
+and the column means two things.
+
+This splitting used to be a second function, and `out_per_ref` *raised* on a list
+field to make the caller choose. That was the wrong trade — the split is exactly
+what the thinking caller writes, so refusing bought nothing and left every plural
+verb whose payload happened to carry a list broken until somebody ran it with two
+refs. `ocr clean` was found that way, in use, with its tests green.
 
 It was one module and a 1,000-line `main` until the reorganization, with `zones`
 alone accounting for 38% of the dispatch. The module docstring is still the parser

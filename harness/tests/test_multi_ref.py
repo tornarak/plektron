@@ -22,8 +22,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
-
 from harness.cli import main
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
@@ -107,21 +105,24 @@ def test_all_pools_even_when_it_matches_one_page(tmp_path, capsys):
     assert out.splitlines()[0].startswith("[2]{ref,")
 
 
-def test_a_list_field_is_refused_rather_than_pooled(tmp_path):
-    """A nested list degrades the *whole* outer table, so pooling one is a bug.
+def test_a_scalar_list_field_is_joined_into_the_cell(capsys):
+    """A list of bare strings joins with spaces rather than getting its own table.
 
-    `out_per_ref` raises with the fix in the message. Held here because the
-    failure it prevents is silent: the table simply becomes the verbose form and
-    every consumer of it starts reading `- ref:` lines.
+    The convention `corrections`' `pages` and `marks`' `refs` already use: a table
+    of one unnamed column is worse than a string, and a raw list in a cell would
+    degrade the row either way.
     """
     from argparse import Namespace
 
     from harness.cli._common import out_per_ref
 
-    with pytest.raises(ValueError, match="is a list"):
-        out_per_ref(Namespace(json=False),
-                    [("1-048", {"n": 1, "hits": []}),
-                     ("1-049", {"n": 2, "hits": ["x"]})])
+    out_per_ref(Namespace(json=False),
+                [("1-048", {"n": 1, "hits": []}),
+                 ("1-049", {"n": 2, "hits": ["x", "y"]})])
+    out = capsys.readouterr().out
+    assert "[2]{ref,n,hits}" in out
+    assert "1-049,2,x y" in out
+    assert "# hits" not in out
 
 
 def test_a_report_with_list_fields_splits_into_tables(tmp_path, capsys):
@@ -132,9 +133,9 @@ def test_a_report_with_list_fields_splits_into_tables(tmp_path, capsys):
     """
     from argparse import Namespace
 
-    from harness.cli._common import out_report_per_ref
+    from harness.cli._common import out_per_ref
 
-    out_report_per_ref(Namespace(json=False),
+    out_per_ref(Namespace(json=False),
                        [("1-048", {"n": 1, "hits": []}),
                         ("1-049", {"n": 2, "hits": [{"line": 3}]})])
     out = capsys.readouterr().out
