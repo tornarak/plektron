@@ -528,37 +528,42 @@ The sidecars are `gt/`-only and take no store: the three split lists,
 judgements about *pages*, and there is no such thing as the machine store's
 opinion of which pages are held out.
 
-### zones check [REF]
-**Does** the gate. With a ref, that page in full; bare, a sweep of every keyed page.
+### zones check [REF ...]
+**Does** the gate. Named pages in full; `--all` sweeps every keyed page.
 **Reads** the `--store` store, `data/zones_config.json`, the `gt/` sidecars, and `scans/` when ink runs.
 **Writes** `gt/zones/_ink_cache.json` (derived) when it reads a raster.
-**Exit** 1 if errors and `--store gt`; **always 0 under `--store mz`**, which is measurement.
+**Exit** 1 if any named page has errors and `--store gt`; **always 0 under `--store mz`**, which is measurement.
+**Note** **named pages always ink-check, however many.** `--ink` is a sweep economy — ~0.20 s a page against ~1 ms for the file-level checks — and naming two pages must not quietly buy a weaker check than naming one, since this is the only check that can see a *missing* zone. Pooled, `errors`/`warnings`/`uncovered` become counts in the row and each gets its own ref-keyed table; one ref prints the report exactly as it always did.
 ```
 --store {gt,mz}  which store [gt]
+--all            every page the store holds
 --itinerary LST  scope the sweep to a work-list [whole store]
---ink            SWEEP ONLY: read every raster for ink no zone accounts for [off; always on for a single page]
+--ink            SWEEP ONLY: read every raster for ink no zone accounts for [off; always on for named pages]
 --lines          SINGLE PAGE ONLY: every zone's lines of type [off; costs a second raster decode]
 --root --json
 ```
 
-### zones edit [REF]
+### zones edit [REF ...]
 **Does** the segmentation editor on 127.0.0.1, arrow keys walking the corpus. `/` and `?` cycle the store shown; a machine page opens as an unsaved proposal.
 **Reads** all three stores, `data/zones_config.json`, `scans/`.
 **Writes** `gt/zones/` on save — no `--commit`, the save click is the human act.
-**Exit** 2 if neither a ref nor an itinerary supplies a start page. This is the one argument check argparse cannot express.
+**Exit** 2 if nothing supplies a start page. This is the one argument check argparse cannot express.
+**Note** **several refs *are* an itinerary**: the session opens at the first and walks the list, which is the same work-list an `.lst` supplies, spelled for the two-page case that would otherwise want a scratch file. One ref is a page to start at, not the only page reachable. `--all` walks the book.
 ```
---itinerary LST  walk this work-list; omit REF to resume at its first unkeyed page
+--all            every scan, in order
+--itinerary LST  walk this work-list; name no ref to resume at its first unkeyed page
 --port N         port [8732; ocr review --serve holds 8731]
 --root --json
 ```
 
-### zones predict [REF]
+### zones predict [REF ...]
 **Does** runs the trained segmenter into `mz/zones/`. Input is always the blotted raster, since that is what the model was trained on.
 **Reads** `models/bogoras-seg/`, `scans/w-figs-blotted/`, the split marks.
 **Writes** `mz/zones/` (derived) — never `gt/`.
 **Exit** 1 if any swept page lacked a blot. A single ref exits 0.
-**Note** an exempt mark does not stop a named ref — naming a page is the request — but an existing prediction does, unless `--force`: the mz file's sha256 is the store's only witness to which model wrote it.
+**Note** an exempt mark does not stop a named ref — naming a page is the request — but an existing prediction does, unless `--force`: the mz file's sha256 is the store's only witness to which model wrote it. **Several named refs go through the sweep** so the model loads once, carrying that override with them; without it a named plate would be dropped in silence by the command that named it. Under `--all` the exempt ruling holds, which is what it is for.
 ```
+--all            every page with a blotted raster
 --force          re-run over pages that already have a prediction [off]
 --itinerary LST  predict over a work-list [every page with a blot, minus exempt]
 --model PATH     the segmentation model [models/bogoras-seg/zones-seg.safetensors]
@@ -623,31 +628,36 @@ opinion of which pages are held out.
 --root --json
 ```
 
-### zones delete REF
+### zones delete REF [REF ...]
 **Does** un-keys a page — removes its file and every mark that referred to it. The one thing the store could not express, `save_zones` refusing an empty save.
 **Reads** `gt/zones/` and its sidecars.
 **Writes** `gt/zones/` under `--commit`, keeping `.prev` and journalling the act.
 **Exit** always 0.
+**Note** **no `--all`, and here the absence is a safety property rather than a cost.** "Un-key the whole ground-truth store" must not be one flag away from a command someone types. `ocr clean` has `--all` precisely because it deletes only derived output; this deletes authored work.
 ```
 --commit  actually remove [off — previews]
 --root --json
 ```
 
-### zones diff [REF]
+### zones diff [REF ...]
 **Does** what differs between the two stores, paired by vertical overlap: `only_in_gt`, `only_in_mz`, `label`, `edge`. Prints a summary then the rows.
 **Reads** both stores, `data/zones_config.json`.
 **Writes** —
 **Exit** always 0 — measurement.
+**Note** an aggregate: refs scope the summary rather than multiplying it, and the rows already carry `ref`.
 ```
+--all     every page present in both stores
 --root --json
 ```
 
-### zones paragraphs [REF]
+### zones paragraphs [REF ...]
 **Does** audits the paragraph-boundary rule both ways. `false_negative` is a recall figure; `false_positive` is a **worklist, not a precision figure**, since gt cannot arbitrate a rule that corrects it.
 **Reads** `gt/zones/`, `scans/w-figs-blotted/`, `data/zones_config.json`.
 **Writes** —
 **Exit** always 0 — measurement.
+**Note** an aggregate, like `zones diff`.
 ```
+--all            every keyed page
 --itinerary LST  scope to a work-list [whole corpus]
 --root --json
 ```
@@ -661,12 +671,14 @@ opinion of which pages are held out.
 --root --json
 ```
 
-### zones blot [REF]
+### zones blot [REF ...]
 **Does** the figure-blotted training raster — `gt/fig/` zones painted **white**, the declared box and not a pixel more. Distinct from `ocr blot`, which paints in conspicuous colours for a human; this one has to look like blank paper.
 **Reads** `scans/`, `gt/fig/`.
 **Writes** `scans/w-figs-blotted/` (derived).
 **Exit** always 0.
+**Note** **`--all` carries no mtime skip and none may be added** — the one place in the CLI where the clobber codicil is deliberately switched off. A figure ALTO corrected after the blot was written leaves a raster that still shows the figure, so an mtime test would report success over exactly the failure it exists to catch. `views check` verifies this farm by *membership* for the same reason, so its `state: ok` may not be read as "up to date". `ocr blot` does have the test, and can: it paints boxes read out of the very ALTO it compares against.
 ```
+--all     all 832 scans
 --root --json
 ```
 

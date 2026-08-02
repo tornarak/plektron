@@ -2021,7 +2021,7 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
 def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 model_path: str | Path = DEFAULT_MODEL,
                 device: str = "auto", decode: str = "raw",
-                force: bool = False) -> dict:
+                force: bool = False, named: bool = False) -> dict:
     """Predict over a work-list, or over every page that has a blotted raster.
 
     What is skipped and why is `predict_skip`'s; this loops and reports. A sweep is
@@ -2030,7 +2030,15 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     interruption costing minutes and costing the run.
 
     The model is loaded once for the whole run, which is most of why this exists as
-    a sweep rather than a shell loop over the single-page form.
+    a sweep rather than a shell loop over the single-page form — and why several
+    refs typed on the command line come here rather than looping the single-page
+    form.
+
+    **`named` is `predict_skip`'s `single`, and it has to travel.** A ref a human
+    typed means that page even where it is ruled exempt; without this, the moment
+    a two-page invocation started routing through the sweep, a named plate would
+    have been dropped in silence by the very command that named it. Off by default
+    because a corpus sweep is exactly where the exempt ruling should hold.
     """
     import time
     net, sha = load_segmenter(model_path, root)
@@ -2043,7 +2051,7 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     done, no_blot, exempted, already = 0, [], 0, 0
     zones = 0
     for ref in refs:
-        why = predict_skip(ref, root, force, splits)
+        why = predict_skip(ref, root, force, splits, single=named)
         if why == "ruled not a text page":
             exempted += 1
             continue

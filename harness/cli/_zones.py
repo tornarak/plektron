@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import sys
 
-from ._common import REF_HELP, out
+from ._common import one_page_only, out, out_per_ref, page_refs, refs_arg
 
 ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file in gt/seg's "
              "format, or a directory taken to mean every page file in it (so "
@@ -61,23 +61,23 @@ def register(sub, common):
                             "view is deliberately not offered")
         return p
 
-    p = store_flag(add("check", help="the gate. With a ref, that page's errors "
-                   "and warnings in full; bare, a sweep of every keyed page. "
+    p = store_flag(add("check", help="the gate. Named pages give their errors "
+                   "and warnings in full; --all sweeps every keyed page. "
                    "Errors are mechanical (a width no column offers, two zones on "
                    "top of each other) and set the exit code; the ordering "
                    "assumptions are warnings, configurable and exemptible, "
                    "because a page that breaks them is the interesting page "
                    "rather than the rejected one"))
-    p.add_argument("ref", metavar="PP-NNN", nargs="?",
-                   help="page ref, e.g. 1-048. Omit to sweep the whole store")
+    refs_arg(p, all_="every page the store holds")
     p.add_argument("--itinerary", metavar="LST", default=None,
                    help=f"scope the sweep to a work-list. {ITIN_HELP}")
     p.add_argument("--ink", action="store_true",
                    help="SWEEP ONLY: also read every raster and report ink no "
                         "zone accounts for. Off by default because it costs "
                         "~0.20 s a page against ~1 ms for the file-level checks. "
-                        "Always on for a single page, where it is the check that "
-                        "catches a dropped zone, so it is not a flag there")
+                        "Always on for named pages, however many — naming two "
+                        "must not quietly buy a weaker check than naming one — "
+                        "where it is what catches a dropped zone")
     p.add_argument("--lines", action="store_true",
                    help="SINGLE PAGE ONLY: every zone's lines of type — 1-based "
                         "zone and line, y, height, indent against the page's own "
@@ -94,9 +94,10 @@ def register(sub, common):
             "page reachable. `/` and `?` cycle the store shown (view, gt, mz, "
             "paras); a machine page opens as an unsaved proposal and promoting it "
             "takes an edit or an explicit save")
-    p.add_argument("ref", metavar="PP-NNN", nargs="?",
-                   help="page to open at. Omit with --itinerary to resume at the "
-                        "first page on the list nobody has keyed")
+    refs_arg(p, all_="every scan, in order",
+             extra=", and several *are* an itinerary: the session opens at the "
+                   "first and walks the list. One ref is a page to start at, not "
+                   "the only page reachable")
     p.add_argument("--itinerary", metavar="LST", default=None, help=ITIN_HELP)
     p.add_argument("--port", type=int, default=8732,
                    help="port (default 8732; `ocr review --serve` holds 8731, so "
@@ -109,9 +110,10 @@ def register(sub, common):
             "that already has a prediction is left alone unless --force, so a "
             "sweep is resumable and a retrain cannot silently replace the model "
             "sha each file records")
-    p.add_argument("ref", metavar="PP-NNN", nargs="?",
-                   help="one page. An exempt mark does not stop it — naming a "
-                        "page is the request. Omit to sweep")
+    refs_arg(p, all_="every page with a blotted raster",
+             extra=". An exempt mark does not stop a named page — naming it is "
+                   "the request — and several go through one process, the model "
+                   "loading once")
     p.add_argument("--itinerary", metavar="LST", default=None,
                    help=f"predict over a work-list. {ITIN_HELP}")
     p.add_argument("--force", action="store_true",
@@ -195,7 +197,11 @@ def register(sub, common):
             "one thing the store could not express: `save_zones` refuses an empty "
             "save, so a page keyed in error could be corrected but not withdrawn. "
             "Keeps `.prev` and records the act in the journal")
-    p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
+    # **No `--all`, and this is the one place the absence is a safety property
+    # rather than a cost.** "Un-key the whole ground-truth store" must not be one
+    # flag away from a command someone types. `ocr clean` has `--all` precisely
+    # because it deletes only derived output; this deletes authored work.
+    refs_arg(p)
     p.add_argument("--commit", action="store_true",
                    help="actually remove; preview otherwise")
     p.set_defaults(func=run_delete)
@@ -205,8 +211,7 @@ def register(sub, common):
             "only_in_mz (an invented one), label (paired but named differently) "
             "or edge (same region, cut elsewhere, beyond min_zone_h_px). "
             "Measurement — exit 0")
-    p.add_argument("ref", metavar="PP-NNN", nargs="?",
-                   help="one page. Omit for every page in both stores")
+    refs_arg(p, all_="every page present in both stores")
     p.set_defaults(func=run_diff)
 
     p = add("paragraphs", help="audit the paragraph-boundary rule, both "
@@ -217,9 +222,7 @@ def register(sub, common):
             "alarm and gt cannot arbitrate. The segmenter cannot do this check at "
             "all: two abutting MainZone-P rectangles rasterize to one target. "
             "Measurement — exit 0")
-    p.add_argument("ref", metavar="PP-NNN", nargs="?",
-                   help="one page. Omit for the whole corpus, or scope with "
-                        "--itinerary")
+    refs_arg(p, all_="every keyed page")
     p.add_argument("--itinerary", metavar="LST", default=None, help=ITIN_HELP)
     p.set_defaults(func=run_paragraphs)
 
@@ -234,8 +237,14 @@ def register(sub, common):
             "Distinct from `ocr blot`, which paints lines and figures in "
             "conspicuous colours for a human to read; this one has to look like "
             "blank paper. The declared box is painted and not a pixel more")
-    p.add_argument("ref", metavar="PP-NNN", nargs="?",
-                   help="one page. Omit for all 832")
+    # **`--all` here carries no mtime skip, and none may be added.** A figure ALTO
+    # corrected after the blot was written leaves a raster that still shows the
+    # figure, so an mtime test would report success over exactly the failure it
+    # exists to catch — the same reason `views check` verifies this farm by
+    # membership and `blot_one` refuses rather than guessing. `ocr blot` does have
+    # the test, and can, because it paints boxes read out of the ALTO it compares
+    # against.
+    refs_arg(p, all_="all 832 scans")
     p.set_defaults(func=run_blot)
 
 
@@ -254,18 +263,38 @@ def run_check(a) -> int:
     zmod, load_config = _mod()
     store = {"gt": zmod.ZONEDIR, "mz": zmod.MZDIR}[a.store]
     cfg = load_config(a.root)
-    if a.ref:
-        rep = zmod.validate_page(a.ref, a.root, cfg, ink=True, store=store)
-        out(a, rep)
-        # The zones themselves, by default — reading a page's layout used to mean
-        # opening the editor. `--lines` swaps in the line-by-line breakdown,
-        # which matters only when something *inside* a zone is in question and
-        # costs a second raster decode besides.
-        rows = (zmod.page_zone_lines(a.ref, a.root, cfg, store=store) if a.lines
-                else zmod.page_zones_table(a.ref, a.root, store=store))
-        if rows:
-            out(a, rows)
-        return 1 if (rep["errors"] and store == zmod.ZONEDIR) else 0
+    refs = page_refs(a)
+    if refs:
+        # `--lines` is the page's own zone-by-zone breakdown, so it names one page
+        # in the same way `ocr zoom --only` does.
+        one_page_only(a, {"lines": "--lines"}, refs)
+        # **Named pages always ink-check, however many.** The flag is a sweep
+        # economy — ~0.20 s a page against ~1 ms — and naming two pages must not
+        # quietly buy a weaker check than naming one, since this is the only check
+        # that can see a *missing* zone.
+        reps = [(r, zmod.validate_page(r, a.root, cfg, ink=True, store=store))
+                for r in refs]
+        if len(reps) == 1:
+            out(a, reps[0][1])
+        else:
+            # `errors`, `warnings` and `uncovered` are lists, and a list in a
+            # pooled row degrades the whole table (see `out_per_ref`), so the row
+            # carries their counts and each gets its own ref-keyed table.
+            listy = [k for k, v in reps[0][1].items() if isinstance(v, list)]
+            out_per_ref(a, [(r, {k: (len(v) if k in listy else v)
+                                 for k, v in rep.items()}) for r, rep in reps])
+            for key in listy:
+                found = [(r, rep[key]) for r, rep in reps if rep[key]]
+                if found:
+                    print(f"# {key}")
+                    out_per_ref(a, found)
+        rows = [(r, zmod.page_zone_lines(r, a.root, cfg, store=store) if a.lines
+                 else zmod.page_zones_table(r, a.root, store=store))
+                for r in refs]
+        if any(v for _, v in rows):
+            out_per_ref(a, rows)
+        bad = any(rep["errors"] for _, rep in reps)
+        return 1 if (bad and store == zmod.ZONEDIR) else 0
     summary, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink,
                                          refs=_itin(a, zmod), store=store)
     out(a, summary)
@@ -276,15 +305,24 @@ def run_check(a) -> int:
 
 def run_edit(a) -> int:
     zmod, _ = _mod()
-    itin = _itin(a, zmod)
-    start = a.ref
+    refs = page_refs(a)
+    # **Several refs *are* an itinerary.** The editor already walks a list with
+    # the arrow keys, so a typed list needs no new machinery — it is the same
+    # work-list an `.lst` supplies, spelled for the two-page case that would
+    # otherwise want a scratch file. `--all` walks the book.
+    itin = refs or _itin(a, zmod)
+    if getattr(a, "all", False):
+        from ..context import all_scans
+        itin = all_scans(a.root)
+    start = itin[0] if refs else None
     if not start and itin:
         # Resume: the first page on the list nobody has keyed. Falls back to the
         # head of the list once it is finished, so the session still opens.
         start = next((r for r in itin if not zmod.has_zones(r, a.root)), itin[0])
     if not start:
-        print("zones edit needs a ref to start at, e.g. `harness zones edit "
-              "1-048` — or an --itinerary to take one from", file=sys.stderr)
+        print("zones edit needs a page to start at: name one or more refs, or "
+              "--itinerary to take one from, or --all for the whole book",
+              file=sys.stderr)
         return 2
     from ..zones_ui import serve as serve_zones
     serve_zones(start, a.root, a.port, itin, a.itinerary or "")
@@ -294,23 +332,29 @@ def run_edit(a) -> int:
 def run_predict(a) -> int:
     zmod, _ = _mod()
     model = a.model or zmod.DEFAULT_MODEL
-    if a.ref:
+    named = page_refs(a)
+    if len(named) == 1:
         # One named page still overrides the exempt skip — naming it is the
         # request — but it no longer bypasses the skip entirely. It used to, so a
         # named ref silently overwrote an existing prediction along with the
         # model sha that file records, which is the one witness in the store to
         # which model spoke. `--force` is how a re-prediction says it meant it.
-        why = zmod.predict_skip(a.ref, a.root, force=a.force, single=True)
+        ref = named[0]
+        why = zmod.predict_skip(ref, a.root, force=a.force, single=True)
         if why:
-            out(a, {"ref": zmod.norm_ref(a.ref), "predicted": 0, "skipped": why})
+            out(a, {"ref": ref, "predicted": 0, "skipped": why})
             return 0
         net, sha = zmod.load_segmenter(model, a.root)
         fn = zmod.predict_dp if a.decode == "dp" else zmod.predict
-        out(a, fn(a.ref, a.root, net=net, sha=sha, model_path=model,
+        out(a, fn(ref, a.root, net=net, sha=sha, model_path=model,
                   device=a.device))
         return 0
-    rep = zmod.predict_all(a.root, refs=_itin(a, zmod), model_path=model,
-                           device=a.device, decode=a.decode, force=a.force)
+    # Several named refs go through the sweep — the model loads once — carrying
+    # `named` so the single-page override travels with them. Without it a page a
+    # human ruled exempt would be skipped in silence by the command that named it.
+    rep = zmod.predict_all(a.root, refs=named or _itin(a, zmod), model_path=model,
+                           device=a.device, decode=a.decode, force=a.force,
+                           named=bool(named))
     out(a, rep)
     # Same contract as `assemble`'s missing_blot: a page the model was asked
     # about and could not be shown is a gap in the run, not a quiet omission.
@@ -367,7 +411,8 @@ def run_remark_eval(a) -> int:
 
 def run_delete(a) -> int:
     zmod, _ = _mod()
-    out(a, zmod.delete_zones(a.ref, a.root, commit=a.commit))
+    out_per_ref(a, [(r, zmod.delete_zones(r, a.root, commit=a.commit))
+                    for r in page_refs(a)])
     return 0
 
 
@@ -375,9 +420,11 @@ def run_diff(a) -> int:
     from collections import Counter
     zmod, load_config = _mod()
     cfg = load_config(a.root)
-    scope = ([zmod.norm_ref(a.ref)] if a.ref else
-             sorted(set(zmod.zone_refs(a.root)) & set(zmod.zone_refs(a.root, zmod.MZDIR)),
-                    key=zmod.parse_ref))
+    # An aggregate: refs scope it and do not multiply it — the summary is over
+    # whatever was named, and the rows already carry `ref`.
+    scope = page_refs(a) or sorted(
+        set(zmod.zone_refs(a.root)) & set(zmod.zone_refs(a.root, zmod.MZDIR)),
+        key=zmod.parse_ref)
     rows = [r for ref_ in scope for r in zmod.zone_diff(ref_, a.root, cfg)]
     out(a, {"pages": len(scope), "differences": len(rows),
             "pages_differing": len({r["ref"] for r in rows}),
@@ -390,7 +437,7 @@ def run_diff(a) -> int:
 
 def run_paragraphs(a) -> int:
     zmod, load_config = _mod()
-    scope = [zmod.norm_ref(a.ref)] if a.ref else _itin(a, zmod)
+    scope = page_refs(a) or _itin(a, zmod)
     summary, rows = zmod.paragraph_audit(a.root, load_config(a.root), refs=scope)
     out(a, summary)
     if rows:
@@ -406,5 +453,10 @@ def run_link(a) -> int:
 
 def run_blot(a) -> int:
     zmod, _ = _mod()
-    out(a, zmod.blot_one(a.ref, a.root) if a.ref else zmod.blot_all(a.root))
+    refs = page_refs(a)
+    # No mtime skip under `--all`, deliberately — see the registration.
+    if refs:
+        out_per_ref(a, [(r, zmod.blot_one(r, a.root)) for r in refs])
+    else:
+        out(a, zmod.blot_all(a.root))
     return 0
