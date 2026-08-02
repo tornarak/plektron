@@ -267,6 +267,10 @@ require `--commit`.
 **Writes** `review/PP-NNN/decision.json` under `--serve`; `review/PP-NNN/review.html` under `--html`. Bare mode writes nothing.
 **Exit** 1 if any ref's bare diff source resolves to the ground truth that proposal produced — a comparison whose two witnesses are one file refuses rather than reporting a clean 40/40. Checked over every ref before the first table prints, so the refusal cannot arrive after pages of reassuring output.
 **Note** the **only action taking more than one ref**, because it is the only one whose cost is a human's attention rather than a process's. `--serve` runs one server over the whole batch, one page on screen at a time, reached by navigation — never several pages merged into one document, since a field belonging to a page other than the one you think you are keying is this pass's oldest failure. **Adjudicated-ness is read off the disk** (`decision.json` exists), never held in the process, so a reload, a second tab or a restart cannot contradict it; a re-run therefore resumes the batch rather than restarting it, and a page that already carried decisions shows done and stays reachable from the strip. `Done` advances to the next unadjudicated page and stops the server only on the last one. A single ref renders and behaves exactly as before — no strip, no navigation.
+
+Each line carries a **`+ note` button** and, once asked for, a note field: the adjudicator's own record, saved into `decision.json` as `note` beside `text`. **Opt-in in both places** — a field on all 45 lines would be 45 empty boxes competing with the 45 that matter, and an empty `note` written on every line would make "which lines were remarked on" unfindable, the key existing being the only way anyone asks. Distinct from `proposal.json`'s `note`, which is the reader's account of its own work; these live in different files so a human ruling is never mistaken for a model's. A note is not an edit, so a page saved with only notes reports `0/N edited` and `restore` is a no-op on it.
+
+The header links to the **full page scan**, new tab — the crops say what a line sets and cannot say what is around it, which is what settling a speck or a dropped line needs. Served from `/scan/<ref>`, scoped to the session's refs like `/p/`; `--html` writes a relative path to `scans/` instead, since a browser will not follow `file://` from an http origin.
 ```
 --serve   serve on 127.0.0.1, accept saves  }
 --html    write review.html per ref         } mutually exclusive
@@ -283,6 +287,8 @@ require `--commit`.
 **Writes** `gt/ocr/` under `--commit`, **and relinks that page in `ocr/`** — the promotion is the write plus the relink, the same pairing `ocr predict` has for what it writes into `mz/ocr/`. The `view` field reports which store the view now names, `""` on a preview.
 **Exit** always 0 — `geometry_drift` and `text_mismatch` are reported, not gated.
 **Note** the view is the right default here rather than a convenience: it resolves to `gt/ocr/` for a keyed page (source is the target — a `revision`, which needs `--force`) and to `mz/ocr/` for a predicted one (source ≠ target, target absent — a `restoration`, which does not). That is the correct source in both cases without the caller choosing, and `mode` reports which ran.
+
+Two tables describe what the human did, and they are separate because a note is not an edit. `edits[]{line,proposal,decision}` is the text that changed; `notes[]{line,note}` is every line the adjudicator remarked on, **edited or not** — the commonest note sits on a line whose text nobody touched (`2-036`'s speck, ruled "ink smudge" and left empty), so a list keyed on `edited` showed it nowhere and the ruling appeared in no report about the page. Neither table gates, and the note never reaches the ALTO: `decision.json` is its record.
 ```
 --store {gt,mz}  which store supplies the line geometry [omit: the ocr/ view,
                  which is gt for a keyed page and mz for a predicted one]

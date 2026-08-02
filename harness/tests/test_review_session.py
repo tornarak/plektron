@@ -308,6 +308,82 @@ def test_the_static_render_points_at_the_file_on_disk(tmp_path):
     assert "../../scans/chukchi-2-046.png" in html
 
 
+def test_a_human_note_is_opt_in_and_absent_until_written(two):
+    """A note field on every line is 45 empty boxes competing with the 45 that
+    matter, so the affordance is a button and the field arrives when asked for."""
+    html = render_queue_html("2-046", "mz/ocr", two)
+    assert "class=hnb" in html, "no button to open a note"
+    # Present in the markup but not shown: opening one must not cost a round trip.
+    assert "data-note='0'" in html
+    assert html.count("hidden></textarea>") >= 2, "note fields should start hidden"
+
+
+def test_an_empty_note_is_not_stored(two):
+    """`note` existing is the only way anyone finds the lines that were remarked
+    on, so an empty one on every line would make that search useless — the same
+    noise in the file that a textarea on every line is on screen."""
+    with Session(["2-046"], two) as s:
+        s.post("/save", {"ref": "2-046",
+                         "lines": {"0": {"text": "a", "note": "   "},
+                                   "1": {"text": "b", "note": "speck, not type"}}})
+        got = json.loads(decisions_path("2-046", two).read_text())
+        assert "note" not in got["lines"]["0"]
+        assert got["lines"]["1"]["note"] == "speck, not type"
+
+
+def test_a_saved_note_renders_open(two):
+    """A note nobody can see is not a record. One already written comes back
+    visible, with its button gone rather than offering to create a second."""
+    with Session(["2-046"], two) as s:
+        s.post("/save", {"ref": "2-046",
+                         "lines": {"1": {"text": "b", "note": "scanner smudge"}}})
+        html = s.get("/p/2-046")
+        assert "scanner smudge" in html
+        assert "class=hnb data-line='1' hidden" in html
+
+
+def test_an_emptied_note_folds_back_to_the_button(two):
+    """The control has two faces, not a door that only opens.
+
+    Asserted on the wiring rather than by driving a browser: the blur handler is
+    scoped to note fields (`data-note`), and reverting is conditional on the field
+    being blank, so a note with content is never closed out from under the typist.
+    """
+    html = render_queue_html("2-046", "mz/ocr", two)
+    assert "t.dataset.note!==undefined" in html, "blur handler not scoped to notes"
+    assert "addEventListener('blur'" in html
+    assert "if(t.value.trim()) return;" in html
+
+
+def test_restore_reports_a_note_on_a_line_nobody_edited(two):
+    """The report that says what the human did must show the ruling they wrote.
+
+    `edits` is keyed on text differing from the proposal, and the commonest note
+    sits on a line whose text nobody changed — so before `notes` existed, an
+    adjudicator's ruling lived in decision.json and appeared in no report at all.
+    """
+    from harness.review import restore
+    with Session(["2-046"], two) as s:
+        s.post("/save", {"ref": "2-046",
+                         "lines": {"0": {"text": "human 2-046 0"},        # unchanged
+                                   "1": {"text": "human 2-046 1",
+                                         "note": "speck, not type"}}})
+    rep = restore("2-046", "mz/ocr", two)
+    assert rep["edited_by_human"] == 0, "no text was changed"
+    assert rep["edits"] == []
+    assert rep["noted"] == 1
+    assert rep["notes"] == [{"line": 1, "note": "speck, not type"}]
+
+
+def test_notes_are_not_posted_as_line_readings(two):
+    """The note boxes are textareas too. Every selector that means "a line's
+    reading" is scoped to [data-line] for this reason — an unscoped one would
+    collect them and post a note as if it were the text of some line."""
+    html = render_queue_html("2-046", "mz/ocr", two)
+    assert "querySelectorAll('textarea[data-line]')" in html
+    assert "for(const t of document.querySelectorAll('textarea'))\n" not in html
+
+
 def test_a_repeated_ref_is_queued_once(two):
     """`review 2-046 2-046` is a typo, and a strip that showed it twice would make
     its own "n/2 adjudicated" count a lie."""

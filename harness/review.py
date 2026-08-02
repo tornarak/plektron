@@ -40,6 +40,7 @@ from __future__ import annotations
 import difflib
 import json
 import os
+import sys
 import unicodedata
 from pathlib import Path
 
@@ -339,6 +340,16 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
         proposed = _nfd(prop[idx]["text"]) if idx in prop else None
         out[str(idx)] = {"text": text, "edited": proposed is not None
                          and text != proposed}
+        # The adjudicator's own note, and **stored only when it says something**.
+        # An empty `note` on every line would be the same noise in the file that a
+        # textarea on every line is on screen, and it would make "this line was
+        # remarked on" unfindable by the only means anyone has — the key existing.
+        # Distinct from the proposal's `note`, which is the reader's: these two
+        # live in different files precisely so a human ruling is never mistaken
+        # for the model's account of what it did.
+        note = _nfd("" if isinstance(v, str) else (v.get("note") or "")).strip()
+        if note:
+            out[str(idx)]["note"] = note
     changed = sorted(int(k) for k, v in out.items()
                      if int(k) in before and before[int(k)]["text"] != v["text"])
     doc = {"ref": ref,
@@ -516,6 +527,16 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     edits = [{"line": i, "proposal": prop[i]["text"] if i in prop else "(gone from proposal)",
              "decision": v["text"]}
             for i, v in sorted(dec.items()) if v.get("edited")]
+    # Reported separately, and **not** folded into `edits`, because a note is not
+    # an edit and the commonest note is on a line whose text nobody changed —
+    # `2-036`'s speck was ruled "ink smudge" and left empty, so it is invisible to
+    # any list keyed on `edited`. That was the whole defect: the adjudicator's
+    # ruling lived in decision.json and appeared in no report about the page.
+    # Its own table rather than a column on `edits` keeps one key set per table
+    # (a ragged list degrades to the verbose nested form — see emit.py) and keeps
+    # `edited_by_human` meaning what it has always meant.
+    notes = [{"line": i, "note": v["note"]}
+             for i, v in sorted(dec.items()) if v.get("note")]
 
     if not commit:
         tmp.unlink()
@@ -526,7 +547,8 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
                 # `view` is "" here, not absent: one fixed key set across both
                 # branches, since a caller reading the report should not have to
                 # know which one produced it to know which keys exist.
-                "edited_by_human": len(edits), "edits": edits, "commit": False,
+                "edited_by_human": len(edits), "edits": edits,
+                "noted": len(notes), "notes": notes, "commit": False,
                 "view": ""}
     tmp.replace(target)
     # **The promotion is the write plus the relink, and it was only ever half
@@ -553,7 +575,8 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             "lines": len(lines),
             "chars": sum(len(y["text"]) for y in b),
             "geometry_drift": drift, "text_mismatch": wrong,
-            "edited_by_human": len(edits), "edits": edits, "commit": True,
+            "edited_by_human": len(edits), "edits": edits,
+            "noted": len(notes), "notes": notes, "commit": True,
             "view": view}
 
 
@@ -667,6 +690,27 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          "a.scan{font-size:.85rem;font-weight:400;margin-left:.6rem;"
          "color:#1a56b8;text-decoration:none;white-space:nowrap}",
          "a.scan:hover{text-decoration:underline}",
+         # Machine's account left, human's right. `min-width:0` on the left column
+         # is what stops a long catmus line from pushing the note column off the
+         # row: a flex item's default `min-width:auto` refuses to shrink below its
+         # content, and an overflowing `<div class=ref>` is exactly that case.
+         ".meta{display:flex;gap:.75rem;align-items:flex-start;margin-top:.25rem}",
+         ".metaL{flex:1 1 auto;min-width:0}",
+         # Fixed at ~15 characters of its own 12px type, and it neither grows into
+         # the left column nor shrinks under it — a note field that resized with
+         # its content would move every line below it as the reviewer typed.
+         ".hn{flex:0 0 15ch;font-size:12px}",
+         # Quiet until used. A dashed outline reads as "nothing here yet" where a
+         # solid button would read as an action the line is waiting on.
+         "button.hnb{font:12px var(--f);color:#888;background:none;width:100%;"
+         "border:1px dashed #c4c4c4;border-radius:3px;padding:.15rem .3rem;"
+         "cursor:pointer}",
+         "button.hnb:hover{color:#333;border-color:#888}",
+         # Tinted, so an open note is never mistaken for the reading field beside
+         # it at a glance down the page.
+         "textarea.hnt{font:12px/1.4 var(--f);background:#fffdf0;"
+         "border-color:#ded4a4;padding:.15rem .3rem}",
+         "textarea.hnt:focus{outline-color:#b59b2e;border-color:#b59b2e}",
          ".sum{color:#555;font-size:.85rem;margin-bottom:1.4rem}",
          ".ln{border-top:1px solid #ddd;padding:.7rem 0}",
          # Agreement is de-emphasis, never omission: CATMuS agreeing about ASCII is
@@ -775,6 +819,10 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          ".jump.edit a{color:#4fd47a;border-color:#1a7f37}"
          ".editflag{color:#4fd47a}"
          "textarea.justsaved{outline-color:#4fd47a}"
+         "button.hnb{color:#8a8a8a;border-color:#3d3d3d}"
+         "button.hnb:hover{color:#e6e6e6;border-color:#7a7a7a}"
+         "textarea.hnt{background:#221e12;border-color:#5c4f22;color:#f0e6c8}"
+         "textarea.hnt:focus{outline-color:#d1a02a;border-color:#d1a02a}"
          ".floor{color:#e88d8d}"
          "textarea{background:#111;color:#eee;border-color:#444}"
          "#st{color:#bbb;border-color:#444}"
@@ -912,12 +960,31 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         h.append(f"<textarea data-line='{idx}' rows=1 spellcheck=false "
                  f"autocomplete=off data-text=\"{_esc(full)}\" "
                  f"data-proposed=\"{_esc(proposed)}\"></textarea>")
+        # Everything under the reading is one row: the machine's account of the
+        # line on the left, the human's on the right. They are read at different
+        # moments — the left while keying, the right when ruling — so stacking
+        # them put the one thing the reviewer authors at the bottom of a pile of
+        # things they only consult.
+        h.append("<div class=meta><div class=metaL>")
         if marks:
             h.append(f"<div class=cp>{_esc(marks)}</div>")
         h.append(f"<div class=ref>catmus: {_esc(rec['text']) or '(empty)'}</div>")
         for key in ("note", "resolved", "corrected"):
             if mine.get(key):
                 h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")
+        h.append("</div>")
+        # The adjudicator's note, opt-in per line. A textarea on all 45 lines would
+        # be 45 empty boxes competing with the 45 that matter, so it starts as a
+        # button and becomes a field only when asked for — and a line that already
+        # carries one renders open, since a note nobody can see is not a record.
+        hnote = (saved.get(idx) or {}).get("note", "")
+        h.append("<div class=hn>"
+                 f"<button type=button class=hnb data-line='{idx}'"
+                 + (" hidden" if hnote else "") + ">+ note</button>"
+                 f"<textarea class=hnt data-note='{idx}' rows=1 spellcheck=false "
+                 f"autocomplete=off data-text=\"{_esc(hnote)}\""
+                 + ("" if hnote else " hidden") + "></textarea></div>")
+        h.append("</div>")
         h.append("</div>")
 
     # Fixed to the bottom of the viewport, and the save controls live in the same
@@ -1057,8 +1124,13 @@ addEventListener('keydown',e=>{
 });
 let dirty=false, timer=null;
 const grow=t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'};
-function collect(){const o={};for(const t of document.querySelectorAll('textarea'))
-  o[t.dataset.line]=t.value;return o}
+// `[data-line]` throughout, never a bare `textarea`: the note boxes are textareas
+// too, and an unscoped selector would post them as if they were line readings.
+function collect(){const o={};
+  for(const t of document.querySelectorAll('textarea[data-line]')){
+    const n=document.querySelector(`textarea[data-note='${t.dataset.line}']`);
+    o[t.dataset.line]={text:t.value,note:n?n.value:''};}
+  return o}
 // Live edited-flag, kept in sync with typing rather than only with the last save,
 // so a line that was reverted back to its proposed text stops claiming "edited"
 // before the next save round-trips. `ef{idx}` is the same span the server rendered.
@@ -1067,7 +1139,7 @@ function refreshEditFlag(t){
   if(ef) ef.style.display=(t.value!==t.dataset.proposed)?'inline':'none';
 }
 function rebuildEditJump(){
-  const idxs=[...document.querySelectorAll('textarea')]
+  const idxs=[...document.querySelectorAll('textarea[data-line]')]
     .filter(t=>t.value!==t.dataset.proposed)
     .map(t=>parseInt(t.dataset.line,10)).sort((a,b)=>a-b);
   document.getElementById('editjump').innerHTML=idxs.length
@@ -1145,14 +1217,37 @@ async function done(){
 // So the server-rendered text is authoritative and is assigned here, after any restore
 // has happened. `autocomplete=off` alone is advisory; this is not. Values are compared
 // before overwriting only to keep `dirty` honest — an assignment is not an edit.
+// Deliberately unscoped: the note boxes are restored by position too, and a note
+// that silently belonged to another page would be worse than a misplaced reading,
+// since a note is read as a human's ruling and nothing checks it against the scan.
 for(const t of document.querySelectorAll('textarea')){
   const want=t.dataset.text;
   if(t.value!==want) t.value=want;
   grow(t);
   t.addEventListener('focus',()=>{last=t});
+  // An empty note is stored as nothing, so an empty *field* is a control asserting
+  // a state the file does not have. Emptied and left, it folds back to the button
+  // and the line reads exactly as it would after a reload.
+  if(t.dataset.note!==undefined) t.addEventListener('blur',()=>{
+    if(t.value.trim()) return;
+    t.hidden=true;
+    const b=document.querySelector(`button.hnb[data-line='${t.dataset.note}']`);
+    if(b) b.hidden=false;});
   t.addEventListener('input',()=>{grow(t);dirty=true;st.className='';
-    st.textContent='unsaved…';refreshEditFlag(t);rebuildEditJump();
+    st.textContent='unsaved…';
+    // Only a reading has an edited-flag; a note is never "edited from proposed",
+    // there being nothing proposed to differ from.
+    if(t.dataset.line){refreshEditFlag(t);rebuildEditJump();}
     clearTimeout(timer);timer=setTimeout(save,1200)});
+}
+// Opt-in notes: the button hands over to the field, and the blur handler above
+// hands back whenever the field is left empty, so the two are one control with
+// two faces rather than a door that only opens.
+for(const b of document.querySelectorAll('button.hnb')){
+  b.addEventListener('click',()=>{
+    const t=document.querySelector(`textarea[data-note='${b.dataset.line}']`);
+    if(!t) return;
+    t.hidden=false; b.hidden=true; grow(t); t.focus(); last=t;});
 }
 sv.addEventListener('click',save);
 dn.addEventListener('click',done);
@@ -1165,7 +1260,7 @@ function goT1(d){
   t1i=(t1i+d+T1.length*2)%T1.length;
   const el=T1[t1i];
   el.scrollIntoView({block:'center',behavior:'smooth'});
-  const t=el.querySelector('textarea'); if(t){t.focus();last=t}
+  const t=el.querySelector('textarea[data-line]'); if(t){t.focus();last=t}
 }
 document.getElementById('t1n').addEventListener('click',()=>goT1(1));
 document.getElementById('t1p').addEventListener('click',()=>goT1(-1));
@@ -1358,6 +1453,15 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
 
     srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     url = f"http://127.0.0.1:{port}/"
+    # Line-buffered for the rest of this process. `serve` is long-running and is
+    # almost always backgrounded with stdout redirected to a file, where Python
+    # block-buffers — so the URL, the one line the caller is waiting for, sat in a
+    # 8 KB buffer until the process exited, and a server that has not printed its
+    # address is indistinguishable from one that failed to start.
+    try:
+        sys.stdout.reconfigure(line_buffering=True)
+    except (AttributeError, ValueError):  # not a real stream (captured in tests)
+        pass
     print(f"review {' '.join(queue)} -> {url}   "
           "(Done button on the page, or ctrl-c)")
     for r in queue:
@@ -1370,7 +1474,12 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
     import webbrowser
     webbrowser.open(url)
     try:
-        srv.serve_forever()
+        # 0.1 rather than the 0.5 default: `shutdown()` blocks until the loop next
+        # wakes, so the default is a flat half-second between the Done button and
+        # the process exiting — and the process exiting is the signal that the
+        # batch is finished. It is also the whole per-test cost of the session
+        # suite, which stands up and tears down a real server per test.
+        srv.serve_forever(poll_interval=0.1)
     except KeyboardInterrupt:
         print("\nstopped")
     else:
