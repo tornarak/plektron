@@ -856,11 +856,25 @@ answers `[0]`, exit 0. The two halves are pinned together over one function in
 `test_farms.py`, since read alone either looks like an inconsistency worth tidying.
 
 **`views check` says how deep it looked, and that is the `verified` column.** For
-`scans/w-figs-blotted/` it reads `membership`, because content freshness there is not
-merely unchecked but *uncheckable*: a figure ALTO corrected after the blot was
-written leaves a raster that still shows the figure, so an mtime test would report
-success over the one failure it exists to catch — `zones blot` refuses one for this
-reason. `state: ok` therefore may not be read as "up to date". The fourth state `?`
+`scans/w-figs-blotted/` it reads `membership`, because nothing there opens pixel data
+or the timestamps behind it — so `state: ok` may not be read as "up to date".
+
+**That column used to be justified by a claim that was simply false**, and the
+correction is worth keeping because the false version had been restated in four
+places and read as rigour. It said content freshness there was not merely unchecked
+but *uncheckable*, on the grounds that a figure ALTO corrected after the blot leaves
+a raster still showing the figure and an mtime test would pass it. It would not: a
+corrected ALTO is **newer** than the blot, so a test against both its inputs —
+`scans/` and `gt/fig/` — catches exactly that case. (Against the scan alone it would
+be blind, the scan never changing; that is an argument for naming the right inputs.)
+What no mtime test can see is a **deleted** figure ALTO — a page whose zones were
+withdrawn should go back to being a link, and the stale painted PNG is still newer
+than the scan, absence having no timestamp. That is a membership question, not a
+content one. So `zones blot` repaints unconditionally because 252 composites cost
+seconds, not because freshness is unknowable, and `membership` remains the honest
+word for what `views check` actually did.
+
+The fourth state `?`
 means no verdict was available at all (`scans/`, `train/`), and does not gate; nor
 does the gate cover farms `build` cannot fix, since an exit code demanding a repair
 the named command does not perform teaches a reader to ignore it.

@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import sys
 
-from ._common import one_page_only, out, out_per_ref, page_refs, refs_arg
+from ._common import one_page_only, out, out_per_ref, out_report_per_ref, page_refs, refs_arg
 
 ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file in gt/seg's "
              "format, or a directory taken to mean every page file in it (so "
@@ -237,13 +237,11 @@ def register(sub, common):
             "Distinct from `ocr blot`, which paints lines and figures in "
             "conspicuous colours for a human to read; this one has to look like "
             "blank paper. The declared box is painted and not a pixel more")
-    # **`--all` here carries no mtime skip, and none may be added.** A figure ALTO
-    # corrected after the blot was written leaves a raster that still shows the
-    # figure, so an mtime test would report success over exactly the failure it
-    # exists to catch — the same reason `views check` verifies this farm by
-    # membership and `blot_one` refuses rather than guessing. `ocr blot` does have
-    # the test, and can, because it paints boxes read out of the ALTO it compares
-    # against.
+    # **No mtime skip under `--all`, and the reason is cost, not impossibility.**
+    # Repainting 252 composites takes seconds. This repo asserted the stronger
+    # claim for a long time — that a corrected figure ALTO could not be detected —
+    # and it was false; see `zones.blot_all`, which now records what an mtime test
+    # can and cannot see.
     refs_arg(p, all_="all 832 scans")
     p.set_defaults(func=run_blot)
 
@@ -274,20 +272,9 @@ def run_check(a) -> int:
         # that can see a *missing* zone.
         reps = [(r, zmod.validate_page(r, a.root, cfg, ink=True, store=store))
                 for r in refs]
-        if len(reps) == 1:
-            out(a, reps[0][1])
-        else:
-            # `errors`, `warnings` and `uncovered` are lists, and a list in a
-            # pooled row degrades the whole table (see `out_per_ref`), so the row
-            # carries their counts and each gets its own ref-keyed table.
-            listy = [k for k, v in reps[0][1].items() if isinstance(v, list)]
-            out_per_ref(a, [(r, {k: (len(v) if k in listy else v)
-                                 for k, v in rep.items()}) for r, rep in reps])
-            for key in listy:
-                found = [(r, rep[key]) for r, rep in reps if rep[key]]
-                if found:
-                    print(f"# {key}")
-                    out_per_ref(a, found)
+        # `errors`, `warnings` and `uncovered` are lists, so pooling puts their
+        # counts in the row and each gets its own ref-keyed table.
+        out_report_per_ref(a, reps)
         rows = [(r, zmod.page_zone_lines(r, a.root, cfg, store=store) if a.lines
                  else zmod.page_zones_table(r, a.root, store=store))
                 for r in refs]

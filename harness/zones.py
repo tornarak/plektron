@@ -1545,10 +1545,24 @@ def blot_one(ref: str, root: Path = Path(".")) -> dict:
 def blot_all(root: Path = Path(".")) -> dict:
     """Rebuild the whole blotted corpus.
 
-    **Unconditional, never incremental.** A freshness test against mtimes would be
-    wrong in the one case that matters: a figure ALTO corrected after the blot was
-    written leaves a raster that still shows the figure, and the sweep would report
-    success over it. Repainting 252 pages costs seconds and cannot go stale.
+    **Unconditional because it is cheap, not because freshness is unknowable** —
+    and this docstring said the second thing for a long time, wrongly, with
+    `farms.py` and CLAUDE.md repeating it. The claim was that a figure ALTO
+    corrected after the blot leaves a raster still showing the figure and an mtime
+    test would pass it. It would not: a corrected ALTO is *newer* than the blot, so
+    a test against both inputs — `scans/` and `gt/fig/` — catches exactly that.
+    (Against the scan alone it would be blind, the scan never changing; that is an
+    argument for naming the right inputs.)
+
+    What no mtime test can see is a **deleted** figure ALTO. A page whose zones
+    were withdrawn should go back to being a link, and the stale painted PNG is
+    still newer than the scan — absence has no timestamp. That is a membership
+    question rather than a content one, and it is why `views check` verifies this
+    farm by membership.
+
+    So the real reason to repaint everything is that repainting 252 composites
+    costs seconds, and an incremental path would add a way to be wrong for very
+    little. Named refs repaint unconditionally too, for the same reason.
     """
     from .context import all_scans
     painted = linked = missing = 0

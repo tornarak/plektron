@@ -105,56 +105,64 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Exit** always 0.
 **Note** `running_title` is the page's own statement of what page it is — `{text, folio, folio_from, bracketed, lines}` — and it is the **second witness** to `expected_folio`, which is a prediction from the preceding transcribed page and knows nothing about this one. The two disagreeing is the signal. The folio is looked for in the head line, then in a bracketed number at the foot of a chapter opening (`QuireMarksZone`), then in the old vocabulary's `NumberingZone`; `folio_from` says which answered. Nothing is repaired: a number that does not parse cleanly leaves `folio` null and stays in `text`, on the same "null means go and look" contract `expected_folio` keeps.
 **Note** the three zones that can carry a folio (`context.APPARATUS_ZONES`) are dropped from **both** `catmus_draft` and `ocr_lines` — they leave the draft and arrive as `running_title` instead, so the information is restructured rather than discarded. Out of `ocr_lines` for a sharper reason than the draft's: that list is the set of `@facs` pointer targets, and a running head, a folio or a signature line is never in the TEI body, so citing one would be a mistake by construction. A **caption** line is dropped from the draft only, since it stays citable.
+**Note** **one of the four singular actions.** The payload is one page's collation prompt, built to be handed to one model for one page; a merged stream of them is not consumable by the thing it exists for.
 ```
 --root --json
 ```
 
-### tei validate REF
-**Does** the gate on one page's TEI — output contract, `@facs` resolution, a
+### tei validate [REF ...]
+**Does** the gate on a page's TEI — output contract, `@facs` resolution, a
 `@resp` rank on every Tier-1 span.
 **Reads** `tei/`, plus everything `context` reads.
 **Writes** —
-**Exit** 1 on FAIL.
+**Exit** 1 on FAIL — the worst across refs, so one failing page fails the batch.
 **Note** `--json` swaps the rendered report for `{ok, errors, warnings, worklist, metrics}`.
+**Note** **the one action that does not pool.** Its payload is a rendered report and prose does not tabulate, so several refs print several reports under `# REF` lines. One ref prints exactly what it always did, with no header.
 ```
+--all       every collated page in tei/
 --ratified  expect '#ed' instead of '#llm'; a remaining '#llm' becomes a worklist line [off]
 --root --json
 ```
 
-### tei state REF
+### tei state REF [REF ...]
 **Does** one page's seam record — predicted folio, what it rests on, headings believed open.
 **Reads** committed `tei/`.
 **Writes** —
 **Exit** always 0.
+**Note** **no `--all`** — `tei ledger` *is* the corpus form of this, and a second spelling of one report is how two answers to one question start to drift.
 ```
 --root --json
 ```
 
-### tei ids REF
+### tei ids [REF ...]
 **Does** checks structural ids against `{kind}-{PP-NNN}-{ordinal}`.
 **Reads** `tei/` (the page and its neighbours).
 **Writes** `tei/` — the page and any neighbour whose `@prev`/`@next` needs repair, under `--commit`.
 **Exit** always 0.
+**Note** with more than one ref and `--commit`, every page is previewed before any is written — the same up-front rule `ocr restore` keeps.
 ```
+--all     every collated page in tei/
 --commit  write the canonical ids and neighbours' pointers [off — reports what would change]
 --root --json
 ```
 
-### tei pair REF
+### tei pair [REF ...]
 **Does** links each `<gloss>` to its `<term>` where containment decides; reports and writes nothing where it does not.
 **Reads** `tei/`.
 **Writes** `tei/` under `--commit`.
 **Exit** always 0.
 ```
+--all     every collated page in tei/
 --commit  write the gloss->term links [off]
 --root --json
 ```
 
-### tei seam REF
+### tei seam REF [REF ...]
 **Does** records whether an element runs across the gap *before* this page, writing `@part` on both sides.
 **Reads** `tei/` — this page and its predecessor.
 **Writes** `tei/` — two files, under `--commit`.
 **Exit** always 0; exit 2 if the predecessor is not collated.
+**Note** **no `--all`**: `--continues`/`--fresh` is an assertion about *this* seam, and a corpus-wide "everything continues" is not a claim anyone could mean. Several refs each get their own seam, the flag applying to each.
 ```
 --continues  an element carries across: this page opens mid-element   } required,
 --fresh      clean break; clears the claim on both sides              } exclusive
@@ -445,7 +453,9 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 **The prior is leave-one-out and density-selected**, and `prior_note` says the second half in every report. Leave-one-out unconditionally: after `restore` a page's ground truth *is* the adjudicated descendant of its own proposal, so a prior containing the page under test compares a proposal against its own output — the two-witnesses-that-are-one failure in a fourth place. Density-selected: `gt/ocr/`'s pages were chosen for Tier-1 density (median 13 types, range 2–56), so it is a prior about dense pages, not a population estimate.
 
 **A page whose reading degraded to ASCII contributes no tokens and every arm goes silent on it**, which is why `pages[]{ref,source,tokens,types}` carries one row per ref whether or not anything was found. `types: 0` beside a page whose zones promise Tier-1 content is itself the finding.
+**`--all` says less than a batch does**, which is the one place in this CLI where the corpus form is the *weaker* reading. The prior is leave-one-out over `gt/ocr/`, so pooling every proposal in the repo drives the sample towards its own prior and the `ratio` arm goes quiet. It is there for the `rare` and `conflict` arms, which are deterministic and gain from breadth.
 ```
+--all            every review/ page with a proposal
 --decisions      read decision.json instead of proposal.json — the last state
                  before restore writes [off]
 --min-types N    types a scope needs before ratio judges it [data/marks_config.json]
@@ -454,37 +464,43 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --root --json
 ```
 
-### proposal check REF
+### proposal check [REF ...]
 **Does** cross-checks `resolved` against the codepoints `text` actually contains; flags a straight apostrophe, a dot-prone bare suffix, and — via `marks` — a rare form or a word spelled two ways against the store.
 **Reads** `review/PP-NNN/proposal.json`, plus `gt/ocr/` and `data/marks_config.json` for the two corpus arms.
 **Writes** —
-**Exit** 1 on any mismatch.
+**Exit** 1 on any mismatch, on any ref — one dirty page fails the batch, which is the contract a gate must have or a batch would launder a failure.
 **Note** the corpus arms are `proposal marks`'s two **deterministic** ones, run over the single page so a reader catches its own slip before writing its report. `ratio` is deliberately not among them: one page is a poor sample and it is the arm that cannot decide, so folding it into a per-page gate would assert exactly what `marks` refuses to. A repeated form is one issue naming its other lines, not one issue per occurrence — a keyer's single habit is one fault. The prior is leave-one-out here too, so a revision is not checked against its own descendant. Where `data/marks_config.json` is absent (a fresh clone), the arms are skipped and the rest still runs.
 
 **Overlap with the suffix check is wanted, not deduplicated**: a bare `-gɪn` yields both a `bare suffix` and a `rare form` issue on the same line. They reach one defect from different directions — a measured shape and a corpus share — and a second witness this cheap is what the governing principle asks for.
 ```
---path FILE  proposal file [review/PP-NNN/proposal.json]
+--all        every review/ page with a proposal
+--path FILE  proposal file, one ref only [review/PP-NNN/proposal.json]
 --root --json
 ```
 
-### proposal fix REF
+### proposal fix [REF ...]
 **Does** applies the one unambiguous correction — a single mark `resolved` names that `text` lacks, swapped for the single mark `text` has that `resolved` lacks.
 **Reads** the proposal.
 **Writes** the proposal, in place.
 **Exit** always 0.
+**Note** nothing to clobber under `--all`: it repairs only what is already wrong, so a page with nothing to fix is untouched.
 ```
---path FILE  proposal file [review/PP-NNN/proposal.json]
+--all        every review/ page with a proposal
+--path FILE  proposal file, one ref only [review/PP-NNN/proposal.json]
 --root --json
 ```
 
-### proposal codepoints REF LINE
-**Does** names every non-ASCII character in one line's field.
+### proposal codepoints [REF ...]
+**Does** names every non-ASCII character in a line's field, or in every line of the page.
 **Reads** the proposal.
 **Writes** —
 **Exit** always 0.
+**Note** **`LINE` is `--line` here and a positional on `set`/`replace`**, and the split is not arbitrary: a plural ref cannot sit beside a positional index, argparse having no way to tell the index from another ref. This action is the reader of the three, so it is the one that wanted the plural; the two editors are singular anyway, a line index being an identity that belongs to exactly one page. Omitting `--line` names every line, which is the more useful default besides — asking what a proposal actually contains rather than confirming one line at a time.
 ```
+--all        every review/ page with a proposal
+--line LINE  one line's index [every line on the page]
 --field {text,resolved,note}  which field [text]
---path FILE                   proposal file [review/PP-NNN/proposal.json]
+--path FILE                   proposal file, one ref only [review/PP-NNN/proposal.json]
 --root --json
 ```
 
@@ -676,7 +692,7 @@ opinion of which pages are held out.
 **Reads** `scans/`, `gt/fig/`.
 **Writes** `scans/w-figs-blotted/` (derived).
 **Exit** always 0.
-**Note** **`--all` carries no mtime skip and none may be added** — the one place in the CLI where the clobber codicil is deliberately switched off. A figure ALTO corrected after the blot was written leaves a raster that still shows the figure, so an mtime test would report success over exactly the failure it exists to catch. `views check` verifies this farm by *membership* for the same reason, so its `state: ok` may not be read as "up to date". `ocr blot` does have the test, and can: it paints boxes read out of the very ALTO it compares against.
+**Note** **`--all` carries no mtime skip, and the reason is cost rather than impossibility.** Repainting 252 composites takes seconds, so an incremental path would add a way to be wrong for very little. It is worth saying plainly because this repo asserted the stronger claim for a long time — that a figure ALTO corrected after the blot could not be detected — and that was simply false: a corrected ALTO is *newer* than the blot, so a test against both inputs catches it. What no mtime test can see is a **deleted** figure ALTO, absence having no timestamp; that is a membership question, and it is why `views check` verifies this farm by membership and its `state: ok` may not be read as "up to date". `ocr blot` does carry the skip, its inputs being an ALTO it compares against directly.
 ```
 --all     all 832 scans
 --root --json

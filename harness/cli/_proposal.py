@@ -22,7 +22,7 @@ from ..proposal_check import _parse_which, line_codepoints, replace_in_field
 from ..proposal_check import check as check_proposal
 from ..proposal_check import fix as fix_proposal
 from ..proposal_check import set_field as set_proposal_field
-from ._common import REF_HELP, out
+from ._common import REF_HELP, one_page_only, out, out_per_ref, page_refs, refs_arg
 
 PATH_HELP = "proposal file (default review/PP-NNN/proposal.json)"
 FIELD_HELP = ("which field of the line to act on (default text). Applies to "
@@ -47,8 +47,19 @@ def _which(v: str) -> str:
     return v
 
 
-def _target(p, **kw):
-    p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
+def _target(p, all_: str | None = None):
+    """The ref positional and `--path`, which is the pair that needs the guard.
+
+    `--path` names *one* file, so it and a second ref are a usage error rather
+    than a silent choice of which page it meant. The three actions that edit one
+    line (`codepoints`, `set`, `replace`) take a `LINE` positional besides, and
+    two of those are singular for that reason — a line index belongs to one
+    proposal.
+    """
+    if all_:
+        refs_arg(p, all_=all_)
+    else:
+        p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
     p.add_argument("--path", type=Path, default=None, help=PATH_HELP)
     return p
 
@@ -67,19 +78,28 @@ def register(sub, common):
                 "anywhere (never a genuine reading, corpus-wide) and a bare "
                 "suffix matching a known dot-prone shape (keying_spec.md §5.1, "
                 "e.g. -gɪn/-gɪt/-gɪ missing g's dot-below). Exit 1 on any "
-                "mismatch"))
+                "mismatch"), all_="every review/ page with a proposal")
     p.set_defaults(func=run_check)
 
     p = _target(add("fix", help="apply the one unambiguous correction — a single "
                 "mark the resolved field names but the text doesn't contain, "
                 "swapped for the single mark text has that resolved doesn't — "
-                "and write the file back"))
+                "and write the file back"), all_="every review/ page with a proposal")
     p.set_defaults(func=run_fix)
 
-    p = _target(add("codepoints", help="name every non-ASCII character in one "
+    # **`LINE` moves to `--line` here and only here.** It cannot stay a positional
+    # beside a plural ref — argparse would take the index for another ref — and
+    # this action is a reader, so it is the one of the three that wants the plural.
+    # Omitted, it names every line, which is the more useful default anyway: a
+    # census of what a proposal actually contains. `set` and `replace` keep their
+    # positional LINE, being singular, and a line index is an identity rather than
+    # a position, so it belongs to exactly one page either way.
+    p = _target(add("codepoints", help="name every non-ASCII character in a "
                 "line's field, instead of running the resolved/text check — a "
-                "spot check while authoring, before resolved is even written"))
-    p.add_argument("line", metavar="LINE", help="the line's index")
+                "spot check while authoring, before resolved is even written"),
+                all_="every review/ page with a proposal")
+    p.add_argument("--line", metavar="LINE", default=None,
+                   help="one line's index; omit for every line on the page")
     p.add_argument("--field", default="text", choices=("text", "resolved", "note"),
                    help=FIELD_HELP)
     p.set_defaults(func=run_codepoints)
@@ -121,9 +141,11 @@ def register(sub, common):
             "holding against the corpus, and one job adrift reads differently "
             "from every job leaning the same way — the second is the prompt or "
             "the spec. Always exits 0")
-    p.add_argument("ref", metavar="PP-NNN", nargs="+",
-                   help=REF_HELP + ". Pass several: they are reported "
-                        "individually and pooled as scope=ALL")
+    refs_arg(p, all_="every review/ page with a proposal",
+             extra=": they are reported individually and pooled as scope=ALL. "
+                   "**--all says less than a batch does** — the prior is "
+                   "leave-one-out over gt/ocr/, so pooling every proposal drives "
+                   "the sample towards its own prior and the ratio arm goes quiet")
     p.add_argument("--decisions", action="store_true",
                    help="read decision.json instead of proposal.json — the last "
                         "state before restore writes; the pair of runs brackets "
@@ -137,23 +159,42 @@ def register(sub, common):
     p.set_defaults(func=run_marks)
 
 
-def _path(a) -> Path:
-    return a.path or proposal_path(a.ref, a.root)
+def _path(a, ref: str | None = None) -> Path:
+    return a.path or proposal_path(ref or a.ref, a.root)
+
+
+def _proposals(a) -> list[str]:
+    """The pages this invocation names, or every one holding a proposal.
+
+    `--path` names one file, so it and a second ref are a usage error. `review/`
+    is authored working state rather than a farm or a store, so an empty answer
+    is a true statement — nothing has been proposed — and not an unbuilt tree.
+    """
+    refs = page_refs(a)
+    one_page_only(a, {"path": "--path"}, refs)
+    if refs:
+        return refs
+    from ..context import norm_ref
+    return [norm_ref(d.name) for d in sorted((a.root / "review").glob("*"))
+            if proposal_path(d.name, a.root).exists()]
 
 
 def run_check(a) -> int:
-    mismatches = check_proposal(_path(a), a.ref, a.root)
-    out(a, mismatches)
-    return 1 if mismatches else 0
+    pairs = [(r, check_proposal(_path(a, r), r, a.root)) for r in _proposals(a)]
+    # Exit is the worst across refs: one dirty page fails the batch, which is the
+    # contract a gate has to have or a batch would launder a failure.
+    out_per_ref(a, pairs)
+    return 1 if any(m for _, m in pairs) else 0
 
 
 def run_fix(a) -> int:
-    out(a, fix_proposal(_path(a)))
+    out_per_ref(a, [(r, fix_proposal(_path(a, r))) for r in _proposals(a)])
     return 0
 
 
 def run_codepoints(a) -> int:
-    out(a, line_codepoints(_path(a), a.line, a.field))
+    out_per_ref(a, [(r, line_codepoints(_path(a, r), a.line, a.field))
+                    for r in _proposals(a)])
     return 0
 
 

@@ -17,7 +17,7 @@ from ..ids import pair_glosses
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
 from ..validate import check_corpus_header, validate
-from ._common import REF_HELP, out
+from ._common import REF_HELP, out, out_report_per_ref, page_refs, refs_arg
 
 
 def register(sub, common):
@@ -31,15 +31,20 @@ def register(sub, common):
             "pass, on stdout — seam state, ToC neighbourhood, figure zones and "
             "their captions, OCR line ids, detector flags. Deterministic and "
             "precomputed: the pass consumes this and never re-derives it")
+    # **Singular, and one of only four in the CLI.** The payload is one page's
+    # collation prompt, built to be handed to one model for one page; a merged
+    # stream of them is not consumable by the thing it exists for.
     p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
     p.set_defaults(func=run_context)
 
-    p = add("validate", help="the gate on one page's TEI. Exit 1 on FAIL. Checks "
+    p = add("validate", help="the gate on a page's TEI. Exit 1 on FAIL. Checks "
             "the output contract, that every @facs resolves against a supplied "
             "zone or OCR line, and that every Tier-1 span carries a @resp rank — "
             "an unmarked span being indistinguishable from a ratified one to "
             "anything that does not look")
-    p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
+    refs_arg(p, all_="every collated page in tei/",
+             extra=", each rendered as its own report under a `# REF` line — "
+                   "prose does not pool, so this is the one action that does not")
     p.add_argument("--ratified", action="store_true",
                    help="expect human-ratified provenance (resp='#ed') on Tier-1 "
                         "spans instead of the collation pass's '#llm'; a "
@@ -51,7 +56,9 @@ def register(sub, common):
             "open. expected_folio is null wherever the chain of transcribed "
             "pages breaks, which means read it off the image, not that anything "
             "failed")
-    p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
+    # No `--all`: `tei ledger` *is* the corpus form of this, and a second
+    # spelling of one report is how two answers to one question start to drift.
+    refs_arg(p)
     p.set_defaults(func=run_state)
 
     p = add("ids", help="check one page's structural ids against the scheme "
@@ -59,7 +66,7 @@ def register(sub, common):
             "position among same-kind elements in document order — so every id "
             "is recomputable from the tree alone. --commit renumbers, repairing "
             "any inbound @prev/@next from a neighbour in the same write")
-    p.add_argument("ref", metavar="PP-NNN", help="page ref, e.g. 1-100")
+    refs_arg(p, all_="every collated page in tei/")
     p.add_argument("--commit", action="store_true",
                    help="write the canonical ids (and neighbours' pointers); "
                         "without it, report what would change")
@@ -69,7 +76,7 @@ def register(sub, common):
             "decides — one of each in a container. Where it does not (two pairs "
             "in one item), report and write nothing: choosing would be "
             "inference. --commit to write")
-    p.add_argument("ref", metavar="PP-NNN", help="page ref, e.g. 1-100")
+    refs_arg(p, all_="every collated page in tei/")
     p.add_argument("--commit", action="store_true",
                    help="write the gloss->term links; without it, report what "
                         "would change")
@@ -80,8 +87,10 @@ def register(sub, common):
             "the previous page's last. The page after the gap writes both ends, "
             "because it is the only one holding both witnesses. Preview unless "
             "--commit")
-    p.add_argument("ref", metavar="PP-NNN",
-                   help="the page AFTER the gap, e.g. 1-100 for the 1-099/1-100 seam")
+    # No `--all`: `--continues`/`--fresh` is an assertion about *this* seam, and a
+    # corpus-wide "everything continues" is not a claim anyone could mean.
+    refs_arg(p, extra=" — each the page AFTER its gap, e.g. 1-100 for the "
+                      "1-099/1-100 seam")
     mx = p.add_mutually_exclusive_group(required=True)
     mx.add_argument("--continues", dest="open_gap", action="store_true",
                     help="an element carries across: this page opens mid-element")
@@ -128,10 +137,28 @@ def _render_gate(a, rep) -> int:
     return 0 if rep.ok else 1
 
 
+def _collated(root: Path) -> list[str]:
+    """Every ref with a committed TEI page. `corpus-header.xml` drops out of its
+    own accord — its stem is not a ref, and `_refs_under` skips what will not
+    parse. A store rather than a farm, so an empty `tei/` answers empty."""
+    from ..context import all_refs
+    return all_refs(root, "tei")
+
+
 def run_validate(a) -> int:
-    ctx = build_context(a.ref, a.root)
-    return _render_gate(a, validate(Path(ctx["output_path"]), ctx,
-                                    ratified=a.ratified))
+    # **The one action that does not pool**, because its payload is a rendered
+    # report and prose does not tabulate. N reports, `# REF` separated — the shape
+    # `ocr review` used to have and gave up once its payload turned out to be
+    # records after all. Exit is the worst across refs.
+    refs = page_refs(a) or _collated(a.root)
+    worst = 0
+    for r in refs:
+        if len(refs) > 1:
+            print(f"# {r}")
+        ctx = build_context(r, a.root)
+        worst = max(worst, _render_gate(a, validate(Path(ctx["output_path"]), ctx,
+                                                    ratified=a.ratified)))
+    return worst
 
 
 def run_header(a) -> int:
@@ -139,22 +166,40 @@ def run_header(a) -> int:
 
 
 def run_state(a) -> int:
-    out(a, entry_state(a.ref, a.root))
+    out_report_per_ref(a, [(r, entry_state(r, a.root)) for r in page_refs(a)])
+    return 0
+
+
+def _write_all(a, fn) -> int:
+    """`ids` and `pair`: the same shape, and the same up-front rule as `restore`.
+
+    With more than one ref and `--commit`, every page is previewed first — both
+    report what they would change without writing — so a page that cannot be
+    repaired does not arrive with earlier pages already rewritten.
+    """
+    refs = page_refs(a) or _collated(a.root)
+    if a.commit and len(refs) > 1:
+        for r in refs:
+            fn(r, a.root, commit=False)
+    out_report_per_ref(a, [(r, fn(r, a.root, commit=a.commit)) for r in refs])
     return 0
 
 
 def run_ids(a) -> int:
-    out(a, fix_ids(a.ref, a.root, commit=a.commit))
-    return 0
+    return _write_all(a, fix_ids)
 
 
 def run_pair(a) -> int:
-    out(a, pair_glosses(a.ref, a.root, commit=a.commit))
-    return 0
+    return _write_all(a, pair_glosses)
 
 
 def run_seam(a) -> int:
-    out(a, set_seam(a.ref, a.open_gap, a.root, commit=a.commit))
+    refs = page_refs(a)
+    if a.commit and len(refs) > 1:
+        for r in refs:
+            set_seam(r, a.open_gap, a.root, commit=False)
+    out_report_per_ref(a, [(r, set_seam(r, a.open_gap, a.root, commit=a.commit))
+                           for r in refs])
     return 0
 
 

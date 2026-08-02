@@ -135,6 +135,35 @@ def one_page_only(a, flags: dict[str, str], refs: list[str]) -> None:
                              f"not {len(refs)}")
 
 
+def out_report_per_ref(a, pairs) -> None:
+    """A per-page *report* — a dict with list fields — for one ref or many.
+
+    One ref prints the report exactly as the single-ref form always did, list
+    fields and all. Several cannot: a list inside a pooled record degrades the
+    whole table (see `out_per_ref`), so the row carries each list's **length** and
+    every non-empty list becomes its own ref-keyed table under a `# field` line.
+
+    A count is not a summary standing in for the detail — the detail follows,
+    keyed by ref, so nothing is lost and the row stays scannable. Three reports
+    have this shape (`ocr restore`, `zones check`, `tei state`) and wrote it out
+    separately before; a fourth would have made it four.
+    """
+    if len(pairs) == 1 and not getattr(a, "all", False):
+        out(a, pairs[0][1])
+        return
+    if not pairs:
+        out(a, [])
+        return
+    listy = [k for k, v in pairs[0][1].items() if isinstance(v, list)]
+    out_per_ref(a, [(r, {k: (len(v) if k in listy else v) for k, v in rep.items()})
+                    for r, rep in pairs])
+    for key in listy:
+        found = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
+        if found:
+            print(f"# {key}")
+            out_per_ref(a, found)
+
+
 def out_per_ref(a, pairs) -> None:
     """Emit one payload per ref: as-is for one, pooled with a `ref` column for N.
 

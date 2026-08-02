@@ -62,18 +62,21 @@ class Farm:
                  is decided by the stores, so it is exactly checkable.
         select   a symlink farm over one tree, membership from a criterion. Also
                  exactly checkable.
-        raster   painted pixels. Membership is checkable; **freshness is not** —
-                 see `verified` below.
+        raster   painted pixels. Membership is checkable; freshness is not
+                 checked here — see `verified` below.
         source   no builder in this repo at all.
         scratch  reported, never rebuilt here.
 
-    `verified` is the honesty column. `zones.blot_all`'s docstring refuses an mtime
-    freshness test as unsound: a figure ALTO corrected after the blot was written
-    leaves a raster that still shows the figure, and the check would report success
-    over it. So for `scans/w-figs-blotted/` membership is knowable and content is
-    not, and the row must say `membership` rather than let `state: ok` imply more
-    than was tested — the same reason `gt/zones/_ink_cache.json` reports `?` instead
-    of blank.
+    `verified` is the honesty column: it says how deep the comparison went, so that
+    `state: ok` is never read as more than was tested. For `scans/w-figs-blotted/`
+    it says `membership`, and the reason wants stating carefully because it was
+    stated wrongly here for a long time. It is **not** that content freshness is
+    unknowable: `zones.blot_all`'s docstring now records that an mtime test against
+    both inputs would in fact catch a figure ALTO corrected after the blot. It is
+    that this check declines to open pixel data at all, and that the one case mtime
+    genuinely cannot see — a *deleted* figure ALTO, absence having no timestamp — is
+    a membership question anyway. Same discipline as `gt/zones/_ink_cache.json`
+    reporting `?` rather than blank: a verdict must not out-run its evidence.
 
     `reads` is what the *builder* must open, as against what its links merely point
     at, and the two differ in the case that matters. The blot builder reads pixels
@@ -386,10 +389,14 @@ def survey(root: Path = Path(".")) -> list[dict]:
     not existing; `stale` is membership disagreeing with the criterion, or a link
     pointing nowhere; `ok` is neither. What `ok` deliberately does **not** mean is
     "up to date" — the `verified` column says how deep the comparison went, and for
-    the painted raster it says `membership`, because content freshness there is not
-    merely unchecked but *uncheckable* (`zones.blot_all` refuses an mtime test as
-    unsound, and it is right to). A verdict that let a membership check imply a
+    the painted raster it says `membership`, because nothing here opens pixel data
+    or the timestamps behind it. A verdict that let a membership check imply a
     content check would be the fluent nonsense this project is organised against.
+
+    That column used to be justified by calling the painted raster's freshness
+    *uncheckable*, which was wrong — see `zones.blot_all`. It is unchecked here,
+    which is a statement about this verb and not about the world, and `membership`
+    is the honest word for it either way.
     """
     rows = []
     for farm in FARMS:

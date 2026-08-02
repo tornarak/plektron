@@ -204,19 +204,29 @@ def replace_in_field(path: Path, line: str, field: str, old: str, new: str,
             "replaced": len(selected)}
 
 
-def line_codepoints(path: Path, line: str, field: str = "text") -> list[dict]:
-    """Non-ASCII characters in one line's field, named — a typed-mark spot check.
+def line_codepoints(path: Path, line: str | None = None,
+                    field: str = "text") -> list[dict]:
+    """Non-ASCII characters in a line's field, named — a typed-mark spot check.
 
     Not a substitute for `check()`/`resolved`: this names what is actually in
     the text (e.g. "U+0131 LATIN SMALL LETTER DOTLESS I" where U+026A ɪ was
     intended), it does not know what was *meant*. Use it to settle a doubt
     about one line while authoring, before `resolved` is even written.
+
+    `line` omitted means every line on the page, each row carrying its own
+    `line`. That is the census the action's plural form needs, and the more
+    useful default besides — asking what a proposal actually contains rather
+    than confirming one line at a time.
     """
     data = json.loads(path.read_text(encoding="utf-8"))
-    rec = data.get("lines", {}).get(line)
-    if rec is None:
-        raise KeyError(f"no line {line!r} in {path}")
-    return non_ascii(rec.get(field, ""))
+    lines = data.get("lines", {})
+    if line is not None:
+        rec = lines.get(line)
+        if rec is None:
+            raise KeyError(f"no line {line!r} in {path}")
+        return [{"line": line, **r} for r in non_ascii(rec.get(field, ""))]
+    return [{"line": k, **r} for k, rec in lines.items()
+            for r in non_ascii(rec.get(field, ""))]
 
 
 def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[dict]:

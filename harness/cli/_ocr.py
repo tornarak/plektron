@@ -58,7 +58,15 @@ from ..review import (
     serve,
     summary,
 )
-from ._common import REF_HELP, one_page_only, out, out_per_ref, page_refs, refs_arg
+from ._common import (
+    REF_HELP,
+    one_page_only,
+    out,
+    out_per_ref,
+    out_report_per_ref,
+    page_refs,
+    refs_arg,
+)
 
 # **A closed set of the two real stores, and the view is not a value in it** —
 # `zones check --store` exactly, and for its reason: a free path is how a check ends
@@ -572,26 +580,18 @@ def run_restore(a) -> int:
                 continue
         pairs.append((r, restore(r, _alto_dir(a), a.root,
                                  a.force or sweep, a.commit)))
-    # `edits`, `geometry_drift`, `text_mismatch` and `notes` are lists, and a list
-    # in a pooled row degrades the whole table (see `out_per_ref`). One ref still
-    # gets the report exactly as it always looked; a batch gets a row of counts
-    # per page and then each list as its own ref-keyed table, which is also the
-    # more useful shape — the whole batch's corrections in one place.
+    # One ref keeps the two-document shape it always had — the report, then the
+    # edits — because `edits` was already emitted separately here. Several go
+    # through the general split: counts in the row, each list its own ref-keyed
+    # table, which for `edits` is the more useful shape anyway, being the whole
+    # batch's corrections in one place.
     if len(pairs) == 1 and not sweep:
         rep = pairs[0][1]
         out(a, {k: v for k, v in rep.items() if k != "edits"})
         if rep.get("edits"):
             out(a, rep["edits"])
     else:
-        listy = [k for k, v in (pairs[0][1].items() if pairs else ())
-                 if isinstance(v, list)]
-        out_per_ref(a, [(r, {k: (len(v) if k in listy else v)
-                             for k, v in rep.items()}) for r, rep in pairs])
-        for key in listy:
-            rows = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
-            if rows:
-                print(f"# {key}")
-                out_per_ref(a, rows)
+        out_report_per_ref(a, pairs)
     if skipped:
         out(a, skipped)
     return 0
