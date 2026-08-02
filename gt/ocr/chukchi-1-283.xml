@@ -1,0 +1,358 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-283.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cpu; input: scans-fig-blotted/chukchi-1-283.png; regions_from: zones/chukchi-1-283.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cpu</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-283_r1" HPOS="373" VPOS="621" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="373 621 2151 621 2151 711 373 711"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l1" HPOS="942" VPOS="634" WIDTH="623" HEIGHT="54" BASELINE="944 666 1565 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="944 666 942 684 1561 688 1565 671 1563 636 963 634 944 666"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l2" HPOS="2044" VPOS="645" WIDTH="95" HEIGHT="47" BASELINE="2044 675 2139 675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2130 647 2109 645 2044 645 2044 675 2044 692 2139 692 2139 675 2139 647 2130 647"/>
+                        </Shape>
+                        <String CONTENT="223"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-283_r2" HPOS="373" VPOS="736" WIDTH="1778" HEIGHT="188" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="373 736 2151 736 2151 924 373 924"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l3" HPOS="476" VPOS="744" WIDTH="1665" HEIGHT="59" BASELINE="478 777 2141 781" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="478 777 476 792 493 803 495 803 498 803 500 803 2139 798 2141 781 2139 749 478 744 478 777"/>
+                        </Shape>
+                        <String CONTENT="Scissors used throughout northeastern Asia are of a peculiar pattern,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l4" HPOS="368" VPOS="796" WIDTH="1771" HEIGHT="61" BASELINE="370 842 2139 837" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 842 370 857 2137 857 2139 837 2135 807 1253 796 1251 796 1249 796 1210 807 686 798 684 798 368 809 370 842"/>
+                        </Shape>
+                        <String CONTENT="common to the Amur tribes, and originating in China, as may be seen by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l5" HPOS="370" VPOS="866" WIDTH="1769" HEIGHT="51" BASELINE="370 900 2139 900" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 900 370 917 2139 917 2139 900 2139 878 1606 866 1487 878 1392 866 1370 878 1318 866 1292 878 1253 866 1162 878 1108 866 1091 878 1000 878 942 866 905 878 706 878 625 866 571 878 539 866 519 878 370 878 370 900"/>
+                        </Shape>
+                        <String CONTENT="comparing Fig. 151, c, with specimens in the Chinese collections of this Museum."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-283_r3" HPOS="373" VPOS="924" WIDTH="1778" HEIGHT="296" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="373 924 2151 924 2151 1220 373 1220"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l6" HPOS="482" VPOS="922" WIDTH="1657" HEIGHT="58" BASELINE="482 961 2139 961" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 961 482 974 2137 980 2139 961 2139 928 482 922 482 961"/>
+                        </Shape>
+                        <String CONTENT="Tailoring-boards of various sizes, and rather long and narrow in shape,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l7" HPOS="365" VPOS="985" WIDTH="1776" HEIGHT="52" BASELINE="368 1019 2141 1013" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1019 368 1037 2139 1030 2141 1013 2135 985 365 989 368 1019"/>
+                        </Shape>
+                        <String CONTENT="are used. The smaller among them are also employed to cut tobacco-leaves"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l8" HPOS="368" VPOS="1039" WIDTH="1773" HEIGHT="58" BASELINE="370 1082 2141 1073" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 1082 370 1097 2139 1091 2141 1073 2137 1045 816 1039 814 1039 812 1039 809 1039 796 1050 437 1041 435 1041 368 1052 370 1082"/>
+                        </Shape>
+                        <String CONTENT="and wood-fibre on, in preparing a convenient mixture for smoking. They are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l9" HPOS="368" VPOS="1093" WIDTH="1773" HEIGHT="65" BASELINE="370 1140 2141 1134" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 1140 370 1158 2139 1151 2141 1134 2137 1106 1994 1093 1992 1093 1990 1093 1944 1104 1923 1093 1920 1093 1918 1093 1784 1104 1752 1093 1749 1093 1747 1093 1693 1104 1656 1093 1654 1093 1652 1093 1650 1093 1648 1093 1630 1104 1606 1093 1604 1093 1602 1093 1539 1106 1500 1095 1498 1095 1496 1095 1494 1095 1463 1106 1370 1095 1368 1095 1277 1106 1100 1095 1097 1095 1095 1095 1074 1106 1020 1095 1017 1095 952 1108 567 1097 565 1097 459 1108 402 1097 400 1097 398 1097 368 1108 370 1140"/>
+                        </Shape>
+                        <String CONTENT="almost always plain among the Chukchee, while those belonging to the Lamut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l10" HPOS="370" VPOS="1156" WIDTH="1377" HEIGHT="58" BASELINE="370 1199 1747 1199" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 1199 370 1214 1747 1214 1747 1199 1747 1169 1580 1156 1578 1156 1576 1156 1574 1156 1557 1166 1533 1156 1531 1156 1528 1156 1526 1156 1524 1156 1524 1158 1513 1169 1321 1169 1264 1156 1262 1156 1260 1156 1219 1166 1193 1156 1191 1156 1188 1156 1048 1166 1011 1156 1009 1156 1007 1156 944 1166 898 1156 896 1156 894 1156 749 1166 688 1156 686 1156 632 1166 621 1158 621 1156 619 1156 617 1156 543 1156 541 1156 539 1156 493 1166 469 1156 467 1156 465 1156 463 1156 461 1156 448 1169 370 1169 370 1199"/>
+                        </Shape>
+                        <String CONTENT="or the Yukaghir are often decorated with engraved designs."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-283_r4" HPOS="373" VPOS="1220" WIDTH="1778" HEIGHT="300" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="373 1220 2151 1220 2151 1520 373 1520"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l11" HPOS="476" VPOS="1212" WIDTH="1663" HEIGHT="65" BASELINE="478 1262 2139 1253" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="478 1262 478 1277 2137 1270 2139 1253 2135 1223 1723 1212 1721 1212 1719 1212 1693 1223 1392 1214 1390 1214 887 1227 493 1218 491 1218 489 1218 487 1218 476 1225 478 1262"/>
+                        </Shape>
+                        <String CONTENT="Only iron needles are used at present. In sewing hard leather, especially"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l12" HPOS="370" VPOS="1273" WIDTH="1769" HEIGHT="64" BASELINE="372 1322 2139 1314" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 1322 372 1337 2137 1331 2139 1314 2135 1283 1704 1273 1702 1273 1700 1273 1697 1273 1684 1283 389 1279 387 1279 385 1279 383 1279 370 1286 372 1322"/>
+                        </Shape>
+                        <String CONTENT="the soles of boots, needles with three edges are preferred, because they pierce"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l13" HPOS="370" VPOS="1333" WIDTH="1771" HEIGHT="67" BASELINE="372 1381 2141 1374" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 1381 372 1396 2124 1400 2126 1400 2128 1400 2130 1400 2141 1389 2141 1374 2137 1346 1970 1333 1968 1333 1966 1333 1938 1346 1719 1346 1671 1333 1669 1333 1667 1333 1596 1344 1552 1333 1550 1333 1548 1333 1546 1333 1507 1346 965 1335 963 1335 961 1335 959 1335 942 1348 877 1337 874 1337 628 1348 469 1337 467 1337 465 1337 463 1337 450 1348 391 1337 389 1337 387 1337 385 1337 370 1346 372 1381"/>
+                        </Shape>
+                        <String CONTENT="the leather more easily. When short of these needles, the women soften the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l14" HPOS="368" VPOS="1396" WIDTH="1771" HEIGHT="74" BASELINE="370 1441 2139 1433" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 1441 370 1470 485 1454 677 1454 766 1470 768 1470 770 1470 812 1452 1152 1467 1154 1467 1156 1467 1158 1467 1178 1452 1236 1461 1238 1461 1240 1461 1279 1450 1489 1461 1492 1461 1591 1450 1693 1461 1695 1461 1697 1461 1730 1448 1780 1459 1782 1459 1894 1448 1910 1459 1912 1459 1914 1459 2011 1461 2014 1461 2016 1461 2018 1461 2033 1450 2118 1461 2120 1461 2122 1461 2124 1461 2139 1448 2139 1433 2135 1405 1253 1396 1251 1396 807 1409 404 1400 402 1400 400 1400 368 1411 370 1441"/>
+                        </Shape>
+                        <String CONTENT="steel of the large round needles, and then hammer them with a stone into"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l15" HPOS="372" VPOS="1465" WIDTH="444" HEIGHT="52" BASELINE="374 1496 816 1500" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="374 1496 372 1513 812 1517 816 1500 814 1470 374 1465 374 1496"/>
+                        </Shape>
+                        <String CONTENT="the required shape."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-283_r5" HPOS="373" VPOS="1520" WIDTH="1778" HEIGHT="894" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="373 1520 2151 1520 2151 2414 373 2414"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l16" HPOS="482" VPOS="1511" WIDTH="1657" HEIGHT="67" BASELINE="485 1556 2139 1560" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 1556 482 1569 2135 1578 2139 1560 2139 1526 2113 1513 2111 1513 2109 1513 2107 1513 2074 1524 1966 1513 1782 1513 1780 1513 1777 1513 1775 1513 1762 1524 1736 1513 1734 1513 1732 1513 1541 1524 1518 1513 1515 1513 1513 1513 1511 1513 1487 1524 1446 1513 1444 1513 1442 1513 1440 1513 1416 1524 1390 1513 1388 1513 1386 1513 1383 1513 1340 1524 1312 1511 1310 1511 1308 1511 1305 1511 1303 1511 1288 1521 1269 1511 1266 1511 1264 1511 1262 1511 1234 1521 1154 1511 1152 1511 1063 1521 957 1511 955 1511 952 1511 926 1521 916 1511 913 1511 911 1511 909 1511 907 1511 881 1521 812 1511 809 1511 807 1511 805 1511 790 1521 485 1519 485 1556"/>
+                        </Shape>
+                        <String CONTENT="Thread is made of sinew of the reindeer’s back, which is dried (Fig. 152),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l17" HPOS="838" VPOS="1571" WIDTH="892" HEIGHT="65" BASELINE="840 1619 1730 1612" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="840 1619 840 1636 1728 1630 1730 1612 1726 1584 1609 1584 1589 1571 1587 1571 1585 1571 1583 1571 1580 1571 1578 1571 1578 1573 1567 1584 1347 1584 1323 1573 1321 1573 1318 1573 1258 1584 1199 1573 1197 1573 1195 1573 1162 1584 1136 1573 1134 1573 1132 1573 1130 1573 1128 1573 1128 1576 1117 1584 1084 1576 1082 1576 1080 1576 991 1586 857 1576 855 1576 853 1576 851 1576 838 1584 840 1619"/>
+                        </Shape>
+                        <String CONTENT="then pounded with a hammer, and sepa-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l18" HPOS="838" VPOS="1632" WIDTH="892" HEIGHT="67" BASELINE="840 1677 1730 1673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="840 1677 840 1688 1282 1699 1284 1699 1357 1688 1730 1688 1730 1673 1726 1645 1392 1632 1390 1632 1327 1643 1284 1632 1282 1632 1279 1632 1277 1632 1275 1632 1256 1643 1247 1636 1247 1634 1245 1634 1243 1634 1240 1634 1238 1634 1212 1645 1162 1634 1160 1634 976 1645 944 1634 942 1634 939 1634 838 1647 840 1677"/>
+                        </Shape>
+                        <String CONTENT="rated or combed into thin shreds not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l19" HPOS="842" VPOS="1688" WIDTH="879" HEIGHT="72" BASELINE="844 1734 1721 1742" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 1734 842 1751 851 1757 853 1757 855 1757 857 1757 1009 1749 1067 1760 1069 1760 1719 1753 1721 1742 1721 1708 1702 1695 1700 1695 1697 1695 1695 1695 1574 1708 1500 1693 1498 1693 1496 1693 1466 1708 1362 1708 1349 1695 1349 1693 1347 1693 1344 1693 1342 1693 1171 1703 1158 1693 1158 1690 1156 1690 1154 1690 1152 1690 1080 1703 1043 1688 1041 1688 1039 1688 1037 1688 1011 1701 911 1688 909 1688 844 1699 844 1734"/>
+                        </Shape>
+                        <String CONTENT="unlike the fibres of hemp (Fig. 153)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l20" HPOS="842" VPOS="1764" WIDTH="884" HEIGHT="48" BASELINE="844 1796 1726 1792" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 1796 844 1812 1723 1812 1726 1792 1721 1764 842 1764 844 1796"/>
+                        </Shape>
+                        <String CONTENT="The shreds can be easily twisted to a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l21" HPOS="842" VPOS="1822" WIDTH="886" HEIGHT="52" BASELINE="844 1857 1728 1853" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 1857 844 1874 1726 1870 1728 1853 1721 1822 842 1825 844 1857"/>
+                        </Shape>
+                        <String CONTENT="neat strong thread of any length desired."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l22" HPOS="842" VPOS="1872" WIDTH="886" HEIGHT="59" BASELINE="844 1916 1728 1911" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 1916 844 1931 1726 1931 1728 1911 1723 1883 1284 1872 1282 1872 1279 1872 1277 1872 1262 1883 857 1874 855 1874 853 1874 851 1874 842 1881 844 1916"/>
+                        </Shape>
+                        <String CONTENT="One end of the thread is tied in a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l23" HPOS="842" VPOS="1935" WIDTH="888" HEIGHT="54" BASELINE="844 1976 1730 1972" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 1976 844 1989 1728 1985 1730 1972 1726 1944 851 1935 848 1935 846 1935 844 1935 844 1937 842 1937 844 1976"/>
+                        </Shape>
+                        <String CONTENT="knot, and the other worked out very"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l24" HPOS="840" VPOS="1991" WIDTH="890" HEIGHT="70" BASELINE="842 2035 1730 2030" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="842 2035 842 2050 1243 2061 1245 2061 1247 2061 1249 2061 1249 2058 1260 2050 1550 2058 1552 2058 1554 2058 1578 2048 1617 2058 1619 2058 1622 2058 1624 2058 1626 2058 1643 2048 1710 2058 1713 2058 1715 2058 1717 2058 1730 2045 1730 2030 1726 2002 1284 1991 1282 1991 1279 1991 1277 1991 1262 2002 855 1993 853 1993 851 1993 848 1993 840 1998 842 2035"/>
+                        </Shape>
+                        <String CONTENT="fine for inserting into the eye of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l25" HPOS="844" VPOS="2054" WIDTH="886" HEIGHT="65" BASELINE="844 2095 1730 2095" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 2095 844 2106 868 2119 870 2119 872 2119 1009 2108 1084 2119 1087 2119 1167 2108 1635 2119 1637 2119 1639 2119 1671 2108 1708 2119 1710 2119 1713 2119 1715 2119 1717 2119 1730 2108 1730 2095 1730 2065 1697 2054 1695 2054 1693 2054 1691 2054 1667 2065 1643 2054 1641 2054 1639 2054 1561 2065 1286 2054 1284 2054 1134 2065 1071 2054 1069 2054 991 2065 937 2054 935 2054 844 2065 844 2095"/>
+                        </Shape>
+                        <String CONTENT="needle. The needle is threaded in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l26" HPOS="842" VPOS="2110" WIDTH="886" HEIGHT="63" BASELINE="842 2156 1728 2156" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="842 2156 842 2169 1726 2173 1728 2156 1728 2126 1652 2126 1630 2110 1628 2110 1626 2110 1624 2110 1552 2123 1511 2110 1509 2110 1507 2110 1505 2110 1502 2110 1483 2123 1463 2110 1461 2110 1459 2110 1457 2110 1455 2110 1405 2126 1325 2126 1312 2113 1312 2110 1310 2110 1308 2110 1305 2110 1230 2123 1145 2110 1143 2110 1141 2110 1091 2123 1074 2110 1071 2110 1069 2110 1067 2110 1065 2110 1063 2110 1041 2123 948 2110 855 2110 853 2110 851 2110 848 2110 848 2113 842 2119 842 2156"/>
+                        </Shape>
+                        <String CONTENT="Eskimo fashion with a kind of loop,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l27" HPOS="842" VPOS="2184" WIDTH="890" HEIGHT="48" BASELINE="842 2214 1732 2214" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="842 2214 842 2232 1732 2232 1732 2214 1732 2184 842 2184 842 2214"/>
+                        </Shape>
+                        <String CONTENT="the thin end of the thread being pulled"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l28" HPOS="842" VPOS="2247" WIDTH="888" HEIGHT="45" BASELINE="842 2277 1730 2277" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="842 2277 842 2292 1730 2292 1730 2277 1730 2247 842 2247 842 2277"/>
+                        </Shape>
+                        <String CONTENT="through the eye only a short distance,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l29" HPOS="840" VPOS="2297" WIDTH="892" HEIGHT="62" BASELINE="842 2338 1732 2331" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="842 2338 842 2349 1303 2359 1305 2359 1308 2359 1338 2349 1403 2359 1405 2359 1407 2359 1433 2346 1442 2355 1442 2357 1444 2357 1446 2357 1448 2357 1559 2346 1719 2357 1721 2357 1723 2357 1726 2357 1726 2355 1728 2355 1732 2349 1732 2331 1728 2303 909 2297 907 2297 840 2307 842 2338"/>
+                        </Shape>
+                        <String CONTENT="and twisted around the main thread"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l30" HPOS="842" VPOS="2351" WIDTH="255" HEIGHT="75" BASELINE="844 2403 1097 2398" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 2403 844 2416 857 2426 859 2426 861 2426 864 2426 866 2426 868 2426 890 2413 935 2426 937 2426 939 2426 942 2426 972 2411 1011 2424 1013 2424 1015 2426 1076 2426 1076 2424 1078 2424 1080 2424 1097 2411 1097 2398 1095 2364 1071 2351 1069 2351 1067 2351 1065 2351 1063 2351 1061 2351 1041 2366 965 2366 857 2353 855 2353 853 2353 851 2353 851 2355 848 2355 842 2362 844 2403"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 154)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-283_r6" HPOS="373" VPOS="2414" WIDTH="1778" HEIGHT="184" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="373 2414 2151 2414 2151 2598 373 2598"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l31" HPOS="952" VPOS="2420" WIDTH="778" HEIGHT="52" BASELINE="952 2455 1730 2455" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="952 2455 952 2470 1728 2472 1730 2455 1730 2424 952 2420 952 2455"/>
+                        </Shape>
+                        <String CONTENT="The women usually sew by pulling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l32" HPOS="840" VPOS="2472" WIDTH="890" HEIGHT="58" BASELINE="842 2513 1730 2509" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="842 2513 842 2530 1728 2526 1730 2509 1726 2483 1299 2472 1297 2472 1295 2472 1292 2472 1277 2483 857 2474 855 2474 853 2474 851 2474 840 2481 842 2513"/>
+                        </Shape>
+                        <String CONTENT="the thread towards them, and make an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l33" HPOS="842" VPOS="2539" WIDTH="355" HEIGHT="50" BASELINE="844 2569 1197 2574" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 2569 842 2585 1193 2589 1197 2574 1195 2543 844 2539 844 2569"/>
+                        </Shape>
+                        <String CONTENT="overcast seam."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-283_r7" HPOS="373" VPOS="2598" WIDTH="1778" HEIGHT="358" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="373 2598 2151 2598 2151 2956 373 2956"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l34" HPOS="952" VPOS="2600" WIDTH="780" HEIGHT="58" BASELINE="955 2634 1732 2628" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="955 2634 955 2649 1470 2658 1472 2658 1632 2647 1713 2656 1715 2656 1717 2656 1719 2656 1732 2645 1732 2628 1728 2600 952 2600 955 2634"/>
+                        </Shape>
+                        <String CONTENT="The thimbles used at present are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l35" HPOS="840" VPOS="2649" WIDTH="883" HEIGHT="68" BASELINE="842 2693 1723 2697" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="842 2693 840 2708 851 2717 853 2717 855 2717 857 2717 1721 2708 1723 2697 1723 2665 1682 2652 1680 2652 1678 2652 1606 2662 1522 2652 1520 2652 1444 2662 1390 2652 1388 2652 1386 2652 1362 2662 1143 2652 1141 2652 991 2660 981 2652 981 2649 978 2649 976 2649 974 2649 842 2658 842 2693"/>
+                        </Shape>
+                        <String CONTENT="for the most part made of iron (Fig."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l36" HPOS="851" VPOS="2708" WIDTH="877" HEIGHT="67" BASELINE="853 2762 1728 2751" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="853 2762 853 2775 1726 2766 1728 2751 1723 2721 1632 2708 1630 2708 1628 2708 1626 2708 1613 2721 1474 2721 1448 2710 1446 2710 1444 2710 1442 2710 1416 2721 1377 2710 1375 2710 1373 2710 1370 2710 1342 2723 1282 2712 1279 2712 1169 2725 1132 2714 1130 2714 1128 2714 1041 2725 1030 2717 1030 2714 1028 2714 1026 2714 1024 2714 1022 2714 974 2727 864 2717 861 2717 859 2717 857 2717 857 2719 855 2719 851 2721 853 2762"/>
+                        </Shape>
+                        <String CONTENT="155, a¹), and are bought from traders."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l37" HPOS="846" VPOS="2777" WIDTH="886" HEIGHT="52" BASELINE="848 2810 1732 2814" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="848 2810 846 2825 1728 2829 1732 2814 1730 2784 848 2777 848 2810"/>
+                        </Shape>
+                        <String CONTENT="They are of the plainest kind, and are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l38" HPOS="844" VPOS="2838" WIDTH="892" HEIGHT="60" BASELINE="844 2872 1736 2872" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="844 2872 844 2888 866 2898 868 2898 870 2898 970 2888 1275 2898 1277 2898 1279 2898 1282 2898 1282 2896 1292 2888 1392 2898 1394 2898 1736 2885 1736 2872 1734 2838 844 2842 844 2872"/>
+                        </Shape>
+                        <String CONTENT="open at the ends. Ivory thimbles of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l39" HPOS="372" VPOS="2890" WIDTH="1358" HEIGHT="63" BASELINE="374 2935 1730 2931" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="372 2916 374 2935 374 2950 1726 2953 1730 2931 1728 2903 1693 2890 1691 2890 1689 2890 1687 2890 1641 2901 1546 2890 1544 2890 1492 2901 1468 2890 1466 2890 1463 2890 1368 2901 1355 2890 1353 2890 1351 2890 1208 2890 1206 2890 1149 2901 1126 2890 1123 2890 1121 2890 1119 2890 1117 2890 1102 2901 1028 2892 1026 2892 1024 2892 1022 2892 1022 2894 1011 2903 983 2892 981 2892 978 2892 976 2892 950 2905 766 2905 693 2892 690 2892 428 2903 398 2892 396 2892 394 2892 391 2892 389 2892 385 2892 372 2916"/>
+                        </Shape>
+                        <String CONTENT="the same pattern are made by the Chukchee, the Koryak,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-283_r8" HPOS="373" VPOS="3124" WIDTH="1778" HEIGHT="141" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="373 3124 2151 3124 2151 3265 373 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-283_l40" HPOS="370" VPOS="3124" WIDTH="1773" HEIGHT="75" BASELINE="372 3171 2143 3167" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2130 3134 1496 3124 1494 3124 1414 3134 1390 3124 1388 3124 1386 3124 1323 3134 1292 3124 1290 3124 1288 3124 1286 3124 1251 3137 1212 3126 1210 3126 1208 3126 1206 3126 1160 3137 1117 3126 1115 3126 1113 3126 1110 3126 1108 3126 1089 3139 939 3139 859 3126 857 3126 855 3126 853 3126 840 3137 827 3126 825 3126 822 3126 706 3126 703 3126 645 3137 582 3126 580 3126 578 3126 552 3137 502 3126 500 3126 498 3126 495 3126 478 3137 448 3126 446 3126 443 3126 370 3139 372 3171 372 3189 1217 3199 1219 3199 1221 3199 1258 3189 1994 3197 1996 3197 2143 3184 2143 3167 2141 3160 2130 3134"/>
+                        </Shape>
+                        <String CONTENT="and the Kamchadal (Fig. 155, b, d¹). Leather thimbles in similar shapes are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-283_l41" HPOS="372" VPOS="3184" WIDTH="561" HEIGHT="78" BASELINE="374 3228 933 3234" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="374 3228 372 3247 378 3253 378 3256 381 3256 383 3256 385 3256 489 3247 599 3247 610 3258 610 3260 612 3260 615 3260 617 3260 744 3249 770 3262 773 3262 775 3262 848 3251 905 3262 907 3262 909 3262 931 3249 933 3234 933 3202 913 3189 911 3189 909 3189 907 3189 905 3189 861 3202 712 3202 680 3186 677 3186 623 3186 621 3186 619 3186 617 3186 617 3189 606 3197 589 3186 586 3186 584 3186 582 3186 437 3197 415 3184 413 3184 411 3184 409 3184 407 3184 374 3195 374 3228"/>
+                        </Shape>
+                        <String CONTENT="also used (Fig. 155, c¹)."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
