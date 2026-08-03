@@ -46,9 +46,15 @@ saying why: `ocr crops`, `ocr sheets`, `ocr zoom`, `zones delete`, `tei state`,
 `tei seam`. **`--all` does not clobber prior work without `--force`** — `ocr
 predict` and `zones predict` skip what a store already holds, `ocr restore`
 skips a page whose ground truth is newer than its decision, `ocr blot` a page
-whose blot is newer than its ALTO. `zones blot` deliberately has no such test:
-freshness there is *uncheckable*, so an mtime comparison would report success
-over the one failure it exists to catch.
+whose blot is newer than its ALTO. `zones blot` deliberately has no such test,
+but **not because freshness there is uncheckable** — that claim was wrong and
+stood in five other places before being corrected; this was the sixth. A figure
+ALTO corrected after a blot is *newer* than the painted raster, so a test against
+both inputs (`scans/` and `gt/fig/`) would catch exactly that case. What no mtime
+test can see is a **deleted** ALTO — a page whose zones were withdrawn should go
+back to being a link, and the stale painted PNG is still newer than the scan,
+absence having no timestamp. That is a membership question, not a freshness one.
+It repaints unconditionally because 252 composites cost seconds.
 
 **Report by default; `--commit` writes.** It is the only write-enable, and it
 gates exactly the authored stores: `gt/`, `tei/`, `models/`, and the split and

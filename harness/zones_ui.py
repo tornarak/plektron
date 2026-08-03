@@ -38,6 +38,7 @@ Three decisions worth naming because their opposites are the obvious choice:
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from . import zones as zn
@@ -2127,6 +2128,16 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
 
     srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     url = f"http://127.0.0.1:{port}/?ref={start}"
+    # **Line-buffered, exactly as `review.serve` is**, and this was the asymmetry
+    # between them: both are normally started in the background with stdout
+    # redirected, where Python block-buffers, so the URL — the one line the caller
+    # is waiting for — sat in an 8 KB buffer until the process exited. A server
+    # that has not printed its address is indistinguishable from one that failed
+    # to start, and this one never exits on its own.
+    try:
+        sys.stdout.reconfigure(line_buffering=True)
+    except (AttributeError, ValueError):  # not a real stream (captured in tests)
+        pass
     print(f"zones {start} -> {url}   (Done button on the page, or ctrl-c)")
     if itinerary:
         done = sum(1 for r in itinerary if zn.has_zones(r, root))

@@ -1037,12 +1037,35 @@ Six conventions hold across every group, and the reference states them once:
 Old spellings do not fail obscurely: the CLI traps every retired verb and flag
 cluster before parsing and prints the new spelling.
 
-Output is **TOON**, not JSON — a tabular encoding that collapses uniform record
-lists to a header row plus data rows (the ledger went 127 KB → 34 KB, the page
-context 8.0 KB → 3.6 KB). `--json` on any verb restores indented JSON for
-anything that needs to parse the output as a contract. Anything emitting a list
-of records keeps one fixed key set across them, because a ragged list silently
-degrades to the verbose nested form.
+Output is **TOON down a pipe and an aligned table at a terminal** — the default
+is `sys.stdout.isatty()` and nothing else, so a model piping the output keeps
+getting TOON byte-for-byte while a human gets columns and neither has to say
+which. TOON is the tabular encoding that collapses uniform record lists to a
+header row plus data rows (the ledger went 127 KB → 34 KB, the page context
+8.0 KB → 3.6 KB); anything emitting a list of records keeps one fixed key set
+across them, because a ragged list silently degrades to the verbose nested form —
+and the table falls back to TOON on exactly the payloads that would. `--toon`
+forces it at a terminal, which is how a human reproduces what a skill's model
+saw. **A rendered table never truncates**: the console is built at the table's
+own measured width and anything wider goes to `$PAGER` (`less -SRFX`, chopping
+rather than wrapping) — a `…` inside a page ref or a Tier-1 form would be a value
+that reads as a value and is not. The layer is `harness/render.py`; `emit.py`
+stays the serializer and does not know what a terminal is.
+
+`--json` gives indented JSON and is **exactly one document per invocation**. It
+was not: an action printing several tables emitted several documents on one
+stream, `tei validate` interleaving `# 1-100` comment lines between them, and
+**15 of 58 measured invocations were not `json.load`-able** — on the one flag
+whose purpose is being parseable. Several sections now become one object keyed by
+section, the first taking the action's own name. The key set follows which
+sections had content, so consumers should use `.get()`.
+
+**Long sweeps draw a progress bar on stderr** naming the page they are on. It
+appears only when stderr is a terminal and only after ~0.5 s of work, so a short
+or redirected run is byte-identical to one with no bar — which is what keeps the
+`--jobs 1` control arm meaningful. `parallel.pmap` reports completions through a
+`tick(item, done, total)` the caller supplies, called from the *calling* thread
+via `as_completed`; it never learns what a terminal is.
 
 Every action that names a page takes `PP-NNN` refs and rejects a bare integer,
 `tei state` included. Every ref is parsed before any work is done, so a typo in
