@@ -46,15 +46,8 @@ saying why: `ocr crops`, `ocr sheets`, `ocr zoom`, `zones delete`, `tei state`,
 `tei seam`. **`--all` does not clobber prior work without `--force`** — `ocr
 predict` and `zones predict` skip what a store already holds, `ocr restore`
 skips a page whose ground truth is newer than its decision, `ocr blot` a page
-whose blot is newer than its ALTO. `zones blot` deliberately has no such test,
-but **not because freshness there is uncheckable** — that claim was wrong and
-stood in five other places before being corrected; this was the sixth. A figure
-ALTO corrected after a blot is *newer* than the painted raster, so a test against
-both inputs (`scans/` and `gt/fig/`) would catch exactly that case. What no mtime
-test can see is a **deleted** ALTO — a page whose zones were withdrawn should go
-back to being a link, and the stale painted PNG is still newer than the scan,
-absence having no timestamp. That is a membership question, not a freshness one.
-It repaints unconditionally because 252 composites cost seconds.
+whose blot is newer than its ALTO. `zones blot` repaints unconditionally: skip
+policy there waits on the dependency graph, which is a sprint of its own.
 
 **Report by default; `--commit` writes.** It is the only write-enable, and it
 gates exactly the authored stores: `gt/`, `tei/`, `models/`, and the split and
@@ -753,7 +746,7 @@ opinion of which pages are held out.
 **Reads** `scans/`, `gt/fig/`.
 **Writes** `scans/w-figs-blotted/` (derived).
 **Exit** always 0.
-**Note** **`--all` carries no mtime skip, and the reason is cost rather than impossibility.** Repainting 252 composites takes seconds, so an incremental path would add a way to be wrong for very little. It is worth saying plainly because this repo asserted the stronger claim for a long time — that a figure ALTO corrected after the blot could not be detected — and that was simply false: a corrected ALTO is *newer* than the blot, so a test against both inputs catches it. What no mtime test can see is a **deleted** figure ALTO, absence having no timestamp; that is a membership question, and it is why `views check` verifies this farm by membership and its `state: ok` may not be read as "up to date". `ocr blot` does carry the skip, its inputs being an ALTO it compares against directly.
+**Note** **`--all` carries no mtime skip, because skip policy here is undecided** — it belongs with the dependency graph, a sprint of its own that has not run. Not because a stale blot is undetectable: a corrected figure ALTO is *newer* than the blot, so a test against both inputs would catch it. What no mtime test can see is a **deleted** figure ALTO, absence having no timestamp; that is a membership question, and it is why `views check` verifies this farm by membership and its `state: ok` may not be read as "up to date". `ocr blot` does carry a skip, its inputs being an ALTO it compares against directly.
 ```
 --all     all 832 scans
 --jobs N  worker threads for the pages that paint; 1 runs serially and builds no pool [cores, capped]

@@ -1639,9 +1639,12 @@ def blot_all(root: Path = Path("."), jobs: int | None = None, tick=None) -> dict
     question rather than a content one, and it is why `views check` verifies this
     farm by membership.
 
-    So the real reason to repaint everything is that repainting 252 composites
-    costs seconds, and an incremental path would add a way to be wrong for very
-    little. Named refs repaint unconditionally too, for the same reason.
+    So repainting everything is not a ruling that an incremental path is a bad
+    idea. **Skip policy here is undecided**, and deliberately so: it belongs with
+    the dependency graph — every derived artifact naming its inputs, so any verb
+    can skip correctly — which is a sprint of its own and has not run. Until it
+    does, unconditional is the honest default rather than a design. Named refs
+    repaint unconditionally too, for the same reason.
 
     **The work is partitioned before it is spread, because it is two jobs sharing a
     verb.** 580 of the 832 pages have no figure and are a `relink` — a syscall,

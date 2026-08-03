@@ -963,9 +963,17 @@ be blind, the scan never changing; that is an argument for naming the right inpu
 What no mtime test can see is a **deleted** figure ALTO — a page whose zones were
 withdrawn should go back to being a link, and the stale painted PNG is still newer
 than the scan, absence having no timestamp. That is a membership question, not a
-content one. So `zones blot` repaints unconditionally because 252 composites cost
-seconds, not because freshness is unknowable, and `membership` remains the honest
-word for what `views check` actually did.
+content one. So `zones blot` repaints unconditionally **because skip policy here is
+undecided** — it belongs with the dependency graph, which is a sprint of its own and
+has not run — and not because freshness is unknowable. `membership` remains the
+honest word for what `views check` actually did.
+
+Worth naming, because this entry has now been wrong twice in the same shape: the
+first version said freshness was *uncheckable*, and the correction replaced it with
+*cost* — "252 composites take seconds, an incremental path would add a way to be
+wrong for very little". That reads as a design decision taken, where the truth is a
+decision deferred. A confident reason standing in for an open question is the same
+failure as a confident reading standing in for an unread glyph.
 
 The fourth state `?`
 means no verdict was available at all (`scans/`, `train/`), and does not gate; nor

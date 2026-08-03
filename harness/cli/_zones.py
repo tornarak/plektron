@@ -251,11 +251,10 @@ def register(sub, common):
             "Distinct from `ocr blot`, which paints lines and figures in "
             "conspicuous colours for a human to read; this one has to look like "
             "blank paper. The declared box is painted and not a pixel more")
-    # **No mtime skip under `--all`, and the reason is cost, not impossibility.**
-    # Repainting 252 composites takes seconds. This repo asserted the stronger
-    # claim for a long time — that a corrected figure ALTO could not be detected —
-    # and it was false; see `zones.blot_all`, which now records what an mtime test
-    # can and cannot see.
+    # **No mtime skip under `--all`, because skip policy here is undecided** — it
+    # waits on the dependency graph, which is its own sprint. Not because a stale
+    # blot is undetectable: `zones.blot_all` records what an mtime test can and
+    # cannot see, and a corrected figure ALTO is one of the things it can.
     refs_arg(p, all_="all 832 scans")
     add_jobs(p)
     p.set_defaults(func=run_blot)

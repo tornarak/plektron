@@ -488,11 +488,9 @@ def run_blot(a) -> int:
     # **Named pages are always repainted; only a sweep skips.** The mtime test is
     # cheap and honest here: this paints boxes read out of the ALTO, so an ALTO
     # newer than the blot is exactly the change that matters. `zones blot` skips
-    # nothing, and the reason is cost rather than impossibility — repainting 252
-    # composites takes seconds — not, as this comment claimed until now, that a
-    # figure ALTO corrected after the blot leaves a staleness nothing can see. It
-    # does not: a corrected ALTO is *newer*. What no mtime test sees is a
-    # **deleted** one, absence having no timestamp. See `zones.blot_all`.
+    # nothing, because skip policy there is undecided and waits on the dependency
+    # graph — not because a stale blot is undetectable. See `zones.blot_all` for
+    # what an mtime test there can and cannot see.
     def _stale(r: str) -> bool:
         if not (getattr(a, "all", False) and not a.force):
             return True
