@@ -235,6 +235,7 @@ require `--commit`.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds
+--jobs N    worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json
 ```
 
@@ -309,6 +310,7 @@ require `--commit`.
 --all       every page the store read holds
 --force     repaint pages whose blot is newer than their ALTO [off — only --all skips]
 --out PATH  output directory [scans/w-blotted/ — corpus-level, unlike the other image actions]
+--jobs N    worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json
 ```
 
@@ -558,6 +560,7 @@ opinion of which pages are held out.
 --itinerary LST  scope the sweep to a work-list [whole store]
 --ink            SWEEP ONLY: read every raster for ink no zone accounts for [off; always on for named pages]
 --lines          SINGLE PAGE ONLY: every zone's lines of type [off; costs a second raster decode]
+--jobs N         worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json
 ```
 
@@ -677,6 +680,7 @@ opinion of which pages are held out.
 ```
 --all            every keyed page
 --itinerary LST  scope to a work-list [whole corpus]
+--jobs N         worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json
 ```
 
@@ -697,6 +701,7 @@ opinion of which pages are held out.
 **Note** **`--all` carries no mtime skip, and the reason is cost rather than impossibility.** Repainting 252 composites takes seconds, so an incremental path would add a way to be wrong for very little. It is worth saying plainly because this repo asserted the stronger claim for a long time — that a figure ALTO corrected after the blot could not be detected — and that was simply false: a corrected ALTO is *newer* than the blot, so a test against both inputs catches it. What no mtime test can see is a **deleted** figure ALTO, absence having no timestamp; that is a membership question, and it is why `views check` verifies this farm by membership and its `state: ok` may not be read as "up to date". `ocr blot` does carry the skip, its inputs being an ALTO it compares against directly.
 ```
 --all     all 832 scans
+--jobs N  worker threads for the pages that paint; 1 runs serially and builds no pool [cores, capped]
 --root --json
 ```
 

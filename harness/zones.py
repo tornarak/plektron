@@ -58,6 +58,7 @@ if TYPE_CHECKING:
     from kraken.lib.vgsl import TorchVGSLModel
 from .context import norm_ref, parse_ref
 from .figures import read_blocks
+from .parallel import pmap
 
 ZONEDIR = "gt/zones"
 # Aliased from `farms.py`, which is the one declaration of every derived path. The
@@ -1486,7 +1487,8 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
 def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                     ink: bool = False, refs: list[str] | None = None,
-                    store: str = ZONEDIR) -> tuple[dict, list[dict]]:
+                    store: str = ZONEDIR,
+                    jobs: int | None = None) -> tuple[dict, list[dict]]:
     """Every keyed page, one flat record each, plus a summary.
 
     Two returns rather than one nested object because TOON collapses a uniform
@@ -1523,14 +1525,25 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
     # one page under one key with nothing to tell them apart — a verdict about work
     # nobody has done, drawn in the same column as one about work someone has. A
     # machine page's ink is measured fresh when asked for, and recorded nowhere.
+    # **The page is measured in the pool; everything is folded out of it.** Under
+    # `--ink` this is a raster decode per page and nothing else, which is what the
+    # concurrency is for; the counters, the label census and the cache write stay
+    # in one thread and in ref order, so the report is identical whatever `jobs`
+    # says. `read_zones` is asked here rather than in the fold for the same reason
+    # — it opens the same file `validate_page` just read.
+    def _measure(ref: str):
+        return (ref,
+                validate_page(ref, root, cfg, ink=ink, store=store),
+                read_zones(ref, root, store=store))
+
     verdicts: list[tuple[str, dict]] = []
-    for ref in (refs if refs is not None else zone_refs(root, store)):
-        r = validate_page(ref, root, cfg, ink=ink, store=store)
+    todo = list(refs if refs is not None else zone_refs(root, store))
+    for ref, r, zs in pmap(_measure, todo, jobs):
         if ink and store == ZONEDIR:
             verdicts.append((ref, r))
         n_err += len(r["errors"])
         n_warn += len(r["warnings"])
-        for z in read_zones(ref, root, store=store):
+        for z in zs:
             labels[z["label"]] = labels.get(z["label"], 0) + 1
         rows.append({
             "ref": ref, "split": r["split"] or "", "zones": r["zones"],
@@ -1597,7 +1610,7 @@ def blot_one(ref: str, root: Path = Path(".")) -> dict:
             "painted": rep["painted"]}
 
 
-def blot_all(root: Path = Path(".")) -> dict:
+def blot_all(root: Path = Path("."), jobs: int | None = None) -> dict:
     """Rebuild the whole blotted corpus.
 
     **Unconditional because it is cheap, not because freshness is unknowable** —
@@ -1618,17 +1631,28 @@ def blot_all(root: Path = Path(".")) -> dict:
     So the real reason to repaint everything is that repainting 252 composites
     costs seconds, and an incremental path would add a way to be wrong for very
     little. Named refs repaint unconditionally too, for the same reason.
+
+    **The work is partitioned before it is spread, because it is two jobs sharing a
+    verb.** 580 of the 832 pages have no figure and are a `relink` — a syscall,
+    microseconds, and pure filesystem churn that a thread pool would only add
+    contention to. The other 252 decode a PNG, paint it and encode it again, which
+    is the part worth spreading. So the links run first and in one thread, and only
+    the rasters are handed to `pmap`. Which page is which is `blot_one`'s own answer
+    (`gt/fig/` present or not), asked once here rather than reimplemented.
     """
     from .context import all_scans
-    painted = linked = missing = 0
-    for ref in all_scans(root):
-        r = blot_one(ref, root)
-        if r["action"] == "painted":
-            painted += 1
-        elif r["action"] == "linked":
-            linked += 1
-        else:
-            missing += 1
+    refs = all_scans(root)
+    figs = root / "gt" / "fig"
+    has_fig = {r: (figs / f"chukchi-{r}.xml").exists() for r in refs}
+    links = [r for r in refs if not has_fig[r]]
+    rasters = [r for r in refs if has_fig[r]]
+
+    results = [blot_one(r, root) for r in links]
+    results += pmap(lambda r: blot_one(r, root), rasters, jobs)
+
+    painted = sum(1 for r in results if r["action"] == "painted")
+    linked = sum(1 for r in results if r["action"] == "linked")
+    missing = sum(1 for r in results if r["action"] not in ("painted", "linked"))
     return {"dir": str(blot_dir(root)), "painted": painted, "linked": linked,
             "no_raster": missing, "total": painted + linked}
 
@@ -2572,7 +2596,8 @@ def _same_label_runs(zones: list[dict]) -> list[list[dict]]:
 
 def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
                     refs: list[str] | None = None,
-                    store: str = ZONEDIR) -> tuple[dict, list[dict]]:
+                    store: str = ZONEDIR,
+                    jobs: int | None = None) -> tuple[dict, list[dict]]:
     """How well the indent rule finds paragraph boundaries, and where it does not.
 
     Both directions in one pass, because quoting either alone has already caused
@@ -2620,21 +2645,27 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
     # of both. That would read an indented paragraph opening as flush. If merging is
     # happening, it shows up as a population at roughly twice the median height.
     line_heights: list[int] = []
-    for ref in (refs if refs is not None else zone_refs(root, store)):
+    # **One page's measurement, returning its own tallies rather than adding to
+    # anyone's.** This is the body of the old loop unchanged; what moved is that it
+    # no longer touches the enclosing counters, so it can run in the pool while the
+    # fold below stays single-threaded and in ref order. The page costs a raster
+    # decode, which is the whole reason for the pool.
+    def _one(ref: str) -> dict | None:
         if splits.get(ref) == "exempt":
-            continue
+            return None
         zones = read_zones(ref, root, store=store)
         if not zones:
-            continue
+            return None
         try:
             ink = _para_ink(ref, root)
         except FileNotFoundError:
-            continue
-        pages += 1
+            return None
         figs = _figure_rects(ref, root)
         tol = int(cfg.get("min_zone_h_px", 30))
         by_zone = _page_lines(zones, ink, figs, min_h, min_w)
-        line_heights.extend(ln[1] - ln[0] for v in by_zone.values() for ln in v)
+        acc: dict = {
+            "heights": [ln[1] - ln[0] for v in by_zone.values() for ln in v],
+            "internal": 0, "fired": 0, "asserted": 0, "recovered": 0, "rows": []}
 
         zi = 0
         for run in _same_label_runs(zones):
@@ -2647,20 +2678,20 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
 
             starts = paragraph_starts(ref, root, cfg, zones=[merged], ink=ink)
             mlines = _page_lines([merged], ink, figs, min_h, min_w)[0]
-            internal += max(0, len(mlines) - 1)
+            acc["internal"] += max(0, len(mlines) - 1)
             got_zones = split_at_paragraphs([merged], ref, root, cfg, ink)
             got = [z["y0"] for z in got_zones[1:]]      # what survives consolidation
-            fired += len(got)
+            acc["fired"] += len(got)
             detail = {s["y"]: s for s in starts}
 
             used = set()
             for w in want:
-                asserted += 1
+                acc["asserted"] += 1
                 hit = next((g for g in got
                             if g not in used and abs(g - w) <= tol), None)
                 if hit is not None:
                     used.add(hit)
-                    recovered += 1
+                    acc["recovered"] += 1
                 else:
                     # The **detected line** at that boundary, not the fired ones.
                     # Consulting only `starts` conflated "no line there" with "a
@@ -2669,22 +2700,37 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
                     # therefore reported -1, which read as a line-detection failure.
                     # `1-056` is the counter-example: indent 36 against a 40 floor.
                     ln = next((c for c in mlines if abs(c[0] - w) <= tol), None)
-                    rows.append({"kind": "false_negative", "ref": ref, "zone": first,
-                                 "label": run[0]["label"],
-                                 "index": want.index(w) + 2, "y": w,
-                                 "indent": ln[2] if ln else -1,
-                                 "width": (ln[3] - ln[2]) if ln else -1,
-                                 "h": (ln[1] - ln[0]) if ln else -1})
+                    acc["rows"].append(
+                        {"kind": "false_negative", "ref": ref, "zone": first,
+                         "label": run[0]["label"],
+                         "index": want.index(w) + 2, "y": w,
+                         "indent": ln[2] if ln else -1,
+                         "width": (ln[3] - ln[2]) if ln else -1,
+                         "h": (ln[1] - ln[0]) if ln else -1})
             for g in got:
                 if g in used:
                     continue
                 d = detail.get(g, {})
-                rows.append({"kind": "false_positive", "ref": ref, "zone": first,
-                             "label": run[0]["label"],
-                             "index": d.get("index", -1), "y": g,
-                             "indent": d.get("indent", -1),
-                             "width": d.get("width", -1),
-                             "h": d.get("h", -1)})
+                acc["rows"].append(
+                    {"kind": "false_positive", "ref": ref, "zone": first,
+                     "label": run[0]["label"],
+                     "index": d.get("index", -1), "y": g,
+                     "indent": d.get("indent", -1),
+                     "width": d.get("width", -1),
+                     "h": d.get("h", -1)})
+        return acc
+
+    todo = list(refs if refs is not None else zone_refs(root, store))
+    for acc in pmap(_one, todo, jobs):
+        if acc is None:            # exempt, unkeyed, or no raster — not a page read
+            continue
+        pages += 1
+        line_heights.extend(acc["heights"])
+        internal += acc["internal"]
+        fired += acc["fired"]
+        asserted += acc["asserted"]
+        recovered += acc["recovered"]
+        rows.extend(acc["rows"])
 
     fn = [r for r in rows if r["kind"] == "false_negative"]
     return ({"pages_read": pages,

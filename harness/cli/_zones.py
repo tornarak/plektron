@@ -25,7 +25,14 @@ from __future__ import annotations
 
 import sys
 
-from ._common import one_page_only, out, out_per_ref, page_refs, refs_arg
+from ._common import (
+    add_jobs,
+    one_page_only,
+    out,
+    out_per_ref,
+    page_refs,
+    refs_arg,
+)
 
 ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file in gt/seg's "
              "format, or a directory taken to mean every page file in it (so "
@@ -69,6 +76,7 @@ def register(sub, common):
                    "because a page that breaks them is the interesting page "
                    "rather than the rejected one"))
     refs_arg(p, all_="every page the store holds")
+    add_jobs(p)
     p.add_argument("--itinerary", metavar="LST", default=None,
                    help=f"scope the sweep to a work-list. {ITIN_HELP}")
     p.add_argument("--ink", action="store_true",
@@ -223,6 +231,7 @@ def register(sub, common):
             "all: two abutting MainZone-P rectangles rasterize to one target. "
             "Measurement — exit 0")
     refs_arg(p, all_="every keyed page")
+    add_jobs(p)
     p.add_argument("--itinerary", metavar="LST", default=None, help=ITIN_HELP)
     p.set_defaults(func=run_paragraphs)
 
@@ -243,6 +252,7 @@ def register(sub, common):
     # and it was false; see `zones.blot_all`, which now records what an mtime test
     # can and cannot see.
     refs_arg(p, all_="all 832 scans")
+    add_jobs(p)
     p.set_defaults(func=run_blot)
 
 
@@ -283,7 +293,8 @@ def run_check(a) -> int:
         bad = any(rep["errors"] for _, rep in reps)
         return 1 if (bad and store == zmod.ZONEDIR) else 0
     summary, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink,
-                                         refs=_itin(a, zmod), store=store)
+                                         refs=_itin(a, zmod), store=store,
+                                         jobs=a.jobs)
     out(a, summary)
     if rows:
         out(a, rows)
@@ -425,7 +436,8 @@ def run_diff(a) -> int:
 def run_paragraphs(a) -> int:
     zmod, load_config = _mod()
     scope = page_refs(a) or _itin(a, zmod)
-    summary, rows = zmod.paragraph_audit(a.root, load_config(a.root), refs=scope)
+    summary, rows = zmod.paragraph_audit(a.root, load_config(a.root), refs=scope,
+                                         jobs=a.jobs)
     out(a, summary)
     if rows:
         out(a, rows)
@@ -443,7 +455,10 @@ def run_blot(a) -> int:
     refs = page_refs(a)
     # No mtime skip under `--all`, deliberately — see the registration.
     if refs:
-        out_per_ref(a, [(r, zmod.blot_one(r, a.root)) for r in refs])
+        from ..parallel import pmap
+        out_per_ref(a, list(zip(
+            refs, pmap(lambda r: zmod.blot_one(r, a.root), refs, a.jobs),
+            strict=True)))
     else:
-        out(a, zmod.blot_all(a.root))
+        out(a, zmod.blot_all(a.root, jobs=a.jobs))
     return 0

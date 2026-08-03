@@ -60,6 +60,7 @@ from ..review import (
 )
 from ._common import (
     REF_HELP,
+    add_jobs,
     one_page_only,
     out,
     out_per_ref,
@@ -152,6 +153,7 @@ def register(sub, common):
               "to look, not a verdict"),
               all_="every page the store read holds — the corpus dropped-line "
                    "sweep, at a raster read per page"))
+    add_jobs(p)
     p.set_defaults(func=run_gaps)
 
     p = _store(_one_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
@@ -242,6 +244,7 @@ def register(sub, common):
                    help="output directory (default scans/w-blotted/ — a "
                         "corpus-level destination, unlike the other image "
                         "actions, because the blotted page is not review material)")
+    add_jobs(p)
     p.set_defaults(func=run_blot)
 
     # **The one action with a store default, and `mz` is it.** The bare diff needs
@@ -389,8 +392,11 @@ def run_lines(a) -> int:
 
 
 def run_gaps(a) -> int:
-    out_per_ref(a, [(r, line_gaps(r, _alto_dir(a), a.root))
-                    for r in _store_refs(a)])
+    from ..parallel import pmap
+    refs = _store_refs(a)
+    out_per_ref(a, list(zip(
+        refs, pmap(lambda r: line_gaps(r, _alto_dir(a), a.root), refs, a.jobs),
+        strict=True)))
     return 0
 
 
@@ -461,23 +467,33 @@ def run_zoom(a) -> int:
 def run_blot(a) -> int:
     refs = _store_refs(a)
     one_page_only(a, {"out": "--out"}, refs)
+    from ..parallel import pmap
+
     dest = a.out or (a.root / "scans" / "w-blotted")
-    pairs, skipped = [], []
-    for r in refs:
-        # Named pages are always repainted; only a sweep skips. The test is
-        # honest here in a way `zones blot`'s cannot be — this paints boxes read
-        # out of the ALTO, so an ALTO newer than the blot is exactly the change
-        # that matters, where a figure ALTO corrected after a `zones blot` leaves
-        # a raster whose staleness nothing can see.
-        if getattr(a, "all", False) and not a.force:
-            src = alto_for_lines(r, _alto_dir(a), a.root)
-            painted = dest / f"chukchi-{r}.png"
-            if painted.exists() and src.exists() and \
-                    painted.stat().st_mtime >= src.stat().st_mtime:
-                skipped.append(r)
-                continue
-        pairs.append((r, write_blot(r, dest, _alto_dir(a), a.root)))
-    out_per_ref(a, pairs)
+
+    # **Named pages are always repainted; only a sweep skips.** The mtime test is
+    # cheap and honest here: this paints boxes read out of the ALTO, so an ALTO
+    # newer than the blot is exactly the change that matters. `zones blot` skips
+    # nothing, and the reason is cost rather than impossibility — repainting 252
+    # composites takes seconds — not, as this comment claimed until now, that a
+    # figure ALTO corrected after the blot leaves a staleness nothing can see. It
+    # does not: a corrected ALTO is *newer*. What no mtime test sees is a
+    # **deleted** one, absence having no timestamp. See `zones.blot_all`.
+    def _stale(r: str) -> bool:
+        if not (getattr(a, "all", False) and not a.force):
+            return True
+        src = alto_for_lines(r, _alto_dir(a), a.root)
+        painted = dest / f"chukchi-{r}.png"
+        return not (painted.exists() and src.exists()
+                    and painted.stat().st_mtime >= src.stat().st_mtime)
+
+    todo = [r for r in refs if _stale(r)]
+    skipped = [r for r in refs if r not in set(todo)]
+    # The skip is decided first, so the pool gets only pages that will be painted
+    # — every one of them a decode, a paint and an encode.
+    out_per_ref(a, list(zip(
+        todo, pmap(lambda r: write_blot(r, dest, _alto_dir(a), a.root),
+                   todo, a.jobs), strict=True)))
     if skipped:
         out(a, {"skipped_fresh": len(skipped), "refs": " ".join(skipped)})
     return 0

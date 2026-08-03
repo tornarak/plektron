@@ -66,6 +66,26 @@ def add_all(p, what: str):
     return p
 
 
+JOBS_HELP = ("worker threads for the per-page raster work; 1 runs serially and "
+             "builds no pool [cores, capped]")
+
+
+def add_jobs(p):
+    """`--jobs N`, on the actions whose per-page cost is a raster decode.
+
+    **Declared per-action rather than on the globals parser**, because a flag that
+    is accepted where it does nothing is a wrong combination argparse should be
+    rejecting, and it is dead surface in the VERBS.md gate besides — the same
+    argument that retired `MainZone-Quote` from the store's label set.
+
+    `--jobs 1` is the control arm, not a debug switch: the claim these verbs rest
+    on is that concurrency moves wall clock and nothing else, and saying so means
+    running both sides and diffing the output.
+    """
+    p.add_argument("--jobs", type=int, default=None, metavar="N", help=JOBS_HELP)
+    return p
+
+
 def refs_arg(p, *, all_: str | None = None, extra: str = ""):
     """The `PP-NNN [PP-NNN ...]` positional, plus `--all` where there is a corpus form.
 
