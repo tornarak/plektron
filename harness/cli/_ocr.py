@@ -29,7 +29,6 @@ import sys
 from pathlib import Path
 
 from ..context import all_refs, norm_ref
-from ..emit import emit
 from ..lines import (
     DEFAULT_ALTO_DIR,
     LINE_SHEET_H,
@@ -668,13 +667,19 @@ def run_predict(a) -> int:
     rep = predict_all(a.root, refs, a.seg_model, a.rec_model, a.device, a.force,
                       named=bool(named), jobs=a.jobs)
     pages, skips = rep.pop("pages"), rep.pop("skips")
-    print(emit(rep, getattr(a, "json", False)))
+    out(a, rep)
     # Three tables, three key sets. Emitting them as one list would collapse the
     # whole thing to the verbose nested form (see emit.py).
+    #
+    # **Through `out()` rather than `emit()` directly**, which is what these three
+    # used to do. It made no difference while `out` was a one-line wrapper and made
+    # this the one action in the CLI that a re-routed print boundary would miss —
+    # in the longest-running verb there is, where a silent divergence would take
+    # the longest to notice.
     if pages:
-        print(emit(pages, getattr(a, "json", False)))
+        out(a, pages)
     if skips:
-        print(emit(skips, getattr(a, "json", False)))
+        out(a, skips)
     return 0
 
 

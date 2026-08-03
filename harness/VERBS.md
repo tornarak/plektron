@@ -79,11 +79,24 @@ write. `--commit` writes. An action name reused across groups means the same
 kind of act: `ocr blot` and `zones blot` both paint a page's raster, and the
 group carries which recipe.
 
+**Three output modes, and the default is whether stdout is a terminal.** Down a
+pipe it is **TOON** — the compact tabular encoding, and what every example in
+this file and in the skills shows. At a **terminal** it is an aligned table,
+with columns of numbers right-justified, section rules between a verb's several
+tables, and nothing ever truncated: the console is built at the table's own
+natural width and output too wide for the screen goes to the pager rather than
+losing a character. **`--toon` forces TOON at a terminal**, which is how a human
+reproduces exactly what a skill's model saw. `--json` gives indented JSON.
+
+The two flags are mutually exclusive and are on every action, alongside
+`--root`; they share the trailing `--root --json --toon` line of each fence
+below rather than being restated per entry.
+
 **`--json` swaps the serializer, not the payload** — except on `tei validate`
 and `tei header`, where it swaps a rendered human report for the structured
-verdict. Both are marked below. Output is otherwise TOON; several actions print
-two tables rather than one, because TOON collapses a uniform record list and
-degrades on a ragged key set, so two key sets must be two tables.
+verdict. Both are marked below. Several actions print two tables rather than
+one, because TOON collapses a uniform record list and degrades on a ragged key
+set, so two key sets must be two tables.
 
 **Argument validation is argparse's.** Mutually exclusive modes are declared,
 not resolved by precedence; conditionally-required flags are `required=True`;
@@ -107,7 +120,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Note** the three zones that can carry a folio (`context.APPARATUS_ZONES`) are dropped from **both** `catmus_draft` and `ocr_lines` — they leave the draft and arrive as `running_title` instead, so the information is restructured rather than discarded. Out of `ocr_lines` for a sharper reason than the draft's: that list is the set of `@facs` pointer targets, and a running head, a folio or a signature line is never in the TEI body, so citing one would be a mistake by construction. A **caption** line is dropped from the draft only, since it stays citable.
 **Note** **one of the four singular actions.** The payload is one page's collation prompt, built to be handed to one model for one page; a merged stream of them is not consumable by the thing it exists for.
 ```
---root --json
+--root --json --toon
 ```
 
 ### tei validate [REF ...]
@@ -121,7 +134,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 ```
 --all       every collated page in tei/
 --ratified  expect '#ed' instead of '#llm'; a remaining '#llm' becomes a worklist line [off]
---root --json
+--root --json --toon
 ```
 
 ### tei state REF [REF ...]
@@ -131,7 +144,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Exit** always 0.
 **Note** **no `--all`** — `tei ledger` *is* the corpus form of this, and a second spelling of one report is how two answers to one question start to drift.
 ```
---root --json
+--root --json --toon
 ```
 
 ### tei ids [REF ...]
@@ -143,7 +156,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 ```
 --all     every collated page in tei/
 --commit  write the canonical ids and neighbours' pointers [off — reports what would change]
---root --json
+--root --json --toon
 ```
 
 ### tei pair [REF ...]
@@ -154,7 +167,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 ```
 --all     every collated page in tei/
 --commit  write the gloss->term links [off]
---root --json
+--root --json --toon
 ```
 
 ### tei seam REF [REF ...]
@@ -167,7 +180,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 --continues  an element carries across: this page opens mid-element   } required,
 --fresh      clean break; clears the claim on both sides              } exclusive
 --commit     write both files [off]
---root --json
+--root --json --toon
 ```
 
 ### tei ledger
@@ -178,7 +191,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 ```
 --part N        restrict to one part [all]
 --untranscribed refs with no committed TEI: bare lines, or a JSON array under --json [off]
---root --json
+--root --json --toon
 ```
 
 ### tei header
@@ -188,7 +201,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Exit** 1 on FAIL.
 **Note** `--json` swaps the rendered report for the structured verdict.
 ```
---root --json
+--root --json --toon
 ```
 
 ---
@@ -211,7 +224,7 @@ require `--commit`.
 --store {gt,mz}  which store to read [omit: the ocr/ view, which resolves per page
                  to the human file where there is one]
 --show-store     a row per ref — which stores hold it, which the view reaches [off]
---root --json
+--root --json --toon
 ```
 
 ### ocr lines [REF ...]
@@ -223,7 +236,7 @@ require `--commit`.
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds
 --full      include baseline and polygon points [off]
---root --json
+--root --json --toon
 ```
 
 ### ocr gaps [REF ...]
@@ -236,7 +249,7 @@ require `--commit`.
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds
 --jobs N    worker threads; 1 runs serially and builds no pool [cores, capped]
---root --json
+--root --json --toon
 ```
 
 ### ocr adopt-gap REF VPOS[,VPOS...]
@@ -248,7 +261,7 @@ require `--commit`.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --commit    actually write gt/ocr/ [off — reports the lines it would create]
---root --json
+--root --json --toon
 ```
 
 ### ocr crops REF [REF ...]
@@ -261,7 +274,7 @@ require `--commit`.
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --margins   widen to the PrintSpace margins [off]
 --out PATH  write elsewhere; also suppresses the page.png link [review/PP-NNN/crops]
---root --json
+--root --json --toon
 ```
 
 ### ocr sheets REF [REF ...]
@@ -276,7 +289,7 @@ require `--commit`.
 --height N    max sheet height in px [2000]
 --margins     widen to the PrintSpace margins [off]
 --out PATH    write elsewhere [review/PP-NNN/sheets]
---root --json
+--root --json --toon
 ```
 
 ### ocr zoom REF [REF ...]
@@ -296,7 +309,7 @@ require `--commit`.
 --margins     widen to the PrintSpace margins [off]
 --smooth      Lanczos instead of nearest-neighbour [off]
 --out PATH    write elsewhere [review/PP-NNN/zoom]
---root --json
+--root --json --toon
 ```
 
 ### ocr blot [REF ...]
@@ -311,7 +324,7 @@ require `--commit`.
 --force     repaint pages whose blot is newer than their ALTO [off — only --all skips]
 --out PATH  output directory [scans/w-blotted/ — corpus-level, unlike the other image actions]
 --jobs N    worker threads; 1 runs serially and builds no pool [cores, capped]
---root --json
+--root --json --toon
 ```
 
 ### ocr review [REF ...]
@@ -332,7 +345,7 @@ The header links to the **full page scan**, new tab — the crops say what a lin
 --port N  port for --serve [8731]
 --store {gt,mz}  which store to read [mz — the bare diff needs an independent
                  witness, and the view is not one once the page has ground truth]
---root --json
+--root --json --toon
 ```
 
 ### ocr restore [REF ...]
@@ -357,7 +370,7 @@ Two tables describe what the human did, and they are separate because a note is 
 --force     overwrite a target that already holds text; every page does, so a revision needs it [off].
             Under --all it carries the same intent one step further: ignore the mtime skip too
 --commit    actually write gt/ocr/ [off — previews the report]
---root --json
+--root --json --toon
 ```
 
 ### ocr corrections [REF ...]
@@ -376,7 +389,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 --all         every review/ page holding both files
 --since DATE  only pages whose saved_at sorts at or after this
 --min N       drop changes seen fewer than N times [1]
---root --json
+--root --json --toon
 ```
 
 ### ocr clean [REF ...]
@@ -387,7 +400,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 **Note** no `--commit`, `--all` included: it removes only derived, regenerable output, which is the same reason `crops` writes without one. The verb that deletes an *authored* file is `zones delete`, and that one has no `--all` at all.
 ```
 --all       every review/ page
---root --json
+--root --json --toon
 ```
 
 ### ocr predict [REF ...]
@@ -408,7 +421,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 --rec-model PATH recognition model [models/catmus-print-fondue-large.mlmodel]
 --device DEV     torch device [auto]
 --jobs N         worker **processes**; 1 keeps the single-process path [cores, capped by free VRAM]
---root --json
+--root --json --toon
 ```
 
 ### ocr link
@@ -418,7 +431,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 **Exit** always 0.
 **Note** `from_gt`/`from_mz` is the number worth reading: how much of the corpus is still only the machines' word.
 ```
---root --json
+--root --json --toon
 ```
 
 ---
@@ -464,7 +477,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --min-types N    types a scope needs before ratio judges it [data/marks_config.json]
 --rare-max PCT   a confusable at or below this share of its axis is rare enough
                  to list every occurrence [data/marks_config.json]
---root --json
+--root --json --toon
 ```
 
 ### proposal check [REF ...]
@@ -480,7 +493,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ```
 --all        every review/ page with a proposal
 --path FILE  proposal file, one ref only [review/PP-NNN/proposal.json]
---root --json
+--root --json --toon
 ```
 
 ### proposal fix [REF ...]
@@ -492,7 +505,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ```
 --all        every review/ page with a proposal
 --path FILE  proposal file, one ref only [review/PP-NNN/proposal.json]
---root --json
+--root --json --toon
 ```
 
 ### proposal codepoints [REF ...]
@@ -506,7 +519,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --line LINE  one line's index [every line on the page]
 --field {text,resolved,note}  which field [text]
 --path FILE                   proposal file, one ref only [review/PP-NNN/proposal.json]
---root --json
+--root --json --toon
 ```
 
 ### proposal set REF LINE
@@ -518,7 +531,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --field {text,resolved,note}  which field [text]
 --value TEXT                  the replacement; omit to read stdin [stdin]
 --path FILE                   proposal file [review/PP-NNN/proposal.json]
---root --json
+--root --json --toon
 ```
 
 ### proposal replace REF LINE
@@ -532,7 +545,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --field {text,resolved,note}  which field [text]
 --which SPEC all | first | last | an occurrence number (3) | an inclusive range (2:4), 1-based [all]
 --path FILE  proposal file [review/PP-NNN/proposal.json]
---root --json
+--root --json --toon
 ```
 
 ---
@@ -562,7 +575,7 @@ opinion of which pages are held out.
 --ink            SWEEP ONLY: read every raster for ink no zone accounts for [off; always on for named pages]
 --lines          SINGLE PAGE ONLY: every zone's lines of type [off; costs a second raster decode]
 --jobs N         worker threads; 1 runs serially and builds no pool [cores, capped]
---root --json
+--root --json --toon
 ```
 
 ### zones edit [REF ...]
@@ -575,7 +588,7 @@ opinion of which pages are held out.
 --all            every scan, in order
 --itinerary LST  walk this work-list; name no ref to resume at its first unkeyed page
 --port N         port [8732; ocr review --serve holds 8731]
---root --json
+--root --json --toon
 ```
 
 ### zones predict [REF ...]
@@ -591,7 +604,7 @@ opinion of which pages are held out.
 --model PATH     the segmentation model [models/bogoras-seg/zones-seg.safetensors]
 --decode {raw,dp} blob vectorisation, or the segmental DP over the page [raw]
 --device DEV     torch device [auto]
---root --json
+--root --json --toon
 ```
 
 ### zones score
@@ -603,7 +616,7 @@ opinion of which pages are held out.
 --model PATH     segment this checkpoint in memory instead of reading mz/zones/ [read mz/]
 --decode {raw,dp} [raw]
 --device DEV     torch device [auto]
---root --json
+--root --json --toon
 ```
 
 ### zones assemble
@@ -614,7 +627,7 @@ opinion of which pages are held out.
 ```
 --scratch  train from random init: no -i, kraken's default spec — the one configuration
            in which the class-map permutation cannot arise [off]
---root --json
+--root --json --toon
 ```
 
 ### zones install CHECKPOINT
@@ -626,7 +639,7 @@ opinion of which pages are held out.
 --name NAME  installed model name; the accuracy stays out of it [zones-seg]
 --device DEV torch device [auto]
 --commit     copy the checkpoint and its split [off — previews]
---root --json
+--root --json --toon
 ```
 
 ### zones remap
@@ -637,7 +650,7 @@ opinion of which pages are held out.
 ```
 --model PATH  [models/bogoras-seg/zones-seg.safetensors]
 --commit      rewrite the class map [off — previews]
---root --json
+--root --json --toon
 ```
 
 ### zones remark-eval FRACTION
@@ -647,7 +660,7 @@ opinion of which pages are held out.
 **Exit** always 0.
 ```
 --commit  write the split marks [off — reports]
---root --json
+--root --json --toon
 ```
 
 ### zones delete REF [REF ...]
@@ -658,7 +671,7 @@ opinion of which pages are held out.
 **Note** **no `--all`, and here the absence is a safety property rather than a cost.** "Un-key the whole ground-truth store" must not be one flag away from a command someone types. `ocr clean` has `--all` precisely because it deletes only derived output; this deletes authored work.
 ```
 --commit  actually remove [off — previews]
---root --json
+--root --json --toon
 ```
 
 ### zones diff [REF ...]
@@ -669,7 +682,7 @@ opinion of which pages are held out.
 **Note** an aggregate: refs scope the summary rather than multiplying it, and the rows already carry `ref`.
 ```
 --all     every page present in both stores
---root --json
+--root --json --toon
 ```
 
 ### zones paragraphs [REF ...]
@@ -682,7 +695,7 @@ opinion of which pages are held out.
 --all            every keyed page
 --itinerary LST  scope to a work-list [whole corpus]
 --jobs N         worker threads; 1 runs serially and builds no pool [cores, capped]
---root --json
+--root --json --toon
 ```
 
 ### zones link
@@ -691,7 +704,7 @@ opinion of which pages are held out.
 **Writes** `zones/` (derived) — relative symlinks; stale ones are removed and counted.
 **Exit** always 0.
 ```
---root --json
+--root --json --toon
 ```
 
 ### zones blot [REF ...]
@@ -703,7 +716,7 @@ opinion of which pages are held out.
 ```
 --all     all 832 scans
 --jobs N  worker threads for the pages that paint; 1 runs serially and builds no pool [cores, capped]
---root --json
+--root --json --toon
 ```
 
 ---
@@ -718,42 +731,42 @@ dictionary, which reads committed TEI instead. All report-only, all exit 0.
 **Reads** `gt/ocr/`, `data/lexicon_extra.txt`. **Named, not the view**: every recognizer error in `mz/ocr/` is a token no dictionary carries, i.e. a `lexicon_miss`, and this list feeds a committed human-edited file that suppresses the detector meant to catch them.
 **Writes** — **Exit** 0.
 ```
---root --json
+--root --json --toon
 ```
 
 ### lexicon native
 **Does** the most frequent native (Tier-1) word forms, for spotting a likely misspelling by comparison rather than by dictionary.
 **Reads** `gt/ocr/`. **Writes** — **Exit** 0.
 ```
---root --json
+--root --json --toon
 ```
 
 ### lexicon marks
 **Does** bare-vs-marked frequency per base letter — is a bare `g` or a dotted `g̣` the likelier reading, prior to the raster.
 **Reads** `gt/ocr/`. **Writes** — **Exit** 0.
 ```
---root --json
+--root --json --toon
 ```
 
 ### lexicon suffixes
 **Does** weighted suffix frequency (length 2–8), marks stripped before counting.
 **Reads** `gt/ocr/`. **Writes** — **Exit** 0.
 ```
---root --json
+--root --json --toon
 ```
 
 ### lexicon digraphs
 **Does** weighted digraph/trigraph frequency, marks and the corpus's own top suffixes stripped first.
 **Reads** `gt/ocr/`. **Writes** — **Exit** 0.
 ```
---root --json
+--root --json --toon
 ```
 
 ### lexicon glosses
 **Does** the term↔gloss dictionary from committed TEI. Pairs come from `@target`, never from containment, so terms nobody linked are a count rather than a guess. `scope` is the frame the gloss list supplies once, resolved back through `@prev` across a seam.
 **Reads** committed `tei/`. **Writes** — **Exit** 0.
 ```
---root --json
+--root --json --toon
 ```
 
 ---
@@ -768,7 +781,7 @@ resolves anything, and no hit is a legitimate outcome.
 **Reads** `data/toc.json`. **Writes** — **Exit** 0.
 ```
 --folio N  sort matches near this folio first [unsorted]
---root --json
+--root --json --toon
 ```
 
 ### find folio N
@@ -776,7 +789,7 @@ resolves anything, and no hit is a legitimate outcome.
 **Reads** `data/toc.json`. **Writes** — **Exit** 0.
 ```
 --span N  folios either side [4]
---root --json
+--root --json --toon
 ```
 
 ### find authority [QUERY]
@@ -787,7 +800,7 @@ resolves anything, and no hit is a legitimate outcome.
 --sigla       the resolution table instead: one row per cited_as, so collisions show
 --key KEY     one record in full, printed blocks included
 --unlocated   only works with neither doi nor url — the worklist
---root --json
+--root --json --toon
 ```
 
 ---
@@ -807,7 +820,7 @@ rather than belonging to one store.
 ```
 --all        every file the corpus globs reach
 --commit     write the fixes; required to touch any file, scoped or not [off]
---root --json
+--root --json --toon
 ```
 
 ### corpus figures
@@ -816,7 +829,7 @@ rather than belonging to one store.
 **Writes** —
 **Exit** 1 if `missing` or `orphan` is non-empty. The counts alone never decide it: 250 pages was once the expected total *and* wrong in two compensating directions at once.
 ```
---root --json
+--root --json --toon
 ```
 
 ---
@@ -840,7 +853,7 @@ call the same functions. Two spellings, one implementation.
 FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
               w-ocr, scans, train
 --all         every farm this action handles
---root --json
+--root --json --toon
 ```
 **Note** the selector is a **positional, not `--only`**, because `--only` already means "line indices" throughout `ocr` and the harness holds to one meaning per flag name. "Everything" must be *said* rather than implied, for symmetry with `build`, where the cost is real — a selector meaning "everything" on one action and needing to be spelled on the other is a difference the caller has to carry between two commands usually typed in sequence. It used to be spelled `all`, a *value* of the positional, which made this the one place in the CLI where everything was not `--all`; the old form is caught by the rename trap.
 **Note** four states, and the fourth is the point. `absent` is the directory not existing; `stale` is membership disagreeing with the criterion, or a link pointing nowhere; `ok` is neither; **`?` is no verdict available** — `scans/` and `train/bogoras-seg/` have no criterion the harness can compute, and reporting `ok` there would be a clean bill of health nobody issued. `?` does not gate: it describes the check's reach, not the tree.
@@ -856,7 +869,7 @@ FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
 FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
               w-ocr
 --all         every farm this action handles
---root --json
+--root --json --toon
 ```
 **Note** **`--all` must be said, and this verb is why.** Rebuilding `scans/w-figs-blotted/` repaints 252 page composites and is by a wide margin the most expensive thing in the harness — a cost entirely invisible at the call site, since nothing about `harness views build` suggests a corpus-wide raster pass. The caller who wanted one view relinked after a `restore` was the one paying it. **Prefer the per-domain spelling in a per-page loop**: `ocr link` and `zones link` relink one view and are what a page-level pass wants; `views build --all` is for a deliberate corpus-level sweep, the way `corpus normalize --all` is against naming the page.
 **Note** **a farm whose builder must *read* an absent tree is skipped with a row**, never attempted and never silently dropped. The distinction is between what a builder opens and what its links merely point at: the blot builder reads pixels out of `scans/`, so with no `scans/` it cannot run; `w-figs` and `w-ocr` need only their tracked membership sources and build fine, leaving raster links that dangle — this repo's stated disposition for a link into an ignored tree. Hence exit 0 on a clone: building what can be built is the success case, and `views check` is what says what is still missing.

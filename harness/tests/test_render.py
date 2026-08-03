@@ -1,0 +1,247 @@
+"""The render layer: three modes over one payload, and what must not differ.
+
+The load-bearing assertion in this file is that **rendering is a view and never a
+transformation**. A display layer that quietly reshapes, reorders, rounds or elides
+is the project's governing failure mode wearing a friendly face — output that reads
+as the payload and is not — and unlike a bad detector it produces no error signal at
+all, because the thing it disagrees with is never printed beside it.
+
+So most of what follows compares a mode against the payload rather than against a
+golden string. Golden strings would pin the layout, which is allowed to change; the
+values are not.
+"""
+from __future__ import annotations
+
+import json
+import re
+import sys
+from types import SimpleNamespace
+
+import pytest
+
+from harness import render as R
+from harness.emit import emit
+
+# A payload with one of everything the renderer distinguishes: a null, both
+# booleans, an int, a float, an empty string, a value containing the TOON
+# delimiter, and a Tier-1 form whose combining mark makes len() and display width
+# disagree.
+ROWS = [
+    {"ref": "1-048", "folio": None, "keyed": True, "zones": 6,
+     "share": 93.9, "note": "", "form": "g̣"},
+    {"ref": "1-101", "folio": 115, "keyed": False, "zones": 12,
+     "share": 6.1, "note": "pdftoppm -r 300, then greyscale", "form": "ɪ"},
+]
+
+ANSI = re.compile(r"\033\[[0-9;]*m")
+
+
+def args(**kw):
+    return SimpleNamespace(**kw)
+
+
+def plain(text: str) -> str:
+    return ANSI.sub("", text)
+
+
+# ----------------------------------------------------------------- mode choice
+
+
+def test_a_pipe_gets_toon_and_a_terminal_gets_a_table(monkeypatch):
+    """The whole dispatch, and the reason the default needs no flag.
+
+    An agent's Bash tool pipes both streams — verified against this harness — so a
+    model keeps getting TOON byte-for-byte while a human gets columns, and neither
+    has to say which it wanted.
+    """
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: False)
+    assert R.mode(args()) == "toon"
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
+    assert R.mode(args()) == "table"
+
+
+@pytest.mark.parametrize("tty", [True, False])
+def test_the_flags_beat_the_terminal(monkeypatch, tty):
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: tty)
+    assert R.mode(args(json=True)) == "json"
+    assert R.mode(args(toon=True)) == "toon"
+
+
+def test_toon_mode_is_byte_identical_to_the_old_emitter():
+    """The compatibility claim the whole pass rests on: nothing that reads this
+    tool through a pipe sees any change at all."""
+    for obj in (ROWS, ROWS[0], ["1-048", "1-101"], [], {"a": [1, 2]}):
+        assert R.render(obj, "toon") == emit(obj)
+        assert R.render(obj, "json") == emit(obj, as_json=True)
+
+
+# ------------------------------------------------- rendering is not a transform
+
+
+def test_every_value_survives_into_the_table():
+    """No cell is dropped, reordered, rounded or abbreviated.
+
+    Checked against the payload rather than a golden string, so the layout stays
+    free to change and the values do not.
+    """
+    text = plain(R.render(ROWS, "table"))
+    lines = [ln for ln in text.split("\n") if ln.strip()]
+    assert lines[0].split() == list(ROWS[0]), "header is the record's own key order"
+    for row, line in zip(ROWS, lines[1:], strict=True):
+        for value in row.values():
+            if value == "":
+                continue
+            assert R._scalar(value) in line, f"{value!r} missing from {line!r}"
+
+
+def test_nothing_is_ever_truncated(monkeypatch):
+    """A `…` in a page ref or a Tier-1 form is a value that reads as a value and
+    is not. rich ellipsizes by default; the console is built at the table's own
+    natural width so it is never asked to.
+
+    80 columns is the fallback terminal size and the width the prototype failed
+    at, which is why it is tested rather than assumed.
+    """
+    wide = [{"ref": r["ref"], "builder": "harness views build w-figs-blotted",
+             "note": "pdftoppm -r 300 over pdfs/, then tools/greyscale_scans.py "
+                     "--commit, and never a re-render"} for r in ROWS]
+    for width in (40, 80, 100, 120):
+        monkeypatch.setattr(R, "_term_width", lambda w=width: w)
+        text = plain(R.render(wide, "table"))
+        assert "…" not in text, f"truncated at width {width}"
+        for row in wide:
+            for value in row.values():
+                assert value in text
+
+
+def test_scalars_are_spelled_the_way_toon_spells_them():
+    """`null`/`true`/`false`, never Python's `None`/`True`.
+
+    Two renderings of one payload disagreeing about the word for a value would put
+    `None` in front of a human and `null` in front of the model for the same
+    ledger cell — two files holding one fact, in the one place nobody would think
+    to check.
+    """
+    assert (R._scalar(None), R._scalar(True), R._scalar(False)) == \
+        ("null", "true", "false")
+    table = plain(R.render(ROWS, "table"))
+    for word in ("null", "true", "false"):
+        assert word in table
+    assert "None" not in table and "True" not in table and "False" not in table
+
+
+def test_a_combining_mark_does_not_stagger_its_column():
+    """`len("g̣")` is 2 and its display width is 1, the store being NFD
+    corpus-wide. An aligner counting characters would misalign every column of
+    Tier-1 forms — which is `lexicon marks`, `lexicon native` and `proposal
+    codepoints`, the three tables most worth reading."""
+    from rich.cells import cell_len
+
+    rows = [{"form": f, "n": 1} for f in ("g", "g̣", "ä", "ɪ")]
+    lines = [ln for ln in plain(R.render(rows, "table")).split("\n") if ln.strip()]
+    assert len({cell_len(ln) for ln in lines}) == 1, "columns do not line up"
+
+
+# -------------------------------------------------------------- shape fallback
+
+
+def test_a_ragged_or_nested_payload_falls_back_to_toon():
+    """Rather than inventing a layout for it.
+
+    Same reflex as `views check`'s `verified` column, which reports how deep it
+    looked instead of implying more. A table drawn over a ragged key set would
+    have to leave a hole and say nothing about it.
+    """
+    for obj in (
+        [{"a": 1}, {"b": 2}],                    # ragged key sets
+        [{"a": 1}, {"a": 2, "b": 3}],            # a missing field
+        [{"a": [1, 2]}],                         # a list in a cell
+        {"a": {"b": 1}},                         # a nested record
+        [[1, 2], [3, 4]],                        # not records at all
+    ):
+        assert R.render(obj, "table") == emit(obj), f"{obj!r} should fall back"
+
+
+def test_a_flat_record_renders_as_aligned_pairs():
+    text = plain(R.render(ROWS[0], "table"))
+    assert text.startswith("ref:   1-048")
+    assert "folio: null" in text
+
+
+def test_a_list_of_scalars_wraps(monkeypatch):
+    monkeypatch.setattr(R, "_term_width", lambda: 30)
+    text = R.render([f"1-{i:03d}" for i in range(12)], "table")
+    assert "\n" in text and max(len(ln) for ln in text.split("\n")) <= 30
+    assert "1-011" in text
+
+
+def test_an_empty_payload_says_so_rather_than_drawing_a_header():
+    """Blank is indistinguishable from clean.
+
+    The rule `exempt` exists for in `gt/zones/` and the one the ink cache's `?`
+    column keeps: a bare header over no rows reads as a table that happened to be
+    empty, where this says a verb was asked and answered nothing.
+    """
+    assert R.render([], "table") == "(none)"
+
+
+# --------------------------------------------------------------------- colour
+
+
+def test_colour_follows_the_environment_not_the_renderer(monkeypatch):
+    """`NO_COLOR` beats `FORCE_COLOR` because it is the one that says *don't*.
+
+    A tool that can be made to shout over an explicit refusal is worse than one
+    with no colour at all. Both beat the TTY test, which is how argparse 3.14
+    behaves in this same process — this repo's environment sets `FORCE_COLOR=3`,
+    and a usage error is already coloured down a pipe because of it.
+    """
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
+    monkeypatch.setenv("NO_COLOR", "1")
+    monkeypatch.setenv("FORCE_COLOR", "3")
+    assert R.colour() is False
+    monkeypatch.delenv("NO_COLOR")
+    assert R.colour() is True
+    monkeypatch.delenv("FORCE_COLOR")
+    assert R.colour() is True
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: False)
+    assert R.colour() is False
+
+
+def test_no_ansi_escapes_reach_toon_or_json(monkeypatch):
+    monkeypatch.setenv("FORCE_COLOR", "3")
+    for m in ("toon", "json"):
+        assert ANSI.search(R.render(ROWS, m)) is None
+
+
+# --------------------------------------------------------------- startup cost
+
+
+def test_the_pipe_path_never_imports_rich():
+    """rich costs 38 ms against `harness.cli`'s 55 ms, on a CLI whose whole
+    `--help` is 110 ms. A 69% startup tax on every non-interactive invocation —
+    which is every invocation a model makes — to load a library that path never
+    touches.
+
+    Run in a subprocess because this suite has certainly imported rich by now;
+    the claim is about a fresh process, which is what a caller gets.
+    """
+    import subprocess
+
+    src = ("import sys;"
+           "from harness.cli import main;"
+           "main(['lexicon','marks']);"
+           "sys.stderr.write(str(any(m.startswith('rich') for m in sys.modules)))")
+    p = subprocess.run([sys.executable, "-c", src], capture_output=True, text=True,
+                       cwd=str(__import__("pathlib").Path(__file__).parents[2]))
+    assert p.stderr.strip().endswith("False"), p.stderr
+
+
+def test_json_mode_stays_parseable_for_a_single_section():
+    """The half of the `--json` contract that already holds.
+
+    A verb printing several sections emits several documents and `json.load`
+    rejects it — 15 of 58 captured invocations. That is a defect of the CLI's
+    section handling rather than of the serializer, and it is fixed one step up.
+    """
+    assert json.loads(R.render(ROWS, "json")) == ROWS

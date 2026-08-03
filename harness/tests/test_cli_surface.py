@@ -49,11 +49,17 @@ _FENCE = re.compile(r"^```\n(.*?)^```", re.M | re.S)
 # mistaken for a flag of its own — `--window`'s note mentions `--zoom`, and an
 # unanchored search would document it twice and miss nothing in return.
 _FLAG = re.compile(r"^(--[\w-]+)", re.M)
-# `--root` and `--json` are on every action by construction and share one
-# trailing line in each fence rather than being restated twice per entry. They
+# `--root`, `--json` and `--toon` are on every action by construction and share
+# one trailing line in each fence rather than being restated twice per entry. They
 # have their own assertion (test_every_action_takes_the_globals); comparing them
 # per action would be 40 repetitions of a fact one test already holds.
-GLOBALS = {"--root", "--json"}
+#
+# **A flag belongs here only if it is genuinely global**, not merely tedious to
+# document. These three qualify because every action emits a payload and all three
+# say something about that payload's destination or form. `--jobs` deliberately
+# does not, and says why at `_common.add_jobs`: a flag accepted where it does
+# nothing is a wrong combination argparse should be rejecting.
+GLOBALS = {"--root", "--json", "--toon"}
 
 
 def _documented() -> dict[tuple[str, str], set[str]]:
@@ -116,7 +122,7 @@ def test_flags_match_both_directions(parser_surface, doc_surface):
 
 
 def test_every_action_takes_the_globals(parser_surface):
-    """`--root`/`--json` are attached to every *action* parser, not to the group.
+    """`--root`/`--json`/`--toon` are attached to every *action* parser, not the group.
 
     With two tiers the last parser to run is the action's, so a group-tier
     registration would leave `harness zones predict --json` a parse error while
@@ -124,7 +130,30 @@ def test_every_action_takes_the_globals(parser_surface):
     hold. Asserted here because it is invisible until someone types it that way.
     """
     for key, flags in parser_surface.items():
-        assert {"--root", "--json"} <= flags, f"{key[0]} {key[1]} is missing a global"
+        assert GLOBALS <= flags, f"{key[0]} {key[1]} is missing a global"
+
+
+def test_the_output_modes_are_exclusive(parser_surface):
+    """`--json` and `--toon` may not both be given, on any action.
+
+    They name two different serializers for one payload, so a precedence rule
+    would be an if-chain silently preferring one — which is what the one-tier CLI
+    was retired for, `lexicon --marks --native` having quietly run `--marks`.
+    Argparse refuses instead, and this holds every action to it rather than
+    trusting one shared registration site to have been used everywhere.
+    """
+    from harness.cli import build_parser
+
+    ap = build_parser()
+    for group_act in ap._subparsers._group_actions:
+        for gname, gparser in group_act.choices.items():
+            for act_act in gparser._subparsers._group_actions:
+                for aname, aparser in act_act.choices.items():
+                    pairs = {frozenset(g._group_actions and
+                                       sum((a.option_strings for a in g._group_actions), []))
+                             for g in aparser._mutually_exclusive_groups}
+                    assert any({"--json", "--toon"} <= p for p in pairs), \
+                        f"{gname} {aname}: --json/--toon are not exclusive"
 
 
 def test_every_action_has_help():

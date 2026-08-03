@@ -17,7 +17,7 @@ from ..ids import pair_glosses
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
 from ..validate import check_corpus_header, validate
-from ._common import REF_HELP, out, out_per_ref, page_refs, refs_arg
+from ._common import REF_HELP, out, out_per_ref, page_refs, refs_arg, section
 
 
 def register(sub, common):
@@ -154,7 +154,7 @@ def run_validate(a) -> int:
     worst = 0
     for r in refs:
         if len(refs) > 1:
-            print(f"# {r}")
+            section(a, r)
         ctx = build_context(r, a.root)
         worst = max(worst, _render_gate(a, validate(Path(ctx["output_path"]), ctx,
                                                     ratified=a.ratified)))

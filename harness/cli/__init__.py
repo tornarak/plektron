@@ -59,7 +59,13 @@ import sys
 from pathlib import Path
 
 from . import _corpus, _find, _lexicon, _ocr, _proposal, _tei, _views, _zones
-from ._common import check_renamed, die_renamed, globals_parser, walk_surface
+from ._common import (
+    add_output_flags,
+    check_renamed,
+    die_renamed,
+    globals_parser,
+    walk_surface,
+)
 
 GROUPS = (_tei, _ocr, _proposal, _zones, _lexicon, _find, _corpus, _views)
 
@@ -72,8 +78,7 @@ def build_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--root", type=Path, default=Path("."),
                     help="repo root; every path resolves against it (default .)")
-    ap.add_argument("--json", action="store_true",
-                    help="indented JSON instead of TOON")
+    add_output_flags(ap)
 
     common = globals_parser()
     sub = ap.add_subparsers(dest="group", required=True, metavar="GROUP")

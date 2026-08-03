@@ -445,7 +445,35 @@ literals. Six detectors feed one list, and a ragged list of records is not a tab
 they used to name their own fields (`context`, `in_text`, `in_text_not_resolved`,
 `explained`), which silently degraded the whole report to TOON's nested form. No
 field holds a list; codepoint sets and the footnote arm's note are rendered into
-`detail` as text. **`codepoints.py`**, **`emit.py`** — one job each.
+`detail` as text. **`codepoints.py`** — one job.
+
+**`emit.py`** — the serializers, TOON and JSON, and nothing else. It does not know
+what a terminal is and must not learn: **`render.py`** owns that half, and the split
+is what keeps the model's view and the human's view from being one negotiation.
+
+**`render.py`** — the human view. `mode(a)` returns one of `json`/`toon`/`table`
+and is the only place the choice is made; the default is `sys.stdout.isatty()`, so
+a model piping the output keeps getting TOON byte-for-byte while a human gets
+columns and neither has to say so. Four properties bind callers:
+
+- **Nothing truncates.** rich ellipsizes a cell that will not fit; prototyped over
+  `views check --all` (169 columns natural) at 80 it also wrapped one field across
+  five rows. A `…` inside a page ref or a Tier-1 form is a value that reads as a
+  value and is not. The console is therefore built at the table's *own* measured
+  width and never narrower, so rich is never in the position of having to shrink a
+  column. Output wider than the screen is the pager's problem, not the renderer's.
+- **A payload that TOON would degrade falls back to TOON.** Uniform records, a flat
+  record, and a list of scalars are drawn; a ragged key set, a nested value or a
+  list in a cell is not. Drawing one would mean leaving a hole and saying nothing
+  about it.
+- **Scalars are spelled as TOON spells them** — `null`, `true`, `false`. Two
+  renderings disagreeing about the word for a value would put `None` in front of a
+  human and `null` in front of the model for the same ledger cell.
+- **rich is imported lazily and only in table mode**, because it costs 38 ms
+  against `harness.cli`'s 55 ms on a CLI whose whole `--help` is 110 ms. It has to
+  be rich rather than a hand-rolled aligner for this corpus's own reason:
+  `len("g̣")` is 2 where its display width is 1, the store being NFD corpus-wide,
+  so a character-counting aligner would misalign every column of Tier-1 forms.
 
 ## Invariants that bind callers
 

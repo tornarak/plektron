@@ -24,27 +24,66 @@ import argparse
 import sys
 from pathlib import Path
 
-from ..emit import emit
+from ..render import mode, render
 
 
 def globals_parser() -> argparse.ArgumentParser:
-    """The `--root`/`--json` parent, one instance per registration pass."""
+    """The `--root`/`--json`/`--toon` parent, one instance per registration pass."""
     common = argparse.ArgumentParser(add_help=False)
     common.add_argument("--root", type=Path, default=argparse.SUPPRESS,
                         help=argparse.SUPPRESS)
-    common.add_argument("--json", action="store_true", default=argparse.SUPPRESS,
-                        help="indented JSON instead of TOON")
+    add_output_flags(common)
     return common
 
 
-def out(a, obj) -> None:
-    """Emit one table. TOON by default, indented JSON under `--json`.
+def add_output_flags(p):
+    """`--json`/`--toon`, mutually exclusive, on the top-level parser and on every action.
 
-    A verb emitting several tables calls this several times, deliberately: TOON
+    **Exclusive at the parser rather than by precedence in `mode()`.** "Argument
+    validation is argparse's, not an if-chain's" is a stated convention here, and
+    a silently-preferred flag is what the one-tier CLI was retired for — `--marks
+    --native` used to run `--marks`.
+
+    Both default to `SUPPRESS` for the reason `_common`'s docstring gives: they are
+    declared twice so they may be typed on either side of the verb, and without
+    SUPPRESS the action parser's default would overwrite a value given before it.
+    """
+    g = p.add_mutually_exclusive_group()
+    g.add_argument("--json", action="store_true", default=argparse.SUPPRESS,
+                   help="indented JSON instead of TOON")
+    g.add_argument("--toon", action="store_true", default=argparse.SUPPRESS,
+                   help="TOON even at a terminal, where an aligned table is the "
+                        "default — what a skill's model sees, reproduced by hand")
+    return p
+
+
+def out(a, obj) -> None:
+    """Emit one section. Aligned table at a terminal, TOON down a pipe, JSON under `--json`.
+
+    A verb emitting several sections calls this several times, deliberately: TOON
     collapses a uniform record list to a header row plus data rows, and a ragged
     key set degrades it to the verbose nested form. Two key sets, two tables.
+
+    The mode is `render.mode(a)` and is decided per invocation, not per section, so
+    a verb cannot emit a table and then a TOON block. Which one it is has exactly
+    one input beyond the two flags — `sys.stdout.isatty()`.
     """
-    print(emit(obj, getattr(a, "json", False)))
+    print(render(obj, mode(a)))
+
+
+def section(a, name: str) -> None:
+    """The label above a verb's second and subsequent sections.
+
+    A literal `# name` line in TOON and JSON mode, unchanged, because it is what
+    anything grepping this output already matches on. At a terminal it becomes a
+    rule, since a table already has a header row and a second bare `#` line above
+    it reads as part of the data.
+    """
+    if mode(a) != "table":
+        print(f"# {name}")
+        return
+    from ..render import rule
+    print(rule(name))
 
 
 REF_HELP = "page ref: part and scan index, e.g. 1-048"
@@ -239,7 +278,7 @@ def out_per_ref(a, pairs) -> None:
     for key in tabular:
         found = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
         if found:
-            print(f"# {key}")
+            section(a, key)
             # **Pooled even when one page contributed.** At the top level the count
             # decides the shape because the caller named one page; here the caller
             # named several and these rows are a *subset* of them, so dropping the
