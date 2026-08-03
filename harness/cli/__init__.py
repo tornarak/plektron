@@ -107,5 +107,12 @@ def main(argv=None):
         # is the common one. It reached the user as a twenty-line traceback while
         # every action named one page; naming several makes a mid-list absence
         # ordinary, and a traceback there says nothing a message could not.
-        print(f"ERROR: {e}", file=sys.stderr)
+        #
+        # Notes are printed because that is where the *page* is. `parallel.pmap`
+        # attaches the item it was working on rather than re-raising a new
+        # exception, so that these four `except` clauses still catch what they were
+        # written for; dropping the note here would throw away the half of the
+        # message that says which of 832 pages failed.
+        note = "; ".join(getattr(e, "__notes__", ()) or ())
+        print(f"ERROR: {e}{f' ({note})' if note else ''}", file=sys.stderr)
         return 2
