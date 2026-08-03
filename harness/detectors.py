@@ -85,6 +85,17 @@ MARK_LICENSE = {
 }
 
 
+# The licensed marks as one character class, so *finding* them is a C-level scan
+# rather than a dict lookup per character.
+#
+# This runs over every character of every scoped file on a corpus `normalize`, and
+# the table has **one** entry — so it was making 5.7 M `dict.get` calls to locate
+# occurrences of a single codepoint, and accounted for 57% of the gate's runtime.
+# Derived from the table rather than written out beside it, so adding a mark cannot
+# leave the two disagreeing.
+_LICENSED_MARKS = re.compile(f"[{''.join(re.escape(c) for c in MARK_LICENSE)}]")
+
+
 def unlicensed_marks(text: str) -> list[dict]:
     """Every combining mark sitting on a base its licence does not cover.
 
@@ -94,10 +105,10 @@ def unlicensed_marks(text: str) -> list[dict]:
     """
     text = unicodedata.normalize("NFD", text)
     out = []
-    for i, ch in enumerate(text):
-        allowed = MARK_LICENSE.get(ch)
-        if allowed is None:
-            continue
+    for m in _LICENSED_MARKS.finditer(text):
+        i = m.start()
+        ch = m.group()
+        allowed = MARK_LICENSE[ch]
         base = text[i - 1] if i else ""
         if base in allowed:
             continue

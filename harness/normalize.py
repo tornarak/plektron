@@ -79,6 +79,19 @@ from .detectors import apostrophe_flags, footnote_report, unlicensed_marks
 _MULTI_SPACE = re.compile(r"(?<=\S) {2,}(?=\S)")
 _SPACE_BEFORE_PUNCT = re.compile(r"[ \t]+([;:,])")
 
+# A necessary condition for either pattern above, in one pass and **without
+# lookaround** — the same characters, matched rather than asserted.
+#
+# It exists to answer "is there anything in this file at all", which is a different
+# question from "where", and the two want different regexes. Over the corpus it
+# rejects 448 of 449 files, so the per-line walk in `_spacing_hits` almost never
+# runs. Measured, because two obvious spellings are both worse: `search()`ing the
+# real lookbehind pattern costs 278 ms against this one's 190 ms, and a plain
+# substring precheck is a thousand times cheaper still but filters *nothing* — `"  "`
+# is in every indented JSON file in the corpus, which is exactly why the real pattern
+# demands a non-space on each side.
+_SPACING_ANY = re.compile(r"\S {2,}\S|[ \t][;:,]")
+
 
 def _fix_spacing(text: str) -> str:
     """Collapse §2.9 spacing drift, line by line, skipping `#`-comment lines.
@@ -102,6 +115,14 @@ def _fix_spacing(text: str) -> str:
 def _spacing_hits(text: str) -> list[dict]:
     """Every spacing-drift occurrence, located. One record per match, not a tally —
     same reasoning as `_lookalikes`: a count is not something a reader can act on."""
+    # **Whole-text probe first.** The line walk exists for the `#`-comment skip, so
+    # it cannot be replaced — but it runs over every line of every scoped file, and
+    # the corpus is overwhelmingly clean. One C-level search over the file answers
+    # "is there anything here at all" and lets the common case skip the loop
+    # entirely. A hit still has to be located line by line, since a match confined
+    # to comment lines is not a hit.
+    if not _SPACING_ANY.search(text):
+        return []
     hits = []
     for lineno, line in enumerate(text.splitlines(), start=1):
         if line.lstrip().startswith("#"):
@@ -182,6 +203,14 @@ LOOKALIKE_CHARS = {
 LOOKALIKE_SEQS = {"ġ": "g+U+0307 (or U+0121) traps g+U+0323"}
 
 
+# The two tables flattened once, in the order `_lookalikes` reports them — chars then
+# sequences — because that order is the report's row order, and a worklist that
+# reshuffled itself would show as churn in every diff. Built here rather than inside
+# the line loop, which was rebuilding it 67k times over a corpus run.
+_LOOKALIKE_PROBES = list(LOOKALIKE_CHARS.items()) + list(LOOKALIKE_SEQS.items())
+_LOOKALIKE_PROBES_FLAT = tuple(p for p, _ in _LOOKALIKE_PROBES)
+
+
 def scoped_files(root: Path = Path("."), include_path_only: bool = False) -> list[Path]:
     """Distinct corpus files, one entry per inode.
 
@@ -235,9 +264,17 @@ def _lookalikes(text: str) -> list[dict]:
     ruling on what the page actually prints, so the report has to name the word. Same
     idiom as `validate.LOOKALIKE_GREPS`'s worklist, which quotes its context.
     """
+    # The probe table was being rebuilt — two dicts, `.items()`, concatenated — once
+    # per *line*, i.e. 67k times over the corpus, and then searched with one
+    # `str.find` loop per probe. Same answer for one whole-text search and, on a hit,
+    # a per-line pass. Ordering is preserved deliberately: hits come out grouped by
+    # probe within a line, as they did, because the report is a worklist a human
+    # reads down and reshuffling it would show as churn in every diff.
+    if not any(probe in text for probe in _LOOKALIKE_PROBES_FLAT):
+        return []
     hits = []
     for lineno, line in enumerate(text.splitlines(), start=1):
-        for probe, msg in list(LOOKALIKE_CHARS.items()) + list(LOOKALIKE_SEQS.items()):
+        for probe, msg in _LOOKALIKE_PROBES:
             start = 0
             while (pos := line.find(probe, start)) != -1:
                 hits.append({"trap": msg, "line": lineno,
