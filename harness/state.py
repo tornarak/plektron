@@ -320,11 +320,23 @@ def entry_state(ref: str, root: Path = Path(".")) -> dict:
     transcribed pages breaks — an untranscribed predecessor, or the first scan
     of a part. None means "read it off the image and don't guess", which is the
     whole point of it being nullable.
+
+    **This asks a narrower question than `build_ledger` answers, and used to call
+    it anyway.** The ledger walks all 832 scans and computes a `boundary` column
+    that needs each page's *successor* — none of which is wanted here. What this
+    needs is two bounded things: a backward walk that stops at the first
+    untranscribed page, and the milestone fold over this page's **own part** up to
+    this page. Neither looks past `ref`, and neither looks at another part. That
+    mattered little at 3 collated pages and is quadratic at 832, since `tei
+    validate --all` and every `tei context` pay it per page.
+
+    `build_ledger` is untouched and remains what `tei ledger` reports — it wants
+    every row, including the boundary column, which is exactly why it is a
+    different function rather than this one generalized.
     """
-    from .context import all_scans, parse_ref
+    from .context import all_scans, parse_ref, stem_for
 
     part, _ = parse_ref(ref)
-    ledger = build_ledger(root)
     refs = [r for r in all_scans(root) if parse_ref(r)[0] == part]
     if ref not in refs:
         raise KeyError(f"{ref} has no scan under {root}")
@@ -332,23 +344,50 @@ def entry_state(ref: str, root: Path = Path(".")) -> dict:
     i = refs.index(ref)
     prior_ref = refs[i - 1] if i > 0 else None
 
+    # Memoized for this call only: the backward walk and the forward fold overlap,
+    # and a page's TEI should be parsed once either way. Nothing survives the
+    # return — a stored ledger would need invalidating, which is a different and
+    # much larger question than not parsing the same file twice in one command.
+    seen: dict[str, dict | None] = {}
+
+    def facts(r: str) -> dict | None:
+        if r not in seen:
+            seen[r] = _tei_facts(root / "tei" / f"{stem_for(r, root)}.xml")
+        return seen[r]
+
     expected = None
     prior_folio = None
     basis_ref = None
-    if prior_ref is not None and ledger[prior_ref]["transcribed"]:
-        prior_folio = ledger[prior_ref]["folio"]
+    basis_folio = None
+    if prior_ref is not None and facts(prior_ref) is not None:
+        prior_folio = facts(prior_ref)["folio"]
         # Walk back over unpaginated pages to the last numbered one. Everything
         # skipped is transcribed-and-unpaginated by the loop's construction, and
         # a plate carries no folio and so does not advance the printed count —
-        # hence +1 from the last numbered page, not +1 per scan. Stop at the
-        # first untranscribed page; past that nothing is known.
+        # hence +1 from the last numbered page, not +1 per scan. **Stop at the
+        # first untranscribed page**; past that nothing is known, and a walk that
+        # skipped the gap looking for a number would predict across exactly the
+        # break `None` exists to report.
         j = i - 1
-        while j >= 0 and ledger[refs[j]]["transcribed"]:
-            if ledger[refs[j]]["folio"] is not None:
-                expected = ledger[refs[j]]["folio"] + 1
+        while j >= 0 and (f := facts(refs[j])) is not None:
+            if f["folio"] is not None:
+                expected = f["folio"] + 1
                 basis_ref = refs[j]
+                basis_folio = f["folio"]
                 break
             j -= 1
+
+    # The believed-open set is a fold and so genuinely wants the prefix — but only
+    # this part's, and only up to this page: `open_in` is the state *entering* the
+    # page, so its own milestones are not applied. An untranscribed page passes the
+    # state through unchanged, which is what makes a prefix over the collated pages
+    # of one part equivalent to the ledger's whole-corpus fold.
+    levels = {e["id"]: e.get("level", 0) for e in load_toc(root) if e.get("id")}
+    open_h: dict[int, str] = {}
+    for r in refs[:i]:
+        f = facts(r)
+        if f is not None:
+            open_h = _apply_milestones(open_h, f["milestones"], levels)
 
     return {
         "prior_ref": prior_ref,
@@ -356,9 +395,9 @@ def entry_state(ref: str, root: Path = Path(".")) -> dict:
         # The last *numbered* page the prediction rests on — not necessarily the
         # immediate predecessor, if plates intervene.
         "basis_ref": basis_ref,
-        "basis_folio": ledger[basis_ref]["folio"] if basis_ref else None,
+        "basis_folio": basis_folio,
         "expected_folio": expected,
-        "believed_open": ledger[ref]["open_in"],
+        "believed_open": [open_h[k] for k in sorted(open_h)],
         # No `boundary_in`. It said whether the gap before this page was open, and
         # `context`'s `prev_tail` now carries the same fact as `part` on the actual
         # element — read off the same file, one field instead of two. Two names for

@@ -106,3 +106,63 @@ def test_a_ref_with_no_scan_is_an_error(repo):
 def test_bare_integer_still_rejected(repo):
     with pytest.raises(ValueError):
         entry_state("5", repo)
+
+
+# ------------------------------------------------- what it is allowed to read
+#
+# `entry_state` used to call `build_ledger`, which walks every scan in the corpus
+# and computes a `boundary` column needing each page's *successor* — none of which
+# this function wants. That cost nothing at 3 collated pages and is quadratic at
+# 832, since `tei validate --all` and every `tei context` pay it once per page.
+# These pin the narrowing, because it is invisible in the output: the answers were
+# byte-identical before and after, so only a test of what gets *opened* can hold it.
+
+
+def _watch(monkeypatch):
+    """Record every TEI path `entry_state` parses."""
+    import harness.state as st
+
+    opened: list[str] = []
+    real = st._tei_facts
+
+    def spy(path):
+        opened.append(path.stem.replace("chukchi-", ""))
+        return real(path)
+
+    monkeypatch.setattr(st, "_tei_facts", spy)
+    return opened
+
+
+def test_it_never_reads_past_the_page_it_is_asked_about(repo, monkeypatch):
+    for i in range(1, 11):
+        transcribe(repo, f"1-{i:03d}", 40 + i)
+    opened = _watch(monkeypatch)
+    entry_state("1-004", repo)
+    assert opened, "nothing was read at all — the spy is not wired up"
+    assert max(opened) < "1-004", f"read at or past the target: {sorted(set(opened))}"
+
+
+def test_it_never_reads_another_part(repo, monkeypatch):
+    (repo / "scans" / "chukchi-2-001.png").touch()
+    transcribe(repo, "2-001", 500)
+    for i in range(1, 4):
+        transcribe(repo, f"1-{i:03d}", 40 + i)
+    opened = _watch(monkeypatch)
+    entry_state("1-003", repo)
+    assert not [r for r in opened if r.startswith("2-")]
+
+
+def test_the_backward_walk_stops_at_the_first_gap(repo, monkeypatch):
+    """A page with no TEI breaks the chain, and nothing before it is consulted for
+    the prediction — reading past the gap to find a number would predict across
+    exactly the break `None` exists to report."""
+    transcribe(repo, "1-001", 41)
+    transcribe(repo, "1-002", 42)
+    # 1-003 deliberately absent.
+    transcribe(repo, "1-004", 44)
+    _watch(monkeypatch)
+    st = entry_state("1-005", repo)
+    assert st["expected_folio"] == 45 and st["basis_ref"] == "1-004"
+    # The fold still needs the whole prefix, but the *prediction* stopped at 1-004:
+    # nothing before the gap contributed a folio.
+    assert st["prior_ref"] == "1-004"
