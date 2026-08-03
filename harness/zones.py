@@ -783,22 +783,14 @@ def cached_ink(ref: str, root: Path = Path(".")) -> dict | None:
     return None
 
 
-def record_ink(ref: str, report: dict, root: Path = Path(".")) -> dict:
-    """Reduce one `validate_page(ink=True)` result to a verdict, and store it.
-
-    The ink pass is ~0.20 s of raster work against ~1 ms for every other check, so
-    a list of 122 pages cannot run it on render. But the editor **already runs it**
-    on every page it opens and every page it saves, and the corpus sweep runs it
-    under `--ink`; the answer is being computed and thrown away. So it is written
-    here instead, and the list is a reader of what keying already produced rather
-    than a job that recomputes it.
+def _ink_verdict(ref: str, report: dict, root: Path) -> dict:
+    """One `validate_page(ink=True)` result reduced to its cache record.
 
     Four states, and the one that must survive the reduction is `ruled` against
     `clean`: a page whose bands were all excused has to stay distinguishable from
     one where nothing was ever found, since that difference is the record that
     `_ink_exempt.json` exists to keep.
     """
-    ref = norm_ref(ref)
     if not report.get("ink_checked"):
         # Not keyed, or ruled not a text page. Uncovered ink is a statement about
         # nothing here, and caching "clean" would be a claim.
@@ -816,9 +808,18 @@ def record_ink(ref: str, report: dict, root: Path = Path(".")) -> dict:
                    + [f"y={b['vpos']}..{b['vpos'] + b['height']} ruled: {b['note']}"
                       for b in ruled] + [w["detail"] for w in stale])}
     rec["stamp"] = ink_stamp(ref, root)
+    return rec
 
-    data = load_ink_cache(root)
-    data[ref] = rec
+
+def _write_ink_cache(data: dict[str, dict], root: Path) -> None:
+    """The whole cache, sorted by ref, written through a temp and renamed.
+
+    **The temp carries the pid**, because the rename is atomic and the write into
+    the temp is not: two processes sharing one `_ink_cache.json.tmp` interleave
+    their bytes and then one of them renames the result into place. The editor
+    saves a page while a sweep is running often enough for that to be a real
+    sequence rather than a theoretical one.
+    """
     p = zone_dir(root) / INK_CACHE_JSON
     p.parent.mkdir(parents=True, exist_ok=True)
     doc = {"_about": ("Derived and disposable: the uncovered-ink verdict for each "
@@ -828,11 +829,60 @@ def record_ink(ref: str, report: dict, root: Path = Path(".")) -> dict:
                       "unknown, not stale-but-usable. Delete this file freely — "
                       "keying refills it.")}
     doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
-    tmp = p.with_suffix(".json.tmp")
+    tmp = p.with_suffix(f".json.{os.getpid()}.tmp")
     tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n",
                    encoding="utf-8")
     tmp.replace(p)
+
+
+def record_ink(ref: str, report: dict, root: Path = Path(".")) -> dict:
+    """Reduce one `validate_page(ink=True)` result to a verdict, and store it.
+
+    The ink pass is ~0.20 s of raster work against ~1 ms for every other check, so
+    a list of 122 pages cannot run it on render. But the editor **already runs it**
+    on every page it opens and every page it saves, and the corpus sweep runs it
+    under `--ink`; the answer is being computed and thrown away. So it is written
+    here instead, and the list is a reader of what keying already produced rather
+    than a job that recomputes it.
+
+    **One page at a time is the editor's shape, not the sweep's** — a save is one
+    verdict and there is nothing to batch. A sweep uses `record_ink_many`, and the
+    reason is in that docstring.
+    """
+    ref = norm_ref(ref)
+    rec = _ink_verdict(ref, report, root)
+    data = load_ink_cache(root)
+    data[ref] = rec
+    _write_ink_cache(data, root)
     return dict(rec, ref=ref)
+
+
+def record_ink_many(items, root: Path = Path(".")) -> list[dict]:
+    """Verdicts for many pages, read once and written once.
+
+    `record_ink` is a read-modify-write of the **whole** file: it loads every
+    entry, replaces one, and re-serializes all of them. Called per page from a
+    sweep that is what 832 pages of it costs — the corpus sweep was re-reading and
+    re-writing a 130 KB JSON once for every page it checked, which is quadratic in
+    the size of the store for no reason anyone chose.
+
+    It is also the shape that cannot survive being parallelised: the loop would
+    have N workers each loading the file, adding their own entry and writing the
+    lot back, so every verdict but the last would be dropped. Reading once here and
+    writing once after the loop removes both, and the resulting file is identical —
+    entries are sorted by `parse_ref` on the way out either way.
+
+    `items` is `[(ref, report)]`, i.e. what a sweep already has in hand.
+    """
+    data = load_ink_cache(root)
+    out = []
+    for ref, report in items:
+        ref = norm_ref(ref)
+        rec = _ink_verdict(ref, report, root)
+        data[ref] = rec
+        out.append(dict(rec, ref=ref))
+    _write_ink_cache(data, root)
+    return out
 
 
 def set_ink_exempt(ref: str, regions: list[dict],
@@ -1461,20 +1511,23 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
         for name in _read_lst(_lst_path(root, s)):
             seen[name] = seen.get(name, 0) + 1
     dup = sorted(n for n, c in seen.items() if c > 1)
+    # A sweep that read 832 rasters and kept nothing would make the page list ask
+    # for the same work again — so the verdicts are kept, but **collected here and
+    # written once** after the loop rather than per page. `record_ink` rewrites the
+    # entire cache on every call, so calling it 832 times made the sweep quadratic
+    # in the size of the store; `record_ink_many` says the rest.
+    #
+    # **Only for the human store.** The cache is keyed by ref alone and stamped
+    # with the page ALTO's mtime, and it feeds the editor's page list, which lists
+    # ground truth. Letting a machine sweep write here would put two verdicts about
+    # one page under one key with nothing to tell them apart — a verdict about work
+    # nobody has done, drawn in the same column as one about work someone has. A
+    # machine page's ink is measured fresh when asked for, and recorded nowhere.
+    verdicts: list[tuple[str, dict]] = []
     for ref in (refs if refs is not None else zone_refs(root, store)):
         r = validate_page(ref, root, cfg, ink=ink, store=store)
         if ink and store == ZONEDIR:
-            # A sweep that read 122 rasters and kept nothing would make the page
-            # list ask for the same work again.
-            #
-            # **Only for the human store.** The cache is keyed by ref alone and
-            # stamped with the page ALTO's mtime, and it feeds the editor's page
-            # list, which lists ground truth. Letting a machine sweep write here
-            # would put two verdicts about one page under one key with nothing to
-            # tell them apart — a verdict about work nobody has done, drawn in the
-            # same column as one about work someone has. A machine page's ink is
-            # measured fresh when asked for, and recorded nowhere.
-            record_ink(ref, r, root)
+            verdicts.append((ref, r))
         n_err += len(r["errors"])
         n_warn += len(r["warnings"])
         for z in read_zones(ref, root, store=store):
@@ -1486,6 +1539,8 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                       or "; ".join(sorted({w["rule"] for w in r["warnings"]}))
                       or "",
         })
+    if verdicts:
+        record_ink_many(verdicts, root)
     # Counted off the reported rows rather than off the split files, so a scoped
     # sweep reports its own scope. Over the whole store the two agree.
     summary = {"pages": len(rows),

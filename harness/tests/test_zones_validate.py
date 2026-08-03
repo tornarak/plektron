@@ -763,3 +763,33 @@ def test_a_sweep_without_the_raster_records_nothing(tmp_path):
     zn.save_zones("1-048", covering(), tmp_path)
     zn.validate_corpus(tmp_path, cfg_for(), ink=False)
     assert zn.cached_ink("1-048", tmp_path) is None
+
+
+def test_batched_and_per_page_recording_write_the_same_file(tmp_path):
+    """`record_ink_many` is the sweep's writer and must not be a second opinion.
+
+    `record_ink` rewrites the *whole* cache per call, so a sweep calling it once a
+    page is quadratic in the size of the store — and, worse, it is the shape that
+    cannot be parallelised, since N workers would each load the file, add one entry
+    and write the lot back, dropping every verdict but the last. The batched form
+    reads once and writes once; this pins that the file it leaves is byte-identical
+    to what the per-page loop left, so the fix is a cost change and nothing else.
+    """
+    make_scan(tmp_path)
+    make_scan(tmp_path, ref="1-049")
+    zn.save_zones("1-048", covering(), tmp_path)
+    zn.save_zones("1-049", [zone("MainZone-Continued", 560, 1500)], tmp_path)
+    reports = [(r, zn.validate_page(r, tmp_path, cfg_for(), ink=True))
+               for r in ("1-048", "1-049")]
+    cache = zn.zone_dir(tmp_path) / zn.INK_CACHE_JSON
+
+    for ref, rep in reports:
+        zn.record_ink(ref, rep, tmp_path)
+    one_at_a_time = cache.read_text(encoding="utf-8")
+
+    cache.unlink()
+    zn.record_ink_many(reports, tmp_path)
+    assert cache.read_text(encoding="utf-8") == one_at_a_time
+    # And the verdicts themselves are the ones the page list draws.
+    assert {r["ref"]: r["state"] for r in zn.record_ink_many(reports, tmp_path)} == {
+        "1-048": "clean", "1-049": "ink"}
