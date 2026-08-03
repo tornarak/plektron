@@ -708,6 +708,43 @@ project trains raises `KeyError: 'hyper_params'` on its first inference —
 `kraken.models.loaders.load_models`, plus setting that key empty to restore the
 `padding = (0, 0)` the guarded branch would have given.
 
+A fourth, on the recognition side: `rpred.rpred` is **deprecated and removed in
+kraken 8**, and recognition now goes through `kraken.tasks.RecognitionTaskModel`
+with a `RecognitionInferenceConfig` (`recognize.load_recognizer`). Two things
+that cost time there. The config's `device` is **Lightning Fabric's**, not
+torch's — it is handed straight to `Fabric(devices=...)`, so `"cuda:0"` fails
+with `invalid literal for int() with base 10: 'cuda:0'`, naming neither the
+field nor the model; `recognize._fabric_placement` translates. And
+`no_legacy_polygons` was an argument to `rpred` and is a config field here, with
+the default flipped between them — left unset, the slow polygon path silently
+returns.
+
+**Recognition is not where `ocr predict` spends its time, and the measurement is
+worth keeping because it inverts the obvious fix.** A page is ~17 s:
+`blla.segment` is ~15 s of it and recognition ~1.5 s. Nor is the segmenter's time
+GPU work — profiled, it is scipy `correlate1d` (6.1 s), shapely `intersection`
+(2.2 s) and kraken's own `boundary_tracing`/`moore_neighborhood` (3.2 s), i.e.
+**baseline vectorization on one core**. That is what the ~4.5% mean GPU
+utilization is: a brief forward pass, then a quarter of a minute of CPU. So
+`batch_size` buys almost nothing — 17.4 s/page at 1 against 16.8 at 32.
+
+**The GPU was never the constraint, so this sweep wants cores.** `ocr predict`
+takes `--jobs`, and it is the one place in the harness where that means
+**processes** rather than threads. Measured over 8 pages: 14.16 s/page serial,
+7.89 with 4 threads, 5.14 with 4 processes — threads plateau at 4 and 8 is no
+better, which is what a ~55% GIL-free workload does, the cost being scipy and
+shapely with a lot of Python between them rather than one long C call. Through
+the CLI, four pages went 75.3 s → 32.9 s including four model loads, output
+byte-identical.
+
+Two things that follow. `spawn`, not fork — a forked child inherits a CUDA
+context it cannot use. And the default worker count is capped by **free VRAM as
+well as cores**, since a worker holds ~1.4 GB of CUDA context (the recognizer's
+weights are 22 MiB; almost none of it is the model). That cap is read off the card
+at run time rather than written down, for the same reason the column measure is
+derived: a constant here would be wrong on the next machine. A `--jobs` a human
+types wins outright, including one that will not fit.
+
 ### A `class_mapping` that has been through `--resize` is not trustworthy
 
 The first trained model **scored 0.2% label agreement on its own training data** —

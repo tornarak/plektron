@@ -210,7 +210,7 @@ project lost 18 pages. **`tags` on a `Region` is `{key: [{"type": label}]}`, nev
 so a bare string iterates characters, matches none, and writes `TAGREFS=""` against
 a lone `OtherTag LABEL="default"`: geometry, ids and reading order all correct, and
 the labels — the one thing the pass exists to add — silently absent. And **what
-gets serialized is the `ocr_record` list from `rpred`, never the lines with `text`
+gets serialized is the `ocr_record` list the recognizer returns, never the lines with `text`
 set on them**: `serialization.serialize` reads `record.prediction` and nothing else,
 so the obvious spelling writes `CONTENT=""` on every line, a well-formed page with
 no words on it, which is the `gt/fig/` failure exactly.

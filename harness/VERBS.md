@@ -407,6 +407,7 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 --seg-model PATH baseline segmentation model [models/blla.mlmodel]
 --rec-model PATH recognition model [models/catmus-print-fondue-large.mlmodel]
 --device DEV     torch device [auto]
+--jobs N         worker **processes**; 1 keeps the single-process path [cores, capped by free VRAM]
 --root --json
 ```
 

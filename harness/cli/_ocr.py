@@ -346,6 +346,11 @@ def register(sub, common):
                         "transcription inventory — a witness to geometry and to "
                         "English, and to nothing else")
     p.add_argument("--device", default="auto", help="torch device [auto]")
+    # **Processes here, where the other `--jobs` are threads**, because this is the
+    # one sweep whose cost is CPU-side vectorization inside kraken rather than a
+    # raster decode. The default is capped by free VRAM as well as by cores, since
+    # each worker holds ~1.4 GB of CUDA context.
+    add_jobs(p)
     p.set_defaults(func=run_predict)
 
     p = add("link", help="rebuild ocr/, the read view over gt/ocr/ and mz/ocr/, "
@@ -661,7 +666,7 @@ def run_predict(a) -> int:
     # ruled exempt would be skipped in silence by the very command that named it.
     refs = named or (load_itinerary(a.itinerary, a.root) if a.itinerary else None)
     rep = predict_all(a.root, refs, a.seg_model, a.rec_model, a.device, a.force,
-                      named=bool(named))
+                      named=bool(named), jobs=a.jobs)
     pages, skips = rep.pop("pages"), rep.pop("skips")
     print(emit(rep, getattr(a, "json", False)))
     # Three tables, three key sets. Emitting them as one list would collapse the

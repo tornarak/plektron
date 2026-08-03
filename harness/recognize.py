@@ -89,6 +89,36 @@ DEFAULT_SEG_MODEL = "models/blla.mlmodel"
 # any Tier-1 form in it as a reading.
 DEFAULT_REC_MODEL = "models/catmus-print-fondue-large.mlmodel"
 
+# How many of a page's lines go through one forward pass, and how many worker
+# processes extract them. kraken defaults these to 1 and 2.
+#
+# **Neither is where this pass spends its time, and that was worth measuring
+# before tuning.** Recognition is 1.5-1.9 s of a 17 s page; `blla.segment` is the
+# other 15 s, and it is not GPU work either — profiled, it is scipy `correlate1d`
+# (6.1 s), shapely `intersection` (2.2 s) and kraken's own `boundary_tracing` /
+# `moore_neighborhood` (3.2 s), i.e. baseline vectorization on one core. That is
+# what the ~4.5% mean GPU utilization is: a brief forward pass, then a quarter of a
+# minute of CPU.
+#
+# So batching buys almost nothing here — 17.4 s/page at `batch=1` against 16.8 at
+# `batch=32`, over a 3-page sample. 16 is kept because it costs nothing and a page
+# is 30-60 lines, so one batch usually *is* the page.
+#
+# `num_line_workers` is **0**, i.e. no pool at all. It spawns `torch.multiprocessing`
+# workers to feed a 1.5 s phase, which does not pay for itself over a short run and
+# adds a process-launch failure mode (it needs a real `__main__`, so it dies under
+# `python -` and anything else that execs a script from stdin).
+REC_BATCH = 16
+REC_LINE_WORKERS = 0
+
+# What one recognition process costs on the card, measured: ~1.4 GB, nearly all of
+# it CUDA/cuDNN context rather than weights (the recognizer's parameters are 22 MiB
+# and the segmenters touch the GPU only during their forward pass). Rounded up, and
+# used to divide *free* VRAM at run time rather than to assert a worker count —
+# the number that fits is a property of the card, and any constant written here
+# would be wrong on the next machine.
+VRAM_PER_WORKER = 1.6 * 1024 ** 3
+
 # Every id this pass mints. Provenance travelling with the data, as everywhere
 # else here: a block or line merged out of context still says what made it.
 ID_PREFIX = "mz_"
@@ -179,13 +209,24 @@ def load_recognizer(model_path: str | Path = DEFAULT_REC_MODEL,
                     root: Path = Path("."), device: str = "cpu"):
     """The recognition model, plus the sha256 that travels in every file.
 
-    `kraken.lib.models.load_any` rather than `models.loaders.load_models`, and the
-    difference matters: the latter returns a bare `TorchVGSLModel`, while `rpred`
-    needs the `TorchSeqRecognizer` that wraps it with a decoder and a codec. Handed
-    the unwrapped model it fails on a missing attribute rather than on a type, which
-    reads as a damaged model instead of the wrong constructor.
+    **`kraken.tasks.RecognitionTaskModel`, not `lib.models.load_any`.** The old
+    path fed `rpred.rpred`, which kraken 7.0.3 marks deprecated and removes in 8,
+    and which recognizes **one line per forward pass** — about 50 tiny GPU calls a
+    page with CPU polygon extraction between them, measured at 4.5% mean GPU
+    utilization. The task model takes a `RecognitionInferenceConfig` carrying
+    `batch_size` and `num_line_workers`, which is what lets a page's lines go
+    through together.
+
+    It wraps the bare `TorchVGSLModel` that `models.loaders.load_models` returns and
+    builds its own decoder, so the warning this docstring used to carry — that
+    `load_models` gives an unwrapped model where a `TorchSeqRecognizer` was needed —
+    no longer applies to this constructor. It still applies to `rpred`, which is why
+    it is recorded rather than deleted.
+
+    `device` is not passed here: placement is the config's, per call.
     """
-    from kraken.lib import models as lm
+    from kraken.models.loaders import load_models
+    from kraken.tasks import RecognitionTaskModel
 
     p = Path(model_path)
     if not p.is_absolute():
@@ -194,7 +235,24 @@ def load_recognizer(model_path: str | Path = DEFAULT_REC_MODEL,
         raise FileNotFoundError(
             f"no recognition model at {p}. `models/` carries stock CATMuS print "
             f"(large and tiny); {DEFAULT_REC_MODEL} is the default.")
-    return lm.load_any(str(p), device=device), Z._model_sha256(p)
+    return RecognitionTaskModel(load_models(str(p))), Z._model_sha256(p)
+
+
+def _fabric_placement(dev: str) -> tuple[str, object]:
+    """A torch device string as Lightning Fabric's `(accelerator, devices)`.
+
+    The two vocabularies do not overlap and the failure is unhelpful:
+    `prepare_for_inference` hands `config.device` straight to
+    `Fabric(devices=...)`, which wants `"auto"`, an int count or a list of
+    indices — so `"cuda:0"` comes back as `invalid literal for int() with base 10:
+    'cuda:0'`, which names neither the field nor the model. The rest of this
+    module speaks torch's spelling because `blla.segment` and `_resolve_device` do,
+    so the translation happens here rather than by changing what `--device` means.
+    """
+    if dev.startswith("cuda"):
+        _, _, idx = dev.partition(":")
+        return "gpu", [int(idx)] if idx else "auto"
+    return "cpu", "auto"
 
 
 @lru_cache(maxsize=4)
@@ -234,7 +292,8 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
             rec_net=None, rec_sha: str = "",
             seg_model: str | Path = DEFAULT_SEG_MODEL,
             rec_model: str | Path = DEFAULT_REC_MODEL,
-            device: str = "auto") -> dict:
+            device: str = "auto", batch_size: int = REC_BATCH,
+            line_workers: int = REC_LINE_WORKERS) -> dict:
     """Segment lines, recognize them, and write ALTO into `mz/ocr/`.
 
     A loaded model may be passed in — `predict_all` loads once for a whole sweep —
@@ -263,7 +322,8 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
             "flat would put a page in the store with no structure and nothing in "
             "it saying the structure was missing.")
 
-    from kraken import blla, containers, rpred, serialization
+    from kraken import blla, containers, serialization
+    from kraken.configs import RecognitionInferenceConfig
     from kraken.containers import ProcessingStep
     from PIL import Image
 
@@ -338,7 +398,20 @@ def predict(ref: str, root: Path = Path("."), seg_net=None, seg_sha: str = "",
     # gets a well-formed page with no words on it. The records preserve the `id`
     # and `regions` set above, so the structure survives the round trip; verified
     # rather than assumed, because nothing in the types says so.
-    records = list(rpred.rpred(rec_net, page, bound, no_legacy_polygons=True))
+    # **A page's lines go through together.** `rpred` yielded one record per
+    # forward pass, so a 50-line page was 50 tiny GPU calls with CPU polygon
+    # extraction and dewarping between them — 4.5% mean utilization, the GPU idle
+    # through every CPU phase. `batch_size` fills the forward pass;
+    # `num_line_workers` runs the extraction that feeds it in parallel.
+    #
+    # `no_legacy_polygons` has to be restated: it was an argument to `rpred` and is
+    # a config field here, and its default flips between the two. Left off, the
+    # slow polygon path silently comes back.
+    accel, devices = _fabric_placement(dev)
+    cfg = RecognitionInferenceConfig(
+        batch_size=batch_size, num_line_workers=line_workers,
+        no_legacy_polygons=True, accelerator=accel, device=devices)
+    records = list(rec_net.predict(page, bound, cfg))
     text = [r.prediction or "" for r in records]
 
     steps = [
@@ -423,7 +496,7 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 seg_model: str | Path = DEFAULT_SEG_MODEL,
                 rec_model: str | Path = DEFAULT_REC_MODEL,
                 device: str = "auto", force: bool = False,
-                named: bool = False) -> dict:
+                named: bool = False, jobs: int | None = None) -> dict:
     """Recognize over a work-list, or over every page that has zones.
 
     What is skipped and why is `predict_skip`'s; this loops and reports. A sweep is
@@ -431,10 +504,19 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     which over 832 pages of two models' inference is the difference between an
     interruption costing minutes and costing the run.
 
-    Both models load once for the whole sweep, which is most of why this exists as
-    a sweep rather than a shell loop over the single-page form. It is also why
+    Both models load once **per worker**, which is most of why this exists as a
+    sweep rather than a shell loop over the single-page form. It is also why
     several refs typed on the command line come *here* rather than looping the
     single-page form: naming two pages should not cost two model loads.
+
+    **The pages run in parallel processes, and the reason is that this is CPU
+    work.** A page is ~17 s, of which `blla.segment` is ~15 s and recognition
+    ~1.5 s — and the segmenter's time is scipy `correlate1d`, shapely
+    `intersection` and kraken's own boundary tracing, i.e. baseline vectorization
+    on one core. The GPU sits at ~4.5% mean utilization throughout, so this is the
+    one sweep in the harness that wants *cores*, not a fuller batch: measured over
+    8 pages, 14.16 s/page serial against 5.14 with four processes. `jobs=1` keeps
+    the single-process path exactly as it was.
 
     **`named` is `predict_skip`'s `single`, and it has to travel.** A ref a human
     typed means that page even if it is ruled exempt; without this the moment a
@@ -458,16 +540,99 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
 
     done = []
     if todo:
-        dev = _resolve_device(device)
-        seg_net, seg_sha = Z.load_segmenter(seg_model, root)
-        rec_net, rec_sha = load_recognizer(rec_model, root, dev)
-        for ref in todo:
-            done.append(predict(ref, root, seg_net, seg_sha, rec_net, rec_sha,
-                                seg_model, rec_model, dev))
+        n = predict_workers(jobs, len(todo))
+        if n == 1:
+            dev = _resolve_device(device)
+            seg_net, seg_sha = Z.load_segmenter(seg_model, root)
+            rec_net, rec_sha = load_recognizer(rec_model, root, dev)
+            for ref in todo:
+                done.append(predict(ref, root, seg_net, seg_sha, rec_net, rec_sha,
+                                    seg_model, rec_model, dev))
+        else:
+            done = _predict_pool(todo, n, root, seg_model, rec_model, device)
     return {"predicted": len(done), "skipped": len(skipped),
+            "workers": predict_workers(jobs, len(todo)) if todo else 0,
             "lines": sum(d["lines"] for d in done),
             "outside": sum(d["lines_outside_zones"] for d in done),
             "pages": done, "skips": skipped}
+
+
+# The models a worker process loads once, then keeps. Module-level because a
+# `spawn`ed worker has to reach them by import rather than by closure.
+_WORKER: dict = {}
+
+
+def _worker_init(root: Path, seg_model, rec_model, device: str) -> None:
+    import os
+
+    os.chdir(root)
+    dev = _resolve_device(device)
+    seg_net, seg_sha = Z.load_segmenter(seg_model, root)
+    rec_net, rec_sha = load_recognizer(rec_model, root, dev)
+    _WORKER.update(root=root, dev=dev, seg_net=seg_net, seg_sha=seg_sha,
+                   rec_net=rec_net, rec_sha=rec_sha,
+                   seg_model=seg_model, rec_model=rec_model)
+
+
+def _worker_predict(ref: str) -> dict:
+    w = _WORKER
+    return predict(ref, w["root"], w["seg_net"], w["seg_sha"],
+                   w["rec_net"], w["rec_sha"], w["seg_model"], w["rec_model"],
+                   w["dev"])
+
+
+def _predict_pool(todo, n, root, seg_model, rec_model, device) -> list[dict]:
+    """`todo` across `n` processes, each loading the models once.
+
+    **Processes, not the thread pool the raster sweeps use**, and the difference
+    is measured rather than assumed. Over 8 pages: 14.16 s/page serial, 7.89 with
+    4 threads (1.8x), 5.14 with 4 processes (2.8x, and that figure *includes* four
+    model loads). Threads plateau at 4 and 8 is no better, which is what a ~55%
+    GIL-free workload does — the segmenter's cost is scipy and shapely with a lot
+    of Python between them, not one long C call.
+
+    **`spawn`, not fork.** A forked child inherits a CUDA context it cannot use.
+
+    Results come back in `todo` order, so the report does not reshuffle by which
+    page happened to finish first.
+    """
+    import multiprocessing as mp
+    from concurrent.futures import ProcessPoolExecutor
+
+    with ProcessPoolExecutor(
+            max_workers=n, mp_context=mp.get_context("spawn"),
+            initializer=_worker_init,
+            initargs=(root, seg_model, rec_model, device)) as ex:
+        return list(ex.map(_worker_predict, todo))
+
+
+def predict_workers(jobs: int | None, n_pages: int) -> int:
+    """How many processes a sweep will use.
+
+    **Capped by VRAM, not only by cores**, and the cap is derived rather than
+    written down: a worker holds ~1.4 GB of CUDA context and weights, so the
+    number that fits is a property of the card in the machine and a constant here
+    would be wrong on the next one. Card memory is read at run time and the
+    per-worker figure is the measured one.
+
+    A `jobs` a human typed wins outright, including one that will not fit — the
+    same rule `predict_skip`'s `single` follows. Naming it is the request.
+    """
+    import os
+
+    if jobs is not None:
+        if jobs < 1:
+            raise ValueError(f"--jobs must be at least 1, got {jobs}")
+        return min(jobs, n_pages)
+    n = max(1, min(os.process_cpu_count() or 1, 4))
+    try:
+        import torch
+        if torch.cuda.is_available():
+            free, _total = torch.cuda.mem_get_info()
+            n = max(1, min(n, int(free / VRAM_PER_WORKER)))
+    except Exception:
+        pass
+    return min(n, n_pages)
 
 
 # ------------------------------------------------------------------ the view
