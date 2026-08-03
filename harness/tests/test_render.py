@@ -237,11 +237,74 @@ def test_the_pipe_path_never_imports_rich():
     assert p.stderr.strip().endswith("False"), p.stderr
 
 
-def test_json_mode_stays_parseable_for_a_single_section():
-    """The half of the `--json` contract that already holds.
+# -------------------------------------------------------------- one document
 
-    A verb printing several sections emits several documents and `json.load`
-    rejects it — 15 of 58 captured invocations. That is a defect of the CLI's
-    section handling rather than of the serializer, and it is fixed one step up.
+
+@pytest.fixture(autouse=True)
+def _no_leftover_sections():
+    """The buffer is module state, so a test that collects and never flushes
+    would leak into the next one — and the failure would land somewhere else."""
+    R._SECTIONS.clear()
+    yield
+    R._SECTIONS.clear()
+
+
+def test_a_single_section_is_the_bare_payload():
+    """43 of the 58 captured invocations print one section, and they must not
+    grow a wrapper for the sake of the 15 that print several."""
+    R.collect(None, ROWS, "check")
+    assert json.loads(R.flush()) == ROWS
+
+
+def test_several_sections_become_one_keyed_document():
+    """`--json` is the flag whose entire purpose is being parseable, and it was
+    emitting several documents on one stream — `tei validate` with two refs even
+    interleaved `# 1-100` comment lines between them."""
+    R.collect(None, {"ok": True}, "check")
+    R.collect("pages", ROWS, "check")
+    assert json.loads(R.flush()) == {"check": {"ok": True}, "pages": ROWS}
+
+
+def test_the_primary_section_takes_the_action_name():
+    """So a verb names only its *extra* tables. Requiring the main one to be
+    named as soon as a second appeared would couple two call sites that know
+    nothing about each other, and would break the moment the second became
+    conditional — which it is, in every one of these verbs."""
+    R.collect(None, [1], "paragraphs")
+    R.collect("boundaries", [2], "paragraphs")
+    assert list(json.loads(R.flush())) == ["paragraphs", "boundaries"]
+
+
+def test_a_name_collision_refuses_rather_than_dropping_a_table():
+    """Two sections resolving to one key would put a whole table in the other's
+    slot, silently, and the consumer would see a plausible document missing half
+    its content. This is the failure the refusal exists for; it is also exactly
+    what every one of the 15 broken verbs did before it was named."""
+    R.collect(None, [1], "check")
+    R.collect(None, [2], "check")
+    with pytest.raises(ValueError, match="distinct name"):
+        R.flush()
+
+
+def test_flush_empties_the_buffer():
+    R.collect(None, [1], "x")
+    R.flush()
+    assert R.flush() is None
+
+
+def test_a_real_two_section_verb_emits_one_document(tmp_path, capsys):
+    """End to end through `main`, because the unit tests above cannot see the
+    wiring: the buffering only helps if `out` actually defers and `main`
+    actually flushes, and either could be right alone while the pair is not.
+
+    `corpus normalize` is the cheapest two-section verb — over an empty root it
+    still runs both passes, which is the point of it having two (`scan`
+    classifies characters, `convert` reports the files it would rewrite; folding
+    them would leave the preview agreeing with itself).
     """
-    assert json.loads(R.render(ROWS, "json")) == ROWS
+    from harness.cli import main
+
+    assert main(["--root", str(tmp_path), "corpus", "normalize", "--all",
+                 "--json"]) == 0
+    doc = json.loads(capsys.readouterr().out)
+    assert list(doc) == ["normalize", "would_convert"]

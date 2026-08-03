@@ -289,7 +289,7 @@ def run_check(a) -> int:
                  else zmod.page_zones_table(r, a.root, store=store))
                 for r in refs]
         if any(v for _, v in rows):
-            out_per_ref(a, rows)
+            out_per_ref(a, rows, "lines" if a.lines else "zones")
         bad = any(rep["errors"] for _, rep in reps)
         return 1 if (bad and store == zmod.ZONEDIR) else 0
     summary, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink,
@@ -297,7 +297,7 @@ def run_check(a) -> int:
                                          jobs=a.jobs)
     out(a, summary)
     if rows:
-        out(a, rows)
+        out(a, rows, "pages")
     return 1 if (summary["errors"] and store == zmod.ZONEDIR) else 0
 
 
@@ -429,7 +429,7 @@ def run_diff(a) -> int:
             "by_kind": " ".join(f"{k}:{v}" for k, v in
                                 sorted(Counter(r["kind"] for r in rows).items()))})
     if rows:
-        out(a, rows)
+        out(a, rows, "differences")
     return 0
 
 
@@ -440,7 +440,7 @@ def run_paragraphs(a) -> int:
                                          jobs=a.jobs)
     out(a, summary)
     if rows:
-        out(a, rows)
+        out(a, rows, "boundaries")
     return 0
 
 

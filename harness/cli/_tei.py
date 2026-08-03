@@ -14,10 +14,11 @@ from ..context import build_context
 from ..emit import emit_lines
 from ..ids import fix_page as fix_ids
 from ..ids import pair_glosses
+from ..render import mode, rule
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
 from ..validate import check_corpus_header, validate
-from ._common import REF_HELP, out, out_per_ref, page_refs, refs_arg, section
+from ._common import REF_HELP, out, out_per_ref, page_refs, refs_arg
 
 
 def register(sub, common):
@@ -125,14 +126,21 @@ def run_context(a) -> int:
     return 0
 
 
-def _render_gate(a, rep) -> int:
+def _render_gate(a, rep, name: str | None = None) -> int:
     """A Report's two faces. The default is the rendered text, because a human
     reads it to decide whether to commit; `--json` is for anything consuming the
-    verdict as data. The exit code is the contract either way."""
+    verdict as data. The exit code is the contract either way.
+
+    `name` is the ref, and only when several were given: under `--json` this verb
+    emits one section per page, so without it the document would be N objects on
+    one stream with `# 1-100` comment lines between them — which is what it was,
+    and what `json.load` refused."""
     if getattr(a, "json", False):
         out(a, {"ok": rep.ok, "errors": rep.errors, "warnings": rep.warnings,
-                "worklist": rep.worklist, "metrics": rep.metrics})
+                "worklist": rep.worklist, "metrics": rep.metrics}, name)
     else:
+        if name:
+            print(f"# {name}" if mode(a) == "toon" else rule(name))
         print(rep.render())
     return 0 if rep.ok else 1
 
@@ -153,11 +161,10 @@ def run_validate(a) -> int:
     refs = page_refs(a) or _collated(a.root)
     worst = 0
     for r in refs:
-        if len(refs) > 1:
-            section(a, r)
         ctx = build_context(r, a.root)
         worst = max(worst, _render_gate(a, validate(Path(ctx["output_path"]), ctx,
-                                                    ratified=a.ratified)))
+                                                    ratified=a.ratified),
+                                        r if len(refs) > 1 else None))
     return worst
 
 

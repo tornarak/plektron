@@ -469,6 +469,23 @@ columns and neither has to say so. Four properties bind callers:
 - **Scalars are spelled as TOON spells them** — `null`, `true`, `false`. Two
   renderings disagreeing about the word for a value would put `None` in front of a
   human and `null` in front of the model for the same ledger cell.
+- **`--json` is one document per invocation.** Sections buffer through `collect`
+  and `main` emits them with `flush`: bare when a verb printed one, an object
+  keyed by section when it printed several, the first key defaulting to the
+  action's own name so a verb names only its *extra* tables. It used to emit N
+  documents on one stream — 15 of 58 measured invocations were not
+  `json.load`-able, on the one flag whose purpose is being parseable. A **name
+  collision refuses**, because two sections sharing a key would drop a whole
+  table into the other's slot and leave a consumer a plausible document missing
+  half its content. Known limit, stated rather than half-fixed: the key set
+  follows which sections had content, so consumers should use `.get()`; making
+  the shape a pure function of the verb would mean each declaring a schema.
+- **A section's `name` is a JSON key, not a heading.** TOON prints a `# name`
+  line only where one was already printed (`out_per_ref`'s split-out list
+  fields), because TOON is what every skill and every model reads and naming a
+  section must not change it. Table mode labels every named section, having no
+  legacy and needing the label: several aligned tables in a row are otherwise
+  indistinguishable from one table that changed shape.
 - **rich is imported lazily and only in table mode**, because it costs 38 ms
   against `harness.cli`'s 55 ms on a CLI whose whole `--help` is 110 ms. It has to
   be rich rather than a hand-rolled aligner for this corpus's own reason:

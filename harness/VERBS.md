@@ -98,6 +98,21 @@ verdict. Both are marked below. Several actions print two tables rather than
 one, because TOON collapses a uniform record list and degrades on a ragged key
 set, so two key sets must be two tables.
 
+**`--json` is always exactly one document.** Where an action prints one table it
+is that table, bare. Where it prints several they become one object keyed by
+section — the first taking the action's own name, the rest their own:
+`zones check REF --json` is `{"check": {…}, "zones": [...]}`, `corpus normalize`
+is `{"normalize": {…}, "would_convert": {…}}`, `tei validate` with several refs
+keys each report on its ref. It used to emit N documents on one stream with `#`
+comment lines between them, which `json.load` rejects — 15 of 58 measured
+invocations — on the one flag whose purpose is being parseable. TOON output is
+unchanged either way, including those `#` lines.
+
+Two things to know before consuming it. **The key set follows which sections had
+content**, so an action whose second table is empty this run omits its key: use
+`.get()`. And the object is emitted **whatever the exit code is** — `views
+check` and `tei validate` legitimately return 1 with a full payload.
+
 **Argument validation is argparse's.** Mutually exclusive modes are declared,
 not resolved by precedence; conditionally-required flags are `required=True`;
 constrained values carry `choices=` or a validator. A flag whose scope is

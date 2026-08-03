@@ -87,6 +87,64 @@ def colour() -> bool:
     return sys.stdout.isatty()
 
 
+# ------------------------------------------------------------------ sections
+#
+# A verb may print several tables, because TOON collapses a uniform record list and
+# degrades on a ragged key set, so two key sets have to be two tables. Under
+# `--json` that meant several *documents* on one stream — 15 of 58 captured
+# invocations were not `json.load`-able, including `tei validate` with two refs,
+# which interleaves `# 1-100` comment lines between objects. `--json` is the flag
+# whose entire purpose is being parseable.
+#
+# So JSON mode buffers instead of printing, and `flush` emits **one document**:
+# the payload bare when a verb printed one section, an object keyed by section name
+# when it printed several. Nothing changes for TOON or table mode, and 43 of the 58
+# stay byte-identical.
+#
+# **Known limit, stated rather than half-fixed.** The key set reflects which
+# sections had content, so a verb whose second table is empty this run omits its
+# key. Making the shape a pure function of the verb would mean each one declaring a
+# schema, which does not exist here and is a much larger job than making the output
+# parseable. Consumers should use `.get()`. What *is* guaranteed is that the stream
+# is always one document, and `_MULTI` below refuses rather than silently emitting
+# two — a verb that grows a second section without naming it fails loudly at the
+# call site instead of quietly at the consumer's.
+_SECTIONS: list[tuple[str | None, object, str | None]] = []
+
+
+def collect(name: str | None, obj, default: str | None = None) -> None:
+    _SECTIONS.append((name, obj, default))
+
+
+def flush() -> str | None:
+    """The buffered sections as one JSON document, or None if nothing buffered.
+
+    **A verb names only its extra sections.** The primary table is whatever the
+    action is called, filled in here, so `zones check --json` reads
+    `{"check": {...}, "pages": [...]}` and a verb does not have to name its main
+    output merely because a second one exists further down — which would couple
+    two call sites that know nothing about each other, and would break the moment
+    a conditional second table appeared.
+
+    What refuses is a **collision**: two sections resolving to one key would drop
+    a whole table into the other's slot, silently, and a consumer would see a
+    plausible document missing half its content.
+    """
+    sections, _SECTIONS[:] = list(_SECTIONS), []
+    if not sections:
+        return None
+    if len(sections) == 1:
+        return emit(sections[0][1], as_json=True)
+    names = [n or d or "" for n, _, d in sections]
+    if len(set(names)) != len(names) or not all(names):
+        raise ValueError(
+            f"--json: {len(sections)} sections resolve to {sorted(set(names))} — a "
+            "verb printing more than one table must give each a distinct name, or "
+            "they cannot be one document (see harness/render.py)")
+    return emit(dict(zip(names, (o for _, o, _ in sections), strict=True)),
+                as_json=True)
+
+
 def render(obj, m: str = "toon") -> str:
     """Serialize a payload for one of the three modes. Never mutates `obj`."""
     if m == "json":

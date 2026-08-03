@@ -499,7 +499,8 @@ def run_blot(a) -> int:
         todo, pmap(lambda r: write_blot(r, dest, _alto_dir(a), a.root),
                    todo, a.jobs), strict=True)))
     if skipped:
-        out(a, {"skipped_fresh": len(skipped), "refs": " ".join(skipped)})
+        out(a, {"skipped_fresh": len(skipped), "refs": " ".join(skipped)},
+            "skipped_fresh")
     return 0
 
 
@@ -564,7 +565,7 @@ def run_review(a) -> int:
         sums.append((r, summary(spans, n)))
         queues.append((r, spans if a.spans else group_spans(spans)))
     out_per_ref(a, sums)
-    out_per_ref(a, queues)
+    out_per_ref(a, queues, "spans" if a.spans else "groups")
     return 0
 
 
@@ -608,11 +609,11 @@ def run_restore(a) -> int:
         rep = pairs[0][1]
         out(a, {k: v for k, v in rep.items() if k != "edits"})
         if rep.get("edits"):
-            out(a, rep["edits"])
+            out(a, rep["edits"], "edits")
     else:
         out_per_ref(a, pairs)
     if skipped:
-        out(a, skipped)
+        out(a, skipped, "skipped")
     return 0
 
 
@@ -677,9 +678,9 @@ def run_predict(a) -> int:
     # in the longest-running verb there is, where a silent divergence would take
     # the longest to notice.
     if pages:
-        out(a, pages)
+        out(a, pages, "pages")
     if skips:
-        out(a, skips)
+        out(a, skips, "skips")
     return 0
 
 

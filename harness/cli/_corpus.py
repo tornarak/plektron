@@ -111,7 +111,8 @@ def run_normalize(a) -> int:
     out(a, rep)
     would = convert(a.root, dry_run=True, paths=paths)
     out(a, {"would_write": len(would["changed"]),
-            "files": " ".join(c["path"] for c in would["changed"]) or None})
+            "files": " ".join(c["path"] for c in would["changed"]) or None},
+        "would_convert")
     # NFD drift, an unlicensed mark, and §2.9 spacing drift all block: each is an
     # error with no reading to adjudicate. The lookalike census does not — it is
     # a to-key worklist needing a human ruling on what the page prints, which is

@@ -58,6 +58,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from ..render import flush
 from . import _corpus, _find, _lexicon, _ocr, _proposal, _tei, _views, _zones
 from ._common import (
     add_output_flags,
@@ -105,7 +106,15 @@ def main(argv=None):
 
     a = ap.parse_args(argv)
     try:
-        return a.func(a)
+        rc = a.func(a)
+        # **The flush is here rather than in `out`, and it runs whatever the exit
+        # code is.** Under `--json` a verb's sections are buffered so several
+        # tables become one document, and `views check` and `tei validate`
+        # legitimately return 1 with a full payload — a flush conditional on
+        # success would drop exactly the report a caller wanted the verdict for.
+        if (doc := flush()) is not None:
+            print(doc)
+        return rc
     except (ValueError, FileNotFoundError, KeyError, OSError) as e:
         # `OSError` covers the parsers, which raise it rather than
         # `FileNotFoundError` for a missing file — `etree.parse` on an absent ALTO

@@ -24,7 +24,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from ..render import mode, render
+from ..render import collect, mode, render, rule
 
 
 def globals_parser() -> argparse.ArgumentParser:
@@ -57,7 +57,7 @@ def add_output_flags(p):
     return p
 
 
-def out(a, obj) -> None:
+def out(a, obj, name: str | None = None, heading: bool = False) -> None:
     """Emit one section. Aligned table at a terminal, TOON down a pipe, JSON under `--json`.
 
     A verb emitting several sections calls this several times, deliberately: TOON
@@ -67,23 +67,29 @@ def out(a, obj) -> None:
     The mode is `render.mode(a)` and is decided per invocation, not per section, so
     a verb cannot emit a table and then a TOON block. Which one it is has exactly
     one input beyond the two flags — `sys.stdout.isatty()`.
+
+    **`name` is a section's key, not a heading**, and the distinction is what
+    keeps the model's view byte-identical. Under `--json` the sections become one
+    keyed document, so a verb printing a second table has to name it or
+    `render.flush` refuses; the single-section verbs — 43 of the 58 measured —
+    name nothing and are untouched. But naming a section must not make a `# name`
+    line appear in **TOON** where none was printed before, since TOON is what
+    every skill and every model reads. So `heading` is separate and is passed only
+    where such a line was already going out: `out_per_ref`'s split-out list
+    fields, which have printed `# field` since they existed.
+
+    **Table mode labels every named section**, `heading` or not, because it has no
+    legacy to preserve and because there the label is doing work a `#` line was
+    not: several aligned tables in a row are otherwise indistinguishable from one
+    table that changed shape.
     """
-    print(render(obj, mode(a)))
-
-
-def section(a, name: str) -> None:
-    """The label above a verb's second and subsequent sections.
-
-    A literal `# name` line in TOON and JSON mode, unchanged, because it is what
-    anything grepping this output already matches on. At a terminal it becomes a
-    rule, since a table already has a header row and a second bare `#` line above
-    it reads as part of the data.
-    """
-    if mode(a) != "table":
-        print(f"# {name}")
+    m = mode(a)
+    if m == "json":
+        collect(name, obj, getattr(a, "action", None))
         return
-    from ..render import rule
-    print(rule(name))
+    if name and (heading or m == "table"):
+        print(f"# {name}" if m == "toon" else rule(name))
+    print(render(obj, m))
 
 
 REF_HELP = "page ref: part and scan index, e.g. 1-048"
@@ -194,8 +200,13 @@ def one_page_only(a, flags: dict[str, str], refs: list[str]) -> None:
                              f"not {len(refs)}")
 
 
-def out_per_ref(a, pairs) -> None:
+def out_per_ref(a, pairs, name: str | None = None) -> None:
     """Emit one payload per ref: as-is for one, pooled with a `ref` column for N.
+
+    `name` is `out`'s, and needed for the same reason: an action calling this
+    twice — `zones check REF` for its findings then its zones, `ocr review` for
+    its summary then its queue — has two sections, and under `--json` they have
+    to be two keys of one document.
 
     One ref emits exactly what the single-ref form always emitted, so every
     example in VERBS.md and in the skills stays literally correct; several pool
@@ -237,10 +248,10 @@ def out_per_ref(a, pairs) -> None:
     the rule `emit`'s own docstring states and the detectors already follow.
     """
     if len(pairs) == 1 and not getattr(a, "all", False):
-        out(a, pairs[0][1])
+        out(a, pairs[0][1], name)
         return
     if not pairs:
-        out(a, [])
+        out(a, [], name)
         return
 
     # An **ordered** set, so the `# field` blocks below follow the record's own
@@ -255,7 +266,7 @@ def out_per_ref(a, pairs) -> None:
                 if isinstance(v, list):
                     listy.setdefault(k)
     if not listy:
-        _pool(a, pairs)
+        _pool(a, pairs, name)
         return
 
     # **Which treatment a list field gets is decided per field over every page,
@@ -274,20 +285,20 @@ def out_per_ref(a, pairs) -> None:
             return v
         return len(v) if key in tabular else " ".join(map(str, v))
 
-    _pool(a, [(r, {k: _cell(k, v) for k, v in rep.items()}) for r, rep in pairs])
+    _pool(a, [(r, {k: _cell(k, v) for k, v in rep.items()}) for r, rep in pairs],
+          name)
     for key in tabular:
         found = [(r, rep[key]) for r, rep in pairs if rep.get(key)]
         if found:
-            section(a, key)
             # **Pooled even when one page contributed.** At the top level the count
             # decides the shape because the caller named one page; here the caller
             # named several and these rows are a *subset* of them, so dropping the
             # `ref` column would leave a table whose rows belong to a page it does
             # not name — findable only by elimination.
-            _pool(a, found)
+            _pool(a, found, name=key, heading=True)
 
 
-def _pool(a, pairs) -> None:
+def _pool(a, pairs, name: str | None = None, heading: bool = False) -> None:
     """Flatten `[(ref, payload)]` into one table with `ref` first, unconditionally."""
     rows = []
     for ref, payload in pairs:
@@ -298,7 +309,7 @@ def _pool(a, pairs) -> None:
                         f"cannot pool {ref}: field {k!r} is a list, which would "
                         "degrade the table — emit it as its own ref-keyed table")
             rows.append({"ref": ref, **item})
-    out(a, rows)
+    out(a, rows, name, heading)
 
 
 # Retired tier-1 verbs -> where each went. Keys are what `argv[1]` used to be.
