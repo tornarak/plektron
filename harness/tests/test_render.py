@@ -12,6 +12,7 @@ values are not.
 """
 from __future__ import annotations
 
+import io
 import json
 import re
 import sys
@@ -290,6 +291,80 @@ def test_flush_empties_the_buffer():
     R.collect(None, [1], "x")
     R.flush()
     assert R.flush() is None
+
+
+# ------------------------------------------------------------------- progress
+
+
+class _FakeTTY(io.StringIO):
+    def isatty(self):
+        return True
+
+
+# Broader than ANSI: a redrawing bar uses cursor-up and erase-line (`[1A`, `[2K`)
+# as well as colour, and `ANSI` deliberately matches only SGR — the payload tests
+# want to see anything else that leaks into a table.
+CSI = re.compile(r"\033\[[0-9;?]*[a-zA-Z]")
+
+
+def _frames(buf) -> list[str]:
+    return [f.strip() for f in CSI.sub("\n", buf.getvalue()).split("\n") if f.strip()]
+
+
+def test_no_bar_when_stderr_is_not_a_terminal(monkeypatch):
+    """`tick` is None and `pmap` skips the call entirely, so a redirected run does
+    exactly what it did before the bar existed. That is what keeps the four
+    benched sweeps diffable against `--jobs 1`."""
+    buf = io.StringIO()
+    monkeypatch.setattr(sys, "stderr", buf)
+    with R.progress("x") as tick:
+        assert tick is None
+    assert buf.getvalue() == ""
+
+
+def test_a_short_sweep_draws_nothing(monkeypatch):
+    """The threshold is elapsed time, not item count. A bar that flashes for
+    200 ms is noise, and a count cannot tell a 4-page raster sweep from a 40-page
+    `ocr lines` — one is seconds and the other is milliseconds."""
+    from harness.parallel import pmap
+
+    buf = _FakeTTY()
+    monkeypatch.setattr(sys, "stderr", buf)
+    monkeypatch.setattr(R, "PROGRESS_AFTER", 10.0)
+    with R.progress("checking") as tick:
+        pmap(lambda x: x, range(30), 4, tick)
+    assert _frames(buf) == []
+
+
+def test_a_long_sweep_draws_a_bar_and_leaves_nothing_behind(monkeypatch):
+    from harness.parallel import pmap
+
+    buf = _FakeTTY()
+    monkeypatch.setattr(sys, "stderr", buf)
+    monkeypatch.setattr(R, "PROGRESS_AFTER", 0.0)
+    with R.progress("checking zones") as tick:
+        pmap(lambda x: x, range(30), 4, tick)
+    # Against the whole stream rather than the last frame: rich's Live refreshes
+    # on its own clock, so which frame is last depends on thread timing.
+    drawn = " ".join(_frames(buf))
+    assert drawn, "no bar drawn"
+    assert "checking zones" in drawn and "30/30" in drawn
+    # `transient`: the payload is what should stay on the screen, not the bar, so
+    # the last thing written is an erase rather than the final count.
+    assert buf.getvalue().rstrip().endswith("\033[2K")
+
+
+def test_the_bar_names_the_current_item(monkeypatch):
+    """"Which page is it on" is most of what a progress line is for on a sweep
+    that takes seventeen seconds a page."""
+    from harness.parallel import pmap
+
+    buf = _FakeTTY()
+    monkeypatch.setattr(sys, "stderr", buf)
+    monkeypatch.setattr(R, "PROGRESS_AFTER", 0.0)
+    with R.progress("recognizing") as tick:
+        pmap(lambda x: x, [f"1-{i:03d}" for i in range(30)], 1, tick)
+    assert "1-029" in " ".join(_frames(buf))
 
 
 # ---------------------------------------------------------------------- pager

@@ -93,6 +93,15 @@ alongside `--root` and `--no-pager`; the four share the trailing
 `--root --json --toon --no-pager` line of each fence below rather than being
 restated per entry.
 
+**Long sweeps draw a progress bar on stderr.** The pooled raster sweeps (`zones
+check --ink`, `zones paragraphs`, `zones blot`, `ocr gaps`, `ocr blot`) and the
+slow serial ones (`ocr predict`, `zones predict`, `ocr crops`/`sheets`/`zoom`)
+report the page they are on, how many are done and how long it has taken. It
+appears only when stderr is a terminal and only once the work has run for about
+half a second, so a short run stays silent and a redirected one is byte-identical
+to a run with no bar at all. stdout is untouched: `harness … > file` holds exactly
+the payload.
+
 **The pager is `$PAGER`, default `less -SRFX`, and only in table mode.** It is
 always started there and `-F` decides whether it shows — content that already
 fits one screen is printed and the pager exits, so there is no length threshold

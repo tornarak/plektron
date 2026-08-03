@@ -1496,8 +1496,8 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
 def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
                     ink: bool = False, refs: list[str] | None = None,
-                    store: str = ZONEDIR,
-                    jobs: int | None = None) -> tuple[dict, list[dict]]:
+                    store: str = ZONEDIR, jobs: int | None = None,
+                    tick=None) -> tuple[dict, list[dict]]:
     """Every keyed page, one flat record each, plus a summary.
 
     Two returns rather than one nested object because TOON collapses a uniform
@@ -1549,7 +1549,7 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
 
     verdicts: list[tuple[str, dict]] = []
     todo = list(refs if refs is not None else zone_refs(root, store))
-    for ref, r, zs in pmap(_measure, todo, jobs):
+    for ref, r, zs in pmap(_measure, todo, jobs, tick):
         if ink and store == ZONEDIR:
             verdicts.append((ref, r))
         n_err += len(r["errors"])
@@ -1621,7 +1621,7 @@ def blot_one(ref: str, root: Path = Path(".")) -> dict:
             "painted": rep["painted"]}
 
 
-def blot_all(root: Path = Path("."), jobs: int | None = None) -> dict:
+def blot_all(root: Path = Path("."), jobs: int | None = None, tick=None) -> dict:
     """Rebuild the whole blotted corpus.
 
     **Unconditional because it is cheap, not because freshness is unknowable** —
@@ -1659,7 +1659,7 @@ def blot_all(root: Path = Path("."), jobs: int | None = None) -> dict:
     rasters = [r for r in refs if has_fig[r]]
 
     results = [blot_one(r, root) for r in links]
-    results += pmap(lambda r: blot_one(r, root), rasters, jobs)
+    results += pmap(lambda r: blot_one(r, root), rasters, jobs, tick)
 
     painted = sum(1 for r in results if r["action"] == "painted")
     linked = sum(1 for r in results if r["action"] == "linked")
@@ -2125,7 +2125,7 @@ def predict_skip(ref: str, root: Path = Path("."), force: bool = False,
 def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 model_path: str | Path = DEFAULT_MODEL,
                 device: str = "auto", decode: str = "raw",
-                force: bool = False, named: bool = False) -> dict:
+                force: bool = False, named: bool = False, tick=None) -> dict:
     """Predict over a work-list, or over every page that has a blotted raster.
 
     What is skipped and why is `predict_skip`'s; this loops and reports. A sweep is
@@ -2154,7 +2154,11 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
     started = time.monotonic()
     done, no_blot, exempted, already = 0, [], 0, 0
     zones = 0
-    for ref in refs:
+    # `ptrack` counts every ref including the skips, deliberately: the denominator
+    # a caller wants is the work-list they named, not the subset that turned out to
+    # need running, which is not knowable until each page has been asked about.
+    from .parallel import ptrack
+    for ref in ptrack(refs, tick):
         why = predict_skip(ref, root, force, splits, single=named)
         if why == "ruled not a text page":
             exempted += 1
@@ -2606,9 +2610,9 @@ def _same_label_runs(zones: list[dict]) -> list[list[dict]]:
 
 
 def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
-                    refs: list[str] | None = None,
-                    store: str = ZONEDIR,
-                    jobs: int | None = None) -> tuple[dict, list[dict]]:
+                    refs: list[str] | None = None, store: str = ZONEDIR,
+                    jobs: int | None = None,
+                    tick=None) -> tuple[dict, list[dict]]:
     """How well the indent rule finds paragraph boundaries, and where it does not.
 
     Both directions in one pass, because quoting either alone has already caused
@@ -2732,7 +2736,7 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
         return acc
 
     todo = list(refs if refs is not None else zone_refs(root, store))
-    for acc in pmap(_one, todo, jobs):
+    for acc in pmap(_one, todo, jobs, tick):
         if acc is None:            # exempt, unkeyed, or no raster — not a page read
             continue
         pages += 1

@@ -46,8 +46,10 @@ from ..lines import (
     write_line_sheets,
     write_line_zoom,
 )
+from ..parallel import ptrack
 from ..paths import clean, crops_dir, ensure_page_link, html_path, sheets_dir, zoom_dir
 from ..recognize import DEFAULT_REC_MODEL, DEFAULT_SEG_MODEL
+from ..render import progress
 from ..review import (
     corrections,
     group_spans,
@@ -402,9 +404,10 @@ def run_lines(a) -> int:
 def run_gaps(a) -> int:
     from ..parallel import pmap
     refs = _store_refs(a)
-    out_per_ref(a, list(zip(
-        refs, pmap(lambda r: line_gaps(r, _alto_dir(a), a.root), refs, a.jobs),
-        strict=True)))
+    with progress("measuring ink") as tick:
+        done = pmap(lambda r: line_gaps(r, _alto_dir(a), a.root), refs, a.jobs,
+                    tick)
+    out_per_ref(a, list(zip(refs, done, strict=True)))
     return 0
 
 
@@ -431,10 +434,12 @@ def run_crops(a) -> int:
     refs = page_refs(a)
     one_page_only(a, {"out": "--out"}, refs)
     pairs = []
-    for r in refs:
-        _page_link(a, r)
-        pairs.append((r, write_line_crops(r, a.out or crops_dir(r, a.root),
-                                          _alto_dir(a), a.root, margins=a.margins)))
+    with progress("cropping") as tick:
+        for r in ptrack(refs, tick):
+            _page_link(a, r)
+            pairs.append((r, write_line_crops(
+                r, a.out or crops_dir(r, a.root), _alto_dir(a), a.root,
+                margins=a.margins)))
     out_per_ref(a, pairs)
     return 0
 
@@ -443,12 +448,12 @@ def run_sheets(a) -> int:
     refs = page_refs(a)
     one_page_only(a, {"out": "--out"}, refs)
     pairs = []
-    for r in refs:
-        _page_link(a, r)
-        pairs.append((r, write_line_sheets(r, a.out or sheets_dir(r, a.root),
-                                           _alto_dir(a), a.root,
-                                           per_sheet=a.per_sheet,
-                                           margins=a.margins, sheet_h=a.sheet_h)))
+    with progress("building sheets") as tick:
+        for r in ptrack(refs, tick):
+            _page_link(a, r)
+            pairs.append((r, write_line_sheets(
+                r, a.out or sheets_dir(r, a.root), _alto_dir(a), a.root,
+                per_sheet=a.per_sheet, margins=a.margins, sheet_h=a.sheet_h)))
     out_per_ref(a, pairs)
     return 0
 
@@ -459,15 +464,16 @@ def run_zoom(a) -> int:
     # the same numbers name unrelated lines on the next page.
     one_page_only(a, {"out": "--out", "only": "--only"}, refs)
     pairs = []
-    for r in refs:
-        _page_link(a, r)
-        pairs.append((r, write_line_zoom(
-            r, a.out or zoom_dir(r, a.root),
-            only=parse_selection(a.only) if a.only else None,
-            zoom=a.zoom, window=a.window, overlap=a.overlap,
-            sheet_h=a.sheet_h, client_w=a.client_w,
-            alto_dir=_alto_dir(a), root=a.root,
-            margins=a.margins, smooth=a.smooth)))
+    with progress("zooming") as tick:
+        for r in ptrack(refs, tick):
+            _page_link(a, r)
+            pairs.append((r, write_line_zoom(
+                r, a.out or zoom_dir(r, a.root),
+                only=parse_selection(a.only) if a.only else None,
+                zoom=a.zoom, window=a.window, overlap=a.overlap,
+                sheet_h=a.sheet_h, client_w=a.client_w,
+                alto_dir=_alto_dir(a), root=a.root,
+                margins=a.margins, smooth=a.smooth)))
     out_per_ref(a, pairs)
     return 0
 
@@ -499,9 +505,10 @@ def run_blot(a) -> int:
     skipped = [r for r in refs if r not in set(todo)]
     # The skip is decided first, so the pool gets only pages that will be painted
     # — every one of them a decode, a paint and an encode.
-    out_per_ref(a, list(zip(
-        todo, pmap(lambda r: write_blot(r, dest, _alto_dir(a), a.root),
-                   todo, a.jobs), strict=True)))
+    with progress("blotting") as tick:
+        done = pmap(lambda r: write_blot(r, dest, _alto_dir(a), a.root),
+                    todo, a.jobs, tick)
+    out_per_ref(a, list(zip(todo, done, strict=True)))
     if skipped:
         out(a, {"skipped_fresh": len(skipped), "refs": " ".join(skipped)},
             "skipped_fresh")
@@ -669,8 +676,9 @@ def run_predict(a) -> int:
     # `named=` carries the single-page override with them, or a page a human
     # ruled exempt would be skipped in silence by the very command that named it.
     refs = named or (load_itinerary(a.itinerary, a.root) if a.itinerary else None)
-    rep = predict_all(a.root, refs, a.seg_model, a.rec_model, a.device, a.force,
-                      named=bool(named), jobs=a.jobs)
+    with progress("recognizing") as tick:
+        rep = predict_all(a.root, refs, a.seg_model, a.rec_model, a.device,
+                          a.force, named=bool(named), jobs=a.jobs, tick=tick)
     pages, skips = rep.pop("pages"), rep.pop("skips")
     out(a, rep)
     # Three tables, three key sets. Emitting them as one list would collapse the

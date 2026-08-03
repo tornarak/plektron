@@ -22,7 +22,10 @@ testing the executor against itself.
 
 Nothing here is a work queue, a scheduler or a progress bar. A sweep is a pure map
 over pages and a fold afterwards; the moment a caller needs more than that, it
-wants a different tool and should say so rather than growing this one.
+wants a different tool and should say so rather than growing this one. `pmap`'s
+`tick` is the one concession and stays inside that line: it *reports* completions
+to a callable the caller supplies, and this module never learns what a terminal
+is or imports anything to draw on one.
 
 **What this is for is a raster decode, and the cheap sweeps were measured and left
 alone.** The rule that came out of benching them is worth stating so the next
@@ -66,7 +69,7 @@ from __future__ import annotations
 
 import os
 from collections.abc import Callable, Iterable
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # The default cap, above what a 4-core machine offers and below what this
 # repository's 16-core one does.
@@ -95,20 +98,88 @@ def workers(jobs: int | None = None) -> int:
     return max(1, min(os.process_cpu_count() or 1, MAX_WORKERS))
 
 
-def pmap(fn: Callable, items: Iterable, jobs: int | None = None) -> list:
+def pmap(fn: Callable, items: Iterable, jobs: int | None = None,
+         tick: Callable | None = None) -> list:
     """`[fn(x) for x in items]`, concurrently, in order.
 
     Raises whatever `fn` raised, with the item that raised it added as a note —
     the type is preserved deliberately, because `cli.main` catches four concrete
     types to turn them into a one-line `ERROR:` instead of a traceback, and
     wrapping would route every failure inside a sweep past that.
+
+    **`tick(item, done, total)` is called once per completion, from the calling
+    thread.** It is how a caller draws a progress bar without this module knowing
+    what one is — the same shape as the serializer, which `cli` supplies rather
+    than `emit` choosing. A counter inside `_call` would have put the drawing on N
+    workers and left the caller blocked in `pool.map` doing nothing, which is
+    display work on the critical path and a shared object touched concurrently to
+    do it. Futures already carry a completion channel; `as_completed` yields on it
+    here.
+
+    It takes the total because **`pmap` is the only party that knows it.** The
+    sweeps compute their own work-list — `validate_corpus` decides which pages the
+    store holds, `blot_all` splits links from rasters — so a caller sizing the bar
+    up front would have to re-derive that list, which is a second implementation of
+    the thing whose answer is the bar's denominator.
+
+    Two invariants that channel costs a little care to keep:
+
+    - **Order.** `as_completed` yields by completion, so results land in a
+      pre-sized list by submission index. Every caller pools its output into one
+      table or accumulates rows in scan order.
+    - **Which failure is reported.** `pool.map` surfaced the exception of the
+      earliest *item* that failed; completion order would surface the earliest to
+      *finish*, so a sweep over 832 pages could name a different page than it used
+      to. Exceptions are collected and re-raised in item order. Nothing is lost by
+      waiting — `pool.map` did not cancel queued work either, `with` exiting
+      through `shutdown(wait=True)` — so both forms run the sweep out regardless.
     """
     items = list(items)
     n = workers(jobs)
-    if n == 1 or len(items) < 2:
-        return [_call(fn, x) for x in items]
+    total = len(items)
+    if n == 1 or total < 2:
+        out = []
+        for done, x in enumerate(items, 1):
+            out.append(_call(fn, x))
+            if tick:
+                tick(x, done, total)
+        return out
+
+    results: list = [None] * total
+    errors: dict[int, BaseException] = {}
     with ThreadPoolExecutor(max_workers=n) as pool:
-        return list(pool.map(lambda x: _call(fn, x), items))
+        futures = {pool.submit(_call, fn, x): i for i, x in enumerate(items)}
+        for done, fut in enumerate(as_completed(futures), 1):
+            i = futures[fut]
+            try:
+                results[i] = fut.result()
+            except BaseException as exc:      # noqa: BLE001 — re-raised below
+                errors[i] = exc
+            if tick:
+                tick(items[i], done, total)
+    if errors:
+        raise errors[min(errors)]
+    return results
+
+
+def ptrack(items: Iterable, tick: Callable | None = None):
+    """`items`, reporting each one to `tick` as the loop body finishes it.
+
+    The serial counterpart of `pmap`'s `tick`, for the loops that are slow without
+    being poolable: `ocr crops`/`sheets`/`zoom` write many PNGs a page, `ocr
+    predict` is ~17 s a page over its own process pool, `zones predict` runs GPU
+    inference in a plain `for`. None of them wants a thread pool and all of them
+    sit silent for minutes.
+
+    It ticks **after** the body rather than before, so the count is work finished
+    rather than work started — the same thing `pmap` reports, and the difference
+    between the two is a whole page on a sweep whose pages take seventeen seconds.
+    """
+    items = list(items)
+    for i, x in enumerate(items, 1):
+        yield x
+        if tick:
+            tick(x, i, len(items))
 
 
 def _call(fn: Callable, item):

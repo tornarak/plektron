@@ -56,6 +56,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import time
 
 from .emit import emit
 
@@ -302,6 +303,64 @@ def _wrapped(items: list[str]) -> str:
                                    break_on_hyphens=False)) or "(none)"
 
 
+# ----------------------------------------------------------------- progress
+#
+# **On stderr**, so stdout stays a clean pipe and `harness … > file` still holds
+# exactly the payload.
+#
+# **Started on elapsed time, never on item count.** A bar that flashes for 200 ms
+# is noise, and a count threshold cannot tell a 4-page raster sweep (~1 s) from a
+# 40-page `ocr lines` (~5 ms). Nothing is drawn until the work has been going for
+# `PROGRESS_AFTER`, at which point the bar appears with its count already correct.
+PROGRESS_AFTER = 0.5
+
+
+@contextlib.contextmanager
+def progress(label: str):
+    """Yield a `tick(item, done, total)` for `parallel.pmap`, if anyone is watching.
+
+    Yields **None** whenever stderr is not a terminal, and `pmap` skips the call
+    entirely — so a redirected or piped run does exactly what it did before the
+    bar existed. That is what keeps the benched sweeps diffable against
+    `--jobs 1`, and it is why the guard is here rather than inside the callback.
+
+    The bar is `transient`, so it leaves nothing behind: what stays on the screen
+    is the payload, which is what the command was for.
+    """
+    if not sys.stderr.isatty():
+        yield None
+        return
+
+    from rich.console import Console
+    from rich.progress import (
+        BarColumn,
+        MofNCompleteColumn,
+        Progress,
+        TextColumn,
+        TimeElapsedColumn,
+    )
+
+    bar = Progress(
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(), MofNCompleteColumn(), TimeElapsedColumn(),
+        TextColumn("{task.fields[item]}"),
+        console=Console(stderr=True), transient=True)
+    task, started = bar.add_task(label, total=None, item=""), time.monotonic()
+
+    def tick(item, done: int, total: int) -> None:
+        if not bar.live.is_started:
+            if time.monotonic() - started < PROGRESS_AFTER:
+                return
+            bar.start()
+        bar.update(task, completed=done, total=total, item=str(item))
+
+    try:
+        yield tick
+    finally:
+        if bar.live.is_started:
+            bar.stop()
+
+
 DEFAULT_PAGER = "less -SRFX"
 
 
@@ -337,20 +396,62 @@ def pager(a):
     if not shutil.which(argv[0]):
         yield
         return
-    proc = subprocess.Popen(argv, stdin=subprocess.PIPE, text=True,
-                            env={**os.environ, "LESSCHARSET": "utf-8"})
-    saved, sys.stdout = sys.stdout, proc.stdin
+    proxy = _LazyPager(argv)
+    saved, sys.stdout = sys.stdout, proxy
     try:
         yield
     finally:
         sys.stdout = saved
+        proxy.close()
+
+
+class _LazyPager:
+    """A stdout stand-in that starts the pager on the first byte written.
+
+    **Lazy because of the progress bar.** The bar draws on stderr, i.e. straight
+    at the terminal, while a pager started up front is already holding it — two
+    writers on one screen. Every pooled sweep accumulates and prints at the end,
+    so deferring the spawn until the first write puts the bar strictly before the
+    pager rather than across it.
+
+    It also means a command that prints nothing never spawns one, which is the
+    right behaviour for its own sake.
+    """
+
+    def __init__(self, argv: list[str]):
+        self._argv, self._proc = argv, None
+
+    def _stdin(self):
+        if self._proc is None:
+            self._proc = subprocess.Popen(
+                self._argv, stdin=subprocess.PIPE, text=True,
+                env={**os.environ, "LESSCHARSET": "utf-8"})
+        return self._proc.stdin
+
+    def write(self, s: str) -> int:
         try:
-            proc.stdin.close()
+            return self._stdin().write(s)
         except BrokenPipeError:
             # The reader quit first — `q` in less before the writer was done.
             # Ordinary, and not an error about the payload.
-            pass
-        proc.wait()
+            return len(s)
+
+    def flush(self) -> None:
+        with contextlib.suppress(BrokenPipeError, ValueError):
+            if self._proc is not None:
+                self._proc.stdin.flush()
+
+    def isatty(self) -> bool:
+        # The pager is one, and something downstream may ask. `mode` does not —
+        # it is resolved and cached before this object exists, deliberately.
+        return True
+
+    def close(self) -> None:
+        if self._proc is None:
+            return
+        with contextlib.suppress(BrokenPipeError, ValueError):
+            self._proc.stdin.close()
+        self._proc.wait()
 
 
 def rule(name: str) -> str:

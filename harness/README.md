@@ -480,6 +480,16 @@ columns and neither has to say so. Four properties bind callers:
   half its content. Known limit, stated rather than half-fixed: the key set
   follows which sections had content, so consumers should use `.get()`; making
   the shape a pure function of the verb would mean each declaring a schema.
+- **Progress goes to stderr, and `render.progress(label)` is the only place that
+  knows what a bar is.** It yields a `tick(item, done, total)` for
+  `parallel.pmap`/`ptrack`, or **None** when stderr is not a terminal — in which
+  case `pmap` skips the call entirely, so a redirected run is exactly what it was
+  before the bar existed. That is what keeps the four benched sweeps diffable
+  against `--jobs 1`, and it is measured: 11.8 / 11.0 / 0.7 s against the 11.2 /
+  10.9 / 0.7 s baselines. The bar starts on **elapsed time** (`PROGRESS_AFTER`),
+  never item count — a count cannot tell a 4-page raster sweep from a 40-page
+  `ocr lines`, one being seconds and the other milliseconds — and it is
+  `transient`, so what stays on screen is the payload.
 - **The pager is `$PAGER` (default `less -SRFX`) and only in table mode.** It is
   *always* started there and `-F` decides whether it shows, so there is no length
   threshold here to get wrong — the arrangement git uses. `pager(a)` replaces
@@ -535,6 +545,15 @@ columns and neither has to say so. Four properties bind callers:
   the shape that breaks silently under a pool — every writer but the last is lost —
   and it is usually also quadratic before anyone parallelizes it; batch it
   (`zones.record_ink_many`).
+- **A sweep reports completions; it does not draw them.** `pmap`'s `tick` is
+  called from the *calling* thread via `as_completed`, never from a worker: a
+  counter inside the mapped function would put display work on N workers while the
+  caller sat blocked, with a shared object touched concurrently to do it. That
+  swap moved two previously-free properties into `parallel.py`'s hands, and both
+  are pinned by `test_parallel.py` — results land by **submission index** (the
+  yield order is completion order), and an exception is re-raised in **item**
+  order, because `pool.map` surfaced the earliest failing *item* and a sweep over
+  832 pages must not start naming a different page than it used to.
 - **Profile before reaching for cores, and check the profile against a stopwatch.**
   The two sweeps that looked like pool candidates each had a larger single-threaded
   win in the hot path, and in one case that same work was what capped the pool.

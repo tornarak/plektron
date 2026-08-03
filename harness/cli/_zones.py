@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import sys
 
+from ..render import progress
 from ._common import (
     add_jobs,
     one_page_only,
@@ -296,9 +297,10 @@ def run_check(a) -> int:
             out_per_ref(a, rows, "lines" if a.lines else "zones")
         bad = any(rep["errors"] for _, rep in reps)
         return 1 if (bad and store == zmod.ZONEDIR) else 0
-    summary, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink,
-                                         refs=_itin(a, zmod), store=store,
-                                         jobs=a.jobs)
+    with progress("checking zones") as tick:
+        summary, rows = zmod.validate_corpus(a.root, cfg, ink=a.ink,
+                                             refs=_itin(a, zmod), store=store,
+                                             jobs=a.jobs, tick=tick)
     out(a, summary)
     if rows:
         out(a, rows, "pages")
@@ -354,9 +356,11 @@ def run_predict(a) -> int:
     # Several named refs go through the sweep — the model loads once — carrying
     # `named` so the single-page override travels with them. Without it a page a
     # human ruled exempt would be skipped in silence by the command that named it.
-    rep = zmod.predict_all(a.root, refs=named or _itin(a, zmod), model_path=model,
-                           device=a.device, decode=a.decode, force=a.force,
-                           named=bool(named))
+    with progress("segmenting") as tick:
+        rep = zmod.predict_all(a.root, refs=named or _itin(a, zmod),
+                               model_path=model, device=a.device,
+                               decode=a.decode, force=a.force,
+                               named=bool(named), tick=tick)
     out(a, rep)
     # Same contract as `assemble`'s missing_blot: a page the model was asked
     # about and could not be shown is a gap in the run, not a quiet omission.
@@ -440,8 +444,9 @@ def run_diff(a) -> int:
 def run_paragraphs(a) -> int:
     zmod, load_config = _mod()
     scope = page_refs(a) or _itin(a, zmod)
-    summary, rows = zmod.paragraph_audit(a.root, load_config(a.root), refs=scope,
-                                         jobs=a.jobs)
+    with progress("auditing paragraphs") as tick:
+        summary, rows = zmod.paragraph_audit(a.root, load_config(a.root),
+                                             refs=scope, jobs=a.jobs, tick=tick)
     out(a, summary)
     if rows:
         out(a, rows, "boundaries")
@@ -460,9 +465,11 @@ def run_blot(a) -> int:
     # No mtime skip under `--all`, deliberately — see the registration.
     if refs:
         from ..parallel import pmap
-        out_per_ref(a, list(zip(
-            refs, pmap(lambda r: zmod.blot_one(r, a.root), refs, a.jobs),
-            strict=True)))
+        with progress("blotting") as tick:
+            done = pmap(lambda r: zmod.blot_one(r, a.root), refs, a.jobs, tick)
+        out_per_ref(a, list(zip(refs, done, strict=True)))
     else:
-        out(a, zmod.blot_all(a.root, jobs=a.jobs))
+        with progress("blotting") as tick:
+            rep = zmod.blot_all(a.root, jobs=a.jobs, tick=tick)
+        out(a, rep)
     return 0

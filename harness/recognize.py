@@ -496,7 +496,7 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 seg_model: str | Path = DEFAULT_SEG_MODEL,
                 rec_model: str | Path = DEFAULT_REC_MODEL,
                 device: str = "auto", force: bool = False,
-                named: bool = False, jobs: int | None = None) -> dict:
+                named: bool = False, jobs: int | None = None, tick=None) -> dict:
     """Recognize over a work-list, or over every page that has zones.
 
     What is skipped and why is `predict_skip`'s; this loops and reports. A sweep is
@@ -545,11 +545,12 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
             dev = _resolve_device(device)
             seg_net, seg_sha = Z.load_segmenter(seg_model, root)
             rec_net, rec_sha = load_recognizer(rec_model, root, dev)
-            for ref in todo:
+            from .parallel import ptrack
+            for ref in ptrack(todo, tick):
                 done.append(predict(ref, root, seg_net, seg_sha, rec_net, rec_sha,
                                     seg_model, rec_model, dev))
         else:
-            done = _predict_pool(todo, n, root, seg_model, rec_model, device)
+            done = _predict_pool(todo, n, root, seg_model, rec_model, device, tick)
     return {"predicted": len(done), "skipped": len(skipped),
             "workers": predict_workers(jobs, len(todo)) if todo else 0,
             "lines": sum(d["lines"] for d in done),
@@ -581,7 +582,8 @@ def _worker_predict(ref: str) -> dict:
                    w["dev"])
 
 
-def _predict_pool(todo, n, root, seg_model, rec_model, device) -> list[dict]:
+def _predict_pool(todo, n, root, seg_model, rec_model, device,
+                  tick=None) -> list[dict]:
     """`todo` across `n` processes, each loading the models once.
 
     **Processes, not the thread pool the raster sweeps use**, and the difference
@@ -594,16 +596,26 @@ def _predict_pool(todo, n, root, seg_model, rec_model, device) -> list[dict]:
     **`spawn`, not fork.** A forked child inherits a CUDA context it cannot use.
 
     Results come back in `todo` order, so the report does not reshuffle by which
-    page happened to finish first.
+    page happened to finish first — which `as_completed` plus a pre-sized list
+    gives, where `ex.map` gave it for free. The swap buys the progress `tick`: at
+    ~17 s a page this is the longest silence in the CLI, and `ex.map` blocks the
+    caller for the whole sweep with nothing to report from.
     """
     import multiprocessing as mp
-    from concurrent.futures import ProcessPoolExecutor
+    from concurrent.futures import ProcessPoolExecutor, as_completed
 
+    results: list = [None] * len(todo)
     with ProcessPoolExecutor(
             max_workers=n, mp_context=mp.get_context("spawn"),
             initializer=_worker_init,
             initargs=(root, seg_model, rec_model, device)) as ex:
-        return list(ex.map(_worker_predict, todo))
+        futures = {ex.submit(_worker_predict, r): i for i, r in enumerate(todo)}
+        for done, fut in enumerate(as_completed(futures), 1):
+            i = futures[fut]
+            results[i] = fut.result()
+            if tick:
+                tick(todo[i], done, len(todo))
+    return results
 
 
 def predict_workers(jobs: int | None, n_pages: int) -> int:
