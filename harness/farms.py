@@ -120,7 +120,8 @@ FARMS = (
     # scratch that `zones assemble` clobbers by design; rebuilding it out of band
     # would be preparing a training run nobody asked for.
     Farm("scans", SCANS, "source", (),
-         "pdftoppm -r 300 over pdfs/ (see harness/README.md)", "none"),
+         "pdftoppm -r 300 over pdfs/, then tools/greyscale_scans.py --commit",
+         "none"),
     Farm("train", TRAIN_WORK, "scratch", (),
          "harness zones assemble", "none"),
 )

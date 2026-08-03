@@ -114,13 +114,31 @@ is the one detector that blocks a write rather than raising a flag.
 
 AMNH Digital Library PDFs (`M11Pt01–03`).
 
-**`scans/` is derived, not source.** It is exactly `pdftoppm -r <dpi>` over
-`pdfs/` — verified pixel-identical — so it is regenerable and stays out of git.
-The PDFs carry a **bitonal JBIG2 text master at ~300 dpi** (part 1 2781×3866 at
-295.5 dpi, part 2 2550×3525 at 300, part 3 2550×3525 at 308.4 against an A4 page
-box; the covers `1-001`/`1-002` and the foldout `1-361` have no master and are
-RGB at 150). The figure *photographs* are separate embedded JPEGs already at
-150 dpi, so nothing is recoverable there — only the text gains.
+**`scans/` is derived, not source.** It is `pdftoppm -r <dpi>` over `pdfs/` —
+verified pixel-identical — **then `tools/greyscale_scans.py --commit`**, so it is
+regenerable and stays out of git. The PDFs carry a **bitonal JBIG2 text master at
+~300 dpi** (part 1 2781×3866 at 295.5 dpi, part 2 2550×3525 at 300, part 3
+2550×3525 at 308.4 against an A4 page box; the covers `1-001`/`1-002` and the
+foldout `1-361` have no master and are RGB at 150). The figure *photographs* are
+separate embedded JPEGs already at 150 dpi, so nothing is recoverable there —
+only the text gains.
+
+**The rasters are greyscale, and the three that are not are named.** poppler
+writes RGB, but `pdfimages -list` over the three PDFs reports exactly three
+non-gray embedded images in the whole volume — `1-001`, `1-002` and `1-361`,
+the covers and part 1's appended foldout map. Every other page's source is
+`gray 1 1 jbig2`, i.e. one grey value written three times, so converting is
+lossless by arithmetic (PIL's luma weights sum to 1, so R=G=B=v gives L=v) and
+was checked per page against the ink mask besides. **829 converted, 3 kept,
+0 skipped.** 913 MB → 604 MB, and a page decodes in ~0.03 s where it took ~0.11 s.
+All three colour pages are `exempt`, so the segmenter still sees a uniform corpus.
+
+Converted **in place rather than re-rendered**, and that is the safety argument:
+`Image.convert("L")` cannot change dimensions, where a re-render that came back a
+pixel different would silently invalidate every coordinate in `gt/zones/`,
+`gt/ocr/` and `gt/fig/` — which is the cost `tools/migrate_coords.py` exists to
+record. A rebuild from `pdfs/` must run the converter afterwards or every raster
+sweep quietly goes back to costing three times what it should.
 
 Rendering at 300 dpi is **not** a clean ×2 of the old 150 dpi rasters — across the
 832 pages, **none** is exactly double, and most are a pixel short on one axis. So
@@ -298,8 +316,11 @@ Layout, all at the repo root:
   **It earned its place on the first pass**: `numpy` and `pillow` were imported at
   twenty-odd sites and declared nowhere, arriving only through kraken — one
   upstream drop from an ImportError naming neither this project nor the reason.
-- `tools/` holds four scripts, none of them part of a loop. `make_mets.py <dir>`
+- `tools/` holds five scripts, none of them part of a loop. `make_mets.py <dir>`
   is live — it rebuilds a METS manifest before an eScriptorium import.
+  `greyscale_scans.py` is live but **only after a re-render**: it converts `scans/`
+  to greyscale, is idempotent (a page already in mode `L` is left alone), and has
+  to run whenever poppler has written the tree afresh.
   `migrate_coords.py` (150→300 dpi) and the two `strip_*_lines.py` (which produced
   the line-free `gt/fig/`) are **spent one-shot migrations**, kept for the
   reasoning in their docstrings; re-running either would corrupt what it already
@@ -581,11 +602,30 @@ gaps. The sampling in `ink_bands` — every other column — is kept for exactly
 reason: vectorising made it free to drop, but dropping it would move a threshold
 calibrated against the sampled count.
 
-The remaining 0.16 s is inherent to the format, not to the check. `scans/` is
-`pdftoppm`'s RGB output while the pages' channels are identical everywhere tested;
-regenerating it as greyscale would cut the decode to ~0.05 s and the tree to a third
-of its size. That is a corpus-wide change to a derived store with several consumers,
-so it is recorded here rather than done.
+**That remaining 0.16 s was the format, not the check, and the format has been
+changed** — `scans/` is greyscale now (see Source rasters), so the decode is ~0.03 s
+and a page validates in ~0.05 s. This entry stood for a long time saying the change
+was "recorded here rather than done"; it is done, and the numbers below are what it
+was worth.
+
+**The raster sweeps also run on a thread pool** (`harness/parallel.py`, `--jobs N`).
+PNG inflate releases the GIL, so threads get most of the win without an interpreter
+per worker — which is the trade that matters on the 4-core machines this has to run
+on. `--jobs 1` builds no pool at all and is the control arm: every one of these was
+diffed both ways and is byte-identical, `_ink_cache.json` included.
+
+    zones check --all --ink   103.0 s -> 11.2 s     4 cores: 15.9 s
+    zones blot --all          114.4 s ->  6.2 s
+    zones paragraphs --all     87.9 s -> 10.9 s
+    ocr gaps --all              4.2 s ->  0.7 s
+
+**Two of those three gains were not the pool**, and that is the lesson worth
+carrying: profiling first found `unlicensed_marks` asking a one-entry dict about
+every character in the corpus (57% of `corpus normalize`, now 23× faster) and
+`validate_page` re-reading all three split lists twice a page. The second was also
+the GIL-bound share capping the pool's own speedup. `harness/parallel.py` records
+this, along with the trap that cProfile's per-call overhead badly overstates
+call-heavy code — it put that split-list read at 19% where the wall clock said 3%.
 
 ### The model exists, and so does a second store
 
@@ -841,8 +881,9 @@ CLI settled on `--all` for every corpus form; the old spelling is trapped.)
     ocr/  zones/                 the read views over the paired stores
     scans/w-figs-blotted/        the segmenter's training rasters
     scans/w-figs/  scans/w-ocr/  selections over scans/, by criterion
-    scans/                       reported, never built here: it is pdftoppm over
-                                 pdfs/, whose entries are symlinks outside the repo
+    scans/                       reported, never built here: pdftoppm over pdfs/
+                                 (symlinks outside the repo), then
+                                 tools/greyscale_scans.py --commit
     train/bogoras-seg/           reported, never built here: assemble's scratch
 
 Three things this settled, each of which had been true and unnoticed:
