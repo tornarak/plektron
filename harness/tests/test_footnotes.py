@@ -134,24 +134,34 @@ def test_check_reports_a_page_level_issue(tmp_path):
     fn = [i for i in issues if i["issue"] == "footnote markers"]
     assert len(fn) == 1
     assert fn[0]["line"] == "-"          # page-level, not pinned to a line
-    assert fn[0]["explained"] == ""
     assert "occur once" in fn[0]["detail"]
+    # No explanation was given, so `detail` carries the problem and nothing else.
+    assert "explained:" not in fn[0]["detail"]
 
 
 def test_an_explanation_downgrades_but_does_not_delete(tmp_path):
     """A page seam legitimately breaks the pairing. The reason must still reach
-    the adjudicator rather than vanishing into a silent pass."""
+    the adjudicator rather than vanishing into a silent pass.
+
+    It rides in `detail` behind an `explained:` marker rather than in a field of
+    its own: this record shares one key set with the five other detectors
+    (`proposal_check.ISSUE_FIELDS`), because a ragged list of records is not a
+    table and silently degrades the whole report.
+    """
     path = _proposal(tmp_path, ["dances.¹ The woman"],
                      footnotes={"note": "note text runs onto 2-035; opener is there"})
     fn = [i for i in check(path) if i["issue"] == "footnote markers"]
     assert len(fn) == 1
-    assert "2-035" in fn[0]["explained"]
+    assert "explained: " in fn[0]["detail"]
+    assert "2-035" in fn[0]["detail"]
+    # The problem is not displaced by the explanation — both are present.
+    assert "occur once" in fn[0]["detail"]
 
 
 def test_explanation_accepts_a_bare_string_too(tmp_path):
     path = _proposal(tmp_path, ["dances.¹"], footnotes="seam case")
     fn = [i for i in check(path) if i["issue"] == "footnote markers"]
-    assert fn[0]["explained"] == "seam case"
+    assert fn[0]["detail"].endswith("explained: seam case")
 
 
 def test_clean_page_emits_no_footnote_issue(tmp_path):

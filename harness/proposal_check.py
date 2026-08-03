@@ -54,6 +54,36 @@ HEX_RE = re.compile(r"U\+([0-9A-Fa-f]{4,6})")
 DOTLESS_I = "ı"
 NOTATION_CHARS = INVENTORY_CHARS | {DOTLESS_I}
 
+# The one issue-record shape, and the only constructor for it.
+#
+# Six detectors feed `check` — three here, two in `marks.page_issues`, one in
+# `_footnote_issues` — and each used to name its own fields: `context` beside
+# `token`, `detail` beside `token`, `in_text`, `in_text_not_resolved` beside
+# `in_resolved_not_text`, `explained`. Six key sets over one list of records, which
+# is exactly the raggedness `emit`'s docstring says degrades a TOON table to the
+# verbose nested form. It did: a corpus sweep emitted 265 findings as 51 KB of
+# indented blocks, and pooling several refs tripped `_pool`'s list guard on the way
+# past. The detectors already had this rule imposed on them once, for the same
+# reason ("one `token` key rather than `span` for some flag types") — this is that
+# rule with a constructor behind it, so the next detector cannot quietly reopen it.
+#
+# `detail` is where a shape that is not a token goes, rendered as text: the
+# codepoint sets both `resolved` arms report, and the footnote arm's editorial note.
+# A list never reaches the record.
+ISSUE_FIELDS = ("line", "issue", "token", "context", "detail")
+
+
+def issue(line, text: str, token: str = "", context: str = "",
+          detail: str = "") -> dict:
+    """One issue record, every field present. See `ISSUE_FIELDS`."""
+    return {"line": str(line), "issue": text,
+            "token": token, "context": context, "detail": detail}
+
+
+def _cps(codepoints) -> str:
+    """A codepoint set as `U+02CA U+026A`, sorted — `detail` text, not a list."""
+    return " ".join(sorted(f"U+{c:04X}" for c in codepoints))
+
 
 def _notation_codepoints(text: str) -> list[int]:
     """Codepoints a `resolved` field is expected to name.
@@ -284,29 +314,32 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
         for hit in apostrophe_flags(text):
-            out.append({"line": idx, "issue": apostrophe_issues[hit["kind"]],
-                        "token": hit["token"], "context": hit.get("context", hit["token"])})
+            out.append(issue(idx, apostrophe_issues[hit["kind"]],
+                             token=hit["token"],
+                             context=hit.get("context", hit["token"])))
         for hit in suffix_mark_flags(text):
-            out.append({"line": idx, "issue": f"bare suffix, expected "
-                        f"{hit['expected']!r} (§5.1: strong corpus-wide "
-                        "bare-vs-marked skew for this shape) — check for a "
-                        "dropped mark", "token": hit["token"]})
+            out.append(issue(idx, f"bare suffix, expected "
+                             f"{hit['expected']!r} (§5.1: strong corpus-wide "
+                             "bare-vs-marked skew for this shape) — check for a "
+                             "dropped mark", token=hit["token"]))
         present = set(_notation_codepoints(text))
         if not present:
             continue
         stated = _stated_codepoints(resolved)
         if not stated and not resolved:
-            out.append({"line": idx, "issue": "notation with no resolved field",
-                        "in_text": sorted(f"U+{c:04X}" for c in present)})
+            out.append(issue(idx, "notation with no resolved field",
+                             detail=f"in text: {_cps(present)}"))
             continue
         extra_in_text = present - stated
         extra_in_resolved = stated - present
         if extra_in_text or extra_in_resolved:
-            out.append({
-                "line": idx, "issue": "resolved/text mismatch",
-                "in_text_not_resolved": sorted(f"U+{c:04X}" for c in extra_in_text),
-                "in_resolved_not_text": sorted(f"U+{c:04X}" for c in extra_in_resolved),
-            })
+            sides = []
+            if extra_in_text:
+                sides.append(f"in text not resolved: {_cps(extra_in_text)}")
+            if extra_in_resolved:
+                sides.append(f"in resolved not text: {_cps(extra_in_resolved)}")
+            out.append(issue(idx, "resolved/text mismatch",
+                             detail="; ".join(sides)))
     return out
 
 
@@ -324,9 +357,11 @@ def _footnote_issues(data: dict) -> list[dict]:
 
     The explanation goes in a page-level `footnotes` key (a sibling of
     `contamination`, same shape of claim: something about the page as a whole
-    that the line records cannot carry). Its presence downgrades the issue to
-    an `explained` record rather than deleting it, so the reason still reaches
-    the adjudicator instead of vanishing into a silent pass.
+    that the line records cannot carry). Its presence **annotates** the issue
+    rather than deleting it, so the reason still reaches the adjudicator instead
+    of vanishing into a silent pass — it is appended to `detail` behind an
+    `explained:` marker, since this record shares one key set with the other five
+    detectors (`ISSUE_FIELDS`) and cannot carry a field of its own.
     """
     texts = [rec.get("text", "") for _, rec in
              sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0]))]
@@ -345,9 +380,10 @@ def _footnote_issues(data: dict) -> list[dict]:
         return []
     explained = (data.get("footnotes") or {}).get("note") if \
         isinstance(data.get("footnotes"), dict) else data.get("footnotes")
-    rec = {"line": "-", "issue": "footnote markers", "detail": "; ".join(problems)}
-    rec["explained"] = str(explained) if explained else ""
-    return [rec]
+    detail = "; ".join(problems)
+    if explained:
+        detail += f" — explained: {explained}"
+    return [issue("-", "footnote markers", detail=detail)]
 
 
 def fix(path: Path) -> dict:

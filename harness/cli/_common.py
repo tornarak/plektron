@@ -165,6 +165,17 @@ def out_per_ref(a, pairs) -> None:
     a caller gets should follow what it asked for, not what the store happened to
     contain — a sweep whose output changed schema on the day the corpus held one
     matching page would be a trap with a long fuse.
+
+    **The field set is decided over every payload, never the first.** It used to be
+    read off `pairs[0]`, so a field absent from page one and a list on page five
+    reached `_pool` unsplit and tripped its guard — after all the work was done.
+
+    **A list *inside* a record of a list-valued payload is not handled here, on
+    purpose.** Where a payload is already one row per finding, a list in a cell is
+    the verb emitting a shape that is not a table, and `_pool`'s guard firing is the
+    correct outcome rather than something to absorb. `proposal check` was found that
+    way and fixed at the source, by giving its six detectors one key set — which is
+    the rule `emit`'s own docstring states and the detectors already follow.
     """
     if len(pairs) == 1 and not getattr(a, "all", False):
         out(a, pairs[0][1])
@@ -172,9 +183,18 @@ def out_per_ref(a, pairs) -> None:
     if not pairs:
         out(a, [])
         return
-    first = pairs[0][1]
-    listy = ([k for k, v in first.items() if isinstance(v, list)]
-             if isinstance(first, dict) else [])
+
+    # An **ordered** set, so the `# field` blocks below follow the record's own
+    # field order rather than a set's iteration order — which Python randomises per
+    # process for strings. CLAUDE.md records the same hazard for `--resize`'s class
+    # map, where it permuted every label; here it shuffled sub-tables between runs
+    # of one unchanged command.
+    listy: dict[str, None] = {}
+    for _, rep in pairs:
+        if isinstance(rep, dict):
+            for k, v in rep.items():
+                if isinstance(v, list):
+                    listy.setdefault(k)
     if not listy:
         _pool(a, pairs)
         return
@@ -186,10 +206,9 @@ def out_per_ref(a, pairs) -> None:
     # since a table of one bare column is worse than a string. An *empty* list
     # cannot say which it is, so a per-cell rule would print `errors: ""` beside
     # `warnings: 1` in the same row and make the column mean two things.
-    tabular = {k for k in listy
-               if any(isinstance(rep.get(k) or [None], list)
-                      and rep.get(k) and isinstance(rep[k][0], dict)
-                      for _, rep in pairs)}
+    tabular = [k for k in listy
+               if any(rep.get(k) and isinstance(rep[k][0], dict)
+                      for _, rep in pairs)]
 
     def _cell(key, v):
         if key not in listy:

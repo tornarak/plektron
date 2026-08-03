@@ -145,6 +145,69 @@ def test_a_report_with_list_fields_splits_into_tables(tmp_path, capsys):
     assert "[1]{ref,line}" in out
 
 
+def test_a_list_field_absent_from_the_first_page_is_still_split(capsys):
+    """The field set is decided over every payload, never `pairs[0]`.
+
+    It used to be read off the first, so a field that only appeared later reached
+    `_pool` unsplit and tripped its list guard — after every page had been
+    computed, which is the worst moment for a report to fail.
+    """
+    from argparse import Namespace
+
+    from harness.cli._common import out_per_ref
+
+    out_per_ref(Namespace(json=False),
+                [("1-048", {"n": 1}),
+                 ("1-049", {"n": 2, "hits": [{"line": 3}]})])
+    out = capsys.readouterr().out
+    assert "# hits" in out
+    assert "[1]{ref,line}" in out
+
+
+def test_sub_tables_follow_field_order_not_set_iteration(capsys):
+    """`# field` blocks come out in the record's own order, every run.
+
+    They were collected into a `set`, and Python randomises string hashing per
+    process — so the blocks of one unchanged command reordered between runs. The
+    same hazard CLAUDE.md records for `--resize`'s class map, where it permuted
+    every label in the model.
+    """
+    from argparse import Namespace
+
+    from harness.cli._common import out_per_ref
+
+    keys = ["zulu", "alpha", "mike", "bravo"]
+    out_per_ref(Namespace(json=False),
+                [("1-048", {k: [{"i": 1}] for k in keys}),
+                 ("1-049", {k: [{"i": 2}] for k in keys})])
+    out = capsys.readouterr().out
+    assert [ln[2:] for ln in out.splitlines() if ln.startswith("# ")] == keys
+
+
+def test_proposal_check_pools_across_refs(tmp_path, capsys):
+    """Its six detectors share one key set, so several pages make one table.
+
+    They did not: each named its own fields (`context`, `detail`, `in_text`,
+    `in_text_not_resolved`, `explained`), which made the list ragged. TOON drops a
+    ragged record list to the verbose nested form silently, and where a field held
+    a list the emitter refused outright — so naming two pages failed after all the
+    work was done. Fixed at the source; this pins that it stays fixed.
+    """
+    for ref, text in (("1-048", "dances.¹ The woman"), ("1-049", "Ye'rgɪn")):
+        d = tmp_path / "review" / ref
+        d.mkdir(parents=True)
+        (d / "proposal.json").write_text(json.dumps(
+            {"lines": {"1": {"text": text, "resolved": ""}}}), encoding="utf-8")
+    code, out, _err = _run(capsys, "proposal", "check", "1-048", "1-049",
+                           "--root", str(tmp_path))
+    assert code == 1                                   # both pages have findings
+    # Four findings from four different detectors — footnote (page-level),
+    # apostrophe, bare suffix, notation-with-no-resolved — under one header.
+    assert out.splitlines()[0].endswith(
+        "{ref,line,issue,token,context,detail}:"), out
+    assert "- ref:" not in out                         # never the nested form
+
+
 # --------------------------------------------------------------- the refusals
 
 def test_a_bad_ref_refuses_before_anything_is_emitted(tmp_path, capsys):

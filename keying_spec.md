@@ -695,8 +695,9 @@ past 2026-07-31, the only class recurring across pages is §5.2's `i`→`ɪ`.
    pre-consonant-not-in-b/p/d/t/g/k, not V_V → this is stress U+02CA, not
    apostrophe" correctly — and `text` kept the literal `'` anyway, on 33 of
    71 lines. `proposal check` reported the exact signature of this
-   (`in_resolved_not_text: U+02CA` — resolved names the codepoint, text
-   doesn't contain it) on nearly every affected line, and it was dismissed as
+   (`resolved/text mismatch`, `detail: in resolved not text: U+02CA` —
+   resolved names the codepoint, text doesn't contain it) on nearly every
+   affected line, and it was dismissed as
    narrative-formatting noise rather than treated as what it was: the same
    diff class repeating across many lines is the tool reporting something
    systematic, not a prose-style mismatch. **After writing `resolved`, re-read

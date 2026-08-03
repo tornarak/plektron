@@ -506,23 +506,28 @@ def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
             prior.setdefault(r, []).append(_nfd(tok))
     prior_tokens = [t for toks in prior.values() for t in toks]
 
+    # Built through `proposal_check.issue`, not as literals: these two records join
+    # four others in one list, and that list is a table only while every record
+    # carries the same keys. See `ISSUE_FIELDS`.
+    from .proposal_check import issue
+
     out = []
     for hit in _rare(batch, prior_tokens, cfg["contrasts"], cfg["rare_max_pct"]):
         lines = hit["lines"].split()
         where = f" (and lines {' '.join(lines[1:])})" if len(lines) > 1 else ""
-        out.append({
-            "line": lines[0] if lines else "-",
-            "issue": f"rare form: {hit['form']!r} sets a character the corpus "
-                     f"sets in only {hit['corpus_pct']}% of {hit['corpus_n']} "
-                     f"(keying_spec §{hit['spec']}) — check for a dropped mark",
-            "token": hit["form"],
-            "detail": f"{hit['count']} occurrence(s) on this page{where}"})
+        out.append(issue(
+            lines[0] if lines else "-",
+            f"rare form: {hit['form']!r} sets a character the corpus "
+            f"sets in only {hit['corpus_pct']}% of {hit['corpus_n']} "
+            f"(keying_spec §{hit['spec']}) — check for a dropped mark",
+            token=hit["form"],
+            detail=f"{hit['count']} occurrence(s) on this page{where}"))
     for hit in _conflicts(batch, prior, cfg["contrasts"]):
-        out.append({
-            "line": "-",
-            "issue": "one word, two spellings" + (
+        out.append(issue(
+            "-",
+            "one word, two spellings" + (
                 "" if hit["in_batch"] else " — the other is adjudicated ground truth"),
-            "token": hit["batch_forms"],
-            "detail": f"against {hit['store_forms'] or '(this page only)'} "
-                      f"on {hit['refs']}"})
+            token=hit["batch_forms"],
+            detail=f"against {hit['store_forms'] or '(this page only)'} "
+                   f"on {hit['refs']}"))
     return out
