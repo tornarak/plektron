@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-021.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-021.png; regions_from: zones/chukchi-1-021.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-021_r1" HPOS="307" VPOS="1285" WIDTH="1778" HEIGHT="160" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="307 1285 2085 1285 2085 1445 307 1445"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l1" HPOS="874" VPOS="1305" WIDTH="648" HEIGHT="95" BASELINE="874 1385 1522 1385" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1509 1333 1193 1331 1169 1307 1169 1305 1167 1305 1165 1305 1104 1305 1102 1305 1100 1305 1097 1305 1097 1307 1069 1335 1046 1335 981 1329 959 1307 959 1305 957 1305 955 1305 874 1305 874 1385 874 1400 1522 1400 1522 1385 1518 1357 1509 1333"/>
+                        </Shape>
+                        <String CONTENT="THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r2" HPOS="307" VPOS="1539" WIDTH="1778" HEIGHT="98" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="307 1539 2085 1539 2085 1637 307 1637"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l2" HPOS="950" VPOS="1558" WIDTH="481" HEIGHT="63" BASELINE="952 1602 1431 1606" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="952 1602 950 1617 1427 1621 1431 1606 1431 1563 952 1558 952 1602"/>
+                        </Shape>
+                        <String CONTENT="INTRODUCTORY."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r3" HPOS="307" VPOS="1672" WIDTH="1778" HEIGHT="558" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="307 1672 2085 1672 2085 2230 307 2230"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l3" HPOS="409" VPOS="1680" WIDTH="1665" HEIGHT="60" BASELINE="411 1723 2074 1727" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2057 1695 2035 1695 2014 1693 1992 1693 1975 1690 1966 1693 1944 1690 1927 1690 1905 1688 1884 1688 1862 1688 1842 1686 1823 1693 1793 1684 1775 1684 1754 1684 1732 1682 1710 1682 1691 1682 1689 1682 1687 1682 1684 1682 1669 1693 1596 1682 1593 1682 1541 1695 1427 1695 1412 1682 1409 1682 1407 1682 1405 1682 1232 1690 1219 1680 1217 1680 1214 1680 1119 1680 1117 1680 1115 1680 1113 1680 1100 1690 1050 1680 1048 1680 955 1690 411 1688 411 1723 409 1736 2070 1740 2074 1727 2074 1695 2057 1695"/>
+                        </Shape>
+                        <String CONTENT="THE following account of the Chukchee tribe contains chiefly the results"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l4" HPOS="307" VPOS="1755" WIDTH="1767" HEIGHT="48" BASELINE="307 1786 2074 1786" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 1786 307 1803 2072 1803 2074 1786 2072 1755 307 1755 307 1786"/>
+                        </Shape>
+                        <String CONTENT="of my own observations, made during a protracted stay in the Kolyma district"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l5" HPOS="303" VPOS="1805" WIDTH="1769" HEIGHT="59" BASELINE="305 1846 2072 1842" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 1846 305 1864 2070 1864 2072 1842 2068 1809 316 1805 314 1805 311 1805 309 1805 309 1807 303 1812 305 1846"/>
+                        </Shape>
+                        <String CONTENT="from 1890 to 1898; and later during a journey to Kamchatka, Anadyr, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l6" HPOS="303" VPOS="1872" WIDTH="1771" HEIGHT="59" BASELINE="305 1903 2074 1907" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 1903 303 1918 316 1929 318 1929 320 1929 322 1929 391 1918 426 1929 428 1929 430 1929 1188 1918 1442 1931 1444 1931 1518 1920 1667 1931 1669 1931 1726 1920 2072 1920 2074 1907 2072 1877 305 1872 305 1903"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee Peninsula, in 1900-01. From 1895 to 1898 the work was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l7" HPOS="307" VPOS="1935" WIDTH="1767" HEIGHT="54" BASELINE="307 1965 2074 1965" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 1965 307 1989 2072 1978 2074 1965 2072 1935 307 1935 307 1965"/>
+                        </Shape>
+                        <String CONTENT="performed in connection with the Sibiryakoff Expedition, and part of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l8" HPOS="307" VPOS="1980" WIDTH="1767" HEIGHT="63" BASELINE="309 2028 2074 2024" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="309 2028 309 2043 2072 2039 2074 2024 2072 1993 2035 1980 2033 1980 2031 1980 2029 1980 2007 1991 1788 1980 1786 1980 1784 1980 1782 1980 1767 1993 1658 1993 1628 1980 1626 1980 1624 1980 1572 1991 1546 1980 1544 1980 1541 1980 1539 1980 1509 1991 1444 1980 1442 1980 1375 1991 1318 1980 1316 1980 1262 1991 1234 1980 1232 1980 1230 1980 1227 1980 1186 1993 1149 1983 1147 1983 1145 1983 1143 1983 1115 1993 1050 1983 1048 1983 903 1993 881 1983 879 1983 682 1983 680 1983 506 1993 433 1983 430 1983 307 1996 309 2028"/>
+                        </Shape>
+                        <String CONTENT="material was published in Russian by the Imperial Academy of Sciences in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l9" HPOS="309" VPOS="2039" WIDTH="1765" HEIGHT="74" BASELINE="311 2089 2074 2082" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="311 2089 311 2102 628 2113 630 2113 632 2113 634 2113 649 2102 829 2102 896 2113 898 2113 1054 2100 1169 2110 1171 2110 1318 2100 1366 2110 1368 2110 1370 2110 1615 2097 1643 2108 1645 2108 1648 2108 1650 2108 1684 2097 1777 2108 1780 2108 2072 2100 2074 2082 2070 2052 1938 2039 1936 2039 1933 2039 1931 2039 1916 2052 1827 2052 1803 2039 1801 2039 1799 2039 1743 2050 1726 2039 1723 2039 1721 2039 1719 2039 1717 2039 1691 2050 1674 2039 1671 2039 1669 2039 1667 2039 1665 2039 1663 2039 1645 2052 1509 2052 1489 2039 1487 2039 1485 2039 1483 2039 1481 2039 1479 2039 1461 2052 1364 2041 1362 2041 1360 2041 1331 2054 1141 2054 1126 2041 1123 2041 1121 2041 1119 2041 1117 2041 1076 2052 996 2041 994 2041 833 2054 768 2043 766 2043 701 2054 669 2043 667 2043 664 2043 309 2050 311 2089"/>
+                        </Shape>
+                        <String CONTENT="St. Petersburg.¹ The expedition of 1900-01 formed part of the Jesup North"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l10" HPOS="303" VPOS="2110" WIDTH="1771" HEIGHT="59" BASELINE="305 2143 2074 2147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 2143 303 2160 314 2169 316 2169 318 2169 320 2169 2072 2160 2074 2147 2072 2115 305 2110 305 2143"/>
+                        </Shape>
+                        <String CONTENT="Pacific Expedition. The collections made during this period are deposited in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l11" HPOS="305" VPOS="2160" WIDTH="979" HEIGHT="63" BASELINE="307 2206 1284 2201" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 2206 307 2223 1282 2221 1284 2201 1279 2173 879 2160 877 2160 779 2173 422 2162 420 2162 357 2173 331 2162 329 2162 327 2162 324 2162 322 2162 305 2171 307 2206"/>
+                        </Shape>
+                        <String CONTENT="the American Museum of Natural History."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r4" HPOS="307" VPOS="2230" WIDTH="1778" HEIGHT="301" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="307 2230 2085 2230 2085 2531 307 2531"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l12" HPOS="409" VPOS="2221" WIDTH="1667" HEIGHT="60" BASELINE="411 2268 2076 2264" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2268 411 2281 2074 2279 2076 2264 2072 2234 2020 2221 2018 2221 2016 2221 2014 2221 1998 2232 1985 2221 1983 2221 1981 2221 1979 2221 1977 2221 1975 2221 1957 2232 1795 2221 1793 2221 1790 2221 1788 2221 1775 2234 1559 2234 1476 2221 1474 2221 1472 2221 1446 2234 1303 2234 1262 2221 1260 2221 1258 2221 1256 2221 1253 2221 1236 2234 1184 2223 1182 2223 1180 2223 1149 2234 662 2223 660 2223 658 2223 630 2234 532 2223 530 2223 528 2223 487 2234 426 2223 424 2223 422 2223 420 2223 409 2232 411 2268"/>
+                        </Shape>
+                        <String CONTENT="On these journeys I visited nearly all parts of the country inhabited by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l13" HPOS="303" VPOS="2279" WIDTH="1771" HEIGHT="65" BASELINE="305 2329 2074 2323" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 2329 305 2344 2072 2338 2074 2323 2070 2292 1955 2292 1940 2279 1938 2279 1936 2279 1933 2279 1868 2290 1842 2279 1840 2279 1838 2279 1836 2279 1834 2279 1819 2292 1723 2292 1667 2279 1665 2279 1613 2290 1596 2279 1593 2279 1591 2279 1589 2279 1587 2279 1559 2290 1533 2279 1531 2279 1528 2279 1468 2292 1147 2281 1145 2281 952 2292 905 2281 903 2281 900 2281 898 2281 896 2281 881 2294 413 2284 411 2284 409 2284 383 2294 329 2284 327 2284 324 2284 322 2284 303 2292 305 2329"/>
+                        </Shape>
+                        <String CONTENT="the Reindeer Chukchee, from central Kamchatka and the Upper Omolon to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l14" HPOS="305" VPOS="2344" WIDTH="1771" HEIGHT="59" BASELINE="307 2387 2076 2383" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 2387 307 2403 2074 2398 2076 2383 2072 2353 322 2344 320 2344 318 2344 316 2344 305 2351 307 2387"/>
+                        </Shape>
+                        <String CONTENT="Chaun Bay and Cape Chukotsky; but I saw only the maritime villages that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l15" HPOS="303" VPOS="2400" WIDTH="1771" HEIGHT="63" BASELINE="305 2448 2074 2442" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 2448 305 2463 2072 2461 2074 2442 2070 2411 1528 2400 1526 2400 1524 2400 1479 2411 402 2405 400 2405 303 2416 305 2448"/>
+                        </Shape>
+                        <String CONTENT="are located on the Pacific coast, between the mouth of the Anadyr and Indian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l16" HPOS="307" VPOS="2461" WIDTH="1503" HEIGHT="61" BASELINE="307 2504 1810 2504" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 2504 307 2522 1810 2522 1810 2504 1810 2474 1721 2461 1635 2461 1632 2461 1630 2461 1628 2461 1617 2472 1580 2461 1578 2461 1576 2461 1574 2461 1552 2472 1528 2461 1526 2461 1524 2461 1522 2461 1502 2472 1487 2461 1485 2461 1483 2461 1481 2461 1479 2461 1476 2461 1459 2472 1388 2461 1386 2461 1323 2474 1206 2474 1193 2461 1191 2461 1188 2461 1186 2461 1184 2461 1160 2472 1143 2461 1141 2461 1139 2461 1136 2461 1134 2461 1110 2472 1084 2461 1082 2461 1080 2461 1078 2461 1033 2472 972 2461 970 2461 907 2472 872 2461 870 2461 868 2461 809 2472 796 2461 794 2461 792 2461 790 2461 725 2474 556 2474 543 2461 541 2461 539 2461 537 2461 307 2470 307 2504"/>
+                        </Shape>
+                        <String CONTENT="Point. These are inhabited by Chukchee and by Asiatic Eskimo."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r5" HPOS="307" VPOS="2531" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="307 2531 2085 2531 2085 2710 307 2710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l17" HPOS="407" VPOS="2528" WIDTH="1667" HEIGHT="52" BASELINE="409 2565 2074 2561" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2565 409 2580 2072 2578 2074 2561 2068 2528 407 2530 409 2565"/>
+                        </Shape>
+                        <String CONTENT="In my protracted intercourse with the northern Reindeer camps I had"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l18" HPOS="305" VPOS="2595" WIDTH="1771" HEIGHT="48" BASELINE="305 2623 2076 2623" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 2623 305 2643 2076 2643 2076 2623 2076 2595 305 2595 305 2623"/>
+                        </Shape>
+                        <String CONTENT="ample opportunity to see people from Arctic villages, and was able to obtain"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l19" HPOS="305" VPOS="2652" WIDTH="1611" HEIGHT="56" BASELINE="307 2682 1916 2686" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 2682 305 2697 314 2706 314 2708 316 2708 318 2708 320 2708 1914 2699 1916 2686 1914 2656 307 2652 307 2682"/>
+                        </Shape>
+                        <String CONTENT="a variety of information regarding their customs and manner of living."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r6" HPOS="307" VPOS="2710" WIDTH="1778" HEIGHT="241" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="307 2710 2085 2710 2085 2951 307 2951"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l20" HPOS="415" VPOS="2701" WIDTH="1664" HEIGHT="61" BASELINE="415 2745 2079 2745" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2745 415 2762 2079 2762 2079 2745 2079 2714 1998 2714 1985 2701 1983 2701 1981 2701 1979 2701 1977 2701 1949 2712 1855 2701 1853 2701 1851 2701 1825 2714 1741 2714 1728 2701 1726 2701 1723 2701 1721 2701 1665 2712 1574 2701 1572 2701 1570 2701 1546 2712 1459 2701 1457 2701 1455 2701 1453 2701 1435 2712 1362 2701 1360 2701 1357 2701 1334 2712 1316 2701 1314 2701 1312 2701 1310 2701 1308 2701 1286 2712 1262 2701 1260 2701 1258 2701 1206 2712 1121 2701 1119 2701 1117 2701 1093 2712 1067 2701 1065 2701 1063 2701 983 2712 931 2701 929 2701 926 2701 900 2712 887 2701 885 2701 883 2701 881 2701 879 2701 840 2712 796 2701 794 2701 792 2701 731 2712 718 2701 716 2701 714 2701 712 2701 415 2706 415 2745"/>
+                        </Shape>
+                        <String CONTENT="The material life of the Reindeer Chukchee is quite uniform throughout"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l21" HPOS="305" VPOS="2771" WIDTH="1771" HEIGHT="49" BASELINE="305 2805 2076 2805" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 2805 305 2820 2076 2820 2076 2805 2074 2771 305 2773 305 2805"/>
+                        </Shape>
+                        <String CONTENT="all the extensive territory occupied by their camps. The same may be said"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l22" HPOS="305" VPOS="2820" WIDTH="1774" HEIGHT="63" BASELINE="307 2866 2079 2862" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 2866 307 2883 2076 2879 2079 2862 2074 2833 2007 2820 2005 2820 2003 2820 1964 2831 1942 2820 1940 2820 1938 2820 1936 2820 1914 2831 1771 2820 1769 2820 1710 2831 1650 2820 1648 2820 1645 2820 1643 2820 1626 2833 1355 2833 1325 2820 1323 2820 1321 2820 1318 2820 1288 2831 1247 2820 1245 2820 1243 2820 1141 2833 543 2823 541 2823 443 2833 346 2823 344 2823 342 2823 305 2836 307 2866"/>
+                        </Shape>
+                        <String CONTENT="of the maritime villages, which have exactly the same material culture, whether"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l23" HPOS="305" VPOS="2883" WIDTH="1065" HEIGHT="59" BASELINE="305 2927 1370 2927" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 2927 305 2942 1370 2942 1370 2927 1370 2896 1050 2883 1048 2883 1046 2883 1043 2883 1043 2885 1033 2896 838 2896 812 2883 809 2883 807 2883 805 2883 803 2883 788 2894 762 2883 760 2883 757 2883 755 2883 753 2883 753 2885 742 2894 680 2883 677 2883 675 2883 673 2883 673 2885 662 2896 521 2896 485 2883 482 2883 480 2883 478 2883 476 2883 459 2894 437 2883 435 2883 433 2883 359 2894 337 2883 335 2883 333 2883 331 2883 305 2894 305 2927"/>
+                        </Shape>
+                        <String CONTENT="they belong to Chukchee or to Eskimo tribes."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r7" HPOS="307" VPOS="2951" WIDTH="1778" HEIGHT="243" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="307 2951 2085 2951 2085 3194 307 3194"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l24" HPOS="407" VPOS="2940" WIDTH="1672" HEIGHT="62" BASELINE="409 2987 2079 2981" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2987 409 3002 2076 2996 2079 2981 2074 2950 1552 2940 1550 2940 1481 2950 965 2942 963 2942 896 2955 407 2955 409 2987"/>
+                        </Shape>
+                        <String CONTENT="In order to avoid repetition, I have found it advisable to describe together"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l25" HPOS="303" VPOS="3000" WIDTH="1773" HEIGHT="63" BASELINE="305 3048 2076 3043" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 3048 305 3063 2074 3059 2076 3043 2072 3011 1199 3000 1197 3000 1195 3000 1193 3000 1180 3011 329 3002 327 3002 324 3002 303 3011 305 3048"/>
+                        </Shape>
+                        <String CONTENT="the main features of the material life of both Maritime Chukchee and Eskimo."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l26" HPOS="307" VPOS="3069" WIDTH="1769" HEIGHT="59" BASELINE="309 3106 2076 3102" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="309 3106 309 3119 2059 3128 2061 3128 2063 3128 2066 3128 2076 3117 2076 3102 2072 3072 307 3069 309 3106"/>
+                        </Shape>
+                        <String CONTENT="The provenience of the specimens illustrated, however, is indicated in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-021_l27" HPOS="305" VPOS="3132" WIDTH="526" HEIGHT="61" BASELINE="307 3167 831 3163" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="307 3167 307 3180 350 3193 353 3193 355 3193 567 3180 723 3191 725 3191 818 3189 820 3189 822 3189 822 3186 831 3178 831 3163 827 3132 305 3132 307 3167"/>
+                        </Shape>
+                        <String CONTENT="legends to the figures."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r8" HPOS="307" VPOS="3222" WIDTH="1778" HEIGHT="54" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="307 3222 2085 3222 2085 3276 307 3276"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l28" HPOS="881" VPOS="3225" WIDTH="617" HEIGHT="54" BASELINE="883 3253 1498 3262" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 3253 881 3271 1494 3279 1498 3262 1498 3234 883 3225 883 3253"/>
+                        </Shape>
+                        <String CONTENT="¹ See list of authorities quoted, p. 3."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r9" HPOS="307" VPOS="3276" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="307 3276 2085 3276 2085 3352 307 3352"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l29" HPOS="1156" VPOS="3279" WIDTH="52" HEIGHT="76" BASELINE="1162 3334 1208 3329" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1162 3334 1165 3355 1208 3353 1208 3329 1201 3282 1156 3279 1162 3334"/>
+                        </Shape>
+                        <String CONTENT="[1]"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-021_r10" HPOS="307" VPOS="3352" WIDTH="1778" HEIGHT="54" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="307 3352 2085 3352 2085 3406 307 3406"/>
+                    </Shape>
+                    <TextLine ID="mz_1-021_l30" HPOS="303" VPOS="3340" WIDTH="675" HEIGHT="52" BASELINE="305 3375 978 3368" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="305 3375 305 3392 976 3388 978 3368 972 3340 303 3344 305 3375"/>
+                        </Shape>
+                        <String CONTENT="1—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

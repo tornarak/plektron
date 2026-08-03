@@ -1,0 +1,131 @@
+{
+  "ref": "1-021",
+  "contamination": {
+    "blind": false,
+    "note": "Not blind. The machine text in mz/ocr/ was visible in the `harness ocr lines --store mz` table, which is the only way to obtain the line indices this proposal is keyed by. Every line was nevertheless read off the raster (full page, both contact sheets, then targeted 2x/4x zooms) and the text below is that reading; CATMuS was treated as a witness to line geometry only. It is wrong on this page in three places that were corrected from the raster: line 8 and line 27 markers (it emits plain ASCII `1` for the raised `¹`), line 28 (it reads `II` for the bracketed folio), and line 29 (it emits U+2013 for the em dash). The page carries no Tier-1 notation at all, so the 0%-of-inventory problem does not arise here."
+  },
+  "page": {
+    "character": "First page of the text proper. Display title `THE CHUKCHEE.` (large T/C with small caps), a short centred rule, the section heading `INTRODUCTORY.`, six paragraphs of English prose, one footnote, the bracketed folio `[1]` at the foot, and the signature line. No running title — this is a chapter/work opening, which is why the segmenter found no RunningTitleZone and why the top third of the page is blank. No figures (gt/fig/chukchi-1-021.xml does not exist and the figure track is complete).",
+    "language": "English throughout. No Chukchee, Koryak or Yupik form anywhere on the page, hence no `resolved` field on any prose line.",
+    "folio": "1, printed as `[1]` at the foot (line 28) — the bracketed-at-the-foot form CLAUDE.md records for a chapter opening, the same shape as `1-151`'s `[115]`.",
+    "footnotes": "One footnote, marker 1. Reference on line 8 (`St. Petersburg.¹`), opener on line 27 (`¹ See list of authorities quoted, p. 3.`). Both invariants of keying_spec.md §2.10 hold: continuous run from 1, each value occurring twice. Its content is corroborated book-internally — `data/authorities.json` was read from printed folios 3–9, so `p. 3` is the first page of the Authorities Quoted list.",
+    "typography": "The book sets French spacing before `;` and a double space after a sentence period. Per keying_spec.md §2.9 (\"Key **English spacing**: `purpose; but`, no space\") neither is reproduced; the text below is keyed with English spacing throughout. Old-style figures are used for all numerals (§5.4): the `1` is x-height, dotless and serifed, and the `0` is small and round — `1900-01` reads as `Igoo-oI` at a glance and is not that."
+  },
+  "segmenter_missed": {
+    "bands": [],
+    "note": "`harness ocr gaps 1-021 --store mz` reported zero bands. This page has no figure ALTO, so nothing could be masking a real band as artwork — the empty result is a clean negative, not an artifact of masking. Checked against the full-page raster: every printed line, including the rule under the title and the rule above the footnote (rules carry no text), is accounted for by the 30 TextLines. No adopt-gap performed."
+  },
+  "lines": {
+    "0": {
+      "text": "THE CHUKCHEE.",
+      "note": "Display title. Set with a full-size initial `T` and `C` and small caps for the remainder of each word. Flattened to plain capitals — the small-cap setting here is an English-register display convention, not the notation's small-cap sorts of keying_spec.md §2.3, which are licensed only for ᴀ ᴇ ɪ ʟ inside Tier-1 forms. (Deliberately not spelling the appearance out in small-cap codepoints: §5.10 records that \"No small-caps \\\"o\\\" exists in this notation\", so an illustrative spelling of CHUKCHEE would have to invent one.)"
+    },
+    "1": {
+      "text": "INTRODUCTORY.",
+      "note": "Section heading, centred, full capitals (not small caps here — letters are of even height). The short centred rule between line 0 and this line carries no text and is correctly not a TextLine."
+    },
+    "2": {
+      "text": "THE following account of the Chukchee tribe contains chiefly the results",
+      "note": "Paragraph opening: `THE` is set in small caps as the opening-word convention. Flattened to capitals, same reasoning as line 0."
+    },
+    "3": {
+      "text": "of my own observations, made during a protracted stay in the Kolyma district"
+    },
+    "4": {
+      "text": "from 1890 to 1898; and later during a journey to Kamchatka, Anadyr, and",
+      "note": "The print sets a thin space before the semicolon after 1898, unambiguous at 2x. Not reproduced, per keying_spec.md §2.9: \"Key **English spacing**: `purpose; but`, no space.\" (This note deliberately does not quote the spaced form: `corpus normalize` strips such a space from the note text itself, per the same §2.9 rule, so a quoted example would silently become its own counterexample.) The numerals are old-style — `1` a bare serifed stem, `8` and `9` with descending/ascending forms; read as 1890 and 1898."
+    },
+    "5": {
+      "text": "the Chukchee Peninsula, in 1900-01. From 1895 to 1898 the work was",
+      "note": "`1900-01` is a U+002D hyphen in English prose (keying_spec.md §2.11 forbids a bare hyphen only for a *dash*; this is a range hyphen, not a dash). The `0`s are the small round old-style form and are zeros, not `o`. Double space after `01.` in the print, keyed single per §2.9."
+    },
+    "6": {
+      "text": "performed in connection with the Sibiryakoff Expedition, and part of the",
+      "note": "A round artifact dot sits between `in` and `connection`. Judged dirt, not ink from the forme — this page is littered with the same speck at type-baseline height in several interword gaps (see also lines 8, 12, 19, 25). Not keyed."
+    },
+    "7": {
+      "text": "material was published in Russian by the Imperial Academy of Sciences in"
+    },
+    "8": {
+      "text": "St. Petersburg.¹ The expedition of 1900-01 formed part of the Jesup North",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE (the footnote reference). Everything else on this line is ASCII.",
+      "note": "The marker is a genuinely raised digit, clearly above x-height at 2x, and is keyed as the Unicode superscript per keying_spec.md §2.10 (\"Key the actual Unicode superscript — `¹` U+00B9 ... never the plain ASCII digit\"). CATMuS emits a plain ASCII `1` here; that is the recognizer's standing behaviour and not evidence. A speck sits between `formed` and `part`; judged dirt, not keyed."
+    },
+    "9": {
+      "text": "Pacific Expedition. The collections made during this period are deposited in",
+      "note": "Double space after `Expedition.` in the print, keyed single per §2.9."
+    },
+    "10": {
+      "text": "the American Museum of Natural History."
+    },
+    "11": {
+      "text": "On these journeys I visited nearly all parts of the country inhabited by"
+    },
+    "12": {
+      "text": "the Reindeer Chukchee, from central Kamchatka and the Upper Omolon to",
+      "note": "A speck sits between `and` and `the`. Dirt, not keyed."
+    },
+    "13": {
+      "text": "Chaun Bay and Cape Chukotsky; but I saw only the maritime villages that",
+      "note": "Thin space before the semicolon in the print; keyed English-spaced per §2.9, as on line 4."
+    },
+    "14": {
+      "text": "are located on the Pacific coast, between the mouth of the Anadyr and Indian",
+      "note": "A speck sits between `on` and `the`. Dirt, not keyed."
+    },
+    "15": {
+      "text": "Point. These are inhabited by Chukchee and by Asiatic Eskimo.",
+      "note": "Double space after `Point.`, keyed single per §2.9."
+    },
+    "16": {
+      "text": "In my protracted intercourse with the northern Reindeer camps I had"
+    },
+    "17": {
+      "text": "ample opportunity to see people from Arctic villages, and was able to obtain"
+    },
+    "18": {
+      "text": "a variety of information regarding their customs and manner of living."
+    },
+    "19": {
+      "text": "The material life of the Reindeer Chukchee is quite uniform throughout",
+      "note": "A speck sits between `The` and `material`. Dirt, not keyed."
+    },
+    "20": {
+      "text": "all the extensive territory occupied by their camps. The same may be said",
+      "note": "Double space after `camps.`, keyed single per §2.9."
+    },
+    "21": {
+      "text": "of the maritime villages, which have exactly the same material culture, whether"
+    },
+    "22": {
+      "text": "they belong to Chukchee or to Eskimo tribes."
+    },
+    "23": {
+      "text": "In order to avoid repetition, I have found it advisable to describe together"
+    },
+    "24": {
+      "text": "the main features of the material life of both Maritime Chukchee and Eskimo."
+    },
+    "25": {
+      "text": "The provenience of the specimens illustrated, however, is indicated in the",
+      "note": "`provenience` is the printed spelling and is the Americanist term of art, not a misspelling of `provenance`. Ground truth reproduces the print (keying_spec.md §1: \"Keying reproduces print\"), so it stands either way. A speck sits in the gap around `however,`; dirt, not keyed."
+    },
+    "26": {
+      "text": "legends to the figures."
+    },
+    "27": {
+      "text": "¹ See list of authorities quoted, p. 3.",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE (the footnote opener). Everything else on this line is ASCII.",
+      "note": "Footnote opener, keyed as the superscript sort like its reference on line 8, per keying_spec.md §2.10: \"A marker is the superscript sort, at the reference and at the opener alike.\" The mark is visibly raised at 4x. A speck sits over the `t` of `list`, which CATMuS read as an apostrophe (`list'`); judged dirt, not keyed."
+    },
+    "28": {
+      "text": "[1]",
+      "note": "The printed folio, bracketed at the foot — the chapter-opening form CLAUDE.md records (`1-151` reads `[115]` at the foot and its TEI gives `<pb n=\"115\"/>`). CATMuS read `II`. THE ONE OPEN QUESTION ON THIS PAGE, flagged rather than argued away: at 4x the glyph is a bare vertical stem with symmetric serifs top and bottom and no top-left flag, so it is optically indistinguishable from a roman/small-cap `I`, and the body-text old-style `1` on line 4 does carry a small head serif. Keyed as the digit `1` on function, not on shape: this is the folio slot, this is the first page of the text, and the front matter it follows is foliated in roman while the body runs 1–732 in arabic. An adjudicator should settle this against line 29, which presents the same letterform in the same size."
+    },
+    "29": {
+      "text": "1—JESUP NORTH PACIFIC EXPED., VOL. VII.",
+      "resolved": "— = U+2014 EM DASH, unspaced both sides. Everything else on this line is ASCII. The trailing `VII.` is three ASCII capitals plus a period.",
+      "note": "Signature line, whole line set in small caps; flattened to capitals like lines 0 and 2. The dash is keyed U+2014 unspaced, per keying_spec.md §2.11: \"**Quire mark / signature line** — `82—JESUP NORTH PACIFIC EXPED., VOL. VII.` **Unspaced**, unlike the other two.\" CATMuS emits U+2013 here, which §2.11 measures at zero occurrences corpus-wide. The leading character is keyed as the digit `1` on the same reasoning as line 28 and on §2.11's \"the number is the signature, not a folio\" — this is the volume's first signature, and the attested instance sets an arabic number (82 on 3-119). Same optical caveat as line 28: the glyph is a serifed stem and a small-cap `I` would present identically. If the adjudicator rules line 28 the other way, this line should move with it."
+    }
+  }
+}

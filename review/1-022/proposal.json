@@ -1,0 +1,39 @@
+{
+  "lines": {
+    "0": {
+      "text": "2 BOGORAS, THE CHUKCHEE.",
+      "note": "Running title line. The folio '2' is printed at the far left of this row (raster x~780) and sits OUTSIDE line 0's polygon (hpos 1323, width 621), i.e. outside every TextLine box on the page — the same class as 1-073's stranded folio 51. Read off the page with --margins and keyed here at the head of the line; an adjudicator who wants the folio in its own line rather than joined to the running title should rule on that, as no geometry exists for it. A round speck sits between the folio and the title (raster x~1290, mid-height) and a second below the final period of CHUKCHEE.; both judged binarization noise, not ink from the forme — isolated dots at no type weight, of the kind CLAUDE.md records for 1-033/1-035/1-036."
+    },
+    "1": {
+      "text": "In the psychological and sociological life of all three divisions of the",
+      "note": "A speck sits between 'psychological' and 'and'; judged noise, not a mark or punctuation. Paragraph opening, indented."
+    },
+    "2": {
+      "text": "population, there are many curious points of similarity and difference, which"
+    },
+    "3": {
+      "text": "will be stated later on in this account."
+    },
+    "4": {
+      "text": "The illustrations were made by Mr. Rudolf Weber; the photographs in",
+      "note": "Paragraph opening, indented. The print sets a thin space before the semicolon ('Weber; the'); keyed English spacing per keying_spec.md §2.9 — 'The book sets French spacing and the corpus does not reproduce it. … Key English spacing: purpose; but, no space.'"
+    },
+    "5": {
+      "text": "the field, by Mr. Alexander Axelrod of Switzerland, and by myself. The"
+    },
+    "6": {
+      "text": "drawings for Plates V (Fig. 2), VII, XIV, were made by Mr. A. E. Döring",
+      "resolved": "ö = o + U+0308 (COMBINING DIAERESIS), NFD. All other characters ASCII.",
+      "note": "The three plate numerals are printed as typographic small capitals — 'V', 'VII', 'XIV' — flattened here to ASCII capitals. This is English-register typography, not notation: keying_spec.md §2.3 licenses small-cap base codepoints only for the notation series, 'The key glosses ᴀ ᴇ ɪ jointly as \"obscure vowels (short)\"; ʟ merely shares the shape family', and there is no small-cap V or X sort in the inventory at all. Note in particular that the I of 'XIV' is ASCII I and NOT U+026A: §5.7's medial-small-cap class is scoped to Tier-1 forms, and this is an English roman numeral. The first numeral reads as a v-shape at lowercase height at 2x; measured against the V of 'VII' in the same strip the two are the same height, so all three are the same small-cap setting and Plate V is the reading — consistent with data/loi.json's plates I–XXXV, and with 'Fig. 2' being a plate-internal figure number rather than text-figure 2. Döring is a German proper name, Tier-2, keyed as printed with its diaeresis. NOTE FOR THE ADJUDICATOR: 'harness proposal check' flags this token under the keying_spec.md 5.1 rare-form arm ('sets a character the corpus sets in only 4.9% of 122 - check for a dropped mark'), so the page does not check silent. The flag is a false positive by construction and the text is deliberately left as it stands: that prior is computed over Tier-1 marked-vs-bare distributions, and this is a Tier-2 German surname where the diaeresis is orthographic rather than notational. The mark is not an absence-shaped call of the kind 5.1 warns about - both dots are plainly set and separated above the o at 2x in review/1-022/zoom/zoom2-002.png, so there is nothing here that a dropped-mark reading could be hiding."
+    },
+    "7": {
+      "text": "from several photographs in my collection."
+    }
+  },
+  "footnotes": "No footnote markers anywhere on this page — no raised digit at any reference and no note at the foot. The page carries no footnote apparatus at all, so keying_spec.md §2.10's two counting invariants are vacuous here rather than failed.",
+  "contamination": {
+    "blind": false,
+    "note": "NOT blind, and stated plainly. `harness ocr gaps` and `harness ocr lines --store mz` were run in one batch before the raster was opened, so the CATMuS text of all 8 lines was visible before the first look at scans/chukchi-1-022.png. Every line was nevertheless read off the raster and the sheets, and the reading departs from the machine text in three places: the folio '2' (which mz has nowhere, being outside the polygon), 'Plates V' (mz reads lowercase 'v'), and the English semicolon spacing. The exposure is low-consequence here because the page carries no Tier-1 material at all — CATMuS's 0%-of-inventory blindness and its ASCII substitutions (' ’ / for ˊ, i I r for ɪ) have nothing to bite on — but the sequencing was mine and is recorded rather than glossed.",
+    "tier1": "None. This page is entirely English prose plus one German proper name (Döring). No Chukchee, Koryak or Yupik form appears on it, so keying_spec.md §5.1-5.3 (dropped g̣, ɪ/i/r, ä/a) and §5.5/§5.8 (stress vs apostrophe) have no instance to apply to. No U+02CA, no U+0323, no small-cap notation sort is keyed anywhere on the page."
+  }
+}
