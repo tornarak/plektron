@@ -416,7 +416,20 @@ collation-side analogue since collation works from the full page image.
   occurrence that doesn't exist.
 - **`note`** for anything an adjudicator would otherwise have to rediscover: material
   outside a polygon, a small-cap flattening, a speck you decided was not ink.
-- A **`contamination`** block, always. Say whether the page is blind.
+- A **`contamination`** block, always — and **`blind: true` is the ordinary
+  answer now.** The field was added when the review machinery was being built and
+  repeatedly refined on the same few pages, so a session held its own earlier
+  readings of a page, and the editor's hand-corrections of them, several times
+  over in one context. That is what it was recording. A subagent reading a page it
+  has never seen, in a fresh context, has none of that and has no reason to mark
+  `false`. **Seeing the machine text in `harness ocr lines` is not contamination**:
+  it is a witness to line geometry and English, it reads 0% of the inventory, and
+  you cannot obtain the line indices this file is keyed by without it. Mark `false`
+  only for something specific and nameable — a previous reading of this page in
+  this context, an adjudicated neighbour opened for evidence — and say what it was.
+  Both readers of the `1-021`/`1-022` batch marked `false` and spent a paragraph
+  each justifying it on the `ocr lines` grounds; that dilutes the field until a
+  genuinely contaminated reading is indistinguishable from a clean one.
 - **Footnote markers are keyed as the actual Unicode superscript digit** — `¹`
   U+00B9, `²` U+00B2, `³` U+00B3, `⁴`–`⁹` U+2074–U+2079 — never the plain ASCII
   digit. `2-244` line 1 got this wrong: `funeral.1` proposed, `funeral.¹`

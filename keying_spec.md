@@ -366,6 +366,34 @@ takes. Three forms occur, and all three are as-set:
   is the signature, not a folio, and `harness tei context` reads that zone for
   the printed folio, so a mis-keyed dash there is not merely cosmetic.
 
+### 2.12 Roman numerals and folio slots — plain ASCII, always (SETTLED, editor ruling)
+
+**Every roman numeral in the book is keyed in plain ASCII capitals**, whatever
+the setting. `Plates V, VII, XIV`, `VOL. VII.`, `Fig. 2`, a folio, a signature
+number — all ASCII. The book sets roman numerals as typographic small capitals
+routinely, and that is an English-register display convention with no bearing on
+the notation. §2.3's small-cap sorts are licensed **only for `ᴀ ᴇ ɪ ʟ` inside
+Tier-1 forms**, and there is no small-cap `V` or `X` in the inventory at all, so
+the question of whether a given numeral "looks small-cap-ish" cannot change what
+is keyed. Do not measure letter heights to settle it; there is nothing to settle.
+
+**The two folio-bearing slots are equally mechanical**, and readers keep treating
+them as puzzles:
+
+- **A bracketed folio at the foot of a chapter opening** — `[1]`, `[115]` — is
+  the book's regular form and appears throughout. Key it as **plain ASCII digits
+  in brackets**. The segmenter classes it `QuireMarksZone`, `tei context` reads
+  that zone for the printed folio, and `context.APPARATUS_ZONES` drops it from
+  the collation draft, so it is apparatus rather than text.
+- **The signature line's leading number** — `82—JESUP NORTH PACIFIC EXPED., VOL.
+  VII.` — likewise, plain ASCII digits. It is practically identical on every page
+  that carries one and is dropped from everything downstream.
+
+**One case is genuinely ambiguous and it is page 1**, where the arabic `1` is set
+as a bare serifed stem indistinguishable from a roman `I`. It is a digit, on the
+same rule as everything above. Nowhere else does the question arise, and a reader
+spending a 4× look on either slot is spending it in the wrong place.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
@@ -767,6 +795,39 @@ past 2026-07-31, the only class recurring across pages is §5.2's `i`→`ɪ`.
     defective opener as a worked example, so a *record of the error* read as a
     *statement of the convention* — the passage has since been rewritten. **When a
     reader misapplies a rule, read the rule before concluding it was ignored.**
+
+12. **A note that invents a second witness for text that is already right.** The
+    other half of §5.11 and harder to catch, because nothing downstream disagrees
+    with anything: the reading is correct, the check passes, and the note supplies
+    a *checkable* corroboration that turns out to be false. Two instances in one
+    two-page batch, from different readers.
+
+    `1-022` keyed `Plates V` — correct — and wrote that the first numeral
+    "measured against the V of VII in the same strip the two are the same height".
+    They are not: at 4× the `v` sits at plain x-height and `VII`/`XIV` are small
+    caps, visibly taller. `1-021` ruled a speck over the `t` of `list` to be dirt
+    — correct — and wrote that "CATMuS read it as an apostrophe (`list'`)". CATMuS
+    read `1 See list of authorities quoted, p. 3.`; there is no apostrophe in the
+    machine text at all.
+
+    **The rule: a note may state what the reader saw, and may not state what
+    another witness said unless that witness was actually consulted.** The machine
+    text is one command away (`harness ocr lines REF --store mz`) and a measured
+    comparison is one zoom away, so both claims were cheap to check and neither
+    was. An invented corroboration is worse than no note, because it is exactly
+    the thing that stops the next reader looking — and it will be believed, since
+    the text beside it is right.
+
+    **Write notes in codepoints, not in glyphs**, which removes the commonest way
+    a note goes wrong on its own. Name the character — `U+0323 COMBINING DOT
+    BELOW`, `U+02CA MODIFIER LETTER ACUTE ACCENT` — rather than reproducing it, and
+    describe a spacing or a shape rather than exhibiting it. Reproducing a glyph in
+    prose is probabilistic in exactly the way keying it is, so a note can acquire
+    its own typo and then argue from it; and `corpus normalize` runs over `note`
+    text like any other field, so a quoted French space or a precomposed letter is
+    silently rewritten and the example becomes its counterexample. **That
+    normalization is intentional and is not a trap to work around** — it is the
+    reason the convention exists.
 
 **On repetition.** More than one of the classes above has been named as "the
 one to check hardest" and then missed again on a later page, sometimes in the

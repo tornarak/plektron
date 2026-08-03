@@ -262,7 +262,10 @@ gap check matters more than usual here").
       - Author review/PP-NNN/proposal.json: one entry per ALTO line index, `text`
         mandatory, `resolved` spelling out codepoints for any line with notation,
         `note` for anything an adjudicator would otherwise rediscover, and a
-        `contamination` block.
+        `contamination` block — **`blind: true` unless you can name something
+        specific**, and seeing the machine text in `ocr lines` is not it (you
+        cannot get the line indices without it). See SKILL.md on what that field
+        was for.
       - `uv run harness proposal fix PP-NNN`, then re-run it without `--fix` until
         it is silent.
       - `uv run harness corpus normalize --commit
@@ -311,6 +314,24 @@ gap check matters more than usual here").
       - A note citing keying_spec.md should quote the sentence it relies on. Two
         readers have now cited the same section for opposite conclusions after
         reading it in full.
+      - **A note may state what you saw. It may not state what another witness
+        said unless you actually consulted that witness** (§5.12). Two readers in
+        one batch invented a corroboration for text that was already correct —
+        one claimed a letter-height measurement that does not hold, the other
+        claimed CATMuS read a speck as an apostrophe when the machine text has no
+        apostrophe in it. Both are one command from being checked and neither was.
+        An invented second witness is worse than no note, because it is what stops
+        the next reader looking.
+      - **Write notes in codepoints, not glyphs** — `U+0323 COMBINING DOT BELOW`,
+        not the character; describe a spacing rather than exhibiting one.
+        Reproducing a glyph in prose is probabilistic the same way keying it is,
+        and `corpus normalize` runs over `note` like any other field, which is
+        deliberate. Do not treat that as a trap to route around.
+      - **Roman numerals are plain ASCII, always** (§2.12), however small-cap they
+        look. So are a bracketed chapter-opening folio (`[1]`) and the signature
+        line's leading number — both are regular, both are apparatus, and neither
+        is worth a zoom. Page 1 is the only slot in the book where the reading is
+        even arguable, and it is a digit.
       - Before you finish, re-read every note against its own text. A note
         describing a keying decision the text does not exhibit is a defect even
         when the text is the right one — worse then, because it argues the

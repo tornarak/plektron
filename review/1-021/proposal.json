@@ -116,7 +116,7 @@
     "27": {
       "text": "¹ See list of authorities quoted, p. 3.",
       "resolved": "¹ = U+00B9 SUPERSCRIPT ONE (the footnote opener). Everything else on this line is ASCII.",
-      "note": "Footnote opener, keyed as the superscript sort like its reference on line 8, per keying_spec.md §2.10: \"A marker is the superscript sort, at the reference and at the opener alike.\" The mark is visibly raised at 4x. A speck sits over the `t` of `list`, which CATMuS read as an apostrophe (`list'`); judged dirt, not keyed."
+      "note": "Footnote opener, keyed as the superscript sort like its reference on line 8, per keying_spec.md §2.10: \"A marker is the superscript sort, at the reference and at the opener alike.\" The mark is visibly raised at 4x. A speck sits over the `t` of `list`; judged dirt, not keyed. (An earlier version of this note claimed CATMuS read it as an apostrophe. It did not — the machine text is `1 See list of authorities quoted, p. 3.`, with no apostrophe anywhere. Corrected per keying_spec.md 5.12: a note may not cite a witness it did not consult.)"
     },
     "28": {
       "text": "[1]",
