@@ -114,6 +114,22 @@ what the thinking caller writes, so refusing bought nothing and left every plura
 verb whose payload happened to carry a list broken until somebody ran it with two
 refs. `ocr clean` was found that way, in use, with its tests green.
 
+**The field set is decided over every payload, never `pairs[0]`** — a field absent
+from page one and a list on page five reached `_pool` unsplit and tripped its guard
+after all the work was done. And the `# field` sub-tables come out in the records'
+own order rather than a `set`'s, since Python randomises string hashing per
+process and they were reordering between runs of one unchanged command; CLAUDE.md
+records the same hazard permuting a model's class map.
+
+**A list inside a record of a list-valued payload is deliberately not handled.**
+Where a payload is already one row per finding, a list in a cell means the verb is
+emitting a shape that is not a table, and `_pool`'s guard firing is the right
+outcome rather than something to absorb. `proposal check` was found that way and
+fixed at the source — its six detectors now share one key set
+(`proposal_check.ISSUE_FIELDS`, built only through `issue()`), where before they
+each named their own fields and a corpus sweep printed 265 findings as 51 KB of
+nested blocks.
+
 It was one module and a 1,000-line `main` until the reorganization, with `zones`
 alone accounting for 38% of the dispatch. The module docstring is still the parser
 `description`, so it reaches `--help`; keep it current. Action help is prose, not
@@ -140,6 +156,38 @@ clone; a farm that does not exist is a question nobody asked. `context._refs_und
 routes both through this, which is why `harness ocr pages` refuses on a clone while
 `--store mz` still answers `[0]`.
 
+**`parallel.py`** — one ordered map, `pmap(fn, items, jobs)`, for the sweeps whose
+per-page cost is a raster decode. A **thread** pool: PNG inflate is ~0.16 s of a
+page against ~0.02 s of measuring, and zlib/PIL/numpy release the GIL for it, so
+threads buy the concurrency without an interpreter and a fresh `lxml`/`numpy`
+import per worker — the trade that matters on a 4-core VPS, where N × the resident
+set binds long before N × the CPU. Workers come from `os.process_cpu_count()`,
+which honours affinity, so a run confined by `taskset` asks for what it has.
+
+Three properties callers depend on. **Results are ordered**, because every caller
+pools into a ref-keyed table or accumulates rows in scan order and completion order
+would reshuffle the report by which page decoded first. **`jobs=1` builds no pool
+at all** — it is the control arm, not a debug switch: the claim these verbs rest on
+is that concurrency moves wall clock and nothing else, and saying so means running
+both sides and diffing. And **an exception keeps its type**, gaining the item as a
+note, because `cli.main` catches four concrete types to turn them into a one-line
+`ERROR:` rather than a traceback; `main` prints notes for the same reason.
+
+**A pool is the second thing to reach for.** Both sweeps that looked like
+candidates had a larger win in the hot path — `unlicensed_marks` asking a one-entry
+dict about every character in the corpus, `validate_page` re-reading all three
+split lists twice a page — and the second was also the GIL-bound share capping the
+pool's own speedup. The module docstring carries the measurements, including which
+verbs were benched and left serial (pure-Python scanning gets *slower*; 0.12 ms of
+lxml per page is under the dispatch cost) and the trap that cProfile's per-call
+overhead overstates call-heavy code by 6×.
+
+**`ocr predict` is the exception and uses processes, not this.** Its cost is not a
+decode: a page is ~17 s, of which `blla.segment` is ~15 and recognition ~1.5, and
+the segmenter's time is scipy/shapely baseline vectorization on one core with the
+GPU at ~4.5%. That workload is only ~55% GIL-free, so threads plateau at 1.8×
+where four processes give 2.8×. See `recognize.predict_workers`.
+
 **`context.py`** — the `PP-NNN` contract (`parse_ref`, `norm_ref`, `stem_for`) and
 `build_context`, the per-page input the collation pass consumes. Everything in it is
 deterministic and precomputed: a pass that re-derived any of it could disagree with
@@ -155,6 +203,18 @@ print in — `FOLIO_ZONES`, in order of confidence — and the second witness to
 **`state.py`** — derived seam state. Folio comes from a committed TEI's `<pb n>` and
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is
 the answer, not a failure. Also `toc_window`/`toc_search`/`toc_near`.
+
+**`entry_state` and `build_ledger` answer different questions and neither calls the
+other.** The ledger walks every scan and computes a `boundary` column needing each
+page's *successor*, which is what `tei ledger` reports and wants. `entry_state`
+needs two bounded things: a backward walk stopping at the first untranscribed page,
+and the milestone fold over its **own part** up to itself. It used to get them by
+building the whole ledger, which is quadratic once `tei validate --all` and every
+`tei context` pay it per page. The only memo is a dict local to one call, so the
+walk and the fold do not parse a page twice; nothing is stored, so nothing needs
+invalidating. The narrowing is invisible in the output — the answers are
+byte-identical — so `test_folio_fold.py` holds it by spying on `_tei_facts` and
+asserting what gets *opened*.
 
 **`ids.py`** — structural ids, `{kind}-{PP-NNN}-{ordinal}`. The ordinal is the
 element's **position** among same-kind elements in document order, not a tally of
@@ -227,6 +287,32 @@ All three were found by reading a written page back rather than by trusting what
 the writer reported about itself; none raised an error, and the file looked right
 from the outside in every case.
 
+**Recognition goes through `kraken.tasks.RecognitionTaskModel`**, not the
+deprecated `rpred.rpred` that kraken 8 removes. Two traps in the swap. The config's
+`device` is **Lightning Fabric's**, handed straight to `Fabric(devices=…)`, so
+`"cuda:0"` fails as `invalid literal for int()` naming neither the field nor the
+model — `_fabric_placement` translates, and the rest of the module keeps torch's
+spelling because `blla.segment` does. And `no_legacy_polygons` moved from an
+`rpred` argument to a config field **with its default flipped**, so leaving it
+unset silently restores the slow polygon path.
+
+**`predict_all` parallelizes across processes, and `predict_workers` says how
+many.** This is the one sweep in the harness that does not use `parallel.pmap`,
+because its cost is not a decode: a page is ~17 s, `blla.segment` ~15 of it and
+recognition ~1.5, and the segmenter's time is scipy `correlate1d`, shapely
+`intersection` and kraken's own boundary tracing — vectorization on one core, with
+the GPU at ~4.5% throughout. Only ~55% of that is GIL-free, so threads plateau at
+1.8× where four processes give 2.8×. Consequently `batch_size` is nearly inert
+(17.4 s/page at 1, 16.8 at 32) and `num_line_workers` is 0, since it spawns
+processes to feed a 1.5 s phase.
+
+`spawn`, not fork — a forked child inherits a CUDA context it cannot use. The
+worker count is capped by **free VRAM as well as cores**, read off the card at run
+time: a worker holds ~1.4 GB of CUDA context (the weights are 22 MiB of it), and a
+constant here would be wrong on the next machine, the same argument the column
+measure rests on. An explicit `--jobs` wins outright, including one that will not
+fit, which is `predict_skip`'s `single` rule applied to a different resource.
+
 **`review.py`** — the largest, and it does five things: span diffing, decision
 persistence (temp-then-rename, a `.prev`, and an append-only `.jsonl` journal),
 `restore`, `corrections`, and a ~450-line embedded browser app in
@@ -273,6 +359,18 @@ there is no such thing as the machine store's opinion of which pages are held ou
 `_ink_cache.json` is gt-only for a sharper version of the same reason: it is keyed by
 ref alone, so a machine verdict landing there would sit in the page list's column
 indistinguishable from one about work a human has actually done.
+
+**A sweep writes that cache once, through `record_ink_many`; only the editor uses
+`record_ink`.** Both reduce through `_ink_verdict` and write through
+`_write_ink_cache`, so there is one reduction and one writer rather than two that
+can drift. The per-page form is a read-modify-write of the *whole* file — load
+every entry, replace one, re-serialize all of them — which made a corpus sweep
+quadratic in the size of the store, and which is the shape that cannot survive
+being parallelized: N workers would each load the file, add their entry and write
+the lot back, dropping every verdict but the last. The batched form reads once and
+writes once, and a test pins the resulting file byte-identical to the per-page
+loop's. The temp file carries the pid, because `replace()` is atomic and the write
+into the temp is not — an editor saving while a sweep runs is an ordinary sequence.
 
 Two things `mz/zones/` deliberately does not do. It is **not normalised** — free
 polygons at whatever x kraken drew, kraken's own ids, kraken's own dialect — because
@@ -341,7 +439,13 @@ test holds them together.
 **`paths.py`** — the `review/<ref>/` layout authority, and `DERIVED`.
 **`proposal_check.py`** — a proposal's `resolved` field against its `text`, plus the
 field-editing verbs; `check` also runs `marks`' two deterministic arms when given a
-ref. **`codepoints.py`**, **`emit.py`** — one job each.
+ref. **Every issue is one record shape** — `ISSUE_FIELDS`, built only through
+`issue()`, and `marks.page_issues` imports that constructor rather than writing
+literals. Six detectors feed one list, and a ragged list of records is not a table:
+they used to name their own fields (`context`, `in_text`, `in_text_not_resolved`,
+`explained`), which silently degraded the whole report to TOON's nested form. No
+field holds a list; codepoint sets and the footnote arm's note are rendered into
+`detail` as text. **`codepoints.py`**, **`emit.py`** — one job each.
 
 ## Invariants that bind callers
 
@@ -363,7 +467,21 @@ ref. **`codepoints.py`**, **`emit.py`** — one job each.
   nearly carried out on the strength of an audit that called the difference drift.
 - **Keep one fixed key set across a list of records.** The TOON encoder collapses a
   uniform list to a header plus rows; one ragged record de-tabularizes the whole
-  table into the verbose nested form.
+  table into the verbose nested form. It does not error, so nothing tells you: a
+  detector-per-shape list read fine one page at a time and printed 265 findings as
+  51 KB of nested blocks over the corpus. If several producers feed one list, give
+  them one constructor (`proposal_check.issue`) rather than one convention.
+- **A sweep measures in the pool and folds outside it.** Counters, caches and
+  label censuses stay single-threaded and in ref order, so `--jobs` changes wall
+  clock and nothing else. A read-modify-write of a shared file inside the loop is
+  the shape that breaks silently under a pool — every writer but the last is lost —
+  and it is usually also quadratic before anyone parallelizes it; batch it
+  (`zones.record_ink_many`).
+- **Profile before reaching for cores, and check the profile against a stopwatch.**
+  The two sweeps that looked like pool candidates each had a larger single-threaded
+  win in the hot path, and in one case that same work was what capped the pool.
+  cProfile's per-call overhead overstates call-heavy code — it reported one of them
+  at 19% where the wall clock said 3%.
 - **Resolve a zone's type by `OtherTag/@LABEL`, never by tag ID.** eScriptorium
   assigns those per export (`BT55`/`BT56` in one, `BT68`/`BT69` in the next), so
   hardcoding them fails silently rather than loudly — see
@@ -400,6 +518,15 @@ tested the CLI at all** — every other test imports module functions directly, 
 verb could be renamed or a documented mode could vanish with a green suite
 throughout. That is not a hypothetical: it is how the surface this file describes
 drifted into needing a reorganization.
+
+**Two kinds of test here hold a property nothing in the output can show.**
+`test_parallel.py` pins that `jobs=1` runs in the *calling thread* rather than a
+pool of one — a serial arm that still went through an executor would compare the
+executor with itself, which is this project's oldest failure shape. And
+`test_folio_fold.py`'s spy asserts which TEI files `entry_state` opens: its
+narrowing was byte-identical in every output, so only a test of what gets read can
+keep it from growing back. Where a change is invisible by construction, test the
+work rather than the answer.
 
 ## No ad-hoc Python
 
