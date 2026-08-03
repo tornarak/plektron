@@ -1055,10 +1055,24 @@ across them, because a ragged list silently degrades to the verbose nested form 
 and the table falls back to TOON on exactly the payloads that would. `--toon`
 forces it at a terminal, which is how a human reproduces what a skill's model
 saw. **A rendered table never truncates**: the console is built at the table's
-own measured width and anything wider goes to `$PAGER` (`less -SRFX`, chopping
-rather than wrapping) — a `…` inside a page ref or a Tier-1 form would be a value
-that reads as a value and is not. The layer is `harness/render.py`; `emit.py`
-stays the serializer and does not know what a terminal is.
+own measured width and a line wider than the screen runs off the edge — a `…`
+inside a page ref or a Tier-1 form would be a value that reads as a value and is
+not. `--pager` is how the rest of it is read (`less -SRFX`, chopping rather than
+wrapping, so columns stay aligned and you scroll sideways); it is **opt-in**,
+having been on by default until the cost turned out to fall on the ordinary case
+— a table that fits going through a subprocess and a pipe to arrive looking the
+same. The layer is `harness/render.py`; `emit.py` stays the serializer and does
+not know what a terminal is.
+
+**Colour says what type a cell is, never what it means**, and the palette is
+rich's own `repr.*` theme rather than one invented here. The renderer knows a
+cell's type and nothing else — it cannot tell `keyed: false` (an unread page)
+from `ok: false` (a gate failed) — so a scheme claiming to say which would be a
+verdict the display layer is not entitled to. Numbers are deliberately unpainted:
+right-justification already marks a numeric column, and numbers being most of the
+cells, painting them buried the two marks that carry information. The one
+exception is `tei validate`/`tei header`, whose reports print `RESULT:
+PASS`/`FAIL` themselves.
 
 `--json` gives indented JSON and is **exactly one document per invocation**. It
 was not: an action printing several tables emitted several documents on one

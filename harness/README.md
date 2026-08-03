@@ -521,6 +521,23 @@ columns and neither has to say so. Four properties bind callers:
   value and is not. The console is therefore built at the table's *own* measured
   width and never narrower, so rich is never in the position of having to shrink a
   column. Output wider than the screen is the pager's problem, not the renderer's.
+- **Colour says what type a cell is, never what it means.** The palette is rich's
+  own `repr.*` theme rather than one invented here: null dim-magenta, the two
+  booleans green and red, headers bold. The renderer knows a cell's type and
+  nothing else — it cannot tell `keyed: false` (an unread page) from `ok: false`
+  (a gate failed) — so any scheme claiming to say which is a verdict the display
+  layer is not entitled to make. **Numbers are deliberately unpainted**, and that
+  is the half worth knowing: the grid already right-justifies an all-numeric
+  column, so painting it encodes one fact twice, and since numbers are most of the
+  cells in most of these tables the first cut turned `views check --all` into a
+  wall of cyan zeros with the two informative marks lost inside it. Colour earns
+  its place by being rare. The one exception is `render.report`, which paints
+  `tei validate`'s `RESULT: PASS`/`FAIL` — that report states its own verdict, so
+  colouring it asserts nothing the text does not. It is also the only painted path
+  reachable outside table mode, hence gated on the mode rather than on `colour()`,
+  and it renders through `Style.render` rather than a `Console` because a console
+  has a width and a width crops: the first cut cut `METRICS:` off at the eightieth
+  column.
 - **A payload that TOON would degrade falls back to TOON.** Uniform records, a flat
   record, and a list of scalars are drawn; a ragged key set, a nested value or a
   list in a cell is not. Drawing one would mean leaving a hole and saying nothing
@@ -549,15 +566,18 @@ columns and neither has to say so. Four properties bind callers:
   never item count — a count cannot tell a 4-page raster sweep from a 40-page
   `ocr lines`, one being seconds and the other milliseconds — and it is
   `transient`, so what stays on screen is the payload.
-- **The pager is `$PAGER` (default `less -SRFX`) and only in table mode.** It is
-  *always* started there and `-F` decides whether it shows, so there is no length
-  threshold here to get wrong — the arrangement git uses. `pager(a)` replaces
-  `sys.stdout` rather than pushing sections through, so every print reaches it,
-  including `tei validate`'s prose, which never went through `out()`; `less`
-  renders progressively, so a long multi-ref run still shows its first report
-  immediately. An absent pager falls back to printing rather than failing.
-  **`zones edit` and `ocr review` opt out at registration** (`pager=False`),
-  because they print a URL and block on a server.
+- **The pager is opt-in — `--pager`, `$PAGER`, default `less -SRFX`, table mode
+  only.** It was on by default on git's reasoning, `-F` printing and exiting when
+  the content already fits; the default is off because that reasoning charges the
+  *ordinary* case. A table that fits went through a subprocess and a pipe to
+  arrive looking the same, and one that did not took the terminal from someone who
+  had not asked for it. `pager(a)` replaces `sys.stdout` rather than pushing
+  sections through, so every print reaches it, including `tei validate`'s prose,
+  which never went through `out()`; `less` renders progressively, so a long
+  multi-ref run still shows its first report immediately. An absent pager falls
+  back to printing rather than failing. **`zones edit` and `ocr review` refuse it
+  at registration** (`pageable=False`), because they print a URL and block on a
+  server.
   Consequence that bites: **`mode(a)` is resolved and cached before the
   redirect.** Asked afterwards, `isatty()` is False and every table silently
   comes back as TOON — the terminal's output format decided by the fact that we

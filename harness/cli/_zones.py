@@ -100,7 +100,7 @@ def register(cli):
                         "by default: it is only wanted when something inside a "
                         "zone is in question, and it costs a second raster decode")
 
-    p = action(g, "edit", run_edit, section="The store", pager=False, help="open the segmentation editor on 127.0.0.1 and keep "
+    p = action(g, "edit", run_edit, section="The store", pageable=False, help="open the segmentation editor on 127.0.0.1 and keep "
             "serving — the session steps through pages with the arrow keys and "
             "saves into gt/zones/, so the ref is where to start, not the only "
             "page reachable. `/` and `?` cycle the store shown (view, gt, mz, "

@@ -259,7 +259,7 @@ def register(cli):
     # group has since caught up with: standing a server up per page made the
     # reviewer wait on the tooling between pages, which got worse the moment the
     # reading half started fanning out to an agent per page.
-    p = _store(add("review", pager=False,
+    p = _store(add("review", pageable=False,
                constraints=(exclusive("serve", "html", "spans"),),
                help="adjudicate reading proposals in the browser "
               "(--serve), one or more pages in one session; bare, a span-level "

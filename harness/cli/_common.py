@@ -12,7 +12,7 @@ only the *declaration* changed, and rewriting 54 handlers is the one thing that
 could quietly falsify it.
 
 **The globals are declared at all three tiers** — root group, each group, each
-action — so `--root`/`--json`/`--toon`/`--no-pager` may be typed anywhere on the
+action — so `--root`/`--json`/`--toon`/`--pager` may be typed anywhere on the
 line. Everything but the root's default is `None`, which is how `_namespace`
 tells "not given" from "given false" as it walks the context chain inward-out.
 That is the job `argparse.SUPPRESS` used to do.
@@ -122,7 +122,7 @@ class _Group(cloup.Group):
 
 
 def globals_params(root_default: Path | None = None) -> list[click.Parameter]:
-    """`--root`/`--json`/`--toon`/`--no-pager`, for the top group and every action.
+    """`--root`/`--json`/`--toon`/`--pager`, for the top group and every action.
 
     **Declared at all three tiers** — root, group, action — so they may be typed
     anywhere on the line. With two tiers of subcommands the last parser to run is
@@ -148,10 +148,11 @@ def globals_params(root_default: Path | None = None) -> list[click.Parameter]:
         cloup.Option(["--toon"], is_flag=True, default=None, group=OUTPUT_GROUP,
                      help="TOON even at a terminal, where an aligned table is the "
                           "default — what a skill's model sees, reproduced by hand"),
-        cloup.Option(["--no-pager"], is_flag=True, default=None, group=OUTPUT_GROUP,
-                     help="print straight to the terminal instead of $PAGER. Only "
-                          "table mode pages at all, and only when stdout is a "
-                          "terminal, so this is never needed down a pipe"),
+        cloup.Option(["--pager"], is_flag=True, default=None, group=OUTPUT_GROUP,
+                     help="page the output through $PAGER (default `less -SRFX`, "
+                          "which chops rather than wraps, so a table wider than "
+                          "the screen scrolls sideways with its columns intact). "
+                          "Table mode only, so it does nothing down a pipe"),
     ]
 
 
@@ -176,7 +177,7 @@ def require_exactly_one(*names: str) -> BoundConstraintSpec:
     return BoundConstraintSpec(require_one, list(names))
 
 
-GLOBAL_NAMES = ("root", "json", "toon", "no_pager")
+GLOBAL_NAMES = ("root", "json", "toon", "pager")
 
 
 def _namespace(ctx, group_name: str, action_name: str, kw: dict):
@@ -208,7 +209,7 @@ def _namespace(ctx, group_name: str, action_name: str, kw: dict):
     for name in GLOBAL_NAMES:
         setattr(a, name, next((p[name] for p in chain
                                if p.get(name) is not None), None))
-    a.json, a.toon, a.no_pager = bool(a.json), bool(a.toon), bool(a.no_pager)
+    a.json, a.toon, a.pager = bool(a.json), bool(a.toon), bool(a.pager)
     a.root = Path(a.root or ".")
     return a
 
@@ -237,7 +238,7 @@ def group(cli: cloup.Group, name: str, help: str,
     return g
 
 
-def action(grp: cloup.Group, name: str, func, *, help: str, pager: bool = True,
+def action(grp: cloup.Group, name: str, func, *, help: str, pageable: bool = True,
            section: str | None = None,
            constraints: tuple[BoundConstraintSpec, ...] = ()) -> cloup.Command:
     """Declare one action: its name, its handler, its help, and the four globals.
@@ -245,10 +246,11 @@ def action(grp: cloup.Group, name: str, func, *, help: str, pager: bool = True,
     Returns the `cloup.Command`, so a caller hangs parameters on it with
     `arg`/`opt` in the order the argparse registration read in.
 
-    `pager=False` is for the two actions that print a URL and then block on a
-    server. It is a keyword here rather than a flag on the namespace because it is
-    a property of the action, not something a caller chooses — `--no-pager` is the
-    caller's spelling.
+    `pageable=False` is for the two actions that print a URL and then block on a
+    server: they refuse `--pager` rather than honouring it, a URL inside a pager on
+    a command that never returns being a URL nobody reads. It is a keyword here
+    rather than a flag on the namespace because it is a property of the action —
+    `--pager` is the only thing a caller says.
 
     Every action gets the `--json`/`--toon` constraint whether it asks or not:
     they are on every action by construction, so their exclusivity has to be too,
@@ -257,7 +259,7 @@ def action(grp: cloup.Group, name: str, func, *, help: str, pager: bool = True,
     @click.pass_context
     def callback(ctx, **kw):
         a = _namespace(ctx, grp.name, name, kw)
-        a.pager = pager
+        a._pageable = pageable
         # The mode is resolved before the pager can replace `sys.stdout` — see
         # `render.mode` — and the flush runs whatever the exit code is, since
         # `views check` and `tei validate` return 1 with a full payload.

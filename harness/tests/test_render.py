@@ -215,6 +215,65 @@ def test_no_ansi_escapes_reach_toon_or_json(monkeypatch):
         assert ANSI.search(R.render(ROWS, m)) is None
 
 
+def test_the_literals_are_painted_and_numbers_are_not(monkeypatch):
+    """**The palette is by type, never by verdict**, which is the whole of what
+    the renderer is entitled to say: it knows a cell is a boolean and cannot know
+    whether `false` there means an unread page or a failed gate.
+
+    Numbers stay plain, and that is the half worth pinning. The grid already
+    right-justifies an all-numeric column, so painting it says the same thing
+    twice — and since numbers are most of the cells in most of these tables,
+    doing it drowned the two marks that carry information. Colour earns its place
+    by being rare.
+
+    Which escape each literal gets is deliberately not asserted: that would pin
+    rich's default theme, which is allowed to move.
+    """
+    monkeypatch.setenv("FORCE_COLOR", "3")
+    styled = {R._scalar(v): ANSI.findall(R.render([{"x": v}], "table").split("\n")[1])
+              for v in (None, True, False, 6, "1-048")}
+    assert not styled["6"] and not styled["1-048"], styled
+    lit = {k: tuple(v) for k, v in styled.items() if k in ("null", "true", "false")}
+    assert all(lit.values()), f"an unpainted literal: {lit}"
+    assert len(set(lit.values())) == 3, lit
+
+
+def test_colour_is_a_layer_over_the_payload_and_strips_back_to_it(monkeypatch):
+    """The load-bearing property: paint is not content. Stripped, a coloured
+    table is byte-identical to the same table rendered with colour refused — so
+    nothing downstream depends on whether the terminal wanted ANSI."""
+    monkeypatch.setenv("FORCE_COLOR", "3")
+    monkeypatch.delenv("NO_COLOR", raising=False)
+    lit = R.render(ROWS, "table")
+    monkeypatch.setenv("NO_COLOR", "1")
+    assert plain(lit) == R.render(ROWS, "table")
+    assert ANSI.search(lit), "nothing was painted, so the test proved nothing"
+
+
+def test_a_gate_report_is_painted_only_at_a_terminal(monkeypatch):
+    """`tei validate` prints its report unconditionally, unlike every other
+    painted path, which is reachable only in table mode. Without the mode test
+    `FORCE_COLOR` would put ANSI into a piped gate report — the one output shape
+    a script is most likely to be reading."""
+    monkeypatch.setenv("FORCE_COLOR", "3")
+    text = "RESULT: FAIL\nERROR: no @resp on a Tier-1 span\nMETRICS: lines=59"
+    assert R.report(text, "toon") == text
+    painted = R.report(text, "table")
+    assert plain(painted) == text
+    assert ANSI.search(painted)
+
+
+def test_a_gate_report_is_never_cropped(monkeypatch):
+    """The regression that painting introduced and this caught: the first cut
+    printed through a rich `Console`, and a console has a width, and a width
+    crops. `METRICS:` — the line whose whole content is a count of what the gate
+    found — came back cut off at the eightieth column."""
+    monkeypatch.setenv("FORCE_COLOR", "3")
+    monkeypatch.setattr(R, "_term_width", lambda: 40)
+    text = "METRICS: " + " ".join(f"k{i}={i}" for i in range(40))
+    assert plain(R.report(text, "table")) == text
+
+
 # --------------------------------------------------------------- startup cost
 
 
@@ -387,34 +446,49 @@ def test_the_mode_is_resolved_before_the_pager_can_hide_the_terminal(monkeypatch
 
 
 def test_only_table_mode_pages(monkeypatch, tmp_path):
-    """A pipe must never page, or every consumer downstream gets a pager's
-    idea of the payload — and `--json`/`--toon` are what a machine reads."""
+    """A pipe must never page even when asked, or every consumer downstream gets
+    a pager's idea of the payload — and `--json`/`--toon` are what a machine
+    reads."""
     sink = tmp_path / "paged"
     monkeypatch.setenv("PAGER", f"tee {sink}")
     for m, paged in (("toon", False), ("json", False), ("table", True)):
         sink.unlink(missing_ok=True)
-        with R.pager(args(_mode=m)):
+        with R.pager(args(_mode=m, pager=True)):
             print("payload")
         assert sink.exists() is paged, f"{m}: paged={sink.exists()}"
 
 
-def test_no_pager_and_an_opted_out_action_both_skip_it(monkeypatch, tmp_path):
-    """`zones edit` and `ocr review` declare `pager=False` at registration: they
-    print a URL and block on a server, and a URL inside a pager on a command that
-    never returns is a URL nobody reads."""
+def test_the_pager_is_opt_in(monkeypatch, tmp_path):
+    """The default is off, and this is the assertion that says so.
+
+    It was on in table mode, on git's reasoning that `less -F` prints and exits
+    when the content fits. What that costs is the *ordinary* case — a table that
+    fits going through a subprocess and a pipe to arrive looking the same.
+    """
     sink = tmp_path / "paged"
     monkeypatch.setenv("PAGER", f"tee {sink}")
-    for kw in ({"no_pager": True}, {"pager": False}):
-        with R.pager(args(_mode="table", **kw)):
-            print("payload")
-        assert not sink.exists(), kw
+    with R.pager(args(_mode="table")):
+        print("payload")
+    assert not sink.exists()
+
+
+def test_an_opted_out_action_refuses_the_flag(monkeypatch, tmp_path):
+    """`zones edit` and `ocr review` declare `pageable=False` at registration:
+    they print a URL and block on a server, so a URL inside a pager sits unread on
+    a command that never returns to release it. `--pager` there is a request
+    nobody can mean, and is refused rather than honoured."""
+    sink = tmp_path / "paged"
+    monkeypatch.setenv("PAGER", f"tee {sink}")
+    with R.pager(args(_mode="table", pager=True, _pageable=False)):
+        print("payload")
+    assert not sink.exists()
 
 
 def test_an_absent_pager_falls_back_to_printing(monkeypatch, capsys):
     """Rather than failing the command. The payload is the point; the pager is a
     convenience, and a machine with no `less` still has to be able to run this."""
     monkeypatch.setenv("PAGER", "definitely-not-a-real-pager-9c3f")
-    with R.pager(args(_mode="table")):
+    with R.pager(args(_mode="table", pager=True)):
         print("payload")
     assert capsys.readouterr().out.strip() == "payload"
 
@@ -427,7 +501,7 @@ def test_the_payload_reaches_the_pager_intact_and_stdout_is_restored(
     sink = tmp_path / "paged"
     monkeypatch.setenv("PAGER", f"tee {sink}")
     before = sys.stdout
-    with R.pager(args(_mode="table")):
+    with R.pager(args(_mode="table", pager=True)):
         assert sys.stdout is not before, "stdout was not redirected"
         print(R.render(ROWS, "table"))
     assert sys.stdout is before, "stdout was not restored"

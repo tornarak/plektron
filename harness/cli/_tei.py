@@ -14,7 +14,7 @@ from ..context import build_context
 from ..emit import emit_lines
 from ..ids import fix_page as fix_ids
 from ..ids import pair_glosses
-from ..render import mode, rule
+from ..render import mode, report, rule
 from ..seam import set_seam
 from ..state import build_ledger, entry_state, ledger_rows
 from ..validate import check_corpus_header, validate
@@ -157,7 +157,7 @@ def _render_gate(a, rep, name: str | None = None) -> int:
     else:
         if name:
             print(f"# {name}" if mode(a) == "toon" else rule(name))
-        print(rep.render())
+        print(report(rep.render(), mode(a)))
     return 0 if rep.ok else 1
 
 

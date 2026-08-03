@@ -90,6 +90,30 @@ def mode(a) -> str:
     return m
 
 
+# ------------------------------------------------------------------- palette
+#
+# **The palette is rich's own `repr.*` theme, not one invented here**, and that is
+# the whole justification for it. A renderer knows the *type* of a cell and nothing
+# about its meaning: it cannot tell `keyed: false` (unread page, ordinary) from
+# `ok: false` (a gate failed), so any scheme claiming to say which is a verdict the
+# display layer is not entitled to. Colouring by type says only what is true —
+# this cell is a boolean, that one is absent — and borrowing rich's defaults means
+# the association is one a reader has already met rather than a local convention.
+#
+# The one place a verdict *is* known is `report` below, which paints a fixed
+# vocabulary the gate itself prints.
+# **Numbers are deliberately not painted**, though rich's theme has a colour for
+# them and the first cut used it. Two reasons, and the second is the general one:
+# the grid already right-justifies a column whose every value is a number, so
+# painting it encodes one fact twice — and numbers are most of the cells in most of
+# these tables, so `views check --all` came back as a wall of cyan zeros with the
+# two marks that carry information lost inside it. Colour is worth having only
+# where it is rare.
+NULL = "repr.none"
+BOOL = {True: "repr.bool_true", False: "repr.bool_false"}
+HEADER = "bold"
+
+
 def colour() -> bool:
     """Whether to emit ANSI, by the conventions the environment already uses.
 
@@ -257,6 +281,17 @@ def _flush(console) -> str:
     return "\n".join(ln.rstrip() for ln in console.file.getvalue().split("\n")).rstrip("\n")
 
 
+def _cell(v):
+    """One value as a styled `Text` — the colour is the value's *type*, see above."""
+    from rich.text import Text
+
+    if v is None:
+        return Text("null", style=NULL)
+    if isinstance(v, bool):
+        return Text(_scalar(v), style=BOOL[v])
+    return Text(_scalar(v))
+
+
 def _grid(keys: list[str], rows: list[dict]) -> str:
     from rich.table import Table
 
@@ -265,12 +300,12 @@ def _grid(keys: list[str], rows: list[dict]) -> str:
     right = {k for k in keys if all(_numeric(r[k]) for r in rows)}
 
     def build():
-        t = Table(box=None, pad_edge=False, header_style="bold" if colour() else "")
+        t = Table(box=None, pad_edge=False, header_style=HEADER)
         for k in keys:
             t.add_column(k, justify="right" if k in right else "left",
                          no_wrap=True, overflow="ignore")
         for r in rows:
-            t.add_row(*(_scalar(r[k]) for k in keys))
+            t.add_row(*(_cell(r[k]) for k in keys))
         return t
 
     # Measured before it is drawn: `maximum` is what the table wants if nothing is
@@ -286,12 +321,32 @@ def _grid(keys: list[str], rows: list[dict]) -> str:
 
 
 def _pairs(record: dict) -> str:
-    """A single flat record as aligned `key: value`."""
-    from rich.cells import cell_len
+    """A single flat record as aligned `key: value`.
 
-    w = max(cell_len(k) for k in record)
-    return "\n".join(f"{k}:{' ' * (w - cell_len(k) + 1)}{_scalar(v)}"
-                     for k, v in record.items())
+    Through the same `Table` the grid uses rather than a hand-rolled `ljust`: the
+    keys carry the header's style, the values carry their type's, and the column is
+    measured with `cell_len` for free — which is the whole reason rich is here, a
+    Tier-1 form's combining mark making `len` and display width disagree.
+    """
+    from rich.table import Table
+
+    def build():
+        # `collapse_padding` so the gap between the two columns is one space and
+        # not two — a key/value list is read as `key: value`, and rich's default
+        # padding on both sides of a cell would put a hole in the middle of it.
+        t = Table(box=None, pad_edge=False, show_header=False,
+                  collapse_padding=True)
+        t.add_column(style=HEADER, no_wrap=True, overflow="ignore")
+        t.add_column(no_wrap=True, overflow="ignore")
+        for k, v in record.items():
+            t.add_row(f"{k}:", _cell(v))
+        return t
+
+    probe = _console(10_000)
+    console = _console(max(build().__rich_measure__(probe, probe.options).maximum,
+                           _term_width()))
+    console.print(build())
+    return _flush(console)
 
 
 def _wrapped(items: list[str]) -> str:
@@ -366,30 +421,37 @@ DEFAULT_PAGER = "less -SRFX"
 
 @contextlib.contextmanager
 def pager(a):
-    """Send this invocation's stdout to `$PAGER`, or do nothing.
+    """Send this invocation's stdout to `$PAGER`, on `--pager` only.
 
-    **The pager is always started in table mode, and `less -F` decides whether it
-    shows.** `-F` prints and exits when the content already fits one screen, so
-    short output never hijacks the terminal and there is no threshold here to get
-    wrong — the same arrangement git uses. `-S` chops long lines rather than
-    wrapping them, which is what makes a table wider than the screen readable at
-    all: columns stay aligned and you scroll sideways. `-R` passes the colour
-    through; `-X` leaves the output in the scrollback on exit.
+    **Opt-in, and that is a reversal.** It was on by default for table mode, on
+    git's reasoning: `less -F` prints and exits when the content already fits, so
+    short output was supposed to pass straight through. What it actually costs is
+    that the *usual* case — a table that fits — now goes through a subprocess and
+    a pipe to arrive looking the same, and the unusual one takes the terminal away
+    from a person who did not ask for it. A flag is the honest shape for something
+    wanted occasionally, and `harness zones check --all --pager` is no harder to
+    type than the `q` that dismissing it costs.
+
+    With it, `-S` chops long lines rather than wrapping them, which is what makes a
+    table wider than the screen readable at all: columns stay aligned and you
+    scroll sideways. `-R` passes the colour through; `-X` leaves the output in the
+    scrollback on exit; `-F` still means a short payload prints inline.
 
     Redirecting `sys.stdout` rather than pushing each section through means every
     print reaches it, including `tei validate`'s rendered prose, which never went
     through `out()`. It also streams: `less` renders progressively, so a long
     multi-ref run shows its first report immediately rather than after the last.
 
-    **Two actions opt out, and declare it rather than being special-cased here.**
-    `zones edit` and `ocr review --serve` block on `serve_forever` after printing
-    a URL the human is meant to open; paged, that URL would sit unread inside a
-    pager the human is not looking at, on a command that never returns to release
-    it.
+    **Two actions refuse it, and declare that rather than being special-cased
+    here.** `zones edit` and `ocr review --serve` block on `serve_forever` after
+    printing a URL the human is meant to open; paged, that URL would sit unread
+    inside a pager the human is not looking at, on a command that never returns to
+    release it. They refuse `--pager` outright rather than honouring it, since the
+    request is one nobody can mean.
     """
     cmd = os.environ.get("PAGER", DEFAULT_PAGER)
-    if (mode(a) != "table" or getattr(a, "no_pager", False)
-            or not getattr(a, "pager", True) or not cmd.strip()):
+    if (mode(a) != "table" or not getattr(a, "pager", False)
+            or not getattr(a, "_pageable", True) or not cmd.strip()):
         yield
         return
     argv = shlex.split(cmd)
@@ -452,6 +514,48 @@ class _LazyPager:
         with contextlib.suppress(BrokenPipeError, ValueError):
             self._proc.stdin.close()
         self._proc.wait()
+
+
+# The gate reports' own vocabulary — `validate.Report.render` prints exactly these
+# line heads and nothing else. **This is the one place a verdict is known**, which
+# is why it is the only colour here that means anything rather than naming a type:
+# the report says PASS or FAIL itself, so painting it asserts nothing the text does
+# not already.
+_VERDICTS = {
+    "RESULT: PASS": "bold green", "RESULT: FAIL": "bold red",
+    "ERROR": "red", "WARN": "yellow", "WORKLIST": "cyan", "METRICS": "bold",
+}
+
+
+def report(text: str, m: str = "toon") -> str:
+    """`validate.Report.render`'s prose, with its verdict lines painted.
+
+    Prose rather than records, so it does not go through `_table` at all — but it
+    is what a human reads to decide whether to commit, and the line deciding it is
+    buried between forty worklist entries. It stays plain text in `validate.py`,
+    which keeps that module out of the display business and keeps the line heads
+    greppable by whatever comes after.
+
+    **Gated on table mode, not on `colour()`.** Every other painted path is
+    reachable only at a terminal, and this one is printed unconditionally, so
+    without the mode test `FORCE_COLOR` would put ANSI into a piped gate report —
+    the one output shape a script is most likely to be reading.
+    """
+    if m != "table" or not colour():
+        return text
+    # `Style.render` and **not** a `Console`, which every other painted path here
+    # uses: a console has a width, and a width crops. The first cut printed through
+    # one and silently cut `METRICS:` off at the eightieth column — a line whose
+    # whole content is a count of what the gate found. This is prose, it is as wide
+    # as it is, and wrapping it is the terminal's business.
+    from rich.style import Style
+
+    out = []
+    for line in text.split("\n"):
+        head = next((h for h in _VERDICTS if line.startswith(h)), None)
+        style = _VERDICTS.get(head)
+        out.append(Style.parse(style).render(line) if style else line)
+    return "\n".join(out)
 
 
 def rule(name: str) -> str:

@@ -60,11 +60,11 @@ _FLAG = re.compile(r"^(--[\w-]+)", re.M)
 # does not, and says why at `_common.add_jobs`: a flag accepted where it does
 # nothing is a wrong combination the parser should be rejecting.
 #
-# `--no-pager` is the closest call, since `zones edit` and `ocr review` never page.
-# It stays because *why* they do not is a property of the action (it blocks on a
+# `--pager` is the closest call, since `zones edit` and `ocr review` refuse it.
+# It stays because *why* they do is a property of the action (it blocks on a
 # server) rather than of the flag, and a caller cannot be expected to know which
 # two those are before typing.
-GLOBALS = {"--root", "--json", "--toon", "--no-pager"}
+GLOBALS = {"--root", "--json", "--toon", "--pager"}
 
 
 def _documented() -> dict[tuple[str, str], set[str]]:
