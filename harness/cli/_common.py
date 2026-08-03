@@ -54,6 +54,10 @@ def add_output_flags(p):
     g.add_argument("--toon", action="store_true", default=argparse.SUPPRESS,
                    help="TOON even at a terminal, where an aligned table is the "
                         "default — what a skill's model sees, reproduced by hand")
+    p.add_argument("--no-pager", action="store_true", default=argparse.SUPPRESS,
+                   help="print straight to the terminal instead of $PAGER. Only "
+                        "table mode pages at all, and only when stdout is a "
+                        "terminal, so this is never needed down a pipe")
     return p
 
 

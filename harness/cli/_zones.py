@@ -110,7 +110,11 @@ def register(sub, common):
     p.add_argument("--port", type=int, default=8732,
                    help="port (default 8732; `ocr review --serve` holds 8731, so "
                         "both can run at once)")
-    p.set_defaults(func=run_edit)
+    # **Not paged.** It prints a URL and then blocks in `serve_forever`; inside a
+    # pager that URL sits unread on a command that never returns to release it.
+    # Declared here rather than special-cased in `render.pager`, so the exception
+    # lives with the action that needs it.
+    p.set_defaults(func=run_edit, pager=False)
 
     p = add("predict", help="run the trained segmenter and write raw ALTO into "
             "mz/zones/ — the machine store, never gt/. Input is always the "

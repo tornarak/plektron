@@ -292,6 +292,74 @@ def test_flush_empties_the_buffer():
     assert R.flush() is None
 
 
+# ---------------------------------------------------------------------- pager
+
+
+def test_the_mode_is_resolved_before_the_pager_can_hide_the_terminal(monkeypatch):
+    """The trap the cache exists for.
+
+    `main` replaces `sys.stdout` with the pager's pipe before the action runs.
+    Asked again after that, `isatty()` is False and every table would come back
+    as TOON — the terminal's own output format decided by the fact that we are
+    showing it to the terminal. Silent, and it would look like the table feature
+    simply not working.
+    """
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: True)
+    a = args()
+    assert R.mode(a) == "table"
+    monkeypatch.setattr(sys.stdout, "isatty", lambda: False)
+    assert R.mode(a) == "table", "mode changed when stdout was redirected"
+
+
+def test_only_table_mode_pages(monkeypatch, tmp_path):
+    """A pipe must never page, or every consumer downstream gets a pager's
+    idea of the payload — and `--json`/`--toon` are what a machine reads."""
+    sink = tmp_path / "paged"
+    monkeypatch.setenv("PAGER", f"tee {sink}")
+    for m, paged in (("toon", False), ("json", False), ("table", True)):
+        sink.unlink(missing_ok=True)
+        with R.pager(args(_mode=m)):
+            print("payload")
+        assert sink.exists() is paged, f"{m}: paged={sink.exists()}"
+
+
+def test_no_pager_and_an_opted_out_action_both_skip_it(monkeypatch, tmp_path):
+    """`zones edit` and `ocr review` declare `pager=False` at registration: they
+    print a URL and block on a server, and a URL inside a pager on a command that
+    never returns is a URL nobody reads."""
+    sink = tmp_path / "paged"
+    monkeypatch.setenv("PAGER", f"tee {sink}")
+    for kw in ({"no_pager": True}, {"pager": False}):
+        with R.pager(args(_mode="table", **kw)):
+            print("payload")
+        assert not sink.exists(), kw
+
+
+def test_an_absent_pager_falls_back_to_printing(monkeypatch, capsys):
+    """Rather than failing the command. The payload is the point; the pager is a
+    convenience, and a machine with no `less` still has to be able to run this."""
+    monkeypatch.setenv("PAGER", "definitely-not-a-real-pager-9c3f")
+    with R.pager(args(_mode="table")):
+        print("payload")
+    assert capsys.readouterr().out.strip() == "payload"
+
+
+def test_the_payload_reaches_the_pager_intact_and_stdout_is_restored(
+        monkeypatch, tmp_path):
+    """Restoring matters beyond tidiness: `main` prints the `--json` flush and
+    the `ERROR:` handler after the context closes, and a `sys.stdout` still
+    pointing at a dead pipe would lose both."""
+    sink = tmp_path / "paged"
+    monkeypatch.setenv("PAGER", f"tee {sink}")
+    before = sys.stdout
+    with R.pager(args(_mode="table")):
+        assert sys.stdout is not before, "stdout was not redirected"
+        print(R.render(ROWS, "table"))
+    assert sys.stdout is before, "stdout was not restored"
+    text = sink.read_text()
+    assert "1-048" in text and "g̣" in text and "pdftoppm -r 300" in text
+
+
 def test_a_real_two_section_verb_emits_one_document(tmp_path, capsys):
     """End to end through `main`, because the unit tests above cannot see the
     wiring: the buffering only helps if `out` actually defers and `main`

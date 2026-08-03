@@ -278,7 +278,11 @@ def register(sub, common):
                     help="with the bare span diff: every span individually, not "
                          "grouped by class")
     p.add_argument("--port", type=int, default=8731, help="port for --serve")
-    p.set_defaults(func=run_review)
+    # **Not paged**, for `zones edit`'s reason: `--serve` prints a URL and blocks
+    # in `serve_forever`. It covers the other two modes too, and that is the right
+    # trade — one flag deciding whether an action pages is legible, where a rule
+    # that paged some invocations of a verb and not others is not.
+    p.set_defaults(func=run_review, pager=False)
 
     p = _store(refs_arg(add("restore", help="preview (default) or write adjudicated "
               "review decisions into gt/ocr/ as ground truth, keeping the source "

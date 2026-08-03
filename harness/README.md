@@ -480,6 +480,19 @@ columns and neither has to say so. Four properties bind callers:
   half its content. Known limit, stated rather than half-fixed: the key set
   follows which sections had content, so consumers should use `.get()`; making
   the shape a pure function of the verb would mean each declaring a schema.
+- **The pager is `$PAGER` (default `less -SRFX`) and only in table mode.** It is
+  *always* started there and `-F` decides whether it shows, so there is no length
+  threshold here to get wrong — the arrangement git uses. `pager(a)` replaces
+  `sys.stdout` rather than pushing sections through, so every print reaches it,
+  including `tei validate`'s prose, which never went through `out()`; `less`
+  renders progressively, so a long multi-ref run still shows its first report
+  immediately. An absent pager falls back to printing rather than failing.
+  **`zones edit` and `ocr review` opt out at registration** (`pager=False`),
+  because they print a URL and block on a server.
+  Consequence that bites: **`mode(a)` is resolved and cached before the
+  redirect.** Asked afterwards, `isatty()` is False and every table silently
+  comes back as TOON — the terminal's output format decided by the fact that we
+  are showing it to the terminal.
 - **A section's `name` is a JSON key, not a heading.** TOON prints a `# name`
   line only where one was already printed (`out_per_ref`'s split-out list
   fields), because TOON is what every skill and every model reads and naming a

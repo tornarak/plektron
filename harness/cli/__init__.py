@@ -58,7 +58,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from ..render import flush
+from ..render import flush, mode, pager
 from . import _corpus, _find, _lexicon, _ocr, _proposal, _tei, _views, _zones
 from ._common import (
     add_output_flags,
@@ -106,7 +106,11 @@ def main(argv=None):
 
     a = ap.parse_args(argv)
     try:
-        rc = a.func(a)
+        # Resolved here, before the pager replaces `sys.stdout`: asked afterwards
+        # `isatty()` is False and every table would come back as TOON.
+        mode(a)
+        with pager(a):
+            rc = a.func(a)
         # **The flush is here rather than in `out`, and it runs whatever the exit
         # code is.** Under `--json` a verb's sections are buffered so several
         # tables become one document, and `views check` and `tei validate`

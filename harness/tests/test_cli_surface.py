@@ -55,11 +55,16 @@ _FLAG = re.compile(r"^(--[\w-]+)", re.M)
 # per action would be 40 repetitions of a fact one test already holds.
 #
 # **A flag belongs here only if it is genuinely global**, not merely tedious to
-# document. These three qualify because every action emits a payload and all three
-# say something about that payload's destination or form. `--jobs` deliberately
+# document. These four qualify because every action emits a payload and all four
+# say something about that payload's form or destination. `--jobs` deliberately
 # does not, and says why at `_common.add_jobs`: a flag accepted where it does
 # nothing is a wrong combination argparse should be rejecting.
-GLOBALS = {"--root", "--json", "--toon"}
+#
+# `--no-pager` is the closest call, since `zones edit` and `ocr review` never page.
+# It stays because *why* they do not is a property of the action (it blocks on a
+# server) rather than of the flag, and a caller cannot be expected to know which
+# two those are before typing.
+GLOBALS = {"--root", "--json", "--toon", "--no-pager"}
 
 
 def _documented() -> dict[tuple[str, str], set[str]]:

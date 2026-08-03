@@ -50,7 +50,11 @@ tables most worth reading.
 """
 from __future__ import annotations
 
+import contextlib
 import os
+import shlex
+import shutil
+import subprocess
 import sys
 
 from .emit import emit
@@ -63,12 +67,26 @@ def mode(a) -> str:
 
     `--json` and `--toon` are mutually exclusive at the parser, so their order
     here is not a precedence rule — argparse has already refused both.
+
+    **Resolved once and cached on the namespace**, because `main` replaces
+    `sys.stdout` with the pager's pipe before the action runs. Asked again after
+    that, `isatty()` is False and every table would silently come back as TOON —
+    the terminal's own output format decided by the fact that we are showing it
+    to the terminal.
     """
+    if (cached := getattr(a, "_mode", None)) is not None:
+        return cached
     if getattr(a, "json", False):
-        return "json"
-    if getattr(a, "toon", False):
-        return "toon"
-    return "table" if sys.stdout.isatty() else "toon"
+        m = "json"
+    elif getattr(a, "toon", False):
+        m = "toon"
+    else:
+        m = "table" if sys.stdout.isatty() else "toon"
+    try:
+        a._mode = m
+    except AttributeError:                      # a mapping-ish fake in a test
+        pass
+    return m
 
 
 def colour() -> bool:
@@ -282,6 +300,57 @@ def _wrapped(items: list[str]) -> str:
     return "\n".join(textwrap.wrap(", ".join(items), width=_term_width(),
                                    break_long_words=False,
                                    break_on_hyphens=False)) or "(none)"
+
+
+DEFAULT_PAGER = "less -SRFX"
+
+
+@contextlib.contextmanager
+def pager(a):
+    """Send this invocation's stdout to `$PAGER`, or do nothing.
+
+    **The pager is always started in table mode, and `less -F` decides whether it
+    shows.** `-F` prints and exits when the content already fits one screen, so
+    short output never hijacks the terminal and there is no threshold here to get
+    wrong — the same arrangement git uses. `-S` chops long lines rather than
+    wrapping them, which is what makes a table wider than the screen readable at
+    all: columns stay aligned and you scroll sideways. `-R` passes the colour
+    through; `-X` leaves the output in the scrollback on exit.
+
+    Redirecting `sys.stdout` rather than pushing each section through means every
+    print reaches it, including `tei validate`'s rendered prose, which never went
+    through `out()`. It also streams: `less` renders progressively, so a long
+    multi-ref run shows its first report immediately rather than after the last.
+
+    **Two actions opt out, and declare it rather than being special-cased here.**
+    `zones edit` and `ocr review --serve` block on `serve_forever` after printing
+    a URL the human is meant to open; paged, that URL would sit unread inside a
+    pager the human is not looking at, on a command that never returns to release
+    it.
+    """
+    cmd = os.environ.get("PAGER", DEFAULT_PAGER)
+    if (mode(a) != "table" or getattr(a, "no_pager", False)
+            or not getattr(a, "pager", True) or not cmd.strip()):
+        yield
+        return
+    argv = shlex.split(cmd)
+    if not shutil.which(argv[0]):
+        yield
+        return
+    proc = subprocess.Popen(argv, stdin=subprocess.PIPE, text=True,
+                            env={**os.environ, "LESSCHARSET": "utf-8"})
+    saved, sys.stdout = sys.stdout, proc.stdin
+    try:
+        yield
+    finally:
+        sys.stdout = saved
+        try:
+            proc.stdin.close()
+        except BrokenPipeError:
+            # The reader quit first — `q` in less before the writer was done.
+            # Ordinary, and not an error about the payload.
+            pass
+        proc.wait()
 
 
 def rule(name: str) -> str:
