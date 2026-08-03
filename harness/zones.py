@@ -1298,7 +1298,8 @@ def _merge_bands(bands: list[dict]) -> list[dict]:
 
 
 def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
-                  ink: bool = True, store: str = ZONEDIR) -> dict:
+                  ink: bool = True, store: str = ZONEDIR,
+                  splits: dict[str, str] | None = None) -> dict:
     """Check one page's zones. Errors are mechanical; warnings are judgement.
 
     The split is the governing distinction in this repo and it is worth stating in
@@ -1330,6 +1331,14 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     no matter whose zones are being measured against it.
     """
     cfg = cfg or zc.load_config(root)
+    # **Threaded in like `cfg`, and for a sharper reason.** This was read twice per
+    # page from inside the two branches below, and each read re-parses all three
+    # `.lst` files and `norm_ref`s every entry in them — 832 refs, so 75k
+    # `parse_ref` calls and as many `Path.stem`s over a 60-page sample, a fifth of
+    # `validate_corpus`'s non-decode time. It is also pure Python, so under `--jobs`
+    # it was the GIL-bound share holding the sweep's speedup below what the same
+    # pool gives `zones blot`.
+    splits = load_splits(root) if splits is None else splits
     ref = norm_ref(ref)
     zones = read_zones(ref, root, with_points=True, store=store)
     labels = set(zc.types_by_label(cfg))
@@ -1346,7 +1355,7 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     # it predates the refusal, or arrived by hand — and it is the one defect that
     # makes a page *look finished*. Everything downstream counts it as keyed.
     if has_zones(ref, root, store) and not zones \
-            and load_splits(root).get(ref) != "exempt":
+            and splits.get(ref) != "exempt":
         err("empty-page",
             "keyed with no zones and not marked exempt — indistinguishable from a "
             "page nobody has reached, while counting as done. Mark it exempt if it "
@@ -1416,7 +1425,7 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
         except FileNotFoundError:
             err("no-raster", f"no scan for {ref}; geometry cannot be checked")
 
-    split = load_splits(root).get(ref)
+    split = splits.get(ref)
     # A page marked `exempt` is a plate, a map, a foldout or a blank — a human has
     # ruled it not a text page. The layout warnings all describe how a *text* page
     # is normally arranged, so on this one they describe nothing and would be
@@ -1531,9 +1540,11 @@ def validate_corpus(root: Path = Path("."), cfg: dict | None = None,
     # in one thread and in ref order, so the report is identical whatever `jobs`
     # says. `read_zones` is asked here rather than in the fold for the same reason
     # — it opens the same file `validate_page` just read.
+    splits = load_splits(root)
+
     def _measure(ref: str):
         return (ref,
-                validate_page(ref, root, cfg, ink=ink, store=store),
+                validate_page(ref, root, cfg, ink=ink, store=store, splits=splits),
                 read_zones(ref, root, store=store))
 
     verdicts: list[tuple[str, dict]] = []
