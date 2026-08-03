@@ -1,7 +1,7 @@
 # `harness` — every verb, every action
 
 The complete surface. `harness/tests/test_cli_surface.py` holds this file and
-the argparse tree together: an action or a flag in one and not the other fails
+the click command tree together: an action or a flag in one and not the other fails
 the suite, in both directions. That gate exists because for most of this
 project's life nothing pinned the CLI at all — no test touched it — so the
 surface drifted silently into 21 top-level verbs whose flags formed subcommands
@@ -132,11 +132,30 @@ content**, so an action whose second table is empty this run omits its key: use
 `.get()`. And the object is emitted **whatever the exit code is** — `views
 check` and `tei validate` legitimately return 1 with a full payload.
 
-**Argument validation is argparse's.** Mutually exclusive modes are declared,
-not resolved by precedence; conditionally-required flags are `required=True`;
-constrained values carry `choices=` or a validator. A flag whose scope is
-narrower than its action says so in its entry here — `zones check --ink` is a
-sweep flag, `--lines` a single-page one.
+**Argument validation is the parser's.** Constrained values carry a closed
+choice set or a validator; a conditionally-required flag is required. Where two
+flags are contradictory the command **refuses** rather than preferring one —
+`--json` with `--toon`, `tei seam --continues` with `--fresh` — because
+precedence standing in for rejection is what the one-tier CLI was retired for.
+A flag whose scope is narrower than its action says so in its entry here:
+`zones check --ink` is a sweep flag, `--lines` a single-page one.
+
+**Shell completion.** The parser is click (with `cloup`), so completion comes off
+the tree itself — every group, action, flag and closed choice set. Add to your
+shell rc:
+
+    eval "$(_HARNESS_COMPLETE=zsh_source harness)"     # or bash_source / fish_source
+
+**`--help` is Markdown, rendered.** These entries and the `--help` text are the
+same prose; `**bold**` and backticks are shown as emphasis rather than printed.
+Actions are grouped into sections (`harness zones --help` splits the store from
+the segmenter), and the four globals sit in their own block below an action's own
+flags. `NO_COLOR` turns the colour off; a pipe does too.
+
+**`harness tui`** exists when `trogon` is installed — a form-filling terminal UI
+over the whole tree, built by introspecting it. Not a declared dependency (it
+pulls `textual`, and has had no release since 2024-10), so
+`uv run --with trogon harness tui` is the whole cost of trying it.
 
 ---
 
@@ -547,7 +566,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 **Reads** the proposal.
 **Writes** —
 **Exit** always 0.
-**Note** **`LINE` is `--line` here and a positional on `set`/`replace`**, and the split is not arbitrary: a plural ref cannot sit beside a positional index, argparse having no way to tell the index from another ref. This action is the reader of the three, so it is the one that wanted the plural; the two editors are singular anyway, a line index being an identity that belongs to exactly one page. Omitting `--line` names every line, which is the more useful default besides — asking what a proposal actually contains rather than confirming one line at a time.
+**Note** **`LINE` is `--line` here and a positional on `set`/`replace`**, and the split is not arbitrary: a plural ref cannot sit beside a positional index, a variadic positional having no way to tell the index from another ref. This action is the reader of the three, so it is the one that wanted the plural; the two editors are singular anyway, a line index being an identity that belongs to exactly one page. Omitting `--line` names every line, which is the more useful default besides — asking what a proposal actually contains rather than confirming one line at a time.
 ```
 --all        every review/ page with a proposal
 --line LINE  one line's index [every line on the page]
@@ -616,7 +635,7 @@ opinion of which pages are held out.
 **Does** the segmentation editor on 127.0.0.1, arrow keys walking the corpus. `/` and `?` cycle the store shown; a machine page opens as an unsaved proposal.
 **Reads** all three stores, `data/zones_config.json`, `scans/`.
 **Writes** `gt/zones/` on save — no `--commit`, the save click is the human act.
-**Exit** 2 if nothing supplies a start page. This is the one argument check argparse cannot express.
+**Exit** 2 if nothing supplies a start page. This is the one argument check the parser cannot express.
 **Note** **several refs *are* an itinerary**: the session opens at the first and walks the list, which is the same work-list an `.lst` supplies, spelled for the two-page case that would otherwise want a scratch file. One ref is a page to start at, not the only page reachable. `--all` walks the book.
 ```
 --all            every scan, in order

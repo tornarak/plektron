@@ -16,13 +16,26 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import click
+
 from ..marks import marks as marks_report
 from ..paths import proposal_path
 from ..proposal_check import _parse_which, line_codepoints, replace_in_field
 from ..proposal_check import check as check_proposal
 from ..proposal_check import fix as fix_proposal
 from ..proposal_check import set_field as set_proposal_field
-from ._common import REF_HELP, one_page_only, out, out_per_ref, page_refs, refs_arg
+from ._common import (
+    REF_HELP,
+    action,
+    arg,
+    group,
+    one_page_only,
+    opt,
+    out,
+    out_per_ref,
+    page_refs,
+    refs_arg,
+)
 
 PATH_HELP = "proposal file (default review/PP-NNN/proposal.json)"
 FIELD_HELP = ("which field of the line to act on (default text). Applies to "
@@ -40,8 +53,7 @@ def _which(v: str) -> str:
     try:
         _parse_which(v, 1)
     except (ValueError, KeyError) as e:
-        import argparse
-        raise argparse.ArgumentTypeError(
+        raise click.BadParameter(
             f"{v!r}: expected all, first, last, an occurrence number (3), or an "
             f"inclusive range (2:4), all 1-based — {e}") from e
     return v
@@ -59,33 +71,34 @@ def _target(p, all_: str | None = None):
     if all_:
         refs_arg(p, all_=all_)
     else:
-        p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
-    p.add_argument("--path", type=Path, default=None, help=PATH_HELP)
+        arg(p, "ref", metavar="PP-NNN")
+        p.help = f"{p.help}\n\nPP-NNN: {REF_HELP}."
+    opt(p, "--path", type=click.Path(path_type=Path), default=None, help=PATH_HELP)
     return p
 
 
-def register(sub, common):
-    g = sub.add_parser("proposal", help="a page's reading proposal — the "
-                       "resolved/text cross-check, and the field editors that "
-                       "keep patching one out of ad-hoc Python")
-    act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
-    add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
+def register(cli):
+    g = group(cli, "proposal", "a page's reading proposal — the "
+              "resolved/text cross-check, and the field editors that "
+              "keep patching one out of ad-hoc Python",
+              sections=("Checking", "Editing one field"), section="The passes")
 
-    p = _target(add("check", help="cross-check the `resolved` field against the "
-                "codepoints `text` actually contains — catches a mistyped "
-                "combining mark (ring below for dot below, diaeresis for caron) "
-                "before it reaches review. Also flags a straight apostrophe "
-                "anywhere (never a genuine reading, corpus-wide) and a bare "
-                "suffix matching a known dot-prone shape (keying_spec.md §5.1, "
-                "e.g. -gɪn/-gɪt/-gɪ missing g's dot-below). Exit 1 on any "
-                "mismatch"), all_="every review/ page with a proposal")
-    p.set_defaults(func=run_check)
+    _target(action(g, "check", run_check, section="Checking",
+                   help="cross-check the `resolved` field against the "
+                   "codepoints `text` actually contains — catches a mistyped "
+                   "combining mark (ring below for dot below, diaeresis for caron) "
+                   "before it reaches review. Also flags a straight apostrophe "
+                   "anywhere (never a genuine reading, corpus-wide) and a bare "
+                   "suffix matching a known dot-prone shape (keying_spec.md §5.1, "
+                   "e.g. -gɪn/-gɪt/-gɪ missing g's dot-below). Exit 1 on any "
+                   "mismatch"), all_="every review/ page with a proposal")
 
-    p = _target(add("fix", help="apply the one unambiguous correction — a single "
-                "mark the resolved field names but the text doesn't contain, "
-                "swapped for the single mark text has that resolved doesn't — "
-                "and write the file back"), all_="every review/ page with a proposal")
-    p.set_defaults(func=run_fix)
+    _target(action(g, "fix", run_fix, section="Editing one field",
+                   help="apply the one unambiguous correction — a single "
+                   "mark the resolved field names but the text doesn't contain, "
+                   "swapped for the single mark text has that resolved doesn't — "
+                   "and write the file back"),
+            all_="every review/ page with a proposal")
 
     # **`LINE` moves to `--line` here and only here.** It cannot stay a positional
     # beside a plural ref — argparse would take the index for another ref — and
@@ -94,46 +107,49 @@ def register(sub, common):
     # census of what a proposal actually contains. `set` and `replace` keep their
     # positional LINE, being singular, and a line index is an identity rather than
     # a position, so it belongs to exactly one page either way.
-    p = _target(add("codepoints", help="name every non-ASCII character in a "
-                "line's field, instead of running the resolved/text check — a "
-                "spot check while authoring, before resolved is even written"),
+    p = _target(action(g, "codepoints", run_codepoints, section="Editing one field",
+                       help="name every non-ASCII character in a "
+                       "line's field, instead of running the resolved/text check — "
+                       "a spot check while authoring, before resolved is even "
+                       "written"),
                 all_="every review/ page with a proposal")
-    p.add_argument("--line", metavar="LINE", default=None,
-                   help="one line's index; omit for every line on the page")
-    p.add_argument("--field", default="text", choices=("text", "resolved", "note"),
-                   help=FIELD_HELP)
-    p.set_defaults(func=run_codepoints)
+    opt(p, "--line", metavar="LINE", default=None,
+        help="one line's index; omit for every line on the page")
+    opt(p, "--field", default="text",
+        type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
 
-    p = _target(add("set", help="set one line's field. The value is NFD-"
-                "normalized on write, so it never fights an Edit-tool exact-match "
-                "failure against the file's own NFD form"))
-    p.add_argument("line", metavar="LINE", help="the line's index")
-    p.add_argument("--field", default="text", choices=("text", "resolved", "note"),
-                   help=FIELD_HELP)
-    p.add_argument("--value", default=None,
-                   help="the replacement text; omit to read stdin")
-    p.set_defaults(func=run_set)
+    p = _target(action(g, "set", run_set, section="Editing one field",
+                       help="set one line's field. The value is NFD-"
+                       "normalized on write, so it never fights an Edit-tool "
+                       "exact-match failure against the file's own NFD form"
+                       "\n\nLINE: the line's index."))
+    arg(p, "line", metavar="LINE")
+    opt(p, "--field", default="text",
+        type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
+    opt(p, "--value", default=None, help="the replacement text; omit to read stdin")
 
-    p = _target(add("replace", help="replace occurrence(s) of --old with --new in "
-                "one line's field — the surgical alternative to `set` for a "
-                "single wrong character in an otherwise-correct line, which "
-                "retypes the whole field and risks a second, unrelated slip "
-                "while fixing the first"))
-    p.add_argument("line", metavar="LINE", help="the line's index")
-    p.add_argument("--old", required=True, help="text to find")
-    p.add_argument("--new", required=True, help="text to substitute")
-    p.add_argument("--field", default="text", choices=("text", "resolved", "note"),
-                   help=FIELD_HELP)
-    p.add_argument("--which", default="all", type=_which,
-                   help="which occurrence(s) of --old to replace — \"all\" "
-                        "(default), \"first\", \"last\", an occurrence number "
-                        "(\"3\"), or an inclusive range (\"2:4\"), all 1-based, "
-                        "left to right")
-    p.set_defaults(func=run_replace)
+    p = _target(action(g, "replace", run_replace, section="Editing one field",
+                       help="replace occurrence(s) of --old with --new in "
+                       "one line's field — the surgical alternative to `set` for a "
+                       "single wrong character in an otherwise-correct line, which "
+                       "retypes the whole field and risks a second, unrelated slip "
+                       "while fixing the first"
+                       "\n\nLINE: the line's index."))
+    arg(p, "line", metavar="LINE")
+    opt(p, "--old", required=True, help="text to find")
+    opt(p, "--new", required=True, help="text to substitute")
+    opt(p, "--field", default="text",
+        type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
+    opt(p, "--which", default="all", callback=lambda c, prm, v: _which(v),
+        help="which occurrence(s) of --old to replace — \"all\" "
+             "(default), \"first\", \"last\", an occurrence number "
+             "(\"3\"), or an inclusive range (\"2:4\"), all 1-based, "
+             "left to right")
 
-    p = add("marks", help="is the character distribution of these readings "
+    p = action(g, "marks", run_marks, section="Checking",
+               help="is the character distribution of these readings "
             "plausible — before a human opens them. Three arms: `rare` lists a "
-            "form the corpus almost never sets (a bare g is 6.1%% of Tier-1 g); "
+            "form the corpus almost never sets (a bare g is 6.1% of Tier-1 g); "
             "`conflict` finds one word spelled two ways across the refs and the "
             "store; `ratio` compares the expected-form share, in types, against a "
             "leave-one-out prior. Pass every ref of a pass together: most pages "
@@ -146,17 +162,16 @@ def register(sub, common):
                    "**--all says less than a batch does** — the prior is "
                    "leave-one-out over gt/ocr/, so pooling every proposal drives "
                    "the sample towards its own prior and the ratio arm goes quiet")
-    p.add_argument("--decisions", action="store_true",
-                   help="read decision.json instead of proposal.json — the last "
-                        "state before restore writes; the pair of runs brackets "
-                        "the adjudication")
-    p.add_argument("--min-types", type=int, default=None, metavar="N",
-                   help="types a scope needs before ratio judges it; under this "
-                        "the row reads outside=? [data/marks_config.json]")
-    p.add_argument("--rare-max", type=float, default=None, metavar="PCT",
-                   help="a confusable at or below this share of its axis is rare "
-                        "enough to list every occurrence [data/marks_config.json]")
-    p.set_defaults(func=run_marks)
+    opt(p, "--decisions", is_flag=True,
+        help="read decision.json instead of proposal.json — the last "
+             "state before restore writes; the pair of runs brackets "
+             "the adjudication")
+    opt(p, "--min-types", type=int, default=None, metavar="N",
+        help="types a scope needs before ratio judges it; under this "
+             "the row reads outside=? [data/marks_config.json]")
+    opt(p, "--rare-max", type=float, default=None, metavar="PCT",
+        help="a confusable at or below this share of its axis is rare "
+             "enough to list every occurrence [data/marks_config.json]")
 
 
 def _path(a, ref: str | None = None) -> Path:

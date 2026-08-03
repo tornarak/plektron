@@ -1004,7 +1004,7 @@ touches; the action names what it does to it.
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with
 its default. It is not duplicated here, and it cannot go stale unnoticed:
-`harness/tests/test_cli_surface.py` walks the argparse tree and fails on any
+`harness/tests/test_cli_surface.py` walks the click command tree and fails on any
 action or flag present in one and not the other, in both directions. That gate
 is the first thing ever to pin this CLI — no test touched it before, which is
 how one tier grew to 21 verbs carrying subcommands nobody had named.
@@ -1039,7 +1039,7 @@ Six conventions hold across every group, and the reference states them once:
 - **One meaning per flag name.** `--from DIR` is a source ALTO directory and
   lives only in `ocr`; `--store gt|mz` is a closed set and lives only in
   `zones`; `--force` overwrites existing output; `--out` redirects a write.
-- **Argument validation is argparse's**, not an if-chain's. A wrong combination
+- **Argument validation is the parser's**, not an if-chain's. A wrong combination
   is rejected rather than silently ignored.
 
 Old spellings do not fail obscurely: the CLI traps every retired verb and flag

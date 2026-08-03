@@ -5,6 +5,15 @@ description = "Bogoras, The Chukchee — annotated digital edition"
 requires-python = ">=3.14"
 dependencies = [
     "chocomufin>=1.0.2",
+    # **Declared because the CLI is built on them**, not because either is new to
+    # the environment — both arrive transitively through kraken, and did before
+    # anything here imported them. `click` is the parser (`harness/cli/`); `rich`
+    # renders the aligned tables and the progress bars (`harness/render.py`). The
+    # same argument as numpy and pillow below: a kraken release that dropped
+    # either would break this package with an ImportError naming neither it nor
+    # the reason.
+    "click>=8.2",
+    "rich>=14.0",
     "kraken>=7.0.3",
     "lxml>=6.1.1",
     # **Declared because the harness imports them directly**, not because anything
@@ -18,6 +27,7 @@ dependencies = [
     "pillow>=11.0",
     "tensorboard>=2.21.0",
     "toon-format>=0.9.0b1",
+    "cloup>=3.1.0",
 ]
 
 [project.scripts]

@@ -196,6 +196,18 @@ wheels = [
 ]
 
 [[package]]
+name = "cloup"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/42/ca/cf02e965cfeb70d65c61fd3abb8022aaf5111a0de71b3c73a6ec2113aa25/cloup-3.1.0.tar.gz", hash = "sha256:637c1e628fe98f3f20a5e44da591a72b42bf54d7d4527190bf39ed5f64af7585", size = 230167, upload-time = "2026-05-26T02:48:18.11Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/21/07/644976263e2d346935b35305908bf89eb660ced7fbc7292b096f38c0a80d/cloup-3.1.0-py2.py3-none-any.whl", hash = "sha256:f4cfbdcdc96d30bcbd8c75eaffb0651e9c57180f2aee4b300cf0dd168b8415ed", size = 55028, upload-time = "2026-05-26T02:48:16.711Z" },
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -622,10 +634,13 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "chocomufin" },
+    { name = "click" },
+    { name = "cloup" },
     { name = "kraken" },
     { name = "lxml" },
     { name = "numpy" },
     { name = "pillow" },
+    { name = "rich" },
     { name = "tensorboard" },
     { name = "toon-format" },
 ]
@@ -640,10 +655,13 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "chocomufin", specifier = ">=1.0.2" },
+    { name = "click", specifier = ">=8.2" },
+    { name = "cloup", specifier = ">=3.1.0" },
     { name = "kraken", specifier = ">=7.0.3" },
     { name = "lxml", specifier = ">=6.1.1" },
     { name = "numpy", specifier = ">=2.4" },
     { name = "pillow", specifier = ">=11.0" },
+    { name = "rich", specifier = ">=14.0" },
     { name = "tensorboard", specifier = ">=2.21.0" },
     { name = "toon-format", specifier = ">=0.9.0b1" },
 ]

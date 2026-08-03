@@ -7,7 +7,7 @@ harness <group> <action>` is the same thing.
 This file covers **structure**: what each module owns, which stores it touches, and
 the invariants that bind a caller. For what an action *does* — what it reads, what
 it writes, what its exit code means — **`harness/VERBS.md` is the source of record**,
-held against the argparse tree by `harness/tests/test_cli_surface.py`; `harness <group>
+held against the click command tree by `harness/tests/test_cli_surface.py`; `harness <group>
 <action> --help` carries the same contract per flag and is deliberately verbose. For
 the project's rules, `CLAUDE.md` governs; for the character inventory,
 `keying_spec.md`.
@@ -69,13 +69,72 @@ predicted polygon fails the fixed-measure width check by construction.
 
 ## Modules
 
-**`cli/`** — the two-tier parser, one module per group: `_tei _ocr _proposal _zones
-_lexicon _find _corpus _views`, each exposing `register(subparsers, common)` and one
-`run_*` handler per action, which returns the exit code. `__init__.py` holds
+**`cli/`** — the two-tier command tree, **click**, one module per group: `_tei _ocr
+_proposal _zones _lexicon _find _corpus _views`, each exposing `register(cli)` and
+one `run_*` handler per action, which returns the exit code. `__init__.py` holds
 `main`, `build_parser` (separate so the surface test can walk the tree without
-running anything), and the rename trap. `_common.py` holds the `--root`/`--json`
-parent, the `out` printer, the two walkers, the three rename tables, and the
-multi-ref machinery:
+running anything), and the rename trap. `_common.py` holds the declaration
+helpers, the `out` printer, the two walkers, the three rename tables, and the
+multi-ref machinery.
+
+**The tree is built programmatically, not by decorator** — `group`/`action`/
+`opt`/`arg` — because that is the shape the eight modules already had, and
+because it keeps the **`run_*` functions untouched**: `action`'s callback packs
+click's keywords into the one namespace object they have always read. The claim
+worth being able to make about a parser migration is that only the declaration
+changed, and rewriting 54 handlers is the one thing that could quietly falsify
+it. Measured: across 142 captured invocations, every payload and every exit code
+came out byte-identical; only error wording and `--help` layout moved.
+
+What the move buys: **shell completion** off the tree itself
+(`_HARNESS_COMPLETE=zsh_source harness`); the globals parse at **all three tiers**
+rather than two, so `harness zones --json check` works where argparse made it an
+error; and `harness tui` appears if `trogon` is installed, guarded rather than
+depended on.
+
+**Constraints and help sections are `cloup`'s**, and they are why it is here
+rather than plain click. Click has no mutually-exclusive group at all, which for
+a few hours meant hand-rolled checks in `_namespace` and in `run_seam` — the
+convention's own anti-pattern ("argument validation is the parser's, not an
+if-chain's") with better manners. `exclusive(...)` and `require_exactly_one(...)`
+put it back at the declaration. Three are declared: `--json`/`--toon` on **every**
+action, `tei seam --continues`/`--fresh` (argparse's one *required* exclusive
+group), and `ocr review --serve`/`--html`/`--spans`. That last one is the reason
+to be glad of the gate — the plain-click conversion had silently dropped it, and
+`--html --spans` together went from exit 2 to running.
+
+Two mechanical notes. Click's own paired-flag form (`--continues` with `--fresh` as its off switch) was tried
+first and rejected: it makes giving *both* legal, last one wins, on a verb that
+writes two pages on the answer. And a constraint names parameters, which cloup
+resolves against `cmd.params` **at construction** — where these modules add params
+afterwards, through `opt`/`arg`. So specs are stored on the command and bound by
+`seal()`, which `build_parser` walks the whole tree to call; no call site can
+forget it.
+
+**Sections** group the actions in `--help` — `zones` splits into "The store" and
+"The segmenter", `ocr` into reading / correction loop / recognition. They are only
+where a group's own module docstring already draws the line: a heading invented
+here would teach a reader a distinction the code does not make, and four groups
+have too few actions to want one. The four globals likewise sit in their own
+`OptionGroup` so they stop crowding out the flags an action is actually about.
+
+**Help text is Markdown and is rendered as such.** These strings have always been
+written that way — `**bold**` for the sentence that matters, backticks for every
+path and flag — because they are read in the source at least as often as on
+screen, and they were being printed with the asterisks in them. `rich` renders
+them (`_markdown`); a pair of regexes here would be the one-off reimplementation
+this project's own rules call a tell. Only the *body* goes through it: an option's
+one-line help stays cloup's, which wraps it into a measured second column, and
+handing that back pre-wrapped would have the two of them wrapping to different
+widths. The theme is `cloup.HelpTheme`; `NO_COLOR` and a pipe both turn it off
+through `render.colour`.
+
+**The cost, stated because it is on the hot path.** click is 28 ms of import and
+cloup another 36 ms, and unlike rich they cannot be deferred — the command tree is
+built out of their classes. A payload invocation went **0.11 s → 0.20 s**, which
+every model invocation pays. `rich.markdown` is another 75 ms but only on
+`--help`, which is a human action. That is the migration's one real regression,
+and it buys completion, declared constraints, sectioned help and the TUI.
 
 | helper | what it is for |
 |---|---|

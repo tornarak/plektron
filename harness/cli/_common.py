@@ -1,64 +1,317 @@
-"""Shared CLI machinery: the globals parser, the emitter, and the rename trap.
+"""Shared CLI machinery: the declaration helpers, the emitter, and the rename trap.
 
 Three things live here because every group module needs them and none owns them.
 
-**`common` is attached to every *action* parser, not to the group parsers.**
-`--root`/`--json` are declared on the top-level parser so they may be typed
-before the verb, and again here so they may be typed after it — which is where a
-hand puts them. With two tiers of subparsers the *last* parser to run is the
-action's, so `harness zones predict --json` only parses if `predict` itself
-carries them. `argparse.SUPPRESS` is what makes the double declaration safe:
-without it the subparser's own default would overwrite a value given earlier on
-the line.
+**The parser is click.** `group`/`action`/`opt`/`arg` build the tree
+programmatically rather than by decorator, because that is the shape the eight
+group modules already had — a `register()` per module, its declarations read in
+order, each action pointing at a `run_*` function. The `run_*` functions are
+untouched by the migration and still take one namespace object, which `action`'s
+callback packs from click's keywords: the claim worth being able to make is that
+only the *declaration* changed, and rewriting 54 handlers is the one thing that
+could quietly falsify it.
+
+**The globals are declared at all three tiers** — root group, each group, each
+action — so `--root`/`--json`/`--toon`/`--no-pager` may be typed anywhere on the
+line. Everything but the root's default is `None`, which is how `_namespace`
+tells "not given" from "given false" as it walks the context chain inward-out.
+That is the job `argparse.SUPPRESS` used to do.
 
 **The rename trap** exists because this CLI went from one tier to two in a hard
 cutover, with no aliases. Nothing mechanical calls the harness — no test, no
 script — so the consumers are documents: this repo's CLAUDE.md, three skills,
-and a human's memory. argparse's own error for a retired spelling is
-`invalid choice` or `unrecognized arguments`, neither of which says where the
-thing went. These two tables do.
+and a human's memory. A parser's own error for a retired spelling is
+`No such command` or `no such option`, neither of which says where the thing
+went. These two tables do, and they run on raw `argv` before any parsing, so
+they were unaffected by the migration.
 """
 from __future__ import annotations
 
-import argparse
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
-from ..render import collect, mode, render, rule
+import click
+import cloup
+from cloup.constraints import mutually_exclusive, require_one
+from cloup.constraints._support import BoundConstraintSpec
 
+from ..render import collect, colour, flush, mode, render, rule
+from ..render import pager as paged
 
-def globals_parser() -> argparse.ArgumentParser:
-    """The `--root`/`--json`/`--toon` parent, one instance per registration pass."""
-    common = argparse.ArgumentParser(add_help=False)
-    common.add_argument("--root", type=Path, default=argparse.SUPPRESS,
-                        help=argparse.SUPPRESS)
-    add_output_flags(common)
-    return common
+OUTPUT_GROUP = cloup.OptionGroup(
+    "Output", help="accepted at every tier — before the group, before the action, "
+                   "or after it")
 
+def _markdown(text: str, width: int) -> str:
+    """A help string rendered as the Markdown it is written in.
 
-def add_output_flags(p):
-    """`--json`/`--toon`, mutually exclusive, on the top-level parser and on every action.
+    **These strings have always been Markdown** — `**bold**` for the sentence that
+    matters, backticks for every path and flag, the same prose style as CLAUDE.md
+    and VERBS.md, because they are read in the source at least as often as on
+    screen. They were printed with the asterisks in them, so `zones install`'s
+    `--help` advertised `**refuses a permuted class map**` on its most important
+    line.
 
-    **Exclusive at the parser rather than by precedence in `mode()`.** "Argument
-    validation is argparse's, not an if-chain's" is a stated convention here, and
-    a silently-preferred flag is what the one-tier CLI was retired for — `--marks
-    --native` used to run `--marks`.
-
-    Both default to `SUPPRESS` for the reason `_common`'s docstring gives: they are
-    declared twice so they may be typed on either side of the verb, and without
-    SUPPRESS the action parser's default would overwrite a value given before it.
+    `rich` renders it, rather than a pair of regexes here: this project's own rule
+    is that a one-off reimplementation of something a library does is a tell, and
+    inline emphasis is where hand-rolled parsing starts and nested spans, escapes
+    and code fences are where it ends.
     """
-    g = p.add_mutually_exclusive_group()
-    g.add_argument("--json", action="store_true", default=argparse.SUPPRESS,
-                   help="indented JSON instead of TOON")
-    g.add_argument("--toon", action="store_true", default=argparse.SUPPRESS,
-                   help="TOON even at a terminal, where an aligned table is the "
-                        "default — what a skill's model sees, reproduced by hand")
-    p.add_argument("--no-pager", action="store_true", default=argparse.SUPPRESS,
-                   help="print straight to the terminal instead of $PAGER. Only "
-                        "table mode pages at all, and only when stdout is a "
-                        "terminal, so this is never needed down a pipe")
-    return p
+    import io
+
+    from rich.console import Console
+    from rich.markdown import Markdown
+
+    console = Console(file=io.StringIO(), width=max(width, 20),
+                      force_terminal=colour(), highlight=False)
+    console.print(Markdown(text))
+    return console.file.getvalue().rstrip("\n")
+
+
+class _Formatter(cloup.HelpFormatter):
+    """cloup's formatter, with the command help body rendered as Markdown.
+
+    Only the body. An option's one-line help stays cloup's, because cloup wraps it
+    into a measured second column and handing it back pre-wrapped ANSI would have
+    the two of them wrapping the same text to different widths.
+    """
+
+    def write_command_help_text(self, cmd) -> None:
+        text = cmd.help or ""
+        if not text.strip():
+            return
+        self.write_paragraph()
+        rendered = _markdown(text, self.width - self.current_indent - 2)
+        pad = " " * (self.current_indent + 2)
+        for line in rendered.split("\n"):
+            # rich justifies to the console width, so every line comes back
+            # right-padded; that is trailing whitespace in a terminal and in a
+            # paste, and it is not what cloup's own output does.
+            line = line.rstrip()
+            self.write(f"{pad}{line}\n" if line else "\n")
+
+
+THEME = cloup.HelpTheme(
+    invoked_command=cloup.Style(fg="bright_white", bold=True),
+    heading=cloup.Style(fg="bright_white", bold=True),
+    constraint=cloup.Style(fg="magenta"),
+    section_help=cloup.Style(fg="bright_black"),
+    col1=cloup.Style(fg="green"),
+)
+
+class _Context(cloup.Context):
+    """Carries the formatter. `Context.settings` has no `formatter_class` — it is a
+    class attribute — and a subcommand builds its context from *its own*
+    `context_class`, so `_Command`/`_Group` below name this one too."""
+    formatter_class = _Formatter
+
+
+CONTEXT = cloup.Context.settings(
+    formatter_settings=_Formatter.settings(theme=THEME),
+    help_option_names=["-h", "--help"],
+)
+
+
+class _Command(cloup.Command):
+    context_class = _Context
+
+
+class _Group(cloup.Group):
+    context_class = _Context
+
+
+def globals_params(root_default: Path | None = None) -> list[click.Parameter]:
+    """`--root`/`--json`/`--toon`/`--no-pager`, for the top group and every action.
+
+    **Declared at all three tiers** — root, group, action — so they may be typed
+    anywhere on the line. With two tiers of subcommands the last parser to run is
+    the action's, so a root-only registration would leave `harness zones predict
+    --json` an error while `harness --json zones predict` worked, a distinction no
+    user should have to hold.
+
+    Everything but the root's `--root` therefore defaults to **None rather than
+    False**, so "not given" is distinguishable from "given false" and `_namespace`
+    can tell which tier actually spoke. That is the job `argparse.SUPPRESS` used to
+    do; `None` already carries the distinction.
+
+    They share a cloup `OptionGroup`, which is purely about `--help`: four global
+    flags inline in every action's option list crowd out the flags that action is
+    actually about. This puts them in their own section under the real ones.
+    """
+    return [
+        cloup.Option(["--root"], type=click.Path(path_type=Path),
+                     default=root_default, group=OUTPUT_GROUP,
+                     help="repo root; every path resolves against it (default .)"),
+        cloup.Option(["--json"], is_flag=True, default=None, group=OUTPUT_GROUP,
+                     help="indented JSON instead of TOON"),
+        cloup.Option(["--toon"], is_flag=True, default=None, group=OUTPUT_GROUP,
+                     help="TOON even at a terminal, where an aligned table is the "
+                          "default — what a skill's model sees, reproduced by hand"),
+        cloup.Option(["--no-pager"], is_flag=True, default=None, group=OUTPUT_GROUP,
+                     help="print straight to the terminal instead of $PAGER. Only "
+                          "table mode pages at all, and only when stdout is a "
+                          "terminal, so this is never needed down a pipe"),
+    ]
+
+
+def exclusive(*names: str) -> BoundConstraintSpec:
+    """`names` may not be given together — declared, not checked in a handler.
+
+    "Argument validation is the parser's, not an if-chain's" is a stated
+    convention here, and it is the one the one-tier CLI was retired for breaking:
+    `lexicon --marks --native` silently ran `--marks`. Plain click has no
+    mutually-exclusive group, so this was briefly a hand-rolled check in
+    `_namespace` and in `run_seam` — which is the convention's own anti-pattern
+    with better manners. `cloup` puts it back where it belongs, and
+    `ConstraintViolated` is a `UsageError`, so the exit code is 2 either way.
+    """
+    return BoundConstraintSpec(mutually_exclusive, list(names))
+
+
+def require_exactly_one(*names: str) -> BoundConstraintSpec:
+    """Exactly one of `names`, neither zero nor two. `tei seam`'s
+    `--continues`/`--fresh`, which was argparse's one *required* mutually
+    exclusive group."""
+    return BoundConstraintSpec(require_one, list(names))
+
+
+GLOBAL_NAMES = ("root", "json", "toon", "no_pager")
+
+
+def _namespace(ctx, group_name: str, action_name: str, kw: dict):
+    """The parsed arguments as one object, the shape every `run_*` already reads.
+
+    Click hands a callback its parameters as keywords; the action functions were
+    written against an `argparse.Namespace` and read `a.root`, `a.ref`, `a.all`.
+    Packing rather than rewriting 54 of them is deliberate — this migration's whole
+    claim is that only the *declaration* changed, and rewriting the bodies is the
+    one thing that could quietly falsify it.
+
+    Parameter names are click's own and deliberately unrenamed, `all` and `json`
+    included: the callback takes `**kw`, so a name that shadows a builtin is a dict
+    key rather than a binding, and `a.all`/`a.json` are what the action functions
+    already read.
+    """
+    a = SimpleNamespace(group=group_name, action=action_name,
+                        **{k: v for k, v in kw.items() if k not in GLOBAL_NAMES})
+    # **The whole context chain, innermost first**, because a global may be
+    # declared at any of the three tiers and the one the user actually typed is
+    # whichever answered. Only the top tier carries a non-None default, so the
+    # first non-None walking outward is the value given — or, at the root, the
+    # default.
+    chain = []
+    c = ctx
+    while c is not None:
+        chain.append(c.params)
+        c = c.parent
+    for name in GLOBAL_NAMES:
+        setattr(a, name, next((p[name] for p in chain
+                               if p.get(name) is not None), None))
+    a.json, a.toon, a.no_pager = bool(a.json), bool(a.toon), bool(a.no_pager)
+    a.root = Path(a.root or ".")
+    return a
+
+
+def group(cli: cloup.Group, name: str, help: str,
+          sections: tuple[str, ...] = (), section: str | None = None) -> cloup.Group:
+    """One tier-1 group. A bare `harness zones` refuses, as a bare `harness` does.
+
+    **The globals are declared here too**, so all three positions parse:
+    `harness --json zones check`, `harness zones --json check`, and
+    `harness zones check --json`. The middle one is new — under argparse the
+    globals sat on the top parser and on every action but never on a group, so
+    it was an error, which is a distinction nobody could have predicted from the
+    other two working.
+
+    `sections` names the headings a group's actions are listed under, in order.
+    **Only where the group's own module docstring already draws the line** — a
+    section title over two entries is decoration, and inventing a taxonomy in the
+    reference is how a reader learns a distinction the code does not make.
+    """
+    g = _Group(name, help=help, no_args_is_help=True,
+                    params=globals_params(), callback=lambda **_: None)
+    for title in sections:
+        g.add_section(cloup.Section(title))
+    cli.add_command(g, section=_section(cli, section))
+    return g
+
+
+def action(grp: cloup.Group, name: str, func, *, help: str, pager: bool = True,
+           section: str | None = None,
+           constraints: tuple[BoundConstraintSpec, ...] = ()) -> cloup.Command:
+    """Declare one action: its name, its handler, its help, and the four globals.
+
+    Returns the `cloup.Command`, so a caller hangs parameters on it with
+    `arg`/`opt` in the order the argparse registration read in.
+
+    `pager=False` is for the two actions that print a URL and then block on a
+    server. It is a keyword here rather than a flag on the namespace because it is
+    a property of the action, not something a caller chooses — `--no-pager` is the
+    caller's spelling.
+
+    Every action gets the `--json`/`--toon` constraint whether it asks or not:
+    they are on every action by construction, so their exclusivity has to be too,
+    and a per-action opt-in is a rule that holds until someone forgets.
+    """
+    @click.pass_context
+    def callback(ctx, **kw):
+        a = _namespace(ctx, grp.name, name, kw)
+        a.pager = pager
+        # The mode is resolved before the pager can replace `sys.stdout` — see
+        # `render.mode` — and the flush runs whatever the exit code is, since
+        # `views check` and `tei validate` return 1 with a full payload.
+        mode(a)
+        with paged(a):
+            rc = func(a)
+        if (doc := flush()) is not None:
+            print(doc)
+        return rc
+
+    cmd = _Command(name, help=help, params=globals_params(),
+                   callback=callback)
+    # **Stored, not passed to the constructor.** cloup resolves a constraint's
+    # parameter *names* against `self.params` at construction, and here the params
+    # arrive afterwards through `opt`/`arg` — that is the shape these eight modules
+    # already had. `seal` binds them once registration is finished, and
+    # `build_parser` walks the whole tree so no call site can forget.
+    cmd._specs = (exclusive("json", "toon"), *constraints)
+    grp.add_command(cmd, section=_section(grp, section))
+    return cmd
+
+
+def seal(cmd: cloup.Command) -> None:
+    """Bind `cmd`'s deferred constraints, now that all its parameters exist."""
+    specs = getattr(cmd, "_specs", ())
+    if not specs:
+        return
+    cmd._params_by_name = {p.name: p for p in cmd.params}
+    cmd.param_constraints = tuple(s.resolve_params(cmd) for s in specs)
+    cmd.all_constraints = cmd.optgroup_constraints + cmd.param_constraints
+
+
+def _section(grp: cloup.Group, title: str | None):
+    """The named section of `grp`, or None for the default one."""
+    if title is None:
+        return None
+    for s in grp._user_sections:
+        if s.title == title:
+            return s
+    raise KeyError(f"{grp.name}: no section {title!r} — declare it in `group()`")
+
+
+def opt(cmd: cloup.Command, *decls, **kw) -> cloup.Command:
+    """One option. `decls` is click's: the flags, plus a bare name to set the dest."""
+    cmd.params.append(cloup.Option(list(decls), **kw))
+    return cmd
+
+
+def arg(cmd: cloup.Command, name: str, **kw) -> cloup.Command:
+    """One positional. `nargs=-1` is argparse's `+` and `*`, `required` telling them
+    apart — click has no separate spelling for required-variadic, but it does
+    enforce it."""
+    cmd.params.append(cloup.Argument([name], **kw))
+    return cmd
 
 
 def out(a, obj, name: str | None = None, heading: bool = False) -> None:
@@ -111,8 +364,7 @@ def add_all(p, what: str):
     holds, the review directories — and which one a sweep walks is the whole
     content of the flag.
     """
-    p.add_argument("--all", action="store_true", help=f"{what}. {ALL_HELP}")
-    return p
+    return opt(p, "--all", is_flag=True, help=f"{what}. {ALL_HELP}")
 
 
 JOBS_HELP = ("worker threads for the per-page raster work; 1 runs serially and "
@@ -122,8 +374,8 @@ JOBS_HELP = ("worker threads for the per-page raster work; 1 runs serially and "
 def add_jobs(p):
     """`--jobs N`, on the actions whose per-page cost is a raster decode.
 
-    **Declared per-action rather than on the globals parser**, because a flag that
-    is accepted where it does nothing is a wrong combination argparse should be
+    **Declared per-action rather than alongside the globals**, because a flag that
+    is accepted where it does nothing is a wrong combination the parser should be
     rejecting, and it is dead surface in the VERBS.md gate besides — the same
     argument that retired `MainZone-Quote` from the store's label set.
 
@@ -131,20 +383,30 @@ def add_jobs(p):
     on is that concurrency moves wall clock and nothing else, and saying so means
     running both sides and diffing the output.
     """
-    p.add_argument("--jobs", type=int, default=None, metavar="N", help=JOBS_HELP)
-    return p
+    return opt(p, "--jobs", type=int, default=None, metavar="N", help=JOBS_HELP)
 
 
 def refs_arg(p, *, all_: str | None = None, extra: str = ""):
     """The `PP-NNN [PP-NNN ...]` positional, plus `--all` where there is a corpus form.
 
-    `nargs` is `+` when the action must name pages and `*` when `--all` is the
-    other way to say what to work on. There is deliberately no third case: a bare
-    `*` with no `--all` would be a sweep spelled as an omission, which is what
-    this replaced.
+    The positional is **required** when the action must name pages and optional
+    when `--all` is the other way to say what to work on — argparse's `+` and `*`.
+    There is deliberately no third case: a bare `*` with no `--all` would be a
+    sweep spelled as an omission, which is what this replaced.
+
+    Click has one variadic spelling (`nargs=-1`) and distinguishes the two by
+    `required`, which it does enforce. The metavar carries `PP-NNN` because
+    `REF [REF ...]` is what a usage line would otherwise say, and the ref's shape
+    is the thing a caller gets wrong.
+
+    **A click Argument takes no `help`**, where argparse's did, so the ref's own
+    help — and `extra`, which several actions use to say something load-bearing
+    ("each the page AFTER its gap") — is appended to the *command's* help instead.
+    Dropping it would lose it from `--help` silently, and `extra` is exactly the
+    text a caller needs before typing.
     """
-    p.add_argument("ref", metavar="PP-NNN", nargs="*" if all_ else "+",
-                   help=REF_HELP + ". Several may be given" + extra)
+    arg(p, "ref", metavar="PP-NNN", nargs=-1, required=not all_)
+    p.help = f"{p.help}\n\nPP-NNN: {REF_HELP}. Several may be given{extra}."
     if all_:
         add_all(p, all_)
     return p
@@ -406,17 +668,23 @@ def walk_surface(parser) -> dict[tuple[str, str], set[str]]:
     Deriving both from the real parser is the point — a second hand-maintained
     list of actions would be one more pair of files holding one fact.
     """
-    surface = {}
-    for group_act in parser._subparsers._group_actions:
-        for gname, gparser in group_act.choices.items():
-            for act_act in gparser._subparsers._group_actions:
-                for aname, aparser in act_act.choices.items():
-                    flags = set()
-                    for act in aparser._actions:
-                        flags.update(o for o in act.option_strings
-                                     if o.startswith("--") and o != "--help")
-                    surface[(gname, aname)] = flags
-    return surface
+    return {key: {o for p in cmd.params if isinstance(p, click.Option)
+                  for o in p.opts + p.secondary_opts
+                  if o.startswith("--") and o != "--help"}
+            for key, cmd in _actions(parser).items()}
+
+
+def _actions(cli: click.Group):
+    """`{(group, action): Command}` — the one place that knows the tree is two-tier.
+
+    Click exposes its subcommands as a plain dict, so this replaces four levels of
+    `parser._subparsers._group_actions` reaching into argparse internals. Both
+    walkers and the surface test go through it.
+    """
+    return {(gname, aname): cmd
+            for gname, g in cli.commands.items()
+            if isinstance(g, click.Group)
+            for aname, cmd in g.commands.items()}
 
 
 def walk_positionals(parser) -> dict[tuple[str, str], dict[str, object]]:
@@ -428,18 +696,22 @@ def walk_positionals(parser) -> dict[tuple[str, str], dict[str, object]]:
     a correctness gate's clothes. What *is* a correctness question is whether a
     ref positional is plural, and only this sees it.
 
-    `nargs` is `None` for a plain single-value positional, which is what argparse
-    stores; the gate reads that as "singular" rather than special-casing it.
+    **`nargs` is reported in argparse's vocabulary** — `"+"`, `"*"`, `"?"` or
+    `None` — rather than click's, which spells every variadic `-1` and carries the
+    required/optional distinction in a separate attribute. Translating here keeps
+    the gate's assertions written in the terms the *convention* is stated in
+    ("refs are plural", "a `*` positional always has `--all`"), and means the
+    migration to click did not touch a single one of them.
     """
-    surface = {}
-    for group_act in parser._subparsers._group_actions:
-        for gname, gparser in group_act.choices.items():
-            for act_act in gparser._subparsers._group_actions:
-                for aname, aparser in act_act.choices.items():
-                    surface[(gname, aname)] = {
-                        act.dest: act.nargs for act in aparser._actions
-                        if not act.option_strings}
-    return surface
+    return {key: {p.name: _argparse_nargs(p) for p in cmd.params
+                  if isinstance(p, click.Argument)}
+            for key, cmd in _actions(parser).items()}
+
+
+def _argparse_nargs(p: click.Argument) -> str | None:
+    if p.nargs == -1:
+        return "+" if p.required else "*"
+    return None if p.required else "?"
 
 
 def check_renamed(argv: list[str], surface: dict[tuple[str, str], set[str]]

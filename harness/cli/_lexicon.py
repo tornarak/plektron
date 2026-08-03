@@ -18,44 +18,44 @@ from ..detectors import (
     suggest_native_forms,
 )
 from ..ids import glossary
-from ._common import out
+from ._common import action, group, out
 
 
-def register(sub, common):
-    g = sub.add_parser("lexicon", help="frequency reports over the native corpus "
-                       "— misses to whitelist, forms to compare against, marks, "
-                       "affixes and n-grams — plus the term<->gloss dictionary "
-                       "from committed TEI")
-    act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
-    add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
+def register(cli):
+    g = group(cli, "lexicon", "frequency reports over the native corpus "
+              "— misses to whitelist, forms to compare against, marks, "
+              "affixes and n-grams — plus the term<->gloss dictionary "
+              "from committed TEI",
+              section="Apparatus and reports")
+    add = lambda name, fn, **kw: action(g, name, lambda a: _emit(a, fn), **kw)
 
-    p = add("misses", help="frequency-ranked lexicon_miss tokens across every "
+    add("misses", suggest_lexicon, help="frequency-ranked lexicon_miss tokens across every "
             "OCR'd page, for bulk approval into data/lexicon_extra.txt. That "
             "file suppresses lexicon_miss and nothing else — a Tier-1 form "
             "listed there is inert by construction, since the detector only "
             "ever tests ASCII components")
-    p.set_defaults(func=lambda a: _emit(a, suggest_lexicon))
 
-    p = add("native", help="invert: the most frequent native (Tier-1) word forms "
+    add("native", suggest_native_forms,
+        help="invert: the most frequent native (Tier-1) word forms "
             "in restored gt/ocr/, for spotting a likely misspelling by "
             "comparison rather than by dictionary")
-    p.set_defaults(func=lambda a: _emit(a, suggest_native_forms))
 
-    p = add("marks", help="bare-vs-marked frequency per base letter across the "
+    add("marks", mark_base_frequency,
+        help="bare-vs-marked frequency per base letter across the "
             "native corpus — e.g. is a bare g or a dotted g̣ the more likely "
             "reading, prior to opening the raster")
-    p.set_defaults(func=lambda a: _emit(a, mark_base_frequency))
 
-    p = add("suffixes", help="weighted suffix frequency (length 2-8) over the "
+    add("suffixes", suffix_frequency,
+        help="weighted suffix frequency (length 2-8) over the "
             "native corpus, diacritics and stress marks stripped before counting")
-    p.set_defaults(func=lambda a: _emit(a, suffix_frequency))
 
-    p = add("digraphs", help="weighted digraph/trigraph frequency over the native "
+    add("digraphs", digraph_frequency,
+        help="weighted digraph/trigraph frequency over the native "
             "corpus, with marks and the corpus's own top suffixes stripped first "
             "so stems aren't drowned by the suffix family repeating itself")
-    p.set_defaults(func=lambda a: _emit(a, digraph_frequency))
 
-    p = add("glosses", help="the corpus's term<->gloss pairs from committed TEI — "
+    add("glosses", glossary,
+        help="the corpus's term<->gloss pairs from committed TEI — "
             "the dictionary the <gloss target> links make queryable. Pairs come "
             "from @target and never from containment, so terms nobody has linked "
             "are reported as a count rather than guessed at. `scope` is the frame "
@@ -64,7 +64,6 @@ def register(sub, common):
             "nothing about what is white. It can arrive from the previous page: "
             "a list running across a seam carries no second head, so the scope "
             "resolves back through @prev")
-    p.set_defaults(func=lambda a: _emit(a, glossary))
 
 
 def _emit(a, fn) -> int:

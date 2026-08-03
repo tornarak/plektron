@@ -17,7 +17,7 @@ are the same defect wearing different clothes.
 
 The reference is hand-written rather than generated on purpose. What it has to
 carry — which store an action reads, which it writes, what its exit code means
-— does not live in argparse and would bloat `--help` past usefulness if it did.
+— does not live in the parser and would bloat `--help` past usefulness if it did.
 Generation would guarantee agreement about the one thing that is already
 checkable and lose the part that is worth writing down.
 """
@@ -39,7 +39,7 @@ from harness.cli._common import (
 VERBS_MD = Path(__file__).resolve().parent.parent / "VERBS.md"
 
 # `### group action [ARGS]` — the heading form every entry uses. Positionals are
-# part of the heading and deliberately not checked here: argparse's metavar and
+# part of the heading and deliberately not checked here: a parameter's metavar and
 # the reference's prose spelling are allowed to differ (`REF` vs `PP-NNN`), and
 # pinning them would be a style gate wearing a correctness gate's clothes.
 _HEADING = re.compile(r"^### (\w+) ([\w-]+)", re.M)
@@ -58,7 +58,7 @@ _FLAG = re.compile(r"^(--[\w-]+)", re.M)
 # document. These four qualify because every action emits a payload and all four
 # say something about that payload's form or destination. `--jobs` deliberately
 # does not, and says why at `_common.add_jobs`: a flag accepted where it does
-# nothing is a wrong combination argparse should be rejecting.
+# nothing is a wrong combination the parser should be rejecting.
 #
 # `--no-pager` is the closest call, since `zones edit` and `ocr review` never page.
 # It stays because *why* they do not is a property of the action (it blocks on a
@@ -138,47 +138,51 @@ def test_every_action_takes_the_globals(parser_surface):
         assert GLOBALS <= flags, f"{key[0]} {key[1]} is missing a global"
 
 
-def test_the_output_modes_are_exclusive(parser_surface):
-    """`--json` and `--toon` may not both be given, on any action.
+def test_the_output_modes_are_exclusive(capsys):
+    """`--json` and `--toon` may not both be given.
 
     They name two different serializers for one payload, so a precedence rule
     would be an if-chain silently preferring one — which is what the one-tier CLI
     was retired for, `lexicon --marks --native` having quietly run `--marks`.
-    Argparse refuses instead, and this holds every action to it rather than
-    trusting one shared registration site to have been used everywhere.
+
+    Declared at the parser, as a `cloup` constraint, on **every** action — they
+    are on every action by construction, so their exclusivity has to be too, and
+    a per-action opt-in is a rule that holds until someone forgets. Checked
+    structurally over the whole tree, then once end to end for the exit code.
     """
+    from harness.cli import build_parser, main
+    from harness.cli._common import _actions
+
+    for (gname, aname), cmd in _actions(build_parser()).items():
+        pairs = {frozenset(p.name for p in bc.params) for bc in cmd.all_constraints}
+        assert {"json", "toon"} in pairs, \
+            f"{gname} {aname}: --json/--toon are not constrained"
+
+    assert main(["lexicon", "marks", "--json", "--toon"]) == 2
+    err = capsys.readouterr().err
+    assert "--json" in err and "--toon" in err and "mutually exclusive" in err
+
+
+def test_every_action_has_help(parser_surface):
+    """A helpless command is a bare name in the group listing, which is how four
+    load-bearing verbs once appeared inside a brace list saying nothing."""
     from harness.cli import build_parser
+    from harness.cli._common import _actions
 
-    ap = build_parser()
-    for group_act in ap._subparsers._group_actions:
-        for gname, gparser in group_act.choices.items():
-            for act_act in gparser._subparsers._group_actions:
-                for aname, aparser in act_act.choices.items():
-                    pairs = {frozenset(g._group_actions and
-                                       sum((a.option_strings for a in g._group_actions), []))
-                             for g in aparser._mutually_exclusive_groups}
-                    assert any({"--json", "--toon"} <= p for p in pairs), \
-                        f"{gname} {aname}: --json/--toon are not exclusive"
-
-
-def test_every_action_has_help():
-    """argparse omits a helpless subparser from the listing entirely, which is how
-    four load-bearing verbs once appeared as bare names inside a brace list."""
-    ap = build_parser()
-    for group_act in ap._subparsers._group_actions:
-        for gname, gparser in group_act.choices.items():
-            for act_act in gparser._subparsers._group_actions:
-                assert act_act.choices, f"group {gname} has no actions"
-                for aname, sub in act_act.choices.items():
-                    assert (sub.description or "").strip() or (sub.format_usage()), \
-                        f"{gname} {aname} has no help"
+    cli = build_parser()
+    groups = {g for g, _ in parser_surface}
+    for name, cmd in cli.commands.items():
+        assert name in groups, f"group {name} has no actions"
+        assert (cmd.help or "").strip(), f"group {name} has no help"
+    for (gname, aname), cmd in _actions(cli).items():
+        assert (cmd.help or "").strip(), f"{gname} {aname} has no help"
 
 
 def test_renamed_tables_point_at_real_actions(parser_surface):
     """Every rename target must name something that exists.
 
     The trap's whole job is to send someone to the right spelling; a stale entry
-    sends them to another dead one, which is worse than argparse's own error
+    sends them to another dead one, which is worse than the parser's own error
     because it reads as authoritative.
     """
     live = {f"{g} {a}" for g, a in parser_surface}
@@ -232,7 +236,7 @@ def test_a_flag_retired_under_a_live_action_is_still_caught(parser_surface):
 
     `--from` is retired across the whole `ocr` group while every action it sat on
     is still live, so the old "skip the flag table once an action is named" rule
-    let it fall through to argparse's bare `unrecognized arguments: --from` —
+    let it fall through to click's bare `no such option: --from` —
     which names the problem and not the fix. The action typed is echoed back, so
     the message is about the command that was actually run.
     """
@@ -376,15 +380,16 @@ def test_the_source_flag_is_always_a_closed_set(parser_surface):
     here would put a ratified and an unratified page under one verdict, which is
     the reason `zones check --store` was closed in the first place.
     """
-    ap = build_parser()
-    for group_act in ap._subparsers._group_actions:
-        for gname, gparser in group_act.choices.items():
-            for act_act in gparser._subparsers._group_actions:
-                for aname, sub in act_act.choices.items():
-                    assert "--from" not in {o for act in sub._actions
-                                            for o in act.option_strings}, \
-                        f"{gname} {aname} still carries the retired --from"
-                    for act in sub._actions:
-                        if "--store" in act.option_strings:
-                            assert tuple(act.choices or ()) == ("gt", "mz"), \
-                                f"{gname} {aname}: --store is not the closed pair"
+    import click
+
+    from harness.cli._common import _actions
+
+    for (gname, aname), cmd in _actions(build_parser()).items():
+        assert "--from" not in {o for p in cmd.params for o in p.opts}, \
+            f"{gname} {aname} still carries the retired --from"
+        for p in cmd.params:
+            if "--store" in p.opts:
+                assert isinstance(p.type, click.Choice), \
+                    f"{gname} {aname}: --store is not a closed set"
+                assert tuple(p.type.choices) == ("gt", "mz"), \
+                    f"{gname} {aname}: --store is not the closed pair"

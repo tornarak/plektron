@@ -13,31 +13,32 @@ gitignored, and absent on a fresh clone.
 """
 from __future__ import annotations
 
+import click
+
 from .. import farms as F
-from ._common import add_all, out
+from ._common import action, add_all, arg, group, out
 
 
-def register(sub, common):
-    g = sub.add_parser("views", help="the derived trees git does not carry — the "
-                       "read views over the paired stores, the scan farms, and "
-                       "the segmenter's blotted rasters: what state each is in, "
-                       "and one command to rebuild them")
-    act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
-    add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
+def register(cli):
+    g = group(cli, "views", "the derived trees git does not carry — the "
+              "read views over the paired stores, the scan farms, and "
+              "the segmenter's blotted rasters: what state each is in, "
+              "and one command to rebuild them",
+              section="Whole-corpus")
 
-    p = add("check", help="one row per named derived tree: whether it exists, "
-            "whether its membership still matches the stores that decide it, "
-            "and how deep that comparison went. Exits 1 on anything absent or "
-            "stale — the defect is mechanical and the fix is one command")
+    p = action(g, "check", run_check,
+               help="one row per named derived tree: whether it exists, "
+               "whether its membership still matches the stores that decide it, "
+               "and how deep that comparison went. Exits 1 on anything absent or "
+               "stale — the defect is mechanical and the fix is one command")
     _farm_arg(p, F.NAMES)
-    p.set_defaults(func=run_check)
 
-    p = add("build", help="rebuild the named derived trees. Writes on invocation "
-            "like every other derived output, since there the write is the "
-            "action; a farm whose source tree is absent is skipped with a row "
-            "rather than attempted")
+    p = action(g, "build", run_build,
+               help="rebuild the named derived trees. Writes on invocation "
+               "like every other derived output, since there the write is the "
+               "action; a farm whose source tree is absent is skipped with a row "
+               "rather than attempted")
     _farm_arg(p, F.BUILDABLE)
-    p.set_defaults(func=run_build)
 
 
 def _farm_arg(p, pool):
@@ -61,9 +62,10 @@ def _farm_arg(p, pool):
     of the positional, which made this the one place in the CLI where "everything"
     was not `--all`.
     """
-    p.add_argument("farm", nargs="*", choices=pool, metavar="FARM",
-                   help=f"which trees, space-separated. "
-                        f"One or more of: {', '.join(pool)}")
+    arg(p, "farm", nargs=-1, required=False, metavar="FARM",
+        type=click.Choice(pool))
+    p.help = (f"{p.help}\n\nFARM: which trees, space-separated. "
+              f"One or more of: {', '.join(pool)}.")
     add_all(p, "every farm this action handles")
 
 

@@ -28,6 +28,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import click
+
 from ..context import all_refs, norm_ref
 from ..lines import (
     DEFAULT_ALTO_DIR,
@@ -61,8 +63,13 @@ from ..review import (
 )
 from ._common import (
     REF_HELP,
+    action,
     add_jobs,
+    arg,
+    exclusive,
+    group,
     one_page_only,
+    opt,
     out,
     out_per_ref,
     page_refs,
@@ -95,7 +102,8 @@ def _one_ref(p):
     this group takes as many refs as you like; `test_cli_surface.py` holds this
     exemption by name so a new singular verb cannot slip in beside it.
     """
-    p.add_argument("ref", metavar="PP-NNN", help=REF_HELP)
+    arg(p, "ref", metavar="PP-NNN")
+    p.help = f"{p.help}\n\nPP-NNN: {REF_HELP}."
     return p
 
 
@@ -106,7 +114,7 @@ def _store(p, default=None):
     `review` sets one, because only there is the view actively wrong — see its
     registration.
     """
-    p.add_argument("--store", choices=("gt", "mz"), default=default,
+    opt(p, "--store", type=click.Choice(("gt", "mz")), default=default,
                    help=STORE_HELP + (f" [default: {default}]" if default else ""))
     return p
 
@@ -115,24 +123,23 @@ def _alto_dir(a) -> str:
     return STORES.get(getattr(a, "store", None), DEFAULT_ALTO_DIR)
 
 
-def register(sub, common):
-    g = sub.add_parser("ocr", help="the ALTO stores and the correction loop — "
-                       "line records, the dropped-line detector, crops and "
-                       "contact sheets, the browser review, and the write back "
-                       "into gt/ocr/")
-    act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
-    add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
+def register(cli):
+    g = group(cli, "ocr", "the ALTO stores and the correction loop — "
+              "line records, the dropped-line detector, crops and "
+              "contact sheets, the browser review, and the write back "
+              "into gt/ocr/",
+              sections=("Reading a page", "The correction loop", "Recognition"), section="The passes")
+    add = lambda name, **kw: action(g, name, globals()[f"run_{name.replace('-','_')}"], **kw)
 
     p = _store(add("pages", help="every ref with OCR present, i.e. workable now. "
               "Through the view by default, so a machine-read page counts — that "
               "is what makes it workable. Narrow it with --store"))
-    p.add_argument("--show-store", action="store_true",
+    opt(p, "--show-store", is_flag=True,
                    help="a row per ref instead of a bare list: which real stores "
                         "hold the page, and which one the ocr/ view actually "
                         "reaches. `view` is read off the farm rather than derived, "
                         "so a page restored since the last `ocr link` shows up as "
                         "still pointing at mz")
-    p.set_defaults(func=run_pages)
 
     p = _store(refs_arg(add("lines", help="per-line records for a page — line id, "
               "geometry and text, in reading order with empties kept, which is "
@@ -140,10 +147,9 @@ def register(sub, common):
               "an identity, not a position: it stays what ALTO document order "
               "assigned, so labels are not consecutive in a banded listing"),
               all_="every page the store read holds"))
-    p.add_argument("--full", action="store_true",
+    opt(p, "--full", is_flag=True,
                    help="include baseline and polygon points, which are long "
                         "enough to make the table unreadable by default")
-    p.set_defaults(func=run_lines)
 
     p = _store(refs_arg(add("gaps", help="bands of ink on the raster that no TextLine "
               "covers — the dropped-line detector. The segmentation this corpus "
@@ -155,20 +161,19 @@ def register(sub, common):
               all_="every page the store read holds — the corpus dropped-line "
                    "sweep, at a raster read per page"))
     add_jobs(p)
-    p.set_defaults(func=run_gaps)
 
     p = _store(_one_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
               "empty TextLines in gt/ocr/, so a dropped line can be keyed. "
               "Geometry only, never CONTENT: text still arrives via "
               "decision.json -> restore. Each VPOS must match a measured band; "
               "naming which bands are real lines is the human call")))
-    p.add_argument("vpos", metavar="VPOS[,VPOS...]",
-                   help="the band(s) to adopt, by the vpos `ocr gaps` reported")
-    p.add_argument("--commit", action="store_true",
+    arg(p, "vpos", metavar="VPOS[,VPOS...]")
+    p.help += ("\n\nVPOS: the band(s) to adopt, by the vpos `ocr gaps` reported. "
+               "Comma-separated.")
+    opt(p, "--commit", is_flag=True,
                    help="actually write gt/ocr/ — bare form reports the lines it "
                         "would create and writes nothing. This is a writer into "
                         "the ground-truth store and gates like `restore` does")
-    p.set_defaults(func=run_adopt_gap)
 
     # **No `--all` on the image writers, and the absence is deliberate.** Crops and
     # sheets are expensive in time and disk and are called per page by a reading
@@ -176,60 +181,57 @@ def register(sub, common):
     # nobody asked for. `--out` is why they still need `one_page_only`: with a
     # second ref and one destination, the second page silently overwrote the first.
     p = _store(refs_arg(add("crops", help="one PNG per line, into review/PP-NNN/crops/")))
-    p.add_argument("--margins", action="store_true", help=MARGINS_HELP)
-    p.add_argument("--out", type=Path, default=None, help=OUT_HELP)
-    p.set_defaults(func=run_crops)
+    opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
+    opt(p, "--out", type=click.Path(path_type=Path), default=None, help=OUT_HELP)
 
     p = _store(refs_arg(add("sheets", help="compose the line crops into labelled "
               "contact sheets in review/PP-NNN/sheets/, index drawn in the "
               "margin, nothing downscaled — the reading pass's instrument; emits "
               "the sheet/lines map instead of the line table")))
-    p.add_argument("--per-sheet", type=int, default=40,
+    opt(p, "--per-sheet", type=int, default=40,
                    help="lines per contact sheet, upper bound only — --height "
                         "packs by height first (default 40)")
-    p.add_argument("--height", dest="sheet_h", type=int, default=LINE_SHEET_H,
+    opt(p, "--height", "sheet_h", type=int, default=LINE_SHEET_H,
                    help=f"max contact-sheet height in px (default {LINE_SHEET_H}); "
                         "fewer, fuller sheets for the same lines")
-    p.add_argument("--margins", action="store_true", help=MARGINS_HELP)
-    p.add_argument("--out", type=Path, default=None, help=OUT_HELP)
-    p.set_defaults(func=run_sheets)
+    opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
+    opt(p, "--out", type=click.Path(path_type=Path), default=None, help=OUT_HELP)
 
     p = _store(refs_arg(add("zoom", help="magnify selected lines — overlapping strips "
               "at an integer scale, packed into as few sheets as the height "
               "budget allows, for the second look a contact sheet leaves open")))
-    p.add_argument("--only", default=None, metavar="SPEC",
+    opt(p, "--only", default=None, metavar="SPEC",
                    help="line indices to magnify, e.g. 7,20,22-26 (default every "
                         "line on the page)")
-    p.add_argument("--zoom", type=int, default=ZOOM,
+    opt(p, "--zoom", type=int, default=ZOOM,
                    help=f"display px per source px, as delivered (default {ZOOM}). "
                         "Higher wraps each line into more strips, and a form seen "
                         "only in halves is the risk being traded against — "
                         "escalate for one question, not by default. --zoom 1 "
                         "wraps least")
-    p.add_argument("--window", type=int, default=None,
+    opt(p, "--window", type=int, default=None,
                    help="source px per strip; derived from --zoom so that the "
                         "delivered scale really is --zoom. Overriding it upward "
                         "makes the sheet exceed the client width, and the scale "
                         "is then whatever the client's fitting leaves")
-    p.add_argument("--client-w", type=int, default=ZOOM_CLIENT_W,
+    opt(p, "--client-w", type=int, default=ZOOM_CLIENT_W,
                    help=f"px the reading client shows per image (default "
                         f"{ZOOM_CLIENT_W}); every sheet is padded to exactly "
                         "this, so the scale does not vary with how long the "
                         "lines are")
-    p.add_argument("--overlap", type=int, default=ZOOM_OVERLAP,
+    opt(p, "--overlap", type=int, default=ZOOM_OVERLAP,
                    help=f"px shared by consecutive strips (default "
                         f"{ZOOM_OVERLAP}), so no glyph is only ever seen cut")
-    p.add_argument("--height", dest="sheet_h", type=int, default=ZOOM_SHEET_H,
+    opt(p, "--height", "sheet_h", type=int, default=ZOOM_SHEET_H,
                    help=f"max sheet height in px (default {ZOOM_SHEET_H}) — a "
                         "taller sheet gets fitted to the display, undoing the zoom")
-    p.add_argument("--margins", action="store_true", help=MARGINS_HELP)
-    p.add_argument("--smooth", action="store_true",
+    opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
+    opt(p, "--smooth", is_flag=True,
                    help="Lanczos instead of nearest-neighbour: better for "
                         "comparing letterforms, worse for deciding whether a "
                         "faint mark is present, since it invents greys")
-    p.add_argument("--out", type=Path, default=None,
+    opt(p, "--out", type=click.Path(path_type=Path), default=None,
                    help="output directory (default review/PP-NNN/zoom)")
-    p.set_defaults(func=run_zoom)
 
     p = _store(refs_arg(add("blot", help="write the page to scans/w-blotted/ with every "
               "line box and figure zone painted out, so whatever remains is "
@@ -238,15 +240,14 @@ def register(sub, common):
               "be confused with `zones blot`, which paints figures white for the "
               "segmenter to train on"),
               all_="every page the store read holds"))
-    p.add_argument("--force", action="store_true",
+    opt(p, "--force", is_flag=True,
                    help="repaint pages whose blot is already newer than their "
                         "ALTO. Only --all skips those; naming a page means it")
-    p.add_argument("--out", type=Path, default=None,
+    opt(p, "--out", type=click.Path(path_type=Path), default=None,
                    help="output directory (default scans/w-blotted/ — a "
                         "corpus-level destination, unlike the other image "
                         "actions, because the blotted page is not review material)")
     add_jobs(p)
-    p.set_defaults(func=run_blot)
 
     # **The one action with a store default, and `mz` is it.** The bare diff needs
     # an *independent* witness; the view stops being one the moment the page has
@@ -258,7 +259,9 @@ def register(sub, common):
     # group has since caught up with: standing a server up per page made the
     # reviewer wait on the tooling between pages, which got worse the moment the
     # reading half started fanning out to an agent per page.
-    p = _store(add("review", help="adjudicate reading proposals in the browser "
+    p = _store(add("review", pager=False,
+               constraints=(exclusive("serve", "html", "spans"),),
+               help="adjudicate reading proposals in the browser "
               "(--serve), one or more pages in one session; bare, a span-level "
               "diff of each proposal against a second witness, grouped by "
               "substitution class"), default="mz")
@@ -266,25 +269,23 @@ def register(sub, common):
                      "pending-adjudication queue",
              extra=": --serve walks them in the order named, one page on screen "
                    "at a time")
-    mx = p.add_mutually_exclusive_group()
-    mx.add_argument("--serve", action="store_true",
+    opt(p, "--serve", is_flag=True,
                     help="serve the review page on 127.0.0.1 and accept saves "
                          "into review/PP-NNN/decision.json")
-    mx.add_argument("--html", action="store_true",
+    opt(p, "--html", is_flag=True,
                     help="write the browser review page to "
                          "review/PP-NNN/review.html instead of emitting a table. "
                          "No destination knob: the page embeds its crops as data "
                          "URIs, so where it sits is nobody's business but the "
                          "pass's, and --serve is the usual route")
-    mx.add_argument("--spans", action="store_true",
+    opt(p, "--spans", is_flag=True,
                     help="with the bare span diff: every span individually, not "
                          "grouped by class")
-    p.add_argument("--port", type=int, default=8731, help="port for --serve")
+    opt(p, "--port", type=int, default=8731, help="port for --serve")
     # **Not paged**, for `zones edit`'s reason: `--serve` prints a URL and blocks
     # in `serve_forever`. It covers the other two modes too, and that is the right
     # trade — one flag deciding whether an action pages is legible, where a rule
     # that paged some invocations of a verb and not others is not.
-    p.set_defaults(func=run_review, pager=False)
 
     p = _store(refs_arg(add("restore", help="preview (default) or write adjudicated "
               "review decisions into gt/ocr/ as ground truth, keeping the source "
@@ -293,16 +294,15 @@ def register(sub, common):
               "re-edited in place)"),
               all_="every page holding an adjudicated decision.json, skipping "
                    "those whose ground truth is already newer than it"))
-    p.add_argument("--force", action="store_true",
+    opt(p, "--force", is_flag=True,
                    help="overwrite a target that already holds text. Every page "
                         "in gt/ocr/ does now that the rebuild is complete, so "
                         "this is how a revision says it meant it — required for "
                         "one. Under --all it carries the same intent one step "
                         "further and ignores the mtime skip as well")
-    p.add_argument("--commit", action="store_true",
+    opt(p, "--commit", is_flag=True,
                    help="actually write gt/ocr/ — bare form only previews the "
                         "report (edits, geometry_drift, text_mismatch)")
-    p.set_defaults(func=run_restore)
 
     p = add("corrections", help="what readers actually get wrong: the "
             "character-level proposal->decision corrections, aggregated across "
@@ -310,16 +310,15 @@ def register(sub, common):
             "recorded — restore computes this diff per page and discards it. "
             "An aggregate: refs scope it, they do not multiply it. Always exits 0")
     refs_arg(p, all_="every review/ page holding both files")
-    p.add_argument("--since", metavar="DATE", default=None,
+    opt(p, "--since", metavar="DATE", default=None,
                    help="only pages whose decision.json saved_at sorts at or "
                         "after this (e.g. 2026-07-31). The store spans this "
                         "project's own history and its oldest error classes are "
                         "ones later rules made impossible, so an unscoped run is "
                         "partly archaeology; a page with no saved_at is excluded "
                         "and named in skipped_unstamped rather than dropped")
-    p.add_argument("--min", type=int, default=1, metavar="N",
+    opt(p, "--min", type=int, default=1, metavar="N",
                    help="drop changes seen fewer than N times [1]")
-    p.set_defaults(func=run_corrections)
 
     # No `--commit`, `--all` included: it removes only derived, regenerable output,
     # which is the same reason `crops` writes without one. The verb that deletes an
@@ -328,7 +327,6 @@ def register(sub, common):
              "sheets, zoom, review.html) — leaving proposal.json and "
              "decision.json in place; run once a page is restored"),
              all_="every review/ page")
-    p.set_defaults(func=run_clean)
 
     p = add("predict", help="zones to text in one pass — baseline segmentation "
             "and recognition over scans/, structured by the zones/ view, written "
@@ -337,31 +335,29 @@ def register(sub, common):
     refs_arg(p, all_="every page with zones",
              extra=", and several go through one process — both models load once, "
                    "which is most of the cost")
-    p.add_argument("--force", action="store_true",
+    opt(p, "--force", is_flag=True,
                    help="re-run over pages already in mz/ocr/ — the file records "
                         "both models' sha256, which is the store's only witness "
                         "to what produced it, so a rerun replaces that record")
-    p.add_argument("--itinerary", metavar="LST",
+    opt(p, "--itinerary", metavar="LST",
                    help="recognize over a work-list rather than the whole store")
-    p.add_argument("--seg-model", default=DEFAULT_SEG_MODEL,
+    opt(p, "--seg-model", default=DEFAULT_SEG_MODEL,
                    help=f"the baseline segmentation model [{DEFAULT_SEG_MODEL}]")
-    p.add_argument("--rec-model", default=DEFAULT_REC_MODEL,
+    opt(p, "--rec-model", default=DEFAULT_REC_MODEL,
                    help=f"the recognition model [{DEFAULT_REC_MODEL}]. Stock "
                         "CATMuS reads ~91%% of the ASCII and 0%% of the "
                         "transcription inventory — a witness to geometry and to "
                         "English, and to nothing else")
-    p.add_argument("--device", default="auto", help="torch device [auto]")
+    opt(p, "--device", default="auto", help="torch device [auto]")
     # **Processes here, where the other `--jobs` are threads**, because this is the
     # one sweep whose cost is CPU-side vectorization inside kraken rather than a
     # raster decode. The default is capped by free VRAM as well as by cores, since
     # each worker holds ~1.4 GB of CUDA context.
     add_jobs(p)
-    p.set_defaults(func=run_predict)
 
     p = add("link", help="rebuild ocr/, the read view over gt/ocr/ and mz/ocr/, "
             "the human file winning wherever it exists. Derived: the links are "
             "relative and a stale one is removed rather than left to dangle")
-    p.set_defaults(func=run_link)
 
 
 def run_pages(a) -> int:

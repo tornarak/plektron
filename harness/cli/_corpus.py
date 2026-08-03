@@ -10,42 +10,41 @@ from __future__ import annotations
 from pathlib import Path
 
 from ..normalize import convert, scan
-from ._common import add_all, out
+from ._common import action, add_all, arg, group, opt, out
 
 
-def register(sub, common):
-    g = sub.add_parser("corpus", help="whole-corpus gates — encoding and spacing "
-                       "conformance, and the figure-track reconciliation")
-    act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
-    add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
+def register(cli):
+    g = group(cli, "corpus", "whole-corpus gates — encoding and spacing "
+              "conformance, and the figure-track reconciliation",
+              section="Whole-corpus")
 
-    p = add("normalize", help="NFD conformance, §2.9 spacing, and the lookalike "
-            "census across every corpus store. Reports by default and exits 1 on "
-            "drift; --commit writes the fixes")
+    p = action(g, "normalize", run_normalize,
+               help="NFD conformance, §2.9 spacing, and the lookalike "
+               "census across every corpus store. Reports by default and exits 1 on "
+               "drift; --commit writes the fixes")
     # **A mixed positional list: a `PP-NNN` ref, or a path.** A ref's shape is
     # closed (`context.parse_ref`), so the two never collide, and a required file
     # argument spelled as a flag was the smell that prompted the whole plural
     # pass. Naming a page scopes to that page's files across the corpus globs —
     # its ALTO, its decision, and its proposal.
-    p.add_argument("target", metavar="REF|PATH", nargs="*",
-                   help="a page ref (PP-NNN), scoping to that page's files, or a "
-                        "file or directory path. Several may be given, and they "
-                        "may be mixed: `1-052 data/readings.md` scopes to both. "
-                        "For checking or converting one just-authored file "
-                        "without touching the other 280+")
+    arg(p, "target", metavar="REF|PATH", nargs=-1, required=False)
+    p.help += ("\n\nREF|PATH: a page ref (PP-NNN), scoping to that page's files, "
+               "or a file or directory path. Several may be given, and they may "
+               "be mixed: `1-052 data/readings.md` scopes to both. For checking "
+               "or converting one just-authored file without touching the "
+               "other 280+.")
     add_all(p, "every file the corpus globs reach")
-    p.add_argument("--commit", action="store_true",
-                   help="write the fixes. Required to touch any file — there is "
-                        "no bare-form write, scoped or not")
-    p.set_defaults(func=run_normalize)
+    opt(p, "--commit", is_flag=True,
+        help="write the fixes. Required to touch any file — there is "
+             "no bare-form write, scoped or not")
 
-    p = add("figures", help="reconcile the figure track — gt/fig/ zone geometry "
-            "against data/readings.md caption text, in both directions. "
-            "`missing` (a zone whose caption was never read) and `orphan` (a "
-            "reading whose zone is gone) must both be empty; a total that merely "
-            "matches is not coverage, which is how two absent pages once went "
-            "unnoticed by cancelling against two zone-only ones")
-    p.set_defaults(func=run_figures)
+    action(g, "figures", run_figures,
+           help="reconcile the figure track — gt/fig/ zone geometry "
+           "against data/readings.md caption text, in both directions. "
+           "`missing` (a zone whose caption was never read) and `orphan` (a "
+           "reading whose zone is gone) must both be empty; a total that merely "
+           "matches is not coverage, which is how two absent pages once went "
+           "unnoticed by cancelling against two zone-only ones")
 
 
 def _targets(a) -> list[Path] | None:

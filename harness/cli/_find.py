@@ -22,60 +22,61 @@ from ..authorities import record as authority_record
 from ..authorities import search as authority_search
 from ..authorities import sigla
 from ..state import WINDOW, load_toc, toc_search, toc_window
-from ._common import out
+from ._common import action, arg, group, opt, out
 
 
-def register(sub, common):
-    g = sub.add_parser("find", help="apparatus lookups — ToC entries by heading "
-                       "or by folio, and the works in data/authorities.json a "
-                       "citation might name")
-    act = g.add_subparsers(dest="action", required=True, metavar="ACTION")
-    add = lambda name, **kw: act.add_parser(name, parents=[common], **kw)
+def register(cli):
+    g = group(cli, "find", "apparatus lookups — ToC entries by heading "
+              "or by folio, and the works in data/authorities.json a "
+              "citation might name",
+              section="Apparatus and reports")
 
-    p = add("toc", help="ToC entries whose title matches a heading you've read "
-            "off the page (word-set match) — for resolving a heading toc_window "
-            "came back empty or thin on, against a folio you now know")
-    p.add_argument("query", help="heading text as read off the page")
-    p.add_argument("--folio", type=int, default=None,
-                   help="sort matches near this folio first")
-    p.set_defaults(func=run_toc)
+    p = action(g, "toc", run_toc,
+               help="ToC entries whose title matches a heading you've read "
+               "off the page (word-set match) — for resolving a heading toc_window "
+               "came back empty or thin on, against a folio you now know"
+               "\n\nQUERY: heading text as read off the page.")
+    arg(p, "query")
+    opt(p, "--folio", type=int, default=None,
+        help="sort matches near this folio first")
 
-    p = add("folio", help="ToC entries near a *known* folio — use once the "
-            "printed folio has been read off the page, not a substitute for "
-            "toc_window's prediction")
-    p.add_argument("folio", type=int, help="the printed folio, as read")
-    p.add_argument("--span", type=int, default=WINDOW,
-                   help=f"folios either side of the target (default {WINDOW})")
-    p.set_defaults(func=run_folio)
+    p = action(g, "folio", run_folio,
+               help="ToC entries near a *known* folio — use once the "
+               "printed folio has been read off the page, not a substitute for "
+               "toc_window's prediction"
+               "\n\nFOLIO: the printed folio, as read.")
+    arg(p, "folio", type=int)
+    opt(p, "--span", type=int, default=WINDOW,
+        help=f"folios either side of the target (default {WINDOW})")
 
-    p = add("authority", help="works in data/authorities.json matching a citation "
-            "read in the body — the siglum (Dall, I), a bare name in prose "
-            "(Krause reports…), a title, or any string off the printed entry. "
-            "Every match is returned and ranked, never resolved to one")
-    p.add_argument("query", nargs="?", default="",
-                   help="a citation or a name as read off the page, not a "
-                        "sentence: matching is word-set containment, so 'Krause' "
-                        "finds the prose reference and 'Krause reports' finds "
-                        "nothing. A footnote form ('Dall, I, p. 375.') is "
-                        "accepted whole — the volume and page locator are lifted "
-                        "out and the lift is echoed on stderr. Omit to list all 73")
-    p.add_argument("--volume", default=None,
-                   help="volume the citation names (II or 2, either form); "
-                        "normally read out of the query itself. Excludes on "
-                        "contradiction, not absence — a work whose every siglum "
-                        "names a different volume drops out, one with no siglum "
-                        "or no recorded volume stays in")
-    p.add_argument("--sigla", action="store_true",
-                   help="the resolution table instead: one row per cited_as entry "
-                        "rather than per work, so the collisions are visible at "
-                        "once; QUERY, if given, restricts to that name")
-    p.add_argument("--key", default=None,
-                   help="one work in full, printed blocks included — printed is "
-                        "the record and the parsed fields lose to it")
-    p.add_argument("--unlocated", action="store_true",
-                   help="only works with neither doi nor url — the 36 with no "
-                        "copy located, i.e. the worklist")
-    p.set_defaults(func=run_authority)
+    p = action(g, "authority", run_authority,
+               help="works in data/authorities.json matching a citation "
+               "read in the body — the siglum (Dall, I), a bare name in prose "
+               "(Krause reports…), a title, or any string off the printed entry. "
+               "Every match is returned and ranked, never resolved to one"
+               "\n\nQUERY: a citation or a name as read off the page, not a "
+               "sentence: matching is word-set containment, so 'Krause' finds the "
+               "prose reference and 'Krause reports' finds nothing. A footnote "
+               "form ('Dall, I, p. 375.') is accepted whole — the volume and page "
+               "locator are lifted out and the lift is echoed on stderr. Omit to "
+               "list all 73.")
+    arg(p, "query", required=False, default="")
+    opt(p, "--volume", default=None,
+        help="volume the citation names (II or 2, either form); "
+             "normally read out of the query itself. Excludes on "
+             "contradiction, not absence — a work whose every siglum "
+             "names a different volume drops out, one with no siglum "
+             "or no recorded volume stays in")
+    opt(p, "--sigla", is_flag=True,
+        help="the resolution table instead: one row per cited_as entry "
+             "rather than per work, so the collisions are visible at "
+             "once; QUERY, if given, restricts to that name")
+    opt(p, "--key", default=None,
+        help="one work in full, printed blocks included — printed is "
+             "the record and the parsed fields lose to it")
+    opt(p, "--unlocated", is_flag=True,
+        help="only works with neither doi nor url — the 36 with no "
+             "copy located, i.e. the worklist")
 
 
 def run_toc(a) -> int:
