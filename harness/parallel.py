@@ -23,6 +23,29 @@ testing the executor against itself.
 Nothing here is a work queue, a scheduler or a progress bar. A sweep is a pure map
 over pages and a fold afterwards; the moment a caller needs more than that, it
 wants a different tool and should say so rather than growing this one.
+
+**What this is for is a raster decode, and the cheap sweeps were measured and left
+alone.** The rule that came out of benching them is worth stating so the next
+caller does not re-derive it: a page has to be doing something that *releases* the
+GIL before a thread pool can help.
+
+  zones blot --all         114.4s -> 15.2s   PNG decode + paint + encode
+  zones check --all --ink  100.5s -> 29.4s   PNG decode, then measuring
+  zones paragraphs --all    87.9s -> 21.8s   PNG decode, then measuring
+  corpus normalize --all     0.84s -> 0.93s  **slower** — pure-Python scanning
+  832 x read_zones           0.098s -> 0.096s  noise — 0.12 ms of lxml per page
+
+`corpus normalize` is the instructive one. It walks 449 files and is the largest
+of the cheap sweeps, so it was the best candidate among them — and pooling it made
+it *slower*, because its per-file work is regex and string scanning that holds the
+GIL from start to finish. Threads there buy nothing and charge contention for it.
+The lxml verbs (`zones diff`, `ocr lines`) fail for the opposite reason: lxml does
+drop the GIL, but a page parses in 0.12 ms, which is under the cost of handing it
+to another thread.
+
+So none of them carry `--jobs`, and that is a measurement rather than a hunch. A
+verb whose page cost is milliseconds of Python does not want this module; one that
+opens a raster does.
 """
 from __future__ import annotations
 
