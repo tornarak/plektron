@@ -1,0 +1,1 @@
+- [Zoom span first guess can miss](zoom-span-first-guess-can-miss.md) — a guessed --only percentage span for a mid-line mark can miss it; re-aim once, don't call it inconclusive
