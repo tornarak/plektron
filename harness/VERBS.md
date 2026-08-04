@@ -518,7 +518,11 @@ proposal is a working file of a live pass, not an authored store.
 
 **The three arms are not equally strong.** `rare[]{ref,form,count,lines,position,corpus_pct,corpus_n,spec}` lists every occurrence of a form whose confusable the corpus almost never sets — bare `g` at 6.1% of Tier-1 `g`, 8 occurrences on 4 pages. Deterministic, no statistics. **One row per (ref, form) carrying a count**, because a keyer repeats a slip along a page (13 dropped dots on `2-040`, 14 on `3-004`, then a tail of 1–3): four bare `g` on a page is one finding of weight four, not four independent hits. Which contrasts can reach this arm is **derived from the prior at run time**, not declared — plain `i` at ~34% of its axis never qualifies and does not need to.
 
-`conflict[]{fold,batch_forms,store_forms,refs,in_batch}` finds one word spelled two ways. Fold collapses every contrast axis then casefolds; a bucket whose **casefolded** spellings differ is a hit. That suppresses `äˊmmê`/`Äˊmmê` while catching `Iᵋplɪˊlɪ`/`ɪᵋplɪˊlɪ`, because `casefold("I")` is `"i"` but `casefold("ɪ")` is `"ɪ"` — U+026A has no case mapping. Scoped to folds the batch touches: the store carries 3 standing `i`/`ɪ` inconsistencies of its own (`2-030` ×2, `3-028` ×1) and re-reporting them every run would bury the batch's news. `in_batch` separates the batch disagreeing with itself from the batch disagreeing with ground truth.
+`conflict[]{fold,form,source,ref,lines,count,in_batch}` finds one word spelled two ways. Fold collapses every contrast axis then casefolds; a bucket whose **casefolded** spellings differ is a hit. That suppresses `äˊmmê`/`Äˊmmê` while catching `Iᵋplɪˊlɪ`/`ɪᵋplɪˊlɪ`, because `casefold("I")` is `"i"` but `casefold("ɪ")` is `"ɪ"` — U+026A has no case mapping. Scoped to folds the batch touches: the store carries standing `i`/`ɪ` inconsistencies of its own and re-reporting them every run would bury the batch's news. `in_batch` separates the batch disagreeing with itself from the batch disagreeing with ground truth.
+
+**One row per (fold, form, page), carrying `lines`** — so two rows sharing a fold *are* the conflict, and each says where to go. The row used to be one per fold with the spellings packed into `batch_forms`/`store_forms` and no line numbers at all, which told an adjudicator a word was keyed two ways and left them to grep for it. `source` is `batch` or `store`; a `store` row has no `lines`, because the prior is `(ref, token)` off the ALTO and carries no line — look it up with `harness ocr lines`, and none is invented. `proposal check` still raises **one issue per fold**, since a word keyed two ways is one fault however many places it surfaces.
+
+**No exemption applies here.** A conflict in a proposal is a *reader's* disagreement and `proposal.json` is the record of what they wrote — never rewritten after adjudication, because `edited` is computed against it. Silencing one would delete the measurement. `data/marks_exempt.json` rules on ground truth and is read only by `lexicon conflicts`.
 
 `ratio[]{scope,contrast,position,types,expected_pct,prior_pct,gt_min_pct,gt_max_pct,band_n,outside}` points and never decides. **Types, not tokens** — the marks are lexical, not independent, and a per-character binomial flags 19 page-base cells over 29 already-adjudicated pages (`2-036`'s 10% `ɪ`-share is `Pehiˊttin` ×4). `outside` is a rank against the band, never a p-value.
 
@@ -827,6 +831,20 @@ dictionary, which reads committed TEI instead. All report-only, all exit 0.
 ```
 --root --json --toon --pager
 ```
+
+### lexicon conflicts
+**Does** one word spelled two ways across ground truth — the corpus-wide, store-side arm of `proposal marks`' `conflict`.
+**Reads** `gt/ocr/`, `data/marks_config.json`, `data/marks_exempt.json`. **Writes** — **Exit** 0.
+```
+--root --json --toon --pager
+```
+**Note** rows are **one per (fold, form, page)** and carry `lines`, so a fold is a worklist rather than a notification: the fold is the word with every contrast axis collapsed, and two rows sharing one mean the corpus spells it two ways. `gt/ocr/` and not the `ocr/` view, on the rule that anything publishing a corpus-wide number names the store — through the view every predicted page would contribute, and CATMuS reads 0% of the inventory, so each of its Tier-1 tokens would be a spelling nobody keyed.
+
+**Where the book itself sets a word two ways, the ruling lives in `data/marks_exempt.json`** — a list of `{fold, refs, note}`, and all three are required. Scoped to a fold **and** the pages it was ruled on, never a fold alone: the same word mis-keyed on a page nobody has examined is exactly what this arm is for, and a fold-wide entry would silence it. That is `gt/zones/_ink_exempt.json`'s reasoning — an exemption narrow enough that it cannot hide the next real finding. `note` is required because without one "the tool complained and I made it stop" is indistinguishable from a judgement, and this file is precisely where a wrong call would hide.
+
+An exempt row is **kept and flagged** (`exempt: true`, carrying its `note`), never dropped; an entry whose conflict no longer occurs on a page that *was* read reports under `stale_exemptions`. Both halves are the mechanism `zones check` uses for ink bands.
+
+**`proposal marks` consults none of this, deliberately.** A conflict in a proposal is a *reader's* disagreement, and `proposal.json` is a record of what someone wrote — never rewritten after adjudication, because `edited` is computed against it. There is nothing there to silence: the conflict is the measurement. Only a conflict in ground truth is a claim about the corpus, and only that can be ruled on.
 
 ### lexicon glosses
 **Does** the term↔gloss dictionary from committed TEI. Pairs come from `@target`, never from containment, so terms nobody linked are a count rather than a guess. `scope` is the frame the gloss list supplies once, resolved back through `@prev` across a seam.

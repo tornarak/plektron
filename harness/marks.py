@@ -59,7 +59,13 @@ import unicodedata
 from pathlib import Path
 
 from .context import norm_ref
-from .detectors import EDGE_PUNCT, INVENTORY_CHARS, TOKEN, native_corpus
+from .detectors import (
+    EDGE_PUNCT,
+    INVENTORY_CHARS,
+    TOKEN,
+    native_corpus,
+    native_corpus_lines,
+)
 
 CONFIG = "data/marks_config.json"
 
@@ -123,6 +129,62 @@ def load_config(root: Path = Path(".")) -> dict:
         if not isinstance(v, kind) or isinstance(v, bool) or v <= 0:
             raise MarksConfigError(f"{p}: '{field}' must be a positive {kind.__name__}")
     return cfg
+
+
+EXEMPT = "data/marks_exempt.json"
+
+
+def exempt_path(root: Path = Path(".")) -> Path:
+    return root / EXEMPT
+
+
+def load_exemptions(root: Path = Path(".")) -> list[dict]:
+    """Folds a human has ruled the book's own inconsistency, scoped to pages.
+
+    A conflict is "one word, two spellings", and the book sets some words two ways
+    — `2-030`'s `neˊlyiᵋ`/`neˊlyɪᵋ` was read against the raster and both keyings
+    found faithful (139135f). Without somewhere to record that, the ruling lives in
+    a commit message and the verb re-reports it forever, which is how a standing
+    finding buries a new one.
+
+    **Scoped to a fold *and* the refs it was ruled on**, never a fold alone. The
+    same word mis-keyed on a page nobody has examined is exactly the finding this
+    arm exists for, and a fold-wide entry would silence it — the reasoning behind
+    `gt/zones/_ink_exempt.json` being scoped to a band rather than to a page.
+
+    **`note` is required and is the record.** Without one, "the tool complained and
+    I made it stop" is indistinguishable from a ruling, and the exemption file is
+    precisely where a wrong call would hide.
+
+    Absent file is no exemptions — the ordinary state, not an error.
+    """
+    p = exempt_path(root)
+    if not p.exists():
+        return []
+    try:
+        doc = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise MarksConfigError(f"{p}: {e}") from e
+    if not isinstance(doc, list):
+        raise MarksConfigError(f"{p}: must be a list of "
+                               "{fold, refs, note} entries")
+    out = []
+    for e in doc:
+        if not isinstance(e, dict):
+            raise MarksConfigError(f"{p}: entry is not an object: {e!r}")
+        for field in ("fold", "refs", "note"):
+            if not e.get(field):
+                raise MarksConfigError(
+                    f"{p}: an entry is missing '{field}': {e!r}"
+                    + ("  — the reason is the record, and an entry without one "
+                       "cannot be told from a silenced complaint"
+                       if field == "note" else ""))
+        if not isinstance(e["refs"], list):
+            raise MarksConfigError(f"{p}: 'refs' must be a list: {e!r}")
+        out.append({"fold": _nfd(e["fold"]),
+                    "refs": {norm_ref(r) for r in e["refs"]},
+                    "note": e["note"]})
+    return out
 
 
 def _nfd(s: str) -> str:
@@ -264,10 +326,14 @@ def _conflicts(batch: dict, prior: dict, contrasts: list[dict]) -> list[dict]:
     `false` when the second witness is the store (the batch disagrees with
     adjudicated ground truth). One boolean apart, and different findings.
     """
-    buckets: dict[str, dict[str, set[str]]] = {}
+    # (fold -> form -> ref -> line indices). The lines are the point: a fold row
+    # naming only its refs told an adjudicator a word was keyed two ways and left
+    # them to grep two pages for it, on a verb whose whole output is a worklist.
+    buckets: dict[str, dict[str, dict[str, list[str]]]] = {}
     for ref, toks in batch.items():
-        for _, tok in toks:
-            buckets.setdefault(fold(tok, contrasts), {}).setdefault(tok, set()).add(ref)
+        for idx, tok in toks:
+            (buckets.setdefault(fold(tok, contrasts), {})
+                    .setdefault(tok, {}).setdefault(ref, []).append(idx))
     store: dict[str, dict[str, set[str]]] = {}
     for ref, toks in prior.items():
         for tok in toks:
@@ -282,16 +348,61 @@ def _conflicts(batch: dict, prior: dict, contrasts: list[dict]) -> list[dict]:
         spellings = {t.casefold() for t in forms} | {t.casefold() for t in store_forms}
         if len(spellings) < 2:
             continue
-        out.append({
-            "fold": unicodedata.normalize("NFC", key),
-            "batch_forms": " ".join(sorted(unicodedata.normalize("NFC", t)
-                                           for t in forms)),
-            "store_forms": " ".join(sorted(unicodedata.normalize("NFC", t)
-                                           for t in store_forms)),
-            "refs": " ".join(sorted({r for rs in forms.values() for r in rs}
-                                    | {r for rs in store_forms.values() for r in rs})),
-            "in_batch": len({t.casefold() for t in forms}) > 1,
-        })
+        nfc = lambda s: unicodedata.normalize("NFC", s)  # noqa: E731
+        rows = []
+        for form, refs in sorted(forms.items()):
+            for ref, idxs in sorted(refs.items()):
+                rows.append({"form": nfc(form), "source": "batch", "ref": ref,
+                             "lines": ",".join(sorted(idxs, key=int)),
+                             "count": len(idxs)})
+        for form, refs in sorted(store_forms.items()):
+            for ref in sorted(refs):
+                # No line indices on this side, and none invented: the prior comes
+                # from `native_corpus`, which yields (ref, token) off the ALTO
+                # without carrying the line it sat on. Empty is the honest cell —
+                # `harness ocr lines REF` is where that side is looked up.
+                rows.append({"form": nfc(form), "source": "store", "ref": ref,
+                             "lines": "", "count": 0})
+        for r in rows:
+            out.append({"fold": nfc(key), **r,
+                        "in_batch": len({t.casefold() for t in forms}) > 1})
+    return out
+
+
+def _apply_exemptions(rows: list[dict], exemptions: list[dict]) -> list[dict]:
+    """Mark the ruled rows; never drop them.
+
+    Every exemption mechanism in this project reports what it silences — the ink
+    bands, the layout rules — because the file recording a judgement is the one
+    place a wrong judgement is invisible. So an exempt row keeps its place in the
+    table and gains the note that rules it.
+    """
+    for r in rows:
+        for e in exemptions:
+            if _nfd(r["fold"]) == e["fold"] and r["ref"] in e["refs"]:
+                r["exempt"], r["note"] = True, e["note"]
+                break
+        else:
+            r["exempt"], r["note"] = False, ""
+    return rows
+
+
+def _stale_exemptions(rows: list[dict], exemptions: list[dict],
+                      under_test: set[str]) -> list[dict]:
+    """Entries that matched nothing on a page this run actually looked at.
+
+    Scoped to `under_test`, because an entry about `2-030` is not stale merely
+    because this run was about `2-040` — it was never consulted. Only a ref that
+    *was* read and no longer carries the conflict says the ruling has outlived
+    what it ruled on.
+    """
+    hit = {(_nfd(r["fold"]), r["ref"]) for r in rows}
+    out = []
+    for e in exemptions:
+        live = e["refs"] & under_test
+        if live and not any((e["fold"], r) in hit for r in live):
+            out.append({"fold": unicodedata.normalize("NFC", e["fold"]),
+                        "refs": " ".join(sorted(live)), "note": e["note"]})
     return out
 
 
@@ -469,11 +580,76 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
     rare = _rare(batch, prior_tokens, contrasts, rare_max)
     ratio = [r for c in contrasts for r in _ratio_rows(c, batch, prior, min_types)]
 
+    # No exemptions on this side, deliberately. A proposal is a **record of what a
+    # reader wrote**, not a store to be corrected — CLAUDE.md forbids rewriting one
+    # after adjudication because `edited` is computed against it, so a conflict here
+    # is the measurement rather than a defect. Silencing one would delete the very
+    # thing the file exists to hold. Exemptions belong to `lexicon conflicts`, over
+    # ground truth, where a fold really can be the book's own inconsistency.
     return {"refs": " ".join(refs),
             "source": "decisions" if decisions else "proposals",
             "prior_pages": len(prior), "prior_note": PRIOR_NOTE,
             "pages": pages, "rare": rare,
             "conflict": _conflicts(batch, prior, contrasts), "ratio": ratio}
+
+
+def gt_conflicts(root: Path = Path(".")) -> dict:
+    """One word spelled two ways in **ground truth** — the corpus-wide arm.
+
+    The store side of `proposal marks`' `conflict`, and the difference between
+    them is which question the answer is evidence for. A conflict in a proposal is
+    a **reader's** disagreement, and it is *data*: `proposal.json` is a record of
+    what someone wrote, never rewritten after adjudication because `edited` is
+    computed against it, so there is nothing there to silence and no exemption
+    file. A conflict in `gt/ocr/` is a claim about the **corpus** — either a
+    keying slip to repair, or the book setting one word two ways — and only the
+    second kind can be ruled on. That is what `data/marks_exempt.json` holds.
+
+    `gt/ocr/` explicitly, not the `ocr/` view: this publishes a corpus-wide
+    finding, and CLAUDE.md's rule is that anything that gates or publishes a
+    number names the stores. Through the view every machine-read page would
+    contribute, and CATMuS reads 0% of the inventory — every one of its Tier-1
+    tokens would be a spelling nobody keyed.
+
+    Exempt rows are **kept and flagged**, never dropped, like every other
+    exemption here: the file recording a judgement is the one place a wrong
+    judgement is invisible. `stale_exemptions` is the other half — an entry whose
+    conflict no longer occurs has outlived what it ruled on.
+    """
+    contrasts = load_config(root)["contrasts"]
+    exemptions = load_exemptions(root)
+
+    buckets: dict[str, dict[str, dict[str, list[str]]]] = {}
+    read = set()
+    for ref, idx, tok in native_corpus_lines(root):
+        read.add(ref)
+        tok = _nfd(tok)
+        (buckets.setdefault(fold(tok, contrasts), {})
+                .setdefault(tok, {}).setdefault(ref, []).append(idx))
+
+    rows = []
+    for key, forms in sorted(buckets.items()):
+        # Casefolded, so `äˊmmê`/`Äˊmmê` is not a conflict while `I`/`ɪ` is —
+        # U+026A has no case mapping. See `fold`.
+        if len({t.casefold() for t in forms}) < 2:
+            continue
+        for form, refs in sorted(forms.items()):
+            for ref, idxs in sorted(refs.items()):
+                rows.append({"fold": unicodedata.normalize("NFC", key),
+                             "form": unicodedata.normalize("NFC", form),
+                             "ref": ref, "lines": ",".join(sorted(idxs, key=int)),
+                             "count": len(idxs)})
+    rows = _apply_exemptions(rows, exemptions)
+    return {"store": "gt/ocr", "pages_read": len(read),
+            "pages_with_a_conflict": len({r["ref"] for r in rows}),
+            "folds": len({r["fold"] for r in rows}),
+            "exempt_rows": sum(1 for r in rows if r["exempt"]),
+            "conflict": rows,
+            # Scoped to the pages actually read, not to the pages that still have
+            # a conflict: an entry is stale when the page was looked at and no
+            # longer carries it, and judging against the rows would call every
+            # working exemption stale the moment it did its job.
+            "stale_exemptions": _stale_exemptions(rows, exemptions, read)}
 
 
 def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
@@ -522,12 +698,29 @@ def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
             f"(keying_spec §{hit['spec']}) — check for a dropped mark",
             token=hit["form"],
             detail=f"{hit['count']} occurrence(s) on this page{where}"))
+    # One issue per *fold*, not per row: `_conflicts` emits a row per (fold, form,
+    # ref) so the table can name lines, but a word keyed two ways is one fault
+    # however many places it surfaces — the same rule that keeps `rare` to one
+    # issue per form.
+    #
+    # And no exemptions here either, for the reason `marks` states: this reads a
+    # proposal, and a proposal records what a reader wrote rather than what the
+    # corpus holds. `data/marks_exempt.json` rules on ground truth and is consulted
+    # only by `lexicon conflicts`.
+    folds: dict[str, list[dict]] = {}
     for hit in _conflicts(batch, prior, cfg["contrasts"]):
+        folds.setdefault(hit["fold"], []).append(hit)
+    for rows in folds.values():
+        here = [r for r in rows if r["source"] == "batch" and r["ref"] == ref]
+        other = [r for r in rows if r not in here]
+        lines = sorted({i for r in here for i in r["lines"].split(",") if i}, key=int)
+        against = " ".join(sorted({r["form"] for r in other})) or "(this page only)"
         out.append(issue(
-            "-",
+            lines[0] if lines else "-",
             "one word, two spellings" + (
-                "" if hit["in_batch"] else " — the other is adjudicated ground truth"),
-            token=hit["batch_forms"],
-            detail=f"against {hit['store_forms'] or '(this page only)'} "
-                   f"on {hit['refs']}"))
+                "" if rows[0]["in_batch"] else " — the other is adjudicated ground truth"),
+            token=" ".join(sorted({r["form"] for r in here})),
+            detail=f"against {against} on "
+                   f"{' '.join(sorted({r['ref'] for r in other})) or ref}"
+                   + (f" (lines {','.join(lines)})" if len(lines) > 1 else "")))
     return out

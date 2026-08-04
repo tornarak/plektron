@@ -1,12 +1,17 @@
 """`harness lexicon` — frequency reports over the corpus, and the gloss dictionary.
 
-Six actions where there were six mutually-exclusive-in-fact flags on one verb,
+Seven actions where there were six mutually-exclusive-in-fact flags on one verb,
 declared independent and resolved by if-chain precedence, so `--marks --native`
 silently ran `--marks`.
 
-Five read restored ground truth in `gt/ocr/`; `glosses` reads committed TEI
+Six read restored ground truth in `gt/ocr/`; `glosses` reads committed TEI
 instead, which is why it is worth naming its source in the help rather than
 letting the group heading imply one store. All are report-only and exit 0.
+
+`conflicts` is the seventh and the only one that consults a *ruling* —
+`data/marks_exempt.json`. It is here rather than beside `proposal marks` because
+the exemptible question is about the corpus, not about a reader: see
+`marks.gt_conflicts`.
 """
 from __future__ import annotations
 
@@ -18,6 +23,7 @@ from ..detectors import (
     suggest_native_forms,
 )
 from ..ids import glossary
+from ..marks import gt_conflicts
 from ._common import action, group, out
 
 
@@ -53,6 +59,18 @@ def register(cli):
         help="weighted digraph/trigraph frequency over the native "
             "corpus, with marks and the corpus's own top suffixes stripped first "
             "so stems aren't drowned by the suffix family repeating itself")
+
+    add("conflicts", gt_conflicts,
+        help="one word spelled two ways in gt/ocr/ — the ground-truth arm "
+            "of `proposal marks`' conflict check, corpus-wide. Rows are one per "
+            "(fold, form, page) and carry the line numbers, so a fold is a "
+            "worklist rather than a notification. Where the book itself sets a "
+            "word two ways, a ruling goes in data/marks_exempt.json scoped to "
+            "the fold and the pages it was read on; a ruled row still appears, "
+            "flagged and carrying its reason, and an entry whose conflict no "
+            "longer occurs reports as stale. Nothing here is exempted in "
+            "`proposal marks`: a proposal records what a reader wrote, and that "
+            "is the measurement rather than a defect to silence")
 
     add("glosses", glossary,
         help="the corpus's term<->gloss pairs from committed TEI — "

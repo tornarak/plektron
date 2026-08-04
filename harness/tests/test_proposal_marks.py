@@ -186,9 +186,21 @@ def test_conflict_sees_the_store_as_a_second_witness(tmp_path):
     _proposal(tmp_path, "1-001", ["vaˊɪrgɪt"])
     _gt(tmp_path, "1-002", ["vaˊɪrg̣ɪt"])
     hits = marks(["1-001"], tmp_path)["conflict"]
-    assert len(hits) == 1
-    assert hits[0]["in_batch"] is False
-    assert hits[0]["store_forms"] == unicodedata.normalize("NFC", nfd("vaˊɪrg̣ɪt"))
+    # One row per (fold, form, ref), so the two witnesses are two rows sharing a
+    # fold rather than one row with the forms packed into two string fields. The
+    # rows carry line numbers; the old shape named only refs, which left an
+    # adjudicator to grep the pages for a word the verb had already located.
+    assert len(hits) == 2
+    assert {h["source"] for h in hits} == {"batch", "store"}
+    assert all(h["in_batch"] is False for h in hits)
+    store = next(h for h in hits if h["source"] == "store")
+    assert store["form"] == unicodedata.normalize("NFC", nfd("vaˊɪrg̣ɪt"))
+    assert store["ref"] == "1-002"
+    # The prior is (ref, token) off the ALTO with no line attached, so the store
+    # side has none and invents none.
+    assert store["lines"] == ""
+    batch = next(h for h in hits if h["source"] == "batch")
+    assert batch["ref"] == "1-001" and batch["lines"]
 
 
 def test_conflict_ignores_a_store_only_disagreement(tmp_path):
@@ -535,3 +547,90 @@ def test_every_cell_is_scalar_so_the_toon_tables_stay_tabular(tmp_path):
         for rec in rep[table]:
             for v in rec.values():
                 assert isinstance(v, (str, int, float, bool)), (table, rec)
+
+
+# --- the ground-truth arm, and the ruling it can consult ----------------------
+
+def _exempt(root, entries):
+    (root / "data").mkdir(parents=True, exist_ok=True)
+    (root / "data" / "marks_exempt.json").write_text(
+        json.dumps(entries, ensure_ascii=False), encoding="utf-8")
+
+
+def test_gt_conflicts_finds_a_word_the_store_spells_two_ways(tmp_path):
+    """`2-030` live: `neˊlyiᵋ` ×3 against `neˊlyɪᵋ` ×1, the corpus's only one."""
+    from harness.marks import gt_conflicts
+
+    _config(tmp_path)
+    _gt(tmp_path, "2-030", ["neˊlyiᵋ here", "and neˊlyɪᵋ", "plain english"])
+    rep = gt_conflicts(tmp_path)
+    assert rep["folds"] == 1
+    assert {r["form"] for r in rep["conflict"]} == {
+        unicodedata.normalize("NFC", nfd(f)) for f in ("neˊlyiᵋ", "neˊlyɪᵋ")}
+    assert all(r["ref"] == "2-030" for r in rep["conflict"])
+    assert all(r["lines"] for r in rep["conflict"]), "every row says where to look"
+
+
+def test_an_exemption_flags_the_row_and_never_hides_it(tmp_path):
+    """The file recording a judgement is where a wrong judgement would hide, so
+    a ruled row keeps its place and carries the reason that rules it."""
+    from harness.marks import gt_conflicts
+
+    _config(tmp_path)
+    _gt(tmp_path, "2-030", ["neˊlyiᵋ", "neˊlyɪᵋ"])
+    _exempt(tmp_path, [{"fold": "neˊlyiᵋ", "refs": ["2-030"],
+                        "note": "the book's own inconsistency (139135f)"}])
+    rep = gt_conflicts(tmp_path)
+    assert len(rep["conflict"]) == 2, "still reported"
+    assert rep["exempt_rows"] == 2
+    assert all(r["exempt"] and "139135f" in r["note"] for r in rep["conflict"])
+    assert rep["stale_exemptions"] == [], "it is doing its job, not outliving it"
+
+
+def test_an_exemption_does_not_reach_a_page_it_was_not_ruled_on(tmp_path):
+    """Scoped to fold *and* refs. A fold-wide entry would silence the same word
+    mis-keyed on a page nobody has examined, which is the finding this exists for."""
+    from harness.marks import gt_conflicts
+
+    _config(tmp_path)
+    _gt(tmp_path, "2-030", ["neˊlyiᵋ", "neˊlyɪᵋ"])
+    _gt(tmp_path, "3-119", ["neˊlyiᵋ", "neˊlyɪᵋ"])
+    _exempt(tmp_path, [{"fold": "neˊlyiᵋ", "refs": ["2-030"], "note": "ruled"}])
+    rows = gt_conflicts(tmp_path)["conflict"]
+    assert {r["ref"] for r in rows if r["exempt"]} == {"2-030"}
+    assert {r["ref"] for r in rows if not r["exempt"]} == {"3-119"}
+
+
+def test_an_exemption_whose_conflict_is_gone_reports_stale(tmp_path):
+    """A ruling that has outlived what it ruled on, on a page that *was* read."""
+    from harness.marks import gt_conflicts
+
+    _config(tmp_path)
+    _gt(tmp_path, "2-030", ["neˊlyiᵋ", "neˊlyiᵋ"])       # repaired: one spelling
+    _exempt(tmp_path, [{"fold": "neˊlyiᵋ", "refs": ["2-030"], "note": "ruled"}])
+    rep = gt_conflicts(tmp_path)
+    assert rep["conflict"] == []
+    assert [e["fold"] for e in rep["stale_exemptions"]] == [
+        unicodedata.normalize("NFC", nfd("neˊlyiᵋ"))]
+
+
+def test_an_exemption_without_a_reason_is_refused(tmp_path):
+    """Without one, a silenced complaint is indistinguishable from a ruling."""
+    from harness.marks import MarksConfigError, gt_conflicts
+
+    _config(tmp_path)
+    _gt(tmp_path, "2-030", ["neˊlyiᵋ", "neˊlyɪᵋ"])
+    _exempt(tmp_path, [{"fold": "neˊlyiᵋ", "refs": ["2-030"]}])
+    with pytest.raises(MarksConfigError, match="note"):
+        gt_conflicts(tmp_path)
+
+
+def test_proposal_marks_never_consults_the_exemptions(tmp_path):
+    """A proposal records what a reader wrote — the conflict is the measurement,
+    not a defect, so there is nothing there to silence."""
+    _config(tmp_path)
+    _proposal(tmp_path, "1-001", ["neˊlyiᵋ", "neˊlyɪᵋ"])
+    _exempt(tmp_path, [{"fold": "neˊlyiᵋ", "refs": ["1-001"], "note": "ruled"}])
+    rows = marks(["1-001"], tmp_path)["conflict"]
+    assert rows, "reported regardless of any ruling"
+    assert all("exempt" not in r for r in rows), "and not even marked"
