@@ -52,7 +52,8 @@ reaches the next.
 Follow SKILL.md's **restoration** branch — the page has no ground truth. **Every
 ALTO verb you run must carry `--store mz`.**
 
-    uv run harness ocr gaps PP-NNN --store mz          first; report what it says
+    uv run harness ocr gaps PP-NNN --store mz          first; report what it says,
+                                                       exempted bands included
     uv run harness ocr lines PP-NNN --store mz         the line indices
     …the image ladder, below…
     (author review/PP-NNN/proposal.json)
@@ -67,9 +68,16 @@ disagrees with its own text. **Do not report a proposal as validated on the stre
 of `fix` and `normalize` alone** — a reader has already done that on a page this
 gate was failing.
 
-If `gaps` reports a band you judge to be a genuinely dropped printed line, use
-`harness ocr adopt-gap` per the skill and record it in the proposal's
-`segmenter_missed` block. That is a real judgement: say why in your report.
+**A band `gaps` reports with `exempted: true` is settled** — a human ruled it not
+type during zoning and the `note` says why (a smudge, a gutter blob, offset from
+the facing page). Read the note, say in your report that you did, and spend no
+image on it. Re-deciding it from the raster is the firewall's own failure: rank
+rises by a human act, and yours is not one.
+
+A band with `exempted: false` is yours to judge. **Whatever you conclude, you
+report it — you never repair it.** Describe the band, say what you think it is
+and why, and put it in the proposal's `segmenter_missed` block. Creating a line
+is a later step and someone else's; nothing in your loop writes page geometry.
 
 The proposal carries one entry per ALTO line index, `text` mandatory, `resolved`
 spelling out codepoints for any line with notation, `note` for anything an
@@ -111,7 +119,8 @@ true` unless you can name something specific**, and seeing the machine text in
 ## Do not
 
 - Run `harness ocr review --serve`, `harness ocr restore`, or `views build`.
-- Write into `gt/ocr/` — except via `adopt-gap`, which writes geometry only.
+- Write into `gt/ocr/` at all, by any route. Your pass produces one file and it is
+  `review/PP-NNN/proposal.json`.
 - Run any `--all` form of anything. Every verb that can sweep the corpus says so
   with that flag, and none of them is yours.
 - Commit anything to git.

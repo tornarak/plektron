@@ -335,10 +335,11 @@ require `--commit`.
 
 ### ocr gaps [REF ...]
 **Does** bands of ink no TextLine covers — the dropped-line detector. A band is a place to look, not a verdict.
-**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`.
+**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`, `gt/zones/_ink_exempt.json`.
 **Writes** —
 **Exit** always 0.
 **Note** `--all` is the corpus dropped-line sweep, at a raster read per page. It reads through the view unless `--store` narrows it, which is `ocr pages`' rule — a machine-read page is workable, and this verb neither gates nor publishes a rate.
+**Note** a band the zoning pass ruled not type carries that ruling: `exempted` true and the `note` that made the call, matched on the band's midpoint by the same `_ink_excuse` `zones check --ink` uses. **Flagged, never suppressed** — an exempted band still reports, because dropping it would make this the one place a wrong call could hide. Without this the ruling reached the zone editor and stopped, and an OCR-side reader re-adjudicated from the raster a band a human had already settled.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds
@@ -347,10 +348,11 @@ require `--commit`.
 ```
 
 ### ocr adopt-gap REF VPOS[,VPOS...]
-**Does** materializes measured `gaps` bands as empty TextLines so a dropped line can be keyed. Geometry only, never CONTENT. Refuses an unmeasured vpos and a band overlapping an existing line.
-**Reads** the `--store` store, or the view, `scans/`.
+**Does** materializes measured `gaps` bands as empty TextLines so a dropped line can be keyed. Geometry only, never CONTENT. Refuses an unmeasured vpos, a band overlapping an existing line, and a band ruled not type in `gt/zones/_ink_exempt.json`.
+**Reads** the `--store` store, or the view, `scans/`, `gt/zones/_ink_exempt.json`.
 **Writes** `gt/ocr/` under `--commit`, resolved explicitly and never through the view.
-**Exit** always 0; exit 2 on an unmeasured vpos or an overlap.
+**Exit** always 0; exit 2 on an unmeasured vpos, an overlap, or an exempted band.
+**Note** the exemption refusal is fail-closed on purpose: the zoning pass's ruling is the ratified witness, and overturning it from the OCR side would be a model undoing a human call silently. Disagreeing means dropping the exemption in `zones edit` — itself a human act. **Also unrunnable on a restoration**, since it resolves its target to `gt/ocr/` explicitly and a page with no ground truth has none; a dropped line found on a fresh page is reported, not adopted, until `restore` has written the page once.
 **Note** **one of the four singular actions**: `VPOS` is a band measured on *that* page's raster, so a ref list would carry a band list belonging to one of them. `test_cli_surface.py` holds the exemption by name.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]

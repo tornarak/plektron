@@ -7,7 +7,8 @@ evidence, it is what both readings that were wrong said.
 
 ## Before reading
 
-- [ ] `ocr gaps PP-NNN` run; every band ruled line-or-not, `adopt-gap` if a line
+- [ ] `ocr gaps PP-NNN` run; `exempted` bands read and taken as settled, the rest
+      ruled line-or-not and **reported, never repaired**
 - [ ] Whole page image read once for orientation (heads, folio, footnotes, figures)
 - [ ] All contact sheets read in full before any zoom
 

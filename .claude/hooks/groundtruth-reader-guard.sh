@@ -23,10 +23,12 @@ case "$COMMAND" in
     exit 2 ;;
 esac
 
-# The reader's whole legitimate surface. `adopt-gap` writes geometry only and
-# is part of the loop; `corpus normalize` gates the reader's own proposal;
-# `lexicon` and `find` are measurement and always exit 0.
-if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (gaps|lines|numbered|sheets|zoom|adopt-gap)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
+# The reader's whole legitimate surface, and it is read-only over the stores:
+# `corpus normalize` gates the reader's own proposal, `lexicon` and `find` are
+# measurement and always exit 0. `adopt-gap` is deliberately absent — it writes
+# gt/ocr/, it cannot run on a restoration anyway (no ground truth to append to),
+# and a verb in the allowlist is a verb a reader will find a reason to try.
+if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2
@@ -35,5 +37,5 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (gaps|lines|numbered|
   exit 0
 fi
 
-echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run harness {ocr gaps|lines|numbered|sheets|zoom|adopt-gap, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *} — one plain command, no --all. Everything else (restore, review, clean, views, git, python3, shell listing) is not yours; Glob answers existence, Read answers content, and the verbs answer the rest. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
+echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run harness {ocr gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *} — one plain command, no --all. Everything else (restore, review, clean, views, git, python3, shell listing) is not yours; Glob answers existence, Read answers content, and the verbs answer the rest. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2

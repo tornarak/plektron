@@ -580,6 +580,21 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     Report-only, and it will have false positives by design: running heads,
     folios, figure labels and plate captions are ink that legitimately has no
     `TextLine` in an OCR store. A band is a place to look, not a verdict.
+
+    **A band a human already ruled carries that ruling.** `gt/zones/_ink_exempt.json`
+    is where the zoning pass records a band as not type — a smudge, a gutter blob,
+    offset from the facing page — and until this read it, the ruling reached `zones
+    check --ink` and the zone editor and stopped there. A reader on the OCR side got
+    the band bare and re-adjudicated it from the raster, which is the one thing the
+    firewall does not permit a model to do: rank rises by a human act, and a band
+    returned unmarked invites a second, lesser witness to re-originate the call.
+    Three pages in the `1-031`..`1-036` batch were marked "scanner artifact" during
+    zoning and re-argued from scratch anyway.
+
+    **Flagged, never suppressed** — the same rule `zones.validate_page` follows for
+    the same file. A matched band still reports, carrying `exempted` and the note
+    that ruled it; dropping it would make this the one place a wrong call could
+    hide, and the next genuinely dropped line on that page with it.
     """
     from PIL import Image
     ref = norm_ref(ref)
@@ -622,7 +637,19 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
 
     # The measuring itself is `ink_bands`, shared with `zones.validate_page` so the
     # two detectors cannot drift apart on a threshold.
-    return ink_bands(ink_mask(img), x0, x1, covered)
+    bands = ink_bands(ink_mask(img), x0, x1, covered)
+
+    # Imported inside the function because `zones` imports `ink_bands`/`ink_mask`
+    # from here; `_ink_excuse` is reused rather than re-derived so the two readers
+    # of this file cannot disagree about which band a region covers (it matches on
+    # the band's midpoint — the extent moves by a pixel or two between runs).
+    from .zones import _ink_excuse, load_ink_exempt
+    regions = load_ink_exempt(root).get(ref, [])
+    for b in bands:
+        excuse = _ink_excuse(b, regions)
+        b["exempted"] = bool(excuse)
+        b["note"] = excuse["note"] if excuse else ""
+    return bands
 
 
 GAP_ID_PREFIX = "gap_"
@@ -684,6 +711,17 @@ def adopt_gaps(ref: str, vpos_list: list[int], alto_dir: str = DEFAULT_ALTO_DIR,
                 f"Available: {sorted(bands) or 'none'} "
                 "(run `harness ocr gaps PP-NNN`; a band must be measured, "
                 "never hand-entered)")
+        # A band the zoning pass ruled not type is a human's call, and adopting it
+        # as a line would overturn that call from the other side of the pipeline
+        # without anyone saying so. Refused rather than warned: the exemption is
+        # the ratified witness here, and the way to disagree with it is to remove
+        # it in the zone editor, which is a human act by construction.
+        if bands[v].get("exempted"):
+            raise ValueError(
+                f"{ref}: the band at vpos={v} is ruled not type in "
+                f"gt/zones/_ink_exempt.json ({bands[v]['note']!r}). Adopting it "
+                "would contradict that ruling. If it is a dropped line after all, "
+                "drop the exemption in `harness zones edit` first")
         wanted.append(bands[v])
 
     tree = etree.parse(str(target))

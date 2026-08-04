@@ -150,6 +150,23 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
    meaning is not. Running heads, folios and figure labels are all legitimately
    uncovered ink.
 
+   **A band carrying `exempted: true` is already ruled.** The zoning pass records a
+   band as not type in `gt/zones/_ink_exempt.json` — a smudge, a gutter blob, offset
+   from the facing page — and `gaps` now carries that ruling with the note that made
+   it, matched the same way `zones check --ink` matches it. Read the note and move
+   on; it is a human's call and re-deciding it from the raster is a lesser witness
+   overwriting a better one. It still *reports*, deliberately: suppressing it would
+   make this the one place a wrong call could hide, and the next real dropped line
+   on that page with it. Three pages of the `1-031`..`1-036` batch were marked during
+   zoning and re-argued from scratch by readers who never saw the mark.
+
+   **Repair is not part of the reading pass.** Everything from here to the end of
+   this step is the restore-side loop, run by whoever holds the page after
+   adjudication — a reader reports a band and stops. On a restoration it could not
+   run anyway: `adopt-gap` resolves its target to `gt/ocr/` explicitly, and a page
+   with no ground truth has none, so it exits 2 until `restore` has written the page
+   once.
+
    **If a band is a real dropped line**, it cannot be fixed by keying alone:
    `restore` only writes `CONTENT` into lines that already exist, so the line has
    to be created first.
@@ -162,8 +179,10 @@ Everything the pass reads or writes lives in **`review/PP-NNN/`** — `proposal.
 
    - it writes **geometry only** — the `String` is empty, and text still arrives
      through `decision.json` → `restore`. Do not be tempted to put text here;
-   - **the `VPOS` must be a measured band.** A hand-entered number is refused, and
-     so is a band overlapping an existing line;
+   - **the `VPOS` must be a measured band.** A hand-entered number is refused, so is
+     a band overlapping an existing line, and so is one the zoning pass exempted —
+     the way to disagree with that ruling is to drop it in `zones edit`, which is
+     itself a human act;
    - the new lines get a **`gap_` id prefix** and take the **highest indices**, so
      nothing is renumbered and the recovery stays visible in the ALTO. They still
      *display* in reading position;
