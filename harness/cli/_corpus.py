@@ -1,16 +1,22 @@
-"""`harness corpus` — the whole-corpus reconciliation gates.
+"""`harness corpus` — the whole-corpus gates, and the census across every store.
 
-Two actions, and an action lands here only if it gates the corpus as a whole
-rather than belonging to one store: `normalize` walks every store, `figures`
-holds `gt/fig/` geometry and `data/readings.md` captions against each other.
-Not a miscellaneous bin.
+An action lands here only if its subject is the corpus as a whole rather than one
+store: `normalize` walks every store, `figures` holds `gt/fig/` geometry and
+`data/readings.md` captions against each other, `state` reports where each page
+has got to across all of them. Not a miscellaneous bin.
+
+`state` is the one that does not gate, and it belongs here for the same reason
+the other two do — no single store can answer it. Every store's own verb already
+reports its own presence honestly and is blind to the rest, which is precisely
+what left "which pages are ready to collate" with no command behind it.
 """
 from __future__ import annotations
 
 from pathlib import Path
 
 from ..normalize import convert, scan
-from ._common import action, add_all, arg, group, opt, out
+from ..pipeline import STAGES
+from ._common import action, add_all, arg, group, opt, out, page_refs, refs_arg
 
 
 def register(cli):
@@ -37,6 +43,23 @@ def register(cli):
     opt(p, "--commit", is_flag=True,
         help="write the fixes. Required to touch any file — there is "
              "no bare-form write, scoped or not")
+
+    p = action(g, "state", run_state,
+               help="where each page has got to, across every store at once — "
+               "scanned, zoned (mz/gt), OCR'd (mz/gt), proposed, decided, "
+               "collated. `stage` is the furthest rung reached and `skipped` the "
+               "rungs below it that are not, so a page that took a route the "
+               "pipeline no longer offers is visible rather than summarised away")
+    refs_arg(p, all_="every scan in scans/, whether or not any store holds it")
+    opt(p, "--stage", "stage", multiple=True, metavar="NAME",
+        help="only pages at this rung (repeatable). One of: absent, "
+             + ", ".join(STAGES))
+    opt(p, "--skipped", is_flag=True,
+        help="only pages that missed a rung below the one they reached")
+    opt(p, "--tally", is_flag=True,
+        help="counts per rung instead of the rows. Every rung is listed, "
+             "including the empty ones — a rung nothing has reached and one "
+             "everything has passed are different facts")
 
     action(g, "figures", run_figures,
            help="reconcile the figure track — gt/fig/ zone geometry "
@@ -92,6 +115,31 @@ def _targets(a) -> list[Path] | None:
                   a.root / "review" / ref / "decision.json",
                   a.root / "review" / ref / "proposal.json"]
     return paths
+
+
+def run_state(a) -> int:
+    """The census. Never gates — it reports where pages are, not whether they pass.
+
+    `--all` enumerates **`scans/`** and not any store, which is the one choice
+    here worth stating: a page no store holds is the most interesting row this
+    verb has, and enumerating a store would have hidden exactly those. It is also
+    why `absent` is a stage rather than an omission.
+    """
+    from ..context import all_scans
+    from ..pipeline import survey, tally
+
+    rows = survey(page_refs(a) or all_scans(a.root), a.root)
+    if a.stage:
+        allowed = set(a.stage)
+        unknown = allowed - {"absent", *STAGES}
+        if unknown:
+            raise ValueError(f"--stage {sorted(unknown)}: not a rung. "
+                             f"One of: absent, {', '.join(STAGES)}")
+        rows = [r for r in rows if r["stage"] in allowed]
+    if a.skipped:
+        rows = [r for r in rows if r["skipped"]]
+    out(a, tally(rows) if a.tally else rows)
+    return 0
 
 
 def run_normalize(a) -> int:

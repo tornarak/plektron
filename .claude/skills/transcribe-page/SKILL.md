@@ -121,6 +121,15 @@ lives on, and the gate checks it.
 
 ## The other fields
 
+- **`page_state`** is the rank of your own input, so you never have to infer it.
+  `ocr: "gt"` means a human adjudicated every line at the raster — the draft's
+  English is settled and `tier1_terms` is your route to the native forms.
+  `ocr: "mz"` means CATMuS read it once: ~91% of the ASCII right, **0% of the
+  inventory**, no handles, and every Tier-1 form on the page is yours to key at
+  `#llm`. Nothing else in the payload distinguishes them — an empty `tier1_terms`
+  means "no ground truth" on most pages and "ground truth with no marked forms"
+  on a page like `3-063`, and those call for opposite work. `harness corpus state`
+  is the same row for any page or for the whole corpus.
 - **`expected_folio`** is a prediction, not an instruction, and is routinely
   `null`: it is the last *numbered* predecessor's folio plus one, and null
   wherever that chain breaks. Null is not a defect. It means read the folio off

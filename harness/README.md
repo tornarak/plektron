@@ -513,6 +513,17 @@ rather than copying its lookbehind class; the two agree on every live position a
 test holds them together.
 
 **`paths.py`** — the `review/<ref>/` layout authority, and `DERIVED`.
+**`pipeline.py`** — the lifecycle census: where each page has got to across every
+store at once, on one ladder (`scanned` → `zoned-mz` → `zoned-gt` → `ocr-mz` →
+`proposed` → `decided` → `ocr-gt` → `collated`). `STAGES` is the whole content —
+`stage` is the furthest rung reached and `skipped` everything below it that is
+absent, both derived from that one tuple so they cannot disagree. **`skipped` is
+why the module exists**: `stage` is a summary, and a summary that can hide the
+anomaly it summarises is the shape this project is organised against. It reads
+**path presence only**, never a file's contents, which is what makes it ~0.4 s
+over 832 pages and also what it cannot answer — whether a page's zoning is any
+*good* is `zones check`'s question and costs a raster. The same row, minus `ref`,
+is `page_state` in `context.build_context`.
 **`proposal_check.py`** — a proposal's `resolved` field against its `text`, plus the
 field-editing verbs; `check` also runs `marks`' two deterministic arms when given a
 ref. **Every issue is one record shape** — `ISSUE_FIELDS`, built only through

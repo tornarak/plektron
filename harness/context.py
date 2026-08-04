@@ -564,6 +564,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     so a top-level import would close a cycle. Three other call sites in this
     package do the same for the same reason.
     """
+    from .pipeline import page_state
     from .seam import tail as seam_tail
     ref = norm_ref(ref)
     stem = stem_for(ref, root)
@@ -660,6 +661,16 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # reads. Not part of the model's input contract.
         "root": str(root),
         "page_image": str(root / "scans" / f"{stem}.png"),
+        # **Which stores this page passed through to get here**, so the pass is
+        # not left inferring the rank of its own input. The draft looks the same
+        # whether a human adjudicated every line of it or CATMuS read it once, and
+        # nothing else in this payload says which: an empty `tier1_terms` means
+        # "no ground truth" on 802 pages and "ground truth with no marked forms"
+        # on `3-063`, and those call for opposite behaviour. `ocr: "gt"` is the
+        # licence to name a handle rather than key a form; `ocr: "mz"` is notice
+        # that the English is ~91% right and the inventory 0%.
+        "page_state": {k: v for k, v in page_state(ref, root).items()
+                       if k != "ref"},
         "catmus_draft": draft,
         # Folio is a prediction from the preceding transcribed page, or null.
         # Null is not a defect: it means read it off the image and don't guess.

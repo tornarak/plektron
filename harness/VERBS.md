@@ -958,8 +958,29 @@ resolves anything, and no hit is a legitimate outcome.
 
 ## corpus
 
-Whole-corpus gates. An action lands here only if it gates the corpus as a whole
-rather than belonging to one store.
+Whole-corpus gates, and the census across every store. An action lands here only
+if its subject is the corpus as a whole rather than one store. `state` is the one
+that does not gate, and it belongs for the same reason the other two do: no
+single store can answer it.
+
+### corpus state PP-NNN [PP-NNN ...]
+**Does** reports where each page has got to across every store at once, on one ladder: `scanned` → `zoned-mz` → `zoned-gt` → `ocr-mz` → `proposed` → `decided` → `ocr-gt` → `collated`. `stage` is the furthest rung reached; `skipped` names the rungs below it that are **not**, so a page that took a route the pipeline no longer offers stays visible instead of being summarised away.
+**Reads** the presence of paths only — `scans/`, `gt/zones/` + `mz/zones/` + the split lists, `gt/ocr/` + `mz/ocr/`, `gt/fig/`, `review/PP-NNN/`, `tei/`. Never a file's contents, which is what makes it ~0.4 s over 832 pages and also why it cannot say whether a page's zoning is any *good*: that is `zones check`, and it costs a raster.
+**Writes** —
+**Exit** always 0. A census is measurement, not a gate.
+**Note** **`--all` enumerates `scans/`, not any store.** A page no store holds is the most interesting row this verb has, and enumerating a store would hide exactly those — which is also why `absent` is a stage rather than an omission.
+**Note** **`skipped` is the point of the ladder.** `2-030` reached `gt/ocr/` by the eScriptorium route before the review loop existed; 84 pages carry human zones with no `mz/zones/` beside them, i.e. keyed from blank rather than adopted; 18 carry `gt/ocr/` with no prediction behind them. Each of those is a real provenance fact that no single store's verb could see.
+**Note** the same row, minus `ref`, is `page_state` in `harness tei context` — so a collation pass is never left inferring the rank of its own input. An empty `tier1_terms` means "no ground truth" on 802 pages and "ground truth with no marked forms" on `3-063`, and those call for opposite behaviour.
+```
+--all         every scan in scans/, whether or not any store holds it
+--stage NAME  only pages at this rung; repeatable. absent, scanned, zoned-mz,
+              zoned-gt, ocr-mz, proposed, decided, ocr-gt, collated
+--skipped     only pages that missed a rung below the one they reached
+--tally       counts per rung instead of the rows; every rung listed, empty ones
+              included — nothing-has-reached-it and everything-has-passed-it are
+              different facts
+--root --json --toon --pager
+```
 
 ### corpus normalize REF|PATH [REF|PATH ...]
 **Does** NFD conformance, §2.9 spacing, and the lookalike census across every store. It prints the census **and** what a `--commit` would rewrite — two tables, because they are two code paths and a preview agreeing with itself is no preview.
