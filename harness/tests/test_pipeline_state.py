@@ -105,6 +105,10 @@ def test_an_exempt_page_has_been_through_the_zoning(tmp_path):
     row = page_state("1-001", tmp_path)
     assert row["zones"] == "exempt"
     assert row["stage"] == "zoned-gt"
+    # And `zoned-mz` is not a rung it skipped: `zones predict` is not how a plate
+    # gets ruled a plate. Counting it put 83 plates in the report and hid the one
+    # page (`1-359`) that really did reach human zoning with no prediction.
+    assert row["skipped"] == ""
 
 
 def test_the_ocr_column_reports_gt_over_mz(tmp_path):

@@ -29,6 +29,12 @@ proposal and no decision, and for a long time nothing could see that. A page
 whose `skipped` is non-empty took a route the pipeline no longer offers, which is
 worth knowing before trusting anything downstream of it.
 
+**A rung a route legitimately omits is not a skip**, and getting that wrong costs
+the column its whole value. `zoned-mz` first counted against every exempt page,
+which put 83 plates in the report and left the one page that really did reach
+human zoning with no prediction behind it (`1-359`) indistinguishable among them
+— 84 rows saying nothing where 1 said something.
+
 **Nothing here reads a file's contents.** Every column is the presence of a path,
 which is what makes the survey affordable over 832 pages — and is also the reason
 it cannot answer "is this page's zoning any good": that is `zones check`'s

@@ -519,7 +519,10 @@ store at once, on one ladder (`scanned` → `zoned-mz` → `zoned-gt` → `ocr-m
 `stage` is the furthest rung reached and `skipped` everything below it that is
 absent, both derived from that one tuple so they cannot disagree. **`skipped` is
 why the module exists**: `stage` is a summary, and a summary that can hide the
-anomaly it summarises is the shape this project is organised against. It reads
+anomaly it summarises is the shape this project is organised against. A rung a
+route legitimately omits is not a skip, and getting that wrong costs the column
+its value — `zoned-mz` first counted against every exempt page, 83 plates
+drowning the one page that really had no prediction behind it. It reads
 **path presence only**, never a file's contents, which is what makes it ~0.4 s
 over 832 pages and also what it cannot answer — whether a page's zoning is any
 *good* is `zones check`'s question and costs a raster. The same row, minus `ref`,

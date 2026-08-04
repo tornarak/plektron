@@ -969,7 +969,7 @@ single store can answer it.
 **Writes** —
 **Exit** always 0. A census is measurement, not a gate.
 **Note** **`--all` enumerates `scans/`, not any store.** A page no store holds is the most interesting row this verb has, and enumerating a store would hide exactly those — which is also why `absent` is a stage rather than an omission.
-**Note** **`skipped` is the point of the ladder.** `2-030` reached `gt/ocr/` by the eScriptorium route before the review loop existed; 84 pages carry human zones with no `mz/zones/` beside them, i.e. keyed from blank rather than adopted; 18 carry `gt/ocr/` with no prediction behind them. Each of those is a real provenance fact that no single store's verb could see.
+**Note** **`skipped` is the point of the ladder.** `2-030` reached `gt/ocr/` by the eScriptorium route before the review loop existed; 18 pages carry `gt/ocr/` with no prediction behind them, the eScriptorium-shell cohort; `1-359` carries human zones with no `mz/zones/`. Each is a provenance fact no single store's verb could see. **A rung a route legitimately omits is not a skip**: `zoned-mz` first counted against every exempt page, which put 83 plates in the report and left `1-359` indistinguishable among them — 84 rows saying nothing where 1 says something.
 **Note** the same row, minus `ref`, is `page_state` in `harness tei context` — so a collation pass is never left inferring the rank of its own input. An empty `tier1_terms` means "no ground truth" on 802 pages and "ground truth with no marked forms" on `3-063`, and those call for opposite behaviour.
 ```
 --all         every scan in scans/, whether or not any store holds it
