@@ -91,27 +91,6 @@ not be merged** — `harness/tests/test_lookalike_scope.py` holds them apart, an
 because a consolidation was nearly carried out on the strength of an audit that
 mistook the difference for drift.
 
-Note U+0027 is *itself* the spirant and pause mark, not merely a lookalike for
-U+02CA. That is why the review page's notation keyboard is a toggled mode rather
-than a remap, and why its palette carries a dedicated curly-quote pair.
-
-**Two more corpus-wide lookalike traps** live in `normalize.py` alongside `ġ`:
-`U+0131` (plain dotless ı) traps `U+026A`, the only licensed dotless small-cap
-(§2.3 — U+0131 has no legitimate reading anywhere here), and `U+0022` traps curly
-`“ ”` in `text` fields and non-`@note` prose. Both report-only, like every
-lookalike — a human ruling, not an auto-fix. `normalize` **checks by default**;
-`--convert` is required to write anything, and the `spacing` rule (§2.9: collapse
-runs of 2+ spaces, strip space before `;`/`:`/`,`) blocks like NFD does, since
-neither is a judgement call.
-
-`keying_spec.md` §2.6 records **mark–base licensing**, editor-supplied: the breve
-U+0306 sits on `u` and `i`, never on the obscure-vowel series `ᴀ ᴇ ɪ ä`, since the
-p. 10 key already glosses that series as short. It exists because `i` **drops its
-dot under an above-diacritic**, so printed `ĭ` and a hypothetical `ɪ̆` are the same
-letterform at any magnification and only the constraint separates them (`1-074`'s
-`Am-g̣roˊkĭ`). Consequence: `ɪ` + U+0306 anywhere is an error, not a reading. This
-is the one detector that blocks a write rather than raising a flag.
-
 # Source rasters
 
 AMNH Digital Library PDFs (`M11Pt01–03`).
@@ -255,70 +234,9 @@ Layout, all at the repo root:
   is `--store mz --show-store` filtered on `view: mz`. `tei/` holds **three**
   pages — `1-151`, and the adjacent pair `1-100`/`1-101`, which is the corpus's
   only collated seam.
-- **`ocr/` is a *view* over two stores, not a store**: the stable name a page's
-  current OCR is reached by, whatever produced it, and the harness's default
-  `--from`. `gt/ocr/` is what a human has been through, `mz/ocr/` is what the
-  models emitted, and the link points at the human file wherever one exists — so
-  a file's rank stays readable from where its link points. **Reads may resolve
-  through `ocr/`; writes never do** — `restore` and `adopt-gap` name `gt/ocr/`,
-  `ocr predict` names `mz/ocr/`, and `ocr link` rebuilds the farm. Exactly the
-  shape `zones/` has over `gt/zones/` and `mz/zones/`.
-  **The view stopped being tracked when it acquired the second store.** Its links
-  used to resolve inside tracked `gt/ocr/`, so a clone got working ones; now half
-  point into the ignored `mz/ocr/` and a committed copy would dangle exactly as
-  `scans/w-figs/` would. One command rebuilds it.
-  Two names over one inode means a tool walking both sees each file twice, so
-  anything iterating the corpus must **dedupe by real path**: without it a writer
-  processes the file under the first name, meets it again under the second, finds
-  it already done and skips silently, so the report undercounts exactly what it
-  touched. `harness/normalize.py:scoped_files` does this and says why.
-  **Anything that gates or publishes a number names the stores, not the view**,
-  which is the same rule as `zones check --store mz`: a machine store may be
-  measured and may not decide. Three places apply it — `normalize`'s scope, and
-  both readers behind `lexicon`. `lexicon misses` is the sharpest: every recognizer
-  error is a token no dictionary carries, i.e. a `lexicon_miss`, so walking the
-  view would fill the approval list with CATMuS's misreadings and invite them into
-  a committed human-edited file that suppresses the very detector meant to catch
-  them. `harness ocr pages` deliberately does *not* apply it — a machine-read page
-  is workable, which is what that verb reports — and takes `--store` to narrow.
-  `ocr lines --all` and `ocr gaps --all` read the view for the same reason:
-  neither gates and neither publishes a rate.
-  `normalize`'s scope listed `ocr/*.xml` while the view was an alias for `gt/ocr/`
-  and nothing else; the moment `ocr predict` existed, one predicted page put **978
-  `spacing` hits** into a corpus-wide gate — and not even over text, but over the
-  whitespace kraken sets inside `<SP>` attributes.
-- **Figure captions live in `data/readings.md`, not in `gt/fig/`.** All **395**
-  are read by hand off the 300 dpi scans, one block per FigDesc zone, keyed
-  `<ref>|<zone-id suffix>`. `gt/fig/` carries **no `TextLine` at all** — the lines
-  were stripped, because the exported line segmentation dropped whole printed
-  lines and a line-level witness in the ALTO would then disagree silently with
-  the readings. **Consequence for code**: reading `String/@CONTENT` out of
-  `gt/fig/` returns `""` for every zone on every page. Not an error — nothing,
-  which is worse. Go through `figures.readings()`, and check the two stores agree
-  with `harness corpus figures` (invariant: `missing` and `orphan` both empty; it exits
-  1 if either is not).
 - **eScriptorium holds nothing right now** — the projects were exported and
   deleted. The repo is the system of record; re-import when keying resumes.
   `tools/make_mets.py gt/fig` rebuilds the manifest first.
-- **The harness has tests**: `uv run pytest`, over the pure logic — ref parsing,
-  the mark licence, the spacing and NFD rules, the folio fold, the layout lists,
-  citation parsing, and the lookalike *scopes*. Fixtures live in `tmp_path`, not
-  the live corpus. See `harness/README.md`.
-- **`ruff` is a gate and runs inside the suite** (`test_lint.py`); `ty` is
-  installed and **is not**. The rule set is pinned in `pyproject.toml` rather than
-  inherited, because ruff's default selection has changed between releases and a
-  gate whose meaning moves on a dependency upgrade cannot be acted on. Two rules
-  are off by name and the reason is this project's: **`RUF001`–`003`
-  (ambiguous-unicode) fire 152 times on the transcription inventory itself** —
-  `ˊ` U+02CA, `ɪ` U+026A, `ᵋ` U+1D4B are the subject matter, not confusables, and
-  an unscoped second lookalike detector would bury the scoped one that exists.
-  `ty` stays out because most of its remaining 71 diagnostics are missing
-  third-party stubs (`lxml` ships none) or `dict[str, str | int]` records it cannot
-  narrow; gating would mean permanent known-false failures or a suppression list
-  long enough to hide a real finding. Run it by hand: `uv run ty check harness/`.
-  **It earned its place on the first pass**: `numpy` and `pillow` were imported at
-  twenty-odd sites and declared nowhere, arriving only through kraken — one
-  upstream drop from an ImportError naming neither this project nor the reason.
 - `tools/` holds five scripts, none of them part of a loop. `make_mets.py <dir>`
   is live — it rebuilds a METS manifest before an eScriptorium import.
   `greyscale_scans.py` is live but **only after a re-render**: it converts `scans/`
@@ -359,31 +277,10 @@ The rebuild ran as `/rebuild-groundtruth PP-NNN` and its skill remains normative
 for the pass — which is now a *revision* loop rather than a restoration one, since
 every page has text. `restore` reports which of the two it did.
 
-Three invariants from that work bind anything touching lines, not just that pass.
-`context._lines_from_alto` **drops empty lines**, so a position in `catmus_draft` is
-not an ALTO index — join through `harness ocr lines`. `detector_flags` used to inherit
-that offset and no longer does: a flag carries **`index`**, the ALTO identity, so it
-joins `ocr_lines`, resolves with `ocr zoom --only` and is citable in `@facs`. The
-`line` position it carried was replaced rather than supplemented — on `1-151` the
-draft's 37 entries sat against `ocr_lines`' 39 and position 6 named index 4, so the
-obvious use of that number silently cited the wrong line, and a second number whose
-only correct use is "none" is worse than one. And **a
-line polygon can exclude printed text**: `1-074` prints `5.` and `9.` outside their
-boxes, `1-073` the same with its `5.` and its folio `51` outside *every* box on the
-page. The omission is horizontal, so no vertical padding reaches it; `--margins`
-widens to the PrintSpace, which is where the excluded material sits.
-
-Third, and newest: **line output is in reading order, but `index` is an identity,
-not a position.** `page_lines` returns banded rows left-to-right while `index`
-stays what ALTO document order assigned — and the two genuinely diverge, on 18 of
-the 20 restored pages, 524 positions in all (`1-101` reorders all 59). Since
-`proposal.json`, `decision.json` and `restore` all join on `index`, anything that
-renumbers to match the display would silently mis-map every adjudicated page. The
-visible consequence is that line labels are *not* consecutive in any listing, sheet
-or review queue; that is the tell, not a bug. Sorting is banded rather than a plain
-`(vpos, hpos)` because baselines wobble a few pixels across a row: a strict sort
-puts the gloss before its headword on four of `3-005`'s six two-column rows, i.e.
-it fails worst on the layout it exists for.
+The three line invariants that came out of the rebuild — `_lines_from_alto` drops
+empty lines, a line polygon can exclude printed text, and `index` is an identity
+rather than a position — bind anything touching lines and are stated in full in
+`harness/README.md`'s caller invariants.
 
 ## Page segmentation, second attempt
 
@@ -446,19 +343,6 @@ the label sets and the geometry regimes differ and nothing in an ALTO says which
 scheme produced it, which is the same missing internal witness that cost 18 pages of
 transcription. Blocks carry an `mz_` id prefix for the same reason.
 
-**An empty page saves only if it is marked `exempt`**, and this is the three-split
-distinction enforced rather than merely declared. In the store a text page with no
-zones and a page nobody has reached are byte-identical — `zone_refs` finds both, the
-sweep counts both as keyed, the list draws both as done — so an empty save does not
-record a judgement, it erases the difference between having made one and not.
-`exempt` is how a human says "I looked at this and it is not a text page"; that is a
-statement and it saves. "Nothing here" is not, and `save_zones` refuses it, including
-when it arrives as zero zones over a page that had some. The refusal only guards
-writes, so `validate_page` also reports an `empty-page` **error** for a page already
-in that state — it is the one defect that makes a page look *finished*, and every
-other check is silent on it by construction. `1-075` was found this way: an ordinary
-text page, chapter opening `III. — TRADE.`, saved with nothing on it.
-
 **Every domain-knowledge assumption is a warning, and configurable.** `title-first`,
 `rank-monotone` (running title → body → footnotes → signature line) and
 `max-per-page` live in `data/zones_config.json` as declarative ranks, are exemptible
@@ -504,46 +388,10 @@ is the sample the first training run was meant to have. An itinerary is a
 still saves, it simply has no neighbours, and a scoped sweep reports the unkeyed
 entries as rows so "how much is left" has an answer.
 
-**The store is complete: all 832 pages keyed**, **716 text pages carrying 4593
-zones**, 116 marked exempt. The splits are **578 train / 138 eval**.
-
-That eval set was rebuilt twice, and the second rebuild is the point. `remark-eval
-0.20` first grew it 60 → 191, stratified per part, taking "independent pages first"
-— but it decided independence by asking whether a page's gt **differed** from `mz/`,
-and a 5 px nudge satisfies that exactly as a redrawn page does. It counted 98
-tidy-ups as independent judgements and pronounced the set 0% contaminated when about
-half of it was the segmenter's own output with the edges pulled straight.
-
-**Similarity cannot settle provenance**, so the split was rebuilt from git instead:
-310 pages are byte-identical to their pre-adoption state, 237 of them not exempt,
-and eval is drawn only from those. Every eval page's labels predate the segmenter.
-Holding out all 237 starved part 1 down to 60 training pages, so its clean pool was
-sampled evenly to 100 — eval is **100/26/12 by part**, and part 1's share is high on
-purpose, it being by far the densest in figures and irregular setting.
-
-**Most pages in the store were adopted from `mz/`, not keyed from blank**, and that
-fact governs how the numbers below may be read. See "the `unseen` row is not held-out
-evidence" in Open.
-
-`harness zones check` reports the class distribution in its summary (`labels`), so read it
-from there rather than from a table here, which goes stale. As of the complete store:
-
-    MainZone-P           2500    MainZone-Other        171
-    RunningTitleZone      694    QuireMarksZone        111
-    MainZone-Continued    641    MainZone-Quote          0
-    MarginTextZone-Notes  476
-
-**`MainZone-Quote` is withdrawn, and the store now holds none**, which is worth
-recording because the reasoning reversed twice. It was zero at 75 pages, level with
-`QuireMarksZone` at 25 by 345 — "the book answered; nothing was decided" — and then
-in the whole-book pass an editor retyped every instance to `MainZone-Other`, the
-distinction not being worth drawing. No model ever saw it: `train_merges` folded it
-from the start, and that entry is now a no-op, as is the type's declaration in
-`data/zones_config.json`. Both are dead surface and can go.
-
-The one live consequence is good: with Quote gone the store's class set is exactly
-the six the installed model carries, so **`zones assemble` reports `resize: (none
-needed)`** and the `--resize` permutation lottery cannot recur on the next run.
+**The store is complete: all 832 pages keyed.** The counts, the splits, the
+git-based eval rebuild and the withdrawal of `MainZone-Quote` are the training
+loop's facts and live in `.claude/skills/train-zones/SKILL.md`; the class
+distribution is `harness zones check`'s `labels` summary, never a table in a doc.
 
 What the findings are worth, read against the scans:
 
@@ -754,31 +602,6 @@ at run time rather than written down, for the same reason the column measure is
 derived: a constant here would be wrong on the next machine. A `--jobs` a human
 types wins outright, including one that will not fit.
 
-### A `class_mapping` that has been through `--resize` is not trustworthy
-
-The first trained model **scored 0.2% label agreement on its own training data** —
-below the ~14% of guessing among seven classes, which is the signature of a wrong
-mapping rather than a weak model. The geometry was right throughout; every name was
-wrong, a clean permutation. Nothing else could see it: the ALTO is well-formed, the
-boxes are right, and the editor draws confident coloured bands with the wrong names
-on them. Fluent nonsense arriving in the one place nothing was checking.
-
-The invariants that follow, mechanism aside:
-
-- **`zones install` refuses a permuted map**, so the check is a precondition of the
-  artifact existing rather than something to remember; `zones remap` repairs one.
-- **The repair is a rename, not a retrain.** Both `--resize` branches assign class
-  indices by iterating a `set`, and Python randomises string hashing per process, so
-  a retrain is a lottery — `union` is not the fix it looks like.
-- **Omitting `--resize` is the only reliable escape**, which `zones assemble` now derives:
-  when the data's class set already matches the model's, nothing is renumbered.
-- **The mechanism is unproven.** The set iteration is a real hazard sitting in the
-  code but has not been shown to be the cause. What is proven is the permutation,
-  its bijectivity, and that it holds out on pages it was not derived from.
-
-The diagnosis, the cycle it formed, and how `zones remap` inverts it are in the
-skill.
-
 ### Two structural facts about this store
 
 **A page is a chain, and that licenses exact search.** Over the keyed corpus a page
@@ -797,57 +620,9 @@ unfalsifiable — silently normalising exactly the pages it exists to surface. T
 is this file's own error/warning split: **a decoder may enforce what `validate_page`
 calls an error, never what it calls a warning.** A test asserts it.
 
-**Adjacent same-label zones are 42% of all boundaries** — 596 of 1405, 561 abutting,
-568 paragraph-to-paragraph — and **no model trained on this store can produce them**:
-two abutting `MainZone-P` rectangles rasterize into one continuous target, so the
-boundary is destroyed before the network sees it. Recovering it is therefore a
-separate mechanism reading the ink, not something a better model would fix. `harness
-zones --paragraphs`; the calibration and the failure modes are in the skill.
-
-That check's `false_positive` count is a **worklist, not a rate**, and the reason is
-the firewall's: gt cannot arbitrate, being the thing the rule corrects. Of the first
-twenty found, fifteen were keying slips and were fixed. A precision computed against
-a reference the tool is repairing is the comparison-with-one-witness problem again.
-
-## Footnote markers
-
-**In TEI, no whitespace immediately before a `<note>`.** The element stands in for
-the printed marker, and the book sets a thin space before the raised digit
-(`1-100`: `[albino] ¹)`). That is the same class of thing as the French spacing
-before `;`/`:` that §2.9 already overrides — a typesetting convention with no
-lexical content, which survives nowhere in the book's meaning and which leaves a
-stray space in the reading text of every consumer that strips the marker. Key it
-tight. `harness tei validate` errors on it; it is a question about where an element
-sits rather than about a character sequence, so `normalize` — which runs over whole
-files as text and cannot see that the space precedes a `<note>` rather than a word
-— is the wrong place for it.
-
-**The book anchors footnotes with a raised digit; the corpus keys the Unicode
-superscript, never the plain ASCII one** (`keying_spec.md` §2.10). A marker keyed
-`1` for `¹` is the *right number*, so it reads as correct everywhere and no
-lookalike grep, lexicon lookup or mark licence can see it. Five of the 20 restored
-pages carried the defect; 16 markers were corrected.
-
-Counting is the only mechanical witness, and numbering restarts every page, so two
-invariants hold with no reading required: the markers form a **continuous run from
-1**, and each occurs **at least twice** (body reference + note opener). A third
-check catches the **half-open pairing** — a line opening with a bare digit, *but
-only once a superscript has appeared earlier in reading order*. The superscript is
-what establishes the page's own convention; against it a bare digit is an
-inconsistency rather than a guess. Without that condition the rule fires on
-ordinary prose (`1-053` wraps "…Nordquist, / 2 houses)." mid-gazetteer on a page
-with no footnote 2 at all), and a permanent known-false hit is exactly the noise
-that buries real signal. Position on the page is deliberately **not** used: some
-pages are half footnotes and the scan will not carry that judgement.
-
-Report-only, in `normalize`'s `footnote_markers` bucket at the `lookalikes` tier —
-both counting invariants break legitimately at a page seam, where a note's
-reference and its text land on different pages with nothing miskeyed.
-
-**Known limit**: a page keying *every* marker as ASCII has no superscript to
-establish a convention, so it passes clean. That is what a freshly recognized page
-looks like, since CATMuS emits plain digits — so this is a consistency gate on
-human-keyed text, not a net for machine output.
+**Adjacent same-label zones are 42% of all boundaries** and no model trained on
+this store can produce them — the paragraph-split mechanism, its calibration and
+its `false_positive`-as-worklist rule are `.claude/skills/train-zones/SKILL.md`'s.
 
 ## Dropped lines
 
@@ -880,47 +655,10 @@ sweeps. `--blot` is the visual counterpart — the page with every line box and 
 painted out, so what remains is uncovered by construction and no threshold can
 hide it.
 
-**Repair needs a second writer into `gt/ocr/`, and that is worth stating plainly.**
-`restore` only writes `CONTENT` into lines that already exist, so a dropped line
-has to be *created* before it can be keyed. `harness ocr adopt-gap PP-NNN VPOS`
-does that, and it is the one tool besides `restore` that writes into the ground
-truth store. What keeps it inside the rule rather than an exception to it:
-
-- **geometry only, never `CONTENT`** — every `String` it creates is empty, and text
-  still arrives solely through `decision.json` → `restore`;
-- the target is resolved to `gt/ocr/` **explicitly**, never through the `ocr/` view;
-- a `VPOS` that is not a measured band is refused, so geometry can never be
-  hand-entered; and a band overlapping an existing line is refused rather than
-  duplicated;
-- the new `TextBlock`/`TextLine` carry a **`gap_` id prefix**, so a recovered line
-  is identifiable from the ALTO alone — provenance travelling with the data, as
-  everywhere else here;
-- it appends at the end of `PrintSpace`, so the new line takes the highest index
-  and nothing is renumbered. Output is in reading order anyway, so it still
-  *displays* in its right place.
-
-Between `--adopt-gap` and adjudication the page holds geometry with no text, and
-`restore` refuses it ("N lines have no decision"). That is correct — a partial
-restore is ground truth with invisible holes — but it means a repair is one
-uninterrupted sequence, and that **a save is not the end of it**: the page can sit
-adjudicated-but-unwritten, looking finished from outside, with `normalize`
-correctly continuing to report it.
-
-**The page count was never the point.** Recognition fine-tuning is off the table, so
-no model waits to train on these, and gloss review runs off TEI provenance rather
-than ALTO ground truth. The deliverable was the *correction workflow* — the crops,
-the review page, the keyboard, the decision log and the error profile it yields.
-
-**What a reading pass spends is pixels, and the ladder is `ocr numbered` → `ocr
-sheets --only` → `ocr zoom --only`.** An image costs `⌈w/28⌉ × ⌈h/28⌉` visual
-tokens and is downscaled to fit a per-image ceiling; **colour depth and file size
-do not enter into it**, so making the derived images greyscale — the obvious first
-economy, and already done — buys decode time and no quota at all. Two numbers
-govern the pass: a whole page cannot be delivered above ~0.64× however many pixels
-are sent, which caps what the composite can settle; and a page's full contact
-sheets cost about three times that composite, which is why reading all of them was
-the wrong default on a book that is mostly English prose. `dispatch.md` carries the
-measurements and the constants tuned against the ceiling.
+Repairing one is `harness ocr adopt-gap` — the one tool besides `restore` that
+writes into `gt/ocr/`, geometry only, never `CONTENT`; its full contract and the
+image-cost ladder are `.claude/skills/rebuild-groundtruth/`'s (`SKILL.md` and
+`dispatch.md`).
 
 # The derived trees
 
@@ -1023,95 +761,17 @@ touches; the action names what it does to it.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with
-its default. It is not duplicated here, and it cannot go stale unnoticed:
+its default. Its Conventions section carries the rules that hold across every
+group. Neither is duplicated here, and the reference cannot go stale unnoticed:
 `harness/tests/test_cli_surface.py` walks the click command tree and fails on any
-action or flag present in one and not the other, in both directions. That gate
-is the first thing ever to pin this CLI — no test touched it before, which is
-how one tier grew to 21 verbs carrying subcommands nobody had named.
+action or flag present in one and not the other, in both directions.
 
-Six conventions hold across every group, and the reference states them once:
-
-- **Report by default; `--commit` writes.** The only write-enable, gating
-  exactly the authored stores (`gt/`, `tei/`, `models/`, the split and exemption
-  sidecars). It replaced `--convert`, `--fix`, and — on `ocr adopt-gap`, which
-  writes `gt/ocr/` — nothing at all. Derived output still writes on invocation,
-  because there the write *is* the action and the same command rebuilds it.
-- **Exit 0 clean, 1 a documented gate failed, 2 usage error.** Measurement never
-  gates: `zones check --store mz`, `zones score`, `zones diff`,
-  `zones paragraphs`, and everything under `find` and `lexicon` always exit 0.
-  With several refs the exit is the **worst across them**, so one dirty page
-  fails the batch.
-- **Refs are plural.** `REF [REF ...]` everywhere, so a batch is one invocation
-  rather than a shell loop. **One ref emits exactly what it always did**; several
-  pool into one table with `ref` as the first field, which is why every example
-  written down in this repo is still literally correct. Four actions are singular
-  and say why in their VERBS.md entry (`ocr adopt-gap`, `tei context`, `proposal
-  set`/`replace`), and a flag naming something only one page has — `ocr zoom
-  --only`, `--out`, `zones check --lines`, `proposal --path` — refuses a second
-  ref rather than picking one.
-- **A corpus run is `--all`, never an omission.** Its help names *what it
-  enumerates*, because "every page" is four different sets here. Naming nothing
-  is a usage error; refs, `--all` and `--itinerary` are three ways of saying the
-  same thing and exactly one may be used. `--all` does not clobber prior work
-  without `--force`. Six plural actions deliberately have no corpus form and say
-  so. Two tables in `test_cli_surface.py` hold both lists by name, so an omission
-  is a decision on the record rather than something nobody got round to.
-- **One meaning per flag name.** `--from DIR` is a source ALTO directory and
-  lives only in `ocr`; `--store gt|mz` is a closed set and lives only in
-  `zones`; `--force` overwrites existing output; `--out` redirects a write.
-- **Argument validation is the parser's**, not an if-chain's. A wrong combination
-  is rejected rather than silently ignored.
-
-Old spellings do not fail obscurely: the CLI traps every retired verb and flag
-cluster before parsing and prints the new spelling.
-
-Output is **TOON down a pipe and an aligned table at a terminal** — the default
-is `sys.stdout.isatty()` and nothing else, so a model piping the output keeps
-getting TOON byte-for-byte while a human gets columns and neither has to say
-which. TOON is the tabular encoding that collapses uniform record lists to a
-header row plus data rows (the ledger went 127 KB → 34 KB, the page context
-8.0 KB → 3.6 KB); anything emitting a list of records keeps one fixed key set
-across them, because a ragged list silently degrades to the verbose nested form —
-and the table falls back to TOON on exactly the payloads that would. `--toon`
-forces it at a terminal, which is how a human reproduces what a skill's model
-saw. **A rendered table never truncates**: the console is built at the table's
-own measured width and a line wider than the screen runs off the edge — a `…`
-inside a page ref or a Tier-1 form would be a value that reads as a value and is
-not. `--pager` is how the rest of it is read (`less -SRFX`, chopping rather than
-wrapping, so columns stay aligned and you scroll sideways); it is **opt-in**,
-having been on by default until the cost turned out to fall on the ordinary case
-— a table that fits going through a subprocess and a pipe to arrive looking the
-same. The layer is `harness/render.py`; `emit.py` stays the serializer and does
-not know what a terminal is.
-
-**Colour says what type a cell is, never what it means**, and the palette is
-rich's own `repr.*` theme rather than one invented here. The renderer knows a
-cell's type and nothing else — it cannot tell `keyed: false` (an unread page)
-from `ok: false` (a gate failed) — so a scheme claiming to say which would be a
-verdict the display layer is not entitled to. Numbers are deliberately unpainted:
-right-justification already marks a numeric column, and numbers being most of the
-cells, painting them buried the two marks that carry information. The one
-exception is `tei validate`/`tei header`, whose reports print `RESULT:
-PASS`/`FAIL` themselves.
-
-`--json` gives indented JSON and is **exactly one document per invocation**. It
-was not: an action printing several tables emitted several documents on one
-stream, `tei validate` interleaving `# 1-100` comment lines between them, and
-**15 of 58 measured invocations were not `json.load`-able** — on the one flag
-whose purpose is being parseable. Several sections now become one object keyed by
-section, the first taking the action's own name. The key set follows which
-sections had content, so consumers should use `.get()`.
-
-**Long sweeps draw a progress bar on stderr** naming the page they are on. It
-appears only when stderr is a terminal and only after ~0.5 s of work, so a short
-or redirected run is byte-identical to one with no bar — which is what keeps the
-`--jobs 1` control arm meaningful. `parallel.pmap` reports completions through a
-`tick(item, done, total)` the caller supplies, called from the *calling* thread
-via `as_completed`; it never learns what a terminal is.
-
-Every action that names a page takes `PP-NNN` refs and rejects a bare integer,
-`tei state` included. Every ref is parsed before any work is done, so a typo in
-the fifth cannot leave four pages written.
+The conventions in one paragraph, because an agent that reads nothing else can
+still violate them: **report by default, `--commit` writes**, and it gates exactly
+the authored stores; **exit 0 clean / 1 gate failed / 2 usage error**, and
+measurement never gates; **refs are plural** and every ref is `PP-NNN`, never a
+bare integer; **a corpus run is `--all`, never an omission**; one meaning per
+flag name; argument validation is the parser's.
 
 **No ad-hoc Python for anything the harness already does.** Not `python3 -c
 "...ord(ch)..."` to check a character's codepoint (`harness proposal
@@ -1213,13 +873,9 @@ the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
    head on `1-048` and at the foot on `1-151`. `folio_from` records which answered.
    Nothing is repaired: `2S` for `28` leaves `folio` null and stays in `text`.
 
-   Recognition is stock CATMuS; the fine-tune referred to in earlier drafts is not
-   in the repo and is no longer the plan. Measured against a human key it reads
-   **0% of the inventory** (see Collation), and its competence ceiling would be the
-   same 20 pages it trained on, so agreement with it would be the editor's own
-   judgement laundered through a checkpoint. It is retained as a cheap second
-   witness to geometry and English, and to nothing else — establish which model
-   produced a page before drawing any conclusion from it. The `Processing` block
+   Recognition is stock CATMuS — a witness to line geometry and English and to
+   nothing else (it reads 0% of the inventory; the measurement and its
+   substitution table live with the passes that use it). The `Processing` block
    names both models and both sha256s.
 
    **A line `blla` finds outside every zone is kept, not dropped**, assigned to no
@@ -1317,13 +973,6 @@ ambiguity: `2-068` stacks figs. 239 and 240 below two side-by-side pictures, bot
 spanning the full measure, so only caption reading order could decide and that is
 an inference. `harness corpus figures` reports it.
 
-**The collation pass anchors `<figure n="87"/>` — the book's own number — and
-never a zone.** Placing a figure is the build's join through `data/readings.md`;
-the pass's competence is finding where the prose says "(Fig. 87, a)". The
-validator checks `n` against the numbers printed in *this page's* captions, which
-is a real second witness and the one thing that catches a figure anchored on the
-wrong page; a `@facs` on a `<figure>` is an error.
-
 Two earlier shapes failed the same way and both are worth remembering. Raw zone
 ids in the payload made the model do the pairing, and `1-151`'s TEI shows the
 cost — a correct anchor plus an orphan comment about the caption zone, which is
@@ -1336,46 +985,7 @@ routinely tile one irregularly-shaped figure — so an ordinal would have report
 that settles it is prose inside the caption, which is why no geometric handle
 could.
 
-**A Tier-1 span the pass did not key is transcluded, not retyped.**
-`tier1_terms` lists the native forms on the page a human already adjudicated at
-the raster (from `gt/ocr/`, never `mz/` — CATMuS reads 0% of the inventory, so
-that list would be garbled forms offered to be copied verbatim). The pass writes
-`<foreign xml:lang="ckt" index="7"/>` and `harness tei expand` fills in the
-ratified string: the model's judgement is *which* token, never the glyphs.
-Retyping is the one step where the answer is already known and can still come out
-wrong, and §5's residual classes — a dropped U+0323, `ɪ` read as `i` — are
-unfalsifiable downstream. The list is a floor (unmarked ASCII inventory members
-are undetectable), and the blind spot is near-complementary to the risk — what
-makes a token undetectable is having no marks, and what makes it dangerous to
-retype is having marks.
-
-**There are four ranks, and the fourth is `#gt`** — *adopted*, written by `tei
-expand` on a span it filled. `#llm` is **false** about such a span, no model
-having chosen those characters, and `#ed` is false too, no human having read this
-document. The human act the firewall requires did happen: one artifact upstream,
-at the raster. So this is not a promotion but a record of where responsibility
-lies, and `#gt` is **not a fourth point on the `#htr < #llm < #ed` order** — its
-authority over glyph identity is an editor's, so it does not sit below `#ed`; its
-subject is a different artifact, so it is not `#ed`.
-
-**And it is verified rather than accepted.** `harness tei validate` checks every
-`#gt` span for membership in that page's `tier1_terms` — a set of whole tokens, so
-the boundary is protected in a way a substring test cannot manage (`Qeˊñ` is a
-substring of `Qeˊñu`, i.e. a dropped final mark passes). Two properties follow, and
-the second is the reason it is derived rather than stamped: a `#gt` claim on a page
-with no ground truth fails and says which failure it is, and **correcting the ground
-truth under an adopted span makes the span fail rather than quietly go stale.** An
-attribute written once at expansion time would go on asserting the old reading with
-nothing to catch it — the same shape as every other claim in this project that
-carried no error signal.
-
-A Tier-1 span may optionally also carry `@facs` pointing at the OCR line(s) it was
-read from — **the `index`, not the ALTO `@ID`** (`harness tei context`'s
-`ocr_lines`, sourced from `ocr/`; resolve one with `harness ocr zoom PP-NNN --only
-<index> --store gt`, not zoom's default store). It cited `line_id` until 2026-08,
-which no harness verb accepts, so acting on a citation meant translating it by
-hand first. See the collation skill's
-"`@facs` — flagging a span worth a second look" for the full rule. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
+Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
 `1-151`, `2-030`, `3-006` — so the figure path is thinly exercised, and thinner
 than that for captions: `3-006` is one of the two zone-with-no-caption pages, and
 `2-030` is fig. 213's 27-line Chukchee gloss list, i.e. the least typical caption
@@ -1532,24 +1142,9 @@ Process and rules: `.claude/skills/transcribe-page/SKILL.md`, which carries both
 it has no separate harness doc, the same shape as `rebuild-groundtruth`. Loop:
 `/transcribe-page PP-NNN`.
 
-**The LLM has the authority to:**
-
-- Correct **English and Russian (and other European languages, where they show up) misspellings and orthographic mistakes**. OCR has persistent trouble with quotes, brackets, and numeric superscripts in this text.
-- Join hyphenated words (in **European languages** - hyphens are load-bearing in Americanist notation).
-- Resolve basic textual features like small-caps and footnotes.
-
-**Chukchi, Koryak and "Eskimo" (Yupik) forms are keyed character by character from the
-page**, enclosed in the appropriate `xml:lang` tag with a `@resp` rank. Every mark is
-read and accounted for; where the letterform does not decide, `<unclear>` says so.
-
-The prohibition on correcting these forms is **not** a lowered bar. It raises it, and the
-repair pass is the reason rather than the exception. `@resp` exists so that every
-unratified span is *findable* — a query over the corpus returns exactly the Tier-1 forms
-awaiting a human, which is the whole design. What it cannot do is tell that human which
-character is wrong. Repair means one editor back at the raster at magnification, with no
-second witness available: CATMuS reads 0% of the inventory, there is no dictionary and no
-competent second reader for these forms. So the pass is single-witness and paid for in the
-scarcest resource here, and its input quality sets its cost.
+The correction licence (European-language spelling yes, Tier-1 never), its
+boundaries and the keying rules are the skill's; what stays here is the
+detector formula and the two measurements that shaped the tools.
 
 The error class that survives review is the one with no internal signal. A dropped mark
 inside an otherwise plausible form reads as correct in the TEI, so nothing flags it and
@@ -1602,6 +1197,30 @@ raster to settle what is on the paper, never to file the oddity as authorial and
   a broken `Kereˊtkun’s` — a Tier-1 stem taking an English genitive, which is
   precisely what a shape-only rule would have thrown away.
 
+  **The payload's flags now read the joined text**, which both `lexicon` arms have
+  done since 2026-08-03; this arm builds its own draft and was simply never
+  included, so it went on reporting `Chuk`/`chee`, `Penin`/`sula`, `direc`/`tions`
+  as words no dictionary knows — 82 flags → 44 over the ground-truth corpus. **The
+  draft itself stays line-per-line**: the model reads the raster beside it, and a
+  draft that silently reflowed would stop being checkable against the page. Safe
+  only because `index` is carried alongside rather than being a position in either
+  list. Emptied lines drop with their index, which also keeps `_balance` seeing one
+  paragraph per page.
+
+  **And that surfaced a live hazard in `tier1_terms`: a half of a broken word was
+  being offered as a form.** `1-101` prints `Torwaˊwaq` as `(Tor-` / `waˊwaq)`, so
+  the list held `waˊwaq` — a whole token on its line, ratified, and half the word.
+  A pass naming it gets a truncated form filled in and stamped `#gt`, and every
+  guard passes, because it really is a token in this page's ground truth: the same
+  boundary the whole-token check protects at one end (`Qeˊñ` ⊂ `Qeˊñu`), broken at
+  the other by the compositor's measure. A term is now offered only if it survives
+  the join as a whole token. **The rejoined form is not offered in its place** —
+  `Tor-waˊwaq` is a string no line holds, and whether that hyphen is the word's or
+  the printer's is the ambiguity the join preserves rather than decides. So a
+  broken form gets no handle and arrives as a flag on the joined text, which is
+  the correct answer: read the page. Eight forms across the store are in this
+  state.
+
 **Density, measured** on `1-048` and `2-030` — the two densest pages, so a ceiling
 and not an average. Inventory glyphs are **3.3% of characters** but fall in **43.8%
 of lines**.
@@ -1612,60 +1231,13 @@ reading the rest of it is nearly free — the expensive act is re-orienting to a
 different line, not reading characters in one already in front of you. **So review
 is line-based**, and the span diff survives only as measurement.
 
-**What CATMuS can and cannot read**, measured against the human-collated
-`tei/chukchi-1-151.xml`: aggregate CER 8.6%, but that blends two unrelated things.
-Its ASCII is ~91% right and **its inventory is 0% right** — of the human text's 41
-non-ASCII characters it produced 13, not one an inventory glyph, losing all the
-Cyrillic, all 5 × U+02CA, all 3 × `ɪ` and the single `ᵋ`. So it is a witness to line
-geometry and to English and to nothing else. That 0% is what killed the old
-verbatim-substring firewall: all four Tier-1 spans in that TEI failed it, on a page
-whose readings are correct. Its substitutions are worth knowing when adjudicating:
-`'` `’` `/` for `ˊ`, `i` `I` **`r`** for `ɪ`, `f` for `ᵋ`, dropped combining tildes,
-and one U+0301 — the corpus's only combining acute, and a pair `LOOKALIKE_GREPS`
-does not trap.
-
 ## Cross-page state
 
 The collation pass is strictly per-page — one page per task, fresh read, no
 impressions carried in the model's head. What legitimately crosses a page
-boundary crosses through the **committed TEI**, folded forward by
-`harness tei ledger` into a per-ref table (`harness tei state PP-NNN` for one page's
-entry into it):
-
-- **folio** — from the page's `<pb n>`. `<pb/>` with no `@n` asserts the page
-  carries no printed number (plate, blank, chapter opening), so it doesn't
-  advance the count.
-- **open headings** — the fold over committed `<milestone>`s; resets at each part.
-- **boundary** — whether an element carries across the gap, recorded as `@part` on
-  the two elements it lands on, one per page. `harness tei seam PP-NNN --continues`
-  writes both. **There is no `boundaries.json`** — the committed TEI is the record,
-  not a materialization of a sidecar, and the I/M/F arithmetic reads back out of
-  the files it wrote to. See below.
-
-`harness tei context` supplies **`prev_tail`** — the previous page's last top-level
-element, as **markup, not a text excerpt**. The markup is where the witnesses are:
-`<item n="14">` is what settles whether the list resuming at 15 on the next page is
-the same list, and a flattened tail throws it away along with every `xml:lang`/
-`@resp` in play at the seam. Trimmed by dropping whole leading children so the
-fragment always parses, with the elision stated rather than implied. `null` when
-the predecessor is not collated — the same case `harness tei seam` refuses.
-
-`ends_sentence` rides along as a **hint, never a verdict**, and the live seam says
-why: `1-100` closes its numbered list at item 14 with a full stop and `1-101`
-resumes it at 15. Absence of a terminal stop is positive evidence; presence of one
-is only the lack of it.
-
-The next page's context is built from that ledger. `expected_folio` is the last
-numbered predecessor's folio plus one and is **null wherever the chain breaks** —
-an untranscribed predecessor, the first scan of a part. Null is the correct
-answer, not a defect: it means read the folio off the page. Likewise `toc_window`
-is a *neighbourhood* of ToC entries marked `open`/`starts_here`/`distance`, not a
-resolved set — the marks are keyed to a predicted folio and inherit its errors,
-so they say where to look and the page decides. Errors here don't cascade: the
-next legible folio re-anchors the chain.
-
-Practical consequence: working in scan order gives live folio predictions;
-jumping around gives nulls until gaps fill. Both are fine.
+boundary crosses through the **committed TEI**, folded forward by `harness tei
+ledger`; the ledger's fields, `prev_tail` and the seam machinery are the
+collation skill's.
 
 ## TEI
 
@@ -1674,125 +1246,8 @@ TBD beyond the per-page output contract in the collation skill (`<pb>` first, no
 figures anchored to supplied zones). **Assembly is still unsettled**; the
 corpus teiHeader is not, and is `tei/corpus-header.xml`.
 
-**A gloss list's shared frame lives on the list, once.** The prose introducing a
-gloss list routinely supplies a frame the entries never repeat — `1-100` announces
-"the following colors of reindeer-skin", and `Qeˊñu` is then glossed `“white mixed
-with brown”`, which in a dictionary says nothing about what is white. That frame is
-written as a **supplied `<head>`** on the list (`<supplied reason="context"
-resp="#llm">`), never copied into the glosses, and `harness lexicon glosses`
-resolves it into a `scope` column beside every entry.
-
-A continuation list carries no head of its own: the scope resolves back through the
-`@prev` the seam wrote, which makes `ids.list_scope` **the only thing in the harness
-that traverses those pointers** rather than checking one hop. `validate` cannot see
-a cycle in them for the same reason, so the walk is capped.
-
-**`@type` on `<gloss>` says what kind of gloss the book printed, not who wrote it.**
-A term routinely carries a sense gloss *and* a literal one and the page cues which
-— `1-039`: `Pnauˊkulɪt (“file-mongers,” from pnauˊkun, “file” [literally,
-“whetting-stone”])`. Two declared kinds, `literal` (cued by *literally*) and
-`etymon` (cued by *from*, holding the source form together with whatever
-translation the print runs into it, because the instances are too varied to split
-those apart without inventing structure). Unmarked is the ordinary sense gloss.
-
-Provenance moved off that attribute to make room: **a gloss nobody printed is
-`<supplied>` inside the gloss**, which is the TEI idiom and the same mechanism the
-scope above uses, so one attribute carries one axis. A `<gloss>` never carries
-`@resp`. Two related rules the pages taught: a gloss spans its **full printed
-extent** rather than stopping at the quotation marks (`Ñireqäˊulɪn ([“one of the
-second time”] male) … from four to five years old` is three glosses, not one), and
-`@target` is a **URI list**, since the age range there is printed once for the male
-and female forms — `page_glossary` read the attribute whole and silently dropped
-every such gloss until this was fixed.
-
-`<supplied>` is gated for the reason the old rule existed — unmarked, authored text
-is indistinguishable from transcription — with two deliberate differences. `@reason`
-is required from a closed set (`context`, `ellipsis`), because a required attribute
-with a free value guarantees a string rather than a distinction. And the
-`#llm`-only rule does **not** extend to it: that exists because a pass may not
-promote a *glyph identity*, and supplied English contains none, so a human writing
-one and marking it `#ed` is legitimate.
-
-Two consequences worth knowing. The head is the list's first child and TEI orders it
-before the items, so it is the first thing `seam._fragment` elides from `prev_tail`
-— the next page's pass meets the frame through `foreign_terms_nearby`'s `scope`
-instead. And `<head>` on a `<list>` means the list's *heading*, which "of a
-reindeer" is not; it is the only conformant slot (`<desc>` is not permitted there,
-and `<note>` is already claimed by footnotes), so **a renderer must check for
-`<supplied>` before printing a list head as a caption**.
-
-**Proper names are marked by category, never by identity, and only in Tier-1.** A
-Chukchee form the page identifies as a name gets `<name>` in place of `<foreign>`,
-keeping its `xml:lang` and `@resp` so the existing provenance and lookalike checks
-reach it unchanged. `@type` is written only where the page says — a closed set
-`anthroponym ethnonym toponym hydronym zoonym mythonym`, usually evidenced by the
-gloss or the sentence around it — and **untyped is a real state rather than an
-unfinished one**, findable by one XPath. `zoonym` is there because a herding people
-names its reindeer and `1-101` is a whole paragraph about the practice; `mythonym`
-rather than `theonym` because the book names supernatural beings that are not gods.
-
-Two things the gate cannot check and the pass has to hold to. **A generic noun is
-not a name**: `keˊlᴇ`/`keˊlet` and `reˊkkeñ` are *kinds* of evil spirit, hence common
-nouns and `<term>`, and being Tier-1, capitalized and otherworldly makes a form none
-of a proper noun. That distinction outranks the type, since a wrong `@type` is a
-mislabel where a spurious `<name>` invents an entity. And **a type comes from the
-page, never from the form** — among one otherworldly-looking group of spans, one is
-a god, one a village, one a person and the rest common nouns, with nothing in the
-shape of the words to separate them. `tier1_spans` flags keying risk and carries no
-class information, so it cannot be mined for this.
-
-The scope is the decision worth recording. English and Latin proper nouns —
-`Chukchee`, `Anadyr`, `Phoca hispida` — are **not** marked here. They are a string
-match anything can find over finished TEI, and `data/lexicon_extra.txt` already
-holds the seed lists (ethnonyms, toponyms sub-typed by comment heading, genus and
-species, and `Pallas` under a `## Authorities` heading distinguishing the describing
-authority from the name). Hand-marking them per page would buy automatable coverage
-with thousands of judgements and the errors in them. **The binomials are the natural
-first target for that automated pass**, being a more regular pattern than the
-ethnonyms; its two wrinkles are trinomials and abbreviated genus (`P. hispida`),
-both easier with a whole page in view than a line.
-
-Hence no `taxon` in the type set: a declared type nothing writes is dead surface in
-the gate. TEI has no biological-nomenclature element at all — checked against the
-element index; `<taxonomy>`/`<category>` classify *texts* — so `<name type="taxon">`
-is what that pass would use if it ever wants one.
-
-**`@ref`, `@key` and `@nymRef` are gate errors.** Identity resolution is the
-annotation pass's, over finished TEI with the whole corpus in view, and this makes
-the deferral checkable rather than a line in a skill's never-do list.
-
-**`name` is a fourth id kind**, alongside `term`, `list` and `table`, earning its
-place the same way they did — by acquiring a referrer. `1-101` glosses two reindeer
-names in running prose (`Mushroom-Eater (Poˊñolɪn)`), and containment decides that
-pairing no better than it decides a term's. `harness lexicon glosses` carries a
-`kind` column so a proper name is separable from a common noun without re-parsing:
-an index of toponyms is that column filtered.
-
-**The id scheme is settled and is `harness/ids.py`** — `{kind}-{PP-NNN}-{ordinal}`,
-where the ordinal is the element's *position* among same-kind elements in document
-order rather than a tally of ids minted. That distinction is the whole design: ids
-are sparse (only where something points at one), every id is a total function of
-the tree and so recomputable without reference to any other file, and adding a
-referrer to one element never renumbers another. The blanket ban it replaced was a
-real concern about *arbitrary* ids generalised into a prohibition, and it gated
-three unrelated things at once; what replaces it is a check, because **a checkable
-rule beats a prohibition — it does not depend on the pass behaving.**
-
-Two consequences worth knowing before writing one. The ordinal is **not** the
-printed item number: `1-100`'s item 4 holds two `<term>`s, so item 5's term is
-`term-1-100-6`. And an id names the page it lives on — checked, because `prev_tail`
-now hands the pass the previous page's markup with its ids in it, and a copy-paste
-would otherwise import a foreign id in silence.
-
-**The header is a fragment, like the page files.** A bare `<teiHeader>` in the TEI
-namespace, not a valid TEI document standalone — `teiCorpus` requires at least one
-`TEI` child, so there is no conformant container for a header alone and inventing
-one would mean settling the assembly scheme by accident. `harness tei header` gates it,
-and what it checks is the *correspondence* with `validate.RESP_RANKS` rather than
-the prose: exactly those four ranks, declared as `respStmt/@xml:id`, no more and
-no fewer. Two files held one fact and nothing linked them — per-page validation
-deliberately never resolves `@resp` locally, so either could have been renamed and
-every page would have gone on passing.
+The encoding rules — gloss kinds, `<supplied>`, proper-name categories, the id
+scheme, the header fragment — are the collation skill's in full.
 
 **Licence: two, because this is not one work.** The transcribed text is **CC0** —
 a faithful transcription of a 1904 book carries no fresh copyright (EU DSM Art. 14;
@@ -1896,71 +1351,9 @@ TBD
   stops being one the moment the page has ground truth and the view points at it.
   Name the store, not the view: the refusal catches the collapse, but only after
   you have typed the wrong thing.
-- **The segmenter is measured, and this is where it stands.** Run 3 —
-  `models/bogoras-seg/zones-seg.safetensors`, 211 train / 60 eval — scores **94.7%
-  recall and 90.8% precision on held-out pages**, median boundary error 6 px, with
-  the segmental DP decode and the paragraph split. Trained-on is 97.0 / 94.2, so the
-  gap is ~2 points either way: ordinary generalisation. Strip the 25 `MainZone-Quote`
-  rows (the fold working as designed) and the residual is **30 zones of 1692**,
-  two-thirds of it `MainZone-P` ↔ `MainZone-Continued` — whether a paragraph opens or
-  resumes, which is an indent question no structural change reaches.
-  `eval` still reads **95.7 / 91.5** against the complete store, so nothing about the
-  model moved; only the corpus around it did.
-- **The `unseen` row is not held-out evidence, and it reads exactly like it is.**
-  After the whole-book pass `zones score` reports 435 `unseen` pages at **99.1% recall,
-  96.5% precision — better than the pages the model trained on**, which is not a
-  thing a held-out set does. The reason is that those pages were **adopted from
-  `mz/`**: the editor's promote loop is how the book was keyed, so gt on most of them
-  is the model's own output with corrections. `zones diff` puts a number on it — **507 of
-  748 pages are identical between the two stores**. The tell inside `zones score` is the
-  median boundary error, **0 px** against 6 px on both other splits: independent
-  keying cannot land on the model's edges exactly.
-  This is the comparison-with-one-witness problem in a third place, after the
-  verbatim firewall and `review`'s span diff, and the shape is the same — **two
-  inputs that can turn out to be one**. It is worse here in one respect: `harness
-  review` could detect its collapse from the paths, and this cannot. Nothing in a
-  `gt/zones/` ALTO records whether a human drew the page or ratified a proposal, so
-  `zones score` has no way to refuse. That is the missing-internal-witness fault the
-  store layout exists to prevent, arriving through provenance the *editor* did not
-  write down rather than through a directory name.
-  **That row is now 0 pages** — the whole book is split, so nothing lands in it — and
-  the eval set it contaminated was rebuilt from git rather than from similarity (see
-  "Where things stand"). The underlying gap is unchanged: nothing in a saved page
-  says whether a human drew it or ratified a proposal, so this recurs the moment a
-  page is keyed and left unsplit.
-- **A bare `harness zones score` may attribute one run's split to another's
-  predictions, and only `split_from` says so.** With no `--model` it takes the split
-  from `train/bogoras-seg/*.lst` — which `zones assemble` rewrites whenever the next
-  run is prepared — while `mz/zones/` still holds the *installed* model's output. So
-  after an assemble the rows are labelled with the next run's split: currently 577
-  "trained-on" pages against a model that trained on 211, and an "eval" row holding
-  pages it did train on. The report names its source and nothing refuses. Pass
-  `--model` for any statement about an installed model; a manifest cannot be
-  mis-attributed and a working directory can. This is the same two-inputs-that-may-be-one
-  shape as the rows above, arriving through a *stale* witness rather than a doubled one.
-- **The decode matters more than the model did.** Same weights: blob vectorisation
-  gave 61.3% precision, the segmental DP 80.1%, and the DP plus the paragraph split
-  90.8%. Two of those three gains cost no training at all.
-- **Part 1's overrepresentation survives the whole-book pass, deliberately.** It was
-  an artifact when the corpus was 345 pages (274 of them part 1); now the store is
-  complete and the skew lives in the eval set instead, 100/26/12 by part, because
-  part 1 is by far the densest in figures and irregular setting. Volume is no longer
-  the lever: run 3 added 121 pages of contiguous ordinary prose over run 2 and moved
-  like-for-like eval by 0.2 points. If a future run is flat, the question is which
-  *kind* of page is missing, not how many.
-- **Why `--resize` shuffled the class names is not established.** The permutation is
-  measured, bijective and corrected; the *mechanism* is not proven. Both branches
-  assign new class indices by iterating a `set` difference and Python randomises
-  string hashing per process, which would do it — but the tail of the `new` branch
-  stores the mapping from the same dict the dataset was backfilled with, which
-  should be self-consistent. Until someone reads it properly, the standing rule is
-  the empirical one: **`zones score` after every training run**, and never trust a
-  `class_mapping` that has been through `--resize`. See "`--resize` shuffled the
-  class names".
-- **`models/bogoras-seg/zones-seg.safetensors` carries a hand-corrected
-  `class_mapping`.** The
-  weights are `ketos segtrain`'s; the names on the output channels were rewritten by
-  `zones remap` from a permutation measured against `gt/zones/`. `.bak` holds the
-  original. Anything retrained from this checkpoint inherits the corrected map, which
-  is the intent — but a future run under `--resize` can permute it again, and only
-  `zones score` will say so.
+- **The segmenter's open questions live with its skill.** The measured state, the
+  `unseen`-row collapse and its recurrence condition, `split_from`, the decode
+  gains, part 1's deliberate overrepresentation, the unproven `--resize`
+  mechanism and the hand-corrected `class_mapping` on the installed model are all
+  `.claude/skills/train-zones/SKILL.md`'s — they are training-loop state, and two
+  copies of a number is how one goes stale.

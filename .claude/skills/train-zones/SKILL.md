@@ -41,8 +41,8 @@ never something you did by leaving an argument off.)
 
 The installed model is run 3: trained on 211 pages, held out on 60, and its
 manifest records **95.2% recall / 80.1% precision on eval** at `>=30px` with the
-raw decode. CLAUDE.md's 94.7 / 90.8 is the same weights under the segmental DP
-decode plus the paragraph split — different decoder, not a different model. Always
+raw decode. The same weights score **94.7 / 90.8** under the segmental DP decode
+plus the paragraph split — different decoder, not a different model. Always
 say which decode a number came from; the three differ by more than any retrain has.
 
 **`MainZone-Quote` is withdrawn and the store holds none.** It sat at 25 instances
