@@ -58,7 +58,7 @@ ALTO verb you run must carry `--store mz`.**
     …the image ladder, below…
     (author review/PP-NNN/proposal.json)
     uv run harness proposal fix PP-NNN                 then re-run until silent
-    uv run harness proposal check PP-NNN               no mismatch; see below
+    uv run harness proposal check PP-NNN               must exit 0
     uv run harness corpus normalize --commit review/PP-NNN/proposal.json
     uv run harness corpus normalize review/PP-NNN/proposal.json     must exit 0
 
@@ -68,15 +68,14 @@ disagrees with its own text. **Do not report a proposal as validated on the stre
 of `fix` and `normalize` alone** — a reader has already done that on a page this
 gate was failing.
 
-**`check` exiting 1 is not always a defect, and you must say which kind you have.**
-A *mismatch* — `resolved` naming codepoints the text does not contain, a straight
-apostrophe, a bare dot-prone suffix — is yours to fix. A **rare-form advisory**
-("sets a character the corpus sets in only 5.7% of 123 … check for a dropped mark")
-is a prompt to look, and if you look and the form is right, it is answered in `note`
-and the exit code stays 1. There is no field that records "checked, genuinely
-bare", so a page carrying a legitimately rare form can never reach exit 0 — most
-adjudicated pages in the corpus exit 1 for exactly this. Report it as answered,
-quote what you contrasted it against, and **never edit correct text to quiet it**.
+**`check` prints two kinds of finding and gates on one.** A **defect** — `resolved`
+naming codepoints the text does not contain, notation with no `resolved` at all, a
+straight apostrophe, an unpaired footnote marker — is yours to fix, and it is what
+exit 1 means. An **advisory** — a rare form, a bare dot-prone suffix, a word spelled
+two ways — is a prompt to look, marked `advisory` in its own column, and it does not
+gate. Answer it: look, then say in `note` what you contrasted it against, and say in
+your report that you answered it. **Never edit correct text to quiet one** — an
+advisory is measurement, and a rare form that is simply rare stays rare.
 
 **A band `gaps` reports with `exempted: true` is settled** — a human ruled it not
 type during zoning and the `note` says why (a smudge, a gutter blob, offset from

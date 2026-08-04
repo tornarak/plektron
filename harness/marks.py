@@ -685,8 +685,14 @@ def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
     # Built through `proposal_check.issue`, not as literals: these two records join
     # four others in one list, and that list is a table only while every record
     # carries the same keys. See `ISSUE_FIELDS`.
-    from .proposal_check import issue
+    from .proposal_check import ADVISORY, issue
 
+    # Both arms here are advisories, not defects: each is a corpus *share*
+    # inviting a look, and neither is satisfiable by the reader it reaches. A rare
+    # form cannot be made common, and the second witness in a spelling conflict is
+    # another page — which the firewall forbids a reader to open, so the one actor
+    # who could settle it is the one who is not allowed to. See `proposal_check`'s
+    # DEFECT/ADVISORY note.
     out = []
     for hit in _rare(batch, prior_tokens, cfg["contrasts"], cfg["rare_max_pct"]):
         lines = hit["lines"].split()
@@ -697,7 +703,8 @@ def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
             f"sets in only {hit['corpus_pct']}% of {hit['corpus_n']} "
             f"(keying_spec §{hit['spec']}) — check for a dropped mark",
             token=hit["form"],
-            detail=f"{hit['count']} occurrence(s) on this page{where}"))
+            detail=f"{hit['count']} occurrence(s) on this page{where}",
+            severity=ADVISORY))
     # One issue per *fold*, not per row: `_conflicts` emits a row per (fold, form,
     # ref) so the table can name lines, but a word keyed two ways is one fault
     # however many places it surfaces — the same rule that keeps `rare` to one
@@ -722,5 +729,6 @@ def page_issues(path: Path, ref: str, root: Path = Path(".")) -> list[dict]:
             token=" ".join(sorted({r["form"] for r in here})),
             detail=f"against {against} on "
                    f"{' '.join(sorted({r['ref'] for r in other})) or ref}"
-                   + (f" (lines {','.join(lines)})" if len(lines) > 1 else "")))
+                   + (f" (lines {','.join(lines)})" if len(lines) > 1 else ""),
+            severity=ADVISORY))
     return out

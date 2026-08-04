@@ -20,7 +20,7 @@ import click
 
 from ..marks import marks as marks_report
 from ..paths import proposal_path
-from ..proposal_check import _parse_which, line_codepoints, replace_in_field
+from ..proposal_check import DEFECT, _parse_which, line_codepoints, replace_in_field
 from ..proposal_check import check as check_proposal
 from ..proposal_check import fix as fix_proposal
 from ..proposal_check import set_field as set_proposal_field
@@ -83,15 +83,21 @@ def register(cli):
               "keep patching one out of ad-hoc Python",
               sections=("Checking", "Editing one field"), section="The passes")
 
-    _target(action(g, "check", run_check, section="Checking",
-                   help="cross-check the `resolved` field against the "
-                   "codepoints `text` actually contains — catches a mistyped "
-                   "combining mark (ring below for dot below, diaeresis for caron) "
-                   "before it reaches review. Also flags a straight apostrophe "
-                   "anywhere (never a genuine reading, corpus-wide) and a bare "
-                   "suffix matching a known dot-prone shape (keying_spec.md §5.1, "
-                   "e.g. -gɪn/-gɪt/-gɪ missing g's dot-below). Exit 1 on any "
-                   "mismatch"), all_="every review/ page with a proposal")
+    c = _target(action(g, "check", run_check, section="Checking",
+                       help="cross-check the `resolved` field against the "
+                       "codepoints `text` actually contains — catches a mistyped "
+                       "combining mark (ring below for dot below, diaeresis for "
+                       "caron) before it reaches review. Also flags a straight "
+                       "apostrophe anywhere (never a genuine reading, corpus-wide) "
+                       "and a bare suffix matching a known dot-prone shape "
+                       "(keying_spec.md §5.1, e.g. -gɪn/-gɪt/-gɪ missing g's "
+                       "dot-below). Every issue carries a severity; exit 1 on a "
+                       "defect, never on an advisory alone"),
+                all_="every review/ page with a proposal")
+    opt(c, "--strict", is_flag=True,
+        help="gate on advisories too — for a sweep meant to chase every prompt, "
+             "not for a page pass, where a rare form that is simply rare would "
+             "make the gate unpassable [off]")
 
     _target(action(g, "fix", run_fix, section="Editing one field",
                    help="apply the one unambiguous correction — a single "
@@ -199,7 +205,16 @@ def run_check(a) -> int:
     # Exit is the worst across refs: one dirty page fails the batch, which is the
     # contract a gate has to have or a batch would launder a failure.
     out_per_ref(a, pairs)
-    return 1 if any(m for _, m in pairs) else 0
+    # **Gated on defects, not on the report being non-empty.** An advisory is
+    # measurement — a corpus share saying "go look" — and measurement never gates
+    # (VERBS.md, Conventions). It gated until now, and since a rare-but-correct
+    # form cannot be made common, the gate was unsatisfiable: eight of eighteen
+    # failing proposals failed on advisories alone, and the reading brief had been
+    # rewritten to teach readers that exit 1 is sometimes fine. `--strict` restores
+    # the old behaviour for a sweep that means to chase every prompt.
+    gating = [m for _, ms in pairs for m in ms
+              if a.strict or m.get("severity", DEFECT) == DEFECT]
+    return 1 if gating else 0
 
 
 def run_fix(a) -> int:

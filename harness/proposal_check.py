@@ -70,13 +70,42 @@ NOTATION_CHARS = INVENTORY_CHARS | {DOTLESS_I}
 # `detail` is where a shape that is not a token goes, rendered as text: the
 # codepoint sets both `resolved` arms report, and the footnote arm's editorial note.
 # A list never reaches the record.
-ISSUE_FIELDS = ("line", "issue", "token", "context", "detail")
+ISSUE_FIELDS = ("line", "issue", "severity", "token", "context", "detail")
+
+# The two severities, and the rule that separates them: **a gate must be
+# satisfiable by the actor it gates.**
+#
+# DEFECT is a claim that something *is* wrong and that the reader can put it
+# right — `resolved` naming codepoints the text does not contain, a straight
+# apostrophe (never a genuine reading corpus-wide), notation with no `resolved`
+# at all, a footnote marker that pairs with nothing.
+#
+# ADVISORY is measurement: leave-one-out corpus statistics saying "this shape is
+# rare, go look". It cannot be *satisfied*, only answered — there is no field
+# recording "checked, genuinely bare", and for a cross-page spelling conflict the
+# second witness is a page the reader is forbidden to open. It gated anyway until
+# now, and the damage was exactly what a gate nobody can pass does: eight of
+# eighteen failing proposals in `review/` failed on advisories alone, the reading
+# brief had to be rewritten to say "exit 1 is sometimes fine", and a real
+# `resolved/text mismatch` became indistinguishable from a rare surname.
+#
+# So `measurement never gates` (VERBS.md, Conventions) is applied here too. An
+# advisory still prints, at the same volume, in the same table — it simply stops
+# claiming to be a gate. `--strict` gates on both, for a sweep where every prompt
+# is meant to be chased.
+DEFECT = "defect"
+ADVISORY = "advisory"
 
 
 def issue(line, text: str, token: str = "", context: str = "",
-          detail: str = "") -> dict:
-    """One issue record, every field present. See `ISSUE_FIELDS`."""
-    return {"line": str(line), "issue": text,
+          detail: str = "", severity: str = DEFECT) -> dict:
+    """One issue record, every field present. See `ISSUE_FIELDS`.
+
+    `severity` defaults to `DEFECT` because that is the safe direction: a new
+    detector added without thinking about severity gates, and someone notices.
+    The reverse default would let one land silently and never fire.
+    """
+    return {"line": str(line), "issue": text, "severity": severity,
             "token": token, "context": context, "detail": detail}
 
 
@@ -343,7 +372,8 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
             out.append(issue(idx, f"bare suffix, expected "
                              f"{hit['expected']!r} (§5.1: strong corpus-wide "
                              "bare-vs-marked skew for this shape) — check for a "
-                             "dropped mark", token=hit["token"]))
+                             "dropped mark", token=hit["token"],
+                             severity=ADVISORY))
         present = set(_notation_codepoints(text))
         if not present:
             continue

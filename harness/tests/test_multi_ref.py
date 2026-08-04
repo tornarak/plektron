@@ -200,11 +200,13 @@ def test_proposal_check_pools_across_refs(tmp_path, capsys):
             {"lines": {"1": {"text": text, "resolved": ""}}}), encoding="utf-8")
     code, out, _err = _run(capsys, "proposal", "check", "1-048", "1-049",
                            "--root", str(tmp_path))
-    assert code == 1                                   # both pages have findings
+    # Both pages carry a defect, so the gate fires. Three of the four findings
+    # are defects; the bare suffix is an advisory and would not have gated alone.
+    assert code == 1
     # Four findings from four different detectors — footnote (page-level),
     # apostrophe, bare suffix, notation-with-no-resolved — under one header.
     assert out.splitlines()[0].endswith(
-        "{ref,line,issue,token,context,detail}:"), out
+        "{ref,line,issue,severity,token,context,detail}:"), out
     assert "- ref:" not in out                         # never the nested form
 
 
