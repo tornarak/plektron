@@ -11,65 +11,65 @@ error in them.
 
     uv run python scratch/chukchi/entry_bounds.py dispatch moll-023 moll-024 moll-025
 
-That prints one prompt per page. Hand each to one `moll-reader`, unedited.
+That prints **one standby prompt for the whole batch and one page block per
+page**, headed as two phases. Every reader gets the standby prompt first, byte
+for byte the same; the page block follows once it has answered `ready`. Hand
+both over unedited — the next section is why the order matters and what editing
+one copy costs.
 
-## Stagger the first launch only, and know what it can and cannot buy
+## Dispatch in two messages, and why the page ref comes second
 
-**Launch one reader, wait ~10 s for its opening call to land, then fan out the
-rest.** Stagger the *first* one and nothing else: the rest can go together.
+**Send every reader the same page-less standby prompt, wait for `ready`, then
+deal out the pages.** `dispatch` prints the standby prompt once and the page
+blocks after it, headed as two phases, for that reason.
 
 A reader's context arrives in this order, which the task transcripts show
 directly. Before it acts it has had exactly two conversation turns:
 
-1. the rendered **task prompt** — ~1,800 chars, *different for every page*
-2. the preloaded **`SKILL.md`** — ~39,000 chars, *identical for every page*
+1. the rendered **task prompt**
+2. the preloaded **`SKILL.md`** — ~41,000 chars, *identical for every page*
 
 Everything ahead of those — core system prompt, tool schemas, `CLAUDE.md`, this
-agent's body, its memory index — is the system prompt, and is what a reader
-reads from cache when it reads anything: **~13.7k tokens**. The remaining
-**~21.3k it writes** is the skill plus the prompt.
+agent's body, its memory index — is the system prompt. A cache prefix ends at
+the first differing byte, so **a page ref in turn 1 puts the largest invariant
+block in the context behind the one thing that varies**, and every reader
+rewrites the skill in full. That is not a scheduling problem and no launch order
+touches it: measured, a reader launched concurrently with a sibling opened at
+13,613 read / 21,080 written, one launched twelve seconds later at 13,706 /
+21,326. Within 1%.
 
-That split decides what timing can do.
+Take the page ref out of turn 1 and the whole preamble is identical, so the
+divergence moves to turn 3 where it is free. **Measured on `moll-038` /
+`moll-039`: the first reader wrote 35,798 and the second read 35,798 and wrote
+nothing** — where the same two pages under per-page prompts would each have
+written ~21.3k of skill. Reader 1 answered `ready` in three chatty sentences and
+reader 2 in the two lines asked for, and it cost nothing: both read the full
+35,798 on their next request, because that variation sits *behind* the prefix.
+Variation at the tail is free; variation at the head costs the whole block.
 
-**It cannot touch the ~21.3k.** The largest invariant block in the context sits
-*behind* the one block that varies, so two sibling readers diverge at the page
-ref and never reconverge; the skill is rewritten in full for every page whatever
-the launch order. Measured: a reader launched concurrently with a sibling opened
-at **13,613 read / 21,080 written**, one launched twelve seconds later at
-**13,706 read / 21,326 written**. Within 1%.
+Two things this does not excuse. **The standby prompt must go out byte-identical
+— editing one copy per reader reintroduces exactly the fault it removes**, which
+is why `dispatch` prints it once and says so. And the phases must stay inside
+the **five-minute subagent cache TTL**, which is not a documentation figure:
+`usage.cache_creation` records the tier each write bought, and `harness agents
+usage` reads it back.
 
-**It may well buy the ~13.7k, and that is what the rule is for.** Concurrent
-siblings can each miss and each write that segment, where a stagger lets the
-first write it and the rest read it — (N−1) × ~13.7k on a batch of six. Not yet
-established: both batches run so far were two readers, and in both the second
-read the segment whether it launched with the first or after it, which is
-equally consistent with "the stagger worked" and with "it was already warm."
-**Two agents cannot separate those; the next batch of six can** — launch all six
-together once and check how many opened with a read of ~13.7k. Until then the
-rule costs ten seconds and is worth keeping on the chance.
+**Check it rather than assume it.** `harness agents usage` groups the batch into
+cohorts by opening size and prints one row per preamble turn with how many
+distinct variants of it the readers had. Six readers should be one cohort of six
+with `shared: yes` on every turn. Six singleton cohorts means a byte varied
+ahead of the block, and the `preamble` table names which turn.
 
-The saving is small against a large allowance and that is not the reason to keep
-it. This pass is meant to run on cheaper plans and other platforms, where the
-same fixed prefix is paid at every scale.
+**Stagger the first launch only.** The first reader has to write the prefix
+before anyone can read it; the rest go together once it has.
 
-**The real lever is not timing.** A cache prefix ends at the first differing
-byte, so shrinking the task prompt or moving the page context into a file the
-reader opens saves nothing — a three-token difference is as fatal as a
-three-thousand-token one. The only way to reach the ~21.3k is to move invariant
-content *ahead* of the variation: out of the preloaded skill and into the agent
-definition body, which is in the system prompt. That is worth ~11k of cache
-write per page, over a million across the rest of the book, and it is not free —
-`SKILL.md` is the pass's single home for the reading contract, so a split has to
-be by *role* (standing contract vs. reference consulted on demand) or it becomes
-the duplication this repo treats as a defect. It also assumes the agent body is
-itself inside the cached ~13.7k, which is suggested by the numbers holding
-steady across batches but is not established.
-
-One thing that *does* move the number: readers write to
+One thing that moves the number and is nobody's fault: readers write to
 `.claude/agent-memory/moll-reader/`, and the memory index is in their system
 prompt. When it changes the prefix changes and everything after it is re-cached,
 so a batch following one where a reader recorded something pays a full write.
-That is the cost of the memory channel, not a fault in it.
+That is the cost of the memory channel, not a defect in it — and it is now a
+cost against 35.8k rather than 13.7k, which is the price of having moved the
+skill into the shared block.
 
 ## Mark the batch first
 
@@ -111,8 +111,9 @@ context block. Two things follow: a clause edited in the agent file reaches the
 next reader with no rendering step, and what is page-specific is legible as such
 rather than buried in standing prose.
 
-**The template is not in the Python.** It sits between the `<!-- prompt:begin
--->` and `<!-- prompt:end -->` markers below, and `entry_bounds.py` only
+**The templates are not in the Python.** Both sit below, between the
+`<!-- standby:begin -->` and `<!-- page:begin -->` marker pairs, and
+`entry_bounds.py` only
 substitutes and refuses. A template copied into code is a second normative text
 that drifts from the first, and the drift is invisible because both look
 authoritative. The same reasoning put the collation prompt in `harness tei
@@ -122,9 +123,19 @@ What the split costs is a new way to be wrong, and it is this repo's oldest one:
 **a reader dispatched under the wrong agent type gets none of the standing half,
 and nothing in the prompt would look amiss** — a role living only in how the
 thing was spawned, the same fault as a role living only in a directory name.
-Nothing inside a task can see its own `subagent_type`, so the template opens by
-asserting what it expects the reader to already hold and telling it to stop if
-it does not. That assertion is the only witness available.
+Nothing inside a task can see its own `subagent_type`, so the reader has to be
+asked, and the **handshake is where it is asked**: phase 1 ends `pass doc: <held
+| missing>` and a `missing` means no page is sent. The check costs a turn that
+the two-phase dispatch was spending anyway, and it is mechanical — a coordinator
+can test the reply without reading English, which is why the form is two fixed
+lines rather than a paragraph.
+
+That check has already earned itself once. A reader started with `claude --agent`
+rather than by dispatch reported the pass doc absent and stopped: the `skills:`
+frontmatter is honoured on the dispatch path and appears not to be on that one.
+The stop was correct and the temptation was to write a recovery path around it —
+"read the skill yourself and carry on" — which would have turned a missing shared
+prefix into a silent runtime branch and hidden the very thing this file measures.
 
 Three clauses that were in the hand-assembled prompts and are now standing, in
 the agent file, because each was written out by hand every time and one of them
@@ -190,23 +201,42 @@ consolidated account of what actually goes wrong on this book and what catches
 each class — including the two classes no per-headword comparison can reach,
 page-wide accent loss and bracket faults.
 
-<!-- prompt:begin -->
+<!-- standby:begin -->
 
-    You are the `moll-reader` agent, reading exactly one page of Moll &
-    Inenlikej 1957, «Чукотско-русский словарь», in the repo at {root} (work in
+    You are the `moll-reader` agent, working in the repo at {root} (work in
     place; do not create a worktree).
+
+    Your page has not been assigned yet. It will arrive in a follow-up message,
+    naming one ref and giving that page's measured context. Read that page and
+    no other when it comes.
+
+    **Do nothing until it arrives.** Make no tool calls in this turn: no Read,
+    no Bash, no Write, no Edit. Do not open a raster, do not go looking for a
+    page to work on, do not check whether anything exists. This turn exists only
+    to confirm that you are ready, and a tool call in it defeats the whole
+    purpose of sending it.
+
+    Reply with exactly two lines, then stop:
+
+        ready
+        pass doc: <held | missing>
+
+    Say `held` if both your standing instructions and the pass doc
+    (`read-moll-page`'s SKILL.md, carrying the page anatomy, the character
+    rules, the zoom budget and the output contract) are already in your context.
+    Say `missing` if either is absent — that means you were dispatched as the
+    wrong agent type, and no page should be sent to you.
+
+<!-- standby:end -->
+
+<!-- page:begin -->
 
     Your page is **{ref}**. Do not touch any other page.
 
         Read   scratch/chukchi/moll-scans/marked/{ref}.png
         Write  scratch/chukchi/moll-scans/entries/{ref}.md
 
-    Your standing instructions — the preloaded pass doc, the loop, your Bash
-    surface, the hard rules and what to report — are in your agent definition,
-    and this prompt does not repeat them. **If you have not been given them, you
-    were dispatched as the wrong agent type: stop and say so rather than reading
-    a page without them.** What follows is only what is true of {ref} in
-    particular.
+    What follows is only what is true of {ref} in particular.
 
     {context}
 
@@ -218,4 +248,4 @@ page-wide accent loss and bracket faults.
     the doubts you could not close, the zooms, and what the pass made harder
     than it needed to be.
 
-<!-- prompt:end -->
+<!-- page:end -->
