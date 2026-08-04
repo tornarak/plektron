@@ -1,0 +1,58 @@
+"""`harness agents` — what a dispatched batch paid, read off the transcripts.
+
+The group names what it touches, and this one does not touch a corpus store: it
+reads Claude Code's own task transcripts. It is here rather than in `tools/`
+because the two dispatch loops in this repo (`ocr dispatch`, and the moll pass's
+`entry_bounds.py dispatch`) both fan out over pages, and both are worth
+measuring the same way — a script with no reference entry and no surface test is
+how the last set of undocumented flags accumulated.
+
+One action. `usage` answers the only question a coordinator can act on: did the
+siblings share a prefix, and did the ones after the first read it.
+"""
+from __future__ import annotations
+
+from ..usage import batch, cohorts, preamble, project, rows, warmth
+from ._common import action, add_all, exclusive, group, opt, out
+
+
+def register(cli):
+    g = group(cli, "agents", "cache telemetry over a dispatched batch — "
+              "whether the siblings shared a prefix, and what the fan-out "
+              "actually paid for it",
+              section="Apparatus and reports")
+
+    p = action(g, "usage", run_usage,
+               help="per-agent cache reads and writes for the most recent "
+               "session's batch, plus the derived verdict. **The opening total "
+               "is the diagnostic**: read+write on an agent's first request is "
+               "what its context cost to establish whatever the cache did, so "
+               "siblings dispatched with identical prompts must open at the "
+               "same number. Openings that disagree mean a byte varies ahead "
+               "of the shared block, which no launch order fixes. A large "
+               "tail write is ordinary by contrast — content behind the prefix "
+               "was going to be written anyway. Reports; never gates",
+               constraints=(exclusive("all", "session"),))
+    opt(p, "--session", default=None,
+        help="one session, by slug or id prefix — what tells two concurrent "
+             "sessions apart when both are dispatching")
+    add_all(p, "session this project has transcripts for, not just the newest")
+    opt(p, "--since", default=None,
+        help="only agents whose first request sorts at or after this "
+             "(ISO date or stamp) [no window]")
+    opt(p, "--tasks", type=str, default=None,
+        help="the task-transcript directory [the newest session for --root's "
+             "project that has any]")
+
+
+def run_usage(a) -> int:
+    from pathlib import Path
+    dirs, agents = batch(a.root, Path(a.tasks) if a.tasks else None,
+                         session=a.session, since=a.since, all_=a.all)
+    out(a, [{"project": project(a.root).name, "sessions": len(dirs),
+             "agents": len(agents)}], name="scope")
+    out(a, rows(agents), name="agents", heading=True)
+    out(a, preamble(agents), name="preamble", heading=True)
+    out(a, cohorts(agents), name="cohorts", heading=True)
+    out(a, warmth(agents), name="warmth", heading=True)
+    return 0

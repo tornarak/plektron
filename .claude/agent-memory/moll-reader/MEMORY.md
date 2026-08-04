@@ -3,3 +3,4 @@
 - [Multi-entry bracket](multi-entry-bracket.md) — a bracket can group many entries, not just two; an oversized zoom crop is the tell
 - [Non-entry brackets, other shapes](non-entry-brackets.md) — an all-caps no-gloss fragment can be numbered as an entry too, not just digit-dash quire marks
 - [Flush-wrap false positive](flush-wrap-false-positive.md) — the warning can resolve to "not a join" fast, by checking hyphen-vs-punctuation at 2x
+- [Continuation spans both columns](continuation-spans-both-columns.md) — an opening continuation can carry a matching c← at the top of the right column too, not just the left

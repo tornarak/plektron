@@ -16,6 +16,7 @@ touches, the action names what it does to it:
     find      apparatus lookups — toc, folio, authority
     corpus    whole-corpus gates — normalize, figures
     views     the derived trees git does not carry — check, build
+    agents    a dispatched batch's cache telemetry — usage
 
 It was one tier for most of this project's life, and grew to 21 verbs whose
 flags formed subcommands nobody had named: `zones` alone carried 21 of them,
@@ -60,7 +61,17 @@ from pathlib import Path
 import click
 import cloup
 
-from . import _corpus, _find, _lexicon, _ocr, _proposal, _tei, _views, _zones
+from . import (
+    _agents,
+    _corpus,
+    _find,
+    _lexicon,
+    _ocr,
+    _proposal,
+    _tei,
+    _views,
+    _zones,
+)
 from ._common import (
     CONTEXT,
     _actions,
@@ -73,7 +84,7 @@ from ._common import (
     walk_surface,
 )
 
-GROUPS = (_tei, _ocr, _proposal, _zones, _lexicon, _find, _corpus, _views)
+GROUPS = (_tei, _ocr, _proposal, _zones, _lexicon, _find, _corpus, _views, _agents)
 
 
 def build_parser() -> click.Group:

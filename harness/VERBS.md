@@ -1056,3 +1056,30 @@ FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
 **Note** **`--all` must be said, and this verb is why.** Rebuilding `scans/w-figs-blotted/` repaints 252 page composites and is by a wide margin the most expensive thing in the harness — a cost entirely invisible at the call site, since nothing about `harness views build` suggests a corpus-wide raster pass. The caller who wanted one view relinked after a `restore` was the one paying it. **Prefer the per-domain spelling in a per-page loop**: `ocr link` and `zones link` relink one view and are what a page-level pass wants; `views build --all` is for a deliberate corpus-level sweep, the way `corpus normalize --all` is against naming the page.
 **Note** **a farm whose builder must *read* an absent tree is skipped with a row**, never attempted and never silently dropped. The distinction is between what a builder opens and what its links merely point at: the blot builder reads pixels out of `scans/`, so with no `scans/` it cannot run; `w-figs` and `w-ocr` need only their tracked membership sources and build fine, leaving raster links that dangle — this repo's stated disposition for a link into an ignored tree. Hence exit 0 on a clone: building what can be built is the success case, and `views check` is what says what is still missing.
 **Note** `scans/` and `train/bogoras-seg/` are reported by `check` and built by neither. `scans/` is `pdftoppm` over `pdfs/`, whose entries are symlinks pointing outside the repo, so on a clone the rasters cannot be regenerated at all; `train/` is scratch that `zones assemble` clobbers by design.
+
+## agents
+
+Cache telemetry over a dispatched batch. The only group that touches no corpus
+store: it reads Claude Code's task transcripts. Reports; nothing here gates.
+
+### agents usage
+**Does** per-agent cache reads and writes for one session's dispatched agents, then groups them into cohorts. **The opening total is the diagnostic** — `read + write` on an agent's first request is what its context cost to establish, whatever the cache did with it, so siblings dispatched with identical prompts must open at the same number. Two agents join one cohort when they agree on model *and* opening, which is exactly the condition under which they could have shared a cached prefix. Six readers dispatched together should appear as one cohort of six; appearing as six singletons means a byte varies ahead of the shared block, and the openings say how much. A large `tail` write is ordinary by contrast: content behind the prefix was going to be written anyway.
+**Reads** `/tmp/claude-*/<project-slug>/*/tasks/*.output`. **Writes** — **Exit** always 0.
+```
+--session S  one session, by slug or id prefix — what tells two concurrent
+             sessions apart when both are dispatching
+--all        every session this project has transcripts for, not just the newest
+--since T    only agents whose first request sorts at or after this (ISO date
+             or stamp) [no window]
+--tasks DIR  the task-transcript directory [the newest session for --root's
+             project that has any]
+--root --json --toon --pager
+```
+**Emits** four sections: `scope`, `agents` (one row each, with the agent type off `attributionAgent`, the model, effort, TTL tier, opening, and the tail written after it), `preamble`, `cohorts`, `warmth`.
+**Note** **`preamble` is where a broken prefix is actually visible.** It is one row per user turn ahead of the first reply — the whole of what a launch order can affect — carrying that turn's label, its size, and how many *distinct* variants the agents in scope had of it. A cohort table says openings disagree; this says which turn disagrees, and since a prefix ends at the first differing byte, the first turn with more than one variant costs everything after it. A preloaded skill labels itself (`skill: read-moll-page`), so the question "what is the 21k?" is answered without opening a transcript.
+**Note** **the TTL is read, not assumed.** A request records which tier its write bought under `usage.cache_creation`, so `warmth` reports the measured clock rather than a constant taken from the documentation. Where agents in scope disagree the shortest wins: a prefix is warm only while every witness to it still is, and the optimistic reading would send a batch at a cold cache. `TTL` survives only as the fallback for a scope that wrote nothing, and says so in the row.
+**Note** the system prompt is **not** in a transcript. It is inferred as `opening - preamble` and never reported as though it had been read, which is why `opening` is the figure this verb leads with.
+**Note** **a cohort of one claims nothing.** A lone agent had nobody to share with, so its opening is reported as `singleton — nothing to share` rather than as a shared prefix. Calling one agent's opening a shared prefix is the fabricated measurement this verb exists to catch, and it would be a poor thing for the verb to commit itself.
+**Note** `missed` is `(agents - 1 - warm) x opening`: one member of a cohort must always write the prefix, so `agents - 1` reads is the ceiling. The gap is what staggering the first launch buys, and it is zero when every sibling after the first read what the first wrote.
+**Note** **`warmth` is the only pre-flight signal there is.** The cache cannot be queried, so the age of the last request against the five-minute subagent TTL is the whole of what can be said — subagents cache on that clock even where the parent session holds a longer one.
+**Note** the session is discovered from `--root`, whose path Claude Code slugs into the transcript directory name; the newest session *that has transcripts* wins, since a session that dispatched nothing has a `tasks/` directory too and picking it would report the empty batch as the batch.

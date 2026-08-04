@@ -141,8 +141,8 @@ modules are open.
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`,
-`views`, `lexicon`, `find`, `corpus`. The group names what the command touches;
-the action names what it does to it.
+`views`, `lexicon`, `find`, `corpus`, `agents`. The group names what the command
+touches; the action names what it does to it.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with
