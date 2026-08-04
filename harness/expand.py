@@ -38,7 +38,7 @@ from pathlib import Path
 from lxml import etree
 
 from .context import norm_ref, tier1_terms
-from .validate import TIER1
+from .validate import ADOPTED, TIER1
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
@@ -90,8 +90,15 @@ def expand_page(ref: str, root: Path = Path("."), commit: bool = False) -> dict:
         else:
             del el.attrib["index"]
             el.text = got["text"]
-            resolved.append({"index": idx, "element": name,
-                             "line": got["line"], "text": got["text"]})
+            was = el.get("resp")
+            # The rank is rewritten, not left alone, and this is the whole point of
+            # the fourth one: `#llm` is *false* about a span whose glyphs no model
+            # chose. `validate` re-derives the claim from `gt/ocr/` on every run
+            # rather than trusting what is written here, so this is a record of
+            # what happened and not an assertion that stands on its own.
+            el.set("resp", ADOPTED)
+            resolved.append({"index": idx, "element": name, "line": got["line"],
+                             "text": got["text"], "resp_was": was or ""})
             continue
         unresolved.append({"index": idx, "element": name, "reason": reason})
     if commit and resolved:

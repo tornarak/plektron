@@ -25,8 +25,10 @@ pattern. Book-internal apparatus (the p. 10 key, the List of Illustrations, the 
 TOC) is *not* subject to this — it is evidence, and it binds.
 
 In the TEI this is `@resp` on every element bearing a Tier-1 `xml:lang`, pointing at one
-of three ranks: `#ed` ratified (a human keyed or confirmed it against the page), `#llm`
-proposed (a model read it), `#htr` unexamined (recognizer output). The ranks are declared
+of four ranks: `#ed` ratified (a human keyed or confirmed it against the page), `#llm`
+proposed (a model read it), `#htr` unexamined (recognizer output), and `#gt` adopted
+(transcluded whole out of adjudicated ground truth by `harness tei expand`, and re-checked
+against it on every run — see "A Tier-1 span the pass did not key"). The ranks are declared
 once in the corpus teiHeader and never in a page file — `@resp` is a pointer resolved
 against the assembled document, and a page file is a fragment that already defers title,
 publication and source the same way. The collation pass may emit `#llm` and nothing else;
@@ -1342,12 +1344,30 @@ that list would be garbled forms offered to be copied verbatim). The pass writes
 ratified string: the model's judgement is *which* token, never the glyphs.
 Retyping is the one step where the answer is already known and can still come out
 wrong, and §5's residual classes — a dropped U+0323, `ɪ` read as `i` — are
-unfalsifiable downstream. It does **not** move a rank: a transcluded span has a
-real case for `#ed`, no model authority having touched the identity, but the
-firewall says rank rises by a human act and that amendment has not been made.
-The list is a floor (unmarked ASCII inventory members are undetectable), and the
-blind spot is near-complementary to the risk — what makes a token undetectable is
-having no marks, and what makes it dangerous to retype is having marks.
+unfalsifiable downstream. The list is a floor (unmarked ASCII inventory members
+are undetectable), and the blind spot is near-complementary to the risk — what
+makes a token undetectable is having no marks, and what makes it dangerous to
+retype is having marks.
+
+**There are four ranks, and the fourth is `#gt`** — *adopted*, written by `tei
+expand` on a span it filled. `#llm` is **false** about such a span, no model
+having chosen those characters, and `#ed` is false too, no human having read this
+document. The human act the firewall requires did happen: one artifact upstream,
+at the raster. So this is not a promotion but a record of where responsibility
+lies, and `#gt` is **not a fourth point on the `#htr < #llm < #ed` order** — its
+authority over glyph identity is an editor's, so it does not sit below `#ed`; its
+subject is a different artifact, so it is not `#ed`.
+
+**And it is verified rather than accepted.** `harness tei validate` checks every
+`#gt` span for membership in that page's `tier1_terms` — a set of whole tokens, so
+the boundary is protected in a way a substring test cannot manage (`Qeˊñ` is a
+substring of `Qeˊñu`, i.e. a dropped final mark passes). Two properties follow, and
+the second is the reason it is derived rather than stamped: a `#gt` claim on a page
+with no ground truth fails and says which failure it is, and **correcting the ground
+truth under an adopted span makes the span fail rather than quietly go stale.** An
+attribute written once at expansion time would go on asserting the old reading with
+nothing to catch it — the same shape as every other claim in this project that
+carried no error signal.
 
 A Tier-1 span may optionally also carry `@facs` pointing at the OCR line(s) it was
 read from — **the `index`, not the ALTO `@ID`** (`harness tei context`'s
@@ -1739,7 +1759,7 @@ namespace, not a valid TEI document standalone — `teiCorpus` requires at least
 `TEI` child, so there is no conformant container for a header alone and inventing
 one would mean settling the assembly scheme by accident. `harness tei header` gates it,
 and what it checks is the *correspondence* with `validate.RESP_RANKS` rather than
-the prose: exactly those three ranks, declared as `respStmt/@xml:id`, no more and
+the prose: exactly those four ranks, declared as `respStmt/@xml:id`, no more and
 no fewer. Two files held one fact and nothing linked them — per-page validation
 deliberately never resolves `@resp` locally, so either could have been renamed and
 every page would have gone on passing.

@@ -12,6 +12,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
@@ -133,6 +135,94 @@ def test_a_page_with_no_handles_is_not_an_error(tmp_path):
     got = expand_page("1-151", tmp_path)
     assert got == {"ref": "1-151", "resolved": [], "unresolved": [],
                    "committed": False}
+
+
+def test_expand_records_the_fourth_rank(tmp_path):
+    """`#llm` is *false* about a span whose glyphs no model chose, and `#ed` is
+    false too, since no human read this document. The responsible act happened
+    one artifact upstream and `#gt` is where that is recorded."""
+    from harness.expand import expand_page
+    _gt_page(tmp_path)
+    p = _tei(tmp_path, "1-151", '<foreign xml:lang="ckt" resp="#llm" index="1"/>')
+
+    got = expand_page("1-151", tmp_path, commit=True)
+    assert got["resolved"][0]["resp_was"] == "#llm"
+    assert 'resp="#gt"' in p.read_text(encoding="utf-8")
+
+
+def test_the_adopted_rank_is_verified_not_accepted(tmp_path):
+    """A rank nothing checks is a claim, and this project's whole subject is
+    claims that carry no error signal. Membership in the page's ratified token
+    set is the check, and it is whole-token by construction."""
+    from harness.validate import validate
+    _gt_page(tmp_path)
+    ctx = {"page_ref": "1-151", "root": str(tmp_path), "figures_on_page": [],
+           "ocr_lines": [], "toc_window": []}
+
+    ok = _tei(tmp_path, "1-151", '<foreign xml:lang="ckt" resp="#gt">uˊᵋnel</foreign>')
+    assert not [e for e in validate(ok, ctx).errors if "PROVENANCE" in e]
+
+    lie = _tei(tmp_path, "1-101", '<foreign xml:lang="ckt" resp="#gt">invented</foreign>')
+    assert any("is not a token in this page's ground truth" in e
+               for e in validate(lie, ctx).errors)
+
+
+def test_a_dropped_final_mark_does_not_pass_as_adopted(tmp_path):
+    """The reason the check is set membership and not a substring test.
+
+    `Qeˊñ` is a substring of `Qeˊñu`, so a substring firewall passes a span that
+    dropped its final mark — which is §5's residual class exactly. Whole tokens
+    are the only granularity at which this check protects the boundary.
+    """
+    from harness.validate import validate
+    _gt_page(tmp_path)
+    ctx = {"page_ref": "1-151", "root": str(tmp_path), "figures_on_page": [],
+           "ocr_lines": [], "toc_window": []}
+    p = _tei(tmp_path, "1-151", '<foreign xml:lang="ckt" resp="#gt">uˊᵋne</foreign>')
+
+    assert any("is not a token in this page's ground truth" in e
+               for e in validate(p, ctx).errors)
+
+
+def test_the_claim_fails_rather_than_going_stale(tmp_path):
+    """The property a written-once attribute could not have. Correct the ground
+    truth under an adopted span and the rank stops being true, loudly — where a
+    stamp applied at expansion time would go on asserting the old reading."""
+    from harness.validate import validate
+    gt = _gt_page(tmp_path)
+    ctx = {"page_ref": "1-151", "root": str(tmp_path), "figures_on_page": [],
+           "ocr_lines": [], "toc_window": []}
+    p = _tei(tmp_path, "1-151", '<foreign xml:lang="ckt" resp="#gt">uˊᵋnel</foreign>')
+    assert not [e for e in validate(p, ctx).errors if "PROVENANCE" in e]
+
+    gt.write_text(gt.read_text(encoding="utf-8").replace("uˊᵋnel", "uˊᵋnelh"),
+                  encoding="utf-8")
+    assert any("is not a token in this page's ground truth" in e
+               for e in validate(p, ctx).errors)
+
+
+def test_a_page_with_no_ground_truth_can_adopt_nothing(tmp_path):
+    """802 of 832 pages. The message says which of the two failures it is —
+    the token is wrong, or there is no ratified witness at all."""
+    from harness.validate import validate
+    ctx = {"page_ref": "2-200", "root": str(tmp_path), "figures_on_page": [],
+           "ocr_lines": [], "toc_window": []}
+    p = _tei(tmp_path, "2-200", '<foreign xml:lang="ckt" resp="#gt">x</foreign>')
+
+    assert any("gt/ocr/ does not hold this page" in e
+               for e in validate(p, ctx).errors)
+
+
+def test_the_rank_is_declared_where_pages_point_at_it():
+    """Two files, one fact. `tei header` holds `RESP_RANKS` and the corpus header
+    to each other, because a page fragment never resolves `@resp` locally — so
+    either could be renamed and every page would go on passing."""
+    from harness.validate import ADOPTED, RESP_RANKS, check_corpus_header
+    root = Path(__file__).resolve().parents[2]
+    if not (root / "tei" / "corpus-header.xml").exists():
+        pytest.skip("no corpus header")
+    assert ADOPTED in RESP_RANKS
+    assert check_corpus_header(root).ok
 
 
 def test_validate_names_the_missing_step(tmp_path):

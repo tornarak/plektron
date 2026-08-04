@@ -143,10 +143,11 @@ lives on, and the gate checks it.
 - **`tier1_terms`** is `{index, line, text}` — the native forms on this page a
   human has **already keyed at the raster**. Where one is listed, do not retype
   it: write `<foreign xml:lang="ckt" resp="#llm" index="7"/>`, empty, and
-  `harness tei expand` fills in the ratified string. Your judgement is *which*
-  token; the glyphs are not yours to originate. The list is empty on most pages
-  (no ground truth), and it is a floor even where it exists — a form with no
-  marks at all may be absent from it, and that one you key yourself.
+  `harness tei expand` fills in the ratified string and rewrites the rank to
+  `#gt`. Your judgement is *which* token; the glyphs are not yours to originate.
+  The list is empty on most pages (no ground truth), and it is a floor even where
+  it exists — a form with no marks at all may be absent from it, and that one you
+  key yourself, at `#llm` like any other reading of yours.
 - **`foreign_terms_nearby`** is recomputed each call from committed TEI on the
   physically neighbouring pages, and carries each term's gloss plus the `scope`
   its gloss list supplies — without which "white mixed with brown" says nothing
@@ -603,6 +604,14 @@ check, an unmarked span is indistinguishable from a ratified one, which is the
 fluent-nonsense failure with the error signal filed off.
 
 Rank only ever rises by a human act. Nothing this pass does moves `#llm` to `#ed`.
+
+**`#gt` is not you doing that.** It is written by `harness tei expand`, on a span
+whose glyphs it copied out of ground truth a human adjudicated at the raster — so
+the human act happened, one artifact upstream, and the rank records where rather
+than promoting anything. You never write `#gt` yourself: write `#llm` on the
+handle and let the verb rewrite it. And you never write it on a form you keyed,
+even a form you are certain of — `validate` checks every `#gt` span against
+`gt/ocr/` and will reject one that is not a token in it.
 
 **`@resp` and `<unclear>` are orthogonal.** `@resp` says who read it; `<unclear>`
 says whether the image decided. So `<unclear xml:lang="ckt" resp="#llm"

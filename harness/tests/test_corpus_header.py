@@ -21,8 +21,15 @@ from harness.validate import CORPUS_HEADER, RESP_RANKS, check_corpus_header
 REPO = Path(__file__).resolve().parent.parent.parent
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
+# Derived, never spelled out. These fixtures held the three ranks literally, so
+# adding a fourth (`#gt`) failed four tests that are about licences and root
+# elements and have no opinion about how many ranks there are — noise in exactly
+# the place a real finding would have to be noticed.
+RANK_IDS = tuple(r.lstrip("#") for r in RESP_RANKS)
+ALL_RANKS = "".join(f'<respStmt xml:id="{r}"/>' for r in RANK_IDS)
 
-def header(tmp_path: Path, ranks=("ed", "llm", "htr"), body=None) -> Path:
+
+def header(tmp_path: Path, ranks=RANK_IDS, body=None) -> Path:
     stmts = "".join(
         f'<respStmt xml:id="{r}"><resp>{r}</resp><name>x</name></respStmt>'
         for r in ranks
@@ -93,7 +100,7 @@ def test_a_respStmt_with_no_xml_id_is_a_rank_nothing_can_point_at(tmp_path):
         body=(
             f'<teiHeader xmlns="{TEI_NS}"><fileDesc><titleStmt><title>t</title>'
             "<respStmt><resp>anonymous</resp></respStmt>"
-            '<respStmt xml:id="ed"/><respStmt xml:id="llm"/><respStmt xml:id="htr"/>'
+            + ALL_RANKS +
             "</titleStmt><publicationStmt><p>p</p></publicationStmt>"
             "<sourceDesc><p>s</p></sourceDesc></fileDesc></teiHeader>"
         ),
@@ -120,7 +127,7 @@ def test_the_deferred_sections_must_exist(tmp_path):
         tmp_path,
         body=(
             f'<teiHeader xmlns="{TEI_NS}"><fileDesc><titleStmt><title>t</title>'
-            '<respStmt xml:id="ed"/><respStmt xml:id="llm"/><respStmt xml:id="htr"/>'
+            + ALL_RANKS +
             "</titleStmt></fileDesc></teiHeader>"
         ),
     )
@@ -158,7 +165,7 @@ def test_a_settled_status_granting_nothing_is_an_error(tmp_path):
         tmp_path,
         body=(
             f'<teiHeader xmlns="{TEI_NS}"><fileDesc><titleStmt><title>t</title>'
-            '<respStmt xml:id="ed"/><respStmt xml:id="llm"/><respStmt xml:id="htr"/>'
+            + ALL_RANKS +
             "</titleStmt><publicationStmt>"
             '<availability status="free"><p>free!</p></availability>'
             "</publicationStmt><sourceDesc><p>s</p></sourceDesc>"
@@ -177,7 +184,7 @@ def test_an_unsettled_licence_is_a_worklist_line_not_a_failure(tmp_path):
         tmp_path,
         body=(
             f'<teiHeader xmlns="{TEI_NS}"><fileDesc><titleStmt><title>t</title>'
-            '<respStmt xml:id="ed"/><respStmt xml:id="llm"/><respStmt xml:id="htr"/>'
+            + ALL_RANKS +
             "</titleStmt><publicationStmt>"
             '<availability status="unknown"><p>undecided</p></availability>'
             "</publicationStmt><sourceDesc><p>s</p></sourceDesc>"

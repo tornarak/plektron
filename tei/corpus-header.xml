@@ -4,7 +4,7 @@
 
   Every page file in tei/ is a *fragment*: its own teiHeader defers title,
   publication and source to this one, and declares no respStmt at all. This is
-  where those deferrals resolve, and it is the only place the three provenance
+  where those deferrals resolve, and it is the only place the four provenance
   ranks are declared. `@resp` in a page file is a pointer with nothing to resolve
   against until this document is spliced in by the assembly step.
 
@@ -38,16 +38,24 @@
       </editor>
 
       <!--
-        The provenance ranks. Strictly ordered: #htr < #llm < #ed. Rank answers
-        *who read this*, which is a different question from whether the letterform
-        decided — that one is <unclear>. A confident reading is still only
-        proposed; certainty is not authority.
+        The provenance ranks. Rank answers *who read this*, which is a different
+        question from whether the letterform decided — that one is <unclear>. A
+        confident reading is still only proposed; certainty is not authority.
+
+        #htr < #llm < #ed is a strict order over the three ranks describing a
+        reading of *this* document. #gt is not a fourth point on that line: it says
+        the glyphs were not read here at all, but copied whole out of ground truth
+        a human adjudicated at the raster. Its authority over glyph identity is an
+        editor's, which is why it does not sit below #ed; its subject is a
+        different artifact, which is why it is not #ed.
 
         These xml:ids are the referents of every @resp in the corpus, and the set
-        is closed: harness/validate.py's RESP_RANKS is the same three, and it
-        rejects a fourth. Rank rises only by a human act, so no pass may promote
-        a span it did not itself ratify — the collation pass may emit #llm and
-        nothing else.
+        is closed: harness/validate.py's RESP_RANKS is the same four, and it
+        rejects a fifth. Rank rises only by a human act, so no pass may promote a
+        span it did not itself ratify — the collation pass may emit #llm and
+        nothing else, and #gt is written only by `harness tei expand`, which
+        asserts nothing on its own: every #gt span is re-derived from gt/ocr/ on
+        every validation run, so it fails rather than going stale.
 
         #ed carries no personal name yet. Left open deliberately rather than
         filled with a plausible one; it wants the editor's own decision.
@@ -55,6 +63,16 @@
       <respStmt xml:id="ed">
         <resp>ratified — keyed, or confirmed against the page, by a human editor</resp>
         <name type="role">human editor</name>
+      </respStmt>
+      <respStmt xml:id="gt">
+        <resp>adopted — transcluded whole out of adjudicated ground truth, where a
+          human settled every mark at the raster. No model chose these characters,
+          so the reading is not a proposal; but no human read this document either,
+          so it is not editorial work on the transcription. The responsible act
+          happened one artifact upstream, and this records where. Verified on every
+          run against the ground truth it came from, so it fails rather than going
+          stale if that is later corrected.</resp>
+        <name type="role">human editor, at the raster</name>
       </respStmt>
       <respStmt xml:id="llm">
         <resp>proposed — read off the page image by a language model. Carries no

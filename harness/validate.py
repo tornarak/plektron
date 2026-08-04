@@ -35,11 +35,29 @@ TIER1 = {"ckt", "kpy", "ypk"}
 # <unclear>. A confident reading is still only proposed; certainty is not authority.
 RESP_RANKS = {
     "#ed": "ratified — a human keyed or confirmed it against the page",
+    "#gt": "adopted — transcluded whole from adjudicated ground truth",
     "#llm": "proposed — a model read it off the page image",
     "#htr": "unexamined — recognizer output nobody has looked at",
 }
 PROPOSED = "#llm"
 RATIFIED = "#ed"
+# The fourth rank, and the one that needed an argument rather than a slot.
+#
+# A span `harness tei expand` filled did not have its glyphs read by the collation
+# pass at all: they were copied whole out of `gt/ocr/`, where a human adjudicated
+# every mark at the raster. So `#llm` is *false* about it — no model chose those
+# characters — and `#ed` is false too, since no human read this TEI. The human act
+# the firewall requires did happen; it happened one artifact upstream, and the
+# honest record of that is its own rank rather than a promotion.
+#
+# **It is not taken on trust.** Every `#gt` span is checked against
+# `context.tier1_terms` for the page — membership in the ratified token set, so
+# the match is whole-token by construction and a dropped final mark cannot pass
+# the way it would past a substring test (`Qeˊñ` is a substring of `Qeˊñu`). That
+# also makes the claim *maintained* rather than stamped: correct the ground truth
+# later and a span that used to match stops matching and says so, where an
+# attribute written once would go stale in silence.
+ADOPTED = "#gt"
 # Why a <supplied> stands where it does. Closed, and extended only here — a required
 # attribute with a free value guarantees a string rather than a distinction.
 #   context   the frame the surrounding prose supplies and the entries do not repeat
@@ -662,6 +680,14 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # the more dangerous of the two — an unmarked span is indistinguishable from a
     # ratified one to every consumer that does not check, so silence here would
     # launder a model reading into an adopted glyph identity.
+    # The page's ratified tokens, read once. Not from the context payload: this is
+    # a check against the store, and reading it out of the same dict the pass was
+    # handed would make the two inputs one witness again.
+    adopted: set[str] = set()
+    if ctx is not None:
+        from .context import tier1_terms
+        adopted = {t["text"] for t in tier1_terms(ctx["page_ref"],
+                                                  Path(ctx["root"]))}
     for el in root.iter():
         if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
             continue
@@ -676,11 +702,26 @@ def validate(tei_path: Path, ctx: dict | None = None,
             r.errors.append(
                 f"PROVENANCE: <{name}> resp={resp!r} is not a declared rank "
                 f"({', '.join(sorted(RESP_RANKS))})")
+        elif resp == ADOPTED:
+            # Checked, not accepted. `adopted` holds the page's ratified token set;
+            # empty means the page has no ground truth at all, so the claim cannot
+            # be true of anything on it.
+            text = unicodedata.normalize("NFD", "".join(el.itertext())).strip()
+            if text not in adopted:
+                r.errors.append(
+                    f"PROVENANCE: <{name}> {span!r} claims resp={ADOPTED!r} but "
+                    "is not a token in this page's ground truth" +
+                    ("" if adopted else
+                     " — gt/ocr/ does not hold this page, so nothing on it can "
+                     "be adopted") +
+                    ". The rank is verified against gt/ocr/ on every run, so it "
+                    "also fails once the ground truth is corrected under it")
         elif not ratified and resp != PROPOSED:
             r.errors.append(
                 f"PROVENANCE: <{name}> {span!r} claims resp={resp!r} "
-                f"({RESP_RANKS[resp]}) — this pass may only emit {PROPOSED!r}; "
-                "rank rises by a human act, never by a pass asserting it")
+                f"({RESP_RANKS[resp]}) — this pass may only emit {PROPOSED!r} or, "
+                f"through `harness tei expand`, {ADOPTED!r}; rank rises by a human "
+                "act, never by a pass asserting it")
         elif ratified and resp != RATIFIED:
             r.worklist.append(
                 f"unratified: <{name}> {span!r} still at resp={resp!r} "
