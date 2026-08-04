@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-034.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-034.png; regions_from: zones/chukchi-1-034.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-034_r1" HPOS="594" VPOS="640" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="594 640 2372 640 2372 730 594 730"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l1" HPOS="1169" VPOS="649" WIDTH="619" HEIGHT="56" BASELINE="1171 686 1788 690" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1777 679 1758 651 1191 649 1171 658 1171 686 1169 701 1784 705 1788 690 1786 653 1777 651 1777 679"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l2" HPOS="595" VPOS="660" WIDTH="72" HEIGHT="52" BASELINE="597 690 667 697" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 690 595 705 664 712 667 697 667 666 597 660 597 690"/>
+                        </Shape>
+                        <String CONTENT="14"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-034_r2" HPOS="594" VPOS="755" WIDTH="1778" HEIGHT="367" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="594 755 2372 755 2372 1122 594 1122"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l3" HPOS="693" VPOS="766" WIDTH="1669" HEIGHT="45" BASELINE="693 796 2362 796" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="693 796 693 811 2362 811 2362 796 2362 766 693 766 693 796"/>
+                        </Shape>
+                        <String CONTENT="Perhaps it will not be out of place to mention here another Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l4" HPOS="589" VPOS="824" WIDTH="1771" HEIGHT="48" BASELINE="591 857 2360 853" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="591 857 591 872 2358 870 2360 853 2356 824 589 824 591 857"/>
+                        </Shape>
+                        <String CONTENT="legend which seems to be even more ancient. In olden times there lived in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l5" HPOS="591" VPOS="872" WIDTH="1769" HEIGHT="67" BASELINE="593 915 2360 920" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 915 591 930 604 939 606 939 608 939 610 939 2358 935 2360 920 2358 887 2271 874 2269 874 2137 885 2120 874 2118 874 2115 874 2113 874 2035 885 1888 874 1886 874 1832 885 1795 874 1793 874 1790 874 1788 874 1756 885 1719 874 1717 874 1715 874 1334 883 1318 872 1316 872 1314 872 1312 872 1310 872 1284 885 1197 885 1182 872 1180 872 1178 872 1175 872 1173 872 1143 883 1020 872 1017 872 1015 872 1013 872 996 883 890 872 887 872 835 883 809 872 807 872 805 872 803 872 801 872 783 883 729 872 727 872 725 872 723 872 708 883 628 872 625 872 623 872 593 881 593 915"/>
+                        </Shape>
+                        <String CONTENT="the Anui Mountains a large beast called Keliˊlhu.¹ He was tall and long,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l6" HPOS="591" VPOS="943" WIDTH="1771" HEIGHT="50" BASELINE="591 976 2362 976" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="591 976 591 993 2362 993 2362 976 2362 948 591 943 591 976"/>
+                        </Shape>
+                        <String CONTENT="had a huge mouth which opened wide, and long-clawed paws. A certain"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l7" HPOS="589" VPOS="995" WIDTH="1773" HEIGHT="65" BASELINE="591 1039 2362 1034" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="591 1039 591 1060 2360 1052 2362 1034 2358 1000 760 995 757 995 589 1006 591 1039"/>
+                        </Shape>
+                        <String CONTENT="young herdsman wandered among the crags, looking for a lost reindeer, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l8" HPOS="591" VPOS="1054" WIDTH="743" HEIGHT="58" BASELINE="593 1097 1334 1093" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 1097 593 1112 1331 1110 1334 1093 1329 1065 1063 1054 1061 1054 591 1067 593 1097"/>
+                        </Shape>
+                        <String CONTENT="was seen and eaten by Keliˊlhu."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-034_r3" HPOS="594" VPOS="1122" WIDTH="1778" HEIGHT="840" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="594 1122 2372 1122 2372 1962 594 1962"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l9" HPOS="697" VPOS="1114" WIDTH="1665" HEIGHT="59" BASELINE="699 1158 2362 1153" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="699 1158 699 1173 2360 1169 2362 1153 2358 1123 710 1114 708 1114 706 1114 703 1114 703 1117 697 1121 699 1158"/>
+                        </Shape>
+                        <String CONTENT="Some time afterward the young man’s father started to look for him."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l10" HPOS="593" VPOS="1173" WIDTH="1771" HEIGHT="61" BASELINE="593 1216 2364 1216" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 1216 593 1234 2364 1234 2364 1216 2364 1186 2260 1173 2258 1173 2256 1173 2228 1184 2172 1173 2029 1173 2027 1173 2024 1173 2022 1173 2009 1184 1985 1173 1983 1173 1981 1173 1918 1184 1849 1173 1847 1173 1788 1184 1700 1173 1572 1173 1570 1173 1567 1173 1565 1173 1550 1186 1336 1186 1321 1173 1318 1173 1316 1173 1314 1173 1260 1186 1043 1186 1028 1173 1026 1173 1024 1173 1022 1173 1020 1173 989 1184 593 1182 593 1216"/>
+                        </Shape>
+                        <String CONTENT="He went among the crags, and soon met Keliˊlhu. He said, “Keliˊlhu, have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l11" HPOS="589" VPOS="1234" WIDTH="1775" HEIGHT="69" BASELINE="591 1279 2364 1275" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="591 1279 591 1292 1134 1303 1136 1303 1201 1292 1515 1301 1518 1301 1520 1301 1541 1290 1604 1301 1606 1301 1609 1301 1611 1301 1626 1290 1914 1290 1931 1301 1933 1301 1936 1301 1938 1303 2124 1303 2124 1301 2180 1290 2204 1301 2206 1301 2208 1301 2278 1290 2343 1301 2345 1301 2347 1301 2349 1301 2364 1288 2364 1275 2360 1247 2260 1234 2258 1234 2185 1244 1678 1234 1676 1234 1470 1247 656 1236 654 1236 589 1249 591 1279"/>
+                        </Shape>
+                        <String CONTENT="a laugh! I am fat, you will eat me; my reindeer are fatter, you will eat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l12" HPOS="591" VPOS="1292" WIDTH="1771" HEIGHT="69" BASELINE="593 1335 2362 1331" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 1335 593 1350 972 1350 1061 1361 1063 1361 1065 1361 1089 1350 1165 1361 1167 1361 1169 1361 1171 1361 1186 1350 1314 1350 1420 1361 1422 1361 1502 1348 1697 1359 1700 1359 1702 1359 1736 1348 2003 1359 2005 1359 2115 1348 2130 1359 2133 1359 2135 1359 2137 1361 2276 1361 2276 1359 2278 1359 2280 1359 2293 1348 2338 1359 2341 1359 2343 1359 2345 1359 2347 1359 2362 1346 2362 1331 2358 1303 1476 1292 1474 1292 1472 1292 1470 1292 1470 1294 1459 1303 612 1294 610 1294 608 1294 606 1294 591 1301 593 1335"/>
+                        </Shape>
+                        <String CONTENT="them too.” — “Ha, ha, ha!” laughed Keliˊlhu; and his mouth opened so"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l13" HPOS="597" VPOS="1366" WIDTH="1765" HEIGHT="47" BASELINE="597 1396 2362 1396" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1396 597 1413 2362 1413 2362 1396 2362 1366 597 1366 597 1396"/>
+                        </Shape>
+                        <String CONTENT="wide that his upper jaw reached his back, while his lower jaw hung down to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l14" HPOS="591" VPOS="1418" WIDTH="1769" HEIGHT="58" BASELINE="593 1452 2360 1459" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 1452 591 1467 2356 1476 2360 1459 2358 1426 593 1418 593 1452"/>
+                        </Shape>
+                        <String CONTENT="his breast. When he stopped laughing, he closed his jaws with his paws,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l15" HPOS="591" VPOS="1483" WIDTH="1769" HEIGHT="47" BASELINE="593 1513 2360 1517" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 1513 591 1526 2356 1530 2360 1517 2358 1487 593 1483 593 1513"/>
+                        </Shape>
+                        <String CONTENT="and continued his pursuit; but the man had succeeded in gaining ground."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l16" HPOS="591" VPOS="1541" WIDTH="1767" HEIGHT="54" BASELINE="593 1573 2358 1578" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 1573 591 1589 2354 1595 2358 1578 2356 1545 593 1541 593 1573"/>
+                        </Shape>
+                        <String CONTENT="After a while the beast approached him again; but the man repeated, “Keliˊlhu,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l17" HPOS="591" VPOS="1599" WIDTH="1773" HEIGHT="59" BASELINE="593 1632 2364 1636" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 1632 591 1649 602 1658 604 1658 606 1658 608 1658 2362 1649 2364 1636 2362 1599 593 1599 593 1632"/>
+                        </Shape>
+                        <String CONTENT="have a laugh! I am fat, you will eat me; my reindeer are fatter, you will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l18" HPOS="595" VPOS="1654" WIDTH="1767" HEIGHT="69" BASELINE="595 1695 2362 1695" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1695 595 1712 1069 1712 1143 1723 1145 1723 1147 1723 1173 1712 1240 1723 1243 1723 1245 1723 1275 1712 1472 1723 1474 1723 1596 1712 2280 1723 2282 1723 2360 1710 2362 1695 2360 1667 1509 1654 1507 1654 1455 1664 1433 1654 1431 1654 1292 1654 1290 1654 1288 1654 1243 1664 1197 1654 1195 1654 1193 1654 1139 1664 1059 1654 1056 1654 959 1664 922 1654 920 1654 918 1654 805 1664 714 1654 712 1654 710 1654 671 1664 625 1654 623 1654 621 1654 619 1654 595 1664 595 1695"/>
+                        </Shape>
+                        <String CONTENT="eat them too.” — “Ha, ha, ha!” laughed Keliˊlhu; and his jaws sprang as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l19" HPOS="593" VPOS="1716" WIDTH="1771" HEIGHT="59" BASELINE="595 1757 2364 1751" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1757 595 1775 2362 1768 2364 1751 2360 1721 630 1716 628 1716 625 1716 593 1727 595 1757"/>
+                        </Shape>
+                        <String CONTENT="wide apart as before, and he closed them in the same manner, and continued"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l20" HPOS="593" VPOS="1779" WIDTH="1771" HEIGHT="61" BASELINE="595 1812 2364 1816" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1812 593 1827 682 1840 684 1840 2362 1831 2364 1816 2362 1786 595 1779 595 1812"/>
+                        </Shape>
+                        <String CONTENT="his pursuit. At last they reached the village, where a number of young men"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l21" HPOS="593" VPOS="1838" WIDTH="1771" HEIGHT="54" BASELINE="595 1872 2364 1877" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1872 593 1887 2360 1892 2364 1877 2362 1844 595 1838 595 1872"/>
+                        </Shape>
+                        <String CONTENT="killed Keliˊlhu with spears; but he had also killed many, because he was light"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l22" HPOS="593" VPOS="1892" WIDTH="1631" HEIGHT="67" BASELINE="595 1933 2224 1937" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1933 593 1950 604 1959 606 1959 608 1959 610 1959 2221 1950 2224 1937 2221 1907 1925 1894 1923 1894 1728 1905 1704 1894 1702 1894 1700 1894 1598 1905 1570 1894 1567 1894 1565 1894 1466 1905 1409 1892 1407 1892 1405 1892 1403 1892 1401 1892 1388 1903 1366 1892 1364 1892 1362 1892 1286 1903 1251 1892 1249 1892 1247 1892 1191 1903 1158 1892 1156 1892 1154 1892 595 1900 595 1933"/>
+                        </Shape>
+                        <String CONTENT="and nimble, jumped high, bit with his teeth, and smote with his paws."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-034_r4" HPOS="594" VPOS="1962" WIDTH="1778" HEIGHT="357" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="594 1962 2372 1962 2372 2319 594 2319"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l23" HPOS="697" VPOS="1950" WIDTH="1667" HEIGHT="63" BASELINE="699 1996 2364 1991" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="699 1996 699 2013 2362 2009 2364 1991 2362 1961 2341 1950 2338 1950 2336 1950 2334 1950 2332 1950 2319 1963 2237 1963 2213 1950 2211 1950 2208 1950 2206 1950 2204 1950 2191 1963 2031 1963 2007 1950 2005 1950 2003 1950 2001 1950 1979 1961 1966 1950 1964 1950 1962 1950 1959 1950 1957 1950 1927 1961 1875 1950 1873 1950 1803 1961 1743 1950 1741 1950 1739 1950 1715 1961 1656 1950 1654 1950 1652 1950 1604 1961 1535 1950 1533 1950 1531 1950 1502 1965 1405 1965 1388 1952 1386 1952 1383 1952 1381 1952 1318 1963 1253 1952 1251 1952 1191 1963 959 1952 957 1952 697 1961 699 1996"/>
+                        </Shape>
+                        <String CONTENT="PRESENT HABITAT. — The villages of the Maritime Chukchee are situated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l24" HPOS="591" VPOS="2015" WIDTH="1773" HEIGHT="65" BASELINE="593 2050 2364 2054" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 2050 591 2065 697 2078 699 2078 1401 2069 1528 2080 1531 2080 2362 2069 2364 2054 2360 2015 593 2019 593 2050"/>
+                        </Shape>
+                        <String CONTENT="on the Arctic coast between Cape Erri and East Cape, and on the coast of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l25" HPOS="593" VPOS="2074" WIDTH="1769" HEIGHT="60" BASELINE="593 2115 2362 2115" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 2115 593 2134 2362 2134 2362 2115 2362 2087 2284 2074 2193 2074 2191 2074 2189 2074 2187 2074 2174 2084 2120 2074 2118 2074 2115 2074 2085 2087 1968 2087 1953 2074 1951 2074 1949 2074 1946 2074 1944 2074 1899 2087 1680 2087 1656 2074 1654 2074 1652 2074 1650 2074 1611 2084 1557 2074 1554 2074 1552 2074 1524 2084 1466 2074 1463 2074 1461 2074 1435 2084 1414 2074 1412 2074 1409 2074 1407 2074 1379 2087 1258 2087 1234 2074 1232 2074 1230 2074 1227 2074 1186 2084 1108 2074 1106 2074 1104 2074 1056 2084 593 2080 593 2115"/>
+                        </Shape>
+                        <String CONTENT="Bering Sea between East Cape and Anadyr Bay, except where a few Eskimo"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l26" HPOS="593" VPOS="2141" WIDTH="1767" HEIGHT="52" BASELINE="595 2171 2360 2177" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2171 593 2186 2356 2193 2360 2177 2358 2147 595 2141 595 2171"/>
+                        </Shape>
+                        <String CONTENT="settlements are interspersed, — two near East Cape, and seven between Indian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l27" HPOS="597" VPOS="2197" WIDTH="1767" HEIGHT="56" BASELINE="597 2236 2364 2236" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 2236 597 2253 2362 2253 2364 2236 2362 2206 597 2197 597 2236"/>
+                        </Shape>
+                        <String CONTENT="Point and Cape Ulakhpen (Улахпенъ). The latter is called by the natives"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l28" HPOS="599" VPOS="2253" WIDTH="1124" HEIGHT="65" BASELINE="602 2292 1723 2299" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="602 2292 599 2305 634 2318 636 2318 638 2318 1721 2312 1723 2299 1721 2268 602 2253 602 2292"/>
+                        </Shape>
+                        <String CONTENT="Wuteˊen, the same name as the village close by."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-034_r5" HPOS="594" VPOS="2319" WIDTH="1778" HEIGHT="114" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="594 2319 2372 2319 2372 2433 594 2433"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l29" HPOS="699" VPOS="2318" WIDTH="1670" HEIGHT="54" BASELINE="701 2353 2369 2357" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="701 2353 699 2368 2364 2372 2369 2357 2367 2327 701 2318 701 2353"/>
+                        </Shape>
+                        <String CONTENT="The Reindeer camps are scattered over the whole country to the northeast"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l30" HPOS="591" VPOS="2375" WIDTH="1773" HEIGHT="58" BASELINE="591 2416 2364 2416" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="591 2405 591 2416 591 2433 2364 2433 2364 2416 2364 2387 1541 2375 1539 2375 1537 2375 1513 2385 1418 2375 1416 2375 1357 2385 1331 2375 1329 2375 1327 2375 1195 2385 1143 2375 1141 2375 1063 2385 1009 2375 1007 2375 1004 2375 970 2385 855 2375 853 2375 786 2385 729 2375 727 2375 667 2385 634 2375 632 2375 630 2375 628 2375 593 2383 591 2405"/>
+                        </Shape>
+                        <String CONTENT="of a line drawn from the mouth of the Indighirka River to Cape Anannon."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-034_r6" HPOS="594" VPOS="2433" WIDTH="1778" HEIGHT="428" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="594 2433 2372 2433 2372 2861 594 2861"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l31" HPOS="701" VPOS="2439" WIDTH="1663" HEIGHT="55" BASELINE="701 2476 2364 2476" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="701 2476 701 2494 2364 2494 2364 2476 2364 2446 701 2439 701 2476"/>
+                        </Shape>
+                        <String CONTENT="The part of the country lying to the west of the rivers Chaun and Anadyr"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l32" HPOS="591" VPOS="2500" WIDTH="1776" HEIGHT="63" BASELINE="593 2533 2367 2539" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 2533 591 2546 803 2559 805 2559 1084 2550 2362 2563 2367 2539 2364 2507 593 2500 593 2533"/>
+                        </Shape>
+                        <String CONTENT="forms the so-called “Chukchee territory”² (Чукотская землица). This territory,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l33" HPOS="593" VPOS="2552" WIDTH="1802" HEIGHT="71" BASELINE="595 2593 2351 2598 2395 2606" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2593 593 2606 773 2619 775 2619 1533 2610 1622 2621 1624 2623 2393 2623 2395 2606 2395 2567 2317 2554 2182 2554 2180 2554 2178 2554 2176 2554 2163 2565 2128 2554 2126 2554 2124 2554 2027 2565 1983 2554 1981 2554 1979 2554 1977 2554 1938 2567 1758 2567 1743 2554 1741 2554 1739 2554 1736 2554 1734 2554 1693 2565 1680 2554 1678 2554 1676 2554 1674 2554 1308 2563 1251 2552 1249 2552 1247 2552 1212 2563 1136 2552 1134 2552 1132 2552 1100 2563 1067 2552 1065 2552 1063 2552 1061 2552 1030 2563 950 2552 948 2552 946 2552 916 2565 781 2565 757 2552 755 2552 753 2552 595 2561 595 2593"/>
+                        </Shape>
+                        <String CONTENT="according to the obsolete but not yet abolished paragraph of the Russian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l34" HPOS="593" VPOS="2619" WIDTH="1771" HEIGHT="63" BASELINE="595 2649 2364 2656" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2649 593 2662 617 2675 619 2675 621 2675 1128 2667 1277 2680 1279 2680 1282 2680 1318 2669 1355 2680 1357 2680 1360 2682 1561 2682 1561 2680 1563 2680 1585 2669 2163 2682 2165 2682 2167 2682 2191 2671 2362 2671 2364 2656 2362 2621 595 2619 595 2649"/>
+                        </Shape>
+                        <String CONTENT="Code, is considered to be “not thoroughly subdued.” Its inhabitants, as well"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l35" HPOS="591" VPOS="2680" WIDTH="1771" HEIGHT="54" BASELINE="593 2712 2362 2717" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 2712 591 2727 2358 2734 2362 2717 2360 2684 593 2680 593 2712"/>
+                        </Shape>
+                        <String CONTENT="as all other Chukchee, have the privilege of settling all their affairs according"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l36" HPOS="591" VPOS="2740" WIDTH="1773" HEIGHT="52" BASELINE="593 2771 2364 2777" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 2771 591 2786 2360 2792 2364 2777 2362 2747 593 2740 593 2771"/>
+                        </Shape>
+                        <String CONTENT="to their own customs, including even murder if committed within the limits"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l37" HPOS="593" VPOS="2797" WIDTH="1717" HEIGHT="60" BASELINE="595 2827 2310 2838" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2827 593 2844 608 2855 610 2855 612 2855 615 2855 898 2846 937 2857 939 2857 942 2857 2308 2853 2310 2838 2308 2808 595 2797 595 2827"/>
+                        </Shape>
+                        <String CONTENT="of their own territories. Such privileges sometimes lead to strange results."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-034_r7" HPOS="594" VPOS="2861" WIDTH="1778" HEIGHT="239" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="594 2861 2372 2861 2372 3100 594 3100"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l38" HPOS="697" VPOS="2859" WIDTH="1672" HEIGHT="59" BASELINE="699 2892 2369 2898" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="699 2892 697 2905 725 2918 727 2918 729 2918 2367 2911 2369 2898 2367 2866 699 2859 699 2892"/>
+                        </Shape>
+                        <String CONTENT="G. Dyachkoff³ relates the following incident, that occurred among the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l39" HPOS="591" VPOS="2909" WIDTH="1780" HEIGHT="63" BASELINE="593 2950 2371 2959" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 2950 591 2963 2367 2972 2371 2959 2371 2924 2358 2916 2356 2916 2354 2916 2351 2916 1483 2922 1141 2911 1139 2911 1046 2920 1028 2909 1026 2909 1024 2909 1022 2909 593 2918 593 2950"/>
+                        </Shape>
+                        <String CONTENT="Olutora Koryak. In 1882 a man was murdered. The brothers of the murdered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l40" HPOS="593" VPOS="2981" WIDTH="1776" HEIGHT="60" BASELINE="595 3011 2369 3015" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 3011 593 3026 1619 3041 1622 3041 2367 3031 2369 3015 2367 2985 595 2981 595 3011"/>
+                        </Shape>
+                        <String CONTENT="man refrained from the usual revenge, and sent a complaint to the magistrate"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l41" HPOS="595" VPOS="3035" WIDTH="1785" HEIGHT="67" BASELINE="597 3074 2380 3078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 3074 595 3087 779 3100 781 3100 1258 3091 2375 3102 2380 3078 2377 3035 597 3035 597 3074"/>
+                        </Shape>
+                        <String CONTENT="in Gishiginsk. During the whole year there was no answer; after that, the"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-034_r8" HPOS="594" VPOS="3138" WIDTH="1778" HEIGHT="143" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="594 3138 2372 3138 2372 3281 594 3281"/>
+                    </Shape>
+                    <TextLine ID="mz_1-034_l42" HPOS="699" VPOS="3130" WIDTH="1176" HEIGHT="61" BASELINE="701 3158 1875 3169" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="701 3158 699 3180 1871 3191 1875 3169 1873 3141 701 3130 701 3158"/>
+                        </Shape>
+                        <String CONTENT="¹ This name is probably a mispronunciation of Keˊli-lūˊᵋ (“spotted face”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l43" HPOS="701" VPOS="3178" WIDTH="206" HEIGHT="45" BASELINE="703 3206 907 3208" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="703 3206 701 3221 903 3223 907 3208 905 3180 703 3178 703 3206"/>
+                        </Shape>
+                        <String CONTENT="² See p. 15."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-034_l44" HPOS="701" VPOS="3217" WIDTH="321" HEIGHT="54" BASELINE="703 3245 1022 3251" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="703 3245 701 3264 1017 3271 1022 3251 1022 3223 703 3217 703 3245"/>
+                        </Shape>
+                        <String CONTENT="³ Dyachkoff, p. 64."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

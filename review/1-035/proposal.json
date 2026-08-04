@@ -1,0 +1,85 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "Running title. The folio \"115\" sits to the right of this text but outside this line's segmented box; keyed on line 1 (see its note). Nothing between them but the vertical rule captured by line 1's box."
+    },
+    "1": {
+      "text": "115",
+      "note": "Line 1's TextLine box is only ~19px wide (the printed vertical rule dividing title from folio) and its own text is empty in mz/ocr/; the folio \"115\" is legible only in the --margins-widened crop, to the right of that rule, so it is keyed here as material outside the polygon (cf. 1-073/1-074 precedent in rebuild-groundtruth SKILL.md for folios stranded outside every box). Plain ASCII digits per keying_spec.md §2.12 (\"Roman numerals and folio slots — plain ASCII, always\"): the leading '1' prints as a bare serifed stem visually close to roman I, but §2.12 rules that shape never changes what is keyed."
+    },
+    "2": {"text": "collector of the tribute, a Cossack officer from Gishiginsk, passing through"},
+    "3": {"text": "Olutora, explained to the complainants that they had to deal with the offender"},
+    "4": {"text": "according to their own tribal customs. Then the relatives of the victim gathered"},
+    "5": {"text": "together, and, coming to the village of the murderer, covered with burning"},
+    "6": {"text": "wood the underground house where he lived with his numerous family, and"},
+    "7": {"text": "all the inmates were burned alive."},
+    "8": {"text": "The reason for this unusual forbearance lies in the fact that the last"},
+    "9": {"text": "campaigns which the Russians conducted against the Chukchee, in the eigh-"},
+    "10": {"text": "teenth century, utterly miscarried, since the Cossack captain, A. Shestakoff,"},
+    "11": {
+      "text": "was defeated and killed March 14, 1730, on the river Egaˊč; and Mayor",
+      "resolved": "Egaˊč = E, g, a, U+02CA MODIFIER LETTER ACUTE ACCENT (stress, postposed to the stressed vowel per keying_spec.md §2.1), č = c + U+030C COMBINING CARON",
+      "note": "mz/ocr/ misread this river name as \"Egafé\"; raster (zoom 4x, --only 11@60-90) shows Ega + raised stress mark + č clearly. proposal check flagged the bare 'g' as rare (keying_spec.md §5.1, ~93.9% of corpus g's are dotted); contrasted at 4x against the plain English 'g' in \"underground\" (line 6, --only 6@15-40) — same open loop, same clean white space below the baseline, no dot on either — read as bare g, not g̣."
+    },
+    "12": {"text": "Pavlutzky, after some temporary success, was likewise defeated and killed"},
+    "13": {"text": "March 21, 1747, on the banks of Mayor’s Lake, not far from Markova, on"},
+    "14": {"text": "the Middle Anadyr. After that, the government, tired of an expensive and"},
+    "15": {"text": "useless war, withdrew its garrisons, and in 1764 even ordered the fort of"},
+    "16": {"text": "Anadyrsk, the remotest Russian post in northeastern Asia, to be demolished."},
+    "17": {"text": "Intercourse with the Chukchee, renewed in 1789, was carried on the"},
+    "18": {"text": "whole time with much circumspection, and no new attempt was made to"},
+    "19": {"text": "conquer the Chukchee by force. The border divisions of the tribe have"},
+    "20": {"text": "gradually submitted to Russian influence. The bulk of the Chukchee territory,"},
+    "21": {
+      "text": "however, up to the present time, remains practically exempt from any trace",
+      "note": "A small round speck sits above the 'e' of \"exempt\" (zoom 4x, --only 21@50-75) — a dot, not a tapered mark, unlike any catalogued diacritic (keying_spec.md §5.9 class: shape at magnification cannot by itself license an uncatalogued codepoint). Read as page dirt, keyed plain \"exempt\"."
+    },
+    "22": {"text": "of Russianization; and there are many camps and villages where a Russian"},
+    "23": {"text": "face has never been seen, nor a word of the Russian language heard."},
+    "24": {"text": "About a century ago the territory of the Reindeer Chukchee extended"},
+    "25": {
+      "text": "beyond the limits of the so-called “Chukchee territory,”¹ — on the Arctic",
+      "resolved": "“ = U+201C LEFT DOUBLE QUOTATION MARK, ” = U+201D RIGHT DOUBLE QUOTATION MARK (curly throughout, keying_spec.md §1/§5.6: \"the book sets them throughout and never straight ones\"), ¹ = U+00B9 SUPERSCRIPT ONE (footnote marker, keying_spec.md §2.10), — = U+2014 EM DASH (keying_spec.md §2.11)",
+      "note": "mz/ocr/ read the closing quote as a straight \\\" and the footnote superscript as \"!\"; raster (zoom 4x, --only 25@57-90) shows curly closing quote and superscript 1 clearly, pairs with the opener on line 42."
+    },
+    "26": {"text": "side as far as the river Baranikha, and on the Pacific side to the river Opuka;"},
+    "27": {"text": "but in the early twenties of the nineteenth century the Reindeer Chukchee,"},
+    "28": {"text": "induced in a measure by the increase of their herds, began to extend their"},
+    "29": {"text": "boundaries westward and southward. In the sixties they crossed the Kolyma"},
+    "30": {"text": "River, and spread over the flat tundra between the Kolyma and the Alaseya;"},
+    "31": {"text": "the people of some camps even crossed the Alaseya, and went as far as the"},
+    "32": {"text": "Indighirka. At the same time, other bands went from the Dry Anui to the"},
+    "33": {"text": "Large Anui, and thence to the Oloi and the Omolon, driving the original"},
+    "34": {"text": "inhabitants, the Lamut, farther and farther into the woods, or settling side by"},
+    "35": {"text": "side with them on the borders of the forest."},
+    "36": {"text": "On the Pacific side, Chukchee herdsmen rapidly spread beyond their"},
+    "37": {
+      "text": "former boundaries, and occupied the lower parts of the rivers Opuka, Poqaˊč",
+      "resolved": "Poqaˊč = P, o, q, a, U+02CA MODIFIER LETTER ACUTE ACCENT (stress, postposed), č = c + U+030C COMBINING CARON",
+      "note": "mz/ocr/ read this toponym as \"Poga/é\"; raster (zoom 4x, --only 37@60-100) shows Poqaˊč clearly, matching the Cyrillic gloss \"(Похача)\" opening line 38."
+    },
+    "38": {
+      "text": "(Похача), and the high flat country around the Palpal Mountains, — lands which",
+      "note": "Cyrillic gloss of the toponym on line 37, Tier-2 Russian. Modern spelling throughout (no pre-reform sorts і/ѣ/ѳ/ѵ/word-final ъ per keying_spec.md §2.7), keyed as printed."
+    },
+    "39": {"text": "before had had no inhabitants at all, on account of the continuous petty wars"},
+    "40": {"text": "between the Chukchee and the Koryak. Some of the Chukchee emigrated"},
+    "41": {
+      "text": "to the Parapolsky Dol,² interspersing themselves among the Koryak as far",
+      "resolved": "² = U+00B2 SUPERSCRIPT TWO (footnote marker, keying_spec.md §2.10)",
+      "note": "mz/ocr/ read the line start as \"ito\" and the footnote superscript as \"?\"; raster (zoom 4x, --only 41@0-15 and 41@20-45) shows \"to the Para...\" with no leading 'i', and a clear superscript 2 after \"Dol,\", pairing with the opener on line 43."
+    },
+    "42": {
+      "text": "¹ See p. 14.",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE (footnote opener, pairs with the reference on line 25)",
+      "note": "Footnote opener, fully legible once widened to margins (zoom 3x --margins, --only 42-43); the narrower ocr sheets crop cut off the leading \"1 S\"."
+    },
+    "43": {
+      "text": "² The high flat country between Penshina and Baron Korff’s Bays.",
+      "resolved": "² = U+00B2 SUPERSCRIPT TWO (footnote opener, pairs with the reference on line 41); ’ = U+2019 RIGHT SINGLE QUOTATION MARK (possessive apostrophe, curly per keying_spec.md §1/§5.6)",
+      "note": "A real ink blot on the raster (visible at every zoom level tried, --only 42-43 and 43) covers the left edge of this line, obscuring the footnote-opener superscript and the initial letter of \"The\". ² is inferred from the page's footnote-numbering invariant (keying_spec.md §2.10: only two markers on this page, 1 and 2, each occurring twice — 1 at lines 25/42, 2 at lines 41/43) rather than read directly off the blotted mark. \"The\" is inferred from grammar/context; the raster shows only \"...he high flat country between Penshina and Baron Korff's Bays.\" past the blot's edge. Flagging for adjudicator attention since the marker glyph itself is not directly visible."
+    }
+  },
+  "contamination": {"blind": true}
+}
