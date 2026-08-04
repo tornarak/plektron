@@ -761,6 +761,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
 
     # language codes + two-scope codepoint hygiene
     tier1_spans = 0
+    tier1_adopted = 0
     for el in root.iter():
         if not isinstance(el.tag, str):
             continue
@@ -768,7 +769,9 @@ def validate(tei_path: Path, ctx: dict | None = None,
         own_text = (el.text or "") + "".join(ch.tail or "" for ch in el)
         own_text = unicodedata.normalize("NFD", own_text)
         if lang in TIER1:
-            tier1_spans += 1 if el.get(XML_LANG) in TIER1 else 0
+            if el.get(XML_LANG) in TIER1:
+                tier1_spans += 1
+                tier1_adopted += 1 if el.get("resp") == ADOPTED else 0
             for ch_ in own_text:
                 if ch_ in LOOKALIKE_GREPS:
                     r.worklist.append(
@@ -799,14 +802,29 @@ def validate(tei_path: Path, ctx: dict | None = None,
             r.warnings.append(f"suspicious xml:lang '{v}'")
 
     # One summary line for the page's provenance state, so a PASS never reads as
-    # "these forms are settled". In the default mode every span is by construction a
-    # proposal, and saying so once is cheaper than a human inferring it from a rank
-    # they'd have to go look up.
-    if tier1_spans and not ratified:
+    # "these forms are settled". Saying so once is cheaper than a human inferring
+    # it from a rank they'd have to go look up.
+    #
+    # **Split by rank, because it was written when there were three.** It counted
+    # every Tier-1 span and called them all proposals "each needing a human reading
+    # against the page" — which after `tei expand` is false about exactly the spans
+    # `#gt` exists to describe: nobody will read those against this page, the
+    # reading happened one artifact upstream, and demanding it again is asking for
+    # the retyping the transclusion removed. A worklist line naming work that must
+    # not be done is worse than no line, and it is this project's own failure shape
+    # — a summary that stays fluent while the thing it summarises moves under it.
+    proposed = tier1_spans - tier1_adopted
+    if proposed and not ratified:
         r.worklist.append(
-            f"{tier1_spans} Tier-1 span(s) at {PROPOSED} — proposals, not adopted "
+            f"{proposed} Tier-1 span(s) at {PROPOSED} — proposals, not adopted "
             "glyph identities; each needs a human reading against the page before "
             "anything downstream may treat it as settled")
+    if tier1_adopted:
+        r.worklist.append(
+            f"{tier1_adopted} Tier-1 span(s) at {ADOPTED} — transcluded from "
+            "gt/ocr/ and re-checked against it on this run, so the glyphs want no "
+            "reading here; what is unratified about them is which token the pass "
+            "chose, not what it says")
 
     # Proper nouns. The pass marks *category* and never identity: which village
     # Uñiˊsak is, or whether this Allen is that Allen, is the annotation pass's,
@@ -830,6 +848,9 @@ def validate(tei_path: Path, ctx: dict | None = None,
 
     r.metrics = {
         "tier1_spans": tier1_spans,
+        # A subset of the above, not a fourth column of the same thing: how much
+        # of this page's Tier-1 carries glyphs nobody keyed here.
+        "tier1_adopted": tier1_adopted,
         "unclear": len(root.findall(f".//{q('unclear')}")),
         "comments": sum(1 for _ in root.iter(etree.Comment)),
         "notes": sum(1 for _ in root.iter(q("note"))),

@@ -235,3 +235,61 @@ def test_validate_names_the_missing_step(tmp_path):
            "ocr_lines": [], "toc_window": []}
 
     assert any("never expanded" in e for e in validate(p, ctx).errors)
+
+
+# --- the flags are what is *left* ---------------------------------------------
+
+def _ocr_view(tmp_path: Path, ref: str = "1-151") -> None:
+    """The `ocr/` view for the page, and the scan `build_context` names."""
+    src = tmp_path / "gt" / "ocr" / f"chukchi-{ref}.xml"
+    dst = tmp_path / "ocr" / f"chukchi-{ref}.xml"
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+    (tmp_path / "scans").mkdir(exist_ok=True)
+    (tmp_path / "scans" / f"chukchi-{ref}.png").write_bytes(b"")
+
+
+def test_a_ratified_term_is_not_also_flagged(tmp_path):
+    """A form the page has already adjudicated at the raster needs no flag: the
+    handle writes its glyphs, and a flag beside it invites the pass to read the
+    form instead — the one thing the handle exists to stop. So `detector_flags`
+    becomes the residue: Tier-1 material with no ratified reading behind it."""
+    from harness.context import build_context
+    _gt_page(tmp_path)
+    _ocr_view(tmp_path)
+
+    ctx = build_context("1-151", tmp_path)
+    assert {t["text"] for t in ctx["tier1_terms"]} == {"kełiˊlın", "uˊᵋnel"}
+    assert not [f for f in ctx["detector_flags"]
+                if f["token"] in {"kełiˊlın", "uˊᵋnel"}]
+
+
+def test_the_suppression_is_by_line_and_token_not_token_alone(tmp_path):
+    """`index` is the ALTO line, so the same form on a line the ground truth
+    does not cover stays flagged. Suppressing on the token alone would let one
+    ratified occurrence silence every other one on the page."""
+    from harness.context import tier1_terms
+    _gt_page(tmp_path)
+    _ocr_view(tmp_path)
+    terms = tier1_terms("1-151", tmp_path)
+    assert {(t["line"], t["text"]) for t in terms} == {
+        (0, "kełiˊlın"), (1, "uˊᵋnel")}
+
+
+def test_the_provenance_summary_is_split_by_rank(tmp_path):
+    """The line was written for three ranks and counted all spans as proposals
+    "each needing a human reading against the page" — false about a `#gt` span,
+    and asking for exactly the retyping the transclusion removed."""
+    from harness.validate import validate
+    _gt_page(tmp_path)
+    ctx = {"page_ref": "1-151", "root": str(tmp_path), "figures_on_page": [],
+           "ocr_lines": [], "toc_window": []}
+    p = _tei(tmp_path, "1-151",
+             '<foreign xml:lang="ckt" resp="#gt">uˊᵋnel</foreign> and '
+             '<foreign xml:lang="ckt" resp="#llm">kełiˊlın</foreign>')
+
+    rep = validate(p, ctx)
+    assert rep.metrics["tier1_spans"] == 2
+    assert rep.metrics["tier1_adopted"] == 1
+    assert any(w.startswith("1 Tier-1 span(s) at #llm") for w in rep.worklist)
+    assert any(w.startswith("1 Tier-1 span(s) at #gt") for w in rep.worklist)

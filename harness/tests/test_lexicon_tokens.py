@@ -28,6 +28,7 @@ from pathlib import Path
 
 from harness.detectors import (
     EDGE_PUNCT,
+    detect_all,
     join_broken_words,
     lexicon_miss,
     native_corpus_lines,
@@ -213,3 +214,33 @@ def test_broken_english_words_leave_the_miss_list(tmp_path):
     assert "Chuk" not in tokens and "chee" not in tokens
     assert "Chuk-chee" not in tokens
     assert "reindeer-herds" not in tokens
+
+
+# --- the cut reaches the flags too -------------------------------------------
+#
+# `detect_all` published the raw whitespace-delimited token and stripped only
+# inside the one check that needed it, so `tei context`'s `detector_flags` handed
+# a collation pass `"mêˊmêl),"` — the printer's parentheses and comma glommed
+# onto a Tier-1 form, in the one field a reader acts on. Two consequences, and
+# the second is why it sat unnoticed: `harness proposal codepoints` and a raster
+# look get asked about characters that are not in the word; and the string did
+# not compare equal to the *same form* in `tier1_terms`, which cuts. That
+# inequality is what kept the payload carrying the same evidence twice.
+
+def test_a_flag_publishes_the_token_without_the_printers_punctuation():
+    flags = detect_all([nfd("Chukchee, mêˊmêl), Phoca")])["tokens"]
+    assert nfd("mêˊmêl") in {f["token"] for f in flags}
+    assert not any(f["token"].endswith(("),", ")", ",")) for f in flags)
+
+
+def test_the_cut_does_not_reach_a_tier1_character():
+    """The negative half, and the one a fix here breaks silently: U+0027 and
+    U+02CA are segments of the notation, not edges of a token."""
+    flags = detect_all([nfd("(va'ɪrg̣ɪn), “qeˊñu”")])["tokens"]
+    tokens = {f["token"] for f in flags}
+    assert nfd("va'ɪrg̣ɪn") in tokens
+    assert nfd("qeˊñu") in tokens
+
+
+def test_a_token_that_is_only_punctuation_raises_nothing():
+    assert detect_all(["— ( ) ,"])["tokens"] == []

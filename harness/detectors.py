@@ -663,7 +663,23 @@ def detect_all(lines: list[str], root: Path = Path("."),
             continue
         para.append(line)
         for m in TOKEN.finditer(line):
-            tok = m.group()
+            # The **one shared cut**, as `EDGE_PUNCT` says it is. This loop used
+            # to publish the raw whitespace-delimited token and strip only where
+            # a particular check needed it, so a flag came out as `"mêˊmêl),"` —
+            # the printer's punctuation glommed onto a Tier-1 form in the one
+            # field a reader is meant to act on. Two costs, and the second is
+            # the one that mattered: `harness proposal codepoints` and a raster
+            # look were being asked about characters that are not in the word,
+            # and the string did not compare equal to the *same form* in
+            # `tier1_terms`, which strips. That inequality is what kept the page
+            # context handing a collation pass the same evidence twice.
+            #
+            # U+0027 survives this deliberately (see `EDGE_PUNCT`): it is the
+            # spirant mark, not punctuation, so stripping it would delete a
+            # Tier-1 character from every report at once.
+            tok = m.group().strip(EDGE_PUNCT)
+            if not tok:
+                continue
             hits = []  # union semantics: a token may carry several types
             if any(c in INVENTORY_CHARS for c in tok):
                 hits.append("inventory_glyph")
@@ -671,7 +687,7 @@ def detect_all(lines: list[str], root: Path = Path("."),
                 hits.append("apostrophe_adjacency")
             if DOT_ABOVE_G.search(tok):
                 hits.append("dot_above_g")
-            if _suffix_mark_drop(tok.strip(EDGE_PUNCT)):
+            if _suffix_mark_drop(tok):
                 hits.append("suffix_mark_drop")
             if MEDIAL_CAPS.search(tok):
                 hits.append("word_medial_caps")
@@ -731,9 +747,10 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
         for f in detect_all(draft.split("\n"), root)["tokens"]:
             if f["type"] != "lexicon_miss":
                 continue
-            tok = f["token"].strip(EDGE_PUNCT)
-            if not tok:
-                continue
+            # No second strip: `detect_all` publishes the token already cut, so
+            # repeating `EDGE_PUNCT` here would be the "second strip downstream"
+            # that constant's own comment records as the thing to stop doing.
+            tok = f["token"]
             counts[tok] = counts.get(tok, 0) + 1
             where.setdefault(tok, ref)
     return [{"token": t, "count": c, "first_seen": where[t]}

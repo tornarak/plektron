@@ -1572,6 +1572,23 @@ raster to settle what is on the paper, never to file the oddity as authorial and
   cannot do otherwise, since `lexicon_miss` only ever tests ASCII components, so a
   Tier-1 form listed there is inert by construction rather than by discipline.
 
+  **The cut is shared and happens once, at the tokenizer.** `detect_all` used to
+  publish the raw whitespace-delimited token and strip `EDGE_PUNCT` only inside
+  the one check that needed it, so a flag reached the collation payload as
+  `"mêˊmêl),"` — the printer's parentheses glommed onto a Tier-1 form in the one
+  field a reader acts on. It sent `proposal codepoints` and a raster look after
+  characters that are not in the word, and it meant the string did not compare
+  equal to the *same form* in `tier1_terms`, which is what let one page's evidence
+  reach the pass twice in two spellings. U+0027 survives the cut deliberately: it
+  is the spirant mark, not punctuation.
+
+  **`tei context` then suppresses a flag on a token that page has already
+  ratified**, on the `(line, token)` pair rather than the token alone, so
+  `detector_flags` is the *residue* — Tier-1 material with no adjudicated reading
+  behind it, plus the ordinary English triage. `1-151` goes 4 flags → 0. What
+  survives on a ground-truth page is the floor's own blind spot, which is the
+  right thing for a triage list to hold.
+
 **Density, measured** on `1-048` and `2-030` — the two densest pages, so a ceiling
 and not an average. Inventory glyphs are **3.3% of characters** but fall in **43.8%
 of lines**.

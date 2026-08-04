@@ -162,6 +162,18 @@ lives on, and the gate checks it.
   `harness ocr zoom REF --only <index>` when the page leaves a real doubt. It was
   a position in `catmus_draft` until 2026-08 and joined to nothing.
 
+  **A token already in `tier1_terms` is not also flagged**, so these are the
+  *residue*: the Tier-1 material on this page with no ratified reading behind it,
+  plus the ordinary English triage. On a ground-truth page that leaves very
+  little — `1-151` goes from four flags to none — and what is left is the floor's
+  blind spot, a form with no marks for the detectors to catch. A flag beside a
+  handle would have invited you to read the form instead of naming it, which is
+  the one thing the handle exists to stop.
+
+  **The token is the word, without the printer's punctuation.** It arrived as
+  `"mêˊmêl),"` until 2026-08, and the parentheses were the tell that two fields
+  were describing one form in two spellings.
+
 # The seam
 
 **About 70% of text pages open mid-paragraph** — 69.8% measured over the keyed

@@ -593,6 +593,26 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     detected = detect_all(draft.split("\n"), root,
                           indices=[str(r["index"]) for r in kept])
     figures = _figures_on_page(ref, root)
+    # A term this page has already adjudicated at the raster does not also need
+    # flagging, and flagging it is worse than redundant: `tier1_terms` gives the
+    # pass a handle that writes the ratified glyphs, and a flag on the same token
+    # invites it to read the form instead — the one thing the handle exists to
+    # stop. So the flags become *what is left*: the Tier-1 material on this page
+    # with no ratified reading behind it, which on an `mz/`-backed page is all of
+    # it and on a ground-truth page is the floor's residue (an unmarked ASCII
+    # inventory member gets no handle and still wants a human).
+    #
+    # Suppressed on the pair, never on the token alone: `index` is the ALTO line,
+    # so the same form occurring on a line the ground truth does not cover stays
+    # flagged. Comparable only because both sides now cut `EDGE_PUNCT` once, at
+    # the tokenizer — while `detect_all` published `"mêˊmêl),"` no equality test
+    # here could have matched anything.
+    # `t["line"]`, not `t["index"]` — the latter is the handle `tei expand`
+    # resolves, and these two numberings share neither meaning nor range.
+    terms = tier1_terms(ref, root)
+    ratified = {(str(t["line"]), t["text"]) for t in terms}
+    detected["tokens"] = [f for f in detected["tokens"]
+                          if (f["index"], f["token"]) not in ratified]
 
     return {
         "page_ref": ref,
@@ -634,7 +654,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # Tier-1 tokens already adjudicated at the raster, named by a page-local
         # handle so the pass never retypes one. Empty on a page with no ground
         # truth, which is 802 of 832 — there the pass reads and flags instead.
-        "tier1_terms": tier1_terms(ref, root),
+        "tier1_terms": terms,
         # Foreign spans already committed on the physically neighbouring pages,
         # recomputed from the TEI each call. For cross-checking a term keyed two
         # ways — never a source to copy from; this page's draft is the only
