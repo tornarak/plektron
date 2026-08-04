@@ -121,7 +121,13 @@ def _read(path: Path) -> tuple[list[dict], dict]:
     Read line by line and filtered before parsing: a transcript carries whole
     rasters as base64 and a batch of them will not fit anywhere useful at once.
     """
-    reqs, meta = [], {"pre": []}
+    # **Keyed by `requestId`, last event wins.** A request emits several usage
+    # records as it streams, and the early ones carry a partial `output_tokens`.
+    # Counting lines instead of requests inflated `reqs` two- to fourfold and
+    # every sum with it — an agent that made 10 requests reported 22.
+    by_id: dict[str, dict] = {}
+    order: list[str] = []
+    meta: dict = {"pre": []}
     with path.open() as fh:
         for line in fh:
             if '"cache_read_input_tokens"' not in line and '"role":"user"' not in line:
@@ -144,7 +150,7 @@ def _read(path: Path) -> tuple[list[dict], dict]:
             # part of the context this file can see — the system prompt is not
             # in the transcript, so it is inferred as `opening - preamble` and
             # never reported as though it had been read.
-            if rec.get("type") == "user" and not reqs:
+            if rec.get("type") == "user" and not order:
                 text = _text(rec)
                 meta["pre"].append({"chars": len(text), "label": _label(rec),
                                     "hash": sha1(text.encode()).hexdigest()[:8]})
@@ -154,7 +160,11 @@ def _read(path: Path) -> tuple[list[dict], dict]:
             if not u:
                 continue
             tiers = u.get("cache_creation") or {}
-            reqs.append({
+            rid = rec.get("requestId") or f"_{len(order)}"
+            if rid not in by_id:
+                order.append(rid)
+            by_id[rid] = {
+                "in": u.get("input_tokens", 0),
                 "read": u.get("cache_read_input_tokens", 0),
                 "write": u.get("cache_creation_input_tokens", 0),
                 "tier": ("1h" if tiers.get("ephemeral_1h_input_tokens")
@@ -162,8 +172,8 @@ def _read(path: Path) -> tuple[list[dict], dict]:
                 "out": u.get("output_tokens", 0),
                 "model": rec.get("model") or (rec.get("message") or {}).get("model", ""),
                 "at": rec.get("timestamp", ""),
-            })
-    return reqs, meta
+            }
+    return [by_id[r] for r in order], meta
 
 
 def _requests(path: Path) -> list[dict]:
@@ -192,6 +202,14 @@ def _agent(path: Path) -> dict | None:
         "opening": first["read"] + first["write"],
         "opened": "warm" if first["read"] and not first["write"] else "COLD",
         "tail": sum(r["write"] for r in reqs[1:]),
+        # What the agent carried at the end: its last request's whole input.
+        # This is the figure the *harness* reports per agent (within ~0.6%, see
+        # VERBS.md) and it is a terminal measure, not a sum — an agent's context
+        # is re-sent every request, so summing requests counts it many times.
+        "ctx": reqs[-1]["in"] + reqs[-1]["read"] + reqs[-1]["write"],
+        # Tokens this agent read that it would have written had it gone first.
+        # Zero for the cold one, which had to write them for the others.
+        "saved": first["read"] if first["read"] and not first["write"] else 0,
         "out": sum(r["out"] for r in reqs),
         "first": min(r["at"] for r in reqs),
         "last": max(r["at"] for r in reqs),
@@ -295,21 +313,37 @@ def preamble(agents: list[dict]) -> list[dict]:
     """
     if not agents:
         return []
-    depth = max(len(a["pre"]) for a in agents)
+    # Grouped by agent type, for the same reason `cohorts` is: two types have
+    # different standing instructions, so pooling their turn 1s compares things
+    # that were never candidates to share a prefix and reports a spurious
+    # "variants: 2" for a batch that was fine.
+    by_type: dict[str, list[dict]] = {}
+    for a in agents:
+        by_type.setdefault(a["type"], []).append(a)
     out_rows = []
-    for i in range(depth):
-        turns = [a["pre"][i] for a in agents if len(a["pre"]) > i]
-        variants = {t["hash"] for t in turns}
-        sizes = sorted({t["chars"] for t in turns})
-        out_rows.append({
-            "turn": i + 1,
-            "label": turns[0]["label"],
-            "agents": len(turns),
-            "variants": len(variants),
-            "chars": str(sizes[0]) if len(sizes) == 1 else f"{sizes[0]}..{sizes[-1]}",
-            "shared": "yes" if len(variants) == 1 and len(turns) > 1
-                      else "n/a" if len(turns) == 1 else "NO",
-        })
+    for atype, members in by_type.items():
+        for i in range(max(len(a["pre"]) for a in members)):
+            turns = [a["pre"][i] for a in members if len(a["pre"]) > i]
+            variants = {t["hash"] for t in turns}
+            sizes = sorted({t["chars"] for t in turns})
+            out_rows.append({
+                "type": atype,
+                "turn": i + 1,
+                "label": turns[0]["label"],
+                "agents": len(turns),
+                "variants": len(variants),
+                # **Characters, and the one figure here that is not tokens.**
+                # No per-message token count is recorded anywhere: `opening`
+                # covers the system prompt and the whole preamble undivided, so
+                # a per-turn token number could only be a chars/4 estimate, and
+                # an estimate sitting in a column beside measured token counts
+                # is exactly the plausible-but-underived figure this project
+                # refuses. The column is named for its unit for that reason.
+                "chars": str(sizes[0]) if len(sizes) == 1
+                         else f"{sizes[0]}..{sizes[-1]}",
+                "shared": "yes" if len(variants) == 1 and len(turns) > 1
+                          else "n/a" if len(turns) == 1 else "NO",
+            })
     return out_rows
 
 
@@ -333,30 +367,54 @@ def cohorts(agents: list[dict]) -> list[dict]:
     fabrication this whole module exists to catch.
     """
     if not agents:
-        return [{"model": "", "opening": 0, "agents": 0, "sessions": 0, "warm": 0,
-                 "shared": "no agents in scope", "missed": 0}]
-    keyed: dict[tuple[str, int], list[dict]] = {}
+        return [{"type": "", "model": "", "opening": 0, "own": 0, "agents": 0, "sessions": 0, "warm": 0,
+                 "saved": 0, "missed": 0, "originated": 0, "if_all_cold": 0, "ceiling": "n/a", "note": "no agents in scope"}]
+    # **Keyed on agent type as well as model and opening.** Opening alone very
+    # nearly decides it — two agent types have different system prompts and so
+    # cannot open at the same total — but "very nearly" is not a grouping rule,
+    # and the type is what a reader of this table wants to see anyway. Reporting
+    # the model while grouping on something the model does not determine was the
+    # kind of half-stated key this repo treats as a defect.
+    keyed: dict[tuple[str, str, int], list[dict]] = {}
     for a in agents:
-        keyed.setdefault((a["model"], a["opening"]), []).append(a)
+        keyed.setdefault((a["type"], a["model"], a["opening"]), []).append(a)
     rows = []
-    for (model, opening), members in sorted(keyed.items(),
-                                            key=lambda kv: max(a["last"] for a in kv[1])):
+    for (atype, model, opening), members in sorted(
+            keyed.items(), key=lambda kv: max(a["last"] for a in kv[1])):
         warm = sum(1 for a in members if a["opened"] == "warm")
         # One member must always write the prefix; (n-1) reads is the ceiling,
         # and the gap between that and what happened is what a stagger buys.
         missed = (len(members) - 1 - warm) * opening
+        # What the batch originated once, versus what it would have cost with
+        # every sibling cold. The ratio has a ceiling worth knowing: with N
+        # agents the saving is (N-1)P / (N(P+W)), which tends to P/(P+W) as the
+        # batch grows — so a pass whose shared prefix dominates its per-item
+        # work approaches halving, and one with a thin prefix never will.
+        own = sum(a["ctx"] - opening for a in members)
+        per = own // len(members)
         rows.append({
+            "type": atype,
             "model": model,
             "opening": opening,
+            # The prefix and the mean per-agent work beyond it, side by side,
+            # because `ceiling` is just their ratio and a bare percentage is not
+            # checkable. A ceiling near 50% means the two columns are near
+            # equal, which is a fact about this pass and not a property of the
+            # arithmetic — a fatter prefix or leaner per-item work moves it.
+            "own": per,
             "agents": len(members),
+            "originated": opening + own,
+            "if_all_cold": len(members) * opening + own,
+            "ceiling": f"{opening / (opening + per):.1%}"
+                       if len(members) > 1 and own else "n/a",
             # Cross-session, deliberately. The cache is content-addressed, so two
             # sessions opening at the same prefix genuinely do share it — a cohort
             # spanning sessions is a real one, not a grouping artifact.
             "sessions": len({a["session"] for a in members}),
             "warm": warm,
-            "shared": f"{warm * opening:,} read"
-                      if len(members) > 1 else "singleton — nothing to share",
+            "saved": warm * opening,
             "missed": missed,
+            "note": "" if len(members) > 1 else "singleton — nothing to share",
         })
     return rows
 

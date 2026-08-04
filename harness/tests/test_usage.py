@@ -43,9 +43,11 @@ def _transcript(tmp_path, name: str, reqs) -> None:
 
 
 def _made(model="sonnet-5", opening=35798, opened="warm", last="2026-08-04T12:00:00Z",
-          ttl="5m", session="s1", pre=None):
+          ttl="5m", session="s1", pre=None, ctx=None, atype="moll-reader"):
     return {"model": model, "opening": opening, "opened": opened, "last": last,
-            "ttl": ttl, "session": session, "pre": pre or []}
+            "type": atype,
+            "ttl": ttl, "session": session, "pre": pre or [],
+            "ctx": opening if ctx is None else ctx}
 
 
 # --- the transcript reader ------------------------------------------------
@@ -99,12 +101,26 @@ def test_differing_openings_do_not_pool():
                     _made(opening=35032, opened="COLD")])
     assert len(rows) == 3
     assert all(r["agents"] == 1 for r in rows)
-    assert all("singleton" in r["shared"] for r in rows)
+    assert all("singleton" in r["note"] for r in rows)
 
 
 def test_a_different_model_is_a_different_cohort():
     rows = cohorts([_made(), _made(model="opus-5")])
     assert len(rows) == 2
+
+
+def test_a_different_agent_type_is_a_different_cohort():
+    """Two types have different standing instructions and so were never
+    candidates to share a prefix; pooling them reports a saving nobody made."""
+    rows = cohorts([_made(), _made(atype="groundtruth-reader")])
+    assert len(rows) == 2
+
+
+def test_preamble_does_not_pool_across_agent_types():
+    rows = preamble([_made(pre=[_turn(7, "aa")]),
+                     _made(atype="groundtruth-reader", pre=[_turn(2300, "bb")])])
+    assert len(rows) == 2
+    assert all(r["variants"] == 1 for r in rows)
 
 
 def test_missed_counts_only_prefixes_a_sibling_had_already_written():
@@ -115,11 +131,33 @@ def test_missed_counts_only_prefixes_a_sibling_had_already_written():
 
 def test_singleton_claims_no_saving():
     rows = cohorts([_made(opened="COLD")])
-    assert rows[0]["missed"] == 0 and rows[0]["shared"].startswith("singleton")
+    assert rows[0]["missed"] == 0 and rows[0]["note"].startswith("singleton")
 
 
 def test_no_agents_reports_rather_than_raising():
     assert cohorts([])[0]["agents"] == 0
+
+
+def test_savings_are_the_prefix_the_warm_siblings_did_not_write():
+    rows = cohorts([_made(opened="COLD", ctx=70000), _made(ctx=70000),
+                    _made(ctx=70000)])
+    own = 3 * (70000 - 35798)
+    assert rows[0]["saved"] == 2 * 35798
+    assert rows[0]["originated"] == 35798 + own
+    assert rows[0]["if_all_cold"] == 3 * 35798 + own
+
+
+def test_the_ceiling_is_the_prefix_share_of_one_agents_cost():
+    """(N-1)P / (N(P+W)) tends to P/(P+W), so a batch whose prefix equals its
+    per-item work approaches halving and one with a thin prefix never does."""
+    rows = cohorts([_made(opening=100, ctx=200)] * 4)      # P == W
+    assert rows[0]["ceiling"] == "50.0%"
+    rows = cohorts([_made(opening=100, ctx=1100)] * 4)     # W is 10x P
+    assert rows[0]["ceiling"] == "9.1%"                    # 100/1100, not 1/10
+
+
+def test_a_singleton_claims_no_ceiling():
+    assert cohorts([_made(opened="COLD", ctx=70000)])[0]["ceiling"] == "n/a"
 
 
 # --- warmth ---------------------------------------------------------------
