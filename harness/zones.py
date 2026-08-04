@@ -590,6 +590,96 @@ def _independent(ref: str, root: Path, nudge_px: int = NUDGE_PX) -> bool:
     return kind != "identical" and shift > nudge_px
 
 
+# The kinds `page_departure` returns, weakest claim about the human first, and
+# the field name each takes in a composition row. Ordered, because the order *is*
+# the strength scale — a report that listed them alphabetically would put
+# `a label differs` above `zone count differs` and say nothing.
+DEPARTURE_KINDS = (
+    ("identical", "identical"),
+    ("geometry only", "geometry_only"),
+    ("a label differs", "label_differs"),
+    ("zone count differs", "zone_count_differs"),
+    ("no prediction", "no_prediction"),
+    # Off the scale rather than at the end of it. A plate has no correct
+    # segmentation — `score` excludes them for that reason — so it has nothing to
+    # have departed *from*, and its empty file against an absent prediction would
+    # otherwise read as `no prediction`, the table's strongest claim. That put 83
+    # plates in the report and hid `1-359`, the one page that genuinely reached
+    # human zoning with nothing predicted, which is the same burial `corpus
+    # state`'s `zoned-mz` rung had to be fixed for. Kept as a row and not dropped:
+    # a silent exclusion is how a shrinking denominator reads as a result.
+    ("exempt", "exempt"),
+)
+
+
+def departures(refs: list[str], root: Path = Path("."),
+               nudge_px: int = NUDGE_PX) -> list[dict]:
+    """Per page: how far the human ruling went beyond the prediction it started from.
+
+    **The criterion existed and the audit did not.** `_independent` has been the
+    rule `--remark-eval` selects on since the eval set was drawn, and nothing ever
+    reported it afterwards — so "this held-out page is the model's own output with
+    the edges pulled straight" was knowable at selection time and invisible at
+    every reading of a score since. A qualifier that outlives its number by exactly
+    one command is the same shape as a provenance rank nothing re-checks.
+
+    `shift` is null where it means nothing: a page whose zone *count* differs has
+    no per-edge correspondence to measure, and `page_departure` returns a sentinel
+    there rather than a distance. Publishing the sentinel would put 10⁹ in a column
+    of pixel values.
+
+    **Two thresholds meet in `zones diff`'s output and they are not the same
+    number**, which is worth knowing before reading the two sections together.
+    `zone_diff`'s `edge` fires above `min_zone_h_px` (30) and asks *is this a
+    different segmentation of the page*; `NUDGE_PX` (20) asks *did the human's
+    ruling go beyond straightening edges*. So a page can report zero differences
+    and still count independent — `1-052` does, at 22 px. That is not a
+    contradiction but it is a real tension, since the looser question currently
+    has the tighter bar, and moving either constant moves the eval set.
+    """
+    splits = load_splits(root)
+    out = []
+    for ref in refs:
+        ref = norm_ref(ref)
+        split = splits.get(ref, "")
+        kind, shift = ("exempt", 10**9) if split == "exempt" \
+            else page_departure(ref, root)
+        out.append({
+            "ref": ref,
+            "split": split,
+            "kind": kind,
+            "shift_px": shift if kind in ("identical", "geometry only") else None,
+            # `exempt` is off the scale, so it is not independent evidence either
+            # — the sentinel shift would otherwise carry it past the threshold and
+            # count 83 plates as the strongest witnesses in the set.
+            "independent": (kind not in ("identical", "exempt")
+                            and shift > nudge_px),
+        })
+    return out
+
+
+def departure_composition(rows: list[dict],
+                          nudge_px: int = NUDGE_PX) -> list[dict]:
+    """`departures` rolled up per split — what a split is actually *made of*.
+
+    This is the row that belongs beside a recall figure. A held-out set half of
+    which is the model's own segmentation measures how well the model agrees with
+    itself, and the number alone cannot say so.
+    """
+    by_split: dict[str, list[dict]] = {}
+    for r in rows:
+        by_split.setdefault(r["split"] or "(unsplit)", []).append(r)
+    out = []
+    for split in sorted(by_split):
+        rs = by_split[split]
+        counts = {field: sum(1 for r in rs if r["kind"] == kind)
+                  for kind, field in DEPARTURE_KINDS}
+        out.append({"split": split, "pages": len(rs), **counts,
+                    "independent": sum(1 for r in rs if r["independent"]),
+                    "nudge_px": nudge_px})
+    return out
+
+
 def _spread(items: list, k: int) -> list:
     """`k` items spread evenly through the sequence, not the first `k`.
 
@@ -2995,6 +3085,11 @@ def score(root: Path = Path("."), cfg: dict | None = None,
     conf = [{"truth": t, "predicted": p or "(unmatched)", "n": n}
             for (t, p), n in sorted(confusion.items(), key=lambda kv: -kv[1])]
     return {"pages_compared": len(both),
+            # The exact set scored, so the independence report beside it is over
+            # those pages and not over a re-derived list that could differ. Popped
+            # by the CLI before the report is printed — a 700-ref string is not a
+            # row anyone reads.
+            "scored_refs": both,
             # Counted and named, never a silent drop: a scored set that shrank
             # without saying so would look like pages that were never predicted.
             "exempt_skipped": " ".join(skipped_exempt),

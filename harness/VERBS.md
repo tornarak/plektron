@@ -745,10 +745,11 @@ opinion of which pages are held out.
 ```
 
 ### zones score
-**Does** compares predictions against `gt/zones/` — recall and precision per split, never blended, plus the confusion matrix and a held-out permutation test. Prints two tables, and a stderr warning when the permutation says relabelling rather than a weak model.
+**Does** compares predictions against `gt/zones/` — recall and precision per split, never blended, plus the confusion matrix, a held-out permutation test, and an **`independence`** table: what each split is *made of*, on `page_departure`'s scale. Prints three tables, and a stderr warning when the permutation says relabelling rather than a weak model.
 **Reads** `gt/zones/`, `mz/zones/` or `--model`, the frozen split lists.
 **Writes** —
 **Exit** always 0 — measurement. Exit 2 if the frozen split lists are gone: without them the training pages cannot be told from the rest, and a comparison whose witnesses may be one witness must refuse.
+**Note** **read the `independence` row before the recall figure above it.** A held-out set half of which is the model's own segmentation with the edges pulled straight measures how well the model agrees with itself, and the number cannot say so. `_independent` has been the rule `remark-eval` selects on since the set was drawn and nothing reported it afterwards; as of 2026-08-04 the frozen eval set is **64 independent of 138** (77 `geometry only`, 4 `identical`), i.e. the quota was filled past the independent pool. `no_prediction` reads 0 without `--model`, since the scored set is then the intersection of the two stores; with `--model` every keyed page is a candidate and the column is live.
 ```
 --model PATH     segment this checkpoint in memory instead of reading mz/zones/ [read mz/]
 --decode {raw,dp} [raw]
@@ -812,11 +813,13 @@ opinion of which pages are held out.
 ```
 
 ### zones diff [REF ...]
-**Does** what differs between the two stores, paired by vertical overlap: `only_in_gt`, `only_in_mz`, `label`, `edge`. Prints a summary then the rows.
-**Reads** both stores, `data/zones_config.json`.
+**Does** what differs between the two stores, paired by vertical overlap: `only_in_gt`, `only_in_mz`, `label`, `edge`. Prints a summary, then the rows, then a per-page **`departure`** table — a different question from the rows: not *what* differs but **how far the human went beyond the model**, on the scale `--remark-eval` selects held-out pages by (`identical` < `geometry only` < `a label differs` < `zone count differs` < `no prediction`, plus `exempt`, which is off the scale).
+**Reads** both stores, `data/zones_config.json`, the split lists.
 **Writes** —
 **Exit** always 0 — measurement.
 **Note** an aggregate: refs scope the summary rather than multiplying it, and the rows already carry `ref`.
+**Note** **the `departure` section is scoped to `gt/zones/`, not to the intersection the rows above use**, so its page count is higher by exactly the pages nothing predicted. That is deliberate: `no prediction` is the strongest independence claim in the table, and a report visiting only pages that *have* a prediction can never emit it — a column advertising coverage it does not have.
+**Note** **two thresholds meet in this output and they are not the same number.** `edge` fires above `min_zone_h_px` (30 px) and asks *is this a different segmentation*; `NUDGE_PX` (20 px) asks *did the human go beyond straightening edges*. So a page can report zero differences and still count independent — `1-052` does, at 22 px. Not a contradiction, but the looser question currently has the tighter bar, and moving either constant moves the eval set.
 ```
 --all     every page present in both stores
 --root --json --toon --pager

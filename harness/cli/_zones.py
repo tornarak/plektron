@@ -357,8 +357,17 @@ def run_score(a) -> int:
     zmod, _ = _mod()
     rep = zmod.score(a.root, model_path=a.model, decode=a.decode, device=a.device)
     conf = rep.pop("confusion")
+    scored = rep.pop("scored_refs")
     out(a, rep)
     out(a, conf)
+    # **What each split is made of, beside what the model scored on it.** A recall
+    # figure over a held-out set half of which is the model's own segmentation with
+    # the edges pulled straight measures how well the model agrees with itself, and
+    # the number cannot say so. `_independent` has been the rule `remark-eval`
+    # selects on since the set was drawn; this is the first thing to report it, so
+    # the qualifier travels with the figure instead of expiring at selection time.
+    out(a, zmod.departure_composition(zmod.departures(scored, a.root)),
+        "independence")
     # A consistent relabelling is a different fault from a weak model and has a
     # different remedy, so it does not get to hide in a table.
     p = rep["permutation"]
@@ -424,6 +433,19 @@ def run_diff(a) -> int:
                                 sorted(Counter(r["kind"] for r in rows).items()))})
     if rows:
         out(a, rows, "differences")
+    # Per-page departure, which is a different question from the zone-level rows
+    # above: not *what* differs but **how far the human went beyond the model** —
+    # the scale `_independent` reads and, until now, the only thing in this
+    # package computed by a private function and reported by nothing.
+    #
+    # **Its scope is the keyed store, not the intersection the rows above use.**
+    # `no prediction` is the strongest independence claim in the table, and a
+    # report that only visits pages which *have* a prediction can never emit it —
+    # a column reporting coverage it does not have, which is the trap `LOOKALIKES`
+    # already paid for once with U+0121. So the counts differ between the two
+    # sections by exactly the pages nothing predicted, and that is the point.
+    out(a, zmod.departures(page_refs(a) or zmod.zone_refs(a.root), a.root),
+        "departure")
     return 0
 
 
