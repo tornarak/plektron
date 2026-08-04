@@ -62,6 +62,28 @@ the load being paid repeatedly, not the device being wrong. Check before blaming
 only because they touch disjoint `review/PP-NNN/` directories. The prompt names the ref
 in the first line and repeats "do not touch any other page".
 
+**Launch the first reader alone, wait ~10 s, then fan out the rest.** Every
+reader in a batch has a byte-identical prefix — the agent body, the preloaded
+SKILL.md, `CLAUDE.md`, the tool schemas — and only the rendered prompt at the end
+differs. Launched together they all miss the cache and all pay to write that
+prefix; launched a few seconds apart, the first writes it and the rest read it.
+Measured on this repo's sibling pass (the Moll reader, whose prefix is smaller):
+first agent 34,744 written and nothing read, second agent launched in the same
+instant 13,613 read and 21,080 written — about 40% of a batch's cache writes,
+duplicated per agent. **The magnitude is the sibling's; the mechanism is the
+same here and the prefix is larger**, since this agent preloads a longer pass doc
+and reads two more files. Ten seconds of stagger buys nearly all of it, and
+serialising the batch buys the rest at the cost of the parallelism, which is not
+a trade worth making. Batches run close together keep the prefix warm.
+
+The saving is small against a large allowance, and that is not the reason. This
+pass is meant to be runnable by people on cheaper plans and other platforms,
+where the same fixed prefix is paid at every scale. Note also that the agent's
+memory index sits in its system prompt: when a reader adds to
+`.claude/agent-memory/groundtruth-reader/`, the prefix changes and the next
+batch pays a full write. That is the cost of the memory channel, not a fault in
+it.
+
 ## What the prompt has to carry, and why each clause is there
 
 Every item below was earned by something going wrong, in this project or in the
@@ -333,9 +355,15 @@ can see which type a task was spawned under.
         `--store mz`.
       - {figures}
 
-    Deliverable: `review/{ref}/proposal.json`, normalized and clean. STOP THERE.
+    Deliverable: `review/{ref}/proposal.json`, normalized and clean — stop there,
+    and do not restore, serve or commit it.
 
-    Report back in the three parts your standing instructions specify: the page,
-    the checklist by section, and the image ladder.
+    **Then report, in the same turn: the pass is not finished when the file is
+    written.** Three parts, as your standing instructions specify — the page, the
+    checklist by section, and the image ladder. Written while the pass is still in
+    your hands, never reconstructed later: the ladder in particular is a record of
+    what you actually looked at, and a report assembled from memory after the fact
+    is the invented-second-witness defect wearing a different hat. "The deliverable
+    is written" is not a report and will be sent back.
 
 <!-- prompt:end -->
