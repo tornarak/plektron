@@ -47,12 +47,20 @@ reader 2 in the two lines asked for, and it cost nothing: both read the full
 35,798 on their next request, because that variation sits *behind* the prefix.
 Variation at the tail is free; variation at the head costs the whole block.
 
-**Neither message contains anything worth mis-copying, and that is deliberate.**
-Phase 1 is the single word `standby`; everything it used to say is standing and
-lives in the agent definition, which is in the system prompt and which nobody
-transcribes. Phase 2 names a ref and tells the reader to run `context` for
-itself. So the coordinator now hands over one identifier per page — the one
-thing that fails loudly when wrong, since `context moll-999` exits 2.
+**Neither message contains any prose at all, and that is deliberate.** Phase 1 is
+the single word `standby`; everything it used to say is standing and lives in
+the agent definition, which is in the system prompt and which nobody
+transcribes. **Phase 2 is the bare ref** — `moll-040`, eight characters. The
+reader runs `assign moll-040` on itself and the tool that measures the page also
+states the job. So the coordinator hands over one identifier per page and
+nothing else, and that identifier is the one thing that fails loudly when wrong.
+
+Phase 2 was a 622-character block until this was measured: the deliverable
+sentence, the STOP, the report instruction and three paths, of which only the
+ref was information — and the ref appeared in it **five times**, five chances to
+write one page's number in another page's message, buried in 600 characters that
+are identical across the batch and so read less carefully on the third
+repetition. All of it is derivable from the ref, so it is derived.
 
 It carried a rendered fourteen-line context block until this was noticed, and a
 coordinator retyping one is precisely the failure this project is organised
@@ -204,8 +212,16 @@ one path by which a reader could go looking for corpus rules to apply.
 
 In this order, because each answers a question the one before it raises:
 
+    uv run python scratch/chukchi/entry_bounds.py reconcile moll-023 moll-024 moll-025
     uv run python scratch/chukchi/entry_bounds.py witness moll-023 moll-024 moll-025
     uv run python scratch/chukchi/check_entries.py
+
+`reconcile` first, and it is the only witness over phase 2. `dispatch` refuses a
+ref named twice on the way out; this checks what came back, because **a
+duplicated or skipped ref is a *valid* ref** and so fails silently everywhere
+else — two readers on one page overwrite each other's file and the batch is one
+page short, with nothing downstream able to say which page went missing. Exit 1
+names the refs that produced no table.
 
 `witness` diffs each keyed headword against the OCR store. **A flag is a
 question, not a verdict** — of 26 uncorroborated headwords in one ten-page batch,
@@ -235,7 +251,6 @@ page-wide accent loss and bracket faults.
 
     Your page is **{ref}**. Do not touch any other page.
 
-        uv run python scratch/chukchi/entry_bounds.py context {ref}
         Read   scratch/chukchi/moll-scans/marked/{ref}.png
         Write  scratch/chukchi/moll-scans/entries/{ref}.md
 

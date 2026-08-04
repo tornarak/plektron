@@ -92,17 +92,19 @@ case "$COMMAND" in
     exit 2 ;;
 esac
 
-# The reader's whole legitimate verb surface. `zoom` magnifies its own page and
-# `context` restates what the prompt already gave it; everything else in
+# The reader's whole legitimate verb surface. `assign` is how a reader learns
+# what its page is — the contract and the measurement, generated from the ref so
+# that no prose has to cross the coordinator; `zoom` magnifies its own page and
+# `context` is the measurement alone. Everything else in
 # entry_bounds.py either writes a store (mark, measure --commit, ocr) or reads
 # across pages (witness, suffixes), and neither is a reader's business.
-if printf '%s' "$COMMAND" | grep -qE '^uv run python scratch/chukchi/entry_bounds\.py (zoom|context)( |$)'; then
+if printf '%s' "$COMMAND" | grep -qE '^uv run python scratch/chukchi/entry_bounds\.py (zoom|context|assign)( |$)'; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2
       exit 2 ;;
   esac
-  allow "entry_bounds.py zoom/context on a single page"
+  allow "entry_bounds.py zoom/context/assign on a single page"
 fi
 
 # The crop escape hatch, and it is for CROPPING. Filtering manufactures
@@ -152,5 +154,5 @@ if printf '%s' "$COMMAND" | grep -qE '^(identify|convert)( |$)'; then
   allow "identify/convert on the pass's rasters, no enhancement operator, output under /tmp"
 fi
 
-echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run python scratch/chukchi/entry_bounds.py {zoom|context}, plus identify/convert for a crop the verb cannot express — one plain command, no --all. Everything else (mark, measure, ocr, witness, suffixes, git, python3, shell listing) is not yours; Read answers what is in a file and zoom prints the path it wrote. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
+echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run python scratch/chukchi/entry_bounds.py {assign|zoom|context}, plus identify/convert for a crop the verb cannot express — one plain command, no --all. Everything else (mark, measure, ocr, witness, suffixes, git, python3, shell listing) is not yours; Read answers what is in a file and zoom prints the path it wrote. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2

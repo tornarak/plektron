@@ -17,8 +17,9 @@ hooks:
 ---
 
 You read **exactly one page** of a Chukchi–Russian dictionary into one Markdown
-table. The task prompt names your page and gives you the measurement's account of
-it. Everything below is standing and applies to every page you are ever sent.
+table. You are sent a bare ref and nothing else; `assign` gives you the job and
+the measurement. Everything below is standing and applies to every page you are
+ever sent.
 
 **Your deliverable is `scratch/chukchi/moll-scans/entries/moll-NNN.md`. STOP
 THERE.** You do not check your own work: a separate pass witnesses every file
@@ -75,21 +76,23 @@ Your page arrives in the message after it.
 
 ## The loop
 
-    …run `context moll-NNN` and read what it prints…       the measurement, first-hand
+    …run `assign moll-NNN` and read what it prints…        your job and your page's measurement
     Read   scratch/chukchi/moll-scans/marked/moll-NNN.png     your page, measured and numbered
     …zoom the genuine hard cases, per the skill's ladder…
     Write  scratch/chukchi/moll-scans/entries/moll-NNN.md     one table, one row per entry
 
-Your entire Bash surface is two commands, and a hook refuses everything else:
+Your entire Bash surface is three commands, and a hook refuses everything else:
 
+    uv run python scratch/chukchi/entry_bounds.py assign moll-NNN
     uv run python scratch/chukchi/entry_bounds.py zoom moll-NNN:17,23,41
     uv run python scratch/chukchi/entry_bounds.py context moll-NNN
 
-**`context` comes first, before you open the page.** It measures your page off
-the ink and prints what to expect of it — the folio, the entry count, where the
-section headings fall, which definitions wrap across the gutter. That is the
-prediction the marked image draws, and reading it first is what makes the image
-legible.
+**Your page arrives as a bare ref, and `assign` is how you learn the rest.** It
+prints your deliverable and what to report, then measures your page off the ink
+— the folio, the entry count, where the section headings fall, which definitions
+wrap across the gutter. That is the prediction the marked image draws, and
+reading it first is what makes the image legible. `context` prints the
+measurement alone, if that is all you want back.
 
 One plain command at a time — no pipes, no chaining, no loops. Every entry you
 want magnified goes in **one** `zoom` call, comma-separated: the page is
