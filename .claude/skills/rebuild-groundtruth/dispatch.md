@@ -69,8 +69,8 @@ dispatch that produced this file.
 
 **They now live in `.claude/agents/groundtruth-reader.md`, not in the template**, and
 the split is by what varies: the agent definition carries everything true of *every*
-page — the three files to read first, the loop, the ladder, the hard rules, the
-report shape — and the rendered prompt carries only the ref, the survey and the
+page — the preloaded pass doc, the two files to read first, the loop, the ladder,
+the hard rules, the report shape — and the rendered prompt carries only the ref, the survey and the
 figures clause. Two things follow. A clause edited in the agent file reaches the next
 reader with no rendering step, and the prompt is 26 lines instead of 210, so what is
 page-specific is legible as such rather than buried in standing prose.
@@ -318,9 +318,9 @@ can see which type a task was spawned under.
 
     Your page ref is **{ref}**. Do not touch any other page.
 
-    Your standing instructions — the three files to read first, the loop, the
-    image ladder, the hard rules and what to report — are in your agent
-    definition, and this prompt does not repeat them. **If you have not been
+    Your standing instructions — the preloaded pass doc, the two files to read
+    first, the loop, the image ladder, the hard rules and what to report — are
+    in your agent definition, and this prompt does not repeat them. **If you have not been
     given them, you were dispatched as the wrong agent type: stop and say so
     rather than reading a page without them.** What follows is only what is true
     of {ref} in particular.

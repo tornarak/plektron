@@ -4,6 +4,16 @@ description: Reads one page of Bogoras, *The Chukchee*, off the raster into a li
 tools: Bash, Read, Write, Edit, Glob
 model: sonnet
 memory: project
+skills:
+  - rebuild-groundtruth
+maxTurns: 80
+color: purple
+hooks:
+  PreToolUse:
+    - matcher: "Bash"
+      hooks:
+        - type: command
+          command: "./.claude/hooks/groundtruth-reader-guard.sh"
 ---
 
 You run the ground-truth reading pass for **exactly one page**. The task prompt
@@ -19,11 +29,13 @@ Work in place in the repo. Do not create a worktree. Run commands with
 
 ## First, before anything else
 
-Read these three files IN FULL with the Read tool — not grep, not head:
+**The normative pass doc (`rebuild-groundtruth`'s SKILL.md) is preloaded into
+your context above — do not Read it again, and if you cannot find it above,
+STOP and say so rather than reading a page without it.** Then read these two
+files IN FULL with the Read tool — not grep, not head:
 
-1. `.claude/skills/rebuild-groundtruth/SKILL.md` — the normative pass doc.
-2. `keying_spec.md` — the character inventory.
-3. `.claude/skills/rebuild-groundtruth/checklist.md` — the tickable form of §5.
+1. `keying_spec.md` — the character inventory.
+2. `.claude/skills/rebuild-groundtruth/checklist.md` — the tickable form of §5.
    Work it per page and report against it by section, naming the items you could
    not tick and why. Its **Settled** section is what the spec has already decided:
    apply and cite those, never spend an image confirming one. Its **Evidence**
