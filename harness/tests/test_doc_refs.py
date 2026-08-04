@@ -35,6 +35,12 @@ DOCS = [
     "harness/README.md",
     ".claude/skills/transcribe-page/SKILL.md",
     ".claude/skills/rebuild-groundtruth/SKILL.md",
+    "docs/segmentation.md",
+    "docs/pipeline.md",
+    "docs/apparatus.md",
+    "docs/rasters.md",
+    "docs/decisions.md",
+    "docs/open-questions.md",
 ]
 
 # A repo-relative path inside backticks: it must contain a directory separator.
