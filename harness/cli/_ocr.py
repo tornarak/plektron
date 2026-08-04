@@ -142,8 +142,7 @@ def register(cli):
                         "still pointing at mz")
 
     p = _store(refs_arg(add("lines", help="per-line records for a page — line id, "
-              "geometry and text, in reading order with empties kept, which is "
-              "the join detector_flags' line numbers cannot supply. `index` is "
+              "geometry and text, in reading order with empties kept. `index` is "
               "an identity, not a position: it stays what ALTO document order "
               "assigned, so labels are not consecutive in a banded listing"),
               all_="every page the store read holds"))

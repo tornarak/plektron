@@ -600,9 +600,11 @@ columns and neither has to say so. Four properties bind callers:
   `gt/ocr/`, so a naive walk sees each file twice, and a writer meets it again under
   the second name, finds it already done, and skips silently — the report then
   undercounts exactly what it touched. `normalize.scoped_files` does this.
-- **`context._lines_from_alto` drops empty lines and discards `@ID`**, so its index
-  is *not* the ALTO's, and `detector_flags`' line numbers inherit that offset. Join
-  through `lines.page_lines`, never through a detector flag's line number.
+- **`context._lines_from_alto` drops empty lines and discards `@ID`**, so a position
+  in `catmus_draft` is *not* an ALTO index. Join through `lines.page_lines`.
+  `detector_flags` used to inherit that offset; it now carries `index`, the ALTO
+  identity, so a flag joins `ocr_lines` and resolves with `ocr zoom --only`. The
+  position was replaced, not supplemented — see `detectors.detect_all`.
 - **A line polygon can exclude printed text.** `1-074` prints `5.` and `9.` outside
   their boxes; `1-073` puts its `5.` and its folio outside *every* box on the page.
   The omission is horizontal, so vertical padding never reaches it — `--margins`

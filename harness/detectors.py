@@ -12,9 +12,12 @@ therefore does not earn the lexicon suppression the others do — see
 NON_ENGLISH_HITS.
 
 `detect_all` returns those as **two** lists, `tokens` and `balance`, because
-they are two record shapes — `{type, line, token}` and
+they are two record shapes — `{type, index, token}` and
 `{type, paragraph, detail}`. Interleaved they would be a ragged table, which
 the tabular encoder cannot collapse; see emit.py.
+
+`index` is the ALTO line identity, not a position in the draft — see
+`detect_all` for why the position it replaced was worse than no number.
 
 The floor is a floor, but it is not an excuse for noise above it. A detector
 that fires on ordinary English is worse than one that stays quiet, because it
@@ -481,19 +484,41 @@ def footnote_report(texts: list[str]) -> dict:
             "gaps": gaps, "singletons": singletons, "ascii_openers": openers}
 
 
-def detect_all(lines: list[str], root: Path = Path(".")) -> dict[str, list[dict]]:
+def detect_all(lines: list[str], root: Path = Path("."),
+               indices: list[str] | None = None) -> dict[str, list[dict]]:
     """Token-level flags and paragraph-level balance flags, kept apart.
 
     Two lists rather than one because they are two different record shapes —
-    `{type, line, token}` and `{type, paragraph, detail}`. Interleaved they
+    `{type, index, token}` and `{type, paragraph, detail}`. Interleaved they
     would be a ragged table, which the tabular encoder cannot collapse (see
     emit.py); separated, both collapse to a header and rows.
+
+    **A flag carries `index` — the line's ALTO identity — and no longer a `line`
+    position.** It used to carry the 1-based position in `catmus_draft`, which
+    was the only handle the collation pass had and which joined to nothing: the
+    draft drops apparatus zones and figdesc lines, so on `1-151` its 37 entries
+    sit against `ocr_lines`' 39, and draft position 6 is ALTO index 4. A pass
+    told "line 6" and reaching for `harness ocr zoom --only 6` got a different
+    line of the same page, silently. The skill's answer was a rule telling humans
+    never to make that join, on the one number the model was given.
+
+    `index` is what `ocr_lines`, `proposal.json`, `decision.json` and `ocr zoom
+    --only` all key on, so a flag is now citable in `@facs` and resolvable
+    against the raster. The position it replaced disambiguated nothing the token
+    in the record did not already say.
+
+    `indices` is positional to `lines`. Omitted — or the wrong length, which
+    would misalign every flag rather than fail — `index` is `null`, never a
+    guess. `suggest_lexicon` passes nothing, reading only `type` and `token`.
     """
+    if indices is not None and len(indices) != len(lines):
+        indices = None
     flags: list[dict] = []
     balance: list[dict] = []
     lex = _lexicon(root)
     para, para_no = [], 1
     for i, line in enumerate(lines, start=1):
+        idx = indices[i - 1] if indices else None
         line = unicodedata.normalize("NFD", line)
         if not line.strip():
             balance += _balance(para, para_no)
@@ -520,12 +545,12 @@ def detect_all(lines: list[str], root: Path = Path(".")) -> dict[str, list[dict]
                 if "ambiguous" in kinds:
                     hits.append("apostrophe_ambiguous")
             for h in hits:
-                flags.append({"type": h, "line": i, "token": tok})
+                flags.append({"type": h, "index": idx, "token": tok})
             # Union semantics, as the module docstring says: only a detector
             # that has already established the token is not English earns the
             # right to suppress the lexicon check.
             if lex and not (set(hits) & NON_ENGLISH_HITS) and lexicon_miss(tok, lex):
-                flags.append({"type": "lexicon_miss", "line": i, "token": tok})
+                flags.append({"type": "lexicon_miss", "index": idx, "token": tok})
     balance += _balance(para, para_no)
     return {"tokens": flags, "balance": balance}
 
@@ -622,16 +647,34 @@ def native_corpus(root: Path = Path(".")) -> list[tuple[str, str]]:
     carrying no mark at all (a bare `c`, `s`, `j`, `x`, `h`) is invisible to
     it by construction and never enters this corpus.
     """
+    return [(ref, tok) for ref, _, tok in native_corpus_lines(root)]
+
+
+def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
+    """(ref, line index, token) — `native_corpus` with the line each token sat on.
+
+    `native_corpus` is this with the middle field dropped, rather than the two
+    walking the store separately: the selection rule is the thing that has to
+    match between every arm reading native forms, so it is written once.
+
+    **The index is `page_lines`', which is the one `proposal.json` and
+    `decision.json` are keyed by** and the one `harness ocr lines` prints. Not
+    document order and not a counter: `context._lines_from_alto` drops empty
+    lines, so its position is not the ALTO's, and joining through it is the
+    documented way to mis-map an adjudicated page (CLAUDE.md, "Three invariants
+    from that work").
+    """
+    from .lines import page_lines
+
     out = []
     for ref in _restored_refs(root):
         p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
-        tree = etree.parse(str(p))
-        for s in tree.getroot().iter("{*}String"):
-            line = unicodedata.normalize("NFD", s.get("CONTENT") or "")
+        for rec in page_lines(p):
+            line = unicodedata.normalize("NFD", rec.get("text") or "")
             for m in TOKEN.finditer(line):
                 tok = m.group().strip(EDGE_PUNCT)
                 if tok and any(c in INVENTORY_CHARS for c in tok):
-                    out.append((ref, tok))
+                    out.append((ref, str(rec["index"]), tok))
     return out
 
 

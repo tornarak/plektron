@@ -142,3 +142,36 @@ def test_straddle_is_a_partial_overlap(monkeypatch):
     L.mark_figure_overlap([straddler], "1-001", Path("."))
     assert straddler["in_figdesc"] is None
     assert straddler["figdesc_straddle"] == "fd"
+
+
+def test_a_detector_flag_names_the_alto_index_not_a_draft_position():
+    """The flag's number has to be the one every other file is keyed by.
+
+    `catmus_draft` is a filtered view — apparatus zones and figdesc lines are
+    dropped — so its positions do not join `ocr_lines`, and on `1-151` the draft's
+    37 entries sit against 39 with position 6 naming ALTO index 4. A pass reading
+    a flag and reaching for `ocr zoom --only` therefore got a different line of the
+    same page, with nothing raised. `line` was replaced rather than supplemented:
+    a second number whose only correct use is "none" is a worse bug than one.
+    """
+    from harness.detectors import detect_all
+
+    lines = ["plain english here", "keliˊlɪn", "more english"]
+    flags = detect_all(lines, Path("."), indices=["0", "9", "4"])["tokens"]
+    hit = [f for f in flags if f["token"] == "keliˊlɪn"]
+    assert hit, "the notated token is flagged"
+    assert hit[0]["index"] == "9", "the index it was given, not its position (2)"
+    assert "line" not in hit[0], "the position is gone, not carried alongside"
+
+
+def test_a_flag_index_is_null_rather_than_misaligned():
+    """Wrong-length indices misalign every flag, so they are refused wholesale.
+
+    Null is a legible "not available"; an off-by-one index is a citation to the
+    wrong line that reads exactly like a citation to the right one.
+    """
+    from harness.detectors import detect_all
+
+    for indices in (None, ["0"]):
+        flags = detect_all(["keliˊlɪn", "x", "y"], Path("."), indices=indices)["tokens"]
+        assert flags and all(f["index"] is None for f in flags)

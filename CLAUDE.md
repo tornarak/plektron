@@ -357,8 +357,14 @@ for the pass — which is now a *revision* loop rather than a restoration one, s
 every page has text. `restore` reports which of the two it did.
 
 Three invariants from that work bind anything touching lines, not just that pass.
-`context._lines_from_alto` **drops empty lines**, so its index is not the ALTO's —
-join through `harness ocr lines`, never through `detector_flags`' line numbers. And **a
+`context._lines_from_alto` **drops empty lines**, so a position in `catmus_draft` is
+not an ALTO index — join through `harness ocr lines`. `detector_flags` used to inherit
+that offset and no longer does: a flag carries **`index`**, the ALTO identity, so it
+joins `ocr_lines`, resolves with `ocr zoom --only` and is citable in `@facs`. The
+`line` position it carried was replaced rather than supplemented — on `1-151` the
+draft's 37 entries sat against `ocr_lines`' 39 and position 6 named index 4, so the
+obvious use of that number silently cited the wrong line, and a second number whose
+only correct use is "none" is worse than one. And **a
 line polygon can exclude printed text**: `1-074` prints `5.` and `9.` outside their
 boxes, `1-073` the same with its `5.` and its folio `51` outside *every* box on the
 page. The omission is horizontal, so no vertical padding reaches it; `--margins`

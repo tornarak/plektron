@@ -520,8 +520,10 @@ Verify the report: `geometry_drift` and `text_mismatch` must both be empty.
   neighbouring page, or propose a sort the inventory has never attested.
 - Take CATMuS as a witness to any glyph. It reads 0% of the inventory. It is evidence
   about line geometry and about English, and nothing else.
-- Join crops through `detector_flags` line numbers. `context._lines_from_alto` drops
-  empty lines, so its index is not the ALTO's; join through `harness ocr lines`.
+- Join crops through a *position* in `catmus_draft`. `context._lines_from_alto` drops
+  empty lines, so its positions are not ALTO indices; join through `harness ocr
+  lines`. A `detector_flags` record is safe — it carries `index`, the same identity
+  `ocr lines` prints and `ocr zoom --only` takes.
 - Trust the browser for the text in its own fields — see the session-restore guards in
   `harness/review.py`. If a save reports many lines changed after one keystroke, stop
   and recover from `.json.prev` or `<ref>.jsonl`.

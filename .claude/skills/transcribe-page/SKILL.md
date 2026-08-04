@@ -142,7 +142,11 @@ lives on, and the gate checks it.
   page's Tier-1 content comes from this page, and a form on a neighbour is never
   a target to harmonize toward.
 - **`detector_flags`** and **`balance_flags`** are mechanical triage, run before
-  the call. A flag means "worth a look", never "this is wrong".
+  the call. A flag means "worth a look", never "this is wrong". A token flag's
+  **`index` is the line's ALTO identity**, the same one `ocr_lines` carries — so a
+  flag is directly citable in `@facs` and resolvable against the raster with
+  `harness ocr zoom REF --only <index>` when the page leaves a real doubt. It was
+  a position in `catmus_draft` until 2026-08 and joined to nothing.
 
 # The seam
 

@@ -158,12 +158,13 @@ def _lines_from_alto(path: Path) -> list[str]:
     substring test and every detector line number." Half of that is spent -- the
     verbatim-substring test is gone (see the comment at its old site in
     `validate.validate`). The live half stands: `catmus_draft` and
-    `detector_flags`' line numbers must agree *with each other*, and they still
-    do, because `build_context` derives both from this one call.
+    `detector_flags` must agree *with each other*, and they still do, because
+    `build_context` derives both from this one call.
 
-    Empty lines are still dropped, so index *i* here is **not** the *i*-th
-    `TextLine` -- unchanged, and still the reason nothing may join a detector
-    flag to a crop except through `page_lines`.
+    Empty lines are still dropped, so position *i* here is **not** the *i*-th
+    `TextLine`. That used to be the whole of a detector flag's addressing, and is
+    no longer: `build_context` passes this reader's line indices to `detect_all`,
+    so a flag names the ALTO identity and the position is not published at all.
 
     Imported locally: `lines` imports `norm_ref` from this module, so a
     module-level import here would be circular.
@@ -484,11 +485,17 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     #
     # An unlabelled block is *kept*: `gt/ocr/` and `gt/seg/` label none, so treating
     # blank as apparatus would empty the draft for every ground-truth page.
-    lines = [r["text"] for r in recs
-             if r["text"].strip() and not r["in_figdesc"]
-             and r["zone"] not in APPARATUS_ZONES]
+    kept = [r for r in recs
+            if r["text"].strip() and not r["in_figdesc"]
+            and r["zone"] not in APPARATUS_ZONES]
+    lines = [r["text"] for r in kept]
     draft = _draft_text(lines)
-    detected = detect_all(draft.split("\n"), root)
+    # The indices ride along so a flag names the line's ALTO identity rather than
+    # its position in this filtered draft. `_draft_text` is a plain join, so the
+    # two lists stay positional to each other; `detect_all` checks the lengths
+    # anyway and reports `null` rather than misaligning if they ever part.
+    detected = detect_all(draft.split("\n"), root,
+                          indices=[str(r["index"]) for r in kept])
     figures = _figures_on_page(root / FIGDIR / f"{stem}.xml", root)
 
     return {

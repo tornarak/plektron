@@ -2,9 +2,10 @@
 
 Nothing else in the repo keys anything at line granularity, and the existing
 reader cannot be pressed into it. `context._lines_from_alto` **drops empty lines
-and discards `@ID`**, so index *i* in `catmus_draft` is not the *i*-th `TextLine`
-in the ALTO, and the `line` field on every `detector_flags` record inherits that
-offset. Nothing may join a detector flag to a crop except through `page_lines`.
+and discards `@ID`**, so position *i* in `catmus_draft` is not the *i*-th `TextLine`
+in the ALTO. A `detector_flags` record used to carry that position and now carries
+`index`, taken from `page_lines` — so a flag joins `ocr_lines`, resolves with
+`ocr zoom --only`, and is citable in `@facs`.
 
 That reader used to be described here as "deliberately left alone: changing it
 would move `catmus_draft`, and with it the firewall's substring test and every
@@ -12,8 +13,9 @@ detector line number." Half of that is spent — the verbatim-substring test was
 removed (see the comment at its old site in `validate.validate`). The live half
 still binds, and is now satisfied differently: `_lines_from_alto` delegates its
 *order* to `page_lines`, so `catmus_draft` and `detector_flags` cannot disagree
-with each other or with `ocr_lines`. It still drops empty lines, so its indices
-are still not the ALTO's.
+with each other or with `ocr_lines`. It still drops empty lines, so a draft
+position is still not an ALTO index — which is why a flag now carries the index
+outright instead of a position that had to be trusted not to have drifted.
 
 **Order is presentation; `index` is identity.** `page_lines` returns lines in
 reading order — banded rows, left to right — while `index` stays the position
