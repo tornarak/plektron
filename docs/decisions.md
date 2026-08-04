@@ -57,6 +57,7 @@ unexamined. Read through in 2026-08 and corrected in six places. **Every page in
 but the shape that produced it is not, and a `gt`-with-no-proposal page is
 invisible to `ocr pages`, which reports the store rather than the review
 directory.
+
 What that page settled is worth more than its six corrections: **`gt/ocr/` and
 `data/readings.md` are not independent witnesses on a figure page.** This
 ground truth was hand-corrected from CATMuS and the caption block descends from
@@ -65,12 +66,14 @@ corroborating each other, and only a fresh raster read separated them. Nothing
 in either file records the shared ancestor. Same fault as the verbatim firewall,
 `review`'s span diff and `zones score`'s `unseen` row — two inputs that turn out
 to be one — arriving through provenance nobody wrote down.
-What that measured is worth carrying: **the residual error classes are §5.1's
-dropped `g̣` and §5.2's `ɪ`-as-`i`, they survive readers who explicitly report
+
+What that measured is worth carrying: **the residual error classes are
+`keying_spec.md` §5.1's dropped `g̣` and §5.2's `ɪ`-as-`i`, they survive readers who explicitly report
 checking them, and the only safeguard that does not depend on a reader
 remembering anything is distributional** — `harness lexicon marks` puts `g̣` at
 93.9% of Tier-1 `g` and `ɪ` at nearly 2:1 over `i`, so a page against the grain
 is visible without opening a scan.
+
 **That claim is now measured rather than asserted, and computed rather than
 eyeballed.** `harness ocr corrections` aggregates what adjudicators actually
 changed across all 29 reviewed pages: scoped past 2026-07-31 the only class
@@ -81,6 +84,7 @@ rarely a sample worth a verdict. Its `scope: ALL` row against the per-ref rows
 is what separates **one reader's slip from a lean every job shares**, and the
 second is the dispatch prompt or the keying spec rather than anybody's reading
 — the one finding nothing else in the loop can reach.
+
 Two of its three arms are deterministic and also run inside `harness proposal
 check`, so a reader meets them on its own page. Its prior is leave-one-out
 (after `restore` a page's gt **is** the adjudicated descendant of its own

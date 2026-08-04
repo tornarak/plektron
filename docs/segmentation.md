@@ -125,7 +125,8 @@ What the findings are worth, read against the scans:
   is now **stale** — the band no longer occurs since the anchor was rebuilt — and
   says so, which is the other half of that mechanism working.
 - `1-033`'s four `column-position` errors were **the anchor's fault, not the
-  zones'**, and fixing them rebuilt the anchor. See below.
+  zones'**, and fixing them rebuilt the anchor — the runs-not-edges derivation
+  above.
 - `1-137` is the anchor's fault too, and is **left standing**. Its column is 68 px
   out because fig. 21's photographic background extends left of the measure and sits
   near enough the block that `max_run_gap_px` bridges it into one 1817 px run —
