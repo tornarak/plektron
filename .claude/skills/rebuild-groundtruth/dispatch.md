@@ -300,6 +300,13 @@ prose edited here reaches the next agent with no other step.
       1. .claude/skills/rebuild-groundtruth/SKILL.md — the normative pass doc
       2. keying_spec.md — the character inventory. §5's error classes are a
          per-line checklist, not background awareness.
+      3. .claude/skills/rebuild-groundtruth/checklist.md — §5 in tickable form.
+         Work it per page and report against it by section, naming the items you
+         could not tick and why. Its **Settled** section is the list of things
+         the spec has already decided: apply and cite those, never spend an image
+         confirming one. Its **Evidence** section is the opposite — those cannot
+         be settled by looking harder, so each wants a contrast word named in
+         `note`, or an explicit "no contrast on this line".
 
     Then follow that skill's loop for a page that has NO ground truth (the
     "restoration" branch), which is your case: mz/ocr/chukchi-{ref}.xml already
@@ -476,6 +483,12 @@ prose edited here reaches the next agent with no other step.
     concluded, how many lines you keyed, which lines carry Tier-1
     (Chukchee/Koryak/Yupik) notation, every doubt you flagged and why, and
     anything you want the adjudicator to look at first. Be concise and concrete.
+
+    Then, separately: the checklist, by section, naming every item you could not
+    tick and why — and anything the pass made harder than it needed to be. A
+    tool that did not exist, a rule you had to hunt for, an image you had to
+    spend twice. That last part is not padding: it is the only route by which a
+    reader's experience reaches the next reader.
 
     Then report separately on the image ladder, which is measured per run:
       - which rungs you used, and how many images you opened in total;

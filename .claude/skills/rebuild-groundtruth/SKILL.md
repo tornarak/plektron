@@ -329,7 +329,15 @@ to the raster there. See `keying_spec.md` §2.8; those are keyed `(??/????)` any
 
 ## Error classes
 
-**The checklist itself now lives in `keying_spec.md` §5** — moved there because it
+**`checklist.md`, beside this file, is the tickable form** — one line per item, no
+rationale, grouped by what you are supposed to *do* with each: **Settled** (apply
+and cite; going to the raster to re-confirm one of these is a wasted image),
+**Evidence** (absence-shaped, no tool settles them, name a contrast word in `note`),
+**Mechanical** (run the verb and read its output). Work it per page and report
+against it. It carries no reasoning on purpose — the reasoning is §5, and restating
+reasoning is the thing that has demonstrably not worked.
+
+**The reasoning itself lives in `keying_spec.md` §5** — moved there because it
 governs the same misreading classes the collation pass hits keying Tier-1 spans off
 the raster, not just this one. Read it in full alongside the rest of the spec before
 a page's first line, and run it as a **per-line pass over every Tier-1 line**, zoomed
