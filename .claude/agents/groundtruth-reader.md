@@ -10,7 +10,7 @@ maxTurns: 80
 color: purple
 hooks:
   PreToolUse:
-    - matcher: "Bash"
+    - matcher: "Bash|Read|Write|Edit"
       hooks:
         - type: command
           command: "./.claude/hooks/groundtruth-reader-guard.sh"

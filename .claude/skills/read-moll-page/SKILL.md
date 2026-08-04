@@ -33,6 +33,16 @@ in a different script, in a scratch side quest.
 Same stem, `.md` for `.png`. One file in, one file out. If
 `scratch/chukchi/moll-scans/entries/` does not exist, create it.
 
+**Normally you are the `moll-reader` subagent and this document was preloaded
+into your context**, alongside a short standing brief — your Bash surface, the
+hard rules, what to report — in `.claude/agents/moll-reader.md`. That brief and
+this document are the two halves of one instruction and neither repeats the
+other. A coordinator sending a batch renders one prompt per page with
+`entry_bounds.py dispatch` and hands each to one `moll-reader`; how to run a
+batch, and what the tool refuses to dispatch, is `dispatch.md` beside this file.
+Invoked directly as `/read-moll-page moll-NNN` this document stands alone and
+you follow it as written.
+
 **This skill covers the dictionary body, folios 9–163 (files `moll-010` …
 `moll-164`).** The volume also carries front matter and three appendices, and
 they are *not* this job — the row shape differs, there is no Russian to gloss,
@@ -175,6 +185,15 @@ and write down the disagreement:
      continuation margin -->
 ```
 
+**The comment must OPEN with `disagrees:`** — `<!-- disagrees: … -->`, its own
+comment, nothing before the word. The check matches the opener, so `<!-- note:
+… see disagrees: … -->` is not a disagreement to it, however good the reason
+inside is: the page reports as an unexplained count mismatch and your reasoning
+is invisible to the thing that was meant to read it. Both readers of the first
+subagent batch made exactly this substitution, so it is worth one deliberate
+look before you finish. Anything that is *not* a disagreement — a smudge you
+ruled out, a stray mark, a gloss oddity — goes in a separate `<!-- note: … -->`.
+
 A `disagrees:` comment demotes the mismatch from a warning to a flagged line
 carrying your reason, which is then read by a human. Its cost is the reason it
 exists: **a reader that silently conformed to the expected count and a reader
@@ -303,8 +322,13 @@ write than the command, it needs an approval you may not get, and it is a tell
 that a verb is missing or is being routed around. If `zoom` genuinely
 does not cover what you need, this box has **ImageMagick 6** — `identify` for
 dimensions, `convert IN.png -crop WxH+X+Y +repage OUT.png` for an arbitrary
-box. There is no `magick`. Write output to your scratchpad, never into
-`moll-scans/marked/` or `moll-scans/`.
+box. There is no `magick`. Write output to **`scratch/chukchi/moll-scans/crops/`**
+and nowhere else — not `/tmp`, not `moll-scans/marked/`, not `moll-scans/`
+itself. A crop is the evidence behind a reading, and the person adjudicating
+your page has to be able to find it beside the page it came from; a crop in a
+temp directory is a citation to something nobody can open. `zoom/` is the
+verb's, and a hand-made crop landing there would be indistinguishable from one
+the tool measured.
 
 That escape hatch is for **cropping and nothing else**, and it does not reopen
 the scale cap: `-resize` above 4× and every enhancement operator are out by the
@@ -339,7 +363,19 @@ watching for them.
   that looks perfectly well-formed, sorts within one position of the truth, and
   passes every check. One page carried **five** of them. **If you have keyed a
   headword ending `-лын`, go back and look at it** — the ending is `-льын` far
-  more often than not.
+  more often than not. `check_entries.py` now flags every `-лын` final, so this
+  one will be caught after you; catching it yourself is cheaper than a second
+  pass over the page.
+
+  **Know why you make this error, because knowing is most of the defence.** A
+  sign before `ы` is impossible in Russian — `ъ` stands only before iotated
+  vowels, `ь` never before `ы` — and ordinary here: 158 instances in the first
+  1073 headwords, 139 of them this suffix. So the sequence you are keying is one
+  your Russian is actively pulling you away from, and dropping the sign lands you
+  on a string that *looks right in the wrong language*. The pull runs one way
+  only: you will not invent a `ьы` that is not printed. Wherever `ы` follows
+  `л`, `ч`, `т`, `н` or `р`, the question "is there a sign in there" is worth
+  asking of the ink rather than of your ear.
 
   The second is confusing the two signs with each other, in both directions:
   `витъывит` keyed `витьывит`, `вэчьым` keyed `вэчым`. At print size they differ
@@ -386,6 +422,14 @@ watching for them.
   it: the audit compares headwords, and headwords carry no accent at all; the
   collation rules never look at the gloss; and the gloss is still perfectly good
   Russian without them.
+
+  **A stressed `и` is not `й`.** The acute sits exactly where the breve sits,
+  so `и́` and `й` differ only in whether the mark leans. `заи́ка` came back keyed
+  `зайка` — a real Russian word, in a gloss beside `заика́ться`, and nothing
+  downstream would ever have seen it: the witness pass compares headwords and
+  glosses are checked by nobody. When a `й` turns up in a word that would be
+  stressed on that vowel, read it again. The rest of the gloss usually decides
+  it before the ink does.
 
   **Chukchi does not mark stress. Never put an accent on a Chukchi form** —
   not on the headword, not on a `(мн. …)` plural, not on a `см.` target. There
@@ -621,6 +665,13 @@ pages. One page, one file, one table.
 - For every headword I keyed ending `-лын`: did I look again to check it is not
   `-льын`? And for every one containing `-ттыргын`: is it not `-тгыргын`?
   *(These two are the errors this book actually produces.)*
+- Did every Russian gloss keep the accent the page prints — including the short
+  one-word glosses? *(`полови́на`, `оста́ток`, `(че́м-л.)` were all keyed bare in a
+  single batch. The gloss is ~90% of the page's text and **nothing downstream
+  compares it to anything**, so an accent dropped here is dropped for good.)*
+- Did I key any `й` where the page prints `и` under an acute? *(`заи́грывать`,
+  not `зайгрывать`. The breve is a curve, the acute a straight stroke; compare
+  it against another accent on the same line before deciding.)*
 - Did every numbered bracket I gave a row to actually contain a flush-left bold
   headword — rather than a quire mark, a bare sense number, or two entries?
   *(Checked one by one, not by the total.)*

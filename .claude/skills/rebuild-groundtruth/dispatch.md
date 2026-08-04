@@ -62,19 +62,29 @@ the load being paid repeatedly, not the device being wrong. Check before blaming
 only because they touch disjoint `review/PP-NNN/` directories. The prompt names the ref
 in the first line and repeats "do not touch any other page".
 
-**Launch the first reader alone, wait ~10 s, then fan out the rest.** Every
-reader in a batch has a byte-identical prefix — the agent body, the preloaded
-SKILL.md, `CLAUDE.md`, the tool schemas — and only the rendered prompt at the end
-differs. Launched together they all miss the cache and all pay to write that
-prefix; launched a few seconds apart, the first writes it and the rest read it.
-Measured on this repo's sibling pass (the Moll reader, whose prefix is smaller):
-first agent 34,744 written and nothing read, second agent launched in the same
-instant 13,613 read and 21,080 written — about 40% of a batch's cache writes,
-duplicated per agent. **The magnitude is the sibling's; the mechanism is the
-same here and the prefix is larger**, since this agent preloads a longer pass doc
-and reads two more files. Ten seconds of stagger buys nearly all of it, and
-serialising the batch buys the rest at the cost of the parallelism, which is not
-a trade worth making. Batches run close together keep the prefix warm.
+**Launch the first reader alone, wait ~10 s, then fan out the rest together.**
+Stagger the first only; the others can go at once.
+
+A reader's context arrives in two parts, and they behave differently. The system
+prompt — agent body, tool schemas, `CLAUDE.md`, memory index — comes first and is
+identical across siblings, so it can be read from cache. Then two conversation
+turns: **the rendered prompt, which differs per page, and only after it the
+preloaded SKILL.md, which does not**. Because a cache prefix ends at the first
+differing byte, the pass doc sits behind the variation and is rewritten in full
+for every page — no launch order reaches it, and neither does shortening the
+prompt. What the stagger can buy is the system prompt: concurrent siblings may
+each miss and each write it, where a stagger lets one write and the rest read.
+
+Measured on this repo's sibling pass (the Moll reader): the system half is
+~13.7k and the rewritten half ~21.3k, and a reader launched twelve seconds after
+another opened within 1% of one launched simultaneously — so the ~21.3k is
+confirmed timing-proof, while whether the stagger saves the ~13.7k is **not yet
+established**, both trials having been two-agent batches where the second read
+that segment either way. **The magnitudes are the sibling's; the mechanism is the
+same here and this agent's prefix is larger**, since it preloads a longer pass
+doc and reads two more files. Ten seconds is cheap enough to keep on the chance,
+and the real lever is elsewhere: moving standing content out of the preloaded
+doc and into the agent body, ahead of the variation.
 
 The saving is small against a large allowance, and that is not the reason. This
 pass is meant to be runnable by people on cheaper plans and other platforms,

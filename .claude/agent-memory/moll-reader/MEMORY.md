@@ -1,0 +1,5 @@
+- [Quire marks numbered as entries](quire-marks.md) — check a lone bracket at the foot of a column before keying it as a headword
+- [Hyphen line-wrap in glosses](hyphen-line-wrap.md) — join a gloss word split by a line-end hyphen (e.g. обере-/гать → оберега́ть); don't key the fragments separately
+- [Multi-entry bracket](multi-entry-bracket.md) — a bracket can group many entries, not just two; an oversized zoom crop is the tell
+- [Non-entry brackets, other shapes](non-entry-brackets.md) — an all-caps no-gloss fragment can be numbered as an entry too, not just digit-dash quire marks
+- [Flush-wrap false positive](flush-wrap-false-positive.md) — the warning can resolve to "not a join" fast, by checking hyphen-vs-punctuation at 2x
