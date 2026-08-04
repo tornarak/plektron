@@ -331,7 +331,8 @@ def _chunk_sheets(items, per_sheet: int, max_h: int | None):
 
 
 def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "sheet",
-                   sheet_w: int = SHEET_W, max_h: int | None = None):
+                   sheet_w: int = SHEET_W, max_h: int | None = None,
+                   name_for=None):
     """Tile (label, image) pairs into indexed composite sheets.
 
     Each strip gets its index drawn in the left margin and a rule beneath it, so
@@ -346,6 +347,16 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
     which sizes the sheet to the widest crop for exactly that reason.
 
     `max_h` caps a sheet's height as well as its strip count; see `_chunk_sheets`.
+
+    `name_for(labels) -> str` names each sheet after **what is on it** instead of its
+    position in this call. Sequential numbering is only safe when a directory has one
+    writer: `<prefix>-001.png` means "the first sheet of whatever was last asked
+    for", so two `--only` selections over one page overwrite each other and each
+    call's returned index goes on naming files that now hold the other's pictures.
+    Content-derived names make an overlapping call *reuse* a file rather than fight
+    over it, which is also what makes re-running a selection idempotent. Duplicates
+    within a single call — a line whose strips straddle two sheets — take a `-b`,
+    `-c` suffix in chunk order, since the packing is deterministic.
     """
     from PIL import Image, ImageDraw, ImageFont
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -354,7 +365,7 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
     except OSError:
         font = ImageFont.load_default()
 
-    sheets, index = [], []
+    sheets, index, used = [], [], {}
     for chunk in _chunk_sheets(items, per_sheet, max_h):
         scaled = []
         for label, im in chunk:
@@ -372,8 +383,15 @@ def compose_sheets(items, out_dir: Path, per_sheet: int = 10, prefix: str = "she
             draw.text((10, y + 4), label.split(":")[0], fill=0, font=font)
             y += im.height + GUTTER
             draw.line([(0, y - GUTTER // 2), (sheet_w, y - GUTTER // 2)], fill=180, width=1)
-        n = len(sheets) + 1
-        path = out_dir / f"{prefix}-{n:03d}.png"
+        if name_for is None:
+            stem = f"{prefix}-{len(sheets) + 1:03d}"
+        else:
+            stem = name_for([lab for lab, _ in chunk])
+            k = used.get(stem, 0)
+            used[stem] = k + 1
+            if k:
+                stem = f"{stem}-{chr(ord('b') + k - 1)}"
+        path = out_dir / f"{stem}.png"
         sheet.save(path)
         sheets.append(path)
         index.append({"sheet": path.name,

@@ -275,6 +275,9 @@ SINGLE_REF_OK = {
     ("tei", "context"):
         "the payload is one page's collation prompt, built to hand to one model "
         "for one page; a merged stream is not consumable by what it exists for",
+    ("ocr", "dispatch"):
+        "the same — one page's reading prompt, handed to one agent. Concatenating "
+        "two would produce a text that names two refs and instructs on neither",
     ("proposal", "set"):
         "LINE/--field/--value name one entry of one proposal",
     ("proposal", "replace"):
@@ -289,6 +292,9 @@ NO_ALL_OK = {
         "expensive in time and disk, and written per page by a pass working on "
         "that page; a corpus form is a great many bytes nobody asked for",
     ("ocr", "sheets"): "the same as crops",
+    ("ocr", "numbered"):
+        "the same as crops — one composite per page, written by the pass reading "
+        "that page. 832 of them is a gigabyte nobody asked for",
     ("ocr", "zoom"): "magnifies selected lines *of* a page",
     ("zones", "delete"):
         "un-keying the whole ground-truth store must not be one flag away from a "

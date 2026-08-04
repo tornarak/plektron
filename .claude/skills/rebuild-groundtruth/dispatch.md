@@ -94,8 +94,20 @@ dispatch that produced this file.
   machine text, or the two witnesses the span diff exists to compare collapse into
   one.
 - **The zoom ceiling, numerically.** "`--zoom 2` by default, never above 4, all
-  lines in one call, use `--margins`." An agent left to its own judgement escalates,
-  and past 4× there is no source detail left to buy.
+  lines in one call." An agent left to its own judgement escalates, and past 4×
+  there is no source detail left to buy. `--margins` is *not* a default — see the
+  template; it costs a strip on every selected line and answers a question about
+  the margin, which most doubts are not.
+- **A settled rule is not a doubt.** Say plainly: where `keying_spec.md` states a
+  closed rule, apply it and cite it; the raster is for what the spec does not
+  decide. `3-063`'s reader zoomed twice to adjudicate straight-vs-curly quotes
+  when §1 and §5.6 say the book sets curly throughout and never straight — the
+  escaped straight quotes in the machine text were an encoding artifact the spec
+  alone disposes of. That is the cheapest saving available at this rung, and it
+  cuts the same way spanning does: both stop the reader paying pixels for a
+  question already answered.
+- **The image ladder, and that it is a ladder.** Name the three rungs in order and
+  say each is paid for only where it is used. See below.
 - **Superscript markers, spelled out.** `¹` U+00B9, never the ASCII digit. The error
   class with no internal signal.
 - **Prefer unresolved.** "A doubt that survives one 4× look IS the answer — write it
@@ -124,6 +136,47 @@ corpus-wide attestation. `2-045`'s reader asserted the apostrophe/pause mark was
 zero-attested and used that to license reading every raised mark as stress; the
 premise held (599 U+02CA against 0 U+0027 in `gt/ocr/`) but it was a claim doing
 real work in a reading, and unchecked it is a doctrine applied on faith.
+
+## What the reading costs, and the ladder that follows from it
+
+The reading half is dominated by images, and an image's cost is a fact about
+**pixels alone**: a model sees it as 28×28 patches, `⌈w/28⌉ × ⌈h/28⌉` visual
+tokens, and anything over the per-image ceiling — 2576 px long edge, 4784 tokens
+— is downscaled until it fits. Greyscale, bit depth and file size do not enter
+into it. Worth stating because the obvious first economy is to make the derived
+images grey, and it buys **nothing** here; they already are, since `compose_sheets`
+builds mode `L` and `scans/` has been greyscale since the raster pass. What that
+bought was decode time.
+
+Measured on this corpus, per page:
+
+| image | source px | delivered | tokens |
+|---|---|---|---|
+| `numbered` composite | 2660×3525 | 0.64× | ~4,800 |
+| one full contact sheet | 1907×1946 | 1.00× | ~4,760 |
+| one `--only 10-14` sheet | 1904×517 | 1.00× | ~1,300 |
+| one `zoom2` sheet | 1450×1460 | 1.00× | ~2,760 |
+
+Two things follow, and the first is not obvious. **A whole page cannot be delivered
+above about 0.64× however many pixels you send** — the ceiling does the downscaling
+— so the numbered composite is a fixed ~4.8k tokens and can never settle a question
+about one mark. It is an orientation instrument. But `2-031`'s three contact sheets
+cost ~14.3k for the same page, and the prompt used to make reading all of them
+mandatory before any zoom. Most pages of this book are English prose that never
+needs a crop.
+
+So: **`numbered` → `sheets --only` → `zoom --only`**, each rung paid for only where
+it is used. An English-only page goes from ~19k tokens of mandatory images to
+~4.8k. A page with four doubtful lines pays ~4.8k + ~1.3k rather than ~14.3k, and
+still gets a closer look at the lines that earned one.
+
+Two constants are tuned against that ceiling and should not be nudged without
+redoing the arithmetic. `ZOOM_CLIENT_W = 1450` with `ZOOM_SHEET_H = 1600` is 3016
+of the 4784 patches, so a zoom sheet is **not** resized and `--zoom N` really is
+N×. And `NUMBER_FONT = 48` is large for the same reason in reverse: 0.64× of it is
+the ~31 px the reader actually sees, where the contact sheets' 26 px would arrive
+at 17 px and be a guess. The labels are serif rather than the sheets' mono because
+at that delivered size a sans `1` is a bare stroke.
 
 ## Check the batch distributionally, before the human sees it
 
@@ -219,14 +272,28 @@ human before handing them the URL.
 
 ## Template
 
-Substitute the ref, the line/zone counts from `predict`, and any page-specific note
-(`2-047` got "19 lines over 5 zones suggests a sparse or figure-heavy page, so the
-gap check matters more than usual here").
+**Do not transcribe this by hand — `harness ocr dispatch PP-NNN` renders it.** The
+block below is the source and this section is its reasoning; the verb substitutes
+the survey, and is the only thing that should ever produce a prompt from it.
+
+That rule was written after being broken twice in one session. Hand-copying put
+five clauses into the prompt an agent actually ran that existed nowhere in this
+file — so the doc described a prompt nobody sent, the run measured something
+unwritten, and anyone debugging the result afterwards would have debugged the wrong
+text. It is the same fault as writing a glyph into a note instead of citing its
+codepoint: a normative thing reproduced probabilistically, with no witness to the
+difference.
+
+The markers around the block are load-bearing (`harness/dispatch.py` reads between
+them) and the `{braces}` are substituted. Everything else is sent verbatim, so
+prose edited here reaches the next agent with no other step.
+
+<!-- prompt:begin -->
 
     You are running the ground-truth reading pass for exactly one page of Bogoras,
-    *The Chukchee*, in the repo at <ROOT> (work in place; do not create a worktree).
+    *The Chukchee*, in the repo at {root} (work in place; do not create a worktree).
 
-    Your page ref is **PP-NNN**. Do not touch any other page.
+    Your page ref is **{ref}**. Do not touch any other page.
 
     FIRST, before anything else, read these two files IN FULL with the Read tool
     (not grep, not head):
@@ -235,41 +302,79 @@ gap check matters more than usual here").
          per-line checklist, not background awareness.
 
     Then follow that skill's loop for a page that has NO ground truth (the
-    "restoration" branch), which is your case: mz/ocr/chukchi-PP-NNN.xml already
-    exists (N lines, M zones — `harness ocr predict` has been run for you).
-    gt/ocr/chukchi-PP-NNN.xml does not exist.
+    "restoration" branch), which is your case: mz/ocr/chukchi-{ref}.xml already
+    exists ({lines} lines over {zones} zones — `harness ocr predict` has been run
+    for you). gt/ocr/chukchi-{ref}.xml does not exist.{note}
 
     Every ALTO verb you run must carry `--store mz`. Run commands with
     `uv run harness ...` from the repo root.
 
-    **Your deliverable is `review/PP-NNN/proposal.json`, normalized and clean.
+    **Your deliverable is `review/{ref}/proposal.json`, normalized and clean.
     STOP THERE.**
 
     Specifically, do:
-      - `uv run harness ocr gaps PP-NNN` first. Report what it says.
-        gt/fig/chukchi-PP-NNN.xml exists so figures are masked and a band is
-        meaningful. If you judge a band to be a genuinely dropped printed line,
+      - `uv run harness ocr gaps {ref} --store mz` first. Report what it says.
+        {figures} If you judge a band to be a genuinely dropped printed line,
         use `harness ocr adopt-gap` per the skill and record it in the proposal's
         `segmenter_missed` block — but that is a real judgement, so say why in
         your final report.
-      - Read the full page raster scans/chukchi-PP-NNN.png for orientation.
-      - `uv run harness ocr lines PP-NNN --store mz` and `uv run harness ocr
-        sheets PP-NNN --store mz`. Read EVERY sheet in full before you zoom at
-        anything.
-      - Zoom only for specific nameable doubts the sheets left open, selecting all
-        lines in ONE call, `--zoom 2` by default. **Never above `--zoom 4`.**
-        Use `--margins`.
-      - Author review/PP-NNN/proposal.json: one entry per ALTO line index, `text`
+      - `uv run harness ocr lines {ref} --store mz` for the line indices.
+      - **The image ladder. Climb it; do not start at the top.**
+          1. `uv run harness ocr numbered {ref} --store mz`, then Read
+             review/{ref}/numbered.png. This is the whole page with every line's
+             index beside it, each line enclosed in its own ruled band. On a page
+             of ordinary English prose it is the only image you need.
+          2. `uv run harness ocr sheets {ref} --store mz --only <SPEC>` for the
+             lines that image left in doubt, and **only** those. Give each a
+             neighbour or two (`--only 10-14`, not `--only 12`) — whether a mark
+             is the page's habit or this line's is a question about the lines
+             around it. Do NOT sheet the whole page.
+             **Name every line you mean to look at in ONE call**, as at rung 3:
+             `--only 4-6,27-31,35-37,43-44`, not four calls. Sheets pack by
+             height, so one call over those twelve lines is a single image where
+             four calls are four — same pixels, four times the re-orientation.
+             It is not a token saving and is not meant to be one; what it saves
+             is images and calls.
+          3. `uv run harness ocr zoom {ref} --store mz --only <SPEC>` for marks
+             the sheets leave open, every such line in ONE call, `--zoom 2` by
+             default. **Never above `--zoom 4`.**
+             **Span the part of the line the doubt is in.** `--only` takes
+             `@LO-HI`, a percentage of a line's width: a footnote opener at the
+             start of its line is `42-43@0-25`, a mark two-thirds along is
+             `12@55-80`. A doubt is about a *mark*, not a line — magnifying a
+             whole measure renders three strips of irrelevance for one of
+             evidence. Span by default; ask for a whole line only when the doubt
+             really is about the whole line. A span is widened to fill the strip
+             and snapped out to whitespace, so it will not cut a word — you do
+             not need to pad it defensively, and a span that misses is a sign
+             you did not know where the mark was, which is rung 2's job.
+             **If you cannot say where in the line the mark sits, go to rung 2
+             first.** Re-aiming a span three times costs more than the contact
+             sheet that would have shown you where to aim once.
+             Add `--margins` ONLY when the doubt is about something in the margin
+             (a list number or folio the line box may exclude). It widens every
+             selected line to the PrintSpace and costs an extra strip apiece. It
+             is not a default and you should usually omit it.
+        Say in your final report which rungs you used and which lines sent you up
+        each one. If you never needed rung 2 or 3, say that too — it is a result,
+        not a shortfall.
+      - Author review/{ref}/proposal.json: one entry per ALTO line index, `text`
         mandatory, `resolved` spelling out codepoints for any line with notation,
         `note` for anything an adjudicator would otherwise rediscover, and a
         `contamination` block — **`blind: true` unless you can name something
         specific**, and seeing the machine text in `ocr lines` is not it (you
         cannot get the line indices without it). See SKILL.md on what that field
         was for.
-      - `uv run harness proposal fix PP-NNN`, then re-run it without `--fix` until
+      - `uv run harness proposal fix {ref}`, then re-run it without `--fix` until
         it is silent.
+      - `uv run harness proposal check {ref}` — **it must exit 0**, and it is a
+        different gate from `fix`: `fix` reconciles what it unambiguously can,
+        `check` reports what it will not guess at, including a `resolved` field
+        that disagrees with its own text. Do not report a proposal as validated
+        on the strength of `fix` and `normalize` alone; a reader has already
+        done that on a page this gate was failing.
       - `uv run harness corpus normalize --commit
-        review/PP-NNN/proposal.json`, then the same command without `--commit` —
+        review/{ref}/proposal.json`, then the same command without `--commit` —
         it must exit 0.
 
     **Do NOT** run `harness ocr review --serve`, do NOT run `harness ocr restore`,
@@ -278,6 +383,14 @@ gap check matters more than usual here").
     every verb that can sweep the corpus now says so with that flag, and none of
     them is yours — and do NOT commit anything to git. A human adjudicates your
     proposal afterwards; that step is not yours.
+
+    **Do NOT run `harness ocr clean`.** Tidying up after yourself is the one
+    prohibition here that sounds like good manners, which is why it needs
+    saying. The images you opened are the only record of what you actually
+    looked at: they are what an adjudicator opens to check a reading against
+    the page, and what a coordinator compares against your report. Delete them
+    and your account of the pass becomes its own sole witness. Cleaning is the
+    coordinator's call, after the page has been adjudicated.
 
     Hard rules that override any instinct:
       - No ad-hoc Python and no shell listing. No `python3 -c`, no heredoc
@@ -295,6 +408,17 @@ gap check matters more than usual here").
         substitutes ' ’ / for ˊ, and i I **r** for ɪ — so "it is only wrong about
         non-ASCII" is false, and is how its `r` got keyed into a Chukchee name.
         It is evidence about line geometry and English prose, nothing else.
+      - **Where keying_spec.md states a closed rule, apply it and cite it — do
+        not go to the raster to confirm what the spec has already settled.** §1
+        and §5.6 say the book sets curly quotes throughout and never straight
+        ones, so a straight quote in the machine text is an encoding artifact,
+        not a reading to adjudicate. The raster is for what the spec does not
+        decide. A reader on this pass spent two whole zoom selections confirming
+        exactly that; do not repeat it.
+      - **A page believed to be all English is a prior, not a licence.** If a
+        Tier-1 form turns up anyway it gets the full treatment — climb the
+        ladder for it and key it character by character. A page believed English
+        is exactly where an unmarked inventory glyph passes unread.
       - Marks that are simply present or absent — the dot under `g`, ä vs a, ɪ vs
         i vs r — often will not resolve by staring at the glyph, because the two
         sorts are the same letterform. Where the line offers a plain English
@@ -352,3 +476,17 @@ gap check matters more than usual here").
     concluded, how many lines you keyed, which lines carry Tier-1
     (Chukchee/Koryak/Yupik) notation, every doubt you flagged and why, and
     anything you want the adjudicator to look at first. Be concise and concrete.
+
+    Then report separately on the image ladder, which is measured per run:
+      - which rungs you used, and how many images you opened in total;
+      - for every `ocr zoom` call, the exact `--only` spec, how many sheets it
+        produced, and whether you spanned or took whole lines — and if you took
+        a whole line, why the span would not have done;
+      - whether the numbered page was legible enough to key English prose from
+        without a contact sheet, and if not, exactly what was illegible.
+      - **Name the lines you actually rendered.** A correction reported as
+        confirmed on a line no image covered is the invented-second-witness
+        defect (§5.12) in its cheapest form: say which lines the spec settled
+        and which the raster did, and do not let one sentence cover both.
+
+<!-- prompt:end -->

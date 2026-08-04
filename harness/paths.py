@@ -48,7 +48,7 @@ from .context import norm_ref
 # `clean` left a stale page behind on every finished ref.
 #
 # `review.html` is a file where the rest are directories; `clean` handles both.
-DERIVED = ("crops", "sheets", "zoom", "review.html")
+DERIVED = ("crops", "sheets", "zoom", "review.html", "numbered.png")
 
 
 def review_dir(ref: str, root: Path = Path(".")) -> Path:
@@ -73,6 +73,10 @@ def sheets_dir(ref: str, root: Path = Path(".")) -> Path:
 
 def zoom_dir(ref: str, root: Path = Path(".")) -> Path:
     return review_dir(ref, root) / "zoom"
+
+
+def numbered_path(ref: str, root: Path = Path(".")) -> Path:
+    return review_dir(ref, root) / "numbered.png"
 
 
 def html_path(ref: str, root: Path = Path(".")) -> Path:

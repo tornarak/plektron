@@ -34,6 +34,8 @@ from ..context import all_refs, norm_ref
 from ..lines import (
     DEFAULT_ALTO_DIR,
     LINE_SHEET_H,
+    NUMBER_FONT,
+    NUMBER_GUTTER,
     ZOOM,
     ZOOM_CLIENT_W,
     ZOOM_OVERLAP,
@@ -43,13 +45,23 @@ from ..lines import (
     line_gaps,
     page_lines,
     parse_selection,
+    parse_spans,
     write_blot,
     write_line_crops,
     write_line_sheets,
     write_line_zoom,
+    write_numbered_page,
 )
 from ..parallel import ptrack
-from ..paths import clean, crops_dir, ensure_page_link, html_path, sheets_dir, zoom_dir
+from ..paths import (
+    clean,
+    crops_dir,
+    ensure_page_link,
+    html_path,
+    numbered_path,
+    sheets_dir,
+    zoom_dir,
+)
 from ..recognize import DEFAULT_REC_MODEL, DEFAULT_SEG_MODEL
 from ..render import progress
 from ..review import (
@@ -183,10 +195,47 @@ def register(cli):
     opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
     opt(p, "--out", type=click.Path(path_type=Path), default=None, help=OUT_HELP)
 
+    # Singular for `tei context`'s reason, held in test_cli_surface.py: the payload
+    # is one page's prompt, built to hand to one agent for one page, and a merged
+    # stream is not consumable by what it exists for.
+    p = _one_ref(add("dispatch", help="the reading pass's subagent prompt for one "
+              "page, rendered from .claude/skills/rebuild-groundtruth/dispatch.md "
+              "with the four-store survey already substituted. Refuses a page that "
+              "is not a restoration candidate — no zones, no prediction, or ground "
+              "truth already present, which would collapse the two witnesses into "
+              "one. Never assemble this prompt by hand"))
+    opt(p, "--note", default=None,
+                   help="a page-specific sentence appended to the branch paragraph, "
+                        "e.g. \"19 lines over 5 zones suggests a sparse page, so "
+                        "the gap check matters more than usual here\"")
+
+    p = _store(refs_arg(add("numbered", help="the whole page with each line's index "
+              "drawn in a left gutter, into review/PP-NNN/numbered.png — the "
+              "reading pass's first image, and its only one on a page that raises "
+              "no doubt. A third of what the page's contact sheets cost to read")))
+    opt(p, "--gutter", type=int, default=NUMBER_GUTTER,
+                   help=f"px added left of the page for the labels (default "
+                        f"{NUMBER_GUTTER}) — added, not overlaid, so a label never "
+                        "covers the margin material --margins exists to recover")
+    opt(p, "--font", "font_size", type=int, default=NUMBER_FONT,
+                   help=f"label px in the written image (default {NUMBER_FONT}); a "
+                        "full page is delivered at roughly 0.64x whatever is sent, "
+                        "so this is about 1.5x the size you want to read")
+    opt(p, "--out", type=click.Path(path_type=Path), default=None,
+                   help="output file (default review/PP-NNN/numbered.png)")
+
+    # A contact sheet shows whole lines, so it has nowhere to honour `@LO-HI`.
+    # Refused rather than ignored: a caller who asked for a quarter of a line and
+    # silently got all of it has been handed a different picture than the one their
+    # report will describe.
     p = _store(refs_arg(add("sheets", help="compose the line crops into labelled "
               "contact sheets in review/PP-NNN/sheets/, index drawn in the "
               "margin, nothing downscaled — the reading pass's instrument; emits "
               "the sheet/lines map instead of the line table")))
+    opt(p, "--only", default=None, metavar="SPEC",
+                   help="line indices to sheet, e.g. 7,20,22-26 (default every "
+                        "line on the page). The rung above `numbered`: sheet the "
+                        "lines that image left in doubt, with their neighbours")
     opt(p, "--per-sheet", type=int, default=40,
                    help="lines per contact sheet, upper bound only — --height "
                         "packs by height first (default 40)")
@@ -200,8 +249,12 @@ def register(cli):
               "at an integer scale, packed into as few sheets as the height "
               "budget allows, for the second look a contact sheet leaves open")))
     opt(p, "--only", default=None, metavar="SPEC",
-                   help="line indices to magnify, e.g. 7,20,22-26 (default every "
-                        "line on the page)")
+                   help="lines to magnify, e.g. 7,20,22-26 (default every line). "
+                        "Append @LO-HI to a token for a percentage of the line's "
+                        "width — `42-43@0-25` is the front quarter of 42 and 43. A "
+                        "doubt is about a mark, not a line, and a mark is a few "
+                        "percent of a measure: spanning is what stops three of "
+                        "every four strips carrying nothing to do with the question")
     opt(p, "--zoom", type=int, default=ZOOM,
                    help=f"display px per source px, as delivered (default {ZOOM}). "
                         "Higher wraps each line into more strips, and a form seen "
@@ -439,16 +492,58 @@ def run_crops(a) -> int:
     return 0
 
 
-def run_sheets(a) -> int:
+def run_dispatch(a) -> int:
+    """Print the prompt, or refuse with the command that makes the page ready.
+
+    The prompt goes to stdout as plain text rather than through a table: it is
+    prose meant to be handed to an agent whole, and a renderer that wrapped or
+    truncated it would corrupt the one artifact this action exists to produce.
+    `--json` carries it as a field alongside the survey, for a caller assembling
+    a batch.
+    """
+    from ..dispatch import Unready, build
+    try:
+        rec = build(a.ref, a.root, note=a.note)
+    except Unready as e:
+        raise click.ClickException(str(e)) from None
+    if getattr(a, "json", False):
+        out(a, [rec])
+    else:
+        click.echo(rec["prompt"])
+    return 0
+
+
+def run_numbered(a) -> int:
     refs = page_refs(a)
     one_page_only(a, {"out": "--out"}, refs)
+    rows = []
+    with progress("numbering") as tick:
+        for r in ptrack(refs, tick):
+            _page_link(a, r)
+            rows.append(write_numbered_page(
+                r, a.out or numbered_path(r, a.root), _alto_dir(a), a.root,
+                gutter=a.gutter, font_size=a.font_size))
+    out(a, rows)
+    return 0
+
+
+def run_sheets(a) -> int:
+    refs = page_refs(a)
+    # `--only` names that page's own line indices, so it cannot span a ref list —
+    # the same numbers name unrelated lines on the next page. Same rule as `zoom`.
+    one_page_only(a, {"out": "--out", "only": "--only"}, refs)
+    if a.only and "@" in a.only:
+        raise click.UsageError(
+            "ocr sheets shows whole lines and cannot honour a @LO-HI span; "
+            "drop the span here, or use `ocr zoom --only` which can.")
     pairs = []
     with progress("building sheets") as tick:
         for r in ptrack(refs, tick):
             _page_link(a, r)
             pairs.append((r, write_line_sheets(
                 r, a.out or sheets_dir(r, a.root), _alto_dir(a), a.root,
-                per_sheet=a.per_sheet, margins=a.margins, sheet_h=a.sheet_h)))
+                per_sheet=a.per_sheet, margins=a.margins, sheet_h=a.sheet_h,
+                only=parse_selection(a.only) if a.only else None)))
     out_per_ref(a, pairs)
     return 0
 
@@ -464,7 +559,7 @@ def run_zoom(a) -> int:
             _page_link(a, r)
             pairs.append((r, write_line_zoom(
                 r, a.out or zoom_dir(r, a.root),
-                only=parse_selection(a.only) if a.only else None,
+                only=parse_spans(a.only) if a.only else None,
                 zoom=a.zoom, window=a.window, overlap=a.overlap,
                 sheet_h=a.sheet_h, client_w=a.client_w,
                 alto_dir=_alto_dir(a), root=a.root,

@@ -56,6 +56,11 @@ review/*/crops/
 review/*/sheets/
 review/*/zoom/
 review/*/review.html
+# The whole page with its line indices drawn in a left gutter — the reading pass's
+# first image, and derived like the rest. `review/*/*.png` below would cover it, but
+# that pattern exists for the `page.png` symlink and is deliberately not read as a
+# DERIVED entry (see test_layout.py), so the name is listed here explicitly.
+review/*/numbered.png
 # The save writes temp-then-rename and keeps one .prev alongside, as insurance
 # against an interrupted write, plus an append-only .jsonl journal of every
 # save for mid-session incident recovery (the Firefox session-restore bug

@@ -876,13 +876,272 @@ def _figure_alto_page(ref: str, root: Path):
     return etree.parse(str(p)).find(".//{*}Page")
 
 
-LINE_SHEET_H = 2000
+def figure_boxes(ref: str, root: Path, size: tuple[int, int]) -> list[tuple]:
+    """This page's `gt/fig/` zones as `(x0, y0, x1, y1)` in raster space.
+
+    The one place the figure geometry is turned into raster coordinates, so the
+    blot, the dropped-line detector and the numbered page all agree about where a
+    figure is rather than each scaling it again. Empty for the 580 pages with no
+    figure ALTO — which is information, not a gap: the figure track is complete at
+    252 pages, so absence means the page has none.
+
+    Per-page and per-axis, as everywhere else here: no page in this corpus is a
+    clean x2 of its 150 dpi predecessor, so assuming 1.0 is the same class of error
+    the ratio exists to avoid.
+    """
+    from .figures import zones as _zones
+    zs = _zones(ref, root)
+    if not zs:
+        return []
+    alto = _figure_alto_page(ref, root)
+    sx, sy = _scale_for(alto, size) if alto is not None else (1.0, 1.0)
+    return [(z["hpos"] * sx, z["vpos"] * sy,
+             (z["hpos"] + z["width"]) * sx, (z["vpos"] + z["height"]) * sy)
+            for z in zs]
+
+
+# **The whole page, with each line's `index` drawn beside it.** The reading pass's
+# first image and, on an English-only page, its only one.
+#
+# Why it exists is an arithmetic fact about how an image is delivered rather than a
+# preference. A model sees an image as 28x28 patches — `ceil(w/28) * ceil(h/28)`
+# visual tokens — and anything over the per-image ceiling is downscaled until it
+# fits. At the current ceiling (2576 px long edge, 4784 tokens) a 2550x3525 page
+# arrives at about 0.64x whatever is sent, so a page composite costs ~4.8k tokens
+# and **cannot be made sharper by sending more pixels**. Three contact sheets over
+# the same page cost ~14k and are the mandated first read. Most pages are English
+# prose that never needs a crop, so the ladder is: this image, then `ocr sheets
+# --only` for the lines it leaves in doubt, then `ocr zoom --only` for the marks
+# those leave in doubt. Each rung is paid for only where it is used.
+#
+# Three consequences for the drawing, and each was got wrong once first.
+#
+# **The label sits immediately left of its own line**, not out at the page edge. The
+# scan carries 250-350 px of its own margin, so a label parked in the added gutter
+# ends up a third of a thousand pixels from the type it names, and the reader has to
+# carry the association across that gap. The gutter still exists, but as *headroom*
+# for a line that starts near x=0 rather than as the place labels live.
+#
+# **Serif, not the mono the contact sheets use.** These labels are read at ~0.6x
+# after delivery, and at that size a sans `1` is a bare stroke — the same shape as
+# `l` and near enough `7` — where a serifed one is unambiguous. The sheets can stay
+# mono because nothing resizes them.
+#
+# **Sized for the delivered image, not this one.** At 0.64x a 26 px label — the
+# sheets' size — arrives at 17 px and is a guess; 48 px arrives at ~31 px and is
+# read. Bigger than that was tried and is merely loud: it competes with the type.
+NUMBER_GUTTER = 110
+NUMBER_FONT = 36
+NUMBER_PAD = 26
+NUMBER_FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"
+
+
+def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_DIR,
+                        root: Path = Path("."), scans: str = "scans",
+                        gutter: int = NUMBER_GUTTER,
+                        font_size: int = NUMBER_FONT) -> dict:
+    """The page raster with every line's ALTO `index` drawn in a left gutter.
+
+    The label is the `page_lines` **index**, the same identity `ocr sheets`,
+    `ocr zoom --only`, `proposal.json` and `restore` all join on — never a position
+    in reading order. So the numbers are legitimately not consecutive down the page
+    (18 of the 20 restored pages reorder, `1-101` all 59 of them), and that is the
+    tell described in CLAUDE.md rather than a fault in this image.
+
+    **The page is banded, not annotated** — the same idiom `compose_sheets` uses,
+    a horizontal rule between neighbours and the number inside its own band, so a
+    label's *extent* says which line it belongs to and nothing has to be inferred
+    from how close it sits. The alternative tried first was a label per line nudged
+    clear of its neighbour with a hairline drawn back to the line it named; a page
+    of those reads as ruling rather than as pointing, and buries the page under it.
+
+    Where two lines share a band — a two-column setting, rare here, but `1-101` sets
+    twelve such rows and `3-005` six — each gets its own label immediately left of
+    its own column, and the divider goes **between the two columns where they
+    actually part on the paper**, not at a share of the gutter. A divider at an x
+    that means nothing is worse than none: it rules through type and implies a
+    boundary the page does not have.
+    """
+    from PIL import Image, ImageDraw, ImageFont
+    ref = norm_ref(ref)
+    alto = alto_for_lines(ref, alto_dir, root)
+    page = etree.parse(str(alto)).find(".//{*}Page")
+    src = Image.open(raster_path(ref, root, scans)).convert("L")
+    sx, sy = _scale_for(page, src.size)
+
+    canvas = Image.new("L", (src.width + gutter, src.height), 255)
+    canvas.paste(src, (gutter, 0))
+    size = src.size
+    src.close()
+    draw = ImageDraw.Draw(canvas)
+
+    # **Figures come out, exactly as they do for the segmenter.** Same geometry the
+    # `scans/w-figs-blotted/` farm holds and the same white, computed here per page
+    # so a per-page verb does not depend on a corpus-wide farm build. Two reasons it
+    # belongs on this image specifically: a plate eats most of the token budget of a
+    # composite that is already delivered at ~0.6x, and its artwork raises baselines
+    # the reader would then have to be told to ignore. The declared box and not a
+    # pixel more — body text sits hard against an inset figure on `1-283`.
+    figs = [(x0 + gutter, y0, x1 + gutter, y1)
+            for x0, y0, x1, y1 in figure_boxes(ref, root, size)]
+    for box in figs:
+        draw.rectangle(box, fill=255)
+
+    fonts: dict[int, object] = {}
+
+    def at(size: int):
+        if size not in fonts:
+            try:
+                fonts[size] = ImageFont.truetype(NUMBER_FONT_PATH, size)
+            except OSError:
+                fonts[size] = ImageFont.load_default()
+        return fonts[size]
+
+    rows, dropped = [], 0
+    for rec in page_lines(alto, root):
+        if rec.get("vpos") is None or rec.get("height") is None:
+            continue
+        top, h = rec["vpos"] * sy, rec["height"] * sy
+        x0 = (rec["hpos"] or 0) * sx if rec.get("hpos") is not None else 0.0
+        x1 = x0 + (rec["width"] or 0) * sx if rec.get("width") is not None else x0
+        x0, x1 = gutter + x0, gutter + x1
+        # A line whose centre is inside a blotted zone is now numbering blank paper,
+        # so it goes. Centre rather than any-overlap: a caption or a body line that
+        # merely abuts a figure keeps its number, and only a line the blot actually
+        # erased loses one. The line is still in the ALTO and still has its index —
+        # `ocr lines` reports it, `sheets --only` will render it. This image just
+        # does not point at it.
+        if any(a <= (x0 + x1) / 2 <= c and b <= top + h / 2 <= d
+               for a, b, c, d in figs):
+            dropped += 1
+            continue
+        rows.append((top, top + h, x0, x1, rec["index"]))
+    rows.sort(key=lambda r: (r[0] + r[1], r[2]))
+    if not rows:
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        canvas.save(out_path)
+        return {"ref": ref, "path": str(out_path), "lines": 0, "bands": 0,
+                "in_figures": dropped, "size": f"{canvas.width}x{canvas.height}"}
+
+    # **Two lines share a band only when they are set side by side**, and the test
+    # has to be a *share* of the line's height rather than any overlap at all.
+    # Consecutive lines of ordinary prose already overlap by a few px — box bounds
+    # follow ascenders and descenders, which interleave — so "overlaps at all" put
+    # 45 lines of `2-031` into 24 bands and 68 of `3-005` into 8, merging exactly
+    # the neighbours that must stay apart.
+    BAND_OVERLAP = 0.6
+    bands: list[list[tuple]] = []
+    for row in rows:
+        if bands:
+            top = min(r[0] for r in bands[-1])
+            bottom = max(r[1] for r in bands[-1])
+            share = min(bottom, row[1]) - max(top, row[0])
+            if share >= BAND_OVERLAP * min(bottom - top, row[1] - row[0]):
+                bands[-1].append(row)
+                continue
+        bands.append([row])
+
+    # The drawn band is not the line's own extent but a **partition of the page's
+    # height**, each boundary the midpoint between neighbouring line centres. A
+    # partition is what makes the rules read as the contact sheets' rules do —
+    # contiguous, no gaps, no overlaps — and it removes the last way a label could
+    # sit ambiguously between two lines.
+    mids = [(min(r[0] for r in b) + max(r[1] for r in b)) / 2 for b in bands]
+    edges = [0.0]
+    edges += [(mids[i] + mids[i + 1]) / 2 for i in range(len(mids) - 1)]
+    edges.append(float(canvas.height))
+
+    # **Where the number column sits is measured off the page, not off the canvas.**
+    # Right-aligning to the added gutter puts it hard against the canvas edge and
+    # therefore 150-250 px from the type, because the scan carries its own margin;
+    # right-aligning to each line instead makes the column wander with every indent.
+    # So: take the left edge of every line, cull the ones far from the median —
+    # centred headings, indented list items, a paragraph's first line — and average
+    # what is left. That is the body's own left edge, and the numbers sit just
+    # inside it. Median-absolute-deviation rather than a fixed tolerance, with a
+    # floor, so it behaves on a page whose lines all start at exactly one x (where
+    # the deviation is 0) and on one set raggedly.
+    lefts = sorted(r[2] for r in rows)
+    med = lefts[len(lefts) // 2]
+    devs = sorted(abs(x - med) for x in lefts)
+    mad = devs[len(devs) // 2]
+    kept = [x for x in lefts if abs(x - med) <= max(40.0, 3 * mad)]
+    anchor = sum(kept) / len(kept)
+
+    n = 0
+    for i, band in enumerate(bands):
+        top, bottom = edges[i], edges[i + 1]
+        cols = sorted(band, key=lambda r: r[2])
+        # **Every band's first number joins the measured column; only the second and
+        # later in a split band sit against their own line.** One axis is scanned far
+        # faster than numbers that wander with each line's indent, and the page sets
+        # plenty of those — so the column is the default and the leftmost line of a
+        # two-column row belongs in it like any other. Position only has to carry
+        # information for the columns *after* the first, where which number belongs
+        # to which is not otherwise recoverable.
+        for k, (r_top, r_bottom, x0, _, index) in enumerate(cols):
+            label, sz = str(index), font_size
+            if k == 0:
+                # The measured anchor, but never right of this line's own start.
+                # A page mixing a two-column block with body prose pulls the mean
+                # right of the narrowest lines, and an un-clamped column then prints
+                # its number over the first letter of every one of them — which is
+                # both unreadable and a corruption of the thing being read. Clamping
+                # costs a slightly ragged column on those lines and nothing else.
+                left, at_x = 0.0, min(anchor, x0)
+            else:
+                left, at_x = cols[k - 1][3], x0
+            avail = at_x - left - NUMBER_PAD
+            while sz > 14 and draw.textlength(label, font=at(sz)) > avail:
+                sz -= 4
+            f = at(sz)
+            w = draw.textlength(label, font=f)
+            draw.text((max(2.0, at_x - NUMBER_PAD - w),
+                       (r_top + r_bottom) / 2 - sz * 0.68), label, fill=0, font=f)
+            n += 1
+        # **The rule crosses the whole page, not just the gutter.** A rule that
+        # stops at the gutter edge asks the reader to extend it across 2500 px of
+        # type by eye to find out which line the number belongs to, and that is a
+        # thing readers get wrong — the band has to physically enclose its line.
+        # Drawn light and thin, and on the midpoint between line centres, so it
+        # lands in the leading; a descender it clips is still legible under it,
+        # where a dark rule would take the glyph.
+        if i:
+            draw.line([(0, top), (canvas.width, top)], fill=185, width=2)
+        # Between the columns where they actually part, not at a share of the
+        # gutter: a divider at an arbitrary x rules through type and asserts a
+        # boundary the page does not have. Its *extent* is the lines' own, not the
+        # band's — the first and last bands run to the canvas edges, so a divider
+        # drawn to the partition edge trails hundreds of px up through blank paper
+        # and reads as a page-long column rule that separates nothing.
+        d_top = min(r[0] for r in cols) - NUMBER_PAD
+        d_bottom = max(r[1] for r in cols) + NUMBER_PAD
+        for k in range(1, len(cols)):
+            xd = (cols[k - 1][3] + cols[k][2]) / 2
+            draw.line([(xd, d_top), (xd, d_bottom)], fill=170, width=2)
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(out_path)
+    return {"ref": ref, "path": str(out_path), "lines": n, "bands": len(bands),
+            "in_figures": dropped, "size": f"{canvas.width}x{canvas.height}"}
+
+
+# **Sized so a full sheet is never resampled on delivery.** An image costs
+# `ceil(w/28) * ceil(h/28)` visual tokens and anything over the 4784 ceiling is
+# downscaled to fit. A full-measure sheet is ~1900 px wide, i.e. 68 patches, so the
+# height budget is `4784 / 68 = 70` patches — 1960 px. At the old 2000 the tallest
+# sheets came to 4896 and were fitted down by about 1%, which is small but is
+# exactly the resample `write_line_sheets` refuses to do locally and for the reason
+# it refuses: the question being asked of these images is whether a dot sits under a
+# `g`. Rounded down to a whole patch row.
+LINE_SHEET_H = 1960
 
 
 def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                       root: Path = Path("."), scans: str = "scans",
                       per_sheet: int = 8, margins: bool = False,
-                      sheet_h: int | None = LINE_SHEET_H) -> list[dict]:
+                      sheet_h: int | None = LINE_SHEET_H,
+                      only: set[int] | None = None) -> list[dict]:
     """Compose the page's line crops into labelled contact sheets, in `out_dir` itself.
 
     `out_dir` is the destination, not a parent to hang a per-ref directory off — the
@@ -904,15 +1163,33 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     still an upper bound, raised well past what height alone would ever hit) — a page
     of short list lines like `1-053` fits far more than 8 per sheet before 2000px
     fills, and fewer, fuller sheets is fewer re-orientations for the same read.
+
+    `only` restricts the sheet to named line indices, which is what makes this the
+    middle rung of the ladder rather than an all-or-nothing first read: a full page's
+    sheets cost about three times the numbered page composite, and a reader that has
+    already read that composite wants a closer look at the four lines it left open,
+    not at all forty. Selecting a *range* around a doubtful line is the usual form —
+    neighbours are what settle whether a mark is the page's habit or this line's.
+    An index that is not on the page raises, as in `write_line_zoom`: a silently
+    dropped selection is a line reported as looked at that was never rendered.
     """
     from .figures import LABEL_W, compose_sheets
-    items = [(str(rec["index"]), crop)
-             for rec, crop in line_crops(ref, alto_dir, root, scans, margins)]
+    items, seen = [], []
+    for rec, crop in line_crops(ref, alto_dir, root, scans, margins):
+        if only is not None and rec["index"] not in only:
+            continue
+        seen.append(rec["index"])
+        items.append((str(rec["index"]), crop))
+    if only:
+        for missing in sorted(set(only) - set(seen)):
+            raise ValueError(f"{norm_ref(ref)}: line {missing} is not on the page "
+                             "(or has no usable geometry)")
     if not items:
         return []
     width = max(im.width for _, im in items) + LABEL_W + 20
     sheets, index = compose_sheets(items, out_dir,
-                                  per_sheet=per_sheet, prefix="lines",
+                                  per_sheet=per_sheet,
+                                  name_for=sheet_namer("lines", margins),
                                   sheet_w=width, max_h=sheet_h)
     # One flat record per sheet, `lines` as a joined string rather than a list:
     # a nested value de-tabularizes the whole TOON table (see the module docstring).
@@ -920,31 +1197,173 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
              "lines": " ".join(e["items"])} for e in index]
 
 
-def parse_selection(spec: str) -> set[int]:
-    """`"7,20,22-26"` -> `{7, 20, 22, 23, 24, 25, 26}`. Raises on anything else.
+def compact_runs(xs) -> str:
+    """`{11,12,13,15}` -> `"11-13_15"`. Canonical over the set, not its spelling."""
+    xs, parts, i = sorted(set(xs)), [], 0
+    while i < len(xs):
+        j = i
+        while j + 1 < len(xs) and xs[j + 1] == xs[j] + 1:
+            j += 1
+        parts.append(str(xs[i]) if i == j else f"{xs[i]}-{xs[j]}")
+        i = j + 1
+    return "_".join(parts)
+
+
+def sheet_namer(base: str, margins: bool = False, smooth: bool = False,
+                limit: int = 44):
+    """A `compose_sheets` namer: each sheet named for the lines it actually holds.
+
+    **Two renderings that differ must not write the same filename, and two that
+    agree must.** Sequential numbering satisfies neither. `zoom` and `sheets`
+    numbered their output `<base>-001.png` upward into one directory per page, so
+    `<base>-001` meant "the first sheet of whatever was asked for last" — a second
+    `--only` selection silently replaced the first's images while the first call's
+    *returned index*, which names those files and the lines on them, went on
+    describing pictures that were no longer there. A reader that issued three
+    selections in parallel got one selection's images and three reports of them, and
+    had nothing to tell it apart.
+
+    That is this repo's recurring fault in a new place: a claim whose referent was
+    swapped underneath it with no error raised. Here it is cheap to make impossible
+    rather than merely detectable.
+
+    Naming the *selection* would stop the clobber but not earn the second half —
+    sheets would still be numbered within a call, so lines 11-12 would land on a
+    different filename depending on what else was selected alongside them. Naming a
+    sheet after its own contents means an overlapping call **reuses** the file it
+    already agrees with. `--only 11,12,13` and `--only 11-13` are one request by
+    construction, and re-running any selection overwrites its own output and nothing
+    else's.
+
+    The base carries what changes the pixels rather than which lines: the zoom
+    level, and the two flags that alter how a line is rendered. Overrides finer than
+    those (`--window`, `--overlap`, `--client-w`, `--height`) are not encoded and so
+    do reuse names — they are deliberate, rare, per-question adjustments, and a
+    filename long enough to carry them is one nobody can read.
+    """
+    head = base + ("m" if margins else "") + ("s" if smooth else "")
+
+    def name(labels) -> str:
+        # A contact-sheet label is the bare index; a zoom label is `index.strip`,
+        # optionally `:LO-HI` for a partial line. Whole lines compact into runs;
+        # a spanned line keeps its span, because two spans of one line are two
+        # different pictures and must not land on one filename.
+        whole, spanned = set(), {}
+        for lab in labels:
+            head_, _, span = str(lab).partition(":")
+            i = int(head_.split(".")[0])
+            if span:
+                spanned.setdefault((i, span), None)
+            else:
+                whole.add(i)
+        parts = [compact_runs(whole)] if whole else []
+        parts += [f"{i}p{span}" for i, span in spanned]
+        slug = "_".join(p for p in parts if p)
+        if len(slug) > limit:
+            import hashlib
+            slug = "n" + hashlib.sha256(slug.encode()).hexdigest()[:8]
+        return f"{head}-{slug}"
+
+    return name
+
+
+FULL_SPAN = (0, 100)
+
+
+def _snap_to_white(crop, a: int, b: int, budget: int) -> tuple[int, int]:
+    """Widen `[a, b)` outward to the nearest blank pixel column, within `budget`.
+
+    A span's edge landing mid-letter is the failure that costs a re-call, and the
+    raster already knows where the letters end. Columns rather than any notion of a
+    word: this is a bitonal line crop, so "no ink in this column" is exact and needs
+    no segmentation. Bounded on each side independently, because a span sitting
+    inside one long word has no gap to find and must not creep out to the measure
+    hunting for one — in that case the edge stays where the caller put it, which is
+    no worse than before.
+    """
+    import numpy as np
+    ink = (np.asarray(crop.convert("L")) < 128).any(axis=0)
+    n = len(ink)
+    a, b = max(0, min(a, n)), max(0, min(b, n))
+
+    lo = a
+    for i in range(a, max(0, a - budget) - 1, -1):
+        if i == 0 or not ink[i]:
+            lo = i
+            break
+    hi = b
+    for i in range(b, min(n, b + budget) + 1):
+        if i == n or not ink[i - 1]:
+            hi = i
+            break
+    return lo, max(lo + 1, hi)
+
+
+def parse_spans(spec: str) -> dict[int, tuple[int, int]]:
+    """`"7,20@0-25,22-26"` -> `{7: (0,100), 20: (0,25), 22..26: (0,100)}`.
+
+    **`@LO-HI` names a percentage of the line's width**, and it is the answer to the
+    commonest waste at this rung: a doubt is almost never about a line, it is about a
+    mark, and a mark occupies a few percent of a full measure. `3-063`'s footnote
+    references sat in a few characters of the third quarter of their lines and its
+    footnote openers in the first few characters of theirs; magnifying the whole line
+    to settle them rendered four strips apiece of which three carried nothing bearing
+    on the question. `42-43@0-20` is one small sheet where `42-43` was six.
+
+    Percentages rather than pixels because the caller is reading a *report*, not
+    measuring a raster — `ocr lines` gives an index, and "the front of it" or "about
+    two-thirds along" is what a reader can actually say from a page composite. A
+    pixel span would demand a measurement nobody has taken and would silently mean
+    something different under `--margins`.
 
     Rejects rather than skips a token it cannot parse. A selection is a claim about
     which lines were looked at, and silently dropping one means a line reported as
-    read was never rendered.
+    read was never rendered. Two different spans for one line is likewise an error
+    and not a merge: the caller meant two looks, and quietly unioning them into the
+    hull gives back the whole-line render the span existed to avoid.
     """
-    out: set[int] = set()
+    out: dict[int, tuple[int, int]] = {}
     for tok in spec.replace(" ", "").split(","):
         if not tok:
             continue
-        if "-" in tok.lstrip("-"):
-            a, b = tok.split("-", 1)
+        body, at, span = tok.partition("@")
+        lo, hi = FULL_SPAN
+        if at:
+            a, dash, b = span.partition("-")
+            if not dash or not b:
+                raise ValueError(f"span {span!r} needs LO-HI percentages, "
+                                 f"e.g. {body}@0-25")
             lo, hi = int(a), int(b)
-            if hi < lo:
-                raise ValueError(f"range {tok!r} runs backwards")
-            out.update(range(lo, hi + 1))
+            if not 0 <= lo < hi <= 100:
+                raise ValueError(f"span {span!r} must satisfy 0 <= LO < HI <= 100")
+        if "-" in body.lstrip("-"):
+            x, y = body.split("-", 1)
+            first, last = int(x), int(y)
+            if last < first:
+                raise ValueError(f"range {body!r} runs backwards")
+            idxs = range(first, last + 1)
         else:
-            out.add(int(tok))
+            idxs = [int(body)]
+        for i in idxs:
+            if out.setdefault(i, (lo, hi)) != (lo, hi):
+                raise ValueError(f"line {i} is given two different spans; ask for "
+                                 "one of them, or the whole line")
     if not out:
         raise ValueError("empty line selection")
     return out
 
 
-def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
+def parse_selection(spec: str) -> set[int]:
+    """`"7,20,22-26"` -> `{7, 20, 22, 23, 24, 25, 26}`. Raises on anything else.
+
+    The line set of `parse_spans`, for the callers that render whole lines and so
+    have nowhere to honour a span.
+    """
+    return set(parse_spans(spec))
+
+
+def write_line_zoom(ref: str, out_dir: Path,
+                    only: set[int] | dict[int, tuple[int, int]] | None = None,
                     zoom: int = ZOOM, window: int | None = None,
                     overlap: int = ZOOM_OVERLAP, sheet_h: int = ZOOM_SHEET_H,
                     client_w: int = ZOOM_CLIENT_W,
@@ -968,6 +1387,13 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
     two sheets beats the same lines fetched four times, and running the verb once per
     doubt spends more than the closer look is worth.
 
+    **`only` may carry a horizontal span per line**, as `parse_spans` returns, and
+    that is where the real saving at this rung is. A doubt is about a mark, not a
+    line: `3-063`'s footnote references occupied a few characters of the third
+    quarter of their lines, and rendering the whole measure gave four strips of which
+    three bore on nothing. A plain `set` still means every line whole, so every
+    caller written before spans keeps working.
+
     **Nearest-neighbour, not Lanczos.** The scan is bitonal, so every interpolated
     value is a grey the page does not contain, and smooth grey around a mark is
     precisely the appearance of a mark that is faintly there. Pixel replication can
@@ -983,20 +1409,72 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
     step = max(1, window - overlap)
     resample = (Image.Resampling.LANCZOS if smooth
                 else Image.Resampling.NEAREST)
+    spans = only if isinstance(only, dict) else None
     strips, seen = [], []
     for rec, crop in line_crops(ref, alto_dir, root, scans, margins=margins):
         if only is not None and rec["index"] not in only:
             continue
         seen.append(rec["index"])
+        lo, hi = spans.get(rec["index"], FULL_SPAN) if spans else FULL_SPAN
+        if (lo, hi) != FULL_SPAN:
+            # Taken on the crop, so the span means a share of *this line's* extent
+            # rather than of the measure — on a short line like a signature or a
+            # centred heading those are very different, and the line is what the
+            # caller named.
+            full = crop.width
+            a = int(full * lo / 100)
+            b = max(a + 1, int(full * hi / 100))
+            # **A span narrower than one strip is widened to fill it, for free.**
+            # The strip is a fixed `window` of source pixels whatever it contains,
+            # and the sheet is padded to `client_w` regardless — so a 20% span of a
+            # full measure renders ~360 px inside a 670 px window and leaves the
+            # rest white. That white is not a saving; it is the margin that would
+            # have carried the rest of the word. A reader naming a span is
+            # estimating where a mark sits from a page composite, so it will
+            # sometimes be off by a few percent, and the observed cost of clipping
+            # is not a bad image but a *re-call*: one page took ten zoom
+            # invocations, most of them the same doubt re-aimed after the last span
+            # cut the word in half. Widening symmetrically absorbs that error at no
+            # cost in pixels, tokens or sheets.
+            if b - a < window:
+                mid = (a + b) // 2
+                a, b = mid - window // 2, mid - window // 2 + window
+                # At an edge, slide rather than shrink — the caller asked to see a
+                # region, and a window pushed flush against the start of the line
+                # still shows all of it plus context on one side.
+                if a < 0:
+                    a, b = 0, min(full, window)
+                elif b > full:
+                    a, b = max(0, full - window), full
+            a, b = max(0, a), min(full, b)
+            # **Then snap both edges out to white, so no glyph is ever cut.** A
+            # span is an estimate of where a mark sits, made off a page composite,
+            # and an edge landing mid-letter is what sends a reader back for
+            # another look at the same doubt. Whitespace between words is the one
+            # boundary the raster itself supplies, so extend to it — bounded, so a
+            # span inside a long unbroken word does not creep across the measure.
+            a, b = _snap_to_white(crop, a, b, budget=window // 4)
+            crop = crop.crop((a, 0, b, crop.height))
+            # The label carries the span *rendered*, not the one asked for. Two
+            # requests that widen onto the same region are one picture and must
+            # share a file; a name recording the request would split them, and a
+            # name that disagreed with its image is the whole defect this scheme
+            # exists to prevent.
+            lo = round(max(0, a) * 100 / full)
+            hi = round(min(full, b) * 100 / full)
         for k, x in enumerate(range(0, max(1, crop.width - overlap), step)):
             s = crop.crop((x, 0, min(crop.width, x + window), crop.height))
             # Label is line index and strip position *within that line*, so the
             # sequence restarts per line and a form seen twice across an overlap is
-            # recognisable as one form rather than two.
-            strips.append((f"{rec['index']}.{k}",
+            # recognisable as one form rather than two. The span rides after a
+            # colon: `compose_sheets` draws only what precedes one, so the margin
+            # stays readable while the filename can still say which part was shown —
+            # two spans of one line are two different pictures and must not collide.
+            tag = "" if (lo, hi) == FULL_SPAN else f":{lo}-{hi}"
+            strips.append((f"{rec['index']}.{k}{tag}",
                            s.resize((s.width * zoom, s.height * zoom), resample)))
     if only:
-        for missing in sorted(only - set(seen)):
+        for missing in sorted(set(only) - set(seen)):
             raise ValueError(f"{norm_ref(ref)}: line {missing} is not on the page "
                              "(or has no usable geometry)")
     if not strips:
@@ -1007,7 +1485,8 @@ def write_line_zoom(ref: str, out_dir: Path, only: set[int] | None = None,
     # that is the same every time.
     sheets, index = compose_sheets(strips, out_dir, per_sheet=len(strips),
                                   sheet_w=client_w, max_h=sheet_h,
-                                  prefix=f"zoom{zoom}")
+                                  name_for=sheet_namer(f"zoom{zoom}", margins,
+                                                       smooth))
     return [{"sheet": str(out_dir / e["sheet"]), "zoom": zoom, "margins": margins,
              "strips": " ".join(e["items"])} for e in index]
 

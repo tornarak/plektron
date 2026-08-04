@@ -343,16 +343,46 @@ require `--commit`.
 --root --json --toon --pager
 ```
 
+### ocr dispatch PP-NNN
+**Does** renders the reading pass's subagent prompt for one page, from the block between `<!-- prompt:begin -->` and `<!-- prompt:end -->` in `.claude/skills/rebuild-groundtruth/dispatch.md`, with the four-store survey substituted (line and zone counts, and which of the two things a `gaps` band means on this page).
+**Reads** `dispatch.md`, `gt/zones/` (and `_exempt.lst`), `gt/fig/`, `gt/ocr/`, `mz/ocr/`.
+**Writes** nothing. Prompt to stdout as plain text; `--json` carries it as a field beside the survey.
+**Exit** 0 with a prompt; 1 when the page is not a dispatch candidate, and the message names the remedy.
+**Note** **singular**, for `tei context`'s reason — held in `test_cli_surface.py`. **Never assemble this prompt by hand.** It was done twice in one session and the second time five clauses reached the agent that existed nowhere in `dispatch.md`, so the doc described a prompt nobody sent and the run measured something unwritten. Same fault as writing a glyph into a note instead of citing its codepoint.
+
+Four refusals, which are `dispatch.md`'s survey made mechanical rather than eyeballed: no `gt/zones/` entry (not a keyed text page); marked in `_exempt.lst` (a human ruled it not a text page); **`gt/ocr/` already present** — the sharp one, since a reader sent at a keyed page reads the human text through every ALTO verb and its proposal stops being an independent witness, and a named range contains such a page sooner or later (`2-031`–`2-035` contained `2-034`); nothing in `mz/ocr/`, naming `ocr predict`.
+```
+--note TEXT  a page-specific sentence appended to the branch paragraph
+--root --json --toon --pager
+```
+
+### ocr numbered REF [REF ...]
+**Does** the whole page with each line's ALTO `index` drawn in an added left gutter. The reading pass's first image, and its only one on a page that raises no doubt.
+**Reads** the `--store` store, or the view, `scans/`.
+**Writes** `review/PP-NNN/numbered.png` (derived), or `--out`.
+**Exit** always 0; exit 2 for `--out` with more than one ref.
+**Note** no `--all`, for `crops`' reason. The label is the **index**, the identity `sheets`, `zoom --only`, `proposal.json` and `restore` all join on — so the numbers are legitimately not consecutive down the page, and that is the tell CLAUDE.md describes rather than a fault here. A page composite is delivered to a reader at about 0.64× whatever is sent, whatever its size, which is why `--font` is large and why this rung cannot answer a question about one mark: escalate to `sheets --only`, then `zoom --only`.
+```
+--store {gt,mz}  which store to read [omit: the ocr/ view]
+--gutter N    px added left of the page for the labels [160]
+--font N      label px in the written image [64]
+--out PATH    write elsewhere [review/PP-NNN/numbered.png]
+--root --json --toon --pager
+```
+
 ### ocr sheets REF [REF ...]
 **Does** labelled contact sheets, index in the margin, nothing downscaled. Emits the sheet/lines map, not the line table.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/sheets/` (derived), or `--out`.
-**Exit** always 0; exit 2 for `--out` with more than one ref.
-**Note** no `--all`, for `crops`' reason.
+**Exit** always 0; exit 2 for `--only` or `--out` with more than one ref.
+**Note** no `--all`, for `crops`' reason. `--only` is what makes this the middle rung rather than an all-or-nothing first read, and it carries `zoom --only`'s rule: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page. Sheets are named for the lines on them (`lines-11-14.png`, `linesm-` under `--margins`), so two selections over one page cannot overwrite each other and an overlapping one reuses what it agrees with.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
+--only SPEC   line indices, e.g. 7,20,22-26 [every line]
 --per-sheet N lines per sheet, upper bound only [40]
---height N    max sheet height in px [2000]
+--height N    max sheet height in px [1960 — the tallest a ~1900px-wide sheet can
+              be and still fit the 4784-visual-token ceiling without being
+              resampled on delivery]
 --margins     widen to the PrintSpace margins [off]
 --out PATH    write elsewhere [review/PP-NNN/sheets]
 --root --json --toon --pager
@@ -364,9 +394,18 @@ require `--commit`.
 **Writes** `review/PP-NNN/zoom/` (derived), or `--out`.
 **Exit** always 0; exit 2 for `--only` or `--out` with more than one ref.
 **Note** no `--all`. `--only` is the sharper of the two per-page flags: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page.
+
+**A span is widened, never obeyed literally, and that is deliberate.** A strip is a fixed `window` of source pixels and the sheet is padded to `--client-w` regardless, so a span narrower than one strip renders inside white space you have already paid for. It is therefore expanded symmetrically to fill the window — sliding rather than shrinking at a line edge — and then both edges snap outward to the nearest blank pixel column, bounded, so **no glyph is ever cut**. The rendered span, not the requested one, is what the label and filename record: two requests that widen onto the same region are one picture and must share one file.
+
+This exists because clipping does not cost a bad image, it costs a *re-call*. `2-134` took ten zoom invocations, most of them the same doubt re-aimed after the previous span cut the word in half. Widening absorbs a few points of aiming error for free; it cannot absorb twenty, and a doubt that needs *locating* rather than resolving belongs at `ocr sheets --only`.
+
+**`@LO-HI` names a percentage of the line's width, and it is where the saving at this rung is.** A doubt is about a mark, not a line, and a mark is a few percent of a full measure — `3-063`'s footnote openers sat in the first characters of their lines, so `42-43` rendered four strips apiece of which three bore on nothing, where `42-43@0-25` renders one each. Percentages, not pixels: the caller is reading a report, not measuring a raster, and a pixel span would mean something different under `--margins`. One line given two different spans is an error rather than a merge, since the hull is the whole-line render the span existed to avoid. `ocr sheets` refuses a span outright — it shows whole lines and has nowhere to honour one.
+
+Each sheet is named for the lines it holds and the settings that drew them — `zoom2m-26-27.png` is lines 26–27 at `--zoom 2 --margins`, `s` marks `--smooth`, and a line whose strips straddle two sheets takes a `-b` suffix. **Two selections over one page therefore cannot overwrite each other**, and an overlapping selection reuses the sheet it already agrees with. They could: sheets were numbered `-001` upward per call, so a second `--only` replaced the first's images while the first's returned index went on naming them — three parallel calls yielded one call's pictures and three reports of them. Finer overrides (`--window`, `--overlap`, `--client-w`, `--height`) are *not* in the name and do reuse it.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
---only SPEC   line indices, e.g. 7,20,22-26 [every line]
+--only SPEC   lines, e.g. 7,20,22-26; append @LO-HI for a percentage of a line's
+              width, e.g. 42-43@0-25 [every line, whole]
 --zoom N      display px per source px, as delivered [2]
 --window N    source px per strip [derived from --zoom; overriding upward breaks the scale]
 --client-w N  px the reading client shows per image [1450]

@@ -908,6 +908,17 @@ no model waits to train on these, and gloss review runs off TEI provenance rathe
 than ALTO ground truth. The deliverable was the *correction workflow* — the crops,
 the review page, the keyboard, the decision log and the error profile it yields.
 
+**What a reading pass spends is pixels, and the ladder is `ocr numbered` → `ocr
+sheets --only` → `ocr zoom --only`.** An image costs `⌈w/28⌉ × ⌈h/28⌉` visual
+tokens and is downscaled to fit a per-image ceiling; **colour depth and file size
+do not enter into it**, so making the derived images greyscale — the obvious first
+economy, and already done — buys decode time and no quota at all. Two numbers
+govern the pass: a whole page cannot be delivered above ~0.64× however many pixels
+are sent, which caps what the composite can settle; and a page's full contact
+sheets cost about three times that composite, which is why reading all of them was
+the wrong default on a book that is mostly English prose. `dispatch.md` carries the
+measurements and the constants tuned against the ceiling.
+
 # The derived trees
 
 Seven directories are **derived**: git carries none of them and a fresh clone has
@@ -997,7 +1008,7 @@ equivalent if you ever need it.
 touches; the action names what it does to it.
 
     tei       context validate ids pair seam state ledger header
-    ocr       pages lines gaps adopt-gap crops sheets zoom blot review
+    ocr       pages lines gaps adopt-gap crops numbered sheets zoom blot review
               restore corrections clean predict link
     proposal  check marks fix codepoints set replace
     zones     check edit predict score assemble install remap remark-eval
