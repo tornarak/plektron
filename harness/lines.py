@@ -602,16 +602,37 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     page = etree.parse(str(alto)).find(".//{*}Page")
     img = Image.open(raster_path(ref, root, scans)).convert("L")
     w, h = img.size
-    sx, sy = _scale_for(page, img.size)
+    # Only the vertical scale is wanted now: the horizontal window comes from the
+    # measured column, in raster coordinates already.
+    _, sy = _scale_for(page, img.size)
 
     recs = page_lines(alto)
     # Column window from the page's own lines, so the margins (and the scanner's
     # dark gutter) never register as ink. Falls back to the full width if a page
     # somehow has no geometry to measure.
-    lefts = [r["hpos"] * sx for r in recs if r.get("hpos") is not None]
-    rights = [(r["hpos"] + r["width"]) * sx for r in recs
-              if r.get("hpos") is not None and r.get("width") is not None]
-    x0, x1 = (int(min(lefts)), int(max(rights))) if lefts else (0, w)
+    # The measured column anchor, which is what `zones.uncovered_ink` bounds itself
+    # by — so the two detectors ask the same question of the same strip of paper.
+    # They did not before: this took the extent of the segmenter's own boxes, which
+    # is circular for a detector whose subject is a box the segmenter failed to
+    # produce, and disagreed with the zone-level window on 38 of 62 page/store
+    # pairs, in both directions (right edge -11..+35 px). The practical cost was
+    # that a band only this side could see had no route into `_ink_exempt.json` at
+    # all, since the editor only offers what the zone check finds — `1-034`.
+    #
+    # `img` is handed over so the measure reuses this decode instead of doing its
+    # own; the decode is the whole cost of the check. Costs ~13 ms a page anyway
+    # (2.02 s -> 2.50 s over 38 pages serially), which buys the agreement.
+    #
+    # It does couple this to `data/zones_config.json`. The anchor's sparse-page
+    # fallback is not a risk it inherits, though: a page reaches an OCR store only
+    # through `ocr predict`, which runs from the zones, so a leaf blank enough to
+    # defeat the measure never gets zones and never gets here — `1-330`, the
+    # exempted reverse of a plate, is exactly that page and has neither. Measured
+    # rather than assumed: all 43 pages with OCR anchor from their own ink, none
+    # fall back.
+    from .zones import page_windows as _page_windows
+    _wins = _page_windows(ref, root, ink=img)
+    x0, x1 = min(int(v["x0"]) for v in _wins), max(int(v["x1"]) for v in _wins)
     x0, x1 = max(0, x0), min(w, x1)
 
     import numpy as np

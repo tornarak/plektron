@@ -1325,9 +1325,16 @@ def uncovered_ink(ref: str, zones: list[dict], root: Path = Path("."),
 
     **Bounded by the configured column**, so ink in the margins is out of scope by
     construction: a running head that overhangs the measure, a folio set outside
-    it, the scanner's dark gutter. That is the same window `line_gaps` derives from
-    a page's own lines, and it carries the same limitation — this finds dropped
-    *body* material, not everything on the leaf.
+    it, the scanner's dark gutter. It carries the limitation that goes with that —
+    this finds dropped *body* material, not everything on the leaf.
+
+    `line_gaps` bounds itself by the same measured window. This docstring claimed
+    that before it was true: it took the extent of the page's own line boxes, which
+    differed here in both directions on 38 of 62 page/store pairs, and the
+    consequence was not cosmetic — a band only the line side could see never
+    reached the zone editor, so no human could rule it and `_ink_exempt.json` had
+    no way to record one. Two detectors, one window, or a ruling made in one place
+    does not bind the other.
     """
     import numpy as np
 

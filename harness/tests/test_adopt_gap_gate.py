@@ -40,6 +40,12 @@ def _page(tmp_path: Path, ref: str = "1-048") -> Path:
     gt.mkdir(parents=True)
     (tmp_path / "scans").mkdir()
     (tmp_path / "gt" / "fig").mkdir(parents=True)
+    # `line_gaps` bounds its search by the measured column anchor, which reads the
+    # zone config — the real one, so the fixture measures the page the way the
+    # corpus does rather than against a contrived set of pads.
+    import shutil
+    (tmp_path / "data").mkdir()
+    shutil.copy(Path("data") / "zones_config.json", tmp_path / "data")
 
     w, h = 600, 800
     img = Image.new("RGB", (w, h), "white")
