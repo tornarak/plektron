@@ -12,6 +12,7 @@ from pathlib import Path
 
 from ..context import build_context
 from ..emit import emit_lines
+from ..expand import expand_page
 from ..ids import fix_page as fix_ids
 from ..ids import pair_glosses
 from ..render import mode, report, rule
@@ -62,6 +63,16 @@ def register(cli):
         help="expect human-ratified provenance (resp='#ed') on Tier-1 "
              "spans instead of the collation pass's '#llm'; a "
              "remaining '#llm' becomes a worklist line")
+
+    p = action(g, "expand", run_expand, section="The collation pass",
+               help="write ratified Tier-1 forms into a collated page. The "
+               "pass names a native term by its handle in tier1_terms rather than "
+               "retyping it, and this fills in the string a human adjudicated at "
+               "the raster — the model chooses which token, never the glyphs. "
+               "Only where gt/ocr/ holds the page. Preview unless --commit")
+    refs_arg(p, all_="every collated page in tei/")
+    opt(p, "--commit", is_flag=True,
+        help="write the ratified forms; without it, report what would change")
 
     p = action(g, "state", run_state, section="Seam state",
                help="one page's seam record — the folio predicted for it, "
@@ -214,6 +225,10 @@ def run_ids(a) -> int:
 
 def run_pair(a) -> int:
     return _write_all(a, pair_glosses)
+
+
+def run_expand(a) -> int:
+    return _write_all(a, expand_page)
 
 
 def run_seam(a) -> int:
