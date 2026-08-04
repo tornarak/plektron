@@ -291,59 +291,79 @@ def _draft_text(lines: list[str]) -> str:
     return unicodedata.normalize("NFD", "\n".join(lines))
 
 
-def _figures_on_page(figs_path: Path, root: Path = Path(".")) -> list[dict]:
-    """Figure zones from the figure-track ALTO: id, type, bbox, caption text.
+def _figures_on_page(ref: str, root: Path = Path(".")) -> list[dict]:
+    """The figures the book prints on this page: its own number, and the caption.
 
-    eScriptorium encodes zone types as OtherTag/@LABEL referenced via TAGREFS.
-    Confirmed against real exports; resolve by label, never by tag ID, since the
-    IDs are assigned per export.
+    **`n` is the book's identity, not the store's.** The pass anchors
+    `<figure n="87"/>` at the textual reference it is already reading in English
+    prose, and the build joins that number to the zones through
+    `data/readings.md`. Nothing about geometry reaches the model, which is the
+    whole point: **placing a figure is not the collator's competence**. Its
+    competence is finding where the prose says "(Fig. 87, a)".
 
-    `bbox` is geometry already sitting in the file (HPOS/VPOS/WIDTH/HEIGHT),
-    included so a page with a figure never needs a second, redundant read of the
-    ALTO just to place it.
+    That is a correction of two earlier shapes, and both failed the same way.
+    The payload used to carry raw `zone_id`s — an opaque string a model cannot
+    check, with the `GraphicZone`/FigDesc pairing left to it, which on `1-151`
+    produced a correct anchor plus a permanent known-false orphan comment about
+    the caption zone. Then it carried a page-local ordinal over pictures, which
+    is worse than it looks: **the zone count is not the figure count in either
+    direction**. `1-207` sets fig. 87 *a, b, c* in two boxes, `a` and `b`
+    sharing one; several boxes routinely tile one irregularly-shaped figure. An
+    ordinal over boxes would have told the model "2 figures" on a page the book
+    calls one figure with three parts — the pairing problem again, one level
+    down, and unanswerable from geometry because the evidence is prose inside
+    the caption.
 
-    `text` comes from **`data/readings.md`**, not from the ALTO. `gt/fig/` carries no
-    `TextLine` — the lines were stripped, because the exported line segmentation
-    dropped whole printed lines. Reading `String/@CONTENT` here used to be the
-    source, and after the strip it returned `""` for every zone on every page:
-    the model was handed figures with no captions and nothing said so. A
-    GraphicZone has no text by construction; a GraphicZone-FigDesc always should,
-    so `text: ""` on one means the reading is missing, which
-    `figures.reconcile()` is there to catch.
+    So the number does the work. It is unique across text-figures 1–302,
+    corroborated by `data/loi.json`, and `validate` checks the pass's `n`
+    against the numbers printed in *this* page's captions — a real second
+    witness, and the one thing that catches a figure anchored on the wrong page.
 
-    Coordinates are parsed as float. eScriptorium writes them as `"365.0"`,
-    which is not `str.isdigit()`; testing for that instead handed the model an
-    empty bbox for every zone on all 250 pages.
+    `n` is null where the caption prints no number, and where a figure has no
+    caption at all (`3-006`, `3-007`). Neither is an error and neither is the
+    pass's business: an uncaptioned zone has no textual reference either, so
+    there is nothing to anchor, and the build places it by page. Plates restart
+    numbering per plate and are full-page artwork with no body text, so they
+    reach this list and are never referenced from it.
+
+    `caption` comes from **`data/readings.md`**, not from the ALTO. `gt/fig/`
+    carries no `TextLine` — the lines were stripped, because the exported line
+    segmentation dropped whole printed lines. Reading `String/@CONTENT` here used
+    to be the source, and after the strip it returned `""` for every zone on
+    every page: the model was handed figures with no captions and nothing said
+    so.
     """
-    if not figs_path.exists():
-        return []
-    ref = norm_ref(figs_path.stem)
-    from .figures import readings_for, zones
-    try:
-        by_zone = readings_for(ref, root)
-    except (ValueError, OSError):
-        by_zone = {}
-    out = []
-    for z in zones(ref, root):
-        # Only figure zones. The store also holds an eScriptorium `dummyblock` with
-        # no geometry (`1-037`) and one degenerate 1x1 unlabelled box (`2-094`,
-        # residue from deleting the phantom captions CLAUDE.md's figure-track note
-        # describes); neither is a figure and neither may reach the model.
-        if "Graphic" not in z["label"]:
+    from .figures import paired
+    out, seen = [], set()
+    for f in paired(ref, root)["figures"]:
+        # One record per *printed figure*, so the pictures sharing fig. 253's
+        # caption are one row and not two. Deduped on the caption itself rather
+        # than on the number, since an uncaptioned zone has neither.
+        if f["caption"] and f["caption"] in seen:
             continue
-        zid = z["id"] or ""
-        reading = by_zone.get(zid[-8:])
-        out.append({
-            "zone_id": z["id"],
-            "zone_type": z["label"],
-            "bbox": {"HPOS": z["hpos"], "VPOS": z["vpos"],
-                     "WIDTH": z["width"], "HEIGHT": z["height"]},
-            "text": reading["text"] if reading else "",
-        })
+        seen.add(f["caption"])
+        out.append({"n": figure_number(f["caption"]), "caption": f["caption"]})
     return out
 
 
-def _figure_line_warnings(recs: list[dict], figures: list[dict]) -> list[dict]:
+_FIG_N = re.compile(r"^\s*Figs?\.\s*(\d+)")
+
+
+def figure_number(caption: str) -> str | None:
+    """The figure number a caption prints, or None.
+
+    Deliberately anchored at the start and deliberately not clever: `1-207`
+    opens `Fig. 87, a (??/????), b …` and the answer is 87, where the catalogue
+    numbers, the letters and the dimensions that follow are not numbers of
+    anything. A caption that does not open this way has no number, which is a
+    real state — `3-006`'s zone has no caption at all.
+    """
+    m = _FIG_N.match(caption or "")
+    return m.group(1) if m else None
+
+
+def _figure_line_warnings(recs: list[dict], ref: str,
+                          root: Path = Path(".")) -> list[dict]:
     """Lines the segmenter ran across a figure boundary, and lines inside artwork.
 
     Two segmenter failures the collation pass has to be told about rather than
@@ -370,14 +390,21 @@ def _figure_line_warnings(recs: list[dict], figures: list[dict]) -> list[dict]:
     this ships exercised only by fixture. Threshold and shape want revisiting the
     first time a genuine one turns up.
     """
-    by_zone = {f["zone_id"]: f for f in figures}
+    # Read straight from the store rather than from `_figures_on_page`, which no
+    # longer carries geometry or the caption zones at all — this is the internal
+    # join the model's payload was never the right place for.
+    from .figures import readings_for, zones
+    by_zone = {z["id"]: z for z in zones(ref, root)}
+    try:
+        texts = readings_for(ref, root)
+    except (ValueError, OSError):
+        texts = {}
     out = []
     for r in recs:
         zid = r.get("figdesc_straddle")
         if zid:
             z = by_zone.get(zid, {})
-            bb = z.get("bbox") or {}
-            cut = bb.get("VPOS")
+            cut = z.get("vpos")
             out.append({
                 "kind": "straddles_caption", "index": r["index"],
                 "line_id": r["line_id"], "zone_id": zid,
@@ -385,7 +412,7 @@ def _figure_line_warnings(recs: list[dict], figures: list[dict]) -> list[dict]:
                                 f"{max(0, (cut or r['vpos']) - r['vpos'])}",
                 "body_side": f"{r['hpos']},{cut},{r['width']},"
                              f"{max(0, r['vpos'] + r['height'] - (cut or r['vpos']))}",
-                "caption": (z.get("text") or "")[:200],
+                "caption": ((texts.get(zid[-8:]) or {}).get("text") or "")[:200],
             })
         elif r.get("in_graphic"):
             out.append({
@@ -425,12 +452,82 @@ def _ocr_lines(ocr_path: Path) -> list[dict]:
 
     Omitting records cannot disturb the rest: `index` is an identity assigned by
     ALTO document order, never a position in this list.
+
+    **`line_id` was removed, and `index` is what `@facs` cites.** The ALTO `@ID`
+    was a currency nothing in the harness accepts: the skill told the pass to
+    write `facs="#eSc_line_e5fa4af8"` and then promised the payoff was
+    `harness ocr zoom REF --only <index>`, which are two different keys, so acting
+    on a citation meant translating it back by hand first. `detector_flags` moved
+    off a draft position and onto `index` for exactly this reason; this was the
+    last field left pointing somewhere else. Neither form resolves as a TEI URI
+    today — there is no `<facsimile>` in the corpus — so nothing conformant was
+    given up, and `index` is the one a human and a tool can both act on.
     """
     from .lines import page_lines  # local: lines.py imports context at module
                                     # level, so this avoids a cycle.
-    return [{"index": r["index"], "line_id": r["line_id"], "text": r["text"]}
+    return [{"index": r["index"], "text": r["text"]}
             for r in page_lines(ocr_path)
             if r["zone"] not in APPARATUS_ZONES]
+
+
+def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
+    """Tier-1 tokens a human has already keyed on this page, with a local handle.
+
+    **Copying is a fresh error surface bolted onto a solved problem.** Where
+    `gt/ocr/` holds the page, every mark on it has been adjudicated at the
+    raster; a collation pass that retypes `ɪᵋplɪˊlᴇ` character by character can
+    drop a U+0323 or read `ɪ` as `i` — §5's two residual classes — and nothing
+    downstream disagrees, because the form is unfalsifiable by construction. So
+    the pass names the token by `index` and `harness tei expand` writes the
+    ratified string in. The model's judgement is *which* token; the glyphs are
+    never its to originate.
+
+    **`gt/` only, and never `mz/` or the view.** CATMuS reads 0% of the
+    inventory, so a list built from a prediction would be a list of garbled
+    forms offered to be copied verbatim — the failure this exists to prevent,
+    inverted. A page with no ground truth gets no list at all, which is a true
+    statement about the page rather than an empty one: the pass then reads the
+    raster itself and flags what it wrote.
+
+    **What counts as Tier-1 here is `NON_ENGLISH_HITS`** — an inventory glyph or
+    a straight apostrophe — and not `INVENTORY_CHARS` alone, which omits U+0027
+    despite a comment in `detectors` saying otherwise. That matters because
+    U+0027 is the spirant and pause mark, is load-bearing, and is one keystroke
+    from the U+2019 in `LOOKALIKES`.
+
+    **The list is a floor and cannot be otherwise.** An unmarked ASCII inventory
+    member (`c` for English *sh*, plain `s`, `j`, `x`) is undetectable, so a form
+    made only of those gets no handle and has to be typed. That costs little and
+    the reason is structural rather than lucky: what makes a token undetectable
+    is having no marks, and what makes a token dangerous to retype is having
+    marks. The blind spot and the risk are near-complementary.
+
+    **One token per handle.** A multi-token Tier-1 span would need a range, and
+    the corpus has none — all 30 spans in committed TEI are single tokens. Built
+    for the attested case, in the habit of `_figure_line_warnings`; a range is
+    cheap to add against a real instance and guesswork before one.
+
+    `line` is the ALTO line index, the same identity `ocr_lines` and
+    `detector_flags` carry, so a term resolves with `harness ocr zoom REF --only
+    <line> --store gt` like everything else.
+    """
+    from .detectors import EDGE_PUNCT, INVENTORY_CHARS, TOKEN
+    from .lines import page_lines
+
+    path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
+    if not path.exists():
+        return []
+    out = []
+    for rec in page_lines(path):
+        if rec["zone"] in APPARATUS_ZONES:
+            continue
+        text = unicodedata.normalize("NFD", rec.get("text") or "")
+        for m in TOKEN.finditer(text):
+            tok = m.group().strip(EDGE_PUNCT)
+            if tok and any(c in INVENTORY_CHARS or c == "'" for c in tok):
+                out.append({"index": len(out) + 1, "line": rec["index"],
+                            "text": tok})
+    return out
 
 
 def build_context(ref: str, root: Path = Path(".")) -> dict:
@@ -447,7 +544,6 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     so a top-level import would close a cycle. Three other call sites in this
     package do the same for the same reason.
     """
-    from .figures import FIGDIR
     from .seam import tail as seam_tail
     ref = norm_ref(ref)
     stem = stem_for(ref, root)
@@ -496,7 +592,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     # anyway and reports `null` rather than misaligning if they ever part.
     detected = detect_all(draft.split("\n"), root,
                           indices=[str(r["index"]) for r in kept])
-    figures = _figures_on_page(root / FIGDIR / f"{stem}.xml", root)
+    figures = _figures_on_page(ref, root)
 
     return {
         "page_ref": ref,
@@ -533,8 +629,12 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # Segmenter faults where a line meets a figure: a line running from a
         # wrapped caption into body text, or a line sitting inside artwork. Both
         # are reported rather than acted on — see `_figure_line_warnings`.
-        "figure_line_warnings": _figure_line_warnings(recs, figures),
+        "figure_line_warnings": _figure_line_warnings(recs, ref, root),
         "ocr_lines": _ocr_lines(ocr),
+        # Tier-1 tokens already adjudicated at the raster, named by a page-local
+        # handle so the pass never retypes one. Empty on a page with no ground
+        # truth, which is 802 of 832 — there the pass reads and flags instead.
+        "tier1_terms": tier1_terms(ref, root),
         # Foreign spans already committed on the physically neighbouring pages,
         # recomputed from the TEI each call. For cross-checking a term keyed two
         # ways — never a source to copy from; this page's draft is the only

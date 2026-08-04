@@ -1301,14 +1301,59 @@ Encoding confirmed against real exports: eScriptorium writes zone types as
 assigned per export (`BT55`/`BT56` in one, `BT68`/`BT69` in the next), so code
 that hardcodes them fails silently rather than loudly.
 
-`harness tei context` surfaces these as `figures_on_page` — zone id, type, bbox, and
-the caption `text` pulled from `data/readings.md`. The collation pass anchors
-`<figure facs>` against those zone ids and the validator rejects any that match
-no supplied zone. A Tier-1 span may optionally also carry `@facs` pointing at
-the OCR line(s) it was read from (`harness tei context`'s `ocr_lines` field
-supplies the ids, sourced from `ocr/` — resolve one with `harness ocr zoom PP-NNN
---only <index> --store gt`, not zoom's default store); `validate.py` checks
-it resolves the same way it checks `<figure facs>`. See the collation skill's
+**Pairing a picture with its caption is `figures.paired`, done once and recorded**
+— the rule CLAUDE.md has always stated and nothing implemented. It branches on
+the **caption's own shape**: a text figure sets its caption below the picture
+(`1-151`'s is 610×96), a plate sets it rotated *beside* it, reading bottom-to-top
+(`1-049`'s three are 86×457, 92×506, 82×636). A below-only rule leaves every
+plate caption unclaimed, which is what it did — 19 over 14 pages. So landscape
+looks below, portrait looks right, each requiring overlap on the other axis, and
+the discriminator is `width >= height` rather than a prior classification of the
+page. Over the whole store **one caption is unpaired** and it is a real
+ambiguity: `2-068` stacks figs. 239 and 240 below two side-by-side pictures, both
+spanning the full measure, so only caption reading order could decide and that is
+an inference. `harness corpus figures` reports it.
+
+**The collation pass anchors `<figure n="87"/>` — the book's own number — and
+never a zone.** Placing a figure is the build's join through `data/readings.md`;
+the pass's competence is finding where the prose says "(Fig. 87, a)". The
+validator checks `n` against the numbers printed in *this page's* captions, which
+is a real second witness and the one thing that catches a figure anchored on the
+wrong page; a `@facs` on a `<figure>` is an error.
+
+Two earlier shapes failed the same way and both are worth remembering. Raw zone
+ids in the payload made the model do the pairing, and `1-151`'s TEI shows the
+cost — a correct anchor plus an orphan comment about the caption zone, which is
+unreferenced *by construction*, i.e. a permanent known-false remark on all 252
+figure pages. A page-local ordinal over pictures replaced it and was worse:
+**the zone count is not the figure count in either direction.** `1-207` sets
+fig. 87 *a, b, c* in two boxes with `a` and `b` sharing one, and several boxes
+routinely tile one irregularly-shaped figure — so an ordinal would have reported
+"2 figures" on a page the book calls one figure with three parts. The evidence
+that settles it is prose inside the caption, which is why no geometric handle
+could.
+
+**A Tier-1 span the pass did not key is transcluded, not retyped.**
+`tier1_terms` lists the native forms on the page a human already adjudicated at
+the raster (from `gt/ocr/`, never `mz/` — CATMuS reads 0% of the inventory, so
+that list would be garbled forms offered to be copied verbatim). The pass writes
+`<foreign xml:lang="ckt" index="7"/>` and `harness tei expand` fills in the
+ratified string: the model's judgement is *which* token, never the glyphs.
+Retyping is the one step where the answer is already known and can still come out
+wrong, and §5's residual classes — a dropped U+0323, `ɪ` read as `i` — are
+unfalsifiable downstream. It does **not** move a rank: a transcluded span has a
+real case for `#ed`, no model authority having touched the identity, but the
+firewall says rank rises by a human act and that amendment has not been made.
+The list is a floor (unmarked ASCII inventory members are undetectable), and the
+blind spot is near-complementary to the risk — what makes a token undetectable is
+having no marks, and what makes it dangerous to retype is having marks.
+
+A Tier-1 span may optionally also carry `@facs` pointing at the OCR line(s) it was
+read from — **the `index`, not the ALTO `@ID`** (`harness tei context`'s
+`ocr_lines`, sourced from `ocr/`; resolve one with `harness ocr zoom PP-NNN --only
+<index> --store gt`, not zoom's default store). It cited `line_id` until 2026-08,
+which no harness verb accepts, so acting on a citation meant translating it by
+hand first. See the collation skill's
 "`@facs` — flagging a span worth a second look" for the full rule. Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
 `1-151`, `2-030`, `3-006` — so the figure path is thinly exercised, and thinner
 than that for captions: `3-006` is one of the two zone-with-no-caption pages, and

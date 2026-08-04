@@ -47,6 +47,7 @@ rejects a bare integer rather than guess which of the three parts you meant.
     (read the page image with the Read tool)       the only witness that matters
     uv run harness ocr zoom PP-NNN --only 7,20 --store gt    the closer look
     (author tei/chukchi-PP-NNN.xml)                your reading
+    uv run harness tei expand PP-NNN --commit          ratified Tier-1 forms in
     uv run harness corpus normalize PP-NNN             NFD + spacing
     uv run harness tei ids PP-NNN                      the id scheme
     uv run harness tei validate PP-NNN                 the gate; exit 1 on FAIL
@@ -126,14 +127,24 @@ lives on, and the gate checks it.
   expected folio plus any the milestone fold believes open, each marked
   `open`/`starts_here`/`distance`. The marks derive from a prediction and inherit
   its errors. They tell you which entry to look at first; the page decides.
-- **`figures_on_page`** carries zone ids verbatim from the segmented ALTO
-  (`eSc_textblock_…`, never minted here), with bbox and caption text. A
-  `GraphicZone` is geometry and never carries text; a `GraphicZone-FigDesc`
-  carries the printed caption.
+- **`figures_on_page`** is `{n, caption}`, one record per **printed figure** —
+  `n` is the number the caption itself prints, and it is what you anchor on.
+  Nothing about geometry reaches you, deliberately: **placing a figure is not
+  your job**, finding where the prose refers to one is. `n` is null where the
+  caption prints no number and where a figure has no caption at all; those are
+  never referenced from the text, so they are not yours either.
 - **`ocr_lines`** is every `TextLine` from the same ALTO the draft was built
-  from, in document order, empties included, each with its real ALTO `@ID`. It
-  exists so a Tier-1 span can cite which line it was read from. Never use these
-  ids for anything else, and never infer text from a `line_id`.
+  from, in document order, empties included, each with its **`index`** — the
+  ALTO identity, the same one `detector_flags` and `tier1_terms` carry, and the
+  one `harness ocr zoom --only` takes. It exists so a Tier-1 span can cite which
+  line it was read from. Never infer text from an index.
+- **`tier1_terms`** is `{index, line, text}` — the native forms on this page a
+  human has **already keyed at the raster**. Where one is listed, do not retype
+  it: write `<foreign xml:lang="ckt" resp="#llm" index="7"/>`, empty, and
+  `harness tei expand` fills in the ratified string. Your judgement is *which*
+  token; the glyphs are not yours to originate. The list is empty on most pages
+  (no ground truth), and it is a floor even where it exists — a form with no
+  marks at all may be absent from it, and that one you key yourself.
 - **`foreign_terms_nearby`** is recomputed each call from committed TEI on the
   physically neighbouring pages, and carries each term's gloss plus the `scope`
   its gloss list supplies — without which "white mixed with brown" says nothing
@@ -291,11 +302,17 @@ boundary -->`.
 
 ## Figures
 
-Anchor `<figure>` at the first textual reference ("Fig. 291"), pointing at the
-matching zone with `facs="#{zone_id}"` from `figures_on_page`. Match reference to
-zone by figure number. **Never invent a zone id.** If a textual reference matches
-no supplied zone, or a supplied zone is never referenced, comment naming the
-orphan and emit nothing else for it.
+Anchor `<figure n="291"/>` at the first textual reference ("Fig. 291"), where
+`n` is the number the caption prints — the same one `figures_on_page` carries.
+**Never write `@facs` on a figure**: which zones a figure occupies is the build's
+join through `data/readings.md`, and it is not a 1:1 question — a box can hold
+two lettered figures, and several boxes routinely tile one irregular figure.
+
+If a textual reference names a figure **no caption on this page prints**, comment
+naming it and emit no `<figure>`; the figure is on another page and the gate will
+say so. A supplied figure that is never referenced needs **no comment at all** —
+full-page plates and uncaptioned artwork are the ordinary case, and remarking on
+each of them was a permanent known-false note on every figure page.
 
 ## Content shape — prose vs. gloss list vs. table
 
@@ -598,15 +615,23 @@ language catches, whereas a misread Chukchee form is unfalsifiable.
 
 Set it on any Tier-1 element whose reading took real deliberation — a hard
 letterform, a mark you went back to the image to settle — pointing at the
-`line_id`(s) in `ocr_lines` you actually read from: `facs="#eSc_line_e5fa4af8"`,
-or several ids for a reading checked against how the same mark prints on a
-neighbouring line. It turns a flagged span into a one-command raster lookup:
-`harness ocr zoom PP-NNN --only <index> --store gt`.
+**`index`**(es) in `ocr_lines` you actually read from: `facs="#18"`, or several
+for a reading checked against how the same mark prints on a neighbouring line.
+It turns a flagged span into a one-command raster lookup:
+`harness ocr zoom PP-NNN --only 18 --store gt`.
+
+It used to cite the ALTO `@ID` (`#eSc_line_e5fa4af8`), which no harness verb
+accepts — so acting on a citation meant translating it back by hand first. One
+currency, and `index` is it.
 
 Reserve it for spans that earned it — a `@facs` on every span stops meaning
 anything. It is a pointer, not a rank: it never substitutes for `@resp`, and
-citing a line does not make a reading more authoritative. Never invent a
-`line_id`; omit `@facs` rather than guess.
+citing a line does not make a reading more authoritative. Never invent an index;
+omit `@facs` rather than guess.
+
+**A span you filled from `tier1_terms` needs no `@facs`** — there was no
+deliberation to record, the reading having been settled at the raster before you
+saw it. Save the flag for what you keyed yourself.
 
 ## What the rule forbids
 

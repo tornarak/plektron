@@ -132,7 +132,12 @@ def test_ocr_lines_omits_what_no_facs_could_point_at(tmp_path):
         "</alto>", encoding="utf-8")
 
     got = _ocr_lines(p)
-    assert [r["line_id"] for r in got] == ["l3"]
+    assert [r["text"] for r in got] == ["Scissors used throughout"]
     # `index` is an identity from ALTO document order, not a position in this
     # list, so dropping records must not renumber the survivor.
     assert got[0]["index"] == 2
+    # And it is the *only* handle offered. `line_id` was the ALTO `@ID`, which no
+    # harness verb accepts — `ocr zoom --only` has always taken the index — so a
+    # citation written in it had to be translated by hand before anyone could act
+    # on it. Nothing may reintroduce a second currency here.
+    assert set(got[0]) == {"index", "text"}

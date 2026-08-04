@@ -225,6 +225,125 @@ def readings_for(ref: str, root: Path = Path(".")) -> dict[str, dict]:
             if r["ref"] == ref}
 
 
+def _gap(g: dict, c: dict) -> float | None:
+    """Distance from picture `g` to caption `c`, or None if `c` cannot be its caption.
+
+    Landscape caption: below, overlapping horizontally. Portrait caption
+    (a rotated plate caption): beside, overlapping vertically. See `paired`.
+    """
+    if c["width"] >= c["height"]:
+        if c["vpos"] < g["vpos"] or (
+                min(c["hpos"] + c["width"], g["hpos"] + g["width"])
+                <= max(c["hpos"], g["hpos"])):
+            return None
+        return c["vpos"] - (g["vpos"] + g["height"])
+    # The same rule rotated: a landscape caption is set *after* its picture down
+    # the page, a rotated one *after* it across the page. Without the second
+    # half, `1-273`'s top-right plate ties at 30 px between the caption on its own
+    # right and the one belonging to the picture on its left, and document order
+    # breaks the tie the wrong way.
+    if c["hpos"] < g["hpos"] or (
+            min(c["vpos"] + c["height"], g["vpos"] + g["height"])
+            <= max(c["vpos"], g["vpos"])):
+        return None
+    # Signed separation, so a caption whose box just overlaps its picture's right
+    # edge (4 px on `1-227`) scores slightly *better* than one merely near it,
+    # rather than being ranked by a distance between origins — which put a plate's
+    # caption 1040 px away from the picture it sits on top of.
+    return max(c["hpos"] - (g["hpos"] + g["width"]),
+               g["hpos"] - (c["hpos"] + c["width"]))
+
+
+def paired(ref: str, root: Path = Path(".")) -> dict:
+    """One record per figure — the picture, its caption — in reading order.
+
+    **The pairing is done here, once, and recorded.** `GraphicZone`↔FigDesc
+    pairing is not in the data, and every consumer that re-derives it derives it
+    differently; `context._figures_on_page` used to not derive it at all, handing
+    the collation pass both zones flat and letting the model sort them out. What
+    that produced on `1-151` is in the committed TEI: the model anchored the
+    figure correctly and then emitted an orphan comment about the caption zone,
+    because the skill says to name an unreferenced zone and a FigDesc is
+    unreferenced **by construction**. A permanent known-false comment waiting on
+    all 252 figure pages.
+
+    **A figure is a `GraphicZone`.** The FigDesc is its caption, not a second
+    figure, so it is a field here rather than a row — which is also why `text: ""`
+    stops being the normal case: a picture zone can never carry a reading (they
+    are keyed by FigDesc suffix in `data/readings.md`), so an empty caption now
+    means `3-006`, artwork the book captions nowhere.
+
+    **The rule branches on the caption's own shape, and the book is why.** A text
+    figure sets its caption *below* the picture, landscape — `1-151`'s is 610×96.
+    A **plate sets it rotated, beside** the picture, reading bottom-to-top:
+    `1-049`'s three are 86×457, 92×506, 82×636. A below-only rule leaves every
+    plate caption unclaimed, which is exactly what it did — 19 of them over 14
+    pages, all plates. So a landscape caption is looked for below its picture and
+    a portrait one beside it, each requiring overlap on the other axis. The
+    discriminator is `width >= height`, a property of the box rather than a
+    threshold anyone has to calibrate, and it needs no prior classification of
+    the page: a mixed page pairs correctly zone by zone.
+
+    Overlap on the perpendicular axis is **required, not preferred**. It is what
+    keeps a two-column plate from pairing across the gutter, and on `2-085` it is
+    what stops the store's 14×38 speck of a `GraphicZone` from claiming fig. 253's
+    caption — the speck stays a captionless figure, which is a defect showing
+    rather than a defect absorbed.
+
+    Pairing is **one-way**: several pictures may share one caption, which is what
+    the book does on 17 pages (`1-276`'s fig. 138 *a, b, c*, `2-085`'s fig. 253
+    *a, b*), and no caption is ever split between pictures.
+
+    **Order is a plain top-to-bottom, left-to-right sort of the picture boxes**,
+    and deliberately not the ALTO's document order, which eScriptorium and the
+    old figure network assigned arbitrarily. Nor is it `lines.reading_order`:
+    that bands rows on half the median *line* height, which is the right
+    tolerance for type and meaningless for artwork.
+
+    **`index` is a handle, not a claim about the book's own order**, because the
+    book does not always number geometrically: a rotated plate numbers as the
+    *turned* page reads (`1-227` is 2,4,1,3 upright), and `1-260` numbers its
+    tall right-hand figure 123 between two in the left column. That costs
+    nothing, since a consumer matches on the caption's printed number and uses
+    the index only to name a zone — see the removed `misordered` check at the
+    foot of `reconcile` for what happened when this was treated as a rule.
+
+    `unpaired_captions` is a FigDesc no picture claimed. It should always be
+    empty — CLAUDE.md records that all five caption-heavy pages were segmentation
+    faults and were deleted — so a non-empty list is a new fault, which is
+    exactly the signal it was supposed to be once noise stopped sharing the
+    bucket. `reconcile` reports it; nothing here refuses.
+    """
+    ref = norm_ref(ref)
+    blocks = zones(ref, root)
+    caps = [b for b in blocks if b["label"] == FIGDESC]
+    try:
+        texts = readings_for(ref, root)
+    except (ValueError, OSError):
+        texts = {}
+
+    claimed, figures = set(), []
+    graphics = sorted((b for b in blocks if b["label"] == GRAPHIC),
+                      key=lambda b: (b["vpos"], b["hpos"]))
+    for i, g in enumerate(graphics, 1):
+        reach = [(d, c) for c in caps if (d := _gap(g, c)) is not None]
+        cap = min(reach, key=lambda dc: dc[0], default=(None, None))[1]
+        if cap is not None:
+            claimed.add(cap["id"])
+        suffix = (cap["id"] or "")[-8:] if cap is not None else ""
+        reading = texts.get(suffix)
+        figures.append({
+            "index": i,
+            "zone_id": g["id"],
+            "caption_zone": cap["id"] if cap is not None else "",
+            "caption": reading["text"] if reading else "",
+        })
+    return {
+        "figures": figures,
+        "unpaired_captions": [c["id"] for c in caps if c["id"] not in claimed],
+    }
+
+
 def reconcile(root: Path = Path(".")) -> dict:
     """Cross-check `gt/fig/` against `data/readings.md` in both directions.
 
@@ -234,9 +353,11 @@ def reconcile(root: Path = Path(".")) -> dict:
     case the reading should go too.
     """
     known = readings(root)
-    missing, orphan = [], []
+    missing, orphan, unpaired = [], [], []
     zones, caps = 0, 0
     for ref in fig_refs(root):
+        unpaired += [f"{ref}|{z[-8:]}"
+                     for z in paired(ref, root)["unpaired_captions"]]
         tree = etree.parse(str(alto_for(ref, root)))
         labels = _labels(tree)
         ids = set()
@@ -261,7 +382,30 @@ def reconcile(root: Path = Path(".")) -> dict:
         "refs_in_readings": len(seen_refs),
         "missing": missing,
         "orphan": sorted(set(orphan)),
+        # A caption no picture claimed. Reported rather than gated: `missing` and
+        # `orphan` are reconciliation between two stores that must agree, where
+        # this is a geometric reading of one of them, and `paired`'s rule is the
+        # only witness against it. It should always be empty — see `paired`.
+        "unpaired_captions": unpaired,
     }
+# A `misordered` column was built here and removed, and the reasoning is worth
+# keeping because it looks like a free second witness and is not. It checked
+# `paired`'s geometric order against the figure numbers the captions themselves
+# print, expecting them to come out ascending. Over the corpus it reported 19
+# pages, and **not one was a pairing error** — every pairing on the five worked
+# through by hand (`1-227`, `1-049`, `1-117`, `1-260`, `2-181`) is right. What it
+# had found was two properties of the book:
+#
+#   * a **rotated plate numbers in rotated reading order**. `1-227` reads
+#     `2,4,1,3` upright and `1,2,3,4` once the page is turned to read its own
+#     bottom-to-top captions;
+#   * the book does not always number geometrically at all. `1-260` numbers the
+#     tall right-hand figure 123, between two figures in the left column.
+#
+# So the check cannot separate a pairing error from a page set that way, and its
+# whole output was permanent known-false rows in a report whose value is that
+# `missing` and `orphan` are empty. Signal buried by noise, in the one place the
+# noise could not be reduced.
 
 
 # `graphic_zones`, `snapshot` and `caption_crops` lived here and were removed: no

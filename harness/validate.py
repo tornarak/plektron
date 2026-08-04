@@ -590,17 +590,32 @@ def validate(tei_path: Path, ctx: dict | None = None,
 
     # figures
     if ctx is not None:
-        zones = {f["zone_id"] for f in ctx.get("figures_on_page", [])}
+        # The page's own captions are the witness, not a set of ids the context
+        # handed over: a figure anchored on the wrong page is the error worth
+        # catching, and only the book's own numbering can see it.
+        printed = {f["n"] for f in ctx.get("figures_on_page", []) if f["n"]}
         for fig in root.iter(q("figure")):
-            facs = (fig.get("facs") or "").lstrip("#")
-            if facs not in zones:
-                r.errors.append(f"<figure facs='#{facs}'> matches no supplied zone")
+            n = fig.get("n")
+            if n is None:
+                r.errors.append("<figure> without n= — anchor it at the figure "
+                                "number the caption prints")
+            elif n not in printed:
+                r.errors.append(
+                    f"<figure n='{n}'> — no caption on this page prints that "
+                    f"number (this page sets {sorted(printed) or 'none'})")
+            if fig.get("facs") is not None:
+                # Geometry is the build's join, through `data/readings.md`. A
+                # zone id here is the pass placing a figure, which is not its
+                # competence and not checkable from the text it can see.
+                r.errors.append(
+                    f"<figure facs='{fig.get('facs')}'> — figures are anchored "
+                    "by the printed number; the build resolves the zones")
 
     # Tier-1 @facs (optional): if a span cites an OCR line, the line must be
     # real. Mirrors the <figure facs> check above — a dangling citation is
     # strictly worse than none, so it errors rather than warns.
     if ctx is not None:
-        line_ids = {ln["line_id"] for ln in ctx.get("ocr_lines", [])}
+        line_ids = {str(ln["index"]) for ln in ctx.get("ocr_lines", [])}
         for el in root.iter():
             if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
                 continue
@@ -613,6 +628,17 @@ def validate(tei_path: Path, ctx: dict | None = None,
                 if lid not in line_ids:
                     r.errors.append(f"<{name} facs='#{lid}'> matches no "
                                     "supplied OCR line")
+
+    # An unexpanded `index=` is not a dangling pointer — it is a file that never
+    # went through `harness tei expand`, holding no text where the ratified form
+    # should be. Named as the missing step rather than as a bad reference, and
+    # detectable rather than merely suspected: `@index` is not a TEI attribute.
+    for el in root.iter():
+        if isinstance(el.tag, str) and el.get("index") is not None:
+            r.errors.append(
+                f"<{etree.QName(el).localname} index='{el.get('index')}'> was "
+                "never expanded — run `harness tei expand` to write the "
+                "ratified form in")
 
     # THE check, re-anchored: provenance rank, not agreement with an upstream file.
     # Every Tier-1 element declares who read it, and this pass may only ever claim

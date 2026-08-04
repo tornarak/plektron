@@ -183,6 +183,9 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Writes** —
 **Exit** always 0.
 **Note** `running_title` is the page's own statement of what page it is — `{text, folio, folio_from, bracketed, lines}` — and it is the **second witness** to `expected_folio`, which is a prediction from the preceding transcribed page and knows nothing about this one. The two disagreeing is the signal. The folio is looked for in the head line, then in a bracketed number at the foot of a chapter opening (`QuireMarksZone`), then in the old vocabulary's `NumberingZone`; `folio_from` says which answered. Nothing is repaired: a number that does not parse cleanly leaves `folio` null and stays in `text`, on the same "null means go and look" contract `expected_folio` keeps.
+**Note** `figures_on_page` is `{n, caption}` — one record per **printed figure**, `n` being the number the caption itself prints. **Placing a figure is not the collator's competence**; finding where the prose says "(Fig. 87, a)" is. So the pass writes `<figure n="87"/>` and the *build* joins that to zones through `data/readings.md`, and nothing about geometry reaches the model. Two earlier shapes failed the same way: raw `zone_id`s (an opaque string a model cannot check, with the `GraphicZone`/FigDesc pairing left to it — on `1-151` that produced a correct anchor plus a permanent known-false orphan comment about the caption zone), then a page-local ordinal over pictures, which is worse than it looks because **the zone count is not the figure count in either direction** — `1-207` sets fig. 87 *a, b, c* in two boxes with `a` and `b` sharing one, and several boxes routinely tile one irregularly-shaped figure. `n` is null where the caption prints no number and where a figure has no caption at all (`3-006`, `3-007`); neither is an error and neither is referenced from the text. `bbox` went because nothing read it — the collation output carries no geometry.
+**Note** `tier1_terms` is `{index, line, text}` — the Tier-1 tokens on this page a human has already keyed, from `gt/ocr/` and never from `mz/` or the view. The pass names one by `index` rather than retyping it; `tei expand` writes the ratified string in. Empty on the 802 pages with no ground truth. What counts as Tier-1 here is `detectors.NON_ENGLISH_HITS` (an inventory glyph or a straight apostrophe), not `INVENTORY_CHARS` alone, which omits U+0027 — the spirant and pause mark, one keystroke from the U+2019 in `LOOKALIKES`. The list is a **floor**: an unmarked ASCII inventory member (`c`, `s`, `j`, `x`) is undetectable and has to be typed, which costs little for a structural reason — what makes a token undetectable is having no marks, and what makes it dangerous to retype is having marks. One token per handle; all 30 spans in committed TEI are single tokens, so a range is built against a real instance rather than guessed at.
+**Note** `ocr_lines` is `{index, text}`, and **`index` is what `@facs` cites**. It carried the ALTO `@ID` as `line_id`, a currency no harness verb accepts: `ocr zoom --only` has always taken the index, so acting on a citation meant translating it by hand first. Neither form resolves as a TEI URI today — there is no `<facsimile>` in the corpus — so nothing conformant was given up.
 **Note** the three zones that can carry a folio (`context.APPARATUS_ZONES`) are dropped from **both** `catmus_draft` and `ocr_lines` — they leave the draft and arrive as `running_title` instead, so the information is restructured rather than discarded. Out of `ocr_lines` for a sharper reason than the draft's: that list is the set of `@facs` pointer targets, and a running head, a folio or a signature line is never in the TEI body, so citing one would be a mistake by construction. A **caption** line is dropped from the draft only, since it stays citable.
 **Note** **one of the four singular actions.** The payload is one page's collation prompt, built to be handed to one model for one page; a merged stream of them is not consumable by the thing it exists for.
 ```
@@ -200,6 +203,24 @@ committed files. There is no `boundaries.json`: the files are the record.
 ```
 --all       every collated page in tei/
 --ratified  expect '#ed' instead of '#llm'; a remaining '#llm' becomes a worklist line [off]
+--root --json --toon --pager
+```
+
+### tei expand [REF ...]
+**Does** writes ratified Tier-1 forms into a collated page, resolving `index=` handles on Tier-1 elements against `tier1_terms`.
+**Reads** `tei/`, `gt/ocr/`.
+**Writes** `tei/`, under `--commit`.
+**Exit** always 0.
+**Note** the collation pass names a native term by its handle — `<foreign xml:lang="ckt" index="7"/>` — instead of retyping it, and this fills in the string a human adjudicated at the raster. **The model's judgement is which token; the glyphs are never its to originate.** Retyping `ɪᵋplɪˊlᴇ` character by character puts §5's two residual classes back on the table (a dropped U+0323, an `ɪ` read as `i`), and both are unfalsifiable downstream — the form still looks like a form, no lexicon knows it, no second reader exists, and CATMuS reads 0% of the inventory.
+**Note** **`gt/ocr/` only.** `tier1_terms` is empty on the 802 pages with no ground truth, so there is nothing to expand there and that is correct: a list built from `mz/ocr/` would be garbled forms offered to be copied verbatim, which is this failure inverted rather than avoided. On those pages the pass reads the raster, writes its best attempt and flags the line.
+**Note** a handle naming no term is left **exactly as it is** — not dropped, not guessed at. `tei validate` errors on a surviving `@index` and names the missing step rather than a dangling reference, `@index` not being a TEI attribute. Removing it would leave a Tier-1 element holding whatever the pass typed, indistinguishable from one that never asked.
+**Note** a handle on an element that **already holds text** is a conflict, not an override: two claims about the same glyphs, reported with neither written. Same for a handle on an element with no Tier-1 `xml:lang` — English is not transcluded.
+**Note** this does **not** change a `@resp` rank. A span whose glyphs come from ratified ground truth has a real case for `#ed`, no model authority having touched the identity, but the firewall says rank rises by a human act and that amendment is not this verb's to make.
+**Note** a page with no handles reports `resolved: []` and is not an error — every page collated before this existed, and every page with no native forms.
+**Note** with more than one ref and `--commit`, every page is previewed before any is written — the same up-front rule `ocr restore` and `tei ids` keep.
+```
+--all     every collated page in tei/
+--commit  write the ratified forms [off — reports what would change]
 --root --json --toon --pager
 ```
 
