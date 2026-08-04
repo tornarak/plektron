@@ -1424,6 +1424,31 @@ addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='
     return "\n".join(h)
 
 
+def _error_html(path: str, tb: str) -> str:
+    """The page a failed request renders, traceback included.
+
+    A reviewer meeting this is looking at a tool that stopped working mid-pass,
+    and the only useful thing it can say is what broke. Withholding the traceback
+    behind a tidy apology would send them to the server's stderr — which, since
+    `--serve` is always backgrounded, is a file they have to be told about first.
+    """
+    import html as _html
+    return (
+        "<!doctype html><meta charset=utf-8><title>review: error</title>"
+        "<style>body{font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;"
+        "max-width:60rem;margin:3rem auto;padding:0 1.5rem;color:#333}"
+        "h1{font-size:1.1rem;color:#a3121a}"
+        "pre{background:#fbf7f7;border:1px solid #e6cdcd;border-left:3px solid #a3121a;"
+        "padding:.8rem 1rem;overflow-x:auto;font-size:12px;line-height:1.45}"
+        "p{color:#555}code{background:#f2f2f2;padding:.1rem .3rem;border-radius:2px}"
+        "</style>"
+        f"<h1>review failed on <code>{_html.escape(path)}</code></h1>"
+        "<p>This request raised. Nothing was written — the server is still up, so a "
+        "reload after fixing the cause will work. The same traceback is on the "
+        "server's stderr.</p>"
+        f"<pre>{_html.escape(tb)}</pre>")
+
+
 def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
           root: Path = Path("."), port: int = 8731) -> None:
     """Serve a session's reviews at 127.0.0.1 and accept saves.
@@ -1467,6 +1492,25 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
     def _state() -> list[dict]:
         return [{"ref": r, "done": _done(r)} for r in queue]
 
+    # Every ref's geometry is resolved before the socket is bound, for the reason
+    # `page_refs` parses every ref before any work is done: a store that cannot
+    # answer for a page is a fact about the invocation, and the invocation is
+    # where it should be reported. It used to surface as a 500 on navigation —
+    # the CLI printed the URL and three reassuring `decisions -> …` lines, then
+    # the browser got a traceback that only existed on the server's stderr, which
+    # in the ordinary backgrounded case is a log nobody is reading. `--store`
+    # defaults to `mz` here, so the ordinary way to meet this is a page restored
+    # before `ocr predict` existed: name the store that does hold it.
+    missing = [(r, alto_for_lines(r, alto_dir, root)) for r in queue]
+    missing = [(r, p) for r, p in missing if not p.exists()]
+    if missing:
+        other = "gt" if "mz" in alto_dir else "mz"
+        raise FileNotFoundError(
+            "no ALTO in this store for "
+            + ", ".join(f"{r} ({p})" for r, p in missing)
+            + f" — review reads --store mz by default; try --store {other}, or "
+              "`harness ocr predict` to write the prediction.")
+
     def _next_after(cur: str) -> str | None:
         """The next page still wanting a decision — never `cur` itself.
 
@@ -1483,7 +1527,36 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
         def log_message(self, format: str, *args) -> None:
             pass
 
+        def send_response(self, *a, **kw):
+            # Track that a status line went out, so the error handler below can
+            # tell "nothing was sent, render a page" from "we are mid-response and
+            # the only honest thing left is to drop the connection".
+            self._sent = True
+            super().send_response(*a, **kw)
+
         def do_GET(self):
+            # An unhandled exception used to reach socketserver, which prints a
+            # traceback to stderr and resets the connection: the reviewer gets a
+            # browser error naming nothing, and the reason lives in a background
+            # log. Render it instead. This is a loopback tool with one user, so
+            # the traceback goes on the page — the alternative is a polite
+            # apology that sends them to the log anyway.
+            self._sent = False
+            try:
+                self._get()
+            except Exception:
+                if getattr(self, "_sent", False):
+                    raise  # mid-response; a second status line would be worse
+                import traceback
+                body = _error_html(self.path, traceback.format_exc()).encode("utf-8")
+                self.send_response(500)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                print(f"500 {self.path}\n{traceback.format_exc()}", file=sys.stderr)
+
+        def _get(self):
             if self.path in ("/", "/index.html"):
                 # Bare `/` is "wherever this session is up to": the first page
                 # still wanting a decision, falling back to the first page when

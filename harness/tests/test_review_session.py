@@ -21,6 +21,7 @@ from __future__ import annotations
 import json
 import socket
 import threading
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -389,3 +390,48 @@ def test_a_repeated_ref_is_queued_once(two):
     its own "n/2 adjudicated" count a lie."""
     with Session(["2-046", "2-046", "2-047"], two) as s:
         assert "0/2 adjudicated" in s.get("/")
+
+
+# --- failure is reported where it happened ---------------------------------
+
+def test_a_store_that_cannot_answer_refuses_before_the_socket_is_bound(two):
+    """Naming the wrong `--store` is a fact about the invocation, so it is
+    reported by the invocation.
+
+    `review` reads `--store mz` by default, and a page restored before `ocr
+    predict` existed has ground truth and no prediction. That used to bind the
+    port, print the URL and three reassuring `decisions -> …` lines, and then
+    fail on navigation — the traceback reaching only the server's stderr, which
+    under `--serve` is always a background log. `serve` resolves every ref's
+    geometry first, the same rule `page_refs` applies to ref parsing.
+    """
+    (two / "mz" / "ocr" / "chukchi-2-047.xml").unlink()
+    with pytest.raises(FileNotFoundError) as e:
+        serve(["2-046", "2-047"], "mz/ocr", two, _free_port())
+    msg = str(e.value)
+    assert "2-047" in msg and "2-046" not in msg, "names the pages that are missing"
+    assert "--store gt" in msg, "names the store that would answer"
+
+
+def test_a_failed_request_renders_the_reason_instead_of_resetting(two, monkeypatch):
+    """An unhandled exception is a page, not a dropped connection.
+
+    Left to socketserver it prints a traceback to stderr and resets, so the
+    reviewer gets a browser error naming nothing while the reason sits in a log
+    they have to be told about. The server stays up: this is a report, not a
+    shutdown.
+    """
+    import harness.lines as L
+    with Session(["2-046"], two) as s:
+        def boom(*a, **kw):
+            raise RuntimeError("the crop scaler fell over")
+        monkeypatch.setattr(L, "write_line_crops", boom)
+        with pytest.raises(urllib.error.HTTPError) as e:
+            s.get("/p/2-046")
+        assert e.value.code == 500
+        body = e.value.read().decode("utf-8")
+        assert "the crop scaler fell over" in body, "the cause is on the page"
+        assert "RuntimeError" in body and "Traceback" in body
+        assert "/p/2-046" in body, "and the request that raised"
+        monkeypatch.undo()
+        assert "2-046" in s.get("/p/2-046"), "the server survived it"
