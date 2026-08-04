@@ -19,6 +19,10 @@ evidence, it is what both readings that were wrong said.
 - [ ] Footnote markers are superscript sorts `¹²³⁴⁵⁶⁷⁸⁹`, never ASCII digits — §2.10
 - [ ] Dashes are em U+2014 — §2.11
 - [ ] Roman numerals and folio slots plain ASCII — §2.12
+- [ ] Page number located by zone — `RunningTitleZone` (plain digits) **or**
+      `QuireMarksZone` (bracketed, at the foot), never both — keyed with no interior
+      space, box width checked for clipping, CATMuS's version corrected where it
+      differs, and never sourced from the scan index or a neighbour
 - [ ] No small-cap `o` keyed (bases are `ᴀ ᴇ ɪ ʟ` only) — §2.3, §5.10
 - [ ] Dot-leader runs dropped, not reproduced
 - [ ] Breve keyed only on `u`/`i`, never on the obscure-vowel series — §2.6

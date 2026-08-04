@@ -192,6 +192,48 @@ true` unless you can name something specific**, and seeing the machine text in
 - **Roman numerals are plain ASCII, always** (§2.12), however small-cap they look.
   So are a bracketed chapter-opening folio (`[1]`) and the signature line's leading
   number — both regular, both apparatus, neither worth a zoom.
+- **The page number is apparatus, it lives in a named zone, and it is yours to
+  correct.** It takes one of **two forms, and they are mutually exclusive** — a page
+  has one or the other, never both, so finding either ends the search:
+
+  - **`RunningTitleZone`** — an ordinary page. The zone holds exactly two lines, the
+    running title (`BOGORAS, THE CHUKCHEE.`) and the folio; the folio is the one that
+    is not the title. **One to three plain ASCII digits, unbracketed, no interior
+    space.**
+  - **`QuireMarksZone`** — a chapter opening or header page, which carries **no
+    running title and no running folio at all**. The number is a **bracketed
+    quire-mark near the foot**, `[1]` or `[11]`, roughly mid-measure rather than at
+    a margin, on the last line or near it. This zone also holds the printer's
+    signature line (`1—JESUP NORTH PACIFIC EXPED., VOL. VII.`) and a page can carry
+    both, one per line — so finding the signature line does not mean you have found
+    the number.
+
+  `ocr lines` prints the zone label for every line, so you never guess which line
+  holds it, and never hunt the foot of a page whose running title you have already
+  found.
+
+  Two mechanical tells, **both about the `RunningTitleZone` folio and neither about
+  the bracketed quire-mark**. That folio is **not centred** — it sits hard against
+  the left or the right margin, and which side it takes is a property of the leaf
+  you cannot work out from this page alone, so do not try to derive it and do not
+  treat a side as wrong. Look at both. And **a folio box under about 30 px wide is
+  clipping the number**: the pages read correctly in the `1-031`..`1-036` batch had
+  boxes 65–76 px, and both pages misread had 19–20 px. On a box that narrow go to
+  `--margins` — and know that a margin-widened crop of a clipped box is exactly
+  where a printed divider rule reads as a leading `1` and a tight kern reads as a
+  gap. `1 3` was `13`, `115` was `15`; both happened here.
+
+  **CATMuS reads this slot badly and often**: it drops a digit, splits one, returns
+  the line empty, or takes the divider rule for a `1`. So where zone and appearance
+  say page number, **correct it** and say in `note` what the machine text had. This
+  is apparatus, not a glyph identity — the firewall does not reach it and no Tier-1
+  prohibition applies.
+
+  What you may not do is get the number from anywhere but **this page**. Not from
+  the scan index — `1-033` is not folio 133, and part and folio are not derivable
+  from each other in either direction. Not from a neighbouring page. If the digits
+  are genuinely unreadable, key what you can see and say so; a number nobody can
+  read is a finding, and the seam ledger settles it later.
 - **Before you finish, re-read every note against its own text.** A note describing
   a keying decision the text does not exhibit is a defect even when the text is the
   right one — worse then, because it argues the adjudicator into undoing correct
