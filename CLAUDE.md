@@ -1589,6 +1589,19 @@ raster to settle what is on the paper, never to file the oddity as authorial and
   survives on a ground-truth page is the floor's own blind spot, which is the
   right thing for a triage list to hold.
 
+  **That exposed `apostrophe_adjacency` as almost pure noise**, and the fix is the
+  shape of every filter here. With Tier-1 forms no longer flagged, all 31 surviving
+  hits over the ground-truth corpus were ordinary English possessives — `wife’s`,
+  `Krause’s`, `reindeer’s`. But **position cannot decide it**: `keˊlet` mis-keyed as
+  `ke’let` puts U+2019 between two lowercase ASCII letters, exactly where a
+  possessive sits. So `english_genitive` requires the shape *and* a stem the lexicon
+  **positively knows** — not `not _unknown_word(...)`, which passes anything under
+  four characters and would clear `ke’let` and `kun’s` alike. It fails closed with
+  no lexicon, and it declines the possessive on an unknown proper noun rather than
+  guessing. The corpus now reports **one** such flag, `2-045`'s `kun’s`, the tail of
+  a broken `Kereˊtkun’s` — a Tier-1 stem taking an English genitive, which is
+  precisely what a shape-only rule would have thrown away.
+
 **Density, measured** on `1-048` and `2-030` — the two densest pages, so a ceiling
 and not an average. Inventory glyphs are **3.3% of characters** but fall in **43.8%
 of lines**.

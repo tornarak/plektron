@@ -29,6 +29,7 @@ from pathlib import Path
 from harness.detectors import (
     EDGE_PUNCT,
     detect_all,
+    english_genitive,
     join_broken_words,
     lexicon_miss,
     native_corpus_lines,
@@ -244,3 +245,49 @@ def test_the_cut_does_not_reach_a_tier1_character():
 
 def test_a_token_that_is_only_punctuation_raises_nothing():
     assert detect_all(["— ( ) ,"])["tokens"] == []
+
+
+# --- the English possessive, which is not a mis-keyed stress mark -------------
+#
+# `apostrophe_adjacency` fires on U+2019 because a curly apostrophe standing in
+# for U+02CA is a real and invisible defect. Once ratified Tier-1 forms stopped
+# being flagged, **every surviving hit on the ground-truth corpus was an ordinary
+# English possessive** — 31 of 31, `wife’s` through `Krause’s`.
+
+LEX = {"reindeer", "wife", "raven", "beak", "daughter", "in", "law", "let"}
+
+
+def test_a_possessive_on_a_word_english_knows_is_not_a_hit():
+    assert english_genitive("wife’s", LEX)
+    assert english_genitive("Raven’s-Beak", LEX)
+    assert english_genitive("daughter-in-law’s", LEX)
+
+
+def test_a_curly_apostrophe_where_the_stress_mark_belongs_still_is():
+    """The load-bearing negative, and why position alone cannot decide it:
+    `keˊlet` mis-keyed as `ke’let` puts U+2019 between two lowercase ASCII
+    letters, which is exactly where a possessive sits. The stem is what
+    separates them — and it must be *positively* known, since `ke` is under the
+    four-character floor `_unknown_word` never reports on."""
+    assert not english_genitive("ke’let", LEX)
+    assert any(f["type"] == "apostrophe_adjacency"
+               for f in detect_all(["called ke’let here"])["tokens"])
+
+
+def test_a_genitive_on_a_native_stem_is_still_a_hit():
+    """`2-045` prints `Kereˊtkun’s`, broken so the token reads `kun’s`. A Tier-1
+    stem taking an English possessive is attested, and is exactly the case a
+    shape-only rule would clear."""
+    assert not english_genitive("kun’s", LEX)
+
+
+def test_a_second_lookalike_in_the_token_defeats_the_explanation():
+    """U+2019 alone has an innocent reading; beside another lookalike the form is
+    not ordinary English whatever the apostrophe is doing."""
+    assert any(f["type"] == "apostrophe_adjacency"
+               for f in detect_all([nfd("the raven´s’ beak")])["tokens"])
+
+
+def test_without_a_lexicon_nothing_is_suppressed():
+    """Fails closed: no dictionary, no claim about what English knows."""
+    assert not english_genitive("reindeer’s", set())

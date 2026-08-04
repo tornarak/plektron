@@ -174,6 +174,12 @@ lives on, and the gate checks it.
   `"mêˊmêl),"` until 2026-08, and the parentheses were the tell that two fields
   were describing one form in two spellings.
 
+  **An English possessive is not an `apostrophe_adjacency` hit** where the stem is
+  a word the lexicon knows — the book sets `wife’s` and `reindeer’s` with a curly
+  apostrophe, correctly, and those were all 31 of the surviving hits before the
+  filter. A possessive on a stem it does *not* know still reports, so `kun’s` —
+  `Kereˊtkun’s` broken across a line — remains the corpus's one hit.
+
 # The seam
 
 **About 70% of text pages open mid-paragraph** — 69.8% measured over the keyed

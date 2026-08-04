@@ -454,6 +454,46 @@ def _unknown_word(p: str, lex: set[str]) -> bool:
     return len(p) > 3 and p.isascii() and p.isalpha() and p.lower() not in lex
 
 
+# U+2019 in the position an English possessive puts it: before a final `s`, or
+# before a hyphen inside a compound (`Raven’s-Beak`). A trailing one never
+# reaches here — `EDGE_PUNCT` cuts it at the tokenizer — so `farmers’` is
+# already outside this question.
+_GENITIVE = re.compile("’s?(?=$|[-‐])")
+
+
+def english_genitive(tok: str, lex: set[str]) -> bool:
+    """Is every U+2019 in this token an English possessive on a word English knows?
+
+    `apostrophe_adjacency` fires on U+2019 because the corpus keys the stress
+    mark as U+02CA and a curly apostrophe in its place is a real and invisible
+    defect. But the book also sets ordinary English possessives with a curly
+    apostrophe, correctly, and after ratified Tier-1 forms stopped being flagged
+    those became **every surviving hit on the ground-truth corpus** — 31 of 31,
+    `wife’s` through `Krause’s`. A detector whose whole output is correct English
+    buries the hits it exists for.
+
+    **Position alone will not do it**, and the counter-example is the point:
+    `keˊlet` mis-keyed as `ke’let` puts a curly apostrophe between two lowercase
+    ASCII letters, which is exactly where a possessive sits. So the shape is
+    necessary and not sufficient, and the stem must be **positively known** —
+    `p.lower() in lex`, not `not _unknown_word(p)`, which passes anything under
+    four characters and would have cleared `ke’let` and `kun’s` alike.
+
+    Fails closed: no lexicon, no suppression. What it cannot clear is a
+    possessive on a proper noun no dictionary carries (`Orion’s`), which stays
+    flagged and is the honest answer — the alternative is guessing that a
+    capitalised unknown before `’s` is English, and the corpus is full of
+    capitalised unknowns that are not.
+    """
+    if not lex or "’" not in tok:
+        return False
+    if len(_GENITIVE.findall(tok)) != tok.count("’"):
+        return False
+    parts = [p for p in tok.split("’", 1)[0].split("-") if p]
+    return bool(parts) and all(
+        p.isascii() and p.isalpha() and p.lower() in lex for p in parts)
+
+
 def apostrophe_flags(text: str) -> list[dict]:
     """Every straight U+0027 in `text`, always flagged — nothing invisible.
 
@@ -683,7 +723,12 @@ def detect_all(lines: list[str], root: Path = Path("."),
             hits = []  # union semantics: a token may carry several types
             if any(c in INVENTORY_CHARS for c in tok):
                 hits.append("inventory_glyph")
-            if any(c in LOOKALIKES for c in tok):
+            seen = set(tok) & LOOKALIKES
+            # An English possessive is the one lookalike with an innocent
+            # explanation the token itself can supply, and only when U+2019 is
+            # the *only* lookalike present: another one in the same token means
+            # the form is not ordinary English whatever the apostrophe is doing.
+            if seen and not (seen == {"’"} and english_genitive(tok, lex)):
                 hits.append("apostrophe_adjacency")
             if DOT_ABOVE_G.search(tok):
                 hits.append("dot_above_g")
