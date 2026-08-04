@@ -3,7 +3,7 @@
 The consumer is the annotation pass, which meets a citation in the body and has
 to say which of the 73 works it names. Three properties of the store make that a
 search problem rather than a dictionary lookup, and all three are recorded in
-CLAUDE.md:
+docs/apparatus.md:
 
   - **The siglum is not the only surface form, or even the common one.** The
     footnote form (`Dall, I, p. 375.`) resolves against `cited_as`, but most
@@ -136,7 +136,7 @@ def _siglum(c: dict) -> str:
     """A `cited_as` record as one readable string — `Dall, I`, `Hough, Lamp`.
 
     Display only. The comma before the volume is not reliable in the print
-    (CLAUDE.md), which is why the store keeps the three parts separate; this
+    (docs/apparatus.md), which is why the store keeps the three parts separate; this
     reassembles them in one fixed style rather than reproducing any page.
     """
     bits = [c.get("name") or ""]
@@ -148,7 +148,7 @@ def _siglum(c: dict) -> str:
 
 
 def _copy(w: dict) -> str:
-    """Which located-copy fields this record carries. See CLAUDE.md: `#llm` on
+    """Which located-copy fields this record carries. See docs/apparatus.md: `#llm` on
     every one of them, so this says a match was *proposed*, not ratified."""
     have = [k for k in ("doi", "url") if w.get(k)]
     return "+".join(have) if have else "-"

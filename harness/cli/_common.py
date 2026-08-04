@@ -524,7 +524,7 @@ def out_per_ref(a, pairs, name: str | None = None) -> None:
 
     # An **ordered** set, so the `# field` blocks below follow the record's own
     # field order rather than a set's iteration order — which Python randomises per
-    # process for strings. CLAUDE.md records the same hazard for `--resize`'s class
+    # process for strings. The train-zones skill records the same hazard for `--resize`'s class
     # map, where it permuted every label; here it shuffled sub-tables between runs
     # of one unchanged command.
     listy: dict[str, None] = {}

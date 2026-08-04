@@ -3176,8 +3176,8 @@ def install_model(checkpoint: str | Path, root: Path = Path("."),
             f"derived on the training pages predicts {perm['holds_out']}% of "
             "held-out zones, which means the geometry was learned and the names on "
             "the output channels are wrong. Run `--remap-model --commit` against "
-            "this checkpoint first. See CLAUDE.md, '--resize shuffled the class "
-            "names'.")
+            "this checkpoint first. See the train-zones skill, 'Diagnosing a "
+            "permuted class map'.")
 
     dest_dir = root / MODELDIR
     rel = f"{MODELDIR}/{name}.safetensors"

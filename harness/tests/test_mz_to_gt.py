@@ -14,7 +14,7 @@ machine's *geometry* survives while the machine's *text* does not reach `gt/`
 except through a decision, and that the span diff's second-witness refusal is
 satisfied by `mz/ocr/` where it is not by the view.
 
-That last one closes a gap CLAUDE.md records as open: "`harness ocr review`'s bare
+That last one closes a gap docs/open-questions.md records as open: "`harness ocr review`'s bare
 span diff has no second witness left ... If a second witness is ever wanted again,
 it links into `ocr/` from its own store." That is exactly what `mz/ocr/` is.
 """

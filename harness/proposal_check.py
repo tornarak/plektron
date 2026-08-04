@@ -130,7 +130,7 @@ def _stated_but_absent(stated: set[int], text: str) -> set[int]:
     entire subject of §2.10, so both are exactly what a careful reader writes
     down, and the gate told them not to.
 
-    What this direction exists to catch is the defect CLAUDE.md names — a
+    What this direction exists to catch is the defect the reading pass names — a
     `resolved` describing a keying decision *the text does not exhibit*, which
     argues an adjudicator into undoing correct work. That is a claim about the
     text's characters, so it is answered against them.

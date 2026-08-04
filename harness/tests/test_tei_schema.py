@@ -2,7 +2,7 @@
 
 `validate.py` checks the edition's own rules, and every one of them is
 expressible in conformant TEI — so a page could satisfy all of them while using
-an attribute TEI has never defined, and nothing would say so. CLAUDE.md listed
+an attribute TEI has never defined, and nothing would say so. docs/open-questions.md listed
 nine attribute usages nobody checked; the whole surface was held in place by a
 skill's prose.
 
@@ -31,7 +31,7 @@ PAGE = (f'<TEI xmlns="{N}"><teiHeader><fileDesc>'
         "<sourceDesc><p>s</p></sourceDesc>"
         "</fileDesc></teiHeader><text><body>%s</body></text></TEI>")
 
-# Every construct CLAUDE.md names as unchecked, plus the ones the collation skill
+# Every construct docs/open-questions.md names as unchecked, plus the ones the collation skill
 # tells the pass to write. If TEI stops accepting one of these, that is a finding.
 CONSTRUCTS = [
     ("plain paragraph", "<p>x</p>"),
@@ -101,7 +101,7 @@ def test_an_unexpanded_handle_is_not_conformant_either(real_root):
 
 
 def test_a_committed_page_validates_standalone(real_root):
-    """CLAUDE.md said for a long time that a page file is a fragment and will not
+    """The open-questions record (once CLAUDE.md itself) said for a long time that a page file is a fragment and will not
     validate standalone. That is true of `tei/corpus-header.xml`, a bare
     `<teiHeader>`, and false of every page — which has a real `<TEI>` root and a
     minimal but structurally complete header."""

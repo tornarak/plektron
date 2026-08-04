@@ -189,7 +189,7 @@ def build_ledger(root: Path = Path(".")) -> dict[str, dict]:
     # collapsing those two into "closed" would put a verdict nobody made into the
     # ledger. That is the same defect as a zone page saved with nothing on it,
     # where an empty save erased the difference between having made a judgement
-    # and not; see CLAUDE.md on `exempt`.
+    # and not; see docs/segmentation.md on `exempt`.
     #
     # What separates them here is *who could have written it*. A seam is recorded
     # by the page after the gap, and `harness tei seam` refuses unless the predecessor

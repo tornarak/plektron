@@ -4,7 +4,7 @@
 that a `<figure>` names a number the page prints, that no whitespace precedes a
 `<note>`. Every one of those is a statement about this edition, and a file can
 satisfy all of them while using an attribute TEI has never defined. Nothing saw
-that until now — CLAUDE.md listed nine attribute usages nobody checked, and the
+that until now — docs/open-questions.md listed nine attribute usages nobody checked, and the
 whole surface was held in place by the collation skill's prose.
 
 **What it catches, concretely.** A hand-written `provenance="uncertain"` on
@@ -32,7 +32,7 @@ quarter of a second. Per page it is 17 s against a collation that took minutes,
 which is why the CLI runs it by default and the library function does not — the
 test suite would otherwise pay it on every call.
 
-**A page file is a complete TEI document and validates standalone.** CLAUDE.md
+**A page file is a complete TEI document and validates standalone.** docs/open-questions.md
 said the opposite for a long time ("a page file is a fragment and will not
 validate standalone"); that is true of `tei/corpus-header.xml`, which is a bare
 `<teiHeader>`, and false of every page, which has a real `<TEI>` root and a

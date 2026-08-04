@@ -106,7 +106,7 @@ def tier1_glyphs(text: str) -> str:
     Used to flag a line as *probably* carrying transcribed notation, which is the
     line the reviewer's attention is worth most on: a misread English word is
     checkable against a dictionary and a second witness, a misread Chukchee form
-    against neither (`keying_spec.md` section 1, and CLAUDE.md's Collation notes).
+    against neither (`keying_spec.md` section 1, and the collation skill's CATMuS notes).
 
     **This is a floor and must be labelled as one wherever it is shown.** Four
     inventory members are unmarked ASCII — `c` for English *sh*, plain `s`, `j`, `x`

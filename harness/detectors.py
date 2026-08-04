@@ -283,7 +283,7 @@ def join_broken_words(recs: list[dict]) -> list[str]:
     output stay positional to each other and `index` never moves.
 
     `recs` must already be in **reading order**, the printed sequence, which is
-    what `page_lines` returns. ALTO document order is *not* it (CLAUDE.md, "line
+    what `page_lines` returns. ALTO document order is *not* it (harness/README.md, "line
     output is in reading order, but `index` is an identity"), and joining along
     document order would splice the foot of one column onto the head of another.
 
@@ -846,7 +846,7 @@ def native_corpus(root: Path = Path(".")) -> list[tuple[str, str]]:
     """(ref, token) for every `inventory_glyph`-flagged token in restored ground truth.
 
     Ground truth only, never OCR draft — draft CATMuS output reads 0% of the
-    inventory (CLAUDE.md, "What CATMuS can and cannot read"), so it is not a
+    inventory (the collation skill, "What CATMuS can and cannot read"), so it is not a
     witness to native spelling at all, only to line geometry and English.
     `inventory_glyph` is the exact test `detect_all` already applies, reused
     rather than re-derived so the two stay in lockstep. A floor, not a census,
@@ -868,7 +868,7 @@ def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     `decision.json` are keyed by** and the one `harness ocr lines` prints. Not
     document order and not a counter: `context._lines_from_alto` drops empty
     lines, so its position is not the ALTO's, and joining through it is the
-    documented way to mis-map an adjudicated page (CLAUDE.md, "Three invariants
+    documented way to mis-map an adjudicated page (harness/README.md, "Three invariants
     from that work").
     """
     from .lines import page_lines
@@ -901,7 +901,7 @@ def suggest_native_forms(root: Path = Path(".")) -> list[dict]:
     reference set of known-good forms to check a new reading against — a
     proposal that's a near-miss against one of these (one mark off, one base
     letter swapped) is a candidate misspelling rather than a genuinely new
-    word. `1-073`'s j/breve slip and `2-040`'s dropped g̣ (CLAUDE.md, "Error
+    word. `1-073`'s j/breve slip and `2-040`'s dropped g̣ (keying_spec.md §5, "Error
     profile so far") are exactly the class this exists to catch on a future
     page, had the recurring word already been in this list to check against.
 
@@ -922,7 +922,7 @@ def mark_base_frequency(root: Path = Path(".")) -> list[dict]:
     """Bare-vs-marked frequency per base letter, across the native corpus.
 
     A prior for exactly the class of error that keeps recurring — dropped
-    U+0323 under `g`, three times now (`1-074`, `1-100`, `2-040`; CLAUDE.md,
+    U+0323 under `g`, three times now (`1-074`, `1-100`, `2-040`; keying_spec.md §5,
     "Error profile so far"): absent a clean raster read, which form is the
     more likely one? Ground truth only, same floor caveat as `native_corpus`
     — a working prior from what has been restored so far, not a population

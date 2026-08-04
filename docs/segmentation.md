@@ -8,7 +8,7 @@ raster costs, kraken traps, `--jobs`) load on demand from
 
 **The first attempt is `gt/seg/` and it is not being extended.** 122 pages under the
 full SegmOnto vocabulary, free polygons drawn around ink — and the faults recorded
-throughout this file are its faults: whole printed lines dropped, captions found
+throughout these docs are its faults: whole printed lines dropped, captions found
 where none exist, line polygons excluding their own text. The regions were only ever
 used to impose a reading order, and CLAUDE.md has always said they carry no semantic
 value.

@@ -421,7 +421,7 @@ def _footnote_hits(p: Path, root: Path) -> list[dict]:
 
     Scoped to OCR ALTO and adjudicated proposals — the stores that hold a
     page's running text in line order. `gt/fig/` is excluded because it carries
-    no `TextLine` at all (CLAUDE.md), `gt/seg/` because it is geometry, and the
+    no `TextLine` at all (harness/README.md), `gt/seg/` because it is geometry, and the
     `data/` apparatus because a marker there is a citation, not a note anchor.
 
     Rides on `normalize` rather than a verb of its own because everything this

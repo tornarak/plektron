@@ -637,7 +637,7 @@ def run_review(a) -> int:
     # store it is pointed at resolves to the ground truth the proposal itself
     # produced, the diff compares a file with its own source and reports a clean
     # 40/40 — the shape of verification without the substance, which is exactly
-    # the fault that killed the old verbatim firewall (CLAUDE.md, "What the
+    # the fault that killed the old verbatim firewall (docs/decisions.md, "What the
     # firewall is not"). So refuse rather than print a reassuring table.
     #
     # Checked for **every** ref before any table is printed. A collapsed witness

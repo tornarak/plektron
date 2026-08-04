@@ -59,7 +59,7 @@ def test_resolved_naming_a_character_absent_from_the_text_still_fails(tmp_path):
     """The direction that matters, and the reason this cannot just be deleted.
 
     A `resolved` describing a keying decision the text does not exhibit argues an
-    adjudicator into undoing correct work — CLAUDE.md's own framing, and the defect
+    adjudicator into undoing correct work — the reading pass's own framing, and the defect
     this arm exists for.
     """
     found = issues(tmp_path, {"7": {

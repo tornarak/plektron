@@ -88,7 +88,15 @@ def page_state(ref: str, root: Path = Path("."),
     }
     reached = {
         "scanned": scan,
-        "zoned-mz": zone_alto(ref, root, ZONES_MZ).exists(),
+        # **An exempt page satisfies this rung without a prediction behind it.**
+        # `zones predict` is not part of how a plate gets ruled a plate — a human
+        # looks and says so — and counting the absence as a skipped rung buried
+        # the column's real content: 83 of this corpus's first 84 `zoned-mz`
+        # skips were exempt pages, and the one page that actually reached human
+        # zoning with no prediction behind it (`1-359`) sat invisible among them.
+        # A summary rung that fires on the ordinary case is the same defect as a
+        # detector that fires on ordinary English.
+        "zoned-mz": exempt or zone_alto(ref, root, ZONES_MZ).exists(),
         "zoned-gt": zones in ("gt", EXEMPT),
         "ocr-mz": ocr_mz,
         "proposed": row["proposal"],

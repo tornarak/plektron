@@ -56,7 +56,7 @@ assigned per export (`BT55`/`BT56` in one, `BT68`/`BT69` in the next), so code
 that hardcodes them fails silently rather than loudly.
 
 **Pairing a picture with its caption is `figures.paired`, done once and recorded**
-— the rule CLAUDE.md has always stated and nothing implemented. It branches on
+— the rule this record had always stated and nothing implemented. It branches on
 the **caption's own shape**: a text figure sets its caption below the picture
 (`1-151`'s is 610×96), a plate sets it rotated *beside* it, reading bottom-to-top
 (`1-049`'s three are 86×457, 92×506, 82×636). A below-only rule leaves every

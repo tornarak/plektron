@@ -169,7 +169,7 @@ def test_sub_tables_follow_field_order_not_set_iteration(capsys):
 
     They were collected into a `set`, and Python randomises string hashing per
     process — so the blocks of one unchanged command reordered between runs. The
-    same hazard CLAUDE.md records for `--resize`'s class map, where it permuted
+    same hazard the train-zones skill records for `--resize`'s class map, where it permuted
     every label in the model.
     """
     from argparse import Namespace

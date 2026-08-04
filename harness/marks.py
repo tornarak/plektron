@@ -581,7 +581,7 @@ def marks(refs: list[str], root: Path = Path("."), decisions: bool = False,
     ratio = [r for c in contrasts for r in _ratio_rows(c, batch, prior, min_types)]
 
     # No exemptions on this side, deliberately. A proposal is a **record of what a
-    # reader wrote**, not a store to be corrected — CLAUDE.md forbids rewriting one
+    # reader wrote**, not a store to be corrected — rewriting one is forbidden
     # after adjudication because `edited` is computed against it, so a conflict here
     # is the measurement rather than a defect. Silencing one would delete the very
     # thing the file exists to hold. Exemptions belong to `lexicon conflicts`, over
@@ -606,7 +606,7 @@ def gt_conflicts(root: Path = Path(".")) -> dict:
     second kind can be ruled on. That is what `data/marks_exempt.json` holds.
 
     `gt/ocr/` explicitly, not the `ocr/` view: this publishes a corpus-wide
-    finding, and CLAUDE.md's rule is that anything that gates or publishes a
+    finding, and harness/README.md's rule is that anything that gates or publishes a
     number names the stores. Through the view every machine-read page would
     contribute, and CATMuS reads 0% of the inventory — every one of its Tier-1
     tokens would be a spelling nobody keyed.

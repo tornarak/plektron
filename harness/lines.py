@@ -438,7 +438,7 @@ def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."
     `_scale_for` is used rather than assuming the two spaces agree. They do agree
     across the current stores — every page's `Page/@WIDTH|@HEIGHT` matches its
     raster exactly — but the reason the primitive exists (no page is exactly ×2,
-    see CLAUDE.md) applies the moment anything is re-rendered, and a silently
+    see docs/rasters.md) applies the moment anything is re-rendered, and a silently
     mis-scaled crop looks like a recognition error rather than a geometry one.
 
     No rotate-if-tall heuristic. Captions are sometimes set vertically beside a
@@ -478,7 +478,7 @@ MIN_BAND_H = 20
 # to separate "some type on this row" from "blank paper", not to measure density.
 ROW_INK_FRACTION = 0.005
 # Rows within this many px of an existing TextLine are treated as already covered.
-# Ascenders and descenders overshoot a line's own box routinely (CLAUDE.md: a line
+# Ascenders and descenders overshoot a line's own box routinely (harness/README.md: a line
 # polygon can exclude printed text), and without the slack every page reports its
 # own lines back as gaps.
 COVER_PAD = 6
@@ -566,7 +566,7 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
 
     The segmentation this corpus was built from **drops whole printed lines**, and
     nothing detected it. `gt/fig/` had its lines stripped for exactly this reason
-    (CLAUDE.md), and `1-053` reached restored ground truth missing two lines of
+    (docs/decisions.md, "Dropped lines"), and `1-053` reached restored ground truth missing two lines of
     body text — found only because the footnote-marker check reported a marker
     with no reference, and traced by hand from there. A dropped line is invisible
     to every text-level check by construction: the text that is there is correct,
@@ -946,7 +946,7 @@ def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_D
     `ocr zoom --only`, `proposal.json` and `restore` all join on — never a position
     in reading order. So the numbers are legitimately not consecutive down the page
     (18 of the 20 restored pages reorder, `1-101` all 59 of them), and that is the
-    tell described in CLAUDE.md rather than a fault in this image.
+    tell described in docs/segmentation.md rather than a fault in this image.
 
     **The page is banded, not annotated** — the same idiom `compose_sheets` uses,
     a horizontal rule between neighbours and the number inside its own band, so a

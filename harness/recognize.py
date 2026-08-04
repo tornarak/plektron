@@ -85,7 +85,7 @@ DEFAULT_SEG_MODEL = "models/blla.mlmodel"
 # CATMuS print, large. Its competence here is known and narrow — ~91% on ASCII and
 # **0% of the transcription inventory**, measured against the human-collated
 # `tei/chukchi-1-151.xml` — so this store is a witness to line geometry and to
-# English, and to nothing else. See CLAUDE.md's Collation section before treating
+# English, and to nothing else. See docs/pipeline.md before treating
 # any Tier-1 form in it as a reading.
 DEFAULT_REC_MODEL = "models/catmus-print-fondue-large.mlmodel"
 

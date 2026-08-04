@@ -195,8 +195,8 @@ high `holds_out` — that is a correct map confirming itself, not a fault.
 
 ## Diagnosing a permuted class map
 
-CLAUDE.md states the invariant: a `class_mapping` that has been through `--resize`
-is not trustworthy. This is how the first one was caught and repaired.
+The invariant: a `class_mapping` that has been through `--resize` is not
+trustworthy. This is how the first one was caught and repaired.
 
 **0.2% agreement on its own training data** is the signature. Guessing among seven
 classes gives ~14%, so far *below* chance is a wrong mapping, not a weak model — no
@@ -227,8 +227,8 @@ renumbered nothing.
 
 ## The paragraph rule, and how it was got wrong
 
-CLAUDE.md states the structural fact: adjacent same-label zones are 42% of all
-boundaries and no model can produce them, so the ink has to. The rule is "a
+`docs/segmentation.md` states the structural fact: adjacent same-label zones are
+42% of all boundaries and no model can produce them, so the ink has to. The rule is "a
 paragraph's first line is indented", `indent_px: 40`. What follows is the
 debugging, because every one of these was wrong first and each looked plausible.
 

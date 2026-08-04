@@ -309,7 +309,7 @@ def paired(ref: str, root: Path = Path(".")) -> dict:
     foot of `reconcile` for what happened when this was treated as a rule.
 
     `unpaired_captions` is a FigDesc no picture claimed. It should always be
-    empty — CLAUDE.md records that all five caption-heavy pages were segmentation
+    empty — docs/apparatus.md records that all five caption-heavy pages were segmentation
     faults and were deleted — so a non-empty list is a new fault, which is
     exactly the signal it was supposed to be once noise stopped sharing the
     bucket. `reconcile` reports it; nothing here refuses.
@@ -443,7 +443,7 @@ def _scale_for(alto_page, image_size) -> tuple[float, float]:
 
     Returns (1.0, 1.0) once the two agree. Deriving this rather than assuming
     it means crops are correct whether or not the coordinate rescale has run,
-    and it never hardcodes 2 — no page is exactly double (see CLAUDE.md).
+    and it never hardcodes 2 — no page is exactly double (see docs/rasters.md).
     """
     aw = float(alto_page.get("WIDTH"))
     ah = float(alto_page.get("HEIGHT"))
