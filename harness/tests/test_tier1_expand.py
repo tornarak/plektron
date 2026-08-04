@@ -10,9 +10,14 @@ So the pass names the token and `tei expand` writes the glyphs.
 """
 from __future__ import annotations
 
+import unicodedata
 from pathlib import Path
 
 import pytest
+
+
+def nfd(s: str) -> str:
+    return unicodedata.normalize("NFD", s)
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -293,3 +298,69 @@ def test_the_provenance_summary_is_split_by_rank(tmp_path):
     assert rep.metrics["tier1_adopted"] == 1
     assert any(w.startswith("1 Tier-1 span(s) at #llm") for w in rep.worklist)
     assert any(w.startswith("1 Tier-1 span(s) at #gt") for w in rep.worklist)
+
+
+# --- a half of a broken word is not a form ------------------------------------
+
+def _broken_page(tmp_path: Path, ref: str = "1-101") -> Path:
+    """`1-101` as it is printed: `Torwaˊwaq` split across the measure."""
+    p = tmp_path / "gt" / "ocr" / f"chukchi-{ref}.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["names to a few reindeer of their herds: (Tor-",
+             "waˊwaq), though this name was given later"]
+    body = "".join(
+        f'<TextLine ID="l{i}" HPOS="400" VPOS="{300 + i * 60}" WIDTH="1778" '
+        f'HEIGHT="50"><String CONTENT="{t}"/></TextLine>'
+        for i, t in enumerate(lines))
+    p.write_text(
+        f'<alto xmlns="{ALTO_NS}"><Layout><Page><PrintSpace>'
+        f'<TextBlock ID="r1" TAGREFS="T1">{body}</TextBlock>'
+        "</PrintSpace></Page></Layout>"
+        '<Tags><OtherTag ID="T1" TYPE="type" LABEL="MainZone-P"/></Tags>'
+        "</alto>", encoding="utf-8")
+    return p
+
+
+def test_half_a_broken_word_is_not_offered_as_a_handle(tmp_path):
+    """`waˊwaq` is a whole token on its line, ratified, and half the word. A pass
+    naming it gets a truncated form filled in and stamped `#gt`, and every guard
+    passes — it really is a token in this page's ground truth. Same boundary the
+    whole-token check protects at one end (`Qeˊñ` ⊂ `Qeˊñu`), broken at the other
+    by the compositor's measure."""
+    from harness.context import tier1_terms
+    _broken_page(tmp_path)
+    assert tier1_terms("1-101", tmp_path) == []
+
+
+def test_the_rejoined_form_is_not_offered_in_its_place(tmp_path):
+    """`Tor-waˊwaq` is a string no line holds, and whether that hyphen is the
+    word's or the printer's is the ambiguity the join deliberately preserves. So
+    a broken form gets no handle at all and is read off the page."""
+    from harness.context import tier1_terms
+    _broken_page(tmp_path)
+    assert not [t for t in tier1_terms("1-101", tmp_path)
+                if "Tor" in t["text"]]
+
+
+def test_the_flags_read_the_joined_text_and_the_draft_does_not(tmp_path):
+    """Both `lexicon` arms have read through `join_broken_words` since
+    2026-08-03; this arm builds its own draft and was left out, so the payload
+    went on reporting `Chuk`/`chee` as words no dictionary knows. The draft
+    itself must stay line-per-line — the model reads the raster beside it."""
+    from harness.context import build_context
+    _broken_page(tmp_path)
+    _ocr_view(tmp_path, "1-101")
+
+    ctx = build_context("1-101", tmp_path)
+    tokens = {f["token"] for f in ctx["detector_flags"]}
+    assert nfd("Tor-waˊwaq") in tokens
+    assert not {nfd("waˊwaq"), "Tor"} & tokens
+    assert "(Tor-" in ctx["catmus_draft"]
+
+
+def test_an_unbroken_form_on_the_same_page_still_gets_one(tmp_path):
+    """The rule drops fragments, not neighbours."""
+    from harness.context import tier1_terms
+    _gt_page(tmp_path, "1-102")
+    assert [t["text"] for t in tier1_terms("1-102", tmp_path)] == [
+        "kełiˊlın", "uˊᵋnel"]

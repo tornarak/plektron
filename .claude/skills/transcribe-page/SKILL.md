@@ -148,6 +148,14 @@ lives on, and the gate checks it.
   The list is empty on most pages (no ground truth), and it is a floor even where
   it exists — a form with no marks at all may be absent from it, and that one you
   key yourself, at `#llm` like any other reading of yours.
+
+  **A form the compositor broke across two lines is absent too**, deliberately.
+  `1-101` prints `Torwaˊwaq` as `(Tor-` / `waˊwaq)`, and offering you `waˊwaq`
+  would hand you half a word that every downstream check accepts. Neither half is
+  listed and the rejoined string is not either — whether that hyphen is the
+  word's or the printer's is not decidable from the ALTO. You get a
+  `detector_flags` row on the joined form instead. Read the page, key it, say in a
+  comment what you decided about the hyphen.
 - **`foreign_terms_nearby`** is recomputed each call from committed TEI on the
   physically neighbouring pages, and carries each term's gloss plus the `scope`
   its gloss list supplies — without which "white mixed with brown" says nothing
@@ -179,6 +187,10 @@ lives on, and the gate checks it.
   apostrophe, correctly, and those were all 31 of the surviving hits before the
   filter. A possessive on a stem it does *not* know still reports, so `kun’s` —
   `Kereˊtkun’s` broken across a line — remains the corpus's one hit.
+
+  **The flags read the page with broken words rejoined; `catmus_draft` does not.**
+  So a flag may name a token (`Tor-waˊwaq`) that appears in the draft as two
+  pieces on consecutive lines, and its `index` is the line the word *starts* on.
 
 # The seam
 

@@ -22,7 +22,7 @@ import unicodedata
 from pathlib import Path
 
 from . import farms
-from .detectors import detect_all
+from .detectors import detect_all, join_broken_words
 from .state import entry_state, foreign_terms_nearby, load_toc, toc_window
 
 REF_RE = re.compile(r"^(?:chukchi-)?(\d+)-(\d+)$")
@@ -517,14 +517,34 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
     path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
     if not path.exists():
         return []
+    recs = page_lines(path)
+    # **A half of a broken word is not a form, and must not be offered as one.**
+    # `1-101` prints `Torwaˊwaq` as `(Tor-` / `waˊwaq)`, so this list held
+    # `waˊwaq` — a whole token on its line, ratified, and *half the word*. A pass
+    # naming it writes a truncated form that `tei expand` fills and stamps `#gt`,
+    # and every guard passes: it really is a token in this page's ground truth.
+    # Same boundary the whole-token check protects at one end (`Qeˊñ` ⊂ `Qeˊñu`),
+    # broken at the other by the compositor's measure.
+    #
+    # The test is survival of the join: a token is offered only if it is still a
+    # whole token after `join_broken_words`. The rejoined form itself is *not*
+    # offered in its place — `Tor-waˊwaq` is a string no line holds, and whether
+    # that hyphen is the word's or the printer's is exactly the ambiguity
+    # `5be1853` preserved rather than decided. So a broken form gets no handle and
+    # arrives instead as a `detector_flags` row on the joined text, which is the
+    # correct answer: read the page. (`1-101`'s editor did, and left a comment.)
+    survives = [{m.group().strip(EDGE_PUNCT)
+                 for m in TOKEN.finditer(unicodedata.normalize("NFD", t))}
+                for t in join_broken_words(recs)]
     out = []
-    for rec in page_lines(path):
+    for rec, whole in zip(recs, survives, strict=True):
         if rec["zone"] in APPARATUS_ZONES:
             continue
         text = unicodedata.normalize("NFD", rec.get("text") or "")
         for m in TOKEN.finditer(text):
             tok = m.group().strip(EDGE_PUNCT)
-            if tok and any(c in INVENTORY_CHARS or c == "'" for c in tok):
+            if (tok and tok in whole
+                    and any(c in INVENTORY_CHARS or c == "'" for c in tok)):
                 out.append({"index": len(out) + 1, "line": rec["index"],
                             "text": tok})
     return out
@@ -586,12 +606,30 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
             and r["zone"] not in APPARATUS_ZONES]
     lines = [r["text"] for r in kept]
     draft = _draft_text(lines)
-    # The indices ride along so a flag names the line's ALTO identity rather than
-    # its position in this filtered draft. `_draft_text` is a plain join, so the
-    # two lists stay positional to each other; `detect_all` checks the lengths
-    # anyway and reports `null` rather than misaligning if they ever part.
-    detected = detect_all(draft.split("\n"), root,
-                          indices=[str(r["index"]) for r in kept])
+    # **The flags read the joined text; the draft does not.** `join_broken_words`
+    # rejoins a word the compositor broke across a printed line, and both `lexicon`
+    # arms have read through it since 2026-08-03 — but this arm builds its own
+    # draft and so was never included, which is why the collation payload went on
+    # reporting `Chuk`/`chee`, `Penin`/`sula`, `direc`/`tions` as words no
+    # dictionary knows. About a quarter of the residual flags on a ground-truth
+    # page were the printer's measure running out.
+    #
+    # The draft itself must stay line-per-line: the model reads the raster beside
+    # it, and a draft that silently reflowed would stop being checkable against
+    # the page. So the two diverge here deliberately, which is safe only because
+    # `index` is carried alongside rather than being a position in either list.
+    #
+    # Emptied lines are dropped **with their index**, exactly as `suggest_lexicon`
+    # drops them: a line whose only token moved up now has no text of its own, and
+    # the token is cited at the line it starts on. Dropping the pair also keeps
+    # `_balance` seeing one paragraph per page — an empty line is a paragraph break
+    # there, so leaving the holes in would split a page at every rejoined word and
+    # invent unbalanced-paren complaints across the seams.
+    joined = [(t, str(r["index"]))
+              for t, r in zip(join_broken_words(kept), kept, strict=True)
+              if t.strip()]
+    detected = detect_all([t for t, _ in joined], root,
+                          indices=[i for _, i in joined])
     figures = _figures_on_page(ref, root)
     # A term this page has already adjudicated at the raster does not also need
     # flagging, and flagging it is worse than redundant: `tier1_terms` gives the
