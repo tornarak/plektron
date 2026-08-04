@@ -67,6 +67,22 @@ in the first line and repeats "do not touch any other page".
 Every item below was earned by something going wrong, in this project or in the
 dispatch that produced this file.
 
+**They now live in `.claude/agents/groundtruth-reader.md`, not in the template**, and
+the split is by what varies: the agent definition carries everything true of *every*
+page — the three files to read first, the loop, the ladder, the hard rules, the
+report shape — and the rendered prompt carries only the ref, the survey and the
+figures clause. Two things follow. A clause edited in the agent file reaches the next
+reader with no rendering step, and the prompt is 26 lines instead of 210, so what is
+page-specific is legible as such rather than buried in standing prose.
+
+What that costs is a new way to be wrong, and it is the failure mode this repo has
+paid for twice: **a reader dispatched under the wrong agent type gets none of it, and
+nothing in the prompt would look amiss.** Same shape as a file whose role lived only
+in the directory holding it. So the template opens by asserting what it expects the
+reader to already have and telling it to stop if it does not — the prompt's own
+witness that the standing half arrived, since the coordinator's `subagent_type` is
+not otherwise visible from inside the task.
+
 - **Read `SKILL.md` and `keying_spec.md` in full, with Read, before anything else.**
   Say "not grep, not head" explicitly — an agent told to consult a spec will grep it
   for the term it already suspects and miss the licensing note that would have
@@ -288,218 +304,38 @@ The markers around the block are load-bearing (`harness/dispatch.py` reads betwe
 them) and the `{braces}` are substituted. Everything else is sent verbatim, so
 prose edited here reaches the next agent with no other step.
 
+**Spawn it with `subagent_type: groundtruth-reader`.** The block below is now only
+the page-specific half; the standing half is the agent definition, and the two are
+assembled by the spawn rather than by this file. A reader given this prompt without
+that agent type is told to stop, which is the only check available — nothing else
+can see which type a task was spawned under.
+
 <!-- prompt:begin -->
 
-    You are running the ground-truth reading pass for exactly one page of Bogoras,
-    *The Chukchee*, in the repo at {root} (work in place; do not create a worktree).
+    You are the `groundtruth-reader` agent, reading exactly one page of Bogoras,
+    *The Chukchee*, in the repo at {root} (work in place; do not create a
+    worktree).
 
     Your page ref is **{ref}**. Do not touch any other page.
 
-    FIRST, before anything else, read these two files IN FULL with the Read tool
-    (not grep, not head):
-      1. .claude/skills/rebuild-groundtruth/SKILL.md — the normative pass doc
-      2. keying_spec.md — the character inventory. §5's error classes are a
-         per-line checklist, not background awareness.
-      3. .claude/skills/rebuild-groundtruth/checklist.md — §5 in tickable form.
-         Work it per page and report against it by section, naming the items you
-         could not tick and why. Its **Settled** section is the list of things
-         the spec has already decided: apply and cite those, never spend an image
-         confirming one. Its **Evidence** section is the opposite — those cannot
-         be settled by looking harder, so each wants a contrast word named in
-         `note`, or an explicit "no contrast on this line".
+    Your standing instructions — the three files to read first, the loop, the
+    image ladder, the hard rules and what to report — are in your agent
+    definition, and this prompt does not repeat them. **If you have not been
+    given them, you were dispatched as the wrong agent type: stop and say so
+    rather than reading a page without them.** What follows is only what is true
+    of {ref} in particular.
 
-    Then follow that skill's loop for a page that has NO ground truth (the
-    "restoration" branch), which is your case: mz/ocr/chukchi-{ref}.xml already
-    exists ({lines} lines over {zones} zones — `harness ocr predict` has been run
-    for you). gt/ocr/chukchi-{ref}.xml does not exist.{note}
+    What the survey found:
+      - `mz/ocr/chukchi-{ref}.xml` exists — {lines} lines over {zones} zones.
+        `harness ocr predict` has been run for you, in the parent.
+      - `gt/ocr/chukchi-{ref}.xml` does not exist.{note}
+      - So this is a **restoration**, and every ALTO verb you run carries
+        `--store mz`.
+      - {figures}
 
-    Every ALTO verb you run must carry `--store mz`. Run commands with
-    `uv run harness ...` from the repo root.
+    Deliverable: `review/{ref}/proposal.json`, normalized and clean. STOP THERE.
 
-    **Your deliverable is `review/{ref}/proposal.json`, normalized and clean.
-    STOP THERE.**
-
-    Specifically, do:
-      - `uv run harness ocr gaps {ref} --store mz` first. Report what it says.
-        {figures} If you judge a band to be a genuinely dropped printed line,
-        use `harness ocr adopt-gap` per the skill and record it in the proposal's
-        `segmenter_missed` block — but that is a real judgement, so say why in
-        your final report.
-      - `uv run harness ocr lines {ref} --store mz` for the line indices.
-      - **The image ladder. Climb it; do not start at the top.**
-          1. `uv run harness ocr numbered {ref} --store mz`, then Read
-             review/{ref}/numbered.png. This is the whole page with every line's
-             index beside it, each line enclosed in its own ruled band. On a page
-             of ordinary English prose it is the only image you need.
-          2. `uv run harness ocr sheets {ref} --store mz --only <SPEC>` for the
-             lines that image left in doubt, and **only** those. Give each a
-             neighbour or two (`--only 10-14`, not `--only 12`) — whether a mark
-             is the page's habit or this line's is a question about the lines
-             around it. Do NOT sheet the whole page.
-             **Name every line you mean to look at in ONE call**, as at rung 3:
-             `--only 4-6,27-31,35-37,43-44`, not four calls. Sheets pack by
-             height, so one call over those twelve lines is a single image where
-             four calls are four — same pixels, four times the re-orientation.
-             It is not a token saving and is not meant to be one; what it saves
-             is images and calls.
-          3. `uv run harness ocr zoom {ref} --store mz --only <SPEC>` for marks
-             the sheets leave open, every such line in ONE call, `--zoom 2` by
-             default. **Never above `--zoom 4`.**
-             **Span the part of the line the doubt is in.** `--only` takes
-             `@LO-HI`, a percentage of a line's width: a footnote opener at the
-             start of its line is `42-43@0-25`, a mark two-thirds along is
-             `12@55-80`. A doubt is about a *mark*, not a line — magnifying a
-             whole measure renders three strips of irrelevance for one of
-             evidence. Span by default; ask for a whole line only when the doubt
-             really is about the whole line. A span is widened to fill the strip
-             and snapped out to whitespace, so it will not cut a word — you do
-             not need to pad it defensively, and a span that misses is a sign
-             you did not know where the mark was, which is rung 2's job.
-             **If you cannot say where in the line the mark sits, go to rung 2
-             first.** Re-aiming a span three times costs more than the contact
-             sheet that would have shown you where to aim once.
-             Add `--margins` ONLY when the doubt is about something in the margin
-             (a list number or folio the line box may exclude). It widens every
-             selected line to the PrintSpace and costs an extra strip apiece. It
-             is not a default and you should usually omit it.
-        Say in your final report which rungs you used and which lines sent you up
-        each one. If you never needed rung 2 or 3, say that too — it is a result,
-        not a shortfall.
-      - Author review/{ref}/proposal.json: one entry per ALTO line index, `text`
-        mandatory, `resolved` spelling out codepoints for any line with notation,
-        `note` for anything an adjudicator would otherwise rediscover, and a
-        `contamination` block — **`blind: true` unless you can name something
-        specific**, and seeing the machine text in `ocr lines` is not it (you
-        cannot get the line indices without it). See SKILL.md on what that field
-        was for.
-      - `uv run harness proposal fix {ref}`, then re-run it without `--fix` until
-        it is silent.
-      - `uv run harness proposal check {ref}` — **it must exit 0**, and it is a
-        different gate from `fix`: `fix` reconciles what it unambiguously can,
-        `check` reports what it will not guess at, including a `resolved` field
-        that disagrees with its own text. Do not report a proposal as validated
-        on the strength of `fix` and `normalize` alone; a reader has already
-        done that on a page this gate was failing.
-      - `uv run harness corpus normalize --commit
-        review/{ref}/proposal.json`, then the same command without `--commit` —
-        it must exit 0.
-
-    **Do NOT** run `harness ocr review --serve`, do NOT run `harness ocr restore`,
-    do NOT write into gt/ocr/ (except via `adopt-gap`, which writes geometry
-    only), do NOT run `views build`, do NOT run any `--all` form of anything —
-    every verb that can sweep the corpus now says so with that flag, and none of
-    them is yours — and do NOT commit anything to git. A human adjudicates your
-    proposal afterwards; that step is not yours.
-
-    **Do NOT run `harness ocr clean`.** Tidying up after yourself is the one
-    prohibition here that sounds like good manners, which is why it needs
-    saying. The images you opened are the only record of what you actually
-    looked at: they are what an adjudicator opens to check a reading against
-    the page, and what a coordinator compares against your report. Delete them
-    and your account of the pass becomes its own sole witness. Cleaning is the
-    coordinator's call, after the page has been adjudicated.
-
-    Hard rules that override any instinct:
-      - No ad-hoc Python and no shell listing. No `python3 -c`, no heredoc
-        scripts, no hand-rolled PIL crops, and no `ls`/`cat`/`find` — **including
-        merely to check that a file exists or parses.** Glob answers "does it
-        exist", Read answers "what is in it", and `proposal fix` reads
-        proposal.json and fails loudly on anything malformed, so running the step
-        you were going to run anyway IS the parse check. Everything else is a
-        verb: `proposal codepoints`, `proposal set`, `proposal replace`,
-        `ocr zoom`. If you reach for a script, you are routing around a tool that
-        exists.
-      - Never take the CATMuS machine text in mz/ocr/ as a witness to what any
-        character is, anywhere an inventory glyph could stand. It reads 0% of the
-        transcription inventory, and **its errors arrive as ASCII** — it
-        substitutes ' ’ / for ˊ, and i I **r** for ɪ — so "it is only wrong about
-        non-ASCII" is false, and is how its `r` got keyed into a Chukchee name.
-        It is evidence about line geometry and English prose, nothing else.
-      - **Where keying_spec.md states a closed rule, apply it and cite it — do
-        not go to the raster to confirm what the spec has already settled.** §1
-        and §5.6 say the book sets curly quotes throughout and never straight
-        ones, so a straight quote in the machine text is an encoding artifact,
-        not a reading to adjudicate. The raster is for what the spec does not
-        decide. A reader on this pass spent two whole zoom selections confirming
-        exactly that; do not repeat it.
-      - **A page believed to be all English is a prior, not a licence.** If a
-        Tier-1 form turns up anyway it gets the full treatment — climb the
-        ladder for it and key it character by character. A page believed English
-        is exactly where an unmarked inventory glyph passes unread.
-      - Marks that are simply present or absent — the dot under `g`, ä vs a, ɪ vs
-        i vs r — often will not resolve by staring at the glyph, because the two
-        sorts are the same letterform. Where the line offers a plain English
-        counterpart, read the two together; that settles in seconds what a 4x
-        look does not, and naming the contrast word in your note makes the
-        reading checkable. Not every line offers one — this is a technique, not a
-        requirement, so use it when it is there and otherwise read and flag as
-        usual. What is *not* acceptable is a confident negative: keying_spec.md
-        §5.1 and §5.2 record that "checked at 4x, no dot / plain i" has been
-        wrong nine times across two batches, every time from a reader who
-        reported having checked.
-      - Read only your own page. Do not open another page's proposal.json,
-        decision.json or gt/ocr/ file for evidence — a convention derived from a
-        neighbouring page is what the firewall forbids, and the settled answers
-        are all in keying_spec.md. If you find yourself hunting the corpus for a
-        precedent, the rule is missing from the spec: say so in your report.
-      - A note citing keying_spec.md should quote the sentence it relies on. Two
-        readers have now cited the same section for opposite conclusions after
-        reading it in full.
-      - **A note may state what you saw. It may not state what another witness
-        said unless you actually consulted that witness** (§5.12). Two readers in
-        one batch invented a corroboration for text that was already correct —
-        one claimed a letter-height measurement that does not hold, the other
-        claimed CATMuS read a speck as an apostrophe when the machine text has no
-        apostrophe in it. Both are one command from being checked and neither was.
-        An invented second witness is worse than no note, because it is what stops
-        the next reader looking.
-      - **Write notes in codepoints, not glyphs** — `U+0323 COMBINING DOT BELOW`,
-        not the character; describe a spacing rather than exhibiting one.
-        Reproducing a glyph in prose is probabilistic the same way keying it is,
-        and `corpus normalize` runs over `note` like any other field, which is
-        deliberate. Do not treat that as a trap to route around.
-      - **Roman numerals are plain ASCII, always** (§2.12), however small-cap they
-        look. So are a bracketed chapter-opening folio (`[1]`) and the signature
-        line's leading number — both are regular, both are apparatus, and neither
-        is worth a zoom. Page 1 is the only slot in the book where the reading is
-        even arguable, and it is a digit.
-      - Before you finish, re-read every note against its own text. A note
-        describing a keying decision the text does not exhibit is a defect even
-        when the text is the right one — worse then, because it argues the
-        adjudicator into undoing correct work.
-      - Footnote and raised markers are keyed as the Unicode superscript (¹
-        U+00B9 etc.), never the ASCII digit.
-      - Prefer "unclear, flagged in `note`" over a confident guess. A doubt that
-        survives one 4× look IS the answer — write it in `note`. **`text` is
-        mandatory, and that is not licence to invent a codepoint**: if the
-        identity is open, key the catalogued sort whose letterform it is and put
-        the unlicensed environment in `note`. Never reach outside
-        keying_spec.md's inventory for a shape that looks nearer — the lookalike
-        table (§2.7) is a list of characters that are *always wrong*, and
-        "closest visual match" is exactly the reasoning that lands on one.
-
-    Final report back to me: the page's character (what kind of page it is,
-    running title, folio, footnotes, figures), what `ocr gaps` said and what you
-    concluded, how many lines you keyed, which lines carry Tier-1
-    (Chukchee/Koryak/Yupik) notation, every doubt you flagged and why, and
-    anything you want the adjudicator to look at first. Be concise and concrete.
-
-    Then, separately: the checklist, by section, naming every item you could not
-    tick and why — and anything the pass made harder than it needed to be. A
-    tool that did not exist, a rule you had to hunt for, an image you had to
-    spend twice. That last part is not padding: it is the only route by which a
-    reader's experience reaches the next reader.
-
-    Then report separately on the image ladder, which is measured per run:
-      - which rungs you used, and how many images you opened in total;
-      - for every `ocr zoom` call, the exact `--only` spec, how many sheets it
-        produced, and whether you spanned or took whole lines — and if you took
-        a whole line, why the span would not have done;
-      - whether the numbered page was legible enough to key English prose from
-        without a contact sheet, and if not, exactly what was illegible.
-      - **Name the lines you actually rendered.** A correction reported as
-        confirmed on a line no image covered is the invented-second-witness
-        defect (§5.12) in its cheapest form: say which lines the spec settled
-        and which the raster did, and do not let one sentence cover both.
+    Report back in the three parts your standing instructions specify: the page,
+    the checklist by section, and the image ladder.
 
 <!-- prompt:end -->

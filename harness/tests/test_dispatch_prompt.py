@@ -49,11 +49,18 @@ def make_page(root: Path, ref="3-063", *, zones=True, mz=True, gt=False,
 
 
 def test_the_repo_template_is_locatable_and_nonempty():
-    """Against the live doc: the markers are load-bearing and easy to lose."""
+    """Against the live doc: the markers are load-bearing and easy to lose.
+
+    The floor was 2000 while the template carried the standing instructions too.
+    Those moved to `.claude/agents/groundtruth-reader.md`, so the block is now the
+    page-specific half alone — the ref, the survey, the figures clause — and a
+    bound tuned to the old size would fail on the split rather than on a lost
+    block. It is a not-empty check, so it is set well under the real length.
+    """
     text = (REPO / DOC).read_text(encoding="utf-8")
     assert text.count(BEGIN) == 1 and text.count(END) == 1
     assert text.index(BEGIN) < text.index(END)
-    assert len(template(REPO)) > 2000
+    assert len(template(REPO)) > 400
 
 
 def test_every_placeholder_the_template_uses_is_supplied(tmp_path):
