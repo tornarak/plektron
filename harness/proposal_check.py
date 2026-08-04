@@ -116,6 +116,28 @@ def _stated_codepoints(resolved: str) -> set[int]:
     return {int(h, 16) for h in HEX_RE.findall(resolved)}
 
 
+def _stated_but_absent(stated: set[int], text: str) -> set[int]:
+    """Codepoints `resolved` names that the text does not contain at all.
+
+    **The two directions of this comparison are not symmetric**, and treating
+    them as if they were made the gate punish thoroughness. `_notation_codepoints`
+    is deliberately narrow — combining marks and medial caps, the things a
+    `resolved` field is *obliged* to name — so subtracting it from `stated`
+    flagged any codepoint a reader spelled out that merely was not a combining
+    mark, even when it sits plainly in the text. `2-042` was refused for
+    documenting the hyphen of `Čiñeiˊ-ñew` and the superscript of `Peruˊten³`: a
+    hyphen is load-bearing in Americanist notation and the superscript is the
+    entire subject of §2.10, so both are exactly what a careful reader writes
+    down, and the gate told them not to.
+
+    What this direction exists to catch is the defect CLAUDE.md names — a
+    `resolved` describing a keying decision *the text does not exhibit*, which
+    argues an adjudicator into undoing correct work. That is a claim about the
+    text's characters, so it is answered against them.
+    """
+    return stated - {ord(ch) for ch in unicodedata.normalize("NFD", text)}
+
+
 def set_field(path: Path, line: str, field: str, value: str) -> dict:
     """Set one line's field, NFD-normalizing on write.
 
@@ -331,7 +353,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
                              detail=f"in text: {_cps(present)}"))
             continue
         extra_in_text = present - stated
-        extra_in_resolved = stated - present
+        extra_in_resolved = _stated_but_absent(stated, text)
         if extra_in_text or extra_in_resolved:
             sides = []
             if extra_in_text:
@@ -417,7 +439,7 @@ def fix(path: Path) -> dict:
         present = set(_notation_codepoints(text))
         stated = _stated_codepoints(resolved)
         extra_in_text = present - stated
-        extra_in_resolved = stated - present
+        extra_in_resolved = _stated_but_absent(stated, text)
         if len(extra_in_text) != 1 or len(extra_in_resolved) != 1:
             continue
         wrong = chr(next(iter(extra_in_text)))
