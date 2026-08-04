@@ -10,6 +10,8 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime, timedelta
 
+import pytest
+
 from harness.usage import (
     TTL,
     TTLS,
@@ -19,6 +21,7 @@ from harness.usage import (
     cohorts,
     preamble,
     project,
+    since_stamp,
     warmth,
 )
 
@@ -204,6 +207,43 @@ def test_no_agents_has_no_preamble():
 
 def test_no_agents_has_no_warmth():
     assert warmth([]) == []
+
+
+# --- --since --------------------------------------------------------------
+
+def test_relative_since_resolves_to_a_stamp_in_the_past():
+    cut = since_stamp("5m")
+    assert cut < datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S")
+    assert since_stamp("1d") < cut
+
+
+def test_every_unit_is_accepted():
+    assert len({since_stamp(f"1{u}") for u in "smhd"}) == 4
+
+
+def test_iso_forms_pass_through():
+    assert since_stamp("2026-08-04").startswith("2026-08-04")
+    assert since_stamp("2026-08-04T21:45Z").startswith("2026-08-04T21:45")
+
+
+def test_an_unparseable_since_raises_rather_than_matching_nothing():
+    """`5m` sorts AFTER every ISO stamp, so the old code answered it with an
+    empty table at exit 0 — a wrong answer shaped like a right one."""
+    with pytest.raises(ValueError, match="neither a duration nor a date"):
+        since_stamp("yesterday")
+
+
+def test_a_bare_number_is_not_a_duration():
+    with pytest.raises(ValueError):
+        since_stamp("5")
+
+
+def test_the_cut_carries_no_trailing_z():
+    """Transcript stamps have fractional seconds, and `…:00Z` sorts after
+    `…:00.5Z` because `Z` > `.`, which would drop a record inside the window."""
+    cut = since_stamp("0s")
+    assert not cut.endswith("Z")
+    assert cut < cut + ".500Z"
 
 
 # --- session discovery ----------------------------------------------------

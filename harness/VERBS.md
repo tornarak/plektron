@@ -522,7 +522,10 @@ Opcodes come from difflib over **NFD** text, so a dropped combining mark ranks a
 **It undercounts by construction**: `proposal set`/`replace` overwrite the proposal in place, so a reader error a coordinator repaired *before* adjudication leaves no diff at all (`2-033`'s four bare `g` went that way). It measures what reached the adjudicator, never what the reader first wrote — and the earlier the loop catches a slip, the less of it appears here, which is the intended direction rather than a gap to close.
 ```
 --all         every review/ page holding both files
---since DATE  only pages whose saved_at sorts at or after this
+--since T     only pages whose saved_at sorts at or after this: a duration back
+              from now (30s, 5m, 2h, 1d, resolved in local time to match
+              `saved_at`) or an ISO date. Unparseable is exit 2, never an empty
+              report
 --min N       drop changes seen fewer than N times [1]
 --root --json --toon --pager
 ```
@@ -1069,8 +1072,8 @@ store: it reads Claude Code's task transcripts. Reports; nothing here gates.
 --session S  one session, by slug or id prefix — what tells two concurrent
              sessions apart when both are dispatching
 --all        every session this project has transcripts for, not just the newest
---since T    only agents whose first request sorts at or after this (ISO date
-             or stamp) [no window]
+--since T    only agents whose first request sorts at or after this: a duration
+             back from now (30s, 5m, 2h, 1d) or an ISO date or stamp [no window]
 --tasks DIR  the task-transcript directory [the newest session for --root's
              project that has any]
 --root --json --toon --pager
@@ -1082,4 +1085,5 @@ store: it reads Claude Code's task transcripts. Reports; nothing here gates.
 **Note** **a cohort of one claims nothing.** A lone agent had nobody to share with, so its opening is reported as `singleton — nothing to share` rather than as a shared prefix. Calling one agent's opening a shared prefix is the fabricated measurement this verb exists to catch, and it would be a poor thing for the verb to commit itself.
 **Note** `missed` is `(agents - 1 - warm) x opening`: one member of a cohort must always write the prefix, so `agents - 1` reads is the ceiling. The gap is what staggering the first launch buys, and it is zero when every sibling after the first read what the first wrote.
 **Note** **`warmth` is the only pre-flight signal there is.** The cache cannot be queried, so the age of the last request against the five-minute subagent TTL is the whole of what can be said — subagents cache on that clock even where the parent session holds a longer one.
+**Note** **an unparseable `--since` is a usage error, not an empty result.** Comparison is lexicographic, so `5m` sorts *after* every ISO stamp there will ever be: before the relative form was supported, passing it filtered every agent out and printed an empty table at exit 0 — a wrong answer wearing the shape of a right one. The stamp is also truncated before comparison rather than carrying a `Z`, since transcript stamps have fractional seconds and `…:00Z` sorts after `…:00.5Z`.
 **Note** the session is discovered from `--root`, whose path Claude Code slugs into the transcript directory name; the newest session *that has transcripts* wins, since a session that dispatched nothing has a `tasks/` directory too and picking it would report the empty batch as the batch.

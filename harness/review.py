@@ -50,6 +50,7 @@ from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
 from .paths import crops_dir, decisions_path, html_path, proposal_path
+from .usage import since_stamp
 
 CONTEXT_CHARS = 24
 
@@ -431,6 +432,12 @@ def corrections(root: Path = Path("."), refs: list[str] | None = None,
     appears. That is the intended direction of travel, not a defect to repair.
     """
     want = {norm_ref(r) for r in refs} if refs else None
+    # Resolved once, and it accepts `5m`/`2h`/`1d` as well as a date. Comparison
+    # below is lexicographic against `saved_at`, so a duration passed raw would
+    # sort *after* every stamp and silently exclude every page — an empty report
+    # at exit 0, which is the shape of a right answer. `since_stamp` raises on
+    # anything it cannot read rather than filtering with it.
+    since = since_stamp(since, tz=None) if since is not None else None
     counts: dict[str, int] = {}
     pages: dict[str, set[str]] = {}
     stamps: dict[str, list[str]] = {}

@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta, timezone
 from hashlib import sha1
 from pathlib import Path
 
@@ -198,6 +198,50 @@ def _agent(path: Path) -> dict | None:
     }
 
 
+RELATIVE = re.compile(r"^(\d+)([smhd])$")
+UNITS = {"s": 1, "m": 60, "h": 3600, "d": 86400}
+
+
+def since_stamp(spec: str, *, tz: timezone | None = UTC) -> str:
+    """`--since` as a comparable stamp: `5m`/`2h`/`1d`, or an ISO date or time.
+
+    **A relative form is the spelling this verb actually wants** — the question
+    it answers is almost always "the batch I just ran", and an absolute stamp
+    means doing date arithmetic by hand to ask it.
+
+    An unparseable value raises rather than filtering. It has to: comparison is
+    lexicographic, so `5m` sorts *after* every ISO stamp there will ever be, and
+    the old code answered it with an empty table and exit 0 — a wrong answer
+    wearing the shape of a right one. That is the failure this repo is
+    organised against, and a `--since` nobody can parse must fail loudly.
+
+    Returned without a trailing `Z` deliberately: transcript stamps carry
+    fractional seconds, and `...:00Z` sorts *after* `...:00.5Z` because `Z` > `.`,
+    which would drop a record inside the window. Truncated, the shorter string
+    compares less and the boundary falls the right way.
+
+    **`tz` names the clock the store being filtered writes in**, because the
+    comparison downstream is on strings and the two stores disagree: a task
+    transcript stamps UTC with a `Z`, and `decision.json` stamps local time with
+    an offset (`2026-07-31T16:19:04-0400`). A duration resolved in the wrong one
+    is silently off by the offset — four hours here — which would quietly move
+    the window rather than fail. `tz=None` gives local wall-clock time. Absolute
+    dates are passed through untouched either way, so no existing `--since DATE`
+    changes meaning.
+    """
+    spec = spec.strip()
+    if m := RELATIVE.match(spec):
+        ago = timedelta(seconds=int(m.group(1)) * UNITS[m.group(2)])
+        return (datetime.now(tz) - ago).strftime("%Y-%m-%dT%H:%M:%S")
+    try:
+        return datetime.fromisoformat(spec.removesuffix("Z")).isoformat()
+    except ValueError:
+        raise ValueError(
+            f"--since {spec!r} is neither a duration nor a date. Use a relative"
+            " form (30s, 5m, 2h, 1d) or an ISO date or stamp"
+            " (2026-08-04, 2026-08-04T21:45)") from None
+
+
 def _age(stamp: str) -> float | None:
     try:
         return (datetime.now(UTC) - datetime.fromisoformat(stamp)).total_seconds()
@@ -226,7 +270,8 @@ def batch(root: Path, tasks: Path | None = None, *, session: str | None = None,
     if session:
         agents = [a for a in agents if a["session"].startswith(session)]
     if since:
-        agents = [a for a in agents if not a["first"] or a["first"] >= since]
+        cut = since_stamp(since)
+        agents = [a for a in agents if not a["first"] or a["first"] >= cut]
     return dirs, agents
 
 
