@@ -158,7 +158,7 @@ class Report:
 CORPUS_HEADER = Path("tei") / "corpus-header.xml"
 
 
-def check_corpus_header(root: Path) -> Report:
+def check_corpus_header(root: Path, schema: bool = False) -> Report:
     """Gate the corpus teiHeader — the one place the provenance ranks are declared.
 
     `RESP_RANKS` above is the closed set every page is validated against, and the
@@ -248,6 +248,13 @@ def check_corpus_header(root: Path) -> Report:
                 f"availability claims status={status!r} but grants no <licence> — "
                 "a settled status with no terms under it reads as decided and says "
                 "nothing")
+
+    if schema:
+        from .schema import check_header
+        # The header is a bare <teiHeader> and has no conformant container of its
+        # own, so `check_header` wraps it in memory. Nothing is written: inventing
+        # a container on disk would settle the assembly scheme by accident.
+        r.errors += check_header(root_el, root)
 
     r.metrics = {"ranks": len(have), "path": str(CORPUS_HEADER)}
     return r
@@ -435,8 +442,16 @@ def _lang_of(el, default="en") -> str:
 
 
 def validate(tei_path: Path, ctx: dict | None = None,
-             ratified: bool = False) -> Report:
+             ratified: bool = False, schema: bool = False) -> Report:
     """Gate one page's TEI. `ratified` switches which provenance rank is expected.
+
+    `schema` adds the **conformance** check — is this actually TEI — against the
+    committed `data/tei_all.rng`. It is off here and on at the CLI, because
+    compiling `tei_all` costs ~17 s once per process and the test suite calls
+    this function hundreds of times. The two checks are complementary and
+    neither subsumes the other: every rule below is expressible in conformant
+    TEI, so the schema is silent on all of them, and a file can satisfy all of
+    them while using an attribute TEI never defined. See `schema.py`.
 
     Default is the collation pass's own self-check, where a Tier-1 span may only
     claim `#llm` and anything higher is the promotion the firewall forbids. With
@@ -786,4 +801,11 @@ def validate(tei_path: Path, ctx: dict | None = None,
         "names_untyped": untyped,
         "worklist": len(r.worklist),
     }
+    if schema:
+        from .schema import check
+        # Last, and appended rather than interleaved: a conformance failure is a
+        # different kind of statement from a project-rule failure, and a reader
+        # meeting "not conformant TEI" among the edition's own rules would take it
+        # for one of them.
+        r.errors += check(tree, Path(ctx["root"]) if ctx else Path("."))
     return r

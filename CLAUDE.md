@@ -181,7 +181,8 @@ Layout, all at the repo root:
             <teiHeader>, a fragment like the page files, spliced in by an
             assembly step that does not exist yet.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
-            zones_config.json
+            zones_config.json  tei_all.rng (TEI P5 4.12.0, the conformance gate's
+            schema — committed so the gate does not move under an upstream release)
     review/ one directory per page, PP-NNN/. proposal.json (a reading, not truth)
             and decision.json (adjudicated) are tracked; crops/ sheets/ zoom/ and
             review.html are derived and ignored. See harness/paths.py.
@@ -1806,14 +1807,31 @@ TBD
   of what is deferred: a Tier-1 name's **category** is now recorded by the
   collation pass, because only a reader of the page can see it, and only the
   **identity** waits — `@ref`/`@key` are gate errors until that scheme exists.
-- **Nothing validates the TEI against the TEI schema.** `harness tei validate` checks
-  *project* rules; there is no RELAX NG, no `tei_all`, no schema anywhere in the
-  repo. That now covers nine attribute usages nobody checks for conformance —
-  `@part`, `xml:id`, `@target` (including its list-valued form), `@prev`, `@next`,
-  `@type` on `<gloss>`, `@reason`/`@resp` on `<supplied>`, and `@type` on `<name>`. It
-  needs no new dependency (`lxml` has `etree.RelaxNG`); what it needs is a
-  committed schema and an assembly step, since a page file is a fragment and will
-  not validate standalone.
+- **The TEI is validated against TEI**, and the entry that stood here saying
+  otherwise wanted "a committed schema and an assembly step". It needed the first
+  and not the second. `data/tei_all.rng` is P5 4.12.0 (1.1 MB, committed so the
+  gate means the same thing on a fresh clone and after an upstream release), and
+  `harness tei validate`/`tei header` run it by default. All nine of the
+  previously-unchecked attribute usages are conformant, and a test pins them so
+  that stays true while the encoding churns.
+  **A page file validates standalone** — the old entry said it would not, which is
+  true of `tei/corpus-header.xml` (a bare `<teiHeader>`, wrapped in a minimal
+  `<TEI>` *in memory* to be checkable at all) and false of every page, which has a
+  real `<TEI>` root. So no assembly step was needed to get here.
+  It found one defect immediately: `version="stock"` on `<application>`, where
+  `teidata.versionNumber` is a pattern that does not match it, in a file read by
+  hand more than once. That is the class this catches and a reader does not.
+  **The two gates are complementary and neither shrinks the other**: every project
+  rule is expressible in conformant TEI, so the schema is silent on all of them,
+  and a file can satisfy all of them while using an attribute TEI never defined.
+  `tei_all` and not `tei_lite` — the smaller customizations are strict *subsets*,
+  so one would reject markup this project legitimately writes, and a gate that
+  fails correct input teaches a reader to ignore it. The cost is the compile
+  (~17 s, identical under `xmllint`, so it is the schema's size and not lxml)
+  against ~0.3 ms a page, so it is cached per process, a sweep pays it once, and
+  the *library* functions default it off or the test suite would pay it on every
+  call. Run it after `tei expand`: `index=` is not a TEI attribute, which is what
+  makes an unexpanded page detectable, so it fails here too.
 - **`data/toc.json` (315 entries) records no provenance.** `loi.json` and
   `authorities.json` both name the scans they were read from; this one does not,
   and the printed ToC's scan range is not recoverable from the file. Someone who

@@ -200,9 +200,12 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Exit** 1 on FAIL — the worst across refs, so one failing page fails the batch.
 **Note** `--json` swaps the rendered report for `{ok, errors, warnings, worklist, metrics}`.
 **Note** **the one action that does not pool.** Its payload is a rendered report and prose does not tabulate, so several refs print several reports under `# REF` lines. One ref prints exactly what it always did, with no header.
+**Note** `--schema` adds the **conformance** check — is this actually TEI — against the committed `data/tei_all.rng` (P5 4.12.0). It catches what no project rule can: an invented attribute, a value of the wrong datatype. The two are complementary and neither subsumes the other — every project rule is expressible in conformant TEI, so the schema is silent on all of them, and a file can satisfy all of them while using an attribute TEI never defined. **On by default** here, off in the library function `validate()`, because compiling `tei_all` costs ~17 s once per process and the test suite calls that function hundreds of times; validating a page afterwards is ~0.3 ms, so a corpus sweep pays the compile once. `tei_all` and not `tei_lite`: the smaller customizations are strict subsets, so one would reject markup this project legitimately writes, and a gate that fails correct input teaches a reader to ignore it. Run it **after `tei expand`** — `index=` is not a TEI attribute, which is what makes an unexpanded page detectable, so it fails here too.
 ```
---all       every collated page in tei/
---ratified  expect '#ed' instead of '#llm'; a remaining '#llm' becomes a worklist line [off]
+--all        every collated page in tei/
+--ratified   expect '#ed' instead of '#llm'; a remaining '#llm' becomes a worklist line [off]
+--schema     also check the file is conformant TEI, against data/tei_all.rng [on]
+--no-schema  skip conformance — the escape for a tight loop, the compile being ~17 s
 --root --json --toon --pager
 ```
 
@@ -287,7 +290,10 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Writes** —
 **Exit** 1 on FAIL.
 **Note** `--json` swaps the rendered report for the structured verdict.
+**Note** `--schema` checks conformance too, as on `tei validate` and on by default. The header is a bare `<teiHeader>` and `teiCorpus` requires a `TEI` child, so there is no conformant container for it — it is wrapped in a minimal `<TEI>` **in memory** to be checkable, never on disk, since inventing a container there would settle the assembly scheme by accident. This found the first defect on its first run: `version="stock"` on `<application>`, where `teidata.versionNumber` is a pattern that does not match it, in a file read by hand more than once.
 ```
+--schema     also check the header is conformant TEI, wrapped in memory [on]
+--no-schema  skip conformance — the compile is ~17 s
 --root --json --toon --pager
 ```
 

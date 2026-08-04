@@ -51,6 +51,8 @@ rejects a bare integer rather than guess which of the three parts you meant.
     uv run harness corpus normalize PP-NNN             NFD + spacing
     uv run harness tei ids PP-NNN                      the id scheme
     uv run harness tei validate PP-NNN                 the gate; exit 1 on FAIL
+                                                       (project rules + conformant
+                                                       TEI; ~17s for the schema)
     uv run harness tei seam PP-NNN --continues|--fresh --commit   the gap behind you
 
 Then re-read your own output once against the image before declaring done.

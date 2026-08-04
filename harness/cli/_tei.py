@@ -63,6 +63,7 @@ def register(cli):
         help="expect human-ratified provenance (resp='#ed') on Tier-1 "
              "spans instead of the collation pass's '#llm'; a "
              "remaining '#llm' becomes a worklist line")
+    _schema_opt(p)
 
     p = action(g, "expand", run_expand, section="The collation pass",
                help="write ratified Tier-1 forms into a collated page. The "
@@ -140,12 +141,33 @@ def register(cli):
         help="refs with no committed TEI — bare, one per line, to "
              "pipe into xargs; a JSON array under --json")
 
-    action(g, "header", run_header, section="The collation pass",
-           help="the gate on the corpus teiHeader — that it exists, "
-           "and that the provenance ranks it declares are exactly the ones "
-           "`tei validate` enforces on every page. Two files hold one fact; "
-           "without this they can drift apart silently, because a page is a "
-           "fragment and never resolves @resp locally. Exit 1 on FAIL")
+    p = action(g, "header", run_header, section="The collation pass",
+               help="the gate on the corpus teiHeader — that it exists, "
+               "and that the provenance ranks it declares are exactly the ones "
+               "`tei validate` enforces on every page. Two files hold one fact; "
+               "without this they can drift apart silently, because a page is a "
+               "fragment and never resolves @resp locally. Exit 1 on FAIL")
+    _schema_opt(p)
+
+
+def _schema_opt(p) -> None:
+    """`--schema/--no-schema`, on by default, on both TEI gates.
+
+    **On by default**, because the point of a conformance check is that it is not
+    the thing anyone remembers to run — an invented attribute that reaches a
+    hundred pages before a sweep finds it is the cost this exists to avoid. The
+    library functions default it *off* instead, so the test suite does not pay
+    libxml2's ~17 s `tei_all` compile on every call.
+
+    `--no-schema` is the escape for a tight loop, and it is a real one: the
+    compile dominates, where validating a page afterwards is ~0.3 ms. So a corpus
+    sweep pays it once and per-page it is 17 s against a collation that took
+    minutes.
+    """
+    opt(p, "--schema/--no-schema", "schema", default=True,
+        help="also check the file is conformant TEI, against the "
+             "committed data/tei_all.rng. Catches what project rules cannot — an "
+             "invented attribute, a value of the wrong datatype [on]")
 
 
 def run_context(a) -> int:
@@ -190,13 +212,14 @@ def run_validate(a) -> int:
     for r in refs:
         ctx = build_context(r, a.root)
         worst = max(worst, _render_gate(a, validate(Path(ctx["output_path"]), ctx,
-                                                    ratified=a.ratified),
+                                                    ratified=a.ratified,
+                                                    schema=a.schema),
                                         r if len(refs) > 1 else None))
     return worst
 
 
 def run_header(a) -> int:
-    return _render_gate(a, check_corpus_header(a.root))
+    return _render_gate(a, check_corpus_header(a.root, schema=a.schema))
 
 
 def run_state(a) -> int:

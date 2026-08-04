@@ -322,12 +322,15 @@
         <desc>Layout segmentation and text recognition. Produces ALTO in
           gt/ and ocr/; all such output is rank #htr until a human reaches it.</desc>
       </application>
-      <application ident="catmus-print" version="stock">
+      <application ident="catmus-print" version="0">
         <label>CATMuS print</label>
-        <desc>Recognition model. Measured against human-collated text it reads
-          approximately 91% of ASCII and <emph>0%</emph> of the Americanist
-          inventory, so it is a witness to line geometry and to English and to
-          nothing else.</desc>
+        <desc>Recognition model, stock and unmodified — upstream ships no version
+          number, and <att>version</att> is required here and must be a version
+          number, so the identifying witness is the sha256 each ALTO records in
+          its <gi>Processing</gi> block rather than this attribute. Measured
+          against human-collated text it reads approximately 91% of ASCII and
+          <emph>0%</emph> of the Americanist inventory, so it is a witness to line
+          geometry and to English and to nothing else.</desc>
       </application>
       <application ident="harness" version="0">
         <label>harness</label>

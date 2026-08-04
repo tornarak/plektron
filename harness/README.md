@@ -302,6 +302,23 @@ out of the files it wrote to. Also `tail()`, which `context` surfaces as `prev_t
 validation deliberately never resolves `@resp` locally, so nothing else could notice
 them drifting apart.
 
+**`schema.py`** — the *conformance* check, against committed `data/tei_all.rng`
+(TEI P5 4.12.0). Answers "is this actually TEI", which `validate.py` cannot: every
+project rule there is expressible in conformant TEI, so a file can satisfy all of
+them while using an attribute TEI never defined. Neither subsumes the other.
+`check()` for a page, `check_header()` for the bare `<teiHeader>`, which has no
+conformant container and is wrapped in a minimal `<TEI>` in memory — never on
+disk, since inventing one would settle the assembly scheme by accident. The
+compiled grammar is cached per process because libxml2 takes ~17 s over `tei_all`
+and ~0.3 ms over a page; `validate()` and `check_corpus_header()` therefore
+default `schema=False` and only the CLI turns it on.
+
+**`expand.py`** — writes ratified Tier-1 forms into a collated page, resolving
+the `index=` handles the pass writes against `context.tier1_terms`. The model
+names the token; the glyphs come from `gt/ocr/`. Refuses rather than ranking two
+claims about one set of glyphs: a handle naming no term, a handle on an element
+already holding text, a handle outside a Tier-1 `xml:lang`.
+
 **`detectors.py`** — two jobs, deliberately: (a) speculative triage, `detect_all`,
 whose output is a flag meaning "worth a look"; (b) the corpus-frequency mining behind
 `lexicon`'s five modes. Plus `unlicensed_marks`/`MARK_LICENSE`, which is **not**
