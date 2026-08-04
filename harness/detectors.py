@@ -237,7 +237,130 @@ SUFFIX_MARK_DROPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 # Punctuation stripped from a token's *edges* before lexicon lookup. Internal
 # hyphens and apostrophes are load-bearing in English too ("sea-mammals",
 # "don't"), so they survive to the split below instead of being deleted.
-EDGE_PUNCT = "\"'()[]{}.,;:!?—\u2013-*\u2020\u2021\u00A7\u00B6"
+#
+# **U+0027 is deliberately absent, and the absence is the rule rather than an
+# oversight.** In this corpus the straight apostrophe is not punctuation at all:
+# it is the spirant and pause mark, an `INVENTORY_CHARS` member and a phonetic
+# segment in its own right (keying_spec.md §1, §2.1). Stripping it off a
+# token's edge deletes a Tier-1 character from the form these reports publish,
+# silently and in every arm at once. Nothing is lost on the English side by
+# keeping it: `lexicon_miss` splits its core on `'` regardless, so `dogs'` and
+# `'tis` reduce to the components they always did.
+#
+# The curly quotes are the other half of the same cut. The print wraps glosses,
+# quoted speech and -- on `2-045`, `3-119`, `3-135` -- native forms in them, so
+# a whitespace tokenizer hands the quote back stuck to the token. A form inside
+# a gloss quote is not a different word, so they are stripped here, in the one
+# shared cut, rather than in a second strip downstream -- which is where they
+# used to sit, applied after `suggest_native_forms` had already published the
+# quoted form.
+EDGE_PUNCT = "\"()[]{}.,;:!?—\u2013-*\u2020\u2021\u00A7\u00B6“”‘’"
+
+# A hyphen that is the **last character of a printed line** is the compositor's
+# word break, not a hyphen in the word. The ALTO stores one line per printed
+# line, so `Chuk-` / `chee` reaches the tokenizer as two tokens and both are
+# reported as words no dictionary knows. A letter must precede it, so a rule, a
+# dash used as punctuation and a numeric range are not joined.
+#
+# A word-*internal* hyphen is never touched. It is load-bearing in Americanist
+# notation, and the collation licence to join a broken word is restricted to
+# European languages -- the hyphenated compounds of `3-004`/`3-005` and
+# `2-045`'s quoted spirit-compound are correct as they stand.
+#
+# The combining run between the letter and the hyphen is not decoration. The
+# corpus is NFD, so a native word ending in a marked letter ends in base + mark
+# + hyphen, and Python's `\w` does not match a combining mark — without it
+# `reˊkkeñ-` / `spirits` stays broken, i.e. the rule would work on English and
+# quietly fail on exactly the forms with no dictionary to catch them.
+_BREAK_HYPHEN = re.compile(r"[^\W\d_][̀-ͯ]*-$")
+
+
+def join_broken_words(recs: list[dict]) -> list[str]:
+    """Rejoin words the compositor broke across a line end. Same length in, out.
+
+    Takes `lines.page_lines` records — `text`, plus `hpos`/`width` where the
+    store has them — and returns their texts, so the caller's records and this
+    output stay positional to each other and `index` never moves.
+
+    `recs` must already be in **reading order**, the printed sequence, which is
+    what `page_lines` returns. ALTO document order is *not* it (CLAUDE.md, "line
+    output is in reading order, but `index` is an identity"), and joining along
+    document order would splice the foot of one column onto the head of another.
+
+    Reading order alone does not make that safe, which is why the geometry is
+    read too. `1-101` sets a two-column gloss list, and the banded order
+    correctly interleaves the columns: the left-column line ending `stock-`
+    is followed by the *right* column's `23. Rew-ᵉiˊᵋtɪn …` and only then by its
+    own continuation `ings”)`. So a candidate whose `hpos` is more than half the
+    stem's width away is a different column and is skipped — that page joined
+    `stock-` to `23.` before this guard, and dropped `ings` into the miss list as
+    an unknown word. Where a store carries no geometry the guard cannot apply and
+    the next line is taken, which is the old behaviour rather than a refusal:
+    a single-column page is the ordinary case and joining it is right.
+
+    The join is positional and says nothing about language. A line ending in
+    letter + hyphen takes the first whitespace-delimited token of the next
+    non-empty line; that line loses it. Nothing else moves, so the record a token
+    sits on is still the record the *word* started on, and every other token
+    keeps its line — which is what lets `native_corpus_lines` go on citing
+    `index`.
+
+    Deliberately no language test, and it is worth stating why rather than
+    leaving it to look like an omission. Whether the hyphen is the compositor's
+    is a fact about the line break — the measure ran out — and that is equally
+    true of an English word and a Tier-1 one. A rule that joined only ASCII would
+    leave a native form cut in half in exactly the store that has no dictionary
+    to notice.
+
+    **The hyphen is kept, not dropped, and that is the one judgement in here.**
+    Dropping it is what a modern de-hyphenator does and it is what this was first
+    written to do; measured over `gt/ocr/` it manufactured nine words the book
+    does not contain — `reindeerowner`, `treetrunk`, `beaconlamp`,
+    `Shootingstars` — because a *real* compound hyphen falling at a line end is
+    indistinguishable from a break, and nothing in the ALTO can separate the two.
+    Deleting it is also not neutral where it matters most: U+002D is the licensed
+    Tier-1 hyphen (keying_spec.md §1), so dropping one inside a native compound
+    edits an inventory character on a guess. Keeping it leaves the printed
+    ambiguity intact and visible; the English arm resolves it with the dictionary
+    it already owns, by testing the concatenation too (`lexicon_miss`), which is a
+    reading of the token rather than an edit to it.
+
+    Iterates from the last line back, so a word broken twice (a stem, a
+    continuation itself ending in a hyphen) resolves in one pass.
+    """
+    out = [(r.get("text") or "") for r in recs]
+    for i in range(len(out) - 2, -1, -1):
+        stem = out[i].rstrip()
+        if not _BREAK_HYPHEN.search(stem):
+            continue
+        nxt = next((k for k in range(i + 1, len(out))
+                    if out[k].strip() and _same_column(recs[i], recs[k])), None)
+        if nxt is None:
+            continue
+        parts = out[nxt].split(None, 1)
+        out[i] = stem + parts[0]
+        out[nxt] = parts[1] if len(parts) > 1 else ""
+    return out
+
+
+def _same_column(a: dict, b: dict) -> bool:
+    """Do two line records start in the same column of the page?
+
+    Half the stem's own width as the tolerance, rather than a page constant: the
+    measure that matters is how far a continuation may legitimately be indented,
+    and a line already tells you how wide the setting is. On `1-101` the left
+    column starts at 402 against the right at 1292, so an 870 px line separates
+    them at 435; on a single-column page every line clears it easily, indented
+    paragraph openings included. Missing geometry is not a mismatch — `gt/ocr/`
+    pages predate none of it, but a fixture or a hand-built record may.
+    """
+    try:
+        ha, hb, wa = float(a["hpos"]), float(b["hpos"]), float(a["width"])
+    except (KeyError, TypeError, ValueError):
+        return True
+    return abs(ha - hb) <= wa / 2
+
+
 # Detectors that already establish a token is not English. For these, a
 # lexicon miss is a tautology and adds only bulk. Typographic flags
 # (word_medial_caps) say nothing about the language and must not suppress it.
@@ -302,6 +425,16 @@ def lexicon_miss(tok: str, lex: set[str]) -> bool:
     "sea-mammals," normalises to "seamammals" and misses on a compound both
     halves of which are ordinary English. A token counts as a miss if any
     component does.
+
+    **A hyphenated token is then given its second reading**, and only a token
+    that misses under both counts. `join_broken_words` rejoins a word the
+    compositor broke across a line end and keeps the hyphen, because the hyphen
+    it broke on and a hyphen the word owns are the same character on the page; so
+    `Chuk-chee` arrives here with two components no dictionary knows and one
+    concatenation it does. Testing both is how that ambiguity is read rather than
+    decided — nothing edits the token, and a compound the book really owns
+    (`sea-mammals`) was already answered by the component pass. Only a token that
+    fails both readings is reported.
     """
     core = tok.strip(EDGE_PUNCT)
     if not core:
@@ -309,12 +442,16 @@ def lexicon_miss(tok: str, lex: set[str]) -> bool:
     parts = [p for p in re.split(r"[-'\u2019]", core) if p]
     if not parts:
         return False
-    for p in parts:
-        if len(p) <= 3 or not p.isascii() or not p.isalpha():
-            continue
-        if p.lower() not in lex:
-            return True
-    return False
+    if not any(_unknown_word(p, lex) for p in parts):
+        return False
+    return not (len(parts) > 1 and "".join(parts).lower() in lex)
+
+
+def _unknown_word(p: str, lex: set[str]) -> bool:
+    """One component against the lexicon. Short, non-ASCII and non-alphabetic
+    components are never a miss — this detector tests English and nothing else,
+    which is also why a Tier-1 form in `data/lexicon_extra.txt` is inert."""
+    return len(p) > 3 and p.isascii() and p.isalpha() and p.lower() not in lex
 
 
 def apostrophe_flags(text: str) -> list[dict]:
@@ -574,7 +711,8 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
     `normalize`'s scope and `zones check --store mz`: a machine store is measured,
     never allowed to decide.
     """
-    from .context import _draft_text, _lines_from_alto, all_refs, stem_for
+    from .context import _draft_text, all_refs, stem_for
+    from .lines import page_lines
 
     counts: dict[str, int] = {}
     where: dict[str, str] = {}
@@ -582,7 +720,14 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
         ocr = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
         if not ocr.exists():
             continue
-        draft = _draft_text(_lines_from_alto(ocr))
+        # `page_lines` rather than `context._lines_from_alto`, and the join here
+        # rather than inside that reader. Both are deliberate: it produces
+        # `catmus_draft`, the text handed to the collation pass, which must keep
+        # reproducing the page line for line — the model reads the raster beside
+        # it — and it drops the geometry the column guard needs. Same reading
+        # order either way, `_lines_from_alto` being a projection of this call.
+        lines = [t for t in join_broken_words(page_lines(ocr)) if t.strip()]
+        draft = _draft_text(lines)
         for f in detect_all(draft.split("\n"), root)["tokens"]:
             if f["type"] != "lexicon_miss":
                 continue
@@ -669,8 +814,15 @@ def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     out = []
     for ref in _restored_refs(root):
         p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
-        for rec in page_lines(p):
-            line = unicodedata.normalize("NFD", rec.get("text") or "")
+        recs = page_lines(p)
+        # Reading order is what `page_lines` returns, which is what the join
+        # requires: a word broken at the foot of the left column continues at
+        # the head of the right one, not at the next ALTO sibling. The records
+        # are not reordered and `index` is not renumbered, so a token still
+        # cites the line it was printed on.
+        texts = [unicodedata.normalize("NFD", t)
+                 for t in join_broken_words(recs)]
+        for rec, line in zip(recs, texts, strict=True):
             for m in TOKEN.finditer(line):
                 tok = m.group().strip(EDGE_PUNCT)
                 if tok and any(c in INVENTORY_CHARS for c in tok):
@@ -743,10 +895,12 @@ def mark_base_frequency(root: Path = Path(".")) -> list[dict]:
 # base letters, not marks — and survive; so does U+0027 (spirant/pause),
 # a real phonetic segment rather than a diacritic on one.
 _MARK_CATEGORIES = {"Mn", "Lm", "Sk"}
-# Curly quotes a token can carry at its edge that EDGE_PUNCT (built for
-# English prose punctuation) doesn't cover — a gloss quote wrapping a native
-# form leaves one on the token when the tokenizer splits on whitespace alone.
-_EDGE_QUOTES = "“”\"'"
+# `_EDGE_QUOTES` stood here — a second edge strip over `suggest_native_forms`'
+# output, covering the curly quotes `EDGE_PUNCT` did not. It is gone because the
+# tokenizer now cuts those edges itself, so this was patching a form that had
+# already been published quoted in `lexicon native`. It also stripped U+0027,
+# which is a Tier-1 segment and not punctuation: a form ending in the spirant
+# lost it from every suffix and digraph counted here.
 
 
 def _strip_marks(tok: str) -> str:
@@ -773,7 +927,7 @@ def suffix_frequency(root: Path = Path(".")) -> list[dict]:
     """
     counts: dict[str, int] = {}
     for rec in suggest_native_forms(root):
-        w = _strip_marks(rec["form"].strip(_EDGE_QUOTES))
+        w = _strip_marks(rec["form"])
         for length in range(2, 9):
             if len(w) >= length:
                 s = w[-length:]
@@ -798,7 +952,7 @@ def digraph_frequency(root: Path = Path(".")) -> list[dict]:
     once more of the 20 pilot pages land rather than trusting a stale run.
     """
     forms = suggest_native_forms(root)
-    stripped = [(_strip_marks(rec["form"].strip(_EDGE_QUOTES)), rec["count"])
+    stripped = [(_strip_marks(rec["form"]), rec["count"])
                 for rec in forms]
 
     suf_counts: dict[str, int] = {}
