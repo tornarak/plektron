@@ -47,9 +47,28 @@ reader 2 in the two lines asked for, and it cost nothing: both read the full
 35,798 on their next request, because that variation sits *behind* the prefix.
 Variation at the tail is free; variation at the head costs the whole block.
 
+**Neither message contains anything worth mis-copying, and that is deliberate.**
+Phase 1 is the single word `standby`; everything it used to say is standing and
+lives in the agent definition, which is in the system prompt and which nobody
+transcribes. Phase 2 names a ref and tells the reader to run `context` for
+itself. So the coordinator now hands over one identifier per page — the one
+thing that fails loudly when wrong, since `context moll-999` exits 2.
+
+It carried a rendered fourteen-line context block until this was noticed, and a
+coordinator retyping one is precisely the failure this project is organised
+against: the folio, the entry count and the wrap list reproduced by an LLM, with
+no downstream check able to see a mistyped digit. A reader given a count one too
+high finds a discrepancy, writes `disagrees:`, and is *credited* for catching
+something the coordinator invented. The witness pass cannot reach it — tesseract
+has no opinion about how many entries a page has. Having the reader run the
+measurement itself also ends a staleness bug nobody had hit yet: a pasted block
+is a snapshot, and a page re-measured after dispatch would be read against
+numbers that no longer described it.
+
 Two things this does not excuse. **The standby prompt must go out byte-identical
 — editing one copy per reader reintroduces exactly the fault it removes**, which
-is why `dispatch` prints it once and says so. And the phases must stay inside
+is why `dispatch` prints it once and says so; at one word that is now hard to
+get wrong rather than merely forbidden. And the phases must stay inside
 the **five-minute subagent cache TTL**, which is not a documentation figure:
 `usage.cache_creation` records the tier each write bought, and `harness agents
 usage` reads it back.
@@ -105,19 +124,24 @@ fine" is not a state it should be possible to dispatch from.
 
 **The standing half lives in `.claude/agents/moll-reader.md`, not here**, and the
 split is by what varies. The agent definition carries everything true of *every*
-page — the preloaded pass doc, the loop, the Bash surface, the hard rules, the
-report shape. The rendered prompt carries only the ref and the page's own
-context block. Two things follow: a clause edited in the agent file reaches the
-next reader with no rendering step, and what is page-specific is legible as such
-rather than buried in standing prose.
+page — the preloaded pass doc, the standby handshake, the loop, the Bash
+surface, the hard rules, the report shape. **The rendered prompt carries one
+ref and nothing else.** Two things follow: a clause edited in the agent file
+reaches the next reader with no rendering step, and there is no page-specific
+prose for anything to drift in.
 
-**The templates are not in the Python.** Both sit below, between the
-`<!-- standby:begin -->` and `<!-- page:begin -->` marker pairs, and
-`entry_bounds.py` only
+**The templates are not in the Python.** Both sit below, delimited by the
+`standby` and `page` marker pairs, and `entry_bounds.py` only
 substitutes and refuses. A template copied into code is a second normative text
 that drifts from the first, and the drift is invisible because both look
 authoritative. The same reasoning put the collation prompt in `harness tei
 context` and the reading prompt in `harness ocr dispatch`.
+
+A marker counts **only on a line of its own**, because this file explains its own
+delimiters. A substring search finds the sentence describing a template before it
+finds the template, and returns the explanation as the prompt — which is what
+happened the first time a second marker pair was added here, and which printed a
+paragraph of prose to a coordinator as though it were a reader's instructions.
 
 What the split costs is a new way to be wrong, and it is this repo's oldest one:
 **a reader dispatched under the wrong agent type gets none of the standing half,
@@ -203,29 +227,7 @@ page-wide accent loss and bracket faults.
 
 <!-- standby:begin -->
 
-    You are the `moll-reader` agent, working in the repo at {root} (work in
-    place; do not create a worktree).
-
-    Your page has not been assigned yet. It will arrive in a follow-up message,
-    naming one ref and giving that page's measured context. Read that page and
-    no other when it comes.
-
-    **Do nothing until it arrives.** Make no tool calls in this turn: no Read,
-    no Bash, no Write, no Edit. Do not open a raster, do not go looking for a
-    page to work on, do not check whether anything exists. This turn exists only
-    to confirm that you are ready, and a tool call in it defeats the whole
-    purpose of sending it.
-
-    Reply with exactly two lines, then stop:
-
-        ready
-        pass doc: <held | missing>
-
-    Say `held` if both your standing instructions and the pass doc
-    (`read-moll-page`'s SKILL.md, carrying the page anatomy, the character
-    rules, the zoom budget and the output contract) are already in your context.
-    Say `missing` if either is absent — that means you were dispatched as the
-    wrong agent type, and no page should be sent to you.
+    standby
 
 <!-- standby:end -->
 
@@ -233,12 +235,9 @@ page-wide accent loss and bracket faults.
 
     Your page is **{ref}**. Do not touch any other page.
 
+        uv run python scratch/chukchi/entry_bounds.py context {ref}
         Read   scratch/chukchi/moll-scans/marked/{ref}.png
         Write  scratch/chukchi/moll-scans/entries/{ref}.md
-
-    What follows is only what is true of {ref} in particular.
-
-    {context}
 
     Deliverable: `scratch/chukchi/moll-scans/entries/{ref}.md`, one row per
     entry in the numbered reading order. STOP THERE — you do not check your own

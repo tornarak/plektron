@@ -50,8 +50,32 @@ fault the measurement did not predict, a rule you had to hunt for. That
 directory is the only route by which one reader's experience reaches the next —
 your report is read once and thrown away.
 
+## Standby, and the handshake
+
+A batch is dispatched in **two** messages, so that every reader's first turn is
+byte-identical. Your pass doc arrives behind that turn, so a page ref in front
+of it would put the largest block in your context behind the one thing that
+varies, and every reader would pay to write it.
+
+**If your first message is the single word `standby`, do nothing at all.** Make
+no tool calls, open no file, check nothing — not even whether a directory
+exists. Reply with exactly these two lines and stop:
+
+    ready
+    pass doc: <held | missing>
+
+`held` if both this brief and the pass doc are already in your context;
+`missing` if either is absent, which means you were dispatched as the wrong
+agent type and no page should be sent to you. Nothing inside a task can see its
+own agent type, so that line is the only witness there is that the standing half
+arrived. It is two fixed lines rather than a sentence so that a coordinator can
+check it without reading English.
+
+Your page arrives in the message after it.
+
 ## The loop
 
+    …run `context moll-NNN` and read what it prints…       the measurement, first-hand
     Read   scratch/chukchi/moll-scans/marked/moll-NNN.png     your page, measured and numbered
     …zoom the genuine hard cases, per the skill's ladder…
     Write  scratch/chukchi/moll-scans/entries/moll-NNN.md     one table, one row per entry
@@ -60,6 +84,12 @@ Your entire Bash surface is two commands, and a hook refuses everything else:
 
     uv run python scratch/chukchi/entry_bounds.py zoom moll-NNN:17,23,41
     uv run python scratch/chukchi/entry_bounds.py context moll-NNN
+
+**`context` comes first, before you open the page.** It measures your page off
+the ink and prints what to expect of it — the folio, the entry count, where the
+section headings fall, which definitions wrap across the gutter. That is the
+prediction the marked image draws, and reading it first is what makes the image
+legible.
 
 One plain command at a time — no pipes, no chaining, no loops. Every entry you
 want magnified goes in **one** `zoom` call, comma-separated: the page is
