@@ -262,7 +262,43 @@ def _table(obj) -> str | None:
         return _pairs(obj)
     if isinstance(obj, list) and all(_is_scalar(v) for v in obj):
         return _wrapped([_scalar(v) for v in obj])
+    if (sections := _sections(obj)) is not None:
+        return sections
     return None
+
+
+def _sections(obj) -> str | None:
+    """A payload built of named sections, drawn as a head block then one table each.
+
+    The fifth shape, and it is not the "invent a layout" the module docstring
+    refuses. A verb that calls `out()` once per section already renders exactly
+    this — a `rule(name)` line above each grid — so a verb that hands its sections
+    over in one dict was getting TOON purely because `_table` had no composite
+    case, not because the payload was ambiguous. `proposal marks` is the one that
+    made it visible: four record lists and four scalars, every one of them
+    perfectly tabular on its own, and none of them drawn.
+
+    The bar stays where the rest of the module puts it: **every** value must be a
+    scalar or a renderable record list, and at least one must be a list. Anything
+    else is genuinely ragged and still falls back, so nothing is drawn with a hole
+    in it. An empty list keeps `_table`'s `(none)`, since blank is
+    indistinguishable from clean.
+    """
+    if not isinstance(obj, dict) or not obj:
+        return None
+    head, blocks = {}, []
+    for k, v in obj.items():
+        if _is_scalar(v):
+            head[k] = v
+        elif isinstance(v, list) and (not v or _records(v) is not None):
+            blocks.append((k, _grid(list(v[0]), v) if v else "(none)"))
+        else:
+            return None
+    if not blocks:
+        return None
+    parts = [_pairs(head)] if head else []
+    parts += [f"{rule(k)}\n{body}" for k, body in blocks]
+    return "\n".join(parts)
 
 
 def _console(width: int):
