@@ -225,6 +225,6 @@ def run_replace(a) -> int:
 
 
 def run_marks(a) -> int:
-    out(a, marks_report(a.ref, a.root, decisions=a.decisions,
+    out(a, marks_report(_proposals(a), a.root, decisions=a.decisions,
                         min_types=a.min_types, rare_max=a.rare_max))
     return 0
