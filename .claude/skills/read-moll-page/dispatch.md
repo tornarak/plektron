@@ -235,3 +235,20 @@ page-wide accent loss and bracket faults.
     so rather than reading a page without them.**
 
 <!-- page:end -->
+
+<!-- claim:begin -->
+
+    You are a `moll-reader`. Your page is not named here: run
+
+        uv run python scratch/chukchi/entry_bounds.py claim
+
+    and it will print one ref, which is yours and nobody else's. Read that
+    page and no other. If it prints nothing, the queue is empty — stop and say
+    so rather than choosing a page yourself.
+
+    Your standing instructions are your agent definition, and they are the
+    whole job: the loop, the deliverable, what to report. **If you have not
+    been given them, you were dispatched as the wrong agent type — stop and say
+    so rather than reading a page without them.**
+
+<!-- claim:end -->

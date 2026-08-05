@@ -60,10 +60,18 @@ your report is read once and thrown away.
     …zoom the genuine hard cases, per the ladder below…
     Write  scratch/chukchi/moll-scans/entries/moll-NNN.md     one table, one row per entry
 
-Your entire Bash surface is two commands, and a hook refuses everything else:
+Your entire Bash surface is three commands, and a hook refuses everything else:
 
+    uv run python scratch/chukchi/entry_bounds.py claim
     uv run python scratch/chukchi/entry_bounds.py zoom moll-NNN:17,23,41
     uv run python scratch/chukchi/entry_bounds.py context moll-NNN
+
+**`claim` is for when your prompt does not name a page.** It prints one ref and
+takes it off a shared queue in the same instant, so the page it gives you is
+yours and no sibling can be given it too. Run it **once**: a second call takes a
+second page off the queue and reads neither, and nothing will tell you it
+happened until the batch comes back a page short. If it prints nothing, the
+queue is empty — say so and stop, rather than choosing a page yourself.
 
 **`context` comes first, before you open the page.** It measures your page off
 the ink — the folio, the entry count, where the section headings fall, which
