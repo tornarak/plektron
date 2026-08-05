@@ -518,6 +518,36 @@ def ink_mask(src) -> np.ndarray:
         return np.asarray(im.convert("L")) < 128
 
 
+# How far apart two columns of ink can sit and still be one thing. Inter-word
+# spaces run ~25 px at 300 dpi, so a text line holds together; `1-037`'s running
+# title ends 514 px short of its folio, so apparatus separates from text without
+# either being named. Only the ink decides.
+COLUMN_GAP = 80
+
+
+def _runs(mask, gap: int = 0) -> list[tuple[int, int]]:
+    """`(start, end)` of each True run in a 1-D mask, bridging gaps of `<= gap`.
+
+    One diff over the mask, padded either end so a run touching the edge is not
+    lost — the same trick the row scan used before this took a second axis.
+    """
+    import numpy as np
+    m = np.asarray(mask, dtype=bool)
+    if gap:
+        # Bridge first, then find runs: a hole shorter than `gap` is filled by
+        # checking whether any True lies within `gap` on both sides.
+        idx = np.flatnonzero(m)
+        if not len(idx):
+            return []
+        holes = np.diff(idx)
+        for a, d in zip(idx[:-1], holes, strict=True):
+            if 1 < d <= gap:
+                m[a:a + d] = True
+    edges = np.flatnonzero(np.diff(np.concatenate(
+        ([0], m.view(np.int8), [0]))))
+    return [(int(s), int(e)) for s, e in zip(edges[::2], edges[1::2], strict=True)]
+
+
 def ink_bands(ink, x0: int, x1: int, covered,
               min_h: int = MIN_BAND_H,
               fraction: float = ROW_INK_FRACTION) -> list[dict]:
@@ -529,11 +559,45 @@ def ink_bands(ink, x0: int, x1: int, covered,
     how the answers start disagreeing. `MIN_BAND_H` and `ROW_INK_FRACTION` are
     derived at their definitions above and both callers inherit the derivation.
 
-    `ink` is an `ink_mask` array; `covered` is one entry per image row, true where
-    something already accounts for that row. Returns `{vpos, height, hpos, width}`
-    in **raster** coordinates, each band carrying the extent of its own ink rather
+    `ink` is an `ink_mask` array. `covered` is **either** one entry per image row,
+    true where something accounts for the whole of that row, **or** a full `(h, w)`
+    mask of what the boxes actually cover. Returns `{vpos, height, hpos, width}` in
+    **raster** coordinates, each band carrying the extent of its own ink rather
     than of the measuring window — a repair needs the geometry of what was found,
     not of where it was looked for.
+
+    **The two shapes are not the same question, and the difference is a whole
+    class of miss.** A row mask can only find text the segmenter dropped
+    *vertically*: anything sharing rows with an accounted-for line is masked by
+    that line, across the full width. So a folio beside a running title, a list
+    number in the margin, a stranded catchword — text missed *horizontally* inside
+    a row that is otherwise fine — is invisible by construction. That is exactly
+    where this book's marginal apparatus sits: `1-073` strands its folio outside
+    every box on the page, `1-074` prints `5.` and `9.` outside theirs, and
+    `1-037`'s folio is inside the running-title zone and outside the title line.
+    `ocr blot` paints boxes and has always shown these plainly, while claiming in
+    its own docstring to be "the inverse of `line_gaps`" — a check on a detector,
+    described as equivalent to it, that was never asking the same question.
+
+    **`fraction` is a share of the thing measured, not of the window.** Once
+    coverage is box-shaped the leftover ink is unaccounted for by construction, and
+    a row projection across the whole window then asks the wrong question: a
+    two-character folio is 43 px of ink in a 1,778 px column, so a bar set at
+    0.5% of the column (8 ink columns) cuts through the middle of the digits,
+    where the thin strokes of a `1` and a `7` carry seven. `1-037`'s folio profiles
+    as `27 28 26 21 21 10 10 8 8 8 8 7 7 7 7 7 7 9 8 9 15 17 15 4 5 …` — thirty-six
+    rows of type, of which the longest run clearing the bar is eleven, against a
+    `MIN_BAND_H` of twenty. Every constant here was calibrated on a full text line
+    and silently assumed one.
+
+    So the ink is grouped into its own **columns** first, and each group is
+    measured against its own width. A dropped body line is one group spanning the
+    column and reads exactly as it always did; a folio is a 43 px group with a bar
+    of one. `COLUMN_GAP` is what holds a line together — inter-word spaces run
+    ~25 px at 300 dpi, while `1-037`'s title ends 514 px short of its folio — so
+    the grouping separates apparatus from text without being told where either is.
+    That also removes a boundary: searching the margins as separate strips split
+    any band straddling the column edge into two bands at an arbitrary column.
 
     Still counts **every other column**, as the original per-pixel loop did, so that
     vectorising this changed no verdict anywhere in the corpus. Sampling costs
@@ -545,29 +609,36 @@ def ink_bands(ink, x0: int, x1: int, covered,
     ink = ink_mask(ink)
     h, w = ink.shape
     x0, x1 = max(0, x0), min(w, x1)
-    cols = x1 - x0
-    if cols <= 0:
+    if x1 - x0 <= 0:
         return []
-    band = ink[:, x0:x1]
-    threshold = max(1, int(cols * fraction))
-    rows = (band[:, ::2].sum(axis=1) * 2 >= threshold)
-    rows &= ~np.asarray(covered, dtype=bool)[:h]
+    # Coverage is subtracted from the ink, not from the row index. With a row mask
+    # the two are the same thing; with a box mask a row keeps whatever ink no box
+    # accounts for, which is the point.
+    cov = np.asarray(covered, dtype=bool)
+    cov = cov[:h, None] if cov.ndim == 1 else cov[:h, x0:x1]
+    band = ink[:, x0:x1] & ~cov
 
-    # Run boundaries from a single diff over the row mask, padded either end so a
-    # band running to the top or bottom of the page is not lost.
-    edges = np.flatnonzero(np.diff(np.concatenate(
-        ([0], rows.view(np.int8), [0]))))
     out = []
-    for start, end in zip(edges[::2], edges[1::2], strict=True):
-        if end - start < min_h:
+    # Row runs first, on *any* leftover ink, so a group is looked for only where
+    # something survives the mask. The bar is applied inside the group, never here.
+    for r0, r1 in _runs(band.any(axis=1)):
+        if r1 - r0 < min_h:
             continue
-        nz = np.flatnonzero(band[start:end].any(axis=0))
-        if not len(nz):
-            continue
-        out.append({"vpos": int(start), "height": int(end - start),
-                    "hpos": x0 + int(nz[0]),
-                    "width": int(nz[-1] - nz[0]) + 1})
-    return out
+        sub = band[r0:r1]
+        for c0, c1 in _runs(sub.any(axis=0), gap=COLUMN_GAP):
+            region = sub[:, c0:c1]
+            threshold = max(1, int((c1 - c0) * fraction))
+            rows = (region[:, ::2].sum(axis=1) * 2 >= threshold)
+            for s, e in _runs(rows):
+                if e - s < min_h:
+                    continue
+                nz = np.flatnonzero(region[s:e].any(axis=0))
+                if not len(nz):
+                    continue
+                out.append({"vpos": int(r0 + s), "height": int(e - s),
+                            "hpos": x0 + c0 + int(nz[0]),
+                            "width": int(nz[-1] - nz[0]) + 1})
+    return sorted(out, key=lambda b: (b["vpos"], b["hpos"]))
 
 
 def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
@@ -612,9 +683,10 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     page = etree.parse(str(alto)).find(".//{*}Page")
     img = Image.open(raster_path(ref, root, scans)).convert("L")
     w, h = img.size
-    # Only the vertical scale is wanted now: the horizontal window comes from the
-    # measured column, in raster coordinates already.
-    _, sy = _scale_for(page, img.size)
+    # Both scales are wanted now that coverage is a box rather than a row band;
+    # the horizontal *window* still comes from the measured column, which is in
+    # raster coordinates already.
+    sx, sy = _scale_for(page, img.size)
 
     recs = page_lines(alto)
     # Column window from the page's own lines, so the margins (and the scanner's
@@ -642,17 +714,54 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     # fall back.
     from .zones import page_windows as _page_windows
     _wins = _page_windows(ref, root, ink=img)
-    x0, x1 = min(int(v["x0"]) for v in _wins), max(int(v["x1"]) for v in _wins)
-    x0, x1 = max(0, x0), min(w, x1)
+    col0, col1 = min(int(v["x0"]) for v in _wins), max(int(v["x1"]) for v in _wins)
+    col0, col1 = max(0, col0), min(w, col1)
+
+    # **The measure looks at the whole PrintSpace, not just the column.** The
+    # column window exists to keep the margins and the scanner's dark gutter from
+    # registering as ink, and it does that job — but the marginal apparatus is on
+    # the far side of it by definition, which is the same omission `--margins`
+    # exists to undo at the crop. `1-037`'s folio sits at raster x 2478-2533
+    # against a column ending at 2224: outside the window, so no amount of
+    # box-masking could ever have found it.
+    #
+    # Nothing is hidden and nothing is conflated: a band is labelled `column` or
+    # `margin` by where its own ink falls, so the dropped-line signal stays
+    # legible and marginal apparatus is a separate reading rather than noise in
+    # the same column.
+    ps = printspace_x(page)
+    p0, p1 = ((max(0, int(ps[0] * sx)), min(w, int(ps[1] * sx))) if ps
+              else (0, w))
+    p0, p1 = min(p0, col0), max(p1, col1)
 
     import numpy as np
-    covered = np.zeros(h, dtype=bool)
+    # **Boxes, exactly as `ocr blot` paints them.** That verb calls itself the
+    # inverse of this one and shows a human what is left after everything
+    # accounted for is erased; masking rows here instead made the two disagree
+    # about every horizontally-missed line, silently, in the direction of
+    # reporting nothing. `1-037`'s folio sits in the running title's rows and
+    # outside its box: blotted it is conspicuous, row-masked it does not exist.
+    covered = np.zeros((h, w), dtype=bool)
+
+    def _cover(box_x, box_y, box_w, box_h):
+        top = max(0, int(box_y * sy) - COVER_PAD)
+        bot = min(h, int((box_y + box_h) * sy) + COVER_PAD)
+        left = max(0, int(box_x * sx) - COVER_PAD)
+        right = min(w, int((box_x + box_w) * sx) + COVER_PAD)
+        covered[top:bot, left:right] = True
+
     for r in recs:
         if r.get("vpos") is None or r.get("height") is None:
             continue
-        top = max(0, int(r["vpos"] * sy) - COVER_PAD)
-        bot = min(h, int((r["vpos"] + r["height"]) * sy) + COVER_PAD)
-        covered[top:bot] = True
+        if r.get("hpos") is None or r.get("width") is None:
+            # No horizontal extent to trust, so fall back to the old reading of
+            # this line: it accounts for its whole row band. Under-reporting a
+            # band is the safe direction when the geometry is the thing missing.
+            top = max(0, int(r["vpos"] * sy) - COVER_PAD)
+            bot = min(h, int((r["vpos"] + r["height"]) * sy) + COVER_PAD)
+            covered[top:bot, :] = True
+            continue
+        _cover(r["hpos"], r["vpos"], r["width"], r["height"])
 
     # Figures are ink with no TextLine by construction, so without this every
     # illustrated page reports its own artwork as dropped text: `2-030` returned 2
@@ -662,13 +771,25 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     # since a page with no figure ALTO has no figure.
     from .figures import zones as _zones
     for z in _zones(ref, root):
-        top = max(0, int(z["vpos"] * sy) - COVER_PAD)
-        bot = min(h, int((z["vpos"] + z["height"]) * sy) + COVER_PAD)
-        covered[top:bot] = True
+        _cover(z["hpos"], z["vpos"], z["width"], z["height"])
 
     # The measuring itself is `ink_bands`, shared with `zones.validate_page` so the
     # two detectors cannot drift apart on a threshold.
-    bands = ink_bands(ink_mask(img), x0, x1, covered)
+    #
+    # One window over the whole PrintSpace, and the grouping inside `ink_bands`
+    # does the rest. Searching the margins as separate strips was the first
+    # attempt and it split any band straddling the column edge into two bands at
+    # an arbitrary column — a boundary invented by the search rather than found on
+    # the page, which is the same fault as the row mask one axis over.
+    bands = ink_bands(ink_mask(img), p0, p1, covered)
+    for b in bands:
+        # Where the band's own ink sits, against the measured text column. A
+        # label, never a filter: `margin` is a folio, a list number or a
+        # catchword, which is a different question from a dropped body line and
+        # wants a different answer — but suppressing it here would rebuild the
+        # blind spot one level up.
+        b["where"] = ("margin" if b["hpos"] + b["width"] <= col0
+                      or b["hpos"] >= col1 else "column")
 
     # Imported inside the function because `zones` imports `ink_bands`/`ink_mask`
     # from here; `_ink_excuse` is reused rather than re-derived so the two readers
