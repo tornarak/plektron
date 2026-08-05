@@ -347,7 +347,8 @@ def batch(root: Path, tasks: Path | None = None, *, session: str | None = None,
     agent whose stamps will not parse is **kept and flagged**, never dropped: a
     missing timestamp must not draw in the same column as one outside the window.
     """
-    dirs = find_tasks(root, tasks)
+    found = find_tasks(root, tasks)
+    dirs = found
     if not all_ and tasks is None and session is None:
         dirs = dirs[-1:]
     # Ordered by when each agent OPENED, not when it finished: launch order is
@@ -361,6 +362,43 @@ def batch(root: Path, tasks: Path | None = None, *, session: str | None = None,
         cut = since_stamp(since)
         agents = [a for a in agents if not a["first"] or a["first"] >= cut]
     return dirs, agents
+
+
+def elsewhere(root: Path, dirs: list[Path], tasks: Path | None = None,
+              window: int = TTLS["5m"]) -> list[dict]:
+    """Sessions dispatching right now that the current scope does NOT cover.
+
+    **The default scope is "the newest session", and with two batches out at
+    once that is a coin flip which can land differently between two runs of this
+    command.** Two passes in this repo fan out over pages — the Bogoras readers
+    and the Moll ones — and they are dispatched from different sessions, so
+    running both at once is ordinary rather than exotic. A report that silently
+    picked one of them is worse than a slow one: every column would be right,
+    about a batch the reader was not asking after.
+
+    So the scope names what it excluded, while it is still plausibly live. The
+    window is the subagent cache TTL, because that is the horizon on which "is
+    another batch running" has consequences — a session quiet for longer than
+    that is history, not competition.
+
+    Reports; never gates. Naming the other session is what a human needs to type
+    `--session`, and choosing for them is not this verb's business.
+    """
+    if tasks is not None:
+        return []
+    now = datetime.now(UTC).timestamp()
+    scoped = {d.resolve() for d in dirs}
+    out = []
+    for d in find_tasks(root, None):
+        if d.resolve() in scoped:
+            continue
+        age = now - max((f.stat().st_mtime for f in d.glob("*.output")), default=0)
+        if age <= window:
+            # `d.parent.name` is the session id, which is exactly what
+            # `--session` matches on by prefix.
+            out.append({"session": d.parent.name[:8], "quiet_for_s": int(age),
+                        "agents": len(list(d.glob("*.output")))})
+    return sorted(out, key=lambda r: r["quiet_for_s"])
 
 
 def find_transcripts(root: Path, idents: list[str],

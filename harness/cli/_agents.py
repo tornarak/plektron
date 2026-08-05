@@ -17,6 +17,7 @@ from __future__ import annotations
 from ..usage import (
     batch,
     cohorts,
+    elsewhere,
     find_transcripts,
     preamble,
     project,
@@ -86,8 +87,19 @@ def run_usage(a) -> int:
     from pathlib import Path
     dirs, agents = batch(a.root, Path(a.tasks) if a.tasks else None,
                          session=a.session, since=a.since, all_=a.all)
-    out(a, [{"project": project(a.root).name, "sessions": len(dirs),
+    # **Name the sessions, do not count the directories.** `sessions` used to be
+    # `len(dirs)`, which is how many were *searched* — under `--session` that is
+    # every session the project has, while the report covers one. A scope row
+    # that cannot be read back to "which batch is this" is the one thing this
+    # section is for.
+    named = sorted({x["session"] for x in agents})
+    out(a, [{"project": project(a.root).name,
+             "session": ", ".join(named) or "—",
+             "sessions": len(named),
+             "types": ", ".join(sorted({x["type"] for x in agents if x["type"]})) or "—",
              "agents": len(agents)}], name="scope")
+    if others := elsewhere(a.root, dirs, Path(a.tasks) if a.tasks else None):
+        out(a, others, name="also_dispatching", heading=True)
     out(a, rows(agents), name="agents", heading=True)
     out(a, preamble(agents), name="preamble", heading=True)
     out(a, cohorts(agents), name="cohorts", heading=True)

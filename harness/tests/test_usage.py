@@ -8,10 +8,12 @@ to a shared number.
 from __future__ import annotations
 
 import json
+import os
 from datetime import UTC, datetime, timedelta
 
 import pytest
 
+from harness import usage
 from harness.usage import (
     TTL,
     TTLS,
@@ -421,3 +423,66 @@ def test_slug_folds_both_separators(tmp_path):
     d.mkdir(parents=True)
     assert _slug(d).endswith("-Projects-machine-press")
     assert "_" not in _slug(d)
+
+
+# --- concurrent sessions --------------------------------------------------
+
+def _session(root, name: str, agent: str, age_s: float = 0):
+    """A task-transcript directory shaped like the real one, aged by mtime."""
+    d = root / "claude-1000" / "-proj" / name / "tasks"
+    d.mkdir(parents=True, exist_ok=True)
+    _transcript(d, agent, [(0, 100)])
+    when = datetime.now(UTC).timestamp() - age_s
+    os.utime(d / f"{agent}.output", (when, when))
+    return d
+
+
+@pytest.fixture
+def sessions(tmp_path, monkeypatch):
+    """Discovery pointed at `tmp_path` instead of `/tmp/claude-*`.
+
+    `elsewhere` finds the project's transcript directories itself — that is the
+    point of it, since the whole question is what the default scope left out —
+    so the seam to fake is the discovery, not the filesystem.
+    """
+    monkeypatch.setattr(usage, "find_tasks", lambda root, tasks=None: sorted(
+        (tmp_path / "claude-1000" / "-proj").glob("*/tasks")))
+    return tmp_path
+
+
+def test_a_second_live_session_is_named_rather_than_silently_excluded(sessions):
+    """The default scope is "the newest session", and two batches out at once
+    make that a coin flip that can land differently between two runs.
+
+    Both passes here fan out over pages — the Bogoras readers and the Moll ones
+    — from different sessions, so this is the ordinary case rather than an edge
+    one. Every column of a report that quietly picked the other batch would be
+    right, about a batch nobody asked after.
+    """
+    mine = _session(sessions, "aaaaaaaa-1111", "a1", age_s=0)
+    _session(sessions, "bbbbbbbb-2222", "b1", age_s=3)
+    others = usage.elsewhere(sessions, [mine], None, 300)
+    # The id, and by its leading characters — which is what `--session` matches.
+    assert [o["session"] for o in others] == ["bbbbbbbb"]
+    assert others[0]["quiet_for_s"] <= 5
+
+
+def test_a_session_quiet_longer_than_the_ttl_is_history_not_competition(sessions):
+    """The window is the subagent cache TTL, because that is the horizon on which
+    "is another batch running" has consequences."""
+    mine = _session(sessions, "aaaaaaaa-1111", "a1", age_s=0)
+    _session(sessions, "cccccccc-3333", "c1", age_s=9000)
+    assert usage.elsewhere(sessions, [mine], None, TTLS["5m"]) == []
+
+
+def test_the_scoped_session_does_not_report_itself(sessions):
+    mine = _session(sessions, "aaaaaaaa-1111", "a1", age_s=0)
+    assert usage.elsewhere(sessions, [mine], None, 300) == []
+
+
+def test_an_explicit_tasks_dir_claims_no_other_session(sessions):
+    """`--tasks` names a directory outright, so there was no default scope to
+    have chosen badly and nothing to warn about."""
+    mine = _session(sessions, "aaaaaaaa-1111", "a1", age_s=0)
+    _session(sessions, "bbbbbbbb-2222", "b1", age_s=1)
+    assert usage.elsewhere(sessions, [mine], mine, 300) == []
