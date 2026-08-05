@@ -373,16 +373,41 @@ require `--commit`.
 --root --json --toon --pager
 ```
 
-### ocr dispatch PP-NNN
-**Does** renders the reading pass's subagent prompt for one page, from the block between `<!-- prompt:begin -->` and `<!-- prompt:end -->` in `.claude/skills/rebuild-groundtruth/dispatch.md`, with the four-store survey substituted (line and zone counts, and which of the two things a `gaps` band means on this page).
+### ocr queue REF [REF ...]
+**Does** validates a batch of pages, writes it to the claim queue, and prints the **one prompt every reader of the batch gets** — the block between `<!-- claim:begin -->` and `<!-- claim:end -->` in `.claude/skills/rebuild-groundtruth/dispatch.md`. That prompt names no page and carries no substitution: each reader takes its own ref with `ocr claim`.
 **Reads** `dispatch.md`, `gt/zones/` (and `_exempt.lst`), `gt/fig/`, `gt/ocr/`, `mz/ocr/`.
-**Writes** nothing. Prompt to stdout as plain text; `--json` carries it as a field beside the survey.
-**Exit** 0 with a prompt; 1 when the page is not a dispatch candidate, and the message names the remedy.
-**Note** **singular**, for `tei context`'s reason — held in `test_cli_surface.py`. **Never assemble this prompt by hand.** It was done twice in one session and the second time five clauses reached the agent that existed nowhere in `dispatch.md`, so the doc described a prompt nobody sent and the run measured something unwritten. Same fault as writing a glyph into a note instead of citing its codepoint.
+**Writes** `review/_queue.txt`, and clears `review/_claims/`. Prompt to stdout as plain text, everything operational to stderr, so a pipe carries the prompt and nothing else.
+**Exit** 0 with a prompt; 1 when any page in the batch is not a dispatch candidate, and the message names the remedy.
+**Note** **send it unedited and identical to every reader.** Identity of the first turn is what caches: three readers dispatched with `moll-043`/`044`/`045` in their prompts all opened COLD at the same total — the totals matching because three refs of the same byte length cost the same — while a batch of byte-identical prompts shared. A ref in the prompt costs every sibling the whole shared context, however few characters it is, which is why the ref arrives from a tool call instead. **Stagger the first launch about ten seconds** so it writes the context the rest read; `agents usage` reports what that bought as `missed`.
 
-Four refusals, which are `dispatch.md`'s survey made mechanical rather than eyeballed: no `gt/zones/` entry (not a keyed text page); marked in `_exempt.lst` (a human ruled it not a text page); **`gt/ocr/` already present** — the sharp one, since a reader sent at a keyed page reads the human text through every ALTO verb and its proposal stops being an independent witness, and a named range contains such a page sooner or later (`2-031`–`2-035` contained `2-034`); nothing in `mz/ocr/`, naming `ocr predict`.
+**Never assemble either text by hand.** It was done twice in one session and the second time five clauses reached the agent that existed nowhere in `dispatch.md`, so the doc described a prompt nobody sent and the run measured something unwritten. Same fault as writing a glyph into a note instead of citing its codepoint.
+
+Every page is checked before any is queued, and its block is rendered and thrown away — a page whose survey raises fails here, where the fix is still a command. Five refusals, four of them `dispatch.md`'s survey made mechanical rather than eyeballed: a ref named twice (one page, two readers, who overwrite each other); no `gt/zones/` entry (not a keyed text page); marked in `_exempt.lst` (a human ruled it not a text page); **`gt/ocr/` already present** — the sharp one, since a reader sent at a keyed page reads the human text through every ALTO verb and its proposal stops being an independent witness, and a named range contains such a page sooner or later (`2-031`–`2-035` contained `2-034`); nothing in `mz/ocr/`, naming `ocr predict`.
 ```
---note TEXT  a page-specific sentence appended to the branch paragraph
+--note TEXT  a sentence appended to the branch paragraph of every page block in
+             this batch; per-page notes want separate queue calls
+--root --json --toon --pager
+```
+
+### ocr claim
+**Does** takes the next unclaimed ref off `review/_queue.txt` and prints that page's block — the ref, and what the four-store survey found (line and zone counts, and which of the two things a `gaps` band means on this page), from between `<!-- prompt:begin -->` and `<!-- prompt:end -->`.
+**Reads** `review/_queue.txt`, `review/_claims/`, `dispatch.md`, the four stores.
+**Writes** `review/_claims/PP-NNN`, stamped with the local time. Block to stdout as plain text.
+**Exit** 0 with a block; 1 when the queue is empty or every ref on it is taken.
+**Note** **takes no ref, and that is the point** — the page arrives from a tool result rather than from a prompt that would then differ between siblings. `O_CREAT|O_EXCL` is the whole lock: the kernel decides which of several readers created the marker first, so there is no window between the check and the take. Readers are dispatched simultaneously and cannot see each other, so a lock resting on politeness rests on nothing; eight concurrent claimers over a three-ref queue return three distinct refs.
+
+**A claim is never released.** A reader that dies holding one leaves its page unread and its claim standing, which is the honest state rather than a silent retry — `reconcile` names the ref, and re-queueing it is a decision somebody makes. Exit 1 on an empty queue rather than an empty success: a reader handed silence at exit 0 has been told nothing, and picking a page for itself is exactly what a silence invites.
+```
+--root --json --toon --pager
+```
+
+### ocr reconcile REF [REF ...]
+**Does** what the batch came back with — each named ref `keyed` (a proposal exists), `CLAIMED, no proposal` (a reader took it and did not come back), or `unclaimed` (nobody took it).
+**Reads** `review/_claims/`, `review/PP-NNN/proposal.json`.
+**Writes** nothing.
+**Exit** 0 when every named ref is keyed; 1 naming those that produced nothing.
+**Note** three states rather than two, because "no proposal" has two causes at scale and they want different answers: the queue outran the readers (or they were never sent), against a reader that died or ran out of turns. Only the second is worth chasing, and the claim stamp is there for that question alone. A page dealt twice or not at all is a *valid* ref and fails silently everywhere else.
+```
 --root --json --toon --pager
 ```
 

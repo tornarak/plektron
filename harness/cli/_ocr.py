@@ -195,19 +195,29 @@ def register(cli):
     opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
     opt(p, "--out", type=click.Path(path_type=Path), default=None, help=OUT_HELP)
 
-    # Singular for `tei context`'s reason, held in test_cli_surface.py: the payload
-    # is one page's prompt, built to hand to one agent for one page, and a merged
-    # stream is not consumable by what it exists for.
-    p = _one_ref(add("dispatch", help="the reading pass's subagent prompt for one "
-              "page, rendered from .claude/skills/rebuild-groundtruth/dispatch.md "
-              "with the four-store survey already substituted. Refuses a page that "
-              "is not a restoration candidate — no zones, no prediction, or ground "
-              "truth already present, which would collapse the two witnesses into "
-              "one. Never assemble this prompt by hand"))
+    p = refs_arg(add("queue", help="validate a batch of pages and write it to the "
+              "claim queue, then print the ONE prompt every reader of the batch "
+              "gets. The prompt names no page — each reader takes its own ref with "
+              "`ocr claim`, so the prompts are identical and the readers can share "
+              "a cached context. Refuses a page that is not a restoration candidate "
+              "— no zones, no prediction, or ground truth already present, which "
+              "would collapse the two witnesses into one"))
     opt(p, "--note", default=None,
-                   help="a page-specific sentence appended to the branch paragraph, "
-                        "e.g. \"19 lines over 5 zones suggests a sparse page, so "
-                        "the gap check matters more than usual here\"")
+                   help="a sentence appended to the branch paragraph of every page "
+                        "block in this batch, e.g. \"19 lines over 5 zones suggests "
+                        "a sparse page, so the gap check matters more than usual "
+                        "here\". Per-page notes want separate queue calls")
+
+    add("claim", help="take the next unclaimed ref off the queue and print that "
+        "page's block — the ref, and what the four-store survey found. Takes no "
+        "ref: that is the point, the page arriving from a tool call rather than "
+        "from a prompt that would then differ between siblings. Exit 1 when the "
+        "queue is empty")
+
+    p = refs_arg(add("reconcile", help="what the batch came back with — each named "
+              "ref keyed, claimed with no proposal, or never claimed at all. Exit "
+              "1 naming any that produced nothing: a page dealt twice or not at "
+              "all is a valid ref and fails silently everywhere else"))
 
     p = _store(refs_arg(add("numbered", help="the whole page with each line's index "
               "drawn in a left gutter, into review/PP-NNN/numbered.png — the "
@@ -492,25 +502,73 @@ def run_crops(a) -> int:
     return 0
 
 
-def run_dispatch(a) -> int:
-    """Print the prompt, or refuse with the command that makes the page ready.
+def run_queue(a) -> int:
+    """Write the batch, print the one prompt, or refuse naming the fix.
 
     The prompt goes to stdout as plain text rather than through a table: it is
     prose meant to be handed to an agent whole, and a renderer that wrapped or
     truncated it would corrupt the one artifact this action exists to produce.
-    `--json` carries it as a field alongside the survey, for a caller assembling
-    a batch.
+    Everything operational goes to stderr, so `queue … | pbcopy` carries the
+    prompt and nothing else.
     """
-    from ..dispatch import Unready, build
+    from ..dispatch import Unready, queue_refs
     try:
-        rec = build(a.ref, a.root, note=a.note)
+        rec = queue_refs(page_refs(a), a.root, note=a.note)
     except Unready as e:
         raise click.ClickException(str(e)) from None
     if getattr(a, "json", False):
         out(a, [rec])
-    else:
-        click.echo(rec["prompt"])
+        return 0
+    click.echo(rec["prompt"])
+    n = len(rec["queued"])
+    click.echo(
+        f"\nqueued {n}: {', '.join(rec['queued'])}. Send the prompt above to "
+        f"{n} readers, UNEDITED and IDENTICAL — it names no page, and identity "
+        "is what lets them share a cached context. Each takes its own ref off "
+        "the queue. Stagger the first launch about ten seconds so it writes the "
+        "context the rest read; `ocr reconcile` checks what came back.", err=True)
     return 0
+
+
+def run_claim(a) -> int:
+    """One ref off the queue, rendered. Exit 1 when there is nothing left.
+
+    Exit 1 rather than an empty success: a reader that gets a blank answer at
+    exit 0 has been told nothing, and the failure it must not commit — picking a
+    page for itself — is exactly what a silence invites.
+    """
+    from ..dispatch import claim
+    rec = claim(a.root)
+    if rec is None:
+        click.echo(
+            "nothing left to claim — the queue is empty or every ref on it is "
+            "taken. Stop and say so; do not pick a page yourself.", err=True)
+        return 1
+    if getattr(a, "json", False):
+        out(a, [rec])
+    else:
+        click.echo(rec["page_block"])
+    return 0
+
+
+def run_reconcile(a) -> int:
+    from ..dispatch import reconcile
+    rows = reconcile(page_refs(a), a.root)
+    out(a, rows, name="refs")
+    missing = [r for r in rows if r["state"] != "keyed"]
+    if not missing:
+        return 0
+    held = [r["ref"] for r in missing if r["state"].startswith("CLAIMED")]
+    click.echo(
+        f"{len(missing)} of {len(rows)} produced no proposal: "
+        f"{', '.join(r['ref'] for r in missing)}. "
+        + (f"{len(held)} still held by a reader that took the page and did not "
+           f"come back ({', '.join(held)}) — check it is not simply still "
+           "running, then decide whether to re-queue."
+           if held else
+           "None of them was claimed, so no reader ever took them: the queue "
+           "outran the readers, or they were never sent."), err=True)
+    return 1
 
 
 def run_numbered(a) -> int:

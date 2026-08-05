@@ -318,11 +318,11 @@ carry Tier-1 notation, every doubt flagged with its reason, and what the adjudic
 should look at first. Concise and concrete — the report is what you relay to the
 human before handing them the URL.
 
-## Template
+## The two templates
 
-**Do not transcribe this by hand — `harness ocr dispatch PP-NNN` renders it.** The
-block below is the source and this section is its reasoning; the verb substitutes
-the survey, and is the only thing that should ever produce a prompt from it.
+**Do not transcribe either by hand — `harness ocr queue` and `harness ocr claim`
+render them.** The blocks below are the source and this section is their reasoning;
+the verbs substitute, and are the only things that should ever produce a prompt.
 
 That rule was written after being broken twice in one session. Hand-copying put
 five clauses into the prompt an agent actually ran that existed nowhere in this
@@ -332,30 +332,42 @@ text. It is the same fault as writing a glyph into a note instead of citing its
 codepoint: a normative thing reproduced probabilistically, with no witness to the
 difference.
 
-The markers around the block are load-bearing (`harness/dispatch.py` reads between
-them) and the `{braces}` are substituted. Everything else is sent verbatim, so
-prose edited here reaches the next agent with no other step.
+The markers are load-bearing (`harness/dispatch.py` reads between them) and count
+only on a line of their own — this file describes its own delimiters, so a
+substring search finds the sentence before the template. The `{braces}` are
+substituted; everything else is sent verbatim, so prose edited here reaches the
+next agent with no other step.
 
-**Spawn it with `subagent_type: groundtruth-reader`.** The block below is now only
-the page-specific half; the standing half is the agent definition, and the two are
-assembled by the spawn rather than by this file. A reader given this prompt without
-that agent type is told to stop, which is the only check available — nothing else
-can see which type a task was spawned under.
+### The prompt every reader gets
+
+**Spawn every reader with `subagent_type: groundtruth-reader` and this text,
+unedited and identical.** It names no page, carries no `{braces}`, and is fixed
+across batches as well as within one, so next month's readers share a cached prefix
+with tonight's. Identity is the whole property being bought: a ref in turn 1 costs
+every sibling the entire shared context, however few characters it is.
+
+The wrong-agent clause stays here and stays out of the agent body, because a reader
+dispatched as the wrong type does not *have* the body — an assertion living there
+could never catch the case it exists for. It costs nothing, carrying no ref.
+
+<!-- claim:begin -->
+
+    Claim a page. If you have no groundtruth-reader contract, stop and say so.
+
+<!-- claim:end -->
+
+### The page block `claim` prints
+
+Everything true of one page in particular, and nothing else. What used to sit here
+as well — the deliverable, the STOP, the report instruction, the standing-instructions
+paragraph — is standing text and lives in `.claude/agents/groundtruth-reader.md`.
+Of two copies of a rule, the one in a rendered prompt is the one that drifts, and it
+was restating the ref four times over to say things derivable from it.
 
 <!-- prompt:begin -->
 
-    You are the `groundtruth-reader` agent, reading exactly one page of Bogoras,
-    *The Chukchee*, in the repo at {root} (work in place; do not create a
-    worktree).
-
-    Your page ref is **{ref}**. Do not touch any other page.
-
-    Your standing instructions — the preloaded pass doc, the two files to read
-    first, the loop, the image ladder, the hard rules and what to report — are
-    in your agent definition, and this prompt does not repeat them. **If you have not been
-    given them, you were dispatched as the wrong agent type: stop and say so
-    rather than reading a page without them.** What follows is only what is true
-    of {ref} in particular.
+    Your page ref is **{ref}**. Do not touch any other page, and do not claim a
+    second: one reader, one page.
 
     What the survey found:
       - `mz/ocr/chukchi-{ref}.xml` exists — {lines} lines over {zones} zones.
@@ -364,16 +376,5 @@ can see which type a task was spawned under.
       - So this is a **restoration**, and every ALTO verb you run carries
         `--store mz`.
       - {figures}
-
-    Deliverable: `review/{ref}/proposal.json`, normalized and clean — stop there,
-    and do not restore, serve or commit it.
-
-    **Then report, in the same turn: the pass is not finished when the file is
-    written.** Three parts, as your standing instructions specify — the page, the
-    checklist by section, and the image ladder. Written while the pass is still in
-    your hands, never reconstructed later: the ladder in particular is a record of
-    what you actually looked at, and a report assembled from memory after the fact
-    is the invented-second-witness defect wearing a different hat. "The deliverable
-    is written" is not a report and will be sent back.
 
 <!-- prompt:end -->

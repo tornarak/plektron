@@ -1,4 +1,4 @@
-"""The subagent prompt is rendered from `dispatch.md`, never transcribed.
+"""The two dispatch texts are rendered from `dispatch.md`, never transcribed.
 
 Hand-copying the template put five clauses into a prompt an agent actually ran that
 existed nowhere in the doc. The doc then described a prompt nobody sent, the run
@@ -17,11 +17,26 @@ Fixtures are built in `tmp_path` rather than read off the live corpus, per this
 suite's rule, except where a test is explicitly about the repo's own `dispatch.md`.
 """
 
+import re
 from pathlib import Path
 
 import pytest
 
-from harness.dispatch import BEGIN, DOC, END, Unready, build, survey, template
+from harness.dispatch import (
+    BEGIN,
+    CLAIM_BEGIN,
+    CLAIM_END,
+    DOC,
+    END,
+    Unready,
+    build,
+    claim,
+    claim_one,
+    queue_refs,
+    reconcile,
+    survey,
+    template,
+)
 
 REPO = Path(__file__).resolve().parent.parent.parent
 
@@ -48,19 +63,44 @@ def make_page(root: Path, ref="3-063", *, zones=True, mz=True, gt=False,
     return root
 
 
-def test_the_repo_template_is_locatable_and_nonempty():
+@pytest.mark.parametrize("markers,floor", [
+    ((BEGIN, END), 400),
+    ((CLAIM_BEGIN, CLAIM_END), 40),
+])
+def test_the_repo_templates_are_locatable_and_nonempty(markers, floor):
     """Against the live doc: the markers are load-bearing and easy to lose.
 
-    The floor was 2000 while the template carried the standing instructions too.
-    Those moved to `.claude/agents/groundtruth-reader.md`, so the block is now the
+    The page block's floor was 2000 while it carried the standing instructions
+    too. Those moved to `.claude/agents/groundtruth-reader.md`, so it is now the
     page-specific half alone — the ref, the survey, the figures clause — and a
     bound tuned to the old size would fail on the split rather than on a lost
-    block. It is a not-empty check, so it is set well under the real length.
+    block. Both are not-empty checks, set well under the real length.
     """
-    text = (REPO / DOC).read_text(encoding="utf-8")
-    assert text.count(BEGIN) == 1 and text.count(END) == 1
-    assert text.index(BEGIN) < text.index(END)
-    assert len(template(REPO)) > 400
+    lines = (REPO / DOC).read_text(encoding="utf-8").splitlines()
+    begin, end = markers
+    assert lines.count(begin) == 1 and lines.count(end) == 1
+    assert lines.index(begin) < lines.index(end)
+    assert len(template(REPO, markers)) > floor
+
+
+def test_the_prompt_every_reader_gets_names_no_page():
+    """The property the whole dispatch is built on, asserted against the live doc.
+
+    Three readers dispatched with `moll-043`/`044`/`045` in their prompts all
+    opened COLD at the same total — the totals matching because three refs of the
+    same byte length cost the same. Byte-identical prompts shared. So identity of
+    turn 1 is what caches, and ANYTHING varying in it costs every sibling the
+    whole shared context: a `{brace}` here is not a formatting slip, it is the
+    saving.
+    """
+    prompt = template(REPO, (CLAIM_BEGIN, CLAIM_END))
+    assert "{" not in prompt and "}" not in prompt
+    assert not re.search(r"\b\d-\d{3}\b", prompt), "a ref in the fixed prompt"
+    assert "PP-NNN" not in prompt
+    # It must still name the agent type, which is the only witness a task has to
+    # how it was spawned: a reader dispatched as the wrong type has no body, so
+    # the assertion cannot live there.
+    assert "groundtruth-reader" in prompt
 
 
 def test_every_placeholder_the_template_uses_is_supplied(tmp_path):
@@ -71,14 +111,14 @@ def test_every_placeholder_the_template_uses_is_supplied(tmp_path):
     is the whole point of keeping the prose in the doc.
     """
     rec = build("3-063", make_page(tmp_path))
-    assert "{" not in rec["prompt"] and "}" not in rec["prompt"]
+    assert "{" not in rec["page_block"] and "}" not in rec["page_block"]
 
 
 def test_the_survey_is_substituted_not_described(tmp_path):
     rec = build("3-063", make_page(tmp_path))
-    assert "**3-063**" in rec["prompt"]
-    assert "PP-NNN" not in rec["prompt"]
-    assert f"{rec['lines']} lines over {rec['blocks']} zones" in rec["prompt"]
+    assert "**3-063**" in rec["page_block"]
+    assert "PP-NNN" not in rec["page_block"]
+    assert f"{rec['lines']} lines over {rec['blocks']} zones" in rec["page_block"]
 
 
 def test_the_figure_clause_says_which_situation_the_page_is_in(tmp_path):
@@ -87,8 +127,8 @@ def test_the_figure_clause_says_which_situation_the_page_is_in(tmp_path):
     Told the wrong one, an agent reads artwork as a dropped line or discounts a
     real one as artwork — so this cannot be left as a word the reader interprets.
     """
-    absent = build("3-063", make_page(tmp_path / "a", figs=False))["prompt"]
-    present = build("3-063", make_page(tmp_path / "b", figs=True))["prompt"]
+    absent = build("3-063", make_page(tmp_path / "a", figs=False))["page_block"]
+    present = build("3-063", make_page(tmp_path / "b", figs=True))["page_block"]
     assert "does NOT exist" in absent and "genuine dropped-line candidate" in absent
     assert "are masked out of the detector" in present
     assert "genuine dropped-line candidate" not in present
@@ -96,11 +136,11 @@ def test_the_figure_clause_says_which_situation_the_page_is_in(tmp_path):
 
 def test_a_note_lands_in_the_branch_paragraph(tmp_path):
     rec = build("3-063", make_page(tmp_path), note="Sparse page; watch the gaps.")
-    assert "does not exist. Sparse page; watch the gaps." in rec["prompt"]
+    assert "does not exist. Sparse page; watch the gaps." in rec["page_block"]
 
 
 def test_no_note_leaves_no_dangling_space(tmp_path):
-    assert "does not exist.\n" in build("3-063", make_page(tmp_path))["prompt"]
+    assert "does not exist.\n" in build("3-063", make_page(tmp_path))["page_block"]
 
 
 @pytest.mark.parametrize("kw,expected", [
@@ -145,3 +185,136 @@ def test_a_doc_without_markers_says_so(tmp_path):
     (tmp_path / DOC).write_text("# no markers here\n", encoding="utf-8")
     with pytest.raises(Unready, match="prompt:begin"):
         template(tmp_path)
+
+
+def test_a_marker_inside_a_sentence_is_not_a_marker(tmp_path):
+    """A marker counts only on a line of its own, and this is why.
+
+    The doc explains its own delimiters, so a substring search finds the prose
+    *describing* a template before the template — which, the first time a second
+    marker pair was added, printed that paragraph to a coordinator as though it
+    were a reader's instructions.
+    """
+    make_page(tmp_path)
+    (tmp_path / DOC).write_text(
+        f"Prose mentioning {BEGIN} mid-sentence, which is not a marker.\n"
+        f"\n{BEGIN}\n\n    the real block\n\n{END}\n", encoding="utf-8")
+    assert template(tmp_path) == "the real block"
+
+
+# --- queue, claim, reconcile ------------------------------------------------
+
+def _queued(root, *refs, note=None):
+    for r in refs:
+        make_page(root, r)
+    return queue_refs(list(refs), root, note=note)
+
+
+def test_queue_returns_the_fixed_prompt_and_writes_the_batch(tmp_path):
+    rec = _queued(tmp_path, "3-063", "3-064")
+    assert rec["queued"] == ["3-063", "3-064"]
+    assert rec["prompt"] == template(tmp_path, (CLAIM_BEGIN, CLAIM_END))
+    assert (tmp_path / "review/_queue.txt").read_text() == "3-063\n3-064\n"
+
+
+def test_a_ref_named_twice_is_refused(tmp_path):
+    """One page and two readers: they overwrite each other's proposal and the
+    batch comes back short with nothing able to say which page went missing."""
+    make_page(tmp_path, "3-063")
+    with pytest.raises(Unready, match="named twice"):
+        queue_refs(["3-063", "3-63"], tmp_path)
+
+
+def test_queue_refuses_the_whole_batch_on_one_bad_page(tmp_path):
+    """Rendered and discarded, before anything is written. A page whose survey
+    raises must fail while the fix is still a command, not in front of a reader
+    that has no way to act on it."""
+    make_page(tmp_path, "3-063")
+    make_page(tmp_path, "3-064", mz=False)
+    with pytest.raises(Unready, match="ocr predict"):
+        queue_refs(["3-063", "3-064"], tmp_path)
+    assert not (tmp_path / "review/_queue.txt").exists()
+
+
+def test_claim_takes_each_ref_once_then_runs_out(tmp_path):
+    _queued(tmp_path, "3-063", "3-064")
+    assert claim_one(tmp_path)[0] == "3-063"
+    assert claim_one(tmp_path)[0] == "3-064"
+    assert claim_one(tmp_path) is None
+
+
+def test_claim_renders_that_page_and_no_other(tmp_path):
+    _queued(tmp_path, "3-063", "3-064")
+    first = claim(tmp_path)
+    assert "**3-063**" in first["page_block"]
+    assert "3-064" not in first["page_block"]
+
+
+def test_the_note_reaches_the_page_block_through_the_queue(tmp_path):
+    _queued(tmp_path, "3-063", note="Sparse page; watch the gaps.")
+    assert "does not exist. Sparse page; watch the gaps." in claim(tmp_path)["page_block"]
+
+
+def test_concurrent_claimers_never_share_a_ref(tmp_path):
+    """`O_CREAT|O_EXCL` is the whole mechanism, so this is the test of it.
+
+    Readers are dispatched simultaneously and by design cannot see each other, so
+    a lock resting on politeness rests on nothing: the kernel decides who created
+    the marker first, and there is no window between the check and the take that
+    an `if not exists: write` would leave open. Eight claimers, three refs.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    _queued(tmp_path, "3-063", "3-064", "3-065")
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        got = [f.result() for f in [ex.submit(claim_one, tmp_path) for _ in range(8)]]
+    refs = sorted(g[0] for g in got if g)
+    assert refs == ["3-063", "3-064", "3-065"]
+    assert got.count(None) == 5
+
+
+def test_a_new_queue_clears_the_claims(tmp_path):
+    """Cleared with the queue, never separately: a claim standing against a new
+    batch silently withholds a page from it, and the batch comes back short for a
+    reason that is a file from last week."""
+    _queued(tmp_path, "3-063")
+    assert claim_one(tmp_path)[0] == "3-063"
+    _queued(tmp_path, "3-063")
+    assert claim_one(tmp_path)[0] == "3-063"
+
+
+def test_a_claim_is_never_released(tmp_path):
+    """A reader that dies holding one leaves its page unread and its claim
+    standing, which is the honest state rather than a silent retry."""
+    _queued(tmp_path, "3-063")
+    claim_one(tmp_path)
+    assert claim_one(tmp_path) is None
+    assert (tmp_path / "review/_claims/3-063").exists()
+
+
+def test_reconcile_tells_the_two_kinds_of_miss_apart(tmp_path):
+    """"No proposal" has two causes at scale and they want different answers:
+    nobody took the page, or somebody took it and did not come back."""
+    from harness.paths import proposal_path
+
+    _queued(tmp_path, "3-063", "3-064", "3-065")
+    claim_one(tmp_path)                      # 3-063, taken and keyed
+    claim_one(tmp_path)                      # 3-064, taken and lost
+    p = proposal_path("3-063", tmp_path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("{}", encoding="utf-8")
+
+    states = {r["ref"]: r["state"] for r in
+              reconcile(["3-063", "3-064", "3-065"], tmp_path)}
+    assert states == {"3-063": "keyed", "3-064": "CLAIMED, no proposal",
+                      "3-065": "unclaimed"}
+
+
+def test_a_claim_is_stamped_for_diagnosis(tmp_path):
+    """Nothing reads it to decide anything — a batch of twenty that comes back one
+    page short is a question about *which* reader stalled, and a bare marker
+    cannot answer it."""
+    _queued(tmp_path, "3-063")
+    claim_one(tmp_path)
+    row = reconcile(["3-063"], tmp_path)[0]
+    assert row["claimed_at"].startswith("20")

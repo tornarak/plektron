@@ -306,6 +306,16 @@ NO_ALL_OK = {
     ("tei", "seam"):
         "--continues/--fresh asserts something about THIS seam; a corpus-wide "
         "'everything continues' is not a claim anyone could mean",
+    ("ocr", "queue"):
+        "a batch is what you are about to spend that many agents on, so it is "
+        "named page by page and never implied. `--all` here would deal out every "
+        "unread page in the corpus to however many readers happened to be "
+        "dispatched, and the ones nobody claimed would sit in the queue looking "
+        "queued",
+    ("ocr", "reconcile"):
+        "it checks the batch that was just dealt, and the refs are the claim "
+        "being made — that THESE pages went out. Reconciling 'everything' cannot "
+        "distinguish a page this batch lost from one never sent",
 }
 
 
