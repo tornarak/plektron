@@ -1061,14 +1061,19 @@ single store can answer it.
 **Note** **`--all` enumerates `scans/`, not any store.** A page no store holds is the most interesting row this verb has, and enumerating a store would hide exactly those — which is also why `absent` is a stage rather than an omission.
 **Note** **`skipped` is the point of the ladder.** `2-030` reached `gt/ocr/` by the eScriptorium route before the review loop existed; 18 pages carry `gt/ocr/` with no prediction behind them, the eScriptorium-shell cohort; `1-359` carries human zones with no `mz/zones/`. Each is a provenance fact no single store's verb could see. **A rung a route legitimately omits is not a skip**: `zoned-mz` first counted against every exempt page, which put 83 plates in the report and left `1-359` indistinguishable among them — 84 rows saying nothing where 1 says something.
 **Note** the same row, minus `ref`, is `page_state` in `harness tei context` — so a collation pass is never left inferring the rank of its own input. An empty `tier1_terms` means "no ground truth" on 802 pages and "ground truth with no marked forms" on `3-063`, and those call for opposite behaviour.
+**Note** **`--context` windows over `scans/`, not over arithmetic.** `PP-NNN` says nothing about how long its part is, so a window is applied to the observed index list rather than computed — which clamps it at each part's end for free, steps over a gap in the sequence instead of counting it as a page, and never crosses a part boundary. `1-362` and `2-001` are neighbours in the binding and nowhere else, and a context spanning them would assert a continuity the scan index does not carry.
 ```
---all         every scan in scans/, whether or not any store holds it
---stage NAME  only pages at this rung; repeatable. absent, scanned, zoned-mz,
-              zoned-gt, ocr-mz, proposed, decided, ocr-gt, collated
---skipped     only pages that missed a rung below the one they reached
---tally       counts per rung instead of the rows; every rung listed, empty ones
-              included — nothing-has-reached-it and everything-has-passed-it are
-              different facts
+--all           every scan in scans/, whether or not any store holds it
+--context SPEC  also the pages around those named, by scan index within the same
+                part: N each way, +N ahead, -N behind, -N+M both. Counts are
+                inclusive; a sign binds only its own side, so 5+3 is refused
+                rather than guessed at. No-op with --all
+--stage NAME    only pages at this rung; repeatable. absent, scanned, zoned-mz,
+                zoned-gt, ocr-mz, proposed, decided, ocr-gt, collated
+--skipped       only pages that missed a rung below the one they reached
+--tally         counts per rung instead of the rows; every rung listed, empty ones
+                included — nothing-has-reached-it and everything-has-passed-it are
+                different facts
 --root --json --toon --pager
 ```
 

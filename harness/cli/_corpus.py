@@ -51,6 +51,13 @@ def register(cli):
                "rungs below it that are not, so a page that took a route the "
                "pipeline no longer offers is visible rather than summarised away")
     refs_arg(p, all_="every scan in scans/, whether or not any store holds it")
+    opt(p, "--context", metavar="SPEC",
+        help="also report the pages around the ones named, by scan index within "
+             "the same part: N each way, +N ahead, -N behind, -N+M both. Counts "
+             "are inclusive and neighbours come from scans/, so a gap in the "
+             "sequence is stepped over and a window never runs past a part's "
+             "end or across into the next one. Ignored with --all, which is "
+             "already every page")
     opt(p, "--stage", "stage", multiple=True, metavar="NAME",
         help="only pages at this rung (repeatable). One of: absent, "
              + ", ".join(STAGES))
@@ -125,10 +132,15 @@ def run_state(a) -> int:
     verb has, and enumerating a store would have hidden exactly those. It is also
     why `absent` is a stage rather than an omission.
     """
-    from ..context import all_scans
+    from ..context import all_scans, with_context
     from ..pipeline import survey, tally
 
-    rows = survey(page_refs(a) or all_scans(a.root), a.root)
+    refs = page_refs(a)
+    # `--all` is already every page, so a window over it is a no-op rather than an
+    # error: the flags answer different questions and neither contradicts the other.
+    if refs and getattr(a, "context", None):
+        refs = with_context(refs, a.context, a.root)
+    rows = survey(refs or all_scans(a.root), a.root)
     if a.stage:
         allowed = set(a.stage)
         unknown = allowed - {"absent", *STAGES}

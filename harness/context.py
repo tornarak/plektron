@@ -17,6 +17,7 @@ recorded one.
 """
 from __future__ import annotations
 
+import bisect
 import re
 import unicodedata
 from pathlib import Path
@@ -80,6 +81,69 @@ def norm_ref(ref: str) -> str:
 
 def stem_for(ref: str, root: Path = Path(".")) -> str:
     return f"chukchi-{norm_ref(ref)}"
+
+
+CONTEXT_RE = re.compile(r"^(?:(\d+)|(?:(?:-(\d+))?(?:\+(\d+))?))$")
+
+
+def parse_context(spec: str) -> tuple[int, int]:
+    """`'5' | '+5' | '-5' | '-5+3'` -> (behind, ahead). Counts are inclusive.
+
+    A bare count means that many **each way**, which is what someone asking for
+    "context" almost always means; the signed forms are for when the question is
+    one-sided — what a seam ran into, or what a batch is about to reach.
+
+    Signed and unsigned are deliberately not mixed (`5+3` is refused): a reader of
+    the command should not have to know whether the bare number binds left, right
+    or both when a sign is already present.
+    """
+    s = str(spec).strip()
+    m = CONTEXT_RE.match(s)
+    if not m or not s:
+        raise ValueError(
+            f"--context {spec!r}: expected N (each way), +N (ahead), -N (behind) "
+            "or -N+M. Counts are inclusive and a sign binds only its own side.")
+    both, behind, ahead = m.groups()
+    if both is not None:
+        return int(both), int(both)
+    return int(behind or 0), int(ahead or 0)
+
+
+def with_context(refs: list[str], spec: str,
+                 root: Path = Path(".")) -> list[str]:
+    """`refs` plus their neighbours by scan index, deduplicated and in page order.
+
+    **Neighbours are drawn from `scans/`, never derived by arithmetic.** A ref
+    `PP-NNN` sits in a part whose length this function has no business knowing,
+    and a window that ran off the end would invent refs no page answers to — so
+    the window is applied to the *observed* index list for that part, which also
+    means a gap in the scans (an unnumbered plate pulled from the sequence) is
+    stepped over rather than silently counted as a page.
+
+    Parts do not run into each other: a window at the head of part 2 does not
+    reach back into part 1, because `1-362` and `2-001` are neighbours in the
+    binding and nothing else, and a context that crossed there would be asserting
+    a continuity the scan index does not carry.
+    """
+    behind, ahead = parse_context(spec)
+    if not (behind or ahead):
+        return [norm_ref(r) for r in refs]
+    by_part: dict[int, list[int]] = {}
+    for r in all_scans(root):
+        p, i = parse_ref(r)
+        by_part.setdefault(p, []).append(i)
+    for idxs in by_part.values():
+        idxs.sort()
+    out: set[str] = set()
+    for r in refs:
+        part, idx = parse_ref(r)
+        seq = by_part.get(part, [])
+        at = bisect.bisect_left(seq, idx)
+        lo = max(0, at - behind)
+        hi = min(len(seq), at + ahead + 1)
+        out.add(norm_ref(r))
+        out.update(f"{part}-{i:03d}" for i in seq[lo:hi])
+    return sorted(out, key=parse_ref)
 
 
 def _refs_under(root: Path, pattern: str) -> list[str]:
