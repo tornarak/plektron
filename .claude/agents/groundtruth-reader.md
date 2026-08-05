@@ -70,7 +70,11 @@ The working numbers, outright:
 **This document is the whole contract, and the two normative texts are inside it**
 — the reading checklist and `keying_spec.md`, both at the bottom, transcluded whole
 rather than left as files to open. Do not Read either from disk: you already have
-them, and a second copy costs what the first one did.
+them, and a second copy costs what the first one did. **The guard now refuses
+`keying_spec.md` outright**, and says so in those terms — it is not withheld, it is
+above. `harness/VERBS.md` is refused the same way and for the same reason: it has
+a verb, `verbs show ocr zoom`, and reading the reference whole cost one page a
+fifth of its context.
 
 Work the checklist per page and report against it by section, naming the items you
 could not tick and why. Its **Settled** section is what the spec has already
@@ -1348,9 +1352,10 @@ changes what a turn costs. Before your first image:
   points at 2× is one good call; four points at 4× is one wasted one, and cost a
   reader 7,376 tokens for an image that settled nothing.
 - **Ask the tool, don't read the manual.** `harness verbs show ocr zoom` is one
-  entry; `Read`ing the reference cost one page a fifth of its context. `ls` works
-  over `review/` and your own memory; `cat` does not work anywhere, and `Read` is
-  what it was reaching for.
+  entry; `Read`ing the reference cost one page a fifth of its context, and is now
+  refused for that reason — as is `keying_spec.md`, which is already above. `ls`
+  works over `review/` and your own memory; `cat` does not work anywhere, and
+  `Read` is what it was reaching for.
 - **Aim at points, not ranges.** `23@60`, `42@0`, `12@100` — one number each,
   widened and snapped to whitespace for you. A range is two guesses about a word
   you cannot measure, and re-aiming one three times around a single word is the

@@ -239,10 +239,9 @@ def test_gt_no_other_write_target(path):
     "review/1-031/sheets/lines-04-06.png",
     "review/1-031/zoom/line-12.png",
     "review/1-031/proposal.json",
-    "keying_spec.md",
     "concordance.md",
     "CLAUDE.md",
-    "harness/VERBS.md",
+    "harness/README.md",
     "docs/decisions.md",
     ".claude/skills/rebuild-groundtruth/checklist.md",
     ".claude/agent-memory/groundtruth-reader/folio-can-sit-on-own-thin-alto-line.md",
@@ -264,6 +263,35 @@ def test_gt_the_evidence_stores_are_refused_by_name(path, names):
     """Each refusal says which rule it is — a generic block teaches nothing."""
     err = blocked(GT_GUARD, "Read", file_path=path)
     assert names in err, f"the refusal for {path} does not name why: {err}"
+
+
+@pytest.mark.parametrize("path,names", [
+    ("keying_spec.md", "TRANSCLUDED"),
+    ("/home/x/machine_press/keying_spec.md", "TRANSCLUDED"),
+    ("harness/VERBS.md", "verbs show"),
+    ("/home/x/machine_press/harness/VERBS.md", "verbs show"),
+])
+def test_gt_text_the_reader_already_has_is_refused_with_where_it_is(path, names):
+    """Refused for cost, not for secrecy — so the message must say where the
+    content already is, or the reader reads the refusal as "do without".
+
+    `keying_spec.md` is transcluded whole into the system prompt, so reading it
+    pays for ~15k tokens twice; `harness/VERBS.md` has `verbs show`, and reading
+    it whole cost one page 33,251 tokens — a fifth of its context — for two
+    lookups. These were allowed on the reasoning that a rule a reader cannot
+    verify is worse than a redundant read, which had it backwards: the reader
+    cannot fail to have the spec, because the spec is what it was built from.
+    """
+    err = blocked(GT_GUARD, "Read", file_path=path)
+    assert names in err, f"the refusal for {path} does not say where it is: {err}"
+
+
+def test_gt_the_normative_text_it_does_not_carry_stays_readable():
+    """The refusal above is about duplication, so it must not spread to the
+    documents a reader genuinely has no other route to."""
+    for path in ("concordance.md", "CLAUDE.md", "harness/README.md",
+                 "docs/decisions.md", "data/lexicon_extra.txt"):
+        allowed(GT_GUARD, "Read", file_path=path)
 
 
 def test_gt_a_traversal_does_not_reach_the_store():

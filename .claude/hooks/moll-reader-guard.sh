@@ -67,7 +67,7 @@ case "$TOOL" in
         exit 2 ;;
     esac
     readable "$P" && allow "moll-reader reading inside the pass's own trees"
-    echo "Blocked: you read the raster trees under scratch/chukchi/moll-scans/ (originals, marked/, zoom/, entries/ — never ocr/), your own memory under $MEMORY, your pass doc, and the crops you wrote under /tmp. Nothing else on this machine is evidence about your page. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
+    echo "Blocked: you read the raster trees under scratch/chukchi/moll-scans/ (originals, marked/, zoom/, entries/ — never ocr/), your own memory under $MEMORY, your pass doc, and the crops you wrote under $CROPS. Nothing else on this machine is evidence about your page. Read takes a file, not a directory: for your memory that is $MEMORY/MEMORY.md, which indexes the notes by filename. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
     exit 2 ;;
 
   Write|Edit)
@@ -88,7 +88,7 @@ COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 # labels re-measures the whole page once per label — the verb takes several.
 case "$COMMAND" in
   *';'*|*'&&'*|*'||'*|*'|'*|*'`'*|*'$('*|*'>'*|*'<'*|*'for '*|*'{'*)
-    echo "Blocked: run one plain command at a time — no pipes, chaining, substitution, redirection or loops. zoom takes every label you want in one call: moll-030:17,23,41." >&2
+    echo "Blocked: run one plain command at a time — no pipes, chaining, substitution, redirection or loops. Send each command as its own call. zoom takes every label you want in one call, so a loop is never the way: uv run python scratch/chukchi/entry_bounds.py zoom moll-NNN:17,23,41" >&2
     exit 2 ;;
 esac
 
@@ -100,7 +100,7 @@ esac
 if printf '%s' "$COMMAND" | grep -qE '^uv run python scratch/chukchi/entry_bounds\.py (zoom|context|claim|rows)( |$)'; then
   case "$COMMAND" in
     *--all*)
-      echo "Blocked: no --all form of anything; you have exactly one page." >&2
+      echo "Blocked: no --all form of anything; you have exactly one page. Name it and only it — e.g. uv run python scratch/chukchi/entry_bounds.py rows moll-NNN, with the ref \`claim\` gave you and no second ref." >&2
       exit 2 ;;
   esac
   allow "entry_bounds.py zoom/context/claim/rows — one page, its own"
@@ -150,8 +150,26 @@ if printf '%s' "$COMMAND" | grep -qE '^(identify|convert)( |$)'; then
       esac ;;
   esac
 
-  allow "identify/convert on the pass's rasters, no enhancement operator, output under /tmp"
+  allow "identify/convert on the pass's rasters, no enhancement operator, output under $CROPS"
 fi
+
+# Name the replacement rather than only the rule. Every pattern below was
+# measured refusing in a real batch, and a reader that is told what to run
+# instead does not spend a second round trip finding out.
+case "$COMMAND" in
+  *"$MEMORY"*|*agent-memory*)
+    echo "Blocked: use the Read tool on your memory, not the shell. Read $MEMORY/MEMORY.md — it indexes every note by filename, one line each — then Read the notes whose summary bears on your page. There is no ls and no cat here, and the directory does not need listing." >&2
+    exit 2 ;;
+  ls\ *|ls|find\ *|tree*|wc\ *|stat\ *)
+    echo "Blocked: nothing here needs a directory listing. Your page is the one \`claim\` gave you; \`context\` measures it, \`zoom\` prints the path of every crop it writes, \`rows\` counts the table you wrote, and Read opens any of them by name. If you are counting your own rows, that is: uv run python scratch/chukchi/entry_bounds.py rows moll-NNN" >&2
+    exit 2 ;;
+  grep\ *|rg\ *|sed\ *|awk\ *|head\ *|tail\ *|cat\ *)
+    echo "Blocked: Read the file. Your table is one page long and you wrote it, so there is nothing in it to search for that reading it will not answer — and a partial view of your own cell is how a wrong reading gets confirmed. Read scratch/chukchi/moll-scans/entries/moll-NNN.md" >&2
+    exit 2 ;;
+  mkdir*|touch\ *|cp\ *|mv\ *|rm\ *)
+    echo "Blocked: you never create or move a path. \`zoom\` writes its own output and prints where; \`convert\` writes the crop you name under /tmp; your table goes to $ENTRIES via Write. Nothing in this pass requires a directory to exist first." >&2
+    exit 2 ;;
+esac
 
 echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run python scratch/chukchi/entry_bounds.py {claim|zoom|context|rows}, plus identify/convert for a crop the verb cannot express — one plain command, no --all. Everything else (mark, measure, ocr, witness, suffixes, git, python3, shell listing) is not yours; Read answers what is in a file and zoom prints the path it wrote. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2

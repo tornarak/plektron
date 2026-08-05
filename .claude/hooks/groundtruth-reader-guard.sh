@@ -18,7 +18,10 @@
 #      first, so the refusal says which rule it is: `gt/ocr/` is another page's
 #      adjudicated truth and a convention derived from a neighbour is what the
 #      firewall forbids; `mz/ocr/` is the CATMuS ALTO, which `ocr lines` already
-#      serves in the form the pass is meant to see it.
+#      serves in the form the pass is meant to see it. Two files are refused for
+#      a different reason — `keying_spec.md` is transcluded into the system
+#      prompt and `harness/VERBS.md` has `verbs show`, so reading either is
+#      buying context twice, and the refusal says where the content already is.
 #   4. NO --all FORM OF ANYTHING. One agent, one page.
 #
 # Where a rule is an allowlist, the hook DECIDES rather than deferring: it
@@ -56,11 +59,12 @@ readable() {
     # The working directory of some page: its images, its proposal, its symlink
     # to the raster. Everything the ladder writes lands here.
     */review/*|review/*) return 0 ;;
-    # The normative text. keying_spec.md and the checklist are named in the
-    # standing brief as required reading; the rest is what a reader legitimately
-    # reaches for when a flag or an invariant is in doubt.
-    *keying_spec.md|*concordance.md|*CLAUDE.md) return 0 ;;
-    */harness/VERBS.md|harness/VERBS.md|*/harness/README.md|harness/README.md) return 0 ;;
+    # The normative text a reader does NOT already carry — what it legitimately
+    # reaches for when a flag or an invariant is in doubt. `keying_spec.md` and
+    # `harness/VERBS.md` are refused above and deliberately absent here: one is
+    # transcluded into the system prompt and the other has a verb.
+    *concordance.md|*CLAUDE.md) return 0 ;;
+    */harness/README.md|harness/README.md) return 0 ;;
     */docs/*|docs/*) return 0 ;;
     *.claude/skills/rebuild-groundtruth/*) return 0 ;;
     *"$MEMORY"*) return 0 ;;
@@ -87,6 +91,15 @@ case "$TOOL" in
         exit 2 ;;
       */decision.json|*/decision.jsonl)
         echo "Blocked: decision.json is the adjudication — a human's, made after you finish. Reading one is reading the answers to a page someone else already keyed. Your deliverable is a proposal." >&2
+        exit 2 ;;
+      # **Text the reader already has, or has a verb for.** Not a secret and not
+      # a hazard — a redundant purchase, which is why the refusal explains where
+      # the content already is rather than telling it to do without.
+      *keying_spec.md)
+        echo "Blocked: keying_spec.md is TRANSCLUDED WHOLE into your system prompt — scroll up, it is already in your context under 'The keying spec'. Reading it buys nothing and pays for ~15k tokens of it twice. Cite the section you need by number; if a rule you expect is genuinely missing from what you were given, that is a finding for your report, not a file to go looking for." >&2
+        exit 2 ;;
+      */harness/VERBS.md|harness/VERBS.md)
+        echo "Blocked: ask the verb, don't read the reference — 'uv run harness verbs show ocr zoom' prints that one entry, and bare 'verbs show' lists every action name. Reading the whole file cost one page 33,251 tokens, a fifth of its context, for two lookups it could have made in a few hundred." >&2
         exit 2 ;;
       */scans/*|scans/*)
         echo "Blocked: the raster comes to you through the image ladder, not off the disk. 'ocr numbered' gives you the whole page with every line indexed, and it is the rung you are meant to start on; the full-resolution scan is the same pixels with nothing to key them against." >&2
