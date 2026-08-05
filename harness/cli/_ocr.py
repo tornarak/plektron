@@ -174,6 +174,22 @@ def register(cli):
                    "sweep, at a raster read per page"))
     add_jobs(p)
 
+    p = _store(add("edit", pageable=False,
+               help="the line-correction editor in the browser: adopt a band "
+                    "`gaps` found as a line, or rule it not type. The human end "
+                    "of that detector, and `zones edit`'s sibling one stage "
+                    "down. It draws and never keys — a recovered line's text is "
+                    "adjudicated in `ocr review` and written by `restore`, like "
+                    "any other line's"))
+    refs_arg(p, all_="every page with a raster — the editor walks them with the "
+                     "arrow keys",
+             extra=": several refs are the itinerary, in the order named")
+    opt(p, "--itinerary", metavar="LST",
+                   help="walk a work-list rather than the refs named. The census "
+                        "is the natural one: `ocr gaps --all` and the refs it "
+                        "leaves live")
+    opt(p, "--port", type=int, default=8733, help="port for the editor")
+
     p = _store(_one_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
               "empty TextLines in gt/ocr/, so a dropped line can be keyed. "
               "Geometry only, never CONTENT: text still arrives via "
@@ -639,6 +655,28 @@ def run_zoom(a) -> int:
                 alto_dir=_alto_dir(a), root=a.root,
                 margins=a.margins, smooth=a.smooth)))
     out_per_ref(a, pairs)
+    return 0
+
+
+def run_edit(a) -> int:
+    from ..context import all_scans
+    from ..lines_ui import serve as serve_lines
+    from ..zones import load_itinerary
+
+    refs = page_refs(a)
+    # **Several refs *are* an itinerary**, the same rule `zones edit` follows:
+    # the editor already walks a list with the arrow keys, so a typed list needs
+    # no new machinery.
+    itin = refs or (load_itinerary(a.itinerary, a.root) if a.itinerary else [])
+    if getattr(a, "all", False):
+        itin = all_scans(a.root)
+    start = itin[0] if itin else None
+    if not start:
+        print("ocr edit needs a page to start at: name one or more refs, or "
+              "--itinerary to take one from, or --all for the whole book",
+              file=sys.stderr)
+        return 2
+    serve_lines(start, a.root, a.port, _alto_dir(a), itin, a.itinerary or "")
     return 0
 
 

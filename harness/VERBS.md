@@ -349,6 +349,23 @@ require `--commit`.
 --root --json --toon --pager
 ```
 
+### ocr edit [REF ...]
+**Does** the line-correction editor in the browser — the human end of `gaps`, and `zones edit`'s sibling one stage down. Adopt a band as a line, or rule it not type; both verdicts in one sitting, because deciding between them is one act.
+**Reads** the `--store` store, or the view, `scans/`, `gt/zones/` and `gt/lines/` with both `_ink_exempt.json` layers, `gt/fig/`, `data/zones_config.json`.
+**Writes** `gt/lines/` and `gt/lines/_ink_exempt.json` on save. **No `--commit`** — the save click is the human act, the same contract `zones edit` and `ocr review --serve` have.
+**Exit** 2 if nothing supplies a start page.
+**Note** **it draws and never keys.** A recovered line's text is adjudicated in `ocr review` like any other line's and written by `restore`; duplicating that machinery here would be a second place a reading could be originated, and this store exists on the argument that its writer cannot originate one.
+**Note** **a box in no zone is refused, and the refusal names `zones edit`.** Ink no region covers is a defect in the *zoning*, not a line this editor can adopt — recording a line inside no region would leave the region missing. It is also what keeps the two ink checks disjoint. A page with no zoning at all is refused outright: line correction comes after zoning, which is a stage-order invariant rather than a statement about this corpus.
+**Note** `b` toggles the blotted view, rendered on demand with **both** ruling layers painted, so what is left is what nobody has settled. That is deliberately the opposite of `ocr blot`'s default, which stays an independent witness.
+**Note** several refs are the itinerary, in the order named — `zones edit`'s rule, since the editor already walks a list with the arrow keys. The census is the natural work-list: `ocr gaps --all` and the refs it leaves live.
+```
+--store {gt,mz}  which store to read [omit: the ocr/ view]
+--all       every page with a raster — the editor walks them with the arrow keys
+--itinerary LST  walk a work-list rather than the refs named
+--port N    port for the editor [8733]
+--root --json --toon --pager
+```
+
 ### ocr adopt-gap REF VPOS[,VPOS...]
 **Does** materializes measured `gaps` bands as empty TextLines so a dropped line can be keyed. Geometry only, never CONTENT. Refuses an unmeasured vpos, a band overlapping an existing line, and a band ruled not type in `gt/zones/_ink_exempt.json`.
 **Reads** the `--store` store, or the view, `scans/`, `gt/zones/_ink_exempt.json`.

@@ -40,6 +40,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from . import webui
 from . import zones as zn
 from . import zones_config as zc
 from .context import all_scans, norm_ref, parse_ref
@@ -342,78 +343,7 @@ def save_payload(payload: dict, root: Path, cfg: dict) -> dict:
 
 # ------------------------------------------------------------------ the page
 
-CSS = """
-:root{--bg:#f6f5f3;--fg:#1c1b19;--dim:#6b675f;--line:#d8d4cc;--accent:#2e86ab;
-      --warn:#a8620a;--warnbg:rgba(0.9, 0.4, 0.4, 0.4);--err:#a4232b;--errbg:#fbeceb}
-@media(prefers-color-scheme:dark){:root{--bg:#16161a;--fg:#e8e6e1;--dim:#9a958c;
-      --line:#33323a;--accent:#6ab6d8;--warn:#e0a250;--warnbg:#2f2517;
-      --err:#e08b8b;--errbg:#2e1a1a}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);
-     font:13px/1.45 ui-sans-serif,system-ui,sans-serif}
-#bar{position:fixed;top:0;left:0;right:0;height:38px;display:flex;gap:14px;
-     align-items:center;padding:0 12px;background:var(--bg);
-     border-bottom:1px solid var(--line);z-index:20;white-space:nowrap;
-     overflow-x:auto}
-#bar b{font-weight:600}
-.pill{padding:1px 8px;border-radius:10px;border:1px solid var(--line);
-      font-size:12px}
-.pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
-.pill.off{background:var(--warn);border-color:var(--warn);color:#fff}
-/* The store selector reads as one control: three adjacent pills, clickable, the
-   selected one lit. `—` means that store holds nothing for this page, which is an
-   answer and is why the pill still draws rather than being hidden. */
-.pill.store{cursor:pointer;font-variant-numeric:tabular-nums}
-.pill.store+.pill.store{margin-left:-1px}
-#cur{font-weight:600}
-#swatch{display:inline-block;width:11px;height:11px;border-radius:2px;
-        vertical-align:-1px;margin-right:5px}
-#target{color:var(--dim);font-size:12px}
-#target.sel{color:var(--fg);font-weight:600}
-#msg{margin-left:auto;color:var(--dim)}
-#msg.bad{color:var(--err);font-weight:600}
-#msg.ok{color:var(--accent)}
-/* One scroll container for both axes: the edge-hover autoscroll needs a single
-   element whose scrollTop it can drive, and the page is now sized to the text
-   column rather than to the leaf, so it is routinely taller than the view. */
-#wrap{position:fixed;top:38px;left:0;right:250px;bottom:0;overflow:auto;padding:10px}
-/* The stage is a window onto the page's inked band, not the whole leaf: the top
-   and bottom of a scan are blank paper, and scrolling through them is time spent
-   on nothing. The image is positioned inside it and clipped. */
-#stage{position:relative;line-height:0;margin:0 auto;overflow:hidden;
-       box-shadow:0 1px 8px rgba(0,0,0,.18)}
-#stage img{position:absolute;left:0;display:block;width:100%;height:auto;
-           image-rendering:-webkit-optimize-contrast}
-@media(prefers-color-scheme:dark){#stage img{filter:invert(1) hue-rotate(180deg)}}
-#ov{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
-#panel{position:fixed;right:0;top:38px;width:250px;bottom:0;overflow-y:auto;
-       border-left:1px solid var(--line);background:var(--bg);padding:10px 12px;
-       z-index:15}
-#panel h4{margin:14px 0 6px;font-size:11px;letter-spacing:.06em;
-          text-transform:uppercase;color:var(--dim);font-weight:600}
-#panel h4:first-child{margin-top:0}
-.key{display:flex;justify-content:space-between;gap:8px;padding:1px 0;
-     font-size:12px}
-.key kbd{font:11px ui-monospace,monospace;background:var(--line);
-         border-radius:3px;padding:0 5px}
-.tk{display:flex;align-items:center;gap:6px;padding:2px 4px;border-radius:4px;
-    cursor:pointer}
-.tk:hover{background:var(--line)}
-.tk.sel{background:var(--line);font-weight:600}
-.tk i{width:11px;height:11px;border-radius:2px;flex:none}
-.tk span{flex:1;font-style:normal}
-.tk em{font-style:normal;font-size:10px;color:var(--dim);border:1px solid var(--line);
-       border-radius:3px;padding:0 4px;cursor:help}
-#flags{padding:6px 0;font-size:12px;color:var(--dim)}
-#issues{position:fixed;left:0;bottom:0;max-width:calc(100% - 250px);z-index:18}
-.iss{padding:6px 12px;border-top:1px solid var(--line);font-size:12px}
-.iss.w{background:var(--warnbg);color:var(--warn)}
-.iss.e{background:var(--errbg);color:var(--err);font-weight:600}
-.iss.x{opacity:.62;font-style:italic}
-button{font:inherit;padding:2px 10px;border:1px solid var(--line);border-radius:5px;
-       background:var(--bg);color:var(--fg);cursor:pointer}
-button:hover{background:var(--line)}
-"""
+CSS = webui.CHROME_CSS
 
 JS = r"""
 const T = {}, KEY = {};
@@ -1959,8 +1889,6 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
     and `ocr edit`. What stays here is the routing and what a save means.
     """
     from urllib.parse import parse_qs, urlparse
-
-    from . import webui
 
     root = Path(root)
     cfg = zc.load_config(root)
