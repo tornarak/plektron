@@ -275,8 +275,20 @@ The label is the number drawn beside that entry on the marked page, so
 `:17` means entry 17 — and `:c` the opening continuation, `:§` a section
 heading. It crops to the entry's **own column**, so you get the useful
 magnification rather than half a page of the column beside it. A wrapped
-definition has two halves under one number and writes both, `-a` and `-b` in
-reading order.
+definition has two halves under one number and both go in, in reading order.
+
+**One call writes ONE file**, with the entries stacked in numeric order, each
+captioned with its label and separated by a rule. So a call is a *question* —
+"these three letterforms, side by side" — and you answer it with a single Read
+rather than three. Batch the entries you are unsure about and look at them
+together; comparing a doubtful `ъ` against a certain one in the same image is
+worth more than either crop alone.
+
+The file is named for what is in it: `moll-045-23_25_36-2x.png` — the page, the
+selection in canonical order, the magnification. **That name is a function of
+the question, so asking it twice writes the same file rather than a second copy
+under a new name, and two different questions cannot overwrite each other.**
+`zoom moll-045:36,23,25` and `zoom moll-045:23,25,36` are the same call.
 
 **Never loop this in the shell.** `for n in 1 2 3; do ... zoom $n; done`
 and `zoom moll-030:{1..40}` both re-measure the whole page once per

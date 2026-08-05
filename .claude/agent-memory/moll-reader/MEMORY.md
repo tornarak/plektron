@@ -5,3 +5,4 @@
 - [Flush-wrap false positive](flush-wrap-false-positive.md) — the warning can resolve to "not a join" fast, by checking hyphen-vs-punctuation at 2x
 - [Continuation spans both columns](continuation-spans-both-columns.md) — an opening continuation can carry a matching c← at the top of the right column too, not just the left
 - [Small-caps headword misread](small-caps-headword-misread.md) — smaller-face short entries crowd и/н/т; 4x does NOT settle them, so key a `?` rather than a confident guess
+- [Accented о looks like б](accented-o-looks-like-b.md) — italic о́ fuses with the accent into a false loop resembling a second б; crop tighter, don't upscale further
