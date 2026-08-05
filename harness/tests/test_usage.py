@@ -20,10 +20,15 @@ from harness.usage import (
     _agent,
     _requests,
     _slug,
+    classes,
+    cohort_classes,
+    cohort_ids,
     cohorts,
     find_transcripts,
+    in_cohort,
     preamble,
     project,
+    rows,
     since_stamp,
     transcript,
     warmth,
@@ -48,11 +53,17 @@ def _transcript(tmp_path, name: str, reqs) -> None:
 
 def _made(model="sonnet-5", opening=35798, opened="warm", last="2026-08-04T12:00:00Z",
           ttl="5m", session="s1", pre=None, ctx=None, atype="moll-reader",
-          ctxs=None):
+          ctxs=None, walk=None):
     return {"model": model, "opening": opening, "opened": opened, "last": last,
             "type": atype, "ctxs": ctxs if ctxs is not None else [opening],
             "ttl": ttl, "session": session, "pre": pre or [],
-            "ctx": opening if ctx is None else ctx}
+            "walk": walk or [], "ctx": opening if ctx is None else ctx}
+
+
+def _walked(klass: str, result: int, reply: int = 0) -> dict:
+    """One already-decomposed request, for the aggregations that take a walk."""
+    return {"class": klass, "result": result, "reply": reply,
+            "added": result + reply}
 
 
 # --- the transcript reader ------------------------------------------------
@@ -146,6 +157,199 @@ def test_a_text_read_is_not_called_a_raster(tmp_path):
         _tool_line(100, 50, "Bash", {"command": "z"}, rid="b"),
     ]) + "\n")
     assert transcript(p)[1]["note"] == "read text"
+
+
+# --- the reply/result split -----------------------------------------------
+
+def _result_line(payload, rid="x") -> str:
+    """A tool result coming back, as the runtime records it.
+
+    A refusal and a non-zero exit arrive as bare strings; anything that worked
+    is a dict carrying `stdout`, which is what tells the three apart.
+    """
+    return json.dumps({"type": "user", "requestId": rid,
+                       "toolUseResult": payload,
+                       "message": {"role": "user", "content": "result"}})
+
+
+def test_added_splits_into_the_reply_and_what_the_tool_returned(tmp_path):
+    """The measurement the whole breakdown rests on.
+
+    A request's growth is the agent's own reply plus its tool's result, and the
+    reply is recorded, so the result is a subtraction rather than a share-out.
+    Here a 900-token reply precedes a 1,000-token growth: 100 of it is the tool's.
+    """
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 500, "Bash", {"command": "x"}, out=900, rid="a"),
+        _tool_line(500, 1000, "Bash", {"command": "y"}, out=7, rid="b"),
+    ]) + "\n")
+    row = transcript(p)[1]
+    assert (row["added"], row["reply"], row["result"]) == (1000, 900, 100)
+
+
+def test_result_is_left_signed(tmp_path):
+    """A negative means the decomposition does not hold there, and that is the
+    one case worth seeing — clamping it to zero would hide it."""
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 500, "Bash", {"command": "x"}, out=900, rid="a"),
+        _tool_line(500, 100, "Bash", {"command": "y"}, out=7, rid="b"),
+    ]) + "\n")
+    assert transcript(p)[1]["result"] == -800
+
+
+def test_the_first_request_is_all_opening_and_owes_no_reply(tmp_path):
+    p = tmp_path / "abcdef01.output"
+    p.write_text(_tool_line(0, 35300, "Bash", {"command": "x"}, rid="a") + "\n")
+    row = transcript(p)[0]
+    assert (row["class"], row["reply"], row["result"]) == ("opening", 0, 35302)
+
+
+def test_a_refused_call_is_not_counted_as_a_command(tmp_path):
+    """The finding this class exists for: a guard-blocked call never ran, so
+    every token it cost bought nothing, and pooling it with the commands that
+    did run is what made a batch's waste invisible."""
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 500, "Bash", {"command": "ls review/"}, rid="a"),
+        _result_line("Error: PreToolUse:Bash hook error: [guard.sh]: Blocked: no"),
+        _tool_line(500, 138, "Bash", {"command": "ocr lines 1-057"}, rid="b"),
+    ]) + "\n")
+    assert transcript(p)[1]["class"] == "refused"
+
+
+def test_a_gate_exiting_nonzero_is_failed_and_not_refused(tmp_path):
+    """`proposal check` reporting an advisory is a gate doing its job. It is a
+    different fact from a call the guard stopped, and the two must not pool."""
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 500, "Bash", {"command": "proposal check 1-057"}, rid="a"),
+        _result_line("Error: Exit code 1\n[1]{line,issue}:\n  12,advisory"),
+        _tool_line(500, 90, "Bash", {"command": "x"}, rid="b"),
+    ]) + "\n")
+    assert transcript(p)[1]["class"] == "failed"
+
+
+def test_a_command_that_worked_is_an_ordinary_command(tmp_path):
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 500, "Bash", {"command": "ocr gaps 1-057"}, rid="a"),
+        _result_line({"stdout": "[0]:", "stderr": "", "interrupted": False}),
+        _tool_line(500, 90, "Bash", {"command": "x"}, rid="b"),
+    ]) + "\n")
+    assert transcript(p)[1]["class"] == "command"
+
+
+def test_a_fate_does_not_leak_onto_the_next_request(tmp_path):
+    """A result is filed against the call that asked for it, so the request
+    after a refusal is classified by its own tool."""
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 500, "Bash", {"command": "ls"}, rid="a"),
+        _result_line("Error: PreToolUse:Bash hook error: Blocked"),
+        _tool_line(500, 138, "Read", {"file_path": "/x/p.png"}, rid="b"),
+        _result_line({"type": "image"}),
+        _tool_line(638, 4026, "Bash", {"command": "x"}, rid="c"),
+    ]) + "\n")
+    assert [r["class"] for r in transcript(p)] == ["opening", "refused", "raster"]
+
+
+# --- the class breakdown ---------------------------------------------------
+
+def test_classes_sum_to_the_context_and_say_so(tmp_path):
+    """`pct` is a share of something real: every request's growth belongs to
+    exactly one class, and the `ALL` row carries the total they are taken against."""
+    walk = [_walked("opening", 50000), _walked("raster", 4000),
+            _walked("raster", 6000), _walked("command", 400)]
+    table = {r["class"]: r for r in classes(walk)}
+    assert table["ALL"]["tokens"] == 60400
+    assert table["raster"]["calls"] == 2
+    assert table["raster"]["tokens"] == 10000
+    assert table["ALL"]["pct"] == "100.0%"
+
+
+def test_classes_separate_a_big_class_from_a_frequent_one(tmp_path):
+    """`mean` and `max` are why the table is not just counts: a class large
+    because one call was expensive reads differently from one large because it
+    recurred, and the fix for each is a different instruction."""
+    table = {r["class"]: r for r in classes(
+        [_walked("raster", 7000), _walked("raster", 1000),
+         _walked("command", 500), _walked("command", 500)])}
+    assert (table["raster"]["mean"], table["raster"]["max"]) == (4000, 7000)
+    assert (table["command"]["mean"], table["command"]["max"]) == (500, 500)
+
+
+def test_reply_is_a_column_and_never_a_class(tmp_path):
+    """It belongs to no tool — every request has one — so folding it into a
+    class would put the agent's own thinking under whatever it called next."""
+    table = {r["class"]: r for r in classes(
+        [_walked("command", 100, reply=900), _walked("raster", 4000, reply=50)])}
+    assert "reply" not in table
+    assert table["ALL"]["reply"] == 950
+    assert table["ALL"]["tokens"] == 4100        # results only
+
+
+def test_classes_of_nothing_is_empty_rather_than_a_zero_row(tmp_path):
+    assert classes([]) == []
+
+
+# --- cohorts as batches ----------------------------------------------------
+
+def test_cohorts_are_numbered_oldest_batch_first():
+    agents = [_made(opening=100, last="2026-08-04T12:00:00Z"),
+              _made(opening=100, last="2026-08-04T12:00:09Z"),
+              _made(opening=200, last="2026-08-04T09:00:00Z")]
+    ids = cohort_ids(agents)
+    assert ids[("moll-reader", "sonnet-5", 200)] == "c1"   # finished first
+    assert ids[("moll-reader", "sonnet-5", 100)] == "c2"
+
+
+def test_every_agent_row_carries_its_cohort():
+    """Which reader belongs to which fan-out, without matching openings by eye."""
+    agents = [_made(opening=100), _made(opening=200)]
+    assert {r["cohort"] for r in rows(agents)} == {"c1", "c2"}
+
+
+def test_the_agents_and_cohorts_tables_agree_on_the_ids():
+    agents = [_made(opening=100, last="2026-08-04T12:00:00Z"),
+              _made(opening=200, last="2026-08-04T09:00:00Z")]
+    by_opening = {r["opening"]: r["cohort"] for r in rows(agents)}
+    for c in cohorts(agents):
+        assert by_opening[c["opening"]] == c["cohort"]
+
+
+def test_a_cohort_breakdown_pools_its_members_walks():
+    """The question a fan-out raises is about the batch, so the members' walks
+    are concatenated rather than reported one reader at a time."""
+    agents = [_made(opening=100, walk=[_walked("raster", 4000)]),
+              _made(opening=100, walk=[_walked("raster", 2000),
+                                       _walked("refused", 138)])]
+    table = {(r["scope"], r["class"]): r for r in cohort_classes(agents)}
+    assert table[("c1", "raster")]["tokens"] == 6000
+    assert table[("c1", "raster")]["calls"] == 2
+    assert table[("c1", "refused")]["tokens"] == 138
+
+
+def test_two_batches_do_not_pool_into_one_breakdown():
+    """The same refusal in two different fan-outs is two findings, and averaging
+    them describes a batch nobody dispatched — the failure `cohorts` exists for."""
+    agents = [_made(opening=100, walk=[_walked("refused", 100)]),
+              _made(opening=200, walk=[_walked("refused", 900)])]
+    scopes = {r["scope"] for r in cohort_classes(agents)}
+    assert scopes == {"c1", "c2"}
+
+
+def test_in_cohort_selects_a_whole_batch():
+    a, b, c = (_made(opening=100), _made(opening=100), _made(opening=200))
+    assert in_cohort([a, b, c], "c2") == [a, b]
+
+
+def test_an_unknown_cohort_raises_and_names_the_ones_in_scope():
+    """An empty table cannot be told from a batch that ran nothing, and only one
+    of those is the caller's to fix."""
+    with pytest.raises(ValueError, match=r"c1"):
+        in_cohort([_made(opening=100)], "c9")
 
 
 def test_an_unmatched_agent_raises_rather_than_reporting_nothing(tmp_path):

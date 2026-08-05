@@ -102,6 +102,36 @@ def find_tasks(root: Path, tasks: Path | None = None) -> list[Path]:
     return [d for _, d in live]
 
 
+# **The classes a request's growth can belong to**, in the order the breakdown
+# prints them when tokens tie. They are named for *what arrived*, not for which
+# tool asked, because the question a coordinator has is "what is this context
+# made of" and two tools can deliver the same kind of thing.
+#
+# `refused` and `failed` are separated from `command` deliberately, and they are
+# not the same finding. A refused call never ran — the guard hook stopped it, and
+# every token it cost bought nothing. A failed one ran and exited non-zero, which
+# includes a gate doing exactly its job (`proposal check` reporting an advisory is
+# a `failed` row and is not waste). Only `refused` is unambiguously spend with no
+# return, which is why it gets its own row rather than being folded into either
+# neighbour.
+CLASSES = ("opening", "raster", "text", "command", "write", "refused", "failed",
+           "message", "none")
+
+
+def _outcome(result) -> str:
+    """Whether the tool result that came back was refused, failed, or ordinary.
+
+    A refusal arrives as a bare string — `Error: PreToolUse:Bash hook error: ...`
+    — and a non-zero exit as `Error: Exit code N`, while anything that worked is a
+    dict carrying `stdout`. So the shape of the field decides it before its text
+    does, and the two error kinds are told apart by their prefix rather than by
+    matching the guard's prose, which is edited far more often than this file.
+    """
+    if not isinstance(result, str) or not result.startswith("Error:"):
+        return ""
+    return "refused" if "PreToolUse" in result[:40] else "failed"
+
+
 def _text(rec: dict) -> str:
     content = (rec.get("message") or {}).get("content")
     if isinstance(content, list):
@@ -147,7 +177,16 @@ def _read(path: Path) -> tuple[list[dict], dict]:
     meta: dict = {"pre": []}
     with path.open() as fh:
         for line in fh:
-            if '"cache_read_input_tokens"' not in line and '"role":"user"' not in line:
+            # **Three fields are worth parsing a line for**, and the filter names
+            # each rather than standing on one that happens to co-occur: the
+            # usage block, a user turn, and a tool result — whose fate decides
+            # the class of the next request's growth. `toolUseResult` used to be
+            # reached only via the `"role":"user"` test, which is a *formatting*
+            # dependency (the runtime writes compact JSON, so the key and value
+            # are adjacent) rather than a claim about content.
+            if ('"cache_read_input_tokens"' not in line
+                    and '"role":"user"' not in line
+                    and '"toolUseResult"' not in line):
                 continue
             try:
                 rec = json.loads(line)
@@ -162,6 +201,17 @@ def _read(path: Path) -> tuple[list[dict], dict]:
             for k, field in (("type", "attributionAgent"), ("effort", "effort")):
                 if not meta.get(k) and rec.get(field):
                     meta[k] = rec[field]
+            # **A tool result names the fate of the call that asked for it**, and
+            # it is filed against the request that made the call rather than the
+            # one that reads it: the next request's growth is this result, so the
+            # class of that growth is decided here. `order[-1]` is that caller —
+            # a request emits several usage records while it streams, but they
+            # share one id and the tool result cannot arrive before the last of
+            # them.
+            if rec.get("type") == "user" and "toolUseResult" in rec:
+                if order:
+                    by_id[order[-1]]["outcome"] = _outcome(rec["toolUseResult"])
+                continue
             # The preamble: every user turn ahead of the first assistant reply.
             # That is the whole of what a launch order can affect, and the only
             # part of the context this file can see — the system prompt is not
@@ -211,6 +261,9 @@ def _read(path: Path) -> tuple[list[dict], dict]:
                 "at": rec.get("timestamp", ""),
                 "tool": tool,
                 "detail": detail,
+                # Carried across the several usage records one request emits, so
+                # a late-streaming record cannot blank a fate already filed.
+                "outcome": by_id.get(rid, {}).get("outcome", ""),
             }
     return [by_id[r] for r in order], meta
 
@@ -239,6 +292,78 @@ def _arrival(prev: dict | None) -> tuple[str, str]:
     if tool == "Bash":
         return "ran command", detail
     return tool.lower(), detail
+
+
+def _klass(prev: dict | None) -> str:
+    """Which class the growth after `prev` belongs to.
+
+    Keyed on the *previous* request for the same reason `_arrival` is: the growth
+    is that request's result. A fate — refused or failed — outranks the tool,
+    because a call that never ran delivered nothing whatever it was going to be.
+    """
+    if prev is None:
+        return "opening"
+    if fate := prev.get("outcome"):
+        return fate
+    tool, detail = prev.get("tool", ""), prev.get("detail", "")
+    if not tool:
+        return "none"
+    if tool == "Read":
+        return "raster" if detail.lower().endswith(RASTER) else "text"
+    if tool in ("Write", "Edit"):
+        return "write"
+    if tool == "Bash":
+        return "command"
+    return "message"
+
+
+def _walk(reqs: list[dict], agent: str = "", atype: str = "") -> list[dict]:
+    """One agent's requests with their growth decomposed into reply and result.
+
+    **`added` is two things and the split is measured, not apportioned.** What
+    arrives between two requests is the agent's own reply — which stays in context
+    — plus whatever its tool returned. The reply's size is recorded (`output_tokens`
+    on the earlier request), so subtracting it leaves the result exactly, and the
+    subtraction is checkable rather than assumed: on this pass two readers were
+    refused an identical `ls` after replies of 4,843 and 4,634 tokens, and both
+    came out at **138** for the refusal. Two different agents, two different
+    replies, the same block message, the same number to the token.
+
+    That is the whole reason for the column. `added` alone made a reader that
+    thought hard before a cheap call look like an expensive call: the blocked `ls`
+    above shows as +4,981 in the raw delta and 138 of it is the tool's.
+
+    `result` is left signed. A negative would mean the decomposition does not hold
+    for that request, and clamping it to zero would hide exactly the case worth
+    seeing.
+    """
+    out, prev_ctx, prev = [], 0, None
+    for i, r in enumerate(reqs, 1):
+        ctx = r["in"] + r["read"] + r["write"]
+        note, detail = _arrival(prev)
+        added = ctx if i == 1 else ctx - prev_ctx
+        reply = prev["out"] if prev else 0
+        out.append({
+            "agent": agent,
+            "type": atype,
+            "req": i,
+            # Whether that growth was PAID FOR or free. A request that wrote
+            # nothing had its whole context served from cache; one that wrote
+            # is the only kind that costs, and the amount is the `write`.
+            "via": "read" if not r["write"] else "write",
+            "read": r["read"],
+            "write": r["write"],
+            "ctx": ctx,
+            "added": added,
+            "reply": reply,
+            "result": added - reply,
+            "class": _klass(prev),
+            "out": r["out"],
+            "note": note,
+            "detail": detail,
+        })
+        prev_ctx, prev = ctx, r
+    return out
 
 
 def _requests(path: Path) -> list[dict]:
@@ -278,6 +403,10 @@ def _agent(path: Path) -> dict | None:
         # Zero for the cold one, which had to write them for the others.
         "saved": first["read"] if first["read"] and not first["write"] else 0,
         "out": sum(r["out"] for r in reqs),
+        # The decomposed requests, kept so a cohort's breakdown is the
+        # concatenation of its members' rather than a second walk over the same
+        # files with a second chance to disagree with the first.
+        "walk": _walk(reqs, path.stem[:8], meta.get("type", "")),
         "first": min(r["at"] for r in reqs),
         "last": max(r["at"] for r in reqs),
     }
@@ -439,28 +568,112 @@ def transcript(path: Path) -> list[dict]:
     in the record divides them.
     """
     reqs, meta = _read(path)
-    out, prev_ctx, prev = [], 0, None
-    for i, r in enumerate(reqs, 1):
-        ctx = r["in"] + r["read"] + r["write"]
-        note, detail = _arrival(prev)
-        out.append({
-            "agent": path.stem[:8],
-            "type": meta.get("type", ""),
-            "req": i,
-            # Whether that growth was PAID FOR or free. A request that wrote
-            # nothing had its whole context served from cache; one that wrote
-            # is the only kind that costs, and the amount is the `write`.
-            "via": "read" if not r["write"] else "write",
-            "read": r["read"],
-            "write": r["write"],
-            "ctx": ctx,
-            "added": ctx if i == 1 else ctx - prev_ctx,
-            "out": r["out"],
-            "note": note,
-            "detail": detail,
-        })
-        prev_ctx, prev = ctx, r
-    return out
+    return _walk(reqs, path.stem[:8], meta.get("type", ""))
+
+
+def classes(walk: list[dict], scope: str = "") -> list[dict]:
+    """What a context is made of, by class, largest first, with an `ALL` row.
+
+    **The denominator is the context itself.** Every request's growth belongs to
+    exactly one class and the growths sum to the terminal context, so `pct` is a
+    share of something real rather than of a total invented for the table. The
+    `ALL` row carries that sum, so the shares are checkable against it instead of
+    being taken on trust.
+
+    `reply` is a column rather than a class, because it is orthogonal: every
+    request has one and it belongs to no tool. Its column total on the `ALL` row
+    is what the agent spent thinking and writing, as distinct from what it read.
+
+    `calls` counts requests, not tool invocations. They are the same number for
+    every class but `none`, and requests are what the turn budget is denominated
+    in — which is the constraint a reader actually hits.
+    """
+    agg: dict[str, dict] = {}
+    for r in walk:
+        a = agg.setdefault(r["class"], {"calls": 0, "tokens": 0, "reply": 0, "max": 0})
+        a["calls"] += 1
+        a["tokens"] += r["result"]
+        a["reply"] += r["reply"]
+        a["max"] = max(a["max"], r["result"])
+    total = sum(a["tokens"] for a in agg.values())
+    rows_ = [{**({"scope": scope} if scope else {}),
+              "class": k,
+              "calls": a["calls"],
+              "tokens": a["tokens"],
+              "pct": f"{a['tokens'] / total:.1%}" if total else "n/a",
+              "mean": a["tokens"] // a["calls"],
+              "max": a["max"],
+              "reply": a["reply"]}
+             for k, a in agg.items()]
+    rows_.sort(key=lambda r: (-r["tokens"], CLASSES.index(r["class"])
+                              if r["class"] in CLASSES else 99))
+    if rows_:
+        rows_.append({**({"scope": scope} if scope else {}),
+                      "class": "ALL", "calls": sum(r["calls"] for r in rows_),
+                      "tokens": total, "pct": "100.0%",
+                      "mean": total // max(1, sum(r["calls"] for r in rows_)),
+                      "max": max(r["max"] for r in rows_),
+                      "reply": sum(r["reply"] for r in rows_)})
+    return rows_
+
+
+def _cohort_key(a: dict) -> tuple[str, str, int]:
+    """What decides two agents could have shared a prefix: type, model, opening."""
+    return (a["type"], a["model"], a["opening"])
+
+
+def cohort_ids(agents: list[dict]) -> dict[tuple[str, str, int], str]:
+    """`c1`, `c2`, … over the cohorts in scope, oldest batch first.
+
+    **A name is what makes a batch addressable.** `usage` has always grouped
+    agents into cohorts — that grouping is the closest thing the transcripts hold
+    to "the batch you dispatched" — but the grouping was internal to one table, so
+    asking a follow-up question about one batch meant copying four agent ids out
+    of the rows above. Numbering them costs a column and turns `cohorts` into an
+    index the other actions can be pointed at.
+
+    Ordered by when the cohort last spoke, which is the order `cohorts` already
+    prints in, so `c1` is the oldest batch in scope and the newest has the highest
+    number. Scope-relative by construction: the ids describe this invocation's
+    grouping and are not identifiers anything should store.
+    """
+    keys = sorted({_cohort_key(a) for a in agents},
+                  key=lambda k: max(a["last"] for a in agents
+                                    if _cohort_key(a) == k))
+    return {k: f"c{i}" for i, k in enumerate(keys, 1)}
+
+
+def cohort_classes(agents: list[dict]) -> list[dict]:
+    """The class breakdown per cohort — a whole batch's context, decomposed.
+
+    Pooled over the cohort rather than reported per agent, because the question a
+    fan-out raises is about the batch: four readers doing the same job differ in
+    which page they drew, and a class that is 3% of one reading and 3% of the next
+    is a property of the pass, not of either agent. The per-agent view is
+    `transcript`, which prints the same breakdown for whatever it was given.
+    """
+    ids = cohort_ids(agents)
+    out_rows = []
+    for key, cid in sorted(ids.items(), key=lambda kv: kv[1]):
+        members = [a for a in agents if _cohort_key(a) == key]
+        out_rows += classes([r for a in members for r in a["walk"]], scope=cid)
+    return out_rows
+
+
+def in_cohort(agents: list[dict], want: str) -> list[dict]:
+    """The agents of cohort `want`, or a usage error naming the ones there are.
+
+    An id matching nothing raises for the same reason a mistyped agent id does:
+    an empty table cannot be told from a batch that genuinely ran nothing, and
+    only one of the two is the caller's to fix.
+    """
+    ids = cohort_ids(agents)
+    members = [a for a in agents if ids[_cohort_key(a)] == want]
+    if not members:
+        raise ValueError(
+            f"no cohort {want!r} in scope — `agents usage` numbers them "
+            f"{', '.join(sorted(set(ids.values()))) or '(none)'}")
+    return members
 
 
 def rows(agents: list[dict]) -> list[dict]:
@@ -478,7 +691,10 @@ def rows(agents: list[dict]) -> list[dict]:
     both columns the gap between them is the agent's own span, which is the other
     thing worth seeing beside `reqs`.
     """
-    return [{k: v for k, v in a.items() if k not in ("pre", "ctxs")} for a in agents]
+    ids = cohort_ids(agents)
+    return [{"cohort": ids[_cohort_key(a)],
+             **{k: v for k, v in a.items() if k not in ("pre", "ctxs", "walk")}}
+            for a in agents]
 
 
 def preamble(agents: list[dict]) -> list[dict]:
@@ -586,7 +802,7 @@ def cohorts(agents: list[dict]) -> list[dict]:
     fabrication this whole module exists to catch.
     """
     if not agents:
-        return [{"type": "", "model": "", "opening": 0, "own": 0, "agents": 0, "sessions": 0, "warm": 0,
+        return [{"cohort": "", "type": "", "model": "", "opening": 0, "own": 0, "agents": 0, "sessions": 0, "warm": 0,
                  "saved": 0, "missed": 0, "originated": 0, "if_all_cold": 0, "saved_pct": "n/a", "asymptote": "n/a", "note": "no agents in scope"}]
     # **Keyed on agent type as well as model and opening.** Opening alone very
     # nearly decides it — two agent types have different system prompts and so
@@ -596,7 +812,8 @@ def cohorts(agents: list[dict]) -> list[dict]:
     # kind of half-stated key this repo treats as a defect.
     keyed: dict[tuple[str, str, int], list[dict]] = {}
     for a in agents:
-        keyed.setdefault((a["type"], a["model"], a["opening"]), []).append(a)
+        keyed.setdefault(_cohort_key(a), []).append(a)
+    ids = cohort_ids(agents)
     rows = []
     for (atype, model, opening), members in sorted(
             keyed.items(), key=lambda kv: max(a["last"] for a in kv[1])):
@@ -615,6 +832,9 @@ def cohorts(agents: list[dict]) -> list[dict]:
         own = sum(a["ctx"] - opening for a in members)
         per = own // len(members)
         rows.append({
+            # The batch's name in this scope, so `transcript --cohort c4` can be
+            # typed straight off the row rather than assembled from agent ids.
+            "cohort": ids[(atype, model, opening)],
             "type": atype,
             "model": model,
             "opening": opening,

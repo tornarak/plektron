@@ -16,16 +16,28 @@ from __future__ import annotations
 
 from ..usage import (
     batch,
+    classes,
+    cohort_classes,
     cohorts,
     elsewhere,
     find_transcripts,
+    in_cohort,
     preamble,
     project,
     rows,
     transcript,
     warmth,
 )
-from ._common import action, add_all, arg, exclusive, group, opt, out
+from ._common import (
+    action,
+    add_all,
+    arg,
+    exclusive,
+    group,
+    opt,
+    out,
+    require_exactly_one,
+)
 
 
 def register(cli):
@@ -65,11 +77,25 @@ def register(cli):
                "duplicated block, which no per-agent total can: a contract "
                "re-injected on resume showed up as +14,916 on request 2 of "
                "three separate readers, identical to the token. Request 1 has "
-               "no predecessor, so its `added` is the opening itself. Reports; "
-               "never gates"
+               "no predecessor, so its `added` is the opening itself. **`added` "
+               "splits into `reply` and `result`** — the agent's own output, "
+               "which stays in context, and what its tool actually returned — "
+               "and a `classes` breakdown follows the requests, so the same "
+               "decomposition can be read whole. Reports; never gates"
                "\n\nAGENT: an agent id, or the leading characters of one — "
-               "what the `usage` table prints.")
-    arg(p, "agents", nargs=-1, required=True, metavar="AGENT")
+               "what the `usage` table prints. `--cohort` takes a whole batch "
+               "instead, by the id `usage` numbers it with.",
+               constraints=(require_exactly_one("agents", "cohort"),))
+    arg(p, "agents", nargs=-1, required=False, metavar="AGENT")
+    opt(p, "--cohort", default=None, metavar="ID",
+        help="every agent of one cohort — a batch, as `usage` groups it (c1, "
+             "c2, …). The way to ask a question about a fan-out rather than "
+             "about one of its readers")
+    opt(p, "--session", default=None,
+        help="one session, by slug or id prefix — scopes --cohort, whose ids "
+             "are relative to the agents in view")
+    add_all(p, "session this project has transcripts for, not just the newest — "
+               "scopes --cohort")
     opt(p, "--tasks", type=str, default=None,
         help="the task-transcript directory [the newest session for --root's "
              "project that has any]")
@@ -77,9 +103,19 @@ def register(cli):
 
 def run_transcript(a) -> int:
     from pathlib import Path
-    paths = find_transcripts(a.root, list(a.agents),
-                             Path(a.tasks) if a.tasks else None)
-    out(a, [t for p in paths for t in transcript(p)], name="transcript")
+    tasks = Path(a.tasks) if a.tasks else None
+    if a.cohort:
+        # **The walk is the one already taken, not a second one.** `batch` has
+        # decomposed every request to group the agents at all, so re-reading the
+        # transcripts here would be two paths to one number with two chances to
+        # disagree — and the whole grouping this flag names lives on that side.
+        _, agents = batch(a.root, tasks, session=a.session, all_=a.all)
+        walk = [r for m in in_cohort(agents, a.cohort) for r in m["walk"]]
+    else:
+        paths = find_transcripts(a.root, list(a.agents), tasks)
+        walk = [t for p in paths for t in transcript(p)]
+    out(a, walk, name="transcript")
+    out(a, classes(walk), name="classes", heading=True)
     return 0
 
 
@@ -103,5 +139,6 @@ def run_usage(a) -> int:
     out(a, rows(agents), name="agents", heading=True)
     out(a, preamble(agents), name="preamble", heading=True)
     out(a, cohorts(agents), name="cohorts", heading=True)
+    out(a, cohort_classes(agents), name="classes", heading=True)
     out(a, warmth(agents), name="warmth", heading=True)
     return 0
