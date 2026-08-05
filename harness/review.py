@@ -1120,8 +1120,9 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         # which is the same class of defect as a hole in ground truth: the queue
         # rendered as complete while a line was unreachable, the human could never
         # adjudicate it, and `restore` would then refuse the page forever. It
-        # happens for real — a line recovered by `--adopt-gap` has geometry before
-        # it has any reading. Render it empty and say so.
+        # happens for real — a line recovered in `ocr edit` has geometry before it
+        # has any reading, which is the whole shape of that pass. Render it empty
+        # and say so.
         if mine is None:
             mine = {"text": ""}
         proposed = _nfd(mine["text"])
@@ -1141,8 +1142,11 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                  + f"line {idx} · {_esc(rec['line_id'])}"
                  + (" · <b>NO PROPOSAL — key from the scan</b>"
                     if idx not in prop else "")
+                 # Off `src` rather than off the id's spelling: a recovered line
+                 # is one the merge added from `gt/lines/`, which is a fact the
+                 # record already carries.
                  + (" · recovered line (segmenter missed it)"
-                    if (rec["line_id"] or "").startswith("gap_") else "")
+                    if rec.get("src") == "corr" else "")
                  + ("" if agree else " · differs from catmus")
                  + f"<span class=editflag id='ef{idx}' "
                    f"style='display:{'inline' if full != proposed else 'none'}'>"

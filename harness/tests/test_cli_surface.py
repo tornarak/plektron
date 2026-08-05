@@ -265,13 +265,10 @@ def test_write_enable_is_commit_everywhere(parser_surface):
         assert not overlap, f"{key[0]} {key[1]} still carries {sorted(overlap)}"
 
 
-# **The four actions that may name only one page, and why.** Held by name so a
-# new singular verb fails the suite rather than passing on the reviewer noticing.
+# **The actions that may name only one page, and why.** Held by name so a new
+# singular verb fails the suite rather than passing on the reviewer noticing.
 # Every other ref-taking action takes as many as you like.
 SINGLE_REF_OK = {
-    ("ocr", "adopt-gap"):
-        "its second positional is a VPOS measured on that page's own raster, so a "
-        "ref list would carry a band list belonging to one of them",
     ("tei", "context"):
         "the payload is one page's collation prompt, built to hand to one model "
         "for one page; a merged stream is not consumable by what it exists for",

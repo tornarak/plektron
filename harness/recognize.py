@@ -13,9 +13,9 @@ is a machine store beside the human one, reachable through the same view.
     ocr/        the read view over both, the human file always winning.
 
 **Reads may resolve through `ocr/`; writes name `gt/ocr/`.** Nothing here writes
-into the ground truth — `restore` does that, from an adjudicated `decision.json`,
-and `adopt_gaps` adds empty geometry. This module writes `mz/ocr/` and the view,
-and it has no parameter in which a caller could name anywhere else.
+into the ground truth — `restore` does that, and only that, from an adjudicated
+`decision.json`. This module writes `mz/ocr/` and the view, and it has no
+parameter in which a caller could name anywhere else.
 
 ## What the zones are for
 

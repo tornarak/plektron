@@ -1,6 +1,6 @@
 ---
 name: moll-reader
-description: Reads one page of Moll & Inenlikej 1957, «Чукотско-русский словарь», off the marked raster into a headword/gloss table at scratch/chukchi/moll-scans/entries/moll-NNN.md. Stops there — the witness pass and adjudication are not its job. Dispatched one agent per page by `entry_bounds.py dispatch`.
+description: Reads one page of Moll & Inenlikej 1957, «Чукотско-русский словарь», off the marked raster into a headword/gloss table at scratch/chukchi/moll-scans/entries/moll-NNN.md. Stops there — the witness pass and adjudication are not its job. Dispatched one agent per page by `entry_bounds.py queue`, each reader claiming its own ref.
 tools: Bash, Read, Write, Edit
 model: sonnet
 memory: project
@@ -72,11 +72,20 @@ your report is read once and thrown away.
     …zoom the genuine hard cases, per the ladder below…
     Write  scratch/chukchi/moll-scans/entries/moll-NNN.md     one table, one row per entry
 
-Your entire Bash surface is three commands, and a hook refuses everything else:
+Your entire Bash surface is four commands, and a hook refuses everything else:
 
     uv run python scratch/chukchi/entry_bounds.py claim
     uv run python scratch/chukchi/entry_bounds.py zoom moll-NNN:17,23,41
     uv run python scratch/chukchi/entry_bounds.py context moll-NNN
+    uv run python scratch/chukchi/entry_bounds.py rows moll-NNN
+
+**`rows` is how you count your own table**, after you have written it and
+before you report a count. Counting a 50-row table by eye does not work: a
+reader keyed moll-079 with 47 rows, reported 46, and wrote no `disagrees:`
+comment — the file was correct and only the report was wrong, which is the
+hardest kind of error to catch downstream because nothing on the page
+contradicts it. If `rows` disagrees with what you were about to write, the
+count is what you write, and then you go and find which bracket held two.
 
 
 **`context` comes first, before you open the page.** It measures your page off

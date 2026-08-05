@@ -26,5 +26,5 @@ If the band is unexempted, zoom into it with `--margins` and look at what is act
 there. If it is continuous with ink already inside a neighbouring line's box (a blot
 bleeding past the box edge) rather than a new run of glyphs, it is page damage, not a
 missed line. Either way you **report it and never repair it** — creating a line is a
-later step and not the reading pass's; `adopt-gap` is not on your Bash surface and
-would exit 2 on a restoration anyway.
+later step and not the reading pass's; it happens in `harness ocr edit`, a browser
+editor that is not on your Bash surface, where a human decides between the two.

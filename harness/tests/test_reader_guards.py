@@ -88,7 +88,7 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
 
 @pytest.mark.parametrize("cmd", [
     "uv run harness ocr restore 1-031",           # writes gt/ocr/
-    "uv run harness ocr adopt-gap 1-031 --vpos 900",  # writes page geometry
+    "uv run harness ocr edit 1-031",              # the human's band-vs-line call
     "uv run harness ocr queue 1-031 1-032",       # a reader dealing itself a batch
     "uv run harness ocr reconcile 1-031",         # auditing a run it is a subject of
     "uv run harness ocr dispatch 1-031",          # retired, and stays refused
@@ -108,13 +108,16 @@ def test_gt_everything_else_is_refused(cmd):
     blocked(GT_GUARD, "Bash", command=cmd)
 
 
-def test_gt_adopt_gap_is_not_in_the_surface():
-    """Named, because it was removed deliberately and would look like an omission.
+def test_gt_edit_is_not_in_the_surface():
+    """Named, because it is left out deliberately and would look like an omission.
 
-    It writes `gt/ocr/`, it cannot run on a restoration anyway, and a verb in the
-    allowlist is a verb a reader will find a reason to try.
+    `ocr edit` is the human's call on whether a band of ink is a dropped line or
+    is not type at all — a browser editor, and a judgement the reading pass is
+    explicitly not asked for. A reader reports the band in `segmenter_missed`; it
+    does not settle it. A verb in the allowlist is a verb a reader will find a
+    reason to try.
     """
-    blocked(GT_GUARD, "Bash", command="uv run harness ocr adopt-gap 1-031 --vpos 900")
+    blocked(GT_GUARD, "Bash", command="uv run harness ocr edit 1-031")
 
 
 @pytest.mark.parametrize("path", [

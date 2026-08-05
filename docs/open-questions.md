@@ -90,3 +90,12 @@ in for an unread glyph.
   mechanism and the hand-corrected `class_mapping` on the installed model are all
   `.claude/skills/train-zones/SKILL.md`'s — they are training-loop state, and two
   copies of a number is how one goes stale.
+- **Whether a `gt/lines/` correction can ever be Tier-1, and what that would take.**
+  `tier1_terms` and the `#gt` transclusion `harness tei expand` performs both read
+  `gt/ocr/` by name, so a native form keyed into a corrected line would be invisible
+  to them. Deferred rather than solved because the census says the class is numerals:
+  ~35 unsegmented folios, ~9 printed rules, a handful of unknowns, and not one
+  Tier-1 span among them. Extending the transclusion is real design — `tei validate`'s
+  membership check and `expand`'s re-check both assume one store — and doing it now
+  would be building a mechanism against no attested case. It leaves this list when a
+  Tier-1 correction actually exists, and the entry will say which page made it.

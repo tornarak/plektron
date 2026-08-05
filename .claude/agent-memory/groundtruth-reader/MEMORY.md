@@ -2,7 +2,7 @@
 - [Margins zoom percent mapping is loose](margins-zoom-percent-mapping-is-loose.md) — --margins widens to PrintSpace so LO-HI % is imprecise; get one clear read, don't re-zoom the same pixels at higher multipliers
 - [Verify line index before zoom span](verify-line-index-before-zoom-span.md) — check the index against `ocr lines`' text column, not just the numbered.png row count, before spanning a zoom
 - [Tier-1 forms in English-prose pages](tier1-forms-in-english-prose-pages.md) — a page that reads as ordinary narrative can still embed a Chukchee ethnonym mid-sentence; check every marked proper noun
-- [Gaps band can be ink blot, not dropped line](gaps-band-can-be-ink-blot-not-dropped-line.md) — a figure-free page's gaps band can be a real smudge bleeding past a line box; zoom --margins before adopt-gap
+- [Gaps band can be ink blot, not dropped line](gaps-band-can-be-ink-blot-not-dropped-line.md) — a figure-free page's gaps band can be a real smudge bleeding past a line box; zoom --margins and report, never repair
 - [Folio can sit on its own thin ALTO line](folio-can-sit-on-own-thin-alto-line.md) — a near-empty sliver line next to the running title can hold the folio, visible only under --margins
 - [Folio can have no ALTO line at all](folio-can-have-no-alto-line-at-all.md) — RunningTitleZone can be a single line (title only); folio is outside every box, found by --margins on that one line
 - [Folio with no line is a dropped line](folio-with-no-line-is-a-dropped-line.md) — printed text no index covers goes in segmenter_missed; never append it to a neighbouring line's text

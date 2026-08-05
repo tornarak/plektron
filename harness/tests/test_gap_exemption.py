@@ -27,21 +27,69 @@ So three properties: *carried*, *not suppressed*, and *not borrowed from the oth
 layer*. Not suppressed matters most — a `gaps` that hid a band would be the one
 place a wrong call could hide, taking the next real dropped line with it.
 
-Fixtures are synthetic and live in `tmp_path`, per the suite's rule; the geometry
-is the `test_adopt_gap_gate` page, whose single uncovered band is contrived to be
-found by the detector.
+Fixtures are synthetic and live in `tmp_path`, per the suite's rule; the page's
+single uncovered band is contrived to be found by the detector.
 """
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 import pytest
-from test_adopt_gap_gate import _page
 
-from harness.lines import adopt_gaps, line_gaps
+from harness.lines import line_gaps
 
 ZONE_NS = "http://www.loc.gov/standards/alto/ns-v4#"
+ALTO_NS = ZONE_NS
+
+
+def _page(tmp_path: Path, ref: str = "1-048") -> Path:
+    """A minimal ALTO with one line, plus the raster `line_gaps` measures against.
+
+    The raster carries a black bar well below the single declared line, so the
+    detector finds exactly one uncovered band to rule on.
+    """
+    from PIL import Image
+
+    gt = tmp_path / "gt" / "ocr"
+    gt.mkdir(parents=True)
+    (tmp_path / "scans").mkdir()
+    (tmp_path / "gt" / "fig").mkdir(parents=True)
+    # `line_gaps` bounds its search by the measured column anchor, which reads the
+    # zone config — the real one, so the fixture measures the page the way the
+    # corpus does rather than against a contrived set of pads.
+    (tmp_path / "data").mkdir()
+    shutil.copy(Path("data") / "zones_config.json", tmp_path / "data")
+
+    w, h = 600, 800
+    img = Image.new("RGB", (w, h), "white")
+    for y in range(100, 130):            # the covered line
+        for x in range(50, 550):
+            img.putpixel((x, y), (0, 0, 0))
+    for y in range(400, 430):            # the uncovered band
+        for x in range(50, 550):
+            img.putpixel((x, y), (0, 0, 0))
+    img.save(tmp_path / "scans" / f"chukchi-{ref}.png")
+
+    p = gt / f"chukchi-{ref}.xml"
+    p.write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns="{ALTO_NS}">
+  <Description><sourceImageInformation><fileName>chukchi-{ref}.png</fileName>
+  </sourceImageInformation></Description>
+  <Layout><Page ID="p1" WIDTH="{w}" HEIGHT="{h}" PHYSICAL_IMG_NR="1">
+    <PrintSpace HPOS="0" VPOS="0" WIDTH="{w}" HEIGHT="{h}">
+      <TextBlock ID="b1" HPOS="50" VPOS="100" WIDTH="500" HEIGHT="30">
+        <TextLine ID="l1" HPOS="50" VPOS="100" WIDTH="500" HEIGHT="30"
+                  BASELINE="50 130 550 130">
+          <String CONTENT="covered" HPOS="50" VPOS="100" WIDTH="500" HEIGHT="30"/>
+        </TextLine>
+      </TextBlock>
+    </PrintSpace>
+  </Page></Layout>
+</alto>
+""", encoding="utf-8")
+    return p
 
 
 def _exempt(tmp_path: Path, y0: int, y1: int, note: str = "scanner artifact",
@@ -195,29 +243,15 @@ def test_a_line_ruling_does_not_settle_a_band_outside_every_zone(page):
     assert after["layer"] == ""
 
 
-def test_adopting_a_ruled_band_is_refused_before_any_write(page):
-    """Adopting is the OCR side overturning the zoning side's call. Refused
-    rather than warned: the exemption is the ratified witness, and the way to
-    disagree with it is to drop it in the editor, which is a human act."""
-    tmp_path, alto = page
-    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
-    _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5)
-    before = alto.read_bytes()
-
-    with pytest.raises(ValueError, match="ruled not type"):
-        adopt_gaps("1-048", [band["vpos"]], "gt/ocr", tmp_path, commit=True)
-    assert alto.read_bytes() == before, "a refused adoption rewrote the store"
-
-
-def test_the_refusal_names_the_note_and_the_way_out(page):
-    """An error a reader cannot act on sends them looking for a workaround."""
+def test_a_ruled_band_is_not_offered_as_work(page):
+    """What the ruling is *for*, now that adopting is a human act in `ocr edit`
+    rather than a verb: a settled band stops appearing among the ones left to
+    decide, while remaining visible and carrying its note."""
     tmp_path, _ = page
     band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
             note="offset from the facing page")
 
-    with pytest.raises(ValueError) as exc:
-        adopt_gaps("1-048", [band["vpos"]], "gt/ocr", tmp_path, commit=True)
-    msg = str(exc.value)
-    assert "offset from the facing page" in msg
-    assert "_ink_exempt.json" in msg and "zones edit" in msg
+    bands = line_gaps("1-048", "gt/ocr", tmp_path)
+    assert [b for b in bands if not b["exempted"]] == []
+    assert bands[0]["note"] == "offset from the facing page"

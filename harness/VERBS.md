@@ -18,10 +18,9 @@ scan index within that part — and rejects a bare integer, because the printed
 folio is not derivable from the scan index.
 
 **Refs are plural.** `REF [REF ...]` everywhere, so a batch is one invocation
-rather than a shell loop. Four actions are singular and say why in their entry:
-`ocr adopt-gap` (its `VPOS` is measured on that page's raster), `tei context`
-(the payload is one page's collation prompt), `proposal set` and `proposal
-replace` (their flags name one entry of one proposal). A flag that names
+rather than a shell loop. Three actions are singular and say why in their entry:
+`tei context` (the payload is one page's collation prompt), `proposal set` and
+`proposal replace` (their flags name one entry of one proposal). A flag that names
 something only one page has — `ocr zoom --only`, `--out`, `zones check --lines`,
 `proposal --path` — refuses a second ref rather than picking one.
 
@@ -187,7 +186,7 @@ committed files. There is no `boundaries.json`: the files are the record.
 **Note** `tier1_terms` is `{index, line, text}` — the Tier-1 tokens on this page a human has already keyed, from `gt/ocr/` and never from `mz/` or the view. The pass names one by `index` rather than retyping it; `tei expand` writes the ratified string in. Empty on the 802 pages with no ground truth. What counts as Tier-1 here is `detectors.NON_ENGLISH_HITS` (an inventory glyph or a straight apostrophe), not `INVENTORY_CHARS` alone, which omits U+0027 — the spirant and pause mark, one keystroke from the U+2019 in `LOOKALIKES`. The list is a **floor**: an unmarked ASCII inventory member (`c`, `s`, `j`, `x`) is undetectable and has to be typed, which costs little for a structural reason — what makes a token undetectable is having no marks, and what makes it dangerous to retype is having marks. One token per handle; all 30 spans in committed TEI are single tokens, so a range is built against a real instance rather than guessed at.
 **Note** `ocr_lines` is `{index, text}`, and **`index` is what `@facs` cites**. It carried the ALTO `@ID` as `line_id`, a currency no harness verb accepts: `ocr zoom --only` has always taken the index, so acting on a citation meant translating it by hand first. Neither form resolves as a TEI URI today — there is no `<facsimile>` in the corpus — so nothing conformant was given up.
 **Note** the three zones that can carry a folio (`context.APPARATUS_ZONES`) are dropped from **both** `catmus_draft` and `ocr_lines` — they leave the draft and arrive as `running_title` instead, so the information is restructured rather than discarded. Out of `ocr_lines` for a sharper reason than the draft's: that list is the set of `@facs` pointer targets, and a running head, a folio or a signature line is never in the TEI body, so citing one would be a mistake by construction. A **caption** line is dropped from the draft only, since it stays citable.
-**Note** **one of the four singular actions.** The payload is one page's collation prompt, built to be handed to one model for one page; a merged stream of them is not consumable by the thing it exists for.
+**Note** **one of the three singular actions.** The payload is one page's collation prompt, built to be handed to one model for one page; a merged stream of them is not consumable by the thing it exists for.
 ```
 --root --json --toon --pager
 ```
@@ -303,9 +302,10 @@ committed files. There is no `boundaries.json`: the files are the record.
 ## ocr
 
 The ALTO stores and the correction loop. Reads resolve through `ocr/`, the read
-view over every OCR store. Exactly two actions write `gt/ocr/` — `restore`
-(text into lines that exist) and `adopt-gap` (geometry, never text) — and both
-require `--commit`.
+view over every OCR store, **and the `gt/lines/` overlay**: a page's lines are
+the store's plus the boxes a human drew over ink the segmenter left unboxed.
+`restore` is the only action that writes `gt/ocr/`, under `--commit`; `edit`
+writes the overlay, and geometry only.
 
 ### ocr pages
 **Does** every ref with OCR present — i.e. workable now.
@@ -363,19 +363,6 @@ require `--commit`.
 --all       every page with a raster — the editor walks them with the arrow keys
 --itinerary LST  walk a work-list rather than the refs named
 --port N    port for the editor [8733]
---root --json --toon --pager
-```
-
-### ocr adopt-gap REF VPOS[,VPOS...]
-**Does** materializes measured `gaps` bands as empty TextLines so a dropped line can be keyed. Geometry only, never CONTENT. Refuses an unmeasured vpos, a band overlapping an existing line, and a band ruled not type in `gt/zones/_ink_exempt.json`.
-**Reads** the `--store` store, or the view, `scans/`, `gt/zones/_ink_exempt.json`.
-**Writes** `gt/ocr/` under `--commit`, resolved explicitly and never through the view.
-**Exit** always 0; exit 2 on an unmeasured vpos, an overlap, or an exempted band.
-**Note** the exemption refusal is fail-closed on purpose: the zoning pass's ruling is the ratified witness, and overturning it from the OCR side would be a model undoing a human call silently. Disagreeing means dropping the exemption in `zones edit` — itself a human act. **Also unrunnable on a restoration**, since it resolves its target to `gt/ocr/` explicitly and a page with no ground truth has none; a dropped line found on a fresh page is reported, not adopted, until `restore` has written the page once.
-**Note** **one of the four singular actions**: `VPOS` is a band measured on *that* page's raster, so a ref list would carry a band list belonging to one of them. `test_cli_surface.py` holds the exemption by name.
-```
---store {gt,mz}  which store to read [omit: the ocr/ view]
---commit    actually write gt/ocr/ [off — reports the lines it would create]
 --root --json --toon --pager
 ```
 
@@ -677,7 +664,7 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ### proposal check [REF ...]
 **Does** cross-checks `resolved` against the codepoints `text` actually contains; flags a straight apostrophe, a dot-prone bare suffix, and — via `marks` — a rare form or a word spelled two ways against the store.
 **Reads** `review/PP-NNN/proposal.json`, plus `gt/ocr/` and `data/marks_config.json` for the two corpus arms, and the `ocr/` view for the line indices.
-**Note** **a line index the store does not have is a defect.** A proposal is keyed by the ALTO's indices and `restore` joins on them, so a key naming no `TextLine` is text with no box to land in — `restore` drops it, silently, and the reading is lost with nothing saying a reading was lost. It belongs in `segmenter_missed`; `ocr adopt-gap` makes the index later from the measured band. Resolved through the view, so a page reads against `mz/ocr/` before a restore and `gt/ocr/` after, the latter holding any line already adopted. A page with no ALTO at all is skipped rather than condemned — absent is not wrong, and every line would fire on a clone whose view was never built. This cannot see the neighbouring fault, a stray reading appended to a *real* line's text (`1-037`'s folio); that one is the reader contract's.
+**Note** **a line index the store does not have is a defect.** A proposal is keyed by the ALTO's indices and `restore` joins on them, so a key naming no `TextLine` is text with no box to land in — `restore` drops it, silently, and the reading is lost with nothing saying a reading was lost. It belongs in `segmenter_missed`; a human gives the band a box in `ocr edit`, and the index exists from then on. Resolved through the view **and the `gt/lines/` overlay**, so a page reads against `mz/ocr/` before a restore and `gt/ocr/` after, plus every correction already drawn — a keyed correction is therefore not an orphan, which is the whole point of giving the line a box. A page with no ALTO at all is skipped rather than condemned — absent is not wrong, and every line would fire on a clone whose view was never built. This cannot see the neighbouring fault, a stray reading appended to a *real* line's text (`1-037`'s folio); that one is the reader contract's.
 **Writes** —
 **Exit** 1 on a **defect**, on any ref — one dirty page fails the batch, which is the contract a gate must have or a batch would launder a failure. Never on an advisory alone, unless `--strict`.
 **Note** the corpus arms are `proposal marks`'s two **deterministic** ones, run over the single page so a reader catches its own slip before writing its report. `ratio` is deliberately not among them: one page is a poor sample and it is the arm that cannot decide, so folding it into a per-page gate would assert exactly what `marks` refuses to. A repeated form is one issue naming its other lines, not one issue per occurrence — a keyer's single habit is one fault. The prior is leave-one-out here too, so a revision is not checked against its own descendant. Where `data/marks_config.json` is absent (a fresh clone), the arms are skipped and the rest still runs.

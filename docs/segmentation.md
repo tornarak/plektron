@@ -153,6 +153,24 @@ it stop" would otherwise be indistinguishable from a ruling. A matched band stil
 reports, flagged and carrying its note; a region that matches nothing any more
 reports as `stale-ink-exemption`.
 
+**That file answers this stage's question and only this one.** There is a second
+ink check downstream — `ocr gaps`, which asks whether ink *inside* a zone is
+inside any line — and for a while both read this one file. So a band ruled
+"scanner smudge" while zoning, which is a claim about what the **zoning** need not
+cover, also stopped the line check from ever reporting that strip of paper again,
+though nobody had said anything about lines when they ruled it. A folio the
+segmenter dropped inside a `RunningTitleZone` is exactly what that hid.
+
+The two are now disjoint by domain, which is the real content of the split:
+**this stage asks whether ink is inside any zone; the line stage asks whether
+in-zone ink is inside any line.** The margin smudges of `1-034`/`1-035` are only
+ever the first question, a printed rule inside a `MainZone` only ever the second.
+One exemption file each, written by its own editor, and both editors show both
+layers — because a band the line editor finds *outside* every zone is either a
+miss by this check or a standing ruling of it, and that boundary is a mutual
+audit. `harness/corrections.py` carries the argument; `harness ocr edit` is the
+line stage's editor.
+
 ### The model exists, and so does a second store
 
 `ketos segtrain` has run, three times. The installed model is

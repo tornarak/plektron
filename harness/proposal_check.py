@@ -411,9 +411,11 @@ def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
     this — a folio appended to the running title's own `text` — which this cannot
     see, since that key is a real index; the reader contract carries that half.
 
-    Resolved through the view, so a page reads against whichever store is current:
-    `mz/ocr/` before a restore and `gt/ocr/` after, the latter including any line
-    `adopt-gap` has since created. A page with no ALTO at all is skipped rather
+    Resolved through the view *and the corrections overlay*, so a page reads
+    against whichever store is current — `mz/ocr/` before a restore and `gt/ocr/`
+    after — plus any line a human has since drawn in `ocr edit`. A keyed
+    correction is therefore not an orphan: the index exists, which is the whole
+    point of giving the line a box. A page with no ALTO at all is skipped rather
     than reported — absent is not the same as wrong, and every line would fire.
     """
     lines = data.get("lines")
@@ -432,9 +434,9 @@ def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
     return [issue(k, "line index is not in the store — a proposal is keyed by "
                      "the ALTO's line indices and `restore` joins on them, so "
                      "this text has no box to land in. If it is printed matter "
-                     "the segmenter missed, it belongs in `segmenter_missed`; "
-                     "`ocr adopt-gap` makes the index later, from the measured "
-                     "band.",
+                     "the segmenter missed, it belongs in `segmenter_missed`; a "
+                     "human gives the band a box in `harness ocr edit`, and the "
+                     "index exists from then on.",
                   context=(lines[k] or {}).get("text", "")[:60],
                   detail=f"store holds {len(have)} lines")
             for k in sorted(lines, key=lambda s: (len(s), s))

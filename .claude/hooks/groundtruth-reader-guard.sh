@@ -125,9 +125,10 @@ esac
 #
 # `queue` and `reconcile` are the coordinator's and stay out: a reader that can
 # queue can deal itself a batch, and one that can reconcile is auditing a run it
-# is a subject of. `adopt-gap` is absent too — it writes gt/ocr/, it cannot run
-# on a restoration anyway (no ground truth to append to), and a verb in the
-# allowlist is a verb a reader will find a reason to try.
+# is a subject of. `edit` is absent too — it is a browser editor and a human act,
+# the one that decides whether a band of ink is a dropped line, and a verb in the
+# allowlist is a verb a reader will find a reason to try. A reader reports the
+# band in `segmenter_missed`; it does not settle it.
 if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
   case "$COMMAND" in
     *--all*)

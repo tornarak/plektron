@@ -6,7 +6,7 @@ touches, the action names what it does to it:
     tei       the TEI store — context, validate, ids, pair, seam, state,
               ledger, header
     ocr       the ALTO stores and the correction loop — pages, lines, gaps,
-              adopt-gap, crops, sheets, zoom, blot, review, restore, clean
+              edit, crops, sheets, zoom, blot, review, restore, clean
     proposal  review/PP-NNN/proposal.json — check, fix, codepoints, set, replace
     zones     the page segmentation and its segmenter — check, edit, predict,
               score, assemble, install, remap, remark-eval, delete, diff,

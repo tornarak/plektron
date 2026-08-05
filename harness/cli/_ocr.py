@@ -13,9 +13,10 @@ one where the view is actively wrong: its bare diff needs an independent witness
 and the view resolves to the ground truth the proposal produced as soon as the
 page has any.
 
-Writes name `gt/ocr/` explicitly and there are exactly two of them: `restore`,
-which fills text into lines that already exist, and `adopt-gap`, which creates an
-empty line so a dropped one can be keyed. Both require `--commit`.
+Writes name `gt/ocr/` explicitly and `restore` is the only one, under `--commit`.
+A line the segmenter dropped is given a box by a human in `edit`, into `gt/lines/`
+— geometry only, and folded over whichever store answers for the page, so it is
+reachable on the pages that have no ground truth at all.
 
 The old `lines` verb carried six modes on one parser — a table, a gap detector,
 a geometry writer, and three image writers — selected by if-chain precedence, so
@@ -41,7 +42,6 @@ from ..lines import (
     ZOOM_MAX,
     ZOOM_OVERLAP,
     ZOOM_SHEET_H,
-    adopt_gaps,
     alto_for_lines,
     line_gaps,
     page_lines,
@@ -75,10 +75,8 @@ from ..review import (
     summary,
 )
 from ._common import (
-    REF_HELP,
     action,
     add_jobs,
-    arg,
     exclusive,
     group,
     one_page_only,
@@ -105,19 +103,6 @@ MARGINS_HELP = ("widen to the PrintSpace margins — a line polygon can exclude 
 OUT_HELP = ("write the images somewhere other than the page's own review/PP-NNN/ "
             "subdirectory — for a one-off comparison, not for the pass, whose "
             "files the other actions expect to find in the default place")
-
-
-def _one_ref(p):
-    """The singular ref positional — `adopt-gap` only, and it earns it.
-
-    Its second positional is a VPOS measured on *that* page's raster, so a ref
-    list would carry a band list belonging to one of them. Everything else in
-    this group takes as many refs as you like; `test_cli_surface.py` holds this
-    exemption by name so a new singular verb cannot slip in beside it.
-    """
-    arg(p, "ref", metavar="PP-NNN")
-    p.help = f"{p.help}\n\nPP-NNN: {REF_HELP}."
-    return p
 
 
 def _store(p, default=None):
@@ -189,19 +174,6 @@ def register(cli):
                         "is the natural one: `ocr gaps --all` and the refs it "
                         "leaves live")
     opt(p, "--port", type=int, default=8733, help="port for the editor")
-
-    p = _store(_one_ref(add("adopt-gap", help="materialize measured `gaps` bands as "
-              "empty TextLines in gt/ocr/, so a dropped line can be keyed. "
-              "Geometry only, never CONTENT: text still arrives via "
-              "decision.json -> restore. Each VPOS must match a measured band; "
-              "naming which bands are real lines is the human call")))
-    arg(p, "vpos", metavar="VPOS[,VPOS...]")
-    p.help += ("\n\nVPOS: the band(s) to adopt, by the vpos `ocr gaps` reported. "
-               "Comma-separated.")
-    opt(p, "--commit", is_flag=True,
-                   help="actually write gt/ocr/ — bare form reports the lines it "
-                        "would create and writes nothing. This is a writer into "
-                        "the ground-truth store and gates like `restore` does")
 
     # **No `--all` on the image writers, and the absence is deliberate.** Crops and
     # sheets are expensive in time and disk and are called per page by a reading
@@ -492,12 +464,6 @@ def run_gaps(a) -> int:
         done = pmap(lambda r: line_gaps(r, _alto_dir(a), a.root), refs, a.jobs,
                     tick)
     out_per_ref(a, list(zip(refs, done, strict=True)))
-    return 0
-
-
-def run_adopt_gap(a) -> int:
-    out(a, adopt_gaps(a.ref, [int(v) for v in a.vpos.split(",")],
-                      _alto_dir(a), a.root, commit=a.commit))
     return 0
 
 

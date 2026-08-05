@@ -120,9 +120,16 @@ have deferred to.
 
 What to do instead: put it in `segmenter_missed` with what you saw and where,
 quoting the `gaps` band if there is one, and leave every existing line describing
-only its own box. The missing index gets made later, by `ocr adopt-gap`, from the
-band's measured geometry. **"There was no other line to put it in" is the report,
-not a reason to put it somewhere else.**
+only its own box. The band is settled later by a human in `harness ocr edit`, who
+gives it a box from its measured geometry — or rules that it is not a line at
+all, which is a judgement you are not being asked for. **"There was no other line
+to put it in" is the report, not a reason to put it somewhere else.**
+
+**The other half of the same rule: a `corr_` line is an ordinary keying target.**
+Once that box exists it arrives through the view like any other line, with its
+own index in `ocr lines` and its own crop — usually a folio, sometimes a heading.
+Read it off the scan and key it exactly as you would a line the segmenter found;
+there is nothing special about it except that a human had to draw it first.
 
 **What `mz/` supplies is geometry, and a second reading — never the proposal.**
 Your proposal is your own reading of the raster, authored from the images. Seeding

@@ -78,7 +78,7 @@ SCANS = farms.SCANS
 MZDIR = "mz/zones"
 VIEWDIR = farms.ZONES_VIEW
 
-# Provenance travelling with the data, as with `lines.GAP_ID_PREFIX`. A block whose
+# Provenance travelling with the data, as with `corrections.CORR_ID_PREFIX`. A block whose
 # id starts with this was drawn in this tool against a configured column; one whose
 # id does not came from somewhere else and its width means something different.
 #
@@ -257,8 +257,8 @@ def read_zones(ref: str, root: Path = Path("."),
 
     Sorted by top edge, because these are a vertical partition and document order
     is not guaranteed to be one: a zone inserted between two others is appended by
-    the writer, exactly as `lines.adopt_gaps` appends a recovered line rather than
-    renumbering around it.
+    the writer, exactly as `lines.page_lines` appends a recovered line after the
+    ALTO's last index rather than renumbering around it.
 
     Empty for a page never keyed. That is not the same as a page keyed and found to
     hold nothing — the latter has a file with no blocks in it, and `has_zones`

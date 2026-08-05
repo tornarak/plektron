@@ -92,8 +92,8 @@ Layout, all at the repo root:
     scans/  the 832 rasters, 300 dpi greyscale. Derived; not in git. Selection farms over it (w-figs/, w-ocr/, w-figs-blotted/)
             are derived too and point into it: a clone gets dangling links.
     gt/     what a human has been through: ocr/, fig/ (geometry only, no
-            lines), zones/ (the current segmentation), seg/ (the first attempt,
-            read-only). Tracked.
+            lines), zones/ (the current segmentation), lines/ (the corrections
+            overlay), seg/ (the first attempt, read-only). Tracked.
     mz/     what the models emitted, raw: zones/ and ocr/. Derived; ignored.
     ocr/  zones/  the read views over the paired stores — symlinks, the human
             file always winning. Derived; ignored. Never written through.
@@ -114,8 +114,7 @@ Counts deliberately absent — they go stale in a file nothing regenerates;
 `harness ocr pages`, `harness zones check` and `harness views check` answer.
 
 **The frontier is collation.** The apparatus stores are done and reconciled, so
-what is left is the pass that consumes them. The state of each track, and what
-building it settled, is under `docs/`.
+what is left is the pass that consumes them.
 
 ## The ground-truth loss
 

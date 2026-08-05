@@ -32,10 +32,10 @@ that no line index covers:
    why you think it is type. `harness ocr gaps` reports the band with its measured
    geometry; quote that if it is there.
 2. Leave every existing line's `text` describing only its own box.
-3. Stop. `ocr adopt-gap` creates the missing line from the measured band, and it
-   is a restore-side step run by whoever holds the page after adjudication — it
-   writes into `gt/ocr/`, which does not exist yet on a restoration, and it is not
-   on your permitted surface.
+3. Stop. A human gives the band a box in `harness ocr edit` — a browser editor,
+   not on your permitted surface — or rules that it is not a line at all. Once
+   that box exists the line arrives through the view like any other, with its own
+   index and crop, and keying it is then an ordinary part of the reading pass.
 
 `ocr gaps` could not see this class until the detector was changed to mask line
 **boxes** rather than whole image rows (it now reports `1-037` as

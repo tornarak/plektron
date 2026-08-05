@@ -133,10 +133,43 @@ sweeps. `--blot` is the visual counterpart — the page with every line box and 
 painted out, so what remains is uncovered by construction and no threshold can
 hide it.
 
-Repairing one is `harness ocr adopt-gap` — the one tool besides `restore` that
-writes into `gt/ocr/`, geometry only, never `CONTENT`; its full contract and the
-image-cost ladder are `.claude/skills/rebuild-groundtruth/`'s (`SKILL.md` and
-`dispatch.md`).
+Repairing one *was* `harness ocr adopt-gap`, which appended an empty `TextLine`
+to `gt/ocr/`. It is retired, and the reasoning is worth keeping because the
+detector outgrew its repair.
+
+**2026-08-05 — the census, and why the repair route changed.** Fixing the ink
+detector's blind spot (it masked *rows* rather than boxes, so a line missed
+horizontally inside an accounted-for row band was invisible) and sweeping the
+book turned three known cases into dozens: ~35 unsegmented folio numerals, ~9
+printed rules, a handful of unknowns. That is a different problem from the one
+`adopt-gap` was built for.
+
+Three things were wrong with it at that scale, and only the first is about
+convenience. It resolved its target to `gt/ocr/` explicitly, so it could not run
+on the ~690 pages holding only machine output — and a dropped folio matters most
+exactly there, because `tei context` turns the folio into the page's `<pb n>`
+witness and nothing infers a page number. Its full route (adopt → review →
+restore) was a whole-page adjudication cycle bought to key one marginal numeral.
+And it was used **once**, on three pages, in its entire life: the orchestration
+doc that should have invoked it never mentioned it, so the route depended on a
+human remembering this file.
+
+What replaces it is a store and an editor. `gt/lines/` holds boxes a human drew
+over ink the segmenter left unboxed, in raster coordinates, folded into every
+page's lines by `lines.page_lines` — so a correction is reachable whichever store
+answers for the page. `harness ocr edit` is where a human draws them, or rules
+that a band is not a line at all; it draws and never keys, because the text of a
+recovered line is adjudicated in `ocr review` and written by `restore` like any
+other line's. The three lines `adopt-gap` did create stay exactly as they are:
+ratified, adjudicated ALTO. The mechanism died; the data stands.
+
+The same census forced the two ink checks apart. `zones check --ink` asks whether
+ink is inside any zone; `ocr gaps` asks whether *in-zone* ink is inside any line.
+They had been sharing one exemption file, so a band ruled "scanner smudge" while
+zoning — a claim about what the zoning need not cover — also stopped the line
+check from ever reporting that strip again. A folio dropped inside a
+`RunningTitleZone` is what that hid. One file each now, overlaid and never
+merged; `harness/corrections.py` carries the argument.
 
 ## A detector census over "the 20 GT pages" was really a census over two
 

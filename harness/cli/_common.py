@@ -590,8 +590,9 @@ RENAMED_VERBS = {
     "header": "tei header",
     "ledger": "tei ledger",
     "pages": "ocr pages",
-    "lines": "ocr lines REF  (--gaps/--crops/--sheets/--blot/--adopt-gap are "
-             "now `ocr gaps`/`ocr crops`/`ocr sheets`/`ocr blot`/`ocr adopt-gap`)",
+    "lines": "ocr lines REF  (--gaps/--crops/--sheets/--blot are now `ocr gaps`/"
+             "`ocr crops`/`ocr sheets`/`ocr blot`; --adopt-gap is retired — a "
+             "human gives a dropped line its box in `ocr edit`)",
     "zoom": "ocr zoom REF",
     "review": "ocr review REF",
     "restore": "ocr restore REF",

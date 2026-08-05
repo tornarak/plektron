@@ -28,8 +28,8 @@ conclude the folio is absent or unreadable — run `ocr zoom --only <that index>
 The first version of this note ended "key it into that same line's text
 (space-separated after the title) since there's no other line index to hold it",
 and that is what was done on `1-037` — producing a proposal in which the title's
-626 px box claims a number 500 px outside it. The premise was also false: `ocr
-adopt-gap` makes the missing index from the band's measured geometry, and `ocr
+626 px box claims a number 500 px outside it. The premise was also false: a human
+gives the band a box in `harness ocr edit`, from its measured geometry, and `ocr
 gaps` now reports that band (`vpos 673, height 36, hpos 2157, width 43`) because
 the detector masks line boxes rather than whole image rows. It reported nothing
 when this page was read, which is why the reader believed it had no option.
