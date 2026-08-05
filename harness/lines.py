@@ -1807,8 +1807,56 @@ def _snap_to_white(crop, a: int, b: int, budget: int) -> tuple[int, int]:
     return lo, max(lo + 1, hi)
 
 
-def parse_spans(spec: str) -> dict[int, tuple[int, int]]:
-    """`"7,20@0-25,22-26"` -> `{7: (0,100), 20: (0,25), 22..26: (0,100)}`.
+def _crop_to_span(img, asked: tuple[int, int], window: int, overlap: int):
+    """One line image narrowed to one requested place. Returns `(crop, lo, hi)`.
+
+    Taken on the crop, so a percentage means a share of *this line's* extent rather
+    than of the measure — on a short line like a signature or a centred heading
+    those are very different, and the line is what the caller named.
+
+    **A span narrower than one strip is widened to fill it, for free.** The strip is
+    a fixed `window` of source pixels whatever it holds and the sheet is padded to
+    the client width regardless, so a 20% span of a full measure renders ~360 px
+    inside a 670 px window and leaves the rest white. That white is not a saving; it
+    is the margin that would have carried the rest of the word. A caller naming a
+    place is estimating from a page composite and will sometimes be off by a few
+    percent, and the observed cost of clipping is not a bad image but a *re-call*.
+
+    The returned `lo`/`hi` are the span **rendered**, not the one asked for: two
+    requests that widen onto the same region are one picture and must share a
+    filename, and a name that disagreed with its image is the defect the naming
+    scheme exists to prevent.
+    """
+    lo, hi = asked
+    if (lo, hi) == FULL_SPAN:
+        return img, lo, hi
+    full = img.width
+    a = int(full * lo / 100)
+    b = max(a + 1, int(full * hi / 100))
+    if b - a < window:
+        mid = (a + b) // 2
+        a, b = mid - window // 2, mid - window // 2 + window
+        # At an edge, slide rather than shrink — the caller asked to see a region,
+        # and a window pushed flush against the start of the line still shows all
+        # of it plus context on one side.
+        if a < 0:
+            a, b = 0, min(full, window)
+        elif b > full:
+            a, b = max(0, full - window), full
+    a, b = max(0, a), min(full, b)
+    # **Then snap both edges out to white, so no glyph is ever cut.** An edge
+    # landing mid-letter is what sends a reader back for another look at the same
+    # doubt. Whitespace between words is the one boundary the raster itself
+    # supplies, so extend to it — bounded, so a place inside a long unbroken word
+    # does not creep across the measure.
+    a, b = _snap_to_white(img, a, b, budget=window // 4)
+    b = fill_last_strip(a, b, full, window, overlap)
+    return (img.crop((a, 0, b, img.height)),
+            round(max(0, a) * 100 / full), round(min(full, b) * 100 / full))
+
+
+def parse_spans(spec: str) -> dict[int, list[tuple[int, int]]]:
+    """`"7,20@0-25,22-26"` -> `{7: [(0,100)], 20: [(0,25)], 22..26: [(0,100)]}`.
 
     **`@LO-HI` names a percentage of the line's width**, and it is the answer to the
     commonest waste at this rung: a doubt is almost never about a line, it is about a
@@ -1825,11 +1873,20 @@ def parse_spans(spec: str) -> dict[int, tuple[int, int]]:
 
     Rejects rather than skips a token it cannot parse. A selection is a claim about
     which lines were looked at, and silently dropping one means a line reported as
-    read was never rendered. Two different spans for one line is likewise an error
-    and not a merge: the caller meant two looks, and quietly unioning them into the
-    hull gives back the whole-line render the span existed to avoid.
+    read was never rendered.
+
+    **One line may carry several places, and they render as several crops.** This
+    used to be refused, on the ground that unioning two spans gives back the
+    whole-line hull the span existed to avoid — which is true of a *union* and was
+    the wrong conclusion. Two places on a line are two pictures, exactly as two
+    places on two lines are; nothing is merged. The refusal cost real work: three
+    readers in one batch independently typed `1@0,1@100`, `45@0,45@100` and
+    `1@15,1@30` — the natural way to ask "is the folio at this end or that one" —
+    and each was told to pick one and come back, which is precisely the extra turn
+    the batching rule exists to remove. Duplicates still collapse, since asking
+    twice for the same crop is one crop.
     """
-    out: dict[int, tuple[int, int]] = {}
+    out: dict[int, list[tuple[int, int]]] = {}
     for tok in spec.replace(" ", "").split(","):
         if not tok:
             continue
@@ -1866,12 +1923,14 @@ def parse_spans(spec: str) -> dict[int, tuple[int, int]]:
         else:
             idxs = [int(body)]
         for i in idxs:
-            if out.setdefault(i, (lo, hi)) != (lo, hi):
-                raise ValueError(f"line {i} is given two different spans; ask for "
-                                 "one of them, or the whole line")
+            at_line = out.setdefault(i, [])
+            if (lo, hi) not in at_line:
+                at_line.append((lo, hi))
     if not out:
         raise ValueError("empty line selection")
-    return out
+    # A whole-line request absorbs the places on that line: it already contains
+    # them, so honouring both would render the same ink twice under two names.
+    return {i: ([FULL_SPAN] if FULL_SPAN in s else s) for i, s in out.items()}
 
 
 def parse_selection(spec: str) -> set[int]:
@@ -1932,69 +1991,28 @@ def write_line_zoom(ref: str, out_dir: Path,
                 else Image.Resampling.NEAREST)
     spans = only if isinstance(only, dict) else None
     strips, seen = [], []
-    for rec, crop in line_crops(ref, alto_dir, root, scans):
+    for rec, line_img in line_crops(ref, alto_dir, root, scans):
         if only is not None and rec["index"] not in only:
             continue
         seen.append(rec["index"])
-        lo, hi = spans.get(rec["index"], FULL_SPAN) if spans else FULL_SPAN
-        if (lo, hi) != FULL_SPAN:
-            # Taken on the crop, so the span means a share of *this line's* extent
-            # rather than of the measure — on a short line like a signature or a
-            # centred heading those are very different, and the line is what the
-            # caller named.
-            full = crop.width
-            a = int(full * lo / 100)
-            b = max(a + 1, int(full * hi / 100))
-            # **A span narrower than one strip is widened to fill it, for free.**
-            # The strip is a fixed `window` of source pixels whatever it contains,
-            # and the sheet is padded to `client_w` regardless — so a 20% span of a
-            # full measure renders ~360 px inside a 670 px window and leaves the
-            # rest white. That white is not a saving; it is the margin that would
-            # have carried the rest of the word. A reader naming a span is
-            # estimating where a mark sits from a page composite, so it will
-            # sometimes be off by a few percent, and the observed cost of clipping
-            # is not a bad image but a *re-call*: one page took ten zoom
-            # invocations, most of them the same doubt re-aimed after the last span
-            # cut the word in half. Widening symmetrically absorbs that error at no
-            # cost in pixels, tokens or sheets.
-            if b - a < window:
-                mid = (a + b) // 2
-                a, b = mid - window // 2, mid - window // 2 + window
-                # At an edge, slide rather than shrink — the caller asked to see a
-                # region, and a window pushed flush against the start of the line
-                # still shows all of it plus context on one side.
-                if a < 0:
-                    a, b = 0, min(full, window)
-                elif b > full:
-                    a, b = max(0, full - window), full
-            a, b = max(0, a), min(full, b)
-            # **Then snap both edges out to white, so no glyph is ever cut.** A
-            # span is an estimate of where a mark sits, made off a page composite,
-            # and an edge landing mid-letter is what sends a reader back for
-            # another look at the same doubt. Whitespace between words is the one
-            # boundary the raster itself supplies, so extend to it — bounded, so a
-            # span inside a long unbroken word does not creep across the measure.
-            a, b = _snap_to_white(crop, a, b, budget=window // 4)
-            b = fill_last_strip(a, b, full, window, overlap)
-            crop = crop.crop((a, 0, b, crop.height))
-            # The label carries the span *rendered*, not the one asked for. Two
-            # requests that widen onto the same region are one picture and must
-            # share a file; a name recording the request would split them, and a
-            # name that disagreed with its image is the whole defect this scheme
-            # exists to prevent.
-            lo = round(max(0, a) * 100 / full)
-            hi = round(min(full, b) * 100 / full)
-        for k, x in enumerate(range(0, max(1, crop.width - overlap), step)):
-            s = crop.crop((x, 0, min(crop.width, x + window), crop.height))
-            # Label is line index and strip position *within that line*, so the
-            # sequence restarts per line and a form seen twice across an overlap is
-            # recognisable as one form rather than two. The span rides after a
-            # colon: `compose_sheets` draws only what precedes one, so the margin
-            # stays readable while the filename can still say which part was shown —
-            # two spans of one line are two different pictures and must not collide.
-            tag = "" if (lo, hi) == FULL_SPAN else f":{lo}-{hi}"
-            strips.append((f"{rec['index']}.{k}{tag}",
-                           s.resize((s.width * zoom, s.height * zoom), resample)))
+        # **A line can be asked for in several places, and each is its own crop.**
+        # Nothing is unioned: `1@0,1@100` is the two ends of a line, two pictures,
+        # in one call and one pair of turns.
+        places = spans.get(rec["index"], [FULL_SPAN]) if spans else [FULL_SPAN]
+        for asked in places:
+            crop, lo, hi = _crop_to_span(line_img, asked, window, overlap)
+            for k, x in enumerate(range(0, max(1, crop.width - overlap), step)):
+                s = crop.crop((x, 0, min(crop.width, x + window), crop.height))
+                # Label is line index and strip position *within that line*, so the
+                # sequence restarts per line and a form seen twice across an overlap
+                # is recognisable as one form rather than two. The span rides after a
+                # colon: `compose_sheets` draws only what precedes one, so the margin
+                # stays readable while the filename can still say which part was
+                # shown — two places on one line are two pictures and must not
+                # collide.
+                tag = "" if (lo, hi) == FULL_SPAN else f":{lo}-{hi}"
+                strips.append((f"{rec['index']}.{k}{tag}",
+                               s.resize((s.width * zoom, s.height * zoom), resample)))
     if only:
         for missing in sorted(set(only) - set(seen)):
             raise ValueError(f"{norm_ref(ref)}: line {missing} is not on the page "

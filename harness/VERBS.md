@@ -441,15 +441,14 @@ Every page is checked before any is queued, and its block is rendered and thrown
 --root --json --toon --pager
 ```
 
-### ocr sheets REF [REF ...]
+### ocr sheets PP-NNN [LINES ...]
 **Does** labelled contact sheets, index in the margin, nothing downscaled. Emits the sheet/lines map, not the line table.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/sheets/` (derived), or `--out`.
-**Exit** always 0; exit 2 for `--only` or `--out` with more than one ref.
-**Note** no `--all`, for `crops`' reason. `--only` is what makes this the middle rung rather than an all-or-nothing first read, and it carries `zoom --only`'s rule: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page. Sheets are named for the lines on them (`lines-11-14.png`), so two selections over one page cannot overwrite each other and an overlapping one reuses what it agrees with.
+**Exit** always 0; exit 2 for a second ref, or `--out` with more than one ref.
+**Note** no `--all`, for `crops`' reason. **The line selection is the argument, not a flag**: `ocr sheets 1-048 7,20,22-26` or `ocr sheets 1-048 7 20 22-26`, the whole page if none is named. It was `--only`, which read as a filter over a default of "the whole page" when the whole page is the thing nobody wants, and which invited the plural positional beside it — where the same indices name unrelated lines on the next page, since a line index is an *identity* and not a position. One ref, then the lines on it. A second token spelled like a canonical ref (`1-049`) is refused rather than read as the range 1–49. Sheets are named for the lines on them (`lines-11-14.png`), so two selections over one page cannot overwrite each other and an overlapping one reuses what it agrees with.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
---only SPEC   line indices, e.g. 7,20,22-26 [every line]
 --per-sheet N lines per sheet, upper bound only [40]
 --height N    max sheet height in px [1960 — the tallest a ~1900px-wide sheet can
               be and still fit the 4784-visual-token ceiling without being
@@ -472,14 +471,14 @@ Every page is checked before any is queued, and its block is rendered and thrown
 --root --json --toon --pager
 ```
 
-### ocr zoom REF [REF ...]
+### ocr zoom PP-NNN [PLACES ...]
 **Does** magnified lines — overlapping strips at an integer scale, packed into as few sheets as the height budget allows.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/zoom/` (derived), or `--out`.
-**Exit** always 0; exit 2 for `--only` or `--out` with more than one ref, for `--zoom` other than 2 or 4, and for a missing `--reason`.
-**Note** no `--all`. `--only` is the sharper of the two per-page flags: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page.
+**Exit** always 0; exit 2 for a second ref, for `--out` with more than one ref, for `--zoom` other than 2 or 4, and for a missing `--reason`.
+**Note** no `--all`. **The places are the argument**: `ocr zoom 1-048 11@70 13@40 23@60` is one ref then the places on it, comma- or space-separated. It was `--only`, and a flag invited the plural positional beside it, where the same indices name unrelated lines on the next page — a line index is an *identity*, not a position. A second token spelled like a canonical ref is refused rather than read as a line range.
 
-**`--zoom` offers two steps, not a range, and every call reports what each one costs on this page.** A ceiling alone left 1 and 3 legal and readers used them as places to hesitate; measured over one six-page batch, **236 crops were taken and not one was at the default 2×** — every call overrode it, 226 to 4× and 10 to 3×. Two of those pages were never finished: their readers spent 80 turns at two turns a crop (issue, then read the image) and had none left to write with. So the middle rungs are gone, and what replaces the prose is arithmetic from the page's own median line: at 2× one crop returns ~38% of a line and four fit a sheet; at 4×, ~19% and two. A whole line is 3 strips at 2× and 7 across two sheets at 4×.
+**`--zoom` offers two steps, not a range, and the first call on a page reports what each one costs there.** It reported on *every* call until the arithmetic moved into the claim block: at 600–2,000 tokens of stderr apiece that was, measured over eight readings, the largest avoidable line item after the fixed contract. What still prints per call is what is about that call — a span narrower than one crop, and the ceiling warning at 4×. A ceiling alone left 1 and 3 legal and readers used them as places to hesitate; measured over one six-page batch, **236 crops were taken and not one was at the default 2×** — every call overrode it, 226 to 4× and 10 to 3×. Two of those pages were never finished: their readers spent 80 turns at two turns a crop (issue, then read the image) and had none left to write with. So the middle rungs are gone, and what replaces the prose is arithmetic from the page's own median line: at 2× one crop returns ~38% of a line and four fit a sheet; at 4×, ~19% and two. A whole line is 3 strips at 2× and 7 across two sheets at 4×.
 
 **`--reason` is required, and it is required of a model rather than of a person.** Nothing about any single crop in that batch looked wasteful; the waste was only visible as a count, after the page had failed. A reason makes the sequence legible in `agents transcript` — where re-aiming a miss reads differently from asking the same question louder — and asks the caller to have a question before it has an image.
 
@@ -493,13 +492,11 @@ This exists because clipping does not cost a bad image, it costs a *re-call*. `2
 
 **The edges are exact, and that retires the guess entirely for the two commonest doubts.** A span is slid rather than shrunk at a line boundary, so `N@0` is the head of the line and `N@100` its tail *whatever the line's length* — no estimate, no re-aim. A footnote reference marker is `@100`; its opener at the foot of the page, and a folio set hard against the left margin, are `@0`. These are the positions the pass returns to on nearly every page, and until they were written down readers were arriving at them by trial: `1-039`'s folio took five crops, four of them margin-widened, on a line whose number sits at one end of a 62px box.
 
-**`@LO-HI` names a percentage of the line's width, and it is where the saving at this rung is.** A doubt is about a mark, not a line, and a mark is a few percent of a full measure — `3-063`'s footnote openers sat in the first characters of their lines, so `42-43` rendered four strips apiece of which three bore on nothing, where `42-43@0-25` renders one each. Percentages, not pixels: the caller is reading a report, not measuring a raster, and a pixel span would demand a measurement nobody has taken. One line given two different spans is an error rather than a merge, since the hull is the whole-line render the span existed to avoid. `ocr sheets` refuses a span outright — it shows whole lines and has nowhere to honour one.
+**`@LO-HI` names a percentage of the line's width, and it is where the saving at this rung is.** A doubt is about a mark, not a line, and a mark is a few percent of a full measure — `3-063`'s footnote openers sat in the first characters of their lines, so `42-43` rendered four strips apiece of which three bore on nothing, where `42-43@0-25` renders one each. Percentages, not pixels: the caller is reading a report, not measuring a raster, and a pixel span would demand a measurement nobody has taken. **One line may be named at several places and renders one crop each** — `1@0 1@100` is a line's two ends, one call. That was refused for a while on the ground that unioning two spans returns the whole-line hull, which is true of a union and was the wrong conclusion: two places are two pictures, nothing is merged, and three readers in one batch each typed exactly this and were told to pick one and come back. A whole-line request absorbs the places on that line, since it already contains them. `ocr sheets` refuses a span outright — it shows whole lines and has nowhere to honour one.
 
 Each sheet is named for the lines it holds and the settings that drew them — `zoom2-26-27.png` is lines 26–27 at `--zoom 2`, `s` marks `--smooth`, and a line whose strips straddle two sheets takes a `-b` suffix. **Two selections over one page therefore cannot overwrite each other**, and an overlapping selection reuses the sheet it already agrees with. They could: sheets were numbered `-001` upward per call, so a second `--only` replaced the first's images while the first's returned index went on naming them — three parallel calls yielded one call's pictures and three reports of them. Finer overrides (`--window`, `--overlap`, `--client-w`, `--height`) are *not* in the name and do reuse it.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
---only SPEC   lines, e.g. 7,20,22-26; append @P to centre a crop at a percentage
-              of the line's width (42@60), or @LO-HI for a range [every line, whole]
 --reason TEXT why this crop, in a few words (required)
 --zoom N      display px per source px, as delivered: 2 or 4 only [2]
 --window N    source px per strip [derived from --zoom; overriding upward breaks the scale]
@@ -1185,3 +1182,20 @@ AGENT...     agent id, or its leading characters — what `usage` prints
 ```
 **Note** an AGENT matching nothing is a usage error, not an empty table: a mistyped id and an agent that never ran are different facts and only one of them is the caller's to fix.
 **Note** request 1 has no predecessor, so its `added` is the opening itself — the system prompt and the whole preamble in one sum, undivided because nothing in the record divides them.
+
+## verbs
+
+This file, addressed by verb. The only group that documents the CLI rather than
+touching the corpus, and the only one whose source is a document rather than a
+store. Reports; nothing here gates.
+
+### verbs show [GROUP [ACTION]]
+**Does** prints one action's entry, or a whole group's plus the Conventions that bind every action, or — named with nothing — the list of every action there is.
+**Reads** `harness/VERBS.md`.
+**Writes** —
+**Exit** 0; exit 2 for a name that matches no action, which reports the near misses rather than an empty table.
+**Note** **it exists because reading the whole reference is expensive enough to distort a pass.** A `groundtruth-reader` mid-page wanted the surface of its own commands, `Read` this file twice — 22,517 tokens then 10,734 — and spent a fifth of that page's entire context on it, more than every folio hunt on the page put together. It was not misbehaving: its contract says the CLI is documented here, `--help` is thin in places, and nothing offered a way to consult one entry. `verbs show ocr zoom` is under a thousand.
+**Note** it slices the committed file on the `### group action` headings the file already carries, so there is no second copy and nothing to drift. `test_cli_surface.py` still gates the file against the click tree in both directions.
+```
+--root --json --toon --pager
+```

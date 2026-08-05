@@ -73,6 +73,7 @@ def blocked(guard, tool, **ti):
     "uv run harness ocr sheets 1-031 --store mz --only 4-6",
     "uv run harness ocr zoom 1-031 --store mz --only 12@55-80 --zoom 2",
     "uv run harness ocr calls 1-031",
+    "uv run harness verbs show ocr zoom",
     "uv run harness proposal fix 1-031",
     "uv run harness proposal check 1-031",
     "uv run harness corpus normalize review/1-031/proposal.json",
@@ -90,6 +91,11 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
     against a ledger reading 4 zooms, 3 at 4x, 8 lines re-opened. A contract that
     names a verb and a guard that blocks it is worse than either alone, because
     the fallback is the exact failure the verb was written to remove.
+
+    `verbs show` is here for the same reason one step earlier: wanting to know the
+    surface of your own commands is a fair question, and with no way to ask it a
+    reader `Read` `VERBS.md` twice mid-page and spent 33,251 tokens — a fifth of
+    that reading's whole context.
     """
     allowed(GT_GUARD, "Bash", command=cmd)
 

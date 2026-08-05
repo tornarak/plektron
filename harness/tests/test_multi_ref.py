@@ -246,10 +246,17 @@ def test_a_per_page_flag_refuses_a_second_ref(tmp_path, capsys):
     overwrote the first's images in the named directory."""
     for ref in ("1-048", "1-049"):
         _alto(tmp_path, "gt/ocr", ref)
+    code, _out, err = _run(capsys, "proposal", "codepoints", "1-048", "1-049", "22",
+                           "--root", str(tmp_path))
+    assert code == 2
+
+    # `ocr sheets` takes the line selection positionally now, so a second ref there
+    # is not a second page — it is a token that would otherwise be read as a line
+    # range, and `1-049` would silently mean lines 1 through 49 of `1-048`.
     code, _out, err = _run(capsys, "ocr", "sheets", "1-048", "1-049", "--store", "gt",
                    "--out", str(tmp_path / "x"), "--root", str(tmp_path))
     assert code == 2
-    assert "--out" in err
+    assert "one ref at a time" in err
 
 
 def test_path_refuses_a_second_ref(tmp_path, capsys):

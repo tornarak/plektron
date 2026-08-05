@@ -361,6 +361,14 @@ def test_a_plural_action_has_a_corpus_form_unless_declared_otherwise(parser_surf
              f"to NO_ALL_OK with the reason.")
 
 
+# An empty invocation here names no work over the corpus, so the rule below does
+# not apply: `verbs show` reads one committed document and its empty case prints
+# the list of action names, which is the cheapest answer to "what can I run" and
+# the reason a caller reaches for it first. The rule guards against a *sweep*
+# spelled as an omission, not against a default.
+STAR_WITHOUT_ALL_OK = {("verbs", "show"): "lists the action names; touches no store"}
+
+
 def test_a_star_positional_always_has_all():
     """`nargs="*"` and no `--all` is a sweep spelled as an omission.
 
@@ -371,6 +379,8 @@ def test_a_star_positional_always_has_all():
     """
     surface = walk_surface(build_parser())
     for key, positionals in walk_positionals(build_parser()).items():
+        if key in STAR_WITHOUT_ALL_OK:
+            continue
         for name, nargs in positionals.items():
             if nargs == "*":
                 assert "--all" in surface[key], \

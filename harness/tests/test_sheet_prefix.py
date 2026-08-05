@@ -120,10 +120,10 @@ def test_a_wide_sheet_degrades_to_a_digest_of_the_same_canonical_form():
 
 
 def test_spans_parse_and_default_to_the_whole_line():
-    assert parse_spans("7,20,22-23") == {7: (0, 100), 20: (0, 100),
-                                         22: (0, 100), 23: (0, 100)}
-    assert parse_spans("42-43@0-25") == {42: (0, 25), 43: (0, 25)}
-    assert parse_spans("12,15@50-85") == {12: (0, 100), 15: (50, 85)}
+    assert parse_spans("7,20,22-23") == {7: [(0, 100)], 20: [(0, 100)],
+                                         22: [(0, 100)], 23: [(0, 100)]}
+    assert parse_spans("42-43@0-25") == {42: [(0, 25)], 43: [(0, 25)]}
+    assert parse_spans("12,15@50-85") == {12: [(0, 100)], 15: [(50, 85)]}
     assert parse_selection("42-43@0-25") == {42, 43}
 
 
@@ -151,17 +151,29 @@ def test_a_point_is_a_span_the_renderer_centres():
     the second is the one that goes wrong. `1-041`'s reader spent `23@45-65`,
     `23@70-90` and `23@60-75` framing one word that `23@60` renders in one call.
     """
-    assert parse_spans("23@60") == {23: (60, 60)}
-    assert parse_spans("11@70,13@40") == {11: (70, 70), 13: (40, 40)}
+    assert parse_spans("23@60") == {23: [(60, 60)]}
+    assert parse_spans("11@70,13@40") == {11: [(70, 70)], 13: [(40, 40)]}
     with pytest.raises(ValueError, match="0 <= P <= 100"):
         parse_spans("23@101")
 
 
-def test_one_line_given_two_spans_is_an_error_not_a_merge():
-    """Unioning them would hand back the whole-line render spans exist to avoid."""
-    with pytest.raises(ValueError, match="two different spans"):
-        parse_spans("12@0-25,12@50-75")
-    parse_spans("12@0-25,12@0-25")  # the same span twice is just the one request
+def test_one_line_can_be_asked_for_in_several_places():
+    """Two places on a line are two pictures, not a union.
+
+    This was refused for a while, on the ground that merging two spans gives back
+    the whole-line hull the span existed to avoid — true of a merge, and the wrong
+    conclusion. Three readers in one batch typed `1@0,1@100`, `45@0,45@100` and
+    `1@15,1@30`, all asking "which end is the folio at", and each was told to pick
+    one and come back: an extra pair of turns for a question that is one call.
+    """
+    assert parse_spans("12@0-25,12@50-75") == {12: [(0, 25), (50, 75)]}
+    assert parse_spans("1@0,1@100") == {1: [(0, 0), (100, 100)]}
+    # Asking twice for the same crop is one crop.
+    assert parse_spans("12@0-25,12@0-25") == {12: [(0, 25)]}
+    # And a whole-line request absorbs the places on that line rather than
+    # rendering the same ink twice under two names.
+    assert parse_spans("12,12@50") == {12: [(0, 100)]}
+    assert parse_spans("12@50,12") == {12: [(0, 100)]}
 
 
 def test_two_spans_of_one_line_are_two_pictures_and_two_names():
@@ -256,7 +268,7 @@ def test_zoom_above_the_ceiling_is_refused_by_the_parser():
     from harness.cli import build_parser
 
     r = CliRunner().invoke(build_parser(),
-                           ["ocr", "zoom", "1-038", "--only", "16",
+                           ["ocr", "zoom", "1-038", "16",
                             "--reason", "x", "--zoom", "6"])
     assert r.exit_code == 2
     assert "'6' is not one of" in r.output
@@ -277,7 +289,7 @@ def test_the_middle_rungs_are_gone(bad):
     from harness.cli import build_parser
 
     r = CliRunner().invoke(build_parser(),
-                           ["ocr", "zoom", "1-038", "--only", "16",
+                           ["ocr", "zoom", "1-038", "16",
                             "--reason", "x", "--zoom", bad])
     assert r.exit_code == 2
     assert f"'{bad}' is not one of" in r.output
@@ -292,7 +304,7 @@ def test_a_zoom_needs_a_stated_reason():
     from harness.cli import build_parser
 
     r = CliRunner().invoke(build_parser(),
-                           ["ocr", "zoom", "1-038", "--only", "16"])
+                           ["ocr", "zoom", "1-038", "16"])
     assert r.exit_code == 2
     assert "--reason" in r.output
 

@@ -171,7 +171,7 @@ fi
 # a guard that blocks it defeats the instrument it was written to serve. Reading
 # the ledger cannot deal a reader a page or settle a band; it only makes the
 # reader's own spending visible to the reader.
-if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
+if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+|verbs show)( |$)'; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2
@@ -180,5 +180,5 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lin
   allow "groundtruth-reader running a verb from its closed surface, on one page"
 fi
 
-echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *} — one plain command, no --all. Everything else (restore, review, clean, views, git, python3, shell listing) is not yours; Glob answers existence, Read answers content, and the verbs answer the rest. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
+echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *, verbs show} — one plain command, no --all. If you want to know what a command does, that is 'verbs show ocr zoom', not a Read of the reference. Everything else (restore, review, clean, views, git, python3, shell listing) is not yours; Glob answers existence, Read answers content, and the verbs answer the rest. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2

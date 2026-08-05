@@ -26,6 +26,7 @@ than a no-op.
 """
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -118,6 +119,42 @@ def _store(p, default=None):
 
 def _alto_dir(a) -> str:
     return STORES.get(getattr(a, "store", None), DEFAULT_ALTO_DIR)
+
+
+CANON_REF = re.compile(r"^(?:chukchi-)?[1-3]-\d{3}$")
+
+
+def ref_and_spec(a) -> tuple[list[str], str | None]:
+    """Split `PP-NNN 11@70 13@40` into one ref and its line selection.
+
+    **The selection is the argument, not a flag on one.** It was `--only`, which
+    is the wrong shape twice: it reads as a filter over a default of "the whole
+    page", when the whole page is the thing nobody wants and the selection is the
+    entire point of the verb; and a flag invites the plural positional beside it,
+    where the same line numbers name unrelated lines on the next page. One ref,
+    then the places on it.
+
+    Tokens are joined with commas, so `11@70 13@40` and `11@70,13@40` are one
+    request spelled two ways — a shell splits on spaces and a reader should not
+    have to care which it typed.
+
+    A trailing token spelled like a canonical ref is refused rather than read as a
+    line range, because `ocr zoom 1-045 1-046` would otherwise silently render
+    lines 1 through 46 of the first page: a plausible typo with no error and a
+    wrong picture. `11-14` is untouched — no page is part 11, and a three-digit
+    tail is what a real ref has.
+    """
+    given = list(getattr(a, "ref", None) or [])
+    if len(given) > 1:
+        for tok in given[1:]:
+            if CANON_REF.match(tok):
+                raise ValueError(
+                    f"{tok!r}: one ref at a time here, then the lines on it — "
+                    "a line selection follows the page it belongs to, since the "
+                    "same indices name different lines on another page")
+    a.ref = given[:1]
+    spec = ",".join(given[1:]) or None
+    return page_refs(a), spec
 
 
 def register(cli):
@@ -237,11 +274,12 @@ def register(cli):
     p = _store(refs_arg(add("sheets", help="compose the line crops into labelled "
               "contact sheets in review/PP-NNN/sheets/, index drawn in the "
               "margin, nothing downscaled — the reading pass's instrument; emits "
-              "the sheet/lines map instead of the line table")))
-    opt(p, "--only", default=None, metavar="SPEC",
-                   help="line indices to sheet, e.g. 7,20,22-26 (default every "
-                        "line on the page). The rung above `numbered`: sheet the "
-                        "lines that image left in doubt, with their neighbours")
+              "the sheet/lines map instead of the line table"),
+              extra=", followed by the line indices to sheet — "
+                    "`ocr sheets 1-048 7,20,22-26` or `ocr sheets 1-048 7 20 22-26`, "
+                    "and the whole page if you name none. The rung above "
+                    "`numbered`: sheet the lines that image left in doubt, with "
+                    "their neighbours"))
     opt(p, "--per-sheet", type=int, default=40,
                    help="lines per contact sheet, upper bound only — --height "
                         "packs by height first (default 40)")
@@ -260,19 +298,18 @@ def register(cli):
                   "page by page, which is the only view that shows one reader "
                   "as an outlier rather than as a number")
 
-    p = _store(refs_arg(add("zoom", help="magnify selected lines — overlapping strips "
+    p = _store(refs_arg(add("zoom", help="magnify selected places — overlapping strips "
               "at an integer scale, packed into as few sheets as the height "
-              "budget allows, for the second look a contact sheet leaves open")))
-    opt(p, "--only", default=None, metavar="SPEC",
-                   help="lines to magnify, e.g. 7,20,22-26 (default every line). "
-                        "Append @P to centre a crop at a percentage of the line's "
-                        "width — `42@60` — or @LO-HI for a range. A doubt is about "
-                        "a mark, not a line, and a mark is a few percent of a "
-                        "measure. The edges are pinned, so `@0` is the head of the "
-                        "line and `@100` its tail whatever the line's length: "
-                        "`@100` is where a footnote reference sits, `@0` where its "
-                        "opener and a left-set folio sit, and neither needs you to "
-                        "estimate anything")
+              "budget allows, for the second look a contact sheet leaves open"),
+              extra=", followed by the places to magnify: `ocr zoom 1-048 11@70 "
+                    "13@40 23@60` is three crops, one call, one sheet. `N@P` "
+                    "centres a crop at a percentage of that line's width, `N@LO-HI` "
+                    "takes a range, and a bare `N` takes the whole line. The edges "
+                    "are pinned, so `@0` is the head of the line and `@100` its "
+                    "tail whatever its length — `@100` is where a footnote "
+                    "reference sits, `@0` where its opener sits, and neither asks "
+                    "you to estimate. One line may be named at several places "
+                    "(`1@0 1@100`) and renders one crop each"))
     opt(p, "--zoom", type=click.Choice(ZOOM_STEPS), default=ZOOM,
                    help=f"display px per source px, as delivered — {ZOOM} or "
                         f"{ZOOM_MAX}, nothing between (default {ZOOM}). 2 is the "
@@ -683,14 +720,12 @@ def run_numbered(a) -> int:
 
 
 def run_sheets(a) -> int:
-    refs = page_refs(a)
-    # `--only` names that page's own line indices, so it cannot span a ref list —
-    # the same numbers name unrelated lines on the next page. Same rule as `zoom`.
-    one_page_only(a, {"out": "--out", "only": "--only"}, refs)
-    if a.only and "@" in a.only:
+    refs, spec = ref_and_spec(a)
+    one_page_only(a, {"out": "--out"}, refs)
+    if spec and "@" in spec:
         raise click.UsageError(
-            "ocr sheets shows whole lines and cannot honour a @LO-HI span; "
-            "drop the span here, or use `ocr zoom --only` which can.")
+            "ocr sheets shows whole lines and cannot honour a @ place; "
+            "drop it here, or use `ocr zoom`, which can.")
     pairs = []
     with progress("building sheets") as tick:
         for r in ptrack(refs, tick):
@@ -698,37 +733,40 @@ def run_sheets(a) -> int:
             pairs.append((r, write_line_sheets(
                 r, a.out or sheets_dir(r, a.root), _alto_dir(a), a.root,
                 per_sheet=a.per_sheet, sheet_h=a.sheet_h,
-                only=parse_selection(a.only) if a.only else None)))
-            log_call(r, "sheets", a.root, only=a.only or "all",
+                only=parse_selection(spec) if spec else None)))
+            log_call(r, "sheets", a.root, only=spec or "all",
                      images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
     return 0
 
 
 def run_zoom(a) -> int:
-    refs = page_refs(a)
-    # `--only` is that page's own line indices — an identity, not a position, so
-    # the same numbers name unrelated lines on the next page.
-    one_page_only(a, {"out": "--out", "only": "--only"}, refs)
+    refs, spec = ref_and_spec(a)
+    one_page_only(a, {"out": "--out"}, refs)
+    # Whether this page has ever been zoomed, asked *before* this call is logged:
+    # the standing guidance below prints once per page, not once per crop.
+    first = not any(c.get("action") == "zoom" for c in read_calls(refs[0], a.root))
     pairs = []
     with progress("zooming") as tick:
         for r in ptrack(refs, tick):
             _page_link(a, r)
             pairs.append((r, write_line_zoom(
                 r, a.out or zoom_dir(r, a.root),
-                only=parse_spans(a.only) if a.only else None,
+                only=parse_spans(spec) if spec else None,
                 zoom=a.zoom, window=a.window, overlap=a.overlap,
                 sheet_h=a.sheet_h, client_w=a.client_w,
                 alto_dir=_alto_dir(a), root=a.root,
                 smooth=a.smooth)))
             log_call(r, "zoom", a.root, reason=a.reason, zoom=a.zoom,
-                     only=a.only or "all", smooth=a.smooth,
+                     only=spec or "all", smooth=a.smooth,
                      images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
-    # The trade, in this page's numbers rather than in prose. Emitted on every
-    # call because the choice is made on every call, and a reader who has just
-    # seen what a whole line costs is the one who can judge whether the next
-    # doubt is worth it.
+    # **The standing guidance prints once per page, on the first zoom.** It used to
+    # print on every call, on the reasoning that the choice is made on every call —
+    # but it is 600-2,000 tokens of stderr, a reader who has read it once has read
+    # it, and the same arithmetic now arrives in the claim block before any image is
+    # rendered. Measured over eight readings it was the largest avoidable line item
+    # after the fixed contract. What stays per-call is what is *about* this call.
     from ..lines import page_lines, zoom_capacity
     recs = page_lines(alto_for_lines(refs[0], _alto_dir(a), a.root), a.root,
                       ref=refs[0])
@@ -737,19 +775,28 @@ def run_zoom(a) -> int:
                          overlap=a.overlap, client_w=a.client_w,
                          sheet_h=a.sheet_h)
     here = next((c for c in caps if c["zoom"] == a.zoom), None)
-    for row in caps:
+    if first:
+        for row in caps:
+            click.echo(
+                f"  {row['zoom']}x: one crop comes back with ~{row['covers_pct']}% "
+                f"of a line whatever you ask for, and {row['points_per_sheet']} of "
+                f"them fit one sheet. A whole line is {row['full_strips']} strips.",
+                err=True)
         click.echo(
-            f"  {row['zoom']}x: one crop comes back with ~{row['covers_pct']}% of "
-            f"a line whatever you ask for, and {row['points_per_sheet']} of them "
-            f"fit one sheet. A whole line is {row['full_strips']} strips.",
+            f"\nSeveral places go in ONE call — `ocr zoom {refs[0]} 11@70 13@40 "
+            f"23@60` is one command, one sheet and one image, where three calls are "
+            f"six turns. {(here or {}).get('points_per_sheet', 0)} places fit a "
+            f"sheet at {a.zoom}x: batch every doubt you already have before reading "
+            "any, and one line may be named twice (`1@0 1@100`) for its two ends.",
             err=True)
     # **Asking for less than a strip is the waste this reports.** The span is
     # widened to the window regardless, so a narrow request buys nothing and costs
     # the aiming error that produced it: the batch behind this rule spent three
     # crops framing one word at spans of 20%, each one of them already 40% by the
     # time it rendered.
-    asked = parse_spans(a.only) if a.only else {}
-    narrow = sorted(i for i, (lo, hi) in asked.items()
+    asked = parse_spans(spec) if spec else {}
+    narrow = sorted(i for i, places in asked.items()
+                    for lo, hi in places
                     if lo != hi and hi - lo < (here or {}).get("covers_pct", 0))
     if narrow and here:
         click.echo(
@@ -758,15 +805,6 @@ def run_zoom(a) -> int:
             f"~{here['covers_pct']}% anyway. Name the point instead — `N@60` "
             "centres a crop there and asks you for one number, not two.",
             err=True)
-    click.echo(
-        f"\nSeveral lines go in ONE call — `--only 11@70,13@40,23@60` is one "
-        f"command, one sheet and one image, where three calls are six turns. "
-        f"{(here or {}).get('points_per_sheet', 0)} points fit a sheet at "
-        f"{a.zoom}x: batch every doubt you already have before reading any.\n"
-        "`@0` and `@100` are the head and tail of a line exactly, whatever its "
-        "length — a footnote reference is `@100`, its opener and a left-set folio "
-        "are `@0`. Neither asks you to estimate a position.",
-        err=True)
     if a.zoom == ZOOM_MAX:
         click.echo(
             f"\n{ZOOM_MAX}x is the ceiling, and it is for one mark on one word — "

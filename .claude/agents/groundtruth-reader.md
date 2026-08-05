@@ -145,8 +145,8 @@ number is in the margin, in the clear, and the ruling has told you which line it
 belongs to. Read it there. **A contact sheet works too** — every crop runs well
 past its box, far enough that a strangled folio comes out whole rather than cut,
 so the fact that the ink sits outside the box does not put it outside the
-picture. `ocr zoom --only <that index>` is the fallback for when neither settles
-it, and not a step to take by reflex.
+picture. `ocr zoom PP-NNN --store mz <that index>` is the fallback for when
+neither settles it, and not a step to take by reflex.
 
 Treating the two alike is how `1-073` nearly lost a folio: line 1's box is 11 px
 and holds `5`, the page prints `51`, and the ruling saying so was sitting in the
@@ -324,19 +324,28 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
    `review/PP-NNN/numbered.png`. The whole page with every line's index beside it,
    each line in its own ruled band. **On a page of ordinary English prose it is the
    only image you need.**
-2. `uv run harness ocr sheets PP-NNN --store mz --only <SPEC>` for the lines that
-   image left in doubt, and **only** those. Give each a neighbour or two
-   (`--only 10-14`, not `--only 12`) — whether a mark is the page's habit or this
-   line's is a question about the lines around it. **Name every line you mean to
-   look at in ONE call** — `--only 4-6,27-31,35-37`, not three calls — and do NOT
+2. `uv run harness ocr sheets PP-NNN --store mz <LINES>` for the lines that image
+   left in doubt, and **only** those — the lines follow the ref, comma- or
+   space-separated. Give each a neighbour or two (`10-14`, not `12`) — whether a
+   mark is the page's habit or this line's is a question about the lines around
+   it. **Name every line you mean to look at in ONE call** —
+   `ocr sheets PP-NNN --store mz 4-6,27-31,35-37`, not three calls — and do NOT
    sheet the whole page. Sheets pack by height, so one call over those lines is a
    single image where three calls are three: same pixels, three times the turns.
-3. `uv run harness ocr zoom PP-NNN --store mz --only <SPEC> --reason "…"` for
-   marks the sheets leave open — **every such line in ONE call.**
 
-   **Aim at a point, not a range.** `--only` takes `LINE@P`, a percentage of the
+   **The folio belongs on this sheet, with everything else.** It is a line like
+   any other, its crop runs past its box far enough to show the number whole even
+   when the box strangles it, and there is nothing about it that wants its own
+   image. Readers have spent six and seven zooms on a folio that was one line of
+   a sheet they were about to render anyway.
+3. `uv run harness ocr zoom PP-NNN --store mz <PLACES> --reason "…"` for marks
+   the sheets leave open — **every such place in ONE call.**
+
+   **Aim at a point, not a range.** A place is `LINE@P`, a percentage of that
    line's width: `23@60` centres a crop on a mark two-thirds along and asks you
-   for one number, not two. **`@0` is the head of the line and `@100` the tail,
+   for one number, not two. One line may be named at several places —
+   `ocr zoom PP-NNN --store mz 1@0 1@100 23@60 --reason "…"` is three crops, one
+   call, one sheet. **`@0` is the head of the line and `@100` the tail,
    exactly, whatever its length** — a footnote opener is `42@0`, a trailing
    footnote reference `12@100` — so the edges never ask you to estimate anything.
    The crop is widened to a full strip and snapped out to whitespace, and it runs
@@ -377,9 +386,9 @@ running title, folio, footnotes and any figure sit. **ALTO order is not reading
 order**: a running title often lands mid-sequence, which is why `ocr lines` emits
 in reading order while keeping the segmenter's index as the label. Line labels are
 therefore not consecutive, and that is the tell that the index is an *identity* —
-it is what `proposal.json` is keyed by and what `restore` joins on. `--only` takes
-that `index` column, never the printed item number in the running text: `1-101`
-zoomed ALTO index 19 meaning printed item "19.", a different line entirely.
+it is what `proposal.json` is keyed by and what `restore` joins on. A selection
+names that `index` column, never the printed item number in the running text:
+`1-101` zoomed ALTO index 19 meaning printed item "19.", a different line entirely.
 
 ### What zoom buys, and what it cannot
 
@@ -482,8 +491,8 @@ why.
   four zooms on the same slot in the same batch. Nothing about a folio is a Tier-1
   identity, so there is no class here that needs a second look by default.
 
-  **If it genuinely does not settle it, `ocr sheets --only <that index>` is the
-  next step and it is enough.** Every crop runs well past its box, so a folio
+  **If it genuinely does not settle it, put that index on the contact sheet you
+  are rendering anyway, and that is enough.** Every crop runs well past its box, so a folio
   whose box holds 12 px of a 70 px number still comes back whole. This used to be
   false — the pad was a rounding allowance, the sheet showed half a digit, and a
   reader seeing half a digit reasonably concluded something was wrong and started
@@ -532,7 +541,7 @@ why.
    rule you had to hunt for, an image you had to spend twice.
 3. **The image ladder, from the ledger, never from memory.** Run
    `uv run harness ocr calls PP-NNN` and include its output — every image call
-   you made is already recorded there with its `--only` spec, its zoom step and
+   you made is already recorded there with the places it named, its zoom step and
    its reason, so do not re-tally any of it: every retrospective in the batch
    that built the ledger understated its own image count, none of them lying,
    because a search stops feeling like a search once it pays off. Add only what
@@ -1320,10 +1329,12 @@ band: a prior backed by one page is a prior backed by one page.
 The spec above is long because the failure catalogue is long, and none of it
 changes what a turn costs. Before your first image:
 
-- **Batch before you look.** Read the sheets, collect every doubt into one
-  `--only` list, and render them together. A reader that zooms one line at a
-  time dies at the turn cap with nothing written; the one that batched over a
-  hundred tool uses into its eighty turns finished.
+- **Batch before you look.** Read the sheets, collect every doubt into one list
+  of places, and render them together — the folio among them, not on its own. A
+  reader that zooms one line at a time dies at the turn cap with nothing written;
+  the one that batched over a hundred tool uses into its eighty turns finished.
+- **Ask the tool, don't read the manual.** `harness verbs show ocr zoom` is one
+  entry; `Read`ing the reference cost one page a fifth of its context.
 - **Aim at points, not ranges.** `23@60`, `42@0`, `12@100` — one number each,
   widened and snapped to whitespace for you. A range is two guesses about a word
   you cannot measure, and re-aiming one three times around a single word is the

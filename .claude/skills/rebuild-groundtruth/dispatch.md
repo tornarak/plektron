@@ -227,7 +227,7 @@ Measured on this corpus, per page:
 |---|---|---|---|
 | `numbered` composite | 2660×3525 | 0.64× | ~4,800 |
 | one full contact sheet | 1907×1946 | 1.00× | ~4,760 |
-| one `--only 10-14` sheet | 1904×517 | 1.00× | ~1,300 |
+| one `sheets … 10-14` | 1904×517 | 1.00× | ~1,300 |
 | one `zoom2` sheet | 1450×1460 | 1.00× | ~2,760 |
 
 Two things follow, and the first is not obvious. **A whole page cannot be delivered
@@ -238,7 +238,7 @@ cost ~14.3k for the same page, and the prompt used to make reading all of them
 mandatory before any zoom. Most pages of this book are English prose that never
 needs a crop.
 
-So: **`numbered` → `sheets --only` → `zoom --only`**, each rung paid for only where
+So: **`numbered` → `sheets LINES` → `zoom PLACES`**, each rung paid for only where
 it is used. An English-only page goes from ~19k tokens of mandatory images to
 ~4.8k. A page with four doubtful lines pays ~4.8k + ~1.3k rather than ~14.3k, and
 still gets a closer look at the lines that earned one.
