@@ -1092,3 +1092,15 @@ store: it reads Claude Code's task transcripts. Reports; nothing here gates.
 **Note** **`warmth` is the only pre-flight signal there is.** The cache cannot be queried, so the age of the last request against the five-minute subagent TTL is the whole of what can be said — subagents cache on that clock even where the parent session holds a longer one.
 **Note** **an unparseable `--since` is a usage error, not an empty result.** Comparison is lexicographic, so `5m` sorts *after* every ISO stamp there will ever be: before the relative form was supported, passing it filtered every agent out and printed an empty table at exit 0 — a wrong answer wearing the shape of a right one. The stamp is also truncated before comparison rather than carrying a `Z`, since transcript stamps have fractional seconds and `…:00Z` sorts after `…:00.5Z`.
 **Note** the session is discovered from `--root`, whose path Claude Code slugs into the transcript directory name; the newest session *that has transcripts* wins, since a session that dispatched nothing has a `tasks/` directory too and picking it would report the empty batch as the batch.
+
+### agents transcript AGENT [AGENT ...]
+**Does** one named agent's requests in order, with what each one added to its context and where that came from. **`added` is the column**: a request's whole context is `in + read + write`, so the difference between consecutive requests is what arrived between them. Reading down it catches a duplicated block, which no per-agent total can — a contract re-injected on resume showed up as +14,916 on request 2 of three separate readers, identical to the token, and was invisible in every summary. `note` and `detail` name the arrival from the tool the *previous* request called, since its result is what the growth is made of: `read raster moll-046.png`, `ran command … zoom moll-046:15,33`, `write file`. `via` says whether that growth was paid for — `read` is a context served whole from cache, `write` is the only kind that costs.
+**Reads** `/tmp/claude-*/<project-slug>/*/tasks/*.output`. **Writes** — **Exit** always 0; 2 if no transcript matches an AGENT.
+```
+AGENT...     agent id, or its leading characters — what `usage` prints
+--tasks DIR  the task-transcript directory [the newest session for --root's
+             project that has any]
+--root --json --toon --pager
+```
+**Note** an AGENT matching nothing is a usage error, not an empty table: a mistyped id and an agent that never ran are different facts and only one of them is the caller's to fix.
+**Note** request 1 has no predecessor, so its `added` is the opening itself — the system prompt and the whole preamble in one sum, undivided because nothing in the record divides them.

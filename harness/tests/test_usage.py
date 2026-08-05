@@ -19,9 +19,11 @@ from harness.usage import (
     _requests,
     _slug,
     cohorts,
+    find_transcripts,
     preamble,
     project,
     since_stamp,
+    transcript,
     warmth,
 )
 
@@ -83,6 +85,78 @@ def test_agent_warm_when_first_request_read_and_wrote_nothing(tmp_path):
 def test_agent_of_an_empty_transcript_is_none(tmp_path):
     (tmp_path / "c1.output").write_text("")
     assert _agent(tmp_path / "c1.output") is None
+
+
+# --- transcript -----------------------------------------------------------
+
+def _tool_line(read, write, tool, detail, out=5, rid="r"):
+    return json.dumps({
+        "type": "assistant", "timestamp": "2026-08-04T12:00:00.000Z",
+        "model": "claude-sonnet-5", "requestId": rid,
+        "message": {"role": "assistant", "content": [
+            {"type": "tool_use", "name": tool, "input": detail}],
+            "usage": {"input_tokens": 2, "cache_creation_input_tokens": write,
+                      "cache_read_input_tokens": read, "output_tokens": out}},
+    })
+
+
+def test_transcript_attributes_growth_to_the_previous_tool(tmp_path):
+    """The growth between two requests is the result of what the earlier one
+    asked for, so that is where the note comes from."""
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 35300, "Bash", {"command": "entry_bounds.py claim"}, rid="a"),
+        _tool_line(35300, 4270, "Read", {"file_path": "/x/moll-046.png"}, rid="b"),
+        _tool_line(39570, 300, "Write", {"file_path": "/x/moll-046.md"}, rid="c"),
+    ]) + "\n")
+    rows = transcript(p)
+    assert rows[0]["note"] == "system prompt + preamble"
+    assert (rows[1]["note"], rows[1]["detail"]) == ("ran command",
+                                                    "entry_bounds.py claim")
+    assert (rows[2]["note"], rows[2]["detail"]) == ("read raster", "moll-046.png")
+
+
+def test_transcript_added_is_the_context_delta(tmp_path):
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 35300, "Bash", {"command": "x"}, rid="a"),
+        _tool_line(35300, 4270, "Read", {"file_path": "/x/p.png"}, rid="b"),
+    ]) + "\n")
+    rows = transcript(p)
+    assert rows[0]["added"] == 35302        # in + read + write, no predecessor
+    assert rows[1]["added"] == 4270
+
+
+def test_via_says_whether_the_growth_was_paid_for(tmp_path):
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(35300, 0, "Bash", {"command": "x"}, rid="a"),
+        _tool_line(35300, 475, "Bash", {"command": "y"}, rid="b"),
+    ]) + "\n")
+    rows = transcript(p)
+    assert [r["via"] for r in rows] == ["read", "write"]
+
+
+def test_a_text_read_is_not_called_a_raster(tmp_path):
+    p = tmp_path / "abcdef01.output"
+    p.write_text("\n".join([
+        _tool_line(0, 100, "Read", {"file_path": "/x/notes.md"}, rid="a"),
+        _tool_line(100, 50, "Bash", {"command": "z"}, rid="b"),
+    ]) + "\n")
+    assert transcript(p)[1]["note"] == "read text"
+
+
+def test_an_unmatched_agent_raises_rather_than_reporting_nothing(tmp_path):
+    (tmp_path / "abcdef01.output").write_text(
+        _tool_line(0, 10, "Bash", {"command": "x"}) + "\n")
+    with pytest.raises(ValueError, match="no transcript for"):
+        find_transcripts(tmp_path, ["deadbeef"], tasks=tmp_path)
+
+
+def test_an_agent_is_matched_on_its_leading_characters(tmp_path):
+    (tmp_path / "abcdef0123456.output").write_text(
+        _tool_line(0, 10, "Bash", {"command": "x"}) + "\n")
+    assert len(find_transcripts(tmp_path, ["abcdef01"], tasks=tmp_path)) == 1
 
 
 # --- cohorts --------------------------------------------------------------

@@ -185,6 +185,17 @@ def _read(path: Path) -> tuple[list[dict], dict]:
             u = (rec.get("message") or {}).get("usage")
             if not u:
                 continue
+            # The tool this request ASKED for. Its result arrives before the
+            # next request, so it is what the next request's growth is made of
+            # — which is the only way a bare token delta can be told from a
+            # raster, a file read, or a message somebody sent.
+            tool, detail = "", ""
+            for blk in ((rec.get("message") or {}).get("content") or []):
+                if isinstance(blk, dict) and blk.get("type") == "tool_use":
+                    tool = blk.get("name", "")
+                    inp = blk.get("input") or {}
+                    detail = (Path(inp["file_path"]).name if inp.get("file_path")
+                              else str(inp.get("command", ""))[:60])
             tiers = u.get("cache_creation") or {}
             rid = rec.get("requestId") or f"_{len(order)}"
             if rid not in by_id:
@@ -198,8 +209,36 @@ def _read(path: Path) -> tuple[list[dict], dict]:
                 "out": u.get("output_tokens", 0),
                 "model": rec.get("model") or (rec.get("message") or {}).get("model", ""),
                 "at": rec.get("timestamp", ""),
+                "tool": tool,
+                "detail": detail,
             }
     return [by_id[r] for r in order], meta
+
+
+RASTER = (".png", ".jpg", ".jpeg", ".gif", ".webp")
+
+
+def _arrival(prev: dict | None) -> tuple[str, str]:
+    """What arrived between the previous request and this one, and from where.
+
+    Named off the tool the previous request called, because that is what the
+    growth *is*. A number alone cannot tell a page raster from a file read, and
+    those are the two things worth telling apart here: one is irreducible and
+    one is a choice.
+    """
+    if prev is None:
+        return "system prompt + preamble", ""
+    tool, detail = prev.get("tool", ""), prev.get("detail", "")
+    if not tool:
+        return "reply, no tool called", ""
+    if tool == "Read":
+        kind = "read raster" if detail.lower().endswith(RASTER) else "read text"
+        return kind, detail
+    if tool in ("Write", "Edit"):
+        return f"{tool.lower()} file", detail
+    if tool == "Bash":
+        return "ran command", detail
+    return tool.lower(), detail
 
 
 def _requests(path: Path) -> list[dict]:
@@ -319,6 +358,68 @@ def batch(root: Path, tasks: Path | None = None, *, session: str | None = None,
         cut = since_stamp(since)
         agents = [a for a in agents if not a["first"] or a["first"] >= cut]
     return dirs, agents
+
+
+def find_transcripts(root: Path, idents: list[str],
+                     tasks: Path | None = None) -> list[Path]:
+    """Transcripts whose agent id starts with one of `idents`.
+
+    Prefixes, because the id a reader of the `agents` table has in front of it
+    is the eight characters that table prints, not the full one. An ident that
+    matches nothing raises rather than returning an empty report: a typo in an
+    id and an agent that never ran are different facts, and only one of them is
+    the caller's to fix.
+    """
+    found: dict[str, Path] = {}
+    for d in find_tasks(root, tasks):
+        for f in d.glob("*.output"):
+            for ident in idents:
+                if f.stem.startswith(ident):
+                    found[f.stem] = f
+    if missing := [i for i in idents
+                   if not any(s.startswith(i) for s in found)]:
+        raise ValueError(f"no transcript for {', '.join(missing)} — "
+                         "`agents usage` lists the ids this project has")
+    return [found[k] for k in sorted(found)]
+
+
+def transcript(path: Path) -> list[dict]:
+    """One transcript, request by request, with what each one added.
+
+    **The column that matters is `added`.** A request's `in + read + write` is
+    its whole context, so the difference between consecutive requests is what
+    arrived between them — a tool result, a raster, a message. Reading down it
+    is how a duplicated block is caught: the preloaded contract showed up as
+    +14,916 on request 2 of three separate readers, identical to the token,
+    which no per-agent total would have separated from ordinary work.
+
+    Request 1 has no predecessor, so its `added` is the opening itself: the
+    system prompt and the whole preamble in one sum, undivided because nothing
+    in the record divides them.
+    """
+    reqs, meta = _read(path)
+    out, prev_ctx, prev = [], 0, None
+    for i, r in enumerate(reqs, 1):
+        ctx = r["in"] + r["read"] + r["write"]
+        note, detail = _arrival(prev)
+        out.append({
+            "agent": path.stem[:8],
+            "type": meta.get("type", ""),
+            "req": i,
+            # Whether that growth was PAID FOR or free. A request that wrote
+            # nothing had its whole context served from cache; one that wrote
+            # is the only kind that costs, and the amount is the `write`.
+            "via": "read" if not r["write"] else "write",
+            "read": r["read"],
+            "write": r["write"],
+            "ctx": ctx,
+            "added": ctx if i == 1 else ctx - prev_ctx,
+            "out": r["out"],
+            "note": note,
+            "detail": detail,
+        })
+        prev_ctx, prev = ctx, r
+    return out
 
 
 def rows(agents: list[dict]) -> list[dict]:

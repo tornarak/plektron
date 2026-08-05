@@ -7,13 +7,24 @@ because the two dispatch loops in this repo (`ocr dispatch`, and the moll pass's
 measuring the same way — a script with no reference entry and no surface test is
 how the last set of undocumented flags accumulated.
 
-One action. `usage` answers the only question a coordinator can act on: did the
-siblings share a prefix, and did the ones after the first read it.
+Two actions. `usage` answers the question a coordinator can act on — did the
+siblings share a prefix, and did the ones after the first read it. `transcript`
+is what to open when the answer is no, or when a total looks wrong: it walks one
+agent request by request and shows what each one added.
 """
 from __future__ import annotations
 
-from ..usage import batch, cohorts, preamble, project, rows, warmth
-from ._common import action, add_all, exclusive, group, opt, out
+from ..usage import (
+    batch,
+    cohorts,
+    find_transcripts,
+    preamble,
+    project,
+    rows,
+    transcript,
+    warmth,
+)
+from ._common import action, add_all, arg, exclusive, group, opt, out
 
 
 def register(cli):
@@ -43,6 +54,32 @@ def register(cli):
     opt(p, "--tasks", type=str, default=None,
         help="the task-transcript directory [the newest session for --root's "
              "project that has any]")
+
+    p = action(g, "transcript", run_transcript,
+               help="one named agent's requests, and what each one added to "
+               "its context. **`added` is the column**: a request's whole "
+               "context is `in + read + write`, so the difference between "
+               "consecutive requests is what arrived between them — a tool "
+               "result, a raster, a message. Reading down it catches a "
+               "duplicated block, which no per-agent total can: a contract "
+               "re-injected on resume showed up as +14,916 on request 2 of "
+               "three separate readers, identical to the token. Request 1 has "
+               "no predecessor, so its `added` is the opening itself. Reports; "
+               "never gates"
+               "\n\nAGENT: an agent id, or the leading characters of one — "
+               "what the `usage` table prints.")
+    arg(p, "agents", nargs=-1, required=True, metavar="AGENT")
+    opt(p, "--tasks", type=str, default=None,
+        help="the task-transcript directory [the newest session for --root's "
+             "project that has any]")
+
+
+def run_transcript(a) -> int:
+    from pathlib import Path
+    paths = find_transcripts(a.root, list(a.agents),
+                             Path(a.tasks) if a.tasks else None)
+    out(a, [t for p in paths for t in transcript(p)], name="transcript")
+    return 0
 
 
 def run_usage(a) -> int:
