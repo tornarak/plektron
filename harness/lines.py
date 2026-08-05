@@ -69,7 +69,22 @@ if TYPE_CHECKING:
 #
 # Bottom exceeds top because a below-mark sits under the descender, further outside
 # the box than an above-mark sits over the ascender.
-PAD_X = 8
+#
+# **`PAD_X` is wide enough to reveal a clipped folio, and that is what sets it.**
+# It was 8, which is a rounding allowance rather than a margin, and the effect was
+# that a box strangling its number rendered the number strangled: `1-051`'s
+# `sheets/lines-0-1` showed the folio cut in half, on a 21 px box holding a ~70 px
+# two-digit number. A reader seeing half a digit does not conclude "the box is
+# narrow"; it concludes something is wrong with the page and starts zooming, which
+# is where two of three readers in one batch spent six and seven crops apiece.
+#
+# So the pad covers the worst clipped box the corpus has shown (~20 px) plus the
+# whole of the number beyond it plus whitespace either side. The bleed is free in
+# the way the last strip and the widened span are free: these pages are set in one
+# column with ~500 px of margin, so there is nothing beside a line to bleed *in*.
+# 56 also stops just short of costing a strip — a full measure is 3 strips at 2x
+# and 7 at 4x padded exactly as it was bare.
+PAD_X = 56
 PAD_TOP = 10
 PAD_BOTTOM = 18
 
@@ -182,7 +197,12 @@ def zoom_capacity(widths: list[int], heights: list[int] | None = None,
     at both steps, because a capacity table that disagrees with the output it
     describes is worse than no table.
     """
-    measure = int(sorted(widths)[len(widths) // 2]) if widths else 0
+    # The measure is the *padded* crop, for the reason the strip height already
+    # is one: `line_crops` adds PAD_X either side, and every percentage a caller
+    # gives is a share of what was rendered rather than of the ALTO box. Counting
+    # the bare box here was a second instance of the same error the strip height
+    # once had, and in the same direction — overstating what a call covers.
+    measure = (int(sorted(widths)[len(widths) // 2]) + 2 * PAD_X) if widths else 0
     hs = sorted(heights or [])
     line_h = int(hs[len(hs) // 2]) if hs else 0
     out = []
@@ -606,20 +626,24 @@ def printspace_x(page) -> tuple[int, int] | None:
     return bb["HPOS"], bb["HPOS"] + bb["WIDTH"]
 
 
-def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int],
-             wide: tuple[int, int] | None = None) -> tuple | None:
+def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int]) -> tuple | None:
     """Crop box in raster space for one `page_lines` record, padded and clamped.
 
-    `wide` widens the box to those ALTO x-bounds, normally the `PrintSpace`'s. It
-    exists because **a line polygon can exclude printed text that belongs to the
-    line**, and the material it excludes is systematically the material sitting in
-    the margins: `1-074` prints its list numbers `5.` and `9.` outside their boxes,
-    `1-073` does the same with `5.` and strands the folio `51` outside every box on
-    the page. Vertical padding cannot reach any of it — the omission is horizontal.
+    **A line polygon can exclude printed text that belongs to the line**, and what
+    it excludes is systematically horizontal: `1-074` prints its list numbers `5.`
+    and `9.` outside their boxes, `1-073` does the same with `5.`, and a box
+    strangling a folio leaves half the number outside itself. Vertical padding
+    cannot reach any of it, which is why `PAD_X` is sized to cover it rather than
+    to round off an edge.
 
-    Widening is not free, so it is not the default: a full-measure crop already runs
-    to both margins, and on a short line the extra width pulls in whatever else the
-    margin holds. It is a second look at a line, not a better one.
+    This used to be a `wide` parameter widening the box to the `PrintSpace`, driven
+    by a `--margins` flag, and it was the wrong shape twice over. It made the
+    ordinary case — a folio you can simply read — conditional on a reader knowing
+    to ask; and because the widened crop then spans the whole sheet, every `@P` a
+    caller gave was suddenly a percentage of the page rather than of the line, so
+    the aim that would have hit the folio was unguessable without probing. Three
+    readers in one batch spent six and seven crops each discovering that. The pad
+    is unconditional now and there is nothing to ask for.
     """
     src = _poly_bounds(rec["points"]) if rec.get("points") else None
     if src is None:
@@ -628,8 +652,6 @@ def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int],
         src = (rec["hpos"], rec["vpos"],
                rec["hpos"] + rec["width"], rec["vpos"] + rec["height"])
     x0, y0, x1, y1 = src
-    if wide is not None:
-        x0, x1 = min(x0, wide[0]), max(x1, wide[1])
     box = (max(0, round(x0 * sx) - PAD_X),
            max(0, round(y0 * sy) - PAD_TOP),
            min(size[0], round(x1 * sx) + PAD_X),
@@ -638,7 +660,7 @@ def line_box(rec: dict, sx: float, sy: float, size: tuple[int, int],
 
 
 def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
-               scans: str = "scans", margins: bool = False):
+               scans: str = "scans"):
     """Yield `(record, PIL.Image)` per line on one page, cropped from the raster.
 
     `_scale_for` is used rather than assuming the two spaces agree. They do agree
@@ -657,10 +679,9 @@ def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."
     page = etree.parse(str(alto)).find(".//{*}Page")
     img = Image.open(raster_path(ref, root, scans))
     sx, sy = _scale_for(page, img.size)
-    wide = printspace_x(page) if margins else None
 
     for rec in page_lines(alto, root, ref=ref):
-        box = line_box(rec, sx, sy, img.size, wide)
+        box = line_box(rec, sx, sy, img.size)
         if box is None:
             continue
         yield rec, img.crop(box)
@@ -1623,7 +1644,7 @@ LINE_SHEET_H = 1960
 
 def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                       root: Path = Path("."), scans: str = "scans",
-                      per_sheet: int = 8, margins: bool = False,
+                      per_sheet: int = 8,
                       sheet_h: int | None = LINE_SHEET_H,
                       only: set[int] | None = None) -> list[dict]:
     """Compose the page's line crops into labelled contact sheets, in `out_dir` itself.
@@ -1659,7 +1680,7 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     """
     from .figures import LABEL_W, compose_sheets
     items, seen = [], []
-    for rec, crop in line_crops(ref, alto_dir, root, scans, margins):
+    for rec, crop in line_crops(ref, alto_dir, root, scans):
         if only is not None and rec["index"] not in only:
             continue
         seen.append(rec["index"])
@@ -1673,7 +1694,7 @@ def write_line_sheets(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     width = max(im.width for _, im in items) + LABEL_W + 20
     sheets, index = compose_sheets(items, out_dir,
                                   per_sheet=per_sheet,
-                                  name_for=sheet_namer("lines", margins),
+                                  name_for=sheet_namer("lines"),
                                   sheet_w=width, max_h=sheet_h)
     # One flat record per sheet, `lines` as a joined string rather than a list:
     # a nested value de-tabularizes the whole TOON table (see the module docstring).
@@ -1693,8 +1714,7 @@ def compact_runs(xs) -> str:
     return "_".join(parts)
 
 
-def sheet_namer(base: str, margins: bool = False, smooth: bool = False,
-                limit: int = 44):
+def sheet_namer(base: str, smooth: bool = False, limit: int = 44):
     """A `compose_sheets` namer: each sheet named for the lines it actually holds.
 
     **Two renderings that differ must not write the same filename, and two that
@@ -1720,12 +1740,16 @@ def sheet_namer(base: str, margins: bool = False, smooth: bool = False,
     else's.
 
     The base carries what changes the pixels rather than which lines: the zoom
-    level, and the two flags that alter how a line is rendered. Overrides finer than
+    level, and the flag that alters how a line is rendered. Overrides finer than
     those (`--window`, `--overlap`, `--client-w`, `--height`) are not encoded and so
     do reuse names — they are deliberate, rare, per-question adjustments, and a
     filename long enough to carry them is one nobody can read.
+
+    The `m` for a margin-widened render is gone with the flag. Old files carrying
+    it are stale renders of a page, not a naming collision: nothing writes that
+    prefix now, so an `m` name can only be something `ocr clean` has yet to sweep.
     """
-    head = base + ("m" if margins else "") + ("s" if smooth else "")
+    head = base + ("s" if smooth else "")
 
     def name(labels) -> str:
         # A contact-sheet label is the bare index; a zoom label is `index.strip`,
@@ -1797,8 +1821,7 @@ def parse_spans(spec: str) -> dict[int, tuple[int, int]]:
     Percentages rather than pixels because the caller is reading a *report*, not
     measuring a raster — `ocr lines` gives an index, and "the front of it" or "about
     two-thirds along" is what a reader can actually say from a page composite. A
-    pixel span would demand a measurement nobody has taken and would silently mean
-    something different under `--margins`.
+    pixel span would demand a measurement nobody has taken.
 
     Rejects rather than skips a token it cannot parse. A selection is a claim about
     which lines were looked at, and silently dropping one means a line reported as
@@ -1866,7 +1889,7 @@ def write_line_zoom(ref: str, out_dir: Path,
                     overlap: int = ZOOM_OVERLAP, sheet_h: int = ZOOM_SHEET_H,
                     client_w: int = ZOOM_CLIENT_W,
                     alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
-                    scans: str = "scans", margins: bool = False,
+                    scans: str = "scans",
                     smooth: bool = False) -> list[dict]:
     """Magnified lines, sliced into overlapping strips and packed into few sheets.
 
@@ -1909,7 +1932,7 @@ def write_line_zoom(ref: str, out_dir: Path,
                 else Image.Resampling.NEAREST)
     spans = only if isinstance(only, dict) else None
     strips, seen = [], []
-    for rec, crop in line_crops(ref, alto_dir, root, scans, margins=margins):
+    for rec, crop in line_crops(ref, alto_dir, root, scans):
         if only is not None and rec["index"] not in only:
             continue
         seen.append(rec["index"])
@@ -1984,15 +2007,13 @@ def write_line_zoom(ref: str, out_dir: Path,
     # that is the same every time.
     sheets, index = compose_sheets(strips, out_dir, per_sheet=len(strips),
                                   sheet_w=client_w, max_h=sheet_h,
-                                  name_for=sheet_namer(f"zoom{zoom}", margins,
-                                                       smooth))
-    return [{"sheet": str(out_dir / e["sheet"]), "zoom": zoom, "margins": margins,
+                                  name_for=sheet_namer(f"zoom{zoom}", smooth))
+    return [{"sheet": str(out_dir / e["sheet"]), "zoom": zoom,
              "strips": " ".join(e["items"])} for e in index]
 
 
 def write_line_crops(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
-                     root: Path = Path("."), scans: str = "scans",
-                     margins: bool = False) -> list[dict]:
+                     root: Path = Path("."), scans: str = "scans") -> list[dict]:
     """Crop every line to `out_dir/<y_rank>-<index>-<line_id>.png`. Returns the records.
 
     Filenames lead with the zero-padded **reading position**, so a directory
@@ -2007,7 +2028,7 @@ def write_line_crops(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     ref = norm_ref(ref)
     out_dir.mkdir(parents=True, exist_ok=True)
     out = []
-    for rec, crop in line_crops(ref, alto_dir, root, scans, margins):
+    for rec, crop in line_crops(ref, alto_dir, root, scans):
         path = out_dir / f"{rec['y_rank']:03d}-{rec['index']:03d}-{rec['line_id']}.png"
         crop.save(path)
         out.append({**rec, "crop": str(path)})

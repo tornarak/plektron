@@ -1,0 +1,66 @@
+{
+  "lines": {
+    "0": {"text": "II. — GENERAL CHARACTERISTICS."},
+    "1": {"text": "APPEARANCE. — As ascertained from anthropological measurements (148"},
+    "2": {"text": "of men, and 49 of women, all adult), the height of the Chukchee is, men,"},
+    "3": {"text": "maximum, 186 mm.; minimum, 150 mm.; average, 162.2 mm.: women, maximum,"},
+    "4": {"text": "168 mm.; minimum, 138 mm.; average, 152 mm. The cephalic index of the"},
+    "5": {"text": "men is, maximum, 96; minimum, 75; average, 82: of the women, maximum,"},
+    "6": {"text": "88; minimum, 74; average, 81.8."},
+    "7": {"text": "The Chukchee are well built and healthy, though rather heavy; so that"},
+    "8": {"text": "the saddle-reindeer bought from the Lamut frequently prove too weak for"},
+    "9": {"text": "their new masters. Nor are the Chukchee as nimble of foot as are the Lamut"},
+    "10": {"text": "hunters. Stout people, however, are rare. I met only one who was rather"},
+    "11": {
+      "text": "portly, and on this account he received the nickname Um-Kutuˊwg̣i; i. e.,",
+      "resolved": "Kutuˊwg̣i = K+u+t+u + stress U+02CA + w + g+U+0323 + i",
+      "note": "Tier-1 nickname. Stress ˊ (U+02CA) after \"Kutu\", g carries dot below (U+0323), confirmed at 4x against machine text's straight apostrophe substitute; no plain g anywhere on this line to contrast against but the dot is plainly visible under g in both occurrences (lines 11 and 12)."
+    },
+    "12": {
+      "text": "“Stout Kutuˊwg̣i.”",
+      "resolved": "Kutuˊwg̣i = K+u+t+u + stress U+02CA + w + g+U+0323 + i",
+      "note": "Same Tier-1 nickname repeated in a direct quote; curly quotes per §1/§5.6. Dot below g confirmed at 4x, same as line 11."
+    },
+    "13": {"text": "The hands and feet, as with all tribes of Arctic Asia, are small. The"},
+    "14": {"text": "young men of the Reindeer division sweat copiously upon slight exertion, —"},
+    "15": {"text": "for instance, while running about the herd, — and on this account the Reindeer"},
+    "16": {
+      "text": "Chukchee call themselves, half facetiously, “the sweating-people” (gɪʟ̣oˊta-raˊmkɪn).",
+      "resolved": "gɪʟ̣oˊta-raˊmkɪn = g + ɪ U+026A + ʟ U+029F + U+0323 + o + stress U+02CA + t + a + hyphen + r + a + stress U+02CA + m + k + ɪ U+026A + n",
+      "note": "Tier-1 self-designation, hyphenated compound with one stress mark per member (cf. keying_spec.md §5.1's ᵋy-qaˊa-raˊmkɪt pattern for two stresses in one hyphenated compound — two roots, two stresses is not a culminative-stress violation). Leading g confirmed bare (no dot below) at 4x, contrasted against the dotted g in wg̣i on lines 11/12 on the same page. The lateral after ɪ is small-cap ʟ with dot below (ʟ̣, §2.2's four-lateral series l/ḷ/ʟ/ʟ̣), confirmed at 4x."
+    },
+    "17": {"text": "Many of the women are clumsily shaped, with short waists, and legs out of"},
+    "18": {"text": "proportion to the rest of their bodies. Some of the Chukchee have consider-"},
+    "19": {"text": "able physical strength, especially the reindeer-breeders, who have a superior"},
+    "20": {
+      "text": "diet. I saw men who were able to carry a whole reindeer-carcass on their",
+      "note": "Machine text (mz/ocr) read this as \"carçass\" with a spurious cedilla; confirmed at 4x it is plain \"carcass\", ordinary c."
+    },
+    "21": {"text": "backs for a quarter of a mile, or lift a great stone about two hundred pounds"},
+    "22": {"text": "in weight. The younger Chukchee are continually bent on increasing their"},
+    "23": {"text": "physical powers by lifting and carrying stones, by running foot-races for long"},
+    "24": {"text": "distances, etc. The Maritime Chukchee and the Eskimo even have special"},
+    "25": {"text": "lifting-stones for each man. These are picked up among the crumbling rocks,"},
+    "26": {"text": "and are usually cylindrical in shape, with smooth surfaces. One of my European"},
+    "27": {"text": "fellow-travellers, however, was able to surpass all the men of the villages"},
+    "28": {"text": "between Mariinsky Post and Indian Point in a hand-pulling contest."},
+    "29": {"text": "The cheek-bones of the Chukchee are much less prominent than those"},
+    "30": {"text": "of the Tungus or Yakut; their noses are often large, well-shaped, and even"},
+    "31": {"text": "aquiline, though noses with the low Mongolian bridge are also frequently met"},
+    "32": {"text": "with, especially among the women."},
+    "33": {"text": "Many Chukchee have faces that are clumsy in outline, flat skulls, and"},
+    "34": {"text": "low straight foreheads, while the lower part of the face is disproportionately"},
+    "35": {
+      "text": "large and strong.¹ A handsome head is frequently compared to a round",
+      "note": "Footnote reference marker, superscript ¹ (U+00B9) confirmed raised above baseline at 4x, per §2.10 — never the ASCII digit."
+    },
+    "36": {"text": "grassy hummock. In their tales, man is sometimes called “hummocky-head.”"},
+    "37": {
+      "text": "¹ Compare Nelson, pp. 27, 28.",
+      "note": "Footnote opener, superscript ¹ (U+00B9) confirmed raised at 4x, pairs with the reference on line 35 per §2.10."
+    },
+    "38": {"text": "[33]"},
+    "39": {"text": "5—JESUP NORTH PACIFIC EXPED., VOL. VII."}
+  },
+  "contamination": {"blind": true}
+}

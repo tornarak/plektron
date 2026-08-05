@@ -142,11 +142,11 @@ non-zero count means a human has already said this line is short.
 **This usually costs you no image at all.** The commonest case by far is a folio,
 and the whole-page composite you already opened for orientation shows it: the
 number is in the margin, in the clear, and the ruling has told you which line it
-belongs to. Read it there. `ocr zoom --only <that index> --margins` is the
-fallback for when the composite does not settle it — a fragment too small to call,
-or a band that is not a folio — and not a step to take by reflex. A contact sheet
-will not do it, since sheets crop to the line box and the whole point is that the
-ink is outside it.
+belongs to. Read it there. **A contact sheet works too** — every crop runs well
+past its box, far enough that a strangled folio comes out whole rather than cut,
+so the fact that the ink sits outside the box does not put it outside the
+picture. `ocr zoom --only <that index>` is the fallback for when neither settles
+it, and not a step to take by reflex.
 
 Treating the two alike is how `1-073` nearly lost a folio: line 1's box is 11 px
 and holds `5`, the page prints `51`, and the ruling saying so was sitting in the
@@ -194,8 +194,8 @@ all.** A folio whose box strangles it — 11 px of a two-digit number — still 
 an index, and you key the **full number** into it: a line's extent is not what
 makes it that line, its position is, and the box is an identity, an anchor and a
 delimiter rather than a measurement. See the `RunningTitleZone` rules below for
-the tells (under ~30 px is clipping; go to `--margins`). What follows is the
-other case, where there is no index at all.
+the tells (under ~30 px is clipping, and the crop shows you the whole number
+anyway). What follows is the other case, where there is no index at all.
 
 **The same rule covers printed text you find with no line index to hold it, and
 that case has actually gone wrong.** A line's `text` is what is inside *that
@@ -338,10 +338,11 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
    line's width: `23@60` centres a crop on a mark two-thirds along and asks you
    for one number, not two. **`@0` is the head of the line and `@100` the tail,
    exactly, whatever its length** — a footnote opener is `42@0`, a trailing
-   footnote reference `12@100`, a left- or right-set folio `44@0` or `44@100`
-   with `--margins` — so the edges never ask you to estimate anything. The crop
-   is widened to a full strip and snapped out to whitespace, so it will not cut
-   the word: you do not pad, and you do not re-aim.
+   footnote reference `12@100` — so the edges never ask you to estimate anything.
+   The crop is widened to a full strip and snapped out to whitespace, and it runs
+   well past the line's box on both sides, so it will not cut the word and will
+   not cut a folio its box was too narrow for: you do not pad, and you do not
+   re-aim.
 
    **The span form `@LO-HI` exists and you should almost never reach for it.** A
    point asks you for one number; a range asks for two, about a word whose extent
@@ -365,9 +366,11 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
    reads: write the actual doubt ("dot under g, last word of 23"), never "check
    the mark".
 
-   Add `--margins` ONLY when the doubt is in the margin (a folio or list number
-   the line box may exclude); it widens every selected line to the PrintSpace
-   and costs an extra strip apiece. Usually omit it.
+   There is no flag for "show me the margin too", and there was: it widened the
+   line to the whole sheet, which silently redefined what `@P` was a percentage
+   *of*, so the aim that would have hit a folio became unguessable and three
+   readers in one batch spent six and seven crops discovering that. The padding
+   is unconditional now and covers the case that flag existed for.
 
 **Read the whole page image once for orientation** before any of this — where the
 running title, folio, footnotes and any figure sit. **ALTO order is not reading
@@ -479,21 +482,20 @@ why.
   four zooms on the same slot in the same batch. Nothing about a folio is a Tier-1
   identity, so there is no class here that needs a second look by default.
 
-  **If the composite genuinely does not settle it, aim at the margin, not across
-  the box.** A folio sits hard against the left or the right, so it is `N@0` or
-  `N@100` with `--margins` — one call, and a second only if you guessed the wrong
-  side. Both readers above walked the box in narrow steps instead (`@85`, then
-  `@95`, then further), and both said in their own reports afterwards that one
-  edge-aimed call would have done it. Which side a folio takes is a property of the
-  leaf you cannot derive from this page, so do not try, and do not treat a side as
-  wrong — look at one, then the other.
+  **If it genuinely does not settle it, `ocr sheets --only <that index>` is the
+  next step and it is enough.** Every crop runs well past its box, so a folio
+  whose box holds 12 px of a 70 px number still comes back whole. This used to be
+  false — the pad was a rounding allowance, the sheet showed half a digit, and a
+  reader seeing half a digit reasonably concluded something was wrong and started
+  hunting. It is fixed in the renderer rather than in your technique.
 
   Two mechanical tells, **both about the `RunningTitleZone` folio and neither about
   the bracketed quire-mark**. **A folio box under about 30 px wide is clipping the
   number**: the pages read correctly in the `1-031`..`1-036` batch had boxes 65–76
-  px, and both pages misread had 19–20 px. On a box that narrow go to `--margins` —
-  and know that a margin-widened crop of a clipped box is exactly where a printed
-  divider rule reads as a leading `1` and a tight kern reads as a gap. `1 3` was
+  px, and both pages misread had 19–20 px. On a box that narrow, key the whole
+  number the crop shows you, not the fragment the box bounds — and know that a
+  clipped folio is exactly where a printed divider rule reads as a leading `1` and
+  a tight kern reads as a gap. `1 3` was
   `13`, `115` was `15`; both happened here. And **the composite writes its own line
   index beside every band**, which next to a narrow marginal folio is a two-digit
   number sitting beside a two-digit number: `1-039` and `1-047` both had to work out

@@ -326,7 +326,7 @@ writes the overlay, and geometry only.
 **Reads** the `--store` store, or the view, `gt/lines/_ink_exempt.json`.
 **Writes** —
 **Exit** always 0.
-**Note** **`annexed` is the count of ruled bands a human has said this line's box is short of** — a `covered_by` ruling naming this index, non-zero meaning the line is *printed wider than its box* and `ocr zoom --margins` is where the rest of it is. It is on the line because that is where it is needed: the ruling lives on the band and reads off `ocr gaps`, but a reader keys from this table and crops from `sheets`/`zoom`, so the one view that mattered was the one that stayed silent. `1-073` line 1 is 11 px wide and holds `5` where the page prints `51`; its reader recovered the second digit from the under-30px strangulation heuristic alone, while the human ruling saying the same thing sat unread.
+**Note** **`annexed` is the count of ruled bands a human has said this line's box is short of** — a `covered_by` ruling naming this index, non-zero meaning the line is *printed wider than its box*, so key the whole of what the paper prints there. `PAD_X` is sized to carry it: every crop runs past the box far enough to show a strangled folio whole, which is why there is no flag to ask for that and no aim to guess. It is on the line because that is where it is needed: the ruling lives on the band and reads off `ocr gaps`, but a reader keys from this table and crops from `sheets`/`zoom`, so the one view that mattered was the one that stayed silent. `1-073` line 1 is 11 px wide and holds `5` where the page prints `51`; its reader recovered the second digit from the under-30px strangulation heuristic alone, while the human ruling saying the same thing sat unread.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds
@@ -385,7 +385,6 @@ writes the overlay, and geometry only.
 **Note** **no `--all`, deliberately.** Crops are expensive in time and disk and are written per page by a pass that is working on that page; a corpus form would be a great many bytes nobody asked for. `zones delete` and `ocr sheets` carry the same declared absence, and `test_cli_surface.py` holds all six by name.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
---margins   widen to the PrintSpace margins [off]
 --out PATH  write elsewhere; also suppresses the page.png link [review/PP-NNN/crops]
 --root --json --toon --pager
 ```
@@ -447,7 +446,7 @@ Every page is checked before any is queued, and its block is rendered and thrown
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/sheets/` (derived), or `--out`.
 **Exit** always 0; exit 2 for `--only` or `--out` with more than one ref.
-**Note** no `--all`, for `crops`' reason. `--only` is what makes this the middle rung rather than an all-or-nothing first read, and it carries `zoom --only`'s rule: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page. Sheets are named for the lines on them (`lines-11-14.png`, `linesm-` under `--margins`), so two selections over one page cannot overwrite each other and an overlapping one reuses what it agrees with.
+**Note** no `--all`, for `crops`' reason. `--only` is what makes this the middle rung rather than an all-or-nothing first read, and it carries `zoom --only`'s rule: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page. Sheets are named for the lines on them (`lines-11-14.png`), so two selections over one page cannot overwrite each other and an overlapping one reuses what it agrees with.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --only SPEC   line indices, e.g. 7,20,22-26 [every line]
@@ -455,7 +454,6 @@ Every page is checked before any is queued, and its block is rendered and thrown
 --height N    max sheet height in px [1960 — the tallest a ~1900px-wide sheet can
               be and still fit the 4784-visual-token ceiling without being
               resampled on delivery]
---margins     widen to the PrintSpace margins [off]
 --out PATH    write elsewhere [review/PP-NNN/sheets]
 --root --json --toon --pager
 ```
@@ -495,9 +493,9 @@ This exists because clipping does not cost a bad image, it costs a *re-call*. `2
 
 **The edges are exact, and that retires the guess entirely for the two commonest doubts.** A span is slid rather than shrunk at a line boundary, so `N@0` is the head of the line and `N@100` its tail *whatever the line's length* — no estimate, no re-aim. A footnote reference marker is `@100`; its opener at the foot of the page, and a folio set hard against the left margin, are `@0`. These are the positions the pass returns to on nearly every page, and until they were written down readers were arriving at them by trial: `1-039`'s folio took five crops, four of them margin-widened, on a line whose number sits at one end of a 62px box.
 
-**`@LO-HI` names a percentage of the line's width, and it is where the saving at this rung is.** A doubt is about a mark, not a line, and a mark is a few percent of a full measure — `3-063`'s footnote openers sat in the first characters of their lines, so `42-43` rendered four strips apiece of which three bore on nothing, where `42-43@0-25` renders one each. Percentages, not pixels: the caller is reading a report, not measuring a raster, and a pixel span would mean something different under `--margins`. One line given two different spans is an error rather than a merge, since the hull is the whole-line render the span existed to avoid. `ocr sheets` refuses a span outright — it shows whole lines and has nowhere to honour one.
+**`@LO-HI` names a percentage of the line's width, and it is where the saving at this rung is.** A doubt is about a mark, not a line, and a mark is a few percent of a full measure — `3-063`'s footnote openers sat in the first characters of their lines, so `42-43` rendered four strips apiece of which three bore on nothing, where `42-43@0-25` renders one each. Percentages, not pixels: the caller is reading a report, not measuring a raster, and a pixel span would demand a measurement nobody has taken. One line given two different spans is an error rather than a merge, since the hull is the whole-line render the span existed to avoid. `ocr sheets` refuses a span outright — it shows whole lines and has nowhere to honour one.
 
-Each sheet is named for the lines it holds and the settings that drew them — `zoom2m-26-27.png` is lines 26–27 at `--zoom 2 --margins`, `s` marks `--smooth`, and a line whose strips straddle two sheets takes a `-b` suffix. **Two selections over one page therefore cannot overwrite each other**, and an overlapping selection reuses the sheet it already agrees with. They could: sheets were numbered `-001` upward per call, so a second `--only` replaced the first's images while the first's returned index went on naming them — three parallel calls yielded one call's pictures and three reports of them. Finer overrides (`--window`, `--overlap`, `--client-w`, `--height`) are *not* in the name and do reuse it.
+Each sheet is named for the lines it holds and the settings that drew them — `zoom2-26-27.png` is lines 26–27 at `--zoom 2`, `s` marks `--smooth`, and a line whose strips straddle two sheets takes a `-b` suffix. **Two selections over one page therefore cannot overwrite each other**, and an overlapping selection reuses the sheet it already agrees with. They could: sheets were numbered `-001` upward per call, so a second `--only` replaced the first's images while the first's returned index went on naming them — three parallel calls yielded one call's pictures and three reports of them. Finer overrides (`--window`, `--overlap`, `--client-w`, `--height`) are *not* in the name and do reuse it.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --only SPEC   lines, e.g. 7,20,22-26; append @P to centre a crop at a percentage
@@ -508,7 +506,6 @@ Each sheet is named for the lines it holds and the settings that drew them — `
 --client-w N  px the reading client shows per image [1450]
 --overlap N   px shared by consecutive strips [60]
 --height N    max sheet height in px [1600]
---margins     widen to the PrintSpace margins [off]
 --smooth      Lanczos instead of nearest-neighbour [off]
 --out PATH    write elsewhere [review/PP-NNN/zoom]
 --root --json --toon --pager

@@ -20,7 +20,6 @@ two-sided, and both sides are tested here — different content never shares a n
 identical content always does.
 """
 
-import itertools
 
 import pytest
 
@@ -77,15 +76,18 @@ def test_a_spec_typed_two_ways_is_one_request():
 
 @pytest.mark.parametrize("base", ["zoom2", "zoom4", "lines"])
 def test_pixel_changing_flags_are_in_the_name(base):
-    """`--margins` and `--smooth` change what the image shows, not which lines.
+    """`--smooth` changes what the image shows, not which lines.
 
-    Without them in the name, a margins run and a plain run over the same lines are
+    Without it in the name, a smoothed run and a plain run over the same lines are
     one filename holding two different pictures — the original bug with the lines
     held constant instead of the selection.
+
+    `--margins` was the other such flag and is gone: the pad that made it necessary
+    is unconditional now, so there is one rendering of a line and nothing to
+    distinguish in its name.
     """
-    variants = {names_for(base, [["11.0"]], margins=m, smooth=s)[0]
-                for m, s in itertools.product((False, True), repeat=2)}
-    assert len(variants) == 4
+    variants = {names_for(base, [["11.0"]], smooth=s)[0] for s in (False, True)}
+    assert len(variants) == 2
 
 
 def test_zoom_level_separates_names():
@@ -309,15 +311,22 @@ def test_capacity_counts_the_padded_strip_and_the_snapped_crop():
     Measured against a real render of `1-043` (1770 px median measure): 3 strips
     for a whole line at 2x and 7 at 4x, 2 strips for a point at either, 4 points
     to a sheet at 2x and 2 at 4x.
+
+    `covers_pct` counts the **padded** crop for the same reason the strip height
+    does — `line_crops` adds `PAD_X` either side, and every percentage a caller
+    gives is a share of what was rendered. Counting the bare ALTO box was the same
+    error the height once had, in the same direction: it claimed 38% where the
+    render gives 36.
     """
-    from harness.lines import PAD_BOTTOM, PAD_TOP, ZOOM_SHEET_H, zoom_capacity
+    from harness.lines import PAD_BOTTOM, PAD_TOP, PAD_X, ZOOM_SHEET_H, zoom_capacity
 
     widths, heights = [1770] * 9, [61] * 9
     at = {c["zoom"]: c for c in zoom_capacity(widths, heights)}
     assert (at[2]["full_strips"], at[4]["full_strips"]) == (3, 7)
     assert (at[2]["point_strips"], at[4]["point_strips"]) == (2, 2)
     assert (at[2]["points_per_sheet"], at[4]["points_per_sheet"]) == (4, 2)
-    assert (at[2]["covers_pct"], at[4]["covers_pct"]) == (38, 19)
+    assert (at[2]["covers_pct"], at[4]["covers_pct"]) == (36, 18)
+    assert at[2]["measure_px"] == 1770 + 2 * PAD_X
     # The padding is the whole of the second correction: drop it and 2x claims 13.
     bare = ZOOM_SHEET_H // (61 * 2) // at[2]["point_strips"]
     assert bare > at[2]["points_per_sheet"]

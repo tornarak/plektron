@@ -1035,8 +1035,9 @@ def build_alto(ref: str, zones: list[dict], size: tuple[int, int],
     carries none either.
 
     `PrintSpace` is the whole page, matching every other store in the repo — it
-    carries no information and `lines --margins` already treats it as the escape
-    hatch it is. Page dimensions are the raster's own, so coordinates are in raster
+    carries no information, which is why nothing reads it any more: the crop
+    padding that once needed it is a constant now. Page dimensions are the
+    raster's own, so coordinates are in raster
     space and the ALTO→raster scale is 1.0 *for files written here*; readers still
     go through `figures._scale_for`, since a file may not have been.
     """

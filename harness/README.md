@@ -690,8 +690,12 @@ columns and neither has to say so. Four properties bind callers:
   position was replaced, not supplemented — see `detectors.detect_all`.
 - **A line polygon can exclude printed text.** `1-074` prints `5.` and `9.` outside
   their boxes; `1-073` puts its `5.` and its folio outside *every* box on the page.
-  The omission is horizontal, so vertical padding never reaches it — `--margins`
-  widens to the PrintSpace, which is where the excluded material sits.
+  The omission is horizontal, so vertical padding never reaches it — `PAD_X` is
+  sized for it, wide enough that a box strangling a folio still renders the whole
+  number. It was a `--margins` flag widening to the `PrintSpace`, which failed
+  twice over: it made the ordinary case conditional on asking, and since the
+  widened crop spans the sheet it silently redefined what a `@P` span was a
+  percentage of, so the aim that would have hit the folio became unguessable.
 - **Reading `String/@CONTENT` out of `gt/fig/` returns `""` for every zone.** Not an
   error — nothing, which is worse. Caption text comes from `figures.readings()`.
 - **The three lookalike tables differ by scope and must not be merged.** See

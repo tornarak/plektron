@@ -29,10 +29,11 @@ a number 500px outside it. Text right, geometry right, only the pairing false �
 one defect no text-level check can see, because nothing disagrees with anything.
 
 **How to apply:** the whole-page composite you already opened for orientation shows
-the folio in the ordinary case, and costs nothing. `--margins` on the title line is
-the fallback when it does not. Beyond that, `ocr gaps` reports the band with
+the folio in the ordinary case, and costs nothing. A contact sheet of that line is
+the fallback — crops run well past the box, so a strangled folio comes back whole
+and there is no flag to reach for. Beyond that, `ocr gaps` reports the band with
 measured geometry — quote it if it is there, and say `gaps` was silent if it is not.
 
-Distrust digits recovered from a margin-widened crop of an empty box: that is
-exactly where a rule, a speck or a bleed reads as type. `1-035`'s note once claimed
-a folio of `115` in a run whose neighbours read 12–16.
+Distrust digits recovered from a crop of a near-empty box: that is exactly where a
+rule, a speck or a bleed reads as type. `1-035`'s note once claimed a folio of
+`115` in a run whose neighbours read 12–16.

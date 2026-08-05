@@ -1,0 +1,38 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "32", "note": "Folio, RunningTitleZone. Line's own box (hpos 762, width 21) covers only part of the ink; gaps reports it exempted/covered by this line's index. Composite and margin-widened 4x zoom (1@30, 1@18-42 strip) together show both digits clearly: '3' then '2'. Keyed the full number per the covered-band rule, not the box-clipped fragment (machine text held only '8')."},
+    "2": {"text": "Chukchee on the Arctic shore, 1600, which should be increased to 2000,"},
+    "3": {"text": "because I omitted in my enumeration some of the minor settlements the names", "note": "Machine text appended a trailing comma after 'names'; the print has none at the line-wrap (sheet zoom, lines 2-9)."},
+    "4": {"text": "of which I obtained, but which I was unable to identify with villages mentioned"},
+    "5": {"text": "by Lieut. Nordquist. Lieut. Nordquist arrives at the same number of inhabitants,"},
+    "6": {"text": "but the number of houses in his list are more than 400, as compared with"},
+    "7": {"text": "266 enumerated by me. His estimate is based, according to his own statement,"},
+    "8": {"text": "on the assumption of only five persons to a house, whereas my figure is six", "note": "A small curved mark sits below-left of the 's' in 'six' (4x zoom, 8@88). 'six' is plain English with no licensed sub-s mark in the inventory, and the mark does not sit under the letter cleanly the way a genuine diacritic would - read as a stray ink speck/smudge, per keying_spec.md §5.9 ('key the letter as printed... let a human rule'). Keyed 'six' plain; flagging for adjudication rather than proposing an uncatalogued codepoint."},
+    "9": {"text": "and a half. With an equal average of inmates to a house, his census of the"},
+    "10": {"text": "population on the Arctic shores would exceed mine by 600. It seems probable,"},
+    "11": {"text": "therefore, as Mr. Gondatti asserts, that the maritime population has diminished"},
+    "12": {"text": "of late years. His assumption, however, that the Arctic shore is more thickly"},
+    "13": {"text": "populated than the Pacific, seems to me unfounded."},
+    "14": {"text": "The total number of the Chukchee amounts to 12,000, rather more than"},
+    "15": {"text": "less, of which three fourths are reindeer-breeders, and only one fourth maritime."},
+    "16": {"text": "The decrease in the maritime population may be partly accounted for by the"},
+    "17": {"text": "fact that each year many families turn from maritime pursuits to reindeer-"},
+    "18": {"text": "breeding."},
+    "19": {"text": "Several villages have nearly or altogether disappeared, because all the"},
+    "20": {"text": "inhabitants have gone inland and have turned reindeer-breeders. These are,"},
+    "21": {"text": "on the Arctic coast, besides those of Kuluˊči Bay, mentioned above, the",
+           "resolved": "Kuluˊči: Kulu + ˊ (U+02CA stress, postposed to u) + či (c + U+030C caron)",
+           "note": "Raised mark after 'Kulu' read as stress U+02CA (keying_spec.md §4: a raised mark defaults to stress, never apostrophe). Confirmed at 4x (21@45)."},
+    "22": {"text": "villages Reᵋn, Ot-ᴇnmɪtaˊhɪn, Paloˊnnan; on the Pacific coast, Kuˊkun, Čeˊnlin,",
+           "resolved": "Reᵋn: R + e + ᵋ (U+1D4B laryngeal superscript, glottalization) + n. Ot-ᴇnmɪtaˊhɪn: ᴇ = U+1D07 small-cap E; ɪ = U+026A small-cap dotless I (x2); ˊ = U+02CA stress, postposed to 'a'. Paloˊnnan: ˊ = U+02CA, postposed to 'o'. Kuˊkun: ˊ = U+02CA, postposed to first 'u'. Čeˊnlin: Č = C+U+030C; ˊ = U+02CA, postposed to 'e'.",
+           "note": "The superscript after 'Re' was read at 4x (22@12) as a closed loop with a tail, not a straight tick - matches the laryngeal ᵋ (U+1D4B) rather than 'g', per the standing lesson that this mark is the one most often misread as an uncatalogued superscript g (agent memory: the-two-superscript-marks). All raised comma-shaped marks elsewhere on the line read as stress U+02CA per §4's default. Small-cap ᴇ/ɪ confirmed against the body-text capital 'O' of 'Ot' on the same word (clearly smaller) at 4x (22@8-30)."},
+    "23": {"text": "Wuˊkwên, also nearly one-half of the inhabitants of the large village ᴇˊnmɪlɪn,",
+           "resolved": "Wuˊkwên: ˊ = U+02CA postposed to first 'u'; ê = e + U+0302 circumflex. ᴇˊnmɪlɪn: ᴇ = U+1D07 small-cap E; ˊ = U+02CA postposed to ᴇ; ɪ = U+026A (x2).",
+           "note": "Confirmed at 4x (23@85, 23@0-20)."},
+    "24": {"text": "and others."}
+  },
+  "contamination": {
+    "blind": true
+  }
+}

@@ -99,10 +99,7 @@ STORE_HELP = ("which store to read: 'gt' is what a human has been through, 'mz' 
               "what the recognizer read. Omit to read through the ocr/ view, which "
               "resolves per page to the human file where there is one")
 STORES = {"gt": "gt/ocr", "mz": "mz/ocr"}
-MARGINS_HELP = ("widen to the PrintSpace margins — a line polygon can exclude "
-                "printed text that belongs to the line, and what it excludes "
-                "sits in the margin (list numbers, the folio)")
-OUT_HELP = ("write the images somewhere other than the page's own review/PP-NNN/ "
+OUT_HELP =("write the images somewhere other than the page's own review/PP-NNN/ "
             "subdirectory — for a one-off comparison, not for the pass, whose "
             "files the other actions expect to find in the default place")
 
@@ -192,7 +189,6 @@ def register(cli):
     # nobody asked for. `--out` is why they still need `one_page_only`: with a
     # second ref and one destination, the second page silently overwrote the first.
     p = _store(refs_arg(add("crops", help="one PNG per line, into review/PP-NNN/crops/")))
-    opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
     opt(p, "--out", type=click.Path(path_type=Path), default=None, help=OUT_HELP)
 
     p = refs_arg(add("queue", help="validate a batch of pages and write it to the "
@@ -226,7 +222,7 @@ def register(cli):
     opt(p, "--gutter", type=int, default=NUMBER_GUTTER,
                    help=f"px added left of the page for the labels (default "
                         f"{NUMBER_GUTTER}) — added, not overlaid, so a label never "
-                        "covers the margin material --margins exists to recover")
+                        "covers the marginal material a crop's padding recovers")
     opt(p, "--font", "font_size", type=int, default=NUMBER_FONT,
                    help=f"label px in the written image (default {NUMBER_FONT}); a "
                         "full page is delivered at roughly 0.64x whatever is sent, "
@@ -252,7 +248,6 @@ def register(cli):
     opt(p, "--height", "sheet_h", type=int, default=LINE_SHEET_H,
                    help=f"max contact-sheet height in px (default {LINE_SHEET_H}); "
                         "fewer, fuller sheets for the same lines")
-    opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
     opt(p, "--out", type=click.Path(path_type=Path), default=None, help=OUT_HELP)
 
     refs_arg(add("calls", help="every image this page's reading has opened, in "
@@ -311,7 +306,6 @@ def register(cli):
     opt(p, "--height", "sheet_h", type=int, default=ZOOM_SHEET_H,
                    help=f"max sheet height in px (default {ZOOM_SHEET_H}) — a "
                         "taller sheet gets fitted to the display, undoing the zoom")
-    opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
     opt(p, "--smooth", is_flag=True,
                    help="Lanczos instead of nearest-neighbour: better for "
                         "comparing letterforms, worse for deciding whether a "
@@ -483,8 +477,8 @@ def run_lines(a) -> int:
         # The ruling lives on the band and is read off `ocr gaps`; a reader keys
         # from this table, and without the marker the one view that matters is the
         # one that stays silent. `annexed` is the count of ruled bands naming this
-        # index, so a non-zero value means: the printed line is wider than its box
-        # and `--margins` is where the rest of it is.
+        # index, so a non-zero value means: the printed line is wider than its box,
+        # and every crop's padding already carries the rest of it.
         annexed = annexed_bands(r, a.root)
         for rec in recs:
             rec["annexed"] = len(annexed.get(int(rec["index"]), []))
@@ -592,10 +586,8 @@ def run_crops(a) -> int:
         for r in ptrack(refs, tick):
             _page_link(a, r)
             pairs.append((r, write_line_crops(
-                r, a.out or crops_dir(r, a.root), _alto_dir(a), a.root,
-                margins=a.margins)))
-            log_call(r, "crops", a.root, margins=a.margins,
-                     images=len(pairs[-1][1]))
+                r, a.out or crops_dir(r, a.root), _alto_dir(a), a.root)))
+            log_call(r, "crops", a.root, images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
     return 0
 
@@ -705,10 +697,10 @@ def run_sheets(a) -> int:
             _page_link(a, r)
             pairs.append((r, write_line_sheets(
                 r, a.out or sheets_dir(r, a.root), _alto_dir(a), a.root,
-                per_sheet=a.per_sheet, margins=a.margins, sheet_h=a.sheet_h,
+                per_sheet=a.per_sheet, sheet_h=a.sheet_h,
                 only=parse_selection(a.only) if a.only else None)))
             log_call(r, "sheets", a.root, only=a.only or "all",
-                     margins=a.margins, images=len(pairs[-1][1]))
+                     images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
     return 0
 
@@ -728,9 +720,9 @@ def run_zoom(a) -> int:
                 zoom=a.zoom, window=a.window, overlap=a.overlap,
                 sheet_h=a.sheet_h, client_w=a.client_w,
                 alto_dir=_alto_dir(a), root=a.root,
-                margins=a.margins, smooth=a.smooth)))
+                smooth=a.smooth)))
             log_call(r, "zoom", a.root, reason=a.reason, zoom=a.zoom,
-                     only=a.only or "all", margins=a.margins, smooth=a.smooth,
+                     only=a.only or "all", smooth=a.smooth,
                      images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
     # The trade, in this page's numbers rather than in prose. Emitted on every

@@ -170,9 +170,7 @@ assertion inside it could never catch the case it exists for.
   one.
 - **The zoom ceiling, numerically.** "`--zoom 2` by default, never above 4, all
   lines in one call." An agent left to its own judgement escalates, and past 4×
-  there is no source detail left to buy. `--margins` is *not* a default — see the
-  template; it costs a strip on every selected line and answers a question about
-  the margin, which most doubts are not.
+  there is no source detail left to buy.
 - **A settled rule is not a doubt.** Say plainly: where `keying_spec.md` states a
   closed rule, apply it and cite it; the raster is for what the spec does not
   decide. `3-063`'s reader zoomed twice to adjudicate straight-vs-curly quotes
@@ -411,8 +409,10 @@ was restating the ref four times over to say things derivable from it.
     So: name points, not ranges. A point is one number and the renderer widens and
     snaps it for you; a range is two numbers about a word whose extent you cannot
     see from a composite, and the second one is the one that goes wrong. `@0` and
-    `@100` are the head and tail of a line exactly, whatever its length — a folio
-    is at one margin or the other, so it is `N@0` or `N@100` with `--margins`, and
-    finding it should never take more than two calls.
+    `@100` are the head and tail of a line exactly, whatever its length, so a
+    footnote opener is `N@0` and a trailing reference `N@100` — neither asks you
+    to estimate. Every crop also runs well past its line's box, so a folio whose
+    box strangles it still comes back whole: read it off the composite or a sheet
+    and spend nothing on it.
 
 <!-- prompt:end -->
