@@ -102,7 +102,7 @@ case "$TOOL" in
       */review/*/"$PROPOSAL"|review/*/"$PROPOSAL") allow "groundtruth-reader authoring its page's proposal" ;;
       *"$MEMORY"*) allow "groundtruth-reader writing its own memory" ;;
     esac
-    echo "Blocked: you write exactly two places — review/PP-NNN/proposal.json, and your own memory under $MEMORY. That is the whole deliverable: gt/ocr/ is off-limits by any route, decision.json is a human's, and nothing in your loop writes page geometry — a band you judge to be a dropped line is REPORTED, in the proposal's segmenter_missed block, never repaired." >&2
+    echo "Blocked: you write exactly two places — review/PP-NNN/proposal.json, and your own memory under $MEMORY. That is the whole deliverable: gt/ocr/ is off-limits by any route, decision.json is a human's, and nothing in your loop writes page geometry — a band you judge to be a dropped line is REPORTED IN YOUR REPORT, never repaired and never recorded in the proposal." >&2
     exit 2 ;;
 esac
 
@@ -111,11 +111,42 @@ COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 
 # One plain invocation: no chaining, substitution, or redirection. A pipe or
 # `&&` is how an allowed verb smuggles a forbidden one.
-case "$COMMAND" in
-  *';'*|*'&&'*|*'||'*|*'|'*|*'`'*|*'$('*|*'>'*|*'<'*)
-    echo "Blocked: run one plain command at a time — no pipes, chaining, substitution or redirection. Your verbs emit TOON down a pipe already; read their output whole." >&2
-    exit 2 ;;
-esac
+#
+# **Scanned with quote state, not as a substring.** The test used to be a `case`
+# over the raw string, which cannot tell an operator from the same character
+# inside a quoted argument — and this corpus puts them there constantly: the
+# gazetteer prose a reader keys into `--value` is full of semicolons ("Register,
+# 4 houses, 28 inhabitants; Nordquist, 9 houses"), so ordinary page text was
+# refused as "chaining". Readers wrote that up twice as a fact about the tool and
+# worked around it by rewriting Bogoras's punctuation out of their notes, which is
+# a guard corrupting the data it exists to protect.
+#
+# Single quotes are literal, so nothing inside them can execute. Double quotes
+# still expand, so `$(` and a backtick stay forbidden there; a bare `;` does not.
+# Outside quotes everything is an operator and everything is refused.
+BAD=$(printf '%s' "$COMMAND" | awk '
+  BEGIN { q = "" }
+  {
+    n = length($0)
+    for (i = 1; i <= n; i++) {
+      c = substr($0, i, 1)
+      if (q != "\x27" && c == "\\") { i++; continue }   # escape, outside '"'"'...'"'"'
+      if (q == "") {
+        if (c == "\x27" || c == "\"") { q = c; continue }
+        if (c ~ /[;|&<>`]/) { print "op"; exit }
+        if (c == "$" && substr($0, i + 1, 1) == "(") { print "sub"; exit }
+      } else if (c == q) {
+        q = ""
+      } else if (q == "\"") {
+        if (c == "`") { print "sub"; exit }
+        if (c == "$" && substr($0, i + 1, 1) == "(") { print "sub"; exit }
+      }
+    }
+  }')
+if [ -n "$BAD" ]; then
+  echo "Blocked: run one plain command at a time — no pipes, chaining, substitution or redirection. Your verbs emit TOON down a pipe already; read their output whole. (Punctuation inside a quoted argument is fine — this fired on an operator outside quotes.)" >&2
+  exit 2
+fi
 
 # The reader's whole legitimate surface, and it is read-only over the stores
 # bar one marker: `claim` is the exception and has to be, since taking a ref off
@@ -127,8 +158,8 @@ esac
 # queue can deal itself a batch, and one that can reconcile is auditing a run it
 # is a subject of. `edit` is absent too — it is a browser editor and a human act,
 # the one that decides whether a band of ink is a dropped line, and a verb in the
-# allowlist is a verb a reader will find a reason to try. A reader reports the
-# band in `segmenter_missed`; it does not settle it.
+# allowlist is a verb a reader will find a reason to try. A reader describes the
+# band in its report; it does not settle it, and it records it nowhere on disk.
 if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
   case "$COMMAND" in
     *--all*)

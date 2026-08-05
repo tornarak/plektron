@@ -20,6 +20,7 @@ identical on the page that prompted it.
 """
 
 import json
+import unicodedata
 
 import pytest
 
@@ -97,3 +98,55 @@ def test_fix_does_not_pair_a_spelled_out_ascii_against_a_real_dangling_mark(
     fix(p)
     after = json.loads(p.read_text(encoding="utf-8"))["lines"]["26"][field]
     assert after == before
+
+
+# --- a precomposed codepoint named in `resolved` ----------------------------
+
+PRECOMPOSED = unicodedata.normalize("NFD", "êlh-aˊᵋttᴀm")
+NAMES_EA = ("ê = U+00EA LATIN SMALL LETTER E WITH CIRCUMFLEX, l, h, hyphen, "
+            "a, U+02CA MODIFIER LETTER ACUTE ACCENT, U+1D4B MODIFIER LETTER "
+            "SMALL OPEN E, t, t, U+1D00 LATIN LETTER SMALL CAPITAL A, m")
+
+
+def test_naming_a_precomposed_letter_is_not_a_mismatch(tmp_path):
+    """U+00EA is how a reader refers to "ê", and the corpus stores it decomposed.
+
+    Compared literally, the named codepoint is *always* absent from an NFD text and
+    the combining mark actually present is *always* unaccounted for — one dangling
+    item on each side, which is precisely the shape `fix()` treats as an
+    unambiguous swap.
+    """
+    assert issues(tmp_path, {"38": {"text": PRECOMPOSED,
+                                    "resolved": NAMES_EA}}) == []
+
+
+def test_fix_does_not_graft_a_precomposed_letter_onto_its_own_base(tmp_path):
+    """The corruption this caused on `1-039` line 38: `êlh-` became `eêlh-`.
+
+    `fix` paired the combining circumflex against the named U+00EA and substituted
+    the precomposed letter into the *mark's* slot, after the base `e` it was meant
+    to have merged with. The reader found it with `codepoints` and worked around it
+    by respelling every `resolved` field as decompositions — a human degrading
+    their own notes to get past a parser.
+    """
+    p = write(tmp_path, {"38": {"text": PRECOMPOSED, "resolved": NAMES_EA}})
+    assert fix(p)["changed"] == []
+    after = json.loads(p.read_text(encoding="utf-8"))["lines"]["38"]["text"]
+    assert after == PRECOMPOSED
+    assert "ê" in after and "eê" not in after
+
+
+def test_fix_writes_nfd_even_when_resolved_names_a_precomposed_target(tmp_path):
+    """A genuine swap whose target is precomposed must not leak NFC into the store.
+
+    The docstring claimed this ("composes the replacement back to NFC-free NFD")
+    for as long as the code did the opposite; only `corpus normalize`, run later
+    and separately, would have caught it.
+    """
+    text = unicodedata.normalize("NFD", "å" + "bc")   # a + ring above
+    p = write(tmp_path, {"7": {"text": text,
+                               "resolved": "U+00EA LATIN SMALL LETTER E WITH "
+                                           "CIRCUMFLEX, b, c"}})
+    fix(p)
+    after = json.loads(p.read_text(encoding="utf-8"))["lines"]["7"]["text"]
+    assert after == unicodedata.normalize("NFD", after)

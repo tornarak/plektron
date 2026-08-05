@@ -20,14 +20,15 @@ CONFIG = "data/lines_config.json"
 # whatever the file happens to list, because a renamed layer would otherwise
 # vanish from the page in silence — the drawing code asks for these by name.
 REQUIRED_LAYERS = (
-    "zone", "line", "band", "band_no_zone", "correction",
-    "correction_selected", "drag", "ruling_line", "ruling_zone")
+    "zone", "line", "line_pick", "band", "band_no_zone", "correction",
+    "correction_selected", "drag", "ruling_line", "ruling_covered",
+    "ruling_zone")
 
 # Likewise: an action the code dispatches on. A config missing one is a key that
 # does nothing, which reads as a broken editor rather than a bad config.
 REQUIRED_ACTIONS = (
-    "save", "delete", "rule_band", "withdraw_ruling", "blot", "list",
-    "zoom_in", "zoom_out", "zoom_fit", "frame_band",
+    "save", "delete", "rule_band", "cover_band", "withdraw_ruling", "blot",
+    "list", "zoom_in", "zoom_out", "zoom_fit", "frame_band",
     "prev_page", "next_page", "cancel")
 
 REQUIRED_VIEW = (

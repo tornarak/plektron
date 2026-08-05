@@ -161,3 +161,30 @@ def test_the_writer_names_no_store(root):
     import inspect
     params = set(inspect.signature(corr.save_lines).parameters)
     assert params == {"ref", "boxes", "root"}
+
+
+def test_a_negative_covered_by_is_refused(tmp_path):
+    """`covered_by` is a line index, and validation is the parser's.
+
+    Cheap, but it is the boundary where a typo becomes a stored claim: the field's
+    whole value is that it names something checkable, and a value that can name no
+    line is a reference that will fail every check for a reason nobody can act on.
+    """
+    from harness.corrections import clean_regions
+
+    with pytest.raises(ValueError, match="covered_by"):
+        clean_regions("1-048", [{"y0": 10, "y1": 40, "note": "x",
+                                 "covered_by": -1}])
+
+
+def test_a_ruling_without_covered_by_stores_no_such_key(tmp_path):
+    """Absence is the disposition, so it must be absent rather than null.
+
+    A `covered_by: null` sitting in the file would read as a covered ruling whose
+    line is unknown — a third state neither the editor nor `covered_faults` has,
+    and the kind of thing that looks like data until something tries to use it.
+    """
+    from harness.corrections import clean_regions
+
+    out = clean_regions("1-048", [{"y0": 10, "y1": 40, "note": "printed rule"}])
+    assert "covered_by" not in out[0]

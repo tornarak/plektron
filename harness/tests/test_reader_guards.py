@@ -108,14 +108,50 @@ def test_gt_everything_else_is_refused(cmd):
     blocked(GT_GUARD, "Bash", command=cmd)
 
 
+@pytest.mark.parametrize("cmd", [
+    # The gazetteer prose this corpus is made of. Both were reported as tool
+    # facts by readers who then rewrote Bogoras's punctuation to get past them.
+    "uv run harness proposal set 1-031 12 --field text --value "
+    "'Register, 4 houses, 28 inhabitants; Nordquist, 9 houses'",
+    'uv run harness proposal set 1-031 12 --field note --value '
+    '"corrected against the raster; the ditto is U+201C"',
+    "uv run harness proposal set 1-031 12 --field text --value "
+    "\"Ai'wan and Ke'rek, both marked\"",
+    "uv run harness proposal replace 1-031 12 --old 'a>b' --new 'a<b'",
+])
+def test_gt_punctuation_inside_a_quoted_argument_is_not_chaining(cmd):
+    """A `;` in a `--value` is page text, not an operator.
+
+    The test was a substring `case` over the raw command, which cannot tell the
+    two apart — so keying an ordinary gazetteer line was refused as chaining, and
+    two separate readers recorded that as a property of the harness. One of them
+    "fixed" it by splitting Bogoras's semicolons into separate sentences, i.e. a
+    guard against smuggling ended up altering the transcription it guards.
+    """
+    allowed(GT_GUARD, "Bash", command=cmd)
+
+
+@pytest.mark.parametrize("cmd", [
+    # Still an operator: outside quotes, or expanding inside double quotes.
+    "uv run harness ocr lines 1-031; rm -rf gt",
+    'uv run harness proposal set 1-031 12 --field note --value "$(cat /etc/passwd)"',
+    'uv run harness proposal set 1-031 12 --field note --value "`id`"',
+    "uv run harness ocr lines 1-031 --store mz \"| head -5\" ; ls",
+])
+def test_gt_an_operator_outside_quotes_is_still_refused(cmd):
+    """Quote-awareness is not permissiveness — single quotes are literal and safe,
+    double quotes still expand, and bare metacharacters are operators."""
+    blocked(GT_GUARD, "Bash", command=cmd)
+
+
 def test_gt_edit_is_not_in_the_surface():
     """Named, because it is left out deliberately and would look like an omission.
 
     `ocr edit` is the human's call on whether a band of ink is a dropped line or
     is not type at all — a browser editor, and a judgement the reading pass is
-    explicitly not asked for. A reader reports the band in `segmenter_missed`; it
-    does not settle it. A verb in the allowlist is a verb a reader will find a
-    reason to try.
+    explicitly not asked for. A reader describes the band in its report; it does
+    not settle it, and it records it nowhere on disk. A verb in the allowlist is a
+    verb a reader will find a reason to try.
     """
     blocked(GT_GUARD, "Bash", command="uv run harness ocr edit 1-031")
 

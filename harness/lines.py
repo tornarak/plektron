@@ -110,6 +110,14 @@ ZOOM = 2
 # laryngeal on one of them. A rule a reader can break is a rule that gets broken,
 # and the sibling pass caps its own zoom for exactly this reason.
 ZOOM_MAX = 4
+# **Two steps, not a range.** A ceiling alone left 1 and 3 legal, and readers used
+# them: 3× as a "pragmatic compromise" that is neither the cheap look nor the
+# decisive one, and 1× as a contact sheet a contact sheet already gives. Neither
+# answers a question the other step does not answer better, so the middle is not a
+# judgement to be exercised — it is a place to hesitate, and hesitation here is
+# what the zoom counts measure. The batch that produced this rule spent 81 and 59
+# zooms on two pages and finished neither, against 7–14 on the three that finished.
+ZOOM_STEPS = (2, 4)
 ZOOM_CLIENT_W = 1450
 ZOOM_OVERLAP = 60
 ZOOM_SHEET_H = 1600
@@ -119,6 +127,64 @@ def zoom_window(zoom: int, client_w: int = ZOOM_CLIENT_W) -> int:
     """Source px per strip such that `zoom`× of it fills the client width exactly."""
     from .figures import LABEL_W
     return max(40, (client_w - LABEL_W - 20) // max(1, zoom))
+
+def zoom_capacity(widths: list[int], heights: list[int] | None = None,
+                  overlap: int = ZOOM_OVERLAP,
+                  client_w: int = ZOOM_CLIENT_W,
+                  sheet_h: int = ZOOM_SHEET_H) -> list[dict]:
+    """What each step costs on *this* page, in strips and in sheets per line.
+
+    A reader choosing a magnification is choosing how much wrapping to accept,
+    and until this existed the trade was stated in prose ("higher wraps each line
+    into more strips") with the numbers left to intuition — so every reader in the
+    batch that prompted this picked the ceiling and none picked the default. The
+    figures are the page's own: the measure is the median line width in source
+    pixels, because a page of centred headings and a page of full-measure prose
+    wrap differently at the same scale and a corpus constant would describe
+    neither.
+
+    `full_strips` is what a whole line costs at that step; `point_strips` is what
+    `@P` costs. The gap between those two columns is the entire argument for
+    naming a point.
+
+    **`point_strips` is not 1.** The obvious guess — a point is one window by
+    construction — is wrong, and shipping it would have put a number in front of
+    readers that the renderer contradicts on every call: `_snap_to_white` extends
+    each edge out to whitespace by up to a quarter-window so no glyph is ever cut,
+    so the rendered crop runs to about 1.5 windows and lands on two strips. It is
+    derived here the way the renderer derives it, and checked against a real render
+    at both steps, because a capacity table that disagrees with the output it
+    describes is worse than no table.
+    """
+    measure = int(sorted(widths)[len(widths) // 2]) if widths else 0
+    hs = sorted(heights or [])
+    line_h = int(hs[len(hs) // 2]) if hs else 0
+    out = []
+    for z in ZOOM_STEPS:
+        window = zoom_window(z, client_w)
+        step = max(1, window - overlap)
+        full = max(1, -(-max(1, measure - overlap) // step)) if measure else 0
+        widened = window + 2 * (window // 4)  # what _snap_to_white can add
+        point = max(1, -(-max(1, widened - overlap) // step))
+        # **The share of a line one point request comes back with.** This is the
+        # number a caller can act on, because percent-of-line is the unit `@LO-HI`
+        # is already written in: a reader asking for `@45-65` is asking for 20% of
+        # a line that will be widened to this figure anyway, and knowing that in
+        # advance is the difference between one crop and three.
+        covers = min(100, round(window * 100 / measure)) if measure else 0
+        # The strip is the *padded* crop, not the ALTO box — `line_crops` adds
+        # PAD_TOP/PAD_BOTTOM so a descender and the mark above a following line are
+        # both in the picture. Using the bare box height overstated capacity by
+        # three times (13 where the composer fits 4), which is the direction that
+        # costs a re-call: a reader told it can batch thirteen doubts and getting
+        # four sheets back learns to distrust the table.
+        strip_h = (line_h + PAD_TOP + PAD_BOTTOM) * z
+        per_sheet = (sheet_h // strip_h) // point if line_h and strip_h else 0
+        out.append({"zoom": z, "measure_px": measure, "window_px": window,
+                    "full_strips": full, "point_strips": point,
+                    "covers_pct": covers, "points_per_sheet": per_sheet})
+    return out
+
 
 LINE_KEYS = ("index", "line_id", "block_id", "text",
              "hpos", "vpos", "width", "height", "baseline", "points")
@@ -745,6 +811,84 @@ def ink_bands(ink, x0: int, x1: int, covered,
     return sorted(out, key=lambda b: (b["vpos"], b["hpos"]))
 
 
+def annexed_bands(ref: str, root: Path = Path(".")) -> dict[int, list[dict]]:
+    """Per line index, the ruled bands a human has said that line's box is short of.
+
+    **The marker has to reach the line, not just the band.** A `covered_by` ruling
+    is read off `ocr gaps`, but a reader keys from `ocr lines` and crops from
+    `ocr sheets`/`ocr zoom` — all of which showed the line and said nothing, so the
+    one place the ruling mattered was the one place it was invisible. Worse, the
+    reading contract tells a reader that an `exempted: true` band is settled and to
+    spend no image on it, which is right for `not_type` and precisely inverted for
+    this: the ruling says *this line's box does not hold all its ink*, which is an
+    instruction to look wider at that line.
+
+    `1-073` is the worked case. Line 1's box is 11 px and holds `5`; the page
+    prints `51`. Its reader recovered the second digit from the under-30px
+    strangulation heuristic alone, before any ruling existed — so the correct
+    reading came from a rule of thumb while a human's explicit statement of the
+    same fact sat unread in the ledger.
+    """
+    ref = norm_ref(ref)
+    from . import corrections as corr
+    out: dict[int, list[dict]] = {}
+    for r in corr.load_ink_exempt(root).get(ref, []):
+        if r.get("covered_by") is None:
+            continue
+        out.setdefault(int(r["covered_by"]), []).append(r)
+    return out
+
+
+def covered_faults(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
+                   root: Path = Path(".")) -> list[dict]:
+    """`covered_by` rulings whose named line does not bear them out.
+
+    **This is the half "not type" could never have.** A ruling that ink is not
+    printing is unfalsifiable from inside the harness — the only witness is the
+    paper, and re-reading it is a human act the firewall reserves. A ruling that
+    ink is *covered by line N* names something the store can be asked about, so
+    it is checkable for free, and the check is worth more than the field:
+
+    - **`no_line`** — N is not in the store. The ruling points at nothing, and a
+      band was suppressed on the authority of a line that does not exist.
+    - **`empty_line`** — N is there and its `text` is empty. The ink was ruled
+      already-keyed by a line that keys nothing, so the reading really is missing
+      and the exemption is hiding exactly what it claims to account for.
+
+    What it deliberately cannot check is whether N's text is the *right* text —
+    that is a reading, and reading is not this function's rank. It catches the
+    structural lie, which is the one that recurs: `1-073`'s folio was strangled to
+    11 px and its line held `5` where the page prints `51`, so a `covered` ruling
+    over that band would have been true of a line whose text was half the number.
+    `empty_line` does not reach that case; the strangulation rule in the reader
+    contract does.
+    """
+    ref = norm_ref(ref)
+    from . import corrections as corr
+    regions = [r for r in corr.load_ink_exempt(root).get(ref, [])
+               if r.get("covered_by") is not None]
+    if not regions:
+        return []
+    alto = alto_for_lines(ref, alto_dir, root)
+    if not alto.exists():
+        return []          # absent is not wrong — see `_orphan_line_issues`
+    by_index = {int(r["index"]): r for r in page_lines(alto, root)}
+    out = []
+    for r in regions:
+        idx = int(r["covered_by"])
+        line = by_index.get(idx)
+        if line is None:
+            fault, detail = "no_line", f"store holds {len(by_index)} lines"
+        elif not (line.get("text") or "").strip():
+            fault, detail = "empty_line", "the named line keys nothing"
+        else:
+            continue
+        out.append({"ref": ref, "y0": r["y0"], "y1": r["y1"],
+                    "covered_by": idx, "fault": fault,
+                    "note": r.get("note", ""), "detail": detail})
+    return out
+
+
 def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
               scans: str = "scans") -> list[dict]:
     """Bands of ink on the page that no `TextLine` covers — dropped lines.
@@ -917,13 +1061,24 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     for b in bands:
         b["zone"] = _band_zone(b, page_zones)
 
-    # **Two layers, and a band is settled by the one whose question it is.** Ink
-    # inside a zone that no line covers is this check's finding, and only a
-    # line-level ruling settles it; ink outside every zone belongs to `zones check
-    # --ink`, and only a zone-level ruling settles it. One file used to serve
-    # both, so a band ruled "scanner smudge" while zoning also stopped this check
-    # from ever reporting that strip of paper again — a claim about what the
-    # zoning need not cover, silently answering whether a line was dropped.
+    # **Two layers, and authority runs downstream only.** Zoning is the first
+    # stage of accounting for the ink; recognition is the last, and its job is to
+    # account for *all* of it — `ocr blot` over a finished page should leave a
+    # blank leaf. So the line layer settles any band, in a zone or not, while the
+    # zone layer settles only what is already outside every zone.
+    #
+    # The asymmetry is the whole point. Upstream must not answer a downstream
+    # question: one file used to serve both, so a band ruled "scanner smudge"
+    # while zoning also stopped this check from ever reporting that strip of paper
+    # again — a claim about what the *zoning* need not cover, silently answering
+    # whether a line was dropped. That direction stays shut.
+    #
+    # Routing by zone in *both* directions was the over-correction, and it left
+    # bands no editor could reach. `1-034`'s two sit beside a zone rather than
+    # below it, so `line_gaps` sees them (it masks by box) and `zones check --ink`
+    # does not (it masks by row) — `ocr edit` refused them as out-of-zone and
+    # `zones edit` never offered them at all. Two rulings were written for them
+    # and were inert, with nothing saying so.
     #
     # **Flagged, never suppressed**, whichever layer speaks: a matched band still
     # reports, carrying `exempted`, the note that ruled it, and the `layer` that
@@ -933,12 +1088,22 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     from .zones import load_ink_exempt as _zone_exempt
     by_layer = {"lines": corr.load_ink_exempt(root).get(ref, []),
                 "zones": _zone_exempt(root).get(ref, [])}
+    # **`reason` says which of the two dispositions ruled it**, because "exempted"
+    # alone made one word carry both — and a reader handed a bare `exempted: true`
+    # plus free text had to infer from prose whether the ink was type. `covered`
+    # names the line whose box strangled it, so the band is answered rather than
+    # dismissed; `not_type` is the original claim, unchanged.
     for b in bands:
-        layer = "lines" if b["zone"] else "zones"
-        excuse = corr.ink_excuse(b, by_layer[layer])
+        excuse, layer = corr.ink_excuse(b, by_layer["lines"]), "lines"
+        if excuse is None and not b["zone"]:
+            excuse, layer = corr.ink_excuse(b, by_layer["zones"]), "zones"
         b["exempted"] = bool(excuse)
         b["note"] = excuse["note"] if excuse else ""
         b["layer"] = layer if excuse else ""
+        covered = excuse.get("covered_by") if excuse else None
+        b["reason"] = ("covered" if covered is not None
+                       else "not_type" if excuse else "")
+        b["covered_by"] = covered if covered is not None else ""
     return bands
 
 
@@ -967,7 +1132,7 @@ def _band_zone(band: dict, zones: list[dict]) -> str:
 
 def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                root: Path = Path("."), scans: str = "scans",
-               exemptions: bool = False) -> dict:
+               exemptions: bool = True) -> dict:
     """The page with every line box and every figure zone painted out.
 
     The inverse of `line_gaps`, and a check on it: that verb reports what it
@@ -985,16 +1150,29 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     fringe of stray pixels around every line that reads as residue. The point is
     to make what is left *conspicuous*, so covering generously is right.
 
-    **`exemptions` is off by default, and that is the whole argument for the
-    flag.** Painting the ruled bands too gives the view a human editing lines
-    actually wants — what is left after everything *settled* is erased, ruled
-    artifacts included — and `ocr edit` asks for it. But it costs this verb the
-    property that makes it worth having: with rulings painted, a wrong one hides
-    ink here as well, and the one view that answered independently of anybody's
-    judgement stops doing so. So the sweep keeps the bare page and the editor
-    opts in, rather than the two sharing a default that suits one of them.
+    **`exemptions` is on by default, because the standard this verb measures
+    against is a blank leaf.** Accounting for the page's ink is what the
+    recognition stage is *for*: zoning is the first pass at it, this is the last,
+    and a finished page has nothing left that is not a line, a figure or a ruling.
+    Painting all three makes the finished state legible as blank rather than as
+    "blank apart from the marks you have to remember are ruled".
 
-    Both layers are painted when it is on, since both are ink somebody settled.
+    It was off for most of this verb's life, on the argument that a bare page is
+    the one view answering independently of anybody's judgement, and that with
+    rulings painted a wrong one hides ink here too. That is true and it is why
+    `--no-exemptions` still exists — but it argued for the wrong default, because
+    a view whose success condition is "blank except for some things" cannot be
+    read at a glance, which was the whole point of a picture over a threshold.
+
+    **A finished page is near-blank, not perfectly blank, and that is fine.**
+    Scanner speckle survives, and so does the odd printed rule; the eye discounts
+    both at a glance and a threshold cannot. Which is the argument against
+    scoring the leftovers: the picture is for a human to look at, and a residual
+    count would turn a page that is plainly done into a number needing
+    interpretation.
+
+    Both layers are painted, since both are ink somebody settled.
+
     They are painted **full width**, which looks careless and is not: a ruling is
     a `y` band with no `x` extent, and `corrections.ink_excuse` matches on the
     band's midpoint alone — so full width is exactly the reach the ruling already
@@ -1174,6 +1352,16 @@ NUMBER_FONT = 36
 NUMBER_PAD = 26
 NUMBER_FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"
 
+# The placard a masked figure carries. Mid-grey with near-white lettering, which
+# reads as a deliberate placement rather than as blank paper or as artwork — the
+# two things it must not be mistaken for. Sized to the box at render time: a plate
+# gets it large, an inset gets it small, and a box too small for even the floor
+# keeps the grey alone, which still says "something was here" where white did not.
+FIG_FILL, FIG_INK = 140, 246
+FIG_TITLE, FIG_SUB = "BLOTTED FIGURE", "DO NOT TRANSCRIBE"
+FIG_TITLE_MIN, FIG_TITLE_MAX = 16, 220
+FIG_SUB_RATIO = 0.55
+
 
 def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                         root: Path = Path("."), scans: str = "scans",
@@ -1221,11 +1409,16 @@ def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_D
     # composite that is already delivered at ~0.6x, and its artwork raises baselines
     # the reader would then have to be told to ignore. The declared box and not a
     # pixel more — body text sits hard against an inset figure on `1-283`.
-    figs = [(x0 + gutter, y0, x1 + gutter, y1)
-            for x0, y0, x1, y1 in figure_boxes(ref, root, size)]
-    for box in figs:
-        draw.rectangle(box, fill=255)
-
+    # **And they say so where they were.** Painted out and left blank, the figure
+    # is a void the reader has to explain to itself: `2-030`'s reader met a huge
+    # vertical gap between two consecutive indices, reasoned its way to "masked
+    # figure" from `gt/fig/` existing and `ocr gaps` coming back empty, and wrote
+    # a memory note about it — three steps and a raster read to recover something
+    # this image already knew and had thrown away. An erasure that does not say
+    # what it erased is indistinguishable from blank paper, which on a page whose
+    # whole question is *what is missing here* is the wrong thing to be
+    # indistinguishable from. Outline and label, in the same grey as the banding,
+    # so the void is self-describing and costs no artwork.
     fonts: dict[int, object] = {}
 
     def at(size: int):
@@ -1235,6 +1428,32 @@ def write_numbered_page(ref: str, out_path: Path, alto_dir: str = DEFAULT_ALTO_D
             except OSError:
                 fonts[size] = ImageFont.load_default()
         return fonts[size]
+
+    figs = [(x0 + gutter, y0, x1 + gutter, y1)
+            for x0, y0, x1, y1 in figure_boxes(ref, root, size)]
+    for box in figs:
+        draw.rectangle(box, fill=FIG_FILL)
+        # `figure_boxes` scales into raster space and returns floats; `range`
+        # below needs integers.
+        bw, bh = int(box[2] - box[0]), int(box[3] - box[1])
+        # Largest type that fits both lines inside the box. Stepping down rather
+        # than solving for it because the metric is the font's, not a formula's —
+        # and a placard that overflowed its own box would sit on the body text
+        # beside an inset figure, which is the one thing worse than no placard.
+        for ts in range(min(FIG_TITLE_MAX, bh // 3), FIG_TITLE_MIN - 1, -4):
+            ss = max(FIG_TITLE_MIN, int(ts * FIG_SUB_RATIO))
+            tf, sf = at(ts), at(ss)
+            tw = draw.textlength(FIG_TITLE, font=tf)
+            sw = draw.textlength(FIG_SUB, font=sf)
+            gap = ts // 5
+            if max(tw, sw) > bw - 24 or ts + gap + ss > bh - 16:
+                continue
+            y = (box[1] + box[3]) / 2 - (ts + gap + ss) / 2
+            draw.text((box[0] + (bw - tw) / 2, y), FIG_TITLE, fill=FIG_INK,
+                      font=tf)
+            draw.text((box[0] + (bw - sw) / 2, y + ts + gap), FIG_SUB,
+                      fill=FIG_INK, font=sf)
+            break
 
     rows, dropped = [], 0
     for rec in page_lines(alto, root):
@@ -1569,12 +1788,26 @@ def parse_spans(spec: str) -> dict[int, tuple[int, int]]:
         lo, hi = FULL_SPAN
         if at:
             a, dash, b = span.partition("-")
-            if not dash or not b:
-                raise ValueError(f"span {span!r} needs LO-HI percentages, "
-                                 f"e.g. {body}@0-25")
-            lo, hi = int(a), int(b)
-            if not 0 <= lo < hi <= 100:
-                raise ValueError(f"span {span!r} must satisfy 0 <= LO < HI <= 100")
+            if not dash and not b:
+                # **`@P` is a point, and it is the form to reach for.** A range
+                # asks the caller for two numbers about a word whose extent they
+                # cannot see yet, and a guess that is too narrow gets snapped and
+                # widened anyway while a guess that is off-centre misses. Naming
+                # only where the word *is* removes the half of the estimate that
+                # was never knowable: the window is a fixed width of source pixels
+                # regardless, so it gets centred on P and rendered at full size.
+                # The batch that produced this form spent three crops framing one
+                # word — `23@45-65`, `23@70-90`, `23@60-75` — where `23@60` is one.
+                lo = hi = int(a)
+                if not 0 <= lo <= 100:
+                    raise ValueError(f"point {span!r} must satisfy 0 <= P <= 100")
+            elif not dash or not b:
+                raise ValueError(f"span {span!r} needs LO-HI percentages or a "
+                                 f"single point, e.g. {body}@0-25 or {body}@60")
+            else:
+                lo, hi = int(a), int(b)
+                if not 0 <= lo < hi <= 100:
+                    raise ValueError(f"span {span!r} must satisfy 0 <= LO < HI <= 100")
         if "-" in body.lstrip("-"):
             x, y = body.split("-", 1)
             first, last = int(x), int(y)

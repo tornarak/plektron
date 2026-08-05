@@ -68,10 +68,14 @@ def page_state(ref: str, root: Path = Path("."),
         for r in page_lines(alto, root, ref=ref):
             if r.get("hpos") is None or r.get("vpos") is None:
                 continue
+            # `text` travels for the covered-by pick: the overlay draws no line
+            # numbers, so the line is chosen by clicking it and the only thing
+            # that confirms the right one was clicked is what it keys.
             box = {"x0": round(r["hpos"] * sx), "y0": round(r["vpos"] * sy),
                    "x1": round((r["hpos"] + r["width"]) * sx),
                    "y1": round((r["vpos"] + r["height"]) * sy),
-                   "index": r["index"], "zone": r["zone"]}
+                   "index": r["index"], "zone": r["zone"],
+                   "text": r.get("text") or ""}
             (corrected if r["src"] == "corr" else lines).append(box)
 
     # The fragment is the authority on a correction's geometry — `page_lines`
@@ -170,6 +174,10 @@ JS = r"""
 const S = STATE, VIEW = CFG.view;
 let corr = S.corr.map(c => ({...c})), exempt = S.line_exempt.map(e => ({...e}));
 let sel = null, dirty = false, blot = false, drag = null;
+// The vpos of a band armed for the covered-by pick, or null. A mode, and the only
+// one this editor has — held for exactly one click and cancelled by Escape, since
+// a mode a human can forget they are in is how a drag becomes a ruling.
+let covering = null;
 
 const $ = s => document.querySelector(s);
 const stage = $('#stage'), ov = $('#ov'), img = $('#img');
@@ -253,11 +261,21 @@ function esc(s) {
 function draw() {
   let s = '';
   for (const z of S.zones) s += rect(z, 'zone', z.label);
-  for (const l of S.lines) s += rect(l, 'line');
+  // While a band is armed for the covered-by pick, the store's lines stop being
+  // context and become the control being operated: lit, hoverable, and carrying
+  // the index and text that are the only way to tell which one is right.
+  for (const l of S.lines)
+    s += (covering === null
+      ? rect(l, 'line')
+      : rect(l, 'line_pick', 'line ' + l.index + ': ' + (l.text || '(empty)'),
+             `data-l="${l.index}"`));
   for (const e of S.zone_exempt)
     s += band_(e.y0, e.y1, 'ruling_zone', 'zoning ruled this: ' + e.note);
   exempt.forEach(e => {
-    s += band_(e.y0, e.y1, 'ruling_line', 'not a line: ' + e.note);
+    s += (e.covered_by === undefined
+      ? band_(e.y0, e.y1, 'ruling_line', 'not a line: ' + e.note)
+      : band_(e.y0, e.y1, 'ruling_covered',
+              'keyed in line ' + e.covered_by + ': ' + e.note));
   });
   for (const b of S.bands) {
     if (b.exempted) continue;
@@ -288,9 +306,22 @@ function draw() {
 // A ruling this session has made over that band, if any. Local, because `exempt`
 // is unsaved until the save lands — the page must show what it is about to write,
 // not what it last read.
+// **Any band, in a zone or not** — this layer is the last stage of accounting for
+// the page's ink, so nothing on the leaf is out of its reach. Matches the server's
+// rule exactly, and it has to: the page briefly disagreed with `/list` here, which
+// is how `1-034` came to read "bands left: 0, ruled: 2" beside a list saying two
+// were live.
 function ruled(b) {
   const mid = b.vpos + b.height / 2;
   return exempt.find(e => e.y0 <= mid && mid <= e.y1);
+}
+
+// A ruling this session holds that settles no band on the page — stale geometry,
+// or a band that stopped being one. Still listed, still withdrawable, and now said
+// out loud rather than counted as if it had done something.
+function dead(e) {
+  return !S.bands.some(b => e.y0 <= b.vpos + b.height / 2
+                         && b.vpos + b.height / 2 <= e.y1);
 }
 
 // **The rulings are listed, not only painted.** A note recorded once through a
@@ -304,10 +335,23 @@ function drawRulings() {
     el.innerHTML = '<li class=none>none on this page</li>';
     return;
   }
+  // The disposition is shown, not only the note. Two rulings suppress the same
+  // band for opposite reasons — "this is not print" and "this is print, keyed in
+  // line N" — and a list that renders them identically is the ambiguity that put
+  // `half of undersized folio line` under a heading reading `not a line`.
   el.innerHTML = exempt.map((e, i) =>
     `<li><span class=y>y ${e.y0}–${e.y1}</span>`
     + `<button data-w="${i}" title="withdraw this ruling">×</button><br>`
-    + esc(e.note) + '</li>').join('');
+    + (e.covered_by === undefined
+        ? '<b>not type</b> — '
+        : `<b>covered by line ${e.covered_by}</b> — `)
+    + esc(e.note)
+    // Said out loud, because the alternative is what already happened: a ruling
+    // that settles nothing looked identical to one that does, and the page
+    // reported the band as handled while every other view called it live.
+    + (dead(e) ? '<br><span class=bad>settles no band on this page — nothing is '
+                 + 'measured where it sits, so this record is inert.</span>' : '')
+    + '</li>').join('');
   el.querySelectorAll('button[data-w]').forEach(b => {
     b.onclick = () => { exempt.splice(+b.dataset.w, 1); dirty = true; draw(); };
   });
@@ -337,10 +381,61 @@ function ruleBand(v) {
   dirty = true; draw();
 }
 
+// **The other disposition: the ink is type, and it is already keyed.** A folio
+// whose box strangled it leaves the rest of the number as a band, and ruling that
+// "not a line" is true only by accident — it is not a *separate* line, which is a
+// different claim, and the note people actually write ("half of undersized folio
+// line") says the opposite of the disposition it was filed under. Naming the line
+// that covers it records what was meant and makes the ruling checkable: `ocr gaps`
+// reports a covered_by whose line is missing or empty as a fault.
+//
+// **The line is clicked, never typed.** This overlay draws no line numbers, so an
+// index typed into a prompt is a number a human has no way to read off the page —
+// they would be guessing, and a guessed index is precisely the silent wrong
+// reference the field exists to make checkable. So `c` arms the pick, every store
+// line lights up and carries its index and text on hover, and the click settles
+// it.
+function coverBand(v) {
+  const b = S.bands.find(x => x.vpos === v);
+  if (!b) return;
+  if (!S.lines.length) {
+    say('this page’s store has no lines to cover the band', 'bad');
+    return;
+  }
+  covering = v;
+  say('click the line that already keys this ink — hover shows what each holds. '
+      + 'Escape to cancel.');
+  draw();
+}
+
+// The second half of the pick: a store line was clicked while a band was armed.
+function coverWith(idx) {
+  const b = S.bands.find(x => x.vpos === covering);
+  const line = S.lines.find(l => l.index === idx);
+  if (!b || !line) { covering = null; draw(); return; }
+  const note = prompt('Why is this ink part of the line reading “'
+                      + (line.text || '(empty)') + '”? (a reason is required)');
+  if (!note || !note.trim()) { covering = null; draw(); return; }
+  const pad = VIEW.ruling_pad_px;
+  exempt.push({y0: b.vpos - pad, y1: b.vpos + b.height + pad,
+               note: note.trim(), covered_by: idx});
+  covering = null; dirty = true;
+  say('ruled covered by the line reading “' + (line.text || '(empty)') + '”');
+  draw();
+}
+
 function say(m, cls) { const e = $('#msg'); e.textContent = m; e.className = cls || ''; }
 
 ov.addEventListener('mousedown', e => {
   const t = e.target;
+  // The armed pick takes the click before anything else, and swallows a click on
+  // nothing rather than starting a drag: while a mode is on, the page is a
+  // question waiting for one answer.
+  if (covering !== null) {
+    if (t.dataset.l !== undefined) coverWith(+t.dataset.l);
+    else say('click a line, or Escape to cancel', 'bad');
+    return;
+  }
   if (t.dataset.i !== undefined) { sel = +t.dataset.i; draw(); return; }
   if (t.dataset.v !== undefined) {
     (e.shiftKey ? ruleBand : adopt)(+t.dataset.v);
@@ -417,15 +512,24 @@ const DO = {
     if (sel !== null) { corr.splice(sel, 1); sel = null; dirty = true; draw(); }
   },
   rule_band: () => { const b = first_undecided(); if (b) ruleBand(b.vpos); },
+  cover_band: () => { const b = first_undecided(); if (b) coverBand(b.vpos); },
   // The withdrawal is the second half of the ruling, exactly as in `zones edit`:
   // a call made once and uncorrectable is worse than no call, and a note nobody
   // can take back is a claim the page cannot argue with.
   withdraw_ruling: () => {
     const b = S.bands.filter(x => ruled(x))[0];
-    const e = b && ruled(b);
+    // A dead ruling is still withdrawable, and by the same key — it is the one
+    // most likely to want withdrawing. Reachable through the panel's × either
+    // way; without this the keyboard would report "nothing to withdraw" beside a
+    // list showing two, which is the shape of inconsistency this whole fix is
+    // about.
+    const e = (b && ruled(b)) || exempt.find(dead);
     if (!e) { say('no ruling of this layer to withdraw', 'bad'); return; }
     exempt.splice(exempt.indexOf(e), 1);
-    dirty = true; say('ruling withdrawn: ' + e.note); draw();
+    dirty = true;
+    say('ruling withdrawn (' + (e.covered_by === undefined
+        ? 'not type' : 'covered by line ' + e.covered_by) + '): ' + e.note);
+    draw();
   },
   list: () => {
     if (dirty && !confirm('Unsaved corrections. Leave anyway?')) return;
@@ -442,7 +546,12 @@ const DO = {
   },
   prev_page: () => { if (S.prev) go(S.prev); },
   next_page: () => { if (S.next) go(S.next); },
-  cancel: () => { sel = null; draw(); },
+  // Cancel drops the pick before the selection: the mode is the more surprising
+  // state to be left in, and Escape is what a human reaches for to get out of it.
+  cancel: () => {
+    if (covering !== null) { covering = null; say(''); draw(); return; }
+    sel = null; draw();
+  },
 };
 
 // **What each action needs before it can do anything.** Only the ones that act
@@ -452,10 +561,11 @@ const DO = {
 // that says it cannot.
 const READY = {
   delete: () => sel !== null,
-  cancel: () => sel !== null,
+  cancel: () => sel !== null || covering !== null,
   rule_band: () => !!first_undecided(),
+  cover_band: () => !!first_undecided() && S.lines.length > 0,
   frame_band: () => !!first_undecided(),
-  withdraw_ruling: () => S.bands.some(b => ruled(b)),
+  withdraw_ruling: () => S.bands.some(b => ruled(b)) || exempt.some(dead),
   prev_page: () => !!S.prev,
   next_page: () => !!S.next,
   zoom_in: () => zoom < VIEW.zoom_max,

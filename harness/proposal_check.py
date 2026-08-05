@@ -142,7 +142,29 @@ def _notation_codepoints(text: str) -> list[int]:
 
 
 def _stated_codepoints(resolved: str) -> set[int]:
-    return {int(h, 16) for h in HEX_RE.findall(resolved)}
+    """Codepoints a `resolved` field names, **decomposed to the corpus's own form**.
+
+    A reader naming `U+00EA` means "ê", which is the ordinary way to refer to the
+    letter and is how the spec's own tables print it. But the corpus is NFD, so
+    U+00EA never occurs in any `text` — comparing the two literally made a
+    correctly-named precomposed letter *always* absent from the text and the
+    combining mark actually there *always* unaccounted for, one dangling item on
+    each side. `fix()` reads exactly that shape as an unambiguous 1-for-1 swap.
+
+    On `1-039` line 38 it fired: `êlh-aˊᵋttᴀm`, NFD, plus a `resolved` naming
+    U+00EA, and the "correction" dropped the precomposed letter into the combining
+    mark's slot — `e` + `ê` = `eêlh-`. The reader caught it with `codepoints` and
+    worked around it by respelling every `resolved` field as decompositions, which
+    is a human degrading their own notes to route around a parser.
+
+    Folding here rather than at the call sites because both directions of the
+    comparison need it and only one of them was ever going to be remembered.
+    """
+    out: set[int] = set()
+    for h in HEX_RE.findall(resolved):
+        for ch in unicodedata.normalize("NFD", chr(int(h, 16))):
+            out.add(ord(ch))
+    return out
 
 
 def _stated_but_absent(stated: set[int], text: str) -> set[int]:
@@ -356,6 +378,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
     }
     data = json.loads(path.read_text(encoding="utf-8"))
     out = []
+    out += _segmenter_missed_issues(data)
     out += _footnote_issues(data)
     if ref is not None:
         from .marks import page_issues
@@ -396,6 +419,42 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
     return out
 
 
+def _segmenter_missed_issues(data: dict) -> list[dict]:
+    """`segmenter_missed` carrying anything at all. A defect, unconditionally.
+
+    **The field is illegal.** It let a reader record printed matter the segmenter
+    dropped, inside the proposal, as a finding travelling with the reading. That
+    made the proposal the place a segmentation fault was reported, and a reading
+    the thing that carried it — so a line's identity could be argued from a
+    transcriber's note rather than from a box. The line store is the upstream
+    source of truth: `mz/ocr/` patched by the human corrections a zone editor
+    draws into `gt/lines/`, every line id anchored there, provenance running
+    forward from it. Nothing downstream of that store may propose a line into
+    existence, and a proposal is downstream.
+
+    Finding text with no box is still worth finding — it is simply **not the
+    transcriber's to correct.** It is upstream human action: a human draws the
+    band a box in `harness ocr edit`, the index exists from then on, and the page
+    is re-read against a store that now holds it. So a reader reports it *to the
+    human, in its report*, and keys nothing; the proposal stays a reading of the
+    boxes that exist.
+
+    An **empty** block is inert legacy, not a finding — `fix` strips it silently
+    and nothing gates. Only content fires, because only content is a reading that
+    went somewhere it may not go.
+    """
+    block = data.get("segmenter_missed")
+    if not block:
+        return []
+    return [issue("-", "`segmenter_missed` is illegal — the line store is the "
+                       "upstream source of truth and a proposal may not propose "
+                       "a line into existence. Printed matter with no box is "
+                       "upstream human action: report it to the human, key "
+                       "nothing, and let a box be drawn in `harness ocr edit` "
+                       "before the page is read against it.",
+                  detail=f"block holds {len(block)}")]
+
+
 def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
     """Proposal lines with no `TextLine` in the store to hold them.
 
@@ -403,7 +462,8 @@ def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
     them: a key naming an index the store does not have describes text with no
     box, which is the dropped-line case wearing a different hat. Ground truth is a
     correspondence between a box and its contents, so a reading that has nowhere
-    to go is a finding — `segmenter_missed` — and never a line.
+    to go is not a reading. It is upstream human action — a box drawn in `ocr
+    edit` — and never a line here.
 
     A defect rather than an advisory because there is nothing to weigh: the index
     either exists or it does not, and `restore` will silently drop what it cannot
@@ -434,9 +494,10 @@ def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
     return [issue(k, "line index is not in the store — a proposal is keyed by "
                      "the ALTO's line indices and `restore` joins on them, so "
                      "this text has no box to land in. If it is printed matter "
-                     "the segmenter missed, it belongs in `segmenter_missed`; a "
-                     "human gives the band a box in `harness ocr edit`, and the "
-                     "index exists from then on.",
+                     "the segmenter missed, that is upstream human action and "
+                     "not yours to correct: drop the key, say what you saw in "
+                     "your report, and a human gives the band a box in `harness "
+                     "ocr edit` before the page is read again.",
                   context=(lines[k] or {}).get("text", "")[:60],
                   detail=f"store holds {len(have)} lines")
             for k in sorted(lines, key=lambda s: (len(s), s))
@@ -509,6 +570,13 @@ def fix(path: Path) -> dict:
     _src = path.read_text(encoding="utf-8")
     data = json.loads(_src)
     changed = []
+    if "segmenter_missed" in data and not data["segmenter_missed"]:
+        # Inert legacy: the field is illegal but an empty one carries no reading,
+        # so it folds away silently rather than gating. A non-empty block is a
+        # human's to disposition and `check` reports it — never stripped here,
+        # which would delete the finding along with the field.
+        del data["segmenter_missed"]
+        changed.append({"line": "-", "replaced": "segmenter_missed", "with": ""})
     for idx, rec in data.get("lines", {}).items():
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
@@ -527,7 +595,11 @@ def fix(path: Path) -> dict:
         nfd = unicodedata.normalize("NFD", text)
         if nfd.count(wrong) != 1:
             continue  # ambiguous position; do not guess which one
-        new_text = nfd.replace(wrong, right)
+        # NFD on the way out, as the docstring has always claimed: `right` comes
+        # from a `resolved` field and may be a precomposed sort, and substituting
+        # it raw writes NFC into an NFD corpus for `corpus normalize` to find
+        # later — if anyone runs it.
+        new_text = unicodedata.normalize("NFD", nfd.replace(wrong, right))
         rec["text"] = new_text
         changed.append({"line": idx,
                         "replaced": f"U+{ord(wrong):04X}", "with": f"U+{ord(right):04X}"})

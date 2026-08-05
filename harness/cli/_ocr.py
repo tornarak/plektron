@@ -31,6 +31,7 @@ from pathlib import Path
 
 import click
 
+from ..calls import call_summary, log_call, read_calls
 from ..context import all_refs, norm_ref
 from ..lines import (
     DEFAULT_ALTO_DIR,
@@ -42,6 +43,7 @@ from ..lines import (
     ZOOM_MAX,
     ZOOM_OVERLAP,
     ZOOM_SHEET_H,
+    ZOOM_STEPS,
     alto_for_lines,
     line_gaps,
     page_lines,
@@ -166,9 +168,15 @@ def register(cli):
                     "down. It draws and never keys — a recovered line's text is "
                     "adjudicated in `ocr review` and written by `restore`, like "
                     "any other line's"))
-    refs_arg(p, all_="every page with a raster — the editor walks them with the "
-                     "arrow keys",
-             extra=": several refs are the walk, in the order named")
+    refs_arg(p, all_="every page the store read holds — the editor walks them "
+                     "with the arrow keys. Not every scan: this corrects lines a "
+                     "segmentation missed, so a page with no ALTO has nothing to "
+                     "be missing from",
+             extra=", and several are the walk: the session opens at the first "
+                   "and steps through the list with the arrow keys, `l` showing "
+                   "it as a table. One ref is a page to start at, not the only "
+                   "page reachable. `--all` walks the store, `--unsettled` "
+                   "narrows that to the pages still carrying a band")
     opt(p, "--unsettled", is_flag=True,
                    help="narrow --all to the pages still carrying a band nobody "
                         "has settled. Measured now, not read from a saved list: a "
@@ -247,25 +255,46 @@ def register(cli):
     opt(p, "--margins", is_flag=True, help=MARGINS_HELP)
     opt(p, "--out", type=click.Path(path_type=Path), default=None, help=OUT_HELP)
 
+    refs_arg(add("calls", help="every image this page's reading has opened, in "
+             "order, with each zoom's stated reason — written by the tools, not "
+             "recalled at the end. Paste it into your report rather than "
+             "summarizing it: a tally reconstructed once the answer is known "
+             "comes out flattering, and every report in the batch that prompted "
+             "this understated its own by two to five times"),
+             all_="every page that has a ledger — what the pass has spent, "
+                  "page by page, which is the only view that shows one reader "
+                  "as an outlier rather than as a number")
+
     p = _store(refs_arg(add("zoom", help="magnify selected lines — overlapping strips "
               "at an integer scale, packed into as few sheets as the height "
               "budget allows, for the second look a contact sheet leaves open")))
     opt(p, "--only", default=None, metavar="SPEC",
                    help="lines to magnify, e.g. 7,20,22-26 (default every line). "
-                        "Append @LO-HI to a token for a percentage of the line's "
-                        "width — `42-43@0-25` is the front quarter of 42 and 43. A "
-                        "doubt is about a mark, not a line, and a mark is a few "
-                        "percent of a measure: spanning is what stops three of "
-                        "every four strips carrying nothing to do with the question")
-    opt(p, "--zoom", type=click.IntRange(1, ZOOM_MAX), default=ZOOM,
-                   help=f"display px per source px, as delivered (default {ZOOM}, "
-                        f"max {ZOOM_MAX}). Higher wraps each line into more "
-                        "strips, and a form seen only in halves is the risk being "
-                        "traded against — escalate for one question, not by "
-                        f"default. --zoom 1 wraps least. Above {ZOOM_MAX} is "
-                        "refused: at 300 dpi a character is ~30 px, so every ink "
-                        "pixel is already a 4x4 block and what a higher number "
-                        "returns is the resampler, not the page")
+                        "Append @P to centre a crop at a percentage of the line's "
+                        "width — `42@60` — or @LO-HI for a range. A doubt is about "
+                        "a mark, not a line, and a mark is a few percent of a "
+                        "measure. The edges are pinned, so `@0` is the head of the "
+                        "line and `@100` its tail whatever the line's length: "
+                        "`@100` is where a footnote reference sits, `@0` where its "
+                        "opener and a left-set folio sit, and neither needs you to "
+                        "estimate anything")
+    opt(p, "--zoom", type=click.Choice(ZOOM_STEPS), default=ZOOM,
+                   help=f"display px per source px, as delivered — {ZOOM} or "
+                        f"{ZOOM_MAX}, nothing between (default {ZOOM}). 2 is the "
+                        "second look at a line a contact sheet left open; 4 is "
+                        "for one mark on one word and warns when used, because "
+                        "at 300 dpi a character is ~30 px and every ink pixel is "
+                        "already a 4x4 block — past it a magnifier returns the "
+                        "resampler, not the page. 3 was legal and became the "
+                        "default hesitation; 1 is what a contact sheet already is")
+    opt(p, "--reason", required=True,
+                   help="why this crop, in a few words — recorded in the call and "
+                        "so visible to `agents transcripts`. Required because a "
+                        "zoom nobody has to justify is one nobody counts: the "
+                        "pages that failed did so at 59 and 81 crops apiece, each "
+                        "individually plausible. Naming the question before the "
+                        "call is also what distinguishes re-aiming a miss from "
+                        "asking the same thing louder")
     opt(p, "--window", type=int, default=None,
                    help="source px per strip; derived from --zoom so that the "
                         "delivered scale really is --zoom. Overriding it upward "
@@ -304,12 +333,12 @@ def register(cli):
                    help="output directory (default scans/w-blotted/ — a "
                         "corpus-level destination, unlike the other image "
                         "actions, because the blotted page is not review material)")
-    opt(p, "--exemptions", is_flag=True,
-                   help="also paint the bands a human ruled not type, both "
-                        "layers, so what remains is what nobody has settled. Off "
-                        "by default: with rulings painted this stops being an "
-                        "independent witness, since a wrong one now hides ink "
-                        "here too")
+    opt(p, "--exemptions/--no-exemptions", default=True,
+                   help="paint the bands a human ruled as well as the lines and "
+                        "figures, both layers, so a finished page blots to a "
+                        "near-blank leaf — the standard the recognition stage "
+                        "exists to reach. --no-exemptions keeps the bare page, "
+                        "which answers independently of anybody's judgement")
     add_jobs(p)
 
     # **The one action with a store default, and `mz` is it.** The bare diff needs
@@ -446,9 +475,19 @@ def _store_refs(a) -> list[str]:
 
 
 def run_lines(a) -> int:
+    from ..lines import annexed_bands
     pairs = []
     for r in _store_refs(a):
         recs = page_lines(alto_for_lines(r, _alto_dir(a), a.root), a.root, ref=r)
+        # **A line whose box a human has said is short of its ink says so here.**
+        # The ruling lives on the band and is read off `ocr gaps`; a reader keys
+        # from this table, and without the marker the one view that matters is the
+        # one that stays silent. `annexed` is the count of ruled bands naming this
+        # index, so a non-zero value means: the printed line is wider than its box
+        # and `--margins` is where the rest of it is.
+        annexed = annexed_bands(r, a.root)
+        for rec in recs:
+            rec["annexed"] = len(annexed.get(int(rec["index"]), []))
         if not a.full:
             # Drop the two long geometry strings. Dropped from every record, never
             # some — a ragged key set collapses the table to the verbose nested
@@ -473,12 +512,38 @@ def run_gaps(a) -> int:
     # the box covers the ink, so it drops out of the table and the page falls
     # silent. Silence is exactly what this detector exists to break, so say how
     # many of them were settled rather than absent.
-    worked = [(r, len(load_lines(r, a.root))) for r in refs]
-    worked = [{"ref": r, "corrected": n} for r, n in worked if n]
-    if worked:
-        out(a, {"pages_corrected": len(worked),
-                "corrections": sum(w["corrected"] for w in worked),
-                "pages": worked}, "pages_corrected")
+    #
+    # **And it says where the line is, because a count sends the reader hunting.**
+    # This reported `corrections: 1` and nothing else, which names no position, no
+    # size and no zone — so `1-039`'s reader, told only that a correction existed,
+    # spent half its zooms groping across the page for it and read the renderer's
+    # own index label as printed ink on the way. The geometry is already in the
+    # store and the zone is one lookup away; withholding both made the reader
+    # rediscover by image what the file already knew.
+    from ..lines import _band_zone
+    from ..zones import read_zones
+    rows = []
+    for r in refs:
+        zs = read_zones(r, a.root)
+        for c in load_lines(r, a.root):
+            box = {"hpos": c["x0"], "vpos": c["y0"],
+                   "width": c["x1"] - c["x0"], "height": c["y1"] - c["y0"]}
+            rows.append({"ref": r, "zone": _band_zone(box, zs) or "-",
+                         "vpos": box["vpos"], "hpos": box["hpos"],
+                         "width": box["width"], "height": box["height"],
+                         "keyed": c["text"] or ""})
+    if rows:
+        out(a, {"pages_corrected": len({x["ref"] for x in rows}),
+                "corrections": len(rows), "corrected": rows}, "pages_corrected")
+    # **A `covered` ruling is the one kind this check can falsify**, so it does.
+    # It names a line index, and the store either has that line keying something
+    # or it does not — where "not type" rests on the paper alone and nothing here
+    # can weigh it. Reported, never gated: `gaps` is measurement, and
+    # `measurement never gates` (VERBS.md, Conventions).
+    from ..lines import covered_faults
+    faults = [f for r in refs for f in covered_faults(r, _alto_dir(a), a.root)]
+    if faults:
+        out(a, {"covered_faults": faults}, "covered_faults")
     return 0
 
 
@@ -495,6 +560,30 @@ def _page_link(a, ref: str | None = None) -> None:
         ensure_page_link(ref or a.ref, a.root)
 
 
+def run_calls(a) -> int:
+    """The ledger, and the counts that make a raw crop total mean something.
+
+    Reports; never gates. What it is for is the adjudicator's first question —
+    was this page read or was it searched — and `repeats` answers it where a bare
+    count cannot: seven crops over seven lines is a careful page, seven over two
+    is a reader that could not frame what it wanted.
+    """
+    from ..calls import calls_path
+    from ..paths import page_dirs
+    refs = page_refs(a) or [d.name for d in page_dirs(a.root)
+                            if calls_path(d.name, a.root).exists()]
+    out(a, [call_summary(r, a.root) for r in refs])
+    # The series only under named refs. A corpus sweep wants the per-page counts —
+    # which reader is an outlier — and pooling every call of every page into one
+    # table buries exactly that in a few thousand rows.
+    if not page_refs(a):
+        return 0
+    rows = [{"ref": norm_ref(r), **c} for r in refs for c in read_calls(r, a.root)]
+    if rows:
+        out(a, {"log": rows}, "log")
+    return 0
+
+
 def run_crops(a) -> int:
     refs = page_refs(a)
     one_page_only(a, {"out": "--out"}, refs)
@@ -505,6 +594,8 @@ def run_crops(a) -> int:
             pairs.append((r, write_line_crops(
                 r, a.out or crops_dir(r, a.root), _alto_dir(a), a.root,
                 margins=a.margins)))
+            log_call(r, "crops", a.root, margins=a.margins,
+                     images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
     return 0
 
@@ -594,6 +685,7 @@ def run_numbered(a) -> int:
             rows.append(write_numbered_page(
                 r, a.out or numbered_path(r, a.root), _alto_dir(a), a.root,
                 gutter=a.gutter, font_size=a.font_size))
+            log_call(r, "numbered", a.root, images=1)
     out(a, rows)
     return 0
 
@@ -615,6 +707,8 @@ def run_sheets(a) -> int:
                 r, a.out or sheets_dir(r, a.root), _alto_dir(a), a.root,
                 per_sheet=a.per_sheet, margins=a.margins, sheet_h=a.sheet_h,
                 only=parse_selection(a.only) if a.only else None)))
+            log_call(r, "sheets", a.root, only=a.only or "all",
+                     margins=a.margins, images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
     return 0
 
@@ -635,12 +729,65 @@ def run_zoom(a) -> int:
                 sheet_h=a.sheet_h, client_w=a.client_w,
                 alto_dir=_alto_dir(a), root=a.root,
                 margins=a.margins, smooth=a.smooth)))
+            log_call(r, "zoom", a.root, reason=a.reason, zoom=a.zoom,
+                     only=a.only or "all", margins=a.margins, smooth=a.smooth,
+                     images=len(pairs[-1][1]))
     out_per_ref(a, pairs)
+    # The trade, in this page's numbers rather than in prose. Emitted on every
+    # call because the choice is made on every call, and a reader who has just
+    # seen what a whole line costs is the one who can judge whether the next
+    # doubt is worth it.
+    from ..lines import page_lines, zoom_capacity
+    recs = page_lines(alto_for_lines(refs[0], _alto_dir(a), a.root), a.root,
+                      ref=refs[0])
+    caps = zoom_capacity([int(r["width"]) for r in recs if r.get("width")],
+                         [int(r["height"]) for r in recs if r.get("height")],
+                         overlap=a.overlap, client_w=a.client_w,
+                         sheet_h=a.sheet_h)
+    here = next((c for c in caps if c["zoom"] == a.zoom), None)
+    for row in caps:
+        click.echo(
+            f"  {row['zoom']}x: one crop comes back with ~{row['covers_pct']}% of "
+            f"a line whatever you ask for, and {row['points_per_sheet']} of them "
+            f"fit one sheet. A whole line is {row['full_strips']} strips.",
+            err=True)
+    # **Asking for less than a strip is the waste this reports.** The span is
+    # widened to the window regardless, so a narrow request buys nothing and costs
+    # the aiming error that produced it: the batch behind this rule spent three
+    # crops framing one word at spans of 20%, each one of them already 40% by the
+    # time it rendered.
+    asked = parse_spans(a.only) if a.only else {}
+    narrow = sorted(i for i, (lo, hi) in asked.items()
+                    if lo != hi and hi - lo < (here or {}).get("covers_pct", 0))
+    if narrow and here:
+        click.echo(
+            f"\n{len(narrow)} span(s) narrower than one crop at {a.zoom}x "
+            f"(lines {', '.join(map(str, narrow[:8]))}): they were widened to "
+            f"~{here['covers_pct']}% anyway. Name the point instead — `N@60` "
+            "centres a crop there and asks you for one number, not two.",
+            err=True)
+    click.echo(
+        f"\nSeveral lines go in ONE call — `--only 11@70,13@40,23@60` is one "
+        f"command, one sheet and one image, where three calls are six turns. "
+        f"{(here or {}).get('points_per_sheet', 0)} points fit a sheet at "
+        f"{a.zoom}x: batch every doubt you already have before reading any.\n"
+        "`@0` and `@100` are the head and tail of a line exactly, whatever its "
+        "length — a footnote reference is `@100`, its opener and a left-set folio "
+        "are `@0`. Neither asks you to estimate a position.",
+        err=True)
+    if a.zoom == ZOOM_MAX:
+        click.echo(
+            f"\n{ZOOM_MAX}x is the ceiling, and it is for one mark on one word — "
+            "a diacritic whose shape is the whole question. There is no source "
+            "detail above it, so a second call at the same scale on the same ink "
+            "returns the same picture and answers nothing new. If this crop did "
+            "not settle it, the next move is a different question, a named "
+            "contrast on the same line, or `note` saying it is unresolved.",
+            err=True)
     return 0
 
 
 def run_edit(a) -> int:
-    from ..context import all_scans
     from ..lines_ui import serve as serve_lines
 
     refs = page_refs(a)
@@ -650,8 +797,13 @@ def run_edit(a) -> int:
     walk = refs
     label = ""
     if getattr(a, "all", False):
-        walk = all_scans(a.root)
-        label = "every page"
+        # **The store's pages, not every scan.** This editor corrects lines the
+        # segmenter missed, which presupposes a segmentation: a page with no ALTO
+        # has no lines to be missing from and nothing to measure against, and
+        # walking to it means opening an editor with nothing in it. `--all` here
+        # is `_store_refs`' rule, the one the rest of the group follows.
+        walk = _store_refs(a)
+        label = "every page the store holds"
     # **A filter over `--all`, never a saved work-list.** The obvious itinerary
     # here is "the pages `gaps` still leaves live", and writing that to a `.lst`
     # would freeze it: every page worked makes the file wrong, and a stale
@@ -660,9 +812,18 @@ def run_edit(a) -> int:
     # the census pays and buys an answer that is true when it is used.
     if getattr(a, "unsettled", False):
         from ..parallel import pmap
+
+        # A page the store cannot answer for has nothing to measure, and asking
+        # anyway is a crash rather than an empty answer — `line_gaps` parses the
+        # ALTO. Skipped here rather than guarded inside the detector: absence is a
+        # fact about this invocation's page list, not about the page.
+        def _bands(r: str) -> list[dict]:
+            if not alto_for_lines(r, _alto_dir(a), a.root).exists():
+                return []
+            return line_gaps(r, _alto_dir(a), a.root)
+
         with progress("measuring ink") as tick:
-            bands = pmap(lambda r: line_gaps(r, _alto_dir(a), a.root),
-                         walk, a.jobs if hasattr(a, "jobs") else 1, tick)
+            bands = pmap(_bands, walk, a.jobs if hasattr(a, "jobs") else 1, tick)
         walk = [r for r, bs in zip(walk, bands, strict=True)
                 if any(not b["exempted"] for b in bs)]
         label = "unsettled"

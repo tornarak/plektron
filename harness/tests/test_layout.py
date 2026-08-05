@@ -191,3 +191,77 @@ def test_page_dirs_on_a_repo_with_no_review_tree(tmp_path):
     from harness.paths import page_dirs
 
     assert page_dirs(tmp_path) == []
+
+
+# --- a masked figure says what it is ----------------------------------------
+
+FIG_NS = "http://www.loc.gov/standards/alto/ns-v4#"
+
+
+def _figured_page(tmp_path, ref: str = "1-048"):
+    """A page with one line and one declared figure, big enough for the placard."""
+    from PIL import Image
+
+    (tmp_path / "scans").mkdir(parents=True, exist_ok=True)
+    Image.new("L", (1200, 1600), 255).save(tmp_path / "scans" / f"chukchi-{ref}.png")
+
+    ocr = tmp_path / "gt" / "ocr"
+    ocr.mkdir(parents=True, exist_ok=True)
+    (ocr / f"chukchi-{ref}.xml").write_text(
+        f'<?xml version="1.0" encoding="UTF-8"?><alto xmlns="{FIG_NS}"><Layout>'
+        '<Page WIDTH="1200" HEIGHT="1600"><PrintSpace HPOS="0" VPOS="0" '
+        'WIDTH="1200" HEIGHT="1600"><TextBlock ID="b1">'
+        '<TextLine ID="l0" HPOS="100" VPOS="120" WIDTH="900" HEIGHT="50">'
+        '<String CONTENT="a line" HPOS="100" VPOS="120" WIDTH="900" HEIGHT="50"/>'
+        "</TextLine></TextBlock></PrintSpace></Page></Layout></alto>",
+        encoding="utf-8")
+
+    fig = tmp_path / "gt" / "fig"
+    fig.mkdir(parents=True, exist_ok=True)
+    (fig / f"chukchi-{ref}.xml").write_text(
+        f'<?xml version="1.0" encoding="UTF-8"?><alto xmlns="{FIG_NS}"><Layout>'
+        '<Page WIDTH="1200" HEIGHT="1600"><PrintSpace HPOS="0" VPOS="0" '
+        'WIDTH="1200" HEIGHT="1600">'
+        '<TextBlock ID="g1" TAGREFS="GT1" HPOS="150" VPOS="400" WIDTH="900" '
+        'HEIGHT="700"/></PrintSpace></Page></Layout>'
+        '<Tags><OtherTag ID="GT1" TYPE="type" LABEL="GraphicZone"/></Tags>'
+        "</alto>", encoding="utf-8")
+    return tmp_path
+
+
+def test_a_masked_figure_carries_its_placard(tmp_path):
+    """A figure is painted out of `ocr numbered` — deliberately, since a plate
+    eats the token budget of an image delivered at ~0.6x and its artwork raises
+    baselines the reader would have to be told to ignore.
+
+    Painted out and left *blank*, though, it is a void the reader has to explain
+    to itself: `2-030`'s reader met a huge vertical jump between two consecutive
+    indices, reasoned its way to "masked figure" from `gt/fig/` existing and `ocr
+    gaps` coming back empty, and wrote a memory note about it — three steps to
+    recover something this image already knew and had thrown away. An erasure
+    that does not say what it erased is indistinguishable from blank paper, which
+    on a page whose whole question is *what is missing here* is the wrong thing
+    to be indistinguishable from.
+    """
+    from PIL import Image
+
+    from harness.lines import FIG_FILL, FIG_INK, write_numbered_page
+
+    root = _figured_page(tmp_path)
+    res = write_numbered_page("1-048", root / "numbered.png", "gt/ocr", root)
+    img = Image.open(res["path"]).convert("L")
+    hist = img.histogram()
+    # The grey is the placard's, and the lettering is drawn over it — so the box
+    # is neither blank paper nor artwork, which are the two things it must not be
+    # mistaken for.
+    assert hist[FIG_FILL] > 5000, "the figure box is not filled with the placard grey"
+    assert hist[FIG_INK] > 200, "the placard carries no lettering"
+
+
+def test_a_figure_too_small_for_the_placard_keeps_the_grey(tmp_path):
+    """The floor matters more than the lettering. A box too small for even the
+    smallest type still reads as *something was removed here*, which is the whole
+    job; white did not."""
+    from harness.lines import FIG_TITLE_MIN
+
+    assert FIG_TITLE_MIN >= 10, "a floor this low would render as noise"

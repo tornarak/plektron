@@ -67,7 +67,11 @@ CLAIMS = Path("review/_claims")
 # will either read artwork as a dropped line or discount a real one as artwork.
 FIGURES_PRESENT = (
     "gt/fig/chukchi-{ref}.xml exists, so the figures are masked out of the "
-    "detector and a band it reports is meaningful rather than artwork.")
+    "detector and a band it reports is meaningful rather than artwork. **You "
+    "will see them on the page image as grey blocks reading BLOTTED FIGURE / DO "
+    "NOT TRANSCRIBE**, and the vertical jump between the line indices either "
+    "side of one is that figure, not a dropped line: it is already adjudicated "
+    "in the figure track and is nobody's to key. Do not spend an image on it.")
 FIGURES_ABSENT = (
     "gt/fig/chukchi-{ref}.xml does NOT exist, and the figure track is complete "
     "at 252 pages, so this page has no figures: nothing is being masked and "

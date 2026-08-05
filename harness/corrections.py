@@ -5,23 +5,35 @@ Two ink checks run over these pages and they ask **different questions**:
 - `zones check --ink` asks *is this ink inside any zone?* Ink outside every
   region is a defect in the zoning — a column the segmenter missed, a marginal
   note nobody boxed.
-- `ocr gaps` asks *is this in-zone ink inside any line?* Ink a zone covers but no
-  `TextLine` does is a dropped line — the fault that is invisible to every
-  text-level check, because the text that is there is correct and so nothing
-  disagrees with anything.
+- `ocr gaps` asks *is this ink inside any line?* Ink no `TextLine` covers is a
+  dropped line — the fault that is invisible to every text-level check, because
+  the text that is there is correct and so nothing disagrees with anything.
 
 They were sharing one exemption file, and that made a ruling about one question
 silently answer the other. A band marked "scanner smudge" during zoning — a
 statement about what the *zoning* need not cover — also stopped the line check
 from ever reporting that strip of paper again. The two are now one file each,
-written by their own editor, and **overlaid rather than merged**: each band is
-settled by the layer whose question it belongs to, and each editor shows the
-other layer so a human can see that the neighbouring check has already spoken.
+written by their own editor, and **overlaid rather than merged**, with each editor
+showing the other layer so a human can see that the neighbouring check has already
+spoken.
 
-The boundary between them is a mutual audit. A band this layer finds *outside*
-every zone is not this layer's business, and it is either a zone-check miss or a
-standing zone-level ruling — which is why `ocr edit` reads both files and refuses
-to record a correction out there, naming `zones edit` instead.
+**Authority runs downstream only.** Zoning is the first stage of accounting for
+the ink and recognition is the last — the standard `ocr blot` sets is a finished
+page rendering blank — so a line-layer ruling settles any band, in a zone or not,
+while a zone-layer ruling settles only what is already outside every zone. The
+upstream direction is the one that did the damage above and stays shut.
+
+Routing *both* directions by zone was the opposite error, and it left bands no
+editor could reach: the two checks do not see the same ink. `zones.uncovered_ink`
+masks coverage by row, `lines.line_gaps` masks by box, so a band sitting *beside*
+a zone rather than below it is covered to the first and reported by the second —
+`1-034`'s two, which `ocr edit` then refused as out-of-zone while `zones edit`
+never offered them at all. Two rulings were written for them and were inert.
+
+What survives of the boundary is the part that was always right: `ocr edit` still
+refuses to record a *correction* — a drawn line — outside every zone, naming
+`zones edit`. Ruling ink accounted-for and asserting a line exists inside no
+region are different acts, and only the second would leave a region missing.
 
 **The mechanism is shared, the meaning is not.** A ruling is band-scoped and
 carries a required reason in both layers, so that core lives here and `zones.py`
@@ -48,12 +60,15 @@ CORR_ID_PREFIX = "corr_"
 
 LINE_EXEMPT_ABOUT = (
     "Bands of ink **inside a zone** that a human has ruled are not a dropped "
-    "line — a printed rule, a footnote separator, a smudge the zoning covers. "
-    "Each carries the reason it was ruled so, and each is scoped to its own "
-    "band: exempting a whole page would hide the next dropped line on it. A "
-    "matched band still reports, flagged `exempted` and carrying its note. This "
-    "is the *line* layer; ink outside every zone is the zoning's question and "
-    "lives in gt/zones/_ink_exempt.json. Keyed PP-NNN.")
+    "line. Two dispositions: without `covered_by` the ruling says the ink is not "
+    "type — a printed rule, a footnote separator, a smudge the zoning covers. "
+    "With `covered_by: N` it says the ink IS type and IS keyed, in line N, whose "
+    "box strangled it; a clipped folio is the standing case. Each carries the "
+    "reason it was ruled so, and each is scoped to its own band: exempting a "
+    "whole page would hide the next dropped line on it. A matched band still "
+    "reports, flagged `exempted` and carrying its note. This is the *line* "
+    "layer; ink outside every zone is the zoning's question and lives in "
+    "gt/zones/_ink_exempt.json. Keyed PP-NNN.")
 
 
 def lines_dir(root: Path = Path(".")) -> Path:
@@ -212,6 +227,20 @@ def clean_regions(ref: str, regions: list[dict] | None) -> list[dict]:
     "the tool complained and I made it stop" is not a record of anything. A year
     from now the note is the only thing that distinguishes a ruled artifact from
     a hidden mistake.
+
+    **Two dispositions, and `covered_by` is what tells them apart.** Without it a
+    ruling says *not type* — a smudge, a gutter blob, offset from the facing page.
+    With it the ruling says *type, and already keyed*: this ink is the part of
+    line N that N's box strangled, so the band is not a dropped line because it is
+    not a separate line at all. Both stop `gaps` reporting a finding; only one of
+    them is true of a clipped folio, and the file used to have to say the false
+    one. `1-051` carries the note "half of undersized folio line" under a
+    disposition that reads "not type", which is the contradiction this field
+    exists to end.
+
+    A line's extent is not what makes it that line — its position is, as identity,
+    anchor and delimiter — so the fix is a truthful record rather than a resized
+    box, and there is deliberately no way to resize one.
     """
     clean = []
     for r in regions or []:
@@ -222,7 +251,15 @@ def clean_regions(ref: str, regions: list[dict] | None) -> list[dict]:
                 "reason is the record; without it the entry is indistinguishable "
                 "from a hidden mistake")
         y0, y1 = sorted((int(r["y0"]), int(r["y1"])))
-        clean.append({"y0": y0, "y1": y1, "note": note})
+        out = {"y0": y0, "y1": y1, "note": note}
+        if r.get("covered_by") not in (None, ""):
+            idx = int(r["covered_by"])
+            if idx < 0:
+                raise ValueError(
+                    f"ink exemption for {ref} at y={y0} names covered_by={idx} — "
+                    "a line index, and no line has a negative one")
+            out["covered_by"] = idx
+        clean.append(out)
     clean.sort(key=lambda r: r["y0"])
     return clean
 

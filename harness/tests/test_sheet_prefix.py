@@ -126,7 +126,7 @@ def test_spans_parse_and_default_to_the_whole_line():
 
 
 @pytest.mark.parametrize("spec", [
-    "12@50", "12@", "12@50-", "12@-50",          # not a LO-HI pair
+    "12@", "12@50-", "12@-50",                   # not a LO-HI pair nor a point
     "12@85-50", "12@50-50", "12@-5-50", "12@0-101",  # not an ordered percentage
     "20-11", "", "12@a-b",
 ])
@@ -138,6 +138,21 @@ def test_a_span_that_is_not_a_span_is_refused(spec):
     """
     with pytest.raises(ValueError):
         parse_spans(spec)
+
+
+def test_a_point_is_a_span_the_renderer_centres():
+    """`@P` is the form a reader can actually supply, and it parses to a degenerate
+    span the existing widening centres on — the same code path that already fills
+    an under-wide range, so a point costs no new geometry.
+
+    A range asks for two numbers about a word whose extent the caller cannot see;
+    the second is the one that goes wrong. `1-041`'s reader spent `23@45-65`,
+    `23@70-90` and `23@60-75` framing one word that `23@60` renders in one call.
+    """
+    assert parse_spans("23@60") == {23: (60, 60)}
+    assert parse_spans("11@70,13@40") == {11: (70, 70), 13: (40, 40)}
+    with pytest.raises(ValueError, match="0 <= P <= 100"):
+        parse_spans("23@101")
 
 
 def test_one_line_given_two_spans_is_an_error_not_a_merge():
@@ -239,18 +254,84 @@ def test_zoom_above_the_ceiling_is_refused_by_the_parser():
     from harness.cli import build_parser
 
     r = CliRunner().invoke(build_parser(),
-                           ["ocr", "zoom", "1-038", "--only", "16", "--zoom", "6"])
+                           ["ocr", "zoom", "1-038", "--only", "16",
+                            "--reason", "x", "--zoom", "6"])
     assert r.exit_code == 2
-    assert "1<=x<=4" in r.output
+    assert "'6' is not one of" in r.output
+
+
+@pytest.mark.parametrize("bad", ["1", "3"])
+def test_the_middle_rungs_are_gone(bad):
+    """Two steps, not a range — the ceiling alone did not hold.
+
+    Measured over one six-page batch: 236 crops taken, **none at the default 2x**.
+    Every call overrode it, 226 to 4x and 10 to 3x, and 3x was reached for as a
+    compromise between a look and a decision that is neither. 1x is what a contact
+    sheet already gives. Two of those six pages were never finished — their readers
+    spent 80 turns at two turns a crop and had none left to write with.
+    """
+    from click.testing import CliRunner
+
+    from harness.cli import build_parser
+
+    r = CliRunner().invoke(build_parser(),
+                           ["ocr", "zoom", "1-038", "--only", "16",
+                            "--reason", "x", "--zoom", bad])
+    assert r.exit_code == 2
+    assert f"'{bad}' is not one of" in r.output
+
+
+def test_a_zoom_needs_a_stated_reason():
+    """Required of a model, not of a person: no single crop in the failing batch
+    looked wasteful, and the waste was visible only as a count after the page had
+    already failed. A reason makes the sequence legible in `agents transcript`."""
+    from click.testing import CliRunner
+
+    from harness.cli import build_parser
+
+    r = CliRunner().invoke(build_parser(),
+                           ["ocr", "zoom", "1-038", "--only", "16"])
+    assert r.exit_code == 2
+    assert "--reason" in r.output
+
+
+def test_capacity_counts_the_padded_strip_and_the_snapped_crop():
+    """Both columns were first written from the obvious guess, and both were wrong.
+
+    A point looks like one window by construction — but `_snap_to_white` extends
+    each edge out to whitespace so no glyph is cut, and the crop lands on two
+    strips. A strip looks like the ALTO box — but `line_crops` adds PAD_TOP and
+    PAD_BOTTOM, and using the bare height claimed 13 points per sheet where the
+    composer fits 4. Both errors overstate what a call buys, which is the direction
+    that costs a re-call: a reader told it can batch thirteen doubts and getting
+    four sheets back stops believing the table.
+
+    Measured against a real render of `1-043` (1770 px median measure): 3 strips
+    for a whole line at 2x and 7 at 4x, 2 strips for a point at either, 4 points
+    to a sheet at 2x and 2 at 4x.
+    """
+    from harness.lines import PAD_BOTTOM, PAD_TOP, ZOOM_SHEET_H, zoom_capacity
+
+    widths, heights = [1770] * 9, [61] * 9
+    at = {c["zoom"]: c for c in zoom_capacity(widths, heights)}
+    assert (at[2]["full_strips"], at[4]["full_strips"]) == (3, 7)
+    assert (at[2]["point_strips"], at[4]["point_strips"]) == (2, 2)
+    assert (at[2]["points_per_sheet"], at[4]["points_per_sheet"]) == (4, 2)
+    assert (at[2]["covers_pct"], at[4]["covers_pct"]) == (38, 19)
+    # The padding is the whole of the second correction: drop it and 2x claims 13.
+    bare = ZOOM_SHEET_H // (61 * 2) // at[2]["point_strips"]
+    assert bare > at[2]["points_per_sheet"]
+    assert PAD_TOP + PAD_BOTTOM == 28
 
 
 def test_the_ceiling_itself_is_allowed():
     """4x is the escalation the pass doc sends a reader to for one named doubt;
     refusing it would make the ceiling unreachable rather than enforced."""
     from harness.cli import build_parser
-    from harness.lines import ZOOM, ZOOM_MAX
+    from harness.lines import ZOOM, ZOOM_MAX, ZOOM_STEPS
 
     assert ZOOM < ZOOM_MAX == 4
+    assert ZOOM_STEPS == (ZOOM, ZOOM_MAX)
     zoom = build_parser().commands["ocr"].commands["zoom"]
-    rng = next(p.type for p in zoom.params if "--zoom" in getattr(p, "opts", []))
-    assert (rng.min, rng.max) == (1, ZOOM_MAX)
+    kind = next(p.type for p in zoom.params if "--zoom" in getattr(p, "opts", []))
+    assert list(kind.choices) == [2, 4]

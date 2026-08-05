@@ -26,7 +26,7 @@ from pathlib import Path
 
 import pytest
 
-from harness.proposal_check import ADVISORY, DEFECT, ISSUE_FIELDS, check, issue
+from harness.proposal_check import ADVISORY, DEFECT, ISSUE_FIELDS, check, fix, issue
 
 # A line whose only finding is the bare dot-prone suffix: `-gɪn` unmarked, with a
 # `resolved` field that correctly names both notation codepoints so the two
@@ -125,7 +125,7 @@ def _keyed(tmp_path, keys, ref="1-048"):
 
 def test_a_line_index_the_store_lacks_is_a_defect(tmp_path):
     """`restore` joins on the index, so a key naming no `TextLine` is text with
-    no box — the dropped-line case, which belongs in `segmenter_missed`.
+    no box — the dropped-line case, which is upstream human action.
 
     It would otherwise be dropped in silence, which is the whole problem: the
     reading is lost and nothing says a reading was lost.
@@ -135,7 +135,45 @@ def test_a_line_index_the_store_lacks_is_a_defect(tmp_path):
     rows = [r for r in check(path, "1-048", root) if "not in the store" in r["issue"]]
     assert [r["line"] for r in rows] == ["7"]
     assert rows[0]["severity"] == DEFECT
-    assert "segmenter_missed" in rows[0]["issue"]
+    assert "ocr edit" in rows[0]["issue"]
+
+
+def test_a_non_empty_segmenter_missed_block_is_a_defect(tmp_path):
+    """The retired field, gated rather than merely undocumented.
+
+    Deleting it from the prompts stops a reader being *taught* it; this stops one
+    that reinvents it from shipping. The line store is the upstream source of
+    truth and a proposal is downstream, so a proposal may not propose a line into
+    existence — and a reading recorded in a field nothing restores is a reading
+    lost as silently as one keyed to an index the store lacks.
+    """
+    p = tmp_path / "review" / "1-048" / "proposal.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({
+        "lines": {"0": {"text": "line 0"}},
+        "segmenter_missed": {"0": {"note": "folio at hpos 2157, no box"}},
+    }), encoding="utf-8")
+    rows = [r for r in check(p) if "illegal" in r["issue"]]
+    assert len(rows) == 1
+    assert rows[0]["severity"] == DEFECT
+
+
+def test_an_empty_segmenter_missed_block_is_inert_and_fix_strips_it(tmp_path):
+    """An empty block carries no reading, so it folds away rather than gating.
+
+    Eight proposals in `review/` hold the key empty. Gating on presence alone
+    would fail every one of them over a field with nothing in it, which is the
+    shape of gate this repo has already been burned by — `check`'s own advisories
+    gated until eight of eighteen proposals failed on advisories alone.
+    """
+    p = tmp_path / "review" / "1-048" / "proposal.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({
+        "lines": {"0": {"text": "line 0"}}, "segmenter_missed": {},
+    }), encoding="utf-8")
+    assert [r for r in check(p) if "illegal" in r["issue"]] == []
+    fix(p)
+    assert "segmenter_missed" not in json.loads(p.read_text(encoding="utf-8"))
 
 
 def test_every_index_present_reports_nothing(tmp_path):

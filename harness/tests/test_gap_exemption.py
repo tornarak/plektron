@@ -2,9 +2,10 @@
 
 Two ink checks run over these pages and they ask different questions. `zones check
 --ink` asks whether ink is inside any zone; ink outside every region is a defect in
-the zoning. `ocr gaps` asks whether in-zone ink is inside any line; ink a zone
-covers but no `TextLine` does is a dropped line. Each has an exemption file, and
-each band is settled only by the layer whose question it belongs to.
+the zoning. `ocr gaps` asks whether ink is inside any line; ink no `TextLine`
+covers is a dropped line. Each has an exemption file, and **authority runs
+downstream only**: the line layer settles any band, the zone layer settles only
+what is already outside every zone.
 
 **Both halves of that have been wrong, in opposite directions, and both are under
 test here.**
@@ -23,8 +24,17 @@ stopped the line check from ever reporting that strip of paper again. A folio th
 segmenter dropped inside a `RunningTitleZone` is exactly the case that must survive
 a zone-level ruling elsewhere on the page.
 
-So three properties: *carried*, *not suppressed*, and *not borrowed from the other
-layer*. Not suppressed matters most — a `gaps` that hid a band would be the one
+The second fix over-corrected in turn, routing *both* directions by zone, which
+left bands neither editor could reach: the two checks do not see the same ink,
+because `zones.uncovered_ink` masks coverage by row and `line_gaps` masks by box,
+so a band beside a zone rather than below it is visible only here. `1-034` had two,
+and the rulings a human wrote for them were inert with nothing saying so. What
+settles the direction is the stage: zoning is the first pass at accounting for the
+ink and recognition is the last, so the downstream layer reaches everything and the
+upstream one does not.
+
+So three properties: *carried*, *not suppressed*, and *not borrowed from
+upstream*. Not suppressed matters most — a `gaps` that hid a band would be the one
 place a wrong call could hide, taking the next real dropped line with it.
 
 Fixtures are synthetic and live in `tmp_path`, per the suite's rule; the page's
@@ -248,19 +258,34 @@ def test_a_line_ruling_settles_a_band_inside_a_zone(in_zone):
     assert after["layer"] == "lines"
 
 
-def test_a_line_ruling_does_not_settle_a_band_outside_every_zone(page):
-    """The mirror, and it keeps the boundary honest in both directions: ink no
-    region covers is the zoning's defect, and the line editor must not be able to
-    rule it away from over here."""
+def test_a_line_ruling_does_settle_a_band_outside_every_zone(page):
+    """**Authority runs downstream, and this is the downstream direction.**
+
+    This asserted the opposite for most of its life, on the reasoning that ink no
+    region covers is the zoning's defect and the line editor must not rule it away
+    from over here. Symmetrical, and wrong — because the two ink checks do not see
+    the same ink. `zones.uncovered_ink` masks coverage by **row**, so a band beside
+    a zone rather than below it counts as covered and never reaches `zones edit`;
+    `line_gaps` masks by **box** and reports it. `1-034` had two such bands: this
+    check saw them, that editor could not offer them, and the rulings a human wrote
+    for them sat inert with nothing saying so.
+
+    The stage argument settles which way to open it. Zoning is the first stage of
+    accounting for the page's ink; recognition is the last, and `ocr blot` over a
+    finished page should leave a blank leaf. So the line layer reaches every band.
+    The upstream direction stays shut — see the test above.
+    """
     tmp_path, _ = page
     band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    assert band["zone"] == "", "the fixture stopped producing an out-of-zone band"
     _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
-            layer="lines")
+            note="marginal blot", layer="lines")
 
     after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
     assert after["zone"] == ""
-    assert after["exempted"] is False
-    assert after["layer"] == ""
+    assert after["exempted"] is True
+    assert after["layer"] == "lines"
+    assert after["note"] == "marginal blot"
 
 
 def test_a_ruled_band_is_not_offered_as_work(page):
@@ -275,3 +300,155 @@ def test_a_ruled_band_is_not_offered_as_work(page):
     bands = line_gaps("1-048", "gt/ocr", tmp_path)
     assert [b for b in bands if not b["exempted"]] == []
     assert bands[0]["note"] == "offset from the facing page"
+
+
+# --- the two dispositions -------------------------------------------------
+#
+# One exemption used to carry two opposite claims. Without `covered_by` a ruling
+# says the ink is not type; with it, the ink IS type and IS keyed, in a line whose
+# box strangled it. Both silence the band, and for a long time only the false one
+# could be recorded — `1-051` carries `half of undersized folio line` filed as a
+# ruling that reads "not a line", which is the contradiction these cover.
+#
+# The asymmetry is the point: "not type" rests on the paper and nothing in the
+# harness can weigh it, while "covered by line N" names something the store can be
+# asked about. So the second disposition is the only one that can be wrong out
+# loud, and `covered_faults` is where it is.
+
+def _covered(tmp_path: Path, y0: int, y1: int, line: int,
+             note: str = "half of undersized folio line",
+             ref: str = "1-048") -> None:
+    d = tmp_path / "gt" / "lines"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "_ink_exempt.json").write_text(
+        json.dumps({ref: [{"y0": y0, "y1": y1, "note": note,
+                           "covered_by": line}]}), encoding="utf-8")
+
+
+def test_a_ruling_without_covered_by_reports_as_not_type(in_zone):
+    """The original disposition, unchanged — and it must stay distinguishable,
+    or separating the two bought nothing."""
+    tmp_path, _alto, band = in_zone
+    _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
+            note="printed rule", layer="lines")
+
+    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    assert after["reason"] == "not_type"
+    assert after["covered_by"] == ""
+
+
+def test_a_covered_ruling_names_the_line_that_keys_the_ink(in_zone):
+    """The band is answered rather than dismissed: it is not a dropped line
+    because it is not a separate line, and the record says which line it is part
+    of instead of claiming the ink is not print."""
+    tmp_path, _alto, band = in_zone
+    _covered(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
+             line=0)
+
+    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    assert after["exempted"] is True
+    assert after["reason"] == "covered"
+    assert after["covered_by"] == 0
+    assert after["note"] == "half of undersized folio line"
+
+
+def test_a_covered_ruling_naming_no_line_is_a_fault(in_zone):
+    """A band suppressed on the authority of a line that does not exist.
+
+    This is the check "not type" could never have had, and the whole argument for
+    the field: an unfalsifiable ruling and a wrong one look identical, so a
+    disposition that can be checked is worth more than one that cannot be
+    challenged.
+    """
+    from harness.lines import covered_faults
+
+    tmp_path, _alto, band = in_zone
+    _covered(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
+             line=99)
+
+    faults = covered_faults("1-048", "gt/ocr", tmp_path)
+    assert [f["fault"] for f in faults] == ["no_line"]
+    assert faults[0]["covered_by"] == 99
+
+
+def test_a_covered_ruling_naming_an_empty_line_is_a_fault(tmp_path):
+    """The sharper of the two: the line exists, so the reference resolves, and it
+    keys nothing — so the reading really is missing and the exemption is hiding
+    exactly what it claims to account for."""
+    from harness.lines import covered_faults
+
+    ref = "1-048"
+    gt = tmp_path / "gt" / "ocr"
+    gt.mkdir(parents=True)
+    gt.joinpath(f"chukchi-{ref}.xml").write_text(
+        f'<?xml version="1.0" encoding="UTF-8"?><alto xmlns="{ALTO_NS}"><Layout>'
+        f'<Page ID="p1" WIDTH="600" HEIGHT="800"><PrintSpace HPOS="0" VPOS="0" '
+        f'WIDTH="600" HEIGHT="800"><TextBlock ID="b1" HPOS="50" VPOS="100" '
+        f'WIDTH="500" HEIGHT="30"><TextLine ID="l1" HPOS="50" VPOS="100" '
+        f'WIDTH="500" HEIGHT="30" BASELINE="50 130 550 130">'
+        f'<String CONTENT="" HPOS="50" VPOS="100" WIDTH="500" HEIGHT="30"/>'
+        f'</TextLine></TextBlock></PrintSpace></Page></Layout></alto>',
+        encoding="utf-8")
+    _covered(tmp_path, 400, 440, line=0, ref=ref)
+
+    faults = covered_faults(ref, "gt/ocr", tmp_path)
+    assert [f["fault"] for f in faults] == ["empty_line"]
+
+
+def test_a_covered_ruling_that_checks_out_is_silent(in_zone):
+    """The control. A check that never passes and a store with nothing wrong in
+    it look identical from the outside."""
+    from harness.lines import covered_faults
+
+    tmp_path, _alto, band = in_zone
+    _covered(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
+             line=0)
+    assert covered_faults("1-048", "gt/ocr", tmp_path) == []
+
+
+def test_a_not_type_ruling_is_never_checked_for_faults(in_zone):
+    """It has nothing to check against, and inventing a fault for it would put a
+    demand on the one disposition whose only witness is the paper."""
+    from harness.lines import covered_faults
+
+    tmp_path, _alto, band = in_zone
+    _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
+            note="scanner artifact", layer="lines")
+    assert covered_faults("1-048", "gt/ocr", tmp_path) == []
+
+
+def test_a_line_ruling_wins_over_a_zone_ruling_on_the_same_band(page):
+    """Both layers speak about one out-of-zone band; the downstream one is heard.
+
+    Not a tie-break for its own sake — `layer` is what tells a reader which stage
+    made the call, and a band the recognition stage has ruled must not report as
+    the zoning's, or the note shown belongs to a different question from the one
+    that settled it.
+    """
+    tmp_path, _ = page
+    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    y0, y1 = band["vpos"] - 5, band["vpos"] + band["height"] + 5
+    _exempt(tmp_path, y0, y1, note="scanner artifact", layer="zones")
+    _exempt(tmp_path, y0, y1, note="marginal blot", layer="lines")
+
+    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    assert after["layer"] == "lines"
+    assert after["note"] == "marginal blot"
+
+
+def test_a_zone_ruling_still_settles_an_out_of_zone_band_alone(page):
+    """The zoning's rulings keep working where they always did.
+
+    Opening the downstream direction must not close the one that was already
+    right: a band outside every zone that only the zoning has spoken about stays
+    settled by it, or every existing `scanner artifact` entry silently stops
+    counting.
+    """
+    tmp_path, _ = page
+    band = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    _exempt(tmp_path, band["vpos"] - 5, band["vpos"] + band["height"] + 5,
+            note="scanner artifact", layer="zones")
+
+    after = line_gaps("1-048", "gt/ocr", tmp_path)[0]
+    assert after["exempted"] is True
+    assert after["layer"] == "zones"
