@@ -265,3 +265,146 @@ catalogue. Both series statements are recorded, since dropping either makes a
 citation in it unresolvable. `@source` in the header points at the catalogue record,
 `@resp` only ever at a model's reading of a raster — the rank machinery is about
 reading pages and says nothing about a catalogue's authority.
+
+## The reading-discipline record (keying_spec.md §5's case files)
+
+Moved here 2026-08-05, when §5 was compressed to rule → instrument → record per
+class. The reason for the move is itself a finding: the 1-039…1-044 reader batch
+showed that a class restated at length in the system prompt is not thereby
+checked — one reader quoted §5.1's 93.9% prior *and* named `vaˊɪrg̣ɪn/vaˊɪrg̣ɪt`
+as the documented trap in its own note, then bare-keyed the suffix twice on the
+page it was writing about. Emphasis had demonstrably failed; the spec now names
+each class's *instrument* instead, and the narratives that established each
+class live here, intact, because they are the evidence the compressed register
+lines point at.
+
+**§5.1, the bare `g` (five occurrences and counting).** `1-074` is above ("The
+error class that survives review"): two dropped U+0323, caught only by the
+editor. `3-004` restated it at scale: `-g̣ɪ`/`-g̣ɪn`/`-g̣ɪt` are common
+noun-forming suffixes, not merely a kinship-vocabulary pattern (`va'ɪrg̣ɪn`,
+"spirit"), and that proposal bare-keyed the suffix across nearly every headword
+— the single largest error class on the page. `3-005`, the fourth occurrence,
+read several `-mgɪn`/`-mgälqäl` clusters as bare `g` after a genuine 4× look
+that seemed to show no dot — and was still wrong on more than one, per the
+human reviewer: the 90% figure is a real prior to weight against your own
+raster impression, and a "no dot" reading must clear a higher bar than a "dot"
+reading precisely because the base rate runs the other way. The fifth
+occurrence was the 2026-08 five-reader batch: five drops across three pages
+(`2-033`: `Attɪˊg̣ɪtkɪ` ×2 and `vaˊɪrg̣ɪt` ×2; `2-035`: `Čig̣eiˊ-veˊem`),
+including the prior-quoting reader above. What finally worked was the contrast
+method — both `2-033` and `2-035` corrections came from holding the doubtful
+`g` against a plain English `g` on the same line (`danger`/`ger.`,
+`representing`) after their readers had looked hard and got it wrong. A sixth
+instance, `1-042`'s `Nɪg̣čɪˊen`, was caught at adjudication in 2026-08 by
+`proposal marks`' distributional arm (g-dot at 0.0% across 3 types against the
+corpus prior) after four clean mechanical gates had passed the page.
+
+The suffix-frequency snapshot that §5.1 used to carry (recompute with `harness
+lexicon suffixes` / `lexicon digraphs` before citing — 11/20 pilot pages
+restored):
+
+| Suffix | Weighted count | | Digraph | Count | | Trigraph | Count |
+|---|---|---|---|---|---|---|---|
+| `-ɪn` | 89 | | `ne` | 34 | | `gɪn` | 10 |
+| `-hɪn` | 28 | | `ɪn` | 32 | | `ini` | 9 |
+| `-en` | 27 | | `en` | 31 | | `ute` | 9 |
+| `-gɪn` | 21 | | `na` | 29 | | `Nut` | 8 |
+| `-lɪn` | 21 | | `an` | 27 | | `erg` | 8 |
+| `-lhɪn` | 20 | | `el` | 27 | | `enu` | 7 |
+| `-rgɪn` | 16 | | `in` | 26 | | `m-g` | 7 |
+| `-ak` | 15 | | `et` | 25 | | `nel` | 7 |
+| `-an` | 12 | | `te` | 24 | | | |
+| `-un` / `-ut` | 11 | | `ɪt` | 24 | | | |
+| `-ɪrgɪn` | 11 | | | | | | |
+
+`-hɪn`/`-lɪn`/`-lhɪn` together are comparably common to the mark-stripped
+`-g̣ɪn` family — a second noun-forming family worth the same "assume it, don't
+bare-key it" discipline — and `g̣` itself (marks kept for this one figure) is
+corpus-wide the 6th most common digraph.
+
+**§5.2, `ɪ`/`i`/`r`.** Word-initial: `1-101`'s `Iᵋplɪˊlɪ` twice on one page,
+both corrected at adjudication to `ɪᵋplɪˊlɪ` — and word-initially the corpus
+genuinely splits (63 ASCII capitals against 55 small caps), which is exactly
+why `detectors.MEDIAL_CAPS`, sharp on medial position (2:509), was blind to the
+pair. From the recognizer: a 2026-08 reader keyed `2-033`'s `Attɪˊg̣ɪtkɪ` as
+`Attrˊgɪtkɪ`, taking CATMuS's `r` — and the standing "CATMuS is not a witness
+to any *non-ASCII* glyph" rule did not reach it, because the recognizer's error
+*is* ASCII; the rule was rescoped to "not a witness to what any character is
+wherever an inventory glyph could stand". The residual class: four instances
+over two 2026-08 batches survived into adjudication (`2-047` lines 15 and 17,
+`empeiˊkɪn`/`hɪshoˊlan`; `2-031` line 33, `Uˊnpɪñe`; `2-035` line 14,
+`velerkileˊlɪt`), and every one was on a line whose reader had explicitly
+narrated the check — `2-031`'s wrote "checked closely against the ɪ elsewhere
+on the page and read as plain ASCII i (x-height, dotted)" and was wrong. A
+confident negative here carries no more weight than an unexamined one.
+
+**§5.5, stress reasoned in `resolved` and not typed in `text`.** `3-004`'s
+proposal reasoned "post-vowel, not-in-b/p/d/t/g/k, not V_V → stress U+02CA, not
+apostrophe" correctly in `resolved` on line after line — and `text` kept the
+literal `'` anyway, on 33 of 71 lines. `proposal check` reported the exact
+signature (`resolved/text mismatch`, `in resolved not text: U+02CA`) on nearly
+every affected line, and the reader dismissed it as narrative-formatting noise.
+The same diff class repeating across many lines is the tool reporting something
+systematic; and after writing `resolved`, `text` must be re-read character by
+character against it, because reasoning about a mark and typing it are two
+different acts and nothing enforces that the second followed the first.
+
+**§5.9, the convenient smudge (two rulings).** `1-048` prints
+`reindeér-breeding`, and at 4× the mark over the second `e` is a solid tapered
+wedge at type weight and slant — categorically unlike the round artifact dots
+littering the page, and so read as ink from the forme. The editor's ruling: a
+serendipitously shaped smudge. The lesson is not that the observation was
+careless; it is that *shape quality at magnification cannot by itself separate
+a sort from a smudge*, so it is never evidence enough to adopt an uncatalogued
+codepoint on. What worked was suspending judgement: the proposal keyed the
+letter as printed and said in `note` that U+0301 is catalogued nowhere in the
+inventory and would be the corpus's first combining acute — which put the call
+in front of a human instead of into the corpus. `1-060` made it a class: CATMuS
+read a combining acute over the `e` of `“Chief of the Chaun Chukchee”`; at 4×
+the mark is an irregular blob touching the `f`'s ascender, and the same page
+supplies a control in the clean tapered ˊ of `tɪkêˊ-vaˊg̣lɪñɪn`. Keyed `Chief`,
+flagged, ruled: another conveniently diacritic-shaped smudge. The disposition
+is the same whichever way the shape argument points, because the codepoint
+being uncatalogued is what decides it, not the ink — and it was the *second
+witness* that made `1-060` cheap: recognizer saw a mark, reading pass did not,
+and the disagreement surfaced itself, which is an argument for reading against
+`mz/ocr/` rather than alone.
+
+**§5.11, the note that argues correct text wrong.** `2-031` keyed its three
+footnote openers correctly as `¹ ² ³` and attached notes claiming plain ASCII
+digits had been keyed, "per the precedent recorded for 2-034 in keying_spec.md
+§2.10", predicting the half-open-pairing check would flag the page and that
+this was expected. Almost certainly the text was repaired mid-pass and the note
+never re-read; left standing, an adjudicator reading a confident rationale
+beside correct text is being argued into breaking it. The first diagnosis of
+this blamed the reader, and was wrong: §2.10 then named `2-034` and printed its
+defective opener as a worked example, so a *record of the error* read as a
+*statement of the convention*, and both readers of that batch cited the section
+in full for opposite conclusions. The passage was rewritten, and the standing
+caution came out of it: **when a reader misapplies a rule, read the rule before
+concluding it was ignored.** The quotation requirement (§5.11) is the check
+that "I read it" is not — neither reader could have quoted a sentence
+supporting a plain-digit opener, because there is none.
+
+**§5.12, the invented second witness (two in one batch, different readers).**
+`1-022` keyed `Plates V` — correct — and wrote that the first numeral
+"measured against the V of VII in the same strip the two are the same height";
+they are not (the `v` sits at plain x-height, `VII`/`XIV` are visibly taller
+small caps). `1-021` ruled a speck over the `t` of `list` to be dirt — correct
+— and wrote that "CATMuS read it as an apostrophe (`list'`)"; the machine text
+reads `1 See list of authorities quoted, p. 3.` and contains no apostrophe.
+Both claims were one command from being checked and neither was. An invented
+corroboration is worse than no note, because it is exactly the thing that
+stops the next reader looking — and it will be believed, since the text beside
+it is right.
+
+**§2.10, the worked example that read as a convention.** `2-034` printed body
+reference `dances.¹` against opener `1 See Chapter XIV.` — the defect the
+half-open-pairing check was written against, since repaired
+(`gt/ocr/chukchi-2-034.xml` keys `¹ See Chapter XIV.`). While §2.10 recorded
+that history with the defective opener printed inline, a 2026-08 reader keyed
+a page's openers as plain ASCII and justified them as "the precedent recorded
+for 2-034" — the §5.11 story above. The spec's statement is now scoped flat:
+no plain-digit convention for footnote markers exists anywhere in the corpus,
+no page is a precedent for one, and a detector firing on your output is the
+rule working, never a convention you have joined.

@@ -1,10 +1,6 @@
-- [Zoom span first guess can miss](zoom-span-first-guess-can-miss.md) — a guessed --only percentage span for a mid-line mark can miss it; re-aim once, don't call it inconclusive
-- [Margins zoom percent mapping is loose](margins-zoom-percent-mapping-is-loose.md) — --margins widens to PrintSpace so LO-HI % is imprecise; get one clear read, don't re-zoom the same pixels at higher multipliers
-- [Verify line index before zoom span](verify-line-index-before-zoom-span.md) — check the index against `ocr lines`' text column, not just the numbered.png row count, before spanning a zoom
-- [Tier-1 forms in English-prose pages](tier1-forms-in-english-prose-pages.md) — a page that reads as ordinary narrative can still embed a Chukchee ethnonym mid-sentence; check every marked proper noun
-- [Gaps band can be ink blot, not dropped line](gaps-band-can-be-ink-blot-not-dropped-line.md) — a figure-free page's gaps band can be a real smudge bleeding past a line box; zoom --margins and report, never repair
-- [Folio can sit on its own thin ALTO line](folio-can-sit-on-own-thin-alto-line.md) — a near-empty sliver line next to the running title can hold the folio, visible only under --margins
-- [Folio can have no ALTO line at all](folio-can-have-no-alto-line-at-all.md) — RunningTitleZone can be a single line (title only); folio is outside every box, found by --margins on that one line
-- [Folio with no line is a dropped line](folio-with-no-line-is-a-dropped-line.md) — printed text no index covers goes in segmenter_missed; never append it to a neighbouring line's text
-- [Footnote-marker CATMuS substitutes vary](footnote-marker-catmus-substitutes-vary.md) — a garbled raised digit can come through as `!`/`/`/quote too, not just a plain digit; zoom any stray trailing punctuation on a footnote page
-- [Laryngeal superscript can look like g at low zoom](laryngeal-superscript-can-look-like-g-at-low-zoom.md) — a small raised loop mark can misread as superscript-g at 3x; zoom close, it's likely the catalogued ᵋ (U+1D4B)
+- [CATMuS substitutes ASCII for marks](catmus-substitutes-ascii-for-marks.md) — a mark it cannot read comes through as some ASCII glyph of that silhouette; the register of observed cases, and why no lookup table retires the raster
+- [The two superscript marks](the-two-superscript-marks.md) — stress U+02CA then laryngeal U+1D4B on one vowel, independent; the laryngeal is what gets misread as an uncatalogued superscript g
+- [Uncatalogued second mark: flag, don't key](uncatalogued-second-mark-flag-dont-key.md) — key the catalogued sort and flag the shape doubt where one fits; where none fits without breaking a validated rule, key nothing and describe it
+- [Tier-1 forms in English-prose pages](tier1-forms-in-english-prose-pages.md) — an ordinary narrative page still embeds marked ethnonyms; genre is a prior, not a licence
+- [Printed text no line covers](printed-text-no-line-covers.md) — where the folio hides, and the rule for all of it: nothing you key may describe ink outside the line you are keying
+- [Coordinator message can name wrong ref](coordinator-message-can-name-wrong-ref.md) — a mid-task nudge can cite a page you did not claim; only your own `ocr claim` names your page

@@ -7,10 +7,13 @@ evidence, it is what both readings that were wrong said.
 
 ## Before reading
 
-- [ ] `ocr gaps PP-NNN` run; `exempted` bands read and taken as settled, the rest
-      ruled line-or-not and **reported, never repaired**
+- [ ] `ocr gaps PP-NNN` run; each `exempted` band read **with its `reason`** —
+      `not_type` taken as settled, `covered` taken as "line `covered_by` is
+      printed wider than its box, key all of it" — and the rest ruled
+      line-or-not and **reported, never repaired**
 - [ ] Every line's `text` describes only that line's own box — printed matter no
-      index covers went to `segmenter_missed`, never onto a neighbour
+      index covers went into the report, never onto a neighbour and never into a
+      field of its own
 - [ ] Whole page image read once for orientation (heads, folio, footnotes, figures)
 - [ ] All contact sheets read in full before any zoom
 
