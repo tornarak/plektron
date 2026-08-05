@@ -1097,6 +1097,16 @@ that language.** Such forms are rare, which is the hazard: a Chukchee-looking
 suffix on one invites a correction toward a distribution it was never drawn
 from.
 
+**And every one of them moves.** The store is mid-rebuild — pages leave it to be
+re-read and come back — so any absolute count written here is a snapshot that has
+already drifted, and one was quietly wrong for a while by being labelled a
+word-initial split when it was a total. So the shape of a claim in this section is
+the *direction* of a lean plus the verb that recomputes it: `harness lexicon
+marks` for bare-vs-marked per base letter, `lexicon suffixes` and `lexicon
+digraphs` for affixes, `harness proposal marks` for a page against the store.
+**Cite the verb, not a remembered number**, and read `band_n` before believing a
+band: a prior backed by one page is a prior backed by one page.
+
 0. **Where a reading and this file disagree, the spec wins and the
    disagreement is flagged for a human — never resolved by further zooming.**
    Magnification cannot settle a question that isn't optical, and a detailed,
@@ -1106,9 +1116,10 @@ from.
    authority; it does not forbid the printed key or an editor ruling from
    binding.
 1. **Dropped dot below `g`: a bare Tier-1 `g`/`G` is the exception that needs a
-   reason, never the resting state.** `g̣` (g + U+0323) is **93.9%** of Tier-1
-   `g` (123 dotted, 8 bare corpus-wide; `harness lexicon marks` for the live
-   figure), and `-g̣ɪ`/`-g̣ɪn`/`-g̣ɪt` are common **noun-forming suffixes** in
+   reason, never the resting state.** `g̣` (g + U+0323) is **the large majority
+   of Tier-1 `g`** — around 87% as the store stands and never yet a minority at
+   any size it has been; run `harness lexicon marks` for today's share rather
+   than quoting this sentence. And `-g̣ɪ`/`-g̣ɪn`/`-g̣ɪt` are common **noun-forming suffixes** in
    every register (`va'ɪrg̣ɪn`, "spirit") — so a word ending plain
    `-git`/`-gin`/`-gɪn` is presumptively wrong before the raster is even open.
    The dotted and undotted sorts are the same letterform, so **absence is not
@@ -1142,25 +1153,28 @@ from.
    after 4× stares had failed; `1-042`'s was caught by `proposal marks` after
    four clean mechanical gates.
 2. **`ɪ` (U+026A) vs `i` vs `r` — the leading residual class, and the tell is
-   that the reader reports checking it.** The base rate runs against plain
-   `i`: Tier-1 `ɪ` outnumbers `i` **470 to 247**, near 2:1, and `-ɪn` / `-ɪt`
-   are by a long shot the commonest suffixes in Bogoras's forms (`-ɪn` tops
-   the corpus suffix table outright) — plain `-in` is attested but rare, and
-   chiefly in proper nouns and words of foreign origin. So a suffixal dotted
-   `i` is the reading that needs a reason, and a page keying mostly `i` wants
-   a second look before anyone opens a scan. Three sub-cases, none caught by
-   shape alone:
+   that the reader reports checking it.** The base rate runs against plain `i`
+   — Tier-1 `ɪ` outnumbers it across the store, and `-ɪn` / `-ɪt` are by a long
+   shot the commonest suffixes in Bogoras's forms, `-ɪn` topping the suffix
+   table outright, while plain `-in` is attested but rare and chiefly in proper
+   nouns and words of foreign origin. So a suffixal dotted `i` is the reading
+   that needs a reason, and a page keying mostly `i` wants a second look before
+   anyone opens a scan. Three sub-cases, none caught by shape alone:
    - **`ɪ` vs `ĭ`** is a §2.6 licensing fact, not a shape call: the breve is
      licensed on `i` and never on the obscure-vowel series, so a dotless vowel
      carrying a genuine breve is `ĭ`, full stop — a rule lookup, not a look.
-   - **Word-initial capital-shape vs small-cap `ɪ`** is a genuine reading:
-     word-*medially* an ASCII capital is essentially never right (2 against
-     509, and `detectors.MEDIAL_CAPS` refuses it), but word-*initially* both
-     are ordinary — **63 ASCII capitals against 55 small caps** (`ᴇ`/`E` too,
-     31:12 the other way; `ᴀ` and `ʟ` attested initially only as ASCII so far,
-     28 and 7 — the corpus speaking, thin enough that a genuine word-initial
-     `ᴀ` should be read, not argued away). Nothing mechanical settles it;
-     `proposal marks`' frequency arms are the only handle.
+   - **Word-initial capital-shape vs small-cap `ɪ` — read it, and do not argue
+     it from a frequency in either direction.** Position splits this in two, and
+     only one half is settled. Word-*medially* an ASCII capital is essentially
+     never right, by a margin wide enough that `detectors.MEDIAL_CAPS` refuses
+     one outright rather than flagging it. Word-*initially* both are ordinary
+     and **the store does not hold enough initials of either kind to support a
+     prior**: `proposal marks` says so in its own output, where the word-initial
+     bands rest on one ground-truth page for `ɪ`/`I` and on none at all for
+     `ᴇ`/`E` — which is what the `?` in its `outside` column means. A page-level
+     lean on this contrast is therefore not evidence, and reporting one as if it
+     were has already sent two batches chasing a word-initial `E` that was
+     correct as keyed.
    - **`ɪ` keyed as `r`, arriving from the recognizer.** CATMuS substitutes
      `i`, `I` and **`r`** for `ɪ`, and `r` is the one that gets through — its
      error *is* ASCII, which is why the rule reads "CATMuS is not a witness to
@@ -1181,10 +1195,11 @@ from.
    narrated the check**, one writing "checked closely against the ɪ elsewhere
    on the page" and being wrong.
 3. **`ä` (a + U+0308) vs. plain `a`: any bare `a` in a Tier-1 form is a
-   candidate for `ä`, not a default reading.** `ä` is **14.0%** of Tier-1 `a`
-   (`harness lexicon marks` for the live figure) — the long counterpart of
-   the obscure-vowel series (§2.2), and the diaeresis is small and easy to
-   read past on a contact sheet.
+   candidate for `ä`, not a default reading.** `ä` runs under a tenth of Tier-1
+   `a` (`harness lexicon marks` for today's share) — so unlike §5.1 the prior
+   here is *against* the mark, and the reason to look anyway is that the
+   diaeresis is small, easy to read past on a contact sheet, and has been
+   missed more than once on one page. A minority sort is still a sort.
    *Instrument:* the same absence-shaped discipline as §5.1 — contrast where
    the line offers one, and the distributional arms of `proposal marks`.
    *Record:* missed more than once on the same page, off sheets rather than
