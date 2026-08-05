@@ -37,6 +37,23 @@ from pathlib import Path
 TTLS = {"5m": 300, "1h": 3600}
 TTL = TTLS["5m"]  # the fallback when a scope wrote nothing and so named no tier
 
+# **Every figure in this file is tokens, measured, except the preamble's
+# per-turn size, which is characters and cannot be anything else.** The whole
+# token vocabulary of a transcript is four per-request fields — `input_tokens`,
+# `output_tokens`, `cache_creation_input_tokens`, `cache_read_input_tokens` —
+# and nothing counts a message. Every preamble turn arrives before the first
+# request, so there is no earlier measurement to diff one against.
+#
+# It is obtainable, just not from data anyone has collected: two agents of one
+# type whose preambles differ in exactly one known way, dispatched with no
+# memory write between them, give that difference in tokens as the difference in
+# their openings. The control is the whole difficulty. Between two real batches
+# here the prompt shrank 1,043 characters while the opening ROSE 154 tokens,
+# because a reader had written a memory file and the memory index sits in the
+# system prompt — fewer tokens for more characters, so the two equations return
+# a negative characters-per-token and the confound is larger than the signal.
+# A divisor picked to paper over that would be a number with no witness.
+
 
 def project(root: Path) -> Path:
     """The repository `root` sits in, or `root` itself outside one.
@@ -150,9 +167,18 @@ def _read(path: Path) -> tuple[list[dict], dict]:
             # part of the context this file can see — the system prompt is not
             # in the transcript, so it is inferred as `opening - preamble` and
             # never reported as though it had been read.
-            if rec.get("type") == "user" and not order:
-                text = _text(rec)
+            # Messages sent *to* the agent, not results coming back to it: a
+            # tool result is a user-role record too, and a page of them would
+            # bury the handful of turns anyone dispatched.
+            if (rec.get("type") == "user" and "toolUseResult" not in rec
+                    and (text := _text(rec).strip())
+                    and not text.startswith("[Image:")):
+                # `after` is how many requests had already been sent when this
+                # message arrived. Messages sharing a value share a request, and
+                # a request is the only thing token-counted — so that value is
+                # what decides whether this message's size is separable at all.
                 meta["pre"].append({"chars": len(text), "label": _label(rec),
+                                    "after": len(order),
                                     "hash": sha1(text.encode()).hexdigest()[:8]})
                 if "task" not in meta:
                     meta["task"] = meta["pre"][0]["label"]
@@ -207,6 +233,8 @@ def _agent(path: Path) -> dict | None:
         # VERBS.md) and it is a terminal measure, not a sum — an agent's context
         # is re-sent every request, so summing requests counts it many times.
         "ctx": reqs[-1]["in"] + reqs[-1]["read"] + reqs[-1]["write"],
+        # Every request's whole context, so `turns` can difference them.
+        "ctxs": [r["in"] + r["read"] + r["write"] for r in reqs],
         # Tokens this agent read that it would have written had it gone first.
         # Zero for the cold one, which had to write them for the others.
         "saved": first["read"] if first["read"] and not first["write"] else 0,
@@ -296,7 +324,7 @@ def batch(root: Path, tasks: Path | None = None, *, session: str | None = None,
 def rows(agents: list[dict]) -> list[dict]:
     """The per-agent table. `pre` is dropped: a list-valued field degrades TOON
     to the verbose nested form, and it has its own section."""
-    return [{k: v for k, v in a.items() if k not in ("pre", "first")} for a in agents]
+    return [{k: v for k, v in a.items() if k not in ("pre", "first", "ctxs")} for a in agents]
 
 
 def preamble(agents: list[dict]) -> list[dict]:
@@ -317,15 +345,11 @@ def preamble(agents: list[dict]) -> list[dict]:
     # different standing instructions, so pooling their turn 1s compares things
     # that were never candidates to share a prefix and reports a spurious
     # "variants: 2" for a batch that was fine.
-    by_type: dict[str, list[dict]] = {}
-    for a in agents:
-        by_type.setdefault(a["type"], []).append(a)
     out_rows = []
-    for atype, members in by_type.items():
+    for atype, members in _by_type(agents).items():
         for i in range(max(len(a["pre"]) for a in members)):
             turns = [a["pre"][i] for a in members if len(a["pre"]) > i]
             variants = {t["hash"] for t in turns}
-            sizes = sorted({t["chars"] for t in turns})
             out_rows.append({
                 "type": atype,
                 "turn": i + 1,
@@ -339,12 +363,53 @@ def preamble(agents: list[dict]) -> list[dict]:
                 # an estimate sitting in a column beside measured token counts
                 # is exactly the plausible-but-underived figure this project
                 # refuses. The column is named for its unit for that reason.
-                "chars": str(sizes[0]) if len(sizes) == 1
-                         else f"{sizes[0]}..{sizes[-1]}",
+                # **Tokens, measured, or a dash.** A request is the only thing
+                # counted, so a message's size is knowable exactly when it is
+                # the only one to arrive since the previous request: then the
+                # context growth is its own. Messages that share a request with
+                # another — the whole opening block, where the system prompt is
+                # mixed in too — get `-`, because nothing recorded separates
+                # them and a divided estimate would be a number with no witness.
+                # The growth includes the preceding reply, which is why this is
+                # "added since the last request" and not "this message".
+                "tokens": _turn_tokens(members, i),
                 "shared": "yes" if len(variants) == 1 and len(turns) > 1
                           else "n/a" if len(turns) == 1 else "NO",
             })
     return out_rows
+
+
+def _turn_tokens(members: list[dict], i: int) -> str:
+    """Turn `i`'s size in tokens across `members`, or `-` where it is not one.
+
+    A request's `in + read + write` is its whole context, so the growth from one
+    request to the next is what arrived between them. That growth belongs to a
+    single message only when a single message arrived — otherwise it is a sum
+    nothing in the record divides, and the first block always is one, since the
+    system prompt is in it.
+    """
+    deltas = []
+    for a in members:
+        if len(a["pre"]) <= i:
+            continue
+        after = a["pre"][i]["after"]
+        # Shares its request with another message, or is the opening block.
+        if after == 0 or sum(1 for t in a["pre"] if t["after"] == after) > 1:
+            return "-"
+        if after >= len(a["ctxs"]):
+            return "-"
+        deltas.append(a["ctxs"][after] - a["ctxs"][after - 1])
+    if not deltas:
+        return "-"
+    lo, hi = min(deltas), max(deltas)
+    return f"{lo:+}" if lo == hi else f"{lo:+}..{hi:+}"
+
+
+def _by_type(agents: list[dict]) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {}
+    for a in agents:
+        out.setdefault(a["type"], []).append(a)
+    return out
 
 
 def cohorts(agents: list[dict]) -> list[dict]:
@@ -368,7 +433,7 @@ def cohorts(agents: list[dict]) -> list[dict]:
     """
     if not agents:
         return [{"type": "", "model": "", "opening": 0, "own": 0, "agents": 0, "sessions": 0, "warm": 0,
-                 "saved": 0, "missed": 0, "originated": 0, "if_all_cold": 0, "ceiling": "n/a", "note": "no agents in scope"}]
+                 "saved": 0, "missed": 0, "originated": 0, "if_all_cold": 0, "saved_pct": "n/a", "ceiling": "n/a", "note": "no agents in scope"}]
     # **Keyed on agent type as well as model and opening.** Opening alone very
     # nearly decides it — two agent types have different system prompts and so
     # cannot open at the same total — but "very nearly" is not a grouping rule,
@@ -405,6 +470,13 @@ def cohorts(agents: list[dict]) -> list[dict]:
             "agents": len(members),
             "originated": opening + own,
             "if_all_cold": len(members) * opening + own,
+            # What this run actually saved, against what the same batch could
+            # ever save. `saved_pct` is measured; `ceiling` is the limit it
+            # approaches as N grows, so the gap between them is the cost of the
+            # batch being small — one member always writes the prefix, and with
+            # three that is a third of them.
+            "saved_pct": f"{warm * opening / (len(members) * opening + own):.1%}"
+                         if len(members) > 1 and own else "n/a",
             "ceiling": f"{opening / (opening + per):.1%}"
                        if len(members) > 1 and own else "n/a",
             # Cross-session, deliberately. The cache is content-addressed, so two

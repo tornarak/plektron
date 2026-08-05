@@ -43,9 +43,10 @@ def _transcript(tmp_path, name: str, reqs) -> None:
 
 
 def _made(model="sonnet-5", opening=35798, opened="warm", last="2026-08-04T12:00:00Z",
-          ttl="5m", session="s1", pre=None, ctx=None, atype="moll-reader"):
+          ttl="5m", session="s1", pre=None, ctx=None, atype="moll-reader",
+          ctxs=None):
     return {"model": model, "opening": opening, "opened": opened, "last": last,
-            "type": atype,
+            "type": atype, "ctxs": ctxs if ctxs is not None else [opening],
             "ttl": ttl, "session": session, "pre": pre or [],
             "ctx": opening if ctx is None else ctx}
 
@@ -157,7 +158,17 @@ def test_the_ceiling_is_the_prefix_share_of_one_agents_cost():
 
 
 def test_a_singleton_claims_no_ceiling():
-    assert cohorts([_made(opened="COLD", ctx=70000)])[0]["ceiling"] == "n/a"
+    row = cohorts([_made(opened="COLD", ctx=70000)])[0]
+    assert row["ceiling"] == "n/a" and row["saved_pct"] == "n/a"
+
+
+def test_saved_pct_is_measured_and_the_ceiling_is_the_limit():
+    """The gap between them is the cost of the batch being small: one member
+    always writes the prefix, so with three that is a third of them."""
+    row = cohorts([_made(opening=100, ctx=200, opened="COLD"),
+                   _made(opening=100, ctx=200), _made(opening=100, ctx=200)])[0]
+    assert row["saved_pct"] == "33.3%"     # 200 saved of 600 all-cold
+    assert row["ceiling"] == "50.0%"       # P/(P+W), the limit as N grows
 
 
 # --- warmth ---------------------------------------------------------------
@@ -205,8 +216,10 @@ def test_unrecorded_tier_falls_back_and_says_so():
 
 # --- preamble -------------------------------------------------------------
 
-def _turn(chars: int, h: str, label: str = "x"):
-    return {"chars": chars, "hash": h, "label": label}
+def _turn(chars: int, h: str, label: str = "x", after: int = 0):
+    """`after` is how many requests had been sent when the message arrived; 0
+    means it is in the opening block, where nothing separates it."""
+    return {"chars": chars, "hash": h, "label": label, "after": after}
 
 
 def test_preamble_names_the_turn_that_breaks_the_prefix():
@@ -227,9 +240,28 @@ def test_preamble_of_one_agent_claims_nothing():
     assert preamble([_made(pre=[_turn(1050, "aa")])])[0]["shared"] == "n/a"
 
 
-def test_preamble_reports_the_size_spread():
-    rows = preamble([_made(pre=[_turn(2324, "aa")]), _made(pre=[_turn(2401, "bb")])])
-    assert rows[0]["chars"] == "2324..2401"
+def test_a_message_sharing_its_request_has_no_separable_size():
+    """The opening block always does — the system prompt is in it — so its
+    turns report `-` rather than a number nothing in the record supports."""
+    rows = preamble([_made(pre=[_turn(7, "aa"), _turn(41195, "zz")],
+                           ctxs=[35952, 51000])])
+    assert [r["tokens"] for r in rows] == ["-", "-"]
+
+
+def test_a_message_that_arrives_alone_is_measured():
+    """One message between two requests: the growth is its own."""
+    rows = preamble([_made(pre=[_turn(7, "aa"), _turn(600, "bb", after=1)],
+                           ctxs=[35952, 36600])])
+    assert rows[0]["tokens"] == "-"
+    assert rows[1]["tokens"] == "+648"
+
+
+def test_a_measured_message_reports_its_spread_across_agents():
+    rows = preamble([_made(pre=[_turn(7, "a"), _turn(600, "b", after=1)],
+                           ctxs=[35952, 36600]),
+                     _made(pre=[_turn(7, "a"), _turn(620, "c", after=1)],
+                           ctxs=[35952, 36700])])
+    assert rows[1]["tokens"] == "+648..+748"
 
 
 def test_preamble_tolerates_uneven_depth():
