@@ -291,8 +291,23 @@ heading. It crops to the entry's **own column**, so you get the useful
 magnification rather than half a page of the column beside it. A wrapped
 definition has two halves under one number and both go in, in reading order.
 
-**One call writes ONE file**, with the entries stacked in numeric order, each
-captioned with its label and separated by a rule. So a call is a *question* —
+**A crop you asked for at 2× arrives at 2×.** An image is charged in 28×28
+patches and capped, and anything over the cap is *downscaled by the API before
+you see it* — so an oversized sheet does not cost more, it silently arrives
+smaller, which on this pass is the one thing a magnification must never do. A
+sheet is therefore split across files when it would exceed the budget, and each
+line of output prints its visual-token cost so the ceiling is visible. If a call
+returns `-p1of2` and `-p2of2`, read both: they are one answer in two frames, not
+a truncation.
+
+Your marked page is over that cap too — about 6,400 tokens against 4,784 — so
+you see it at roughly 86% of its rendered size. It is an overview and that is
+fine for one, but it means "read it at full scale" is approximate, and a mark
+you cannot resolve on the whole page may simply be below the resolution you were
+given. That is a reason to zoom, not a reason to guess.
+
+**One call writes ONE file** (or a numbered few), with the entries stacked in
+numeric order, each captioned with its label and separated by a rule. So a call is a *question* —
 "these three letterforms, side by side" — and you answer it with a single Read
 rather than three. Batch the entries you are unsure about and look at them
 together; comparing a doubtful `ъ` against a certain one in the same image is

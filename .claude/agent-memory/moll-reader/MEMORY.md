@@ -6,3 +6,4 @@
 - [Continuation spans both columns](continuation-spans-both-columns.md) — an opening continuation can carry a matching c← at the top of the right column too, not just the left
 - [Small-caps headword misread](small-caps-headword-misread.md) — smaller-face short entries crowd и/н/т; 4x does NOT settle them, so key a `?` rather than a confident guess
 - [Accented о looks like б](accented-o-looks-like-b.md) — italic о́ fuses with the accent into a false loop resembling a second б; crop tighter, don't upscale further
+- [Italic о at line-break looks like с](italic-o-at-linebreak-looks-like-c.md) — line-end "по-" can print as "пс-"; a real-word lexicon check settles it, 4x doesn't
