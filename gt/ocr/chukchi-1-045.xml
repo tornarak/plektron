@@ -1,0 +1,439 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-045.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-045.png; regions_from: zones/chukchi-1-045.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-045_r1" HPOS="407" VPOS="615" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="407 615 2185 615 2185 705 407 705"/>
+                    </Shape>
+                    <TextLine ID="mz_1-045_l1" HPOS="981" VPOS="630" WIDTH="619" HEIGHT="56" BASELINE="983 662 1600 666" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1589 647 1567 632 1546 632 1524 632 1502 632 1481 632 1459 632 1437 632 1416 632 1394 632 1373 632 1351 632 1329 632 1308 632 1286 632 1264 632 1243 632 1221 632 1199 632 1178 632 1156 632 1134 632 1113 632 1091 632 1069 632 1048 632 1026 632 1004 632 983 640 983 662 981 681 1596 686 1600 666 1598 632 1589 630 1589 647"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l2" HPOS="2124" VPOS="634" WIDTH="35" HEIGHT="67" BASELINE="2124 677 2159 677" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2124 636 2124 677 2124 692 2156 701 2159 677 2156 634 2124 634 2124 636"/>
+                        </Shape>
+                        <String CONTENT="25"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-045_r2" HPOS="407" VPOS="730" WIDTH="1778" HEIGHT="1351" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="407 730 2185 730 2185 2081 407 2081"/>
+                    </Shape>
+                    <TextLine ID="mz_1-045_l3" HPOS="511" VPOS="738" WIDTH="1669" HEIGHT="50" BASELINE="511 766 2180 766" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="511 766 511 788 2180 788 2180 766 2180 738 511 738 511 766"/>
+                        </Shape>
+                        <String CONTENT="The Kolyma River freezes, at Nishne-Kolymsk, Oct. 12; at Sredne-Kolymsk, Oct. 11. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l4" HPOS="409" VPOS="779" WIDTH="1312" HEIGHT="56" BASELINE="409 814 1721 814" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="409 807 409 814 409 835 1721 835 1721 814 1719 779 422 783 409 807"/>
+                        </Shape>
+                        <String CONTENT="ice breaks up, at Nishne-Kolymsk, June 15; at Sredne-Kolymsk, June. 4.¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l5" HPOS="517" VPOS="861" WIDTH="1525" HEIGHT="52" BASELINE="519 898 2042 894" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="519 898 519 913 2040 909 2042 894 2037 863 517 861 519 898"/>
+                        </Shape>
+                        <String CONTENT="The average temperature in the Anadyr country is as follows: —"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l6" HPOS="1154" VPOS="926" WIDTH="325" HEIGHT="56" BASELINE="1156 967 1479 965" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1156 967 1156 982 1476 980 1479 965 1474 937 1178 926 1175 926 1173 926 1154 935 1156 967"/>
+                        </Shape>
+                        <String CONTENT="Mariinsky Post."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l7" HPOS="1708" VPOS="939" WIDTH="215" HEIGHT="43" BASELINE="1708 967 1923 967" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1708 967 1708 982 1923 982 1923 967 1923 939 1708 939 1708 967"/>
+                        </Shape>
+                        <String CONTENT="Markova."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l8" HPOS="530" VPOS="985" WIDTH="1525" HEIGHT="43" BASELINE="530 1015 2055 1015" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="530 1015 530 1028 2055 1028 2055 1015 2055 989 530 985 530 1015"/>
+                        </Shape>
+                        <String CONTENT="Winter —18.8° C. (— 1.84° F.) —22.4° C. (— 8.32° F.)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l9" HPOS="526" VPOS="1028" WIDTH="1000" HEIGHT="56" BASELINE="528 1063 1526 1056" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="528 1063 528 1071 647 1084 649 1084 651 1084 654 1084 671 1071 688 1084 690 1084 693 1084 695 1084 697 1084 699 1084 718 1069 738 1084 740 1084 742 1084 744 1084 747 1084 749 1084 768 1069 788 1084 790 1084 792 1084 794 1084 796 1084 799 1084 820 1069 838 1084 840 1084 842 1084 844 1084 846 1084 848 1084 848 1082 864 1067 1076 1067 1188 1082 1191 1082 1193 1082 1195 1082 1223 1065 1282 1065 1297 1078 1297 1080 1299 1080 1301 1080 1303 1082 1446 1082 1446 1080 1448 1080 1450 1080 1474 1065 1520 1080 1526 1056 1520 1028 526 1034 528 1063"/>
+                        </Shape>
+                        <String CONTENT="Spring — 13.4° ” (+ 7.88° ”)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l10" HPOS="1596" VPOS="1032" WIDTH="454" HEIGHT="54" BASELINE="1596 1058 2050 1058" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1596 1058 1596 1069 1650 1084 1652 1084 1654 1084 1726 1071 1799 1071 1812 1082 1812 1084 1814 1084 1816 1084 1819 1084 1821 1084 1875 1071 1894 1084 1897 1084 1899 1084 1901 1086 1962 1086 1962 1084 1964 1084 1966 1084 1966 1082 1979 1071 2048 1078 2050 1058 2050 1032 1596 1032 1596 1058"/>
+                        </Shape>
+                        <String CONTENT="— 13.2° ” (+ 8.24° ”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l11" HPOS="526" VPOS="1078" WIDTH="1002" HEIGHT="52" BASELINE="528 1108 1528 1104" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="528 1108 528 1119 690 1130 693 1130 695 1130 731 1112 1074 1112 1089 1125 1089 1127 1091 1127 1093 1127 1095 1130 1193 1130 1193 1127 1195 1127 1197 1127 1217 1112 1277 1112 1292 1125 1292 1127 1295 1127 1297 1127 1299 1130 1442 1130 1442 1127 1444 1127 1472 1112 1489 1127 1492 1127 1494 1127 1496 1127 1526 1123 1528 1104 1522 1078 526 1080 528 1108"/>
+                        </Shape>
+                        <String CONTENT="Summer + 9.0° ” (+48.20° ”)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l12" HPOS="1587" VPOS="1076" WIDTH="466" HEIGHT="56" BASELINE="1589 1108 2053 1104" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1589 1108 1589 1121 1609 1132 1611 1132 1613 1132 1706 1130 1708 1130 1710 1130 1710 1127 1721 1119 1797 1119 1810 1130 1810 1132 1812 1132 1814 1132 1816 1132 1953 1130 1955 1130 1957 1130 1972 1117 2048 1123 2053 1104 2046 1076 1587 1078 1589 1108"/>
+                        </Shape>
+                        <String CONTENT="+12.6° ” (+54.68° ”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l13" HPOS="528" VPOS="1125" WIDTH="1005" HEIGHT="44" BASELINE="530 1156 1533 1151" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="530 1156 530 1169 1531 1166 1533 1151 1526 1125 528 1125 530 1156"/>
+                        </Shape>
+                        <String CONTENT="Fall — 4.4° ” (+24.08° ”)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l14" HPOS="1587" VPOS="1123" WIDTH="459" HEIGHT="50" BASELINE="1589 1153 2046 1156" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1589 1153 1587 1160 1661 1173 1663 1173 2044 1171 2046 1156 2044 1125 1589 1123 1589 1153"/>
+                        </Shape>
+                        <String CONTENT="— 7.6° ” (+18.34° ”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l15" HPOS="521" VPOS="1156" WIDTH="1534" HEIGHT="71" BASELINE="524 1201 2055 1205" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="524 1201 521 1214 530 1223 530 1225 532 1225 534 1225 537 1227 693 1227 693 1225 695 1225 697 1225 708 1214 731 1225 734 1225 736 1225 738 1225 740 1225 757 1214 781 1225 783 1225 786 1225 788 1225 790 1225 807 1214 833 1225 835 1225 838 1225 840 1225 842 1225 857 1214 881 1225 883 1225 885 1225 887 1225 909 1214 935 1225 937 1225 939 1225 942 1225 944 1225 955 1214 983 1225 985 1225 987 1225 989 1225 991 1225 1007 1214 1037 1225 1039 1225 1041 1225 1043 1225 1046 1225 1059 1214 1167 1225 1169 1225 1171 1225 1217 1214 1232 1225 1234 1225 1236 1225 1238 1225 1240 1225 1279 1214 1292 1225 1292 1227 1295 1227 1297 1227 1299 1227 1448 1216 1492 1227 1494 1227 1496 1227 1498 1227 1533 1216 1641 1216 1654 1227 1656 1227 1658 1227 1661 1227 1715 1216 1955 1227 1957 1227 1959 1227 1962 1227 1977 1216 2031 1227 2033 1227 2035 1227 2037 1227 2053 1214 2055 1205 2050 1156 1593 1158 1591 1158 1589 1158 1574 1171 1511 1156 1509 1156 524 1166 524 1201"/>
+                        </Shape>
+                        <String CONTENT="Average — 6.9°C. (+19.58° F.) — 7.6°C. (+18.34° F.)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l16" HPOS="428" VPOS="1234" WIDTH="1731" HEIGHT="47" BASELINE="428 1264 2159 1264" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="428 1264 428 1281 2159 1281 2159 1264 2159 1234 428 1234 428 1264"/>
+                        </Shape>
+                        <String CONTENT="Absolute maximum, Mariinsky Post, +20.2° C. (+68.36° F.); Markova, +26.6° C. (+79.88° F.)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l17" HPOS="428" VPOS="1281" WIDTH="1711" HEIGHT="48" BASELINE="428 1309 2139 1309" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="428 1309 428 1329 2139 1329 2139 1309 2139 1281 428 1281 428 1309"/>
+                        </Shape>
+                        <String CONTENT="Absolute minimum, Mariinsky Post, —42.7° C. (—44.86° F.); Markova, —47.0° C. (—52.6° F.)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l18" HPOS="511" VPOS="1337" WIDTH="1667" HEIGHT="50" BASELINE="511 1368 2178 1368" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="511 1368 511 1387 2176 1387 2178 1368 2176 1342 511 1337 511 1368"/>
+                        </Shape>
+                        <String CONTENT="The estuary of the Anadyr freezes, at Mariinsky Post, Oct. 17. The ice breaks up in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l19" HPOS="409" VPOS="1385" WIDTH="1713" HEIGHT="48" BASELINE="411 1418 2122 1413" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="411 1418 411 1433 2122 1428 2122 1413 2115 1385 409 1387 411 1418"/>
+                        </Shape>
+                        <String CONTENT="Anadyr River, at Markova, June 5; in the estuary of the Anadyr, at Mariinsky Post, June 17.²"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l20" HPOS="519" VPOS="1459" WIDTH="1655" HEIGHT="58" BASELINE="519 1496 2174 1496" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="519 1496 519 1517 2172 1517 2174 1496 2172 1465 519 1459 519 1496"/>
+                        </Shape>
+                        <String CONTENT="The average temperature at Piˊlhäqäi (Pitlekai), Arctic Sea, ³ is as follows: —"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l21" HPOS="608" VPOS="1543" WIDTH="786" HEIGHT="50" BASELINE="608 1569 1394 1569" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="608 1569 608 1582 619 1591 621 1591 623 1591 625 1593 751 1593 751 1591 753 1591 755 1591 755 1589 764 1580 783 1591 786 1591 788 1591 790 1591 792 1591 809 1580 833 1591 835 1591 838 1591 840 1591 861 1580 885 1591 887 1591 890 1591 892 1591 894 1591 911 1580 935 1591 937 1591 939 1591 942 1591 944 1591 961 1580 987 1591 989 1591 991 1591 994 1591 996 1591 1011 1580 1035 1591 1037 1591 1039 1591 1041 1591 1043 1591 1061 1580 1087 1591 1089 1591 1091 1591 1093 1591 1095 1591 1110 1580 1136 1591 1139 1591 1141 1591 1394 1582 1394 1569 1394 1543 608 1543 608 1569"/>
+                        </Shape>
+                        <String CONTENT="October — 5.20° C."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l22" HPOS="612" VPOS="1582" WIDTH="732" HEIGHT="54" BASELINE="615 1615 1344 1612" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="615 1615 615 1634 916 1623 935 1636 937 1636 939 1636 942 1636 944 1636 968 1623 987 1636 989 1636 991 1636 994 1636 996 1636 998 1636 1017 1623 1037 1636 1039 1636 1041 1636 1043 1636 1046 1636 1048 1636 1067 1623 1087 1636 1089 1636 1091 1636 1093 1636 1095 1636 1097 1636 1117 1623 1136 1636 1139 1636 1141 1636 1143 1636 1145 1636 1178 1623 1314 1636 1316 1636 1318 1636 1321 1636 1344 1621 1344 1612 1340 1584 612 1582 615 1615"/>
+                        </Shape>
+                        <String CONTENT="November —16.58°"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l23" HPOS="610" VPOS="1630" WIDTH="1323" HEIGHT="47" BASELINE="610 1662 1933 1662" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1931 1634 610 1630 610 1662 610 1677 1933 1675 1933 1662 1933 1641 1931 1634"/>
+                        </Shape>
+                        <String CONTENT="December —22.80° ” Average for winter months,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l24" HPOS="612" VPOS="1675" WIDTH="767" HEIGHT="59" BASELINE="615 1710 1379 1708" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="615 1710 615 1734 744 1732 747 1732 749 1732 749 1729 760 1721 779 1732 781 1732 783 1732 786 1732 788 1732 790 1732 805 1719 833 1732 835 1732 838 1732 840 1732 842 1732 857 1719 883 1732 885 1732 887 1732 890 1732 892 1732 907 1719 933 1732 935 1732 937 1732 939 1732 942 1732 957 1719 983 1732 985 1732 987 1732 989 1732 991 1732 1009 1719 1033 1732 1035 1732 1037 1732 1039 1732 1041 1732 1059 1719 1082 1732 1084 1732 1087 1732 1089 1732 1091 1732 1108 1719 1134 1732 1136 1732 1139 1732 1141 1732 1143 1732 1160 1719 1230 1732 1232 1732 1377 1716 1379 1708 1373 1675 612 1675 615 1710"/>
+                        </Shape>
+                        <String CONTENT="January —25.06° ”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l25" HPOS="1437" VPOS="1677" WIDTH="464" HEIGHT="57" BASELINE="1440 1708 1901 1710" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1440 1708 1437 1719 1483 1734 1485 1734 1487 1734 1576 1723 1606 1734 1609 1734 1611 1734 1689 1723 1866 1734 1868 1734 1871 1734 1899 1721 1901 1710 1899 1680 1440 1677 1440 1708"/>
+                        </Shape>
+                        <String CONTENT="—24.32° C. (—11.81° F.)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l26" HPOS="606" VPOS="1721" WIDTH="760" HEIGHT="56" BASELINE="608 1753 1158 1757 1366 1749" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="608 1753 606 1768 790 1777 792 1777 794 1777 796 1777 796 1775 809 1764 868 1764 885 1777 887 1777 890 1777 892 1777 894 1777 896 1777 896 1775 907 1764 931 1775 933 1775 935 1775 1020 1764 1037 1777 1039 1777 1041 1777 1043 1777 1046 1777 1071 1764 1087 1777 1089 1777 1091 1777 1093 1777 1095 1777 1121 1764 1136 1777 1139 1777 1141 1777 1143 1777 1145 1777 1180 1764 1316 1777 1318 1777 1321 1777 1364 1762 1366 1749 1360 1721 608 1725 608 1753"/>
+                        </Shape>
+                        <String CONTENT="February —25.09° ”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l27" HPOS="608" VPOS="1779" WIDTH="1321" HEIGHT="54" BASELINE="610 1809 1929 1805" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="610 1809 610 1822 617 1829 617 1831 619 1831 621 1831 623 1833 740 1833 740 1831 742 1831 744 1831 760 1818 1020 1818 1035 1831 1035 1833 1037 1833 1039 1833 1041 1833 1043 1833 1046 1833 1046 1831 1061 1818 1087 1833 1089 1833 1091 1833 1093 1833 1095 1833 1115 1818 1232 1833 1234 1833 1321 1831 1323 1831 1325 1831 1325 1829 1338 1816 1375 1831 1377 1831 1379 1831 1927 1822 1929 1805 1923 1779 608 1781 610 1809"/>
+                        </Shape>
+                        <String CONTENT="March —21.65° ” Average for spring months,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l28" HPOS="610" VPOS="1829" WIDTH="773" HEIGHT="48" BASELINE="612 1857 1383 1855" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="612 1857 612 1870 701 1877 703 1877 706 1877 708 1877 723 1864 738 1877 740 1877 742 1877 744 1877 747 1877 770 1864 788 1877 790 1877 792 1877 794 1877 796 1877 820 1864 838 1877 840 1877 842 1877 844 1877 846 1877 872 1864 890 1877 892 1877 894 1877 896 1877 898 1877 922 1864 939 1877 942 1877 944 1877 946 1877 948 1877 972 1864 991 1877 994 1877 996 1877 998 1877 1000 1877 1002 1877 1022 1864 1041 1877 1043 1877 1046 1877 1048 1877 1050 1877 1052 1877 1071 1864 1091 1877 1093 1877 1095 1877 1097 1877 1100 1877 1102 1877 1123 1864 1143 1877 1145 1877 1147 1877 1149 1877 1152 1877 1180 1864 1321 1877 1323 1877 1325 1877 1327 1877 1327 1874 1340 1864 1381 1864 1383 1855 1377 1829 610 1829 612 1857"/>
+                        </Shape>
+                        <String CONTENT="April —18.93° ”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l29" HPOS="1440" VPOS="1816" WIDTH="433" HEIGHT="71" BASELINE="1442 1855 1873 1859" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1442 1855 1440 1868 1498 1883 1500 1883 1637 1870 1652 1883 1652 1885 1654 1885 1656 1885 1658 1887 1752 1887 1752 1885 1754 1885 1756 1885 1777 1872 1842 1885 1845 1885 1847 1885 1849 1885 1871 1870 1873 1859 1873 1829 1849 1816 1847 1816 1845 1816 1442 1822 1442 1855"/>
+                        </Shape>
+                        <String CONTENT="—15.79° C. (+3.58° F.)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l30" HPOS="619" VPOS="1868" WIDTH="710" HEIGHT="54" BASELINE="621 1900 1329 1898" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="621 1900 621 1922 693 1920 695 1920 697 1920 697 1918 710 1907 1325 1918 1329 1898 1323 1868 619 1868 621 1900"/>
+                        </Shape>
+                        <String CONTENT="May — 6.79°"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l31" HPOS="615" VPOS="1911" WIDTH="760" HEIGHT="54" BASELINE="617 1948 1375 1942" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="617 1948 617 1965 731 1952 1370 1954 1375 1942 1368 1911 615 1918 617 1948"/>
+                        </Shape>
+                        <String CONTENT="June — 0.6° ”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l32" HPOS="606" VPOS="1957" WIDTH="773" HEIGHT="62" BASELINE="608 1998 1136 1998 1379 1985" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="608 1998 608 2011 805 2019 807 2019 809 2019 812 2019 812 2017 822 2009 890 2017 892 2017 894 2017 924 2006 935 2017 937 2017 939 2017 942 2017 944 2017 974 2006 989 2017 991 2017 994 2017 996 2017 998 2017 1024 2006 1039 2017 1041 2017 1043 2017 1046 2017 1048 2017 1050 2017 1069 2004 1082 2015 1084 2015 1087 2015 1089 2015 1180 2004 1191 2013 1191 2015 1193 2015 1195 2015 1197 2017 1297 2017 1297 2015 1377 2000 1379 1985 1373 1957 606 1967 608 1998"/>
+                        </Shape>
+                        <String CONTENT="July (1-17) + 2.68° ”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l33" HPOS="506" VPOS="2019" WIDTH="1586" HEIGHT="48" BASELINE="506 2050 2092 2050" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="506 2050 506 2067 2092 2067 2092 2050 2092 2019 506 2019 506 2050"/>
+                        </Shape>
+                        <String CONTENT="Absolute maximum, +11.5° C. (+52.7° F.); absolute minimum, —46.1° C. (—50.98° F.)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-045_r3" HPOS="407" VPOS="2102" WIDTH="1778" HEIGHT="911" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="407 2102 2185 2102 2185 3013 407 3013"/>
+                    </Shape>
+                    <TextLine ID="mz_1-045_l34" HPOS="489" VPOS="2097" WIDTH="1689" HEIGHT="61" BASELINE="491 2143 2178 2139" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="491 2143 491 2158 2176 2154 2178 2139 2172 2106 1851 2108 1825 2097 1823 2097 1821 2097 1819 2097 1816 2097 1801 2108 1777 2097 1775 2097 1773 2097 1771 2097 1769 2097 1756 2108 1697 2097 1695 2097 1626 2108 1609 2097 1606 2097 1604 2097 1476 2097 1474 2097 1472 2097 1470 2097 1455 2108 1366 2097 1364 2097 1362 2097 1329 2110 1076 2100 1074 2100 1071 2100 1069 2100 1054 2113 881 2113 781 2100 779 2100 777 2100 775 2100 760 2113 580 2113 532 2100 530 2100 528 2100 526 2100 489 2110 491 2143"/>
+                        </Shape>
+                        <String CONTENT="CAMPS AND VILLAGES. — The camps of the Reindeer Chukchee are situated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l35" HPOS="404" VPOS="2158" WIDTH="1772" HEIGHT="63" BASELINE="407 2206 2176 2199" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2206 407 2221 2174 2216 2176 2199 2172 2169 1780 2158 1777 2158 404 2169 407 2206"/>
+                        </Shape>
+                        <String CONTENT="in groups, mostly along the rivers; and their grazing-grounds are divided by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l36" HPOS="407" VPOS="2219" WIDTH="1769" HEIGHT="60" BASELINE="409 2264 2176 2260" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="409 2264 409 2279 2174 2275 2176 2260 2172 2232 2096 2219 2094 2219 2092 2219 2046 2232 1847 2232 1819 2219 1816 2219 1814 2219 1721 2229 1656 2219 1654 2219 1552 2229 1463 2219 1461 2219 1459 2219 1414 2229 1357 2219 1355 2219 1249 2232 727 2221 725 2221 647 2232 547 2221 545 2221 407 2234 409 2264"/>
+                        </Shape>
+                        <String CONTENT="watersheds, which are ordinarily so devoid of vegetation and so exposed to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l37" HPOS="407" VPOS="2281" WIDTH="1771" HEIGHT="57" BASELINE="409 2323 2178 2318" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="409 2323 409 2338 2176 2333 2178 2318 2174 2288 448 2281 446 2281 443 2281 407 2292 409 2323"/>
+                        </Shape>
+                        <String CONTENT="winds as to be unfit for reindeer-breeding. In the fall the camps are moved"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l38" HPOS="404" VPOS="2342" WIDTH="1772" HEIGHT="56" BASELINE="407 2383 2176 2377" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2383 407 2398 2174 2394 2176 2377 2172 2349 424 2342 422 2342 420 2342 417 2342 404 2349 407 2383"/>
+                        </Shape>
+                        <String CONTENT="to the border of the forest to find shelter from the winter tempests; while in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l39" HPOS="404" VPOS="2398" WIDTH="1772" HEIGHT="61" BASELINE="407 2444 2176 2439" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2444 407 2459 2174 2455 2176 2439 2172 2411 2094 2398 2092 2398 2089 2398 2063 2409 2024 2398 2022 2398 2020 2398 2018 2398 1988 2409 1671 2398 1669 2398 1567 2409 1511 2398 1509 2398 1401 2409 1290 2398 1288 2398 1286 2398 1284 2398 1260 2411 693 2400 690 2400 688 2400 647 2411 569 2400 567 2400 487 2411 426 2400 424 2400 422 2400 420 2400 404 2409 407 2444"/>
+                        </Shape>
+                        <String CONTENT="the spring of the year the herds are driven to the tundra, as far as the sea-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l40" HPOS="407" VPOS="2472" WIDTH="1771" HEIGHT="48" BASELINE="407 2502 2178 2502" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2502 407 2520 2178 2520 2178 2502 2178 2472 407 2472 407 2502"/>
+                        </Shape>
+                        <String CONTENT="coast, in order to be freer from noxious insects, and to give them pasturage"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l41" HPOS="398" VPOS="2528" WIDTH="1778" HEIGHT="50" BASELINE="400 2563 2176 2559" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="400 2563 400 2578 2174 2574 2176 2559 2169 2528 398 2530 400 2563"/>
+                        </Shape>
+                        <String CONTENT="better suited for the summer season. Some of the camps near the head waters"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l42" HPOS="402" VPOS="2580" WIDTH="1774" HEIGHT="59" BASELINE="404 2623 2176 2617" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="404 2623 404 2639 2174 2632 2176 2617 2172 2589 1024 2580 1022 2580 1020 2580 989 2591 439 2582 437 2582 435 2582 402 2593 404 2623"/>
+                        </Shape>
+                        <String CONTENT="of several rivers move to the mountains instead of to the sea, and stay near"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l43" HPOS="402" VPOS="2639" WIDTH="1774" HEIGHT="60" BASELINE="404 2684 2176 2680" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="404 2684 404 2699 2174 2695 2176 2680 2172 2649 1390 2639 1388 2639 1284 2649 638 2641 636 2641 402 2652 404 2684"/>
+                        </Shape>
+                        <String CONTENT="some small glacier, where the insects are less numerous than in the valleys."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l44" HPOS="404" VPOS="2697" WIDTH="1772" HEIGHT="59" BASELINE="407 2743 2176 2738" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2743 407 2756 2174 2751 2176 2738 2172 2710 1613 2697 1611 2697 1511 2708 1457 2697 1455 2697 1364 2708 1321 2697 1318 2697 1316 2697 1314 2697 1260 2710 710 2699 708 2699 706 2699 677 2710 580 2699 578 2699 576 2699 534 2710 422 2699 420 2699 417 2699 415 2699 404 2708 407 2743"/>
+                        </Shape>
+                        <String CONTENT="Often these herds do not thrive so well as those which are driven down to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l45" HPOS="404" VPOS="2758" WIDTH="1770" HEIGHT="58" BASELINE="407 2803 2174 2799" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2803 407 2816 2172 2814 2174 2799 2169 2771 1461 2758 1459 2758 1403 2769 1366 2758 1364 2758 1362 2758 1264 2771 1238 2760 1236 2760 1234 2760 740 2771 645 2760 643 2760 641 2760 638 2760 623 2773 487 2773 426 2760 424 2760 422 2760 420 2760 404 2769 407 2803"/>
+                        </Shape>
+                        <String CONTENT="the sea. The range of the wanderings of a Chukchee camp extends from a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l46" HPOS="404" VPOS="2827" WIDTH="1772" HEIGHT="52" BASELINE="407 2864 2176 2855" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2864 407 2879 2174 2870 2176 2855 2172 2827 404 2827 407 2864"/>
+                        </Shape>
+                        <String CONTENT="hundred to a hundred and fifty miles, and in most cases covers the same or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l47" HPOS="404" VPOS="2883" WIDTH="1774" HEIGHT="57" BASELINE="407 2924 2178 2916" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="407 2924 407 2940 2176 2931 2178 2916 2174 2885 498 2883 495 2883 404 2894 407 2924"/>
+                        </Shape>
+                        <String CONTENT="nearly the same territory every year; but any camp that becomes dissatisfied"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l48" HPOS="407" VPOS="2940" WIDTH="1769" HEIGHT="58" BASELINE="409 2981 2176 2976" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="409 2981 409 2998 2174 2994 2176 2976 2172 2948 448 2940 446 2940 443 2940 407 2950 409 2981"/>
+                        </Shape>
+                        <String CONTENT="with its range may pick out a new one wherever it chooses, the only condition"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-045_r4" HPOS="407" VPOS="3045" WIDTH="1778" HEIGHT="225" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="407 3045 2185 3045 2185 3270 407 3270"/>
+                    </Shape>
+                    <TextLine ID="mz_1-045_l49" HPOS="513" VPOS="3043" WIDTH="1665" HEIGHT="50" BASELINE="515 3076 2178 3069" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="515 3076 515 3093 2176 3087 2178 3069 2172 3043 513 3048 515 3076"/>
+                        </Shape>
+                        <String CONTENT="¹ The Climate of the Province of Yakutsk (in the Note-Book of the Yakutsk Province, for the Year"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l50" HPOS="407" VPOS="3089" WIDTH="279" HEIGHT="50" BASELINE="409 3119 686 3117" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="409 3119 409 3137 682 3139 686 3117 680 3089 407 3089 409 3119"/>
+                        </Shape>
+                        <String CONTENT="1896, pp. 8, 26)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l51" HPOS="513" VPOS="3126" WIDTH="1663" HEIGHT="50" BASELINE="515 3154 2176 3158" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="515 3154 513 3171 2172 3176 2176 3158 2174 3130 515 3126 515 3154"/>
+                        </Shape>
+                        <String CONTENT="² Annual Report of the Main Physical Observatory, St. Petersburg, 1900 (in Russian and French), p. 301."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l52" HPOS="511" VPOS="3167" WIDTH="1663" HEIGHT="52" BASELINE="513 3195 2174 3199" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="513 3195 511 3215 2169 3219 2174 3199 2172 3171 513 3167 513 3195"/>
+                        </Shape>
+                        <String CONTENT="³ Observations Météorologiques, réduites par H. Hildebrand Hildebrandsson (Vega Expeditionens veten-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-045_l53" HPOS="400" VPOS="3212" WIDTH="611" HEIGHT="50" BASELINE="402 3243 1011 3247" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="402 3221 402 3243 400 3258 1007 3262 1011 3247 1009 3217 402 3212 402 3221"/>
+                        </Shape>
+                        <String CONTENT="skapliga iakttagelser, I, pp. 598-649)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-045_r5" HPOS="407" VPOS="3287" WIDTH="1778" HEIGHT="62" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="407 3287 2185 3287 2185 3349 407 3349"/>
+                    </Shape>
+                    <TextLine ID="mz_1-045_l54" HPOS="402" VPOS="3288" WIDTH="674" HEIGHT="48" BASELINE="404 3323 1076 3316" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="404 3323 404 3336 1076 3331 1076 3316 1069 3288 402 3292 404 3323"/>
+                        </Shape>
+                        <String CONTENT="4—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

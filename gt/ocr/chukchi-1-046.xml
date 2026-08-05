@@ -1,0 +1,406 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-046.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-046.png; regions_from: zones/chukchi-1-046.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-046_r1" HPOS="593" VPOS="623" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="593 623 2371 623 2371 713 593 713"/>
+                    </Shape>
+                    <TextLine ID="mz_1-046_l1" HPOS="1169" VPOS="640" WIDTH="615" HEIGHT="54" BASELINE="1171 673 1784 677" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1777 645 1765 640 1191 640 1173 655 1171 673 1169 690 1780 694 1784 677 1782 673 1777 645"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l2" HPOS="597" VPOS="636" WIDTH="70" HEIGHT="58" BASELINE="597 681 667 681" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="597 681 597 694 667 692 667 681 667 647 645 636 643 636 641 636 638 636 597 647 597 681"/>
+                        </Shape>
+                        <String CONTENT="26"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-046_r2" HPOS="593" VPOS="738" WIDTH="1778" HEIGHT="129" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="593 738 2371 738 2371 867 593 867"/>
+                    </Shape>
+                    <TextLine ID="mz_1-046_l3" HPOS="589" VPOS="753" WIDTH="1773" HEIGHT="52" BASELINE="591 788 2362 783" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="591 788 591 805 2360 801 2362 783 2347 753 589 753 591 788"/>
+                        </Shape>
+                        <String CONTENT="being that it may not trespass on any ground already occupied by others for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l4" HPOS="591" VPOS="814" WIDTH="455" HEIGHT="58" BASELINE="593 844 1046 848" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="593 844 591 857 911 872 913 872 1043 861 1046 848 1043 818 593 814 593 844"/>
+                        </Shape>
+                        <String CONTENT="the season running."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-046_r3" HPOS="593" VPOS="867" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="593 867 2371 867 2371 932 593 932"/>
+                    </Shape>
+                    <TextLine ID="mz_1-046_l5" HPOS="699" VPOS="861" WIDTH="1243" HEIGHT="61" BASELINE="701 907 1942 902" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="701 907 701 922 1940 917 1942 902 1938 874 1682 861 1680 861 1678 861 1676 861 1676 863 1665 874 1440 874 1412 861 1409 861 1407 861 1405 861 1403 861 1388 872 1318 861 1316 861 1314 861 1266 874 1184 863 1182 863 699 872 701 907"/>
+                        </Shape>
+                        <String CONTENT="The groups of Reindeer Chukchee are as follows: —"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-046_r4" HPOS="593" VPOS="954" WIDTH="1778" HEIGHT="2343" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="593 954 2371 954 2371 3297 593 3297"/>
+                    </Shape>
+                    <TextLine ID="mz_1-046_l6" HPOS="591" VPOS="974" WIDTH="1771" HEIGHT="47" BASELINE="593 1004 2362 1000" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2345 974 591 976 593 1004 593 1021 2360 1017 2362 1000 2356 974 2345 974"/>
+                        </Shape>
+                        <String CONTENT="The Indighirka and Alaseya Group, along the rivers of the same names, — 13 camps, with a popu-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l7" HPOS="671" VPOS="1019" WIDTH="1685" HEIGHT="52" BASELINE="673 1054 2356 1045" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 1054 673 1071 2354 1065 2356 1045 2349 1019 671 1024 673 1054"/>
+                        </Shape>
+                        <String CONTENT="lation of about 150 souls. This is the most westerly group, and its territory is surrounded by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l8" HPOS="671" VPOS="1067" WIDTH="1689" HEIGHT="47" BASELINE="673 1099 2360 1093" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 1099 673 1114 2358 1110 2360 1093 2354 1067 671 1071 673 1099"/>
+                        </Shape>
+                        <String CONTENT="districts inhabited by Yakut and Tungus. Some of its reindeer-herds consist of as many as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l9" HPOS="675" VPOS="1110" WIDTH="1685" HEIGHT="56" BASELINE="677 1147 2360 1138" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 1147 677 1166 2358 1156 2360 1138 2354 1110 675 1117 677 1147"/>
+                        </Shape>
+                        <String CONTENT="5,000 head, and their owners reguiarly supply the Russian town of Sredne-Kolymsk and other"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l10" HPOS="673" VPOS="1164" WIDTH="409" HEIGHT="46" BASELINE="673 1192 1082 1192" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 1192 673 1210 1082 1210 1082 1192 1082 1164 673 1164 673 1192"/>
+                        </Shape>
+                        <String CONTENT="settlements with meat."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l11" HPOS="595" VPOS="1229" WIDTH="1767" HEIGHT="46" BASELINE="595 1257 2362 1257" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="595 1257 595 1275 2360 1275 2362 1257 2360 1229 595 1229 595 1257"/>
+                        </Shape>
+                        <String CONTENT="The Western Kolyma Group, as the name indicates, on the tundra to the west of the Kolyma"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l12" HPOS="673" VPOS="1275" WIDTH="1687" HEIGHT="49" BASELINE="675 1307 2360 1301" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1307 675 1324 2358 1318 2360 1301 2354 1275 673 1277 675 1307"/>
+                        </Shape>
+                        <String CONTENT="River, — about 35 camps, with a population of 400 souls. This group, on account of a severe"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l13" HPOS="673" VPOS="1320" WIDTH="1687" HEIGHT="52" BASELINE="675 1353 2360 1346" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1353 675 1372 2358 1366 2360 1346 2354 1320 673 1324 675 1353"/>
+                        </Shape>
+                        <String CONTENT="epidemic of small-pox, which in 1884 devastated it and caused one-third of the population to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l14" HPOS="671" VPOS="1368" WIDTH="1687" HEIGHT="52" BASELINE="673 1400 2358 1396" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 1400 673 1420 2356 1415 2358 1396 2351 1368 671 1370 673 1400"/>
+                        </Shape>
+                        <String CONTENT="perish, is rather on the decrease. After the epidemic many large herds, left without guards,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l15" HPOS="673" VPOS="1415" WIDTH="1685" HEIGHT="48" BASELINE="675 1446 2358 1441" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1446 675 1463 2356 1459 2358 1441 2351 1415 673 1418 675 1446"/>
+                        </Shape>
+                        <String CONTENT="disintegrated, and joined the herds of wild reindeer; while some of the western camps, who"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l16" HPOS="671" VPOS="1461" WIDTH="1687" HEIGHT="50" BASELINE="673 1493 2358 1489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 1493 673 1511 2356 1506 2358 1489 2351 1461 671 1463 673 1493"/>
+                        </Shape>
+                        <String CONTENT="formerly lived in this district, recrossed the Kolyma River and re-occupied their former territory."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l17" HPOS="593" VPOS="1532" WIDTH="1769" HEIGHT="57" BASELINE="595 1567 2362 1560" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="593 1537 595 1567 595 1580 1762 1589 1765 1589 1767 1589 1769 1589 1769 1586 1780 1578 2343 1586 2345 1586 2347 1586 2349 1586 2362 1576 2362 1560 2356 1532 593 1534 593 1537"/>
+                        </Shape>
+                        <String CONTENT="The Dry Anui Group, between the Arctic Ocean and the Dry Anui River. This group is the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l18" HPOS="673" VPOS="1580" WIDTH="1687" HEIGHT="50" BASELINE="675 1612 2360 1608" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1612 675 1630 2358 1625 2360 1608 2354 1580 673 1582 675 1612"/>
+                        </Shape>
+                        <String CONTENT="largest of all, and its camps extend at intervals of from five to ten miles from the right bank"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l19" HPOS="673" VPOS="1628" WIDTH="1687" HEIGHT="47" BASELINE="675 1658 2360 1654" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1658 675 1675 2358 1671 2360 1654 2354 1628 673 1630 675 1658"/>
+                        </Shape>
+                        <String CONTENT="of the Kolyma, along the Anui, to the confines of the Chaun tundra. The camps number"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l20" HPOS="675" VPOS="1677" WIDTH="1687" HEIGHT="46" BASELINE="675 1706 2362 1706" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1706 675 1723 2362 1723 2362 1706 2362 1677 675 1677 675 1706"/>
+                        </Shape>
+                        <String CONTENT="about 100. Their herds are not very large, for the most part consisting of from 300 to 400"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l21" HPOS="675" VPOS="1723" WIDTH="1685" HEIGHT="47" BASELINE="675 1753 2360 1753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1753 675 1770 2360 1770 2360 1753 2360 1725 675 1723 675 1753"/>
+                        </Shape>
+                        <String CONTENT="head, which is sufficient to supply two families (i. e., from ten to fifteen persons, the average"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l22" HPOS="675" VPOS="1770" WIDTH="1685" HEIGHT="48" BASELINE="675 1799 2360 1799" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1799 675 1818 2360 1818 2360 1799 2360 1770 675 1770 675 1799"/>
+                        </Shape>
+                        <String CONTENT="size of a camp) with meat, clothing, and trading-skins. Several herds, however, number 2,000-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l23" HPOS="675" VPOS="1814" WIDTH="1378" HEIGHT="52" BASELINE="677 1853 2053 1842" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 1853 677 1866 2050 1859 2053 1842 2046 1814 675 1822 677 1853"/>
+                        </Shape>
+                        <String CONTENT="3,000 animals. Farther to the east the herds of this group are of larger size."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l24" HPOS="597" VPOS="1885" WIDTH="1767" HEIGHT="63" BASELINE="599 1920 2364 1913" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="599 1920 599 1948 2362 1933 2364 1913 2358 1885 597 1887 599 1920"/>
+                        </Shape>
+                        <String CONTENT="The Large Anui Group, consisting of hardly 20 camps. Their number has been considerably depleted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l25" HPOS="680" VPOS="1933" WIDTH="1680" HEIGHT="52" BASELINE="682 1967 2360 1959" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="682 1967 682 1985 2358 1976 2360 1959 2354 1933 680 1933 682 1967"/>
+                        </Shape>
+                        <String CONTENT="by migration southward to the rivers Oloi and Omolon, where at present the most southerly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l26" HPOS="675" VPOS="1980" WIDTH="1687" HEIGHT="55" BASELINE="677 2015 2362 2006" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 2015 677 2035 2360 2024 2362 2006 2356 1980 675 1987 677 2015"/>
+                        </Shape>
+                        <String CONTENT="portion of the tribe is living. This is a group of about 45 camps, with a population of 500"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l27" HPOS="675" VPOS="2028" WIDTH="1685" HEIGHT="50" BASELINE="677 2061 2360 2054" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 2061 677 2078 2358 2071 2360 2054 2354 2028 675 2032 677 2061"/>
+                        </Shape>
+                        <String CONTENT="souls. Some of their herds are as large as those of the Indighirka, and supply two Russian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l28" HPOS="677" VPOS="2076" WIDTH="1681" HEIGHT="50" BASELINE="680 2106 2358 2102" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 2106 680 2121 2354 2126 2358 2102 2351 2076 677 2078 680 2106"/>
+                        </Shape>
+                        <String CONTENT="towns — Sredne-Kolymsk and Gishiginsk — with meat. They have no access to the sea,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l29" HPOS="675" VPOS="2121" WIDTH="1687" HEIGHT="52" BASELINE="677 2152 2362 2147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2351 2121 675 2123 677 2152 677 2173 2360 2169 2362 2147 2358 2130 2351 2121"/>
+                        </Shape>
+                        <String CONTENT="however, and consequently live in the mountains during the summer months, so that there have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l30" HPOS="677" VPOS="2173" WIDTH="1220" HEIGHT="46" BASELINE="677 2201 1897 2201" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 2201 677 2219 1897 2219 1897 2201 1897 2173 677 2173 677 2201"/>
+                        </Shape>
+                        <String CONTENT="been considerable losses in reindeer among them from time to time."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l31" HPOS="595" VPOS="2234" WIDTH="1772" HEIGHT="60" BASELINE="597 2268 2367 2262" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="595 2242 597 2268 597 2294 2364 2279 2367 2262 2360 2234 602 2236 595 2242"/>
+                        </Shape>
+                        <String CONTENT="The Upper Anadyr Group, which comprises about 30 camps. These also resort to the mountains"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l32" HPOS="677" VPOS="2284" WIDTH="1159" HEIGHT="47" BASELINE="680 2314 1836 2310" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 2314 680 2331 1834 2327 1836 2310 1829 2284 677 2286 680 2314"/>
+                        </Shape>
+                        <String CONTENT="in summer. Of late their herds, too, have been greatly reduced."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l33" HPOS="595" VPOS="2349" WIDTH="1769" HEIGHT="49" BASELINE="597 2381 2364 2375" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="597 2381 597 2398 2362 2392 2364 2375 2358 2349 595 2353 597 2381"/>
+                        </Shape>
+                        <String CONTENT="The Chaun Group, — about 50 camps, living on the tundra near Chaun Bay. They are separated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l34" HPOS="675" VPOS="2394" WIDTH="1687" HEIGHT="52" BASELINE="677 2426 2362 2420" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 2426 677 2446 2360 2439 2362 2420 2356 2394 675 2398 677 2426"/>
+                        </Shape>
+                        <String CONTENT="from the Anui Group by the mountains of the watershed. Their herds, like those of the Eastern"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l35" HPOS="677" VPOS="2442" WIDTH="1683" HEIGHT="52" BASELINE="680 2476 2360 2468" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 2476 680 2494 2358 2485 2360 2468 2354 2442 677 2448 680 2476"/>
+                        </Shape>
+                        <String CONTENT="Anui, number about 400 or 500 head, though more numerous herds also occur. The same may"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l36" HPOS="677" VPOS="2491" WIDTH="200" HEIGHT="46" BASELINE="677 2520 877 2520" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 2520 677 2537 877 2537 877 2520 877 2491 677 2491 677 2520"/>
+                        </Shape>
+                        <String CONTENT="be said of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l37" HPOS="597" VPOS="2554" WIDTH="1770" HEIGHT="50" BASELINE="599 2589 2367 2582" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="599 2589 599 2604 2367 2598 2367 2582 2360 2554 597 2556 599 2589"/>
+                        </Shape>
+                        <String CONTENT="The Erri Group, whose territory lies farther to the east, and which is made up of about the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l38" HPOS="677" VPOS="2606" WIDTH="470" HEIGHT="48" BASELINE="677 2634 1147 2634" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="677 2634 677 2654 1147 2654 1147 2634 1147 2606 677 2606 677 2634"/>
+                        </Shape>
+                        <String CONTENT="number (40-50) of camps."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l39" HPOS="597" VPOS="2667" WIDTH="1767" HEIGHT="52" BASELINE="599 2701 2364 2695" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="599 2701 599 2719 2362 2712 2364 2695 2358 2667 597 2671 599 2701"/>
+                        </Shape>
+                        <String CONTENT="The Oˊnmɪlɪn (“the inland one”) Group, living between the north bank of the Anadyr River and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l40" HPOS="677" VPOS="2714" WIDTH="1685" HEIGHT="52" BASELINE="680 2749 2362 2740" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 2749 680 2766 2360 2760 2362 2740 2356 2714 677 2721 680 2749"/>
+                        </Shape>
+                        <String CONTENT="Holy Cross Bay, — about 60 camps. It varies considerably in the proportion and distribution"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l41" HPOS="680" VPOS="2762" WIDTH="1682" HEIGHT="52" BASELINE="682 2797 2362 2790" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="682 2797 682 2814 2360 2814 2362 2790 2356 2762 680 2766 682 2797"/>
+                        </Shape>
+                        <String CONTENT="of its herds. Many camps are very poor, and live on fish and seal three seasons out of four,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l42" HPOS="680" VPOS="2810" WIDTH="1682" HEIGHT="47" BASELINE="682 2840 2362 2836" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="682 2840 682 2857 2360 2853 2362 2836 2356 2810 680 2812 682 2840"/>
+                        </Shape>
+                        <String CONTENT="while others are well-to-do. This whole group includes a number of Maritime Chukchee from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l43" HPOS="677" VPOS="2855" WIDTH="1687" HEIGHT="52" BASELINE="680 2888 2364 2881" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 2888 680 2907 2362 2901 2364 2881 2358 2855 677 2859 680 2888"/>
+                        </Shape>
+                        <String CONTENT="the Pacific villages who have turned reindeer-breeders within the last thirty years. Their herds"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l44" HPOS="680" VPOS="2907" WIDTH="809" HEIGHT="46" BASELINE="680 2935 1489 2935" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 2935 680 2953 1489 2953 1489 2935 1489 2907 680 2907 680 2935"/>
+                        </Shape>
+                        <String CONTENT="have not yet had time to become very large."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l45" HPOS="597" VPOS="2968" WIDTH="1770" HEIGHT="52" BASELINE="599 3002 2367 2996" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="599 3002 599 3020 2364 3013 2367 2996 2360 2968 597 2970 599 3002"/>
+                        </Shape>
+                        <String CONTENT="The Telqäˊp Group, called by the Russians Tumanskiye Chukchee (Туманскіе Чукчи), — about 50"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l46" HPOS="677" VPOS="3015" WIDTH="1687" HEIGHT="50" BASELINE="680 3048 2364 3041" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 3048 680 3065 2362 3059 2364 3041 2358 3015 677 3020 680 3048"/>
+                        </Shape>
+                        <String CONTENT="camps. Their herds are of moderate size (400-500 head). These are the roughest and most"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l47" HPOS="680" VPOS="3063" WIDTH="1687" HEIGHT="50" BASELINE="682 3095 2367 3089" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="682 3095 682 3113 2364 3106 2367 3089 2360 3063 680 3065 682 3095"/>
+                        </Shape>
+                        <String CONTENT="indomitable of all the Chukchee, and in former times were the leaders in the wars against"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l48" HPOS="680" VPOS="3115" WIDTH="227" HEIGHT="45" BASELINE="680 3143 907 3143" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="680 3143 680 3160 907 3160 907 3143 907 3115 680 3115 680 3143"/>
+                        </Shape>
+                        <String CONTENT="the Koryak."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l49" HPOS="599" VPOS="3173" WIDTH="1770" HEIGHT="55" BASELINE="602 3210 2369 3202" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="602 3210 602 3228 2367 3219 2369 3202 2362 3173 599 3176 602 3210"/>
+                        </Shape>
+                        <String CONTENT="The camps along the river Utteˊg̣nɪčen, a southern affluent of the Anadyr (called by the Russians"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-046_l50" HPOS="680" VPOS="3221" WIDTH="1682" HEIGHT="58" BASELINE="682 3256 2362 3247" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="682 3256 682 3279 2360 3271 2362 3247 2356 3221 680 3225 682 3256"/>
+                        </Shape>
+                        <String CONTENT="Big River), and farther on along the Koryak border, including those scattered on the Parapolsky"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

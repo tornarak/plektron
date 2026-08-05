@@ -1,0 +1,391 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-047.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-047.png; regions_from: zones/chukchi-1-047.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-047_r1" HPOS="411" VPOS="621" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="411 621 2189 621 2189 711 411 711"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l1" HPOS="983" VPOS="632" WIDTH="619" HEIGHT="56" BASELINE="985 666 1602 671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1593 634 985 632 985 666 983 684 1598 688 1602 671 1600 643 1593 634"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r2" HPOS="411" VPOS="736" WIDTH="1778" HEIGHT="470" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="411 736 2189 736 2189 1206 411 1206"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l2" HPOS="489" VPOS="742" WIDTH="1693" HEIGHT="48" BASELINE="489 770 2182 770" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 759 489 770 489 790 2182 790 2182 770 2182 742 500 742 489 759"/>
+                        </Shape>
+                        <String CONTENT="Dol¹ and in Kamchatka, numbering perhaps 80 in all. Owing to the extent of territory covered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l3" HPOS="489" VPOS="790" WIDTH="1691" HEIGHT="47" BASELINE="489 818 2180 818" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 818 489 837 2178 837 2180 818 2178 790 489 790 489 818"/>
+                        </Shape>
+                        <String CONTENT="by them, the strength of their herds is very unequal. Their herds also resort to the mountains"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l4" HPOS="487" VPOS="833" WIDTH="219" HEIGHT="50" BASELINE="489 861 706 866" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 861 487 878 701 883 706 866 703 837 489 833 489 861"/>
+                        </Shape>
+                        <String CONTENT="in summer."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l5" HPOS="409" VPOS="891" WIDTH="1771" HEIGHT="50" BASELINE="411 922 2180 926" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 922 409 937 2176 941 2180 926 2178 896 411 891 411 922"/>
+                        </Shape>
+                        <String CONTENT="The White River Group, numbering about 25 camps; and the group in the Peˊqul-ñei Mountains,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l6" HPOS="487" VPOS="943" WIDTH="528" HEIGHT="48" BASELINE="489 972 1015 969" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 972 489 991 1013 989 1015 969 1009 943 487 943 489 972"/>
+                        </Shape>
+                        <String CONTENT="containing the same number."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l7" HPOS="409" VPOS="1002" WIDTH="1771" HEIGHT="48" BASELINE="409 1030 2180 1030" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1030 409 1047 2178 1050 2180 1030 2180 1002 409 1002 409 1030"/>
+                        </Shape>
+                        <String CONTENT="On the so-called Chukchee Peninsula, between Kuluˊči Bay, Holy Cross Bay, and the Pacific Ocean,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l8" HPOS="487" VPOS="1045" WIDTH="1693" HEIGHT="48" BASELINE="489 1076 2180 1080" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 1076 487 1088 2176 1093 2180 1080 2178 1050 489 1045 489 1076"/>
+                        </Shape>
+                        <String CONTENT="the whole number of reindeer-camps is from about 80 to 100. The herds are not very large,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l9" HPOS="489" VPOS="1097" WIDTH="1691" HEIGHT="43" BASELINE="489 1125 2180 1125" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 1125 489 1140 2178 1140 2180 1125 2178 1097 489 1097 489 1125"/>
+                        </Shape>
+                        <String CONTENT="owing to the severity of the climate and to scanty pasturage. Almost half of these camps"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l10" HPOS="489" VPOS="1143" WIDTH="1613" HEIGHT="47" BASELINE="489 1171 2102 1171" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="489 1171 489 1190 2102 1190 2102 1171 2102 1143 489 1143 489 1171"/>
+                        </Shape>
+                        <String CONTENT="obtain the best part of their food from the sea; they keep dog-teams, own skin boats, etc."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r3" HPOS="411" VPOS="1214" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="411 1214 2189 1214 2189 1512 411 1512"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l11" HPOS="517" VPOS="1205" WIDTH="1663" HEIGHT="65" BASELINE="519 1255 2180 1249" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="519 1255 519 1270 2178 1264 2180 1249 2178 1218 2152 1205 2150 1205 2148 1205 2146 1205 2143 1205 2128 1216 2024 1205 2022 1205 2020 1205 2018 1205 2005 1218 1875 1218 1845 1205 1842 1205 1840 1205 1773 1216 1747 1205 1745 1205 1743 1205 1674 1216 1645 1205 1643 1205 1641 1205 1639 1205 1637 1205 1622 1218 1600 1208 1598 1208 1596 1208 1593 1208 1570 1218 1528 1208 1526 1208 1524 1208 1522 1208 1483 1218 1396 1208 1394 1208 1392 1208 1355 1218 1284 1208 1282 1208 1279 1208 1251 1218 1208 1208 1206 1208 1204 1208 1037 1221 950 1210 948 1210 890 1221 809 1210 807 1210 805 1210 775 1221 736 1210 734 1210 731 1210 729 1210 695 1221 654 1210 651 1210 649 1210 517 1216 519 1255"/>
+                        </Shape>
+                        <String CONTENT="Within the last thirty years the breeding of reindeer has increased grad-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l12" HPOS="407" VPOS="1273" WIDTH="1775" HEIGHT="58" BASELINE="409 1316 2182 1309" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1316 409 1331 2180 1324 2182 1309 2178 1273 465 1273 463 1273 407 1283 409 1316"/>
+                        </Shape>
+                        <String CONTENT="ually, and even some of the Eskimo have succeeded in gathering herds of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l13" HPOS="407" VPOS="1329" WIDTH="1773" HEIGHT="65" BASELINE="409 1376 2180 1368" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1376 409 1389 1734 1394 1736 1394 1739 1394 1780 1383 2178 1383 2180 1368 2176 1340 1736 1329 1734 1329 1732 1329 1710 1340 1394 1331 1392 1331 1286 1342 426 1335 424 1335 422 1335 420 1335 407 1342 409 1376"/>
+                        </Shape>
+                        <String CONTENT="their own; but the winter of 1900-01, when we were in the field, was so"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l14" HPOS="409" VPOS="1389" WIDTH="1771" HEIGHT="61" BASELINE="411 1435 2180 1431" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1435 411 1450 2178 1446 2180 1431 2176 1400 1295 1389 1292 1389 1290 1389 1266 1400 472 1392 469 1392 409 1402 411 1435"/>
+                        </Shape>
+                        <String CONTENT="unfavorable, that the reindeer were famished everywhere, and many of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l15" HPOS="409" VPOS="1448" WIDTH="1596" HEIGHT="63" BASELINE="411 1496 2005 1489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1496 411 1511 2003 1504 2005 1489 2001 1459 1472 1448 1470 1448 1468 1448 1466 1448 1450 1459 972 1450 970 1450 968 1450 929 1461 498 1452 495 1452 409 1463 411 1496"/>
+                        </Shape>
+                        <String CONTENT="northern herdsmen especially lost about one-half of their whole stock."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r4" HPOS="411" VPOS="1512" WIDTH="1778" HEIGHT="365" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="411 1512 2189 1512 2189 1877 411 1877"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l16" HPOS="515" VPOS="1519" WIDTH="1667" HEIGHT="50" BASELINE="517 1552 2182 1547" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="517 1552 517 1569 2180 1565 2182 1547 2178 1519 515 1519 517 1552"/>
+                        </Shape>
+                        <String CONTENT="It would be easy to increase the number of the divisions, since almost"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l17" HPOS="407" VPOS="1567" WIDTH="1771" HEIGHT="71" BASELINE="409 1615 2178 1608" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1615 409 1628 524 1638 526 1638 528 1638 530 1638 545 1628 2176 1628 2178 1608 2174 1580 1803 1567 1801 1567 1732 1578 1667 1567 1665 1567 1663 1567 1637 1578 1587 1567 1585 1567 1507 1580 1195 1569 1193 1569 1191 1569 1143 1580 736 1571 734 1571 731 1571 701 1582 647 1571 645 1571 407 1584 409 1615"/>
+                        </Shape>
+                        <String CONTENT="every small cluster of camps, united by ties of kinship, claim to have a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l18" HPOS="409" VPOS="1630" WIDTH="1771" HEIGHT="58" BASELINE="411 1675 2180 1669" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1675 411 1688 2178 1682 2180 1669 2176 1638 1000 1630 998 1630 996 1630 963 1641 565 1632 563 1632 409 1643 411 1675"/>
+                        </Shape>
+                        <String CONTENT="separate name derived from the river on the banks of which they wander"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l19" HPOS="411" VPOS="1686" WIDTH="1769" HEIGHT="63" BASELINE="413 1734 2180 1727" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1734 413 1749 2178 1742 2180 1727 2176 1699 1803 1686 1801 1686 1799 1686 1797 1686 1782 1699 1613 1699 1596 1686 1593 1686 1591 1686 1589 1686 1587 1686 1585 1686 1563 1699 1461 1688 1459 1688 1405 1699 1381 1688 1379 1688 1377 1688 1375 1688 1373 1688 1355 1699 1331 1688 1329 1688 1327 1688 1247 1699 1210 1688 1208 1688 1206 1688 1204 1688 1165 1699 1110 1688 1108 1688 1106 1688 1074 1699 1009 1688 1007 1688 1004 1688 1002 1688 985 1701 556 1690 554 1690 552 1690 513 1701 454 1690 452 1690 450 1690 411 1703 413 1734"/>
+                        </Shape>
+                        <String CONTENT="with their herds. Thus Mr. Bogdanovitch gives the name Tahrait to those"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l20" HPOS="409" VPOS="1747" WIDTH="1771" HEIGHT="62" BASELINE="411 1794 2180 1788" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1794 411 1809 2178 1803 2180 1788 2176 1760 2001 1747 1998 1747 1886 1757 1855 1747 1853 1747 1851 1747 1849 1747 1847 1747 1829 1757 1784 1747 1782 1747 1780 1747 1717 1757 1654 1747 1652 1747 1650 1747 1648 1747 1630 1757 1596 1747 1593 1747 1591 1747 1589 1747 1546 1760 1461 1749 1459 1749 1457 1749 1429 1760 1357 1749 1355 1749 1353 1749 1323 1760 1115 1749 1113 1749 1110 1749 1063 1760 409 1760 411 1794"/>
+                        </Shape>
+                        <String CONTENT="living around St. Lawrence Bay near the river Marich. Perhaps this is a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l21" HPOS="411" VPOS="1809" WIDTH="1629" HEIGHT="61" BASELINE="411 1853 2040 1853" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 1853 411 1870 2040 1870 2040 1853 2040 1820 2014 1809 2011 1809 1892 1809 1890 1809 1888 1809 1886 1809 1871 1820 1810 1809 1808 1809 1749 1820 1537 1809 1535 1809 1355 1820 1275 1809 1273 1809 1271 1809 1245 1820 1158 1809 1156 1809 1035 1820 1009 1809 1007 1809 1004 1809 866 1820 790 1809 788 1809 671 1820 643 1809 641 1809 638 1809 636 1809 634 1809 619 1820 597 1809 595 1809 593 1809 591 1809 589 1809 573 1822 476 1822 439 1809 437 1809 435 1809 433 1809 411 1820 411 1853"/>
+                        </Shape>
+                        <String CONTENT="distorted form of the word teg̣reˊtɪlɪt (“those coming down [the river]”)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r5" HPOS="411" VPOS="1877" WIDTH="1778" HEIGHT="537" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="411 1877 2189 1877 2189 2414 411 2414"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l22" HPOS="521" VPOS="1870" WIDTH="1659" HEIGHT="59" BASELINE="524 1913 2180 1909" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="524 1913 524 1929 2178 1924 2180 1909 2176 1881 1351 1870 1349 1870 1347 1870 1344 1870 1327 1881 539 1872 537 1872 534 1872 532 1872 521 1879 524 1913"/>
+                        </Shape>
+                        <String CONTENT="According to the situation of their districts in the western or the eastern"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l23" HPOS="407" VPOS="1926" WIDTH="1773" HEIGHT="70" BASELINE="409 1974 2180 1967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1974 409 1996 2178 1983 2180 1967 2176 1937 1611 1926 1609 1926 1606 1926 1585 1937 1028 1929 1026 1929 1024 1929 994 1939 571 1931 569 1931 407 1942 409 1974"/>
+                        </Shape>
+                        <String CONTENT="part of the country, the divisions of the Reindeer Chukchee call each other"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l24" HPOS="407" VPOS="1989" WIDTH="1771" HEIGHT="61" BASELINE="409 2032 2178 2026" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2032 409 2050 2176 2043 2178 2026 2174 1998 998 1989 996 1989 922 2000 441 1991 439 1991 437 1991 407 2002 409 2032"/>
+                        </Shape>
+                        <String CONTENT="eig̣ɪˊs˙qɪlɪt (“westerners;” literally, “those coming leeward”) or aivaˊʟaᵋt (“east-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l25" HPOS="407" VPOS="2045" WIDTH="1771" HEIGHT="65" BASELINE="409 2095 2178 2087" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2095 409 2110 2176 2104 2178 2087 2174 2058 2087 2045 2085 2045 2083 2045 2061 2056 1966 2045 1964 2045 1962 2045 1959 2045 1940 2058 1821 2058 1793 2045 1790 2045 1788 2045 1726 2058 1476 2048 1474 2048 1418 2058 1362 2048 1360 2048 1171 2061 851 2050 848 2050 846 2050 818 2063 565 2052 563 2052 407 2065 409 2095"/>
+                        </Shape>
+                        <String CONTENT="erners;” literally, “those coming windward”). These names have arisen from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l26" HPOS="407" VPOS="2110" WIDTH="1773" HEIGHT="59" BASELINE="409 2156 2180 2149" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2156 409 2169 2178 2162 2180 2149 2176 2119 1020 2110 1017 2110 1015 2110 987 2121 433 2113 430 2113 428 2113 407 2121 409 2156"/>
+                        </Shape>
+                        <String CONTENT="the fact that the chief wind of the country comes from the west along the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l27" HPOS="409" VPOS="2173" WIDTH="1769" HEIGHT="59" BASELINE="411 2216 2178 2208" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2216 411 2232 2176 2223 2178 2208 2174 2177 430 2173 428 2173 426 2173 424 2173 409 2180 411 2216"/>
+                        </Shape>
+                        <String CONTENT="Arctic shore. Perhaps the names Aiˊwan and Eiwhueˊn have a common origin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l28" HPOS="409" VPOS="2225" WIDTH="1769" HEIGHT="65" BASELINE="411 2275 2178 2268" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2275 411 2290 2176 2284 2178 2268 2176 2238 2141 2225 2139 2225 2137 2225 2135 2225 2094 2236 2037 2225 2035 2225 1977 2236 1962 2225 1959 2225 1957 2225 1955 2225 1953 2225 1931 2236 1914 2225 1912 2225 1910 2225 1907 2225 1905 2225 1903 2225 1888 2238 1762 2238 1706 2225 1704 2225 1702 2225 1678 2236 1617 2225 1615 2225 1613 2225 1583 2238 1550 2227 1548 2227 1546 2227 1544 2227 1515 2238 1420 2227 1418 2227 1416 2227 1392 2238 1342 2227 1340 2227 1271 2238 983 2229 981 2229 978 2229 976 2229 963 2240 937 2229 935 2229 933 2229 931 2229 883 2240 569 2229 567 2229 511 2240 454 2229 452 2229 450 2229 409 2242 411 2275"/>
+                        </Shape>
+                        <String CONTENT="with aivaˊʟat (from aiˊg̣-êpu, “windward”), since the inhabitants of the Pacific"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l29" HPOS="409" VPOS="2288" WIDTH="1767" HEIGHT="65" BASELINE="411 2336 2176 2331" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2336 411 2351 2172 2353 2176 2331 2172 2301 2089 2288 2087 2288 2085 2288 2059 2299 1949 2288 1946 2288 1944 2288 1942 2288 1927 2301 1834 2301 1810 2288 1808 2288 1806 2288 1803 2288 1784 2299 1762 2288 1760 2288 1758 2288 1756 2288 1734 2299 1678 2288 1676 2288 1674 2288 1648 2299 1613 2288 1611 2288 1609 2288 1606 2288 1574 2299 1533 2288 1531 2288 1528 2288 1526 2288 1524 2288 1507 2299 1479 2288 1476 2288 1474 2288 1401 2299 1292 2288 1290 2288 1288 2288 1236 2301 1193 2290 1191 2290 1188 2290 1186 2290 1158 2301 1141 2290 1139 2290 1136 2290 1134 2290 935 2301 907 2290 905 2290 903 2290 900 2290 868 2301 812 2290 809 2290 807 2290 786 2301 690 2290 688 2290 409 2303 411 2336"/>
+                        </Shape>
+                        <String CONTENT="coast are called Aivaˊʟat by all the inland and Arctic Chukchee, whom they,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l30" HPOS="411" VPOS="2349" WIDTH="1022" HEIGHT="62" BASELINE="411 2394 1433 2394" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2394 411 2411 1433 2411 1433 2394 1433 2362 1195 2349 1193 2349 1191 2349 1156 2359 1130 2349 1128 2349 1126 2349 1061 2359 1030 2349 1028 2349 1026 2349 1024 2349 1022 2349 1007 2359 978 2349 976 2349 974 2349 972 2349 933 2359 894 2349 892 2349 890 2349 887 2349 885 2349 872 2359 844 2349 842 2349 840 2349 838 2349 835 2349 820 2359 788 2349 786 2349 783 2349 781 2349 779 2349 760 2362 578 2362 558 2349 556 2349 554 2349 552 2349 550 2349 526 2359 508 2349 506 2349 504 2349 502 2349 443 2359 428 2349 426 2349 424 2349 422 2349 420 2349 417 2349 417 2351 411 2357 411 2394"/>
+                        </Shape>
+                        <String CONTENT="in their turn, call indiscriminately Eig̣ɪˊs˙qɪlɪt."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r6" HPOS="411" VPOS="2414" WIDTH="1778" HEIGHT="122" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="411 2414 2189 2414 2189 2536 411 2536"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l31" HPOS="517" VPOS="2409" WIDTH="1663" HEIGHT="59" BASELINE="519 2452 2180 2448" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="519 2452 519 2468 2178 2463 2180 2448 2176 2420 1353 2409 1351 2409 1349 2409 1347 2409 1334 2420 541 2411 539 2411 537 2411 517 2420 519 2452"/>
+                        </Shape>
+                        <String CONTENT="All camps to the southeast from Chaun Bay are called by the more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l32" HPOS="407" VPOS="2470" WIDTH="1507" HEIGHT="60" BASELINE="409 2511 1914 2509" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2511 409 2530 1912 2530 1914 2509 1910 2481 697 2470 695 2470 407 2481 409 2511"/>
+                        </Shape>
+                        <String CONTENT="eastern people Uˊnmɪ-nuteˊkinet (“those from the inland country”)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r7" HPOS="411" VPOS="2533" WIDTH="1778" HEIGHT="119" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="411 2533 2189 2533 2189 2652 411 2652"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l33" HPOS="517" VPOS="2530" WIDTH="1663" HEIGHT="57" BASELINE="517 2572 2180 2572" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="517 2572 517 2587 2180 2587 2180 2572 2180 2543 2102 2530 2100 2530 2020 2541 1925 2530 1923 2530 1920 2530 1892 2541 1782 2530 1780 2530 1777 2530 1739 2541 1689 2530 1687 2530 1684 2530 1658 2541 517 2537 517 2572"/>
+                        </Shape>
+                        <String CONTENT="The whole number of reindeer camps amounts to about 650, with a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l34" HPOS="407" VPOS="2591" WIDTH="1104" HEIGHT="61" BASELINE="407 2634 1511 2630" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 2634 407 2652 1509 2645 1511 2630 1507 2602 1052 2591 1050 2591 411 2604 407 2634"/>
+                        </Shape>
+                        <String CONTENT="population of 7500-9000, rather more than less."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r8" HPOS="411" VPOS="2652" WIDTH="1778" HEIGHT="553" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="411 2652 2189 2652 2189 3205 411 3205"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l35" HPOS="513" VPOS="2645" WIDTH="1667" HEIGHT="63" BASELINE="515 2693 2180 2686" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="515 2693 515 2708 2178 2701 2180 2686 2176 2658 2122 2645 2120 2645 2068 2656 1868 2645 1866 2645 1728 2656 1650 2645 1648 2645 1645 2645 1619 2658 1303 2647 1301 2647 1299 2647 1297 2647 1282 2660 1188 2660 1136 2647 1134 2647 1132 2647 1108 2658 1080 2647 1078 2647 1076 2647 1074 2647 1048 2660 978 2649 976 2649 974 2649 931 2660 879 2649 877 2649 874 2649 842 2660 762 2649 760 2649 513 2658 515 2693"/>
+                        </Shape>
+                        <String CONTENT="In compiling the list of the maritime villages, I have utilized, besides"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l36" HPOS="407" VPOS="2708" WIDTH="1773" HEIGHT="61" BASELINE="409 2753 2180 2749" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2753 409 2769 2180 2764 2180 2749 2176 2719 1399 2708 1396 2708 1284 2721 407 2721 409 2753"/>
+                        </Shape>
+                        <String CONTENT="information collected by myself, the very valuable paper by Nordquist and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l37" HPOS="409" VPOS="2769" WIDTH="1763" HEIGHT="62" BASELINE="411 2814 2172 2805" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 2814 411 2831 2169 2823 2172 2805 2167 2769 851 2769 848 2769 846 2769 816 2779 448 2771 446 2771 443 2771 409 2782 411 2814"/>
+                        </Shape>
+                        <String CONTENT="official “Register of the Inhabited Places of the Seacoast Province of Siberia.”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l38" HPOS="407" VPOS="2827" WIDTH="1771" HEIGHT="61" BASELINE="409 2875 2178 2870" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2875 409 2888 2176 2883 2178 2870 2176 2838 2159 2827 2156 2827 2154 2827 2152 2827 2096 2838 2057 2827 2055 2827 2053 2827 1855 2838 1797 2827 1795 2827 1793 2827 1749 2838 1719 2827 1717 2827 1715 2827 1713 2827 1710 2827 1695 2840 1513 2840 1487 2827 1485 2827 1483 2827 1481 2827 1479 2827 1468 2838 1455 2827 1453 2827 1450 2827 1357 2827 1355 2827 1249 2840 599 2829 597 2829 543 2840 517 2829 515 2829 513 2829 461 2840 422 2829 420 2829 417 2829 415 2829 413 2829 413 2831 407 2836 409 2875"/>
+                        </Shape>
+                        <String CONTENT="In the latter the data relating to the Chukchee were furnished by Mr. N."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l39" HPOS="407" VPOS="2892" WIDTH="1771" HEIGHT="58" BASELINE="409 2935 2178 2927" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2935 409 2950 2176 2942 2178 2927 2174 2896 424 2892 422 2892 420 2892 417 2892 407 2898 409 2935"/>
+                        </Shape>
+                        <String CONTENT="Gondatti. Unfortunately, while writing this memoir, I have not been able to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l40" HPOS="407" VPOS="2950" WIDTH="1769" HEIGHT="59" BASELINE="409 2994 2176 2985" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 2994 409 3009 2174 3005 2176 2985 2172 2957 851 2950 848 2950 846 2950 844 2950 825 2961 530 2953 528 2953 407 2963 409 2994"/>
+                        </Shape>
+                        <String CONTENT="use the very valuable article of Mr. Gondatti, the title of which is given on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l41" HPOS="409" VPOS="3005" WIDTH="1767" HEIGHT="73" BASELINE="411 3059 2176 3048" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 3059 411 3078 2174 3063 2176 3048 2172 3018 1979 3005 1977 3005 1975 3005 1940 3015 1916 3005 1914 3005 1912 3005 1910 3005 1907 3005 1890 3015 1793 3007 1790 3007 1788 3007 1786 3007 1773 3018 1760 3007 1758 3007 1756 3007 1754 3007 1643 3018 1544 3007 1541 3007 1463 3020 1167 3009 1165 3009 807 3022 766 3011 764 3011 762 3011 760 3011 723 3024 563 3013 560 3013 558 3013 556 3013 543 3024 495 3015 493 3015 409 3026 411 3059"/>
+                        </Shape>
+                        <String CONTENT="p. 20, but, so far as I can remember, it does not differ much from the Register."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l42" HPOS="411" VPOS="3065" WIDTH="1767" HEIGHT="67" BASELINE="413 3115 2178 3108" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 3115 413 3126 2161 3132 2163 3132 2165 3132 2167 3132 2178 3121 2178 3108 2174 3078 1940 3065 1938 3065 1842 3076 1784 3065 1782 3065 1780 3065 1741 3076 1697 3065 1695 3065 1693 3065 1630 3076 1604 3065 1602 3065 1600 3065 1598 3065 1596 3065 1580 3078 1567 3067 1565 3067 1563 3067 1561 3067 1559 3067 1522 3078 1476 3067 1474 3067 1472 3067 1470 3067 1431 3080 1312 3080 1297 3067 1295 3067 1292 3067 1290 3067 1288 3067 1256 3078 1154 3067 1152 3067 1149 3067 1110 3078 1013 3067 1011 3067 1009 3067 974 3080 948 3069 946 3069 944 3069 942 3069 900 3080 857 3069 855 3069 853 3069 411 3076 413 3115"/>
+                        </Shape>
+                        <String CONTENT="The journey of Mr. Gondatti from the mouth of the Anadyr to East Cape"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l43" HPOS="409" VPOS="3128" WIDTH="1765" HEIGHT="63" BASELINE="411 3173 2174 3169" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 3173 411 3189 2172 3191 2174 3169 2169 3139 1368 3128 1366 3128 1269 3139 599 3130 597 3130 409 3141 411 3173"/>
+                        </Shape>
+                        <String CONTENT="was made in the spring of 1895. Some data given by Krause, Bogdanovitch,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-047_r9" HPOS="411" VPOS="3219" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="411 3219 2189 3219 2189 3295 411 3295"/>
+                    </Shape>
+                    <TextLine ID="mz_1-047_l44" HPOS="1297" VPOS="3221" WIDTH="630" HEIGHT="48" BASELINE="1299 3251 1927 3247" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1299 3251 1299 3269 1925 3266 1927 3247 1920 3221 1297 3223 1299 3251"/>
+                        </Shape>
+                        <String CONTENT="² Compare the Oˊnmɪlɪn Group, p. 26."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-047_l45" HPOS="515" VPOS="3225" WIDTH="290" HEIGHT="48" BASELINE="515 3251 805 3251" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="515 3251 515 3271 803 3273 805 3251 805 3225 515 3225 515 3251"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare p. 15."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
