@@ -128,6 +128,32 @@ def zoom_window(zoom: int, client_w: int = ZOOM_CLIENT_W) -> int:
     from .figures import LABEL_W
     return max(40, (client_w - LABEL_W - 20) // max(1, zoom))
 
+def fill_last_strip(a: int, b: int, full: int, window: int,
+                    overlap: int = ZOOM_OVERLAP) -> int:
+    """Extend `b` so the span's final strip is a whole window, bounded by `full`.
+
+    **A span that wraps used to end short, and the last strip is exactly where
+    that hurts.** The widening in `zoom_sheets` fires only when a span is narrower
+    than one window, so a *wider* one was cropped flush at `hi` and its tail strip
+    carried whatever fraction of a window happened to be left — `@20-60` of a full
+    measure lands two strips, the second a third ink and two thirds white.
+
+    The sheet is padded to `client_w` whatever that strip holds, so the text that
+    would have completed it costs nothing to include, and withholding it is how a
+    reader ends up calling `@55-90` next for the word the boundary cut in half.
+    That is the same trade as widening a point, made at the other end of the range,
+    and it was found by a reader doing precisely the re-aiming it prevents: `1-046`
+    selected every one of its failing zooms by range.
+
+    Only rightward, and only to `full`. Extending left would move a region the
+    caller named and can see the label for; running past the line would render
+    paper that is not this line's.
+    """
+    step = max(1, window - overlap)
+    n = max(1, -(-max(1, b - a - overlap) // step))
+    return min(full, a + step * (n - 1) + window)
+
+
 def zoom_capacity(widths: list[int], heights: list[int] | None = None,
                   overlap: int = ZOOM_OVERLAP,
                   client_w: int = ZOOM_CLIENT_W,
@@ -1926,6 +1952,7 @@ def write_line_zoom(ref: str, out_dir: Path,
             # boundary the raster itself supplies, so extend to it — bounded, so a
             # span inside a long unbroken word does not creep across the measure.
             a, b = _snap_to_white(crop, a, b, budget=window // 4)
+            b = fill_last_strip(a, b, full, window, overlap)
             crop = crop.crop((a, 0, b, crop.height))
             # The label carries the span *rendered*, not the one asked for. Two
             # requests that widen onto the same region are one picture and must

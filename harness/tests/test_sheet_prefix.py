@@ -324,6 +324,34 @@ def test_capacity_counts_the_padded_strip_and_the_snapped_crop():
     assert PAD_TOP + PAD_BOTTOM == 28
 
 
+def test_a_wrapping_span_fills_its_last_strip():
+    """The widening only ever fired on spans *narrower* than a window, so a span
+    wider than one ended flush at `hi` and its tail strip came back part-empty.
+
+    `1-046` is the page that found it, by selecting every one of its failing zooms
+    by range and then re-calling for the words its own boundaries cut. Free, on the
+    same argument that already widens a point: the sheet is `client_w` wide whatever
+    the strip holds.
+    """
+    from harness.lines import ZOOM_OVERLAP, fill_last_strip, zoom_window
+
+    w = zoom_window(2)
+    step = max(1, w - ZOOM_OVERLAP)
+    full = 1770
+    # A span landing two strips: the second is whole afterwards, not a remainder.
+    # It has to clear step+overlap to wrap at all — below that the loop emits one
+    # strip and the fill simply pads it, which is the narrow-span case.
+    b = fill_last_strip(0, step + ZOOM_OVERLAP + 30, full, w)
+    assert b == step + w
+    assert -(-max(1, b - ZOOM_OVERLAP) // step) == 2, "still two strips, not three"
+    # Under that threshold it is one strip, padded to a whole window.
+    assert fill_last_strip(0, step + 10, full, w) == w
+    # It never runs past the line, and never moves the left edge the caller named.
+    assert fill_last_strip(full - 20, full, full, w) == full
+    # A span already whole is untouched, so points and exact fits keep their render.
+    assert fill_last_strip(0, w, full, w) == w
+
+
 def test_the_ceiling_itself_is_allowed():
     """4x is the escalation the pass doc sends a reader to for one named doubt;
     refusing it would make the ceiling unreachable rather than enforced."""

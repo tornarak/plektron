@@ -404,4 +404,15 @@ was restating the ref four times over to say things derivable from it.
         `--store mz`.
       - {figures}
 
+    What a crop of THIS page will show you, measured off its own lines — read it
+    now, before you form any intention to zoom:
+    {zoom}
+
+    So: name points, not ranges. A point is one number and the renderer widens and
+    snaps it for you; a range is two numbers about a word whose extent you cannot
+    see from a composite, and the second one is the one that goes wrong. `@0` and
+    `@100` are the head and tail of a line exactly, whatever its length — a folio
+    is at one margin or the other, so it is `N@0` or `N@100` with `--margins`, and
+    finding it should never take more than two calls.
+
 <!-- prompt:end -->

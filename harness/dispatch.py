@@ -49,6 +49,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .context import norm_ref
+from .lines import ZOOM
 
 DOC = Path(".claude/skills/rebuild-groundtruth/dispatch.md")
 # The page block, rendered by `claim` — everything true of one page in particular.
@@ -111,7 +112,7 @@ def template(root: Path = Path("."), markers: tuple[str, str] = (BEGIN, END)) ->
 
 def survey(ref: str, root: Path = Path(".")) -> dict:
     """What the four stores hold for this page — the check `dispatch.md` describes."""
-    from .lines import alto_for_lines, page_lines
+    from .lines import alto_for_lines, page_lines, zoom_capacity
     ref = norm_ref(ref)
     exempt = root / "gt/zones/_exempt.lst"
     out = {
@@ -134,6 +135,21 @@ def survey(ref: str, root: Path = Path(".")) -> dict:
         recs = page_lines(alto, root)
         out["lines"] = len(recs)
         out["blocks"] = len({r["block_id"] for r in recs if r.get("block_id")})
+        # **The zoom geometry belongs here, before the first image, not on the
+        # call that renders one.** `ocr zoom` has printed this table since the
+        # step was restricted, and printing it there is too late: by the time a
+        # reader sees what a crop covers it has already chosen a line, a
+        # magnification and a span, and the numbers arrive as a comment on a
+        # decision rather than an input to one. Three readers in the 1-045..047
+        # batch read the table on every call and went on re-aiming — one walked a
+        # word across three 4x crops, having escalated before asking whether the
+        # word would fit in a strip at that step.
+        #
+        # Measured off this page's own lines, so it is this page's arithmetic and
+        # not a rule of thumb: a reader that knows a 4x crop shows a fifth of a
+        # line knows, before it starts, that a whole word wants 2x.
+        out["zoom"] = zoom_capacity([r["width"] for r in recs],
+                                    [r["height"] for r in recs])
     return out
 
 
@@ -170,8 +186,21 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
             f"`uv run harness ocr predict {r}` first, in the parent: it wants the "
             "GPU, and several agents racing for it is slower than one loop.")
     figs = (FIGURES_PRESENT if s["figures"] else FIGURES_ABSENT).format(ref=r)
+    # Rendered as sentences, not as the table `ocr zoom` prints. The reader is
+    # being handed this before it has a doubt to spend it on, so what it has to
+    # carry is the consequence — "a whole line is N strips" — rather than a row of
+    # figures it would have to do arithmetic on later, at the moment it is least
+    # inclined to.
+    zoom = "\n".join(
+        f"  - at {c['zoom']}x one crop shows ~{c['covers_pct']}% of a line "
+        f"however you aim it, {c['points_per_sheet']} fit one sheet, and a whole "
+        f"line is {c['full_strips']} strips — "
+        + ("so a whole word fits; this is the step to look at."
+           if c["zoom"] == ZOOM else
+           "so a long word does NOT fit and comes back in pieces. One mark only.")
+        for c in s.get("zoom") or [])
     text = template(root).format(
-        ref=r, lines=s["lines"], zones=s["blocks"],
+        ref=r, lines=s["lines"], zones=s["blocks"], zoom=zoom,
         figures=figs, note=f" {note.strip()}" if note else "")
     left = sorted(set(re.findall(r"\{(\w+)\}", template(root))))
     return {**s, "page_block": text, "placeholders": " ".join(left)}

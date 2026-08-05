@@ -341,18 +341,29 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
    footnote reference `12@100`, a left- or right-set folio `44@0` or `44@100`
    with `--margins` — so the edges never ask you to estimate anything. The crop
    is widened to a full strip and snapped out to whitespace, so it will not cut
-   the word: you do not pad, and you do not re-aim. A span form `@LO-HI` exists,
-   but three crops framing one word (`@45-65`, then `@70-90`, then `@60-75`) is
-   the measured signature of a reader that died with nothing written; if you
-   cannot say where in the line the mark sits, go back to rung 2 — that is what
-   a contact sheet is for.
+   the word: you do not pad, and you do not re-aim.
+
+   **The span form `@LO-HI` exists and you should almost never reach for it.** A
+   point asks you for one number; a range asks for two, about a word whose extent
+   you cannot see from a composite, and it is the second that goes wrong. Three
+   crops framing one word — `@45-65`, then `@70-90`, then `@60-75` — is the
+   measured signature of a reader in trouble, and the page that selected *every*
+   one of its failing zooms by range is the page that then re-called for the words
+   its own boundaries had cut. If you cannot say where in the line the mark sits,
+   go back to rung 2; that is what a contact sheet is for.
 
    **Two steps exist, `--zoom 2` and `--zoom 4`, and nothing else.** 2 is the
-   look. 4 is for resolving one tiny diacritic on one word, and the tool warns
-   when you use it because it is the ceiling — past it there is no source detail
-   left to buy, only interpolation. `--reason` is required on every call and
-   lands in the ledger the adjudicator reads: write the actual doubt ("dot under
-   g, last word of 23"), never "check the mark".
+   look. 4 is for one tiny diacritic on one word, and the tool warns when you use
+   it because it is the ceiling — past it there is no source detail left to buy,
+   only interpolation. **Before escalating, ask what has to fit.** Your claim
+   block gave you this page's own arithmetic: at 4× a crop is roughly a fifth of
+   a line, so a long Tier-1 word does not fit in one and comes back in pieces. A
+   target that will not fit means you have gone one step too far — drop to 2×,
+   where the whole word lands in a single crop. Two readers in one batch escalated
+   first and then spent three crops apiece walking a word across the ceiling.
+   `--reason` is required on every call and lands in the ledger the adjudicator
+   reads: write the actual doubt ("dot under g, last word of 23"), never "check
+   the mark".
 
    Add `--margins` ONLY when the doubt is in the margin (a folio or list number
    the line box may exclude); it widens every selected line to the PrintSpace
@@ -462,16 +473,32 @@ why.
   holds it, and never hunt the foot of a page whose running title you have already
   found.
 
+  **The ordinary case costs no image at all: the numbered composite shows the
+  folio, and that settles it.** Say so and move on. `1-046` did exactly that — box
+  70 px, digits legible, nothing spent — while `1-045` and `1-047` spent six and
+  four zooms on the same slot in the same batch. Nothing about a folio is a Tier-1
+  identity, so there is no class here that needs a second look by default.
+
+  **If the composite genuinely does not settle it, aim at the margin, not across
+  the box.** A folio sits hard against the left or the right, so it is `N@0` or
+  `N@100` with `--margins` — one call, and a second only if you guessed the wrong
+  side. Both readers above walked the box in narrow steps instead (`@85`, then
+  `@95`, then further), and both said in their own reports afterwards that one
+  edge-aimed call would have done it. Which side a folio takes is a property of the
+  leaf you cannot derive from this page, so do not try, and do not treat a side as
+  wrong — look at one, then the other.
+
   Two mechanical tells, **both about the `RunningTitleZone` folio and neither about
-  the bracketed quire-mark**. That folio is **not centred** — it sits hard against
-  the left or the right margin, and which side it takes is a property of the leaf
-  you cannot work out from this page alone, so do not try to derive it and do not
-  treat a side as wrong. Look at both. And **a folio box under about 30 px wide is
-  clipping the number**: the pages read correctly in the `1-031`..`1-036` batch had
-  boxes 65–76 px, and both pages misread had 19–20 px. On a box that narrow go to
-  `--margins` — and know that a margin-widened crop of a clipped box is exactly
-  where a printed divider rule reads as a leading `1` and a tight kern reads as a
-  gap. `1 3` was `13`, `115` was `15`; both happened here.
+  the bracketed quire-mark**. **A folio box under about 30 px wide is clipping the
+  number**: the pages read correctly in the `1-031`..`1-036` batch had boxes 65–76
+  px, and both pages misread had 19–20 px. On a box that narrow go to `--margins` —
+  and know that a margin-widened crop of a clipped box is exactly where a printed
+  divider rule reads as a leading `1` and a tight kern reads as a gap. `1 3` was
+  `13`, `115` was `15`; both happened here. And **the composite writes its own line
+  index beside every band**, which next to a narrow marginal folio is a two-digit
+  number sitting beside a two-digit number: `1-039` and `1-047` both had to work out
+  which was ink. The label is the index `ocr lines` gave you; the ink is what you
+  key.
 
   **CATMuS reads this slot badly and often**: it drops a digit, splits one, returns
   the line empty, or takes the divider rule for a `1`. So where zone and appearance
@@ -1280,9 +1307,14 @@ changes what a turn costs. Before your first image:
   `--only` list, and render them together. A reader that zooms one line at a
   time dies at the turn cap with nothing written; the one that batched over a
   hundred tool uses into its eighty turns finished.
-- **Aim at points.** `23@60`, `42@0`, `12@100` — one number each, widened and
-  snapped to whitespace for you. Re-aiming a span three times around one word
-  is the signature of a page that failed.
+- **Aim at points, not ranges.** `23@60`, `42@0`, `12@100` — one number each,
+  widened and snapped to whitespace for you. A range is two guesses about a word
+  you cannot measure, and re-aiming one three times around a single word is the
+  signature of a page that failed. A folio is `N@0` or `N@100`, never a walk
+  across the box.
+- **Ask what has to fit before you escalate.** 4× shows about a fifth of a line,
+  so a long word comes back in pieces; if the target will not fit, 2× is the
+  answer, not more crops.
 - **Two steps.** 2× is the look; 4× is one tiny diacritic on one word, and it
   is the ceiling. A doubt that survives one 4× look IS the answer — key the
   catalogued sort, put the doubt in `note`, move on. No further crop can settle
