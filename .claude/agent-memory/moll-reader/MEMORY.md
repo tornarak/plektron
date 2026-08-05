@@ -1,9 +1,5 @@
-- [Quire marks numbered as entries](quire-marks.md) — check a lone bracket at the foot of a column before keying it as a headword
-- [Hyphen line-wrap in glosses](hyphen-line-wrap.md) — join a gloss word split by a line-end hyphen (e.g. обере-/гать → оберега́ть); don't key the fragments separately
-- [Multi-entry bracket](multi-entry-bracket.md) — a bracket can group many entries, not just two; an oversized zoom crop is the tell
-- [Non-entry brackets, other shapes](non-entry-brackets.md) — an all-caps no-gloss fragment can be numbered as an entry too, not just digit-dash quire marks
-- [Flush-wrap false positive](flush-wrap-false-positive.md) — the warning can resolve to "not a join" fast, by checking hyphen-vs-punctuation at 2x
-- [Continuation spans both columns](continuation-spans-both-columns.md) — an opening continuation can carry a matching c← at the top of the right column too, not just the left
-- [Small-caps headword misread](small-caps-headword-misread.md) — smaller-face short entries crowd и/н/т; 4x does NOT settle them, so key a `?` rather than a confident guess
-- [Accented о looks like б](accented-o-looks-like-b.md) — italic о́ fuses with the accent into a false loop resembling a second б; crop tighter, don't upscale further
-- [Italic о at line-break looks like с](italic-o-at-linebreak-looks-like-c.md) — line-end "по-" can print as "пс-"; a real-word lexicon check settles it, 4x doesn't
+- [Bracket faults](bracket-faults.md) — a numbered bracket can hold no entry, part of one, or six; check inside every bracket, and count your own file before reporting it
+- [What settles a letterform](what-settles-a-letterform.md) — zoom adds no information; per class, the decider is 4x, a tighter crop, the lexicon, or a `?` — know which
+- [Gloss-side faults](gloss-side-faults.md) — the unwatched half of the row: dropped stress accents and un-joined line-end hyphens, neither of which feels like doubt
+- [Marked-page warnings](marked-page-warnings.md) — flush-wrap is geometric and usually false, settled at 2x; `c`/`c←` can span both columns
+- [Asterisk before numeral](asterisk-before-numeral.md) — `headword * II` prints in that order; key what prints, don't move the numeral to the end
