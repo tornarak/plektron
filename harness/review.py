@@ -45,6 +45,9 @@ from pathlib import Path
 
 from lxml import etree
 
+# Aliased: this module already exposes a `corrections` verb (proposal->decision
+# character diffs), which is a different subject entirely.
+from . import corrections as _corr
 from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
@@ -608,9 +611,20 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     tree = etree.parse(str(src))
     lines = list(tree.iter("{*}TextLine"))
 
-    missing = [i for i in range(len(lines)) if i not in dec]
+    # **The merged view is the index space, so a correction is not a hole.** A
+    # line a human drew in `ocr edit` lives in `gt/lines/`, is appended after the
+    # ALTO's last index by `page_lines`, and is adjudicated in the browser like any
+    # other line — so it has a decision, and that decision has to land somewhere.
+    # `ref` is passed explicitly here and on the verification below: `tmp` is
+    # `chukchi-PP-NNN.xml.tmp`, whose stem parses as no ref, and a fold that
+    # applied to one side and not the other would surface as this function
+    # reporting that its own write had lost lines.
+    recs = page_lines(src, root, ref=ref)
+    corrected = [r for r in recs if r["src"] == "corr"]
+
+    missing = [i for i in range(len(recs)) if i not in dec]
     if missing:
-        raise ValueError(f"{ref}: {len(missing)} of {len(lines)} lines have no "
+        raise ValueError(f"{ref}: {len(missing)} of {len(recs)} lines have no "
                          f"decision (indices {missing[:12]}…); refusing a partial "
                          "restore — ground truth with holes is worse than none")
 
@@ -634,6 +648,10 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     if target.exists() and not force:
         existing = sum(len(s.get("CONTENT") or "")
                        for s in etree.parse(str(target)).getroot().iter("{*}String"))
+        # The fragment counts too: a corrected line's adjudicated text lives there
+        # and nowhere else, so a guard that only looked at `gt/ocr/` would wave
+        # through the overwrite of the one reading with no second copy.
+        existing += sum(len(r["text"]) for r in _corr.load_lines(ref, root))
         if existing:
             raise ValueError(
                 f"{target} already holds {existing} characters of text. Refusing to "
@@ -647,6 +665,16 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
                              "String elements, expected exactly 1 — not guessing")
         strings[0].set("CONTENT", _nfd(dec[i]["text"]))
 
+    # **Text goes to the store its line came from**, which is what keeps `restore`
+    # the only writer of ground-truth *text* now that a line can live in two
+    # places. The join is by `corr_` id rather than by position: the fragment is
+    # ordered by geometry and a human may have nudged a box since, where the id was
+    # minted once and travels with it.
+    frag = _corr.load_lines(ref, root)
+    index_of = {r["line_id"]: r["index"] for r in corrected}
+    boxes = [dict(b, text=_nfd(dec[index_of[b["id"]]]["text"]))
+             for b in frag if b["id"] in index_of]
+
     # Always written to a scratch path and verified from there — `commit` only
     # gates the final `tmp.replace(target)` below, so dry-run and real-write share
     # one code path rather than a preview implementation drifting from the real one.
@@ -656,8 +684,8 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
 
     # Verify against the source rather than trusting the write: geometry identical,
     # text exactly what was adjudicated.
-    a = page_lines(src)
-    b = page_lines(tmp)
+    a = page_lines(src, root, ref=ref)
+    b = page_lines(tmp, root, ref=ref)
     # **Length first, and then `strict`.** Bare `zip` stops at the shorter side, so
     # a write that dropped a line would have been verified over the common prefix
     # and reported clean — a check that cannot see the one failure this repo has
@@ -673,7 +701,12 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             "baseline", "points")
     drift = [x["index"] for x, y in zip(a, b, strict=True)
              if any(x[k] != y[k] for k in geom)]
-    wrong = [y["index"] for y in b if y["text"] != _nfd(dec[y["index"]]["text"])]
+    # Only the ALTO's own lines are verifiable from `tmp`: a correction's text is
+    # written to the fragment, and both sides of this comparison fold the fragment
+    # as it still stands on disk. The corrected lines are verified after their
+    # write, below, by reading the store back.
+    wrong = [y["index"] for y in b if y["src"] == "alto"
+             and y["text"] != _nfd(dec[y["index"]]["text"])]
     # `edits` names what changed, not just how many lines did — "edited_by_human: 2"
     # used to be the whole answer, and finding out *what* meant hand-rolling a
     # proposal-vs-decision diff script each time. `load_proposal` can be missing a
@@ -697,8 +730,8 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     if not commit:
         tmp.unlink()
         return {"path": str(target), "source": str(src), "mode": mode,
-                "lines": len(lines),
-                "chars": sum(len(y["text"]) for y in b),
+                "lines": len(recs), "corrections": len(boxes),
+                "chars": sum(len(_nfd(v["text"])) for v in dec.values()),
                 "geometry_drift": drift, "text_mismatch": wrong,
                 # `view` is "" here, not absent: one fixed key set across both
                 # branches, since a caller reading the report should not have to
@@ -707,6 +740,15 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
                 "noted": len(notes), "notes": notes, "commit": False,
                 "view": ""}
     tmp.replace(target)
+    # The fragment second, and verified by reading it back rather than trusting the
+    # write — the same rule the ALTO side follows above. `save_lines` rebuilds the
+    # file from these boxes, so it must be handed every correction on the page and
+    # not only the ones whose text changed.
+    if boxes:
+        _corr.save_lines(ref, boxes, root)
+        after = {b["id"]: b["text"] for b in _corr.load_lines(ref, root)}
+        wrong += [i for cid, i in sorted(index_of.items(), key=lambda kv: kv[1])
+                  if after.get(cid) != _nfd(dec[i]["text"])]
     # **The promotion is the write plus the relink, and it was only ever half
     # wired.** `recognize.link_one`'s own docstring says so — "promoting a page is a
     # matter of `restore` writing `gt/ocr/` and this relinking, never of moving
@@ -728,8 +770,8 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     from .recognize import link_one
     view = link_one(ref, root)
     return {"path": str(target), "source": str(src), "mode": mode,
-            "lines": len(lines),
-            "chars": sum(len(y["text"]) for y in b),
+            "lines": len(recs), "corrections": len(boxes),
+            "chars": sum(len(_nfd(v["text"])) for v in dec.values()),
             "geometry_drift": drift, "text_mismatch": wrong,
             "edited_by_human": len(edits), "edits": edits,
             "noted": len(notes), "notes": notes, "commit": True,

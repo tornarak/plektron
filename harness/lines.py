@@ -314,8 +314,72 @@ def mark_figure_overlap(recs: list[dict], ref: str, root: Path = Path(".")) -> l
     return recs
 
 
-def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
-    """One flat record per `TextLine`, **reading order**, empties included.
+def _zones_for(ref: str, root: Path = Path(".")) -> list[dict]:
+    """This page's declared zones, in raster coordinates, `[]` if never keyed.
+
+    Imported inside the function because `zones` imports `ink_bands`/`ink_mask`
+    from this module. Zone geometry is raster geometry by construction — the
+    editor draws on the raster and `save_zones` writes what it drew — which is the
+    same assumption `page_windows` already makes about the column.
+    """
+    from .zones import read_zones
+    return read_zones(ref, root)
+
+
+def _fold_corrections(out: list[dict], root: Path | None, ref: str | None,
+                      page) -> list[dict]:
+    """Append this page's `gt/lines/` corrections to the ALTO's own records.
+
+    The merging lives here rather than in `corrections.py` because it is entirely
+    about this structure — it needs `_scale_for`, `_overlap_fraction` and
+    `_band_zone`, all of which are geometry over line records. That module owns
+    the *store*; this owns what a page's lines are.
+
+    **Indices are assigned after the ALTO's maximum, never interleaved**, which is
+    what makes the whole overlay safe: every existing `proposal.json` and
+    `decision.json` keyed against this page still names the line it always named.
+    Reading position is `reading_order`'s business a few lines below, and it sorts
+    the correction into its true place on the page without touching any identity.
+
+    The fragment is stored in **raster** coordinates and the target ALTO may be in
+    another space, so the scale is taken per axis from the fragment's own declared
+    page size — the same reason `line_crops` derives it instead of assuming: a
+    silently mis-scaled box reads as a segmentation error rather than a units one.
+    """
+    from . import corrections as corr
+    if ref is None or page is None:
+        return out
+    recs = corr.load_lines(ref, root or Path("."))
+    if not recs:
+        return out
+
+    page_zones = _zones_for(ref, root or Path("."))
+    aw, ah = float(page.get("WIDTH") or 0), float(page.get("HEIGHT") or 0)
+    for j, r in enumerate(recs):
+        rw, rh = r["page_w"] or aw, r["page_h"] or ah
+        sx, sy = (rw / aw if aw else 1.0), (rh / ah if ah else 1.0)
+        # Containment is asked in raster space, where both the fragment and the
+        # zones live; the geometry is scaled into the ALTO's space afterwards.
+        band = {"hpos": r["x0"], "vpos": r["y0"],
+                "width": r["x1"] - r["x0"], "height": r["y1"] - r["y0"]}
+        x, y = round(r["x0"] / sx), round(r["y0"] / sy)
+        w, h = round(band["width"] / sx), round(band["height"] / sy)
+        out.append({
+            "index": len(out) + j,
+            "line_id": r["id"],
+            "block_id": f"{r['id']}_block",
+            "zone": _band_zone(band, page_zones),
+            "text": r["text"],
+            "hpos": x, "vpos": y, "width": w, "height": h,
+            "baseline": f"{x} {y + h} {x + w} {y + h}",
+            "points": f"{x} {y} {x + w} {y} {x + w} {y + h} {x} {y + h}",
+        })
+    return out
+
+
+def page_lines(alto_path: Path, root: Path | None = None,
+               ref: str | None = None) -> list[dict]:
+    """One flat record per line, **reading order**, empties included.
 
     `index` is assigned from ALTO **document order, before the reorder**, and is
     the record's identity: `proposal.json` and `decision.json` are keyed by it and
@@ -325,6 +389,24 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
     is reordered; identities never move -- which means the labels appear out of
     numeric sequence, and that is the tell that `index` means identity rather than
     position.
+
+    **A page's lines are the store's plus `gt/lines/`'s**, and this is the one
+    place that is decided. A correction is a box a human drew over ink the
+    segmenter left unboxed; it is appended after the ALTO's last index and carries
+    `src: "corr"`, where everything out of the file carries `src: "alto"`. Every
+    consumer inherits the merge — the reader's sheets and crops, the review
+    server, `proposal check`, `ocr gaps`, `tei context` — because a correction
+    nobody downstream can point at is not a correction, it is a note.
+
+    **`ref` is why this parameter exists, and `restore` is why it must.** The ref
+    is otherwise derived from `alto_path.stem` below, inside a `try` that degrades
+    quietly where the derivation does not hold. `restore` verifies its write by
+    comparing `page_lines(src)` against `page_lines(tmp)` — and `tmp` is
+    `chukchi-PP-NNN.xml.tmp`, whose stem is `chukchi-PP-NNN.xml` and parses as no
+    ref at all. Left to the derivation, one side of that comparison would fold the
+    corrections and the other would not, and the mismatch would surface as
+    restore's own "the write lost or gained lines" on every corrected page. Pass
+    it on both sides or on neither.
 
     `y_rank` is the reading position, supplied so no caller re-derives it.
 
@@ -339,6 +421,10 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
     carried no semantic value. `mz/ocr/` labels every one, because `ocr predict`
     writes the zones in as the regions, and that field is what lets a consumer drop
     the running title and the signature line without a second walk of the tree.
+    A correction's `zone` is resolved differently — by containment against
+    `gt/zones/`, since the fragment stores no label — and that is deliberate:
+    stored, a label would go stale the moment the page was re-zoned, and the way a
+    stranded correction announces itself is by resolving to no zone at all.
     """
     from .figures import _block_label, _labels
     tree = etree.parse(str(alto_path))
@@ -364,6 +450,9 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
             "baseline": tl.get("BASELINE"),
             "points": (poly.get("POINTS") if poly is not None else None),
         })
+    for rec in out:
+        rec["src"] = "alto"
+
     # Figure-zone marking needs the page's ref and the repo root. Both are derivable
     # from the ALTO's own location (`<root>/<store>/chukchi-<ref>.xml`) so that every
     # caller gets the marking without having to remember to ask — the failure mode
@@ -371,11 +460,26 @@ def page_lines(alto_path: Path, root: Path | None = None) -> list[dict]:
     # derivation does not hold (a `--out` path, a tmp_path fixture) no figure ALTO is
     # found and every record carries the keys with `None`, which is exactly right:
     # a page with no figure ALTO has no figure.
+    #
+    # The corrections fold rides the same derivation, and an explicit `ref` wins
+    # over it. Both degrade to "there is nothing to add" rather than raising, and
+    # `src` is stamped on every record either way: a caller must never have to tell
+    # "this line came from the ALTO" from "this build does not know about
+    # corrections".
+    at = root if root is not None else alto_path.parent.parent
     try:
-        ref = norm_ref(alto_path.stem)
-        mark_figure_overlap(out, ref, root if root is not None else alto_path.parent.parent)
+        found = norm_ref(ref) if ref else norm_ref(alto_path.stem)
+        mark_figure_overlap(out, found, at)
     except ValueError:
+        found = None
         for rec in out:
+            rec["in_figdesc"] = rec["in_graphic"] = rec["figdesc_straddle"] = None
+    if found:
+        page = tree.getroot().find(".//{*}Page")
+        before = len(out)
+        _fold_corrections(out, at, found, page)
+        for rec in out[before:]:
+            rec["src"] = "corr"
             rec["in_figdesc"] = rec["in_graphic"] = rec["figdesc_straddle"] = None
     return reading_order(out)
 
@@ -800,16 +904,10 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
                       or b["hpos"] >= col1 else "column")
 
     # **Which zone the band falls in, if any — and it decides who owns the band.**
-    # Imported inside the function because `zones` imports `ink_bands`/`ink_mask`
-    # from here. Zone geometry is raster geometry by construction (the editor
-    # draws on the raster and `save_zones` writes what it drew), which is the same
-    # assumption `page_windows` above already makes about the column.
-    #
     # A page with no zones yields no containment and every band reads out-of-zone.
     # That is the honest degradation rather than a gate: measurement never gates,
     # and it is `ocr edit` that requires zoning, not this.
-    from .zones import read_zones
-    page_zones = read_zones(ref, root)
+    page_zones = _zones_for(ref, root)
     for b in bands:
         b["zone"] = _band_zone(b, page_zones)
 
