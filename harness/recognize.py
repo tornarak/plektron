@@ -538,7 +538,7 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
         why = predict_skip(ref, root, force, single=named)
         (skipped.append({"ref": ref, "why": why}) if why else todo.append(ref))
 
-    done = []
+    done, chatter = [], {"stderr_lines": 0, "stderr_log": ""}
     if todo:
         n = predict_workers(jobs, len(todo))
         if n == 1:
@@ -550,11 +550,13 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
                 done.append(predict(ref, root, seg_net, seg_sha, rec_net, rec_sha,
                                     seg_model, rec_model, dev))
         else:
-            done = _predict_pool(todo, n, root, seg_model, rec_model, device, tick)
+            done, chatter = _predict_pool(todo, n, root, seg_model, rec_model,
+                                          device, tick)
     return {"predicted": len(done), "skipped": len(skipped),
             "workers": predict_workers(jobs, len(todo)) if todo else 0,
             "lines": sum(d["lines"] for d in done),
             "outside": sum(d["lines_outside_zones"] for d in done),
+            **chatter,
             "pages": done, "skips": skipped}
 
 
@@ -563,8 +565,64 @@ def predict_all(root: Path = Path("."), refs: list[str] | None = None,
 _WORKER: dict = {}
 
 
-def _worker_init(root: Path, seg_model, rec_model, device: str) -> None:
+# kraken raises this once per recognition call, and it is a property of the
+# pinned model rather than of the page: `models/blla.mlmodel` predates the new
+# polygon extractor, so every page is "trained with old version". The caveat is
+# real and is recorded in `VERBS.md`'s `ocr predict` entry, which is where a
+# statement true of all 832 pages belongs.
+#
+# **Suppressed in the workers because they are the one place it cannot be
+# handled.** A `spawn`ed child inherits fd 2, so its warnings go straight to the
+# terminal, underneath a progress bar that redraws by moving the cursor — rich
+# redirects `stderr`, but only Python-level writes in the *parent*. The result is
+# frames left stranded at the wrong line and a count that appears frozen while
+# the store fills normally, which is how a 689-page sweep loses the only signal
+# it has. On the serial path the same warning is raised in-process, rich catches
+# it, and it prints tidily above the bar — so this is scoped to the pool.
+POLYGON_WARNING = "Enforcing use of the new polygon extractor"
+
+
+def _capture_stderr(log_dir) -> None:
+    """Point this process's fd 2 at a file of its own, and never at the terminal.
+
+    **A worker must not be able to write where the parent is drawing**, and the
+    filter above cannot promise that — it names one warning, and the next library
+    that clears its throat during a 689-page sweep would break the display again
+    with nobody able to say why. This closes the channel rather than the message:
+    whatever the child emits, present or future, Python-level or from inside a C
+    extension, lands in a file instead of between two frames of a progress bar.
+
+    `dup2` and not `sys.stderr =`, for that last reason: rebinding the Python
+    object leaves fd 2 pointing at the terminal, and scipy, shapely and torch all
+    have C in them.
+
+    Nothing is silenced. The parent reads these files when the pool closes and
+    reports what they hold; an empty one is removed.
+    """
     import os
+    fd = os.open(Path(log_dir) / f"worker-{os.getpid()}.log",
+                 os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    os.dup2(fd, 2)
+    os.close(fd)
+
+
+def _worker_init(root: Path, seg_model, rec_model, device: str,
+                 log_dir=None) -> None:
+    import os
+    import warnings
+
+    # **Both of these run before the models load**, which is not tidiness: kraken
+    # and torch both talk during a load, and a warning raised while the recognizer
+    # comes up is as much a write to the shared fd as one raised on page 400.
+    if log_dir is not None:
+        _capture_stderr(log_dir)
+    # By message, not by category: `UserWarning` from kraken is a channel worth
+    # keeping open, and a blanket filter in a worker would silence the next
+    # warning nobody has seen yet. This one is a property of the pinned model
+    # rather than of any page — `VERBS.md` states it once — so filtering it keeps
+    # the capture file empty in the ordinary case, and an empty file is what makes
+    # a non-empty one worth reading.
+    warnings.filterwarnings("ignore", message=POLYGON_WARNING)
 
     os.chdir(root)
     dev = _resolve_device(device)
@@ -602,20 +660,49 @@ def _predict_pool(todo, n, root, seg_model, rec_model, device,
     caller for the whole sweep with nothing to report from.
     """
     import multiprocessing as mp
+    import tempfile
     from concurrent.futures import ProcessPoolExecutor, as_completed
 
     results: list = [None] * len(todo)
+    log_dir = Path(tempfile.mkdtemp(prefix="harness-predict-"))
     with ProcessPoolExecutor(
             max_workers=n, mp_context=mp.get_context("spawn"),
             initializer=_worker_init,
-            initargs=(root, seg_model, rec_model, device)) as ex:
+            initargs=(root, seg_model, rec_model, device, log_dir)) as ex:
         futures = {ex.submit(_worker_predict, r): i for i, r in enumerate(todo)}
         for done, fut in enumerate(as_completed(futures), 1):
             i = futures[fut]
             results[i] = fut.result()
             if tick:
                 tick(todo[i], done, len(todo))
-    return results
+    return results, worker_output(log_dir)
+
+
+def worker_output(log_dir: Path) -> dict:
+    """What the workers wrote to their captured stderr, and where it is.
+
+    Read after the pool closes rather than streamed: the whole point is that this
+    text must not reach the terminal while the bar is live, and a sweep that ends
+    is the moment it can be read safely.
+
+    **Empty files are removed and an empty run reports nothing**, which is what
+    makes a non-empty one worth looking at. The directory survives only if it has
+    something in it, so the path in the report always names a file that exists.
+    """
+    files = sorted(log_dir.glob("worker-*.log")) if log_dir.exists() else []
+    kept, lines = [], 0
+    for f in files:
+        text = f.read_text(encoding="utf-8", errors="replace")
+        if text.strip():
+            kept.append(f)
+            lines += len(text.strip().splitlines())
+        else:
+            f.unlink()
+    if not kept:
+        if log_dir.exists():
+            log_dir.rmdir()
+        return {"stderr_lines": 0, "stderr_log": ""}
+    return {"stderr_lines": lines, "stderr_log": str(log_dir)}
 
 
 def predict_workers(jobs: int | None, n_pages: int) -> int:

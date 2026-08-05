@@ -110,3 +110,37 @@ weights are 22 MiB; almost none of it is the model). That cap is read off the ca
 at run time rather than written down, for the same reason the column measure is
 derived: a constant here would be wrong on the next machine. A `--jobs` a human
 types wins outright, including one that will not fit.
+
+**A third: a `spawn`ed worker's stderr goes straight to the terminal, and that
+destroys the progress bar.** kraken warns once per recognition call that
+`blla.mlmodel` predates its new polygon extractor. Rich redirects `stderr`, but
+only Python-level writes **in the parent**, so a child's writes land between
+frames; the cursor is then not where rich believes it is, and its
+erase-and-redraw strands the frame being watched. It presents as two faults —
+scrambled output, and a count frozen while `mz/ocr/` fills normally — which are
+one. On a 689-page sweep that is the only signal there is.
+
+The count sticking at exactly the worker count is the tell: Python shows a warning
+**once per process per code location**, so four workers emit it four times, as
+completions 1–4 land. Nothing disturbs the display afterwards and nothing repairs
+it either.
+
+The fix is in `_worker_init`, which is the only place it can go — the parent
+cannot intercept another process's fd, and `--jobs 1` does not need it. Two
+layers, and they answer different questions. `_capture_stderr` `dup2`s the child's
+fd 2 to a file of its own, which closes the *channel*: whatever any library emits,
+now or after the next upgrade, Python-level or from inside a C extension, cannot
+reach the terminal. `dup2` and not `sys.stderr =`, because scipy, shapely and
+torch all have C in them. Then the known warning is filtered by message
+(`recognize.POLYGON_WARNING`), which keeps the capture *empty* in the ordinary
+case — an empty capture is what makes a non-empty one worth reading. The parent
+reads the files when the pool closes and reports `stderr_lines`/`stderr_log`;
+empty ones are removed, so the path always names something that exists.
+
+The obvious test for this is a tautology and was written that way first:
+`warnings.catch_warnings(record=True)` **resets `warnings.filters`**, so a test
+that re-adds the filter inside the block and observes silence proves only that
+`filterwarnings` works — it passes with `_worker_init` empty. Assert against the
+`warnings.filters` registry instead (`test_worker_stderr.py`), and check the
+filter is installed *before* the model loads, since a warning raised while the
+recognizer loads is still a write to the shared fd.
