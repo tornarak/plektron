@@ -350,8 +350,11 @@ def batch(root: Path, tasks: Path | None = None, *, session: str | None = None,
     dirs = find_tasks(root, tasks)
     if not all_ and tasks is None and session is None:
         dirs = dirs[-1:]
+    # Ordered by when each agent OPENED, not when it finished: launch order is
+    # what decides which one wrote the shared prefix, and `last` sorted a reader
+    # that opened first and ran long below one dispatched minutes later.
     agents = sorted((a for d in dirs for f in sorted(d.glob("*.output"))
-                     if (a := _agent(f))), key=lambda a: a["last"])
+                     if (a := _agent(f))), key=lambda a: a["first"])
     if session:
         agents = [a for a in agents if a["session"].startswith(session)]
     if since:
@@ -423,9 +426,21 @@ def transcript(path: Path) -> list[dict]:
 
 
 def rows(agents: list[dict]) -> list[dict]:
-    """The per-agent table. `pre` is dropped: a list-valued field degrades TOON
-    to the verbose nested form, and it has its own section."""
-    return [{k: v for k, v in a.items() if k not in ("pre", "first", "ctxs")} for a in agents]
+    """The per-agent table.
+
+    `pre` and `ctxs` are dropped: a list-valued field degrades TOON to the
+    verbose nested form, and both have their own section.
+
+    **`first` and `last` are both here, and the table is ordered by `first`.**
+    Launch order is the question this table is read for — one member of a cohort
+    writes the prefix and the rest read it, so who opened first is who paid, and
+    a stagger is a claim about `first` alone. Ordering by `last` sorted by when
+    agents *finished*, which is duration talking over launch order: a reader that
+    opened first and ran long sorted below one dispatched minutes later. With
+    both columns the gap between them is the agent's own span, which is the other
+    thing worth seeing beside `reqs`.
+    """
+    return [{k: v for k, v in a.items() if k not in ("pre", "ctxs")} for a in agents]
 
 
 def preamble(agents: list[dict]) -> list[dict]:
