@@ -2,7 +2,7 @@
 name: bold-gloss-is-not-italic-parenthetical
 description: the main gloss text is set in the same bold weight as the headword; only parenthetical clarifications are italic/lighter — don't read uniform boldness across a whole short entry as a layout anomaly
 metadata:
-  type: feedback
+  type: project
 ---
 
 On moll-096, entry 42 ("ок! эй! ок, како! а, да!") is set in one uniform bold

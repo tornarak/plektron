@@ -29,7 +29,14 @@ sits mid-stem. What generalizes is not the suffix `-льын` but the **sequence
 Russian-shaped prior deletes the sign wherever it occurs, and the result is
 always a legal-looking string.
 
-Two of those three were caught only by the OCR witness, which keeps the sign
+**And it reaches the cross-reference targets too.** On moll-105 the gloss cell
+`см. пылыльын` should read `см. пыльыльын` — the print sets `ль` twice, and the
+first one lost its sign. That reader's own report says it checked every `-льын`
+ending on the page; it did, and the ending here was right. The drop was earlier
+in the word, in a cell nobody thinks of as a headword. A `см.` target is a
+headword — it names an entry that has to be findable — so it earns the same zoom.
+
+Two of the moll-099 three were caught only by the OCR witness, which keeps the sign
 the reading dropped. That is worth knowing about your own confidence: on a page
 where you have already corrected other letters, the `ь` you did not see still
 does not announce itself.

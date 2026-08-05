@@ -16,7 +16,7 @@ confident wrong answer, the one outcome nothing downstream can catch.
 |---|---|---|
 | `ъ` against apostrophe-consonant (`ръ` as `рт'`, `нъ` as `н'`) | moll-059, moll-063 | **4× — this one does resolve** |
 | accent fused with a letter (italic `о́` reading as a second `б`) | moll-044 | a **tighter crop at the same scale**, not more magnification |
-| italic `о` at a line break reading as `с` (`по-` as `пс-`) | moll-046 | the **lexicon** — one reading is a real Russian word, the other is not |
+| a letter with its bowls broken away (`о` as `с`, `в` as `е`) | moll-046, moll-104 | the **lexicon** — one reading is a real Russian word, the other is not |
 | two headwords a few rows apart that look identical at 1× | moll-073 | **crop the pair into one frame** and compare them against each other |
 | a headword disagreeing with its own `(мн. …)` stem | moll-070 | **the plural — it is a witness, and it is usually right** |
 | `и`/`н`/`т` in a small bold face | moll-042 | **nothing you can do at the raster: key a `?`** |
@@ -75,6 +75,25 @@ because two independent sources agreed, and the third opinion — however
 confident, however zoomed — was recorded as a doubt rather than applied as a
 correction. Do the same. Count strokes if you must, but treat a count you had
 to work for as a `?`, not as a finding.
+
+**A third time, and the tally is now the point.** On moll-104 a reader read a
+gloss as `выеетривания`, zoomed to 4×, satisfied itself that the third and
+fourth characters were both plain `е`, and wrote that into a page note *and* a
+row note as a compositor error kept verbatim. It is `выве́тривания` — a `в` with
+its bowls broken away. So across `ииъэ`, `нымлилык'ин` and this, **4× has
+produced a more confident wrong reading three times and a correction none**, and
+each time the right answer was already available from something cheaper: a
+second witness, a real word, an acute sitting exactly where Russian puts the
+stress. That is not an argument against zooming. It is an argument that
+magnification settles only the class it settles — the `ъ`/apostrophe row of the
+table above, and nothing else in it — and that "I looked closer and became
+sure" is the specific feeling to distrust.
+
+**Beware the shape "an apparent misprint, kept verbatim."** It sounds like
+restraint and it is the opposite: it takes an unresolved reading and files it as
+adjudicated, in the one place a later reader will treat as settled. Before
+writing it, check that the thing you are preserving is a word, and check whether
+the accent falls where the real word would take it.
 
 So: zoom **once** to establish that the doubt exists, then **key what you see
 and mark the row `?`**. Do not magnify again, and do not settle it on which

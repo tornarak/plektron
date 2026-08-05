@@ -111,8 +111,12 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
     "uv run harness views build",
     "git commit -am wip",
     "python3 -c 'print(1)'",
-    "ls review/1-031",
+    "ls /etc",
+    "ls gt/ocr",
+    "ls review/1-031 /etc",                       # one allowed argument is not enough
+    "ls review/1-031/../../gt/ocr",
     "cat keying_spec.md",
+    "cat review/1-031/proposal.json",             # allowed to Read, not to shell at
     "uv run harness proposal check --all",
     "uv run harness ocr lines 1-031 --store mz | head -5",
     "uv run harness ocr lines 1-031 --store mz > /tmp/x",
@@ -156,6 +160,43 @@ def test_gt_an_operator_outside_quotes_is_still_refused(cmd):
     """Quote-awareness is not permissiveness — single quotes are literal and safe,
     double quotes still expand, and bare metacharacters are operators."""
     blocked(GT_GUARD, "Bash", command=cmd)
+
+
+@pytest.mark.parametrize("cmd", [
+    "ls review/1-031",
+    "ls review/1-031/",
+    "ls -la review/1-031/zoom",
+    "ls review",
+    "ls .claude/agent-memory/groundtruth-reader/",
+    "ls review/1-031 review/1-031/sheets",
+])
+def test_gt_ls_is_allowed_over_the_trees_it_may_already_read(cmd):
+    """The one shell command in the surface, and it gives up nothing.
+
+    Every file under `review/` is already readable, so listing that tree exposes
+    no path a `Read` could not open — this closes the gap between "you may read
+    this" and "you may find out what is here", which is where readers kept
+    falling. It was not a marginal habit: measured over four batches, every
+    reader tried `ls` and each was refused, 2 to 4 refusals per reader per batch
+    at a turn apiece against a budget of 80. Four independent batches make that a
+    property of the instruction, not of any reader.
+    """
+    allowed(GT_GUARD, "Bash", command=cmd)
+
+
+def test_gt_the_ls_refusal_names_the_trees_and_glob():
+    err = blocked(GT_GUARD, "Bash", command="ls /etc")
+    assert "review/" in err and "Glob" in err
+
+
+def test_gt_the_cat_refusal_names_read():
+    """A refusal that says only "not in your surface" leaves the reader to work
+    out that a *tool* rather than a *permission* was what it was missing. Two
+    re-tried the same file with `Read` only after burning the turn."""
+    for cmd in ("cat keying_spec.md", "head -5 docs/decisions.md",
+                "tail docs/rasters.md", "less CLAUDE.md"):
+        err = blocked(GT_GUARD, "Bash", command=cmd)
+        assert "Read" in err, f"{cmd}: the refusal does not name the tool: {err}"
 
 
 def test_gt_edit_is_not_in_the_surface():

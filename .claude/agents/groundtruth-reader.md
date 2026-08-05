@@ -375,6 +375,16 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
    reads: write the actual doubt ("dot under g, last word of 23"), never "check
    the mark".
 
+   **Batching and 4× pull against each other, so batch at 2× and aim at 4×.**
+   Every other rule here tells you to put several doubts in one call, and at the
+   ceiling that advice inverts: a sheet holds a fixed amount, so the more places
+   you name at 4× the less of each one you get, and the crop comes back too coarse
+   to settle any of them. A reader that put six points across two lines into one 4×
+   call paid 7,376 tokens for the batch's largest image, settled nothing, and spent
+   5,626 more re-aiming twice. **Four points at 2× is one good call; four points at
+   4× is one wasted one.** So use the wide step to find which mark is actually in
+   doubt, and spend 4× on that mark alone — one or two places, named exactly.
+
    There is no flag for "show me the margin too", and there was: it widened the
    line to the whole sheet, which silently redefined what `@P` was a percentage
    *of*, so the aim that would have hit a folio became unguessable and three
@@ -1333,8 +1343,14 @@ changes what a turn costs. Before your first image:
   of places, and render them together — the folio among them, not on its own. A
   reader that zooms one line at a time dies at the turn cap with nothing written;
   the one that batched over a hundred tool uses into its eighty turns finished.
+- **Batch at 2×, aim at 4×.** The two rules pull against each other: a sheet holds
+  a fixed amount, so several places at the ceiling means too little of each. Four
+  points at 2× is one good call; four points at 4× is one wasted one, and cost a
+  reader 7,376 tokens for an image that settled nothing.
 - **Ask the tool, don't read the manual.** `harness verbs show ocr zoom` is one
-  entry; `Read`ing the reference cost one page a fifth of its context.
+  entry; `Read`ing the reference cost one page a fifth of its context. `ls` works
+  over `review/` and your own memory; `cat` does not work anywhere, and `Read` is
+  what it was reaching for.
 - **Aim at points, not ranges.** `23@60`, `42@0`, `12@100` — one number each,
   widened and snapped to whitespace for you. A range is two guesses about a word
   you cannot measure, and re-aiming one three times around a single word is the

@@ -8,9 +8,10 @@
 #
 #   1. THE BASH SURFACE IS AN ALLOWLIST. The reader's legitimate verbs are a
 #      closed set; everything else — restore, review, clean, any --all sweep,
-#      git, python3 -c, ls/cat/find, compound commands — is exactly what the
-#      hard rules forbid, and a denylist would have to anticipate every route
-#      around itself.
+#      git, python3 -c, find, compound commands — is exactly what the hard rules
+#      forbid, and a denylist would have to anticipate every route around
+#      itself. `ls` is the one shell command in the set, scoped to the trees the
+#      reader may already read; `cat` is out, and its refusal names `Read`.
 #   2. WRITES LAND IN TWO PLACES: the page's proposal and the agent's own
 #      memory. `gt/ocr/` is off-limits by any route; so is page geometry.
 #   3. READS ARE AN ALLOWLIST TOO. The evidence stores are named and refused
@@ -148,6 +149,57 @@ if [ -n "$BAD" ]; then
   exit 2
 fi
 
+# **`ls` over a page's working directory, and nowhere else.** Measured across
+# four batches, every reader tried it and each was refused: 2 to 4 refusals per
+# reader per batch, the same three reaches every time — `ls`, `cat`, a shell
+# operator. Each costs a turn against a budget of 80, and the refusal taught
+# nothing that stuck, four independent batches making that a property of the
+# instruction rather than of any reader.
+#
+# It is allowed because it gives up nothing. `readable()` already serves every
+# file under `review/`, so listing that tree exposes no path a Read could not
+# already open — this closes the gap between "you may read this" and "you may
+# find out what is here", which is the gap a reader kept falling into. The
+# memory directory is in for the same reason: it is the one place a reader
+# writes, and asking what it already holds is how a duplicate memory is avoided.
+#
+# Every argument is checked, not just the first: `ls review/1-031 /etc` is two
+# facts and only one of them is allowed. Flags pass through — `-la` says nothing
+# about which tree is being read — and a `..` is refused here as it is
+# everywhere. No operator can have survived the scan above, so word-splitting
+# the command is safe.
+case "$COMMAND" in
+  ls|ls\ *)
+    bad=""; hits=0
+    set -- $COMMAND
+    shift
+    for arg in "$@"; do
+      case "$arg" in
+        -*) continue ;;
+        *..*) bad=1 ;;
+        */review/*|review/*|review|*"$MEMORY"*) hits=$((hits + 1)) ;;
+        *) bad=1 ;;
+      esac
+    done
+    if [ -z "$bad" ] && [ "$hits" -gt 0 ]; then
+      allow "groundtruth-reader listing its working directory or its own memory"
+    fi
+    echo "Blocked: 'ls' is yours over review/ — your page's working directory, where your images and your proposal land — and over your own memory under $MEMORY. Nothing else on this machine is evidence about your page, and a listing of it is not either. Glob answers existence anywhere you can read." >&2
+    exit 2 ;;
+esac
+
+# **The file-viewers, named separately so the refusal can name the tool.** `cat`
+# was the second-commonest refused reach, and it is not a policy question: every
+# file these would print, `Read` already opens for you. A generic "not in your
+# surface" left readers to work out that a *tool* rather than a *permission* was
+# what they were missing, and two of them re-tried the same file with `Read`
+# only after burning the turn.
+case "$COMMAND" in
+  cat|cat\ *|head|head\ *|tail|tail\ *|less|less\ *|more|more\ *)
+    echo "Blocked: use Read, not cat — it opens every file you are allowed (your page's working directory, keying_spec.md, the docs, your own memory), it numbers the lines so you can cite one, and it renders a raster as an image instead of as bytes. head/tail are the same answer: Read takes an offset and a limit. Nothing about this file is refused; the shell is." >&2
+    exit 2 ;;
+esac
+
 # The reader's whole legitimate surface, and it is read-only over the stores
 # bar one marker: `claim` is the exception and has to be, since taking a ref off
 # the queue is how the reader learns which page is its own. `corpus normalize`
@@ -180,5 +232,5 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lin
   allow "groundtruth-reader running a verb from its closed surface, on one page"
 fi
 
-echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *, verbs show} — one plain command, no --all. If you want to know what a command does, that is 'verbs show ocr zoom', not a Read of the reference. Everything else (restore, review, clean, views, git, python3, shell listing) is not yours; Glob answers existence, Read answers content, and the verbs answer the rest. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
+echo "Blocked: Glob answers existence, Read answers content, and the verbs answer everything else — reach for those three before the shell. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *, verbs show}, plus 'ls' over review/ and your own memory — one plain command, no --all. If you want to know what a command does, that is 'verbs show ocr zoom', not a Read of the reference. Everything else (restore, review, clean, views, git, python3) is not yours. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2

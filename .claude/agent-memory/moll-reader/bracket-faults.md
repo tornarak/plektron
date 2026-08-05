@@ -91,8 +91,6 @@ neighbours, not a reason to stop looking.**
 
 The general rule it stands for belongs here though: **when something on the
 page looks like damaged apparatus, check whether it is declared apparatus
-first.** A mark that recurs across pages in the same position is a convention,
-and this book writes its conventions down — front matter, the printed alphabet
-table, the collation rule on folio 3. That is evidence and it binds. Reasoning
-out what a mark "must" mean from one page is how three readers reached three
-different wrong answers about the same one.
+first.** The argument, and the three readers who reached three different wrong
+answers about one mark by reasoning from a single page, are
+[[paren-2-after-headword]].

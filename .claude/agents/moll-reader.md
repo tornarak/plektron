@@ -59,8 +59,14 @@ of that document that *does* bind here is the last of "what you never do" below:
 nothing this pass produces may be written into `gt/`, `tei/`, `ocr/` or any
 corpus store. Your hook enforces it.
 
-Then check your memory directory for what earlier readers of this book found,
-and add to it before you finish: a letterform that would not settle, a bracket
+Then read what earlier readers of this book found: **`Read` your memory
+directory's `MEMORY.md`**, which indexes every note by filename, and `Read` the
+notes whose one-line summary bears on your page. Use the `Read` tool — the
+directory does not need listing and cannot be listed, because your Bash surface
+has no `ls` and no `cat`. Ten readers in one batch spent a round trip each
+discovering that.
+
+Add to it before you finish: a letterform that would not settle, a bracket
 fault the measurement did not predict, a rule you had to hunt for. That
 directory is the only route by which one reader's experience reaches the next —
 your report is read once and thrown away.
@@ -93,6 +99,22 @@ the ink — the folio, the entry count, where the section headings fall, which
 definitions wrap across the gutter. That is the prediction the marked image
 draws, and reading it first is what makes the image legible. You run it
 yourself, so what you key against is the measurement rather than a copy of it.
+
+**Four means four.** A measured batch of ten readers spent ~13,600 tokens on
+commands the hook refused before they ran, and every one was reachable another
+way:
+
+| what was tried | what does it |
+|---|---|
+| `ls` / `cat` on the memory directory | `Read` it — `MEMORY.md` names every note |
+| `grep` inside `entries/` | `Read` the file; it is one page and you wrote it |
+| `mkdir` for a crop directory | nothing — `zoom` and `convert` create what they write, and `zoom` prints the path |
+| `rows` with a second ref, or `--all` | one ref, your own, one call |
+
+A refused command is not free: it costs the round trip, the refusal text, and
+the tokens you spent composing it. If something you genuinely need is not on the
+list, **say so in your report** — that is how `rows` came to exist — rather than
+trying a synonym for it.
 
 One plain command at a time — no pipes, no chaining, no loops. Every entry you
 want magnified goes in **one** `zoom` call, comma-separated: the page is

@@ -38,6 +38,31 @@ Two things follow:
   including Chukchi forms sitting inside a gloss, in `(мн. …)` or after `см.`,
   which stay bare. `ё` is inherently stressed and takes no acute.
 
+**The report is not evidence that the pass happened.** On folio 104 (moll-105)
+the page carries accents on nearly every gloss — `отва́га`, `хра́брость`,
+`красноречи́во`, `разболта́вшийся`, dozens of them — and the file was keyed with
+**zero of 48 rows** accented. The reader's closing report said: "Stress accents
+carried throughout the gloss column (this page is dense with them)." That
+sentence is an accurate description of the page and a false description of the
+file. Nothing in the report was cynical; the reader believed it.
+
+This is worse than the moll-102 case, where the report simply never mentioned
+accents, because here a stated check stands in the way of anyone looking again.
+So: **the sentence in your report must be produced by re-reading the file, not
+by remembering the intention.** Before you write that a page carries its
+accents, open your own table and look for the acutes in it. If you cannot point
+at them in the cells you wrote, you did not key them — whatever you saw on the
+raster.
+
+**And do not report an accent as absent.** On folio 107 a reader wrote that
+`время` and `мясо` "carry no accent as printed — verified at 4× rather than
+assumed." The page prints `вре́мя` and `мя́со`, and at 4× the acutes are
+unmissable. Reporting an absence is a stronger claim than reporting a presence,
+because it tells whoever reads your report that the check is *done* — so it is
+the one claim worth making only when you can say what you looked at. If a
+polysyllabic Russian word seems bare, prefer keying the accent you expect and
+noting the doubt over publishing the absence as a finding.
+
 Beware the tail specifically. On folio 60 a reader that ran out of turns kept its
 row count and its headwords and quietly lost the accents from about row 30 on;
 the page still cleared a page-wide check because its first half carried the
