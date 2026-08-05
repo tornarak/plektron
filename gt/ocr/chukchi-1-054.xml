@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-054.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-054.png; regions_from: zones/chukchi-1-054.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-054_r1" HPOS="747" VPOS="623" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="747 623 2525 623 2525 713 747 713"/>
+                    </Shape>
+                    <TextLine ID="mz_1-054_l1" HPOS="1325" VPOS="638" WIDTH="619" HEIGHT="54" BASELINE="1325 673 1944 673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1940 638 1334 638 1325 643 1325 673 1325 692 1944 692 1944 673 1944 640 1940 638"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l2" HPOS="762" VPOS="653" WIDTH="21" HEIGHT="52" BASELINE="768 679 779 677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="762 653 768 679 775 705 783 699 779 677 773 653 762 653"/>
+                        </Shape>
+                        <String CONTENT="32"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-054_r2" HPOS="747" VPOS="738" WIDTH="1778" HEIGHT="723" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="747 738 2525 738 2525 1461 747 1461"/>
+                    </Shape>
+                    <TextLine ID="mz_1-054_l3" HPOS="744" VPOS="738" WIDTH="1778" HEIGHT="60" BASELINE="744 781 2522 781" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2520 751 2308 751 2278 738 2276 738 2273 738 2137 749 2100 738 2098 738 2096 738 2037 749 2014 738 2011 738 2009 738 2007 738 2005 738 1992 749 1936 738 1933 738 1931 738 1888 749 1860 738 1858 738 1855 738 1801 749 1713 738 1710 738 1600 749 1563 738 1561 738 1559 738 1557 738 1554 738 1539 751 1424 751 1377 738 1375 738 1373 738 1318 749 1206 738 1204 738 1201 738 1154 749 1104 738 1102 738 1100 738 1097 738 1080 751 942 751 894 738 892 738 890 738 887 738 885 738 870 749 764 738 762 738 760 738 757 738 744 746 744 781 744 798 2522 798 2522 781 2522 753 2520 751"/>
+                        </Shape>
+                        <String CONTENT="Chukchee on the Arctic shore, 1600, which should be increased to 2000,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l4" HPOS="747" VPOS="807" WIDTH="1773" HEIGHT="52" BASELINE="749 840 2520 835" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="749 840 749 859 2518 855 2520 835 2516 807 747 807 749 840"/>
+                        </Shape>
+                        <String CONTENT="because I omitted in my enumeration some of the minor settlements the names"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l5" HPOS="747" VPOS="868" WIDTH="1773" HEIGHT="49" BASELINE="747 900 2520 900" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 900 747 917 2520 917 2520 900 2518 868 747 868 747 900"/>
+                        </Shape>
+                        <String CONTENT="of which I obtained, but which I was unable to identify with villages mentioned"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l6" HPOS="744" VPOS="915" WIDTH="1772" HEIGHT="65" BASELINE="747 959 2516 963" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 959 744 974 2512 980 2516 963 2514 930 2395 917 2393 917 2211 928 2143 917 2141 917 2059 930 1884 930 1853 917 1851 917 1849 917 1847 917 1845 917 1829 930 1715 930 1691 917 1689 917 1687 917 1684 917 1645 928 1572 915 1570 915 1567 915 1546 926 1509 915 1507 915 1505 915 1502 915 1466 926 1440 915 1437 915 1435 915 1381 926 1297 915 1295 915 1236 926 1147 915 1145 915 1143 915 1121 926 1084 915 1082 915 1080 915 1078 915 1056 926 1013 915 1011 915 1009 915 1007 915 959 926 866 915 864 915 747 922 747 959"/>
+                        </Shape>
+                        <String CONTENT="by Lieut. Nordquist. Lieut. Nordquist arrives at the same number of inhabitants,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l7" HPOS="744" VPOS="985" WIDTH="1778" HEIGHT="58" BASELINE="747 1017 2522 1021" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1017 744 1034 755 1043 757 1043 760 1043 762 1043 2520 1034 2522 1021 2520 991 747 985 747 1017"/>
+                        </Shape>
+                        <String CONTENT="but the number of houses in his list are more than 400, as compared with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l8" HPOS="744" VPOS="1039" WIDTH="1776" HEIGHT="62" BASELINE="747 1082 2520 1078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1082 747 1101 2518 1101 2520 1078 2516 1050 1632 1039 1630 1039 1628 1039 1604 1050 794 1041 792 1041 790 1041 744 1052 747 1082"/>
+                        </Shape>
+                        <String CONTENT="266 enumerated by me. His estimate is based, according to his own statement,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l9" HPOS="742" VPOS="1101" WIDTH="1778" HEIGHT="63" BASELINE="744 1143 2520 1138" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="744 1143 744 1158 2503 1164 2505 1164 2507 1164 2509 1164 2520 1153 2520 1138 2516 1110 851 1101 848 1101 742 1112 744 1143"/>
+                        </Shape>
+                        <String CONTENT="on the assumption of only five persons to a house, whereas my figure is six"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l10" HPOS="740" VPOS="1164" WIDTH="1778" HEIGHT="63" BASELINE="742 1201 2518 1195" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="742 1201 742 1216 1329 1227 1331 1227 1392 1216 1890 1225 1892 1225 1894 1225 1925 1214 2501 1223 2503 1223 2505 1223 2507 1223 2518 1212 2518 1195 2512 1164 740 1169 742 1201"/>
+                        </Shape>
+                        <String CONTENT="and a half. With an equal average of inmates to a house, his census of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l11" HPOS="747" VPOS="1231" WIDTH="1771" HEIGHT="55" BASELINE="747 1262 2518 1262" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1262 747 1286 2518 1279 2518 1262 2518 1231 747 1231 747 1262"/>
+                        </Shape>
+                        <String CONTENT="population on the Arctic shores would exceed mine by 600. It seems probable,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l12" HPOS="744" VPOS="1279" WIDTH="1774" HEIGHT="61" BASELINE="747 1322 2518 1318" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1322 747 1340 2516 1335 2518 1318 2514 1286 764 1279 762 1279 760 1279 757 1279 744 1286 747 1322"/>
+                        </Shape>
+                        <String CONTENT="therefore, as Mr. Gondatti asserts, that the maritime population has diminished"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l13" HPOS="747" VPOS="1350" WIDTH="1769" HEIGHT="50" BASELINE="747 1381 2516 1381" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1381 747 1400 2516 1400 2516 1381 2516 1350 747 1350 747 1381"/>
+                        </Shape>
+                        <String CONTENT="of late years. His assumption, however, that the Arctic shore is more thickly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l14" HPOS="744" VPOS="1398" WIDTH="1189" HEIGHT="63" BASELINE="747 1444 1933 1439" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1444 747 1461 1931 1454 1933 1439 1931 1409 1912 1398 1910 1398 1907 1398 1905 1398 1903 1398 1884 1409 1862 1398 1860 1398 1858 1398 1855 1398 1832 1409 1762 1398 1760 1398 1758 1398 1715 1409 1277 1400 1275 1400 1273 1400 1271 1400 1258 1411 1236 1400 1234 1400 1232 1400 1084 1411 996 1400 994 1400 991 1400 989 1400 981 1409 972 1402 972 1400 970 1400 968 1400 855 1400 853 1400 744 1413 747 1444"/>
+                        </Shape>
+                        <String CONTENT="populated than the Pacific, seems to me unfounded."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-054_r3" HPOS="747" VPOS="1461" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="747 1461 2525 1461 2525 1759 747 1759"/>
+                    </Shape>
+                    <TextLine ID="mz_1-054_l15" HPOS="855" VPOS="1465" WIDTH="1663" HEIGHT="52" BASELINE="855 1500 2518 1500" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="855 1500 855 1517 2518 1517 2518 1500 2518 1472 855 1465 855 1500"/>
+                        </Shape>
+                        <String CONTENT="The total number of the Chukchee amounts to 12,000, rather more than"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l16" HPOS="744" VPOS="1521" WIDTH="1770" HEIGHT="57" BASELINE="747 1558 2514 1563" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1558 744 1573 2509 1578 2514 1563 2512 1530 747 1521 747 1558"/>
+                        </Shape>
+                        <String CONTENT="less, of which three fourths are reindeer-breeders, and only one fourth maritime."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l17" HPOS="747" VPOS="1582" WIDTH="1769" HEIGHT="54" BASELINE="749 1617 2516 1621" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="749 1617 747 1632 2512 1636 2516 1621 2514 1591 749 1582 749 1617"/>
+                        </Shape>
+                        <String CONTENT="The decrease in the maritime population may be partly accounted for by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l18" HPOS="747" VPOS="1651" WIDTH="1769" HEIGHT="48" BASELINE="747 1680 2516 1680" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1680 747 1699 2516 1699 2516 1680 2516 1651 747 1651 747 1680"/>
+                        </Shape>
+                        <String CONTENT="fact that each year many families turn from maritime pursuits to reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l19" HPOS="744" VPOS="1703" WIDTH="211" HEIGHT="54" BASELINE="747 1738 955 1742" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1738 744 1753 950 1757 955 1742 952 1710 747 1703 747 1738"/>
+                        </Shape>
+                        <String CONTENT="breeding."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-054_r4" HPOS="747" VPOS="1759" WIDTH="1778" HEIGHT="368" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="747 1759 2525 1759 2525 2127 747 2127"/>
+                    </Shape>
+                    <TextLine ID="mz_1-054_l20" HPOS="853" VPOS="1757" WIDTH="1665" HEIGHT="61" BASELINE="853 1801 2518 1801" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="853 1801 853 1818 2518 1818 2518 1801 2518 1770 2466 1757 2464 1757 2462 1757 2434 1768 2412 1757 2410 1757 2408 1757 2406 1757 2360 1770 2200 1770 2185 1757 2182 1757 2180 1757 2178 1757 2176 1757 2150 1768 2133 1757 2130 1757 2128 1757 2126 1757 2057 1768 1914 1757 1912 1757 1910 1757 1871 1768 1795 1757 1793 1757 1721 1768 1678 1757 1676 1757 1674 1757 1671 1757 1635 1768 1496 1757 1494 1757 1492 1757 1463 1768 1269 1757 1266 1757 1264 1757 1232 1768 1126 1757 1123 1757 853 1766 853 1801"/>
+                        </Shape>
+                        <String CONTENT="Several villages have nearly or altogether disappeared, because all the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l21" HPOS="744" VPOS="1827" WIDTH="1770" HEIGHT="56" BASELINE="744 1861 2514 1861" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="744 1861 744 1877 2512 1883 2514 1861 2514 1831 744 1827 744 1861"/>
+                        </Shape>
+                        <String CONTENT="inhabitants have gone inland and have turned reindeer-breeders. These are,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l22" HPOS="747" VPOS="1879" WIDTH="1769" HEIGHT="58" BASELINE="747 1922 2516 1922" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 1922 747 1937 2516 1937 2516 1922 2516 1892 2464 1879 2462 1879 2460 1879 2429 1890 1645 1879 1643 1879 1513 1890 1483 1879 1481 1879 1479 1879 1409 1890 1279 1879 1277 1879 1275 1879 1273 1879 1258 1892 1091 1892 970 1879 968 1879 916 1890 861 1879 859 1879 747 1890 747 1922"/>
+                        </Shape>
+                        <String CONTENT="on the Arctic coast, besides those of Kuluˊči Bay, mentioned above, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l23" HPOS="749" VPOS="1935" WIDTH="1765" HEIGHT="63" BASELINE="751 1978 2514 1983" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="751 1978 749 1991 2509 1998 2514 1983 2514 1950 2468 1937 2466 1937 2338 1937 2336 1937 2334 1937 2332 1937 2317 1948 2148 1937 2146 1937 2143 1937 2141 1937 2126 1950 1983 1950 1925 1937 1923 1937 1920 1937 1899 1948 1849 1937 1847 1937 1845 1937 1801 1948 1775 1937 1773 1937 1771 1937 1769 1937 1767 1937 1747 1950 1635 1950 1528 1935 1420 1935 1418 1935 1416 1935 1414 1935 1399 1946 1323 1935 1321 1935 751 1944 751 1978"/>
+                        </Shape>
+                        <String CONTENT="villages Reᵋn, Ot-ᴇnmɪtaˊhɪn, Paloˊnnan; on the Pacific coast, Kuˊkun, Čeˊnlin,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l24" HPOS="751" VPOS="1998" WIDTH="1763" HEIGHT="67" BASELINE="751 2041 2514 2041" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2509 2009 2449 1998 2447 1998 2384 2009 2362 1998 2360 1998 2358 1998 2356 1998 2315 2009 2226 1998 2224 1998 2154 2009 2042 1998 2040 1998 2037 1998 2009 2009 1972 1998 1970 1998 1968 1998 1881 2009 1749 1998 1747 1998 1687 2009 1674 1998 1671 1998 1669 1998 1667 1998 1604 2009 1557 1998 1554 1998 1552 1998 1468 2009 1442 1998 1440 1998 1437 1998 1386 2009 1370 1998 1368 1998 1366 1998 1364 1998 1362 1998 1318 2009 1217 1998 1214 1998 1212 1998 1180 2009 751 2000 751 2041 751 2058 2512 2065 2514 2041 2514 2035 2509 2009"/>
+                        </Shape>
+                        <String CONTENT="Wuˊkwên, also nearly one-half of the inhabitants of the large village ᴇˊnmɪlɪn,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-054_l25" HPOS="747" VPOS="2069" WIDTH="264" HEIGHT="52" BASELINE="747 2097 1011 2097" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="747 2097 747 2121 1011 2121 1011 2097 1011 2069 747 2069 747 2097"/>
+                        </Shape>
+                        <String CONTENT="and others."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
