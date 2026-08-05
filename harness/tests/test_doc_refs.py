@@ -71,6 +71,14 @@ EXPECTED_ABSENT = {
     # Written by `ocr queue` and cleared by the next one, so it exists only while
     # a batch is out. A checkout that has it is mid-dispatch, not complete.
     "review/_queue.txt",
+    # Deleted by the rebuild sweep and not yet re-read. Both pages were keyed in
+    # eScriptorium, so their ALTO carried that tool's zone vocabulary and their
+    # readings predate the current pipeline; `keying_spec.md` still cites them as
+    # worked examples, which stays correct — the example is about what the *page*
+    # prints, and the page has not changed. Remove these two entries when the
+    # rebuild restores them, and the test starts checking them again.
+    "gt/ocr/chukchi-2-034.xml",
+    "gt/ocr/chukchi-3-119.xml",
 }
 
 

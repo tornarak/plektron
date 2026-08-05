@@ -1,0 +1,156 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "A small isolated speck sits above the U in CHUKCHEE, not touching the letter and with no comparable accent anywhere else the running title appears on this page or in the book's convention; read as ink debris, not a diacritic, and not keyed."
+    },
+    "1": {
+      "text": "23",
+      "note": "RunningTitleZone folio, plain old-style ASCII digits, unbracketed. Box width 41px; both digits legible under 3x margins zoom, no clipping."
+    },
+    "2": {
+      "text": "the same village, Kuluˊči, which was mentioned by Wrangell, a tale of seemingly",
+      "resolved": "Kuluˊči = Kulu + U+02CA MODIFIER LETTER ACUTE ACCENT (stress, postposed to stressed vowel u) + či (c + U+030C COMBINING CARON)"
+    },
+    "3": {
+      "text": "still more recent origin than his, in which it was asserted that a few years ago",
+      "note": "Machine text (mz) reads 'vears'; raster clearly shows 'years' (y, not v) — corrected."
+    },
+    "4": {
+      "text": "two kayakers of the village were carried out by the wind to this land across"
+    },
+    "5": {
+      "text": "the sea. They discovered houses and stole some provisions from the under-"
+    },
+    "6": {
+      "text": "ground cellars, and finally succeeded in getting away unnoticed. All these"
+    },
+    "7": {
+      "text": "details were given so vividly, that, if I had not known that Wrangell’s Land"
+    },
+    "8": {
+      "text": "is destitute of inhabitants, I should have had no hesitation in crediting the"
+    },
+    "9": {
+      "text": "narrative."
+    },
+    "10": {
+      "text": "The belief that there are unknown tribes still living in some remote part"
+    },
+    "11": {
+      "text": "of the country, exists in various places in northeastern Asia. Besides the tale"
+    },
+    "12": {
+      "text": "of Krächoj, the Chukchee tell a story about the Vaiˊñê-qaˊa-raˊmkɪt, or “twilight",
+      "resolved": "Krächoj = Kr + a+U+0308 COMBINING DIAERESIS + choj. Vaiˊñê-qaˊa-raˊmkɪt = Vai + U+02CA (stress on i) + ñ (n+U+0303 COMBINING TILDE) + ê (e+U+0302 COMBINING CIRCUMFLEX ACCENT) + hyphen + qa + U+02CA (stress) + a + hyphen + ra + U+02CA (stress) + mkɪt, ɪ = U+026A LATIN LETTER SMALL CAPITAL I. Three hyphenated members of the compound each carry their own culminative stress mark (§2.1).",
+      "note": "`proposal check` flags Krächoj's U+0308 diaeresis on ä as a rare form (3.1% of corpus occurrences of that character, per §2.2). Answered: read at 4x zoom, the mark is a clean two-dot diaeresis at type weight matching the catalogued ä sort, contrasted against the plain 'a' vowels elsewhere on the page — not an artifact."
+    },
+    "13": {
+      "text": "Lamut,” and say that they, too, emigrated beyond the sea, but that they often"
+    },
+    "14": {
+      "text": "swim back again, overcome by homesickness, and may sometimes be seen in"
+    },
+    "15": {
+      "text": "the twilight, outlined against the last short rays of the fading day. They are"
+    },
+    "16": {
+      "text": "supposed to be quite inoffensive, only stealing an occasional ration of food"
+    },
+    "17": {
+      "text": "from the storehouses. From time to time the Chukchee have a chance to"
+    },
+    "18": {
+      "text": "shoot one of them; and then it is seen that the victim looks very much like"
+    },
+    "19": {
+      "text": "an ordinary man, except that his feet are larger and the toes are webbed for"
+    },
+    "20": {
+      "text": "swimming.¹",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote reference marker pairing with the opener on line 41."
+    },
+    "21": {
+      "text": "The Chukchee do not assimilate readily. Whenever they come in contact"
+    },
+    "22": {
+      "text": "with another tribe, they do not learn its language, but force the other to learn"
+    },
+    "23": {
+      "text": "theirs. The chief reason for this is that they are the greatest reindeer-breeders"
+    },
+    "24": {
+      "text": "in the country, and other tribes have to depend upon them for food and"
+    },
+    "25": {
+      "text": "sustenance. Thus it is that outsiders are forced to seek a means of easy"
+    },
+    "26": {
+      "text": "intercourse with them. The Maritime Chukchee in the immediate vicinity of"
+    },
+    "27": {
+      "text": "the Eskimo likewise learn very little of their language, while all the Eskimo"
+    },
+    "28": {
+      "text": "men and a majority of the women speak Chukchee as fluently as they do"
+    },
+    "29": {
+      "text": "their own language."
+    },
+    "30": {
+      "text": "Again, in the same way, a few Chukchee families living on the Anadyr"
+    },
+    "31": {
+      "text": "River, not far from the Russianized village of Markova, have not learned much",
+      "note": "A small dot sits between 'from' and 'the' at mid-height, not on the baseline and with no comma tail — read as ink debris rather than punctuation (grammatically 'from, the' would be anomalous, and the mark's shape does not match a period or comma elsewhere on the page). Not keyed. Machine text (mz) had rendered it as a comma."
+    },
+    "32": {
+      "text": "Russian, while at least all the men in Markova speak Chukchee fluently."
+    },
+    "33": {
+      "text": "The Chukchee are so self-sufficient that they prefer to make words of their"
+    },
+    "34": {
+      "text": "own for new objects coming from the civilized world, rather than adopt the"
+    },
+    "35": {
+      "text": "foreign names. Thus they have for mustard, čɪˊmyɪčɪn (“bitterness”); flour,",
+      "resolved": "čɪˊmyɪčɪn = č (c+U+030C) + ɪ (U+026A) + U+02CA (stress) + myɪčɪn, ɪ = U+026A twice more."
+    },
+    "36": {
+      "text": "piñ-wuˊrrɪn (“powder-like” [Kolyma dialect]); bread, pin-tekiˊčɪn (“powder-",
+      "resolved": "piñ-wuˊrrɪn: ñ = n+U+0303, ˊ = U+02CA (stress on u), ɪ = U+026A. pin-tekiˊčɪn: ˊ = U+02CA (stress on i), č = c+U+030C, ɪ = U+026A."
+    },
+    "37": {
+      "text": "meat”); brandy, äˊᵋq-iˊmɪl (“bad water”); iron file, pɪlvɪˊntɪ-pnauˊkun (“metal",
+      "resolved": "äˊᵋq-iˊmɪl = ä (a+U+0308) + U+02CA (stress) + ᵋ U+1D4B MODIFIER LETTER SMALL REVERSED OPEN E (laryngeal superscript, glottalization of the stressed vowel, per key) + q-i + U+02CA (stress) + mɪl, ɪ = U+026A. pɪlvɪˊntɪ-pnauˊkun = p + ɪ (U+026A) + lv + ɪ (U+026A) + U+02CA (stress) + nt + ɪ (U+026A) + hyphen + pnau + U+02CA (stress) + kun."
+    },
+    "38": {
+      "text": "whetting-stone”); tea-kettle, piˊlhɪ-kuk (“muzzle-pot”).",
+      "resolved": "piˊlhɪ-kuk = pi + U+02CA (stress) + lh + ɪ (U+026A) + hyphen + kuk."
+    },
+    "39": {
+      "text": "Character of the Country. — The territory of the Chukchee is situated",
+      "note": "Run-in section heading set in small capitals in print; keyed as full capitals per §2.11 convention (cf. 'LANGUAGE. — The Chukchee language is rich...'). Em dash U+2014, spaced both sides."
+    },
+    "40": {
+      "text": "chiefly in the tundra region, and includes the northern border of the forest."
+    },
+    "41": {
+      "text": "¹ At the mouth of the Anadyr the Chukchee call them vaᵋy-qaˊa-raˊmkɪt (“grass Lamut”). They say that",
+      "resolved": "¹ = U+00B9, footnote opener pairing with line 20's reference. vaᵋy-qaˊa-raˊmkɪt = va + ᵋ (U+1D4B, laryngeal superscript) + y + hyphen + qa + U+02CA (stress) + a + hyphen + ra + U+02CA (stress) + mkɪt, ɪ = U+026A."
+    },
+    "42": {
+      "text": "they are clad in grass garments. During the night-time they creep cautiously along, and occasionally kill young"
+    },
+    "43": {
+      "text": "children when met alone, with nobody to protect them. Here the notion about the mysterious human tribe"
+    },
+    "44": {
+      "text": "evidently comes nearer to the usual ideas concerning evil spirits."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

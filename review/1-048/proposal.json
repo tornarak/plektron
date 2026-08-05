@@ -1,206 +1,179 @@
 {
-  "segmenter_missed": {
-    "48": {"band_vpos": 1721, "hpos": 1522, "vpos": 1721, "width": 189, "height": 28,
-           "source": "harness lines 1-048 --gaps", "adopted_as": "gap_line_1-048-1721",
-           "why": "centred small-caps section heading; short and centred, the class the segmenter systematically drops"}
-  },
-  "contamination": {
-    "blind": false,
-    "detail": "NOT a blind read. 1-048 is one of the two pages that predate this pipeline; gt/ocr/chukchi-1-048.xml already held hand-keyed text and I read it (via `harness lines`) before reading the raster. This is a revision pass, so the proposal is that text as re-checked against the 300 dpi scan, not an independent reading. Treat agreement between proposal and existing GT as weak evidence: on any line I did not flag, the two witnesses are not independent.",
-    "sources": [
-      "scans/chukchi-1-048.png (full page)",
-      "review/1-048/sheets/lines-001..003.png (--margins)",
-      "review/1-048/zoom/zoom2-001..002.png, zoom4-001..005.png (lines 21, 28, 46)",
-      "gt/ocr/chukchi-1-048.xml via `harness lines 1-048`"
-    ]
-  },
   "lines": {
     "0": {
-      "text": "28"
+      "text": "BOGORAS, THE CHUKCHEE."
     },
     "1": {
-      "text": "Hooper, and Hilder, have also been taken into consideration as far as possible."
+      "text": "28",
+      "note": "RunningTitleZone folio, box width 72px (not clipped, cf. keying_spec.md §2.12 clipping threshold ~30px). --margins zoom on this box shows only \"28\" printed, no leading digit outside the box; the printed folio is 28, not 128."
     },
     "2": {
-      "text": "I have enclosed in parentheses the statistics obtained from these authorities."
+      "text": "Hooper, and Hilder, have also been taken into consideration as far as possible."
     },
     "3": {
-      "text": "Krause’s geographical information, and his maps of the coast, seem to me to",
-      "note": "Curly apostrophe in Krause’s reproduces the print (keying_spec §1: English prose keeps the book's curly quotes). Raised speck over 'geographical' — artifact, not keyed; see line 46 note."
+      "text": "I have enclosed in parentheses the statistics obtained from these authorities."
     },
     "4": {
-      "text": "be quite correct; his list of villages from Holy Cross Bay to Kuluˊči Bay is",
-      "resolved": "Kuluˊči = K, u, l, u, U+02CA, c+U+030C, i",
-      "note": "Print sets a thin space before the semicolon (French spacing); keyed English per §2.9."
+      "text": "Krause’s geographical information, and his maps of the coast, seem to me to",
+      "resolved": "’ = U+2019 RIGHT SINGLE QUOTATION MARK (curly apostrophe, English prose per §1/§5.6, not Tier-1)"
     },
     "5": {
-      "text": "also accurate.¹",
-      "resolved": "superscript footnote marker; no notation codepoints on this line",
-      "note": "CHANGED from GT 'accurate.1'. The print sets a raised superscript footnote marker, confirmed on sheet lines-001; a plain ASCII digit reads as correct and so nothing mechanical catches it (cf. 2-244 line 1, 'funeral.¹'). No space before the marker, per that precedent."
+      "text": "be quite correct; his list of villages from Holy Cross Bay to Kuluˊči Bay is",
+      "resolved": "Kuluˊči = K+u+l+u+U+02CA(stress)+c+U+030C(caron)+i"
     },
     "6": {
-      "text": "Only the names of the principal villages are here given, because the",
-      "note": "Raised dot after 'Only' in the print is one of this page's many artifact dots (see line 46 note); not keyed."
+      "text": "also accurate.¹",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote 1 reference"
     },
     "7": {
-      "text": "smaller ones mentioned by many travellers are not fixed dwelling-places. They"
+      "text": "Only the names of the principal villages are here given, because the"
     },
     "8": {
-      "text": "are simply hunting-stations, that are used for a few years, and afterwards aban-"
+      "text": "smaller ones mentioned by many travellers are not fixed dwelling-places. They"
     },
     "9": {
-      "text": "doned for other places a few miles away. The name belongs to the locality,"
+      "text": "are simply hunting-stations, that are used for a few years, and afterwards aban-"
     },
     "10": {
-      "text": "not to the village. Even the larger villages are not very stable; and the"
+      "text": "doned for other places a few miles away. The name belongs to the locality,"
     },
     "11": {
-      "text": "population often desert one and move to another, according to the changing"
+      "text": "not to the village. Even the larger villages are not very stable; and the"
     },
     "12": {
-      "text": "conditions of seal-hunting. However, those among the smaller settlements"
+      "text": "population often desert one and move to another, according to the changing"
     },
     "13": {
-      "text": "which were mentioned by several older travellers, and which happen to be"
+      "text": "conditions of seal-hunting. However, those among the smaller settlements"
     },
     "14": {
-      "text": "inhabited at the present time, are included in the following list."
+      "text": "which were mentioned by several older travellers, and which happen to be"
     },
     "15": {
-      "text": "BOGORAS, THE CHUKCHEE.",
-      "note": "Running title, set in small caps; flattened to ASCII capitals as elsewhere in the corpus. ALTO order puts it mid-sequence, not at the top.",
-      "resolved": "U+0041, U+0045 = ASCII A and E inside the all-caps running title \"BOGORAS, THE CHUKCHEE.\" MEDIAL_CAPS false positive: the title is set in small caps and flattened to ASCII capitals per corpus habit, so these are not small-cap sorts (keying_spec 5.7). No notation on this line."
+      "text": "inhabited at the present time, are included in the following list."
     },
     "16": {
-      "text": "The villages on the Pacific coast are as follows: —"
+      "text": "The villages on the Pacific coast are as follows: —",
+      "resolved": "— = U+2014 EM DASH, spaced left only, list-introduction form per keying_spec.md §2.11"
     },
     "17": {
-      "text": "Veᵋñ, in Anadyr Bay, near the mouth of the Anadyr River.² The Russians subsequently founded",
-      "resolved": "Veᵋñ = V, e, U+1D4B, n+U+0303",
-      "note": "CHANGED from GT 'River.2'. Superscript marker, same class as line 5. Veᵋñ is monosyllabic, so its lack of a stress mark is not the §5.5 red flag."
+      "text": "CHUKCHEE.",
+      "note": "Section heading set in small capitals, keyed in full ASCII caps matching the RunningTitleZone convention for this corpus (cf. \"BOGORAS, THE CHUKCHEE.\"); plain English word, not Tier-1."
     },
     "18": {
-      "text": "a settlement near by, and called it Mariinsky Post. In former times the Chukchee village lay"
+      "text": "Veᵋñ, in Anadyr Bay, near the mouth of the Anadyr River.² The Russians subsequently founded",
+      "resolved": "Veᵋñ = V+e+U+1D4B(laryngeal superscript ᵋ)+n+U+0303(tilde); ² = U+00B2 SUPERSCRIPT TWO, footnote 2 reference",
+      "note": "The mark over n reads slightly more angular/pointed than the flatter tilde on Uñiˊsak (line 30) at the same zoom level, but no caron-n sort is catalogued in keying_spec.md §2.2 (only ñ, n+U+0303, is licensed); keyed as the catalogued ñ per §5.9's discipline against inventing an uncatalogued sort. Village name Veᵋñ recurs at line 20."
     },
     "19": {
-      "text": "nearer the open sea, on the low sandy shore of Geëk Land. Veᵋñ has at present 7 native",
-      "resolved": "Geëk = G, e, e+U+0308, k; Veᵋñ = V, e, U+1D4B, n+U+0303"
+      "text": "a settlement near by, and called it Mariinsky Post. In former times the Chukchee village lay"
     },
     "20": {
-      "text": "houses and about 40 inhabitants."
+      "text": "nearer the open sea, on the low sandy shore of Geëk Land. Veᵋñ has at present 7 native",
+      "resolved": "Geëk = G+e+U+0308(diaeresis)+k, English/Russian-derived toponym, not Tier-1; Veᵋñ = V+e+U+1D4B+n+U+0303, same mark-shape caveat as line 18"
     },
     "21": {
-      "text": "Mɪˊs˙qᴀn (“hill”), on the west point of the long, narrow island Mɪˊs˙qᴀn, ³ in Holy Cross Bay; and",
-      "resolved": "Mɪˊs˙qᴀn = M, U+026A, U+02CA, s, U+02D9, q, U+1D00, n",
-      "note": "CHANGED from GT '..., 3 in'. Superscript marker; the space before it is in the print (unlike lines 5/17, where the marker hugs the preceding period) and is kept. Verified at 4x: second letter is small-cap ɪ U+026A, not ASCII I (§5.2, word-initial capital-shaped letter); raised mark after Mɪ is a slanted wedge = stress U+02CA; raised dot after s is round = palatalization U+02D9, licensed after s by §2.1; ᴀ is small-cap U+1D00."
+      "text": "houses and about 40 inhabitants."
     },
     "22": {
-      "text": "Rêˊtkên (“clayish”), on the east point of the same island. During my visit in 1901 the former",
-      "resolved": "Rêˊtkên = R, e+U+0302, U+02CA, t, k, e+U+0302, n"
+      "text": "Mɪˊs˙qᴀn (“hill”), on the west point of the long, narrow island Mɪˊs˙qᴀn,³ in Holy Cross Bay; and",
+      "resolved": "Mɪˊs˙qᴀn = M+U+026A(ɪ)+U+02CA(stress)+s+U+02D9(palatalization dot, postposed per §2.1 series n x d t s č ǰ)+q+U+1D00(small cap ᴀ)+n; ³ = U+00B3 SUPERSCRIPT THREE, footnote 3 reference",
+      "note": "Village name recurs identically twice on this line and again at line 48."
     },
     "23": {
-      "text": "village had 3 houses, and, besides, 1 family was living a few miles off; while in two places",
-      "note": "Old-style figures throughout (§5.4); '1' here is x-height and dotless but is the numeral, not ɪ — it is in English register and reads 'one family'."
+      "text": "Rêˊtkên (“clayish”), on the east point of the same island. During my visit in 1901 the former",
+      "resolved": "Rêˊtkên = R+e+U+0302(ê)+U+02CA(stress)+t+k+e+U+0302(ê)+n; 1901 in old-style figures (dotless x-height 1, small round 0) per §5.4, keyed as plain ASCII digits"
     },
     "24": {
-      "text": "there were 6 tents of some very poor half Maritime, half Reindeer people. The total population"
+      "text": "village had 3 houses, and, besides, 1 family was living a few miles off; while in two places"
     },
     "25": {
-      "text": "was 41 (according to the Register, 7 houses, 30 inhabitants). Rêˊtkên had 6 houses with 35",
-      "resolved": "Rêˊtkên = R, e+U+0302, U+02CA, t, k, e+U+0302, n"
+      "text": "there were 6 tents of some very poor half Maritime, half Reindeer people. The total population"
     },
     "26": {
-      "text": "inhabitants (Register, 6 houses, 22 inhabitants)."
+      "text": "was 41 (according to the Register, 7 houses, 30 inhabitants). Rêˊtkên had 6 houses with 35",
+      "resolved": "Rêˊtkên = R+e+U+0302(ê,circumflex)+U+02CA(stress)+t+k+e+U+0302(ê,circumflex)+n"
     },
     "27": {
-      "text": "Farther along the shore, on Cape Wuˊkwên (“stony”), there used to be a small settlement whose",
-      "resolved": "Wuˊkwên = W, u, U+02CA, k, w, e+U+0302, n"
+      "text": "inhabitants (Register, 6 houses, 22 inhabitants)."
     },
     "28": {
-      "text": "inhabitants afterwards turned to reindeér-breeding and went inland.",
-      "resolved": "reindeér = r, e, i, n, d, e, U+0301 COMBINING ACUTE ACCENT, r",
-      "note": "CHANGED from GT 'reindeer-breeding'. FOR THE ADJUDICATOR — this is the one reading on the page I cannot settle myself, and it is an editorial call, not an optical one. The print carries an acute over the second 'e' of 'reindeer'. At 4x (zoom4-002.png, strip 28.5) it is a solid tapered wedge at type weight and slant, identical in form to the stress sorts elsewhere on the page, and categorically unlike the round artifact dots this page is littered with (see line 46). So it is ink from this forme, not a speck and not show-through. But 'reindeér' is not a word, this is English prose, and U+0301 is catalogued nowhere in keying_spec — it would be the corpus's first combining acute. Read as a foul-case sort: the compositor set an accented 'e'. Keyed as printed per §1 ('keying reproduces print') and the readings.md MISPRINT habit, flagged rather than silently corrected to 'reindeer' or silently dropped. If the editor rules it a defect rather than a reading, delete the mark here — but the ruling should be recorded, because nothing mechanical will catch this again."
+      "text": "Farther along the shore, on Cape Wuˊkwên (“stony”), there used to be a small settlement whose",
+      "resolved": "Wuˊkwên = W+u+U+02CA(stress)+k+w+e+U+0302(ê)+n"
     },
     "29": {
-      "text": "¹ In his statistics, Krause gives for the large village Uñiˊsak (Indian Point) only 13 houses “from personal",
-      "resolved": "U+0049 = ASCII I in \"(Indian\", a MEDIAL_CAPS hit only because it follows an open paren; word-initial English, not a small-cap sort. Uñiˊsak = U, n+U+0303, i, U+02CA, s, a, k",
-      "note": "CHANGED from GT, which omitted the footnote marker entirely — the line opened at 'In his statistics'. The marker is printed and inside this line's polygon (hpos 824, left of the sibling footnote openers at 834). Uñiˊsak also appears in data/loi.json; that entry is a proposal, not an adopted identity, and this reading is off the raster."
+      "text": "inhabitants afterwards turned to reindeer-breeding and went inland.",
+      "note": "Printed \"reindeer-breeding\": at 4x the mark over the second e is a solid tapered wedge, distinct from the round artifact dots elsewhere on the page, and could be read as ink from the forme. keying_spec.md §5.9 records the editor's ruling on this exact word on this exact page: \"a serendipitously shaped smudge\" — not a genuine diacritic, and U+0301 is catalogued nowhere in the inventory. Keyed plain per that settled ruling."
     },
     "30": {
-      "text": "observation.” He evidently confounds the small village Kuˊkun with the larger Luˊᵋren, since he states that there",
-      "resolved": "Kuˊkun = K, u, U+02CA, k, u, n; Luˊᵋren = L, u, U+02CA, U+1D4B, r, e, n",
-      "note": "Luˊᵋren: stress postposed to the stressed u, then the laryngeal superscript ᵋ U+1D4B glottalizing it (§2.1). ᵋ is not followed by i here, so it is not the ᵉ/ᵋ review-flag position."
+      "text": "¹ In his statistics, Krause gives for the large village Uñiˊsak (Indian Point) only 13 houses “from personal",
+      "resolved": "¹ = U+00B9, footnote 1 opener; Uñiˊsak = U+n+U+0303(ñ)+i+U+02CA(stress)+s+a+k; “ = U+201C LEFT DOUBLE QUOTATION MARK"
     },
     "31": {
-      "text": "are 20 houses in Kuˊkun, and only 2 in Luˊᵋren, whereas in reality the numbers are the reverse.",
-      "resolved": "Kuˊkun = K, u, U+02CA, k, u, n; Luˊᵋren = L, u, U+02CA, U+1D4B, r, e, n",
-      "note": "The '2' here is prose ('only 2 in Luˊᵋren'), not a footnote marker — keyed as a plain digit deliberately."
+      "text": "observation.” He evidently confounds the small village Kuˊkun with the larger Luˊᵋren, since he states that there",
+      "resolved": "” = U+201D RIGHT DOUBLE QUOTATION MARK; Kuˊkun = K+u+U+02CA(stress)+k+u+n; Luˊᵋren = L+u+U+02CA(stress)+U+1D4B(laryngeal ᵋ)+r+e+n (word-initial ASCII capital L, attested form per keying_spec.md §5.2's own corpus example list)"
     },
     "32": {
-      "text": "² On the Middle Anadyr live about ten Chukchee families scattered in five or six places. Of these,",
-      "resolved": "superscript footnote marker; no notation codepoints on this line",
-      "note": "CHANGED from GT '2 On the Middle'. Footnote opener, superscript in print."
+      "text": "are 20 houses in Kuˊkun, and only 2 in Luˊᵋren, whereas in reality the numbers are the reverse.",
+      "resolved": "Kuˊkun = K+u+U+02CA(stress)+k+u+n, Luˊᵋren = L+u+U+02CA(stress)+U+1D4B(laryngeal)+r+e+n"
     },
     "33": {
-      "text": "Chikayeva has two families, and Under-the-Cliffs three. The first name has been borrowed by the Chukchee",
-      "note": "Raised speck after 'families,' — artifact, not keyed."
+      "text": "² On the Middle Anadyr live about ten Chukchee families scattered in five or six places. Of these,",
+      "resolved": "² = U+00B2, footnote 2 opener"
     },
     "34": {
-      "text": "from the Russianized natives; the second name has the same meaning, both in the Chukchee and in the Russian"
+      "text": "Chikayeva has two families, and Under-the-Cliffs three. The first name has been borrowed by the Chukchee"
     },
     "35": {
-      "text": "languages. The other settlements are unstable."
+      "text": "from the Russianized natives; the second name has the same meaning, both in the Chukchee and in the Russian"
     },
     "36": {
-      "text": "³ Long, narrow islands or spits, consisting of sand cast up by the waves, are met with everywhere on",
-      "resolved": "superscript footnote marker; no notation codepoints on this line",
-      "note": "CHANGED from GT '3 Long, narrow'. Footnote opener, superscript in print."
+      "text": "languages. The other settlements are unstable."
     },
     "37": {
-      "text": "the shores of Bering Sea and the Arctic Ocean, especially at the mouths of rivers or of narrow, deeply indented"
+      "text": "³ Long, narrow islands or spits, consisting of sand cast up by the waves, are met with everywhere on",
+      "resolved": "³ = U+00B3, footnote 3 opener"
     },
     "38": {
-      "text": "bays. These islands are called by the Chukchee Teˊpän in the Pacific dialect, and Teˊpqän in the Arctic dialect. With",
-      "resolved": "Teˊpän = T, e, U+02CA, p, a+U+0308, n; Teˊpqän = T, e, U+02CA, p, q, a+U+0308, n",
-      "note": "ä is the long obscure vowel (§2.2), diaeresis confirmed on both forms at sheet resolution — §5.3 class."
+      "text": "the shores of Bering Sea and the Arctic Ocean, especially at the mouths of rivers or of narrow, deeply indented"
     },
     "39": {
-      "text": "the Kamchadal and Koryak, where salmon is abundant, the villages near such spits lie on the mainland shore,"
+      "text": "bays. These islands are called by the Chukchee Teˊpän in the Pacific dialect, and Teˊpqän in the Arctic dialect. With",
+      "resolved": "Teˊpän = T+e+U+02CA(stress)+p+a+U+0308(ä, obscure long vowel per §2.2)+n; Teˊpqän = T+e+U+02CA(stress)+p+q+a+U+0308(ä)+n"
     },
     "40": {
-      "text": "which is less exposed to the wind. Mouths of rivers and entrances to bays are very convenient places for"
+      "text": "the Kamchadal and Koryak, where salmon is abundant, the villages near such spits lie on the mainland shore,"
     },
     "41": {
-      "text": "catching salmon, which enter there in masses for the purpose of spawning. The Maritime Chukchee and the"
+      "text": "which is less exposed to the wind. Mouths of rivers and entrances to bays are very convenient places for"
     },
     "42": {
-      "text": "Eskimo, on the contrary, build their villages on the outward shore of such islands or spits for convenience of",
-      "note": "Raised speck after 'outward' — artifact, not keyed."
+      "text": "catching salmon, which enter there in masses for the purpose of spawning. The Maritime Chukchee and the"
     },
     "43": {
-      "text": "sealing. The same is true of all islands lying near the shore. For instance, the Koryak village in Karagha"
+      "text": "Eskimo, on the contrary, build their villages on the outward shore of such islands or spits for convenience of"
     },
     "44": {
-      "text": "Bay, of northern Kamchatka, lies on the mainland shore, opposite the large island Karagha. The Chukchee"
+      "text": "sealing. The same is true of all islands lying near the shore. For instance, the Koryak village in Karagha"
     },
     "45": {
-      "text": "village in Kuluˊči Bay, on the contrary, is situated on the small island some distance away from the narrow",
-      "resolved": "Kuluˊči = K, u, l, u, U+02CA, c+U+030C, i"
+      "text": "Bay, of northern Kamchatka, lies on the mainland shore, opposite the large island Karagha. The Chukchee"
     },
     "46": {
-      "text": "mouth of the bay. On Kihiˊni Island the village Kihiˊni lies on its outward northwestern shore. The villages",
-      "resolved": "Kihiˊni = K, i, h, i, U+02CA, n, i (twice)",
-      "note": "UNCHANGED from GT, but the ruling is worth recording. The print sets a raised mark after the FIRST Kihi-stress-ni (before \"Island\") which the second occurrence does not carry. At 4x (zoom4-004.png, strip 46.4) it is a small ROUND dot, plainly distinct from the slanted tapered wedge of the stress mark in the same word. Not keyed, for two independent reasons. (a) This page carries dozens of identical raised round dots over ordinary English words - after \"Only\" (line 6), \"villages\" (10), \"desert\" and \"according\" (11), \"families,\" (33), \"outward\" (42) - and this mark belongs to that population, which is a page-wide print or show-through artifact rather than a sort. (b) The only round raised sort in the inventory is U+02D9, licensed by keying_spec 2.1 only after n x d t s c-caron j-caron; this one follows i, so keying it would assert a sequence the notation does not contain. Overrule if the editor reads it as ink."
+      "text": "village in Kuluˊči Bay, on the contrary, is situated on the small island some distance away from the narrow",
+      "resolved": "Kuluˊči = K+u+l+u+U+02CA(stress)+c+U+030C(caron)+i"
     },
     "47": {
-      "text": "of Mɪˊs˙qᴀn, Rêˊtkên, and Yanřaˊkê-not are situated on sandy spits which lie at the entrance to the bays.",
-      "resolved": "Mɪˊs˙qᴀn = M, U+026A, U+02CA, s, U+02D9, q, U+1D00, n; Rêˊtkên = R, e+U+0302, U+02CA, t, k, e+U+0302, n; Yanřaˊkê-not = Y, a, n, r+U+030C, a, U+02CA, k, e+U+0302, -, n, o, t",
-      "note": "ř is the third rhotic, r + U+030C (§2.2/§2.5). The hyphen in Yanřaˊkê-not is a connector inside a Tier-1 form (U+002D, §2.1) and must not be joined away."
+      "text": "mouth of the bay. On Kihiˊni Island the village Kihiˊni lies on its outward northwestern shore. The villages",
+      "resolved": "Kihiˊni = K+i+h+i+U+02CA(stress)+n+i (both occurrences)",
+      "note": "The first \"Kihiˊni\" (before \"Island\") carries what appears to be a second raised mark after the final i, at 4x a small grave-oriented tick distinct in both shape and print weight from the stress mark ˊ after \"hi\" earlier in the same word — it is crisp, not a smudge like line 29's. It cannot be a second U+02CA (culminative rule, §2.1/§5.5: ≤1 stress per word, already satisfied by the mark after \"hi\"), and it sits word-final before a space, not in a licensed V_V or post-consonant environment for the pause/spirant U+0027 (§2.1). No catalogued mark fits this position, so per §5.9 it is left unkeyed rather than guessed; the second, unambiguous occurrence of the same village name later in the line (\"the village Kihiˊni\") carries no such mark. Flagged for adjudication."
     },
     "48": {
-      "text": "CHUKCHEE.",
-      "resolved": "U+0045 = the two ASCII E in \"CHUKCHEE.\" — MEDIAL_CAPS hits only, since that check sees word-medial A/E/I/L. The heading is set in small caps and flattened to ASCII capitals as the running title is (line 15), so these are the flattening, not small-cap sorts. No notation on this line.",
-      "note": "Recovered line: a centred small-caps section heading the segmenter dropped. Sits between \"The villages on the Pacific coast are as follows: —\" (16) and the first entry (17). Found by harness lines --gaps AFTER this page had already been revised and restored, which is the point of the detector: nothing text-level could see it."
+      "text": "of Mɪˊs˙qᴀn, Rêˊtkên, and Yanřaˊkê-not are situated on sandy spits which lie at the entrance to the bays.",
+      "resolved": "Mɪˊs˙qᴀn = M+U+026A(ɪ)+U+02CA(stress)+s+U+02D9(dot)+q+U+1D00(ᴀ)+n, Rêˊtkên = R+e+U+0302(ê)+U+02CA(stress)+t+k+e+U+0302(ê)+n, Yanřaˊkê-not = Y+a+n+r+U+030C(ř caron)+a+U+02CA(stress)+k+e+U+0302(ê)+hyphen+n+o+t"
     }
+  },
+  "contamination": {
+    "blind": true
   }
 }

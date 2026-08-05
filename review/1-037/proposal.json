@@ -1,0 +1,61 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "RunningTitleZone."
+    },
+    "1": {
+      "text": "on the Bear Islands, near the mouth of the Kolyma, are also supposed to be"
+    },
+    "2": {
+      "text": "theirs. They have often been confounded with the Čaˊačêt, though nothing",
+      "resolved": "Č = C+U+030C; ˊ = U+02CA MODIFIER LETTER ACUTE ACCENT (stress, not apostrophe); č = c+U+030C; ê = e+U+0302",
+      "note": "Chukchee ethnonym Čaˊačêt, confirmed at 4x zoom on 2@55-75. Same form (Čaˊačêt/Čaˊačên) is attested elsewhere in the corpus per groundtruth-reader agent memory for 1-036; the raised mark between the two a's is stress per §2.1/§5.5 default, not an apostrophe — no licensing environment for spirant/pause applies (not post-b/p/d/t/g/k, and word-medial V_V here is exactly where stress is the corpus-wide default, keying_spec.md §4/§5.8)."
+    },
+    "3": {
+      "text": "is known about the mutual relations of the two tribes. Both are supposed by"
+    },
+    "4": {
+      "text": "the natives to have emigrated westward. This is also mentioned by Wrangell.¹",
+      "note": "Footnote 1 body reference. CATMuS/mz text rendered the superscript as a bare '!'; confirmed at 4x zoom (4@85-100) that it is a small raised digit '1', keyed as the actual superscript sort ¹ U+00B9 per keying_spec.md §2.10, never the ASCII digit."
+    },
+    "5": {
+      "text": "Maydell, without any apparent reason, denies the existence of either tribe."
+    },
+    "6": {
+      "text": "He mentions, however, almost in the same passage, that Peter Mangol, one"
+    },
+    "7": {
+      "text": "of his Chukchee fellow-travellers, affirmed that in former times, on Cape Erri,"
+    },
+    "8": {
+      "text": "there had lived Maritime Chukchee who spoke a language different from that"
+    },
+    "9": {
+      "text": "of the modern villages.²",
+      "note": "Footnote 2 body reference, confirmed at 4x zoom (9@60-100) as a small raised digit '2' at line end — keyed as ² U+00B2 per keying_spec.md §2.10."
+    },
+    "10": {
+      "text": "Further on he mentions the hunter, Ivan Viligin, who lived in the latter"
+    },
+    "11": {
+      "text": "part of the eighteenth century. He affirmed that he knew an old man by",
+      "note": "The word 'part' at line start renders visually bold/smudged in the raster (zoom 11@0-25) — an ink blot bleeding across the word, not a typographic emphasis; keyed as ordinary text."
+    },
+    "12": {
+      "text": "² Maydell I, p. 331.",
+      "note": "Footnote 2 opener. Confirmed at 4x zoom (12-13@0-15) as a small raised digit '2', keyed as ² U+00B2 per keying_spec.md §2.10, never a plain ASCII digit."
+    },
+    "13": {
+      "text": "¹ Wrangell, p. 338.",
+      "note": "Footnote 1 opener. Confirmed at 4x zoom (12-13@0-15) as a small raised digit '1', keyed as ¹ U+00B9 per keying_spec.md §2.10, never a plain ASCII digit."
+    },
+    "14": {
+      "text": "3—JESUP NORTH PACIFIC EXPED., VOL. VII.",
+      "note": "QuireMarksZone signature line. mz/CATMuS text read 'A3-JESDE...' — confirmed at 4x zoom (14@0-40, 14@40-100) that it is the ordinary printed signature '3—JESUP NORTH PACIFIC EXPED., VOL. VII.', unspaced dash per keying_spec.md §2.11 (signature-line form), digits plain ASCII per §2.12. The stray diagonal stroke before the '3' and scattered specks around the line are page damage/ink flecks, not additional characters. No bracketed quire-mark number is present anywhere on this page — the page carries a RunningTitleZone with folio 17 instead (see line 0), consistent with §2.12's rule that the two folio forms are mutually exclusive."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

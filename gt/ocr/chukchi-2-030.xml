@@ -1,168 +1,92 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
-  <Description>
-    <MeasurementUnit>pixel</MeasurementUnit>
-    <sourceImageInformation>
-      <fileName>chukchi-2-030.png</fileName>
-    </sourceImageInformation>
-  </Description>
-  <Tags>
-    <OtherTag ID="BT1" LABEL="Title" DESCRIPTION="block type Title"/><OtherTag ID="BT2" LABEL="Main" DESCRIPTION="block type Main"/><OtherTag ID="BT3" LABEL="Commentary" DESCRIPTION="block type Commentary"/><OtherTag ID="BT4" LABEL="Illustration" DESCRIPTION="block type Illustration"/><OtherTag ID="BT70" LABEL="NumberingZone" DESCRIPTION="block type NumberingZone"/><OtherTag ID="BT71" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/><OtherTag ID="BT72" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/><OtherTag ID="BT73" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/><OtherTag ID="BT74" LABEL="MainZone-Entry" DESCRIPTION="block type MainZone-Entry"/><OtherTag ID="BT75" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/><OtherTag ID="BT76" LABEL="MainZone-Head" DESCRIPTION="block type MainZone-Head"/><OtherTag ID="BT79" LABEL="MainZone-List" DESCRIPTION="block type MainZone-List"/><OtherTag ID="BT80" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT81" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
-    <OtherTag ID="LT9" LABEL="default" DESCRIPTION="line type default"/>
-  </Tags>
-  <Layout>
-    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="8" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-        <TextBlock HPOS="362.0" VPOS="486.0" WIDTH="110.0" HEIGHT="70.0" ID="eSc_textblock_d3818360" TAGREFS="BT70">
-          <Shape><Polygon POINTS="362 486 362 556 472 556 472 486"/></Shape>
-          <TextLine ID="eSc_line_f135a679" TAGREFS="LT9" BASELINE="372 526 468 522" HPOS="370.0" VPOS="490.0" WIDTH="98.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="458 490 370 492 372 526 372 542 468 538 468 522 462 490 458 490"/></Shape>
-            <String CONTENT="304" HPOS="370.0" VPOS="490.0" WIDTH="98.0" HEIGHT="52.0" WC="0.999569316705068"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="356.0" VPOS="578.0" WIDTH="1794.0" HEIGHT="150.0" ID="eSc_textblock_dccdd279" TAGREFS="BT71">
-          <Shape><Polygon POINTS="356 578 356 728 2150 728 2150 578"/></Shape>
-          <TextLine ID="eSc_line_2d3ececa" TAGREFS="LT9" BASELINE="366 630 2130 624" HPOS="364.0" VPOS="590.0" WIDTH="1766.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="2108 600 2088 598 2068 598 2050 596 2030 596 2010 594 1990 594 1970 594 1952 592 1932 592 1928 590 364 590 366 630 366 644 2128 642 2130 624 2126 600 2108 600"/></Shape>
-            <String CONTENT="begins. Among other feats, the contestants have to run along a thin pole" HPOS="364.0" VPOS="590.0" WIDTH="1766.0" HEIGHT="54.0" WC="0.9998198019133674"/>
-          </TextLine>
-          <TextLine ID="eSc_line_15550697" TAGREFS="LT9" BASELINE="368 686 2130 682" HPOS="366.0" VPOS="646.0" WIDTH="1764.0" HEIGHT="58.0">
-            <Shape><Polygon POINTS="2120 656 1912 646 1910 646 1908 646 1906 646 1890 658 1760 658 1700 646 1698 646 1696 646 1694 646 1678 656 1622 646 1620 646 1618 646 1592 656 1562 646 1560 646 1558 646 1336 656 1296 646 1294 646 1292 646 1228 658 1132 648 1130 648 896 658 832 648 830 648 828 648 796 658 562 648 560 648 558 648 556 648 540 660 366 660 368 686 368 700 2126 704 2130 682 2128 680 2120 656"/></Shape>
-            <String CONTENT="over a boiling-hot river. The shaman does not wait for his turn, but starts" HPOS="366.0" VPOS="646.0" WIDTH="1764.0" HEIGHT="58.0" WC="0.9997717746098836"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="934.0" VPOS="474.0" WIDTH="628.0" HEIGHT="76.0" ID="eSc_textblock_26734c07" TAGREFS="BT73">
-          <Shape><Polygon POINTS="934 474 934 550 1562 550 1562 474"/></Shape>
-          <TextLine ID="eSc_line_30a7e3cc" TAGREFS="LT9" BASELINE="942 518 1554 518" HPOS="942.0" VPOS="484.0" WIDTH="612.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="1550 498 1530 484 1510 484 1490 484 1470 484 1452 484 1432 484 1412 484 1392 484 1372 484 1354 484 1334 484 1314 484 1294 484 1274 484 1256 484 1236 484 1216 484 1196 484 1176 484 1158 484 1138 484 1118 484 1098 484 1078 484 1060 484 1040 484 1020 484 1000 484 980 484 962 484 942 484 942 518 942 538 1554 538 1554 518 1550 500 1550 498"/></Shape>
-            <String CONTENT="BOGORAS, THE CHUKCHEE." HPOS="942.0" VPOS="484.0" WIDTH="612.0" HEIGHT="54.0" WC="0.999110836874355"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="352.0" VPOS="2387.0" WIDTH="1804.0" HEIGHT="572.0" ID="eSc_textblock_71d7094a" TAGREFS="BT79">
-          <Shape><Polygon POINTS="352 2389 352 2959 2156 2959 2156 2387"/></Shape>
-          <TextLine ID="eSc_line_9715c41b" TAGREFS="LT9" BASELINE="374 2411 1212 2407" HPOS="372.0" VPOS="2381.0" WIDTH="840.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="568 2385 548 2385 528 2387 508 2387 490 2389 470 2389 450 2391 430 2391 410 2391 392 2393 372 2393 374 2411 374 2423 788 2433 790 2433 792 2433 826 2423 1200 2431 1202 2431 1204 2431 1206 2431 1206 2429 1208 2429 1212 2423 1212 2407 1206 2381 576 2383 568 2385"/></Shape>
-            <String CONTENT="tiˊrkɪ-reˊiᵋ or têrk-amêčaˊtyêᵋ (“sun has come in” or" HPOS="372.0" VPOS="2381.0" WIDTH="840.0" HEIGHT="52.0" WC="0.9407363651054246"/>
-          </TextLine>
-          <TextLine ID="eSc_line_be91900e" TAGREFS="LT9" BASELINE="408 2447 876 2455" HPOS="406.0" VPOS="2421.0" WIDTH="470.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="408 2447 406 2461 872 2471 876 2455 874 2429 408 2421 408 2447"/></Shape>
-            <String CONTENT="“sun has gone out of sight”)." HPOS="406.0" VPOS="2421.0" WIDTH="470.0" HEIGHT="50.0" WC="0.9681165824676382"/>
-          </TextLine>
-          <TextLine ID="eSc_line_f9f10dee" TAGREFS="LT9" BASELINE="376 2493 790 2493" HPOS="376.0" VPOS="2469.0" WIDTH="414.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="376 2493 376 2509 788 2513 790 2493 790 2469 376 2469 376 2493"/></Shape>
-            <String CONTENT="aᵋčoˊpta (“it is still day”)." HPOS="376.0" VPOS="2469.0" WIDTH="414.0" HEIGHT="44.0" WC="0.9756713509559631"/>
-          </TextLine>
-          <TextLine ID="eSc_line_a45aeeb3" TAGREFS="LT9" BASELINE="376 2537 990 2537" HPOS="376.0" VPOS="2511.0" WIDTH="614.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="376 2537 376 2555 990 2555 990 2537 990 2511 376 2511 376 2537"/></Shape>
-            <String CONTENT="em-g̣iˊthilɪ-neˊlyi (“twilight has come”)." HPOS="376.0" VPOS="2511.0" WIDTH="614.0" HEIGHT="44.0" WC="0.9349340469371982"/>
-          </TextLine>
-          <TextLine ID="eSc_line_0bc7880b" TAGREFS="LT9" BASELINE="376 2579 1096 2577" HPOS="374.0" VPOS="2555.0" WIDTH="722.0" HEIGHT="42.0">
-            <Shape><Polygon POINTS="376 2579 376 2597 1094 2595 1096 2577 1090 2555 374 2555 376 2579"/></Shape>
-            <String CONTENT="g̣itg̣iluweˊtyiᵋ (“twilight has become narrow”)." HPOS="374.0" VPOS="2555.0" WIDTH="722.0" HEIGHT="42.0" WC="0.974328462196433"/>
-          </TextLine>
-          <TextLine ID="eSc_line_4594f8b5" TAGREFS="LT9" BASELINE="376 2619 1194 2623" HPOS="374.0" VPOS="2591.0" WIDTH="820.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="376 2619 374 2637 1192 2637 1194 2623 1192 2595 376 2591 376 2619"/></Shape>
-            <String CONTENT="g̣êˊthêlu-waiñeˊeᵋ (“twilight has been extinguished”)." HPOS="374.0" VPOS="2591.0" WIDTH="820.0" HEIGHT="46.0" WC="0.9663373577807631"/>
-          </TextLine>
-          <TextLine ID="eSc_line_1688108f" TAGREFS="LT9" BASELINE="376 2663 1212 2663" HPOS="376.0" VPOS="2639.0" WIDTH="836.0" HEIGHT="40.0">
-            <Shape><Polygon POINTS="376 2663 376 2675 1210 2679 1212 2663 1212 2639 376 2639 376 2663"/></Shape>
-            <String CONTENT="aiˊvêčha (“in the evening”) or tun-nɪkiruˊiᵋ (“night" HPOS="376.0" VPOS="2639.0" WIDTH="836.0" HEIGHT="40.0" WC="0.9531279681966855"/>
-          </TextLine>
-          <TextLine ID="eSc_line_a73620c3" TAGREFS="LT9" BASELINE="408 2701 668 2705" HPOS="406.0" VPOS="2675.0" WIDTH="262.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="408 2701 406 2717 664 2723 668 2705 666 2679 408 2675 408 2701"/></Shape>
-            <String CONTENT="recently came”)." HPOS="406.0" VPOS="2675.0" WIDTH="262.0" HEIGHT="48.0" WC="0.9929490089416504"/>
-          </TextLine>
-          <TextLine ID="eSc_line_ad8c2e01" TAGREFS="LT9" BASELINE="376 2745 1130 2749" HPOS="374.0" VPOS="2717.0" WIDTH="756.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="376 2745 374 2757 424 2767 426 2767 1128 2761 1130 2749 1128 2721 376 2717 376 2745"/></Shape>
-            <String CONTENT="em-g̣ɪnuˊn-nɪkiˊtä neˊlyiᵋ (“midnight has come”)." HPOS="374.0" VPOS="2717.0" WIDTH="756.0" HEIGHT="50.0" WC="0.9358137505395072"/>
-          </TextLine>
-          <TextLine ID="eSc_line_052ed173" TAGREFS="LT9" BASELINE="376 2789 1210 2789" HPOS="376.0" VPOS="2763.0" WIDTH="834.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="1204 2763 376 2763 376 2789 376 2807 1210 2807 1210 2789 1210 2787 1204 2763"/></Shape>
-            <String CONTENT="em-g̣ɪnuˊn-nɪkiˊtä halaˊêᵋ (“midnight has passed by”)." HPOS="376.0" VPOS="2763.0" WIDTH="834.0" HEIGHT="44.0" WC="0.9655373259024187"/>
-          </TextLine>
-          <TextLine ID="eSc_line_aad2f4c3" TAGREFS="LT9" BASELINE="376 2833 994 2833" HPOS="376.0" VPOS="2805.0" WIDTH="618.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="376 2833 376 2847 992 2849 994 2833 994 2805 376 2805 376 2833"/></Shape>
-            <String CONTENT="eimeˊwkwiᵋ (“[dawn] has approached”)." HPOS="376.0" VPOS="2805.0" WIDTH="618.0" HEIGHT="44.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_570270c5" TAGREFS="LT9" BASELINE="376 2869 938 2875" HPOS="374.0" VPOS="2843.0" WIDTH="564.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="376 2869 374 2885 392 2895 394 2895 396 2895 516 2887 560 2897 562 2897 564 2897 936 2889 938 2875 936 2849 376 2843 376 2869"/></Shape>
-            <String CONTENT="ɪˊprɪñg̣êᵋ (“[light] has burst forth”)." HPOS="374.0" VPOS="2843.0" WIDTH="564.0" HEIGHT="54.0" WC="0.9249601237475872"/>
-          </TextLine>
-          <TextLine ID="eSc_line_05252340" TAGREFS="LT9" BASELINE="376 2913 1214 2917" HPOS="374.0" VPOS="2885.0" WIDTH="840.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="376 2913 374 2929 1210 2933 1214 2917 1212 2889 376 2885 376 2913"/></Shape>
-            <String CONTENT="tñeˊiᵋ (“it has dawned”) or tñaˊɪrg̣ɪn (“morning-dawn”)." HPOS="374.0" VPOS="2885.0" WIDTH="840.0" HEIGHT="48.0" WC="0.939263602620677"/>
-          </TextLine>
-          <TextLine ID="eSc_line_520515a8" TAGREFS="LT9" BASELINE="1298 2409 1810 2413" HPOS="1296.0" VPOS="2383.0" WIDTH="514.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="1298 2409 1296 2423 1806 2429 1810 2413 1808 2387 1298 2383 1298 2409"/></Shape>
-            <String CONTENT="totɪntoˊêᵋ (“darkness has gone”)." HPOS="1296.0" VPOS="2383.0" WIDTH="514.0" HEIGHT="46.0" WC="0.9448350212153267"/>
-          </TextLine>
-          <TextLine ID="eSc_line_23ae64d8" TAGREFS="LT9" BASELINE="1296 2453 1870 2453" HPOS="1296.0" VPOS="2427.0" WIDTH="574.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="1864 2441 1858 2427 1296 2427 1296 2453 1296 2471 1870 2471 1870 2453 1870 2445 1864 2441"/></Shape>
-            <String CONTENT="tañ-ɪrg̣ɪroˊêᵋ (“it has well dawned”)." HPOS="1296.0" VPOS="2427.0" WIDTH="574.0" HEIGHT="44.0" WC="0.9675285770342901"/>
-          </TextLine>
-          <TextLine ID="eSc_line_f2269cfc" TAGREFS="LT9" BASELINE="1296 2495 1742 2495" HPOS="1296.0" VPOS="2471.0" WIDTH="446.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="1296 2495 1296 2511 1740 2517 1742 2495 1742 2471 1296 2471 1296 2495"/></Shape>
-            <String CONTENT="tirk-iiniˊɪᵋ (“sun has risen”)." HPOS="1296.0" VPOS="2471.0" WIDTH="446.0" HEIGHT="46.0" WC="0.9581750277429819"/>
-          </TextLine>
-          <TextLine ID="eSc_line_0ed6d0d2" TAGREFS="LT9" BASELINE="1296 2537 1912 2537" HPOS="1296.0" VPOS="2511.0" WIDTH="616.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="1296 2537 1296 2555 1910 2559 1912 2537 1912 2511 1296 2511 1296 2537"/></Shape>
-            <String CONTENT="têˊrkɪ-g̣ɪrg̣olaˊtyêᵋ (“sun has ascended”)." HPOS="1296.0" VPOS="2511.0" WIDTH="616.0" HEIGHT="48.0" WC="0.9634712546370751"/>
-          </TextLine>
-          <TextLine ID="eSc_line_02f501c3" TAGREFS="LT9" BASELINE="1298 2579 2120 2579" HPOS="1298.0" VPOS="2553.0" WIDTH="822.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="1298 2579 1298 2595 2118 2603 2120 2579 2118 2553 1298 2555 1298 2579"/></Shape>
-            <String CONTENT="tiˊrkɪ-keulkeˊtyiᵋ (“sun has climbed [towards the top]”)." HPOS="1298.0" VPOS="2553.0" WIDTH="822.0" HEIGHT="50.0" WC="0.9581420357738223"/>
-          </TextLine>
-          <TextLine ID="eSc_line_4b94204f" TAGREFS="LT9" BASELINE="1298 2619 2136 2623" HPOS="1296.0" VPOS="2591.0" WIDTH="840.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="1298 2619 1296 2637 1302 2643 1302 2645 1304 2645 1306 2645 1308 2645 2134 2641 2136 2623 2134 2595 1298 2591 1298 2619"/></Shape>
-            <String CONTENT="am-gɪnoˊt-aᵋloˊwtɪ tɪleˊhtɪ neˊlyiᵋ (“to the mid-day it" HPOS="1296.0" VPOS="2591.0" WIDTH="840.0" HEIGHT="54.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_e56cc4d5" TAGREFS="LT9" BASELINE="1332 2665 1770 2665" HPOS="1332.0" VPOS="2641.0" WIDTH="438.0" HEIGHT="42.0">
-            <Shape><Polygon POINTS="1332 2665 1332 2679 1768 2683 1770 2665 1770 2641 1332 2641 1332 2665"/></Shape>
-            <String CONTENT="has gradually approached”)." HPOS="1332.0" VPOS="2641.0" WIDTH="438.0" HEIGHT="42.0" WC="0.9991822151037363"/>
-          </TextLine>
-          <TextLine ID="eSc_line_e8a10b3b" TAGREFS="LT9" BASELINE="1296 2707 2000 2707" HPOS="1296.0" VPOS="2681.0" WIDTH="704.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="1296 2707 1296 2721 1998 2725 2000 2707 2000 2681 1296 2681 1296 2707"/></Shape>
-            <String CONTENT="am-gɪnoˊt-aᵋloˊ neˊlyiᵋ (“mid-day has come”)." HPOS="1296.0" VPOS="2681.0" WIDTH="704.0" HEIGHT="44.0" WC="0.9411897374524011"/>
-          </TextLine>
-          <TextLine ID="eSc_line_37ed21c4" TAGREFS="LT9" BASELINE="1302 2747 2074 2751" HPOS="1300.0" VPOS="2719.0" WIDTH="774.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="1302 2747 1300 2761 2070 2765 2074 2751 2072 2723 1302 2719 1302 2747"/></Shape>
-            <String CONTENT="am-gɪnoˊt-aᵋloˊ halaˊêᵋ (“mid-day has passed by”)." HPOS="1300.0" VPOS="2719.0" WIDTH="774.0" HEIGHT="46.0" WC="0.9597327709197998"/>
-          </TextLine>
-          <TextLine ID="eSc_line_030899bd" TAGREFS="LT9" BASELINE="1296 2791 2098 2789" HPOS="1294.0" VPOS="2763.0" WIDTH="804.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="1296 2791 1296 2807 2094 2811 2098 2789 2092 2763 1294 2763 1296 2791"/></Shape>
-            <String CONTENT="t-arkɪčhaweˊtɪ neˊlyɪᵋ (“sun descending has come”)." HPOS="1294.0" VPOS="2763.0" WIDTH="804.0" HEIGHT="48.0" WC="0.9528135323524475"/>
-          </TextLine>
-          <TextLine ID="eSc_line_8b34ff1a" TAGREFS="LT9" BASELINE="1296 2835 2132 2829" HPOS="1294.0" VPOS="2799.0" WIDTH="838.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="1296 2835 1296 2849 2132 2843 2132 2829 2126 2799 1294 2807 1296 2835"/></Shape>
-            <String CONTENT="t-arkɪčhaˊwkwê or tirk-iwtɪtviˊiᵋ (“sun has descended”" HPOS="1294.0" VPOS="2799.0" WIDTH="838.0" HEIGHT="50.0" WC="0.9464619601314718"/>
-          </TextLine>
-          <TextLine ID="eSc_line_87ab8c12" TAGREFS="LT9" BASELINE="1332 2875 1764 2875" HPOS="1332.0" VPOS="2851.0" WIDTH="432.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="1332 2875 1332 2887 1764 2897 1764 2875 1764 2851 1332 2851 1332 2875"/></Shape>
-            <String CONTENT="or “sun has become low”)." HPOS="1332.0" VPOS="2851.0" WIDTH="432.0" HEIGHT="46.0" WC="0.9895022630691528"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="948.0" VPOS="2345.0" WIDTH="620.0" HEIGHT="42.0" ID="eSc_textblock_6a2dbfa6" TAGREFS="BT80">
-          <Shape><Polygon POINTS="948 2345 948 2387 1568 2387 1568 2345"/></Shape>
-          <TextLine ID="eSc_line_fe0ec61d" TAGREFS="LT9" BASELINE="946 2371 1564 2367" HPOS="944.0" VPOS="2335.0" WIDTH="620.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="946 2371 946 2383 1562 2381 1564 2367 1560 2343 952 2335 950 2335 948 2335 946 2335 946 2337 944 2337 946 2371"/></Shape>
-            <String CONTENT="Fig. 213. Directions of the Compass." HPOS="944.0" VPOS="2335.0" WIDTH="620.0" HEIGHT="48.0" WC="0.9996651808420817"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="368.0" VPOS="2977.0" WIDTH="1790.0" HEIGHT="150.0" ID="eSc_textblock_526dc9c0" TAGREFS="BT71">
-          <Shape><Polygon POINTS="368 2977 368 3127 2158 3127 2158 2977"/></Shape>
-          <TextLine ID="eSc_line_3e4a2d5d" TAGREFS="LT9" BASELINE="374 3019 2140 3025" HPOS="372.0" VPOS="2979.0" WIDTH="1768.0" HEIGHT="66.0">
-            <Shape><Polygon POINTS="374 3019 372 3035 386 3045 388 3045 390 3045 392 3045 2138 3039 2140 3025 2140 2995 2104 2983 2102 2983 1924 2983 1922 2983 1920 2983 1918 2983 1902 2993 1766 2983 1764 2983 1600 2993 1542 2981 1540 2981 1482 2991 1426 2981 1424 2981 1422 2981 1384 2991 1234 2981 1232 2981 1230 2981 1196 2993 1040 2993 1010 2981 1008 2981 1006 2981 898 2989 882 2979 882 2979 880 2979 878 2979 804 2989 740 2979 738 2979 736 2979 700 2989 374 2987 374 3019"/></Shape>
-            <String CONTENT="from the opposite end at the same time as the other competitors. When he" HPOS="372.0" VPOS="2979.0" WIDTH="1768.0" HEIGHT="66.0" WC="0.9997114986181259"/>
-          </TextLine>
-          <TextLine ID="eSc_line_c748d3ab" TAGREFS="LT9" BASELINE="376 3081 2140 3081" HPOS="376.0" VPOS="3055.0" WIDTH="1764.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="2132 3055 376 3055 376 3081 376 3101 2140 3101 2140 3081 2140 3075 2132 3055"/></Shape>
-            <String CONTENT="meets them, he jumps over their heads and runs on. Next they have to" HPOS="376.0" VPOS="3055.0" WIDTH="1764.0" HEIGHT="46.0" WC="0.9998176877989489"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="354.0" VPOS="744.0" WIDTH="1802.0" HEIGHT="1595.0" ID="eSc_textblock_76d01b42" TAGREFS="BT81">
-          <Shape><Polygon POINTS="354 744 354 2339 2156 2339 2156 744"/></Shape>
-        </TextBlock>
-      </PrintSpace>
-    </Page>
-  </Layout>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-2-030.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-2-030.png; regions_from: zones/chukchi-2-030.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+                <TextBlock ID="mz_2-030_r1" HPOS="372" VPOS="474" WIDTH="1776" HEIGHT="90" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="372 474 2148 474 2148 564 372 564"/>
+                    </Shape>
+                    <TextLine ID="mz_2-030_l1" HPOS="940" VPOS="485" WIDTH="615" HEIGHT="51" BASELINE="940 517 1555 517" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1547 487 1543 485 940 485 940 517 940 536 1555 536 1555 517 1553 511 1547 487"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-030_l2" HPOS="377" VPOS="489" WIDTH="91" HEIGHT="63" BASELINE="379 520 468 524" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="379 520 377 544 421 538 438 550 440 550 442 550 444 552 444 550 446 550 448 550 466 536 468 524 468 495 379 489 379 520"/>
+                        </Shape>
+                        <String CONTENT="304"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-030_r2" HPOS="372" VPOS="582" WIDTH="1776" HEIGHT="143" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="372 582 2148 582 2148 725 372 725"/>
+                    </Shape>
+                    <TextLine ID="mz_2-030_l3" HPOS="360" VPOS="583" WIDTH="1774" HEIGHT="69" BASELINE="362 630 2134 624" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2103 585 2087 585 2064 593 1942 583 1940 583 1938 583 1917 595 1790 595 1748 583 1747 583 1745 583 1743 583 1741 583 1723 595 1541 595 1443 585 1441 585 1439 585 1412 597 1133 597 1102 585 1100 585 1098 585 1096 585 1057 595 991 585 989 585 902 597 832 587 830 587 771 597 611 587 609 587 607 587 564 597 468 587 466 587 360 593 362 630 362 640 417 652 419 652 528 642 1030 650 1032 650 1034 650 1036 650 1051 640 1525 648 1527 648 1529 648 1531 648 1547 638 2115 648 2117 648 2119 648 2121 648 2134 636 2134 624 2132 595 2105 585 2103 585"/>
+                        </Shape>
+                        <String CONTENT="begins. Among other feats, the contestants have to run along a thin pole"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-030_l4" HPOS="368" VPOS="644" WIDTH="1760" HEIGHT="61" BASELINE="370 687 2128 683" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="370 687 370 703 2125 705 2128 683 2125 656 1915 644 1913 644 1911 644 1909 644 1893 656 1758 656 1703 644 1701 644 1700 644 1678 654 1621 644 1619 644 1617 644 1590 654 1562 644 1560 644 1558 644 1333 654 1298 644 1296 644 1294 644 1229 656 1130 646 1128 646 1126 646 1092 656 718 646 716 646 714 646 679 656 560 646 558 646 556 646 554 646 538 658 368 658 370 687"/>
+                        </Shape>
+                        <String CONTENT="over a boiling-hot river. The shaman does not wait for his turn, but starts"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_2-030_r3" HPOS="372" VPOS="2977" WIDTH="1776" HEIGHT="146" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="372 2977 2148 2977 2148 3123 372 3123"/>
+                    </Shape>
+                    <TextLine ID="mz_2-030_l5" HPOS="368" VPOS="2984" WIDTH="1774" HEIGHT="61" BASELINE="370 3023 2142 3027" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="370 3023 368 3035 381 3045 383 3045 385 3045 387 3045 2140 3037 2142 3027 2142 2998 2101 2986 2099 2986 1925 2986 1923 2986 1921 2986 1919 2986 1903 2996 1790 2986 1788 2986 1637 2996 1406 2986 1404 2986 1402 2986 1400 2986 1384 2998 1271 2998 1239 2984 1237 2984 1235 2984 1233 2984 1194 2994 1010 2984 1008 2984 1006 2984 963 2994 883 2984 881 2984 802 2994 738 2984 736 2984 734 2984 701 2994 370 2992 370 3023"/>
+                        </Shape>
+                        <String CONTENT="from the opposite end at the same time as the other competitors. When he"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_2-030_l6" HPOS="374" VPOS="3056" WIDTH="1766" HEIGHT="46" BASELINE="374 3084 2140 3084" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="374 3084 374 3102 2140 3102 2140 3084 2140 3056 374 3056 374 3084"/>
+                        </Shape>
+                        <String CONTENT="meets them, he jumps over their heads and runs on. Next they have to"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
 </alto>

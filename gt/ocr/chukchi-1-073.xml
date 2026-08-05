@@ -1,237 +1,404 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
-  <Description>
-    <MeasurementUnit>pixel</MeasurementUnit>
-    <sourceImageInformation>
-      <fileName>chukchi-1-073.png</fileName>
-    </sourceImageInformation>
-  </Description>
-  <Tags>
-    <OtherTag ID="BT1" LABEL="Title" DESCRIPTION="block type Title"/><OtherTag ID="BT2" LABEL="Main" DESCRIPTION="block type Main"/><OtherTag ID="BT3" LABEL="Commentary" DESCRIPTION="block type Commentary"/><OtherTag ID="BT4" LABEL="Illustration" DESCRIPTION="block type Illustration"/><OtherTag ID="BT70" LABEL="NumberingZone" DESCRIPTION="block type NumberingZone"/><OtherTag ID="BT71" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/><OtherTag ID="BT72" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/><OtherTag ID="BT73" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/><OtherTag ID="BT74" LABEL="MainZone-Entry" DESCRIPTION="block type MainZone-Entry"/><OtherTag ID="BT75" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/><OtherTag ID="BT76" LABEL="MainZone-Head" DESCRIPTION="block type MainZone-Head"/><OtherTag ID="BT79" LABEL="MainZone-List" DESCRIPTION="block type MainZone-List"/><OtherTag ID="BT80" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT81" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/><OtherTag ID="BT82" LABEL="TableZone" DESCRIPTION="block type TableZone"/><OtherTag ID="BT83" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/><OtherTag ID="BT84" LABEL="MainZone-Other" DESCRIPTION="block type MainZone-Other"/><OtherTag ID="BT85" LABEL="MainZone-Lg" DESCRIPTION="block type MainZone-Lg"/>
-    <OtherTag ID="LT9" LABEL="default" DESCRIPTION="line type default"/>
-  </Tags>
-  <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="3" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="380.0" VPOS="712.0" WIDTH="1788.0" HEIGHT="368.0" ID="eSc_textblock_c6d70341" TAGREFS="BT72">
-          <Shape><Polygon POINTS="380 712 380 1080 2168 1080 2168 712"/></Shape>
-          <TextLine ID="eSc_line_f9ad18fc" TAGREFS="LT9" BASELINE="498 762 2158 756" HPOS="494.0" VPOS="724.0" WIDTH="1664.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="498 762 498 778 2156 774 2158 756 2154 728 494 724 498 762"/></Shape>
-            <String CONTENT="The herdsmen, of course, never count their reindeer, nor are they able" HPOS="494.0" VPOS="724.0" WIDTH="1664.0" HEIGHT="54.0" WC="0.9998273500374385"/>
-          </TextLine>
-          <TextLine ID="eSc_line_2cf901bd" TAGREFS="LT9" BASELINE="390 822 2148 818" HPOS="388.0" VPOS="776.0" WIDTH="1760.0" HEIGHT="64.0">
-            <Shape><Polygon POINTS="390 822 390 840 2146 834 2148 818 2142 776 1268 776 1266 776 1264 776 1262 776 1244 788 602 778 598 778 388 790 390 822"/></Shape>
-            <String CONTENT="to remember all their animals by their looks, as has been asserted by travellers.¹" HPOS="388.0" VPOS="776.0" WIDTH="1760.0" HEIGHT="64.0" WC="0.9872305540435286"/>
-          </TextLine>
-          <TextLine ID="eSc_line_253fcbd2" TAGREFS="LT9" BASELINE="394 882 2158 876" HPOS="390.0" VPOS="844.0" WIDTH="1768.0" HEIGHT="62.0">
-            <Shape><Polygon POINTS="394 882 394 896 662 906 664 906 882 896 974 906 976 906 978 906 980 906 998 894 1216 904 1218 904 1220 904 1266 894 1422 904 1424 904 1486 894 1534 904 1536 904 1538 904 2156 892 2158 876 2154 848 390 844 394 882"/></Shape>
-            <String CONTENT="In the larger herds they know only the more conspicuous animals, such as" HPOS="390.0" VPOS="844.0" WIDTH="1768.0" HEIGHT="62.0" WC="0.9998008468084865"/>
-          </TextLine>
-          <TextLine ID="eSc_line_dade89d4" TAGREFS="LT9" BASELINE="390 942 2156 942" HPOS="390.0" VPOS="904.0" WIDTH="1766.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="390 942 390 958 2156 958 2156 942 2156 910 390 904 390 942"/></Shape>
-            <String CONTENT="breeding-bucks, old dams, harness-animals, etc. If there be any loss, they" HPOS="390.0" VPOS="904.0" WIDTH="1766.0" HEIGHT="54.0" WC="0.9998428330228135"/>
-          </TextLine>
-          <TextLine ID="eSc_line_98c592d7" TAGREFS="LT9" BASELINE="390 1002 2156 996" HPOS="388.0" VPOS="964.0" WIDTH="1768.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="390 1002 390 1016 2154 1010 2156 996 2152 968 388 964 390 1002"/></Shape>
-            <String CONTENT="become aware of it only by the absence of one of them. Of the smaller" HPOS="388.0" VPOS="964.0" WIDTH="1768.0" HEIGHT="52.0" WC="0.9995082832764888"/>
-          </TextLine>
-          <TextLine ID="eSc_line_1290ef4c" TAGREFS="LT9" BASELINE="390 1056 1928 1060" HPOS="388.0" VPOS="1016.0" WIDTH="1540.0" HEIGHT="66.0">
-            <Shape><Polygon POINTS="390 1056 388 1070 404 1082 406 1082 408 1082 410 1082 1926 1074 1928 1060 1926 1032 1836 1018 1834 1018 1832 1018 1792 1030 1768 1018 1766 1018 1764 1018 1654 1030 1622 1018 1618 1018 1616 1018 1512 1032 1334 1032 1320 1018 1318 1018 1316 1018 1314 1018 1312 1018 1274 1030 1236 1018 1234 1018 1232 1018 1230 1018 1196 1030 1046 1030 1030 1016 1028 1016 1026 1016 1024 1016 970 1028 896 1016 894 1016 802 1028 760 1016 756 1016 754 1016 752 1016 722 1030 634 1030 620 1016 618 1016 616 1016 614 1016 612 1016 578 1028 542 1016 540 1016 538 1016 390 1026 390 1056"/></Shape>
-            <String CONTENT="animals they take little notice, nor do they care much about them." HPOS="388.0" VPOS="1016.0" WIDTH="1540.0" HEIGHT="66.0" WC="0.9998148788105358"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="968.0" VPOS="608.0" WIDTH="612.0" HEIGHT="80.0" ID="eSc_textblock_c2ed7e7d" TAGREFS="BT73">
-          <Shape><Polygon POINTS="968 608 968 688 1580 688 1580 608"/></Shape>
-          <TextLine ID="eSc_line_25a23db5" TAGREFS="LT9" BASELINE="964 648 1582 652" HPOS="962.0" VPOS="614.0" WIDTH="620.0" HEIGHT="56.0">
-            <Shape><Polygon POINTS="1572 616 964 614 964 648 962 666 1578 670 1582 652 1580 642 1572 616"/></Shape>
-            <String CONTENT="BOGORAS, THE CHUKCHEE." HPOS="962.0" VPOS="614.0" WIDTH="620.0" HEIGHT="56.0" WC="0.9981464499777014"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="382.0" VPOS="1082.0" WIDTH="1788.0" HEIGHT="480.0" ID="eSc_textblock_48f061a2" TAGREFS="BT72">
-          <Shape><Polygon POINTS="382 1082 382 1562 2170 1562 2170 1082"/></Shape>
-          <TextLine ID="eSc_line_f7dbf712" TAGREFS="LT9" BASELINE="500 1118 2160 1118" HPOS="500.0" VPOS="1082.0" WIDTH="1660.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="500 1118 500 1136 2160 1136 2160 1118 2160 1088 500 1082 500 1118"/></Shape>
-            <String CONTENT="The Rev. Argentoff relates that one Maiˊñɪ-qlaˊul, a rich reindeer-breeder" HPOS="500.0" VPOS="1082.0" WIDTH="1660.0" HEIGHT="54.0" WC="0.9850927337010702"/>
-          </TextLine>
-          <TextLine ID="eSc_line_c46e9485" TAGREFS="LT9" BASELINE="388 1178 2158 1182" HPOS="386.0" VPOS="1144.0" WIDTH="1772.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="388 1178 386 1192 2154 1196 2158 1182 2156 1148 388 1144 388 1178"/></Shape>
-            <String CONTENT="from the Dry Anui, tried to ascertain the number of his animals by counting" HPOS="386.0" VPOS="1144.0" WIDTH="1772.0" HEIGHT="52.0" WC="0.9998023716608683"/>
-          </TextLine>
-          <TextLine ID="eSc_line_0b22cb4c" TAGREFS="LT9" BASELINE="390 1238 2158 1238" HPOS="390.0" VPOS="1210.0" WIDTH="1768.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="390 1238 390 1258 2156 1258 2158 1238 2156 1210 390 1210 390 1238"/></Shape>
-            <String CONTENT="them by corrals. Each corralful was represented by a chip of wood, and these" HPOS="390.0" VPOS="1210.0" WIDTH="1768.0" HEIGHT="48.0" WC="0.9998390454995004"/>
-          </TextLine>
-          <TextLine ID="eSc_line_b1929eb8" TAGREFS="LT9" BASELINE="394 1298 2160 1298" HPOS="394.0" VPOS="1258.0" WIDTH="1766.0" HEIGHT="66.0">
-            <Shape><Polygon POINTS="394 1298 394 1314 504 1314 518 1324 520 1324 524 1324 526 1324 674 1314 738 1324 740 1324 886 1314 1040 1324 1042 1324 1188 1314 1284 1324 1286 1324 2158 1312 2160 1298 2156 1266 1794 1268 1688 1258 1686 1258 1684 1258 1656 1268 1548 1258 1546 1258 1442 1268 1386 1258 1382 1258 1322 1268 1264 1258 1262 1258 1260 1258 1224 1268 1190 1258 1188 1258 1186 1258 1184 1258 1182 1258 1164 1268 1076 1258 1074 1258 958 1268 920 1258 918 1258 916 1258 912 1258 884 1268 812 1258 808 1258 690 1268 658 1258 656 1258 654 1258 594 1268 562 1258 560 1258 558 1258 394 1268 394 1298"/></Shape>
-            <String CONTENT="were placed together in a glove.² Operations of this kind were performed" HPOS="394.0" VPOS="1258.0" WIDTH="1766.0" HEIGHT="66.0" WC="0.9997050671113862"/>
-          </TextLine>
-          <TextLine ID="eSc_line_6985d5b4" TAGREFS="LT9" BASELINE="390 1358 2158 1358" HPOS="390.0" VPOS="1324.0" WIDTH="1768.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="390 1358 390 1378 2156 1378 2158 1358 2156 1328 390 1324 390 1358"/></Shape>
-            <String CONTENT="by the rich Tungus for the same purpose; but among the Chukchee they can" HPOS="390.0" VPOS="1324.0" WIDTH="1768.0" HEIGHT="54.0" WC="0.9995547582705816"/>
-          </TextLine>
-          <TextLine ID="eSc_line_ed9f75a2" TAGREFS="LT9" BASELINE="390 1420 2160 1420" HPOS="390.0" VPOS="1390.0" WIDTH="1770.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="390 1420 390 1434 2160 1434 2160 1420 2160 1390 390 1390 390 1420"/></Shape>
-            <String CONTENT="occur only exceptionally, because every new experiment with the herd is" HPOS="390.0" VPOS="1390.0" WIDTH="1770.0" HEIGHT="44.0" WC="0.9998270818884943"/>
-          </TextLine>
-          <TextLine ID="eSc_line_b7bf7f3d" TAGREFS="LT9" BASELINE="390 1478 2160 1478" HPOS="390.0" VPOS="1436.0" WIDTH="1770.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="390 1478 390 1496 2160 1496 2160 1478 2160 1450 2108 1436 2106 1436 2104 1436 2074 1448 1928 1436 1926 1436 1924 1436 1922 1436 1906 1450 1780 1450 1748 1436 1746 1436 1744 1436 1632 1448 1546 1436 1544 1436 1540 1436 1538 1436 1526 1448 1488 1436 1486 1436 1484 1436 1434 1448 1390 1436 1388 1436 1386 1436 1382 1436 1344 1448 1272 1436 1270 1436 1174 1448 1130 1436 1128 1436 1126 1436 1060 1448 1030 1436 1028 1436 1026 1436 926 1448 894 1436 892 1436 890 1436 796 1448 728 1436 726 1436 640 1448 608 1436 606 1436 604 1436 550 1448 490 1436 488 1436 390 1448 390 1478"/></Shape>
-            <String CONTENT="considered to thwart the qaˊa-vaˊɪrg̣ɪn (literally, “reindeer substance;” i. e., the" HPOS="390.0" VPOS="1436.0" WIDTH="1770.0" HEIGHT="60.0" WC="0.9641302437299774"/>
-          </TextLine>
-          <TextLine ID="eSc_line_c1138554" TAGREFS="LT9" BASELINE="390 1538 874 1534" HPOS="388.0" VPOS="1494.0" WIDTH="486.0" HEIGHT="68.0">
-            <Shape><Polygon POINTS="390 1538 390 1556 856 1562 858 1562 860 1562 864 1562 874 1552 874 1534 872 1506 844 1494 842 1494 840 1494 724 1504 694 1494 692 1494 690 1494 688 1494 686 1494 670 1504 648 1494 646 1494 644 1494 642 1494 608 1506 398 1496 396 1496 394 1496 390 1496 390 1498 388 1498 390 1538"/></Shape>
-            <String CONTENT="herd’s good fortune)." HPOS="388.0" VPOS="1494.0" WIDTH="486.0" HEIGHT="68.0" WC="0.9983291711126056"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="382.0" VPOS="1558.0" WIDTH="1788.0" HEIGHT="302.0" ID="eSc_textblock_1c9ea459" TAGREFS="BT72">
-          <Shape><Polygon POINTS="382 1558 382 1860 2170 1860 2170 1558"/></Shape>
-          <TextLine ID="eSc_line_58ff533d" TAGREFS="LT9" BASELINE="500 1600 2162 1600" HPOS="500.0" VPOS="1564.0" WIDTH="1662.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="500 1600 500 1616 2162 1616 2162 1600 2162 1566 500 1564 500 1600"/></Shape>
-            <String CONTENT="SEASONS. — It may not be out of place to add here the Chukchee method" HPOS="500.0" VPOS="1564.0" WIDTH="1662.0" HEIGHT="52.0" WC="0.9984475909799769"/>
-          </TextLine>
-          <TextLine ID="eSc_line_2d5a8d27" TAGREFS="LT9" BASELINE="394 1658 2152 1654" HPOS="390.0" VPOS="1612.0" WIDTH="1762.0" HEIGHT="64.0">
-            <Shape><Polygon POINTS="394 1658 394 1676 2150 1670 2152 1654 2146 1616 1638 1624 1614 1612 1612 1612 1610 1612 1556 1624 1530 1612 1528 1612 1526 1612 1524 1612 1522 1612 1504 1626 1382 1626 1316 1612 1314 1612 1312 1612 1310 1612 1296 1624 1274 1612 1272 1612 1270 1612 968 1626 900 1614 898 1614 896 1614 894 1614 878 1628 720 1628 666 1614 664 1614 604 1626 582 1614 580 1614 430 1614 428 1614 426 1614 390 1626 394 1658"/></Shape>
-            <String CONTENT="of dividing the year. The year is divided into twelve lunar months or “moons”" HPOS="390.0" VPOS="1612.0" WIDTH="1762.0" HEIGHT="64.0" WC="0.9932804216038097"/>
-          </TextLine>
-          <TextLine ID="eSc_line_1649f72d" TAGREFS="LT9" BASELINE="394 1720 2160 1720" HPOS="394.0" VPOS="1676.0" WIDTH="1766.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="394 1720 394 1736 2158 1732 2160 1720 2160 1690 2130 1676 2128 1676 2126 1676 2124 1676 2100 1688 2078 1676 2076 1676 2074 1676 2072 1676 1966 1686 1940 1676 1938 1676 1936 1676 1932 1676 1904 1688 1810 1676 1808 1676 1806 1676 1776 1688 1712 1676 1710 1676 1708 1676 1678 1688 1588 1676 1586 1676 1584 1676 1558 1686 1530 1676 1528 1676 1526 1676 1524 1676 1522 1676 1504 1688 1364 1676 1362 1676 1360 1676 1312 1688 1246 1676 1244 1676 1242 1676 1212 1688 1168 1676 1166 1676 1164 1676 1088 1688 1010 1676 1008 1676 952 1686 924 1676 922 1676 920 1676 918 1676 916 1676 900 1688 846 1676 844 1676 842 1676 770 1688 698 1676 696 1676 630 1688 562 1676 560 1676 394 1684 394 1720"/></Shape>
-            <String CONTENT="(yiˊᵋlhɪn). The series begins with the winter solstice, the time of which is" HPOS="394.0" VPOS="1676.0" WIDTH="1766.0" HEIGHT="60.0" WC="0.9888843135039012"/>
-          </TextLine>
-          <TextLine ID="eSc_line_42db5de4" TAGREFS="LT9" BASELINE="396 1780 2158 1774" HPOS="394.0" VPOS="1742.0" WIDTH="1764.0" HEIGHT="64.0">
-            <Shape><Polygon POINTS="396 1780 396 1794 960 1806 962 1806 2158 1792 2158 1774 2152 1742 394 1746 396 1780"/></Shape>
-            <String CONTENT="marked pretty accurately. The dark interval between two “moons” is called" HPOS="394.0" VPOS="1742.0" WIDTH="1764.0" HEIGHT="64.0" WC="0.9906944101803923"/>
-          </TextLine>
-          <TextLine ID="eSc_line_0041c508" TAGREFS="LT9" BASELINE="406 1834 1756 1838" HPOS="404.0" VPOS="1798.0" WIDTH="1352.0" HEIGHT="66.0">
-            <Shape><Polygon POINTS="406 1834 404 1848 430 1862 432 1862 434 1864 540 1864 540 1862 542 1862 544 1862 544 1860 554 1850 576 1862 578 1862 580 1864 730 1864 730 1862 734 1862 736 1862 736 1860 746 1850 930 1862 932 1862 1002 1850 1210 1864 1212 1864 1214 1864 1248 1852 1278 1864 1282 1864 1284 1864 1286 1864 1316 1852 1342 1864 1344 1864 1346 1864 1414 1852 1754 1852 1756 1838 1754 1808 406 1798 406 1834"/></Shape>
-            <String CONTENT="“moon interval” (yuˊᵋtir). The names of the months are —" HPOS="404.0" VPOS="1798.0" WIDTH="1352.0" HEIGHT="66.0" WC="0.9649159259029797"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="400.0" VPOS="1882.0" WIDTH="1784.0" HEIGHT="775.0" ID="eSc_textblock_182e2c7a" TAGREFS="BT79">
-          <Shape><Polygon POINTS="400 1882 400 2657 2184 2657 2184 1882"/></Shape>
-          <TextLine ID="eSc_line_907f8fa2" TAGREFS="LT9" BASELINE="412 1918 2156 1922" HPOS="410.0" VPOS="1890.0" WIDTH="1746.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="412 1918 410 1938 2152 1942 2156 1922 2154 1894 412 1890 412 1918"/></Shape>
-            <String CONTENT="1. ɪnp-luˊwleñ-yiˊᵋlhɪn (“old-buck month”), from about the 20th of December to the 20th of January." HPOS="410.0" VPOS="1890.0" WIDTH="1746.0" HEIGHT="52.0" WC="0.9716319134741118"/>
-          </TextLine>
-          <TextLine ID="eSc_line_7e514b3b" TAGREFS="LT9" BASELINE="516 1971 1180 1967" HPOS="514.0" VPOS="1932.0" WIDTH="666.0" HEIGHT="53.0">
-            <Shape><Polygon POINTS="516 1971 516 1985 1178 1981 1180 1967 1174 1942 524 1932 520 1932 518 1932 516 1932 516 1936 514 1936 516 1971"/></Shape>
-            <String CONTENT="The origin of the name is uncertain." HPOS="514.0" VPOS="1932.0" WIDTH="666.0" HEIGHT="53.0" WC="0.999776671330134"/>
-          </TextLine>
-          <TextLine ID="eSc_line_f25ec975" TAGREFS="LT9" BASELINE="416 2017 1144 2011" HPOS="414.0" VPOS="1973.0" WIDTH="730.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="416 2017 416 2033 1142 2029 1144 2011 1140 1983 814 1973 812 1973 808 1973 772 1983 482 1975 480 1975 414 1985 416 2017"/></Shape>
-            <String CONTENT="2. Čačanloˊrg̣ɪn (“cold udder [month]”)." HPOS="414.0" VPOS="1973.0" WIDTH="730.0" HEIGHT="60.0" WC="0.9639045556909159"/>
-          </TextLine>
-          <TextLine ID="eSc_line_a25588d3" TAGREFS="LT9" BASELINE="426 2063 1186 2063" HPOS="426.0" VPOS="2033.0" WIDTH="760.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="426 2063 426 2087 1186 2079 1186 2063 1186 2033 426 2033 426 2063"/></Shape>
-            <String CONTENT="3. Lêˊê-loˊrg̣ɪn (“genuine udder [month]”)." HPOS="426.0" VPOS="2033.0" WIDTH="760.0" HEIGHT="54.0" WC="0.9577238315885718"/>
-          </TextLine>
-          <TextLine ID="eSc_line_615864d5" TAGREFS="LT9" BASELINE="420 2111 1032 2107" HPOS="416.0" VPOS="2069.0" WIDTH="616.0" HEIGHT="56.0">
-            <Shape><Polygon POINTS="420 2111 420 2125 1030 2121 1032 2107 1028 2079 768 2069 766 2069 416 2081 420 2111"/></Shape>
-            <String CONTENT="4. G̣roˊ-êˊᵋlhɪn (“calving month”)." HPOS="416.0" VPOS="2069.0" WIDTH="616.0" HEIGHT="56.0" WC="0.9706661464536891"/>
-          </TextLine>
-          <TextLine ID="eSc_line_e2a365d0" TAGREFS="LT9" BASELINE="474 2155 986 2151" HPOS="472.0" VPOS="2115.0" WIDTH="514.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="474 2155 474 2175 984 2175 986 2151 982 2125 480 2115 478 2115 476 2115 474 2115 474 2119 472 2119 474 2155"/></Shape>
-            <String CONTENT="5. Imlɪˊrɪlɪn (“water [month]”)." HPOS="472.0" VPOS="2115.0" WIDTH="514.0" HEIGHT="60.0" WC="0.9517315954997622"/>
-          </TextLine>
-          <TextLine ID="eSc_line_5057a405" TAGREFS="LT9" BASELINE="416 2201 1226 2201" HPOS="416.0" VPOS="2173.0" WIDTH="810.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="416 2201 416 2219 1226 2219 1226 2201 1226 2173 416 2173 416 2201"/></Shape>
-            <String CONTENT="6. Taˊwtɪñ-yêˊᵋlhɪn (“making-leaves month”)." HPOS="416.0" VPOS="2173.0" WIDTH="810.0" HEIGHT="46.0" WC="0.9440974113733872"/>
-          </TextLine>
-          <TextLine ID="eSc_line_94a7bb8d" TAGREFS="LT9" BASELINE="428 2251 1648 2251" HPOS="428.0" VPOS="2215.0" WIDTH="1220.0" HEIGHT="56.0">
-            <Shape><Polygon POINTS="428 2251 428 2271 1648 2265 1648 2251 1648 2219 428 2215 428 2251"/></Shape>
-            <String CONTENT="7. Om-yêˊᵋlhɪn (“warm month”) or Aˊno-yêˊᵋlhɪn (“summer month”)." HPOS="428.0" VPOS="2215.0" WIDTH="1220.0" HEIGHT="56.0" WC="0.9317651973529295"/>
-          </TextLine>
-          <TextLine ID="eSc_line_73e0c064" TAGREFS="LT9" BASELINE="414 2291 2024 2297" HPOS="412.0" VPOS="2259.0" WIDTH="1612.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="414 2291 412 2307 2020 2313 2024 2297 2022 2265 414 2259 414 2291"/></Shape>
-            <String CONTENT="8. Neǰ-iˊᵋlhɪn (“rubbing-off-velvet [antlers] month”) or Eleˊ-yiˊᵋlhɪn (“midsummer month”)." HPOS="412.0" VPOS="2259.0" WIDTH="1612.0" HEIGHT="54.0" WC="0.9491610315110949"/>
-          </TextLine>
-          <TextLine ID="eSc_line_6394a6fd" TAGREFS="LT9" BASELINE="426 2345 1104 2341" HPOS="424.0" VPOS="2299.0" WIDTH="680.0" HEIGHT="70.0">
-            <Shape><Polygon POINTS="426 2345 428 2369 454 2359 1100 2363 1104 2341 1100 2311 772 2299 770 2299 768 2299 730 2311 482 2303 480 2303 424 2313 426 2345"/></Shape>
-            <String CONTENT="9. Ñeˊrg̣eǰ-iˊᵋlhɪn (“light-frost month”)." HPOS="424.0" VPOS="2299.0" WIDTH="680.0" HEIGHT="70.0" WC="0.9684924759515902"/>
-          </TextLine>
-          <TextLine ID="eSc_line_bf3badc1" TAGREFS="LT9" BASELINE="400 2387 2114 2391" HPOS="398.0" VPOS="2357.0" WIDTH="1716.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="400 2387 398 2401 2110 2407 2114 2391 2114 2361 400 2357 400 2387"/></Shape>
-            <String CONTENT="10. G̣ɪthaˊ-êˊᵋlhɪn (“autumn month”), called also ɪlv-eiˊñe-yiˊᵋlhɪn (“wild-reindeer rutting month”)." HPOS="398.0" VPOS="2357.0" WIDTH="1716.0" HEIGHT="50.0" WC="0.9591762461498672"/>
-          </TextLine>
-          <TextLine ID="eSc_line_e080e8c5" TAGREFS="LT9" BASELINE="398 2429 2162 2435" HPOS="396.0" VPOS="2401.0" WIDTH="1766.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="398 2429 396 2447 2158 2451 2162 2435 2160 2407 398 2401 398 2429"/></Shape>
-            <String CONTENT="11. Yaraˊučɪn, probably from Yaˊraw (“muscles of the back”), because it is supposed that the" HPOS="396.0" VPOS="2401.0" WIDTH="1766.0" HEIGHT="50.0" WC="0.9744839514455488"/>
-          </TextLine>
-          <TextLine ID="eSc_line_a4ea40d9" TAGREFS="LT9" BASELINE="512 2479 2162 2485" HPOS="510.0" VPOS="2449.0" WIDTH="1652.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="512 2479 510 2495 2158 2499 2162 2485 2160 2453 512 2449 512 2479"/></Shape>
-            <String CONTENT="muscles of a reindeer’s back strengthen in mid-winter. The same name, with the same expla-" HPOS="510.0" VPOS="2449.0" WIDTH="1652.0" HEIGHT="50.0" WC="0.9946476380030315"/>
-          </TextLine>
-          <TextLine ID="eSc_line_029f008f" TAGREFS="LT9" BASELINE="512 2525 2160 2529" HPOS="510.0" VPOS="2495.0" WIDTH="1650.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="512 2525 510 2539 2156 2543 2160 2529 2158 2499 512 2495 512 2525"/></Shape>
-            <String CONTENT="nation, was found among the Koryak of the western shore of Kamchatka in the form" HPOS="510.0" VPOS="2495.0" WIDTH="1650.0" HEIGHT="48.0" WC="0.9994863495230675"/>
-          </TextLine>
-          <TextLine ID="eSc_line_b0655fbb" TAGREFS="LT9" BASELINE="510 2571 2066 2577" HPOS="508.0" VPOS="2543.0" WIDTH="1558.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="510 2571 508 2591 2060 2593 2066 2577 2062 2549 510 2543 510 2571"/></Shape>
-            <String CONTENT="yaraˊwučɪn. This month is also called by the Chukchee Tuˊr-eᵋče (“new-snow cover”)." HPOS="508.0" VPOS="2543.0" WIDTH="1558.0" HEIGHT="50.0" WC="0.9814956258325016"/>
-          </TextLine>
-          <TextLine ID="eSc_line_04cebb33" TAGREFS="LT9" BASELINE="396 2623 1232 2619" HPOS="394.0" VPOS="2585.0" WIDTH="838.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="396 2623 396 2639 1230 2635 1232 2619 1224 2585 394 2589 396 2623"/></Shape>
-            <String CONTENT="12. Quˊuleǰ-iˊᵋlhɪn (“shrinking [days] month”)." HPOS="394.0" VPOS="2585.0" WIDTH="838.0" HEIGHT="54.0" WC="0.9535676868672066"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="386.0" VPOS="2663.0" WIDTH="1786.0" HEIGHT="492.0" ID="eSc_textblock_2de077ba" TAGREFS="BT72">
-          <Shape><Polygon POINTS="386 2663 386 3155 2172 3155 2172 2663"/></Shape>
-          <TextLine ID="eSc_line_6caa0f7c" TAGREFS="LT9" BASELINE="502 2709 2162 2705" HPOS="500.0" VPOS="2661.0" WIDTH="1662.0" HEIGHT="64.0">
-            <Shape><Polygon POINTS="502 2709 502 2725 2160 2723 2162 2705 2158 2677 2068 2663 2066 2663 1984 2675 1968 2661 1966 2661 1964 2661 1962 2661 1958 2661 1914 2675 1866 2661 1864 2661 1862 2661 1860 2661 1802 2677 1738 2677 1720 2661 1718 2661 1716 2661 1714 2661 1712 2661 1684 2677 1598 2677 1580 2661 1578 2661 1576 2661 1574 2661 1572 2661 1534 2675 1442 2661 1440 2661 1326 2679 1222 2679 1206 2663 1204 2663 1200 2663 1198 2663 1196 2663 1166 2679 1012 2679 996 2663 994 2663 990 2663 988 2663 986 2663 960 2677 944 2663 942 2663 938 2663 936 2663 934 2663 910 2675 850 2663 848 2663 846 2663 844 2663 826 2677 752 2663 750 2663 692 2675 676 2663 674 2663 672 2663 670 2663 602 2677 564 2663 562 2663 560 2663 500 2671 502 2709"/></Shape>
-            <String CONTENT="The Maritime Chukchee use the same table of months. The Koryak in" HPOS="500.0" VPOS="2661.0" WIDTH="1662.0" HEIGHT="64.0" WC="0.9976184817460867"/>
-          </TextLine>
-          <TextLine ID="eSc_line_5693aa84" TAGREFS="LT9" BASELINE="390 2767 2162 2767" HPOS="390.0" VPOS="2737.0" WIDTH="1772.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="390 2767 390 2787 2162 2787 2162 2767 2162 2737 390 2737 390 2767"/></Shape>
-            <String CONTENT="different localities have different systems of names, but for the third and the" HPOS="390.0" VPOS="2737.0" WIDTH="1772.0" HEIGHT="50.0" WC="0.9998388841182371"/>
-          </TextLine>
-          <TextLine ID="eSc_line_eef3a20e" TAGREFS="LT9" BASELINE="394 2831 2156 2825" HPOS="390.0" VPOS="2787.0" WIDTH="1766.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="394 2831 394 2847 2154 2841 2156 2825 2152 2787 404 2787 402 2787 400 2787 398 2787 398 2789 390 2793 394 2831"/></Shape>
-            <String CONTENT="fourth month most of them have names signifying “false reindeer-birth month”" HPOS="390.0" VPOS="2787.0" WIDTH="1766.0" HEIGHT="60.0" WC="0.9965856467422686"/>
-          </TextLine>
-          <TextLine ID="eSc_line_046a1841" TAGREFS="LT9" BASELINE="394 2885 2162 2889" HPOS="390.0" VPOS="2855.0" WIDTH="1772.0" HEIGHT="56.0">
-            <Shape><Polygon POINTS="394 2885 390 2903 402 2911 404 2911 406 2911 408 2911 2160 2903 2162 2889 2160 2859 394 2855 394 2885"/></Shape>
-            <String CONTENT="and “genuine reindeer-birth month.”³ Of course, the twelve lunar months do" HPOS="390.0" VPOS="2855.0" WIDTH="1772.0" HEIGHT="56.0" WC="0.9915612952129261"/>
-          </TextLine>
-          <TextLine ID="eSc_line_1bb036a1" TAGREFS="LT9" BASELINE="394 2945 2164 2949" HPOS="390.0" VPOS="2897.0" WIDTH="1774.0" HEIGHT="66.0">
-            <Shape><Polygon POINTS="394 2945 390 2959 2160 2963 2164 2949 2164 2919 2114 2903 2112 2903 2110 2903 2108 2903 2078 2917 2002 2903 2000 2903 1998 2903 1996 2903 1972 2917 1886 2903 1884 2903 1776 2917 1664 2903 1662 2903 1660 2903 1618 2917 1352 2917 1334 2903 1330 2903 1328 2903 1326 2903 1324 2903 1322 2903 1298 2917 1182 2917 1134 2899 1132 2899 1130 2899 1128 2899 1094 2915 1002 2899 1000 2899 998 2899 958 2915 906 2899 904 2899 902 2899 900 2899 840 2915 790 2899 788 2899 786 2899 782 2899 754 2915 726 2899 724 2899 722 2899 654 2915 614 2899 612 2899 610 2899 608 2899 606 2899 584 2915 482 2915 460 2899 458 2899 456 2899 394 2897 394 2945"/></Shape>
-            <String CONTENT="not exactly coincide with the solar year between two winter solstices; but the" HPOS="390.0" VPOS="2897.0" WIDTH="1774.0" HEIGHT="66.0" WC="0.9951113110933548"/>
-          </TextLine>
-          <TextLine ID="eSc_line_7af45f5b" TAGREFS="LT9" BASELINE="394 3001 2164 3009" HPOS="390.0" VPOS="2971.0" WIDTH="1774.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="394 3001 390 3017 2160 3023 2164 3009 2162 2977 394 2971 394 3001"/></Shape>
-            <String CONTENT="Chukchee do not care about a few extra days. In ordinary talk the names" HPOS="390.0" VPOS="2971.0" WIDTH="1774.0" HEIGHT="52.0" WC="0.9997502565383911"/>
-          </TextLine>
-          <TextLine ID="eSc_line_cd57a180" TAGREFS="LT9" BASELINE="394 3063 2164 3069" HPOS="390.0" VPOS="3027.0" WIDTH="1774.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="394 3063 390 3079 2160 3087 2164 3069 2162 3039 394 3027 394 3063"/></Shape>
-            <String CONTENT="of the months are often replaced by those of the seasons, which are much more" HPOS="390.0" VPOS="3027.0" WIDTH="1774.0" HEIGHT="60.0" WC="0.999749936840751"/>
-          </TextLine>
-          <TextLine ID="eSc_line_926cf321" TAGREFS="LT9" BASELINE="394 3123 1998 3129" HPOS="390.0" VPOS="3093.0" WIDTH="1608.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="394 3123 390 3139 1588 3153 1590 3153 1996 3143 1998 3129 1998 3099 394 3093 394 3123"/></Shape>
-            <String CONTENT="numerous than with us. The following are most frequently employed." HPOS="390.0" VPOS="3093.0" WIDTH="1608.0" HEIGHT="60.0" WC="0.9998007154825962"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="498.0" VPOS="3185.0" WIDTH="472.0" HEIGHT="68.0" ID="eSc_textblock_3e38ea33" TAGREFS="BT75">
-          <Shape><Polygon POINTS="498 3185 498 3253 970 3253 970 3185"/></Shape>
-          <TextLine ID="eSc_line_9f083ba3" TAGREFS="LT9" BASELINE="502 3213 962 3221" HPOS="500.0" VPOS="3185.0" WIDTH="462.0" HEIGHT="54.0">
-            <Shape><Polygon POINTS="502 3213 500 3233 958 3239 962 3221 960 3193 502 3185 502 3213"/></Shape>
-            <String CONTENT="¹ Compare Melikoff, p. 136." HPOS="500.0" VPOS="3185.0" WIDTH="462.0" HEIGHT="54.0" WC="0.9995793369081285"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="1242.0" VPOS="3187.0" WIDTH="264.0" HEIGHT="64.0" ID="eSc_textblock_48b8d7c3" TAGREFS="BT75">
-          <Shape><Polygon POINTS="1242 3187 1242 3251 1506 3251 1506 3187"/></Shape>
-          <TextLine ID="eSc_line_3efb7186" TAGREFS="LT9" BASELINE="1244 3221 1504 3221" HPOS="1244.0" VPOS="3195.0" WIDTH="260.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="1244 3221 1244 3239 1504 3239 1504 3221 1504 3195 1244 3195 1244 3221"/></Shape>
-            <String CONTENT="² Argentoff, II." HPOS="1244.0" VPOS="3195.0" WIDTH="260.0" HEIGHT="44.0" WC="0.9992856942117214"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="1780.0" VPOS="3189.0" WIDTH="222.0" HEIGHT="66.0" ID="eSc_textblock_4ff4d616" TAGREFS="BT75">
-          <Shape><Polygon POINTS="1780 3189 1780 3255 2002 3255 2002 3189"/></Shape>
-          <TextLine ID="eSc_line_004cdd4b" TAGREFS="LT9" BASELINE="1782 3219 2000 3223" HPOS="1780.0" VPOS="3191.0" WIDTH="220.0" HEIGHT="58.0">
-            <Shape><Polygon POINTS="1782 3219 1780 3233 1890 3249 1892 3249 1998 3237 2000 3223 1998 3195 1782 3191 1782 3219"/></Shape>
-            <String CONTENT="³ See p. 13." HPOS="1780.0" VPOS="3191.0" WIDTH="220.0" HEIGHT="58.0" WC="0.9870840758085251"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="2080.0" VPOS="618.0" WIDTH="76.0" HEIGHT="72.0" ID="eSc_textblock_6222fbf7" TAGREFS="BT70">
-          <Shape><Polygon POINTS="2080 618 2080 690 2156 690 2156 618"/></Shape>
-        </TextBlock>
-      </PrintSpace>
-    </Page>
-  </Layout>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-073.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-073.png; regions_from: zones/chukchi-1-073.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-073_r1" HPOS="391" VPOS="604" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="391 604 2169 604 2169 694 391 694"/>
+                    </Shape>
+                    <TextLine ID="mz_1-073_l1" HPOS="963" VPOS="614" WIDTH="620" HEIGHT="57" BASELINE="965 647 1583 653" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1576 617 1169 614 1160 614 1139 614 1117 614 1095 614 1074 614 1052 614 1030 614 1009 614 987 614 965 614 965 647 963 664 1578 671 1583 653 1580 621 1576 617"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l2" HPOS="2107" VPOS="621" WIDTH="11" HEIGHT="65" BASELINE="2107 660 2118 660" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2107 660 2111 686 2118 681 2118 660 2118 621 2107 621 2107 660"/>
+                        </Shape>
+                        <String CONTENT="51"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-073_r2" HPOS="391" VPOS="724" WIDTH="1778" HEIGHT="360" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="391 724 2169 724 2169 1084 391 1084"/>
+                    </Shape>
+                    <TextLine ID="mz_1-073_l3" HPOS="498" VPOS="725" WIDTH="1661" HEIGHT="54" BASELINE="498 762 2159 762" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="498 762 498 779 2159 779 2159 762 2154 729 498 725 498 762"/>
+                        </Shape>
+                        <String CONTENT="The herdsmen, of course, never count their reindeer, nor are they able"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l4" HPOS="389" VPOS="777" WIDTH="1759" HEIGHT="60" BASELINE="391 822 2148 818" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 822 391 837 2146 833 2148 818 2143 777 1269 777 1266 777 1264 777 1262 777 1245 788 602 779 599 779 389 790 391 822"/>
+                        </Shape>
+                        <String CONTENT="to remember all their animals by their looks, as has been asserted by travellers.¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l5" HPOS="394" VPOS="842" WIDTH="1765" HEIGHT="56" BASELINE="394 883 2159 883" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 883 394 898 2159 898 2159 883 2152 850 394 842 394 883"/>
+                        </Shape>
+                        <String CONTENT="In the larger herds they know only the more conspicuous animals, such as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l6" HPOS="391" VPOS="900" WIDTH="1765" HEIGHT="59" BASELINE="391 941 2156 941" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 941 391 959 2156 959 2156 941 2156 913 2105 900 2102 900 2048 911 1949 900 1946 900 1944 900 1914 911 1760 900 1758 900 1756 900 1728 911 1637 900 1635 900 1632 900 1600 911 1583 900 1580 900 1578 900 1576 900 1520 913 1355 913 1340 900 1338 900 1336 900 1334 900 1214 911 1041 900 1039 900 1037 900 1002 911 894 900 892 900 890 900 857 911 833 900 831 900 829 900 764 911 684 900 682 900 556 911 534 900 532 900 530 900 391 902 391 941"/>
+                        </Shape>
+                        <String CONTENT="breeding-bucks, old dams, harness-animals, etc. If there be any loss, they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l7" HPOS="389" VPOS="965" WIDTH="1767" HEIGHT="61" BASELINE="391 1002 2156 998" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1002 391 1015 885 1015 976 1026 978 1026 981 1026 1013 1015 1065 1026 1067 1026 1069 1026 1071 1026 1087 1015 1271 1024 1273 1024 1399 1013 1416 1024 1418 1024 1420 1024 1422 1024 1474 1013 1487 1024 1489 1024 1492 1024 1494 1024 1574 1013 1589 1024 1591 1024 1593 1024 1596 1024 1598 1024 1639 1013 1652 1024 1654 1024 1656 1024 1658 1026 1760 1026 1760 1024 1814 1013 1868 1024 1871 1024 1873 1024 1875 1024 1888 1013 1901 1024 1903 1024 1905 1024 1907 1026 2137 1026 2137 1024 2139 1024 2141 1024 2156 1011 2156 998 2152 969 389 965 391 1002"/>
+                        </Shape>
+                        <String CONTENT="become aware of it only by the absence of one of them. Of the smaller"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l8" HPOS="389" VPOS="1017" WIDTH="1538" HEIGHT="61" BASELINE="391 1063 1927 1058" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1063 391 1078 1925 1076 1927 1058 1923 1030 1829 1017 1827 1017 1825 1017 1797 1028 1297 1017 1295 1017 1292 1017 1256 1028 1219 1017 1217 1017 1214 1017 1134 1030 1026 1019 1024 1019 918 1030 820 1019 818 1019 816 1019 792 1030 710 1019 708 1019 706 1019 684 1030 593 1019 591 1019 589 1019 563 1030 448 1019 446 1019 443 1019 389 1032 391 1063"/>
+                        </Shape>
+                        <String CONTENT="animals they take little notice, nor do they care much about them."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-073_r3" HPOS="391" VPOS="1084" WIDTH="1778" HEIGHT="474" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="391 1084 2169 1084 2169 1558 391 1558"/>
+                    </Shape>
+                    <TextLine ID="mz_1-073_l9" HPOS="500" VPOS="1082" WIDTH="1659" HEIGHT="56" BASELINE="500 1119 2159 1119" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="500 1119 500 1138 2159 1138 2159 1119 2154 1086 500 1082 500 1119"/>
+                        </Shape>
+                        <String CONTENT="The Rev. Argentoff relates that one Maiˊñɪ-qlaˊul, a rich reindeer-breeder"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l10" HPOS="391" VPOS="1149" WIDTH="1765" HEIGHT="52" BASELINE="391 1179 2156 1179" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1179 391 1195 2154 1201 2156 1179 2156 1149 391 1149 391 1179"/>
+                        </Shape>
+                        <String CONTENT="from the Dry Anui, tried to ascertain the number of his animals by counting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l11" HPOS="391" VPOS="1210" WIDTH="1768" HEIGHT="47" BASELINE="391 1240 2159 1240" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1240 391 1257 2156 1257 2159 1240 2150 1210 391 1210 391 1240"/>
+                        </Shape>
+                        <String CONTENT="them by corrals. Each corralful was represented by a chip of wood, and these"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l12" HPOS="394" VPOS="1266" WIDTH="1765" HEIGHT="61" BASELINE="394 1301 2159 1301" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 1301 394 1316 506 1316 521 1327 524 1327 526 1327 528 1327 675 1316 740 1327 742 1327 887 1316 1024 1316 1039 1327 1041 1327 1043 1327 1046 1327 1184 1316 1284 1327 1286 1327 2159 1314 2159 1301 2152 1266 394 1268 394 1301"/>
+                        </Shape>
+                        <String CONTENT="were placed together in a glove.² Operations of this kind were performed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l13" HPOS="391" VPOS="1324" WIDTH="1768" HEIGHT="52" BASELINE="391 1359 2159 1359" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1359 391 1376 2156 1376 2159 1359 2150 1329 391 1324 391 1359"/>
+                        </Shape>
+                        <String CONTENT="by the rich Tungus for the same purpose; but among the Chukchee they can"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l14" HPOS="389" VPOS="1387" WIDTH="1770" HEIGHT="59" BASELINE="391 1420 2159 1415" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1420 391 1435 968 1446 970 1446 972 1446 974 1446 991 1435 2156 1435 2159 1415 2150 1387 389 1389 391 1420"/>
+                        </Shape>
+                        <String CONTENT="occur only exceptionally, because every new experiment with the herd is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l15" HPOS="389" VPOS="1435" WIDTH="1770" HEIGHT="71" BASELINE="391 1480 2159 1476" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1480 391 1496 959 1496 1004 1506 1007 1506 1009 1506 1074 1496 1201 1506 1204 1506 1206 1506 1247 1496 1269 1506 1271 1506 1273 1506 1453 1504 1455 1504 1457 1504 1472 1493 1693 1493 1730 1504 1732 1504 1734 1504 2156 1493 2159 1476 2150 1446 2107 1435 2105 1435 2102 1435 2100 1435 2079 1446 1933 1435 1931 1435 1929 1435 1927 1435 1912 1448 1775 1448 1756 1435 1754 1435 1752 1435 1749 1435 1632 1446 1550 1435 1548 1435 1546 1435 1524 1446 1489 1435 1487 1435 1485 1435 1483 1435 1442 1446 1273 1435 1271 1435 1269 1435 1266 1435 1251 1448 1143 1437 1141 1437 937 1448 898 1437 896 1437 894 1437 892 1437 857 1448 727 1437 725 1437 723 1437 690 1448 489 1437 487 1437 389 1450 391 1480"/>
+                        </Shape>
+                        <String CONTENT="considered to thwart the qaˊa-vaˊɪrg̣ɪn (literally, “reindeer substance;” i. e., the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l16" HPOS="389" VPOS="1493" WIDTH="485" HEIGHT="70" BASELINE="391 1539 874 1534" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1539 391 1556 851 1563 853 1563 855 1563 857 1563 874 1552 874 1534 872 1506 840 1493 838 1493 835 1493 833 1493 831 1493 816 1506 723 1506 697 1493 695 1493 693 1493 690 1493 688 1493 671 1504 649 1493 647 1493 645 1493 643 1493 610 1506 478 1496 476 1496 474 1496 428 1506 400 1496 398 1496 396 1496 394 1496 391 1496 391 1498 389 1498 391 1539"/>
+                        </Shape>
+                        <String CONTENT="herd’s good fortune)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-073_r4" HPOS="391" VPOS="1558" WIDTH="1778" HEIGHT="309" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="391 1558 2169 1558 2169 1867 391 1867"/>
+                    </Shape>
+                    <TextLine ID="mz_1-073_l17" HPOS="500" VPOS="1556" WIDTH="1663" HEIGHT="61" BASELINE="500 1599 2163 1599" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="500 1599 500 1617 2163 1617 2163 1599 2156 1560 2150 1556 2148 1556 2146 1556 2143 1556 2141 1556 2115 1567 2081 1556 2079 1556 2076 1556 2074 1556 2029 1569 1933 1569 1920 1556 1918 1556 1916 1556 1914 1556 1912 1556 1886 1567 1871 1556 1868 1556 1866 1556 1864 1556 1862 1556 1829 1567 1816 1556 1814 1556 1812 1556 1810 1556 1760 1567 1715 1556 1713 1556 1710 1556 1708 1556 1678 1567 1585 1556 1583 1556 1489 1569 1336 1569 1316 1556 1314 1556 1312 1556 1310 1556 1208 1569 1078 1569 1063 1556 1061 1556 1059 1556 1056 1556 985 1569 831 1569 816 1556 814 1556 812 1556 809 1556 807 1556 770 1567 500 1565 500 1599"/>
+                        </Shape>
+                        <String CONTENT="Seasons. — It may not be out of place to add here the Chukchee method"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l18" HPOS="394" VPOS="1621" WIDTH="1760" HEIGHT="54" BASELINE="394 1658 2154 1658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 1658 394 1675 2154 1675 2154 1658 2152 1621 394 1625 394 1658"/>
+                        </Shape>
+                        <String CONTENT="of dividing the year. The year is divided into twelve lunar months or “moons”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l19" HPOS="391" VPOS="1684" WIDTH="1770" HEIGHT="60" BASELINE="394 1716 2161 1721" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 1716 391 1734 1472 1734 1650 1744 1652 1744 1654 1744 1676 1734 1697 1744 1700 1744 1702 1744 1758 1734 2159 1734 2161 1721 2161 1688 394 1684 394 1716"/>
+                        </Shape>
+                        <String CONTENT="(yiˊᵋlhɪn). The series begins with the winter solstice, the time of which is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l20" HPOS="394" VPOS="1744" WIDTH="1767" HEIGHT="59" BASELINE="396 1775 2161 1779" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1775 394 1794 402 1801 404 1801 407 1801 409 1801 1256 1792 1275 1803 1277 1803 1279 1803 1282 1803 2159 1792 2161 1779 2161 1744 396 1744 396 1775"/>
+                        </Shape>
+                        <String CONTENT="marked pretty accurately. The dark interval between two “moons” is called"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l21" HPOS="407" VPOS="1801" WIDTH="1347" HEIGHT="63" BASELINE="407 1835 1754 1835" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1835 407 1853 762 1853 775 1864 777 1864 779 1864 781 1864 853 1853 907 1864 909 1864 911 1864 950 1853 1212 1864 1214 1864 1217 1864 1249 1853 1279 1864 1282 1864 1284 1864 1286 1864 1316 1853 1342 1864 1344 1864 1347 1864 1412 1853 1476 1864 1479 1864 1754 1851 1754 1835 1754 1807 407 1801 407 1835"/>
+                        </Shape>
+                        <String CONTENT="“moon interval” (yuˊᵋtir). The names of the months are —"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-073_r5" HPOS="391" VPOS="1881" WIDTH="1778" HEIGHT="775" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="391 1881 2169 1881 2169 2656 391 2656"/>
+                    </Shape>
+                    <TextLine ID="mz_1-073_l22" HPOS="411" VPOS="1890" WIDTH="1745" HEIGHT="54" BASELINE="413 1920 2156 1926" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="413 1920 411 1937 2152 1944 2156 1926 2154 1896 413 1890 413 1920"/>
+                        </Shape>
+                        <String CONTENT="1. ɪnp-luˊwleñ-yiˊᵋlhɪn (“old-buck month”), from about the 20th of December to the 20th of January."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l23" HPOS="515" VPOS="1942" WIDTH="665" HEIGHT="43" BASELINE="517 1970 1180 1967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="517 1970 517 1985 1178 1983 1180 1967 1173 1942 515 1942 517 1970"/>
+                        </Shape>
+                        <String CONTENT="The origin of the name is uncertain."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l24" HPOS="413" VPOS="1974" WIDTH="734" HEIGHT="67" BASELINE="415 2017 1147 2013" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2017 415 2030 1119 2041 1121 2041 1123 2041 1126 2041 1147 2028 1147 2013 1143 1985 792 1974 790 1974 788 1974 786 1974 773 1985 480 1976 478 1976 413 1987 415 2017"/>
+                        </Shape>
+                        <String CONTENT="2. Čačanloˊrg̣ɪn (“cold udder [month]”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l25" HPOS="426" VPOS="2030" WIDTH="760" HEIGHT="52" BASELINE="428 2063 1186 2065" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2063 426 2082 1184 2078 1186 2065 1184 2032 428 2030 428 2063"/>
+                        </Shape>
+                        <String CONTENT="3. Lêˊê-loˊrg̣ɪn (“genuine udder [month]”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l26" HPOS="417" VPOS="2069" WIDTH="616" HEIGHT="57" BASELINE="420 2113 1033 2108" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2113 420 2126 1030 2121 1033 2108 1028 2080 723 2069 721 2069 718 2069 690 2080 487 2071 485 2071 417 2082 420 2113"/>
+                        </Shape>
+                        <String CONTENT="4. G̣roˊ-êˊᵋlhɪn (“calving month”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l27" HPOS="469" VPOS="2123" WIDTH="518" HEIGHT="50" BASELINE="472 2156 987 2152" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="472 2156 472 2173 985 2171 987 2152 981 2123 469 2126 472 2156"/>
+                        </Shape>
+                        <String CONTENT="5. Imlɪˊrɪlɪn (“water [month]”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l28" HPOS="417" VPOS="2173" WIDTH="808" HEIGHT="46" BASELINE="417 2201 1225 2201" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2201 417 2219 1225 2219 1225 2201 1225 2173 417 2173 417 2201"/>
+                        </Shape>
+                        <String CONTENT="6. Taˊwtɪñ-yêˊᵋlhɪn (“making-leaves month”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l29" HPOS="428" VPOS="2216" WIDTH="1215" HEIGHT="57" BASELINE="430 2251 1643 2249" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="430 2251 430 2273 1641 2266 1643 2249 1639 2221 428 2216 430 2251"/>
+                        </Shape>
+                        <String CONTENT="7. Om-yêˊᵋlhɪn (“warm month”) or Aˊno-yêˊᵋlhɪn (“summer month”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l30" HPOS="413" VPOS="2262" WIDTH="1609" HEIGHT="52" BASELINE="415 2292 2022 2297" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2018 2277 2009 2264 415 2262 415 2292 413 2310 2018 2314 2022 2297 2020 2284 2018 2277"/>
+                        </Shape>
+                        <String CONTENT="8. Neǰ-iˊᵋlhɪn (“rubbing-off-velvet [antlers] month”) or Eleˊ-yiˊᵋlhɪn (“midsummer month”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l31" HPOS="424" VPOS="2301" WIDTH="680" HEIGHT="69" BASELINE="426 2346 1104 2342" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 2346 428 2370 454 2359 1100 2364 1104 2342 1100 2312 770 2301 768 2301 766 2301 731 2312 480 2303 478 2303 424 2314 426 2346"/>
+                        </Shape>
+                        <String CONTENT="9. Ñeˊrg̣eǰ-iˊᵋlhɪn (“light-frost month”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l32" HPOS="400" VPOS="2359" WIDTH="1715" HEIGHT="48" BASELINE="400 2390 2115 2390" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 2390 400 2405 2113 2407 2115 2390 2115 2359 400 2359 400 2390"/>
+                        </Shape>
+                        <String CONTENT="10. G̣ɪthaˊ-êˊᵋlhɪn (“autumn month”), called also ɪlv-eiˊñe-yiˊᵋlhɪn (“wild-reindeer rutting month”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l33" HPOS="396" VPOS="2403" WIDTH="1763" HEIGHT="49" BASELINE="398 2431 2159 2437" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 2431 396 2446 2154 2452 2159 2437 2159 2407 398 2403 398 2431"/>
+                        </Shape>
+                        <String CONTENT="11. Yaraˊučɪn, probably from Yaˊraw (“muscles of the back”), because it is supposed that the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l34" HPOS="511" VPOS="2448" WIDTH="1650" HEIGHT="50" BASELINE="513 2478 2161 2483" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="513 2478 511 2494 2156 2498 2161 2483 2159 2455 513 2448 513 2478"/>
+                        </Shape>
+                        <String CONTENT="muscles of a reindeer’s back strengthen in mid-winter. The same name, with the same expla-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l35" HPOS="511" VPOS="2496" WIDTH="1650" HEIGHT="47" BASELINE="513 2526 2161 2530" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="513 2526 511 2539 2156 2543 2161 2530 2159 2500 513 2496 513 2526"/>
+                        </Shape>
+                        <String CONTENT="nation, was found among the Koryak of the western shore of Kamchatka in the form"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l36" HPOS="511" VPOS="2541" WIDTH="1555" HEIGHT="52" BASELINE="511 2572 2066 2576" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="511 2572 511 2593 2063 2593 2066 2576 2063 2546 511 2541 511 2572"/>
+                        </Shape>
+                        <String CONTENT="yaraˊwučɪn. This month is also called by the Chukchee Tuˊr-eᵋče (“new-snow cover”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l37" HPOS="394" VPOS="2587" WIDTH="836" HEIGHT="54" BASELINE="396 2621 1230 2617" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2621 396 2641 1227 2641 1230 2617 1223 2587 394 2589 396 2621"/>
+                        </Shape>
+                        <String CONTENT="12. Quˊuleǰ-iˊᵋlhɪn (“shrinking [days] month”)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-073_r6" HPOS="391" VPOS="2667" WIDTH="1778" HEIGHT="484" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="391 2667 2169 2667 2169 3151 391 3151"/>
+                    </Shape>
+                    <TextLine ID="mz_1-073_l38" HPOS="500" VPOS="2662" WIDTH="1661" HEIGHT="63" BASELINE="502 2710 2161 2706" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="502 2710 502 2725 2159 2723 2161 2706 2156 2678 2066 2665 2063 2665 1985 2675 1966 2662 1964 2662 1962 2662 1959 2662 1957 2662 1912 2675 1864 2662 1862 2662 1860 2662 1858 2662 1803 2675 1715 2662 1713 2662 1710 2662 1661 2678 1596 2678 1578 2662 1576 2662 1574 2662 1572 2662 1570 2662 1531 2675 1479 2662 1476 2662 1474 2662 1312 2678 1201 2665 1199 2665 1197 2665 1165 2680 1030 2680 994 2665 991 2665 989 2665 987 2665 961 2678 946 2665 944 2665 942 2665 851 2665 848 2665 846 2665 844 2665 827 2678 753 2665 751 2665 500 2671 502 2710"/>
+                        </Shape>
+                        <String CONTENT="The Maritime Chukchee use the same table of months. The Koryak in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l39" HPOS="391" VPOS="2734" WIDTH="1772" HEIGHT="50" BASELINE="394 2766 2163 2771" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2154 2736 394 2734 394 2766 391 2779 2159 2784 2163 2771 2161 2758 2154 2736"/>
+                        </Shape>
+                        <String CONTENT="different localities have different systems of names, but for the third and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l40" HPOS="394" VPOS="2790" WIDTH="1762" HEIGHT="56" BASELINE="394 2829 2156 2829" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2829 394 2846 2156 2846 2156 2829 2154 2790 394 2797 394 2829"/>
+                        </Shape>
+                        <String CONTENT="fourth month most of them have names signifying “false reindeer-birth month”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l41" HPOS="394" VPOS="2846" WIDTH="1769" HEIGHT="59" BASELINE="394 2888 2163 2888" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2888 394 2905 2163 2905 2163 2888 2163 2857 2122 2846 2120 2846 2118 2846 2115 2846 2092 2857 2037 2846 2035 2846 2033 2846 1985 2857 1793 2846 1790 2846 1788 2846 1743 2857 1704 2846 1702 2846 1700 2846 1697 2846 1695 2846 1678 2859 1580 2859 1554 2846 1552 2846 1550 2846 1548 2846 1546 2846 1526 2859 1360 2859 1288 2846 1286 2846 1284 2846 1245 2857 1141 2846 1139 2846 1011 2857 909 2846 907 2846 853 2857 766 2846 764 2846 673 2857 517 2846 515 2846 513 2846 511 2846 498 2857 469 2846 467 2846 465 2846 394 2857 394 2888"/>
+                        </Shape>
+                        <String CONTENT="and “genuine reindeer-birth month.” ³ Of course, the twelve lunar months do"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l42" HPOS="396" VPOS="2918" WIDTH="1769" HEIGHT="48" BASELINE="396 2948 2165 2948" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2948 396 2966 2165 2966 2165 2948 2165 2918 396 2918 396 2948"/>
+                        </Shape>
+                        <String CONTENT="not exactly coincide with the solar year between two winter solstices; but the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l43" HPOS="394" VPOS="2979" WIDTH="1769" HEIGHT="45" BASELINE="394 3007 2163 3007" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 3007 394 3024 2163 3024 2163 3007 2163 2979 394 2979 394 3007"/>
+                        </Shape>
+                        <String CONTENT="Chukchee do not care about a few extra days. In ordinary talk the names"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l44" HPOS="391" VPOS="3033" WIDTH="1772" HEIGHT="52" BASELINE="394 3063 2163 3067" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 3063 391 3080 2159 3085 2163 3067 2161 3037 394 3033 394 3063"/>
+                        </Shape>
+                        <String CONTENT="of the months are often replaced by those of the seasons, which are much more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l45" HPOS="396" VPOS="3098" WIDTH="1598" HEIGHT="49" BASELINE="396 3126 1994 3126" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 3126 396 3143 1992 3147 1994 3126 1994 3098 396 3098 396 3126"/>
+                        </Shape>
+                        <String CONTENT="numerous than with us. The following are most frequently employed."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-073_r7" HPOS="391" VPOS="3189" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="391 3189 2169 3189 2169 3257 391 3257"/>
+                    </Shape>
+                    <TextLine ID="mz_1-073_l46" HPOS="502" VPOS="3184" WIDTH="459" HEIGHT="57" BASELINE="504 3212 961 3219" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="504 3212 502 3234 957 3241 961 3219 959 3191 504 3184 504 3212"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare Melikoff, p. 136."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l47" HPOS="1245" VPOS="3195" WIDTH="257" HEIGHT="46" BASELINE="1245 3221 1502 3221" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1245 3221 1245 3241 1502 3241 1502 3221 1502 3195 1245 3195 1245 3221"/>
+                        </Shape>
+                        <String CONTENT="² Argentoff, II."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-073_l48" HPOS="1782" VPOS="3195" WIDTH="219" HEIGHT="54" BASELINE="1782 3221 2001 3221" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1782 3221 1782 3236 1886 3249 1888 3249 2001 3236 2001 3221 2001 3195 1782 3195 1782 3221"/>
+                        </Shape>
+                        <String CONTENT="³ See p. 13."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
 </alto>

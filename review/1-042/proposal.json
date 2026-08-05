@@ -1,0 +1,201 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "22",
+      "note": "Folio, RunningTitleZone. Box width 67px, not clipped (>30px threshold, keying_spec.md §2.12). Plain ASCII digits as printed, matches CATMuS reading."
+    },
+    "2": {
+      "text": "reindeer of their own; yet at the present time, on the whole West Bering"
+    },
+    "3": {
+      "text": "coast, there are only five underground houses still inhabited, — one in Uweˊlen,",
+      "resolved": "Uweˊlen = U+02CA MODIFIER LETTER ACUTE ACCENT (stress) postposed to the second e. mz/CATMuS read this as 'Uwe len' (space, mark dropped) — corrected against raster.",
+      "note": "Corrected CATMuS's dropped stress mark; not a witness, per standing rule."
+    },
+    "4": {
+      "text": "and four in Nɵˊɵkan. It is easy, however, to understand that to Wrangell,",
+      "resolved": "Nɵˊɵkan = N + U+0275 LATIN SMALL LETTER BARRED O (long rounded mid vowel, licensed keying_spec.md §2.2) + U+02CA stress + U+0275 again + kan.",
+      "note": "CATMuS read this as 'Ne'ekan' (plain e twice) — the raster clearly shows the barred-o/theta-shaped licensed vowel ɵ, not e, in both positions. This is exactly the class keying_spec.md warns about (recognizer substitutes ASCII for an inventory glyph); corrected against the scan, not against the machine text."
+    },
+    "5": {
+      "text": "who approached the northern shore from the Kolyma side, the tents of the"
+    },
+    "6": {
+      "text": "Reindeer people appeared to be typical Chukchee dwellings. The difference,"
+    },
+    "7": {
+      "text": "was the more striking, since around Kuluˊči Bay the inhabitants turned from",
+      "resolved": "Kuluˊči = Kulu + U+02CA stress + č (c+U+030C). CATMuS rendered the stress mark as a bare slash '/' and dropped the caron entirely.",
+      "note": "Matches the vocabulary-table entry on line 23 (Kuluˊči.) — same word, same page, read together for confirmation."
+    },
+    "8": {
+      "text": "maritime pursuits to reindeer-breeding. I know of some, whom I saw on the"
+    },
+    "9": {
+      "text": "northern tundra, who claim that their grandfathers lived on the coast and"
+    },
+    "10": {
+      "text": "occupied themselves with seal-hunting. This same change occurred in several"
+    },
+    "11": {
+      "text": "other places, as will be shown farther on."
+    },
+    "12": {
+      "text": "It is not my intention to deny that on the Arctic coast there was previously"
+    },
+    "13": {
+      "text": "more of the Eskimo element, which little by little became assimilated by the"
+    },
+    "14": {
+      "text": "Chukchee. Thus, some of the Chukchee village names, both on the Arctic"
+    },
+    "15": {
+      "text": "and on the Pacific shores, have an Eskimo sound, and moreover, especially"
+    },
+    "16": {
+      "text": "in their Aiˊwan form, can be explained on the basis of the Eskimo language.",
+      "resolved": "Aiˊwan = Ai + U+02CA stress + wan.",
+      "note": "Same form as the column headers on lines 20/28 (Aiˊwan.) — read together."
+    },
+    "17": {
+      "text": "Compare, for instance, the following village names."
+    },
+    "18": {
+      "text": "ON THE ARCTIC COAST.",
+      "note": "English small-caps display heading (keying_spec.md §2.3 small-cap base codepoints are licensed only inside Tier-1 forms), keyed as plain ASCII caps."
+    },
+    "19": {
+      "text": "Chukchee.",
+      "note": "Italic column header. CATMuS misread as 'Chuechee.' — corrected against raster, unambiguous at 2x."
+    },
+    "20": {
+      "text": "Aiˊwan.",
+      "resolved": "Aiˊwan = Ai + U+02CA stress + wan."
+    },
+    "21": {
+      "text": "Neˊᵋs˙qᴀn.",
+      "resolved": "Ne + U+02CA stress + U+1D4B MODIFIER LETTER SMALL EPSILON (laryngeal, keying_spec.md §2.1, licensed on the stressed vowel) + s + U+02D9 COMBINING DOT ABOVE (palatalization, postposed after s per the licensed seven-member series) + q + U+1D00 LATIN LETTER SMALL CAPITAL A + n.",
+      "note": "The 'A' before final 'n' reads as small-cap ᴀ rather than full ASCII capital: at 4x its height sits below the initial 'N' and matches the small-cap ɪ height seen elsewhere on this page (lines 30/31/34/38), and keying_spec.md §5.2 records that a word-medial ASCII capital is essentially never correct (2 vs 509 in the restored corpus). Flagging the shape call for adjudication regardless — this is the one instance on the page without an on-page contrast."
+    },
+    "22": {
+      "text": "Naˊs˙kok (“head”).",
+      "resolved": "Na + U+02CA stress + s + U+02D9 (palatalization after s) + kok. Curly quotes “ ” as printed (keying_spec.md §1)."
+    },
+    "23": {
+      "text": "Kuluˊči.",
+      "resolved": "Kulu + U+02CA stress + č (c+U+030C)."
+    },
+    "24": {
+      "text": "Kuluˊsik (“old iceberg”).",
+      "resolved": "Kulu + U+02CA stress + sik.",
+      "note": "CATMuS/mz text had a stray '?' where the closing curly quote ” belongs — corrected."
+    },
+    "25": {
+      "text": "Iqäˊlurun.",
+      "resolved": "Iq + ä (a+U+0308) + U+02CA stress + lurun.",
+      "note": "CATMuS dropped the stress mark entirely (printed 'Iqä lurun' with a bare space) — corrected against raster."
+    },
+    "26": {
+      "text": "Iqaˊluwhak (fish of the species Gadus wachna).",
+      "resolved": "Iqa + U+02CA stress + luwhak. 'Gadus wachna' is an italic binomial, keyed as plain text (no formatting field available)."
+    },
+    "27": {
+      "text": "ON THE PACIFIC COAST.",
+      "note": "Same small-caps heading convention as line 18. A stray ink speck between PACIFIC and COAST at 4x is not punctuation — no dot keyed."
+    },
+    "28": {
+      "text": "Aiˊwan.",
+      "resolved": "Aiˊwan = Ai + U+02CA stress + wan."
+    },
+    "29": {
+      "text": "Chukchee."
+    },
+    "30": {
+      "text": "Nɪgčɪˊen.",
+      "resolved": "N + U+026A LATIN SMALL CAPITAL LETTER I (small-cap ɪ) + g + č (c+U+030C) + U+026A + U+02CA stress + en.",
+      "note": "Checked g at 4x for the licensed dot-below sort (keying_spec.md sec5.1, ~90% prior toward dotted): tail is clean, no mark beneath, crop is crisp. No other Tier-1 g on this page to contrast against. proposal check flags a rare-form and a two-spellings advisory here (GT on 1-052 spells the apparently-same word with the dot). Re-zoomed twice at 4x in light of that precedent, still find no dot on this page raster. Reading this page independently per the firewall rather than importing 1-052 convention, flagging the disagreement for adjudication."
+    },
+    "31": {
+      "text": "Nɪxcɪˊṛak (from nɪˊxcak, “ringed seal”).",
+      "resolved": "First form: N + U+026A + x + c (plain, no caron — contrasted directly against the caroned č in Nɪgčɪˊen on line 30, same sheet) + U+026A + U+02CA stress + ṛ (r+U+0323, velar r, keying_spec.md §2.2) + ak. Second form (root gloss): n + U+026A + U+02CA stress + xcak.",
+      "note": "CATMuS/mz badly garbled this line and it was corrected wholesale against the raster. Also fixed the mis-set open paren before ringed to the curly opening quote actually printed there. proposal check flags rare-form advisories for both the velar r dot-below and the small-cap I sorts, each 3.1 percent corpus share. Both confirmed at 4x, clean marks, no ambiguity. Contrasted the plain c here against the caroned c in line 30 same sheet."
+    },
+    "32": {
+      "text": "Nunäˊᵋmun.",
+      "resolved": "Nun + ä (a+U+0308) + U+02CA stress + U+1D4B (laryngeal ᵋ) + mun.",
+      "note": "Same ˊᵋ sequence as line 21 (Neˊᵋsˑqᴀn.) — same shape, read together."
+    },
+    "33": {
+      "text": "Nunaˊmo (“land’s end”).",
+      "resolved": "Nuna + U+02CA stress + mo. 'land’s' keeps the English possessive apostrophe as a curly U+2019 (this is ordinary English gloss text, not Tier-1, so the ASCII-only apostrophe policy of §1 does not apply here — the print sets it curly and keying_spec.md §1 says English prose reproduces the print, curly quotes included)."
+    },
+    "34": {
+      "text": "Čeˊwɪn.",
+      "resolved": "Č (c+U+030C) + e + U+02CA stress + w + U+026A (small-cap ɪ) + n.",
+      "note": "Contrasted the initial letter against line 36 (no caron there) to confirm this caron is real, not print noise. The final letter before n was compared at 4x against the small-cap I in line 30 same crop: same tall serif stem, no dot, same height class, read as small-cap not plain dotted i. proposal check flags a two-spellings advisory against 1-052 spelling with plain i. Reading this page independently per the firewall rather than importing that page's spelling, flagging the disagreement for adjudication."
+    },
+    "35": {
+      "text": "Caˊvik (“knife”).",
+      "resolved": "Ca + U+02CA stress + vik."
+    },
+    "36": {
+      "text": "Ceˊčin.",
+      "resolved": "C (plain, no caron) + e + U+02CA stress + č (c+U+030C) + in.",
+      "note": "Initial C confirmed plain (no caron) at 4x, contrasted directly against the caroned Č opening line 34 in the same crop — the book does print this inconsistency (initial C plain, medial c caroned) rather than it being an artifact."
+    },
+    "37": {
+      "text": "Teˊsik.¹",
+      "resolved": "Te + U+02CA stress + sik. ¹ = U+00B9 SUPERSCRIPT ONE, footnote marker (keying_spec.md §2.10, never a plain ASCII digit).",
+      "note": "Footnote 1 reference; opener is line 49. Only one footnote number on this page, occurs twice (reference + opener) — satisfies the continuity/pairing invariants."
+    },
+    "38": {
+      "text": "Mečiˊwmɪn.",
+      "resolved": "M + e + č (c+U+030C) + i (plain lowercase, x-height, dotted — not small-cap) + U+02CA stress + w + m + U+026A (small-cap ɪ) + n.",
+      "note": "The two 'i' sorts in this word are visibly different heights at 4x: the one right after č is plain dotted lowercase i, the one before final n is the taller small-cap ɪ matching the ɪ's on lines 30/31/34."
+    },
+    "39": {
+      "text": "Meˊsik.",
+      "resolved": "Me + U+02CA stress + sik."
+    },
+    "40": {
+      "text": "In regard to the legend cited by Wrangell, about the Eskimo chief Krächoj,",
+      "resolved": "Krächoj = Kr + ä (a+U+0308) + choj, as printed. Proper name (German-transliterated), not Tier-1 grammar, but carries a licensed inventory mark.",
+      "note": "Krächoj = proper name, ä (a+U+0308) clearly two dots at 4x, distinct diaeresis shape, unambiguous. proposal check's rare-form advisory (3.1% corpus share) answered: checked, the mark is a clean diaeresis, not a dropped or extra mark."
+    },
+    "41": {
+      "text": "who is said to have emigrated across the sea to certain islands, I may say"
+    },
+    "42": {
+      "text": "that I too heard it among the Chukchee; but it is mythical in character, and"
+    },
+    "43": {
+      "text": "is connected with other tales about vanished tribes, similar to corresponding"
+    },
+    "44": {
+      "text": "tales of the Eskimo. It is true, however, that the northern Chukchee believe"
+    },
+    "45": {
+      "text": "that in some northern land, not very far distant from the continent of Asia,"
+    },
+    "46": {
+      "text": "there lives a race of men sprung from these ancient emigrants. This land is,"
+    },
+    "47": {
+      "text": "said to have been seen by the crew of a boat which drifted out into the open"
+    },
+    "48": {
+      "text": "sea. It corresponds to Wrangell’s Land, and I have heard from people from"
+    },
+    "49": {
+      "text": "¹ St. Michael’s Fort, in northern Alaska, is called by the same name. In Central Eskimo it signifies “lake.”",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote opener (matches the reference on line 37, keying_spec.md §2.10). Michael’s = U+2019 curly apostrophe, as printed (English text).",
+      "note": "CATMuS/mz keyed the opener as plain ASCII '1' and the closing quote as a straight \" — both corrected against the raster per the settled rule (§2.10: superscript at reference and opener alike; §1: curly quotes throughout)."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

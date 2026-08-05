@@ -1,5 +1,5 @@
 {
- "_about": "Bands of ink ruled *not type* — smudges, gutter blobs, offset from the facing page. Each carries the reason it was ruled so, and each is scoped to its own band: exempting a whole page's ink check would hide the next dropped zone on it. A matched band still reports, flagged `exempted` and carrying its note. Keyed PP-NNN.",
+ "_about": "Bands of ink the **zoning** legitimately does not cover — smudges, gutter blobs, offset from the facing page. Each carries the reason it was ruled so, and each is scoped to its own band: exempting a whole page's ink check would hide the next dropped zone on it. A matched band still reports, flagged `exempted` and carrying its note. This is the *zone* layer; ink inside a zone that no line covers is `ocr gaps`'s question and lives in gt/lines/_ink_exempt.json. Keyed PP-NNN.",
  "1-033": [
   {
    "y0": 3296,

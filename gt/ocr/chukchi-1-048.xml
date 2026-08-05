@@ -1,247 +1,408 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
-  <Description>
-    <MeasurementUnit>pixel</MeasurementUnit>
-    <sourceImageInformation>
-      <fileName>chukchi-1-048.png</fileName>
-    </sourceImageInformation>
-  </Description>
-  <Tags>
-    <OtherTag ID="BT1" LABEL="Title" DESCRIPTION="block type Title"/><OtherTag ID="BT2" LABEL="Main" DESCRIPTION="block type Main"/><OtherTag ID="BT3" LABEL="Commentary" DESCRIPTION="block type Commentary"/><OtherTag ID="BT4" LABEL="Illustration" DESCRIPTION="block type Illustration"/><OtherTag ID="BT70" LABEL="NumberingZone" DESCRIPTION="block type NumberingZone"/><OtherTag ID="BT71" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/><OtherTag ID="BT72" LABEL="MainZone-P" DESCRIPTION="block type MainZone-P"/><OtherTag ID="BT73" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/><OtherTag ID="BT74" LABEL="MainZone-Entry" DESCRIPTION="block type MainZone-Entry"/><OtherTag ID="BT75" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/><OtherTag ID="BT76" LABEL="MainZone-Head" DESCRIPTION="block type MainZone-Head"/><OtherTag ID="BT79" LABEL="MainZone-List" DESCRIPTION="block type MainZone-List"/><OtherTag ID="BT80" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT81" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
-    <OtherTag ID="LT9" LABEL="default" DESCRIPTION="line type default"/>
-  </Tags>
-  <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="728.0" VPOS="632.0" WIDTH="78.0" HEIGHT="74.0" ID="eSc_textblock_0e0a8fba" TAGREFS="BT70">
-          <Shape><Polygon POINTS="728 632 728 706 806 706 806 632"/></Shape>
-          <TextLine ID="eSc_line_ef585439" TAGREFS="LT9" BASELINE="730 674 798 670" HPOS="726.0" VPOS="632.0" WIDTH="72.0" HEIGHT="58.0">
-            <Shape><Polygon POINTS="770 632 754 632 726 640 730 674 730 690 798 688 798 670 794 636 782 632 770 632"/></Shape>
-            <String CONTENT="28" HPOS="726.0" VPOS="632.0" WIDTH="72.0" HEIGHT="58.0" WC="0.9995110630989075"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="720.0" VPOS="738.0" WIDTH="1782.0" HEIGHT="304.0" ID="eSc_textblock_a3de4f20" TAGREFS="BT71">
-          <Shape><Polygon POINTS="720 738 720 1042 2502 1042 2502 738"/></Shape>
-          <TextLine ID="eSc_line_862ad835" TAGREFS="LT9" BASELINE="728 780 2496 786" HPOS="726.0" VPOS="740.0" WIDTH="1770.0" HEIGHT="58.0">
-            <Shape><Polygon POINTS="728 780 726 794 2492 798 2496 786 2496 750 728 740 728 780"/></Shape>
-            <String CONTENT="Hooper, and Hilder, have also been taken into consideration as far as possible." HPOS="726.0" VPOS="740.0" WIDTH="1770.0" HEIGHT="58.0" WC="0.9998630602148515"/>
-          </TextLine>
-          <TextLine ID="eSc_line_0ffc0e45" TAGREFS="LT9" BASELINE="730 840 2494 844" HPOS="728.0" VPOS="798.0" WIDTH="1766.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="2488 808 730 798 730 840 728 856 2490 858 2494 844 2492 832 2488 808"/></Shape>
-            <String CONTENT="I have enclosed in parentheses the statistics obtained from these authorities." HPOS="728.0" VPOS="798.0" WIDTH="1766.0" HEIGHT="60.0" WC="0.999776541422575"/>
-          </TextLine>
-          <TextLine ID="eSc_line_fbe6c139" TAGREFS="LT9" BASELINE="728 902 2496 902" HPOS="728.0" VPOS="864.0" WIDTH="1768.0" HEIGHT="56.0">
-            <Shape><Polygon POINTS="728 902 728 920 2494 920 2496 902 2494 874 728 864 728 902"/></Shape>
-            <String CONTENT="Krause’s geographical information, and his maps of the coast, seem to me to" HPOS="728.0" VPOS="864.0" WIDTH="1768.0" HEIGHT="56.0" WC="0.9988304130236307"/>
-          </TextLine>
-          <TextLine ID="eSc_line_a7ac6c61" TAGREFS="LT9" BASELINE="724 960 2496 960" HPOS="724.0" VPOS="926.0" WIDTH="1772.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="2494 928 724 926 724 960 724 978 2496 978 2496 960 2496 932 2494 928"/></Shape>
-            <String CONTENT="be quite correct; his list of villages from Holy Cross Bay to Kuluˊči Bay is" HPOS="724.0" VPOS="926.0" WIDTH="1772.0" HEIGHT="52.0" WC="0.9948268230859335"/>
-          </TextLine>
-          <TextLine ID="eSc_line_cc9ec05e" TAGREFS="LT9" BASELINE="724 1022 1042 1016" HPOS="722.0" VPOS="988.0" WIDTH="320.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="724 1022 724 1036 1042 1032 1042 1016 1036 988 722 990 724 1022"/></Shape>
-            <String CONTENT="also accurate.¹" HPOS="722.0" VPOS="988.0" WIDTH="320.0" HEIGHT="48.0" WC="0.9998375262532916"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="724.0" VPOS="1038.0" WIDTH="1780.0" HEIGHT="562.0" ID="eSc_textblock_7bced8d8" TAGREFS="BT72">
-          <Shape><Polygon POINTS="724 1038 724 1600 2504 1600 2504 1038"/></Shape>
-          <TextLine ID="eSc_line_1325e231" TAGREFS="LT9" BASELINE="832 1082 2498 1078" HPOS="830.0" VPOS="1036.0" WIDTH="1668.0" HEIGHT="72.0">
-            <Shape><Polygon POINTS="832 1082 832 1096 1570 1108 1572 1108 1574 1108 1622 1096 1766 1106 1768 1106 2046 1094 2060 1106 2062 1106 2066 1106 2068 1106 2218 1096 2384 1106 2386 1106 2388 1106 2410 1094 2478 1106 2480 1106 2482 1106 2486 1106 2498 1092 2498 1078 2496 1050 2446 1036 2444 1036 2442 1036 2440 1036 2412 1050 2254 1050 2230 1036 2228 1036 2226 1036 2224 1036 2220 1036 2208 1050 2126 1050 2102 1036 2100 1036 2098 1036 1976 1048 1948 1036 1946 1036 1944 1036 1942 1036 1940 1036 1924 1050 1734 1050 1674 1036 1670 1036 1668 1036 1642 1050 1616 1038 1614 1038 1612 1038 1610 1038 1576 1050 1560 1038 1558 1038 1556 1038 1554 1038 1404 1050 1340 1038 1338 1038 1336 1038 1334 1038 1316 1050 1288 1038 1286 1038 1284 1038 1282 1038 1256 1052 1064 1052 990 1038 988 1038 986 1038 962 1050 846 1038 844 1038 842 1038 840 1038 840 1040 830 1048 832 1082"/></Shape>
-            <String CONTENT="Only the names of the principal villages are here given, because the" HPOS="830.0" VPOS="1036.0" WIDTH="1668.0" HEIGHT="72.0" WC="0.999768028364462"/>
-          </TextLine>
-          <TextLine ID="eSc_line_396b1006" TAGREFS="LT9" BASELINE="724 1142 2494 1138" HPOS="722.0" VPOS="1100.0" WIDTH="1772.0" HEIGHT="60.0">
-            <Shape><Polygon POINTS="724 1142 724 1160 2492 1160 2494 1138 2490 1110 1608 1100 1606 1100 1604 1100 1562 1110 806 1102 804 1102 722 1112 724 1142"/></Shape>
-            <String CONTENT="smaller ones mentioned by many travellers are not fixed dwelling-places. They" HPOS="722.0" VPOS="1100.0" WIDTH="1772.0" HEIGHT="60.0" WC="0.9998089880138249"/>
-          </TextLine>
-          <TextLine ID="eSc_line_de1931ca" TAGREFS="LT9" BASELINE="724 1204 2496 1198" HPOS="722.0" VPOS="1158.0" WIDTH="1774.0" HEIGHT="62.0">
-            <Shape><Polygon POINTS="724 1204 724 1220 2494 1216 2496 1198 2492 1168 1628 1158 1626 1158 1624 1158 1590 1168 838 1160 834 1160 722 1170 724 1204"/></Shape>
-            <String CONTENT="are simply hunting-stations, that are used for a few years, and afterwards aban-" HPOS="722.0" VPOS="1158.0" WIDTH="1774.0" HEIGHT="62.0" WC="0.9989013992249965"/>
-          </TextLine>
-          <TextLine ID="eSc_line_bf453b4d" TAGREFS="LT9" BASELINE="724 1260 2494 1264" HPOS="722.0" VPOS="1218.0" WIDTH="1772.0" HEIGHT="68.0">
-            <Shape><Polygon POINTS="724 1256 724 1260 722 1272 770 1286 772 1286 774 1286 2492 1278 2494 1264 2492 1232 1632 1232 1484 1218 1482 1218 736 1226 724 1256"/></Shape>
-            <String CONTENT="doned for other places a few miles away. The name belongs to the locality," HPOS="722.0" VPOS="1218.0" WIDTH="1772.0" HEIGHT="68.0" WC="0.9998027505101384"/>
-          </TextLine>
-          <TextLine ID="eSc_line_6a2eb38b" TAGREFS="LT9" BASELINE="724 1322 2498 1322" HPOS="724.0" VPOS="1282.0" WIDTH="1774.0" HEIGHT="64.0">
-            <Shape><Polygon POINTS="724 1322 724 1332 1100 1346 1102 1346 1182 1336 1462 1336 1520 1346 1522 1346 1608 1336 1712 1346 1714 1346 1806 1336 2078 1346 2080 1346 2082 1346 2130 1336 2264 1346 2266 1346 2498 1332 2498 1322 2498 1292 2452 1282 2450 1282 2448 1282 2336 1292 2200 1282 2198 1282 2140 1294 1722 1294 1658 1282 1656 1282 1512 1292 1474 1282 1472 1282 1470 1282 1468 1282 1444 1292 1386 1282 1382 1282 1380 1282 1342 1292 1220 1282 1218 1282 1216 1282 1214 1282 1198 1294 1108 1294 1042 1282 1040 1282 984 1292 924 1282 922 1282 920 1282 880 1292 850 1282 848 1282 846 1282 844 1282 812 1292 798 1282 796 1282 794 1282 792 1282 724 1292 724 1322"/></Shape>
-            <String CONTENT="not to the village. Even the larger villages are not very stable; and the" HPOS="724.0" VPOS="1282.0" WIDTH="1774.0" HEIGHT="64.0" WC="0.9997196728236055"/>
-          </TextLine>
-          <TextLine ID="eSc_line_a8aaf322" TAGREFS="LT9" BASELINE="724 1384 2494 1378" HPOS="722.0" VPOS="1342.0" WIDTH="1772.0" HEIGHT="64.0">
-            <Shape><Polygon POINTS="724 1384 724 1404 1686 1396 1870 1406 1872 1406 2176 1394 2202 1404 2204 1404 2206 1404 2276 1394 2296 1404 2298 1404 2302 1406 2492 1406 2494 1378 2490 1348 830 1342 828 1342 722 1352 724 1384"/></Shape>
-            <String CONTENT="population often desert one and move to another, according to the changing" HPOS="722.0" VPOS="1342.0" WIDTH="1772.0" HEIGHT="64.0" WC="0.9998217740574399"/>
-          </TextLine>
-          <TextLine ID="eSc_line_8a6e5370" TAGREFS="LT9" BASELINE="726 1442 2496 1442" HPOS="726.0" VPOS="1410.0" WIDTH="1770.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="726 1442 726 1458 2496 1458 2496 1442 2496 1410 726 1410 726 1442"/></Shape>
-            <String CONTENT="conditions of seal-hunting. However, those among the smaller settlements" HPOS="726.0" VPOS="1410.0" WIDTH="1770.0" HEIGHT="48.0" WC="0.9997396485673057"/>
-          </TextLine>
-          <TextLine ID="eSc_line_10f40427" TAGREFS="LT9" BASELINE="728 1498 2496 1502" HPOS="726.0" VPOS="1468.0" WIDTH="1770.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="728 1498 726 1512 2492 1518 2496 1502 2494 1472 728 1468 728 1498"/></Shape>
-            <String CONTENT="which were mentioned by several older travellers, and which happen to be" HPOS="726.0" VPOS="1468.0" WIDTH="1770.0" HEIGHT="50.0" WC="0.9999033601747619"/>
-          </TextLine>
-          <TextLine ID="eSc_line_b21c38c7" TAGREFS="LT9" BASELINE="724 1558 2186 1562" HPOS="722.0" VPOS="1526.0" WIDTH="1464.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="724 1558 722 1572 2182 1576 2186 1562 2184 1530 724 1526 724 1558"/></Shape>
-            <String CONTENT="inhabited at the present time, are included in the following list." HPOS="722.0" VPOS="1526.0" WIDTH="1464.0" HEIGHT="50.0" WC="0.999868342370698"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="1306.0" VPOS="630.0" WIDTH="618.0" HEIGHT="78.0" ID="eSc_textblock_324ffbd1" TAGREFS="BT73">
-          <Shape><Polygon POINTS="1306 630 1306 708 1924 708 1924 630"/></Shape>
-          <TextLine ID="eSc_line_e48ea5b5" TAGREFS="LT9" BASELINE="1310 670 1924 674" HPOS="1308.0" VPOS="640.0" WIDTH="616.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="1916 640 1894 640 1872 640 1850 640 1828 640 1808 640 1786 640 1764 640 1742 640 1720 640 1700 640 1678 640 1656 640 1634 640 1612 640 1590 640 1570 640 1548 640 1526 640 1504 640 1482 640 1460 640 1440 640 1418 640 1396 640 1374 640 1352 640 1330 640 1310 644 1310 670 1308 686 1920 690 1924 674 1922 648 1916 640"/></Shape>
-            <String CONTENT="BOGORAS, THE CHUKCHEE." HPOS="1308.0" VPOS="640.0" WIDTH="616.0" HEIGHT="50.0" WC="0.9979719329964031"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="850.0" VPOS="1596.0" WIDTH="1200.0" HEIGHT="58.0" ID="eSc_textblock_710e4d86" TAGREFS="BT72">
-          <Shape><Polygon POINTS="850 1654 850 1596 2050 1596 2050 1654"/></Shape>
-          <TextLine ID="eSc_line_a28a5968" TAGREFS="LT9" BASELINE="838 1618 2016 1618" HPOS="838.0" VPOS="1582.0" WIDTH="1178.0" HEIGHT="56.0">
-            <Shape><Polygon POINTS="838 1618 838 1638 2016 1638 2016 1618 2016 1590 838 1582 838 1618"/></Shape>
-            <String CONTENT="The villages on the Pacific coast are as follows: —" HPOS="838.0" VPOS="1582.0" WIDTH="1178.0" HEIGHT="56.0" WC="0.9962199014775893"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="728.0" VPOS="1794.0" WIDTH="1772.0" HEIGHT="201.0" ID="eSc_textblock_7baf9a3c" TAGREFS="BT74">
-          <Shape><Polygon POINTS="728 1794 728 1995 2500 1995 2500 1794"/></Shape>
-          <TextLine ID="eSc_line_904657e4" TAGREFS="LT9" BASELINE="728 1832 2496 1826" HPOS="726.0" VPOS="1800.0" WIDTH="1770.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="2480 1808 2460 1808 2438 1808 2416 1808 2394 1806 2372 1806 2350 1806 2330 1806 2308 1802 2286 1802 2264 1802 2242 1802 2220 1800 2200 1800 2178 1800 2156 1800 726 1800 728 1832 728 1850 2494 1846 2496 1826 2492 1808 2480 1808"/></Shape>
-            <String CONTENT="Veᵋñ, in Anadyr Bay, near the mouth of the Anadyr River.² The Russians subsequently founded" HPOS="726.0" VPOS="1800.0" WIDTH="1770.0" HEIGHT="50.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_bc4a6d96" TAGREFS="LT9" BASELINE="804 1878 2494 1878" HPOS="804.0" VPOS="1850.0" WIDTH="1690.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="804 1878 804 1898 2492 1898 2494 1878 2492 1850 804 1850 804 1878"/></Shape>
-            <String CONTENT="a settlement near by, and called it Mariinsky Post. In former times the Chukchee village lay" HPOS="804.0" VPOS="1850.0" WIDTH="1690.0" HEIGHT="48.0" WC="0.9998236797426058"/>
-          </TextLine>
-          <TextLine ID="eSc_line_78e464ca" TAGREFS="LT9" BASELINE="806 1924 2494 1924" HPOS="806.0" VPOS="1898.0" WIDTH="1688.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="806 1924 806 1942 2494 1942 2494 1924 2494 1898 806 1898 806 1924"/></Shape>
-            <String CONTENT="nearer the open sea, on the low sandy shore of Geëk Land. Veᵋñ has at present 7 native" HPOS="806.0" VPOS="1898.0" WIDTH="1688.0" HEIGHT="44.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_5b3cd77b" TAGREFS="LT9" BASELINE="804 1969 1400 1973" HPOS="802.0" VPOS="1942.0" WIDTH="598.0" HEIGHT="47.0">
-            <Shape><Polygon POINTS="804 1969 802 1983 1396 1989 1400 1973 1398 1946 804 1942 804 1969"/></Shape>
-            <String CONTENT="houses and about 40 inhabitants." HPOS="802.0" VPOS="1942.0" WIDTH="598.0" HEIGHT="47.0" WC="0.9994955398142338"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="722.0" VPOS="2009.0" WIDTH="1774.0" HEIGHT="292.0" ID="eSc_textblock_f1ab7c65" TAGREFS="BT74">
-          <Shape><Polygon POINTS="722 2009 722 2301 2496 2301 2496 2009"/></Shape>
-          <TextLine ID="eSc_line_76cce8fe" TAGREFS="LT9" BASELINE="724 2045 2496 2045" HPOS="724.0" VPOS="2015.0" WIDTH="1772.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="724 2045 724 2067 2496 2067 2496 2045 2496 2017 724 2015 724 2045"/></Shape>
-            <String CONTENT="Mɪˊs˙qᴀn (“hill”), on the west point of the long, narrow island Mɪˊs˙qᴀn, ³ in Holy Cross Bay; and" HPOS="724.0" VPOS="2015.0" WIDTH="1772.0" HEIGHT="52.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_c1ffde60" TAGREFS="LT9" BASELINE="806 2093 2494 2087" HPOS="804.0" VPOS="2061.0" WIDTH="1690.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="806 2093 806 2111 2492 2107 2494 2087 2488 2061 804 2063 806 2093"/></Shape>
-            <String CONTENT="Rêˊtkên (“clayish”), on the east point of the same island. During my visit in 1901 the former" HPOS="804.0" VPOS="2061.0" WIDTH="1690.0" HEIGHT="50.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_64f9c687" TAGREFS="LT9" BASELINE="806 2137 2494 2137" HPOS="806.0" VPOS="2109.0" WIDTH="1688.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="806 2137 806 2157 2494 2157 2494 2137 2494 2109 806 2109 806 2137"/></Shape>
-            <String CONTENT="village had 3 houses, and, besides, 1 family was living a few miles off; while in two places" HPOS="806.0" VPOS="2109.0" WIDTH="1688.0" HEIGHT="48.0" WC="0.9961041516583898"/>
-          </TextLine>
-          <TextLine ID="eSc_line_186ec694" TAGREFS="LT9" BASELINE="808 2185 2492 2185" HPOS="808.0" VPOS="2157.0" WIDTH="1684.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="808 2185 808 2203 2492 2203 2492 2185 2492 2157 808 2157 808 2185"/></Shape>
-            <String CONTENT="there were 6 tents of some very poor half Maritime, half Reindeer people. The total population" HPOS="808.0" VPOS="2157.0" WIDTH="1684.0" HEIGHT="46.0" WC="0.9994995460865346"/>
-          </TextLine>
-          <TextLine ID="eSc_line_14b6914a" TAGREFS="LT9" BASELINE="808 2231 2492 2235" HPOS="806.0" VPOS="2201.0" WIDTH="1686.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="808 2231 806 2243 2488 2249 2492 2235 2490 2205 808 2201 808 2231"/></Shape>
-            <String CONTENT="was 41 (according to the Register, 7 houses, 30 inhabitants). Rêˊtkên had 6 houses with 35" HPOS="806.0" VPOS="2201.0" WIDTH="1686.0" HEIGHT="48.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_73ad3338" TAGREFS="LT9" BASELINE="804 2279 1656 2279" HPOS="804.0" VPOS="2251.0" WIDTH="852.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="804 2279 804 2299 1656 2299 1656 2279 1656 2251 804 2251 804 2279"/></Shape>
-            <String CONTENT="inhabitants (Register, 6 houses, 22 inhabitants)." HPOS="804.0" VPOS="2251.0" WIDTH="852.0" HEIGHT="48.0" WC="0.9998824231478632"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="724.0" VPOS="2317.0" WIDTH="1770.0" HEIGHT="106.0" ID="eSc_textblock_7aa6539c" TAGREFS="BT74">
-          <Shape><Polygon POINTS="724 2317 724 2423 2494 2423 2494 2317"/></Shape>
-          <TextLine ID="eSc_line_8741f6cf" TAGREFS="LT9" BASELINE="724 2351 2496 2351" HPOS="724.0" VPOS="2321.0" WIDTH="1772.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="724 2351 724 2371 2496 2371 2496 2351 2496 2321 724 2321 724 2351"/></Shape>
-            <String CONTENT="Farther along the shore, on Cape Wuˊkwên (“stony”), there used to be a small settlement whose" HPOS="724.0" VPOS="2321.0" WIDTH="1772.0" HEIGHT="50.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_35872f15" TAGREFS="LT9" BASELINE="802 2397 2008 2397" HPOS="802.0" VPOS="2369.0" WIDTH="1206.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="802 2397 802 2415 2008 2415 2008 2397 2008 2369 802 2369 802 2397"/></Shape>
-            <String CONTENT="inhabitants afterwards turned to reindeer-breeding and went inland." HPOS="802.0" VPOS="2369.0" WIDTH="1206.0" HEIGHT="46.0" WC="0.9996169910711401"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="722.0" VPOS="2451.0" WIDTH="1782.0" HEIGHT="140.0" ID="eSc_textblock_5131d554" TAGREFS="BT75">
-          <Shape><Polygon POINTS="722 2451 722 2591 2504 2591 2504 2451"/></Shape>
-          <TextLine ID="eSc_line_6e0a253c" TAGREFS="LT9" BASELINE="824 2485 2496 2485" HPOS="824.0" VPOS="2459.0" WIDTH="1672.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="824 2485 824 2505 2496 2505 2496 2485 2496 2459 824 2459 824 2485"/></Shape>
-            <String CONTENT="¹ In his statistics, Krause gives for the large village Uñiˊsak (Indian Point) only 13 houses “from personal" HPOS="824.0" VPOS="2459.0" WIDTH="1672.0" HEIGHT="46.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_e99a6f3c" TAGREFS="LT9" BASELINE="726 2527 2494 2527" HPOS="726.0" VPOS="2501.0" WIDTH="1768.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="726 2527 726 2545 2492 2545 2494 2527 2492 2501 726 2501 726 2527"/></Shape>
-            <String CONTENT="observation.” He evidently confounds the small village Kuˊkun with the larger Luˊᵋren, since he states that there" HPOS="726.0" VPOS="2501.0" WIDTH="1768.0" HEIGHT="44.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_c5ef4e3a" TAGREFS="LT9" BASELINE="724 2573 2268 2571" HPOS="722.0" VPOS="2545.0" WIDTH="1546.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="724 2573 724 2591 2266 2591 2268 2571 2262 2545 722 2545 724 2573"/></Shape>
-            <String CONTENT="are 20 houses in Kuˊkun, and only 2 in Luˊᵋren, whereas in reality the numbers are the reverse." HPOS="722.0" VPOS="2545.0" WIDTH="1546.0" HEIGHT="46.0"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="720.0" VPOS="2587.0" WIDTH="1784.0" HEIGHT="172.0" ID="eSc_textblock_ac0c996c" TAGREFS="BT75">
-          <Shape><Polygon POINTS="720 2587 720 2759 2504 2759 2504 2587"/></Shape>
-          <TextLine ID="eSc_line_4399f659" TAGREFS="LT9" BASELINE="834 2611 2494 2611" HPOS="834.0" VPOS="2585.0" WIDTH="1660.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="834 2611 834 2627 2492 2631 2494 2611 2494 2585 834 2585 834 2611"/></Shape>
-            <String CONTENT="² On the Middle Anadyr live about ten Chukchee families scattered in five or six places. Of these," HPOS="834.0" VPOS="2585.0" WIDTH="1660.0" HEIGHT="46.0" WC="0.9997265424047198"/>
-          </TextLine>
-          <TextLine ID="eSc_line_c472bf2d" TAGREFS="LT9" BASELINE="726 2655 2494 2651" HPOS="724.0" VPOS="2625.0" WIDTH="1770.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="726 2655 726 2673 2492 2669 2494 2651 2488 2625 724 2627 726 2655"/></Shape>
-            <String CONTENT="Chikayeva has two families, and Under-the-Cliffs three. The first name has been borrowed by the Chukchee" HPOS="724.0" VPOS="2625.0" WIDTH="1770.0" HEIGHT="48.0" WC="0.9997014592473323"/>
-          </TextLine>
-          <TextLine ID="eSc_line_10c2563c" TAGREFS="LT9" BASELINE="726 2695 2492 2699" HPOS="724.0" VPOS="2665.0" WIDTH="1768.0" HEIGHT="50.0">
-            <Shape><Polygon POINTS="726 2695 724 2711 2488 2715 2492 2699 2490 2671 726 2665 726 2695"/></Shape>
-            <String CONTENT="from the Russianized natives; the second name has the same meaning, both in the Chukchee and in the Russian" HPOS="724.0" VPOS="2665.0" WIDTH="1768.0" HEIGHT="50.0" WC="0.9997336981452514"/>
-          </TextLine>
-          <TextLine ID="eSc_line_169b5fe0" TAGREFS="LT9" BASELINE="724 2741 1478 2737" HPOS="722.0" VPOS="2711.0" WIDTH="756.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="724 2741 724 2757 1476 2755 1478 2737 1472 2711 722 2713 724 2741"/></Shape>
-            <String CONTENT="languages. The other settlements are unstable." HPOS="722.0" VPOS="2711.0" WIDTH="756.0" HEIGHT="46.0" WC="0.9996961938298267"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="718.0" VPOS="2747.0" WIDTH="1790.0" HEIGHT="526.0" ID="eSc_textblock_a971deac" TAGREFS="BT75">
-          <Shape><Polygon POINTS="718 2759 724 3273 2508 3273 2508 2747"/></Shape>
-          <TextLine ID="eSc_line_8c7035cb" TAGREFS="LT9" BASELINE="834 2781 2496 2781" HPOS="834.0" VPOS="2755.0" WIDTH="1662.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="834 2781 834 2801 2496 2801 2496 2781 2496 2755 834 2755 834 2781"/></Shape>
-            <String CONTENT="³ Long, narrow islands or spits, consisting of sand cast up by the waves, are met with everywhere on" HPOS="834.0" VPOS="2755.0" WIDTH="1662.0" HEIGHT="46.0" WC="0.9995955634117126"/>
-          </TextLine>
-          <TextLine ID="eSc_line_fb758073" TAGREFS="LT9" BASELINE="728 2825 2496 2825" HPOS="728.0" VPOS="2799.0" WIDTH="1768.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="728 2825 728 2843 2494 2843 2496 2825 2494 2799 728 2799 728 2825"/></Shape>
-            <String CONTENT="the shores of Bering Sea and the Arctic Ocean, especially at the mouths of rivers or of narrow, deeply indented" HPOS="728.0" VPOS="2799.0" WIDTH="1768.0" HEIGHT="44.0" WC="0.9997727274894714"/>
-          </TextLine>
-          <TextLine ID="eSc_line_df629a07" TAGREFS="LT9" BASELINE="726 2865 2494 2865" HPOS="726.0" VPOS="2839.0" WIDTH="1768.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="726 2865 726 2885 2492 2885 2494 2865 2492 2839 726 2839 726 2865"/></Shape>
-            <String CONTENT="bays. These islands are called by the Chukchee Teˊpän in the Pacific dialect, and Teˊpqän in the Arctic dialect. With" HPOS="726.0" VPOS="2839.0" WIDTH="1768.0" HEIGHT="46.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_cae26f9f" TAGREFS="LT9" BASELINE="728 2907 2492 2907" HPOS="728.0" VPOS="2881.0" WIDTH="1764.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="2490 2881 728 2881 728 2907 728 2925 2490 2927 2492 2907 2492 2883 2490 2881"/></Shape>
-            <String CONTENT="the Kamchadal and Koryak, where salmon is abundant, the villages near such spits lie on the mainland shore," HPOS="728.0" VPOS="2881.0" WIDTH="1764.0" HEIGHT="46.0" WC="0.9998635967201162"/>
-          </TextLine>
-          <TextLine ID="eSc_line_30195713" TAGREFS="LT9" BASELINE="728 2949 2490 2945" HPOS="726.0" VPOS="2919.0" WIDTH="1764.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="728 2949 728 2967 2488 2963 2490 2945 2482 2919 726 2921 728 2949"/></Shape>
-            <String CONTENT="which is less exposed to the wind. Mouths of rivers and entrances to bays are very convenient places for" HPOS="726.0" VPOS="2919.0" WIDTH="1764.0" HEIGHT="48.0" WC="0.9997791109176782"/>
-          </TextLine>
-          <TextLine ID="eSc_line_4dfecaac" TAGREFS="LT9" BASELINE="728 2993 2492 2989" HPOS="726.0" VPOS="2963.0" WIDTH="1766.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="728 2993 728 3011 2490 3005 2492 2989 2486 2963 726 2965 728 2993"/></Shape>
-            <String CONTENT="catching salmon, which enter there in masses for the purpose of spawning. The Maritime Chukchee and the" HPOS="726.0" VPOS="2963.0" WIDTH="1766.0" HEIGHT="48.0" WC="0.9998028475104026"/>
-          </TextLine>
-          <TextLine ID="eSc_line_500c386b" TAGREFS="LT9" BASELINE="728 3035 2494 3029" HPOS="726.0" VPOS="3001.0" WIDTH="1768.0" HEIGHT="52.0">
-            <Shape><Polygon POINTS="728 3035 728 3053 2492 3049 2494 3029 2488 3001 726 3005 728 3035"/></Shape>
-            <String CONTENT="Eskimo, on the contrary, build their villages on the outward shore of such islands or spits for convenience of" HPOS="726.0" VPOS="3001.0" WIDTH="1768.0" HEIGHT="52.0" WC="0.9997316712682898"/>
-          </TextLine>
-          <TextLine ID="eSc_line_89f580a2" TAGREFS="LT9" BASELINE="728 3077 2492 3073" HPOS="726.0" VPOS="3047.0" WIDTH="1766.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="728 3077 728 3093 2490 3091 2492 3073 2486 3047 726 3049 728 3077"/></Shape>
-            <String CONTENT="sealing. The same is true of all islands lying near the shore. For instance, the Koryak village in Karagha" HPOS="726.0" VPOS="3047.0" WIDTH="1766.0" HEIGHT="46.0" WC="0.9978450480497109"/>
-          </TextLine>
-          <TextLine ID="eSc_line_9103a19e" TAGREFS="LT9" BASELINE="728 3119 2494 3119" HPOS="728.0" VPOS="3093.0" WIDTH="1766.0" HEIGHT="46.0">
-            <Shape><Polygon POINTS="728 3119 728 3139 2494 3139 2494 3119 2494 3093 728 3093 728 3119"/></Shape>
-            <String CONTENT="Bay, of northern Kamchatka, lies on the mainland shore, opposite the large island Karagha. The Chukchee" HPOS="728.0" VPOS="3093.0" WIDTH="1766.0" HEIGHT="46.0" WC="0.9998409470308174"/>
-          </TextLine>
-          <TextLine ID="eSc_line_0db89c31" TAGREFS="LT9" BASELINE="728 3161 2492 3157" HPOS="726.0" VPOS="3131.0" WIDTH="1766.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="728 3161 728 3179 2490 3175 2492 3157 2486 3131 726 3133 728 3161"/></Shape>
-            <String CONTENT="village in Kuluˊči Bay, on the contrary, is situated on the small island some distance away from the narrow" HPOS="726.0" VPOS="3131.0" WIDTH="1766.0" HEIGHT="48.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_ef91b1ab" TAGREFS="LT9" BASELINE="726 3203 2494 3203" HPOS="726.0" VPOS="3177.0" WIDTH="1768.0" HEIGHT="44.0">
-            <Shape><Polygon POINTS="726 3203 726 3221 2492 3221 2494 3203 2492 3177 726 3177 726 3203"/></Shape>
-            <String CONTENT="mouth of the bay. On Kihiˊni Island the village Kihiˊni lies on its outward northwestern shore. The villages" HPOS="726.0" VPOS="3177.0" WIDTH="1768.0" HEIGHT="44.0"/>
-          </TextLine>
-          <TextLine ID="eSc_line_b8b0d026" TAGREFS="LT9" BASELINE="728 3247 2402 3247" HPOS="728.0" VPOS="3219.0" WIDTH="1674.0" HEIGHT="48.0">
-            <Shape><Polygon POINTS="728 3247 728 3267 2402 3267 2402 3247 2402 3219 728 3219 728 3247"/></Shape>
-            <String CONTENT="of Mɪˊs˙qᴀn, Rêˊtkên, and Yanřaˊkê-not are situated on sandy spits which lie at the entrance to the bays." HPOS="728.0" VPOS="3219.0" WIDTH="1674.0" HEIGHT="48.0"/>
-          </TextLine>
-        </TextBlock>
-        <TextBlock HPOS="1498.0" VPOS="1702.0" WIDTH="236.0" HEIGHT="72.0" ID="eSc_textblock_0e20f9f8" TAGREFS="BT76">
-          <Shape><Polygon POINTS="1498 1702 1498 1774 1734 1774 1734 1702"/></Shape>
-        </TextBlock>
-      <TextBlock HPOS="1522" VPOS="1721" WIDTH="189" HEIGHT="28" ID="gap_textblock_1-048-1721"><Shape><Polygon POINTS="1522 1721 1711 1721 1711 1749 1522 1749"/></Shape><TextLine ID="gap_line_1-048-1721" BASELINE="1522 1749 1711 1749" HPOS="1522" VPOS="1721" WIDTH="189" HEIGHT="28"><Shape><Polygon POINTS="1522 1721 1711 1721 1711 1749 1522 1749"/></Shape><String CONTENT="CHUKCHEE." HPOS="1522" VPOS="1721" WIDTH="189" HEIGHT="28"/></TextLine></TextBlock></PrintSpace>
-    </Page>
-  </Layout>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-048.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-048.png; regions_from: zones/chukchi-1-048.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-048_r1" HPOS="726" VPOS="626" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="726 626 2504 626 2504 716 726 716"/>
+                    </Shape>
+                    <TextLine ID="mz_1-048_l1" HPOS="1305" VPOS="640" WIDTH="615" HEIGHT="52" BASELINE="1308 673 1920 668" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1912 653 1890 640 1868 640 1847 640 1825 640 1803 640 1782 640 1760 640 1739 640 1717 640 1695 640 1674 640 1652 640 1630 640 1609 640 1587 640 1565 640 1544 640 1522 640 1500 640 1479 640 1457 640 1435 640 1414 640 1392 640 1370 640 1349 640 1327 640 1305 647 1308 673 1308 692 1918 688 1920 668 1912 653 1912 653"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l2" HPOS="727" VPOS="632" WIDTH="72" HEIGHT="58" BASELINE="731 675 799 671" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="770 632 755 632 727 640 731 675 731 690 799 688 799 671 794 636 783 632 770 632"/>
+                        </Shape>
+                        <String CONTENT="28"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-048_r2" HPOS="726" VPOS="741" WIDTH="1778" HEIGHT="297" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="726 741 2504 741 2504 1038 726 1038"/>
+                    </Shape>
+                    <TextLine ID="mz_1-048_l3" HPOS="727" VPOS="738" WIDTH="1767" HEIGHT="60" BASELINE="729 781 2494 785" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2481 751 2462 742 2458 742 2438 742 2416 742 2395 742 2373 742 2351 742 2330 742 2312 742 1773 751 1697 740 1695 740 1693 740 1648 751 1615 738 1613 738 1611 738 1548 749 1450 738 1448 738 1446 738 1412 749 1373 738 1370 738 1368 738 1366 738 1327 749 1221 738 1219 738 1217 738 1184 749 1130 738 1000 738 998 738 996 738 994 738 978 749 729 740 729 781 727 794 2490 798 2494 785 2492 772 2481 751"/>
+                        </Shape>
+                        <String CONTENT="Hooper, and Hilder, have also been taken into consideration as far as possible."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l4" HPOS="731" VPOS="803" WIDTH="1761" HEIGHT="58" BASELINE="731 842 2492 842" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="731 818 731 842 731 861 2492 861 2492 842 2492 811 740 803 731 818"/>
+                        </Shape>
+                        <String CONTENT="I have enclosed in parentheses the statistics obtained from these authorities."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l5" HPOS="729" VPOS="861" WIDTH="1765" HEIGHT="67" BASELINE="729 900 2494 904" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 900 729 917 1611 917 1769 928 1771 928 2492 917 2494 904 2492 874 729 861 729 900"/>
+                        </Shape>
+                        <String CONTENT="Krause’s geographical information, and his maps of the coast, seem to me to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l6" HPOS="727" VPOS="924" WIDTH="1767" HEIGHT="56" BASELINE="727 961 2494 961" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 961 727 980 2492 980 2494 961 2492 930 727 924 727 961"/>
+                        </Shape>
+                        <String CONTENT="be quite correct; his list of villages from Holy Cross Bay to Kuluˊči Bay is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l7" HPOS="725" VPOS="982" WIDTH="321" HEIGHT="57" BASELINE="725 1021 1046 1021" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="725 1021 725 1039 1046 1039 1046 1021 1043 982 725 989 725 1021"/>
+                        </Shape>
+                        <String CONTENT="also accurate.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-048_r3" HPOS="726" VPOS="1038" WIDTH="1778" HEIGHT="547" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="726 1038 2504 1038 2504 1585 726 1585"/>
+                    </Shape>
+                    <TextLine ID="mz_1-048_l8" HPOS="833" VPOS="1052" WIDTH="1666" HEIGHT="56" BASELINE="833 1082 2499 1082" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="833 1082 833 1095 913 1108 916 1108 918 1108 955 1097 1403 1097 1416 1108 1418 1108 1420 1108 1422 1108 2499 1095 2499 1082 2499 1052 833 1052 833 1082"/>
+                        </Shape>
+                        <String CONTENT="Only the names of the principal villages are here given, because the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l9" HPOS="723" VPOS="1108" WIDTH="1771" HEIGHT="52" BASELINE="725 1143 2494 1138" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="725 1143 725 1160 2492 1160 2494 1138 2488 1108 723 1110 725 1143"/>
+                        </Shape>
+                        <String CONTENT="smaller ones mentioned by many travellers are not fixed dwelling-places. They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l10" HPOS="723" VPOS="1160" WIDTH="1771" HEIGHT="61" BASELINE="725 1203 2494 1199" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="725 1203 725 1221 2492 1216 2494 1199 2490 1171 1624 1160 1622 1160 1619 1160 1589 1171 838 1162 835 1162 723 1173 725 1203"/>
+                        </Shape>
+                        <String CONTENT="are simply hunting-stations, that are used for a few years, and afterwards aban-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l11" HPOS="725" VPOS="1231" WIDTH="1767" HEIGHT="52" BASELINE="725 1262 2492 1262" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="725 1262 725 1277 2488 1283 2492 1262 2490 1231 725 1231 725 1262"/>
+                        </Shape>
+                        <String CONTENT="doned for other places a few miles away. The name belongs to the locality,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l12" HPOS="723" VPOS="1283" WIDTH="1773" HEIGHT="65" BASELINE="725 1324 2496 1318" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="723 1299 725 1324 725 1337 1136 1348 1139 1348 1351 1335 1524 1346 1526 1346 1606 1335 1693 1346 1695 1346 1801 1335 1890 1344 1892 1344 1894 1344 1897 1344 1910 1333 2059 1344 2061 1344 2130 1333 2146 1344 2148 1344 2150 1344 2152 1344 2494 1333 2496 1318 2492 1290 751 1283 749 1283 747 1283 725 1292 723 1299"/>
+                        </Shape>
+                        <String CONTENT="not to the village. Even the larger villages are not very stable; and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l13" HPOS="723" VPOS="1342" WIDTH="1771" HEIGHT="63" BASELINE="725 1385 2494 1381" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="725 1385 725 1405 2492 1402 2494 1381 2490 1350 831 1342 829 1342 723 1353 725 1385"/>
+                        </Shape>
+                        <String CONTENT="population often desert one and move to another, according to the changing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l14" HPOS="727" VPOS="1411" WIDTH="1767" HEIGHT="48" BASELINE="727 1439 2494 1439" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 1439 727 1459 2492 1459 2494 1439 2492 1411 727 1411 727 1439"/>
+                        </Shape>
+                        <String CONTENT="conditions of seal-hunting. However, those among the smaller settlements"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l15" HPOS="727" VPOS="1467" WIDTH="1769" HEIGHT="59" BASELINE="729 1498 2496 1502" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 1498 727 1513 799 1526 801 1526 2494 1517 2496 1502 2494 1472 729 1467 729 1498"/>
+                        </Shape>
+                        <String CONTENT="which were mentioned by several older travellers, and which happen to be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l16" HPOS="725" VPOS="1526" WIDTH="1462" HEIGHT="52" BASELINE="727 1558 2187 1563" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 1558 725 1573 2182 1578 2187 1563 2185 1530 727 1526 727 1558"/>
+                        </Shape>
+                        <String CONTENT="inhabited at the present time, are included in the following list."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-048_r4" HPOS="726" VPOS="1585" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="726 1585 2504 1585 2504 1650 726 1650"/>
+                    </Shape>
+                    <TextLine ID="mz_1-048_l17" HPOS="835" VPOS="1578" WIDTH="1179" HEIGHT="67" BASELINE="838 1617 2014 1621" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="838 1617 835 1636 848 1645 851 1645 853 1645 855 1645 2011 1636 2014 1621 2011 1593 1840 1580 1838 1580 1758 1593 1453 1593 1429 1578 1427 1578 1424 1578 1422 1578 1368 1589 1344 1578 1342 1578 1340 1578 1338 1578 1295 1589 1251 1578 1249 1578 1247 1578 1245 1578 1212 1589 838 1582 838 1617"/>
+                        </Shape>
+                        <String CONTENT="The villages on the Pacific coast are as follows: —"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-048_r5" HPOS="726" VPOS="1691" WIDTH="1778" HEIGHT="737" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="726 1691 2504 1691 2504 2428 726 2428"/>
+                    </Shape>
+                    <TextLine ID="mz_1-048_l18" HPOS="1505" VPOS="1708" WIDTH="218" HEIGHT="47" BASELINE="1507 1740 1723 1736" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1700 1710 1678 1710 1665 1708 1505 1710 1507 1740 1507 1755 1723 1751 1723 1736 1721 1729 1700 1710"/>
+                        </Shape>
+                        <String CONTENT="CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l19" HPOS="727" VPOS="1801" WIDTH="1767" HEIGHT="47" BASELINE="729 1831 2494 1827" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2488 1801 727 1801 729 1831 729 1848 2492 1844 2494 1827 2490 1803 2488 1801"/>
+                        </Shape>
+                        <String CONTENT="Veᵋñ, in Anadyr Bay, near the mouth of the Anadyr River.² The Russians subsequently founded"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l20" HPOS="805" VPOS="1846" WIDTH="1687" HEIGHT="50" BASELINE="807 1874 2492 1879" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="807 1874 805 1892 2488 1896 2492 1879 2490 1851 807 1846 807 1874"/>
+                        </Shape>
+                        <String CONTENT="a settlement near by, and called it Mariinsky Post. In former times the Chukchee village lay"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l21" HPOS="809" VPOS="1898" WIDTH="1685" HEIGHT="46" BASELINE="809 1924 2494 1924" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="809 1924 809 1944 2494 1944 2494 1924 2494 1898 809 1898 809 1924"/>
+                        </Shape>
+                        <String CONTENT="nearer the open sea, on the low sandy shore of Geëk Land. Veᵋñ has at present 7 native"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l22" HPOS="805" VPOS="1939" WIDTH="594" HEIGHT="52" BASELINE="807 1967 1399 1974" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="807 1967 805 1985 1394 1991 1399 1974 1396 1946 807 1939 807 1967"/>
+                        </Shape>
+                        <String CONTENT="houses and about 40 inhabitants."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l23" HPOS="723" VPOS="2015" WIDTH="1771" HEIGHT="50" BASELINE="725 2045 2494 2041" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="723 2039 725 2045 725 2065 2492 2061 2494 2041 2488 2015 736 2015 723 2039"/>
+                        </Shape>
+                        <String CONTENT="Mɪˊs˙qᴀn (“hill”), on the west point of the long, narrow island Mɪˊs˙qᴀn,³ in Holy Cross Bay; and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l24" HPOS="807" VPOS="2063" WIDTH="1685" HEIGHT="47" BASELINE="809 2093 2492 2089" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="809 2093 809 2110 2490 2106 2492 2089 2486 2063 807 2063 809 2093"/>
+                        </Shape>
+                        <String CONTENT="Rêˊtkên (“clayish”), on the east point of the same island. During my visit in 1901 the former"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l25" HPOS="807" VPOS="2106" WIDTH="1685" HEIGHT="50" BASELINE="809 2136 2492 2141" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="809 2136 807 2152 2488 2156 2492 2141 2490 2110 809 2106 809 2136"/>
+                        </Shape>
+                        <String CONTENT="village had 3 houses, and, besides, 1 family was living a few miles off; while in two places"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l26" HPOS="809" VPOS="2158" WIDTH="1683" HEIGHT="45" BASELINE="809 2186 2492 2186" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="809 2186 809 2203 2492 2203 2492 2186 2492 2158 809 2158 809 2186"/>
+                        </Shape>
+                        <String CONTENT="there were 6 tents of some very poor half Maritime, half Reindeer people. The total population"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l27" HPOS="809" VPOS="2206" WIDTH="1681" HEIGHT="47" BASELINE="809 2234 2490 2234" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="809 2234 809 2249 2486 2253 2490 2234 2488 2206 809 2206 809 2234"/>
+                        </Shape>
+                        <String CONTENT="was 41 (according to the Register, 7 houses, 30 inhabitants). Rêˊtkên had 6 houses with 35"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l28" HPOS="803" VPOS="2245" WIDTH="851" HEIGHT="52" BASELINE="805 2275 1654 2281" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="805 2275 803 2290 1650 2297 1654 2281 1654 2251 805 2245 805 2275"/>
+                        </Shape>
+                        <String CONTENT="inhabitants (Register, 6 houses, 22 inhabitants)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l29" HPOS="725" VPOS="2320" WIDTH="1771" HEIGHT="50" BASELINE="727 2353 2496 2349" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 2353 727 2370 2494 2366 2496 2349 2490 2320 725 2323 727 2353"/>
+                        </Shape>
+                        <String CONTENT="Farther along the shore, on Cape Wuˊkwên (“stony”), there used to be a small settlement whose"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l30" HPOS="801" VPOS="2366" WIDTH="1206" HEIGHT="50" BASELINE="803 2396 2007 2400" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="803 2396 801 2411 2003 2416 2007 2400 2005 2370 803 2366 803 2396"/>
+                        </Shape>
+                        <String CONTENT="inhabitants afterwards turned to reindeer-breeding and went inland."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-048_r6" HPOS="726" VPOS="2452" WIDTH="1778" HEIGHT="829" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="726 2452 2504 2452 2504 3281 726 3281"/>
+                    </Shape>
+                    <TextLine ID="mz_1-048_l31" HPOS="822" VPOS="2455" WIDTH="1672" HEIGHT="49" BASELINE="825 2485 2494 2481" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="825 2485 825 2504 2492 2500 2494 2481 2488 2455 822 2457 825 2485"/>
+                        </Shape>
+                        <String CONTENT="¹ In his statistics, Krause gives for the large village Uñiˊsak (Indian Point) only 13 houses “from personal"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l32" HPOS="725" VPOS="2498" WIDTH="1767" HEIGHT="48" BASELINE="727 2526 2492 2530" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 2526 725 2541 2488 2546 2492 2530 2490 2502 727 2498 727 2526"/>
+                        </Shape>
+                        <String CONTENT="observation.” He evidently confounds the small village Kuˊkun with the larger Luˊᵋren, since he states that there"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l33" HPOS="723" VPOS="2541" WIDTH="1544" HEIGHT="46" BASELINE="725 2569 2267 2574" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="725 2569 723 2582 2263 2587 2267 2574 2265 2546 725 2541 725 2569"/>
+                        </Shape>
+                        <String CONTENT="are 20 houses in Kuˊkun, and only 2 in Luˊᵋren, whereas in reality the numbers are the reverse."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l34" HPOS="833" VPOS="2580" WIDTH="1659" HEIGHT="50" BASELINE="835 2608 2492 2613" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="835 2608 833 2623 2488 2630 2492 2613 2490 2585 835 2580 835 2608"/>
+                        </Shape>
+                        <String CONTENT="² On the Middle Anadyr live about ten Chukchee families scattered in five or six places. Of these,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l35" HPOS="725" VPOS="2626" WIDTH="1767" HEIGHT="47" BASELINE="727 2654 2492 2652" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 2654 727 2673 2490 2671 2492 2652 2486 2626 725 2626 727 2654"/>
+                        </Shape>
+                        <String CONTENT="Chikayeva has two families, and Under-the-Cliffs three. The first name has been borrowed by the Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l36" HPOS="727" VPOS="2671" WIDTH="1765" HEIGHT="46" BASELINE="727 2697 2492 2697" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 2697 727 2717 2492 2717 2492 2697 2492 2671 727 2671 727 2697"/>
+                        </Shape>
+                        <String CONTENT="from the Russianized natives; the second name has the same meaning, both in the Chukchee and in the Russian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l37" HPOS="723" VPOS="2712" WIDTH="753" HEIGHT="48" BASELINE="725 2743 1476 2738" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="725 2743 725 2760 1474 2760 1476 2738 1470 2712 723 2714 725 2743"/>
+                        </Shape>
+                        <String CONTENT="languages. The other settlements are unstable."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l38" HPOS="833" VPOS="2751" WIDTH="1661" HEIGHT="48" BASELINE="835 2782 2494 2777" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="835 2782 835 2799 2492 2795 2494 2777 2488 2751 833 2753 835 2782"/>
+                        </Shape>
+                        <String CONTENT="³ Long, narrow islands or spits, consisting of sand cast up by the waves, are met with everywhere on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l39" HPOS="727" VPOS="2792" WIDTH="1765" HEIGHT="50" BASELINE="729 2820 2492 2825" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 2820 727 2838 2488 2842 2492 2825 2490 2797 729 2792 729 2820"/>
+                        </Shape>
+                        <String CONTENT="the shores of Bering Sea and the Arctic Ocean, especially at the mouths of rivers or of narrow, deeply indented"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l40" HPOS="725" VPOS="2836" WIDTH="1765" HEIGHT="49" BASELINE="727 2866 2490 2862" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 2866 727 2885 2488 2885 2490 2862 2483 2836 725 2838 727 2866"/>
+                        </Shape>
+                        <String CONTENT="bays. These islands are called by the Chukchee Teˊpän in the Pacific dialect, and Teˊpqän in the Arctic dialect. With"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l41" HPOS="729" VPOS="2881" WIDTH="1761" HEIGHT="48" BASELINE="729 2907 2490 2907" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 2907 729 2927 2488 2929 2490 2907 2490 2881 729 2881 729 2907"/>
+                        </Shape>
+                        <String CONTENT="the Kamchadal and Koryak, where salmon is abundant, the villages near such spits lie on the mainland shore,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l42" HPOS="727" VPOS="2920" WIDTH="1765" HEIGHT="48" BASELINE="729 2950 2492 2946" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 2950 729 2968 2490 2963 2492 2946 2486 2920 727 2922 729 2950"/>
+                        </Shape>
+                        <String CONTENT="which is less exposed to the wind. Mouths of rivers and entrances to bays are very convenient places for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l43" HPOS="727" VPOS="2961" WIDTH="1763" HEIGHT="50" BASELINE="729 2994 2490 2987" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 2994 729 3011 2488 3007 2490 2987 2483 2961 727 2966 729 2994"/>
+                        </Shape>
+                        <String CONTENT="catching salmon, which enter there in masses for the purpose of spawning. The Maritime Chukchee and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l44" HPOS="727" VPOS="3002" WIDTH="1765" HEIGHT="52" BASELINE="729 3035 2492 3031" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 3035 729 3054 2490 3050 2492 3031 2486 3002 727 3007 729 3035"/>
+                        </Shape>
+                        <String CONTENT="Eskimo, on the contrary, build their villages on the outward shore of such islands or spits for convenience of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l45" HPOS="727" VPOS="3048" WIDTH="1763" HEIGHT="47" BASELINE="729 3078 2490 3074" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 3078 729 3095 2488 3095 2490 3074 2488 3065 2483 3048 727 3050 729 3078"/>
+                        </Shape>
+                        <String CONTENT="sealing. The same is true of all islands lying near the shore. For instance, the Koryak village in Karagha"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l46" HPOS="729" VPOS="3093" WIDTH="1765" HEIGHT="44" BASELINE="729 3119 2494 3119" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 3119 729 3137 2494 3137 2494 3119 2494 3093 729 3093 729 3119"/>
+                        </Shape>
+                        <String CONTENT="Bay, of northern Kamchatka, lies on the mainland shore, opposite the large island Karagha. The Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l47" HPOS="729" VPOS="3134" WIDTH="1763" HEIGHT="46" BASELINE="729 3160 2492 3160" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 3160 729 3180 2492 3180 2492 3160 2492 3134 729 3134 729 3160"/>
+                        </Shape>
+                        <String CONTENT="village in Kuluˊči Bay, on the contrary, is situated on the small island some distance away from the narrow"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l48" HPOS="727" VPOS="3178" WIDTH="1765" HEIGHT="43" BASELINE="727 3204 2492 3204" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="727 3204 727 3221 2492 3221 2492 3204 2492 3178 727 3178 727 3204"/>
+                        </Shape>
+                        <String CONTENT="mouth of the bay. On Kihiˊni Island the village Kihiˊni lies on its outward northwestern shore. The villages"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-048_l49" HPOS="729" VPOS="3219" WIDTH="1674" HEIGHT="50" BASELINE="729 3247 2403 3247" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="729 3247 729 3269 2403 3269 2403 3247 2403 3219 729 3219 729 3247"/>
+                        </Shape>
+                        <String CONTENT="of Mɪˊs˙qᴀn, Rêˊtkên, and Yanřaˊkê-not are situated on sandy spits which lie at the entrance to the bays."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
 </alto>

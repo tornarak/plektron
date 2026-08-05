@@ -1,121 +1,26 @@
 {
-  "contamination": {
-    "blind": false,
-    "detail": "NOT a blind read, and this must be weighed when reading the edit count. 2-030 is the corpus's only page with ground truth and no proposal — it was adjudicated by the eScriptorium route before this pass existed — so there is no mz/ocr prediction to key against and the only line geometry available is gt/ocr's own, reached through `harness ocr lines 2-030`, which prints the stored text beside every index. I therefore saw the existing ground truth before reading the raster. Every line below was nevertheless re-read off the 300 dpi scan at 2x and, where a doubt was nameable, at 4x; the three changes proposed are changes AGAINST what I had already seen, not agreements with it. But an unchanged line here is weaker evidence than an unchanged line on a blind page, because anchoring cannot be ruled out. The compass diagram (fig. 213) prints all 27 terms a second time in italic and is a genuine independent witness on this page; I used it only where noted (line 26)."
-  },
-  "footnotes": "None on this page. The counting invariants (spec 2.10) are vacuous here, not passed.",
-  "notes": {
-    "page": "Scan folio 304. Two-column gloss list under fig. 213, flanked by body prose above (lines 1-2) and below (lines 30-31). Every list entry is a Chukchee term plus an English gloss in curly quotes. `harness ocr gaps` reports no uncovered ink, so no line was dropped. Line indices are ALTO identities and are not consecutive in reading order (CLAUDE.md); lines 4-16 are the left column, 17-28 the right, interleaved by vpos.",
-    "method": "Read every line off the sheets first (`--margins`, which on this page widens each crop to the full PrintSpace and so shows both columns at once — the index's own line is the one at its hpos). Then 2x over the twelve lines carrying a nameable doubt, then 4x over seven. The dot-below calls were settled by CONTRAST, per keying_spec.md 5.1: lines 12 and 24 land in the same 4x sheet, and `em-g̣ɪnuˊn` there shows an unmistakable dot below its g while `am-gɪnoˊt` shows none. That pairing is the evidence for both readings, and it is worth stating because the two look like they should share a root ('mid-night' / 'mid-day') and I opened the page expecting one of them to be wrong.",
-    "marks": "`harness proposal marks 2-030` was run against this proposal and reports three things, all of which are answered above rather than dismissed. (1) `rare` names the three bare-g forms — `am-gɪnoˊt-aᵋloˊ` x2 and `am-gɪnoˊt-aᵋloˊwtɪ` — at 2.8% of the g axis. (2) `ratio` puts this page's g-dot share at 80.0% against a 96.8% prior and a per-page band whose floor is 100.0 over 6 pages, i.e. `outside: low` — no page in the prior carries a bare Tier-1 g at all. (3) `conflict` names `neˊlyiᵋ`/`neˊlyɪᵋ`, in_batch. I am not moving on any of them, and the reason is that the tool is measuring a real property of this page rather than a defect: 2-030 sets the `am-gɪnoˊt-` morpheme three times bare beside `em-g̣ɪnuˊn-` twice dotted, and the two appear together in one 4x sheet. But an 80% share under a 100% floor is precisely the shape of a page that should be re-read before it is accepted, so this belongs in front of the adjudicator rather than only in my reasoning. If the dots are there and I have missed them, all three lines move together and the reading of line 12 is the control that would have to be wrong too. Note the prior is leave-one-out, so 2-030's own stored bare g's are not in the 96.8%."
-  },
   "lines": {
-    "0": {"text": "304", "note": "NumberingZone, printed folio, old-style figures (3o4)."},
-    "1": {"text": "begins. Among other feats, the contestants have to run along a thin pole", "note": "The print sets a double space after the sentence period; keyed single per spec 2.9."},
-    "2": {"text": "over a boiling-hot river. The shaman does not wait for his turn, but starts", "note": "Double space after 'river.' in the print; keyed single per spec 2.9."},
-    "3": {"text": "BOGORAS, THE CHUKCHEE.", "note": "RunningTitleZone."},
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "304",
+      "note": "RunningTitleZone folio, left-margin, plain ASCII digits per keying_spec.md §2.12 (\"Every roman numeral in the book is keyed in plain ASCII capitals\" section also covers the folio slot: \"Key it as plain ASCII digits in brackets\" for QuireMarksZone and analogously unbracketed here). Box width ~91px, not clipped. Confirmed at 2x zoom: 3-0-4, old-style figures (0 small and round per §5.4)."
+    },
+    "2": {
+      "text": "begins. Among other feats, the contestants have to run along a thin pole"
+    },
+    "3": {
+      "text": "over a boiling-hot river. The shaman does not wait for his turn, but starts"
+    },
     "4": {
-      "text": "tiˊrkɪ-reˊiᵋ or têrk-amêčaˊtyêᵋ (“sun has come in” or",
-      "resolved": "tiˊrkɪ = t, i (DOTTED — compare line 21, same root), U+02CA, r, k, U+026A. reˊiᵋ = r, e, U+02CA, i, U+1D4B. têrk = t, e+U+0302, r, k. amêčaˊtyêᵋ = a, m, e+U+0302, c+U+030C, a, U+02CA, t, y, e+U+0302, U+1D4B."
+      "text": "from the opposite end at the same time as the other competitors. When he"
     },
-    "5": {"text": "“sun has gone out of sight”).", "note": "Continuation of line 4's gloss; English only."},
-    "6": {
-      "text": "aᵋčoˊpta (“it is still day”).",
-      "resolved": "a, U+1D4B, c+U+030C, o, U+02CA, p, t, a. The U+1D4B stands before č, not before i, so spec 2.1's ᵉ/ᵋ review-flag position does not arise."
-    },
-    "7": {
-      "text": "em-g̣iˊthilɪ-neˊlyi (“twilight has come”).",
-      "resolved": "em- = e, m, hyphen. g̣iˊthilɪ = g+U+0323 (dot below, clear at 2x), i (dotted), U+02CA, t, h, i (dotted), l, U+026A. neˊlyi = n, e, U+02CA, l, y, i (dotted).",
-      "note": "Ends `neˊlyi` with a plain dotted i and NO U+1D4B — unlike every other `neˊlyiᵋ` on the page (lines 12, 22, 24) and unlike line 26's `neˊlyɪᵋ`. Checked at 2x: there is nothing after the i. Corroborated by the fig. 213 label, which also sets `em-g̣iˊthili-neˊlyi`."
-    },
-    "8": {
-      "text": "g̣itg̣iluweˊtyiᵋ (“twilight has become narrow”).",
-      "resolved": "g+U+0323, i, t, g+U+0323, i, l, u, w, e, U+02CA, t, y, i, U+1D4B. Both g's carry a dot below; visible at 2x."
-    },
-    "9": {
-      "text": "g̣êˊthêlu-waiñeˊeᵋ (“twilight has been extinguished”).",
-      "resolved": "g+U+0323, e+U+0302, U+02CA, t, h, e+U+0302, l, u, hyphen, w, a, i, n+U+0303, e, U+02CA, e, U+1D4B."
-    },
-    "10": {
-      "text": "aiˊvêčha (“in the evening”) or tun-nɪkiruˊiᵋ (“night",
-      "resolved": "aiˊvêčha = a, i, U+02CA, v, e+U+0302, c+U+030C, h, a. tun-nɪkiruˊiᵋ = t, u, n, hyphen, n, U+026A (dotless), k, i (dotted), r, u, U+02CA, i, U+1D4B."
-    },
-    "11": {"text": "recently came”).", "note": "Continuation of line 10's gloss; English only."},
-    "12": {
-      "text": "em-g̣ɪnuˊn-nɪkiˊtä neˊlyiᵋ (“midnight has come”).",
-      "resolved": "em- = e, m, hyphen. g̣ɪnuˊn = g+U+0323, U+026A, n, u, U+02CA, n. nɪkiˊtä = n, U+026A (dotless), k, i (dotted), U+02CA, t, a+U+0308. neˊlyiᵋ = n, e, U+02CA, l, y, i, U+1D4B.",
-      "note": "The dot below this g is the clearest on the page at 4x, and it is the control for line 24's bare `am-gɪnoˊt` — the two sit in one 4x sheet. `nɪki` is small-cap then dotted i, which is the reading line 13 must match."
-    },
-    "13": {
-      "text": "em-g̣ɪnuˊn-nɪkiˊtä halaˊêᵋ (“midnight has passed by”).",
-      "resolved": "Identical first two elements to line 12: g+U+0323, U+026A, n, u, U+02CA, n, hyphen, n, U+026A (dotless), k, i (dotted), U+02CA, t, a+U+0308. halaˊêᵋ = h, a, l, a, U+02CA, e+U+0302, U+1D4B.",
-      "note": "CHANGE against the stored ground truth, which keys `nikiˊtä` with a dotted i where the print sets dotless U+026A. Lines 12 and 13 print the same word on consecutive lines and the letterforms are identical — that pairing is the evidence, not a judgement about one glyph in isolation. Spec 5.2, and the class `harness ocr corrections` reports as the only one still recurring across pages."
-    },
-    "14": {
-      "text": "eimeˊwkwiᵋ (“[dawn] has approached”).",
-      "resolved": "e, i, m, e, U+02CA, w, k, w, i, U+1D4B."
-    },
-    "15": {
-      "text": "ɪˊprɪñg̣êᵋ (“[light] has burst forth”).",
-      "resolved": "U+026A (word-initial, dotless, x-height with top and bottom serifs — a small cap, not ASCII I, which would carry full cap height), U+02CA, p, r, U+026A, n+U+0303, g+U+0323, e+U+0302, U+1D4B.",
-      "note": "CHANGE against the stored ground truth, which keys a bare `g`. At 4x the g carries a clear round dot below the bowl. Spec 5.1. The word-initial ɪ is the contentious position (spec 5.2: 63 ASCII capitals against 55 small caps word-initially, so nothing mechanical settles it) — I read it as small-cap on height alone, which the store already had."
-    },
-    "16": {
-      "text": "tñeˊiᵋ (“it has dawned”) or tñaˊɪrg̣ɪn (“morning-dawn”).",
-      "resolved": "tñeˊiᵋ = t, n+U+0303, e, U+02CA, i, U+1D4B. tñaˊɪrg̣ɪn = t, n+U+0303, a, U+02CA, U+026A, r, g+U+0323, U+026A, n.",
-      "note": "FLAG FOR THE ADJUDICATOR — the printed dot on this g sits ABOVE the bowl, not below it. At 4x it is a well-formed round dot at about x-height and I can find nothing below the descender; compare line 15 in the same 4x sheet, where the dot is unambiguously below. I have keyed g+U+0323 anyway, on two grounds that are both rules rather than readings: dot-above g is not in the inventory at all (it is spec 3's forbidden lookalike FOR g̣, so there is no sort to key), and `-rg̣ɪn` is spec 5.1's documented noun-forming suffix. But that means the keyed form does not reproduce what I see on the paper, which is exactly the kind of thing this pass is not allowed to settle by itself. A type defect, a shifted sort, or ink — a human should look. The stored ground truth already keys g̣ here, so nothing changes either way; the flag is new."
-    },
-    "17": {
-      "text": "totɪntoˊêᵋ (“darkness has gone”).",
-      "resolved": "t, o, t, U+026A (dotless), n, t, o, U+02CA, e+U+0302, U+1D4B."
-    },
-    "18": {
-      "text": "tañ-ɪrg̣ɪroˊêᵋ (“it has well dawned”).",
-      "resolved": "t, a, n+U+0303, hyphen, U+026A, r, g+U+0323, U+026A, r, o, U+02CA, e+U+0302, U+1D4B.",
-      "note": "The g's dot below was not decidable at 2x and is clear at 4x. `-ɪrg̣ɪ-` is spec 5.1's dot-prone family."
-    },
-    "19": {
-      "text": "tirk-iiniˊɪᵋ (“sun has risen”).",
-      "resolved": "t, i (dotted), r, k, hyphen, i, i (both dotted), n, i (dotted), U+02CA, U+026A (dotless), U+1D4B.",
-      "note": "Four i-forms in one word and the last is the only dotless one; read against each other rather than singly."
-    },
-    "20": {
-      "text": "têˊrkɪ-g̣ɪrg̣olaˊtyêᵋ (“sun has ascended”).",
-      "resolved": "t, e+U+0302, U+02CA, r, k, U+026A, hyphen, g+U+0323, U+026A, r, g+U+0323, o, l, a, U+02CA, t, y, e+U+0302, U+1D4B.",
-      "note": "Both g's carry a dot below; unambiguous at 4x."
-    },
-    "21": {
-      "text": "tiˊrkɪ-keulkeˊtyiᵋ (“sun has climbed [towards the top]”).",
-      "resolved": "tiˊrkɪ = t, i (DOTTED), U+02CA, r, k, U+026A (dotless). keulkeˊtyiᵋ = k, e, u, l, k, e, U+02CA, t, y, i, U+1D4B.",
-      "note": "TWO CHANGES against the stored ground truth. (1) It keys `tɪˊrkɪ` with a small cap in first position; the print sets a dotted i there, matching line 4's `tiˊrkɪ` — the same root, and the two crops show the same letterform. (2) The stored text has no terminal period; the print sets one, like every other entry in the list. The period sits at the right edge of the 2x strip, so read it off the contact sheet where the whole line is in view."
-    },
-    "22": {
-      "text": "am-gɪnoˊt-aᵋloˊwtɪ tɪleˊhtɪ neˊlyiᵋ (“to the mid-day it",
-      "resolved": "am- = a, m, hyphen. gɪnoˊt = g (BARE, no dot below), U+026A, n, o, U+02CA, t. aᵋloˊwtɪ = a, U+1D4B, l, o, U+02CA, w, t, U+026A. tɪleˊhtɪ = t, U+026A, l, e, U+02CA, h, t, U+026A. neˊlyiᵋ = n, e, U+02CA, l, y, i, U+1D4B.",
-      "note": "Bare g, and the same bare g recurs on lines 24 and 25. Against spec 5.1's 93.9% prior three bare g's want justifying, so: the control is line 12's `em-g̣ɪnuˊn` in the same 4x sheet as line 24, where the dot is plain. The book distinguishes the two morphemes. `proposal marks` reports this page `outside: low` on the g-dot axis — see the page-level `marks` note."
-    },
-    "23": {"text": "has gradually approached”).", "note": "Continuation of line 22's gloss; English only."},
-    "24": {
-      "text": "am-gɪnoˊt-aᵋloˊ neˊlyiᵋ (“mid-day has come”).",
-      "resolved": "a, m, hyphen, g (BARE), U+026A, n, o, U+02CA, t, hyphen, a, U+1D4B, l, o, U+02CA. neˊlyiᵋ = n, e, U+02CA, l, y, i (dotted), U+1D4B.",
-      "note": "This is the line that settles the bare/dotted question for the whole `am-gɪnoˊt` family: it and line 12 land in one 4x sheet, so the two g's are compared directly rather than each inspected alone. Spec 5.1 is explicit that absence is not observable in isolation."
-    },
-    "25": {
-      "text": "am-gɪnoˊt-aᵋloˊ halaˊêᵋ (“mid-day has passed by”).",
-      "resolved": "a, m, hyphen, g (BARE), U+026A, n, o, U+02CA, t, hyphen, a, U+1D4B, l, o, U+02CA. halaˊêᵋ = h, a, l, a, U+02CA, e+U+0302, U+1D4B."
-    },
-    "26": {
-      "text": "t-arkɪčhaweˊtɪ neˊlyɪᵋ (“sun descending has come”).",
-      "resolved": "t, hyphen, a, r, k, U+026A, c+U+030C, h, a, w, e, U+02CA, t, U+026A. neˊlyɪᵋ = n, e, U+02CA, l, y, U+026A (DOTLESS), U+1D4B.",
-      "note": "Two things. (a) The character pair after `waweˊ` is struck through by a solid ink blot and is not legible as two letters at 4x — it reads as one fused mass. I have kept the stored `tɪ`, and the reason it is not a guess is that fig. 213 prints this same term as a diagram label, where `t-arkɪčhaweˊtɪ` is clean; that label is an independent witness on the same page. Flagging it anyway so the adjudicator sees the blot rather than trusting the reading. (b) `neˊlyɪᵋ` here is DOTLESS where lines 12, 22 and 24 set `neˊlyiᵋ` dotted. Unambiguous at 4x. That is the book's own inconsistency in one morpheme on one page, not a keying slip, and both spellings should stand — which is why `proposal marks` reports a `conflict` row for this fold."
-    },
-    "27": {
-      "text": "t-arkɪčhaˊwkwê or tirk-iwtɪtviˊiᵋ (“sun has descended”",
-      "resolved": "t-arkɪčhaˊwkwê = t, hyphen, a, r, k, U+026A, c+U+030C, h, a, U+02CA, w, k, w, e+U+0302. tirk-iwtɪtviˊiᵋ = t, i (dotted), r, k, hyphen, i (dotted), w, t, U+026A (dotless), t, v, i (dotted), U+02CA, i (dotted), U+1D4B."
-    },
-    "28": {"text": "or “sun has become low”).", "note": "Continuation of line 27's gloss; English only."},
-    "29": {"text": "Fig. 213. Directions of the Compass.", "note": "GraphicZone-FigDesc. The caption store for this figure is data/readings.md, not this ALTO (CLAUDE.md); keyed here because gt/ocr keeps every line the page sets."},
-    "30": {"text": "from the opposite end at the same time as the other competitors. When he", "note": "Double space after 'competitors.'; keyed single per spec 2.9."},
-    "31": {"text": "meets them, he jumps over their heads and runs on. Next they have to", "note": "Double space after 'on.'; keyed single per spec 2.9."}
+    "5": {
+      "text": "meets them, he jumps over their heads and runs on. Next they have to"
+    }
+  },
+  "contamination": {
+    "blind": true
   }
 }

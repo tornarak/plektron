@@ -1,0 +1,170 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "RunningTitleZone title line."
+    },
+    "1": {
+      "text": "18",
+      "note": "RunningTitleZone folio, plain ASCII digits, keying_spec.md §2.12. Box is comfortably wide (not clipped); confirmed at 3x margins zoom, no divider-rule/kerning ambiguity."
+    },
+    "2": {
+      "text": "the name of Kopai, who claimed to belong to the Shelag tribe, and who had"
+    },
+    "3": {
+      "text": "his place on the seashore at a distance of two hundred versts (about a hundred"
+    },
+    "4": {
+      "text": "and twenty-five miles) from the mouth of the Kolyma. Maydell regards the"
+    },
+    "5": {
+      "text": "whole story as a misunderstanding."
+    },
+    "6": {
+      "text": "I was told by the natives, however, that on the seashore, westward from"
+    },
+    "7": {
+      "text": "the island of Ayo, some ruins similar to those on the Bear Islands still exist,"
+    },
+    "8": {
+      "text": "and this gives support to Viligin’s words."
+    },
+    "9": {
+      "text": "The name Čaˊačên, in its Russianized form, would be Chavantzy or",
+      "resolved": "Č = C+U+030C; a; ˊ = U+02CA word stress; a; č = c+U+030C; ê = e+U+0302; n",
+      "note": "Tier-1 ethnonym embedded in otherwise plain English narrative (keying_spec.md §5 class: Tier-1 forms in English-prose pages). Zoomed at 3x, index 9. Raised mark after the first a read as stress U+02CA per §5.5/§4 default, not apostrophe (no post-b/p/d/t/g/k or V_V licensing environment that would make apostrophe plausible, and the mark shape matches the other confirmed stress marks on this page, e.g. line 34)."
+    },
+    "10": {
+      "text": "Chauntzy, which is almost identical with that of Chuvantzy. This latter tribe,"
+    },
+    "11": {
+      "text": "almost extinct at present, in former times lived somewhere in the country"
+    },
+    "12": {
+      "text": "between the Yukaghir and the Chukchee regions. It bred reindeer, and"
+    },
+    "13": {
+      "text": "probably was an intermediate tribe between those two. The last remnants of"
+    },
+    "14": {
+      "text": "the Reindeer Chuvantzy are, at the present time, assimilated with the Koryak,"
+    },
+    "15": {
+      "text": "and speak the Koryak language; while the fisher-people of that tribe are"
+    },
+    "16": {
+      "text": "Russianized. The few words of the Chuvantzy language given in the curious",
+      "note": "At 6x zoom (16@25-45) a round dot sits at baseline between \"few\" and \"words\", positioned like a period but making no sense mid-sentence (\"The few. words of...\"). Judged a speck of ink/dirt, not type, and dropped — same disposition as keying_spec.md §5.9's smudge class. Not reproduced in text."
+    },
+    "17": {
+      "text": "book by G. Dyachkoff,¹ the native school-teacher of the village of Markova,",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote reference marker (keying_spec.md §2.10)",
+      "note": "Footnote 1 body reference. Superscript confirmed at 3x zoom, matches the opener on line 38."
+    },
+    "18": {
+      "text": "on the Middle Anadyr, who comes from Chuvantzy stock, are mainly Yukaghir.",
+      "note": "At 6x zoom (18@8-23) a small tick mark sits high above the baseline immediately after \"the\", before \"Middle\" — not attached to either word and not a plausible apostrophe (\"on the' Middle\" has no grammatical or notational reading; this is plain English, not Tier-1). Judged a speck of ink, not type, and dropped from text, per the same disposition as the line-16 dot."
+    },
+    "19": {
+      "text": "There are still on the tundra to the west of the Kolyma two or three clans,"
+    },
+    "20": {
+      "text": "of Yukaghir who to some extent breed reindeer, and are intermingled with"
+    },
+    "21": {
+      "text": "the Tungus. The oldest documents in the archives of Nishne-Kolymsk, dated"
+    },
+    "22": {
+      "text": "about 1770, mention several Yukaghir of the Khodynsky Chuvansky clan.²",
+      "resolved": "² = U+00B2 SUPERSCRIPT TWO, footnote reference marker (keying_spec.md §2.10)",
+      "note": "\"Yukaghir of the Khodynsky Chuvansky clan\" is set in italics in the print (a quoted document title); italics carry no separate keying here. CATMuS/mz misread this as \"Vukaghir ... Khodynseey\" — corrected against the raster at 3x zoom (both words are unambiguous: Y with serif, Khodynsky matches its own repetition on line 24)."
+    },
+    "23": {
+      "text": "Now, the single clan of Chuvantzy existing to-day is called by this same name,"
+    },
+    "24": {
+      "text": "Khodynsky.³",
+      "resolved": "³ = U+00B3 SUPERSCRIPT THREE, footnote reference marker (keying_spec.md §2.10)"
+    },
+    "25": {
+      "text": "In later times the Chuvantzy were always allied with the Cossacks, and"
+    },
+    "26": {
+      "text": "waged common warfare against the Chukchee. The latter, after the defeat"
+    },
+    "27": {
+      "text": "of Major Pavlutsky, are said to have destroyed more than half of them. The"
+    },
+    "28": {
+      "text": "situation in former times may have been different, since even the Yukaghir"
+    },
+    "29": {
+      "text": "of the Upper Kolyma preserve a curious tradition that the Chukchee were"
+    },
+    "30": {
+      "text": "once their brothers, and that they had a defensive and offensive alliance"
+    },
+    "31": {
+      "text": "with them."
+    },
+    "32": {
+      "text": "The names given by the Chukchee to their various neighbors are as"
+    },
+    "33": {
+      "text": "follows: —",
+      "note": "List-introduction dash (keying_spec.md §2.11), spaced left / nothing right, at line end. French spacing before the colon in print, not reproduced per §2.9 (English spacing)."
+    },
+    "34": {
+      "text": "Taˊn˙ñɪtan (pl. Taˊn˙ñɪt), as mentioned before, is given to the Reindeer Koryak.",
+      "resolved": "T; a; ˊ = U+02CA word stress; n; ˙ = U+02D9 palatalization mark (postposed after n, keying_spec.md §2.1/§2.5); ñ = n+U+0303; ɪ = U+026A small-cap dotless i (IPA block, §2.3); t; a; n — pattern repeats identically in the plural form Taˊn˙ñɪt",
+      "note": "Confirmed at 5x zoom (34@0-30): the letter after ñ is a serif dotless small-cap ɪ, not lowercase dotted i — contrasted against the plain lowercase i's in the surrounding English (\"mentioned\", \"given\") on the same line. `proposal check` raised an advisory that this same word is spelled with ñi/ñɪt differently across other adjudicated pages; answered by re-inspecting this page's own raster rather than deferring to those pages — the shape here is unambiguously the dotless small-cap ɪ, so the reading stands as keyed."
+    },
+    "35": {
+      "text": "Mêˊlhɪ-taˊn˙ñɪtan, which signifies “fire-tools Taˊn˙ñɪtan,” is applied to the",
+      "resolved": "M; ê = e+U+0302; ˊ = U+02CA word stress (postposed to ê); l; h; ɪ = U+026A; hyphen U+002D; t; a; ˊ; n; ˙ = U+02D9; ñ = n+U+0303; ɪ; t; a; n — second occurrence of Taˊn˙ñɪtan in quotes is identical",
+      "note": "Checked at 6x zoom (35@0-20) for a possible laryngeal superscript (ᵋ, cf. line 37) between ɪ and the hyphen — none present here, plain hyphen directly follows ɪ."
+    },
+    "36": {
+      "text": "Russians. The same name is given to the Russians by the Koryak. Previously",
+      "note": "mz/CATMuS read a comma before \"Previously\"; confirmed at 6x zoom (36@80-100) that the mark is a period at baseline, matching the sentence-final punctuation pattern (\"Koryak.\" followed by a new sentence, not a subordinate clause)."
+    },
+    "37": {
+      "text": "it may have been Mêˊlhɪᵋ-t-taˊn˙ñɪtan (i. e., “Taˊn˙ñɪtan with a fire-lock,” or, more",
+      "resolved": "M; ê = e+U+0302; ˊ = U+02CA word stress; l; h; ɪ = U+026A; ᵋ = U+1D4B MODIFIER LETTER SMALL OPEN E, laryngeal/glottalization superscript (keying_spec.md §2.1); hyphen; t; hyphen; t; a; ˊ; n; ˙ = U+02D9; ñ = n+U+0303; ɪ; t; a; n",
+      "note": "At first glance (3x) the mark after ɪ and before the first hyphen looked like it could be a superscript g; re-zoomed to 6x (37@18-38) and it resolves clearly as the small open-e/epsilon shape of ᵋ (laryngeal superscript, §2.1), distinct in outline from a g-loop. This is the corpus's licensed ᵋ sort, not an uncatalogued mark. Compare line 35's Mˆeˊlhɪ-, which lacks this mark entirely on the same root — the two spellings of the compound differ exactly here, consistent with the parenthetical gloss that follows (\"with a fire-lock\")."
+    },
+    "38": {
+      "text": "¹ Dyachkoff, p. 101.",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, footnote opener (keying_spec.md §2.10)"
+    },
+    "39": {
+      "text": "² Dr. Kyber, one of Wrangell’s fellow-travellers, says, “The Chuvantzy are of Yukaghir stock. Their",
+      "resolved": "² = U+00B2 SUPERSCRIPT TWO, footnote opener (keying_spec.md §2.10)",
+      "note": "\"Their\" at the line's wrap point appears in heavier/bolder strokes at 3x zoom than the rest of the line; judged show-through/bleed from the facing leaf rather than a deliberate typeface change (the quoted matter is ordinary roman throughout otherwise), so keyed as plain text with no markup."
+    },
+    "40": {
+      "text": "languages are very similar. I knew one Chuvantzy man who, without previous intercourse with the Yukaghir,"
+    },
+    "41": {
+      "text": "could easily communicate with them. But the clothes of the inland Chuvantzy are like those of the Chukchee.” —",
+      "note": "Em dash (U+2014) closing the quoted citation before the attribution wraps onto line 42 (\"KYBER, II.\"), keying_spec.md §2.11."
+    },
+    "42": {
+      "text": "KYBER, II.",
+      "note": "Attribution continuing from line 41's closing dash. Roman numeral II keyed plain ASCII per keying_spec.md §2.12."
+    },
+    "43": {
+      "text": "³ In the middle of the seventeenth century, Deshneff, in his well-known report to the government about",
+      "resolved": "³ = U+00B3 SUPERSCRIPT THREE, footnote opener (keying_spec.md §2.10)"
+    },
+    "44": {
+      "text": "his travels and discoveries, mentions, in connection with the Chuvantzy, the tribe or the clan of the Anauly,"
+    },
+    "45": {
+      "text": "whom he exterminated on account of the resistance they offered. Nothing is known about them except their name."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

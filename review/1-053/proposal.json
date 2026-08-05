@@ -1,184 +1,179 @@
 {
-  "footnotes": {
-    "note": "Markers 1 and 2 read as bare ASCII digits below (lines 9 and 41) and are left that way deliberately: this proposal is the original reading, and rewriting it would erase the page's error-profile measurement, which `edited` is computed against. The corrections live in decision.json, which is what restore writes. Line 9 is the detector's known false positive — a wrapped body line beginning '2 houses).', not a footnote opener. Marker 1 pairs correctly once line 44 is adjudicated: its body reference was on a line the segmenter dropped, which is why it read as unpaired at all."
-  },
-  "segmenter_missed": {
-    "43": {"band_vpos": 3018, "hpos": 482, "vpos": 3018, "width": 1636, "height": 52,
-           "source": "harness lines 1-053 --gaps", "adopted_as": "gap_line_1-053-3018"},
-    "44": {"band_vpos": 3076, "hpos": 374, "vpos": 3076, "width": 1742, "height": 47,
-           "source": "harness lines 1-053 --gaps", "adopted_as": "gap_line_1-053-3076"}
-  },
   "lines": {
     "0": {
-      "text": "Keˊñičvun (signifying, with a slight modification of the last vowel, “curve”): 11 houses (Nordquist,",
-      "resolved": "Ke + U+02CA (stress, not after b/p/d/t/g/k or V_V so not spirant/pause) + ñičvun; ñ = n+U+0303, č = c+U+030C"
+      "text": "BOGORAS, THE CHUKCHEE."
     },
     "1": {
-      "text": "17 houses; it is not given in the Register, and probably the inhabitants are counted with those"
+      "text": "Keˊñičvun (signifying, with a slight modification of the last vowel, “curve”): 11 houses (Nordquist,",
+      "resolved": "Keˊñičvun = K, e, U+02CA, ñ (n+U+0303), i, č (c+U+030C), v, u, n"
     },
     "2": {
-      "text": "of Neˊte-keˊñičvun, a hunting-station near Neˊten).",
-      "resolved": "compound, three U+02CA (one per constituent: Ne, ke, Ne); ñ = n+U+0303; č = c+U+030C"
+      "text": "17 houses; it is not given in the Register, and probably the inhabitants are counted with those"
     },
     "3": {
-      "text": "Enuˊrmin (Eskimo, Anoˊrmik): 12 houses (Register, 20 houses, 125 inhabitants; Nordquist, 20 houses).",
-      "resolved": "entry-initial E and A are full capitals here (not small-cap ᴇ/ᴀ) — compare line 37/38 where entry-initial is small-cap. U+02CA after u, after o"
+      "text": "of Neˊte-keˊñičvun, a hunting-station near Neˊten).",
+      "resolved": "Neˊte = N,e,U+02CA,t,e; keˊñičvun = k,e,U+02CA,ñ(n+U+0303),i,č(c+U+030C),v,u,n; Neˊten = N,e,U+02CA,t,e,n"
     },
     "4": {
-      "text": "Neˊte-keˊñičvun (“the curve of Neˊten”): 1 house (Register, 5 houses, 29 inhabitants; Nordquist, 2",
-      "resolved": "as line 2: three U+02CA, ñ = n+U+0303, č = c+U+030C"
+      "text": "Enuˊrmin (Eskimo, Anoˊrmik): 12 houses (Register, 20 houses, 125 inhabitants; Nordquist, 20 houses).",
+      "resolved": "Enuˊrmin = E,n,u,U+02CA,r,m,i,n; Anoˊrmik = A,n,o,U+02CA,r,m,i,k"
     },
     "5": {
-      "text": "houses)."
+      "text": "Neˊte-keˊñičvun (“the curve of Neˊten”): 1 house (Register, 5 houses, 29 inhabitants; Nordquist, 2",
+      "resolved": "Neˊte = N,e,U+02CA,t,e; keˊñičvun = k,e,U+02CA,ñ(n+U+0303),i,č(c+U+030C),v,u,n; Neˊten = N,e,U+02CA,t,e,n (same forms as line 3)"
     },
     "6": {
-      "text": "Neˊten (Eskimo, Naˊtak): 9 houses (Register, 5 houses, 33 inhabitants; Nordquist, 14 houses).",
-      "resolved": "two U+02CA (Ne, Na)"
+      "text": "houses)."
     },
     "7": {
-      "text": "BOGORAS, THE CHUKCHEE."
+      "text": "Neˊten (Eskimo, Naˊtak): 9 houses (Register, 5 houses, 33 inhabitants; Nordquist, 14 houses).",
+      "resolved": "Neˊten = N,e,U+02CA,t,e,n; Naˊtak = N,a,U+02CA,t,a,k"
     },
     "8": {
       "text": "Nat-ᴇnmɪtaˊhɪn (“cliff’s end of Neˊten”): 2 houses (Register, 4 houses, 30 inhabitants; Nordquist,",
-      "resolved": "small-cap ᴇ = U+1D07 after hyphen, ɪ = U+026A x2 (dotless small-cap i, licensed obscure-vowel series — no breve on these per §2.6), stress U+02CA after a and after Ne"
+      "resolved": "ᴇnmɪtaˊhɪn = N,a,t,-,U+1D07(small-cap E),n,m,U+026A(small-cap I),t,a,U+02CA,h,U+026A,n; Neˊten = N,e,U+02CA,t,e,n; cliff’s apostrophe is U+2019 (English possessive, curly per print)"
     },
     "9": {
       "text": "2 houses)."
     },
     "10": {
       "text": "Imɪˊlᴇ (“the whole one”): 4 houses (Register, 7 houses, 49 inhabitants; Nordquist, 4 houses).",
-      "resolved": "I = full cap (word-initial vowel not obscure), ɪ = U+026A, stress U+02CA after ɪ, ᴇ = U+1D07 word-final"
+      "resolved": "Imɪˊlᴇ = I,m,U+026A(small-cap I),U+02CA,l,U+1D07(small-cap E)"
     },
     "11": {
       "text": "Mäˊᵋmi-piˊlhɪn (“mouth of Mäˊᵋmi”): 2 houses (Register, 3 houses, 19 inhabitants; Nordquist, 1 house).",
-      "resolved": "ä = a+U+0308, stress U+02CA then laryngeal ᵋ = U+1D4B (glottalization of the stressed vowel, §2.1) — order is stress-tick then ᵋ; ɪ = U+026A"
+      "resolved": "Mäˊᵋmi = M,a+U+0308,U+02CA,U+1D4B(laryngeal),m,i; piˊlhɪn = p,i,U+02CA,l,h,U+026A,n"
     },
     "12": {
       "text": "Mäˊᵋmi (“with arrows”): 3 houses (Nordquist, 7 houses; not mentioned in the Register).",
-      "resolved": "Mä+U+02CA+U+1D4B+mi, as line 11: ä = a+U+0308, U+02CA, U+1D4B"
+      "resolved": "Mäˊᵋmi = M,a+U+0308,U+02CA,U+1D4B,m,i"
     },
     "13": {
       "text": "Teˊpqän (“low straight coast”): 8 houses (Nordquist, 9 houses; not mentioned in the Register).",
-      "resolved": "ä = a+U+0308 (§2.2 long counterpart of the obscure-vowel series); U+02CA on Te"
+      "resolved": "Teˊpqän = T,e,U+02CA,p,q,a+U+0308,n"
     },
     "14": {
       "text": "Paloˊnnan: 1 house. The other inhabitants had turned to reindeer-breeding. (Register, 4 houses,",
-      "resolved": "U+02CA on Palo"
+      "resolved": "Paloˊnnan = P,a,l,o,U+02CA,n,n,a,n"
     },
     "15": {
       "text": "28 inhabitants; Nordquist, 1 house.)"
     },
     "16": {
       "text": "Neˊs˙qᴀn (Eskimo, Naˊs˙kok, “head”): 8 houses (Register, 10 houses, 59 inhabitants; Nordquist, 6",
-      "resolved": "s + U+02D9 x2 (palatalization mark, licensed after s per the seven-member series — printed as a raised dot after s, a lookalike trap for the middle-dot interpunct but not that codepoint); ᴀ = U+1D00; U+02CA x2. Corrects OCR's 'so inhabitants' -> '59 inhabitants', confirmed at zoom (old-style 5 and 9)"
+      "resolved": "Neˊs˙qᴀn = N,e,U+02CA,s,U+02D9(palatalization dot),q,U+1D00(small-cap A),n; Naˊs˙kok = N,a,U+02CA,s,U+02D9,k,o,k"
     },
     "17": {
       "text": "houses)."
     },
     "18": {
       "text": "Velkäˊl-tɪnuˊp (“jaw hill”): 4 houses (Register, 6 houses, 33 inhabitants; Nordquist, probably under",
-      "resolved": "ä = a+U+0308, ɪ = U+026A, two U+02CA (compound)"
+      "resolved": "Velkäˊl = V,e,l,k,a+U+0308,U+02CA,l; tɪnuˊp = t,U+026A(small-cap I),n,u,U+02CA,p"
     },
     "19": {
-      "text": "the name Kakodla, 9 houses).",
-      "note": "'Kakodla' carries no diacritics — plain roman, keyed as printed"
+      "text": "the name Kakodla, 9 houses)."
     },
     "20": {
       "text": "Neˊs˙qᴀqäi (“little Neˊs˙qᴀn”): 6 houses (Nordquist, 7 houses; not mentioned in the Register).",
-      "resolved": "s+U+02D9 x2, ᴀ=U+1D00 x2, U+02CA x2, plus ä=a+U+0308 in qäi"
+      "resolved": "Neˊs˙qᴀqäi = N,e,U+02CA,s,U+02D9,q,U+1D00(small-cap A),q,a+U+0308,i; nested Neˊs˙qᴀn as line 16"
     },
     "21": {
       "text": "Irg̣uᵋnnuˊp (“pointed hill”): 5 houses (Nordquist, 6 houses; not mentioned in the Register).",
-      "resolved": "g̣ = g+U+0323, confirmed at 6x zoom — clear dot below the g's descender loop, distinct mark; ᵋ = U+1D4B; U+02CA on p"
+      "resolved": "Irg̣uᵋnnuˊp = I,r,g+U+0323,u,U+1D4B(laryngeal),n,n,u,U+02CA,p — g carries the dot below, confirmed at 4x zoom"
     },
     "22": {
       "text": "Yɪˊnřɪlɪn (“having steep hills”): 5 houses (Register, 4 houses, 26 inhabitants; Nordquist, 4 houses).",
-      "resolved": "ɪ = U+026A x3, U+02CA on Y, ř = r+U+030C (third rhotic, caron confirmed at 4x zoom — not a breve, which is unlicensed on r per §2.6). Punctuation after 'hills”) is a colon, not the semicolon the raw OCR carried"
+      "resolved": "Yɪˊnřɪlɪn = Y,U+026A(small-cap I),U+02CA,n,ř(r+U+030C),U+026A,l,U+026A,n"
     },
     "23": {
       "text": "Piˊlhɪn (“mouth”): 1 house. The other inhabitants had turned reindeer-breeders. (Nordquist, 3",
-      "resolved": "ɪ = U+026A, U+02CA on Pi"
+      "resolved": "Piˊlhɪn = P,i,U+02CA,l,h,U+026A(small-cap I),n"
     },
     "24": {
       "text": "houses; not mentioned in the Register.)"
     },
     "25": {
       "text": "Kuluˊči (Eskimo, Kuluˊsik, “old iceberg”): 11 houses (Register, 14 houses, 94 inhabitants; Nordquist,",
-      "resolved": "č = c+U+030C, two U+02CA (Kulu, Kulu)"
+      "resolved": "Kuluˊči = K,u,l,u,U+02CA,č(c+U+030C),i; Kuluˊsik = K,u,l,u,U+02CA,s,i,k"
     },
     "26": {
       "text": "20 houses)."
     },
     "27": {
       "text": "Nuteˊ-pɪˊnmɪn (“tongue of land”): 4 houses (Register, 4 houses, 23 inhabitants; not mentioned by",
-      "resolved": "ɪ = U+026A x2, two U+02CA (compound)"
+      "resolved": "Nuteˊ = N,u,t,e,U+02CA; pɪˊnmɪn = p,U+026A(small-cap I),U+02CA,n,m,U+026A,n"
     },
     "28": {
       "text": "Nordquist)."
     },
     "29": {
       "text": "Wañkarêˊman (derived from Waˊñka, “walrus-tusk”): 7 houses (Register, 4 houses, 28 inhabitants;",
-      "resolved": "ñ = n+U+0303 x2, ê = e+U+0302, two U+02CA (postposed to the stressed vowel ê, and to Wa)"
+      "resolved": "Wañkarêˊman = W,a,ñ(n+U+0303),k,a,r,e+U+0302,U+02CA,m,a,n; Waˊñka = W,a,U+02CA,ñ(n+U+0303),k,a"
     },
     "30": {
       "text": "Nordquist, 9 houses)."
     },
     "31": {
       "text": "Rɪrkaiˊpɪyan (“walrus barred off”): 11 houses (Register, 9 houses, 52 inhabitants; Nordquist, 15 houses).",
-      "resolved": "ɪ = U+026A x2, one U+02CA between kai and pɪyan"
+      "resolved": "Rɪrkaiˊpɪyan = R,U+026A(small-cap I),r,k,a,i,U+02CA,p,U+026A,y,a,n"
     },
     "32": {
       "text": "Notaˊ-tɪˊmlɪn (“close to the land”): 4 houses (Register, 4 houses, 28 inhabitants; Nordquist, 3 houses).",
-      "resolved": "ɪ = U+026A, two U+02CA (compound)"
+      "resolved": "Notaˊ = N,o,t,a,U+02CA; tɪˊmlɪn = t,U+026A(small-cap I),U+02CA,m,l,U+026A,n"
     },
     "33": {
       "text": "Reᵋn (“food”): 1 house. All the other inhabitants had turned reindeer-breeders. (Not mentioned",
-      "resolved": "ᵋ = U+1D4B, no stress mark — monosyllable"
+      "resolved": "Reᵋn = R,e,U+1D4B(laryngeal ᵋ),n — no separate stress mark printed"
     },
     "34": {
       "text": "either in the Register or by Nordquist.)"
     },
     "35": {
       "text": "Kɪnmaˊnka-uˊtir: 3 houses (Register, 2 houses, 13 inhabitants; Nordquist, 4 houses).",
-      "resolved": "ɪ = U+026A, two U+02CA (compound)"
+      "resolved": "Kɪnmaˊnka = K,U+026A(small-cap I),n,m,a,U+02CA,n,k,a; uˊtir = u,U+02CA,t,i,r (plain ASCII i, not small-cap, confirmed at 4x)"
     },
     "36": {
       "text": "Yaˊqan: 3 houses (Nordquist, 5 houses; not mentioned in the Register).",
-      "resolved": "U+02CA on Ya"
+      "resolved": "Yaˊqan = Y,a,U+02CA,q,a,n"
     },
     "37": {
       "text": "ᴇnmaaˊtir (“cliff-brook”): 2 houses (Nordquist, 4 houses; not mentioned in the Register).",
-      "resolved": "entry-initial small-cap ᴇ = U+1D07 (contrast line 3's full-cap E — the choice is phonemic, not positional); U+02CA"
+      "resolved": "ᴇnmaaˊtir = U+1D07(small-cap E),n,m,a,a,U+02CA,t,i,r"
     },
     "38": {
       "text": "ᴇnmɪtaˊhɪn (“cliff’s end”), 3 houses (Register, 2 houses, 16 inhabitants; Nordquist, 6 houses).",
-      "resolved": "ᴇ = U+1D07, ɪ = U+026A x2, U+02CA"
+      "resolved": "ᴇnmɪtaˊhɪn = U+1D07(small-cap E),n,m,U+026A(small-cap I),t,a,U+02CA,h,U+026A,n; cliff’s apostrophe U+2019"
     },
     "39": {
       "text": "Uwg̣aˊrg̣ɪn: 2 houses (Nordquist, 4 houses; not mentioned in the Register).",
-      "resolved": "g̣ = g+U+0323 x2, confirmed at 6x zoom — both g's carry a clear dot below; ɪ = U+026A, U+02CA"
+      "resolved": "Uwg̣aˊrg̣ɪn = U,w,g+U+0323,a,U+02CA,r,g+U+0323,U+026A(small-cap I),n — both g's dotted, confirmed at 4x"
     },
     "40": {
       "text": "Three different places on Cape Erri: 6 houses (Register, 2 houses, 10 inhabitants; Nordquist, 13 houses)."
     },
     "41": {
-      "text": "1 Besides these, there are about 400 inhabitants on the Diomede Islands and on St. Lawrence Island;",
-      "note": "footnote marker digit keyed as plain '1', not distinguished typographically"
+      "text": "In summing up the whole population, we obtain in round numbers, for"
     },
     "42": {
-      "text": "so that the whole number of Eskimo in Asia, in round numbers, is 1600."
+      "text": "the Chukchee on the Pacific shore, 1100; for the Eskimo, 1200; ¹ for the",
+      "resolved": "footnote marker is superscript U+00B9, confirmed raised above baseline at 4x zoom"
     },
     "43": {
-      "text": "In summing up the whole population, we obtain in round numbers, for",
-      "note": "Recovered line: the first of a two-line closing paragraph the segmenter dropped entirely. Paragraph-initial, hence the indent (hpos 482 against 374 for the continuation)."
+      "text": "¹ Besides these, there are about 400 inhabitants on the Diomede Islands and on St. Lawrence Island;",
+      "resolved": "opener marker is superscript U+00B9, matching reference on line 42"
     },
     "44": {
-      "text": "the Chukchee on the Pacific shore, 1100; for the Eskimo, 1200;¹ for the",
-      "note": "Recovered line. The superscript ¹ after \"1200;\" is the body reference for footnote 1, whose opener is line 41 — this is the line whose absence left that marker unpaired. Old-style figures for 1100/1200. Print sets a thin space before each semicolon (French spacing); keyed English per keying_spec 2.9."
+      "text": "so that the whole number of Eskimo in Asia, in round numbers, is 1600."
     }
   },
+  "segmenter_missed": [
+    {
+      "where": "RunningTitleZone, gaps band vpos=642 height=34 hpos=2072 width=46",
+      "text": "31",
+      "note": "Folio for the RunningTitleZone. This page's RunningTitleZone holds only one ALTO line (index 0, the running title 'BOGORAS, THE CHUKCHEE.', hpos 929-1554). The folio '31' sits well to the right at hpos~2072, outside that box, on the same text row (vpos 617-673). Read at 4x under --margins: '3' followed by an old-style dotless serif '1' (x-height, per §5.4). No line index covers this box; per the rule against appending stray text to a neighbouring line, it is reported here rather than folded into line 0's text."
+    }
+  ],
   "contamination": {
-    "blind": true,
-    "note": "1-053 not previously read in this project; first look at this page"
+    "blind": true
   }
 }

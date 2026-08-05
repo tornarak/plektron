@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-037.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-037.png; regions_from: zones/chukchi-1-037.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-037_r1" HPOS="446" VPOS="640" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="446 640 2224 640 2224 730 446 730"/>
+                    </Shape>
+                    <TextLine ID="mz_1-037_l1" HPOS="1017" VPOS="651" WIDTH="626" HEIGHT="56" BASELINE="1017 688 1643 688" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1017 688 1017 707 1643 707 1643 688 1643 653 1017 651 1017 688"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-037_r2" HPOS="446" VPOS="755" WIDTH="1778" HEIGHT="137" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="446 755 2224 755 2224 892 446 892"/>
+                    </Shape>
+                    <TextLine ID="mz_1-037_l2" HPOS="443" VPOS="751" WIDTH="1772" HEIGHT="60" BASELINE="446 796 2215 792" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="887 753 885 753 877 753 855 753 833 753 812 755 790 755 768 755 747 755 738 755 727 764 664 757 660 757 638 757 617 757 612 757 599 764 569 757 552 759 530 759 508 759 502 759 443 766 446 796 446 811 2215 807 2215 792 2213 764 2163 751 2161 751 2159 751 2156 751 2133 762 2053 751 2050 751 2048 751 2046 751 2031 764 1819 764 1793 751 1790 751 1788 751 1786 751 1762 764 1613 764 1472 751 1470 751 1468 751 1466 751 1448 762 1344 751 1342 751 1340 751 1338 751 1316 764 1279 753 1277 753 1275 753 907 764 890 753 887 753"/>
+                        </Shape>
+                        <String CONTENT="on the Bear Islands, near the mouth of the Kolyma, are also supposed to be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l3" HPOS="443" VPOS="811" WIDTH="1768" HEIGHT="67" BASELINE="446 857 2211 853" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="443 835 446 857 446 874 2208 878 2211 853 2206 824 2143 811 2141 811 1825 822 1663 811 1661 811 1658 811 1619 822 1591 811 1589 811 1587 811 1585 811 1546 822 1489 811 1487 811 1485 811 1446 822 1366 811 1364 811 1234 824 636 814 634 814 573 824 469 814 467 814 465 814 463 814 450 818 443 835"/>
+                        </Shape>
+                        <String CONTENT="theirs. They have often been confounded with the Čaˊačêt, though nothing"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-037_r3" HPOS="446" VPOS="2661" WIDTH="1778" HEIGHT="122" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="446 2661 2224 2661 2224 2783 446 2783"/>
+                    </Shape>
+                    <TextLine ID="mz_1-037_l4" HPOS="446" VPOS="2656" WIDTH="1771" HEIGHT="63" BASELINE="448 2704 2217 2695" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1962 2658 1940 2658 1918 2658 1897 2658 1875 2658 1853 2658 1832 2658 1810 2658 1788 2658 1767 2658 1760 2658 1708 2665 1424 2658 1420 2658 1399 2658 1377 2658 1355 2658 1334 2658 1321 2658 1303 2667 1050 2658 1048 2658 446 2669 448 2704 448 2719 2215 2710 2217 2695 2213 2665 1962 2656 1962 2658"/>
+                        </Shape>
+                        <String CONTENT="is known about the mutual relations of the two tribes. Both are supposed by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l5" HPOS="448" VPOS="2714" WIDTH="1756" HEIGHT="63" BASELINE="450 2762 2204 2756" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="450 2762 450 2777 2202 2771 2204 2756 2198 2714 1613 2725 1100 2717 1097 2717 1024 2727 474 2719 472 2719 469 2719 448 2727 450 2762"/>
+                        </Shape>
+                        <String CONTENT="the natives to have emigrated westward. This is also mentioned by Wrangell.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-037_r4" HPOS="446" VPOS="2783" WIDTH="1778" HEIGHT="303" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="446 2783 2224 2783 2224 3086 446 3086"/>
+                    </Shape>
+                    <TextLine ID="mz_1-037_l6" HPOS="556" VPOS="2775" WIDTH="1659" HEIGHT="65" BASELINE="558 2825 2215 2816" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="558 2825 558 2840 2213 2831 2215 2816 2211 2786 1925 2775 1923 2775 1795 2786 1450 2777 1448 2777 1373 2790 556 2790 558 2825"/>
+                        </Shape>
+                        <String CONTENT="Maydell, without any apparent reason, denies the existence of either tribe."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l7" HPOS="448" VPOS="2836" WIDTH="1769" HEIGHT="65" BASELINE="450 2883 2217 2875" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="450 2883 450 2901 2215 2892 2217 2875 2213 2846 1786 2836 1784 2836 1782 2836 1780 2836 1767 2846 1693 2838 1691 2838 448 2849 450 2883"/>
+                        </Shape>
+                        <String CONTENT="He mentions, however, almost in the same passage, that Peter Mangol, one"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l8" HPOS="443" VPOS="2894" WIDTH="1774" HEIGHT="65" BASELINE="446 2944 2217 2937" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="446 2944 446 2959 2215 2957 2217 2937 2215 2905 2195 2894 2193 2894 2191 2894 2189 2894 2066 2905 2007 2894 2005 2894 2003 2894 1966 2905 1602 2896 1600 2896 1598 2896 1596 2896 1583 2907 1546 2896 1544 2896 1541 2896 1539 2896 1515 2907 1251 2896 1249 2896 1143 2907 1091 2896 1089 2896 981 2909 909 2898 907 2898 779 2909 762 2898 760 2898 757 2898 619 2898 617 2898 615 2898 582 2909 489 2898 487 2898 485 2898 443 2911 446 2944"/>
+                        </Shape>
+                        <String CONTENT="of his Chukchee fellow-travellers, affirmed that in former times, on Cape Erri,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l9" HPOS="422" VPOS="2950" WIDTH="1795" HEIGHT="74" BASELINE="424 3005 2217 2992" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="424 3005 424 3024 1903 3024 1903 3022 1992 3011 2200 3020 2202 3020 2204 3020 2206 3020 2217 3009 2217 2992 2213 2963 2148 2950 2146 2950 2143 2950 2122 2961 2014 2950 2011 2950 1914 2963 1877 2953 1875 2953 1873 2953 1806 2963 1591 2955 1589 2955 1587 2955 1585 2955 1570 2966 1470 2955 1468 2955 1344 2966 1323 2955 1321 2955 1318 2955 1316 2955 1288 2968 1195 2957 1052 2957 1050 2957 1048 2957 1046 2957 1028 2968 913 2959 911 2959 909 2959 907 2959 894 2970 879 2959 877 2959 874 2959 723 2959 721 2959 643 2970 593 2961 591 2961 589 2961 586 2961 571 2972 469 2961 467 2961 465 2961 422 2974 424 3005"/>
+                        </Shape>
+                        <String CONTENT="there had lived Maritime Chukchee who spoke a language different from that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l10" HPOS="437" VPOS="3018" WIDTH="559" HEIGHT="69" BASELINE="439 3059 996 3061" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="439 3059 437 3074 476 3087 478 3087 480 3087 482 3087 508 3076 530 3087 532 3087 534 3087 602 3076 695 3087 697 3087 994 3074 996 3061 987 3018 972 3028 874 3018 872 3018 803 3028 710 3018 708 3018 706 3018 703 3018 684 3031 569 3031 558 3020 558 3018 556 3018 554 3018 552 3018 439 3026 439 3059"/>
+                        </Shape>
+                        <String CONTENT="of the modern villages.²"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-037_r5" HPOS="446" VPOS="3086" WIDTH="1778" HEIGHT="122" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="446 3086 2224 3086 2224 3208 446 3208"/>
+                    </Shape>
+                    <TextLine ID="mz_1-037_l11" HPOS="554" VPOS="3072" WIDTH="1667" HEIGHT="65" BASELINE="556 3121 2221 3113" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="556 3121 556 3137 2219 3128 2221 3113 2217 3085 1910 3072 1907 3072 1905 3072 1860 3082 1823 3072 1821 3072 1819 3072 1816 3072 1814 3072 1799 3085 1756 3074 1754 3074 1752 3074 1749 3074 1706 3085 1524 3074 1522 3074 1466 3085 1403 3074 1401 3074 1399 3074 1396 3074 1381 3087 1015 3076 1013 3076 952 3091 868 3091 855 3078 853 3078 851 3078 848 3078 846 3078 820 3089 686 3078 684 3078 554 3087 556 3121"/>
+                        </Shape>
+                        <String CONTENT="Further on he mentions the hunter, Ivan Viligin, who lived in the latter"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l12" HPOS="446" VPOS="3128" WIDTH="1775" HEIGHT="87" BASELINE="448 3186 2221 3171" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="448 3186 448 3215 550 3202 820 3210 822 3210 991 3197 1167 3208 1169 3208 1171 3208 1208 3195 1329 3195 1347 3206 1349 3206 1351 3206 1353 3206 1524 3193 1589 3204 1591 3204 1643 3193 1697 3204 1700 3204 1702 3204 1704 3204 1719 3191 1795 3202 1797 3202 1847 3191 1868 3202 1871 3202 1873 3202 1933 3191 1949 3202 1951 3202 1953 3202 1955 3202 2219 3191 2221 3171 2215 3132 2027 3141 1981 3128 1979 3128 1977 3128 1975 3128 1972 3128 1951 3145 1762 3145 1741 3130 1739 3130 1736 3130 1734 3130 1732 3130 1730 3130 1708 3145 1665 3132 1663 3132 1661 3132 1658 3132 1656 3132 1637 3145 1570 3132 1567 3132 1565 3132 1539 3145 1520 3132 1518 3132 1515 3132 1513 3132 1511 3132 1468 3145 1379 3134 1377 3134 1375 3134 1344 3147 1243 3134 1240 3134 1238 3134 1201 3152 994 3152 974 3137 972 3137 970 3137 968 3137 892 3150 838 3139 835 3139 757 3152 690 3141 688 3141 580 3154 543 3141 541 3141 539 3141 446 3143 448 3186"/>
+                        </Shape>
+                        <String CONTENT="part of the eighteenth century. He affirmed that he knew an old man by"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-037_r6" HPOS="446" VPOS="3230" WIDTH="1778" HEIGHT="57" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="446 3230 2224 3230 2224 3287 446 3287"/>
+                    </Shape>
+                    <TextLine ID="mz_1-037_l13" HPOS="1329" VPOS="3228" WIDTH="338" HEIGHT="51" BASELINE="1331 3258 1667 3262" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1331 3258 1329 3275 1663 3279 1667 3262 1665 3232 1331 3228 1331 3258"/>
+                        </Shape>
+                        <String CONTENT="² Maydell I, p. 331."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-037_l14" HPOS="554" VPOS="3230" WIDTH="329" HEIGHT="60" BASELINE="556 3260 883 3266" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="556 3260 554 3271 773 3290 775 3290 881 3277 883 3266 883 3236 556 3230 556 3260"/>
+                        </Shape>
+                        <String CONTENT="¹ Wrangell, p. 338."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-037_r7" HPOS="446" VPOS="3311" WIDTH="1778" HEIGHT="73" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="446 3311 2224 3311 2224 3384 446 3384"/>
+                    </Shape>
+                    <TextLine ID="mz_1-037_l15" HPOS="394" VPOS="3303" WIDTH="734" HEIGHT="74" BASELINE="396 3347 1128 3331" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="396 3347 396 3368 495 3377 498 3377 500 3377 502 3377 528 3360 838 3353 961 3366 963 3366 965 3366 968 3366 968 3364 978 3355 1043 3360 1046 3360 1048 3360 1050 3360 1061 3349 1089 3362 1091 3362 1093 3362 1095 3362 1128 3349 1128 3331 1123 3305 612 3303 610 3303 608 3303 606 3303 606 3305 595 3314 517 3303 515 3303 420 3305 417 3305 394 3316 396 3347"/>
+                        </Shape>
+                        <String CONTENT="3—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

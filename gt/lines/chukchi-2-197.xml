@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
+  <Layout>
+    <Page ID="corr_page_2-197" PHYSICAL_IMG_NR="1" WIDTH="2550" HEIGHT="3525">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock ID="corr_2-197-2976_block" HPOS="466" VPOS="2976" WIDTH="1766" HEIGHT="63">
+          <Shape>
+            <Polygon POINTS="466 2976 2232 2976 2232 3039 466 3039"/>
+          </Shape>
+          <TextLine ID="corr_2-197-2976" BASELINE="466 3039 2232 3039" HPOS="466" VPOS="2976" WIDTH="1766" HEIGHT="63">
+            <Shape>
+              <Polygon POINTS="466 2976 2232 2976 2232 3039 466 3039"/>
+            </Shape>
+            <String CONTENT="" HPOS="466" VPOS="2976" WIDTH="1766" HEIGHT="63"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>
