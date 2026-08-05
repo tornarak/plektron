@@ -567,7 +567,7 @@ def line_crops(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."
     sx, sy = _scale_for(page, img.size)
     wide = printspace_x(page) if margins else None
 
-    for rec in page_lines(alto):
+    for rec in page_lines(alto, root, ref=ref):
         box = line_box(rec, sx, sy, img.size, wide)
         if box is None:
             continue
@@ -792,7 +792,13 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     # raster coordinates already.
     sx, sy = _scale_for(page, img.size)
 
-    recs = page_lines(alto)
+    # **Rooted and named, both.** Left to the path derivation this resolves the
+    # corrections store against `<alto>/../..`, which is `<root>/gt` for a
+    # `gt/ocr` page — a directory that never holds one, so the fold found nothing
+    # and every corrected band went on reporting as though nobody had touched it.
+    # The detector claiming a line is missing *because* it could not see the box
+    # somebody drew for it is the exact failure this pass exists to end.
+    recs = page_lines(alto, root, ref=ref)
     # Column window from the page's own lines, so the margins (and the scanner's
     # dark gutter) never register as ink. Falls back to the full width if a page
     # somehow has no geometry to measure.

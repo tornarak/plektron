@@ -189,6 +189,26 @@ def test_a_region_matching_nothing_leaves_the_band_alone(page):
 
 # --- the two layers, and the boundary between them -------------------------
 
+def test_a_corrected_band_goes_quiet(in_zone):
+    """The other way a band leaves the report, and the one that has to work for
+    the pass to converge: a human drew a box over it, so the ink is covered and
+    there is nothing left to find.
+
+    Caught in production and not by the unit tests, which is why it is here.
+    `line_gaps` called `page_lines(alto)` with no root, so the fold resolved
+    `gt/lines/` against `<alto>/../..` — `<root>/gt` for a `gt/ocr` page, a
+    directory that never holds one. The detector went on reporting a line as
+    missing *because it could not see the box somebody had drawn for it*, which
+    is the exact failure this whole pass exists to end.
+    """
+    from harness import corrections as corr
+    tmp_path, _alto, band = in_zone
+    corr.save_lines("1-048", [{"x0": band["hpos"], "y0": band["vpos"],
+                               "x1": band["hpos"] + band["width"],
+                               "y1": band["vpos"] + band["height"]}], tmp_path)
+    assert line_gaps("1-048", "gt/ocr", tmp_path) == []
+
+
 def test_a_band_inside_a_zone_names_it(in_zone):
     """Containment is what decides whose question the band is, so it is reported
     rather than left implicit — and it is what hands a recovered folio the

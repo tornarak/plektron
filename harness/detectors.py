@@ -787,7 +787,8 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
         # reproducing the page line for line — the model reads the raster beside
         # it — and it drops the geometry the column guard needs. Same reading
         # order either way, `_lines_from_alto` being a projection of this call.
-        lines = [t for t in join_broken_words(page_lines(ocr)) if t.strip()]
+        lines = [t for t in join_broken_words(page_lines(ocr, root, ref=ref))
+                 if t.strip()]
         draft = _draft_text(lines)
         for f in detect_all(draft.split("\n"), root)["tokens"]:
             if f["type"] != "lexicon_miss":
@@ -876,7 +877,7 @@ def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     out = []
     for ref in _restored_refs(root):
         p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
-        recs = page_lines(p)
+        recs = page_lines(p, root, ref=ref)
         # Reading order is what `page_lines` returns, which is what the join
         # requires: a word broken at the foot of the left column continues at
         # the head of the right one, not at the next ALTO sibling. The records

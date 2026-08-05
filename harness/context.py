@@ -423,7 +423,8 @@ def _figure_line_warnings(recs: list[dict], ref: str,
     return out
 
 
-def _ocr_lines(ocr_path: Path) -> list[dict]:
+def _ocr_lines(ocr_path: Path, root: Path = Path("."),
+               ref: str | None = None) -> list[dict]:
     """OCR lines with their ALTO ids, for optional @facs citation on a Tier-1 span.
 
     Deliberately not `catmus_draft`: that reader (`_lines_from_alto`) drops
@@ -466,7 +467,7 @@ def _ocr_lines(ocr_path: Path) -> list[dict]:
     from .lines import page_lines  # local: lines.py imports context at module
                                     # level, so this avoids a cycle.
     return [{"index": r["index"], "text": r["text"]}
-            for r in page_lines(ocr_path)
+            for r in page_lines(ocr_path, root, ref=ref)
             if r["zone"] not in APPARATUS_ZONES]
 
 
@@ -517,7 +518,7 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
     path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
     if not path.exists():
         return []
-    recs = page_lines(path)
+    recs = page_lines(path, root, ref=ref)
     # **A half of a broken word is not a form, and must not be offered as one.**
     # `1-101` prints `Torwaˊwaq` as `(Tor-` / `waˊwaq)`, so this list held
     # `waˊwaq` — a whole token on its line, ratified, and *half the word*. A pass
@@ -699,7 +700,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # wrapped caption into body text, or a line sitting inside artwork. Both
         # are reported rather than acted on — see `_figure_line_warnings`.
         "figure_line_warnings": _figure_line_warnings(recs, ref, root),
-        "ocr_lines": _ocr_lines(ocr),
+        "ocr_lines": _ocr_lines(ocr, root, ref),
         # Tier-1 tokens already adjudicated at the raster, named by a page-local
         # handle so the pass never retypes one. Empty on a page with no ground
         # truth, which is 802 of 832 — there the pass reads and flags instead.

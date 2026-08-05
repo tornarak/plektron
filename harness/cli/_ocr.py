@@ -445,7 +445,7 @@ def _store_refs(a) -> list[str]:
 def run_lines(a) -> int:
     pairs = []
     for r in _store_refs(a):
-        recs = page_lines(alto_for_lines(r, _alto_dir(a), a.root))
+        recs = page_lines(alto_for_lines(r, _alto_dir(a), a.root), a.root, ref=r)
         if not a.full:
             # Drop the two long geometry strings. Dropped from every record, never
             # some — a ragged key set collapses the table to the verbose nested
@@ -458,12 +458,24 @@ def run_lines(a) -> int:
 
 
 def run_gaps(a) -> int:
+    from ..corrections import load_lines
     from ..parallel import pmap
     refs = _store_refs(a)
     with progress("measuring ink") as tick:
         done = pmap(lambda r: line_gaps(r, _alto_dir(a), a.root), refs, a.jobs,
                     tick)
     out_per_ref(a, list(zip(refs, done, strict=True)))
+    # **A page that has been worked reports differently from one nobody has
+    # opened, and without this it does not.** A corrected band stops being a band:
+    # the box covers the ink, so it drops out of the table and the page falls
+    # silent. Silence is exactly what this detector exists to break, so say how
+    # many of them were settled rather than absent.
+    worked = [(r, len(load_lines(r, a.root))) for r in refs]
+    worked = [{"ref": r, "corrected": n} for r, n in worked if n]
+    if worked:
+        out(a, {"pages_corrected": len(worked),
+                "corrections": sum(w["corrected"] for w in worked),
+                "pages": worked}, "pages_corrected")
     return 0
 
 
@@ -738,7 +750,7 @@ def run_review(a) -> int:
     sums, queues = [], []
     for r in refs:
         spans = page_spans(r, _alto_dir(a), a.root)
-        n = len(page_lines(alto_for_lines(r, _alto_dir(a), a.root)))
+        n = len(page_lines(alto_for_lines(r, _alto_dir(a), a.root), a.root, ref=r))
         sums.append((r, summary(spans, n)))
         queues.append((r, spans if a.spans else group_spans(spans)))
     out_per_ref(a, sums)

@@ -169,7 +169,7 @@ def page_spans(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     ref = norm_ref(ref)
     prop = load_proposal(ref, root)
     out = []
-    for rec in page_lines(alto_for_lines(ref, alto_dir, root)):
+    for rec in page_lines(alto_for_lines(ref, alto_dir, root), root, ref=ref):
         mine = prop.get(rec["index"])
         if mine is None:
             continue
