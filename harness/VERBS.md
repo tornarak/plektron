@@ -358,12 +358,18 @@ writes the overlay, and geometry only.
 **Note** **it draws and never keys.** A recovered line's text is adjudicated in `ocr review` like any other line's and written by `restore`; duplicating that machinery here would be a second place a reading could be originated, and this store exists on the argument that its writer cannot originate one.
 **Note** **a box in no zone is refused, and the refusal names `zones edit`.** Ink no region covers is a defect in the *zoning*, not a line this editor can adopt — recording a line inside no region would leave the region missing. It is also what keeps the two ink checks disjoint. A page with no zoning at all is refused outright: line correction comes after zoning, which is a stage-order invariant rather than a statement about this corpus.
 **Note** `b` toggles the blotted view, rendered on demand with **both** ruling layers painted, so what is left is what nobody has settled. That is deliberately the opposite of `ocr blot`'s default, which stays an independent witness.
-**Note** several refs are the itinerary, in the order named — `zones edit`'s rule, since the editor already walks a list with the arrow keys. The census is the natural work-list: `ocr gaps --all` and the refs it leaves live.
+**Note** **every colour and every key is `data/lines_config.json`'s**, `data/zones_config.json`'s shape and validated the same way — a key bound twice, a layer the editor paints by name and the config does not declare, a `zoom_step` of 1, are each refused at load rather than met as a dead key three pages into a sitting. The overlay's stylesheet and the panel's key list are both *generated* from it, so a rebound key moves in one place and the help cannot lie about the tool.
+**Note** **the panel is a control surface, not a legend**: every action's row does the thing when clicked, so it is reachable without knowing its shortcut or having kept one. A key may be set to `null` — the shortcut comes off the keyboard, the control stays. Rows whose action has nothing to act on (delete with no selection, withdraw with no ruling) draw dimmed and stay put, since a control that comes and goes is harder to learn than one that is visibly not applicable.
+**Note** zoom is the instrument, not a convenience: the subject is a mark ~40 px wide on a 2824 px leaf, which at fit is some 17 screen pixels — too small to tell a numeral from a printed rule. `frame_band` jumps straight to the first undecided band at a legible step.
+**Note** a ruling can be **withdrawn**, as in `zones edit`, and the page's rulings are listed with their reasons beside the keys. A reason recorded once through a prompt and never shown again is a record nobody can check, and the whole argument for requiring one is that a year later it is all that separates a ruled artifact from a hidden mistake.
+**Note** several refs are the walk, in the order named — `zones edit`'s rule, since the editor already steps through a list with the arrow keys.
+**Note** **`--unsettled` is a filter over `--all`, and deliberately not a saved work-list.** The obvious itinerary here is "the pages `gaps` still leaves live", and writing that to an `.lst` would freeze it: every page worked makes the file wrong, and a stale work-list is a claim about the corpus that nothing checks. It is measured when asked instead — a raster read per page, the same cost the census pays — so the answer is true when it is used. `l` in the editor opens the same view as a table, measured per row on request, with `?` until a row is fetched because blank is indistinguishable from none.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page with a raster — the editor walks them with the arrow keys
---itinerary LST  walk a work-list rather than the refs named
+--unsettled  narrow --all to pages still carrying a band nobody has settled
 --port N    port for the editor [8733]
+--jobs N    worker threads for --unsettled; 1 runs serially [cores, capped]
 --root --json --toon --pager
 ```
 

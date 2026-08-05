@@ -28,7 +28,7 @@ import json
 from pathlib import Path
 
 from . import corrections as corr
-from . import webui
+from . import lines_config, webui
 from . import zones as zn
 from .context import norm_ref
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, line_gaps, page_lines
@@ -100,6 +100,21 @@ def page_state(ref: str, root: Path = Path("."),
     }
 
 
+def page_row(ref: str, root: Path = Path("."),
+             alto_dir: str = DEFAULT_ALTO_DIR) -> dict:
+    """One page's state for the list — the slow column measured, the rest read.
+
+    `bands` is the raster read (~0.2 s) and everything else is a file test, which
+    is why the list draws the cheap columns immediately and fetches this per row.
+    """
+    ref = norm_ref(ref)
+    alto = alto_for_lines(ref, alto_dir, root)
+    bands = line_gaps(ref, alto_dir, root) if alto.exists() else []
+    return {"ref": ref, "live": sum(1 for b in bands if not b["exempted"]),
+            "ruled": sum(1 for b in bands if b["exempted"]),
+            "corrections": len(corr.load_lines(ref, root))}
+
+
 def _zone_of(box: dict, zones: list[dict]) -> str:
     from .lines import _band_zone
     return _band_zone({"hpos": box["x0"], "vpos": box["y0"],
@@ -152,21 +167,54 @@ def save_payload(payload: dict, root: Path = Path("."),
 
 
 JS = r"""
-const S = STATE;
+const S = STATE, VIEW = CFG.view;
 let corr = S.corr.map(c => ({...c})), exempt = S.line_exempt.map(e => ({...e}));
 let sel = null, dirty = false, blot = false, drag = null;
 
 const $ = s => document.querySelector(s);
 const stage = $('#stage'), ov = $('#ov'), img = $('#img');
 
+// **Zoom is not a convenience here, it is the instrument.** The thing being
+// judged is a band of ink 43x36 px on a 2824x3897 leaf; fitted to the viewport
+// that arrives about 17 px wide, which is too small to tell a numeral from a
+// printed rule from a smudge — the one decision this editor exists to support.
+// Steps of 1.25 from fit, persisted, and the same keys `zones edit` uses so the
+// hand does not have to learn two tools.
+let zoom = parseFloat(localStorage.getItem('linesZoom') || '0') || 0;
+
 function fit() {
-  // The stage is a window onto the page; width follows the viewport so the
-  // whole measure is legible without horizontal scrolling.
-  const w = Math.min(window.innerWidth - 290, 1100);
+  const wrap = $('#wrap');
+  const base = (wrap.clientWidth - 24) / S.w;
+  const s = zoom ? base * Math.pow(VIEW.zoom_step, zoom) : base;
+  const w = Math.max(120, Math.round(S.w * s));
   stage.style.width = w + 'px';
-  stage.style.height = (w * S.h / S.w) + 'px';
+  stage.style.height = Math.round(S.h * s) + 'px';
   img.style.width = w + 'px';
   ov.setAttribute('viewBox', `0 0 ${S.w} ${S.h}`);
+  $('#zl').textContent = (zoom ? Math.pow(VIEW.zoom_step, zoom) : 1).toFixed(2) + '×';
+  return s;
+}
+
+// Keep whatever is selected — or the first band left to decide — in view after a
+// zoom step, rather than dumping the human at the top of a page they were
+// working the middle of.
+function keepInView() {
+  const wrap = $('#wrap');
+  const t = (sel !== null && corr[sel])
+    || S.bands.filter(b => !b.exempted)[0];
+  if (!t) return;
+  const y = (t.y0 !== undefined ? t.y0 : t.vpos), h = (t.y1 - t.y0) || t.height;
+  const s = stage.clientHeight / S.h;
+  wrap.scrollTop = Math.max(0, (y + h / 2) * s - wrap.clientHeight / 2);
+  const x = (t.x0 !== undefined ? t.x0 : t.hpos), w = (t.x1 - t.x0) || t.width;
+  wrap.scrollLeft = Math.max(0, (x + w / 2) * (stage.clientWidth / S.w)
+                             - wrap.clientWidth / 2);
+}
+
+function setZoom(z) {
+  zoom = Math.max(VIEW.zoom_min, Math.min(VIEW.zoom_max, z));
+  localStorage.setItem('linesZoom', zoom);
+  fit(); draw(); requestAnimationFrame(keepInView);
 }
 
 function at(e) {
@@ -188,40 +236,81 @@ function inZone(b) {
   return best >= 0.5;
 }
 
-function rect(b, cls, title) {
+function rect(b, layer, title, attrs) {
   return `<rect x="${b.x0}" y="${b.y0}" width="${b.x1 - b.x0}" `
-       + `height="${b.y1 - b.y0}" class="${cls}">`
-       + (title ? `<title>${title}</title>` : '') + '</rect>';
+       + `height="${b.y1 - b.y0}" class="ly-${layer}" ${attrs || ''}>`
+       + (title ? `<title>${esc(title)}</title>` : '') + '</rect>';
+}
+function band_(y0, y1, layer, title) {
+  return `<rect x="0" y="${y0}" width="${S.w}" height="${y1 - y0}" `
+       + `class="ly-${layer}"><title>${esc(title)}</title></rect>`;
+}
+function esc(s) {
+  return String(s).replace(/[<>&"]/g, c =>
+    ({'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;'}[c]));
 }
 
 function draw() {
   let s = '';
-  for (const z of S.zones) s += rect(z, 'z', z.label);
-  for (const l of S.lines) s += rect(l, 'l');
+  for (const z of S.zones) s += rect(z, 'zone', z.label);
+  for (const l of S.lines) s += rect(l, 'line');
   for (const e of S.zone_exempt)
-    s += `<rect x="0" y="${e.y0}" width="${S.w}" height="${e.y1 - e.y0}" `
-       + `class="xz"><title>zone layer: ${e.note}</title></rect>`;
-  for (const e of exempt)
-    s += `<rect x="0" y="${e.y0}" width="${S.w}" height="${e.y1 - e.y0}" `
-       + `class="xl"><title>not type: ${e.note}</title></rect>`;
+    s += band_(e.y0, e.y1, 'ruling_zone', 'zoning ruled this: ' + e.note);
+  exempt.forEach(e => {
+    s += band_(e.y0, e.y1, 'ruling_line', 'not a line: ' + e.note);
+  });
   for (const b of S.bands) {
     if (b.exempted) continue;
+    if (ruled(b)) continue;
     if (corr.some(c => c.y0 < b.vpos + b.height && b.vpos < c.y1)) continue;
-    s += `<rect x="${b.hpos}" y="${b.vpos}" width="${b.width}" `
-       + `height="${b.height}" class="b${b.zone ? '' : ' nz'}" `
-       + `data-v="${b.vpos}"><title>${b.zone || 'in no zone'}</title></rect>`;
+    const box = {x0: b.hpos, y0: b.vpos, x1: b.hpos + b.width,
+                 y1: b.vpos + b.height};
+    s += rect(box, b.zone ? 'band' : 'band_no_zone',
+              b.zone || 'in no zone — a gap in the zoning, not a line',
+              `data-v="${b.vpos}"`);
   }
   corr.forEach((c, i) => {
-    s += `<rect x="${c.x0}" y="${c.y0}" width="${c.x1 - c.x0}" `
-       + `height="${c.y1 - c.y0}" class="c${i === sel ? ' sel' : ''}`
-       + `${inZone(c) ? '' : ' nz'}" data-i="${i}"></rect>`;
+    s += rect(c, i === sel ? 'correction_selected'
+                           : (inZone(c) ? 'correction' : 'band_no_zone'),
+              inZone(c) ? '' : 'outside every zone — the save will refuse it',
+              `data-i="${i}"`);
   });
   if (drag) s += rect(drag, 'drag');
   ov.innerHTML = s;
   $('#nc').textContent = corr.length;
-  $('#nb').textContent = S.bands.filter(b => !b.exempted).length;
+  $('#nb').textContent = S.bands.filter(b => !b.exempted && !ruled(b)).length;
   $('#nx').textContent = exempt.length;
   $('#dirty').style.visibility = dirty ? 'visible' : 'hidden';
+  drawRulings();
+  if (window.syncControls) syncControls();
+}
+
+// A ruling this session has made over that band, if any. Local, because `exempt`
+// is unsaved until the save lands — the page must show what it is about to write,
+// not what it last read.
+function ruled(b) {
+  const mid = b.vpos + b.height / 2;
+  return exempt.find(e => e.y0 <= mid && mid <= e.y1);
+}
+
+// **The rulings are listed, not only painted.** A note recorded once through a
+// prompt and never shown again is a record nobody can check: the whole argument
+// for requiring a reason is that a year from now it is the only thing separating
+// a ruled artifact from a hidden mistake. So each is on the page with its reason
+// and a way to take it back.
+function drawRulings() {
+  const el = $('#rulings');
+  if (!exempt.length) {
+    el.innerHTML = '<li class=none>none on this page</li>';
+    return;
+  }
+  el.innerHTML = exempt.map((e, i) =>
+    `<li><span class=y>y ${e.y0}–${e.y1}</span>`
+    + `<button data-w="${i}" title="withdraw this ruling">×</button><br>`
+    + esc(e.note) + '</li>').join('');
+  el.querySelectorAll('button[data-w]').forEach(b => {
+    b.onclick = () => { exempt.splice(+b.dataset.w, 1); dirty = true; draw(); };
+  });
 }
 
 function adopt(v) {
@@ -242,7 +331,9 @@ function ruleBand(v) {
   if (!b) return;
   const note = prompt('Why is this not a line? (a reason is required)');
   if (!note || !note.trim()) return;
-  exempt.push({y0: b.vpos - 4, y1: b.vpos + b.height + 4, note: note.trim()});
+  const pad = VIEW.ruling_pad_px;
+  exempt.push({y0: b.vpos - pad, y1: b.vpos + b.height + pad,
+               note: note.trim()});
   dirty = true; draw();
 }
 
@@ -268,7 +359,7 @@ ov.addEventListener('mousemove', e => {
 window.addEventListener('mouseup', () => {
   if (!drag) return;
   const d = drag; drag = null;
-  if (d.x1 - d.x0 > 8 && d.y1 - d.y0 > 6) {
+  if (d.x1 - d.x0 > VIEW.min_draw_w && d.y1 - d.y0 > VIEW.min_draw_h) {
     corr.push({x0: d.x0, y0: d.y0, x1: d.x1, y1: d.y1, text: ''});
     sel = corr.length - 1; dirty = true;
     if (!inZone(d)) say('drawn outside every zone — the save will refuse it', 'bad');
@@ -300,64 +391,200 @@ function go(ref) {
   location.href = '/?ref=' + ref;
 }
 
-document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT') return;
-  if (e.key === 's' || (e.key === 's' && e.ctrlKey)) { e.preventDefault(); save(); }
-  else if (e.key === 'b') {
+// **Dispatched by action name, bound in the config.** The keys live in
+// `data/lines_config.json` beside the colours, so rebinding one is an edit to a
+// file rather than to a source string — and the loader refuses a config that
+// binds a key twice, which would otherwise present as a broken shortcut.
+// An action bound to null or "" is deliberately off the keyboard and reachable
+// only by its row in the panel, so it must not land in this table under an empty
+// key — every keystroke would match it.
+const ACT = Object.fromEntries(
+  Object.entries(CFG.actions).filter(([k, v]) => !k.startsWith('_') && v)
+        .map(([name, key]) => [key, name]));
+
+function first_undecided() {
+  return S.bands.filter(x => !x.exempted && !ruled(x))[0];
+}
+
+const DO = {
+  save: () => save(),
+  blot: () => {
     blot = !blot;
     img.src = (blot ? '/blot/' : '/page/') + S.ref + '.png?t=' + Date.now();
     $('#bp').className = 'pill' + (blot ? ' on' : '');
-  }
-  else if (e.key === 'Delete' || e.key === 'Backspace') {
+  },
+  delete: () => {
     if (sel !== null) { corr.splice(sel, 1); sel = null; dirty = true; draw(); }
+  },
+  rule_band: () => { const b = first_undecided(); if (b) ruleBand(b.vpos); },
+  // The withdrawal is the second half of the ruling, exactly as in `zones edit`:
+  // a call made once and uncorrectable is worse than no call, and a note nobody
+  // can take back is a claim the page cannot argue with.
+  withdraw_ruling: () => {
+    const b = S.bands.filter(x => ruled(x))[0];
+    const e = b && ruled(b);
+    if (!e) { say('no ruling of this layer to withdraw', 'bad'); return; }
+    exempt.splice(exempt.indexOf(e), 1);
+    dirty = true; say('ruling withdrawn: ' + e.note); draw();
+  },
+  list: () => {
+    if (dirty && !confirm('Unsaved corrections. Leave anyway?')) return;
+    location.href = '/list?ref=' + S.ref;
+  },
+  zoom_in: () => setZoom(zoom + 1),
+  zoom_out: () => setZoom(zoom - 1),
+  zoom_fit: () => setZoom(0),
+  // Straight to the work: frame the first undecided band at a zoom where its
+  // glyphs are legible, rather than making the human hunt for a 40-pixel mark
+  // and then zoom in on it by hand.
+  frame_band: () => {
+    if (first_undecided()) { sel = null; setZoom(Math.max(zoom, VIEW.frame_zoom)); }
+  },
+  prev_page: () => { if (S.prev) go(S.prev); },
+  next_page: () => { if (S.next) go(S.next); },
+  cancel: () => { sel = null; draw(); },
+};
+
+// **What each action needs before it can do anything.** Only the ones that act
+// on a selection or a position have an entry; everything else is always live.
+// This drives both the dimming and the click, so a row that looks inert is inert
+// — a control that looks available and silently does nothing is worse than one
+// that says it cannot.
+const READY = {
+  delete: () => sel !== null,
+  cancel: () => sel !== null,
+  rule_band: () => !!first_undecided(),
+  frame_band: () => !!first_undecided(),
+  withdraw_ruling: () => S.bands.some(b => ruled(b)),
+  prev_page: () => !!S.prev,
+  next_page: () => !!S.next,
+  zoom_in: () => zoom < VIEW.zoom_max,
+  zoom_out: () => zoom > VIEW.zoom_min,
+  zoom_fit: () => zoom !== 0,
+};
+function ready(name) { return READY[name] ? READY[name]() : true; }
+
+// On `window` so `draw` can reach it: `draw` is defined above this block and
+// runs once before it, and a bare reference would throw on that first pass.
+window.syncControls = function syncControls() {
+  document.querySelectorAll('.key[data-act]').forEach(el => {
+    el.classList.toggle('off', !ready(el.dataset.act));
+  });
+};
+
+document.querySelectorAll('.key[data-act]').forEach(el => {
+  el.onclick = () => {
+    const name = el.dataset.act;
+    if (!ready(name) || !DO[name]) return;
+    DO[name]();
+    syncControls();
+  };
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  // `Delete`/`Backspace` are the platform's own, and stay bound alongside
+  // whatever the config gives `delete`.
+  let name = ACT[e.key];
+  if (!name && (e.key === 'Delete' || e.key === 'Backspace')) name = 'delete';
+  if (!name && (e.key === '=' || e.key === '_')) {
+    name = e.key === '=' ? 'zoom_in' : 'zoom_out';   // unshifted +/- on most rows
   }
-  else if (e.key === 'x' && sel === null) {
-    const b = S.bands.filter(x => !x.exempted)[0];
-    if (b) ruleBand(b.vpos);
-  }
-  else if (e.key === 'ArrowLeft' && S.prev) go(S.prev);
-  else if (e.key === 'ArrowRight' && S.next) go(S.next);
-  else if (e.key === 'Escape') { sel = null; draw(); }
+  if (!name || !DO[name]) return;
+  e.preventDefault();
+  if (!ready(name)) { syncControls(); return; }
+  DO[name]();
+  syncControls();
 });
 
 window.addEventListener('beforeunload', e => { if (dirty) e.preventDefault(); });
 window.addEventListener('resize', () => { fit(); draw(); });
 $('#save').onclick = save;
 $('#done').onclick = async () => { await post('/done', {}); say('server stopped'); };
-fit(); draw();
+fit(); draw(); syncControls();
 """
 
+# Structure only. Every colour is `lines_config.layer_css`'s, generated from
+# `data/lines_config.json`, because two places naming a colour is how one of them
+# goes stale — and this editor's whole subject is a mark you have to be able to
+# see.
 EXTRA_CSS = """
 #ov rect{vector-effect:non-scaling-stroke}
-/* Zones sit behind everything as context; they are not this editor's subject. */
-#ov .z{fill:none;stroke:var(--dim);stroke-width:1;stroke-dasharray:6 5;opacity:.5}
-/* Lines the store already has: dim, uneditable, present so a band can be judged
-   against what is around it. */
-#ov .l{fill:rgba(120,120,120,.14);stroke:rgba(120,120,120,.5);stroke-width:1}
-/* A live gap band — the thing to decide about. */
-#ov .b{fill:rgba(200,120,0,.20);stroke:#c87800;stroke-width:2;cursor:pointer}
-#ov .b:hover{fill:rgba(200,120,0,.35)}
-/* In no zone: a finding about the zoning, drawn as a refusal rather than an
-   invitation. */
-#ov .nz{stroke:var(--err);stroke-dasharray:5 4}
-#ov .c{fill:rgba(46,134,171,.22);stroke:#2e86ab;stroke-width:2;cursor:pointer}
-#ov .c.sel{stroke-width:3;fill:rgba(46,134,171,.36)}
-#ov .drag{fill:rgba(46,134,171,.18);stroke:#2e86ab;stroke-width:2;
-          stroke-dasharray:4 3}
-/* The two ruling layers, each in its own hand: this editor writes the line
-   layer and only shows the zone layer. */
-#ov .xl{fill:rgba(255,200,90,.30)}
-#ov .xz{fill:rgba(150,150,150,.20)}
+#ov .ly-band,#ov .ly-band_no_zone,#ov .ly-correction,
+#ov .ly-correction_selected{cursor:pointer}
 #tally{display:flex;gap:14px;color:var(--dim)}
 #tally b{color:var(--fg)}
 #dirty{color:var(--warn);font-weight:600}
+#rulings{font-size:12px}
+#rulings li{list-style:none;margin:0 0 5px;padding-left:10px;
+            border-left:2px solid var(--warn)}
+#rulings .y{color:var(--dim);font-variant-numeric:tabular-nums}
+#rulings button{padding:0 6px;font-size:11px;margin-left:4px}
+#rulings .none{color:var(--dim);font-style:italic}
+/* The key rows are controls: clicking one does the thing, so an action is
+   reachable without knowing (or having kept) its shortcut. */
+.key[data-act]{cursor:pointer;border-radius:4px;padding:1px 4px;margin:0 -4px}
+.key[data-act]:hover{background:var(--line)}
+.key.off{opacity:.38;cursor:default}
+.key.off:hover{background:none}
+kbd.none{opacity:.45}
 """
+
+
+# What each bound action is called on the page. Held beside the dispatch rather
+# than in the config: the config says which key, this says what to call it, and a
+# human rebinding a key should not have to restate its name in English.
+ACTION_NAMES = {
+    "rule_band": "rule a band not type",
+    "withdraw_ruling": "withdraw a ruling",
+    "delete": "delete selected",
+    "zoom_in": "zoom in",
+    "zoom_out": "zoom out",
+    "zoom_fit": "fit the page",
+    "frame_band": "frame the next band",
+    "blot": "blotted view",
+    "save": "save",
+    "list": "the walk, measured",
+    "prev_page": "previous page",
+    "next_page": "next page",
+    "cancel": "deselect",
+}
+
+
+def _keys_html(cfg: dict) -> str:
+    """The panel: every action, clickable, with its key if it has one.
+
+    Generated from the bindings, because written out by hand it was a second
+    place the keys lived, free to disagree with what the editor actually binds —
+    a help panel that lies about the tool is worse than none.
+
+    **Every row is a control, not a legend.** An action reachable only by a
+    keystroke is unreachable to anyone who has rebound it away or has not learnt
+    it yet, and this is a tool a human meets a few dozen times a book. So the row
+    does the thing, and the key is a shortcut for the row rather than the only way
+    in. Actions with nothing to act on — delete with no selection, withdraw with
+    no ruling — draw dimmed rather than disappearing, since a control that comes
+    and goes is harder to learn than one that is visibly not applicable.
+    """
+    rows = ['<div class=key><span>adopt a band</span><kbd>click</kbd></div>',
+            '<div class=key><span>draw a box</span><kbd>drag</kbd></div>']
+    keys = {k: v for k, v in cfg["actions"].items() if not k.startswith("_")}
+    for name, label in ACTION_NAMES.items():
+        shown = {"ArrowLeft": "←", "ArrowRight": "→"}.get(
+            keys.get(name), keys.get(name, ""))
+        rows.append(
+            f'<div class=key data-act="{name}" title="{label}">'
+            f'<span>{label}</span>'
+            + (f"<kbd>{shown}</kbd>" if shown else "<kbd class=none>—</kbd>")
+            + "</div>")
+    return "\n  ".join(rows)
 
 
 def render_html(ref: str, root: Path = Path("."),
                 alto_dir: str = DEFAULT_ALTO_DIR,
                 itinerary: list[str] | None = None,
                 itinerary_name: str = "") -> str:
+    cfg = lines_config.load_config(root)
     st = page_state(ref, root, alto_dir)
     it = itinerary or []
     i = it.index(st["ref"]) if st["ref"] in it else -1
@@ -374,10 +601,11 @@ def render_html(ref: str, root: Path = Path("."),
                  '<code>zones edit</code>, or rule the band not type.</div>')
     return f"""<!doctype html><meta charset=utf-8>
 <title>lines {st['ref']}</title>
-<style>{webui.CHROME_CSS}{EXTRA_CSS}</style>
+<style>{webui.CHROME_CSS}{EXTRA_CSS}{lines_config.layer_css(cfg)}</style>
 <div id=bar>
   <b>lines</b><span id=cur>{st['ref']}</span>
   <span class=pill id=bp>b · blot</span>
+  <span class=pill id=zl>1.00×</span>
   <span id=tally>
     <span>corrections <b id=nc>0</b></span>
     <span>bands left <b id=nb>0</b></span>
@@ -392,24 +620,113 @@ def render_html(ref: str, root: Path = Path("."),
 </div></div>
 <div id=panel>
   <h4>what to do</h4>
-  <div class=key><span>adopt a band</span><kbd>click</kbd></div>
-  <div class=key><span>rule it not type</span><kbd>shift-click</kbd></div>
-  <div class=key><span>draw a box</span><kbd>drag</kbd></div>
-  <div class=key><span>delete selected</span><kbd>del</kbd></div>
-  <div class=key><span>blotted view</span><kbd>b</kbd></div>
-  <div class=key><span>save</span><kbd>s</kbd></div>
-  <div class=key><span>page</span><kbd>← →</kbd></div>
+  {_keys_html(cfg)}
+  <h4>ruled not a line</h4>
+  <ul id=rulings></ul>
   <h4>this editor draws</h4>
   <div id=flags>It never keys. The text of a recovered line is adjudicated in
   <code>ocr review</code> and written by <code>restore</code>, like any other
   line's.</div>
-  <h4>itinerary</h4>
+  <h4>the walk</h4>
   <div id=flags>{itinerary_name or '—'}
-  {f'· {i + 1} of {len(it)}' if i >= 0 else ''}</div>
+  {f'· {i + 1} of {len(it)}' if i >= 0 else ''}<br>
+  <a href="/list?ref={st['ref']}">list, with live counts</a></div>
 </div>
 <div id=issues>{warn}</div>
-<script>const STATE = {json.dumps(st, ensure_ascii=False)};</script>
+<script>const STATE = {json.dumps(st, ensure_ascii=False)};
+const CFG = {json.dumps({k: v for k, v in cfg.items() if not k.startswith('_')},
+                        ensure_ascii=False)};</script>
 <script>{JS}</script>
+"""
+
+
+def render_list_html(walk: list[str], label: str, root: Path,
+                     cur: str = "") -> str:
+    """The walk as a table, with the live counts fetched per row.
+
+    **A view over what is being walked, not a saved work-list.** The obvious
+    itinerary for this editor is "the pages that still carry a band", and writing
+    that to a file would freeze it: every page worked makes the file wrong, and
+    nothing would ever check it. So the list measures when asked and says so —
+    `?` until a row has been fetched, never blank, because blank is
+    indistinguishable from none.
+    """
+    rows = "".join(
+        f'<tr{" class=here" if r == cur else ""} data-ref="{r}" data-state="todo">'
+        f'<td class=ref><span class="dot s-todo"></span>'
+        f'<a href="/?ref={r}">{r}</a></td>'
+        f'<td class=num data-live>?</td>'
+        f'<td class="num dim" data-ruled>?</td>'
+        f'<td class=num data-corr>?</td></tr>' for r in walk)
+    back = cur or (walk[0] if walk else "")
+    return f"""<!doctype html><meta charset=utf-8><title>lines · {label or 'walk'}</title>
+<style>{webui.CHROME_CSS}{webui.LIST_CSS}{EXTRA_CSS}</style>
+<div id=head>
+  <h1>{label or 'the walk'} — {len(walk)} pages
+    <a class=chip href="/?ref={back}">back to the page</a></h1>
+  <p><span id=shownum>unmeasured</span> — a live count is a raster read a page,
+  so it is a button rather than something this page spends a minute on before
+  showing you anything. <kbd>Esc</kbd> or a ref goes back.<span id=shown></span></p>
+  <div id=filters>
+    <span class=chip id=go>measure every row</span>
+    <span class=chip data-filter=live><i class=s-warn></i> still live</span>
+    <span class=chip data-filter=done><i class=s-ok></i> settled</span>
+  </div>
+</div>
+<div id=wrapl>
+<table><tr><th>page</th><th class=num>live</th><th class=num>ruled</th>
+<th class=num>corrections</th></tr>
+{rows}</table></div>
+<script>
+// One row at a time, and only when asked: each is a raster read. The button says
+// so rather than the page quietly spending a minute before showing anything.
+const note = document.querySelector('#shownum');
+document.querySelector('#go').onclick = async () => {{
+  const rows = [...document.querySelectorAll('tr[data-ref]')];
+  let live = 0;
+  for (let i = 0; i < rows.length; i++) {{
+    const tr = rows[i];
+    note.textContent = `measuring ${{i + 1}} / ${{rows.length}}`;
+    try {{
+      const r = await (await fetch('/row?ref=' + tr.dataset.ref)).json();
+      tr.querySelector('[data-live]').textContent = r.live;
+      tr.querySelector('[data-ruled]').textContent = r.ruled;
+      tr.querySelector('[data-corr]').textContent = r.corrections;
+      // The dot carries the state, as it does in the zone editor's list, so a
+      // colour means one thing across the pass rather than one thing per tool.
+      tr.dataset.state = r.live ? 'live' : 'done';
+      tr.querySelector('.dot').className =
+        'dot ' + (r.live ? 's-warn' : 's-ok');
+      live += r.live ? 1 : 0;
+    }} catch (e) {{ note.textContent = String(e); return; }}
+  }}
+  note.textContent = `${{live}} of ${{rows.length}} still carrying a band`;
+}};
+
+// Filters hide rows, they never re-order them: the walk's order is the order the
+// editor steps through, and a list that disagreed with the arrow keys would be
+// worse than no list.
+let filter = '';
+document.querySelectorAll('.chip[data-filter]').forEach(c => {{
+  c.onclick = () => {{
+    filter = (filter === c.dataset.filter) ? '' : c.dataset.filter;
+    document.querySelectorAll('.chip[data-filter]').forEach(
+      o => o.classList.toggle('on', o.dataset.filter === filter));
+    let n = 0;
+    document.querySelectorAll('tr[data-ref]').forEach(tr => {{
+      const show = !filter || tr.dataset.state === filter;
+      tr.style.display = show ? '' : 'none';
+      n += show ? 1 : 0;
+    }});
+    document.querySelector('#shown').textContent =
+      filter ? ` · showing ${{n}}` : '';
+  }};
+}});
+
+document.addEventListener('keydown', e => {{
+  if (e.key === 'Escape') location.href = '/?ref={back}';
+}});
+</script>
 """
 
 
@@ -427,6 +744,7 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
 
     class Handler(webui.EditorHandler):
         editor = "lines"
+        fetched = ("/row",)   # the list drives this from JS and parses JSON
 
         def get(self):
             u = urlparse(self.path)
@@ -434,6 +752,19 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                 r = (parse_qs(u.query).get("ref") or [start])[0]
                 self.send_html(render_html(r, root, alto_dir, itinerary,
                                            itinerary_name))
+                return
+            if u.path == "/list":
+                cur = (parse_qs(u.query).get("ref") or [""])[0]
+                self.send_html(render_list_html(itinerary or [start],
+                                                itinerary_name, root, cur))
+                return
+            if u.path == "/row":
+                try:
+                    r = norm_ref((parse_qs(u.query).get("ref") or [""])[0])
+                except ValueError:
+                    self.send_error(404)
+                    return
+                self.send_json(page_row(r, root, alto_dir))
                 return
             if u.path.startswith("/page/") and u.path.endswith(".png"):
                 try:

@@ -100,7 +100,7 @@ Layout, all at the repo root:
     tei/    the collated pages, plus corpus-header.xml — the corpus teiHeader,
             a fragment gated by `harness tei header`.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
-            zones_config.json  tei_all.rng (the committed conformance schema).
+            zones_config.json  lines_config.json  tei_all.rng (the schema).
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
             ignored. See harness/paths.py.

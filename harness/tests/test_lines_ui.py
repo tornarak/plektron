@@ -50,6 +50,7 @@ def root(tmp_path: Path) -> Path:
         tmp_path / "scans" / "chukchi-1-048.png")
     (tmp_path / "data").mkdir()
     shutil.copy(Path("data") / "zones_config.json", tmp_path / "data")
+    shutil.copy(Path("data") / "lines_config.json", tmp_path / "data")
     alto = tmp_path / "gt" / "ocr" / "chukchi-1-048.xml"
     alto.parent.mkdir(parents=True)
     alto.write_text(
@@ -156,3 +157,31 @@ def test_the_page_says_when_it_has_no_zoning(root):
     html = render_html("1-048", root, "gt/ocr")
     assert "no zoning" in html
     assert "zones edit" in html
+
+
+# --- the walk is measured, never saved -------------------------------------
+
+def test_a_rows_counts_are_measured_not_remembered(root):
+    """The list's slow column, and the reason there is no `.lst` anywhere near
+    this editor: a work-list freezes at the moment it is written, and every page
+    worked afterwards makes it wrong with nothing to check it. This is asked when
+    it is needed, so the answer is true when it is used."""
+    from harness.lines_ui import page_row
+    _zones(root)
+    before = page_row("1-048", root, "gt/ocr")
+    assert before["corrections"] == 0
+
+    _save(root, [IN_ZONE])
+    after = page_row("1-048", root, "gt/ocr")
+    assert after["corrections"] == 1
+    assert after["live"] <= before["live"], "a correction did not settle its band"
+
+
+def test_the_list_draws_unknown_rather_than_blank(root):
+    """`?` until a row is fetched. Blank would be indistinguishable from none,
+    which is the same silence this whole detector exists to break."""
+    from harness.lines_ui import render_list_html
+    html = render_list_html(["1-048", "1-049"], "unsettled", root, "1-048")
+    assert html.count("?") >= 6      # three unknown columns per row
+    assert "1-049" in html
+    assert "measure" in html         # and it says the cost is on request

@@ -168,12 +168,15 @@ def register(cli):
                     "any other line's"))
     refs_arg(p, all_="every page with a raster — the editor walks them with the "
                      "arrow keys",
-             extra=": several refs are the itinerary, in the order named")
-    opt(p, "--itinerary", metavar="LST",
-                   help="walk a work-list rather than the refs named. The census "
-                        "is the natural one: `ocr gaps --all` and the refs it "
-                        "leaves live")
+             extra=": several refs are the walk, in the order named")
+    opt(p, "--unsettled", is_flag=True,
+                   help="narrow --all to the pages still carrying a band nobody "
+                        "has settled. Measured now, not read from a saved list: a "
+                        "work-list goes stale the moment a page is worked, and a "
+                        "stale one is a claim about the corpus that nothing "
+                        "checks. Costs a raster read per page")
     opt(p, "--port", type=int, default=8733, help="port for the editor")
+    add_jobs(p)
 
     # **No `--all` on the image writers, and the absence is deliberate.** Crops and
     # sheets are expensive in time and disk and are called per page by a reading
@@ -639,22 +642,40 @@ def run_zoom(a) -> int:
 def run_edit(a) -> int:
     from ..context import all_scans
     from ..lines_ui import serve as serve_lines
-    from ..zones import load_itinerary
 
     refs = page_refs(a)
-    # **Several refs *are* an itinerary**, the same rule `zones edit` follows:
-    # the editor already walks a list with the arrow keys, so a typed list needs
-    # no new machinery.
-    itin = refs or (load_itinerary(a.itinerary, a.root) if a.itinerary else [])
+    # **Several refs *are* the walk**, the same rule `zones edit` follows: the
+    # editor already steps through a list with the arrow keys, so a typed list
+    # needs no new machinery.
+    walk = refs
+    label = ""
     if getattr(a, "all", False):
-        itin = all_scans(a.root)
-    start = itin[0] if itin else None
+        walk = all_scans(a.root)
+        label = "every page"
+    # **A filter over `--all`, never a saved work-list.** The obvious itinerary
+    # here is "the pages `gaps` still leaves live", and writing that to a `.lst`
+    # would freeze it: every page worked makes the file wrong, and a stale
+    # work-list is a claim about the corpus that nothing checks. Measured at the
+    # moment it is asked instead — a raster read per page, which is the same cost
+    # the census pays and buys an answer that is true when it is used.
+    if getattr(a, "unsettled", False):
+        from ..parallel import pmap
+        with progress("measuring ink") as tick:
+            bands = pmap(lambda r: line_gaps(r, _alto_dir(a), a.root),
+                         walk, a.jobs if hasattr(a, "jobs") else 1, tick)
+        walk = [r for r, bs in zip(walk, bands, strict=True)
+                if any(not b["exempted"] for b in bs)]
+        label = "unsettled"
+        if not walk:
+            print("no page has an unsettled band — nothing to edit")
+            return 0
+    start = walk[0] if walk else None
     if not start:
         print("ocr edit needs a page to start at: name one or more refs, or "
-              "--itinerary to take one from, or --all for the whole book",
-              file=sys.stderr)
+              "--all for the whole book (--unsettled narrows it to the pages "
+              "still carrying a band)", file=sys.stderr)
         return 2
-    serve_lines(start, a.root, a.port, _alto_dir(a), itin, a.itinerary or "")
+    serve_lines(start, a.root, a.port, _alto_dir(a), walk, label)
     return 0
 
 

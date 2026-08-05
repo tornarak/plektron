@@ -27,7 +27,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
 | `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
-| `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` | by hand |
+| `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
@@ -421,6 +421,18 @@ with their keys and colours, the per-part text measure and anchor calibration, t
 declarative order rules. `order_warnings` is pure and is transcribed into the
 editor's JS, with `harness/tests/test_zones_order.py` holding the two together. Every rule
 here is a *warning* — nothing in this config can refuse a save.
+
+**`lines_config.py`** — the same for `data/lines_config.json`: the line editor's
+layers with their colours, its keybindings, its zoom. Deliberately the same shape,
+so a human moving between the two editors configures one tool with two subjects
+rather than learning a second format. The overlay's stylesheet (`layer_css`) and
+the panel's key list are *generated* from it — written out beside it they would be
+a second place the colours and keys lived, free to disagree with what the editor
+actually binds, and a help panel that lies about the tool is worse than none.
+Validation is at load and by name, because every fault here would otherwise
+present as a **broken editor**: a key bound twice fires one of its two jobs, and a
+layer the drawing code asks for and the config omits simply stops being painted —
+on an editor whose whole subject is a mark you have to be able to see.
 
 **`zones.py`** — the zone stores: the ALTO writer (eScriptorium dialect, no
 `TextLine`, `mz_` ids, atomic with a `.prev` and a journal), the split lists, the

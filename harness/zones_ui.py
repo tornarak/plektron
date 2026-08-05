@@ -1464,64 +1464,22 @@ def _ink_cell(ink: dict) -> str:
     return txt + (" · stale" if ink.get("stale") else "")
 
 
-LIST_CSS = """
-table{border-collapse:collapse;width:100%;font-size:13px}
-th{position:sticky;top:0;background:var(--bg);text-align:left;font-weight:600;
-   font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);
-   padding:8px 10px;border-bottom:1px solid var(--line)}
-td{padding:5px 10px;border-bottom:1px solid var(--line)}
-tr:hover td{background:var(--line)}
-tr.here td{background:var(--line);font-weight:600}
-td.ref a{color:var(--fg);text-decoration:none;font-weight:600}
-td.ref a:hover{text-decoration:underline}
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;
-     margin-right:7px;vertical-align:-1px}
-.s-todo{background:transparent;border:1px solid var(--dim)}
-/* Hollow like `todo`, because it is one — nothing is keyed here. Coloured, because
-   a page with a prediction waiting is a different piece of work from a blank one. */
-.s-proposed{background:transparent;border:1px solid var(--warn)}
-.s-ok{background:#3f8f5f}
-.s-warn{background:var(--warn)}
-.s-err{background:var(--err)}
-td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim)}
-th.num{text-align:right}
-/* The machine count reads as the fainter of the pair on purpose: the two columns
-   are not equals, one being a tracked human ruling and the other a proposal. */
-td.num.dim{opacity:.6}
-td.detail{color:var(--dim);font-size:12px}
-/* `unknown` is its own state and looks like one: a blank cell would read as
-   "clean" where it means "nothing has read this page's raster since it changed". */
+LIST_CSS = webui.LIST_CSS + """
+/* Zones-only: one bar per zone, in reading order — the page's composition at a
+   glance, which a count cannot give. Hover names the type. */
+.z{display:inline-block;width:7px;height:15px;border-radius:2px;margin-right:2px;
+   vertical-align:-2px;cursor:help}
+#inkrun{margin-left:auto}
 td.ink{font-size:12px;color:var(--dim);white-space:nowrap;cursor:help}
 td.ink[data-ink="ink"]{color:var(--warn);font-weight:600}
 td.ink[data-ink="unknown"]{opacity:.5}
-#inkrun{margin-left:auto}
-td.pick,th.pick{width:1%;padding-right:0}
-td.pick input,th.pick input{cursor:pointer;margin:0}
-/* One bar per zone, in reading order: the page's composition at a glance, which
-   a count cannot give. Hover names the type. */
-.z{display:inline-block;width:7px;height:15px;border-radius:2px;margin-right:2px;
-   vertical-align:-2px;cursor:help}
-#filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-.chip{display:flex;align-items:center;gap:6px;padding:2px 9px;border-radius:11px;
-      border:1px solid var(--line);font-size:12px;cursor:pointer;user-select:none}
-.chip:hover{background:var(--line)}
-.chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.chip i{display:inline-block;width:9px;height:9px;border-radius:2px}
-.chip.on i{outline:1px solid var(--bg)}
-#shown{color:var(--dim);font-size:12px;margin-left:4px}
-#head{position:sticky;top:0;background:var(--bg);padding:14px 16px 10px;
-      border-bottom:1px solid var(--line);z-index:5}
-#head h1{margin:0 0 4px;font-size:15px;display:flex;align-items:center;gap:10px}
 /* The scope link sits in the title because it changes what the title names — the
    universe of rows, not which of them are shown. It is not a filter. */
 #scope{font-weight:400;text-decoration:none;color:inherit}
 /* The force box is a control, not a selector; it never lights and never filters. */
 #force{cursor:pointer}
 #force input{cursor:pointer;margin:0}
-#head p{margin:0;color:var(--dim);font-size:12px}
-#wrapl{padding:0 16px 40px}
 """
-
 
 def render_list_html(root: Path, cfg: dict, itinerary: list[str] | None = None,
                      itinerary_name: str = "", current: str = "",

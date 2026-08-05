@@ -147,6 +147,62 @@ white, which is the only way a long sitting is bearable.
 """
 
 
+LIST_CSS = """
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{position:sticky;top:0;background:var(--bg);text-align:left;font-weight:600;
+   font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);
+   padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:5px 10px;border-bottom:1px solid var(--line)}
+tr:hover td{background:var(--line)}
+tr.here td{background:var(--line);font-weight:600}
+td.ref a{color:var(--fg);text-decoration:none;font-weight:600}
+td.ref a:hover{text-decoration:underline}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;
+     margin-right:7px;vertical-align:-1px}
+.s-todo{background:transparent;border:1px solid var(--dim)}
+/* Hollow like `todo`, because it is one — nothing is keyed here. Coloured, because
+   work waiting on a decision is different work from a blank page. */
+.s-proposed{background:transparent;border:1px solid var(--warn)}
+.s-ok{background:#3f8f5f}
+.s-warn{background:var(--warn)}
+.s-err{background:var(--err)}
+td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim)}
+th.num{text-align:right}
+/* A machine count reads as the fainter of a pair on purpose: the two columns are
+   not equals, one being a tracked human ruling and the other a proposal. */
+td.num.dim{opacity:.6}
+td.detail{color:var(--dim);font-size:12px}
+td.pick,th.pick{width:1%;padding-right:0}
+td.pick input,th.pick input{cursor:pointer;margin:0}
+#filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{display:flex;align-items:center;gap:6px;padding:2px 9px;border-radius:11px;
+      border:1px solid var(--line);font-size:12px;cursor:pointer;user-select:none}
+.chip:hover{background:var(--line)}
+.chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip i{display:inline-block;width:9px;height:9px;border-radius:2px}
+.chip.on i{outline:1px solid var(--bg)}
+#shown{color:var(--dim);font-size:12px;margin-left:4px}
+#head{position:sticky;top:0;background:var(--bg);padding:14px 16px 10px;
+      border-bottom:1px solid var(--line);z-index:5}
+#head h1{margin:0 0 4px;font-size:15px;display:flex;align-items:center;gap:10px}
+#head p{margin:0;color:var(--dim);font-size:12px}
+#wrapl{padding:0 16px 40px}
+"""
+"""The list view both editors wear.
+
+A sweep's question is *which page*, never how many, so each editor can reach a
+table of its work-list in one keystroke and leave it in one click. The states are
+deliberately the same four dots in both — `todo`, `proposed`, `warn`, `err` — so
+a colour means one thing across the pass rather than one thing per tool.
+
+**`unknown` is a state and looks like one.** A blank cell reads as "clean" where
+it means "nothing has measured this page since it changed", and that is the same
+silence every detector here exists to break. Each editor draws `?` and makes
+going to get the answer an explicit button, because it is the only slow thing a
+list can do.
+"""
+
+
 class EditorHandler(BaseHTTPRequestHandler):
     """Base handler: subclass and implement `get` and `post`.
 
