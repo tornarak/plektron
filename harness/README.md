@@ -492,9 +492,17 @@ client never re-derives the store rule. The `zones` pill reports what the *view*
 resolves to, which is deliberately not an echo of the current selection: with `mz`
 pinned on a page that has both, `shown` is `mz` while the view still answers `gt`.
 
-**`zones_ui.py`** — the segmentation editor. Same server shape as `review.serve`,
-with a `GET /page/<ref>.png` route because a full page as a data URI is ~10 MB of
-markup. The client sends a column index and never an x — the geometry is re-measured
+**`webui.py`** — the shell the browser editors share: loopback bind, silent request
+log, a failure rendered on the page rather than reset onto the server's stderr, a
+PNG straight off disk, shutdown from the page. Two copies of that were a
+coincidence; the third was a module. The one decision in it that is not moved code
+is `fetched` — the GET paths a page **fetches** rather than navigates to, whose
+failures are reported as `{"error": …}` because an HTML traceback raises inside the
+`fetch` and throws away the very reason the page was trying to show.
+
+**`zones_ui.py`** — the segmentation editor, on that shell, with a
+`GET /page/<ref>.png` route because a full page as a data URI is ~10 MB of markup.
+The client sends a column index and never an x — the geometry is re-measured
 server-side on save, so a zone of the wrong measure has no field to travel in.
 
 **`authorities.py`** — search over the book's own 73-work bibliography. Returns every

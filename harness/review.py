@@ -40,7 +40,6 @@ from __future__ import annotations
 import difflib
 import json
 import os
-import sys
 import unicodedata
 from pathlib import Path
 
@@ -1431,31 +1430,6 @@ addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='
     return "\n".join(h)
 
 
-def _error_html(path: str, tb: str) -> str:
-    """The page a failed request renders, traceback included.
-
-    A reviewer meeting this is looking at a tool that stopped working mid-pass,
-    and the only useful thing it can say is what broke. Withholding the traceback
-    behind a tidy apology would send them to the server's stderr — which, since
-    `--serve` is always backgrounded, is a file they have to be told about first.
-    """
-    import html as _html
-    return (
-        "<!doctype html><meta charset=utf-8><title>review: error</title>"
-        "<style>body{font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;"
-        "max-width:60rem;margin:3rem auto;padding:0 1.5rem;color:#333}"
-        "h1{font-size:1.1rem;color:#a3121a}"
-        "pre{background:#fbf7f7;border:1px solid #e6cdcd;border-left:3px solid #a3121a;"
-        "padding:.8rem 1rem;overflow-x:auto;font-size:12px;line-height:1.45}"
-        "p{color:#555}code{background:#f2f2f2;padding:.1rem .3rem;border-radius:2px}"
-        "</style>"
-        f"<h1>review failed on <code>{_html.escape(path)}</code></h1>"
-        "<p>This request raised. Nothing was written — the server is still up, so a "
-        "reload after fixing the cause will work. The same traceback is on the "
-        "server's stderr.</p>"
-        f"<pre>{_html.escape(tb)}</pre>")
-
-
 def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
           root: Path = Path("."), port: int = 8731) -> None:
     """Serve a session's reviews at 127.0.0.1 and accept saves.
@@ -1484,9 +1458,9 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
     reachable from the strip — visible, not hidden, since "already adjudicated" is
     an answer and silently re-queuing it would discard the earlier one.
     """
-    import json as _json
     import time
-    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    from . import webui
 
     queue = [norm_ref(r) for r in ([refs] if isinstance(refs, str) else refs)]
     # Order is the caller's, duplicates dropped: `review 2-045 2-045` is a typo,
@@ -1527,43 +1501,10 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
         """
         return next((r for r in queue if r != cur and not _done(r)), None)
 
-    class Handler(BaseHTTPRequestHandler):
-        # Silence the per-request log: one line per save is enough, GETs are noise.
-        # Signature matches the base class rather than `*a` — an override that
-        # narrows is a real incompatibility even when the body ignores everything.
-        def log_message(self, format: str, *args) -> None:
-            pass
+    class Handler(webui.EditorHandler):
+        editor = "review"
 
-        def send_response(self, *a, **kw):
-            # Track that a status line went out, so the error handler below can
-            # tell "nothing was sent, render a page" from "we are mid-response and
-            # the only honest thing left is to drop the connection".
-            self._sent = True
-            super().send_response(*a, **kw)
-
-        def do_GET(self):
-            # An unhandled exception used to reach socketserver, which prints a
-            # traceback to stderr and resets the connection: the reviewer gets a
-            # browser error naming nothing, and the reason lives in a background
-            # log. Render it instead. This is a loopback tool with one user, so
-            # the traceback goes on the page — the alternative is a polite
-            # apology that sends them to the log anyway.
-            self._sent = False
-            try:
-                self._get()
-            except Exception:
-                if getattr(self, "_sent", False):
-                    raise  # mid-response; a second status line would be worse
-                import traceback
-                body = _error_html(self.path, traceback.format_exc()).encode("utf-8")
-                self.send_response(500)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
-                self.send_header("Content-Length", str(len(body)))
-                self.end_headers()
-                self.wfile.write(body)
-                print(f"500 {self.path}\n{traceback.format_exc()}", file=sys.stderr)
-
-        def _get(self):
+        def get(self):
             if self.path in ("/", "/index.html"):
                 # Bare `/` is "wherever this session is up to": the first page
                 # still wanting a decision, falling back to the first page when
@@ -1571,27 +1512,13 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
                 # finished work must still show something rather than 404.
                 cur = next((r for r in queue if not _done(r)), queue[0])
             elif self.path.startswith("/scan/"):
-                # The page raster, straight off disk. Not a data URI like the
-                # crops: a 2824x3897 sheet base64'd into every render would cost
-                # megabytes on a page the reviewer reloads constantly, to carry
-                # something they open occasionally and in another tab.
                 r = self.path[6:]
                 if r not in queue:
                     self.send_error(404)
                     return
-                try:
-                    png = raster_path(r, root).read_bytes()
-                except FileNotFoundError:
-                    # scans/ is derived and gitignored, so this is the ordinary
-                    # state of a clone rather than a broken link. Say which.
-                    self.send_error(404, f"no raster for {r} — scans/ is derived; "
-                                         "render it with pdftoppm over pdfs/")
-                    return
-                self.send_response(200)
-                self.send_header("Content-Type", "image/png")
-                self.send_header("Content-Length", str(len(png)))
-                self.end_headers()
-                self.wfile.write(png)
+                self.send_png(raster_path(r, root),
+                              f"no raster for {r} — scans/ is derived; "
+                              "render it with pdftoppm over pdfs/")
                 return
             elif self.path.startswith("/p/"):
                 cur = self.path[3:]
@@ -1604,33 +1531,22 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
             else:
                 self.send_error(404)
                 return
-            body = render_queue_html(cur, alto_dir, root, queue=_state(),
-                                     scan_href=f"/scan/{cur}").encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            self.send_html(render_queue_html(cur, alto_dir, root, queue=_state(),
+                                             scan_href=f"/scan/{cur}"))
 
-        def do_POST(self):
-            n = int(self.headers.get("Content-Length") or 0)
-            raw = self.rfile.read(n) or b"{}"
+        def post(self):
+            payload = self.body_json()
             if self.path == "/done":
                 # The page has finished with *one* ref. Whether that ends the
                 # session depends on what is left, and the answer comes from the
                 # disk rather than from the page — `save` has already written this
                 # page's decisions, so it is done by definition of the file.
                 try:
-                    cur = norm_ref((_json.loads(raw) or {}).get("ref") or queue[0])
+                    cur = norm_ref(payload.get("ref") or queue[0])
                 except Exception:
                     cur = queue[0]
                 nxt = _next_after(cur) if cur in queue else None
-                body = _json.dumps({"next": nxt}).encode("utf-8")
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.send_header("Content-Length", str(len(body)))
-                self.end_headers()
-                self.wfile.write(body)
+                self.send_json({"next": nxt})
                 if nxt:
                     print(f"{cur} adjudicated -> next {nxt}")
                     return
@@ -1639,86 +1555,42 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
                 # later save lands on stale text — the rebuild skill warns about
                 # exactly that, and telling a human to remember it is a worse fix
                 # than a button.
-                #
-                # Shut down from another thread: `shutdown()` blocks until the
-                # serve loop exits, and the serve loop is what is running this
-                # handler, so calling it inline would deadlock.
-                import threading
-                threading.Thread(target=srv.shutdown, daemon=True).start()
+                self.stop_from_page()
                 return
             if self.path != "/save":
                 self.send_error(404)
                 return
-            try:
-                payload = _json.loads(raw)
-                # The page says which ref it is; refuse anything else rather than
-                # fall back to a "current page", which is the assumption that would
-                # write one page's text into another's file.
-                cur = norm_ref(payload.get("ref") or "")
-                if cur not in queue:
-                    raise ValueError(
-                        f"save names {cur or '(no ref)'}, which is not in this "
-                        f"review session ({', '.join(queue)})")
-                res = save_decisions(cur, payload.get("lines") or {}, root,
-                                     stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
-            except Exception as e:  # report it to the page, never a blank failure
-                msg = _json.dumps({"error": str(e)}).encode("utf-8")
-                self.send_response(500)
-                self.send_header("Content-Type", "application/json")
-                self.send_header("Content-Length", str(len(msg)))
-                self.end_headers()
-                self.wfile.write(msg)
-                return
+            # The page says which ref it is; refuse anything else rather than fall
+            # back to a "current page", which is the assumption that would write
+            # one page's text into another's file. A raise here is reported to the
+            # page as JSON by the shell — never a blank failure.
+            cur = norm_ref(payload.get("ref") or "")
+            if cur not in queue:
+                raise ValueError(
+                    f"save names {cur or '(no ref)'}, which is not in this "
+                    f"review session ({', '.join(queue)})")
+            res = save_decisions(cur, payload.get("lines") or {}, root,
+                                 stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
             edited_str = ",".join(map(str, res["edited_lines"])) or "none"
             changed_str = f" · changed this save: {','.join(map(str, res['changed_lines']))}" \
                 if res["changed_lines"] else ""
             print(f"saved {res['path']}: {res['edited']}/{res['lines']} edited "
                   f"(lines {edited_str}){changed_str}")
-            body = _json.dumps(res).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            self.send_json(res)
 
-    srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     url = f"http://127.0.0.1:{port}/"
-    # Line-buffered for the rest of this process. `serve` is long-running and is
-    # almost always backgrounded with stdout redirected to a file, where Python
-    # block-buffers — so the URL, the one line the caller is waiting for, sat in a
-    # 8 KB buffer until the process exited, and a server that has not printed its
-    # address is indistinguishable from one that failed to start.
-    try:
-        sys.stdout.reconfigure(line_buffering=True)
-    except (AttributeError, ValueError):  # not a real stream (captured in tests)
-        pass
-    print(f"review {' '.join(queue)} -> {url}   "
-          "(Done button on the page, or ctrl-c)")
-    for r in queue:
-        # Say which pages arrive already adjudicated *before* the reviewer meets a
-        # strip full of green. A resumed session is the ordinary case; a page
-        # unexpectedly carrying decisions is a question, and it should be asked
-        # here rather than discovered by the reviewer wondering what they missed.
-        print(f"decisions -> {decisions_path(r, root)}"
-              f"{'   (already present)' if _done(r) else ''}")
-    import webbrowser
-    webbrowser.open(url)
-    try:
-        # 0.1 rather than the 0.5 default: `shutdown()` blocks until the loop next
-        # wakes, so the default is a flat half-second between the Done button and
-        # the process exiting — and the process exiting is the signal that the
-        # batch is finished. It is also the whole per-test cost of the session
-        # suite, which stands up and tears down a real server per test.
-        srv.serve_forever(poll_interval=0.1)
-    except KeyboardInterrupt:
-        print("\nstopped")
-    else:
-        # Reached when the page's Done button called `/done`. Printing it matters:
-        # the process exiting is the signal that the review is finished and the
-        # page is ready to `restore`, so whoever is driving does not have to ask.
-        print("done — server stopped from the page")
-    finally:
-        srv.server_close()
+    banner = [f"review {' '.join(queue)} -> {url}   "
+              "(Done button on the page, or ctrl-c)"]
+    # Say which pages arrive already adjudicated *before* the reviewer meets a
+    # strip full of green. A resumed session is the ordinary case; a page
+    # unexpectedly carrying decisions is a question, and it should be asked here
+    # rather than discovered by the reviewer wondering what they missed.
+    banner += [f"decisions -> {decisions_path(r, root)}"
+               f"{'   (already present)' if _done(r) else ''}" for r in queue]
+    # The shell's closing line — "done — server stopped from the page" — matters
+    # here: the process exiting is the signal that the review is finished and the
+    # page is ready to `restore`, so whoever is driving does not have to ask.
+    webui.run(Handler, port, url, banner)
 
 
 def summary(spans: list[dict], n_lines: int) -> dict:

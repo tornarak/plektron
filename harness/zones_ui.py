@@ -38,7 +38,6 @@ Three decisions worth naming because their opposites are the obvious choice:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 from . import zones as zn
@@ -1955,17 +1954,13 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
           itinerary: list[str] | None = None, itinerary_name: str = "") -> None:
     """Serve the editor on 127.0.0.1 and accept saves.
 
-    Loopback only and 404 on anything unrouted, as `review.serve` is: this holds
-    unpublished editorial work and has no business being reachable. The one route
-    beyond the two `review` needs is the raster — a 2824x3897 page as a base64 data
-    URI is some 10 MB of markup per render, where `review`'s line crops are small
-    enough that inlining them was the cheaper trick.
+    The shell — loopback bind, silent request log, traceback-on-page, the raster
+    route, shutdown from the page — is `harness/webui.py`'s, shared with `review`
+    and `ocr edit`. What stays here is the routing and what a save means.
     """
-    import json as _json
-    import threading
-    import webbrowser
-    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
     from urllib.parse import parse_qs, urlparse
+
+    from . import webui
 
     root = Path(root)
     cfg = zc.load_config(root)
@@ -1974,19 +1969,11 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
     # slot rather than a global, so it dies with the server.
     segmenter: list = [None]
 
-    class Handler(BaseHTTPRequestHandler):
-        # Silence the per-request log; see `review.serve` on the signature.
-        def log_message(self, format: str, *args) -> None:
-            pass
+    class Handler(webui.EditorHandler):
+        editor = "zones"
+        fetched = ("/ink",)   # the list drives this from JS and parses JSON
 
-        def _send(self, code, ctype, body):
-            self.send_response(code)
-            self.send_header("Content-Type", ctype)
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-
-        def do_GET(self):
+        def get(self):
             u = urlparse(self.path)
             if u.path in ("/", "/index.html"):
                 q = parse_qs(u.query)
@@ -1998,28 +1985,17 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                 sel = (q.get("store") or ["zones"])[0]
                 if sel not in STORES:
                     sel = "zones"
-                try:
-                    body = render_html(r, root, cfg, nudge, itinerary,
-                                       itinerary_name, sel).encode("utf-8")
-                except Exception as e:
-                    self._send(500, "text/plain; charset=utf-8",
-                               str(e).encode("utf-8"))
-                    return
-                self._send(200, "text/html; charset=utf-8", body)
+                self.send_html(render_html(r, root, cfg, nudge, itinerary,
+                                           itinerary_name, sel))
                 return
             if u.path == "/list":
                 q = parse_qs(u.query)
                 cur = (q.get("ref") or [""])[0]
                 sc = (q.get("scope") or ["stores"])[0]
-                try:
-                    body = render_list_html(root, cfg, itinerary, itinerary_name,
-                                            norm_ref(cur) if cur else "",
-                                            "all" if sc == "all" else "stores")
-                except Exception as e:
-                    self._send(500, "text/plain; charset=utf-8",
-                               str(e).encode("utf-8"))
-                    return
-                self._send(200, "text/html; charset=utf-8", body.encode("utf-8"))
+                self.send_html(render_list_html(
+                    root, cfg, itinerary, itinerary_name,
+                    norm_ref(cur) if cur else "",
+                    "all" if sc == "all" else "stores"))
                 return
             if u.path == "/ink":
                 q = parse_qs(u.query)
@@ -2031,14 +2007,7 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                 # One page, the slow way if the cache cannot answer. The list drives
                 # this itself, one call at a time, and only for the pages it drew
                 # as unknown.
-                try:
-                    rec = ink_state(r, root, cfg)
-                except Exception as e:
-                    self._send(500, "application/json",
-                               _json.dumps({"error": str(e)}).encode("utf-8"))
-                    return
-                self._send(200, "application/json",
-                           _json.dumps(rec, ensure_ascii=False).encode("utf-8"))
+                self.send_json(ink_state(r, root, cfg))
                 return
             if u.path.startswith("/page/") and u.path.endswith(".png"):
                 # Through norm_ref, so the path cannot name a file outside `scans/`.
@@ -2047,108 +2016,63 @@ def serve(ref: str, root: Path = Path("."), port: int = PORT,
                 except ValueError:
                     self.send_error(404)
                     return
-                p = zn.scan_for(r, root)
-                if not p.exists():
-                    self.send_error(404)
-                    return
-                self._send(200, "image/png", p.read_bytes())
+                self.send_png(zn.scan_for(r, root))
                 return
             self.send_error(404)
 
-        def do_POST(self):
+        def post(self):
+            # Every route here is a `fetch`, so a raise is reported to the page as
+            # `{"error": …}` by the shell — never a blank failure.
             if self.path == "/done":
-                self._send(200, "application/json", b"{}")
-                # From another thread: `shutdown()` blocks until the serve loop
-                # exits, and the serve loop is what is running this handler.
-                threading.Thread(target=srv.shutdown, daemon=True).start()
+                self.send_json({})
+                self.stop_from_page()
                 return
             if self.path == "/predict":
                 # One page per call, but the **model stays resident** between them —
                 # loading it costs ~5 s, and a bulk run that paid that per page is
                 # the clunkiness this replaces. The client drives the loop so it can
                 # show progress, exactly as the ink runner does.
-                try:
-                    n = int(self.headers.get("Content-Length") or 0)
-                    payload = _json.loads(self.rfile.read(n) or b"{}")
-                    r = norm_ref(payload.get("ref", ""))
-                    # The same rule the CLI sweep uses, asked here so a bulk run
-                    # through the browser and one through the terminal cannot
-                    # disagree about what they left alone.
-                    why = zn.predict_skip(r, root, bool(payload.get("force")),
-                                          single=bool(payload.get("single")))
-                    if why:
-                        self._send(200, "application/json", _json.dumps(
-                            {"ref": r, "skipped": why}).encode("utf-8"))
-                        return
-                    if segmenter[0] is None:
-                        segmenter[0] = zn.load_segmenter(zn.DEFAULT_MODEL, root)
-                    net, sha = segmenter[0]
-                    res = zn.predict_dp(r, root, net=net, sha=sha,
-                                        model_path=zn.DEFAULT_MODEL, cfg=cfg)
-                except Exception as e:
-                    self._send(500, "application/json",
-                               _json.dumps({"error": str(e)}).encode("utf-8"))
+                payload = self.body_json()
+                r = norm_ref(payload.get("ref", ""))
+                # The same rule the CLI sweep uses, asked here so a bulk run
+                # through the browser and one through the terminal cannot
+                # disagree about what they left alone.
+                why = zn.predict_skip(r, root, bool(payload.get("force")),
+                                      single=bool(payload.get("single")))
+                if why:
+                    self.send_json({"ref": r, "skipped": why})
                     return
+                if segmenter[0] is None:
+                    segmenter[0] = zn.load_segmenter(zn.DEFAULT_MODEL, root)
+                net, sha = segmenter[0]
+                res = zn.predict_dp(r, root, net=net, sha=sha,
+                                    model_path=zn.DEFAULT_MODEL, cfg=cfg)
                 print(f"segmented {res['ref']}: {res['zones']} zones -> mz/zones/")
-                self._send(200, "application/json",
-                           _json.dumps(res, ensure_ascii=False).encode("utf-8"))
+                self.send_json(res)
                 return
             if self.path == "/delete":
                 # The only route that removes keyed work. Confirmed on the page and
                 # journalled here; `.prev` keeps it one deep either way.
-                try:
-                    n = int(self.headers.get("Content-Length") or 0)
-                    payload = _json.loads(self.rfile.read(n) or b"{}")
-                    res = zn.delete_zones(payload.get("ref", ""), root, commit=True)
-                except Exception as e:
-                    self._send(500, "application/json",
-                               _json.dumps({"error": str(e)}).encode("utf-8"))
-                    return
+                res = zn.delete_zones(self.body_json().get("ref", ""), root,
+                                      commit=True)
                 print(f"deleted {res['path']}: was {res['zones']} zones "
                       f"[{res['split'] or 'unmarked'}]")
-                self._send(200, "application/json",
-                           _json.dumps(res, ensure_ascii=False).encode("utf-8"))
+                self.send_json(res)
                 return
             if self.path != "/save":
                 self.send_error(404)
                 return
-            try:
-                n = int(self.headers.get("Content-Length") or 0)
-                payload = _json.loads(self.rfile.read(n) or b"{}")
-                res = save_payload(payload, root, cfg)
-            except Exception as e:      # report it to the page, never a blank failure
-                self._send(500, "application/json",
-                           _json.dumps({"error": str(e)}).encode("utf-8"))
-                return
+            res = save_payload(self.body_json(), root, cfg)
             note = f" · {len(res['errors'])} error(s)" if res["errors"] else ""
             print(f"saved {res['path']}: {res['zones']} zones "
                   f"[{res['labels'] or 'none'}] {res['split']}{note}")
-            self._send(200, "application/json",
-                       _json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            self.send_json(res)
 
-    srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     url = f"http://127.0.0.1:{port}/?ref={start}"
-    # **Line-buffered, exactly as `review.serve` is**, and this was the asymmetry
-    # between them: both are normally started in the background with stdout
-    # redirected, where Python block-buffers, so the URL — the one line the caller
-    # is waiting for — sat in an 8 KB buffer until the process exited. A server
-    # that has not printed its address is indistinguishable from one that failed
-    # to start, and this one never exits on its own.
-    try:
-        sys.stdout.reconfigure(line_buffering=True)
-    except (AttributeError, ValueError):  # not a real stream (captured in tests)
-        pass
-    print(f"zones {start} -> {url}   (Done button on the page, or ctrl-c)")
+    banner = [f"zones {start} -> {url}   (Done button on the page, or ctrl-c)"]
     if itinerary:
         done = sum(1 for r in itinerary if zn.has_zones(r, root))
-        print(f"itinerary {itinerary_name}: {len(itinerary)} pages, {done} keyed")
-    print(f"store -> {zn.zone_dir(root)}")
-    webbrowser.open(url)
-    try:
-        srv.serve_forever()
-    except KeyboardInterrupt:
-        print("\nstopped")
-    else:
-        print("done — server stopped from the page")
-    finally:
-        srv.server_close()
+        banner.append(
+            f"itinerary {itinerary_name}: {len(itinerary)} pages, {done} keyed")
+    banner.append(f"store -> {zn.zone_dir(root)}")
+    webui.run(Handler, port, url, banner)
