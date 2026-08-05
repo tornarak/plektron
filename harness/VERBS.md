@@ -447,8 +447,10 @@ Every page is checked before any is queued, and its block is rendered and thrown
 **Does** magnified lines — overlapping strips at an integer scale, packed into as few sheets as the height budget allows.
 **Reads** the `--store` store, or the view, `scans/`.
 **Writes** `review/PP-NNN/zoom/` (derived), or `--out`.
-**Exit** always 0; exit 2 for `--only` or `--out` with more than one ref.
+**Exit** always 0; exit 2 for `--only` or `--out` with more than one ref, and for `--zoom` outside 1–4.
 **Note** no `--all`. `--only` is the sharper of the two per-page flags: a line index is an *identity*, not a position, so the same numbers name unrelated lines on the next page.
+
+**`--zoom` is capped at 4 by the parser, not by prose.** At 300 dpi a character stands about 30 px, so at 4× every ink pixel is already a 4×4 block and there is no source detail left: what a higher number returns is the resampler's opinion, not the paper's. That was a rule in the pass doc for months and was broken anyway — `2-245` spent ten calls at 6× on a shape question, and the first reader dispatched under `queue`/`claim` went to 6× nine times and settled a laryngeal identity on one of them. A confident answer at a magnification carrying no more information than the one below it is worse than an unresolved one, because nothing downstream re-opens it. A doubt that survives 4× **is** the finding: put it in `note`.
 
 **A span is widened, never obeyed literally, and that is deliberate.** A strip is a fixed `window` of source pixels and the sheet is padded to `--client-w` regardless, so a span narrower than one strip renders inside white space you have already paid for. It is therefore expanded symmetrically to fill the window — sliding rather than shrinking at a line edge — and then both edges snap outward to the nearest blank pixel column, bounded, so **no glyph is ever cut**. The rendered span, not the requested one, is what the label and filename record: two requests that widen onto the same region are one picture and must share one file.
 

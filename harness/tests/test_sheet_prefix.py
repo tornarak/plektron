@@ -216,3 +216,41 @@ def test_numbering_still_available_for_callers_that_want_it(tmp_path):
     _, index = compose_sheets(items, tmp_path, per_sheet=2, sheet_w=400,
                               prefix="sheet")
     assert [e["sheet"] for e in index] == ["sheet-001.png", "sheet-002.png"]
+
+
+# --- the magnification ceiling ---------------------------------------------
+
+def test_zoom_above_the_ceiling_is_refused_by_the_parser():
+    """The rule was prose for months and got broken anyway, so it is a range now.
+
+    At 300 dpi a character stands ~30 px, so by 4x every ink pixel is already a
+    4x4 block: past it a magnifier returns the resampler's opinion, not the
+    paper's. `2-245` spent ten calls at 6x on a shape question, and the first
+    reader dispatched under the queue/claim contract went to 6x nine times and
+    settled a laryngeal identity on one of them — a confident answer at a
+    magnification carrying no more information than the one below it, which is
+    worse than an unresolved one because nothing downstream re-opens it.
+
+    Exit 2, not 1: an out-of-range flag is a usage error, and the parser owns
+    argument validation (VERBS.md, Conventions).
+    """
+    from click.testing import CliRunner
+
+    from harness.cli import build_parser
+
+    r = CliRunner().invoke(build_parser(),
+                           ["ocr", "zoom", "1-038", "--only", "16", "--zoom", "6"])
+    assert r.exit_code == 2
+    assert "1<=x<=4" in r.output
+
+
+def test_the_ceiling_itself_is_allowed():
+    """4x is the escalation the pass doc sends a reader to for one named doubt;
+    refusing it would make the ceiling unreachable rather than enforced."""
+    from harness.cli import build_parser
+    from harness.lines import ZOOM, ZOOM_MAX
+
+    assert ZOOM < ZOOM_MAX == 4
+    zoom = build_parser().commands["ocr"].commands["zoom"]
+    rng = next(p.type for p in zoom.params if "--zoom" in getattr(p, "opts", []))
+    assert (rng.min, rng.max) == (1, ZOOM_MAX)

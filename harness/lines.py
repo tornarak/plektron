@@ -100,6 +100,16 @@ PAD_BOTTOM = 18
 # share enough that no glyph is only ever seen cut. Height is capped for the same
 # reason as width, against the client's shorter axis.
 ZOOM = 2
+# **The ceiling is enforced, not advised.** A 300 dpi bitonal scan puts a
+# character at ~30 px, so at 4x every ink pixel is already a 4x4 block and there
+# is no source detail left to buy — past it a magnifier returns interpolation,
+# which is a fact about the resampler rather than about the paper. The prose rule
+# has been in the pass doc for months and has been broken repeatedly anyway:
+# `2-245` spent ten calls at 6x on a shape question, and the first reader
+# dispatched under the queue/claim contract went to 6x nine times and settled a
+# laryngeal on one of them. A rule a reader can break is a rule that gets broken,
+# and the sibling pass caps its own zoom for exactly this reason.
+ZOOM_MAX = 4
 ZOOM_CLIENT_W = 1450
 ZOOM_OVERLAP = 60
 ZOOM_SHEET_H = 1600

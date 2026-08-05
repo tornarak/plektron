@@ -38,6 +38,7 @@ from ..lines import (
     NUMBER_GUTTER,
     ZOOM,
     ZOOM_CLIENT_W,
+    ZOOM_MAX,
     ZOOM_OVERLAP,
     ZOOM_SHEET_H,
     adopt_gaps,
@@ -265,12 +266,15 @@ def register(cli):
                         "doubt is about a mark, not a line, and a mark is a few "
                         "percent of a measure: spanning is what stops three of "
                         "every four strips carrying nothing to do with the question")
-    opt(p, "--zoom", type=int, default=ZOOM,
-                   help=f"display px per source px, as delivered (default {ZOOM}). "
-                        "Higher wraps each line into more strips, and a form seen "
-                        "only in halves is the risk being traded against — "
-                        "escalate for one question, not by default. --zoom 1 "
-                        "wraps least")
+    opt(p, "--zoom", type=click.IntRange(1, ZOOM_MAX), default=ZOOM,
+                   help=f"display px per source px, as delivered (default {ZOOM}, "
+                        f"max {ZOOM_MAX}). Higher wraps each line into more "
+                        "strips, and a form seen only in halves is the risk being "
+                        "traded against — escalate for one question, not by "
+                        f"default. --zoom 1 wraps least. Above {ZOOM_MAX} is "
+                        "refused: at 300 dpi a character is ~30 px, so every ink "
+                        "pixel is already a 4x4 block and what a higher number "
+                        "returns is the resampler, not the page")
     opt(p, "--window", type=int, default=None,
                    help="source px per strip; derived from --zoom so that the "
                         "delivered scale really is --zoom. Overriding it upward "
