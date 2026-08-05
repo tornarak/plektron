@@ -41,11 +41,13 @@ from ._common import (
     refs_arg,
 )
 
-ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file in gt/seg's "
-             "format, or a directory taken to mean every page file in it (so "
-             "`--itinerary gt/seg` is that whole selection, chosen for "
-             "heterogeneity). A work-list, not a filter — a page not on it still "
-             "opens and still saves, it simply has no neighbours")
+ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file "
+             "(`chukchi-1-019.xml` per line; bare refs and paths also read), or "
+             "a directory taken to mean every page file in it, so "
+             "`--itinerary gt/zones` walks the whole store and "
+             "`--itinerary gt/zones/_train.lst` walks one split. A work-list, "
+             "not a filter — a page not on it still opens and still saves, it "
+             "simply has no neighbours")
 MODEL_HELP = "the segmentation model (default models/bogoras-seg/zones-seg.safetensors)"
 DEVICE_HELP = "torch device — 'auto' takes cuda:0 when it is available, else cpu"
 DECODE_HELP = (

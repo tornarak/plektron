@@ -22,7 +22,6 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `gt/lines/` | the **corrections overlay**: boxes a human drew over ink the segmenter left unboxed, per page, in raster coordinates, `+ _ink_exempt.json`. Folded into every page's lines by `lines.page_lines`, so a correction is reachable on the pages that have no ground truth at all | `ocr edit` (geometry), `ocr restore --commit` (text) |
 | `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, structured by the zones. Derived, ignored | `ocr predict` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
-| `gt/seg/` | the **first** segmentation attempt: 122 pages, full SegmOnto vocabulary, free polygons. Kept, read-only | by hand, via eScriptorium |
 | `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json` | `zones edit` |
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
 | `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |

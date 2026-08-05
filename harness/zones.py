@@ -8,13 +8,15 @@ page's zones form a vertical partition of a column whose width was decided by th
 printer. Letting the editor drag an x-edge would offer a freedom the page does not
 have, and every hand-drawn width would then be a small lie the trainer learns.
 
-**Why a second store rather than more of `gt/seg/`.** That directory holds 122
+**Why a second store rather than more of `gt/seg/`.** That directory held 122
 pages under the full SegmOnto vocabulary, drawn as free polygons around ink. Both
-the label set and the geometry regime differ from this one, and nothing in an ALTO
-says which scheme produced it — the same absence of an internal witness that lost
-18 pages of transcription when a file's role lived only in the directory holding
-it. So the role lives in the directory again, and this time the directories do not
-alias: `gt/seg/` is the old attempt, kept and read-only; `gt/zones/` is this one.
+the label set and the geometry regime differed from this one, and nothing in an
+ALTO says which scheme produced it — the same absence of an internal witness that
+lost 18 pages of transcription when a file's role lived only in the directory
+holding it. So the role lives in the directory again. `gt/seg/` has since been
+deleted, no model having been trainable on it; the reasoning is kept because it
+is why this store's geometry regime is what it is, not because the old one
+survives to be confused with it.
 Every block written here also carries an **`mz_` id prefix**, so provenance travels
 with the data and a file merged out of context is still identifiable.
 
@@ -28,7 +30,7 @@ question with a mechanical answer.
 Three files sit beside the pages, all tracked:
 
     gt/zones/_train.lst        the training split, one filename per line
-    gt/zones/_eval.lst         the held-out split; `gt/seg/`'s format exactly
+    gt/zones/_eval.lst         the held-out split; one filename per line
     gt/zones/_exempt.lst       plates, maps and blanks — not text pages at all,
                                and so in neither of the two above
     gt/zones/_rule_exempt.json {ref: [rule-id, ...]} — order rules ruled on
@@ -171,12 +173,12 @@ def load_itinerary(path: str | Path, root: Path = Path(".")) -> list[str]:
 
     The editor's prev/next walk `all_scans` by default, which is right for keying a
     part straight through and wrong for everything else. A training set wants a
-    *chosen* sequence — `gt/seg/`'s 122 pages were selected for heterogeneity, and
-    stepping to them through 700 scans nobody means to key is not navigation.
+    *chosen* sequence — a split is picked for heterogeneity, and stepping to its
+    pages through 700 scans nobody means to key is not navigation.
 
-    Accepts either a list file in `gt/seg/`'s format (`chukchi-1-019.xml` per line,
-    bare refs and paths also read) or a directory, which is taken to mean every page
-    file in it. The second is there because "everything in `gt/seg/`" is the obvious
+    Accepts either a list file (`chukchi-1-019.xml` per line, bare refs and paths
+    also read) or a directory, which is taken to mean every page file in it. The
+    second is there because "everything in `gt/zones/`" is the obvious
     itinerary and spans two list files, and making that a shell incantation would be
     the kind of friction this tool exists to remove.
 

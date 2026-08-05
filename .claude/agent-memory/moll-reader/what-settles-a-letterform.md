@@ -8,7 +8,7 @@ metadata:
 **Zooming does not add information; it only removes distraction.** The scan is
 bitonal and fixed, so 4× cannot recover a stroke the paper never recorded. What
 decides a doubt therefore depends on *why* the letters are ambiguous, and the
-four cases this pass has met answer differently. Going to 4× and *feeling*
+cases this pass has met answer differently. Going to 4× and *feeling*
 certain is itself a failure mode — it converts an unresolved letterform into a
 confident wrong answer, the one outcome nothing downstream can catch.
 
@@ -17,7 +17,19 @@ confident wrong answer, the one outcome nothing downstream can catch.
 | `ъ` against apostrophe-consonant (`ръ` as `рт'`, `нъ` as `н'`) | moll-059, moll-063 | **4× — this one does resolve** |
 | accent fused with a letter (italic `о́` reading as a second `б`) | moll-044 | a **tighter crop at the same scale**, not more magnification |
 | italic `о` at a line break reading as `с` (`по-` as `пс-`) | moll-046 | the **lexicon** — one reading is a real Russian word, the other is not |
+| two headwords a few rows apart that look identical at 1× | moll-073 | **crop the pair into one frame** and compare them against each other |
+| a headword disagreeing with its own `(мн. …)` stem | moll-070 | **the plural — it is a witness, and it is usually right** |
 | `и`/`н`/`т` in a small bold face | moll-042 | **nothing you can do at the raster: key a `?`** |
+
+**The one that resolves by comparison.** On moll-073, entries 14 and 17 both
+read `к'эютэкичгын` at page scale. Cropped into one frame at 2×, entry 17 has
+an extra `у` — `к'эюутэкичгын`, "fawn meat", matching the `к'эюу-` family two
+rows above it, against entry 14's `к'эютэкичгын`, "poor-quality meat". Neither
+letterform was doubtful on its own; only the pair was. This is not the repeated
+entry of [[bracket-faults]], which is the same headword *and* gloss set twice —
+so when two headwords within a few rows look alike, crop them together before
+keying either. If every character and every gloss word does match, that is the
+repeated entry: key it twice, unaltered, and do not merge.
 
 **The one that resolves at 4×.** The hard sign against the `к'`/`н'` apostrophe
 is a difference in structure, not in surviving ink: the apostrophe is a small
@@ -50,6 +62,20 @@ raster found the letter was never there — tesseract had it right and was
 dismissed. `CATALOG.md` records the same class across 29 of 40 contradictions
 one и/н flip apart, three readers unable to settle it.
 
+**It happened a second time, to the adjudicator.** On moll-088 the reader keyed
+`нымлилык'ин` and the OCR store agreed; adjudication zoomed it to 4×, read
+`нымлилилык'ин` — one whole `л-и` pair more — and was certain enough to write
+the disagreement into the row. A human at the raster confirmed the reader:
+`нымлилык'ин`. So the failure mode is not "readers are careless at 1× and
+adjudicators are careful at 4×". **A repeating `л-и-л-ы` run does not become
+countable by being made larger**, because what is ambiguous is where one stroke
+ends and the next begins, and magnifying an ambiguity magnifies both readings
+equally. The two-witness rule is what saved the row: the keyed form stood
+because two independent sources agreed, and the third opinion — however
+confident, however zoomed — was recorded as a doubt rather than applied as a
+correction. Do the same. Count strokes if you must, but treat a count you had
+to work for as a `?`, not as a finding.
+
 So: zoom **once** to establish that the doubt exists, then **key what you see
 and mark the row `?`**. Do not magnify again, and do not settle it on which
 word looks more plausible — a well-formed wrong word passes every check this
@@ -57,3 +83,24 @@ project has. A `?` costs an adjudicator thirty seconds; a confident guess
 survives to the end. The witness pass and the collation check are what catch
 this class; on moll-042 the entry also tripped an out-of-order warning, which
 was the real signal.
+
+**A fifth case: a headword that disagrees with its own `(мн. …)` stem. The
+plural is a witness. Believe it.** On moll-070 a reader keyed entry 37 as
+`к'эв (мн. к'эевыт) и́ней`, noticed the plural carried an `е` the headword did
+not, and talked itself out of restoring it — then wrote that reasoning here as
+a rule saying *don't* restore. The print reads `к'эев`. All three entries were
+misread the same way: 37, 38 and 39 are `к'эев`, `к'эевэтык`, `к'эевэтыльын`.
+
+**The corroboration was circular, and that is the transferable part.** The
+reader cited entries 38–39 as independent support for the short stem, but it
+had keyed 38 and 39 itself, minutes earlier, with the same blind spot. Two of
+your own readings are one reading. Neighbouring entries corroborate only when
+something other than you produced them — the `(мн. …)` printed *inside* the
+entry is such a witness, because the compositor set it, and here it was
+pointing at the right answer the whole time.
+
+So: when a headword and its own plural disagree about a letter, that is a
+signal to go back to the raster, not a curiosity to explain away. Zoom the
+headword and the plural together, and let the ink decide. If it still
+disagrees after that, key what you see and mark the row `?` — but the moll-070
+case was legible at 2×, and the disagreement was the reader's, not the book's.

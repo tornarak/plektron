@@ -1,5 +1,10 @@
-- [Bracket faults](bracket-faults.md) — a numbered bracket can hold no entry, part of one, or six; check inside every bracket, and count your own file before reporting it
-- [What settles a letterform](what-settles-a-letterform.md) — zoom adds no information; per class, the decider is 4x, a tighter crop, the lexicon, or a `?` — know which
-- [Gloss-side faults](gloss-side-faults.md) — the unwatched half of the row: dropped stress accents and un-joined line-end hyphens, neither of which feels like doubt
+- [Bracket faults](bracket-faults.md) — a numbered bracket can hold no entry, part of one, or six; check inside every bracket, count your own file with `rows` before reporting it, and read the front matter before inferring what a recurring mark means
+- [What settles a letterform](what-settles-a-letterform.md) — zoom adds no information; per class, the decider is 4x, a tighter crop, the lexicon, the printed plural, or a `?` — know which
+- [Gloss-side faults](gloss-side-faults.md) — the unwatched half of the row: dropped stress accents, un-joined line-end hyphens, and phantom accents on monosyllables — none of which feel like doubt
 - [Marked-page warnings](marked-page-warnings.md) — flush-wrap is geometric and usually false, settled at 2x; `c`/`c←` can span both columns
 - [Asterisk before numeral](asterisk-before-numeral.md) — `headword * II` prints in that order; key what prints, don't move the numeral to the end
+- [Own transcription slips](own-transcription-slips.md) — typos introduced while typing (not misreadings) can form plausible Russian words; re-check your own cell against the crop before finalizing
+- [Dropped ь before ы: no felt doubt](lyn-lyyn-no-felt-doubt.md) — the `-льын` suffix AND mid-stem `ль`; zoom every `лы` on principle, check the printed plural too. Six instances in three batches, none caught by the reader that made them
+- [Bare (2) after headword](paren-2-after-headword.md) — the book's strong-vowel-row marker, declared in its own front matter; goes verbatim at the head of the gloss cell. Not a homonym numeral, not a compositor slip, not unexplained — three readers guessed, the front matter answers
+- [Bold gloss is not italic parenthetical](bold-gloss-is-not-italic-parenthetical.md) — main gloss text is same bold weight as the headword; only parenthetical clarifications are italic/lighter — a fully-bold short entry (no parenthetical) is not a layout fault
+- [Hard sign reads soft at 2x](hard-sign-at-2x-reads-soft.md) — a run of headwords sharing a stem in ъ can look like ь at 2x with zero felt doubt across all of them; zoom the whole run at 4x, not just the one that feels shaky

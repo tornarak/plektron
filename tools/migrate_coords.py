@@ -37,7 +37,7 @@ from lxml import etree
 # `gt/fig` was a top-level `fig/` when this ran; the store moved under `gt/` once
 # the figure track was wholly human-reviewed. Named here in its current place so a
 # reader checking what this touched can find it, not because it should run again.
-DIRS = ("gt/fig", "ocr", "gt/ocr", "gt/seg")
+DIRS = ("gt/fig", "ocr", "gt/ocr")
 
 # Attributes carrying an x-coordinate or a width, and a y-coordinate or height.
 X_ATTRS = ("HPOS", "WIDTH")

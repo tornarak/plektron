@@ -117,7 +117,7 @@ def _targets(a) -> list[Path] | None:
             continue
         ref = norm_ref(t)
         paths += [a.root / "gt" / d / f"chukchi-{ref}.xml"
-                  for d in ("ocr", "seg", "fig")]
+                  for d in ("ocr", "fig")]
         paths += [a.root / "tei" / f"chukchi-{ref}.xml",
                   a.root / "review" / ref / "decision.json",
                   a.root / "review" / ref / "proposal.json"]

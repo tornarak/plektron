@@ -56,3 +56,15 @@ the break in.
 syllable before finalising the cell, and join without the hyphen.** See
 [[what-settles-a-letterform]] for the case where the letter at such a break is
 itself ambiguous — the two faults compound at exactly the same spot.
+
+## The opposite failure exists too: a phantom accent on a monosyllable
+
+On moll-092, entry 24's gloss reads `за что́-то, во внутрь (чего́-л.)`. At page
+scale `внутрь` looked accented — there is a stray mark near it in the
+letterpress noise — but `внутрь` has one vowel and takes no stress mark, and a
+2× zoom of the entry alone showed no acute over it at all. Having just read
+the "accent nearly everywhere" rule, it is easy to overcorrect and add a mark
+to a short word that never carried one, which is the mirror image of the
+whole-page accent-dropping fault above. Before keying an accent on a
+monosyllable, or on a word you are not certain has one, zoom that one word —
+do not pattern-match "this book accents everything" onto every gloss token.

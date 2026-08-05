@@ -151,7 +151,7 @@ def _spacing_hits(text: str) -> list[dict]:
 # predicted page contributes 978 `spacing` hits, and they are not even text: they
 # are the whitespace kraken sets inside `<SP>` attributes. Naming the real store
 # keeps every gt page in scope, since the view never held anything else.
-SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/seg/*.xml", "gt/fig/*.xml", "tei/*.xml",
+SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
                # decision.json is an editorial act — the adjudicated record that
                # `restore` actually writes to gt/ocr/ — so it stays in the default
@@ -421,8 +421,8 @@ def _footnote_hits(p: Path, root: Path) -> list[dict]:
 
     Scoped to OCR ALTO and adjudicated proposals — the stores that hold a
     page's running text in line order. `gt/fig/` is excluded because it carries
-    no `TextLine` at all (harness/README.md), `gt/seg/` because it is geometry, and the
-    `data/` apparatus because a marker there is a citation, not a note anchor.
+    no `TextLine` at all (harness/README.md), and the `data/` apparatus because a
+    marker there is a citation, not a note anchor.
 
     Rides on `normalize` rather than a verb of its own because everything this
     needs is already here — the corpus walk, the dedupe by real path, the

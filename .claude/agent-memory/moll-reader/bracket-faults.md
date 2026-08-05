@@ -20,7 +20,9 @@ case makes it too high; the wrap band makes it too low.
 | an illegible blot with no Cyrillic and no gloss | moll-052 | no |
 | an all-caps fragment with no gloss (`ГЫТ ТЫ`) | moll-036 | no |
 | several complete entries under one label — one wrap plus **five** headwords | moll-035 | one row each |
-| two headwords, no `←` between them | moll-059 | one row each |
+| three headwords stacked under one label, no `←` — three flush-left bold words, three glosses, on three consecutive lines of the same bracket | moll-091 | one row each |
+| two headwords, no `←` between them | moll-059, moll-095 | one row each |
+| two headwords, second **not** flush-left — bold, matching headword weight, run into the tail of the first entry's gloss line instead of starting a new line (`ныкынмальав 1) согласно; 2) поровну; ныкынмальав вальын 1) единый; ...`) | moll-087 | one row each |
 | a wrapped tail **plus** the next headword, swallowed by the `←` band | moll-053 | one row each |
 | bold text mid-line, not flush-left — a derived form's mini-gloss | moll-033 | keep inside the gloss cell |
 
@@ -54,3 +56,43 @@ the table you actually wrote, never against the prediction. **A silent agreement
 is worth less than a stated disagreement**, and a row count differing from the
 prediction by more than one is expected and correct when a bracket held several
 entries — not evidence you have erred.
+
+**A bare `(2)` right after the headword is not a sense numeral, not a torn
+entry, and not a bracket fault.** It is the book's strong-vowel-row marker and
+it belongs verbatim at the head of the gloss cell — the whole account, and the
+three separate times a reader invented a meaning for it, are
+[[paren-2-after-headword]]. No row, no `disagrees:`, no `?`.
+
+**A word can be split mid-bracket with no `←` and no wrap warning, both halves
+in the same column.** On moll-085, bracket 24 held five complete headwords,
+and the last one's third sense — `3) спе-` — ran off the foot of that
+bracket; the tool opened a *new* bracket, numbered 25, for the single
+continuation line `лый * (о ягодах)`. There is no `←` (that marks the gutter
+wrap specifically) and no `flush-wrap`/`flush-runover` warning in the context
+block, because this is a plain same-column bracket boundary, not a column or
+page boundary — nothing flags it. The tell is the same shape as the gutter
+case: the tail bracket opens with a lowercase word-fragment, not a bold
+flush-left headword. Join it into the gloss of the entry above it and give it
+no row of its own. The arithmetic is easy to get backwards: five real entries
+out of bracket 24 and zero out of bracket 25 nets **+3** over what a naive
+"one bracket, one entry" reading of the pair would predict.
+
+**The fault can recur three brackets running, on both columns of the same
+page.** moll-099: bracket 18 opened with the *tail of the previous entry's
+gloss* (no new headword) and then swallowed four full headwords with their own
+glosses before the next label; two brackets later, in the other column,
+labels 20 and 21 each swallowed one extra headword the same way. None of the
+six missing entries were marked with `*` or anything else distinguishing them
+— each was an ordinary bold flush-left word, just not given its own label.
+Net effect was +5 over the context block's count (41 rows against a predicted
+36), and it would have been easy to stop checking after finding the first
+merged bracket. **Finding one bracket fault is a reason to check its
+neighbours, not a reason to stop looking.**
+
+The general rule it stands for belongs here though: **when something on the
+page looks like damaged apparatus, check whether it is declared apparatus
+first.** A mark that recurs across pages in the same position is a convention,
+and this book writes its conventions down — front matter, the printed alphabet
+table, the collation rule on folio 3. That is evidence and it binds. Reasoning
+out what a mark "must" mean from one page is how three readers reached three
+different wrong answers about the same one.

@@ -93,7 +93,7 @@ Layout, all at the repo root:
             are derived too and point into it: a clone gets dangling links.
     gt/     what a human has been through: ocr/, fig/ (geometry only, no
             lines), zones/ (the current segmentation), lines/ (the corrections
-            overlay), seg/ (the first attempt, read-only). Tracked.
+            overlay). Tracked.
     mz/     what the models emitted, raw: zones/ and ocr/. Derived; ignored.
     ocr/  zones/  the read views over the paired stores — symlinks, the human
             file always winning. Derived; ignored. Never written through.
@@ -127,8 +127,9 @@ The full story is `docs/decisions.md`; the line invariants it produced are
 
 ## Page segmentation, second attempt
 
-Seven declared types, fixed-width bands of a per-page-measured column, a
-separate store from `gt/seg/` permanently. The design and its reasoning are
+Seven declared types, fixed-width bands of a per-page-measured column, in its
+own store — the first attempt's `gt/seg/` is deleted, nothing having trained
+coherently on it. The design and its reasoning are
 `docs/segmentation.md`; the training loop is `.claude/skills/train-zones/`;
 the code-facing internals load from `.claude/rules/zones.md` when the zones
 modules are open.
