@@ -112,6 +112,14 @@ scans/w-ocr/
 gt/zones/*.prev
 gt/zones/*.tmp
 gt/zones/_journal.jsonl
+# `gt/lines/` is tracked on the same terms — the correction fragments and
+# `_ink_exempt.json` are the authored record, the recovery copy beside them is
+# not. Note what is *not* ignored: `gt/lines/*.xml` is a human's geometry over
+# ink the segmenter missed, and it exists nowhere else. There is no journal here
+# because the store has no history to keep that the file itself does not — the
+# fragment is the whole record of the act.
+gt/lines/*.prev
+gt/lines/*.tmp
 # Derived, and disposable in a stronger sense than the two above: the uncovered-ink
 # verdict per page, written by whatever last read the raster, stamped with the
 # mtimes it was true for. Deleting it costs one re-check; committing it would put a

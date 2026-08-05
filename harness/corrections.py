@@ -33,9 +33,18 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from lxml import etree
+
 from .context import norm_ref, parse_ref
 
 INK_EXEMPT_JSON = "_ink_exempt.json"
+
+ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
+
+# Provenance travelling with the data, as `zones.ID_PREFIX` does. A line whose id
+# starts with this was drawn by a human in `ocr edit` over ink the segmenter left
+# unboxed; nothing else in any store carries it.
+CORR_ID_PREFIX = "corr_"
 
 LINE_EXEMPT_ABOUT = (
     "Bands of ink **inside a zone** that a human has ruled are not a dropped "
@@ -50,6 +59,131 @@ LINE_EXEMPT_ABOUT = (
 def lines_dir(root: Path = Path(".")) -> Path:
     """The line-correction store. Authored and tracked, like `gt/zones/`."""
     return Path(root) / "gt" / "lines"
+
+
+def lines_path(ref: str, root: Path = Path(".")) -> Path:
+    return lines_dir(root) / f"chukchi-{norm_ref(ref)}.xml"
+
+
+# --------------------------------------------------------------- the fragment
+
+def load_lines(ref: str, root: Path = Path(".")) -> list[dict]:
+    """This page's corrections, in raster coordinates. `[]` when there are none.
+
+    No file means no human has drawn a line on this page — the same
+    file-existence-is-the-record rule `gt/zones/` follows. There is deliberately
+    no way to express "looked and found nothing" here: unlike a zoning, which
+    partitions the whole page and can legitimately be empty, a correction store
+    with no corrections in it says exactly what its absence says.
+    """
+    p = lines_path(ref, root)
+    if not p.exists():
+        return []
+    root_el = etree.parse(str(p)).getroot()
+    page = root_el.find(".//{*}Page")
+    pw = int(page.get("WIDTH") or 0) if page is not None else 0
+    ph = int(page.get("HEIGHT") or 0) if page is not None else 0
+    out = []
+    for tl in root_el.iter("{*}TextLine"):
+        s = tl.find("{*}String")
+        x, y = int(tl.get("HPOS")), int(tl.get("VPOS"))
+        w, h = int(tl.get("WIDTH")), int(tl.get("HEIGHT"))
+        out.append({"id": tl.get("ID"), "x0": x, "y0": y, "x1": x + w,
+                    "y1": y + h, "text": (s.get("CONTENT") or "") if s is not None
+                    else "", "page_w": pw, "page_h": ph})
+    return sorted(out, key=lambda r: (r["y0"], r["x0"]))
+
+
+def build_fragment(ref: str, boxes: list[dict], size: tuple[int, int]):
+    """The store's ALTO, in the dialect `page_lines` already parses.
+
+    Lifted from the late `lines.adopt_gaps`, which built exactly this shape
+    in-place inside `gt/ocr/`. What changes is only where it lands: a file of its
+    own, at raster scale, folded over whichever store answers for the page — so a
+    correction is reachable on the ~690 pages that have no ground truth, which is
+    the whole reason that verb could not do this job.
+
+    **The `String` is empty by construction**, and the legitimacy of this writer
+    rests on it exactly as it rested on `adopt_gaps`: the editor draws a box, and
+    nothing here originates a reading. Text arrives later, from `restore`, out of
+    an adjudicated decision.
+    """
+    w, h = size
+    nsmap = {None: ALTO_NS}
+    root_el = etree.Element(f"{{{ALTO_NS}}}alto", nsmap=nsmap)
+    layout = etree.SubElement(root_el, f"{{{ALTO_NS}}}Layout")
+    page = etree.SubElement(layout, f"{{{ALTO_NS}}}Page", {
+        "ID": f"corr_page_{ref}", "PHYSICAL_IMG_NR": "1",
+        "WIDTH": str(w), "HEIGHT": str(h)})
+    ps = etree.SubElement(page, f"{{{ALTO_NS}}}PrintSpace", {
+        "HPOS": "0", "VPOS": "0", "WIDTH": str(w), "HEIGHT": str(h)})
+    for b in boxes:
+        x, y = int(b["x0"]), int(b["y0"])
+        bw, bh = int(b["x1"]) - x, int(b["y1"]) - y
+        ident = b.get("id") or f"{CORR_ID_PREFIX}{ref}-{y}"
+        geom = {"HPOS": str(x), "VPOS": str(y),
+                "WIDTH": str(bw), "HEIGHT": str(bh)}
+        rect = f"{x} {y} {x + bw} {y} {x + bw} {y + bh} {x} {y + bh}"
+        blk = etree.SubElement(ps, f"{{{ALTO_NS}}}TextBlock",
+                               {"ID": f"{ident}_block", **geom})
+        etree.SubElement(etree.SubElement(blk, f"{{{ALTO_NS}}}Shape"),
+                         f"{{{ALTO_NS}}}Polygon", {"POINTS": rect})
+        tl = etree.SubElement(blk, f"{{{ALTO_NS}}}TextLine", {
+            "ID": ident, "BASELINE": f"{x} {y + bh} {x + bw} {y + bh}", **geom})
+        etree.SubElement(etree.SubElement(tl, f"{{{ALTO_NS}}}Shape"),
+                         f"{{{ALTO_NS}}}Polygon", {"POINTS": rect})
+        etree.SubElement(tl, f"{{{ALTO_NS}}}String",
+                         {"CONTENT": b.get("text") or "", **geom})
+    return etree.ElementTree(root_el)
+
+
+def save_lines(ref: str, boxes: list[dict], root: Path = Path(".")) -> dict:
+    """Write this page's corrections. No store parameter, on purpose.
+
+    `save_zones`' property: there is no argument in which to name somewhere else,
+    so nothing can write a human's geometry into a machine store by passing the
+    wrong string. Durability is that function's too — `.prev` beside the file,
+    write to `.tmp`, `replace`.
+
+    **An empty save deletes the file**, which is the opposite of `save_zones`'
+    rule and for the same underlying reason. There, an empty page and an unvisited
+    page are byte-identical, so an empty save would erase the difference between
+    having judged and not; here the file's *existence* is the whole record, and a
+    file holding no corrections would claim a human drew something when they
+    withdrew everything. Withdrawing the last correction is a real act and this is
+    how it is recorded.
+
+    **Text already in the store is carried forward by id**, never taken from the
+    caller for a line that already exists. The editor is geometry-only and has no
+    business round-tripping an adjudicated reading through a browser; but a human
+    who nudges a box after `restore` has written its text must not thereby lose
+    it. The id is minted from the position where the line was first drawn and
+    then travels with it, so moving a box keeps its text.
+    """
+    from .zones import raster_size
+    ref = norm_ref(ref)
+    p = lines_path(ref, root)
+
+    keep = {r["id"]: r["text"] for r in load_lines(ref, root) if r["text"]}
+    boxes = [dict(b, text=b.get("text") or keep.get(b.get("id"), ""))
+             for b in boxes or []]
+
+    if not boxes:
+        existed = p.exists()
+        if existed:
+            p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
+            p.unlink()
+        return {"ref": ref, "path": str(p), "lines": 0, "removed": existed}
+
+    tree = build_fragment(ref, boxes, raster_size(ref, root))
+    p.parent.mkdir(parents=True, exist_ok=True)
+    if p.exists():
+        p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
+    tmp = p.with_suffix(".xml.tmp")
+    tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
+               standalone=None, pretty_print=True)
+    tmp.replace(p)
+    return {"ref": ref, "path": str(p), "lines": len(boxes), "removed": False}
 
 
 # --------------------------------------------------------------- the shared core
