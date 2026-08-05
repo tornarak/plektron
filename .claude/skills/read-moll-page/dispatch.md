@@ -111,9 +111,18 @@ fine" is not a state it should be possible to dispatch from.
 **The standing half lives in `.claude/agents/moll-reader.md`, not here**, and the
 split is by what varies. The agent definition carries everything true of *every*
 page — the whole reading contract, the loop, the Bash surface, the hard rules,
-the report shape. **The rendered prompt carries one ref and one assertion.** Two
-things follow: a clause edited in the agent file reaches the next reader with no
-rendering step, and there is no page-specific prose for anything to drift in.
+the report shape. **The rendered prompt carries the ref once and one assertion,
+and the assertion has no ref in it.** So the only thing that varies across a
+batch is eight characters, and eight characters that fail loudly when wrong.
+
+It carried six lines more than that until the contract moved. They were the
+deliverable path, the STOP, the Read/Write paths and the report instruction —
+every one of them already standing in the agent body, and the ref repeated in
+four of them. Restating standing text in a rendered prompt is the duplication
+this repo treats as a defect, and it is the worse half of it: the copy in the
+prompt is the one that drifts, because it is the one a coordinator retypes. A
+prompt should name what varies and assert what it expects; anything else in it
+is a second normative text with a shorter half-life than the first.
 
 **The template is not in the Python.** It sits below, delimited by the `page`
 marker pair, and `entry_bounds.py` only substitutes and refuses. A template copied into code is a second normative text
@@ -220,19 +229,9 @@ page-wide accent loss and bracket faults.
 
     Your page is **{ref}**. Do not touch any other page.
 
-    Your standing instructions — the whole reading contract — are your agent
-    definition. **If you have not been given them, you were dispatched as the
-    wrong agent type: stop and say so rather than reading a page without them.**
-
-        Read   scratch/chukchi/moll-scans/marked/{ref}.png
-        Write  scratch/chukchi/moll-scans/entries/{ref}.md
-
-    Deliverable: `scratch/chukchi/moll-scans/entries/{ref}.md`, one row per
-    entry in the numbered reading order. STOP THERE — you do not check your own
-    work, and the witness pass over the batch is not yours.
-
-    Report back in the four parts your standing instructions specify: the page,
-    the doubts you could not close, the zooms, and what the pass made harder
-    than it needed to be.
+    Your standing instructions are your agent definition, and they are the
+    whole job: the loop, the deliverable, what to report. **If you have not
+    been given them, you were dispatched as the wrong agent type — stop and say
+    so rather than reading a page without them.**
 
 <!-- page:end -->
