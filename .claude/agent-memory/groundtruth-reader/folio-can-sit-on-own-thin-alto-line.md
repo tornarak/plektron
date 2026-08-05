@@ -27,6 +27,15 @@ neighbour; a human settles it at the raster.
 
 **How to apply:** on a running-title zone, if there's a second, very narrow ALTO line
 near the title with empty predicted text, don't assume it's just a rule/divider —
-zoom it with `--margins` before deciding it carries nothing. Key the folio (plain
-ASCII digits, keying_spec.md §2.12) into whichever line's widened crop actually shows it,
-and note that it was outside the segmented polygon.
+zoom it with `--margins` before deciding it carries nothing. If the sliver line is
+the folio's own box, key the folio into **that** line's index (plain ASCII digits,
+keying_spec.md §2.12) and note that its ink sits outside the box's plain crop.
+
+**If it turns out there is no box for the folio at all, it is a dropped line and
+you report it — see [[folio-with-no-line-is-a-dropped-line]].** An earlier version
+of this note said to key it "into whichever line's widened crop actually shows it",
+which is wrong and was followed on `1-037`: the folio went into the running title's
+own `text`, so the proposal asserted that the title's box contains a number sitting
+500 px to its right. Ground truth is a text-to-geometry correspondence, and that
+one would have been false. Nothing you key may describe ink outside the line you
+are keying.

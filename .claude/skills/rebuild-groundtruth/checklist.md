@@ -9,6 +9,8 @@ evidence, it is what both readings that were wrong said.
 
 - [ ] `ocr gaps PP-NNN` run; `exempted` bands read and taken as settled, the rest
       ruled line-or-not and **reported, never repaired**
+- [ ] Every line's `text` describes only that line's own box — printed matter no
+      index covers went to `segmenter_missed`, never onto a neighbour
 - [ ] Whole page image read once for orientation (heads, folio, footnotes, figures)
 - [ ] All contact sheets read in full before any zoom
 

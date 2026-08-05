@@ -102,6 +102,28 @@ report it — you never repair it.** Describe the band, say what you think it is
 and why, and put it in the proposal's `segmenter_missed` block. Creating a line
 is a later step and someone else's; nothing in your loop writes page geometry.
 
+**The same rule covers printed text you find with no line index to hold it, and
+that case has actually gone wrong.** A line's `text` is what is inside *that
+line's box* — `restore` writes it into the `String` of the `TextLine` with that
+index, so ground truth is a correspondence between a box and its contents. Key
+something into a line whose box does not contain it and the text is right, the
+geometry is right, and only their pairing is false, which no later check
+re-opens. It is a dropped line wearing a different hat.
+
+So: **never append stray text to a neighbouring line, however close it sits.** On
+`1-037` the running title's box runs hpos 1017–1643 and the folio's ink sits at
+2157–2200 — same rows, 500 px away, inside no box on the page. It was keyed as
+`"BOGORAS, THE CHUKCHEE. 17"`, and the proposal then asserted that a 626 px box
+contains a number well outside it. The reader was following a memory note that
+said to do exactly that; the note is corrected, and this is the rule it should
+have deferred to.
+
+What to do instead: put it in `segmenter_missed` with what you saw and where,
+quoting the `gaps` band if there is one, and leave every existing line describing
+only its own box. The missing index gets made later, by `ocr adopt-gap`, from the
+band's measured geometry. **"There was no other line to put it in" is the report,
+not a reason to put it somewhere else.**
+
 **What `mz/` supplies is geometry, and a second reading — never the proposal.**
 Your proposal is your own reading of the raster, authored from the images. Seeding
 it from the machine text would collapse the two witnesses the later diff exists to
@@ -431,6 +453,8 @@ evidence, it is what both readings that were wrong said.
 
 - [ ] `ocr gaps PP-NNN` run; `exempted` bands read and taken as settled, the rest
       ruled line-or-not and **reported, never repaired**
+- [ ] Every line's `text` describes only that line's own box — printed matter no
+      index covers went to `segmenter_missed`, never onto a neighbour
 - [ ] Whole page image read once for orientation (heads, folio, footnotes, figures)
 - [ ] All contact sheets read in full before any zoom
 
