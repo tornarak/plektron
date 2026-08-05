@@ -160,7 +160,18 @@ fi
 # the one that decides whether a band of ink is a dropped line, and a verb in the
 # allowlist is a verb a reader will find a reason to try. A reader describes the
 # band in its report; it does not settle it, and it records it nowhere on disk.
-if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
+#
+# `calls` is in, and it is the one verb here a reader reads *about itself*. The
+# report contract requires its output pasted rather than a recollection, and on
+# the first batch after that contract was written the verb was missing from this
+# line: `1-041`'s reader said so in its report — correctly — and fell back to
+# reporting the ladder from memory, which came out "6 image calls, inside
+# budget" against a ledger reading 4 zooms, 3 of them at 4x, and 8 lines
+# re-opened. The fallback is exactly the failure the ledger exists to remove, so
+# a guard that blocks it defeats the instrument it was written to serve. Reading
+# the ledger cannot deal a reader a page or settle a band; it only makes the
+# reader's own spending visible to the reader.
+if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2
@@ -169,5 +180,5 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|gaps|lines|num
   allow "groundtruth-reader running a verb from its closed surface, on one page"
 fi
 
-echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run harness {ocr gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *} — one plain command, no --all. Everything else (restore, review, clean, views, git, python3, shell listing) is not yours; Glob answers existence, Read answers content, and the verbs answer the rest. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
+echo "Blocked by your standing instructions. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *} — one plain command, no --all. Everything else (restore, review, clean, views, git, python3, shell listing) is not yours; Glob answers existence, Read answers content, and the verbs answer the rest. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2

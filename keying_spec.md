@@ -454,6 +454,14 @@ care about), and it undercounts by construction, since a repair made with
 `proposal set`/`replace` before adjudication leaves no diff. As of 2026-08-02,
 scoped past 2026-07-31, the only class recurring across pages is §5.2's `i`→`ɪ`.
 
+**Every frequency below is Chukchee's.** The numbers are pooled over a store
+that is overwhelmingly Chukchee, so where the text explicitly glosses a form as
+another language — Koryak, Chuvan, Eskimo — **the priors do not apply. Transcribe
+what is printed, with extra care, and say in `note` that the form is glossed as
+that language.** Such forms are rare, which is the hazard: a Chukchee-looking
+suffix on one invites a correction toward a distribution it was never drawn
+from.
+
 0. **Where a reading and this file disagree, the spec wins and the
    disagreement is flagged for a human — never resolved by further zooming.**
    Magnification cannot settle a question that isn't optical, and a detailed,

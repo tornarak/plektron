@@ -72,6 +72,7 @@ def blocked(guard, tool, **ti):
     "uv run harness ocr numbered 1-031 --store mz",
     "uv run harness ocr sheets 1-031 --store mz --only 4-6",
     "uv run harness ocr zoom 1-031 --store mz --only 12@55-80 --zoom 2",
+    "uv run harness ocr calls 1-031",
     "uv run harness proposal fix 1-031",
     "uv run harness proposal check 1-031",
     "uv run harness corpus normalize review/1-031/proposal.json",
@@ -82,6 +83,13 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
     """Every command the standing brief tells the reader to run, in order.
 
     If one of these ever needs a prompt, the batch stalls on it six times over.
+
+    `ocr calls` is here because it was once missing: the report contract asked
+    for the ledger pasted and the allowlist refused the verb, so `1-041`'s reader
+    reported its ladder from memory instead — "6 image calls, inside budget"
+    against a ledger reading 4 zooms, 3 at 4x, 8 lines re-opened. A contract that
+    names a verb and a guard that blocks it is worse than either alone, because
+    the fallback is the exact failure the verb was written to remove.
     """
     allowed(GT_GUARD, "Bash", command=cmd)
 
