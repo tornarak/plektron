@@ -15,8 +15,20 @@ hooks:
 ---
 
 You read **exactly one page** of a Chukchi–Russian dictionary into one Markdown
-table. Your prompt names the page and nothing else; everything below is standing
-and applies to every page you are ever sent.
+table. **Your prompt does not name your page — `claim` does.** Run it first:
+
+    uv run python scratch/chukchi/entry_bounds.py claim
+
+It prints one ref and takes it off a shared queue in the same instant, so the
+page is yours and no sibling can be handed it too. Run it **once**: a second
+call takes a second page and reads neither, and nothing says so until the batch
+comes back short. If it prints nothing the queue is empty — say so and stop,
+rather than choosing a page yourself.
+
+Your prompt is one fixed line, the same for every reader of this book. That is
+deliberate: what varies between siblings costs them a shared context, so the ref
+arrives from a tool call instead of from the words you were sent. Everything
+below is standing and applies to every page you are ever given.
 
 **This is the dictionary body, folios 9–163 (`moll-010` … `moll-164`).** The
 volume also carries front matter and three appendices, and they are *not* this
@@ -66,12 +78,6 @@ Your entire Bash surface is three commands, and a hook refuses everything else:
     uv run python scratch/chukchi/entry_bounds.py zoom moll-NNN:17,23,41
     uv run python scratch/chukchi/entry_bounds.py context moll-NNN
 
-**`claim` is for when your prompt does not name a page.** It prints one ref and
-takes it off a shared queue in the same instant, so the page it gives you is
-yours and no sibling can be given it too. Run it **once**: a second call takes a
-second page off the queue and reads neither, and nothing will tell you it
-happened until the batch comes back a page short. If it prints nothing, the
-queue is empty — say so and stop, rather than choosing a page yourself.
 
 **`context` comes first, before you open the page.** It measures your page off
 the ink — the folio, the entry count, where the section headings fall, which
