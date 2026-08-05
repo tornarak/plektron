@@ -39,7 +39,7 @@ lived only in the directory holding it. Note that nothing here writes into `gt/`
 
 from pathlib import Path
 
-from .context import norm_ref
+from .context import norm_ref, parse_ref
 
 # Everything under `review/<ref>/` that any verb may recreate from the ALTO and the
 # rasters. The gitignore rules mirror this; so does `clean` below. `harness/tests/test_layout.py`
@@ -53,6 +53,41 @@ DERIVED = ("crops", "sheets", "zoom", "review.html", "numbered.png")
 
 def review_dir(ref: str, root: Path = Path(".")) -> Path:
     return root / "review" / norm_ref(ref)
+
+
+def page_dirs(root: Path = Path(".")) -> list[Path]:
+    """Every child of `review/` that is a page, in (part, scan index) order.
+
+    **`review/` is not all pages.** Five call sites used to glob `review/*` and treat
+    whatever came back as a ref, which held only for as long as nothing else lived
+    there. It does now: the dispatch queue and its claim markers are the batch's
+    working state and belong beside the pages they deal out, so `_queue.txt` and
+    `_claims/` sit here too. Three of those sites survived contact by accident,
+    filtering on `proposal.json` or `decision.json` existence; `ocr clean` with no
+    refs filtered on `is_dir()` alone and would have handed `_claims` to `norm_ref`,
+    where a `ValueError` about bare page numbers is a confusing way to be told the
+    verb walked into the wrong directory.
+
+    The underscore is not what excludes them — **being ref-shaped is what includes
+    a directory**, so anything else that ever lands in `review/` is out by
+    construction rather than by having been anticipated. The name is the whole test,
+    exactly as `parse_ref` intends it: a directory is a page because it is called
+    one, and nothing infers a page from what it happens to contain.
+    """
+    out = []
+    for d in (root / "review").glob("*"):
+        if not d.is_dir():
+            continue
+        try:
+            out.append((parse_ref(d.name), d))
+        except ValueError:
+            continue
+    return [d for _, d in sorted(out)]
+
+
+def page_refs_under(root: Path = Path(".")) -> list[str]:
+    """`page_dirs` as canonical refs — what most callers actually want."""
+    return [norm_ref(d.name) for d in page_dirs(root)]
 
 
 def proposal_path(ref: str, root: Path = Path(".")) -> Path:

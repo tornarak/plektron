@@ -161,3 +161,33 @@ def test_clean_leaves_the_link_and_the_authored_files(tmp_path):
     assert not (d / "crops").exists()
     assert (d / "page.png").is_symlink()
     assert (d / "proposal.json").exists()
+
+
+def test_page_dirs_takes_only_ref_shaped_children(tmp_path):
+    """`review/` holds the dispatch queue and its claims as well as pages.
+
+    Five sweeps used to glob `review/*` and treat whatever came back as a ref.
+    Three filtered on `proposal.json`/`decision.json` and survived by accident;
+    `ocr clean` with no refs filtered on `is_dir()` alone, so the first non-page
+    child would have taken it into `norm_ref` and out through a `ValueError`
+    about bare page numbers — a true message about the wrong thing.
+    """
+    from harness.paths import page_dirs, page_refs_under
+
+    r = tmp_path / "review"
+    for name in ("1-048", "1-9", "2-030", "_claims", "notes"):
+        (r / name).mkdir(parents=True)
+    (r / "_queue.txt").write_text("1-048\n", encoding="utf-8")
+
+    assert [d.name for d in page_dirs(tmp_path)] == ["1-9", "1-048", "2-030"]
+    # Canonicalized and in (part, index) order, so `1-9` sorts before `1-048`
+    # by index rather than by string.
+    assert page_refs_under(tmp_path) == ["1-009", "1-048", "2-030"]
+
+
+def test_page_dirs_on_a_repo_with_no_review_tree(tmp_path):
+    """Empty, not an error: `review/` is authored working state, so nothing
+    waiting is a true answer rather than an unbuilt tree (unlike a farm)."""
+    from harness.paths import page_dirs
+
+    assert page_dirs(tmp_path) == []

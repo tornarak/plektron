@@ -610,11 +610,10 @@ def _pending_review(root: Path) -> list[str]:
     answer here is a true statement (nothing is waiting) rather than a tree
     nobody built.
     """
-    from ..paths import decisions_path, proposal_path
-    refs = [d.name for d in sorted((root / "review").glob("*"))
-            if proposal_path(d.name, root).exists()
-            and not decisions_path(d.name, root).exists()]
-    return [norm_ref(r) for r in refs]
+    from ..paths import decisions_path, page_refs_under, proposal_path
+    return [r for r in page_refs_under(root)
+            if proposal_path(r, root).exists()
+            and not decisions_path(r, root).exists()]
 
 
 def run_review(a) -> int:
@@ -674,9 +673,9 @@ def run_restore(a) -> int:
     refs = page_refs(a)
     sweep = getattr(a, "all", False)
     if sweep:
-        from ..paths import decisions_path
-        refs = [norm_ref(d.name) for d in sorted((a.root / "review").glob("*"))
-                if decisions_path(d.name, a.root).exists()]
+        from ..paths import decisions_path, page_refs_under
+        refs = [r for r in page_refs_under(a.root)
+                if decisions_path(r, a.root).exists()]
     # **Every page is checked before any page is written.** `restore` with
     # `commit=False` runs the whole of its refusal set and touches nothing, so a
     # dry pass over the list is exactly the up-front validation a multi-ref write
@@ -730,8 +729,8 @@ def run_corrections(a) -> int:
 def run_clean(a) -> int:
     refs = page_refs(a)
     if not refs:
-        refs = [norm_ref(d.name) for d in sorted((a.root / "review").glob("*"))
-                if d.is_dir()]
+        from ..paths import page_refs_under
+        refs = page_refs_under(a.root)
     # `removed` is a list, so this is the splitting emitter: a count per page and
     # the names in their own ref-keyed table.
     out_per_ref(a, [(r, clean(r, a.root)) for r in refs])

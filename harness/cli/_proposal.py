@@ -195,9 +195,9 @@ def _proposals(a) -> list[str]:
     one_page_only(a, {"path": "--path"}, refs)
     if refs:
         return refs
-    from ..context import norm_ref
-    return [norm_ref(d.name) for d in sorted((a.root / "review").glob("*"))
-            if proposal_path(d.name, a.root).exists()]
+    from ..paths import page_refs_under
+    return [r for r in page_refs_under(a.root)
+            if proposal_path(r, a.root).exists()]
 
 
 def run_check(a) -> int:

@@ -49,7 +49,7 @@ from lxml import etree
 from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
-from .paths import crops_dir, decisions_path, html_path, proposal_path
+from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
 from .usage import since_stamp
 
 CONTEXT_CHARS = 24
@@ -443,8 +443,8 @@ def corrections(root: Path = Path("."), refs: list[str] | None = None,
     stamps: dict[str, list[str]] = {}
     by_page: list[dict] = []
     skipped_unstamped: list[str] = []
-    for d in sorted((root / "review").glob("*/")):
-        ref = d.name
+    for d in page_dirs(root):
+        ref = norm_ref(d.name)
         if want is not None and ref not in want:
             continue
         p, dc = d / "proposal.json", d / "decision.json"
