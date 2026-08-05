@@ -128,7 +128,7 @@ is a second normative text with a shorter half-life than the first.
 marker pair, and `entry_bounds.py` only substitutes and refuses. A template copied into code is a second normative text
 that drifts from the first, and the drift is invisible because both look
 authoritative. The same reasoning put the collation prompt in `harness tei
-context` and the reading prompt in `harness ocr dispatch`.
+context` and the reading prompt in `harness ocr queue`/`claim`.
 
 A marker counts **only on a line of its own**, because this file explains its own
 delimiters. A substring search finds the sentence describing a template before it

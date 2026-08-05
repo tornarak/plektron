@@ -173,6 +173,55 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
     return {**s, "page_block": text, "placeholders": " ".join(left)}
 
 
+AGENT = Path(".claude/agents/groundtruth-reader.md")
+TRANSCLUDE = re.compile(
+    r"^<!-- transclude: (?P<src>\S+) -->$.*?^<!-- /transclude -->$",
+    re.MULTILINE | re.DOTALL)
+
+
+def sync_transcludes(root: Path = Path("."), agent: Path = AGENT) -> dict:
+    """Refill the agent's transcluded blocks from the files they name.
+
+    **The reader's whole contract has to be in its system prompt, and
+    `keying_spec.md` has to stay one file.** Those pull opposite ways. The spec
+    binds the collation pass and the human keying track as well, so it cannot
+    move into an agent definition; but a `Read` of it costs ~15k tokens per
+    reader per page, behind the turn that varies, where nothing can share it.
+
+    So it is copied in, and the copy is mechanical: this rewrites each marked
+    block from its source on every `queue`, and `test_transclusion.py` fails if
+    the checked-in file and its source disagree. Two copies with a gate between
+    them is what this repo already does for `VERBS.md` and the CLI tree — what it
+    forbids is two copies with a *comment* between them.
+
+    Returns the sources that changed, so `queue` can say so: the agent file is
+    tracked, and a changed block is a commit somebody makes.
+    """
+    p = root / agent
+    if not p.exists():
+        return {"agent": str(agent), "updated": []}
+    text = p.read_text(encoding="utf-8")
+    updated = []
+
+    def swap(m: re.Match) -> str:
+        src = m.group("src")
+        f = root / src
+        if not f.exists():
+            raise Unready(
+                f"{agent} transcludes {src}, which does not exist. The block is "
+                "a copy under a gate, so a missing source is a contract with a "
+                "hole in it rather than a stale copy to leave alone.")
+        body = f.read_text(encoding="utf-8").strip("\n")
+        if body != m.group(0).split("\n", 1)[1].rsplit("\n", 1)[0].strip("\n"):
+            updated.append(src)
+        return (f"<!-- transclude: {src} -->\n{body}\n<!-- /transclude -->")
+
+    new = TRANSCLUDE.sub(swap, text)
+    if new != text:
+        p.write_text(new, encoding="utf-8")
+    return {"agent": str(agent), "updated": updated}
+
+
 def queue_path(root: Path = Path(".")) -> Path:
     return root / QUEUE
 
@@ -217,7 +266,11 @@ def queue_refs(refs: list[str], root: Path = Path("."),
             f.unlink()
     body = "".join(f"{r}\t{note.strip()}\n" if note else f"{r}\n" for r in ordered)
     q.write_text(body, encoding="utf-8")
-    return {"queued": ordered, "prompt": template(root, (CLAIM_BEGIN, CLAIM_END))}
+    # Last, so a batch that was going to be refused does not also rewrite a
+    # tracked file on its way out.
+    synced = sync_transcludes(root)
+    return {"queued": ordered, "prompt": template(root, (CLAIM_BEGIN, CLAIM_END)),
+            "resynced": synced["updated"]}
 
 
 def claim_one(root: Path = Path(".")) -> tuple[str, str] | None:

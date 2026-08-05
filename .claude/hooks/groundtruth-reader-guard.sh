@@ -117,12 +117,18 @@ case "$COMMAND" in
     exit 2 ;;
 esac
 
-# The reader's whole legitimate surface, and it is read-only over the stores:
-# `corpus normalize` gates the reader's own proposal, `lexicon` and `find` are
-# measurement and always exit 0. `adopt-gap` is deliberately absent — it writes
-# gt/ocr/, it cannot run on a restoration anyway (no ground truth to append to),
-# and a verb in the allowlist is a verb a reader will find a reason to try.
-if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
+# The reader's whole legitimate surface, and it is read-only over the stores
+# bar one marker: `claim` is the exception and has to be, since taking a ref off
+# the queue is how the reader learns which page is its own. `corpus normalize`
+# gates the reader's own proposal, `lexicon` and `find` are measurement and
+# always exit 0.
+#
+# `queue` and `reconcile` are the coordinator's and stay out: a reader that can
+# queue can deal itself a batch, and one that can reconcile is auditing a run it
+# is a subject of. `adopt-gap` is absent too — it writes gt/ocr/, it cannot run
+# on a restoration anyway (no ground truth to append to), and a verb in the
+# allowlist is a verb a reader will find a reason to try.
+if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+)( |$)'; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2

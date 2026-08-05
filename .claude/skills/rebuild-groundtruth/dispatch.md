@@ -58,67 +58,94 @@ on, one per invocation.
 It is on the GPU by default — `--device auto` resolves to `cuda:0` — so a slow run is
 the load being paid repeatedly, not the device being wrong. Check before blaming it.
 
-**Give each agent one ref and say so twice.** Several agents in one repo are safe
-only because they touch disjoint `review/PP-NNN/` directories. The prompt names the ref
-in the first line and repeats "do not touch any other page".
+**One ref per agent, and nobody hands it over.** Several agents in one repo are
+safe only because they touch disjoint `review/PP-NNN/` directories, and what keeps
+them disjoint is `claim`: it takes the next ref off `review/_queue.txt` with
+`O_CREAT|O_EXCL`, so the file system decides who got it and there is no window
+between the check and the take. Eight concurrent claimers over a three-ref queue
+return three distinct refs.
 
-**Launch the first reader alone, wait ~10 s, then fan out the rest together.**
-Stagger the first only; the others can go at once.
+### Why the prompt names no page
 
-A reader's context arrives in two parts, and they behave differently. The system
-prompt — agent body, tool schemas, `CLAUDE.md`, memory index — comes first and is
-identical across siblings, so it can be read from cache. Then two conversation
-turns: **the rendered prompt, which differs per page, and only after it the
-preloaded SKILL.md, which does not**. Because a cache prefix ends at the first
-differing byte, the pass doc sits behind the variation and is rewritten in full
-for every page — no launch order reaches it, and neither does shortening the
-prompt. What the stagger can buy is the system prompt: concurrent siblings may
-each miss and each write it, where a stagger lets one write and the rest read.
+A reader's context has exactly one block its siblings can share: the system prompt
+— agent body, tool schemas, `CLAUDE.md`, memory index — which is the only part
+ahead of every user turn. Everything behind the first differing byte is written per
+reader.
 
-Measured on this repo's sibling pass (the Moll reader): the system half is
-~13.7k and the rewritten half ~21.3k, and a reader launched twelve seconds after
-another opened within 1% of one launched simultaneously — so the ~21.3k is
-confirmed timing-proof, while whether the stagger saves the ~13.7k is **not yet
-established**, both trials having been two-agent batches where the second read
-that segment either way. **The magnitudes are the sibling's; the mechanism is the
-same here and this agent's prefix is larger**, since it preloads a longer pass
-doc and reads two more files. Ten seconds is cheap enough to keep on the chance,
-and the real lever is elsewhere: moving standing content out of the preloaded
-doc and into the agent body, ahead of the variation.
+Two things were on the wrong side of that line, and both are now fixed.
 
-The saving is small against a large allowance, and that is not the reason. This
-pass is meant to be runnable by people on cheaper plans and other platforms,
-where the same fixed prefix is paid at every scale. Note also that the agent's
-memory index sits in its system prompt: when a reader adds to
-`.claude/agent-memory/groundtruth-reader/`, the prefix changes and the next
-batch pays a full write. That is the cost of the memory channel, not a fault in
-it.
+**The preloaded `skills:` doc arrived as a message**, behind the turn naming the
+page, so ~40k characters of invariant text sat behind the one thing that varied and
+every reader wrote it in full. Moving it into the agent body — which *is* the system
+prompt — cut the sibling pass's fixed overhead for three readers from ~118k tokens
+to ~50k. A `standby` handshake that delivered the ref on resume also worked, but
+**resume re-injects a preloaded skill whole**: request 2 cost 14,916 tokens for
+three readers identically and separately, giving half the saving straight back.
 
-## What the prompt has to carry, and why each clause is there
+**Then the ref itself.** Three readers dispatched with `moll-043`/`044`/`045` in
+their prompts all opened **COLD**, at the same total to the token — the totals
+matching because three refs of the same byte length cost the same. A batch whose
+prompts were byte-identical shared. So the first user turn is folded into the cached
+block: **identity of turn 1 is what caches, not its position or its size**, and a
+per-page prompt costs every sibling the entire prefix however few characters vary.
+`queue`/`claim` gets that property with no handshake and so no re-injection.
+
+The same batch measured here: six readers over `1-031`..`1-036`, every one COLD at
+36,856 tokens — six copies of one context. `harness agents usage` reports this as a
+cohort with no warm members, and it is the check to run after any batch.
+
+**Stagger the first launch about ten seconds, then fan out the rest together.** One
+member of a cohort has to write the prefix and the others read it, so a sibling that
+opens before that write completes writes its own. An earlier measurement — a reader
+launched twelve seconds after another opening within 1% of one launched
+simultaneously — is *not* evidence against this: it was taken when the prompts
+differed, so no sharing was possible either way. `agents usage` reports what the
+stagger bought as `missed`, so it is checkable after the fact rather than assumed;
+if `missed` is 0 on a fanned-out batch, drop it.
+
+The saving is small against a large allowance, and that is not the reason. This pass
+is meant to be runnable by people on cheaper plans and other platforms, where the
+same fixed prefix is paid at every scale. Note also that the agent's memory index
+sits in its system prompt: when a reader adds to
+`.claude/agent-memory/groundtruth-reader/`, the prefix changes and the next batch
+pays a full write. That is the cost of the memory channel, not a fault in it — and
+it is once per batch, not once per reader.
+
+## What the two texts have to carry, and why each clause is there
 
 Every item below was earned by something going wrong, in this project or in the
 dispatch that produced this file.
 
-**They now live in `.claude/agents/groundtruth-reader.md`, not in the template**, and
-the split is by what varies: the agent definition carries everything true of *every*
-page — the preloaded pass doc, the two files to read first, the loop, the ladder,
-the hard rules, the report shape — and the rendered prompt carries only the ref, the survey and the
-figures clause. Two things follow. A clause edited in the agent file reaches the next
-reader with no rendering step, and the prompt is 26 lines instead of 210, so what is
-page-specific is legible as such rather than buried in standing prose.
+**Almost all of it lives in `.claude/agents/groundtruth-reader.md`**, and the split
+is by what varies: the agent body carries everything true of *every* page — the loop,
+the ladder, the proposal contract, the hard rules, the report shape, and the reading
+checklist and `keying_spec.md` transcluded whole — while the claim-rendered block
+carries only the ref, the survey and the figures clause. Three things follow. A
+clause edited in the agent file reaches the next reader with no rendering step; the
+page block is a dozen lines instead of 210, so what is page-specific is legible as
+such; and none of the standing text is written per reader, because all of it is
+ahead of the first varying byte.
 
-What that costs is a new way to be wrong, and it is the failure mode this repo has
-paid for twice: **a reader dispatched under the wrong agent type gets none of it, and
-nothing in the prompt would look amiss.** Same shape as a file whose role lived only
-in the directory holding it. So the template opens by asserting what it expects the
-reader to already have and telling it to stop if it does not — the prompt's own
-witness that the standing half arrived, since the coordinator's `subagent_type` is
-not otherwise visible from inside the task.
+**The spec is transcluded, not read.** `keying_spec.md` cannot move here — it binds
+the collation pass and the human keying track too — but a `Read` of it costs ~15k
+tokens per reader per page, behind the varying turn, where nothing can share it. So
+the agent file carries a copy between markers, `harness ocr queue` re-syncs it from
+the source before every batch, and `test_transclusion.py` fails if the committed
+copy and the source disagree. Two copies with a gate between them, which is what
+this repo already does for `VERBS.md` and the CLI tree; what it forbids is two
+copies with a comment between them.
 
-- **Read `SKILL.md` and `keying_spec.md` in full, with Read, before anything else.**
-  Say "not grep, not head" explicitly — an agent told to consult a spec will grep it
-  for the term it already suspects and miss the licensing note that would have
-  overridden its first guess.
+What the split costs is a new way to be wrong, and it is the failure mode this repo
+has paid for twice: **a reader dispatched under the wrong agent type gets none of
+it, and nothing would look amiss.** Same shape as a file whose role lived only in
+the directory holding it. So the *fixed prompt* — not the agent body — carries the
+assertion and tells the reader to stop if it does not have the contract. It has to
+live there: an agent spawned as the wrong type does not have the body, so an
+assertion inside it could never catch the case it exists for.
+
+- **Claim the page, do not choose one.** "Run it once" is explicit, because a second
+  claim takes a page off the queue that this reader will not read, and the batch
+  comes back short with nothing able to say why.
 - **State which branch of the loop applies.** "This page has no ground truth, so it
   is the restoration branch, `--store mz` on every ALTO verb, no `--force`." Left to
   infer, an agent reaches for the default view, and the view is the wrong witness.

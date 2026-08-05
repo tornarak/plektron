@@ -521,6 +521,12 @@ def run_queue(a) -> int:
         return 0
     click.echo(rec["prompt"])
     n = len(rec["queued"])
+    if rec["resynced"]:
+        click.echo(
+            f"\nthe reader's transcluded contract was out of date and has been "
+            f"rewritten from {', '.join(rec['resynced'])}. The agent file is "
+            "tracked: commit it, or the next clone dispatches readers against "
+            "the old text.", err=True)
     click.echo(
         f"\nqueued {n}: {', '.join(rec['queued'])}. Send the prompt above to "
         f"{n} readers, UNEDITED and IDENTICAL — it names no page, and identity "

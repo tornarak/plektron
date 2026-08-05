@@ -66,6 +66,7 @@ def blocked(guard, tool, **ti):
 # --- groundtruth-reader -----------------------------------------------------
 
 @pytest.mark.parametrize("cmd", [
+    "uv run harness ocr claim",
     "uv run harness ocr gaps 1-031 --store mz",
     "uv run harness ocr lines 1-031 --store mz",
     "uv run harness ocr numbered 1-031 --store mz",
@@ -88,6 +89,9 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
 @pytest.mark.parametrize("cmd", [
     "uv run harness ocr restore 1-031",           # writes gt/ocr/
     "uv run harness ocr adopt-gap 1-031 --vpos 900",  # writes page geometry
+    "uv run harness ocr queue 1-031 1-032",       # a reader dealing itself a batch
+    "uv run harness ocr reconcile 1-031",         # auditing a run it is a subject of
+    "uv run harness ocr dispatch 1-031",          # retired, and stays refused
     "uv run harness ocr clean 1-031",             # destroys the record of the pass
     "uv run harness ocr review --serve",          # a human's tool
     "uv run harness views build",

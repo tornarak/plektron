@@ -2,9 +2,9 @@
 
 The group names what it touches, and this one does not touch a corpus store: it
 reads Claude Code's own task transcripts. It is here rather than in `tools/`
-because the two dispatch loops in this repo (`ocr dispatch`, and the moll pass's
-`entry_bounds.py dispatch`) both fan out over pages, and both are worth
-measuring the same way — a script with no reference entry and no surface test is
+because the two dispatch loops in this repo (`ocr queue`/`claim`, and the moll
+pass's `entry_bounds.py queue`/`claim`) both fan out over pages, and both are
+worth measuring the same way — a script with no reference entry and no surface test is
 how the last set of undocumented flags accumulated.
 
 Two actions. `usage` answers the question a coordinator can act on — did the

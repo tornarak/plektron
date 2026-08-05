@@ -512,7 +512,27 @@ in `prior_note`. `is_medial` generalises `detectors.MEDIAL_CAPS` to the small ca
 rather than copying its lookbehind class; the two agree on every live position and a
 test holds them together.
 
-**`paths.py`** — the `review/<ref>/` layout authority, and `DERIVED`.
+**`paths.py`** — the `review/<ref>/` layout authority, and `DERIVED`. Also
+`page_dirs`, because `review/` has children that are not pages: the dispatch queue
+and its claim markers live beside the directories they deal out, so **no caller may
+glob `review/*` and assume a ref**. Five did, and three survived only by filtering
+on `proposal.json` existing.
+
+**`dispatch.py`** — the reading pass's fan-out: `queue` validates a batch and
+writes `review/_queue.txt`, `claim` takes the next ref off it with
+`O_CREAT|O_EXCL`, `reconcile` says what came back. Two templates, both living in
+`dispatch.md` rather than here, and the module only substitutes and refuses.
+
+**The prompt every reader gets names no page**, and that is the invariant the
+module exists to hold: identity of a subagent's first turn is what makes its
+context cacheable, so a ref written into a prompt costs every sibling the whole
+shared prefix. Anything that varies between readers must arrive from a tool call —
+which is what `claim` is. `sync_transcludes` is the other half: it refills the
+agent definition's marked blocks from `keying_spec.md` and the checklist, so the
+contract sits in the system prompt without the spec becoming two files. It is a
+verb writing a tracked file with no `--commit`, deliberately, and the exception is
+stated in `VERBS.md`: the write is a byte-copy under a test
+(`test_transclusion.py`), not a judgement.
 **`pipeline.py`** — the lifecycle census: where each page has got to across every
 store at once, on one ladder (`scanned` → `zoned-mz` → `zoned-gt` → `ocr-mz` →
 `proposed` → `decided` → `ocr-gt` → `collated`). `STAGES` is the whole content —

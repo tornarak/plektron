@@ -549,7 +549,7 @@ def cohorts(agents: list[dict]) -> list[dict]:
     """
     if not agents:
         return [{"type": "", "model": "", "opening": 0, "own": 0, "agents": 0, "sessions": 0, "warm": 0,
-                 "saved": 0, "missed": 0, "originated": 0, "if_all_cold": 0, "saved_pct": "n/a", "ceiling": "n/a", "note": "no agents in scope"}]
+                 "saved": 0, "missed": 0, "originated": 0, "if_all_cold": 0, "saved_pct": "n/a", "asymptote": "n/a", "note": "no agents in scope"}]
     # **Keyed on agent type as well as model and opening.** Opening alone very
     # nearly decides it — two agent types have different system prompts and so
     # cannot open at the same total — but "very nearly" is not a grouping rule,
@@ -567,10 +567,13 @@ def cohorts(agents: list[dict]) -> list[dict]:
         # and the gap between that and what happened is what a stagger buys.
         missed = (len(members) - 1 - warm) * opening
         # What the batch originated once, versus what it would have cost with
-        # every sibling cold. The ratio has a ceiling worth knowing: with N
-        # agents the saving is (N-1)P / (N(P+W)), which tends to P/(P+W) as the
-        # batch grows — so a pass whose shared prefix dominates its per-item
-        # work approaches halving, and one with a thin prefix never will.
+        # every sibling cold. The ratio has a limit worth knowing: with N agents
+        # the saving is (N-1)P / (N(P+W)), which TENDS TO P/(P+W) as the batch
+        # grows — so a pass whose shared prefix dominates its per-item work
+        # approaches halving, and one with a thin prefix never will. It is an
+        # asymptote and not a ceiling: (N-1)/N is never 1, so no batch of any
+        # size reaches it, and a report calling it a ceiling invites reading a
+        # shortfall as a defect when it is arithmetic.
         own = sum(a["ctx"] - opening for a in members)
         per = own // len(members)
         rows.append({
@@ -578,23 +581,23 @@ def cohorts(agents: list[dict]) -> list[dict]:
             "model": model,
             "opening": opening,
             # The prefix and the mean per-agent work beyond it, side by side,
-            # because `ceiling` is just their ratio and a bare percentage is not
-            # checkable. A ceiling near 50% means the two columns are near
-            # equal, which is a fact about this pass and not a property of the
-            # arithmetic — a fatter prefix or leaner per-item work moves it.
+            # because `asymptote` is just their ratio and a bare percentage is
+            # not checkable. An asymptote near 50% means the two columns are
+            # near equal, which is a fact about this pass and not a property of
+            # the arithmetic — a fatter prefix or leaner per-item work moves it.
             "own": per,
             "agents": len(members),
             "originated": opening + own,
             "if_all_cold": len(members) * opening + own,
             # What this run actually saved, against what the same batch could
-            # ever save. `saved_pct` is measured; `ceiling` is the limit it
-            # approaches as N grows, so the gap between them is the cost of the
-            # batch being small — one member always writes the prefix, and with
-            # three that is a third of them.
+            # ever approach. `saved_pct` is measured; `asymptote` is the limit,
+            # never attained, so the gap between them is the cost of the batch
+            # being small — one member always writes the prefix, and with three
+            # that is a third of them.
             "saved_pct": f"{warm * opening / (len(members) * opening + own):.1%}"
                          if len(members) > 1 and own else "n/a",
-            "ceiling": f"{opening / (opening + per):.1%}"
-                       if len(members) > 1 and own else "n/a",
+            "asymptote": f"{opening / (opening + per):.1%}"
+                         if len(members) > 1 and own else "n/a",
             # Cross-session, deliberately. The cache is content-addressed, so two
             # sessions opening at the same prefix genuinely do share it — a cohort
             # spanning sessions is a real one, not a grouping artifact.

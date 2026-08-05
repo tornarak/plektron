@@ -222,27 +222,36 @@ def test_savings_are_the_prefix_the_warm_siblings_did_not_write():
     assert rows[0]["if_all_cold"] == 3 * 35798 + own
 
 
-def test_the_ceiling_is_the_prefix_share_of_one_agents_cost():
+def test_the_asymptote_is_the_prefix_share_of_one_agents_cost():
     """(N-1)P / (N(P+W)) tends to P/(P+W), so a batch whose prefix equals its
     per-item work approaches halving and one with a thin prefix never does."""
     rows = cohorts([_made(opening=100, ctx=200)] * 4)      # P == W
-    assert rows[0]["ceiling"] == "50.0%"
+    assert rows[0]["asymptote"] == "50.0%"
     rows = cohorts([_made(opening=100, ctx=1100)] * 4)     # W is 10x P
-    assert rows[0]["ceiling"] == "9.1%"                    # 100/1100, not 1/10
+    assert rows[0]["asymptote"] == "9.1%"                  # 100/1100, not 1/10
 
 
-def test_a_singleton_claims_no_ceiling():
+def test_a_singleton_claims_no_asymptote():
     row = cohorts([_made(opened="COLD", ctx=70000)])[0]
-    assert row["ceiling"] == "n/a" and row["saved_pct"] == "n/a"
+    assert row["asymptote"] == "n/a" and row["saved_pct"] == "n/a"
 
 
-def test_saved_pct_is_measured_and_the_ceiling_is_the_limit():
+def test_saved_pct_is_measured_and_the_asymptote_is_never_reached():
     """The gap between them is the cost of the batch being small: one member
-    always writes the prefix, so with three that is a third of them."""
+    always writes the prefix, so with three that is a third of them.
+
+    And it is an asymptote, not a ceiling — (N-1)/N is never 1, so no batch of
+    any size attains it. A perfectly-run batch still reports a shortfall, which
+    is arithmetic rather than a defect to chase.
+    """
     row = cohorts([_made(opening=100, ctx=200, opened="COLD"),
                    _made(opening=100, ctx=200), _made(opening=100, ctx=200)])[0]
     assert row["saved_pct"] == "33.3%"     # 200 saved of 600 all-cold
-    assert row["ceiling"] == "50.0%"       # P/(P+W), the limit as N grows
+    assert row["asymptote"] == "50.0%"     # P/(P+W), approached, never reached
+    # Every sibling warm, and it still falls short of the asymptote.
+    big = cohorts([_made(opening=100, ctx=200, opened="COLD")]
+                  + [_made(opening=100, ctx=200)] * 99)[0]
+    assert big["saved_pct"] == "49.5%" and big["asymptote"] == "50.0%"
 
 
 # --- warmth ---------------------------------------------------------------

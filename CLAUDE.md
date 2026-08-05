@@ -112,7 +112,6 @@ Layout, all at the repo root:
 
 Counts deliberately absent — they go stale in a file nothing regenerates;
 `harness ocr pages`, `harness zones check` and `harness views check` answer.
-eScriptorium currently holds nothing; the repo is the system of record.
 
 **The frontier is collation.** The apparatus stores are done and reconciled, so
 what is left is the pass that consumes them. The state of each track, and what
@@ -162,7 +161,7 @@ flag name; argument validation is the parser's.
 for a codepoint (`proposal codepoints`), not a crop script (`ocr zoom`), not a
 heredoc onto a JSON field (`proposal set`). A one-off script is a tell that a
 tool is missing or under-used; reach for the verb, or extend it, never route
-around it. The concrete cases are `rebuild-groundtruth`'s SKILL.md.
+around it. The cases are in the `groundtruth-reader` agent.
 
 **Doc precedence.** This file is authoritative on the project's invariants and
 is the router to everything else. It is deliberately **not** the place for how
@@ -176,7 +175,8 @@ every byte of this file on every page.
 | `CLAUDE.md` | project invariants, the store layout, and this table |
 | `keying_spec.md` | the character inventory. Binds both passes and the human keying track |
 | `.claude/skills/transcribe-page/` | the OCR→TEI collation loop, rules included — it has no separate harness doc |
-| `.claude/skills/rebuild-groundtruth/` | the raster→ALTO reading loop, rules included — it has no separate harness doc |
+| `.claude/agents/groundtruth-reader.md` | the raster→ALTO reading contract, whole — a reader's system prompt, spec transcluded |
+| `.claude/skills/rebuild-groundtruth/` | dispatching and adjudicating a batch of readers |
 | `.claude/skills/train-zones/` | the segmenter's train→score→install loop, its measured state, and the judgement in it |
 | `.claude/rules/zones.md` | code-facing zones/raster internals; loads itself when those modules are open |
 | `harness/VERBS.md` | the CLI surface: every action, its reads, writes, exit contract and flags. Gated by `test_cli_surface.py` |
@@ -190,8 +190,8 @@ every byte of this file on every page.
 | `docs/open-questions.md` | what is deliberately unresolved |
 
 Two passes, and they are not the same job: collation (OCR → TEI, output `tei/`) and
-the ground-truth loop (raster → ALTO, output `gt/ocr/`). The latter is now a
-*revision* pass rather than a rebuild, every page having been restored.
+the ground-truth loop (raster → ALTO, output `gt/ocr/`). A page that already has
+ground truth is not a reading candidate.
 
 # Current pipeline
 

@@ -76,6 +76,15 @@ review/*/*.jsonl
 # tracked: `scans/` is derived and ignored, so a committed link would dangle in
 # every clone, exactly as `scans/w-figs/` would.
 review/*/*.png
+# The dispatch queue and the claims taken off it. Not `review/*/…` and so not
+# `DERIVED`'s business (test_layout.py holds that pair over the per-page names
+# alone): these are the batch's working state, live only while readers are out,
+# and cleared by the next `ocr queue`. A claim is a statement that one agent took
+# one page in one run — committing it would deal that page to nobody in the next
+# clone. `harness/paths.py:page_dirs` is what stops the sweeps reading them as
+# pages.
+review/_queue.txt
+review/_claims/
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and

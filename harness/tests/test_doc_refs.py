@@ -68,6 +68,9 @@ EXPECTED_ABSENT = {
     "review/PP-NNN/decision.json",
     "tei/chukchi-1-100.xml",
     "data/zones_config.json",
+    # Written by `ocr queue` and cleared by the next one, so it exists only while
+    # a batch is out. A checkout that has it is mid-dispatch, not complete.
+    "review/_queue.txt",
 }
 
 
