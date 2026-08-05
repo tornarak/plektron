@@ -51,6 +51,7 @@ from typing import TYPE_CHECKING, cast
 
 from lxml import etree
 
+from . import corrections as _corr
 from . import farms
 from . import zones_config as zc
 
@@ -820,14 +821,12 @@ def set_exempt(ref: str, rules: list[str], root: Path = Path(".")) -> dict:
 
 
 def load_ink_exempt(root: Path = Path(".")) -> dict[str, list[dict]]:
-    p = zone_dir(root) / INK_EXEMPT_JSON
-    if not p.exists():
-        return {}
-    try:
-        data = json.loads(p.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return {}
-    return {k: list(v) for k, v in data.items() if not k.startswith("_")}
+    """Zone-level rulings: ink the zoning legitimately does not cover.
+
+    The line layer's equivalent is `corrections.load_ink_exempt`, over its own
+    file. The store mechanism is shared; the question each answers is not.
+    """
+    return _corr.load_exemptions(zone_dir(root))
 
 
 def ink_stamp(ref: str, root: Path = Path(".")) -> list[int]:
@@ -976,67 +975,46 @@ def record_ink_many(items, root: Path = Path(".")) -> list[dict]:
     return out
 
 
+ZONE_EXEMPT_ABOUT = (
+    "Bands of ink the **zoning** legitimately does not cover — smudges, gutter "
+    "blobs, offset from the facing page. Each carries the reason it was ruled "
+    "so, and each is scoped to its own band: exempting a whole page's ink check "
+    "would hide the next dropped zone on it. A matched band still reports, "
+    "flagged `exempted` and carrying its note. This is the *zone* layer; ink "
+    "inside a zone that no line covers is `ocr gaps`'s question and lives in "
+    "gt/lines/_ink_exempt.json. Keyed PP-NNN.")
+
+
 def set_ink_exempt(ref: str, regions: list[dict],
                    root: Path = Path(".")) -> dict:
-    """Record bands of ink on this page that a human has ruled are not type.
+    """Record bands of ink on this page that a human has ruled the zoning need
+    not cover.
 
-    **A reason is required and is the point of the file.** The check this excuses
-    is the only one that can see a dropped zone, so every suppression of it is a
-    claim that something on the paper is not printing — a scanner smudge, a gutter
-    blob, an offset from the facing page. Those are all real and all common in this
-    scan set, but "the tool complained and I made it stop" is not a record of
-    anything, and a year from now the note is the only thing that distinguishes a
-    ruled artifact from a hidden mistake.
+    **A reason is required and is the point of the file** — see
+    `corrections.clean_regions`, which enforces it for both layers. Scoped to a
+    band, never to the page: the next dropped zone on the same leaf must still
+    report.
 
-    Scoped to a band, never to the page: the next dropped zone on the same leaf
-    must still report.
+    **This settles the zone-level question only.** It used to settle the
+    line-level one too, by being the single file both checks read: a band ruled
+    "scanner smudge" while zoning also stopped `ocr gaps` from ever reporting
+    that strip again, though the two are different claims about it. The line
+    layer is `corrections.set_ink_exempt`.
     """
     ref = norm_ref(ref)
-    clean = []
-    for r in regions or []:
-        note = (r.get("note") or "").strip()
-        if not note:
-            raise ValueError(
-                f"ink exemption for {ref} at y={r.get('y0')} has no reason — the "
-                "reason is the record; without it the entry is indistinguishable "
-                "from a hidden mistake")
-        y0, y1 = sorted((int(r["y0"]), int(r["y1"])))
-        clean.append({"y0": y0, "y1": y1, "note": note})
-    clean.sort(key=lambda r: r["y0"])
-
+    clean = _corr.clean_regions(ref, regions)
     data = load_ink_exempt(root)
     if clean:
         data[ref] = clean
     else:
         data.pop(ref, None)
-    p = zone_dir(root) / INK_EXEMPT_JSON
-    p.parent.mkdir(parents=True, exist_ok=True)
-    doc = {"_about": ("Bands of ink ruled *not type* — smudges, gutter blobs, "
-                      "offset from the facing page. Each carries the reason it was "
-                      "ruled so, and each is scoped to its own band: exempting a "
-                      "whole page's ink check would hide the next dropped zone on "
-                      "it. A matched band still reports, flagged `exempted` and "
-                      "carrying its note. Keyed PP-NNN.")}
-    doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n",
-                 encoding="utf-8")
+    _corr.write_exemptions(zone_dir(root), data, ZONE_EXEMPT_ABOUT)
     return {"ref": ref, "ink_exempt": data.get(ref, [])}
 
 
-def _ink_excuse(band: dict, regions: list[dict]) -> dict | None:
-    """The recorded region covering this band, if any.
-
-    Matched on the band's **midpoint**, not on its edges: the band is re-measured
-    from the raster on every run and its exact extent moves by a pixel or two with
-    any change to a neighbouring zone, so an edge test would silently stop matching.
-    The midpoint is stable, and regions are stored tight enough that it cannot
-    wander into a neighbouring finding.
-    """
-    mid = band["vpos"] + band["height"] / 2
-    for r in regions:
-        if r["y0"] <= mid <= r["y1"]:
-            return r
-    return None
+# The matcher is shared with the line layer rather than re-derived, so the two
+# readers of these files cannot disagree about which band a region covers.
+_ink_excuse = _corr.ink_excuse
 
 
 # ---------------------------------------------------------------- ALTO writing
@@ -1424,8 +1402,19 @@ def validate_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     produced them would be unable to tell you the model is wrong.
 
     The sidecars are read from `gt/` whichever store is checked, and that is right:
-    an ink exemption rules that some mark on the *page* is not type, which is true
-    no matter whose zones are being measured against it.
+    a ruling is a human's, and which store is being *measured* does not change what
+    a human said about the paper.
+
+    **What a ruling settles is narrower than it once claimed, though.** This said
+    an ink exemption rules that some mark on the page is not type, "which is true
+    no matter whose zones are being measured against it" — and the file was read by
+    both this check and `ocr gaps`, so it was true no matter which *question* was
+    being asked either. The two are not the same question. Here it means the zoning
+    need not cover that ink; over there it would mean no line was dropped in it, a
+    claim nobody made while zoning. A folio the segmenter dropped inside a
+    `RunningTitleZone` is exactly what the conflation hid. This function reads the
+    zone layer, `gt/zones/_ink_exempt.json`, and settles only its own question;
+    `harness/corrections.py` holds the line layer and the argument in full.
     """
     cfg = cfg or zc.load_config(root)
     # **Threaded in like `cfg`, and for a sharper reason.** This was read twice per

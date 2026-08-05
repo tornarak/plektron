@@ -721,14 +721,22 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
     # column window exists to keep the margins and the scanner's dark gutter from
     # registering as ink, and it does that job — but the marginal apparatus is on
     # the far side of it by definition, which is the same omission `--margins`
-    # exists to undo at the crop. `1-037`'s folio sits at raster x 2478-2533
-    # against a column ending at 2224: outside the window, so no amount of
-    # box-masking could ever have found it.
+    # exists to undo at the crop.
     #
     # Nothing is hidden and nothing is conflated: a band is labelled `column` or
     # `margin` by where its own ink falls, so the dropped-line signal stays
     # legible and marginal apparatus is a separate reading rather than noise in
     # the same column.
+    #
+    # **The label is not the reason the folios were being missed**, and this
+    # comment said it was. It cited `1-037`'s folio as sitting at raster
+    # x 2478-2533 outside a column ending at 2224, "so no amount of box-masking
+    # could ever have found it". Measured, that band is at x 2157-2200 and reports
+    # `where: column`: it is *inside* the column and inside the running title's
+    # rows, and outside only its **box**. The box mask one axis over is what
+    # finds it. A 29-page sample across the three parts returns one band, also in
+    # column — so `margin` is a rare label rather than the common case, and the
+    # widened window is cheap insurance, not the fix.
     ps = printspace_x(page)
     p0, p1 = ((max(0, int(ps[0] * sx)), min(w, int(ps[1] * sx))) if ps
               else (0, w))
@@ -791,17 +799,66 @@ def line_gaps(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path(".")
         b["where"] = ("margin" if b["hpos"] + b["width"] <= col0
                       or b["hpos"] >= col1 else "column")
 
+    # **Which zone the band falls in, if any — and it decides who owns the band.**
     # Imported inside the function because `zones` imports `ink_bands`/`ink_mask`
-    # from here; `_ink_excuse` is reused rather than re-derived so the two readers
-    # of this file cannot disagree about which band a region covers (it matches on
-    # the band's midpoint — the extent moves by a pixel or two between runs).
-    from .zones import _ink_excuse, load_ink_exempt
-    regions = load_ink_exempt(root).get(ref, [])
+    # from here. Zone geometry is raster geometry by construction (the editor
+    # draws on the raster and `save_zones` writes what it drew), which is the same
+    # assumption `page_windows` above already makes about the column.
+    #
+    # A page with no zones yields no containment and every band reads out-of-zone.
+    # That is the honest degradation rather than a gate: measurement never gates,
+    # and it is `ocr edit` that requires zoning, not this.
+    from .zones import read_zones
+    page_zones = read_zones(ref, root)
     for b in bands:
-        excuse = _ink_excuse(b, regions)
+        b["zone"] = _band_zone(b, page_zones)
+
+    # **Two layers, and a band is settled by the one whose question it is.** Ink
+    # inside a zone that no line covers is this check's finding, and only a
+    # line-level ruling settles it; ink outside every zone belongs to `zones check
+    # --ink`, and only a zone-level ruling settles it. One file used to serve
+    # both, so a band ruled "scanner smudge" while zoning also stopped this check
+    # from ever reporting that strip of paper again — a claim about what the
+    # zoning need not cover, silently answering whether a line was dropped.
+    #
+    # **Flagged, never suppressed**, whichever layer speaks: a matched band still
+    # reports, carrying `exempted`, the note that ruled it, and the `layer` that
+    # did. Dropping it would make this the one place a wrong call could hide, and
+    # the next genuinely dropped line on that page with it.
+    from . import corrections as corr
+    from .zones import load_ink_exempt as _zone_exempt
+    by_layer = {"lines": corr.load_ink_exempt(root).get(ref, []),
+                "zones": _zone_exempt(root).get(ref, [])}
+    for b in bands:
+        layer = "lines" if b["zone"] else "zones"
+        excuse = corr.ink_excuse(b, by_layer[layer])
         b["exempted"] = bool(excuse)
         b["note"] = excuse["note"] if excuse else ""
+        b["layer"] = layer if excuse else ""
     return bands
+
+
+# A band more than half inside a zone is that zone's business. Below it the ink
+# is mostly outside every region, which is the zoning's question rather than this
+# one — and a band merely clipping a zone's edge is not a line in it.
+ZONE_INSIDE = 0.5
+
+
+def _band_zone(band: dict, zones: list[dict]) -> str:
+    """The label of the zone this band is in, or `""` for none.
+
+    Largest overlap wins, and it must clear `ZONE_INSIDE`. Both axes, for the
+    reason `_overlap_fraction` gives: a Y-only test hands every marginal mark to
+    whatever body zone happens to share its rows.
+    """
+    best, share = "", 0.0
+    for z in zones:
+        box = {"hpos": z["x0"], "vpos": z["y0"],
+               "width": z["x1"] - z["x0"], "height": z["y1"] - z["y0"]}
+        f = _overlap_fraction(band, box)
+        if f > share:
+            best, share = z["label"], f
+    return best if share >= ZONE_INSIDE else ""
 
 
 GAP_ID_PREFIX = "gap_"
@@ -945,7 +1002,8 @@ def adopt_gaps(ref: str, vpos_list: list[int], alto_dir: str = DEFAULT_ALTO_DIR,
 
 
 def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
-               root: Path = Path("."), scans: str = "scans") -> dict:
+               root: Path = Path("."), scans: str = "scans",
+               exemptions: bool = False) -> dict:
     """The page with every line box and every figure zone painted out.
 
     The inverse of `line_gaps`, and a check on it: that verb reports what it
@@ -962,6 +1020,22 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     Boxes are painted, not polygons: a polygon follows the ink and would leave a
     fringe of stray pixels around every line that reads as residue. The point is
     to make what is left *conspicuous*, so covering generously is right.
+
+    **`exemptions` is off by default, and that is the whole argument for the
+    flag.** Painting the ruled bands too gives the view a human editing lines
+    actually wants — what is left after everything *settled* is erased, ruled
+    artifacts included — and `ocr edit` asks for it. But it costs this verb the
+    property that makes it worth having: with rulings painted, a wrong one hides
+    ink here as well, and the one view that answered independently of anybody's
+    judgement stops doing so. So the sweep keeps the bare page and the editor
+    opts in, rather than the two sharing a default that suits one of them.
+
+    Both layers are painted when it is on, since both are ink somebody settled.
+    They are painted **full width**, which looks careless and is not: a ruling is
+    a `y` band with no `x` extent, and `corrections.ink_excuse` matches on the
+    band's midpoint alone — so full width is exactly the reach the ruling already
+    has in the check this illustrates. Drawing it narrower would show a coverage
+    the matcher does not honour.
     """
     from PIL import Image, ImageDraw
 
@@ -973,7 +1047,7 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     sx, sy = _scale_for(page, img.size)
     d = ImageDraw.Draw(img)
 
-    n_lines = n_zones = 0
+    n_lines = n_zones = n_exempt = 0
     for rec in page_lines(alto, root):
         if rec.get("hpos") is None or rec.get("vpos") is None:
             continue
@@ -986,12 +1060,23 @@ def write_blot(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
                      (z["hpos"] + z["width"]) * sx,
                      (z["vpos"] + z["height"]) * sy], fill=(214, 229, 255))
         n_zones += 1
+    if exemptions:
+        from . import corrections as corr
+        from .zones import load_ink_exempt as _zone_exempt
+        w = img.size[0]
+        for regions in (corr.load_ink_exempt(root).get(ref, []),
+                        _zone_exempt(root).get(ref, [])):
+            for r in regions:
+                # Rulings are recorded in raster coordinates, like the bands they
+                # answer — no `sy` here, unlike the ALTO geometry above.
+                d.rectangle([0, r["y0"], w, r["y1"]], fill=(255, 232, 189))
+                n_exempt += 1
 
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"chukchi-{ref}.png"
     img.save(path)
     return {"ref": ref, "path": str(path), "lines_blotted": n_lines,
-            "zones_blotted": n_zones}
+            "zones_blotted": n_zones, "exempt_blotted": n_exempt}
 
 
 def write_fig_blot(ref: str, out_dir: Path, root: Path = Path("."),

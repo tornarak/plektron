@@ -313,6 +313,12 @@ def register(cli):
                    help="output directory (default scans/w-blotted/ — a "
                         "corpus-level destination, unlike the other image "
                         "actions, because the blotted page is not review material)")
+    opt(p, "--exemptions", is_flag=True,
+                   help="also paint the bands a human ruled not type, both "
+                        "layers, so what remains is what nobody has settled. Off "
+                        "by default: with rulings painted this stops being an "
+                        "independent witness, since a wrong one now hides ink "
+                        "here too")
     add_jobs(p)
 
     # **The one action with a store default, and `mz` is it.** The bare diff needs
@@ -662,7 +668,8 @@ def run_blot(a) -> int:
     # The skip is decided first, so the pool gets only pages that will be painted
     # — every one of them a decode, a paint and an encode.
     with progress("blotting") as tick:
-        done = pmap(lambda r: write_blot(r, dest, _alto_dir(a), a.root),
+        done = pmap(lambda r: write_blot(r, dest, _alto_dir(a), a.root,
+                                         exemptions=a.exemptions),
                     todo, a.jobs, tick)
     out_per_ref(a, list(zip(todo, done, strict=True)))
     if skipped:

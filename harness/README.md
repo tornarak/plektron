@@ -492,6 +492,18 @@ client never re-derives the store rule. The `zones` pill reports what the *view*
 resolves to, which is deliberately not an echo of the current selection: with `mz`
 pinned on a page that has both, `shown` is `mz` while the view still answers `gt`.
 
+**`corrections.py`** — human line corrections, and the line half of the ink
+question. Two checks run over these pages: `zones check --ink` asks whether ink is
+inside any zone, `ocr gaps` asks whether *in-zone* ink is inside any line. They
+shared one exemption file, so a band ruled "scanner smudge" while zoning — a claim
+about what the zoning need not cover — also stopped the line check from ever
+reporting that strip again, and a folio dropped inside a `RunningTitleZone` is
+what that hid. One file each now, **overlaid rather than merged**: each band is
+settled by the layer whose question it is, and `line_gaps` reports which. The
+store *mechanism* is shared and lives here — band-scoped, reason-required,
+midpoint-matched — with `zones.py` calling it for its own directory; what differs
+is only which question the file answers, which is what each file's `_about` says.
+
 **`webui.py`** — the shell the browser editors share: loopback bind, silent request
 log, a failure rendered on the page rather than reset onto the server's stderr, a
 PNG straight off disk, shutdown from the page. Two copies of that were a

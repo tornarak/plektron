@@ -335,11 +335,13 @@ require `--commit`.
 
 ### ocr gaps [REF ...]
 **Does** bands of ink no TextLine covers — the dropped-line detector. A band is a place to look, not a verdict.
-**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`, `gt/zones/_ink_exempt.json`.
+**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`, `gt/zones/`, and both `_ink_exempt.json` layers.
 **Writes** —
 **Exit** always 0.
 **Note** `--all` is the corpus dropped-line sweep, at a raster read per page. It reads through the view unless `--store` narrows it, which is `ocr pages`' rule — a machine-read page is workable, and this verb neither gates nor publishes a rate.
-**Note** a band the zoning pass ruled not type carries that ruling: `exempted` true and the `note` that made the call, matched on the band's midpoint by the same `_ink_excuse` `zones check --ink` uses. **Flagged, never suppressed** — an exempted band still reports, because dropping it would make this the one place a wrong call could hide. Without this the ruling reached the zone editor and stopped, and an OCR-side reader re-adjudicated from the raster a band a human had already settled.
+**Note** each band reports the `zone` containing it, or empty for none, resolved by overlap against `gt/zones/`. A page with no zoning yields no containment and every band reads out-of-zone — the honest degradation, not a gate; it is `ocr edit` that requires zoning, not this.
+**Note** **the containing zone decides which ruling can settle the band, and the two layers are not interchangeable.** Ink inside a zone that no line covers is this check's finding, settled only by `gt/lines/_ink_exempt.json`; ink outside every zone is `zones check --ink`'s, settled only by `gt/zones/_ink_exempt.json`. One file used to serve both, so a band ruled "scanner smudge" while zoning — a claim about what the *zoning* need not cover — also stopped this check from ever reporting that strip again. A folio dropped inside a `RunningTitleZone` is what that hid. `layer` names whichever ruled.
+**Note** **Flagged, never suppressed** — an exempted band still reports, carrying `exempted`, its `note` and its `layer`, because dropping it would make this the one place a wrong call could hide. Earlier this verb read no ruling at all, and an OCR-side reader re-adjudicated from the raster a band a human had already settled.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds
@@ -476,15 +478,17 @@ Each sheet is named for the lines it holds and the settings that drew them — `
 
 ### ocr blot [REF ...]
 **Does** the page with every line box and figure zone painted out, so what remains is uncovered by construction. The visual counterpart to `gaps`. See `zones blot` for the other recipe.
-**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`.
+**Reads** the `--store` store, or the view, `scans/`, `gt/fig/`; both `_ink_exempt.json` layers under `--exemptions`.
 **Writes** `scans/w-blotted/` (derived), or `--out`.
 **Exit** always 0; exit 2 for `--out` with more than one ref.
 **Note** `--all` skips a page whose blot is already newer than its ALTO, and `--force` repaints it; naming a page always repaints it, since naming it is the request. **The mtime test is honest here in a way `zones blot`'s could not be**: this paints boxes read out of the ALTO, so an ALTO newer than the blot is exactly the change that matters — where a figure ALTO corrected after a `zones blot` leaves a raster whose staleness nothing can see, which is why that verb has no such test at all.
+**Note** **`--exemptions` is off by default and that is the point.** Painting the ruled bands gives the view a human editing lines wants — what is left once everything *settled* is erased — and `ocr edit` asks for it. It also costs this verb the property that makes it worth having: with rulings painted, a wrong one hides ink here too, and the one view that answered independently of anybody's judgement stops doing so. The sweep keeps the bare page; the editor opts in. Ruled bands paint **full width**, which is exactly the reach a ruling has in the check this illustrates — it is a `y` band with no `x` extent, matched on the band's midpoint alone.
 ```
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds
 --force     repaint pages whose blot is newer than their ALTO [off — only --all skips]
 --out PATH  output directory [scans/w-blotted/ — corpus-level, unlike the other image actions]
+--exemptions  also paint the bands a human ruled not type, both layers [off — keeps this an independent witness]
 --jobs N    worker threads; 1 runs serially and builds no pool [cores, capped]
 --root --json --toon --pager
 ```
