@@ -360,6 +360,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
     if ref is not None:
         from .marks import page_issues
 
+        out += _orphan_line_issues(data, ref, root)
         out += page_issues(path, ref, root)
     for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
         text = rec.get("text", "")
@@ -393,6 +394,51 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
             out.append(issue(idx, "resolved/text mismatch",
                              detail="; ".join(sides)))
     return out
+
+
+def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:
+    """Proposal lines with no `TextLine` in the store to hold them.
+
+    **A proposal is keyed by the ALTO's line indices**, and `restore` joins on
+    them: a key naming an index the store does not have describes text with no
+    box, which is the dropped-line case wearing a different hat. Ground truth is a
+    correspondence between a box and its contents, so a reading that has nowhere
+    to go is a finding — `segmenter_missed` — and never a line.
+
+    A defect rather than an advisory because there is nothing to weigh: the index
+    either exists or it does not, and `restore` will silently drop what it cannot
+    join. Silently is the problem. `1-037` produced the neighbouring version of
+    this — a folio appended to the running title's own `text` — which this cannot
+    see, since that key is a real index; the reader contract carries that half.
+
+    Resolved through the view, so a page reads against whichever store is current:
+    `mz/ocr/` before a restore and `gt/ocr/` after, the latter including any line
+    `adopt-gap` has since created. A page with no ALTO at all is skipped rather
+    than reported — absent is not the same as wrong, and every line would fire.
+    """
+    lines = data.get("lines")
+    if not isinstance(lines, dict) or not lines:
+        return []
+    from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines
+    try:
+        alto = alto_for_lines(ref, DEFAULT_ALTO_DIR, root)
+    except Exception:
+        return []
+    if not alto.exists():
+        return []
+    have = {str(r["index"]) for r in page_lines(alto, root)}
+    if not have:
+        return []
+    return [issue(k, "line index is not in the store — a proposal is keyed by "
+                     "the ALTO's line indices and `restore` joins on them, so "
+                     "this text has no box to land in. If it is printed matter "
+                     "the segmenter missed, it belongs in `segmenter_missed`; "
+                     "`ocr adopt-gap` makes the index later, from the measured "
+                     "band.",
+                  context=(lines[k] or {}).get("text", "")[:60],
+                  detail=f"store holds {len(have)} lines")
+            for k in sorted(lines, key=lambda s: (len(s), s))
+            if str(k) not in have]
 
 
 def _footnote_issues(data: dict) -> list[dict]:
