@@ -5,7 +5,7 @@ There are three tables and they are not copies of one another:
   * `detectors.LOOKALIKES`   — speculative *triage* over OCR lines. A flag, never
                                a gate; "worth a look".
   * `normalize.LOOKALIKE_CHARS` — corpus-wide, whole file, English prose included.
-  * `validate.LOOKALIKE_GREPS`  — only inside Tier-1 spans (`xml:lang` in ckt/kpy/ypk).
+  * `validate.LOOKALIKE_GREPS`  — only inside Tier-1 spans (`xml:lang` in `validate.TIER1`).
 
 The curly quotes are the crux, and they are the reason this file exists. English
 prose reproduces the print, curly quotes and all (keying_spec §1, ASCII policy

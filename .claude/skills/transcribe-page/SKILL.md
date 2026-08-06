@@ -529,6 +529,17 @@ notation the whole project exists to protect. Closed set:
   from Central Siberian Yupik anywhere checked so far, and inventing that
   distinction because ISO 639-3 offers `ess` and `ynk` would assume precision the
   source does not carry.
+- **`xcv`** — Chuvan. Only when the adjacent English names Chuvan or Chuvantsy.
+- **`eve`** — Lamut. Only when the adjacent English names Lamut or Even; *Lamut* is
+  what Bogoras writes and *Even* is the same language under its later name, so the
+  one code takes both words. The book sets Lamut forms in the same notation as
+  Chukchee — `1-359`'s footnote gives the river name `Buks˙unda` with the inventory's
+  U+02D9 — and it does so inside English prose, which is exactly where a reader with
+  no rule reaching the word keys the mark as ordinary punctuation.
+- **`ipk`** — Inupiat. Only when the adjacent English names Inupiat or Alaskan
+  Eskimo *as distinct from* the Siberian shore. The macrolanguage code, on `ypk`'s
+  reasoning and for the same reason: ISO 639-3 separates North Alaskan from
+  Northwest Alaska Inupiatun (`esi`, `esk`) and the book separates neither.
 
 There is **no section- or chapter-level signal for any of this**. A comparative
 citation can appear anywhere the author finds it useful. The Koryak gloss for

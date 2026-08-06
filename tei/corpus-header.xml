@@ -362,9 +362,12 @@
   <profileDesc>
     <langUsage>
       <!--
-        The three Tier-1 languages are what @resp is for: a query over the corpus
-        for a Tier-1 xml:lang not at #ed returns exactly the forms awaiting a
-        human. English and Russian carry no such requirement.
+        The Tier-1 languages are what @resp is for: a query over the corpus for a
+        Tier-1 xml:lang not at #ed returns exactly the forms awaiting a human.
+        English and Russian carry no such requirement. The set is `validate.TIER1`
+        and `test_tier1_scope.py` holds this list and that one together — the two
+        disagreed silently for as long as both existed, this file declaring xcv
+        Tier-1 while the code enforced nothing of the sort over it.
       -->
       <language ident="en" usage="90">English — the text as printed, curly quotes
         included.</language>
@@ -374,6 +377,8 @@
       <language ident="kpy">Koryak. Tier-1, as above.</language>
       <language ident="ypk">Yupik (the book's "Eskimo"). Tier-1, as above.</language>
       <language ident="xcv">Chuvan. Tier-1, as above.</language>
+      <language ident="eve">Lamut (Even). Tier-1, as above.</language>
+      <language ident="ipk">Inupiat. Tier-1, as above.</language>
       <language ident="la">Latin, in binomials.</language>
       <language ident="de">German, in quoted titles and citations.</language>
       <language ident="fr">French, in quoted titles and citations.</language>

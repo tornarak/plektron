@@ -26,7 +26,12 @@ from .state import load_toc
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
-TIER1 = {"ckt", "kpy", "ypk"}
+# The closed set the firewall covers: languages the book renders in the same
+# ambiguous Americanist notation, so a glyph inside one carries the inventory and
+# the ASCII policy. `.claude/skills/transcribe-page/SKILL.md` says when each fires.
+# Where the source does not distinguish members of a family, neither does this —
+# `ypk` and `ipk` are family and macrolanguage codes on purpose.
+TIER1 = {"ckt", "kpy", "ypk", "xcv", "eve", "ipk"}
 # Provenance ranks, strictly ordered, declared as respStmt/@xml:id once in the corpus
 # teiHeader and never in a page file — a page is a fragment and defers. `harness tei header`
 # (check_corpus_header below) is what holds this dict and that file together; without

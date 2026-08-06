@@ -63,7 +63,7 @@ destroys them: `ᵋ` U+1D4B → plain U+025B, `˙` U+02D9 → space + combining 
 Any `normalize()` call must name its form.
 
 **The ASCII policy is scoped to Tier-1** (`keying_spec.md` §1). Inside
-`ckt`/`kpy`/`ypk`, U+0027 and U+002D are the only apostrophe and hyphen; English
+the five Tier-1 codes, U+0027 and U+002D are the only apostrophe and hyphen; English
 prose reproduces the print, **curly quotes included**. The lookalike tables
 differ by scope and **must not be merged** — `harness/README.md` states the
 rule, `test_lookalike_scope.py` holds them apart.
