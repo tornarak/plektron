@@ -48,10 +48,21 @@ def declared_tier1() -> set[str]:
 
 
 def test_the_spec_scopes_the_ascii_policy_by_naming_every_code():
-    """§1's scoping sentence is the normative statement of the set."""
-    line = next(ln for ln in SPEC.read_text(encoding="utf-8").splitlines()
-                if "ASCII policy, scoped to Tier-1" in ln)
-    missing = sorted(c for c in TIER1 if f"`{c}`" not in line)
+    """§1's scoping sentence is the normative statement of the set.
+
+    Read as a whole bullet rather than a single line: the first version matched
+    only the line carrying the bold lead-in, so adding a seventh code and
+    rewrapping the paragraph — which put the list on the continuation line —
+    failed the gate over nothing. A gate that fires on reflow trains its reader to
+    work around it.
+    """
+    lines = SPEC.read_text(encoding="utf-8").splitlines()
+    start = next(i for i, ln in enumerate(lines)
+                 if "ASCII policy, scoped to Tier-1" in ln)
+    end = next(i for i in range(start + 1, len(lines))
+               if lines[i].startswith("- ") or not lines[i].strip())
+    bullet = " ".join(lines[start:end])
+    missing = sorted(c for c in TIER1 if f"`{c}`" not in bullet)
     assert not missing, f"keying_spec §1 scopes the policy without naming {missing}"
 
 

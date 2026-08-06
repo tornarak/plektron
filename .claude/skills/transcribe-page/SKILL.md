@@ -530,6 +530,10 @@ notation the whole project exists to protect. Closed set:
   distinction because ISO 639-3 offers `ess` and `ynk` would assume precision the
   source does not carry.
 - **`xcv`** — Chuvan. Only when the adjacent English names Chuvan or Chuvantsy.
+- **`itl`** — Itelmen. Only when the adjacent English names Itelmen or Kamchadal;
+  *Kamchadal* is what Bogoras writes and the two are one language under two names,
+  so the one code takes both words, as `eve` does for Lamut. Glosses only — the
+  book cites Itelmen comparatively rather than transcribing connected text in it.
 - **`eve`** — Lamut. Only when the adjacent English names Lamut or Even; *Lamut* is
   what Bogoras writes and *Even* is the same language under its later name, so the
   one code takes both words. The book sets Lamut forms in the same notation as

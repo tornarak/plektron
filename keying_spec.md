@@ -16,9 +16,9 @@ the character inventory, and binds both passes and the human keying track.
   binds.
 - **NFD, corpus-wide.** One conversion point; verified at export:
   `python3 -c "import unicodedata,sys; print(unicodedata.is_normalized('NFD', open(sys.argv[1]).read()))"`
-- **ASCII policy, scoped to Tier-1.** Inside `ckt`/`kpy`/`ypk`/`xcv`/`eve`/`ipk`,
-  U+0027 and U+002D are the only apostrophe and hyphen, and the lookalike greps
-  (§3) run there.
+- **ASCII policy, scoped to Tier-1.** Inside
+  `ckt`/`kpy`/`ypk`/`xcv`/`eve`/`ipk`/`itl`, U+0027 and U+002D are the only
+  apostrophe and hyphen, and the lookalike greps (§3) run there.
   Rationale: ASCII is what every keyboard emits, hence drift-proof; a
   modifier-letter codepoint invites conflation with a true apostrophe at every
   entry point — and inside a Tier-1 span the apostrophe is phonetically

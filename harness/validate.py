@@ -31,7 +31,7 @@ XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 # the ASCII policy. `.claude/skills/transcribe-page/SKILL.md` says when each fires.
 # Where the source does not distinguish members of a family, neither does this —
 # `ypk` and `ipk` are family and macrolanguage codes on purpose.
-TIER1 = {"ckt", "kpy", "ypk", "xcv", "eve", "ipk"}
+TIER1 = {"ckt", "kpy", "ypk", "xcv", "eve", "ipk", "itl"}
 # Provenance ranks, strictly ordered, declared as respStmt/@xml:id once in the corpus
 # teiHeader and never in a page file — a page is a fragment and defers. `harness tei header`
 # (check_corpus_header below) is what holds this dict and that file together; without
