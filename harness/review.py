@@ -713,9 +713,28 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
     # line decisions has (a line added after the proposal was authored, in theory),
     # so `.get` rather than assuming symmetry.
     prop = load_proposal(ref, root)
+
+    # **Computed against the proposal, not read off the decision's `edited` flag.**
+    # The flag is the review server's own bookkeeping, written when a box changes
+    # under a human's hands; the proposal is the record the diff is *defined*
+    # against. Where the two can disagree, the derived one has to win, and they can:
+    # a decision revised through `proposal replace --path` — which is how a ruling
+    # about a whole class of lines gets applied across pages — changes `text` and
+    # leaves the flag false, so the page reported `edited_by_human: 0` while
+    # carrying three corrections. `edits` is the error profile this pass exists to
+    # produce, so a silent zero there is worse than a wrong glyph.
+    #
+    # It also fixes the other direction, which nobody had noticed: a line the
+    # adjudicator retyped identically carried the flag and appeared as an edit
+    # whose two sides were the same string.
+    def _changed(i, v) -> bool:
+        if i not in prop:
+            return True          # arrived from somewhere the proposal has no line for
+        return _nfd(prop[i]["text"]) != _nfd(v["text"])
+
     edits = [{"line": i, "proposal": prop[i]["text"] if i in prop else "(gone from proposal)",
              "decision": v["text"]}
-            for i, v in sorted(dec.items()) if v.get("edited")]
+            for i, v in sorted(dec.items()) if _changed(i, v)]
     # Reported separately, and **not** folded into `edits`, because a note is not
     # an edit and the commonest note is on a line whose text nobody changed —
     # `2-036`'s speck was ruled "ink smudge" and left empty, so it is invisible to

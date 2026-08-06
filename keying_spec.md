@@ -382,6 +382,38 @@ as a bare serifed stem indistinguishable from a roman `I`. It is a digit, on the
 same rule as everything above. Nowhere else does the question arise, and a reader
 spending a 4× look on either slot is spending it in the wrong place.
 
+### 2.13 Run-in section headings — key the setting (SETTLED, editor ruling)
+
+The book sets a run-in heading (§2.11's `HEADING. — text`) two ways, and the
+difference is structural rather than decorative:
+
+| printed as | level | key it as |
+|---|---|---|
+| small capitals — `Aɴᴄɪᴇɴᴛ Hᴀʙɪᴛᴀᴛ. —` | second | **plain ASCII capitals**, `ANCIENT HABITAT.` |
+| italic title case — `System of Winds. —` | third | **title case as printed**, `System of Winds.` |
+
+Neither is a Tier-1 question. §2.3's small-cap sorts are `ᴀ ᴇ ɪ ʟ` inside Tier-1
+forms only; there is no small-cap sort for the other letters, so nothing here ever
+licenses a small-cap codepoint in English text — the same ruling §2.12 makes for
+roman numerals, reached the same way.
+
+**The error runs one way, and it is a shape error.** Four second-level headings
+were keyed in title case — `1-043`, `1-062` twice, `1-073` — because a small-cap
+setting has a full-height initial and reads as an ordinary capitalized word until
+the rest of the letters are compared against it. No heading has ever been keyed
+the other way. So the check is the same contrast discipline §5.2 asks for: hold
+the second letter against the first on the line you are already keying. One look,
+no zoom.
+
+**The printed ToC is not a witness to a heading's existence.** `System of Winds`
+is set on `2-046` at folio 320 and appears nowhere in the printed contents (p. vii,
+scan `1-009`), which runs `Other “Beings”` 314 straight to `Monsters` 323. The
+omission is the book's. It is carried in `data/toc.json` as `chXII.11a` with an
+`editorial` field recording that, so that an entry added on an editor's ruling is
+never indistinguishable from one the book printed. A heading absent from the ToC
+is therefore not suspect and is never to be retitled, demoted or dropped to make
+it match one: key what is set, and say in your report that you found no entry.
+
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
 | Codepoint(s) | Trap for |
