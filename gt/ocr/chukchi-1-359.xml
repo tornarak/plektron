@@ -1,0 +1,641 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-359.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-359.png; regions_from: zones/chukchi-1-359.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-359_r1" HPOS="468" VPOS="823" WIDTH="1778" HEIGHT="1597" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="468 823 2246 823 2246 2420 468 2420"/>
+                    </Shape>
+                    <TextLine ID="mz_1-359_l1" HPOS="1102" VPOS="842" WIDTH="498" HEIGHT="54" BASELINE="1104 881 1600 876" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1104 881 1104 896 1598 891 1600 876 1578 842 1102 844 1104 881"/>
+                        </Shape>
+                        <String CONTENT="EXPLANATORY NOTE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l2" HPOS="586" VPOS="939" WIDTH="1646" HEIGHT="50" BASELINE="589 974 2232 969" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2211 950 2189 950 2167 948 2146 948 2124 948 2102 948 2081 946 2059 946 2037 946 2016 943 1994 943 1972 943 1951 943 1929 941 1907 941 1886 941 1873 939 586 941 589 974 589 989 2230 985 2232 969 2228 950 2211 950"/>
+                        </Shape>
+                        <String CONTENT="Names of native villages and other localities are given in aboriginal form with phonetic"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l3" HPOS="467" VPOS="985" WIDTH="1767" HEIGHT="54" BASELINE="469 1021 2234 1013" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="469 1021 469 1039 2232 1030 2234 1013 2228 985 467 991 469 1021"/>
+                        </Shape>
+                        <String CONTENT="spelling. Names of Russian and Russianized villages are printed in the English transcription of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l4" HPOS="469" VPOS="1032" WIDTH="1765" HEIGHT="54" BASELINE="472 1067 2234 1058" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="472 1067 472 1086 2232 1078 2234 1058 2228 1032 469 1034 472 1067"/>
+                        </Shape>
+                        <String CONTENT="Russian form. In a few cases a literal translation of the Russian name is given. Russian equivalents"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l5" HPOS="469" VPOS="1084" WIDTH="1324" HEIGHT="46" BASELINE="469 1110 1793 1110" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="469 1110 469 1130 1793 1130 1793 1110 1793 1084 469 1084 469 1110"/>
+                        </Shape>
+                        <String CONTENT="of native names or of English translations are given in the following lists."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l6" HPOS="467" VPOS="1173" WIDTH="897" HEIGHT="50" BASELINE="469 1203 1364 1201" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="469 1203 469 1223 1364 1223 1364 1201 1357 1173 467 1173 469 1203"/>
+                        </Shape>
+                        <String CONTENT="Northern Kamchatka and Adjacent Pacific Shore."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l7" HPOS="1606" VPOS="1162" WIDTH="386" HEIGHT="56" BASELINE="1609 1205 1992 1201" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1609 1205 1609 1218 1992 1216 1992 1201 1988 1173 1806 1162 1803 1162 1801 1162 1799 1162 1799 1164 1797 1164 1790 1173 1630 1164 1628 1164 1626 1164 1606 1173 1609 1205"/>
+                        </Shape>
+                        <String CONTENT="Chukchee Peninsula."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l8" HPOS="474" VPOS="1251" WIDTH="151" HEIGHT="52" BASELINE="476 1288 625 1283" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="476 1288 476 1303 625 1296 625 1283 619 1251 474 1251 476 1288"/>
+                        </Shape>
+                        <String CONTENT="Kiˊčhɪn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l9" HPOS="851" VPOS="1257" WIDTH="140" HEIGHT="46" BASELINE="851 1286 991 1286" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="851 1286 851 1303 991 1303 991 1286 991 1257 851 1257 851 1286"/>
+                        </Shape>
+                        <String CONTENT="Кичиги"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l10" HPOS="1364" VPOS="1266" WIDTH="242" HEIGHT="56" BASELINE="1366 1299 1606 1303" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1366 1299 1364 1322 1604 1322 1606 1303 1604 1273 1366 1266 1366 1299"/>
+                        </Shape>
+                        <String CONTENT="Indian Point"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l11" HPOS="1736" VPOS="1273" WIDTH="275" HEIGHT="45" BASELINE="1739 1303 2011 1299" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1739 1303 1739 1318 2011 1314 2011 1299 2005 1273 1736 1275 1739 1303"/>
+                        </Shape>
+                        <String CONTENT="Мысъ Чаплинъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l12" HPOS="474" VPOS="1301" WIDTH="164" HEIGHT="49" BASELINE="476 1335 638 1329" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="476 1335 476 1350 638 1344 638 1329 632 1301 474 1305 476 1335"/>
+                        </Shape>
+                        <String CONTENT="Qareˊñɪn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l13" HPOS="848" VPOS="1303" WIDTH="128" HEIGHT="43" BASELINE="851 1333 976 1329" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="851 1333 851 1346 976 1342 976 1329 970 1303 848 1305 851 1333"/>
+                        </Shape>
+                        <String CONTENT="Карага"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l14" HPOS="1362" VPOS="1316" WIDTH="190" HEIGHT="52" BASELINE="1364 1348 1552 1353" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1364 1348 1362 1363 1548 1368 1552 1353 1550 1322 1364 1316 1364 1348"/>
+                        </Shape>
+                        <String CONTENT="East Cape"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l15" HPOS="1739" VPOS="1322" WIDTH="268" HEIGHT="48" BASELINE="1741 1353 2007 1348" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1741 1353 1741 1370 2005 1366 2007 1348 2001 1322 1739 1324 1741 1353"/>
+                        </Shape>
+                        <String CONTENT="Мысъ Дежневъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l16" HPOS="472" VPOS="1344" WIDTH="182" HEIGHT="52" BASELINE="474 1379 654 1374" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="474 1379 474 1396 654 1392 654 1374 647 1344 472 1346 474 1379"/>
+                        </Shape>
+                        <String CONTENT="Ewleˊwun"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l17" HPOS="853" VPOS="1348" WIDTH="210" HEIGHT="50" BASELINE="853 1379 1063 1379" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="853 1379 853 1398 1063 1398 1063 1379 1063 1350 853 1348 853 1379"/>
+                        </Shape>
+                        <String CONTENT="Пусторѣцкъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l18" HPOS="1730" VPOS="1370" WIDTH="331" HEIGHT="50" BASELINE="1730 1396 2061 1396" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1730 1396 1730 1420 2061 1411 2061 1396 2061 1370 1730 1370 1730 1396"/>
+                        </Shape>
+                        <String CONTENT="Чечинская губа or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l19" HPOS="1357" VPOS="1379" WIDTH="210" HEIGHT="56" BASELINE="1360 1422 1567 1418" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1360 1422 1360 1435 1567 1433 1567 1418 1563 1387 1368 1379 1366 1379 1364 1379 1362 1379 1362 1381 1357 1383 1360 1422"/>
+                        </Shape>
+                        <String CONTENT="Čeˊčin Bay"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l20" HPOS="474" VPOS="1394" WIDTH="177" HEIGHT="52" BASELINE="474 1424 651 1424" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="474 1424 474 1446 651 1446 651 1424 651 1394 474 1394 474 1424"/>
+                        </Shape>
+                        <String CONTENT="Pitkaˊheñ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l21" HPOS="855" VPOS="1398" WIDTH="201" HEIGHT="48" BASELINE="855 1426 1056 1426" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1426 855 1446 1056 1446 1056 1426 1056 1398 855 1398 855 1426"/>
+                        </Shape>
+                        <String CONTENT="Подкагерно"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l22" HPOS="1723" VPOS="1396" WIDTH="479" HEIGHT="69" BASELINE="1726 1439 2202 1444" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2187 1413 1890 1402 1888 1402 1777 1411 1728 1396 1726 1439 1723 1465 2200 1465 2202 1444 2202 1437 2187 1413"/>
+                        </Shape>
+                        <String CONTENT="Заливъ Адмирала Бутакова"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l23" HPOS="476" VPOS="1437" WIDTH="156" HEIGHT="52" BASELINE="478 1467 632 1472" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="478 1467 476 1485 628 1489 632 1472 630 1441 478 1437 478 1467"/>
+                        </Shape>
+                        <String CONTENT="Tɪˊḷḷɪran"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l24" HPOS="853" VPOS="1441" WIDTH="173" HEIGHT="48" BASELINE="855 1472 1026 1467" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1472 855 1489 1026 1485 1026 1467 1020 1441 853 1444 855 1472"/>
+                        </Shape>
+                        <String CONTENT="Тилечики"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l25" HPOS="1734" VPOS="1459" WIDTH="191" HEIGHT="47" BASELINE="1736 1487 1925 1491" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1736 1487 1734 1502 1920 1506 1925 1491 1923 1463 1736 1459 1736 1487"/>
+                        </Shape>
+                        <String CONTENT="Колючинъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l26" HPOS="1364" VPOS="1459" WIDTH="143" HEIGHT="52" BASELINE="1364 1489 1507 1489" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1364 1489 1364 1511 1507 1511 1507 1489 1507 1459 1364 1459 1364 1489"/>
+                        </Shape>
+                        <String CONTENT="Kuluˊči"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l27" HPOS="474" VPOS="1480" WIDTH="78" HEIGHT="54" BASELINE="476 1519 552 1515" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="476 1519 476 1534 552 1532 552 1515 545 1480 474 1483 476 1519"/>
+                        </Shape>
+                        <String CONTENT="Iˊlir"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l28" HPOS="855" VPOS="1489" WIDTH="162" HEIGHT="48" BASELINE="855 1519 1017 1519" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1519 855 1537 1017 1537 1017 1519 1017 1491 855 1489 855 1519"/>
+                        </Shape>
+                        <String CONTENT="Култусно"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l29" HPOS="474" VPOS="1534" WIDTH="108" HEIGHT="46" BASELINE="476 1567 582 1563" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="476 1567 476 1580 582 1576 582 1563 576 1534 474 1537 476 1567"/>
+                        </Shape>
+                        <String CONTENT="Aˊlut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l30" HPOS="855" VPOS="1537" WIDTH="195" HEIGHT="47" BASELINE="855 1565 1050 1565" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1565 855 1584 1050 1584 1050 1565 1050 1537 855 1537 855 1565"/>
+                        </Shape>
+                        <String CONTENT="Олюторскъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l31" HPOS="1624" VPOS="1563" WIDTH="364" HEIGHT="56" BASELINE="1626 1597 1988 1593" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1626 1597 1626 1610 1970 1619 1972 1619 1975 1619 1977 1619 1988 1608 1988 1593 1981 1563 1624 1565 1626 1597"/>
+                        </Shape>
+                        <String CONTENT="The Lower Kolyma."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l32" HPOS="855" VPOS="1580" WIDTH="180" HEIGHT="56" BASELINE="857 1610 1035 1606" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="857 1610 857 1625 942 1636 944 1636 1035 1621 1035 1606 1028 1580 855 1582 857 1610"/>
+                        </Shape>
+                        <String CONTENT="Хатырка¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l33" HPOS="476" VPOS="1580" WIDTH="89" HEIGHT="50" BASELINE="476 1612 565 1612" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="476 1612 476 1630 565 1630 565 1612 565 1580 476 1580 476 1612"/>
+                        </Shape>
+                        <String CONTENT="Iˊlpi"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l34" HPOS="474" VPOS="1619" WIDTH="156" HEIGHT="56" BASELINE="476 1660 630 1656" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="476 1660 476 1675 630 1671 630 1656 625 1628 487 1619 485 1619 482 1619 480 1619 480 1621 474 1625 476 1660"/>
+                        </Shape>
+                        <String CONTENT="Qaˊyɪlɪn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l35" HPOS="855" VPOS="1630" WIDTH="154" HEIGHT="45" BASELINE="855 1656 1009 1656" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1656 855 1675 1009 1675 1009 1656 1009 1630 855 1630 855 1656"/>
+                        </Shape>
+                        <String CONTENT="Хаилино"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l36" HPOS="1732" VPOS="1649" WIDTH="240" HEIGHT="59" BASELINE="1734 1690 1972 1686" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1734 1690 1734 1708 1970 1703 1972 1686 1968 1660 1855 1649 1853 1649 1851 1649 1849 1649 1849 1651 1847 1651 1840 1660 1747 1651 1745 1651 1743 1651 1741 1651 1732 1656 1734 1690"/>
+                        </Shape>
+                        <String CONTENT="Край Лѣсовъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l37" HPOS="1366" VPOS="1656" WIDTH="273" HEIGHT="52" BASELINE="1366 1690 1639 1690" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1366 1690 1366 1708 1639 1706 1639 1690 1639 1660 1366 1656 1366 1690"/>
+                        </Shape>
+                        <String CONTENT="Forest Border"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l38" HPOS="474" VPOS="1671" WIDTH="597" HEIGHT="52" BASELINE="476 1706 1071 1699" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="476 1706 476 1723 1069 1719 1071 1699 1065 1671 474 1675 476 1706"/>
+                        </Shape>
+                        <String CONTENT="Cape Alutorsky, Cape Anannon²"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l39" HPOS="1366" VPOS="1703" WIDTH="877" HEIGHT="52" BASELINE="1366 1736 2243 1736" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2232 1719 2224 1706 1366 1703 1366 1736 1366 1755 2243 1753 2243 1736 2243 1708 2232 1706 2232 1719"/>
+                        </Shape>
+                        <String CONTENT="Keiˊñu-weˊem³ (R.) Медвѣжья рѣка (Bear River)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l40" HPOS="1364" VPOS="1749" WIDTH="565" HEIGHT="56" BASELINE="1366 1781 1929 1786" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1366 1781 1364 1796 1375 1805 1377 1805 1379 1805 1381 1805 1927 1796 1929 1786 1927 1755 1366 1749 1366 1781"/>
+                        </Shape>
+                        <String CONTENT="With the Mosquito У Комарка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l41" HPOS="794" VPOS="1757" WIDTH="252" HEIGHT="57" BASELINE="796 1799 1046 1794" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="796 1799 796 1814 1043 1812 1046 1794 1041 1766 814 1757 812 1757 809 1757 807 1757 794 1764 796 1799"/>
+                        </Shape>
+                        <String CONTENT="Gishiga Bay."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l42" HPOS="1364" VPOS="1799" WIDTH="775" HEIGHT="52" BASELINE="1366 1831 2139 1825" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1366 1831 1366 1851 2137 1844 2139 1825 2133 1799 1364 1799 1366 1831"/>
+                        </Shape>
+                        <String CONTENT="Large Chukchee River Большая Чукочья рѣка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l43" HPOS="1364" VPOS="1838" WIDTH="732" HEIGHT="60" BASELINE="1366 1879 2096 1872" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1366 1879 1366 1898 2094 1892 2096 1872 2092 1846 1641 1838 1639 1838 1637 1838 1600 1851 1364 1851 1366 1879"/>
+                        </Shape>
+                        <String CONTENT="Small Chukchee River Малая Чукочья рѣка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l44" HPOS="478" VPOS="1842" WIDTH="132" HEIGHT="52" BASELINE="480 1879 610 1874" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="480 1879 480 1894 610 1890 610 1874 604 1842 478 1842 480 1879"/>
+                        </Shape>
+                        <String CONTENT="Poiˊtɪn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l45" HPOS="853" VPOS="1846" WIDTH="136" HEIGHT="57" BASELINE="855 1877 989 1881" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1877 853 1894 864 1903 866 1903 868 1903 870 1903 987 1894 989 1881 989 1851 855 1846 855 1877"/>
+                        </Shape>
+                        <String CONTENT="Парень"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l46" HPOS="480" VPOS="1892" WIDTH="187" HEIGHT="50" BASELINE="482 1924 667 1920" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 1924 482 1942 664 1939 667 1920 660 1892 480 1892 482 1924"/>
+                        </Shape>
+                        <String CONTENT="Vaiˊkenan"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l47" HPOS="853" VPOS="1894" WIDTH="188" HEIGHT="45" BASELINE="855 1924 1041 1920" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1924 855 1939 1041 1935 1041 1920 1035 1894 853 1896 855 1924"/>
+                        </Shape>
+                        <String CONTENT="Каменское"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l48" HPOS="1368" VPOS="1890" WIDTH="236" HEIGHT="49" BASELINE="1368 1924 1604 1924" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1368 1924 1368 1939 1604 1939 1604 1924 1604 1896 1368 1890 1368 1924"/>
+                        </Shape>
+                        <String CONTENT="Two Brooks"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l49" HPOS="1743" VPOS="1896" WIDTH="297" HEIGHT="46" BASELINE="1743 1924 2040 1924" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1743 1924 1743 1942 2040 1942 2040 1924 2040 1896 1743 1896 1743 1924"/>
+                        </Shape>
+                        <String CONTENT="У Двухъ Високъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l50" HPOS="1730" VPOS="1937" WIDTH="312" HEIGHT="48" BASELINE="1732 1965 2042 1970" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1732 1965 1730 1980 2037 1985 2042 1970 2040 1942 1732 1937 1732 1965"/>
+                        </Shape>
+                        <String CONTENT="Россомашья рѣка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l51" HPOS="1370" VPOS="1935" WIDTH="312" HEIGHT="52" BASELINE="1370 1967 1682 1967" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1370 1967 1370 1987 1682 1987 1682 1967 1682 1939 1370 1935 1370 1967"/>
+                        </Shape>
+                        <String CONTENT="Wolverine River"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l52" HPOS="853" VPOS="1944" WIDTH="214" HEIGHT="47" BASELINE="855 1974 1067 1970" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="855 1974 855 1991 1067 1987 1067 1970 1061 1944 853 1946 855 1974"/>
+                        </Shape>
+                        <String CONTENT="Шестаковка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l53" HPOS="480" VPOS="1939" WIDTH="167" HEIGHT="52" BASELINE="480 1974 647 1974" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="480 1974 480 1991 647 1991 647 1974 647 1942 480 1939 480 1974"/>
+                        </Shape>
+                        <String CONTENT="Egaˊč R."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l54" HPOS="770" VPOS="2035" WIDTH="304" HEIGHT="47" BASELINE="770 2063 1074 2063" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="770 2063 770 2082 1074 2080 1074 2063 1074 2035 770 2035 770 2063"/>
+                        </Shape>
+                        <String CONTENT="Anadyr Country."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l55" HPOS="1626" VPOS="2045" WIDTH="366" HEIGHT="50" BASELINE="1626 2076 1992 2076" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1626 2076 1626 2095 1992 2095 1992 2076 1992 2045 1626 2045 1626 2076"/>
+                        </Shape>
+                        <String CONTENT="The Middle Omolon."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l56" HPOS="480" VPOS="2108" WIDTH="301" HEIGHT="52" BASELINE="482 2145 781 2139" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 2145 482 2160 779 2154 781 2139 775 2108 480 2108 482 2145"/>
+                        </Shape>
+                        <String CONTENT="Under the Cliffs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l57" HPOS="855" VPOS="2106" WIDTH="191" HEIGHT="54" BASELINE="857 2145 1046 2141" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="857 2145 857 2160 1046 2154 1046 2141 1041 2115 866 2106 864 2106 861 2106 859 2106 859 2108 857 2108 855 2108 857 2145"/>
+                        </Shape>
+                        <String CONTENT="У Утесика"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l58" HPOS="1364" VPOS="2134" WIDTH="249" HEIGHT="59" BASELINE="1366 2171 1613 2162" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1366 2171 1366 2188 1548 2193 1550 2193 1611 2180 1613 2162 1606 2134 1364 2139 1366 2171"/>
+                        </Shape>
+                        <String CONTENT="Karbaschan⁴"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l59" HPOS="1736" VPOS="2141" WIDTH="243" HEIGHT="45" BASELINE="1736 2171 1979 2171" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1736 2171 1736 2186 1979 2186 1979 2171 1979 2141 1736 2141 1736 2171"/>
+                        </Shape>
+                        <String CONTENT="Small Boat."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l60" HPOS="480" VPOS="2160" WIDTH="301" HEIGHT="50" BASELINE="480 2190 781 2190" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="480 2190 480 2210 781 2210 781 2190 781 2160 480 2160 480 2190"/>
+                        </Shape>
+                        <String CONTENT="Hare Mountains"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l61" HPOS="857" VPOS="2160" WIDTH="301" HEIGHT="50" BASELINE="857 2190 1158 2190" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="857 2190 857 2210 1158 2210 1158 2190 1158 2160 857 2160 857 2190"/>
+                        </Shape>
+                        <String CONTENT="Ушканій хребетъ"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l62" HPOS="480" VPOS="2201" WIDTH="230" HEIGHT="52" BASELINE="482 2234 710 2238" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 2234 480 2249 706 2253 710 2238 708 2206 482 2201 482 2234"/>
+                        </Shape>
+                        <String CONTENT="White River"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l63" HPOS="859" VPOS="2210" WIDTH="191" HEIGHT="45" BASELINE="859 2236 1050 2236" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="859 2236 859 2255 1050 2255 1050 2236 1050 2210 859 2210 859 2236"/>
+                        </Shape>
+                        <String CONTENT="Бѣла рѣка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l64" HPOS="1630" VPOS="2236" WIDTH="360" HEIGHT="58" BASELINE="1630 2277 1990 2277" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1630 2277 1630 2294 1990 2294 1990 2277 1990 2249 1728 2236 1726 2236 1723 2236 1693 2247 1648 2236 1645 2236 1643 2236 1641 2236 1639 2236 1630 2242 1630 2277"/>
+                        </Shape>
+                        <String CONTENT="The Upper Kolyma."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l65" HPOS="478" VPOS="2251" WIDTH="202" HEIGHT="52" BASELINE="480 2284 680 2279" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="480 2284 480 2303 677 2299 680 2279 673 2251 478 2253 480 2284"/>
+                        </Shape>
+                        <String CONTENT="Red River"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l66" HPOS="855" VPOS="2253" WIDTH="375" HEIGHT="46" BASELINE="857 2284 1230 2279" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="857 2284 857 2299 1230 2294 1230 2279 1223 2253 855 2255 857 2284"/>
+                        </Shape>
+                        <String CONTENT="Краснина or Красная"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l67" HPOS="478" VPOS="2297" WIDTH="210" HEIGHT="49" BASELINE="480 2327 688 2331" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="480 2327 478 2342 684 2346 688 2331 688 2301 480 2297 480 2327"/>
+                        </Shape>
+                        <String CONTENT="Pike River"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l68" HPOS="859" VPOS="2303" WIDTH="221" HEIGHT="46" BASELINE="859 2331 1080 2331" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="859 2331 859 2349 1080 2349 1080 2331 1080 2303 859 2303 859 2331"/>
+                        </Shape>
+                        <String CONTENT="Щучья рѣка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l69" HPOS="1368" VPOS="2346" WIDTH="308" HEIGHT="46" BASELINE="1368 2375 1676 2375" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1368 2375 1368 2392 1676 2392 1676 2375 1676 2346 1368 2346 1368 2375"/>
+                        </Shape>
+                        <String CONTENT="Shoudon⁵ River"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l70" HPOS="857" VPOS="2351" WIDTH="256" HEIGHT="45" BASELINE="857 2377 1113 2377" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="857 2377 857 2396 1113 2396 1113 2377 1113 2351 857 2351 857 2377"/>
+                        </Shape>
+                        <String CONTENT="Большая рѣка"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l71" HPOS="1728" VPOS="2349" WIDTH="338" HEIGHT="43" BASELINE="1728 2377 2066 2377" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1728 2377 1728 2392 2066 2392 2066 2377 2066 2349 1728 2349 1728 2377"/>
+                        </Shape>
+                        <String CONTENT="Лаудонъ or Сухая"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l72" HPOS="482" VPOS="2346" WIDTH="193" HEIGHT="50" BASELINE="482 2379 675 2379" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 2379 482 2396 675 2396 675 2379 675 2349 482 2346 482 2379"/>
+                        </Shape>
+                        <String CONTENT="Big River"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-359_r2" HPOS="468" VPOS="2420" WIDTH="1778" HEIGHT="568" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="468 2420 2246 2420 2246 2988 468 2988"/>
+                    </Shape>
+                    <TextLine ID="mz_1-359_l73" HPOS="591" VPOS="2424" WIDTH="1654" HEIGHT="46" BASELINE="591 2452 2245 2452" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="591 2452 591 2470 2243 2470 2245 2452 2243 2424 591 2424 591 2452"/>
+                        </Shape>
+                        <String CONTENT="¹ The Russians call by this name the village and the river Iˊlpi, and also the whole country occupied"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l74" HPOS="480" VPOS="2465" WIDTH="1763" HEIGHT="46" BASELINE="482 2496 2243 2491" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 2496 482 2511 2241 2509 2243 2491 2237 2465 480 2465 482 2496"/>
+                        </Shape>
+                        <String CONTENT="by that division of the Kerek. The proper river Хатырка, however, lies farther to the east. Its Kerek name is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l75" HPOS="480" VPOS="2504" WIDTH="1479" HEIGHT="48" BASELINE="482 2533 1959 2537" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 2533 480 2548 1955 2552 1959 2537 1957 2509 482 2504 482 2533"/>
+                        </Shape>
+                        <String CONTENT="Hatɪˊykan or Hatɪˊrkan. On the map the Chukchee variety of the name (Vatɪˊrkan) is given."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l76" HPOS="591" VPOS="2543" WIDTH="1659" HEIGHT="52" BASELINE="593 2572 2250 2578" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="593 2572 591 2589 2245 2595 2250 2578 2247 2550 593 2543 593 2572"/>
+                        </Shape>
+                        <String CONTENT="² On Russian and English maps, Cape Anannon, through a general misunderstanding, has been called"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l77" HPOS="480" VPOS="2591" WIDTH="1005" HEIGHT="48" BASELINE="482 2621 1485 2617" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 2621 482 2639 1483 2636 1485 2617 1479 2591 480 2593 482 2621"/>
+                        </Shape>
+                        <String CONTENT="Cape Alutorsky; and the real Cape Alutorsky, Cape Govensky."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l78" HPOS="591" VPOS="2634" WIDTH="870" HEIGHT="46" BASELINE="591 2660 1461 2660" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="591 2660 591 2680 1461 2680 1461 2660 1461 2634 591 2634 591 2660"/>
+                        </Shape>
+                        <String CONTENT="³ Chukchee. The meaning is the same as in Russian."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l79" HPOS="591" VPOS="2673" WIDTH="1661" HEIGHT="48" BASELINE="593 2701 2252 2706" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="593 2701 591 2717 2247 2721 2252 2706 2250 2678 593 2673 593 2701"/>
+                        </Shape>
+                        <String CONTENT="⁴ This name, although belonging to a Yukaghir village, is Lamut. It comes from a mountain near by,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l80" HPOS="480" VPOS="2717" WIDTH="505" HEIGHT="47" BASELINE="482 2745 985 2749" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="482 2745 480 2760 981 2764 985 2749 983 2721 482 2717 482 2745"/>
+                        </Shape>
+                        <String CONTENT="which has the shape of a boat."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l81" HPOS="591" VPOS="2762" WIDTH="1661" HEIGHT="50" BASELINE="591 2788 2252 2788" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="591 2788 591 2803 2250 2812 2252 2788 2252 2762 591 2762 591 2788"/>
+                        </Shape>
+                        <String CONTENT="⁵ Yukaghir, meaning “stony.” The first Russian name is probably a corruption of it. It is, however,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l82" HPOS="482" VPOS="2803" WIDTH="1768" HEIGHT="46" BASELINE="485 2833 2250 2829" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="485 2833 485 2849 2247 2844 2250 2829 2243 2803 482 2805 485 2833"/>
+                        </Shape>
+                        <String CONTENT="unknown even to the Russian inhabitants of the country, though it appears on most of the maps. The second"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l83" HPOS="485" VPOS="2846" WIDTH="1762" HEIGHT="44" BASELINE="485 2872 2247 2872" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="485 2872 485 2890 2247 2890 2247 2872 2247 2846 485 2846 485 2872"/>
+                        </Shape>
+                        <String CONTENT="Russian name means “dry river.” The Lamut name of the river is Buks˙unda, which means “icy river.” Of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l84" HPOS="485" VPOS="2890" WIDTH="1765" HEIGHT="47" BASELINE="485 2916 2250 2916" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="485 2916 485 2937 2250 2937 2250 2916 2250 2890 485 2890 485 2916"/>
+                        </Shape>
+                        <String CONTENT="this last some travellers have made, through mispronunciation, Buyunda, though the real river of this name lies"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-359_l85" HPOS="482" VPOS="2929" WIDTH="429" HEIGHT="47" BASELINE="485 2961 911 2955" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="485 2961 485 2976 911 2974 911 2955 905 2929 482 2933 485 2961"/>
+                        </Shape>
+                        <String CONTENT="much farther to the south."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
