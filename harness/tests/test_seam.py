@@ -13,19 +13,29 @@ corpus where long elements lose one of their two ends.
 """
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
 from lxml import etree
 
 from harness import seam
-from harness.validate import validate
+from harness.validate import OPENS, validate
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
 
 
-def page(tmp_path: Path, ref: str, body: str) -> Path:
+def page(tmp_path: Path, ref: str, body: str, opens: str | None = "indented") -> Path:
+    """A page fixture; `opens` supplies the seam witness the gate requires.
+
+    Note what it is *not*: `@part`, which these tests are about, is the verdict, and
+    `seam` writes it from both ends of the gap. This comment is the evidence the
+    collator had and the coordinator does not — the first line's indent, which lives
+    only on the raster. The two coexist on a page without restating each other.
+    """
+    if opens is not None:
+        body = re.sub(r"(<pb\b[^>]*/>)", rf"\1<!-- opens: {opens} -->", body, count=1)
     d = tmp_path / "tei"
     d.mkdir(parents=True, exist_ok=True)
     p = d / f"chukchi-{ref}.xml"
@@ -455,3 +465,64 @@ def test_a_note_opening_its_parent_has_nothing_before_it(tmp_path):
     page(tmp_path, "1-010",
          '<pb n="1"/><p><note n="1" place="bottom">Pink eyes.</note> after</p>')
     assert not [e for e in gate(tmp_path, "1-010").errors if "<note" in e]
+
+
+# ------------------------------------------------------- the opening witness
+#
+# `@part` above is the verdict and `seam` writes it from both ends of the gap. This
+# is the evidence for it, and the evidence had nowhere to live: of the three
+# witnesses the collation rules name, the previous page's tail and this page's
+# opening text both survive into the TEI, and the first line's indent — the positive
+# one — exists only on the raster. Under a dispatched batch the collator has the
+# image and the coordinator writing @part does not, so the comment is the whole of
+# what crosses between them.
+
+def test_a_page_with_no_opening_witness_is_refused(tmp_path):
+    page(tmp_path, "1-010", '<pb n="1"/><p>text</p>', opens=None)
+    assert any("no <!-- opens:" in e for e in gate(tmp_path, "1-010").errors)
+
+
+@pytest.mark.parametrize("value", sorted(OPENS))
+def test_each_of_the_three_passes(tmp_path, value):
+    """`no witness` is in the set rather than expressed by the comment's absence: a
+    heading or a plate has no measure to judge against, and that is an answer. Left
+    to absence it would be indistinguishable from a collator that did not look."""
+    page(tmp_path, "1-010", '<pb n="1"/><p>text</p>', opens=value)
+    assert not [e for e in gate(tmp_path, "1-010").errors if "opens:" in e]
+
+
+def test_a_witness_off_the_set_is_refused(tmp_path):
+    """Closed because the coordinator batches `seam --continues/--fresh` off these.
+    Free text would have to be read one page at a time, which is the cost that
+    dispatching the pass exists to remove."""
+    page(tmp_path, "1-010", '<pb n="1"/><p>text</p>',
+         opens="slightly indented, hard to tell")
+    assert any("is not one of the three" in e for e in gate(tmp_path, "1-010").errors)
+
+
+def test_the_witness_must_lead_the_comments_after_pb(tmp_path):
+    """Not "be the first node" — the folio-disagreement comment also sits right after
+    <pb>, and two comments cannot both be immediate. The order is fixed instead, so
+    the gate never fires on which one the author happened to write first."""
+    page(tmp_path, "1-010",
+         '<pb n="1"/><!-- printed folio 1 disagrees with expected 2 -->'
+         '<p>text</p>', opens=None)
+    assert any("no <!-- opens:" in e for e in gate(tmp_path, "1-010").errors)
+    page(tmp_path, "1-011",
+         '<pb n="1"/><!-- opens: indented -->'
+         '<!-- printed folio 1 disagrees with expected 2 --><p>text</p>',
+         opens=None)
+    assert not [e for e in gate(tmp_path, "1-011").errors if "opens:" in e]
+
+
+def test_the_witness_sits_after_pb_and_not_before_it(tmp_path):
+    """A comment is not an element, so the "pb is the first element" check steps
+    straight over one placed before it and reports nothing. If this check started at
+    the first node rather than at `<pb>`, both positions would validate — a fixed
+    form quietly becoming two nobody chose between."""
+    page(tmp_path, "1-010",
+         '<!-- opens: indented --><pb n="1"/><p>text</p>', opens=None)
+    rep = gate(tmp_path, "1-010")
+    assert not [e for e in rep.errors if "first element" in e], (
+        "pb really is the first *element* here; that check is not the one that bites")
+    assert any("no <!-- opens:" in e for e in rep.errors)

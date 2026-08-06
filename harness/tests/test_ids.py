@@ -12,6 +12,7 @@ resolves to nothing, which is this project's defining failure shape.
 """
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -24,7 +25,16 @@ TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
 
 
-def page(tmp_path: Path, ref: str, body: str) -> Path:
+def page(tmp_path: Path, ref: str, body: str, opens: str | None = "indented") -> Path:
+    """A page fixture. `opens` supplies the seam witness every page must carry.
+
+    Defaulted rather than written into each body: it is required on every page, and
+    these fixtures are about other rules — a hundred copies of one comment would say
+    nothing except that the gate exists. `opens=None` omits it, for the tests that
+    are about the witness itself.
+    """
+    if opens is not None:
+        body = re.sub(r"(<pb\b[^>]*/>)", rf"\1<!-- opens: {opens} -->", body, count=1)
     d = tmp_path / "tei"
     d.mkdir(parents=True, exist_ok=True)
     p = d / f"chukchi-{ref}.xml"

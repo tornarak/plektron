@@ -54,9 +54,13 @@ rejects a bare integer rather than guess which of the three parts you meant.
     uv run harness tei validate PP-NNN                 the gate; exit 1 on FAIL
                                                        (project rules + conformant
                                                        TEI; ~17s for the schema)
-    uv run harness tei seam PP-NNN --continues|--fresh --commit   the gap behind you
 
 Then re-read your own output once against the image before declaring done.
+
+**`tei seam` is not in that list.** The gap behind the page is recorded by whoever
+coordinates the batch, in scan order, once every page is in — you record the one
+witness only you have (`<!-- opens: … -->`) and stop there. Collating a page on your
+own does not change that; it makes you both parties, in that order.
 
 **`tei context` is one of four actions in the whole CLI that takes exactly one
 ref**, and this is why: its payload is a page's collation prompt, built to be
@@ -108,8 +112,10 @@ and `@resp` in play at the seam. Trimmed by dropping whole leading children so i
 always parses, with `elided_children` saying how many went.
 
 `null` when the predecessor is not collated — the same case `harness tei seam`
-refuses. `part` on it is a verdict already recorded for this gap, if `seam` has
-run.
+refuses, and the ordinary case in a dispatched batch, where the neighbour may be
+being collated beside you. `part` on it is a verdict already recorded for this gap,
+if `seam` has run. A null tail costs you the list-continuation witness and nothing
+else; the indent still answers whether this page opens mid-element.
 
 `ends_sentence` is **a hint and never a verdict**. `1-100` closes its numbered
 list at item 14 with a full stop and `1-101` resumes it at 15. Absence of a
@@ -225,24 +231,53 @@ Read three things together:
    new paragraph; running flush to the measure, it continues one. This is the
    positive witness and you already have the image in front of you.
 
-Then record it:
+## How the page opens — the witness only you have
 
-    uv run harness tei seam PP-NNN --continues --commit
-    uv run harness tei seam PP-NNN --fresh --commit
+**Record witness 3 in the file, immediately after `<pb>`, before any other
+comment.** Exactly one of:
 
-**You do not write `@part`, `@prev` or `@next` by hand.** The verb writes both
-ends of the gap — this page's first top-level element and the previous page's
-last — because a gap is one fact landing on two elements, and this page is the
-only place both witnesses exist. Where the elements are not fragmentable (a
-`<list>` or `<table>` running on) it mints ids and links them instead; where the
-two sides are different kinds it refuses, because a `<p>` ending one page and a
-`<list>` opening the next are two elements, not one carrying across.
+    <!-- opens: indented -->              a new paragraph begins here
+    <!-- opens: flush to the measure -->  an element carries across the gap
+    <!-- opens: no witness -->            a heading, a plate, no measure to judge
+
+The gate requires it and the set is closed. **This is why it exists**: of the three
+witnesses above, the first two survive into the TEI — the previous page's tail is
+in its file, this page's opening text is in yours — and the indent does not. It is
+on the raster, which you have open and the coordinator does not. Re-deriving it
+later means reopening the image to answer a question you already answered.
+
+`no witness` is an answer, not a refusal to look. Left to the comment's absence it
+would be indistinguishable from a collator that never checked.
+
+**It is a witness, not the verdict.** `@part` is the verdict, and the coordinator
+writes it from both ends of the gap. The two are not one fact twice.
+
+## Recording the seam — not yours
+
+**You do not run `harness tei seam`, and you do not write `@part`, `@prev` or
+`@next` by hand.** The verb writes both ends of the gap — this page's first
+top-level element and the previous page's last — because a gap is one fact landing
+on two elements. Under a dispatched batch the neighbour may not be collated yet, or
+may be being collated beside you, so the coordinator runs it in scan order once the
+batch is in:
+
+    uv run harness tei seam 1-076 1-077 --continues --commit
+    uv run harness tei seam 1-085 --fresh --commit
+
+Where the elements are not fragmentable (a `<list>` or `<table>` running on) it
+mints ids and links them instead; where the two sides are different kinds it
+refuses, because a `<p>` ending one page and a `<list>` opening the next are two
+elements, not one carrying across. That refusal is the safety net for a batch
+collated out of order — let it fire.
 
 There is no `boundaries.json` and no geometry pass. The committed TEI is the
 record.
 
-**If the predecessor is not collated, `seam` refuses and that is correct.** Work
-in scan order or within a chapter.
+**With `prev_tail` null you cannot resolve a list running across the gap.** A page
+opening with an unnumbered item does not know it is item 15 of the previous page's
+list. Do not guess the number and do not renumber from 1: leave the item unnumbered
+and comment `<!-- opens mid-list, no prev_tail: item numbering unresolved -->`.
+The coordinator re-reads those pages against their predecessors.
 
 # Output contract
 
@@ -282,11 +317,14 @@ from itself; 730 copies can.
   into `@n` because it was supplied — it is the value your folio is *checked
   against*, and a folio invented here is one the rest of the volume inherits
   through the ledger.
+- **The opening witness comes first, immediately after `<pb>`**, before any other
+  comment. See "How the page opens" below; the gate requires it.
 - **Folio disagrees with a non-null `expected_folio`**: the printed folio wins.
-  Add immediately after `<pb>`:
+  Add **after the `opens:` comment**:
   `<!-- printed folio {folio} disagrees with expected {expected_folio} (predicted
   from {basis_ref}): check ToC alignment -->`. With `expected_folio` null there is
-  nothing to disagree with and no comment is needed.
+  nothing to disagree with and no comment is needed — which is the ordinary case in
+  a dispatched batch, and is *not* the same as the two agreeing.
 - **No folio printed** (plates, some chapter openings, blanks): `<pb/>` with no
   `@n`, plus `<!-- no printed folio on this page -->`. This is a positive
   assertion — nothing was printed here — and the ledger reads it as one, so an
@@ -975,6 +1013,9 @@ identity is a different scheme and does not exist yet.
 - Is `<pb n=>` the printed folio as it appears on the page, checked against
   `expected_folio` where non-null, with a comment on mismatch? If the page carries
   no printed folio, is it `<pb/>` with no `@n`?
+- Is there exactly one `<!-- opens: … -->`, from the three, immediately after `<pb>`
+  and before every other comment — recording what the *image* showed, not what the
+  text made you expect? Did I leave `tei seam` alone? (Always yes, always yes.)
 - Did any running head or series title survive into the output? (Always no.)
 - Did I complete, capitalize or punctuate anything at either page edge? (Always
   no.)
@@ -1043,6 +1084,8 @@ stays a comment** — durable in the file — never a silent decision.
 
 - Answer your own question by picking the plausible option. Fluent nonsense is the
   failure mode that matters; "unresolved" is a valid deliverable.
+- Run `harness tei seam`, or omit the `<!-- opens: … -->` witness it will be read
+  against. The first is the coordinator's; the second is yours and only yours.
 - Write `@part`, `@prev` or `@next` by hand — `harness tei seam` writes those, from
   the page that holds both witnesses.
 - Mint an entity id — which is *not* the same act as marking a name. Writing
@@ -1069,9 +1112,11 @@ your head. `harness tei ledger` folds every committed `<pb>`, milestone and seam
 into the table the next page's context is built from, and `harness tei seam` wrote
 into the previous page's file directly. **So the commit is the handoff.**
 
-Working in scan order gives each page a live `expected_folio` and a resolvable
-seam. Jumping around gives nulls until the gaps fill, and `seam` will refuse. Both
-are fine; the first is faster.
+Working in scan order gives each page a live `expected_folio` and a `prev_tail`.
+A dispatched batch gives nulls on both for every page but the first, which is the
+price of collating them at once and is paid back by the coordinator's `tei seam`
+and `tei ledger` sweeps afterwards. Neither is a defect; what would be one is a
+page that filled a null by guessing.
 
 # What this pass deliberately does not do
 

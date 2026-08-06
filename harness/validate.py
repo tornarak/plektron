@@ -189,6 +189,38 @@ MEASURE_TYPES = {"currency", "barter", "weight"}
 # per-page pass would start inventing conventions, so the field it would invent them
 # in is not available.
 MEASURE_IDENTITY_ATTRS = ("unit", "quantity", "commodity")
+# How the page opens, as the collator saw it on the raster. Closed, and required.
+#
+# **This is a witness, not a verdict.** `@part` is the verdict and `harness tei seam`
+# is the only thing that writes one, from the page that holds both ends of the gap —
+# so the two are not one fact in two places. What they are is a fact and the evidence
+# for it, and the evidence had nowhere to live: of the three witnesses the collation
+# rules name, two survive into the TEI (the previous page's tail, this page's opening
+# text) and the third does not. **The first line's indent is the positive witness —
+# a paragraph opening indented is a new one, running flush to the measure continues
+# one — and it exists only on the image.** A coordinator reading finished TEI cannot
+# recover it, and re-deriving it means reopening rasters the collator already had
+# open.
+#
+# That mattered little while the pass ran serially and wrote its own seam. It is
+# load-bearing once collation is dispatched: the collator sees the page, the
+# coordinator writes the seam, and this comment is the whole of what crosses.
+#
+# One comment on every page, which is a cost worth naming. It earns it because ~70%
+# of text pages open mid-paragraph, so the question is live nearly everywhere —
+# unlike `@facs`, which is reserved for spans that earned it precisely because a
+# marker on everything stops meaning anything.
+OPENS_PREFIX = "opens:"
+OPENS = {
+    # A new paragraph begins here; the gap behind is a clean break.
+    "indented",
+    # An element carries across the gap — the ordinary case, at ~70%.
+    "flush to the measure",
+    # A heading, a plate, a page whose first line is not prose: there is no measure
+    # to judge against. A real answer, not a refusal to look, which is why it is in
+    # the set rather than expressed by the comment's absence.
+    "no witness",
+}
 # The four curly quotes are deliberately absent. Under the Tier-1-scoped ASCII policy
 # (keying spec section 1) English prose reproduces the print, curly quotes included, so
 # forbidding them here would reject correct text. What remains is the set with no
@@ -523,6 +555,49 @@ def _lang_of(el, default="en") -> str:
     return default
 
 
+def _opening_witness(body, q, r) -> None:
+    """The `opens:` comment: present, leading, and one of the three.
+
+    **Checked as the first comment after `<pb>`, not as the first node.** The
+    collation rules also put a folio-disagreement comment immediately after `<pb>`,
+    and two comments cannot both be immediate — an unordered pair would fail
+    validation according to which one the author happened to write first, and a gate
+    that fires on authoring order teaches its reader to work around it. So the order
+    is fixed, `opens:` leads, and the comments after it are not this check's business.
+    """
+    # **After `<pb>`, and the walk starts there rather than at the first node.** A
+    # comment is not an element, so the "pb is the first element" check above steps
+    # straight over one sitting before it — leaving two positions that both validate,
+    # which is how a fixed form becomes two fixed forms nobody chose between.
+    nodes = list(body)
+    after = []
+    for i, node in enumerate(nodes):
+        if isinstance(node.tag, str) and node.tag == q("pb"):
+            after = nodes[i + 1:]
+            break
+    lead = None
+    for node in after:
+        if node.tag is etree.Comment:
+            lead = (node.text or "").strip()
+        break
+    if lead is None or not lead.startswith(OPENS_PREFIX):
+        r.errors.append(
+            "no <!-- opens: … --> immediately after <pb>. It records the one seam "
+            "witness that exists only on the raster — whether the first line is "
+            "indented or runs flush to the measure — and the coordinator writing "
+            f"@part cannot recover it from the text. One of: "
+            f"{', '.join(sorted(OPENS))}")
+        return
+    value = lead[len(OPENS_PREFIX):].strip()
+    if value not in OPENS:
+        r.errors.append(
+            f"<!-- opens: {value} --> is not one of the three "
+            f"({', '.join(sorted(OPENS))}). The set is closed because a coordinator "
+            "batches `tei seam --continues/--fresh` off these, and a free-text "
+            "witness has to be read one page at a time — which is the thing "
+            "dispatching the pass was meant to stop.")
+
+
 def validate(tei_path: Path, ctx: dict | None = None,
              ratified: bool = False, schema: bool = False) -> Report:
     """Gate one page's TEI. `ratified` switches which provenance rank is expected.
@@ -579,6 +654,8 @@ def validate(tei_path: Path, ctx: dict | None = None,
                 f"(predicted from {basis.get('basis_ref')} = "
                 f"{basis.get('basis_folio')}) — mismatch comment required "
                 "(harness: folio wins, the prediction is only a prediction)")
+
+    _opening_witness(body, q, r)
 
     # forbidden structure.
     #
