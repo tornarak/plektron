@@ -1,0 +1,52 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "Running title, apparatus.",
+      "class": "layout"
+    },
+    "1": {
+      "text": "their name, Aiˊwan, was used among reindeer-breeders as an expression of",
+      "resolved": "Aiˊwan = A, i, U+02CA (stress), w, a, n",
+      "note": "Raised mark after 'Ai' keyed as stress U+02CA per §5.8/§4 (every raised mark defaults to stress, never apostrophe) -- confirmed at 4x, angled apostrophe-like glyph consistent with the stress sort, not U+0027.",
+      "class": "doubt"
+    },
+    "2": {
+      "text": "contempt. With the coming of American whalers, however, Eskimo traders"
+    },
+    "3": {
+      "text": "came into possession of so many things necessary or tempting to the Reindeer"
+    },
+    "4": {
+      "text": "people, that they could no longer be despised. With their increased trading"
+    },
+    "5": {
+      "text": "capacity, their demand for Chukchee reindeer is much greater than ever."
+    },
+    "6": {
+      "text": "Every fall the squadron of Indian Point skin boats and whale-boats returns"
+    },
+    "7": {
+      "text": "from St. Lawrence Bay or from Holy Cross Bay, where the Reindeer people"
+    },
+    "8": {
+      "text": "are numerous, deeply laden with skins and meat, part of which is bartered"
+    },
+    "9": {
+      "text": "off to the Eskimo of St. Lawrence Island for whale-skin and blubber."
+    },
+    "10": {
+      "text": "13—JESUP NORTH PACIFIC EXPED., VOL. VII.",
+      "note": "Signature line, QuireMarksZone. Dash keyed as unspaced em dash U+2014 per §2.11 (signature-line form, unlike the spaced run-in-heading and list-introduction forms).",
+      "class": "layout"
+    },
+    "11": {
+      "text": "97",
+      "note": "corr_1-127-647: human-drawn correction box in RunningTitleZone, keyed = ''. Read off the whole-page composite (ocr numbered): the RunningTitleZone row prints the composite's own line-index label '11' followed by the actual printed folio '97', to the right of the running title. Keyed the folio number.",
+      "class": "layout"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

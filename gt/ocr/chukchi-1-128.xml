@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-128.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-128.png; regions_from: zones/chukchi-1-128.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-128_r1" HPOS="618" VPOS="900" WIDTH="1778" HEIGHT="84" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 900 2396 900 2396 984 618 984"/>
+                    </Shape>
+                    <TextLine ID="mz_1-128_l1" HPOS="1210" VPOS="902" WIDTH="600" HEIGHT="65" BASELINE="1210 950 1810 950" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1210 950 1210 967 1810 967 1810 950 1810 915 1734 902 1732 902 1210 913 1210 950"/>
+                        </Shape>
+                        <String CONTENT="V. — DOG-BREEDING."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-128_r2" HPOS="618" VPOS="1008" WIDTH="1778" HEIGHT="558" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="618 1008 2396 1008 2396 1566 618 1566"/>
+                    </Shape>
+                    <TextLine ID="mz_1-128_l2" HPOS="723" VPOS="1013" WIDTH="1670" HEIGHT="71" BASELINE="725 1058 2393 1054" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2369 1019 2347 1019 2338 1019 2330 1024 2291 1017 2282 1017 2260 1017 2239 1015 2217 1015 2211 1015 1994 1024 1907 1013 1905 1013 1849 1024 1771 1013 1769 1013 1691 1024 1606 1013 1604 1013 1602 1013 1552 1026 744 1015 742 1015 740 1015 738 1015 723 1024 725 1058 725 1073 1258 1084 1260 1084 1316 1073 1492 1082 1494 1082 1721 1071 1814 1082 1816 1082 1940 1071 2109 1082 2111 1082 2163 1071 2354 1082 2356 1082 2358 1082 2393 1069 2393 1054 2390 1026 2375 1019 2369 1019"/>
+                        </Shape>
+                        <String CONTENT="GROUPS OF DOG-BREEDING TRIBES. — The origin of dog-team driving is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l3" HPOS="619" VPOS="1076" WIDTH="1769" HEIGHT="58" BASELINE="621 1119 2388 1114" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 1119 621 1134 2386 1132 2388 1114 2384 1086 1505 1076 1502 1076 1500 1076 1498 1076 1483 1086 662 1078 660 1078 658 1078 619 1088 621 1119"/>
+                        </Shape>
+                        <String CONTENT="still more obscure than that of the domestication of the reindeer. In Asia"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l4" HPOS="619" VPOS="1136" WIDTH="1776" HEIGHT="61" BASELINE="621 1179 2395 1173" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 1179 621 1197 2393 1190 2395 1173 2390 1136 1221 1136 1219 1136 1217 1136 1193 1147 638 1138 636 1138 634 1138 632 1138 619 1145 621 1179"/>
+                        </Shape>
+                        <String CONTENT="there are three groups of dog-driving tribes, differing in their methods of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l5" HPOS="619" VPOS="1195" WIDTH="1774" HEIGHT="60" BASELINE="621 1240 2393 1236" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 1240 621 1255 2390 1251 2393 1236 2382 1205 2343 1195 2341 1195 2338 1195 2336 1195 2306 1205 2163 1195 2161 1195 2159 1195 2124 1205 2070 1195 2068 1195 1988 1205 1899 1195 1897 1195 1827 1205 1626 1195 1624 1195 1448 1208 1251 1197 1249 1197 1162 1208 1037 1197 1035 1197 1033 1197 1000 1208 935 1197 933 1197 931 1197 894 1208 803 1197 801 1197 619 1203 621 1240"/>
+                        </Shape>
+                        <String CONTENT="harnessing, the shape of harness and sledge, etc. Those belonging to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l6" HPOS="617" VPOS="1260" WIDTH="1776" HEIGHT="58" BASELINE="619 1301 2393 1294" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1301 619 1318 2390 1311 2393 1294 2380 1264 630 1260 628 1260 625 1260 623 1260 623 1262 617 1266 619 1301"/>
+                        </Shape>
+                        <String CONTENT="first group, who inhabit northwestern Siberia, use a peculiar circular strap that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l7" HPOS="621" VPOS="1318" WIDTH="1772" HEIGHT="65" BASELINE="623 1361 2393 1357" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="623 1361 623 1383 2393 1370 2393 1357 2382 1324 656 1318 654 1318 651 1318 621 1329 623 1361"/>
+                        </Shape>
+                        <String CONTENT="girds the dog’s body about the middle, like a belt, and without bands across"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l8" HPOS="619" VPOS="1379" WIDTH="1771" HEIGHT="58" BASELINE="621 1422 2390 1415" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 1422 621 1437 2388 1433 2390 1415 2386 1385 641 1379 638 1379 636 1379 634 1379 619 1385 621 1422"/>
+                        </Shape>
+                        <String CONTENT="the shoulders, so that the dog can pull only with the hind-part of its body"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l9" HPOS="619" VPOS="1439" WIDTH="1771" HEIGHT="57" BASELINE="621 1483 2390 1476" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 1483 621 1496 2388 1489 2390 1476 2386 1446 632 1439 630 1439 628 1439 625 1439 625 1441 619 1446 621 1483"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 20, a). This method of harnessing does not work well: the dogs do"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l10" HPOS="619" VPOS="1493" WIDTH="1767" HEIGHT="65" BASELINE="621 1541 2386 1534" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1532 621 1541 621 1558 2384 1558 2386 1534 2384 1506 2338 1493 2336 1493 2334 1493 2332 1493 2330 1493 2310 1506 1966 1506 1884 1493 1881 1493 1793 1506 1466 1496 1463 1496 1405 1506 1344 1496 1342 1496 1340 1496 1338 1496 1325 1506 1271 1496 1269 1496 1191 1509 1156 1498 1154 1498 1152 1498 833 1509 729 1498 727 1498 628 1511 619 1532"/>
+                        </Shape>
+                        <String CONTENT="not draw as heavy loads as the East Siberian teams, and they go more slowly."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-128_r3" HPOS="618" VPOS="2417" WIDTH="1778" HEIGHT="547" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="618 2417 2396 2417 2396 2964 618 2964"/>
+                    </Shape>
+                    <TextLine ID="mz_1-128_l11" HPOS="725" VPOS="2424" WIDTH="1670" HEIGHT="65" BASELINE="727 2468 2395 2461" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="727 2468 727 2481 1760 2489 1762 2489 2393 2476 2395 2461 2388 2424 725 2431 727 2468"/>
+                        </Shape>
+                        <String CONTENT="East of the Lena River, and as far south as the Amur, all fishing and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l12" HPOS="617" VPOS="2483" WIDTH="1773" HEIGHT="67" BASELINE="619 2526 2390 2522" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2526 619 2539 1377 2550 1379 2550 1440 2539 1498 2550 1500 2550 1502 2550 1544 2537 1583 2548 1585 2548 1587 2548 1743 2537 1816 2548 1819 2548 1918 2537 1949 2548 1951 2548 1953 2548 2033 2537 2059 2548 2061 2548 2063 2550 2224 2550 2224 2548 2289 2537 2349 2548 2351 2548 2354 2548 2390 2535 2390 2522 2386 2494 1505 2483 1502 2483 1440 2494 690 2485 688 2485 617 2496 619 2526"/>
+                        </Shape>
+                        <String CONTENT="seal-hunting tribes use dog-teams with uniform sledge and harness. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l13" HPOS="619" VPOS="2546" WIDTH="1769" HEIGHT="56" BASELINE="621 2587 2388 2580" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2587 621 2602 2386 2598 2388 2580 2384 2552 641 2546 638 2546 636 2546 634 2546 619 2552 621 2587"/>
+                        </Shape>
+                        <String CONTENT="sledge has three or four pairs of stanchions and a circular fore-part.¹ The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l14" HPOS="621" VPOS="2615" WIDTH="1769" HEIGHT="50" BASELINE="621 2645 2390 2645" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2645 621 2660 2388 2665 2390 2645 2390 2615 621 2615 621 2645"/>
+                        </Shape>
+                        <String CONTENT="dogs are attached in pairs to a long, thick strap, in place of a whiffletree,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l15" HPOS="619" VPOS="2662" WIDTH="1774" HEIGHT="61" BASELINE="621 2706 2393 2699" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2706 621 2723 2390 2717 2393 2699 2388 2671 1212 2662 1210 2662 1208 2662 1178 2673 660 2665 658 2665 656 2665 619 2675 621 2706"/>
+                        </Shape>
+                        <String CONTENT="with about a fathom’s distance between the pairs; and a full team consists"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l16" HPOS="619" VPOS="2723" WIDTH="1771" HEIGHT="59" BASELINE="621 2766 2390 2762" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2766 621 2782 2388 2777 2390 2762 2386 2734 1505 2723 1502 2723 1500 2723 1498 2723 1498 2725 1487 2734 656 2725 654 2725 651 2725 619 2736 621 2766"/>
+                        </Shape>
+                        <String CONTENT="of six or seven pairs. The course is directed by the voice, with special call-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l17" HPOS="621" VPOS="2792" WIDTH="1772" HEIGHT="50" BASELINE="621 2825 2393 2825" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2825 621 2842 2393 2842 2393 2825 2390 2792 621 2792 621 2825"/>
+                        </Shape>
+                        <String CONTENT="words. These are understood and obeyed by the leading dog, which is trained"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l18" HPOS="619" VPOS="2842" WIDTH="1769" HEIGHT="61" BASELINE="621 2885 2388 2881" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2885 621 2903 2386 2903 2388 2881 2384 2853 1574 2842 1572 2842 1489 2853 714 2844 712 2844 619 2855 621 2885"/>
+                        </Shape>
+                        <String CONTENT="specially for that purpose. The harness is somewhat similar to the ordinary"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l19" HPOS="621" VPOS="2907" WIDTH="1728" HEIGHT="63" BASELINE="621 2942 2349 2946" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2942 621 2959 1401 2959 1522 2970 1524 2970 2347 2959 2349 2946 2347 2916 621 2907 621 2942"/>
+                        </Shape>
+                        <String CONTENT="horse-harness, with a breast-piece, and two or three bands across the back."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-128_r4" HPOS="618" VPOS="2964" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="618 2964 2396 2964 2396 3032 618 3032"/>
+                    </Shape>
+                    <TextLine ID="mz_1-128_l20" HPOS="729" VPOS="2963" WIDTH="1659" HEIGHT="65" BASELINE="729 3007 2388 3007" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="729 3007 729 3020 2386 3028 2388 3007 2388 2974 2367 2963 2364 2963 2362 2963 2360 2963 2317 2976 2163 2976 2146 2963 2143 2963 2141 2963 2139 2963 2081 2974 2057 2963 2055 2963 1962 2963 1959 2963 1957 2963 1955 2963 1940 2974 1873 2963 1871 2963 1868 2963 1840 2974 1827 2963 1825 2963 1823 2963 1732 2963 1730 2963 1728 2963 1726 2963 1713 2974 1656 2963 1654 2963 1563 2976 1474 2976 1459 2963 1457 2963 1455 2963 1453 2963 1450 2963 1420 2976 1282 2976 1266 2963 1264 2963 1262 2963 1260 2963 1139 2974 729 2970 729 3007"/>
+                        </Shape>
+                        <String CONTENT="The third group of tribes — those of the Chukchee Peninsula — used,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-128_r5" HPOS="618" VPOS="3048" WIDTH="1778" HEIGHT="225" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="618 3048 2396 3048 2396 3273 618 3273"/>
+                    </Shape>
+                    <TextLine ID="mz_1-128_l21" HPOS="727" VPOS="3054" WIDTH="1666" HEIGHT="48" BASELINE="729 3082 2393 3087" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="729 3082 727 3098 2388 3102 2393 3087 2390 3059 729 3054 729 3082"/>
+                        </Shape>
+                        <String CONTENT="¹ In the collections of the Smithsonian Institution, in Washington, I saw a sledge of the Alaskan Eskimo,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l22" HPOS="621" VPOS="3100" WIDTH="1769" HEIGHT="43" BASELINE="623 3128 2390 3126" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="623 3128 623 3143 2388 3141 2390 3126 2384 3100 621 3100 623 3128"/>
+                        </Shape>
+                        <String CONTENT="which, curiously enough, is similar in shape to a Siberian form of sledge used by the Gilyaks of the Amur"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l23" HPOS="621" VPOS="3143" WIDTH="1772" HEIGHT="46" BASELINE="621 3169 2393 3169" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 3169 621 3189 2393 3189 2393 3169 2393 3143 621 3143 621 3169"/>
+                        </Shape>
+                        <String CONTENT="River. Its runners are bent upwards at both ends, and are joined by a horizontal bow similar to that at the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l24" HPOS="621" VPOS="3180" WIDTH="1769" HEIGHT="52" BASELINE="623 3208 2390 3215" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="623 3208 621 3225 2386 3232 2390 3215 2388 3186 623 3180 623 3208"/>
+                        </Shape>
+                        <String CONTENT="front end of the Chukchee sledge (p. 105). The stanchions, too, are similar in shape, only their upper ends"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-128_l25" HPOS="625" VPOS="3228" WIDTH="1189" HEIGHT="47" BASELINE="625 3256 1814 3256" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="625 3256 625 3275 1814 3275 1814 3256 1814 3228 625 3228 625 3256"/>
+                        </Shape>
+                        <String CONTENT="are bent inward and fastened to cross-pieces, in the usual Eskimo manner."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-128_r6" HPOS="618" VPOS="3276" WIDTH="1778" HEIGHT="70" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="618 3276 2396 3276 2396 3346 618 3346"/>
+                    </Shape>
+                    <TextLine ID="mz_1-128_l26" HPOS="1470" VPOS="3269" WIDTH="67" HEIGHT="84" BASELINE="1470 3325 1537 3325" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1470 3325 1470 3353 1537 3353 1537 3325 1537 3269 1470 3269 1470 3325"/>
+                        </Shape>
+                        <String CONTENT="[98]"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

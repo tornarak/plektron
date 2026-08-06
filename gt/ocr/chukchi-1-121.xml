@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-121.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-121.png; regions_from: zones/chukchi-1-121.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-121_r1" HPOS="374" VPOS="612" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="374 612 2152 612 2152 702 374 702"/>
+                    </Shape>
+                    <TextLine ID="mz_1-121_l1" HPOS="957" VPOS="621" WIDTH="619" HEIGHT="54" BASELINE="957 653 1576 653" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1567 621 968 621 957 627 957 653 957 675 1576 675 1576 653 1576 625 1567 621"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l2" HPOS="2079" VPOS="623" WIDTH="54" HEIGHT="63" BASELINE="2085 668 2133 662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2085 668 2085 686 2133 686 2133 662 2122 623 2079 630 2085 668"/>
+                        </Shape>
+                        <String CONTENT="93"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-121_r2" HPOS="374" VPOS="727" WIDTH="1778" HEIGHT="314" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="374 727 2152 727 2152 1041 374 1041"/>
+                    </Shape>
+                    <TextLine ID="mz_1-121_l3" HPOS="376" VPOS="720" WIDTH="1774" HEIGHT="59" BASELINE="376 764 2150 764" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 764 376 779 2150 779 2150 764 2150 733 2098 720 2096 720 2094 720 2061 731 1611 720 1609 720 1537 731 1498 720 1496 720 1494 720 1442 731 1390 720 1388 720 1386 720 1360 731 1286 720 1284 720 1282 720 1245 731 1188 720 1186 720 1134 731 1104 720 1102 720 1100 720 968 731 898 720 896 720 647 731 591 720 589 720 586 720 547 731 482 720 480 720 478 720 452 731 422 720 420 720 417 720 415 720 376 731 376 764"/>
+                        </Shape>
+                        <String CONTENT="of skin for a seat-cushion, and with feet hanging down or resting on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l4" HPOS="378" VPOS="781" WIDTH="1770" HEIGHT="63" BASELINE="378 824 2148 824" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 824 378 837 2146 844 2148 824 2148 794 2068 781 2066 781 2063 781 2035 792 2005 781 2003 781 2001 781 1916 792 1884 781 1881 781 1879 781 1628 792 1589 781 1587 781 1585 781 1583 781 1580 781 1567 792 1541 781 1539 781 1537 781 1535 781 1489 792 1379 781 1377 781 1375 781 1336 792 1284 781 1282 781 1158 792 1102 781 1100 781 1015 792 946 781 944 781 885 792 859 781 857 781 855 781 790 792 684 781 682 781 610 792 586 781 584 781 582 781 580 781 578 781 563 794 378 794 378 824"/>
+                        </Shape>
+                        <String CONTENT="runners (see Plate V.). Thus they easily direct their course with their feet,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l5" HPOS="378" VPOS="842" WIDTH="1772" HEIGHT="56" BASELINE="378 883 2150 883" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 883 378 898 2150 898 2150 883 2150 853 2122 842 2120 842 2118 842 2115 842 2083 853 2020 842 2018 842 1929 853 1635 842 1632 842 1567 853 1502 842 1500 842 1498 842 1496 842 1481 853 1396 842 1394 842 1340 853 1266 842 1264 842 1208 853 1173 842 1171 842 1169 842 1056 853 868 842 866 842 864 842 861 842 846 855 643 855 586 842 584 842 485 853 454 842 452 842 450 842 378 853 378 883"/>
+                        </Shape>
+                        <String CONTENT="and avoid stumps, bowlders, and other obstacles. The same position is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l6" HPOS="378" VPOS="911" WIDTH="1774" HEIGHT="50" BASELINE="378 941 2152 941" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 941 378 961 2152 961 2152 941 2152 911 378 911 378 941"/>
+                        </Shape>
+                        <String CONTENT="required by the dog-sledge of the Gilyak, and especially by that of the ancient"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l7" HPOS="378" VPOS="956" WIDTH="1770" HEIGHT="76" BASELINE="381 1004 2148 1000" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1004 381 1032 2148 1017 2148 1000 2143 969 2070 956 2068 956 2066 956 2040 967 2024 956 2022 956 2020 956 2018 956 2016 956 2014 956 1996 969 1864 969 1834 956 1832 956 1829 956 1827 956 1806 967 1784 956 1782 956 1780 956 1702 967 1676 956 1674 956 1671 956 1561 967 1537 956 1535 956 1533 956 1418 967 1379 956 1377 956 1375 956 1373 956 1351 967 1327 956 1325 956 1323 956 1243 969 1217 959 1214 959 1212 959 1210 959 1184 969 1128 959 1126 959 1123 959 1093 969 1069 959 1067 959 1065 959 948 969 905 959 903 959 900 959 898 959 855 969 838 959 835 959 833 959 831 959 747 969 580 959 578 959 576 959 573 959 560 969 517 959 515 959 513 959 450 969 391 959 389 959 387 959 385 959 385 961 378 965 381 1004"/>
+                        </Shape>
+                        <String CONTENT="Kamchadal (Fig. 19), that had also curved ribs, and, on the whole, was similar"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-121_r3" HPOS="374" VPOS="1851" WIDTH="1778" HEIGHT="301" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="374 1851 2152 1851 2152 2152 374 2152"/>
+                    </Shape>
+                    <TextLine ID="mz_1-121_l8" HPOS="376" VPOS="1846" WIDTH="1770" HEIGHT="65" BASELINE="378 1896 2146 1890" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="636 1853 615 1855 593 1855 571 1855 550 1855 541 1855 500 1861 487 1857 485 1857 463 1857 441 1859 420 1859 413 1859 376 1864 378 1896 378 1911 2143 1909 2146 1890 2141 1859 1842 1846 1840 1846 1838 1846 1836 1846 1821 1859 1730 1859 1706 1846 1704 1846 1702 1846 1700 1846 1680 1857 1658 1846 1656 1846 1654 1846 1652 1846 1624 1857 1583 1846 1580 1846 1578 1846 1576 1846 1550 1859 1513 1848 1511 1848 1509 1848 1507 1848 1485 1859 1463 1848 1461 1848 1459 1848 1457 1848 1435 1859 1342 1848 1340 1848 1264 1859 1208 1848 1206 1848 1204 1848 1156 1859 1089 1848 1087 1848 1011 1859 970 1848 968 1848 965 1848 898 1861 645 1853 636 1853"/>
+                        </Shape>
+                        <String CONTENT="to the reindeer driving-sledge of the Koryak and the Chukchee. When gliding"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l9" HPOS="374" VPOS="1913" WIDTH="1769" HEIGHT="57" BASELINE="376 1954 2143 1950" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 1954 376 1970 2141 1967 2143 1950 2139 1922 396 1913 394 1913 391 1913 389 1913 374 1920 376 1954"/>
+                        </Shape>
+                        <String CONTENT="down a slope, the driver generally uses his feet as a brake. In the spring,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l10" HPOS="376" VPOS="1970" WIDTH="1767" HEIGHT="62" BASELINE="378 2013 2143 2004" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 2013 378 2032 2141 2024 2143 2004 2139 1978 1284 1970 1282 1970 1279 1970 1256 1980 413 1974 411 1974 409 1974 376 1985 378 2013"/>
+                        </Shape>
+                        <String CONTENT="when the upper snow-crust becomes hard and slippery, a brake made of antler"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l11" HPOS="374" VPOS="2026" WIDTH="1772" HEIGHT="69" BASELINE="376 2078 2146 2065" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2078 376 2095 2143 2082 2146 2065 2141 2037 1968 2026 1966 2026 1845 2037 1617 2028 1615 2028 1550 2039 1264 2030 1262 2030 1260 2030 1258 2030 1245 2043 374 2043 376 2078"/>
+                        </Shape>
+                        <String CONTENT="is used (see Fig. 17, f¹), that is loosely tied to the right runner, and, when"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l12" HPOS="376" VPOS="2091" WIDTH="1276" HEIGHT="61" BASELINE="378 2136 1652 2132" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 2136 378 2152 1650 2147 1652 2132 1648 2104 1468 2104 1444 2091 1442 2091 1440 2091 1364 2102 1327 2091 1325 2091 1323 2091 1180 2102 1147 2091 1145 2091 1143 2091 1091 2102 1065 2091 1063 2091 1061 2091 948 2104 907 2093 905 2093 903 2093 714 2104 703 2095 703 2093 701 2093 699 2093 604 2093 602 2093 599 2093 576 2104 567 2095 567 2093 565 2093 563 2093 478 2093 476 2093 376 2106 378 2136"/>
+                        </Shape>
+                        <String CONTENT="required, firmly pressed with the foot against the snow."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-121_r4" HPOS="374" VPOS="2152" WIDTH="1778" HEIGHT="544" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="374 2152 2152 2152 2152 2696 374 2696"/>
+                    </Shape>
+                    <TextLine ID="mz_1-121_l13" HPOS="485" VPOS="2145" WIDTH="1661" HEIGHT="67" BASELINE="487 2197 2146 2186" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 2197 487 2212 2143 2206 2146 2186 2141 2158 1899 2145 1897 2145 1808 2158 1700 2147 1697 2147 1695 2147 1671 2160 1476 2162 1312 2162 1284 2149 1282 2149 1279 2149 1134 2162 911 2152 909 2152 801 2165 768 2154 766 2154 764 2154 762 2154 731 2165 721 2154 718 2154 716 2154 714 2154 485 2158 487 2197"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee driver, as a rule, does not carry anything on his sledge,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l14" HPOS="374" VPOS="2212" WIDTH="1772" HEIGHT="67" BASELINE="376 2253 2146 2247" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2253 376 2268 857 2279 859 2279 1463 2266 1552 2277 1554 2277 2143 2262 2146 2247 2141 2219 391 2212 389 2212 387 2212 385 2212 374 2219 376 2253"/>
+                        </Shape>
+                        <String CONTENT="for fear of fatiguing his reindeer. Even for a long journey he takes on his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l15" HPOS="374" VPOS="2271" WIDTH="1772" HEIGHT="62" BASELINE="376 2316 2146 2305" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2316 376 2333 2143 2323 2146 2305 2139 2271 374 2286 376 2316"/>
+                        </Shape>
+                        <String CONTENT="sledge only a lasso, a spear, an outer coat for protection against storms, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l16" HPOS="374" VPOS="2331" WIDTH="1769" HEIGHT="61" BASELINE="376 2372 2143 2364" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2372 376 2392 2141 2383 2143 2364 2139 2331 833 2331 831 2331 829 2331 807 2342 391 2333 389 2333 387 2333 385 2333 374 2340 376 2372"/>
+                        </Shape>
+                        <String CONTENT="for provisions a cake of ground meat mixed with tallow, but no kettle and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l17" HPOS="374" VPOS="2390" WIDTH="1769" HEIGHT="60" BASELINE="376 2435 2143 2426" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2435 376 2450 2141 2448 2143 2426 2139 2398 1288 2390 1286 2390 1284 2390 1245 2400 965 2392 963 2392 374 2405 376 2435"/>
+                        </Shape>
+                        <String CONTENT="no cup. For subsistence he depends solely on the villages and camps along"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l18" HPOS="374" VPOS="2444" WIDTH="1772" HEIGHT="80" BASELINE="376 2494 2146 2483" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2494 376 2524 448 2511 675 2522 677 2522 680 2522 736 2509 1236 2517 1238 2517 1321 2507 1431 2517 1433 2517 2143 2500 2146 2483 2141 2455 2009 2444 2007 2444 374 2459 376 2494"/>
+                        </Shape>
+                        <String CONTENT="his route, or, if he fails to find these, he sleeps patiently on the snow without"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l19" HPOS="374" VPOS="2509" WIDTH="1769" HEIGHT="63" BASELINE="376 2554 2143 2541" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2554 376 2572 2141 2559 2143 2541 2139 2515 1260 2509 1258 2509 1256 2509 1234 2520 695 2513 693 2513 690 2513 664 2524 465 2515 463 2515 374 2526 376 2554"/>
+                        </Shape>
+                        <String CONTENT="meals. For the most part, however, Chukchee journeys are undertaken with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l20" HPOS="374" VPOS="2569" WIDTH="1769" HEIGHT="61" BASELINE="376 2615 2143 2604" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2615 376 2630 2141 2626 2143 2604 2139 2576 1115 2569 1113 2569 1110 2569 1078 2580 452 2574 450 2574 374 2585 376 2615"/>
+                        </Shape>
+                        <String CONTENT="a train of from eight to ten sledges, a woman goes along to attend to it,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l21" HPOS="374" VPOS="2630" WIDTH="914" HEIGHT="58" BASELINE="376 2675 1288 2671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2675 376 2688 1286 2686 1288 2671 1284 2643 981 2630 978 2630 903 2641 864 2630 861 2630 859 2630 768 2643 543 2632 541 2632 476 2643 448 2632 446 2632 443 2632 374 2645 376 2675"/>
+                        </Shape>
+                        <String CONTENT="and a few score reindeer drag it along."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-121_r5" HPOS="374" VPOS="2696" WIDTH="1778" HEIGHT="539" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="374 2696 2152 2696 2152 3235 374 3235"/>
+                    </Shape>
+                    <TextLine ID="mz_1-121_l22" HPOS="482" VPOS="2680" WIDTH="1664" HEIGHT="73" BASELINE="485 2736 2146 2723" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 2736 485 2753 1866 2753 1866 2751 1998 2740 2124 2749 2126 2749 2128 2749 2130 2749 2146 2738 2146 2723 2143 2693 2118 2680 2115 2680 2113 2680 1942 2691 1899 2680 1897 2680 1894 2680 1892 2680 1855 2693 1790 2682 1788 2682 1786 2682 1784 2682 1767 2695 1622 2695 1596 2682 1593 2682 1591 2682 1589 2682 1587 2682 1587 2684 1574 2695 1383 2684 1381 2684 1303 2697 1286 2686 1284 2686 1282 2686 1279 2686 1134 2697 1106 2686 1104 2686 1102 2686 1100 2686 1080 2697 1065 2686 1063 2686 1061 2686 1059 2686 1056 2686 1030 2699 898 2688 896 2688 842 2699 779 2688 777 2688 712 2701 682 2691 680 2691 677 2691 580 2701 506 2691 504 2691 502 2691 500 2691 482 2699 485 2736"/>
+                        </Shape>
+                        <String CONTENT="All pack-sledges have their definite place in the travelling-line, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l23" HPOS="372" VPOS="2740" WIDTH="1771" HEIGHT="72" BASELINE="374 2797 2143 2782" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="374 2797 374 2812 2141 2797 2143 2782 2139 2753 1890 2740 1888 2740 1886 2740 1860 2753 1671 2743 1669 2743 1667 2743 1619 2756 1444 2745 1442 2745 1336 2758 1247 2747 1245 2747 1243 2747 1204 2758 1117 2749 1115 2749 1113 2749 1110 2749 1095 2760 935 2749 933 2749 931 2749 929 2749 911 2762 372 2762 374 2797"/>
+                        </Shape>
+                        <String CONTENT="begins with the woman leading it, and ends with the pole-sled. One woman"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l24" HPOS="374" VPOS="2805" WIDTH="1769" HEIGHT="65" BASELINE="376 2853 2143 2842" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2853 376 2870 2141 2859 2143 2842 2139 2814 1435 2805 1433 2805 1431 2805 1401 2816 1087 2808 1084 2808 1082 2808 1080 2808 1067 2818 478 2812 476 2812 374 2823 376 2853"/>
+                        </Shape>
+                        <String CONTENT="can lead from ten to fifteen sledges; and a well-to-do house with a large family"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l25" HPOS="376" VPOS="2872" WIDTH="1767" HEIGHT="61" BASELINE="378 2916 2143 2901" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 2916 378 2933 2141 2918 2143 2901 2139 2872 628 2872 625 2872 623 2872 621 2872 606 2883 493 2875 491 2875 376 2885 378 2916"/>
+                        </Shape>
+                        <String CONTENT="may have forty or even sixty sledges, which travel in from four to six separate"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l26" HPOS="374" VPOS="2927" WIDTH="1769" HEIGHT="62" BASELINE="376 2972 2143 2961" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2972 376 2989 2141 2979 2143 2961 2137 2927 374 2937 376 2972"/>
+                        </Shape>
+                        <String CONTENT="lines. When starting, the sledges are packed early in the morning, and placed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l27" HPOS="374" VPOS="2985" WIDTH="1769" HEIGHT="67" BASELINE="376 3037 2143 3022" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 3037 376 3052 2141 3037 2143 3022 2137 2985 374 3000 376 3037"/>
+                        </Shape>
+                        <String CONTENT="in the usual order. All the lines are joined together, forming a large corral"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l28" HPOS="372" VPOS="3037" WIDTH="1771" HEIGHT="76" BASELINE="374 3098 2143 3078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2133 3048 1959 3037 1957 3037 1955 3037 1953 3037 1940 3050 1920 3039 1918 3039 1916 3039 1819 3050 1795 3039 1793 3039 1790 3039 1788 3039 1747 3052 1732 3041 1730 3041 1728 3041 1726 3041 1619 3052 1520 3043 1518 3043 1515 3043 1513 3043 1498 3054 1403 3043 1401 3043 1399 3043 1342 3056 1175 3046 1173 3046 1171 3046 1169 3046 1147 3059 1004 3048 1002 3048 1000 3048 959 3061 807 3050 805 3050 803 3050 783 3061 770 3050 768 3050 766 3050 764 3050 762 3050 731 3063 669 3052 667 3052 526 3065 389 3054 387 3054 385 3054 383 3054 372 3061 374 3098 374 3113 2141 3093 2143 3078 2141 3069 2133 3048"/>
+                        </Shape>
+                        <String CONTENT="(Plate IV, Fig. 2) in the shape of a horseshoe, into which the reindeer are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l29" HPOS="374" VPOS="3108" WIDTH="1769" HEIGHT="59" BASELINE="376 3152 2143 3143" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 3152 376 3167 2141 3163 2143 3143 2139 3115 818 3108 816 3108 814 3108 792 3119 400 3111 398 3111 396 3111 374 3119 376 3152"/>
+                        </Shape>
+                        <String CONTENT="driven. Most of the sledges are stood up one against another in a slanting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-121_l30" HPOS="374" VPOS="3171" WIDTH="1769" HEIGHT="67" BASELINE="376 3215 2143 3202" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 3215 376 3238 2143 3221 2143 3202 2139 3173 671 3171 669 3171 374 3184 376 3215"/>
+                        </Shape>
+                        <String CONTENT="position, and the corral is strengthened with sticks, shovels, large skins, etc.,"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

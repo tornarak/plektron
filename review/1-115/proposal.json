@@ -1,0 +1,145 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "43": {
+      "text": "87",
+      "note": "Folio in RunningTitleZone, corr_ line (box was drawn empty). Read whole off the composite/sheet, unspaced digits per keying_spec.md §2.12.",
+      "class": "layout"
+    },
+    "1": {
+      "text": "to turn its head, the čɪˊkɪl is violently jerked several times by the driver,",
+      "resolved": "č = c+U+030C; ɪ = U+026A LATIN SMALL CAPITAL LETTER I (×2); ˊ = U+02CA stress, postposed to first ɪ",
+      "note": "Tier-1 word mid-sentence in otherwise English narrative. Read at 4x: č (caron-c), then small-cap dotless ɪ, then a raised comma-shaped mark (stress U+02CA, not apostrophe, per keying_spec.md §4/§5.8 default), then kɪl. mz/ocr machine text had 'er'kil', an ASCII substitution for the caron and small-cap ɪ. No lexicon match found via `lexicon lookup`.",
+      "class": "doubt"
+    },
+    "2": {
+      "text": "causing the animal considerable pain. When the newly broken reindeer kicks"
+    },
+    "3": {
+      "text": "too much, or, after pasturing, does not allow itself to be caught for harnessing,"
+    },
+    "4": {
+      "text": "the herdsman will pull it for half an hour by one of its hind-legs by way of"
+    },
+    "5": {
+      "text": "punishment. Reindeer are generally attached singly to the pack-sledge, and"
+    },
+    "6": {
+      "text": "in pairs to the driving-sledge. Only a poor man will drive a single reindeer,"
+    },
+    "7": {
+      "text": "and then for short"
+    },
+    "8": {
+      "text": "distances only, be-"
+    },
+    "9": {
+      "text": "cause the reindeer"
+    },
+    "10": {
+      "text": "would very soon be"
+    },
+    "11": {
+      "text": "completely tired out."
+    },
+    "12": {
+      "text": "The reindeer-"
+    },
+    "13": {
+      "text": "harness is quite"
+    },
+    "14": {
+      "text": "simple (Figs. 9, 10)."
+    },
+    "15": {
+      "text": "It consists of a heavy"
+    },
+    "16": {
+      "text": "strap four centime-"
+    },
+    "17": {
+      "text": "tres wide, which"
+    },
+    "18": {
+      "text": "forms a bight, one"
+    },
+    "19": {
+      "text": "end passing along"
+    },
+    "20": {
+      "text": "the right side of the"
+    },
+    "21": {
+      "text": "animal, the other"
+    },
+    "22": {
+      "text": "end across the left"
+    },
+    "23": {
+      "text": "shoulder and then"
+    },
+    "24": {
+      "text": "between the fore-"
+    },
+    "25": {
+      "text": "legs. I will call this"
+    },
+    "26": {
+      "text": "bight the collar."
+    },
+    "27": {
+      "text": "The ends broaden,"
+    },
+    "28": {
+      "text": "and a wooden toggle"
+    },
+    "29": {
+      "text": "is inserted in a slit"
+    },
+    "30": {
+      "text": "in each end (Fig. 11). Then both ends are passed through the eye of the"
+    },
+    "31": {
+      "text": "trace. The harness-strap of the pack-rein-"
+    },
+    "32": {
+      "text": "deer sometimes has the middle part covered"
+    },
+    "33": {
+      "text": "with soft skin, especially in the season of"
+    },
+    "34": {
+      "text": "hair-shedding, when the skin of the rein-"
+    },
+    "35": {
+      "text": "deer is very sensitive and becomes sore"
+    },
+    "36": {
+      "text": "easily. In winter little care need be given"
+    },
+    "37": {
+      "text": "to the harness, since the reindeer does not"
+    },
+    "38": {
+      "text": "perspire, and the harness is always dry and"
+    },
+    "39": {
+      "text": "clean. Two thin strips of leather are"
+    },
+    "40": {
+      "text": "fastened to each side of the collar. They",
+      "note": "mz/ocr machine text read 'Thev' for the line-final word; confirmed 'They' at 2x zoom (OCR misread, not a print error)."
+    },
+    "41": {
+      "text": "reach around the chest, and are joined by means of a wooden toggle. Some-"
+    },
+    "42": {
+      "text": "times a stronger breastpiece is fastened in the same way."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

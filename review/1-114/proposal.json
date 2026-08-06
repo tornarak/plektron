@@ -1,0 +1,132 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "86",
+      "note": "Folio, RunningTitleZone, plain ASCII digits per §2.12.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "from the hands of their masters. Reindeer that are to be trained for pack-"
+    },
+    "3": {
+      "text": "sledges are usually attached"
+    },
+    "4": {
+      "text": "to the last little sledge of"
+    },
+    "5": {
+      "text": "the line. On this sledge the"
+    },
+    "6": {
+      "text": "tent-poles are carried, tied"
+    },
+    "7": {
+      "text": "together, and the struggles"
+    },
+    "8": {
+      "text": "of the reindeer can do no"
+    },
+    "9": {
+      "text": "harm to the load. The"
+    },
+    "10": {
+      "text": "sledge is attached to the"
+    },
+    "11": {
+      "text": "preceding ones, which are"
+    },
+    "12": {
+      "text": "hauled by trained animals."
+    },
+    "13": {
+      "text": "In a few days the young"
+    },
+    "14": {
+      "text": "reindeer, after having been"
+    },
+    "15": {
+      "text": "dragged several"
+    },
+    "16": {
+      "text": "times behind the"
+    },
+    "17": {
+      "text": "line, together"
+    },
+    "18": {
+      "text": "with the sledge,"
+    },
+    "19": {
+      "text": "learns to bear"
+    },
+    "20": {
+      "text": "even with, the",
+      "note": "A small comma-shaped mark sits right after 'with', confirmed at 2x zoom (line20@60). Grammatically odd but the ink is genuinely there and distinct from the baseline; keyed as printed per §2.14 (printer's errors are keyed, not repaired).",
+      "class": "print"
+    },
+    "21": {
+      "text": "rattling of the"
+    },
+    "22": {
+      "text": "Rein-"
+    },
+    "23": {
+      "text": "poles.",
+      "note": "A faint mark appears near the poles./Rein- boundary in the whole-page composite; at 4x zoom (line22@0) it resolves as descender bleed from line 21 ('rattling of the') above, not a footnote marker or any other character — no footnote zone exists on this page and no superscript digit is actually present. Nothing keyed for it.",
+      "class": "artifact"
+    },
+    "24": {
+      "text": "deer for driving-"
+    },
+    "25": {
+      "text": "sledges are bro-"
+    },
+    "26": {
+      "text": "ken in by means"
+    },
+    "27": {
+      "text": "of the čɪˊkɪl",
+      "resolved": "č = c+U+030C; ɪ = U+026A LATIN LETTER SMALL CAPITAL I (×2, dotless stems with top/bottom serifs, contrasted against x-height dotted 'i' in 'with'/'line' on neighbouring lines); ˊ = U+02CA stress mark, postposed to the stressed vowel",
+      "note": "Tier-1 gloss for the club named two words later as '(Fig. 8)'. Lexicon lookup ('kil'/'cikil') returns no attested match for this form (below the 2-page floor) — keyed from the raster, not from any precedent.",
+      "class": "doubt"
+    },
+    "28": {
+      "text": "(Fig. 8), a heavy"
+    },
+    "29": {
+      "text": "wooden club"
+    },
+    "30": {
+      "text": "that is fastened"
+    },
+    "31": {
+      "text": "to one of the"
+    },
+    "32": {
+      "text": "reins or to the"
+    },
+    "33": {
+      "text": "end ofthe halter.",
+      "note": "Printed with no space between 'of' and 'the', confirmed at 2x zoom (line33@40) — keyed as printed per §2.14 printer's-error rule, not corrected to 'of the'.",
+      "class": "print"
+    },
+    "34": {
+      "text": "Whenever the"
+    },
+    "35": {
+      "text": "reindeer wants"
+    },
+    "36": {
+      "text": "to turn off the"
+    },
+    "37": {
+      "text": "track, or even"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
