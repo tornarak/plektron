@@ -4,7 +4,7 @@
 requirement and `tei expand` all apply — so adding a language is a corpus-wide act
 and a code the docs do not name is one no keyer knows to reach for. Three places
 say the set outside the code: `keying_spec.md` §1 scopes the ASCII policy by
-listing it, `.claude/skills/transcribe-page/SKILL.md` gives the closed set with the
+listing it, `.claude/agents/collator.md` gives the closed set with the
 rule for when each fires, and `tei/corpus-header.xml` declares it to the corpus in
 `langUsage`.
 
@@ -34,7 +34,7 @@ from harness.validate import TIER1
 
 REPO = Path(__file__).resolve().parent.parent.parent
 SPEC = REPO / "keying_spec.md"
-SKILL = REPO / ".claude" / "skills" / "transcribe-page" / "SKILL.md"
+SKILL = REPO / ".claude" / "agents" / "collator.md"
 HEADER = REPO / "tei" / "corpus-header.xml"
 
 
@@ -71,7 +71,7 @@ def test_the_collation_skill_gives_every_code_a_firing_rule():
     body = SKILL.read_text(encoding="utf-8")
     tier1 = body.split("## Tier 1", 1)[1].split("## Tier 2", 1)[0]
     missing = sorted(c for c in TIER1 if f"**`{c}`**" not in tier1)
-    assert not missing, f"transcribe-page's closed set omits {missing}"
+    assert not missing, f"the collator's closed set omits {missing}"
 
 
 def test_the_corpus_header_declares_exactly_the_set():

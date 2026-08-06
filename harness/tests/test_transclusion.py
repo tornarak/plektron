@@ -22,6 +22,7 @@ from pathlib import Path
 import pytest
 
 from harness.dispatch import AGENT, TRANSCLUDE, Unready, sync_transcludes
+from harness.dispatch import COLLATE_AGENT as COLLATOR
 
 REPO = Path(__file__).resolve().parent.parent.parent
 
@@ -33,32 +34,48 @@ def blocks(text: str) -> list[tuple[str, str]]:
             for m in TRANSCLUDE.finditer(text)]
 
 
-def test_the_agent_carries_the_two_texts_it_says_it_does():
+# What each dispatched agent must carry. `keying_spec.md` is in both because it
+# binds both passes — which is also why it cannot simply *move* into either file.
+CARRIES = {
+    AGENT: {"keying_spec.md",
+            ".claude/skills/rebuild-groundtruth/checklist.md"},
+    COLLATOR: {"keying_spec.md"},
+}
+
+
+@pytest.mark.parametrize("agent", sorted(CARRIES), ids=lambda p: p.name)
+def test_each_agent_carries_the_texts_it_says_it_does(agent):
     """Named, so removing one is a failure rather than a quiet economy.
 
-    The body tells the reader not to open either file because it already has
-    them. If a block went missing, that instruction would send readers into a
-    page with no spec and nothing would say so.
+    Both bodies tell their agent not to open the spec because it already has it. If
+    a block went missing, that instruction would send agents into a page with no
+    spec and nothing would say so.
     """
-    got = {src for src, _ in blocks((REPO / AGENT).read_text(encoding="utf-8"))}
-    assert got == {"keying_spec.md",
-                   ".claude/skills/rebuild-groundtruth/checklist.md"}
+    got = {src for src, _ in blocks((REPO / agent).read_text(encoding="utf-8"))}
+    assert got == CARRIES[agent]
 
 
-@pytest.mark.parametrize("src", ["keying_spec.md",
-                                 ".claude/skills/rebuild-groundtruth/checklist.md"])
-def test_every_transcluded_block_matches_its_source_byte_for_byte(src):
-    """The gate itself. Edit the source and this fails until `queue` re-syncs.
+@pytest.mark.parametrize("agent,src",
+                         [(a, s) for a, ss in sorted(CARRIES.items()) for s in sorted(ss)],
+                         ids=lambda v: getattr(v, "name", v))
+def test_every_transcluded_block_matches_its_source_byte_for_byte(agent, src):
+    """The gate itself. Edit the source and this fails until a `queue` re-syncs.
 
     Byte-for-byte and not "substantially the same": the spec's content is
     codepoints, and a copy that differs by a combining mark is precisely the
     class of error the spec exists to prevent.
+
+    **Two agents now carry `keying_spec.md`**, so one edit puts two files out of
+    date and `agents sync --commit` is the way to catch both. `ocr queue` re-syncs
+    only the reading agent and `tei queue` only the collator — a batch is dispatched
+    from one contract, and rewriting the other on its way past would put an
+    unrelated tracked file into the commit.
     """
-    text = (REPO / AGENT).read_text(encoding="utf-8")
+    text = (REPO / agent).read_text(encoding="utf-8")
     body = dict(blocks(text))[src]
     assert body == (REPO / src).read_text(encoding="utf-8").strip("\n"), (
-        f"{src} and its copy in {AGENT} disagree. Run `harness ocr queue` (which "
-        "re-syncs), or sync_transcludes(), and commit the result.")
+        f"{src} and its copy in {agent} disagree. Run `harness agents sync "
+        "--commit` and commit the result.")
 
 
 def test_sync_is_idempotent(tmp_path):

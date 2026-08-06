@@ -363,3 +363,115 @@ def test_moll_crops_but_does_not_enhance():
 def test_moll_may_not_write_into_the_corpus():
     blocked(MOLL_GUARD, "Write", file_path="gt/ocr/chukchi-1-031.xml", content="x")
     blocked(MOLL_GUARD, "Write", file_path="tei/1-031.xml", content="x")
+
+
+# --- collator ---------------------------------------------------------------
+#
+# The third guard, and the first for a pass whose deliverable is a tracked file
+# rather than a proposal under `review/`. Two things make it differ from the two
+# above rather than being a copy of them: the raster is read directly (the collation
+# rules call the image "the only witness that matters", and `tei context` hands over
+# `page_image` for exactly that), and one verb is refused for *ordering* rather than
+# authority — `tei seam` is legitimate work that must happen later, done by someone
+# else, which is a refusal a generic "not in your surface" would teach the wrong
+# lesson about.
+
+COLLATOR_GUARD = REPO / ".claude/hooks/collator-guard.sh"
+
+
+@pytest.mark.parametrize("cmd", [
+    "uv run harness tei claim",
+    "uv run harness tei context 1-075",
+    "uv run harness tei validate 1-075",
+    "uv run harness tei expand 1-075 --commit",
+    "uv run harness tei ids 1-075",
+    "uv run harness tei pair 1-075",
+    "uv run harness corpus normalize 1-075",
+    "uv run harness ocr zoom 1-075 --only 7,20",
+    "uv run harness ocr zoom 1-075 --only 7 --store gt",
+    "uv run harness find authority 'Dall, I, p. 375.'",
+    "uv run harness lexicon lookup kulu",
+    "uv run harness verbs show tei expand",
+])
+def test_the_collator_s_surface_runs_without_a_prompt(cmd):
+    allowed(COLLATOR_GUARD, "Bash", command=cmd)
+
+
+def test_the_collator_may_not_seam_its_own_page():
+    """The one refusal here that is about ordering rather than authority: under a
+    dispatched batch the neighbour may be half-written, so a page that seams itself
+    asserts a gap against a file nobody finished. The message has to say that, or a
+    collator concludes the verb was merely unavailable and looks for another route to
+    the same claim."""
+    err = blocked(COLLATOR_GUARD, "Bash",
+                  command="uv run harness tei seam 1-075 --continues --commit")
+    assert "coordinator" in err and "opens:" in err
+
+
+@pytest.mark.parametrize("cmd", [
+    "uv run harness tei queue 1-075 1-076",
+    "uv run harness tei reconcile 1-075",
+    "uv run harness tei reservations --all",
+    "uv run harness tei ledger",
+])
+def test_the_coordinator_s_view_of_the_batch_is_refused(cmd):
+    """A collator that can queue can deal itself pages; one that can reconcile is
+    auditing a run it is a subject of."""
+    blocked(COLLATOR_GUARD, "Bash", command=cmd)
+
+
+def test_the_collator_reads_the_raster_directly():
+    """Unlike the reading loop, which meets the page through an indexed ladder. The
+    collation rules call the image the only witness that matters, and `tei context`
+    hands over `page_image` pointing straight at it — a guard refusing `scans/` here
+    would starve the pass of its primary evidence."""
+    allowed(COLLATOR_GUARD, "Read", file_path="scans/chukchi-1-075.png")
+
+
+def test_the_collator_reads_and_writes_its_own_page():
+    allowed(COLLATOR_GUARD, "Read", file_path="tei/chukchi-1-075.xml")
+    allowed(COLLATOR_GUARD, "Write", file_path="tei/chukchi-1-075.xml")
+
+
+@pytest.mark.parametrize("path", [
+    "gt/ocr/chukchi-1-075.xml",
+    "mz/ocr/chukchi-1-075.xml",
+    "ocr/chukchi-1-075.xml",
+    "zones/chukchi-1-075.xml",
+])
+def test_the_raw_alto_is_refused_in_favour_of_context(path):
+    err = blocked(COLLATOR_GUARD, "Read", file_path=path)
+    assert "tei context" in err
+
+
+def test_the_transcluded_spec_is_refused_by_name():
+    err = blocked(COLLATOR_GUARD, "Read", file_path="keying_spec.md")
+    assert "TRANSCLUDED" in err
+
+
+@pytest.mark.parametrize("path", [
+    "gt/ocr/chukchi-1-075.xml",
+    "data/authorities.json",
+    "tei/corpus-header.xml",
+    "../elsewhere/tei/chukchi-1-075.xml",
+])
+def test_the_collator_writes_nowhere_else(path):
+    blocked(COLLATOR_GUARD, "Write", file_path=path)
+
+
+def test_no_corpus_form_of_anything():
+    blocked(COLLATOR_GUARD, "Bash", command="uv run harness tei validate --all")
+
+
+def test_an_operator_cannot_smuggle_a_second_command():
+    blocked(COLLATOR_GUARD, "Bash",
+            command="uv run harness tei validate 1-075 && rm -rf tei")
+
+
+def test_a_citation_with_punctuation_is_not_chaining():
+    """`find authority` takes a printed citation whole, semicolons and all. The
+    reading guard learned this the expensive way: a substring test refused ordinary
+    page text as "chaining", and readers rewrote Bogoras's punctuation to get past
+    it — a guard corrupting the data it exists to protect."""
+    allowed(COLLATOR_GUARD, "Bash",
+            command="uv run harness find authority 'Krause; see also Nordquist, II'")

@@ -430,7 +430,7 @@ def queue_refs(refs: list[str], root: Path = Path("."),
         r = norm_ref(ref)
         if r in seen:
             raise Unready(
-                f"{r} is named twice. A ref appears once per batch: two readers "
+                f"{r} is named twice. A ref appears once per batch: two agents "
                 "on one page overwrite each other, and the batch is a page short "
                 "with nothing able to say which one.")
         seen.add(r)

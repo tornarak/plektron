@@ -28,7 +28,7 @@ In the TEI this is `@resp` on every element bearing a Tier-1 `xml:lang`, pointin
 of four ranks: `#ed` ratified (a human keyed or confirmed it against the page), `#llm`
 proposed (a model read it), `#htr` unexamined (recognizer output), and `#gt` adopted
 (transcluded whole out of adjudicated ground truth by `harness tei expand`, and re-checked
-against it on every run — the collation skill's "A Tier-1 span the pass did not key").
+against it on every run — the collator's "A Tier-1 span the pass did not key").
 The ranks are declared once, in the corpus teiHeader, never in a page file. The
 collation pass may emit `#llm` and nothing else; `harness tei validate` errors on a
 higher claim and on a missing `@resp` equally, because an unmarked span is
@@ -174,7 +174,8 @@ every byte of this file on every page.
 |---|---|
 | `CLAUDE.md` | project invariants, the store layout, and this table |
 | `keying_spec.md` | the character inventory. Binds both passes and the human keying track |
-| `.claude/skills/transcribe-page/` | the OCR→TEI collation loop, rules included — it has no separate harness doc |
+| `.claude/agents/collator.md` | the OCR→TEI collation contract, whole — a collator's system prompt, spec transcluded |
+| `.claude/skills/transcribe-page/` | dispatching a batch of collators, and the seam afterwards |
 | `.claude/agents/groundtruth-reader.md` | the raster→ALTO reading contract, whole — a reader's system prompt, spec transcluded |
 | `.claude/skills/rebuild-groundtruth/` | dispatching and adjudicating a batch of readers |
 | `.claude/skills/train-zones/` | the segmenter's train→score→install loop, its measured state, and the judgement in it |
@@ -189,9 +190,10 @@ every byte of this file on every page.
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
 
-Two passes, and they are not the same job: collation (OCR → TEI, output `tei/`) and
-the ground-truth loop (raster → ALTO, output `gt/ocr/`). A page that already has
-ground truth is not a reading candidate.
+Two passes, not one job: collation (OCR → TEI, `tei/`) and the ground-truth loop
+(raster → ALTO, `gt/ocr/`). Both dispatch one agent per page off a queue, contract
+in the agent body. Ground truth disqualifies a page from the second and improves
+it for the first.
 
 # Current pipeline
 
@@ -203,11 +205,8 @@ reasoning are `docs/pipeline.md`.
 
 # Collation
 
-Process and rules — the correction licence (European-language spelling yes,
-Tier-1 never), its boundaries, the keying rules — are
-`.claude/skills/transcribe-page/SKILL.md`'s; the loop is
-`/transcribe-page PP-NNN`. What stays here is the detector formula and the
-measurements that shaped the tools.
+Rules are `.claude/agents/collator.md`'s, dispatch is `/transcribe-page`. What
+stays here is the detector formula and the measurements that shaped the tools.
 
 **Transcription Detection** (speculative, mechanical, no judgement): inventory-glyph match ∪ word-medial
   `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **English-lexicon miss**. The
@@ -228,18 +227,17 @@ and the span diff survives only as measurement.
 
 ## Cross-page state
 
-The collation pass is strictly per-page. What legitimately crosses a page
-boundary crosses through the **committed TEI**, folded forward by `harness tei
-ledger`; the ledger's fields, `prev_tail` and the seam machinery are the
-collation skill's.
+Collation is per-page, dispatched a batch at a time. What crosses a page
+boundary crosses through the **committed TEI**, folded by `harness tei ledger`.
+The seam is the coordinator's: a page records `<!-- opens: … -->`, the witness
+only it saw; `tei seam` writes the verdict after the batch.
 
 ## TEI
 
 **Assembly is still unsettled**; the corpus teiHeader is not, and is
 `tei/corpus-header.xml`. The output contract and every encoding rule are the
-collation skill's in full. The annotation passes beyond it are TBD.
+collator's in full. The annotation passes beyond it are TBD.
 
 ## Open
 
-The standing record of what is deliberately unresolved is `docs/open-questions.md` —
-an entry leaves it by being settled, and says so when it goes.
+An entry leaves `docs/open-questions.md` by being settled, and says so when it goes.

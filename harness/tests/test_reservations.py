@@ -22,7 +22,10 @@ import pytest
 from harness.reservations import CLASSES, classify, page_reservations
 
 REPO = Path(__file__).resolve().parent.parent.parent
-CONTRACT = REPO / ".claude" / "skills" / "transcribe-page" / "SKILL.md"
+# The agent body, not the skill: the skill is the coordinator's half and states none
+# of the comment forms. This pointer moved once already, when the rules did, and the
+# gate is what said so.
+CONTRACT = REPO / ".claude" / "agents" / "collator.md"
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 

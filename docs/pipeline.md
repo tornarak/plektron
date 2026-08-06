@@ -98,5 +98,16 @@ the stages that are built.
 5. **TEI** - `tei/chukchi-PP-NNN.xml`. Also the system of record for seam state:
    its `<pb>` is where the printed folio enters the project, and `harness tei ledger`
    folds the committed files into the per-ref ledger the next page is built from.
+
+   **Written by a dispatched collator, one agent per page**, off the queue
+   `harness tei queue` writes — the same shape as the ground-truth loop, and for the
+   same reason: the contract has to sit in a system prompt for siblings to share it.
+   The pass looked serial and was not. Only the *seam* is, and it was never the
+   page's work — `@part` is `harness tei seam`'s, written from the page holding both
+   ends of the gap, so a collator records the one witness only it has (the first
+   line's indent, as `<!-- opens: … -->`) and the coordinator writes the verdict
+   after the batch. What a fan-out gives up is `prev_tail` and `expected_folio` on
+   every page but the first; `tei reservations` names what that blinded and
+   `tei ledger` is where the folio check comes back, over the whole run at once.
 6. ???
 7. PROFIT!
