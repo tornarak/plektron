@@ -416,3 +416,36 @@ def test_the_source_flag_is_always_a_closed_set(parser_surface):
                     f"{gname} {aname}: --store is not a closed set"
                 assert tuple(p.type.choices) == ("gt", "mz"), \
                     f"{gname} {aname}: --store is not the closed pair"
+
+
+def test_every_flag_that_parses_also_renders_in_help():
+    """`--help` and the parser must agree, in the direction that actually failed.
+
+    cloup splits `params` into grouped and ungrouped options once, in
+    `OptionGroupMixin.__init__`, and formats `--help` off that split — while click
+    parses off `params`. Since every action-specific option in this CLI is hung on
+    the command *after* construction, all of them parsed correctly and none of
+    them appeared in any help output: `proposal codepoints --line` was real,
+    documented in `VERBS.md`, gated by the test above, and invisible to `-h`. A
+    reader checked the help, concluded the flag did not exist, guessed a
+    positional, and spent two turns on the usage error.
+
+    `test_flags_match_both_directions` cannot see this — it compares the parser
+    against the reference, and both of those were right.
+    """
+    import click
+
+    from harness.cli import build_parser
+    from harness.cli._common import _actions
+
+    cli = build_parser()
+    ctx = click.Context(cli)
+    for (gname, aname), cmd in _actions(cli).items():
+        shown = {o.name for o in cmd.get_ungrouped_options(ctx)}
+        for grp in getattr(cmd, "option_groups", ()):
+            shown |= {o.name for o in grp.options}
+        for p in cmd.params:
+            if isinstance(p, click.Option):
+                assert p.name in shown, (
+                    f"{gname} {aname}: {p.opts} parses but renders in no "
+                    "--help section")

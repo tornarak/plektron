@@ -33,6 +33,7 @@ from types import SimpleNamespace
 
 import click
 import cloup
+from cloup._option_groups import get_option_group_of
 from cloup.constraints import mutually_exclusive, require_one
 from cloup.constraints._support import BoundConstraintSpec
 
@@ -303,8 +304,20 @@ def _section(grp: cloup.Group, title: str | None):
 
 
 def opt(cmd: cloup.Command, *decls, **kw) -> cloup.Command:
-    """One option. `decls` is click's: the flags, plus a bare name to set the dest."""
-    cmd.params.append(cloup.Option(list(decls), **kw))
+    """One option. `decls` is click's: the flags, plus a bare name to set the dest.
+
+    **The second append is not redundant.** cloup splits `params` into grouped and
+    ungrouped options *once*, in `OptionGroupMixin.__init__`, and renders `--help`
+    off that split — while click parses off `params`. Every option hung on a
+    command after construction, which is every action-specific option in this CLI,
+    therefore worked perfectly and appeared in no help output: `proposal codepoints
+    --line` was real, documented in `VERBS.md`, and invisible to `-h`, so a reader
+    that checked the help concluded it did not exist and guessed a positional.
+    """
+    o = cloup.Option(list(decls), **kw)
+    cmd.params.append(o)
+    if get_option_group_of(o) is None and hasattr(cmd, "ungrouped_options"):
+        cmd.ungrouped_options = [*cmd.ungrouped_options, o]
     return cmd
 
 
