@@ -305,6 +305,17 @@ it would fire forever on `1-053`'s wrapped "…Nordquist, / 2 houses)." — a pa
 printing no footnote 2 at all — and a permanent known-false hit is precisely the
 noise that buries real signal.
 
+**A figure sub-part locant is not a marker** — `(Fig. 17, f¹)`, a raised numeral
+picking out one labelled detail of a plate. Key it as printed; it anchors no
+note, so it is printed once, and the counting excludes it rather than reading it
+as an unpaired marker. The exclusion is narrow, and taken from what `gt/ocr/`
+attests: a **lone letter** carries the superscript and a close-paren follows.
+Both halves are load-bearing — the same store holds real markers on a
+multi-letter word before a paren (`Ciˊṛluk⁶)`) and spaced off the word
+(`Nelson ¹)`), and either half of the rule alone would swallow one of them. The
+locant is still *reported*, at the advisory tier: an exclusion that says nothing
+is indistinguishable from a check that never ran.
+
 **Position on the page is not used by the checks, and must not be** — the scan
 is not consistent enough for the *detectors* to carry geometric judgement, and
 a half-footnote page would defeat any fixed cut. That is a constraint on the

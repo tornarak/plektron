@@ -816,14 +816,25 @@ def _footnote_issues(data: dict) -> list[dict]:
         problems.append(f"line {op['line']} opens with bare ASCII {op['digit']!r} — "
                         f"footnote markers are keyed as the superscript digit, never "
                         f"the plain one: {op['text']!r}")
+    # The locants the pairing arms were told to ignore, reported at the advisory
+    # tier. They cannot gate — being unpaired is what a locant *is*, so a gate
+    # here is the one `1-137` failed by mis-keying `a¹` to `a1`. But the
+    # exclusion rests on a bracket and a neighbouring letter, and a genuine
+    # marker wearing that shape would vanish out of the count in silence, so it
+    # says what it dropped and lets the adjudicator look.
+    out = [issue(lo["line"], "figure locant, not a footnote", severity=ADVISORY,
+                 token=f"{lo['digit']}", context=lo["text"],
+                 detail="a raised numeral labelling a figure sub-part anchors no "
+                        "note; excluded from the marker count. Key it as printed.")
+           for lo in rep["figure_locants"]]
     if not problems:
-        return []
+        return out
     explained = (data.get("footnotes") or {}).get("note") if \
         isinstance(data.get("footnotes"), dict) else data.get("footnotes")
     detail = "; ".join(problems)
     if explained:
         detail += f" — explained: {explained}"
-    return [issue("-", "footnote markers", detail=detail)]
+    return out + [issue("-", "footnote markers", detail=detail)]
 
 
 def fix(path: Path) -> dict:

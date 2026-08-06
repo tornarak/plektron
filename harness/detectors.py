@@ -603,6 +603,23 @@ SUPERSCRIPT_DIGITS = {"¹": 1, "²": 2, "³": 3,
 # book sets those as digit + PERIOD (27 in the same corpus, e.g. "2. Cacanlorgin"),
 # which this deliberately does not match. Report-only, like everything here.
 ASCII_FOOTNOTE_OPENER = re.compile(r"^([1-9])\s+(?=\S)")
+# A figure citation's sub-part locant: `(Fig. 17, f¹)`, a raised numeral picking
+# out one labelled detail of a plate. Typographically identical to a footnote
+# marker and not one — it anchors nothing, so it is printed once and can only
+# ever read as an unpaired marker.
+#
+# The shape is taken from `gt/ocr/`, which attests four and no counter-example:
+# `Fig. 17, f¹)`, `Fig. 155, a¹)`, `Fig. 155, b, d¹)`, `Fig. 155, c¹)`. A **lone
+# letter** carries the superscript and a close-paren follows, and both conjuncts
+# are load-bearing: the same store holds `Ciˊṛluk⁶),` (a real marker, on a
+# multi-letter word) and `Nelson ¹)`, `Kiˊhi ¹)`, `[albino] ¹)` (real markers
+# before a paren, spaced off the word). Either half alone would swallow one of
+# those.
+#
+# Deliberately **not** keyed on `Fig.` appearing in the line: `155, a¹),` is a
+# citation wrapped across a line break, and the reader keying that line can see
+# the locant but not the word that governs it.
+FIGURE_LOCANT = re.compile(r"(?<![^\s(])[a-z]([¹²³⁴⁵⁶⁷⁸⁹])\)")
 
 
 def footnote_report(texts: list[str]) -> dict:
@@ -644,10 +661,34 @@ def footnote_report(texts: list[str]) -> dict:
     and is what a freshly recognized page looks like, since CATMuS emits plain
     digits. Catching that case needs a witness this function does not have.
 
+    A **figure sub-part locant** (`FIGURE_LOCANT`) is dropped before any of this
+    runs, and returned in `figure_locants` so the exclusion is visible. It is a
+    raised numeral that anchors nothing, so it is printed once and fails the
+    pairing invariant by construction — and a reader cannot satisfy a gate by
+    keying it right. Two batches proved that the hard way: `1-137` keyed `a¹`
+    down to a plain `a1` to get past the check and put a character in the store
+    the page does not set, which is the one outcome this whole module exists to
+    prevent. The pairing invariants stay a gate for everything else.
+
     `texts` must be in **reading order**; "earlier" is meaningless otherwise.
 
     Returns counts and offenders; the caller decides what is an issue.
     """
+    # A figure locant is not a marker of anything countable, so it leaves before
+    # the counting rather than being forgiven after it: it must not add a count,
+    # must not fill a gap, and must not establish the page's superscript
+    # convention for `ascii_openers` below.
+    #
+    # It is *returned* rather than merely dropped. An exclusion that reports
+    # nothing is indistinguishable from a detector that never looked, and this
+    # one takes a real superscript out of the count on the strength of a
+    # neighbouring letter and a bracket — the reading that most wants a second
+    # pair of eyes is exactly the one this silences.
+    printed, texts = texts, [FIGURE_LOCANT.sub("", t) for t in texts]
+    locants = [{"line": i, "digit": int(SUPERSCRIPT_DIGITS[m.group(1)]),
+                "text": t[:60]}
+               for i, t in enumerate(printed) for m in FIGURE_LOCANT.finditer(t)]
+
     counts: dict[int, int] = {}
     for text in texts:
         for ch in text:
@@ -661,11 +702,13 @@ def footnote_report(texts: list[str]) -> dict:
     seen_superscript = False
     for i, t in enumerate(texts):
         if (m := ASCII_FOOTNOTE_OPENER.match(t)) and seen_superscript:
-            openers.append({"line": i, "digit": int(m.group(1)), "text": t[:60]})
+            openers.append({"line": i, "digit": int(m.group(1)),
+                            "text": printed[i][:60]})
         if any(ch in SUPERSCRIPT_DIGITS for ch in t):
             seen_superscript = True
     return {"counts": {n: counts[n] for n in sorted(counts)},
-            "gaps": gaps, "singletons": singletons, "ascii_openers": openers}
+            "gaps": gaps, "singletons": singletons, "ascii_openers": openers,
+            "figure_locants": locants}
 
 
 def detect_all(lines: list[str], root: Path = Path("."),

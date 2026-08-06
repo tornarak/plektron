@@ -18,7 +18,7 @@ real hits (CLAUDE.md, "Transcription Detection").
 import json
 
 from harness.detectors import footnote_report
-from harness.proposal_check import check
+from harness.proposal_check import DEFECT, check
 
 
 def test_clean_page_passes():
@@ -39,7 +39,8 @@ def test_clean_page_passes():
 
 def test_page_with_no_footnotes_is_not_an_issue():
     rep = footnote_report(["ordinary prose", "more prose"])
-    assert rep == {"counts": {}, "gaps": [], "singletons": [], "ascii_openers": []}
+    assert rep == {"counts": {}, "gaps": [], "singletons": [],
+                   "ascii_openers": [], "figure_locants": []}
 
 
 def test_gap_in_the_run_is_reported():
@@ -120,6 +121,76 @@ def test_a_bare_digit_before_the_first_superscript_is_not_flagged():
     assert rep["ascii_openers"] == []
 
 
+# --- the figure sub-part locant ---------------------------------------------
+#
+# `(Fig. 17, f¹)` — a raised numeral picking out one labelled detail of a plate.
+# It anchors no note, so it is printed once and breaks the pairing invariant by
+# construction, and the gate is one no reader can pass: `1-137` keyed `a¹` down
+# to `a1` to get past it, putting a character in the store the page does not set.
+# `1-121` and `1-148` hit the same wall and kept the correct glyph instead.
+
+ATTESTED_LOCANTS = [           # every instance in gt/ocr/, whole lines
+    "is used (see Fig. 17, f¹), that is loosely tied to the right runner, and, when",
+    "155, a¹), and are bought from traders.",
+    "and the Kamchadal (Fig. 155, b, d¹). Leather thimbles in similar shapes are",
+    "also used (Fig. 155, c¹).",
+]
+
+ATTESTED_MARKERS = [           # real markers from the same store, near the shape
+    "Nepeˊkuten (Eskimo, Napaˊkutak), on the island called Ipeˊkut (Eskimo, Ciˊṛluk⁶),",
+    "Kihiˊni (Eskimo, Kiˊhi ¹), on an island of the same name: 3 houses",
+    "Nelson ¹) misspell it “Circassian” (Cherkessky, Черкесскій). It is sold either",
+    "14. Ilhɪ-lileˊ (“white-eyed” [albino] ¹).",
+]
+
+
+def test_a_figure_locant_does_not_count_as_a_marker():
+    """Each line prints one raised numeral and no note opens anywhere, so every
+    one of these would be a singleton — the gate `1-137` mis-keyed to pass."""
+    for line in ATTESTED_LOCANTS:
+        rep = footnote_report([line])
+        assert rep["counts"] == {}, line
+        assert rep["singletons"] == [] and rep["gaps"] == [], line
+
+
+def test_a_real_marker_near_the_locant_shape_still_counts():
+    """Both conjuncts of the pattern are load-bearing, and the same store holds
+    the counter-example to each: `Ciˊṛluk⁶)` puts a real marker on a multi-letter
+    word before a paren, and the other three space it off the word entirely.
+    Either half of the rule alone would swallow one of these."""
+    for line in ATTESTED_MARKERS:
+        rep = footnote_report([line])
+        assert rep["singletons"], line
+
+
+def test_a_locant_does_not_establish_the_page_convention():
+    """`ascii_openers` fires only once a superscript has proved this page keys
+    its markers raised. A locant proves nothing about the notes, so a bare digit
+    after one is still just a digit — otherwise excluding it from the count
+    would smuggle it back in through the other arm."""
+    rep = footnote_report(["also used (Fig. 155, c¹).", "2 houses)."])
+    assert rep["ascii_openers"] == []
+
+
+def test_a_locant_is_reported_rather_than_silently_dropped():
+    """An exclusion that reports nothing reads exactly like a detector that never
+    looked, and this one drops a real superscript on the strength of a bracket."""
+    rep = footnote_report(ATTESTED_LOCANTS)
+    assert [lo["digit"] for lo in rep["figure_locants"]] == [1, 1, 1, 1]
+    assert rep["figure_locants"][0]["line"] == 0
+    # The excerpt is the line as printed, not the line with the locant cut out.
+    assert "f¹" in rep["figure_locants"][0]["text"]
+
+
+def test_a_page_of_locants_and_one_real_note_keeps_the_note(tmp_path):
+    """`1-148`'s shape: `Fig. 21, a¹` alongside an ordinary paired footnote. The
+    locant leaves, the note is counted, and the page passes clean."""
+    rep = footnote_report(["a brake (Fig. 21, a¹) checks the motion",
+                           "described by Nelson.¹", "¹ Nelson, p. 136."])
+    assert rep["counts"] == {1: 2}
+    assert rep["singletons"] == [] and rep["gaps"] == []
+
+
 def _proposal(tmp_path, lines, footnotes=None):
     doc = {"lines": {str(i): {"text": t} for i, t in enumerate(lines)}}
     if footnotes is not None:
@@ -167,6 +238,18 @@ def test_explanation_accepts_a_bare_string_too(tmp_path):
 def test_clean_page_emits_no_footnote_issue(tmp_path):
     path = _proposal(tmp_path, ["a.¹", "¹ note"])
     assert [i for i in check(path) if i["issue"] == "footnote markers"] == []
+
+
+def test_a_locant_never_gates_but_always_prints(tmp_path):
+    """The whole fix in one page: `1-137`'s line, which failed the gate and got
+    a correct character mis-keyed to satisfy it. It must now pass — and must not
+    pass in silence."""
+    from harness.proposal_check import ADVISORY
+    issues = check(_proposal(tmp_path, ["is used (see Fig. 21, a¹), that is tied"]))
+    assert [i for i in issues if i["issue"] == "footnote markers"] == []
+    lo = [i for i in issues if i["issue"] == "figure locant, not a footnote"]
+    assert len(lo) == 1 and lo[0]["severity"] == ADVISORY
+    assert not [i for i in issues if i["severity"] == DEFECT]
 
 
 # --- the normalize bucket: scoping, and the report-only tier -----------------
