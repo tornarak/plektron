@@ -1,0 +1,84 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "45"},
+    "2": {
+      "text": "tribes and nations intermingle.” Raˊlɵ geneˊʟ̣eet (“blended together”) is the",
+      "resolved": "Raˊlɵ = R,a,U+02CA stress,l,ɵ U+0275 LATIN SMALL LETTER BARRED O; geneˊʟ̣eet = g,e,n,e,U+02CA stress,ʟ U+029F LATIN LETTER SMALL CAPITAL L + U+0323 COMBINING DOT BELOW,e,e,t",
+      "note": "Both raised marks read as stress U+02CA (comma-tick shape, matches every other stress mark on the page), not apostrophe, per keying_spec §4/§5.8. The small-cap ʟ carries a dot below, confirmed at 4x zoom (review/1-067/zoom/zoom4-2p36-69_15p49-81.png) — visible as a distinct mark separate from the letter body, matching the licensed ʟ̣ sort (§2.5, four laterals l ḷ ʟ ʟ̣). `proposal check` flags `geneˊʟ̣eet` as advisory ('rare form', ʟ̣ set in only 9.4% of 53 corpus attestations) — answered: the dot below was read directly off the 4x crop, not inferred from base rate, and the shape is unambiguous at that magnification. The vowel after 'Ra' reads as ɵ (barred o, 'between o and u, long', §2.1), confirmed at 4x against the identical glyph shape recurring in the same crop; CATMuS's machine text reads it as plain 'e' (Ra'le), consistent with the known ɵ→e substitution pattern."
+    },
+    "3": {"text": "ordinary Chukchee term to describe intertribal relations on all borders. On the"},
+    "4": {"text": "other hand, when in 1895, during a brawl at the Anui fair, a Reindeer Chukchee"},
+    "5": {"text": "was killed by the Cossacks, the others resented the deed so much that they were"},
+    "6": {"text": "almost ready to attack the fort. Notwithstanding the “weregild” paid by the"},
+    "7": {"text": "officials to the family of the slain man, the Chukchee harbored a feeling of ill will"},
+    "8": {"text": "for a long time afterwards; and the next winter, when travelling among the"},
+    "9": {"text": "Anui camps, I had one or two rather unpleasant encounters with the people."},
+    "10": {"text": "A considerable part of their former intractability remains at the present"},
+    "11": {"text": "time, especially among the Reindeer people, and shows itself even in the minor"},
+    "12": {"text": "details of every-day life. The Chukchee is easily angered; often a trifle will"},
+    "13": {"text": "suffice to transform his merry laughter into the most unreasonable rage. They"},
+    "14": {"text": "themselves are not unconscious of this peculiar feature of their mind. “I am"},
+    "15": {
+      "text": "a tundra wanderer,” one of my Chukchee acquaintances, named Ñᵉiroˊn, would",
+      "resolved": "Ñᵉiroˊn = N+U+0303 (Ñ), ᵉ U+1D49 rising-diphthong onglide (licensed only immediately before i, §2.1), i, r, o, U+02CA stress, n",
+      "note": "A raised mark sits directly above/before the 'i', distinct in position from the page's postposed stress ticks (which sit to the upper-right of the preceding vowel, as in Raˊlɵ and Yekuˊtku on this same page). Ruled out tilde-tail bleed by contrasting against the plain 'ñ' in maraˊ-ñaˊus˙qattê (line 18, zoom review/1-067/zoom/zoom4-18p50-83.png), whose tilde has no downward tail. Keyed as the licensed onglide ᵉ (preposed, immediately before i, §2.1) since that is the only catalogued sort whose position and licensing fit; the final mark after 'o' is keyed as ordinary postposed stress. Flagging for adjudication per §5.9/uncatalogued-second-mark discipline: if wrong, the likely alternative is print bleed from line 14 directly above, not a second stress mark (which would violate culminativity)."
+    },
+    "16": {"text": "say to me. “My anger rises suddenly. It comes and goes of its own accord.”"},
+    "17": {"text": "Some women bear a special name on account of their violent temper. They"},
+    "18": {
+      "text": "are called “quarrelling women” (maraˊ-ñaˊus˙qattê). These are regarded as",
+      "resolved": "maraˊ-ñaˊus˙qattê = mara,U+02CA stress,-,n+U+0303 (ñ),a,U+02CA stress,us,U+02D9 COMBINING DOT ABOVE (palatalization, postposed after s — s is a licensed base, §2.1/§2.5 seven-member series n x d t s č ǰ),qattê (ê = e+U+0302)",
+      "note": "The dot between 'us' and 'qattê' is a round dot sitting close to the baseline/x-height, distinct in shape from the comma-tick stress marks earlier in the same word (confirmed at 4x, review/1-067/zoom/zoom4-18p50-83.png) — keyed as the palatalization mark U+02D9 on 's', not a stray period."
+    },
+    "19": {"text": "nuisances even by their housemates. Among the men, some have the very"},
+    "20": {
+      "text": "suggestive epithet “hasty” (qɪvr) prefixed to their names, as “Hasty Aᵋmuˊlin”",
+      "resolved": "qɪvr = q, ɪ U+026A LATIN LETTER SMALL CAPITAL I, v, r; Aᵋmuˊlin = A, ᵋ U+1D4B LATIN SMALL LETTER GLOTTAL STOP (laryngeal superscript, licensed §2.1), m, u, U+02CA stress, l, i, n",
+      "note": "The small-cap ɪ in qɪvr was contrasted against ordinary ASCII capital I elsewhere on the page ('I had', line 9; 'I heard', line 36) — the notation letter is shorter and lacks the ordinary capital's proportions, consistent with ɪ (§2.3). The raised mark after A in Aᵋmu'lin reads as a rounded loop with a tail rather than a straight tick; per the recorded misreading class (memory: the-two-superscript-marks, citing 1-038 L37) this shape is the laryngeal ᵋ U+1D4B, not an uncatalogued 'superscript g' — keyed as ᵋ accordingly."
+    },
+    "21": {
+      "text": "(Qɪvr-Aᵋmuˊlin).",
+      "resolved": "Qɪvr-Aᵋmuˊlin = Q (plain ASCII, not part of the ᴀ ᴇ ɪ ʟ small-cap series), ɪ U+026A LATIN LETTER SMALL CAPITAL I, v, r, -, A, ᵋ U+1D4B laryngeal superscript, m, u, U+02CA stress, l, i, n",
+      "note": "Same qɪvr/Aᵋmu'lin forms as line 20, repeated in the parenthetical gloss; read against line 20's crop for consistency."
+    },
+    "22": {"text": "The Chukchee, when angry, growls, shows his teeth, and makes a threatening"},
+    "23": {"text": "bite on his sleeve or on the handle of his knife, in defiance of his foe. Some"},
+    "24": {"text": "of them, when angered, shed tears of rage, and tear their hair like unruly children."},
+    "25": {"text": "Their language is singularly poor in abusive terms, and quarrels are"},
+    "26": {"text": "immediately settled by blows or wrestling. There is no lack of murders, some"},
+    "27": {"text": "of them of a barbarous character. Thus, in a camp near Cape Erri, the son"},
+    "28": {
+      "text": "and the nephew of the rich reindeer-breeder Yekuˊtku, being goaded to the",
+      "resolved": "Yekuˊtku = Y,e,k,u,U+02CA stress,t,k,u",
+      "note": "Ordinary single postposed stress mark, unambiguous at 2x."
+    },
+    "29": {"text": "extreme by constant blows and abuse, cut his throat, and that with the knowl-"},
+    "30": {
+      "text": "edge of his wife, the mother of one of the murderers. In the summer of",
+      "note": "The word 'the' before 'mother' carries a small raised comma-shaped mark above the 'e' (review/1-067/zoom/zoom2-43_30p19-87_42p37-100.png). This is an ordinary English word with no licensed Tier-1 environment nearby, so the mark is read as a printing artifact (stray ink / damaged sort) rather than a real diacritic, and is not reproduced — keyed as plain 'the'."
+    },
+    "31": {"text": "1896 on the Poplar River, an affluent of the Small Anui, a young man killed"},
+    "32": {"text": "his brother in order to get possession of his flock. The murderer, with his"},
+    "33": {"text": "accomplice and their victim, arranged a contest of jumping over a barrier,"},
+    "34": {"text": "the loser to pay the forfeit of skipping about for a while with his feet and"},
+    "35": {"text": "hands bound together. When the elder brother lost, the other two men"},
+    "36": {"text": "accordingly tied his feet, and coolly stabbed him with their knives. I heard"},
+    "37": {"text": "the details of both deeds from the murderers themselves."},
+    "38": {"text": "In the tale of “Elendi and his Sons,” published in my “Chukchee Materials,”"},
+    "39": {"text": "Elendi, to avenge the treachery of his slave, kills him in a most cruel manner."},
+    "40": {"text": "With sharp stakes he fastens the slave’s hands, feet, the fleshy parts of his"},
+    "41": {"text": "sides, and the skin of his scalp, to the ground, and then makes both of his"},
+    "42": {
+      "text": "wives urinate and defecate into his mouth.¹",
+      "note": "Footnote reference marker keyed as superscript ¹ U+00B9, confirmed at 2x (review/1-067/zoom/zoom2-43_30p19-87_42p37-100.png), per keying_spec §2.10."
+    },
+    "43": {
+      "text": "¹Bogoras, Chukchee Materials, p. 350.",
+      "note": "Footnote opener marker keyed as superscript ¹ U+00B9, matching the reference in line 42, per §2.10."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "43"},
+    "2": {
+      "text": "Kalêˊlɪ-taˊɪrg̣ɪn (“spotted taˊɪrg̣ɪn”) covers the skin with large spots of a",
+      "resolved": "ê = e + U+0302; ˊ = U+02CA (×2); ɪ = U+026A (×4); g̣ = g + U+0323 (×2); “ ” = U+201C / U+201D",
+      "note": "Tier-1 personal-name/gloss form. Confirmed at 2x/4x zoom: raised mark is stress U+02CA (curved comma shape, not straight apostrophe, per keying_spec §4); g carries a dot below (g̣, confirmed at 4x against 'spot' on same crop); lɪ/ɪ letters are the dotless small-cap ɪ, contrasted against ordinary dotted i in 'skin'/'spots' on the same line."
+    },
+    "3": {"text": "light, ashen color, often over the whole body, including the face and the hair"},
+    "4": {
+      "text": "of the head. It does not seem to affect the health. A man named Tuˊrkew,",
+      "resolved": "ˊ = U+02CA",
+      "note": "Tu'rkew: raised mark confirmed at 4x as stress U+02CA (curved comma), not apostrophe."
+    },
+    "5": {
+      "text": "who was affected by this disease, received the name of Keliˊlɪ-Tuˊrkew (“Spotted",
+      "resolved": "ˊ = U+02CA (×2); ɪ = U+026A; “ = U+201C",
+      "note": "Keli'li-Tu'rkew confirmed at 4x: 'Keli' is ordinary lowercase (dotted i), then stress mark U+02CA, then small-cap dotless ɪ (U+026A), hyphen, Tu + stress + rkew. Spelled with plain 'e'/'i' here vs. 'ê' in line 2's Kalêˊlɪ — kept as printed on each line, not harmonized (keying_spec forbids normalizing toward a neighbouring line's spelling)."
+    },
+    "6": {
+      "text": "Tuˊrkew”). He was well known in the Anui country on account of his piebald",
+      "resolved": "ˊ = U+02CA; ” = U+201D",
+      "note": "Closes the quotation opened on line 5; straight quote in machine text is an encoding artifact, keyed curly per §5.6."
+    },
+    "7": {"text": "hair. At the age of fifty years he was still active for his time of life."},
+    "8": {"text": "I came across five deaf-mutes. Three of them were full-grown, and took"},
+    "9": {"text": "part in all the daily pursuits of their camp. They communicated with other"},
+    "10": {"text": "people by means of simple signs. Sleep, for instance, was expressed by leaning"},
+    "11": {"text": "the face on the palm; eating and drinking, by representative motions of the"},
+    "12": {"text": "hand to the mouth; woman, by forming an imaginary braid on each side of"},
+    "13": {"text": "the face; man, by pointing out the mustache; going, by a motion of two"},
+    "14": {"text": "fingers on the palm; etc. These signs are similar to those used by the Chuk-"},
+    "15": {"text": "chee for communicating with people who do not understand their language,"},
+    "16": {"text": "though no conventional signs exist in either case."},
+    "17": {"text": "I met two dwarfs. One of them was married, and had three well-developed"},
+    "18": {"text": "children. There were several weak-minded people. One of them was a deaf-"},
+    "19": {"text": "mute; another had been struck with the palsy, and could not walk or move"},
+    "20": {"text": "his left hand. But the Chukchee had no notion of supernatural power possessed"},
+    "21": {"text": "by such people, as is held by the American Eskimo. Cases of violent madness"},
+    "22": {"text": "also occur. I was told by a woman shaman that she was out of her mind"},
+    "23": {"text": "for three years, because of a spell wrought on her by a rival. When in a"},
+    "24": {"text": "fit, she would lose all feeling in her wrists, and sometimes in her whole body."},
+    "25": {"text": "At such times she would snatch a stone and pound her fingers with it, without"},
+    "26": {"text": "feeling any pain. In fact, the upper joints of two of her fingers were missing."},
+    "27": {"text": "Frequently she would want to harm other people, and then her housemates"},
+    "28": {"text": "would tie her hands and bind her to one of the house-poles."},
+    "29": {"text": "In another case I heard that a man of the Reindeer division of the tribe,"},
+    "30": {"text": "who for a long time was afflicted with similar fits, kept making attempts to"},
+    "31": {"text": "injure his camp-companions, and ultimately was put out of the way by common"},
+    "32": {"text": "consent."},
+    "33": {"text": "Blindness occurs often, especially among old people. The young herdsmen"},
+    "34": {"text": "often have sore eyes on account of loss of sleep in the seasons when the"},
+    "35": {"text": "herding of the reindeer requires extra exertion, and because of the corrosive"},
+    "36": {"text": "action of sweat mixed with dirt. Snow-blindness in the spring is very common"},
+    "37": {"text": "among all who make journeys across the tundra. In treating inflamed eyes,"},
+    "38": {"text": "the lids are sometimes turned outward and bled by being rubbed with the"},
+    "39": {"text": "large hard larva of the reindeer-fly, the segments of which act like the teeth"},
+    "40": {"text": "of a fine file."},
+    "41": {"text": "Lame people use crutches of various shapes, made in the same way as"},
+    "42": {"text": "those used by civilized people."},
+    "43": {"text": "The Chukchee do not use any remedies of their own except magic, unlike"}
+  },
+  "contamination": {"blind": true}
+}
