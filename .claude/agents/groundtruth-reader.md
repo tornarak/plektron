@@ -107,15 +107,24 @@ truth that proposal produced — the shape of verification with none of the subs
     …the image ladder, below…
     (author review/PP-NNN/proposal.json)
     uv run harness proposal fix PP-NNN                 then re-run until silent
-    uv run harness proposal check PP-NNN               must exit 0
+    uv run harness proposal check PP-NNN               read its verdict row
     uv run harness corpus normalize --commit review/PP-NNN/proposal.json
-    uv run harness corpus normalize review/PP-NNN/proposal.json     must exit 0
+    uv run harness corpus normalize review/PP-NNN/proposal.json     same
 
 `check` is a different gate from `fix`: `fix` reconciles what it unambiguously can,
 `check` reports what it will not guess at, including a `resolved` field that
 disagrees with its own text. **Do not report a proposal as validated on the strength
 of `fix` and `normalize` alone** — a reader has already done that on a page this
 gate was failing.
+
+**Both of those verbs end with a `verdict` row — `exit`, and a line saying what it
+means. That row is the answer; do not go looking for the exit code.** You cannot
+run `echo $?` or append `; echo "EXIT: $?"` — a compound command is refused, and
+the refusal costs you a turn — and you have no need to: a non-zero exit comes back
+to you as an error without your asking, and the verdict names the case either way.
+The one it exists for is the pair that share exit 0: nothing found, and advisories
+found that deliberately do not gate. Those are different results and only the
+second leaves you work.
 
 **`check` prints two kinds of finding and gates on one.** A **defect** — `resolved`
 naming codepoints the text does not contain, notation with no `resolved` at all, a
@@ -599,10 +608,10 @@ evidence, it is what both readings that were wrong said.
 ## Mechanical — run these, read the output
 
 - [ ] `proposal fix PP-NNN`, then re-run: zero output
-- [ ] `proposal check PP-NNN`: **exit 0** — a defect is yours to fix, never to explain
+- [ ] `proposal check PP-NNN`: verdict row reads **exit 0** — a defect is yours to fix, never to explain
 - [ ] every `advisory` row read and answered in `note`, with the contrast named
 - [ ] `resolved/text mismatch` repeating down the page treated as systematic — §5.5
-- [ ] `corpus normalize --commit review/PP-NNN/proposal.json`, then again without: exit 0
+- [ ] `corpus normalize --commit review/PP-NNN/proposal.json`, then again without: verdict exit 0
 
 ## Before finalizing
 
@@ -754,7 +763,7 @@ present. No magnification separates them; only the constraint does.
 
 | Mark | Licensed on | Never on |
 |---|---|---|
-| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ") | **everything else.** The obscure-vowel series **ᴀ ᴇ ɪ ä** for the reason below; `j` because the marked sort is **ǰ**, j+U+030C (§2.2), and a breve there is a misread caron |
+| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ", and on `1-067` L15, "Ñĭroˊn") | **everything else.** The obscure-vowel series **ᴀ ᴇ ɪ ä** for the reason below; `j` because the marked sort is **ǰ**, j+U+030C (§2.2), and a breve there is a misread caron |
 
 **The list is closed, and enforced as such.** `detectors.MARK_LICENSE` holds the
 allow-list, `harness corpus normalize` exits 1 on a violation, `harness tei validate`

@@ -351,6 +351,30 @@ def out(a, obj, name: str | None = None, heading: bool = False) -> None:
     print(render(obj, m))
 
 
+def verdict(a, code: int, means: str) -> int:
+    """Emit a gating action's exit code as a row, and return it.
+
+    **A gate that signals only through `$?` is illegible to the actor it gates.**
+    A groundtruth-reader is refused a shell operator — no `; echo $?`, no
+    chaining — for reasons that hold, so the exit code of the verb it is measured
+    by was the one fact about its own work it could not obtain. Measured over a
+    six-reader batch: every refusal that batch was the operator arm, and the
+    commonest single reach was `proposal check REF; echo "EXIT: $?"`, four times
+    across three readers, each costing a turn against a budget of eighty.
+
+    The fix belongs here rather than in the guard. Relaxing the operator rule to
+    let one idiom through buys back one fact and gives up the property that makes
+    the surface auditable; printing the fact costs a row. And the row says more
+    than `$?` could: `means` names *why* the code is what it is, so a clean run
+    and a run whose only findings were advisories are distinguishable, which they
+    are not from the number alone.
+
+    Emitted last, after the findings, because it is the summary of them.
+    """
+    out(a, {"exit": code, "means": means}, "verdict", heading=True)
+    return code
+
+
 REF_HELP = "page ref: part and scan index, e.g. 1-048"
 
 ALL_HELP = ("Required for a corpus-wide run: naming nothing is a usage error "

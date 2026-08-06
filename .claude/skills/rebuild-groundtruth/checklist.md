@@ -49,10 +49,10 @@ evidence, it is what both readings that were wrong said.
 ## Mechanical — run these, read the output
 
 - [ ] `proposal fix PP-NNN`, then re-run: zero output
-- [ ] `proposal check PP-NNN`: **exit 0** — a defect is yours to fix, never to explain
+- [ ] `proposal check PP-NNN`: verdict row reads **exit 0** — a defect is yours to fix, never to explain
 - [ ] every `advisory` row read and answered in `note`, with the contrast named
 - [ ] `resolved/text mismatch` repeating down the page treated as systematic — §5.5
-- [ ] `corpus normalize --commit review/PP-NNN/proposal.json`, then again without: exit 0
+- [ ] `corpus normalize --commit review/PP-NNN/proposal.json`, then again without: verdict exit 0
 
 ## Before finalizing
 

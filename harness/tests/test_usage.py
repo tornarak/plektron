@@ -341,8 +341,31 @@ def test_two_batches_do_not_pool_into_one_breakdown():
 
 
 def test_in_cohort_selects_a_whole_batch():
-    a, b, c = (_made(opening=100), _made(opening=100), _made(opening=200))
+    """The timestamps differ on purpose: `c1` is defined as the *oldest* batch,
+    so a fixture whose cohorts last spoke at the same moment asserts nothing
+    about the numbering it claims to check."""
+    a, b, c = (_made(opening=100, last="2026-08-04T13:00:00Z"),
+               _made(opening=100, last="2026-08-04T13:00:00Z"),
+               _made(opening=200, last="2026-08-04T12:00:00Z"))
     assert in_cohort([a, b, c], "c2") == [a, b]
+    assert in_cohort([a, b, c], "c1") == [c]
+
+
+def test_cohort_numbering_does_not_move_when_two_batches_tie():
+    """Two cohorts sharing a last-spoke timestamp used to be ordered by a `set`,
+    whose iteration order for string tuples moves with the hash seed — so the
+    same transcripts could number the same batches either way round between runs,
+    and a `--cohort c2` copied out of one report would select the other batch.
+
+    Run repeatedly within one process this could not catch it; what it pins is
+    that the order is a function of the keys, which is the property that makes it
+    reproducible across processes.
+    """
+    tie = "2026-08-04T12:00:00Z"
+    agents = [_made(opening=100, last=tie), _made(opening=200, last=tie)]
+    ids = cohort_ids(agents)
+    assert ids == cohort_ids(list(reversed(agents)))
+    assert sorted(ids.values()) == ["c1", "c2"]
 
 
 def test_an_unknown_cohort_raises_and_names_the_ones_in_scope():

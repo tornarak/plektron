@@ -509,19 +509,22 @@ def test_the_payload_reaches_the_pager_intact_and_stdout_is_restored(
     assert "1-048" in text and "g̣" in text and "pdftoppm -r 300" in text
 
 
-def test_a_real_two_section_verb_emits_one_document(tmp_path, capsys):
+def test_a_real_multi_section_verb_emits_one_document(tmp_path, capsys):
     """End to end through `main`, because the unit tests above cannot see the
     wiring: the buffering only helps if `out` actually defers and `main`
     actually flushes, and either could be right alone while the pair is not.
 
-    `corpus normalize` is the cheapest two-section verb — over an empty root it
+    `corpus normalize` is the cheapest multi-section verb — over an empty root it
     still runs both passes, which is the point of it having two (`scan`
     classifies characters, `convert` reports the files it would rewrite; folding
-    them would leave the preview agreeing with itself).
+    them would leave the preview agreeing with itself), and closes with its
+    `verdict`. Order is asserted, not just membership: the verdict summarises the
+    findings and a summary printed before them is not one.
     """
     from harness.cli import main
 
     assert main(["--root", str(tmp_path), "corpus", "normalize", "--all",
                  "--json"]) == 0
     doc = json.loads(capsys.readouterr().out)
-    assert list(doc) == ["normalize", "would_convert"]
+    assert list(doc) == ["normalize", "would_convert", "verdict"]
+    assert doc["verdict"]["exit"] == 0

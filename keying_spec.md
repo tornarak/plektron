@@ -123,7 +123,7 @@ present. No magnification separates them; only the constraint does.
 
 | Mark | Licensed on | Never on |
 |---|---|---|
-| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ") | **everything else.** The obscure-vowel series **ᴀ ᴇ ɪ ä** for the reason below; `j` because the marked sort is **ǰ**, j+U+030C (§2.2), and a breve there is a misread caron |
+| breve **U+0306** | `u` (ŭ, §2.2); `i` (ĭ — editor-confirmed on `1-074`, "Am-g̣roˊkĭ", and on `1-067` L15, "Ñĭroˊn") | **everything else.** The obscure-vowel series **ᴀ ᴇ ɪ ä** for the reason below; `j` because the marked sort is **ǰ**, j+U+030C (§2.2), and a breve there is a misread caron |
 
 **The list is closed, and enforced as such.** `detectors.MARK_LICENSE` holds the
 allow-list, `harness corpus normalize` exits 1 on a violation, `harness tei validate`

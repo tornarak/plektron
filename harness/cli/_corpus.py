@@ -16,7 +16,17 @@ from pathlib import Path
 
 from ..normalize import convert, scan
 from ..pipeline import STAGES
-from ._common import action, add_all, arg, group, opt, out, page_refs, refs_arg
+from ._common import (
+    action,
+    add_all,
+    arg,
+    group,
+    opt,
+    out,
+    page_refs,
+    refs_arg,
+    verdict,
+)
 
 
 def register(cli):
@@ -157,8 +167,10 @@ def run_state(a) -> int:
 def run_normalize(a) -> int:
     paths = _targets(a)
     if a.commit:
-        out(a, convert(a.root, paths=paths))
-        return 0
+        rep = convert(a.root, paths=paths)
+        out(a, rep)
+        n = len(rep["changed"])
+        return verdict(a, 0, f"wrote {n} file(s)" if n else "nothing to write")
 
     rep = scan(a.root, paths=paths)
     # The census, then what a --commit would actually rewrite. Two tables,
@@ -176,8 +188,17 @@ def run_normalize(a) -> int:
     # error with no reading to adjudicate. The lookalike census does not — it is
     # a to-key worklist needing a human ruling on what the page prints, which is
     # firewalled, same contract as validate's WORKLIST.
-    return 1 if (rep["nfd_offenders"] or rep["unlicensed_marks"]
-                 or rep["spacing_offenders"]) else 0
+    blocking = (rep["nfd_offenders"] or rep["unlicensed_marks"]
+                or rep["spacing_offenders"])
+    if blocking:
+        means = ("NFD drift, an unlicensed mark or §2.9 spacing — each an error "
+                 "with no reading to adjudicate. --commit rewrites what it can")
+    elif would["changed"]:
+        means = (f"no blocking drift; --commit would rewrite "
+                 f"{len(would['changed'])} file(s)")
+    else:
+        means = "clean — nothing to fix, nothing to write"
+    return verdict(a, 1 if blocking else 0, means)
 
 
 def run_figures(a) -> int:

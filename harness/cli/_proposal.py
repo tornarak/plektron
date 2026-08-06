@@ -35,6 +35,7 @@ from ._common import (
     out_per_ref,
     page_refs,
     refs_arg,
+    verdict,
 )
 
 PATH_HELP = "proposal file (default review/PP-NNN/proposal.json)"
@@ -214,7 +215,24 @@ def run_check(a) -> int:
     # the old behaviour for a sweep that means to chase every prompt.
     gating = [m for _, ms in pairs for m in ms
               if a.strict or m.get("severity", DEFECT) == DEFECT]
-    return 1 if gating else 0
+    # The severity split is exactly what the exit code cannot express: 0 with
+    # advisories printed and 0 with nothing found are the same number and not the
+    # same result, and a reader that cannot run `echo $?` was reading the empty
+    # table for the difference. Named here, once, in the verb's own words.
+    found = [m for _, ms in pairs for m in ms]
+    advisories = len(found) - len([m for m in found
+                                   if m.get("severity", DEFECT) == DEFECT])
+    if gating:
+        means = (f"{len(gating)} gating issue{'' if len(gating) == 1 else 's'} "
+                 "above — each is yours to fix, then run this again")
+    elif advisories:
+        means = (f"no defects; {advisories} "
+                 f"advisor{'y' if advisories == 1 else 'ies'} above. An advisory "
+                 "is measurement, not a fault — answer it in the line's note and "
+                 "go on")
+    else:
+        means = "clean — no defects, no advisories"
+    return verdict(a, 1 if gating else 0, means)
 
 
 def run_fix(a) -> int:

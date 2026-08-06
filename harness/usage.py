@@ -636,10 +636,18 @@ def cohort_ids(agents: list[dict]) -> dict[tuple[str, str, int], str]:
     prints in, so `c1` is the oldest batch in scope and the newest has the highest
     number. Scope-relative by construction: the ids describe this invocation's
     grouping and are not identifiers anything should store.
+
+    **The tie is broken on the key itself, not left to the set.** Two cohorts can
+    share a last-spoke timestamp, and this sorted a `set`, whose iteration order
+    for tuples of strings moves with the hash seed — so the same transcripts could
+    number the same two batches `c1`/`c2` on one run and the other way round on
+    the next, and a `--cohort c2` written down from one report would then point at
+    the other batch. Sorting the key as a secondary makes the numbering a function
+    of the data alone.
     """
     keys = sorted({_cohort_key(a) for a in agents},
-                  key=lambda k: max(a["last"] for a in agents
-                                    if _cohort_key(a) == k))
+                  key=lambda k: (max(a["last"] for a in agents
+                                     if _cohort_key(a) == k), k))
     return {k: f"c{i}" for i, k in enumerate(keys, 1)}
 
 
