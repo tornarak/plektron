@@ -23,6 +23,7 @@ from pathlib import Path
 import pytest
 
 from harness.dispatch import (
+    AGENT,
     BEGIN,
     CLAIM_BEGIN,
     CLAIM_END,
@@ -60,6 +61,13 @@ def make_page(root: Path, ref="3-063", *, zones=True, mz=True, gt=False,
     doc = root / DOC
     doc.parent.mkdir(parents=True, exist_ok=True)
     doc.write_text((REPO / DOC).read_text(encoding="utf-8"), encoding="utf-8")
+    # A stub agent, because `queue` refuses a root that has none: the agent body *is*
+    # the system prompt, so dispatching without one sends readers at pages with no
+    # rules. It carries no transclusion markers, which is the point — this fixture is
+    # about the queue, and `test_transclusion.py` is about the contract.
+    agent = root / AGENT
+    agent.parent.mkdir(parents=True, exist_ok=True)
+    agent.write_text("stub\n", encoding="utf-8")
     return root
 
 

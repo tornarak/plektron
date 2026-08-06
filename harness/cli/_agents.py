@@ -16,7 +16,7 @@ from their sources.
 """
 from __future__ import annotations
 
-from ..dispatch import sync_transcludes
+from ..dispatch import sync_all
 from ..usage import (
     batch,
     classes,
@@ -118,10 +118,13 @@ def register(cli):
 
 
 def run_sync(a) -> int:
-    r = sync_transcludes(a.root, commit=a.commit)
-    out(a, [{"agent": r["agent"], "stale": len(r["updated"]),
+    out(a, [{"agent": r["agent"],
+             # A missing agent file is not zero stale blocks — it is no contract at
+             # all, and a row reading `0 —` would say the opposite of what is true.
+             "stale": "ABSENT" if not r["exists"] else len(r["updated"]),
              "sources": ", ".join(r["updated"]) or "—",
-             "commit": bool(a.commit)}], name="transclusions")
+             "commit": bool(a.commit)}
+            for r in sync_all(a.root, commit=a.commit)], name="transclusions")
     return 0
 
 

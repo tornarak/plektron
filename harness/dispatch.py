@@ -45,6 +45,8 @@ from __future__ import annotations
 
 import os
 import re
+from collections.abc import Callable
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
@@ -84,8 +86,9 @@ class Unready(Exception):
     """The page is not a dispatch candidate, and the message says what to do."""
 
 
-def template(root: Path = Path("."), markers: tuple[str, str] = (BEGIN, END)) -> str:
-    """One delimited block from `dispatch.md`, dedented, markers stripped.
+def template(root: Path = Path("."), markers: tuple[str, str] = (BEGIN, END),
+             doc_path: Path = DOC) -> str:
+    """One delimited block from a track's `dispatch.md`, dedented, markers stripped.
 
     **A marker counts only on a line of its own.** The doc explains its own
     delimiters, so a substring search finds the sentence describing a template
@@ -93,16 +96,16 @@ def template(root: Path = Path("."), markers: tuple[str, str] = (BEGIN, END)) ->
     printed that paragraph to a coordinator as though it were instructions.
     """
     begin, end = markers
-    doc = root / DOC
+    doc = root / doc_path
     if not doc.exists():
-        raise Unready(f"{DOC} is missing; it is the prompt's only source")
+        raise Unready(f"{doc_path} is missing; it is the prompt's only source")
     lines = doc.read_text(encoding="utf-8").splitlines()
     try:
         i = lines.index(begin)
         j = lines.index(end, i)
     except ValueError:
         raise Unready(
-            f"{DOC} has no {begin} / {end} pair on lines of their own; the "
+            f"{doc_path} has no {begin} / {end} pair on lines of their own; the "
             "template is delimited by them and cannot be located by heading "
             "alone") from None
     body = "\n".join(lines[i + 1:j])
@@ -206,6 +209,82 @@ def build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
     return {**s, "page_block": text, "placeholders": " ".join(left)}
 
 
+# ---------------------------------------------------------------------------
+# The collation track. Same queue, same claim, a different pass at the other end.
+#
+# **What is not shared is the refusal set, and that is the whole of the design.**
+# Reading refuses a page that already has ground truth because a reader sent at one
+# stops being an independent witness; collation refuses a page that already has TEI
+# for a plainer reason — it would overwrite committed work. The two passes also
+# disagree about the *seam*: reading has no cross-page state at all, and collation
+# has one fact that legitimately crosses, which is why an uncollated predecessor is
+# pointedly NOT a refusal here. It used to be an implicit one, because the pass ran
+# serially and `tei seam` refuses without a predecessor; moving the seam to the
+# coordinator is what lets a batch be dispatched in any order.
+
+COLLATE_DOC = Path(".claude/skills/transcribe-page/dispatch.md")
+COLLATE_QUEUE = Path("tei/_queue.txt")
+COLLATE_CLAIMS = Path("tei/_claims")
+COLLATE_AGENT = Path(".claude/agents/collator.md")
+
+
+def collate_survey(ref: str, root: Path = Path(".")) -> dict:
+    """What the stores hold for a page about to be collated.
+
+    Presence only, like `pipeline.page_state` and for the same reason: this runs over
+    a whole batch before any of it is dispatched, and reading files to decide whether
+    to dispatch is how a queue call comes to cost what a page does.
+    """
+    ref = norm_ref(ref)
+    exempt = root / "gt/zones/_exempt.lst"
+    stem = f"chukchi-{ref}"
+    return {
+        "ref": ref,
+        "exempt": (exempt.exists()
+                   and f"{stem}.xml" in exempt.read_text(encoding="utf-8").split()),
+        # The draft, through the view — a collation input may come from either store
+        # and the view is where the human file wins. Unlike the reading pass, `gt/`
+        # here is a *better* input rather than a disqualifying one: it means the
+        # Tier-1 forms are ratified and `tei expand` can write them in.
+        "ocr": (root / "ocr" / f"{stem}.xml").exists(),
+        "gt": (root / "gt/ocr" / f"{stem}.xml").exists(),
+        "tei": (root / "tei" / f"{stem}.xml").exists(),
+    }
+
+
+def collate_build(ref: str, root: Path = Path("."), note: str | None = None) -> dict:
+    """The page block for one collation, or `Unready` naming the remedy."""
+    s = collate_survey(ref, root)
+    r = s["ref"]
+    if s["exempt"]:
+        raise Unready(
+            f"{r}: marked exempt in gt/zones/_exempt.lst — a human ruled it not a "
+            "text page (a plate, map, foldout or blank). There is no prose to "
+            "collate, and the ruling is a statement rather than an absence.")
+    if s["tei"]:
+        raise Unready(
+            f"{r}: tei/chukchi-{r}.xml already exists. Collating it again overwrites "
+            "committed work, and the pass's own self-check — re-read your output "
+            "once against the image — would read the *previous* run's file as though "
+            "it were this one's. Revising a collated page is a decision somebody "
+            "makes, not something a batch does on its way past.")
+    if not s["ocr"]:
+        raise Unready(
+            f"{r}: nothing at ocr/chukchi-{r}.xml — no draft to collate and no line "
+            f"indices for `@facs` to cite. Run `uv run harness ocr predict {r}` "
+            "first, in the parent: it wants the GPU.")
+    text = template(root, (BEGIN, END), COLLATE_DOC).format(
+        ref=r,
+        # The rank of the pass's own input, in one word, because it decides whether
+        # the collator names a handle or keys a form. `context`'s `page_state` says
+        # the same thing in full; this is the sentence the agent reads first.
+        ocr_store="gt" if s["gt"] else "mz",
+        note=f" {note.strip()}" if note else "")
+    left = sorted(set(re.findall(r"\{(\w+)\}",
+                                 template(root, (BEGIN, END), COLLATE_DOC))))
+    return {**s, "page_block": text, "placeholders": " ".join(left)}
+
+
 AGENT = Path(".claude/agents/groundtruth-reader.md")
 TRANSCLUDE = re.compile(
     r"^<!-- transclude: (?P<src>\S+) -->$.*?^<!-- /transclude -->$",
@@ -238,7 +317,13 @@ def sync_transcludes(root: Path = Path("."), agent: Path = AGENT,
     """
     p = root / agent
     if not p.exists():
-        return {"agent": str(agent), "updated": []}
+        # **Reported, not raised, and the flag is why.** A track whose agent file is
+        # absent has no contract at all, which is worse than a stale one — but this
+        # runs over every track from `agents sync`, where a checkout part-way through
+        # adding a pass is an ordinary state and an exception would make the whole
+        # report unavailable. `queue` is where it becomes a refusal, because that is
+        # the call about to spend agents on it.
+        return {"agent": str(agent), "updated": [], "exists": False}
     text = p.read_text(encoding="utf-8")
     updated = []
 
@@ -258,19 +343,77 @@ def sync_transcludes(root: Path = Path("."), agent: Path = AGENT,
     new = TRANSCLUDE.sub(swap, text)
     if new != text and commit:
         p.write_text(new, encoding="utf-8")
-    return {"agent": str(agent), "updated": updated}
+    return {"agent": str(agent), "updated": updated, "exists": True}
 
 
-def queue_path(root: Path = Path(".")) -> Path:
-    return root / QUEUE
+def sync_all(root: Path = Path("."), commit: bool = True) -> list[dict]:
+    """Every dispatched pass's agent, in track order.
+
+    `queue` re-syncs only its own track's agent — a batch is dispatched from one
+    contract and rewriting the other one on its way past would put an unrelated
+    tracked file in the commit. `agents sync` is the report over both, which is the
+    form the question actually takes: *is any contract stale*, not *is this one*.
+    """
+    return [sync_transcludes(root, t.agent, commit) for t in TRACKS.values()]
 
 
-def claims_dir(root: Path = Path(".")) -> Path:
-    return root / CLAIMS
+@dataclass(frozen=True)
+class Track:
+    """One dispatched pass: where its queue lives, and what it deals out.
+
+    The queue, the `O_CREAT|O_EXCL` claim and `reconcile` are the same machinery for
+    reading and for collating — what differs is four paths, the per-page block, and
+    what counts as having come back with something. Holding those in a value rather
+    than in module constants is what let the second pass exist without a second copy
+    of the locking, which is the part it would be worst to have two of.
+
+    `deliverable` is the file `reconcile` looks for. It is the pass's whole output
+    contract in one path: a proposal for reading, a page file for collation, and in
+    both cases the thing whose absence means the agent did not come back.
+    """
+    name: str
+    doc: Path
+    agent: Path
+    queue: Path
+    claims: Path
+    build: Callable[[str, Path, str | None], dict]
+    deliverable: Callable[[str, Path], Path]
+    # `reconcile`'s two words, per track rather than derived, because they are read
+    # by a human against a report they already know the shape of. Deriving them from
+    # `name` would have renamed the reading pass's states as a side effect of the
+    # collation pass existing, which is a gratuitous break of a documented surface.
+    done: str
+    missing: str
+
+
+def _proposal(ref: str, root: Path) -> Path:
+    from .paths import proposal_path
+    return proposal_path(ref, root)
+
+
+def _tei_page(ref: str, root: Path) -> Path:
+    from .seam import tei_path
+    return tei_path(ref, root)
+
+
+READING = Track("reading", DOC, AGENT, QUEUE, CLAIMS, build, _proposal,
+                done="keyed", missing="CLAIMED, no proposal")
+COLLATION = Track("collation", COLLATE_DOC, COLLATE_AGENT, COLLATE_QUEUE,
+                  COLLATE_CLAIMS, collate_build, _tei_page,
+                  done="collated", missing="CLAIMED, no TEI")
+TRACKS = {t.name: t for t in (READING, COLLATION)}
+
+
+def queue_path(root: Path = Path("."), track: Track = READING) -> Path:
+    return root / track.queue
+
+
+def claims_dir(root: Path = Path("."), track: Track = READING) -> Path:
+    return root / track.claims
 
 
 def queue_refs(refs: list[str], root: Path = Path("."),
-               note: str | None = None) -> dict:
+               note: str | None = None, track: Track = READING) -> dict:
     """Validate a batch, write it to the queue, and return the one fixed prompt.
 
     Every page is checked before any is queued, and the page block is rendered and
@@ -293,8 +436,8 @@ def queue_refs(refs: list[str], root: Path = Path("."),
         seen.add(r)
         ordered.append(r)
     for r in ordered:
-        build(r, root, note)
-    q, c = queue_path(root), claims_dir(root)
+        track.build(r, root, note)
+    q, c = queue_path(root, track), claims_dir(root, track)
     q.parent.mkdir(parents=True, exist_ok=True)
     # **The claims are cleared with the queue, never separately.** A claim standing
     # against a new batch would silently withhold a page from it — the reader that
@@ -307,12 +450,20 @@ def queue_refs(refs: list[str], root: Path = Path("."),
     q.write_text(body, encoding="utf-8")
     # Last, so a batch that was going to be refused does not also rewrite a
     # tracked file on its way out.
-    synced = sync_transcludes(root)
-    return {"queued": ordered, "prompt": template(root, (CLAIM_BEGIN, CLAIM_END)),
+    synced = sync_transcludes(root, track.agent)
+    if not synced["exists"]:
+        raise Unready(
+            f"{track.agent} does not exist, and it is the {track.name} pass's whole "
+            "contract — the agent body is the system prompt, so a batch dispatched "
+            "without it sends agents at pages with no rules and nothing would say "
+            "so until the output came back wrong.")
+    return {"queued": ordered,
+            "prompt": template(root, (CLAIM_BEGIN, CLAIM_END), track.doc),
             "resynced": synced["updated"]}
 
 
-def claim_one(root: Path = Path(".")) -> tuple[str, str] | None:
+def claim_one(root: Path = Path("."),
+              track: Track = READING) -> tuple[str, str] | None:
     """Take the next unclaimed ref off the queue, atomically, or None.
 
     **`O_CREAT|O_EXCL` is the whole mechanism.** The file system decides which of
@@ -325,7 +476,7 @@ def claim_one(root: Path = Path(".")) -> tuple[str, str] | None:
     The queue file is never rewritten; a claim is a marker beside it. Returns
     `(ref, note)`, the note being whatever the batch was queued with.
     """
-    q, c = queue_path(root), claims_dir(root)
+    q, c = queue_path(root, track), claims_dir(root, track)
     if not q.exists():
         return None
     c.mkdir(parents=True, exist_ok=True)
@@ -347,34 +498,37 @@ def claim_one(root: Path = Path(".")) -> tuple[str, str] | None:
     return None
 
 
-def claim(root: Path = Path(".")) -> dict | None:
+def claim(root: Path = Path("."), track: Track = READING) -> dict | None:
     """`claim_one`, then the page block for whatever it took. None if the queue is out."""
-    taken = claim_one(root)
+    taken = claim_one(root, track)
     if taken is None:
         return None
     ref, note = taken
-    return build(ref, root, note or None)
+    return track.build(ref, root, note or None)
 
 
-def reconcile(refs: list[str], root: Path = Path(".")) -> list[dict]:
-    """Each ref as keyed / claimed-no-proposal / unclaimed.
+def reconcile(refs: list[str], root: Path = Path("."),
+              track: Track = READING) -> list[dict]:
+    """Each ref as done / claimed-and-empty-handed / unclaimed.
 
-    **Three states rather than two**, because "no proposal" has two very different
+    **Three states rather than two**, because "no deliverable" has two very different
     causes at scale and they want different answers: nobody took the page (the queue
-    outran the readers, or they were never sent), or somebody took it and did not
-    come back (died, or ran out of turns). Only the second is worth chasing.
+    outran the agents, or they were never sent), or somebody took it and did not come
+    back (died, or ran out of turns). Only the second is worth chasing.
+
+    The verb names the deliverable rather than the state, so the row reads the same
+    for either pass while still saying what is missing.
     """
-    from .paths import proposal_path
-    c = claims_dir(root)
+    c = claims_dir(root, track)
     out = []
     for ref in refs:
         r = norm_ref(ref)
         marker = c / r
         when = marker.read_text(encoding="utf-8").strip() if marker.exists() else ""
-        if proposal_path(r, root).exists():
-            state = "keyed"
+        if track.deliverable(r, root).exists():
+            state = track.done
         elif marker.exists():
-            state = "CLAIMED, no proposal"
+            state = track.missing
         else:
             state = "unclaimed"
         out.append({"ref": r, "state": state, "claimed_at": when})
