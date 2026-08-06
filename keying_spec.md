@@ -26,9 +26,10 @@ the character inventory, and binds both passes and the human keying track.
   included**: the book sets them, nothing there is load-bearing, and forbidding
   them would reject correct text. `validate.py`'s `FORBIDDEN_PROSE` and its
   scoped greps are the enforcement.
-- **Keying reproduces print.** The collation pass may modernize glossed Russian
-  (harness rev 2); ground truth does not — pre-reform Cyrillic sorts are keyed as
-  printed. See §2.7 for the closed list and what each is confusable with.
+- **Keying reproduces print**, the book's own errors included. The collation pass
+  may modernize glossed Russian (harness rev 2); ground truth does not —
+  pre-reform Cyrillic sorts are keyed as printed. See §2.7 for the closed list and
+  what each is confusable with, and §2.14 for the typo rule and its one exception.
 - **Two-tier settlement.** SETTLED rows carry the editor's stamp or the key's
   authority and are law, stated flat. PROPOSED rows are the best available
   disposition, awaiting the stamp; they enter force via changelog, not by
@@ -413,6 +414,47 @@ omission is the book's. It is carried in `data/toc.json` as `chXII.11a` with an
 never indistinguishable from one the book printed. A heading absent from the ToC
 is therefore not suspect and is never to be retitled, demoted or dropped to make
 it match one: key what is set, and say in your report that you found no entry.
+
+### 2.14 The printer's errors — key them, with one exception (SETTLED, editor ruling)
+
+**A printer's error is keyed as printed, and `gt/ocr` never repairs the book.** Four
+were verified against the raster on the `1-070`–`1-100` pass and all four stand:
+`1-087` L17 `spririts`, `1-090` L38 `Government, to wishing breed reindeer`,
+`1-094` L5 `fawns-kins`, `1-100` L53 `eaıly` (the `r` worn to a bare stem). Note the
+setting on the line and go on. The collation pass corrects it visibly, where the
+print survives beside the correction; a silent repair here would leave neither.
+
+The reason is what the store *is*. `gt/ocr` is line images paired with their text,
+so every character that disagrees with the raster teaches a recognizer something
+false — and a near-miss like `spririts` is exactly the shape a model will learn.
+
+**The one exception is a Tier-1 form the corpus already settles otherwise.**
+`1-099` L13 prints `Kuvár`, an acute over the vowel, for the name set `Kuvaˊr` with
+the postposed stress mark six times across `1-088`, `1-089`, `1-090` and `1-093`.
+That one is normalized in the store, because Tier-1 glyphs are not only training
+data: `proposal marks` computes its corpus percentages from `gt/ocr` and
+`concordance.md` treats it as the attestation set. Keying the typo would enter
+"acute over a vowel" into the evidence as a real occurrence, and every later reader
+would be measured against a distribution containing it. An English typo enters no
+such table and costs one wrong training pair.
+
+**The test, then, is not "is it wrong" but "does keying it put something into the
+evidence set that the corpus does not otherwise attest".** If yes, key the settled
+form and record the printed setting in that line's `note`. If no — and English
+orthography is always no — key what is set.
+
+**This licenses correction against occurrences already in `gt/ocr`, and nothing
+else.** Not against expectation of what the notation should contain, not against a
+neighbouring page's reading that is itself unratified, not against a single other
+attestation. A form the corpus holds once is keyed as printed.
+
+**Nothing catches this mechanically, and the reader's flag is the whole detector.**
+`a` + U+0301 appears in no table — not `INVENTORY_CHARS`, not `LOOKALIKES`, not
+`MARK_LICENSE` — and `unlicensed_marks` inspects only marks that *have* a licence
+entry, so it reports a licensed mark on a wrong base and says nothing about a mark
+it has never heard of. `corpus normalize` exits 0 on the proposal carrying `Kuvár`.
+A raised or overset mark you cannot place in §2.1 is therefore a `note`, every time,
+whatever the gates say.
 
 ## 3. Forbidden lookalikes — unconditional corpus-wide greps
 
