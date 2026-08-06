@@ -1,0 +1,64 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "142"},
+    "2": {"text": "with a rifle. The pregnant bear lies down in some convenient spot on the"},
+    "3": {"text": "rough ice, and allows the snow to cover her over. She is killed in her snow"},
+    "4": {"text": "den, together with her young, much in the same way as are brown bears in"},
+    "5": {"text": "more southern latitudes. The polar bear of northeastern Asia is not dangerous,"},
+    "6": {"text": "and rarely defends itself. When wounded or hunted down, it simply thrusts"},
+    "7": {"text": "its head into the snow, and waits for the blow."},
+    "8": {"text": "Brown bears are occasionally killed by the Reindeer Chukchee, chiefly"},
+    "9": {"text": "during their winter sleep, because that is the least dangerous method. The"},
+    "10": {"text": "entrance to the den is sometimes blocked with logs, and the animal is speared"},
+    "11": {"text": "or shot through a hole made in the roof. The Maritime Chukchee occasion-"},
+    "12": {"text": "ally have a chance to kill a brown bear, because in the summer-time bears go"},
+    "13": {"text": "to the tundra far away from the forest border. Thus on the Arctic coast, near"},
+    "14": {"text": "the Kolyma, brown bears are met on the seashore between the mouth of the"},
+    "15": {
+      "text": "Kolyma and Brown Bear River (Keiˊñu-weˊem). On the Lower Kolyma brown",
+      "resolved": "Keiˊñu-weˊem = K,e,i,U+02CA,n+U+0303,u,-,w,e,U+02CA,e,m",
+      "note": "Both raised marks after 'Kei' and 'we' are the diagonal stress tick (U+02CA), matched at 4x against the mark's own shape; machine text (mz) had rendered the first as '/' and the second as a curly apostrophe, both artifacts of CATMuS misreading the same mark differently. ñ = n+U+0303 as printed.",
+      "class": "doubt"
+    },
+    "16": {"text": "bears even hibernate on the steep banks of some brook, well protected from"},
+    "17": {"text": "the wind, but beyond the border of the forest. On the Pacific coast I met a"},
+    "18": {"text": "brown bear in Holy Cross Bay, in June, 1901, that was feeding on seaweed"},
+    "19": {"text": "along the land-ice piled on the shore."},
+    "20": {"text": "On the edge of the forest the Reindeer Chukchee sometimes catch the"},
+    "21": {"text": "bear with small thin wooden blocks spiked on their upper surface (Fig. 51, b),"},
+    "22": {"text": "and left on the pathway among fallen leaves. When the bear steps on one"},
+    "23": {"text": "of these, the spikes penetrate the sole of its foot. A wound of this kind"},
+    "24": {"text": "rapidly disables it for walking, especially since, in trying to tear away the"},
+    "25": {"text": "block, the bear only makes the wound worse. This implement seems to have"},
+    "26": {"text": "been copied from some tribe living within the forest limit, though I am not"},
+    "27": {
+      "text": "aware that any of the neighboring tribes use it at present.¹",
+      "note": "Footnote reference marker keyed as superscript U+00B9, confirmed at 4x; pairs with the opener on line 43.",
+      "class": "print"
+    },
+    "28": {"text": "The Maritime Chukchee catch hares in winter by cornering them and"},
+    "29": {"text": "finally driving them into a spot surrounded by nets. Women and children"},
+    "30": {"text": "join in the battue with rattles and sticks to drive the hares in the desired"},
+    "31": {"text": "direction. I was told that in one successful battue several scores might be"},
+    "32": {"text": "caught. In times of famine poor families often escape starvation by this kind"},
+    "33": {"text": "of hare-hunting."},
+    "34": {"text": "Small animals — like marmots, ground-squirrels, etc. — are caught with"},
+    "35": {"text": "snares; house-mice, with special mouse-traps; ermines, with a kind of self-acting"},
+    "36": {"text": "bow (Fig. 52), probably copied from the Russianized natives. It consists of"},
+    "37": {"text": "a small but strong bow fastened in a vertical position to a wooden frame of"},
+    "38": {"text": "narrow rectangular shape. The “arrow” is tied at one end to the middle of the"},
+    "39": {"text": "string, while on its other end is a cross-piece which runs up and down in"},
+    "40": {"text": "grooves, between the vertical sides of the frame. In stringing the bow, the"},
+    "41": {"text": "arrow with the attached cross-piece is pulled upward. Then the string is held"},
+    "42": {"text": "in position by means of a trigger, which is connected by a sinew cord with"},
+    "43": {
+      "text": "¹ For the use of this implement among the Aleuts, see Mason, Traps, p. 472.",
+      "note": "Footnote opener keyed as superscript U+00B9, confirmed at 4x; pairs with the reference marker on line 27.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

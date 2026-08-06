@@ -1,0 +1,41 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "Running title, RunningTitleZone.",
+      "class": "layout"
+    },
+    "1": {
+      "text": "156",
+      "note": "Folio, RunningTitleZone, old-style figures. Plain ASCII digits per keying_spec.md §2.12.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "of all these materials combined (Fig. 74). They were fastened to the shaft",
+      "note": "Print sets a wider (French) sentence space after \"74).\"; keyed single-space per keying_spec.md §2.9 (\"Key single-space, same reasoning as the semicolon rule\").",
+      "class": "layout"
+    },
+    "3": {
+      "text": "in various ways, — wedged in and occasionally wrapped with sinew, or inserted",
+      "note": "Em dash U+2014 per keying_spec.md §2.11, spaced both sides as printed.",
+      "class": "layout"
+    },
+    "4": {
+      "text": "in a hole in the tip of the shaft. I was told that some were simply slanted"
+    },
+    "5": {
+      "text": "and tied to the shaft, though among the specimens obtained not a single"
+    },
+    "6": {
+      "text": "splice of this kind is found. However, this method of splicing is well known"
+    },
+    "7": {
+      "text": "in northeastern Siberia, and is used, for instance, in lashing a man’s crooked",
+      "note": "Curly apostrophe U+2019 as printed; this is an ordinary English possessive, not the Tier-1 stress mark.",
+      "class": "semantic"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
