@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-075.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-075.png; regions_from: zones/chukchi-1-075.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-075_r1" HPOS="394" VPOS="902" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="394 902 2172 902 2172 997 394 997"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l1" HPOS="1087" VPOS="909" WIDTH="396" HEIGHT="73" BASELINE="1089 961 1483 956" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1476 954 1461 922 1373 909 1368 909 1353 909 1338 922 1286 909 1284 909 1282 909 1279 909 1277 909 1251 926 1169 926 1149 909 1147 909 1145 909 1143 909 1102 911 1100 911 1097 911 1097 913 1087 922 1089 961 1089 972 1282 982 1284 982 1466 980 1468 980 1470 980 1483 969 1483 956 1481 952 1476 954"/>
+                        </Shape>
+                        <String CONTENT="III. — TRADE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-075_r2" HPOS="394" VPOS="1016" WIDTH="1778" HEIGHT="542" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 1016 2172 1016 2172 1558 394 1558"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l2" HPOS="506" VPOS="1021" WIDTH="1661" HEIGHT="59" BASELINE="506 1065 2167 1065" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2130 1028 2109 1028 2087 1026 2085 1026 2022 1032 1466 1021 1463 1021 1373 1032 1318 1021 1316 1021 1314 1021 1266 1032 1136 1021 1134 1021 1132 1021 1097 1032 991 1021 989 1021 987 1021 985 1021 972 1034 796 1034 736 1021 734 1021 731 1021 703 1032 530 1021 528 1021 526 1021 506 1030 506 1065 506 1080 2167 1080 2167 1065 2167 1032 2150 1028 2130 1028"/>
+                        </Shape>
+                        <String CONTENT="ANCIENT TRADE. — Even before the arrival of the Russians, a lively"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l3" HPOS="398" VPOS="1080" WIDTH="1771" HEIGHT="60" BASELINE="400 1125 2169 1121" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 1125 400 1140 2167 1136 2169 1121 2165 1091 1288 1080 1286 1080 1284 1080 1282 1080 1269 1091 472 1082 469 1082 398 1093 400 1125"/>
+                        </Shape>
+                        <String CONTENT="traffic was carried on between the Reindeer Chukchee camps and the Maritime"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l4" HPOS="396" VPOS="1143" WIDTH="1782" HEIGHT="58" BASELINE="398 1186 2178 1179" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1186 398 1201 2176 1195 2178 1179 2174 1143 430 1143 428 1143 426 1143 396 1153 398 1186"/>
+                        </Shape>
+                        <String CONTENT="villages (both Chukchee and Eskimo), and also between Asia and America"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l5" HPOS="394" VPOS="1201" WIDTH="1771" HEIGHT="63" BASELINE="396 1247 2165 1240" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1247 396 1262 2161 1264 2165 1240 2161 1210 1030 1201 1028 1201 394 1214 396 1247"/>
+                        </Shape>
+                        <String CONTENT="across Bering Strait. The Reindeer people were in need of blubber, thongs,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l6" HPOS="394" VPOS="1260" WIDTH="1775" HEIGHT="60" BASELINE="396 1307 2169 1301" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1307 396 1320 2167 1314 2169 1301 2165 1270 1578 1260 1576 1260 1574 1260 1572 1260 1552 1270 989 1262 987 1262 916 1273 467 1264 465 1264 394 1275 396 1307"/>
+                        </Shape>
+                        <String CONTENT="and seal-skins, and would offer in exchange reindeer-skins and ready-made"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l7" HPOS="394" VPOS="1320" WIDTH="1775" HEIGHT="65" BASELINE="396 1366 2169 1359" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1366 396 1385 2167 1374 2169 1359 2165 1331 1637 1320 1635 1320 1528 1331 1052 1322 1050 1322 976 1333 569 1324 567 1324 394 1335 396 1366"/>
+                        </Shape>
+                        <String CONTENT="garments, just as is done at the present day. On the American side, reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l8" HPOS="396" VPOS="1383" WIDTH="1773" HEIGHT="56" BASELINE="398 1426 2169 1420" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1426 398 1439 2167 1433 2169 1420 2165 1389 424 1383 422 1383 420 1383 396 1392 398 1426"/>
+                        </Shape>
+                        <String CONTENT="skins brought a much better price than in Asia: therefore Chukchee and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l9" HPOS="400" VPOS="1452" WIDTH="1767" HEIGHT="50" BASELINE="400 1483 2167 1483" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 1483 400 1502 2165 1502 2167 1483 2165 1452 400 1452 400 1483"/>
+                        </Shape>
+                        <String CONTENT="Asiatic Eskimo parties crossed over every year on trading-expeditions, occasion-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l10" HPOS="396" VPOS="1509" WIDTH="784" HEIGHT="58" BASELINE="398 1539 1180 1543" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1539 396 1558 409 1567 411 1567 413 1567 415 1567 1178 1558 1180 1543 1178 1513 398 1509 398 1539"/>
+                        </Shape>
+                        <String CONTENT="ally, however, indulging in piracy."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-075_r3" HPOS="394" VPOS="1558" WIDTH="1778" HEIGHT="423" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 1558 2172 1558 2172 1981 394 1981"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l11" HPOS="502" VPOS="1554" WIDTH="1665" HEIGHT="65" BASELINE="504 1604 2167 1597" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="504 1604 504 1619 2165 1612 2167 1597 2163 1567 2074 1554 2072 1554 1988 1565 1972 1554 1970 1554 1968 1554 1966 1554 1964 1554 1962 1554 1946 1567 1741 1567 1708 1554 1706 1554 1704 1554 1606 1567 1106 1556 1104 1556 1041 1569 1015 1558 1013 1558 1011 1558 656 1569 604 1558 602 1558 599 1558 558 1569 517 1558 515 1558 513 1558 511 1558 508 1558 508 1560 502 1565 504 1604"/>
+                        </Shape>
+                        <String CONTENT="In the tale of “Elendi and his Sons,” the hero, coming to an American"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l12" HPOS="398" VPOS="1628" WIDTH="1771" HEIGHT="49" BASELINE="400 1662 2169 1658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 1662 400 1677 2167 1673 2169 1658 2165 1628 398 1628 400 1662"/>
+                        </Shape>
+                        <String CONTENT="Eskimo, requests “a score of ground-seal skins, a score each of bleached and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l13" HPOS="396" VPOS="1688" WIDTH="1769" HEIGHT="54" BASELINE="398 1723 2165 1716" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1723 398 1742 2163 1742 2165 1716 2161 1688 396 1688 398 1723"/>
+                        </Shape>
+                        <String CONTENT="black-dyed coils of thong, the same of rough-seal skins; whatever you have,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l14" HPOS="394" VPOS="1738" WIDTH="1771" HEIGHT="58" BASELINE="396 1783 2165 1779" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1783 396 1796 2163 1792 2165 1779 2161 1749 1455 1738 1453 1738 394 1751 396 1783"/>
+                        </Shape>
+                        <String CONTENT="one score of each.” The host asks for an equivalent, but Elendi has nothing:"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l15" HPOS="396" VPOS="1796" WIDTH="1771" HEIGHT="61" BASELINE="398 1842 2167 1838" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1842 398 1857 2165 1853 2167 1838 2163 1807 1282 1796 1279 1796 1221 1807 662 1799 660 1799 396 1809 398 1842"/>
+                        </Shape>
+                        <String CONTENT="so a quarrel arises, and they fight. Elendi vanquishes the Eskimo, commands"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l16" HPOS="398" VPOS="1870" WIDTH="1769" HEIGHT="50" BASELINE="398 1903 2167 1903" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1903 398 1916 2165 1920 2167 1903 2167 1870 398 1870 398 1903"/>
+                        </Shape>
+                        <String CONTENT="the people of the village to deliver up to him everything he had asked for,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l17" HPOS="396" VPOS="1916" WIDTH="1472" HEIGHT="62" BASELINE="398 1961 1868 1954" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1961 398 1978 1866 1972 1868 1954 1862 1916 1364 1926 931 1918 929 1918 870 1929 463 1920 461 1920 396 1931 398 1961"/>
+                        </Shape>
+                        <String CONTENT="and returns home carrying his subdued enemy away as a slave.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-075_r4" HPOS="394" VPOS="1981" WIDTH="1778" HEIGHT="533" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 1981 2172 1981 2172 2514 394 2514"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l18" HPOS="506" VPOS="1974" WIDTH="1663" HEIGHT="61" BASELINE="508 2015 2169 2019" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="508 2015 506 2030 2165 2035 2169 2019 2169 1989 2128 1976 2126 1976 1955 1976 1953 1976 1951 1976 1949 1976 1936 1987 1897 1976 1894 1976 1892 1976 1890 1976 1853 1987 1767 1976 1765 1976 1691 1987 1637 1976 1635 1976 1269 1985 1245 1974 1243 1974 1240 1974 1156 1987 1054 1987 1039 1974 1037 1974 1035 1974 1033 1974 1030 1974 1004 1985 900 1974 898 1974 896 1974 872 1987 755 1987 740 1974 738 1974 736 1974 734 1974 508 1980 508 2015"/>
+                        </Shape>
+                        <String CONTENT="The chief part in such expeditions, however, belonged to the Nɵˊɵkalɪt"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l19" HPOS="396" VPOS="2035" WIDTH="1771" HEIGHT="60" BASELINE="398 2080 2167 2076" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 2080 398 2095 2165 2091 2167 2076 2165 2048 2139 2035 2137 2035 2135 2035 2133 2035 2102 2048 1992 2048 1977 2035 1975 2035 1972 2035 1970 2035 1968 2035 1942 2045 1918 2035 1916 2035 1914 2035 1832 2048 1596 2048 1565 2035 1563 2035 1561 2035 1559 2035 1515 2045 1427 2035 1424 2035 1422 2035 1396 2045 1383 2035 1381 2035 1379 2035 1288 2035 1286 2035 1284 2035 1282 2035 1266 2048 1214 2037 1212 2037 1210 2037 1180 2048 1141 2037 1139 2037 1136 2037 1134 2037 1097 2048 1035 2037 1033 2037 965 2048 842 2037 840 2037 838 2037 794 2048 714 2037 712 2037 396 2043 398 2080"/>
+                        </Shape>
+                        <String CONTENT="Eskimo of East Cape, although the Chukchee often accompanied them. It"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l20" HPOS="396" VPOS="2106" WIDTH="1769" HEIGHT="50" BASELINE="398 2141 2165 2134" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 2141 398 2156 2163 2152 2165 2134 2161 2106 396 2106 398 2141"/>
+                        </Shape>
+                        <String CONTENT="is told that as late as three generations ago large parties would start from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l21" HPOS="396" VPOS="2154" WIDTH="1771" HEIGHT="60" BASELINE="398 2199 2167 2195" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 2199 398 2214 2165 2210 2167 2195 2163 2167 2070 2154 2068 2154 2066 2154 2042 2167 1814 2167 1799 2154 1797 2154 1795 2154 1793 2154 1790 2154 1769 2165 1665 2154 1663 2154 1661 2154 1635 2165 1609 2154 1606 2154 1604 2154 1602 2154 1574 2165 1561 2154 1559 2154 1557 2154 1554 2154 1552 2154 1522 2165 1476 2154 1474 2154 1472 2154 1470 2154 1446 2165 396 2165 398 2199"/>
+                        </Shape>
+                        <String CONTENT="East Cape for America. The Nɵˊɵkalɪt went in their large boats, sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l22" HPOS="396" VPOS="2212" WIDTH="1771" HEIGHT="65" BASELINE="398 2260 2167 2253" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 2260 398 2277 2165 2271 2167 2253 2163 2225 1619 2212 1617 2212 1615 2212 1565 2225 1502 2214 1500 2214 1498 2214 1474 2225 1364 2214 1362 2214 1310 2225 1264 2214 1262 2214 1260 2214 1258 2214 1256 2214 1240 2225 1134 2214 1132 2214 1130 2214 1100 2225 1054 2214 1052 2214 1050 2214 1048 2214 1046 2214 1028 2225 530 2216 528 2216 526 2216 500 2227 439 2216 437 2216 435 2216 396 2229 398 2260"/>
+                        </Shape>
+                        <String CONTENT="with thirty paddles in each; the Chukchee from the neighboring Arctic villages"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l23" HPOS="394" VPOS="2279" WIDTH="1773" HEIGHT="54" BASELINE="396 2320 2167 2316" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2320 396 2333 2165 2329 2167 2316 2163 2288 493 2279 491 2279 394 2290 396 2320"/>
+                        </Shape>
+                        <String CONTENT="went in smaller boats. These fleets crossed to America, carrying on trade"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l24" HPOS="394" VPOS="2333" WIDTH="1773" HEIGHT="63" BASELINE="396 2381 2167 2375" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2381 396 2396 2165 2390 2167 2375 2163 2344 1576 2333 1574 2333 1518 2344 1030 2336 1028 2336 974 2346 500 2338 498 2338 394 2349 396 2381"/>
+                        </Shape>
+                        <String CONTENT="or piracy, as circumstances dictated. Similar expeditions of Eskimo and Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l25" HPOS="394" VPOS="2394" WIDTH="1773" HEIGHT="61" BASELINE="396 2439 2167 2433" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2439 396 2455 2167 2448 2167 2433 2163 2405 1580 2394 1578 2394 1576 2394 1574 2394 1561 2405 420 2398 417 2398 415 2398 394 2407 396 2439"/>
+                        </Shape>
+                        <String CONTENT="chee, though on a smaller scale, went over from Indian Point to St. Lawrence"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l26" HPOS="400" VPOS="2452" WIDTH="160" HEIGHT="65" BASELINE="400 2498 560 2498" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 2498 400 2517 560 2517 560 2498 560 2465 415 2452 413 2452 411 2452 409 2452 400 2459 400 2498"/>
+                        </Shape>
+                        <String CONTENT="Island."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-075_r5" HPOS="394" VPOS="2514" WIDTH="1778" HEIGHT="542" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 2514 2172 2514 2172 3056 394 3056"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l27" HPOS="502" VPOS="2511" WIDTH="1663" HEIGHT="63" BASELINE="504 2559 2165 2552" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="504 2559 504 2574 2163 2567 2165 2552 2161 2524 1619 2511 1617 2511 1615 2511 1613 2511 1598 2526 1509 2526 1494 2513 1492 2513 1489 2513 1487 2513 1409 2524 1305 2513 1303 2513 1043 2526 974 2515 972 2515 896 2526 838 2515 835 2515 833 2515 805 2526 502 2524 504 2559"/>
+                        </Shape>
+                        <String CONTENT="Trade, even in Asia, was carried on with considerable mutual distrust."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l28" HPOS="394" VPOS="2572" WIDTH="1771" HEIGHT="62" BASELINE="396 2617 2165 2610" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2617 396 2634 2163 2628 2165 2610 2161 2582 1574 2572 1572 2572 1570 2572 1546 2582 1026 2574 1024 2574 1022 2574 981 2585 394 2585 396 2617"/>
+                        </Shape>
+                        <String CONTENT="I was told that in very ancient times there was a kind of fair in Nɵˊɵkan or,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l29" HPOS="394" VPOS="2634" WIDTH="1771" HEIGHT="59" BASELINE="394 2675 2165 2675" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2675 394 2693 2165 2693 2165 2675 2165 2645 2120 2634 2118 2634 2115 2634 2113 2634 2079 2645 1975 2634 1972 2634 1970 2634 1938 2645 1808 2634 1806 2634 1803 2634 1767 2645 1715 2634 1713 2634 1710 2634 1678 2647 1513 2647 1496 2634 1494 2634 1492 2634 1489 2634 1422 2645 1362 2634 1360 2634 1269 2645 1217 2634 1214 2634 1095 2645 1063 2634 1061 2634 968 2634 965 2634 963 2634 961 2634 946 2647 822 2647 807 2634 805 2634 803 2634 801 2634 394 2643 394 2675"/>
+                        </Shape>
+                        <String CONTENT="in Uweˊlen, which was held outside of the village, on the flat seashore, for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l30" HPOS="391" VPOS="2693" WIDTH="1774" HEIGHT="58" BASELINE="394 2738 2165 2734" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2738 394 2751 2163 2749 2165 2734 2163 2706 2128 2693 2126 2693 2124 2693 2122 2693 2096 2704 2081 2693 2079 2693 2076 2693 2074 2693 1611 2704 1580 2693 1578 2693 1576 2693 1574 2693 1539 2704 1420 2693 1418 2693 1271 2706 552 2695 550 2695 491 2706 409 2695 407 2695 404 2695 402 2695 391 2701 394 2738"/>
+                        </Shape>
+                        <String CONTENT="fear of hostilities (the same custom was afterwards universally adopted in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l31" HPOS="391" VPOS="2756" WIDTH="1774" HEIGHT="58" BASELINE="394 2797 2165 2792" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2797 394 2814 2163 2810 2165 2792 2161 2764 413 2756 411 2756 409 2756 407 2756 391 2762 394 2797"/>
+                        </Shape>
+                        <String CONTENT="the Russian fairs, and it is persisted in at the present time in Anadyr). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l32" HPOS="394" VPOS="2814" WIDTH="1771" HEIGHT="65" BASELINE="396 2859 2165 2851" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2859 396 2879 2163 2868 2165 2851 2161 2823 1288 2814 1286 2814 1284 2814 1249 2825 868 2816 866 2816 394 2829 396 2859"/>
+                        </Shape>
+                        <String CONTENT="people came to trade fully armed, and offered their wares to each other on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l33" HPOS="391" VPOS="2872" WIDTH="1774" HEIGHT="63" BASELINE="394 2918 2165 2914" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2918 394 2935 2163 2935 2165 2914 2161 2883 1279 2872 1277 2872 1195 2883 413 2875 411 2875 409 2875 407 2875 391 2881 394 2918"/>
+                        </Shape>
+                        <String CONTENT="their spear-points; or else they would hold a bundle of skins with one hand,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l34" HPOS="391" VPOS="2931" WIDTH="1774" HEIGHT="71" BASELINE="394 2979 2165 2972" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2979 394 2992 981 3000 983 3000 1095 2989 1219 3000 1221 3000 1223 3000 1249 2989 1286 3000 1288 3000 1290 3000 1292 3000 1316 2989 1331 3000 1334 3000 1336 3000 1338 3002 1518 3002 1518 3000 1606 2987 1663 2998 1665 2998 1747 2987 2055 2998 2057 2998 2059 2998 2061 2998 2076 2987 2143 2998 2146 2998 2148 2998 2150 2998 2165 2985 2165 2972 2163 2944 2118 2931 2115 2931 2113 2931 1931 2942 1836 2931 1834 2931 1832 2931 1829 2931 1814 2944 1713 2944 1682 2931 1680 2931 1678 2931 1552 2944 1104 2933 1102 2933 1100 2933 1097 2933 1084 2944 1054 2933 1052 2933 1050 2933 929 2946 547 2935 545 2935 543 2935 502 2946 463 2935 461 2935 459 2935 391 2948 394 2979"/>
+                        </Shape>
+                        <String CONTENT="and with the other a bared knife, in readiness to raise a fight upon the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l35" HPOS="394" VPOS="2994" WIDTH="483" HEIGHT="60" BASELINE="396 3037 877 3033" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 3037 396 3054 877 3048 877 3033 872 3002 420 2994 417 2994 415 2994 394 3002 396 3037"/>
+                        </Shape>
+                        <String CONTENT="slightest provocation."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-075_r6" HPOS="394" VPOS="3056" WIDTH="1778" HEIGHT="133" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="394 3056 2172 3056 2172 3189 394 3189"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l36" HPOS="502" VPOS="3048" WIDTH="1665" HEIGHT="78" BASELINE="504 3098 2167 3089" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="504 3098 504 3126 573 3113 989 3121 991 3121 1336 3108 1747 3117 1749 3117 1888 3106 1964 3117 1966 3117 1968 3117 1970 3117 1981 3108 1992 3117 1994 3117 1996 3117 1998 3119 2105 3119 2105 3117 2167 3102 2167 3089 2163 3061 1914 3048 1912 3048 1910 3048 1873 3059 1836 3048 1834 3048 1832 3048 1743 3061 1719 3050 1717 3050 1715 3050 1713 3050 1689 3061 1524 3050 1522 3050 1453 3061 1409 3050 1407 3050 1405 3050 1329 3063 1100 3052 1097 3052 1037 3063 996 3052 994 3052 991 3052 989 3052 950 3063 922 3052 920 3052 918 3052 842 3065 805 3054 803 3054 801 3054 563 3065 521 3054 519 3054 517 3054 515 3054 513 3054 502 3063 504 3098"/>
+                        </Shape>
+                        <String CONTENT="A mute trade took place in Asia as well as in America. In this manner"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-075_l37" HPOS="394" VPOS="3111" WIDTH="1769" HEIGHT="67" BASELINE="396 3158 2163 3150" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 3158 396 3178 2161 3169 2163 3150 2159 3119 1279 3111 1277 3111 1275 3111 1253 3121 526 3115 524 3115 394 3126 396 3158"/>
+                        </Shape>
+                        <String CONTENT="a party of adventurers, who in 1646 sailed from the mouth of the Kolyma west-"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-075_r7" HPOS="394" VPOS="3203" WIDTH="1778" HEIGHT="51" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="394 3203 2172 3203 2172 3254 394 3254"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l38" HPOS="965" VPOS="3204" WIDTH="628" HEIGHT="52" BASELINE="968 3232 1593 3238" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="968 3232 965 3249 1589 3256 1593 3238 1591 3210 968 3204 968 3232"/>
+                        </Shape>
+                        <String CONTENT="¹ Bogoras, Chukchee Materials, p. 345."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-075_r8" HPOS="394" VPOS="3260" WIDTH="1778" HEIGHT="67" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="394 3260 2172 3260 2172 3327 394 3327"/>
+                    </Shape>
+                    <TextLine ID="mz_1-075_l39" HPOS="1225" VPOS="3249" WIDTH="102" HEIGHT="78" BASELINE="1225 3308 1327 3308" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1225 3308 1225 3327 1327 3327 1327 3308 1327 3260 1318 3251 1318 3249 1316 3249 1314 3249 1312 3249 1310 3249 1264 3260 1247 3249 1245 3249 1243 3249 1240 3249 1238 3249 1236 3249 1225 3256 1225 3308"/>
+                        </Shape>
+                        <String CONTENT="[53]"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-074.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-074.png; regions_from: zones/chukchi-1-074.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-074_r1" HPOS="730" VPOS="599" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="730 599 2508 599 2508 689 730 689"/>
+                    </Shape>
+                    <TextLine ID="mz_1-074_l1" HPOS="1308" VPOS="614" WIDTH="617" HEIGHT="54" BASELINE="1308 649 1925 649" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1914 614 1892 614 1871 614 1849 614 1827 614 1806 614 1784 614 1762 614 1741 614 1719 614 1697 614 1676 614 1654 614 1632 614 1611 614 1589 614 1567 614 1546 614 1524 614 1502 614 1481 614 1459 614 1437 614 1416 614 1394 614 1373 614 1351 614 1329 614 1308 627 1308 649 1308 668 1925 668 1925 649 1923 640 1914 614"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-074_r2" HPOS="730" VPOS="714" WIDTH="1778" HEIGHT="758" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="730 714 2508 714 2508 1472 730 1472"/>
+                    </Shape>
+                    <TextLine ID="mz_1-074_l2" HPOS="751" VPOS="707" WIDTH="1748" HEIGHT="68" BASELINE="753 751 2499 744" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2483 716 2462 716 2440 716 2434 714 1334 707 1331 707 1329 707 1288 718 822 710 820 710 751 720 753 751 753 766 1912 775 1914 775 1975 764 2481 772 2483 772 2486 772 2488 772 2499 762 2499 744 2494 716 2483 714 2483 716"/>
+                        </Shape>
+                        <String CONTENT="1. Emyiˊrɪk (“in the extending [of the days]”). Loosely speaking, it corresponds to the first month"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l3" HPOS="851" VPOS="768" WIDTH="223" HEIGHT="46" BASELINE="851 796 1074 796" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="851 796 851 814 1074 814 1074 796 1074 768 851 768 851 796"/>
+                        </Shape>
+                        <String CONTENT="of the year."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l4" HPOS="760" VPOS="814" WIDTH="1355" HEIGHT="45" BASELINE="760 842 2115 842" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="760 842 760 859 2113 857 2115 842 2113 814 760 814 760 842"/>
+                        </Shape>
+                        <String CONTENT="2. Ureˊtvik (“in the lengthening”). This corresponds to the second month."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l5" HPOS="755" VPOS="848" WIDTH="1746" HEIGHT="63" BASELINE="757 891 2501 885" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="757 891 757 911 2501 900 2501 885 2496 857 1338 848 1336 848 1334 848 1286 859 825 850 822 850 755 861 757 891"/>
+                        </Shape>
+                        <String CONTENT="3. Niwleˊwkɪ (“during [the days] growing long”). It lasts about six weeks, until the reindeer-dams"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l6" HPOS="851" VPOS="909" WIDTH="272" HEIGHT="45" BASELINE="851 937 1123 937" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="851 937 851 950 1121 954 1123 937 1123 909 851 909 851 937"/>
+                        </Shape>
+                        <String CONTENT="begin to calve."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l7" HPOS="760" VPOS="943" WIDTH="1656" HEIGHT="63" BASELINE="762 987 2416 976" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="762 987 762 1006 2063 1006 2063 1004 2152 993 2390 1002 2393 1002 2395 1002 2416 989 2416 976 2412 943 1106 943 1104 943 1102 943 1100 943 1082 954 831 946 829 946 760 956 762 987"/>
+                        </Shape>
+                        <String CONTENT="4. Am-g̣roˊkĭ (“in the calving [time]”). This corresponds more or less to our term “spring.”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l8" HPOS="807" VPOS="1000" WIDTH="815" HEIGHT="47" BASELINE="807 1028 1622 1028" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="807 1028 807 1047 1622 1047 1622 1028 1622 1000 807 1000 807 1028"/>
+                        </Shape>
+                        <String CONTENT="5. Tur-eleˊtvuk (“in the new summer growing”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l9" HPOS="755" VPOS="1041" WIDTH="648" HEIGHT="50" BASELINE="757 1071 1403 1076" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="757 1071 755 1086 1399 1091 1403 1076 1403 1045 757 1041 757 1071"/>
+                        </Shape>
+                        <String CONTENT="6. Kɪˊtkɪtɪk (“in the first summer”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l10" HPOS="768" VPOS="1091" WIDTH="646" HEIGHT="56" BASELINE="770 1123 1414 1119" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="770 1123 770 1147 1412 1138 1414 1119 1409 1093 768 1091 770 1123"/>
+                        </Shape>
+                        <String CONTENT="7. Aˊnok (“in the second summer”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l11" HPOS="755" VPOS="1138" WIDTH="650" HEIGHT="48" BASELINE="755 1166 1405 1166" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="755 1166 755 1186 1405 1186 1405 1166 1405 1138 755 1138 755 1166"/>
+                        </Shape>
+                        <String CONTENT="8. Eˊlek (“in the middle summer”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l12" HPOS="801" VPOS="1182" WIDTH="766" HEIGHT="47" BASELINE="803 1214 1567 1210" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="803 1214 803 1229 1567 1225 1567 1210 1561 1182 801 1184 803 1214"/>
+                        </Shape>
+                        <String CONTENT="9. Êh-ɪˊntok (“with the fresh air going out”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l13" HPOS="738" VPOS="1227" WIDTH="758" HEIGHT="52" BASELINE="740 1264 1496 1257" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="740 1264 740 1279 1496 1273 1496 1257 1489 1227 738 1231 740 1264"/>
+                        </Shape>
+                        <String CONTENT="10. Ñerg̣eˊrɪk (“with the first light frost”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l14" HPOS="736" VPOS="1275" WIDTH="714" HEIGHT="52" BASELINE="738 1309 1450 1305" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 1309 738 1327 1448 1322 1450 1305 1444 1275 736 1277 738 1309"/>
+                        </Shape>
+                        <String CONTENT="11. Tur-äᵋleˊtɪk (“with the new snow”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l15" HPOS="734" VPOS="1322" WIDTH="491" HEIGHT="50" BASELINE="736 1355 1225 1353" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1355 736 1372 1223 1370 1225 1353 1219 1322 734 1322 736 1355"/>
+                        </Shape>
+                        <String CONTENT="12. G̣ɪthaˊk (“in the fall”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l16" HPOS="738" VPOS="1363" WIDTH="572" HEIGHT="65" BASELINE="740 1405 1310 1398" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="740 1405 740 1418 775 1428 777 1428 779 1428 1310 1413 1310 1398 1305 1370 926 1363 924 1363 738 1374 740 1405"/>
+                        </Shape>
+                        <String CONTENT="13. Läᵋleˊñkɪ (“in the winter”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l17" HPOS="851" VPOS="1415" WIDTH="1520" HEIGHT="50" BASELINE="853 1448 2371 1444" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2362 1415 851 1418 853 1448 853 1465 2369 1461 2371 1444 2364 1415 2362 1415"/>
+                        </Shape>
+                        <String CONTENT="Yawrɪˊna means “in the next year,” and is applied to the beginning of the next fall."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-074_r3" HPOS="730" VPOS="1492" WIDTH="1778" HEIGHT="914" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="730 1492 2508 1492 2508 2406 730 2406"/>
+                    </Shape>
+                    <TextLine ID="mz_1-074_l18" HPOS="831" VPOS="1487" WIDTH="1670" HEIGHT="65" BASELINE="833 1539 2501 1530" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="833 1539 833 1552 2499 1543 2501 1530 2496 1500 2330 1487 2328 1487 2325 1487 2293 1498 2263 1487 2260 1487 2258 1487 2159 1498 2126 1487 2124 1487 2122 1487 2120 1487 2068 1500 1858 1489 1855 1489 1853 1489 1808 1500 1777 1489 1775 1489 1773 1489 1661 1502 1310 1491 1308 1491 1305 1491 1303 1491 1290 1502 1182 1493 1180 1493 1178 1493 1175 1493 1162 1506 885 1506 846 1493 844 1493 842 1493 840 1493 838 1493 838 1496 831 1500 833 1539"/>
+                        </Shape>
+                        <String CONTENT="LANGUAGE. — The Chukchee language is rich in words, and pliant in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l19" HPOS="727" VPOS="1552" WIDTH="1774" HEIGHT="69" BASELINE="729 1597 2501 1589" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="729 1597 729 1610 1152 1621 1154 1621 1643 1608 2479 1615 2481 1615 2483 1615 2486 1615 2501 1604 2501 1589 2496 1560 1615 1552 1613 1552 1611 1552 1576 1563 1225 1554 1223 1554 1152 1565 740 1556 738 1556 736 1556 734 1556 734 1558 727 1563 729 1597"/>
+                        </Shape>
+                        <String CONTENT="forms; and the people are eloquent in their own way, but they do not like"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l20" HPOS="729" VPOS="1608" WIDTH="1770" HEIGHT="61" BASELINE="731 1654 2499 1647" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="731 1654 731 1669 2496 1662 2499 1647 2494 1619 1968 1608 1966 1608 1903 1619 816 1612 814 1612 729 1623 731 1654"/>
+                        </Shape>
+                        <String CONTENT="to be bored with questions. The Reindeer men, who are in their houses"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l21" HPOS="731" VPOS="1669" WIDTH="1768" HEIGHT="73" BASELINE="734 1716 2499 1710" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1716 734 1742 961 1732 2494 1732 2499 1710 2494 1682 2115 1669 2113 1669 2009 1680 1975 1669 1972 1669 1970 1669 1968 1669 1966 1669 1951 1680 1522 1671 1520 1671 1518 1671 1515 1671 1500 1684 1364 1684 1323 1671 1321 1671 1318 1671 1316 1671 1260 1684 844 1673 842 1673 731 1686 734 1716"/>
+                        </Shape>
+                        <String CONTENT="practically only when eating or sleeping, and keep in motion all the time,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l22" HPOS="729" VPOS="1732" WIDTH="1770" HEIGHT="67" BASELINE="731 1777 2499 1770" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="731 1777 731 1788 1292 1799 1295 1799 1435 1788 2499 1788 2499 1770 2494 1740 1362 1732 1360 1732 729 1744 731 1777"/>
+                        </Shape>
+                        <String CONTENT="were with difficulty persuaded to spend a few hours with me in the tent,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l23" HPOS="731" VPOS="1792" WIDTH="1765" HEIGHT="72" BASELINE="734 1840 2496 1829" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1840 734 1864 883 1853 976 1861 978 1861 2494 1844 2496 1829 2492 1794 1297 1792 1295 1792 1292 1792 1290 1792 1275 1805 1173 1805 1087 1792 1084 1792 1082 1792 1043 1805 981 1794 978 1794 879 1805 762 1794 760 1794 757 1794 731 1805 734 1840"/>
+                        </Shape>
+                        <String CONTENT="giving explanations or dictating texts. Even the old men would say, “Bad"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l24" HPOS="727" VPOS="1848" WIDTH="1769" HEIGHT="65" BASELINE="729 1896 2496 1890" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="729 1896 729 1913 2494 1913 2496 1890 2492 1861 1923 1848 1920 1848 1918 1848 1916 1848 1899 1861 1793 1851 1790 1851 1507 1861 1450 1851 1448 1851 1360 1861 1321 1851 1318 1851 1316 1851 1212 1864 1188 1853 1186 1853 1184 1853 1128 1864 909 1853 907 1853 820 1864 755 1853 753 1853 751 1853 727 1864 729 1896"/>
+                        </Shape>
+                        <String CONTENT="thing, dotage,” and would prefer to stay outside. Most of them, moreover,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l25" HPOS="727" VPOS="1907" WIDTH="1769" HEIGHT="65" BASELINE="729 1957 2496 1948" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="729 1957 729 1972 2494 1963 2496 1948 2490 1913 2219 1918 2180 1907 2178 1907 2176 1907 2174 1907 2141 1918 2109 1907 2107 1907 2105 1907 1983 1920 1957 1909 1955 1909 1953 1909 1951 1909 1929 1920 1875 1909 1873 1909 1871 1909 1849 1920 1814 1909 1812 1909 1810 1909 1723 1920 1637 1909 1635 1909 1632 1909 1606 1922 1474 1911 1472 1911 1407 1922 1279 1911 1277 1911 1275 1911 1273 1911 1258 1922 1089 1913 1087 1913 978 1924 926 1913 924 1913 727 1926 729 1957"/>
+                        </Shape>
+                        <String CONTENT="were quite unable to dictate. Even their curiosity is not lasting. When I"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l26" HPOS="727" VPOS="1967" WIDTH="1769" HEIGHT="65" BASELINE="729 2017 2496 2009" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="729 2017 729 2032 2494 2024 2496 2009 2492 1978 2107 1967 2105 1967 2046 1978 1689 1970 1687 1970 1602 1980 1269 1972 1266 1972 727 1985 729 2017"/>
+                        </Shape>
+                        <String CONTENT="came to a new camp, the inhabitants would pay close attention to my doings"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l27" HPOS="727" VPOS="2026" WIDTH="1769" HEIGHT="74" BASELINE="729 2076 2496 2065" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="729 2076 729 2091 1134 2100 1136 2100 1139 2100 1141 2100 1158 2089 1297 2089 1383 2100 1386 2100 1388 2100 1390 2100 1405 2089 1771 2097 1773 2097 1775 2097 1777 2097 1793 2084 1866 2095 1868 2095 1871 2095 1918 2084 1981 2095 1983 2095 2494 2082 2496 2065 2492 2037 2143 2026 2141 2026 2139 2026 2137 2026 2118 2037 1819 2028 1816 2028 1814 2028 1784 2039 740 2035 738 2035 736 2035 734 2035 734 2037 727 2041 729 2076"/>
+                        </Shape>
+                        <String CONTENT="for a few hours; then they would gradually drop off, and finally would be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l28" HPOS="729" VPOS="2087" WIDTH="1767" HEIGHT="65" BASELINE="731 2136 2496 2126" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="731 2136 731 2152 2494 2143 2496 2126 2492 2097 2143 2087 2141 2087 2139 2087 2111 2097 1933 2089 1931 2089 1784 2102 729 2102 731 2136"/>
+                        </Shape>
+                        <String CONTENT="interested only in barter. There were certainly exceptions, as Aiñanwaˊt, whom"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l29" HPOS="740" VPOS="2147" WIDTH="1754" HEIGHT="67" BASELINE="742 2197 2494 2190" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="742 2197 742 2214 2492 2203 2494 2190 2492 2160 2453 2147 2451 2147 2449 2147 2447 2147 2410 2158 2092 2147 2089 2147 2016 2158 1936 2147 1933 2147 1834 2160 1786 2149 1784 2149 1782 2149 1780 2149 1747 2160 1515 2149 1513 2149 1446 2160 1375 2149 1373 2149 1308 2162 1279 2152 1277 2152 1275 2152 1219 2162 1147 2152 1145 2152 1143 2152 1100 2162 1046 2152 1043 2152 968 2162 740 2154 742 2197"/>
+                        </Shape>
+                        <String CONTENT="I have mentioned, and a few others. In the Maritime villages, where the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l30" HPOS="729" VPOS="2206" WIDTH="1770" HEIGHT="67" BASELINE="731 2258 2499 2247" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="731 2258 731 2273 2496 2262 2499 2247 2494 2216 2165 2206 2163 2206 2161 2206 2137 2216 1795 2208 1793 2208 1790 2208 1788 2208 1775 2221 729 2221 731 2258"/>
+                        </Shape>
+                        <String CONTENT="inner rooms are much larger, and furnished with steadily burning lamps, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l31" HPOS="729" VPOS="2273" WIDTH="1770" HEIGHT="60" BASELINE="731 2314 2499 2305" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="731 2314 731 2333 2496 2327 2499 2305 2494 2277 760 2273 757 2273 755 2273 729 2281 731 2314"/>
+                        </Shape>
+                        <String CONTENT="old people are more used to sitting indoors, and accordingly are more tractable"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-074_l32" HPOS="729" VPOS="2342" WIDTH="979" HEIGHT="52" BASELINE="729 2372 1708 2372" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="729 2372 729 2394 1708 2394 1708 2372 1708 2342 729 2342 729 2372"/>
+                        </Shape>
+                        <String CONTENT="and more useful for scientific investigation."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

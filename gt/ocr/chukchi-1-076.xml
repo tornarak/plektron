@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-076.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-076.png; regions_from: zones/chukchi-1-076.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-076_r1" HPOS="761" VPOS="614" WIDTH="1778" HEIGHT="93" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="761 614 2539 614 2539 707 761 707"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l1" HPOS="1342" VPOS="636" WIDTH="615" HEIGHT="52" BASELINE="1342 668 1957 668" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1951 636 1342 636 1342 668 1342 688 1957 688 1957 668 1957 647 1951 636"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l2" HPOS="766" VPOS="643" WIDTH="69" HEIGHT="51" BASELINE="766 684 835 677" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 684 766 694 835 692 835 677 829 643 777 643 766 684"/>
+                        </Shape>
+                        <String CONTENT="54"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-076_r2" HPOS="761" VPOS="727" WIDTH="1778" HEIGHT="257" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="761 727 2539 727 2539 984 761 984"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l3" HPOS="762" VPOS="740" WIDTH="1769" HEIGHT="54" BASELINE="764 779 2531 775" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2516 751 2494 751 2473 749 2451 749 2429 746 2408 746 2386 744 2364 744 2360 742 762 740 764 779 764 794 2529 790 2531 775 2527 751 2516 751"/>
+                        </Shape>
+                        <String CONTENT="ward along the Arctic coast, carried on trade with the Maritime Chukchee."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l4" HPOS="764" VPOS="796" WIDTH="1771" HEIGHT="57" BASELINE="764 837 2535 837" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 837 764 853 2535 853 2535 837 2535 809 2460 796 2319 796 2317 796 2315 796 2312 796 2299 807 2254 796 2252 796 2250 796 2178 809 1938 809 1923 796 1920 796 1918 796 1916 796 1860 807 1732 796 1730 796 1728 796 1697 807 1630 796 1628 796 1626 796 1591 807 764 801 764 837"/>
+                        </Shape>
+                        <String CONTENT="They would leave their wares on the shore and go away. The Chukchee,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l5" HPOS="760" VPOS="861" WIDTH="1771" HEIGHT="59" BASELINE="762 900 2531 894" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="762 900 762 920 2529 920 2531 894 2525 861 760 866 762 900"/>
+                        </Shape>
+                        <String CONTENT="would come afterwards, take the wares, and leave their equivalent in peltries,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l6" HPOS="760" VPOS="915" WIDTH="608" HEIGHT="70" BASELINE="762 959 1368 954" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="762 959 762 972 848 985 851 985 903 974 1123 982 1126 982 1128 982 1130 982 1130 980 1139 972 1158 982 1160 982 1162 985 1344 985 1344 982 1347 982 1349 982 1368 969 1368 954 1362 915 760 926 762 959"/>
+                        </Shape>
+                        <String CONTENT="ivory, and ivory carvings.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-076_r3" HPOS="761" VPOS="987" WIDTH="1778" HEIGHT="56" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="761 987 2539 987 2539 1043 761 1043"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l7" HPOS="866" VPOS="969" WIDTH="1665" HEIGHT="65" BASELINE="868 1019 2531 1013" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="868 1019 868 1034 2529 1028 2531 1013 2527 982 2399 982 2382 969 2380 969 2377 969 2375 969 2289 980 2273 969 2271 969 2269 969 2267 969 2265 969 2226 980 2174 969 2172 969 2111 980 2081 969 2079 969 2076 969 1962 982 1931 972 1929 972 1927 972 1723 982 1702 972 1700 972 1570 972 1567 972 1565 972 1539 982 1494 972 1492 972 1489 972 1487 972 1485 972 1468 982 1355 974 1353 974 1351 974 1349 974 1331 985 1011 974 1009 974 1007 974 1004 974 994 982 983 974 981 974 978 974 887 974 885 974 883 974 881 974 866 982 868 1019"/>
+                        </Shape>
+                        <String CONTENT="Chukchee tradition relates the following regarding trade with America: —"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-076_r4" HPOS="761" VPOS="1043" WIDTH="1778" HEIGHT="475" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="761 1043 2539 1043 2539 1518 761 1518"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l8" HPOS="874" VPOS="1037" WIDTH="1653" HEIGHT="56" BASELINE="874 1073 2527 1073" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="874 1073 874 1093 2527 1093 2527 1073 2525 1037 874 1043 874 1073"/>
+                        </Shape>
+                        <String CONTENT="“On the other side of the sea, in a large forest, live ‘the invisible ones.’"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l9" HPOS="766" VPOS="1099" WIDTH="1765" HEIGHT="54" BASELINE="766 1136 2531 1136" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 1136 766 1153 2531 1153 2531 1136 2531 1106 770 1099 766 1136"/>
+                        </Shape>
+                        <String CONTENT="When they come to trade, one can see only the fox and beaver skins which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l10" HPOS="762" VPOS="1151" WIDTH="1769" HEIGHT="63" BASELINE="764 1197 2531 1190" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1197 764 1214 2529 1208 2531 1190 2527 1162 1951 1151 1949 1151 1946 1151 1944 1151 1929 1162 1435 1153 1433 1153 1347 1164 779 1156 777 1156 775 1156 773 1156 762 1162 764 1197"/>
+                        </Shape>
+                        <String CONTENT="they carry in their hands, and it seems as if the peltries move of themselves."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l11" HPOS="766" VPOS="1227" WIDTH="1769" HEIGHT="46" BASELINE="766 1255 2535 1255" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 1255 766 1273 2535 1273 2535 1255 2535 1227 775 1227 766 1255"/>
+                        </Shape>
+                        <String CONTENT="They come to meet our traders on the border of the forest, and shout, ‘Let"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l12" HPOS="764" VPOS="1286" WIDTH="1767" HEIGHT="45" BASELINE="764 1316 2531 1316" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1316 764 1331 2529 1331 2531 1316 2529 1286 764 1286 764 1316"/>
+                        </Shape>
+                        <String CONTENT="us trade!’ The traders take a bundle of tobacco and fling it far away."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l13" HPOS="766" VPOS="1340" WIDTH="1767" HEIGHT="58" BASELINE="768 1372 2533 1376" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="768 1372 766 1385 792 1398 794 1398 796 1398 2531 1389 2533 1376 2533 1346 768 1340 768 1372"/>
+                        </Shape>
+                        <String CONTENT="‘Tobacco, tobacco!’ rings through the forest, but nobody is seen. After a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l14" HPOS="762" VPOS="1392" WIDTH="1773" HEIGHT="60" BASELINE="764 1437 2535 1433" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1437 764 1452 2533 1448 2535 1433 2531 1402 1661 1392 1658 1392 1656 1392 1654 1392 1639 1402 805 1394 803 1394 801 1394 762 1405 764 1437"/>
+                        </Shape>
+                        <String CONTENT="while a bag filled with fox or beaver skins is flung from the forest. For one,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l15" HPOS="762" VPOS="1448" WIDTH="1401" HEIGHT="71" BASELINE="764 1496 2163 1489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1496 764 1511 1277 1519 1279 1519 1282 1519 1284 1519 1297 1509 1396 1509 1440 1519 1442 1519 1444 1519 1574 1509 1665 1519 1667 1519 1669 1519 1726 1506 1955 1517 1957 1517 2014 1506 2027 1517 2029 1517 2031 1517 2033 1519 2141 1519 2141 1517 2143 1517 2146 1517 2163 1504 2163 1489 2152 1448 2133 1459 1842 1448 1840 1448 1838 1448 1801 1459 1780 1448 1777 1448 1775 1448 1773 1448 1728 1459 1704 1448 1702 1448 1700 1448 1697 1448 1654 1461 1585 1450 1583 1450 1580 1450 1578 1450 1565 1463 1470 1463 1446 1450 1444 1450 1442 1450 1440 1450 1396 1461 1351 1450 1349 1450 1347 1450 1344 1450 1312 1463 762 1463 764 1496"/>
+                        </Shape>
+                        <String CONTENT="bundle of tobacco they will give a bagful of white-fox skins.”"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-076_r5" HPOS="761" VPOS="1518" WIDTH="1778" HEIGHT="479" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="761 1518 2539 1518 2539 1997 761 1997"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l16" HPOS="868" VPOS="1513" WIDTH="1667" HEIGHT="56" BASELINE="870 1556 2535 1552" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="870 1556 870 1569 2533 1565 2535 1552 2531 1521 881 1513 879 1513 877 1513 874 1513 874 1515 868 1519 870 1556"/>
+                        </Shape>
+                        <String CONTENT="Some trade with the Koryak was also probably carried on before the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l17" HPOS="762" VPOS="1567" WIDTH="1769" HEIGHT="65" BASELINE="764 1617 2531 1610" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1617 764 1632 2529 1628 2531 1610 2527 1580 2252 1567 2250 1567 2141 1578 2100 1567 2098 1567 2096 1567 2094 1567 2048 1578 1981 1567 1979 1567 1977 1567 1938 1580 1905 1569 1903 1569 1901 1569 1899 1569 1875 1580 1739 1569 1736 1569 1734 1569 1691 1580 1661 1569 1658 1569 1656 1569 1654 1569 1632 1580 1561 1569 1559 1569 1557 1569 1554 1569 1537 1580 1509 1569 1507 1569 1505 1569 1448 1580 1355 1569 1353 1569 1351 1569 1349 1569 1334 1582 807 1571 805 1571 803 1571 762 1584 764 1617"/>
+                        </Shape>
+                        <String CONTENT="advent of the Russians. I heard that in the south of the Parapolsky Dol, on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l18" HPOS="762" VPOS="1632" WIDTH="1771" HEIGHT="58" BASELINE="764 1675 2533 1671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1675 764 1690 2531 1686 2533 1671 2529 1641 781 1632 779 1632 777 1632 775 1632 762 1638 764 1675"/>
+                        </Shape>
+                        <String CONTENT="the river Anapka, an ancient fair was held at which several camps of Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l19" HPOS="766" VPOS="1688" WIDTH="1767" HEIGHT="63" BASELINE="766 1734 2533 1729" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 1734 766 1751 2531 1747 2533 1729 2529 1699 2341 1688 2338 1688 2336 1688 2299 1699 2278 1688 2276 1688 2273 1688 2198 1699 2120 1688 2118 1688 2115 1688 2113 1688 2098 1701 1946 1701 1920 1688 1918 1688 1916 1688 1767 1699 1743 1688 1741 1688 1739 1688 1736 1688 1715 1699 1650 1688 1648 1688 1645 1688 1593 1701 1511 1690 1509 1690 1234 1701 1219 1690 1217 1690 1214 1690 1026 1690 1024 1690 942 1701 926 1690 924 1690 922 1690 781 1690 779 1690 766 1734"/>
+                        </Shape>
+                        <String CONTENT="Koryak and Chukchee, of Maritime Chukchee, and even of Kamchadal, used"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l20" HPOS="764" VPOS="1766" WIDTH="1769" HEIGHT="46" BASELINE="764 1794 2533 1794" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1794 764 1812 2533 1812 2533 1794 2533 1766 764 1766 764 1794"/>
+                        </Shape>
+                        <String CONTENT="to gather. Perhaps a few articles of Japanese manufacture may have come"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l21" HPOS="762" VPOS="1809" WIDTH="1773" HEIGHT="61" BASELINE="764 1855 2535 1851" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1855 764 1870 2533 1866 2535 1851 2531 1822 2388 1809 2386 1809 2258 1820 2232 1809 2230 1809 2228 1809 2139 1820 2063 1809 2061 1809 1996 1820 1901 1809 1899 1809 1842 1820 1780 1809 1777 1809 1669 1820 1596 1812 1593 1812 1591 1812 1589 1812 1572 1822 1009 1812 1007 1812 909 1822 846 1812 844 1812 762 1825 764 1855"/>
+                        </Shape>
+                        <String CONTENT="to the north in this way. At least, the question of the origin and manufacture"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l22" HPOS="764" VPOS="1883" WIDTH="1771" HEIGHT="48" BASELINE="764 1913 2535 1913" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1913 764 1931 2535 1931 2535 1913 2535 1883 764 1883 764 1913"/>
+                        </Shape>
+                        <String CONTENT="of Chukchee iron armor suggests a connection with the Japanese which does"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l23" HPOS="762" VPOS="1933" WIDTH="478" HEIGHT="63" BASELINE="764 1974 1240 1970" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 1974 764 1989 1223 1996 1225 1996 1227 1996 1230 1996 1240 1985 1240 1970 1234 1933 762 1944 764 1974"/>
+                        </Shape>
+                        <String CONTENT="not exist at present.²"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-076_r6" HPOS="761" VPOS="1997" WIDTH="1778" HEIGHT="718" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="761 1997 2539 1997 2539 2715 761 2715"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l24" HPOS="868" VPOS="1987" WIDTH="1667" HEIGHT="76" BASELINE="870 2035 2535 2030" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="870 2035 870 2063 978 2050 1509 2061 1511 2061 1624 2050 2107 2058 2109 2058 2111 2058 2137 2048 2533 2048 2535 2030 2531 2000 2380 1987 2377 1987 2375 1987 2373 1987 2358 2000 2215 2000 2191 1987 2189 1987 2187 1987 2185 1987 2182 1987 2167 2000 2076 2000 2046 1987 2044 1987 2042 1987 1957 1998 1927 1987 1925 1987 1923 1987 1920 1987 1897 1998 1840 1987 1838 1987 1736 1998 1704 1987 1702 1987 1700 1987 1639 2000 1531 1989 1528 1989 1526 1989 1492 2000 1468 1989 1466 1989 1463 1989 1461 1989 1414 2000 1342 1989 1340 1989 1338 1989 1297 2000 1256 1989 1253 1989 1251 1989 868 1998 870 2035"/>
+                        </Shape>
+                        <String CONTENT="This armor, made of small pieces of iron with fastenings of narrow leather"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l25" HPOS="760" VPOS="2050" WIDTH="1773" HEIGHT="60" BASELINE="762 2095 2533 2089" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="762 2095 762 2110 2531 2106 2533 2089 2529 2058 1938 2050 1936 2050 1823 2061 1537 2052 1535 2052 760 2063 762 2095"/>
+                        </Shape>
+                        <String CONTENT="strips, was very common among the Reindeer Chukchee until recently. Even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l26" HPOS="762" VPOS="2110" WIDTH="1771" HEIGHT="61" BASELINE="764 2156 2533 2152" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 2156 764 2171 2531 2167 2533 2152 2529 2121 1905 2110 1903 2110 762 2123 764 2156"/>
+                        </Shape>
+                        <String CONTENT="now, many individuals preserve their armor out of reverence for its antiquity."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l27" HPOS="766" VPOS="2180" WIDTH="1767" HEIGHT="47" BASELINE="766 2212 2533 2208" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2212 766 2227 2531 2223 2533 2208 2527 2180 775 2182 766 2212"/>
+                        </Shape>
+                        <String CONTENT="Besides armor, helmets and greaves were used, all of which are in some"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l28" HPOS="762" VPOS="2232" WIDTH="1771" HEIGHT="58" BASELINE="764 2273 2533 2268" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 2273 764 2290 2531 2286 2533 2268 2529 2240 781 2232 779 2232 777 2232 775 2232 762 2238 764 2273"/>
+                        </Shape>
+                        <String CONTENT="degree similar to those of Japanese production. The Chukchee, however, are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l29" HPOS="766" VPOS="2290" WIDTH="1767" HEIGHT="59" BASELINE="766 2333 2533 2333" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2333 766 2349 2531 2349 2533 2333 2533 2303 2499 2290 2496 2290 2494 2290 2492 2290 2453 2301 2371 2290 2369 2290 2306 2303 2111 2303 2083 2290 2081 2290 2079 2290 2076 2290 2074 2290 2059 2303 1938 2303 1890 2290 1888 2290 1886 2290 1884 2290 1881 2290 1864 2303 1700 2303 1611 2290 1609 2290 1606 2290 1567 2301 1526 2290 1524 2290 1522 2290 1520 2290 1496 2301 1440 2290 1437 2290 1435 2290 1390 2301 1362 2290 1360 2290 1357 2290 1355 2290 1316 2301 1295 2290 1292 2290 1139 2290 1136 2290 1134 2290 1095 2301 1071 2290 1069 2290 922 2290 920 2290 777 2301 766 2333"/>
+                        </Shape>
+                        <String CONTENT="not sufficiently skilled in the blacksmith’s art to forge such armor. The only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l30" HPOS="766" VPOS="2362" WIDTH="1767" HEIGHT="54" BASELINE="766 2392 2533 2392" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2392 766 2416 2531 2405 2533 2392 2531 2362 777 2362 766 2392"/>
+                        </Shape>
+                        <String CONTENT="place where it could have been made is in the Koryak village of Poiˊtɪn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l31" HPOS="762" VPOS="2409" WIDTH="1771" HEIGHT="61" BASELINE="764 2452 2533 2448" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="764 2452 764 2470 2531 2465 2533 2448 2529 2416 779 2409 777 2409 775 2409 773 2409 762 2416 764 2452"/>
+                        </Shape>
+                        <String CONTENT="(Russian Paren, Парень), the inhabitants of which have for a long time occupied"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l32" HPOS="766" VPOS="2481" WIDTH="1769" HEIGHT="49" BASELINE="766 2511 2535 2511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2511 766 2530 2535 2530 2535 2511 2535 2481 777 2481 766 2511"/>
+                        </Shape>
+                        <String CONTENT="themselves with farriery; and the tradition of the southwestern Chukchee points"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l33" HPOS="766" VPOS="2541" WIDTH="1769" HEIGHT="48" BASELINE="766 2572 2535 2572" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2572 766 2589 2535 2589 2535 2572 2535 2541 777 2541 766 2572"/>
+                        </Shape>
+                        <String CONTENT="in this direction. The question arises, whether the manufacture of this armor"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l34" HPOS="766" VPOS="2587" WIDTH="1769" HEIGHT="60" BASELINE="766 2632 2535 2628" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2632 766 2647 2533 2643 2535 2628 2531 2598 1665 2587 1663 2587 1661 2587 1630 2598 948 2589 946 2589 775 2600 766 2632"/>
+                        </Shape>
+                        <String CONTENT="was really developed only after the arrival of the Russians, especially as the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l35" HPOS="766" VPOS="2660" WIDTH="1510" HEIGHT="48" BASELINE="766 2691 2276 2691" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2691 766 2708 2276 2708 2276 2691 2276 2660 777 2660 766 2691"/>
+                        </Shape>
+                        <String CONTENT="wars have decreased since the last half of the eighteenth century."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-076_r7" HPOS="761" VPOS="2715" WIDTH="1778" HEIGHT="417" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="761 2715 2539 2715 2539 3132 761 3132"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l36" HPOS="877" VPOS="2708" WIDTH="1658" HEIGHT="61" BASELINE="877 2749 2535 2749" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="877 2749 877 2769 2535 2769 2535 2749 2535 2719 2512 2708 2509 2708 2507 2708 2399 2719 2336 2708 2334 2708 2332 2708 2297 2721 2089 2721 2072 2708 2070 2708 2068 2708 2066 2708 1981 2719 1873 2708 1871 2708 1728 2721 1509 2721 1494 2708 1492 2708 1489 2708 1487 2708 1485 2708 1455 2719 1318 2708 1227 2708 1225 2708 1223 2708 1221 2708 1206 2719 877 2714 877 2749"/>
+                        </Shape>
+                        <String CONTENT="Not less remarkable are the armor and helmet of Japanese make which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l37" HPOS="766" VPOS="2769" WIDTH="1767" HEIGHT="58" BASELINE="766 2812 2533 2808" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2812 766 2827 2531 2827 2533 2808 2529 2777 777 2769 775 2769 773 2769 766 2812"/>
+                        </Shape>
+                        <String CONTENT="I acquired from a Reindeer Chukchee of the North Anadyr tundra. They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l38" HPOS="766" VPOS="2831" WIDTH="1767" HEIGHT="57" BASELINE="766 2872 2533 2866" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2872 766 2888 2531 2883 2533 2866 2529 2833 816 2831 814 2831 775 2840 766 2872"/>
+                        </Shape>
+                        <String CONTENT="are old and rusty, and it was asserted that they had been in the family of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l39" HPOS="766" VPOS="2901" WIDTH="1769" HEIGHT="43" BASELINE="766 2929 2535 2929" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2929 766 2944 2535 2944 2535 2929 2535 2901 777 2901 766 2929"/>
+                        </Shape>
+                        <String CONTENT="their owner for several generations. It is certain that in recent times no"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l40" HPOS="766" VPOS="2946" WIDTH="1769" HEIGHT="67" BASELINE="766 2992 2535 2987" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 2992 766 3013 2533 3002 2535 2987 2531 2957 1650 2946 1648 2946 1645 2946 1622 2957 781 2948 779 2948 766 2992"/>
+                        </Shape>
+                        <String CONTENT="Japanese traders have visited Anadyr Bay. The Japanese probably had some"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l41" HPOS="766" VPOS="3007" WIDTH="1769" HEIGHT="60" BASELINE="766 3048 2535 3043" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 3048 766 3067 2533 3063 2535 3043 2531 3015 779 3007 766 3048"/>
+                        </Shape>
+                        <String CONTENT="intercourse with the southern Kamchadal. Steller and Krasheninnikoff mention"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l42" HPOS="766" VPOS="3078" WIDTH="1767" HEIGHT="54" BASELINE="766 3108 2533 3108" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 3108 766 3128 2529 3132 2533 3108 2531 3078 777 3078 766 3108"/>
+                        </Shape>
+                        <String CONTENT="that the Kamchadal name of the Japanese (Sühsemen according to the former,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-076_r8" HPOS="761" VPOS="3186" WIDTH="1778" HEIGHT="85" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="761 3186 2539 3186 2539 3271 761 3271"/>
+                    </Shape>
+                    <TextLine ID="mz_1-076_l43" HPOS="874" VPOS="3202" WIDTH="429" HEIGHT="54" BASELINE="877 3232 1303 3238" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="877 3232 874 3249 1299 3256 1303 3238 1303 3208 877 3202 877 3232"/>
+                        </Shape>
+                        <String CONTENT="¹ Nordenskiöld, II, p. 75."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-076_l44" HPOS="1749" VPOS="3204" WIDTH="598" HEIGHT="49" BASELINE="1752 3232 2347 3236" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1752 3232 1749 3249 2343 3253 2347 3236 2345 3208 1752 3204 1752 3232"/>
+                        </Shape>
+                        <String CONTENT="² See Chapter VI, section on armor."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,95 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {
+      "text": "1. Emyiˊrɪk (“in the extending [of the days]”). Loosely speaking, it corresponds to the first month",
+      "resolved": "Emyiˊrɪk: ˊ = U+02CA stress after the first, dotted i; ɪ = U+026A dotless small-cap in rɪk, contrasted at 4x against the dotted i earlier in the same word and against the gloss word 'in'",
+      "note": "Small-cap ɪ vs dotted i settled by contrast per §5.2, keying_spec.md."
+    },
+    "2": {"text": "of the year."},
+    "3": {
+      "text": "2. Ureˊtvik (“in the lengthening”). This corresponds to the second month.",
+      "resolved": "Ureˊtvik: ˊ = U+02CA stress after e; final -vik keeps a plain dotted ASCII i, confirmed at 4x against the dotted i in the same line's gloss 'in the lengthening' — unlike the other list entries, this one's final vowel is NOT the small-cap ɪ",
+      "note": "Contrast checked directly: this word's final i has a visible dot, distinguishing it from the dotless ɪ seen in neighbouring entries (e.g. line 4 wkɪ, line 12 rɪk)."
+    },
+    "4": {
+      "text": "3. Niwleˊwkɪ (“during [the days] growing long”). It lasts about six weeks, until the reindeer-dams",
+      "resolved": "Niwleˊwkɪ: ˊ = U+02CA stress after e; ɪ = U+026A dotless small-cap in wkɪ, confirmed at 4x against dotted i in gloss 'during'"
+    },
+    "5": {"text": "begin to calve."},
+    "6": {
+      "text": "4. Am-g̣roˊkĭ (“in the calving [time]”). This corresponds more or less to our term “spring.”",
+      "resolved": "Am-g̣roˊkĭ: g̣ = g + U+0323 (dot below, confirmed at 4x, clean of line-overlap on second look); ˊ = U+02CA stress after o; ĭ = i + U+0306 breve on i (§2.6-licensed, matches the exact editor-confirmed reading cited for this page)",
+      "note": "Matches keying_spec.md §2.6's own worked example for this page: 'ĭ — editor-confirmed on 1-074, \"Am-g̣roˊkĭ\"'."
+    },
+    "7": {
+      "text": "5. Tur-eleˊtvuk (“in the new summer growing”).",
+      "resolved": "Tur-eleˊtvuk: ˊ = U+02CA stress after the second e",
+      "note": "A stray mark sits above the opening curly quote before the gloss word 'in' (visible in both the composite and a 4x crop). It does not touch any letter, sits over English prose where no notation applies, and is judged a print artifact/ink fleck, not a mark — nothing keyed for it."
+    },
+    "8": {
+      "text": "6. Kɪˊtkɪtɪk (“in the first summer”).",
+      "resolved": "Kɪˊtkɪtɪk: ɪ = U+026A ×3, all dotless small-cap (checked at 2x, consistent shape as the other ɪ instances on this page); ˊ = U+02CA stress after the first ɪ"
+    },
+    "9": {
+      "text": "7. Aˊnok (“in the second summer”).",
+      "resolved": "Aˊnok: ˊ = U+02CA stress after A"
+    },
+    "10": {
+      "text": "8. Eˊlek (“in the middle summer”).",
+      "resolved": "Eˊlek: ˊ = U+02CA stress after E"
+    },
+    "11": {
+      "text": "9. Êh-ɪˊntok (“with the fresh air going out”).",
+      "resolved": "Êh-ɪˊntok: Ê = E + U+0302 circumflex (capital); ɪ = U+026A dotless small-cap, confirmed at 4x against dotted i's in the gloss 'with'/'fresh'; ˊ = U+02CA stress after ɪ"
+    },
+    "12": {
+      "text": "10. Ñerg̣eˊrɪk (“with the first light frost”).",
+      "resolved": "Ñerg̣eˊrɪk: Ñ = N + U+0303 tilde (capital); g̣ = g + U+0323 dot below, confirmed at 4x after the advisory flagged this word as a rare form — the dot was missed on first read; ˊ = U+02CA stress after the second e; ɪ = U+026A dotless small-cap in rɪk"
+    },
+    "13": {
+      "text": "11. Tur-äᵋleˊtɪk (“with the new snow”).",
+      "resolved": "Tur-äᵋleˊtɪk: ä = a + U+0308 diaeresis; ᵋ = U+1D4B laryngeal superscript immediately after ä (raised loop-with-tail shape, matching the corpus's documented 'reads as superscript g at small scale' pattern for this exact mark rather than any catalogued g-sort); ˊ = U+02CA stress after e (culminative, one per word — the ä mark is independent of it); ɪ = U+026A dotless small-cap in tɪk",
+      "note": "The raised mark after ä has no catalogued 'superscript g' codepoint anywhere in the inventory (keying_spec.md §5.9/§2.1); keyed as the laryngeal U+1D4B per the documented ä+laryngeal pattern (cf. spec's own 'äˊᵋq-iˊmɪl' example) rather than left uncatalogued, since a catalogued sort fits both the position (immediately after a vowel) and does not violate the one-stress-per-word rule. Flagging for adjudicator: this identification rests on shape-at-4x and the corpus pattern, not certainty — same mark recurs identically on line 15."
+    },
+    "14": {
+      "text": "12. G̣ɪthaˊk (“in the fall”).",
+      "resolved": "G̣ɪthaˊk: G̣ = G + U+0323 dot below (capital), confirmed at 4x; ɪ = U+026A dotless small-cap; ˊ = U+02CA stress after a"
+    },
+    "15": {
+      "text": "13. Läᵋleˊñkɪ (“in the winter”).",
+      "resolved": "Läᵋleˊñkɪ: ä = a + U+0308; ᵋ = U+1D4B laryngeal after ä, same shape and reasoning as line 13's äᵋ; ˊ = U+02CA stress after e; ñ = n + U+0303; ɪ = U+026A dotless small-cap",
+      "note": "Same open-doubt as line 13's ᵋ reading — flagging both together for the adjudicator; the two occurrences on this page are visually identical, which supports (but does not prove) the same reading for both."
+    },
+    "16": {
+      "text": "Yawrɪˊna means “in the next year,” and is applied to the beginning of the next fall.",
+      "resolved": "Yawrɪˊna: ɪ = U+026A dotless small-cap, confirmed at 4x against dotted i's in 'in'/'the'/'applied'; ˊ = U+02CA stress after ɪ"
+    },
+    "17": {
+      "text": "LANGUAGE. — The Chukchee language is rich in words, and pliant in",
+      "resolved": "LANGUAGE keyed plain ASCII capitals per keying_spec.md §2.13 (printed small-caps run-in second-level heading; no small-cap codepoint licensed outside Tier-1 forms). Em dash U+2014 per §2.11, spaced both sides as printed."
+    },
+    "18": {"text": "forms; and the people are eloquent in their own way, but they do not like"},
+    "19": {"text": "to be bored with questions. The Reindeer men, who are in their houses"},
+    "20": {"text": "practically only when eating or sleeping, and keep in motion all the time,"},
+    "21": {"text": "were with difficulty persuaded to spend a few hours with me in the tent,"},
+    "22": {"text": "giving explanations or dictating texts. Even the old men would say, “Bad"},
+    "23": {"text": "thing, dotage,” and would prefer to stay outside. Most of them, moreover,"},
+    "24": {"text": "were quite unable to dictate. Even their curiosity is not lasting. When I"},
+    "25": {"text": "came to a new camp, the inhabitants would pay close attention to my doings"},
+    "26": {"text": "for a few hours; then they would gradually drop off, and finally would be"},
+    "27": {
+      "text": "interested only in barter. There were certainly exceptions, as Aiñanwaˊt, whom",
+      "resolved": "Aiñanwaˊt: ñ = n + U+0303 tilde; ˊ = U+02CA stress after the second a (raised mark defaults to stress per §4, confirmed at 4x — not the pause/spirant apostrophe, which has never been the correct reading corpus-wide)"
+    },
+    "28": {"text": "I have mentioned, and a few others. In the Maritime villages, where the"},
+    "29": {"text": "inner rooms are much larger, and furnished with steadily burning lamps, the"},
+    "30": {"text": "old people are more used to sitting indoors, and accordingly are more tractable"},
+    "31": {"text": "and more useful for scientific investigation."},
+    "32": {
+      "text": "52",
+      "note": "Folio in RunningTitleZone, correction box (corr_1-074-620) drawn by a human with empty CONTENT, keyed per keying_spec.md apparatus rule. Read directly off the composite/sheet: plain digits '52', box width 67px is not clipping a wider number."
+    }
+  },
+  "contamination": {"blind": true}
+}
