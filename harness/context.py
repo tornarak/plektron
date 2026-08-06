@@ -320,6 +320,44 @@ def _running_title(recs: list[dict], ref: str, root: Path) -> dict | None:
             "bracketed": bracketed, "lines": sum(len(v) for v in by_zone.values())}
 
 
+def _window_folio(expected: int | None, running: dict | None) -> tuple[int | None, str]:
+    """Which folio centres `toc_window`, and which witness supplied it.
+
+    **The cold start this exists for.** `expected_folio` is a prediction from the
+    preceding *collated* page, so it is null at the front of any run; `toc_window`
+    filters ToC entries by distance from it, so with a null folio the distance test
+    never fires and the window falls back to `believed_open` — itself a fold over
+    collated pages, and likewise empty when nothing precedes. The window therefore
+    came back empty, no heading could match an entry that was not in it, and the
+    collation rules turn every unmatched heading into an unresolved comment. Serially
+    that was the first page of a run; under a dispatched batch it is all of them.
+    `1-075` is the case: two headings, both chapter openings, both invisible.
+
+    The page's own running title is the better witness anyway. CLAUDE.md's rule is
+    that the page says what page it is and nothing infers it — a running title is the
+    page saying so, where `expected_folio` is a neighbour's arithmetic.
+
+    **`expected_folio` is deliberately not filled from this.** It is the *prediction*
+    and when there is none there is none; writing this page's own folio into it would
+    manufacture the second witness and leave the disagreement check comparing a value
+    with itself. That is the comparison whose witnesses may be one witness, which
+    CLAUDE.md says must say so — and it says so here, in the returned witness, rather
+    than by falling silent.
+
+    `running["folio"]` is transcribed content and so a string, and not always an
+    integer: a number that did not read cleanly stays in `text` with `folio` null, on
+    `_running_title`'s own "null means go and look" contract. Both witnesses absent is
+    a real state, and `"none"` is what separates "nothing near this folio" from "no
+    folio to be near" — an empty window alone cannot say which.
+    """
+    if expected is not None:
+        return expected, "expected_folio"
+    try:
+        return int(str((running or {}).get("folio")).strip()), "running_title"
+    except (TypeError, ValueError):
+        return None, "none"
+
+
 def _lines_in_zone(recs: list[dict], ref: str, root: Path,
                    label: str) -> list[dict]:
     """Lines whose vertical midpoint falls in a zone of this label.
@@ -718,6 +756,9 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     detected["tokens"] = [f for f in detected["tokens"]
                           if (f["index"], f["token"]) not in ratified]
 
+    running = _running_title(recs, ref, root)
+    window_folio, window_witness = _window_folio(state["expected_folio"], running)
+
     return {
         "page_ref": ref,
         "stem": stem,
@@ -747,11 +788,14 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # witness to `expected_folio` above, which is a prediction from the
         # preceding page and knows nothing about this one. Cheap, independent, and
         # the two disagreeing is the signal.
-        "running_title": _running_title(recs, ref, root),
+        "running_title": running,
         # A neighbourhood with marks, not a resolution. `open` is what the
         # milestone fold believes; it informs, it does not decide.
-        "toc_window": toc_window(load_toc(root), state["expected_folio"],
+        "toc_window": toc_window(load_toc(root), window_folio,
                                  state["believed_open"]),
+        # WHICH folio centred the window above, because an empty one has two very
+        # different causes and the pass would otherwise have to guess which.
+        "toc_window_folio": {"folio": window_folio, "witness": window_witness},
         # The end of the previous page's committed TEI, so the pass can see
         # whether this page opens mid-element instead of inferring it. Null when
         # the predecessor is not collated — then the seam is genuinely unknown and

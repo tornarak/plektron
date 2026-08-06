@@ -136,9 +136,16 @@ lives on, and the gate checks it.
   wherever that chain breaks. Null is not a defect. It means read the folio off
   the image and do not guess, which is what you do either way.
 - **`toc_window`** is a neighbourhood, not a resolution — entries near the
-  expected folio plus any the milestone fold believes open, each marked
+  centring folio plus any the milestone fold believes open, each marked
   `open`/`starts_here`/`distance`. The marks derive from a prediction and inherit
   its errors. They tell you which entry to look at first; the page decides.
+- **`toc_window_folio`** says which witness centred it — `expected_folio`,
+  `running_title`, or `none`. It matters when the window is **empty**, which has
+  two causes a bare empty list cannot tell apart: nothing in the ToC is near this
+  page, or no folio was available to be near. On `none`, treat an unmatched heading
+  as unresolved *because the check could not run* — say so in the comment, rather
+  than reporting that the ToC has no such entry. `open` marks also thin out where
+  the pages before this one are not collated; that degrades the hint, not the rule.
 - **`figures_on_page`** is `{n, caption}`, one record per **printed figure** —
   `n` is the number the caption itself prints, and it is what you anchor on.
   Nothing about geometry reaches you, deliberately: **placing a figure is not
@@ -317,6 +324,13 @@ If heading-shaped text matches nothing in `toc_window`:
   `<!-- heading-shaped text, no ToC match, no list/table follows: needs a human
   call on where this attaches -->`. Never force a `<head>` onto something it does
   not caption, and never let a non-ToC heading enter chapter state.
+
+**With `toc_window_folio.witness` of `none` there was no window to match against**,
+so write `<!-- heading-shaped text, no folio to centre the ToC window: match
+unchecked -->` instead of either form above. The distinction is the whole of what
+the coordinator can act on: "the ToC has no such entry" is a finding about the
+book, "the check did not run" is a finding about this page's inputs, and reporting
+the second as the first is the fluent-nonsense failure in miniature.
 
 If an entry is marked `starts_here: true` and nothing matches it, do not force a
 milestone. Comment instead: `<!-- expected milestone for {id} ({title}) not found

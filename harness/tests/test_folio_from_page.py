@@ -11,7 +11,10 @@ brackets, each matching the `<pb n>` a human wrote.
 """
 from __future__ import annotations
 
-from harness.context import FOLIO_ZONES, _folio_in, _running_title
+import pytest
+
+from harness.context import FOLIO_ZONES, _folio_in, _running_title, _window_folio
+from harness.state import toc_window
 
 
 def _line(text, zone, hpos=0, vpos=0, height=50):
@@ -141,3 +144,62 @@ def test_ocr_lines_omits_what_no_facs_could_point_at(tmp_path):
     # citation written in it had to be translated by hand before anyone could act
     # on it. Nothing may reintroduce a second currency here.
     assert set(got[0]) == {"index", "text"}
+
+
+# The window the folio centres, and the cold start that left it empty.
+#
+# `toc_window` filters ToC entries by distance from `expected_folio`, which is a
+# prediction from the preceding *collated* page — so at the front of any run it is
+# null, the distance test never fires, and the window falls back to `believed_open`,
+# itself a fold over collated pages and likewise empty. Every heading on that page
+# then matches no entry and becomes an unresolved comment. Serially that was one
+# page; under a dispatched batch it is all of them.
+
+def test_the_window_falls_back_to_the_page_s_own_folio():
+    """The running title is the better witness anyway — the page saying what page
+    it is, against a neighbour's arithmetic."""
+    assert _window_folio(None, {"folio": "53"}) == (53, "running_title")
+    toc = [{"id": "chIII", "level": 1, "title": "Trade", "page_start": 53},
+           {"id": "chIV", "level": 1, "title": "War", "page_start": 90}]
+    assert toc_window(toc, None, []) == [], "the state this fixes"
+    got = toc_window(toc, 53, [])
+    assert [e["id"] for e in got] == ["chIII"] and got[0]["starts_here"]
+
+
+def test_a_prediction_wins_where_there_is_one():
+    """The fallback is for the absence, not a preference. Where both witnesses exist
+    the window keeps centring on the prediction, so the two stay independent and the
+    disagreement between them remains the signal it was built to be."""
+    assert _window_folio(74, {"folio": "75"}) == (74, "expected_folio")
+
+
+def test_both_witnesses_absent_is_a_state_the_payload_names():
+    """`running_title.folio` is transcribed content, so a string, and not always an
+    integer — a number that did not read cleanly stays in `text` with `folio` null.
+    An empty window alone cannot say whether nothing was near this folio or there was
+    no folio to be near, so the witness says which."""
+    for bad in (None, "", "5]", "liii", "1-075"):
+        assert _window_folio(None, {"folio": bad}) == (None, "none"), bad
+    assert _window_folio(None, None) == (None, "none"), "no running title at all"
+
+
+def test_the_prediction_is_never_filled_from_the_page_itself():
+    """The whole point of the pair, asserted on the live page rather than in the
+    abstract. `1-075` opens the trade chapter with nothing collated before it, so the
+    prediction is genuinely absent. `expected_folio` must stay null — arriving with
+    this page's own folio in it would leave `<pb>` checked against itself, a
+    comparison whose witnesses are one witness — while the window still centres on 53
+    and both of the page's headings become reachable."""
+    from pathlib import Path
+
+    from harness.context import build_context
+    repo = Path(__file__).resolve().parent.parent.parent
+    if not (repo / "ocr" / "chukchi-1-075.xml").exists():
+        pytest.skip("1-075 has no OCR in this checkout")
+    ctx = build_context("1-075", repo)
+    assert ctx["expected_folio"] is None, "the prediction stays absent"
+    assert ctx["toc_window_folio"] == {"folio": 53, "witness": "running_title"}
+    starts = {e["id"] for e in ctx["toc_window"] if e["starts_here"]}
+    assert starts == {"chIII", "chIII.1"}, (
+        "III. — TRADE. and ANCIENT TRADE., the two headings 1-075 prints; with the "
+        "empty window they matched nothing and became unresolved comments")
