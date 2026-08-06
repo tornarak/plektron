@@ -749,14 +749,17 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --root --json --toon --pager
 ```
 
-### proposal set REF LINE
-**Does** sets one line's field. NFD-normalized on write.
-**Reads** the proposal, and stdin when `--value` is absent.
+### proposal set REF [LINE]
+**Does** sets one line's field, or many lines' in one write when `LINE` is omitted. NFD-normalized on write.
+**Reads** the proposal, and stdin when `--value`/`--values` is absent.
 **Writes** the proposal, in place.
 **Exit** always 0.
+**Note** **the bulk form is a budget fix, not a convenience.** A reader issues a command and reads its result as two separate turns, so a single-line write costs two of `maxTurns: 80`. `1-101` — a two-column numbered list of native names, nearly every line wanting Tier-1 keying — spent 23 `set`, 3 `replace` and 14 `Edit` calls over 21 distinct lines, hit the cap exactly, and was cut off mid-correction. One line was touched twice, so it was not thrash: forty corrections arriving one per turn on a page needing forty corrections. The class of page this fails on is the vocabulary list, which is the densest Tier-1 material in the book. It reports `changed` and `unchanged` per line, because re-sending a whole page most of which was already right is the ordinary use and a bulk write that says only "ok" cannot be checked.
+**Note** **`--values` exists beside stdin because the reader cannot reach stdin.** Its guard refuses any unquoted operator, so `<` and `|` are both unavailable inside a reading pass. Same pairing as `--value` and stdin on the singular form, at a different scale.
 ```
 --field {text,resolved,note}  which field [text]
 --value TEXT                  the replacement; omit to read stdin [stdin]
+--values TEXT                 a {"line": "text"} object, used instead of LINE [stdin]
 --path FILE                   proposal file [review/PP-NNN/proposal.json]
 --root --json --toon --pager
 ```

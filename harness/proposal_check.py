@@ -236,6 +236,41 @@ def set_field(path: Path, line: str, field: str, value: str) -> dict:
     return {"path": str(path), "line": line, "field": field}
 
 
+def set_fields(path: Path, values: dict, field: str) -> dict:
+    """Set one field on many lines, in one write. NFD on the way in, as `set_field`.
+
+    **The turn cost of authoring is what this exists for.** A reader issues a
+    command and reads its result as two separate turns, so every single-line write
+    costs two of `maxTurns: 80`. `1-101` — a two-column numbered list of native
+    names, where nearly every line wants Tier-1 keying — spent 23 `proposal set`,
+    3 `proposal replace` and 14 `Edit` calls across 21 distinct lines, hit the cap
+    exactly, and was cut off mid-correction with the page still open. Only one line
+    was touched more than once, so this was not thrash: it was forty corrections
+    arriving one per turn, on a page that needed forty corrections. `1-100`, the
+    other structured page in the corpus, ran to 73 turns the same way.
+
+    So the bulk form is not a convenience. A page whose every line needs authoring
+    is unreadable within the budget without it, and that class of page is exactly
+    the vocabulary list — the densest Tier-1 material in the book, and the material
+    the whole pass is for.
+
+    Reports which lines changed and which were already what was asked for, because
+    a bulk write that says only "ok" is a bulk write nobody can check.
+    """
+    _src = path.read_text(encoding="utf-8")
+    data = json.loads(_src)
+    lines = data.setdefault("lines", {})
+    changed, same = [], []
+    for line, value in sorted(values.items(), key=lambda kv: (len(kv[0]), kv[0])):
+        rec = lines.setdefault(str(line), {})
+        new = unicodedata.normalize("NFD", value)
+        (same if rec.get(field) == new else changed).append(str(line))
+        rec[field] = new
+    _write_json(path, data, _src)
+    return {"path": str(path), "field": field, "set": len(values),
+            "changed": ",".join(changed), "unchanged": ",".join(same)}
+
+
 def _write_json(path: Path, data: dict, original: str) -> None:
     """Serialize back in the indentation the file already used.
 

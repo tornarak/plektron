@@ -13,6 +13,7 @@ open, which is the human act a gate would otherwise be asking for twice.
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -24,6 +25,7 @@ from ..proposal_check import DEFECT, _parse_which, line_codepoints, replace_in_f
 from ..proposal_check import check as check_proposal
 from ..proposal_check import fix as fix_proposal
 from ..proposal_check import set_field as set_proposal_field
+from ..proposal_check import set_fields as set_proposal_fields
 from ._common import (
     REF_HELP,
     action,
@@ -108,13 +110,12 @@ def register(cli):
                    "and write the file back"),
             all_="every review/ page with a proposal")
 
-    # **`LINE` moves to `--line` here and only here.** It cannot stay a positional
-    # beside a plural ref — argparse would take the index for another ref — and
-    # this action is a reader, so it is the one of the three that wants the plural.
-    # Omitted, it names every line, which is the more useful default anyway: a
-    # census of what a proposal actually contains. `set` and `replace` keep their
-    # positional LINE, being singular, and a line index is an identity rather than
-    # a position, so it belongs to exactly one page either way.
+    # **`LINE` is the trailing bare number, beside the plural refs.** It was a
+    # `--line` flag on the argument that a variadic positional cannot tell an index
+    # from another ref, which is not true here — a ref is `PP-NNN` and a bare
+    # number is refused as one corpus-wide, so the two shapes are disjoint. Omitted,
+    # it names every line, which is the more useful default anyway: a census of what
+    # a proposal actually contains.
     p = _target(action(g, "codepoints", run_codepoints, section="Editing one field",
                        help="name every non-ASCII character in a "
                        "line's field, instead of running the resolved/text check — "
@@ -127,14 +128,22 @@ def register(cli):
         type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
 
     p = _target(action(g, "set", run_set, section="Editing one field",
-                       help="set one line's field. The value is NFD-"
+                       help="set one line's field, or many lines' in one write. "
+                       "The value is NFD-"
                        "normalized on write, so it never fights an Edit-tool "
                        "exact-match failure against the file's own NFD form"
-                       "\n\nLINE: the line's index."))
-    arg(p, "line", metavar="LINE")
+                       "\n\nLINE: the line's index. Omit it and pipe a "
+                       '{\"line\": \"text\"} object on stdin to set many lines at '
+                       "once — a page whose every line needs authoring cannot "
+                       "afford two turns per line."))
+    arg(p, "line", metavar="[LINE]", required=False, default=None)
     opt(p, "--field", default="text",
         type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
     opt(p, "--value", default=None, help="the replacement text; omit to read stdin")
+    opt(p, "--values", default=None,
+        help='the bulk form: a {"line": "text"} object setting many lines in one '
+             "write, used instead of LINE. Omit both and the object is read from "
+             "stdin instead")
 
     p = _target(action(g, "replace", run_replace, section="Editing one field",
                        help="replace occurrence(s) of --old with --new in "
@@ -261,8 +270,40 @@ def run_codepoints(a) -> int:
 
 
 def run_set(a) -> int:
-    value = a.value if a.value is not None else sys.stdin.read().rstrip("\n")
-    out(a, set_proposal_field(_path(a), a.line, a.field, value))
+    if a.line is not None:
+        value = a.value if a.value is not None else sys.stdin.read().rstrip("\n")
+        out(a, set_proposal_field(_path(a), a.line, a.field, value))
+        return 0
+    # No LINE: stdin is a `{line: value}` object and every one of them is written
+    # in a single pass. See `set_fields` for why the batch form is load-bearing
+    # rather than a convenience.
+    if a.value is not None:
+        raise ValueError("--value sets one line, so it needs a LINE; the bulk "
+                         "form takes its object in --values or on stdin")
+    # `--values` is not redundant with stdin, and the reader is why: its guard
+    # refuses any unquoted operator, so `<` and `|` are both unavailable to it and
+    # stdin cannot be reached from inside a reading pass at all. This is the same
+    # pairing the single form already has — `--value` or stdin — for the same
+    # reason at a different scale.
+    raw = a.values if a.values is not None else sys.stdin.read()
+    raw = raw.strip()
+    if not raw:
+        raise ValueError("no LINE and no values: give a line index to set one "
+                         'field, or a {"line": "text"} object in --values to set many')
+    try:
+        values = json.loads(raw)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"stdin is not JSON ({e}) — the bulk form takes a "
+                         '{"line": "text"} object, one entry per line to set') from e
+    if not isinstance(values, dict) or not values:
+        raise ValueError('stdin must be a non-empty {"line": "text"} object, not '
+                         f"{type(values).__name__}")
+    bad = sorted(k for k, v in values.items()
+                 if not str(k).isdigit() or not isinstance(v, str))
+    if bad:
+        raise ValueError(f"{', '.join(bad[:5])}: every key is a line index and "
+                         "every value is the field's text")
+    out(a, set_proposal_fields(_path(a), values, a.field))
     return 0
 
 

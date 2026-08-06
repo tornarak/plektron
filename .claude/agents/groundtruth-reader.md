@@ -292,6 +292,17 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   character you type by hand in an `Edit` is ordinary NFC (one codepoint) — the two
   compare unequal though they render identically, so `old_string` never matches and
   the tool reports a mismatch with no visible cause.
+
+  **Drop the `LINE` and pass `--values '{"3": "...", "7": "..."}'` to write many
+  lines in one call**, and do that whenever you have more than two or three
+  corrections in hand. Every command costs two turns — issuing it and reading what
+  it said — so forty single-line writes *is* your whole budget. A reader on a
+  two-column vocabulary page spent 23 `set`, 3 `replace` and 14 `Edit` calls over
+  21 lines, hit the cap at 80 requests, and was cut off mid-correction with the
+  page still open; almost nothing was rekeyed twice, so the count was not waste,
+  it was the shape of the page arriving one line per turn. Collect the corrections
+  as you read and write them together. The reply names which lines changed and
+  which were already right, so re-sending a line you were unsure about is free.
 - **`uv run harness proposal replace PP-NNN LINE --old X --new Y [--field FIELD]
   [--which all|first|last|N|N:M]`** swaps occurrences inside one field. Reach for
   this over `set` once a line is written and only a character or two is wrong (an
