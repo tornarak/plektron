@@ -1,0 +1,375 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-098.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-098.png; regions_from: zones/chukchi-1-098.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-098_r1" HPOS="877" VPOS="612" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="877 612 2655 612 2655 702 877 702"/>
+                    </Shape>
+                    <TextLine ID="mz_1-098_l1" HPOS="1455" VPOS="619" WIDTH="619" HEIGHT="54" BASELINE="1457 653 2074 658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1565 621 1544 621 1522 621 1500 621 1479 621 1457 621 1457 653 1455 668 2070 673 2074 658 2072 623 1578 619 1565 621"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l2" HPOS="894" VPOS="627" WIDTH="50" HEIGHT="57" BASELINE="896 664 944 660" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="935 627 913 634 894 640 896 664 896 684 944 681 944 660 937 627 935 627"/>
+                        </Shape>
+                        <String CONTENT="72"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-098_r2" HPOS="877" VPOS="727" WIDTH="1778" HEIGHT="300" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="877 727 2655 727 2655 1027 877 1027"/>
+                    </Shape>
+                    <TextLine ID="mz_1-098_l3" HPOS="881" VPOS="720" WIDTH="1771" HEIGHT="61" BASELINE="883 766 2652 762" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2635 733 2613 733 2592 733 2570 731 2548 731 2527 731 2505 731 2483 729 2471 729 2462 729 2440 729 2434 727 1767 720 1765 720 1762 720 1723 731 907 723 905 723 903 723 881 731 883 766 883 781 2650 779 2652 762 2648 733 2635 733"/>
+                        </Shape>
+                        <String CONTENT="time he visits them to enjoy the freedom of a wandering life under the skin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l4" HPOS="881" VPOS="781" WIDTH="1771" HEIGHT="61" BASELINE="883 827 2652 822" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 827 883 842 2650 840 2652 822 2646 788 2221 792 2193 781 2191 781 2189 781 2109 792 2042 781 2040 781 2037 781 2014 792 1985 781 1983 781 1981 781 1923 792 1715 783 1713 783 1537 794 1479 783 1476 783 1474 783 1472 783 1457 796 1331 796 1152 783 1149 783 1147 783 1145 783 1128 794 1039 783 1037 783 1035 783 1033 783 1017 794 900 785 898 785 896 785 894 785 881 792 883 827"/>
+                        </Shape>
+                        <String CONTENT="tent. The herdsman, on his part, wishes to catch fish and to spear seals, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l5" HPOS="883" VPOS="855" WIDTH="1767" HEIGHT="52" BASELINE="883 885 2650 885" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 885 883 900 2646 907 2650 885 2648 855 883 855 883 885"/>
+                        </Shape>
+                        <String CONTENT="during the hunting season descends to the shore. The herds are not numerous,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l6" HPOS="883" VPOS="909" WIDTH="1767" HEIGHT="54" BASELINE="885 946 2650 941" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="885 946 885 963 2648 961 2650 941 2644 909 883 909 885 946"/>
+                        </Shape>
+                        <String CONTENT="however, since the attention of the people is divided between their care and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l7" HPOS="881" VPOS="969" WIDTH="379" HEIGHT="52" BASELINE="883 1000 1260 1004" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1000 881 1017 1256 1021 1260 1004 1258 974 883 969 883 1000"/>
+                        </Shape>
+                        <String CONTENT="the sea-fisheries."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-098_r3" HPOS="877" VPOS="1027" WIDTH="1778" HEIGHT="1677" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="877 1027 2655 1027 2655 2704 877 2704"/>
+                    </Shape>
+                    <TextLine ID="mz_1-098_l8" HPOS="989" VPOS="1030" WIDTH="1666" HEIGHT="61" BASELINE="991 1067 2655 1063" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="991 1067 991 1080 1762 1080 1816 1091 1819 1091 1821 1091 1862 1078 1875 1088 1877 1088 1879 1088 1881 1088 2003 1078 2046 1088 2048 1088 2050 1088 2118 1078 2224 1078 2239 1088 2241 1088 2243 1088 2245 1091 2462 1091 2462 1088 2464 1088 2466 1088 2479 1078 2535 1088 2538 1088 2540 1088 2564 1078 2631 1088 2633 1088 2635 1088 2637 1088 2655 1076 2655 1063 2650 1032 989 1030 991 1067"/>
+                        </Shape>
+                        <String CONTENT="Not more than a hundred and fifty years ago the forefathers of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l9" HPOS="881" VPOS="1080" WIDTH="1771" HEIGHT="67" BASELINE="883 1125 2652 1121" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1125 883 1147 2650 1138 2652 1121 2648 1093 2460 1080 2458 1080 2336 1091 2312 1080 2310 1080 2308 1080 2306 1080 2284 1091 2263 1080 2260 1080 2258 1080 2256 1080 2211 1091 2182 1080 2180 1080 2178 1080 2176 1080 2174 1080 2161 1091 2115 1080 2113 1080 2111 1080 2109 1080 2087 1091 2044 1080 2042 1080 2040 1080 2037 1080 2001 1091 1972 1080 1970 1080 1968 1080 1903 1091 1814 1080 1812 1080 1810 1080 1762 1093 1684 1082 1682 1082 1615 1093 1437 1082 1435 1082 1433 1082 1431 1082 1416 1095 1204 1095 1089 1082 1087 1082 1037 1093 994 1082 991 1082 989 1082 881 1095 883 1125"/>
+                        </Shape>
+                        <String CONTENT="people of almost every Koryak village of Kamchatka had reindeer, while now"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l10" HPOS="883" VPOS="1140" WIDTH="1767" HEIGHT="61" BASELINE="885 1186 2650 1182" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="885 1186 885 1201 2648 1197 2650 1182 2648 1153 2603 1140 2600 1140 2598 1140 2596 1140 2568 1151 2349 1140 2347 1140 2345 1140 2321 1153 2152 1153 2076 1140 2074 1140 1942 1151 1925 1140 1923 1140 1920 1140 1814 1140 1812 1140 1810 1140 1762 1153 1691 1143 1689 1143 1338 1153 1258 1143 1256 1143 1253 1143 1230 1153 994 1143 991 1143 989 1143 963 1153 905 1143 903 1143 900 1143 898 1143 883 1151 885 1186"/>
+                        </Shape>
+                        <String CONTENT="the inhabitants live solely by fishing. Similar conditions prevail among the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l11" HPOS="883" VPOS="1212" WIDTH="1769" HEIGHT="50" BASELINE="883 1247 2652 1247" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1247 883 1262 2652 1262 2652 1247 2652 1214 883 1212 883 1247"/>
+                        </Shape>
+                        <String CONTENT="Reindeer Chukchee around the mouth of the Anadyr and along the seacoast"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l12" HPOS="881" VPOS="1257" WIDTH="1769" HEIGHT="65" BASELINE="883 1307 2650 1301" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1307 883 1322 2648 1316 2650 1301 2646 1270 2477 1270 2447 1257 2445 1257 2442 1257 2440 1257 2438 1257 2421 1270 2284 1270 2239 1257 2237 1257 2234 1257 2232 1257 2208 1268 2191 1257 2189 1257 2187 1257 2185 1257 2094 1268 2076 1257 2074 1257 2072 1257 2070 1257 2068 1257 2066 1257 2044 1270 1611 1260 1609 1260 1528 1270 1485 1260 1483 1260 1481 1260 1479 1260 1476 1260 1461 1273 1017 1262 1015 1262 1013 1262 989 1273 898 1262 896 1262 894 1262 892 1262 881 1270 883 1307"/>
+                        </Shape>
+                        <String CONTENT="from Holy Cross Bay to Cape Erri. Everywhere about half of the Reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l13" HPOS="883" VPOS="1335" WIDTH="1767" HEIGHT="48" BASELINE="883 1366 2650 1366" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1366 883 1383 2648 1383 2650 1366 2648 1335 883 1335 883 1366"/>
+                        </Shape>
+                        <String CONTENT="camps have small herds only, and support themselves largely by seal-hunting."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l14" HPOS="883" VPOS="1381" WIDTH="1767" HEIGHT="60" BASELINE="885 1428 2650 1422" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="885 1428 885 1441 2648 1437 2650 1422 2646 1394 2507 1394 2492 1381 2490 1381 2488 1381 2486 1381 2483 1381 2462 1392 2380 1381 2377 1381 2375 1381 2356 1392 2338 1381 2336 1381 2334 1381 2332 1381 2180 1392 2152 1381 2150 1381 2148 1381 2146 1381 2122 1392 2094 1381 2092 1381 2089 1381 2087 1381 2057 1394 2003 1383 2001 1383 1998 1383 1959 1394 1923 1383 1920 1383 1918 1383 1916 1383 1888 1394 1832 1383 1829 1383 1827 1383 1797 1394 1717 1383 1715 1383 1713 1383 1678 1394 883 1392 885 1428"/>
+                        </Shape>
+                        <String CONTENT="It was only in the last century that the herds of the Chukchee became"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l15" HPOS="881" VPOS="1452" WIDTH="1769" HEIGHT="50" BASELINE="883 1485 2650 1480" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1485 883 1502 2648 1498 2650 1480 2644 1452 881 1454 883 1485"/>
+                        </Shape>
+                        <String CONTENT="numerous. Even at the time of the appearance of the Russians, the continuous"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l16" HPOS="883" VPOS="1502" WIDTH="1767" HEIGHT="61" BASELINE="885 1547 2650 1543" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="885 1547 885 1563 2648 1558 2650 1543 2646 1513 1782 1502 1780 1502 1777 1502 1747 1513 970 1504 968 1504 883 1515 885 1547"/>
+                        </Shape>
+                        <String CONTENT="warfare on the Koryak border was carried on by the Chukchee chiefly for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l17" HPOS="883" VPOS="1563" WIDTH="1765" HEIGHT="67" BASELINE="885 1608 2648 1599" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="885 1608 885 1630 2646 1615 2648 1599 2644 1571 1814 1563 1812 1563 1760 1573 1535 1565 1533 1565 883 1578 885 1608"/>
+                        </Shape>
+                        <String CONTENT="purpose of carrying away herds of reindeer. For instance, according to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l18" HPOS="885" VPOS="1621" WIDTH="1765" HEIGHT="61" BASELINE="885 1664 2650 1664" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="885 1664 885 1682 2650 1682 2650 1664 2650 1634 2598 1621 2596 1621 2594 1621 2570 1632 2553 1621 2551 1621 2548 1621 2546 1621 2544 1621 2509 1632 2458 1621 2455 1621 2453 1621 2416 1632 2377 1621 2375 1621 2373 1621 2371 1621 2347 1632 2302 1621 2299 1621 2297 1621 2295 1621 2269 1632 2256 1621 2254 1621 2252 1621 2250 1621 2198 1634 2107 1634 2092 1621 2089 1621 2087 1621 2085 1621 2031 1632 2001 1621 1998 1621 1996 1621 1994 1621 1972 1632 1940 1621 1938 1621 1936 1621 1933 1621 1910 1632 1810 1621 1808 1621 1806 1621 1771 1632 1654 1621 1652 1621 1650 1621 1648 1621 1630 1632 1544 1621 1541 1621 1539 1621 1513 1632 1500 1621 1498 1621 1496 1621 1494 1621 1390 1632 1329 1621 1327 1621 1325 1621 1297 1632 1266 1621 1264 1621 1262 1621 1184 1632 1169 1621 1167 1621 1165 1621 1162 1621 1113 1632 1087 1621 1084 1621 1082 1621 1080 1621 1048 1632 1013 1621 1011 1621 1009 1621 885 1628 885 1664"/>
+                        </Shape>
+                        <String CONTENT="Krasheninnikoff,¹ the Chukchee, in 1738-39, had driven off the herds of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l19" HPOS="881" VPOS="1680" WIDTH="1769" HEIGHT="62" BASELINE="883 1725 2650 1721" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1725 883 1742 2648 1738 2650 1721 2646 1693 2579 1680 2577 1680 2574 1680 2553 1690 2445 1680 2442 1680 2440 1680 2408 1690 2382 1680 2380 1680 2377 1680 2375 1680 2373 1680 2358 1693 2219 1693 2195 1680 2193 1680 2191 1680 2189 1680 2154 1690 2128 1680 2126 1680 2124 1680 2059 1690 1988 1680 1985 1680 1983 1680 1940 1690 1912 1680 1910 1680 1907 1680 1905 1680 1881 1690 1858 1680 1855 1680 1853 1680 1762 1693 1702 1682 1700 1682 1697 1682 1669 1693 1589 1682 1587 1682 1457 1693 1368 1682 1366 1682 881 1690 883 1725"/>
+                        </Shape>
+                        <String CONTENT="Koryak of the Opuka and Khatyrka; and the latter had to settle in under-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l20" HPOS="881" VPOS="1740" WIDTH="1769" HEIGHT="67" BASELINE="883 1788 2650 1781" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1788 883 1807 2648 1796 2650 1781 2648 1753 2598 1740 2596 1740 2594 1740 2592 1740 2568 1751 2269 1740 2267 1740 2265 1740 2237 1751 2206 1740 2204 1740 2202 1740 2135 1751 2070 1740 2068 1740 2066 1740 2063 1740 2048 1753 1996 1742 1994 1742 1635 1753 1561 1742 1559 1742 1468 1755 1435 1744 1433 1744 1431 1744 1173 1755 1022 1744 1020 1744 881 1757 883 1788"/>
+                        </Shape>
+                        <String CONTENT="ground huts, and lived on fish and roots. The Koryak fishermen on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l21" HPOS="883" VPOS="1809" WIDTH="1767" HEIGHT="50" BASELINE="883 1844 2650 1844" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 1844 883 1859 2648 1859 2650 1844 2648 1814 883 1809 883 1844"/>
+                        </Shape>
+                        <String CONTENT="River Opuka claim to be descendants of those reindeer-breeders who were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l22" HPOS="879" VPOS="1868" WIDTH="1771" HEIGHT="54" BASELINE="881 1905 2650 1900" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 1905 881 1922 2648 1918 2650 1900 2644 1868 879 1870 881 1905"/>
+                        </Shape>
+                        <String CONTENT="robbed of their herds by the Chukchee; and in reality they speak the Reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l23" HPOS="879" VPOS="1920" WIDTH="1771" HEIGHT="63" BASELINE="881 1965 2650 1959" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 1965 881 1983 2648 1976 2650 1959 2646 1931 2156 1920 2154 1920 2014 1931 1676 1922 1674 1922 879 1931 881 1965"/>
+                        </Shape>
+                        <String CONTENT="Koryak dialect, and in some respects are different from their western Maritime"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l24" HPOS="879" VPOS="1983" WIDTH="1771" HEIGHT="58" BASELINE="881 2026 2650 2022" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 2026 881 2041 2648 2037 2650 2022 2646 1991 937 1983 935 1983 879 1993 881 2026"/>
+                        </Shape>
+                        <String CONTENT="neighbors. Almost all Chukchee tales referring to this subject give the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l25" HPOS="877" VPOS="2050" WIDTH="1773" HEIGHT="60" BASELINE="879 2087 2650 2082" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="879 2087 879 2100 1468 2110 1470 2110 1472 2110 1474 2110 1489 2100 1752 2108 1754 2108 2154 2097 2343 2108 2345 2108 2347 2108 2373 2097 2386 2108 2388 2108 2390 2108 2393 2110 2527 2110 2527 2108 2529 2108 2561 2097 2626 2108 2629 2108 2631 2108 2633 2108 2650 2095 2650 2082 2644 2050 877 2052 879 2087"/>
+                        </Shape>
+                        <String CONTENT="reason for the beginning of their border wars. The Reindeer Koryak are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l26" HPOS="879" VPOS="2104" WIDTH="1769" HEIGHT="58" BASELINE="881 2147 2648 2143" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 2147 881 2162 2646 2158 2648 2143 2644 2113 900 2104 898 2104 896 2104 894 2104 879 2110 881 2147"/>
+                        </Shape>
+                        <String CONTENT="described as having large herds, living exclusively on their produce, and as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l27" HPOS="879" VPOS="2160" WIDTH="1769" HEIGHT="74" BASELINE="881 2208 2648 2203" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 2208 881 2234 1024 2223 1450 2232 1453 2232 2646 2219 2648 2203 2644 2173 2557 2160 2555 2160 2553 2160 2551 2160 2535 2171 2001 2160 1998 2160 1920 2171 1775 2160 1773 2160 1771 2160 1769 2160 1754 2173 1713 2162 1710 2162 1708 2162 1643 2173 1561 2162 1559 2162 1297 2173 1275 2162 1273 2162 1117 2162 1115 2162 981 2173 892 2162 890 2162 887 2162 885 2162 885 2165 879 2169 881 2208"/>
+                        </Shape>
+                        <String CONTENT="being unskilful in sea pursuits. The Reindeer Chukchee are represented as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l28" HPOS="879" VPOS="2225" WIDTH="1767" HEIGHT="59" BASELINE="881 2268 2646 2260" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 2268 881 2284 2644 2279 2646 2260 2642 2232 1323 2225 1321 2225 1318 2225 1273 2236 1024 2227 1022 2227 879 2238 881 2268"/>
+                        </Shape>
+                        <String CONTENT="a semi-maritime tribe, with a decided aversion to getting too far away from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l29" HPOS="879" VPOS="2281" WIDTH="1767" HEIGHT="61" BASELINE="881 2327 2646 2323" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 2327 881 2342 2644 2338 2646 2323 2644 2294 2600 2281 2598 2281 2596 2281 2496 2292 2354 2281 2351 2281 2349 2281 2347 2281 2330 2292 2306 2281 2304 2281 2302 2281 2217 2292 2191 2281 2189 2281 2187 2281 2185 2281 2182 2281 2167 2294 1949 2294 1890 2281 1888 2281 1829 2292 1762 2281 1760 2281 1758 2281 1717 2294 1663 2284 1661 2284 961 2294 900 2284 898 2284 896 2284 894 2284 879 2292 881 2327"/>
+                        </Shape>
+                        <String CONTENT="the seacoast, and with an excessive liking for sea-meat (anqaˊtɵl), — whale-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l30" HPOS="879" VPOS="2340" WIDTH="1767" HEIGHT="63" BASELINE="881 2387 2646 2383" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 2387 881 2403 2644 2398 2646 2383 2639 2349 2070 2351 2016 2340 2014 2340 2011 2340 2009 2340 1996 2351 1966 2340 1964 2340 1962 2340 1959 2340 1957 2340 1940 2351 1916 2340 1914 2340 1912 2340 1910 2340 1873 2351 1816 2340 1814 2340 1752 2353 1498 2342 1496 2342 1334 2353 1162 2342 1160 2342 1097 2353 1065 2342 1063 2342 1061 2342 974 2353 907 2342 905 2342 903 2342 879 2353 881 2387"/>
+                        </Shape>
+                        <String CONTENT="skin and seal-blubber, — often ready to risk their lives to procure this relished"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l31" HPOS="881" VPOS="2398" WIDTH="1763" HEIGHT="70" BASELINE="883 2442 2644 2446" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 2442 881 2459 892 2468 894 2468 896 2468 898 2468 2642 2459 2644 2446 2642 2413 2243 2400 2241 2400 2146 2411 2122 2400 2120 2400 2118 2400 2115 2400 2113 2400 2098 2411 2076 2400 2074 2400 2072 2400 2070 2400 2044 2411 1994 2400 1992 2400 1929 2411 1903 2400 1901 2400 1899 2400 1832 2411 1795 2400 1793 2400 1790 2400 1788 2400 1765 2411 1739 2398 1736 2398 1734 2398 1645 2409 1565 2398 1563 2398 1561 2398 1526 2409 1483 2398 1481 2398 1479 2398 883 2407 883 2442"/>
+                        </Shape>
+                        <String CONTENT="food.² In the tale of “Elendi and his Sons,” a Chukchee girl is carried away"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l32" HPOS="881" VPOS="2470" WIDTH="1765" HEIGHT="52" BASELINE="883 2507 2646 2502" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 2507 883 2522 2644 2517 2646 2502 2642 2472 881 2470 883 2507"/>
+                        </Shape>
+                        <String CONTENT="by a Koryak warrior, and forced to become his wife. She upbraids him for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l33" HPOS="879" VPOS="2520" WIDTH="1767" HEIGHT="60" BASELINE="881 2565 2646 2561" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 2565 881 2580 2644 2578 2646 2561 2642 2530 1799 2520 1797 2520 1795 2520 1758 2533 879 2533 881 2565"/>
+                        </Shape>
+                        <String CONTENT="his way of living, in words like these: “When I lived with my brothers, they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l34" HPOS="877" VPOS="2582" WIDTH="1767" HEIGHT="59" BASELINE="879 2623 2644 2619" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="879 2623 879 2641 2642 2636 2644 2619 2639 2591 894 2582 892 2582 890 2582 887 2582 877 2589 879 2623"/>
+                        </Shape>
+                        <String CONTENT="fed me with sea-meat and seal-blubber. Why do you annoy me with your"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l35" HPOS="877" VPOS="2641" WIDTH="619" HEIGHT="58" BASELINE="879 2684 1496 2680" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="879 2684 879 2699 1494 2695 1496 2680 1489 2641 877 2654 879 2684"/>
+                        </Shape>
+                        <String CONTENT="everlasting reindeer-meat?”³"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-098_r4" HPOS="877" VPOS="2704" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="877 2704 2655 2704 2655 2891 877 2891"/>
+                    </Shape>
+                    <TextLine ID="mz_1-098_l36" HPOS="987" VPOS="2710" WIDTH="1659" HEIGHT="52" BASELINE="987 2745 2646 2745" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="987 2745 987 2762 2646 2762 2646 2745 2646 2712 987 2710 987 2745"/>
+                        </Shape>
+                        <String CONTENT="INCREASE OF CHUKCHEE REINDEER-BREEDING. — The increase of the Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l37" HPOS="877" VPOS="2762" WIDTH="1769" HEIGHT="61" BASELINE="879 2803 2646 2799" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="879 2803 879 2823 2644 2818 2646 2799 2642 2771 907 2762 905 2762 903 2762 877 2771 879 2803"/>
+                        </Shape>
+                        <String CONTENT="chee herds has taken place chiefly during the last fifty years, and is simultaneous"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l38" HPOS="877" VPOS="2823" WIDTH="1769" HEIGHT="58" BASELINE="879 2866 2646 2862" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="879 2866 879 2881 2644 2877 2646 2862 2642 2829 920 2823 918 2823 916 2823 877 2833 879 2866"/>
+                        </Shape>
+                        <String CONTENT="with their forward movement in a western and southern direction.⁴ When I"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-098_r5" HPOS="877" VPOS="2937" WIDTH="1778" HEIGHT="328" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="877 2937 2655 2937 2655 3265 877 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-098_l39" HPOS="985" VPOS="2946" WIDTH="1661" HEIGHT="52" BASELINE="985 2972 2646 2972" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="985 2972 985 2983 1026 2996 1028 2996 1030 2998 1446 2998 1446 2996 1448 2996 1450 2996 1466 2985 1693 2996 1695 2996 2414 2985 2427 2996 2429 2996 2432 2996 2434 2998 2607 2998 2607 2996 2609 2996 2646 2983 2646 2972 2646 2946 985 2946 985 2972"/>
+                        </Shape>
+                        <String CONTENT="¹ Krasheninnikoff, II, p. 204. ² Bogoras, Chukchee Materials, p. 352. ³ Ibid., p. 342."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l40" HPOS="983" VPOS="2983" WIDTH="1654" HEIGHT="50" BASELINE="985 3013 2637 3009" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="985 3013 985 3033 2635 3033 2637 3009 2631 2983 983 2985 985 3013"/>
+                        </Shape>
+                        <String CONTENT="⁴ As early as the first part of the nineteenth century, Dr. Kyber called the Reindeer Chukchee very rich"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l41" HPOS="879" VPOS="3026" WIDTH="1760" HEIGHT="48" BASELINE="881 3056 2639 3052" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 3056 881 3074 2637 3069 2639 3052 2633 3026 879 3028 881 3056"/>
+                        </Shape>
+                        <String CONTENT="reindeer-breeders. “The poor Chukchee,” he says, “has several hundred animals; the well-to-do, a thousand; the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l42" HPOS="879" VPOS="3067" WIDTH="1760" HEIGHT="50" BASELINE="881 3100 2639 3093" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 3100 881 3117 2637 3113 2639 3093 2633 3067 879 3072 881 3100"/>
+                        </Shape>
+                        <String CONTENT="rich one does not know the number of his herd” (KYBER, II). His information, however, seems to me to be drawn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l43" HPOS="879" VPOS="3108" WIDTH="1763" HEIGHT="48" BASELINE="881 3141 2642 3137" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 3141 881 3156 2642 3152 2642 3137 2635 3108 879 3113 881 3141"/>
+                        </Shape>
+                        <String CONTENT="from the Russian inhabitants of the Kolyma, who are inclined to exaggerate the wealth of the inhabitants of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l44" HPOS="881" VPOS="3156" WIDTH="1756" HEIGHT="48" BASELINE="881 3184 2637 3184" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 3169 881 3184 881 3204 2637 3204 2637 3184 2637 3156 890 3156 881 3169"/>
+                        </Shape>
+                        <String CONTENT="the tundra. According to the unanimous assertion of the old men of the Chukchee two generations ago, only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-098_l45" HPOS="879" VPOS="3197" WIDTH="922" HEIGHT="50" BASELINE="881 3228 1801 3223" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="881 3228 881 3247 1799 3245 1801 3223 1795 3197 879 3199 881 3228"/>
+                        </Shape>
+                        <String CONTENT="very few herds numbered their reindeer by the thousands."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
