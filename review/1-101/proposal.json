@@ -1,0 +1,206 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "75",
+      "note": "layout: Folio, RunningTitleZone. gaps reports this band exempted reason=covered, covered_by=1: the line's own box (44px) strangles the printed number. Full folio '75' is legible in the whole-page composite at the margin; keyed the full number per keying_spec.md 'A clipped box' rule, not the fragment the box bounds."
+    },
+    "2": {
+      "text": "15. Elveˊek (“one hind-leg in white stocking” 22. Keliˊlin (“spotted” [white spots on brown or",
+      "resolved": "Elveˊek: e + U+02CA stress; Keliˊlin: root 'Keli' keeps plain dotted i (both occurrences), suffix '-lin' likewise plain i here (not ɪ) per raster contrast against Krɪmɪˊntɪ's dotless ɪ elsewhere on the page; ˊ = U+02CA stress in both words.",
+      "note": "Bracket in machine text '[body gray or brown!)' corrected to '])' matching the composite; CATMuS reads ']' as '!' throughout this page (keying_spec.md catalogued CATMuS ASCII-substitution failure mode)."
+    },
+    "3": {
+      "text": "[body gray or brown])."
+    },
+    "4": {
+      "text": "gray ground])."
+    },
+    "5": {
+      "text": "16. Keˊmg̣ekem (“both hind-legs in white stock- 23. Rew-ᵉiˊᵋtɪn (“ptarmigan-neck” [white body",
+      "resolved": "Keˊmg̣ekem: e + U+02CA; g̣ = g + U+0323 dot-below (confirmed at 4x, 5@8 -- a visible dot hangs under the g's bowl, missed on first pass, caught by proposal check's rare-form advisory per keying_spec.md §5.1); Rew-ᵉiˊᵋtɪn: ᵉ = U+1D49 onglide immediately before 'i' (licensed per keying_spec.md §2.1); i + U+02CA stress; ᵋ = U+1D4B laryngeal immediately after the stress mark (two independent superscripts on one vowel, per the-two-superscript-marks memory); tɪn: ɪ = U+026A dotless.",
+      "note": "Confirmed at 4x zoom (5@58,5@72,5@8): order is e-onglide, i, stress tick, laryngeal loop, tɪn -- matches keying_spec.md §2.1's stress+laryngeal pairing. g̣ dot-below in Keˊmg̣ekem only found on re-zoom after proposal check flagged the bare-g form as rare (§5.1: dotted g is ~87-93% of the corpus, bare g is the exception needing a reason)."
+    },
+    "6": {
+      "text": "with a black head, like a ptarmigan in spring"
+    },
+    "7": {
+      "text": "ings”)."
+    },
+    "8": {
+      "text": "plumage])."
+    },
+    "9": {
+      "text": "17. ᵉIᵋñɪt-qeˊñu (“nose-tip white” [literally, “nose-",
+      "resolved": "ᵉIᵋñɪt: ᵉ = U+1D49 onglide before capital I; I = U+0049 (plain ASCII capital); ᵋ = U+1D4B laryngeal directly after I, no separate stress tick on this root; ñɪt: ñ = n+U+0303, ɪ = U+026A dotless; qeˊñu: ˊ = U+02CA stress, ñ = n+U+0303.",
+      "note": "Confirmed at 4x (9@0-9@22): laryngeal sits directly after capital I with no intervening stress mark, unlike the compound's second element qeˊñu which carries its own stress -- read as two independently-stressed roots joined by a hyphen (compare vaᵋy-qaˊa-raˊmkɪt cited in the-two-superscript-marks memory)."
+    },
+    "10": {
+      "text": "24. Iᵋplɪˊlɪ-qeˊñu (“yellowish gray mixed with",
+      "resolved": "Iᵋplɪˊlɪ: ᵋ = U+1D4B laryngeal after capital I; plɪˊlɪ: both ɪ = U+026A dotless, ˊ after first ɪ = U+02CA stress; qeˊñu: ˊ = U+02CA stress, ñ = n + U+0303."
+    },
+    "11": {
+      "text": "tip white mixed with brown”])."
+    },
+    "12": {
+      "text": "18. Arê-qaˊño (“groin white mixed with brown”).",
+      "resolved": "Arê: ê = e + U+0302; qaˊño: ˊ = U+02CA stress, ñ = n + U+0303."
+    },
+    "13": {
+      "text": "white”)."
+    },
+    "14": {
+      "text": "19. Rɪˊččit-qeˊñu (“belt white mixed with brown”). 25. Iᵋplɪˊlɪ-keliˊlɪn (“yellowish gray spotted with",
+      "resolved": "Rɪˊččit: R + ɪ (U+026A) + U+02CA stress + čč (two c + U+030C in sequence) + plain dotted 'it'; qeˊñu: ˊ = U+02CA, ñ = n+U+0303; Iᵋplɪˊlɪ-keliˊlɪn: ᵋ = U+1D4B after I, ɪ = U+026A in plɪˊlɪ (dotless), root 'keli' plain dotted i as in line 2's Keliˊlin, suffix '-lɪn' dotless ɪ.",
+      "note": "čč (doubled c+caron) confirmed at 4x zoom (14@8): two distinct caron marks over adjacent c's, not a single digraph glyph."
+    },
+    "15": {
+      "text": "white”)."
+    },
+    "16": {
+      "text": "20. Qeˊñu (“white mixed with brown”).",
+      "resolved": "Qeˊñu: ˊ = U+02CA stress, ñ = n + U+0303."
+    },
+    "17": {
+      "text": "21. Meiˊñɪ-qeˊñu (“very much qeˊñu,” i. e., more 26. Kerg̣ɪˊpɪtku-qeˊñu (“speckled with white” [on",
+      "resolved": "Meiˊñɪ-qeˊñu: ˊ after i = U+02CA stress, ñ = n+U+0303 (x2), dotless ɪ = U+026A, second qeˊñu ˊ = U+02CA; Kerg̣ɪˊpɪtku-qeˊñu: g̣ = g + U+0323 dot-below (confirmed at 4x, 17@56), both ɪ = U+026A dotless, ˊ after first ɪ = U+02CA stress.",
+      "note": "Confirmed dotless ɪ throughout at 4x zoom (17@10-17@88). g̣ dot-below found on re-zoom (17@56) after proposal check flagged the bare-g form as rare (§5.1)."
+    },
+    "18": {
+      "text": "white than brown)."
+    },
+    "19": {
+      "text": "yellowish-gray ground])."
+    },
+    "20": {
+      "text": "The name of the reindeer is generally taken from its color or from some"
+    },
+    "21": {
+      "text": "peculiar feature of its antlers. Examples of such names are The-quite-Black-"
+    },
+    "22": {
+      "text": "One, One-with-a-Cross-Branch-over-the-Forehead, etc. Some breeders give real"
+    },
+    "23": {
+      "text": "names to a few reindeer of their herds: e. g., Young-Lamut-Reindeer (Tor-"
+    },
+    "24": {
+      "text": "waˊwaq), — though this name was given to a Chukchee reindeer partly for",
+      "resolved": "waˊwaq: ˊ = U+02CA stress. Dash = U+2014 em dash (keying_spec.md §2.11)."
+    },
+    "25": {
+      "text": "the purpose of increasing its agility through the force of the word. — Mush-",
+      "resolved": "Dash = U+2014 em dash."
+    },
+    "26": {
+      "text": "room-Eater (Poˊñolɪn), etc.",
+      "resolved": "Poˊñolɪn: ˊ = U+02CA stress, ñ = n + U+0303, ɪ = U+026A dotless final vowel."
+    },
+    "27": {
+      "text": "The term of a reindeer’s life is from twelve to fifteen years, though some"
+    },
+    "28": {
+      "text": "animals live considerably longer. According to age, they are classified as"
+    },
+    "29": {
+      "text": "follows: —",
+      "resolved": "Dash = U+2014 em dash (list-introduction form, keying_spec.md §2.11, spaced left / trailing at line end)."
+    },
+    "30": {
+      "text": "Qäyūˊ (“fawn”), both male and female.",
+      "resolved": "Qäyūˊ: ä = a + U+0308 (diaeresis, licensed obscure-vowel long sort §2.2); ū = u + U+0304 (macron, licensed length mark §2.1); ˊ after ū = U+02CA stress.",
+      "note": "Confirmed at 4x (30@5,30@25): clear two-dot diaeresis over a and a straight macron bar over u, distinct from the breve seen elsewhere on the page (e.g. Čŭˊmñɪñ, line 42)."
+    },
+    "31": {
+      "text": "Qliˊkin (“male fawn”) and ečveˊk (“female fawn”).",
+      "resolved": "Qliˊkin: both i's plain dotted (confirmed at 4x, contrast against dotless ɪ words elsewhere), ˊ = U+02CA stress per keying_spec.md §4 default; ečveˊk: č = c + U+030C, ˊ = U+02CA stress."
+    },
+    "32": {
+      "text": "Pêˊêčvak (both male and female), less than one year old.",
+      "resolved": "Pêˊêčvak: ê = e + U+0302 (x2), ˊ after first ê = U+02CA stress, č = c + U+030C."
+    },
+    "33": {
+      "text": "Peˊnvel (male) and vañqaˊs˙-qor (female), from one to two years old.",
+      "resolved": "Peˊnvel: ˊ = U+02CA stress; vañqaˊs˙-qor: ñ = n+U+0303, ˊ after a = U+02CA stress, ˙ = s + U+02D9 (palatalization mark, licensed on s per §2.1's seven-member series), q not g before 'or'.",
+      "note": "Confirmed the raised dot after 's' and before the hyphen at 4x (33@45,33@60) -- distinct small dot sitting above baseline right after the s, matching the palatalization mark's licensed environment."
+    },
+    "34": {
+      "text": "Krɪmɪˊntɪ (male) and krɪˊm-qor (female), from two to three years old.",
+      "resolved": "Krɪmɪˊntɪ: all three ɪ = U+026A dotless (confirmed 4x), ˊ after second ɪ = U+02CA stress; krɪˊm-qor: ɪ = U+026A dotless, ˊ = U+02CA stress, q not g."
+    },
+    "35": {
+      "text": "Taačɪmɪˊntɪ (male) and ñêraˊn-ɪg̣rɪˊm-qor ([literally, “two times krɪˊm-qor”] a female), from three",
+      "resolved": "Taačɪmɪˊntɪ: č = c+U+030C, all ɪ = U+026A dotless, ˊ = U+02CA stress; ñêraˊn: ñ=n+U+0303, ê=e+U+0302, ˊ=U+02CA stress; ɪg̣rɪˊm-qor: g̣ = g + U+0323 dot-below (confirmed at 4x, 35@30), ɪ = U+026A dotless (x2), ˊ = U+02CA stress.",
+      "note": "g̣ dot-below in ɪg̣rɪˊm-qor found on re-zoom (35@30) after proposal check flagged the bare-g form as rare (keying_spec.md §5.1)."
+    },
+    "36": {
+      "text": "to four years old."
+    },
+    "37": {
+      "text": "Ñireqäˊulɪn ([“one of the second time”] male) and tur-rewkuteˊtɪlɪn ([“new doe grown”] female),",
+      "resolved": "Ñireqäˊulɪn: ñ = n+U+0303, first vowel 'i' plain dotted (contrast confirmed at 4x against the breve ĭ in lines 39/41), ä = a+U+0308 diaeresis, ˊ after ä = U+02CA stress, final ulɪn: ɪ = U+026A dotless; tur-rewkuteˊtɪlɪn: ˊ = U+02CA stress, ɪ = U+026A dotless.",
+      "note": "Confirmed at 4x (37@0-37@15): the letter after Ñ carries an ordinary dot (plain i), not the wider breve mark seen on the Ñ-initial words of lines 39 and 41 -- read as a genuine root-vowel contrast, not a misprint."
+    },
+    "38": {
+      "text": "from four to five years old."
+    },
+    "39": {
+      "text": "Ñĭroqaˊulɪn ([one of the third time”] male) and reˊwkut ([“doe”] female), from five to six",
+      "resolved": "Ñĭroqaˊulɪn: Ñ = N+U+0303, ĭ = i + U+0306 breve (licensed on i per §2.6), ˊ after a = U+02CA stress, final ulɪn ɪ = U+026A dotless; reˊwkut: ˊ = U+02CA stress.",
+      "note": "The bracket '([one of the third time\"]' has no opening curly quote before 'one', unlike the parallel constructions in lines 37 and 41 which do open with a curly quote -- confirmed absent at 4x (39@11,39@16), keyed as printed per keying_spec.md §2.14 (printer's inconsistency, not repaired)."
+    },
+    "40": {
+      "text": "years old."
+    },
+    "41": {
+      "text": "Ñĭraqaˊulɪn (“one of the fourth time”), male only, from six to seven years old.",
+      "resolved": "Ñĭraqaˊulɪn: Ñ = N+U+0303, ĭ = i + U+0306 breve (licensed on i), ˊ after a = U+02CA stress, final ulɪn ɪ = U+026A dotless."
+    },
+    "42": {
+      "text": "Čŭˊmñɪñ (“buck”), more than seven years old.",
+      "resolved": "Čŭˊmñɪñ: Č = c+U+030C, ŭ = u+U+0306 breve, ˊ after ŭ = U+02CA stress, ñ = n+U+0303 (x2), ɪ = U+026A dotless."
+    },
+    "43": {
+      "text": "The reindeer begins to shed its hair in the spring, and finishes in the"
+    },
+    "44": {
+      "text": "middle of summer. Well-fed animals start shedding before lean ones, and"
+    },
+    "45": {
+      "text": "grown animals before younger ones. A herd in good condition will finish"
+    },
+    "46": {
+      "text": "two weeks earlier than a lean one. The new hair is short and sleek, but it"
+    },
+    "47": {
+      "text": "thickens rapidly; and in September the skins of fawns are suitable for making"
+    },
+    "48": {
+      "text": "winter garments. For this purpose skins of fawns are used almost exclusively."
+    },
+    "49": {
+      "text": "The fawns are killed at two set periods in early fall, according to the kind"
+    },
+    "50": {
+      "text": "of fur desired. The late fall fawn-skins are used only for heavy overcoats;"
+    },
+    "51": {
+      "text": "and the skins of grown animals, for sleeping-room coverings, bedding, and the"
+    },
+    "52": {
+      "text": "like. For the Russian trade, spring fawn-skins of smaller size, called by the"
+    },
+    "53": {
+      "text": "traders “vyporotki” (ВЫПОРОТКИ), are required. Of these, the black skins are",
+      "note": "Cyrillic gloss ВЫПОРОТКИ (modern orthography, no pre-reform letters present -- keying_spec.md §2.7's closed list does not apply here) confirmed at 4x (53@45,53@75)."
+    },
+    "54": {
+      "text": "more highly valued, and bring almost three times the price of gray ones."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
