@@ -1,0 +1,160 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "58",
+      "note": "Folio in RunningTitleZone, plain digits, matches machine text and raster."
+    },
+    "2": {
+      "text": "Anui camps led them to the fair. As late as 1879 Nordenskiöld saw several",
+      "resolved": "ö = o + U+0308 COMBINING DIAERESIS, in the European proper name 'Nordenskiöld' (Adolf Erik Nordenskiöld) — ordinary orthographic umlaut, not Tier-1 notation, keyed as printed"
+    },
+    "3": {
+      "text": "dog-sledges passing by on their return from the fair, while during the whole"
+    },
+    "4": {
+      "text": "of my stay in the Kolyma district (1890-98), hardly a single dog-sledge came"
+    },
+    "5": {
+      "text": "to the fair from the maritime villages."
+    },
+    "6": {
+      "text": "At the present time about six or seven hundred people gather together"
+    },
+    "7": {
+      "text": "for the Anui fair (Plate II, Figs. 1, 2). One-fourth of these are Russians,"
+    },
+    "8": {
+      "text": "Russianized natives, and Yakut, from settlements on the Anadyr, Kolyma,"
+    },
+    "9": {
+      "text": "Alaseya, and Indighirka; one-fourth are Kolyma Lamut; and the rest, Rein-"
+    },
+    "10": {
+      "text": "deer Chukchee and Kavraˊlɪt. Commerce has fallen off greatly, because American",
+      "resolved": "ˊ = U+02CA MODIFIER LETTER STRESS (postposed after the stressed vowel 'a' of 'Kavra', keying_spec §2.1); ɪ = U+026A LATIN SMALL CAPITAL LETTER I, dotless, in 'lɪt' (keying_spec §2.3, §5.2)",
+      "note": "Machine text (mz) read this as 'Kavra lit' (space, no mark, plain i) — corrected against raster: raised stress mark clearly visible after 'Kavra' (contrasted against ordinary apostrophes/quotes elsewhere on page), and the letter after 'l' is dotless with top/bottom serifs (ɪ), contrasted at 4x against the dotted 'i' in 'Commerce' on the same line."
+    },
+    "11": {
+      "text": "peltries have nearly ceased to come, and part of the peltries from the Asiatic"
+    },
+    "12": {
+      "text": "shore are bought by the whalers. Of the remainder, a large portion goes to"
+    },
+    "13": {
+      "text": "the Anadyr. Of late the total of the Anui trade has been, according to official"
+    },
+    "14": {
+      "text": "data, from twenty to twenty-five thousand rubles annually. Of this amount,"
+    },
+    "15": {
+      "text": "two thirds is contributed by the Reindeer Chukchee; the remaining third belongs"
+    },
+    "16": {
+      "text": "to the Lamut, Russianized Yukaghir, etc."
+    },
+    "17": {
+      "text": "OTHER FAIRS. — At about the time of the founding of the Anui fair, the",
+      "note": "Run-in heading set in small capitals in the print; keyed plain ASCII capitals per keying_spec §2.13, second-level form."
+    },
+    "18": {
+      "text": "Anadyr and the Telqäˊp Chukchee began to trade at Gishiginsk and Kamen-",
+      "resolved": "ä = a + U+0308 COMBINING DIAERESIS; ˊ = U+02CA MODIFIER LETTER STRESS, postposed after ä, before 'p' (keying_spec §2.1/§2.2)",
+      "note": "Machine text read 'Telqä/p' (slash for the stress mark, a known CATMuS ASCII substitution) — corrected to ˊ, the same mark keyed consistently at all four occurrences of this word on the page (lines 18, 27, 32)."
+    },
+    "19": {
+      "text": "skoye, on the Sea of Okhotsk. In the beginning of the century, simultaneously"
+    },
+    "20": {
+      "text": "with a spring fair for the Reindeer Koryak, was established another one for"
+    },
+    "21": {
+      "text": "the southwestern Chukchee on the Parapolsky Dol, not far from the upper"
+    },
+    "22": {
+      "text": "part of the river Opuka. In the village of Markova, on the Middle Anadyr,"
+    },
+    "23": {
+      "text": "a fair was held, for the Anadyr and Oˊnmɪlɪn Chukchee. During the last",
+      "resolved": "ˊ = U+02CA MODIFIER LETTER STRESS, postposed after 'O'; ɪ (×2) = U+026A LATIN SMALL CAPITAL LETTER I, dotless, in 'nmɪlɪn' (keying_spec §2.3, §5.2)",
+      "note": "Machine text read 'O'nmilin' with plain i — the two vowels after 'nm' and 'l' are dotless with serifs, contrasted at 2x against the dotted 'i' in neighbouring English words ('village', 'Middle'); keyed consistently across all three occurrences of this word (lines 23, 28, 33)."
+    },
+    "24": {
+      "text": "fifteen years, from the time of the institution of separate district administration"
+    },
+    "25": {
+      "text": "in Anadyr, three more fairs were opened, — one, the Tumanskaya fair, on"
+    },
+    "26": {
+      "text": "the west (Plate III, Fig. 1), near the mountain Iˊrgu·ñei (“pointed mountain”),",
+      "resolved": "ˊ = U+02CA MODIFIER LETTER STRESS, postposed after 'I'; ñ = n + U+0303 COMBINING TILDE (keying_spec §2.2); · as printed between 'rgu' and 'ñei' — see note, uncatalogued",
+      "note": "The mark between 'rgu' and 'ñei' is a small raised round dot, not a hyphen: contrasted at 4x directly against the ordinary hyphen in 'dog-sledges' (line 3), which is an unambiguous horizontal stroke at mid-height — the two shapes are clearly different. keying_spec §2.1 licenses U+02D9 the palatalization mark only 'postposed' after one of the unmarked consonants n x d t s č ǰ, but here the mark sits after the vowel 'u' and before 'ñ', which is not a licensed environment. §3 lists U+00B7 MIDDLE DOT as an unconditional lookalike trap for U+02D9, but neither licensed reading fits this position cleanly. Per §5.9/§0, keyed here as printed (U+00B7) with the identity flagged as uncatalogued/unlicensed for a human to rule on — not adopted as U+02D9 on my own authority since the licensing environment does not match."
+    },
+    "27": {
+      "text": "chiefly for the Telqäˊp Chukchee; another in the small village of Vaˊkarena,",
+      "resolved": "ä = a + U+0308 COMBINING DIAERESIS; ˊ (×2) = U+02CA MODIFIER LETTER STRESS, postposed after ä in Telqäˊp and after 'Va' in Vaˊkarena",
+      "note": "Machine text read 'Telqä/p' and 'Va/karena' (slash substitution) — both corrected to ˊ stress, consistent with the other occurrences of each word on this page."
+    },
+    "28": {
+      "text": "on the Middle Anadyr, for the Oˊnmɪlɪn; and a third on the Yeropol River,",
+      "resolved": "ˊ = U+02CA MODIFIER LETTER STRESS, postposed after 'O'; ɪ (×2) = U+026A LATIN SMALL CAPITAL LETTER I, dotless, in 'nmɪlɪn'"
+    },
+    "29": {
+      "text": "for the Chukchee of the Upper Anadyr and for the Lamut (Plate III, Fig. 2)."
+    },
+    "30": {
+      "text": "The extent of trade in the Anadyr region, however, is by no means sufficient"
+    },
+    "31": {
+      "text": "to support all these fairs, the annual receipts being about twenty thousand"
+    },
+    "32": {
+      "text": "rubles. In 1901, on account of heavy snows, only two Telqäˊp camps went",
+      "resolved": "ä = a + U+0308 COMBINING DIAERESIS; ˊ = U+02CA MODIFIER LETTER STRESS, postposed after ä, before 'p'"
+    },
+    "33": {
+      "text": "to the Tumanskaya fair, and but three Oˊnmɪlɪn camps to the Vaˊkarena.",
+      "resolved": "ˊ (×2) = U+02CA MODIFIER LETTER STRESS, postposed after 'O' and after 'Va'; ɪ (×2) = U+026A LATIN SMALL CAPITAL LETTER I, dotless, in 'nmɪlɪn'"
+    },
+    "34": {
+      "text": "The annual trade at the Chukchee fair on the Opuka River amounts to not"
+    },
+    "35": {
+      "text": "more than a few thousand rubles."
+    },
+    "36": {
+      "text": "ROUTES. — In former times a few Russian traders went with dog-sledges",
+      "note": "Run-in heading set in small capitals in the print; keyed plain ASCII capitals per keying_spec §2.13."
+    },
+    "37": {
+      "text": "along the seashore from the mouth of the Kolyma to the Arctic villages. This"
+    },
+    "38": {
+      "text": "route was shorter, but more difficult, than the inland one, because between the"
+    },
+    "39": {
+      "text": "mouth of the Kolyma and Cape Erri there are no settlements whatsoever. The"
+    },
+    "40": {
+      "text": "last of these traders was the Cossack, Ivan Kudrin, who, in 1882, brought W. H."
+    },
+    "41": {
+      "text": "Gilder to the Kolyma, and in a way wanted to take him captive, as Mr. Gilder"
+    },
+    "42": {
+      "text": "relates in his book.¹ Mr. Gilder names him Vanker, a corruption of his two",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, the footnote reference marker (keying_spec §2.10)",
+      "note": "Machine text read 'book.!' — a known CATMuS ASCII substitution for a superscript footnote digit. Keyed as the superscript sort per §2.10, paired with the opener on line 43."
+    },
+    "43": {
+      "text": "¹ Gilder, p. 148.",
+      "resolved": "¹ = U+00B9 SUPERSCRIPT ONE, the footnote opener marker (keying_spec §2.10)",
+      "note": "Machine text read a plain ASCII '1'; keyed as the superscript sort per §2.10 (superscript at reference and opener alike). Only one footnote on the page: value 1, continuous run, occurs twice (reference line 42 + opener line 43) — satisfies the footnote_report invariants."
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}
