@@ -303,6 +303,31 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   it was the shape of the page arriving one line per turn. Collect the corrections
   as you read and write them together. The reply names which lines changed and
   which were already right, so re-sending a line you were unsure about is free.
+- **`uv run harness lexicon lookup QUERY` finds a form a human has already
+  adjudicated**, with the pages and the lines it was printed on — `kulu` gives you
+  `Kuluˊči`, 15 times over 12 pages, and "south of Kuluˊči Bay", which is what makes
+  the word a place rather than a string. It prints a **key** beside each form:
+  `Kulu'c^i`. Write that key in braces in your reading — `The bay of {Kulu'c^i}` —
+  and `proposal set` substitutes the ratified glyphs on write.
+
+  **A handle is a claim that the corpus supplied these characters, not a reading.**
+  It is recorded as such, in `as_typed`, and the review UI shows the adjudicator the
+  claim beside what it resolved to. That record is the entire reason you are allowed
+  the corpus at all: the firewall's rule is that a comparison whose witnesses may be
+  one witness must say so, and a form you copy without saying so has quietly turned
+  two witnesses into one.
+
+  **So it is never how a doubt gets settled.** If the raster will not decide a mark,
+  a handle does not decide it either — it only hides that nothing did. Key what you
+  see, flag it, and let the adjudicator rule; a doubt that survives one 4× look *is*
+  the finding. Use a handle for a form you have read and would otherwise retype
+  character by character, which is where a dropped U+0323 comes from.
+
+  The key is deliberately not pretty — `Kavraˊlɪt` is `Kavra'li_t`, not `kavralit` —
+  because a plain-ASCII key would teach you an `i` that is not there, and `ɪ`/`i` is
+  this pass's largest correction family. Don't type a key from memory: look it up.
+  Where the book spells a word two ways the lookup gives **no key at all** and says
+  so; that is not a gap to work around, it is the answer. Read the raster.
 - **`uv run harness proposal replace PP-NNN LINE --old X --new Y [--field FIELD]
   [--which all|first|last|N|N:M]`** swaps occurrences inside one field. Reach for
   this over `set` once a line is written and only a character or two is wrong (an
@@ -662,6 +687,8 @@ evidence, it is what both readings that were wrong said.
 - [ ] No note claims what another witness said unless it was consulted — §5.12
 - [ ] Notes written in codepoints, not glyphs — §5.12
 - [ ] Every `note` carries a `class`: doubt / semantic / print / layout / artifact
+- [ ] Every `{handle}` names a form you *read* and would have retyped — never one
+      the raster left in doubt, which is a flag and not a lookup
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them
 <!-- /transclude -->

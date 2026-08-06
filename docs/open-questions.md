@@ -7,6 +7,24 @@ in for an unread glyph.
 
 ## Open
 
+- **The lookup's index and the toponym authority want to be the same object, and
+  the pass boundary is in the way.** `lexicon lookup` builds, per run, exactly what
+  an index of place-names needs: every ratified Tier-1 form, its attestations, and
+  the lines it was printed on. The annotation pass will want that object persisted,
+  scoped to the forms that are toponyms, and linked out — which is a different pass
+  reading a different store, and the collation pass in between is where a form
+  acquires the `<placeName>` that would say it is one. `1-359` is the densest single
+  source in the book for it, a two-column gazetteer setting native names against
+  their pre-reform Russian equivalents, and it is ground truth now.
+
+  What is deliberately unresolved is **where the index lives**, not whether it is
+  wanted. Persisting it under `data/` before any pass consumes it would freeze a
+  snapshot of a store that grows every batch — the failure `native_corpus`'s own
+  docstring names, "recompute rather than trust a stale run". Building it in the
+  annotation pass instead means the reading pass and the annotation pass derive the
+  same forms by two paths, which is the two-witnesses-that-are-one collapse in a
+  new place. Neither is chosen; the lookup recomputes on every invocation, which is
+  correct for a reader's question and would be wrong for a published index.
 - **No part is named by a part title page** — the surrogate has none. Parts II and III
   are named by librarian typescript over an archival sheet that contradicts itself
   (typed 1907/1909 against a printed 1904 imprint), and part I only by the AMNH

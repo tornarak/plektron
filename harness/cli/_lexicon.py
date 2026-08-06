@@ -23,8 +23,9 @@ from ..detectors import (
     suggest_native_forms,
 )
 from ..ids import glossary
+from ..lookup import search
 from ..marks import gt_conflicts
-from ._common import action, group, out
+from ._common import action, arg, group, opt, out
 
 
 def register(cli):
@@ -72,6 +73,28 @@ def register(cli):
             "`proposal marks`: a proposal records what a reader wrote, and that "
             "is the measurement rather than a defect to silence")
 
+    p = action(g, "lookup", run_lookup,
+               help="a ratified native form by a typeable key, with the lines it "
+               "was printed on. **The key is marked ASCII and deliberately not "
+               "pretty** — `Kuluˊči` is `Kulu'c^i` — because a plain-ASCII key "
+               "would spell `Kavraˊlɪt` as `kavralit` and teach an `i` that is not "
+               "there, which is the corpus's largest correction family. Match is a "
+               "substring of the key, the fold, the form or the key's bare "
+               "reduction, so `kulu` finds it. **A word the book spells more than "
+               "one way yields no key at all**, and a ruling in "
+               "data/marks_exempt.json does not restore it: that ruling says the "
+               "ambiguity is real. The key is what a reader writes in braces for "
+               "`proposal set` to expand. Reports; never gates"
+               "\n\nQUERY: any substring; several are an OR")
+    arg(p, "queries", nargs=-1, required=True, metavar="QUERY")
+    opt(p, "--min-pages", type=int, default=2,
+        help="withhold the key from a word attested on fewer pages than this — "
+             "one page is a neighbour, not a convention. Counted per fold over "
+             "all its spellings, so the floor can never hide a conflict [2]")
+    opt(p, "--context", type=int, default=2,
+        help="lines of surrounding text per matched form, which is what makes a "
+             "form's sense readable without opening the page [2]")
+
     add("glosses", glossary,
         help="the corpus's term<->gloss pairs from committed TEI — "
             "the dictionary the <gloss target> links make queryable. Pairs come "
@@ -82,6 +105,15 @@ def register(cli):
             "nothing about what is white. It can arrive from the previous page: "
             "a list running across a seam carries no second head, so the scope "
             "resolves back through @prev")
+
+
+def run_lookup(a) -> int:
+    r = search(list(a.queries), a.root, min_pages=a.min_pages, context=a.context)
+    out(a, [{k: v for k, v in r.items() if k not in ("matches", "context")}],
+        name="scope")
+    out(a, r["matches"], name="matches", heading=True)
+    out(a, r["context"], name="context", heading=True)
+    return 0
 
 
 def _emit(a, fn) -> int:

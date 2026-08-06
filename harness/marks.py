@@ -271,6 +271,74 @@ def fold(token: str, contrasts: list[dict]) -> str:
     return t.casefold()
 
 
+# **One marker per mark class, and the classes collide on purpose.** `^` serves the
+# superscripts and the caron/circumflex, `.` both dots. A collision yields two
+# distinct forms with one key, which `lookup` already refuses as a key collision, so
+# inventing a marker against a case the corpus does not attest would be guesswork
+# ahead of an instance — the rule `tier1_terms` states for ranges.
+#
+# A combining mark contributes **only** its marker: after NFD its base is already an
+# ASCII letter and has passed through. An atomic letter contributes an ASCII base
+# and a marker; `ˊ` and `˙` are marks that stand alone and so contribute no base.
+HANDLE_MARKERS = {
+    "ˊ": "'", "˙": ".",
+    "ɪ": "i_", "ᴇ": "e_", "ᴀ": "a_", "ʟ": "l_", "ɵ": "o_",
+    "ᵋ": "e^", "ᵉ": "e^",
+    "̣": ".", "̌": "^", "̂": "^", "̃": "~",
+    "̈": ":", "̆": ")", "̄": "=",
+}
+
+
+def handle_key(token: str) -> str:
+    """The typed handle for one form: ASCII through, every other character marked.
+
+    **A plain-ASCII key would teach the reader the wrong glyph.** `fold` collapses
+    exactly the axes this pass gets wrong most often — dropped U+0323 is the largest
+    single correction class in the store, and `i`/`ɪ`/`I` the largest family — so a
+    key spelled `kavralit` asserts an `i` that is not there, to a reader who will
+    key it from memory on a later page. Every non-ASCII character therefore leaves a
+    visible marker, and the key cannot be read back as a spelling.
+
+        Kuluˊči            -> kulu'c^i
+        Kavraˊlɪt          -> kavra'li_t
+        Notaˊs˙qa-vaˊɪrg̣ɪn -> nota's.qa-va'i_rg.i_n
+
+    **This is not `fold` and must not be**: marking a collapse distinguishes it,
+    and the bucket exists to *not* distinguish — `Čeˊwɪn` and `Čeˊwin` are one word
+    there and two keys here. So the ambiguity refusal lives on the bucket, and a
+    precise key pointing into a contested one is refused all the same. Without that
+    split, a reader could name a side of a live conflict by spelling it exactly.
+
+    U+0027 and U+002D pass through as themselves: the ASCII policy makes both
+    load-bearing inside Tier-1 and 147 of the 499 attested forms carry a hyphen, so
+    stripping them would merge forms the book distinguishes.
+
+    **Case passes through too, and lowercasing was tried first.** It collided on 11
+    of the 499 — `Aiˊwan`/`aiˊwan`, `Kavraˊlɪt`/`kavraˊlɪt`, and nine more, every
+    one a word attested both sentence-initially and mid-sentence. Case is not a
+    glyph identity a reader has to guess at: it is legible at any zoom, unlike the
+    dot-below this key exists to stop asserting, so the reader types the case it
+    sees and the collision disappears. `fold` still casefolds, so the two remain one
+    bucket and a genuine `I`/`ɪ` disagreement — which casefolding cannot hide, U+026A
+    having no case mapping — is still caught there.
+
+    Raises on a character `HANDLE_MARKERS` does not reach, rather than dropping it.
+    A silent pass-through is how a new inventory glyph would start producing keys
+    that read as spellings, which is the one thing this function exists to prevent.
+    """
+    out = []
+    for ch in unicodedata.normalize("NFD", token):
+        if ch.isascii():
+            out.append(ch)
+        elif ch in HANDLE_MARKERS:
+            out.append(HANDLE_MARKERS[ch])
+        else:
+            raise ValueError(
+                f"no handle marker for U+{ord(ch):04X} in {token!r} — add it to "
+                "HANDLE_MARKERS beside the inventory member it belongs to")
+    return "".join(out)
+
+
 def page_tokens(path: Path) -> list[tuple[str, str]]:
     """(line index, NFD token) for the Tier-1 tokens in a proposal or decision.
 

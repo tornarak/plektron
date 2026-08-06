@@ -272,7 +272,7 @@ def run_codepoints(a) -> int:
 def run_set(a) -> int:
     if a.line is not None:
         value = a.value if a.value is not None else sys.stdin.read().rstrip("\n")
-        out(a, set_proposal_field(_path(a), a.line, a.field, value))
+        out(a, set_proposal_field(_path(a), a.line, a.field, value, a.root))
         return 0
     # No LINE: stdin is a `{line: value}` object and every one of them is written
     # in a single pass. See `set_fields` for why the batch form is load-bearing
@@ -303,7 +303,7 @@ def run_set(a) -> int:
     if bad:
         raise ValueError(f"{', '.join(bad[:5])}: every key is a line index and "
                          "every value is the field's text")
-    out(a, set_proposal_fields(_path(a), values, a.field))
+    out(a, set_proposal_fields(_path(a), values, a.field, a.root))
     return 0
 
 

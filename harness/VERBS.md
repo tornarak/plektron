@@ -750,10 +750,13 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ```
 
 ### proposal set REF [LINE]
-**Does** sets one line's field, or many lines' in one write when `LINE` is omitted. NFD-normalized on write.
-**Reads** the proposal, and stdin when `--value`/`--values` is absent.
+**Does** sets one line's field, or many lines' in one write when `LINE` is omitted. NFD-normalized on write, and `{key}` handles in a `text` value are expanded to the ratified forms `lexicon lookup` names.
+**Reads** the proposal, `gt/ocr/` when a value carries a handle, and stdin when `--value`/`--values` is absent.
 **Writes** the proposal, in place.
-**Exit** always 0.
+**Exit** 0; 2 if a handle does not resolve.
+**Note** **a handle is expanded here, on write, and that is the whole reason the field exists.** `text` gets the ratified glyphs and `as_typed` keeps the line as the reader wrote it, so the proposal and the decision go on comparing like with like. Expanding when the review server *serves* the line would do the same job for the adjudicator's eye and wreck the measurement behind it: every handled line would differ from what it is measured against, `save_decisions` would record a human edit nobody made, and `ocr corrections` would grow classes the tooling manufactured — `'` → `ˊ` and `^` → U+030C among them, which is not merely noise but noise shaped like the corpus's real error classes.
+**Note** **nothing half-expands, and a bulk write dry-runs every line before writing any.** One unresolvable handle refuses the whole call: a partly-expanded line records neither what was read nor what was meant, and a partly-authored page cannot be told from a finished one. Same rule as `tei expand` one stage later and as `ocr restore` across refs.
+**Note** `as_typed` is **cleared** when a handled line is later keyed by hand, because a provenance record that outlives its provenance is worse than none — the review UI would badge a hand-read line as a corpus match for good. Only `text` is expanded; a note may mention a handle without meaning it.
 **Note** **the bulk form is a budget fix, not a convenience.** A reader issues a command and reads its result as two separate turns, so a single-line write costs two of `maxTurns: 80`. `1-101` — a two-column numbered list of native names, nearly every line wanting Tier-1 keying — spent 23 `set`, 3 `replace` and 14 `Edit` calls over 21 distinct lines, hit the cap exactly, and was cut off mid-correction. One line was touched twice, so it was not thrash: forty corrections arriving one per turn on a page needing forty corrections. The class of page this fails on is the vocabulary list, which is the densest Tier-1 material in the book. It reports `changed` and `unchanged` per line, because re-sending a whole page most of which was already right is the ordinary use and a bulk write that says only "ok" cannot be checked.
 **Note** **`--values` exists beside stdin because the reader cannot reach stdin.** Its guard refuses any unquoted operator, so `<` and `|` are both unavailable inside a reading pass. Same pairing as `--value` and stdin on the singular form, at a different scale.
 ```
@@ -973,6 +976,22 @@ dictionary, which reads committed TEI instead. All report-only, all exit 0.
 ```
 --root --json --toon --pager
 ```
+
+### lexicon lookup QUERY...
+**Does** finds a ratified native form by a typeable key and shows the lines it was printed on, so a form's sense is readable without opening the page — `Kuluˊči` alone is a string, "south of Kuluˊči Bay" is a place. The key is what a reader writes in braces for `proposal set` to expand. Match is a substring of the key, the fold, the form, or the key's bare reduction, so `kulu` reaches it.
+**Reads** `gt/ocr/`, `data/marks_config.json`. **Writes** — **Exit** 0.
+```
+QUERY...       any substring; several are an OR
+--min-pages N  withhold the key from a word attested on fewer pages than this
+               [2]
+--context N    lines of surrounding text per matched form [2]
+--root --json --toon --pager
+```
+**Emits** `scope` (the queries, the floor, `forms_indexed`, the standing `floor` caveat, and how many forms could not be keyed), `matches` (one row per form: `key`, `form`, `count`, `pages`, `refs`, `ambiguous`, `why`), and `context`.
+**Note** **the key is marked ASCII and deliberately not pretty** — `Kuluˊči` is `Kulu'c^i`, `Kavraˊlɪt` is `Kavra'li_t`. A plain-ASCII key would spell the second `kavralit` and teach an `i` that is not there, to a reader who will key it from memory on a later page: `fold` collapses exactly the axes this pass gets wrong most often, dropped U+0323 being the largest single correction class and `i`/`ɪ`/`I` the largest family. So every non-ASCII character leaves a visible marker and the key cannot be read back as a spelling. Case passes through — it is legible at any zoom, unlike the dot-below, and lowercasing collided on 11 of the 499 forms.
+**Note** **a word the book spells more than one way yields no key at all**, and a ruling in `data/marks_exempt.json` does not restore it. That ruling says the ambiguity is *real* — the book setting one word two ways rather than a keyer slipping — which is the strongest possible reason to refuse to pick a side. `Čeˊwɪn` (1-042) and `Čeˊwin` (1-052) are the live instance, and 1-042's reader flagged the disagreement rather than harmonizing to the older page's ground truth; a lookup answering with one spelling is a machine for erasing that.
+**Note** **the floor counts pages per fold, over all a word's spellings together, and ambiguity is judged before it applies.** Per-form would delete that same instance rather than refuse it — one page each, both below the default — so a floor could hide a conflict. It may withhold a handle from a form the corpus barely attests; it may never do the other thing.
+**Note** the `floor` row is printed on every run because **an empty result is not a corpus-wide negative**: selection requires an inventory glyph, so a native token carrying no mark at all (a bare `c`, `s`, `j`, `x`, `h`) is invisible here by construction. `unkeyable` counts forms carrying something the marker table does not reach — two today, both English possessives on a native name.
 
 ### lexicon marks
 **Does** bare-vs-marked frequency per base letter — is a bare `g` or a dotted `g̣` the likelier reading, prior to the raster.

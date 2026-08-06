@@ -61,5 +61,7 @@ evidence, it is what both readings that were wrong said.
 - [ ] No note claims what another witness said unless it was consulted — §5.12
 - [ ] Notes written in codepoints, not glyphs — §5.12
 - [ ] Every `note` carries a `class`: doubt / semantic / print / layout / artifact
+- [ ] Every `{handle}` names a form you *read* and would have retyped — never one
+      the raster left in doubt, which is a flag and not a lookup
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them

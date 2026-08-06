@@ -218,7 +218,90 @@ def _stated_but_absent(stated: set[int], text: str) -> set[int]:
     return stated - {ord(ch) for ch in unicodedata.normalize("NFD", text)}
 
 
-def set_field(path: Path, line: str, field: str, value: str) -> dict:
+def _keyed_by_hand(rec: dict, text: str) -> str:
+    """The part of a reading the reader's own eyes produced.
+
+    A line with no `as_typed` is all its own; otherwise it is `as_typed` with the
+    handles cut out, which leaves exactly the characters the reader keyed. Used by
+    the arms that ask a reader to account for what it read.
+    """
+    from .lookup import HANDLE
+
+    typed = rec.get("as_typed", "")
+    return HANDLE.sub("", typed) if typed else text
+
+
+def _handle_issues(idx: str, rec: dict, text: str, root: Path) -> list[dict]:
+    """The provenance record and the reading must agree, or neither is evidence.
+
+    Two defects and deliberately no third. There is **no arm noticing a hand-typed
+    form the lookup could have supplied**: it would fire on ordinary correct reading
+    on nearly every Tier-1 line of every page — a detector firing on ordinary work
+    buries the real hits, which is the failure `CLAUDE.md` names — and its only
+    actionable reading would be "you should have used a handle here", which is
+    pressure to stop looking at the raster.
+    """
+    from .lookup import HANDLE, expand
+
+    out = []
+    typed = rec.get("as_typed", "")
+    if typed and not HANDLE.search(typed):
+        out.append(issue(idx, "as_typed carries no handle",
+                         detail="the field records that the corpus supplied part "
+                                "of this line; with no handle in it, it records "
+                                "nothing and badges the line for no reason"))
+    elif typed:
+        want, refusals = expand(typed, root)
+        if refusals:
+            out.append(issue(idx, "as_typed no longer resolves",
+                             detail="; ".join(refusals)))
+        elif unicodedata.normalize("NFD", want) != unicodedata.normalize("NFD",
+                                                                         text):
+            out.append(issue(idx, "as_typed does not expand to text",
+                             detail=f"expands to {want!r}, line holds {text!r} — "
+                                    "one of them was edited without the other, so "
+                                    "neither is a record of what happened"))
+    if "{" in text or "}" in text:
+        out.append(issue(idx, "brace in the reading",
+                         detail="no page keys a brace; this is a handle that was "
+                                "never expanded, or a character belonging in a "
+                                "note rather than in the text"))
+    return out
+
+
+def _expanded(value: str, field: str, root: Path | None) -> tuple[str, str | None]:
+    """Resolve any `{key}` handles in a reading, and keep what was typed.
+
+    **The expansion happens here, on write, and not when the review server serves
+    the line.** Both put the ratified glyphs in front of the adjudicator, but only
+    this one leaves `text` and the decision comparing like with like: expanding at
+    serve time would make every handled line differ from its proposal, so it would
+    read as a human edit in `save_decisions` and enter `ocr corrections` as a
+    correction class — the pass's own error profile polluted by its own tooling.
+
+    `as_typed` is the provenance record and the reason a handle is safe to offer at
+    all. The firewall's rule is that a comparison whose witnesses may be one witness
+    must say so; a reader that quietly copies a corpus spelling has collapsed two
+    witnesses into one, and this is the field that says so, out of which the review
+    UI derives the badge. **Derived, never asserted** — a self-reported class could
+    be omitted by the reader whose claim it describes.
+
+    Only `text` is expanded. A note may mention a handle without meaning it.
+    """
+    if field != "text" or "{" not in value:
+        return value, None
+    from .lookup import expand
+
+    out, refusals = expand(value, root if root is not None else Path("."))
+    if refusals:
+        raise ValueError("; ".join(refusals) + ". Nothing was written: a "
+                         "half-expanded line records neither what was read nor "
+                         "what was meant")
+    return out, value
+
+
+def set_field(path: Path, line: str, field: str, value: str,
+              root: Path | None = None) -> dict:
     """Set one line's field, NFD-normalizing on write.
 
     Exists because hand-typing a replacement for `Edit` risks producing NFC
@@ -231,12 +314,32 @@ def set_field(path: Path, line: str, field: str, value: str) -> dict:
     _src = path.read_text(encoding="utf-8")
     data = json.loads(_src)
     rec = data.setdefault("lines", {}).setdefault(line, {})
-    rec[field] = unicodedata.normalize("NFD", value)
+    text, typed = _expanded(value, field, root)
+    rec[field] = unicodedata.normalize("NFD", text)
+    _set_as_typed(rec, field, typed)
     _write_json(path, data, _src)
-    return {"path": str(path), "line": line, "field": field}
+    return {"path": str(path), "line": line, "field": field,
+            "expanded": typed or ""}
 
 
-def set_fields(path: Path, values: dict, field: str) -> dict:
+def _set_as_typed(rec: dict, field: str, typed: str | None) -> None:
+    """Record the handles, or **clear the record** when there are none left.
+
+    The clear is the half that matters. A reader that writes a handled line and
+    then keys it out by hand has withdrawn the corpus claim, and a stale `as_typed`
+    would leave the review UI badging a reading as a corpus match forever after —
+    a provenance record that outlives the provenance is worse than none.
+    """
+    if field != "text":
+        return
+    if typed is None:
+        rec.pop("as_typed", None)
+    else:
+        rec["as_typed"] = unicodedata.normalize("NFD", typed)
+
+
+def set_fields(path: Path, values: dict, field: str,
+               root: Path | None = None) -> dict:
     """Set one field on many lines, in one write. NFD on the way in, as `set_field`.
 
     **The turn cost of authoring is what this exists for.** A reader issues a
@@ -260,15 +363,30 @@ def set_fields(path: Path, values: dict, field: str) -> dict:
     _src = path.read_text(encoding="utf-8")
     data = json.loads(_src)
     lines = data.setdefault("lines", {})
-    changed, same = [], []
-    for line, value in sorted(values.items(), key=lambda kv: (len(kv[0]), kv[0])):
+    changed, same, expanded = [], [], []
+    # **Every line is resolved before any line is written.** One refused handle
+    # aborts the whole call rather than leaving a page half-authored, which is the
+    # rule `ocr restore` already follows for a multi-ref write and for the same
+    # reason: a partial write is the state nobody can tell from a finished one.
+    resolved = {}
+    for line, value in values.items():
+        try:
+            resolved[str(line)] = _expanded(value, field, root)
+        except ValueError as e:
+            raise ValueError(f"line {line}: {e}") from e
+    for line in sorted(values, key=lambda k: (len(k), k)):
         rec = lines.setdefault(str(line), {})
-        new = unicodedata.normalize("NFD", value)
+        text, typed = resolved[str(line)]
+        new = unicodedata.normalize("NFD", text)
         (same if rec.get(field) == new else changed).append(str(line))
         rec[field] = new
+        _set_as_typed(rec, field, typed)
+        if typed is not None:
+            expanded.append(str(line))
     _write_json(path, data, _src)
     return {"path": str(path), "field": field, "set": len(values),
-            "changed": ",".join(changed), "unchanged": ",".join(same)}
+            "changed": ",".join(changed), "unchanged": ",".join(same),
+            "expanded": ",".join(expanded)}
 
 
 def _write_json(path: Path, data: dict, original: str) -> None:
@@ -469,6 +587,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
             out.append(issue(idx, "note with no class (which of "
                              + "/".join(NOTE_CLASSES) + " is it?)",
                              severity=ADVISORY))
+        out += _handle_issues(idx, rec, text, root)
         for hit in apostrophe_flags(text):
             out.append(issue(idx, apostrophe_issues[hit["kind"]],
                              token=hit["token"],
@@ -479,7 +598,14 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
                              "bare-vs-marked skew for this shape) — check for a "
                              "dropped mark", token=hit["token"],
                              severity=ADVISORY))
-        present = set(_notation_codepoints(text))
+        # **Scoped to what the reader actually keyed.** `resolved` exists so a
+        # reader documents the marks it settled at the raster; a handle is a
+        # declaration that it settled none of them, the corpus having supplied the
+        # glyphs whole. Demanding a `resolved` for those would ask the reader to
+        # narrate a reading that is not its own — and an invented account of how a
+        # mark was decided is worse than no account, since it is indistinguishable
+        # from a real one. The hand-keyed remainder still answers for itself.
+        present = set(_notation_codepoints(_keyed_by_hand(rec, text)))
         if not present:
             continue
         stated = _stated_codepoints(resolved)

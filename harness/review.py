@@ -51,6 +51,7 @@ from . import corrections as _corr
 from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
+from .lookup import HANDLE
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
 from .proposal_check import NOTE_CLASSES
 from .usage import since_stamp
@@ -1038,6 +1039,14 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          ".nb-layout{background:#37474f}",
          ".nb-artifact{background:#795548}",
          ".nb-note{background:#8d6e00}",
+         # **Not a note class.** The CORPUS badge is derived from `as_typed`, so
+         # it appears on exactly the lines where a handle supplied the glyphs and
+         # cannot be omitted by the reader whose claim it describes. Blue, apart
+         # from every note colour, because it answers a different question: not
+         # "what did the reader think" but "who read this".
+         ".nb-corpus{background:#1565c0}",
+         ".astyped{font:11px ui-monospace,monospace;color:#666;margin-top:.15rem}",
+         ".astyped b{color:#1565c0;font-weight:600}",
          # Crops are emitted as one CSS rule per line and referenced by class, not
          # inlined per occurrence. Inlining embedded a line's image once per queue
          # entry; on 1-074 that was 676 KB against 209.
@@ -1256,11 +1265,20 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         nclass = (mine.get("class") or "note") if mine.get("note") else ""
         if nclass not in NOTE_CLASSES:
             nclass = "note" if nclass else ""
+        # **Derived, never asserted.** A line whose glyphs came out of ratified
+        # ground truth rather than off this raster is a claim about provenance, and
+        # the reader making the claim is the last party who should get to decide
+        # whether it shows. `as_typed` exists iff a handle was expanded, so the
+        # badge follows it, and the line joins `noted` — never dimmed for agreeing
+        # with CATMuS, because agreement is exactly what a corpus form guarantees
+        # and exactly what would hide it.
+        typed = mine.get("as_typed", "")
         cls = ("ln" + (" agree" if agree else "") + (" t1" if glyphs else "")
-               + (" noted" if nclass else ""))
+               + (" noted" if nclass or typed else ""))
         h.append(f"<div class='{cls}' id='l{idx}'"
                  + (" data-t1=1" if glyphs else "") + ">")
         h.append("<div class=tags>"
+                 + ("<span class='nb nb-corpus'>CORPUS</span>" if typed else "")
                  + (f"<span class=badge>TIER 1</span>"
                     f"<span class=t1glyphs>{_esc(glyphs)}</span> · "
                     if glyphs else "")
@@ -1299,6 +1317,13 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         if mine.get("note"):
             h.append(f"<div class=note><span class='nb nb-{nclass}'>"
                      f"{nclass.upper()}</span>{_esc(mine['note'])}</div>")
+        # The claim itself, under the reading it produced, so the adjudicator sees
+        # what was asserted and what it resolved to at the same glance. Without
+        # this the badge says a corpus form is in the line and nothing says which.
+        if typed:
+            h.append("<div class=astyped>as typed: "
+                     + HANDLE.sub(lambda m: f"<b>{_esc(m.group(0))}</b>",
+                                  _esc(typed)) + "</div>")
         for key in ("resolved", "corrected"):
             if mine.get(key):
                 h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")

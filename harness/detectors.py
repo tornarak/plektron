@@ -886,9 +886,10 @@ def _cyrillic(token: str) -> bool:
 def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     """(ref, line index, token) — `native_corpus` with the line each token sat on.
 
-    `native_corpus` is this with the middle field dropped, rather than the two
-    walking the store separately: the selection rule is the thing that has to
-    match between every arm reading native forms, so it is written once.
+    `native_corpus` is this with the middle field dropped and both are
+    `native_corpus_context` with fields dropped, rather than three walks over the
+    store: the selection rule is the thing that has to match between every arm
+    reading native forms, so it is written once.
 
     **The index is `page_lines`', which is the one `proposal.json` and
     `decision.json` are keyed by** and the one `harness ocr lines` prints. Not
@@ -896,6 +897,20 @@ def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     lines, so its position is not the ALTO's, and joining through it is the
     documented way to mis-map an adjudicated page (harness/README.md, "Three invariants
     from that work").
+    """
+    return [(r["ref"], r["line"], r["token"]) for r in native_corpus_context(root)]
+
+
+def native_corpus_context(root: Path = Path(".")) -> list[dict]:
+    """Every native token in ground truth, **with the line it was printed on**.
+
+    The line is what makes a form's sense readable without opening the page:
+    `Kuluˊči` alone is a string, and "south of Kuluˊči Bay" is a place. `lexicon
+    lookup` is the caller that needs it, and it needs the *joined* text — the same
+    string the token was matched in — so a form broken across a column foot cites
+    a line that actually contains it.
+
+    Fields: `ref`, `line` (the `page_lines` index), `token`, `text`.
     """
     from .lines import page_lines
 
@@ -915,7 +930,8 @@ def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
                 tok = m.group().strip(EDGE_PUNCT)
                 if tok and not _cyrillic(tok) and any(c in INVENTORY_CHARS
                                                       for c in tok):
-                    out.append((ref, str(rec["index"]), tok))
+                    out.append({"ref": ref, "line": str(rec["index"]),
+                                "token": tok, "text": line})
     return out
 
 

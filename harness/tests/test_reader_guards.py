@@ -78,6 +78,10 @@ def blocked(guard, tool, **ti):
     "uv run harness proposal check 1-031",
     "uv run harness corpus normalize review/1-031/proposal.json",
     "uv run harness lexicon misses",
+    "uv run harness lexicon marks",
+    "uv run harness lexicon conflicts",
+    "uv run harness lexicon lookup kulu",
+    "uv run harness lexicon lookup kulu --min-pages 3",
     "uv run harness find glyph",
 ])
 def test_gt_the_whole_loop_runs_unprompted(cmd):
@@ -124,6 +128,29 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
 ])
 def test_gt_everything_else_is_refused(cmd):
     blocked(GT_GUARD, "Bash", command=cmd)
+
+
+@pytest.mark.parametrize("cmd", [
+    "uv run harness lexicon native",
+    "uv run harness lexicon native --json",
+])
+def test_gt_the_bare_form_list_is_refused_in_favour_of_the_lookup(cmd):
+    """**The hole this allowlist had for four batches.**
+
+    The arm read `lexicon [a-z]+` under a comment calling the group "measurement",
+    which is true of `marks`, `digraphs` and `suffixes` — they report distributions
+    — and false of `native`, which emits 490 ratified spellings as a bare list. A
+    prior says *look again*; a list of spellings says *write this*, and the
+    difference is the whole of what the firewall is about.
+
+    `lookup` is the same corpus behind a discipline: a page-count floor, a refusal
+    where the book spells a word two ways, and a handle that records in the
+    proposal that the corpus supplied the glyphs. A form copied out of a list is
+    indistinguishable from a form that was read; the record is the only reason a
+    reader is allowed the corpus at all.
+    """
+    r = blocked(GT_GUARD, "Bash", command=cmd)
+    assert "lexicon lookup" in r
 
 
 @pytest.mark.parametrize("cmd", [

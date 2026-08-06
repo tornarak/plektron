@@ -544,6 +544,21 @@ in `prior_note`. `is_medial` generalises `detectors.MEDIAL_CAPS` to the small ca
 rather than copying its lookbehind class; the two agree on every live position and a
 test holds them together.
 
+**`lookup.py`** — a ratified native form found by a typeable key, and the handle a
+reader writes instead of retyping its glyphs. **Two strings, and conflating them is
+the trap.** `marks.fold` is the *bucket*: it collapses every contrast axis, which is
+what makes `Čeˊwɪn` and `Čeˊwin` one word and lets the conflict be seen at all.
+`marks.handle_key` is the *key*: it marks every non-ASCII character, so the key
+cannot be read back as a spelling and cannot teach a reader an `i` that is not there.
+Marking distinguishes, so the two spellings have different keys — which is why the
+ambiguity refusal lives on the bucket, and a precise key pointing into a contested
+one is refused all the same. Three invariants for callers: expansion happens **on
+write**, so the proposal and the decision compare like with like and `ocr
+corrections` never sees a correction the tooling manufactured; `as_typed` is the
+provenance record and the review badge is **derived** from it, never asserted by the
+reader whose claim it describes; and **nothing half-expands** — one refused handle
+aborts the whole write, on `tei expand`'s rule one stage earlier.
+
 **`paths.py`** — the `review/<ref>/` layout authority, and `DERIVED`. Also
 `page_dirs`, because `review/` has children that are not pages: the dispatch queue
 and its claim markers live beside the directories they deal out, so **no caller may

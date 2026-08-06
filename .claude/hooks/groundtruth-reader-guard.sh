@@ -212,6 +212,23 @@ esac
 # what they were missing, and two of them re-tried the same file with `Read`
 # only after burning the turn.
 case "$COMMAND" in
+  # **`lexicon native` was the hole in this allowlist, and it was open for four
+  # batches.** The arm used to read `lexicon [a-z]+` under a comment calling the
+  # group "measurement" — true of `marks`, `digraphs` and `suffixes`, which report
+  # distributions, and false of `native`, which emits 490 ratified forms in a bare
+  # list. A prior says *look again*; a list of spellings says *write this*, and the
+  # difference is the whole of what the firewall is about. `lexicon lookup` is the
+  # same corpus behind a discipline: a floor, an ambiguity refusal, and a handle
+  # that records in the proposal that the corpus supplied the glyphs.
+  # Both spellings and no trailing glob: `native*` also caught `nativeish`, which
+  # is not a verb and would be refused anyway — but with a message explaining a
+  # rule it does not break, which is how a reader learns the wrong lesson.
+  uv\ run\ harness\ lexicon\ native|uv\ run\ harness\ lexicon\ native\ *)
+    echo "Blocked: 'lexicon native' hands you 490 ratified spellings as a bare list — no attestation counts, no context, and no record anywhere that you saw it. Use 'uv run harness lexicon lookup QUERY': same corpus, plus the pages and the lines each form was printed on, a key you can write in braces for 'proposal set' to expand, and a refusal where the book spells a word two ways. A form you copy out of a list is indistinguishable from a form you read; a handle says which it was, which is the only reason you are allowed the corpus at all." >&2
+    exit 2 ;;
+esac
+
+case "$COMMAND" in
   cat|cat\ *|head|head\ *|tail|tail\ *|less|less\ *|more|more\ *)
     echo "Blocked: use Read, not cat — it opens every file you are allowed (your page's working directory, keying_spec.md, the docs, your own memory), it numbers the lines so you can cite one, and it renders a raster as an image instead of as bytes. head/tail are the same answer: Read takes an offset and a limit. Nothing about this file is refused; the shell is." >&2
     exit 2 ;;
@@ -240,7 +257,7 @@ esac
 # a guard that blocks it defeats the instrument it was written to serve. Reading
 # the ledger cannot deal a reader a page or settle a band; it only makes the
 # reader's own spending visible to the reader.
-if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon [a-z]+|find [a-z]+|verbs show)( |$)'; then
+if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes)|find [a-z]+|verbs show)( |$)'; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page." >&2
