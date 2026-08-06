@@ -85,6 +85,12 @@ review/*/*.png
 # pages.
 review/_queue.txt
 review/_claims/
+# The collation pass's pair, same argument. They live beside `tei/` because that is
+# the store this batch deals out, exactly as the two above live beside `review/` —
+# and `tei/` is otherwise entirely tracked, so these two lines are the only holes in
+# it and are worth being able to see at a glance.
+tei/_queue.txt
+tei/_claims/
 
 # Symlink farms pointing *into* `scans/`, which is ignored above — so committing
 # them yields 272 dangling links on a fresh clone. Regenerable from the `fig/` and

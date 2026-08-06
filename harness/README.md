@@ -565,10 +565,33 @@ and its claim markers live beside the directories they deal out, so **no caller 
 glob `review/*` and assume a ref**. Five did, and three survived only by filtering
 on `proposal.json` existing.
 
-**`dispatch.py`** — the reading pass's fan-out: `queue` validates a batch and
-writes `review/_queue.txt`, `claim` takes the next ref off it with
-`O_CREAT|O_EXCL`, `reconcile` says what came back. Two templates, both living in
+**`dispatch.py`** — a dispatched pass's fan-out: `queue` validates a batch and
+writes its queue file, `claim` takes the next ref off it with `O_CREAT|O_EXCL`,
+`reconcile` says what came back. Two templates, both living in a track's
 `dispatch.md` rather than here, and the module only substitutes and refuses.
+
+**Two tracks, one `Track` value.** `READING` deals pages to `groundtruth-reader` out
+of `review/`; `COLLATION` deals them to `collator` out of `tei/`. What varies is four
+paths, the per-page block and the deliverable `reconcile` looks for — so it is a
+frozen dataclass rather than a second module, because the locking is the part it
+would be worst to have two of: a bug there deals one page twice and nothing says so
+until the batch comes back wrong. Every public function takes `track=READING`.
+
+What the tracks do *not* share is the refusal set. Reading refuses a page with
+ground truth (a reader sent at one stops being an independent witness); collation
+refuses a page with TEI (it would overwrite committed work) and treats ground truth
+as the *better* input. And **an uncollated predecessor is not a refusal for
+collation** — it was an implicit one while that pass ran serially, since `tei seam`
+refuses without a predecessor, and moving the seam to the coordinator is what lets a
+batch go out in any order.
+
+**`reservations.py`** — the far end of the collation fan-out: the open comments a
+batch left in its pages, pooled and classified so they can be read against each
+other rather than one file at a time. Its class table is a second copy of the comment
+forms the collation contract fixes, held to them by `test_reservations.py` — which
+checks that every pattern matches a stated form, and not the reverse, because an
+unmatched contract form lands in `other` where somebody sees it while an unmatched
+pattern is dead surface that never fires.
 
 **The prompt every reader gets names no page**, and that is the invariant the
 module exists to hold: identity of a subagent's first turn is what makes its

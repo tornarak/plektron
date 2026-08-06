@@ -37,7 +37,8 @@ def register(cli):
     g = group(cli, "tei", "the TEI store: the collation pass's input "
               "contract, the gates on its output, structural ids, and "
               "the seam state folded out of the committed files",
-              sections=("The collation pass", "Structure", "Seam state"), section="The passes")
+              sections=("The collation pass", "Dispatch", "Structure",
+                        "Seam state"), section="The passes")
 
     p = action(g, "context", run_context, section="The collation pass",
                help="the whole per-page input contract for the collation "
@@ -129,6 +130,37 @@ def register(cli):
              "claim on both sides if one was recorded")
     opt(p, "--commit", is_flag=True,
         help="write both files; without it, report what would change")
+
+    p = action(g, "queue", run_queue, section="Dispatch",
+               help="validate a batch of pages, write it to the collation "
+               "claim queue, and print the one prompt every collator of the batch "
+               "gets. That prompt names no page: each agent takes its own ref with "
+               "`tei claim`, because identity of the first turn is what caches and a "
+               "ref written into the prompt costs every sibling the shared context")
+    refs_arg(p)
+    opt(p, "--note", type=str, default=None,
+        help="a sentence appended to every page block in this batch; "
+             "per-page notes want separate queue calls")
+
+    p = action(g, "claim", run_claim, section="Dispatch",
+               help="take the next unclaimed ref off the collation queue "
+               "and print that page's block. Takes no ref, which is the point — the "
+               "page arrives from a tool result rather than from a prompt that would "
+               "then differ between siblings. Exit 1 when the queue is out")
+
+    p = action(g, "reconcile", run_reconcile, section="Dispatch",
+               help="what the batch came back with — each ref collated, "
+               "CLAIMED but with no TEI (an agent took the page and did not return), "
+               "or unclaimed (nobody took it). The two misses have different causes "
+               "and want different answers, so they are not one state")
+    refs_arg(p)
+
+    p = action(g, "reservations", run_reservations, section="Dispatch",
+               help="the open questions a batch left in its pages, pooled "
+               "and classified. Read the rows against each other: one page adrift is "
+               "a page to re-read, all of them leaning the same way is the contract "
+               "or the spec. Measurement — always exit 0")
+    refs_arg(p, all_="every collated page in tei/")
 
     p = action(g, "ledger", run_ledger, section="Seam state",
                help="the seam table across every scan — folio, heading "
@@ -264,6 +296,97 @@ def run_seam(a) -> int:
             set_seam(r, a.open_gap, a.root, commit=False)
     out_per_ref(a, [(r, set_seam(r, a.open_gap, a.root, commit=a.commit))
                            for r in refs])
+    return 0
+
+
+def run_queue(a) -> int:
+    """Write the batch, print the one prompt, or refuse naming the fix.
+
+    The prompt goes to stdout as plain text rather than through a table: it is prose
+    meant to be handed to an agent whole, and a renderer that wrapped or truncated it
+    would corrupt the one artifact this action exists to produce. Everything
+    operational goes to stderr.
+    """
+    import click
+
+    from ..dispatch import COLLATION, Unready, queue_refs
+    try:
+        rec = queue_refs(page_refs(a), a.root, note=a.note, track=COLLATION)
+    except Unready as e:
+        raise click.ClickException(str(e)) from None
+    if getattr(a, "json", False):
+        out(a, [rec])
+        return 0
+    click.echo(rec["prompt"])
+    if rec["resynced"]:
+        click.echo(
+            f"\nthe collator's transcluded contract was out of date and has been "
+            f"rewritten from {', '.join(rec['resynced'])}. The agent file is "
+            "tracked; commit it.", err=True)
+    click.echo(
+        f"\n{len(rec['queued'])} queued: {', '.join(rec['queued'])}. Send that "
+        "prompt unedited and identical to every collator, staggering the first "
+        "launch about ten seconds. The seam is yours afterwards, not theirs.",
+        err=True)
+    return 0
+
+
+def run_claim(a) -> int:
+    """One ref off the queue, rendered. Exit 1 when there is nothing left.
+
+    Exit 1 rather than an empty success: an agent handed a blank answer at exit 0 has
+    been told nothing, and picking a page for itself is exactly what a silence
+    invites.
+    """
+    import click
+
+    from ..dispatch import COLLATION, claim
+    rec = claim(a.root, COLLATION)
+    if rec is None:
+        click.echo(
+            "nothing left to claim — the queue is empty or every ref on it is "
+            "taken. Stop and say so; do not pick a page yourself.", err=True)
+        return 1
+    if getattr(a, "json", False):
+        out(a, [rec])
+    else:
+        click.echo(rec["page_block"])
+    return 0
+
+
+def run_reconcile(a) -> int:
+    import click
+
+    from ..dispatch import COLLATION, reconcile
+    rows = reconcile(page_refs(a), a.root, COLLATION)
+    out(a, rows, name="refs")
+    missing = [r for r in rows if r["state"] != COLLATION.done]
+    if not missing:
+        return 0
+    held = [r["ref"] for r in missing if r["state"].startswith("CLAIMED")]
+    click.echo(
+        f"{len(missing)} of {len(rows)} produced no TEI: "
+        f"{', '.join(r['ref'] for r in missing)}. "
+        + (f"{len(held)} still held by a collator that took the page and did not "
+           f"come back ({', '.join(held)}) — check it is not simply still running, "
+           "then decide whether to re-queue."
+           if held else
+           "None is held, so the queue outran the collators or they were never "
+           "sent."), err=True)
+    return 1
+
+
+def run_reservations(a) -> int:
+    """Pooled, and always exit 0 — measurement never gates."""
+    import click
+
+    from ..reservations import page_reservations, unchecked
+    refs = page_refs(a)
+    rows = [row for ref in refs for row in page_reservations(ref, a.root)]
+    out(a, rows, name="reservations")
+    if not getattr(a, "json", False):
+        for line in unchecked(refs, a.root):
+            click.echo(f"\n{line}", err=True)
     return 0
 
 

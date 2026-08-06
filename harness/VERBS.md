@@ -275,6 +275,55 @@ committed files. There is no `boundaries.json`: the files are the record.
 --root --json --toon --pager
 ```
 
+### tei queue REF [REF ...]
+**Does** validates a batch, writes it to the collation claim queue, and prints the **one prompt every collator of the batch gets** — the block between `<!-- claim:begin -->` and `<!-- claim:end -->` in `.claude/skills/transcribe-page/dispatch.md`. That prompt names no page: each agent takes its own ref with `tei claim`.
+**Reads** `dispatch.md`, `.claude/agents/collator.md`, `ocr/`, `gt/ocr/`, `tei/`, `gt/zones/_exempt.lst`.
+**Writes** `tei/_queue.txt`, and clears `tei/_claims/`. Prompt to stdout as plain text, everything operational to stderr.
+**Exit** 0 with a prompt; 1 when any page in the batch is not a candidate, and the message names the remedy.
+**Note** four refusals, every page checked before any is queued: a ref named twice; **`tei/chukchi-PP-NNN.xml` already present**, which would overwrite committed work and feed the pass's own "re-read your output once" the *previous* run's file; nothing at `ocr/chukchi-PP-NNN.xml`, naming `ocr predict`; and a page marked exempt. A missing `collator.md` is refused too — the agent body *is* the system prompt, so dispatching without one sends agents at pages with no rules.
+**Note** **an uncollated predecessor is deliberately not a refusal**, and that is the whole design. It was an implicit one while the pass ran serially, because `tei seam` refuses without a predecessor; moving the seam to the coordinator is what lets a batch go out in any order. The price is `prev_tail` and `expected_folio` null on every page but the first — see `tei reservations`, which says so rather than letting a clean report imply otherwise.
+**Note** **send it unedited and identical to every collator**, staggering the first launch about ten seconds. Identity of the first turn is what caches; a ref written into the prompt costs every sibling the shared context, which is why the ref arrives from a tool call instead.
+```
+--note TEXT  a sentence appended to every page block in this batch; per-page
+             notes want separate queue calls
+--root --json --toon --pager
+```
+
+### tei claim
+**Does** takes the next unclaimed ref off `tei/_queue.txt` and prints that page's block — the ref, which store its draft comes from, and the instruction to run `tei context`.
+**Reads** `tei/_queue.txt`, `tei/_claims/`, `dispatch.md`, `ocr/`, `gt/ocr/`, `tei/`.
+**Writes** `tei/_claims/PP-NNN`, stamped with the local time. Block to stdout as plain text.
+**Exit** 0 with a block; 1 when the queue is empty or every ref on it is taken.
+**Note** **takes no ref, and that is the point** — the page arrives from a tool result rather than from a prompt that would then differ between siblings. `O_CREAT|O_EXCL` is the whole lock, shared with `ocr claim` rather than reimplemented: the kernel decides which of several agents created the marker first, so there is no window between the check and the take.
+**Note** the block does not embed `tei context`. It names it, because `context` is built fresh per page and is the one action in the CLI whose payload is a single page's prompt; copying it into a claim would freeze it at queue time.
+```
+--root --json --toon --pager
+```
+
+### tei reconcile REF [REF ...]
+**Does** what the batch came back with — each named ref `collated`, `CLAIMED, no TEI` (an agent took it and did not come back), or `unclaimed` (nobody took it).
+**Reads** `tei/_claims/`, `tei/`.
+**Writes** —
+**Exit** 0 when every named ref is collated; 1 naming those that produced nothing.
+**Note** three states rather than two, for the reason `ocr reconcile` gives: "no deliverable" has two causes at scale and only one is worth chasing. The state words are per-track rather than derived, so this pass existing did not rename the reading pass's report.
+```
+--root --json --toon --pager
+```
+
+### tei reservations [REF ...]
+**Does** pools the open comments a batch left in its pages and classifies each — the collation analogue of `proposal marks`. Rows are `{ref, class, text}`.
+**Reads** `tei/`.
+**Writes** —
+**Exit** always 0. Measurement never gates.
+**Note** **read the rows against each other, not one at a time.** One page adrift is a page to re-read; all of them leaning the same way is the contract or the spec, not the collators. Reading twenty page files individually is twenty separate judgements, which is exactly what a per-page pass cannot do for itself.
+**Note** **`opens:` is excluded.** It is on every page by construction, so pooling it would bury the real rows under itself, and it records an answer rather than a question. `tei seam` is what reads it.
+**Note** **the report says what it could not check.** In a dispatched batch `expected_folio` is null on every page but the first, so `folio_disagrees` cannot fire — not because the folios agree but because nothing compared them. A silent clean report would be a confident output with the error signal removed, so the verb names the blind pages and points at `tei ledger`, which folds the whole run at once.
+**Note** the classes come from the comment forms the collation contract fixes verbatim, and the two copies have a gate: `test_reservations.py` asserts every pattern matches a form the agent body states. It checks that direction because an unmatched *contract* form lands in `other` and is visible, while an unmatched *pattern* is dead surface nobody would see.
+```
+--all        every collated page in tei/
+--root --json --toon --pager
+```
+
 ### tei ledger
 **Does** the seam table across every scan — folio, heading fold, boundary state.
 **Reads** committed `tei/`.

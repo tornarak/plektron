@@ -313,6 +313,8 @@ NO_ALL_OK = {
         "it checks the batch that was just dealt, and the refs are the claim "
         "being made — that THESE pages went out. Reconciling 'everything' cannot "
         "distinguish a page this batch lost from one never sent",
+    ("tei", "queue"): "the same as `ocr queue`, and for the same reason",
+    ("tei", "reconcile"): "the same as `ocr reconcile`",
 }
 
 
