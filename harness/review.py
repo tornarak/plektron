@@ -798,19 +798,56 @@ def _edit_jump_inner(idxs: list[int]) -> str:
     return "<b>Edited lines:</b> " + " ".join(f"<a href='#l{i}'>{i}</a>" for i in idxs)
 
 
-# DejaVu Serif first, deliberately. Its single-storey `g` has a short descender, so
-# a U+0323 below the bowl stays legible; Charis SIL matches Bogoras's serif
-# letterforms far better and is the right choice for comparing *shapes*, but it
-# crowds that dot. Confirming a mark exists is this view's job. No webfont: the
-# font is installed locally and a CSS reference cannot silently substitute the way
-# a missing glyph in a terminal does.
-_FONT_STACK = "'DejaVu Serif', 'Charis SIL', 'Noto Sans', sans-serif"
+# **Brill first, because this is a Brill book.** The Memoirs are set in the house
+# face the Brill typeface was drawn from, so a reviewer scanning the crop against
+# the entry is comparing two renderings of one design rather than translating
+# between two — which is the whole ergonomic question here, the crop and the box
+# sitting one above the other. It carries the entire inventory, laryngeals and
+# dots-below included, and is free from the publisher.
+#
+# DejaVu Serif stays as the fallback and keeps its old argument: its single-storey
+# `g` has a short descender, so a U+0323 under the bowl stays legible where a
+# tighter face crowds it. That is the one thing Brill is worse at, and it is worth
+# knowing when a dot is the question — which is why the face is now a knob and not
+# a constant.
+#
+# **No webfont, deliberately.** These are locally installed, and a CSS reference to
+# a remote font can silently substitute a face that lacks a glyph, which is the
+# same class of failure as a terminal showing a box: the text looks fine and is
+# not what it says.
+DEFAULT_FONT = "Brill"
+_FALLBACK = "'DejaVu Serif', 'Charis SIL', 'Noto Sans', sans-serif"
+
+# Points, roughly: the entry text is what a reviewer reads for an hour, and Brill
+# runs small for its em — the reason a face change alone was not enough.
+DEFAULT_FONT_SIZE = 17
+DEFAULT_BOX_LINES = 1
+
+
+def font_stack(font: str | None = None) -> str:
+    """The CSS stack: the chosen face, then the standing fallbacks.
+
+    Prepended rather than replacing, so a name that is not installed degrades to a
+    readable page instead of the browser's default serif — a font that silently
+    did not load is exactly the failure this view cannot afford.
+    """
+    name = (font or DEFAULT_FONT).strip()
+    if not name:
+        return _FALLBACK
+    quoted = name if name.startswith(("'", '"')) else f"'{name}'"
+    # A face already in the fallbacks is promoted, not repeated: CSS ignores the
+    # duplicate, but a stack naming one family twice reads as a bug to whoever
+    # next opens the page source.
+    rest = [f for f in _FALLBACK.split(", ") if f.strip("'\"") != quoted.strip("'\"")]
+    return ", ".join([quoted, *rest])
 
 
 def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
                       root: Path = Path("."), crops: Path | None = None,
                       queue: list[dict] | None = None,
-                      scan_href: str | None = None) -> str:
+                      scan_href: str | None = None,
+                      font: str | None = None, font_size: int | None = None,
+                      box_lines: int | None = None) -> str:
     """Self-contained review page for one ref: one entry per line, reading order.
 
     `queue` is the session's other pages — `[{"ref", "done"}, …]` in the order the
@@ -868,7 +905,14 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     summ = summary(spans, len(recs))
 
     h = [f"<title>review {ref}</title>", "<style>",
-         f":root{{--f:{_FONT_STACK}}}",
+         # Three knobs, as CSS variables so the in-page steppers can move them
+         # without a reload and the server flags only decide where they start.
+         # `--fs` is the entry text; `--bl` is how many lines the box holds before
+         # it grows, which is a separate want from size — Brill's small eye means
+         # a comfortable reading size still leaves a one-line box looking cramped.
+         f":root{{--f:{font_stack(font)};"
+         f"--fs:{int(font_size or DEFAULT_FONT_SIZE)}px;"
+         f"--bl:{max(1, int(box_lines or DEFAULT_BOX_LINES))}}}",
          "body{font:15px var(--f);margin:0;padding:1.5rem;max-width:1100px}",
          "h1{font-size:1.1rem;margin:0 0 .3rem}",
          # The session strip. Deliberately plain and above everything: it is the
@@ -930,6 +974,11 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          "margin-right:.4rem;letter-spacing:.04em}",
          ".t1glyphs{font-size:1.05rem;color:#7a4a00;letter-spacing:.12em}",
          ".jump{font:12px ui-monospace,monospace;margin:.5rem 0 0}",
+         ".type{font:12px ui-monospace,monospace;margin:.5rem 0 0;color:#666}",
+         "button.tb{font:11px ui-monospace,monospace;border:1px solid #bbb;"
+         "background:#fff;border-radius:4px;padding:.1rem .35rem;margin-left:.3rem;"
+         "cursor:pointer}",
+         ".tv{margin-left:.35rem;color:#888}",
          ".jump a{color:#8a5a00;margin-right:.45rem;text-decoration:none;"
          "border-bottom:1px dotted #b8860b}",
          ".jump.edit a{color:#1a7f37;border-color:#1a7f37}",
@@ -950,8 +999,12 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          # entry; on 1-074 that was 676 KB against 209.
          ".crop{border:1px solid #ddd;background-repeat:no-repeat;"
          "background-size:contain;background-color:#fff;margin:.2rem 0}",
-         "textarea{font:17px/1.4 var(--f);width:100%;border:1px solid #bbb;"
-         "border-radius:4px;padding:.35rem .5rem;resize:vertical;overflow:hidden}",
+         # `min-height` rather than `rows`: the box autogrows past it, so this is a
+         # floor and not a size, and a reviewer who wants room to see a wrapped
+         # line gets it without the box shrinking back on every keystroke.
+         "textarea{font:var(--fs)/1.45 var(--f);width:100%;border:1px solid #bbb;"
+         "border-radius:4px;padding:.35rem .5rem;resize:vertical;overflow:hidden;"
+         "min-height:calc(var(--bl) * 1.45em + .8rem)}",
          "textarea:focus{outline:2px solid #47f;border-color:#47f}",
          # Fixed to the bottom, full width, always visible. It is the reference for
          # what the mode does as much as it is an input device, so hiding it behind a
@@ -1009,6 +1062,7 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
          ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
          ".note{color:#d9b26a}"
+         "button.tb{background:#1e1e1e;color:#ccc;border-color:#444}"
          ".t1{border-color:#d1a02a;background:linear-gradient(90deg,#2a2211,"
          "transparent 45%)}"
          ".badge{background:#d1a02a;color:#161616}"
@@ -1094,6 +1148,20 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          "only: it is a witness to geometry and English, and produced no inventory "
          "glyph anywhere in this book, so on a glyph the image is the sole witness "
          "— and a line the two agree on can still have both of them wrong.</div>"]
+    # **Type controls, live.** The flags decide where the page starts; these decide
+    # where it ends up, because the right size for a face is a thing you find by
+    # looking at it against a crop rather than by predicting it at a command line.
+    # Persisted per browser, so the next page and the next session open where this
+    # one was left — a setting that has to be re-found every page is not a setting.
+    h.append(
+        "<div class=type><b>Type:</b> "
+        "<button class=tb data-var=fs data-by='-1'>A−</button>"
+        "<button class=tb data-var=fs data-by='1'>A+</button>"
+        "<span class=tv id=tvfs></span>"
+        "<button class=tb data-var=bl data-by='-1'>box −</button>"
+        "<button class=tb data-var=bl data-by='1'>box +</button>"
+        "<span class=tv id=tvbl></span>"
+        "<button class=tb id=treset>reset</button></div>")
     if t1:
         h.append("<div class=jump><b>Tier-1 lines:</b> " + " ".join(
             f"<a href='#l{i}'>{i}</a>" for i in t1) + "</div>")
@@ -1326,6 +1394,41 @@ addEventListener('keydown',e=>{
 });
 let dirty=false, timer=null;
 const grow=t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'};
+
+// TYPE CONTROLS. The two CSS variables the entry boxes are sized from, moved
+// live and remembered per browser. The server flags set the starting values and
+// stay the reset target, so `reset` means "back to what this server was started
+// with" rather than to a constant compiled in here — otherwise a coordinator who
+// passed --font-size would find the button undoing their flag.
+const TYPE={fs:{min:11,max:34,unit:'px'},bl:{min:1,max:8,unit:''}};
+const typeStart={};
+for(const k in TYPE) typeStart[k]=parseFloat(
+  getComputedStyle(document.documentElement).getPropertyValue('--'+k));
+function typeSet(k,v){
+  v=Math.min(TYPE[k].max,Math.max(TYPE[k].min,v));
+  document.documentElement.style.setProperty('--'+k,v+TYPE[k].unit);
+  const lab=document.getElementById('tv'+k);
+  if(lab) lab.textContent=(k==='fs'?v+'px':v+(v===1?' line':' lines'));
+  try{localStorage.setItem('review.'+k,v)}catch(e){}
+  // Every box was sized against the old metrics, so re-grow them all: a box left
+  // at its previous pixel height after a size change is the one thing that would
+  // make this look broken.
+  for(const t of document.querySelectorAll('textarea')) grow(t);
+}
+for(const k in TYPE){
+  let v=typeStart[k];
+  try{const s=localStorage.getItem('review.'+k); if(s!==null) v=parseFloat(s)}catch(e){}
+  typeSet(k,v);
+}
+for(const b of document.querySelectorAll('button.tb[data-var]')){
+  b.addEventListener('click',()=>{
+    const k=b.dataset.var;
+    typeSet(k,parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue('--'+k))+parseFloat(b.dataset.by));
+  });
+}
+{const r=document.getElementById('treset');
+ if(r) r.addEventListener('click',()=>{for(const k in TYPE) typeSet(k,typeStart[k])});}
 // `[data-line]` throughout, never a bare `textarea`: the note boxes are textareas
 // too, and an unscoped selector would post them as if they were line readings.
 function collect(){const o={};
@@ -1477,7 +1580,8 @@ addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='
 
 
 def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
-          root: Path = Path("."), port: int = 8731) -> None:
+          root: Path = Path("."), port: int = 8731, font: str | None = None,
+          font_size: int | None = None, box_lines: int | None = None) -> None:
     """Serve a session's reviews at 127.0.0.1 and accept saves.
 
     Loopback only, and no path routing beyond the endpoints it needs: this holds
@@ -1578,7 +1682,9 @@ def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
                 self.send_error(404)
                 return
             self.send_html(render_queue_html(cur, alto_dir, root, queue=_state(),
-                                             scan_href=f"/scan/{cur}"))
+                                             scan_href=f"/scan/{cur}", font=font,
+                                             font_size=font_size,
+                                             box_lines=box_lines))
 
         def post(self):
             payload = self.body_json()

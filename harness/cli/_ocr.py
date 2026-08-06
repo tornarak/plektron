@@ -69,6 +69,9 @@ from ..paths import (
 from ..recognize import DEFAULT_REC_MODEL, DEFAULT_SEG_MODEL
 from ..render import progress
 from ..review import (
+    DEFAULT_BOX_LINES,
+    DEFAULT_FONT,
+    DEFAULT_FONT_SIZE,
     corrections,
     group_spans,
     page_spans,
@@ -405,6 +408,21 @@ def register(cli):
                     help="with the bare span diff: every span individually, not "
                          "grouped by class")
     opt(p, "--port", type=int, default=8731, help="port for --serve")
+    # **Type, for the two rendered modes.** A review is an hour of comparing a crop
+    # against an entry box, so the face those are set in is an ergonomic
+    # parameter and not decoration: the book is a Brill, and matching the entry to
+    # the printed face makes the comparison one design in two renderings rather
+    # than two designs. These decide where the page *starts* — the page carries
+    # live steppers for the size and the box, remembered per browser, because the
+    # right size for a face is something you find by looking at it beside a crop.
+    opt(p, "--font", default=None, metavar="NAME",
+        help=f"font family for the entry boxes, prepended to the standing "
+             f"fallbacks so an uninstalled name still renders [{DEFAULT_FONT}]")
+    opt(p, "--font-size", type=int, default=None, metavar="PX",
+        help=f"entry text size [{DEFAULT_FONT_SIZE}]")
+    opt(p, "--box-lines", type=int, default=None, metavar="N",
+        help=f"lines an entry box holds before it grows — a floor, not a cap "
+             f"[{DEFAULT_BOX_LINES}]")
     # **Not paged**, for `zones edit`'s reason: `--serve` prints a URL and blocks
     # in `serve_forever`. It covers the other two modes too, and that is the right
     # trade — one flag deciding whether an action pages is legible, where a rule
@@ -986,14 +1004,17 @@ def run_review(a) -> int:
     if a.serve:
         for r in refs:
             _page_link(a, r)
-        serve(refs, _alto_dir(a), a.root, a.port)
+        serve(refs, _alto_dir(a), a.root, a.port, font=a.font,
+              font_size=a.font_size, box_lines=a.box_lines)
         return 0
     if a.html:
         for r in refs:
             _page_link(a, r)
             dest = html_path(r, a.root)
             dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_text(render_queue_html(r, _alto_dir(a), a.root),
+            dest.write_text(render_queue_html(r, _alto_dir(a), a.root,
+                                              font=a.font, font_size=a.font_size,
+                                              box_lines=a.box_lines),
                             encoding="utf-8")
             print(f"{dest}: review page for {r}")
         return 0

@@ -435,3 +435,62 @@ def test_a_failed_request_renders_the_reason_instead_of_resetting(two, monkeypat
         assert "/p/2-046" in body, "and the request that raised"
         monkeypatch.undo()
         assert "2-046" in s.get("/p/2-046"), "the server survived it"
+
+
+# --- the type controls -----------------------------------------------------
+#
+# A review is an hour of comparing a crop against the entry box directly under
+# it, so the face those are set in is an ergonomic parameter rather than
+# decoration: the Memoirs are a Brill, and matching the entry to the printed face
+# makes the comparison two renderings of one design instead of a translation
+# between two. What is tested is that the knobs actually reach the page and that
+# an unusable value cannot be reached through them.
+
+def test_the_default_face_is_brill_over_the_standing_fallbacks(tmp_path):
+    _page(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path)
+    assert "--f:'Brill', 'DejaVu Serif'" in html
+
+
+def test_a_named_face_is_prepended_not_substituted(tmp_path):
+    """An uninstalled name must still leave a readable page — a font that
+    silently did not load is precisely what this view cannot afford."""
+    _page(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path, font="Junicode")
+    assert "--f:'Junicode', 'DejaVu Serif'" in html
+    assert "sans-serif" in html
+
+
+def test_a_face_already_in_the_stack_is_promoted_not_repeated(tmp_path):
+    """CSS ignores the duplicate; a reader of the page source does not."""
+    _page(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path, font="Charis SIL")
+    stack = html.split("--f:", 1)[1].split(";", 1)[0]
+    assert stack.count("Charis SIL") == 1
+    assert stack.startswith("'Charis SIL'")
+
+
+def test_size_and_box_reach_the_page_as_variables(tmp_path):
+    """Variables rather than baked-in rules, because the in-page steppers move
+    the same two values live and must not need a different mechanism."""
+    _page(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path, font_size=21,
+                             box_lines=3)
+    assert "--fs:21px" in html
+    assert "--bl:3" in html
+
+
+def test_a_box_of_zero_lines_is_not_reachable(tmp_path):
+    """The box is a floor and autogrows past it; a floor of nothing would render
+    an entry field with no entry in it."""
+    _page(tmp_path, "2-046")
+    assert "--bl:1" in render_queue_html("2-046", "mz/ocr", tmp_path, box_lines=0)
+
+
+def test_the_box_floor_does_not_cap_growth(tmp_path):
+    """`min-height`, never `rows`: a long line still expands to hold itself, and
+    a reviewer who drags the box larger keeps it."""
+    _page(tmp_path, "2-046")
+    html = render_queue_html("2-046", "mz/ocr", tmp_path)
+    assert "min-height:calc(var(--bl) * 1.45em" in html
+    assert "resize:vertical" in html

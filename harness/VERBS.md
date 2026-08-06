@@ -539,6 +539,10 @@ Each sheet is named for the lines it holds and the settings that drew them — `
 
 Each line carries a **`+ note` button** and, once asked for, a note field: the adjudicator's own record, saved into `decision.json` as `note` beside `text`. **Opt-in in both places** — a field on all 45 lines would be 45 empty boxes competing with the 45 that matter, and an empty `note` written on every line would make "which lines were remarked on" unfindable, the key existing being the only way anyone asks. Distinct from `proposal.json`'s `note`, which is the reader's account of its own work; these live in different files so a human ruling is never mistaken for a model's. A note is not an edit, so a page saved with only notes reports `0/N edited` and `restore` is a no-op on it.
 
+**The entry boxes are set in Brill by default, and the type is a knob.** A review is an hour of comparing a crop against a box directly under it, so the face is an ergonomic parameter: the Memoirs are a Brill, and matching the entry to the printed face makes that comparison two renderings of one design rather than a translation between two. The fallback stays DejaVu Serif, which keeps its own argument — a single-storey `g` with a short descender, so a U+0323 under the bowl stays legible where a tighter face crowds it, which is the one thing Brill is worse at and worth knowing when a dot is the question. Nothing is fetched: the families are locally installed, and a remote webfont can substitute a face missing a glyph, which is the same failure as a box in a terminal — the text looks fine and is not what it says. `--font` is *prepended* to the fallbacks rather than replacing them, so an uninstalled name still renders.
+
+**The three flags decide where a page starts; the page itself carries live steppers.** Size and box height move without a reload and persist per browser, because the right size for a face is something you find by looking at it beside a crop rather than by predicting it at a command line — and Brill runs small for its em, which is why a face change alone was not enough. `reset` returns to the values the server was started with, not to a constant, so it never quietly undoes a flag. `--box-lines` is a floor: the box still autogrows past it.
+
 The header links to the **full page scan**, new tab — the crops say what a line sets and cannot say what is around it, which is what settling a speck or a dropped line needs. Served from `/scan/<ref>`, scoped to the session's refs like `/p/`; `--html` writes a relative path to `scans/` instead, since a browser will not follow `file://` from an http origin.
 ```
 --serve   serve on 127.0.0.1, accept saves  }
@@ -546,6 +550,9 @@ The header links to the **full page scan**, new tab — the crops say what a lin
 --spans   bare diff: every span, ungrouped  }
 --all     every page with a proposal and no decision
 --port N  port for --serve [8731]
+--font NAME     entry-box family, prepended to the fallbacks [Brill]
+--font-size PX  entry text size [17]
+--box-lines N   lines a box holds before it grows — a floor, not a cap [1]
 --store {gt,mz}  which store to read [mz — the bare diff needs an independent
                  witness, and the view is not one once the page has ground truth]
 --root --json --toon --pager
