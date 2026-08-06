@@ -736,15 +736,14 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 --root --json --toon --pager
 ```
 
-### proposal codepoints [REF ...]
+### proposal codepoints [REF ...] [LINE]
 **Does** names every non-ASCII character in a line's field, or in every line of the page.
 **Reads** the proposal.
 **Writes** —
 **Exit** always 0.
-**Note** **`LINE` is `--line` here and a positional on `set`/`replace`**, and the split is not arbitrary: a plural ref cannot sit beside a positional index, a variadic positional having no way to tell the index from another ref. This action is the reader of the three, so it is the one that wanted the plural; the two editors are singular anyway, a line index being an identity that belongs to exactly one page. Omitting `--line` names every line, which is the more useful default besides — asking what a proposal actually contains rather than confirming one line at a time.
+**Note** **`LINE` is a trailing bare number, and the plural refs stay.** This was a `--line` flag on the argument that a variadic positional cannot tell an index from another ref — which is not true here: a ref is `PP-NNN`, a bare number is refused as one corpus-wide with its own message, and the two token shapes are therefore disjoint. The flag cost more than it bought, because `set` and `replace` take their `LINE` positionally and a reader reaches for all three in the same breath; one of them did, guessed the positional, and lost two turns to a usage error. Omitting `LINE` names every line, which is the more useful default besides — asking what a proposal actually contains rather than confirming one line at a time.
 ```
 --all        every review/ page with a proposal
---line LINE  one line's index [every line on the page]
 --field {text,resolved,note}  which field [text]
 --path FILE                   proposal file, one ref only [review/PP-NNN/proposal.json]
 --root --json --toon --pager

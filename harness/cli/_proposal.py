@@ -64,10 +64,11 @@ def _target(p, all_: str | None = None):
     """The ref positional and `--path`, which is the pair that needs the guard.
 
     `--path` names *one* file, so it and a second ref are a usage error rather
-    than a silent choice of which page it meant. The three actions that edit one
-    line (`codepoints`, `set`, `replace`) take a `LINE` positional besides, and
-    two of those are singular for that reason — a line index belongs to one
-    proposal.
+    than a silent choice of which page it meant. The three actions that act on
+    one line (`codepoints`, `set`, `replace`) take a `LINE` positional besides;
+    `set` and `replace` are singular for that reason — a line index belongs to one
+    proposal — while `codepoints` keeps the plural and splits the trailing bare
+    number off itself, a ref and an index being disjoint token shapes here.
     """
     if all_:
         refs_arg(p, all_=all_)
@@ -118,10 +119,10 @@ def register(cli):
                        help="name every non-ASCII character in a "
                        "line's field, instead of running the resolved/text check — "
                        "a spot check while authoring, before resolved is even "
-                       "written"),
+                       "written"
+                       "\n\nLINE: the line's index, as a trailing bare number. "
+                       "Omit it for every line on the page."),
                 all_="every review/ page with a proposal")
-    opt(p, "--line", metavar="LINE", default=None,
-        help="one line's index; omit for every line on the page")
     opt(p, "--field", default="text",
         type=click.Choice(("text", "resolved", "note")), help=FIELD_HELP)
 
@@ -241,6 +242,19 @@ def run_fix(a) -> int:
 
 
 def run_codepoints(a) -> int:
+    # A trailing bare integer is the line index, and the rest are refs. The
+    # ambiguity this was avoided for — "a variadic positional has no way to tell
+    # the index from another ref" — does not exist in this corpus: a ref is
+    # PP-NNN and a bare number is refused as one everywhere, with its own message
+    # saying the printed folio is not derivable from the scan index. The two
+    # token shapes are disjoint, so the split is mechanical.
+    #
+    # It matters because the alternative was a flag on this action and a
+    # positional on `set`/`replace`, which is one shape for three actions a
+    # reader uses in the same breath — and readers guessed the positional anyway.
+    refs = list(getattr(a, "ref", None) or ())
+    a.line = refs.pop() if refs and refs[-1].isdigit() else None
+    a.ref = tuple(refs)
     out_per_ref(a, [(r, line_codepoints(_path(a, r), a.line, a.field))
                     for r in _proposals(a)])
     return 0
