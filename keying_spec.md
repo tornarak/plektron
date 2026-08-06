@@ -419,6 +419,8 @@ it match one: key what is set, and say in your report that you found no entry.
 ### 2.14 The printer's errors — key them, with one exception (SETTLED, editor ruling)
 
 **A printer's error is keyed as printed, and `gt/ocr` never repairs the book.**
+**It is a letter or a word — never a mark of punctuation**, which is a blot and is
+keyed as nothing, class `artifact`.
 Three stand in `gt/ocr` today, each re-read out of the store: `1-087` L17
 `spririts`, `1-090` L38 `Government, to wishing breed reindeer`, `1-094` L5
 `fawns-kins`. Note the setting on the line and go on. The collation pass corrects

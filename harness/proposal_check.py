@@ -100,7 +100,7 @@ ADVISORY = "advisory"
 # the classes apart instead of rendering one undifferentiated amber paragraph.
 #
 # The set is closed and small on purpose: an open vocabulary is a free-text field
-# with extra steps, and the whole value here is that the adjudicator learns five
+# with extra steps, and the whole value here is that the adjudicator learns four
 # colours and can then skip on sight. Each is a different question:
 #
 #   doubt     the reader could not close it at the 4x ceiling. The only class
@@ -108,8 +108,9 @@ ADVISORY = "advisory"
 #   semantic  the letterforms are settled and the sense is not — the
 #             fluent-nonsense case, which is otherwise invisible precisely
 #             because nothing about the characters looks wrong.
-#   print     the page's own error, keyed verbatim per keying_spec §2.14. Not
-#             something to fix; something a later pass may want to find.
+#   print     a letter or a word the compositor set wrong, keyed verbatim per
+#             keying_spec §2.14. Letters and words only: a stray mark of
+#             punctuation is a blot, and blots are `artifact`.
 #   layout    a band, gap, dropped line or covered zone — about geometry rather
 #             than glyphs, and settled by a different instrument.
 #   artifact  an ink speck ruled not-type. A ruling already made, worth a
@@ -118,6 +119,13 @@ ADVISORY = "advisory"
 # A note with no class is valid and renders neutral: the undimming that makes any
 # of this work is earned by writing a note at all, and a reader who is unsure
 # which class applies must not be pushed toward silence.
+#
+# `print` is letters and words because it used to be anything. It was the only class
+# that let a reader *conclude* rather than hand up, and what it concluded was that
+# the book was wrong — so it absorbed every mark the eye could not otherwise place.
+# Five readers of one fifteen-page batch keyed a blot as punctuation and filed it
+# here, each having zoomed first, each reporting the ink confirmed; every one was
+# struck by the adjudicator. Zooming shows a mark is there, never that it is type.
 NOTE_CLASSES = ("doubt", "semantic", "print", "layout", "artifact")
 
 # What `_added_terminal_punctuation` will question at the end of a line. Sentence

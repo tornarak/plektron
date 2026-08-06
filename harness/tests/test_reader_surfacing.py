@@ -232,7 +232,7 @@ def test_a_noted_line_drops_to_advisory(tmp_path):
     stuck against a gate it cannot pass — the note is how it says so."""
     hit = _terminal(_checked(tmp_path, {
         "0": {"text": "afraid of anything unusual,",
-              "note": "comma confirmed at 4x, @100", "class": "print"}}))
+              "note": "comma confirmed at 4x, @100"}}))
     assert len(hit) == 1
     assert hit[0]["severity"] == ADVISORY
 
