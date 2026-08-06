@@ -740,9 +740,71 @@ def run_sheets(a) -> int:
     return 0
 
 
+def apparatus_hits(recs, asked) -> list[int]:
+    """Which of the asked-for line indices sit in an apparatus zone, in order.
+
+    Split from the refusal so the decision is testable without a store: what
+    counts as apparatus is a question about `FOLIO_ZONES` and a page's own zone
+    labels, and neither needs a raster to answer.
+
+    A line whose index the page does not carry is **not** a hit. Asking for a
+    line that does not exist is a different error with a different message, and
+    swallowing it here would answer the wrong question.
+    """
+    from ..context import FOLIO_ZONES
+    zoned = {int(r["index"]): r.get("zone")
+             for r in recs if r.get("index") is not None}
+    return [i for i in sorted(asked) if zoned.get(i) in FOLIO_ZONES]
+
+
+def _refuse_apparatus(ref: str, spec: str | None, a) -> None:
+    """Refuse a zoom aimed at the head line, the folio, or a signature mark.
+
+    **The most structured text on the page has been its most expensive.** Four
+    pages across two batches spent 42,620 tokens hunting a folio at the ceiling,
+    and a fifth keyed a three-digit number off a two-digit one. Neither is a
+    perception problem: a folio is two or three ASCII digits in a zone the
+    segmenter labels, set in the same type as the running title beside it, and
+    anything a 4x crop can say about it the composite already said. Every other
+    zoom on the page is a question about a letterform; this one never is.
+
+    So it is refused rather than discouraged, which is the difference between a
+    rule and a suggestion — the standing brief has told readers not to do this
+    since the second batch, and they kept doing it. The refusal names the two
+    rungs that answer instead, because a reader stopped without an alternative
+    reaches for a worse one.
+
+    Zone-scoped, not line-scoped: `RunningTitleZone`, `QuireMarksZone` and
+    `NumberingZone` are `FOLIO_ZONES`, and which of them a given page's folio
+    landed in is exactly what a reader cannot be expected to know in advance.
+    """
+    if not spec:
+        return
+    from ..lines import page_lines
+    try:
+        recs = page_lines(alto_for_lines(ref, _alto_dir(a), a.root), a.root, ref=ref)
+    except Exception:
+        return          # a page whose lines will not load has a louder problem
+    hit = apparatus_hits(recs, parse_spans(spec))
+    if not hit:
+        return
+    which = ", ".join(str(i) for i in hit)
+    raise ValueError(
+        f"line{'s' if len(hit) > 1 else ''} {which} of {ref} "
+        f"{'are' if len(hit) > 1 else 'is'} apparatus — the running title, the "
+        "folio, or a signature mark — and zooming it is refused. It is plain "
+        "type in a labelled zone, so `ocr numbered` shows it whole and a contact "
+        "sheet shows it larger; no crop of it has ever settled anything a "
+        "composite did not. Read it off the rung you are already on, and if the "
+        "printed number runs wider than its box, `ocr gaps` says so and you key "
+        "what is printed. Re-run naming only the lines you have a letterform "
+        "question about.")
+
+
 def run_zoom(a) -> int:
     refs, spec = ref_and_spec(a)
     one_page_only(a, {"out": "--out"}, refs)
+    _refuse_apparatus(refs[0], spec, a)
     # Whether this page has ever been zoomed, asked *before* this call is logged:
     # the standing guidance below prints once per page, not once per crop.
     first = not any(c.get("action") == "zoom" for c in read_calls(refs[0], a.root))

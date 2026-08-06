@@ -49,3 +49,14 @@ entry prints a `(мн. …)`, check the plural too — it inflects the same stem
 it either corroborates the sign or exposes the drop, and keying both from the
 same misreading is how a wrong stem gets two witnesses that are one. See
 [[what-settles-a-letterform]] on why that corroboration is worth nothing.
+
+**One more hit, one more zero-doubt case.** On moll-119 entry 36, the full
+marked page read as `рыннылын` — clean, crisp, no reason to look twice. A
+prophylactic 2× zoom of the whole `лы`-bearing cluster on that page (entries
+10, 11, 35, 36) showed it is `рынныльын`. Entry 35 right above it,
+`рыннылгын`, really has no sign (the `л` there is followed by `г`, not `ы`) —
+so the check has to be per-word, not per-neighbourhood: a page can carry both
+the sign and its absence one entry apart, and scanning every headword by eye
+for the literal substring "л immediately followed by ы" before zooming is what
+found the one real instance out of many near-misses (`лю`, `ль`+`ы` already
+correct, `ы`+`л` the other way round) on that page.

@@ -143,18 +143,12 @@ and you must key the whole of what the paper prints there, not the fragment the
 crop shows. `ocr lines` marks the same fact on the line itself, as `annexed` — a
 non-zero count means a human has already said this line is short.
 
-**This usually costs you no image at all.** The commonest case by far is a folio,
-and the whole-page composite you already opened for orientation shows it: the
-number is in the margin, in the clear, and the ruling has told you which line it
-belongs to. Read it there. **A contact sheet works too** — every crop runs well
-past its box, far enough that a strangled folio comes out whole rather than cut,
-so the fact that the ink sits outside the box does not put it outside the
-picture. `ocr zoom PP-NNN --store mz <that index>` is the fallback for when
-neither settles it, and not a step to take by reflex.
-
-Treating the two alike is how `1-073` nearly lost a folio: line 1's box is 11 px
-and holds `5`, the page prints `51`, and the ruling saying so was sitting in the
-ledger while the rule about `exempted` said to spend no image on it.
+**This costs you no image at all.** The commonest case by far is a folio, and the
+composite you opened for orientation shows it: the number is in the margin, in the
+clear, and the ruling has told you which line it belongs to. A contact sheet works
+too — every crop runs well past its box, so a strangled number comes out whole.
+`1-073` nearly lost one this way: line 1's box is 11 px and holds `5`, the page
+prints `51`.
 
 A band with `exempted: false` is yours to judge. **Whatever you conclude, you
 report it — you never repair it.** Describe the band, say what you think it is
@@ -197,9 +191,8 @@ printed ink along the way.
 all.** A folio whose box strangles it — 11 px of a two-digit number — still *has*
 an index, and you key the **full number** into it: a line's extent is not what
 makes it that line, its position is, and the box is an identity, an anchor and a
-delimiter rather than a measurement. See the `RunningTitleZone` rules below for
-the tells (under ~30 px is clipping, and the crop shows you the whole number
-anyway). What follows is the other case, where there is no index at all.
+delimiter rather than a measurement. What follows is the other case, where there
+is no index at all.
 
 **The same rule covers printed text you find with no line index to hold it, and
 that case has actually gone wrong.** A line's `text` is what is inside *that
@@ -337,11 +330,10 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
    sheet the whole page. Sheets pack by height, so one call over those lines is a
    single image where three calls are three: same pixels, three times the turns.
 
-   **The folio belongs on this sheet, with everything else.** It is a line like
-   any other, its crop runs past its box far enough to show the number whole even
-   when the box strangles it, and there is nothing about it that wants its own
-   image. Readers have spent six and seven zooms on a folio that was one line of
-   a sheet they were about to render anyway.
+   **The folio belongs on this sheet, with everything else** — a line like any
+   other, whose crop runs past its box far enough to show the number whole. Zoom
+   refuses it, and the apparatus lines beside it, for the same reason: every zoom
+   you take is a question about a letterform, and this one never is.
 3. `uv run harness ocr zoom PP-NNN --store mz <PLACES> --reason "…"` for marks
    the sheets leave open — **every such place in ONE call.**
 
@@ -499,43 +491,22 @@ why.
   holds it, and never hunt the foot of a page whose running title you have already
   found.
 
-  **The ordinary case costs no image at all: the numbered composite shows the
-  folio, and that settles it.** Say so and move on. `1-046` did exactly that — box
-  70 px, digits legible, nothing spent — while `1-045` and `1-047` spent six and
-  four zooms on the same slot in the same batch. Nothing about a folio is a Tier-1
-  identity, so there is no class here that needs a second look by default.
+  **Read it off the composite, or off a sheet. `ocr zoom` refuses an apparatus
+  line, so there is no third rung** — and none is wanted: it is plain type, and a
+  crop runs well past its box, so a number wider than its box still comes back
+  whole. Key the whole number you can see, not the fragment the box bounds.
 
-  **If it genuinely does not settle it, put that index on the contact sheet you
-  are rendering anyway, and that is enough.** Every crop runs well past its box, so a folio
-  whose box holds 12 px of a 70 px number still comes back whole. This used to be
-  false — the pad was a rounding allowance, the sheet showed half a digit, and a
-  reader seeing half a digit reasonably concluded something was wrong and started
-  hunting. It is fixed in the renderer rather than in your technique.
+  Both known errors here are about digits, not about magnification: a printed
+  divider rule reads as a leading `1` (`115` was `15`, `141` was `41`), and the
+  composite prints its own index label beside each band, which next to a marginal
+  number is two digits beside two digits. CATMuS is unreliable in this slot too —
+  it drops a digit, splits one, or returns the line empty. Correct it, and say in
+  `note` what the machine text had: this is apparatus, so no Tier-1 prohibition
+  applies.
 
-  Two mechanical tells, **both about the `RunningTitleZone` folio and neither about
-  the bracketed quire-mark**. **A folio box under about 30 px wide is clipping the
-  number**: the pages read correctly in the `1-031`..`1-036` batch had boxes 65–76
-  px, and both pages misread had 19–20 px. On a box that narrow, key the whole
-  number the crop shows you, not the fragment the box bounds — and know that a
-  clipped folio is exactly where a printed divider rule reads as a leading `1` and
-  a tight kern reads as a gap. `1 3` was
-  `13`, `115` was `15`; both happened here. And **the composite writes its own line
-  index beside every band**, which next to a narrow marginal folio is a two-digit
-  number sitting beside a two-digit number: `1-039` and `1-047` both had to work out
-  which was ink. The label is the index `ocr lines` gave you; the ink is what you
-  key.
-
-  **CATMuS reads this slot badly and often**: it drops a digit, splits one, returns
-  the line empty, or takes the divider rule for a `1`. So where zone and appearance
-  say page number, **correct it** and say in `note` what the machine text had. This
-  is apparatus, not a glyph identity — the firewall does not reach it and no Tier-1
-  prohibition applies.
-
-  What you may not do is get the number from anywhere but **this page**. Not from
-  the scan index — `1-033` is not folio 133, and part and folio are not derivable
-  from each other in either direction. Not from a neighbouring page. If the digits
-  are genuinely unreadable, key what you can see and say so; a number nobody can
-  read is a finding, and the seam ledger settles it later.
+  **The number comes from this page and nowhere else** — not from the scan index
+  (`1-033` is not folio 133), not from a neighbour. Unreadable digits are a
+  finding: key what you can see, say so, and the seam ledger settles it later.
 - **Prefer "unclear, flagged in `note`" over a confident guess.** A doubt that
   survives one 4× look IS the answer. **`text` is mandatory, and that is not licence
   to invent a codepoint**: if the identity is open, key the catalogued sort whose

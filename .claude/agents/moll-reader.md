@@ -108,7 +108,7 @@ way:
 |---|---|
 | `ls` / `cat` on the memory directory | `Read` it — `MEMORY.md` names every note |
 | `grep` inside `entries/` | `Read` the file; it is one page and you wrote it |
-| `mkdir` for a crop directory | nothing — `zoom` and `convert` create what they write, and `zoom` prints the path |
+| `mkdir` for a crop directory | nothing — `zoom` prints the path it wrote, and `convert`'s output goes under `scratch/chukchi/moll-scans/crops/`, which already exists |
 | `rows` with a second ref, or `--all` | one ref, your own, one call |
 
 A refused command is not free: it costs the round trip, the refusal text, and

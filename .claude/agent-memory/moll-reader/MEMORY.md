@@ -9,3 +9,6 @@
 - [Asterisk before numeral](asterisk-before-numeral.md) — `headword * II` prints in that order; key what prints, don't move the numeral to the end
 - [Literal question mark in headword](literal-question-mark-in-headword.md) — an interrogative headword (`ръэнут?`) prints a real `?` as part of the word and its plural, not the unresolved-reading marker
 - [Bold gloss is not italic parenthetical](bold-gloss-is-not-italic-parenthetical.md) — main gloss text is the same bold weight as the headword; only parenthetical clarifications are italic. A fully-bold short entry is not a layout fault
+- [moll-122 notes](moll-122-notes.md) — clean 48/48 page, heavy prophylactic zooming confirmed every reading with no corrections; four more well-placed `(2)` markers
+- [-ок/-ук endings on shared-stem neighbours](oc-ok-endings.md) — adjacent same-stem entries can look like the same ending at 1x (a phantom в inserted); zoom the pair together, same shape as the к'эютэкичгын case
+- [Near-identical stems a few rows apart](near-identical-stems-few-rows-apart.md) — moll-121, an 11-entry `рырат-` derivational run hid `рырататык` vs `рыратык` three rows apart; crop suspicious pairs together before keying either

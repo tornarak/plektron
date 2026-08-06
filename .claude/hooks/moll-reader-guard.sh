@@ -167,7 +167,7 @@ case "$COMMAND" in
     echo "Blocked: Read the file. Your table is one page long and you wrote it, so there is nothing in it to search for that reading it will not answer — and a partial view of your own cell is how a wrong reading gets confirmed. Read scratch/chukchi/moll-scans/entries/moll-NNN.md" >&2
     exit 2 ;;
   mkdir*|touch\ *|cp\ *|mv\ *|rm\ *)
-    echo "Blocked: you never create or move a path. \`zoom\` writes its own output and prints where; \`convert\` writes the crop you name under /tmp; your table goes to $ENTRIES via Write. Nothing in this pass requires a directory to exist first." >&2
+    echo "Blocked: you never create or move a path. \`zoom\` writes its own output and prints where; \`convert\` writes the crop you name under $CROPS, which already exists; your table goes to $ENTRIES via Write. Every directory this pass writes into is already there." >&2
     exit 2 ;;
 esac
 
