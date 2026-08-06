@@ -1,6 +1,6 @@
 ---
 name: read-moll-page
-description: Dispatch and check a batch of readers over Moll & Inenlikej 1957, «Чукотско-русский словарь». Use when reading pages of the Chukchi–Russian dictionary into scratch/chukchi/moll-scans/entries/, or on /read-moll-page. The reading contract itself lives in the moll-reader agent, not here. Not a Bogoras corpus pass — nothing it produces may enter gt/ or tei/.
+description: Dispatch and check a batch of readers over Moll & Inenlikej 1957, «Чукотско-русский словарь». Use when reading pages of the Chukchi–Russian dictionary into scratch/chukchi/moll-md/entries/, or on /read-moll-page. The reading contract itself lives in the moll-reader agent, not here. Not a Bogoras corpus pass — nothing it produces may enter gt/ or tei/.
 ---
 
 # Run a batch over the Moll dictionary
@@ -44,5 +44,5 @@ You are not a `moll-reader`, so you do not have the contract. Read
 
 One thing does not carry over: its hard rules assume the guard hook, which fires
 only for the subagent. Working by hand, the blindness rule is yours to keep —
-`scratch/chukchi/moll-scans/ocr/` is the independent witness your page will be
+`scratch/chukchi/moll-md/ocr/` is the independent witness your page will be
 diffed against, and opening it collapses two witnesses into one.

@@ -308,7 +308,7 @@ def test_gt_a_traversal_does_not_reach_the_store():
 
 def test_moll_writes_its_table_and_memory_unprompted():
     allowed(MOLL_GUARD, "Write",
-            file_path="scratch/chukchi/moll-scans/entries/moll-035.md", content="x")
+            file_path="scratch/chukchi/moll-md/entries/moll-035.md", content="x")
     allowed(MOLL_GUARD, "Write",
             file_path=".claude/agent-memory/moll-reader/note.md", content="x")
 

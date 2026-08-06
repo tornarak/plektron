@@ -31,6 +31,24 @@ so when two headwords within a few rows look alike, crop them together before
 keying either. If every character and every gloss word does match, that is the
 repeated entry: key it twice, unaltered, and do not merge.
 
+**Three more instances, and what they add.** On moll-115 entries 17 and 18 share
+`рыгытко-`; at page scale the endings were interchangeable and the reader keyed
+`рыгытков`, **inventing a `в` that is not on the page** — so this class does not
+only hide a difference, it can manufacture a letter. On moll-121 entries 33 and
+36 both read `рыратык`; cropped together, 33 is `рырататык`. On moll-114 the
+variant in a comma-joined pair prints `рыгаймавававык` and was keyed
+`рыгаймававык`, one `ав` short, in **both** the verb entry and its participle
+entry — caught because the compositor set the run twice and the two printed
+instances agree, which a single reader's two keyings never do.
+
+The generalization: **a long derivational run is not N independent readings.**
+moll-121's `рырат-` family is eleven consecutive entries; that is one sustained
+chance for the same substitution to repeat unnoticed, not eleven chances to
+catch it. Whenever several consecutive entries share a stem, crop the pair you
+are unsure of into one frame and compare character by character — and do not
+treat "it matches the one I read three rows back" as confirmation, because that
+is the thing being tested.
+
 **The one that resolves at 4×.** The hard sign against the `к'`/`н'` apostrophe
 is a difference in structure, not in surviving ink: the apostrophe is a small
 raised comma clear of the letter, the hard sign a taller stroke with a foot on
@@ -38,6 +56,26 @@ the baseline, part of the letter row. Both directions occur, sometimes on
 adjacent entries of the same page (moll-059's `кытчынъёк` beside
 `кытчын'авык`), so do not assume consistency between neighbours — the page
 prints both. Zoom the entries alone at 4× and compare height and foot.
+
+**The same fusion, on `и`, and it makes a non-word.** On moll-128 the gloss
+`заи́грывание` was keyed `зайгрывание`: the acute over `и` sits exactly where
+the breve of `й` sits, and the two are one short stroke apart in a bitonal
+scan. The tell is not the mark, which is genuinely ambiguous — it is that
+`зайгрывание` is not a Russian word and `заи́грывание` is, and the same entry's
+`подхали́мство` two words earlier carries the identical mark over `и` in a word
+where `й` is impossible. So this is the lexicon's row of the table, not the
+magnification row: **when a mark over `и` would turn a real word into a
+non-word, it is an acute.** The reader keyed the non-word and reported it
+without doubt.
+
+**And the mirror of it: ruling out `ё` does not establish `ё`.** On moll-136 a
+reader zoomed `че́м-нибудь` to 4× specifically to decide acute against
+diaeresis, correctly saw a single stroke rather than two dots, wrote in its
+report that it had confirmed "a single acute, not a diaeresis" — and then keyed
+`чём`, with the diaeresis. The check was right and the cell contradicted it,
+which is the [[gloss-side-faults]] shape again in one character. Note also that
+both spellings exist in Russian and mean different cases (`о чём` prepositional,
+`с че́м` instrumental), so no later reader would flag it as impossible.
 
 **The one that resolves at the same scale.** On moll-044 an accented italic `о`
 fused with its acute into a `б`-like loop, making `пробо́ину` read as
@@ -88,6 +126,25 @@ stress. That is not an argument against zooming. It is an argument that
 magnification settles only the class it settles — the `ъ`/apostrophe row of the
 table above, and nothing else in it — and that "I looked closer and became
 sure" is the specific feeling to distrust.
+
+**The broken bowl is a property of the impression, not of one word.** On
+moll-163 a reader filed *three* separate rows as compositor errors kept
+verbatim — `молодсе`, `п?сле`, `подко́га` — each with its own careful note. All
+three are one defect: this page's type drops the right arc of `о`, so it prints
+as `с`, and `в` loses its bowls and prints as `г`. The lexicon settles every one
+(`молодо́е`, `по́сле`, `подко́ва`), and `подко́ва` is settled twice over, because
+the entry directly above prints `подкова́ть` with a clean `в` and the gloss's
+`(ко́нская)` agrees with `подкова` in gender. The same defect appears on
+moll-143, where a reader met it once, applied the lexicon and got it right.
+
+So the rule is: **when you are about to write "apparent print defect" for the
+second time on one page, stop and look at the first one again.** A compositor
+who sets three unrelated non-words on one page is a story; a worn forme is the
+explanation. One instance is a curiosity, two is a page-level property, and a
+page-level property is evidence you can use on the third — including on a
+Chukchi headword where the lexicon cannot help (moll-163's `ягс!`, which the OCR
+witness reads `яго` and which was left as read with the doubt recorded, because
+a headword has no second witness of its own).
 
 **Beware the shape "an apparent misprint, kept verbatim."** It sounds like
 restraint and it is the opposite: it takes an unresolved reading and files it as

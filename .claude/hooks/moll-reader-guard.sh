@@ -6,17 +6,21 @@
 #
 # Three rules, and each is one this pass has actually needed:
 #
-#   1. BLIND TO THE OCR STORE. `moll-scans/ocr/` is the independent witness
+#   1. BLIND TO THE OCR STORE. `moll-md/ocr/` is the independent witness
 #      every keyed page is diffed against afterwards, and it is worth having
 #      only because it cannot have made the reader's mistake. One Read of it
 #      collapses the two witnesses into one, silently and unrecoverably.
+#      It sits beside the entry store a reader MAY write, as it always has —
+#      the permitted world is one tree with one hole in it, and the hole is
+#      matched by its own name (`*/ocr/*`) rather than by its parent, so
+#      moving the tree cannot open it.
 #   2. WRITES LAND IN THE ENTRY STORE (or the agent's own memory). Nothing this
 #      side quest produces may enter `gt/`, `tei/`, `ocr/` or any corpus store.
 #   3. THE BASH SURFACE IS AN ALLOWLIST — two verbs and a crop tool. A denylist
 #      would have to anticipate every route around itself.
 #   4. AND SO ARE THE TARGETS. Every path a reader reads or crops must be inside
 #      the pass's own trees. A rule naming only the tools leaves `identify
-#      moll-scans/ocr/moll-035.txt` and `convert` of anything on the box wide
+#      moll-md/ocr/moll-035.txt` and `convert` of anything on the box wide
 #      open, which is rule 1 defeated through a different tool name.
 #
 # Exit 2 blocks the call and the reader sees the message.
@@ -32,20 +36,28 @@
 INPUT=$(cat)
 TOOL=$(printf '%s' "$INPUT" | jq -r '.tool_name // empty')
 
-ENTRIES='scratch/chukchi/moll-scans/entries/'
+ENTRIES='scratch/chukchi/moll-md/entries/'
 MEMORY='.claude/agent-memory/moll-reader/'
 
 CROPS='scratch/chukchi/moll-scans/crops/'
 
 # Every place a reader has business looking: the rasters (originals, marked,
-# zoom output, crops/, its own table), its memory, and its pass doc. Matched as
-# substrings, so a `..` anywhere is refused outright — otherwise
-# .../marked/../ocr/x satisfies the prefix and defeats the rule.
+# zoom output, crops/) under `moll-scans/`, its own table under `moll-md/`, its
+# memory, and its pass doc. Matched as substrings, so a `..` anywhere is refused
+# outright — otherwise .../marked/../ocr/x satisfies the prefix and defeats the
+# rule.
+#
+# The ocr deny is FIRST and is written against the store's own name, not its
+# parent's. When the text stores moved out of `moll-scans/` into `moll-md/`, a
+# deny reading `*/moll-scans/ocr/*` would have stopped matching and the allow
+# below would have swallowed the witness whole — a silent hole, opened by a
+# file move, in the one rule this pass cannot detect the breach of.
 readable() {
   case "$1" in *..*) return 1 ;; esac
   case "$1" in
-    */moll-scans/ocr/*) return 1 ;;
+    */ocr/*) return 1 ;;
     */scratch/chukchi/moll-scans/*|scratch/chukchi/moll-scans/*) return 0 ;;
+    */scratch/chukchi/moll-md/*|scratch/chukchi/moll-md/*) return 0 ;;
     *"$MEMORY"*|*.claude/skills/read-moll-page/*) return 0 ;;
   esac
   return 1
@@ -62,12 +74,12 @@ case "$TOOL" in
   Read)
     P=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // empty')
     case "$P" in
-      */moll-scans/ocr/*)
-        echo "Blocked: scratch/chukchi/moll-scans/ocr/ is the tesseract witness your page will be diffed against after you finish. Reading it collapses the two witnesses into one and destroys the only check on this book that can see a dropped soft sign. Read the marked raster." >&2
+      */ocr/*)
+        echo "Blocked: scratch/chukchi/moll-md/ocr/ is the tesseract witness your page will be diffed against after you finish. Reading it collapses the two witnesses into one and destroys the only check on this book that can see a dropped soft sign. Read the marked raster." >&2
         exit 2 ;;
     esac
     readable "$P" && allow "moll-reader reading inside the pass's own trees"
-    echo "Blocked: you read the raster trees under scratch/chukchi/moll-scans/ (originals, marked/, zoom/, entries/ — never ocr/), your own memory under $MEMORY, your pass doc, and the crops you wrote under $CROPS. Nothing else on this machine is evidence about your page. Read takes a file, not a directory: for your memory that is $MEMORY/MEMORY.md, which indexes the notes by filename. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
+    echo "Blocked: you read the raster trees under scratch/chukchi/moll-scans/ (originals, marked/, zoom/, crops/) and the text stores under scratch/chukchi/moll-md/ (entries/ — never ocr/), your own memory under $MEMORY, your pass doc, and the crops you wrote under $CROPS. Nothing else on this machine is evidence about your page. Read takes a file, not a directory: for your memory that is $MEMORY/MEMORY.md, which indexes the notes by filename. If something you genuinely need is outside that list, say so in your report rather than reaching around the rule." >&2
     exit 2 ;;
 
   Write|Edit)
@@ -164,7 +176,7 @@ case "$COMMAND" in
     echo "Blocked: nothing here needs a directory listing. Your page is the one \`claim\` gave you; \`context\` measures it, \`zoom\` prints the path of every crop it writes, \`rows\` counts the table you wrote, and Read opens any of them by name. If you are counting your own rows, that is: uv run python scratch/chukchi/entry_bounds.py rows moll-NNN" >&2
     exit 2 ;;
   grep\ *|rg\ *|sed\ *|awk\ *|head\ *|tail\ *|cat\ *)
-    echo "Blocked: Read the file. Your table is one page long and you wrote it, so there is nothing in it to search for that reading it will not answer — and a partial view of your own cell is how a wrong reading gets confirmed. Read scratch/chukchi/moll-scans/entries/moll-NNN.md" >&2
+    echo "Blocked: Read the file. Your table is one page long and you wrote it, so there is nothing in it to search for that reading it will not answer — and a partial view of your own cell is how a wrong reading gets confirmed. Read scratch/chukchi/moll-md/entries/moll-NNN.md" >&2
     exit 2 ;;
   mkdir*|touch\ *|cp\ *|mv\ *|rm\ *)
     echo "Blocked: you never create or move a path. \`zoom\` writes its own output and prints where; \`convert\` writes the crop you name under $CROPS, which already exists; your table goes to $ENTRIES via Write. Every directory this pass writes into is already there." >&2

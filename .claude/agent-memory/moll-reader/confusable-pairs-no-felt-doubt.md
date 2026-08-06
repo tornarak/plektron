@@ -42,3 +42,13 @@ The `ъ`/`ь` half is the one case in that note's table where more magnification
 genuinely does decide, and it is worth knowing which half you are in. Compare
 [[lyn-lyyn-no-felt-doubt]], the same no-doubt shape on the commonest error class
 in this book.
+
+**A third pair, same shape: `з` read as `э` at word-initial position.** On
+moll-141 entry 10, the gloss `что́-л. засы́панное землёй` read at both 2x and
+4x as `эасы́панное` — the top serif of the bold `з` is broken by ink loss, so
+what survives looks like the left-facing stroke of `э`. `эасыпанное` is not a
+Russian word; `засыпанное` is, and matches the sense ("something covered over
+with earth"). Lexicon side of the row decided it, same as `в`/`б`. Zoom alone
+did not resolve it — both 2x and 4x showed the same ambiguous glyph — so this
+is a case, like the gloss-side `в`/`б`, where the non-word is the trigger and
+the arbiter, not the ink.

@@ -157,7 +157,7 @@ Three clauses that were in the hand-assembled prompts and are now standing, in
 the agent file, because each was written out by hand every time and one of them
 was eventually forgotten:
 
-- **Blind to `moll-scans/ocr/`.** Now a hook, not a sentence. The whole design
+- **Blind to `moll-md/ocr/`.** Now a hook, not a sentence. The whole design
   rests on it: every error class with no internal signal — a dropped `ь`, an
   invented double consonant — is found by tesseract or not at all, and only
   because tesseract cannot have made the reader's mistake.
@@ -177,7 +177,7 @@ verified; the fifth is not read as carefully as the first, which is how a real
 one gets waved through.
 
 **The targets are enumerated too, not just the tools.** A rule that names
-`identify` and `convert` but no paths leaves `identify moll-scans/ocr/…` open,
+`identify` and `convert` but no paths leaves `identify moll-md/ocr/…` open,
 and that is the blindness rule defeated through a different tool name. So every
 path argument — and every `Read` — must land inside the pass's own trees, `..`
 anywhere is refused outright rather than resolved, and `convert`'s output
