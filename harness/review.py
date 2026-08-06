@@ -1000,14 +1000,19 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          # Crops are emitted as one CSS rule per line and referenced by class, not
          # inlined per occurrence. Inlining embedded a line's image once per queue
          # entry; on 1-074 that was 676 KB against 209.
+         #
+         # `margin: auto` centres the crop, and the entry below it is centred to
+         # match (see the textarea rule). A crop is as wide as its line, so a short
+         # line left-aligned puts print and typed text on two different axes and the
+         # reviewer's eye has to travel to compare them. Centred, the two sit on one.
          ".crop{border:1px solid #ddd;background-repeat:no-repeat;"
-         "background-size:contain;background-color:#fff;margin:.2rem 0}",
+         "background-size:contain;background-color:#fff;margin:.2rem auto}",
          # `min-height` rather than `rows`: the box autogrows past it, so this is a
          # floor and not a size, and a reviewer who wants room to see a wrapped
          # line gets it without the box shrinking back on every keystroke.
          "textarea{font:var(--fs)/1.45 var(--f);width:100%;border:1px solid #bbb;"
          "border-radius:4px;padding:.35rem .5rem;resize:vertical;overflow:hidden;"
-         "min-height:calc(var(--bl) * 1.45em + .8rem)}",
+         "min-height:calc(var(--bl) * 1.45em + .8rem);text-align:center}",
          "textarea:focus{outline:2px solid #47f;border-color:#47f}",
          # Fixed to the bottom, full width, always visible. It is the reference for
          # what the mode does as much as it is an input device, so hiding it behind a
