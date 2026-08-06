@@ -254,7 +254,14 @@ SUFFIX_MARK_DROPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 # shared cut, rather than in a second strip downstream -- which is where they
 # used to sit, applied after `suggest_native_forms` had already published the
 # quoted form.
-EDGE_PUNCT = "\"()[]{}.,;:!?—\u2013-*\u2020\u2021\u00A7\u00B6“”‘’"
+#
+# **The superscripts are here because a footnote marker is typography, not part of
+# the word.** `str.strip` takes a character *set* and stops at the first member it
+# does not know, so without them `Keliˊlhu.¹` kept both — the digit blocked the
+# period behind it — and entered every native frequency table as a form distinct
+# from the `Keliˊlhu` that seven other lines spell. 14 such tokens across the
+# store, each splitting a real form's count.
+EDGE_PUNCT = "\"()[]{}.,;:!?—\u2013-*\u2020\u2021\u00A7\u00B6“”‘’¹²³⁴⁵⁶⁷⁸⁹"
 
 # A hyphen that is the **last character of a printed line** is the compositor's
 # word break, not a hyphen in the word. The ALTO stores one line per printed
@@ -858,6 +865,24 @@ def native_corpus(root: Path = Path(".")) -> list[tuple[str, str]]:
     return [(ref, tok) for ref, _, tok in native_corpus_lines(root)]
 
 
+def _cyrillic(token: str) -> bool:
+    """Is this Russian rather than Tier-1?
+
+    **`й` is `и` + U+0306, and U+0306 is an inventory member**, so pre-reform
+    Russian walked straight into the native corpus on a breve the inventory means
+    as a length mark. Five tokens over three pages — `Край`, `Ушканій`,
+    `Черкасскій`, `Черкесскій`, `Чукотскій` — and it was invisible until `1-359`,
+    a gazetteer setting a Russian column beside every native name, made the class
+    large enough to notice.
+
+    They are not a small error in the right units: Russian is Tier-2, the ASCII
+    policy does not reach it and no Cyrillic string is evidence about Bogoras's
+    notation at all. Every table `native_corpus` feeds is cited by `keying_spec.md`
+    §5.1, so this was five wrong rows inside published numbers.
+    """
+    return any("Ѐ" <= c <= "ӿ" for c in token)
+
+
 def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
     """(ref, line index, token) — `native_corpus` with the line each token sat on.
 
@@ -888,7 +913,8 @@ def native_corpus_lines(root: Path = Path(".")) -> list[tuple[str, str, str]]:
         for rec, line in zip(recs, texts, strict=True):
             for m in TOKEN.finditer(line):
                 tok = m.group().strip(EDGE_PUNCT)
-                if tok and any(c in INVENTORY_CHARS for c in tok):
+                if tok and not _cyrillic(tok) and any(c in INVENTORY_CHARS
+                                                      for c in tok):
                     out.append((ref, str(rec["index"]), tok))
     return out
 
