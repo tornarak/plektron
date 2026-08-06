@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-173.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-173.png; regions_from: zones/chukchi-1-173.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-173_r1" HPOS="392" VPOS="621" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="392 621 2170 621 2170 711 392 711"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l1" HPOS="976" VPOS="627" WIDTH="628" HEIGHT="54" BASELINE="978 660 1604 664" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1593 627 994 627 978 640 978 660 976 677 1600 681 1604 664 1602 632 1593 627"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l2" HPOS="2079" VPOS="636" WIDTH="73" HEIGHT="52" BASELINE="2079 671 2152 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2143 638 2135 636 2079 636 2079 671 2079 686 2150 688 2152 671 2152 640 2143 638"/>
+                        </Shape>
+                        <String CONTENT="131"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-173_r2" HPOS="392" VPOS="736" WIDTH="1778" HEIGHT="413" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="392 736 2170 736 2170 1149 392 1149"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l3" HPOS="391" VPOS="738" WIDTH="1776" HEIGHT="52" BASELINE="391 772 2167 772" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 772 391 790 2167 790 2167 772 2165 738 391 738 391 772"/>
+                        </Shape>
+                        <String CONTENT="instance, on a village shore, — they simply seize the boat by the lashings and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l4" HPOS="394" VPOS="790" WIDTH="1773" HEIGHT="69" BASELINE="394 833 2167 833" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 833 394 846 478 859 480 859 482 859 519 848 675 859 677 859 742 848 807 859 809 859 872 848 1535 848 1667 859 1669 859 1730 848 1743 859 1745 859 1747 859 1749 859 2167 846 2167 833 2167 801 2133 790 2130 790 2128 790 2066 801 2050 790 2048 790 2046 790 2044 790 2042 790 1996 801 1797 790 1795 790 1674 801 1622 790 1619 790 1617 790 1578 801 1509 790 1507 790 1453 801 1353 790 1351 790 1225 801 1119 790 1117 790 1115 790 1069 801 1028 790 1026 790 1024 790 1022 790 989 801 963 790 961 790 959 790 957 790 916 803 656 803 617 790 615 790 612 790 610 790 569 801 539 790 537 790 534 790 532 790 530 790 515 803 394 803 394 833"/>
+                        </Shape>
+                        <String CONTENT="carry it along, cargo and all. These methods of landing, quite impracticable"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l5" HPOS="394" VPOS="857" WIDTH="1771" HEIGHT="54" BASELINE="396 889 2165 894" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 889 394 904 2161 911 2165 894 2163 861 396 857 396 889"/>
+                        </Shape>
+                        <String CONTENT="with the ordinary wooden whale-boat, look strange to a civilized eye; but when,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l6" HPOS="391" VPOS="920" WIDTH="1776" HEIGHT="49" BASELINE="394 952 2167 948" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 952 394 969 2165 965 2167 948 2163 920 391 920 394 952"/>
+                        </Shape>
+                        <String CONTENT="in the first heavy surf encountered on our journey, we tried to land with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l7" HPOS="391" VPOS="980" WIDTH="1774" HEIGHT="48" BASELINE="394 1013 2165 1008" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1013 394 1028 2163 1026 2165 1008 2161 980 391 980 394 1013"/>
+                        </Shape>
+                        <String CONTENT="bow forward, in the ordinary way, the boat filled with water and nearly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l8" HPOS="391" VPOS="1041" WIDTH="1776" HEIGHT="47" BASELINE="391 1071 2167 1071" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 1071 391 1088 2167 1088 2167 1071 2167 1041 391 1041 391 1071"/>
+                        </Shape>
+                        <String CONTENT="capsized; and it would have been completely wrecked had it not been for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l9" HPOS="394" VPOS="1101" WIDTH="1041" HEIGHT="48" BASELINE="394 1132 1435 1132" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1132 394 1149 1435 1149 1435 1132 1435 1101 394 1101 394 1132"/>
+                        </Shape>
+                        <String CONTENT="extreme toughness and elasticity of its frame."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-173_r3" HPOS="392" VPOS="1149" WIDTH="1778" HEIGHT="249" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="392 1149 2170 1149 2170 1398 392 1398"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l10" HPOS="500" VPOS="1162" WIDTH="1667" HEIGHT="46" BASELINE="500 1192 2167 1192" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="500 1192 500 1208 2165 1208 2167 1192 2165 1162 500 1162 500 1192"/>
+                        </Shape>
+                        <String CONTENT="Of the wooden boats I had occasion to see, the “sampan” of northern"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l11" HPOS="391" VPOS="1208" WIDTH="1776" HEIGHT="67" BASELINE="394 1255 2167 1249" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1255 394 1275 2165 1264 2167 1249 2163 1218 1576 1208 1574 1208 1572 1208 1528 1221 391 1221 394 1255"/>
+                        </Shape>
+                        <String CONTENT="Japanese fishermen with flat bottom and smooth sides, more nearly resembles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l12" HPOS="394" VPOS="1266" WIDTH="1771" HEIGHT="63" BASELINE="396 1314 2165 1307" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 1314 396 1329 2163 1327 2165 1307 2161 1279 2037 1266 2035 1266 2033 1266 2031 1266 2016 1279 1905 1279 1881 1266 1879 1266 1877 1266 1825 1277 1799 1266 1797 1266 1795 1266 1693 1277 1669 1266 1667 1266 1665 1266 1572 1279 1557 1268 1554 1268 1552 1268 1550 1268 1548 1268 1520 1279 1489 1268 1487 1268 1485 1268 1483 1268 1457 1279 1399 1268 1396 1268 1394 1268 1392 1268 1377 1281 1284 1281 1219 1268 1217 1268 1162 1279 1130 1268 1128 1268 1126 1268 1123 1268 1095 1279 1065 1268 1063 1268 1061 1268 1059 1268 1056 1268 1039 1279 625 1270 623 1270 621 1270 593 1281 521 1270 519 1270 517 1270 474 1281 413 1270 411 1270 409 1270 407 1270 394 1279 396 1314"/>
+                        </Shape>
+                        <String CONTENT="the skin boat. Like that, it is able to land through surf, when ordinary"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l13" HPOS="394" VPOS="1335" WIDTH="1459" HEIGHT="61" BASELINE="396 1368 1853 1372" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 1368 394 1387 404 1396 407 1396 409 1396 411 1396 1851 1387 1853 1372 1851 1342 396 1335 396 1368"/>
+                        </Shape>
+                        <String CONTENT="European boats are threatened at every attempt with capsizing."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-173_r4" HPOS="392" VPOS="1398" WIDTH="1778" HEIGHT="299" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="392 1398 2170 1398 2170 1697 392 1697"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l14" HPOS="500" VPOS="1398" WIDTH="1667" HEIGHT="50" BASELINE="502 1428 2167 1433" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="502 1428 500 1444 2163 1448 2167 1433 2165 1402 502 1398 502 1428"/>
+                        </Shape>
+                        <String CONTENT="For setting out from shore, the skin boat is put close to the water, with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l15" HPOS="394" VPOS="1457" WIDTH="1773" HEIGHT="49" BASELINE="394 1491 2167 1491" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1491 394 1506 2167 1506 2167 1491 2167 1457 394 1457 394 1491"/>
+                        </Shape>
+                        <String CONTENT="bow foremost but out of reach of the larger waves. Two or three inflated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l16" HPOS="391" VPOS="1506" WIDTH="1776" HEIGHT="72" BASELINE="394 1552 2167 1547" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1552 394 1567 879 1567 926 1578 929 1578 931 1578 933 1578 935 1578 950 1567 1061 1567 1167 1578 1169 1578 1279 1576 1282 1576 1284 1576 1299 1565 1602 1565 1639 1576 1641 1576 1643 1576 2165 1565 2167 1547 2163 1519 2066 1506 2063 1506 2061 1506 2059 1506 2044 1517 1998 1506 1996 1506 1994 1506 1992 1506 1970 1517 1838 1506 1836 1506 1834 1506 1832 1506 1816 1519 1676 1519 1619 1506 1617 1506 1615 1506 1589 1517 1561 1506 1559 1506 1557 1506 1554 1506 1533 1517 1509 1506 1507 1506 1505 1506 1407 1517 1331 1506 1329 1506 1271 1519 1219 1509 1217 1509 1214 1509 1175 1519 632 1509 630 1509 628 1509 625 1509 610 1521 521 1521 409 1509 407 1509 404 1509 402 1509 391 1517 394 1552"/>
+                        </Shape>
+                        <String CONTENT="floats are laid under it, with long lines tied to their flippers. Then the boat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l17" HPOS="391" VPOS="1576" WIDTH="1774" HEIGHT="58" BASELINE="394 1608 2165 1612" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1608 391 1621 417 1634 420 1634 422 1634 2163 1625 2165 1612 2163 1582 394 1576 394 1608"/>
+                        </Shape>
+                        <String CONTENT="is loaded, and with one effort pushed into the water; while the crew, with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l18" HPOS="394" VPOS="1641" WIDTH="1457" HEIGHT="47" BASELINE="394 1671 1851 1671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1671 394 1688 1851 1688 1851 1671 1851 1641 394 1641 394 1671"/>
+                        </Shape>
+                        <String CONTENT="oars and poles, prevent it from being hurled against the shore."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-173_r5" HPOS="392" VPOS="1697" WIDTH="1778" HEIGHT="302" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="392 1697 2170 1697 2170 1999 392 1999"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l19" HPOS="498" VPOS="1697" WIDTH="1671" HEIGHT="50" BASELINE="500 1727 2169 1732" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="500 1727 498 1742 2165 1747 2169 1732 2167 1697 500 1697 500 1727"/>
+                        </Shape>
+                        <String CONTENT="On narrow strips of land between two shores the boats are unloaded and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l20" HPOS="389" VPOS="1760" WIDTH="1776" HEIGHT="54" BASELINE="391 1790 2165 1794" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 1790 389 1803 409 1814 411 1814 413 1814 2163 1809 2165 1794 2163 1764 391 1760 391 1790"/>
+                        </Shape>
+                        <String CONTENT="taken across. Six men can easily carry on their shoulders an empty boat,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l21" HPOS="391" VPOS="1807" WIDTH="1776" HEIGHT="70" BASELINE="394 1848 2167 1853" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1848 391 1864 407 1874 409 1874 411 1874 413 1874 1160 1866 1295 1877 1297 1877 2165 1866 2167 1853 2165 1822 2092 1809 2089 1809 2027 1820 1994 1809 1992 1809 1990 1809 1988 1809 1955 1820 1925 1809 1923 1809 1816 1809 1814 1809 1812 1809 1810 1809 1797 1820 1754 1809 1752 1809 1749 1809 1652 1822 1518 1822 1500 1809 1498 1809 1496 1809 1494 1809 1221 1818 1195 1807 1193 1807 1191 1807 1188 1807 1154 1820 965 1820 950 1807 948 1807 946 1807 944 1807 866 1818 835 1807 833 1807 831 1807 829 1807 801 1818 766 1807 764 1807 762 1807 760 1807 729 1820 604 1820 589 1807 586 1807 584 1807 582 1807 394 1816 394 1848"/>
+                        </Shape>
+                        <String CONTENT="even when soaked with water. Sometimes only part of the freight is taken"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l22" HPOS="394" VPOS="1870" WIDTH="1775" HEIGHT="59" BASELINE="394 1911 2169 1911" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1911 394 1929 2169 1929 2169 1911 2169 1881 1962 1870 1959 1870 1868 1881 1814 1870 1812 1870 1704 1881 1613 1870 1611 1870 1533 1881 1435 1870 1433 1870 1431 1870 1396 1881 1351 1870 1349 1870 1347 1870 1344 1870 1342 1870 1323 1883 1089 1883 994 1870 991 1870 898 1881 866 1870 864 1870 861 1870 859 1870 835 1881 736 1870 734 1870 731 1870 701 1881 647 1870 645 1870 643 1870 619 1881 584 1870 582 1870 580 1870 394 1881 394 1911"/>
+                        </Shape>
+                        <String CONTENT="out, and the boat is pushed across on the floats, which act like rollers and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l23" HPOS="391" VPOS="1937" WIDTH="843" HEIGHT="52" BASELINE="394 1974 1234 1967" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1974 394 1989 1232 1983 1234 1967 1227 1937 391 1942 394 1974"/>
+                        </Shape>
+                        <String CONTENT="prevent its contact with the ground."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-173_r6" HPOS="392" VPOS="1999" WIDTH="1778" HEIGHT="838" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="392 1999 2170 1999 2170 2837 392 2837"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l24" HPOS="500" VPOS="2000" WIDTH="1667" HEIGHT="48" BASELINE="500 2030 2167 2030" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="500 2030 500 2048 2165 2048 2167 2030 2165 2000 500 2000 500 2030"/>
+                        </Shape>
+                        <String CONTENT="One of the drawbacks of the skin boat is the fragility of its cover. Every"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l25" HPOS="394" VPOS="2050" WIDTH="1771" HEIGHT="58" BASELINE="394 2093 2165 2093" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2093 394 2108 2165 2108 2165 2093 2165 2063 2096 2050 2094 2050 2037 2061 1970 2050 1968 2050 1966 2050 1942 2061 1918 2050 1916 2050 1914 2050 1912 2050 1884 2061 1654 2050 1652 2050 1650 2050 1648 2050 1630 2063 1502 2063 1472 2050 1470 2050 1468 2050 1466 2050 1444 2061 1416 2050 1414 2050 1412 2050 1360 2061 1290 2050 1288 2050 1286 2050 1247 2061 1160 2050 1158 2050 1156 2050 1154 2050 1139 2063 885 2063 770 2050 768 2050 766 2050 736 2061 706 2050 703 2050 701 2050 699 2050 697 2050 680 2063 519 2063 422 2050 420 2050 417 2050 394 2061 394 2093"/>
+                        </Shape>
+                        <String CONTENT="sharp stone is liable to cut a hole through it, especially when it has been"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l26" HPOS="394" VPOS="2110" WIDTH="1773" HEIGHT="59" BASELINE="394 2154 2167 2154" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2154 394 2169 2167 2169 2167 2154 2167 2121 2141 2110 2139 2110 2137 2110 2135 2110 2105 2121 2076 2110 2074 2110 2072 2110 2070 2110 2044 2123 1741 2123 1710 2110 1708 2110 1706 2110 1704 2110 1682 2121 1656 2110 1654 2110 1652 2110 1596 2121 1541 2110 1539 2110 1537 2110 1500 2121 1468 2110 1466 2110 1463 2110 1461 2110 1459 2110 1444 2123 1295 2123 1247 2110 1245 2110 1243 2110 1240 2110 1238 2110 1221 2123 1011 2123 946 2110 944 2110 942 2110 898 2121 885 2110 883 2110 881 2110 751 2110 749 2110 686 2121 651 2110 649 2110 647 2110 567 2121 472 2110 469 2110 394 2121 394 2154"/>
+                        </Shape>
+                        <String CONTENT="soaked and softened with water. At every landing it is necessary to look"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l27" HPOS="391" VPOS="2177" WIDTH="1778" HEIGHT="59" BASELINE="394 2208 2169 2212" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2208 391 2223 407 2234 409 2234 411 2234 413 2234 1110 2225 1284 2236 1286 2236 2167 2225 2169 2212 2167 2177 394 2177 394 2208"/>
+                        </Shape>
+                        <String CONTENT="carefully over the whole skin surface, to clean away from under the central"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l28" HPOS="391" VPOS="2238" WIDTH="1778" HEIGHT="50" BASELINE="394 2268 2169 2273" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2268 391 2284 2165 2288 2169 2273 2167 2242 394 2238 394 2268"/>
+                        </Shape>
+                        <String CONTENT="timber every small pebble, and to patch even the minutest hole; otherwise"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l29" HPOS="391" VPOS="2299" WIDTH="1774" HEIGHT="56" BASELINE="394 2329 2165 2333" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2329 391 2342 424 2355 426 2355 428 2355 2163 2346 2165 2333 2163 2303 394 2299 394 2329"/>
+                        </Shape>
+                        <String CONTENT="the boat may suddenly spring a leak while on the water, and necessitate an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l30" HPOS="394" VPOS="2362" WIDTH="1773" HEIGHT="47" BASELINE="394 2390 2167 2390" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2390 394 2409 2167 2409 2167 2390 2167 2362 394 2362 394 2390"/>
+                        </Shape>
+                        <String CONTENT="extra landing. When in good repair, the boat is water-tight, and requires no"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l31" HPOS="396" VPOS="2416" WIDTH="1773" HEIGHT="52" BASELINE="396 2450 2169 2450" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2450 396 2468 2169 2468 2169 2450 2169 2422 396 2416 396 2450"/>
+                        </Shape>
+                        <String CONTENT="bailer; on the other hand, I know of cases where, on account of an over-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l32" HPOS="394" VPOS="2476" WIDTH="1773" HEIGHT="52" BASELINE="394 2511 2167 2511" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2511 394 2528 2167 2528 2167 2511 2167 2481 394 2476 394 2511"/>
+                        </Shape>
+                        <String CONTENT="looked gap, boats were almost sunk before a landing could be effected. While"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l33" HPOS="391" VPOS="2537" WIDTH="1776" HEIGHT="50" BASELINE="394 2567 2167 2572" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2567 391 2582 2163 2587 2167 2572 2165 2541 394 2537 394 2567"/>
+                        </Shape>
+                        <String CONTENT="on shore, the boat is turned upside down, pebbles and sand are shaken off by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l34" HPOS="391" VPOS="2589" WIDTH="1776" HEIGHT="58" BASELINE="391 2632 2167 2632" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 2632 391 2647 2167 2647 2167 2632 2165 2598 1951 2600 1894 2589 1892 2589 1829 2600 1769 2589 1767 2589 1678 2600 1650 2589 1648 2589 1645 2589 1574 2600 1526 2589 1524 2589 1522 2589 1520 2589 1474 2600 1444 2589 1442 2589 1440 2589 1437 2589 1435 2589 1418 2602 1273 2602 1225 2589 1223 2589 1221 2589 1219 2589 1193 2600 1165 2589 1162 2589 1160 2589 968 2600 913 2589 911 2589 909 2589 870 2600 812 2589 809 2589 744 2600 621 2589 619 2589 617 2589 615 2589 602 2600 573 2589 571 2589 569 2589 391 2600 391 2632"/>
+                        </Shape>
+                        <String CONTENT="repeated blows with the oar, and the cover is allowed to dry. If not dried"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l35" HPOS="391" VPOS="2656" WIDTH="1772" HEIGHT="58" BASELINE="394 2688 2163 2693" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2688 391 2701 428 2714 430 2714 433 2714 2161 2712 2163 2693 2161 2660 394 2656 394 2688"/>
+                        </Shape>
+                        <String CONTENT="for a long time, the boat will warp and get out of shape. To prevent warping,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l36" HPOS="391" VPOS="2717" WIDTH="1778" HEIGHT="60" BASELINE="394 2749 2169 2753" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2749 391 2762 812 2775 814 2775 1238 2766 1364 2777 1366 2777 2167 2766 2169 2753 2167 2721 394 2717 394 2749"/>
+                        </Shape>
+                        <String CONTENT="the boat has several sets of special lashings (see Fig. 44, c¹), which connect"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l37" HPOS="391" VPOS="2775" WIDTH="1729" HEIGHT="58" BASELINE="394 2805 2120 2812" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2805 391 2823 409 2833 411 2833 413 2833 415 2833 2118 2827 2120 2812 2118 2782 394 2775 394 2805"/>
+                        </Shape>
+                        <String CONTENT="the gunwales with the central timber, and can be lengthened or shortened."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-173_r7" HPOS="392" VPOS="2837" WIDTH="1778" HEIGHT="355" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="392 2837 2170 2837 2170 3192 392 3192"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l38" HPOS="504" VPOS="2827" WIDTH="1663" HEIGHT="63" BASELINE="506 2868 2167 2872" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="506 2868 504 2881 2163 2890 2167 2872 2165 2842 2053 2842 2037 2829 2035 2829 2033 2829 2031 2829 2029 2829 2001 2840 1972 2829 1970 2829 1968 2829 1903 2840 1743 2829 1741 2829 1739 2829 1704 2842 1609 2842 1596 2829 1593 2829 1591 2829 1589 2829 1587 2829 1557 2842 1435 2842 1420 2829 1418 2829 1416 2829 1414 2829 1412 2829 1381 2840 1197 2840 1173 2827 1171 2827 1169 2827 1087 2838 1011 2827 870 2827 868 2827 866 2827 864 2827 848 2838 757 2827 755 2827 506 2831 506 2868"/>
+                        </Shape>
+                        <String CONTENT="The Reindeer Chukchee living near the seashore also use skin boats;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l39" HPOS="391" VPOS="2894" WIDTH="1778" HEIGHT="61" BASELINE="394 2927 2169 2933" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2927 391 2944 404 2953 407 2953 409 2953 411 2953 909 2944 987 2955 989 2955 2167 2946 2169 2933 2167 2901 394 2894 394 2927"/>
+                        </Shape>
+                        <String CONTENT="and the boats of the Telqäˊp people, for instance, are just as large as those"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l40" HPOS="391" VPOS="2944" WIDTH="1778" HEIGHT="67" BASELINE="394 2985 2169 2992" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2985 391 3000 407 3011 409 3011 411 3011 413 3011 2167 3005 2169 2992 2167 2959 1923 2948 1920 2948 1918 2948 1916 2948 1901 2961 1762 2961 1721 2948 1719 2948 1717 2948 1715 2948 1687 2959 1656 2948 1654 2948 1652 2948 1576 2959 1292 2946 1290 2946 1288 2946 1245 2957 1182 2946 1180 2946 1121 2957 1061 2946 1059 2946 985 2957 874 2944 872 2944 805 2955 710 2944 708 2944 656 2955 628 2944 625 2944 623 2944 394 2953 394 2985"/>
+                        </Shape>
+                        <String CONTENT="of the Maritime villagers. The inland Reindeer people have no boats, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l41" HPOS="394" VPOS="3011" WIDTH="1769" HEIGHT="61" BASELINE="396 3046 2163 3052" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 3046 394 3063 404 3072 407 3072 409 3072 411 3072 2161 3065 2163 3052 2161 3020 396 3011 396 3046"/>
+                        </Shape>
+                        <String CONTENT="hardly need any. A few of them buy from the Russianized Yukaghir or from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l42" HPOS="394" VPOS="3076" WIDTH="1773" HEIGHT="50" BASELINE="396 3106 2167 3111" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 3106 394 3121 2163 3126 2167 3111 2165 3080 396 3076 396 3106"/>
+                        </Shape>
+                        <String CONTENT="the Yakut small wooden canoes, and drag them along to use in summer on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-173_l43" HPOS="394" VPOS="3137" WIDTH="541" HEIGHT="49" BASELINE="394 3169 935 3169" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 3169 394 3186 935 3186 935 3169 935 3139 394 3137 394 3169"/>
+                        </Shape>
+                        <String CONTENT="lakes and larger rivers."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-173_r8" HPOS="392" VPOS="3192" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="392 3192 2170 3192 2170 3268 392 3268"/>
+                    </Shape>
+                    <TextLine ID="mz_1-173_l44" HPOS="502" VPOS="3195" WIDTH="1665" HEIGHT="63" BASELINE="504 3228 2167 3232" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2163 3197 504 3195 504 3228 502 3243 602 3256 604 3256 1299 3247 1336 3258 1338 3258 1340 3258 2165 3247 2167 3232 2165 3212 2163 3197"/>
+                        </Shape>
+                        <String CONTENT="Camps travelling late in spring, especially those of the Kavraˊlɪt, are"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

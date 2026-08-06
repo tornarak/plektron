@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-153.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-153.png; regions_from: zones/chukchi-1-153.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-153_r1" HPOS="397" VPOS="602" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="397 602 2175 602 2175 692 397 692"/>
+                    </Shape>
+                    <TextLine ID="mz_1-153_l1" HPOS="2066" VPOS="608" WIDTH="71" HEIGHT="65" BASELINE="2066 649 2137 647" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2128 610 2107 608 2083 608 2068 627 2066 649 2066 666 2133 673 2137 647 2133 610 2128 610"/>
+                        </Shape>
+                        <String CONTENT="117"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-153_r2" HPOS="397" VPOS="1545" WIDTH="1778" HEIGHT="371" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="397 1545 2175 1545 2175 1916 397 1916"/>
+                    </Shape>
+                    <TextLine ID="mz_1-153_l2" HPOS="394" VPOS="1552" WIDTH="777" HEIGHT="71" BASELINE="396 1599 1171 1589" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1152 1565 1130 1565 1108 1563 1087 1563 1065 1563 1043 1563 1022 1560 1000 1560 978 1560 957 1558 935 1558 913 1558 881 1560 872 1556 870 1556 848 1556 844 1556 835 1563 775 1554 762 1554 751 1552 738 1563 623 1554 621 1554 619 1554 617 1554 617 1556 606 1567 402 1569 394 1584 396 1599 396 1612 545 1623 547 1623 550 1623 578 1610 807 1619 809 1619 812 1619 838 1608 944 1617 946 1617 948 1617 950 1617 968 1606 1009 1617 1011 1617 1013 1617 1080 1604 1145 1615 1147 1615 1149 1615 1152 1615 1171 1602 1171 1589 1167 1565 1152 1565"/>
+                        </Shape>
+                        <String CONTENT="country. The skin boat used ex-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l3" HPOS="391" VPOS="1610" WIDTH="780" HEIGHT="67" BASELINE="394 1656 1171 1651" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 1656 394 1669 1030 1677 1033 1677 1035 1677 1071 1667 1154 1677 1156 1677 1158 1677 1160 1677 1160 1675 1171 1664 1171 1651 1167 1621 838 1610 835 1610 833 1610 831 1610 831 1612 820 1621 632 1612 630 1612 628 1612 586 1623 487 1612 485 1612 391 1625 394 1656"/>
+                        </Shape>
+                        <String CONTENT="tensively by the Chukchee and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l4" HPOS="394" VPOS="1671" WIDTH="775" HEIGHT="71" BASELINE="396 1719 1169 1710" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 1719 396 1732 584 1742 586 1742 671 1729 777 1740 779 1740 870 1727 1084 1736 1087 1736 1089 1736 1091 1736 1106 1725 1147 1736 1149 1736 1152 1736 1154 1736 1156 1736 1169 1723 1169 1710 1165 1682 948 1671 946 1671 864 1682 809 1671 807 1671 805 1671 757 1684 634 1673 632 1673 469 1686 413 1675 411 1675 409 1675 407 1675 394 1684 396 1719"/>
+                        </Shape>
+                        <String CONTENT="the Koryak is quite unknown to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l5" HPOS="396" VPOS="1727" WIDTH="773" HEIGHT="67" BASELINE="398 1779 1169 1770" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 1779 398 1794 1167 1786 1169 1770 1165 1740 1002 1727 1000 1727 998 1727 970 1740 931 1729 929 1729 926 1729 846 1740 790 1729 788 1729 786 1729 783 1729 764 1742 612 1732 610 1732 608 1732 606 1732 591 1742 487 1734 485 1734 482 1734 446 1744 417 1734 415 1734 413 1734 411 1734 409 1734 396 1742 398 1779"/>
+                        </Shape>
+                        <String CONTENT="the Kamchadal, although all three"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l6" HPOS="396" VPOS="1790" WIDTH="775" HEIGHT="67" BASELINE="398 1838 1171 1831" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 1838 398 1851 1156 1857 1158 1857 1160 1857 1162 1857 1162 1855 1171 1844 1171 1831 1169 1803 1121 1790 1119 1790 1117 1790 1115 1790 1087 1801 894 1792 892 1792 890 1792 887 1792 874 1803 861 1792 859 1792 857 1792 855 1792 853 1792 812 1803 680 1792 677 1792 602 1805 435 1794 433 1794 430 1794 396 1807 398 1838"/>
+                        </Shape>
+                        <String CONTENT="tribes undoubtedly belong to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l7" HPOS="396" VPOS="1868" WIDTH="271" HEIGHT="45" BASELINE="396 1896 667 1896" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 1896 396 1911 664 1913 667 1896 667 1868 396 1868 396 1896"/>
+                        </Shape>
+                        <String CONTENT="same stock."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-153_r3" HPOS="397" VPOS="1916" WIDTH="1778" HEIGHT="1327" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="397 1916 2175 1916 2175 3243 397 3243"/>
+                    </Shape>
+                    <TextLine ID="mz_1-153_l8" HPOS="508" VPOS="1916" WIDTH="661" HEIGHT="62" BASELINE="511 1957 1169 1950" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="511 1957 511 1972 851 1978 853 1978 961 1965 1089 1976 1091 1976 1093 1976 1095 1976 1108 1965 1128 1976 1130 1976 1132 1976 1134 1976 1169 1961 1169 1950 1165 1922 521 1916 519 1916 517 1916 515 1916 515 1918 508 1922 511 1957"/>
+                        </Shape>
+                        <String CONTENT="A strong piece of thong or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l9" HPOS="394" VPOS="1974" WIDTH="771" HEIGHT="63" BASELINE="396 2017 1165 2013" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2017 396 2032 1160 2037 1165 2013 1160 1983 420 1974 417 1974 415 1974 394 1983 396 2017"/>
+                        </Shape>
+                        <String CONTENT="sinew, about fifty centimetres long,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l10" HPOS="394" VPOS="2030" WIDTH="775" HEIGHT="61" BASELINE="396 2076 1169 2071" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2076 396 2091 1167 2087 1169 2071 1165 2041 779 2030 777 2030 775 2030 744 2041 402 2032 400 2032 398 2032 396 2032 396 2035 394 2035 396 2076"/>
+                        </Shape>
+                        <String CONTENT="is passed through the hole of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l11" HPOS="394" VPOS="2089" WIDTH="777" HEIGHT="60" BASELINE="396 2136 1171 2130" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2136 396 2149 1171 2143 1171 2130 1167 2102 1048 2102 1037 2091 1037 2089 1035 2089 1033 2089 1030 2089 970 2100 868 2091 866 2091 864 2091 842 2102 623 2093 621 2093 619 2093 589 2104 409 2093 407 2093 404 2093 402 2093 402 2095 394 2102 396 2136"/>
+                        </Shape>
+                        <String CONTENT="Chukchee harpoon-point. The two"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l12" HPOS="396" VPOS="2152" WIDTH="773" HEIGHT="62" BASELINE="398 2195 1169 2190" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2195 398 2214 1167 2214 1169 2190 1165 2160 463 2152 461 2152 396 2162 398 2195"/>
+                        </Shape>
+                        <String CONTENT="ends of the thong are tied together,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l13" HPOS="396" VPOS="2212" WIDTH="771" HEIGHT="63" BASELINE="396 2255 1167 2255" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2255 396 2271 1165 2275 1167 2255 1167 2223 1143 2212 1141 2212 1139 2212 1136 2212 1093 2223 900 2212 898 2212 829 2223 790 2212 788 2212 786 2212 783 2212 781 2212 781 2214 770 2225 660 2225 628 2212 625 2212 623 2212 621 2212 619 2212 608 2223 580 2212 578 2212 576 2212 515 2223 489 2212 487 2212 485 2212 396 2223 396 2255"/>
+                        </Shape>
+                        <String CONTENT="so that it forms a loop (Fig. 34, a¹),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l14" HPOS="396" VPOS="2268" WIDTH="775" HEIGHT="63" BASELINE="398 2314 1171 2310" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2314 398 2331 1169 2327 1171 2310 1165 2277 887 2279 848 2268 846 2268 844 2268 842 2268 812 2279 786 2268 783 2268 781 2268 545 2281 517 2271 515 2271 513 2271 511 2271 508 2271 493 2281 469 2271 467 2271 465 2271 396 2284 398 2314"/>
+                        </Shape>
+                        <String CONTENT="and the sides of the loop are sewed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l15" HPOS="396" VPOS="2331" WIDTH="775" HEIGHT="67" BASELINE="398 2375 1171 2368" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2375 398 2387 649 2398 651 2398 760 2385 868 2396 870 2396 872 2396 892 2385 905 2396 907 2396 909 2396 911 2396 998 2383 1154 2394 1156 2394 1158 2394 1160 2394 1160 2392 1171 2381 1171 2368 1167 2340 680 2331 677 2331 396 2344 398 2375"/>
+                        </Shape>
+                        <String CONTENT="or tied together very near to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l16" HPOS="394" VPOS="2383" WIDTH="777" HEIGHT="78" BASELINE="396 2435 1171 2426" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2435 396 2450 506 2450 517 2459 517 2461 519 2461 521 2461 524 2461 526 2461 563 2450 584 2461 586 2461 589 2461 591 2461 623 2448 645 2459 647 2459 649 2461 775 2461 775 2459 777 2459 779 2459 799 2446 1154 2455 1156 2455 1158 2455 1160 2455 1160 2452 1171 2442 1171 2426 1169 2396 1158 2385 1158 2383 1156 2383 1154 2383 1152 2383 1149 2383 1147 2383 1130 2396 955 2385 952 2385 950 2385 900 2398 848 2385 846 2385 844 2385 842 2385 840 2385 840 2387 827 2398 747 2387 744 2387 742 2387 740 2387 725 2400 524 2390 521 2390 519 2390 493 2403 456 2390 454 2390 452 2390 450 2390 448 2390 430 2400 404 2390 402 2390 400 2390 398 2390 396 2390 396 2392 394 2392 396 2435"/>
+                        </Shape>
+                        <String CONTENT="hole (Fig. 34, a²). The lower end"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l17" HPOS="394" VPOS="2450" WIDTH="775" HEIGHT="61" BASELINE="396 2494 1169 2489" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2494 396 2507 1165 2511 1169 2489 1165 2459 435 2450 433 2450 430 2450 394 2461 396 2494"/>
+                        </Shape>
+                        <String CONTENT="of the loop is fastened to a long"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l18" HPOS="394" VPOS="2502" WIDTH="777" HEIGHT="78" BASELINE="396 2554 1171 2546" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2554 396 2567 502 2567 530 2580 532 2580 534 2580 537 2580 539 2580 556 2567 582 2580 584 2580 586 2580 589 2580 619 2565 645 2578 647 2578 649 2580 710 2580 710 2578 712 2578 714 2578 714 2576 727 2565 764 2578 766 2578 768 2578 770 2578 816 2563 955 2576 957 2576 959 2576 961 2576 985 2561 1004 2572 1007 2572 1009 2572 1080 2561 1093 2572 1093 2574 1095 2574 1097 2574 1100 2574 1169 2563 1171 2546 1167 2517 1113 2504 1110 2504 1039 2515 1017 2502 1015 2502 1013 2502 1011 2502 1009 2502 970 2517 870 2504 868 2504 866 2504 833 2517 749 2507 747 2507 744 2507 742 2507 742 2509 729 2520 521 2509 519 2509 517 2509 480 2522 402 2509 400 2509 398 2509 396 2509 396 2511 394 2511 396 2554"/>
+                        </Shape>
+                        <String CONTENT="line (Fig. 34, b¹), which, for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l19" HPOS="396" VPOS="2567" WIDTH="775" HEIGHT="61" BASELINE="398 2613 1171 2608" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2613 398 2628 1169 2623 1171 2608 1169 2580 1141 2567 1139 2567 1136 2567 926 2578 833 2567 831 2567 829 2567 777 2580 662 2569 660 2569 658 2569 656 2569 656 2572 645 2580 493 2572 491 2572 396 2582 398 2613"/>
+                        </Shape>
+                        <String CONTENT="most part, is free from the shaft."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l20" HPOS="402" VPOS="2623" WIDTH="769" HEIGHT="65" BASELINE="404 2673 1171 2667" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 2673 404 2688 1169 2682 1171 2667 1167 2636 1059 2623 1056 2623 1054 2623 1052 2623 1039 2634 402 2634 404 2673"/>
+                        </Shape>
+                        <String CONTENT="The body of the line is wound into"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l21" HPOS="398" VPOS="2686" WIDTH="771" HEIGHT="63" BASELINE="400 2732 1169 2727" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 2732 400 2749 1167 2745 1169 2727 1167 2699 1121 2686 1119 2686 1117 2686 1115 2686 1113 2686 1095 2697 1024 2686 1022 2686 907 2697 851 2686 848 2686 846 2686 844 2686 827 2697 805 2686 803 2686 801 2686 799 2686 762 2699 686 2688 684 2688 545 2699 504 2688 502 2688 500 2688 398 2701 400 2732"/>
+                        </Shape>
+                        <String CONTENT="a coil, sometimes held together by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l22" HPOS="398" VPOS="2747" WIDTH="773" HEIGHT="58" BASELINE="400 2790 1171 2786" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 2790 400 2805 1169 2801 1171 2786 1167 2758 786 2747 783 2747 781 2747 779 2747 779 2749 777 2749 770 2758 461 2749 459 2749 398 2760 400 2790"/>
+                        </Shape>
+                        <String CONTENT="a few thin threads of damp sinew"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l23" HPOS="400" VPOS="2808" WIDTH="771" HEIGHT="60" BASELINE="402 2851 1171 2846" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 2851 402 2868 1169 2864 1171 2846 1167 2816 454 2808 452 2808 400 2818 402 2851"/>
+                        </Shape>
+                        <String CONTENT="twisted around it, which will easily"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l24" HPOS="400" VPOS="2866" WIDTH="765" HEIGHT="61" BASELINE="400 2911 1165 2911" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 2911 400 2924 1162 2927 1165 2911 1165 2877 1143 2866 1141 2866 1139 2866 1136 2866 1134 2866 1093 2881 998 2881 965 2866 963 2866 877 2866 874 2866 872 2866 870 2866 870 2868 857 2879 809 2866 807 2866 805 2866 803 2866 801 2866 786 2877 755 2866 753 2866 751 2866 749 2866 747 2866 747 2868 734 2881 673 2881 649 2866 647 2866 645 2866 643 2866 641 2866 612 2879 576 2866 573 2866 571 2866 569 2866 541 2881 400 2881 400 2911"/>
+                        </Shape>
+                        <String CONTENT="come off when desired (Fig. 34, b²)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l25" HPOS="402" VPOS="2927" WIDTH="769" HEIGHT="58" BASELINE="402 2970 1171 2970" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 2970 402 2985 1171 2985 1171 2970 1171 2940 1093 2927 1091 2927 1089 2927 1065 2940 959 2940 948 2929 948 2927 946 2927 944 2927 942 2927 939 2927 911 2937 877 2927 874 2927 872 2927 870 2927 848 2937 788 2927 786 2927 783 2927 747 2937 697 2927 695 2927 693 2927 662 2937 556 2927 554 2927 402 2935 402 2970"/>
+                        </Shape>
+                        <String CONTENT="Sometimes the line is fastened to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l26" HPOS="398" VPOS="2985" WIDTH="775" HEIGHT="58" BASELINE="400 3031 1173 3026" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 3031 400 3043 1171 3041 1173 3026 1169 2998 1063 2985 1061 2985 1009 2996 983 2985 981 2985 978 2985 976 2985 950 2996 924 2985 922 2985 920 2985 855 2996 827 2985 825 2985 822 2985 820 2985 818 2985 803 2996 788 2985 786 2985 783 2985 781 2985 779 2985 747 2998 721 2987 718 2987 716 2987 617 2998 498 2987 495 2987 493 2987 491 2987 474 2998 420 2987 417 2987 415 2987 413 2987 398 2996 400 3031"/>
+                        </Shape>
+                        <String CONTENT="the lower end of the shaft with a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l27" HPOS="398" VPOS="3043" WIDTH="777" HEIGHT="72" BASELINE="400 3089 1175 3085" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 3089 400 3104 757 3115 760 3115 762 3115 790 3102 1000 3102 1011 3111 1011 3113 1013 3113 1015 3113 1017 3115 1156 3115 1156 3113 1158 3113 1160 3113 1175 3100 1175 3085 1171 3056 1084 3043 1082 3043 1080 3043 1078 3043 1061 3054 950 3043 948 3043 946 3043 918 3054 907 3046 907 3043 905 3043 903 3043 829 3043 827 3043 825 3043 781 3056 426 3046 424 3046 422 3046 398 3056 400 3089"/>
+                        </Shape>
+                        <String CONTENT="similar twisting, which is undone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l28" HPOS="400" VPOS="3104" WIDTH="773" HEIGHT="67" BASELINE="402 3150 1173 3145" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 3150 402 3160 682 3171 684 3171 686 3171 727 3160 781 3171 783 3171 877 3158 892 3169 894 3169 896 3169 898 3169 1171 3158 1173 3145 1171 3117 1123 3104 1121 3104 1119 3104 1117 3104 1093 3115 1069 3104 1067 3104 1065 3104 1063 3104 1024 3115 987 3104 985 3104 983 3104 981 3104 942 3115 805 3104 803 3104 723 3117 634 3106 632 3106 630 3106 597 3117 530 3106 528 3106 400 3113 402 3150"/>
+                        </Shape>
+                        <String CONTENT="by the first violent pull of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-153_l29" HPOS="400" VPOS="3160" WIDTH="773" HEIGHT="72" BASELINE="402 3212 1173 3199" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 3212 402 3232 1171 3217 1173 3199 1169 3171 1037 3160 1035 3160 981 3171 948 3160 946 3160 944 3160 942 3160 907 3173 829 3163 827 3163 656 3178 645 3169 645 3167 643 3167 641 3167 638 3167 573 3178 450 3169 448 3169 446 3169 400 3182 402 3212"/>
+                        </Shape>
+                        <String CONTENT="game. The end of the line is usu-"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

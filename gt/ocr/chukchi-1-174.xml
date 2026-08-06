@@ -1,0 +1,376 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-174.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-174.png; regions_from: zones/chukchi-1-174.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-174_r1" HPOS="644" VPOS="610" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="644 610 2422 610 2422 700 644 700"/>
+                    </Shape>
+                    <TextLine ID="mz_1-174_l1" HPOS="1232" VPOS="623" WIDTH="617" HEIGHT="54" BASELINE="1234 658 1849 653" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1838 625 1816 623 1795 623 1773 623 1752 623 1730 623 1708 623 1687 623 1665 623 1643 623 1622 623 1600 623 1578 623 1557 623 1535 623 1232 623 1234 658 1234 677 1847 673 1849 653 1847 651 1838 625"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l2" HPOS="664" VPOS="625" WIDTH="87" HEIGHT="52" BASELINE="667 664 751 660" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 664 667 677 749 675 751 660 744 625 664 627 667 664"/>
+                        </Shape>
+                        <String CONTENT="132"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-174_r2" HPOS="644" VPOS="725" WIDTH="1778" HEIGHT="302" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="644 725 2422 725 2422 1027 644 1027"/>
+                    </Shape>
+                    <TextLine ID="mz_1-174_l3" HPOS="654" VPOS="731" WIDTH="1773" HEIGHT="61" BASELINE="656 762 2427 766" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2408 742 2386 740 2364 740 2343 738 2321 738 2299 736 2295 733 656 731 656 762 654 775 677 788 680 788 682 788 794 779 883 790 885 792 1004 792 1004 790 1007 790 1009 790 1024 779 1087 790 1089 790 1487 779 1509 790 1511 790 1513 790 1658 781 1814 792 1816 792 2425 779 2427 766 2425 742 2408 742"/>
+                        </Shape>
+                        <String CONTENT="often hampered while on the road by the breaking-up of the ice. In order"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l4" HPOS="651" VPOS="792" WIDTH="1776" HEIGHT="58" BASELINE="654 822 2427 827" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 822 651 835 1541 850 1544 850 2425 840 2427 827 2425 796 654 792 654 822"/>
+                        </Shape>
+                        <String CONTENT="to cross the mountain rivers, suddenly swollen by floods, they sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l5" HPOS="651" VPOS="853" WIDTH="1774" HEIGHT="58" BASELINE="654 883 2425 887" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 883 651 896 673 909 675 909 677 909 1327 900 1541 911 1544 911 2423 900 2425 887 2423 857 654 853 654 883"/>
+                        </Shape>
+                        <String CONTENT="construct a peculiar device, consisting of several sledges tied together in a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l6" HPOS="651" VPOS="904" WIDTH="1774" HEIGHT="63" BASELINE="654 946 2425 941" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 946 654 967 2423 961 2425 941 2421 911 686 904 684 904 682 904 651 915 654 946"/>
+                        </Shape>
+                        <String CONTENT="pile, and protected from beneath by the cover of the outer tent. This is used"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l7" HPOS="651" VPOS="961" WIDTH="1174" HEIGHT="67" BASELINE="654 1000 1825 1006" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1000 651 1019 660 1026 662 1026 664 1026 667 1026 948 1017 1043 1028 1046 1028 1823 1019 1825 1006 1823 965 1674 965 1671 965 1669 965 1667 965 1667 967 1658 974 1648 965 1645 965 1643 965 1641 965 1576 976 1565 967 1565 965 1563 965 1561 965 1559 965 1455 974 1437 963 1435 963 1433 963 1431 963 1344 974 866 974 855 963 855 961 853 961 851 961 848 961 846 961 820 972 654 972 654 1000"/>
+                        </Shape>
+                        <String CONTENT="as a raft to carry over men and household things.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-174_r3" HPOS="644" VPOS="1027" WIDTH="1778" HEIGHT="420" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="644 1027 2422 1027 2422 1447 644 1447"/>
+                    </Shape>
+                    <TextLine ID="mz_1-174_l8" HPOS="755" VPOS="1034" WIDTH="1670" HEIGHT="48" BASELINE="755 1065 2425 1065" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="755 1065 755 1082 2425 1082 2425 1065 2425 1034 755 1034 755 1065"/>
+                        </Shape>
+                        <String CONTENT="HUNTING OF LAND-GAME. — Of land-game, the wild reindeer is the most"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l9" HPOS="651" VPOS="1091" WIDTH="1774" HEIGHT="49" BASELINE="651 1123 2425 1123" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1123 651 1140 2425 1140 2425 1123 2425 1095 651 1091 651 1123"/>
+                        </Shape>
+                        <String CONTENT="important. It is nevertheless not so abundant in northeastern Asia as the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l10" HPOS="651" VPOS="1145" WIDTH="1774" HEIGHT="56" BASELINE="654 1186 2425 1182" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1186 654 1201 2423 1199 2425 1182 2421 1149 721 1145 718 1145 651 1156 654 1186"/>
+                        </Shape>
+                        <String CONTENT="caribou in America, because the best pastures are occupied by domesticated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l11" HPOS="654" VPOS="1203" WIDTH="1771" HEIGHT="59" BASELINE="654 1247 2425 1247" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1247 654 1262 2425 1262 2425 1247 2425 1216 2369 1203 2367 1203 2286 1214 2137 1203 2135 1203 2044 1214 1925 1203 1923 1203 1920 1203 1892 1214 1816 1203 1814 1203 1719 1214 1676 1203 1674 1203 1671 1203 1669 1203 1641 1214 1628 1203 1626 1203 1624 1203 1622 1203 1567 1214 1412 1203 1409 1203 1407 1203 1377 1214 1331 1203 1329 1203 1327 1203 1236 1214 1175 1203 1173 1203 1119 1214 1097 1203 1095 1203 1093 1203 1091 1203 1061 1214 1007 1203 1004 1203 1002 1203 965 1214 926 1203 924 1203 922 1203 833 1214 654 1210 654 1247"/>
+                        </Shape>
+                        <String CONTENT="herds. Only the depths of the forests and the higher slopes of the mountains"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l12" HPOS="651" VPOS="1262" WIDTH="1774" HEIGHT="60" BASELINE="654 1305 2425 1301" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1305 654 1322 2423 1318 2425 1301 2421 1273 1550 1262 1548 1262 1457 1273 760 1264 757 1264 651 1275 654 1305"/>
+                        </Shape>
+                        <String CONTENT="are left quite undisturbed for the wild breed, because they are unsuitable for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l13" HPOS="651" VPOS="1320" WIDTH="1774" HEIGHT="63" BASELINE="654 1368 2425 1363" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1368 654 1383 2423 1379 2425 1363 2421 1333 1907 1333 1884 1320 1881 1320 1879 1320 1801 1331 1769 1320 1767 1320 1765 1320 1762 1320 1760 1320 1747 1331 1715 1320 1713 1320 1710 1320 1708 1320 1665 1331 1652 1320 1650 1320 1648 1320 1548 1320 1546 1320 1544 1320 1541 1320 1526 1333 1459 1322 1457 1322 1455 1322 1422 1333 1381 1322 1379 1322 1377 1322 1375 1322 1342 1333 1173 1322 1171 1322 1108 1333 989 1322 987 1322 985 1322 944 1333 751 1322 749 1322 747 1322 744 1322 731 1333 673 1322 671 1322 669 1322 667 1322 651 1331 654 1368"/>
+                        </Shape>
+                        <String CONTENT="the breeding of domesticated animals. Wild reindeer, however, are met every-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l14" HPOS="654" VPOS="1389" WIDTH="1427" HEIGHT="50" BASELINE="656 1420 2081 1424" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 1420 654 1435 2076 1439 2081 1424 2079 1394 656 1389 656 1420"/>
+                        </Shape>
+                        <String CONTENT="where in northeastern Asia, in single heads or in small herds."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-174_r4" HPOS="644" VPOS="1447" WIDTH="1778" HEIGHT="718" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="644 1447 2422 1447 2422 2165 644 2165"/>
+                    </Shape>
+                    <TextLine ID="mz_1-174_l15" HPOS="766" VPOS="1446" WIDTH="1659" HEIGHT="54" BASELINE="766 1485 2425 1485" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="766 1485 766 1500 2425 1500 2425 1485 2425 1454 766 1446 766 1485"/>
+                        </Shape>
+                        <String CONTENT="The wild reindeer is larger than any of the domesticated varieties. Its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l16" HPOS="654" VPOS="1515" WIDTH="1769" HEIGHT="48" BASELINE="654 1545 2423 1545" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1545 654 1563 2423 1563 2423 1545 2423 1515 654 1515 654 1545"/>
+                        </Shape>
+                        <String CONTENT="step is wider, and its footprint longer, because its hoof-joints are more supple."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l17" HPOS="654" VPOS="1569" WIDTH="1769" HEIGHT="54" BASELINE="654 1604 2423 1604" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1604 654 1623 2423 1623 2423 1604 2423 1573 654 1569 654 1604"/>
+                        </Shape>
+                        <String CONTENT="Its antlers are more or less similar to those of the Lamut reindeer, but generally"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l18" HPOS="654" VPOS="1625" WIDTH="1771" HEIGHT="55" BASELINE="654 1662 2425 1662" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1662 654 1680 2425 1680 2425 1662 2423 1625 654 1632 654 1662"/>
+                        </Shape>
+                        <String CONTENT="the ends are bent up in a hook-like shape. Also the difference in size of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l19" HPOS="649" VPOS="1690" WIDTH="1772" HEIGHT="50" BASELINE="651 1721 2421 1725" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1721 649 1736 2416 1740 2421 1725 2419 1695 651 1690 651 1721"/>
+                        </Shape>
+                        <String CONTENT="antlers between buck and doe is still more marked than with Lamut reindeer."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l20" HPOS="651" VPOS="1744" WIDTH="1770" HEIGHT="68" BASELINE="654 1779 2421 1786" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1779 651 1794 1990 1812 1992 1812 2419 1801 2421 1786 2419 1755 654 1744 654 1779"/>
+                        </Shape>
+                        <String CONTENT="The color of the skin is uniformly dark gray, somewhat lighter on the belly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l21" HPOS="649" VPOS="1801" WIDTH="1772" HEIGHT="60" BASELINE="651 1844 2421 1840" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1844 651 1861 2419 1861 2421 1840 2414 1809 1972 1812 1942 1801 1940 1801 1938 1801 1810 1812 1780 1801 1777 1801 1775 1801 1773 1801 1771 1801 1752 1814 1630 1814 1539 1801 1537 1801 1535 1801 1533 1801 1518 1814 1386 1803 1383 1803 1321 1814 1292 1803 1290 1803 1288 1803 1191 1814 1134 1803 1132 1803 1130 1803 1128 1803 1113 1814 1076 1803 1074 1803 1071 1803 1020 1814 1007 1803 1004 1803 1002 1803 1000 1803 896 1814 718 1803 716 1803 649 1816 651 1844"/>
+                        </Shape>
+                        <String CONTENT="and lower part of the neck. Those living on the northeastern tundras and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l22" HPOS="649" VPOS="1872" WIDTH="1770" HEIGHT="54" BASELINE="651 1903 2419 1907" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1903 649 1916 664 1926 667 1926 669 1926 671 1926 2416 1924 2419 1907 2416 1877 651 1872 651 1903"/>
+                        </Shape>
+                        <String CONTENT="close to the ocean are smaller, but accumulate more fat. In this respect,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l23" HPOS="651" VPOS="1926" WIDTH="1770" HEIGHT="54" BASELINE="651 1961 2421 1961" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1961 651 1980 2421 1980 2421 1961 2421 1933 651 1926 651 1961"/>
+                        </Shape>
+                        <String CONTENT="however, all varieties of the wild reindeer are superior, even to the Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l24" HPOS="649" VPOS="1985" WIDTH="1772" HEIGHT="54" BASELINE="651 2022 2421 2026" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2022 649 2035 2416 2039 2421 2026 2419 1993 651 1985 651 2022"/>
+                        </Shape>
+                        <String CONTENT="breed. Late in summer, when insects cease to swarm around the pastures, a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l25" HPOS="649" VPOS="2039" WIDTH="1772" HEIGHT="61" BASELINE="651 2084 2421 2080" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2084 651 2100 2419 2095 2421 2080 2416 2052 2308 2039 2306 2039 2304 2039 2258 2050 2241 2039 2239 2039 2237 2039 2234 2039 2163 2050 2141 2039 2139 2039 2137 2039 2135 2039 2133 2039 2115 2052 1981 2052 1925 2039 1923 2039 1920 2039 1897 2050 1840 2039 1838 2039 1836 2039 1834 2039 1816 2052 1695 2052 1650 2039 1648 2039 1645 2039 1643 2039 1622 2050 1572 2039 1570 2039 1567 2039 1531 2052 1457 2041 1455 2041 1453 2041 1427 2052 1399 2041 1396 2041 1394 2041 1392 2041 1366 2052 1264 2041 1262 2041 1260 2041 1258 2041 1243 2054 1115 2054 1076 2041 1074 2041 1071 2041 1007 2052 929 2041 926 2041 924 2041 881 2052 868 2041 866 2041 864 2041 690 2041 688 2041 686 2041 649 2054 651 2084"/>
+                        </Shape>
+                        <String CONTENT="wild buck often takes on three inches of tallow on his hips, so that he is no"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l26" HPOS="651" VPOS="2108" WIDTH="997" HEIGHT="50" BASELINE="654 2143 1648 2141" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 2143 654 2158 1645 2156 1648 2141 1643 2113 651 2108 654 2143"/>
+                        </Shape>
+                        <String CONTENT="longer able to run with his usual swiftness."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-174_r5" HPOS="644" VPOS="2165" WIDTH="1778" HEIGHT="173" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="644 2165 2422 2165 2422 2338 644 2338"/>
+                    </Shape>
+                    <TextLine ID="mz_1-174_l27" HPOS="755" VPOS="2165" WIDTH="1668" HEIGHT="60" BASELINE="757 2199 2423 2203" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="757 2199 755 2214 773 2225 775 2225 777 2225 779 2225 2421 2216 2423 2203 2421 2169 757 2165 757 2199"/>
+                        </Shape>
+                        <String CONTENT="Some wild reindeer always live in the same places. They are called"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l28" HPOS="654" VPOS="2225" WIDTH="1769" HEIGHT="67" BASELINE="656 2255 2423 2266" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 2255 654 2268 684 2284 686 2284 688 2286 846 2286 846 2284 848 2284 874 2273 1011 2286 1013 2286 1082 2275 1160 2286 1162 2286 1492 2277 1515 2288 1518 2288 1520 2288 1845 2279 1903 2290 1905 2292 1905 2290 1964 2279 2239 2279 2295 2292 2297 2292 2421 2279 2423 2266 2421 2236 656 2225 656 2255"/>
+                        </Shape>
+                        <String CONTENT="“resident reindeer.” Others gather every year in large herds and migrate"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l29" HPOS="645" VPOS="2288" WIDTH="1717" HEIGHT="52" BASELINE="647 2318 2362 2325" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2318 645 2333 2358 2340 2362 2325 2362 2294 647 2288 647 2318"/>
+                        </Shape>
+                        <String CONTENT="considerable distances, from the forest border to the tundra and back again."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-174_r6" HPOS="644" VPOS="2338" WIDTH="1778" HEIGHT="848" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="644 2338 2422 2338 2422 3186 644 3186"/>
+                    </Shape>
+                    <TextLine ID="mz_1-174_l30" HPOS="755" VPOS="2349" WIDTH="1666" HEIGHT="49" BASELINE="755 2381 2421 2381" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="755 2381 755 2398 2421 2398 2421 2381 2421 2353 755 2349 755 2381"/>
+                        </Shape>
+                        <String CONTENT="In former times there were two different trails in northeastern Asia for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l31" HPOS="643" VPOS="2398" WIDTH="1778" HEIGHT="70" BASELINE="645 2439 2421 2444" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2439 643 2452 710 2465 712 2465 1531 2457 1593 2468 1596 2468 2419 2457 2421 2444 2419 2413 2358 2400 2356 2400 2354 2400 2317 2411 2273 2400 2271 2400 2269 2400 2267 2400 2224 2411 2174 2400 2172 2400 2169 2400 2135 2413 1942 2413 1918 2400 1916 2400 1914 2400 1836 2411 1788 2400 1786 2400 1784 2400 1498 2409 1483 2398 1481 2398 1479 2398 1476 2398 1474 2398 1444 2409 1344 2398 1342 2398 1340 2398 1312 2409 1288 2398 1286 2398 1284 2398 1206 2409 1134 2398 1132 2398 1130 2398 1091 2409 950 2398 948 2398 946 2398 920 2409 853 2398 851 2398 645 2407 645 2439"/>
+                        </Shape>
+                        <String CONTENT="these migrations. One led from the Kolyma Mountains across the Omolon"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l32" HPOS="647" VPOS="2461" WIDTH="1772" HEIGHT="56" BASELINE="647 2502 2419 2502" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2502 647 2515 2416 2517 2419 2502 2419 2472 2393 2461 2390 2461 2388 2461 2297 2472 2252 2461 2250 2461 2247 2461 2245 2461 2215 2472 1985 2461 1983 2461 1892 2472 1862 2461 1860 2461 1858 2461 1773 2472 1734 2461 1732 2461 1730 2461 1550 2472 1485 2461 1483 2461 1481 2461 1442 2472 1390 2461 1388 2461 1386 2461 1383 2461 1366 2474 1266 2474 998 2461 996 2461 994 2461 991 2461 976 2474 840 2474 781 2461 779 2461 777 2461 753 2472 718 2461 716 2461 714 2461 647 2472 647 2502"/>
+                        </Shape>
+                        <String CONTENT="and the two Anui Rivers to the Chaun tundra; the other, from the high"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l33" HPOS="645" VPOS="2526" WIDTH="1776" HEIGHT="61" BASELINE="647 2556 2421 2563" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2556 645 2572 762 2585 764 2585 1212 2576 1273 2587 1275 2587 2419 2578 2421 2563 2419 2533 647 2526 647 2556"/>
+                        </Shape>
+                        <String CONTENT="country of Palpal, across the Anadyr River, to the Chukchee Peninsula. About"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l34" HPOS="645" VPOS="2587" WIDTH="1771" HEIGHT="54" BASELINE="647 2619 2416 2628" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2619 645 2632 2412 2641 2416 2628 2414 2595 647 2587 647 2619"/>
+                        </Shape>
+                        <String CONTENT="fourscore years ago the reindeer migration over the former trail began to lessen,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l35" HPOS="647" VPOS="2639" WIDTH="1772" HEIGHT="60" BASELINE="647 2682 2419 2682" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2678 647 2682 647 2699 2419 2699 2419 2682 2419 2652 2323 2639 2321 2639 2319 2639 2297 2649 2276 2639 2273 2639 2271 2639 2269 2639 2247 2649 2148 2639 2146 2639 2143 2639 2141 2639 2124 2649 2085 2639 2083 2639 2081 2639 1765 2649 1706 2639 1704 2639 1652 2649 1639 2639 1637 2639 1635 2639 1520 2639 1518 2639 1424 2649 1383 2639 1381 2639 1379 2639 1377 2639 1375 2639 1360 2652 1273 2652 1245 2639 1243 2639 1240 2639 1154 2649 1121 2639 1119 2639 1117 2639 1115 2639 1082 2649 1059 2639 1056 2639 1054 2639 903 2649 775 2639 773 2639 770 2639 768 2639 751 2649 723 2639 721 2639 718 2639 658 2647 647 2678"/>
+                        </Shape>
+                        <String CONTENT="and finally ceased altogether. Several Yukaghir villages which depended on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l36" HPOS="645" VPOS="2708" WIDTH="1774" HEIGHT="50" BASELINE="647 2738 2419 2743" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2738 645 2753 2414 2758 2419 2743 2416 2712 647 2708 647 2738"/>
+                        </Shape>
+                        <String CONTENT="wild reindeer for their subsistence were starved out in consequence, and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l37" HPOS="647" VPOS="2771" WIDTH="1769" HEIGHT="47" BASELINE="647 2801 2416 2801" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2801 647 2818 2416 2818 2416 2801 2416 2771 647 2771 647 2801"/>
+                        </Shape>
+                        <String CONTENT="remainder went to the northwest and settled in the Russo-Yukaghir fishing-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l38" HPOS="645" VPOS="2827" WIDTH="1771" HEIGHT="61" BASELINE="647 2857 2416 2862" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2857 645 2872 736 2885 738 2885 1442 2877 1533 2888 1535 2888 2414 2877 2416 2862 2414 2831 647 2827 647 2857"/>
+                        </Shape>
+                        <String CONTENT="villages on the Kolyma River. In the year 1896, when descending the Omolon"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l39" HPOS="645" VPOS="2885" WIDTH="1771" HEIGHT="59" BASELINE="647 2916 2416 2922" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2916 645 2933 658 2942 660 2942 662 2942 664 2942 1147 2933 1238 2944 1240 2944 2414 2935 2416 2922 2414 2892 647 2885 647 2916"/>
+                        </Shape>
+                        <String CONTENT="on a raft, I passed several of these deserted or starved-out hamlets. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l40" HPOS="645" VPOS="2942" WIDTH="1769" HEIGHT="65" BASELINE="647 2976 2414 2981" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2976 645 2992 1829 3007 1832 3007 2412 2996 2414 2981 2412 2950 647 2942 647 2976"/>
+                        </Shape>
+                        <String CONTENT="houses of some were still standing. Others had completely fallen in, and only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l41" HPOS="645" VPOS="3007" WIDTH="1769" HEIGHT="49" BASELINE="647 3041 2414 3037" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 3041 647 3056 2412 3054 2414 3037 2408 3007 645 3009 647 3041"/>
+                        </Shape>
+                        <String CONTENT="a grassy patch that interrupted the continuous line of the forest along the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l42" HPOS="643" VPOS="3059" WIDTH="1771" HEIGHT="58" BASELINE="645 3098 2414 3102" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 3098 643 3113 2410 3117 2414 3102 2414 3072 2247 3059 2245 3059 645 3059 645 3098"/>
+                        </Shape>
+                        <String CONTENT="bank indicated the former dwelling-place of humanity. For the abandonment"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-174_l43" HPOS="645" VPOS="3130" WIDTH="1765" HEIGHT="50" BASELINE="645 3158 2410 3158" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 3158 645 3178 2408 3180 2410 3158 2410 3130 645 3130 645 3158"/>
+                        </Shape>
+                        <String CONTENT="of this trail by the reindeer, Yukaghir hunters blame the Lamut, who every"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-174_r7" HPOS="644" VPOS="3203" WIDTH="1778" HEIGHT="51" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="644 3203 2422 3203 2422 3254 644 3254"/>
+                    </Shape>
+                    <TextLine ID="mz_1-174_l44" HPOS="1299" VPOS="3195" WIDTH="453" HEIGHT="52" BASELINE="1301 3223 1752 3230" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1301 3223 1299 3241 1747 3247 1752 3230 1749 3202 1301 3195 1301 3223"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare Maydell, p. 211."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

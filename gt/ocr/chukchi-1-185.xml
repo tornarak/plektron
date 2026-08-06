@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-185.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-185.png; regions_from: zones/chukchi-1-185.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-185_r1" HPOS="403" VPOS="615" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="403 615 2181 615 2181 705 403 705"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l1" HPOS="981" VPOS="623" WIDTH="619" HEIGHT="52" BASELINE="983 653 1600 658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1589 625 1567 623 1546 623 1524 623 1502 623 1481 623 1459 623 1437 623 1416 623 1394 623 1373 623 1351 623 1329 623 1308 623 1286 623 1264 623 1243 623 1221 623 1199 623 1178 623 1156 623 1134 623 1113 623 1091 623 1069 623 1048 623 1026 623 1004 623 985 634 983 653 981 671 1596 675 1600 658 1598 647 1589 625"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l2" HPOS="2079" VPOS="632" WIDTH="93" HEIGHT="62" BASELINE="2081 666 2172 671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2167 643 2146 638 2130 634 2081 632 2081 666 2079 679 2124 694 2126 694 2128 694 2130 694 2169 684 2172 671 2172 645 2167 643"/>
+                        </Shape>
+                        <String CONTENT="143"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-185_r2" HPOS="403" VPOS="730" WIDTH="1778" HEIGHT="958" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="403 730 2181 730 2181 1688 403 1688"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l3" HPOS="402" VPOS="723" WIDTH="1776" HEIGHT="60" BASELINE="404 770 2178 766" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 725 632 736 550 729 532 731 511 731 489 731 467 731 446 733 437 733 402 738 404 770 404 783 2176 783 2178 766 2174 736 2068 723 2066 723 2063 723 2061 723 2046 736 1881 736 1858 723 1855 723 1853 723 1851 723 1806 733 1777 723 1775 723 1773 723 1700 733 1663 723 1661 723 1658 723 1574 733 1544 723 1541 723 1539 723 1351 733 1321 723 1318 723 1316 723 1314 723 1286 736 1188 725 1186 725 1184 725 1149 736 1100 725 1097 725 751 736 680 725 669 725"/>
+                        </Shape>
+                        <String CONTENT="a slender chip of wood. The latter is propped against the bottom of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l4" HPOS="402" VPOS="783" WIDTH="1774" HEIGHT="63" BASELINE="404 829 2176 824" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2169 794 2118 783 2115 783 2113 783 2092 794 2042 783 2040 783 2037 783 2014 796 1845 796 1821 783 1819 783 1816 783 1706 794 1615 783 1613 783 1550 794 1487 783 1485 783 1483 783 1481 783 1468 794 1437 783 1435 783 1433 783 1431 783 1429 783 1414 794 1383 783 1381 783 1379 783 1269 796 1247 785 1245 785 1243 785 1240 785 1199 796 1156 785 1154 785 1152 785 1149 785 1123 796 1037 785 1035 785 874 796 814 785 812 785 809 785 788 796 773 785 770 785 768 785 632 785 630 785 539 796 420 785 417 785 415 785 413 785 402 794 404 829 404 846 2174 842 2176 824 2172 796 2169 794"/>
+                        </Shape>
+                        <String CONTENT="frame, and holds the cross-piece in place. It is braced by another very slender"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l5" HPOS="402" VPOS="846" WIDTH="514" HEIGHT="61" BASELINE="404 889 916 883" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 889 404 907 913 900 916 883 909 846 402 859 404 889"/>
+                        </Shape>
+                        <String CONTENT="cross-piece, the ends of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l6" HPOS="404" VPOS="902" WIDTH="514" HEIGHT="61" BASELINE="407 950 918 946" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 950 407 963 916 959 918 946 913 915 701 902 699 902 697 902 675 913 664 902 662 902 660 902 658 902 656 902 654 902 634 915 448 904 446 904 443 904 404 917 407 950"/>
+                        </Shape>
+                        <String CONTENT="which are held by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l7" HPOS="404" VPOS="965" WIDTH="514" HEIGHT="65" BASELINE="407 1011 918 1004" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1011 407 1028 649 1019 727 1030 729 1030 731 1030 734 1030 749 1017 896 1028 898 1028 900 1028 903 1028 918 1015 918 1004 913 976 757 965 755 965 753 965 751 965 738 976 645 967 643 967 404 980 407 1011"/>
+                        </Shape>
+                        <String CONTENT="grooves. The bow is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l8" HPOS="402" VPOS="1024" WIDTH="516" HEIGHT="67" BASELINE="404 1063 918 1067" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 1063 402 1082 407 1086 409 1086 409 1088 411 1088 413 1088 415 1088 593 1078 667 1091 669 1091 671 1091 673 1091 690 1080 731 1091 734 1091 736 1091 916 1078 918 1067 916 1039 803 1026 801 1026 682 1037 649 1024 647 1024 645 1024 643 1024 608 1034 404 1034 404 1063"/>
+                        </Shape>
+                        <String CONTENT="set on the ermine’s"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l9" HPOS="404" VPOS="1093" WIDTH="512" HEIGHT="50" BASELINE="407 1127 916 1121" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1127 407 1143 913 1136 916 1121 909 1093 404 1097 407 1127"/>
+                        </Shape>
+                        <String CONTENT="track, so that the ani-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l10" HPOS="404" VPOS="1143" WIDTH="512" HEIGHT="62" BASELINE="407 1188 916 1184" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1188 407 1205 913 1201 916 1184 913 1156 885 1143 883 1143 881 1143 656 1156 474 1145 472 1145 404 1158 407 1188"/>
+                        </Shape>
+                        <String CONTENT="mal has to pass through"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l11" HPOS="402" VPOS="1214" WIDTH="514" HEIGHT="59" BASELINE="404 1247 916 1242" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 1247 404 1262 630 1262 654 1273 656 1273 658 1273 749 1260 894 1270 896 1270 898 1270 900 1270 916 1257 916 1242 909 1214 402 1216 404 1247"/>
+                        </Shape>
+                        <String CONTENT="the lower part of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l12" HPOS="404" VPOS="1277" WIDTH="512" HEIGHT="50" BASELINE="404 1307 916 1307" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 1307 404 1327 916 1327 916 1307 916 1277 404 1277 404 1307"/>
+                        </Shape>
+                        <String CONTENT="frame, beneath the bow."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l13" HPOS="409" VPOS="1324" WIDTH="507" HEIGHT="70" BASELINE="409 1368 916 1368" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="409 1368 409 1381 511 1394 513 1394 916 1381 916 1368 916 1337 491 1324 489 1324 487 1324 456 1335 435 1324 433 1324 430 1324 428 1324 409 1333 409 1368"/>
+                        </Shape>
+                        <String CONTENT="A light touch pushes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l14" HPOS="404" VPOS="1387" WIDTH="509" HEIGHT="57" BASELINE="404 1428 913 1428" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 1428 404 1444 913 1444 913 1428 913 1400 699 1387 697 1387 573 1398 515 1387 513 1387 511 1387 489 1398 446 1387 443 1387 441 1387 439 1387 404 1398 404 1428"/>
+                        </Shape>
+                        <String CONTENT="off the wooden prop,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l15" HPOS="402" VPOS="1459" WIDTH="511" HEIGHT="58" BASELINE="402 1489 913 1489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 1489 402 1502 738 1502 783 1515 786 1515 788 1517 900 1517 900 1515 903 1515 905 1515 905 1513 913 1504 913 1489 913 1459 402 1459 402 1489"/>
+                        </Shape>
+                        <String CONTENT="releases the trigger,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l16" HPOS="400" VPOS="1506" WIDTH="513" HEIGHT="63" BASELINE="402 1547 913 1543" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 1547 402 1558 599 1569 602 1569 604 1569 638 1558 649 1569 651 1569 654 1569 656 1569 911 1556 913 1543 909 1515 472 1506 469 1506 400 1517 402 1547"/>
+                        </Shape>
+                        <String CONTENT="and the arrow with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l17" HPOS="400" VPOS="1573" WIDTH="513" HEIGHT="50" BASELINE="402 1608 913 1602" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 1608 402 1623 911 1617 913 1602 907 1573 400 1578 402 1608"/>
+                        </Shape>
+                        <String CONTENT="the cross-piece shoots"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l18" HPOS="402" VPOS="1623" WIDTH="1235" HEIGHT="72" BASELINE="404 1660 1637 1669" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 1660 402 1682 411 1688 413 1688 415 1688 417 1688 1017 1682 1327 1695 1329 1695 1635 1684 1637 1669 1637 1638 1609 1628 1606 1628 1604 1628 1022 1634 1015 1625 1013 1625 1013 1623 1011 1623 1009 1623 1007 1623 404 1630 404 1660"/>
+                        </Shape>
+                        <String CONTENT="down, catching the animal and strangling it to death."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-185_r3" HPOS="403" VPOS="1688" WIDTH="1778" HEIGHT="544" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="403 1688 2181 1688 2181 2232 403 2232"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l19" HPOS="508" VPOS="1686" WIDTH="1661" HEIGHT="63" BASELINE="508 1729 2169 1729" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="508 1729 508 1742 2167 1749 2169 1729 2169 1699 2096 1686 2094 1686 2033 1697 1977 1686 1975 1686 1972 1686 1949 1699 1760 1699 1736 1686 1734 1686 1732 1686 1645 1697 1570 1686 1567 1686 1565 1686 1537 1697 1515 1686 1513 1686 1511 1686 1509 1686 1476 1697 1433 1686 1431 1686 1429 1686 1364 1699 1269 1699 1253 1686 1251 1686 1249 1686 1247 1686 1167 1697 1121 1686 1119 1686 1117 1686 1022 1697 974 1686 972 1686 970 1686 968 1686 926 1697 508 1693 508 1729"/>
+                        </Shape>
+                        <String CONTENT="BIRD-HUNTING. — Sea-fowl, such as eider-ducks, guillemots, and puffins,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l20" HPOS="402" VPOS="1755" WIDTH="1767" HEIGHT="50" BASELINE="402 1788 2169 1788" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 1788 402 1805 2167 1805 2169 1788 2165 1755 402 1755 402 1788"/>
+                        </Shape>
+                        <String CONTENT="are caught with various kinds of snares. These are made of whalebone and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l21" HPOS="402" VPOS="1818" WIDTH="1770" HEIGHT="48" BASELINE="402 1848 2172 1848" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 1848 402 1866 2172 1866 2172 1848 2172 1818 402 1818 402 1848"/>
+                        </Shape>
+                        <String CONTENT="sinew thread, and some of them (Fig. 53, a) are quite similar to those of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l22" HPOS="407" VPOS="1874" WIDTH="1765" HEIGHT="52" BASELINE="407 1907 2172 1907" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 1907 407 1926 2172 1926 2172 1907 2169 1874 407 1874 407 1907"/>
+                        </Shape>
+                        <String CONTENT="American Eskimo.¹ Many snares of this kind are joined together and furnished"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l23" HPOS="402" VPOS="1926" WIDTH="1767" HEIGHT="59" BASELINE="404 1967 2169 1963" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 1967 404 1985 2167 1980 2169 1963 2165 1935 441 1926 439 1926 437 1926 402 1937 404 1967"/>
+                        </Shape>
+                        <String CONTENT="with wooden buoys (Fig. 53, b, c), then tied to a very long rope and thrown"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l24" HPOS="400" VPOS="1983" WIDTH="1767" HEIGHT="67" BASELINE="402 2024 2167 2030" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2024 400 2037 424 2050 426 2050 428 2050 2165 2043 2167 2030 2165 2000 1784 1987 1782 1987 1780 1987 1777 1987 1765 1998 1732 1987 1730 1987 1728 1987 1726 1987 1723 1987 1710 1998 1682 1987 1680 1987 1678 1987 1580 1998 1544 1985 1541 1985 1539 1985 1472 1996 1407 1985 1405 1985 916 1993 900 1983 898 1983 896 1983 894 1983 892 1983 861 1993 781 1983 779 1983 777 1983 749 1993 660 1983 658 1983 656 1983 634 1993 560 1983 558 1983 556 1983 532 1993 430 1983 428 1983 426 1983 402 1991 402 2024"/>
+                        </Shape>
+                        <String CONTENT="from the shore into the sea as far as possible. The catch is best during long-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l25" HPOS="402" VPOS="2058" WIDTH="1770" HEIGHT="48" BASELINE="402 2087 2172 2087" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2087 402 2106 2172 2106 2172 2087 2172 2058 402 2058 402 2087"/>
+                        </Shape>
+                        <String CONTENT="continued tempests, when the sea-fowl come near the shore. Other snares are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l26" HPOS="400" VPOS="2108" WIDTH="1772" HEIGHT="57" BASELINE="402 2149 2172 2145" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2149 402 2165 2169 2160 2172 2145 2167 2113 528 2108 526 2108 400 2119 402 2149"/>
+                        </Shape>
+                        <String CONTENT="spread on the land, close to lakes and rivers, on nesting-rocks for auks and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l27" HPOS="402" VPOS="2175" WIDTH="1425" HEIGHT="54" BASELINE="402 2206 1827 2210" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2206 402 2229 1825 2223 1827 2210 1825 2180 402 2175 402 2206"/>
+                        </Shape>
+                        <String CONTENT="puffins, around entrances to nests, or in bushes for ptarmigan."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-185_r4" HPOS="403" VPOS="2232" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="403 2232 2181 2232 2181 2530 403 2530"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l28" HPOS="508" VPOS="2234" WIDTH="1664" HEIGHT="52" BASELINE="511 2268 2172 2264" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="511 2268 511 2286 2169 2281 2172 2264 2167 2236 508 2234 511 2268"/>
+                        </Shape>
+                        <String CONTENT="The snare represented in Fig. 53, d, has two nooses made of whalebone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l29" HPOS="400" VPOS="2299" WIDTH="1769" HEIGHT="45" BASELINE="400 2329 2169 2329" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 2329 400 2344 2169 2344 2169 2329 2169 2299 400 2299 400 2329"/>
+                        </Shape>
+                        <String CONTENT="and fastened on both sides of a small stick. They are spread by placing a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l30" HPOS="398" VPOS="2349" WIDTH="1771" HEIGHT="62" BASELINE="400 2392 2169 2385" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 2392 400 2411 2167 2398 2169 2385 2165 2355 485 2349 482 2349 398 2359 400 2392"/>
+                        </Shape>
+                        <String CONTENT="portion of each noose into small tubes made of goose-quills. The snare has"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l31" HPOS="400" VPOS="2405" WIDTH="1772" HEIGHT="69" BASELINE="402 2450 2172 2446" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2450 402 2463 560 2474 563 2474 565 2474 567 2474 582 2463 2169 2463 2172 2446 2167 2416 1305 2405 1303 2405 1301 2405 1275 2416 467 2407 465 2407 400 2418 402 2450"/>
+                        </Shape>
+                        <String CONTENT="a long line fastened to the middle of the cross-piece, by means of which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l32" HPOS="400" VPOS="2463" WIDTH="669" HEIGHT="61" BASELINE="402 2511 1069 2507" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2511 402 2524 1067 2520 1069 2507 1065 2474 842 2463 840 2463 400 2476 402 2511"/>
+                        </Shape>
+                        <String CONTENT="captured birds are hauled in."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-185_r5" HPOS="403" VPOS="2530" WIDTH="1778" HEIGHT="120" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="403 2530 2181 2530 2181 2650 403 2650"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l33" HPOS="506" VPOS="2526" WIDTH="1668" HEIGHT="59" BASELINE="508 2569 2174 2565" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="508 2569 508 2585 2172 2580 2174 2565 2169 2528 528 2526 526 2526 524 2526 521 2526 506 2533 508 2569"/>
+                        </Shape>
+                        <String CONTENT="Another kind of snare (Fig. 53, e) is set across the entrance to nests of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l34" HPOS="400" VPOS="2598" WIDTH="1722" HEIGHT="47" BASELINE="400 2628 2122 2628" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 2628 400 2645 2122 2645 2122 2628 2122 2598 400 2598 400 2628"/>
+                        </Shape>
+                        <String CONTENT="sea-fowl, already mentioned, so that they are caught when passing through."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-185_r6" HPOS="403" VPOS="2650" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="403 2650 2181 2650 2181 2829 403 2829"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l35" HPOS="508" VPOS="2645" WIDTH="1661" HEIGHT="69" BASELINE="511 2691 2169 2684" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="511 2691 511 2704 760 2714 762 2714 1386 2701 1472 2712 1474 2712 1476 2712 1479 2712 1492 2701 1505 2712 1507 2712 1509 2712 1511 2714 1615 2714 1615 2712 1617 2712 1652 2699 1881 2699 1897 2710 1899 2710 1901 2710 1903 2710 1905 2710 1940 2699 1962 2710 1964 2710 1966 2710 2167 2697 2169 2684 2165 2656 1619 2645 1617 2645 1615 2645 1613 2645 1600 2656 526 2649 524 2649 521 2649 519 2649 508 2656 511 2691"/>
+                        </Shape>
+                        <String CONTENT="A ptarmigan-snare is represented in Fig. 53, f. Its end is tied to a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l36" HPOS="400" VPOS="2714" WIDTH="1769" HEIGHT="50" BASELINE="402 2749 2169 2745" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2749 402 2764 2167 2760 2169 2745 2165 2714 400 2714 402 2749"/>
+                        </Shape>
+                        <String CONTENT="branch, while the noose is spread on the ptarmigan-track. It is identical with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l37" HPOS="402" VPOS="2777" WIDTH="1490" HEIGHT="48" BASELINE="402 2808 1892 2808" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2808 402 2825 1892 2825 1892 2808 1892 2777 402 2777 402 2808"/>
+                        </Shape>
+                        <String CONTENT="that represented by Nelson,² which he says is used for marmots."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-185_r7" HPOS="403" VPOS="2829" WIDTH="1778" HEIGHT="311" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="403 2829 2181 2829 2181 3140 403 3140"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l38" HPOS="508" VPOS="2820" WIDTH="1659" HEIGHT="65" BASELINE="511 2864 2167 2872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="511 2864 508 2877 2163 2885 2167 2872 2167 2840 2143 2827 2141 2827 2139 2827 1762 2838 1524 2838 1494 2825 1492 2825 1383 2825 1381 2825 1379 2825 1377 2825 1366 2836 1329 2823 1327 2823 1325 2823 1323 2823 1297 2833 1089 2823 1087 2823 1084 2823 1039 2833 1013 2823 1011 2823 1009 2823 1007 2823 1004 2823 991 2833 920 2820 918 2820 916 2820 892 2833 788 2833 770 2820 768 2820 766 2820 764 2820 511 2829 511 2864"/>
+                        </Shape>
+                        <String CONTENT="Sitting birds are killed with stones hurled from a common sling (Fig. 54)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l39" HPOS="404" VPOS="2890" WIDTH="1765" HEIGHT="56" BASELINE="404 2927 2169 2927" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 2927 404 2946 2169 2946 2169 2927 2169 2894 404 2890 404 2927"/>
+                        </Shape>
+                        <String CONTENT="When on the wing, they are hit with throwing-balls, which have been described"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l40" HPOS="400" VPOS="2944" WIDTH="1767" HEIGHT="63" BASELINE="402 2989 2167 2985" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2989 402 3002 2163 3007 2167 2985 2163 2955 1284 2944 1282 2944 1279 2944 1277 2944 1260 2955 569 2946 567 2946 400 2957 402 2989"/>
+                        </Shape>
+                        <String CONTENT="many times by travellers both in Asia and America. At the present time,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l41" HPOS="402" VPOS="3018" WIDTH="1770" HEIGHT="45" BASELINE="402 3048 2172 3048" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 3048 402 3061 2169 3063 2172 3048 2172 3018 402 3018 402 3048"/>
+                        </Shape>
+                        <String CONTENT="throwing-balls have gone completely out of use, even on the Arctic shore,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l42" HPOS="400" VPOS="3074" WIDTH="1769" HEIGHT="50" BASELINE="402 3108 2169 3102" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 3108 402 3124 2169 3117 2169 3102 2165 3074 400 3074 402 3108"/>
+                        </Shape>
+                        <String CONTENT="because with the introduction of the shotgun the birds ceased to come within"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-185_r8" HPOS="403" VPOS="3186" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="403 3186 2181 3186 2181 3262 403 3262"/>
+                    </Shape>
+                    <TextLine ID="mz_1-185_l43" HPOS="506" VPOS="3195" WIDTH="702" HEIGHT="61" BASELINE="508 3223 1208 3228" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="508 3223 506 3241 874 3256 877 3256 1206 3245 1208 3228 1206 3199 508 3195 508 3223"/>
+                        </Shape>
+                        <String CONTENT="¹ Boas, Central Eskimo, Fig. 452, p. 511."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-185_l44" HPOS="1399" VPOS="3202" WIDTH="586" HEIGHT="45" BASELINE="1399 3228 1985 3228" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1399 3228 1399 3247 1985 3247 1985 3228 1985 3202 1399 3202 1399 3228"/>
+                        </Shape>
+                        <String CONTENT="² Nelson, Plate LI, Fig. 4, p. 122."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-183.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-183.png; regions_from: zones/chukchi-1-183.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-183_r1" HPOS="380" VPOS="542" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="380 542 2158 542 2158 632 380 632"/>
+                    </Shape>
+                    <TextLine ID="mz_1-183_l1" HPOS="957" VPOS="558" WIDTH="623" HEIGHT="54" BASELINE="959 588 1580 593" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1570 558 974 558 959 569 959 588 957 608 1576 612 1580 593 1578 565 1570 558"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l2" HPOS="2057" VPOS="569" WIDTH="91" HEIGHT="56" BASELINE="2057 599 2148 599" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2143 573 2122 569 2063 569 2057 575 2057 599 2057 612 2092 625 2094 625 2096 625 2148 612 2148 599 2148 575 2143 573"/>
+                        </Shape>
+                        <String CONTENT="141"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-183_r2" HPOS="380" VPOS="657" WIDTH="1778" HEIGHT="302" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="380 657 2158 657 2158 959 380 959"/>
+                    </Shape>
+                    <TextLine ID="mz_1-183_l3" HPOS="383" VPOS="673" WIDTH="1769" HEIGHT="45" BASELINE="383 703 2152 703" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 673 383 703 383 718 2152 718 2152 703 2152 673 404 673 383 673"/>
+                        </Shape>
+                        <String CONTENT="which work on the same principle as the wooden ones. Sometimes, in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l4" HPOS="378" VPOS="733" WIDTH="1772" HEIGHT="48" BASELINE="378 762 2150 762" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 762 378 781 2150 781 2150 762 2150 733 378 733 378 762"/>
+                        </Shape>
+                        <String CONTENT="deep snow among the rough ice, a pit is dug and covered with a large block"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l5" HPOS="378" VPOS="779" WIDTH="1772" HEIGHT="69" BASELINE="381 822 2150 818" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 822 381 837 890 848 892 848 1498 835 1630 846 1632 846 1726 835 1741 846 1743 846 1745 846 1747 848 2081 848 2081 846 2148 833 2150 818 2146 792 1858 792 1816 779 1814 779 1812 779 1810 779 1808 779 1793 790 1760 779 1758 779 1756 779 1754 779 1752 779 1736 792 1602 792 1565 779 1563 779 1561 779 1500 790 1442 779 1440 779 1437 779 1401 790 1370 779 1368 779 1366 779 1182 792 1126 781 1123 781 1121 781 1089 792 807 781 805 781 740 792 718 781 716 781 576 781 573 781 517 792 420 781 417 781 415 781 378 794 381 822"/>
+                        </Shape>
+                        <String CONTENT="of ice. This is well poised on its axis, and will swing on slight pressure; so"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l6" HPOS="381" VPOS="853" WIDTH="1769" HEIGHT="47" BASELINE="381 883 2150 883" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 883 381 900 2150 900 2150 883 2150 853 381 853 381 883"/>
+                        </Shape>
+                        <String CONTENT="that the animal stepping on it falls into the pit, and the ice-block comes to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l7" HPOS="378" VPOS="900" WIDTH="819" HEIGHT="59" BASELINE="381 943 1197 939" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 943 381 959 1195 954 1197 939 1193 911 842 900 840 900 378 911 381 943"/>
+                        </Shape>
+                        <String CONTENT="its former place by its own weight."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-183_r3" HPOS="380" VPOS="959" WIDTH="1778" HEIGHT="125" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="380 959 2158 959 2158 1084 380 1084"/>
+                    </Shape>
+                    <TextLine ID="mz_1-183_l8" HPOS="485" VPOS="961" WIDTH="1667" HEIGHT="58" BASELINE="487 1004 2152 1000" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="487 1004 487 1019 2150 1017 2152 1000 2148 969 498 961 495 961 493 961 491 961 491 963 485 967 487 1004"/>
+                        </Shape>
+                        <String CONTENT="Strychnine pills, procured from Russian or American traders, and wrapped"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l9" HPOS="376" VPOS="1032" WIDTH="1531" HEIGHT="48" BASELINE="376 1063 1907 1063" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1063 376 1080 1907 1080 1907 1063 1907 1032 376 1032 376 1063"/>
+                        </Shape>
+                        <String CONTENT="in blubber or tallow, are also occasionally used for killing animals."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-183_r4" HPOS="380" VPOS="1084" WIDTH="1778" HEIGHT="295" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="380 1084 2158 1084 2158 1379 380 1379"/>
+                    </Shape>
+                    <TextLine ID="mz_1-183_l10" HPOS="489" VPOS="1078" WIDTH="1661" HEIGHT="71" BASELINE="491 1123 2150 1119" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="491 1123 491 1138 1275 1149 1277 1149 1279 1149 1282 1149 1297 1138 1931 1147 1933 1147 1936 1147 1938 1147 1953 1136 2109 1147 2111 1147 2113 1147 2150 1134 2150 1119 2146 1091 2079 1078 2076 1078 2074 1078 2048 1091 1864 1091 1847 1078 1845 1078 1842 1078 1840 1078 1838 1078 1836 1078 1819 1088 1756 1078 1754 1078 1752 1078 1717 1088 1658 1078 1656 1078 1654 1078 1624 1088 1515 1078 1513 1078 1316 1091 1264 1080 1262 1080 1123 1091 489 1086 491 1123"/>
+                        </Shape>
+                        <String CONTENT="The self-acting bow was probably copied from the Russians, together"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l11" HPOS="376" VPOS="1143" WIDTH="1774" HEIGHT="56" BASELINE="378 1184 2150 1179" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1184 378 1199 2148 1195 2150 1179 2146 1151 417 1143 415 1143 413 1143 376 1153 378 1184"/>
+                        </Shape>
+                        <String CONTENT="with the sinew spring-trap. At the present time, of all the tribes of north-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l12" HPOS="381" VPOS="1212" WIDTH="1769" HEIGHT="48" BASELINE="381 1242 2150 1242" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1242 381 1260 2150 1260 2150 1242 2150 1212 381 1212 381 1242"/>
+                        </Shape>
+                        <String CONTENT="eastern Asia, the Yakut and the Lamut use it most frequently. They secure"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l13" HPOS="381" VPOS="1260" WIDTH="1767" HEIGHT="64" BASELINE="381 1305 2148 1305" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1305 381 1318 2143 1324 2148 1305 2148 1273 2105 1260 2102 1260 2100 1260 2098 1260 2066 1270 2024 1260 2022 1260 2020 1260 2018 1260 1985 1270 1936 1260 1933 1260 1931 1260 1886 1270 1282 1260 1279 1260 1221 1270 1160 1260 1158 1260 1156 1260 1154 1260 1139 1273 1052 1273 963 1260 961 1260 907 1270 877 1260 874 1260 872 1260 777 1270 738 1260 736 1260 734 1260 731 1260 729 1260 712 1273 547 1273 517 1260 515 1260 513 1260 511 1260 480 1270 424 1260 422 1260 420 1260 381 1270 381 1305"/>
+                        </Shape>
+                        <String CONTENT="with it even elk and reindeer. The Chukchee employ it for small animals,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l14" HPOS="378" VPOS="1322" WIDTH="579" HEIGHT="57" BASELINE="378 1363 957 1363" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1363 378 1379 957 1379 957 1363 957 1335 586 1322 584 1322 582 1322 580 1322 580 1324 569 1335 485 1335 454 1322 452 1322 450 1322 378 1333 378 1363"/>
+                        </Shape>
+                        <String CONTENT="such as foxes and hares."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-183_r5" HPOS="380" VPOS="1379" WIDTH="1778" HEIGHT="1265" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="380 1379 2158 1379 2158 2644 380 2644"/>
+                    </Shape>
+                    <TextLine ID="mz_1-183_l15" HPOS="491" VPOS="1383" WIDTH="1659" HEIGHT="58" BASELINE="491 1422 2150 1422" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="491 1422 491 1441 2150 1441 2150 1422 2150 1389 491 1383 491 1422"/>
+                        </Shape>
+                        <String CONTENT="Till recent times the well-known spit of whalebone ¹ (Fig. 51, a), identical"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l16" HPOS="378" VPOS="1437" WIDTH="826" HEIGHT="67" BASELINE="381 1480 1204 1485" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1480 378 1496 391 1504 394 1504 396 1504 398 1504 1201 1502 1204 1485 1201 1452 1119 1439 1117 1439 740 1448 729 1439 729 1437 727 1437 725 1437 723 1437 721 1437 695 1448 682 1437 680 1437 677 1437 675 1437 673 1437 634 1450 554 1450 543 1439 543 1437 541 1437 539 1437 537 1437 534 1437 511 1448 461 1437 459 1437 381 1446 381 1480"/>
+                        </Shape>
+                        <String CONTENT="with that of the American Eskimo,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l17" HPOS="378" VPOS="1511" WIDTH="830" HEIGHT="54" BASELINE="381 1543 1208 1539" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 1543 381 1554 777 1565 779 1565 781 1565 820 1552 879 1563 881 1563 1000 1552 1180 1563 1182 1563 1184 1563 1208 1550 1208 1539 1201 1511 378 1513 381 1543"/>
+                        </Shape>
+                        <String CONTENT="was used to catch wolves. It con-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l18" HPOS="376" VPOS="1556" WIDTH="830" HEIGHT="63" BASELINE="378 1599 1206 1604" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1599 376 1612 1201 1619 1206 1604 1204 1571 931 1558 929 1558 926 1558 890 1569 868 1558 866 1558 864 1558 794 1569 744 1556 742 1556 740 1556 738 1556 716 1567 667 1556 664 1556 662 1556 634 1567 569 1556 567 1556 565 1556 563 1556 545 1567 502 1556 500 1556 498 1556 495 1556 493 1556 478 1567 413 1556 411 1556 409 1556 378 1565 378 1599"/>
+                        </Shape>
+                        <String CONTENT="sisted of a slender rod of whalebone,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l19" HPOS="378" VPOS="1619" WIDTH="832" HEIGHT="67" BASELINE="378 1660 1210 1660" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1660 378 1673 539 1686 541 1686 1210 1673 1210 1660 1210 1632 985 1619 983 1619 933 1630 900 1619 898 1619 896 1619 894 1619 892 1619 892 1621 881 1632 814 1632 790 1619 788 1619 786 1619 731 1630 699 1619 697 1619 695 1619 693 1619 690 1619 671 1632 560 1632 534 1619 532 1619 530 1619 476 1630 424 1619 422 1619 420 1619 378 1630 378 1660"/>
+                        </Shape>
+                        <String CONTENT="with sharp-pointed ends, folded to-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l20" HPOS="378" VPOS="1693" WIDTH="834" HEIGHT="49" BASELINE="378 1721 1212 1721" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1721 378 1742 1212 1738 1212 1721 1212 1693 378 1693 378 1721"/>
+                        </Shape>
+                        <String CONTENT="gether several times, and bound with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l21" HPOS="374" VPOS="1738" WIDTH="838" HEIGHT="61" BASELINE="376 1783 1212 1779" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1783 376 1799 1210 1794 1212 1779 1210 1749 1186 1738 1184 1738 1182 1738 1180 1738 1178 1738 1178 1740 1167 1751 994 1751 955 1738 952 1738 950 1738 816 1749 792 1738 790 1738 788 1738 786 1738 760 1751 747 1740 744 1740 742 1740 740 1740 621 1751 552 1740 550 1740 547 1740 513 1751 443 1740 441 1740 374 1751 376 1783"/>
+                        </Shape>
+                        <String CONTENT="a thin thread of sinew well saturated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l22" HPOS="376" VPOS="1799" WIDTH="836" HEIGHT="67" BASELINE="378 1844 1212 1840" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1844 378 1855 792 1866 794 1866 866 1855 1197 1864 1199 1864 1201 1864 1204 1864 1204 1861 1212 1853 1212 1840 1210 1809 1184 1799 1182 1799 1180 1799 1178 1799 1139 1812 920 1812 890 1799 887 1799 885 1799 883 1799 881 1799 868 1809 844 1799 842 1799 840 1799 838 1799 807 1809 656 1801 654 1801 580 1812 537 1801 534 1801 532 1801 476 1812 417 1801 415 1801 413 1801 376 1814 378 1844"/>
+                        </Shape>
+                        <String CONTENT="with oil. Afterward it was several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l23" HPOS="376" VPOS="1861" WIDTH="834" HEIGHT="57" BASELINE="378 1903 1210 1898" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1903 378 1918 1208 1913 1210 1898 1206 1868 391 1861 389 1861 387 1861 385 1861 376 1868 378 1903"/>
+                        </Shape>
+                        <String CONTENT="times soaked in water and allowed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l24" HPOS="376" VPOS="1922" WIDTH="834" HEIGHT="63" BASELINE="378 1963 1210 1959" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1963 378 1974 747 1985 749 1985 751 1985 753 1985 766 1974 1078 1983 1080 1983 1082 1983 1115 1972 1186 1983 1188 1983 1191 1983 1193 1983 1210 1970 1210 1959 1206 1931 391 1922 389 1922 387 1922 385 1922 376 1929 378 1963"/>
+                        </Shape>
+                        <String CONTENT="to freeze. The whole object was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l25" HPOS="376" VPOS="1976" WIDTH="834" HEIGHT="65" BASELINE="378 2024 1210 2019" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2024 378 2041 1208 2037 1210 2019 1206 1989 870 1976 868 1976 866 1976 864 1976 851 1987 807 1976 805 1976 803 1976 801 1976 799 1976 799 1978 786 1989 755 1978 753 1978 751 1978 749 1978 725 1991 591 1991 550 1978 547 1978 545 1978 433 1989 402 1978 400 1978 398 1978 396 1978 394 1978 376 1987 378 2024"/>
+                        </Shape>
+                        <String CONTENT="then well covered with blubber, tallow,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l26" HPOS="376" VPOS="2045" WIDTH="832" HEIGHT="61" BASELINE="378 2082 1208 2078" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2082 378 2095 706 2106 708 2106 710 2106 740 2095 777 2106 779 2106 781 2106 846 2093 916 2104 918 2104 1206 2091 1208 2078 1201 2045 376 2052 378 2082"/>
+                        </Shape>
+                        <String CONTENT="meat, or such like. These folded"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l27" HPOS="376" VPOS="2102" WIDTH="830" HEIGHT="60" BASELINE="378 2145 1206 2136" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2145 378 2162 1204 2154 1206 2136 1201 2106 582 2102 580 2102 376 2113 378 2145"/>
+                        </Shape>
+                        <String CONTENT="spring-spits were often joined in strings"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l28" HPOS="376" VPOS="2154" WIDTH="1774" HEIGHT="65" BASELINE="378 2199 2150 2188" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2130 2165 2109 2165 2087 2162 2066 2162 2053 2160 1446 2154 1444 2154 1442 2154 1412 2165 1093 2156 1091 2156 1089 2156 1087 2156 1074 2167 417 2160 415 2160 413 2160 376 2171 378 2199 378 2219 2148 2208 2150 2188 2146 2165 2130 2165"/>
+                        </Shape>
+                        <String CONTENT="of five or six, and hung on a bush on the wolf’s trail, but so high as to be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l29" HPOS="376" VPOS="2216" WIDTH="1774" HEIGHT="65" BASELINE="378 2262 2150 2249" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2262 378 2281 2148 2268 2150 2249 2143 2216 376 2232 378 2262"/>
+                        </Shape>
+                        <String CONTENT="out of reach of foxes; or they were laid in a hole in the ice and water was poured"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l30" HPOS="376" VPOS="2284" WIDTH="1770" HEIGHT="54" BASELINE="378 2323 2146 2312" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2323 378 2338 2143 2333 2146 2312 2139 2284 376 2292 378 2323"/>
+                        </Shape>
+                        <String CONTENT="over them, so that it would freeze to a transparent protecting cover strong"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l31" HPOS="376" VPOS="2340" WIDTH="1770" HEIGHT="60" BASELINE="378 2381 2146 2368" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2381 378 2400 2143 2387 2146 2368 2139 2340 376 2351 378 2381"/>
+                        </Shape>
+                        <String CONTENT="enough to resist the attacks of smaller animals. The wolf would break through"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l32" HPOS="376" VPOS="2390" WIDTH="1770" HEIGHT="69" BASELINE="378 2444 2146 2431" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2444 378 2459 2143 2452 2146 2431 2143 2400 2126 2390 2124 2390 2122 2390 2120 2390 1827 2403 1567 2392 1565 2392 1507 2405 1485 2394 1483 2394 1481 2394 1331 2405 1271 2394 1269 2394 1206 2407 1123 2396 1121 2396 1026 2407 998 2396 996 2396 994 2396 991 2396 963 2409 948 2398 946 2398 944 2398 942 2398 939 2398 894 2409 647 2400 645 2400 643 2400 641 2400 623 2411 398 2400 396 2400 394 2400 391 2400 376 2409 378 2444"/>
+                        </Shape>
+                        <String CONTENT="the ice and swallow all the spits, which would unfold in the stomach, and,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l33" HPOS="376" VPOS="2448" WIDTH="1772" HEIGHT="72" BASELINE="378 2504 2148 2489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2504 378 2520 2146 2504 2148 2489 2146 2459 2126 2448 2124 2448 2122 2448 2120 2448 2024 2459 1946 2448 1944 2448 1838 2461 1661 2450 1658 2450 1578 2463 1448 2452 1446 2452 1334 2465 1186 2455 1184 2455 1121 2468 942 2457 939 2457 877 2470 820 2459 818 2459 816 2459 790 2470 764 2459 762 2459 760 2459 757 2459 721 2470 641 2459 638 2459 636 2459 599 2472 519 2461 517 2461 376 2468 378 2504"/>
+                        </Shape>
+                        <String CONTENT="breaking through its walls, cause the speedy death of the animal. But with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l34" HPOS="376" VPOS="2513" WIDTH="1772" HEIGHT="65" BASELINE="378 2561 2148 2550" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2561 378 2578 2146 2569 2148 2550 2143 2524 1793 2513 1790 2513 1736 2524 1106 2517 1104 2517 1102 2517 1080 2528 435 2522 433 2522 376 2533 378 2561"/>
+                        </Shape>
+                        <String CONTENT="only one or two spits it was able to walk away for a considerable distance,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l35" HPOS="374" VPOS="2582" WIDTH="1310" HEIGHT="54" BASELINE="376 2621 1684 2613" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2621 376 2636 1682 2630 1684 2613 1678 2582 374 2589 376 2621"/>
+                        </Shape>
+                        <String CONTENT="even so far that it would never be found by the hunter."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-183_r6" HPOS="380" VPOS="2644" WIDTH="1778" HEIGHT="185" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="380 2644 2158 2644 2158 2829 380 2829"/>
+                    </Shape>
+                    <TextLine ID="mz_1-183_l36" HPOS="454" VPOS="2634" WIDTH="1696" HEIGHT="65" BASELINE="456 2684 2150 2667" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 2684 456 2699 2148 2682 2150 2667 2143 2634 454 2649 456 2684"/>
+                        </Shape>
+                        <String CONTENT="Polar bears are sought on the sea-ice with dog-teams. When the animal"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l37" HPOS="374" VPOS="2686" WIDTH="1772" HEIGHT="85" BASELINE="376 2745 2146 2725" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2745 376 2760 517 2771 519 2771 617 2758 760 2766 762 2766 764 2766 796 2756 926 2764 929 2764 1017 2753 1355 2762 1357 2762 1360 2762 1362 2762 1381 2749 1401 2760 1403 2760 1405 2760 1472 2749 1535 2760 1537 2760 1667 2758 1669 2758 1671 2758 1684 2747 1741 2758 1743 2758 1821 2745 1847 2756 1849 2756 1851 2756 2143 2747 2146 2725 2141 2697 1962 2686 1959 2686 1957 2686 1955 2686 1940 2697 1749 2688 1747 2688 1745 2688 1713 2699 1648 2691 1645 2691 374 2710 376 2745"/>
+                        </Shape>
+                        <String CONTENT="is espied, two or three of the best dogs are released. The bear is easily"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l38" HPOS="376" VPOS="2756" WIDTH="1772" HEIGHT="64" BASELINE="378 2803 2148 2790" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2803 378 2820 2146 2808 2148 2790 2143 2762 1292 2756 1290 2756 1288 2756 1247 2766 1007 2758 1004 2758 1002 2758 963 2769 723 2760 721 2760 376 2773 378 2803"/>
+                        </Shape>
+                        <String CONTENT="overtaken by them, and, when held at bay, is speared with a lance, or shot"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-183_r7" HPOS="380" VPOS="2845" WIDTH="1778" HEIGHT="352" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="380 2845 2158 2845 2158 3197 380 3197"/>
+                    </Shape>
+                    <TextLine ID="mz_1-183_l39" HPOS="482" VPOS="2842" WIDTH="1666" HEIGHT="59" BASELINE="485 2883 2148 2868" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="485 2883 485 2901 2146 2885 2148 2868 2141 2842 482 2855 485 2883"/>
+                        </Shape>
+                        <String CONTENT="¹ Its name in Chukchee is waˊpak, which means literally “fly-agaric” (an intoxicating mushroom). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l40" HPOS="378" VPOS="2885" WIDTH="1768" HEIGHT="59" BASELINE="381 2927 2146 2911" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2927 381 2944 2143 2929 2146 2911 2139 2885 378 2898 381 2927"/>
+                        </Shape>
+                        <String CONTENT="Chukchee and the Koryak are very fond of this mushroom; and when they find it in the woods, they pick it"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l41" HPOS="378" VPOS="2929" WIDTH="1772" HEIGHT="56" BASELINE="381 2970 2150 2955" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2970 381 2985 2148 2976 2150 2955 2143 2929 378 2942 381 2970"/>
+                        </Shape>
+                        <String CONTENT="off just as eagerly as the wolves snatch after the greased whalebone spits. The Chukchee believe, moreover,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l42" HPOS="378" VPOS="2968" WIDTH="1768" HEIGHT="63" BASELINE="381 3011 2146 2994" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 3011 381 3031 2143 3013 2146 2994 2139 2968 378 2983 381 3011"/>
+                        </Shape>
+                        <String CONTENT="that mice, when gathering roots for the winter, bring in some unknown intoxicating herbs which they use in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l43" HPOS="381" VPOS="3013" WIDTH="1767" HEIGHT="65" BASELINE="383 3054 2148 3039" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 3054 383 3078 2148 3056 2148 3039 2141 3013 381 3026 383 3054"/>
+                        </Shape>
+                        <String CONTENT="their ceremonials. These herbs also serve to protect their stores from intruders, because they are said to act"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l44" HPOS="381" VPOS="3052" WIDTH="1765" HEIGHT="63" BASELINE="383 3098 2146 3078" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 3098 383 3115 2143 3095 2146 3078 2139 3052 381 3069 383 3098"/>
+                        </Shape>
+                        <String CONTENT="as poison on most other animals, including man. These herbs are called by a name derived from that of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l45" HPOS="378" VPOS="3095" WIDTH="1768" HEIGHT="61" BASELINE="381 3139 2146 3121" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 3139 381 3156 2143 3141 2146 3121 2139 3095 378 3111 381 3139"/>
+                        </Shape>
+                        <String CONTENT="intoxicating mushroom, — êˊlhɪ-waˊpak (“white agaric”), — and a similar name is given to the whalebone spit"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-183_l46" HPOS="381" VPOS="3145" WIDTH="1022" HEIGHT="52" BASELINE="383 3180 1403 3171" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="383 3180 383 3197 1403 3191 1403 3171 1396 3145 381 3152 383 3180"/>
+                        </Shape>
+                        <String CONTENT="on account of its power of killing the animal that swallowed it."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

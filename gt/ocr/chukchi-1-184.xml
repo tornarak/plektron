@@ -1,0 +1,376 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-184.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-184.png; regions_from: zones/chukchi-1-184.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-184_r1" HPOS="621" VPOS="553" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="621 553 2399 553 2399 643 621 643"/>
+                    </Shape>
+                    <TextLine ID="mz_1-184_l1" HPOS="1204" VPOS="569" WIDTH="615" HEIGHT="54" BASELINE="1204 604 1819 604" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1810 571 1803 569 1204 569 1204 604 1204 623 1819 623 1819 604 1819 578 1810 571"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l2" HPOS="625" VPOS="578" WIDTH="104" HEIGHT="54" BASELINE="625 606 729 606" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="625 606 625 617 662 632 664 632 667 632 729 617 729 606 729 578 625 578 625 606"/>
+                        </Shape>
+                        <String CONTENT="142"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-184_r2" HPOS="621" VPOS="668" WIDTH="1778" HEIGHT="359" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="621 668 2399 668 2399 1027 621 1027"/>
+                    </Shape>
+                    <TextLine ID="mz_1-184_l3" HPOS="617" VPOS="677" WIDTH="1776" HEIGHT="56" BASELINE="619 707 2393 712" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2371 681 2349 681 2347 679 619 677 619 707 617 723 632 733 634 733 636 733 638 733 2390 725 2393 712 2390 681 2371 681"/>
+                        </Shape>
+                        <String CONTENT="with a rifle. The pregnant bear lies down in some convenient spot on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l4" HPOS="619" VPOS="742" WIDTH="1774" HEIGHT="46" BASELINE="619 770 2393 770" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 770 619 788 2393 788 2393 770 2393 742 619 742 619 770"/>
+                        </Shape>
+                        <String CONTENT="rough ice, and allows the snow to cover her over. She is killed in her snow"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l5" HPOS="617" VPOS="790" WIDTH="1773" HEIGHT="58" BASELINE="619 831 2390 827" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 831 619 848 2388 844 2390 827 2386 798 636 790 634 790 632 790 630 790 617 796 619 831"/>
+                        </Shape>
+                        <String CONTENT="den, together with her young, much in the same way as are brown bears in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l6" HPOS="619" VPOS="861" WIDTH="1769" HEIGHT="52" BASELINE="619 891 2388 891" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 891 619 907 2386 913 2388 891 2388 861 619 861 619 891"/>
+                        </Shape>
+                        <String CONTENT="more southern latitudes. The polar bear of northeastern Asia is not dangerous,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l7" HPOS="617" VPOS="907" WIDTH="1776" HEIGHT="60" BASELINE="619 952 2393 948" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 952 619 967 2390 963 2393 948 2388 920 2258 907 2256 907 2200 917 2178 907 2176 907 2174 907 2120 917 2105 907 2102 907 2100 907 2098 907 2096 907 2050 917 2024 907 2022 907 2020 907 1949 917 1875 907 1873 907 1871 907 1868 907 1855 917 1827 907 1825 907 1823 907 1821 907 1790 917 1695 907 1693 907 1611 917 1533 907 1531 907 1466 920 909 909 907 909 905 909 870 920 820 909 818 909 731 920 693 909 690 909 688 909 617 922 619 952"/>
+                        </Shape>
+                        <String CONTENT="and rarely defends itself. When wounded or hunted down, it simply thrusts"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l8" HPOS="619" VPOS="978" WIDTH="1113" HEIGHT="48" BASELINE="619 1011 1732 1011" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1011 619 1026 1732 1026 1732 1011 1732 980 619 978 619 1011"/>
+                        </Shape>
+                        <String CONTENT="its head into the snow, and waits for the blow."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-184_r3" HPOS="621" VPOS="1027" WIDTH="1778" HEIGHT="724" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="621 1027 2399 1027 2399 1751 621 1751"/>
+                    </Shape>
+                    <TextLine ID="mz_1-184_l9" HPOS="725" VPOS="1028" WIDTH="1668" HEIGHT="58" BASELINE="725 1071 2393 1071" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="725 1071 725 1086 2390 1086 2393 1071 2393 1041 2356 1028 2354 1028 2351 1028 2247 1039 2143 1028 2141 1028 2139 1028 2113 1039 2098 1028 2096 1028 2094 1028 2092 1028 2089 1028 2066 1039 2044 1028 2042 1028 2040 1028 1985 1039 1903 1028 1901 1028 1899 1028 1875 1039 1851 1028 1849 1028 1847 1028 1762 1039 1719 1028 1717 1028 1715 1028 1713 1028 1680 1039 1611 1028 1609 1028 1606 1028 1583 1039 1565 1028 1563 1028 1561 1028 1446 1028 1444 1028 1442 1028 1440 1028 1427 1039 1390 1028 1388 1028 1386 1028 1334 1039 1282 1028 1279 1028 1277 1028 1249 1039 725 1037 725 1071"/>
+                        </Shape>
+                        <String CONTENT="Brown bears are occasionally killed by the Reindeer Chukchee, chiefly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l10" HPOS="617" VPOS="1095" WIDTH="1776" HEIGHT="63" BASELINE="619 1125 2393 1132" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1125 617 1140 632 1151 634 1151 636 1151 638 1151 1091 1143 1212 1156 1214 1156 1217 1156 1219 1156 1238 1145 1821 1145 1892 1158 1894 1158 2390 1145 2393 1132 2390 1101 619 1095 619 1125"/>
+                        </Shape>
+                        <String CONTENT="during their winter sleep, because that is the least dangerous method. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l11" HPOS="619" VPOS="1160" WIDTH="1774" HEIGHT="48" BASELINE="619 1190 2393 1190" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1190 619 1208 2393 1208 2393 1190 2393 1160 619 1160 619 1190"/>
+                        </Shape>
+                        <String CONTENT="entrance to the den is sometimes blocked with logs, and the animal is speared"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l12" HPOS="617" VPOS="1208" WIDTH="1776" HEIGHT="58" BASELINE="619 1244 2393 1251" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1244 617 1260 2388 1266 2393 1251 2390 1221 619 1208 619 1244"/>
+                        </Shape>
+                        <String CONTENT="or shot through a hole made in the roof. The Maritime Chukchee occasion-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l13" HPOS="617" VPOS="1277" WIDTH="1773" HEIGHT="50" BASELINE="619 1307 2390 1311" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1307 617 1322 2386 1327 2390 1311 2388 1281 619 1277 619 1307"/>
+                        </Shape>
+                        <String CONTENT="ally have a chance to kill a brown bear, because in the summer-time bears go"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l14" HPOS="617" VPOS="1337" WIDTH="1773" HEIGHT="48" BASELINE="619 1368 2390 1372" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1368 617 1381 2386 1385 2390 1372 2388 1342 619 1337 619 1368"/>
+                        </Shape>
+                        <String CONTENT="to the tundra far away from the forest border. Thus on the Arctic coast, near"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l15" HPOS="617" VPOS="1396" WIDTH="1776" HEIGHT="50" BASELINE="619 1426 2393 1433" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1426 617 1439 2388 1446 2393 1433 2390 1402 619 1396 619 1426"/>
+                        </Shape>
+                        <String CONTENT="the Kolyma, brown bears are met on the seashore between the mouth of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l16" HPOS="619" VPOS="1452" WIDTH="1771" HEIGHT="54" BASELINE="621 1487 2390 1491" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 1487 619 1502 2386 1506 2390 1491 2388 1459 621 1452 621 1487"/>
+                        </Shape>
+                        <String CONTENT="Kolyma and Brown Bear River (Keiˊñu-weˊem). On the Lower Kolyma brown"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l17" HPOS="617" VPOS="1511" WIDTH="1773" HEIGHT="54" BASELINE="619 1547 2390 1552" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1547 617 1560 2386 1565 2390 1552 2388 1519 619 1511 619 1547"/>
+                        </Shape>
+                        <String CONTENT="bears even hibernate on the steep banks of some brook, well protected from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l18" HPOS="617" VPOS="1576" WIDTH="1773" HEIGHT="47" BASELINE="619 1608 2390 1612" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1608 617 1619 2386 1623 2390 1612 2388 1580 619 1576 619 1608"/>
+                        </Shape>
+                        <String CONTENT="the wind, but beyond the border of the forest. On the Pacific coast I met a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l19" HPOS="619" VPOS="1634" WIDTH="1774" HEIGHT="54" BASELINE="619 1671 2393 1671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1671 619 1688 2393 1688 2393 1671 2393 1638 619 1634 619 1671"/>
+                        </Shape>
+                        <String CONTENT="brown bear in Holy Cross Bay, in June, 1901, that was feeding on seaweed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l20" HPOS="617" VPOS="1686" WIDTH="872" HEIGHT="58" BASELINE="619 1727 1489 1732" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1727 617 1740 1485 1744 1489 1732 1487 1701 1405 1701 1394 1690 1394 1688 1392 1688 1390 1688 1388 1688 1386 1688 1351 1699 1290 1688 1288 1688 1286 1688 1256 1701 1173 1701 1162 1690 1162 1688 1160 1688 1158 1688 1156 1688 1028 1697 987 1686 985 1686 983 1686 619 1695 619 1727"/>
+                        </Shape>
+                        <String CONTENT="along the land-ice piled on the shore."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-184_r4" HPOS="621" VPOS="1751" WIDTH="1778" HEIGHT="479" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="621 1751 2399 1751 2399 2230 621 2230"/>
+                    </Shape>
+                    <TextLine ID="mz_1-184_l21" HPOS="725" VPOS="1753" WIDTH="1670" HEIGHT="54" BASELINE="727 1783 2395 1792" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="727 1783 725 1799 2390 1807 2395 1792 2393 1762 727 1753 727 1783"/>
+                        </Shape>
+                        <String CONTENT="On the edge of the forest the Reindeer Chukchee sometimes catch the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l22" HPOS="617" VPOS="1814" WIDTH="1776" HEIGHT="58" BASELINE="619 1846 2393 1855" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1846 617 1859 820 1872 822 1872 2390 1870 2393 1855 2390 1822 619 1814 619 1846"/>
+                        </Shape>
+                        <String CONTENT="bear with small thin wooden blocks spiked on their upper surface (Fig. 51, b),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l23" HPOS="619" VPOS="1870" WIDTH="1774" HEIGHT="56" BASELINE="619 1911 2393 1911" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1911 619 1926 2393 1926 2393 1911 2393 1883 1723 1870 1721 1870 1658 1881 1526 1870 1524 1870 1522 1870 1496 1881 1390 1870 1388 1870 1386 1870 1383 1870 1368 1883 1195 1883 1069 1870 1067 1870 985 1881 922 1870 920 1870 822 1881 807 1870 805 1870 803 1870 688 1870 686 1870 619 1881 619 1911"/>
+                        </Shape>
+                        <String CONTENT="and left on the pathway among fallen leaves. When the bear steps on one"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l24" HPOS="617" VPOS="1935" WIDTH="1778" HEIGHT="58" BASELINE="619 1965 2395 1970" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 1965 617 1978 638 1991 641 1991 643 1991 1455 1983 1518 1993 1520 1993 2393 1983 2395 1970 2393 1939 619 1935 619 1965"/>
+                        </Shape>
+                        <String CONTENT="of these, the spikes penetrate the sole of its foot. A wound of this kind"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l25" HPOS="617" VPOS="1987" WIDTH="1778" HEIGHT="67" BASELINE="619 2028 2395 2032" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2028 617 2041 662 2054 664 2054 667 2054 2393 2045 2395 2032 2393 2002 2328 1989 2325 1989 2323 1989 2321 1989 2304 2002 1944 2002 1910 1989 1907 1989 1905 1989 1814 2000 1773 1989 1771 1989 1769 1989 1680 2000 1641 1989 1639 1989 1637 1989 1635 1989 1589 2000 1505 1987 1502 1987 1500 1987 1476 2000 1312 2000 1288 1987 1286 1987 1284 1987 1169 1998 1104 1987 1102 1987 1100 1987 1061 1998 1030 1987 1028 1987 1026 1987 1024 1987 991 1998 937 1987 935 1987 619 1996 619 2028"/>
+                        </Shape>
+                        <String CONTENT="rapidly disables it for walking, especially since, in trying to tear away the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l26" HPOS="617" VPOS="2052" WIDTH="1778" HEIGHT="56" BASELINE="619 2084 2395 2093" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2084 617 2100 2390 2108 2395 2093 2393 2063 619 2052 619 2084"/>
+                        </Shape>
+                        <String CONTENT="block, the bear only makes the wound worse. This implement seems to have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l27" HPOS="617" VPOS="2113" WIDTH="1778" HEIGHT="54" BASELINE="619 2145 2395 2152" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2145 617 2160 2390 2167 2395 2152 2393 2121 619 2113 619 2145"/>
+                        </Shape>
+                        <String CONTENT="been copied from some tribe living within the forest limit, though I am not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l28" HPOS="625" VPOS="2169" WIDTH="1360" HEIGHT="67" BASELINE="628 2206 1985 2210" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="628 2206 625 2221 1373 2236 1375 2236 1377 2236 1424 2225 1773 2225 1784 2234 1784 2236 1786 2236 1788 2236 1790 2236 1983 2223 1985 2210 1981 2169 628 2173 628 2206"/>
+                        </Shape>
+                        <String CONTENT="aware that any of the neighboring tribes use it at present.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-184_r5" HPOS="621" VPOS="2230" WIDTH="1778" HEIGHT="357" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="621 2230 2399 2230 2399 2587 621 2587"/>
+                    </Shape>
+                    <TextLine ID="mz_1-184_l29" HPOS="727" VPOS="2229" WIDTH="1668" HEIGHT="68" BASELINE="729 2264 2395 2273" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="729 2264 727 2279 744 2290 747 2290 749 2290 751 2290 1936 2286 1975 2297 1977 2297 1979 2297 2393 2286 2395 2273 2393 2240 729 2229 729 2264"/>
+                        </Shape>
+                        <String CONTENT="The Maritime Chukchee catch hares in winter by cornering them and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l30" HPOS="617" VPOS="2286" WIDTH="1776" HEIGHT="69" BASELINE="619 2327 2393 2333" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2327 617 2340 725 2353 727 2353 1208 2344 1305 2355 1308 2355 2390 2346 2393 2333 2390 2303 2315 2290 2312 2290 2213 2301 2189 2290 2187 2290 2185 2290 2105 2303 1992 2303 1972 2290 1970 2290 1968 2290 1966 2290 1719 2299 1704 2288 1702 2288 1700 2288 1697 2288 1212 2299 1134 2286 1132 2286 1130 2286 1100 2297 1011 2286 1009 2286 1007 2286 970 2297 892 2286 890 2286 619 2294 619 2327"/>
+                        </Shape>
+                        <String CONTENT="finally driving them into a spot surrounded by nets. Women and children"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l31" HPOS="615" VPOS="2355" WIDTH="1778" HEIGHT="52" BASELINE="617 2387 2393 2392" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="617 2387 615 2407 2390 2405 2393 2392 2390 2357 617 2355 617 2387"/>
+                        </Shape>
+                        <String CONTENT="join in the battue with rattles and sticks to drive the hares in the desired"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l32" HPOS="619" VPOS="2416" WIDTH="1774" HEIGHT="58" BASELINE="621 2446 2393 2450" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2446 619 2459 896 2472 898 2472 1461 2463 1544 2474 1546 2474 2390 2463 2393 2450 2390 2420 621 2416 621 2446"/>
+                        </Shape>
+                        <String CONTENT="direction. I was told that in one successful battue several scores might be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l33" HPOS="617" VPOS="2476" WIDTH="1776" HEIGHT="59" BASELINE="619 2507 2393 2511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2507 617 2522 697 2535 699 2535 2390 2526 2393 2511 2390 2476 619 2476 619 2507"/>
+                        </Shape>
+                        <String CONTENT="caught. In times of famine poor families often escape starvation by this kind"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l34" HPOS="619" VPOS="2524" WIDTH="366" HEIGHT="67" BASELINE="621 2563 985 2567" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2563 619 2578 699 2591 701 2591 983 2582 985 2567 983 2537 829 2537 805 2524 803 2524 801 2524 621 2530 621 2563"/>
+                        </Shape>
+                        <String CONTENT="of hare-hunting."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-184_r6" HPOS="621" VPOS="2587" WIDTH="1778" HEIGHT="542" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="621 2587 2399 2587 2399 3129 621 3129"/>
+                    </Shape>
+                    <TextLine ID="mz_1-184_l35" HPOS="727" VPOS="2585" WIDTH="1666" HEIGHT="69" BASELINE="729 2626 2393 2632" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="729 2626 727 2639 983 2652 985 2652 1249 2643 1301 2654 1303 2654 2390 2645 2393 2632 2393 2602 2369 2589 2367 2589 2364 2589 2289 2600 2243 2589 2241 2589 2239 2589 2180 2602 1840 2602 1808 2587 1806 2587 1803 2587 1548 2598 1232 2598 1199 2585 1197 2585 1195 2585 1132 2595 1030 2585 1028 2585 1026 2585 987 2595 948 2585 946 2585 944 2585 942 2585 909 2595 864 2585 861 2585 859 2585 729 2591 729 2626"/>
+                        </Shape>
+                        <String CONTENT="Small animals — like marmots, ground-squirrels, etc. — are caught with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l36" HPOS="619" VPOS="2649" WIDTH="1771" HEIGHT="63" BASELINE="621 2684 2390 2695" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2684 619 2699 2386 2712 2390 2695 2388 2662 2035 2649 2033 2649 621 2649 621 2684"/>
+                        </Shape>
+                        <String CONTENT="snares; house-mice, with special mouse-traps; ermines, with a kind of self-acting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l37" HPOS="619" VPOS="2708" WIDTH="1776" HEIGHT="63" BASELINE="621 2745 2395 2753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2745 619 2758 667 2771 669 2771 671 2771 2393 2766 2395 2753 2395 2714 621 2708 621 2745"/>
+                        </Shape>
+                        <String CONTENT="bow (Fig. 52), probably copied from the Russianized natives. It consists of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l38" HPOS="617" VPOS="2762" WIDTH="1780" HEIGHT="65" BASELINE="619 2803 2397 2812" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="617 2818 2393 2827 2397 2812 2395 2775 649 2775 621 2762 619 2803 617 2818"/>
+                        </Shape>
+                        <String CONTENT="a small but strong bow fastened in a vertical position to a wooden frame of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l39" HPOS="617" VPOS="2833" WIDTH="1776" HEIGHT="52" BASELINE="619 2864 2393 2870" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2864 617 2879 2388 2885 2393 2870 2390 2840 619 2833 619 2864"/>
+                        </Shape>
+                        <String CONTENT="narrow rectangular shape. The “arrow” is tied at one end to the middle of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l40" HPOS="617" VPOS="2888" WIDTH="1773" HEIGHT="65" BASELINE="619 2924 2390 2931" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="619 2924 617 2937 1210 2953 1212 2953 2388 2944 2390 2931 2388 2901 1875 2901 1799 2888 1797 2888 619 2892 619 2924"/>
+                        </Shape>
+                        <String CONTENT="string, while on its other end is a cross-piece which runs up and down in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l41" HPOS="621" VPOS="2955" WIDTH="1772" HEIGHT="52" BASELINE="621 2985 2393 2992" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 2985 621 3007 2390 3007 2393 2992 2390 2961 621 2955 621 2985"/>
+                        </Shape>
+                        <String CONTENT="grooves, between the vertical sides of the frame. In stringing the bow, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l42" HPOS="619" VPOS="3013" WIDTH="1771" HEIGHT="61" BASELINE="621 3046 2390 3052" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 3046 619 3059 1303 3074 1305 3074 2388 3065 2390 3052 2388 3018 621 3013 621 3046"/>
+                        </Shape>
+                        <String CONTENT="arrow with the attached cross-piece is pulled upward. Then the string is held"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-184_l43" HPOS="619" VPOS="3069" WIDTH="1769" HEIGHT="65" BASELINE="621 3102 2388 3113" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="621 3102 619 3117 695 3130 697 3130 1266 3124 1329 3134 1331 3134 2386 3128 2388 3113 2386 3082 621 3069 621 3102"/>
+                        </Shape>
+                        <String CONTENT="in position by means of a trigger, which is connected by a sinew cord with"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-184_r7" HPOS="621" VPOS="3146" WIDTH="1778" HEIGHT="54" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="621 3146 2399 3146 2399 3200 621 3200"/>
+                    </Shape>
+                    <TextLine ID="mz_1-184_l44" HPOS="881" VPOS="3141" WIDTH="1249" HEIGHT="58" BASELINE="883 3169 2130 3180" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="883 3169 881 3189 2126 3199 2130 3180 2128 3152 883 3141 883 3169"/>
+                        </Shape>
+                        <String CONTENT="¹ For the use of this implement among the Aleuts, see Mason, Traps, p. 472."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

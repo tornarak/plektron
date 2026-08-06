@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-159.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-159.png; regions_from: zones/chukchi-1-159.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-159_r1" HPOS="453" VPOS="594" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="453 594 2231 594 2231 684 453 684"/>
+                    </Shape>
+                    <TextLine ID="mz_1-159_l1" HPOS="1030" VPOS="614" WIDTH="622" HEIGHT="54" BASELINE="1033 649 1652 645" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1637 614 1615 614 1593 614 1572 614 1550 614 1528 614 1507 614 1485 614 1463 614 1442 614 1420 614 1399 614 1377 614 1355 614 1336 614 1030 614 1033 649 1033 668 1650 664 1652 645 1645 619 1637 614"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l2" HPOS="2133" VPOS="623" WIDTH="86" HEIGHT="48" BASELINE="2133 655 2219 655" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2198 625 2187 623 2133 623 2133 655 2133 671 2219 671 2219 655 2219 630 2198 625"/>
+                        </Shape>
+                        <String CONTENT="121"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-159_r2" HPOS="453" VPOS="709" WIDTH="1778" HEIGHT="193" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="453 709 2231 709 2231 902 453 902"/>
+                    </Shape>
+                    <TextLine ID="mz_1-159_l3" HPOS="452" VPOS="712" WIDTH="1774" HEIGHT="71" BASELINE="454 759 2226 755" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2219 723 1944 712 1942 712 1879 723 1864 712 1862 712 1860 712 1858 712 1788 723 1765 712 1762 712 1760 712 1758 712 1756 712 1741 725 1635 725 1574 712 1572 712 1498 723 1468 712 1466 712 1463 712 1461 712 1416 723 1375 712 1373 712 1370 712 1288 725 710 714 708 714 706 714 667 725 634 714 632 714 630 714 530 725 480 716 474 716 459 716 452 723 454 759 454 777 2204 783 2206 783 2208 783 2211 783 2226 772 2226 755 2224 744 2219 723"/>
+                        </Shape>
+                        <String CONTENT="far away, the hunter will pick out a small cake of ice, and, using his spear for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l4" HPOS="454" VPOS="775" WIDTH="1486" HEIGHT="69" BASELINE="456 820 1940 816" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 820 456 833 632 844 634 844 636 844 638 844 638 842 649 833 742 833 777 844 779 844 781 844 1234 831 1357 842 1360 842 1362 842 1364 842 1377 831 1483 831 1578 842 1580 842 1583 842 1585 842 1600 831 1613 842 1615 842 1617 842 1619 844 1760 844 1760 842 1762 842 1765 842 1782 831 1821 842 1823 842 1825 842 1827 842 1851 831 1923 842 1925 842 1927 842 1929 842 1929 840 1940 829 1940 816 1938 788 1890 775 1888 775 1886 775 1884 775 1855 785 1505 775 1502 775 1500 775 1476 785 1453 775 1450 775 1448 775 1349 785 1243 775 1240 775 1238 775 1193 788 1182 777 1180 777 1178 777 1175 777 1173 777 1139 788 892 777 890 777 887 777 859 788 831 777 829 777 827 777 755 788 688 777 686 777 454 790 456 820"/>
+                        </Shape>
+                        <String CONTENT="an oar, will push forward to the body, and then drag it to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l5" HPOS="456" VPOS="844" WIDTH="691" HEIGHT="50" BASELINE="456 876 1147 876" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 876 456 894 1147 894 1147 876 1147 846 456 844 456 876"/>
+                        </Shape>
+                        <String CONTENT="land-ice with the harpoon-line."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-159_r3" HPOS="453" VPOS="902" WIDTH="1778" HEIGHT="1198" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="453 902 2231 902 2231 2100 453 2100"/>
+                    </Shape>
+                    <TextLine ID="mz_1-159_l6" HPOS="498" VPOS="904" WIDTH="1442" HEIGHT="48" BASELINE="498 937 1940 939" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="498 937 498 952 1938 950 1940 939 1938 907 498 904 498 937"/>
+                        </Shape>
+                        <String CONTENT="In summer, seal-hunting is done chiefly with guns from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l7" HPOS="452" VPOS="952" WIDTH="1484" HEIGHT="63" BASELINE="454 993 1936 1000" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 993 452 1006 1931 1015 1936 1000 1936 969 1894 956 1892 956 1793 956 1790 956 1788 956 1786 956 1773 967 1721 956 1719 956 1717 956 1682 967 1593 956 1591 956 1390 965 1360 954 1357 954 1223 954 1221 954 1219 954 1217 954 1204 967 1071 967 1059 954 1056 954 1054 954 1052 954 1050 954 1026 965 996 954 994 954 991 954 838 963 822 952 820 952 818 952 816 952 814 952 783 963 697 952 695 952 693 952 669 965 513 965 500 952 498 952 495 952 493 952 491 952 454 961 454 993"/>
+                        </Shape>
+                        <String CONTENT="shore or from large skin boats. Kayaks are used on the Arctic,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l8" HPOS="456" VPOS="1015" WIDTH="1482" HEIGHT="67" BASELINE="456 1056 1938 1056" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1056 456 1071 1108 1071 1169 1082 1171 1082 1173 1082 1212 1071 1318 1071 1336 1082 1338 1082 1340 1082 1342 1082 1537 1071 1585 1082 1587 1082 1589 1082 1654 1071 1676 1082 1678 1082 1680 1082 1682 1082 1723 1071 1886 1082 1888 1082 1890 1082 1938 1069 1938 1056 1938 1028 1782 1015 1780 1015 1710 1026 1678 1015 1676 1015 1674 1015 1671 1015 1648 1026 1611 1015 1609 1015 1606 1015 1544 1026 1520 1015 1518 1015 1515 1015 1453 1026 1418 1015 1416 1015 1414 1015 1412 1015 1388 1028 1206 1028 1128 1015 1126 1015 1022 1026 994 1015 991 1015 989 1015 987 1015 939 1026 881 1015 879 1015 877 1015 853 1026 801 1015 799 1015 744 1026 714 1015 712 1015 710 1015 708 1015 706 1015 690 1028 576 1028 498 1015 495 1015 493 1015 456 1026 456 1056"/>
+                        </Shape>
+                        <String CONTENT="while on the Pacific shore they are employed only in reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l9" HPOS="454" VPOS="1071" WIDTH="1482" HEIGHT="67" BASELINE="456 1114 1936 1119" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1114 454 1132 459 1136 461 1136 461 1138 463 1138 465 1138 467 1138 1933 1130 1936 1119 1936 1086 1888 1073 1886 1073 1884 1073 1821 1084 1689 1073 1687 1073 1684 1073 1661 1084 1650 1073 1648 1073 1645 1073 1643 1073 1641 1073 1600 1084 1589 1073 1587 1073 1585 1073 1583 1073 1580 1073 1544 1084 1310 1073 1308 1073 1197 1084 1121 1071 1119 1071 1117 1071 1089 1082 1030 1071 1028 1071 1026 1071 1000 1082 950 1071 948 1071 456 1078 456 1114"/>
+                        </Shape>
+                        <String CONTENT="hunting on the Middle Anadyr, as will be described later. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l10" HPOS="456" VPOS="1140" WIDTH="1480" HEIGHT="52" BASELINE="459 1177 1936 1173" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="459 1177 459 1192 1933 1188 1936 1173 1931 1153 1721 1153 1702 1140 1622 1153 1600 1140 1574 1153 1520 1140 1505 1153 1381 1153 1310 1140 1295 1153 1210 1153 1197 1140 1171 1156 1143 1143 1082 1156 1056 1143 1011 1156 965 1143 931 1156 749 1143 456 1151 459 1177"/>
+                        </Shape>
+                        <String CONTENT="Maritime villages on the Pacific have but very few kayaks. I saw"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l11" HPOS="452" VPOS="1192" WIDTH="1486" HEIGHT="68" BASELINE="454 1234 1938 1238" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1234 452 1247 474 1260 476 1260 478 1260 1936 1251 1938 1238 1936 1208 1728 1195 1726 1195 1665 1205 1641 1195 1639 1195 1637 1195 1635 1195 1632 1195 1619 1208 1494 1208 1414 1195 1412 1195 1340 1205 1316 1195 1314 1195 1312 1195 1310 1195 1273 1205 1156 1192 1154 1192 1080 1203 996 1192 994 1192 924 1203 842 1192 840 1192 454 1201 454 1234"/>
+                        </Shape>
+                        <String CONTENT="one in the Eskimo village Wuteˊen (see Fig. 47, c), which was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l12" HPOS="454" VPOS="1266" WIDTH="1484" HEIGHT="48" BASELINE="454 1296 1938 1296" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1296 454 1314 1938 1314 1938 1296 1938 1266 454 1266 454 1296"/>
+                        </Shape>
+                        <String CONTENT="about fifteen feet long, and obtained a model of a kayak made at"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l13" HPOS="456" VPOS="1322" WIDTH="1477" HEIGHT="57" BASELINE="456 1359 1933 1359" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1359 456 1372 1931 1379 1933 1359 1933 1327 456 1322 456 1359"/>
+                        </Shape>
+                        <String CONTENT="Indian Point. I had no opportunity of seeing the Arctic kayaks,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l14" HPOS="454" VPOS="1381" WIDTH="1484" HEIGHT="52" BASELINE="456 1413 1938 1418" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1413 454 1428 1933 1433 1938 1418 1936 1387 456 1381 456 1413"/>
+                        </Shape>
+                        <String CONTENT="but, according to the natives, they are of various sizes, sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l15" HPOS="454" VPOS="1439" WIDTH="1484" HEIGHT="63" BASELINE="456 1474 1938 1478" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1474 454 1491 461 1498 463 1498 463 1500 465 1500 467 1500 469 1502 560 1502 560 1500 563 1500 565 1500 578 1489 608 1500 610 1500 612 1500 682 1489 721 1500 723 1500 725 1500 1195 1489 1236 1500 1238 1500 1240 1500 1706 1491 1849 1502 1851 1502 1853 1502 1855 1502 1855 1500 1866 1491 1936 1491 1938 1478 1936 1448 456 1439 456 1474"/>
+                        </Shape>
+                        <String CONTENT="have two seats, and are used for seal-hunting and travel, as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l16" HPOS="454" VPOS="1502" WIDTH="1482" HEIGHT="56" BASELINE="456 1532 1936 1539" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1532 454 1547 463 1556 463 1558 465 1558 467 1558 469 1558 1933 1552 1936 1539 1933 1509 456 1502 456 1532"/>
+                        </Shape>
+                        <String CONTENT="mentioned many times in Chukchee tales. These kayaks are so"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l17" HPOS="454" VPOS="1560" WIDTH="1482" HEIGHT="61" BASELINE="456 1593 1936 1597" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1593 454 1606 513 1619 515 1619 1152 1610 1208 1621 1210 1621 1933 1610 1936 1597 1933 1567 456 1560 456 1593"/>
+                        </Shape>
+                        <String CONTENT="large, that sometimes a man creeps into one and lies down, to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l18" HPOS="452" VPOS="1621" WIDTH="1486" HEIGHT="61" BASELINE="454 1651 1938 1658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1651 452 1669 465 1677 467 1677 469 1677 472 1677 1418 1671 1444 1682 1446 1682 1448 1682 1936 1671 1938 1658 1936 1628 454 1621 454 1651"/>
+                        </Shape>
+                        <String CONTENT="be carried as a passive passenger. I was told of one case where"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l19" HPOS="454" VPOS="1688" WIDTH="1479" HEIGHT="44" BASELINE="454 1716 1933 1716" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1716 454 1729 1929 1732 1933 1716 1931 1688 454 1688 454 1716"/>
+                        </Shape>
+                        <String CONTENT="three men set out in a kayak across Chaun Bay. Two of them"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l20" HPOS="452" VPOS="1740" WIDTH="1479" HEIGHT="52" BASELINE="454 1773 1931 1779" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1773 452 1786 1927 1792 1931 1779 1929 1747 454 1740 454 1773"/>
+                        </Shape>
+                        <String CONTENT="fastened themselves in the manholes, and the third lay down in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l21" HPOS="452" VPOS="1803" WIDTH="1479" HEIGHT="56" BASELINE="454 1835 1931 1840" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1835 452 1848 467 1859 469 1859 472 1859 474 1859 1929 1855 1931 1840 1929 1807 454 1803 454 1835"/>
+                        </Shape>
+                        <String CONTENT="the hold. A tempest suddenly arose and capsized the kayak,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l22" HPOS="452" VPOS="1853" WIDTH="1481" HEIGHT="58" BASELINE="454 1894 1933 1898" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 1894 452 1907 1929 1911 1933 1898 1931 1866 1585 1855 1583 1855 1580 1855 1578 1855 1565 1868 1427 1868 1401 1855 1399 1855 1396 1855 1394 1855 1360 1866 1290 1855 1288 1855 1286 1855 1262 1866 1234 1855 1232 1855 1230 1855 1227 1855 1195 1866 1093 1853 1091 1853 1089 1853 1063 1864 864 1853 861 1853 794 1866 697 1866 684 1853 682 1853 680 1853 677 1853 675 1853 645 1864 567 1853 565 1853 454 1861 454 1894"/>
+                        </Shape>
+                        <String CONTENT="so that the paddlers were drowned; but the man inside remained"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l23" HPOS="454" VPOS="1916" WIDTH="1477" HEIGHT="56" BASELINE="456 1957 1931 1952" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 1957 456 1972 1929 1967 1931 1952 1927 1924 511 1916 508 1916 454 1926 456 1957"/>
+                        </Shape>
+                        <String CONTENT="safe and sound, and on the second day drifted ashore in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l24" HPOS="452" VPOS="1983" WIDTH="1479" HEIGHT="49" BASELINE="454 2013 1931 2017" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2013 452 2028 1927 2032 1931 2017 1929 1987 454 1983 454 2013"/>
+                        </Shape>
+                        <String CONTENT="kayak, together with his dead companions, and was able to get out"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l25" HPOS="452" VPOS="2043" WIDTH="1447" HEIGHT="57" BASELINE="454 2076 1899 2080" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2076 452 2091 465 2100 467 2100 469 2100 472 2100 1897 2091 1899 2080 1897 2048 454 2043 454 2076"/>
+                        </Shape>
+                        <String CONTENT="and go away. Perhaps this is only a fragment of some folk-tale."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-159_r4" HPOS="453" VPOS="2100" WIDTH="1778" HEIGHT="658" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="453 2100 2231 2100 2231 2758 453 2758"/>
+                    </Shape>
+                    <TextLine ID="mz_1-159_l26" HPOS="560" VPOS="2104" WIDTH="1365" HEIGHT="56" BASELINE="563 2136 1925 2141" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="563 2136 560 2147 768 2160 770 2160 1923 2158 1925 2141 1923 2108 563 2104 563 2136"/>
+                        </Shape>
+                        <String CONTENT="In hunting from boats, the harpoon is thrown at the animal,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l27" HPOS="454" VPOS="2162" WIDTH="1767" HEIGHT="50" BASELINE="456 2195 2221 2199" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 2195 454 2208 2217 2212 2221 2199 2219 2167 456 2162 456 2195"/>
+                        </Shape>
+                        <String CONTENT="and the shaft becomes detached from the point in the same way as described."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l28" HPOS="461" VPOS="2214" WIDTH="1763" HEIGHT="67" BASELINE="461 2258 2224 2258" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="461 2258 461 2273 2221 2281 2224 2258 2224 2227 2029 2227 1996 2214 1994 2214 1992 2214 1990 2214 1966 2227 1834 2227 1819 2214 1816 2214 1814 2214 1812 2214 1810 2214 1808 2214 1790 2225 1754 2214 1752 2214 1749 2214 1684 2225 1650 2214 1648 2214 1645 2214 1643 2214 1606 2225 1589 2214 1587 2214 1585 2214 1583 2214 1580 2214 1557 2225 1474 2214 1472 2214 1470 2214 1442 2225 1396 2214 1394 2214 1392 2214 1390 2214 1357 2225 1303 2214 1301 2214 1299 2214 1271 2225 1249 2214 1247 2214 1245 2214 1193 2225 1104 2214 1102 2214 974 2225 942 2214 939 2214 937 2214 935 2214 907 2225 883 2214 881 2214 879 2214 801 2225 764 2214 762 2214 760 2214 757 2214 718 2225 461 2219 461 2258"/>
+                        </Shape>
+                        <String CONTENT="Then the animal is hauled in, and the floating shaft picked up. At present,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l29" HPOS="454" VPOS="2281" WIDTH="1774" HEIGHT="52" BASELINE="454 2318 2228 2318" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2318 454 2333 2228 2333 2228 2318 2228 2288 454 2281 454 2318"/>
+                        </Shape>
+                        <String CONTENT="however, seals do not allow the boat to come near enough for the use of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l30" HPOS="454" VPOS="2336" WIDTH="1774" HEIGHT="69" BASELINE="454 2377 2228 2377" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2377 454 2390 526 2403 528 2403 660 2392 1071 2392 1136 2403 1139 2403 1141 2403 1180 2392 1580 2403 1583 2405 1691 2405 1691 2403 1693 2403 1695 2403 1710 2392 1739 2403 1741 2403 1743 2403 1834 2392 1855 2403 1858 2403 1860 2405 1955 2405 1955 2403 1957 2403 1959 2403 1975 2392 2048 2403 2050 2403 2053 2403 2074 2392 2111 2403 2113 2403 2115 2403 2118 2403 2139 2392 2206 2403 2208 2403 2211 2403 2213 2403 2228 2392 2228 2377 2228 2349 2174 2336 2172 2336 2169 2336 2143 2346 2130 2336 2128 2336 2126 2336 2124 2336 2122 2336 2083 2349 1780 2349 1765 2336 1762 2336 1760 2336 1758 2336 1756 2336 1728 2346 1557 2336 1554 2336 1502 2346 1340 2336 1338 2336 1336 2336 1305 2346 1113 2336 1110 2336 1108 2336 1071 2346 1026 2336 1024 2336 1022 2336 959 2346 894 2336 892 2336 890 2336 853 2346 816 2336 814 2336 812 2336 693 2346 454 2342 454 2377"/>
+                        </Shape>
+                        <String CONTENT="harpoon. With the rifle they are shot at wherever they come out of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l31" HPOS="454" VPOS="2403" WIDTH="1772" HEIGHT="58" BASELINE="456 2433 2226 2437" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 2433 454 2446 530 2459 532 2459 1310 2450 1373 2461 1375 2461 2224 2450 2226 2437 2224 2407 456 2403 456 2433"/>
+                        </Shape>
+                        <String CONTENT="water, no matter how far away they may be. The native hunters are pretty"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l32" HPOS="456" VPOS="2468" WIDTH="1772" HEIGHT="52" BASELINE="456 2498 2228 2498" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 2498 456 2520 2228 2511 2228 2498 2228 2468 456 2468 456 2498"/>
+                        </Shape>
+                        <String CONTENT="good marksmen, but of course many shots go amiss. The animals that have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l33" HPOS="452" VPOS="2522" WIDTH="1772" HEIGHT="50" BASELINE="454 2552 2224 2559" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2552 452 2565 2219 2572 2224 2559 2221 2528 454 2522 454 2552"/>
+                        </Shape>
+                        <String CONTENT="been killed sink so rapidly that they are often lost before the hunter can"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l34" HPOS="452" VPOS="2580" WIDTH="1772" HEIGHT="56" BASELINE="454 2610 2224 2619" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2610 452 2628 463 2636 465 2636 467 2636 469 2636 2221 2632 2224 2619 2221 2589 454 2580 454 2610"/>
+                        </Shape>
+                        <String CONTENT="secure the body. Especially is this true in shooting from the shore, though"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l35" HPOS="452" VPOS="2641" WIDTH="1772" HEIGHT="58" BASELINE="454 2671 2224 2680" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2671 452 2686 2219 2699 2224 2680 2221 2649 454 2641 454 2671"/>
+                        </Shape>
+                        <String CONTENT="the small boat stands ready to hand. Only fat seals, mostly the younger ones,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l36" HPOS="452" VPOS="2691" WIDTH="563" HEIGHT="58" BASELINE="454 2732 1015 2736" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2732 452 2745 1011 2749 1015 2736 1015 2706 985 2693 983 2693 981 2693 831 2704 786 2693 783 2693 781 2693 779 2693 736 2704 716 2691 714 2691 712 2691 710 2691 454 2699 454 2732"/>
+                        </Shape>
+                        <String CONTENT="do not sink after death."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-159_r5" HPOS="453" VPOS="2758" WIDTH="1778" HEIGHT="488" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="453 2758 2231 2758 2231 3246 453 3246"/>
+                    </Shape>
+                    <TextLine ID="mz_1-159_l37" HPOS="560" VPOS="2762" WIDTH="1668" HEIGHT="52" BASELINE="560 2797 2228 2797" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="560 2797 560 2814 2226 2814 2228 2797 2226 2766 560 2762 560 2797"/>
+                        </Shape>
+                        <String CONTENT="Hunting on open water is more successful early in the season, when the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l38" HPOS="452" VPOS="2820" WIDTH="1772" HEIGHT="57" BASELINE="454 2853 2224 2859" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2853 452 2868 2219 2877 2224 2859 2221 2827 454 2820 454 2853"/>
+                        </Shape>
+                        <String CONTENT="drift-ice is abundant, because all kinds of sea-animals go along with it, basking"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l39" HPOS="452" VPOS="2872" WIDTH="1772" HEIGHT="61" BASELINE="454 2918 2224 2914" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2918 454 2933 2221 2933 2224 2914 2221 2885 2172 2872 2169 2872 2167 2872 2165 2872 2143 2883 1851 2872 1849 2872 1784 2883 1739 2872 1736 2872 1734 2872 1732 2872 1689 2883 1656 2872 1654 2872 1652 2872 1650 2872 1606 2883 1580 2872 1578 2872 1576 2872 1574 2872 1531 2883 1457 2872 1455 2872 1334 2885 1204 2875 1201 2875 1199 2875 1162 2885 682 2875 680 2875 623 2885 482 2875 480 2875 478 2875 452 2885 454 2918"/>
+                        </Shape>
+                        <String CONTENT="all the while on its surface. Later on, when the ice has drifted away, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l40" HPOS="452" VPOS="2942" WIDTH="1772" HEIGHT="50" BASELINE="454 2974 2224 2979" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 2974 452 2987 2219 2992 2224 2979 2221 2946 454 2942 454 2974"/>
+                        </Shape>
+                        <String CONTENT="animals become more scarce and the hunt difficult. Then the seal-hunters go"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l41" HPOS="452" VPOS="3002" WIDTH="1774" HEIGHT="57" BASELINE="454 3033 2226 3037" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 3033 452 3046 511 3059 513 3059 2224 3050 2226 3037 2224 3007 454 3002 454 3033"/>
+                        </Shape>
+                        <String CONTENT="far out to sea in search of game. The Arctic hunters in their large boats"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l42" HPOS="454" VPOS="3061" WIDTH="1772" HEIGHT="50" BASELINE="456 3093 2226 3098" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 3093 454 3106 2221 3111 2226 3098 2224 3065 456 3061 456 3093"/>
+                        </Shape>
+                        <String CONTENT="sail off with fair wind, and go so far that the highest mountain-tops near the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l43" HPOS="452" VPOS="3119" WIDTH="1769" HEIGHT="61" BASELINE="454 3150 2221 3158" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="454 3150 452 3169 463 3178 465 3178 467 3178 469 3180 2219 3180 2221 3158 2219 3128 454 3119 454 3150"/>
+                        </Shape>
+                        <String CONTENT="shore are out of sight. They remain in the open sea for two or three days,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-159_l44" HPOS="454" VPOS="3171" WIDTH="1170" HEIGHT="72" BASELINE="456 3212 1624 3217" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 3212 454 3225 580 3241 582 3241 634 3230 872 3241 874 3241 937 3230 1156 3241 1158 3241 1197 3232 1208 3241 1208 3243 1210 3243 1212 3243 1214 3243 1622 3230 1624 3217 1624 3184 1606 3173 1604 3173 1602 3173 1600 3173 1546 3184 1531 3173 1528 3173 1526 3173 1524 3173 1522 3173 1494 3184 1314 3173 1312 3173 1310 3173 1308 3173 1308 3176 1297 3186 1136 3186 1110 3173 1108 3173 1106 3173 1104 3173 1102 3173 1102 3176 1091 3184 1009 3171 1007 3171 1004 3171 957 3182 818 3171 816 3171 814 3171 779 3184 684 3184 671 3171 669 3171 667 3171 664 3171 662 3171 636 3182 565 3171 563 3171 456 3180 456 3212"/>
+                        </Shape>
+                        <String CONTENT="waiting for a change of wind to get back to land."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-159_r6" HPOS="453" VPOS="3265" WIDTH="1778" HEIGHT="57" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="453 3265 2231 3265 2231 3322 453 3322"/>
+                    </Shape>
+                    <TextLine ID="mz_1-159_l45" HPOS="456" VPOS="3266" WIDTH="689" HEIGHT="50" BASELINE="456 3292 1145 3292" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="456 3292 456 3316 1145 3316 1145 3292 1145 3266 456 3266 456 3292"/>
+                        </Shape>
+                        <String CONTENT="16—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

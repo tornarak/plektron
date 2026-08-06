@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-177.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-177.png; regions_from: zones/chukchi-1-177.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-177_r1" HPOS="396" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="396 618 2174 618 2174 708 396 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-177_l1" HPOS="976" VPOS="632" WIDTH="622" HEIGHT="54" BASELINE="978 664 1598 668" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1587 632 994 632 978 655 978 664 976 681 1593 686 1598 668 1596 640 1587 632"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l2" HPOS="2079" VPOS="640" WIDTH="86" HEIGHT="54" BASELINE="2081 677 2165 681" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2146 645 2124 645 2102 643 2081 640 2081 677 2079 690 2161 694 2165 681 2165 647 2146 645"/>
+                        </Shape>
+                        <String CONTENT="135"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-177_r2" HPOS="396" VPOS="733" WIDTH="1778" HEIGHT="481" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="396 733 2174 733 2174 1214 396 1214"/>
+                    </Shape>
+                    <TextLine ID="mz_1-177_l3" HPOS="506" VPOS="742" WIDTH="1670" HEIGHT="52" BASELINE="506 777 2176 777" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="506 777 506 794 2176 794 2176 777 2176 746 506 742 506 777"/>
+                        </Shape>
+                        <String CONTENT="The later the season, the better is the meat, because the animals are no"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l4" HPOS="398" VPOS="794" WIDTH="1771" HEIGHT="67" BASELINE="400 837 2169 842" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 837 398 846 428 859 430 859 433 861 2167 861 2169 842 2167 809 2016 796 2014 796 1962 807 1767 796 1765 796 1697 807 1637 796 1635 796 1390 807 1284 794 1282 794 1279 794 1256 807 1147 807 1132 794 1130 794 1128 794 1126 794 1046 805 400 798 400 837"/>
+                        </Shape>
+                        <String CONTENT="longer worried by insects, and can feed undisturbed. The meat of young"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l5" HPOS="400" VPOS="855" WIDTH="1774" HEIGHT="60" BASELINE="400 898 2174 898" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 898 400 915 2174 915 2174 898 2174 866 2137 855 2135 855 2133 855 2130 855 2105 866 2068 855 2066 855 2063 855 2061 855 2029 866 1931 855 1929 855 1836 866 1808 855 1806 855 1803 855 1801 855 1777 866 1752 855 1749 855 1747 855 1745 855 1700 866 1654 855 1652 855 1650 855 1561 866 1522 855 1520 855 1518 855 1414 866 1383 855 1381 855 1379 855 1243 866 1208 855 1206 855 1204 855 1108 866 1078 855 1076 855 1074 855 1071 855 1069 855 1054 868 968 868 842 855 840 855 777 866 755 855 753 855 597 855 595 855 593 855 571 866 537 855 534 855 532 855 530 855 508 866 459 855 456 855 400 866 400 898"/>
+                        </Shape>
+                        <String CONTENT="animals killed in midsummer is so lean and tasteless, that it is really only fit"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l6" HPOS="400" VPOS="915" WIDTH="1772" HEIGHT="59" BASELINE="400 956 2172 956" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 956 400 974 2172 974 2172 956 2172 928 2120 915 2118 915 2115 915 2085 926 1990 915 1988 915 1985 915 1962 926 1832 915 1717 915 1715 915 1713 915 1710 915 1693 928 1461 928 1446 915 1444 915 1442 915 1440 915 1437 915 1409 926 1388 915 1386 915 1383 915 1381 915 1336 926 1314 915 1312 915 1310 915 1240 928 1087 928 1063 915 1061 915 1059 915 1002 926 976 915 974 915 972 915 868 926 816 915 814 915 747 926 690 915 688 915 638 926 625 915 623 915 621 915 619 915 400 924 400 956"/>
+                        </Shape>
+                        <String CONTENT="for dog-food. The buck-skins are valued for summer bedding and as the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l7" HPOS="398" VPOS="978" WIDTH="1774" HEIGHT="56" BASELINE="400 1013 2172 1019" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 1013 398 1028 2167 1034 2172 1019 2169 989 400 978 400 1013"/>
+                        </Shape>
+                        <String CONTENT="best material for curried leather. The fawn-skins, on the contrary, are poor,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l8" HPOS="398" VPOS="1043" WIDTH="1774" HEIGHT="56" BASELINE="400 1073 2172 1078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 1073 398 1091 411 1099 413 1099 415 1099 417 1099 2169 1091 2172 1078 2169 1047 400 1043 400 1073"/>
+                        </Shape>
+                        <String CONTENT="since the hunter cannot choose his own time for killing. Only the poorest"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l9" HPOS="400" VPOS="1093" WIDTH="1772" HEIGHT="65" BASELINE="400 1134 2172 1138" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 1134 400 1158 2169 1151 2172 1138 2172 1108 2126 1095 2124 1095 2122 1095 2063 1106 2003 1095 2001 1095 1998 1095 1964 1106 1609 1095 1606 1095 1604 1095 1565 1106 1500 1095 1498 1095 1496 1095 1494 1095 1476 1106 1386 1095 1383 1095 1381 1095 1338 1106 1223 1093 1221 1093 1130 1106 877 1106 835 1093 833 1093 831 1093 829 1093 801 1104 710 1093 708 1093 706 1093 675 1106 552 1106 528 1093 526 1093 524 1093 400 1101 400 1134"/>
+                        </Shape>
+                        <String CONTENT="people use them for garments, while all others buy fawn-skins from the rein-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l10" HPOS="400" VPOS="1160" WIDTH="312" HEIGHT="54" BASELINE="402 1192 712 1197" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 1192 400 1210 708 1214 712 1197 710 1164 402 1160 402 1192"/>
+                        </Shape>
+                        <String CONTENT="deer-breeders."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-177_r3" HPOS="396" VPOS="1214" WIDTH="1778" HEIGHT="483" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="396 1214 2174 1214 2174 1697 396 1697"/>
+                    </Shape>
+                    <TextLine ID="mz_1-177_l11" HPOS="508" VPOS="1214" WIDTH="1664" HEIGHT="61" BASELINE="508 1257 2172 1257" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2169 1225 2120 1214 2118 1214 2048 1225 1808 1214 1806 1214 1803 1214 1777 1225 1728 1214 1726 1214 1723 1214 1700 1225 1674 1214 1671 1214 1669 1214 1667 1214 1637 1227 1466 1227 1377 1214 1375 1214 1277 1225 1260 1214 1258 1214 1256 1214 1143 1214 1141 1214 1076 1225 1024 1214 1022 1214 939 1225 892 1214 890 1214 887 1214 762 1225 729 1214 727 1214 725 1214 654 1225 623 1214 621 1214 619 1214 617 1214 578 1225 534 1214 532 1214 530 1214 528 1214 508 1223 508 1257 508 1275 2172 1275 2172 1257 2172 1234 2169 1225"/>
+                        </Shape>
+                        <String CONTENT="At the places where the migrating reindeer crossed the Kolyma and its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l12" HPOS="400" VPOS="1275" WIDTH="1767" HEIGHT="58" BASELINE="400 1316 2167 1316" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 1316 400 1333 2165 1333 2167 1316 2167 1288 2141 1275 2139 1275 2137 1275 2135 1275 2105 1286 2074 1275 2072 1275 2070 1275 2068 1275 2042 1286 2020 1275 2018 1275 2016 1275 2014 1275 1985 1286 974 1275 972 1275 970 1275 939 1286 877 1275 874 1275 872 1275 844 1286 736 1275 734 1275 731 1275 697 1286 651 1275 649 1275 647 1275 645 1275 643 1275 625 1288 500 1288 441 1275 439 1275 437 1275 400 1286 400 1316"/>
+                        </Shape>
+                        <String CONTENT="affluents, the Yukaghir inhabitants used to set long rows of snares on both"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l13" HPOS="404" VPOS="1337" WIDTH="1763" HEIGHT="57" BASELINE="404 1379 2167 1379" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 1379 404 1394 2167 1394 2167 1379 2167 1348 404 1337 404 1379"/>
+                        </Shape>
+                        <String CONTENT="banks of the river, spreading them out on the trees and among the bushes."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l14" HPOS="404" VPOS="1398" WIDTH="1765" HEIGHT="56" BASELINE="404 1437 2169 1437" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 1437 404 1454 2169 1454 2169 1437 2169 1407 404 1398 404 1437"/>
+                        </Shape>
+                        <String CONTENT="These were still more efficient than hunting on the water; but bush and forest"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l15" HPOS="398" VPOS="1452" WIDTH="1765" HEIGHT="65" BASELINE="400 1493 2163 1500" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 1493 398 1509 409 1517 411 1517 413 1517 415 1517 2161 1513 2163 1500 2161 1470 2094 1457 1942 1457 1940 1457 1938 1457 1914 1467 1899 1457 1897 1457 1894 1457 1892 1457 1708 1467 1687 1457 1684 1457 1682 1457 1544 1465 1481 1454 1479 1454 1418 1467 1000 1467 900 1452 898 1452 896 1452 870 1463 807 1452 805 1452 803 1452 775 1463 721 1452 718 1452 400 1461 400 1493"/>
+                        </Shape>
+                        <String CONTENT="on the Middle Anadyr are too scanty to allow of this method of hunting."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l16" HPOS="402" VPOS="1515" WIDTH="1770" HEIGHT="58" BASELINE="402 1558 2172 1558" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 1558 402 1573 2172 1573 2172 1558 2172 1528 2061 1515 2059 1515 2007 1526 1936 1515 1933 1515 1855 1526 1403 1515 1401 1515 1318 1526 1288 1515 1286 1515 1284 1515 1282 1515 1245 1526 1154 1515 1152 1515 1054 1526 913 1515 911 1515 909 1515 883 1526 781 1515 779 1515 729 1526 699 1515 697 1515 695 1515 563 1526 515 1515 513 1515 511 1515 508 1515 469 1526 426 1515 424 1515 422 1515 420 1515 417 1515 402 1524 402 1558"/>
+                        </Shape>
+                        <String CONTENT="At the mouth of the Kolyma, where the migration of reindeer still continues"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l17" HPOS="396" VPOS="1584" WIDTH="1771" HEIGHT="52" BASELINE="398 1617 2167 1621" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 1617 396 1628 2163 1636 2167 1621 2165 1589 398 1584 398 1617"/>
+                        </Shape>
+                        <String CONTENT="to some extent, a few score reindeer are killed every summer on the water,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l18" HPOS="396" VPOS="1636" WIDTH="1600" HEIGHT="59" BASELINE="398 1680 1996 1675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 1680 398 1695 1994 1690 1996 1675 1992 1645 469 1636 467 1636 396 1647 398 1680"/>
+                        </Shape>
+                        <String CONTENT="and in some places single snares are still spread on the reindeer-trail."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-177_r4" HPOS="396" VPOS="1697" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="396 1697 2174 1697 2174 1827 396 1827"/>
+                    </Shape>
+                    <TextLine ID="mz_1-177_l19" HPOS="511" VPOS="1699" WIDTH="1658" HEIGHT="54" BASELINE="511 1736 2169 1736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="511 1736 511 1753 2169 1753 2169 1736 2169 1706 511 1699 511 1736"/>
+                        </Shape>
+                        <String CONTENT="The frame of the kayak used by the Chukchee for hunting reindeer on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l20" HPOS="396" VPOS="1766" WIDTH="1773" HEIGHT="52" BASELINE="396 1799 2169 1799" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 1799 396 1818 2169 1818 2169 1799 2169 1766 396 1766 396 1799"/>
+                        </Shape>
+                        <String CONTENT="the rivers (Fig. 47, b) is similar to the common Eskimo form, but it is covered"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-177_r5" HPOS="396" VPOS="2582" WIDTH="1778" HEIGHT="680" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="396 2582 2174 2582 2174 3262 396 3262"/>
+                    </Shape>
+                    <TextLine ID="mz_1-177_l21" HPOS="396" VPOS="2587" WIDTH="1773" HEIGHT="60" BASELINE="398 2632 2169 2628" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2632 398 2647 2167 2643 2169 2628 2165 2600 2105 2587 2102 2587 2100 2587 2072 2598 1864 2587 1862 2587 1771 2598 1749 2587 1747 2587 1745 2587 1743 2587 1700 2598 1669 2587 1667 2587 1665 2587 1663 2587 1632 2598 1602 2587 1600 2587 1598 2587 1596 2587 1574 2598 1548 2587 1546 2587 1544 2587 1409 2598 1344 2587 1342 2587 1279 2600 1247 2589 1245 2589 1243 2589 1002 2600 976 2589 974 2589 972 2589 970 2589 933 2600 838 2589 835 2589 833 2589 803 2600 731 2589 729 2589 727 2589 725 2589 708 2600 569 2589 567 2589 502 2600 437 2589 435 2589 433 2589 396 2602 398 2632"/>
+                        </Shape>
+                        <String CONTENT="with reindeer-skin instead of seal-skin. The manhole in the middle remains"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l22" HPOS="398" VPOS="2662" WIDTH="1767" HEIGHT="48" BASELINE="398 2693 2165 2693" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2693 398 2710 2163 2710 2165 2693 2163 2662 398 2662 398 2693"/>
+                        </Shape>
+                        <String CONTENT="open, because there is no need of making it water-tight for use on the river."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l23" HPOS="402" VPOS="2712" WIDTH="1767" HEIGHT="57" BASELINE="402 2753 2169 2753" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 2753 402 2769 2167 2769 2169 2753 2167 2723 402 2712 402 2753"/>
+                        </Shape>
+                        <String CONTENT="The kayak is employed because of its lightness as compared to that of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l24" HPOS="396" VPOS="2769" WIDTH="1771" HEIGHT="62" BASELINE="398 2814 2167 2810" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2814 398 2831 2165 2827 2167 2810 2163 2779 1282 2769 1279 2769 1277 2769 1275 2769 1258 2779 502 2771 500 2771 396 2782 398 2814"/>
+                        </Shape>
+                        <String CONTENT="wooden canoes of the Russianized Yukaghir. The type of the Maritime Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l25" HPOS="398" VPOS="2838" WIDTH="1769" HEIGHT="52" BASELINE="398 2872 2167 2872" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2872 398 2890 2167 2890 2167 2872 2167 2842 398 2838 398 2872"/>
+                        </Shape>
+                        <String CONTENT="kayak is represented in Fig. 47, c. The double paddle (Fig. 47, a) is similar"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l26" HPOS="396" VPOS="2888" WIDTH="1769" HEIGHT="65" BASELINE="398 2933 2165 2929" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 2933 398 2948 2161 2953 2165 2929 2163 2898 2143 2888 2141 2888 2139 2888 2137 2888 2135 2888 2111 2901 1940 2901 1923 2888 1920 2888 1918 2888 1916 2888 1914 2888 1912 2888 1894 2901 1684 2901 1600 2888 1598 2888 1498 2898 1470 2888 1468 2888 1466 2888 1463 2888 1420 2898 1377 2888 1375 2888 1373 2888 1370 2888 1368 2888 1353 2901 1240 2901 615 2890 612 2890 610 2890 567 2901 487 2890 485 2890 482 2890 452 2901 417 2890 415 2890 413 2890 411 2890 409 2890 396 2898 398 2933"/>
+                        </Shape>
+                        <String CONTENT="to that of the Yukaghir, and has a stem that is straight or somewhat curved,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l27" HPOS="400" VPOS="2950" WIDTH="1767" HEIGHT="68" BASELINE="400 2992 2167 2992" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="400 2992 400 3007 866 3007 935 3018 937 3018 1009 3007 1095 3007 1110 3018 1113 3018 1115 3018 1117 3018 2165 3005 2167 2992 2165 2963 2113 2950 2111 2950 2061 2961 2044 2950 2042 2950 2040 2950 2037 2950 2035 2950 2003 2961 1572 2950 1570 2950 1515 2961 1474 2950 1472 2950 1470 2950 1420 2961 1388 2950 1386 2950 1383 2950 1381 2950 1353 2961 1251 2950 1249 2950 1097 2961 1067 2950 1065 2950 1063 2950 944 2961 898 2950 896 2950 894 2950 820 2961 792 2950 790 2950 788 2950 786 2950 740 2961 706 2950 703 2950 701 2950 699 2950 664 2961 532 2950 530 2950 528 2950 500 2961 441 2950 439 2950 437 2950 400 2961 400 2992"/>
+                        </Shape>
+                        <String CONTENT="with blades in the shape of a poplar-leaf. In shallow waters two slender"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l28" HPOS="398" VPOS="3011" WIDTH="1771" HEIGHT="56" BASELINE="398 3052 2169 3052" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 3052 398 3067 2169 3067 2169 3052 2169 3024 1661 3011 1658 3011 1656 3011 1654 3011 1637 3022 1613 3011 1611 3011 1609 3011 1412 3022 1321 3011 1318 3011 1316 3011 1314 3011 1297 3024 1154 3024 1123 3011 1121 3011 1119 3011 968 3022 929 3011 926 3011 924 3011 922 3011 920 3011 903 3024 686 3024 582 3011 580 3011 524 3022 441 3011 439 3011 437 3011 398 3022 398 3052"/>
+                        </Shape>
+                        <String CONTENT="sticks about 150 cm. long and 1 cm. thick are used, both with the dug-out"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l29" HPOS="396" VPOS="3078" WIDTH="1769" HEIGHT="61" BASELINE="398 3108 2165 3113" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="398 3108 396 3124 1431 3139 1433 3139 2163 3128 2165 3113 2163 3082 398 3078 398 3108"/>
+                        </Shape>
+                        <String CONTENT="and with the skin canoe, for punting. The sporadic occurrence of the kayak"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l30" HPOS="396" VPOS="3143" WIDTH="1771" HEIGHT="43" BASELINE="396 3171 2167 3171" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 3171 396 3186 2167 3186 2167 3171 2167 3143 396 3143 396 3171"/>
+                        </Shape>
+                        <String CONTENT="all along the Asiatic shore is very curious. It exists on the Arctic, then"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-177_l31" HPOS="394" VPOS="3191" WIDTH="1771" HEIGHT="69" BASELINE="396 3230 2165 3225" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 3230 396 3249 1238 3260 1240 3260 1308 3249 2040 3258 2042 3258 2165 3245 2165 3225 2161 3199 428 3191 426 3191 424 3191 394 3202 396 3230"/>
+                        </Shape>
+                        <String CONTENT="almost disappears on the Pacific, again appears on the waters of the Middle"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-165.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-165.png; regions_from: zones/chukchi-1-165.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-165_r1" HPOS="389" VPOS="612" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="389 612 2167 612 2167 702 389 702"/>
+                    </Shape>
+                    <TextLine ID="mz_1-165_l1" HPOS="963" VPOS="623" WIDTH="620" HEIGHT="56" BASELINE="965 660 1583 664" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1574 625 965 623 965 660 963 675 1578 679 1583 664 1580 638 1574 625"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l2" HPOS="2063" VPOS="625" WIDTH="80" HEIGHT="63" BASELINE="2068 671 2143 666" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2068 671 2068 684 2141 688 2143 666 2137 625 2063 632 2068 671"/>
+                        </Shape>
+                        <String CONTENT="125"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-165_r2" HPOS="389" VPOS="727" WIDTH="1778" HEIGHT="308" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="389 727 2167 727 2167 1035 389 1035"/>
+                    </Shape>
+                    <TextLine ID="mz_1-165_l3" HPOS="387" VPOS="725" WIDTH="1774" HEIGHT="67" BASELINE="389 772 2161 766" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 731 625 731 604 731 582 731 560 731 539 731 517 731 495 733 474 733 452 733 430 733 409 733 402 733 387 740 389 772 389 792 2159 783 2161 766 2156 736 1578 725 1576 725 1574 725 1572 725 1559 736 654 729 647 731"/>
+                        </Shape>
+                        <String CONTENT="plunge down head foremost; but instead of diving, it lands in the net, where"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l4" HPOS="387" VPOS="785" WIDTH="1769" HEIGHT="65" BASELINE="389 833 2156 829" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2148 792 2135 785 2133 785 2130 785 2128 785 2126 785 2096 796 2055 785 2053 785 2050 785 2048 785 2016 796 1923 785 1920 785 1918 785 1894 796 1812 785 1810 785 1747 796 1684 785 1682 785 1680 785 1635 796 1533 785 1531 785 1528 785 1500 796 1461 785 1459 785 1457 785 1269 798 1227 788 1225 788 1223 788 1134 801 872 801 840 788 838 788 835 788 833 788 803 798 768 788 766 788 764 788 387 794 389 833 389 846 2152 850 2156 829 2154 814 2148 792"/>
+                        </Shape>
+                        <String CONTENT="its flippers easily become entangled, and it is drowned. Often the animal,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l5" HPOS="387" VPOS="846" WIDTH="1772" HEIGHT="58" BASELINE="389 891 2159 887" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 891 389 904 2156 900 2159 887 2156 859 2111 846 2109 846 2107 846 2105 846 2076 857 1786 846 1784 846 1695 857 1663 846 1661 846 1658 846 1656 846 1630 857 1585 846 1583 846 1580 846 1459 857 1392 846 1390 846 1388 846 1386 846 1368 857 1340 846 1338 846 1336 846 1271 859 1230 848 1227 848 1225 848 1141 859 1033 848 1030 848 1028 848 1000 861 699 861 636 848 634 848 632 848 591 859 537 848 534 848 532 848 493 859 430 848 428 848 426 848 387 861 389 891"/>
+                        </Shape>
+                        <String CONTENT="with the net, comes out of the hole and dies on the ice. This net can be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l6" HPOS="387" VPOS="907" WIDTH="1774" HEIGHT="60" BASELINE="389 952 2161 948" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 952 389 967 2159 963 2161 948 2156 917 1277 907 1275 907 1273 907 1271 907 1258 917 474 909 472 909 387 920 389 952"/>
+                        </Shape>
+                        <String CONTENT="used only in the spring, when the ice is several feet thick and blow-holes are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l7" HPOS="391" VPOS="969" WIDTH="336" HEIGHT="63" BASELINE="391 1011 727 1011" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 1011 391 1032 727 1032 727 1011 727 982 391 969 391 1011"/>
+                        </Shape>
+                        <String CONTENT="less numerous."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-165_r3" HPOS="389" VPOS="1035" WIDTH="1778" HEIGHT="63" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="389 1035 2167 1035 2167 1098 389 1098"/>
+                    </Shape>
+                    <TextLine ID="mz_1-165_l8" HPOS="502" VPOS="1024" WIDTH="1659" HEIGHT="71" BASELINE="504 1071 2161 1065" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="504 1071 504 1086 1602 1095 1604 1095 1606 1095 1650 1084 2143 1093 2146 1093 2148 1093 2150 1093 2161 1082 2161 1065 2159 1037 2111 1024 2109 1024 2107 1024 2105 1024 2079 1034 2066 1024 2063 1024 2061 1024 2059 1024 1949 1034 1923 1024 1920 1024 1918 1024 1916 1024 1914 1024 1897 1037 1784 1037 1684 1024 1682 1024 1589 1037 1554 1026 1552 1026 1550 1026 1548 1026 1518 1037 1383 1026 1381 1026 1379 1026 1351 1037 985 1028 983 1028 981 1028 978 1028 963 1039 502 1030 504 1071"/>
+                        </Shape>
+                        <String CONTENT="The more common kind of seal-net has a shape similar to that of the"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-165_r4" HPOS="389" VPOS="2883" WIDTH="1778" HEIGHT="382" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="389 2883 2167 2883 2167 3265 389 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-165_l9" HPOS="389" VPOS="2879" WIDTH="1772" HEIGHT="76" BASELINE="391 2931 2161 2922" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2100 2881 2079 2881 2068 2879 1829 2890 1741 2879 1739 2879 1736 2879 1734 2879 1713 2892 1570 2881 1567 2881 1565 2881 1539 2892 1513 2881 1511 2881 1509 2881 1507 2881 1485 2892 1217 2883 1214 2883 1100 2894 1048 2883 1046 2883 1043 2883 1020 2894 946 2883 944 2883 942 2883 896 2894 853 2883 851 2883 848 2883 846 2883 844 2883 820 2896 476 2885 474 2885 389 2898 391 2931 391 2942 489 2955 491 2955 569 2944 879 2953 881 2953 883 2953 885 2953 903 2942 1273 2950 1275 2950 1277 2950 1279 2950 1295 2940 1658 2950 1661 2950 1663 2950 1702 2940 1825 2948 1827 2948 1829 2948 1832 2948 1847 2937 1866 2948 1868 2948 1871 2950 1998 2950 1998 2948 2001 2948 2003 2948 2018 2937 2137 2946 2139 2946 2141 2946 2143 2946 2161 2935 2161 2922 2156 2892 2113 2881 2100 2881"/>
+                        </Shape>
+                        <String CONTENT="straight fish-net, only that its meshes are much larger (Fig. 43, b). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l10" HPOS="394" VPOS="2946" WIDTH="1765" HEIGHT="59" BASELINE="396 2987 2159 2981" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 2987 396 3005 2156 2998 2159 2981 2154 2953 493 2946 491 2946 394 2957 396 2987"/>
+                        </Shape>
+                        <String CONTENT="specimen obtained is twenty-seven meshes long and ten meshes high, each mesh"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l11" HPOS="394" VPOS="3000" WIDTH="1758" HEIGHT="63" BASELINE="396 3050 2152 3041" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 3050 396 3063 2150 3061 2152 3041 2148 3011 1721 3000 1719 3000 1717 3000 1715 3000 1702 3011 1418 3002 1416 3002 394 3013 396 3050"/>
+                        </Shape>
+                        <String CONTENT="being six inches square. It has large wooden buoys and stone sinkers. It"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l12" HPOS="394" VPOS="3063" WIDTH="1765" HEIGHT="61" BASELINE="396 3111 2159 3100" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 3111 396 3124 2156 3117 2159 3100 2152 3063 394 3072 396 3111"/>
+                        </Shape>
+                        <String CONTENT="is set under the ice between the breathing-holes or along the cracks, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l13" HPOS="391" VPOS="3119" WIDTH="1768" HEIGHT="65" BASELINE="394 3169 2159 3160" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 3169 394 3184 2156 3176 2159 3160 2154 3130 1717 3119 1715 3119 1713 3119 1710 3119 1695 3130 848 3124 846 3124 844 3124 842 3124 827 3134 417 3126 415 3126 413 3126 391 3134 394 3169"/>
+                        </Shape>
+                        <String CONTENT="during the summer in those places to which seals frequently resort. Thus, in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-165_l14" HPOS="391" VPOS="3182" WIDTH="1768" HEIGHT="65" BASELINE="394 3228 2159 3217" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 3228 394 3247 2156 3238 2159 3217 2154 3191 1459 3182 1457 3182 1455 3182 1429 3193 790 3186 788 3186 786 3186 740 3197 411 3189 409 3189 407 3189 404 3189 391 3195 394 3228"/>
+                        </Shape>
+                        <String CONTENT="the small bay of ᴇˊnmɪlɪn, near the village of the same name, the nets are"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="textblock_5">
+                    
+                    <TextLine ID="mz_1-165_unzoned15" HPOS="1271" VPOS="1110" WIDTH="76" HEIGHT="54" BASELINE="1271 1136 1347 1136" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1271 1136 1271 1164 1347 1164 1347 1136 1347 1110 1271 1110 1271 1136"/>
+                        </Shape>
+                        <String CONTENT=""/>
+                    </TextLine>
+
+                </TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

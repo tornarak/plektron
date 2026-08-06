@@ -1,0 +1,363 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-154.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-154.png; regions_from: zones/chukchi-1-154.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-154_r1" HPOS="629" VPOS="610" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="629 610 2407 610 2407 700 629 700"/>
+                    </Shape>
+                    <TextLine ID="mz_1-154_l1" HPOS="1214" VPOS="623" WIDTH="615" HEIGHT="56" BASELINE="1214 655 1829 655" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1821 634 1799 623 1777 623 1756 623 1734 623 1713 623 1691 623 1669 623 1648 623 1626 623 1604 623 1583 623 1561 623 1539 623 1518 623 1496 623 1474 623 1453 623 1431 623 1409 623 1388 623 1366 623 1344 623 1323 623 1301 623 1279 623 1258 623 1236 623 1214 623 1214 655 1214 679 1829 679 1829 655 1825 643 1821 634"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l2" HPOS="641" VPOS="617" WIDTH="106" HEIGHT="67" BASELINE="643 664 747 660" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="706 619 699 617 651 630 641 649 643 664 643 673 690 684 693 684 747 671 747 660 744 630 718 619 706 619"/>
+                        </Shape>
+                        <String CONTENT="118"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-154_r2" HPOS="629" VPOS="725" WIDTH="1778" HEIGHT="359" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="629 725 2407 725 2407 1084 629 1084"/>
+                    </Shape>
+                    <TextLine ID="mz_1-154_l3" HPOS="628" VPOS="720" WIDTH="1780" HEIGHT="74" BASELINE="630 770 2408 764" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2382 733 2360 733 2338 731 2317 731 2295 729 2273 729 2252 729 2239 731 2226 727 2208 727 2187 725 2185 725 2161 731 2143 725 2143 725 2122 723 2107 723 2014 731 1977 720 1975 720 1972 720 1970 720 1968 720 1953 731 1799 723 1797 723 1795 723 1793 723 1777 736 1645 736 1606 723 1604 723 1602 723 1507 733 1403 723 1401 723 1399 723 1396 723 1381 733 1288 723 1286 723 1284 723 1251 733 1225 723 1223 723 1221 723 1219 723 1217 723 1197 736 762 725 760 725 757 725 723 736 662 725 660 725 658 725 628 736 630 770 630 781 686 794 688 794 690 794 725 783 1130 794 1132 794 1253 781 1678 792 1680 792 1682 792 1726 781 1810 792 1812 792 1814 792 1845 779 2386 790 2388 790 2390 790 2393 790 2408 777 2408 764 2403 733 2382 733"/>
+                        </Shape>
+                        <String CONTENT="ally tied into a loop. A short bone or ivory rod, or a long, slender piece"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l4" HPOS="632" VPOS="783" WIDTH="1774" HEIGHT="70" BASELINE="634 829 2406 824" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="634 829 634 842 1033 853 1035 853 1037 853 1039 853 1054 842 1126 853 1128 853 1130 853 1132 853 1149 842 1360 850 1362 850 1593 840 1676 850 1678 850 1912 840 1975 850 1977 850 1979 850 2001 840 2128 850 2130 850 2133 850 2135 850 2150 840 2349 840 2380 850 2382 850 2384 850 2386 850 2388 850 2406 837 2406 824 2401 794 1520 783 1518 783 1515 783 1513 783 1498 794 669 785 667 785 664 785 632 796 634 829"/>
+                        </Shape>
+                        <String CONTENT="of iron (Fig. 34, a³), is inserted in the upper end of the shaft, where it is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l5" HPOS="632" VPOS="853" WIDTH="1774" HEIGHT="47" BASELINE="634 887 2406 883" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="634 887 634 900 2403 896 2406 883 2401 853 632 853 634 887"/>
+                        </Shape>
+                        <String CONTENT="held firmly with lashings. Sometimes it is also wound around with a thin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l6" HPOS="632" VPOS="900" WIDTH="1771" HEIGHT="63" BASELINE="634 948 2403 941" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="634 948 634 963 2401 959 2403 941 2401 913 2364 900 2362 900 2360 900 2358 900 2356 900 2338 911 2308 900 2306 900 2304 900 2302 900 2278 911 2254 900 2252 900 2250 900 2247 900 2245 900 2228 911 2167 900 2165 900 2163 900 2118 911 2087 900 2085 900 2083 900 1981 911 1907 900 1905 900 1793 913 1769 902 1767 902 1765 902 1762 902 1736 913 1708 902 1706 902 1704 902 1550 913 1466 902 1463 902 1461 902 1416 913 1353 902 1351 902 1349 902 1347 902 1329 915 1154 915 790 904 788 904 738 915 695 904 693 904 690 904 632 917 634 948"/>
+                        </Shape>
+                        <String CONTENT="strip of leather. The upper point of the rod is inserted in a circular hole in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l7" HPOS="632" VPOS="974" WIDTH="1774" HEIGHT="60" BASELINE="632 1004 2406 1004" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1004 632 1019 861 1032 864 1032 920 1021 1266 1032 1269 1034 1509 1034 1509 1032 1511 1032 1513 1032 1528 1021 2237 1032 2239 1032 2241 1032 2243 1032 2263 1021 2406 1021 2406 1004 2406 974 632 974 632 1004"/>
+                        </Shape>
+                        <String CONTENT="the slanting base of the harpoon-head, which fits it tightly (Fig. 34, a⁴). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l8" HPOS="630" VPOS="1030" WIDTH="1288" HEIGHT="58" BASELINE="632 1063 1918 1067" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1063 630 1082 638 1088 641 1088 643 1088 645 1088 1916 1084 1918 1067 1916 1034 632 1030 632 1063"/>
+                        </Shape>
+                        <String CONTENT="harpoon-head is released as soon as it strikes the game."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-154_r3" HPOS="629" VPOS="1084" WIDTH="1778" HEIGHT="602" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="629 1084 2407 1084 2407 1686 629 1686"/>
+                    </Shape>
+                    <TextLine ID="mz_1-154_l9" HPOS="734" VPOS="1080" WIDTH="1672" HEIGHT="63" BASELINE="736 1125 2406 1119" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1125 736 1143 2403 1136 2406 1119 2401 1091 1868 1080 1866 1080 1864 1080 1842 1091 1316 1082 1314 1082 1251 1095 734 1095 736 1125"/>
+                        </Shape>
+                        <String CONTENT="Frequently the rod is replaced by two separate pieces. The lower piece"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l10" HPOS="630" VPOS="1136" WIDTH="1776" HEIGHT="69" BASELINE="632 1190 2406 1182" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1190 632 1205 2403 1197 2406 1182 2403 1151 2349 1136 2347 1136 2345 1136 2343 1136 2341 1136 2321 1149 2202 1138 2200 1138 2198 1138 2195 1138 2180 1149 2083 1136 2081 1136 1959 1151 1940 1138 1938 1138 1936 1138 1933 1138 1931 1138 1929 1138 1907 1151 1875 1138 1873 1138 1871 1138 1868 1138 1866 1138 1845 1153 1773 1153 1730 1138 1728 1138 1726 1138 1723 1138 1684 1151 1658 1138 1656 1138 1654 1138 1587 1149 1524 1138 1522 1138 1520 1138 1518 1138 1502 1151 1459 1140 1457 1140 1455 1140 1453 1140 1412 1153 1386 1140 1383 1140 1381 1140 1379 1140 1353 1153 1141 1153 1106 1140 1104 1140 1102 1140 1100 1140 1097 1140 1080 1153 989 1143 987 1143 985 1143 948 1156 911 1143 909 1143 907 1143 744 1156 647 1143 645 1143 643 1143 641 1143 630 1149 632 1190"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 34, b³), which is stout, and cylindrical in shape, is fastened firmly to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l11" HPOS="630" VPOS="1199" WIDTH="1776" HEIGHT="71" BASELINE="632 1247 2406 1240" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1247 632 1260 1219 1270 1221 1270 1223 1270 1247 1260 2384 1266 2386 1266 2388 1266 2390 1266 2406 1255 2406 1240 2403 1212 2354 1199 2351 1199 2349 1199 2347 1199 2321 1210 2271 1199 2269 1199 2267 1199 2265 1199 2247 1210 2215 1199 2213 1199 2211 1199 2208 1199 2185 1210 2159 1199 2156 1199 2154 1199 2152 1199 2150 1199 2135 1210 2066 1199 2063 1199 1992 1210 1957 1199 1955 1199 1953 1199 1951 1199 1916 1210 1758 1201 1756 1201 1754 1201 1752 1201 1739 1212 1693 1201 1691 1201 1689 1201 1639 1212 1617 1201 1615 1201 1613 1201 1515 1212 1418 1201 1416 1201 1414 1201 1412 1201 1396 1214 1299 1214 1223 1201 1221 1201 1219 1201 1188 1214 1110 1203 1108 1203 1106 1203 1067 1214 805 1203 803 1203 801 1203 757 1214 656 1203 654 1203 651 1203 649 1203 630 1214 632 1247"/>
+                        </Shape>
+                        <String CONTENT="shaft. The upper piece (Fig. 34, b⁴) is a slender ivory rod, with a hole in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l12" HPOS="630" VPOS="1257" WIDTH="1773" HEIGHT="65" BASELINE="632 1305 2403 1299" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1305 632 1322 2401 1316 2403 1299 2401 1270 2375 1257 2373 1257 2371 1257 2085 1268 2059 1257 2057 1257 2055 1257 2053 1257 2016 1268 1992 1257 1990 1257 1988 1257 1914 1268 1886 1257 1884 1257 1881 1257 1879 1257 1838 1268 1814 1257 1812 1257 1810 1257 1749 1270 1691 1260 1689 1260 1687 1260 1641 1270 1576 1260 1574 1260 1518 1270 1455 1260 1453 1260 1450 1260 1405 1270 1152 1262 1149 1262 1147 1262 1145 1262 1132 1273 1097 1262 1095 1262 1093 1262 1091 1262 1059 1273 846 1262 844 1262 783 1273 680 1262 677 1262 675 1262 630 1275 632 1305"/>
+                        </Shape>
+                        <String CONTENT="middle. Through the hole is passed a thin strip of leather, both ends of which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l13" HPOS="630" VPOS="1316" WIDTH="1773" HEIGHT="73" BASELINE="632 1366 2403 1357" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1366 632 1381 1245 1389 1247 1389 1249 1389 1271 1379 1541 1387 1544 1387 1546 1387 1548 1387 1565 1376 1580 1387 1583 1387 1585 1387 1587 1389 1944 1389 1944 1387 1946 1387 1994 1376 2102 1385 2105 1385 2107 1385 2109 1385 2124 1374 2367 1385 2369 1385 2371 1385 2403 1372 2403 1357 2399 1329 2169 1316 2167 1316 2165 1316 2163 1316 2148 1329 2035 1329 2011 1316 2009 1316 2007 1316 2005 1316 1957 1329 1927 1318 1925 1318 1923 1318 1719 1329 1689 1318 1687 1318 1684 1318 1682 1318 1680 1318 1665 1329 1619 1318 1617 1318 1615 1318 1509 1331 1455 1320 1453 1320 1450 1320 1424 1331 1331 1320 1329 1320 1219 1331 1152 1320 1149 1320 1147 1320 1145 1320 1132 1331 1097 1320 1095 1320 1093 1320 1091 1320 1089 1320 1069 1333 1039 1322 1037 1322 1035 1322 859 1333 738 1322 736 1322 630 1335 632 1366"/>
+                        </Shape>
+                        <String CONTENT="are fastened to the lashings of the ivory cylinder, forming a loop. The lower"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l14" HPOS="632" VPOS="1379" WIDTH="1769" HEIGHT="67" BASELINE="634 1420 2401 1424" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="634 1420 632 1437 645 1446 647 1446 649 1446 651 1446 2399 1441 2401 1424 2401 1392 2386 1381 2384 1381 2382 1381 2191 1381 2189 1381 2187 1381 2185 1381 2167 1392 2094 1381 2092 1381 2089 1381 2053 1392 1853 1381 1851 1381 1849 1381 1827 1392 1799 1381 1797 1381 1795 1381 1676 1392 1572 1381 1570 1381 1520 1392 1466 1379 1463 1379 1461 1379 1459 1379 1429 1389 1386 1379 1383 1379 1381 1379 1379 1379 1353 1389 1325 1379 1323 1379 1321 1379 1234 1389 1106 1379 1104 1379 1102 1379 1078 1389 1033 1379 1030 1379 1028 1379 1026 1379 1000 1389 983 1379 981 1379 978 1379 976 1379 974 1379 948 1392 861 1392 846 1379 844 1379 842 1379 840 1379 838 1379 812 1389 796 1379 794 1379 792 1379 790 1379 634 1387 634 1420"/>
+                        </Shape>
+                        <String CONTENT="end of the rod fits into a hole in the cylinder, and the loop, thus tightened,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l15" HPOS="632" VPOS="1437" WIDTH="1771" HEIGHT="63" BASELINE="634 1483 2403 1478" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="634 1483 634 1500 2401 1496 2403 1478 2401 1450 2367 1437 2364 1437 2362 1437 2360 1437 2338 1448 2315 1437 2312 1437 2310 1437 2308 1437 2278 1448 2202 1437 2200 1437 2141 1450 1983 1450 1966 1437 1964 1437 1962 1437 1959 1437 1957 1437 1933 1450 1777 1450 1752 1437 1749 1437 1747 1437 1624 1448 1557 1437 1554 1437 1552 1437 1513 1450 1479 1439 1476 1439 1474 1439 1422 1452 1308 1452 1292 1439 1290 1439 1288 1439 1286 1439 1284 1439 1260 1450 1217 1439 1214 1439 1212 1439 1210 1439 1180 1450 1136 1439 1134 1439 1132 1439 1043 1450 944 1439 942 1439 939 1439 900 1450 848 1439 846 1439 844 1439 820 1450 794 1439 792 1439 790 1439 788 1439 764 1450 740 1439 738 1439 736 1439 632 1446 634 1483"/>
+                        </Shape>
+                        <String CONTENT="holds it in place, while the harpoon-head is firmly set on its top. The whole"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l16" HPOS="632" VPOS="1509" WIDTH="1771" HEIGHT="49" BASELINE="634 1543 2403 1539" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="634 1543 634 1558 2401 1554 2403 1539 2399 1509 632 1509 634 1543"/>
+                        </Shape>
+                        <String CONTENT="is at the same time tight and elastic. The head becomes disengaged with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l17" HPOS="630" VPOS="1569" WIDTH="1773" HEIGHT="50" BASELINE="632 1602 2403 1597" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1602 632 1619 2401 1615 2403 1597 2399 1569 630 1569 632 1602"/>
+                        </Shape>
+                        <String CONTENT="blow and remains in the wound, while the movable rod separates from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l18" HPOS="630" VPOS="1621" WIDTH="1130" HEIGHT="67" BASELINE="632 1662 1760 1658" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1662 632 1677 1043 1688 1046 1688 1048 1688 1050 1688 1069 1677 1314 1686 1316 1686 1466 1675 1513 1686 1515 1686 1518 1686 1520 1686 1546 1675 1570 1686 1572 1686 1574 1686 1639 1675 1730 1686 1732 1686 1734 1686 1760 1673 1760 1658 1756 1630 682 1621 680 1621 630 1632 632 1662"/>
+                        </Shape>
+                        <String CONTENT="cylinder and hangs down suspended by the loop."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-154_r4" HPOS="629" VPOS="1686" WIDTH="1778" HEIGHT="1574" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="629 1686 2407 1686 2407 3260 629 3260"/>
+                    </Shape>
+                    <TextLine ID="mz_1-154_l19" HPOS="740" VPOS="1686" WIDTH="1666" HEIGHT="52" BASELINE="740 1721 2406 1721" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="740 1721 740 1738 2406 1738 2406 1721 2406 1690 740 1686 740 1721"/>
+                        </Shape>
+                        <String CONTENT="The lower end of the shaft is furnished with a strong bone or iron point"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l20" HPOS="628" VPOS="1734" WIDTH="1775" HEIGHT="75" BASELINE="630 1788 2403 1777" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 1788 630 1799 911 1809 913 1809 1069 1799 1334 1807 1336 1807 1338 1807 1340 1807 1355 1796 1565 1805 1567 1805 2403 1790 2403 1777 2399 1744 2169 1734 2167 1734 2096 1744 2044 1734 2042 1734 2040 1734 2037 1734 2016 1747 1793 1736 1790 1736 1788 1736 1743 1747 1708 1736 1706 1736 1704 1736 1702 1736 1652 1749 1567 1738 1565 1738 1563 1738 1535 1749 1191 1740 1188 1740 1186 1740 1184 1740 1169 1751 1126 1740 1123 1740 1121 1740 1069 1751 1024 1740 1022 1740 1020 1740 929 1753 913 1742 911 1742 909 1742 907 1742 744 1753 643 1742 641 1742 638 1742 636 1742 628 1747 630 1788"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 34, b⁵) firmly attached by means of a strip of leather. The old method"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l21" HPOS="630" VPOS="1794" WIDTH="1769" HEIGHT="70" BASELINE="632 1840 2399 1846" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="632 1840 630 1853 645 1864 647 1864 649 1864 651 1864 2397 1859 2399 1846 2399 1812 2373 1799 2371 1799 2369 1799 2312 1809 2195 1799 2193 1799 1713 1807 1674 1796 1671 1796 1669 1796 1364 1807 1323 1796 1321 1796 1318 1796 1316 1796 1275 1807 1249 1796 1247 1796 1245 1796 1243 1796 1221 1807 1152 1794 1149 1794 1147 1794 1123 1807 1007 1807 991 1794 989 1794 987 1794 985 1794 983 1794 959 1807 701 1807 686 1794 684 1794 682 1794 680 1794 632 1803 632 1840"/>
+                        </Shape>
+                        <String CONTENT="of attachment, by passing the line through holes made with a drill (Fig. 34, b⁶),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l22" HPOS="628" VPOS="1857" WIDTH="1773" HEIGHT="61" BASELINE="630 1903 2401 1898" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 1903 630 1918 2399 1913 2401 1898 2397 1868 1619 1857 1617 1857 1507 1870 628 1870 630 1903"/>
+                        </Shape>
+                        <String CONTENT="is still employed. The point is used as an ice-pick for breaking holes through"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l23" HPOS="628" VPOS="1918" WIDTH="1773" HEIGHT="58" BASELINE="630 1961 2401 1957" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 1961 630 1976 2399 1972 2401 1957 2397 1929 1515 1918 1513 1918 1431 1929 647 1920 645 1920 643 1920 641 1920 628 1926 630 1961"/>
+                        </Shape>
+                        <String CONTENT="the ice, also for testing the depth of the snow, etc. In some cases a slender"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l24" HPOS="628" VPOS="1978" WIDTH="1773" HEIGHT="63" BASELINE="630 2022 2401 2017" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 2022 630 2041 2401 2032 2401 2017 2397 1987 662 1978 660 1978 658 1978 628 1989 630 2022"/>
+                        </Shape>
+                        <String CONTENT="piece of ivory, used for testing thin, newly formed ice, is substituted for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l25" HPOS="974" VPOS="2037" WIDTH="1427" HEIGHT="58" BASELINE="976 2080 2401 2076" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2080 976 2095 2399 2091 2401 2076 2397 2048 1739 2037 1736 2037 1626 2050 974 2050 976 2080"/>
+                        </Shape>
+                        <String CONTENT="bone or iron point. The shaft of the long harpoon sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l26" HPOS="974" VPOS="2095" WIDTH="1429" HEIGHT="72" BASELINE="976 2141 2403 2136" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2141 976 2156 1622 2156 1687 2167 1689 2167 1691 2167 1730 2154 1741 2162 1741 2165 1743 2165 1745 2165 1747 2165 1851 2154 1866 2165 1868 2165 1871 2165 1873 2165 1949 2154 1981 2165 1983 2165 1985 2165 1988 2165 2009 2154 2031 2165 2033 2165 2035 2165 2401 2152 2403 2136 2401 2108 2356 2095 2354 2095 2351 2095 2282 2106 2146 2095 2143 2095 2141 2095 2120 2106 2098 2095 2096 2095 2094 2095 2092 2095 2061 2106 2031 2095 2029 2095 2027 2095 2024 2095 2022 2095 2022 2097 2011 2108 1836 2108 1752 2095 1749 2095 1669 2108 1518 2097 1515 2097 1513 2097 1511 2097 1498 2110 1401 2110 1368 2097 1366 2097 1364 2097 1362 2097 1360 2097 1347 2110 1262 2110 1219 2097 1217 2097 1214 2097 1061 2108 985 2097 983 2097 981 2097 978 2097 978 2100 976 2100 974 2100 976 2141"/>
+                        </Shape>
+                        <String CONTENT="has a small wooden or bone peg (Fig. 35, a, b), halfway of its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l27" HPOS="976" VPOS="2158" WIDTH="1427" HEIGHT="69" BASELINE="976 2199 2403 2199" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2199 976 2212 1041 2225 1043 2227 1134 2227 1134 2225 1136 2225 1139 2225 1152 2214 1585 2214 1596 2223 1596 2225 1598 2225 1600 2225 1602 2227 1719 2227 1719 2225 1721 2225 1723 2225 1736 2214 2295 2225 2297 2225 2299 2225 2302 2225 2315 2214 2403 2214 2403 2199 2403 2171 2351 2158 2349 2158 2347 2158 2315 2169 2243 2158 2122 2158 2120 2158 2118 2158 2115 2158 2100 2169 2057 2158 2055 2158 2053 2158 1985 2169 1925 2158 1923 2158 1920 2158 1894 2169 1851 2158 1849 2158 1847 2158 1754 2169 1481 2158 1479 2158 1476 2158 1444 2169 1301 2158 1299 2158 1245 2171 1126 2171 1113 2158 1110 2158 1108 2158 1106 2158 976 2167 976 2199"/>
+                        </Shape>
+                        <String CONTENT="length, to allow a firmer grasp of the hand in throwing the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l28" HPOS="976" VPOS="2214" WIDTH="1425" HEIGHT="61" BASELINE="978 2260 2401 2255" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="978 2260 978 2275 2399 2271 2401 2255 2399 2225 2380 2214 2377 2214 2375 2214 2373 2214 2371 2214 2358 2227 2256 2227 2232 2214 2230 2214 2228 2214 2154 2225 2128 2214 2126 2214 2124 2214 2122 2214 2120 2214 2107 2227 2029 2227 2003 2214 2001 2214 1998 2214 1996 2214 1955 2225 1923 2214 1920 2214 1918 2214 1916 2214 1914 2214 1914 2216 1903 2227 1775 2227 1723 2214 1721 2214 1719 2214 1667 2227 1630 2216 1628 2216 1626 2216 1624 2216 1593 2227 1476 2216 1474 2216 1472 2216 1429 2227 1342 2216 1340 2216 1338 2216 1303 2227 1214 2216 1212 2216 1210 2216 1208 2216 1208 2219 1197 2229 976 2229 978 2260"/>
+                        </Shape>
+                        <String CONTENT="weapon. The shaft of the short harpoon is about four feet and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l29" HPOS="976" VPOS="2288" WIDTH="1421" HEIGHT="48" BASELINE="976 2320 2397 2320" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2320 976 2336 2397 2336 2397 2320 2397 2288 976 2288 976 2320"/>
+                        </Shape>
+                        <String CONTENT="a half long; that of the long harpoon, eight feet and a half long."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l30" HPOS="1087" VPOS="2333" WIDTH="1312" HEIGHT="63" BASELINE="1089 2379 2399 2375" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1089 2379 1089 2396 2397 2392 2399 2375 2397 2346 2373 2333 2371 2333 2369 2333 2367 2333 2338 2344 1962 2333 1959 2333 1957 2333 1927 2344 1901 2333 1899 2333 1897 2333 1814 2344 1782 2333 1780 2333 1777 2333 1775 2333 1739 2346 1708 2336 1706 2336 1704 2336 1702 2336 1654 2346 1541 2336 1539 2336 1537 2336 1515 2346 1351 2336 1349 2336 1347 2336 1318 2346 1240 2336 1238 2336 1087 2344 1089 2379"/>
+                        </Shape>
+                        <String CONTENT="The short harpoon is used in winter for killing seals through"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l31" HPOS="974" VPOS="2392" WIDTH="1425" HEIGHT="63" BASELINE="976 2439 2399 2433" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2439 976 2455 2397 2448 2399 2433 2395 2405 2234 2392 2232 2392 2182 2403 2156 2392 2154 2392 2152 2392 2150 2392 2109 2403 2092 2392 2089 2392 2087 2392 2085 2392 1988 2403 1966 2392 1964 2392 1962 2392 1959 2392 1918 2405 1881 2394 1879 2394 1877 2394 1875 2394 1849 2405 1693 2394 1691 2394 1689 2394 1667 2405 1643 2394 1641 2394 1639 2394 1637 2394 1635 2394 1635 2396 1624 2407 1557 2407 1494 2394 1492 2394 1489 2394 1444 2407 1386 2396 1383 2396 1279 2407 1256 2396 1253 2396 1052 2396 1050 2396 1048 2396 1046 2396 1030 2407 1002 2396 1000 2396 998 2396 996 2396 994 2396 974 2405 976 2439"/>
+                        </Shape>
+                        <String CONTENT="their breathing-holes. These holes are found on the land-ice, or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l32" HPOS="976" VPOS="2457" WIDTH="1425" HEIGHT="56" BASELINE="976 2498 2401 2498" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2498 976 2513 2401 2513 2401 2498 2401 2468 2356 2457 2354 2457 2351 2457 2349 2457 2317 2468 2299 2457 2297 2457 2295 2457 2293 2457 2215 2468 2193 2457 2191 2457 2189 2457 2115 2468 2092 2457 2089 2457 2087 2457 1942 2468 1812 2457 1810 2457 1674 2468 1645 2457 1643 2457 1641 2457 1639 2457 1598 2468 1546 2457 1544 2457 1541 2457 1539 2457 1522 2470 1256 2470 1182 2457 1180 2457 1178 2457 1141 2468 1089 2457 1087 2457 976 2468 976 2498"/>
+                        </Shape>
+                        <String CONTENT="on the floe nearest to the shore, whither the ringed and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l33" HPOS="974" VPOS="2522" WIDTH="1423" HEIGHT="52" BASELINE="976 2554 2397 2559" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2554 974 2567 2393 2574 2397 2559 2395 2526 976 2522 976 2554"/>
+                        </Shape>
+                        <String CONTENT="spotted seals resort in the winter time. The holes are concealed,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l34" HPOS="974" VPOS="2576" WIDTH="1425" HEIGHT="58" BASELINE="976 2617 2399 2613" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="976 2617 976 2634 2397 2630 2399 2613 2395 2582 989 2576 987 2576 985 2576 983 2576 974 2582 976 2617"/>
+                        </Shape>
+                        <String CONTENT="for the most part, under small snow mounds, and can be located"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l35" HPOS="976" VPOS="2641" WIDTH="1423" HEIGHT="58" BASELINE="978 2671 2399 2675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="978 2671 976 2691 989 2699 991 2699 994 2699 996 2699 2397 2691 2399 2675 2397 2645 978 2641 978 2671"/>
+                        </Shape>
+                        <String CONTENT="only with the aid of a keen-scented dog selected from the team"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l36" HPOS="978" VPOS="2695" WIDTH="1423" HEIGHT="56" BASELINE="978 2736 2401 2736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="978 2736 978 2751 2401 2751 2401 2736 2401 2708 2107 2695 2105 2695 1996 2706 1970 2695 1968 2695 1966 2695 1964 2695 1931 2706 1905 2695 1903 2695 1901 2695 1838 2706 1808 2695 1806 2695 1803 2695 1801 2695 1775 2706 1747 2695 1745 2695 1743 2695 1741 2695 1719 2706 1687 2695 1684 2695 1682 2695 1680 2695 1658 2706 1637 2695 1635 2695 1632 2695 1630 2695 1589 2706 1563 2695 1561 2695 1559 2695 1474 2706 1394 2695 1392 2695 1390 2695 1388 2695 1388 2697 1377 2708 1141 2708 1087 2695 1084 2695 1082 2695 1052 2706 994 2695 991 2695 989 2695 987 2695 978 2701 978 2736"/>
+                        </Shape>
+                        <String CONTENT="for the purpose. When the hole is found, the sealer sits down"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l37" HPOS="978" VPOS="2766" WIDTH="1423" HEIGHT="48" BASELINE="978 2797 2401 2797" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="978 2797 978 2814 2401 2814 2401 2797 2401 2766 978 2766 978 2797"/>
+                        </Shape>
+                        <String CONTENT="to wait patiently, sometimes for hours. He brings along a small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l38" HPOS="976" VPOS="2814" WIDTH="1425" HEIGHT="58" BASELINE="978 2857 2401 2853" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="978 2857 978 2872 2399 2868 2401 2853 2397 2825 1739 2814 1736 2814 1678 2825 1084 2816 1082 2816 976 2827 978 2857"/>
+                        </Shape>
+                        <String CONTENT="wooden stool to sit on, or makes himself a seat of square pieces"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l39" HPOS="976" VPOS="2870" WIDTH="1425" HEIGHT="72" BASELINE="978 2918 2401 2909" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="978 2918 978 2933 1687 2942 1689 2942 1691 2942 1713 2931 2040 2940 2042 2940 2141 2929 2367 2937 2369 2937 2371 2937 2401 2924 2401 2909 2397 2881 2059 2870 2057 2870 2055 2870 2053 2870 2037 2881 1015 2877 1013 2877 1011 2877 976 2888 978 2918"/>
+                        </Shape>
+                        <String CONTENT="of snow piled together, covering the top with a piece of reindeer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l40" HPOS="625" VPOS="2931" WIDTH="1774" HEIGHT="61" BASELINE="628 2976 2399 2972" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 2940 634 2940 625 2944 628 2976 628 2992 2397 2987 2399 2972 2397 2944 2364 2931 2362 2931 2360 2931 2358 2931 2310 2942 2148 2931 2146 2931 2053 2942 2029 2931 2027 2931 2024 2931 2022 2931 2020 2931 2005 2944 1918 2944 1890 2931 1888 2931 1886 2931 1884 2931 1881 2931 1866 2944 1765 2944 1734 2931 1732 2931 1730 2931 1728 2931 1697 2942 1639 2931 1637 2931 1635 2931 1632 2931 1615 2942 1557 2931 1554 2931 1487 2944 1399 2933 1396 2933 1394 2933 1366 2944 1323 2933 1321 2933 1318 2933 1316 2933 1290 2944 1162 2933 1160 2933 1082 2944 1020 2933 1017 2933 1015 2933 976 2944 805 2933 803 2933 729 2944 669 2935 647 2940"/>
+                        </Shape>
+                        <String CONTENT="skin. Another piece of skin he lays under his feet to keep the cold from his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l41" HPOS="628" VPOS="2998" WIDTH="1771" HEIGHT="61" BASELINE="630 3031 2399 3035" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 3031 628 3046 864 3059 866 3059 2397 3050 2399 3035 2395 2998 630 2998 630 3031"/>
+                        </Shape>
+                        <String CONTENT="soles. He gets the harpoon ready, frees the coil from the sinew twisting, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l42" HPOS="630" VPOS="3059" WIDTH="1767" HEIGHT="52" BASELINE="630 3091 2397 3091" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 3091 630 3111 2395 3111 2397 3091 2395 3063 630 3059 630 3091"/>
+                        </Shape>
+                        <String CONTENT="lays it on his lap. If the snow covering of the hole is very thick, he cautiously"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l43" HPOS="630" VPOS="3124" WIDTH="1767" HEIGHT="47" BASELINE="630 3152 2397 3152" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 3152 630 3171 2395 3171 2397 3152 2395 3124 630 3124 630 3152"/>
+                        </Shape>
+                        <String CONTENT="removes a portion of the snow. As soon as the seal is heard blowing, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-154_l44" HPOS="630" VPOS="3178" WIDTH="1767" HEIGHT="56" BASELINE="630 3210 2397 3210" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="630 3210 630 3234 2395 3234 2397 3210 2395 3182 630 3178 630 3210"/>
+                        </Shape>
+                        <String CONTENT="hunter suddenly stands up and throws the harpoon straight down into the hole"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
