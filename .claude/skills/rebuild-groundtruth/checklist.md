@@ -60,5 +60,6 @@ evidence, it is what both readings that were wrong said.
 - [ ] Every `keying_spec.md` citation in a note quotes its sentence — §5.11
 - [ ] No note claims what another witness said unless it was consulted — §5.12
 - [ ] Notes written in codepoints, not glyphs — §5.12
+- [ ] Every `note` carries a `class`: doubt / semantic / print / layout / artifact
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them

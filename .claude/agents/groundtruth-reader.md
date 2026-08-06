@@ -301,7 +301,20 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   1-based, left to right; it refuses rather than silently doing less than asked.
 - **`note`** for anything an adjudicator would otherwise have to rediscover:
   material outside a polygon, a small-cap flattening, a speck you decided was not
-  ink.
+  ink. **A note is also what lifts the line out of the review UI's dimming** — a
+  line whose text matches the machine draft is shown de-emphasised, and a note
+  overrides that, because agreement about characters is not agreement about the
+  thing you noticed. A line you looked hard at and said nothing about is a line
+  the adjudicator's eye is being told to skip.
+- **`class`** beside it, naming what the note is *about*, one of exactly five:
+  **`doubt`** (you could not close it at the 4× ceiling — the only class that asks
+  for a ruling), **`semantic`** (the letterforms are settled and the sense is not),
+  **`print`** (the page's own error, keyed verbatim per §2.14), **`layout`** (a
+  band, gap, dropped line or covered zone), **`artifact`** (a speck ruled
+  not-type). They are coloured apart in review, so the class is what lets an
+  adjudicator find your one `doubt` among nine `artifact`s without reading all ten.
+  A note whose class you genuinely cannot pick is still worth writing — omitting
+  `class` costs an advisory, omitting the note costs the finding.
 - A **`contamination`** block, always — and **`blind: true` is the ordinary
   answer.** Mark `false` only for something specific and nameable, and say what it
   was. **Seeing the machine text in `ocr lines` is not contamination**: it is a
@@ -620,6 +633,7 @@ evidence, it is what both readings that were wrong said.
 - [ ] Every `keying_spec.md` citation in a note quotes its sentence — §5.11
 - [ ] No note claims what another witness said unless it was consulted — §5.12
 - [ ] Notes written in codepoints, not glyphs — §5.12
+- [ ] Every `note` carries a `class`: doubt / semantic / print / layout / artifact
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them
 <!-- /transclude -->

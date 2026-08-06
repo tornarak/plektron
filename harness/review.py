@@ -52,6 +52,7 @@ from .context import norm_ref
 from .detectors import DOT_ABOVE_G, INVENTORY_CHARS, LOOKALIKES, unlicensed_marks
 from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines, raster_path
 from .paths import crops_dir, decisions_path, html_path, page_dirs, proposal_path
+from .proposal_check import NOTE_CLASSES
 from .usage import since_stamp
 
 CONTEXT_CHARS = 24
@@ -991,6 +992,14 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          ".t1{border-left:5px solid #b8860b;padding-left:.7rem;"
          "background:linear-gradient(90deg,#fdf6e3,transparent 45%)}",
          ".t1.agree{opacity:1}",
+         # A reader's note overrides `.agree` for the same reason `.t1` does, and
+         # it is the more general case: agreement with CATMuS is evidence about
+         # the *characters*, and a note is the reader saying the characters were
+         # never the question. `1-099`'s `Kuvár` is why the rule exists — an
+         # uncatalogued combining acute raised no Tier-1 badge, matched the draft,
+         # and dimmed, so the one line on the page that wanted a ruling was styled
+         # exactly like the forty-four that did not.
+         ".noted.agree{opacity:1}",
          ".badge{display:inline-block;font:11px ui-monospace,monospace;"
          "background:#b8860b;color:#fff;border-radius:3px;padding:.05rem .35rem;"
          "margin-right:.4rem;letter-spacing:.04em}",
@@ -1016,6 +1025,19 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          ".tags{font:11px ui-monospace,monospace;color:#666}",
          ".ref{font:13px ui-monospace,monospace;color:#777;margin-top:.2rem}",
          ".note{font-size:12px;color:#7a4a00;margin-top:.2rem;max-width:70ch}",
+         # One badge per note class, coloured apart rather than merely labelled:
+         # the classes are read at a glance while scrolling, and a row of
+         # identically-styled words is what the eye learns to skip. `doubt` is the
+         # only one that asks for a ruling, so it is the only one in alarm red.
+         ".nb{display:inline-block;font:10px ui-monospace,monospace;color:#fff;"
+         "border-radius:3px;padding:.05rem .3rem;margin-right:.35rem;"
+         "letter-spacing:.05em;vertical-align:.05em}",
+         ".nb-doubt{background:#b00020}",
+         ".nb-semantic{background:#6a1b9a}",
+         ".nb-print{background:#00695c}",
+         ".nb-layout{background:#37474f}",
+         ".nb-artifact{background:#795548}",
+         ".nb-note{background:#8d6e00}",
          # Crops are emitted as one CSS rule per line and referenced by class, not
          # inlined per occurrence. Inlining embedded a line's image once per queue
          # entry; on 1-074 that was 676 KB against 209.
@@ -1227,7 +1249,15 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         marks = codepoints("".join(dict.fromkeys(c for c in full if ord(c) > 127)))
         agree = idx not in differing
         glyphs = t1.get(idx, "")
-        cls = "ln" + (" agree" if agree else "") + (" t1" if glyphs else "")
+        # An unclassed note still counts as noted — the undimming is the reader's
+        # to earn by writing anything at all, and the class only decides which
+        # badge it wears. A class the vocabulary does not know renders under the
+        # neutral badge rather than vanishing; `proposal check` is what refuses it.
+        nclass = (mine.get("class") or "note") if mine.get("note") else ""
+        if nclass not in NOTE_CLASSES:
+            nclass = "note" if nclass else ""
+        cls = ("ln" + (" agree" if agree else "") + (" t1" if glyphs else "")
+               + (" noted" if nclass else ""))
         h.append(f"<div class='{cls}' id='l{idx}'"
                  + (" data-t1=1" if glyphs else "") + ">")
         h.append("<div class=tags>"
@@ -1266,7 +1296,10 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
         if marks:
             h.append(f"<div class=cp>{_esc(marks)}</div>")
         h.append(f"<div class=ref>catmus: {_esc(rec['text']) or '(empty)'}</div>")
-        for key in ("note", "resolved", "corrected"):
+        if mine.get("note"):
+            h.append(f"<div class=note><span class='nb nb-{nclass}'>"
+                     f"{nclass.upper()}</span>{_esc(mine['note'])}</div>")
+        for key in ("resolved", "corrected"):
             if mine.get(key):
                 h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")
         h.append("</div>")

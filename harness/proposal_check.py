@@ -96,6 +96,30 @@ ISSUE_FIELDS = ("line", "issue", "severity", "token", "context", "detail")
 DEFECT = "defect"
 ADVISORY = "advisory"
 
+# What a reader's `note` is *about*, as a closed set, so the review UI can colour
+# the classes apart instead of rendering one undifferentiated amber paragraph.
+#
+# The set is closed and small on purpose: an open vocabulary is a free-text field
+# with extra steps, and the whole value here is that the adjudicator learns five
+# colours and can then skip on sight. Each is a different question:
+#
+#   doubt     the reader could not close it at the 4x ceiling. The only class
+#             that asks the adjudicator for a ruling.
+#   semantic  the letterforms are settled and the sense is not — the
+#             fluent-nonsense case, which is otherwise invisible precisely
+#             because nothing about the characters looks wrong.
+#   print     the page's own error, keyed verbatim per keying_spec §2.14. Not
+#             something to fix; something a later pass may want to find.
+#   layout    a band, gap, dropped line or covered zone — about geometry rather
+#             than glyphs, and settled by a different instrument.
+#   artifact  an ink speck ruled not-type. A ruling already made, worth a
+#             spot-check and no more; the commonest note there is.
+#
+# A note with no class is valid and renders neutral: the undimming that makes any
+# of this work is earned by writing a note at all, and a reader who is unsure
+# which class applies must not be pushed toward silence.
+NOTE_CLASSES = ("doubt", "semantic", "print", "layout", "artifact")
+
 
 def issue(line, text: str, token: str = "", context: str = "",
           detail: str = "", severity: str = DEFECT) -> dict:
@@ -388,6 +412,22 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
     for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
+        nclass, note = rec.get("class", ""), rec.get("note", "")
+        if nclass and nclass not in NOTE_CLASSES:
+            out.append(issue(idx, f"unknown note class {nclass!r}",
+                             detail="one of " + ", ".join(NOTE_CLASSES)))
+        if nclass and not note:
+            out.append(issue(idx, "note class with no note",
+                             detail=f"class {nclass!r} asserts nothing"))
+        # Advisory, not a defect, though it is plainly satisfiable: the class
+        # only decides which badge the note wears, and the part that fixes the
+        # `Kuvár` failure — a noted line is never dimmed — happens without it.
+        # Gating on it would make an unclassifiable observation cost the reader
+        # its note, which is the opposite of the point.
+        if note and not nclass:
+            out.append(issue(idx, "note with no class (which of "
+                             + "/".join(NOTE_CLASSES) + " is it?)",
+                             severity=ADVISORY))
         for hit in apostrophe_flags(text):
             out.append(issue(idx, apostrophe_issues[hit["kind"]],
                              token=hit["token"],

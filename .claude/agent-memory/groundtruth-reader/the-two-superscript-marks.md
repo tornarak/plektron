@@ -28,3 +28,13 @@ A same-root contrast on the same page is worth more than more magnification.
 present in one spelling and absent in the other, matching the text's own
 parenthetical gloss, which settles that it is meaningful rather than print noise.
 That contrast cost no image at all.
+
+**"Stress first" is not a fixed rule — it was one word's print order.** `1-100`'s
+reindeer-color list has a recurring root (`Iᵋˊpɪrg̣ɪn`, `Uuᵋplɪˊlᴇ`, `Iᵋplɪˊlᴇ`,
+`Ilh-ɪᵋplɪˊlᴇ`) where the laryngeal sits immediately after the word's first vowel
+and the stress tick shows up later — sometimes right next to the laryngeal
+(loop-then-tick, both directly after the initial vowel), sometimes several letters
+downstream (after `plɪ`, right before a final `-lᴇ` suffix). Read the print order
+as printed rather than assuming stress always precedes laryngeal; when the two
+marks are adjacent, key them in the visual left-to-right order and flag the
+placement in `note` rather than silently reordering to match `1-043`'s example.
