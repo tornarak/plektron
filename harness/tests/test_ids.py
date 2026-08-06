@@ -18,7 +18,7 @@ import pytest
 from lxml import etree
 
 from harness import ids
-from harness.validate import NAME_TYPES, validate
+from harness.validate import MEASURE_TYPES, NAME_TYPES, validate
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_ID = "{http://www.w3.org/XML/1998/namespace}id"
@@ -614,6 +614,70 @@ def test_a_citation_carries_no_key(tmp_path):
     for attr in ("corresp", "ref", "key", "sameAs"):
         rep = named(tmp_path, f'<bibl {attr}="steller1774">Steller, p. 42.</bibl>')
         assert any("names which work is cited" in e for e in rep.errors), attr
+
+
+def test_a_measure_must_say_which_regime_of_value(tmp_path):
+    """Required, where a <name>'s @type is not. An untyped name is a real state — the
+    page marked a proper noun and did not say what kind. A measure has no such state:
+    which regime of value it belongs to is the entire reason to mark it."""
+    rep = named(tmp_path, "<measure>30 kopeks</measure>")
+    assert any("carries no @type" in e for e in rep.errors)
+
+
+def test_the_measure_types_are_the_books_own_three(tmp_path):
+    """`currency` is not the superset, because 1-093 refuses to let it be: "Money is
+    quite unknown ... the unit of value in Russian trade remains a bundle of tobacco".
+    `weight` is in because the pud and the Russian pound are as recondite as the
+    barter units and denominate half the chapter's prices."""
+    assert MEASURE_TYPES == {"currency", "barter", "weight"}
+    assert not named(
+        tmp_path, '<measure type="barter">a bundle of tobacco</measure>').errors
+    assert any("not a declared type" in e for e in
+               named(tmp_path, '<measure type="money">30 kopeks</measure>').errors)
+
+
+@pytest.mark.parametrize("attr", ["unit", "quantity", "commodity"])
+def test_a_measure_may_not_normalize_its_value(tmp_path, attr):
+    """The same deferral as <name @ref>, one axis over. @quantity additionally cannot
+    hold what the chapter prints — "$2.50 to $3.50", "10 to 15 fawn-skins", "6¼
+    pounds" — and a range is where a per-page pass would start inventing conventions.
+    """
+    rep = named(tmp_path, f'<measure type="weight" {attr}="pud">one pud</measure>')
+    assert any("normalizes the value" in e for e in rep.errors)
+
+
+def test_a_measure_group_holding_no_measure_records_nothing(tmp_path):
+    rep = named(tmp_path, "<measureGrp>a hide of a large ground-seal</measureGrp>")
+    assert any("holds no <measure>" in e for e in rep.errors)
+
+
+def test_a_group_gathers_one_priced_thing_and_not_things_that_are_equal(tmp_path):
+    """1-094 prices a bundle of tobacco seven ways in one sentence, and the seven are
+    pointedly not equal. Under an equality reading the subject would sit in seven
+    groups at once, which no tree expresses; under TEI's own "relate to the same
+    object" it is one group, and the print's ellipsis ("in Yakutsk, 60 kopeks") is
+    resolved by the reader who has the paragraph open."""
+    rep = named(tmp_path,
+                '<measureGrp><measure type="barter">a bundle of tobacco</measure>'
+                ' was worth about <measure type="currency">30 kopeks</measure>;'
+                ' in Yakutsk, <measure type="currency">60 kopeks</measure>;'
+                ' at the Anui fair, <measure type="currency">2.40 rubles</measure>'
+                ' or <measure type="barter">3 black fawn-skins</measure>'
+                '</measureGrp>')
+    assert not rep.errors
+    assert rep.metrics["measures"] == 5 and rep.metrics["measure_groups"] == 1
+
+
+def test_a_group_needs_no_measure_for_the_thing_it_prices(tmp_path):
+    """"for a hide of a large ground-seal, from 10 to 15 fawn-skins of larger size" —
+    the hide is the commodity, not a unit of value, so it carries no <measure> and the
+    group spans from it through its price. Requiring two would refuse the commonest
+    shape in 1-094's inland-trade list."""
+    rep = named(tmp_path,
+                '<measureGrp>for a hide of a large ground-seal, <measure '
+                'type="barter">from 10 to 15 fawn-skins of larger size</measure>'
+                '</measureGrp>')
+    assert not rep.errors and rep.metrics["measure_groups"] == 1
 
 
 def test_a_bare_citation_passes_and_is_counted(tmp_path):

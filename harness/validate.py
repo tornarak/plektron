@@ -147,6 +147,48 @@ NAME_IDENTITY_ATTRS = ("ref", "key", "nymRef")
 # and a per-page pass resolving what it can would leave a store part-keyed by
 # accident of which pages ran first.
 BIBL_IDENTITY_ATTRS = ("corresp", "ref", "key", "sameAs")
+# What a <measure> may be. Required, unlike a <name>'s type, and the asymmetry is
+# deliberate: an untyped name is a real state — the page marked a proper noun and did
+# not say what kind — whereas the only reason to mark a measure at all is which regime
+# of value it belongs to. A span that counts things merely being counted is not this
+# element's business — 1-090's 2,837 reindeer in Alaskan herds, 1-088's four hundred
+# fire-arms in a population of four hundred and forty — and a rule that caught those
+# would fire on most numbers in the book.
+#
+# The test is what the counted thing is *doing*, not whether a price is named. The
+# 1837 Anui tally ("580 red foxes, 80 gray foxes, 13 black foxes, 268 white foxes")
+# is `barter`, not an inventory: that fair reckoned in peltries — 1-079, "the value of
+# other peltries was expressed in red-fox units" — and 1-078 calls the tally a value
+# outright, "these figures must be at least doubled to reach the real trade value".
+# It is "its traffic amounted to two hundred thousand rubles yearly" in the unit the
+# fair used.
+#
+# The three come from the chapter itself rather than from a standard vocabulary, and
+# `currency` is not the superset because 1-093 refuses to let it be:
+#
+#   "The Chukchee trade is carried on exclusively in barter. Money is quite unknown.
+#    The Reindeer people have not even a word for it ... The unit of value in Russian
+#    trade remains a bundle of tobacco 'not tampered with' ... In recent years
+#    brick-tea has also come into use as a standard of value."
+#
+#   currency  money proper — rubles, kopeks, dollars, cents. Foreign to the trade
+#             being described, which is the point: it is the traders' unit.
+#   barter    a commodity doing money's job — a bundle of tobacco, a piece of
+#             brick-tea, a slab of whalebone, a pair of boots, 1-079's whole red-fox
+#             system ("The value of other peltries was expressed in red-fox units").
+#   weight    the pud, the Russian pound, the sack. As recondite as the barter units
+#             and glossed in the same breath — "one pud (thirty-six pounds
+#             Avoirdupois)", "One Russian pound (nine-tenths of a pound Avoirdupois)"
+#             — and the denominator of half the prices in the chapter.
+MEASURE_TYPES = {"currency", "barter", "weight"}
+# The normalizing attributes, refused for the reason @ref is refused on <name>: they
+# mint a controlled vocabulary, and a per-page pass minting one produces as many
+# vocabularies as there are pages. `unit="pud"` also asserts a regularization the page
+# did not make, and `quantity` cannot hold what the chapter actually prints — "$2.50
+# to $3.50", "10 to 15 fawn-skins", "6¼ pounds", "20-30 slabs". A range is where a
+# per-page pass would start inventing conventions, so the field it would invent them
+# in is not available.
+MEASURE_IDENTITY_ATTRS = ("unit", "quantity", "commodity")
 # The four curly quotes are deliberately absent. Under the Tier-1-scoped ASCII policy
 # (keying spec section 1) English prose reproduces the print, curly quotes included, so
 # forbidding them here would reject correct text. What remains is the set with no
@@ -881,6 +923,46 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     "its answer is not written down; the key is the annotation "
                     "pass's, over finished TEI")
 
+    # Value, and the relations between the ways of stating it. `<measureGrp>` is TEI's
+    # "dimensional specifications which relate to the same object", which is read here
+    # as *these measures bear on one priced thing* and deliberately not as *these are
+    # equal*. The looser reading is the one the chapter needs: 1-094 prices a bundle
+    # of tobacco seven ways in one sentence — 30 kopeks in southern Russia, 60 in
+    # Yakutsk, 1.80 rubles in Sredne-Kolymsk, 2.40 or 3 black fawn-skins at the Anui
+    # fair — and those seven are pointedly *not* equal to each other. Under "equal"
+    # the subject would have to sit in seven groups at once, which no tree expresses;
+    # under "one object" it is one group, and the ellipsis the print leaves ("in
+    # Yakutsk, 60 kopeks") is resolved by the reader who has the paragraph open.
+    measures = groups = 0
+    for el in root.iter(q("measure"), q("measureGrp")):
+        local = etree.QName(el).localname
+        if local == "measure":
+            measures += 1
+            kind = el.get("type")
+            if kind is None:
+                span = " ".join("".join(el.itertext()).split())[:40]
+                r.errors.append(
+                    f"<measure> {span!r} carries no @type — which regime "
+                    f"of value it belongs to is the whole reason to mark it "
+                    f"({', '.join(sorted(MEASURE_TYPES))})")
+            elif kind not in MEASURE_TYPES:
+                r.errors.append(
+                    f"<measure type={kind!r}> is not a declared type "
+                    f"({', '.join(sorted(MEASURE_TYPES))})")
+        else:
+            groups += 1
+            if el.find(f".//{q('measure')}") is None:
+                r.errors.append(
+                    "<measureGrp> holds no <measure> — the element records that "
+                    "some measure is a valuation of the thing this span names, so "
+                    "one with none in it records nothing")
+        for attr in MEASURE_IDENTITY_ATTRS:
+            if el.get(attr) is not None:
+                r.errors.append(
+                    f"<{local} @{attr}> normalizes the value, which this pass does "
+                    "not do — the page's own words are the record, and a per-page "
+                    "pass minting units produces one vocabulary per page")
+
     r.metrics = {
         "tier1_spans": tier1_spans,
         # A subset of the above, not a fourth column of the same thing: how much
@@ -897,6 +979,8 @@ def validate(tei_path: Path, ctx: dict | None = None,
         "names": names,
         "names_untyped": untyped,
         "bibls": bibls,
+        "measures": measures,
+        "measure_groups": groups,
         "worklist": len(r.worklist),
     }
     if schema:

@@ -560,6 +560,112 @@ references in the text," so a citation with no entry is expected and is not a
 finding. Do not comment on a miss, and never let an empty result talk you out of
 `<bibl>` on something the page is plainly citing.
 
+## Value — `<measure>`, and the equations it sits in
+
+The book prices things in three registers, often in one sentence, and it names the
+distinction itself (`1-093`, *Units and Prices*):
+
+> The Chukchee trade is carried on exclusively in barter. **Money is quite
+> unknown.** The Reindeer people have not even a word for it… **The unit of value
+> in Russian trade remains a bundle of tobacco** "not tampered with"… In recent
+> years **brick-tea has also come into use as a standard of value**.
+
+So `currency` is not the general word here, and the closed set is three:
+
+    currency  money proper — rubles, kopeks, dollars, cents
+    barter    a commodity doing money's job — a bundle of tobacco, a piece of
+              brick-tea, a slab of whalebone, a pair of boots, a red-fox unit
+    weight    the pud, the Russian pound, the sack — as recondite as the barter
+              units, and the denominator of half the prices
+
+**`@type` is required**, unlike a `<name>`'s. An untyped name is a real state: the
+page marked a proper noun and did not say what kind. A measure has no such state,
+because which regime of value it belongs to *is* the reason to mark it. If you
+cannot say which of the three, you have probably found a quantity rather than a
+value — see the firing rule below.
+
+**Never `@unit`, `@quantity` or `@commodity`.** They normalize, and a per-page pass
+that normalizes mints one vocabulary per page. `@quantity` also cannot hold what
+this chapter prints — `$2.50 to $3.50`, `10 to 15 fawn-skins`, `6¼ pounds`, `20-30
+slabs`. A range is exactly where a per-page pass would start inventing conventions,
+so the field it would invent them in is not available. The gate errors on all three.
+
+### The firing rule: is this thing doing money's job here?
+
+Mark a **price**, an **equivalence**, or an **aggregate stated in a unit of value**.
+Leave bare a count of things that are merely being counted. The test is not
+price-versus-count — it is what the thing is *doing* in that sentence, and the same
+noun does both jobs on the same page.
+
+**A turnover counted in peltries is a monetary aggregate, not an inventory.** The
+1837 Anui figures — "there were sold at the fair 100 beavers, 395 martens, 30
+lynxes… 580 red foxes, 80 gray foxes, 13 black foxes, 268 white foxes, 8 blue foxes,
+and 1563 walrus-tusks" — are `barter` measures, because that fair reckoned in
+peltries: `1-079` says "the value of other peltries was expressed in red-fox units",
+and the book itself treats the tally as a value figure two sentences later — "these
+figures must be at least doubled **to reach the real trade value**". It is the same
+statement as "its traffic amounted to two hundred thousand rubles yearly" one
+paragraph earlier, in the unit the fair actually used. Group the run.
+
+| mark | leave bare |
+|---|---|
+| "was equal to **ten red foxes**" — an equivalence | "in 1899 there were 9 herds … **2,837 reindeer**" — livestock, not exchange |
+| "for a Winchester rifle, **2 sledge-reindeer**" — a price | "the number of fire-arms in 1901 was **over four hundred** in a population of **four hundred and forty**" — possessions, and people |
+| "sold at the fair **580 red foxes**…" — a turnover in the fair's own unit | "about **ten whaling-ships**" come annually — vessels |
+
+A rule that caught the right-hand column would fire on most numbers in the book,
+which is the failure `CLAUDE.md` names: a detector firing on ordinary prose buries
+the real hits. And a rule that missed the left-hand column's third row would discard
+the only quantitative record the chapter has of what the fair was worth. Both errors
+are one judgement, made with the sentence in front of you — which is the whole
+argument for marking here rather than later.
+
+### `<measureGrp>` — measures of one priced thing, not measures that are equal
+
+TEI calls it "dimensional specifications which relate to the same object", and
+**take that literally rather than reading it as equality**. `1-094` prices a bundle
+of tobacco seven ways in one sentence, and those seven are pointedly not equal to
+each other:
+
+    <measureGrp><measure type="barter">a bundle of tobacco</measure>
+      (<measure type="weight">a pound and a quarter Avoirdupois</measure>) was
+      worth about <measure type="currency">30 kopeks</measure>; in Yakutsk,
+      <measure type="currency">60 kopeks</measure>; in Sredne-Kolymsk,
+      <measure type="currency">1.80 rubles</measure>; at the Anui fair,
+      <measure type="currency">2.40 rubles</measure> or <measure type="barter">3
+      black fawn-skins of small size</measure></measureGrp>
+
+Under an equality reading the subject would have to sit in seven groups at once,
+which no tree expresses. Under "one object" it is one group — and the ellipsis the
+print leaves ("in Yakutsk, 60 kopeks", with no repeated subject) is resolved by the
+group boundary, by you, with the paragraph open. That is the recovery no later pass
+gets for free.
+
+A two-term equation is the same element with two measures in it:
+
+    At the usual rate, one <measureGrp><measure type="weight">pud (thirty-six
+    pounds Avoirdupois)</measure> of tobacco was equal to <measure
+    type="barter">ten red foxes</measure></measureGrp>.
+
+- **The priced thing need not itself be a measure.** "for a hide of a large
+  ground-seal, from 10 to 15 fawn-skins of larger size" — the hide is the commodity,
+  not a unit of value, so it carries no `<measure>` and the group spans from it
+  through its price. A `<measureGrp>` needs **at least one** `<measure>`; the gate
+  says so.
+- **A bare `<measure>` is right where nothing is being priced** — "its traffic
+  amounted to two hundred thousand rubles yearly", "the annual receipts being about
+  twenty thousand rubles". A total is a value without a transaction.
+- **`1-079`'s red-fox system is a run of two-term groups**, not one big one: "four
+  white foxes were equal to one red fox", "one gray fox or one beaver was equal to
+  two red foxes", "one black fox was equal to twenty red foxes". Each sentence
+  states one relation; the paragraph's claim that "the value of other peltries was
+  expressed in red-fox units" is prose, and you do not encode it as structure.
+
+**The Chukchee words for money are `<term>`s, not measures** — `keliˊtul` ("a piece
+of variegated") and `manêˊman` are glossed common nouns, and `1-093` introduces them
+precisely to say the thing they name is unknown. Naming a concept is not stating a
+value.
+
 # Language spans and the firewall — read this twice
 
 Non-English content splits into two tiers, treated differently, because the risk
@@ -887,6 +993,10 @@ identity is a different scheme and does not exist yet.
   which are the ones easiest to read past? Every citation wrapped in `<bibl>` over
   its whole extent, with no key, `@corresp` or comment recording what `find
   authority` returned?
+- Every `<measure>`: typed from the three, and doing money's job in its sentence
+  rather than just being counted? Any `@unit`, `@quantity` or `@commodity`? (Always
+  no.) Every priced thing's valuations gathered in one `<measureGrp>`, the ones the
+  print leaves elliptical included? Any turnover stated in peltries left bare?
 - Every `<supplied>`: `@resp` and a declared `@reason`? A frame shared by a gloss
   list written once on the list, and never restated on a continuation?
 - Is there any `<lb/>`? Any hand-written `@part`/`@prev`/`@next`? (Always no.)
