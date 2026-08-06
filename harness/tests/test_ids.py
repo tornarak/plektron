@@ -591,3 +591,35 @@ def test_names_are_counted_and_never_put_on_the_worklist(tmp_path):
     rep = named(tmp_path, '<name>Karagha</name> and <name type="hydronym">Anui</name>')
     assert rep.metrics["names"] == 2 and rep.metrics["names_untyped"] == 1
     assert not [w for w in rep.worklist if "name" in w.lower()]
+
+
+def test_an_english_person_is_a_name_like_a_tier1_one(tmp_path):
+    """`anthroponym` is the one type not scoped to Tier-1. A bare `Steller` is a man,
+    a work or a jay and the string carries none of the three, so the automatable
+    coverage that justifies leaving `Chukchee` and `Phoca hispida` bare does not
+    exist here. No xml:lang, so no @resp: the firewall is about glyph identity, and
+    nobody needs a model's authority to have read a Latin-alphabet surname."""
+    assert not named(tmp_path, '<name type="anthroponym">Pavlutsky</name>').errors
+
+
+# `<bibl>` marks that a work is cited. Which work is `find authority`'s answer, read
+# while collating and deliberately not written down — the same deferral as `<name>`,
+# spelled in the attributes TEI uses for bibliographic identity.
+
+def test_a_citation_carries_no_key(tmp_path):
+    """Every one of these would point the citation at a data/authorities.json entry.
+    The printed list is open — "For other authorities see references in the text" —
+    so a per-page pass resolving what it could would key the store by accident of
+    which pages ran first."""
+    for attr in ("corresp", "ref", "key", "sameAs"):
+        rep = named(tmp_path, f'<bibl {attr}="steller1774">Steller, p. 42.</bibl>')
+        assert any("names which work is cited" in e for e in rep.errors), attr
+
+
+def test_a_bare_citation_passes_and_is_counted(tmp_path):
+    """The extent is the deliverable: the reader decided this run of text is a
+    reference to a work, which is what no string match recovers."""
+    rep = named(tmp_path,
+                '<bibl><name type="anthroponym">Steller</name>, p. 42.</bibl>')
+    assert not rep.errors
+    assert rep.metrics["bibls"] == 1 and rep.metrics["names"] == 1

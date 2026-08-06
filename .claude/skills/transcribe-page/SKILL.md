@@ -46,6 +46,7 @@ rejects a bare integer rather than guess which of the three parts you meant.
     uv run harness tei context PP-NNN                  the input contract
     (read the page image with the Read tool)       the only witness that matters
     uv run harness ocr zoom PP-NNN --only 7,20 --store gt    the closer look
+    uv run harness find authority 'Dall, I, p. 375.'   what work a citation names
     (author tei/chukchi-PP-NNN.xml)                your reading
     uv run harness tei expand PP-NNN --commit          ratified Tier-1 forms in
     uv run harness corpus normalize PP-NNN             NFD + spacing
@@ -464,7 +465,7 @@ anyway — it is what puts the `scope` column beside each gloss.
 - Most gloss lists need none of this. A list whose glosses stand on their own gets
   no head, and that is the ordinary case.
 
-## Proper names — Tier-1 only, category never identity
+## Proper names — every person, Tier-1 for the rest; category never identity
 
 A Tier-1 form the page identifies as a name gets `<name>` instead of `<foreign>`:
 
@@ -500,15 +501,64 @@ god, one a village, one a person, and the rest are common nouns. Nothing in the
 shape of a word says which, and guessing from it is the firewall's failure mode one
 category over from glyphs.
 
-**Only Tier-1 names.** English and Latin proper nouns — `Chukchee`, `Lamut`,
-`Anadyr`, `Phoca hispida` — are left bare. Not because they do not matter, but
-because they are a string match anything can find over finished TEI, whereas
-"this Chukchee form is a village" is recoverable only by reading the page. Marking
-them here would buy automatable coverage with thousands of hand judgements.
+**Every personal name, whatever its language.** `Pavlutsky`, `Steller`,
+`Nordenskiöld`, `Jochelson` are `<name type="anthroponym">` exactly as `Poˊñolɪn`
+is. Persons are the one class where the string does not carry its own category: a
+bare `Steller` is a man, a citation, or a jay, and nothing but the page decides
+which. `<name>` is that decision, written down.
+
+**Everything else non-Tier-1 stays bare** — `Chukchee`, `Lamut`, `Anadyr`, `Phoca
+hispida`. Not because they do not matter, but because they *are* a string match
+anything can find over finished TEI, whereas "this Chukchee form is a village" is
+recoverable only by reading the page. Marking them would buy automatable coverage
+with thousands of hand judgements. Persons are the exception because they are the
+case where the automatable route does not exist.
+
+An English or Russian name carries no `xml:lang` it would not otherwise carry, and
+so no `@resp` — the provenance rule is about glyph identity, and nobody needs a
+model's authority to have read `Pavlutsky`. A Tier-1 name keeps both, as before.
 
 **Never `@ref`, `@key` or `@nymRef`.** Which village `Uñiˊsak` is, and whether this
-name is that one, belongs to the annotation pass, which runs over finished TEI with
+Dall is that Dall, belongs to the annotation pass, which runs over finished TEI with
 the whole corpus in view. The gate errors on all three.
+
+## Sources cited — `<bibl>`, and the lookup behind it
+
+The commonest personal names in the book are its sources, and they appear bare:
+`Steller`, `Jochelson`, `Nordenskiöld`, often with nothing but a volume and a page
+beside them. A citation gets `<bibl>` with the name marked inside it:
+
+    <note n="1" place="bottom"><bibl><name type="anthroponym">Steller</name>,
+      p. 42.</bibl></note>
+
+`<bibl>` spans the whole citation — name, volume, page — not just the name. The
+element says "this is a reference to a work"; the `<name>` inside says "and this
+part of it is a person". A person the narrative talks about (`Pavlutsky` leading a
+campaign) gets the `<name>` and no `<bibl>`, because no work is being cited.
+
+**`harness find authority QUERY` is the instrument**, over `data/authorities.json`
+— the printed *Authorities Quoted* of part 1's front matter, which is book-internal
+apparatus and therefore evidence that binds. A footnote form goes in whole:
+
+    uv run harness find authority 'Dall, I, p. 375.'
+    uv run harness find authority Nordenskiöld --volume II
+    uv run harness find authority --sigla            the resolution table
+
+It returns **every** match, ranked by which field caught it, because 51 sigla share
+34 names and a single answer would be manufactured.
+
+**What the lookup is for is the reading, not the record.** It settles whether a
+bare name is a citation at all, how the diaeresis in `Nordenskiöld` is set, whether
+a footnote naming two works is one `<bibl>` or two. **Nothing about the result is
+written into the file** — no key, no `@corresp`, no comment. `steller1774` is an
+identity, and identity is the annotation pass's, which will redo this lookup with
+the whole corpus in view and can do it better. What this pass leaves behind is the
+`<bibl>` boundary, which is the part that needed a reader.
+
+**The list is open and says so.** Its closing line is "For other authorities see
+references in the text," so a citation with no entry is expected and is not a
+finding. Do not comment on a miss, and never let an empty result talk you out of
+`<bibl>` on something the page is plainly citing.
 
 # Language spans and the firewall — read this twice
 
@@ -831,8 +881,12 @@ identity is a different scheme and does not exist yet.
   `@target` where the page prints a gloss once for a pair? Is `type="literal"` or
   `"etymon"` written only where the page cues it?
 - Every Tier-1 name the page identifies as one: `<name>` rather than `<foreign>`,
-  typed only where the page says, and carrying no `@ref`/`@key`? Every English or
-  Latin proper noun left bare? (Both: always.)
+  typed only where the page says, and carrying no `@ref`/`@key`? Every non-Tier-1
+  proper noun that is **not** a person left bare? (Both: always.)
+- Every personal name marked, whatever its language — the book's sources included,
+  which are the ones easiest to read past? Every citation wrapped in `<bibl>` over
+  its whole extent, with no key, `@corresp` or comment recording what `find
+  authority` returned?
 - Every `<supplied>`: `@resp` and a declared `@reason`? A frame shared by a gloss
   list written once on the list, and never restated on a continuation?
 - Is there any `<lb/>`? Any hand-written `@part`/`@prev`/`@next`? (Always no.)

@@ -88,14 +88,20 @@ GLOSS_TYPES = {"literal", "etymon"}
 # attestation — "type only what's evidenced" means most names carry none of these,
 # and an untyped <name> is the designed outcome rather than an unfinished one.
 #
-# **Scoped to Tier-1 names**, and that scope is the point rather than a limitation.
-# A Chukchee form glossed "a village" or "personal name" is a fact only a reader of
-# the page can record, and it is unrecoverable later without re-reading; an English
-# ethnonym or a Latin binomial is a string match anything can find over finished TEI,
-# so asking a per-page pass to mark every "Chukchee" and "Phoca" buys automatable
-# coverage at the price of thousands of hand judgements and the errors in them. Hence
-# no `taxon`: the binomials are Latin in English prose and out of scope, and a type
-# nothing can carry is dead surface in the gate.
+# **Scoped to Tier-1 names, plus persons at every tier**, and the asymmetry is the
+# point rather than a limitation. A Chukchee form glossed "a village" or "personal
+# name" is a fact only a reader of the page can record, and it is unrecoverable later
+# without re-reading; an English ethnonym or a Latin binomial is a string match
+# anything can find over finished TEI, so asking a per-page pass to mark every
+# "Chukchee" and "Phoca" buys automatable coverage at the price of thousands of hand
+# judgements and the errors in them. Hence no `taxon`: the binomials are Latin in
+# English prose and out of scope, and a type nothing can carry is dead surface here.
+#
+# Persons are where that argument fails, so `anthroponym` is not scoped by tier.
+# `Steller` bare in a footnote is a man, a work, or a jay, and the string carries
+# none of the three; the commonest personal names in the book are its sources, which
+# it cites by surname alone. Automatable coverage does not exist for that case, so
+# there is nothing to buy it back from.
 #
 # One element with @type rather than TEI's <persName>/<placeName>/<geogName>,
 # because the untyped state has to be expressible in the *same* element: typing a
@@ -130,6 +136,17 @@ NAME_TYPES = {"anthroponym", "ethnonym", "toponym", "hydronym",
 # line in a skill's never-do list — a checkable rule does not depend on the pass
 # behaving.
 NAME_IDENTITY_ATTRS = ("ref", "key", "nymRef")
+# The same deferral on <bibl>, which marks a citation's extent and nothing more. The
+# attributes differ because TEI spells bibliographic identity differently — @corresp
+# and @sameAs point a citation at the work it names — but the rule is one rule: this
+# pass records that a work is being cited, never *which* work. `find authority` is
+# read while collating and its answer is not written down; `data/authorities.json`
+# keys belong to the annotation pass, which resolves them with the whole corpus in
+# view rather than one page at a time. The printed list is open ("For other
+# authorities see references in the text"), so a body citation outside it is expected
+# and a per-page pass resolving what it can would leave a store part-keyed by
+# accident of which pages ran first.
+BIBL_IDENTITY_ATTRS = ("corresp", "ref", "key", "sameAs")
 # The four curly quotes are deliberately absent. Under the Tier-1-scoped ASCII policy
 # (keying spec section 1) English prose reproduces the print, curly quotes included, so
 # forbidding them here would reject correct text. What remains is the set with no
@@ -851,6 +868,19 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     "not do — mark what the page says the name is and leave "
                     "@ref/@key for the annotation pass over finished TEI")
 
+    # A citation's extent, and nothing about which work it names. Counted rather
+    # than gated for presence: a page citing nothing is the ordinary page.
+    bibls = 0
+    for el in root.iter(q("bibl")):
+        bibls += 1
+        for attr in BIBL_IDENTITY_ATTRS:
+            if el.get(attr) is not None:
+                r.errors.append(
+                    f"<bibl @{attr}> names which work is cited, which this pass "
+                    "does not do — `find authority` is read while collating and "
+                    "its answer is not written down; the key is the annotation "
+                    "pass's, over finished TEI")
+
     r.metrics = {
         "tier1_spans": tier1_spans,
         # A subset of the above, not a fourth column of the same thing: how much
@@ -866,6 +896,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
         # to avoid. Unlike the Tier-1 census above, this count trends nowhere.
         "names": names,
         "names_untyped": untyped,
+        "bibls": bibls,
         "worklist": len(r.worklist),
     }
     if schema:

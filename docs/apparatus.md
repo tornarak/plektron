@@ -145,6 +145,17 @@ titles, then the printed blocks, reports which of those caught each hit, and
 manufactured, and no hit at all is a legitimate outcome on an open list. It
 resolves nothing; a human reads the candidates.
 
+**Collation is now a second consumer, and it writes nothing back.** The pass wraps a
+citation in `<bibl>` and marks the author inside it, so the *extent* of a reference —
+the part no string match recovers, since the book cites by bare surname — is recorded
+per page. Which work it names is not: `find authority` is read while collating to
+settle the reading, and its answer never reaches the file, `harness tei validate`
+refusing `@corresp`, `@ref`, `@key` and `@sameAs` on `<bibl>` to make that mechanical.
+The annotation pass remains the only thing that keys a citation, because it resolves
+with the whole corpus in view rather than one page at a time — and because this list
+is open, so a per-page pass keying what it could would leave the store part-resolved
+by accident of which pages ran first.
+
 **The payload is `cited_as`.** The book cites in short form and this list is the only
 witness to what those resolve to. It is **structured — `{name, volume, short_title}` —
 not a string**, because the surface form in the body is not the form printed here:
