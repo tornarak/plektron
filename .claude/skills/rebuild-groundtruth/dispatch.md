@@ -335,6 +335,58 @@ Worth keeping because the *shape* recurred rather than the instances.
   keying_spec.md §2.11 now states the dash; a reader reduced to corpus archaeology
   mid-pass is a gap in the spec, and it should report one.
 
+## Profile the batch before you forget it ran
+
+`agents usage` and `agents transcript` are the instruments, and the questions
+below are the ones a batch can actually answer. **Run this while the transcripts
+are still on disk** — they live in `/tmp`, so a profile deferred is a profile
+lost, and every change to the prompt or the guard is an experiment whose control
+arm was the batch before it.
+
+Cohorts are numbered `c1..cN` in scope, so `agents transcript --cohort c4` asks a
+question about the fan-out rather than about one reader. Compare against the
+previous cohort's row rather than against an absolute: the pages differ in
+density, and a dense Tier-1 page legitimately costs more than a page of English
+prose. **A rise is a question, not a verdict.**
+
+Read these five, in this order:
+
+1. **Did the prefix hold?** One cohort per fan-out; several means a byte varied
+   ahead of the shared block. `warm` should be `agents - 1`, and `missed` zero —
+   any other number is a stagger that did not take, and `preamble` says which
+   turn disagreed.
+2. **`refused`, in the classes table.** This is the batch's dead weight: calls a
+   guard stopped, so every token bought nothing. It has run 2–4 per reader per
+   batch, and the reaches repeat — `ls`, `cat`, a shell operator. **A refusal
+   that recurs across independent readers is a defect in the instruction or the
+   allowlist, not in the readers**, and one that appears for the first time is
+   worth reading in full: a guard arm that refuses the spelling everyone actually
+   types is a rule that does not exist, and one was found exactly that way.
+3. **`raster` calls against `raster` mean.** Falling calls with a rising mean is
+   batching working — fewer images, each carrying more. Rising calls with a
+   falling mean is a reader re-aiming, which is what a page in trouble looks like
+   before it runs out of turns.
+4. **`text`, which should be near nothing.** A reader has its spec in its prompt
+   and a verb for the CLI reference. A large `text` row means it went reading
+   something instead, and the two that cost most are already refused.
+5. **`opening` as a share of `ALL`.** Once it passes about two-thirds, the batch
+   is dominated by what readers were told rather than by what they did, and
+   further tool work buys progressively less. That is the signal to spend effort
+   on the prompt instead.
+
+**A reader that died mid-run distorts its cohort.** Its transcript ends without a
+final context, so its share of the pooled breakdown is nonsense — a negative
+`none` row and totals over 100%. Name the survivors explicitly
+(`agents transcript a1b2 c3d4 …`) rather than trusting `--cohort` there. An
+agent that failed also cost a full cold opening for nothing, and the re-dispatch
+pays another if the cache has since expired: that is the price of the failure,
+and it belongs in the write-up rather than in the readers' column.
+
+**Wall clock is not a reader measurement.** An agent's span is `last - first` on
+its own row; the gap between dispatch and your reading of the result includes
+however long the session sat idle, and reporting that as a stall blames a reader
+for a coffee break.
+
 ## What to ask for back
 
 The page's character (kind of page, running title, folio, footnotes, figures), the

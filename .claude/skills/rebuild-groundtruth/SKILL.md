@@ -34,7 +34,13 @@ batch returns. In short:
       identical, staggering the first launch about ten seconds…
     uv run harness ocr reconcile PP-NNN ...   what came back
     uv run harness proposal marks PP-NNN ...  the batch read distributionally
-    uv run harness agents usage               what the fan-out actually paid
+    uv run harness agents usage               what the fan-out actually paid,
+                                              and what its context was made of
+
+**Profile the batch before the transcripts age out** — they live in `/tmp`, and
+every change to the prompt or the guard is an experiment whose control arm was
+the batch before it. `dispatch.md`'s "Profile the batch" section names the five
+rows worth reading and what a rise in each one means.
 
 **The prompt names no page.** Each reader runs `ocr claim`, which takes the next ref
 off the queue atomically and prints that page's survey. Identity of the first turn

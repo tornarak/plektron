@@ -190,7 +190,11 @@ case "$COMMAND" in
       case "$arg" in
         -*) continue ;;
         *..*) bad=1 ;;
-        */review/*|review/*|review|*"$MEMORY"*) hits=$((hits + 1)) ;;
+        # `$MEMORY` ends in a slash, so the bare directory — which is how a
+        # caller actually types `ls` — matched nothing and was refused on the
+        # first batch after this arm was written. Both spellings, or the rule
+        # allows only the form nobody uses.
+        */review/*|review/*|review|*"$MEMORY"*|*"${MEMORY%/}") hits=$((hits + 1)) ;;
         *) bad=1 ;;
       esac
     done

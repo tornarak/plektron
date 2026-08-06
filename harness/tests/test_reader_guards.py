@@ -168,6 +168,12 @@ def test_gt_an_operator_outside_quotes_is_still_refused(cmd):
     "ls -la review/1-031/zoom",
     "ls review",
     "ls .claude/agent-memory/groundtruth-reader/",
+    # Without the trailing slash, which is how anyone actually types it — and
+    # which the first version of this arm refused, because the constant it
+    # matched against carries one. A rule that allows only the spelling nobody
+    # uses is a rule that does not exist.
+    "ls .claude/agent-memory/groundtruth-reader",
+    "ls /home/x/machine_press/.claude/agent-memory/groundtruth-reader",
     "ls review/1-031 review/1-031/sheets",
 ])
 def test_gt_ls_is_allowed_over_the_trees_it_may_already_read(cmd):
