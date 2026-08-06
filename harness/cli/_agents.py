@@ -7,13 +7,16 @@ pass's `entry_bounds.py queue`/`claim`) both fan out over pages, and both are
 worth measuring the same way — a script with no reference entry and no surface test is
 how the last set of undocumented flags accumulated.
 
-Two actions. `usage` answers the question a coordinator can act on — did the
-siblings share a prefix, and did the ones after the first read it. `transcript`
-is what to open when the answer is no, or when a total looks wrong: it walks one
-agent request by request and shows what each one added.
+`usage` answers the question a coordinator can act on — did the siblings share a
+prefix, and did the ones after the first read it. `transcript` is what to open
+when the answer is no, or when a total looks wrong: it walks one agent request by
+request and shows what each one added. `sync` is the odd one out and touches the
+contract rather than a measurement: it refills the reader's transcluded blocks
+from their sources.
 """
 from __future__ import annotations
 
+from ..dispatch import sync_transcludes
 from ..usage import (
     batch,
     classes,
@@ -68,6 +71,19 @@ def register(cli):
         help="the task-transcript directory [the newest session for --root's "
              "project that has any]")
 
+    p = action(g, "sync", run_sync,
+               help="refill the groundtruth-reader's transcluded blocks from "
+               "the files they name. The reader's whole contract has to sit in "
+               "its system prompt and `keying_spec.md` has to stay one file, so "
+               "the spec is copied in and `test_transclusion.py` fails on a "
+               "copy that disagrees with its source. **Edit the source, then "
+               "run this** — `ocr queue` does it too, but on the way out of a "
+               "dispatch, which is no help to a spec edit made between batches. "
+               "Bare form names the stale blocks and writes nothing")
+    opt(p, "--commit", is_flag=True,
+        help="actually rewrite the agent file — bare form only reports which "
+             "sources its blocks have drifted from")
+
     p = action(g, "transcript", run_transcript,
                help="one named agent's requests, and what each one added to "
                "its context. **`added` is the column**: a request's whole "
@@ -99,6 +115,14 @@ def register(cli):
     opt(p, "--tasks", type=str, default=None,
         help="the task-transcript directory [the newest session for --root's "
              "project that has any]")
+
+
+def run_sync(a) -> int:
+    r = sync_transcludes(a.root, commit=a.commit)
+    out(a, [{"agent": r["agent"], "stale": len(r["updated"]),
+             "sources": ", ".join(r["updated"]) or "—",
+             "commit": bool(a.commit)}], name="transclusions")
+    return 0
 
 
 def run_transcript(a) -> int:

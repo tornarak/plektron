@@ -212,7 +212,8 @@ TRANSCLUDE = re.compile(
     re.MULTILINE | re.DOTALL)
 
 
-def sync_transcludes(root: Path = Path("."), agent: Path = AGENT) -> dict:
+def sync_transcludes(root: Path = Path("."), agent: Path = AGENT,
+                     commit: bool = True) -> dict:
     """Refill the agent's transcluded blocks from the files they name.
 
     **The reader's whole contract has to be in its system prompt, and
@@ -229,6 +230,11 @@ def sync_transcludes(root: Path = Path("."), agent: Path = AGENT) -> dict:
 
     Returns the sources that changed, so `queue` can say so: the agent file is
     tracked, and a changed block is a commit somebody makes.
+
+    `commit=False` computes the same answer and writes nothing, which is what
+    `agents sync` reports on. `queue` keeps the write, because a batch dispatched
+    from a stale contract is the failure the gate exists to prevent and there is
+    nobody to ask at that point.
     """
     p = root / agent
     if not p.exists():
@@ -250,7 +256,7 @@ def sync_transcludes(root: Path = Path("."), agent: Path = AGENT) -> dict:
         return (f"<!-- transclude: {src} -->\n{body}\n<!-- /transclude -->")
 
     new = TRANSCLUDE.sub(swap, text)
-    if new != text:
+    if new != text and commit:
         p.write_text(new, encoding="utf-8")
     return {"agent": str(agent), "updated": updated}
 

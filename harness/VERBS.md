@@ -1150,8 +1150,9 @@ FARM...       which trees, space-separated: ocr, zones, w-figs-blotted, w-figs,
 
 ## agents
 
-Cache telemetry over a dispatched batch. The only group that touches no corpus
-store: it reads Claude Code's task transcripts. Reports; nothing here gates.
+Cache telemetry over a dispatched batch, and the contract the batch is dispatched
+with. The only group that touches no corpus store: it reads Claude Code's task
+transcripts, and writes one tracked file under `.claude/`. Nothing here gates.
 
 ### agents usage
 **Does** per-agent cache reads and writes for one session's dispatched agents, then groups them into cohorts. **The opening total is the diagnostic** — `read + write` on an agent's first request is what its context cost to establish, whatever the cache did with it, so siblings dispatched with identical prompts must open at the same number. Two agents join one cohort when they agree on model *and* opening, which is exactly the condition under which they could have shared a cached prefix. Six readers dispatched together should appear as one cohort of six; appearing as six singletons means a byte varies ahead of the shared block, and the openings say how much. A large `tail` write is ordinary by contrast: content behind the prefix was going to be written anyway.
@@ -1186,6 +1187,18 @@ store: it reads Claude Code's task transcripts. Reports; nothing here gates.
 **Note** **`warmth` is the only pre-flight signal there is.** The cache cannot be queried, so the age of the last request against the five-minute subagent TTL is the whole of what can be said — subagents cache on that clock even where the parent session holds a longer one.
 **Note** **an unparseable `--since` is a usage error, not an empty result.** Comparison is lexicographic, so `5m` sorts *after* every ISO stamp there will ever be: before the relative form was supported, passing it filtered every agent out and printed an empty table at exit 0 — a wrong answer wearing the shape of a right one. The stamp is also truncated before comparison rather than carrying a `Z`, since transcript stamps have fractional seconds and `…:00Z` sorts after `…:00.5Z`.
 **Note** the session is discovered from `--root`, whose path Claude Code slugs into the transcript directory name; the newest session *that has transcripts* wins, since a session that dispatched nothing has a `tasks/` directory too and picking it would report the empty batch as the batch.
+
+### agents sync
+**Does** refills the groundtruth-reader's transcluded blocks from the files they name, so the copy in its system prompt agrees with the source. Bare form reports which blocks have drifted and writes nothing.
+**Reads** `.claude/agents/groundtruth-reader.md` and each `<!-- transclude: SRC -->` it names. **Writes** `.claude/agents/groundtruth-reader.md`, under `--commit`. **Exit** always 0; 2 if a transcluded source does not exist.
+```
+--commit     actually rewrite the agent file — bare form only reports which
+             sources its blocks have drifted from
+--root --json --toon --pager
+```
+**Emits** one `transclusions` row: the agent file, the count of `stale` blocks, the `sources` they came from, and whether this run wrote.
+**Note** **the reader's contract has to be in its system prompt, and `keying_spec.md` has to stay one file.** The spec binds the collation pass and the human keying track too, so it cannot move into an agent definition; but a `Read` of it costs ~15k tokens per reader per page, behind the turn that varies, where nothing can share it. So it is copied in mechanically and `test_transclusion.py` fails when the checked-in copy and its source disagree — two copies with a gate between them, which is what this repo already does for `VERBS.md` and the click tree. What it forbids is two copies with a *comment* between them.
+**Note** **`ocr queue` syncs too, and this verb exists because that is the wrong moment.** A spec edit made between batches leaves the agent file stale until the next dispatch, so the gate fails on a commit that has nothing to do with dispatching and the fix is a command whose other effect is to deal out a queue. `queue` keeps its write regardless: a batch dispatched from a stale contract is exactly the failure the gate exists to prevent, and there is nobody to ask at that point.
 
 ### agents transcript [AGENT ...]
 **Does** one named agent's requests in order — or a whole cohort's under `--cohort` — with what each one added to its context and where that came from. **`added` is the column**: a request's whole context is `in + read + write`, so the difference between consecutive requests is what arrived between them. Reading down it catches a duplicated block, which no per-agent total can — a contract re-injected on resume showed up as +14,916 on request 2 of three separate readers, identical to the token, and was invisible in every summary. `note` and `detail` name the arrival from the tool the *previous* request called, since its result is what the growth is made of: `read raster moll-046.png`, `ran command … zoom moll-046:15,33`, `write file`. `via` says whether that growth was paid for — `read` is a context served whole from cache, `write` is the only kind that costs.
