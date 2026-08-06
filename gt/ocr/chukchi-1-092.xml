@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-092.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-092.png; regions_from: zones/chukchi-1-092.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-092_r1" HPOS="860" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="860 618 2638 618 2638 708 860 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-092_l1" HPOS="1437" VPOS="640" WIDTH="618" HEIGHT="54" BASELINE="1440 673 2055 677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2046 640 1745 640 1743 640 1721 640 1700 640 1678 640 1656 640 1635 640 1613 640 1591 640 1570 640 1548 640 1526 640 1505 640 1483 640 1461 640 1440 640 1440 673 1437 690 2050 694 2055 677 2053 662 2046 640"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l2" HPOS="864" VPOS="632" WIDTH="82" HEIGHT="67" BASELINE="864 675 946 675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="937 643 892 632 890 632 887 632 864 643 864 675 864 690 877 699 879 699 881 699 883 699 946 686 946 675 946 653 937 643"/>
+                        </Shape>
+                        <String CONTENT="66"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-092_r2" HPOS="860" VPOS="733" WIDTH="1778" HEIGHT="432" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="860 733 2638 733 2638 1165 860 1165"/>
+                    </Shape>
+                    <TextLine ID="mz_1-092_l3" HPOS="861" VPOS="742" WIDTH="1772" HEIGHT="61" BASELINE="861 785 2633 785" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2616 759 2594 757 2572 757 2551 755 2529 755 2507 753 2486 753 2464 751 2442 749 2421 749 2410 746 2334 753 2276 742 2273 742 2219 753 2174 742 2172 742 2169 742 2167 742 2165 742 2150 755 1962 755 1914 742 1912 742 1910 742 1907 742 1905 742 1892 753 1864 742 1862 742 1860 742 1732 753 1667 742 1665 742 1585 753 1554 742 1552 742 1550 742 1548 742 1515 753 1502 742 1500 742 1498 742 1403 742 1401 742 1342 753 1308 742 1305 742 1303 742 1301 742 1277 753 1188 742 1186 742 1084 753 1000 742 998 742 996 742 961 753 896 742 894 742 892 742 861 753 861 785 861 803 2633 803 2633 785 2633 759 2616 759"/>
+                        </Shape>
+                        <String CONTENT="able distance from it. With the advance of the season, he will proceed east-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l4" HPOS="864" VPOS="816" WIDTH="1769" HEIGHT="45" BASELINE="864 846 2633 846" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 846 864 861 2633 861 2633 846 2633 816 864 816 864 846"/>
+                        </Shape>
+                        <String CONTENT="ward as far as possible, and turn to the shore only when travelling with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l5" HPOS="861" VPOS="874" WIDTH="1772" HEIGHT="48" BASELINE="861 904 2633 904" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 904 861 922 2633 922 2633 904 2633 874 861 874 861 904"/>
+                        </Shape>
+                        <String CONTENT="reindeer becomes impossible. Sometimes he will reach East Cape; more often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l6" HPOS="864" VPOS="922" WIDTH="1767" HEIGHT="58" BASELINE="864 963 2631 963" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 963 864 980 2629 980 2631 963 2631 935 2596 922 2594 922 2592 922 2590 922 2542 935 2440 935 2423 922 2421 922 2419 922 2416 922 2414 922 2375 933 2291 922 2289 922 2200 933 2072 922 1873 922 1871 922 1868 922 1866 922 1851 935 1702 935 1687 922 1684 922 1682 922 1680 922 1678 922 1652 933 1570 922 1567 922 1500 933 1422 922 1420 922 1366 933 864 928 864 963"/>
+                        </Shape>
+                        <String CONTENT="he will stop in some other village between Kuluˊči Bay and East Cape. To"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l7" HPOS="859" VPOS="989" WIDTH="1774" HEIGHT="56" BASELINE="861 1019 2633 1026" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1019 859 1037 870 1045 872 1045 874 1045 877 1045 2631 1039 2633 1026 2631 995 861 989 861 1019"/>
+                        </Shape>
+                        <String CONTENT="stay west of Kuluˊči is inconvenient, because in the western villages the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l8" HPOS="861" VPOS="1052" WIDTH="1770" HEIGHT="54" BASELINE="861 1084 2631 1088" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1084 861 1106 2629 1106 2631 1088 2629 1056 861 1052 861 1084"/>
+                        </Shape>
+                        <String CONTENT="population is scanty, and the sea-journey to East Cape presents more trouble,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l9" HPOS="859" VPOS="1110" WIDTH="414" HEIGHT="56" BASELINE="861 1140 1273 1145" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1140 859 1158 870 1166 872 1166 874 1166 877 1166 1271 1158 1273 1145 1271 1114 861 1110 861 1140"/>
+                        </Shape>
+                        <String CONTENT="and even danger."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-092_r3" HPOS="860" VPOS="1165" WIDTH="1778" HEIGHT="905" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="860 1165 2638 1165 2638 2070 860 2070"/>
+                    </Shape>
+                    <TextLine ID="mz_1-092_l10" HPOS="968" VPOS="1164" WIDTH="1667" HEIGHT="63" BASELINE="970 1199 2635 1203" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="970 1199 968 1216 983 1227 985 1227 987 1227 989 1227 2633 1218 2635 1203 2633 1173 970 1164 970 1199"/>
+                        </Shape>
+                        <String CONTENT="He will spend the whole summer on the seashore; he will take part in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l11" HPOS="859" VPOS="1231" WIDTH="1774" HEIGHT="57" BASELINE="861 1262 2633 1266" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1262 859 1277 874 1288 877 1288 879 1288 881 1288 2631 1283 2633 1266 2631 1236 861 1231 861 1262"/>
+                        </Shape>
+                        <String CONTENT="the seal-hunting, so as to have a share in the spoils without paying for it;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l12" HPOS="859" VPOS="1288" WIDTH="1774" HEIGHT="62" BASELINE="861 1320 2633 1324" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1320 859 1335 1136 1348 1139 1348 1710 1340 1756 1350 1758 1350 1760 1350 2631 1340 2633 1324 2629 1288 861 1288 861 1320"/>
+                        </Shape>
+                        <String CONTENT="and he will journey by boat to East Cape. In exchange for his skins, he will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l13" HPOS="861" VPOS="1342" WIDTH="1772" HEIGHT="60" BASELINE="861 1385 2633 1385" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1385 861 1402 2633 1402 2633 1385 2633 1355 2546 1342 2544 1342 2542 1342 2518 1353 2442 1342 2440 1342 2438 1342 2414 1353 2388 1342 2386 1342 2384 1342 2382 1342 2358 1353 1871 1342 1868 1342 1866 1342 1838 1353 1810 1342 1808 1342 1806 1342 1684 1353 1548 1342 1546 1342 1544 1342 1502 1353 1457 1342 1455 1342 1453 1342 1108 1353 987 1342 985 1342 983 1342 981 1342 965 1355 861 1355 861 1385"/>
+                        </Shape>
+                        <String CONTENT="try chiefly to get ground-seal hides and all kinds of thongs, and American"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l14" HPOS="861" VPOS="1400" WIDTH="1774" HEIGHT="63" BASELINE="861 1444 2635 1444" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1444 861 1463 2635 1461 2635 1444 2635 1411 2295 1400 2293 1400 2211 1411 2189 1400 2187 1400 2185 1400 2182 1400 2150 1411 2115 1400 2113 1400 2111 1400 2109 1400 2107 1400 2092 1413 1992 1413 1940 1400 1938 1400 1838 1411 1814 1400 1812 1400 1810 1400 1808 1400 1806 1400 1790 1413 1693 1413 1637 1400 1635 1400 1632 1400 1630 1400 1613 1413 1496 1413 1468 1400 1466 1400 1463 1400 1461 1400 1437 1411 1351 1400 1349 1400 1347 1400 1344 1400 1331 1411 1303 1400 1301 1400 1299 1400 1297 1400 1295 1400 1277 1411 1253 1400 1251 1400 1249 1400 1247 1400 1221 1411 1191 1400 1188 1400 1186 1400 1184 1400 1160 1413 1000 1413 961 1400 959 1400 957 1400 861 1411 861 1444"/>
+                        </Shape>
+                        <String CONTENT="products, — alcohol, Winchester rifles, and cartridges. In the middle fall he will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l15" HPOS="864" VPOS="1474" WIDTH="1769" HEIGHT="45" BASELINE="864 1504 2633 1504" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 1504 864 1519 2633 1519 2633 1504 2633 1474 864 1474 864 1504"/>
+                        </Shape>
+                        <String CONTENT="start on his return journey as slowly as before, and will finally go back to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l16" HPOS="864" VPOS="1528" WIDTH="1771" HEIGHT="52" BASELINE="864 1563 2635 1563" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 1563 864 1580 2635 1580 2635 1563 2635 1534 864 1528 864 1563"/>
+                        </Shape>
+                        <String CONTENT="his own country in the spring. He will return the borrowed reindeer, for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l17" HPOS="864" VPOS="1595" WIDTH="1771" HEIGHT="46" BASELINE="864 1623 2635 1623" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 1623 864 1641 2635 1641 2635 1623 2635 1595 864 1595 864 1623"/>
+                        </Shape>
+                        <String CONTENT="most part without any particular pay, and will distribute some of the wares"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l18" HPOS="861" VPOS="1647" WIDTH="1774" HEIGHT="54" BASELINE="861 1682 2635 1682" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1682 861 1701 2635 1701 2635 1682 2635 1654 861 1647 861 1682"/>
+                        </Shape>
+                        <String CONTENT="he has bought among those whose agent he has been, retaining a considerable"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l19" HPOS="861" VPOS="1708" WIDTH="1772" HEIGHT="52" BASELINE="864 1738 2633 1742" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 1738 861 1755 2629 1760 2633 1742 2631 1712 864 1708 864 1738"/>
+                        </Shape>
+                        <String CONTENT="share of profit for himself out of every transaction of this kind. Such a journey"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l20" HPOS="861" VPOS="1770" WIDTH="1770" HEIGHT="59" BASELINE="864 1801 2631 1807" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 1801 861 1814 1524 1829 1526 1829 2629 1825 2631 1807 2629 1777 864 1770 864 1801"/>
+                        </Shape>
+                        <String CONTENT="will last a whole year, and perhaps even longer; so that a caravan leaving"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l21" HPOS="859" VPOS="1818" WIDTH="1774" HEIGHT="61" BASELINE="861 1859 2633 1866" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1859 859 1872 2629 1879 2633 1866 2631 1835 2358 1822 2356 1822 2304 1833 2256 1822 2254 1822 2252 1822 2250 1822 2206 1833 2174 1822 2172 1822 2169 1822 2107 1833 2070 1822 2068 1822 2066 1822 2063 1822 2044 1833 2029 1820 2027 1820 2024 1820 2022 1820 2020 1820 1992 1831 1955 1820 1953 1820 1951 1820 1949 1820 1920 1831 1799 1820 1797 1820 1745 1831 1721 1820 1719 1820 1717 1820 1715 1820 1684 1831 1645 1820 1643 1820 1641 1820 1639 1820 1637 1820 1619 1833 1492 1833 1453 1818 1450 1818 1448 1818 1446 1818 1420 1829 1396 1818 1394 1818 1392 1818 1329 1829 1247 1818 1245 1818 861 1827 861 1859"/>
+                        </Shape>
+                        <String CONTENT="two months before fair-time at Anui will be back just in time for the next"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l22" HPOS="861" VPOS="1892" WIDTH="1772" HEIGHT="47" BASELINE="861 1922 2633 1922" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1922 861 1939 2633 1939 2633 1922 2633 1892 861 1892 861 1922"/>
+                        </Shape>
+                        <String CONTENT="fair. Travelling between Indian Point and the Anadyr is much shorter, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l23" HPOS="859" VPOS="1946" WIDTH="1774" HEIGHT="63" BASELINE="861 1980 2633 1985" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 1980 859 1993 1749 2009 1752 2009 2631 1998 2633 1985 2631 1948 861 1946 861 1980"/>
+                        </Shape>
+                        <String CONTENT="is usually accomplished in one winter, so that a caravan starting in the fall"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l24" HPOS="861" VPOS="2006" WIDTH="1207" HEIGHT="55" BASELINE="864 2039 2068 2048" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 2039 861 2052 2063 2061 2068 2048 2066 2015 864 2006 864 2039"/>
+                        </Shape>
+                        <String CONTENT="will come back about the middle of the next spring."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-092_r4" HPOS="860" VPOS="2070" WIDTH="1778" HEIGHT="954" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="860 2070 2638 2070 2638 3024 860 3024"/>
+                    </Shape>
+                    <TextLine ID="mz_1-092_l25" HPOS="972" VPOS="2061" WIDTH="1661" HEIGHT="58" BASELINE="974 2097 2633 2102" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="974 2097 972 2115 2629 2119 2633 2102 2631 2074 974 2061 974 2097"/>
+                        </Shape>
+                        <String CONTENT="When a man finds zest and profit in such journeys, he makes them his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l26" HPOS="859" VPOS="2130" WIDTH="1774" HEIGHT="58" BASELINE="861 2160 2633 2165" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2160 859 2173 1048 2186 1050 2186 1743 2177 1760 2188 1762 2188 1765 2188 1767 2188 2631 2177 2633 2165 2631 2134 861 2130 861 2160"/>
+                        </Shape>
+                        <String CONTENT="vocation, and becomes a Kavraˊlɪn. As mentioned before, the greater part"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l27" HPOS="859" VPOS="2188" WIDTH="1774" HEIGHT="52" BASELINE="861 2219 2633 2223" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2219 859 2236 2629 2240 2633 2223 2631 2190 861 2188 861 2219"/>
+                        </Shape>
+                        <String CONTENT="of the Kavraˊlɪt are maritime people who first turned to reindeer-breeding and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l28" HPOS="859" VPOS="2249" WIDTH="1774" HEIGHT="52" BASELINE="861 2279 2633 2286" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2279 859 2294 2629 2301 2633 2286 2631 2255 861 2249 861 2279"/>
+                        </Shape>
+                        <String CONTENT="then to trade, and thus are experienced in both pursuits and in the customs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l29" HPOS="859" VPOS="2307" WIDTH="1774" HEIGHT="52" BASELINE="861 2338 2633 2344" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2338 859 2353 2629 2359 2633 2344 2631 2314 861 2307 861 2338"/>
+                        </Shape>
+                        <String CONTENT="of both parts of the tribe. The Kavraˊlɪt are continually en route. In former"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l30" HPOS="864" VPOS="2368" WIDTH="1767" HEIGHT="54" BASELINE="864 2398 2631 2405" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="864 2398 864 2422 2629 2418 2631 2405 2629 2375 864 2368 864 2398"/>
+                        </Shape>
+                        <String CONTENT="years they were anxious to visit the Russian fairs. They went down to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l31" HPOS="859" VPOS="2426" WIDTH="1772" HEIGHT="55" BASELINE="861 2457 2631 2465" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2457 859 2472 2626 2481 2631 2465 2629 2435 861 2426 861 2457"/>
+                        </Shape>
+                        <String CONTENT="seashore to meet the boats coming from the Diomede Islands and America,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l32" HPOS="859" VPOS="2487" WIDTH="1772" HEIGHT="52" BASELINE="861 2515 2631 2522" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2515 859 2533 2626 2539 2631 2522 2629 2494 861 2487 861 2515"/>
+                        </Shape>
+                        <String CONTENT="and often associated with them and made a trip across the sea to secure an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l33" HPOS="859" VPOS="2546" WIDTH="1772" HEIGHT="54" BASELINE="861 2578 2631 2585" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2578 859 2593 2626 2600 2631 2585 2629 2550 861 2546 861 2578"/>
+                        </Shape>
+                        <String CONTENT="additional supply of valuable peltries. Sometimes the father of a family would"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l34" HPOS="861" VPOS="2613" WIDTH="1772" HEIGHT="45" BASELINE="861 2641 2633 2641" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2641 861 2658 2633 2658 2633 2641 2633 2613 861 2613 861 2641"/>
+                        </Shape>
+                        <String CONTENT="start westward with a reindeer-caravan. Meanwhile one of his sons would"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l35" HPOS="859" VPOS="2667" WIDTH="1772" HEIGHT="52" BASELINE="861 2697 2631 2704" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2697 859 2712 2626 2719 2631 2704 2629 2673 861 2667 861 2697"/>
+                        </Shape>
+                        <String CONTENT="wait till summer and cross Bering Strait in his boat. The next spring father"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l36" HPOS="859" VPOS="2730" WIDTH="1772" HEIGHT="47" BASELINE="861 2760 2631 2764" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2760 859 2773 2626 2777 2631 2764 2629 2734 861 2730 861 2760"/>
+                        </Shape>
+                        <String CONTENT="and son would meet, and arrange for the distribution of their wares for new"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l37" HPOS="859" VPOS="2786" WIDTH="1774" HEIGHT="58" BASELINE="859 2823 2633 2823" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="859 2823 859 2844 2633 2838 2633 2823 2631 2786 859 2786 859 2823"/>
+                        </Shape>
+                        <String CONTENT="journeys. Even now a few Kavraˊlɪt traders have not restricted the range of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l38" HPOS="859" VPOS="2833" WIDTH="1767" HEIGHT="68" BASELINE="861 2875 2626 2885" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2875 859 2890 2622 2901 2626 2885 2624 2855 2458 2842 2455 2842 2453 2842 2451 2842 2434 2853 2403 2842 2401 2842 2399 2842 2325 2853 2273 2840 2271 2840 2269 2840 2267 2840 2230 2851 2191 2840 2189 2840 2187 2840 2185 2840 2154 2851 2141 2840 2139 2840 2137 2840 2135 2840 1907 2849 1871 2838 1868 2838 1866 2838 1864 2838 1838 2849 1710 2838 1708 2838 1706 2838 1667 2849 1645 2838 1643 2838 1641 2838 1639 2838 1617 2849 1567 2836 1565 2836 1563 2836 1561 2836 1559 2836 1539 2849 1392 2849 1368 2836 1366 2836 1364 2836 1362 2836 1338 2846 1243 2836 1240 2836 1132 2844 1117 2833 1115 2833 1113 2833 1110 2833 1108 2833 1078 2846 965 2846 950 2833 948 2833 946 2833 944 2833 861 2842 861 2875"/>
+                        </Shape>
+                        <String CONTENT="their travels, and continue to visit both the Anui fair and the Diomede Islands."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l39" HPOS="859" VPOS="2905" WIDTH="1770" HEIGHT="65" BASELINE="861 2935 2629 2944" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2935 859 2950 933 2963 935 2963 1284 2955 1368 2966 1370 2966 2141 2959 2237 2970 2239 2970 2626 2959 2629 2944 2626 2914 861 2905 861 2935"/>
+                        </Shape>
+                        <String CONTENT="Others, however, trade chiefly in fawn-skins, and do not go as far as the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l40" HPOS="859" VPOS="2957" WIDTH="1204" HEIGHT="63" BASELINE="861 2992 2063 3002" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 2992 859 3009 2059 3020 2063 3002 2061 2974 1689 2961 1687 2961 1585 2970 1546 2959 1544 2959 1541 2959 1366 2968 1344 2957 1342 2957 1340 2957 861 2961 861 2992"/>
+                        </Shape>
+                        <String CONTENT="Ostrovnoye market-place or the Kolyma settlements."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-092_r5" HPOS="860" VPOS="3024" WIDTH="1778" HEIGHT="246" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="860 3024 2638 3024 2638 3270 860 3270"/>
+                    </Shape>
+                    <TextLine ID="mz_1-092_l41" HPOS="968" VPOS="3026" WIDTH="1663" HEIGHT="52" BASELINE="970 3056 2631 3063" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="970 3056 968 3072 2626 3078 2631 3063 2629 3033 970 3026 970 3056"/>
+                        </Shape>
+                        <String CONTENT="At the present time about ten or fifteen caravans, each consisting of six"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l42" HPOS="859" VPOS="3085" WIDTH="1770" HEIGHT="60" BASELINE="861 3115 2629 3126" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 3115 859 3128 1249 3143 1251 3143 1544 3134 1567 3145 1570 3145 1572 3145 2626 3139 2629 3126 2626 3095 861 3085 861 3115"/>
+                        </Shape>
+                        <String CONTENT="or eight tents, resort every spring to the Wolverine River, on the eastern"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l43" HPOS="859" VPOS="3143" WIDTH="1772" HEIGHT="59" BASELINE="861 3173 2631 3184" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="861 3173 859 3191 874 3202 877 3202 879 3202 881 3202 2629 3199 2631 3184 2629 3154 861 3143 861 3173"/>
+                        </Shape>
+                        <String CONTENT="confines of the Anui country, coming from the east. Some of these come"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-092_l44" HPOS="857" VPOS="3195" WIDTH="1769" HEIGHT="71" BASELINE="859 3236 2626 3245" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="859 3236 857 3253 2622 3266 2626 3245 2624 3215 2328 3202 2325 3202 2247 3212 2172 3199 2169 3199 2167 3199 2128 3210 2100 3199 2098 3199 2096 3199 1951 3210 1855 3199 1853 3199 1762 3210 1745 3197 1743 3197 1741 3197 1739 3197 1736 3197 1706 3208 1613 3197 1611 3197 1609 3197 1578 3208 1483 3197 1481 3197 1479 3197 1453 3208 1351 3197 1349 3197 1175 3206 1141 3195 1139 3195 1136 3195 859 3204 859 3236"/>
+                        </Shape>
+                        <String CONTENT="from the Chaun tundra, others from the neighborhood of Cape Erri, Yaˊqan,"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

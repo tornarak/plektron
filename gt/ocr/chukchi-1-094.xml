@@ -1,0 +1,373 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-094.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-094.png; regions_from: zones/chukchi-1-094.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-094_r1" HPOS="825" VPOS="610" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="825 610 2603 610 2603 700 825 700"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l1" HPOS="829" VPOS="614" WIDTH="80" HEIGHT="67" BASELINE="829 658 909 658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="905 625 853 614 851 614 829 632 829 658 829 673 840 681 842 681 844 681 846 681 909 668 909 658 909 630 905 625"/>
+                        </Shape>
+                        <String CONTENT="68"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l2" HPOS="1407" VPOS="623" WIDTH="617" HEIGHT="54" BASELINE="1407 658 2024 658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2014 638 1996 623 1407 623 1407 658 1407 677 2024 677 2024 658 2018 643 2014 638"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-094_r2" HPOS="825" VPOS="725" WIDTH="1778" HEIGHT="237" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="825 725 2603 725 2603 962 825 962"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l3" HPOS="822" VPOS="718" WIDTH="1776" HEIGHT="67" BASELINE="825 770 2598 764" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2555 725 2533 725 2518 723 2483 729 2414 720 2403 720 2386 720 2373 729 2315 718 2312 718 2310 718 2265 729 2239 718 2237 718 2234 718 2161 729 2133 718 2130 718 2128 718 2126 718 2124 718 2109 731 2001 731 1949 720 1946 720 1944 720 1914 731 1864 720 1862 720 1661 731 1598 720 1596 720 1593 720 1591 720 1574 731 1463 720 1461 720 1368 733 1011 723 1009 723 877 733 844 723 842 723 840 723 838 723 835 723 822 731 825 770 825 785 2596 785 2598 764 2596 731 2574 725 2555 725"/>
+                        </Shape>
+                        <String CONTENT="(a pound and a quarter Avoirdupois) was worth about 30 kopeks;¹ in Yakutsk,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l4" HPOS="827" VPOS="779" WIDTH="1771" HEIGHT="65" BASELINE="829 827 2598 820" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="829 827 829 844 2596 837 2598 820 2594 792 2438 779 2436 779 2434 779 2432 779 2416 792 2234 792 2169 779 2167 779 2165 779 2163 779 2148 790 2126 779 2124 779 2122 779 2120 779 2092 790 2048 779 2046 779 2044 779 2042 779 2003 792 1968 781 1966 781 1964 781 1962 781 1931 792 1741 781 1739 781 1669 792 1622 781 1619 781 1617 781 1537 792 1507 781 1505 781 1502 781 1500 781 1498 781 1485 792 1418 781 1416 781 1305 794 1288 783 1286 783 1284 783 1282 783 1074 794 918 783 916 783 913 783 892 794 851 783 848 783 846 783 844 783 842 783 827 792 829 827"/>
+                        </Shape>
+                        <String CONTENT="60 kopeks; in Sredne-Kolymsk, 1.80 rubles; at the Anui fair, 2.40 rubles or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l5" HPOS="844" VPOS="844" WIDTH="1750" HEIGHT="67" BASELINE="844 887 2594 887" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="844 887 844 911 2594 904 2594 887 2594 857 2479 844 2477 844 2165 855 2111 844 2109 844 2107 844 2105 844 2087 855 2007 844 2005 844 2003 844 1979 855 1933 844 1931 844 1929 844 1927 844 1890 855 1741 844 1739 844 1736 844 1695 855 1656 844 1654 844 1652 844 1596 855 1539 844 1537 844 1535 844 1502 855 1461 844 1459 844 1457 844 1368 855 1331 844 1329 844 1327 844 1266 855 1178 844 1175 844 1173 844 1147 855 1052 844 1050 844 1048 844 1017 855 985 844 983 844 981 844 978 844 976 844 961 855 898 844 896 844 844 855 844 887"/>
+                        </Shape>
+                        <String CONTENT="3 black fawn-skins of small size; in Anadyr, 80 kopeks; on the tundra, 5"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l6" HPOS="825" VPOS="909" WIDTH="1435" HEIGHT="52" BASELINE="827 941 2260 946" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 941 825 956 2256 961 2260 946 2258 913 827 909 827 941"/>
+                        </Shape>
+                        <String CONTENT="black fawns-kins; in the Chukchee Peninsula, 1 white-fox skin."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-094_r3" HPOS="825" VPOS="962" WIDTH="1778" HEIGHT="366" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="825 962 2603 962 2603 1328 825 1328"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l7" HPOS="933" VPOS="959" WIDTH="1667" HEIGHT="65" BASELINE="935 1006 2600 1002" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="935 1006 935 1024 2598 1024 2600 1002 2596 972 2527 959 2525 959 2522 959 2499 969 2416 959 2414 959 2412 959 2410 959 2395 972 2250 972 2230 959 2228 959 2226 959 2224 959 2221 959 2176 969 2150 959 2148 959 2146 959 2029 969 2001 959 1998 959 1996 959 1897 969 1884 959 1881 959 1879 959 1767 959 1765 959 1762 959 1730 972 1635 961 1632 961 1630 961 1596 972 1373 961 1370 961 1368 961 1366 961 1353 974 1275 974 1245 961 1243 961 1240 961 1180 972 1015 961 1013 961 1011 961 987 972 948 961 946 961 944 961 942 961 939 961 939 963 933 967 935 1006"/>
+                        </Shape>
+                        <String CONTENT="In Vladivostok or Irkutsk a piece of brick-tea is worth about 30 kopeks;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l8" HPOS="825" VPOS="1019" WIDTH="1775" HEIGHT="63" BASELINE="827 1065 2600 1060" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1065 827 1082 2598 1078 2600 1060 2596 1030 1790 1019 1788 1019 825 1030 827 1065"/>
+                        </Shape>
+                        <String CONTENT="in Yakutsk, 50 kopeks; in Sredne-Kolymsk and on the tundra it is equivalent"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l9" HPOS="825" VPOS="1084" WIDTH="1773" HEIGHT="56" BASELINE="827 1125 2598 1121" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1125 827 1140 2596 1136 2598 1121 2594 1093 844 1084 842 1084 840 1084 838 1084 825 1091 827 1125"/>
+                        </Shape>
+                        <String CONTENT="to a bundle of tobacco. One Russian pound (nine-tenths of a pound Avoir-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l10" HPOS="827" VPOS="1153" WIDTH="1771" HEIGHT="52" BASELINE="827 1186 2598 1186" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1186 827 1201 2596 1205 2598 1186 2598 1153 827 1153 827 1186"/>
+                        </Shape>
+                        <String CONTENT="dupois) of sugar is worth in southern Russia 15 kopeks; in Yakutsk, 40 kopeks;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l11" HPOS="822" VPOS="1199" WIDTH="1774" HEIGHT="63" BASELINE="825 1247 2596 1242" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="825 1247 825 1262 2594 1257 2596 1242 2592 1214 2527 1199 2525 1199 2522 1199 2479 1212 2412 1199 2410 1199 2408 1199 2382 1212 2321 1199 2319 1199 2317 1199 2315 1199 2297 1214 2165 1214 2083 1199 2081 1199 2079 1199 2033 1214 1881 1214 1853 1199 1851 1199 1849 1199 1793 1210 1769 1199 1767 1199 1765 1199 1762 1199 1734 1210 1689 1201 1687 1201 1684 1201 1682 1201 1667 1214 1609 1201 1606 1201 1604 1201 1576 1214 1403 1201 1401 1201 1273 1214 1253 1201 1251 1201 1249 1201 1071 1201 1069 1201 1067 1201 1035 1212 916 1201 913 1201 911 1201 877 1214 842 1201 840 1201 838 1201 835 1201 833 1201 822 1208 825 1247"/>
+                        </Shape>
+                        <String CONTENT="in Sredne-Kolymsk, 1 ruble; at the Anui fair, 1.50 rubles or 2 black and 1"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l12" HPOS="825" VPOS="1260" WIDTH="799" HEIGHT="62" BASELINE="827 1309 1624 1303" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1309 827 1322 1622 1316 1624 1303 1619 1273 1427 1260 1424 1260 1422 1260 1399 1273 1292 1273 1269 1262 1266 1262 1264 1262 1262 1262 1260 1262 1243 1273 1217 1262 1214 1262 1212 1262 1154 1273 1089 1262 1087 1262 1084 1262 1082 1262 1067 1275 963 1264 961 1264 959 1264 957 1264 957 1266 946 1277 825 1277 827 1309"/>
+                        </Shape>
+                        <String CONTENT="gray fawn-skin of the smaller size."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-094_r4" HPOS="825" VPOS="1328" WIDTH="1778" HEIGHT="775" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="825 1328 2603 1328 2603 2103 825 2103"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l13" HPOS="931" VPOS="1318" WIDTH="1669" HEIGHT="65" BASELINE="933 1368 2600 1361" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="933 1368 933 1383 2598 1376 2600 1361 2596 1331 2050 1318 2048 1318 2046 1318 2044 1318 2029 1331 1985 1320 1983 1320 1981 1320 1979 1320 1953 1331 1827 1320 1825 1320 1823 1320 1788 1331 1762 1320 1760 1320 1758 1320 1648 1331 1632 1320 1630 1320 1628 1320 1524 1320 1522 1320 1442 1333 1420 1322 1418 1322 1416 1322 1134 1333 1115 1322 1113 1322 1110 1322 955 1322 952 1322 950 1322 948 1322 931 1331 933 1368"/>
+                        </Shape>
+                        <String CONTENT="A bottle of undiluted alcohol is worth, in Sredne-Kolymsk, from 2 to 2.50"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l14" HPOS="825" VPOS="1381" WIDTH="1775" HEIGHT="60" BASELINE="827 1426 2600 1422" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1426 827 1441 2598 1437 2600 1422 2596 1392 1713 1381 1710 1381 1708 1381 1682 1392 877 1383 874 1383 825 1394 827 1426"/>
+                        </Shape>
+                        <String CONTENT="rubles; at the Anui fair (largely diluted with water), 5 rubles or a good red-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l15" HPOS="825" VPOS="1441" WIDTH="1663" HEIGHT="61" BASELINE="827 1487 2488 1483" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1487 827 1502 2486 1498 2488 1483 2483 1452 1656 1441 1654 1441 1652 1441 1650 1441 1650 1444 1639 1452 840 1444 838 1444 835 1444 833 1444 825 1450 827 1487"/>
+                        </Shape>
+                        <String CONTENT="fox skin; on the tundra and in the Anadyr, any price that it will bring."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l16" HPOS="937" VPOS="1509" WIDTH="1661" HEIGHT="49" BASELINE="937 1543 2598 1543" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="937 1543 937 1558 2598 1558 2598 1543 2598 1515 937 1509 937 1543"/>
+                        </Shape>
+                        <String CONTENT="In trading with the whalers, a storehouse that is worth $100 in San"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l17" HPOS="825" VPOS="1558" WIDTH="1773" HEIGHT="65" BASELINE="827 1608 2598 1602" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1608 827 1623 2596 1617 2598 1602 2594 1571 2501 1558 2499 1558 2496 1558 2464 1569 2451 1558 2449 1558 2447 1558 2445 1558 2317 1569 2265 1558 2263 1558 2260 1558 2258 1558 2243 1569 1602 1560 1600 1560 1546 1571 1461 1560 1459 1560 1388 1573 1275 1563 1273 1563 825 1571 827 1608"/>
+                        </Shape>
+                        <String CONTENT="Francisco, is sold for 100 slabs of whalebone (about 400 pounds), worth from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l18" HPOS="825" VPOS="1628" WIDTH="1773" HEIGHT="56" BASELINE="827 1671 2598 1662" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1671 827 1684 2596 1675 2598 1662 2594 1632 842 1628 840 1628 838 1628 835 1628 825 1634 827 1671"/>
+                        </Shape>
+                        <String CONTENT="$2.50 to $3.50 per pound; i. e., for $1000-$1400. A second-hand whale-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l19" HPOS="827" VPOS="1693" WIDTH="1773" HEIGHT="49" BASELINE="829 1725 2600 1721" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="829 1725 829 1742 2598 1738 2600 1721 2596 1693 827 1693 829 1725"/>
+                        </Shape>
+                        <String CONTENT="boat, with equipment, is sold for 20-30 slabs of whalebone, or from $200 to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l20" HPOS="825" VPOS="1738" WIDTH="1775" HEIGHT="65" BASELINE="827 1790 2600 1781" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1790 827 1803 2598 1796 2600 1781 2596 1751 2434 1738 2432 1738 2429 1738 2393 1749 2380 1738 2377 1738 2375 1738 2373 1738 2269 1749 2245 1738 2243 1738 2241 1738 2189 1749 2161 1738 2159 1738 2156 1738 2154 1738 2152 1738 2135 1751 1996 1740 1994 1740 1992 1740 1953 1751 1920 1740 1918 1740 1916 1740 1851 1751 1797 1740 1795 1740 1793 1740 1756 1751 1381 1742 1379 1742 1377 1742 1375 1742 1360 1753 1074 1744 1071 1744 1069 1744 1067 1744 1052 1757 948 1757 844 1744 842 1744 840 1744 838 1744 825 1753 827 1790"/>
+                        </Shape>
+                        <String CONTENT="$420; a shotgun or a Winchester rifle with reloading-tools, for 4-6 slabs; a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l21" HPOS="825" VPOS="1809" WIDTH="1775" HEIGHT="59" BASELINE="827 1842 2600 1846" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1842 825 1857 840 1868 842 1868 844 1868 846 1868 2598 1859 2600 1846 2598 1814 827 1809 827 1842"/>
+                        </Shape>
+                        <String CONTENT="small box of chewing-tobacco (6¼ pounds), for 2 pairs of boots; a keg of black"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l22" HPOS="825" VPOS="1864" WIDTH="1775" HEIGHT="56" BASELINE="827 1905 2600 1900" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1905 827 1920 2598 1916 2600 1900 2596 1872 898 1864 896 1864 825 1874 827 1905"/>
+                        </Shape>
+                        <String CONTENT="molasses, for 1 or 2 pairs of boots; a sack of white flour, for 1 or 2 pairs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l23" HPOS="827" VPOS="1922" WIDTH="1771" HEIGHT="58" BASELINE="827 1963 2598 1963" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 1963 827 1980 2598 1980 2598 1963 2598 1933 2564 1922 2561 1922 2559 1922 2483 1933 2250 1922 2247 1922 2195 1933 2165 1922 2163 1922 2161 1922 2159 1922 2135 1935 1953 1935 1914 1922 1912 1922 1910 1922 1838 1933 1765 1922 1762 1922 1648 1933 1617 1922 1615 1922 1613 1922 1611 1922 1589 1933 1522 1922 1520 1922 1518 1922 1487 1933 1355 1922 1353 1922 1243 1933 1208 1922 1206 1922 1204 1922 1201 1922 1199 1922 1184 1935 935 1935 870 1922 868 1922 866 1922 827 1933 827 1963"/>
+                        </Shape>
+                        <String CONTENT="of boots; etc. A good fawn-skin is equal in value to a pair of boots; a plain"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l24" HPOS="825" VPOS="1978" WIDTH="1773" HEIGHT="67" BASELINE="827 2028 2598 2019" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2028 827 2045 2596 2035 2598 2019 2596 1991 2551 1978 2548 1978 2546 1978 2544 1978 2518 1989 2297 1978 2295 1978 2293 1978 2291 1978 2276 1991 2150 1991 1713 1980 1710 1980 1708 1980 1665 1993 1351 1983 1349 1983 1347 1983 1321 1993 1234 1985 1232 1985 1110 1996 1074 1985 1071 1985 1069 1985 1067 1985 1024 1996 1011 1985 1009 1985 1007 1985 1004 1985 825 1998 827 2028"/>
+                        </Shape>
+                        <String CONTENT="garment, to 2 pairs of boots; an embroidered garment, to a slab of whale-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l25" HPOS="825" VPOS="2054" WIDTH="253" HEIGHT="46" BASELINE="827 2087 1078 2082" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2087 827 2100 1078 2095 1078 2082 1071 2054 825 2054 827 2087"/>
+                        </Shape>
+                        <String CONTENT="bone; etc."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-094_r5" HPOS="825" VPOS="2103" WIDTH="1778" HEIGHT="661" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="825 2103 2603 2103 2603 2764 825 2764"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l26" HPOS="933" VPOS="2100" WIDTH="1670" HEIGHT="60" BASELINE="935 2145 2603 2141" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="935 2145 935 2160 2600 2156 2603 2141 2598 2110 1769 2100 1767 2100 1765 2100 1762 2100 1745 2110 957 2102 955 2102 952 2102 933 2110 935 2145"/>
+                        </Shape>
+                        <String CONTENT="At the mouth of the Anadyr, American wares are bartered away by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l27" HPOS="825" VPOS="2160" WIDTH="1773" HEIGHT="61" BASELINE="827 2206 2598 2201" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2206 827 2221 2596 2216 2598 2201 2596 2171 2577 2160 2574 2160 2572 2160 2570 2160 2568 2160 2525 2173 2289 2173 2260 2160 2258 2160 2256 2160 2254 2160 2211 2171 2180 2160 2178 2160 2176 2160 2120 2171 2081 2160 2079 2160 2076 2160 2074 2160 2035 2173 1784 2173 1730 2160 1728 2160 1726 2160 1697 2173 842 2162 840 2162 838 2162 835 2162 825 2169 827 2206"/>
+                        </Shape>
+                        <String CONTENT="Chukchee for commodities that, according to our scale of prices, are worth"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l28" HPOS="827" VPOS="2221" WIDTH="1771" HEIGHT="58" BASELINE="827 2262 2598 2262" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2262 827 2277 2596 2279 2598 2262 2598 2234 2512 2221 2509 2221 2507 2221 2477 2232 2425 2221 2423 2221 2421 2221 2397 2232 2384 2221 2382 2221 2380 2221 2377 2221 2315 2232 2245 2221 2243 2221 2241 2221 2217 2232 2187 2221 2185 2221 2182 2221 2126 2232 2046 2221 2044 2221 2042 2221 2001 2234 1888 2234 1873 2221 1871 2221 1868 2221 1866 2221 1864 2221 1834 2232 1775 2221 1773 2221 1771 2221 1741 2232 1667 2221 1665 2221 1567 2232 1502 2221 1500 2221 1498 2221 1468 2232 1373 2221 1370 2221 1308 2232 1227 2221 1225 2221 1223 2221 1195 2232 1123 2221 1121 2221 1119 2221 1074 2232 976 2221 974 2221 972 2221 942 2232 827 2229 827 2262"/>
+                        </Shape>
+                        <String CONTENT="less than what is paid to the whalers for them. One rifle is sold for from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l29" HPOS="829" VPOS="2284" WIDTH="1769" HEIGHT="56" BASELINE="829 2325 2598 2325" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="829 2325 829 2340 2598 2340 2598 2325 2598 2297 2471 2284 2468 2284 2466 2284 2434 2294 1933 2284 1931 2284 1734 2294 1700 2284 1697 2284 1695 2284 1598 2294 1565 2284 1563 2284 1561 2284 1559 2284 1513 2294 1286 2284 1284 2284 1223 2294 1117 2284 1115 2284 970 2294 937 2284 935 2284 933 2284 829 2294 829 2325"/>
+                        </Shape>
+                        <String CONTENT="20 to 30 pieces of brick-tea, i. e., 8 to 12 rubles; one whale-boat, for 70"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l30" HPOS="825" VPOS="2340" WIDTH="1775" HEIGHT="67" BASELINE="827 2387 2600 2381" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2387 827 2407 2598 2396 2600 2381 2596 2353 2503 2340 2501 2340 2499 2340 2471 2351 2325 2340 2323 2340 2321 2340 2319 2340 2304 2353 2156 2353 2033 2340 2031 2340 2029 2340 2001 2353 1964 2342 1962 2342 1959 2342 1721 2353 1565 2342 1563 2342 1561 2342 1518 2353 1476 2342 1474 2342 1472 2342 1357 2355 859 2344 857 2344 855 2344 825 2355 827 2387"/>
+                        </Shape>
+                        <String CONTENT="pieces of brick-tea, 30 pounds of sugar, 20 pounds of tobacco. — in all, about"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l31" HPOS="831" VPOS="2403" WIDTH="1767" HEIGHT="62" BASELINE="831 2446 2598 2446" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="831 2446 831 2463 2594 2465 2598 2446 2598 2416 2557 2403 2555 2403 2553 2403 2501 2416 2143 2416 2076 2403 2074 2403 1890 2413 1825 2403 1823 2403 1626 2413 1591 2403 1589 2403 1587 2403 1481 2413 1383 2403 1381 2403 1299 2413 1219 2403 1217 2403 1214 2403 1212 2403 1195 2413 1134 2403 1132 2403 1059 2413 968 2403 965 2403 831 2413 831 2446"/>
+                        </Shape>
+                        <String CONTENT="50 rubles. Smaller articles, such as powder, percussion-caps, cotton goods,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l32" HPOS="825" VPOS="2461" WIDTH="1773" HEIGHT="59" BASELINE="827 2504 2598 2498" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2504 827 2520 2596 2517 2598 2498 2594 2470 1455 2461 1453 2461 1392 2472 933 2463 931 2463 825 2474 827 2504"/>
+                        </Shape>
+                        <String CONTENT="are bought by the Cossacks at still cheaper rates. The reason is, that in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l33" HPOS="825" VPOS="2522" WIDTH="1775" HEIGHT="58" BASELINE="827 2563 2600 2559" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2563 827 2580 2598 2576 2600 2559 2596 2530 842 2522 840 2522 838 2522 835 2522 825 2528 827 2563"/>
+                        </Shape>
+                        <String CONTENT="former times the Russians did not accept whalebone, and set on their wares"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l34" HPOS="827" VPOS="2589" WIDTH="1776" HEIGHT="52" BASELINE="827 2623 2603 2623" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2600 827 2623 827 2641 2603 2641 2603 2623 2603 2593 831 2589 827 2600"/>
+                        </Shape>
+                        <String CONTENT="high prices in peltries; so that the Maritime natives who barter at present"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l35" HPOS="825" VPOS="2643" WIDTH="1780" HEIGHT="63" BASELINE="827 2684 2605 2680" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2684 827 2697 2583 2706 2585 2706 2587 2706 2590 2706 2605 2695 2605 2680 2600 2643 838 2643 835 2643 833 2643 831 2643 831 2645 825 2649 827 2684"/>
+                        </Shape>
+                        <String CONTENT="for American wares with whalebone are accustomed to regard them as of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l36" HPOS="827" VPOS="2712" WIDTH="1078" HEIGHT="48" BASELINE="827 2743 1905 2743" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2743 827 2760 1905 2760 1905 2743 1905 2712 827 2712 827 2743"/>
+                        </Shape>
+                        <String CONTENT="lesser value in comparison with Russian wares."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-094_r6" HPOS="825" VPOS="2764" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="825 2764 2603 2764 2603 3062 825 3062"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l37" HPOS="933" VPOS="2758" WIDTH="1667" HEIGHT="62" BASELINE="935 2805 2600 2799" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="935 2805 935 2820 2598 2814 2600 2799 2596 2771 2347 2758 2345 2758 2343 2758 2341 2758 2325 2771 2107 2771 2074 2758 2072 2758 2070 2758 2068 2758 2022 2773 1639 2773 1606 2760 1604 2760 1602 2760 1468 2773 1353 2762 1351 2762 933 2769 935 2805"/>
+                        </Shape>
+                        <String CONTENT="In the inland trade among the western camps, prices are as follows: for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l38" HPOS="825" VPOS="2823" WIDTH="1775" HEIGHT="56" BASELINE="827 2864 2600 2859" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2864 827 2879 2598 2877 2600 2859 2596 2831 883 2823 881 2823 825 2833 827 2864"/>
+                        </Shape>
+                        <String CONTENT="a hide of a large ground-seal, from 10 to 15 fawn-skins of larger size; for a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l39" HPOS="825" VPOS="2881" WIDTH="1775" HEIGHT="65" BASELINE="827 2924 2600 2920" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2924 827 2937 2577 2946 2579 2946 2581 2946 2583 2946 2600 2935 2600 2920 2596 2890 879 2881 877 2881 825 2892 827 2924"/>
+                        </Shape>
+                        <String CONTENT="coil of white thong, 5 fawn-skins; for a large bag full of seal-oil, 3 reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l40" HPOS="825" VPOS="2937" WIDTH="1771" HEIGHT="61" BASELINE="827 2981 2596 2985" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="827 2981 825 2994 2592 2998 2596 2985 2594 2953 2161 2940 2159 2940 2156 2940 2154 2940 2139 2953 2031 2953 1998 2940 1996 2940 1994 2940 1992 2940 1990 2940 1975 2953 1801 2953 1786 2940 1784 2940 1782 2940 1780 2940 1680 2948 1658 2937 1656 2937 1654 2937 1596 2948 1457 2937 1455 2937 1453 2937 1427 2948 1401 2937 1399 2937 1396 2937 1314 2948 1240 2937 1238 2937 1173 2948 1052 2937 1050 2937 1048 2937 1022 2948 961 2937 959 2937 957 2937 933 2948 855 2937 853 2937 851 2937 827 2946 827 2981"/>
+                        </Shape>
+                        <String CONTENT="for slaughter; for a Winchester rifle with accessories, 2 sledge-reindeer; etc."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-094_l41" HPOS="831" VPOS="3011" WIDTH="1713" HEIGHT="50" BASELINE="831 3041 2544 3041" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="831 3041 831 3061 2544 3061 2544 3041 2544 3011 831 3011 831 3041"/>
+                        </Shape>
+                        <String CONTENT="Among the Kerek a Winchester rifle with accessories is worth 2 sable-skins."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-094_r7" HPOS="825" VPOS="3062" WIDTH="1778" HEIGHT="62" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="825 3062 2603 3062 2603 3124 825 3124"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l42" HPOS="937" VPOS="3063" WIDTH="1659" HEIGHT="58" BASELINE="939 3098 2596 3104" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="939 3098 937 3115 2592 3121 2596 3104 2594 3065 939 3063 939 3098"/>
+                        </Shape>
+                        <String CONTENT="The total yearly trade between the Chukchee and the Russians, in all"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-094_r8" HPOS="825" VPOS="3186" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="825 3186 2603 3186 2603 3276 825 3276"/>
+                    </Shape>
+                    <TextLine ID="mz_1-094_l43" HPOS="1342" VPOS="3204" WIDTH="750" HEIGHT="47" BASELINE="1342 3230 2092 3230" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1342 3230 1342 3251 2092 3251 2092 3230 2092 3204 1342 3204 1342 3230"/>
+                        </Shape>
+                        <String CONTENT="¹ A kopek is equivalent to about half a cent."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

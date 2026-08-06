@@ -1,0 +1,29 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "69"},
+    "2": {"text": "the three northern districts, yields about 70,000 rubles. The total amount of"},
+    "3": {"text": "the whalers’ trade on the seashore is uncertain. In the last few years there"},
+    "4": {"text": "have come annually to the shores of Asia about ten whaling-ships, each of"},
+    "5": {"text": "which carries on trade to the amount of about one or two thousand dollars;"},
+    "6": {"text": "so that the whole yearly proceeds may be anywhere from $10,000 to $20,000."},
+    "7": {"text": "As stated before, this trade is carried on chiefly with the Eskimo.¹",
+          "note": "Footnote marker superscript 1 (U+00B9) sits outside line 7's box — gaps band reports it exempted reason=covered, covered_by=line 7 (keying_spec.md: 'the band is not a dropped line, but the named line is printed wider than its box and you must key the whole of what the paper prints there'). Keyed the full line including the marker."},
+    "8": {"text": "The yearly amount of trade done in the three districts of northeastern"},
+    "9": {"text": "Asia by all the tribes — including the Chukchee, the Koryak, the Eskimo,"},
+    "10": {"text": "the Lamut, the Yukaghir, the Russian settlers, the Russianized natives, and"},
+    "11": {"text": "the Yakut — does not exceed 200,000 rubles, — 70,000 in Gishiga, 70,000"},
+    "12": {"text": "in Kolyma, 25,000 in Anadyr, and about 30,000 on the Chukchee Peninsula."},
+    "13": {"text": "Of course, even the first three figures, though based on official reports, are"},
+    "14": {"text": "only approximate."},
+    "15": {"text": "¹ Mr. Gondatti (op. cit., p. 12) mentions Tñeˊs˙qᴀn of Uweˊlen as being the wealthiest trader on the",
+           "resolved": "Tñeˊs˙qᴀn = T, n+U+0303, e, stress U+02CA, s, palatalization U+02D9 (licensed on s, keying_spec.md §2.1/§2.6 series n x d t s č ǰ), q, small-cap a U+1D00 (§2.3, word-medial capital-shaped letter → small-cap per §5.2), n. Uweˊlen = stress U+02CA on e (not an apostrophe: environment is vowel-then-consonant, unlicensed for the apostrophe sort per §4 script 2, so defaults to stress per §5.8/§4 closing paragraph).",
+           "note": "CATMuS/mz read this name inconsistently across its three occurrences on the page (’qAn,:gAn, -qan) — confirmed at 4x (ocr zoom 15@42) that all three print identically as Tñeˊs˙qᴀn. Footnote opener superscript ¹ (U+00B9) confirmed at 2x on the composite; mz text omitted it."},
+    "16": {"text": "Arctic coast. The name Tñeˊs˙qᴀn is Chukchee, as are the majority of the inhabitants of Uweˊlen. A few years",
+           "resolved": "Tñeˊs˙qᴀn = T, n+U+0303, e, stress U+02CA, s, palatalization U+02D9, q, small-cap a U+1D00, n. Uweˊlen = stress U+02CA on e."},
+    "17": {"text": "after the visit of Mr. Gondatti, Tñeˊs˙qᴀn died. It is true, however, that the Chukchee on the Arctic coast do",
+           "resolved": "Tñeˊs˙qᴀn = T, n+U+0303, e, stress U+02CA, s, palatalization U+02D9, q, small-cap a U+1D00, n."},
+    "18": {"text": "take a more active share in trading with whalers than those on the Pacific."}
+  },
+  "contamination": {"blind": true}
+}

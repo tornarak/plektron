@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-095.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-095.png; regions_from: zones/chukchi-1-095.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-095_r1" HPOS="384" VPOS="594" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="384 594 2162 594 2162 684 384 684"/>
+                    </Shape>
+                    <TextLine ID="mz_1-095_l1" HPOS="957" VPOS="612" WIDTH="617" HEIGHT="56" BASELINE="959 647 1574 651" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="959 647 957 666 1570 668 1574 651 1565 614 959 612 959 647"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l2" HPOS="2085" VPOS="623" WIDTH="54" HEIGHT="50" BASELINE="2089 655 2139 651" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2128 623 2107 625 2085 627 2089 655 2089 671 2137 673 2139 651 2133 623 2128 623"/>
+                        </Shape>
+                        <String CONTENT="69"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-095_r2" HPOS="384" VPOS="709" WIDTH="1778" HEIGHT="372" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="384 709 2162 709 2162 1081 384 1081"/>
+                    </Shape>
+                    <TextLine ID="mz_1-095_l3" HPOS="383" VPOS="716" WIDTH="1773" HEIGHT="61" BASELINE="385 759 2156 755" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2029 718 2007 718 1985 718 1964 718 1942 718 1920 718 1899 718 1877 718 1855 718 1834 718 1812 718 1790 718 1782 716 1199 716 1197 716 1195 716 1149 727 1054 716 1052 716 991 727 840 716 838 716 835 716 801 727 721 718 708 718 686 720 664 720 643 723 636 723 597 727 576 725 556 727 534 727 513 727 491 729 469 729 448 731 426 731 404 733 383 733 385 759 385 777 2154 772 2156 755 2152 718 2029 716 2029 718"/>
+                        </Shape>
+                        <String CONTENT="the three northern districts, yields about 70,000 rubles. The total amount of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l4" HPOS="387" VPOS="790" WIDTH="1767" HEIGHT="45" BASELINE="387 818 2154 818" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 818 387 835 2152 835 2154 818 2152 790 387 790 387 818"/>
+                        </Shape>
+                        <String CONTENT="the whalers’ trade on the seashore is uncertain. In the last few years there"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l5" HPOS="385" VPOS="835" WIDTH="1767" HEIGHT="72" BASELINE="387 881 2152 874" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 881 387 896 842 907 844 907 846 907 848 907 864 894 1039 894 2148 894 2152 874 2146 835 385 842 387 881"/>
+                        </Shape>
+                        <String CONTENT="have come annually to the shores of Asia about ten whaling-ships, each of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l6" HPOS="387" VPOS="911" WIDTH="1769" HEIGHT="45" BASELINE="387 941 2156 941" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 941 387 954 2154 956 2156 941 2156 911 387 911 387 941"/>
+                        </Shape>
+                        <String CONTENT="which carries on trade to the amount of about one or two thousand dollars;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l7" HPOS="387" VPOS="969" WIDTH="1765" HEIGHT="48" BASELINE="387 1000 2152 1000" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1000 387 1017 2152 1017 2152 1000 2152 969 387 969 387 1000"/>
+                        </Shape>
+                        <String CONTENT="so that the whole yearly proceeds may be anywhere from $10,000 to $20,000."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l8" HPOS="389" VPOS="1015" WIDTH="1510" HEIGHT="63" BASELINE="389 1056 1899 1056" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 1056 389 1073 1897 1078 1899 1056 1899 1028 1814 1015 1812 1015 1481 1026 1468 1015 1466 1015 1463 1015 1375 1015 1373 1015 1370 1015 1368 1015 1353 1028 1260 1028 1236 1015 1234 1015 1232 1015 1230 1015 1227 1015 1217 1026 1191 1015 1188 1015 1186 1015 1078 1026 1050 1015 1048 1015 1046 1015 1043 1015 1015 1026 989 1015 987 1015 985 1015 881 1026 829 1015 827 1015 723 1026 695 1015 693 1015 690 1015 688 1015 662 1026 641 1015 638 1015 636 1015 634 1015 632 1015 621 1026 599 1015 597 1015 595 1015 593 1015 591 1015 578 1028 437 1028 413 1015 411 1015 409 1015 407 1015 404 1015 389 1024 389 1056"/>
+                        </Shape>
+                        <String CONTENT="As stated before, this trade is carried on chiefly with the Eskimo.¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-095_r3" HPOS="384" VPOS="1081" WIDTH="1778" HEIGHT="426" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="384 1081 2162 1081 2162 1507 384 1507"/>
+                    </Shape>
+                    <TextLine ID="mz_1-095_l9" HPOS="498" VPOS="1080" WIDTH="1658" HEIGHT="56" BASELINE="498 1119 2156 1119" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="498 1119 498 1136 2156 1136 2156 1119 2156 1088 498 1080 498 1119"/>
+                        </Shape>
+                        <String CONTENT="The yearly amount of trade done in the three districts of northeastern"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l10" HPOS="387" VPOS="1132" WIDTH="1763" HEIGHT="67" BASELINE="389 1175 2150 1182" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 1175 387 1190 2146 1199 2150 1182 2148 1149 2063 1136 1964 1136 1962 1136 1959 1136 1957 1136 1944 1147 1907 1136 1905 1136 1903 1136 1901 1136 1864 1147 1819 1136 1816 1136 1814 1136 1496 1145 1481 1134 1479 1134 1476 1134 1474 1134 1472 1134 1446 1145 1433 1134 1431 1134 1429 1134 1338 1134 1336 1134 1334 1134 1331 1134 1318 1145 1262 1134 1260 1134 1258 1134 1234 1145 1154 1134 1152 1134 1149 1134 1115 1145 1091 1134 1089 1134 1087 1134 1084 1134 1061 1145 1030 1134 1028 1134 1026 1134 1024 1134 1022 1134 1002 1145 872 1145 855 1132 853 1132 851 1132 848 1132 846 1132 814 1143 725 1132 723 1132 721 1132 697 1143 662 1132 660 1132 658 1132 656 1132 625 1143 389 1143 389 1175"/>
+                        </Shape>
+                        <String CONTENT="Asia by all the tribes — including the Chukchee, the Koryak, the Eskimo,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l11" HPOS="385" VPOS="1192" WIDTH="1767" HEIGHT="65" BASELINE="387 1240 2152 1234" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1240 387 1257 2150 1255 2152 1234 2150 1201 2139 1192 2137 1192 2135 1192 2133 1192 2130 1192 2128 1192 2113 1205 1972 1205 1953 1192 1951 1192 1949 1192 1946 1192 1866 1203 1838 1192 1836 1192 1834 1192 1832 1192 1799 1203 1775 1192 1773 1192 1771 1192 1769 1192 1736 1203 1710 1192 1708 1192 1706 1192 1650 1203 1606 1192 1604 1192 1602 1192 1600 1192 1561 1205 1539 1195 1537 1195 1535 1195 1533 1195 1505 1205 1399 1195 1396 1195 1266 1205 1130 1195 1128 1195 1126 1195 1102 1205 1052 1195 1050 1195 1048 1195 1046 1195 1030 1205 495 1197 493 1197 491 1197 461 1208 407 1197 404 1197 402 1197 400 1197 385 1205 387 1240"/>
+                        </Shape>
+                        <String CONTENT="the Lamut, the Yukaghir, the Russian settlers, the Russianized natives, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l12" HPOS="387" VPOS="1260" WIDTH="1765" HEIGHT="56" BASELINE="389 1301 2152 1296" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 1301 389 1316 2150 1311 2152 1296 2148 1268 400 1260 398 1260 396 1260 394 1260 394 1262 387 1266 389 1301"/>
+                        </Shape>
+                        <String CONTENT="the Yakut — does not exceed 200,000 rubles, — 70,000 in Gishiga, 70,000"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l13" HPOS="387" VPOS="1318" WIDTH="1767" HEIGHT="58" BASELINE="387 1361 2154 1361" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1361 387 1376 2152 1376 2154 1361 2154 1331 2109 1318 2107 1318 2105 1318 2044 1329 2022 1318 2020 1318 1927 1318 1925 1318 1923 1318 1920 1318 1907 1329 1847 1318 1702 1318 1700 1318 1697 1318 1695 1318 1682 1329 1641 1318 1639 1318 1637 1318 1635 1318 1600 1331 1271 1331 1256 1318 1253 1318 1251 1318 1249 1318 1247 1318 1214 1329 1193 1318 1191 1318 1188 1318 1132 1329 1028 1318 1026 1318 1024 1318 978 1329 942 1318 939 1318 937 1318 935 1318 903 1329 859 1318 857 1318 855 1318 853 1318 825 1329 387 1324 387 1361"/>
+                        </Shape>
+                        <String CONTENT="in Kolyma, 25,000 in Anadyr, and about 30,000 on the Chukchee Peninsula."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l14" HPOS="385" VPOS="1385" WIDTH="1769" HEIGHT="61" BASELINE="387 1415 2154 1420" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1415 385 1431 409 1444 411 1444 413 1444 1134 1435 1282 1446 1284 1446 2152 1435 2154 1420 2152 1389 387 1385 387 1415"/>
+                        </Shape>
+                        <String CONTENT="Of course, even the first three figures, though based on official reports, are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l15" HPOS="387" VPOS="1450" WIDTH="412" HEIGHT="48" BASELINE="387 1480 799 1480" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1480 387 1498 799 1498 799 1480 799 1450 387 1450 387 1480"/>
+                        </Shape>
+                        <String CONTENT="only approximate."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-095_r4" HPOS="384" VPOS="1537" WIDTH="1778" HEIGHT="189" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="384 1537 2162 1537 2162 1726 384 1726"/>
+                    </Shape>
+                    <TextLine ID="mz_1-095_l16" HPOS="498" VPOS="1539" WIDTH="1656" HEIGHT="45" BASELINE="498 1565 2154 1565" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="498 1565 498 1584 2154 1584 2154 1565 2154 1539 498 1539 498 1565"/>
+                        </Shape>
+                        <String CONTENT="¹ Mr. Gondatti (op. cit., p. 12) mentions Tñeˊs˙qᴀn of Uweˊlen as being the wealthiest trader on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l17" HPOS="387" VPOS="1578" WIDTH="1763" HEIGHT="47" BASELINE="389 1608 2150 1604" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 1608 389 1625 2148 1623 2150 1604 2143 1578 387 1580 389 1608"/>
+                        </Shape>
+                        <String CONTENT="Arctic coast. The name Tñeˊs˙qᴀn is Chukchee, as are the majority of the inhabitants of Uweˊlen. A few years"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l18" HPOS="389" VPOS="1617" WIDTH="1763" HEIGHT="52" BASELINE="391 1645 2152 1649" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1645 389 1667 2148 1669 2152 1649 2150 1621 391 1617 391 1645"/>
+                        </Shape>
+                        <String CONTENT="after the visit of Mr. Gondatti, Tñeˊs˙qᴀn died. It is true, however, that the Chukchee on the Arctic coast do"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-095_l19" HPOS="389" VPOS="1660" WIDTH="1209" HEIGHT="52" BASELINE="391 1688 1598 1693" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1688 389 1708 1593 1712 1598 1693 1596 1664 391 1660 391 1688"/>
+                        </Shape>
+                        <String CONTENT="take a more active share in trading with whalers than those on the Pacific."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

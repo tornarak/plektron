@@ -1,0 +1,285 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-096.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-096.png; regions_from: zones/chukchi-1-096.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-096_r1" HPOS="663" VPOS="886" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="663 886 2441 886 2441 976 663 976"/>
+                    </Shape>
+                    <TextLine ID="mz_1-096_l1" HPOS="1160" VPOS="885" WIDTH="786" HEIGHT="74" BASELINE="1162 935 1946 930" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1160 911 1162 935 1162 950 1929 959 1931 959 1933 959 1936 959 1936 956 1946 946 1946 930 1942 896 1351 885 1349 885 1347 885 1344 885 1344 887 1334 898 1243 898 1182 885 1180 885 1160 911"/>
+                        </Shape>
+                        <String CONTENT="IV. — REINDEER-BREEDING."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-096_r2" HPOS="663" VPOS="1001" WIDTH="1778" HEIGHT="370" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="663 1001 2441 1001 2441 1371 663 1371"/>
+                    </Shape>
+                    <TextLine ID="mz_1-096_l2" HPOS="770" VPOS="1008" WIDTH="1672" HEIGHT="63" BASELINE="773 1052 2442 1056" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2440 1028 2434 1021 1998 1011 1996 1011 1918 1021 1886 1011 1884 1011 1881 1011 1879 1011 1842 1021 1814 1011 1812 1011 1810 1011 1708 1021 1676 1011 1674 1011 1671 1011 1669 1011 1639 1021 1606 1008 1604 1008 1602 1008 1535 1019 1288 1008 1286 1008 773 1017 773 1052 770 1065 2438 1071 2442 1056 2440 1028 2440 1028"/>
+                        </Shape>
+                        <String CONTENT="GROUPS OF REINDEER-BREEDERS. — The domestication of the reindeer among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l3" HPOS="667" VPOS="1071" WIDTH="1775" HEIGHT="61" BASELINE="667 1114 2442 1114" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1114 667 1132 2442 1132 2442 1114 2442 1084 2380 1071 2377 1071 2375 1071 2338 1082 2304 1071 2302 1071 2299 1071 1905 1082 1877 1071 1875 1071 1873 1071 1816 1082 1771 1071 1769 1071 1767 1071 1708 1082 1674 1071 1671 1071 1669 1071 1667 1071 1665 1071 1650 1082 1563 1071 1561 1071 1502 1082 1442 1071 1440 1071 1437 1071 1392 1082 1308 1071 1305 1071 1303 1071 1301 1071 1288 1082 1266 1071 1264 1071 1262 1071 1260 1071 1217 1082 1171 1071 1169 1071 1167 1071 1097 1082 1074 1071 1071 1071 913 1071 911 1071 909 1071 885 1082 805 1071 803 1071 721 1082 695 1071 693 1071 690 1071 688 1071 667 1082 667 1114"/>
+                        </Shape>
+                        <String CONTENT="the tribes inhabiting the Asiatic side of Bering Sea forms the chief distinctive"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l4" HPOS="669" VPOS="1143" WIDTH="1773" HEIGHT="47" BASELINE="669 1173 2442 1173" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1173 669 1190 2442 1190 2442 1173 2442 1145 669 1143 669 1173"/>
+                        </Shape>
+                        <String CONTENT="feature in their economic condition as compared to that of the Arctic tribes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l5" HPOS="667" VPOS="1203" WIDTH="1775" HEIGHT="48" BASELINE="667 1234 2442 1234" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1234 667 1251 2442 1251 2442 1234 2442 1203 667 1203 667 1234"/>
+                        </Shape>
+                        <String CONTENT="of America. Nevertheless it is difficult to say how reindeer-breeding, and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l6" HPOS="667" VPOS="1264" WIDTH="1775" HEIGHT="47" BASELINE="667 1294 2442 1294" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1294 667 1311 2442 1311 2442 1294 2442 1264 667 1264 667 1294"/>
+                        </Shape>
+                        <String CONTENT="nomadic state of life entailed by it, were introduced into the extreme north-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l7" HPOS="667" VPOS="1318" WIDTH="539" HEIGHT="56" BASELINE="669 1348 1206 1355" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1348 667 1366 677 1374 680 1374 682 1374 684 1374 1204 1368 1206 1355 1204 1324 669 1318 669 1348"/>
+                        </Shape>
+                        <String CONTENT="eastern corner of Asia."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-096_r3" HPOS="663" VPOS="1371" WIDTH="1778" HEIGHT="548" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="663 1371 2441 1371 2441 1919 663 1919"/>
+                    </Shape>
+                    <TextLine ID="mz_1-096_l8" HPOS="773" VPOS="1368" WIDTH="1669" HEIGHT="67" BASELINE="775 1411 2442 1415" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="775 1411 773 1424 781 1433 781 1435 783 1435 786 1435 788 1435 2440 1426 2442 1415 2440 1383 2057 1370 2055 1370 1998 1381 1977 1370 1975 1370 1972 1370 1970 1370 1968 1370 1951 1381 1927 1370 1925 1370 1923 1370 1920 1370 1918 1370 1901 1383 1780 1383 1752 1370 1749 1370 1747 1370 1745 1370 1702 1381 1674 1370 1671 1370 1669 1370 1667 1370 1635 1381 1602 1368 1600 1368 1598 1368 1596 1368 1565 1379 1502 1368 1500 1368 1498 1368 1468 1379 1446 1368 1444 1368 1442 1368 1440 1368 1396 1381 1000 1381 987 1368 985 1368 983 1368 981 1368 978 1368 950 1379 840 1368 838 1368 775 1376 775 1411"/>
+                        </Shape>
+                        <String CONTENT="Along the western parts of the Arctic shores of the Old World there"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l9" HPOS="662" VPOS="1439" WIDTH="1778" HEIGHT="50" BASELINE="664 1470 2440 1474" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="664 1470 662 1485 2436 1489 2440 1474 2438 1439 664 1439 664 1470"/>
+                        </Shape>
+                        <String CONTENT="dwell a number of tribes who have possessed from ancient times domesticated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l10" HPOS="667" VPOS="1502" WIDTH="1775" HEIGHT="48" BASELINE="667 1532 2442 1532" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1532 667 1550 2442 1550 2442 1532 2442 1502 667 1502 667 1532"/>
+                        </Shape>
+                        <String CONTENT="reindeer that are harnessed to sledges and also used for food. Their herds"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l11" HPOS="664" VPOS="1558" WIDTH="1774" HEIGHT="59" BASELINE="667 1589 2438 1593" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1589 664 1604 731 1617 734 1617 2436 1608 2438 1593 2436 1563 667 1558 667 1589"/>
+                        </Shape>
+                        <String CONTENT="are, or rather were, large; and their whole existence is based on the supply"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l12" HPOS="667" VPOS="1621" WIDTH="1773" HEIGHT="50" BASELINE="667 1651 2440 1651" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1651 667 1671 2440 1671 2440 1651 2440 1621 667 1621 667 1651"/>
+                        </Shape>
+                        <String CONTENT="of meat and skins furnished by these herds. Their economic condition resembles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l13" HPOS="664" VPOS="1669" WIDTH="1776" HEIGHT="63" BASELINE="667 1714 2440 1710" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1714 667 1732 2438 1727 2440 1710 2436 1682 2360 1669 2358 1669 2356 1669 2334 1680 2308 1669 2306 1669 2304 1669 2302 1669 2299 1669 2282 1680 2118 1669 2115 1669 2113 1669 2111 1669 2096 1682 2005 1682 1968 1669 1966 1669 1964 1669 1879 1680 1834 1669 1832 1669 1829 1669 1773 1680 1674 1669 1671 1669 1583 1680 1554 1669 1552 1669 1550 1669 1548 1669 1518 1682 1487 1671 1485 1671 1483 1671 1405 1682 1201 1671 1199 1671 1115 1682 1035 1671 1033 1671 1030 1671 996 1684 818 1684 803 1671 801 1671 799 1671 796 1671 664 1680 667 1714"/>
+                        </Shape>
+                        <String CONTENT="in this respect that of the more southerly cattle-breeding tribes. These reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l14" HPOS="664" VPOS="1738" WIDTH="1776" HEIGHT="52" BASELINE="667 1770 2440 1775" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1770 664 1786 2436 1790 2440 1775 2438 1742 667 1738 667 1770"/>
+                        </Shape>
+                        <String CONTENT="tribes are the Laplanders, Zyrians, and Samoyeds (European and Asiatic). Their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l15" HPOS="667" VPOS="1805" WIDTH="1775" HEIGHT="46" BASELINE="667 1833 2442 1833" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1833 667 1851 2442 1851 2442 1833 2442 1805 667 1805 667 1833"/>
+                        </Shape>
+                        <String CONTENT="methods of reindeer-breeding are somewhat uniform, and they all use the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l16" HPOS="669" VPOS="1861" WIDTH="885" HEIGHT="50" BASELINE="669 1892 1554 1892" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1892 669 1911 1554 1911 1554 1892 1554 1861 669 1861 669 1892"/>
+                        </Shape>
+                        <String CONTENT="shepherd-dog in managing their herds."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-096_r4" HPOS="663" VPOS="1919" WIDTH="1778" HEIGHT="538" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="663 1919 2441 1919 2441 2457 663 2457"/>
+                    </Shape>
+                    <TextLine ID="mz_1-096_l17" HPOS="775" VPOS="1911" WIDTH="1670" HEIGHT="67" BASELINE="777 1948 2445 1952" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="777 1948 775 1963 820 1976 822 1976 825 1976 1546 1967 1624 1978 1626 1978 2442 1967 2445 1952 2442 1922 777 1911 777 1948"/>
+                        </Shape>
+                        <String CONTENT="The widespread branches of the Tungus and Lamut constitute the most"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l18" HPOS="667" VPOS="1972" WIDTH="1773" HEIGHT="65" BASELINE="667 2015 2440 2015" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 2015 667 2037 2440 2028 2440 2015 2440 1985 2020 1972 2018 1972 1949 1983 1920 1972 1918 1972 1916 1972 1914 1972 1879 1983 1825 1972 1823 1972 1821 1972 1795 1983 1715 1972 1713 1972 1643 1983 1628 1972 1626 1972 1624 1972 1502 1972 1500 1972 1498 1972 1496 1972 1481 1985 1325 1985 1292 1972 1290 1972 1288 1972 1232 1983 1169 1972 1167 1972 1059 1983 968 1972 965 1972 896 1983 783 1972 781 1972 667 1983 667 2015"/>
+                        </Shape>
+                        <String CONTENT="prominent reindeer tribe of eastern Siberia. Usually they live some distance"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l19" HPOS="664" VPOS="2037" WIDTH="1776" HEIGHT="63" BASELINE="667 2067 2440 2074" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 2067 664 2082 1297 2097 1299 2097 1760 2089 1847 2100 1849 2100 2438 2089 2440 2074 2438 2043 667 2037 667 2067"/>
+                        </Shape>
+                        <String CONTENT="from the shore, and many bands use the saddle in place of the sledge. Their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l20" HPOS="667" VPOS="2097" WIDTH="1771" HEIGHT="55" BASELINE="667 2132 2438 2132" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 2132 667 2152 2438 2152 2438 2132 2438 2104 667 2097 667 2132"/>
+                        </Shape>
+                        <String CONTENT="herds are so small that they can use their reindeer for riding and transportation"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l21" HPOS="667" VPOS="2165" WIDTH="1773" HEIGHT="45" BASELINE="667 2193 2440 2193" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 2193 667 2210 2440 2210 2440 2193 2440 2165 667 2165 667 2193"/>
+                        </Shape>
+                        <String CONTENT="only, not for slaughter. They have not become nomadic, but, owing to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l22" HPOS="664" VPOS="2214" WIDTH="1772" HEIGHT="57" BASELINE="667 2249 2436 2255" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 2249 664 2264 2432 2271 2436 2255 2434 2216 667 2214 667 2249"/>
+                        </Shape>
+                        <String CONTENT="introduction of the reindeer, have been enabled to extend their hunting and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l23" HPOS="669" VPOS="2279" WIDTH="1769" HEIGHT="52" BASELINE="669 2312 2438 2312" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2312 669 2331 2438 2331 2438 2312 2438 2284 669 2279 669 2312"/>
+                        </Shape>
+                        <String CONTENT="fishing expeditions over a larger extent of territory, in the same way as the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l24" HPOS="669" VPOS="2329" WIDTH="1765" HEIGHT="65" BASELINE="671 2370 2434 2377" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2370 669 2383 2429 2394 2434 2377 2434 2344 2397 2331 2395 2331 2393 2331 1931 2342 1916 2331 1914 2331 1912 2331 1910 2331 1780 2340 1758 2329 1756 2329 1754 2329 1752 2329 1710 2340 1682 2329 1680 2329 1678 2329 1676 2329 1630 2340 1570 2329 1567 2329 1565 2329 1537 2340 1492 2329 1489 2329 1487 2329 1485 2329 1457 2340 1375 2329 1373 2329 1370 2329 1368 2329 1355 2340 1305 2329 1303 2329 671 2329 671 2370"/>
+                        </Shape>
+                        <String CONTENT="North American Indians did after the introduction of horses. Several bands,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l25" HPOS="664" VPOS="2394" WIDTH="1718" HEIGHT="54" BASELINE="667 2429 2382 2433" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 2429 664 2444 2377 2448 2382 2433 2380 2403 667 2394 667 2429"/>
+                        </Shape>
+                        <String CONTENT="however, raise large herds, so that they are able to live on their products."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-096_r5" HPOS="663" VPOS="2457" WIDTH="1778" HEIGHT="204" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="663 2457 2441 2457 2441 2661 663 2661"/>
+                    </Shape>
+                    <TextLine ID="mz_1-096_l26" HPOS="773" VPOS="2448" WIDTH="1665" HEIGHT="63" BASELINE="775 2494 2438 2489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="775 2494 775 2511 2436 2507 2438 2489 2434 2461 2317 2461 2304 2448 2302 2448 2299 2448 2297 2448 2295 2448 2250 2459 1819 2448 1816 2448 1814 2448 1812 2448 1799 2461 1600 2461 1585 2450 1583 2450 1580 2450 1578 2450 1576 2450 1546 2461 1513 2450 1511 2450 1509 2450 1507 2450 1481 2461 1275 2450 1273 2450 1193 2461 1115 2450 1113 2450 1110 2450 1078 2461 1024 2450 1022 2450 1020 2450 994 2461 981 2450 978 2450 976 2450 794 2450 792 2450 790 2450 788 2450 773 2459 775 2494"/>
+                        </Shape>
+                        <String CONTENT="Although the riding of reindeer is the most striking feature among Tungus"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l27" HPOS="660" VPOS="2520" WIDTH="1778" HEIGHT="58" BASELINE="662 2550 2438 2554" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="662 2550 660 2563 818 2576 820 2576 1474 2567 1572 2578 1574 2578 2436 2567 2438 2554 2438 2524 662 2520 662 2550"/>
+                        </Shape>
+                        <String CONTENT="reindeer-breeders, numerous bands have adopted a peculiar form of sledge"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l28" HPOS="664" VPOS="2569" WIDTH="1774" HEIGHT="63" BASELINE="664 2613 2438 2613" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="664 2613 664 2632 2438 2632 2438 2613 2438 2578 2423 2569 2421 2569 2419 2569 2416 2569 2414 2569 2375 2582 2289 2582 2273 2569 2271 2569 2269 2569 2267 2569 2265 2569 2239 2580 2221 2569 2219 2569 2217 2569 2215 2569 2213 2569 2189 2582 1914 2582 1897 2569 1894 2569 1892 2569 1890 2569 1888 2569 1862 2580 1812 2569 1810 2569 1808 2569 1784 2580 1734 2569 1732 2569 1730 2569 1697 2580 1682 2569 1680 2569 1678 2569 1676 2569 1674 2569 1648 2580 1598 2569 1596 2569 1593 2569 1565 2580 1520 2569 1518 2569 1515 2569 1513 2569 1489 2580 1390 2569 1388 2569 664 2578 664 2613"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 4) with stanchions fitted into circular holes in the runners and fastened"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-096_r6" HPOS="663" VPOS="3110" WIDTH="1778" HEIGHT="141" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="663 3110 2441 3110 2441 3251 663 3251"/>
+                    </Shape>
+                    <TextLine ID="mz_1-096_l29" HPOS="664" VPOS="3115" WIDTH="1765" HEIGHT="61" BASELINE="667 3156 2429 3160" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2421 3139 2410 3128 1600 3128 1546 3115 1544 3115 667 3121 667 3156 664 3171 2425 3176 2429 3160 2427 3156 2421 3139"/>
+                        </Shape>
+                        <String CONTENT="with thongs, and with a circular bow-like fore-part for attaching the traces, —"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-096_l30" HPOS="664" VPOS="3182" WIDTH="1432" HEIGHT="63" BASELINE="667 3212 2096 3219" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 3212 664 3230 1253 3245 1256 3245 2094 3236 2096 3219 2094 3189 667 3182 667 3212"/>
+                        </Shape>
+                        <String CONTENT="the same as is used throughout eastern Siberia for dog-teams."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-096_r7" HPOS="663" VPOS="3254" WIDTH="1778" HEIGHT="71" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="663 3254 2441 3254 2441 3325 663 3325"/>
+                    </Shape>
+                    <TextLine ID="mz_1-096_l31" HPOS="1492" VPOS="3236" WIDTH="95" HEIGHT="89" BASELINE="1496 3299 1587 3292" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1496 3299 1496 3316 1507 3325 1509 3325 1511 3325 1513 3325 1515 3325 1518 3325 1539 3312 1587 3318 1587 3292 1578 3236 1492 3251 1496 3299"/>
+                        </Shape>
+                        <String CONTENT="[70]"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
