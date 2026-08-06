@@ -1069,25 +1069,39 @@ The reason is what the store *is*. `gt/ocr` is line images paired with their tex
 so every character that disagrees with the raster teaches a recognizer something
 false — and a near-miss like `spririts` is exactly the shape a model will learn.
 
-**The one exception is a Tier-1 form the corpus already settles otherwise.**
-`1-099` L13 prints `Kuvár`, an acute over the vowel, for the name set `Kuvaˊr` with
-the postposed stress mark six times across `1-088`, `1-089`, `1-090` and `1-093`.
-That one is normalized in the store, because Tier-1 glyphs are not only training
-data: `proposal marks` computes its corpus percentages from `gt/ocr` and
-`concordance.md` treats it as the attestation set. Keying the typo would enter
-"acute over a vowel" into the evidence as a real occurrence, and every later reader
+**The one exception is a form that is contextually Tier-1 — a gloss, a native
+proper name, a word in a numbered vocabulary — carrying something the keying spec
+does not contain at all.** A diacritic outside the §2.1 mark set. A plainly
+polysyllabic form with no stress mark anywhere. A base the inventory has no sort
+for. This is narrower than "looks wrong": the notation is a closed set, so a form
+inside it that merely surprises you is evidence, and a form carrying a mark the set
+does not have is a compositor's slip with no reading to preserve.
+
+`1-099` L13 prints `Kuvár` — an acute over the vowel, in a personal name. §2.1 has
+no acute. §3 already lists the spacing acute U+00B4 as a trap for U+02CA; this is
+that trap in the form NFD leaves behind, `a` + U+0301, which the table does not
+name. The store holds `Kuvaˊr`.
+
+**The reason the asymmetry exists is that Tier-1 glyphs are not only training
+data.** `proposal marks` computes its corpus percentages from `gt/ocr` and
+`concordance.md` treats it as the attestation set, so keying the slip would enter
+"acute over a vowel" into the evidence as a real occurrence and every later reader
 would be measured against a distribution containing it. An English typo enters no
 such table and costs one wrong training pair.
 
-**The test, then, is not "is it wrong" but "does keying it put something into the
-evidence set that the corpus does not otherwise attest".** If yes, key the settled
-form and record the printed setting in that line's `note`. If no — and English
-orthography is always no — key what is set.
+**If you are reading a page, this is a `note`, not a correction.** You can see that
+the mark is outside the set — that is a fact about the spec in front of you. You
+cannot see what the form should be instead: `gt/ocr` is closed to you by the guard,
+which refuses it saying that deriving a convention from a neighbouring page is what
+the firewall forbids. So key what is set, and say in the line's `note` which
+provision it falls outside and what you think it stands for. That is a complete
+piece of work, and it is what `1-099`'s reader did.
 
-**This licenses correction against occurrences already in `gt/ocr`, and nothing
-else.** Not against expectation of what the notation should contain, not against a
-neighbouring page's reading that is itself unratified, not against a single other
-attestation. A form the corpus holds once is keyed as printed.
+**The correction is the adjudicator's**, made at the review server where the other
+occurrences can actually be counted, and licensed by occurrences already in
+`gt/ocr` and nothing else — not by expectation of what the notation should contain,
+not by a neighbouring page's unratified reading, not by a single other attestation.
+A form the corpus holds once is keyed as printed.
 
 **Nothing catches this mechanically, and the reader's flag is the whole detector.**
 `a` + U+0301 appears in no table — not `INVENTORY_CHARS`, not `LOOKALIKES`, not
