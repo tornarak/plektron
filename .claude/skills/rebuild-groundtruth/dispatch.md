@@ -116,6 +116,13 @@ differed, so no sharing was possible either way. `agents usage` reports what the
 stagger bought as `missed`, so it is checkable after the fact rather than assumed;
 if `missed` is 0 on a fanned-out batch, drop it.
 
+**The wait is a backgrounded `sleep 10` and nothing more.** Launch the first reader
+and the sleep in the same turn, then fan the rest out on the sleep's completion
+notification. Do not poll for the first reader's output file: the prefix is written
+early in its run, not at the end, so a wait conditioned on its *result* waits minutes
+for something that took seconds — and the harness re-invokes on completion anyway, so
+the loop only burns CPU to learn what it was going to be told.
+
 The saving is small against a large allowance, and that is not the reason. This pass
 is meant to be runnable by people on cheaper plans and other platforms, where the
 same fixed prefix is paid at every scale. Note also that the agent's memory index
