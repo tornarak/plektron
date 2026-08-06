@@ -418,10 +418,11 @@ it match one: key what is set, and say in your report that you found no entry.
 ### 2.14 The printer's errors — key them, with one exception (SETTLED, editor ruling)
 
 **A printer's error is keyed as printed, and `gt/ocr` never repairs the book.**
-Three were verified against the raster on the `1-070`–`1-100` pass and stand:
-`1-087` L17 `spririts`, `1-090` L38 `Government, to wishing breed reindeer`,
-`1-094` L5 `fawns-kins`. Note the setting on the line and go on. The collation pass corrects it visibly, where the
-print survives beside the correction; a silent repair here would leave neither.
+Three stand in `gt/ocr` today, each re-read out of the store: `1-087` L17
+`spririts`, `1-090` L38 `Government, to wishing breed reindeer`, `1-094` L5
+`fawns-kins`. Note the setting on the line and go on. The collation pass corrects
+it visibly, where the print survives beside the correction; a silent repair here
+would leave neither.
 
 The reason is what the store *is*. `gt/ocr` is line images paired with their text,
 so every character that disagrees with the raster teaches a recognizer something
@@ -437,10 +438,17 @@ mints a glyph identity out of damage, which is the firewall's whole subject, and
 `gt/ocr` it does the exact harm the paragraph above describes: it teaches a
 recognizer that a damaged `r` is a different character.
 
-Note the wear on the line, class `artifact`, and key the letter. The register here
-carried `1-100` L53 `eaıly` as a printer's error until this ruling; it was ink loss
-on an `r`, the entry taught the rule backwards, and `1-107` L36 was keyed `aıe` on
-its authority before the adjudicator caught it.
+Note the wear on the line, class `artifact`, and key the letter.
+
+The register above carried a fourth entry, `1-100` L53 `eaıly`, described as
+verified against the raster. **It never was.** `gt/ocr/chukchi-1-100.xml` reads
+`early` and contains no dotless i anywhere: the entry wrote up a reading the
+adjudicator had already corrected, as though it had been ratified. It then did
+what a false register entry does — `1-107` L36 was keyed `aıe` on its authority,
+and the same correction had to be made a second time.
+
+So a register here is checkable against `gt/ocr` or it is not evidence, and the
+three entries above were re-read out of the store, not recalled.
 
 **The one exception is a form that is contextually Tier-1 — a gloss, a native
 proper name, a word in a numbered vocabulary — carrying something the keying spec
