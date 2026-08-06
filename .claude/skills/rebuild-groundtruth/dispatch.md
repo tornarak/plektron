@@ -19,6 +19,19 @@ for it is slower than one loop. Survey the batch across four stores first —
 `gt/zones/`, `gt/fig/`, `gt/ocr/`, `mz/ocr/` — because each answers a different
 question about the dispatch:
 
+**`harness corpus state` answers all four in one call, and its filters are how the
+queue gets populated.** `--context` windows over the observed scan index from the
+refs you name — `corpus state 1-077 --context +12` is "the next twelve pages that
+exist", clamped at the part's end and never crossing into the next part — and
+`--stage ocr-mz` then keeps exactly the pages that are predicted and not yet keyed,
+because `stage` is the *furthest* rung reached: a page already in `gt/ocr/` reports
+`ocr-gt` and drops out of the filter on its own. That is the `gt/ocr/` hazard below
+handled mechanically rather than by reading a range and hoping. Ask for more context
+than the batch needs and take the first N of what comes back: the gaps are where
+the plates are, and they are not few — `1-081`–`1-084` are four consecutive `exempt`
+pages sitting in the middle of an otherwise unbroken run. Widening the window is
+free; a `queue` refusal after the fact is not.
+
 - **`gt/zones/`** — is it a text page at all, and does it have the zones `predict`
   needs. No zones, no dispatch.
 - **`gt/ocr/`** — **a page already in the ground-truth store is not a restoration
