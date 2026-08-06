@@ -526,33 +526,34 @@ why.
 
 ## What to report back
 
-1. **The page.** What kind of page it is — running title, folio, footnotes, figures.
-   What `ocr gaps` said and what you concluded. How many lines you keyed. Which
-   lines carry Tier-1 (Chukchee/Koryak/Yupik) notation. Every doubt you flagged and
-   why. What you want the adjudicator to look at first. Concise and concrete.
-2. **The checklist, by section**, naming every item you could not tick and why — and
-   anything the pass made harder than it needed to be: a tool that did not exist, a
-   rule you had to hunt for, an image you had to spend twice.
-3. **The image ladder, from the ledger, never from memory.** Run
-   `uv run harness ocr calls PP-NNN` and include its output — every image call
-   you made is already recorded there with the places it named, its zoom step and
-   its reason, so do not re-tally any of it: every retrospective in the batch
-   that built the ledger understated its own image count, none of them lying,
-   because a search stops feeling like a search once it pays off. Add only what
-   the ledger cannot say:
-   - which doubt each zoom settled, and which it did not (those go to `note`);
-   - whether the numbered page was legible enough to key English prose from
-     without a contact sheet, and if not, exactly what was illegible;
-   - **which lines the spec settled and which the raster did**, in separate
-     sentences — a correction reported as confirmed on a line no image covered
-     is the invented-second-witness defect (§5.12) in its cheapest form, and
-     the ledger is what makes it checkable now.
+Open with one sentence saying what kind of page it is.
+
+**Leave these out — your tools already record them:**
+
+- the image ladder — `harness ocr calls PP-NNN` has every call, its zoom step, the
+  lines it named and the reason you gave;
+- the checklist item by item;
+- the advisories `proposal check` raised, and the fact that the gates passed;
+- the contrast words and spec citations behind a reading — those belong in that
+  line's `note`, not in prose;
+- counts: lines keyed, zooms spent, corrections made;
+- what went as expected.
+
+**Include these:**
+
+1. **Every doubt you could not settle** — what you keyed instead, and what you want
+   the adjudicator to look at first.
+2. **Checklist items you could not tick**, and why.
+3. **Friction** — a tool that did not exist, a rule you had to hunt for, an image
+   you had to spend twice.
+
+If you have nothing under 1 or 3, say so in a clause.
 
 ---
 
 # The reading checklist
 
-Work this per page and report against it by section. It carries no reasoning on
+Work this per page, every item; report only what you could not tick. It carries no reasoning on
 purpose — the reasoning is the spec below it, and restating reasoning is the thing
 that has demonstrably not worked.
 
@@ -1352,8 +1353,9 @@ changes what a turn costs. Before your first image:
   numbered composite alone is usually enough. A dense page: past ~20 zooms you
   are off the mark. The tool prints what every call buys on your page; read it
   and economize.
-- **The ledger is the record.** Every image call and its `--reason` land in
-  `calls.jsonl`, the adjudicator reads the series, and your report includes
-  `ocr calls` output rather than a recollection.
+- **The ledger is the record, and it is not yours to retell.** Every image call
+  and its `--reason` land in `calls.jsonl` and the adjudicator reads the series
+  there. Keep the reasons honest, since they are what is read; then leave the
+  ladder out of your report entirely.
 
 A flagged doubt is a finished page. An unwritten proposal is not.
