@@ -120,6 +120,11 @@ ADVISORY = "advisory"
 # which class applies must not be pushed toward silence.
 NOTE_CLASSES = ("doubt", "semantic", "print", "layout", "artifact")
 
+# What `_added_terminal_punctuation` will question at the end of a line. Sentence
+# punctuation only: a closing bracket or quote is structural, routinely spans a
+# line break, and disagreeing with the draft about one is ordinary work.
+TERMINAL_PUNCTUATION = ",.;:"
+
 
 def issue(line, text: str, token: str = "", context: str = "",
           detail: str = "", severity: str = DEFECT) -> dict:
@@ -408,6 +413,7 @@ def check(path: Path, ref: str | None = None, root: Path = Path(".")) -> list[di
         from .marks import page_issues
 
         out += _orphan_line_issues(data, ref, root)
+        out += _added_terminal_punctuation(data, ref, root)
         out += page_issues(path, ref, root)
     for idx, rec in sorted(data.get("lines", {}).items(), key=lambda kv: int(kv[0])):
         text = rec.get("text", "")
@@ -493,6 +499,70 @@ def _segmenter_missed_issues(data: dict) -> list[dict]:
                        "nothing, and let a box be drawn in `harness ocr edit` "
                        "before the page is read against it.",
                   detail=f"block holds {len(block)}")]
+
+
+def _added_terminal_punctuation(data: dict, ref: str, root: Path) -> list[dict]:
+    """A line ending in punctuation the machine draft does not end in.
+
+    **The commonest fabrication this pass produces.** Nine line-final commas over
+    two batches — `1-079`, `1-092`, `1-099`, then `1-103` L4, `1-104` L33, `1-107`
+    L3, `1-109` L35, `1-110` L3 and L24 — none of them on the page, and none of
+    them in `mz/ocr` either, so no recognizer artifact carried them in. Six of the
+    ten pages in one batch, past readers who had answered every advisory they were
+    given, which is what says the rule alone will not hold it.
+
+    Why they appear is not settled. They sit at the end of the value, beside the
+    closing quote, which reads like a serialization slip — but three of the four
+    inspected sat in a record with no following field, so there was no separator to
+    bleed in from. The *shape* is what is stable: always terminal, never mid-line,
+    always absent from the draft. So the detector keys on the shape and takes no
+    position on the cause.
+
+    **Terminal only, and against the draft rather than against a rule of prose.**
+    A comma the reader restores because the recognizer dropped one is a real
+    correction and must stay possible; what makes this checkable is that CATMuS is
+    a competent witness to ASCII punctuation, so a disagreement is worth one look
+    at `@100` — the length of the crop is not a judgement call there.
+
+    A defect when the line says nothing about it, an advisory once the line carries
+    a `note`: the gate is satisfiable either way — look, then delete the mark or
+    say what you saw — and a reader that looked and found the comma genuinely
+    printed must not be stuck. This is `_footnote_issues`'s `explained` shape, for
+    the same reason.
+    """
+    lines = data.get("lines")
+    if not isinstance(lines, dict) or not lines:
+        return []
+    from .lines import DEFAULT_ALTO_DIR, alto_for_lines, page_lines
+    try:
+        alto = alto_for_lines(ref, DEFAULT_ALTO_DIR, root)
+    except Exception:
+        return []
+    if not alto.exists():
+        return []
+    draft = {str(r["index"]): (r.get("text") or "") for r in page_lines(alto, root)}
+    out = []
+    for k, rec in sorted(lines.items(), key=lambda kv: (len(kv[0]), kv[0])):
+        text = (rec or {}).get("text", "").rstrip()
+        was = draft.get(str(k), "").rstrip()
+        # Only when the draft has a line to disagree with: an empty one is a
+        # recognizer that returned nothing, which is no witness at all.
+        if not text or not was or text[-1] not in TERMINAL_PUNCTUATION:
+            continue
+        if was and was[-1] == text[-1]:
+            continue
+        # The bodies have to match apart from the mark, or this is not "a comma
+        # was added" but "the line was rekeyed", which the reader is entitled to
+        # do and which this detector has no opinion about.
+        if text[:-1].rstrip() != was:
+            continue
+        out.append(issue(k, f"line ends {text[-1]!r}, the draft does not — the "
+                         "commonest fabrication on this pass is a line-final "
+                         "comma that is on no page and in no draft. Look at "
+                         "`@100` before keeping it",
+                         token=text[-1], context=text[-28:],
+                         severity=ADVISORY if (rec or {}).get("note") else DEFECT))
+    return out
 
 
 def _orphan_line_issues(data: dict, ref: str, root: Path) -> list[dict]:

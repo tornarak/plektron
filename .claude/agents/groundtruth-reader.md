@@ -536,6 +536,23 @@ why.
   `keying_spec.md`'s inventory for a shape that looks nearer — the lookalike table
   (§2.7) lists characters that are *always wrong*, and "closest visual match" is
   exactly the reasoning that lands on one.
+- **Do not add punctuation at the end of a line.** This is the commonest fabrication
+  this pass produces, by a distance: nine line-final commas across two batches
+  (`1-079`, `1-092`, `1-099`, then `1-103` L4, `1-104` L33, `1-107` L3, `1-109` L35,
+  `1-110` L3 and L24), every one of them absent from `mz/ocr` as well as from the
+  page. **Why they appear is not settled** — they sit at the very end of the value,
+  next to the closing quote, which looks like a serialization slip, but they turn up
+  just as often on a record with no following field to bleed from. What is settled
+  is the shape: always terminal, never mid-line, never in the draft. So it is not
+  caught by looking harder — it is caught by knowing the shape
+  exists. **A line ends where the type ends.** If you are about to write a line
+  whose last character is punctuation the machine draft does not have, go and look
+  at that spot: `@100` is the idiom and needs no estimate. A wrapped line usually
+  ends on a bare word, and that is not a defect to smooth over.
+- **Wear is not a letter.** A sort worn, broken or printed thin is keyed as the
+  letter the compositor set, never the lookalike the residue resembles — an abraded
+  `r` is `r`, not `ı`. Note the wear, class `artifact`. §2.14 carries the ruling and
+  the register entry it replaced.
 
 ## What to report back
 
@@ -1072,16 +1089,30 @@ it match one: key what is set, and say in your report that you found no entry.
 
 ### 2.14 The printer's errors — key them, with one exception (SETTLED, editor ruling)
 
-**A printer's error is keyed as printed, and `gt/ocr` never repairs the book.** Four
-were verified against the raster on the `1-070`–`1-100` pass and all four stand:
+**A printer's error is keyed as printed, and `gt/ocr` never repairs the book.**
+Three were verified against the raster on the `1-070`–`1-100` pass and stand:
 `1-087` L17 `spririts`, `1-090` L38 `Government, to wishing breed reindeer`,
-`1-094` L5 `fawns-kins`, `1-100` L53 `eaıly` (the `r` worn to a bare stem). Note the
-setting on the line and go on. The collation pass corrects it visibly, where the
+`1-094` L5 `fawns-kins`. Note the setting on the line and go on. The collation pass corrects it visibly, where the
 print survives beside the correction; a silent repair here would leave neither.
 
 The reason is what the store *is*. `gt/ocr` is line images paired with their text,
 so every character that disagrees with the raster teaches a recognizer something
 false — and a near-miss like `spririts` is exactly the shape a model will learn.
+
+**Wear is not a letter (SETTLED, editor ruling).** A sort that printed thin, broke,
+or abraded is keyed as **the letter the compositor set**, never as whatever the
+surviving shape resembles. An `r` worn to a bare stem is an `r`, not `ı`. This is
+not an exception to keying what is printed — it is what keying what is printed
+*means*, because the compositor set a
+letter and the wear happened to the impression of it. Substituting the lookalike
+mints a glyph identity out of damage, which is the firewall's whole subject, and in
+`gt/ocr` it does the exact harm the paragraph above describes: it teaches a
+recognizer that a damaged `r` is a different character.
+
+Note the wear on the line, class `artifact`, and key the letter. The register here
+carried `1-100` L53 `eaıly` as a printer's error until this ruling; it was ink loss
+on an `r`, the entry taught the rule backwards, and `1-107` L36 was keyed `aıe` on
+its authority before the adjudicator caught it.
 
 **The one exception is a form that is contextually Tier-1 — a gloss, a native
 proper name, a word in a numbered vocabulary — carrying something the keying spec
