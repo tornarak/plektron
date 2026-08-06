@@ -818,9 +818,12 @@ def _edit_jump_inner(idxs: list[int]) -> str:
 DEFAULT_FONT = "Brill"
 _FALLBACK = "'DejaVu Serif', 'Charis SIL', 'Noto Sans', sans-serif"
 
-# Points, roughly: the entry text is what a reviewer reads for an hour, and Brill
-# runs small for its em — the reason a face change alone was not enough.
-DEFAULT_FONT_SIZE = 17
+# **24px, set by looking at it.** The entry text is what a reviewer reads for an
+# hour, against a crop of type printed at 300 dpi, and Brill runs small for its em
+# — so the size that was comfortable in a UI serif is not the size that is
+# comfortable here. This is the value the steppers arrived at in use, not a
+# default carried over from a face nobody is reading in any more.
+DEFAULT_FONT_SIZE = 24
 DEFAULT_BOX_LINES = 1
 
 

@@ -551,7 +551,7 @@ The header links to the **full page scan**, new tab — the crops say what a lin
 --all     every page with a proposal and no decision
 --port N  port for --serve [8731]
 --font NAME     entry-box family, prepended to the fallbacks [Brill]
---font-size PX  entry text size [17]
+--font-size PX  entry text size [24]
 --box-lines N   lines a box holds before it grows — a floor, not a cap [1]
 --store {gt,mz}  which store to read [mz — the bare diff needs an independent
                  witness, and the view is not one once the page has ground truth]
