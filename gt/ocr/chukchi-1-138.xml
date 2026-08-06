@@ -1,0 +1,363 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-138.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-138.png; regions_from: zones/chukchi-1-138.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-138_r1" HPOS="564" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="564 618 2342 618 2342 708 564 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-138_l1" HPOS="1145" VPOS="636" WIDTH="613" HEIGHT="52" BASELINE="1145 668 1758 668" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1754 636 1145 636 1145 668 1145 688 1758 688 1758 668 1758 645 1754 636"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l2" HPOS="565" VPOS="643" WIDTH="106" HEIGHT="43" BASELINE="565 673 671 673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 645 565 673 565 686 671 686 671 673 671 643 567 643 565 645"/>
+                        </Shape>
+                        <String CONTENT="106"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-138_r2" HPOS="564" VPOS="733" WIDTH="1778" HEIGHT="1505" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="564 733 2342 733 2342 2238 564 2238"/>
+                    </Shape>
+                    <TextLine ID="mz_1-138_l3" HPOS="558" VPOS="733" WIDTH="1778" HEIGHT="65" BASELINE="558 779 2336 779" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2312 742 2291 742 2284 742 2280 744 2241 740 2226 740 2204 740 2182 738 2161 738 2154 738 2109 744 2096 736 2096 736 2076 736 2046 744 1905 733 1903 733 1825 744 1795 733 1793 733 1790 733 1788 733 1786 733 1771 746 1671 746 1639 733 1637 733 1635 733 1632 733 1630 733 1611 746 1446 746 1418 733 1416 733 1414 733 1412 733 1409 733 1394 744 1292 733 1290 733 1288 733 1253 744 1223 733 1221 733 1219 733 1217 733 1184 744 1141 733 1139 733 1136 733 1074 744 1048 733 1046 733 1043 733 972 744 939 733 937 733 935 733 933 733 892 744 868 733 866 733 864 733 861 733 859 733 844 746 753 746 727 733 725 733 723 733 721 733 718 733 703 744 604 733 602 733 599 733 558 744 558 779 558 792 2334 798 2336 779 2336 744 2328 742 2312 742"/>
+                        </Shape>
+                        <String CONTENT="of birch-wood; but the Arctic Chukchee use also various kinds of driftwood,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l4" HPOS="558" VPOS="794" WIDTH="1780" HEIGHT="61" BASELINE="560 840 2338 835" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="560 840 560 855 2336 850 2338 835 2334 807 2139 794 2137 794 2135 794 2133 794 2118 807 1988 807 1962 794 1959 794 1957 794 1955 794 1953 794 1938 807 1793 807 1739 794 1736 794 1645 805 1630 794 1628 794 1626 794 1511 794 1509 794 1507 794 1468 805 1453 794 1450 794 1448 794 1446 794 1444 794 1409 807 812 796 809 796 807 796 777 807 682 796 680 796 558 809 560 840"/>
+                        </Shape>
+                        <String CONTENT="especially American pine, and even oak picked out from wreckage. On some"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l5" HPOS="558" VPOS="853" WIDTH="1776" HEIGHT="69" BASELINE="560 900 2334 896" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="560 900 560 922 2332 920 2334 896 2330 866 1957 853 1955 853 1953 853 1951 853 1936 866 1702 866 1613 853 1611 853 1533 863 1446 853 1444 853 1442 853 1416 866 1375 855 1373 855 1370 855 1050 866 1026 855 1024 855 1022 855 1020 855 981 866 861 855 859 855 857 855 827 866 731 855 729 855 558 868 560 900"/>
+                        </Shape>
+                        <String CONTENT="parts of the Arctic shore driftwood is piled up in large masses (Plate VII, Fig. 2),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l6" HPOS="560" VPOS="926" WIDTH="1776" HEIGHT="48" BASELINE="563 959 2336 954" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 959 563 974 2334 969 2336 954 2330 926 560 928 563 959"/>
+                        </Shape>
+                        <String CONTENT="sometimes covering an entire acre, and wreckage may be found everywhere"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l7" HPOS="560" VPOS="974" WIDTH="1774" HEIGHT="65" BASELINE="563 1019 2334 1015" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1019 563 1034 2330 1039 2334 1015 2330 985 1448 974 1446 974 1444 974 1422 985 753 976 751 976 560 987 563 1019"/>
+                        </Shape>
+                        <String CONTENT="among the wood. The Pacific people buy lumber from whalers, or even bring"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l8" HPOS="560" VPOS="1045" WIDTH="1776" HEIGHT="50" BASELINE="563 1080 2336 1076" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1080 563 1095 2334 1091 2336 1076 2332 1045 560 1045 563 1080"/>
+                        </Shape>
+                        <String CONTENT="it themselves from St. Lawrence Island or the Alaskan shore in their boats."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l9" HPOS="563" VPOS="1093" WIDTH="1773" HEIGHT="58" BASELINE="565 1138 2336 1134" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 1138 565 1151 2334 1149 2336 1134 2334 1104 2315 1093 2312 1093 2310 1093 2308 1093 2306 1093 2278 1104 2232 1093 2230 1093 2228 1093 2124 1104 2094 1093 2092 1093 2089 1093 2087 1093 2061 1106 1972 1106 1957 1093 1955 1093 1953 1093 1951 1093 1949 1093 1918 1104 1847 1093 1845 1093 1842 1093 1799 1104 1773 1093 1771 1093 1769 1093 1507 1104 1450 1093 1448 1093 1446 1093 1444 1093 1422 1106 1338 1095 1336 1095 1334 1095 1301 1106 1238 1095 1236 1095 1234 1095 1199 1106 1158 1095 1156 1095 1154 1095 1152 1095 1110 1106 1039 1095 1037 1095 1035 1095 1000 1106 563 1101 565 1138"/>
+                        </Shape>
+                        <String CONTENT="Birch runners are fit only for the cold season, and after the end of March"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l10" HPOS="565" VPOS="1164" WIDTH="1773" HEIGHT="50" BASELINE="565 1195 2338 1195" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 1195 565 1214 2338 1214 2338 1195 2336 1164 565 1164 565 1195"/>
+                        </Shape>
+                        <String CONTENT="will not run easily in the daytime, when the snow is damp and loose and all"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l11" HPOS="560" VPOS="1216" WIDTH="1776" HEIGHT="57" BASELINE="563 1257 2336 1253" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1257 563 1273 2334 1268 2336 1253 2332 1225 582 1216 580 1216 578 1216 576 1216 560 1223 563 1257"/>
+                        </Shape>
+                        <String CONTENT="the sharp points of the ground protrude. The friction of birch-wood is so"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l12" HPOS="560" VPOS="1283" WIDTH="1776" HEIGHT="52" BASELINE="563 1318 2336 1311" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1318 563 1335 2334 1329 2336 1311 2330 1283 560 1288 563 1318"/>
+                        </Shape>
+                        <String CONTENT="strong as to tire out the best dogs, and, besides, wear out the precious run-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l13" HPOS="560" VPOS="1335" WIDTH="1776" HEIGHT="59" BASELINE="563 1379 2336 1372" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1379 563 1394 2334 1387 2336 1372 2332 1344 1227 1335 1225 1335 560 1348 563 1379"/>
+                        </Shape>
+                        <String CONTENT="ners in a couple of weeks. In the Kolyma district and in the eastern Arctic"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l14" HPOS="563" VPOS="1402" WIDTH="1773" HEIGHT="59" BASELINE="565 1433 2336 1437" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 1433 563 1448 578 1459 580 1459 582 1459 584 1459 1355 1450 1455 1461 1457 1461 2334 1450 2336 1437 2334 1407 565 1402 565 1433"/>
+                        </Shape>
+                        <String CONTENT="villages, runners made from the outer layer of the larch, with twisted fibre"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l15" HPOS="563" VPOS="1452" WIDTH="1773" HEIGHT="63" BASELINE="565 1498 2336 1493" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 1498 565 1515 2334 1509 2336 1493 2334 1465 2289 1452 2286 1452 2284 1452 2221 1463 2096 1452 2094 1452 2092 1452 2046 1463 2016 1452 2014 1452 2011 1452 1914 1463 1884 1452 1881 1452 1879 1452 1877 1452 1875 1452 1860 1465 1734 1465 1704 1452 1702 1452 1700 1452 1697 1452 1674 1463 1648 1452 1645 1452 1643 1452 1574 1463 1474 1452 1472 1452 1470 1452 1427 1465 580 1454 578 1454 576 1454 573 1454 563 1461 565 1498"/>
+                        </Shape>
+                        <String CONTENT="(called in local Russian крень), are substituted for use in springtime. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l16" HPOS="560" VPOS="1515" WIDTH="1776" HEIGHT="58" BASELINE="563 1558 2336 1552" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1558 563 1573 2334 1567 2336 1552 2332 1524 1180 1515 1178 1515 1175 1515 1147 1526 645 1517 643 1517 560 1528 563 1558"/>
+                        </Shape>
+                        <String CONTENT="material is obtained from the trees that grow on the mountain-slopes, and is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l17" HPOS="560" VPOS="1571" WIDTH="1774" HEIGHT="65" BASELINE="563 1619 2334 1612" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1619 563 1634 2330 1636 2334 1612 2330 1584 2265 1571 2263 1571 2260 1571 2258 1571 2241 1582 2159 1571 2156 1571 2057 1582 2031 1571 2029 1571 2027 1571 1832 1582 1801 1571 1799 1571 1797 1571 1736 1584 1723 1573 1721 1573 1719 1573 1717 1573 1715 1573 1684 1584 1539 1573 1537 1573 1474 1584 1334 1573 1331 1573 1329 1573 1308 1584 1180 1573 1178 1573 1175 1573 1128 1586 718 1576 716 1576 714 1576 693 1586 658 1576 656 1576 654 1576 560 1589 563 1619"/>
+                        </Shape>
+                        <String CONTENT="much harder than the ordinary larchwood. In the damp weather of spring"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l18" HPOS="560" VPOS="1630" WIDTH="1774" HEIGHT="65" BASELINE="563 1680 2334 1671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1680 563 1695 2332 1690 2334 1671 2328 1638 2109 1641 2083 1630 2081 1630 2079 1630 2076 1630 2055 1641 2031 1630 2029 1630 2027 1630 1946 1641 1923 1630 1920 1630 1918 1630 1916 1630 1886 1643 1743 1632 1741 1632 1739 1632 1736 1632 1721 1645 1509 1645 1479 1632 1476 1632 1474 1632 1147 1645 1043 1634 1041 1634 809 1647 671 1636 669 1636 667 1636 643 1647 582 1636 580 1636 578 1636 576 1636 560 1645 563 1680"/>
+                        </Shape>
+                        <String CONTENT="the drivers will sometimes smear the birch runners with oil, though it may spoil"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l19" HPOS="560" VPOS="1697" WIDTH="1774" HEIGHT="56" BASELINE="563 1738 2334 1732" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1738 563 1753 2332 1753 2334 1732 2330 1699 582 1697 580 1697 578 1697 576 1697 560 1703 563 1738"/>
+                        </Shape>
+                        <String CONTENT="them for the winter; or they will tie a piece of blubber to the quirt, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l20" HPOS="560" VPOS="1760" WIDTH="1776" HEIGHT="56" BASELINE="563 1799 2336 1792" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 1799 563 1816 2334 1809 2336 1792 2332 1760 560 1760 563 1799"/>
+                        </Shape>
+                        <String CONTENT="every now and then, while going ahead, whip it across the track, to be passed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l21" HPOS="565" VPOS="1827" WIDTH="1771" HEIGHT="45" BASELINE="565 1857 2336 1857" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 1857 565 1872 2336 1872 2336 1857 2336 1827 565 1827 565 1857"/>
+                        </Shape>
+                        <String CONTENT="over alternately by both runners, to make them more slippery. Much more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l22" HPOS="565" VPOS="1885" WIDTH="1771" HEIGHT="48" BASELINE="565 1916 2336 1916" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 1916 565 1933 2336 1933 2336 1916 2336 1885 565 1885 565 1916"/>
+                        </Shape>
+                        <String CONTENT="frequently the runners are shod with whalebone, or with pieces of bone taken"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l23" HPOS="563" VPOS="1944" WIDTH="1769" HEIGHT="52" BASELINE="565 1976 1873 1974 2332 1983" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 1976 563 1989 2328 1996 2332 1983 2330 1944 565 1944 565 1976"/>
+                        </Shape>
+                        <String CONTENT="from the whale’s jaw, sewed to the runner with sunken stitches (see Fig. 17, g)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l24" HPOS="563" VPOS="2002" WIDTH="1773" HEIGHT="56" BASELINE="565 2032 2336 2037" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 2032 563 2048 578 2058 580 2058 582 2058 584 2058 2334 2050 2336 2037 2334 2006 565 2002 565 2032"/>
+                        </Shape>
+                        <String CONTENT="or fastened with wooden pegs. On the Chukchee Peninsula, drivers protect"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l25" HPOS="563" VPOS="2063" WIDTH="1773" HEIGHT="50" BASELINE="565 2095 2336 2091" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 2095 565 2113 2334 2108 2336 2091 2330 2063 563 2065 565 2095"/>
+                        </Shape>
+                        <String CONTENT="their wooden runners with bone shoeing throughout the winter, though it makes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l26" HPOS="563" VPOS="2121" WIDTH="1771" HEIGHT="59" BASELINE="565 2152 2334 2156" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 2152 563 2169 578 2180 580 2180 582 2180 584 2180 2332 2175 2334 2156 2332 2126 565 2121 565 2152"/>
+                        </Shape>
+                        <String CONTENT="the sledge twice as heavy, and the bone does not run smoothly on the cold,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l27" HPOS="565" VPOS="2188" WIDTH="264" HEIGHT="44" BASELINE="565 2216 829 2216" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 2216 565 2232 829 2232 829 2216 829 2188 565 2188 565 2216"/>
+                        </Shape>
+                        <String CONTENT="crisp snow."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-138_r3" HPOS="564" VPOS="2238" WIDTH="1778" HEIGHT="900" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="564 2238 2342 2238 2342 3138 564 3138"/>
+                    </Shape>
+                    <TextLine ID="mz_1-138_l28" HPOS="669" VPOS="2232" WIDTH="1669" HEIGHT="58" BASELINE="671 2277 2338 2273" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="671 2277 671 2290 2338 2286 2338 2273 2334 2242 1762 2232 1760 2232 669 2242 671 2277"/>
+                        </Shape>
+                        <String CONTENT="In the winter-time the birch runners are covered with a thin sheet of ice"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l29" HPOS="563" VPOS="2297" WIDTH="1773" HEIGHT="56" BASELINE="565 2338 2336 2331" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 2338 565 2353 2334 2349 2336 2331 2332 2301 582 2297 580 2297 578 2297 576 2297 563 2303 565 2338"/>
+                        </Shape>
+                        <String CONTENT="to make them run more smoothly. For this purpose they are well saturated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l30" HPOS="567" VPOS="2364" WIDTH="1769" HEIGHT="47" BASELINE="567 2396 2336 2396" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2396 567 2411 2336 2411 2336 2396 2334 2364 567 2364 567 2396"/>
+                        </Shape>
+                        <String CONTENT="with water in the early fall, usually by immersing them in a pool or small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l31" HPOS="565" VPOS="2420" WIDTH="1769" HEIGHT="56" BASELINE="567 2457 2334 2452" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2457 567 2472 2330 2476 2334 2452 2330 2424 565 2420 567 2457"/>
+                        </Shape>
+                        <String CONTENT="lake for a couple of weeks; or in winter, when the pools are frozen, by steaming"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l32" HPOS="567" VPOS="2485" WIDTH="1769" HEIGHT="48" BASELINE="567 2515 2336 2515" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2515 567 2533 2336 2533 2336 2515 2336 2485 567 2485 567 2515"/>
+                        </Shape>
+                        <String CONTENT="them in long troughs filled with hot water or by frequently wetting the bottoms"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l33" HPOS="565" VPOS="2537" WIDTH="1767" HEIGHT="61" BASELINE="567 2572 2332 2576" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2572 565 2587 580 2598 582 2598 584 2598 586 2598 2330 2589 2332 2576 2328 2537 567 2539 567 2572"/>
+                        </Shape>
+                        <String CONTENT="with boiling water. Only damp wood, well soaked with water, will hold"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l34" HPOS="565" VPOS="2595" WIDTH="1769" HEIGHT="54" BASELINE="567 2632 2334 2636" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2632 565 2645 2330 2649 2334 2636 2330 2595 567 2600 567 2632"/>
+                        </Shape>
+                        <String CONTENT="the ice-sheet, which is formed by wetting the bottoms of the runners several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l35" HPOS="567" VPOS="2665" WIDTH="1769" HEIGHT="47" BASELINE="567 2695 2336 2695" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2695 567 2712 2336 2712 2336 2695 2336 2665 567 2665 567 2695"/>
+                        </Shape>
+                        <String CONTENT="times over by means of a small piece of skin. The colder the day, the hotter"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l36" HPOS="563" VPOS="2714" WIDTH="1773" HEIGHT="57" BASELINE="565 2756 2336 2751" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 2756 565 2771 2334 2769 2336 2751 2332 2723 584 2714 582 2714 580 2714 578 2714 563 2721 565 2756"/>
+                        </Shape>
+                        <String CONTENT="the water that is used for the process. Larch-wood holds the ice-sheet only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l37" HPOS="565" VPOS="2786" WIDTH="1771" HEIGHT="45" BASELINE="565 2814 2336 2814" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="565 2814 565 2831 2336 2831 2336 2814 2336 2786 565 2786 565 2814"/>
+                        </Shape>
+                        <String CONTENT="for a short time, and bone hardly at all: therefore it is not subjected to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l38" HPOS="565" VPOS="2833" WIDTH="1771" HEIGHT="65" BASELINE="567 2877 2336 2872" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2877 567 2898 2334 2888 2336 2872 2332 2842 794 2833 792 2833 565 2844 567 2877"/>
+                        </Shape>
+                        <String CONTENT="process. This method of covering the runners with ice is adopted by all the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l39" HPOS="569" VPOS="2890" WIDTH="1767" HEIGHT="60" BASELINE="571 2935 2336 2931" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="571 2935 571 2950 2334 2948 2336 2931 2332 2903 1897 2903 1881 2890 1879 2890 1877 2890 1875 2890 1873 2890 1849 2901 1782 2890 1780 2890 1777 2890 1749 2901 1717 2890 1715 2890 1713 2890 1710 2890 1684 2901 1524 2890 1522 2890 1520 2890 1481 2901 1455 2890 1453 2890 1450 2890 1448 2890 1414 2903 1373 2892 1370 2892 1368 2892 1366 2892 1342 2903 1312 2892 1310 2892 1308 2892 1305 2892 1269 2905 1147 2905 1132 2892 1130 2892 1128 2892 1126 2892 1061 2903 959 2892 957 2892 887 2903 812 2892 809 2892 569 2896 571 2935"/>
+                        </Shape>
+                        <String CONTENT="West Bering tribes. The people in South Kamchatka, however, on account"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l40" HPOS="567" VPOS="2966" WIDTH="1769" HEIGHT="54" BASELINE="567 2996 2336 2996" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 2996 567 3007 855 3020 857 3020 859 3020 905 3009 1227 3009 1279 3020 1282 3020 1422 3009 1496 3020 1498 3020 1600 3009 1862 3020 1864 3020 2237 3009 2315 3020 2317 3020 2319 3020 2321 3020 2336 3009 2336 2996 2336 2966 567 2966 567 2996"/>
+                        </Shape>
+                        <String CONTENT="of their damp winters with frequent thaws, do not employ it much. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l41" HPOS="567" VPOS="3020" WIDTH="1769" HEIGHT="49" BASELINE="567 3054 2336 3054" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 3054 567 3069 2336 3069 2336 3054 2336 3024 567 3020 567 3054"/>
+                        </Shape>
+                        <String CONTENT="Kolyma Yakut cover the runners of their reindeer and horse sledges also"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l42" HPOS="569" VPOS="3072" WIDTH="206" HEIGHT="58" BASELINE="569 3113 775 3113" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="569 3113 569 3130 775 3130 775 3113 775 3085 610 3072 608 3072 606 3072 569 3082 569 3113"/>
+                        </Shape>
+                        <String CONTENT="with ice."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-138_r4" HPOS="564" VPOS="3138" WIDTH="1778" HEIGHT="132" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="564 3138 2342 3138 2342 3270 564 3270"/>
+                    </Shape>
+                    <TextLine ID="mz_1-138_l43" HPOS="673" VPOS="3128" WIDTH="1665" HEIGHT="61" BASELINE="675 3176 2338 3171" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="675 3176 675 3189 2338 3184 2338 3171 2334 3141 2273 3128 2271 3128 2269 3128 2267 3128 2247 3139 1793 3128 1790 3128 1788 3128 1762 3139 1732 3128 1730 3128 1728 3128 1726 3128 1723 3128 1706 3139 1680 3128 1678 3128 1676 3128 1674 3128 1671 3128 1656 3139 1632 3128 1630 3128 1628 3128 1567 3139 1541 3128 1539 3128 1537 3128 1466 3141 963 3130 961 3130 959 3130 957 3130 939 3141 885 3130 883 3130 766 3141 697 3130 695 3130 693 3130 690 3130 673 3139 675 3176"/>
+                        </Shape>
+                        <String CONTENT="Among the Maritime Chukchee and the Asiatic Eskimo there exists also"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-138_l44" HPOS="565" VPOS="3191" WIDTH="1771" HEIGHT="60" BASELINE="567 3236 2336 3232" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="567 3236 567 3251 2336 3247 2336 3232 2332 3204 2265 3191 2263 3191 2260 3191 2237 3202 2107 3191 2105 3191 2102 3191 2070 3202 2040 3191 2037 3191 2035 3191 2033 3191 2011 3202 1988 3191 1985 3191 1983 3191 1981 3191 1979 3191 1962 3202 1940 3191 1938 3191 1936 3191 1933 3191 1912 3202 1881 3191 1879 3191 1877 3191 1760 3202 1708 3191 1706 3191 1615 3202 1600 3191 1598 3191 1596 3191 1492 3191 1489 3191 1487 3191 1446 3204 978 3193 976 3193 974 3193 926 3204 831 3193 829 3193 827 3193 825 3193 809 3204 729 3193 727 3193 565 3206 567 3236"/>
+                        </Shape>
+                        <String CONTENT="a peculiar form of small sled, — not related to the usual Asiatic forms, but"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

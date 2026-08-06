@@ -1,0 +1,131 @@
+{
+  "lines": {
+    "0": {
+      "text": "122"
+    },
+    "1": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "2": {
+      "text": "WALRUS AND WHALE HUNTING. — The long harpoon used in walrus-hunting",
+      "note": "Run-in heading set in small capitals; keyed as plain ASCII capitals per keying_spec.md §2.13.",
+      "class": "print"
+    },
+    "3": {
+      "text": "has the same shape as the harpoons already described; but"
+    },
+    "4": {
+      "text": "the end of the line has one or two floats tied to it (Fig. 38)."
+    },
+    "5": {
+      "text": "These are thrown into the water after a successful blow. Floats"
+    },
+    "6": {
+      "text": "(Fig. 39, a) consist of a whole seal-skin skilfully removed from"
+    },
+    "7": {
+      "text": "the carcass of the animal. The mouth is enlarged by an oblong"
+    },
+    "8": {
+      "text": "cut down the neck, and the skin is pulled off like a stocking."
+    },
+    "9": {
+      "text": "The head is carefully sewed up, the fore-flippers often cut off, and"
+    },
+    "10": {
+      "text": "the openings firmly tied up. One of them is used for inflating"
+    },
+    "11": {
+      "text": "the float, which is done without an inflating-pipe such as is used"
+    },
+    "12": {
+      "text": "by the Eskimo. The skin of the hind-flippers is carefully stitched;"
+    },
+    "13": {
+      "text": "and when the body is inflated, the flippers stand out, furnishing"
+    },
+    "14": {
+      "text": "a hold for the separate loops on the end of the line (Fig. 39, b)."
+    },
+    "15": {
+      "text": "At the present time, however, walrus-hunting is done almost"
+    },
+    "16": {
+      "text": "exclusively with rifles, especially on the Pacific. Thirty years"
+    },
+    "17": {
+      "text": "ago American whalers applied themselves to a great extent"
+    },
+    "18": {
+      "text": "to walrus-hunting, and the number of walrus on the Pacific"
+    },
+    "19": {
+      "text": "consequently began to decrease rapidly. Later on, the whalers"
+    },
+    "20": {
+      "text": "desisted from the pursuit, asserting that prices were too low,"
+    },
+    "21": {
+      "text": "and that the whole business was not remunerative enough."
+    },
+    "22": {
+      "text": "Then the decrease slackened, although even now the reckless"
+    },
+    "23": {
+      "text": "shooting of walrus by the natives continues to work disaster."
+    },
+    "24": {
+      "text": "To the south of Anadyr the walrus have greatly diminished in"
+    },
+    "25": {
+      "text": "numbers. That is the reason that the Kerek on the southern"
+    },
+    "26": {
+      "text": "shore of Anadyr Bay, who in former times subsisted on walrus,"
+    },
+    "27": {
+      "text": "are now rapidly starving to death. Farther to the south walrus"
+    },
+    "28": {
+      "text": "became very rare in the vicinity of most of the villages, and"
+    },
+    "29": {
+      "text": "are now met with only on the shores of some islands, as Karagha"
+    },
+    "30": {
+      "text": "Island, for instance. To the north of Anadyr, beginning at"
+    },
+    "31": {
+      "text": "the northern shore of Holy Cross Bay, considerable numbers"
+    },
+    "32": {
+      "text": "of walrus are still killed. For some villages, as Miˊs˙qᴀn and",
+      "resolved": "Miˊs˙qᴀn = M, i, U+02CA (stress), s, U+02D9 (postposed palatalization dot on s, licensed §2.1 series n x d t s č ǰ), q, U+1D00 small-cap ᴀ, n",
+      "note": "Tier-1 toponym. Raised dot after s read as postposed palatalization mark (s˙), matching the licensed series. Final letters after q: an elevated capital-height glyph read as small-cap ᴀ (U+1D00, licensed §2.3), followed by ordinary lowercase n (confirmed at 4x against the following word 'and' on the same line, same x-height). First vowel keyed plain dotted 'i': at 4x it clearly carries a separate round tittle above the stem, distinct from and to the left of the stress mark, which reads as ordinary dotted i rather than the dotless small-cap ɪ. `lexicon lookup sqan` was consulted and surfaces the same toponym (in the same Holy Cross Bay context) keyed `Mɪˊs˙qᴀn` in ground truth on 1-048 — a real contradiction the raster here does not resolve in that direction. Flagging for adjudication rather than adopting the other page's spelling.",
+      "class": "doubt"
+    },
+    "33": {
+      "text": "Rêˊtkên in Holy Cross Bay, also Yeˊrg̣ɪn and Kihiˊni, on the",
+      "resolved": "Rêˊtkên = R, e+U+0302 (ê), U+02CA stress, t, k, e+U+0302 (ê), n. Yeˊrg̣ɪn = Y, e, U+02CA stress, r, g+U+0323 (g̣), U+026A (ɪ), n. Kihiˊni = K, i, h, i, U+02CA stress, n, i",
+      "note": "Tier-1 toponyms. g in Yeˊrg̣ɪn confirmed dotted below at 4x (§5.1 prior).",
+      "class": "print"
+    },
+    "34": {
+      "text": "island of Kihiˊni, they still form the staple food of the inhabitants.",
+      "resolved": "Kihiˊni = K, i, h, i, U+02CA stress, n, i",
+      "note": "Tier-1 toponym, second occurrence on the page (also line 33); confirmed at 4x, no additional marks.",
+      "class": "print"
+    },
+    "35": {
+      "text": "On the Pacific shore the walrus is killed chiefly during its migrations"
+    },
+    "36": {
+      "text": "from Holy Cross Bay to East Cape and back again (Plate X, Figs. 1, 3).",
+      "note": "Printed as lowercase italic roman numeral 'x'; keyed as ASCII capital X per keying_spec.md §2.12 ('roman numerals... keyed in plain ASCII capitals, whatever the setting').",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

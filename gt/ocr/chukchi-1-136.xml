@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-136.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-136.png; regions_from: zones/chukchi-1-136.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-136_r1" HPOS="666" VPOS="626" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="666 626 2444 626 2444 716 666 716"/>
+                    </Shape>
+                    <TextLine ID="mz_1-136_l1" HPOS="1251" VPOS="638" WIDTH="617" HEIGHT="54" BASELINE="1251 671 1868 671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1858 651 1842 638 1266 638 1251 651 1251 671 1251 692 1868 692 1868 671 1864 660 1858 651"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l2" HPOS="675" VPOS="647" WIDTH="106" HEIGHT="54" BASELINE="675 675 781 675" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 649 675 675 675 688 742 701 744 701 747 701 781 688 781 675 781 647 677 647 675 649"/>
+                        </Shape>
+                        <String CONTENT="104"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-136_r2" HPOS="666" VPOS="741" WIDTH="1778" HEIGHT="302" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="666 741 2444 741 2444 1043 666 1043"/>
+                    </Shape>
+                    <TextLine ID="mz_1-136_l3" HPOS="669" VPOS="738" WIDTH="1771" HEIGHT="58" BASELINE="669 781 2440 781" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2267 738 2265 738 2263 738 2260 738 2228 749 2079 738 2076 738 2074 738 2048 749 1988 738 1985 738 1983 738 1955 749 1923 738 1920 738 1918 738 1855 749 1801 738 1799 738 1732 749 1624 738 1622 738 1619 738 1587 749 1531 738 1528 738 1526 738 1498 749 1468 738 1466 738 1463 738 1414 749 1381 738 1379 738 1377 738 1297 749 1243 738 1240 738 1132 749 972 738 970 738 968 738 937 749 885 738 883 738 881 738 851 749 669 746 669 781 669 796 2440 796 2440 781 2440 751 2289 751 2269 738 2267 738"/>
+                        </Shape>
+                        <String CONTENT="had to be kept carefully tied all the time. The Siberian harness-dogs are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l4" HPOS="669" VPOS="805" WIDTH="1771" HEIGHT="58" BASELINE="671 837 2440 842" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 837 669 850 695 863 697 863 699 863 2438 855 2440 842 2438 805 671 805 671 837"/>
+                        </Shape>
+                        <String CONTENT="more given to howling than barking. Their howl is long and whining, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l5" HPOS="671" VPOS="872" WIDTH="1771" HEIGHT="45" BASELINE="671 900 2442 900" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 900 671 917 2442 917 2442 900 2442 872 671 872 671 900"/>
+                        </Shape>
+                        <String CONTENT="ends with an occasional yelp. On winter nights the whole canine population"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l6" HPOS="671" VPOS="926" WIDTH="1771" HEIGHT="52" BASELINE="671 961 2442 961" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 961 671 978 2442 978 2442 961 2440 926 671 928 671 961"/>
+                        </Shape>
+                        <String CONTENT="of the village, often several hundred head strong, will raise a chorus that will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l7" HPOS="669" VPOS="982" WIDTH="1728" HEIGHT="55" BASELINE="671 1017 2397 1024" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1017 669 1030 2393 1037 2397 1024 2395 991 671 982 671 1017"/>
+                        </Shape>
+                        <String CONTENT="last for half an hour, subsiding several times, and then breaking out again."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-136_r3" HPOS="666" VPOS="1043" WIDTH="1778" HEIGHT="1368" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="666 1043 2444 1043 2444 2411 666 2411"/>
+                    </Shape>
+                    <TextLine ID="mz_1-136_l8" HPOS="770" VPOS="1045" WIDTH="1668" HEIGHT="61" BASELINE="773 1078 2438 1084" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="773 1078 770 1088 801 1104 803 1104 805 1104 807 1104 851 1093 900 1104 903 1106 1156 1106 1156 1104 1158 1104 1160 1104 1175 1093 1269 1093 1282 1104 1284 1104 1286 1104 1288 1104 2436 1099 2438 1084 2436 1052 773 1045 773 1078"/>
+                        </Shape>
+                        <String CONTENT="Of dog-diseases, the peculiar Arctic form of rabies occurs frequently,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l9" HPOS="667" VPOS="1097" WIDTH="1773" HEIGHT="69" BASELINE="669 1140 2440 1136" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1140 669 1156 1214 1166 1217 1166 1219 1166 1221 1166 1236 1156 2438 1156 2440 1136 2436 1108 1557 1097 1554 1097 1552 1097 1550 1097 1533 1108 786 1099 783 1099 667 1110 669 1140"/>
+                        </Shape>
+                        <String CONTENT="especially in the spring. I observed that it occurred most frequently after a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l10" HPOS="669" VPOS="1164" WIDTH="1773" HEIGHT="52" BASELINE="669 1201 2442 1201" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1201 669 1216 2442 1216 2442 1201 2442 1171 669 1164 669 1201"/>
+                        </Shape>
+                        <String CONTENT="long course on the open tundra; and, according to native ideas, it results"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l11" HPOS="671" VPOS="1227" WIDTH="1771" HEIGHT="52" BASELINE="671 1260 2442 1260" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1260 671 1279 2442 1279 2442 1260 2442 1229 671 1227 671 1260"/>
+                        </Shape>
+                        <String CONTENT="from the action upon the brain of the excessive brightness of the snow, analogous"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l12" HPOS="671" VPOS="1290" WIDTH="1769" HEIGHT="47" BASELINE="671 1320 2440 1320" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1320 671 1337 2440 1337 2440 1320 2440 1290 671 1290 671 1320"/>
+                        </Shape>
+                        <String CONTENT="to the spring snow-blindness of men. Dog-rabies, however, is not so bad in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l13" HPOS="669" VPOS="1337" WIDTH="1771" HEIGHT="61" BASELINE="671 1381 2440 1376" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1381 671 1398 2438 1394 2440 1376 2436 1348 1559 1337 1557 1337 1554 1337 1520 1348 755 1340 753 1340 669 1350 671 1381"/>
+                        </Shape>
+                        <String CONTENT="northern as in southern latitudes; and, though I have known of many men"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l14" HPOS="671" VPOS="1398" WIDTH="1771" HEIGHT="59" BASELINE="671 1439 2442 1439" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1439 671 1457 2442 1457 2442 1439 2442 1411 2390 1398 2388 1398 2386 1398 2356 1409 2265 1398 2263 1398 2260 1398 2230 1409 2187 1398 2185 1398 2182 1398 2126 1409 2061 1398 2059 1398 2057 1398 2014 1409 2001 1398 1998 1398 1996 1398 1994 1398 1992 1398 1966 1409 1866 1398 1864 1398 1862 1398 1825 1409 1795 1398 1793 1398 1790 1398 1788 1398 1745 1409 1684 1398 1682 1398 1680 1398 1654 1411 1431 1411 1416 1398 1414 1398 1412 1398 1409 1398 1338 1409 1260 1398 1258 1398 1256 1398 1232 1409 1214 1398 1212 1398 1210 1398 1208 1398 1095 1409 671 1402 671 1439"/>
+                        </Shape>
+                        <String CONTENT="being bitten by a rabid dog, I have never heard of any bad results from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l15" HPOS="671" VPOS="1463" WIDTH="1769" HEIGHT="54" BASELINE="671 1500 2440 1500" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1500 671 1517 2440 1517 2440 1500 2440 1470 671 1463 671 1500"/>
+                        </Shape>
+                        <String CONTENT="bite, but I have heard of some such cases with rabid wolves. However, any"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l16" HPOS="667" VPOS="1524" WIDTH="1773" HEIGHT="52" BASELINE="669 1554 2440 1560" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1554 667 1569 2436 1576 2440 1560 2438 1524 669 1524 669 1554"/>
+                        </Shape>
+                        <String CONTENT="dog bitten by a rabid one will itself go mad, and sometimes, when the rabid"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l17" HPOS="667" VPOS="1584" WIDTH="1773" HEIGHT="63" BASELINE="669 1615 2440 1621" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1615 667 1632 682 1643 684 1643 686 1643 688 1643 779 1632 794 1643 796 1643 799 1643 801 1643 803 1643 838 1632 877 1643 879 1643 881 1643 944 1632 1186 1632 1282 1645 1284 1645 1286 1645 1318 1634 1453 1645 1455 1645 1457 1645 1494 1634 1548 1645 1550 1645 1829 1636 1845 1647 1847 1647 1849 1647 1851 1647 2438 1638 2440 1621 2438 1591 669 1584 669 1615"/>
+                        </Shape>
+                        <String CONTENT="dog is not killed in time, several teams will be greatly injured. On long"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l18" HPOS="669" VPOS="1645" WIDTH="1773" HEIGHT="61" BASELINE="669 1680 2442 1680" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1680 669 1706 2442 1697 2442 1680 2442 1649 669 1645 669 1680"/>
+                        </Shape>
+                        <String CONTENT="journeys the drivers simply muzzle the rabid dogs at first, so that they cannot"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l19" HPOS="669" VPOS="1703" WIDTH="1773" HEIGHT="54" BASELINE="669 1740 2442 1740" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1740 669 1757 2442 1757 2442 1740 2442 1710 669 1703 669 1740"/>
+                        </Shape>
+                        <String CONTENT="bite their companions; and they continue to drive them thus for two or three"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l20" HPOS="667" VPOS="1766" WIDTH="1775" HEIGHT="50" BASELINE="669 1796 2442 1801" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1796 667 1812 2438 1816 2442 1801 2440 1770 669 1766 669 1796"/>
+                        </Shape>
+                        <String CONTENT="successive days, as I witnessed when travelling among the Chukchee between"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l21" HPOS="669" VPOS="1825" WIDTH="1773" HEIGHT="52" BASELINE="671 1857 2442 1861" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1857 669 1872 2438 1877 2442 1861 2440 1829 671 1825 671 1857"/>
+                        </Shape>
+                        <String CONTENT="Anadyr and Indian Point in March, 1901. Dr. Slunin¹ asserts that animals bitten"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l22" HPOS="669" VPOS="1879" WIDTH="1773" HEIGHT="65" BASELINE="671 1918 2442 1922" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1918 669 1929 690 1942 693 1942 695 1942 1520 1933 1559 1944 1561 1944 1563 1944 2440 1933 2442 1922 2440 1890 671 1879 671 1918"/>
+                        </Shape>
+                        <String CONTENT="by a rabid dog are not infected. However, I had dogs in my own team"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l23" HPOS="669" VPOS="1950" WIDTH="1773" HEIGHT="50" BASELINE="669 1980 2442 1980" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1980 669 2000 2442 1993 2442 1980 2442 1950 669 1950 669 1980"/>
+                        </Shape>
+                        <String CONTENT="perish from such cause. A dog suspected of being rabid is speedily made"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l24" HPOS="667" VPOS="2006" WIDTH="1773" HEIGHT="57" BASELINE="669 2037 2440 2041" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2037 667 2050 751 2063 753 2063 2438 2058 2440 2041 2438 2011 669 2006 669 2037"/>
+                        </Shape>
+                        <String CONTENT="away with, for fear that it may bite some of its companions — except on long"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l25" HPOS="671" VPOS="2056" WIDTH="1795" HEIGHT="70" BASELINE="673 2100 2466 2097" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 2100 673 2126 2425 2126 2425 2123 2427 2123 2466 2110 2466 2097 2460 2056 2395 2069 2215 2069 2195 2056 2193 2056 2191 2056 2189 2056 2096 2067 2044 2056 2042 2056 2040 2056 2007 2069 1858 2069 1834 2056 1832 2056 1829 2056 1827 2056 1806 2067 1784 2056 1782 2056 1780 2056 1777 2056 1747 2067 1671 2056 1669 2056 1667 2056 1639 2067 1570 2056 1567 2056 1489 2067 1329 2056 1327 2056 1325 2056 1295 2067 1214 2056 1212 2056 1147 2067 1082 2056 1080 2056 1078 2056 1041 2067 957 2056 955 2056 898 2067 671 2061 673 2100"/>
+                        </Shape>
+                        <String CONTENT="journeys, when the driver has to utilize the whole strength of his team. I"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l26" HPOS="669" VPOS="2126" WIDTH="1776" HEIGHT="49" BASELINE="671 2154 2445 2158" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2154 669 2171 2440 2175 2445 2158 2442 2130 671 2126 671 2154"/>
+                        </Shape>
+                        <String CONTENT="would also mention a kind of palsy — a disease of northern dogs, that affects"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l27" HPOS="667" VPOS="2184" WIDTH="1775" HEIGHT="52" BASELINE="669 2214 2442 2221" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2214 667 2229 2438 2236 2442 2221 2440 2190 669 2184 669 2214"/>
+                        </Shape>
+                        <String CONTENT="the head of the animal, and disables it for walking — and a kind of cramp"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l28" HPOS="667" VPOS="2245" WIDTH="1775" HEIGHT="52" BASELINE="669 2275 2442 2279" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2275 667 2292 2438 2297 2442 2279 2440 2249 669 2245 669 2275"/>
+                        </Shape>
+                        <String CONTENT="that often precedes the palsy. Both diseases are contagious, and may destroy"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l29" HPOS="667" VPOS="2305" WIDTH="1775" HEIGHT="63" BASELINE="669 2336 2442 2342" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2336 667 2351 1905 2368 1907 2368 2440 2357 2442 2342 2440 2312 669 2305 669 2336"/>
+                        </Shape>
+                        <String CONTENT="a whole team in twenty-four hours, since the animal generally dies with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l30" HPOS="667" VPOS="2353" WIDTH="188" HEIGHT="58" BASELINE="669 2394 855 2398" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2394 667 2407 851 2411 855 2398 855 2368 820 2355 818 2355 816 2355 814 2355 779 2366 706 2353 703 2353 701 2353 669 2362 669 2394"/>
+                        </Shape>
+                        <String CONTENT="first fit."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-136_r4" HPOS="666" VPOS="2411" WIDTH="1778" HEIGHT="797" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="666 2411 2444 2411 2444 3208 666 3208"/>
+                    </Shape>
+                    <TextLine ID="mz_1-136_l31" HPOS="773" VPOS="2413" WIDTH="1669" HEIGHT="72" BASELINE="775 2455 2442 2461" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="775 2455 773 2470 1279 2472 1331 2485 1334 2485 2440 2476 2442 2461 2442 2429 2429 2418 2427 2418 2425 2418 2423 2418 2421 2418 2388 2429 2308 2418 2306 2418 2232 2429 2211 2418 2208 2418 2087 2418 2085 2418 2083 2418 2081 2418 2068 2431 1923 2431 1910 2418 1907 2418 1905 2418 1903 2418 1790 2426 1767 2416 1765 2416 1762 2416 1760 2416 1719 2426 1635 2416 1632 2416 1630 2416 1596 2426 1394 2416 1392 2416 1331 2426 1314 2413 1312 2413 1310 2413 1308 2413 1305 2413 1277 2424 1232 2413 1230 2413 1227 2413 1158 2424 775 2422 775 2455"/>
+                        </Shape>
+                        <String CONTENT="DOG-DRIVING. — The dog-sledge now in use in northeastern Siberia (Fig. 21)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l32" HPOS="671" VPOS="2481" WIDTH="1771" HEIGHT="56" BASELINE="671 2517 2442 2517" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2517 671 2537 2442 2537 2442 2517 2442 2487 671 2481 671 2517"/>
+                        </Shape>
+                        <String CONTENT="is long and narrow, and has three or four pairs of stanchions. The lower end"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l33" HPOS="669" VPOS="2543" WIDTH="1771" HEIGHT="61" BASELINE="671 2574 2440 2580" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2574 669 2589 1321 2604 1323 2604 2438 2600 2440 2580 2438 2550 671 2543 671 2574"/>
+                        </Shape>
+                        <String CONTENT="of the stanchion is cut off square, except a rough peg which is left standing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l34" HPOS="669" VPOS="2593" WIDTH="1769" HEIGHT="63" BASELINE="671 2634 2438 2641" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2634 669 2649 2434 2656 2438 2641 2438 2610 2412 2598 2410 2598 2408 2598 2406 2598 2371 2608 2189 2598 2187 2598 1994 2608 1977 2598 1975 2598 1972 2598 1970 2598 1968 2598 1927 2608 1897 2598 1894 2598 1892 2598 1890 2598 1866 2608 1849 2595 1847 2595 1845 2595 1842 2595 1840 2595 1810 2606 1793 2595 1790 2595 1788 2595 1786 2595 1784 2595 1762 2606 1713 2595 1710 2595 1656 2606 1635 2595 1632 2595 1630 2595 1628 2595 1604 2606 1502 2595 1500 2595 1442 2606 1312 2595 1310 2595 1308 2595 1286 2606 1260 2593 1258 2593 1256 2593 1253 2593 1251 2593 1234 2604 671 2598 671 2634"/>
+                        </Shape>
+                        <String CONTENT="in the middle. The peg is inserted in a circular hole in the runner (Fig. 21, b)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l35" HPOS="671" VPOS="2658" WIDTH="1771" HEIGHT="59" BASELINE="673 2695 2442 2701" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 2695 671 2710 2438 2717 2442 2701 2440 2669 673 2658 673 2695"/>
+                        </Shape>
+                        <String CONTENT="Each pair of stanchions is joined at half their height by a round stick, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l36" HPOS="667" VPOS="2721" WIDTH="1775" HEIGHT="63" BASELINE="669 2756 2442 2760" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2756 667 2769 883 2782 885 2782 1552 2773 1565 2784 1567 2784 1570 2784 1572 2784 2440 2773 2442 2760 2440 2730 669 2721 669 2756"/>
+                        </Shape>
+                        <String CONTENT="is mortised into a circular hole in the stanchion. A thin, broad plank — or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l37" HPOS="669" VPOS="2786" WIDTH="1776" HEIGHT="50" BASELINE="671 2814 2445 2818" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2814 669 2831 2440 2836 2445 2818 2445 2788 671 2786 671 2814"/>
+                        </Shape>
+                        <String CONTENT="rather two planks laced together — rests on these sticks. Two rails are fastened"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l38" HPOS="667" VPOS="2836" WIDTH="1773" HEIGHT="62" BASELINE="669 2872 2440 2883" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2872 667 2888 2436 2898 2440 2883 2438 2853 2094 2853 2035 2840 2033 2840 1747 2849 1728 2838 1726 2838 1723 2838 1721 2838 1435 2846 1377 2836 1375 2836 669 2840 669 2872"/>
+                        </Shape>
+                        <String CONTENT="on the upper ends of the stanchions, and are lashed to the boards with thong,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l39" HPOS="669" VPOS="2894" WIDTH="1773" HEIGHT="72" BASELINE="671 2935 2442 2942" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2935 669 2948 1377 2963 1379 2963 1847 2955 1873 2966 1875 2966 1877 2966 2440 2955 2442 2942 2440 2911 2130 2911 2070 2898 2068 2898 1981 2909 1942 2898 1940 2898 1938 2898 1936 2898 1933 2898 1918 2909 1888 2898 1886 2898 1884 2898 1881 2898 1851 2909 1806 2896 1803 2896 1801 2896 1799 2896 1773 2907 1749 2896 1747 2896 1745 2896 1593 2907 1552 2896 1550 2896 1548 2896 1546 2896 1522 2909 1390 2909 1217 2894 1214 2894 1212 2894 1169 2905 1141 2894 1139 2894 1136 2894 671 2903 671 2935"/>
+                        </Shape>
+                        <String CONTENT="which forms a kind of retaining-net all around the sledge. The runners are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l40" HPOS="667" VPOS="2963" WIDTH="1767" HEIGHT="55" BASELINE="669 2994 2434 3002" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2994 667 3009 2429 3018 2434 3002 2432 2972 669 2963 669 2994"/>
+                        </Shape>
+                        <String CONTENT="flat, and their front ends are strongly curved and tied to a strong wooden bow,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l41" HPOS="669" VPOS="3022" WIDTH="1771" HEIGHT="56" BASELINE="671 3054 2440 3063" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 3054 669 3069 2436 3078 2440 3063 2438 3031 671 3022 671 3054"/>
+                        </Shape>
+                        <String CONTENT="which is fastened to the foremost stanchions with strong lashings (Fig. 21, c)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l42" HPOS="669" VPOS="3085" WIDTH="1773" HEIGHT="49" BASELINE="671 3115 2442 3119" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 3115 669 3130 2438 3134 2442 3119 2440 3089 671 3085 671 3115"/>
+                        </Shape>
+                        <String CONTENT="Another vertical bow is fastened above the foremost stanchions; and the driver"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-136_l43" HPOS="667" VPOS="3143" WIDTH="1773" HEIGHT="56" BASELINE="669 3171 2440 3180" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 3171 667 3191 2436 3199 2440 3180 2438 3152 669 3143 669 3171"/>
+                        </Shape>
+                        <String CONTENT="directs the course of the sledge, and prevents it from overturning, holding on"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-136_r5" HPOS="666" VPOS="3219" WIDTH="1778" HEIGHT="54" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="666 3219 2444 3219 2444 3273 666 3273"/>
+                    </Shape>
+                    <TextLine ID="mz_1-136_l44" HPOS="1396" VPOS="3217" WIDTH="321" HEIGHT="49" BASELINE="1399 3245 1717 3249" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1399 3245 1396 3262 1713 3266 1717 3249 1715 3221 1399 3217 1399 3245"/>
+                        </Shape>
+                        <String CONTENT="¹ Slunin, I, p. 628."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

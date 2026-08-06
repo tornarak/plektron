@@ -1,0 +1,376 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-143.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-143.png; regions_from: zones/chukchi-1-143.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-143_r1" HPOS="397" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="397 618 2175 618 2175 708 397 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-143_l1" HPOS="974" VPOS="638" WIDTH="619" HEIGHT="54" BASELINE="974 671 1593 671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1589 638 983 638 974 643 974 671 974 692 1593 692 1593 671 1593 640 1589 638"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l2" HPOS="2070" VPOS="640" WIDTH="89" HEIGHT="52" BASELINE="2072 677 2159 673" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2135 645 2124 640 2076 643 2070 653 2072 677 2072 692 2156 690 2159 673 2152 649 2135 645"/>
+                        </Shape>
+                        <String CONTENT="107"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-143_r2" HPOS="397" VPOS="733" WIDTH="1778" HEIGHT="188" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="397 733 2175 733 2175 921 397 921"/>
+                    </Shape>
+                    <TextLine ID="mz_1-143_l3" HPOS="394" VPOS="733" WIDTH="1775" HEIGHT="74" BASELINE="396 781 2169 775" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="558 738 556 738 511 749 465 740 459 740 437 742 435 742 394 751 396 781 396 798 407 807 409 807 411 807 413 807 1020 794 1561 805 1563 805 1565 805 1567 805 1583 792 1652 803 1654 803 1656 803 1658 803 1674 792 1693 803 1695 803 1697 803 1769 792 1784 803 1786 803 1788 803 1790 805 1940 805 1940 803 1942 803 1944 803 1957 794 1968 803 1970 803 1972 803 1975 805 2083 805 2083 803 2085 803 2107 792 2143 803 2146 803 2148 803 2150 803 2152 803 2169 790 2169 775 2163 740 1719 744 1695 733 1693 733 1691 733 1689 733 1661 744 1628 733 1626 733 1624 733 1526 746 1394 736 1392 736 1390 736 1357 746 1314 736 1312 736 1310 736 1308 736 1284 746 1249 736 1247 736 1245 736 1180 746 1063 736 1061 736 1059 736 1028 746 989 736 987 736 985 736 983 736 961 746 812 738 809 738 693 749 560 738 558 738"/>
+                        </Shape>
+                        <String CONTENT="quite similar to the small sledge of the Eskimo. It has runners made of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l4" HPOS="394" VPOS="796" WIDTH="1773" HEIGHT="70" BASELINE="396 840 2167 835" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2159 805 1310 796 1308 796 1305 796 1275 807 456 798 454 798 394 809 396 840 396 855 1130 866 1132 866 1282 855 2165 855 2167 835 2165 822 2159 805"/>
+                        </Shape>
+                        <String CONTENT="walrus-tusks or of whale’s ribs, also of wood shod with ivory or with bone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l5" HPOS="391" VPOS="855" WIDTH="315" HEIGHT="60" BASELINE="394 900 706 896" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 900 394 915 706 915 706 896 701 866 597 855 595 855 593 855 591 855 591 857 580 866 487 857 485 857 482 857 480 857 465 868 437 857 435 857 433 857 430 857 391 866 394 900"/>
+                        </Shape>
+                        <String CONTENT="of the whale."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-143_r3" HPOS="397" VPOS="921" WIDTH="1778" HEIGHT="1151" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="397 921 2175 921 2175 2072 397 2072"/>
+                    </Shape>
+                    <TextLine ID="mz_1-143_l6" HPOS="502" VPOS="913" WIDTH="1663" HEIGHT="80" BASELINE="504 963 2165 954" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2159 924 2113 913 2111 913 2109 913 1849 924 1760 913 1758 913 1756 913 1726 926 1622 915 1619 915 1617 915 1578 926 1533 915 1531 915 1528 915 1424 926 1360 915 1357 915 1355 915 1329 928 1251 917 1249 917 1247 917 1212 928 1197 917 1195 917 1193 917 1191 917 1102 928 985 917 983 917 792 930 502 926 504 963 504 993 606 980 857 991 859 991 1015 978 1563 987 1565 987 1567 987 1570 987 1587 976 1702 987 1704 987 1706 987 1708 987 1721 976 1736 985 1739 985 1741 985 1860 974 2148 985 2150 985 2152 985 2154 985 2165 974 2165 954 2163 948 2159 924"/>
+                        </Shape>
+                        <String CONTENT="Fig. 22, a, represents a sled from Mariinsky Post, which was used by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l7" HPOS="391" VPOS="976" WIDTH="408" HEIGHT="63" BASELINE="394 1021 799 1015" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 1021 394 1039 796 1032 799 1015 794 987 662 976 660 976 658 976 656 976 641 987 400 980 398 980 396 980 394 980 394 982 391 982 394 1021"/>
+                        </Shape>
+                        <String CONTENT="hunters on the ice"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l8" HPOS="391" VPOS="1039" WIDTH="408" HEIGHT="65" BASELINE="394 1082 799 1078" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 1082 394 1091 554 1104 556 1104 558 1104 560 1104 560 1101 573 1091 673 1101 675 1101 677 1101 710 1088 721 1099 721 1101 723 1101 725 1101 727 1104 777 1104 777 1101 779 1101 781 1101 799 1086 799 1078 794 1052 729 1039 727 1039 725 1039 723 1039 723 1041 712 1050 502 1041 500 1041 498 1041 467 1052 435 1041 433 1041 430 1041 428 1041 391 1054 394 1082"/>
+                        </Shape>
+                        <String CONTENT="of the sea for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l9" HPOS="391" VPOS="1099" WIDTH="408" HEIGHT="67" BASELINE="394 1143 799 1138" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 1143 394 1153 576 1166 578 1166 580 1166 582 1166 582 1164 597 1151 768 1164 770 1164 773 1164 775 1164 799 1149 799 1138 794 1110 634 1099 632 1099 391 1112 394 1143"/>
+                        </Shape>
+                        <String CONTENT="carrying to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l10" HPOS="396" VPOS="1171" WIDTH="407" HEIGHT="47" BASELINE="396 1201 803 1201" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1201 396 1218 803 1218 803 1201 803 1171 396 1171 396 1201"/>
+                        </Shape>
+                        <String CONTENT="shore walrus-meat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l11" HPOS="396" VPOS="1231" WIDTH="413" HEIGHT="55" BASELINE="396 1260 809 1260" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1260 396 1275 409 1283 411 1283 413 1283 415 1283 636 1273 667 1286 669 1286 671 1286 809 1270 809 1260 809 1231 396 1231 396 1260"/>
+                        </Shape>
+                        <String CONTENT="cut into square"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l12" HPOS="394" VPOS="1277" WIDTH="402" HEIGHT="65" BASELINE="396 1324 796 1316" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1324 396 1342 775 1342 775 1340 777 1340 779 1340 796 1329 796 1316 792 1288 593 1277 591 1277 589 1277 586 1277 586 1279 584 1279 576 1290 426 1281 424 1281 422 1281 394 1292 396 1324"/>
+                        </Shape>
+                        <String CONTENT="pieces. It is simi-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l13" HPOS="398" VPOS="1346" WIDTH="398" HEIGHT="61" BASELINE="398 1381 796 1381" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1381 398 1392 424 1405 426 1405 428 1405 430 1405 467 1394 504 1405 506 1405 508 1407 508 1405 511 1405 550 1394 781 1405 783 1405 786 1405 788 1405 788 1402 796 1394 796 1381 796 1353 398 1346 398 1381"/>
+                        </Shape>
+                        <String CONTENT="lar to one from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l14" HPOS="398" VPOS="1396" WIDTH="401" HEIGHT="61" BASELINE="400 1441 799 1437" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 1441 400 1457 796 1452 799 1437 794 1409 734 1396 731 1396 729 1396 727 1396 727 1398 716 1409 547 1409 407 1398 404 1398 402 1398 400 1398 400 1400 398 1400 400 1441"/>
+                        </Shape>
+                        <String CONTENT="St. Lawrence Is-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l15" HPOS="398" VPOS="1457" WIDTH="401" HEIGHT="60" BASELINE="398 1500 799 1500" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1500 398 1517 799 1517 799 1500 799 1470 744 1457 742 1457 740 1457 697 1467 669 1457 667 1457 664 1457 662 1457 660 1457 645 1467 623 1457 621 1457 619 1457 398 1463 398 1500"/>
+                        </Shape>
+                        <String CONTENT="land which is illu-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l16" HPOS="396" VPOS="1515" WIDTH="398" HEIGHT="63" BASELINE="398 1560 794 1556" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1560 398 1578 792 1573 794 1556 790 1524 608 1515 606 1515 604 1515 602 1515 589 1526 537 1517 534 1517 396 1528 398 1560"/>
+                        </Shape>
+                        <String CONTENT="strated by Nelson.¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l17" HPOS="398" VPOS="1576" WIDTH="403" HEIGHT="69" BASELINE="400 1623 801 1619" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="400 1623 400 1634 584 1645 586 1645 651 1634 781 1643 783 1643 786 1643 788 1643 801 1632 801 1619 796 1591 706 1591 693 1578 693 1576 690 1576 688 1576 686 1576 684 1576 656 1589 628 1576 625 1576 623 1576 621 1576 591 1591 398 1586 400 1623"/>
+                        </Shape>
+                        <String CONTENT="Fig. 22, b, shows"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l18" HPOS="396" VPOS="1636" WIDTH="403" HEIGHT="63" BASELINE="396 1680 799 1680" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1680 396 1699 799 1699 799 1680 799 1649 515 1636 513 1636 511 1636 508 1636 498 1647 469 1636 467 1636 465 1636 396 1647 396 1680"/>
+                        </Shape>
+                        <String CONTENT="a sled from Indian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l19" HPOS="398" VPOS="1697" WIDTH="403" HEIGHT="63" BASELINE="398 1740 801 1740" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 1740 398 1760 801 1760 801 1740 801 1706 788 1697 786 1697 783 1697 781 1697 779 1697 755 1710 671 1710 660 1699 660 1697 658 1697 656 1697 654 1697 651 1697 649 1697 632 1708 576 1697 573 1697 571 1697 543 1708 476 1697 474 1697 398 1706 398 1740"/>
+                        </Shape>
+                        <String CONTENT="Point, that is used"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l20" HPOS="396" VPOS="1757" WIDTH="400" HEIGHT="70" BASELINE="396 1801 796 1801" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1801 396 1814 571 1827 573 1827 796 1814 796 1801 796 1770 593 1757 591 1757 443 1768 415 1757 413 1757 411 1757 409 1757 407 1757 396 1764 396 1801"/>
+                        </Shape>
+                        <String CONTENT="for carrying skin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l21" HPOS="394" VPOS="1829" WIDTH="402" HEIGHT="48" BASELINE="396 1861 796 1857" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 1861 396 1877 794 1872 796 1857 792 1829 394 1829 396 1861"/>
+                        </Shape>
+                        <String CONTENT="boats. A wooden"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l22" HPOS="394" VPOS="1872" WIDTH="1771" HEIGHT="65" BASELINE="396 1922 2165 1916" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2083 1877 2061 1877 2040 1874 2018 1874 1996 1874 1975 1874 1643 1883 1619 1872 1617 1872 1615 1872 1520 1885 1498 1874 1496 1874 1494 1874 1492 1874 1446 1885 1412 1874 1409 1874 1407 1874 1266 1885 1169 1874 1167 1874 1063 1885 1033 1874 1030 1874 1028 1874 957 1887 422 1877 420 1877 417 1877 394 1887 396 1922 396 1937 2163 1931 2165 1916 2161 1885 2094 1877 2083 1877"/>
+                        </Shape>
+                        <String CONTENT="sledge of a similar pattern is used by the Russianized natives of the Kolyma"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l23" HPOS="391" VPOS="1935" WIDTH="1772" HEIGHT="63" BASELINE="394 1980 2163 1972" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 1980 394 1998 2161 1989 2163 1972 2156 1935 391 1948 394 1980"/>
+                        </Shape>
+                        <String CONTENT="and the Anadyr for conveying tubs of water from the common “water-hole”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l24" HPOS="396" VPOS="1998" WIDTH="333" HEIGHT="69" BASELINE="396 2041 729 2041" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2041 396 2054 649 2067 651 2067 729 2054 729 2041 729 2011 595 1998 593 1998 515 2009 491 1998 489 1998 487 1998 485 1998 482 1998 465 2009 441 1998 439 1998 437 1998 435 1998 396 2009 396 2041"/>
+                        </Shape>
+                        <String CONTENT="of the village."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-143_r4" HPOS="397" VPOS="2072" WIDTH="1778" HEIGHT="296" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="397 2072 2175 2072 2175 2368 397 2368"/>
+                    </Shape>
+                    <TextLine ID="mz_1-143_l25" HPOS="500" VPOS="2054" WIDTH="1667" HEIGHT="63" BASELINE="502 2102 2167 2093" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="502 2102 502 2117 2165 2108 2167 2093 2163 2065 1749 2054 1747 2054 1678 2065 1487 2056 1485 2056 500 2067 502 2102"/>
+                        </Shape>
+                        <String CONTENT="In former times a kind of toboggan made of whalebone was used for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l26" HPOS="391" VPOS="2119" WIDTH="1774" HEIGHT="58" BASELINE="394 2162 2165 2156" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2162 394 2177 2163 2171 2165 2156 2161 2128 985 2119 983 2119 981 2119 959 2130 508 2121 506 2121 391 2132 394 2162"/>
+                        </Shape>
+                        <String CONTENT="carrying meat over the ice, while at present the whalebone has too high a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l27" HPOS="394" VPOS="2177" WIDTH="1773" HEIGHT="61" BASELINE="396 2223 2167 2214" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2223 396 2238 2165 2229 2167 2214 2163 2186 1282 2177 1279 2177 1277 2177 1275 2177 1256 2188 480 2182 478 2182 394 2193 396 2223"/>
+                        </Shape>
+                        <String CONTENT="market value to be applied for any such purpose. The model in the collection"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l28" HPOS="391" VPOS="2234" WIDTH="1776" HEIGHT="65" BASELINE="394 2286 2167 2277" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2286 394 2299 2165 2290 2167 2277 2163 2247 2005 2247 1979 2234 1977 2234 1975 2234 1972 2234 1927 2245 1901 2234 1899 2234 1897 2234 1810 2245 1758 2234 1756 2234 1754 2234 1721 2247 1700 2236 1697 2236 1695 2236 1526 2247 1386 2236 1383 2236 1381 2236 1357 2247 1323 2236 1321 2236 1318 2236 1316 2236 1275 2249 1093 2238 1091 2238 1089 2238 1065 2249 1028 2238 1026 2238 1024 2238 1022 2238 978 2249 922 2238 920 2238 864 2249 840 2238 838 2238 835 2238 833 2238 783 2251 411 2240 409 2240 407 2240 404 2240 391 2249 394 2286"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 22, c) is made of a single piece of whalebone, while the real toboggans"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l29" HPOS="396" VPOS="2297" WIDTH="1046" HEIGHT="62" BASELINE="398 2342 1442 2338" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 2342 398 2359 1440 2359 1442 2338 1437 2307 918 2297 916 2297 913 2297 911 2297 894 2307 404 2299 402 2299 400 2299 398 2299 398 2301 396 2301 398 2342"/>
+                        </Shape>
+                        <String CONTENT="had several slabs laced together side by side."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-143_r5" HPOS="397" VPOS="2368" WIDTH="1778" HEIGHT="593" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="397 2368 2175 2368 2175 2961 397 2961"/>
+                    </Shape>
+                    <TextLine ID="mz_1-143_l30" HPOS="502" VPOS="2359" WIDTH="1665" HEIGHT="59" BASELINE="504 2400 2167 2394" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="504 2400 504 2418 2165 2411 2167 2394 2163 2366 526 2359 524 2359 521 2359 502 2368 504 2400"/>
+                        </Shape>
+                        <String CONTENT="At the present time an ordinary dog-team has six or seven pairs of animals"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l31" HPOS="391" VPOS="2420" WIDTH="1776" HEIGHT="67" BASELINE="394 2461 2167 2452" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2461 394 2476 762 2487 764 2487 883 2474 952 2485 955 2485 957 2485 959 2485 974 2474 1303 2483 1305 2483 1308 2483 1310 2483 1325 2472 1407 2483 1409 2483 1412 2483 1437 2472 1487 2483 1489 2483 1492 2483 1494 2483 1511 2472 1871 2481 1873 2481 1957 2470 1972 2481 1975 2481 1977 2481 1979 2483 2122 2483 2122 2481 2124 2481 2167 2468 2167 2452 2163 2420 411 2420 409 2420 407 2420 404 2420 391 2426 394 2461"/>
+                        </Shape>
+                        <String CONTENT="(Plate VIII, Figs. 1, 2; also Plate VI, Fig. 4). An odd dog is attached"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l32" HPOS="394" VPOS="2478" WIDTH="1771" HEIGHT="61" BASELINE="396 2520 2165 2511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2520 396 2539 2163 2530 2165 2511 2161 2485 838 2478 835 2478 394 2491 396 2520"/>
+                        </Shape>
+                        <String CONTENT="separately, generally at the rear end; or, if the central strap is too long for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l33" HPOS="394" VPOS="2535" WIDTH="1773" HEIGHT="60" BASELINE="396 2580 2167 2574" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2580 396 2595 2165 2589 2167 2574 2163 2546 1576 2535 1574 2535 1572 2535 1546 2546 1065 2537 1063 2537 981 2548 420 2539 417 2539 415 2539 394 2548 396 2580"/>
+                        </Shape>
+                        <String CONTENT="the number of dogs, two or three of them are attached separately. Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l34" HPOS="391" VPOS="2598" WIDTH="1776" HEIGHT="56" BASELINE="394 2639 2167 2634" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2639 394 2654 2165 2649 2167 2634 2163 2606 417 2598 415 2598 413 2598 391 2606 394 2639"/>
+                        </Shape>
+                        <String CONTENT="drivers going on a long journey borrow from their friends and relatives as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l35" HPOS="391" VPOS="2662" WIDTH="1774" HEIGHT="65" BASELINE="394 2701 2165 2691" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2701 394 2717 636 2727 638 2727 749 2714 983 2725 985 2725 1106 2712 1295 2723 1297 2723 1366 2712 1697 2721 1700 2721 1702 2721 1723 2710 1784 2721 1786 2721 1892 2708 1988 2719 1990 2719 2163 2708 2165 2691 2159 2662 391 2671 394 2701"/>
+                        </Shape>
+                        <String CONTENT="many dogs as they can, and thus have teams of from sixteen to eighteen"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l36" HPOS="391" VPOS="2717" WIDTH="1776" HEIGHT="60" BASELINE="394 2762 2167 2753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2762 394 2777 2165 2769 2167 2753 2163 2725 1279 2717 1277 2717 1275 2717 1245 2727 411 2721 409 2721 407 2721 404 2721 391 2727 394 2762"/>
+                        </Shape>
+                        <String CONTENT="dogs. Even double teams of more than twenty dogs are used; though this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l37" HPOS="394" VPOS="2777" WIDTH="1771" HEIGHT="61" BASELINE="396 2818 2165 2814" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2818 396 2838 2163 2838 2165 2814 2161 2786 415 2777 413 2777 411 2777 409 2777 394 2784 396 2818"/>
+                        </Shape>
+                        <String CONTENT="does not work well, because the foremost pair will hardly do their share of work,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l38" HPOS="391" VPOS="2831" WIDTH="1776" HEIGHT="70" BASELINE="394 2881 2167 2872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2881 394 2894 1721 2901 1723 2901 1726 2901 1756 2890 2141 2898 2143 2898 2146 2898 2167 2885 2167 2872 2163 2844 2014 2844 1990 2831 1988 2831 1985 2831 1983 2831 1981 2831 1964 2844 1866 2844 1832 2831 1829 2831 1827 2831 1745 2842 1728 2831 1726 2831 1723 2831 1721 2831 1719 2831 1667 2844 1630 2833 1628 2833 1626 2833 1624 2833 1600 2846 1386 2846 1318 2833 1316 2833 1314 2833 1275 2846 911 2836 909 2836 814 2849 467 2838 465 2838 391 2851 394 2881"/>
+                        </Shape>
+                        <String CONTENT="and the whole team will lack in unity. Moreover, a double train requires two"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l39" HPOS="394" VPOS="2894" WIDTH="1648" HEIGHT="61" BASELINE="396 2940 2042 2933" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 2940 396 2955 2040 2948 2042 2933 2037 2905 1507 2894 1505 2894 1502 2894 1500 2894 1485 2905 417 2898 415 2898 413 2898 394 2907 396 2940"/>
+                        </Shape>
+                        <String CONTENT="drivers wherever the road is uneven, as on the hills and in the forests."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-143_r6" HPOS="397" VPOS="2961" WIDTH="1778" HEIGHT="244" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="397 2961 2175 2961 2175 3205 397 3205"/>
+                    </Shape>
+                    <TextLine ID="mz_1-143_l40" HPOS="504" VPOS="2953" WIDTH="1659" HEIGHT="65" BASELINE="506 3000 2163 2994" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="506 3000 506 3018 2161 3018 2163 2994 2159 2966 2074 2953 2072 2953 2070 2953 2033 2963 1797 2953 1795 2953 1702 2963 1611 2953 1609 2953 1606 2953 1574 2966 1533 2955 1531 2955 1528 2955 1526 2955 1500 2966 1487 2955 1485 2955 1483 2955 1481 2955 1479 2955 1450 2966 1353 2955 1351 2955 1273 2966 1160 2955 1158 2955 1039 2970 903 2970 879 2957 877 2957 874 2957 796 2968 504 2966 506 3000"/>
+                        </Shape>
+                        <String CONTENT="The strap serving as whiffletree (Fig. 23) is either made of one piece,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l41" HPOS="394" VPOS="3013" WIDTH="1769" HEIGHT="63" BASELINE="396 3061 2163 3054" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 3061 396 3074 2159 3076 2163 3054 2159 3024 1622 3013 1619 3013 1554 3024 1054 3015 1052 3015 394 3028 396 3061"/>
+                        </Shape>
+                        <String CONTENT="or consists of two or three lengths of thong (a), each about a fathom long,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l42" HPOS="394" VPOS="3076" WIDTH="1769" HEIGHT="69" BASELINE="396 3117 2163 3113" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 3117 396 3145 543 3132 591 3143 593 3143 595 3143 740 3132 846 3143 848 3143 851 3143 853 3143 866 3132 920 3143 922 3143 1184 3132 1230 3143 1232 3143 1234 3143 1236 3143 1288 3130 1303 3141 1305 3141 1308 3141 1310 3141 1381 3130 2159 3137 2163 3113 2159 3085 407 3076 404 3076 402 3076 400 3076 400 3078 394 3082 396 3117"/>
+                        </Shape>
+                        <String CONTENT="joined together with bone or iron eyes (b). The ends of each piece of thong"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-143_l43" HPOS="394" VPOS="3137" WIDTH="1769" HEIGHT="62" BASELINE="396 3178 2163 3169" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 3178 396 3199 2161 3191 2163 3169 2156 3137 394 3147 396 3178"/>
+                        </Shape>
+                        <String CONTENT="are slung through the eyes, and sewed together with thin leather or fastened"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-143_r7" HPOS="397" VPOS="3219" WIDTH="1778" HEIGHT="57" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="397 3219 2175 3219 2175 3276 397 3276"/>
+                    </Shape>
+                    <TextLine ID="mz_1-143_l44" HPOS="976" VPOS="3219" WIDTH="613" HEIGHT="45" BASELINE="976 3245 1589 3245" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="976 3245 976 3264 1589 3264 1589 3245 1589 3219 976 3219 976 3245"/>
+                        </Shape>
+                        <String CONTENT="¹ Nelson, Plate LXXVI, Fig. I, p. 208."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

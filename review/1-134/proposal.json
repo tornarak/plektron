@@ -1,0 +1,88 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "102"},
+    "2": {
+      "text": "fox”), etc.; though other names have a different origin, for instance, keiˊñɪn",
+      "resolved": "keiˊñɪn = k+e+i, stress U+02CA, ñ = n+U+0303, ɪ = U+026A, n",
+      "class": "doubt",
+      "note": "mz draft read \"kei'nm\"; raster shows stress mark then ñ (tilde over n) then dotless small-cap ɪ then n — contrasted against the dotted lowercase i earlier in \"instance\" on the same line."
+    },
+    "3": {
+      "text": "(“bear”), veˊʟ̣ᴇ (“raven”), neneˊn (“infant”), titiˊñɪ (“needle”). Other names cannot",
+      "resolved": "veˊʟ̣ᴇ = v+e, stress U+02CA, ʟ = U+029F, dot below U+0323, ᴇ = U+1D07; neneˊn = n+e+n+e, stress U+02CA, n; titiˊñɪ = t+i+t+i, stress U+02CA, ñ = n+U+0303, ɪ = U+026A",
+      "class": "doubt",
+      "note": "ve'LE at 4x shows a dot below the small-cap L and a following letter matching small-cap ᴇ height (shorter than the flanking parenthesis ascenders, taller than the surrounding lowercase x-height) — keyed ʟ̣ᴇ per §2.2/§2.3. Flagging since the dot-below-ʟ + small-cap-ᴇ combination is rare on this page and worth a second look."
+    },
+    "4": {
+      "text": "be translated; for instance, pappaˊlhɪn, which is given only to black dogs,",
+      "resolved": "pappaˊlhɪn = p+a+p+p+a, stress U+02CA, l+h, ɪ = U+026A, n"
+    },
+    "5": {
+      "text": "and eliˊhɪkɪ.",
+      "resolved": "eliˊhɪkɪ = e+l+i (plain dotted i), stress U+02CA, h, ɪ = U+026A, k, ɪ = U+026A"
+    },
+    "6": {"text": "Dogs of the southern and western districts are considered the swiftest and"},
+    "7": {"text": "the most enduring. Among the Russianized natives the large and shaggy"},
+    "8": {"text": "dogs of the Indighirka River are especially valued; among the Kamchadal,"},
+    "9": {"text": "those of the southwestern villages Yavina and Golyghina; and among the"},
+    "10": {
+      "text": "Koryak, those of the Poqaˊč. The Chukchee dogs are considered the poorest",
+      "resolved": "Poqaˊč = P+o+q+a, stress U+02CA, č = c+U+030C",
+      "class": "print",
+      "note": "mz draft read \"Poqa'é\" (acute e); raster clearly shows a caron over c, not an acute over e — corrected to Poqaˊč."
+    },
+    "11": {"text": "of all, probably on account of their more scanty diet. Therefore the trade in"},
+    "12": {"text": "live dogs between the Russian settlements in Anadyr and the Chukchee villages"},
+    "13": {"text": "on the Pacific shore is of importance. A good dog can be bought with four"},
+    "14": {"text": "or five white fox-skins, or two dogs with an American shotgun with accessories, etc."},
+    "15": {"text": "Kamchadal, Koryak, and Russian dogs are fed exclusively on fish, — raw,"},
+    "16": {
+      "text": "dried, or frozen, according to the season or the locality (Plate VI, Fig. 3).",
+      "class": "print",
+      "note": "Printed roman numeral \"vi\" is set genuinely lowercase (x-height, not small-cap or full-cap height); keyed ASCII capital VI per keying_spec.md §2.12, \"Every roman numeral in the book is keyed in plain ASCII capitals, whatever the setting.\""
+    },
+    "17": {"text": "The Kolyma Russians often cook for their dogs a kind of porridge made of"},
+    "18": {"text": "putrid fish, roe, fish-bones, refuse of human food, etc., and serve it in long"},
+    "19": {"text": "wooden trays; but this kind of food is convenient only at times of rest, since"},
+    "20": {"text": "the dogs feel heavy with too much liquid food. The Chukchee dogs are fed"},
+    "21": {"text": "on the intestines of seals, and on seal, walrus, and whale blubber. Their share"},
+    "22": {"text": "of meat is small, and consists only of kitchen refuse, since their masters want"},
+    "23": {"text": "all the meat proper for themselves. However, exclusive blubber diet is insuf-"},
+    "24": {"text": "ficient for dogs. In the summer-time, in the Chukchee villages of the Pacific"},
+    "25": {
+      "text": "coast, I saw large pieces of blubber strewn all over the ground; and the dogs",
+      "class": "artifact",
+      "note": "small ink speck between \"the\" and \"ground\", above the baseline gutter; not a letterform or mark, ruled a print speck and not keyed."
+    },
+    "26": {"text": "prowling among them did not appear to be overfed. The natives said, that,"},
+    "27": {"text": "whenever the dogs were satiated, they would desist from eating blubber for"},
+    "28": {"text": "a long time. On the contrary, in the fishing villages of the Koryak or Kam-"},
+    "29": {"text": "chadal, at the same season, when food is scattered on the ground, the dogs"},
+    "30": {
+      "text": "grow so fat that they can hardly walk.¹",
+      "resolved": "¹ = U+00B9",
+      "class": "layout",
+      "note": "footnote reference marker; mz draft dropped it entirely (\"walk.\" with no digit). Raster shows a clear raised 1 after the period, paired with the opener on line 43."
+    },
+    "31": {"text": "The continuous fluctuations of success in seal-hunting, and the frequent"},
+    "32": {"text": "seasons of famine, have a deteriorating effect upon the Chukchee race of dogs;"},
+    "33": {"text": "but fishing among the more southern tribes is much more regular. Chukchee"},
+    "34": {"text": "dogs need something to season their blubber, and are generally inclined to"},
+    "35": {"text": "eat up all the dry thongs they can get; they even gnaw at the lashings of"},
+    "36": {"text": "sledges, and destroy their own harness and traces, much more than do the"},
+    "37": {"text": "southern fish-fed dogs. On the contrary, the Russian fish-fed dogs thrive best"},
+    "38": {"text": "when they are given blubber mixed with their dried fish. The dogs are fed"},
+    "39": {"text": "once a day, usually in the evening, by some of the drivers immediately after"},
+    "40": {"text": "stopping; while others prefer to wait until they have had three hours of rest."},
+    "41": {"text": "A piece of blubber measuring two inches each way, and some shreds of putrid"},
+    "42": {"text": "walrus-meat or whale-skin, form the daily ration of every dog. During the"},
+    "43": {
+      "text": "¹ As regards the poor quality of blubber diet for dogs, compare also Maydell, I, p. 570.",
+      "resolved": "¹ = U+00B9",
+      "class": "layout",
+      "note": "footnote opener marker, pairs with the reference on line 30; mz draft keyed a plain ASCII \"1\" instead of the superscript sort."
+    }
+  },
+  "contamination": {"blind": true}
+}

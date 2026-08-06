@@ -1,0 +1,20 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "105"},
+    "2": {"text": "to the top of this bow with his left hand, while with his right hand he works"},
+    "3": {"text": "a brake (Fig. 21, a1). The length of the runners is 3-3.5 m.; breadth, 8 cm.;",
+          "note": "Printed as italic 'a' with a small raised numeral 1, labelling a part of Fig. 21 — not a footnote marker (no footnote opener anywhere on the page). Keyed the digit plain rather than as U+00B9, since that codepoint is reserved by §2.10 for footnote markers and using it here trips the marker-pairing invariant on a mark that isn't one.",
+          "class": "print"},
+    "4": {"text": "thickness, 3 cm.; height of the standing bow, 120 cm.; height of the sledge"},
+    "5": {"text": "when heavily laden, 1 m. All joints are fastened with strong, ingeniously"},
+    "6": {"text": "twisted lashings (Fig. 21, b, c). The general shape of this sledge is, as has"},
+    "7": {"text": "been said, identical with the Tungus reindeer-sledge, which, however, is shorter"},
+    "8": {"text": "and clumsier. The latter has only three pairs of stanchions, and no standing"},
+    "9": {"text": "bow in the middle. Its planks are broader, and the lashings are stiffer"},
+    "10": {"text": "and ruder."},
+    "11": {"text": "All parts of the dog-sledge, especially the runners, are made, if possible,"},
+    "12": {"text": "14—JESUP NORTH PACIFIC EXPED., VOL. VII."}
+  },
+  "contamination": {"blind": true}
+}

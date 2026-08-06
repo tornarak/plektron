@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-137.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-137.png; regions_from: zones/chukchi-1-137.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-137_r1" HPOS="399" VPOS="615" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="399 615 2177 615 2177 705 399 705"/>
+                    </Shape>
+                    <TextLine ID="mz_1-137_l1" HPOS="974" VPOS="627" WIDTH="624" HEIGHT="54" BASELINE="976 662 1598 666" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="976 632 976 662 974 677 1593 681 1598 666 1596 632 985 627 976 632"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l2" HPOS="2076" VPOS="636" WIDTH="83" HEIGHT="54" BASELINE="2076 671 2159 671" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2076 671 2076 686 2156 690 2159 671 2159 636 2076 636 2076 671"/>
+                        </Shape>
+                        <String CONTENT="105"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-137_r2" HPOS="399" VPOS="730" WIDTH="1778" HEIGHT="135" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="399 730 2177 730 2177 865 399 865"/>
+                    </Shape>
+                    <TextLine ID="mz_1-137_l3" HPOS="394" VPOS="729" WIDTH="1778" HEIGHT="69" BASELINE="396 775 2172 768" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 740 396 775 396 790 1557 798 1559 798 1615 788 2169 788 2172 768 2167 738 987 729 985 729 983 729 950 740 411 731 409 731 407 731 404 731 394 740"/>
+                        </Shape>
+                        <String CONTENT="to the top of this bow with his left hand, while with his right hand he works"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l4" HPOS="398" VPOS="792" WIDTH="1767" HEIGHT="69" BASELINE="398 833 2165 833" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="398 833 398 850 2161 861 2165 833 2163 805 2046 792 2044 792 2042 792 2009 803 1975 792 1972 792 1970 792 1349 803 1251 792 1249 792 1247 792 1201 803 1171 792 1169 792 1167 792 1165 792 1121 803 1063 792 1061 792 1059 792 1037 803 950 792 948 792 894 803 851 792 848 792 846 792 844 792 842 792 825 805 706 805 617 792 615 792 612 792 580 803 459 792 456 792 398 803 398 833"/>
+                        </Shape>
+                        <String CONTENT="a brake (Fig. 21, a¹). The length of the runners is 3-3.5 m.; breadth, 8 cm.;"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-137_r3" HPOS="399" VPOS="2764" WIDTH="1778" HEIGHT="430" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="399 2764 2177 2764 2177 3194 399 3194"/>
+                    </Shape>
+                    <TextLine ID="mz_1-137_l5" HPOS="400" VPOS="2779" WIDTH="1778" HEIGHT="52" BASELINE="402 2816 2178 2812" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2816 402 2831 2178 2827 2178 2812 2172 2779 400 2782 402 2816"/>
+                        </Shape>
+                        <String CONTENT="thickness, 3 cm.; height of the standing bow, 120 cm.; height of the sledge"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l6" HPOS="400" VPOS="2836" WIDTH="1774" HEIGHT="67" BASELINE="402 2877 2174 2868" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 2877 402 2892 703 2903 706 2903 708 2903 710 2903 725 2892 874 2901 877 2901 879 2901 881 2901 896 2890 1169 2901 1171 2901 1308 2888 2169 2888 2174 2868 2169 2840 443 2836 441 2836 439 2836 400 2846 402 2877"/>
+                        </Shape>
+                        <String CONTENT="when heavily laden, 1 m. All joints are fastened with strong, ingeniously"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l7" HPOS="402" VPOS="2888" WIDTH="1772" HEIGHT="75" BASELINE="404 2937 2174 2929" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 2937 404 2953 742 2963 744 2963 747 2963 777 2953 809 2963 812 2963 814 2963 898 2950 1286 2961 1288 2961 1455 2948 1524 2959 1526 2959 1604 2948 2172 2948 2174 2929 2169 2901 1860 2888 1858 2888 1855 2888 1853 2888 1840 2898 1810 2888 1808 2888 1806 2888 1803 2888 1765 2898 1734 2888 1732 2888 1730 2888 1626 2901 1431 2890 1429 2890 1368 2901 1182 2892 1180 2892 1117 2903 1102 2892 1100 2892 1097 2892 1095 2892 1093 2892 1056 2903 1026 2892 1024 2892 1022 2892 1020 2892 1017 2892 1002 2905 887 2905 848 2892 846 2892 844 2892 777 2905 461 2894 459 2894 456 2894 402 2907 404 2937"/>
+                        </Shape>
+                        <String CONTENT="twisted lashings (Fig. 21, b, c). The general shape of this sledge is, as has"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l8" HPOS="402" VPOS="2948" WIDTH="1772" HEIGHT="67" BASELINE="404 2996 2174 2989" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 2996 404 3015 2172 3009 2174 2989 2169 2959 1626 2948 1624 2948 1622 2948 1578 2959 994 2950 991 2950 989 2950 963 2963 402 2963 404 2996"/>
+                        </Shape>
+                        <String CONTENT="been said, identical with the Tungus reindeer-sledge, which, however, is shorter"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l9" HPOS="400" VPOS="3013" WIDTH="1769" HEIGHT="63" BASELINE="402 3056 2169 3050" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 3056 402 3072 2165 3076 2169 3050 2165 3022 1009 3013 1007 3013 1004 3013 1002 3013 983 3024 472 3015 469 3015 400 3026 402 3056"/>
+                        </Shape>
+                        <String CONTENT="and clumsier. The latter has only three pairs of stanchions, and no standing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l10" HPOS="402" VPOS="3069" WIDTH="1770" HEIGHT="72" BASELINE="404 3115 2172 3111" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="404 3115 404 3130 861 3141 864 3141 937 3130 989 3141 991 3141 994 3141 996 3141 1011 3130 1084 3141 1087 3141 1184 3130 1271 3139 1273 3139 1275 3139 1277 3139 1292 3128 1472 3139 1474 3139 1476 3139 1507 3128 1723 3128 1741 3139 1743 3139 1745 3139 1747 3139 2169 3126 2172 3111 2169 3082 2128 3069 2126 3069 2124 3069 2046 3080 1797 3069 1795 3069 1793 3069 1769 3080 1741 3069 1739 3069 1736 3069 1734 3069 1704 3080 1650 3069 1648 3069 1645 3069 1619 3080 1591 3069 1589 3069 1587 3069 1455 3080 1422 3069 1420 3069 1418 3069 1362 3080 1316 3069 1314 3069 1312 3069 1310 3069 1282 3085 1158 3085 1141 3072 1139 3072 1136 3072 1134 3072 1132 3072 1102 3082 1078 3072 1076 3072 1074 3072 1071 3072 1039 3082 963 3072 961 3072 959 3072 929 3082 848 3072 846 3072 402 3080 404 3115"/>
+                        </Shape>
+                        <String CONTENT="bow in the middle. Its planks are broader, and the lashings are stiffer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-137_l11" HPOS="402" VPOS="3134" WIDTH="249" HEIGHT="61" BASELINE="402 3178 651 3178" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="402 3178 402 3195 651 3195 651 3178 651 3147 576 3134 573 3134 506 3145 480 3134 478 3134 476 3134 402 3145 402 3178"/>
+                        </Shape>
+                        <String CONTENT="and ruder."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-137_r4" HPOS="399" VPOS="3194" WIDTH="1778" HEIGHT="74" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="399 3194 2177 3194 2177 3268 399 3268"/>
+                    </Shape>
+                    <TextLine ID="mz_1-137_l12" HPOS="508" VPOS="3189" WIDTH="1666" HEIGHT="67" BASELINE="511 3238 2174 3232" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="511 3238 511 3256 2174 3256 2174 3232 2172 3202 2128 3189 2126 3189 2124 3189 2055 3199 1860 3189 1858 3189 1613 3202 1292 3191 1290 3191 1288 3191 1286 3191 1269 3204 1136 3204 1069 3191 1067 3191 1002 3204 937 3193 935 3193 933 3193 903 3204 779 3193 777 3193 610 3204 534 3193 532 3193 530 3193 528 3193 508 3204 511 3238"/>
+                        </Shape>
+                        <String CONTENT="All parts of the dog-sledge, especially the runners, are made, if possible,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-137_r5" HPOS="399" VPOS="3287" WIDTH="1778" HEIGHT="57" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="399 3287 2177 3287 2177 3344 399 3344"/>
+                    </Shape>
+                    <TextLine ID="mz_1-137_l13" HPOS="404" VPOS="3284" WIDTH="691" HEIGHT="52" BASELINE="407 3318 1095 3314" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="407 3318 407 3336 1095 3331 1095 3314 1089 3284 404 3286 407 3318"/>
+                        </Shape>
+                        <String CONTENT="14—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

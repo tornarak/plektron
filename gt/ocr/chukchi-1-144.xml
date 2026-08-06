@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-144.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-144.png; regions_from: zones/chukchi-1-144.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-144_r1" HPOS="677" VPOS="612" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="677 612 2455 612 2455 702 677 702"/>
+                    </Shape>
+                    <TextLine ID="mz_1-144_l1" HPOS="682" VPOS="621" WIDTH="104" HEIGHT="56" BASELINE="684 666 786 662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="682 640 684 666 684 677 786 675 786 662 783 632 747 621 744 621 742 621 688 632 682 640"/>
+                        </Shape>
+                        <String CONTENT="108"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l2" HPOS="1249" VPOS="630" WIDTH="622" HEIGHT="51" BASELINE="1249 662 1871 662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1858 630 1249 630 1249 662 1249 681 1871 681 1871 662 1868 651 1858 630"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-144_r2" HPOS="677" VPOS="727" WIDTH="1778" HEIGHT="138" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="677 727 2455 727 2455 865 677 865"/>
+                    </Shape>
+                    <TextLine ID="mz_1-144_l3" HPOS="675" VPOS="727" WIDTH="1774" HEIGHT="69" BASELINE="677 772 2449 768" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="677 772 677 785 1024 785 1063 796 1065 796 1067 796 1247 785 1323 796 1325 796 1327 796 1329 796 1349 785 1548 794 1550 794 1552 794 1576 783 1994 783 2011 794 2014 794 2016 794 2018 794 2124 783 2267 794 2269 794 2271 794 2293 783 2425 794 2427 794 2429 794 2432 794 2449 781 2449 768 2445 738 1563 727 1561 727 1487 738 695 729 693 729 690 729 688 729 675 736 677 772"/>
+                        </Shape>
+                        <String CONTENT="to them with toggles. The rear end is fastened to the shaft with a larger"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l4" HPOS="677" VPOS="788" WIDTH="1770" HEIGHT="60" BASELINE="680 831 2447 827" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="680 831 680 848 2445 846 2447 827 2442 798 1580 788 1578 788 1576 788 1574 788 1554 798 779 790 777 790 677 801 680 831"/>
+                        </Shape>
+                        <String CONTENT="toggle (c), or simply twisted around the curved shaft and then tied to the"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-144_r3" HPOS="677" VPOS="1499" WIDTH="1778" HEIGHT="910" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="677 1499 2455 1499 2455 2409 677 2409"/>
+                    </Shape>
+                    <TextLine ID="mz_1-144_l5" HPOS="673" VPOS="1502" WIDTH="1772" HEIGHT="61" BASELINE="675 1547 2445 1543" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2276 1504 2254 1504 2232 1504 2211 1504 2193 1504 2159 1511 2139 1504 2124 1504 2113 1504 2105 1513 1946 1513 1879 1502 1864 1502 1853 1502 1819 1511 1793 1502 1777 1502 1773 1502 1758 1511 1401 1502 1399 1502 1334 1513 1249 1502 1247 1502 1245 1502 1210 1513 1158 1502 1156 1502 1154 1502 1152 1502 1136 1515 985 1515 890 1502 887 1502 835 1513 783 1502 781 1502 673 1515 675 1547 675 1563 2442 1558 2445 1543 2440 1513 2293 1504 2276 1504"/>
+                        </Shape>
+                        <String CONTENT="standing bow or to the right rail (Fig. 23; see also Fig. 21, a, b). The large"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l6" HPOS="673" VPOS="1558" WIDTH="1772" HEIGHT="65" BASELINE="675 1610 2445 1602" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="675 1610 675 1623 2442 1619 2445 1602 2442 1571 2416 1558 2414 1558 2412 1558 2079 1569 2024 1558 2022 1558 2020 1558 2018 1558 1996 1571 1957 1560 1955 1560 1953 1560 1951 1560 1929 1571 1845 1560 1842 1560 1840 1560 1838 1560 1823 1573 1704 1573 1658 1560 1656 1560 1654 1560 1598 1571 1570 1560 1567 1560 1565 1560 1563 1560 1511 1573 1342 1563 1340 1563 1262 1573 1227 1563 1225 1563 1223 1563 1063 1576 853 1565 851 1565 848 1565 822 1576 777 1565 775 1565 773 1565 673 1578 675 1610"/>
+                        </Shape>
+                        <String CONTENT="toggle is made of wood or iron, and is often combined with a swivel which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l7" HPOS="673" VPOS="1623" WIDTH="1772" HEIGHT="59" BASELINE="675 1667 2445 1662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="675 1667 675 1682 2442 1677 2445 1662 2440 1634 1559 1623 1557 1623 1489 1634 742 1625 740 1625 673 1636 675 1667"/>
+                        </Shape>
+                        <String CONTENT="ends in a large eye. The rear end of the central strap and the first two traces"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l8" HPOS="671" VPOS="1684" WIDTH="1774" HEIGHT="58" BASELINE="673 1729 2445 1723" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="673 1729 673 1742 2442 1738 2445 1723 2440 1693 1323 1684 1321 1684 1258 1695 788 1686 786 1686 671 1697 673 1729"/>
+                        </Shape>
+                        <String CONTENT="are fastened to this eye. The rear end is thicker, and the strap gradually"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l9" HPOS="673" VPOS="1742" WIDTH="1772" HEIGHT="67" BASELINE="675 1790 2445 1781" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="675 1790 675 1809 2442 1796 2445 1781 2440 1751 1565 1742 1563 1742 1561 1742 1559 1742 1546 1753 1158 1744 1156 1744 673 1757 675 1790"/>
+                        </Shape>
+                        <String CONTENT="grows thinner toward the front end. If the strap is of one piece, loops are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l10" HPOS="673" VPOS="1801" WIDTH="1772" HEIGHT="67" BASELINE="675 1846 2445 1840" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="675 1846 675 1861 2425 1868 2427 1868 2429 1868 2432 1868 2445 1857 2445 1840 2440 1812 1873 1801 1871 1801 1868 1801 1866 1801 1847 1812 699 1805 697 1805 695 1805 673 1814 675 1846"/>
+                        </Shape>
+                        <String CONTENT="tied in it (Fig. 24) at distances of about a fathom. The toggles of the traces"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l11" HPOS="1719" VPOS="1874" WIDTH="726" HEIGHT="48" BASELINE="1719 1903 2445 1903" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1719 1903 1719 1922 2445 1922 2445 1903 2445 1874 1719 1874 1719 1903"/>
+                        </Shape>
+                        <String CONTENT="of each pair of dogs are fastened"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l12" HPOS="1710" VPOS="1920" WIDTH="732" HEIGHT="69" BASELINE="1713 1959 2442 1963" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1713 1959 1710 1978 1723 1987 1726 1987 1728 1987 1730 1987 1732 1987 1775 1976 1979 1987 1981 1987 1983 1987 1985 1987 2003 1976 2076 1989 2079 1989 2081 1989 2124 1978 2195 1989 2198 1989 2440 1976 2442 1963 2440 1935 2250 1922 2247 1922 2245 1922 2243 1922 2243 1924 2232 1935 2107 1935 2079 1920 2076 1920 2074 1920 2005 1931 1907 1920 1905 1920 1903 1920 1879 1931 1739 1920 1736 1920 1734 1920 1713 1929 1713 1959"/>
+                        </Shape>
+                        <String CONTENT="in one loop (Fig. 21, d). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l13" HPOS="1713" VPOS="1980" WIDTH="732" HEIGHT="59" BASELINE="1715 2026 2445 2022" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1715 2026 1715 2039 2442 2035 2445 2022 2440 1991 2083 1980 2081 1980 2079 1980 2076 1980 2061 1991 1756 1983 1754 1983 1752 1983 1713 1993 1715 2026"/>
+                        </Shape>
+                        <String CONTENT="attachment of the dog’s traces"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l14" HPOS="1717" VPOS="2043" WIDTH="725" HEIGHT="54" BASELINE="1719 2084 2442 2080" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1719 2084 1719 2097 2440 2097 2442 2080 2438 2048 1732 2043 1730 2043 1728 2043 1726 2043 1717 2050 1719 2084"/>
+                        </Shape>
+                        <String CONTENT="to the harness is illustrated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l15" HPOS="1717" VPOS="2102" WIDTH="725" HEIGHT="67" BASELINE="1717 2145 2442 2145" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1717 2145 1717 2156 1836 2169 1838 2169 1912 2158 2423 2169 2425 2169 2427 2169 2429 2169 2442 2158 2442 2145 2442 2117 2360 2102 2358 2102 2356 2102 2328 2117 2291 2117 2278 2104 2278 2102 2276 2102 2273 2102 2226 2102 2224 2102 2221 2102 2219 2102 2219 2104 2206 2117 2098 2117 2085 2104 2085 2102 2083 2102 2081 2102 2079 2102 1894 2115 1797 2102 1795 2102 1793 2102 1790 2102 1769 2115 1732 2102 1730 2102 1728 2102 1726 2102 1723 2102 1723 2104 1717 2110 1717 2145"/>
+                        </Shape>
+                        <String CONTENT="in Figs. 21 and 23. The dogs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l16" HPOS="1713" VPOS="2165" WIDTH="732" HEIGHT="56" BASELINE="1715 2206 2445 2201" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1715 2206 1715 2221 2442 2214 2445 2201 2440 2173 1773 2165 1771 2165 1713 2175 1715 2206"/>
+                        </Shape>
+                        <String CONTENT="pull on the traces somewhat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l17" HPOS="1719" VPOS="2221" WIDTH="728" HEIGHT="60" BASELINE="1719 2262 2447 2262" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1719 2262 1719 2281 2447 2281 2447 2262 2447 2234 2367 2221 2364 2221 1927 2232 1884 2221 1881 2221 1879 2221 1877 2221 1875 2221 1860 2232 1756 2221 1754 2221 1752 2221 1719 2232 1719 2262"/>
+                        </Shape>
+                        <String CONTENT="obliquely, so as to leave sufficient"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l18" HPOS="671" VPOS="2281" WIDTH="1774" HEIGHT="61" BASELINE="673 2327 2445 2323" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1624 2284 1602 2286 1580 2286 1570 2286 1552 2292 996 2286 996 2286 974 2286 952 2286 931 2286 909 2286 887 2286 866 2286 844 2286 822 2286 801 2286 786 2286 677 2294 671 2299 673 2327 673 2342 2442 2338 2445 2323 2440 2292 1626 2281 1624 2284"/>
+                        </Shape>
+                        <String CONTENT="room between the animals belonging to the same pair for them to walk without"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l19" HPOS="673" VPOS="2338" WIDTH="1772" HEIGHT="71" BASELINE="675 2387 2445 2381" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="675 2387 675 2409 2445 2396 2445 2381 2440 2351 2230 2351 2211 2338 2208 2338 2206 2338 2204 2338 2202 2338 2200 2338 2182 2349 2161 2338 2159 2338 2156 2338 2079 2349 2050 2338 2048 2338 2046 2338 1942 2349 1894 2338 1892 2338 1890 2338 1888 2338 1851 2351 1825 2340 1823 2340 1821 2340 1819 2340 1790 2351 1576 2340 1574 2340 1360 2351 1273 2340 1271 2340 1269 2340 1243 2353 1143 2342 1141 2342 1139 2342 1100 2353 955 2342 952 2342 673 2351 675 2387"/>
+                        </Shape>
+                        <String CONTENT="jostling. The two lines of dogs generally follow in the tracks of the runners"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-144_r4" HPOS="677" VPOS="3073" WIDTH="1778" HEIGHT="116" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="677 3073 2455 3073 2455 3189 677 3189"/>
+                    </Shape>
+                    <TextLine ID="mz_1-144_l20" HPOS="680" VPOS="3080" WIDTH="1767" HEIGHT="48" BASELINE="680 3111 2447 3111" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="680 3111 680 3128 2445 3128 2447 3111 2445 3080 680 3080 680 3111"/>
+                        </Shape>
+                        <String CONTENT="of sledges that have preceded them. Thus on beaten trails an elevation is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-144_l21" HPOS="675" VPOS="3132" WIDTH="1282" HEIGHT="65" BASELINE="677 3167 1957 3173" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="677 3167 675 3189 677 3191 680 3191 680 3193 682 3193 684 3193 686 3193 1065 3184 1130 3195 1132 3195 1446 3186 1531 3197 1533 3197 1955 3186 1957 3173 1955 3143 677 3132 677 3167"/>
+                        </Shape>
+                        <String CONTENT="left between the two lines, which keeps the dogs apart."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-144_r5" HPOS="677" VPOS="3194" WIDTH="1778" HEIGHT="74" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="677 3194 2455 3194 2455 3268 677 3268"/>
+                    </Shape>
+                    <TextLine ID="mz_1-144_l22" HPOS="786" VPOS="3189" WIDTH="1659" HEIGHT="62" BASELINE="786 3230 2445 3230" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="786 3230 786 3251 2445 3251 2445 3230 2445 3197 2432 3189 2429 3189 2427 3189 2425 3189 2423 3189 2401 3199 2384 3189 2382 3189 2380 3189 2377 3189 2375 3189 2334 3202 2208 3202 2193 3189 2191 3189 2189 3189 2187 3189 2185 3189 2159 3202 2068 3202 2053 3189 2050 3189 2048 3189 2046 3189 2044 3189 2018 3199 1949 3189 1946 3189 1944 3189 1910 3199 1797 3189 1795 3189 1793 3189 1762 3199 1745 3189 1743 3189 1741 3189 1739 3189 1736 3189 1710 3199 1648 3189 1645 3189 1643 3189 1604 3199 1500 3189 1498 3189 1446 3199 1340 3189 1338 3189 1336 3189 1299 3199 1284 3189 1282 3189 1279 3189 1277 3189 1152 3199 1113 3189 1110 3189 1108 3189 1106 3189 1076 3199 786 3193 786 3230"/>
+                        </Shape>
+                        <String CONTENT="The harness described above allows of variation. One form, the so-called"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
