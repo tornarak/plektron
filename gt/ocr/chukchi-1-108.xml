@@ -1,0 +1,362 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-108.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-108.png; regions_from: zones/chukchi-1-108.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-108_r1" HPOS="643" VPOS="604" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="643 604 2421 604 2421 694 643 694"/>
+                    </Shape>
+                    <TextLine ID="mz_1-108_l1" HPOS="1225" VPOS="619" WIDTH="617" HEIGHT="52" BASELINE="1225 651 1842 651" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1834 619 1243 619 1227 636 1225 651 1225 671 1842 671 1842 651 1842 636 1834 619"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l2" HPOS="645" VPOS="621" WIDTH="82" HEIGHT="58" BASELINE="647 653 727 658" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 653 645 664 684 679 686 679 688 679 690 679 725 668 727 658 727 625 647 621 647 653"/>
+                        </Shape>
+                        <String CONTENT="80"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-108_r2" HPOS="643" VPOS="719" WIDTH="1778" HEIGHT="1086" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="643 719 2421 719 2421 1805 643 1805"/>
+                    </Shape>
+                    <TextLine ID="mz_1-108_l3" HPOS="747" VPOS="720" WIDTH="1674" HEIGHT="57" BASELINE="749 762 2421 755" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2414 725 2393 725 2371 725 2349 723 2328 723 2306 723 2284 723 2282 720 760 720 757 720 755 720 753 720 753 723 747 727 749 762 749 777 2419 770 2421 755 2416 725 2414 725"/>
+                        </Shape>
+                        <String CONTENT="During the greater part of the summer the reindeer are much worried"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l4" HPOS="643" VPOS="777" WIDTH="1778" HEIGHT="63" BASELINE="645 822 2421 816" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 822 645 840 2419 833 2421 816 2416 788 1918 777 1916 777 1812 790 643 790 645 822"/>
+                        </Shape>
+                        <String CONTENT="by large and small mosquitoes, and still more by two kinds of reindeer-flies."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l5" HPOS="647" VPOS="846" WIDTH="1774" HEIGHT="54" BASELINE="649 883 2421 876" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="649 883 649 900 2419 900 2421 876 2416 846 647 846 649 883"/>
+                        </Shape>
+                        <String CONTENT="The first one (Œstrus tarandi Nordenskiöld, Tabanus tarandinus Slunin)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l6" HPOS="643" VPOS="909" WIDTH="1778" HEIGHT="50" BASELINE="645 943 2421 937" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 943 645 959 2419 952 2421 937 2416 909 643 909 645 943"/>
+                        </Shape>
+                        <String CONTENT="lays its eggs on the hair of the reindeer, fastening them to the ends of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l7" HPOS="643" VPOS="954" WIDTH="1778" HEIGHT="65" BASELINE="645 1004 2421 995" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1004 645 1019 2419 1011 2421 995 2419 967 2393 954 2390 954 2388 954 2276 965 2206 954 2204 954 2202 954 2200 954 2185 965 1637 956 1635 956 1515 969 1422 959 1420 959 1368 972 1236 972 1212 959 1210 959 1208 959 1117 969 643 969 645 1004"/>
+                        </Shape>
+                        <String CONTENT="hair. After a little while a small maggot hatches from the egg, and immedi-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l8" HPOS="643" VPOS="1015" WIDTH="1778" HEIGHT="63" BASELINE="645 1065 2421 1058" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1065 645 1078 2419 1071 2421 1058 2414 1024 1964 1026 1938 1015 1936 1015 1933 1015 1931 1015 1929 1015 1914 1026 1814 1017 1812 1017 1810 1017 1769 1028 1754 1017 1752 1017 1749 1017 1645 1017 1643 1017 1574 1028 1422 1017 1420 1017 1347 1028 1292 1017 1290 1017 1288 1017 1286 1017 1271 1028 1165 1019 1162 1019 1160 1019 1158 1019 1143 1032 1011 1032 965 1019 963 1019 961 1019 959 1019 929 1030 855 1019 853 1019 764 1030 718 1019 716 1019 714 1019 643 1032 645 1065"/>
+                        </Shape>
+                        <String CONTENT="ately makes its way into the epidermis. While there it grows rapidly, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l9" HPOS="643" VPOS="1080" WIDTH="1773" HEIGHT="56" BASELINE="645 1121 2416 1117" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1121 645 1136 2414 1134 2416 1117 2412 1088 660 1080 658 1080 656 1080 654 1080 643 1086 645 1121"/>
+                        </Shape>
+                        <String CONTENT="finally reaches the size of a hazel-nut. When full grown, it protrudes from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l10" HPOS="643" VPOS="1136" WIDTH="1773" HEIGHT="65" BASELINE="645 1184 2416 1177" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1184 645 1197 2412 1201 2416 1177 2412 1149 2250 1136 2247 1136 2245 1136 2243 1136 2228 1149 2089 1149 2037 1136 2035 1136 2033 1136 1998 1147 1938 1136 1936 1136 1799 1149 1396 1138 1394 1138 1392 1138 1390 1138 1375 1149 1299 1138 1297 1138 1217 1151 1173 1140 1171 1140 1169 1140 846 1151 770 1140 768 1140 766 1140 723 1151 664 1140 662 1140 660 1140 658 1140 643 1149 645 1184"/>
+                        </Shape>
+                        <String CONTENT="the skin, and is ready to fall down. The maggots evidently cause itching,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l11" HPOS="643" VPOS="1197" WIDTH="1778" HEIGHT="60" BASELINE="645 1244 2421 1238" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1244 645 1257 2419 1251 2421 1238 2416 1208 1829 1197 1827 1197 1825 1197 1823 1197 1810 1208 671 1201 669 1201 667 1201 643 1210 645 1244"/>
+                        </Shape>
+                        <String CONTENT="since the reindeer scratches its back whenever possible. When the maggots"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l12" HPOS="643" VPOS="1266" WIDTH="1776" HEIGHT="54" BASELINE="645 1303 2419 1294" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1303 645 1320 2416 1311 2419 1294 2412 1266 643 1273 645 1303"/>
+                        </Shape>
+                        <String CONTENT="are very numerous, the reindeer loses its fat, and sometimes even dies. Later"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l13" HPOS="643" VPOS="1318" WIDTH="1778" HEIGHT="63" BASELINE="645 1366 2421 1357" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1366 645 1381 2419 1372 2421 1357 2416 1327 1550 1318 1548 1318 1546 1318 1524 1329 1147 1320 1145 1320 643 1331 645 1366"/>
+                        </Shape>
+                        <String CONTENT="in spring the backs of some hapless animals look as if they were stuffed over"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l14" HPOS="645" VPOS="1374" WIDTH="1774" HEIGHT="65" BASELINE="647 1424 2419 1415" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 1424 647 1439 2416 1433 2419 1415 2414 1387 2211 1374 2208 1374 2206 1374 2204 1374 2189 1387 2102 1387 2072 1374 2070 1374 2068 1374 2066 1374 2044 1385 2022 1374 2020 1374 2018 1374 2016 1374 2014 1374 2001 1385 1977 1374 1975 1374 1972 1374 1970 1374 1940 1387 1609 1376 1606 1376 1604 1376 1561 1387 1535 1376 1533 1376 1531 1376 1528 1376 1526 1376 1513 1389 1481 1379 1479 1379 1476 1379 1418 1389 1284 1379 1282 1379 1063 1392 916 1381 913 1381 753 1392 716 1381 714 1381 712 1381 645 1394 647 1424"/>
+                        </Shape>
+                        <String CONTENT="and over with maggots, and the skin is riddled with small holes. Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l15" HPOS="643" VPOS="1450" WIDTH="1776" HEIGHT="50" BASELINE="645 1483 2419 1478" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1483 645 1500 2416 1496 2419 1478 2414 1450 643 1450 645 1483"/>
+                        </Shape>
+                        <String CONTENT="herdsmen very dexterously pick out these maggots, when large enough, from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l16" HPOS="643" VPOS="1498" WIDTH="1778" HEIGHT="58" BASELINE="645 1541 2421 1537" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1541 645 1556 2419 1552 2421 1537 2416 1509 1533 1498 1531 1498 1528 1498 1485 1509 669 1500 667 1500 664 1500 643 1509 645 1541"/>
+                        </Shape>
+                        <String CONTENT="the reindeer’s back, and eat them with great relish. The Lamut sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l17" HPOS="645" VPOS="1556" WIDTH="1776" HEIGHT="67" BASELINE="647 1602 2421 1597" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 1602 647 1623 2419 1615 2421 1597 2419 1569 2373 1556 2371 1556 2369 1556 2367 1556 2341 1567 2278 1556 2276 1556 2273 1556 2245 1567 2221 1556 2219 1556 2217 1556 2215 1556 2187 1567 1903 1556 1901 1556 1899 1556 1862 1567 1819 1556 1816 1556 1814 1556 1756 1567 1676 1556 1674 1556 1671 1556 1669 1556 1654 1569 1476 1569 1429 1558 1427 1558 1424 1558 1422 1558 1396 1569 1136 1558 1134 1558 1052 1569 989 1558 987 1558 803 1569 723 1558 721 1558 645 1571 647 1602"/>
+                        </Shape>
+                        <String CONTENT="gather a quantity and boil them in water. Although this fly, when laying its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l18" HPOS="645" VPOS="1619" WIDTH="1774" HEIGHT="58" BASELINE="647 1662 2419 1658" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 1662 647 1677 2416 1673 2419 1658 2414 1630 1598 1619 1596 1619 1526 1630 803 1621 801 1621 645 1632 647 1662"/>
+                        </Shape>
+                        <String CONTENT="eggs, does not cause the reindeer any pain or discomfort, the animal is much"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l19" HPOS="643" VPOS="1677" WIDTH="1776" HEIGHT="61" BASELINE="645 1721 2419 1716" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1721 645 1738 2416 1734 2419 1716 2414 1688 1674 1677 1671 1677 1526 1688 818 1680 816 1680 643 1690 645 1721"/>
+                        </Shape>
+                        <String CONTENT="more afraid of it than of the stinging mosquito, and the herd will not remain"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l20" HPOS="645" VPOS="1753" WIDTH="803" HEIGHT="46" BASELINE="645 1781 1448 1781" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1781 645 1799 1448 1799 1448 1781 1448 1753 645 1753 645 1781"/>
+                        </Shape>
+                        <String CONTENT="quiet when the flies are numerous."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-108_r3" HPOS="643" VPOS="1805" WIDTH="1778" HEIGHT="707" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="643 1805 2421 1805 2421 2512 643 2512"/>
+                    </Shape>
+                    <TextLine ID="mz_1-108_l21" HPOS="751" VPOS="1799" WIDTH="1670" HEIGHT="60" BASELINE="753 1844 2421 1840" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="753 1844 753 1859 2419 1857 2421 1840 2416 1807 775 1799 773 1799 770 1799 751 1807 753 1844"/>
+                        </Shape>
+                        <String CONTENT="Another fly, of smaller size and darker color (Œdemagena tarandi Slunin),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l22" HPOS="643" VPOS="1866" WIDTH="1776" HEIGHT="52" BASELINE="645 1905 2419 1898" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1905 645 1918 2416 1911 2419 1898 2412 1866 643 1868 645 1905"/>
+                        </Shape>
+                        <String CONTENT="lays its eggs in the reindeer’s nostrils. The larvæ go up to the throat, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l23" HPOS="643" VPOS="1920" WIDTH="1773" HEIGHT="63" BASELINE="645 1965 2416 1959" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 1965 645 1983 2414 1980 2416 1959 2412 1929 1247 1920 1245 1920 1243 1920 1240 1920 1227 1931 762 1922 760 1922 643 1933 645 1965"/>
+                        </Shape>
+                        <String CONTENT="penetrate the cartilage. The next year, when the maggots are full-grown,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l24" HPOS="645" VPOS="1980" WIDTH="1774" HEIGHT="59" BASELINE="647 2022 2419 2015" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 2022 647 2039 2416 2032 2419 2015 2414 1987 664 1980 662 1980 660 1980 658 1980 645 1987 647 2022"/>
+                        </Shape>
+                        <String CONTENT="they cause a constant cough, which continues until the last one drops to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l25" HPOS="647" VPOS="2035" WIDTH="1772" HEIGHT="69" BASELINE="649 2084 2419 2076" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="649 2084 649 2104 2416 2093 2419 2076 2414 2048 2347 2035 2345 2035 1972 2048 1927 2037 1925 2037 1923 2037 1920 2037 1894 2048 1463 2039 1461 2039 1459 2039 1457 2039 1442 2050 1390 2039 1388 2039 1219 2050 1091 2039 1089 2039 985 2052 790 2041 788 2041 647 2054 649 2084"/>
+                        </Shape>
+                        <String CONTENT="ground. The Yukaghir and the Tungus, following the example of Yakut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l26" HPOS="645" VPOS="2097" WIDTH="1774" HEIGHT="63" BASELINE="647 2141 2419 2136" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 2141 647 2160 2416 2156 2419 2136 2414 2108 1533 2097 1531 2097 1528 2097 1526 2097 1507 2108 731 2100 729 2100 645 2110 647 2141"/>
+                        </Shape>
+                        <String CONTENT="cattle-breeders, try to protect their reindeer from obnoxious insects by a smudge"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l27" HPOS="645" VPOS="2160" WIDTH="1771" HEIGHT="56" BASELINE="647 2201 2416 2197" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 2201 647 2216 2414 2212 2416 2197 2412 2169 686 2160 684 2160 682 2160 645 2171 647 2201"/>
+                        </Shape>
+                        <String CONTENT="of smouldering dung, or of a fire covered with green leaves. But with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l28" HPOS="647" VPOS="2229" WIDTH="1774" HEIGHT="48" BASELINE="647 2260 2421 2260" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 2260 647 2277 2421 2277 2421 2260 2421 2229 647 2229 647 2260"/>
+                        </Shape>
+                        <String CONTENT="wild and large herds of the Chukchee such fires are of little value, and not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l29" HPOS="647" VPOS="2292" WIDTH="1772" HEIGHT="54" BASELINE="647 2320 2419 2320" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 2320 647 2333 918 2346 920 2346 1022 2336 1178 2346 1180 2346 1182 2346 1217 2336 1457 2336 1472 2346 1474 2346 1476 2346 1479 2346 1604 2336 1635 2346 1637 2346 1639 2346 1743 2336 1836 2346 1838 2346 1927 2336 2419 2336 2419 2320 2419 2292 647 2292 647 2320"/>
+                        </Shape>
+                        <String CONTENT="without danger. Thus, some five years ago, Tungus herdsmen who were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l30" HPOS="647" VPOS="2349" WIDTH="1772" HEIGHT="49" BASELINE="647 2379 2419 2379" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 2379 647 2398 2419 2398 2419 2379 2416 2349 647 2349 647 2379"/>
+                        </Shape>
+                        <String CONTENT="tending the herd of a rich Chukchee on the Alaseya River tried to surround"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l31" HPOS="643" VPOS="2394" WIDTH="1773" HEIGHT="65" BASELINE="645 2442 2416 2435" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2442 645 2459 2414 2452 2416 2435 2414 2407 2364 2394 2362 2394 2360 2394 2358 2394 2334 2405 2217 2394 2215 2394 2213 2394 2189 2405 2172 2394 2169 2394 2167 2394 2165 2394 2163 2394 2161 2394 2146 2405 2130 2394 2128 2394 2126 2394 2124 2394 2055 2405 1955 2394 1953 2394 1951 2394 1949 2394 1933 2407 1821 2409 1661 2409 1632 2396 1630 2396 1628 2396 1626 2396 1604 2407 1580 2396 1578 2396 1576 2396 1509 2407 1461 2396 1459 2396 1457 2396 1455 2396 1424 2407 1394 2396 1392 2396 1390 2396 1388 2396 1353 2407 1262 2396 1260 2396 1258 2396 1230 2409 1206 2398 1204 2398 1201 2398 939 2409 851 2398 848 2398 846 2398 816 2409 751 2398 749 2398 695 2409 658 2398 656 2398 654 2398 651 2398 649 2398 649 2400 643 2405 645 2442"/>
+                        </Shape>
+                        <String CONTENT="it with fires, and finally burned the whole pasture, and injured half of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l32" HPOS="645" VPOS="2470" WIDTH="195" HEIGHT="50" BASELINE="645 2500 840 2500" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2500 645 2520 840 2520 840 2500 840 2470 645 2470 645 2500"/>
+                        </Shape>
+                        <String CONTENT="animals."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-108_r4" HPOS="643" VPOS="2512" WIDTH="1778" HEIGHT="731" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="643 2512 2421 2512 2421 3243 643 3243"/>
+                    </Shape>
+                    <TextLine ID="mz_1-108_l33" HPOS="751" VPOS="2515" WIDTH="1670" HEIGHT="63" BASELINE="753 2561 2421 2556" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="753 2561 753 2578 2419 2574 2421 2556 2416 2528 2304 2515 2302 2515 2299 2515 2265 2528 2102 2528 2083 2515 2081 2515 2079 2515 2076 2515 2074 2515 2072 2515 2057 2528 1866 2528 1827 2515 1825 2515 1823 2515 1749 2526 1732 2515 1730 2515 1728 2515 1589 2515 1587 2515 1585 2515 1559 2528 764 2517 762 2517 760 2517 757 2517 757 2520 751 2524 753 2561"/>
+                        </Shape>
+                        <String CONTENT="Hoof-swelling is the most common of reindeer-diseases, and occurs almost"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l34" HPOS="643" VPOS="2578" WIDTH="1773" HEIGHT="58" BASELINE="645 2621 2416 2617" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2621 645 2636 2414 2632 2416 2617 2412 2589 1546 2578 1544 2578 1541 2578 1539 2578 1522 2589 922 2580 920 2580 643 2591 645 2621"/>
+                        </Shape>
+                        <String CONTENT="every year to a greater or less extent in most herds. It develops where the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l35" HPOS="643" VPOS="2636" WIDTH="1773" HEIGHT="70" BASELINE="645 2680 2416 2675" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2680 645 2695 1069 2695 1134 2706 1136 2706 1139 2706 1141 2706 1156 2695 1368 2695 1424 2706 1427 2706 1565 2693 1624 2704 1626 2704 1752 2693 1977 2693 1996 2704 1998 2704 2001 2704 2003 2704 2414 2691 2416 2675 2412 2647 1531 2636 1528 2636 1526 2636 1524 2636 1511 2647 701 2639 699 2639 643 2649 645 2680"/>
+                        </Shape>
+                        <String CONTENT="animals walk on dry and hot ground. Large abscesses break out between"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l36" HPOS="645" VPOS="2697" WIDTH="1769" HEIGHT="61" BASELINE="645 2738 2414 2738" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2738 645 2758 2414 2758 2414 2738 2414 2708 2393 2697 2390 2697 2289 2697 2286 2697 2284 2697 2282 2697 2269 2708 2250 2697 2247 2697 2245 2697 1752 2708 1713 2697 1710 2697 1708 2697 1706 2697 1704 2697 1687 2710 1563 2710 1537 2697 1535 2697 1533 2697 1481 2708 1457 2697 1455 2697 1453 2697 1368 2708 1325 2697 1323 2697 1321 2697 1240 2708 1195 2697 1193 2697 1191 2697 1188 2697 1186 2697 1171 2710 1078 2710 1048 2697 1046 2697 1043 2697 1041 2697 996 2708 920 2697 918 2697 859 2708 751 2697 749 2697 747 2697 721 2708 671 2697 669 2697 667 2697 645 2708 645 2738"/>
+                        </Shape>
+                        <String CONTENT="the joints of the foot. Sometimes the foot swells to the size of a child’s head."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l37" HPOS="647" VPOS="2764" WIDTH="1769" HEIGHT="54" BASELINE="647 2799 2416 2799" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 2799 647 2818 2416 2818 2416 2799 2416 2771 647 2764 647 2799"/>
+                        </Shape>
+                        <String CONTENT="The disease is catching, and is more dangerous in the mountains than on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l38" HPOS="645" VPOS="2829" WIDTH="1771" HEIGHT="50" BASELINE="645 2859 2416 2859" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2859 645 2879 2416 2879 2416 2859 2416 2829 645 2829 645 2859"/>
+                        </Shape>
+                        <String CONTENT="seacoast. The Chukchee believe that when an animal afflicted with hoof-disease"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l39" HPOS="643" VPOS="2879" WIDTH="1771" HEIGHT="58" BASELINE="645 2920 2414 2914" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2920 645 2937 2412 2931 2414 2914 2410 2888 1256 2879 1253 2879 1251 2879 1230 2890 677 2881 675 2881 673 2881 643 2892 645 2920"/>
+                        </Shape>
+                        <String CONTENT="steps on the tracks of a healthy animal, it communicates the disease to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l40" HPOS="645" VPOS="2944" WIDTH="1771" HEIGHT="52" BASELINE="645 2979 2416 2979" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 2979 645 2996 2416 2996 2416 2979 2416 2948 645 2944 645 2979"/>
+                        </Shape>
+                        <String CONTENT="latter. Therefore an infected herd sometimes finds trouble in moving about"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l41" HPOS="645" VPOS="3009" WIDTH="1769" HEIGHT="47" BASELINE="645 3039 2414 3039" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 3039 645 3056 2414 3056 2414 3039 2414 3009 645 3009 645 3039"/>
+                        </Shape>
+                        <String CONTENT="the country. In an unfavorable summer a third or even half of the herd may"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l42" HPOS="645" VPOS="3067" WIDTH="1771" HEIGHT="48" BASELINE="645 3100 2416 3100" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="645 3100 645 3115 2416 3115 2416 3100 2414 3067 645 3067 645 3100"/>
+                        </Shape>
+                        <String CONTENT="die of it; but usually the loss amounts to only a few score. The first cold"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l43" HPOS="641" VPOS="3115" WIDTH="1773" HEIGHT="67" BASELINE="643 3160 2414 3156" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="643 3160 643 3173 2354 3182 2356 3182 2414 3169 2414 3156 2410 3126 2111 3115 2109 3115 2059 3126 2037 3115 2035 3115 2033 3115 1957 3126 1916 3115 1914 3115 1912 3115 1860 3126 1825 3115 1823 3115 1821 3115 1771 3126 1741 3115 1739 3115 1736 3115 1734 3115 1732 3115 1715 3126 1004 3117 1002 3117 812 3128 721 3117 718 3117 641 3128 643 3160"/>
+                        </Shape>
+                        <String CONTENT="rapidly restores health to those that were not seriously affected. The symptom"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-108_l44" HPOS="645" VPOS="3184" WIDTH="1769" HEIGHT="63" BASELINE="647 3215 2414 3219" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="647 3215 645 3232 859 3245 861 3245 1483 3236 1548 3247 1550 3247 2412 3236 2414 3219 2412 3189 647 3184 647 3215"/>
+                        </Shape>
+                        <String CONTENT="of another disease, that is not so frequent but much more dangerous, is a"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

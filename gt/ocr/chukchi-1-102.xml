@@ -1,0 +1,386 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-102.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-102.png; regions_from: zones/chukchi-1-102.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-102_r1" HPOS="646" VPOS="607" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="646 607 2424 607 2424 697 646 697"/>
+                    </Shape>
+                    <TextLine ID="mz_1-102_l1" HPOS="1236" VPOS="617" WIDTH="615" HEIGHT="51" BASELINE="1236 649 1851 649" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1842 623 1825 617 1236 617 1236 649 1236 668 1851 668 1851 649 1849 634 1842 623"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l2" HPOS="673" VPOS="610" WIDTH="89" HEIGHT="65" BASELINE="673 658 762 658" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="673 658 673 675 762 664 762 658 762 625 723 610 721 610 718 610 673 614 673 658"/>
+                        </Shape>
+                        <String CONTENT="76"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-102_r2" HPOS="646" VPOS="722" WIDTH="1778" HEIGHT="359" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="646 722 2424 722 2424 1081 646 1081"/>
+                    </Shape>
+                    <TextLine ID="mz_1-102_l3" HPOS="654" VPOS="710" WIDTH="1771" HEIGHT="75" BASELINE="656 762 2425 755" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2408 725 2386 725 2364 723 2343 723 2332 720 2332 723 2003 712 2001 712 1998 712 1979 723 1964 710 1962 710 1959 710 1866 710 1864 710 1862 710 1829 725 1782 712 1780 712 1777 712 1775 712 1773 712 1756 725 1667 712 1665 712 1578 725 1507 712 1505 712 1502 712 1470 725 1405 712 1403 712 1401 712 1373 723 1279 712 1277 712 1275 712 1234 727 1180 714 1178 714 1175 714 1173 714 1121 727 1102 714 1100 714 1097 714 1095 714 1030 727 961 714 959 714 896 727 814 714 812 714 809 714 773 727 757 714 755 714 753 714 751 714 654 723 656 762 656 775 1195 785 1197 785 1199 785 1201 785 1217 775 1433 783 1435 783 1437 783 1440 783 1455 772 1767 772 1832 783 1834 783 1951 770 1992 781 1994 781 1996 783 2198 783 2198 781 2200 781 2202 781 2215 770 2234 781 2237 781 2239 781 2308 770 2403 781 2406 781 2408 781 2410 781 2425 768 2425 755 2423 725 2408 725"/>
+                        </Shape>
+                        <String CONTENT="Fall fawn-skins (black), called by the traders “pyshiki” (пыжики), are also"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l4" HPOS="658" VPOS="775" WIDTH="1767" HEIGHT="60" BASELINE="658 818 2425 818" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="658 818 658 835 2423 835 2425 818 2423 788 2338 775 2336 775 2334 775 2310 785 1613 775 1611 775 1526 785 1496 775 1494 775 1492 775 1489 775 1461 788 1301 788 1236 775 1234 775 1232 775 1230 775 1214 788 1110 788 987 775 985 775 931 785 868 775 866 775 864 775 816 785 740 775 738 775 658 785 658 818"/>
+                        </Shape>
+                        <String CONTENT="traded. The full-grown skins are soft-curried before being sold to the traders."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l5" HPOS="656" VPOS="833" WIDTH="1767" HEIGHT="63" BASELINE="658 881 2423 876" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="658 881 658 896 2421 894 2423 876 2421 846 2386 833 2384 833 2382 833 2380 833 2334 844 2321 833 2319 833 2317 833 2315 833 2312 833 2265 846 2018 846 1998 833 1996 833 1994 833 1992 833 1938 844 1847 833 1845 833 1842 833 1814 844 1801 833 1799 833 1797 833 1795 833 1793 833 1749 844 1578 833 1576 833 1500 846 1399 835 1305 835 1303 835 1301 835 1299 835 1284 846 1204 835 1201 835 1199 835 1173 846 1100 835 1097 835 1095 835 1067 846 1037 835 1035 835 1033 835 952 846 879 835 877 835 656 842 658 881"/>
+                        </Shape>
+                        <String CONTENT="In bartering with American Eskimo, white spotted fawn-skins are most highly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l6" HPOS="656" VPOS="904" WIDTH="1767" HEIGHT="52" BASELINE="658 937 2423 941" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="658 937 656 950 2419 956 2423 941 2421 909 658 904 658 937"/>
+                        </Shape>
+                        <String CONTENT="valued. Pure white skins are highly prized everywhere. For making garments,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l7" HPOS="656" VPOS="967" WIDTH="1769" HEIGHT="48" BASELINE="656 998 2425 998" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 998 656 1015 2425 1015 2425 998 2425 967 656 967 656 998"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee men lay equal value on white, black, and spotted skins; but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l8" HPOS="654" VPOS="1024" WIDTH="725" HEIGHT="58" BASELINE="656 1054 1379 1058" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 1054 654 1073 669 1082 671 1082 673 1082 675 1082 1377 1073 1379 1058 1377 1028 656 1024 656 1054"/>
+                        </Shape>
+                        <String CONTENT="the women prefer spotted ones."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-102_r3" HPOS="646" VPOS="1081" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="646 1081 2424 1081 2424 1260 646 1260"/>
+                    </Shape>
+                    <TextLine ID="mz_1-102_l9" HPOS="762" VPOS="1076" WIDTH="1663" HEIGHT="58" BASELINE="762 1117 2425 1117" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="762 1117 762 1134 2425 1134 2425 1117 2425 1086 2388 1076 2386 1076 2384 1076 2382 1076 2356 1088 2182 1088 2167 1076 2165 1076 2163 1076 2161 1076 2050 1088 1849 1088 1825 1076 1823 1076 1821 1076 1713 1086 1570 1076 1567 1076 1496 1086 1435 1076 1433 1076 1334 1086 1243 1076 1240 1076 1132 1086 1056 1076 1054 1076 1052 1076 1022 1086 905 1076 903 1076 762 1082 762 1117"/>
+                        </Shape>
+                        <String CONTENT="In winter the reindeer feed solely on reindeer-moss, which grows in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l10" HPOS="654" VPOS="1147" WIDTH="1769" HEIGHT="48" BASELINE="654 1175 2423 1175" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1175 654 1195 2423 1195 2423 1175 2423 1147 654 1147 654 1175"/>
+                        </Shape>
+                        <String CONTENT="abundance everywhere on the flat tundra and on the hills. There are some"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l11" HPOS="654" VPOS="1205" WIDTH="786" HEIGHT="50" BASELINE="656 1238 1440 1234" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 1238 656 1255 1437 1251 1440 1234 1433 1205 654 1208 656 1238"/>
+                        </Shape>
+                        <String CONTENT="seven species of reindeer-moss: —"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-102_r4" HPOS="646" VPOS="1271" WIDTH="1778" HEIGHT="629" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="646 1271 2424 1271 2424 1900 646 1900"/>
+                    </Shape>
+                    <TextLine ID="mz_1-102_l12" HPOS="658" VPOS="1281" WIDTH="1767" HEIGHT="48" BASELINE="658 1311 2425 1311" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="658 1311 658 1329 2423 1329 2425 1311 2423 1281 658 1281 658 1311"/>
+                        </Shape>
+                        <String CONTENT="1. Lêˊê-wattaˊp (“genuine moss,” Cetraria Islandica), otherwise called êˊlhu-wattaˊp (“white moss”)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l13" HPOS="753" VPOS="1327" WIDTH="552" HEIGHT="47" BASELINE="753 1355 1305 1355" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="753 1355 753 1372 1303 1374 1305 1355 1305 1327 753 1327 753 1355"/>
+                        </Shape>
+                        <String CONTENT="or koˊo-wattaˊp (“large moss”)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l14" HPOS="658" VPOS="1374" WIDTH="1767" HEIGHT="48" BASELINE="658 1405 2425 1405" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="658 1405 658 1422 2423 1422 2425 1405 2423 1374 658 1374 658 1405"/>
+                        </Shape>
+                        <String CONTENT="2. Qai-wattaˊpqai (“small moss”) or êˊmu-wattaˊp (“fine moss”), small moss with thin tender fibres."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l15" HPOS="760" VPOS="1415" WIDTH="1663" HEIGHT="55" BASELINE="760 1450 2423 1450" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="760 1450 760 1470 2423 1470 2423 1450 2423 1422 760 1415 760 1450"/>
+                        </Shape>
+                        <String CONTENT="There are two varieties of different color: (a) kɪˊmčir, black; and (b) loˊᵋqai, light green, like"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l16" HPOS="751" VPOS="1463" WIDTH="444" HEIGHT="48" BASELINE="753 1493 1195 1498" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="753 1493 751 1506 1191 1511 1195 1498 1193 1467 753 1463 753 1493"/>
+                        </Shape>
+                        <String CONTENT="the ordinary large moss."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l17" HPOS="658" VPOS="1511" WIDTH="1765" HEIGHT="52" BASELINE="660 1545 2423 1539" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="660 1545 660 1563 2421 1554 2423 1539 2416 1511 658 1515 660 1545"/>
+                        </Shape>
+                        <String CONTENT="3. Kaimaˊ-wattaˊp (“bald moss,” Stenocaulon paschale), otherwise called aᵋm-tal-wattaˊp (“ground-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l18" HPOS="753" VPOS="1560" WIDTH="1310" HEIGHT="46" BASELINE="753 1589 2063 1589" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="753 1589 753 1606 2063 1606 2063 1589 2063 1560 753 1560 753 1589"/>
+                        </Shape>
+                        <String CONTENT="bones moss”). It is light green in color, with small round rolls of fibres."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l19" HPOS="658" VPOS="1595" WIDTH="1607" HEIGHT="59" BASELINE="660 1638 2265 1634" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="660 1638 660 1654 2263 1649 2265 1634 2260 1606 1489 1595 1487 1595 1485 1595 1444 1606 721 1597 718 1597 658 1608 660 1638"/>
+                        </Shape>
+                        <String CONTENT="4. Koihuˊ-wattaˊp (“glacier moss”), like the ordinary large moss, but dark brown in color."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l20" HPOS="658" VPOS="1651" WIDTH="1767" HEIGHT="55" BASELINE="660 1686 2425 1680" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="660 1686 660 1706 2423 1697 2425 1680 2419 1651 658 1656 660 1686"/>
+                        </Shape>
+                        <String CONTENT="5. Mɪˊrg̣ɪčhɪn, also of two colors: (a) uwaˊla-mɪˊrg̣ɪčhɪn, black, similar to very rough horse-hair tangled"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l21" HPOS="753" VPOS="1701" WIDTH="1261" HEIGHT="46" BASELINE="753 1729 2014 1729" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="753 1729 753 1747 2014 1747 2014 1729 2014 1701 753 1701 753 1729"/>
+                        </Shape>
+                        <String CONTENT="together; and (b) êᵋw-mɪˊrg̣ɪčhɪn (“wolf’s moss”), similar to wolf’s hair."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l22" HPOS="654" VPOS="1747" WIDTH="1769" HEIGHT="47" BASELINE="654 1775 2423 1775" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1775 654 1794 2423 1794 2423 1775 2423 1747 654 1747 654 1775"/>
+                        </Shape>
+                        <String CONTENT="6. Kaˊkwêl-wattaˊp (“ear-like moss,” Cetraria arctica), in large flaps, and light green in color."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l23" HPOS="753" VPOS="1794" WIDTH="591" HEIGHT="46" BASELINE="753 1822 1344 1822" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="753 1822 753 1840 1344 1840 1344 1822 1344 1794 753 1794 753 1822"/>
+                        </Shape>
+                        <String CONTENT="Sprouts chiefly on burnt ground."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l24" HPOS="654" VPOS="1838" WIDTH="1682" HEIGHT="52" BASELINE="656 1872 2336 1866" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 1872 656 1890 2334 1883 2336 1866 2330 1838 654 1842 656 1872"/>
+                        </Shape>
+                        <String CONTENT="7. Aioˊpɪču-wattaˊp (“pricking moss”), of two different colors, — light green and dark brown."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-102_r5" HPOS="646" VPOS="1913" WIDTH="1778" HEIGHT="246" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="646 1913 2424 1913 2424 2159 646 2159"/>
+                    </Shape>
+                    <TextLine ID="mz_1-102_l25" HPOS="753" VPOS="1913" WIDTH="1666" HEIGHT="65" BASELINE="755 1954 2419 1959" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="755 1954 753 1965 783 1978 786 1978 788 1978 2416 1976 2419 1959 2416 1929 2029 1916 2027 1916 2024 1916 2022 1916 2007 1929 1622 1929 1587 1913 1585 1913 1583 1913 1580 1913 1544 1924 1502 1913 1500 1913 1498 1913 1496 1913 1463 1924 1357 1913 1355 1913 1292 1924 1225 1913 1223 1913 1136 1924 976 1913 974 1913 972 1913 939 1924 911 1913 909 1913 907 1913 755 1922 755 1954"/>
+                        </Shape>
+                        <String CONTENT="Of all these varieties, No. 1 is the most common; No. 3 is scarce,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l26" HPOS="649" VPOS="1983" WIDTH="1772" HEIGHT="52" BASELINE="651 2017 2421 2013" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2017 651 2035 2419 2030 2421 2013 2414 1983 649 1985 651 2017"/>
+                        </Shape>
+                        <String CONTENT="especially on the tundra; No. 4 is very good fodder, but grows only in cer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l27" HPOS="649" VPOS="2032" WIDTH="1772" HEIGHT="63" BASELINE="651 2078 2421 2074" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2078 651 2095 2419 2091 2421 2074 2416 2045 2113 2032 2111 2032 2109 2032 2107 2032 2092 2043 2068 2032 2066 2032 2063 2032 2061 2032 2059 2032 2044 2043 2029 2032 2027 2032 2024 2032 2022 2032 2020 2032 2018 2032 2003 2045 1780 2045 1754 2032 1752 2032 1749 2032 1671 2043 1654 2032 1652 2032 1650 2032 1648 2032 1572 2043 1537 2032 1535 2032 1533 2032 1531 2032 1489 2045 1418 2035 1416 2035 1011 2045 944 2035 942 2035 939 2035 896 2045 786 2035 783 2035 781 2035 742 2045 701 2035 699 2035 697 2035 695 2035 649 2048 651 2078"/>
+                        </Shape>
+                        <String CONTENT="tain places; No. 5 is poorer fodder; Nos. 6 and 7 are good fodder, but they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l28" HPOS="651" VPOS="2108" WIDTH="997" HEIGHT="48" BASELINE="651 2139 1648 2139" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2139 651 2156 1648 2152 1648 2139 1648 2108 651 2108 651 2139"/>
+                        </Shape>
+                        <String CONTENT="grow only on burnt places, and are scarce."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-102_r6" HPOS="646" VPOS="2159" WIDTH="1778" HEIGHT="1076" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="646 2159 2424 2159 2424 3235 646 3235"/>
+                    </Shape>
+                    <TextLine ID="mz_1-102_l29" HPOS="760" VPOS="2158" WIDTH="1663" HEIGHT="65" BASELINE="762 2193 2423 2197" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="762 2193 760 2208 959 2221 961 2221 1513 2212 1626 2223 1628 2223 2421 2212 2423 2197 2421 2167 762 2158 762 2193"/>
+                        </Shape>
+                        <String CONTENT="With the first green sprouts that shoot up through the snow, the reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l30" HPOS="647" VPOS="2223" WIDTH="1774" HEIGHT="50" BASELINE="649 2253 2421 2258" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2253 647 2268 2416 2273 2421 2258 2419 2227 649 2223 649 2253"/>
+                        </Shape>
+                        <String CONTENT="cease to care for the moss, and scatter over considerable distances in search"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l31" HPOS="647" VPOS="2284" WIDTH="1776" HEIGHT="49" BASELINE="649 2314 2423 2318" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2314 647 2329 2419 2333 2423 2318 2421 2288 649 2284 649 2314"/>
+                        </Shape>
+                        <String CONTENT="of new kinds of food. In summer they feed on sprouts growing on the tundra,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l32" HPOS="649" VPOS="2342" WIDTH="1774" HEIGHT="61" BASELINE="651 2372 2423 2377" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2372 649 2387 757 2400 760 2400 1314 2392 1544 2403 1546 2403 2421 2392 2423 2377 2421 2346 651 2342 651 2372"/>
+                        </Shape>
+                        <String CONTENT="chiefly on various species of reed-grass; also on young leaves of low willow-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l33" HPOS="647" VPOS="2398" WIDTH="1774" HEIGHT="54" BASELINE="649 2431 2421 2437" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2431 647 2446 2416 2452 2421 2437 2419 2409 649 2398 649 2431"/>
+                        </Shape>
+                        <String CONTENT="bushes, shore-grass, and the like, with the exception, however, of common"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l34" HPOS="649" VPOS="2452" WIDTH="1772" HEIGHT="65" BASELINE="651 2498 2421 2494" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2498 651 2517 2419 2509 2421 2494 2416 2463 1576 2452 1574 2452 649 2465 651 2498"/>
+                        </Shape>
+                        <String CONTENT="grass, — “horse-fodder” (koˊnên-vaˊᵋg̣lɪñɪn) as the Chukchee call it. Even late"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l35" HPOS="645" VPOS="2520" WIDTH="1776" HEIGHT="52" BASELINE="647 2552 2421 2556" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2552 645 2567 2416 2572 2421 2556 2419 2526 647 2520 647 2552"/>
+                        </Shape>
+                        <String CONTENT="in the fall, reindeer require some reed-grass and withered leaves mixed with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l36" HPOS="647" VPOS="2582" WIDTH="1774" HEIGHT="59" BASELINE="649 2613 2421 2617" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2613 647 2626 710 2639 712 2639 1500 2630 1557 2641 1559 2641 2419 2630 2421 2617 2419 2587 649 2582 649 2613"/>
+                        </Shape>
+                        <String CONTENT="moss, and without it they will not fatten. On the other hand, toward the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l37" HPOS="645" VPOS="2641" WIDTH="1776" HEIGHT="60" BASELINE="647 2671 2421 2675" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2671 645 2686 690 2699 693 2699 695 2699 1450 2691 1548 2701 1550 2701 2419 2691 2421 2675 2419 2645 647 2641 647 2671"/>
+                        </Shape>
+                        <String CONTENT="end of summer they require moss mixed with the grass, and without it they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l38" HPOS="649" VPOS="2695" WIDTH="1772" HEIGHT="58" BASELINE="649 2736 2421 2736" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2736 649 2753 2421 2753 2421 2736 2421 2708 2341 2695 2338 2695 2336 2695 2306 2706 2146 2695 2143 2695 2092 2706 2066 2695 2063 2695 2061 2695 2011 2706 1985 2695 1983 2695 1981 2695 1918 2706 1888 2695 1886 2695 1884 2695 1767 2706 1741 2695 1739 2695 1736 2695 1734 2695 1713 2706 1652 2695 1650 2695 1648 2695 1645 2695 1630 2708 1457 2708 1409 2695 1407 2695 1405 2695 1403 2695 1368 2706 1336 2695 1334 2695 1331 2695 1329 2695 1327 2695 1312 2708 1145 2708 1048 2695 1046 2695 983 2706 870 2695 868 2695 866 2695 864 2695 848 2708 751 2708 690 2695 688 2695 686 2695 649 2706 649 2736"/>
+                        </Shape>
+                        <String CONTENT="will not thrive. This season is the most critical one for the herdsman, since"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l39" HPOS="649" VPOS="2762" WIDTH="1772" HEIGHT="50" BASELINE="649 2795 2421 2795" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2795 649 2812 2421 2812 2421 2795 2421 2766 649 2762 649 2795"/>
+                        </Shape>
+                        <String CONTENT="a herd that does not gather fat enough in late summer will not be able to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l40" HPOS="647" VPOS="2823" WIDTH="1774" HEIGHT="49" BASELINE="647 2857 2421 2857" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2857 647 2872 2421 2872 2421 2857 2421 2823 647 2823 647 2857"/>
+                        </Shape>
+                        <String CONTENT="keep in condition through the whole winter, even in the best pastures, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l41" HPOS="647" VPOS="2875" WIDTH="1776" HEIGHT="69" BASELINE="647 2916 2423 2916" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2916 647 2931 825 2931 840 2942 842 2942 844 2942 846 2942 1067 2931 1429 2942 1431 2942 1509 2931 1550 2942 1552 2942 1554 2942 1557 2942 1591 2931 1622 2942 1624 2942 1626 2944 1747 2944 1747 2942 1749 2942 1752 2942 1765 2931 1806 2942 1808 2942 1810 2942 1812 2942 1840 2931 1864 2942 1866 2942 1868 2944 1972 2944 1972 2942 1975 2942 1977 2942 1990 2931 2016 2942 2018 2942 2020 2942 2070 2931 2087 2942 2089 2942 2092 2942 2094 2944 2245 2944 2245 2942 2247 2942 2269 2931 2282 2942 2284 2942 2286 2942 2289 2942 2423 2929 2423 2916 2423 2888 2371 2875 2369 2875 2278 2888 1903 2888 1888 2875 1886 2875 1884 2875 1881 2875 1879 2875 1851 2885 1834 2875 1832 2875 1829 2875 1827 2875 1825 2875 1777 2885 1689 2875 1687 2875 1684 2875 1658 2885 1635 2875 1632 2875 1630 2875 1544 2888 1412 2888 1388 2875 1386 2875 1383 2875 1381 2875 1351 2885 1301 2875 1299 2875 1297 2875 1266 2885 1214 2875 1212 2875 1091 2885 996 2875 994 2875 647 2879 647 2916"/>
+                        </Shape>
+                        <String CONTENT="in the springtime will be in danger of losing all fawns on account of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l42" HPOS="645" VPOS="2942" WIDTH="1774" HEIGHT="54" BASELINE="647 2974 2419 2979" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2974 645 2987 2414 2996 2419 2979 2416 2946 647 2942 647 2974"/>
+                        </Shape>
+                        <String CONTENT="exhaustion of the dams. In the fall the reindeer has a great relish for mushrooms,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l43" HPOS="645" VPOS="3000" WIDTH="1778" HEIGHT="61" BASELINE="647 3031 2423 3035" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 3031 645 3046 820 3059 822 3059 1513 3050 1593 3061 1596 3061 2421 3050 2423 3035 2421 3005 647 3000 647 3031"/>
+                        </Shape>
+                        <String CONTENT="and seeks for them so obstinately as to neglect its ordinary fodder, and lose"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l44" HPOS="645" VPOS="3061" WIDTH="1776" HEIGHT="60" BASELINE="647 3091 2421 3095" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 3091 645 3106 1585 3121 1587 3121 2419 3111 2421 3095 2419 3061 647 3061 647 3091"/>
+                        </Shape>
+                        <String CONTENT="fat. It also consumes bird-dung with relish, quantities of which are heaped"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l45" HPOS="645" VPOS="3113" WIDTH="1774" HEIGHT="65" BASELINE="647 3152 2419 3158" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 3152 645 3165 684 3178 686 3178 688 3178 2416 3173 2419 3158 2416 3126 1849 3126 1832 3113 1829 3113 1827 3113 1825 3113 647 3117 647 3152"/>
+                        </Shape>
+                        <String CONTENT="around the moulting-places of ducks. The Yukaghir on the Middle Omolon,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-102_l46" HPOS="645" VPOS="3180" WIDTH="1774" HEIGHT="54" BASELINE="647 3210 2419 3215" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2412 3182 647 3180 647 3210 645 3230 2414 3234 2419 3215 2416 3189 2412 3182"/>
+                        </Shape>
+                        <String CONTENT="who subsist on fish, and ride reindeer instead of driving dogs, keep their"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

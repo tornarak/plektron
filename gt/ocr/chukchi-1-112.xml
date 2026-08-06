@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-112.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-112.png; regions_from: zones/chukchi-1-112.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-112_r1" HPOS="571" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="571 618 2349 618 2349 708 571 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-112_l1" HPOS="1154" VPOS="638" WIDTH="619" HEIGHT="54" BASELINE="1154 671 1773 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1760 640 1754 638 1158 638 1154 640 1154 671 1154 692 1773 692 1773 671 1771 653 1760 640"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l2" HPOS="578" VPOS="630" WIDTH="82" HEIGHT="71" BASELINE="578 675 660 675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 632 578 638 578 675 578 686 621 701 623 701 625 701 628 701 660 686 660 675 660 645 595 630 593 630 591 630 584 632"/>
+                        </Shape>
+                        <String CONTENT="84"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-112_r2" HPOS="571" VPOS="733" WIDTH="1778" HEIGHT="305" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="571 733 2349 733 2349 1038 571 1038"/>
+                    </Shape>
+                    <TextLine ID="mz_1-112_l3" HPOS="573" VPOS="736" WIDTH="1774" HEIGHT="62" BASELINE="576 779 2347 783" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2306 742 2284 742 2269 740 2208 749 2109 738 2107 738 2105 738 2070 751 1962 751 1946 738 1944 738 1942 738 1940 738 1884 749 1780 738 1777 738 1775 738 1745 749 1645 738 1643 738 1641 738 1611 749 1598 738 1596 738 1593 738 1591 738 1351 746 1334 736 1331 736 1329 736 1232 736 1230 736 1227 736 1225 736 1212 746 1178 736 1175 736 1173 736 1171 736 1136 746 1069 736 1067 736 576 744 576 779 573 792 2343 798 2347 783 2347 751 2312 742 2306 742"/>
+                        </Shape>
+                        <String CONTENT="are seen in the vicinity, the herd may be left for a day, and even for a night,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l4" HPOS="578" VPOS="809" WIDTH="1771" HEIGHT="48" BASELINE="578 840 2349 840" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 840 578 857 2349 857 2349 840 2347 809 578 809 578 840"/>
+                        </Shape>
+                        <String CONTENT="without any watch; and two boys are sufficient to keep watch for several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l5" HPOS="576" VPOS="866" WIDTH="1773" HEIGHT="49" BASELINE="578 898 2349 902" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 898 576 911 2345 915 2349 902 2345 866 578 866 578 898"/>
+                        </Shape>
+                        <String CONTENT="weeks, with an occasional visit from their father or elder brother, who attend"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l6" HPOS="576" VPOS="920" WIDTH="1771" HEIGHT="58" BASELINE="576 961 2347 961" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 961 576 978 2347 978 2347 961 2347 930 2317 920 2315 920 2312 920 2310 920 2269 930 2128 920 2126 920 1914 930 1862 920 1860 920 1858 920 1836 930 1739 920 1736 920 1678 930 1622 920 1619 920 1617 920 1583 930 1546 920 1544 920 1541 920 1539 920 1537 920 1520 930 1409 920 1407 920 1347 930 1154 920 1152 920 1009 930 955 920 952 920 900 930 848 920 846 920 844 920 842 920 825 933 727 933 606 920 604 920 602 920 576 930 576 961"/>
+                        </Shape>
+                        <String CONTENT="chiefly to the change of pasture. Thus in the winter-time the older people"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l7" HPOS="576" VPOS="989" WIDTH="1039" HEIGHT="48" BASELINE="576 1021 1615 1021" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1021 576 1037 1615 1037 1615 1021 1615 991 576 989 576 1021"/>
+                        </Shape>
+                        <String CONTENT="have more leisure for visits and amusements."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-112_r3" HPOS="571" VPOS="1038" WIDTH="1778" HEIGHT="783" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="571 1038 2349 1038 2349 1821 571 1821"/>
+                    </Shape>
+                    <TextLine ID="mz_1-112_l8" HPOS="684" VPOS="1037" WIDTH="1665" HEIGHT="60" BASELINE="684 1080 2349 1080" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="684 1080 684 1097 2349 1097 2349 1080 2349 1047 2312 1037 2310 1037 2308 1037 2252 1047 2178 1037 2176 1037 2174 1037 2137 1047 2100 1037 2098 1037 2096 1037 2094 1037 2068 1047 2042 1037 2040 1037 2037 1037 2035 1037 2011 1047 1994 1037 1992 1037 1990 1037 1988 1037 1985 1037 1959 1047 1860 1037 1858 1037 1855 1037 1829 1047 1765 1037 1762 1037 1706 1047 1678 1037 1676 1037 1674 1037 1671 1037 1648 1050 1446 1050 1431 1037 1429 1037 1427 1037 1424 1037 1349 1047 1327 1037 1325 1037 1323 1037 1225 1050 983 1050 968 1037 965 1037 963 1037 961 1037 959 1037 933 1047 918 1037 916 1037 913 1037 911 1037 684 1043 684 1080"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee are supplied with meat and skins from their herds. No"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l9" HPOS="571" VPOS="1095" WIDTH="1778" HEIGHT="61" BASELINE="573 1143 2349 1138" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 1143 573 1156 2349 1151 2349 1138 2345 1108 2096 1108 2072 1095 2070 1095 2068 1095 2066 1095 2040 1106 1996 1095 1994 1095 1992 1095 1990 1095 1988 1095 1972 1108 1875 1108 1793 1095 1790 1095 1715 1106 1648 1095 1645 1095 1528 1106 1461 1095 1459 1095 1457 1095 1414 1108 1357 1097 1355 1097 1269 1108 907 1097 905 1097 803 1108 788 1097 786 1097 783 1097 623 1097 621 1097 619 1097 571 1110 573 1143"/>
+                        </Shape>
+                        <String CONTENT="milking is possible on account of the wildness of the reindeer. Early in summer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l10" HPOS="576" VPOS="1171" WIDTH="1771" HEIGHT="50" BASELINE="576 1201 2347 1201" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1201 576 1216 2345 1221 2347 1201 2347 1171 576 1171 576 1201"/>
+                        </Shape>
+                        <String CONTENT="the herdsmen may catch one of the does with fawn, strike her to the ground,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l11" HPOS="573" VPOS="1216" WIDTH="1772" HEIGHT="61" BASELINE="576 1262 2345 1257" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1262 576 1277 2343 1275 2345 1257 2341 1227 1459 1216 1457 1216 1455 1216 1422 1227 643 1218 641 1218 573 1229 576 1262"/>
+                        </Shape>
+                        <String CONTENT="and try to suck some milk from her udder, although she may kick desperately"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l12" HPOS="573" VPOS="1275" WIDTH="1774" HEIGHT="62" BASELINE="576 1322 2347 1318" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1322 576 1337 2345 1337 2347 1318 2343 1290 2243 1277 2241 1277 2239 1277 2237 1277 2221 1290 2011 1290 1994 1275 1992 1275 1990 1275 1988 1275 1925 1288 1897 1275 1894 1275 1892 1275 1890 1275 1860 1288 1806 1275 1803 1275 1801 1275 1799 1275 1797 1275 1780 1288 1730 1275 1728 1275 1726 1275 1723 1275 1674 1288 1587 1275 1585 1275 1583 1275 1531 1288 1461 1275 1459 1275 1457 1275 1455 1275 1435 1290 1401 1277 1399 1277 1396 1277 1316 1290 1162 1277 1160 1277 1158 1277 1156 1277 1139 1292 1022 1292 929 1277 926 1277 866 1290 788 1277 786 1277 783 1277 729 1290 608 1277 606 1277 604 1277 573 1290 576 1322"/>
+                        </Shape>
+                        <String CONTENT="all the while. The man has to strike her udder with his fist, just as the fawn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l13" HPOS="573" VPOS="1344" WIDTH="1774" HEIGHT="52" BASELINE="576 1374 2347 1381" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1374 573 1389 2343 1396 2347 1381 2345 1350 576 1344 576 1374"/>
+                        </Shape>
+                        <String CONTENT="does with its forehead, to cause a more abundant flow of milk. Sometimes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l14" HPOS="576" VPOS="1411" WIDTH="1769" HEIGHT="46" BASELINE="576 1439 2345 1439" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1439 576 1457 2345 1457 2345 1439 2345 1411 576 1411 576 1439"/>
+                        </Shape>
+                        <String CONTENT="the milk that has been sucked out is spit into a bladder and brought home"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l15" HPOS="573" VPOS="1457" WIDTH="1772" HEIGHT="60" BASELINE="576 1500 2345 1496" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1500 576 1517 2343 1513 2345 1496 2341 1467 1463 1457 1461 1457 1459 1457 1422 1467 1039 1459 1037 1459 573 1470 576 1500"/>
+                        </Shape>
+                        <String CONTENT="as a rare present. The amount is rarely more than half a glassful. But these"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l16" HPOS="573" VPOS="1526" WIDTH="1772" HEIGHT="56" BASELINE="576 1556 2345 1560" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1556 573 1569 634 1582 636 1582 2343 1573 2345 1560 2343 1530 576 1526 576 1556"/>
+                        </Shape>
+                        <String CONTENT="milking-operations must not be repeated too frequently, otherwise the fawn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l17" HPOS="573" VPOS="1578" WIDTH="1772" HEIGHT="58" BASELINE="576 1619 2345 1615" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 1619 576 1634 2341 1636 2345 1615 2341 1586 664 1578 662 1578 573 1589 576 1619"/>
+                        </Shape>
+                        <String CONTENT="would be starved. When the herdsman is very hungry, he may also chop"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l18" HPOS="571" VPOS="1638" WIDTH="1776" HEIGHT="57" BASELINE="573 1680 2347 1675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 1680 573 1695 2345 1693 2347 1675 2343 1647 612 1638 610 1638 608 1638 571 1649 573 1680"/>
+                        </Shape>
+                        <String CONTENT="off a few pieces of the soft velvet of some buck with large antlers, and eat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l19" HPOS="571" VPOS="1695" WIDTH="1774" HEIGHT="60" BASELINE="573 1740 2345 1736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 1740 573 1755 2343 1753 2345 1736 2343 1708 2293 1695 2291 1695 2289 1695 2219 1706 2120 1695 2118 1695 2055 1706 2024 1695 2022 1695 2020 1695 2018 1695 2016 1695 2001 1708 1823 1708 1767 1695 1765 1695 1762 1695 1726 1706 1697 1695 1695 1695 1693 1695 1615 1706 1578 1695 1576 1695 1574 1695 1515 1706 1459 1695 1457 1695 1455 1695 1418 1708 1383 1697 1381 1697 1379 1697 1377 1697 1342 1708 1078 1697 1076 1697 1074 1697 1071 1697 1052 1710 907 1710 870 1697 868 1697 866 1697 783 1708 688 1697 686 1697 684 1697 651 1708 597 1697 595 1697 593 1697 591 1697 571 1706 573 1740"/>
+                        </Shape>
+                        <String CONTENT="the thick, soft outer skin. The animal is released without any dressing of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l20" HPOS="573" VPOS="1768" WIDTH="1685" HEIGHT="48" BASELINE="573 1799 2258 1799" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 1799 573 1816 2258 1816 2258 1799 2258 1768 573 1768 573 1799"/>
+                        </Shape>
+                        <String CONTENT="wound; and the blood will sometimes continue to trickle down for hours."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-112_r4" HPOS="571" VPOS="1821" WIDTH="1778" HEIGHT="1078" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="571 1821 2349 1821 2349 2899 571 2899"/>
+                    </Shape>
+                    <TextLine ID="mz_1-112_l21" HPOS="680" VPOS="1818" WIDTH="1669" HEIGHT="67" BASELINE="682 1861 2349 1855" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="682 1861 682 1874 989 1885 991 1885 2347 1870 2349 1855 2343 1818 680 1825 682 1861"/>
+                        </Shape>
+                        <String CONTENT="Bucks are gelded in a way somewhat corresponding to the process of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l22" HPOS="571" VPOS="1874" WIDTH="1774" HEIGHT="61" BASELINE="573 1920 2345 1916" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 1920 573 1935 2343 1933 2345 1916 2343 1887 2317 1874 2315 1874 2312 1874 2310 1874 2263 1885 2159 1874 2156 1874 2102 1887 2001 1887 1983 1874 1981 1874 1979 1874 1977 1874 1975 1874 1938 1885 1901 1874 1899 1874 1897 1874 1894 1874 1866 1885 1825 1874 1823 1874 1821 1874 1819 1874 1786 1885 1771 1874 1769 1874 1767 1874 1765 1874 1710 1885 1420 1877 1418 1877 1416 1877 1414 1877 1399 1887 1292 1877 1290 1877 1288 1877 1262 1887 818 1877 816 1877 749 1887 623 1877 621 1877 619 1877 571 1890 573 1920"/>
+                        </Shape>
+                        <String CONTENT="milking. The animal is struck to the ground, and the herdsman bites with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l23" HPOS="571" VPOS="1933" WIDTH="1772" HEIGHT="71" BASELINE="573 1980 2343 1974" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 1980 573 1993 1119 2004 1121 2004 1123 2004 1165 1991 1366 2002 1368 2002 1457 1991 1645 2002 1648 2002 1814 1989 1836 2000 1838 2000 1840 2000 2341 1991 2343 1974 2341 1946 2312 1933 2310 1933 2308 1933 2033 1944 2003 1933 2001 1933 1998 1933 1996 1933 1994 1933 1975 1946 1784 1946 1758 1933 1756 1933 1754 1933 1752 1933 1749 1933 1732 1946 1700 1935 1697 1935 1695 1935 1693 1935 1658 1946 1572 1935 1570 1935 1567 1935 1537 1948 1336 1948 1312 1935 1310 1935 1308 1935 1245 1946 1193 1935 1191 1935 1188 1935 1158 1948 1130 1937 1128 1937 1126 1937 1123 1937 1087 1948 1007 1937 1004 1937 1002 1937 965 1948 885 1937 883 1937 818 1948 775 1937 773 1937 770 1937 571 1944 573 1980"/>
+                        </Shape>
+                        <String CONTENT="his teeth either through the dowcets or through the spermatic ducts. This"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l24" HPOS="571" VPOS="1998" WIDTH="1774" HEIGHT="58" BASELINE="573 2041 2345 2037" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2336 2004 714 1998 712 1998 571 2009 573 2041 573 2056 2343 2052 2345 2037 2341 2013 2336 2004"/>
+                        </Shape>
+                        <String CONTENT="operation does not affect the reindeer much, and immediately afterward it"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l25" HPOS="571" VPOS="2058" WIDTH="1774" HEIGHT="59" BASELINE="573 2102 2345 2095" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 2102 573 2117 2343 2110 2345 2095 2341 2067 1178 2058 1175 2058 1108 2069 658 2061 656 2061 571 2071 573 2102"/>
+                        </Shape>
+                        <String CONTENT="continues to graze. Sometimes the scrotum is tied very tightly with a sinew"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l26" HPOS="571" VPOS="2115" WIDTH="1774" HEIGHT="60" BASELINE="573 2160 2345 2156" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 2160 573 2175 2343 2171 2345 2156 2341 2126 1466 2115 1463 2115 1461 2115 1459 2115 1446 2126 597 2117 595 2117 593 2117 571 2126 573 2160"/>
+                        </Shape>
+                        <String CONTENT="thread, and after a while becomes atrophied and drops off. Usually the antlers"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l27" HPOS="573" VPOS="2188" WIDTH="1770" HEIGHT="48" BASELINE="573 2216 2343 2216" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="573 2216 573 2236 2343 2236 2343 2216 2343 2188 573 2188 573 2216"/>
+                        </Shape>
+                        <String CONTENT="of the driving-reindeer are cut short with a saw early in the fall, when they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l28" HPOS="569" VPOS="2245" WIDTH="1774" HEIGHT="49" BASELINE="571 2279 2343 2275" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="571 2279 571 2294 2341 2292 2343 2275 2336 2245 569 2247 571 2279"/>
+                        </Shape>
+                        <String CONTENT="are dry and hard. The mark of the owner (vêloˊlhɪn, “ear”), which is a very"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l29" HPOS="569" VPOS="2305" WIDTH="1772" HEIGHT="59" BASELINE="571 2336 2341 2340" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="571 2336 569 2355 580 2364 582 2364 584 2364 586 2364 2338 2359 2341 2340 2338 2310 571 2305 571 2336"/>
+                        </Shape>
+                        <String CONTENT="simple one, is bitten out of the fawns’ ears in late summer, or the next spring"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l30" HPOS="1188" VPOS="2364" WIDTH="1153" HEIGHT="58" BASELINE="1191 2394 2341 2398" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1191 2394 1188 2409 1299 2422 1301 2422 2338 2413 2341 2398 2338 2368 1191 2364 1191 2394"/>
+                        </Shape>
+                        <String CONTENT="during the separation of bucks from pregnant dams."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l31" HPOS="1191" VPOS="2424" WIDTH="1152" HEIGHT="50" BASELINE="1191 2459 2343 2459" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1191 2459 1191 2472 2341 2474 2343 2459 2343 2429 1191 2424 1191 2459"/>
+                        </Shape>
+                        <String CONTENT="For catching reindeer the herdsman uses the long"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l32" HPOS="1186" VPOS="2474" WIDTH="1157" HEIGHT="61" BASELINE="1188 2520 2343 2513" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 2520 1188 2535 2341 2528 2343 2513 2338 2485 2014 2474 2011 2474 1951 2485 1645 2476 1643 2476 1186 2487 1188 2520"/>
+                        </Shape>
+                        <String CONTENT="lasso (čaˊat) with a knot on one end and a noose"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l33" HPOS="1186" VPOS="2537" WIDTH="1152" HEIGHT="63" BASELINE="1188 2576 2338 2582" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 2576 1186 2591 1193 2598 1193 2600 1195 2600 1197 2600 1199 2600 2336 2593 2338 2582 2338 2550 2315 2537 2312 2537 2310 2537 2308 2537 2271 2548 2226 2537 2224 2537 2221 2537 2033 2548 1985 2537 1983 2537 1981 2537 1188 2541 1188 2576"/>
+                        </Shape>
+                        <String CONTENT="formed by means of a bone eye on the other (Fig. 5)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l34" HPOS="1188" VPOS="2595" WIDTH="1155" HEIGHT="67" BASELINE="1188 2639 2343 2639" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2338 2604 1199 2595 1197 2595 1195 2595 1193 2595 1193 2598 1188 2602 1188 2639 1188 2652 1892 2662 1894 2662 2343 2652 2343 2639 2343 2630 2338 2604"/>
+                        </Shape>
+                        <String CONTENT="It is made of thin seal-skin straps plaited together,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l35" HPOS="1186" VPOS="2652" WIDTH="1157" HEIGHT="67" BASELINE="1188 2699 2343 2693" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 2699 1188 2712 2315 2719 2317 2719 2319 2719 2343 2706 2343 2693 2338 2662 1975 2652 1972 2652 1970 2652 1942 2662 1645 2654 1643 2654 1186 2667 1188 2699"/>
+                        </Shape>
+                        <String CONTENT="sometimes of intertwined sinew cords, or of ground-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l36" HPOS="1188" VPOS="2725" WIDTH="1153" HEIGHT="50" BASELINE="1188 2758 2341 2758" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 2758 1188 2773 2338 2775 2341 2758 2341 2725 1188 2725 1188 2758"/>
+                        </Shape>
+                        <String CONTENT="seal and walrus thong carefully softened by rubbing,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l37" HPOS="1186" VPOS="2773" WIDTH="1155" HEIGHT="58" BASELINE="1188 2816 2341 2812" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 2816 1188 2831 2338 2827 2341 2812 2336 2784 1767 2773 1765 2773 1762 2773 1760 2773 1760 2775 1758 2775 1752 2784 1260 2775 1258 2775 1186 2786 1188 2816"/>
+                        </Shape>
+                        <String CONTENT="and well smeared with blubber to make it more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l38" HPOS="1188" VPOS="2831" WIDTH="174" HEIGHT="67" BASELINE="1188 2879 1362 2879" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 2879 1188 2898 1362 2896 1362 2879 1362 2846 1230 2831 1227 2831 1225 2831 1188 2844 1188 2879"/>
+                        </Shape>
+                        <String CONTENT="pliable."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-112_r5" HPOS="571" VPOS="2899" WIDTH="1778" HEIGHT="366" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="571 2899 2349 2899 2349 3265 571 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-112_l39" HPOS="1297" VPOS="2905" WIDTH="1046" HEIGHT="48" BASELINE="1297 2937 2343 2937" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1297 2937 1297 2953 2343 2953 2343 2937 2343 2905 1297 2905 1297 2937"/>
+                        </Shape>
+                        <String CONTENT="A good lasso is worth a fat buck for slaughter,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l40" HPOS="1184" VPOS="2961" WIDTH="1159" HEIGHT="59" BASELINE="1186 2996 2343 2992" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1186 2996 1186 3009 1756 3020 1758 3020 1760 3020 1806 3007 1925 3018 1927 3018 1929 3018 1931 3018 1944 3007 1979 3018 1981 3018 1983 3020 2172 3020 2172 3018 2174 3018 2176 3018 2176 3015 2185 3009 2198 3018 2200 3018 2202 3018 2204 3020 2312 3020 2312 3018 2315 3018 2343 3005 2343 2992 2336 2961 1184 2963 1186 2996"/>
+                        </Shape>
+                        <String CONTENT="or even a sledge-reindeer. The Chukchee herds-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l41" HPOS="1186" VPOS="3013" WIDTH="1157" HEIGHT="56" BASELINE="1188 3054 2343 3050" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 3054 1188 3069 2341 3065 2343 3050 2338 3024 1762 3013 1760 3013 1758 3013 1756 3013 1739 3024 1353 3015 1351 3015 1186 3026 1188 3054"/>
+                        </Shape>
+                        <String CONTENT="man will not go abroad without his lasso, even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l42" HPOS="1186" VPOS="3069" WIDTH="1155" HEIGHT="63" BASELINE="1188 3117 2341 3113" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 3117 1188 3130 2336 3132 2341 3113 2336 3082 2076 3069 2074 3069 2020 3080 1988 3069 1985 3069 1983 3069 1923 3080 1905 3069 1903 3069 1901 3069 1899 3069 1845 3080 1762 3069 1760 3069 1758 3069 1756 3069 1756 3072 1754 3072 1747 3080 1728 3072 1726 3072 1723 3072 1721 3072 1684 3082 1648 3072 1645 3072 1643 3072 1641 3072 1619 3082 1550 3072 1548 3072 1479 3082 1431 3072 1429 3072 1427 3072 1377 3082 1347 3072 1344 3072 1342 3072 1340 3072 1338 3072 1338 3074 1327 3085 1258 3085 1232 3072 1230 3072 1227 3072 1225 3072 1186 3085 1188 3117"/>
+                        </Shape>
+                        <String CONTENT="when far from his herd (Fig. 6; also Plate XXVII,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l43" HPOS="1186" VPOS="3128" WIDTH="1157" HEIGHT="74" BASELINE="1188 3178 2343 3171" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1188 3178 1188 3189 1243 3202 1245 3202 1247 3202 1290 3191 1329 3202 1331 3202 1334 3202 1336 3202 1368 3191 1745 3199 1747 3199 1749 3199 1752 3199 1752 3197 1762 3189 1955 3199 1957 3199 1959 3199 1985 3186 2165 3197 2167 3197 2330 3195 2332 3195 2334 3195 2334 3193 2343 3184 2343 3171 2341 3139 2323 3128 2321 3128 2319 3128 2317 3128 2315 3128 2312 3128 2312 3130 2302 3141 2169 3141 2146 3128 2143 3128 2141 3128 2139 3128 2105 3139 2076 3128 2074 3128 2072 3128 2070 3128 2035 3139 1925 3130 1923 3130 1920 3130 1918 3130 1899 3141 1622 3130 1619 3130 1617 3130 1563 3143 1526 3132 1524 3132 1522 3132 1279 3143 1197 3132 1195 3132 1193 3132 1191 3132 1191 3134 1188 3134 1186 3134 1188 3178"/>
+                        </Shape>
+                        <String CONTENT="Fig. 2). While walking, he usually carries it around"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-112_l44" HPOS="569" VPOS="3191" WIDTH="1772" HEIGHT="67" BASELINE="569 3234 2341 3234" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="569 3221 569 3234 569 3251 2338 3258 2341 3234 2341 3204 2278 3191 2276 3191 2221 3202 2185 3191 2182 3191 2180 3191 2178 3191 2148 3202 2118 3191 2115 3191 2113 3191 2046 3202 1862 3191 1860 3191 1858 3191 1855 3191 1836 3204 1708 3204 1680 3191 1678 3191 1676 3191 1674 3191 1650 3202 1617 3191 1615 3191 1613 3191 1611 3191 1609 3191 1593 3204 1498 3204 1474 3191 1472 3191 1470 3191 1468 3191 1466 3191 1450 3204 1364 3204 1347 3191 1344 3191 1342 3191 1340 3191 1253 3202 1180 3191 1178 3191 1175 3191 1154 3202 1117 3191 1115 3191 1113 3191 1041 3202 952 3191 950 3191 842 3202 809 3191 807 3191 805 3191 803 3191 779 3202 738 3191 736 3191 734 3191 638 3202 586 3191 569 3221"/>
+                        </Shape>
+                        <String CONTENT="his neck in a thick coil, like a huge boa. It is sometimes used in hunting"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

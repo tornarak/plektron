@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-107.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-107.png; regions_from: zones/chukchi-1-107.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-107_r1" HPOS="365" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="365 618 2143 618 2143 708 365 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-107_l1" HPOS="944" VPOS="623" WIDTH="621" HEIGHT="56" BASELINE="946 658 1565 662" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1554 625 946 623 946 658 944 675 1561 679 1565 662 1563 638 1554 625"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l2" HPOS="2081" VPOS="634" WIDTH="21" HEIGHT="60" BASELINE="2081 673 2102 673" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2081 634 2081 673 2083 694 2102 684 2102 673 2102 640 2081 634"/>
+                        </Shape>
+                        <String CONTENT="79"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-107_r2" HPOS="365" VPOS="733" WIDTH="1778" HEIGHT="961" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="365 733 2143 733 2143 1694 365 1694"/>
+                    </Shape>
+                    <TextLine ID="mz_1-107_l3" HPOS="363" VPOS="725" WIDTH="1774" HEIGHT="65" BASELINE="365 772 2137 768" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 733 365 733 363 736 365 772 365 785 2133 790 2137 768 2135 738 2098 725 2096 725 2094 725 2092 725 2063 736 2029 725 2027 725 2024 725 2022 725 1998 738 1754 738 1726 725 1723 725 1721 725 1613 736 1489 725 1487 725 1407 736 1351 725 1349 725 1292 736 1262 725 1260 725 1258 725 1167 738 539 727 537 727 534 727 532 727 517 740 422 740 398 731 385 733"/>
+                        </Shape>
+                        <String CONTENT="fawn. Even twins are often born dead. One of living twins, or even both,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l4" HPOS="365" VPOS="794" WIDTH="1776" HEIGHT="52" BASELINE="368 827 2141 831" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 827 365 842 2137 846 2141 831 2139 794 368 794 368 827"/>
+                        </Shape>
+                        <String CONTENT="are often killed by the Chukchee because they are afraid of anything unusual"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l5" HPOS="368" VPOS="857" WIDTH="1771" HEIGHT="50" BASELINE="370 891 2139 885" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 891 370 907 2137 900 2139 885 2135 857 368 857 370 891"/>
+                        </Shape>
+                        <String CONTENT="in connection with their herd. Some of the breeders, however, value twins"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l6" HPOS="365" VPOS="907" WIDTH="1774" HEIGHT="60" BASELINE="368 952 2139 948" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 952 368 967 2137 963 2139 948 2137 920 2087 907 2085 907 2083 907 2081 907 2050 917 1983 907 1981 907 1912 917 1881 907 1879 907 1877 907 1875 907 1853 917 1758 907 1756 907 1754 907 1708 920 1524 920 1492 907 1489 907 1487 907 1353 917 1271 907 1269 907 1266 907 1264 907 1245 920 931 909 929 909 877 920 805 909 803 909 801 909 762 920 699 909 697 909 365 915 368 952"/>
+                        </Shape>
+                        <String CONTENT="highly, asserting that when grown up they will be very swift, and will make"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l7" HPOS="365" VPOS="965" WIDTH="1772" HEIGHT="67" BASELINE="368 1011 2137 1006" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1011 368 1032 2135 1030 2137 1006 2135 976 2115 965 2113 965 2111 965 2109 965 2107 965 2081 976 1964 965 1962 965 1959 965 1936 976 1914 965 1912 965 1910 965 1821 976 1795 965 1793 965 1790 965 1695 976 1667 965 1665 965 1663 965 1661 965 1658 965 1643 978 1524 978 1487 965 1485 965 1483 965 1379 976 1290 965 1288 965 1227 978 1195 967 1193 967 1191 967 1188 967 1141 978 703 967 701 967 621 978 582 967 580 967 578 967 502 978 469 967 467 967 465 967 365 980 368 1011"/>
+                        </Shape>
+                        <String CONTENT="good racing-reindeer. Therefore when living twins are born into their herd,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l8" HPOS="365" VPOS="1026" WIDTH="1774" HEIGHT="58" BASELINE="368 1071 2139 1067" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1071 368 1084 2137 1082 2139 1067 2133 1034 1944 1037 1916 1026 1914 1026 1912 1026 1910 1026 1907 1026 1894 1037 1868 1026 1866 1026 1864 1026 1862 1026 1825 1037 1795 1026 1793 1026 1790 1026 1788 1026 1786 1026 1771 1039 1628 1039 1522 1026 1520 1026 1518 1026 1485 1037 1401 1026 1399 1026 1340 1037 1262 1026 1260 1026 1258 1026 1256 1026 1240 1039 1046 1028 1043 1028 972 1039 937 1028 935 1028 933 1028 870 1039 816 1028 814 1028 699 1039 636 1028 634 1028 632 1028 599 1039 500 1028 498 1028 495 1028 474 1039 387 1028 385 1028 383 1028 381 1028 365 1037 368 1071"/>
+                        </Shape>
+                        <String CONTENT="they look for another doe that has just given birth to a dead fawn, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l9" HPOS="365" VPOS="1084" WIDTH="1774" HEIGHT="63" BASELINE="368 1132 2139 1125" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1132 368 1147 2137 1140 2139 1125 2135 1097 1702 1084 1700 1084 1697 1084 1674 1095 1492 1086 1489 1086 1422 1097 1394 1086 1392 1086 1390 1086 1327 1097 1269 1086 1266 1086 1264 1086 1238 1097 1180 1086 1178 1086 1108 1097 985 1086 983 1086 981 1086 978 1086 963 1097 857 1088 855 1088 853 1088 829 1101 563 1101 467 1088 465 1088 365 1101 368 1132"/>
+                        </Shape>
+                        <String CONTENT="carefully wrap one of the living twins into the placenta of the dead fawn to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l10" HPOS="365" VPOS="1147" WIDTH="1772" HEIGHT="58" BASELINE="368 1192 2137 1188" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1192 368 1205 2135 1201 2137 1188 2133 1158 1251 1147 1249 1147 1247 1147 1225 1158 439 1149 437 1149 365 1160 368 1192"/>
+                        </Shape>
+                        <String CONTENT="make the dam raise it as its own. Of course, this is feasible only in large"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l11" HPOS="368" VPOS="1216" WIDTH="1769" HEIGHT="52" BASELINE="368 1251 2137 1251" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1251 368 1268 2137 1268 2137 1251 2137 1221 368 1216 368 1251"/>
+                        </Shape>
+                        <String CONTENT="herds, where in calving-time there are daily about twenty or thirty fawns born."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l12" HPOS="368" VPOS="1277" WIDTH="1771" HEIGHT="50" BASELINE="368 1309 2139 1309" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1309 368 1327 2139 1327 2139 1309 2139 1279 368 1277 368 1309"/>
+                        </Shape>
+                        <String CONTENT="If a suitable reindeer-dam is wanting, they will sometimes kill some new-born"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l13" HPOS="368" VPOS="1340" WIDTH="1769" HEIGHT="47" BASELINE="368 1370 2137 1370" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1370 368 1387 2137 1387 2137 1370 2137 1340 368 1340 368 1370"/>
+                        </Shape>
+                        <String CONTENT="fawn and put one of the twins in its place. If they prefer to kill one of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l14" HPOS="365" VPOS="1389" WIDTH="1774" HEIGHT="59" BASELINE="368 1431 2139 1426" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1431 368 1448 2137 1444 2139 1426 2135 1398 424 1389 422 1389 365 1400 368 1431"/>
+                        </Shape>
+                        <String CONTENT="twins, they keep a female one, because they believe that it will grow up to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l15" HPOS="368" VPOS="1457" WIDTH="1771" HEIGHT="49" BASELINE="368 1489 2139 1489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1489 368 1506 2139 1506 2139 1489 2139 1461 368 1457 368 1489"/>
+                        </Shape>
+                        <String CONTENT="be a barren doe, fit to use for the harness.¹ Breeding-bucks are best at the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l16" HPOS="368" VPOS="1519" WIDTH="1771" HEIGHT="48" BASELINE="368 1550 2139 1550" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1550 368 1567 2139 1567 2139 1550 2139 1519 368 1519 368 1550"/>
+                        </Shape>
+                        <String CONTENT="age of three and four years; later on, their value decreases, although the bulk"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l17" HPOS="365" VPOS="1569" WIDTH="1772" HEIGHT="56" BASELINE="368 1608 2137 1604" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1608 368 1625 2135 1621 2137 1604 2133 1578 407 1569 404 1569 402 1569 365 1580 368 1608"/>
+                        </Shape>
+                        <String CONTENT="of the body and the dimension of the antlers continue to increase until the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l18" HPOS="365" VPOS="1625" WIDTH="1391" HEIGHT="59" BASELINE="368 1669 1756 1664" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1669 368 1684 1754 1680 1756 1664 1752 1625 1061 1625 1059 1625 1056 1625 1054 1625 1054 1628 1043 1636 383 1628 381 1628 378 1628 376 1628 365 1634 368 1669"/>
+                        </Shape>
+                        <String CONTENT="fifth or sixth year. The doe breeds to the end of her life.²"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-107_r3" HPOS="365" VPOS="1694" WIDTH="1778" HEIGHT="295" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="365 1694 2143 1694 2143 1989 365 1989"/>
+                    </Shape>
+                    <TextLine ID="mz_1-107_l19" HPOS="472" VPOS="1686" WIDTH="1667" HEIGHT="61" BASELINE="474 1732 2139 1727" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="474 1732 474 1747 2137 1742 2139 1727 2135 1699 2042 1686 2040 1686 2037 1686 2035 1686 2020 1699 1933 1699 1907 1686 1905 1686 1903 1686 1832 1697 1786 1686 1784 1686 1782 1686 1726 1697 1678 1686 1676 1686 1674 1686 1671 1686 1669 1686 1656 1697 1598 1686 1596 1686 1528 1697 1492 1686 1489 1686 1487 1686 1485 1686 1483 1686 1466 1699 1351 1699 1318 1686 1316 1686 1314 1686 1238 1699 946 1688 944 1688 942 1688 900 1699 870 1688 868 1688 866 1688 864 1688 831 1699 755 1688 753 1688 472 1697 474 1732"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee herdsmen are careful to select for breeding those does"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l20" HPOS="365" VPOS="1760" WIDTH="1772" HEIGHT="47" BASELINE="365 1790 2137 1790" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 1790 365 1807 2137 1807 2137 1790 2137 1760 365 1760 365 1790"/>
+                        </Shape>
+                        <String CONTENT="that bear the strongest fawns. Those whose fawns have died for several years"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l21" HPOS="363" VPOS="1805" WIDTH="1776" HEIGHT="63" BASELINE="365 1853 2139 1846" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 1853 365 1868 2137 1861 2139 1846 2135 1818 1996 1818 1972 1805 1970 1805 1968 1805 1849 1816 1793 1805 1790 1805 1788 1805 1743 1816 1713 1805 1710 1805 1708 1805 1706 1805 1667 1816 1604 1805 1602 1805 1600 1805 1598 1805 1583 1816 1459 1807 1457 1807 1455 1807 1431 1818 926 1809 924 1809 922 1809 920 1809 909 1820 896 1809 894 1809 892 1809 890 1809 415 1820 378 1809 376 1809 374 1809 372 1809 370 1809 370 1812 363 1816 365 1853"/>
+                        </Shape>
+                        <String CONTENT="in succession are killed first, when meat is required. The herdsman observes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l22" HPOS="363" VPOS="1864" WIDTH="1774" HEIGHT="67" BASELINE="365 1913 2137 1905" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 1913 365 1931 2135 1922 2137 1905 2135 1877 2094 1864 2092 1864 2089 1864 2003 1874 1985 1864 1983 1864 1981 1864 1979 1864 1977 1864 1975 1864 1955 1877 1741 1877 1717 1864 1715 1864 1713 1864 1710 1864 1708 1864 1687 1877 1513 1866 1511 1866 1509 1866 1474 1877 1448 1866 1446 1866 1444 1866 1368 1877 1321 1866 1318 1866 1316 1866 1314 1866 1279 1877 1253 1866 1251 1866 1249 1866 1247 1866 1217 1879 1182 1868 1180 1868 1178 1868 1175 1868 1139 1879 1071 1868 1069 1868 965 1879 931 1868 929 1868 926 1868 868 1879 838 1868 835 1868 833 1868 656 1870 654 1870 651 1870 636 1881 389 1870 387 1870 385 1870 383 1870 363 1879 365 1913"/>
+                        </Shape>
+                        <String CONTENT="the lineage (yɪčhɪˊyɪkwɪn) of his animals through three or four generations in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l23" HPOS="365" VPOS="1926" WIDTH="748" HEIGHT="63" BASELINE="368 1972 1113 1967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 1972 368 1989 1110 1985 1113 1967 1108 1939 894 1926 892 1926 818 1937 794 1926 792 1926 790 1926 788 1926 786 1926 786 1929 775 1937 680 1929 677 1929 628 1939 604 1929 602 1929 599 1929 530 1939 493 1929 491 1929 489 1929 487 1929 454 1939 417 1929 415 1929 413 1929 411 1929 365 1942 368 1972"/>
+                        </Shape>
+                        <String CONTENT="selecting the best breeding-does."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-107_r4" HPOS="365" VPOS="1989" WIDTH="1778" HEIGHT="1092" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="365 1989 2143 1989 2143 3081 365 3081"/>
+                    </Shape>
+                    <TextLine ID="mz_1-107_l24" HPOS="469" VPOS="1985" WIDTH="1668" HEIGHT="65" BASELINE="472 2035 2137 2026" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="472 2035 472 2050 2135 2041 2137 2026 2130 1993 1814 1996 1784 1985 1782 1985 1780 1985 1777 1985 1752 1998 1520 1998 1483 1987 1481 1987 1479 1987 1409 1998 1357 1987 1355 1987 1353 1987 1351 1987 1336 2000 1106 2000 1054 1989 1052 1989 1050 1989 1048 1989 1030 2000 907 1989 905 1989 693 2002 677 1991 675 1991 673 1991 491 1991 489 1991 487 1991 485 1991 469 2000 472 2035"/>
+                        </Shape>
+                        <String CONTENT="Although the Chukchee have a very imperfect system of numerals, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l25" HPOS="363" VPOS="2050" WIDTH="1776" HEIGHT="60" BASELINE="365 2095 2139 2089" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2095 365 2110 2139 2102 2139 2089 2135 2058 976 2050 974 2050 890 2061 519 2052 517 2052 363 2063 365 2095"/>
+                        </Shape>
+                        <String CONTENT="never know the exact number of animals in their herd, still they keep a strict"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l26" HPOS="363" VPOS="2106" WIDTH="1772" HEIGHT="67" BASELINE="365 2156 2135 2149" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2156 365 2173 2133 2165 2135 2149 2130 2117 1544 2106 1541 2106 1539 2106 1511 2117 1033 2108 1030 2108 942 2119 530 2110 528 2110 363 2121 365 2156"/>
+                        </Shape>
+                        <String CONTENT="proportion between its integral parts. Fertile does always form a large majority."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l27" HPOS="370" VPOS="2167" WIDTH="1767" HEIGHT="60" BASELINE="372 2212 2137 2208" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 2212 372 2227 2135 2223 2137 2208 2135 2177 2115 2167 2113 2167 2111 2167 2109 2167 2005 2177 1918 2167 1916 2167 1864 2180 1635 2180 1609 2167 1606 2167 1604 2167 1546 2177 1489 2167 1487 2167 1485 2167 1457 2177 1351 2167 1349 2167 1249 2180 1152 2169 1149 2169 1147 2169 1117 2180 1011 2169 1009 2169 1007 2169 976 2180 931 2169 929 2169 926 2169 870 2180 766 2169 764 2169 762 2169 729 2180 693 2169 690 2169 688 2169 686 2169 658 2180 370 2177 372 2212"/>
+                        </Shape>
+                        <String CONTENT="The largest bucks, aside from those used for breeding, are usually gelded."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l28" HPOS="365" VPOS="2227" WIDTH="1772" HEIGHT="61" BASELINE="368 2273 2137 2266" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2273 368 2288 2135 2281 2137 2266 2133 2238 1546 2227 1544 2227 1541 2227 1507 2238 1004 2229 1002 2229 365 2240 368 2273"/>
+                        </Shape>
+                        <String CONTENT="Such geldings and a few barren does are allowed to fatten. The harness-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l29" HPOS="365" VPOS="2290" WIDTH="1772" HEIGHT="61" BASELINE="368 2333 2137 2325" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2333 368 2351 2135 2342 2137 2325 2133 2297 842 2290 840 2290 838 2290 796 2301 415 2292 413 2292 411 2292 365 2303 368 2333"/>
+                        </Shape>
+                        <String CONTENT="reindeer are also geldings, with the exception of a few large barren females"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l30" HPOS="368" VPOS="2351" WIDTH="1769" HEIGHT="67" BASELINE="370 2392 2137 2385" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 2392 370 2407 584 2418 586 2418 589 2418 617 2407 1147 2416 1149 2416 1152 2416 1154 2416 1169 2405 1258 2405 1327 2416 1329 2416 1331 2416 1353 2405 1394 2416 1396 2416 1399 2416 1585 2403 1819 2403 1838 2413 1840 2413 1842 2413 1845 2413 2135 2403 2137 2385 2133 2357 411 2351 409 2351 407 2351 368 2362 370 2392"/>
+                        </Shape>
+                        <String CONTENT="with large antlers. The majority of the bucks are killed for their skins in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l31" HPOS="365" VPOS="2411" WIDTH="1772" HEIGHT="57" BASELINE="368 2452 2137 2446" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2452 368 2468 2135 2461 2137 2446 2133 2418 385 2411 383 2411 381 2411 378 2411 365 2418 368 2452"/>
+                        </Shape>
+                        <String CONTENT="the first fall of their lives. On an average, there are in a herd, to every"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l32" HPOS="365" VPOS="2465" WIDTH="1772" HEIGHT="65" BASELINE="368 2511 2137 2504" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2511 368 2530 2135 2524 2137 2504 2133 2476 1591 2465 1589 2465 1533 2478 365 2478 368 2511"/>
+                        </Shape>
+                        <String CONTENT="hundred breeding-does, about a dozen breeding-bucks, from ten to fifteen sledge-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l33" HPOS="363" VPOS="2530" WIDTH="1774" HEIGHT="59" BASELINE="365 2572 2137 2565" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2572 365 2589 2135 2582 2137 2565 2133 2537 415 2530 413 2530 363 2541 365 2572"/>
+                        </Shape>
+                        <String CONTENT="reindeer, and from sixty to seventy half-grown fawns. In a large herd (Plate"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l34" HPOS="363" VPOS="2585" WIDTH="1774" HEIGHT="67" BASELINE="365 2634 2137 2626" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2634 365 2652 2135 2652 2137 2626 2133 2598 2074 2585 2072 2585 2070 2585 2046 2595 1897 2585 1894 2585 1821 2595 1797 2585 1795 2585 1793 2585 1790 2585 1769 2595 1697 2585 1695 2585 1693 2585 1648 2598 1292 2587 1290 2587 1288 2587 1249 2598 1130 2589 1128 2589 1126 2589 1123 2589 1104 2602 970 2602 913 2589 911 2589 792 2602 454 2591 452 2591 363 2604 365 2634"/>
+                        </Shape>
+                        <String CONTENT="IV, Fig. 1) there may be to a thousand breeding-does thirty breeding-bucks,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l35" HPOS="363" VPOS="2645" WIDTH="1774" HEIGHT="63" BASELINE="365 2691 2137 2684" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2691 365 2708 2135 2701 2137 2684 2133 2656 1546 2645 1544 2645 1541 2645 1539 2645 1526 2656 970 2647 968 2647 965 2647 933 2658 398 2649 396 2649 394 2649 363 2660 365 2691"/>
+                        </Shape>
+                        <String CONTENT="eighty sledge-reindeer, and from three hundred to four hundred fawns. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l36" HPOS="363" VPOS="2710" WIDTH="1774" HEIGHT="59" BASELINE="365 2753 2137 2745" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2753 365 2769 2135 2762 2137 2745 2133 2717 822 2710 820 2710 363 2723 365 2753"/>
+                        </Shape>
+                        <String CONTENT="number of fattened bucks varies from a very few to about as many as there"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l37" HPOS="365" VPOS="2769" WIDTH="1772" HEIGHT="60" BASELINE="365 2812 2137 2812" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2812 365 2827 2135 2829 2137 2812 2137 2779 2115 2769 2113 2769 2111 2769 1983 2779 1938 2769 1936 2769 1933 2769 1661 2779 1624 2769 1622 2769 1619 2769 1617 2769 1583 2779 1407 2769 1405 2769 1318 2779 1273 2769 1271 2769 1269 2769 1266 2769 1264 2769 1249 2779 1197 2769 1195 2769 1100 2779 1067 2769 1065 2769 1063 2769 1061 2769 1059 2769 1041 2782 896 2782 833 2769 831 2769 829 2769 827 2769 812 2782 721 2782 688 2769 686 2769 684 2769 630 2779 584 2769 582 2769 580 2769 504 2779 482 2769 480 2769 478 2769 365 2779 365 2812"/>
+                        </Shape>
+                        <String CONTENT="are breeding-does. However, large bucks and barren does are highly prized,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l38" HPOS="363" VPOS="2825" WIDTH="1776" HEIGHT="65" BASELINE="365 2875 2139 2866" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="365 2875 365 2890 2137 2881 2139 2866 2135 2836 1713 2825 1710 2825 1708 2825 1706 2825 1689 2836 391 2831 389 2831 387 2831 363 2840 365 2875"/>
+                        </Shape>
+                        <String CONTENT="since the Chukchee assert that a herd without bucks with large antlers looks"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l39" HPOS="365" VPOS="2890" WIDTH="1770" HEIGHT="65" BASELINE="368 2935 2135 2927" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2935 368 2955 2133 2942 2135 2927 2130 2896 816 2890 814 2890 812 2890 781 2901 467 2892 465 2892 365 2903 368 2935"/>
+                        </Shape>
+                        <String CONTENT="poorly, and that without barren fattened does, all signs of wealth disappear."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l40" HPOS="365" VPOS="2944" WIDTH="1774" HEIGHT="67" BASELINE="368 2994 2139 2985" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 2994 368 3011 2137 3002 2139 2985 2137 2957 2087 2944 2085 2944 2083 2944 2081 2944 2079 2944 2063 2955 2005 2944 2003 2944 1929 2955 1899 2944 1897 2944 1894 2944 1892 2944 1890 2944 1875 2955 1773 2944 1771 2944 1719 2955 1697 2944 1695 2944 1693 2944 1691 2944 1689 2944 1667 2957 1463 2946 1461 2946 1403 2957 1377 2946 1375 2946 1373 2946 1370 2946 1325 2957 1288 2946 1286 2946 1284 2946 1206 2959 872 2948 870 2948 805 2961 742 2950 740 2950 684 2961 662 2950 660 2950 658 2950 656 2950 621 2961 530 2950 528 2950 526 2950 495 2961 415 2950 413 2950 365 2959 368 2994"/>
+                        </Shape>
+                        <String CONTENT="Even in springtime, when almost every doe is with fawn, the Chukchee herds-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l41" HPOS="368" VPOS="3007" WIDTH="1719" HEIGHT="62" BASELINE="370 3052 2087 3048" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 3052 370 3069 2085 3065 2087 3048 2083 3018 1277 3007 1275 3007 1221 3018 493 3009 491 3009 368 3020 370 3052"/>
+                        </Shape>
+                        <String CONTENT="man is often more ready to kill a breeding-doe than a large fattened buck."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-107_r5" HPOS="365" VPOS="3119" WIDTH="1778" HEIGHT="146" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="365 3119 2143 3119 2143 3265 365 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-107_l42" HPOS="478" VPOS="3126" WIDTH="223" HEIGHT="41" BASELINE="478 3152 701 3152" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="478 3152 478 3167 701 3167 701 3152 701 3126 478 3126 478 3152"/>
+                        </Shape>
+                        <String CONTENT="¹ See below."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l43" HPOS="476" VPOS="3163" WIDTH="1663" HEIGHT="47" BASELINE="478 3193 2139 3189" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="478 3193 478 3210 2139 3206 2139 3189 2137 3180 2133 3163 476 3165 478 3193"/>
+                        </Shape>
+                        <String CONTENT="² The Rev. Argentoff (I, p. 92) says that some of the does bring forth fawns for forty years. Perhaps"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-107_l44" HPOS="368" VPOS="3210" WIDTH="1669" HEIGHT="48" BASELINE="368 3236 2037 3236" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="368 3236 368 3258 2037 3258 2037 3236 2037 3210 368 3210 368 3236"/>
+                        </Shape>
+                        <String CONTENT="this is a misprint, since the average life of the reindeer is from twelve to fifteen years. See also p. 75."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-111.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-111.png; regions_from: zones/chukchi-1-111.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-111_r1" HPOS="477" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="477 618 2255 618 2255 708 477 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-111_l1" HPOS="1065" VPOS="623" WIDTH="617" HEIGHT="61" BASELINE="1065 664 1682 662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1669 632 1663 627 1104 623 1084 630 1067 653 1065 664 1065 684 1680 681 1682 662 1680 655 1669 632"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l2" HPOS="2189" VPOS="627" WIDTH="56" HEIGHT="67" BASELINE="2191 666 2245 673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2237 634 2226 630 2193 627 2191 666 2189 681 2239 694 2245 673 2245 634 2237 634"/>
+                        </Shape>
+                        <String CONTENT="83"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-111_r2" HPOS="477" VPOS="733" WIDTH="1778" HEIGHT="598" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="477 733 2255 733 2255 1331 477 1331"/>
+                    </Shape>
+                    <TextLine ID="mz_1-111_l3" HPOS="480" VPOS="731" WIDTH="1778" HEIGHT="67" BASELINE="482 779 2258 772" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="697 736 675 738 654 738 632 738 610 740 589 740 567 740 545 740 524 742 521 742 480 744 482 779 482 798 2256 788 2258 772 2254 740 1074 731 1071 731 1013 742 714 736 697 736"/>
+                        </Shape>
+                        <String CONTENT="poor families usually combine for the summer and form a large herd with plenty"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l4" HPOS="482" VPOS="792" WIDTH="1776" HEIGHT="61" BASELINE="485 837 2258 831" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 837 485 853 2256 846 2258 831 2254 801 1076 792 1074 792 1071 792 1041 803 524 794 521 794 519 794 482 805 485 837"/>
+                        </Shape>
+                        <String CONTENT="of herdsmen. Early in the fall the herds are separated; and in winter some"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l5" HPOS="485" VPOS="850" WIDTH="1773" HEIGHT="61" BASELINE="487 896 2258 891" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 896 487 911 2256 907 2258 891 2254 861 1373 850 1370 850 1308 861 526 853 524 853 521 853 485 863 487 896"/>
+                        </Shape>
+                        <String CONTENT="of the poor men will join their wealthy neighbors and help them watch the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l6" HPOS="487" VPOS="913" WIDTH="1767" HEIGHT="59" BASELINE="487 956 2254 956" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 956 487 972 2252 972 2254 956 2252 926 2165 913 2053 913 2050 913 2048 913 2046 913 2033 924 1972 913 1970 913 1968 913 1938 924 1905 913 1903 913 1901 913 1756 926 1602 926 1585 913 1583 913 1580 913 1578 913 1496 924 1407 913 1405 913 1344 924 487 920 487 956"/>
+                        </Shape>
+                        <String CONTENT="herd, receiving for their pay some skins, and some animals for slaughter."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l7" HPOS="487" VPOS="980" WIDTH="1769" HEIGHT="52" BASELINE="487 1015 2256 1015" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 1015 487 1030 2254 1032 2256 1015 2256 985 487 980 487 1015"/>
+                        </Shape>
+                        <String CONTENT="Such temporary helpers generally leave in spring, before the calving-season,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l8" HPOS="482" VPOS="1034" WIDTH="1772" HEIGHT="61" BASELINE="485 1076 2254 1071" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 1076 485 1091 2250 1095 2254 1071 2250 1043 508 1034 506 1034 504 1034 482 1043 485 1076"/>
+                        </Shape>
+                        <String CONTENT="since at that time a large herd gives much trouble. It must be kept moving"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l9" HPOS="482" VPOS="1099" WIDTH="1774" HEIGHT="50" BASELINE="485 1136 2256 1132" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 1136 485 1149 2254 1147 2256 1132 2250 1099 482 1101 485 1136"/>
+                        </Shape>
+                        <String CONTENT="in search of new pastures. Does with young ones are very slow. In a herd"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l10" HPOS="485" VPOS="1164" WIDTH="1773" HEIGHT="46" BASELINE="485 1192 2258 1192" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 1192 485 1210 2258 1210 2258 1192 2258 1164 485 1164 485 1192"/>
+                        </Shape>
+                        <String CONTENT="of a thousand does there are some thirty calvings daily. The herdsman has"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l11" HPOS="485" VPOS="1214" WIDTH="1773" HEIGHT="56" BASELINE="487 1255 2258 1251" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 1255 487 1270 2256 1266 2258 1251 2254 1223 502 1214 500 1214 498 1214 495 1214 485 1221 487 1255"/>
+                        </Shape>
+                        <String CONTENT="to keep his eye on every one of these. He leaves them behind, then comes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l12" HPOS="482" VPOS="1270" WIDTH="1280" HEIGHT="61" BASELINE="485 1316 1762 1311" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 1316 485 1331 1760 1327 1762 1311 1758 1283 1658 1270 1656 1270 1654 1270 1630 1281 1609 1270 1606 1270 1604 1270 1602 1270 1600 1270 1600 1273 1589 1283 1520 1283 1487 1270 1485 1270 1483 1270 1481 1270 1479 1270 1463 1283 1368 1283 1331 1270 1329 1270 1327 1270 1325 1270 1282 1281 1253 1270 1251 1270 1249 1270 1247 1270 1212 1281 1143 1270 1141 1270 1139 1270 1104 1286 944 1286 933 1275 933 1273 931 1273 929 1273 926 1273 924 1273 898 1283 738 1273 736 1273 734 1273 697 1283 645 1273 643 1273 482 1281 485 1316"/>
+                        </Shape>
+                        <String CONTENT="back for them, and even assists the inexperienced dam."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-111_r3" HPOS="477" VPOS="1331" WIDTH="1778" HEIGHT="836" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="477 1331 2255 1331 2255 2167 477 2167"/>
+                    </Shape>
+                    <TextLine ID="mz_1-111_l13" HPOS="589" VPOS="1329" WIDTH="1669" HEIGHT="63" BASELINE="591 1376 2258 1370" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="591 1376 591 1392 2256 1385 2258 1370 2256 1342 2226 1329 2224 1329 2221 1329 2219 1329 2198 1340 2176 1329 2174 1329 2172 1329 2169 1329 2143 1340 2042 1329 2040 1329 1988 1340 1959 1329 1957 1329 1955 1329 1860 1340 1829 1329 1827 1329 1825 1329 1697 1344 1537 1344 1522 1331 1520 1331 1518 1331 1515 1331 1513 1331 1481 1342 1366 1331 1364 1331 1362 1331 1325 1342 1282 1331 1279 1331 1277 1331 1102 1344 1011 1333 1009 1333 589 1340 591 1376"/>
+                        </Shape>
+                        <String CONTENT="Many poor families, especially those who want to raise a herd of their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l14" HPOS="482" VPOS="1405" WIDTH="1774" HEIGHT="45" BASELINE="482 1435 2256 1435" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 1435 482 1450 2256 1450 2256 1435 2256 1405 482 1405 482 1435"/>
+                        </Shape>
+                        <String CONTENT="own, enter the service of one of their wealthy neighbors for several years."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l15" HPOS="485" VPOS="1459" WIDTH="1771" HEIGHT="52" BASELINE="487 1493 2256 1489" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 1493 487 1511 2254 1506 2256 1489 2252 1461 485 1459 487 1493"/>
+                        </Shape>
+                        <String CONTENT="They are very hard-worked, and receive as pay their meat-supply and skins"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l16" HPOS="480" VPOS="1515" WIDTH="1776" HEIGHT="56" BASELINE="482 1556 2256 1550" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 1556 482 1571 2254 1567 2256 1550 2252 1521 493 1515 491 1515 489 1515 487 1515 487 1517 480 1521 482 1556"/>
+                        </Shape>
+                        <String CONTENT="from the herd of their master; but in moving from camp to camp they must"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l17" HPOS="482" VPOS="1569" WIDTH="1774" HEIGHT="61" BASELINE="485 1615 2256 1610" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="485 1615 485 1630 2254 1625 2256 1610 2252 1580 1370 1569 1368 1569 1366 1569 1338 1580 599 1571 597 1571 482 1582 485 1615"/>
+                        </Shape>
+                        <String CONTENT="use their own pack and driving animals. Meanwhile their own little stock is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l18" HPOS="480" VPOS="1641" WIDTH="1774" HEIGHT="49" BASELINE="482 1673 2254 1669" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 1673 482 1690 2252 1686 2254 1669 2250 1641 480 1641 482 1673"/>
+                        </Shape>
+                        <String CONTENT="left undisturbed to multiply. In return for good services, they may expect to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l19" HPOS="482" VPOS="1699" WIDTH="1774" HEIGHT="52" BASELINE="482 1734 2256 1734" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 1734 482 1751 2256 1751 2256 1734 2254 1699 482 1701 482 1734"/>
+                        </Shape>
+                        <String CONTENT="receive from their master every year about ten fawns; and with the natural"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l20" HPOS="480" VPOS="1762" WIDTH="1774" HEIGHT="47" BASELINE="482 1794 2254 1790" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 1794 482 1809 2252 1807 2254 1790 2250 1762 480 1762 482 1794"/>
+                        </Shape>
+                        <String CONTENT="increase of their own animals they may secure one hundred reindeer in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l21" HPOS="480" VPOS="1807" WIDTH="1770" HEIGHT="65" BASELINE="482 1855 2250 1848" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 1855 482 1872 2247 1866 2250 1848 2243 1812 2046 1818 2001 1807 1998 1807 1996 1807 1994 1807 1955 1818 1931 1807 1929 1807 1927 1807 1877 1818 1853 1807 1851 1807 1849 1807 1847 1807 1845 1807 1832 1818 1793 1807 1790 1807 1788 1807 1786 1807 1762 1820 1565 1820 1533 1809 1531 1809 1528 1809 1526 1809 1505 1820 1483 1809 1481 1809 1479 1809 1476 1809 1455 1820 1433 1809 1431 1809 1429 1809 1427 1809 1396 1820 1360 1809 1357 1809 1355 1809 1353 1809 1351 1809 1336 1822 1154 1822 1089 1809 1087 1809 1084 1809 1046 1822 963 1812 961 1812 959 1812 933 1822 829 1812 827 1812 825 1812 794 1822 682 1812 680 1812 677 1812 651 1825 480 1825 482 1855"/>
+                        </Shape>
+                        <String CONTENT="course of five fairly favorable years. Such helpers are called “dwelling-mates”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l22" HPOS="480" VPOS="1872" WIDTH="1776" HEIGHT="59" BASELINE="482 1916 2256 1911" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="482 1916 482 1931 2254 1926 2256 1911 2252 1879 498 1872 495 1872 493 1872 491 1872 480 1879 482 1916"/>
+                        </Shape>
+                        <String CONTENT="(nɪm-tuˊmg̣ɪt); and the owners of every large flock, when short of hands, will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l23" HPOS="480" VPOS="1944" WIDTH="1776" HEIGHT="45" BASELINE="480 1974 2256 1974" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 1974 480 1989 2256 1989 2256 1974 2256 1944 480 1944 480 1974"/>
+                        </Shape>
+                        <String CONTENT="strive in every way to attract at least one poor family. Often these are poor"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l24" HPOS="478" VPOS="1989" WIDTH="1778" HEIGHT="61" BASELINE="480 2035 2256 2030" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2035 480 2050 2254 2045 2256 2030 2252 2002 2143 2002 2126 1989 2124 1989 2122 1989 2120 1989 2118 1989 2096 2000 2068 1989 2066 1989 2063 1989 2061 1989 2059 1989 2044 2002 1531 2002 1368 1989 1366 1989 1364 1989 1362 1989 1340 2002 1299 1991 1297 1991 1295 1991 1292 1991 1249 2002 1219 1991 1217 1991 1214 1991 1212 1991 1180 2002 1071 1991 1069 1991 1067 1991 1041 2004 853 2004 794 1991 792 1991 790 1991 788 1991 775 2002 736 1991 734 1991 731 1991 673 2002 528 1991 526 1991 524 1991 478 2004 480 2035"/>
+                        </Shape>
+                        <String CONTENT="relatives of the owner of the herd. If there are any young unmarried men"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l25" HPOS="480" VPOS="2063" WIDTH="1785" HEIGHT="47" BASELINE="480 2093 2265 2093" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2093 480 2110 2265 2110 2265 2093 2265 2063 480 2063 480 2093"/>
+                        </Shape>
+                        <String CONTENT="in these families, they will be offered a girl of the master’s family in marriage,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l26" HPOS="478" VPOS="2113" WIDTH="773" HEIGHT="58" BASELINE="480 2156 1251 2152" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2156 480 2171 1249 2167 1251 2152 1247 2121 550 2113 547 2113 478 2123 480 2156"/>
+                        </Shape>
+                        <String CONTENT="and thus become relatives of his."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-111_r4" HPOS="477" VPOS="2167" WIDTH="1778" HEIGHT="906" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="477 2167 2255 2167 2255 3073 477 3073"/>
+                    </Shape>
+                    <TextLine ID="mz_1-111_l27" HPOS="593" VPOS="2175" WIDTH="1663" HEIGHT="54" BASELINE="595 2212 2256 2208" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2212 595 2229 2254 2225 2256 2208 2252 2180 593 2175 595 2212"/>
+                        </Shape>
+                        <String CONTENT="With the beginning of summer, when sledges become useless and tents"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l28" HPOS="478" VPOS="2232" WIDTH="1778" HEIGHT="58" BASELINE="480 2275 2256 2268" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2275 480 2290 2254 2284 2256 2268 2252 2240 1071 2232 1069 2232 952 2242 524 2234 521 2234 519 2234 478 2245 480 2275"/>
+                        </Shape>
+                        <String CONTENT="cannot be moved around the country, the Chukchee herdsmen usually leave"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l29" HPOS="478" VPOS="2292" WIDTH="1776" HEIGHT="59" BASELINE="480 2336 2254 2331" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2336 480 2351 2252 2346 2254 2331 2250 2301 500 2292 498 2292 495 2292 493 2292 478 2299 480 2336"/>
+                        </Shape>
+                        <String CONTENT="their families in camp, and move with the herd about twenty miles away, to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l30" HPOS="480" VPOS="2364" WIDTH="1774" HEIGHT="49" BASELINE="480 2392 2254 2392" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2392 480 2407 2252 2413 2254 2392 2254 2364 480 2364 480 2392"/>
+                        </Shape>
+                        <String CONTENT="the summer pastures. Boys and girls of more than ten years, and young"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l31" HPOS="480" VPOS="2422" WIDTH="1772" HEIGHT="52" BASELINE="480 2452 2252 2452" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2452 480 2468 2250 2474 2252 2452 2252 2422 480 2422 480 2452"/>
+                        </Shape>
+                        <String CONTENT="women having no small children, usually go along for a time. While moving"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l32" HPOS="478" VPOS="2478" WIDTH="1772" HEIGHT="55" BASELINE="480 2509 2250 2513" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2509 478 2524 2245 2533 2250 2513 2247 2483 480 2478 480 2509"/>
+                        </Shape>
+                        <String CONTENT="about with the herd, the herdsmen have to carry on their backs all necessaries,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l33" HPOS="478" VPOS="2528" WIDTH="1776" HEIGHT="61" BASELINE="480 2574 2254 2569" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2574 480 2589 2252 2585 2254 2569 2250 2541 2189 2528 2187 2528 2128 2539 1953 2528 1951 2528 1840 2539 1814 2528 1812 2528 1810 2528 1691 2539 1674 2528 1671 2528 1669 2528 1567 2528 1565 2528 1563 2528 1526 2539 1435 2528 1433 2528 1340 2541 861 2530 859 2530 857 2530 855 2530 840 2543 589 2543 556 2530 554 2530 552 2530 478 2543 480 2574"/>
+                        </Shape>
+                        <String CONTENT="such as extra clothing, rifle and ammunition, kettles, and provisions. After"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l34" HPOS="480" VPOS="2602" WIDTH="1776" HEIGHT="45" BASELINE="480 2632 2256 2632" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2632 480 2647 2256 2647 2256 2632 2256 2602 480 2602 480 2632"/>
+                        </Shape>
+                        <String CONTENT="they have killed a reindeer, they must carry its skin and meat until it is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l35" HPOS="480" VPOS="2662" WIDTH="1774" HEIGHT="46" BASELINE="480 2693 2254 2693" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2693 480 2708 2254 2708 2254 2693 2254 2662 480 2662 480 2693"/>
+                        </Shape>
+                        <String CONTENT="consumed. For this reason the herdsmen are so averse to slaughtering an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l36" HPOS="478" VPOS="2723" WIDTH="1776" HEIGHT="46" BASELINE="478 2753 2254 2753" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="478 2753 478 2769 2254 2769 2254 2753 2254 2723 478 2723 478 2753"/>
+                        </Shape>
+                        <String CONTENT="animal at that season, that they sometimes go for several days on starvation"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l37" HPOS="476" VPOS="2771" WIDTH="1778" HEIGHT="56" BASELINE="478 2812 2254 2808" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="478 2812 478 2827 2252 2825 2254 2808 2250 2779 541 2771 539 2771 476 2782 478 2812"/>
+                        </Shape>
+                        <String CONTENT="rations. If the hoof-disease breaks out, they have plenty of meat, but they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l38" HPOS="478" VPOS="2827" WIDTH="1774" HEIGHT="63" BASELINE="480 2872 2252 2866" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2872 480 2890 2250 2885 2252 2866 2247 2838 1708 2827 1706 2827 1704 2827 1656 2840 478 2840 480 2872"/>
+                        </Shape>
+                        <String CONTENT="have to carry along additional loads of skins. Sometimes they are so heavily"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l39" HPOS="478" VPOS="2896" WIDTH="1776" HEIGHT="61" BASELINE="480 2933 2254 2929" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2933 480 2946 994 2957 996 2957 998 2957 1000 2957 1015 2946 2252 2946 2254 2929 2250 2898 478 2896 480 2933"/>
+                        </Shape>
+                        <String CONTENT="laden as to be hardly able to move. The burdens are carried by girls and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l40" HPOS="478" VPOS="2957" WIDTH="1774" HEIGHT="52" BASELINE="480 2992 2252 2987" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 2992 480 3009 2250 3005 2252 2987 2247 2959 478 2957 480 2992"/>
+                        </Shape>
+                        <String CONTENT="by men who are not very agile; while the best herdsmen must remain unen-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l41" HPOS="478" VPOS="3009" WIDTH="1057" HEIGHT="60" BASELINE="480 3050 1535 3048" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 3050 480 3069 1533 3069 1535 3048 1531 3020 569 3009 567 3009 478 3020 480 3050"/>
+                        </Shape>
+                        <String CONTENT="cumbered for moving swiftly around the herd."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-111_r5" HPOS="477" VPOS="3073" WIDTH="1778" HEIGHT="200" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="477 3073 2255 3073 2255 3273 477 3273"/>
+                    </Shape>
+                    <TextLine ID="mz_1-111_l42" HPOS="589" VPOS="3074" WIDTH="1665" HEIGHT="54" BASELINE="589 3108 2254 3108" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="589 3108 589 3128 2254 3128 2254 3108 2254 3080 589 3074 589 3108"/>
+                        </Shape>
+                        <String CONTENT="The time of the first sprouting of weeds, and the mushroom season in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l43" HPOS="476" VPOS="3130" WIDTH="1774" HEIGHT="59" BASELINE="478 3171 2250 3165" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="478 3171 478 3189 2247 3186 2250 3165 2245 3137 498 3130 495 3130 493 3130 491 3130 476 3137 478 3171"/>
+                        </Shape>
+                        <String CONTENT="the fall, are also hard on the herdsman; but the winter is easier, especially"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-111_l44" HPOS="476" VPOS="3186" WIDTH="1774" HEIGHT="63" BASELINE="478 3232 2250 3228" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="478 3232 478 3249 2250 3245 2250 3228 2247 3199 2204 3186 2202 3186 2200 3186 2198 3186 2174 3197 2081 3186 2079 3186 2022 3197 1998 3186 1996 3186 1994 3186 1992 3186 1990 3186 1970 3199 1860 3199 1803 3186 1801 3186 1739 3197 1708 3186 1706 3186 1704 3186 1648 3197 1583 3186 1580 3186 1578 3186 1544 3197 1513 3186 1511 3186 1509 3186 1429 3197 1370 3186 1368 3186 1366 3186 1364 3186 1347 3199 1260 3189 1258 3189 1256 3189 1223 3199 981 3189 978 3189 911 3199 855 3189 853 3189 734 3199 623 3189 621 3189 558 3199 502 3189 500 3189 498 3189 495 3189 476 3197 478 3232"/>
+                        </Shape>
+                        <String CONTENT="the coldest months, which have clear sky and calm air. If no wolves’ tracks"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
