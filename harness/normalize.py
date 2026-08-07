@@ -92,8 +92,30 @@ _SPACE_BEFORE_PUNCT = re.compile(r"[ \t]+([;:,])")
 # demands a non-space on each side.
 _SPACING_ANY = re.compile(r"\S {2,}\S|[ \t][;:,]")
 
+# A proposal's or decision's `note` and `resolved` are editorial commentary *about*
+# the page, not print-reproduction content, so §2.9 does not reach them: an
+# adjudicator's sentence is not a line of Bogoras and there is no printed spacing
+# for it to be drifting from. `_quote_hits` and `_apostrophe_hits` already scope
+# this way, and by the cleaner route — they parse the JSON and read `text`. These
+# two cannot, because `convert`'s whole safety argument is that it rewrites raw
+# source and never parses (see its docstring), so they recognise the field by the
+# shape of its line instead. Sound because these files are written by
+# `json.dump(indent=…)`, one field per physical line, with any newline inside a
+# value escaped rather than set.
+#
+# `1-194`'s note is the case: "Woke Nonsense  Line" reported as corpus drift and
+# `--commit` would have rewritten the human's prose to match a rule about print.
+_JSON_COMMENTARY = re.compile(r'^\s*"(?:note|resolved)":')
 
-def _fix_spacing(text: str) -> str:
+
+def _skip_line(line: str, commentary: bool) -> bool:
+    """Lines no spacing rule applies to: `#` comments, and — in JSON — the two
+    commentary fields. `commentary` is the caller saying "this file has them"."""
+    return bool(line.lstrip().startswith("#")
+                or (commentary and _JSON_COMMENTARY.match(line)))
+
+
+def _fix_spacing(text: str, commentary: bool = False) -> str:
     """Collapse §2.9 spacing drift, line by line, skipping `#`-comment lines.
 
     Line-by-line (not a whole-text regex) so a `#`-prefixed line — `lexicon_extra.txt`'s
@@ -103,7 +125,7 @@ def _fix_spacing(text: str) -> str:
     """
     out = []
     for line in text.split("\n"):
-        if line.lstrip().startswith("#"):
+        if _skip_line(line, commentary):
             out.append(line)
             continue
         line = _MULTI_SPACE.sub(" ", line)
@@ -112,7 +134,7 @@ def _fix_spacing(text: str) -> str:
     return "\n".join(out)
 
 
-def _spacing_hits(text: str) -> list[dict]:
+def _spacing_hits(text: str, commentary: bool = False) -> list[dict]:
     """Every spacing-drift occurrence, located. One record per match, not a tally —
     same reasoning as `_lookalikes`: a count is not something a reader can act on."""
     # **Whole-text probe first.** The line walk exists for the `#`-comment skip, so
@@ -125,7 +147,7 @@ def _spacing_hits(text: str) -> list[dict]:
         return []
     hits = []
     for lineno, line in enumerate(text.splitlines(), start=1):
-        if line.lstrip().startswith("#"):
+        if _skip_line(line, commentary):
             continue
         for pat, label in ((_MULTI_SPACE, "2+ spaces (§2.9 sentence spacing)"),
                            (_SPACE_BEFORE_PUNCT, "space before ;/:/, (§2.9)")):
@@ -556,7 +578,7 @@ def scan(root: Path = Path("."), paths: list[Path] | None = None) -> dict:
         for lineno, line in enumerate(nfd.splitlines(), start=1):
             for h in unlicensed_marks(line):
                 unlicensed.append({"path": rel, "line": lineno, **h})
-        for h in _spacing_hits(text):
+        for h in _spacing_hits(text, commentary=p.suffix == ".json"):
             spacing.append({"path": rel, **h})
         footnotes += _footnote_hits(p, root)
     return {"files": files, "nfd_offenders": offenders,
@@ -611,7 +633,8 @@ def convert(root: Path = Path("."), dry_run: bool = False,
             before = p.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
-        after = _fix_spacing(unicodedata.normalize("NFD", before))
+        after = _fix_spacing(unicodedata.normalize("NFD", before),
+                             commentary=p.suffix == ".json")
         if after == before:
             continue
 

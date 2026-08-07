@@ -55,6 +55,43 @@ class TestSpacing:
         once = _fix_spacing("a  ;  b")
         assert _fix_spacing(once) == once
 
+    # --- §2.9 is a rule about print, so it stops at the keyed text ------------
+    #
+    # `1-194`'s decision note read "Woke Nonsense  Line", which reported as corpus
+    # drift and which `--commit` would have rewritten. An adjudicator's sentence is
+    # not a line of Bogoras: there is no printed spacing for it to drift from, and
+    # the flag sent a human to look at a page where nothing was wrong.
+
+    COMMENTARY = ('  "12": {\n'
+                  '   "text": "runners made from the outer  layer of the larch",\n'
+                  '   "note": "Woke Nonsense  Line. i think it triggered on a speck",\n'
+                  '   "resolved": "крень = к, р, е, н, ь  (soft sign, §2.7)"\n'
+                  '  }')
+
+    def test_commentary_fields_are_not_print(self):
+        hits = _spacing_hits(self.COMMENTARY, commentary=True)
+        assert [h["line"] for h in hits] == [2]      # the `text` line, nothing else
+
+    def test_the_keyed_text_is_still_checked_beside_them(self):
+        """The scoping must not become a blanket exemption for the whole file —
+        `text` on the same record still reports, or a real drift hides behind a
+        note that happens to sit next to it."""
+        assert "outer" in _spacing_hits(self.COMMENTARY, commentary=True)[0]["token"]
+
+    def test_the_writer_agrees_with_the_reporter(self):
+        """Report and write are two walks over the same raw source, and a fix that
+        rewrote what no report mentioned would be the worse half of this bug:
+        silent, and on a human's prose."""
+        out = _fix_spacing(self.COMMENTARY, commentary=True)
+        assert "Nonsense  Line" in out and "н, ь  (soft" in out
+        assert "outer layer" in out
+
+    def test_commentary_scoping_is_off_by_default(self):
+        """Every non-JSON caller keeps the old behaviour: `readings.md` prose and
+        `lexicon_extra.txt` have no such fields, and a default that skipped
+        anything quoted would be a silent widening."""
+        assert [h["line"] for h in _spacing_hits(self.COMMENTARY)] == [2, 3, 4]
+
 
 class TestNFD:
     """NFD corpus-wide, and never NFKC."""
