@@ -64,6 +64,7 @@ import cloup
 from . import (
     _agents,
     _corpus,
+    _fig,
     _find,
     _lexicon,
     _ocr,
@@ -85,8 +86,8 @@ from ._common import (
     walk_surface,
 )
 
-GROUPS = (_tei, _ocr, _proposal, _zones, _lexicon, _find, _corpus, _views, _agents,
-          _verbs)
+GROUPS = (_tei, _ocr, _proposal, _zones, _fig, _lexicon, _find, _corpus, _views,
+          _agents, _verbs)
 
 
 def build_parser() -> click.Group:

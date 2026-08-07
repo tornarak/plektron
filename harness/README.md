@@ -767,9 +767,10 @@ columns and neither has to say so. Four properties bind callers:
   at 19% where the wall clock said 3%.
 - **Resolve a zone's type by `OtherTag/@LABEL`, never by tag ID.** eScriptorium
   assigns those per export (`BT55`/`BT56` in one, `BT68`/`BT69` in the next), so
-  hardcoding them fails silently rather than loudly — see
-  `tools/strip_graphiczone_lines.py`, where it "quietly became a no-op that
-  reported success". `figures.read_blocks` is the only place that does this.
+  hardcoding them fails silently rather than loudly: it once left a migration that
+  "quietly became a no-op that reported success"
+  (`git log -- tools/strip_graphiczone_lines.py`). `figures.read_blocks` is the
+  only place that resolves a label.
 - **An empty zone file is a claim, not an absence.** A plate has no text column, so
   zero zones is its correct segmentation; a page nobody opened is also zero zones.
   Only the file's existence separates them (`zones.has_zones`), which is why the

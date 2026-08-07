@@ -1180,6 +1180,70 @@ single store can answer it.
 
 ---
 
+## fig
+
+The figure and caption track in `gt/fig/`: one `GraphicZone` per picture and one
+`GraphicZone-FigDesc` per caption, **freely-placed rectangles** rather than the
+zone track's fixed-width bands of the measured column. The caption *text* is not
+here — it is hand-read into `data/readings.md`, keyed by the last field of a
+block id, and `harness corpus figures` is what reconciles the two stores.
+
+Its own group rather than actions under `zones`, because the geometry regime
+differs: a zone's x comes from the page's column and a hand-drawn width would be
+a lie the trainer learns, while a picture's x is exactly what a human saw. The
+two tracks share one editor and one keyboard (`harness zones edit`); they share
+no geometry, no split lists and no exemption files.
+
+**There is no view over `gt/fig/` and `mz/fig/`**, deliberately, where `zones/`
+covers the zone stores. Every consumer of figure geometry names `gt/fig` directly
+— `zones blot`, `ocr gaps`, `tei context`, the reader dispatch survey — and the
+one thing a view would buy is the one thing that must not happen: `zones blot`
+painting `scans/w-figs-blotted/` from *machine* figure claims, and the zone
+segmenter then training on them. A proposal reaches a human through the editor,
+which asks, or not at all.
+
+### fig check [PP-NNN ...]
+**Does** the gate. Named pages give their errors, warnings and exemptions in full; `--all` sweeps the store and lists only the pages with something to say.
+**Reads** `gt/fig/` or `mz/fig/` per `--store`, `gt/fig/_rule_exempt.json`, the split lists, `data/zones_config.json`, and each page's raster for its dimensions.
+**Writes** —
+**Exit** 1 if any page in `gt/` has an **error**; 0 otherwise. Always 0 for `--store mz`, which is measurement.
+```
+PP-NNN...     which pages; several may be given
+--all         every page the store holds
+--store gt|mz which store to read [gt]
+--root --json --toon --pager
+```
+**Note** **three errors, and the list is short on purpose.** A label the store does not declare; a `Shape/Polygon` that is not the rectangle its own bbox claims; a box off the raster. Each is unarguable — nothing could read the first, nothing does read the second, and the third describes part of a page that does not exist.
+**Note** everything else is a **warning**: configured in `data/zones_config.json`, exemptable per page, never gating. `captions-lte-figures` is a fact about *this book* (414 pictures to 395 captions, and every caption-heavy page this store ever held turned out to be a segmentation fault). `picture-overlap` and `tiny-picture` were briefly written as errors, on the zone track's model, and that was importing a rule from a geometry regime that does not apply: zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused, while figures are freely placed — an inset sits inside the frame it insets, two pictures on a plate may abut, and a 14×38 px box is suspicious rather than impossible. Over the migrated store the two produce exactly three findings (`1-189`, `1-334`, `2-085`), every one a real thing to look at and not one a thing the store must refuse to hold.
+**Note** an exempted rule **still reports**, flagged, the way the zone track's do — a warning that vanished when excused would leave no way to notice the excuse had outlived its page. An exemption naming a rule the config does not declare is an *error*, since a typo would otherwise excuse nothing while reading as a considered judgement.
+
+### fig delete PP-NNN ...
+**Does** withdraws pages from the figure store: the ALTO, the split mark, the rule exemptions.
+**Reads** `gt/fig/` and its sidecars.
+**Writes** with `--commit`: removes `gt/fig/chukchi-PP-NNN.xml`, keeping one `.xml.prev` deep, and appends to `gt/fig/_journal.jsonl`. Without it, nothing.
+**Exit** always 0; deleting what is not there is a row saying so, not a failure.
+```
+PP-NNN...     which pages; several may be given
+--commit      actually delete; without it the row is a preview
+--root --json --toon --pager
+```
+**Note** **the counterpart to the store's refusal of an empty page.** Absence of a file is how this store records "no figures here" — read that way by `zones blot`, `ocr gaps` and the reader dispatch alike — so an empty ALTO would assert the opposite of what it means, and a page whose last box was deleted has no other way to say so.
+**Note** **it does not touch `data/readings.md`.** The captions that named the deleted blocks become orphans, and that is the intended outcome: a geometry withdrawal cascading silently into hand-read text would be far worse than a loud reconciliation failure. The row counts the captions it orphans and `harness corpus figures` is what names them.
+**Note** no `--all`, for `zones delete`'s reason and one more: a corpus form would strand all 395 hand-read captions in one keystroke.
+
+### fig mets --out DIR
+**Does** writes a METS manifest over `gt/fig/` for importing the store into eScriptorium.
+**Reads** the filenames in `gt/fig/`.
+**Writes** `DIR/METS.xml`.
+**Exit** always 0; a store with no ALTOs is a usage error (2).
+```
+--out DIR     where to write it; required, with no default
+--root --json --toon --pager
+```
+**Note** **`--out` is required so this cannot land in `gt/fig/` by omission.** The manifest that used to live there was an export artifact, tracked, and describing a store that has since been rewritten under it — a manifest committed beside the thing it manifests is a second copy of that thing's shape with nothing keeping the two honest. Built on demand instead; zip it at the root beside the store's files.
+
+---
+
 ## views
 
 The derived trees git does not carry: the read views over the paired stores

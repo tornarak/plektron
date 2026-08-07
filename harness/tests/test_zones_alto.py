@@ -4,8 +4,8 @@ The properties tested here are the ones a later reader will assume without
 checking. Two matter more than the rest.
 
 **Labels resolve through TAGREFS, never through the tag ID.** The ids are assigned
-per export, and `tools/strip_graphiczone_lines.py` records what hardcoding them
-cost the last time: a migration that "quietly became a no-op and reported success".
+per export, and hardcoding them cost a migration once — one that "quietly became a
+no-op and reported success" (`git log -- tools/strip_graphiczone_lines.py`).
 `test_labels_survive_renumbered_tag_ids` perturbs every id in a written file and
 demands the labels still come back, which is the only form of that test that would
 have failed then.

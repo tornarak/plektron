@@ -117,7 +117,9 @@ def read_blocks(path: Path, with_points: bool = False) -> list[dict]:
     Zone type comes from `OtherTag/@LABEL` via `TAGREFS`, **never from the tag ID**:
     eScriptorium assigns those per export (`BT55`/`BT56` in one, `BT68`/`BT69` in
     the next), so code that hardcodes them fails silently rather than loudly.
-    `tools/strip_graphiczone_lines.py` records what that cost when it happened.
+    It cost a migration once, which "quietly became a no-op that reported
+    success" — `git log -- tools/strip_graphiczone_lines.py` for the script that
+    did it and the docstring that recorded why.
 
     A missing file returns `[]` rather than raising: absence is the ordinary case
     for both stores it serves — 580 of the 832 pages have no figure ALTO, and the
@@ -298,6 +300,68 @@ def set_rule_exempt(ref: str, rules: list[str], root: Path = Path("."),
     p.write_text(json.dumps(data, indent=2, sort_keys=True,
                             ensure_ascii=False) + "\n", encoding="utf-8")
     return {"ref": ref, "rules": data.get(ref, [])}
+
+
+METS_NS = "http://www.loc.gov/METS/"
+XLINK_NS = "http://www.w3.org/1999/xlink"
+
+
+def build_mets(names: list[str]) -> str:
+    """A METS manifest over a list of ALTO filenames, for eScriptorium import.
+
+    The shape mirrors what eScriptorium itself exports: one
+    `fileGrp USE="export"` listing the ALTOs, and a physical `structMap` with a
+    `div TYPE="page"` each, in filename order — which for `chukchi-PP-NNN` is page
+    order. No image fileGrp: on import the pages match images already in the
+    document, exactly as on the round-trip of an export.
+    """
+    from xml.sax.saxutils import quoteattr
+
+    files, divs = [], []
+    for i, name in enumerate(names, 1):
+        fid = f"export{i}"
+        files.append(f'        <file ID="{fid}">\n'
+                     f"          <FLocat xlink:href={quoteattr(name)}/>\n"
+                     f"        </file>")
+        divs.append(f'      <div TYPE="page">\n'
+                    f'        <fptr FILEID="{fid}"/>\n'
+                    f"      </div>")
+    nl = "\n"
+    return (f'<mets xmlns="{METS_NS}" xmlns:xlink="{XLINK_NS}">\n'
+            f"  <fileSec>\n"
+            f'    <fileGrp USE="export">\n{nl.join(files)}\n'
+            f"    </fileGrp>\n"
+            f"  </fileSec>\n"
+            f'  <structMap TYPE="physical">\n'
+            f'    <div TYPE="document">\n{nl.join(divs)}\n'
+            f"    </div>\n"
+            f"  </structMap>\n"
+            f"</mets>\n")
+
+
+def write_mets(root: Path = Path("."), out_dir: str | Path = "",
+               store: str = FIGDIR) -> dict:
+    """Write `METS.xml` for `gt/fig/` into a directory the caller names.
+
+    **Never into the store.** The manifest that used to live in `gt/fig/METS.xml`
+    was an eScriptorium export artifact, tracked, and describing a store that has
+    since been rewritten under it — a manifest committed beside the thing it
+    manifests is a second copy of the store's shape with nothing keeping the two
+    honest. It is built on demand now, and `--out` is required so it cannot land
+    back there by omission.
+
+    The manifest names the ALTOs, so a caller zips the store's files and this
+    manifest together at the zip root.
+    """
+    names = sorted(p.name for p in (root / store).glob("chukchi-*.xml"))
+    if not names:
+        raise ValueError(f"no chukchi-*.xml under {root / store}")
+    d = Path(out_dir)
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / "METS.xml"
+    p.write_text(build_mets(names), encoding="utf-8")
+    return {"path": str(p), "files": len(names),
+            "first": names[0], "last": names[-1]}
 
 
 def migrate_page(ref: str, root: Path = Path("."),

@@ -35,6 +35,13 @@ models/*
 # `gt/zones/*.prev`.
 !models/bogoras-seg/
 models/bogoras-seg/*.bak
+# The figure segmenter, on the same terms. Its manifest's corpus digest is over
+# `gt/fig/` rather than `gt/zones/`, which is the whole reason the two are separate
+# models rather than one with more classes: they are fitted to different stores and
+# read different rasters — zones-seg trains on figure-blotted pages, and a figure
+# segmenter obviously cannot, since the blot paints out its target.
+!models/bogoras-fig/
+models/bogoras-fig/*.bak
 
 # Transient working dirs: recognition output kept only for comparison, and
 # the sxiv review gates.
@@ -118,6 +125,17 @@ scans/w-ocr/
 gt/zones/*.prev
 gt/zones/*.tmp
 gt/zones/_journal.jsonl
+# `gt/fig/` on exactly the same terms: the 252 page ALTOs, the two split lists and
+# `_rule_exempt.json` are the authored record; the recovery data beside them is not.
+# `METS.xml` joins them because it is *derived from the store it sits in* — the one
+# that used to be tracked here was an eScriptorium export artifact describing a
+# store that has since been rewritten under it, which is a second copy of the
+# store's shape with nothing keeping the two honest. `harness fig mets --out DIR`
+# builds one on demand, and requires the directory so it cannot land back here.
+gt/fig/*.prev
+gt/fig/*.tmp
+gt/fig/_journal.jsonl
+gt/fig/METS.xml
 # `gt/lines/` is tracked on the same terms — the correction fragments and
 # `_ink_exempt.json` are the authored record, the recovery copy beside them is
 # not. Note what is *not* ignored: `gt/lines/*.xml` is a human's geometry over
@@ -175,6 +193,12 @@ train/
 # being promoted.
 /mz/zones/
 /mz/ocr/
+# `mz/fig/` too, and note there is deliberately **no `fig/` view** over it and
+# `gt/fig/` the way `zones/` covers the zone stores: every consumer of figure
+# geometry names `gt/fig` directly, and the one thing a view would buy is the one
+# thing that must not happen — `zones blot` painting the training rasters from
+# machine figure claims and the zone segmenter then learning them.
+/mz/fig/
 # The two read views, one name per page, the human file winning: `harness zones link`
 # builds the first, `harness ocr link` the second.
 #

@@ -40,15 +40,21 @@ error: it predicts 2782 for the covers where poppler renders 2781.
 
 ## The tools/ scripts
 
-`tools/` holds five scripts, none of them part of a loop. `make_mets.py <dir>`
-is live — it rebuilds a METS manifest before an eScriptorium import.
+`tools/` holds three scripts, none of them part of a loop.
 `greyscale_scans.py` is live but **only after a re-render**: it converts `scans/`
 to greyscale, is idempotent (a page already in mode `L` is left alone), and has
 to run whenever poppler has written the tree afresh.
-`migrate_coords.py` (150→300 dpi) and the two `strip_*_lines.py` (which produced
-the line-free `gt/fig/`) are **spent one-shot migrations**, kept for the
-reasoning in their docstrings; re-running either would corrupt what it already
-converted, and both say so at the top.
+`migrate_coords.py` (150→300 dpi) and `migrate_fig_bboxes.py` (which reduced
+`gt/fig/` to bounding boxes and re-keyed `data/readings.md` with it) are **spent
+one-shot migrations**, kept for the reasoning in their docstrings; re-running
+either would corrupt what it already converted, and both say so at the top.
+
+The METS manifest is `harness fig mets --out DIR` now, not a script — and it
+writes only where you point it, because the one that used to sit tracked in
+`gt/fig/` was an export artifact describing a store that has since been
+rewritten under it. The two `strip_*_lines.py`, which produced the line-free
+`gt/fig/`, are gone: `git log -- tools/strip_lines.py` has them, and the tag-ID
+lesson one of them recorded is quoted where it is load-bearing.
 
 # The derived trees
 
