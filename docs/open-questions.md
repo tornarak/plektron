@@ -55,6 +55,22 @@ in for an unread glyph.
   than a top-level body element, so `seam`'s two-sided-edge machinery does not
   reach it, and the pilot set has no attested instance — so it is deliberately
   unresolved rather than built for. The orphan-foot-text comment names no pass.
+- **Nothing is collated, and that is now the deliberate state.** `1-021` and
+  `1-022` were authored from a plaintext draft under the contract this milestone
+  replaced, and were deleted rather than carried forward — a page with no baseline
+  is a page `harness tei diff` can say nothing about, and generating one under it
+  after the fact would produce a comparison against a file no collator ever saw,
+  which is what `drifted` exists to refuse. So the corpus starts collation from
+  zero, and every page that enters `tei/` from here has a baseline behind it.
+
+  What those two pages bought before they went is the generator's only measured
+  agreement with a human pass, and it is worth keeping: on `1-021` the rules
+  produced **the same seven body blocks, the same five paragraph divisions and the
+  same note**, differing only in leaving the note unanchored at the foot and in
+  flagging both `MainZone-Other` blocks rather than shaping them. On `1-022` the
+  one Tier-1 handle it raised was `Döring`, which the human pass had also declined
+  to mark as foreign. **One page is not a rate**, and the honest open question is
+  whether that holds over a batch — the first real batch is the evidence.
 - **Corpus-stable identity is not settled**, and the id scheme deliberately does
   not provide it: ordinals move when content is inserted, so a pointer held
   outside the page would break silently. These ids are stable within a page file's
@@ -63,6 +79,12 @@ in for an unread glyph.
   of what is deferred: a Tier-1 name's **category** is now recorded by the
   collation pass, because only a reader of the page can see it, and only the
   **identity** waits — `@ref`/`@key` are gate errors until that scheme exists.
+  What is decided, and waits only on the store to point at: the refusal is lifted
+  rather than routed around, `validate` gains a referential-integrity check that
+  `@ref` resolves in the entity store, and a link a trigger-match proposed
+  mechanically carries a rank of its own (`#mz`, declared with that store and
+  deliberately not before — a rank with no referent in committed TEI is a
+  declaration nothing checks).
 - **The TEI is validated against TEI**, and the entry that stood here saying
   otherwise wanted "a committed schema and an assembly step". It needed the first
   and not the second. `data/tei_all.rng` is P5 4.12.0 (1.1 MB, committed so the

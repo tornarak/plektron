@@ -77,7 +77,7 @@ case "$TOOL" in
     P=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // empty')
     case "$P" in
       */gt/ocr/*|gt/ocr/*|*/mz/ocr/*|mz/ocr/*|*/ocr/*|ocr/*|*/zones/*|zones/*)
-        echo "Blocked: the draft reaches you through 'uv run harness tei context PP-NNN', which gives you catmus_draft, ocr_lines with the indices @facs cites, and tier1_terms with the ratified forms already keyed. The raw ALTO adds geometry the collation output carries none of, and a page of machine text you would then be reading as a witness rather than as a draft to correct." >&2
+        echo "Blocked: you do not read these stores — the generator already did. Your draft is the TEI 'tei claim' put at tei/chukchi-PP-NNN.xml, built from exactly these files, and 'uv run harness tei context PP-NNN' gives you the rest: ocr_lines with the indices @facs cites, and tier1_terms with the ratified forms already keyed. The raw ALTO adds geometry the TEI carries none of, and re-deriving the generator's own input by eye is how a reviewer talks itself out of a mechanical fact." >&2
         exit 2 ;;
       *keying_spec.md)
         echo "Blocked: keying_spec.md is TRANSCLUDED WHOLE into your system prompt — scroll up, it is already in your context under 'The keying spec, transcluded'. Reading it buys nothing and pays ~15k tokens for it twice. Cite the section you need by number; if a rule you expect is genuinely missing from what you were given, that is a finding for your report, not a file to go looking for." >&2
@@ -94,6 +94,15 @@ case "$TOOL" in
     P=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // empty')
     case "$P" in
       *..*) ;;
+      # **`mz/tei/` first, and it must stay first.** The allow below is
+      # `*/tei/chukchi-*.xml`, which matches `mz/tei/chukchi-1-021.xml` exactly as
+      # well as `tei/chukchi-1-021.xml` — so without this case a collator could
+      # overwrite the generated baseline it is reviewing, and `tei diff` would then
+      # compare the review against itself. The one comparison this pass has would
+      # silently become no comparison at all.
+      */mz/tei/*|mz/tei/*)
+        echo "Blocked: mz/tei/ is the generated baseline, and nothing you do touches it. 'harness tei claim' already copied it to tei/chukchi-PP-NNN.xml — that copy is your working file and the one you edit. The difference between the two IS the record of what you judged, so a write here would leave 'tei diff' comparing the review against itself. Regenerating is 'harness tei generate', and that is the coordinator's." >&2
+        exit 2 ;;
       */tei/chukchi-*.xml|tei/chukchi-*.xml) allow "collator authoring its page's TEI" ;;
       *"$MEMORY"*) allow "collator writing its own memory" ;;
     esac

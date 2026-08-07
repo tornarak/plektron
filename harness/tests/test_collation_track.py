@@ -12,6 +12,19 @@ for a plainer reason: it would overwrite committed work. And an uncollated prede
 is pointedly not a refusal here — it was an implicit one while the pass ran serially,
 because `tei seam` refuses without one, and moving the seam to the coordinator is what
 lets a batch be dispatched in any order at all.
+
+**Ground truth used to be an input and is now a precondition**, and the reversal is
+this file's other subject. The old rule took a draft from either store on the
+reasoning that a machine reading is workable and an adjudicated one merely better;
+what that bought was a pass whose input rank varied per page and a contract with a
+long section defending against exactly that. Collation now reviews a page *generated*
+from adjudicated text, so there is no lower-ranked draft left for the rule to admit,
+and the ambiguity is deleted rather than documented.
+
+That moves two things into the dispatcher that used to be nobody's: the baseline is
+built at queue time, and `claim` puts the working copy where the agent may write it.
+The second is why `reconcile` grew a fourth state — once claiming creates the
+deliverable, the deliverable's existence stops meaning the agent came back.
 """
 
 from __future__ import annotations
@@ -19,6 +32,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from conftest import write_scan
 
 from harness.dispatch import (
     COLLATE_DOC,
@@ -32,23 +46,39 @@ from harness.dispatch import (
     queue_refs,
     reconcile,
 )
+from harness.zones import save_zones
 
 REPO = Path(__file__).resolve().parent.parent.parent
-ALTO = ('<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#"><Layout>'
-        '<Page WIDTH="2550" HEIGHT="3525"><PrintSpace><TextBlock ID="b1">'
-        '<TextLine ID="l1" HPOS="10" VPOS="10" WIDTH="100" HEIGHT="20">'
+ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
+ALTO = (f'<alto xmlns="{ALTO_NS}"><Layout>'
+        '<Page WIDTH="2824" HEIGHT="3897"><PrintSpace>'
+        '<TextBlock ID="b1" HPOS="307" VPOS="200" WIDTH="1700" HEIGHT="45" '
+        'TAGREFS="T1">'
+        '<TextLine ID="l1" HPOS="307" VPOS="200" WIDTH="1700" HEIGHT="45">'
         '<String CONTENT="hi"/></TextLine></TextBlock>'
-        "</PrintSpace></Page></Layout></alto>")
+        "</PrintSpace></Page></Layout>"
+        f'<Tags><OtherTag ID="T1" TYPE="type" LABEL="MainZone-P"/></Tags></alto>')
 
 
-def make_page(root: Path, ref="1-075", *, ocr=True, gt=False, tei=False,
+def make_page(root: Path, ref="1-075", *, gt=True, zones=True, tei=False,
               exempt=False) -> Path:
-    """The smallest tree `collate_survey` reads."""
-    for store, on in (("ocr", ocr), ("gt/ocr", gt), ("tei", tei)):
-        d = root / store
+    """The smallest tree `collate_survey` reads, and `queue` can generate from.
+
+    `gt` and `zones` both default on because both are now preconditions: the tests
+    that matter turn one off and name what it costs.
+    """
+    write_scan(root, ref)
+    if gt:
+        d = root / "gt/ocr"
         d.mkdir(parents=True, exist_ok=True)
-        if on:
-            (d / f"chukchi-{ref}.xml").write_text(ALTO, encoding="utf-8")
+        (d / f"chukchi-{ref}.xml").write_text(ALTO, encoding="utf-8")
+    if zones:
+        save_zones(ref, [{"id": "z1", "label": "MainZone-P", "x0": 307,
+                          "y0": 200, "x1": 2085, "y1": 245}], root)
+    d = root / "tei"
+    d.mkdir(parents=True, exist_ok=True)
+    if tei:
+        (d / f"chukchi-{ref}.xml").write_text("<TEI/>", encoding="utf-8")
     lst = root / "gt/zones/_exempt.lst"
     lst.parent.mkdir(parents=True, exist_ok=True)
     lst.write_text(f"chukchi-{ref}.xml\n" if exempt else "", encoding="utf-8")
@@ -80,13 +110,34 @@ def test_a_collated_page_is_refused(tmp_path):
         queue_refs(["1-075"], tmp_path, track=COLLATION)
 
 
-def test_ground_truth_is_an_input_here_not_a_disqualification(tmp_path):
-    """The inverse of the reading pass's rule, and worth pinning because the two
-    stores are the same two. `gt/ocr` means the Tier-1 forms are ratified and
-    `tei expand` can write them in, so it is the *better* input."""
-    make_page(tmp_path, gt=True)
-    assert collate_survey("1-075", tmp_path)["gt"] is True
-    assert queue_refs(["1-075"], tmp_path, track=COLLATION)["queued"] == ["1-075"]
+def test_ground_truth_is_a_precondition_and_not_merely_a_better_input(tmp_path):
+    """The reversal, pinned. This rule used to be the inverse — either store would
+    do, and `gt/` was the better one — which left the pass unable to tell, per page,
+    whether it was reading adjudicated text or a recognizer at 0% on the inventory.
+    The refusal names the loop that fixes it rather than the file that is missing."""
+    make_page(tmp_path, gt=False)
+    assert collate_survey("1-075", tmp_path)["gt"] is False
+    with pytest.raises(Unready, match="rebuild-groundtruth"):
+        queue_refs(["1-075"], tmp_path, track=COLLATION)
+
+
+def test_keyed_zones_are_a_precondition_too(tmp_path):
+    """Ground truth alone is not readiness: the paragraph boundaries *are* the keyed
+    zone labels, so a page with adjudicated text and no human zoning has no structure
+    to generate from. `mz/zones/` is a prediction, which is not an assertion."""
+    make_page(tmp_path, zones=False)
+    with pytest.raises(Unready, match="zones edit"):
+        queue_refs(["1-075"], tmp_path, track=COLLATION)
+
+
+def test_queue_builds_the_baseline_it_is_about_to_deal_out(tmp_path):
+    """Generation is deterministic and wants no GPU, so making the coordinator run it
+    separately would only create a way to forget it — and a batch queued without
+    baselines fails one page at a time, in front of agents that cannot fix it."""
+    make_page(tmp_path)
+    assert collate_survey("1-075", tmp_path)["baseline"] is False
+    queue_refs(["1-075"], tmp_path, track=COLLATION)
+    assert collate_survey("1-075", tmp_path)["baseline"] is True
 
 
 def test_an_uncollated_predecessor_is_not_a_refusal(tmp_path):
@@ -96,12 +147,6 @@ def test_an_uncollated_predecessor_is_not_a_refusal(tmp_path):
     make_page(tmp_path)
     assert not (tmp_path / "tei" / "chukchi-1-074.xml").exists()
     assert queue_refs(["1-075"], tmp_path, track=COLLATION)["queued"] == ["1-075"]
-
-
-def test_a_page_with_no_draft_is_refused_naming_predict(tmp_path):
-    make_page(tmp_path, ocr=False)
-    with pytest.raises(Unready, match="ocr predict"):
-        queue_refs(["1-075"], tmp_path, track=COLLATION)
 
 
 def test_an_exempt_page_is_refused(tmp_path):
@@ -139,21 +184,35 @@ def test_the_claim_is_atomic_across_the_collation_queue(tmp_path):
     assert got[3:] == [None] * 5
 
 
-def test_the_claim_block_names_the_rank_of_its_own_input(tmp_path):
-    """`ocr: gt` is the licence to name a handle rather than key a form, and `mz` is
-    notice that the inventory is 0% right. The block says which in a word, because it
-    is the first thing the collator reads."""
-    make_page(tmp_path, gt=True)
+def test_claiming_puts_the_working_copy_in_place(tmp_path):
+    """**The copy is the harness's, not the agent's.** A collator's Bash surface is an
+    allowlist with no `cp` in it — a copy it could perform is one it could perform in
+    the wrong direction, back over the baseline that is the other half of `tei diff`.
+    Copying here also means review starts from the generated bytes exactly, which is
+    what makes that diff a record of judgement rather than of transcription."""
+    make_page(tmp_path)
     queue_refs(["1-075"], tmp_path, track=COLLATION)
     block = claim(tmp_path, COLLATION)
     assert block["ref"] == "1-075"
     assert "**1-075**" in block["page_block"]
-    assert "from the **gt** store" in block["page_block"]
+    working = tmp_path / "tei" / "chukchi-1-075.xml"
+    assert block["working_file"] == str(working)
+    assert working.read_bytes() == (tmp_path / "mz/tei/chukchi-1-075.xml").read_bytes()
     # `placeholders` is what the *template* declares, a diagnostic for whoever edits
     # the doc — so the check that substitution happened is that the rendered block
     # carries no brace left, not that the list is empty.
-    assert block["placeholders"] == "note ocr_store ref"
     assert "{" not in block["page_block"]
+
+
+def test_the_store_is_no_longer_named_in_the_page_block(tmp_path):
+    """`ocr_store` said `gt` or `mz` because either could arrive. With `mz` refused
+    outright the word carried no information, and a constant in a prompt is a line
+    every sibling pays for on every page to be told what the gate already guarantees."""
+    make_page(tmp_path)
+    queue_refs(["1-075"], tmp_path, track=COLLATION)
+    block = claim(tmp_path, COLLATION)
+    assert "ocr_store" not in block["placeholders"]
+    assert "mz" not in block["page_block"]
 
 
 def test_reconcile_keeps_each_track_s_own_words(tmp_path):
@@ -169,3 +228,20 @@ def test_reconcile_keeps_each_track_s_own_words(tmp_path):
               reconcile(["1-075", "1-076"], tmp_path, COLLATION)}
     assert states == {"1-075": "collated", "1-076": "unclaimed"}
     assert READING.missing == "CLAIMED, no proposal"
+
+
+def test_an_untouched_copy_does_not_read_as_a_collated_page(tmp_path):
+    """The fourth state, and the reason it had to exist. `claim` now creates the
+    deliverable, so its presence stopped meaning the agent came back: a collator that
+    died on its first turn leaves a file that a presence check reports as finished
+    work. Byte equality against the baseline is the honest test, and no real page
+    survives it — every one arrives with a lang-less wrap, an unresolved zone or a
+    missing `opens:` still to clear."""
+    make_page(tmp_path)
+    queue_refs(["1-075"], tmp_path, track=COLLATION)
+    claim(tmp_path, COLLATION)
+    assert reconcile(["1-075"], tmp_path, COLLATION)[0]["state"] == "CLAIMED, unedited"
+    p = tmp_path / "tei" / "chukchi-1-075.xml"
+    p.write_text(p.read_text(encoding="utf-8").replace("<pb", "<!-- read -->\n<pb"),
+                 encoding="utf-8")
+    assert reconcile(["1-075"], tmp_path, COLLATION)[0]["state"] == "collated"

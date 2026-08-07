@@ -199,6 +199,28 @@ train/
 # thing that must not happen — `zones blot` painting the training rasters from
 # machine figure claims and the zone segmenter then learning them.
 /mz/fig/
+# `mz/tei/` is the fourth, and the odd one: not a model's output but a *rule's*.
+# `harness tei generate` reads `gt/zones/` and `gt/ocr/` — both human-adjudicated —
+# and folds them into a first-draft TEI page, so its content is derived in the
+# strongest sense available here: same inputs, same bytes, no checkpoint and no
+# sampling in between. Regenerating it costs a second.
+#
+# It is ignored anyway, and for the reason that decides all four: **it is nobody's
+# judgement.** What a human ruled is already in the two stores it reads, and what
+# the collator ruled is in `tei/`, which is tracked. A committed copy would be a
+# third place the same facts live, going stale against both.
+#
+# **There is deliberately no view over the tei pair**, as with `fig` and unlike
+# `ocr`/`zones`. A view exists to give one stable name to a page's current best
+# reading; here the two files mean *different things* — `mz/tei/` is what the rules
+# produced and `tei/` is what a reader signed — and `harness tei diff` is the whole
+# point of being able to name them apart. A view would make `tei/…` ambiguous
+# between them, which is the one property this pair must not have.
+#
+# Anchored, like its siblings: a bare `tei/` would swallow the tracked `tei/` at the
+# repo root, and a store silently untracked is the failure this repo has already
+# paid for once.
+/mz/tei/
 # The two read views, one name per page, the human file winning: `harness zones link`
 # builds the first, `harness ocr link` the second.
 #

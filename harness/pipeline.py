@@ -18,7 +18,8 @@ rung's input is the one below it**:
     proposed   a reading proposal exists                    — review/PP-NNN/
     decided    a human adjudicated it                       — review/PP-NNN/
     ocr-gt     `restore` wrote the adjudicated text         — gt/ocr/
-    collated   the page has TEI                             — tei/
+    generated  the rules built a first-draft TEI            — mz/tei/
+    collated   a reader signed the page                     — tei/
 
 **`stage` is the furthest rung reached and is therefore a summary, so it ships
 beside `skipped`** — the rungs below it that are *not* satisfied. A summary that
@@ -51,7 +52,7 @@ from .paths import decisions_path, proposal_path
 # is `max` over it and `skipped` is everything below the max that is absent, so
 # both derive from this tuple and cannot disagree with each other.
 STAGES = ("scanned", "zoned-mz", "zoned-gt", "ocr-mz",
-          "proposed", "decided", "ocr-gt", "collated")
+          "proposed", "decided", "ocr-gt", "generated", "collated")
 
 # What `zones` reports when a human ruled the page is not a text page at all.
 # It satisfies the `zoned-gt` rung: that rung asks whether a human has been
@@ -79,6 +80,7 @@ def page_state(ref: str, root: Path = Path("."),
     stem = f"chukchi-{ref}.xml"
     ocr_gt = (root / "gt" / "ocr" / stem).exists()
     ocr_mz = (root / "mz" / "ocr" / stem).exists()
+    tei_mz = (root / "mz" / "tei" / stem).exists()
     row = {
         "ref": ref,
         "scan": scan,
@@ -90,6 +92,10 @@ def page_state(ref: str, root: Path = Path("."),
         "fig": (root / "gt" / "fig" / stem).exists(),
         "proposal": proposal_path(ref, root).exists(),
         "decision": decisions_path(ref, root).exists(),
+        # Both TEI stores, like `zones` and `ocr` above and for the same reason:
+        # they are two different claims about the page — what the rules produced and
+        # what a reader signed — and a single column would have to pick one.
+        "tei_mz": tei_mz,
         "tei": (root / "tei" / stem).exists(),
     }
     reached = {
@@ -108,6 +114,13 @@ def page_state(ref: str, root: Path = Path("."),
         "proposed": row["proposal"],
         "decided": row["decision"],
         "ocr-gt": ocr_gt,
+        # **Generation is a rung and not a detail**, because collation is now gated
+        # on it: `tei queue` refuses a page with no generated draft, so a page that
+        # has ground truth and no `mz/tei/` is genuinely not ready and the ladder
+        # should say which step is missing. It is also the only rung a single
+        # command fills for the whole corpus, which makes a non-empty count here a
+        # to-do rather than a finding.
+        "generated": tei_mz,
         "collated": row["tei"],
     }
     top = max((i for i, s in enumerate(STAGES) if reached[s]), default=-1)

@@ -408,3 +408,73 @@ for 2-034" — the §5.11 story above. The spec's statement is now scoped flat:
 no plain-digit convention for footnote markers exists anywhere in the corpus,
 no page is a precedent for one, and a detector firing on your output is the
 rule working, never a convention you have joined.
+
+## Collation moved behind ground truth, and the generator that made it possible
+
+The collation pass used to run on "whatever draft is current" — `ocr/`, the view,
+resolving to `gt/ocr/` where a human had been and `mz/ocr/` otherwise. That was
+written down as a feature: ground truth was **a better input rather than a
+disqualifying one**, the inverse of the reading loop's rule, and it meant collation
+did not have to wait.
+
+What it cost was a pass that could not see the rank of its own input. The same bytes
+arrived whether an editor had adjudicated every mark at the raster or CATMuS had read
+the page once at ~91% on the ASCII and **0% on the inventory**, and nothing in the
+payload distinguished them — an empty `tier1_terms` meant "no ground truth" on 802
+pages and "ground truth with no marked forms" on `3-063`, which call for opposite
+work. So `page_state` existed to say which, and the contract carried a section headed
+"the tautology hazard" telling the model that what reached it under a machine label
+was usually a careful human's reading, and that treating it as confirmation compared
+a file against something already agreeing with it.
+
+All of that was defence. **A comparison whose witnesses may be one witness must say
+so** — and the honest response, once the ground-truth loop had run far enough, was to
+stop having two rather than to keep describing the hazard. `tei queue` now refuses a
+page without `gt/ocr/`, and `page_state` and `catmus_draft` are both gone from the
+collation payload: the first could only ever report one value, and the second was a
+lower-ranked second copy of the page's text sitting beside the file under review.
+
+The second half is what made the reversal worth making rather than merely safe.
+`gt/zones/` records, on all 832 pages and keyed by a human, **where every paragraph
+begins** — `MainZone-P` against `MainZone-Continued` — plus which blocks are
+apparatus, which is the footnote apparatus, and which is a block quote. A collator
+was re-deriving all of it by eye from the raster. A second derivation of an
+adjudicated fact can disagree with the first, nothing downstream can tell which is
+right, and the disagreement is invisible because both readings look like prose.
+
+So `harness tei generate` builds the page by rule into `mz/tei/` and the pass reviews
+it. Three consequences worth recording:
+
+- **The pass acquired a baseline.** `harness tei diff` compares the generated file
+  against the collated one, which makes "did the collator invent this structure?" a
+  question with an answer for the first time. It was unanswerable for every page the
+  authoring pass produced.
+- **`claim` copies the baseline into `tei/`,** because the collator's Bash surface is
+  an allowlist with no `cp` in it and must stay that way: a copy it could perform is
+  one it could perform in the wrong direction, back over the baseline. The guard hook
+  refuses writes to `mz/tei/` outright — its existing `*/tei/chukchi-*.xml` allow
+  matched that path exactly as well, which is the over-broad-arm failure
+  `test_reader_guards.py` was written against, found in the act.
+- **`reconcile` grew a fourth state.** Once claiming creates the deliverable, the
+  deliverable's presence stops meaning the agent came back — a collator that died on
+  its first turn leaves a file that a presence check reports as finished work.
+  `CLAIMED, unedited` is byte equality against the baseline saying otherwise.
+
+**What the generator will not do is the load-bearing part.** Headings, tables, verse
+and captions all fall into `MainZone-Other`, whose `rank: null` is the store
+declining to tell them apart; note anchoring, figure placement and language identity
+are readings. Each leaves a comment naming itself, and `tei diff`'s `gen_comments`
+counts the ones still standing — so an unfinished page is detectable rather than
+merely unfinished.
+
+The sharpest case is the last. Every ratified Tier-1 token is lifted into an empty
+`<foreign index="N"/>` carrying **no `xml:lang`**, and `validate` errors on a
+lang-less `<foreign>` — which turns each into a question with exactly two answers:
+name the language and let `tei expand` write the adjudicated glyphs in, or unwrap,
+because it was never a foreign form. `tier1_terms` is a floor over inventory marks
+with no language awareness, and U+0308 combining diaeresis *is* an inventory mark
+(`ë`, `ä`), so it fires on `Döring` — ordinary German in English prose — exactly as
+on a Chukchee form. A generator that named a language there would be inferring one
+from the shape of a word, which is the firewall's failure mode one category over from
+glyphs. The gate closes a hole that predates all of this besides: a hand-written
+`<foreign>` with text and no language used to pass in silence.

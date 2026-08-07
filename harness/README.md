@@ -254,10 +254,20 @@ the validator that checks it.
 
 Also `_running_title`, the page's own folio, read from the three zones a number can
 print in — `FOLIO_ZONES`, in order of confidence — and the second witness to
-`state.py`'s prediction. `APPARATUS_ZONES` is the same three, kept out of
-`catmus_draft`; the exclusion lives in `build_context` and **not** in
-`_lines_from_alto`, which also feeds the lexicon frequency tables that
-`keying_spec.md` §5.1 cites. Same reader, two consumers, one exclusion.
+`state.py`'s prediction. `APPARATUS_ZONES` is the same three, kept out of the body
+`generate.py` writes and out of the text `detector_flags` reads; the exclusion lives
+in `build_context` and **not** in `_lines_from_alto`, which also feeds the lexicon
+frequency tables that `keying_spec.md` §5.1 cites. Same reader, two consumers, one
+exclusion.
+
+**`generate.py`** — the first-draft TEI page, by rule, into `mz/tei/`. Reads
+`gt/zones/` for the paragraph boundaries (`MainZone-P` opens one,
+`MainZone-Continued` does not), `zones.split_at_paragraphs` to cut a band that holds
+two, and `gt/ocr/` for the text. Emits a comment naming every judgement it declines
+— the `MainZone-Other` catch-all, note anchoring, figure placement, and the language
+of a Tier-1 form. `diff` compares it against the collated page; the generation stamp
+is what lets that comparison tell a difference review made from one a regeneration
+made under it.
 
 **`state.py`** — derived seam state. Folio comes from a committed TEI's `<pb n>` and
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is
@@ -633,8 +643,11 @@ its value — `zoned-mz` first counted against every exempt page, 83 plates
 drowning the one page that really had no prediction behind it. It reads
 **path presence only**, never a file's contents, which is what makes it ~0.4 s
 over 832 pages and also what it cannot answer — whether a page's zoning is any
-*good* is `zones check`'s question and costs a raster. The same row, minus `ref`,
-is `page_state` in `context.build_context`.
+*good* is `zones check`'s question and costs a raster. It gained a `generated`
+rung when collation became gated on one — a page with ground truth and no `mz/tei/`
+is genuinely not ready, and the ladder names which step is missing. It no longer
+feeds `context.build_context`: with the gate in place that payload could only ever
+have carried one value.
 **`proposal_check.py`** — a proposal's `resolved` field against its `text`, plus the
 field-editing verbs; `check` also runs `marks`' two deterministic arms when given a
 ref. **Every issue is one record shape** — `ISSUE_FIELDS`, built only through
@@ -740,7 +753,8 @@ columns and neither has to say so. Four properties bind callers:
   the second name, finds it already done, and skips silently — the report then
   undercounts exactly what it touched. `normalize.scoped_files` does this.
 - **`context._lines_from_alto` drops empty lines and discards `@ID`**, so a position
-  in `catmus_draft` is *not* an ALTO index. Join through `lines.page_lines`.
+  in the plaintext it produces is *not* an ALTO index. Join through
+  `lines.page_lines`.
   `detector_flags` used to inherit that offset; it now carries `index`, the ALTO
   identity, so a flag joins `ocr_lines` and resolves with `ocr zoom --only`. The
   position was replaced, not supplemented — see `detectors.detect_all`.

@@ -49,8 +49,8 @@ identity and never mint an index entry unreviewed.
   nearly every tutorial online is 4.x-era.** Verify flags against `kraken --help` /
   `ketos --help` rather than trusting remembered or documented syntax, including
   anything asserted in this file.
-- eScriptorium via `docker compose`, local. The annotation GUI, **not** the
-  system of record: export ALTO and commit every session.
+- eScriptorium is **out of the loop** — keying is `zones edit`/`ocr edit` in the
+  browser. The ALTO stores keep its shape and `fig mets` still exports for it.
 - GPU: Turing card, ~100× over CPU.
 
 # Encoding
@@ -94,8 +94,8 @@ Layout, all at the repo root:
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
             pictures and their captions; no lines), zones/ (the current
             segmentation), lines/ (the corrections overlay). Tracked.
-    mz/     what the models emitted, raw: zones/, ocr/ and fig/. Derived;
-            ignored. There is no read view over the fig pair, deliberately.
+    mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them, and
+            tei/ as the rules built it. Derived; ignored. No view over fig or tei.
     ocr/  zones/  the read views over the paired stores — symlinks, the human
             file always winning. Derived; ignored. Never written through.
     tei/    the collated pages, plus corpus-header.xml — the corpus teiHeader,
@@ -116,8 +116,8 @@ Counts deliberately absent — they go stale in a file nothing regenerates.
 **`harness corpus state` answers**, across every store at once as no store's own
 verb can; `--stage`/`--refs`/`--limit` make it a worklist.
 
-**The frontier is collation.** The apparatus stores are done and reconciled, so
-what is left is the pass that consumes them.
+**The frontier is collation**, and its input is ground truth: a page is ready when
+`corpus state` puts it at `ocr-gt`.
 
 ## The ground-truth loss
 
@@ -177,7 +177,7 @@ every byte of this file on every page.
 |---|---|
 | `CLAUDE.md` | project invariants, the store layout, and this table |
 | `keying_spec.md` | the character inventory. Binds both passes and the human keying track |
-| `.claude/agents/collator.md` | the OCR→TEI collation contract, whole — a collator's system prompt, spec transcluded |
+| `.claude/agents/collator.md` | the TEI review contract, whole — a collator's system prompt, spec transcluded |
 | `.claude/skills/transcribe-page/` | dispatching a batch of collators, and the seam afterwards |
 | `.claude/agents/groundtruth-reader.md` | the raster→ALTO reading contract, whole — a reader's system prompt, spec transcluded |
 | `.claude/skills/rebuild-groundtruth/` | dispatching and adjudicating a batch of readers |
@@ -194,29 +194,32 @@ every byte of this file on every page.
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
 
-Two passes, not one job: collation (OCR → TEI, `tei/`) and the ground-truth loop
-(raster → ALTO, `gt/ocr/`). Both dispatch one agent per page off a queue, contract
-in the agent body. Ground truth disqualifies a page from the second and improves
-it for the first.
+Two passes, not one job: the ground-truth loop (raster → ALTO, `gt/ocr/`) and
+collation (generated TEI → `tei/`). Both dispatch one agent per page off a queue,
+contract in the agent body. Ground truth disqualifies a page from the first and is
+a **precondition** of the second.
 
 # Current pipeline
 
-Zoning (`zones predict` → editor → `gt/zones/`) → lines + recognition in one
-pass (`ocr predict` → `mz/ocr/`, zones replacing blla's regions) → collation
-(LLM over scan + draft + precomputed context, gated by `tei validate`) →
-annotation (TBD) → compilation (TBD). The stage-by-stage detail and the design
-reasoning are `docs/pipeline.md`.
+`zones predict` → editor → `gt/zones/` → `ocr predict` → `/rebuild-groundtruth` →
+`gt/ocr/` → **`tei generate` → `mz/tei/`** (by rule: the keyed zone labels are the
+paragraph boundaries) → collation (an LLM reviews that page against the scan, gated
+by `tei validate`) → `tei/` → annotation (TBD) → compilation (TBD). Stage by stage,
+with the reasoning: `docs/pipeline.md`.
 
 # Collation
 
-Rules are `.claude/agents/collator.md`'s, dispatch is `/transcribe-page`. What
-stays here is the detector formula and the measurements that shaped the tools.
+**A model never authors structure a store already holds.** It judges what no rule
+can — a heading from a table, where a note anchors, what language a form is — and
+`tei diff` is its edits against the baseline. Rules are
+`.claude/agents/collator.md`'s, dispatch is `/transcribe-page`; here, the detector
+formula and the measurements that shaped the tools.
 
-**Transcription Detection** (speculative, mechanical, no judgement): inventory-glyph match ∪ word-medial
-  `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **English-lexicon miss**. The
-  numerator is a floor — unmarked ASCII inventory members (`c` = English *sh*, plain
-  `s`, `j`, `x`) are undetectable by construction, which is itself an argument for
-  route-all over per-glyph triage.
+**Transcription Detection** (speculative, mechanical, no judgement): inventory-glyph
+  match ∪ word-medial `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **English-lexicon
+  miss**. It is a **floor**: unmarked ASCII inventory members (`c` = English *sh*,
+  plain `s`, `j`, `x`) are undetectable by construction, and a hit is never a verdict
+  — an inventory mark also fires on ordinary German (`Döring`).
 
   A floor is not licence for noise above it: a detector firing on ordinary
   English buries the real hits. `data/lexicon_extra.txt` (committed, seeded via
@@ -224,23 +227,21 @@ stays here is the detector formula and the measurements that shaped the tools.
   dictionary carries, and **suppresses `lexicon_miss` and nothing else**.
 
 **Density, measured** on `1-048` and `2-030`, the two densest pages: inventory
-glyphs are **3.3% of characters** but fall in **43.8% of lines**. That
-asymmetry decides tool shape — the expensive act is re-orienting to a
-different line, not reading one already open — **so review is line-based**,
-and the span diff survives only as measurement.
+glyphs are **3.3% of characters** but fall in **43.8% of lines**. That asymmetry
+decides tool shape — the expensive act is re-orienting to a different line, not
+reading one already open — **so review is line-based**.
 
 ## Cross-page state
 
-Collation is per-page, dispatched a batch at a time. What crosses a page
-boundary crosses through the **committed TEI**, folded by `harness tei ledger`.
-The seam is the coordinator's: a page records `<!-- opens: … -->`, the witness
-only it saw; `tei seam` writes the verdict after the batch.
+Dispatched a batch at a time; what crosses a page boundary crosses through the
+**committed TEI**, folded by `harness tei ledger`. The seam is the coordinator's:
+a page records `<!-- opens: … -->`, the witness only it saw, and `tei seam` writes
+the verdict after the batch.
 
 ## TEI
 
 **Assembly is still unsettled**; the corpus teiHeader is not, and is
-`tei/corpus-header.xml`. The output contract and every encoding rule are the
-collator's in full. The annotation passes beyond it are TBD.
+`tei/corpus-header.xml`. Every encoding rule is the collator's in full.
 
 ## Open
 

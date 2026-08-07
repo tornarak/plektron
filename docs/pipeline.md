@@ -82,9 +82,43 @@ the stages that are built.
    mis-zoned or a zone is missing — the same finding `zones check --ink` reaches
    from the other side.
 
-3. **Collation** — An LLM (usually Sonnet-class) receives 1) the image of the original scan, 2) the OCR plaintext for that page, and 3) a machine-generated summary with useful contextual data (relevant TOC entries, list of page figures, etc.). It outputs TEI for that page. Built by `harness tei context`; gated by `harness tei validate`. Everything the model receives is deterministic and precomputed — it never re-derives ToC ids, figure zones, or detector flags.
-4. **Annotation** — TBD
-5. **Compilation** — TBD
+3. **Generation** — `harness tei generate` → `mz/tei/`, by rule and no model.
+   Paragraph boundaries come from the keyed `MainZone-P`/`MainZone-Continued`
+   labels, split further inside a band by `zones.paragraph_starts`; `<pb n>` from
+   the running title's folio; apparatus zones and caption lines dropped;
+   `MarginTextZone-Notes` collected into one unanchored `<note>`; every ratified
+   `tier1_terms` hit lifted into an empty `<foreign index="N"/>`.
+
+   **This stage exists because the collation pass was re-deriving adjudicated
+   facts.** A collator read the raster and decided where paragraphs began — on
+   pages whose `gt/zones/` records exactly that, keyed by a human. The second
+   derivation can disagree with the first, nothing downstream can tell which is
+   right, and the disagreement is invisible because both look like prose.
+
+   **What it will not do is the other half.** Headings, tables, verse and captions
+   all land in `MainZone-Other`, whose `rank: null` says the store declines to tell
+   them apart; note anchoring is a reading; a figure's place in the prose is a
+   reading; language is a judgement no inventory-mark detector can make. Each of
+   those leaves a comment naming itself, and the set of those comments is the next
+   stage's worklist.
+
+4. **Collation** — an LLM reviews the generated page against the scan, and its
+   deliverable is `tei/`. `harness tei claim` copies the baseline into place, so
+   the agent opens a file rather than authoring one, and **the difference between
+   the two stores is the record of what review judged** (`harness tei diff`) — a
+   comparison the pass did not have while it authored from plaintext. Context comes
+   from `harness tei context`, which now carries everything about the page that is
+   *not in the page*; gated by `harness tei validate`.
+
+   **Collation runs only after `gt/ocr/`**, which reverses the earlier position that
+   it "runs on whatever draft is current". Taking either store left the pass unable
+   to see, per page, whether it was reading a human's adjudication or a recognizer
+   at 0% on the inventory — and the defence against that was a long section of prose
+   telling the model not to trust its own input. `docs/decisions.md` carries the
+   reversal.
+
+5. **Annotation** — TBD
+6. **Compilation** — TBD
 
 ## Final Product
 
@@ -93,9 +127,17 @@ the stages that are built.
 3. **Figure captions** - `data/readings.md`, keyed `1-123|<zone-id suffix>` — the last field of the block id, which makes it a **foreign key**: `figures.save_figs` preserves ids for that reason where `zones.save_zones` re-mints them. The only caption store.
 4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`, the view: `gt/ocr/` where a human
    has been through the page, `mz/ocr/` otherwise. ALTO carrying the zones as
-   regions and the lines within them, dumped to plain text for the collation pass.
-   The regions are no longer useless — they are the seven declared types.
-5. **TEI** - `tei/chukchi-PP-NNN.xml`. Also the system of record for seam state:
+   regions and the lines within them. The regions are no longer useless — they are
+   the seven declared types, and they are what stage 3 reads structure out of.
+   **The collation pass no longer sees this file at all**: it reads a generated
+   page built from `gt/ocr/` by name, and the guard hook refuses it the raw ALTO.
+5. **Generated TEI** - `mz/tei/chukchi-PP-NNN.xml`. Derived and gitignored, and
+   **there is deliberately no view over the tei pair** the way `ocr/` covers the OCR
+   stores: a view exists to give one name to a page's current best reading, and here
+   naming the two apart is the whole point. It carries a generation stamp — version
+   plus a digest of both inputs — which is what lets `tei diff` tell a difference
+   review made from one a regeneration made under it.
+6. **TEI** - `tei/chukchi-PP-NNN.xml`. Also the system of record for seam state:
    its `<pb>` is where the printed folio enters the project, and `harness tei ledger`
    folds the committed files into the per-ref ledger the next page is built from.
 
@@ -109,5 +151,13 @@ the stages that are built.
    after the batch. What a fan-out gives up is `prev_tail` and `expected_folio` on
    every page but the first; `tei reservations` names what that blinded and
    `tei ledger` is where the folio check comes back, over the whole run at once.
-6. ???
-7. PROFIT!
+
+   **`claim` puts the working copy here**, copied from `mz/tei/`, because the
+   collator has no `cp` in its allowlist and must not have one — a copy it could
+   perform is a copy it could perform in the wrong direction, over the baseline that
+   is the other half of the diff. That is also why `reconcile` grew a fourth state:
+   once claiming creates the deliverable, the deliverable's existence stops meaning
+   the agent came back, and `CLAIMED, unedited` is byte equality against the
+   baseline saying so.
+7. ???
+8. PROFIT!

@@ -40,9 +40,9 @@ carry one.
 
 ## Dispatching
 
-    uv run harness ocr predict PP-NNN ...     in the parent if any page lacks a
-                                              draft — it wants the GPU
-    uv run harness tei queue PP-NNN ...       validates, writes the queue, prints
+    uv run harness corpus state --all --stage ocr-gt --refs   what is ready
+    uv run harness tei queue PP-NNN ...       validates, generates any missing
+                                              baseline, writes the queue, prints
                                               THE prompt
     …spawn one collator per page with that prompt, unedited and identical,
       staggering the first launch about ten seconds…
@@ -54,7 +54,8 @@ carry one.
 ref off the queue atomically. Identity of the first turn is what caches, so a ref
 written into a prompt costs every sibling the whole shared context.
 
-`queue` refuses a page that is already collated, has no draft, is marked exempt, or
+`queue` refuses a page that is already collated, **has no `gt/ocr/` or no
+`gt/zones/`**, is marked exempt, or
 is named twice — and refuses a batch whose agent file is missing, since the agent
 body *is* the contract. It does **not** refuse a page whose predecessor is
 uncollated: that is the change that makes a batch possible at all.
@@ -84,7 +85,13 @@ prediction was.
 The collating half parallelises; this half does not.
 
 1. **`harness tei reconcile PP-NNN ...`** the moment the agents return — `collated`,
-   `CLAIMED, no TEI` (took the page, did not come back), or `unclaimed`.
+   `CLAIMED, unedited` (took the page, changed nothing), `CLAIMED, no TEI` (took the
+   page, did not come back), or `unclaimed`. **`unedited` is new and is why the
+   check still works**: `claim` now creates the deliverable, so its presence stopped
+   meaning an agent came back — a collator that died on its first turn leaves a file
+   byte-identical to the baseline, and only comparing them says so.
+   `harness tei diff` is the finer version of the same question: `gen_comments`
+   counts the generator's questions still unanswered.
 2. **`harness tei reservations PP-NNN ...`** over every ref at once, and read the
    rows *against each other*. One page adrift is a page to re-read; all of them
    leaning the same way is systemic — the contract or the spec, not the collators.

@@ -526,3 +526,59 @@ def test_the_witness_sits_after_pb_and_not_before_it(tmp_path):
     assert not [e for e in rep.errors if "first element" in e], (
         "pb really is the first *element* here; that check is not the one that bites")
     assert any("no <!-- opens:" in e for e in rep.errors)
+
+
+# --- the two witnesses to how a page opens -----------------------------------
+
+def _opened(tmp_path, opens: str, zone_opens: str) -> str:
+    """A page carrying both comments, and the `witnesses` string `seam` reports."""
+    from harness.seam import _witnesses
+    p = tmp_path / "tei" / "chukchi-1-076.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        '<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body>'
+        f'<pb n="1"/><!-- opens: {opens} --><!-- zone-opens: {zone_opens} '
+        '(from the zone label) --><p>x</p></body></text></TEI>',
+        encoding="utf-8")
+    return _witnesses(p)
+
+
+def test_the_two_opening_witnesses_are_compared(tmp_path):
+    """An indented first line means a paragraph begins here; a first body zone
+    labelled `MainZone-P` means the same thing, and the two were established by
+    different acts months apart — a measurement of ink against a human's
+    segmentation. Agreement is worth reporting precisely because it was not
+    guaranteed."""
+    assert _opened(tmp_path, "indented", "fresh").startswith("agree")
+    assert _opened(tmp_path, "flush to the measure", "continued").startswith("agree")
+
+
+def test_a_disagreement_is_reported_and_not_refused(tmp_path):
+    """Both witnesses are human-rank, so neither loses to the other by rule. This
+    is an editorial question about the page and `seam` has no standing to decide
+    it — the refusals in this module are about *shape*, where one side is wrong by
+    construction."""
+    w = _opened(tmp_path, "indented", "continued")
+    assert w.startswith("DISAGREE") and "read the page" in w
+
+
+def test_no_witness_is_a_third_answer_and_not_a_missing_one(tmp_path):
+    """A page opening on a heading has no measure to judge, so `opens: no witness`
+    is a statement rather than a gap. Comparing it against the zone label would
+    manufacture a disagreement out of a page that said so honestly."""
+    assert "not comparable" in _opened(tmp_path, "no witness", "fresh")
+
+
+def test_one_witness_alone_is_reported_as_nothing(tmp_path):
+    """The comparison this project keeps meeting in new costumes. A page generated
+    before the zone-opens comment existed, or one whose reader left no `opens:`,
+    has one statement — and one statement compared with itself is the collapse, not
+    a cheap second check."""
+    from harness.seam import _witnesses
+    p = tmp_path / "tei" / "chukchi-1-077.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        '<TEI xmlns="http://www.tei-c.org/ns/1.0"><text><body>'
+        '<pb n="1"/><!-- opens: indented --><p>x</p></body></text></TEI>',
+        encoding="utf-8")
+    assert _witnesses(p) == ""

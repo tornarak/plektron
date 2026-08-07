@@ -211,6 +211,50 @@ def tail(ref: str, root: Path = Path(".")) -> dict | None:
     }
 
 
+#: What each `opens:` value implies about the gap, and what each `zone-opens:` value
+#: does. `no witness` maps to nothing: a page opening on a heading has no measure to
+#: judge, which is a third answer rather than a missing one.
+_OPENS_MEANS = {"indented": "fresh", "flush to the measure": "continued"}
+
+
+def _witnesses(page: Path) -> str:
+    """The two independent statements about how this page opens, compared.
+
+    `opens:` is a reader's, off the raster — whether the first line is indented.
+    `zone-opens:` is the generator's, off the keyed zone label — whether the page's
+    first body zone is `MainZone-Continued`. They are genuinely independent: one is
+    a measurement of ink, the other a human's segmentation act recorded months
+    earlier, and neither is derived from the other.
+
+    **Reported, never enforced.** Both are human-rank, so a disagreement is not a
+    fault in either — it is an editorial question about the page, and this verb has
+    no standing to decide it. Silence when either is absent, and silence for `no
+    witness`, because a comparison with one witness is the thing this project keeps
+    finding in new costumes.
+    """
+    from lxml import etree
+    try:
+        root_el = etree.parse(str(page)).getroot()
+    except Exception:
+        return ""
+    reader = zones = ""
+    for c in root_el.iter(etree.Comment):
+        t = (c.text or "").strip()
+        if t.startswith("opens:") and not reader:
+            reader = t[len("opens:"):].strip()
+        elif t.startswith("zone-opens:") and not zones:
+            zones = t[len("zone-opens:"):].split("(")[0].strip()
+    if not reader or not zones:
+        return ""
+    implied = _OPENS_MEANS.get(reader)
+    if implied is None:
+        return f"opens:{reader} / zone-opens:{zones} — not comparable"
+    if implied == zones:
+        return f"agree ({zones})"
+    return (f"DISAGREE: the raster says {reader!r} (so {implied}) and the keyed "
+            f"zone says {zones!r} — read the page before writing the seam")
+
+
 def set_seam(ref: str, open_gap: bool, root: Path = Path("."),
              commit: bool = False) -> dict:
     """Record whether the gap *before* `ref` carries an element across it.
@@ -234,7 +278,7 @@ def set_seam(ref: str, open_gap: bool, root: Path = Path("."),
             "must already be collated — work in scan order, or within a chapter.")
 
     out = {"ref": ref, "prev": pref, "open": open_gap, "committed": commit,
-           "changes": [], "refused": []}
+           "witnesses": _witnesses(here), "changes": [], "refused": []}
 
     htree = _load(here)
     ttree = _load(there)

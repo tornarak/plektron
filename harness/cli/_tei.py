@@ -13,6 +13,8 @@ from pathlib import Path
 from ..context import build_context
 from ..emit import emit_lines
 from ..expand import expand_page
+from ..generate import Unready, generate
+from ..generate import diff as gen_diff
 from ..ids import fix_page as fix_ids
 from ..ids import pair_glosses
 from ..render import mode, report, rule
@@ -50,6 +52,26 @@ def register(cli):
     # collation prompt, built to be handed to one model for one page; a merged
     # stream of them is not consumable by the thing it exists for.
     arg(p, "ref", metavar="PP-NNN")
+
+    p = action(g, "generate", run_generate, section="The collation pass",
+               help="build a first-draft TEI page from gt/zones/ and gt/ocr/ into "
+               "mz/tei/ — paragraph boundaries off the keyed zone labels, the folio "
+               "off the running title, the apparatus dropped, every judgement left "
+               "as a comment naming itself. What the collation pass reviews; it "
+               "authors nothing the stores already hold")
+    refs_arg(p, all_="every page holding both gt/ocr/ and gt/zones/")
+    opt(p, "--force", is_flag=True,
+        help="replace a baseline that already exists. Off by default because a "
+             "baseline a collator has copied is one half of `tei diff`, and moving "
+             "it under a review in progress makes that comparison a lie")
+
+    p = action(g, "diff", run_diff, section="The collation pass",
+               help="what review changed — the generated baseline in mz/tei/ "
+               "against the collated page in tei/. `gen_comments` is the count of "
+               "generator questions still unanswered, and `drifted` says the "
+               "baseline moved under the review, which makes every other column "
+               "noise. Measurement: always exit 0")
+    refs_arg(p, all_="every page holding a generated baseline")
 
     p = action(g, "validate", run_validate, section="The collation pass",
                help="the gate on a page's TEI. Exit 1 on FAIL. Checks "
@@ -234,6 +256,37 @@ def _collated(root: Path) -> list[str]:
     return all_refs(root, "tei")
 
 
+def _generatable(root: Path) -> list[str]:
+    """Every page holding both inputs. The intersection, not either store alone:
+    a page with zones and no ground truth is not a page this can read, and one with
+    ground truth and no zones has no paragraph boundaries to honour."""
+    from ..context import all_refs
+    return sorted(set(all_refs(root, "gt/ocr")) & set(all_refs(root, "gt/zones")))
+
+
+def run_generate(a) -> int:
+    """Report per ref. Never gates: a page it cannot build is `Unready` with the
+    verb that fixes it, which is a worklist line and not a failure of this run."""
+    rows = []
+    for r in page_refs(a) or _generatable(a.root):
+        try:
+            rows.append(generate(r, a.root, force=a.force))
+        except Unready as e:
+            from ..generate import skipped
+            rows.append(skipped(r, str(e)))
+    out(a, rows)
+    return 0
+
+
+def run_diff(a) -> int:
+    """An aggregate, like `zones diff`: refs scope the table rather than multiply
+    it, and every row already carries `ref`."""
+    from ..context import all_refs
+    refs = page_refs(a) or all_refs(a.root, "mz/tei")
+    out(a, [gen_diff(r, a.root) for r in refs])
+    return 0
+
+
 def run_validate(a) -> int:
     # **The one action that does not pool**, because its payload is a rendered
     # report and prose does not tabulate. N reports, `# REF` separated — the shape
@@ -243,7 +296,12 @@ def run_validate(a) -> int:
     worst = 0
     for r in refs:
         ctx = build_context(r, a.root)
-        worst = max(worst, _render_gate(a, validate(Path(ctx["output_path"]), ctx,
+        # The page's own path, built here rather than read out of `ctx`. It used to
+        # ride in the payload as `output_path`, which put a path the model never
+        # needed into every collation prompt so that this one line could avoid
+        # recomputing it.
+        page = a.root / "tei" / f"chukchi-{ctx['page_ref']}.xml"
+        worst = max(worst, _render_gate(a, validate(page, ctx,
                                                     ratified=a.ratified,
                                                     schema=a.schema),
                                         r if len(refs) > 1 else None))
@@ -363,16 +421,29 @@ def run_reconcile(a) -> int:
     missing = [r for r in rows if r["state"] != COLLATION.done]
     if not missing:
         return 0
-    held = [r["ref"] for r in missing if r["state"].startswith("CLAIMED")]
-    click.echo(
-        f"{len(missing)} of {len(rows)} produced no TEI: "
-        f"{', '.join(r['ref'] for r in missing)}. "
-        + (f"{len(held)} still held by a collator that took the page and did not "
-           f"come back ({', '.join(held)}) — check it is not simply still running, "
-           "then decide whether to re-queue."
-           if held else
-           "None is held, so the queue outran the collators or they were never "
-           "sent."), err=True)
+    # **Three ways to come back short, and they want different answers**, so the
+    # summary names each rather than pooling them under "no TEI" — which stopped
+    # being true the moment `claim` began writing the file. An `unedited` page has a
+    # deliverable and no work in it, and telling its coordinator that nothing was
+    # produced sends them looking for a missing file that is sitting right there.
+    unedited = [r["ref"] for r in missing if r["state"] == COLLATION.unedited]
+    held = [r["ref"] for r in missing
+            if r["state"] == COLLATION.missing]
+    parts = [f"{len(missing)} of {len(rows)} did not come back collated: "
+             f"{', '.join(r['ref'] for r in missing)}."]
+    if unedited:
+        parts.append(
+            f"{len(unedited)} byte-identical to the generated baseline "
+            f"({', '.join(unedited)}) — claimed and never edited, so the collator "
+            "died early or is still on its first turns.")
+    if held:
+        parts.append(
+            f"{len(held)} claimed with no file at all ({', '.join(held)}) — check "
+            "it is not simply still running, then decide whether to re-queue.")
+    if not unedited and not held:
+        parts.append("None is claimed, so the queue outran the collators or they "
+                     "were never sent.")
+    click.echo(" ".join(parts), err=True)
     return 1
 
 

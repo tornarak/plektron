@@ -668,7 +668,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     so a top-level import would close a cycle. Three other call sites in this
     package do the same for the same reason.
     """
-    from .pipeline import page_state
+    from .generate import GENDIR
     from .seam import tail as seam_tail
     ref = norm_ref(ref)
     stem = stem_for(ref, root)
@@ -677,13 +677,18 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         raise FileNotFoundError(f"no {ocr} — {ref} has no OCR yet")
 
     state = entry_state(ref, root)
-    # The draft is assembled here, not inside `_lines_from_alto`, because that
-    # reader is shared with `detectors.suggest_lexicon` and the corpus frequency
-    # tables. Excluding caption lines there would silently move published numbers:
-    # `2-030`'s caption alone carries 10 of the corpus's 109 U+0323 marks — 9.2% of
-    # them, from 2.0% of its characters — and keying_spec section 5.1 cites those
-    # tables for the "~90% of g's carry the dot" prior. Same reader, two consumers,
-    # and only one of them wants the exclusion.
+    # **`kept` outlived the draft it was built for.** It used to feed
+    # `catmus_draft`; what still needs it is `detector_flags`, which fires over the
+    # same filtered, joined text and must go on doing so — a flag on a running head
+    # or a caption is a flag on text that will never be in the body.
+    #
+    # The filtering stays here rather than moving into `_lines_from_alto` because
+    # that reader is shared with `detectors.suggest_lexicon` and the corpus
+    # frequency tables. Excluding caption lines there would silently move published
+    # numbers: `2-030`'s caption alone carries 10 of the corpus's 109 U+0323 marks —
+    # 9.2% of them, from 2.0% of its characters — and keying_spec section 5.1 cites
+    # those tables for the "~90% of g's carry the dot" prior. Same reader, two
+    # consumers, and only one of them wants the exclusion.
     from .lines import page_lines
     recs = page_lines(ocr, root)
     # A caption is text the project already has a *human* reading of
@@ -709,8 +714,6 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     kept = [r for r in recs
             if r["text"].strip() and not r["in_figdesc"]
             and r["zone"] not in APPARATUS_ZONES]
-    lines = [r["text"] for r in kept]
-    draft = _draft_text(lines)
     # **The flags read the joined text; the draft does not.** `join_broken_words`
     # rejoins a word the compositor broke across a printed line, and both `lexicon`
     # arms have read through it since 2026-08-03 — but this arm builds its own
@@ -761,24 +764,26 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
     window_folio, window_witness = _window_folio(state["expected_folio"], running)
 
     return {
+        # **The validator's two fields, and not the model's.** `validate` builds its
+        # own context and reads exactly these back — `root` for the full ToC id set
+        # (300-odd ids nobody would put in a prompt) and `page_ref` to re-read
+        # `tier1_terms` from the store rather than from this dict, which is what
+        # keeps the provenance check a second witness instead of the same one twice.
+        # They stay because something reads them; they are named here because
+        # nothing in the pass should.
         "page_ref": ref,
-        "stem": stem,
-        # For the validator's benefit: it re-reads the full ToC id set from
-        # here rather than the context carrying 300-odd ids the model never
-        # reads. Not part of the model's input contract.
         "root": str(root),
         "page_image": str(root / "scans" / f"{stem}.png"),
-        # **Which stores this page passed through to get here**, so the pass is
-        # not left inferring the rank of its own input. The draft looks the same
-        # whether a human adjudicated every line of it or CATMuS read it once, and
-        # nothing else in this payload says which: an empty `tier1_terms` means
-        # "no ground truth" on 802 pages and "ground truth with no marked forms"
-        # on `3-063`, and those call for opposite behaviour. `ocr: "gt"` is the
-        # licence to name a handle rather than key a form; `ocr: "mz"` is notice
-        # that the English is ~91% right and the inventory 0%.
-        "page_state": {k: v for k, v in page_state(ref, root).items()
-                       if k != "ref"},
-        "catmus_draft": draft,
+        # The generated page under review. **This replaces `catmus_draft`**, which
+        # was the pass's input while it authored TEI from plaintext, and which had a
+        # whole section of the contract defending against it: what arrived under a
+        # machine label was usually restored human ground truth, so the pass could
+        # not see the rank of its own input and was told at length not to guess.
+        # `tei queue` now refuses a page without `gt/ocr/`, so there is one rank and
+        # `page_state` had nothing left to report either. A lower-ranked second copy
+        # of the page's text, sitting beside the file being reviewed, would be the
+        # two-witnesses-that-are-one hazard pointed the wrong way.
+        "generated": str(root / GENDIR / f"{stem}.xml"),
         # Folio is a prediction from the preceding transcribed page, or null.
         # Null is not a defect: it means read it off the image and don't guess.
         "expected_folio": state["expected_folio"],
@@ -824,5 +829,10 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # stays uniform.
         "detector_flags": detected["tokens"],
         "balance_flags": detected["balance"],
-        "output_path": str(root / "tei" / f"{stem}.xml"),
+        # `stem` and `output_path` are gone with `page_state` and `catmus_draft`.
+        # They were justified as redundancy — the ref arrives in the page block, and
+        # naming the file again could only help — but preventing a write to the
+        # wrong path is the guard hook's job, mechanically, and a prompt variable
+        # cannot do it at all. What redundancy actually bought was a second place
+        # for a path to be right or wrong.
     }

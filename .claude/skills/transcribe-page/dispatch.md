@@ -20,9 +20,9 @@ its own ref with `tei claim`, atomically.
 
 ## The loop
 
-    uv run harness ocr predict PP-NNN ...    in the parent, if any page lacks a
-                                             draft — it wants the GPU
-    uv run harness tei queue PP-NNN ...      validates, writes the queue, prints
+    uv run harness corpus state --all --stage ocr-gt --refs  what is ready
+    uv run harness tei queue PP-NNN ...      validates, generates any missing
+                                             baseline, writes the queue, prints
                                              THE prompt
     …spawn one collator per page with that prompt, unedited and identical,
       staggering the first launch about ten seconds…
@@ -30,9 +30,13 @@ its own ref with `tei claim`, atomically.
     uv run harness tei reservations PP-NNN ... the batch's open questions, pooled
     uv run harness agents usage              what the fan-out paid
 
-`queue` refuses a page that is already collated, has no draft, is marked exempt, or
-is named twice — and **not** one whose predecessor is uncollated, which is the
-whole reason a batch can be dispatched at all.
+`queue` refuses a page that is already collated, **has no `gt/ocr/` or no
+`gt/zones/`**, is marked exempt, or is named twice — and **not** one whose
+predecessor is uncollated, which is the whole reason a batch can be dispatched at
+all. It also **generates any missing baseline** on its way past: generation is
+deterministic and wants no GPU, so a separate step would only be a step to forget,
+and a batch queued without baselines fails one page at a time in front of agents
+that cannot fix it.
 
 <!-- claim:begin -->
 
@@ -52,11 +56,13 @@ that drifts.
     Your page ref is **{ref}**. Do not touch any other page, and do not claim a
     second: one collator, one page.
 
-    Your draft comes from the **{ocr_store}** store.{note}
+    Your working file already exists at `tei/chukchi-{ref}.xml` — a copy of the
+    generated draft, put there for you. Read it first; you are reviewing it, not
+    writing it.{note}
 
     Run `uv run harness tei context {ref}` now. It is the whole input contract —
-    the draft, the folio witnesses, the ToC window, the ratified Tier-1 handles,
-    the line indices `@facs` cites — and it is built fresh for this page.
+    the folio witnesses, the ToC window, the ratified Tier-1 handles, the line
+    indices `@facs` cites — and it is built fresh for this page.
 
 <!-- prompt:end -->
 
@@ -66,7 +72,12 @@ The reading half parallelises; **the seam does not**, and it is yours rather tha
 any collator's.
 
 1. **`harness tei reconcile PP-NNN ...`** the moment the agents return — `collated`,
-   `CLAIMED, no TEI` (an agent took it and did not come back), or `unclaimed`.
+   `CLAIMED, unedited`, `CLAIMED, no TEI` (an agent took it and did not come back),
+   or `unclaimed`. `unedited` exists because `claim` now creates the deliverable:
+   its presence stopped meaning an agent came back, and byte equality against the
+   baseline is what tells the two apart. Then **`harness tei diff PP-NNN ...`** for
+   the finer question — `gen_comments` is the generator's questions still
+   unanswered, and `drifted` says a baseline moved under a review.
 2. **`harness tei reservations PP-NNN ...`** over every ref at once, and read the
    rows against each other. One page adrift is a page to re-read; all of them
    leaning the same way is *systemic* — the contract or the spec, not the collators.

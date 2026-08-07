@@ -565,11 +565,13 @@ def test_an_undeclared_name_type_is_refused(tmp_path):
                named(tmp_path, '<name type="village">Karagha</name>').errors)
 
 
-def test_the_declared_types_are_the_six(tmp_path):
+def test_the_declared_types_are_the_seven(tmp_path):
     """`zoonym` because a herding people names its reindeer; `mythonym` rather than
-    `theonym` because the book names supernatural beings that are not gods."""
+    `theonym` because the book names supernatural beings that are not gods; `event`
+    because an expedition is neither a person nor a place, and calling one after the
+    man it was named for is what `1-021` did with nothing better on offer."""
     assert NAME_TYPES == {"anthroponym", "ethnonym", "toponym", "hydronym",
-                          "zoonym", "mythonym"}
+                          "zoonym", "mythonym", "event"}
 
 
 def test_taxon_is_not_a_declared_type(tmp_path):
@@ -610,6 +612,16 @@ def test_an_english_person_is_a_name_like_a_tier1_one(tmp_path):
     exist here. No xml:lang, so no @resp: the firewall is about glyph identity, and
     nobody needs a model's authority to have read a Latin-alphabet surname."""
     assert not named(tmp_path, '<name type="anthroponym">Pavlutsky</name>').errors
+
+
+def test_an_event_is_a_name_at_any_tier(tmp_path):
+    """The second unscoped type, and for the same reason `anthroponym` is: every
+    attested case is English, so a Tier-1 scope would exclude all of them. The span's
+    extent is the judgement — that these five words are one name — which is exactly
+    what no match over finished TEI recovers."""
+    assert not named(
+        tmp_path,
+        '<name type="event">Jesup North Pacific Expedition</name>').errors
 
 
 # `<bibl>` marks that a work is cited. Which work is `find authority`'s answer, read

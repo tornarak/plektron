@@ -242,6 +242,58 @@ def test_validate_names_the_missing_step(tmp_path):
     assert any("never expanded" in e for e in validate(p, ctx).errors)
 
 
+# --- language is a judgement, and the empty handle is where it is asked for ----
+
+def _ctx(tmp_path, ref="1-151"):
+    return {"page_ref": ref, "root": str(tmp_path), "figures_on_page": [],
+            "ocr_lines": [], "toc_window": []}
+
+
+def test_a_foreign_with_no_language_is_refused(tmp_path):
+    """The shape `harness tei generate` writes, one per `tier1_terms` hit. It is
+    deliberately contentless: `<foreign>` means "not the surrounding language", so
+    without naming the language it asserts a negative about an unnamed positive,
+    and there is no fact it could be recording. The reviewer assigns or unwraps."""
+    from harness.validate import validate
+    p = _tei(tmp_path, "1-151", '<foreign index="1"/>')
+    errs = validate(p, _ctx(tmp_path)).errors
+    assert any("carries no xml:lang" in e for e in errs)
+
+
+def test_the_refusal_holds_for_a_foreign_carrying_text(tmp_path):
+    """The hole this closes predates the generator: a hand-written <foreign> with
+    text and no language used to pass in silence, which is the failure shape this
+    project is built against — well-formed, plausible, and asserting nothing."""
+    from harness.validate import validate
+    p = _tei(tmp_path, "1-151", "<foreign>Döring</foreign>")
+    errs = validate(p, _ctx(tmp_path)).errors
+    assert any("carries no xml:lang" in e for e in errs)
+
+
+def test_unwrapping_is_a_legal_disposition(tmp_path):
+    """`Döring` is ordinary German in English prose. `NON_ENGLISH_HITS` fires on it
+    correctly — U+0308 is an inventory mark — and the word was never foreign to
+    mark, so the reviewer deletes the wrapper rather than naming a language for it.
+    Nothing may push back toward wrapping it: the detector is a floor, not a
+    verdict."""
+    from harness.validate import validate
+    p = _tei(tmp_path, "1-151", "Mr. A. E. Döring drew the figures.")
+    errs = validate(p, _ctx(tmp_path)).errors
+    assert not [e for e in errs if "xml:lang" in e]
+
+
+def test_assigning_a_language_satisfies_it_and_the_rank_rule_takes_over(tmp_path):
+    """The other disposition, and the point of the seam between the two checks:
+    once a language is named the span is Tier-1 and the provenance rule owns it, so
+    naming a language without a rank trades one error for the right one rather than
+    for silence."""
+    from harness.validate import validate
+    p = _tei(tmp_path, "1-151", '<foreign xml:lang="ckt">kełiˊlın</foreign>')
+    errs = validate(p, _ctx(tmp_path)).errors
+    assert not [e for e in errs if "carries no xml:lang" in e]
+    assert any("carries no @resp" in e for e in errs)
+
+
 # --- the flags are what is *left* ---------------------------------------------
 
 def _ocr_view(tmp_path: Path, ref: str = "1-151") -> None:
@@ -342,11 +394,15 @@ def test_the_rejoined_form_is_not_offered_in_its_place(tmp_path):
                 if "Tor" in t["text"]]
 
 
-def test_the_flags_read_the_joined_text_and_the_draft_does_not(tmp_path):
-    """Both `lexicon` arms have read through `join_broken_words` since
-    2026-08-03; this arm builds its own draft and was left out, so the payload
-    went on reporting `Chuk`/`chee` as words no dictionary knows. The draft
-    itself must stay line-per-line — the model reads the raster beside it."""
+def test_the_flags_read_the_joined_text(tmp_path):
+    """Both `lexicon` arms have read through `join_broken_words` since 2026-08-03;
+    this arm built its own draft and was left out, so the payload went on reporting
+    `Chuk`/`chee` as words no dictionary knows.
+
+    The draft this shared a filter with is gone — the pass reviews a generated page
+    now — but the filtering it required stays, and that is the point worth pinning.
+    The flags still fire over the same kept-and-joined text, so a hit on a running
+    head or a caption cannot reach a payload whose body will never contain either."""
     from harness.context import build_context
     _broken_page(tmp_path)
     _ocr_view(tmp_path, "1-101")
@@ -355,7 +411,6 @@ def test_the_flags_read_the_joined_text_and_the_draft_does_not(tmp_path):
     tokens = {f["token"] for f in ctx["detector_flags"]}
     assert nfd("Tor-waˊwaq") in tokens
     assert not {nfd("waˊwaq"), "Tor"} & tokens
-    assert "(Tor-" in ctx["catmus_draft"]
 
 
 def test_an_unbroken_form_on_the_same_page_still_gets_one(tmp_path):

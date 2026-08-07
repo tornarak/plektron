@@ -522,6 +522,20 @@ def test_the_collator_reads_and_writes_its_own_page():
     allowed(COLLATOR_GUARD, "Write", file_path="tei/chukchi-1-075.xml")
 
 
+def test_the_generated_baseline_is_readable_and_not_writable():
+    """The over-broad-arm failure this file's docstring names, caught in the act.
+
+    The write allow is `*/tei/chukchi-*.xml`, which matches `mz/tei/chukchi-1-075.xml`
+    exactly as well as `tei/chukchi-1-075.xml` — so before the refusal was added
+    ahead of it, a collator could overwrite the generated baseline it was reviewing
+    and leave `tei diff` comparing the review against itself. Reading it stays
+    allowed: it is the same page and there is nothing secret about it, the working
+    copy `tei claim` made is simply the one that gets edited."""
+    allowed(COLLATOR_GUARD, "Read", file_path="mz/tei/chukchi-1-075.xml")
+    err = blocked(COLLATOR_GUARD, "Write", file_path="mz/tei/chukchi-1-075.xml")
+    assert "tei diff" in err
+
+
 @pytest.mark.parametrize("path", [
     "gt/ocr/chukchi-1-075.xml",
     "mz/ocr/chukchi-1-075.xml",

@@ -62,9 +62,26 @@ def test_a_full_run_skips_nothing(tmp_path):
     for rel in ("mz/zones/chukchi-1-151.xml", "gt/zones/chukchi-1-151.xml",
                 "mz/ocr/chukchi-1-151.xml", "review/1-151/proposal.json",
                 "review/1-151/decision.json", "gt/ocr/chukchi-1-151.xml",
-                "tei/chukchi-1-151.xml"):
+                "mz/tei/chukchi-1-151.xml", "tei/chukchi-1-151.xml"):
         touch(tmp_path, rel)
     assert page_state("1-151", tmp_path)["skipped"] == ""
+
+
+def test_a_page_collated_before_the_generator_says_so(tmp_path):
+    """`1-021` and `1-022`, reduced: authored by a collator from a plaintext draft
+    before `tei generate` existed, so they hold `tei/` with no `mz/tei/` behind
+    them. That is a retired route like `2-030`'s and the ladder reports it the same
+    way — the summary alone reads `collated` and says nothing about which pass
+    produced it."""
+    scanned(tmp_path, "1-021")
+    for rel in ("mz/zones/chukchi-1-021.xml", "gt/zones/chukchi-1-021.xml",
+                "mz/ocr/chukchi-1-021.xml", "review/1-021/proposal.json",
+                "review/1-021/decision.json", "gt/ocr/chukchi-1-021.xml",
+                "tei/chukchi-1-021.xml"):
+        touch(tmp_path, rel)
+    row = page_state("1-021", tmp_path)
+    assert row["stage"] == "collated"
+    assert row["skipped"] == "generated"
 
 
 # ------------------------------------------------- the rungs that were missed
@@ -144,10 +161,17 @@ def test_the_survey_reads_the_split_lists_once(tmp_path):
 
 # ------------------------------------------------- the same row in the payload
 
-def test_the_context_carries_the_page_state(tmp_path):
-    """So a collation pass is never left inferring the rank of its own input:
-    an empty `tier1_terms` means "no ground truth" on 802 pages and "ground
-    truth with no marked forms" on `3-063`, and those call for opposite work."""
+def test_the_context_no_longer_carries_the_page_state(tmp_path):
+    """It existed so a collation pass was never left inferring the rank of its own
+    input — the draft looked the same whether a human had adjudicated every line or
+    CATMuS had read it once, and `ocr: "gt"` versus `"mz"` was the whole difference
+    between naming a handle and keying a form.
+
+    `tei queue` now refuses a page without `gt/ocr/`, so the field could only ever
+    report one value. A constant in a prompt is worse than nothing: every sibling
+    pays for it on every page to be told what the gate already guarantees, and a
+    reader who finds it there reasonably assumes it could have said something else.
+    What replaced it is `generated` — the path of the page under review."""
     from harness.context import build_context
 
     scanned(tmp_path)
@@ -160,7 +184,9 @@ def test_the_context_carries_the_page_state(tmp_path):
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(alto, encoding="utf-8")
 
-    state = build_context("1-151", tmp_path)["page_state"]
-    assert state["ocr"] == "mz"
-    assert state["stage"] == "ocr-mz"
-    assert "ref" not in state          # `page_ref` already says which page
+    ctx = build_context("1-151", tmp_path)
+    assert "page_state" not in ctx and "catmus_draft" not in ctx
+    assert ctx["generated"].endswith("mz/tei/chukchi-1-151.xml")
+    # `page_state` itself is untouched and still answers for `corpus state`; what
+    # changed is only that the collation payload stops carrying a copy of it.
+    assert page_state("1-151", tmp_path)["ocr"] == "mz"

@@ -51,6 +51,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .context import norm_ref
+from .generate import GENDIR
 from .lines import ZOOM
 
 DOC = Path(".claude/skills/rebuild-groundtruth/dispatch.md")
@@ -243,12 +244,18 @@ def collate_survey(ref: str, root: Path = Path(".")) -> dict:
         "ref": ref,
         "exempt": (exempt.exists()
                    and f"{stem}.xml" in exempt.read_text(encoding="utf-8").split()),
-        # The draft, through the view — a collation input may come from either store
-        # and the view is where the human file wins. Unlike the reading pass, `gt/`
-        # here is a *better* input rather than a disqualifying one: it means the
-        # Tier-1 forms are ratified and `tei expand` can write them in.
-        "ocr": (root / "ocr" / f"{stem}.xml").exists(),
+        # **`gt/` by name, never the view.** This used to read `ocr/` and take
+        # either store, on the reasoning that a machine draft is workable and
+        # ground truth merely better. That was true while collation could run ahead
+        # of the reading loop, and it is what the whole `catmus_draft` tautology
+        # hazard existed to defend against — a draft whose rank the pass could not
+        # see. The pass now reviews a generated page built from adjudicated text, so
+        # the ambiguity has nothing left to protect and the gate deletes it instead.
         "gt": (root / "gt/ocr" / f"{stem}.xml").exists(),
+        "zones": (root / "gt/zones" / f"{stem}.xml").exists(),
+        # The generated baseline the collator reviews. `queue` builds it for any
+        # page lacking one, so this is a state to repair rather than a refusal.
+        "baseline": (root / GENDIR / f"{stem}.xml").exists(),
         "tei": (root / "tei" / f"{stem}.xml").exists(),
     }
 
@@ -269,21 +276,82 @@ def collate_build(ref: str, root: Path = Path("."), note: str | None = None) -> 
             "once against the image — would read the *previous* run's file as though "
             "it were this one's. Revising a collated page is a decision somebody "
             "makes, not something a batch does on its way past.")
-    if not s["ocr"]:
+    if not s["gt"]:
         raise Unready(
-            f"{r}: nothing at ocr/chukchi-{r}.xml — no draft to collate and no line "
-            f"indices for `@facs` to cite. Run `uv run harness ocr predict {r}` "
-            "first, in the parent: it wants the GPU.")
+            f"{r}: nothing at gt/ocr/chukchi-{r}.xml. **Collation runs after the "
+            "reading loop, not beside it** — the pass reviews a page built from "
+            "adjudicated text, and a machine draft would put a reviewer in front of "
+            "prose at ~91% and an inventory at 0% with nothing on the page saying "
+            f"so. Restore it first: `/rebuild-groundtruth {r}`.")
+    if not s["zones"]:
+        raise Unready(
+            f"{r}: nothing at gt/zones/chukchi-{r}.xml. The paragraph boundaries "
+            "*are* the keyed zone labels, and a prediction is not a human's "
+            f"assertion. Key the page: `uv run harness zones edit {r}`.")
     text = template(root, (BEGIN, END), COLLATE_DOC).format(
         ref=r,
-        # The rank of the pass's own input, in one word, because it decides whether
-        # the collator names a handle or keys a form. `context`'s `page_state` says
-        # the same thing in full; this is the sentence the agent reads first.
-        ocr_store="gt" if s["gt"] else "mz",
         note=f" {note.strip()}" if note else "")
     left = sorted(set(re.findall(r"\{(\w+)\}",
                                  template(root, (BEGIN, END), COLLATE_DOC))))
     return {**s, "page_block": text, "placeholders": " ".join(left)}
+
+
+def collate_prepare(ref: str, root: Path = Path(".")) -> None:
+    """Build the baseline for a page that has none, at queue time.
+
+    Generation is deterministic, reads no model and wants no GPU, so requiring the
+    coordinator to run it as a separate step would only create a way to forget it —
+    and a batch queued without baselines fails one page at a time, in front of
+    agents that cannot fix it. Existing baselines are left exactly as they are:
+    `generate` refuses to replace one without `--force`, which is what protects a
+    review already in progress.
+    """
+    from .generate import Unready as GenUnready
+    from .generate import generate
+    try:
+        generate(ref, root)
+    except GenUnready:
+        # The survey refuses this page in a moment, with the verb that fixes it.
+        # Raising here would report the same fault in the generator's words instead
+        # of the dispatcher's, and one of the two has to be the one that speaks.
+        pass
+
+
+def collate_open(ref: str, root: Path = Path(".")) -> dict:
+    """Put the working copy at `tei/`, so the collator opens a file rather than making one.
+
+    **The copy is the harness's and not the agent's.** A collator's Bash surface is
+    an allowlist with no `cp` in it, deliberately — a copy it could perform is a
+    copy it could perform in the wrong direction, back over the baseline that is the
+    other half of `tei diff`. Doing it here also means the review starts from the
+    generated bytes exactly, which is what makes that diff a record of judgement
+    rather than of transcription.
+
+    Never overwrites: `collate_build` has already refused a page whose `tei/` file
+    exists, so arriving here with one present would mean the two disagreed.
+    """
+    from .generate import gen_path
+    src, dst = gen_path(ref, root), _tei_page(ref, root)
+    if not src.exists() or dst.exists():
+        return {"working_file": ""}
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    dst.write_bytes(src.read_bytes())
+    return {"working_file": str(dst)}
+
+
+def collate_untouched(ref: str, root: Path = Path(".")) -> bool:
+    """Whether the page is still byte-identical to the baseline `claim` copied.
+
+    The deliverable existing stopped meaning the agent came back the moment `claim`
+    began creating it. Byte equality is the honest test and a cheap one: a collator
+    that read the page and changed nothing is not a case the corpus has — every page
+    arrives with at least a lang-less wrap, an unresolved zone, or a missing
+    `opens:` to clear.
+    """
+    from .generate import gen_path
+    src, dst = gen_path(ref, root), _tei_page(ref, root)
+    return (src.exists() and dst.exists()
+            and src.read_bytes() == dst.read_bytes())
 
 
 AGENT = Path(".claude/agents/groundtruth-reader.md")
@@ -385,6 +453,25 @@ class Track:
     # collation pass existing, which is a gratuitous break of a documented surface.
     done: str
     missing: str
+    # **Three optional hooks, and only collation uses any of them.** Reading deals
+    # out a raster, which needs no preparing; collation deals out a *file*, which
+    # has to exist and has to be put where the agent may write it.
+    #
+    #   on_queue   per ref, before the survey: build what the batch needs.
+    #   on_claim   after the page block is rendered: put the working copy in place.
+    #              Here rather than in the agent because the collator has no `cp`
+    #              and must not have one — its Bash surface is an allowlist, and a
+    #              copy it performed itself would be a copy it could perform in the
+    #              wrong direction.
+    #   untouched  reconcile's fourth state. Once `claim` writes the deliverable,
+    #              its mere existence stops meaning the agent came back — a
+    #              collator that died would leave an unedited copy that reads as a
+    #              finished page, which is precisely the silence `reconcile` exists
+    #              to break.
+    on_queue: Callable[[str, Path], None] | None = None
+    on_claim: Callable[[str, Path], dict] | None = None
+    untouched: Callable[[str, Path], bool] | None = None
+    unedited: str = "CLAIMED, unedited"
 
 
 def _proposal(ref: str, root: Path) -> Path:
@@ -401,7 +488,9 @@ READING = Track("reading", DOC, AGENT, QUEUE, CLAIMS, build, _proposal,
                 done="keyed", missing="CLAIMED, no proposal")
 COLLATION = Track("collation", COLLATE_DOC, COLLATE_AGENT, COLLATE_QUEUE,
                   COLLATE_CLAIMS, collate_build, _tei_page,
-                  done="collated", missing="CLAIMED, no TEI")
+                  done="collated", missing="CLAIMED, no TEI",
+                  on_queue=collate_prepare, on_claim=collate_open,
+                  untouched=collate_untouched)
 TRACKS = {t.name: t for t in (READING, COLLATION)}
 
 
@@ -437,6 +526,8 @@ def queue_refs(refs: list[str], root: Path = Path("."),
         seen.add(r)
         ordered.append(r)
     for r in ordered:
+        if track.on_queue:
+            track.on_queue(r, root)
         track.build(r, root, note)
     q, c = queue_path(root, track), claims_dir(root, track)
     q.parent.mkdir(parents=True, exist_ok=True)
@@ -505,7 +596,8 @@ def claim(root: Path = Path("."), track: Track = READING) -> dict | None:
     if taken is None:
         return None
     ref, note = taken
-    return track.build(ref, root, note or None)
+    block = track.build(ref, root, note or None)
+    return {**block, **(track.on_claim(ref, root) if track.on_claim else {})}
 
 
 def reconcile(refs: list[str], root: Path = Path("."),
@@ -526,7 +618,13 @@ def reconcile(refs: list[str], root: Path = Path("."),
         r = norm_ref(ref)
         marker = c / r
         when = marker.read_text(encoding="utf-8").strip() if marker.exists() else ""
-        if track.deliverable(r, root).exists():
+        if track.untouched and track.untouched(r, root):
+            # Checked *before* `done`, because the deliverable exists in this state
+            # too — `claim` put it there. A page that reads as collated and holds
+            # nothing but the generator's own bytes is the failure this ordering
+            # catches, and the one a presence check alone would report as success.
+            state = track.unedited
+        elif track.deliverable(r, root).exists():
             state = track.done
         elif marker.exists():
             state = track.missing

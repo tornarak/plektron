@@ -1,0 +1,1 @@
+- [tier1_terms lists Tier-2 names carrying inventory marks](tier1_terms_can_misfire_on_tier2_names.md) — a mechanical floor, working as specified; judge the language before using the <foreign>/index handle

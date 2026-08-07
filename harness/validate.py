@@ -103,6 +103,17 @@ GLOSS_TYPES = {"literal", "etymon"}
 # it cites by surname alone. Automatable coverage does not exist for that case, so
 # there is nothing to buy it back from.
 #
+# `event` is unscoped for the same reason and is the second exception, not a
+# loosening of the rule. Its attested cases are English — "the Jesup North Pacific
+# Expedition", "the Cossack wars" — so a Tier-1 scope would exclude every one of
+# them. It is not string-matchable either: the span's extent is the judgement. A
+# reader has to decide that "Jesup North Pacific Expedition" is one name and that
+# the bare "Jesup" a page later is the same event rather than the man it was named
+# after, and no match over finished TEI recovers that. It also removes a live
+# mistyping: `1-021` marked `Sibiryakoff` and `Jesup` inside expedition titles as
+# `anthroponym`, correctly under the old table and wrongly about the page, because
+# a person was the only thing there was to call them.
+#
 # One element with @type rather than TEI's <persName>/<placeName>/<geogName>,
 # because the untyped state has to be expressible in the *same* element: typing a
 # name later is then adding an attribute, not changing an element and moving the
@@ -114,6 +125,9 @@ GLOSS_TYPES = {"literal", "etymon"}
 #   mythonym  a mythological or supernatural being. Broader than `theonym`, which
 #             is the narrower class of gods, because the book names beings that are
 #             not gods at all.
+#   event     a named historical event or undertaking — an expedition, a war, a
+#             treaty. Named, not merely described: "the Cossack wars" is one and
+#             "the wars with the Cossacks" is prose about the same thing.
 #
 # Two rules this table cannot enforce and the pass has to hold to:
 #
@@ -130,7 +144,7 @@ GLOSS_TYPES = {"literal", "etymon"}
 # so it cannot be mined for this; inferring class from shape is the firewall's
 # failure mode one category over from glyphs.
 NAME_TYPES = {"anthroponym", "ethnonym", "toponym", "hydronym",
-              "zoonym", "mythonym"}
+              "zoonym", "mythonym", "event"}
 # Identity is the annotation pass's, over finished TEI. These attributes are how TEI
 # spells it, so refusing them is the deferral made mechanical rather than left as a
 # line in a skill's never-do list — a checkable rule does not depend on the pass
@@ -712,7 +726,25 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # an element sits, not about a character sequence — `normalize` runs over whole
     # files as text and cannot see that the space precedes a <note> rather than a
     # word.
+    #
+    # **A note that is a direct child of `<body>` is not anchored at all**, and the
+    # whitespace rule has nothing to say about it: there is no character it sets
+    # tight against. That is the state every generated page arrives in — the store
+    # holds `MarginTextZone-Notes` as one zone for the whole apparatus, so which
+    # body marker a note belongs to is a reading and the generator leaves it at the
+    # foot. It gets its own error, because the two proxy complaints it used to draw
+    # (a stray space, a missing `@n`) both described symptoms of being unanchored
+    # while naming something else, and a reviewer who fixes what the message says
+    # has not fixed the page.
     for note in root.iter(q("note")):
+        if etree.QName(note.getparent()).localname == "body":
+            r.errors.append(
+                f"<note n={note.get('n')!r}> is a child of <body> — it has not been "
+                "anchored. Move it inline to the character its printed marker "
+                "follows, and set @n from that marker. Where the apparatus holds "
+                "several notes, split them first: the store zones the whole foot as "
+                "one block and cannot say how many there are")
+            continue
         prev = note.getprevious()
         before = prev.tail if prev is not None else note.getparent().text
         if before and before != before.rstrip():
@@ -756,7 +788,11 @@ def validate(tei_path: Path, ctx: dict | None = None,
     for note in root.iter(q("note")):
         if note.get("place") != "bottom":
             r.errors.append("a <note> lacks place='bottom'")
-        if note.get("n") is None and NOTE_CONT_COMMENT not in comments_text:
+        # Silent on an unanchored note: the anchoring error already tells the
+        # reviewer to set `@n` from the printed marker, and a second line naming the
+        # same missing attribute in different words reads as a second thing to do.
+        if (note.get("n") is None and NOTE_CONT_COMMENT not in comments_text
+                and etree.QName(note.getparent()).localname != "body"):
             r.errors.append("<note> without n= but no continuation comment present")
         if note.get("n") is not None and not note.get("n").isdigit():
             r.warnings.append(f"<note n='{note.get('n')}'>: non-integer marker "
@@ -807,12 +843,55 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # went through `harness tei expand`, holding no text where the ratified form
     # should be. Named as the missing step rather than as a bad reference, and
     # detectable rather than merely suspected: `@index` is not a TEI attribute.
+    #
+    # **Silent where the element carries no Tier-1 `xml:lang`**, because there the
+    # missing step is not this one. `expand` refuses a handle whose element is not
+    # a Tier-1 span — "English is not transcluded" — so telling a reviewer to run it
+    # would send them to a verb that cannot help, and the check below already says
+    # what actually has to happen. Every generated page arrives with one handle per
+    # ratified token, so without this the ordinary state of a page nobody has
+    # touched is two errors per handle naming two different remedies, one of them
+    # inert. A detector firing on the ordinary case buries the one that is not.
     for el in root.iter():
-        if isinstance(el.tag, str) and el.get("index") is not None:
+        if (isinstance(el.tag, str) and el.get("index") is not None
+                and el.get(XML_LANG) in TIER1):
             r.errors.append(
                 f"<{etree.QName(el).localname} index='{el.get('index')}'> was "
                 "never expanded — run `harness tei expand` to write the "
                 "ratified form in")
+
+    # **A <foreign> with no @xml:lang says nothing at all**, and is the one element
+    # where that is true by definition: TEI's <foreign> means "not the surrounding
+    # language", so without naming the language it asserts a negative about an
+    # unnamed positive. Every other element here has a real untyped state — an
+    # untyped <name> records "the page marked a proper noun and did not say what
+    # kind", which is a finding — but there is no fact a lang-less <foreign> can be
+    # recording.
+    #
+    # It is a gate rather than a worklist because the pass cannot leave one behind
+    # by accident: `harness tei generate` writes exactly this shape, one per
+    # `tier1_terms` hit, precisely so the reviewer has to dispose of each. Two
+    # dispositions, and both are cheap — assign the language, and `tei expand` fills
+    # the ratified glyphs from `gt/ocr/`; or unwrap, because the detector is a floor
+    # over inventory marks and cannot tell a Chukchee form from a German surname
+    # carrying the same combining diaeresis. `Döring` on `1-022` is the standing
+    # case: U+0308 is an inventory mark, `NON_ENGLISH_HITS` fires correctly, and the
+    # word is ordinary German in English prose that was never foreign to mark.
+    #
+    # Unwrapping is the commoner answer on front matter and the rarer one in the
+    # body, and nothing here leans either way — that is the judgement being asked
+    # for. The check also closes a hole that predates the generator: a hand-written
+    # <foreign> with text and no language used to pass in silence.
+    for el in root.iter(q("foreign")):
+        if el.get(XML_LANG):
+            continue
+        span = " ".join("".join(el.itertext()).split())[:40]
+        held = f"index={el.get('index')!r}" if el.get("index") else repr(span)
+        r.errors.append(
+            f"<foreign {held}> carries no xml:lang — language unjudged. Assign one "
+            "(and `harness tei expand` writes the ratified form in), or unwrap it: "
+            "an inventory mark is not by itself a foreign form, and a name in an "
+            "ordinary European orthography is not one at all")
 
     # THE check, re-anchored: provenance rank, not agreement with an upstream file.
     # Every Tier-1 element declares who read it, and this pass may only ever claim

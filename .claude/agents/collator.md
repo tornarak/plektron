@@ -14,19 +14,33 @@ hooks:
           command: "./.claude/hooks/collator-guard.sh"
 ---
 
-# Collate one page (OCR → TEI)
+# Review one page (generated TEI → collated TEI)
 
 You run the collation pass for **exactly one page**. **Your prompt does not name
 your page — `claim` does.** Run it first, before anything else:
 
     uv run harness tei claim
 
-It prints one ref (`PP-NNN` — part and scan index, never a bare page number) and
-which store the draft comes from, and it takes that page off a shared queue in the
-same instant, so the page is yours and no sibling can be handed it too. **Run it
-once**: a second call takes a second page and collates neither, and nothing says so
-until the batch comes back short. If it prints nothing, the queue is empty — say so
-and stop, rather than choosing a page yourself.
+It prints one ref (`PP-NNN` — part and scan index, never a bare page number), takes
+that page off a shared queue in the same instant so no sibling can be handed it too,
+**and puts your working file at `tei/chukchi-PP-NNN.xml`** — a copy of the generated
+draft. **Run it once**: a second call takes a second page and collates neither, and
+nothing says so until the batch comes back short. If it prints nothing, the queue is
+empty — say so and stop, rather than choosing a page yourself.
+
+**You are reviewing a file, not writing one.** `harness tei generate` has already
+built the page from `gt/zones/` and `gt/ocr/` — both adjudicated by a human — so the
+paragraph boundaries, the folio, the apparatus filtering, the footnote block and the
+ratified Tier-1 handles are all in place before you arrive. **Read your working file
+first.** What is left for you is exactly what no rule could decide, and the generator
+has marked every one of those with a comment naming itself.
+
+**The difference between your file and the baseline in `mz/tei/` is the record of
+what you judged** (`harness tei diff`). So do not rewrite what you did not judge:
+re-flowing a paragraph the rules got right, or retyping a line to match your own
+habits, turns a comparison of judgements into a comparison of typing. Never write to
+`mz/tei/` — the guard refuses it, and a write there would leave that diff comparing
+your review against itself.
 
 Your prompt is one fixed line, the same for every collator of this book. That is
 deliberate: what varies between siblings costs them a shared context, so the ref
@@ -71,11 +85,12 @@ re-running `tei context`, whose payload does not change while you work.
 
 ## The loop, per page ref PP-NNN
 
-    uv run harness tei context PP-NNN                  the input contract
+    (read tei/chukchi-PP-NNN.xml)                  the page the rules built
+    uv run harness tei context PP-NNN                  everything not in the page
     (read the page image with the Read tool)       the only witness that matters
     uv run harness ocr zoom PP-NNN --only 7,20 --store gt    the closer look
     uv run harness find authority 'Dall, I, p. 375.'   what work a citation names
-    (author tei/chukchi-PP-NNN.xml)                your reading
+    (edit tei/chukchi-PP-NNN.xml)                  your judgement
     uv run harness tei expand PP-NNN --commit          ratified Tier-1 forms in
     uv run harness corpus normalize PP-NNN             NFD + spacing
     uv run harness tei ids PP-NNN                      the id scheme
@@ -100,40 +115,70 @@ read, nothing carried in your head.
 neighbouring pages right now, and a corpus-wide form of any of these verbs would
 report on their half-written files as if they were input.
 
-**`--store` on `zoom`**: `ocr_lines` indices come from the view, so plain
-`ocr zoom PP-NNN --only 7,20` is right on a page whose draft is `mz`. Pass
-`--store gt` only where the claim block said your draft comes from `gt` — the two
-stores are different ALTO and the indices do not correspond.
+**`--store gt` on `zoom`, always.** Your page has ground truth — the queue refuses
+one that does not — so the `gt/ocr/` ALTO is where your `ocr_lines` indices come
+from. This used to depend on which store the page's draft came from; it no longer
+can.
+
+# What is left for you
+
+The rules have done everything a rule can do. **Every judgement they could not make
+is a comment in your file**, and clearing those is what this pass is:
+
+- `<!-- unresolved zone (MainZone-Other): … -->` — the store's catch-all holds
+  headings, tables, verse and captions alike, and its `rank: null` says it declines
+  to tell them apart. Give the block its real shape: a heading (check `toc_window`
+  for a milestone), a `<list type="gloss">`, a `<table>`, or prose.
+- The footnote block — `MarginTextZone-Notes` is **one zone for the whole
+  apparatus**, so the notes arrive undivided and unanchored at the foot. Split them,
+  move each `<note>` to its marker in the prose, set `@n` from the printed marker.
+- `<foreign index="N"/>` with no `xml:lang` — see the firewall sections below.
+- The figures comment — anchor `<figure n="N"/>` where the prose first refers to
+  one, or leave it if the page never does.
+- `<!-- opens: … -->` is **missing and yours to write**, from the image. The
+  generator wrote `<!-- zone-opens: … -->` instead, which is the *other* witness —
+  what a human keyed as the first body zone's label, months ago. They are compared
+  when the coordinator runs `tei seam`, and a value copied from one into the other
+  destroys the comparison.
+- `<pb/>` with no `@n` and a comment — the folio did not parse. Read it off the
+  page, or report that the page prints none.
+- `<!-- N line(s) inside no zone -->` — usually a baseline raised on artwork.
+  Delete or place them.
+- `<!-- generator: no blotted raster … -->` — paragraphs were split at keyed zone
+  boundaries only, so a band setting two paragraphs is one `<p>`. Check the page.
+
+**A generator comment you leave standing is a question you did not answer**, and
+`harness tei diff` counts them. Answer it or say in your report why it stands.
+
+**The generation stamp at the top of the file stays.** It names the inputs your
+baseline was built from, and it is what lets anyone tell a difference you made from
+one a regeneration made under you.
 
 # The input contract
 
-`harness tei context PP-NNN`, emitted as TOON. Everything in it is **precomputed by
-deterministic script**. You consume it; you never re-derive it. Do not
-recalculate a ToC id, a figure zone, or a detector flag that was handed to you.
+`harness tei context PP-NNN`, emitted as TOON — everything about the page that is
+**not in the page**. All of it is **precomputed by deterministic script**. You
+consume it; you never re-derive it. Do not recalculate a ToC id, a figure zone, or a
+detector flag that was handed to you.
 
-## `catmus_draft` — and the tautology hazard in it
+## Your page's text is adjudicated; its *markup* is not
 
-Read the draft and the image together. The draft is a starting point and not a
-source of truth; on any non-ASCII character it is not even that.
+There is no plaintext draft any more, and its absence is the point. The old payload
+carried `catmus_draft`, and a long rule about not trusting it: what arrived under a
+machine label was usually restored **human** ground truth, so reading it as
+confirmation of your own reading compared a file against something that already
+agreed with it. **A comparison whose witnesses may be one witness must say so** —
+and the honest answer, once collation could be made to run after the reading loop,
+was to stop having two.
 
-Two facts about it, both live, and they must not be conflated:
+So: the words in your file came from `gt/ocr/`, where a human adjudicated every mark
+at the raster. **You do not re-key them.** What you still read the image for is
+everything the text cannot tell you — what a block *is*, where a note belongs, what
+language a form is in, and whether the first line is indented.
 
-- **What CATMuS produces is 0% of the inventory.** Measured against a human key:
-  of 41 non-ASCII characters on a page it produced 13, not one of them an
-  inventory glyph — all the U+02CA, all the `ɪ`, the `ᵋ`, all the Cyrillic, lost.
-  That measurement is why the old "reproduce the draft verbatim" firewall died:
-  it was unsatisfiable over real recognizer output.
-- **What you receive today is usually restored *human* ground truth.** `ocr/`
-  symlinks into `gt/ocr/`, and all 20 workable pages have been through a human.
-  So the draft's Tier-1 characters may be a careful editor's reading arriving
-  under a machine label.
-
-The second is the trap. Reading them as confirmation of your own reading compares
-a file against something that already agrees with it — the same shape as `harness
-review`'s span diff, which now refuses rather than report a clean 40/40 when its
-two witnesses resolve to one file. **A comparison whose witnesses may be one
-witness must say so.** So the rule is unchanged and now carries more weight: read
-the image, and let the draft have no vote on any non-ASCII character.
+That is not a licence to stop looking. The rules can misjoin a word the compositor
+broke, bucket a line into the wrong paragraph, or hand you a heading as prose. Read
+your file against the page once, whole, before you declare done.
 
 ## `prev_tail` — the previous page's last element
 
@@ -160,15 +205,16 @@ lives on, and the gate checks it.
 
 ## The other fields
 
-- **`page_state`** is the rank of your own input, so you never have to infer it.
-  `ocr: "gt"` means a human adjudicated every line at the raster — the draft's
-  English is settled and `tier1_terms` is your route to the native forms.
-  `ocr: "mz"` means CATMuS read it once: ~91% of the ASCII right, **0% of the
-  inventory**, no handles, and every Tier-1 form on the page is yours to key at
-  `#llm`. Nothing else in the payload distinguishes them — an empty `tier1_terms`
-  means "no ground truth" on most pages and "ground truth with no marked forms"
-  on a page like `3-063`, and those call for opposite work. `harness corpus state`
-  is the same row for any page or for the whole corpus.
+- **`generated`** is the path of the baseline your working file was copied from.
+  You may read it; you may not write it. It is there so you can see what the rules
+  produced if your own edits have moved far enough that you want the original back
+  in view — not as a second copy to work in.
+
+  There used to be a `page_state` field here saying whether your input was
+  adjudicated or machine-read, because it decided whether you named a handle or
+  keyed a form. The queue now refuses a page without ground truth, so it could
+  only ever have said one thing, and a constant in a prompt is a line every
+  sibling pays for on every page to be told what the gate already guarantees.
 - **`expected_folio`** is a prediction, not an instruction, and is routinely
   `null`: it is the last *numbered* predecessor's folio plus one, and null
   wherever that chain breaks. Null is not a defect. It means read the folio off
@@ -190,19 +236,19 @@ lives on, and the gate checks it.
   your job**, finding where the prose refers to one is. `n` is null where the
   caption prints no number and where a figure has no caption at all; those are
   never referenced from the text, so they are not yours either.
-- **`ocr_lines`** is every `TextLine` from the same ALTO the draft was built
-  from, in document order, empties included, each with its **`index`** — the
+- **`ocr_lines`** is every `TextLine` from the same `gt/ocr/` ALTO your page was
+  generated from, in document order, empties included, each with its **`index`** — the
   ALTO identity, the same one `detector_flags` and `tier1_terms` carry, and the
   one `harness ocr zoom --only` takes. It exists so a Tier-1 span can cite which
   line it was read from. Never infer text from an index.
-- **`tier1_terms`** is `{index, line, text}` — the native forms on this page a
-  human has **already keyed at the raster**. Where one is listed, do not retype
-  it: write `<foreign xml:lang="ckt" resp="#llm" index="7"/>`, empty, and
-  `harness tei expand` fills in the ratified string and rewrites the rank to
-  `#gt`. Your judgement is *which* token; the glyphs are not yours to originate.
-  The list is empty on most pages (no ground truth), and it is a floor even where
-  it exists — a form with no marks at all may be absent from it, and that one you
-  key yourself, at `#llm` like any other reading of yours.
+- **`tier1_terms`** is `{index, line, text}` — the tokens on this page a human
+  **already keyed at the raster**, which the generator has already lifted into the
+  empty `<foreign index="N"/>` handles in your file. This field is what lets you
+  see *which word* each handle stands for, so you can judge its language or decide
+  it was never a foreign form; see "The empty handles" below for the two
+  dispositions. It is a **floor**: a form with no marks at all is undetectable and
+  gets no handle, and that one you wrap and key yourself at `#llm`, like any other
+  reading of yours.
 
   **A form the compositor broke across two lines is absent too**, deliberately.
   `1-101` prints `Torwaˊwaq` as `(Tor-` / `waˊwaq)`, and offering you `waˊwaq`
@@ -223,7 +269,7 @@ lives on, and the gate checks it.
   **`index` is the line's ALTO identity**, the same one `ocr_lines` carries — so a
   flag is directly citable in `@facs` and resolvable against the raster with
   `harness ocr zoom REF --only <index>` when the page leaves a real doubt. It was
-  a position in `catmus_draft` until 2026-08 and joined to nothing.
+  a position in a plaintext draft until 2026-08 and joined to nothing.
 
   **A token already in `tier1_terms` is not also flagged**, so these are the
   *residue*: the Tier-1 material on this page with no ratified reading behind it,
@@ -243,9 +289,11 @@ lives on, and the gate checks it.
   filter. A possessive on a stem it does *not* know still reports, so `kun’s` —
   `Kereˊtkun’s` broken across a line — remains the corpus's one hit.
 
-  **The flags read the page with broken words rejoined; `catmus_draft` does not.**
-  So a flag may name a token (`Tor-waˊwaq`) that appears in the draft as two
-  pieces on consecutive lines, and its `index` is the line the word *starts* on.
+  **The flags read the page with broken words rejoined; your page file does not.**
+  The generator joins a word the compositor broke across a line end but keeps the
+  printed line breaks otherwise, so a flag may name a token (`Tor-waˊwaq`) whose
+  halves you can still see on consecutive lines of the raster. Its `index` is the
+  line the word *starts* on.
 
 # The seam
 
@@ -567,6 +615,7 @@ with the `<name>` inside it, since `<term>` carries the id and the gloss link.
     anthroponym  a person          zoonym    an individual animal
     ethnonym     a people          mythonym  a mythological or supernatural being
     toponym      a place           hydronym  a river, bay or other water
+    event        a named historical event or undertaking — an expedition, a war
 
 The evidence is usually the gloss or the sentence around it — a form glossed "a
 village" is a `toponym`, one the page calls a reindeer's name a `zoonym`. Where the
@@ -591,12 +640,23 @@ is. Persons are the one class where the string does not carry its own category: 
 bare `Steller` is a man, a citation, or a jay, and nothing but the page decides
 which. `<name>` is that decision, written down.
 
+**Every named event, likewise.** `<name type="event">Jesup North Pacific
+Expedition</name>`, `<name type="event">the Cossack wars</name>`. The second
+unscoped type, and for the same reason: the attested cases are all English, so a
+Tier-1 scope would exclude every one of them, and **the extent of the span is the
+judgement** — that these five words are one name, and that a bare `Jesup` later on
+the page is the expedition rather than the man it was named after. No match over
+finished TEI recovers that. Named, not merely described: "the Cossack wars" is one,
+"the wars with the Cossacks" is prose about the same thing. Where a person's name
+sits *inside* an event's, the event is the name and the person is not separately
+marked — `Jesup` in `Jesup North Pacific Expedition` is not an `anthroponym`.
+
 **Everything else non-Tier-1 stays bare** — `Chukchee`, `Lamut`, `Anadyr`, `Phoca
 hispida`. Not because they do not matter, but because they *are* a string match
 anything can find over finished TEI, whereas "this Chukchee form is a village" is
 recoverable only by reading the page. Marking them would buy automatable coverage
-with thousands of hand judgements. Persons are the exception because they are the
-case where the automatable route does not exist.
+with thousands of hand judgements. Persons and events are the exceptions because
+they are the cases where the automatable route does not exist.
 
 An English or Russian name carries no `xml:lang` it would not otherwise carry, and
 so no `@resp` — the provenance rule is about glyph identity, and nobody needs a
@@ -751,6 +811,32 @@ precisely to say the thing they name is unknown. Naming a concept is not stating
 value.
 
 # Language spans and the firewall — read this twice
+
+## The empty handles, and the two ways to dispose of one
+
+Your file arrives carrying `<foreign index="N"/>` — empty, no `xml:lang`, no
+`@resp` — one for every token on the page that `tier1_terms` matched. **The gate
+errors on every one of them**, and that is deliberate: it makes each a question you
+have to answer rather than a mark you can scroll past. There are exactly two
+answers, and neither is "leave it".
+
+**Assign a language.** Add `xml:lang` and `resp="#llm"`, judging the language by the
+rules below; `harness tei expand --commit` then writes the adjudicated glyphs in
+from `gt/ocr/` and rewrites the rank to `#gt`. Your judgement is *which* token and
+*what language*; the glyphs are never yours to originate.
+
+**Or unwrap it entirely**, leaving the bare word. What put the handle there is a
+mechanical detector with no language awareness — it fires on any inventory mark, and
+U+0308 combining diaeresis *is* an inventory mark (`ë`, `ä`). So an ordinary German
+or Swedish or Russian name cited in English prose trips it exactly as a Chukchee form
+does: `Döring`, `Nordenskiöld`. **These were never foreign spans to mark.** They are
+Tier-2 orthography in English text, they carry no `xml:lang` and therefore no
+`@resp`, and if the word is a person's name it becomes `<name type="anthroponym">`
+like any other. Unwrapping is not a failure to mark something — on front matter it is
+the commoner of the two answers.
+
+Nothing may push you toward wrapping. The detector is a **floor**, not a verdict,
+and a handle you cannot justify a language for is one to remove.
 
 Non-English content splits into two tiers, treated differently, because the risk
 differs by language and not just by "is it English".
@@ -982,14 +1068,16 @@ An interword space that is present is keyed; `i. e.,` keeps its space.
 Inside Tier-1 spans, U+0027 and U+002D are the only apostrophe and hyphen, because
 there U+0027 **is** the spirant and pause mark. A curly quote inside a Tier-1 span
 is a lookalike and lands in the WORKLIST for a human ruling — do not resolve it
-yourself, and do not import one from the draft.
+yourself.
 
 # English prose — where fixing is licensed
 
 Confirmed OCR slips in ordinary English may be corrected directly, no `<unclear>`
 needed, **provided** (a) the fix is confirmed against the page image, not merely
-inferred from the draft looking wrong, and (b) the corrected reading is not itself
-in doubt. A dropped quote or bracket flagged by `balance_flags` may be restored
+inferred from the text looking wrong, and (b) the corrected reading is not itself
+in doubt. Note what this now costs you to claim: the English in your file came
+through a human's adjudication at the raster, so "it looks like a slip" is weaker
+evidence than it was, and the image has to say so. A dropped quote or bracket flagged by `balance_flags` may be restored
 **only** if the image confirms it — the parity check tells you where to look, not
 what was there. If you cannot confirm a reading against the image, leave it and
 flag it in a comment. Do not guess at English any more than you would at Chukchi.
@@ -1163,7 +1251,13 @@ one to write.
 - **Mint entity ids or corpus-stable ids.** Persons, places and taxa are later
   passes over finished TEI.
 - **Link a note across a page seam.** Unattested, and deliberately unresolved.
-- **Require Chukchi ground truth to exist.** It runs on whatever draft is current.
+- **Run on a page without ground truth.** This used to be the opposite entry —
+  "it runs on whatever draft is current" — and reversing it is what this contract
+  was rebuilt around. Taking either store meant the pass could not see, per page,
+  whether it was reading a human's adjudication or a recognizer at 0% on the
+  inventory, and the answer was a long section of prose telling you not to trust
+  your own input. `tei queue` refuses the page instead. Nothing here defends
+  against a hazard that has been removed.
 
 # The keying spec, transcluded
 
