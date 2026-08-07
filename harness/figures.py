@@ -24,7 +24,9 @@ that hardcodes them fails silently rather than loudly.
 """
 from __future__ import annotations
 
+import json
 import re
+import time
 import unicodedata
 from pathlib import Path
 
@@ -42,7 +44,34 @@ FIGDESC = "GraphicZone-FigDesc"
 # store's rank should be readable from where it lives rather than from a doc that says
 # so. It was a bare top-level `fig/` while that was still an open question.
 FIGDIR = "gt/fig"
+
+# What the segmenter emitted, raw, on the `mz/zones/` model: derived, ignored, and
+# never a substitute for the human file. There is deliberately **no read view** over
+# the pair the way `zones/` covers `gt/zones` and `mz/zones`. Every consumer of
+# figure geometry — `zones.blot_one`, `lines.figure_boxes`,
+# `context._figures_on_page`, `dispatch.survey` — names `gt/fig` directly, and the
+# one thing a view would buy is the one thing that must not happen: `zones blot`
+# painting `scans/w-figs-blotted/` from *machine* figure claims and the zone
+# segmenter then training on them. A proposal reaches a human through the editor,
+# which asks, or not at all.
+MZFIGDIR = "mz/fig"
 READINGS = "data/readings.md"
+
+
+def zone_suffix(block_id: str) -> str:
+    """The part of a block id that keys `data/readings.md`.
+
+    Two id schemes exist and this reads both: eScriptorium's
+    `eSc_textblock_ca04178c` and this project's `fig_1-037_002`. Taking the last
+    underscore-delimited field rather than a fixed slice is what lets the two
+    coexist while the store migrates, and it is why the migration could land the
+    helper first and the files second.
+
+    The suffix is a **foreign key**, which is the whole reason `save_figs` will not
+    re-mint ids positionally the way `zones.save_zones` does: there, nothing points
+    at a zone id; here, 395 reading blocks do.
+    """
+    return (block_id or "").rsplit("_", 1)[-1]
 
 
 def _labels(tree) -> dict[str, str]:
@@ -124,7 +153,8 @@ def read_blocks(path: Path, with_points: bool = False) -> list[dict]:
     return out
 
 
-def zones(ref: str, root: Path = Path(".")) -> list[dict]:
+def zones(ref: str, root: Path = Path("."), store: str = FIGDIR,
+          with_points: bool = False) -> list[dict]:
     """Every declared zone on one page of the **figure** track.
 
     Three callers need exactly this — `context._figures_on_page` (to hand the model
@@ -132,14 +162,19 @@ def zones(ref: str, root: Path = Path(".")) -> list[dict]:
     dropped-line detector), and `lines`' caption-line marking. The walk itself is
     `read_blocks`; what this adds is the binding to `gt/fig/`, which is the part a
     caller must not have to know.
+
+    `store` defaults to the human file, so a caller that does not ask cannot be
+    handed a machine proposal. `with_points` forwards to `read_blocks` for
+    `validate_fig_page`, which has to know whether a block really is the rectangle
+    its bbox implies — the same question `zones.validate_page` asks of its own store.
     """
-    return read_blocks(alto_for(ref, root))
+    return read_blocks(alto_for(ref, root, store), with_points=with_points)
 
 
-def fig_refs(root: Path = Path(".")) -> list[str]:
+def fig_refs(root: Path = Path("."), store: str = FIGDIR) -> list[str]:
     """Every ref with a figure-track ALTO, in (part, scan index) order."""
     refs = []
-    for p in (root / FIGDIR).glob("chukchi-*.xml"):
+    for p in (root / store).glob("chukchi-*.xml"):
         try:
             refs.append(norm_ref(p.stem))
         except ValueError:
@@ -147,8 +182,360 @@ def fig_refs(root: Path = Path(".")) -> list[str]:
     return sorted(set(refs), key=parse_ref)
 
 
-def alto_for(ref: str, root: Path = Path(".")) -> Path:
-    return root / FIGDIR / f"chukchi-{norm_ref(ref)}.xml"
+def alto_for(ref: str, root: Path = Path("."), store: str = FIGDIR) -> Path:
+    return root / store / f"chukchi-{norm_ref(ref)}.xml"
+
+
+def fig_dir(root: Path = Path("."), store: str = FIGDIR) -> Path:
+    return root / store
+
+
+# --- the store's own sidecars ----------------------------------------------
+#
+# All four live in `gt/fig/` and none is shared with `gt/zones/`. The two stores
+# answer different questions about the same page, and an exemption filed against
+# one of them says nothing about the other: this repo has already paid once for a
+# single exemption file serving two domains, where a band ruled "not type" for the
+# line checker also silenced the zone checker and a dropped folio went unseen.
+# Two files that look redundant until the day they are not.
+TRAIN_LST = "_train.lst"
+EVAL_LST = "_eval.lst"
+
+# Two splits, not the zone store's three. `exempt` there means "a human ruled this
+# not a text page" — plates, maps, blanks — and that is a statement about the text
+# column, which the figure track does not care about. Plates are where figures
+# *live*: exempting them here would hold out exactly the pages worth training on.
+FIG_SPLITS = ("train", "eval")
+
+RULE_EXEMPT_JSON = "_rule_exempt.json"
+JOURNAL = "_journal.jsonl"
+DEFAULT_SPLIT = "train"
+
+
+def _lst_path(root: Path, split: str, store: str = FIGDIR) -> Path:
+    return fig_dir(root, store) / {"train": TRAIN_LST, "eval": EVAL_LST}[split]
+
+
+def _read_lst(p: Path) -> list[str]:
+    if not p.exists():
+        return []
+    return [ln.strip() for ln in p.read_text(encoding="utf-8").splitlines()
+            if ln.strip()]
+
+
+def load_splits(root: Path = Path("."), store: str = FIGDIR) -> dict[str, str]:
+    """`{ref: "train"|"eval"}` over the two lists, `eval` winning a contradiction.
+
+    **A listed ref need not name an existing file.** The lists carry the negatives
+    too — pages a human went through in the zone track and found no figure on —
+    and a negative is precisely a ref with no `gt/fig/` ALTO. `assemble` is what
+    synthesizes the empty region set at training time; the store never holds one,
+    because an empty figure ALTO on disk would tell `dispatch.survey` the page has
+    figures and tell `zones blot` to repaint a raster for nothing.
+    """
+    rank = {"train": 0, "eval": 1}
+    out: dict[str, str] = {}
+    for split in FIG_SPLITS:
+        for name in _read_lst(_lst_path(root, split, store)):
+            try:
+                ref = norm_ref(Path(name).stem.replace("chukchi-", ""))
+            except ValueError:
+                continue
+            if ref not in out or rank[split] > rank[out[ref]]:
+                out[ref] = split
+    return out
+
+
+def set_split(ref: str, split: str, root: Path = Path("."),
+              store: str = FIGDIR) -> dict:
+    """Put this page in exactly one of the two lists, removing it from both first."""
+    if split not in FIG_SPLITS:
+        raise ValueError(
+            f"split must be one of {', '.join(FIG_SPLITS)}, not {split!r}")
+    ref = norm_ref(ref)
+    name = f"chukchi-{ref}.xml"
+    fig_dir(root, store).mkdir(parents=True, exist_ok=True)
+    for which in FIG_SPLITS:
+        p = _lst_path(root, which, store)
+        entries = [e for e in _read_lst(p) if e != name]
+        if which == split:
+            entries.append(name)
+        entries = sorted(set(entries),
+                         key=lambda e: parse_ref(
+                             Path(e).stem.replace("chukchi-", "")))
+        p.write_text("".join(e + "\n" for e in entries), encoding="utf-8")
+    return {"ref": ref, "split": split}
+
+
+def load_rule_exempt(root: Path = Path("."),
+                     store: str = FIGDIR) -> dict[str, list[str]]:
+    p = fig_dir(root, store) / RULE_EXEMPT_JSON
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return {}
+    return {k: list(v) for k, v in data.items()} if isinstance(data, dict) else {}
+
+
+def set_rule_exempt(ref: str, rules: list[str], root: Path = Path("."),
+                    store: str = FIGDIR) -> dict:
+    """Record which warnings a human has accepted on this page.
+
+    An exempted rule **still reports**, flagged — the zone store's discipline, for
+    its reason: a warning that vanishes when excused leaves no way to notice that
+    the excuse has outlived the page it was written for.
+    """
+    ref = norm_ref(ref)
+    data = load_rule_exempt(root, store)
+    if rules:
+        data[ref] = sorted(set(rules))
+    else:
+        data.pop(ref, None)
+    p = fig_dir(root, store) / RULE_EXEMPT_JSON
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2, sort_keys=True,
+                            ensure_ascii=False) + "\n", encoding="utf-8")
+    return {"ref": ref, "rules": data.get(ref, [])}
+
+
+def validate_fig_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
+                      store: str = FIGDIR) -> dict:
+    """Check one page of the figure store: mechanical errors, configured warnings.
+
+    The division is `zones.validate_page`'s and means the same thing here. An
+    **error** is a fault no reading of the page could excuse — a label this store
+    does not declare, a polygon that is not the rectangle its own bbox claims, a box
+    too small to be a picture or falling off the raster. A **warning** is a domain
+    expectation about *this book*, configurable and exemptable, and it never gates.
+
+    Two boxes overlapping is an error only between pictures. A caption *inside* its
+    picture's box is an ordinary arrangement — Bogoras sets several that way — and a
+    caption overlapping a caption is caught by the count rule instead.
+    """
+    from . import zones_config as zc
+    from .zones import _is_rectangle, raster_size
+
+    cfg = cfg or zc.load_config(root)
+    ref = norm_ref(ref)
+    figs_cfg = cfg.get("figures") or {}
+    declared = {t["label"] for t in zc.fig_types(cfg)}
+    min_px = int(figs_cfg.get("min_size_px") or 0)
+    max_ov = int(figs_cfg.get("max_overlap_px") or 0)
+
+    path = alto_for(ref, root, store)
+    blocks = read_blocks(path, with_points=True)
+    errors: list[dict] = []
+
+    def err(rule: str, detail: str):
+        errors.append({"rule": rule, "detail": detail})
+
+    try:
+        page_w, page_h = raster_size(ref, root)
+    except (FileNotFoundError, OSError):
+        page_w = page_h = 0
+
+    for b in blocks:
+        x0, y0 = b["hpos"], b["vpos"]
+        x1, y1 = x0 + b["width"], y0 + b["height"]
+        if b["label"] not in declared:
+            err("undeclared-label",
+                f"{b['id']} carries {b['label']!r}, which this store does not "
+                f"declare ({', '.join(sorted(declared))})")
+        if b["width"] < min_px or b["height"] < min_px:
+            err("min-size",
+                f"{b['id']} is {b['width']}x{b['height']}, under min_size_px "
+                f"{min_px}")
+        if page_w and (x0 < 0 or y0 < 0 or x1 > page_w or y1 > page_h):
+            err("off-raster",
+                f"{b['id']} spans {x0},{y0}..{x1},{y1} on a {page_w}x{page_h} page")
+        if not _is_rectangle(b.get("points", ""), x0, y0, x1, y1):
+            err("not-a-rectangle",
+                f"{b['id']}'s polygon is not the rectangle its bbox claims — this "
+                "store carries boxes, and every reader of it takes the bbox")
+
+    pics = [b for b in blocks if b["label"] == GRAPHIC]
+    for i, a in enumerate(pics):
+        for c in pics[i + 1:]:
+            ox = min(a["hpos"] + a["width"], c["hpos"] + c["width"]) - max(
+                a["hpos"], c["hpos"])
+            oy = min(a["vpos"] + a["height"], c["vpos"] + c["height"]) - max(
+                a["vpos"], c["vpos"])
+            if ox > max_ov and oy > max_ov:
+                err("picture-overlap",
+                    f"{a['id']} and {c['id']} overlap by {ox}x{oy} px")
+
+    exempt = load_rule_exempt(root, store).get(ref, [])
+    warnings = zc.fig_warnings(cfg, blocks, exempt)
+    known = {r["id"] for r in (figs_cfg.get("rules") or [])}
+    for r in exempt:
+        if r not in known:
+            err("unknown-exemption",
+                f"{ref} exempts {r!r}, which is not a rule this config declares")
+
+    return {
+        "ref": ref, "keyed": path.exists(), "blocks": len(blocks),
+        "figures": len(pics),
+        "captions": sum(1 for b in blocks if b["label"] == FIGDESC),
+        "split": load_splits(root, store).get(ref) or "",
+        "errors": errors,
+        "warnings": [w for w in warnings if not w["exempted"]],
+        "exempted": [w for w in warnings if w["exempted"]],
+    }
+
+
+def save_figs(ref: str, blocks: list[dict], root: Path = Path("."),
+              split: str | None = None, rules: list[str] | None = None,
+              stamp: str | None = None) -> dict:
+    """Write one page's figure and caption boxes, atomically, and record the save.
+
+    `blocks` are `{label, x0, y0, x1, y1}` and **optionally `id`**. The durability
+    shape is `save_zones`': copy to `.prev`, write `.tmp`, `replace()`, append to an
+    append-only journal.
+
+    **An id that arrives is kept, and that is the whole reason this is not
+    `save_zones` with a different directory.** A block id's last field is the key
+    `data/readings.md` files its caption text under, so re-minting by position — as
+    the zone store does, harmlessly, because nothing points at a zone id — would
+    re-point every caption below an inserted figure at the wrong picture. It would
+    do so silently: the file stays well-formed, the counts still reconcile, and
+    `harness corpus figures` comes back clean because it compares *sets* of
+    suffixes, which are unchanged. `1-191` is the live case — its undeclared
+    photograph sorts above all four existing blocks.
+
+    **An empty page is refused**, and unlike the zone store there is no `exempt`
+    escape: the figure store's absence of a file is already the statement "no
+    figures here", read that way by `dispatch.survey`, `zones.blot_one` and
+    `lines.line_gaps` alike. Writing an empty ALTO would claim the opposite of what
+    it means. Withdrawal is `delete_figs`, and the message says so, because a human
+    deleting a page's last box in the editor arrives here with no other way out.
+    """
+    from .zones import build_alto, raster_size
+
+    ref = norm_ref(ref)
+    if not blocks:
+        raise ValueError(
+            f"{ref} has no figure boxes, and an empty figure ALTO would mean the "
+            "opposite of what it says: absence of the file is how this store "
+            "records 'no figures on this page', and every reader of it — the "
+            "reader dispatch survey, the blot, the dropped-line detector — takes "
+            "an existing file as 'this page has figures'. If the page has none, "
+            f"withdraw it: `harness fig delete {ref} --commit`.")
+    for b in blocks:
+        if b["label"] not in (GRAPHIC, FIGDESC):
+            raise ValueError(
+                f"{ref} carries {b['label']!r}, which is not a figure-track label. "
+                f"This store declares {GRAPHIC} and {FIGDESC} and nothing else; a "
+                "body-text zone belongs in `gt/zones/`.")
+
+    p = alto_for(ref, root)
+
+    # Mint the missing ids here rather than leaving them to `build_alto`, because
+    # the high-water mark this store needs is not visible from one batch. Two ways
+    # a freed ordinal could otherwise come back: the caller dropped an id it was
+    # handed, or this very save removes the highest-numbered block. Both would let
+    # the next mint land on a number a reading still names, and a stale caption
+    # re-attaching to a new picture is the exact silent mispairing this store is
+    # built to make impossible.
+    #
+    # It is a floor, not a guarantee across time: a block deleted in one save and
+    # another added in the next can still collide. That window is *gated* rather
+    # than closed — deleting a caption block orphans its reading, `harness corpus
+    # figures` exits 1 on an orphan, and the store cannot reach the collision
+    # without a human passing through that failure and deciding what the reading
+    # was for. A persistent counter would close it and would put the store's
+    # identity in a file nothing else reads; the reconciliation is the better
+    # witness because it is the one already being run.
+    from .zones import _id_ordinal
+    on_disk = [b["id"] for b in read_blocks(p)] if p.exists() else []
+    nxt = max((_id_ordinal(i) for i in
+               on_disk + [b.get("id") or "" for b in blocks]), default=0) + 1
+    blocks = [dict(b) for b in blocks]
+    for b in sorted(blocks, key=lambda b: (b["y0"], b["x0"])):
+        if not b.get("id"):
+            b["id"] = f"fig_{ref}_{nxt:03d}"
+            nxt += 1
+
+    stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    tree = build_alto(ref, blocks, raster_size(ref, root), id_prefix="fig_")
+
+    p.parent.mkdir(parents=True, exist_ok=True)
+    if p.exists():
+        p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
+    tmp = p.with_suffix(".xml.tmp")
+    tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
+               standalone=None, pretty_print=True)
+    tmp.replace(p)
+
+    if rules is not None:
+        set_rule_exempt(ref, rules, root)
+    marked = load_splits(root).get(ref)
+    if split is not None:
+        set_split(ref, split, root)
+    elif marked is None:
+        set_split(ref, DEFAULT_SPLIT, root)
+
+    counts: dict[str, int] = {}
+    for b in blocks:
+        counts[b["label"]] = counts.get(b["label"], 0) + 1
+    with (fig_dir(root) / JOURNAL).open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"saved_at": stamp, "ref": ref,
+                             "blocks": len(blocks), "labels": counts,
+                             "split": split or marked or DEFAULT_SPLIT},
+                            ensure_ascii=False) + "\n")
+    return {"ref": ref, "path": str(p), "blocks": len(blocks),
+            "figures": counts.get(GRAPHIC, 0), "captions": counts.get(FIGDESC, 0),
+            "split": split or marked or DEFAULT_SPLIT}
+
+
+def delete_figs(ref: str, root: Path = Path("."), commit: bool = False,
+                stamp: str | None = None) -> dict:
+    """Withdraw a page from the figure store: its file, its split mark, its rules.
+
+    The counterpart to `save_figs`' refusal of an empty page, and the only way to
+    say "this page has no figures after all". Same durability as a save, because
+    this is the more dangerous direction, and `--commit` is required.
+
+    **It does not touch `data/readings.md`.** A deleted page's captions become
+    orphans, which is exactly what `harness corpus figures` exists to report — a
+    silent cascade from a geometry withdrawal into hand-read text would be a far
+    worse outcome than a loud reconciliation failure. The report names them and a
+    human decides.
+    """
+    ref = norm_ref(ref)
+    p = alto_for(ref, root)
+    splits = load_splits(root)
+    rules = load_rule_exempt(root).get(ref, [])
+    blocks = read_blocks(p) if p.exists() else []
+    caps = sum(1 for b in blocks if b["label"] == FIGDESC)
+
+    out = {"ref": ref, "path": str(p), "exists": p.exists(),
+           "blocks": len(blocks), "captions_orphaned": caps,
+           "split": splits.get(ref) or "", "rule_exemptions": " ".join(rules),
+           "committed": commit}
+    if not p.exists():
+        out["note"] = "nothing to delete"
+        return out
+    if not commit:
+        out["note"] = "preview only — pass --commit to delete"
+        return out
+
+    stamp = stamp or time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
+    p.unlink()
+    for which in FIG_SPLITS:
+        lst = _lst_path(root, which)
+        entries = [e for e in _read_lst(lst) if e != f"chukchi-{ref}.xml"]
+        if lst.exists():
+            lst.write_text("".join(e + "\n" for e in entries), encoding="utf-8")
+    if rules:
+        set_rule_exempt(ref, [], root)
+    with (fig_dir(root) / JOURNAL).open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"saved_at": stamp, "ref": ref, "deleted": True,
+                             "blocks": len(blocks),
+                             "captions_orphaned": caps}, ensure_ascii=False) + "\n")
+    return out
 
 
 # Adjudication keywords that may open a reading's `@note`. The first two are
@@ -330,7 +717,7 @@ def paired(ref: str, root: Path = Path(".")) -> dict:
         cap = min(reach, key=lambda dc: dc[0], default=(None, None))[1]
         if cap is not None:
             claimed.add(cap["id"])
-        suffix = (cap["id"] or "")[-8:] if cap is not None else ""
+        suffix = zone_suffix(cap["id"]) if cap is not None else ""
         reading = texts.get(suffix)
         figures.append({
             "index": i,
@@ -356,7 +743,7 @@ def reconcile(root: Path = Path(".")) -> dict:
     missing, orphan, unpaired = [], [], []
     zones, caps = 0, 0
     for ref in fig_refs(root):
-        unpaired += [f"{ref}|{z[-8:]}"
+        unpaired += [f"{ref}|{zone_suffix(z)}"
                      for z in paired(ref, root)["unpaired_captions"]]
         tree = etree.parse(str(alto_for(ref, root)))
         labels = _labels(tree)
@@ -367,7 +754,7 @@ def reconcile(root: Path = Path(".")) -> dict:
                 zones += 1
             elif lab == FIGDESC:
                 caps += 1
-                ids.add((blk.get("ID") or "")[-8:])
+                ids.add(zone_suffix(blk.get("ID")))
         have = {r["zone_suffix"] for r in known.values() if r["ref"] == ref}
         missing += [f"{ref}|{z}" for z in sorted(ids - have)]
         orphan += [f"{ref}|{z}" for z in sorted(have - ids)]

@@ -495,7 +495,7 @@ def _figure_line_warnings(recs: list[dict], ref: str,
     # Read straight from the store rather than from `_figures_on_page`, which no
     # longer carries geometry or the caption zones at all — this is the internal
     # join the model's payload was never the right place for.
-    from .figures import readings_for, zones
+    from .figures import readings_for, zone_suffix, zones
     by_zone = {z["id"]: z for z in zones(ref, root)}
     try:
         texts = readings_for(ref, root)
@@ -514,7 +514,8 @@ def _figure_line_warnings(recs: list[dict], ref: str,
                                 f"{max(0, (cut or r['vpos']) - r['vpos'])}",
                 "body_side": f"{r['hpos']},{cut},{r['width']},"
                              f"{max(0, r['vpos'] + r['height'] - (cut or r['vpos']))}",
-                "caption": ((texts.get(zid[-8:]) or {}).get("text") or "")[:200],
+                "caption": ((texts.get(zone_suffix(zid)) or {})
+                            .get("text") or "")[:200],
             })
         elif r.get("in_graphic"):
             out.append({

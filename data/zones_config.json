@@ -139,5 +139,44 @@
       "into": "MainZone-Other",
       "why": "Block quote and 'other' are set at the same size with the same measure, and the model cannot separate them: of 31 MainZone-Quote regions it drew over the held-out pages, 6 were right and 23 were really MainZone-Other, while 15 of MainZone-Other's misses were really Quote — 38 zones swapped, the largest single error in the matrix. Folding them for training raises held-out precision 61.3% -> 78.2% and recall 93.9% -> 94.9%. Quote was also the class this design was already unsure of: zero instances at 75 pages, 25 at 181, joint-smallest either way."
     }
+  },
+
+  "figures": {
+    "_about": "The figure track, which runs parallel to the zone track and not inside it. Its store is `gt/fig/`, its geometry is **freely-placed rectangles** rather than fixed-width bands of the measure, and that difference is the reason it is a separate store rather than two more labels here: a zone's x comes from the page's column and a hand-drawn width would be a small lie the trainer learns, while a picture's x is exactly what a human saw and nothing else can supply it. The two tracks share one editor, one keyboard and one config file; they share no geometry and no split lists.",
+    "_shape_fields": "`auto_place` is the caption's analogue of the zone chain's `gap_after`: after a picture is committed the editor arms a caption preview at its foot, `gap_px` below, `height_px` tall and the picture's own width. `beside_px` is the width used when the preview is flipped to the picture's right edge for a caption set vertically — the minority arrangement, ~19 plate captions over 14 pages.",
+    "types": [
+      {
+        "label": "GraphicZone",
+        "name": "figure",
+        "key": "g",
+        "color": "#b8860b"
+      },
+      {
+        "label": "GraphicZone-FigDesc",
+        "name": "caption",
+        "key": "d",
+        "color": "#2aa5a0",
+        "auto_place": {
+          "after": "GraphicZone",
+          "gap_px": 18,
+          "height_px": 110,
+          "beside_px": 150
+        }
+      }
+    ],
+    "min_size_px": 24,
+    "max_overlap_px": 8,
+    "rules": [
+      {
+        "id": "captions-lte-figures",
+        "severity": "warn",
+        "description": "A page never carries more captions than pictures. True of this book and not of printing in general, which is why it is here and not compiled in: 414 graphics against 395 captions over 252 pages, and every caption-heavy page that ever existed in this store was a segmentation fault — clipped body-text slivers, an unlabelled graphic, and on 2-094 the cheek line-work of fig. 260 read as a line of type. Those boxes and their readings were deleted, so the class is empty and a new member means a new fault. Exemptable per page in gt/fig/_rule_exempt.json; an exempted rule still reports, flagged."
+      }
+    ],
+    "actions": {
+      "_about": "Bound in the same keyboard as the zone track's, and the loader refuses a collision across all three namespaces — zone types, figure types, actions — because one keystroke doing two jobs silently does only one of them. `toggle_track` is the mode switch: with it off the pointer places bands, with it on it drags rectangles.",
+      "toggle_track": "b",
+      "caption_beside": "B"
+    }
   }
 }

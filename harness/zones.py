@@ -1021,6 +1021,18 @@ _ink_excuse = _corr.ink_excuse
 
 # ---------------------------------------------------------------- ALTO writing
 
+def _id_ordinal(block_id: str) -> int:
+    """The trailing integer of a block id, or 0 where there is none.
+
+    Only `build_alto`'s minter uses this, and only to avoid reusing an ordinal a
+    caller supplied. An eScriptorium id (`eSc_textblock_ca04178c`) has no numeric
+    tail and reads 0, which is right: it constrains nothing, and a page mixing the
+    two schemes gets fresh ordinals from 1 that cannot collide with hex.
+    """
+    tail = (block_id or "").rsplit("_", 1)[-1]
+    return int(tail) if tail.isdigit() else 0
+
+
 def build_alto(ref: str, zones: list[dict], size: tuple[int, int],
                id_prefix: str = ID_PREFIX) -> etree._ElementTree:
     """One page's zones as an eScriptorium-shaped ALTO 4.2 tree.
@@ -1074,13 +1086,30 @@ def build_alto(ref: str, zones: list[dict], size: tuple[int, int],
     ps = etree.SubElement(page, f"{{{ALTO_NS}}}PrintSpace", {
         "HPOS": "0", "VPOS": "0", "WIDTH": str(w), "HEIGHT": str(h)})
 
-    for i, z in enumerate(ordered, start=1):
+    # A block that arrives carrying an `id` keeps it; only the rest are minted, and
+    # they are minted *past* the highest ordinal present rather than by position.
+    #
+    # The zone store never supplies one, and does not need to: nothing anywhere
+    # points at a zone id, so re-minting the whole page on every save is free. The
+    # figure store is the opposite case — `data/readings.md` keys 395 caption blocks
+    # by the last field of their block id (`figures.zone_suffix`) — so a figure drawn
+    # above an existing one would, under positional minting, silently renumber every
+    # block below it and re-point every caption on the page at the wrong picture.
+    # That failure writes a well-formed file and breaks no check that runs at save
+    # time; `harness corpus figures` would see the same counts reconcile.
+    nxt = max((_id_ordinal(z["id"]) for z in ordered if z.get("id")), default=0) + 1
+    for z in ordered:
         x0, y0 = int(round(z["x0"])), int(round(z["y0"]))
         x1, y1 = int(round(z["x1"])), int(round(z["y1"]))
+        if z.get("id"):
+            block_id = z["id"]
+        else:
+            block_id = f"{id_prefix}{ref}_{nxt:03d}"
+            nxt += 1
         blk = etree.SubElement(ps, f"{{{ALTO_NS}}}TextBlock", {
             "HPOS": str(x0), "VPOS": str(y0),
             "WIDTH": str(x1 - x0), "HEIGHT": str(y1 - y0),
-            "ID": f"{id_prefix}{ref}_{i:03d}", "TAGREFS": tag_id[z["label"]]})
+            "ID": block_id, "TAGREFS": tag_id[z["label"]]})
         shape = etree.SubElement(blk, f"{{{ALTO_NS}}}Shape")
         etree.SubElement(shape, f"{{{ALTO_NS}}}Polygon", {
             "POINTS": f"{x0} {y0} {x1} {y0} {x1} {y1} {x0} {y1}"})

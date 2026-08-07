@@ -101,11 +101,51 @@ def load_config(root: Path = Path(".")) -> dict:
                 f"{p}: chain_after of {t['label']!r} must be true or false — a "
                 "number here would read as a gap and silently do nothing")
 
+    # The figure track's types share that same keyboard — one editor, one set of
+    # keystrokes, two tracks — so they join the collision check rather than getting
+    # their own. A key bound to `MainZone-P` and to `GraphicZone` would place a band
+    # or a rectangle depending on a mode the typist is not thinking about.
+    figs = cfg.get("figures") or {}
+    fig_types_ = figs.get("types") or []
+    if figs and not fig_types_:
+        raise ConfigError(f"{p}: 'figures' is present but declares no types")
+    for t in fig_types_:
+        for field in ("label", "key"):
+            if not t.get(field):
+                raise ConfigError(f"{p}: a figure type is missing '{field}': {t!r}")
+        if t["label"] in seen_label:
+            raise ConfigError(
+                f"{p}: {t['label']!r} is declared as both a zone type and a figure "
+                "type — the two stores would claim the same label and nothing in an "
+                "ALTO says which store wrote it")
+        if len(t["key"]) != 1:
+            raise ConfigError(
+                f"{p}: figure type key {t['key']!r} must be one character")
+        if t["key"] in seen_key:
+            raise ConfigError(
+                f"{p}: key {t['key']!r} is bound to two types — one of them would "
+                "be unreachable from the keyboard and nothing would say so")
+        seen_label.add(t["label"])
+        seen_key.add(t["key"])
+        ap = t.get("auto_place")
+        if ap is not None:
+            if not ap.get("after"):
+                raise ConfigError(
+                    f"{p}: auto_place on {t['label']!r} names no 'after' type")
+            for field in ("gap_px", "height_px"):
+                v = ap.get(field)
+                if not isinstance(v, int) or v <= 0:
+                    raise ConfigError(
+                        f"{p}: auto_place.{field} on {t['label']!r} must be a "
+                        "positive integer — a zero would arm an invisible preview")
+
     # Actions share the keyboard with types, so they share the collision check.
     # A key bound to both "paragraph start" and "undo" would fire exactly one of
     # them, consistently, and look like a broken shortcut rather than a bad config.
     actions = {k: v for k, v in (cfg.get("actions") or {}).items()
                if not k.startswith("_")}
+    actions.update({k: v for k, v in (figs.get("actions") or {}).items()
+                    if not k.startswith("_")})
     seen_action: dict[str, str] = {}
     for name, key in actions.items():
         if not isinstance(key, str) or not key:
@@ -280,4 +320,50 @@ def order_warnings(cfg: dict, zones: list[dict],
     # about arrangement, and `zones.validate_page` raises it as one — a zone whose
     # type nobody declared has no rank, so every rule above simply skipped it, and
     # a page of nothing but undeclared labels would otherwise come back clean.
+    return out
+
+
+def fig_types(cfg: dict) -> list[dict]:
+    return list((cfg.get("figures") or {}).get("types") or [])
+
+
+def fig_warnings(cfg: dict, blocks: list[dict],
+                 exempt: tuple[str, ...] | list[str] = ()) -> list[dict]:
+    """Evaluate the figure track's declarative rules over one page's boxes.
+
+    Same contract as `order_warnings` — pure, exempted rules still report, unknown
+    rule ids ignored — and a separate function rather than another arm of it,
+    because the two ask different kinds of question. An order rule is about a
+    vertical *sequence*; these are about *counts* and about a picture's relation to
+    its caption. Folding them together would mean one evaluator sorting boxes it
+    has no reason to sort.
+
+    `captions-lte-figures` is **a fact about this book, not about printing**, which
+    is why it is configured rather than compiled in. Bogoras's compositor never
+    sets more captions than pictures on a page: 414 graphics against 395 captions
+    across 252 pages, and the caption-heavy pages that once existed were all
+    segmentation faults — clipped body-text slivers, an unlabelled graphic, and on
+    `2-094` the cheek line-work of fig. 260 read as a line of type. Those boxes were
+    deleted, so the class is now empty and a new member means a new fault.
+    `docs/apparatus.md` holds that record. A book that sets two captions to one
+    composite plate would turn this rule off and lose nothing else.
+    """
+    exempted = set(exempt or ())
+    figs = (cfg.get("figures") or {})
+    enabled = {r["id"] for r in (figs.get("rules") or [])}
+    out: list[dict] = []
+
+    def warn(rule: str, detail: str):
+        out.append({"rule": rule, "detail": detail, "exempted": rule in exempted})
+
+    if "captions-lte-figures" in enabled:
+        n_fig = sum(1 for b in blocks if b.get("label") == "GraphicZone")
+        n_cap = sum(1 for b in blocks if b.get("label") == "GraphicZone-FigDesc")
+        if n_cap > n_fig:
+            warn("captions-lte-figures",
+                 f"{n_cap} captions to {n_fig} "
+                 f"{'picture' if n_fig == 1 else 'pictures'} — this book never "
+                 "sets more, so either a picture went undeclared or a caption box "
+                 "is a segmentation fault")
+
     return out
