@@ -302,6 +302,460 @@ def set_rule_exempt(ref: str, rules: list[str], root: Path = Path("."),
     return {"ref": ref, "rules": data.get(ref, [])}
 
 
+# ---------------------------------------------------------- the segmenter
+#
+# The zone track's quartet, mirrored, with one difference that decides everything
+# else: **this model trains on the raw `scans/`**, where zones-seg trains on
+# `scans/w-figs-blotted/`. It has to — the blot paints figures white, and a figure
+# segmenter cannot learn from pages where its target has been erased. That is also
+# why the two are separate models rather than one with four classes: they read
+# different rasters.
+WORKDIR = "train/bogoras-fig"
+MODELDIR = "models/bogoras-fig"
+MODEL_NAME = "fig-seg"
+DEFAULT_MODEL = f"{MODELDIR}/{MODEL_NAME}.safetensors"
+
+
+def negative_refs(root: Path = Path(".")) -> dict[str, list[str]]:
+    """Pages witnessed to have no figures, and the ones nothing can say about.
+
+    A negative is **a keyed, non-exempt page whose ink check is clean, with no ink
+    exemptions and no `gt/fig/` file**. Each clause is load-bearing:
+
+    - *keyed and non-exempt*: an exempt page has no zones, so the ink check never
+      ran over it. Exempt pages are plates — exactly where figures live — so
+      treating them as negatives would train the model that plates are empty.
+      (Exemption disqualifies a page from being a *negative* only; an exempt plate
+      that carries a `gt/fig/` file is an ordinary positive and trains.)
+    - *ink check clean*: this is the witness. Every band of ink on the page is
+      accounted for by text zones alone, so there is nothing left for a figure to
+      be. `1-191` is the proof it works — that check, and not exemption status, is
+      what exposed its undeclared photograph.
+    - *no ink exemptions*: a band ruled `not_type` makes the check read clean while
+      hiding exactly the ink a figure would be. Such a page is **unknown**, not
+      negative.
+
+    Returns `{"negative": [...], "unknown": [...]}`, and the second list is the
+    point. The verdicts come from `gt/zones/_ink_cache.json`, which is derived and
+    gitignored, and a stale or absent entry reads *unknown* rather than clean — on
+    a cold cache that is every page in the corpus. A caller that quietly trained on
+    whatever negatives it happened to find would look exactly like a caller with a
+    small corpus, so the count of unknowns is returned to be reported.
+    """
+    from . import zones as zn
+
+    splits = zn.load_splits(root)
+    negative, unknown = [], []
+    for ref in zn.zone_refs(root):
+        if splits.get(ref) == "exempt" or alto_for(ref, root).exists():
+            continue
+        # `cached_ink` returns None for a stale or absent verdict rather than the
+        # stale record — the distinction this store needs, already drawn there.
+        # And the cache's own four states already separate `clean` from `ruled`,
+        # so the no-exemptions clause is read off the verdict rather than
+        # re-derived from `_ink_exempt.json` beside it.
+        hit = zn.cached_ink(ref, root)
+        (negative if hit and hit.get("state") == "clean" else unknown).append(ref)
+    return {"negative": negative, "unknown": unknown}
+
+
+def remark_eval(root: Path = Path("."), fraction: float = 0.20,
+                commit: bool = False) -> dict:
+    """Mint or extend the figure track's train/eval split.
+
+    The universe is the positives (every page with a `gt/fig/` ALTO, exempt ones
+    included — a plate carrying figures is the best training page there is) plus
+    the witnessed negatives from `negative_refs`.
+
+    **Additive: a mark a human made is never moved.** Held out has to stay held
+    out, or the eval set drifts with whatever was keyed most recently and stops
+    being a held-out set at all.
+
+    Stratified per part and spread rather than taken from the front, so the eval
+    set is not the first fifth of part 1 — `zones._spread` is the same picker the
+    zone track uses, for the same reason.
+
+    Reports `unknown` prominently. Those pages are neither trained on nor scored,
+    and on a cold `_ink_cache.json` that is every page in the corpus; a run that
+    quietly produced a small split would look exactly like a small corpus.
+    """
+    from .zones import _spread
+
+    seen = load_splits(root, FIGDIR)
+    neg = negative_refs(root)
+    universe = sorted(set(fig_refs(root)) | set(neg["negative"]), key=parse_ref)
+    fresh = [r for r in universe if r not in seen]
+
+    by_part: dict[str, list[str]] = {}
+    for r in fresh:
+        by_part.setdefault(r.split("-")[0], []).append(r)
+    picked: set[str] = set()
+    for _part, refs in by_part.items():
+        k = int(round(len(refs) * fraction))
+        picked.update(_spread(refs, k))
+
+    plan = {r: ("eval" if r in picked else "train") for r in fresh}
+    out = {
+        "positives": len(fig_refs(root)),
+        "negatives": len(neg["negative"]),
+        "unknown": len(neg["unknown"]),
+        "already_marked": len(seen),
+        "newly_marked": len(plan),
+        "to_eval": sum(1 for v in plan.values() if v == "eval"),
+        "committed": commit,
+    }
+    if neg["unknown"]:
+        out["note"] = (
+            f"{len(neg['unknown'])} pages have no usable ink verdict and are "
+            "neither trained on nor scored — a page is a witnessed negative only "
+            "when its ink check is clean and unexcused. Run `harness zones check "
+            "--all --ink` if the cache is cold; "
+            + " ".join(neg["unknown"][:8]))
+    if not commit:
+        out["preview"] = "nothing written — pass --commit"
+        return out
+    for ref, split in plan.items():
+        set_split(ref, split, root)
+    return out
+
+
+def assemble(root: Path = Path("."), scratch: bool = False) -> dict:
+    """Lay out `train/bogoras-fig/` for `ketos segtrain`, and report the command.
+
+    ketos resolves a page's image through the ALTO's own
+    `sourceImageInformation/fileName`, relative to the XML, so each page's file and
+    its raster sit together under the name the ALTO already carries.
+
+    **The raster is the raw `scans/` page, never the blot.** `zones assemble` links
+    `scans/w-figs-blotted/` because the zone segmenter must not learn figure-shaped
+    body zones; here the blot paints the target white, so training on it would be
+    asking the model to find something that has been erased.
+
+    **A negative page's ALTO is synthesized here and stored nowhere.** `gt/fig/`
+    never holds an empty file — absence is how it records "no figures", and every
+    reader takes an existing file as "this page has figures". Verified against
+    kraken 7.0.3: an empty region ALTO parses to a `baselines` container with no
+    regions and `BaselineSet.add` accepts it as a page with none, which is what
+    teaches the model that most pages are empty.
+    """
+    from .zones import SEGTRAIN_CMD, _runtime_flags, build_alto, raster_size
+
+    work = root / WORKDIR
+    for p in sorted(work.glob("*")) if work.exists() else []:
+        if p.is_file() or p.is_symlink():
+            p.unlink()
+    work.mkdir(parents=True, exist_ok=True)
+
+    splits = load_splits(root, FIGDIR)
+    lists: dict[str, list[str]] = {"train": [], "eval": []}
+    positives = synthesized = 0
+    missing: list[str] = []
+    for ref, split in sorted(splits.items(), key=lambda kv: parse_ref(kv[0])):
+        scan = root / "scans" / f"chukchi-{ref}.png"
+        if not scan.exists():
+            missing.append(ref)
+            continue
+        name = f"chukchi-{ref}"
+        img = work / f"{name}.png"
+        if not img.exists():
+            img.symlink_to(scan.resolve())
+        xml = work / f"{name}.xml"
+        src = alto_for(ref, root)
+        if src.exists():
+            if not xml.exists():
+                xml.symlink_to(src.resolve())
+            positives += 1
+        else:
+            build_alto(ref, [], raster_size(ref, root), id_prefix="fig_").write(
+                str(xml), xml_declaration=True, encoding="UTF-8",
+                standalone=None, pretty_print=True)
+            synthesized += 1
+        # Relative and unresolved. Resolving follows the symlink back to `gt/fig/`
+        # and silently trains on the store instead of the work dir — the lesson
+        # `zones.assemble` records, and it applies verbatim.
+        lists[split].append(f"{WORKDIR}/{name}.xml")
+
+    for split, names in lists.items():
+        (work / f"{split}.lst").write_text(
+            "".join(n + "\n" for n in names), encoding="utf-8")
+
+    device, workers = _runtime_flags()
+    base_note = ""
+    if scratch:
+        load, base = "", "scratch (asked for)"
+    elif (root / DEFAULT_MODEL).exists():
+        # Fine-tuning this project's own figure model: the class map is already
+        # right, so no `--resize`, which is what permutes an output layer.
+        load, base = f" -i {DEFAULT_MODEL}", DEFAULT_MODEL
+    elif (root / "models" / "blla.mlmodel").exists():
+        load, base = " -i models/blla.mlmodel --resize new", "models/blla.mlmodel"
+    else:
+        # Says so rather than quietly emitting a from-scratch command. Fine-tuning
+        # and training from random init are different experiments, and the one
+        # that arrives by a missing file is the one nobody chose.
+        load, base = "", "scratch (no base model found)"
+        base_note = ("no models/blla.mlmodel and no installed figure model, so "
+                     "the reported command trains from random init — pass "
+                     "--scratch to mean that deliberately")
+    out = {
+        "work": str(work), "train": len(lists["train"]), "eval": len(lists["eval"]),
+        "positives": positives, "negatives": synthesized,
+        "base": base,
+        "missing_raster": missing,
+        "command": SEGTRAIN_CMD.format(
+            device=device, workers=workers, load=load, work=WORKDIR,
+            out=f"{WORKDIR}/run-{_fig_next_run(root)}"),
+    }
+    notes = [n for n in (base_note,
+                         "pages with no raster were left out of both lists"
+                         if missing else "") if n]
+    if notes:
+        out["note"] = "; ".join(notes)
+    return out
+
+
+def predict(refs: list[str], root: Path = Path("."),
+            model_path: str | Path | None = None, device: str = "auto",
+            force: bool = False) -> list[dict]:
+    """Run the figure segmenter over pages and write raw ALTO into `mz/fig/`.
+
+    Input is the **raw scan**, matching what the model was trained on and unlike
+    `zones predict`, which reads the blot. **No exempt skip**: plates are exempt in
+    the zone track and are exactly where figures live.
+
+    `--force` to overwrite, because an `mz/` file's `ProcessingStep` is the store's
+    only witness to which model wrote it, and quietly replacing one loses that.
+    """
+    from .zones import _model_sha256, load_segmenter
+
+    model_path = model_path or DEFAULT_MODEL
+    net, sha, dev = None, "", device
+    out = []
+    for ref in refs:
+        ref = norm_ref(ref)
+        dest = alto_for(ref, root, MZFIGDIR)
+        scan = root / "scans" / f"chukchi-{ref}.png"
+        if not scan.exists():
+            out.append({"ref": ref, "wrote": False, "note": "no raster"})
+            continue
+        if dest.exists() and not force:
+            out.append({"ref": ref, "wrote": False, "note": "exists; --force"})
+            continue
+        if net is None:
+            net, dev = load_segmenter(model_path, device)
+            sha = _model_sha256(root / model_path if not Path(model_path)
+                                .is_absolute() else Path(model_path))
+        out.append(_predict_one(ref, root, net, dev, model_path, sha, dest))
+    return out
+
+
+def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
+    from kraken import blla
+    from PIL import Image
+
+    from .zones import build_alto
+
+    with Image.open(root / "scans" / f"chukchi-{ref}.png") as s:
+        page = s.convert("RGB")
+    seg = blla.segment(page, model=net, device=dev)
+    blocks = [{"label": label,
+               "x0": min(p[0] for p in g.boundary),
+               "x1": max(p[0] for p in g.boundary),
+               "y0": min(p[1] for p in g.boundary),
+               "y1": max(p[1] for p in g.boundary)}
+              for label, group in (seg.regions or {}).items()
+              for g in group if label in (GRAPHIC, FIGDESC)]
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tree = build_alto(ref, blocks, page.size, id_prefix="mzfig_")
+    # The witness to which model wrote this. Without it an `mz/` file is a claim
+    # with no provenance, and the store's whole value is that it is separable from
+    # anybody's judgement.
+    desc = tree.getroot().find("{*}Description")
+    from lxml import etree as _et
+    steps = _et.SubElement(desc, "{http://www.loc.gov/standards/alto/ns-v4#}"
+                                 "Processing")
+    _et.SubElement(steps, "{http://www.loc.gov/standards/alto/ns-v4#}"
+                          "processingStepDescription").text = (
+        f"{model_path} sha256:{sha[:16]} device:{dev}")
+    tmp = dest.with_suffix(".xml.tmp")
+    tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
+               standalone=None, pretty_print=True)
+    tmp.replace(dest)
+    return {"ref": ref, "wrote": True,
+            "figures": sum(1 for b in blocks if b["label"] == GRAPHIC),
+            "captions": sum(1 for b in blocks if b["label"] == FIGDESC)}
+
+
+def _iou(a: dict, b: dict) -> float:
+    ox = min(a["x1"], b["x1"]) - max(a["x0"], b["x0"])
+    oy = min(a["y1"], b["y1"]) - max(a["y0"], b["y0"])
+    if ox <= 0 or oy <= 0:
+        return 0.0
+    inter = ox * oy
+    ua = (a["x1"] - a["x0"]) * (a["y1"] - a["y0"])
+    ub = (b["x1"] - b["x0"]) * (b["y1"] - b["y0"])
+    return inter / (ua + ub - inter)
+
+
+def score(root: Path = Path("."), model_path: str | Path | None = None,
+          min_iou: float = 0.5) -> dict:
+    """Compare `mz/fig/` against `gt/fig/`, per split and per class, never blended.
+
+    **Matched by area overlap**, not by y — the zone track pairs on y because zones
+    are bands, and pairing figures that way would call two side-by-side pictures one
+    match. Boxes at `min_iou` or better, greedily best-first.
+
+    **Pictures and captions are scored separately.** They differ by an order of
+    magnitude in size, so a single figure recall would be carried by whichever class
+    is commoner and would hide a model that finds every picture and no caption.
+
+    **Negatives are their own bucket.** A page witnessed to have no figures is a
+    third of the eval set, and a box predicted on one is a false positive with
+    nowhere else to be counted — folding those into the picture precision would let
+    a model that hallucinates on empty pages hide behind the pages that have some.
+
+    Per split and never averaged, for `zones.score`'s reason: agreement on the
+    trained-on pages is the editor's own judgement read back.
+    """
+    splits = load_splits(root, FIGDIR)
+    rows: dict[str, dict] = {}
+    for split in FIG_SPLITS:
+        refs = [r for r, s in splits.items() if s == split]
+        acc = {"pages": 0, "empty_pages": 0, "spurious_on_empty": 0}
+        for label in (GRAPHIC, FIGDESC):
+            acc[label] = {"truth": 0, "predicted": 0, "matched": 0}
+        for ref in sorted(refs, key=parse_ref):
+            pred_path = alto_for(ref, root, MZFIGDIR)
+            if not pred_path.exists():
+                continue
+            acc["pages"] += 1
+            truth = [{"label": b["label"], "x0": b["hpos"], "y0": b["vpos"],
+                      "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
+                     for b in zones(ref, root)]
+            pred = [{"label": b["label"], "x0": b["hpos"], "y0": b["vpos"],
+                     "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
+                    for b in read_blocks(pred_path)]
+            if not truth:
+                acc["empty_pages"] += 1
+                acc["spurious_on_empty"] += len(pred)
+                continue
+            for label in (GRAPHIC, FIGDESC):
+                t = [b for b in truth if b["label"] == label]
+                p = [b for b in pred if b["label"] == label]
+                acc[label]["truth"] += len(t)
+                acc[label]["predicted"] += len(p)
+                used = set()
+                for tb in t:
+                    best, bi = 0.0, -1
+                    for i, pb in enumerate(p):
+                        if i in used:
+                            continue
+                        v = _iou(tb, pb)
+                        if v > best:
+                            best, bi = v, i
+                    if best >= min_iou:
+                        used.add(bi)
+                        acc[label]["matched"] += 1
+        for label in (GRAPHIC, FIGDESC):
+            a = acc[label]
+            a["recall"] = round(100 * a["matched"] / a["truth"], 1) if a["truth"] else None
+            a["precision"] = (round(100 * a["matched"] / a["predicted"], 1)
+                              if a["predicted"] else None)
+        rows[split] = acc
+    return {"model": str(model_path or DEFAULT_MODEL), "min_iou": min_iou,
+            "splits": rows}
+
+
+def install_model(checkpoint: str | Path, root: Path = Path("."),
+                  name: str = MODEL_NAME, commit: bool = False,
+                  device: str = "auto") -> dict:
+    """Score a checkpoint, refuse a swapped class map, then install it.
+
+    `zones.install_model`'s shape and its reasoning: everything that makes a
+    checkpoint trustworthy is a precondition of installing it, so the checks run
+    before anything is copied and the manifest is written before the weights.
+
+    With two classes the permutation test degenerates to a swap test, which is
+    still worth running — `--resize new` renumbers the output layer, and a model
+    that has learned "caption" on the channel it calls "picture" scores plausibly
+    on counts while being wrong about every box.
+    """
+    import shutil
+
+    from .zones import _kraken_version, _model_sha256, corpus_digest
+
+    src = Path(checkpoint)
+    if not src.is_absolute():
+        src = root / src
+    if not src.exists():
+        raise FileNotFoundError(f"no checkpoint at {checkpoint}")
+
+    work = root / WORKDIR
+    lists = {s: work / f"{s}.lst" for s in FIG_SPLITS}
+    missing = [s for s, p in lists.items() if not p.exists()]
+    if missing:
+        raise FileNotFoundError(
+            f"{WORKDIR}/{missing[0]}.lst is gone, so the split this run consumed "
+            "cannot be frozen beside the model — re-run `harness fig assemble` "
+            "before installing, or the scores would belong to a split nobody kept")
+
+    sc = score(root, src)
+    swapped = _swap_check(sc)
+    out = {"checkpoint": str(checkpoint), "name": name, "committed": False,
+           "swapped_map": swapped, "scores": sc["splits"]}
+    if swapped:
+        out["note"] = ("the two classes look swapped — captions scoring as "
+                       "pictures and the reverse. Not installed")
+        return out
+    if not commit:
+        out["note"] = "preview only — pass --commit to install"
+        return out
+
+    dest_dir = root / MODELDIR
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    manifest = {
+        "name": name,
+        "model": f"{MODELDIR}/{name}{src.suffix}",
+        "installed_from": str(checkpoint),
+        "sha256": _model_sha256(src),
+        "corpus_digest": corpus_digest(root, store=FIGDIR),
+        "kraken": _kraken_version(),
+        "trained_on": "scans/ (raw) — the blot paints this model's target white",
+        "scores": sc["splits"],
+    }
+    (dest_dir / f"{name}.json").write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    for s, p in lists.items():
+        shutil.copy(p, dest_dir / f"{name}.{s}.lst")
+    shutil.copy(src, dest_dir / f"{name}{src.suffix}")
+    out["committed"] = True
+    out["path"] = f"{MODELDIR}/{name}{src.suffix}"
+    return out
+
+
+def _swap_check(sc: dict) -> bool:
+    """Would calling every picture a caption and vice versa score better?
+
+    The two-class degenerate of `zones`' permutation refusal. Read off `train`,
+    where the model has seen the answer: a correct model agrees with itself there,
+    and a swapped one disagrees with itself everywhere.
+    """
+    t = sc["splits"].get("train") or {}
+    g, d = t.get(GRAPHIC) or {}, t.get(FIGDESC) or {}
+    if not g.get("truth") or not d.get("truth"):
+        return False
+    straight = (g.get("matched", 0) + d.get("matched", 0))
+    # A swapped model matches almost nothing straight while predicting plenty.
+    return straight == 0 and (g.get("predicted", 0) + d.get("predicted", 0)) > 0
+
+
+def _fig_next_run(root: Path) -> int:
+    n = 1
+    while (root / WORKDIR / f"run-{n}").exists():
+        n += 1
+    return n
+
+
 METS_NS = "http://www.loc.gov/METS/"
 XLINK_NS = "http://www.w3.org/1999/xlink"
 

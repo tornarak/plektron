@@ -1247,6 +1247,83 @@ PP-NNN...     which pages; several may be given
 ```
 **Note** **`--out` is required so this cannot land in `gt/fig/` by omission.** The manifest that used to live there was an export artifact, tracked, and describing a store that has since been rewritten under it — a manifest committed beside the thing it manifests is a second copy of that thing's shape with nothing keeping the two honest. Built on demand instead; zip it at the root beside the store's files.
 
+### fig remark-eval
+**Does** mints or extends `gt/fig/_train.lst` and `_eval.lst`.
+**Reads** `gt/fig/`, `gt/zones/`'s splits and `_ink_cache.json`.
+**Writes** the two lists, with `--commit`.
+**Exit** always 0.
+```
+--fraction F  share of the newly-marked pages to hold out [0.20]
+--commit      write the lists
+--root --json --toon --pager
+```
+**Note** the universe is **every page with a figure ALTO — exempt plates included** — plus the pages *witnessed* to have none. Exemption is a zone-track statement about the text column; plates are where figures live, so holding them out would hold out the corpus. Measured today: 252 positives, 506 negatives, and **44 of the positives are exempt pages**.
+**Note** **a negative is a keyed, non-exempt page whose ink verdict is `clean`, with no `gt/fig/` file.** The ink check is the witness — every band of ink accounted for by text zones alone, so there is nothing left for a figure to be. `1-191` is the proof it works: that check, not exemption status, is what exposed its undeclared photograph. A page whose bands were *excused* reads `ruled`, not `clean`, and is **unknown** rather than negative — an exemption makes the check read clean while hiding exactly the ink a figure would be. The live instances are `1-033`, `1-035`, `1-036`, all "scanner artifact".
+**Note** **the `unknown` count is reported, always.** The verdicts come from `gt/zones/_ink_cache.json`, which is derived and gitignored, and a stale entry reads unknown rather than clean — on a cold cache that is every page. A run that quietly trained on whatever negatives it happened to find would look exactly like a run on a small corpus, so the number is in the report and the note names `zones check --all --ink`.
+**Note** additive: a mark a human made is never moved. Held out has to stay held out, or the eval set drifts with whatever was keyed most recently and stops being one.
+
+### fig assemble
+**Does** lays out `train/bogoras-fig/` and **reports** the `ketos segtrain` invocation.
+**Reads** `gt/fig/`, its split lists, `scans/`.
+**Writes** `train/bogoras-fig/` — symlinks, synthesized ALTOs for the negatives, and `train.lst`/`eval.lst`. Pure scratch; clobbered on every run.
+**Exit** always 0.
+```
+--scratch     random init rather than fine-tuning blla or the installed model
+--root --json --toon --pager
+```
+**Note** **the raster is the raw `scans/` page, never the blot.** `zones assemble` links `scans/w-figs-blotted/` so the zone segmenter cannot learn figure-shaped body zones; here the blot paints this model's *target* white, so training on it would ask the model to find something that has been erased. It is also why these are two models rather than one with four classes: they read different rasters.
+**Note** **a negative page's ALTO is synthesized here and stored nowhere.** `gt/fig/` never holds an empty file — absence is how it records "no figures", and `zones blot`, `ocr gaps` and the reader dispatch all read an existing file as "this page has figures". Verified against kraken 7.0.3 rather than assumed: an empty-region ALTO parses to a `baselines` container with no regions and `BaselineSet.add` accepts it as a page with none, which is what teaches the model that most pages are empty.
+**Note** the list entries are **relative and unresolved**. Resolving follows the symlink back to `gt/fig/` and silently trains on the store instead of the work dir — `zones assemble` records that lesson and it applies verbatim.
+**Note** the command is **reported, not run**. Training holds the GPU for hours and belongs in your own terminal.
+
+### fig predict [PP-NNN ...]
+**Does** runs the figure segmenter and writes raw ALTO into `mz/fig/`.
+**Reads** `scans/`, the model.
+**Writes** `mz/fig/chukchi-PP-NNN.xml`, atomically, each carrying a processing step naming the model path, its sha256 and the device.
+**Exit** always 0; a page with no raster is a row saying so.
+```
+PP-NNN...     which pages; several may be given
+--all         every page with a raster
+--force       overwrite an existing mz/fig/ page
+--model M     model path [the installed one]
+--device D    torch device [auto]
+--root --json --toon --pager
+```
+**Note** **no exempt skip.** Plates are exempt in the zone track and are exactly where figures live.
+**Note** `--force` is required to overwrite, because that file's processing step is the store's only witness to which model wrote it.
+**Note** there is **no `fig/` view** over `gt/fig/` and `mz/fig/`. A prediction reaches a human through the editor, which shows it as a proposal and asks, or not at all — see the group note above.
+
+### fig score
+**Does** compares `mz/fig/` against `gt/fig/`, per split and per class.
+**Reads** both stores and the split lists.
+**Writes** —
+**Exit** always 0. Measurement never gates.
+```
+--model M     model path, for the report's header [the installed one]
+--min-iou F   area overlap at which a predicted box counts as found [0.5]
+--root --json --toon --pager
+```
+**Note** **matched by area overlap, not by y.** `zones score` pairs on vertical overlap because zones are bands; pairing figures that way would call two side-by-side pictures one match.
+**Note** **pictures and captions are scored apart.** They differ by an order of magnitude in area, so one blended figure recall would be carried by whichever class is commoner and would hide a model that finds every picture and no caption.
+**Note** **pages witnessed to have no figures are their own bucket.** Two thirds of the corpus is negatives, and a box predicted on one is a false positive with nowhere else to be counted; folding those into the picture precision would let a model that hallucinates on empty pages hide behind the pages that have some.
+**Note** per split and **never blended**, for `zones score`'s reason: agreement on the trained-on pages is the editor's own judgement read back.
+
+### fig install CKPT
+**Does** scores a checkpoint, refuses a swapped class map, then installs it.
+**Reads** the checkpoint, both stores, `train/bogoras-fig/*.lst`.
+**Writes** with `--commit`: `models/bogoras-fig/` — the weights, a manifest, and verbatim copies of the two split lists.
+**Exit** 0; refuses by reporting rather than by exit code.
+```
+CKPT          the .safetensors ketos wrote
+--name N      installed name [fig-seg]
+--device D    torch device [auto]
+--commit      install it
+--root --json --toon --pager
+```
+**Note** everything that makes a checkpoint trustworthy is a **precondition of installing it**, so the score runs first, the manifest is written before the weights, and the copy is last — `zones install`'s shape and its reasoning.
+**Note** with two classes the permutation test degenerates to a **swap test**, and it is still worth running: `--resize new` renumbers the output layer, and a model that learned "caption" on the channel it calls "picture" scores plausibly on counts while being wrong about every box.
+**Note** **refuses if `train/bogoras-fig/*.lst` are gone.** The split a run consumed has to be frozen beside the model, or its scores belong to a division nobody kept. Manifest paths are relative to the repo root: it is committed, and a record of one machine's filesystem is no record.
+
 ---
 
 ## views
