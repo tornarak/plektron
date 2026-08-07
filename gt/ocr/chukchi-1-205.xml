@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-205.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-205.png; regions_from: zones/chukchi-1-205.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-205_r1" HPOS="422" VPOS="607" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="422 607 2200 607 2200 697 422 697"/>
+                    </Shape>
+                    <TextLine ID="mz_1-205_l1" HPOS="991" VPOS="621" WIDTH="622" HEIGHT="52" BASELINE="991 653 1613 653" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="991 653 991 673 1613 673 1613 653 1613 621 991 621 991 653"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l2" HPOS="2092" VPOS="614" WIDTH="90" HEIGHT="59" BASELINE="2094 660 2182 655" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2178 623 2174 621 2148 614 2135 617 2113 619 2092 625 2094 660 2094 673 2182 673 2182 655 2180 625 2178 623"/>
+                        </Shape>
+                        <String CONTENT="163"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-205_r2" HPOS="422" VPOS="722" WIDTH="1778" HEIGHT="137" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="422 722 2200 722 2200 859 422 859"/>
+                    </Shape>
+                    <TextLine ID="mz_1-205_l3" HPOS="411" VPOS="718" WIDTH="1778" HEIGHT="61" BASELINE="413 764 2189 757" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="411 757 413 764 413 779 2189 775 2189 757 2185 729 1600 718 1598 718 1596 718 1572 729 446 723 443 723 441 723 426 727 411 757"/>
+                        </Shape>
+                        <String CONTENT="also parts and separate plates of several other sets of armor, besides the armor"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l4" HPOS="417" VPOS="781" WIDTH="1770" HEIGHT="72" BASELINE="420 824 2187 818" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 824 420 842 567 853 569 853 1269 840 1381 850 1383 850 1386 850 1414 840 1492 850 1494 850 1611 837 1752 848 1754 848 2185 837 2187 818 2182 785 459 781 456 781 454 781 417 792 420 824"/>
+                        </Shape>
+                        <String CONTENT="of Japanese make¹ mentioned before (Fig. 85). In the region of the Palpal"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-205_r3" HPOS="422" VPOS="2690" WIDTH="1778" HEIGHT="304" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="422 2690 2200 2690 2200 2994 422 2994"/>
+                    </Shape>
+                    <TextLine ID="mz_1-205_l5" HPOS="417" VPOS="2688" WIDTH="1776" HEIGHT="63" BASELINE="420 2736 2193 2725" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2128 2691 2107 2691 2085 2691 2070 2691 2061 2697 1920 2697 1907 2691 1890 2691 1873 2691 1864 2695 1855 2691 1847 2691 1825 2691 1803 2691 1788 2691 1739 2697 1537 2688 1522 2688 1500 2688 1479 2688 1476 2688 1461 2699 1347 2688 1344 2688 1342 2688 1316 2701 417 2701 420 2736 420 2751 2191 2740 2193 2725 2189 2697 2137 2691 2128 2691"/>
+                        </Shape>
+                        <String CONTENT="Mountains and on the upper course of the Big River, which is a southern"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l6" HPOS="417" VPOS="2743" WIDTH="1774" HEIGHT="71" BASELINE="420 2797 2191 2784" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2797 420 2814 2189 2803 2191 2784 2185 2751 2031 2753 2009 2743 2007 2743 2005 2743 2003 2743 1981 2753 1964 2743 1962 2743 1959 2743 1957 2743 1955 2743 1929 2753 1897 2743 1894 2743 1892 2743 1890 2743 1858 2756 1840 2745 1838 2745 1836 2745 1834 2745 1739 2756 1715 2745 1713 2745 1710 2745 1639 2756 1602 2745 1600 2745 1598 2745 1596 2745 1557 2758 1474 2747 1472 2747 1470 2747 1468 2747 1450 2758 1362 2747 1360 2747 1357 2747 1355 2747 1340 2758 1225 2749 1223 2749 1221 2749 1197 2762 996 2762 935 2751 933 2751 931 2751 892 2762 842 2751 840 2751 838 2751 792 2762 738 2751 736 2751 651 2764 463 2753 461 2753 459 2753 417 2766 420 2797"/>
+                        </Shape>
+                        <String CONTENT="tributary of the Anadyr, many of the Reindeer Koryak and Chukchee still"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l7" HPOS="417" VPOS="2810" WIDTH="1774" HEIGHT="62" BASELINE="420 2855 2191 2846" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2855 420 2872 2189 2864 2191 2846 2187 2818 1316 2810 1314 2810 1312 2810 1310 2810 1297 2820 519 2814 517 2814 417 2825 420 2855"/>
+                        </Shape>
+                        <String CONTENT="carefully keep such armor as heirlooms from their ancestors, and do not want to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l8" HPOS="417" VPOS="2870" WIDTH="1776" HEIGHT="67" BASELINE="420 2918 2193 2907" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2918 420 2937 2191 2922 2193 2907 2189 2877 1158 2870 1156 2870 1154 2870 1123 2881 905 2872 903 2872 417 2885 420 2918"/>
+                        </Shape>
+                        <String CONTENT="part with it at any price. One rich reindeer-breeder by the name of Kaˊka gave"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l9" HPOS="417" VPOS="2929" WIDTH="1772" HEIGHT="63" BASELINE="420 2976 2189 2970" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2976 420 2992 2187 2985 2189 2970 2185 2940 1619 2929 1617 2929 1615 2929 1583 2940 1039 2931 1037 2931 417 2944 420 2976"/>
+                        </Shape>
+                        <String CONTENT="as a reason, that he might have need of it in strife with some of his neighbors."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-205_r4" HPOS="422" VPOS="2994" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="422 2994 2200 2994 2200 3173 422 3173"/>
+                    </Shape>
+                    <TextLine ID="mz_1-205_l10" HPOS="532" VPOS="2989" WIDTH="1663" HEIGHT="61" BASELINE="534 3035 2195 3026" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="534 3035 534 3050 2195 3041 2195 3026 2189 2989 532 2996 534 3035"/>
+                        </Shape>
+                        <String CONTENT="The specimens brought back, as well as others seen in the possession of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l11" HPOS="417" VPOS="3056" WIDTH="1774" HEIGHT="55" BASELINE="420 3095 2191 3087" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 3080 420 3095 420 3111 2189 3102 2191 3087 2185 3056 420 3063 417 3080"/>
+                        </Shape>
+                        <String CONTENT="the natives, consist of several rows of narrow iron plates, laced together with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-205_l12" HPOS="420" VPOS="3102" WIDTH="1769" HEIGHT="69" BASELINE="422 3158 2189 3145" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 3141 422 3158 422 3171 2187 3163 2189 3145 2185 3115 1979 3115 1959 3102 1957 3102 1955 3102 1953 3102 1951 3102 1923 3113 1907 3102 1905 3102 1903 3102 1901 3102 1899 3102 1897 3102 1881 3115 1702 3104 1700 3104 1626 3115 1602 3104 1600 3104 1598 3104 1518 3117 1386 3106 1383 3106 1381 3106 1379 3106 1362 3117 1063 3108 1061 3108 1059 3108 1056 3108 1041 3119 981 3111 978 3111 905 3121 877 3111 874 3111 872 3111 786 3121 716 3111 714 3111 712 3111 710 3111 690 3121 480 3113 478 3113 426 3124 420 3141"/>
+                        </Shape>
+                        <String CONTENT="strips of leather and easily folded. The shape of the plates, and the manner"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-205_r5" HPOS="422" VPOS="3189" WIDTH="1778" HEIGHT="52" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="422 3189 2200 3189 2200 3241 422 3241"/>
+                    </Shape>
+                    <TextLine ID="mz_1-205_l13" HPOS="1221" VPOS="3186" WIDTH="193" HEIGHT="61" BASELINE="1223 3217 1414 3221" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1223 3217 1221 3234 1318 3247 1321 3247 1412 3236 1414 3221 1414 3193 1223 3186 1223 3217"/>
+                        </Shape>
+                        <String CONTENT="¹ See p. 54."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

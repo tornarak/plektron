@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-209.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-209.png; regions_from: zones/chukchi-1-209.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-209_r1" HPOS="468" VPOS="675" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="468 675 2246 675 2246 765 468 765"/>
+                    </Shape>
+                    <TextLine ID="mz_1-209_l1" HPOS="2143" VPOS="690" WIDTH="91" HEIGHT="65" BASELINE="2148 731 2234 725" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2219 690 2143 694 2148 731 2148 749 2202 755 2204 755 2206 755 2234 740 2234 725 2228 694 2219 690"/>
+                        </Shape>
+                        <String CONTENT="167"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l2" HPOS="1048" VPOS="692" WIDTH="623" HEIGHT="54" BASELINE="1048 727 1671 727" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1048 718 1048 727 1048 746 1671 746 1671 727 1671 692 1063 692 1048 718"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-209_r2" HPOS="468" VPOS="790" WIDTH="1778" HEIGHT="126" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="468 790 2246 790 2246 916 468 916"/>
+                    </Shape>
+                    <TextLine ID="mz_1-209_l3" HPOS="472" VPOS="792" WIDTH="1773" HEIGHT="61" BASELINE="474 835 2245 831" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="474 835 474 853 2243 848 2245 831 2241 801 513 792 511 792 508 792 472 803 474 835"/>
+                        </Shape>
+                        <String CONTENT="of Sciences at St. Petersburg (Fig. 90, b), has a neck-fender quite similar to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l4" HPOS="474" VPOS="853" WIDTH="485" HEIGHT="62" BASELINE="474 896 959 896" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="474 870 474 896 474 915 959 915 959 896 959 866 586 853 584 853 526 863 504 853 502 853 500 853 498 853 478 859 474 870"/>
+                        </Shape>
+                        <String CONTENT="the Gilyak specimen."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-209_r3" HPOS="468" VPOS="916" WIDTH="1778" HEIGHT="71" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="468 916 2246 916 2246 987 468 987"/>
+                    </Shape>
+                    <TextLine ID="mz_1-209_l5" HPOS="580" VPOS="913" WIDTH="1665" HEIGHT="56" BASELINE="582 954 2245 950" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 954 582 969 2243 969 2245 950 2241 922 597 913 595 913 593 913 591 913 580 920 582 954"/>
+                        </Shape>
+                        <String CONTENT="Greaves and arm-guards were also used. They were made of hide and"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-209_r4" HPOS="468" VPOS="2834" WIDTH="1778" HEIGHT="428" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="468 2834 2246 2834 2246 3262 468 3262"/>
+                    </Shape>
+                    <TextLine ID="mz_1-209_l6" HPOS="467" VPOS="2827" WIDTH="1776" HEIGHT="80" BASELINE="469 2883 2243 2864" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2135 2829 2122 2827 2109 2827 2092 2827 2070 2827 2048 2827 2029 2827 2007 2836 1743 2827 1741 2827 1739 2827 1710 2838 1678 2827 1676 2827 1674 2827 1671 2827 1643 2842 1416 2842 1364 2831 1362 2831 1360 2831 1357 2831 1342 2842 1217 2833 1214 2833 1212 2833 1182 2844 1078 2833 1076 2833 1074 2833 1071 2833 1050 2846 695 2838 693 2838 690 2838 660 2851 511 2840 508 2840 506 2840 467 2853 469 2883 469 2898 859 2907 861 2907 1455 2890 2219 2892 2221 2892 2224 2892 2226 2892 2243 2881 2243 2864 2239 2836 2141 2829 2135 2829"/>
+                        </Shape>
+                        <String CONTENT="of iron. The expedition obtained two iron arm-guards (Fig. 91, a, b) bought"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l7" HPOS="469" VPOS="2892" WIDTH="1768" HEIGHT="69" BASELINE="472 2942 2237 2927" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 2942 472 2957 1223 2961 1225 2961 1227 2961 1256 2950 1572 2957 1574 2957 1732 2946 1892 2955 1894 2955 1988 2944 2232 2953 2237 2927 2232 2898 1476 2892 1474 2892 1204 2905 513 2901 511 2901 508 2901 469 2911 472 2942"/>
+                        </Shape>
+                        <String CONTENT="with one of the suits of armor, and evidently used with it for protecting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l8" HPOS="467" VPOS="2946" WIDTH="1774" HEIGHT="74" BASELINE="469 3005 2241 2985" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="469 3005 469 3020 2239 3000 2241 2985 2237 2955 1853 2946 1851 2946 1849 2946 1801 2957 1650 2948 1648 2948 1645 2948 1613 2959 1059 2955 1056 2955 1054 2955 1052 2955 1033 2968 467 2970 469 3005"/>
+                        </Shape>
+                        <String CONTENT="both arms. They are quite Japanese in pattern, with special hand-protectors"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l9" HPOS="469" VPOS="3002" WIDTH="1772" HEIGHT="76" BASELINE="472 3063 2241 3043" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 3063 472 3078 2239 3059 2241 3043 2239 3015 2206 3002 2204 3002 2202 3002 1648 3020 1515 3009 1513 3009 1440 3022 1286 3011 1284 3011 1282 3011 1260 3022 1115 3013 1113 3013 1110 3013 1059 3026 1013 3015 1011 3015 1009 3015 1007 3015 968 3026 898 3015 896 3015 894 3015 892 3015 877 3026 773 3018 770 3018 768 3018 766 3018 751 3031 634 3031 513 3020 511 3020 508 3020 469 3033 472 3063"/>
+                        </Shape>
+                        <String CONTENT="which were held in place by small loops slung over the thumb and little"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l10" HPOS="469" VPOS="3065" WIDTH="1770" HEIGHT="76" BASELINE="472 3124 2239 3102" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 3124 472 3141 2237 3119 2239 3102 2234 3074 1912 3065 1910 3065 1907 3065 1879 3076 1364 3072 1362 3072 1360 3072 1357 3072 1344 3082 1191 3074 1188 3074 1110 3085 1002 3076 1000 3076 946 3087 680 3080 677 3080 675 3080 643 3091 487 3082 485 3082 482 3082 480 3082 469 3089 472 3124"/>
+                        </Shape>
+                        <String CONTENT="finger. A greave made of thick skin (Fig. 91, d) was obtained with another"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l11" HPOS="469" VPOS="3128" WIDTH="1772" HEIGHT="71" BASELINE="472 3184 2241 3165" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 3184 472 3199 2239 3180 2241 3165 2237 3130 1650 3128 1648 3128 1416 3141 1282 3132 1279 3132 1041 3145 864 3137 861 3137 859 3137 857 3137 838 3150 662 3150 524 3141 521 3141 469 3152 472 3184"/>
+                        </Shape>
+                        <String CONTENT="suit of armor. My informants insisted that usually only the left hand and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-209_l12" HPOS="472" VPOS="3199" WIDTH="1020" HEIGHT="59" BASELINE="474 3243 1492 3232" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="474 3243 474 3258 1489 3249 1492 3232 1487 3204 675 3199 673 3199 671 3199 669 3199 651 3210 489 3202 487 3202 485 3202 482 3202 472 3208 474 3243"/>
+                        </Shape>
+                        <String CONTENT="the left leg were protected by these guards."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-209_r5" HPOS="468" VPOS="3262" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="468 3262 2246 3262 2246 3338 468 3338"/>
+                    </Shape>
+                    <TextLine ID="mz_1-209_l13" HPOS="582" VPOS="3247" WIDTH="1661" HEIGHT="76" BASELINE="584 3299 2243 3286" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 3299 584 3314 1132 3323 1134 3323 2243 3301 2243 3286 2239 3258 2018 3247 2016 3247 1912 3260 582 3262 584 3299"/>
+                        </Shape>
+                        <String CONTENT="The lance was used, together with the armor, as a weapon of defence."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

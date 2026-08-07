@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-210.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-210.png; regions_from: zones/chukchi-1-210.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-210_r1" HPOS="572" VPOS="656" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="572 656 2350 656 2350 746 572 746"/>
+                    </Shape>
+                    <TextLine ID="mz_1-210_l1" HPOS="1158" VPOS="679" WIDTH="615" HEIGHT="54" BASELINE="1158 712 1773 712" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1765 697 1747 679 1158 679 1158 712 1158 733 1773 733 1773 712 1769 701 1765 697"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l2" HPOS="586" VPOS="671" WIDTH="100" HEIGHT="60" BASELINE="586 716 686 716" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="586 716 586 731 686 727 686 716 686 681 656 671 654 671 651 671 586 681 586 716"/>
+                        </Shape>
+                        <String CONTENT="168"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-210_r2" HPOS="572" VPOS="771" WIDTH="1778" HEIGHT="1048" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="572 771 2350 771 2350 1819 572 1819"/>
+                    </Shape>
+                    <TextLine ID="mz_1-210_l3" HPOS="580" VPOS="779" WIDTH="1769" HEIGHT="61" BASELINE="580 822 2349 822" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="580 822 580 840 2349 840 2349 822 2349 792 2293 779 2291 779 2237 790 2092 779 2089 779 2087 779 2057 790 2003 779 2001 779 1938 790 1907 779 1905 779 1903 779 1901 779 1871 790 1767 779 1765 779 1762 779 1730 790 580 781 580 822"/>
+                        </Shape>
+                        <String CONTENT="Thrusts were made over the head-protector, as shown in Fig. 84, a. For"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l4" HPOS="1561" VPOS="842" WIDTH="786" HEIGHT="65" BASELINE="1563 883 2347 878" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1563 883 1563 896 1951 907 1953 907 2135 896 2325 904 2328 904 2330 904 2332 904 2347 894 2347 878 2343 850 1609 842 1606 842 1604 842 1561 853 1563 883"/>
+                        </Shape>
+                        <String CONTENT="attacks on the opponent the bow"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l5" HPOS="1565" VPOS="898" WIDTH="780" HEIGHT="58" BASELINE="1567 943 2345 937" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1567 943 1567 956 2343 950 2345 937 2341 909 2098 898 2096 898 2094 898 2072 909 1849 900 1847 900 1845 900 1819 911 1762 902 1760 902 1565 913 1567 943"/>
+                        </Shape>
+                        <String CONTENT="was used. On some of the head-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l6" HPOS="1567" VPOS="969" WIDTH="780" HEIGHT="55" BASELINE="1570 1004 2347 1000" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1570 1004 1570 1024 2345 1015 2347 1000 2341 969 1567 972 1570 1004"/>
+                        </Shape>
+                        <String CONTENT="protectors the marks of arrows shot"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l7" HPOS="1565" VPOS="1021" WIDTH="782" HEIGHT="59" BASELINE="1567 1065 2347 1058" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1567 1065 1567 1080 2345 1073 2347 1058 2343 1028 1606 1021 1604 1021 1602 1021 1565 1032 1567 1065"/>
+                        </Shape>
+                        <String CONTENT="at them in ceremonial or real fights"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l8" HPOS="1563" VPOS="1078" WIDTH="784" HEIGHT="58" BASELINE="1565 1123 2347 1119" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1123 1565 1136 2345 1132 2347 1119 2345 1091 2315 1078 2312 1078 2310 1078 2193 1088 2169 1078 2167 1078 2165 1078 2163 1078 2161 1078 2148 1088 2092 1078 2089 1078 2040 1088 2011 1078 2009 1078 2007 1078 2005 1078 1975 1088 1734 1080 1732 1080 1563 1093 1565 1123"/>
+                        </Shape>
+                        <String CONTENT="may still be traced. Both kinds"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l9" HPOS="1563" VPOS="1136" WIDTH="784" HEIGHT="69" BASELINE="1565 1184 2347 1179" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1184 1565 1197 2332 1205 2334 1205 2336 1205 2338 1205 2338 1203 2347 1192 2347 1179 2343 1147 2098 1136 2096 1136 2094 1136 2061 1147 2027 1136 2024 1136 2022 1136 2020 1136 2018 1136 2003 1147 1927 1138 1925 1138 1923 1138 1920 1138 1920 1140 1910 1151 1773 1151 1754 1138 1752 1138 1749 1138 1604 1138 1602 1138 1600 1138 1563 1151 1565 1184"/>
+                        </Shape>
+                        <String CONTENT="of fighting are described in several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l10" HPOS="1565" VPOS="1201" WIDTH="780" HEIGHT="56" BASELINE="1565 1242 2345 1242" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1242 1565 1257 2345 1257 2345 1242 2345 1214 1736 1201 1734 1201 1676 1212 1615 1201 1613 1201 1611 1201 1565 1212 1565 1242"/>
+                        </Shape>
+                        <String CONTENT="tales, though the combatants are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l11" HPOS="1563" VPOS="1262" WIDTH="780" HEIGHT="69" BASELINE="1565 1305 2343 1299" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1305 1565 1318 1628 1331 1630 1331 1632 1331 1661 1316 1957 1316 2014 1329 2016 1329 2018 1329 2341 1316 2343 1299 2338 1270 1821 1262 1819 1262 1563 1275 1565 1305"/>
+                        </Shape>
+                        <String CONTENT="represented as displaying more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l12" HPOS="1563" VPOS="1333" WIDTH="782" HEIGHT="46" BASELINE="1563 1361 2345 1361" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1563 1361 1563 1379 2345 1379 2345 1361 2345 1333 1563 1333 1563 1361"/>
+                        </Shape>
+                        <String CONTENT="agility than would seem consistent"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l13" HPOS="1565" VPOS="1392" WIDTH="778" HEIGHT="45" BASELINE="1565 1420 2343 1420" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1420 1565 1437 2343 1437 2343 1420 2343 1392 1565 1392 1565 1420"/>
+                        </Shape>
+                        <String CONTENT="with the armor. In other tales the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l14" HPOS="1563" VPOS="1448" WIDTH="782" HEIGHT="50" BASELINE="1563 1480 2345 1480" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1563 1480 1563 1498 2345 1498 2345 1480 2343 1448 1563 1450 1563 1480"/>
+                        </Shape>
+                        <String CONTENT="action of the combatants is said"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l15" HPOS="1563" VPOS="1498" WIDTH="782" HEIGHT="58" BASELINE="1565 1543 2345 1539" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1543 1565 1556 2343 1552 2345 1539 2341 1511 2092 1498 2089 1498 2087 1498 2085 1498 2085 1500 2074 1509 1726 1500 1723 1500 1721 1500 1691 1511 1635 1500 1632 1500 1630 1500 1628 1500 1617 1511 1583 1500 1580 1500 1578 1500 1576 1500 1574 1500 1563 1509 1565 1543"/>
+                        </Shape>
+                        <String CONTENT="to be slow and wary. They cover"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l16" HPOS="1563" VPOS="1556" WIDTH="780" HEIGHT="61" BASELINE="1565 1602 2343 1597" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1602 1565 1617 2341 1612 2343 1597 2338 1569 2137 1569 2113 1556 2111 1556 2109 1556 2050 1567 2027 1556 2024 1556 2022 1556 2020 1556 1977 1567 1953 1556 1951 1556 1949 1556 1946 1556 1944 1556 1931 1569 1903 1558 1901 1558 1899 1558 1736 1569 1704 1558 1702 1558 1700 1558 1697 1558 1676 1569 1587 1558 1585 1558 1583 1558 1580 1558 1563 1567 1565 1602"/>
+                        </Shape>
+                        <String CONTENT="their faces with the head-protector"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l17" HPOS="1563" VPOS="1623" WIDTH="780" HEIGHT="61" BASELINE="1565 1662 2343 1656" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1662 1565 1675 1881 1684 1884 1684 1949 1673 2022 1684 2024 1684 2027 1684 2061 1673 2074 1684 2076 1684 2079 1684 2081 1684 2198 1671 2323 1682 2325 1682 2328 1682 2330 1682 2343 1669 2343 1656 2338 1630 1583 1623 1580 1623 1578 1623 1576 1623 1563 1630 1565 1662"/>
+                        </Shape>
+                        <String CONTENT="and discharge one arrow after"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l18" HPOS="1563" VPOS="1677" WIDTH="782" HEIGHT="72" BASELINE="1565 1723 2345 1719" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1565 1723 1565 1734 1749 1749 1752 1749 1754 1749 1756 1749 1756 1747 1769 1736 2143 1747 2146 1747 2148 1747 2185 1734 2206 1747 2208 1747 2211 1747 2213 1749 2328 1749 2328 1747 2330 1747 2332 1747 2332 1744 2345 1729 2345 1719 2341 1690 2074 1677 2072 1677 1745 1690 1658 1680 1656 1680 1563 1693 1565 1723"/>
+                        </Shape>
+                        <String CONTENT="another, which certainly agrees"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-210_l19" HPOS="1570" VPOS="1738" WIDTH="773" HEIGHT="63" BASELINE="1572 1777 2343 1781" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1572 1777 1570 1796 2338 1801 2343 1781 2341 1751 1985 1751 1959 1738 1957 1738 1955 1738 1572 1744 1572 1777"/>
+                        </Shape>
+                        <String CONTENT="more nearly with the probable facts."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

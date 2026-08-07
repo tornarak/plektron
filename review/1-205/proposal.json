@@ -1,0 +1,31 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "163"},
+    "2": {"text": "also parts and separate plates of several other sets of armor, besides the armor"},
+    "3": {
+      "text": "of Japanese make¹ mentioned before (Fig. 85). In the region of the Palpal",
+      "note": "Footnote reference marker after 'make': printed as a small raised digit (superscript 1, U+00B9), keyed per keying_spec.md §2.10 ('key the actual Unicode superscript... never the plain ASCII digit'). CATMuS/mz text read it as an exclamation mark ('make!').",
+      "class": "print"
+    },
+    "4": {"text": "Mountains and on the upper course of the Big River, which is a southern"},
+    "5": {"text": "tributary of the Anadyr, many of the Reindeer Koryak and Chukchee still"},
+    "6": {"text": "carefully keep such armor as heirlooms from their ancestors, and do not want to"},
+    "7": {
+      "text": "part with it at any price. One rich reindeer-breeder by the name of Kaˊka gave",
+      "resolved": "Kaˊka = K, a, U+02CA MODIFIER LETTER ACUTE ACCENT (stress mark), k, a",
+      "note": "Personal name 'Ka+U+02CA+ka' carries a raised mark between the two syllables, keyed as stress U+02CA per keying_spec.md section 5.8 ('every raised mark keyed stress U+02CA, never apostrophe') and section 4's closing rule (raised marks default to stress, never apostrophe). mz/ocr read it as a bare slash ('Ka/ka'), the same ASCII-substitution failure documented for stress marks in prior batches (memory: tier1-forms-in-english-prose-pages, catmus-substitutes-ascii-for-marks).",
+      "class": "print"
+    },
+    "8": {"text": "as a reason, that he might have need of it in strife with some of his neighbors."},
+    "9": {"text": "The specimens brought back, as well as others seen in the possession of"},
+    "10": {"text": "the natives, consist of several rows of narrow iron plates, laced together with"},
+    "11": {"text": "strips of leather and easily folded. The shape of the plates, and the manner"},
+    "12": {
+      "text": "¹ See p. 54.",
+      "note": "Footnote opener, keyed with superscript U+00B9 per keying_spec.md §2.10, pairing with the reference marker on line 3.",
+      "class": "print"
+    }
+  },
+  "contamination": {"blind": true}
+}

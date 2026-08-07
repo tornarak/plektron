@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-201.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-201.png; regions_from: zones/chukchi-1-201.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-201_r1" HPOS="398" VPOS="591" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="398 591 2176 591 2176 681 398 681"/>
+                    </Shape>
+                    <TextLine ID="mz_1-201_l1" HPOS="965" VPOS="612" WIDTH="626" HEIGHT="54" BASELINE="968 649 1591 645" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1578 612 965 614 968 649 968 666 1589 662 1591 645 1585 619 1578 612"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-201_r2" HPOS="398" VPOS="706" WIDTH="1778" HEIGHT="80" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="398 706 2176 706 2176 786 398 786"/>
+                    </Shape>
+                    <TextLine ID="mz_1-201_l2" HPOS="391" VPOS="707" WIDTH="1770" HEIGHT="65" BASELINE="394 757 2161 751" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 736 394 757 394 772 2161 768 2161 751 2156 720 1964 707 1962 707 1959 707 1914 718 1897 707 1894 707 1892 707 1890 707 1793 718 1745 707 1743 707 1741 707 1684 718 1658 707 1656 707 1654 707 1565 720 1204 710 1201 710 1108 720 1082 710 1080 710 1078 710 1076 710 1050 720 1011 710 1009 710 1007 710 922 723 526 712 524 712 443 723 413 712 411 712 409 712 407 712 404 712 391 736"/>
+                        </Shape>
+                        <String CONTENT="forged by blacksmiths of all the neighboring tribes, and sold to the Reindeer"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-201_r3" HPOS="398" VPOS="3024" WIDTH="1778" HEIGHT="127" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="398 3024 2176 3024 2176 3151 398 3151"/>
+                    </Shape>
+                    <TextLine ID="mz_1-201_l3" HPOS="391" VPOS="3033" WIDTH="1772" HEIGHT="65" BASELINE="394 3078 1059 3072 2163 3082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1554 3033 1552 3033 1550 3033 1515 3043 1412 3033 1409 3033 1407 3033 1405 3033 1390 3046 1295 3046 1258 3033 1256 3033 1253 3033 1251 3033 1249 3033 1234 3043 1097 3033 1087 3033 1065 3033 1061 3033 1035 3041 918 3033 913 3033 892 3033 870 3033 859 3033 753 3041 731 3033 718 3033 701 3033 684 3039 580 3033 567 3033 545 3033 524 3033 502 3033 480 3033 467 3033 394 3039 394 3078 391 3093 2159 3098 2163 3082 2161 3048 2100 3035 2098 3035 1589 3043 1557 3033 1554 3033"/>
+                        </Shape>
+                        <String CONTENT="people, though recently but few new lances have been sold, the people being"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-201_l4" HPOS="394" VPOS="3091" WIDTH="658" HEIGHT="63" BASELINE="396 3134 1052 3130" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="396 3134 396 3154 1050 3154 1052 3130 1048 3102 768 3091 766 3091 394 3104 396 3134"/>
+                        </Shape>
+                        <String CONTENT="contented with the old ones."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-201_r4" HPOS="398" VPOS="3151" WIDTH="1778" HEIGHT="79" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="398 3151 2176 3151 2176 3230 398 3230"/>
+                    </Shape>
+                    <TextLine ID="mz_1-201_l5" HPOS="511" VPOS="3152" WIDTH="1654" HEIGHT="63" BASELINE="513 3193 2165 3197" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="513 3193 511 3210 2161 3215 2165 3197 2163 3165 513 3152 513 3193"/>
+                        </Shape>
+                        <String CONTENT="The points of lances, and sometimes the best arrows, are often adorned"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
