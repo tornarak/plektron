@@ -58,6 +58,12 @@ The second attempt narrows the claim until it is checkable. Three things change:
   keep ink just outside a zone, but that ink is a few pixels of photograph edge on
   a plate like `1-167`.
 
+  **The figure segmenter trains on the raw `scans/` instead, and that is why it is
+  a second model rather than more classes on this one.** The blot paints its
+  target white; a network cannot learn to find what has been erased from its
+  input. Two models reading two rasters, and neither can be folded into the other
+  — `docs/apparatus.md` holds that track's design and its witnessed negatives.
+
 Store is `gt/zones/`, ALTO in the eScriptorium dialect so it goes straight into
 `ketos segtrain` and back into the GUI if ever wanted — the import/export loop being
 the friction this replaces. It is **a separate store from `gt/seg/`, permanently**:

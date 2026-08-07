@@ -91,10 +91,11 @@ Layout, all at the repo root:
 
     scans/  the 832 rasters, 300 dpi greyscale. Derived; not in git. Selection farms over it (w-figs/, w-ocr/, w-figs-blotted/)
             are derived too and point into it: a clone gets dangling links.
-    gt/     what a human has been through: ocr/, fig/ (geometry only, no
-            lines), zones/ (the current segmentation), lines/ (the corrections
-            overlay). Tracked.
-    mz/     what the models emitted, raw: zones/ and ocr/. Derived; ignored.
+    gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
+            pictures and their captions; no lines), zones/ (the current
+            segmentation), lines/ (the corrections overlay). Tracked.
+    mz/     what the models emitted, raw: zones/, ocr/ and fig/. Derived;
+            ignored. There is no read view over the fig pair, deliberately.
     ocr/  zones/  the read views over the paired stores — symlinks, the human
             file always winning. Derived; ignored. Never written through.
     tei/    the collated pages, plus corpus-header.xml — the corpus teiHeader,
@@ -104,7 +105,8 @@ Layout, all at the repo root:
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
             ignored. See harness/paths.py.
-    models/ the recognizers and segmenters, this project's zones-seg included.
+    models/ the recognizers and segmenters, this project's zones-seg and
+            fig-seg included.
     pdfs/   symlinks to the three AMNH source PDFs, outside the repo.
     train/  training working dirs, pure scratch. Ignored; artifacts go to models/.
     harness/  tools/  docs/  concordance.md  keying_spec.md — the tests live in
@@ -141,8 +143,8 @@ modules are open.
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
 **Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`,
-`views`, `lexicon`, `find`, `corpus`, `agents`. The group names what the command
-touches; the action names what it does to it.
+`fig`, `views`, `lexicon`, `find`, `corpus`, `agents`. The group names what the
+command touches; the action names what it does to it.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with

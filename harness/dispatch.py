@@ -76,10 +76,11 @@ FIGURES_PRESENT = (
     "side of one is that figure, not a dropped line: it is already adjudicated "
     "in the figure track and is nobody's to key. Do not spend an image on it.")
 FIGURES_ABSENT = (
-    "gt/fig/chukchi-{ref}.xml does NOT exist, and the figure track is complete "
-    "at 252 pages, so this page has no figures: nothing is being masked and "
-    "**every band it reports is a genuine dropped-line candidate**, not "
-    "something to discount as a photograph.")
+    "gt/fig/chukchi-{ref}.xml does NOT exist, which in this store means a human "
+    "went through the page and found no figure on it — absence of the file is "
+    "how the figure track records that. So nothing is being masked and **every "
+    "band it reports is a genuine dropped-line candidate**, not something to "
+    "discount as a photograph.")
 
 
 class Unready(Exception):

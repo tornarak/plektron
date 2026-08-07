@@ -409,11 +409,29 @@ establishing the intent the flag would. Deliberately not keyed on the *proposal*
 mtime — a proposal is a reading, not an adjudication, and re-authoring one licenses
 no write.
 
-**`figures.py`** — the figure track: `gt/fig/` geometry against `data/readings.md`
-text, reconciled by `reconcile()` (the `figures` verb). Also the generic sheet
-compositor `lines.py` reuses, and `read_blocks` — **the one reader of the
-`OtherTag/@LABEL` + `TAGREFS` zone encoding**, store-agnostic, with `zones()` and
-`zones.read_zones` as its two bindings.
+**`figures.py`** — the figure track whole: `gt/fig/` geometry against
+`data/readings.md` text, reconciled by `reconcile()` (`corpus figures`); the
+store's writes (`save_figs`, `delete_figs`, its own split lists and
+`_rule_exempt.json` under `gt/fig/`, never shared with `gt/zones/`); the checks
+(`validate_fig_page`); and the segmenter quartet (`remark_eval`, `assemble`,
+`predict`, `score`, `install_model`). Also the generic sheet compositor `lines.py`
+reuses, and `read_blocks` — **the one reader of the `OtherTag/@LABEL` + `TAGREFS`
+zone encoding**, store-agnostic, with `zones()` and `zones.read_zones` as its two
+bindings.
+
+Two caller invariants are this module's alone, and both are silent when broken:
+
+- **A block id's last field is a foreign key** into `data/readings.md`, so
+  `save_figs` preserves ids where `save_zones` re-mints them by position. The mint
+  floor is the union of the incoming ids and the ids on disk — the batch alone
+  cannot see an ordinal a reading still names. Re-minting produces a well-formed
+  file with the same counts and the same *set* of suffixes, so `corpus figures`
+  still reconciles; only the pairing moves.
+- **An empty figure ALTO is never written.** Absence of the file is how this store
+  records "no figures on this page", and `zones.blot_one`, `lines.line_gaps` and
+  `dispatch.survey` all read an existing file as the opposite. `save_figs` refuses
+  and names `fig delete`; the empty region sets a segmenter needs are synthesized
+  in `assemble` and land only in `train/`.
 
 **`zones_config.py`** — loads and checks `data/zones_config.json`: the seven types
 with their keys and colours, the per-part text measure and anchor calibration, the
