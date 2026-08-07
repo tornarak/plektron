@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-313.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-313.png; regions_from: zones/chukchi-1-313.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-313_r1" HPOS="412" VPOS="606" WIDTH="1778" HEIGHT="104" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="412 606 2190 606 2190 710 412 710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-313_l1" HPOS="983" VPOS="627" WIDTH="626" HEIGHT="52" BASELINE="985 660 1609 664" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1598 627 998 627 985 647 985 660 983 675 1604 679 1609 664 1606 640 1598 627"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l2" HPOS="2085" VPOS="630" WIDTH="93" HEIGHT="54" BASELINE="2087 666 2178 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2174 645 2161 632 2087 630 2087 666 2085 679 2174 684 2178 671 2176 634 2174 632 2174 645"/>
+                        </Shape>
+                        <String CONTENT="245"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-313_r2" HPOS="412" VPOS="736" WIDTH="1778" HEIGHT="121" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="412 736 2190 736 2190 857 412 857"/>
+                    </Shape>
+                    <TextLine ID="mz_1-313_l3" HPOS="521" VPOS="733" WIDTH="1664" HEIGHT="63" BASELINE="524 770 2185 764" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="524 770 524 788 1570 796 1572 796 2185 781 2185 764 2180 736 521 733 524 770"/>
+                        </Shape>
+                        <String CONTENT="The combination-garment (see Plate XXIII, Fig. 2; also Fig. 177) consists"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l4" HPOS="409" VPOS="792" WIDTH="1773" HEIGHT="56" BASELINE="411 831 2182 822" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="411 831 411 848 2180 846 2182 822 2176 792 409 801 411 831"/>
+                        </Shape>
+                        <String CONTENT="of a bodice, large at the shoulders, but rather close-fitting at the waist, and"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-313_r3" HPOS="412" VPOS="1853" WIDTH="1778" HEIGHT="1265" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="412 1853 2190 1853 2190 3118 412 3118"/>
+                    </Shape>
+                    <TextLine ID="mz_1-313_l5" HPOS="407" VPOS="1861" WIDTH="1784" HEIGHT="74" BASELINE="409 1907 2191 1900" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2182 1868 2161 1868 2139 1868 2118 1868 2096 1868 2074 1868 2053 1866 2031 1866 2009 1866 1988 1866 1966 1866 1944 1866 1938 1864 809 1861 796 1864 775 1864 753 1864 731 1866 710 1866 688 1866 667 1868 645 1868 623 1870 602 1870 580 1870 558 1872 537 1872 515 1872 493 1874 472 1874 450 1877 428 1877 407 1877 409 1907 409 1935 493 1922 569 1933 571 1933 573 1933 576 1933 593 1920 831 1933 833 1933 835 1933 838 1933 855 1920 1563 1926 1565 1926 1567 1926 1609 1916 1897 1916 1912 1926 1914 1926 1916 1926 1918 1929 2107 1929 2107 1926 2109 1926 2111 1926 2124 1916 2163 1926 2165 1926 2167 1926 2169 1926 2172 1926 2191 1913 2191 1900 2187 1868 2182 1868"/>
+                        </Shape>
+                        <String CONTENT="passing into baggy trousers that reach a little below the knees. The neck of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l6" HPOS="409" VPOS="1918" WIDTH="1773" HEIGHT="60" BASELINE="411 1963 2182 1959" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="411 1963 411 1978 2180 1974 2182 1959 2178 1931 1771 1931 1745 1918 1743 1918 1741 1918 1739 1918 1713 1929 1624 1918 1622 1918 1619 1918 1617 1918 1600 1931 1476 1931 1448 1918 1446 1918 1444 1918 1442 1918 1420 1929 1338 1918 1336 1918 1273 1931 1175 1920 1173 1920 1171 1920 1143 1931 1119 1920 1117 1920 1115 1920 981 1931 944 1920 942 1920 939 1920 937 1920 935 1920 920 1931 868 1920 866 1920 712 1931 695 1920 693 1920 690 1920 515 1920 513 1920 511 1920 489 1931 435 1920 433 1920 430 1920 428 1920 409 1931 411 1963"/>
+                        </Shape>
+                        <String CONTENT="the bodice is cut quite low both front and back, especially for younger women."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l7" HPOS="415" VPOS="1978" WIDTH="1772" HEIGHT="61" BASELINE="417 2024 2187 2017" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 2024 417 2039 2185 2032 2187 2017 2182 1980 1578 1978 1576 1978 1522 1989 1492 1978 1489 1978 1487 1978 1399 1989 1342 1978 1340 1978 1338 1978 1301 1989 1288 1978 1286 1978 1284 1978 1093 1978 1091 1978 1089 1978 1067 1989 1035 1978 1033 1978 1030 1978 1028 1978 1004 1991 991 1980 989 1980 987 1980 985 1980 870 1991 415 1983 417 2024"/>
+                        </Shape>
+                        <String CONTENT="To keep off the cold it is bordered with a double or even a triple row of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l8" HPOS="413" VPOS="2052" WIDTH="1774" HEIGHT="50" BASELINE="413 2082 2187 2082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2082 413 2095 2185 2102 2187 2082 2187 2052 413 2052 413 2082"/>
+                        </Shape>
+                        <String CONTENT="trimming of the thick fur of the dog, fox, or wolf. On the suits of young"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l9" HPOS="413" VPOS="2113" WIDTH="1772" HEIGHT="47" BASELINE="413 2141 2185 2141" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2141 413 2160 2185 2156 2185 2141 2185 2113 413 2113 413 2141"/>
+                        </Shape>
+                        <String CONTENT="women these strips of fur are of different hues, contrasting strikingly with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l10" HPOS="411" VPOS="2160" WIDTH="1774" HEIGHT="56" BASELINE="413 2201 2185 2197" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2201 413 2216 2182 2214 2185 2197 2180 2169 487 2160 485 2160 411 2171 413 2201"/>
+                        </Shape>
+                        <String CONTENT="each other. Of course this does not prevent the cold winds of the tundra"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l11" HPOS="411" VPOS="2216" WIDTH="1774" HEIGHT="63" BASELINE="413 2258 2185 2264" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2258 411 2273 2180 2279 2185 2264 2182 2234 2100 2221 2098 2221 2096 2221 2055 2232 1803 2221 1801 2221 1799 2221 1797 2221 1780 2234 1654 2234 1448 2219 1446 2219 1444 2219 1407 2229 1292 2219 1290 2219 1204 2229 1156 2219 1154 2219 1152 2219 1149 2219 1117 2229 1091 2219 1089 2219 1087 2219 1084 2219 1050 2229 1004 2216 1002 2216 1000 2216 998 2216 996 2216 981 2227 911 2216 909 2216 855 2227 742 2216 740 2216 738 2216 708 2229 459 2229 443 2216 441 2216 439 2216 437 2216 435 2216 413 2225 413 2258"/>
+                        </Shape>
+                        <String CONTENT="from penetrating under the bodice. The sleeves are very full, and so long"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l12" HPOS="413" VPOS="2292" WIDTH="1774" HEIGHT="46" BASELINE="413 2320 2187 2320" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2320 413 2338 2187 2338 2187 2320 2187 2292 413 2292 413 2320"/>
+                        </Shape>
+                        <String CONTENT="that they interfere with the work of the woman. Moreover, they are not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l13" HPOS="413" VPOS="2340" WIDTH="1772" HEIGHT="65" BASELINE="415 2383 2185 2379" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2383 415 2405 2182 2394 2185 2379 2180 2351 1353 2340 1351 2340 1245 2351 482 2342 480 2342 413 2353 415 2383"/>
+                        </Shape>
+                        <String CONTENT="gathered in at the opening. On account of these sleeves, the woman, when"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l14" HPOS="411" VPOS="2400" WIDTH="1776" HEIGHT="59" BASELINE="413 2442 2187 2437" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2442 413 2459 2185 2455 2187 2437 2182 2409 537 2400 534 2400 411 2411 413 2442"/>
+                        </Shape>
+                        <String CONTENT="occupied in several branches of work, has to thrust her right arm and shoulder"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l15" HPOS="413" VPOS="2457" WIDTH="1772" HEIGHT="58" BASELINE="413 2500 2185 2500" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2500 413 2515 2185 2515 2185 2500 2185 2468 2154 2457 2152 2457 2150 2457 2048 2468 1994 2457 1992 2457 1990 2457 1966 2468 1927 2457 1925 2457 1923 2457 1920 2457 1894 2468 1838 2457 1836 2457 1730 2468 1700 2457 1697 2457 1695 2457 1622 2468 1578 2457 1576 2457 1574 2457 1513 2468 1485 2457 1483 2457 1481 2457 1479 2457 1440 2468 1368 2457 1366 2457 1364 2457 1329 2468 1305 2457 1303 2457 1301 2457 1299 2457 1297 2457 1282 2470 1188 2470 1158 2457 1156 2457 1154 2457 1080 2468 1052 2457 1050 2457 1048 2457 991 2468 922 2457 920 2457 816 2468 775 2457 773 2457 770 2457 768 2457 731 2468 706 2457 703 2457 701 2457 645 2468 623 2457 621 2457 619 2457 617 2457 589 2468 563 2457 560 2457 558 2457 413 2468 413 2500"/>
+                        </Shape>
+                        <String CONTENT="out of the bodice, while the sleeve is left dangling down the back. This"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l16" HPOS="411" VPOS="2515" WIDTH="1778" HEIGHT="61" BASELINE="413 2561 2189 2556" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2561 413 2576 2187 2572 2189 2556 2185 2528 2109 2515 2107 2515 2105 2515 2085 2526 2063 2515 2061 2515 2059 2515 2057 2515 2035 2526 1890 2515 1888 2515 1886 2515 1866 2526 1845 2515 1842 2515 1840 2515 1838 2515 1812 2526 1786 2515 1784 2515 1782 2515 1780 2515 1777 2515 1760 2528 1537 2528 1457 2515 1455 2515 1299 2528 1282 2517 1279 2517 1277 2517 1275 2517 1273 2517 1245 2528 755 2517 753 2517 751 2517 725 2528 664 2517 662 2517 582 2528 476 2517 474 2517 411 2530 413 2561"/>
+                        </Shape>
+                        <String CONTENT="attitude, with half of the bust bare, is one of the most typical for Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l17" HPOS="413" VPOS="2576" WIDTH="1776" HEIGHT="60" BASELINE="415 2621 2189 2617" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2621 415 2636 2187 2632 2189 2617 2185 2589 2020 2576 2018 2576 1931 2587 1907 2576 1905 2576 1903 2576 1901 2576 1899 2576 1884 2589 1511 2589 1422 2576 1420 2576 1334 2587 1303 2576 1301 2576 1299 2576 1297 2576 1264 2589 1234 2578 1232 2578 1230 2578 807 2589 597 2578 595 2578 593 2578 591 2578 576 2591 413 2591 415 2621"/>
+                        </Shape>
+                        <String CONTENT="women (see Plate XXVII, Fig. 3). The front of the garment opens a short distance"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l18" HPOS="413" VPOS="2647" WIDTH="1774" HEIGHT="52" BASELINE="413 2678 2187 2678" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2678 413 2699 2187 2699 2187 2678 2185 2647 413 2647 413 2678"/>
+                        </Shape>
+                        <String CONTENT="down from the neck, and may be fastened with curried leather bands attached"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l19" HPOS="411" VPOS="2699" WIDTH="1774" HEIGHT="57" BASELINE="413 2740 2185 2736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2740 413 2756 2182 2751 2185 2736 2180 2708 433 2699 430 2699 428 2699 426 2699 411 2706 413 2740"/>
+                        </Shape>
+                        <String CONTENT="to both edges. The garment is without any opening to allow the women to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l20" HPOS="415" VPOS="2771" WIDTH="1772" HEIGHT="45" BASELINE="415 2799 2187 2799" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2799 415 2816 2187 2816 2187 2799 2187 2771 415 2771 415 2799"/>
+                        </Shape>
+                        <String CONTENT="attend to the requirements of nature. For such purposes the body must be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l21" HPOS="413" VPOS="2818" WIDTH="1774" HEIGHT="59" BASELINE="415 2859 2187 2855" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2859 415 2877 2185 2872 2187 2855 2182 2827 487 2818 485 2818 413 2829 415 2859"/>
+                        </Shape>
+                        <String CONTENT="entirely removed, allowing the garment to fall down on the knees. In winter"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l22" HPOS="413" VPOS="2885" WIDTH="1774" HEIGHT="52" BASELINE="415 2920 2187 2914" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2920 415 2937 2185 2931 2187 2914 2180 2885 413 2890 415 2920"/>
+                        </Shape>
+                        <String CONTENT="the women then cover their naked bodies with overcoats thrown over their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l23" HPOS="413" VPOS="2940" WIDTH="1772" HEIGHT="56" BASELINE="415 2979 2185 2974" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2979 415 2996 2182 2992 2185 2974 2178 2940 413 2948 415 2979"/>
+                        </Shape>
+                        <String CONTENT="shoulders, but in summer they may be seen about the camps quite uncovered."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l24" HPOS="417" VPOS="3002" WIDTH="1770" HEIGHT="54" BASELINE="417 3039 2187 3039" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 3039 417 3056 2187 3056 2187 3039 2187 3009 417 3002 417 3039"/>
+                        </Shape>
+                        <String CONTENT="The leg-openings of the breeches are fastened over the boots with a gathering-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l25" HPOS="415" VPOS="3063" WIDTH="148" HEIGHT="56" BASELINE="417 3095 563 3102" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 3095 415 3113 558 3119 563 3102 563 3069 417 3063 417 3095"/>
+                        </Shape>
+                        <String CONTENT="string."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-313_r4" HPOS="412" VPOS="3118" WIDTH="1778" HEIGHT="138" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="412 3118 2190 3118 2190 3256 412 3256"/>
+                    </Shape>
+                    <TextLine ID="mz_1-313_l26" HPOS="524" VPOS="3113" WIDTH="1663" HEIGHT="63" BASELINE="526 3160 2187 3154" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="526 3160 526 3176 2185 3169 2187 3154 2185 3126 2161 3113 2159 3113 2156 3113 2154 3113 2124 3124 2031 3113 2029 3113 2027 3113 2001 3124 1907 3113 1905 3113 1903 3113 1877 3124 1758 3113 1756 3113 1691 3124 1635 3113 1632 3113 1630 3113 1628 3113 1611 3126 1539 3115 1537 3115 1535 3115 1489 3126 1290 3115 1288 3115 1126 3126 1080 3115 1078 3115 1076 3115 1074 3115 1071 3115 1052 3128 1017 3117 1015 3117 1013 3117 1011 3117 974 3128 887 3117 885 3117 883 3117 846 3128 524 3124 526 3160"/>
+                        </Shape>
+                        <String CONTENT="The boots reach to the knee. The upper edge either has a hem through"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-313_l27" HPOS="415" VPOS="3189" WIDTH="1770" HEIGHT="49" BASELINE="415 3219 2185 3219" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2178 3189 415 3189 415 3219 415 3238 2185 3238 2185 3219 2185 3212 2178 3189"/>
+                        </Shape>
+                        <String CONTENT="which a string is pulled (Fig. 178, a) or is left rough as in the boots of men."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

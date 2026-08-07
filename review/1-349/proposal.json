@@ -1,0 +1,162 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "267"
+    },
+    "2": {
+      "text": "the sports described; but if a stranger should be so imprudent as to take the"
+    },
+    "3": {
+      "text": "best prize, the people are likely to resent it, and might even try to retaliate"
+    },
+    "4": {
+      "text": "in some way."
+    },
+    "5": {
+      "text": "The Maritime Chukchee and Eskimo have foot-races (Plate XXX, Fig. 1)",
+      "note": "Roman numeral set as small capitals in print (\"xxx\"); keyed ASCII per keying_spec.md §2.12 (\"Every roman numeral in the book is keyed in plain ASCII capitals, whatever the setting\").",
+      "class": "print"
+    },
+    "6": {
+      "text": "and wrestling-matches (Plate XXXI, Fig. 1) of the same character as those above",
+      "note": "Roman numeral set as small capitals in print (\"xxxi\"); keyed ASCII per keying_spec.md §2.12.",
+      "class": "print"
+    },
+    "7": {
+      "text": "described, as well as nearly all the other sports which we shall now take up."
+    },
+    "8": {
+      "text": "I have already noted the fighting-contests of former times and the physical"
+    },
+    "9": {
+      "text": "exercises with stones (Plate XXVIII, Fig. 1) and trunks of trees.¹ In all exercises",
+      "note": "Roman numeral \"xxviii\" set small-caps, keyed ASCII per §2.12. Footnote reference keyed as superscript U+00B9, tight against the period, matching the print (mz draft had \"!\").",
+      "class": "print"
+    },
+    "10": {
+      "text": "long and continuous running plays the most important part. The common"
+    },
+    "11": {
+      "text": "expression for these exercises is “becoming lighter of foot” (inetviˊrkɪn). Even",
+      "resolved": "inetvi'rkin -> inetvi + stress U+02CA + rk + small-cap dotless i U+026A + n; closing quote is curly U+201D not the straight quote in the mz draft",
+      "note": "Tier-1 form inetviˊrkɪn: raised mark after \"vi\" read as stress U+02CA (§2.1, §4 default); letter before final n is the dotless small-cap ɪ (U+026A), contrasted against the ordinary dotted \"i\" in \"lighter\"/\"foot\" on the same line at 4x. Closing quote fixed to curly U+201D (mz draft had an escaped straight quote).",
+      "class": "doubt"
+    },
+    "12": {
+      "text": "at the present time, if a young man is vanquished by an unfriendly rival in"
+    },
+    "13": {
+      "text": "a wrestling-contest, he will sometimes train for a whole year, dragging heavy"
+    },
+    "14": {
+      "text": "loads, running, carrying burdens, etc., in order to acquire more agility and"
+    },
+    "15": {
+      "text": "strength for another contest. Cases of this kind are often mentioned in tales."
+    },
+    "16": {
+      "text": "For instance, in the legend of Talo² it is stated that the hero lies idle in his",
+      "note": "Footnote reference keyed as superscript U+00B2, tight against \"Talo\" per keying_spec.md §2.10's majority body-reference convention (the raster showed a small kerning gap around the raised numeral at 4x, but this is the ordinary tight-set body reference, not one of the rare spaced exceptions). mz draft had \"?\".",
+      "class": "print"
+    },
+    "17": {
+      "text": "tent for about a year, eating an enormous amount and storing up fat and"
+    },
+    "18": {
+      "text": "muscle. Then suddenly he starts training. At first he is so slow in dragging"
+    },
+    "19": {
+      "text": "a small sledge behind him, that the moving train of his family gets far ahead"
+    },
+    "20": {
+      "text": "of him, and he reaches the camping-place only late the next morning. He"
+    },
+    "21": {
+      "text": "perseveres, however, in his exercises, and from day to day increases his speed"
+    },
+    "22": {
+      "text": "and the load he is drawing. On the twentieth day he is able to pull six"
+    },
+    "23": {
+      "text": "loaded sledges, and still keep ahead of the moving train. All this time he"
+    },
+    "24": {
+      "text": "eats nothing and does not enter his tent, sleeping for only a few hours each"
+    },
+    "25": {
+      "text": "night out in the open on the snow. After that he practises other exercises."
+    },
+    "26": {
+      "text": "For whole days he will throw his lance or jump over the tents, across the"
+    },
+    "27": {
+      "text": "lakes, or over large forests from one border to the other, until he feels ready"
+    },
+    "28": {
+      "text": "to conquer the Taˊn˙ñɪt.",
+      "resolved": "T + a + stress U+02CA + n + palatalization mark U+02D9 (licensed on n, keying_spec.md section 2.1) + n plus U+0303 (n-tilde) + dotless small-cap i U+026A + t",
+      "note": "Tier-1 form: raised mark after the a read as stress U+02CA; mid-height dot after n read as the palatalization mark U+02D9, licensed on n per keying_spec.md section 2.1 (palatalization mark, postposed... after the full seven-member series n x d t s c-caron j-caron); final vowel before t is the dotless small-cap i (U+026A), matching the same letterform seen on line 11.",
+      "class": "doubt"
+    },
+    "29": {
+      "text": "Tossing in blankets is a kind of religious performance with the Maritime",
+      "note": "A small speck sits above and left of the \"e\" in \"religious\" at 4x, offset from center and not matching any licensed diacritic position; ruled a print/dust artifact rather than an accent (English word, no accent expected). mz draft had \"réligious\".",
+      "class": "artifact"
+    },
+    "30": {
+      "text": "Chukchee and Eskimo, and will therefore be described later, in the chapters"
+    },
+    "31": {
+      "text": "dealing with this subject. Other amusements of less importance are practised"
+    },
+    "32": {
+      "text": "by grown people and children whenever occasion presents, without prizes being"
+    },
+    "33": {
+      "text": "offered and without general gatherings."
+    },
+    "34": {
+      "text": "Jumping-matches are often arranged on the spur of the moment by young"
+    },
+    "35": {
+      "text": "people in camps or villages. Each tries to make the longest jump possible,"
+    },
+    "36": {
+      "text": "keeping his heels together, and getting a start by a few preliminary jumps."
+    },
+    "37": {
+      "text": "Arm-pulling, finger-pulling, neck-pulling, and stick-pulling are practised in"
+    },
+    "38": {
+      "text": "pairs. For these the contestants lock arms or fingers, have a rawhide loop"
+    },
+    "39": {
+      "text": "passed around their necks, or put their feet sole to sole and grasp the same"
+    },
+    "40": {
+      "text": "stick, holding it horizontally above their knees. Then they strain and pull"
+    },
+    "41": {
+      "text": "until one gives way."
+    },
+    "42": {
+      "text": "Young women amuse themselves with a game similar to our skip-rope."
+    },
+    "43": {
+      "text": "¹ Compare pp. 33, 161.",
+      "note": "Footnote opener keyed as superscript U+00B9, space, text, per keying_spec.md §2.10. mz draft had ASCII \"1\".",
+      "class": "print"
+    },
+    "44": {
+      "text": "² Bogoras, Chukchee Materials, p. 364.",
+      "note": "Footnote opener keyed as superscript U+00B2, space, text, per keying_spec.md §2.10. mz draft had ASCII \"2\".",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

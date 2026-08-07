@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-323.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-323.png; regions_from: zones/chukchi-1-323.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-323_r1" HPOS="450" VPOS="613" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="450 613 2228 613 2228 703 450 703"/>
+                    </Shape>
+                    <TextLine ID="mz_1-323_l1" HPOS="1013" VPOS="606" WIDTH="628" HEIGHT="88" BASELINE="1015 653 1641 649" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1511 612 1489 612 1468 610 1446 610 1424 610 1403 610 1381 610 1360 610 1338 610 1316 608 1295 608 1273 608 1251 608 1230 608 1208 608 1186 608 1165 606 1143 606 1121 606 1100 606 1078 606 1056 606 1035 606 1013 612 1015 653 1015 677 1269 694 1271 694 1349 675 1381 675 1394 686 1394 688 1396 688 1399 688 1401 688 1496 673 1533 690 1535 690 1537 690 1539 690 1541 690 1561 673 1639 671 1641 649 1515 612 1511 612"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-323_r2" HPOS="450" VPOS="727" WIDTH="1778" HEIGHT="113" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="450 727 2228 727 2228 840 450 840"/>
+                    </Shape>
+                    <TextLine ID="mz_1-323_l2" HPOS="439" VPOS="707" WIDTH="1765" HEIGHT="81" BASELINE="439 764 2204 757" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2198 716 1691 707 1689 707 632 718 632 720 623 720 582 720 567 723 545 723 524 723 502 725 480 725 459 725 441 744 439 764 439 788 2202 788 2204 757 2200 729 2198 716"/>
+                        </Shape>
+                        <String CONTENT="mentioned, but reminds one rather of the ear-laps used by the Russian cos-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l3" HPOS="435" VPOS="783" WIDTH="1771" HEIGHT="100" BASELINE="437 822 2206 816" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 822 437 883 2204 881 2206 816 2200 783 435 783 437 822"/>
+                        </Shape>
+                        <String CONTENT="sacks on the Kolyma, which are worn under the parade fur cap to protect"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-323_r3" HPOS="450" VPOS="1793" WIDTH="1778" HEIGHT="265" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="450 1793 2228 1793 2228 2058 450 2058"/>
+                    </Shape>
+                    <TextLine ID="mz_1-323_l4" HPOS="448" VPOS="1783" WIDTH="933" HEIGHT="94" BASELINE="448 1855 1381 1851" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1377 1799 1355 1783 1334 1783 1312 1783 1290 1783 1269 1783 1247 1783 1225 1783 1204 1783 1182 1783 1160 1783 1139 1783 1117 1783 1095 1783 1074 1783 1052 1783 1030 1783 1009 1783 987 1783 965 1783 944 1783 922 1783 900 1783 879 1783 857 1783 835 1783 814 1783 792 1783 770 1783 749 1783 727 1786 706 1788 684 1788 662 1790 641 1792 619 1794 597 1796 576 1799 554 1801 532 1801 511 1803 489 1805 467 1807 459 1812 448 1855 448 1877 1379 1877 1381 1851 1379 1801 1377 1799"/>
+                        </Shape>
+                        <String CONTENT="the ears from the cold of winter. These,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l5" HPOS="446" VPOS="1864" WIDTH="933" HEIGHT="73" BASELINE="448 1913 1379 1907" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 1913 448 1935 1375 1937 1379 1907 1375 1866 939 1864 937 1864 935 1864 909 1874 838 1864 835 1864 751 1877 446 1868 448 1913"/>
+                        </Shape>
+                        <String CONTENT="however, are made of plain cloth, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l6" HPOS="446" VPOS="1922" WIDTH="933" HEIGHT="84" BASELINE="448 1978 1379 1970" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 1978 448 2006 1379 2000 1379 1970 1375 1929 1145 1922 1143 1922 1022 1935 1000 1924 998 1924 996 1924 994 1924 952 1935 913 1924 911 1924 909 1924 907 1924 877 1939 747 1939 695 1926 693 1926 690 1926 688 1926 667 1939 446 1931 448 1978"/>
+                        </Shape>
+                        <String CONTENT="are not adorned with embroidery, as in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l7" HPOS="452" VPOS="1989" WIDTH="442" HEIGHT="72" BASELINE="454 2032 894 2037" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 2032 452 2061 892 2058 894 2037 892 1989 454 1989 454 2032"/>
+                        </Shape>
+                        <String CONTENT="Alaskan specimens."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-323_r4" HPOS="450" VPOS="2054" WIDTH="1778" HEIGHT="666" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="450 2054 2228 2054 2228 2720 450 2720"/>
+                    </Shape>
+                    <TextLine ID="mz_1-323_l8" HPOS="558" VPOS="2045" WIDTH="830" HEIGHT="68" BASELINE="560 2093 1388 2084" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="560 2093 560 2113 1388 2104 1388 2084 1381 2045 558 2052 560 2093"/>
+                        </Shape>
+                        <String CONTENT="The summer overcoats worn by herds-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l9" HPOS="446" VPOS="2097" WIDTH="935" HEIGHT="83" BASELINE="448 2156 1381 2145" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2156 448 2180 1379 2175 1381 2145 1377 2110 1273 2110 1260 2097 1258 2097 1256 2097 1253 2097 1251 2097 1249 2097 1232 2108 1071 2100 1069 2100 935 2113 662 2104 660 2104 658 2104 623 2119 446 2119 448 2156"/>
+                        </Shape>
+                        <String CONTENT="men are chiefly made of the skin of reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l10" HPOS="446" VPOS="2167" WIDTH="937" HEIGHT="75" BASELINE="448 2216 1383 2210" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2216 448 2242 1381 2242 1383 2210 1379 2173 454 2167 452 2167 450 2167 448 2167 448 2169 446 2169 448 2216"/>
+                        </Shape>
+                        <String CONTENT="killed in spring, when the hide is thinnest,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l11" HPOS="446" VPOS="2232" WIDTH="940" HEIGHT="78" BASELINE="448 2277 1386 2268" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2277 448 2310 534 2299 677 2307 680 2307 682 2307 710 2297 900 2305 903 2305 970 2294 1145 2303 1147 2303 1383 2290 1386 2268 1379 2232 446 2238 448 2277"/>
+                        </Shape>
+                        <String CONTENT="and the fur is half-shed and in its poorest"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l12" HPOS="446" VPOS="2284" WIDTH="940" HEIGHT="71" BASELINE="448 2336 1386 2329" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2336 448 2355 1386 2349 1386 2329 1381 2297 1329 2284 1327 2284 1325 2284 1288 2294 1171 2284 1169 2284 1022 2297 760 2286 757 2286 755 2286 712 2299 534 2288 532 2288 446 2301 448 2336"/>
+                        </Shape>
+                        <String CONTENT="condition. The hair is scraped off, but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l13" HPOS="446" VPOS="2344" WIDTH="933" HEIGHT="80" BASELINE="448 2396 1379 2387" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2396 448 2416 868 2424 870 2424 968 2411 1067 2422 1069 2422 1071 2422 1074 2422 1074 2420 1084 2411 1325 2420 1327 2420 1329 2420 1379 2407 1379 2387 1375 2357 1178 2344 1175 2344 1173 2344 1139 2357 939 2346 937 2346 877 2359 472 2351 469 2351 467 2351 446 2359 448 2396"/>
+                        </Shape>
+                        <String CONTENT="the skins are prepared very roughly, be-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l14" HPOS="446" VPOS="2405" WIDTH="935" HEIGHT="76" BASELINE="448 2457 1381 2448" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2457 448 2478 1377 2481 1381 2448 1375 2405 675 2418 482 2409 480 2409 478 2409 446 2420 448 2457"/>
+                        </Shape>
+                        <String CONTENT="cause extra care would not show after the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l15" HPOS="448" VPOS="2472" WIDTH="931" HEIGHT="65" BASELINE="450 2513 1379 2509" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="450 2513 450 2537 1377 2533 1379 2509 1373 2472 448 2474 450 2513"/>
+                        </Shape>
+                        <String CONTENT="coat had passed through the first rainstorm."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l16" HPOS="452" VPOS="2530" WIDTH="934" HEIGHT="63" BASELINE="454 2572 1386 2565" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 2572 454 2593 1383 2587 1386 2565 1381 2530 452 2530 454 2572"/>
+                        </Shape>
+                        <String CONTENT="These overcoats are so stiff that they can be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l17" HPOS="448" VPOS="2569" WIDTH="1765" HEIGHT="98" BASELINE="450 2634 2213 2621" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2202 2585 2180 2580 2159 2576 2137 2572 2135 2569 1953 2580 1920 2569 1918 2569 1916 2569 1914 2569 1877 2582 1624 2572 1622 2572 1619 2572 1591 2582 1455 2574 1453 2574 1392 2585 1362 2574 1360 2574 1357 2574 840 2589 783 2578 781 2578 779 2578 738 2591 708 2582 706 2582 703 2582 448 2593 450 2634 450 2667 545 2656 989 2662 991 2662 1046 2652 2208 2654 2213 2621 2211 2587 2202 2585"/>
+                        </Shape>
+                        <String CONTENT="put on only when moistened with water. At the same time, they are very"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l18" HPOS="450" VPOS="2641" WIDTH="801" HEIGHT="78" BASELINE="452 2693 1251 2688" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="452 2693 452 2719 1249 2717 1251 2688 1247 2652 848 2641 846 2641 844 2641 842 2641 827 2652 619 2643 617 2643 450 2654 452 2693"/>
+                        </Shape>
+                        <String CONTENT="light and convenient for herdsmen."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-323_r5" HPOS="450" VPOS="2720" WIDTH="1778" HEIGHT="415" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="450 2720 2228 2720 2228 3135 450 3135"/>
+                    </Shape>
+                    <TextLine ID="mz_1-323_l19" HPOS="552" VPOS="2691" WIDTH="1665" HEIGHT="86" BASELINE="554 2753 2217 2738" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="554 2753 554 2777 2215 2769 2217 2738 2211 2691 552 2710 554 2753"/>
+                        </Shape>
+                        <String CONTENT="Overcoats made of retteˊm leather (Plate XXVIII, Fig. 1), are also worn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l20" HPOS="446" VPOS="2756" WIDTH="1769" HEIGHT="80" BASELINE="448 2816 2215 2799" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2816 448 2836 1992 2831 2061 2820 2211 2829 2215 2799 2211 2756 1327 2756 1325 2756 1180 2758 1178 2758 1175 2758 1160 2769 1028 2760 1026 2760 1024 2760 1002 2771 950 2760 948 2760 946 2760 922 2773 625 2775 446 2764 448 2816"/>
+                        </Shape>
+                        <String CONTENT="in summer, but are heavier than those described here. They do not shrink"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l21" HPOS="446" VPOS="2816" WIDTH="1771" HEIGHT="78" BASELINE="448 2872 2217 2859" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 2872 448 2894 2215 2883 2217 2859 2213 2825 1650 2816 1648 2816 1247 2829 1063 2820 1061 2820 1059 2820 1033 2831 480 2825 478 2825 476 2825 446 2836 448 2872"/>
+                        </Shape>
+                        <String CONTENT="after being exposed to rain, and, if made of the thickest leather, are water-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l22" HPOS="448" VPOS="2872" WIDTH="1769" HEIGHT="91" BASELINE="450 2933 2217 2918" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="450 2933 450 2963 2217 2942 2217 2918 2213 2885 2143 2872 1988 2872 1985 2872 1983 2872 1955 2885 1938 2875 1936 2875 1933 2875 1931 2875 1782 2885 1710 2875 1708 2875 1706 2875 1676 2888 1485 2877 1483 2877 1481 2877 1431 2890 1279 2879 1277 2879 1201 2892 1076 2881 1074 2881 1071 2881 1030 2892 822 2883 820 2883 641 2896 550 2885 547 2885 448 2898 450 2933"/>
+                        </Shape>
+                        <String CONTENT="proof to a considerable degree. The Maritime Chukchee and the Eskimo"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l23" HPOS="450" VPOS="2935" WIDTH="1765" HEIGHT="83" BASELINE="452 2996 2215 2979" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="452 2996 452 3018 2213 3009 2215 2979 2208 2935 450 2957 452 2996"/>
+                        </Shape>
+                        <String CONTENT="wear waterproof coats made of seal or walrus guts (see Plate XXVI, Fig. 2), quite"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l24" HPOS="448" VPOS="2998" WIDTH="1767" HEIGHT="76" BASELINE="450 3054 2215 3037" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="450 3054 450 3074 2215 3065 2215 3037 2208 2998 448 3013 450 3054"/>
+                        </Shape>
+                        <String CONTENT="similar to the American Eskimo patterns. Seal-skin overcoats are used very"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l25" HPOS="461" VPOS="3056" WIDTH="1663" HEIGHT="81" BASELINE="463 3115 2124 3104" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="463 3115 463 3137 2122 3132 2124 3104 2120 3061 1708 3056 1706 3056 1704 3056 1665 3067 1522 3056 1520 3056 1427 3069 1258 3059 1256 3059 1193 3069 1141 3059 1139 3059 1136 3059 1108 3072 981 3061 978 3061 911 3072 874 3061 872 3061 870 3061 790 3074 506 3063 504 3063 502 3063 461 3076 463 3115"/>
+                        </Shape>
+                        <String CONTENT="rarely because of the high value of that material (see Plate XXV, Fig. 1)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-323_r6" HPOS="450" VPOS="3135" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="450 3135 2228 3135 2228 3265 450 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-323_l26" HPOS="560" VPOS="3113" WIDTH="1653" HEIGHT="86" BASELINE="563 3173 2213 3160" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="563 3173 563 3199 2211 3189 2213 3160 2208 3124 1942 3113 1940 3113 1938 3113 1936 3113 1936 3115 1925 3124 851 3121 848 3121 688 3132 584 3124 582 3124 580 3124 560 3132 563 3173"/>
+                        </Shape>
+                        <String CONTENT="CHILDREN’S CLOTHING. — The child’s dress is a combination-suit (Fig. 184;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-323_l27" HPOS="450" VPOS="3171" WIDTH="1767" HEIGHT="106" BASELINE="452 3234 2217 3219" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="452 3234 452 3277 2215 3277 2217 3219 2213 3182 1775 3171 1773 3171 1771 3171 1732 3182 1717 3171 1715 3171 1713 3171 1710 3171 1559 3173 1557 3173 1554 3173 1541 3184 1515 3173 1513 3173 1511 3173 1509 3173 1453 3186 1379 3176 1377 3176 1249 3186 1232 3176 1230 3176 1227 3176 1225 3176 1223 3176 1193 3189 1136 3178 1134 3178 952 3191 833 3180 831 3180 682 3193 450 3184 452 3234"/>
+                        </Shape>
+                        <String CONTENT="Plate XX, Fig. 4), and is called in Chukchee kaˊlhê-kêˊr (“joint-suit”). It has"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

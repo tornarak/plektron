@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-319.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-319.png; regions_from: zones/chukchi-1-319.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-319_r1" HPOS="456" VPOS="615" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="456 615 2234 615 2234 710 456 710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-319_l1" HPOS="1022" VPOS="630" WIDTH="621" HEIGHT="56" BASELINE="1024 664 1643 668" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1630 632 1028 630 1024 632 1024 664 1022 681 1639 686 1643 668 1641 655 1630 632"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-319_l2" HPOS="2122" VPOS="643" WIDTH="91" HEIGHT="49" BASELINE="2122 677 2213 677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2122 677 2122 692 2213 692 2213 677 2213 643 2122 643 2122 677"/>
+                        </Shape>
+                        <String CONTENT="249"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-319_r2" HPOS="456" VPOS="727" WIDTH="1778" HEIGHT="139" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="456 727 2234 727 2234 866 456 866"/>
+                    </Shape>
+                    <TextLine ID="mz_1-319_l3" HPOS="443" VPOS="731" WIDTH="1774" HEIGHT="67" BASELINE="446 779 2217 775" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="469 733 467 733 443 742 446 779 446 794 2213 798 2217 775 2213 742 1340 731 1338 731 1279 742 472 733 469 733"/>
+                        </Shape>
+                        <String CONTENT="described are made on both shores of Bering Sea by the Maritime Chukchee,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-319_l4" HPOS="446" VPOS="792" WIDTH="1771" HEIGHT="63" BASELINE="448 837 2217 833" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="448 837 448 855 2215 855 2217 833 2213 805 1894 792 1892 792 1801 803 1780 792 1777 792 1775 792 1773 792 1749 803 1689 792 1687 792 1684 792 1682 792 1669 803 1643 792 1641 792 1639 792 1539 803 1412 792 1409 792 1329 805 1308 794 1305 794 1303 794 1301 794 1273 805 1082 794 1080 794 1078 794 1050 805 1020 794 1017 794 1015 794 903 805 742 794 740 794 738 794 710 805 573 794 571 794 569 794 526 805 474 794 472 794 469 794 446 805 448 837"/>
+                        </Shape>
+                        <String CONTENT="the Asiatic Eskimo, and the American Eskimo of Alaska. Whaling-crews"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-319_r3" HPOS="456" VPOS="2884" WIDTH="1778" HEIGHT="364" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="456 2884 2234 2884 2234 3248 456 3248"/>
+                    </Shape>
+                    <TextLine ID="mz_1-319_l5" HPOS="456" VPOS="2898" WIDTH="1770" HEIGHT="48" BASELINE="456 2931 2226 2931" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 2931 456 2946 2226 2946 2226 2931 2226 2898 456 2898 456 2931"/>
+                        </Shape>
+                        <String CONTENT="and miners use them in preference to the civilized form of foot-gear. In Asia"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-319_l6" HPOS="452" VPOS="2948" WIDTH="1776" HEIGHT="63" BASELINE="454 2987 2228 2983" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 2987 454 3002 2204 3011 2206 3011 2208 3011 2211 3011 2228 3000 2228 2983 2224 2950 472 2948 469 2948 467 2948 465 2948 452 2955 454 2987"/>
+                        </Shape>
+                        <String CONTENT="they are traded off to the inland camps of Reindeer people, and some of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-319_l7" HPOS="454" VPOS="3005" WIDTH="1770" HEIGHT="60" BASELINE="456 3050 2224 3046" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 3050 456 3065 2221 3061 2224 3046 2221 3018 2185 3005 2182 3005 2180 3005 2128 3015 2115 3005 2113 3005 2111 3005 2109 3005 2107 3005 2074 3015 1957 3005 1955 3005 1953 3005 1951 3005 1936 3015 1914 3005 1912 3005 1910 3005 1907 3005 1905 3005 1890 3018 1782 3018 1736 3005 1734 3005 1732 3005 1635 3015 1496 3005 1494 3005 1492 3005 1459 3015 1407 3005 1405 3005 1403 3005 1401 3005 1388 3015 1342 3005 1340 3005 1338 3005 1336 3005 1334 3005 1314 3018 1071 3007 1069 3007 1067 3007 1065 3007 1050 3020 957 3020 905 3007 903 3007 900 3007 877 3020 727 3020 690 3007 688 3007 686 3007 571 3018 474 3007 472 3007 469 3007 467 3007 454 3015 456 3050"/>
+                        </Shape>
+                        <String CONTENT="them reach even the market-places of the Kolyma. Some of the seal-skin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-319_l8" HPOS="454" VPOS="3074" WIDTH="1770" HEIGHT="60" BASELINE="456 3111 2224 3104" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 3111 456 3124 948 3134 950 3134 1046 3124 1593 3132 1596 3132 2224 3119 2224 3104 2219 3076 454 3074 456 3111"/>
+                        </Shape>
+                        <String CONTENT="boots are much longer. Boots and trousers combined, made of curried seal-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-319_l9" HPOS="452" VPOS="3128" WIDTH="1769" HEIGHT="61" BASELINE="454 3171 2221 3167" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 3171 454 3184 2219 3189 2221 3167 2217 3137 478 3128 476 3128 474 3128 452 3137 454 3171"/>
+                        </Shape>
+                        <String CONTENT="skin, are occasionally seen. These are useful for seal-hunters and fishermen,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-319_l10" HPOS="452" VPOS="3184" WIDTH="936" HEIGHT="63" BASELINE="454 3230 1388 3225" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 3230 454 3247 1386 3247 1388 3225 1383 3197 957 3184 955 3184 831 3197 630 3186 628 3186 550 3197 493 3186 491 3186 489 3186 452 3199 454 3230"/>
+                        </Shape>
+                        <String CONTENT="who walk constantly through cold water."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-319_r4" HPOS="456" VPOS="3273" WIDTH="1778" HEIGHT="70" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="456 3273 2234 3273 2234 3343 456 3343"/>
+                    </Shape>
+                    <TextLine ID="mz_1-319_l11" HPOS="454" VPOS="3282" WIDTH="691" HEIGHT="49" BASELINE="454 3310 1145 3310" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="454 3310 454 3331 1145 3331 1145 3310 1145 3282 454 3282 454 3310"/>
+                        </Shape>
+                        <String CONTENT="32—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,152 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "266"
+    },
+    "2": {
+      "text": "swiftly driven sledge, keeping it from tipping over. After twenty-four hours"
+    },
+    "3": {
+      "text": "of this painful exercise, the driver is often so tired, that, on reaching the"
+    },
+    "4": {
+      "text": "place, he reels like one drunk, and has to be helped into the house."
+    },
+    "5": {
+      "text": "Of two drivers who took part in the dog-race of 1869, which I mentioned"
+    },
+    "6": {
+      "text": "before, the victor so impaired his health by the strain that he never recovered."
+    },
+    "7": {
+      "text": "The young girls and women among the Chukchee have foot-races of their"
+    },
+    "8": {
+      "text": "own, which they are as eager to win as the men. Often foot-races are run by"
+    },
+    "9": {
+      "text": "boys, who compete with fellows of their own age.",
+      "note": "Printed as \"who\" + U+00B7 MIDDLE DOT + \"compete\", a raised mid-height dot between the words with no space, not a comma and not a baseline period. Ruled a printer's blot (keying_spec.md §2.14: a printer's error in punctuation is a blot, keyed as nothing, class artifact) and dropped, with a normal interword space keyed instead. Same defect recurs on this page at lines 36 and 37.",
+      "class": "artifact"
+    },
+    "10": {
+      "text": "Wrestling usually takes place after the foot-race, because the wrestlers"
+    },
+    "11": {
+      "text": "strip naked to the waist, and they like to have their bodies heated by the"
+    },
+    "12": {
+      "text": "previous exercise. If there is no foot-race, the wrestlers will run a couple of"
+    },
+    "13": {
+      "text": "miles to get warmed up for their contests. While the couples are wrestling,"
+    },
+    "14": {
+      "text": "the rest of the people sit or stand around to judge the matches. Sometimes"
+    },
+    "15": {
+      "text": "two or three pairs wrestle at the same time. After stripping, the men, just"
+    },
+    "16": {
+      "text": "before the contest, rub their bodies all over with snow."
+    },
+    "17": {
+      "text": "The rules of the contest require that one man shall assume a posture"
+    },
+    "18": {
+      "text": "of passive defence, and the other try to throw him. The first is called"
+    },
+    "19": {
+      "text": "“motionless” (uˊlvɪlɪn); the second, “the attacking one” (viriˊtɪlɪn). If the latter",
+      "resolved": "uˊlvɪlɪn = u + U+02CA + l + v + U+026A + l + U+026A + n; viriˊtɪlɪn = v + i + r + i + U+02CA + t + U+026A + l + U+026A + n",
+      "note": "Both raised marks are the angled stress tick, keyed U+02CA per keying_spec.md §4/§5.8 (raised mark defaults to stress, never apostrophe). Confirmed at 4x: in both words the letters after the stress mark (l,v,ɪ,l,ɪ,n and t,ɪ,l,ɪ,n) are dotless small-cap ɪ (U+026A), shorter and serifed top/bottom, contrasted against the dotted lowercase i's in \"viri\" on the same word before the mark. Both quote pairs normalized to curly “ ” per §1/§5.6 — the machine draft had the second pair as straight \\\" ... \\\".",
+      "class": "doubt"
+    },
+    "20": {
+      "text": "proves unsuccessful, the positions are reversed. Finally there usually follows"
+    },
+    "21": {
+      "text": "a rough-and-tumble scramble, in which each of the contestants tries every"
+    },
+    "22": {
+      "text": "means to get the better of his adversary. Custom requires that one of the"
+    },
+    "23": {
+      "text": "parties be made to touch the ground with both of his shoulders, and kept"
+    },
+    "24": {
+      "text": "in this position in spite of his struggles. Three bouts are regarded as settling"
+    },
+    "25": {
+      "text": "the match, but the vanquished one often desires to keep on trying his"
+    },
+    "26": {
+      "text": "chances. Frequently he becomes greatly excited, and then a violent scuffle"
+    },
+    "27": {
+      "text": "may ensue. The victor has to meet the winner of any other contests: but,"
+    },
+    "28": {
+      "text": "lest he should become too tired, he will step back after a few matches and"
+    },
+    "29": {
+      "text": "return in a half-hour or so to try his chance once more. This continues until"
+    },
+    "30": {
+      "text": "the best man is determined, and he takes the stake if there is one. The"
+    },
+    "31": {
+      "text": "passions are aroused quite enough, however, without stakes, so that prizes"
+    },
+    "32": {
+      "text": "are seldom put up for this sport. Several Chukchee tales describe a peculiar"
+    },
+    "33": {
+      "text": "wrestling-match that takes place on a spread walrus-skin, slippery with blubber"
+    },
+    "34": {
+      "text": "and made dangerous by having sharp splinters of bone or wood stuck around"
+    },
+    "35": {
+      "text": "its edge. Similar details are mentioned also in Eskimo and Indian tales.¹",
+      "note": "Footnote reference marker keyed as superscript ¹ (U+00B9) per keying_spec.md §2.10, tight against the period; the machine draft rendered it as a bare \"!\".",
+      "class": "print"
+    },
+    "36": {
+      "text": "A wrestling-match is the usual method of settling quarrels among the",
+      "note": "Printed as \"usual\" + U+00B7 MIDDLE DOT + \"method\", the same raised mid-dot artifact as line 9 (keying_spec.md §2.14, blot, keyed as nothing).",
+      "class": "artifact"
+    },
+    "37": {
+      "text": "Chukchee. A man having a grudge against another one will either openly",
+      "note": "Printed as \"A man. having\", a small raised dot after \"man\" with no sentence break in sense; the same blot family as lines 9 and 36 (keying_spec.md §2.14), keyed as nothing.",
+      "class": "artifact"
+    },
+    "38": {
+      "text": "challenge him for a match or he will seek a chance to encounter him in a"
+    },
+    "39": {
+      "text": "general contest. In either case, the match sometimes ends in bloodshed, or"
+    },
+    "40": {
+      "text": "even death, if the spectators do not interfere in time."
+    },
+    "41": {
+      "text": "Women also wrestle, but their matches generally end in scratching and"
+    },
+    "42": {
+      "text": "pulling hair. Members of alien tribes are also allowed to take part in all of"
+    },
+    "43": {
+      "text": "¹ Bogoras, Anthropologist, p. 617.",
+      "note": "Footnote opener: superscript ¹ (U+00B9) followed by a space, per keying_spec.md §2.10.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-335.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-335.png; regions_from: zones/chukchi-1-335.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-335_r1" HPOS="428" VPOS="634" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="428 634 2206 634 2206 724 428 724"/>
+                    </Shape>
+                    <TextLine ID="mz_1-335_l1" HPOS="1002" VPOS="636" WIDTH="620" HEIGHT="56" BASELINE="1002 673 1622 668" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1002 662 1002 673 1002 692 1619 688 1622 668 1615 636 1017 636 1002 662"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l2" HPOS="2100" VPOS="638" WIDTH="82" HEIGHT="59" BASELINE="2100 679 2182 679" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2100 679 2100 697 2182 697 2182 679 2180 638 2100 640 2100 679"/>
+                        </Shape>
+                        <String CONTENT="257"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-335_r2" HPOS="428" VPOS="738" WIDTH="1778" HEIGHT="135" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="428 738 2206 738 2206 873 428 873"/>
+                    </Shape>
+                    <TextLine ID="mz_1-335_l3" HPOS="539" VPOS="736" WIDTH="1654" HEIGHT="60" BASELINE="541 781 2193 777" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="541 781 541 796 2191 792 2193 777 2189 749 2102 736 2100 736 2040 746 1912 736 1910 736 1907 736 1871 746 1845 736 1842 736 1840 736 1838 736 1836 736 1819 749 1630 749 1596 736 1593 736 1591 736 1483 746 1448 736 1446 736 1444 736 1442 736 1440 736 1427 749 1314 749 1292 738 1290 738 1288 738 1175 749 539 740 541 781"/>
+                        </Shape>
+                        <String CONTENT="The bracelet of the most usual type is made to match the necklace."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l4" HPOS="426" VPOS="794" WIDTH="1767" HEIGHT="65" BASELINE="428 842 2193 833" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 842 428 859 2191 853 2193 833 2189 805 1957 794 1955 794 1747 807 426 807 428 842"/>
+                        </Shape>
+                        <String CONTENT="It is a narrow strip of leather, with a single bead tied to one of the ends"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-335_r3" HPOS="428" VPOS="2766" WIDTH="1778" HEIGHT="502" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="428 2766 2206 2766 2206 3268 428 3268"/>
+                    </Shape>
+                    <TextLine ID="mz_1-335_l5" HPOS="428" VPOS="2771" WIDTH="1780" HEIGHT="67" BASELINE="430 2825 2208 2816" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2204 2808 2187 2784 2033 2784 2020 2775 2009 2775 1988 2775 1977 2775 1929 2782 1912 2773 1901 2773 1881 2773 1806 2782 1786 2771 1775 2771 1732 2786 1470 2786 1446 2773 1444 2773 1442 2773 1440 2773 1437 2773 1420 2784 1399 2773 1396 2773 1394 2773 1392 2773 1390 2773 1377 2784 1318 2773 1316 2773 1314 2773 1312 2773 1295 2786 1093 2775 1091 2775 1037 2786 1002 2775 1000 2775 998 2775 944 2786 887 2775 885 2775 883 2775 881 2775 859 2788 448 2777 446 2777 443 2777 441 2777 428 2786 430 2825 430 2838 2206 2831 2208 2816 2206 2812 2204 2808"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 189, a; Fig. 190, a, b). Very few Chukchee are seen without these bracelets"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l6" HPOS="430" VPOS="2840" WIDTH="1772" HEIGHT="54" BASELINE="433 2879 2202 2872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="433 2879 433 2894 2200 2892 2202 2872 2195 2840 430 2849 433 2879"/>
+                        </Shape>
+                        <String CONTENT="on at least one of their wrists. Some add an extra bead or wind the band"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l7" HPOS="435" VPOS="2909" WIDTH="1760" HEIGHT="48" BASELINE="435 2940 2195 2940" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="435 2940 435 2953 2193 2957 2195 2940 2195 2909 435 2909 435 2940"/>
+                        </Shape>
+                        <String CONTENT="around twice. Arm-bands of a similar style are also worn (Fig. 190 a, b)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l8" HPOS="437" VPOS="2961" WIDTH="1767" HEIGHT="54" BASELINE="439 3000 2204 2994" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="439 3000 439 3015 2202 3011 2204 2994 2198 2961 437 2961 439 3000"/>
+                        </Shape>
+                        <String CONTENT="More ornamental bracelets are made of a string of large beads or of small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l9" HPOS="435" VPOS="3024" WIDTH="1769" HEIGHT="56" BASELINE="437 3061 2204 3052" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="437 3061 437 3080 2202 3069 2204 3052 2200 3024 435 3024 437 3061"/>
+                        </Shape>
+                        <String CONTENT="beads sewed in several rows on a strip of leather (Fig. 188, c, f). Bracelets"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l10" HPOS="435" VPOS="3076" WIDTH="1767" HEIGHT="58" BASELINE="437 3119 2202 3113" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="437 3119 437 3134 2200 3132 2202 3113 2198 3085 1024 3076 1022 3076 1020 3076 996 3087 472 3078 469 3078 467 3078 435 3089 437 3119"/>
+                        </Shape>
+                        <String CONTENT="of iron and brass are also used (Fig. 189, b), though these are generally"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l11" HPOS="435" VPOS="3143" WIDTH="1767" HEIGHT="56" BASELINE="437 3180 2202 3176" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="437 3180 437 3195 2200 3199 2202 3176 2198 3145 435 3143 437 3180"/>
+                        </Shape>
+                        <String CONTENT="bought from the neighboring tribes. The same may be said of brass, copper,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-335_l12" HPOS="430" VPOS="3193" WIDTH="797" HEIGHT="76" BASELINE="433 3236 1227 3243" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="433 3236 430 3256 443 3264 446 3264 448 3264 450 3264 530 3253 706 3266 708 3266 781 3256 846 3266 848 3266 968 3258 981 3269 983 3269 985 3269 987 3269 989 3269 1035 3258 1115 3269 1117 3269 1225 3260 1227 3243 1227 3212 1214 3199 1214 3197 1212 3197 1210 3197 1208 3197 1206 3197 1178 3210 1093 3197 1091 3197 1024 3210 965 3195 963 3195 961 3195 959 3195 916 3208 816 3195 814 3195 812 3195 809 3195 790 3210 712 3210 688 3193 686 3193 684 3193 682 3193 680 3193 649 3206 560 3193 558 3193 556 3193 554 3193 537 3206 524 3193 521 3193 519 3193 517 3193 515 3193 513 3193 491 3206 433 3206 433 3236"/>
+                        </Shape>
+                        <String CONTENT="and iron finger-rings (Fig. 189, c)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-335_r4" HPOS="428" VPOS="3287" WIDTH="1778" HEIGHT="65" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="428 3287 2206 3287 2206 3352 428 3352"/>
+                    </Shape>
+                    <TextLine ID="mz_1-335_l13" HPOS="433" VPOS="3288" WIDTH="697" HEIGHT="52" BASELINE="435 3325 1130 3316" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="435 3325 435 3340 1128 3334 1130 3316 1123 3288 433 3295 435 3325"/>
+                        </Shape>
+                        <String CONTENT="33—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

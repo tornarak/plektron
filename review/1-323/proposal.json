@@ -1,0 +1,57 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE.",
+      "note": "Running title, RunningTitleZone. mz draft had CHUKCHÉE with an acute accent on the final E; the print is plain CHUKCHEE, no accent, per §2.12 running-title apparatus is plain ASCII.",
+      "class": "print"
+    },
+    "1": {"text": "mentioned, but reminds one rather of the ear-laps used by the Russian cos-"},
+    "2": {"text": "sacks on the Kolyma, which are worn under the parade fur cap to protect"},
+    "3": {"text": "the ears from the cold of winter. These,"},
+    "4": {"text": "however, are made of plain cloth, and"},
+    "5": {"text": "are not adorned with embroidery, as in"},
+    "6": {"text": "Alaskan specimens."},
+    "7": {"text": "The summer overcoats worn by herds-"},
+    "8": {"text": "men are chiefly made of the skin of reindeer"},
+    "9": {"text": "killed in spring, when the hide is thinnest,"},
+    "10": {"text": "and the fur is half-shed and in its poorest"},
+    "11": {"text": "condition. The hair is scraped off, but"},
+    "12": {"text": "the skins are prepared very roughly, be-"},
+    "13": {"text": "cause extra care would not show after the"},
+    "14": {"text": "coat had passed through the first rainstorm."},
+    "15": {"text": "These overcoats are so stiff that they can be"},
+    "16": {"text": "put on only when moistened with water. At the same time, they are very"},
+    "17": {"text": "light and convenient for herdsmen."},
+    "18": {
+      "text": "Overcoats made of retteˊm leather (Plate XXVIII, Fig. 1), are also worn",
+      "resolved": "retteˊm = r,e,t,t,e,U+02CA,m",
+      "note": "Tier-1 form retteˊm; raised mark after the second e is stress U+02CA, not apostrophe, per §4/§5.8. Zoomed at 2x, mark clearly a raised prime, not a straight apostrophe. lexicon lookup found the same form attested once on 1-214 ('The cover (retteˊm) is made in two pieces'), below the floor of 2 so no key was offered; keyed by hand accordingly.",
+      "class": "doubt"
+    },
+    "19": {"text": "in summer, but are heavier than those described here. They do not shrink"},
+    "20": {"text": "after being exposed to rain, and, if made of the thickest leather, are water-"},
+    "21": {"text": "proof to a considerable degree. The Maritime Chukchee and the Eskimo"},
+    "22": {"text": "wear waterproof coats made of seal or walrus guts (see Plate XXVI, Fig. 2), quite"},
+    "23": {"text": "similar to the American Eskimo patterns. Seal-skin overcoats are used very"},
+    "24": {"text": "rarely because of the high value of that material (see Plate XXV, Fig. 1)."},
+    "25": {
+      "text": "CHILDREN’S CLOTHING. — The child’s dress is a combination-suit (Fig. 184;",
+      "note": "Run-in second-level heading set in small capitals (§2.13); keyed as plain ASCII capitals, CHILDREN'S CLOTHING. Apostrophes curly per §1/spec (mz draft had a straight apostrophe in CHILDREN'S).",
+      "class": "print"
+    },
+    "26": {
+      "text": "Plate XX, Fig. 4), and is called in Chukchee kaˊlhê-kêˊr (“joint-suit”). It has",
+      "resolved": "kaˊlhê-kêˊr = k,a,U+02CA,l,h,e+U+0302,-,k,e+U+0302,U+02CA,r",
+      "note": "Tier-1 form kaˊlhê-kêˊr; mz draft misread this as 'kaZlhè-kèr'. Zoomed at 2x: two raised stress marks (U+02CA), after 'ka' and after the second 'kê', and both e's carry a circumflex (U+0302), not a grave. lexicon lookup for this form and 'kalhe' returned no match (below floor / no inventory-glyph match), so keyed by hand from the raster.",
+      "class": "doubt"
+    },
+    "27": {
+      "text": "251",
+      "note": "Folio, corrected box in RunningTitleZone (ocr gaps: corrected, keyed: \"\"). Read off the numbered composite / contact sheet, old-style spaced figures '2 5 1' reading 251.",
+      "class": "layout"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

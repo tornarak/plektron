@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-341.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-341.png; regions_from: zones/chukchi-1-341.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-341_r1" HPOS="390" VPOS="624" WIDTH="1778" HEIGHT="86" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="390 624 2168 624 2168 710 390 710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-341_l1" HPOS="991" VPOS="634" WIDTH="624" HEIGHT="52" BASELINE="994 666 1615 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="994 649 994 666 991 681 1611 686 1615 671 1613 636 1007 634 994 649"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l2" HPOS="2089" VPOS="636" WIDTH="100" HEIGHT="67" BASELINE="2089 677 2189 677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2176 651 2154 647 2133 640 2115 636 2089 645 2089 677 2089 690 2152 703 2154 703 2156 703 2189 690 2189 677 2189 653 2176 651"/>
+                        </Shape>
+                        <String CONTENT="263"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-341_r2" HPOS="390" VPOS="736" WIDTH="1778" HEIGHT="362" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="390 736 2168 736 2168 1098 390 1098"/>
+                    </Shape>
+                    <TextLine ID="mz_1-341_l3" HPOS="420" VPOS="736" WIDTH="1769" HEIGHT="60" BASELINE="420 779 2189 779" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="420 779 420 792 2187 796 2189 779 2189 749 2085 736 2083 736 2081 736 2057 746 2007 736 2005 736 2003 736 1977 746 1942 736 1940 736 1938 736 1866 746 1851 736 1849 736 1847 736 1845 736 1721 746 1639 736 1637 736 1635 736 1632 736 1617 749 1440 749 1386 736 1383 736 1381 736 1351 746 1321 736 1318 736 1316 736 1314 736 1290 746 1195 736 1193 736 1121 746 1017 736 1015 736 959 746 872 736 870 736 868 736 833 746 805 736 803 736 801 736 799 736 796 736 779 749 554 749 461 736 459 736 456 736 420 746 420 779"/>
+                        </Shape>
+                        <String CONTENT="which prevents it from sinking through the snow. The staff with the hoop"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l4" HPOS="417" VPOS="803" WIDTH="1774" HEIGHT="52" BASELINE="417 840 2191 840" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 840 417 855 2191 855 2191 840 2191 807 417 803 417 840"/>
+                        </Shape>
+                        <String CONTENT="is well known among the American Eskimo. In Asia, however, it is used"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l5" HPOS="415" VPOS="863" WIDTH="1774" HEIGHT="57" BASELINE="417 896 2189 900" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 896 415 909 2185 920 2189 900 2187 868 417 863 417 896"/>
+                        </Shape>
+                        <String CONTENT="chiefly with the broad snowshoes in walking on soft snow. When travelling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l6" HPOS="417" VPOS="922" WIDTH="1772" HEIGHT="52" BASELINE="420 954 2189 961" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="420 954 417 967 2185 974 2189 961 2187 928 420 922 420 954"/>
+                        </Shape>
+                        <String CONTENT="with netted snowshoes on hard ground, there is much less need for support."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l7" HPOS="420" VPOS="976" WIDTH="1773" HEIGHT="56" BASELINE="422 1015 2193 1019" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="422 1015 420 1028 2189 1032 2193 1019 2191 987 422 976 422 1015"/>
+                        </Shape>
+                        <String CONTENT="The staff of this form is known through all the Arctic country of the Old"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l8" HPOS="422" VPOS="1034" WIDTH="714" HEIGHT="65" BASELINE="424 1071 1136 1078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="424 1071 422 1088 435 1097 437 1097 439 1097 441 1097 649 1088 656 1097 658 1097 658 1099 660 1099 662 1099 664 1099 1134 1091 1136 1078 1136 1045 1119 1034 1117 1034 1115 1034 1113 1034 970 1045 937 1034 935 1034 933 1034 931 1034 909 1045 424 1034 424 1071"/>
+                        </Shape>
+                        <String CONTENT="World as far west as Lapland."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-341_r3" HPOS="390" VPOS="1098" WIDTH="1778" HEIGHT="481" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="390 1098 2168 1098 2168 1579 390 1579"/>
+                    </Shape>
+                    <TextLine ID="mz_1-341_l9" HPOS="519" VPOS="1099" WIDTH="1674" HEIGHT="54" BASELINE="521 1134 2193 1138" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="521 1134 519 1149 2189 1153 2193 1138 2189 1099 521 1099 521 1134"/>
+                        </Shape>
+                        <String CONTENT="Foot-racers and even herdsmen in the summer-time use a short staff"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l10" HPOS="415" VPOS="1149" WIDTH="1100" HEIGHT="80" BASELINE="417 1203 1515 1195" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1203 417 1218 428 1227 430 1227 433 1227 435 1227 437 1227 465 1214 491 1227 493 1227 495 1227 498 1227 532 1214 584 1227 586 1227 589 1229 649 1229 649 1227 651 1227 654 1227 654 1225 667 1214 723 1225 725 1225 727 1225 729 1225 729 1223 742 1212 1511 1214 1515 1195 1509 1156 1416 1162 1401 1149 1399 1149 1396 1149 1394 1149 1392 1149 1349 1162 1323 1149 1321 1149 1318 1149 1316 1149 1286 1162 1240 1149 1238 1149 1236 1149 1160 1164 1139 1151 1136 1151 1134 1151 1132 1151 1130 1151 1089 1164 1063 1151 1061 1151 1059 1151 1056 1151 1054 1151 1054 1153 1043 1164 894 1166 857 1153 855 1153 853 1153 851 1153 848 1153 829 1166 777 1153 775 1153 773 1153 770 1153 725 1166 690 1153 688 1153 686 1153 684 1153 682 1153 682 1156 680 1156 669 1171 526 1171 428 1156 426 1156 424 1156 422 1156 422 1158 415 1162 417 1203"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 194, b), the lower end of which is tipped"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l11" HPOS="415" VPOS="1216" WIDTH="1105" HEIGHT="65" BASELINE="417 1257 1520 1253" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1257 417 1270 1041 1279 1043 1279 1046 1279 1048 1279 1048 1277 1059 1268 1240 1268 1271 1279 1273 1279 1275 1279 1277 1279 1279 1279 1295 1270 1303 1277 1303 1279 1305 1279 1308 1279 1310 1281 1437 1281 1437 1279 1440 1279 1442 1279 1459 1268 1500 1279 1502 1279 1505 1279 1507 1279 1509 1279 1509 1277 1520 1266 1520 1253 1515 1216 454 1216 452 1216 450 1216 415 1227 417 1257"/>
+                        </Shape>
+                        <String CONTENT="with spikes made of antler. Often a couple of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l12" HPOS="415" VPOS="1273" WIDTH="1103" HEIGHT="71" BASELINE="417 1318 1518 1314" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1318 417 1333 762 1333 805 1344 807 1344 809 1344 1115 1331 1299 1342 1301 1342 1303 1342 1305 1342 1323 1331 1383 1342 1386 1342 1388 1342 1390 1342 1405 1333 1414 1340 1414 1342 1416 1342 1418 1342 1420 1344 1502 1344 1502 1342 1505 1342 1507 1342 1507 1340 1518 1329 1518 1314 1513 1286 965 1273 963 1273 961 1273 959 1273 959 1275 957 1275 948 1286 816 1275 814 1275 723 1286 690 1275 688 1275 686 1275 684 1275 682 1275 682 1277 671 1288 526 1288 472 1275 469 1275 467 1275 415 1288 417 1318"/>
+                        </Shape>
+                        <String CONTENT="nails serve for spikes. While running, the man"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l13" HPOS="413" VPOS="1340" WIDTH="1105" HEIGHT="52" BASELINE="415 1376 1518 1372" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 1376 415 1392 1515 1389 1518 1372 1511 1340 413 1344 415 1376"/>
+                        </Shape>
+                        <String CONTENT="thrusts the staff as far ahead as possible, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l14" HPOS="415" VPOS="1407" WIDTH="1105" HEIGHT="56" BASELINE="415 1437 1520 1437" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 1437 415 1450 465 1463 467 1463 612 1452 905 1452 937 1463 939 1463 942 1463 944 1463 970 1452 1015 1463 1017 1463 1020 1463 1520 1450 1520 1437 1520 1407 415 1407 415 1437"/>
+                        </Shape>
+                        <String CONTENT="supports himself on it, trying to lengthen his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l15" HPOS="411" VPOS="1452" WIDTH="1109" HEIGHT="69" BASELINE="413 1498 1520 1493" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 1498 413 1509 478 1521 480 1521 550 1511 604 1521 606 1521 868 1511 894 1521 896 1521 898 1521 968 1509 1502 1519 1505 1519 1507 1519 1509 1519 1509 1517 1520 1506 1520 1493 1515 1463 1336 1452 1334 1452 1331 1452 1329 1452 1329 1454 1318 1465 1091 1465 1052 1452 1050 1452 1048 1452 961 1465 931 1454 929 1454 926 1454 773 1465 747 1454 744 1454 742 1454 740 1454 708 1465 606 1454 604 1454 602 1454 599 1454 599 1457 589 1467 411 1467 413 1498"/>
+                        </Shape>
+                        <String CONTENT="steps. Instead of this staff, runners will often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l16" HPOS="415" VPOS="1513" WIDTH="566" HEIGHT="58" BASELINE="417 1554 981 1558" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1554 415 1567 976 1571 981 1558 978 1528 926 1515 924 1515 838 1526 766 1515 764 1515 623 1524 602 1513 599 1513 597 1513 417 1521 417 1554"/>
+                        </Shape>
+                        <String CONTENT="use plain wooden sticks."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-341_r4" HPOS="390" VPOS="1579" WIDTH="1778" HEIGHT="540" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="390 1579 2168 1579 2168 2119 390 2119"/>
+                    </Shape>
+                    <TextLine ID="mz_1-341_l17" HPOS="526" VPOS="1571" WIDTH="994" HEIGHT="61" BASELINE="526 1617 1520 1617" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="526 1617 526 1632 1520 1632 1520 1617 1520 1584 1349 1571 1347 1571 1344 1571 1299 1582 1266 1571 1264 1571 1262 1571 1260 1571 1258 1571 1247 1582 1225 1571 1223 1571 1221 1571 1219 1571 1217 1571 1217 1573 1206 1584 1108 1584 1080 1571 1078 1571 1076 1571 1074 1571 1071 1571 1059 1582 1024 1571 1022 1571 1020 1571 1017 1571 1015 1571 1015 1573 1004 1584 937 1584 913 1571 911 1571 909 1571 853 1582 835 1571 833 1571 831 1571 829 1571 827 1571 825 1571 809 1582 751 1571 749 1571 669 1582 651 1571 649 1571 647 1571 645 1571 573 1582 552 1571 550 1571 547 1571 545 1571 526 1580 526 1617"/>
+                        </Shape>
+                        <String CONTENT="Another kind of staff is used in climbing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l18" HPOS="417" VPOS="1645" WIDTH="1098" HEIGHT="48" BASELINE="417 1675 1515 1675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1675 417 1693 1515 1693 1515 1675 1515 1645 417 1645 417 1675"/>
+                        </Shape>
+                        <String CONTENT="mountains. It has a head of antler or iron, with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l19" HPOS="415" VPOS="1693" WIDTH="1103" HEIGHT="60" BASELINE="417 1736 1518 1732" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1736 417 1753 1515 1749 1518 1732 1513 1703 965 1693 963 1693 961 1693 959 1693 946 1703 515 1695 513 1695 415 1706 417 1736"/>
+                        </Shape>
+                        <String CONTENT="two large, slightly curved spikes not unlike walrus-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l20" HPOS="415" VPOS="1755" WIDTH="1103" HEIGHT="57" BASELINE="417 1796 1518 1792" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1796 417 1812 1515 1807 1518 1792 1513 1764 430 1755 428 1755 426 1755 424 1755 415 1762 417 1796"/>
+                        </Shape>
+                        <String CONTENT="tusks. These spikes are used for catching to rocks"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l21" HPOS="413" VPOS="1812" WIDTH="1105" HEIGHT="69" BASELINE="415 1855 1518 1851" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 1855 415 1870 939 1881 942 1881 1067 1868 1225 1868 1238 1879 1240 1879 1243 1879 1245 1879 1338 1868 1370 1879 1373 1879 1375 1879 1377 1879 1403 1868 1412 1877 1412 1879 1414 1879 1416 1879 1418 1881 1500 1881 1500 1879 1502 1879 1505 1879 1518 1866 1518 1851 1513 1822 963 1812 961 1812 959 1812 920 1822 422 1814 420 1814 417 1814 415 1814 415 1816 413 1816 415 1855"/>
+                        </Shape>
+                        <String CONTENT="in the most difficult places. This staff is used"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l22" HPOS="415" VPOS="1872" WIDTH="1098" HEIGHT="61" BASELINE="417 1916 1513 1909" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="417 1916 417 1933 1511 1926 1513 1909 1509 1881 781 1872 779 1872 777 1872 775 1872 762 1883 485 1874 482 1874 415 1885 417 1916"/>
+                        </Shape>
+                        <String CONTENT="mainly among the Kamchadal in hunting sheep"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l23" HPOS="415" VPOS="1946" WIDTH="1100" HEIGHT="54" BASELINE="415 1974 1515 1974" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 1974 415 1989 435 2000 437 2000 439 2000 441 2000 474 1989 608 2000 610 2000 612 2000 615 2000 628 1989 825 1989 838 2000 840 2000 842 2000 844 2000 1515 1987 1515 1974 1515 1946 415 1946 415 1974"/>
+                        </Shape>
+                        <String CONTENT="or bears on the rugged mountains. A similar"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l24" HPOS="413" VPOS="2000" WIDTH="1774" HEIGHT="54" BASELINE="415 2037 2187 2030" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2037 415 2054 2185 2054 2187 2030 2180 2000 413 2004 415 2037"/>
+                        </Shape>
+                        <String CONTENT="form is found among the Lamut hunters. I have also seen specimens among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l25" HPOS="413" VPOS="2050" WIDTH="1425" HEIGHT="60" BASELINE="415 2095 1838 2091" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 2095 415 2110 1836 2106 1838 2091 1836 2063 1803 2050 1801 2050 1799 2050 1472 2061 1444 2050 1442 2050 1440 2050 1437 2050 1407 2061 1379 2050 1377 2050 1375 2050 1373 2050 1342 2061 1269 2050 1266 2050 1217 2061 1193 2050 1191 2050 1188 2050 1104 2063 1041 2052 1039 2052 773 2063 699 2052 697 2052 695 2052 693 2052 675 2063 654 2052 651 2052 649 2052 647 2052 623 2063 571 2052 569 2052 567 2052 565 2052 552 2065 469 2065 443 2052 441 2052 439 2052 437 2052 413 2063 415 2095"/>
+                        </Shape>
+                        <String CONTENT="those Chukchee of the Kolyma who live farther to the south."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-341_r5" HPOS="390" VPOS="2119" WIDTH="1778" HEIGHT="185" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="390 2119 2168 2119 2168 2304 390 2304"/>
+                    </Shape>
+                    <TextLine ID="mz_1-341_l26" HPOS="519" VPOS="2108" WIDTH="1670" HEIGHT="74" BASELINE="521 2156 2189 2149" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="521 2156 521 2182 2189 2165 2189 2149 2185 2121 1912 2121 1871 2108 1868 2108 1866 2108 1864 2108 1862 2108 1847 2121 1747 2121 1687 2108 1684 2108 1682 2108 1680 2108 1667 2119 1639 2108 1637 2108 1635 2108 1632 2108 1596 2121 1264 2110 1262 2110 1186 2121 1108 2110 1106 2110 1104 2110 1069 2123 1020 2113 1017 2113 744 2123 537 2113 534 2113 532 2113 530 2113 519 2121 521 2156"/>
+                        </Shape>
+                        <String CONTENT="Chukchee and Koryak, when walking over smooth ice, use ivory creepers"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l27" HPOS="409" VPOS="2169" WIDTH="1778" HEIGHT="73" BASELINE="411 2214 2187 2210" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="411 2214 411 2242 2185 2229 2187 2210 2182 2180 1957 2169 1955 2169 1899 2180 1875 2169 1873 2169 1871 2169 1762 2180 1674 2169 1671 2169 1619 2180 1489 2169 1487 2169 1409 2180 1379 2169 1377 2169 1375 2169 1253 2182 1188 2171 1186 2171 1097 2182 983 2171 981 2171 978 2171 948 2182 909 2171 907 2171 905 2171 903 2171 857 2182 723 2171 721 2171 718 2171 688 2182 643 2171 641 2171 638 2171 409 2180 411 2214"/>
+                        </Shape>
+                        <String CONTENT="identical in shape with those of the American Eskimo (Fig. 195). These are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-341_l28" HPOS="411" VPOS="2242" WIDTH="1150" HEIGHT="59" BASELINE="413 2277 1561 2273" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="413 2277 413 2292 1541 2301 1544 2301 1546 2301 1548 2301 1561 2290 1561 2273 1554 2242 411 2245 413 2277"/>
+                        </Shape>
+                        <String CONTENT="fastened to the sole crosswise to prevent slipping."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

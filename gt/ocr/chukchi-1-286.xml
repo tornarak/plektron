@@ -1,0 +1,378 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-286.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-286.png; regions_from: zones/chukchi-1-286.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-286_r1" HPOS="618" VPOS="615" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="618 615 2396 615 2396 710 618 710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l1" HPOS="1206" VPOS="634" WIDTH="613" HEIGHT="56" BASELINE="1206 668 1819 668" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1812 634 1219 634 1208 649 1206 668 1206 690 1819 690 1819 668 1819 645 1812 634"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l2" HPOS="623" VPOS="630" WIDTH="108" HEIGHT="67" BASELINE="625 675 731 671" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="625 675 625 686 675 697 677 697 731 684 731 671 729 640 697 630 695 630 693 630 623 643 625 675"/>
+                        </Shape>
+                        <String CONTENT="226"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-286_r2" HPOS="618" VPOS="745" WIDTH="1778" HEIGHT="659" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 745 2396 745 2396 1404 618 1404"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l3" HPOS="725" VPOS="733" WIDTH="1672" HEIGHT="61" BASELINE="727 779 2397 775" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2371 742 2349 742 2328 742 2315 740 2291 744 2254 738 2241 738 2219 738 2198 738 2191 738 2150 746 1812 746 1734 733 1732 733 1596 744 1572 733 1570 733 1567 733 1565 733 1524 746 738 736 736 736 734 736 731 736 731 738 725 742 727 779 727 794 2395 790 2397 775 2395 744 2388 742 2371 742"/>
+                        </Shape>
+                        <String CONTENT="EMBROIDERY. — Skin clothes are ornamented in two ways, — either with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l4" HPOS="619" VPOS="796" WIDTH="1778" HEIGHT="59" BASELINE="621 837 2397 833" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 837 621 855 2395 850 2397 833 2393 805 693 796 690 796 619 807 621 837"/>
+                        </Shape>
+                        <String CONTENT="embroidery or with appliqué work, formed, like a mosaic, of small squares"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l5" HPOS="619" VPOS="857" WIDTH="1776" HEIGHT="58" BASELINE="621 898 2395 894" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 898 621 915 2393 911 2395 894 2390 866 662 857 660 857 658 857 619 868 621 898"/>
+                        </Shape>
+                        <String CONTENT="of black and white skin cut out for the purpose and sewed together piece by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l6" HPOS="619" VPOS="913" WIDTH="1778" HEIGHT="69" BASELINE="621 961 2397 954" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 961 621 982 2395 969 2397 954 2393 924 1832 913 1829 913 1756 924 1260 915 1258 915 1256 915 1208 926 656 917 654 917 651 917 619 928 621 961"/>
+                        </Shape>
+                        <String CONTENT="piece (see Plate XXI, Fig. 1). In both branches of this ornamental work the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l7" HPOS="621" VPOS="972" WIDTH="1776" HEIGHT="62" BASELINE="623 1019 2397 1013" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="623 1019 623 1034 2395 1028 2397 1013 2393 982 2122 972 2120 972 2066 982 1988 972 1985 972 1864 982 1836 972 1834 972 1832 972 1829 972 1799 985 1769 974 1767 974 1765 974 1533 985 1518 974 1515 974 1513 974 1344 974 1342 974 1264 985 1219 974 1217 974 1214 974 1212 974 1210 974 1195 987 848 976 846 976 844 976 816 989 621 989 623 1019"/>
+                        </Shape>
+                        <String CONTENT="women of the Chukchee have but little skill, while those of the Koryak and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l8" HPOS="621" VPOS="1032" WIDTH="1772" HEIGHT="63" BASELINE="623 1080 2393 1076" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="623 1080 623 1095 2390 1091 2393 1076 2388 1045 2265 1032 2263 1032 2260 1032 2258 1032 2241 1045 2044 1045 2020 1032 2018 1032 2016 1032 2014 1032 2011 1032 1996 1045 1780 1045 1717 1032 1715 1032 1713 1032 1671 1043 1611 1032 1609 1032 1505 1045 1431 1034 1429 1034 1427 1034 1396 1045 1375 1034 1373 1034 1370 1034 1301 1045 1243 1034 1240 1034 1186 1045 1097 1034 1095 1034 1093 1034 1091 1034 1078 1045 1063 1034 1061 1034 1059 1034 916 1034 913 1034 911 1034 909 1034 894 1045 814 1034 812 1034 809 1034 775 1045 725 1034 723 1034 721 1034 697 1045 669 1034 667 1034 664 1034 662 1034 621 1047 623 1080"/>
+                        </Shape>
+                        <String CONTENT="of the Russianized Yukaghir display considerable taste and great patience."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l9" HPOS="621" VPOS="1091" WIDTH="1774" HEIGHT="65" BASELINE="623 1140 2395 1132" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="623 1140 623 1156 2393 1147 2395 1132 2390 1104 2096 1091 2094 1091 2092 1091 2089 1091 2074 1104 1949 1104 1825 1093 1823 1093 1821 1093 1797 1104 1773 1093 1771 1093 1769 1093 1767 1093 1743 1104 1656 1093 1654 1093 1563 1104 1453 1095 1450 1095 1448 1095 1446 1095 1431 1106 1342 1095 1340 1095 1338 1095 1312 1106 1271 1095 1269 1095 1266 1095 1264 1095 1232 1106 1201 1095 1199 1095 1197 1095 1063 1108 1015 1097 1013 1097 1011 1097 1009 1097 974 1108 935 1097 933 1097 931 1097 929 1097 898 1108 820 1097 818 1097 621 1101 623 1140"/>
+                        </Shape>
+                        <String CONTENT="Embroidery is done with the long hair of the reindeer-mane, which is white"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l10" HPOS="621" VPOS="1149" WIDTH="1776" HEIGHT="65" BASELINE="623 1201 2397 1192" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="623 1201 623 1214 2395 1208 2397 1192 2395 1160 2375 1149 2373 1149 2371 1149 2369 1149 2367 1149 2351 1162 2256 1162 2239 1149 2237 1149 2234 1149 2232 1149 2230 1149 2228 1149 2213 1160 2198 1149 2195 1149 2193 1149 2191 1149 2109 1160 2087 1149 2085 1149 2083 1149 1975 1160 1957 1149 1955 1149 1953 1149 1951 1149 1949 1149 1946 1149 1927 1162 1801 1151 1799 1151 1732 1162 1706 1151 1704 1151 1702 1151 1700 1151 1661 1162 1637 1151 1635 1151 1632 1151 1630 1151 1596 1162 1539 1151 1537 1151 1535 1151 1505 1164 1470 1153 1468 1153 1466 1153 1409 1164 1366 1153 1364 1153 1362 1153 1360 1153 1321 1164 1275 1153 1273 1153 1271 1153 1167 1164 1119 1153 1117 1153 1115 1153 1024 1166 948 1156 946 1156 874 1166 770 1156 768 1156 621 1162 623 1201"/>
+                        </Shape>
+                        <String CONTENT="in color. Often it is dyed red with alder-bark. Thin sinew thread is used"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l11" HPOS="621" VPOS="1214" WIDTH="1774" HEIGHT="61" BASELINE="623 1260 2395 1253" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="623 1260 623 1275 2393 1268 2395 1253 2390 1225 1825 1214 1823 1214 1821 1214 1773 1225 1388 1216 1386 1216 621 1227 623 1260"/>
+                        </Shape>
+                        <String CONTENT="for the same purpose, as are also long narrow strips of soft white leather."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l12" HPOS="621" VPOS="1281" WIDTH="1776" HEIGHT="54" BASELINE="623 1320 2397 1314" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="623 1320 623 1335 2395 1329 2397 1314 2390 1281 621 1286 623 1320"/>
+                        </Shape>
+                        <String CONTENT="Koryak women and Russianized native women also use woollen thread and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l13" HPOS="621" VPOS="1348" WIDTH="583" HEIGHT="48" BASELINE="621 1379 1204 1379" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 1379 621 1396 1204 1396 1204 1379 1204 1348 621 1348 621 1379"/>
+                        </Shape>
+                        <String CONTENT="silk bought from traders."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-286_r3" HPOS="618" VPOS="1404" WIDTH="1778" HEIGHT="356" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 1404 2396 1404 2396 1760 618 1760"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l14" HPOS="729" VPOS="1392" WIDTH="1666" HEIGHT="62" BASELINE="731 1437 2395 1431" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="731 1437 731 1454 2393 1448 2395 1431 2390 1402 2014 1392 2011 1392 1834 1402 1394 1394 1392 1394 729 1405 731 1437"/>
+                        </Shape>
+                        <String CONTENT="The embroidery patterns used by Chukchee women consist of a few very"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l15" HPOS="619" VPOS="1457" WIDTH="1776" HEIGHT="60" BASELINE="621 1498 2395 1491" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 1498 621 1517 2393 1511 2395 1491 2390 1463 649 1457 647 1457 645 1457 619 1465 621 1498"/>
+                        </Shape>
+                        <String CONTENT="simple geometrical figures, chiefly straight lines, crosses, and circles, single or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l16" HPOS="619" VPOS="1517" WIDTH="1778" HEIGHT="67" BASELINE="621 1558 2397 1554" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 1558 621 1571 1084 1582 1087 1582 1225 1571 1286 1582 1288 1584 1288 1582 1347 1571 1381 1582 1383 1582 1386 1582 1388 1582 1418 1571 1494 1582 1496 1582 1635 1569 1964 1580 1966 1580 2033 1569 2059 1580 2061 1580 2063 1580 2395 1567 2397 1554 2393 1526 645 1517 643 1517 641 1517 619 1526 621 1558"/>
+                        </Shape>
+                        <String CONTENT="double. The circles are said to represent stars. All these figures may be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l17" HPOS="619" VPOS="1573" WIDTH="1776" HEIGHT="61" BASELINE="621 1619 2395 1615" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 1619 621 1634 2393 1630 2395 1615 2393 1586 2364 1573 2362 1573 2360 1573 2358 1573 2334 1584 2256 1573 2254 1573 2252 1573 2208 1584 2070 1573 2068 1573 2066 1573 2022 1584 1988 1573 1985 1573 1983 1573 1981 1573 1979 1573 1959 1586 1819 1586 1721 1573 1719 1573 1717 1573 1715 1573 1697 1586 1600 1586 1507 1573 1505 1573 1502 1573 1461 1586 1386 1576 1383 1576 1067 1586 1030 1576 1028 1576 1026 1576 1024 1576 983 1586 896 1576 894 1576 619 1589 621 1619"/>
+                        </Shape>
+                        <String CONTENT="seen on various pieces of embroidery (Plate XXI, Figs. 1-4; also Fig. 158, a-c)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l18" HPOS="619" VPOS="1634" WIDTH="1778" HEIGHT="74" BASELINE="621 1677 2397 1671" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 1677 621 1708 693 1697 883 1706 885 1706 887 1706 929 1693 1013 1706 1015 1706 1017 1706 1020 1706 1039 1693 1165 1701 1167 1701 1271 1690 1585 1703 1587 1703 1663 1690 2005 1701 2007 1701 2009 1701 2011 1701 2029 1688 2105 1699 2107 1699 2109 1699 2137 1688 2156 1701 2159 1701 2161 1701 2163 1703 2317 1703 2317 1701 2395 1686 2397 1671 2393 1634 1212 1634 1210 1634 1154 1645 638 1636 636 1636 634 1636 632 1636 619 1643 621 1677"/>
+                        </Shape>
+                        <String CONTENT="Occasionally they embellish the trimming of the “dry-shoes,” the opening of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l19" HPOS="617" VPOS="1695" WIDTH="1654" HEIGHT="60" BASELINE="619 1740 2271 1734" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 1740 619 1755 2269 1749 2271 1734 2267 1703 1715 1695 1713 1695 1658 1706 1167 1697 1165 1697 1162 1697 1128 1710 617 1710 619 1740"/>
+                        </Shape>
+                        <String CONTENT="the sleeves, or the backs of women’s frocks, where tassels are fastened."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-286_r4" HPOS="618" VPOS="1760" WIDTH="1778" HEIGHT="239" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 1760 2396 1760 2396 1999 618 1999"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l20" HPOS="729" VPOS="1749" WIDTH="1666" HEIGHT="65" BASELINE="731 1799 2395 1790" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="731 1799 731 1814 2393 1807 2395 1790 2390 1762 2265 1749 2263 1749 2161 1760 2143 1749 2141 1749 2139 1749 2137 1749 2135 1749 2102 1760 2081 1749 2079 1749 2076 1749 1970 1762 1654 1751 1652 1751 1650 1751 1606 1762 1585 1751 1583 1751 1580 1751 1578 1751 1541 1766 1253 1766 1240 1753 1238 1753 1236 1753 1234 1753 1232 1753 1206 1764 1193 1753 1191 1753 1188 1753 1186 1753 1078 1766 985 1755 983 1755 729 1762 731 1799"/>
+                        </Shape>
+                        <String CONTENT="The Reindeer Chukchee women embroider the covers of their family"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l21" HPOS="617" VPOS="1816" WIDTH="1778" HEIGHT="58" BASELINE="619 1861 2395 1855" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 1861 619 1874 2393 1868 2395 1855 2390 1825 1210 1816 1208 1816 1128 1827 645 1818 643 1818 641 1818 617 1827 619 1861"/>
+                        </Shape>
+                        <String CONTENT="sledges according to their skill. These covers have around their lower part"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l22" HPOS="617" VPOS="1877" WIDTH="1778" HEIGHT="58" BASELINE="619 1920 2395 1913" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 1920 619 1935 2393 1929 2395 1913 2390 1881 686 1877 684 1877 617 1887 619 1920"/>
+                        </Shape>
+                        <String CONTENT="a broad band of leather embroidered with various geometrical designs, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l23" HPOS="621" VPOS="1935" WIDTH="1386" HEIGHT="58" BASELINE="621 1978 2007 1978" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 1978 621 1993 2007 1993 2007 1978 2007 1946 1981 1935 1979 1935 1977 1935 1975 1935 1951 1948 1886 1948 1875 1937 1875 1935 1873 1935 1871 1935 1868 1935 1866 1935 1819 1946 1669 1935 1667 1935 1665 1935 1635 1946 1602 1935 1600 1935 1598 1935 1476 1946 1418 1935 1416 1935 1414 1935 1412 1935 1401 1944 1392 1937 1392 1935 1390 1935 1388 1935 1260 1935 1258 1935 1191 1946 1165 1935 1162 1935 1160 1935 1020 1946 957 1935 955 1935 952 1935 920 1946 870 1935 868 1935 866 1935 820 1946 799 1935 796 1935 794 1935 716 1946 671 1935 669 1935 667 1935 664 1935 621 1946 621 1978"/>
+                        </Shape>
+                        <String CONTENT="trimmed with fringe and red-dyed fur tassels (Fig. 158, a-c)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-286_r5" HPOS="618" VPOS="1999" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 1999 2396 1999 2396 2297 618 2297"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l24" HPOS="729" VPOS="1991" WIDTH="1668" HEIGHT="74" BASELINE="731 2039 2397 2032" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="731 2039 731 2054 983 2065 985 2065 1414 2052 1496 2063 1498 2063 1500 2063 1522 2052 1602 2063 1604 2063 1606 2063 1641 2052 1678 2063 1680 2063 1682 2063 1684 2063 1687 2063 1702 2052 2085 2061 2087 2061 2089 2061 2092 2061 2105 2050 2143 2061 2146 2061 2148 2061 2150 2061 2172 2050 2260 2061 2263 2061 2265 2061 2267 2061 2284 2050 2395 2050 2397 2032 2393 2002 2343 1991 2341 1991 2338 1991 2315 2004 2083 2004 2057 1991 2055 1991 2053 1991 1955 2002 1879 1991 1877 1991 1799 2004 1786 1993 1784 1993 1782 1993 1780 1993 1777 1993 1756 2004 1572 1993 1570 1993 1507 2004 1325 1993 1323 1993 1264 2006 1221 1996 1219 1996 1217 1996 1214 1996 1186 2009 1024 2009 1011 1996 1009 1996 1007 1996 1004 1996 729 2002 731 2039"/>
+                        </Shape>
+                        <String CONTENT="The triangles seen in Plate XXI, Fig. 1, and in Fig. 158, c, were said"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l25" HPOS="617" VPOS="2058" WIDTH="1780" HEIGHT="59" BASELINE="619 2100 2397 2093" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2100 619 2117 2395 2110 2397 2093 2393 2063 638 2058 636 2058 634 2058 632 2058 617 2065 619 2100"/>
+                        </Shape>
+                        <String CONTENT="to represent mountains; and the zigzag-like lines in Fig. 158, c, were explained"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l26" HPOS="617" VPOS="2117" WIDTH="1778" HEIGHT="67" BASELINE="619 2158 2395 2154" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2158 619 2173 933 2173 972 2184 974 2184 976 2184 1225 2173 1338 2184 1340 2184 1446 2173 1502 2184 1505 2184 1507 2184 1550 2171 1587 2182 1589 2182 1591 2182 2393 2169 2395 2154 2390 2126 716 2117 714 2117 617 2128 619 2158"/>
+                        </Shape>
+                        <String CONTENT="as rivers. A part of the design in Fig. 158, c, is apparently copied from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l27" HPOS="617" VPOS="2175" WIDTH="1773" HEIGHT="63" BASELINE="619 2219 2390 2214" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2219 619 2234 2386 2238 2390 2214 2386 2186 1505 2175 1502 2175 1500 2175 1498 2175 1479 2186 773 2177 770 2177 617 2188 619 2219"/>
+                        </Shape>
+                        <String CONTENT="engraving on the iron spear-points, the pattern of which, as noted before,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l28" HPOS="619" VPOS="2249" WIDTH="500" HEIGHT="45" BASELINE="619 2277 1119 2277" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2277 619 2292 1117 2294 1119 2277 1119 2249 619 2249 619 2277"/>
+                        </Shape>
+                        <String CONTENT="came from the south."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-286_r6" HPOS="618" VPOS="2296" WIDTH="1778" HEIGHT="131" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 2296 2396 2296 2396 2427 618 2427"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l29" HPOS="727" VPOS="2292" WIDTH="1668" HEIGHT="72" BASELINE="729 2338 2395 2333" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="729 2338 729 2353 1212 2353 1305 2364 1308 2364 1377 2353 1520 2364 1522 2364 1524 2364 1526 2364 1541 2351 1656 2351 1739 2362 1741 2362 1845 2351 1981 2362 1983 2362 2393 2349 2395 2333 2390 2305 2321 2292 2319 2292 1944 2303 1871 2292 1868 2292 1814 2303 1777 2292 1775 2292 1773 2292 1650 2303 1587 2292 1585 2292 1583 2292 1554 2307 1344 2307 1325 2294 1323 2294 1321 2294 1318 2294 1316 2294 1282 2305 1253 2294 1251 2294 1249 2294 1247 2294 1219 2305 1126 2294 1123 2294 727 2303 729 2338"/>
+                        </Shape>
+                        <String CONTENT="I could not find a single woman able to give full explanations of her"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l30" HPOS="617" VPOS="2355" WIDTH="1778" HEIGHT="58" BASELINE="619 2398 2395 2394" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2398 619 2413 2393 2409 2395 2394 2390 2366 1678 2355 1676 2355 617 2368 619 2398"/>
+                        </Shape>
+                        <String CONTENT="own patterns; so that, if they ever had a meaning, it is forgotten by this time."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-286_r7" HPOS="618" VPOS="2427" WIDTH="1778" HEIGHT="769" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 2427 2396 2427 2396 3196 618 3196"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l31" HPOS="727" VPOS="2413" WIDTH="1670" HEIGHT="61" BASELINE="729 2459 2397 2455" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="729 2459 729 2474 2395 2470 2397 2455 2393 2424 1574 2413 1572 2413 1570 2413 1546 2424 751 2416 749 2416 747 2416 727 2424 729 2459"/>
+                        </Shape>
+                        <String CONTENT="Above the band on the back part of the cover is fastened a circle about"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l32" HPOS="617" VPOS="2476" WIDTH="1776" HEIGHT="59" BASELINE="619 2517 2393 2513" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2517 619 2535 2390 2530 2393 2513 2388 2485 736 2476 734 2476 617 2487 619 2517"/>
+                        </Shape>
+                        <String CONTENT="twenty-five or thirty centimetres in diameter, covered all over with embroidery."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l33" HPOS="623" VPOS="2533" WIDTH="1772" HEIGHT="60" BASELINE="625 2578 2395 2574" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="625 2578 625 2593 2393 2589 2395 2574 2393 2546 2343 2533 2341 2533 2338 2533 2336 2533 2310 2543 2176 2533 2174 2533 2172 2533 2139 2546 1840 2546 1823 2533 1821 2533 1819 2533 1816 2533 1814 2533 1782 2543 1745 2533 1743 2533 1741 2533 1739 2533 1706 2543 1602 2533 1600 2533 1455 2548 1273 2548 1240 2535 1238 2535 1236 2535 1234 2535 1204 2546 1186 2535 1184 2535 1182 2535 1180 2535 1080 2546 1020 2535 1017 2535 623 2539 625 2578"/>
+                        </Shape>
+                        <String CONTENT="This is called “the sun,” the same name which the Lamut women give to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l34" HPOS="617" VPOS="2595" WIDTH="1778" HEIGHT="59" BASELINE="619 2639 2395 2634" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2639 619 2654 2393 2649 2395 2634 2390 2602 738 2595 736 2595 617 2606 619 2639"/>
+                        </Shape>
+                        <String CONTENT="round metal breastplates that form part of their festive costumes. This round"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l35" HPOS="617" VPOS="2652" WIDTH="1773" HEIGHT="67" BASELINE="619 2699 2390 2693" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2699 619 2719 2388 2719 2390 2693 2388 2665 2345 2652 2343 2652 2341 2652 2098 2662 2027 2652 2024 2652 1968 2662 1912 2652 1910 2652 1907 2652 1886 2662 1842 2652 1840 2652 1838 2652 1777 2665 1450 2654 1448 2654 1269 2665 1208 2654 1206 2654 1204 2654 1201 2654 1186 2667 788 2656 786 2656 783 2656 740 2667 654 2656 651 2656 649 2656 617 2667 619 2699"/>
+                        </Shape>
+                        <String CONTENT="piece clearly represents the sun, which is often embroidered in the middle,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l36" HPOS="619" VPOS="2712" WIDTH="1774" HEIGHT="63" BASELINE="621 2758 2393 2751" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="621 2758 621 2775 2390 2769 2393 2751 2388 2723 1840 2712 1838 2712 1836 2712 1797 2723 688 2717 686 2717 619 2727 621 2758"/>
+                        </Shape>
+                        <String CONTENT="and is easily recognized by the prominent rays spreading out from the centre"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l37" HPOS="619" VPOS="2775" WIDTH="1776" HEIGHT="56" BASELINE="619 2816 2395 2816" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2816 619 2831 2395 2831 2395 2816 2395 2788 2343 2775 2341 2775 2338 2775 2306 2786 2265 2775 2263 2775 2260 2775 2258 2775 2228 2786 2141 2775 2139 2775 2033 2786 1808 2775 1806 2775 1752 2786 1715 2775 1713 2775 1710 2775 1589 2786 1500 2775 1498 2775 1446 2786 1422 2775 1420 2775 1418 2775 1416 2775 1414 2775 1399 2788 1290 2788 1193 2775 1191 2775 1188 2775 1186 2775 1169 2788 1063 2788 944 2775 942 2775 939 2775 909 2786 874 2775 872 2775 870 2775 868 2775 866 2775 853 2786 820 2775 818 2775 816 2775 814 2775 770 2786 718 2775 716 2775 714 2775 693 2786 664 2775 662 2775 660 2775 658 2775 619 2786 619 2816"/>
+                        </Shape>
+                        <String CONTENT="of the circle (Plate XXI, Figs. 3, 4). The tassels which are sewed on in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l38" HPOS="617" VPOS="2833" WIDTH="1778" HEIGHT="59" BASELINE="619 2877 2395 2872" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2877 619 2892 2393 2888 2395 2872 2390 2844 1515 2833 1513 2833 1455 2844 814 2836 812 2836 617 2846 619 2877"/>
+                        </Shape>
+                        <String CONTENT="centre of the sun or all around the disk also represent the rays. The sun is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l39" HPOS="619" VPOS="2894" WIDTH="1774" HEIGHT="59" BASELINE="619 2935 2393 2935" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2935 619 2953 2393 2953 2393 2935 2393 2905 2358 2894 2356 2894 2354 2894 2351 2894 2315 2905 2250 2894 2247 2894 2185 2905 1741 2894 1739 2894 1736 2894 1713 2905 1626 2894 1624 2894 1531 2905 1442 2894 1440 2894 1437 2894 1392 2905 1360 2894 1357 2894 1355 2894 994 2905 937 2894 935 2894 879 2905 801 2894 799 2894 619 2905 619 2935"/>
+                        </Shape>
+                        <String CONTENT="surrounded with many concentric circles, which indicate different worlds. In"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l40" HPOS="617" VPOS="2953" WIDTH="1780" HEIGHT="67" BASELINE="619 2996 2397 2992" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 2996 619 3011 2371 3020 2373 3020 2375 3020 2397 3007 2397 2992 2393 2963 1507 2953 1505 2953 1502 2953 1476 2963 803 2955 801 2955 617 2966 619 2996"/>
+                        </Shape>
+                        <String CONTENT="some of these worlds are seen flying birds and shining stars. The birds are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l41" HPOS="619" VPOS="3026" WIDTH="1776" HEIGHT="48" BASELINE="619 3056 2395 3056" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 3056 619 3074 2395 3074 2395 3056 2395 3026 619 3026 619 3056"/>
+                        </Shape>
+                        <String CONTENT="represented by crosses; and stars, by small circles (Plate XXI, Fig. 4). Once"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l42" HPOS="619" VPOS="3074" WIDTH="1776" HEIGHT="60" BASELINE="619 3115 2395 3115" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 3115 619 3134 2395 3134 2395 3115 2395 3087 2343 3074 2341 3074 2263 3085 2224 3074 2221 3074 2219 3074 2217 3074 2189 3085 2163 3074 2161 3074 2159 3074 2068 3085 2031 3074 2029 3074 2027 3074 2024 3074 1996 3085 1983 3074 1981 3074 1979 3074 1977 3074 1864 3085 1734 3074 1732 3074 1730 3074 1691 3085 1453 3074 1450 3074 1370 3085 1327 3074 1325 3074 1323 3074 1236 3085 1204 3074 1201 3074 1199 3074 1197 3074 1167 3085 1059 3074 1056 3074 1054 3074 1017 3087 859 3087 842 3074 840 3074 838 3074 835 3074 619 3080 619 3115"/>
+                        </Shape>
+                        <String CONTENT="in a while a sun-picture is replaced by a moon-picture, which is made in white"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-286_l43" HPOS="617" VPOS="3141" WIDTH="1093" HEIGHT="52" BASELINE="619 3176 1710 3171" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="619 3176 619 3193 1708 3191 1710 3171 1704 3141 617 3143 619 3176"/>
+                        </Shape>
+                        <String CONTENT="or red, and crossed with several diagonal lines."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-286_r8" HPOS="618" VPOS="3196" WIDTH="1778" HEIGHT="69" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="618 3196 2396 3196 2396 3265 618 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-286_l44" HPOS="731" VPOS="3189" WIDTH="1662" HEIGHT="64" BASELINE="734 3236 2393 3230" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2386 3195 2377 3189 2375 3189 2373 3189 2371 3189 2369 3189 2367 3189 2351 3199 2282 3189 2280 3189 2278 3189 2232 3199 2187 3189 2185 3189 2182 3189 2180 3189 2178 3189 2163 3199 2094 3189 2092 3189 1838 3202 1823 3191 1821 3191 1819 3191 1816 3191 1743 3202 1665 3191 1663 3191 1611 3202 1546 3191 1544 3191 1541 3191 1511 3202 1481 3191 1479 3191 1476 3191 1316 3202 1288 3191 1286 3191 1284 3191 1282 3191 1240 3204 1139 3193 1046 3193 1043 3193 1041 3193 1039 3193 1026 3204 991 3193 989 3193 987 3193 731 3197 734 3236 734 3253 2393 3249 2393 3230 2390 3223 2386 3195"/>
+                        </Shape>
+                        <String CONTENT="The Asiatic Eskimo adorn their fur shirts with a band of embroidered"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

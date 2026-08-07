@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-338.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-338.png; regions_from: zones/chukchi-1-338.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-338_r1" HPOS="625" VPOS="615" WIDTH="1778" HEIGHT="104" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="625 615 2403 615 2403 719 625 719"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l1" HPOS="1230" VPOS="636" WIDTH="623" HEIGHT="56" BASELINE="1232 673 1853 668" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1842 636 1240 638 1230 651 1232 673 1232 692 1851 688 1853 668 1847 636 1842 636"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l2" HPOS="656" VPOS="645" WIDTH="114" HEIGHT="52" BASELINE="656 673 770 673" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 662 656 673 656 688 662 694 662 697 664 697 667 697 669 697 770 684 770 673 770 645 667 645 656 662"/>
+                        </Shape>
+                        <String CONTENT="260"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-338_r2" HPOS="625" VPOS="736" WIDTH="1778" HEIGHT="121" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="625 736 2403 736 2403 857 625 857"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l3" HPOS="649" VPOS="742" WIDTH="1776" HEIGHT="56" BASELINE="651 777 2425 783" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 777 649 790 2421 798 2425 783 2425 749 651 742 651 777"/>
+                        </Shape>
+                        <String CONTENT="by the Central Eskimo.¹ It is uncertain whether, before the arrival of Europeans,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l4" HPOS="651" VPOS="805" WIDTH="1566" HEIGHT="52" BASELINE="654 835 2217 842" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 835 651 850 2213 857 2217 842 2215 811 654 805 654 835"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee used necklaces made of small objects strung together."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-338_r3" HPOS="625" VPOS="857" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="625 857 2403 857 2403 1044 625 1044"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l5" HPOS="757" VPOS="868" WIDTH="1666" HEIGHT="49" BASELINE="760 900 2423 896" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="760 900 760 917 2421 913 2423 896 2419 868 757 868 760 900"/>
+                        </Shape>
+                        <String CONTENT="I have heard that necklaces of the vertebræ of fish were worn by children."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l6" HPOS="651" VPOS="917" WIDTH="1774" HEIGHT="59" BASELINE="651 961 2425 961" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 961 651 976 2425 976 2425 961 2425 930 2336 917 2334 917 2332 917 2304 928 2243 917 2241 917 2180 928 2072 917 2070 917 2068 917 2040 930 1855 930 1741 917 1739 917 1635 928 1572 917 1570 917 1567 917 1565 917 1548 930 1442 930 1427 917 1424 917 1422 917 1303 917 1301 917 1230 928 1182 917 1180 917 1178 917 1123 928 1091 917 1089 917 1087 917 1084 917 1059 928 978 917 976 917 907 928 877 917 874 917 872 917 870 917 846 928 818 917 816 917 814 917 727 928 671 917 669 917 667 917 664 917 651 926 651 961"/>
+                        </Shape>
+                        <String CONTENT="One of the dolls I collected had a necklace of tiny stones of irregular form"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l7" HPOS="649" VPOS="978" WIDTH="754" HEIGHT="56" BASELINE="651 1019 1403 1015" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1019 651 1034 1401 1030 1403 1015 1399 987 669 978 667 978 664 978 662 978 649 985 651 1019"/>
+                        </Shape>
+                        <String CONTENT="tied together on a sinew thread."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-338_r4" HPOS="625" VPOS="1044" WIDTH="1778" HEIGHT="240" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="625 1044 2403 1044 2403 1284 625 1284"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l8" HPOS="757" VPOS="1034" WIDTH="1672" HEIGHT="70" BASELINE="760 1082 2429 1078" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2425 1058 2421 1047 2315 1047 2295 1034 2293 1034 2291 1034 2289 1034 2286 1034 2263 1047 2022 1047 2003 1034 2001 1034 1998 1034 1996 1034 1994 1034 1966 1045 1955 1034 1953 1034 1951 1034 1949 1034 1946 1034 1914 1045 1825 1034 1823 1034 1821 1034 1793 1045 1691 1034 1689 1034 1687 1034 1661 1045 1648 1034 1645 1034 1643 1034 1641 1034 1550 1037 1548 1037 1546 1037 1533 1047 1481 1037 1479 1037 1476 1037 1444 1047 1210 1037 1208 1037 1206 1037 1180 1047 1145 1037 1143 1037 1141 1037 1046 1047 757 1045 760 1082 760 1093 1585 1104 1587 1104 1782 1093 2410 1101 2412 1101 2414 1101 2416 1101 2429 1091 2429 1078 2425 1047 2425 1058"/>
+                        </Shape>
+                        <String CONTENT="Buttons are little known to the Chukchee, since their garments do not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l9" HPOS="649" VPOS="1097" WIDTH="1778" HEIGHT="59" BASELINE="651 1140 2427 1136" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1140 651 1156 2425 1151 2427 1136 2423 1108 1596 1097 1593 1097 1496 1108 751 1099 749 1099 649 1110 651 1140"/>
+                        </Shape>
+                        <String CONTENT="require any. Some buttons carved out of ivory are used for clasping belts or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l10" HPOS="651" VPOS="1158" WIDTH="1776" HEIGHT="69" BASELINE="651 1199 2427 1199" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1199 651 1214 924 1227 926 1227 1169 1216 1424 1216 1472 1227 1474 1227 1476 1227 1533 1216 1557 1227 1559 1227 1561 1227 1667 1216 1713 1227 1715 1227 1717 1227 1797 1216 1823 1227 1825 1227 1827 1227 1931 1216 2081 1227 2083 1227 2085 1227 2113 1216 2200 1227 2202 1227 2204 1227 2206 1227 2221 1216 2427 1216 2427 1199 2427 1171 2269 1171 2254 1158 2252 1158 2250 1158 2247 1158 2245 1158 2217 1169 2029 1158 2027 1158 1962 1169 1905 1158 1903 1158 1901 1158 1864 1169 651 1160 651 1199"/>
+                        </Shape>
+                        <String CONTENT="for buttoning pouches and work-bags (Fig. 191, e, f). They may be com-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l11" HPOS="649" VPOS="1216" WIDTH="1679" HEIGHT="65" BASELINE="651 1262 2328 1255" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1262 651 1281 2325 1273 2328 1255 2323 1216 1273 1216 1271 1216 1160 1227 762 1218 760 1218 649 1229 651 1262"/>
+                        </Shape>
+                        <String CONTENT="pared to the buttons belonging to the Gilyak, and illustrated by Schrenck.²"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-338_r5" HPOS="625" VPOS="1284" WIDTH="1778" HEIGHT="128" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="625 1284 2403 1284 2403 1412 625 1412"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l12" HPOS="757" VPOS="1286" WIDTH="1662" HEIGHT="58" BASELINE="760 1316 2419 1322" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="760 1316 757 1329 775 1342 777 1342 779 1342 781 1342 1106 1331 1325 1344 1327 1344 1507 1333 1565 1344 1567 1344 1570 1344 1572 1344 1589 1333 2414 1342 2419 1322 2416 1286 760 1286 760 1316"/>
+                        </Shape>
+                        <String CONTENT="SNOW-GOGGLES. — Snow-goggles of leather and wood (Fig. 192, a, b)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l13" HPOS="651" VPOS="1348" WIDTH="1774" HEIGHT="52" BASELINE="651 1379 2425 1379" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1379 651 1400 2425 1400 2425 1379 2425 1348 651 1348 651 1379"/>
+                        </Shape>
+                        <String CONTENT="are used by the Chukchee, the Asiatic Eskimo, the Lamut, and other tribes"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-338_r6" HPOS="625" VPOS="2511" WIDTH="1778" HEIGHT="489" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="625 2511 2403 2511 2403 3000 625 3000"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l14" HPOS="649" VPOS="2530" WIDTH="1776" HEIGHT="48" BASELINE="649 2561 2425 2561" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2410 2530 649 2530 649 2561 649 2578 2425 2578 2425 2561 2425 2554 2410 2530"/>
+                        </Shape>
+                        <String CONTENT="of northeastern Asia. They have narrow slits similar to those in the specimens"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l15" HPOS="649" VPOS="2576" WIDTH="1776" HEIGHT="60" BASELINE="651 2621 2425 2617" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2621 651 2636 2423 2632 2425 2617 2419 2582 1998 2587 1942 2576 1940 2576 1938 2576 1936 2576 1920 2587 1892 2576 1890 2576 1888 2576 1812 2587 1765 2576 1762 2576 1760 2576 1526 2589 1470 2578 1468 2578 1466 2578 1442 2589 1357 2578 1355 2578 1260 2589 1132 2578 1130 2578 1128 2578 1097 2589 903 2578 900 2578 898 2578 861 2589 801 2578 799 2578 796 2578 757 2589 662 2578 660 2578 658 2578 656 2578 656 2580 649 2585 651 2621"/>
+                        </Shape>
+                        <String CONTENT="from the American Eskimo. The Lamut sometimes fashion snow-goggles of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l16" HPOS="649" VPOS="2641" WIDTH="1772" HEIGHT="65" BASELINE="651 2682 2421 2678" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2682 651 2695 994 2706 996 2706 998 2706 1030 2695 2419 2695 2421 2678 2416 2649 667 2641 664 2641 662 2641 660 2641 649 2647 651 2682"/>
+                        </Shape>
+                        <String CONTENT="the same shape out of thin sheets of silver hammered out of silver coins."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l17" HPOS="654" VPOS="2704" WIDTH="1782" HEIGHT="54" BASELINE="656 2740 2436 2738" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 2740 656 2758 2434 2756 2436 2738 2432 2708 654 2704 656 2740"/>
+                        </Shape>
+                        <String CONTENT="Nowadays snow-goggles of Yakut make, covered with a net of horsehair, are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l18" HPOS="651" VPOS="2760" WIDTH="1770" HEIGHT="65" BASELINE="654 2795 2421 2801" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 2795 651 2814 662 2823 664 2823 667 2823 669 2823 1147 2814 1249 2825 1251 2825 2419 2816 2421 2801 2419 2771 654 2760 654 2795"/>
+                        </Shape>
+                        <String CONTENT="bought from Russian traders. Glass goggles from civilized countries are also"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l19" HPOS="651" VPOS="2825" WIDTH="1770" HEIGHT="58" BASELINE="654 2855 2421 2862" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 2855 651 2870 684 2883 686 2883 688 2883 2419 2879 2421 2862 2419 2831 654 2825 654 2855"/>
+                        </Shape>
+                        <String CONTENT="eagerly purchased. The Chukchee sometimes imitate European snow-goggles,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l20" HPOS="654" VPOS="2881" WIDTH="1767" HEIGHT="56" BASELINE="654 2920 2421 2920" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 2920 654 2937 2419 2937 2421 2920 2419 2888 654 2881 654 2920"/>
+                        </Shape>
+                        <String CONTENT="but in place of smoked glass or hair-netting they use round bits of iron pierced"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l21" HPOS="649" VPOS="2944" WIDTH="485" HEIGHT="52" BASELINE="651 2979 1134 2974" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 2979 651 2996 1134 2992 1134 2974 1128 2944 649 2946 651 2979"/>
+                        </Shape>
+                        <String CONTENT="with numerous holes."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-338_r7" HPOS="625" VPOS="3000" WIDTH="1778" HEIGHT="126" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="625 3000 2403 3000 2403 3126 625 3126"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l22" HPOS="760" VPOS="3002" WIDTH="1663" HEIGHT="54" BASELINE="760 3039 2423 3039" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="760 3039 760 3056 2423 3056 2423 3039 2423 3009 760 3002 760 3039"/>
+                        </Shape>
+                        <String CONTENT="I once saw among the Reindeer Chukchee an eye-shade used by a man"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l23" HPOS="651" VPOS="3067" WIDTH="1768" HEIGHT="50" BASELINE="651 3098 2419 3098" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 3098 651 3117 2416 3117 2419 3098 2416 3067 651 3067 651 3098"/>
+                        </Shape>
+                        <String CONTENT="who had weak eyes. It was made of thick leather, and fastened with strings"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-338_r8" HPOS="625" VPOS="3152" WIDTH="1778" HEIGHT="104" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="625 3152 2403 3152 2403 3256 625 3256"/>
+                    </Shape>
+                    <TextLine ID="mz_1-338_l24" HPOS="757" VPOS="3158" WIDTH="1623" HEIGHT="57" BASELINE="760 3186 2380 3195" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="760 3186 757 3206 2375 3215 2380 3195 2377 3167 760 3158 760 3186"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare Boas, Central Eskimo, Fig. 509, a, p. 555; and Boas, Baffin-Land Eskimo, Fig. 75, p. 52."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-338_l25" HPOS="755" VPOS="3202" WIDTH="615" HEIGHT="51" BASELINE="757 3232 1370 3238" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="757 3232 755 3247 1366 3253 1370 3238 1368 3208 757 3202 757 3232"/>
+                        </Shape>
+                        <String CONTENT="² Schrenck, II, Plate XXIX, Figs. 4, 5."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-306.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-306.png; regions_from: zones/chukchi-1-306.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-306_r1" HPOS="659" VPOS="615" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="659 615 2437 615 2437 710 659 710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-306_l1" HPOS="1232" VPOS="634" WIDTH="619" HEIGHT="54" BASELINE="1234 668 1851 673" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1840 636 1838 634 1251 634 1236 647 1234 668 1232 684 1847 688 1851 673 1849 655 1840 636"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-306_l2" HPOS="669" VPOS="638" WIDTH="13" HEIGHT="59" BASELINE="669 677 682 677" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="669 677 669 697 682 694 682 677 682 638 669 638 669 677"/>
+                        </Shape>
+                        <String CONTENT="238"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-306_r2" HPOS="659" VPOS="736" WIDTH="1778" HEIGHT="199" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="659 736 2437 736 2437 935 659 935"/>
+                    </Shape>
+                    <TextLine ID="mz_1-306_l3" HPOS="645" VPOS="736" WIDTH="1771" HEIGHT="69" BASELINE="647 779 2416 775" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1121 742 1100 742 1078 742 1056 740 1035 740 1022 738 965 738 963 738 645 749 647 779 647 794 1366 805 1368 805 2416 792 2416 775 2412 746 1531 736 1528 736 1526 736 1524 736 1507 746 1136 740 1121 742"/>
+                        </Shape>
+                        <String CONTENT="are very particular about this, and change their boots almost every month."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-306_l4" HPOS="656" VPOS="794" WIDTH="1763" HEIGHT="72" BASELINE="658 842 2419 835" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="658 842 658 855 1214 866 1217 866 1219 866 1247 853 1715 863 1717 863 1862 850 2096 850 2128 861 2130 861 2133 861 2416 850 2419 835 2416 807 2367 794 2364 794 2362 794 2304 805 2163 794 2161 794 2159 794 2156 794 2141 807 1858 807 1834 794 1832 794 1829 794 1758 807 1437 796 1435 796 1377 807 1321 796 1318 796 1240 809 1206 798 1204 798 1201 798 1028 809 656 801 658 842"/>
+                        </Shape>
+                        <String CONTENT="The boots are generally made of black skin, with a narrow strip of white"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-306_l5" HPOS="654" VPOS="857" WIDTH="1765" HEIGHT="60" BASELINE="654 900 2419 900" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="654 900 654 917 2419 915 2419 900 2419 870 2356 857 2354 857 2351 857 2306 868 2241 857 2239 857 2237 857 2206 868 2189 857 2187 857 2185 857 2182 857 2107 868 2050 857 2048 857 2046 857 2018 868 1881 857 1879 857 1877 857 1845 868 1801 857 1799 857 1797 857 1671 868 1455 857 1453 857 1450 857 1422 868 1399 857 1396 857 1394 857 1331 868 1273 857 1271 857 1269 857 1223 868 1130 857 1128 857 1126 857 1091 868 1054 857 1052 857 1050 857 983 868 654 863 654 900"/>
+                        </Shape>
+                        <String CONTENT="in the vamp. The legs of men’s boots are usually short. Around the edge"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-306_r3" HPOS="659" VPOS="3066" WIDTH="1778" HEIGHT="199" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="659 3066 2437 3066 2437 3265 659 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-306_l6" HPOS="651" VPOS="3069" WIDTH="1768" HEIGHT="65" BASELINE="654 3117 2419 3113" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2408 3080 2362 3072 2362 3072 2343 3072 2325 3080 1992 3072 1972 3072 1964 3069 1910 3069 1907 3069 1905 3069 1903 3069 1888 3082 1788 3082 1758 3069 1756 3069 1754 3069 1752 3069 1749 3069 1734 3080 1645 3069 1643 3069 1533 3082 1492 3072 1489 3072 1487 3072 972 3082 929 3072 926 3072 924 3072 922 3072 920 3072 907 3082 868 3072 866 3072 864 3072 799 3082 695 3072 693 3072 690 3072 651 3085 654 3117 654 3130 2414 3134 2419 3113 2416 3100 2408 3080"/>
+                        </Shape>
+                        <String CONTENT="of the sole is an upright strip of skin, to which is attached the piece covering"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-306_l7" HPOS="649" VPOS="3130" WIDTH="1770" HEIGHT="69" BASELINE="651 3176 2419 3171" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="651 3176 651 3186 1433 3199 1435 3199 1437 3199 1440 3199 1457 3189 1990 3197 1992 3197 1994 3197 1996 3197 2011 3186 2072 3197 2074 3197 2076 3197 2105 3186 2172 3197 2174 3197 2176 3197 2195 3186 2208 3197 2211 3197 2213 3197 2215 3199 2312 3199 2312 3197 2419 3184 2419 3171 2412 3137 1732 3141 1648 3130 1645 3130 1593 3141 1535 3130 1533 3130 1531 3130 1479 3143 1405 3132 1403 3132 1401 3132 1399 3132 1383 3145 1243 3145 1154 3132 1152 3132 1149 3132 1126 3143 1039 3132 1037 3132 1035 3132 1033 3132 1015 3143 898 3132 896 3132 835 3143 775 3132 773 3132 770 3132 768 3132 751 3143 677 3132 675 3132 673 3132 649 3143 651 3176"/>
+                        </Shape>
+                        <String CONTENT="the top of the foot (Fig. 171, b). This gives more room for the toes, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-306_l8" HPOS="651" VPOS="3191" WIDTH="1770" HEIGHT="60" BASELINE="654 3236 2421 3230" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="654 3236 654 3251 2421 3247 2421 3230 2414 3191 1684 3202 1652 3191 1650 3191 1648 3191 1645 3191 1617 3202 1565 3191 1563 3191 1561 3191 1531 3202 1489 3191 1487 3191 1485 3191 1483 3191 1461 3202 1360 3191 1357 3191 1355 3191 1353 3191 1338 3202 1282 3191 1279 3191 1277 3191 1275 3191 1260 3202 1171 3193 1169 3193 1104 3204 751 3193 749 3193 747 3193 714 3204 701 3193 699 3193 697 3193 695 3193 693 3193 651 3206 654 3236"/>
+                        </Shape>
+                        <String CONTENT="at the same time makes the boot fit the foot more snugly. On account of"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

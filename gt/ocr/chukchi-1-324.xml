@@ -1,0 +1,371 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-324.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-324.png; regions_from: zones/chukchi-1-324.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-324_r1" HPOS="585" VPOS="606" WIDTH="1778" HEIGHT="87" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="585 606 2363 606 2363 693 585 693"/>
+                    </Shape>
+                    <TextLine ID="mz_1-324_l1" HPOS="1167" VPOS="619" WIDTH="617" HEIGHT="56" BASELINE="1167 655 1784 651" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1771 619 1182 619 1169 640 1167 655 1167 675 1782 671 1784 651 1780 621 1771 619"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l2" HPOS="602" VPOS="627" WIDTH="91" HEIGHT="50" BASELINE="602 660 693 660" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="602 643 602 660 602 677 693 677 693 660 693 627 615 627 602 643"/>
+                        </Shape>
+                        <String CONTENT="252"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-324_r2" HPOS="585" VPOS="719" WIDTH="1778" HEIGHT="1204" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="585 719 2363 719 2363 1923 585 1923"/>
+                    </Shape>
+                    <TextLine ID="mz_1-324_l3" HPOS="591" VPOS="720" WIDTH="1778" HEIGHT="61" BASELINE="591 764 2369 764" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2367 733 2345 733 2323 731 2302 731 2280 729 2258 729 2245 729 2239 731 1715 720 1713 720 1533 731 1496 720 1494 720 1492 720 1429 731 1364 720 1362 720 1301 731 1245 720 1243 720 1240 720 1212 731 1156 720 1154 720 1152 720 1115 731 1084 720 1082 720 1080 720 1004 731 957 720 955 720 952 720 950 720 909 731 879 720 877 720 874 720 872 720 835 731 786 720 783 720 781 720 760 731 651 720 649 720 591 731 591 764 591 781 2369 781 2369 764 2369 733 2367 733"/>
+                        </Shape>
+                        <String CONTENT="a large hood trimmed with fur. The sleeves and breeches have no openings"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l4" HPOS="589" VPOS="790" WIDTH="1775" HEIGHT="58" BASELINE="591 820 2364 824" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="591 820 589 835 682 848 684 848 2362 840 2364 824 2362 794 591 790 591 820"/>
+                        </Shape>
+                        <String CONTENT="at all, so that the child’s feet and hands are kept warm inside. A square"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l5" HPOS="1747" VPOS="842" WIDTH="617" HEIGHT="58" BASELINE="1747 883 2364 883" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 883 1747 900 2364 900 2364 883 2364 855 2001 842 1998 842 1996 842 1968 853 1927 842 1925 842 1923 842 1920 842 1918 842 1918 844 1907 855 1821 855 1747 842 1747 883"/>
+                        </Shape>
+                        <String CONTENT="diaper (maˊkɪ) is sewed on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l6" HPOS="1745" VPOS="900" WIDTH="613" HEIGHT="69" BASELINE="1747 941 2358 946" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 941 1745 954 1879 967 1881 967 2033 959 2048 969 2050 969 2053 969 2055 969 2356 959 2358 946 2358 913 2338 902 2336 902 2334 902 2332 902 2141 913 2053 900 2050 900 2048 900 2046 900 2046 902 2035 911 2007 900 2005 900 2003 900 2001 900 1970 911 1936 900 1933 900 1931 900 1929 900 1903 911 1858 900 1855 900 1853 900 1747 909 1747 941"/>
+                        </Shape>
+                        <String CONTENT="at the back (Fig. 184, a)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l7" HPOS="1747" VPOS="969" WIDTH="617" HEIGHT="48" BASELINE="1749 1004 2364 1000" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1749 1004 1749 1017 2362 1015 2364 1000 2360 972 1747 969 1749 1004"/>
+                        </Shape>
+                        <String CONTENT="It can be tucked between"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l8" HPOS="1743" VPOS="1017" WIDTH="621" HEIGHT="69" BASELINE="1745 1065 2364 1058" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1745 1065 1745 1084 2345 1086 2347 1086 2349 1086 2351 1086 2364 1076 2364 1058 2360 1028 2169 1017 2167 1017 2165 1017 2163 1017 2148 1030 1992 1019 1990 1019 1988 1019 1985 1019 1972 1030 1949 1019 1946 1019 1944 1019 1743 1030 1745 1065"/>
+                        </Shape>
+                        <String CONTENT="the child’s legs, and its ends"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l9" HPOS="1745" VPOS="1082" WIDTH="617" HEIGHT="58" BASELINE="1747 1123 2362 1119" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 1123 1747 1140 2360 1136 2362 1119 2358 1091 1758 1082 1756 1082 1754 1082 1752 1082 1752 1084 1745 1088 1747 1123"/>
+                        </Shape>
+                        <String CONTENT="fastened in front by strings."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l10" HPOS="1752" VPOS="1138" WIDTH="612" HEIGHT="70" BASELINE="1752 1182 2364 1182" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1752 1182 1752 1195 1767 1205 1769 1205 1771 1205 1773 1205 1907 1195 1981 1208 1983 1208 1985 1208 2040 1195 2087 1208 2089 1208 2092 1208 2224 1205 2226 1205 2228 1205 2228 1203 2239 1195 2345 1208 2347 1208 2349 1208 2351 1208 2364 1195 2364 1182 2364 1151 2334 1138 2332 1138 2330 1138 2328 1138 2273 1153 2163 1153 2150 1140 2150 1138 2148 1138 2146 1138 2143 1138 2141 1138 2118 1149 2092 1138 2089 1138 2087 1138 2085 1138 2083 1138 2083 1140 2070 1151 2027 1138 2024 1138 2022 1138 2020 1138 1977 1151 1752 1143 1752 1182"/>
+                        </Shape>
+                        <String CONTENT="With small infants this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l11" HPOS="1747" VPOS="1201" WIDTH="615" HEIGHT="59" BASELINE="1747 1242 2362 1242" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 1242 1747 1260 2362 1260 2362 1242 2362 1212 2317 1201 2315 1201 2312 1201 2089 1212 2066 1201 2063 1201 2061 1201 2059 1201 2057 1201 2057 1203 2046 1212 1981 1201 1979 1201 1977 1201 1949 1212 1918 1201 1916 1201 1914 1201 1912 1201 1910 1201 1910 1203 1899 1214 1816 1214 1771 1201 1769 1201 1767 1201 1765 1201 1762 1201 1747 1210 1747 1242"/>
+                        </Shape>
+                        <String CONTENT="diaper is filled with a mix-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l12" HPOS="1747" VPOS="1273" WIDTH="617" HEIGHT="45" BASELINE="1747 1303 2364 1303" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 1303 1747 1318 2364 1318 2364 1303 2362 1273 1747 1273 1747 1303"/>
+                        </Shape>
+                        <String CONTENT="ture of reindeer-moss and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l13" HPOS="1743" VPOS="1327" WIDTH="619" HEIGHT="54" BASELINE="1745 1363 2362 1359" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1745 1363 1745 1381 2360 1376 2362 1359 2358 1329 1743 1327 1745 1363"/>
+                        </Shape>
+                        <String CONTENT="hair, which absorbs the ex-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l14" HPOS="1745" VPOS="1387" WIDTH="617" HEIGHT="54" BASELINE="1747 1418 2362 1424" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 1418 1745 1435 2358 1441 2362 1424 2360 1392 1747 1387 1747 1418"/>
+                        </Shape>
+                        <String CONTENT="creta and is changed several"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l15" HPOS="1747" VPOS="1441" WIDTH="615" HEIGHT="68" BASELINE="1747 1483 2362 1483" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 1483 1747 1493 1834 1506 1836 1506 1949 1496 1996 1509 1998 1509 2001 1509 2003 1509 2053 1496 2111 1506 2113 1506 2211 1496 2273 1509 2276 1509 2362 1493 2362 1483 2362 1454 2100 1441 2098 1441 2096 1441 2094 1441 2094 1444 2083 1454 2005 1454 1970 1441 1968 1441 1966 1441 1964 1441 1962 1441 1962 1444 1951 1454 1823 1454 1769 1441 1767 1441 1765 1441 1762 1441 1747 1450 1747 1483"/>
+                        </Shape>
+                        <String CONTENT="times a day. This diaper"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l16" HPOS="1747" VPOS="1511" WIDTH="615" HEIGHT="49" BASELINE="1747 1541 2362 1541" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 1541 1747 1560 2362 1560 2362 1541 2360 1511 1747 1511 1747 1541"/>
+                        </Shape>
+                        <String CONTENT="with moss has been adopted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l17" HPOS="1745" VPOS="1560" WIDTH="617" HEIGHT="57" BASELINE="1745 1602 2362 1602" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1745 1602 1745 1617 2362 1617 2362 1602 2362 1571 2325 1560 2323 1560 2321 1560 2319 1560 2273 1571 2191 1560 2189 1560 2087 1571 2053 1560 2050 1560 2048 1560 1966 1571 1940 1560 1938 1560 1936 1560 1933 1560 1903 1571 1866 1560 1864 1560 1862 1560 1808 1571 1745 1560 1745 1602"/>
+                        </Shape>
+                        <String CONTENT="by all the tribes of north-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l18" HPOS="1743" VPOS="1617" WIDTH="615" HEIGHT="71" BASELINE="1745 1658 2358 1662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1745 1658 1743 1671 1862 1686 1864 1686 1866 1686 1910 1675 2096 1688 2098 1688 2100 1688 2124 1677 2354 1682 2358 1662 2356 1632 2295 1619 2293 1619 2020 1628 2009 1619 2009 1617 2007 1617 2005 1617 2003 1617 1745 1625 1745 1658"/>
+                        </Shape>
+                        <String CONTENT="eastern Siberia, including"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l19" HPOS="1743" VPOS="1677" WIDTH="619" HEIGHT="63" BASELINE="1745 1723 2362 1719" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1745 1723 1745 1740 2360 1736 2362 1719 2358 1690 2280 1677 2278 1677 2276 1677 2273 1677 2273 1680 2263 1690 2085 1690 2061 1677 2059 1677 2057 1677 2055 1677 2053 1677 2053 1680 2050 1680 2042 1690 1765 1680 1762 1680 1760 1680 1758 1680 1743 1688 1745 1723"/>
+                        </Shape>
+                        <String CONTENT="the Russians, because of its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l20" HPOS="1745" VPOS="1753" WIDTH="617" HEIGHT="50" BASELINE="1745 1783 2362 1783" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1745 1783 1745 1803 2362 1796 2362 1783 2362 1753 1745 1753 1745 1783"/>
+                        </Shape>
+                        <String CONTENT="practical convenience. Its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l21" HPOS="1745" VPOS="1803" WIDTH="615" HEIGHT="58" BASELINE="1747 1838 2360 1844" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1747 1838 1745 1855 2356 1861 2360 1844 2358 1812 1747 1803 1747 1838"/>
+                        </Shape>
+                        <String CONTENT="Russian name, мака (maˊka),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l22" HPOS="1743" VPOS="1859" WIDTH="617" HEIGHT="59" BASELINE="1745 1898 2360 1903" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1745 1898 1743 1913 2356 1918 2360 1903 2358 1872 2276 1859 2273 1859 2271 1859 2243 1870 2232 1859 2230 1859 2228 1859 2226 1859 2224 1859 2200 1870 2174 1859 2172 1859 2169 1859 2167 1859 2122 1870 2076 1859 2074 1859 2072 1859 1745 1861 1745 1898"/>
+                        </Shape>
+                        <String CONTENT="is taken from the Chukchee."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-324_r3" HPOS="585" VPOS="1923" WIDTH="1778" HEIGHT="357" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="585 1923 2363 1923 2363 2280 585 2280"/>
+                    </Shape>
+                    <TextLine ID="mz_1-324_l23" HPOS="1845" VPOS="1924" WIDTH="519" HEIGHT="56" BASELINE="1847 1961 2364 1957" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1847 1961 1847 1980 2362 1976 2364 1957 2358 1924 1845 1926 1847 1961"/>
+                        </Shape>
+                        <String CONTENT="The combination-suit of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l24" HPOS="1739" VPOS="1978" WIDTH="623" HEIGHT="63" BASELINE="1741 2024 2362 2017" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1741 2024 1741 2041 2360 2035 2362 2017 2356 1978 1739 1989 1741 2024"/>
+                        </Shape>
+                        <String CONTENT="new-born infants is made of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l25" HPOS="1739" VPOS="2048" WIDTH="623" HEIGHT="56" BASELINE="1741 2078 2362 2082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1741 2078 1739 2095 1752 2104 1754 2104 1756 2104 1758 2104 2360 2095 2362 2082 2360 2052 1741 2048 1741 2078"/>
+                        </Shape>
+                        <String CONTENT="the softest fawn-skins, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l26" HPOS="584" VPOS="2097" WIDTH="1776" HEIGHT="68" BASELINE="586 2134 2360 2141" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="586 2134 584 2147 1295 2162 1297 2162 1700 2154 1767 2165 1769 2165 2358 2154 2360 2141 2360 2108 2312 2097 2310 2097 586 2097 586 2134"/>
+                        </Shape>
+                        <String CONTENT="hair side in. Since at this early age babies are kept out of the open air, the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l27" HPOS="586" VPOS="2160" WIDTH="1774" HEIGHT="56" BASELINE="589 2190 2360 2201" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="589 2190 586 2206 2356 2216 2360 2201 2358 2171 589 2160 589 2190"/>
+                        </Shape>
+                        <String CONTENT="doubling of the suit is unnecessary. A little later double suits made of thicker"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l28" HPOS="586" VPOS="2221" WIDTH="466" HEIGHT="50" BASELINE="589 2251 1052 2255" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="589 2251 586 2266 1048 2271 1052 2255 1050 2225 589 2221 589 2251"/>
+                        </Shape>
+                        <String CONTENT="fawn-skins are used."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-324_r4" HPOS="585" VPOS="2280" WIDTH="1778" HEIGHT="653" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="585 2280 2363 2280 2363 2933 585 2933"/>
+                    </Shape>
+                    <TextLine ID="mz_1-324_l29" HPOS="695" VPOS="2271" WIDTH="1667" HEIGHT="69" BASELINE="697 2312 2362 2323" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="697 2312 695 2327 712 2338 714 2338 716 2338 718 2338 1026 2329 1043 2340 1046 2340 1048 2340 1050 2340 2360 2336 2362 2323 2362 2290 697 2271 697 2312"/>
+                        </Shape>
+                        <String CONTENT="The garments of children are trimmed with all kinds of charms and pen-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l30" HPOS="584" VPOS="2340" WIDTH="1780" HEIGHT="65" BASELINE="586 2370 2364 2379" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="586 2370 584 2385 1169 2400 1171 2400 1409 2392 1515 2403 1518 2403 1806 2394 1918 2405 1920 2405 2362 2394 2364 2379 2364 2349 586 2340 586 2370"/>
+                        </Shape>
+                        <String CONTENT="dants made of beads and strips of leather. As the children grow, the com-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l31" HPOS="584" VPOS="2396" WIDTH="1776" HEIGHT="63" BASELINE="586 2429 2360 2442" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="586 2429 584 2442 623 2457 625 2457 628 2459 829 2459 829 2457 831 2457 861 2446 991 2459 994 2459 2358 2455 2360 2442 2358 2411 586 2396 586 2429"/>
+                        </Shape>
+                        <String CONTENT="bination-suit undergoes gradual changes. Sleeves are supplied with slits cut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l32" HPOS="582" VPOS="2450" WIDTH="1778" HEIGHT="74" BASELINE="584 2491 2360 2500" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2491 582 2504 1115 2520 1117 2520 1827 2513 1959 2524 1962 2524 2358 2513 2360 2500 2360 2470 2328 2457 2325 2457 2323 2457 2265 2468 2059 2457 2057 2457 2001 2468 1979 2457 1977 2457 1975 2457 1918 2468 1881 2455 1879 2455 1877 2455 1814 2468 1632 2468 1615 2455 1613 2455 1611 2455 1609 2455 1424 2463 1388 2452 1386 2452 1383 2452 1381 2452 1347 2463 1256 2452 1253 2452 1251 2452 1221 2463 1074 2452 1071 2452 868 2461 846 2450 844 2450 842 2450 584 2459 584 2491"/>
+                        </Shape>
+                        <String CONTENT="on the side some distance from the end (Plate XXVI, Fig. 1). Through this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l33" HPOS="582" VPOS="2511" WIDTH="1778" HEIGHT="65" BASELINE="584 2552 2360 2561" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2552 582 2567 595 2576 597 2576 599 2576 602 2576 2358 2572 2360 2561 2358 2530 2124 2517 2122 2517 2055 2528 2020 2517 2018 2517 2016 2517 1920 2528 1901 2515 1899 2515 1897 2515 1894 2515 1892 2515 1862 2526 1832 2515 1829 2515 1827 2515 1635 2526 1580 2515 1578 2515 1500 2526 1472 2513 1470 2513 1468 2513 1466 2513 1424 2524 1175 2513 1173 2513 1171 2513 1134 2524 1071 2513 1069 2513 916 2522 900 2511 898 2511 896 2511 894 2511 584 2520 584 2552"/>
+                        </Shape>
+                        <String CONTENT="slit the hand may be thrust out and easily drawn back again. When the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l34" HPOS="582" VPOS="2576" WIDTH="1776" HEIGHT="63" BASELINE="584 2608 2358 2619" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2608 582 2623 738 2636 740 2639 2356 2639 2358 2619 2356 2589 2029 2589 2005 2576 2003 2576 2001 2576 584 2576 584 2608"/>
+                        </Shape>
+                        <String CONTENT="child begins to walk, the breeches of the suit are also supplied with openings,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l35" HPOS="582" VPOS="2634" WIDTH="1774" HEIGHT="67" BASELINE="584 2671 2356 2678" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2671 582 2684 783 2697 786 2697 1717 2691 1762 2701 1765 2701 1767 2701 2354 2691 2356 2678 2354 2647 1786 2647 1769 2634 1767 2634 1765 2634 1762 2634 584 2639 584 2671"/>
+                        </Shape>
+                        <String CONTENT="and short-legged boots of fawn-skin are worn. The use of the breech-cloth"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l36" HPOS="582" VPOS="2695" WIDTH="1772" HEIGHT="58" BASELINE="584 2732 2354 2740" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2732 582 2745 2349 2753 2354 2740 2351 2708 584 2695 584 2732"/>
+                        </Shape>
+                        <String CONTENT="is continued after the moss matting becomes unnecessary. Small boys up to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l37" HPOS="580" VPOS="2760" WIDTH="1776" HEIGHT="54" BASELINE="582 2790 2356 2799" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 2790 580 2805 2351 2814 2356 2799 2354 2764 582 2760 582 2790"/>
+                        </Shape>
+                        <String CONTENT="about three years of age, walking around with the strings of this diaper untied"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l38" HPOS="582" VPOS="2818" WIDTH="1774" HEIGHT="65" BASELINE="584 2851 2356 2859" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2851 582 2864 736 2877 738 2877 1418 2870 1528 2881 1531 2881 1860 2872 1912 2883 1914 2883 2354 2872 2356 2859 2354 2827 584 2818 584 2851"/>
+                        </Shape>
+                        <String CONTENT="and dragging behind them in the snow, is a familiar sight in Chukchee or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l39" HPOS="582" VPOS="2877" WIDTH="351" HEIGHT="63" BASELINE="584 2907 933 2914" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2907 582 2927 593 2935 595 2935 597 2935 599 2935 779 2929 814 2940 816 2940 818 2940 931 2929 933 2914 931 2883 584 2877 584 2907"/>
+                        </Shape>
+                        <String CONTENT="Koryak camps."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-324_r5" HPOS="585" VPOS="2933" WIDTH="1778" HEIGHT="185" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="585 2933 2363 2933 2363 3118 585 3118"/>
+                    </Shape>
+                    <TextLine ID="mz_1-324_l40" HPOS="688" VPOS="2937" WIDTH="1668" HEIGHT="63" BASELINE="690 2968 2356 2979" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="690 2968 688 2983 805 2996 807 2996 1347 2989 1373 3000 1375 3000 1377 3000 2354 2994 2356 2979 2354 2948 690 2937 690 2968"/>
+                        </Shape>
+                        <String CONTENT="At the age of about six or eight years, both boys and girls receive gar-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l41" HPOS="580" VPOS="2998" WIDTH="1774" HEIGHT="65" BASELINE="582 3028 2354 3039" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 3028 580 3041 641 3054 643 3054 1288 3048 1418 3059 1420 3059 1923 3052 1998 3063 2001 3063 2351 3052 2354 3039 2351 3009 582 2998 582 3028"/>
+                        </Shape>
+                        <String CONTENT="ments of the usual cut; but the latter retain the diaper piece considerably"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l42" HPOS="582" VPOS="3050" WIDTH="1769" HEIGHT="65" BASELINE="584 3089 2351 3100" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 3089 582 3102 647 3115 649 3115 2349 3113 2351 3100 2349 3067 584 3050 584 3089"/>
+                        </Shape>
+                        <String CONTENT="longer, because the regular female garment is not adapted to the child’s needs."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-324_r6" HPOS="585" VPOS="3118" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="585 3118 2363 3118 2363 3248 585 3248"/>
+                    </Shape>
+                    <TextLine ID="mz_1-324_l43" HPOS="686" VPOS="3115" WIDTH="1665" HEIGHT="63" BASELINE="688 3150 2351 3158" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="688 3150 686 3163 879 3176 881 3176 1104 3167 2347 3178 2351 3158 2349 3126 688 3115 688 3150"/>
+                        </Shape>
+                        <String CONTENT="LOIN-BREECHES. — The Maritime people, both Chukchee and Eskimo,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-324_l44" HPOS="580" VPOS="3178" WIDTH="1774" HEIGHT="63" BASELINE="582 3208 2354 3219" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 3208 580 3223 1340 3241 1342 3241 2351 3234 2354 3219 2351 3189 582 3178 582 3208"/>
+                        </Shape>
+                        <String CONTENT="when in the inner sleeping-room, are accustomed to strip naked except for"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

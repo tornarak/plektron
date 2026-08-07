@@ -1,0 +1,156 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "231",
+      "note": "Folio in RunningTitleZone; box (hpos 2081, width 24) strangles it — gaps reports an exempted band (reason: covered, covered_by index 1) to the right at hpos 2111-2154. Full number read off the composite as 231.",
+      "class": "layout"
+    },
+    "2": {
+      "text": "pyrites and flint for the same purpose. Yukaghir tradition says that the “first",
+      "note": "Opening double quote is curly “ per §1/§5.6; mz had straight \".",
+      "class": "print"
+    },
+    "3": {
+      "text": "ancestor” used to get fire by",
+      "note": "Closing double quote curly ” per §1/§5.6; mz had straight \\\".",
+      "class": "print"
+    },
+    "4": {
+      "text": "striking together two stones."
+    },
+    "5": {
+      "text": "One old man related to me"
+    },
+    "6": {
+      "text": "that the spark was caught in"
+    },
+    "7": {
+      "text": "a tiny sulphur-dish in the same"
+    },
+    "8": {
+      "text": "way as is now done. The"
+    },
+    "9": {
+      "text": "sulphur at present is bought",
+      "note": "A small raised mark sits between \"sulphur\" and \"at\" at 2x zoom (crop 9.0) with nothing beneath it on either word - ink debris, not a letter or accent. Keyed as nothing per §2.14 (a mark of punctuation/blot is keyed as nothing).",
+      "class": "artifact"
+    },
+    "10": {
+      "text": "from Russians, but the natives"
+    },
+    "11": {
+      "text": "say that in former times sul-"
+    },
+    "12": {
+      "text": "phur was found in the Anui"
+    },
+    "13": {
+      "text": "Mountains and near Baron"
+    },
+    "14": {
+      "text": "Korff’s Bay. In a Chukchee",
+      "note": "Apostrophe in \"Korff’s\" is curly U+2019 at 2x (crop 14.0), matching the book's curly-quote convention; mz had straight U+0027.",
+      "class": "print"
+    },
+    "15": {
+      "text": "creation-myth the Raven first"
+    },
+    "16": {
+      "text": "drills fire out of his right foot,"
+    },
+    "17": {
+      "text": "by means of his forefinger,"
+    },
+    "18": {
+      "text": "then strikes it out of his two"
+    },
+    "19": {
+      "text": "thumb-nails.¹ At the present",
+      "note": "Footnote reference keyed as superscript ¹ U+00B9, tight against the period, per §2.10; mz had ASCII 1 with a space.",
+      "class": "print"
+    },
+    "20": {
+      "text": "time, however, the strike-a-"
+    },
+    "21": {
+      "text": "light, though quite prevalent"
+    },
+    "22": {
+      "text": "among the Chukchee, is made"
+    },
+    "23": {
+      "text": "of steel and flint, and bought"
+    },
+    "24": {
+      "text": "from Russians or Americans."
+    },
+    "25": {
+      "text": "Among the Maritime"
+    },
+    "26": {
+      "text": "Chukchee the fire-drill (uˊttɪ-",
+      "note": "Stress mark keyed U+02CA per default (spirant/pause never confirmed, keying_spec §4); ɪ read from dotless small serif letterform at 2x zoom (crop 26.0), not CATMuS's 'r' substitution.",
+      "class": "print",
+      "resolved": "uˊttɪ- = u + U+02CA STRESS, t, t, ɪ = U+026A LATIN SMALL CAPITAL I, hyphen U+002D"
+    },
+    "27": {
+      "text": "miˊlhɪmil, “wooden fire-tools”)",
+      "note": "Stress mark keyed U+02CA (default per §4); ɪ read at 2x zoom (crop 27.0); closing quote curly ” per §5.6, mz had straight escaped quote.",
+      "class": "print",
+      "resolved": "miˊlhɪmil = m, i, U+02CA STRESS, l, h, ɪ = U+026A LATIN SMALL CAPITAL I, m, i, l"
+    },
+    "28": {
+      "text": "has gone out of use. Among"
+    },
+    "29": {
+      "text": "the Reindeer Chukchee it is"
+    },
+    "30": {
+      "text": "still the only means of starting"
+    },
+    "31": {
+      "text": "the sacred fire used in many"
+    },
+    "32": {
+      "text": "ceremonials. It is also em-"
+    },
+    "33": {
+      "text": "ployed in remote places in"
+    },
+    "34": {
+      "text": "ordinary life, when the house-"
+    },
+    "35": {
+      "text": "hold finds itself without touch-"
+    },
+    "36": {
+      "text": "wood, which is necessary for"
+    },
+    "37": {
+      "text": "use with flint and steel."
+    },
+    "38": {
+      "text": "The fire-drill has the same"
+    },
+    "39": {
+      "text": "shape both among the Rein-"
+    },
+    "40": {
+      "text": "deer Chukchee and the Rein-"
+    },
+    "41": {
+      "text": "deer Koryak (Fig. 166). It consists of a board roughly shaped, usually in"
+    },
+    "42": {
+      "text": "¹ Bogoras, Chukchee Materials, p. 168.",
+      "note": "Footnote opener keyed as superscript ¹ U+00B9 followed by a space, per §2.10; mz had ASCII 1.",
+      "class": "print"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

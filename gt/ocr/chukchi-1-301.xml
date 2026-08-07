@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-301.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-301.png; regions_from: zones/chukchi-1-301.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-301_r1" HPOS="430" VPOS="615" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="430 615 2208 615 2208 710 430 710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-301_l1" HPOS="1009" VPOS="630" WIDTH="619" HEIGHT="56" BASELINE="1011 666 1628 662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1009 640 1011 666 1011 686 1626 681 1628 662 1622 630 1015 632 1009 640"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l2" HPOS="2113" VPOS="638" WIDTH="63" HEIGHT="63" BASELINE="2113 677 2176 677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2113 677 2113 690 2174 701 2176 677 2176 638 2113 638 2113 677"/>
+                        </Shape>
+                        <String CONTENT="235"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-301_r2" HPOS="430" VPOS="727" WIDTH="1778" HEIGHT="243" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="430 727 2208 727 2208 970 430 970"/>
+                    </Shape>
+                    <TextLine ID="mz_1-301_l3" HPOS="428" VPOS="729" WIDTH="1774" HEIGHT="72" BASELINE="430 779 2202 772" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="753 738 731 738 710 738 688 740 667 740 645 742 623 742 602 744 595 744 580 744 558 746 537 746 515 749 493 749 472 749 450 751 428 751 430 779 430 801 2200 788 2202 772 2198 742 2122 729 2120 729 2118 729 2098 740 2076 729 2074 729 2072 729 2070 729 2044 740 1959 729 1957 729 1955 729 1933 740 1912 729 1910 729 1907 729 1853 740 1587 731 1585 731 1583 731 1580 731 1565 742 1089 731 1087 731 1084 731 1056 742 766 736 753 738"/>
+                        </Shape>
+                        <String CONTENT="put on the heavy fur shirts of the Chukchee when they drive a reindeer-sledge."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l4" HPOS="430" VPOS="790" WIDTH="1772" HEIGHT="63" BASELINE="433 837 2202 831" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="433 837 433 853 2200 848 2202 831 2200 801 2180 790 2178 790 2176 790 2174 790 2172 790 2156 803 1966 803 1942 790 1940 790 1938 790 1936 790 1905 801 1860 790 1858 790 1855 790 1773 801 1726 790 1723 790 1721 790 1650 801 1613 790 1611 790 1609 790 1606 790 1578 805 1379 805 1355 792 1353 792 1351 792 1020 805 946 794 944 794 942 794 911 805 831 794 829 794 430 801 433 837"/>
+                        </Shape>
+                        <String CONTENT="Their own clothing does not sufficiently protect them from the heavy wind"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l5" HPOS="428" VPOS="850" WIDTH="1774" HEIGHT="63" BASELINE="430 898 2202 891" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="430 898 430 913 2200 907 2202 891 2198 861 1626 850 1624 850 1622 850 1598 863 428 863 430 898"/>
+                        </Shape>
+                        <String CONTENT="blowing against their faces, and from the lumps of snow thrown up by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l6" HPOS="428" VPOS="915" WIDTH="1051" HEIGHT="57" BASELINE="430 956 1479 952" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="430 956 430 972 1476 969 1479 952 1474 924 478 915 476 915 474 915 428 926 430 956"/>
+                        </Shape>
+                        <String CONTENT="reindeer-hoofs and the runners of the sledges."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-301_r3" HPOS="430" VPOS="970" WIDTH="1778" HEIGHT="436" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="430 970 2208 970 2208 1406 430 1406"/>
+                    </Shape>
+                    <TextLine ID="mz_1-301_l7" HPOS="534" VPOS="969" WIDTH="1670" HEIGHT="63" BASELINE="537 1017 2204 1011" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="537 1017 537 1032 2202 1026 2204 1011 2200 982 2018 969 2016 969 2014 969 2011 969 1996 982 1630 982 1576 972 1574 972 1572 972 1570 972 1554 985 1329 985 1223 972 1221 972 1165 982 1091 972 1089 972 1087 972 1084 972 1067 985 534 985 537 1017"/>
+                        </Shape>
+                        <String CONTENT="Each part of the Chukchee winter garments for men or women is made"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l8" HPOS="426" VPOS="1032" WIDTH="1774" HEIGHT="63" BASELINE="428 1080 2200 1073" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="428 1080 428 1095 2198 1095 2200 1073 2195 1043 1745 1032 1743 1032 1533 1045 426 1045 428 1080"/>
+                        </Shape>
+                        <String CONTENT="in two pieces, an inner and an outer one, the former with the hair side in,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l9" HPOS="426" VPOS="1091" WIDTH="1776" HEIGHT="62" BASELINE="428 1136 2202 1132" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="428 1136 428 1151 2198 1153 2202 1132 2198 1101 1355 1091 1353 1091 1351 1091 1310 1101 504 1093 502 1093 426 1104 428 1136"/>
+                        </Shape>
+                        <String CONTENT="and the latter with the hair side out. These pieces are worn without being"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l10" HPOS="428" VPOS="1164" WIDTH="1776" HEIGHT="48" BASELINE="428 1195 2204 1195" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="428 1169 428 1195 428 1212 2204 1212 2204 1195 2204 1164 430 1164 428 1169"/>
+                        </Shape>
+                        <String CONTENT="sewed together, in order that they may be separated for drying, but they fit"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l11" HPOS="426" VPOS="1212" WIDTH="1778" HEIGHT="61" BASELINE="428 1257 2204 1251" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="428 1257 428 1273 2202 1266 2204 1251 2200 1223 1855 1212 1853 1212 426 1223 428 1257"/>
+                        </Shape>
+                        <String CONTENT="together so exactly as to form practically a single garment. The inner part"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l12" HPOS="430" VPOS="1268" WIDTH="1776" HEIGHT="65" BASELINE="433 1318 2206 1309" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="433 1318 433 1333 2204 1324 2206 1309 2202 1281 2150 1268 2148 1268 2146 1268 2122 1279 1957 1268 1955 1268 1851 1279 1797 1268 1795 1268 1793 1268 1758 1281 1723 1270 1721 1270 1719 1270 1717 1270 1689 1281 1611 1270 1609 1270 1492 1281 1420 1270 1418 1270 1299 1283 1262 1273 1260 1273 1258 1273 430 1281 433 1318"/>
+                        </Shape>
+                        <String CONTENT="is usually made of very soft-haired material, so that it will not irritate the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l13" HPOS="428" VPOS="1335" WIDTH="1534" HEIGHT="59" BASELINE="430 1376 1962 1370" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="430 1376 430 1394 1959 1387 1962 1370 1957 1342 459 1335 456 1335 454 1335 428 1344 430 1376"/>
+                        </Shape>
+                        <String CONTENT="skin, and can be worn without underclothing even by a European."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-301_r4" HPOS="430" VPOS="1406" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="430 1406 2208 1406 2208 1593 430 1593"/>
+                    </Shape>
+                    <TextLine ID="mz_1-301_l14" HPOS="539" VPOS="1389" WIDTH="1667" HEIGHT="74" BASELINE="541 1437 2206 1431" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="541 1437 541 1463 638 1452 957 1461 959 1461 2204 1446 2206 1431 2204 1402 2154 1389 2152 1389 2150 1389 2148 1389 2120 1400 1936 1389 1933 1389 1931 1389 1929 1389 1912 1402 1758 1402 1704 1389 1702 1389 1700 1389 1697 1389 1680 1400 1580 1392 1578 1392 1576 1392 1574 1392 1561 1402 1500 1392 1498 1392 1496 1392 1466 1402 1340 1392 1338 1392 1336 1392 1305 1402 1232 1392 1230 1392 1227 1392 1199 1402 1136 1392 1134 1392 1022 1405 996 1394 994 1394 991 1394 989 1394 946 1405 842 1394 840 1394 838 1394 801 1405 779 1394 777 1394 775 1394 539 1400 541 1437"/>
+                        </Shape>
+                        <String CONTENT="The chief piece of clothing is a heavy fur shirt almost reaching to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l15" HPOS="426" VPOS="1459" WIDTH="1778" HEIGHT="62" BASELINE="428 1496 2204 1489" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2191 1459 426 1463 428 1496 428 1521 2204 1504 2204 1489 2202 1483 2191 1459"/>
+                        </Shape>
+                        <String CONTENT="knees, with no hood attached, and with a rather large opening in the collar"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l16" HPOS="428" VPOS="1509" WIDTH="1774" HEIGHT="64" BASELINE="430 1558 2202 1552" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="430 1558 430 1573 2202 1573 2202 1552 2198 1521 1840 1509 1838 1509 1836 1509 1806 1519 1775 1509 1773 1509 1771 1509 1702 1519 1641 1509 1639 1509 1637 1509 1606 1521 1570 1511 1567 1511 1565 1511 1502 1521 1286 1511 1284 1511 1156 1521 1076 1511 1074 1511 1071 1511 1069 1511 1054 1521 751 1513 749 1513 747 1513 744 1513 729 1526 586 1526 448 1513 446 1513 443 1513 441 1513 428 1519 430 1558"/>
+                        </Shape>
+                        <String CONTENT="(Plates XXIII, Fig. 1; XXIV, Fig. 2; also Fig. 168). Koryak shirts are longer,"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-301_r5" HPOS="430" VPOS="2520" WIDTH="1778" HEIGHT="476" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="430 2520 2208 2520 2208 2996 430 2996"/>
+                    </Shape>
+                    <TextLine ID="mz_1-301_l17" HPOS="430" VPOS="2526" WIDTH="1772" HEIGHT="56" BASELINE="433 2559 2202 2565" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2191 2530 433 2526 433 2559 430 2574 2198 2582 2202 2565 2200 2550 2191 2530"/>
+                        </Shape>
+                        <String CONTENT="and often have a hood; but among the Chukchee only the shroud has a hood,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l18" HPOS="433" VPOS="2578" WIDTH="1773" HEIGHT="65" BASELINE="435 2619 2206 2623" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="435 2619 433 2632 452 2643 454 2643 456 2643 2204 2634 2206 2623 2204 2593 2130 2580 2128 2580 1979 2591 1962 2580 1959 2580 1957 2580 1793 2580 1790 2580 1728 2591 1665 2580 1663 2580 1600 2591 1561 2580 1559 2580 1557 2580 1554 2580 1522 2591 1448 2580 1446 2580 1444 2580 1409 2591 1375 2580 1373 2580 1370 2580 1368 2580 1325 2591 1288 2578 1286 2578 1284 2578 1282 2578 1253 2589 1236 2578 1234 2578 1232 2578 1230 2578 1227 2578 1182 2589 1087 2578 1084 2578 1082 2578 1052 2589 996 2578 994 2578 991 2578 955 2591 736 2591 695 2578 693 2578 690 2578 688 2578 662 2589 617 2578 615 2578 612 2578 610 2578 582 2589 552 2578 550 2578 547 2578 435 2587 435 2619"/>
+                        </Shape>
+                        <String CONTENT="which is drawn over the face of the dead body. The shroud is therefore"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l19" HPOS="435" VPOS="2636" WIDTH="1771" HEIGHT="68" BASELINE="437 2680 2206 2684" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 2680 435 2695 448 2704 450 2704 452 2704 454 2704 2204 2695 2206 2684 2206 2652 2172 2639 2169 2639 2167 2639 2165 2639 2141 2649 2100 2639 2098 2639 2096 2639 1970 2649 1942 2639 1940 2639 1938 2639 1936 2639 1933 2639 1923 2649 1910 2639 1907 2639 1905 2639 1812 2639 1810 2639 1754 2649 1732 2639 1730 2639 1728 2639 1726 2639 1704 2649 1680 2639 1678 2639 1676 2639 1591 2649 1550 2639 1548 2639 1546 2639 1450 2649 1388 2639 1386 2639 1383 2639 1351 2649 1323 2636 1321 2636 1318 2636 1316 2636 1279 2649 1117 2649 1100 2636 1097 2636 1095 2636 1093 2636 1020 2647 957 2636 955 2636 952 2636 926 2647 881 2636 879 2636 877 2636 820 2647 712 2636 710 2636 708 2636 684 2647 610 2636 608 2636 606 2636 586 2647 565 2636 563 2636 560 2636 437 2645 437 2680"/>
+                        </Shape>
+                        <String CONTENT="called by them “the hooded garment.” The collar of the Chukchee shirt is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l20" HPOS="435" VPOS="2701" WIDTH="1767" HEIGHT="63" BASELINE="437 2738 2202 2743" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 2738 435 2753 2198 2764 2202 2743 2200 2712 437 2701 437 2738"/>
+                        </Shape>
+                        <String CONTENT="bound with a narrow piece of skin folded over so that a stout sinew string"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l21" HPOS="435" VPOS="2769" WIDTH="1769" HEIGHT="56" BASELINE="437 2799 2204 2803" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 2799 435 2812 491 2825 493 2825 2202 2816 2204 2803 2202 2773 437 2769 437 2799"/>
+                        </Shape>
+                        <String CONTENT="may be pulled through to tighten the collar as much as desired. The ends"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l22" HPOS="435" VPOS="2827" WIDTH="1769" HEIGHT="56" BASELINE="437 2857 2204 2864" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 2857 435 2875 448 2883 450 2883 452 2883 454 2883 2202 2881 2204 2864 2202 2833 437 2827 437 2857"/>
+                        </Shape>
+                        <String CONTENT="of the string come out on the breast. The Chukchee assert that the string"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l23" HPOS="437" VPOS="2879" WIDTH="1769" HEIGHT="58" BASELINE="439 2916 2206 2922" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="439 2916 437 2933 2202 2937 2206 2922 2204 2892 439 2879 439 2916"/>
+                        </Shape>
+                        <String CONTENT="is added to strengthen the neck of the shirt in case of a scuffle; otherwise"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l24" HPOS="435" VPOS="2944" WIDTH="1132" HEIGHT="58" BASELINE="437 2976 1567 2985" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 2976 435 2994 441 3000 441 3002 443 3002 446 3002 448 3002 1565 3000 1567 2985 1565 2953 437 2944 437 2976"/>
+                        </Shape>
+                        <String CONTENT="it would give way when pulled hard in wrestling."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-301_r6" HPOS="430" VPOS="2996" WIDTH="1778" HEIGHT="260" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="430 2996 2208 2996 2208 3256 430 3256"/>
+                    </Shape>
+                    <TextLine ID="mz_1-301_l25" HPOS="543" VPOS="3000" WIDTH="1663" HEIGHT="59" BASELINE="545 3037 2206 3043" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="545 3037 543 3052 2202 3059 2206 3043 2204 3011 545 3000 545 3037"/>
+                        </Shape>
+                        <String CONTENT="The shirts of the Maritime people, (Plate XXIV, Fig. 1) are of the same cut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l26" HPOS="437" VPOS="3072" WIDTH="1767" HEIGHT="45" BASELINE="437 3100 2204 3100" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 3100 437 3117 2202 3117 2204 3100 2202 3072 437 3072 437 3100"/>
+                        </Shape>
+                        <String CONTENT="as those of the reindeer-breeders. They often wear cast-off clothing of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l27" HPOS="435" VPOS="3119" WIDTH="1767" HEIGHT="59" BASELINE="437 3156 2202 3163" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 3156 435 3171 2198 3178 2202 3163 2200 3132 437 3119 437 3156"/>
+                        </Shape>
+                        <String CONTENT="Reindeer people, because the herdsman wears his coat only one winter, often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-301_l28" HPOS="435" VPOS="3186" WIDTH="1769" HEIGHT="52" BASELINE="437 3217 2204 3221" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="437 3217 435 3234 2200 3238 2204 3221 2202 3191 437 3186 437 3217"/>
+                        </Shape>
+                        <String CONTENT="only half of this time. After that, the women of his family make him a new"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

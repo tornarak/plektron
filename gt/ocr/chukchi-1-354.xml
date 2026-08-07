@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-354.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-354.png; regions_from: zones/chukchi-1-354.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-354_r1" HPOS="661" VPOS="615" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="661 615 2439 615 2439 710 661 710"/>
+                    </Shape>
+                    <TextLine ID="mz_1-354_l1" HPOS="1238" VPOS="634" WIDTH="622" HEIGHT="54" BASELINE="1240 666 1860 673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1849 636 1260 634 1243 655 1240 666 1238 681 1855 688 1860 673 1858 651 1849 636"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l2" HPOS="723" VPOS="640" WIDTH="24" HEIGHT="57" BASELINE="723 677 747 677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="723 677 723 692 744 697 747 677 747 640 723 640 723 677"/>
+                        </Shape>
+                        <String CONTENT="272"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-354_r2" HPOS="661" VPOS="736" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="661 736 2439 736 2439 866 661 866"/>
+                    </Shape>
+                    <TextLine ID="mz_1-354_l3" HPOS="770" VPOS="733" WIDTH="1659" HEIGHT="72" BASELINE="773 781 2429 777" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2416 770 2401 744 2200 733 2198 733 2111 744 2081 733 2079 733 2076 733 2074 733 2033 744 2001 733 1998 733 1996 733 1994 733 1992 733 1977 746 1888 746 1829 733 1827 733 1777 744 1749 733 1747 733 1745 733 1684 744 1650 733 1648 733 1645 733 1643 733 1598 746 1570 736 1567 736 1565 736 1563 736 1537 746 1524 736 1522 736 1520 736 1518 736 1368 746 1275 736 1273 736 1197 746 1165 736 1162 736 1160 736 1158 736 1132 746 1037 736 1035 736 1033 736 1002 749 825 749 794 736 792 736 790 736 788 736 786 736 770 744 773 781 773 792 885 805 887 805 978 794 1706 803 1708 803 1771 792 2020 803 2022 805 2122 805 2122 803 2124 803 2126 803 2139 792 2165 803 2167 803 2169 803 2273 792 2358 803 2360 803 2362 803 2364 803 2377 792 2406 803 2408 803 2410 803 2412 803 2414 803 2429 790 2429 777 2425 746 2416 744 2416 770"/>
+                        </Shape>
+                        <String CONTENT="A game which is called oˊkkal is played with a slender stick and a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l4" HPOS="660" VPOS="796" WIDTH="1767" HEIGHT="72" BASELINE="662 840 2427 835" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="662 840 662 857 1273 857 1386 868 1388 868 1390 868 1416 855 1676 855 2410 866 2412 866 2414 866 2416 866 2427 855 2427 835 2423 807 1585 796 1583 796 1515 807 755 798 753 798 660 809 662 840"/>
+                        </Shape>
+                        <String CONTENT="number of small wooden hoops of various sizes (Fig. 197, a). The hoops"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-354_r3" HPOS="661" VPOS="2823" WIDTH="1778" HEIGHT="442" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="661 2823 2439 2823 2439 3265 661 3265"/>
+                    </Shape>
+                    <TextLine ID="mz_1-354_l5" HPOS="660" VPOS="2825" WIDTH="1774" HEIGHT="60" BASELINE="662 2870 2434 2864" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2421 2831 1275 2825 1273 2825 1271 2825 1247 2836 783 2827 781 2827 660 2838 662 2870 662 2885 2432 2879 2434 2864 2429 2838 2421 2831"/>
+                        </Shape>
+                        <String CONTENT="are thrown upwards in a bunch, and one of the party tries to catch on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l6" HPOS="660" VPOS="2883" WIDTH="1769" HEIGHT="63" BASELINE="662 2929 2429 2920" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="662 2929 662 2946 2427 2937 2429 2920 2425 2892 1546 2883 1544 2883 1481 2894 1357 2885 1355 2885 1087 2896 703 2888 701 2888 699 2888 660 2898 662 2929"/>
+                        </Shape>
+                        <String CONTENT="stick as many hoops as possible. The hoops caught are taken off in pairs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l7" HPOS="662" VPOS="2944" WIDTH="1765" HEIGHT="61" BASELINE="664 2987 2427 2981" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="664 2987 664 3005 2425 2998 2427 2981 2423 2953 1301 2944 1299 2944 1238 2955 731 2946 729 2946 662 2957 664 2987"/>
+                        </Shape>
+                        <String CONTENT="and returned to the general bunch. If there is an odd hoop left over, it is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l8" HPOS="660" VPOS="3000" WIDTH="1769" HEIGHT="63" BASELINE="662 3050 2429 3041" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="662 3050 662 3063 2427 3054 2429 3041 2425 3013 2367 3000 2364 3000 2362 3000 2360 3000 2345 3013 2087 3013 2059 3000 2057 3000 2055 3000 1981 3013 1643 3002 1641 3002 1639 3002 1596 3013 1567 3002 1565 3002 1563 3002 1481 3015 1292 3005 1290 3005 1288 3005 1286 3005 1269 3015 1238 3005 1236 3005 1234 3005 1232 3005 1230 3005 1214 3015 1175 3005 1173 3005 1171 3005 1169 3005 1141 3015 1106 3005 1104 3005 1102 3005 1100 3005 1061 3015 957 3007 955 3007 952 3007 950 3007 935 3018 712 3007 710 3007 708 3007 660 3020 662 3050"/>
+                        </Shape>
+                        <String CONTENT="said to be “killed.” It is left out of the lot thrown up, and counts one for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l9" HPOS="660" VPOS="3059" WIDTH="1765" HEIGHT="75" BASELINE="662 3111 2425 3102" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="662 3111 662 3124 868 3134 870 3134 872 3134 874 3134 887 3124 909 3132 911 3132 913 3132 1104 3121 1414 3132 1416 3132 1561 3119 1576 3130 1578 3130 1580 3130 1583 3130 1704 3119 1769 3130 1771 3130 1773 3130 1814 3119 1849 3130 1851 3130 1853 3130 1907 3119 1923 3130 1925 3130 1927 3130 1929 3130 2035 3117 2146 3128 2148 3128 2150 3128 2189 3117 2213 3128 2215 3128 2217 3128 2423 3119 2425 3102 2416 3059 2369 3069 2284 3059 2282 3059 2280 3059 2256 3072 2029 3072 1985 3059 1983 3059 1981 3059 1979 3059 1927 3072 1617 3061 1615 3061 1539 3074 1522 3063 1520 3063 1518 3063 1515 3063 1513 3063 1468 3074 1279 3063 1277 3063 1212 3074 1123 3063 1121 3063 1119 3063 1117 3063 1095 3076 822 3065 820 3065 818 3065 816 3065 803 3076 766 3065 764 3065 762 3065 760 3065 738 3076 686 3065 684 3065 682 3065 680 3065 660 3076 662 3111"/>
+                        </Shape>
+                        <String CONTENT="the lucky catcher. This odd hoop also gives him the right to try again. If"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l10" HPOS="660" VPOS="3126" WIDTH="1772" HEIGHT="63" BASELINE="662 3171 2432 3160" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="660 3150 662 3171 662 3189 2408 3189 2408 3186 2410 3186 2432 3173 2432 3160 2425 3126 989 3139 753 3130 751 3130 662 3141 660 3150"/>
+                        </Shape>
+                        <String CONTENT="no hoop, or an even number of hoops, is caught, the turn is forfeited, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-354_l11" HPOS="660" VPOS="3189" WIDTH="1769" HEIGHT="69" BASELINE="662 3230 2429 3219" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="662 3230 662 3247 1000 3258 1002 3258 1004 3258 1007 3258 1022 3245 1362 3256 1364 3256 1366 3256 1368 3256 1390 3243 1444 3253 1446 3253 1554 3243 2427 3243 2429 3219 2425 3191 682 3189 680 3189 677 3189 675 3189 660 3195 662 3230"/>
+                        </Shape>
+                        <String CONTENT="the next party begins to play. After all the hoops have been “killed,” the"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

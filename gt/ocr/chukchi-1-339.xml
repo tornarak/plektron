@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-339.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-339.png; regions_from: zones/chukchi-1-339.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-339_r1" HPOS="390" VPOS="580" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="390 580 2168 580 2168 675 390 675"/>
+                    </Shape>
+                    <TextLine ID="mz_1-339_l1" HPOS="994" VPOS="597" WIDTH="623" HEIGHT="54" BASELINE="996 632 1617 636" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1609 599 1015 597 996 599 996 632 994 647 1613 651 1617 636 1615 604 1609 599"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l2" HPOS="2089" VPOS="601" WIDTH="102" HEIGHT="52" BASELINE="2092 640 2191 636" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2176 617 2154 610 2133 606 2118 601 2102 606 2089 619 2092 640 2092 653 2189 651 2191 636 2187 617 2176 617"/>
+                        </Shape>
+                        <String CONTENT="261"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-339_r2" HPOS="390" VPOS="701" WIDTH="1778" HEIGHT="424" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="390 701 2168 701 2168 1125 390 1125"/>
+                    </Shape>
+                    <TextLine ID="mz_1-339_l3" HPOS="413" VPOS="699" WIDTH="1776" HEIGHT="63" BASELINE="415 742 2189 746" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="781 701 766 701 749 710 725 703 716 703 695 703 690 703 677 710 656 705 651 705 630 707 608 707 599 707 597 710 595 707 586 710 565 710 543 712 521 712 500 712 478 714 456 714 435 716 415 716 415 742 413 755 2185 762 2189 746 2187 714 2070 701 2068 701 1994 714 1786 714 1747 701 1745 701 1743 701 1741 701 1717 714 1591 714 1511 701 1509 701 1507 701 1505 701 1487 712 1422 701 1420 701 1418 701 1394 712 1342 701 1340 701 1338 701 1308 712 1171 699 1169 699 1167 699 1132 710 1074 699 1071 699 1069 699 1024 710 987 699 985 699 983 699 981 699 955 710 931 699 929 699 926 699 827 710 786 699 781 701"/>
+                        </Shape>
+                        <String CONTENT="around the back of his head. Among the Maritime people, owners of boats,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l4" HPOS="413" VPOS="764" WIDTH="1778" HEIGHT="56" BASELINE="415 805 2191 801" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 805 415 820 2189 816 2191 801 2187 772 454 764 452 764 450 764 413 775 415 805"/>
+                        </Shape>
+                        <String CONTENT="who usually sit at the stern steering, put on eye-shades during their hunting-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l5" HPOS="415" VPOS="822" WIDTH="1776" HEIGHT="59" BASELINE="415 863 2191 863" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 863 415 881 2191 881 2191 863 2191 833 2165 822 2163 822 2161 822 2057 833 1994 822 1992 822 1892 833 1531 822 1528 822 1526 822 1524 822 1509 835 1193 835 1130 822 1128 822 1126 822 1102 835 892 835 840 822 838 822 835 822 814 833 731 822 729 822 727 822 725 822 710 835 615 835 537 822 534 822 415 833 415 863"/>
+                        </Shape>
+                        <String CONTENT="expeditions. The harpooneer also wears an eye-shade. The eye-shades which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l6" HPOS="420" VPOS="878" WIDTH="1773" HEIGHT="61" BASELINE="422 926 2193 922" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="422 926 422 939 2191 935 2193 922 2189 891 2092 891 2076 878 2074 878 2072 878 2070 878 2068 878 2066 878 2046 891 1691 891 1658 878 1656 878 1654 878 1563 889 1533 878 1531 878 1528 878 1459 889 1234 881 1232 881 1230 881 1227 881 1214 891 1188 881 1186 881 1074 881 1071 881 1069 881 1067 881 1052 891 985 881 983 881 981 881 955 891 420 887 422 926"/>
+                        </Shape>
+                        <String CONTENT="I collected belong to the Asiatic Eskimo. All of them represent masks at"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l7" HPOS="415" VPOS="939" WIDTH="1778" HEIGHT="61" BASELINE="417 985 2193 980" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 985 417 1000 2191 995 2193 980 2189 952 1522 939 1520 939 1518 939 1492 950 1435 939 1433 939 1325 950 1310 939 1308 939 1305 939 1303 939 1232 952 1188 941 1186 941 1184 941 1182 941 1149 952 1117 941 1115 941 1113 941 1110 941 1080 952 816 941 814 941 744 952 662 941 660 941 658 941 656 941 641 954 493 954 437 941 435 941 433 941 430 941 415 950 417 985"/>
+                        </Shape>
+                        <String CONTENT="the same time. One has on it the image of a killer-whale and two walruses"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l8" HPOS="413" VPOS="1000" WIDTH="1778" HEIGHT="71" BASELINE="415 1050 2191 1043" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1050 415 1060 942 1071 944 1071 1054 1058 2189 1058 2191 1043 2187 1013 1812 1000 1810 1000 1808 1000 1777 1011 1734 1000 1732 1000 1730 1000 1481 1013 1084 1002 1082 1002 1080 1002 1050 1013 1009 1002 1007 1002 1004 1002 1002 1002 970 1015 426 1004 424 1004 422 1004 420 1004 420 1006 413 1011 415 1050"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 192, c); another, the face of a walrus without tusks (Fig. 192, d); a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l9" HPOS="417" VPOS="1073" WIDTH="1399" HEIGHT="46" BASELINE="417 1104 1816 1104" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1104 417 1119 1816 1119 1816 1104 1816 1073 417 1073 417 1104"/>
+                        </Shape>
+                        <String CONTENT="third has two eyes, which are said to represent whale’s eyes."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-339_r3" HPOS="390" VPOS="1125" WIDTH="1778" HEIGHT="728" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="390 1125 2168 1125 2168 1853 390 1853"/>
+                    </Shape>
+                    <TextLine ID="mz_1-339_l10" HPOS="521" VPOS="1119" WIDTH="1672" HEIGHT="60" BASELINE="524 1164 2193 1158" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="524 1164 524 1179 2191 1173 2193 1158 2189 1130 1743 1119 1741 1119 1619 1130 1102 1121 1100 1121 521 1132 524 1164"/>
+                        </Shape>
+                        <String CONTENT="SNOWSHOES, STAFFS, AND ICE-CREEPERS. — The snowshoes used in north-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l11" HPOS="415" VPOS="1182" WIDTH="1778" HEIGHT="56" BASELINE="415 1223 2193 1223" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1223 415 1238 2193 1238 2193 1223 2193 1192 2148 1182 2146 1182 2143 1182 2044 1192 1743 1182 1741 1182 1739 1182 1697 1192 1639 1182 1637 1182 1526 1192 1457 1182 1455 1182 1301 1192 1260 1182 1258 1182 1256 1182 1253 1182 1214 1192 1104 1182 1102 1182 918 1192 881 1182 879 1182 877 1182 710 1192 625 1182 623 1182 621 1182 619 1182 602 1195 415 1195 415 1223"/>
+                        </Shape>
+                        <String CONTENT="eastern Asia are of two varieties, in accordance with the character of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l12" HPOS="417" VPOS="1238" WIDTH="1772" HEIGHT="71" BASELINE="420 1288 2189 1281" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 1288 420 1309 584 1299 998 1307 1000 1307 1002 1307 1041 1296 2185 1303 2189 1281 2185 1251 2122 1238 2120 1238 2118 1238 2089 1249 2029 1238 2027 1238 1936 1249 1907 1238 1905 1238 1903 1238 1901 1238 1858 1249 1816 1238 1814 1238 1812 1238 1810 1238 1771 1249 1682 1238 1680 1238 1678 1238 1637 1249 1606 1238 1604 1238 1602 1238 1600 1238 1570 1251 1368 1240 1366 1240 1364 1240 1318 1251 1286 1240 1284 1240 1282 1240 1180 1251 1128 1240 1126 1240 1123 1240 1121 1240 1104 1251 731 1242 729 1242 599 1253 560 1242 558 1242 556 1242 417 1255 420 1288"/>
+                        </Shape>
+                        <String CONTENT="ground on which they are to be used. Those used within the forest-border,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l13" HPOS="415" VPOS="1299" WIDTH="1776" HEIGHT="60" BASELINE="417 1344 2191 1337" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1344 417 1359 2189 1355 2191 1337 2187 1309 1606 1299 1604 1299 1544 1309 1024 1301 1022 1301 1020 1301 985 1311 452 1303 450 1303 448 1303 415 1314 417 1344"/>
+                        </Shape>
+                        <String CONTENT="where the snow is soft and abundant, are made of long, thin boards. Those"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l14" HPOS="415" VPOS="1361" WIDTH="1776" HEIGHT="59" BASELINE="415 1402 2191 1402" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1402 415 1420 2191 1420 2191 1402 2191 1374 1821 1361 1819 1361 1816 1361 1780 1372 1719 1361 1717 1361 1715 1361 1680 1372 1648 1361 1645 1361 1643 1361 1303 1372 1271 1361 1269 1361 1266 1361 1264 1361 1225 1374 885 1374 747 1361 744 1361 742 1361 708 1372 662 1361 660 1361 658 1361 656 1361 610 1372 556 1361 554 1361 552 1361 550 1361 537 1372 508 1361 506 1361 504 1361 415 1372 415 1402"/>
+                        </Shape>
+                        <String CONTENT="used by the Yakut are narrow, and are not covered with skins. They are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l15" HPOS="415" VPOS="1420" WIDTH="1774" HEIGHT="65" BASELINE="417 1463 2189 1459" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1463 417 1478 2185 1485 2189 1459 2185 1431 1303 1420 1301 1420 1299 1420 1260 1431 437 1422 435 1422 433 1422 430 1422 415 1428 417 1463"/>
+                        </Shape>
+                        <String CONTENT="therefore called “bare snowshoes.” Those used by the Lamut are broader,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l16" HPOS="413" VPOS="1478" WIDTH="1780" HEIGHT="61" BASELINE="415 1524 2193 1519" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1524 415 1539 2191 1537 2193 1519 2189 1489 1303 1478 1301 1478 1299 1478 1273 1489 487 1480 485 1480 413 1491 415 1524"/>
+                        </Shape>
+                        <String CONTENT="and covered underneath with slick reindeer-leg skins, the hair turning backward"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l17" HPOS="415" VPOS="1537" WIDTH="1776" HEIGHT="65" BASELINE="417 1584 2191 1578" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1584 417 1602 2189 1595 2191 1578 2187 1550 2085 1537 2083 1537 1990 1547 1966 1537 1964 1537 1962 1537 1907 1547 1877 1537 1875 1537 1873 1537 1871 1537 1834 1547 1806 1537 1803 1537 1801 1537 1695 1547 1626 1537 1624 1537 1622 1537 1585 1550 1256 1539 1253 1539 1141 1550 1110 1539 1108 1539 1106 1539 1104 1539 1065 1550 556 1541 554 1541 415 1554 417 1584"/>
+                        </Shape>
+                        <String CONTENT="to assist in ascending hills and yet glide along smoothly on the level or down"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l18" HPOS="415" VPOS="1597" WIDTH="1772" HEIGHT="70" BASELINE="417 1647 2187 1638" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1647 417 1667 2185 1654 2187 1638 2182 1610 1916 1597 1914 1597 1912 1597 1868 1608 1812 1597 1810 1597 1624 1610 1325 1602 1323 1602 1321 1602 1297 1612 996 1602 994 1602 991 1602 989 1602 972 1612 935 1602 933 1602 931 1602 929 1602 926 1602 913 1612 877 1602 874 1602 872 1602 870 1602 838 1612 625 1604 623 1604 621 1604 619 1604 604 1615 502 1604 500 1604 415 1617 417 1647"/>
+                        </Shape>
+                        <String CONTENT="grades. Their length is from 125 cm. to 130 cm.; and breadth, from 24 cm."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l19" HPOS="413" VPOS="1662" WIDTH="1778" HEIGHT="57" BASELINE="415 1703 2191 1699" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1703 415 1719 2189 1714 2191 1699 2187 1667 534 1662 532 1662 413 1673 415 1703"/>
+                        </Shape>
+                        <String CONTENT="to 26 cm. The Kamchadal snowshoes are more clumsily made, and covered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l20" HPOS="415" VPOS="1721" WIDTH="1776" HEIGHT="60" BASELINE="417 1764 2191 1755" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 1764 417 1781 2189 1773 2191 1755 2187 1727 861 1721 859 1721 747 1732 456 1723 454 1723 452 1723 415 1734 417 1764"/>
+                        </Shape>
+                        <String CONTENT="with seal-skin, which does not serve nearly as well as reindeer-skin. Snowshoes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l21" HPOS="413" VPOS="1781" WIDTH="1778" HEIGHT="72" BASELINE="415 1825 2191 1816" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 1825 415 1851 500 1842 818 1853 820 1853 939 1840 970 1851 972 1851 974 1851 1082 1840 1273 1851 1275 1851 1386 1838 1851 1846 1853 1846 1855 1846 1858 1846 1873 1835 2167 1846 2169 1846 2172 1846 2174 1846 2191 1833 2191 1816 2187 1788 859 1781 857 1781 855 1781 827 1792 571 1783 569 1783 413 1794 415 1825"/>
+                        </Shape>
+                        <String CONTENT="covered with leg-skins (Fig. 193, a) are known also among the Reindeer"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-339_r4" HPOS="390" VPOS="2719" WIDTH="1778" HEIGHT="303" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="390 2719 2168 2719 2168 3022 390 3022"/>
+                    </Shape>
+                    <TextLine ID="mz_1-339_l22" HPOS="415" VPOS="2725" WIDTH="1770" HEIGHT="61" BASELINE="417 2769 2185 2773" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 2769 415 2782 2180 2786 2185 2773 2185 2738 2165 2727 2163 2727 2161 2727 2159 2727 2156 2727 2120 2738 1752 2727 1749 2727 1682 2738 1658 2727 1656 2727 1654 2727 1559 2738 1507 2727 1505 2727 1502 2727 1459 2738 1401 2727 1399 2727 1396 2727 1375 2738 1323 2727 1321 2727 1318 2727 1316 2727 1301 2738 1264 2725 1262 2725 1260 2725 1258 2725 1225 2736 1210 2725 1208 2725 1206 2725 1204 2725 1149 2736 1078 2725 985 2725 983 2725 981 2725 978 2725 965 2736 909 2725 907 2725 905 2725 874 2736 838 2725 835 2725 833 2725 831 2725 803 2736 768 2725 766 2725 764 2725 762 2725 738 2738 593 2738 578 2725 576 2725 573 2725 571 2725 569 2725 545 2736 530 2725 528 2725 526 2725 524 2725 417 2734 417 2769"/>
+                        </Shape>
+                        <String CONTENT="Chukchee on both the Arctic and the Pacific shores (see Plate XXX, Fig. 2)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l23" HPOS="417" VPOS="2786" WIDTH="1772" HEIGHT="63" BASELINE="420 2831 2189 2827" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="420 2831 420 2849 2187 2844 2189 2827 2185 2799 2094 2786 2092 2786 2089 2786 2066 2799 1940 2799 1925 2786 1923 2786 1920 2786 1918 2786 1916 2786 1892 2797 1829 2786 1827 2786 1825 2786 1799 2797 1760 2786 1758 2786 1756 2786 1754 2786 1723 2797 1697 2786 1695 2786 1693 2786 1691 2786 1665 2797 1613 2786 1611 2786 1266 2799 1188 2788 1186 2788 1184 2788 1152 2799 1110 2788 1108 2788 1106 2788 1104 2788 1076 2799 983 2788 981 2788 978 2788 948 2799 883 2788 881 2788 818 2799 773 2788 770 2788 768 2788 766 2788 723 2799 660 2788 658 2788 580 2799 417 2795 420 2831"/>
+                        </Shape>
+                        <String CONTENT="They are bought either from the Lamut or from the Russianized natives, and are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l24" HPOS="413" VPOS="2849" WIDTH="1774" HEIGHT="62" BASELINE="415 2890 2187 2885" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2890 415 2905 2182 2911 2187 2885 2182 2857 504 2849 502 2849 413 2859 415 2890"/>
+                        </Shape>
+                        <String CONTENT="used in winter for travel in the forests. They are very useful in hunting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l25" HPOS="413" VPOS="2909" WIDTH="1776" HEIGHT="57" BASELINE="415 2948 2189 2944" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 2948 415 2966 2187 2961 2189 2944 2185 2918 463 2909 461 2909 459 2909 413 2920 415 2948"/>
+                        </Shape>
+                        <String CONTENT="reindeer on the hard-crusted snow, because their large surface prevents the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l26" HPOS="413" VPOS="2974" WIDTH="1269" HEIGHT="61" BASELINE="415 3005 1682 3011" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 3005 413 3022 422 3031 422 3033 424 3033 426 3033 428 3035 504 3035 504 3033 506 3033 508 3033 508 3031 519 3022 623 3033 625 3033 628 3033 651 3022 838 3035 840 3035 842 3035 844 3035 861 3024 976 3035 978 3035 1046 3024 1340 3035 1342 3035 1680 3024 1682 3011 1680 2981 415 2974 415 3005"/>
+                        </Shape>
+                        <String CONTENT="foot from breaking through the thin crust of the snow."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-339_r5" HPOS="390" VPOS="3022" WIDTH="1778" HEIGHT="130" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="390 3022 2168 3022 2168 3152 390 3152"/>
+                    </Shape>
+                    <TextLine ID="mz_1-339_l27" HPOS="526" VPOS="3026" WIDTH="1665" HEIGHT="59" BASELINE="526 3067 2191 3067" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="526 3067 526 3085 2191 3085 2191 3067 2191 3037 2156 3026 2154 3026 2059 3026 2057 3026 2055 3026 2053 3026 2040 3037 1981 3026 1979 3026 1977 3026 1944 3037 1849 3026 1847 3026 1845 3026 1816 3039 1736 3039 1723 3026 1721 3026 1719 3026 1717 3026 1650 3039 1489 3039 1476 3026 1474 3026 1472 3026 1470 3026 1468 3026 1440 3037 1429 3026 1427 3026 1424 3026 1422 3026 1420 3026 1383 3037 1260 3026 1258 3026 1256 3026 1230 3039 1082 3039 1067 3026 1065 3026 1063 3026 1061 3026 1059 3026 1015 3037 987 3026 985 3026 983 3026 885 3037 848 3026 846 3026 844 3026 526 3031 526 3067"/>
+                        </Shape>
+                        <String CONTENT="Nordenskiöld¹ obtained a specimen of these snowshoes from the Arctic"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-339_l28" HPOS="415" VPOS="3087" WIDTH="1774" HEIGHT="69" BASELINE="417 3128 2189 3124" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="415 3108 417 3128 417 3145 1271 3156 1273 3156 2189 3141 2189 3124 2185 3091 433 3087 430 3087 428 3087 426 3087 417 3091 415 3108"/>
+                        </Shape>
+                        <String CONTENT="Chukchee, and considered them hopelessly clumsy. He says that he could"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-339_r6" HPOS="390" VPOS="3161" WIDTH="1778" HEIGHT="61" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="390 3161 2168 3161 2168 3222 390 3222"/>
+                    </Shape>
+                    <TextLine ID="mz_1-339_l29" HPOS="1087" VPOS="3165" WIDTH="439" HEIGHT="50" BASELINE="1089 3193 1526 3197" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1089 3193 1087 3210 1522 3215 1526 3197 1524 3169 1089 3165 1089 3193"/>
+                        </Shape>
+                        <String CONTENT="¹ Nordenskiöld, II, p. 101."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

@@ -1,0 +1,384 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-280.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-280.png; regions_from: zones/chukchi-1-280.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-280_r1" HPOS="649" VPOS="598" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="649 598 2427 598 2427 693 649 693"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l1" HPOS="1232" VPOS="614" WIDTH="617" HEIGHT="54" BASELINE="1234 649 1849 645" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1838 617 1816 614 1795 614 1773 614 1752 614 1730 614 1708 614 1687 614 1665 614 1643 614 1622 614 1600 614 1578 614 1557 614 1535 614 1232 614 1234 649 1234 668 1847 664 1849 645 1847 643 1838 617"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l2" HPOS="656" VPOS="623" WIDTH="110" HEIGHT="43" BASELINE="656 653 766 653" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="656 653 656 666 766 666 766 653 766 623 656 623 656 653"/>
+                        </Shape>
+                        <String CONTENT="220"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r2" HPOS="649" VPOS="719" WIDTH="1778" HEIGHT="121" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="649 719 2427 719 2427 840 649 840"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l3" HPOS="651" VPOS="714" WIDTH="1774" HEIGHT="61" BASELINE="651 757 2425 757" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2386 716 2367 727 2130 727 2107 714 2105 714 2102 714 2100 714 2055 725 2027 714 2024 714 2022 714 2020 714 1981 725 1953 714 1951 714 1949 714 1853 725 1816 714 1814 714 1812 714 1810 714 1808 714 1793 727 1643 727 1567 714 1565 714 1563 714 1522 725 1492 714 1489 714 1487 714 1485 714 1444 725 1403 714 1401 714 1399 714 1396 714 1362 725 1336 714 1334 714 1331 714 1329 714 1327 714 1310 725 1266 714 1264 714 1262 714 1260 714 1230 725 1167 714 1165 714 1162 714 1115 725 1059 714 1056 714 1002 725 903 714 900 714 898 714 896 714 879 727 775 727 695 714 693 714 690 714 651 725 651 757 651 775 2425 775 2425 757 2425 725 2401 716 2386 716"/>
+                        </Shape>
+                        <String CONTENT="white or dyed with alder-bark dissolved in water instead of urine, are much"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l4" HPOS="649" VPOS="775" WIDTH="1064" HEIGHT="62" BASELINE="651 820 1713 816" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 820 651 837 1710 831 1713 816 1708 785 1195 775 1193 775 1191 775 1188 775 1173 785 822 777 820 777 649 788 651 820"/>
+                        </Shape>
+                        <String CONTENT="poorer in quality than those of the Chukchee."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r3" HPOS="649" VPOS="840" WIDTH="1778" HEIGHT="303" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="649 840 2427 840 2427 1143 649 1143"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l5" HPOS="760" VPOS="833" WIDTH="1663" HEIGHT="61" BASELINE="762 878 2423 874" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="762 878 762 894 2421 889 2423 874 2419 846 2256 846 2239 833 2237 833 2234 833 2232 833 2230 833 2193 844 2066 833 2063 833 2061 833 2035 844 1894 833 1892 833 1890 833 1862 844 1758 833 1756 833 1697 844 1639 833 1637 833 1635 833 1587 846 1502 835 1500 835 1498 835 1468 846 1442 835 1440 835 1437 835 1388 846 1342 835 1340 835 1338 835 1277 846 1212 835 1210 835 1208 835 1178 846 1145 835 1143 835 1141 835 760 840 762 878"/>
+                        </Shape>
+                        <String CONTENT="The chief drawback with all these skins is their complete unfitness to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l6" HPOS="649" VPOS="902" WIDTH="1776" HEIGHT="52" BASELINE="651 935 2425 939" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 935 649 950 2421 954 2425 939 2423 902 651 902 651 935"/>
+                        </Shape>
+                        <String CONTENT="stand moisture. Even slightly damp skins, when drying, will become crumpled"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l7" HPOS="651" VPOS="967" WIDTH="1772" HEIGHT="48" BASELINE="651 998 2423 998" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 998 651 1015 2423 1015 2423 998 2423 967 651 967 651 998"/>
+                        </Shape>
+                        <String CONTENT="and as hard as wood. Faults of this kind can be partially corrected by fresh"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l8" HPOS="651" VPOS="1015" WIDTH="1772" HEIGHT="61" BASELINE="651 1056 2423 1056" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1056 651 1076 2423 1076 2423 1056 2423 1028 2345 1015 2343 1015 2341 1015 2310 1026 2241 1015 2239 1015 2146 1028 1936 1028 1907 1015 1905 1015 1903 1015 1901 1015 1899 1015 1884 1028 1790 1028 1756 1015 1754 1015 1752 1015 1749 1015 1726 1026 1697 1015 1695 1015 1693 1015 1691 1015 1663 1026 1598 1015 1596 1015 1593 1015 1552 1026 1500 1015 1498 1015 1496 1015 1459 1026 1383 1015 1381 1015 1379 1015 1377 1015 1357 1028 1223 1028 1147 1015 1145 1015 1080 1026 916 1015 913 1015 842 1026 768 1015 766 1015 651 1026 651 1056"/>
+                        </Shape>
+                        <String CONTENT="scraping and dyeing, but even then the skin is in much worse condition than"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l9" HPOS="651" VPOS="1084" WIDTH="321" HEIGHT="48" BASELINE="651 1117 972 1117" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1117 651 1130 970 1132 972 1117 972 1086 651 1084 651 1117"/>
+                        </Shape>
+                        <String CONTENT="it was before."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r4" HPOS="649" VPOS="1143" WIDTH="1778" HEIGHT="601" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="649 1143 2427 1143 2427 1744 649 1744"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l10" HPOS="757" VPOS="1143" WIDTH="1668" HEIGHT="49" BASELINE="757 1177 2425 1177" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="757 1177 757 1192 2423 1192 2425 1177 2423 1147 757 1143 757 1177"/>
+                        </Shape>
+                        <String CONTENT="In currying reindeer-skins the Chukchee women do not manifest much"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l11" HPOS="649" VPOS="1192" WIDTH="1774" HEIGHT="70" BASELINE="651 1234 2423 1238" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1234 649 1251 662 1260 664 1260 667 1260 669 1260 1390 1251 1550 1262 1552 1262 2421 1251 2423 1238 2423 1208 2390 1195 2388 1195 2386 1195 2247 1205 1784 1195 1782 1195 1641 1205 1615 1195 1613 1195 1611 1195 1537 1205 1429 1205 1414 1192 1412 1192 1409 1192 1407 1192 1275 1203 1258 1192 1256 1192 1253 1192 1251 1192 1249 1192 1208 1203 1108 1192 1106 1192 1104 1192 1074 1203 1041 1192 1039 1192 1037 1192 1035 1192 1009 1203 896 1192 894 1192 651 1201 651 1234"/>
+                        </Shape>
+                        <String CONTENT="skill. This work is neglected because the curried leather is comparatively"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l12" HPOS="649" VPOS="1255" WIDTH="1776" HEIGHT="59" BASELINE="649 1299 2425 1299" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 1299 649 1314 2425 1314 2425 1299 2425 1266 2403 1255 2401 1255 2399 1255 2265 1266 2208 1255 2206 1255 2204 1255 2182 1266 2148 1255 2146 1255 2143 1255 2141 1255 2109 1266 2018 1255 2016 1255 2014 1255 1988 1266 1955 1255 1953 1255 1951 1255 1892 1266 1825 1255 1823 1255 1821 1255 1790 1266 1704 1255 1702 1255 1700 1255 1674 1268 1541 1268 1518 1255 1515 1255 1513 1255 1457 1266 1355 1255 1210 1255 1208 1255 1206 1255 1204 1255 1191 1266 1130 1255 1128 1255 1126 1255 1093 1266 649 1262 649 1299"/>
+                        </Shape>
+                        <String CONTENT="little used among the Chukchee. For currying, the skin is soaked and left"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l13" HPOS="647" VPOS="1322" WIDTH="1776" HEIGHT="50" BASELINE="649 1355 2423 1359" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 1355 647 1368 2419 1372 2423 1359 2421 1327 649 1322 649 1355"/>
+                        </Shape>
+                        <String CONTENT="for twenty-four hours folded together. Then the hair is scraped off and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l14" HPOS="649" VPOS="1372" WIDTH="1772" HEIGHT="65" BASELINE="651 1415 2421 1420" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1415 649 1428 2416 1437 2421 1420 2421 1387 2380 1374 2377 1374 2375 1374 2315 1387 2079 1387 2044 1374 2042 1374 2040 1374 1405 1383 1381 1372 1379 1372 1377 1372 1321 1383 1295 1372 1292 1372 1290 1372 1288 1372 1240 1385 1110 1385 1093 1372 1091 1372 1089 1372 1087 1372 1084 1372 1061 1383 1033 1372 1030 1372 1028 1372 1026 1372 989 1383 937 1372 935 1372 651 1381 651 1415"/>
+                        </Shape>
+                        <String CONTENT="skin is dried. Such scraped skins are brought by the Chukchee to every fair,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l15" HPOS="649" VPOS="1439" WIDTH="1774" HEIGHT="61" BASELINE="651 1472 2423 1478" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1472 649 1489 662 1498 664 1498 667 1498 669 1498 1230 1489 1247 1500 1249 1500 1251 1500 1253 1500 2421 1491 2423 1478 2421 1448 651 1439 651 1472"/>
+                        </Shape>
+                        <String CONTENT="because they are much lighter than those with the hair on. In the further"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l16" HPOS="651" VPOS="1496" WIDTH="1772" HEIGHT="62" BASELINE="651 1539 2423 1539" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1539 651 1558 2423 1552 2423 1539 2423 1506 2393 1496 2390 1496 2388 1496 2319 1506 2092 1496 2089 1496 2087 1496 2059 1509 1832 1509 1769 1496 1767 1496 1765 1496 1728 1506 1697 1496 1695 1496 1693 1496 1505 1506 1468 1496 1466 1496 1463 1496 1461 1496 1437 1506 1405 1496 1403 1496 1401 1496 1399 1496 1353 1506 1286 1496 1284 1496 1282 1496 1236 1506 1180 1496 1178 1496 1175 1496 1134 1506 1063 1496 1061 1496 922 1506 883 1496 881 1496 879 1496 877 1496 848 1509 651 1509 651 1539"/>
+                        </Shape>
+                        <String CONTENT="process of preparing the skin, it is smeared with any one of the materials"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l17" HPOS="649" VPOS="1560" WIDTH="1774" HEIGHT="50" BASELINE="651 1593 2423 1597" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1593 649 1606 2419 1610 2423 1597 2421 1565 651 1560 651 1593"/>
+                        </Shape>
+                        <String CONTENT="mentioned above, then scraped again, and bleached in the wind or dyed with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l18" HPOS="651" VPOS="1625" WIDTH="1770" HEIGHT="52" BASELINE="651 1656 2421 1656" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1656 651 1677 2421 1671 2421 1656 2421 1625 651 1625 651 1656"/>
+                        </Shape>
+                        <String CONTENT="yellow ochre. The Russianized natives even wash the finest curried skins with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l19" HPOS="647" VPOS="1680" WIDTH="1726" HEIGHT="60" BASELINE="649 1710 2373 1719" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 1710 647 1729 660 1738 662 1738 664 1738 667 1738 1017 1729 1080 1740 1082 1740 2371 1734 2373 1719 2371 1688 649 1680 649 1710"/>
+                        </Shape>
+                        <String CONTENT="soap, and then dry them in the air, giving them a snow-white appearance."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r5" HPOS="649" VPOS="1744" WIDTH="1778" HEIGHT="478" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="649 1744 2427 1744 2427 2222 649 2222"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l20" HPOS="755" VPOS="1738" WIDTH="1668" HEIGHT="65" BASELINE="757 1773 2423 1777" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="757 1773 755 1783 825 1799 827 1799 883 1788 916 1799 918 1799 920 1799 922 1799 961 1788 991 1799 994 1799 996 1799 1061 1788 1095 1799 1097 1799 1100 1799 1502 1788 1632 1801 1635 1801 1637 1801 1682 1790 1713 1801 1715 1801 1717 1801 1771 1790 1806 1801 1808 1801 1810 1801 1812 1801 1840 1790 1873 1801 1875 1801 1877 1803 1998 1803 1998 1801 2001 1801 2003 1801 2018 1790 2399 1801 2401 1801 2403 1801 2406 1801 2421 1788 2423 1777 2421 1747 757 1738 757 1773"/>
+                        </Shape>
+                        <String CONTENT="Most of the curried skins are smoked for a couple of days over the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l21" HPOS="647" VPOS="1794" WIDTH="1776" HEIGHT="67" BASELINE="649 1833 2423 1838" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 1833 647 1846 1020 1859 1022 1859 1505 1851 1561 1861 1563 1861 2421 1851 2423 1838 2419 1794 649 1796 649 1833"/>
+                        </Shape>
+                        <String CONTENT="hearth or in a special shed which is employed for extra cooking, scraping of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l22" HPOS="647" VPOS="1866" WIDTH="1774" HEIGHT="47" BASELINE="647 1896 2421 1896" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 1896 647 1913 2421 1913 2421 1896 2421 1866 647 1866 647 1896"/>
+                        </Shape>
+                        <String CONTENT="skins, etc. The women among the Russianized natives often make a temporary"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l23" HPOS="647" VPOS="1920" WIDTH="1774" HEIGHT="52" BASELINE="649 1950 2421 1957" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 1950 647 1965 2416 1972 2421 1957 2419 1922 649 1920 649 1950"/>
+                        </Shape>
+                        <String CONTENT="tent of a few sticks, covering them with skins they are going to smoke, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l24" HPOS="647" VPOS="1974" WIDTH="1765" HEIGHT="56" BASELINE="649 2013 2412 2017" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2013 647 2026 2408 2030 2412 2017 2408 1974 649 1974 649 2013"/>
+                        </Shape>
+                        <String CONTENT="build a smouldering fire inside. A structure of this kind is called a “bath,”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l25" HPOS="647" VPOS="2037" WIDTH="1772" HEIGHT="63" BASELINE="649 2074 2419 2078" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2074 647 2089 658 2097 660 2097 662 2097 664 2097 1461 2089 1539 2100 1541 2100 2416 2089 2419 2078 2416 2045 649 2037 649 2074"/>
+                        </Shape>
+                        <String CONTENT="in reference to the fact that the Russians in that country still take sweat-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l26" HPOS="647" VPOS="2097" WIDTH="1774" HEIGHT="55" BASELINE="649 2132 2421 2139" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2132 647 2145 2416 2152 2421 2139 2419 2108 649 2097 649 2132"/>
+                        </Shape>
+                        <String CONTENT="baths inside of the tent sometimes, much in the same way as the American"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l27" HPOS="647" VPOS="2147" WIDTH="264" HEIGHT="63" BASELINE="649 2188 911 2193" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 2188 647 2206 907 2210 911 2193 911 2162 868 2149 866 2149 864 2149 762 2158 744 2147 742 2147 740 2147 738 2147 649 2156 649 2188"/>
+                        </Shape>
+                        <String CONTENT="Indians do."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r6" HPOS="649" VPOS="2222" WIDTH="1778" HEIGHT="419" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="649 2222 2427 2222 2427 2641 649 2641"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l28" HPOS="755" VPOS="2214" WIDTH="1668" HEIGHT="57" BASELINE="757 2251 2423 2258" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="757 2251 755 2264 2419 2271 2423 2258 2423 2225 757 2214 757 2251"/>
+                        </Shape>
+                        <String CONTENT="The best curried leather of Chukchee make is the retteˊm,¹ i. e., the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l29" HPOS="645" VPOS="2281" WIDTH="1778" HEIGHT="61" BASELINE="647 2312 2423 2316" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2312 645 2327 805 2340 807 2340 1507 2331 1619 2342 1622 2342 2421 2331 2423 2316 2421 2286 647 2281 647 2312"/>
+                        </Shape>
+                        <String CONTENT="covering of the outer tent, especially the upper parts, which get a continuous"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l30" HPOS="645" VPOS="2340" WIDTH="1776" HEIGHT="50" BASELINE="647 2372 2421 2377" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2372 645 2385 2416 2390 2421 2377 2419 2342 647 2340 647 2372"/>
+                        </Shape>
+                        <String CONTENT="smoking from the hearth inside. This leather does not shrink after rain, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l31" HPOS="643" VPOS="2398" WIDTH="1778" HEIGHT="52" BASELINE="645 2431 2421 2435" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2431 643 2446 2416 2450 2421 2435 2419 2405 645 2398 645 2431"/>
+                        </Shape>
+                        <String CONTENT="is waterproof to a considerable degree. The tent-covering has the hair closely"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l32" HPOS="643" VPOS="2461" WIDTH="1776" HEIGHT="59" BASELINE="645 2491 2419 2496" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2491 643 2504 710 2517 712 2517 1474 2509 1561 2520 1563 2520 2416 2509 2419 2496 2416 2465 645 2461 645 2491"/>
+                        </Shape>
+                        <String CONTENT="cropped. In making clothes, this hair, if necessary, is scraped off with an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l33" HPOS="645" VPOS="2515" WIDTH="1774" HEIGHT="63" BASELINE="647 2550 2419 2556" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2550 645 2567 656 2576 658 2576 660 2576 662 2578 2416 2578 2419 2556 2416 2526 647 2515 647 2550"/>
+                        </Shape>
+                        <String CONTENT="iron scraper. Because of the previous smoking, it comes off easily. Often,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l34" HPOS="645" VPOS="2582" WIDTH="513" HEIGHT="48" BASELINE="645 2613 1158 2613" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2613 645 2630 1158 2630 1158 2613 1158 2582 645 2582 645 2613"/>
+                        </Shape>
+                        <String CONTENT="however, it is left on."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r7" HPOS="649" VPOS="2641" WIDTH="1778" HEIGHT="478" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="649 2641 2427 2641 2427 3119 649 3119"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l35" HPOS="755" VPOS="2634" WIDTH="1668" HEIGHT="54" BASELINE="757 2671 2423 2675" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="757 2671 755 2684 2419 2688 2423 2675 2421 2643 757 2634 757 2671"/>
+                        </Shape>
+                        <String CONTENT="The dressing of seal-skins has not developed to the same degree as that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l36" HPOS="643" VPOS="2699" WIDTH="1778" HEIGHT="61" BASELINE="645 2732 2421 2736" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2732 643 2745 1845 2760 1847 2760 2419 2749 2421 2736 2419 2701 645 2699 645 2732"/>
+                        </Shape>
+                        <String CONTENT="of reindeer-skins, because the former are utilized only for boots, bags, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l37" HPOS="643" VPOS="2751" WIDTH="1778" HEIGHT="65" BASELINE="645 2797 2421 2792" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2797 645 2816 2419 2808 2421 2792 2416 2762 2224 2751 2221 2751 2219 2751 2217 2751 2202 2764 2059 2764 2033 2751 2031 2751 2029 2751 1957 2762 1920 2751 1918 2751 1916 2751 1914 2751 1912 2751 1894 2764 1756 2764 1719 2751 1717 2751 1715 2751 1713 2751 1710 2751 1695 2764 1580 2764 1548 2751 1546 2751 1544 2751 1457 2764 900 2753 898 2753 896 2753 866 2766 643 2766 645 2797"/>
+                        </Shape>
+                        <String CONTENT="purposes which do not require so much care in preparing the material as is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l38" HPOS="643" VPOS="2820" WIDTH="1778" HEIGHT="59" BASELINE="645 2853 2421 2857" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2853 643 2868 656 2877 658 2877 660 2877 662 2877 1483 2868 1544 2879 1546 2879 2419 2868 2421 2857 2419 2825 645 2820 645 2853"/>
+                        </Shape>
+                        <String CONTENT="necessary for clothing. Walrus and thong-seal skins, after they are dried, do"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l39" HPOS="643" VPOS="2879" WIDTH="1776" HEIGHT="61" BASELINE="645 2909 2419 2914" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 2909 643 2924 1661 2940 1663 2940 2416 2929 2419 2914 2416 2883 645 2879 645 2909"/>
+                        </Shape>
+                        <String CONTENT="not undergo any further process. The thong-seal skin is used with the hair"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l40" HPOS="645" VPOS="2940" WIDTH="1774" HEIGHT="47" BASELINE="647 2970 2419 2974" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 2970 645 2983 2414 2987 2419 2974 2416 2944 647 2940 647 2970"/>
+                        </Shape>
+                        <String CONTENT="on for soles of boots, to make the boot warmer. The walrus-hide is split in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l41" HPOS="643" VPOS="2996" WIDTH="1776" HEIGHT="65" BASELINE="645 3028 2419 3035" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 3028 643 3043 1282 3059 1284 3059 1715 3050 1825 3061 1827 3061 2416 3050 2419 3035 2419 3002 645 2996 645 3028"/>
+                        </Shape>
+                        <String CONTENT="two with a thin broad knife, while the hide is tightly stretched on the drying-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-280_l42" HPOS="643" VPOS="3048" WIDTH="851" HEIGHT="67" BASELINE="645 3089 1494 3095" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="645 3089 643 3106 649 3113 649 3115 651 3115 654 3115 656 3115 1492 3111 1494 3095 1494 3065 1459 3052 1457 3052 1455 3052 1210 3063 1182 3050 1180 3050 1178 3050 991 3061 926 3048 924 3048 645 3056 645 3089"/>
+                        </Shape>
+                        <String CONTENT="rack (see Plate XIII, Fig. 1, p. 170)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r8" HPOS="649" VPOS="3119" WIDTH="1778" HEIGHT="59" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="649 3119 2427 3119 2427 3178 649 3178"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l43" HPOS="753" VPOS="3113" WIDTH="1663" HEIGHT="67" BASELINE="755 3150 2416 3154" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2412 3121 755 3113 755 3150 753 3165 1713 3180 1715 3180 2414 3169 2416 3154 2414 3130 2412 3121"/>
+                        </Shape>
+                        <String CONTENT="When used for covering a boat, the walrus-hide does not receive any"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-280_r9" HPOS="649" VPOS="3196" WIDTH="1778" HEIGHT="52" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="649 3196 2427 3196 2427 3248 649 3248"/>
+                    </Shape>
+                    <TextLine ID="mz_1-280_l44" HPOS="1427" VPOS="3195" WIDTH="203" HEIGHT="46" BASELINE="1427 3221 1630 3221" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1427 3221 1427 3241 1630 3241 1630 3221 1630 3195 1427 3195 1427 3221"/>
+                        </Shape>
+                        <String CONTENT="¹ See p. 170."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

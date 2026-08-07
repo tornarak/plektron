@@ -1,0 +1,77 @@
+{
+  "lines": {
+    "0": {
+      "text": "BOGORAS, THE CHUKCHEE."
+    },
+    "1": {
+      "text": "258"
+    },
+    "2": {
+      "text": "Women often wear around the wrist or over the chest, under their clothing,"
+    },
+    "3": {
+      "text": "a string with a few beads on it (Fig. 190, b).",
+      "note": "italic 'b' after 'Fig. 190,'; the machine draft misread it as digit 6, confirmed at 2x.",
+      "class": "print"
+    },
+    "4": {
+      "text": "The men simply use a thin strip of leather"
+    },
+    "5": {
+      "text": "or a cord of sinew for the same purpose"
+    },
+    "6": {
+      "text": "190, a)."
+    },
+    "7": {
+      "text": "(Fig.",
+      "note": "Line ends '(Fig.' with the abbreviation's own period, confirmed at 4x -- not a fabricated line-final mark; it is the standard 'Fig.' abbreviation dot, continued on line 6 '190, a).'",
+      "class": "print"
+    },
+    "8": {
+      "text": "Middle-aged men often wear a kind"
+    },
+    "9": {
+      "text": "of head-band (Fig. 191, a) similar in style"
+    },
+    "10": {
+      "text": "to the leather necklace. It is made of a"
+    },
+    "11": {
+      "text": "very narrow strip of leather, adorned at"
+    },
+    "12": {
+      "text": "intervals with a few large beads and having"
+    },
+    "13": {
+      "text": "a few strings of smaller beads hanging"
+    },
+    "14": {
+      "text": "from it. These ornaments are also amulets."
+    },
+    "15": {
+      "text": "In olden times the attachments consisted"
+    },
+    "16": {
+      "text": "of small blocks of wood. These represent-"
+    },
+    "17": {
+      "text": "ed protecting spirits, and were called"
+    },
+    "18": {
+      "text": "“wooden manikins” (ottaˊᵋ-laˊulqaitê). I",
+      "resolved": "ottaˊᵋ-laˊulqaitê = otta + stress U+02CA + laryngeal U+1D4B + hyphen U+002D + la + stress U+02CA + ulqaitê (ê = e+U+0302)",
+      "note": "gaps reports vpos 1660 hpos 2339-2352 as exempted reason=covered, covered_by line 18, note \"the word \\\"I\\\"\" -- the trailing 'I' is set past this line's box (box ends hpos 2284) and belongs to this line, opening the next sentence continued on line 19 ('I saw one head-band...'). Keyed in full per the covered-band rule. Also confirmed at 4x: the final vowel of 'ulqaitê' is circumflex ê (e+U+0302), not acute as the machine draft's 'ulqaité' suggested.",
+      "class": "layout"
+    },
+    "19": {
+      "text": "saw one head-band of this kind worn by an old man among the Reindeer"
+    },
+    "20": {
+      "text": "people on the Wolverene River. Head-bands with wooden images attached are"
+    }
+  },
+  "contamination": {
+    "blind": true
+  }
+}

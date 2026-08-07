@@ -1,0 +1,30 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "271"},
+    "2": {"text": "Playing ball is more common among the Maritime Chukchee, who live"},
+    "3": {"text": "in settled villages, and whose life is more regular than in the scattered, ever-"},
+    "4": {"text": "moving camps."},
+    "5": {"text": "The Chukchee employ both hand-balls and foot-balls, which differ chiefly",
+          "note": "A small ink blot sits above the second l of \"balls\" (first occurrence); it is a printer's speck, not a letter — keyed as ordinary text with the blot noted. class: artifact",
+          "class": "artifact"},
+    "6": {"text": "in size (Fig. 196, a-d). The word used for the ball (qeˊpel), however, signifies",
+          "resolved": "qeˊpel = q, e, U+02CA, p, e, l",
+          "note": "Raised mark after e in qe'pel keyed as stress U+02CA per keying_spec.md §4: \"Read every raised mark as stress (U+02CA) by default, full stop\" — the mz draft dropped the mark entirely.",
+          "class": "doubt"},
+    "7": {"text": "“kick,” “kicked thing,” and therefore is connected more closely with the foot-",
+          "note": "mz draft had the first pair as escaped straight quotes (\\\"kick,\\\"); the book sets curly quotes throughout (keying_spec.md §1, §5.6) — keyed curly, no raster check needed.",
+          "class": "print"},
+    "8": {"text": "ball. The outward appearance of the balls resembles very much that of the"},
+    "9": {"text": "balls used by Alaskan Eskimo. There are no particular rules for ball-playing."},
+    "10": {"text": "The participants, mainly young boys and girls, are divided into two parties. The"},
+    "11": {"text": "ball is thrown or kicked by one party, while the members of the other party"},
+    "12": {"text": "try to catch it. Often the girls take one side, and the boys the other. Still"},
+    "13": {"text": "more frequently they all run about, trying to catch the ball as it flies from"},
+    "14": {"text": "side to side."},
+    "15": {"text": "Sometimes a whole reindeer-skin is folded and fashioned into a large"},
+    "16": {"text": "clumsy-looking foot-ball, and almost the entire population of the village joins"},
+    "17": {"text": "in tossing and kicking it about."}
+  },
+  "contamination": {"blind": true}
+}

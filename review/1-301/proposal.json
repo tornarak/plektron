@@ -1,0 +1,49 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {
+      "text": "235",
+      "note": "Folio, RunningTitleZone. ocr gaps reports this band exempted reason=covered, note=folio, covered_by=line 1: the line's box (hpos 2113, width 63) strangles the printed number. Contact sheet of lines 0-1 shows the full folio clearly as three digits '235'. Keyed the whole number per the covered-band rule, not the fragment the box bounds.",
+      "class": "layout"
+    },
+    "2": {"text": "put on the heavy fur shirts of the Chukchee when they drive a reindeer-sledge."},
+    "3": {"text": "Their own clothing does not sufficiently protect them from the heavy wind"},
+    "4": {"text": "blowing against their faces, and from the lumps of snow thrown up by the"},
+    "5": {"text": "reindeer-hoofs and the runners of the sledges."},
+    "6": {"text": "Each part of the Chukchee winter garments for men or women is made"},
+    "7": {"text": "in two pieces, an inner and an outer one, the former with the hair side in,"},
+    "8": {"text": "and the latter with the hair side out. These pieces are worn without being"},
+    "9": {"text": "sewed together, in order that they may be separated for drying, but they fit"},
+    "10": {"text": "together so exactly as to form practically a single garment. The inner part"},
+    "11": {"text": "is usually made of very soft-haired material, so that it will not irritate the"},
+    "12": {"text": "skin, and can be worn without underclothing even by a European."},
+    "13": {"text": "The chief piece of clothing is a heavy fur shirt almost reaching to the"},
+    "14": {"text": "knees, with no hood attached, and with a rather large opening in the collar"},
+    "15": {
+      "text": "(Plates XXIII, Fig. 1; XXIV, Fig. 2; also Fig. 168). Koryak shirts are longer,",
+      "note": "Roman numerals XXIII/XXIV keyed plain ASCII caps per keying_spec.md §2.12 regardless of the printed small-cap setting. Machine draft read 'Fig., 168' with a comma before 168; 4x zoom (zoom4-15p46-78.png) shows 'Fig.' with its period, then an isolated small ink speck below the baseline, then '168)' — the speck has no comma-shaped hook and sits detached from the period. Read as a stray ink blot, not a compositor's comma, per §2.14 (punctuation blots are artifact, keyed as nothing).",
+      "class": "artifact"
+    },
+    "16": {"text": "and often have a hood; but among the Chukchee only the shroud has a hood,"},
+    "17": {"text": "which is drawn over the face of the dead body. The shroud is therefore"},
+    "18": {
+      "text": "called by them “the hooded garment.” The collar of the Chukchee shirt is",
+      "note": "Machine draft rendered the closing quote as a straight/escaped \\\" ; 2x zoom (zoom2-18p30-98_24p9-82.png) shows a curly closing quotation mark ” after 'garment.', per §1/§5.6 (quotes are always curly, not a raster question).",
+      "class": "print"
+    },
+    "19": {"text": "bound with a narrow piece of skin folded over so that a stout sinew string"},
+    "20": {"text": "may be pulled through to tighten the collar as much as desired. The ends"},
+    "21": {"text": "of the string come out on the breast. The Chukchee assert that the string"},
+    "22": {"text": "is added to strengthen the neck of the shirt in case of a scuffle; otherwise"},
+    "23": {"text": "it would give way when pulled hard in wrestling."},
+    "24": {
+      "text": "The shirts of the Maritime people, (Plate XXIV, Fig. 1) are of the same cut",
+      "note": "Machine draft read the roman numeral as mixed-case 'xXIV'; keyed plain ASCII caps 'XXIV' per §2.12, confirmed at 2x (zoom2-18p30-98_24p9-82.png).",
+      "class": "print"
+    },
+    "25": {"text": "as those of the reindeer-breeders. They often wear cast-off clothing of the"},
+    "26": {"text": "Reindeer people, because the herdsman wears his coat only one winter, often"},
+    "27": {"text": "only half of this time. After that, the women of his family make him a new"}
+  },
+  "contamination": {"blind": true}
+}

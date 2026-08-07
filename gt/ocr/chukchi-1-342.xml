@@ -1,0 +1,340 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-342.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-342.png; regions_from: zones/chukchi-1-342.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-342_r1" HPOS="602" VPOS="892" WIDTH="1778" HEIGHT="87" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="602 892 2380 892 2380 979 602 979"/>
+                    </Shape>
+                    <TextLine ID="mz_1-342_l1" HPOS="1282" VPOS="900" WIDTH="405" HEIGHT="63" BASELINE="1282 950 1687 950" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1676 911 1654 900 1652 900 1650 900 1368 915 1353 902 1353 900 1351 900 1349 900 1303 900 1301 900 1282 948 1282 950 1282 963 1687 963 1687 950 1687 935 1676 911"/>
+                        </Shape>
+                        <String CONTENT="XI. — GAMES."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-342_r2" HPOS="602" VPOS="1022" WIDTH="1778" HEIGHT="191" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="602 1022 2380 1022 2380 1213 602 1213"/>
+                    </Shape>
+                    <TextLine ID="mz_1-342_l2" HPOS="706" VPOS="1032" WIDTH="1667" HEIGHT="50" BASELINE="708 1065 2373 1069" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2354 1037 2332 1037 2310 1034 2289 1034 2267 1034 2245 1032 2224 1032 2202 1032 708 1032 708 1065 706 1078 2369 1082 2373 1069 2371 1037 2354 1037"/>
+                        </Shape>
+                        <String CONTENT="ATHLETIC SPORTS. — The Chukchee are fond of all kinds of sports, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l3" HPOS="595" VPOS="1091" WIDTH="1778" HEIGHT="60" BASELINE="597 1123 2373 1127" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1123 595 1136 701 1149 703 1149 1247 1140 1487 1151 1489 1151 2371 1140 2373 1127 2371 1097 597 1091 597 1123"/>
+                        </Shape>
+                        <String CONTENT="indulge in them whenever opportunity is offered. Many of their games are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l4" HPOS="595" VPOS="1151" WIDTH="1442" HEIGHT="50" BASELINE="597 1184 2037 1188" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1184 595 1197 2033 1201 2037 1188 2035 1156 597 1151 597 1184"/>
+                        </Shape>
+                        <String CONTENT="connected with religious ceremonials, as will be described later."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-342_r3" HPOS="602" VPOS="1213" WIDTH="1778" HEIGHT="596" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="602 1213 2380 1213 2380 1809 602 1809"/>
+                    </Shape>
+                    <TextLine ID="mz_1-342_l5" HPOS="708" VPOS="1203" WIDTH="1665" HEIGHT="61" BASELINE="708 1247 2373 1247" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="708 1247 708 1264 2373 1264 2373 1247 2373 1216 2280 1203 2278 1203 2276 1203 2243 1214 2120 1203 2118 1203 2115 1203 2113 1203 2096 1216 1994 1216 1964 1203 1962 1203 1959 1203 1957 1203 1955 1203 1942 1214 1914 1203 1912 1203 1910 1203 1838 1214 1814 1203 1812 1203 1810 1203 1808 1203 1806 1203 1790 1216 1671 1216 1658 1203 1656 1203 1654 1203 1570 1203 1567 1203 1502 1214 1474 1203 1472 1203 1470 1203 1388 1214 1362 1203 1360 1203 1357 1203 1355 1203 1336 1214 1325 1203 1323 1203 1321 1203 1232 1203 1230 1203 1154 1214 1119 1203 1117 1203 1115 1203 1113 1203 1110 1203 1095 1214 1007 1203 1004 1203 1002 1203 957 1214 929 1203 926 1203 924 1203 922 1203 920 1203 903 1216 796 1216 731 1203 729 1203 727 1203 708 1212 708 1247"/>
+                        </Shape>
+                        <String CONTENT="Among the Reindeer Chukchee the chief sport is reindeer-racing. Once"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l6" HPOS="595" VPOS="1275" WIDTH="1776" HEIGHT="54" BASELINE="597 1305 2371 1309" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1305 595 1320 608 1329 610 1329 612 1329 615 1329 2369 1327 2371 1309 2369 1279 597 1275 597 1305"/>
+                        </Shape>
+                        <String CONTENT="a year almost every camp arranges a race. These races are held in circuits,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l7" HPOS="595" VPOS="1324" WIDTH="1780" HEIGHT="59" BASELINE="595 1368 2375 1368" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1368 595 1383 2375 1383 2375 1368 2375 1335 1875 1324 1873 1324 1871 1324 1823 1335 1739 1324 1736 1324 1734 1324 1693 1335 1602 1324 1600 1324 1598 1324 1557 1335 1494 1324 1492 1324 1357 1335 1329 1324 1327 1324 1325 1324 1323 1324 1286 1335 1234 1324 1232 1324 1230 1324 1227 1324 1212 1335 1097 1324 1095 1324 1022 1335 933 1324 931 1324 877 1335 822 1324 820 1324 818 1324 775 1335 703 1324 701 1324 595 1335 595 1368"/>
+                        </Shape>
+                        <String CONTENT="so that the whole neighborhood can visit all in their vicinity. The principal"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l8" HPOS="595" VPOS="1383" WIDTH="1776" HEIGHT="67" BASELINE="597 1424 2371 1428" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1424 595 1437 814 1450 816 1450 2369 1441 2371 1428 2371 1398 2338 1385 2336 1385 2334 1385 1732 1396 1624 1385 1622 1385 1619 1385 1572 1396 1483 1383 1481 1383 1479 1383 1476 1383 1459 1394 1422 1383 1420 1383 1418 1383 1416 1383 1381 1394 1175 1383 1173 1383 1171 1383 1134 1394 1084 1383 1082 1383 1030 1394 820 1383 818 1383 597 1392 597 1424"/>
+                        </Shape>
+                        <String CONTENT="man of the camp, who figures as the host of the race (ireˊlɪn), has to supply"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l9" HPOS="597" VPOS="1457" WIDTH="1774" HEIGHT="45" BASELINE="597 1487 2371 1487" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1487 597 1502 2371 1502 2371 1487 2371 1457 597 1457 597 1487"/>
+                        </Shape>
+                        <String CONTENT="the prize, which varies from a couple of leaves of tobacco to a beaver-skin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l10" HPOS="595" VPOS="1502" WIDTH="1776" HEIGHT="61" BASELINE="597 1547 2371 1543" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1547 597 1563 2369 1560 2371 1543 2369 1515 2341 1502 2338 1502 2336 1502 2334 1502 2332 1502 2312 1513 2081 1502 2079 1502 2005 1513 1979 1502 1977 1502 1975 1502 1972 1502 1925 1513 1860 1502 1858 1502 1855 1502 1825 1515 1637 1515 1554 1502 1552 1502 1550 1502 1513 1513 1485 1502 1483 1502 1481 1502 1479 1502 1476 1502 1461 1515 1409 1504 1407 1504 1405 1504 1375 1515 1043 1504 1041 1504 978 1515 857 1504 855 1504 853 1504 851 1504 838 1515 801 1504 799 1504 796 1504 595 1517 597 1547"/>
+                        </Shape>
+                        <String CONTENT="or a pack-sledge reindeer. The prize is tied to a tree-branch, which is stuck"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l11" HPOS="595" VPOS="1560" WIDTH="1776" HEIGHT="70" BASELINE="597 1604 2371 1608" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1604 595 1619 606 1628 608 1628 610 1628 612 1628 1444 1619 1483 1630 1485 1630 1487 1630 2369 1619 2371 1608 2371 1576 2325 1563 2323 1563 2321 1563 2258 1573 2198 1563 2195 1563 2139 1573 2118 1563 2115 1563 1975 1563 1972 1563 1970 1563 1968 1563 1955 1573 1942 1563 1940 1563 1938 1563 1936 1563 1933 1563 1903 1573 1765 1563 1762 1563 1704 1573 1648 1563 1645 1563 1429 1571 1409 1560 1407 1560 1405 1560 1403 1560 1401 1560 1379 1571 1355 1560 1353 1560 1351 1560 1349 1560 1325 1573 1160 1573 1141 1560 1139 1560 1136 1560 1134 1560 1076 1571 1011 1560 1009 1560 1007 1560 961 1571 597 1569 597 1604"/>
+                        </Shape>
+                        <String CONTENT="into the snow. For this reason it is called “the thing stuck in” (rɪˊpyo). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l12" HPOS="595" VPOS="1628" WIDTH="1778" HEIGHT="60" BASELINE="597 1662 2373 1667" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1662 595 1675 651 1688 654 1688 2371 1680 2373 1667 2371 1632 597 1628 597 1662"/>
+                        </Shape>
+                        <String CONTENT="larger the prize, the greater will be the concourse of people at the race, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l13" HPOS="595" VPOS="1693" WIDTH="1780" HEIGHT="58" BASELINE="597 1723 2375 1727" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 1723 595 1740 608 1749 610 1749 612 1749 615 1749 1459 1740 1485 1751 1487 1751 1489 1751 2373 1740 2375 1727 2373 1697 597 1693 597 1723"/>
+                        </Shape>
+                        <String CONTENT="the longer the stretch to be covered by the contestants, sometimes ten miles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l14" HPOS="593" VPOS="1751" WIDTH="316" HEIGHT="58" BASELINE="595 1781 909 1786" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1781 593 1801 602 1807 604 1807 606 1807 608 1807 708 1799 749 1809 751 1809 753 1809 907 1799 909 1786 907 1755 595 1751 595 1781"/>
+                        </Shape>
+                        <String CONTENT="and upwards."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-342_r4" HPOS="602" VPOS="1809" WIDTH="1778" HEIGHT="418" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="602 1809 2380 1809 2380 2227 602 2227"/>
+                    </Shape>
+                    <TextLine ID="mz_1-342_l15" HPOS="706" VPOS="1803" WIDTH="1667" HEIGHT="63" BASELINE="708 1840 2373 1846" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="708 1840 706 1855 721 1866 723 1866 725 1866 727 1866 2371 1859 2373 1846 2371 1816 708 1803 708 1840"/>
+                        </Shape>
+                        <String CONTENT="There are no particular rules about starting the race. The participants"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l16" HPOS="593" VPOS="1870" WIDTH="1778" HEIGHT="54" BASELINE="595 1903 2371 1909" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1903 593 1922 2367 1924 2371 1909 2369 1877 595 1870 595 1903"/>
+                        </Shape>
+                        <String CONTENT="gather in front of the prize in an irregular group. The host gives the signal,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l17" HPOS="593" VPOS="1920" WIDTH="1778" HEIGHT="60" BASELINE="595 1965 2371 1961" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 1965 595 1980 2369 1978 2371 1961 2367 1933 2250 1920 2247 1920 2146 1931 2128 1920 2126 1920 2124 1920 2122 1920 2120 1920 2098 1931 2068 1920 2066 1920 2063 1920 1983 1931 1949 1920 1946 1920 1944 1920 1942 1920 1940 1920 1925 1933 1829 1933 1782 1920 1780 1920 1777 1920 1717 1931 1693 1920 1691 1920 1689 1920 1687 1920 1684 1920 1667 1933 1563 1933 1535 1920 1533 1920 1531 1920 1442 1933 1030 1922 1028 1922 1026 1922 991 1933 937 1922 935 1922 783 1933 731 1922 729 1922 727 1922 706 1933 671 1922 669 1922 667 1922 593 1935 595 1965"/>
+                        </Shape>
+                        <String CONTENT="and all start off. While some keep to the road, others strike off through the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l18" HPOS="597" VPOS="1996" WIDTH="1776" HEIGHT="45" BASELINE="597 2024 2373 2024" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 2024 597 2041 2373 2041 2373 2024 2373 1996 597 1996 597 2024"/>
+                        </Shape>
+                        <String CONTENT="deep snow, trying to intercept the leaders. The race is to a distant point"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l19" HPOS="593" VPOS="2052" WIDTH="1780" HEIGHT="54" BASELINE="595 2082 2373 2087" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2082 593 2097 606 2106 608 2106 610 2106 612 2106 2371 2097 2373 2087 2371 2056 595 2052 595 2082"/>
+                        </Shape>
+                        <String CONTENT="and back again. Until the contestants are on the return stretch they spare"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l20" HPOS="595" VPOS="2100" WIDTH="1776" HEIGHT="60" BASELINE="597 2145 2371 2141" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 2145 597 2160 2369 2158 2371 2141 2367 2113 2206 2113 2189 2100 2187 2100 2185 2100 2182 2100 2180 2100 2178 2100 2165 2110 2150 2100 2148 2100 2146 2100 2143 2100 2141 2100 2139 2100 2124 2113 2035 2113 2018 2100 2016 2100 2014 2100 2011 2100 1962 2110 1944 2100 1942 2100 1940 2100 1938 2100 1936 2100 1933 2100 1916 2113 1780 2113 1749 2100 1747 2100 1745 2100 1743 2100 1741 2100 1721 2110 1221 2102 1219 2102 1217 2102 1214 2102 1199 2115 1065 2115 972 2102 970 2102 905 2113 892 2102 890 2102 887 2102 786 2102 783 2102 710 2113 615 2102 612 2102 610 2102 608 2102 595 2110 597 2145"/>
+                        </Shape>
+                        <String CONTENT="their animals. The race begins in earnest on the way back, and becomes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l21" HPOS="597" VPOS="2169" WIDTH="849" HEIGHT="58" BASELINE="599 2199 1446 2206" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="599 2199 597 2216 612 2225 615 2225 617 2225 619 2225 723 2216 881 2227 883 2227 1444 2219 1446 2206 1444 2175 599 2169 599 2199"/>
+                        </Shape>
+                        <String CONTENT="very exciting as they near the prize."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-342_r5" HPOS="602" VPOS="2227" WIDTH="1778" HEIGHT="536" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="602 2227 2380 2227 2380 2763 602 2763"/>
+                    </Shape>
+                    <TextLine ID="mz_1-342_l22" HPOS="706" VPOS="2223" WIDTH="1665" HEIGHT="61" BASELINE="708 2260 2371 2268" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="708 2260 706 2273 2367 2284 2371 2268 2369 2236 708 2223 708 2260"/>
+                        </Shape>
+                        <String CONTENT="The onlookers are very enthusiastic, and meet the racers with encouraging"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l23" HPOS="591" VPOS="2288" WIDTH="1778" HEIGHT="58" BASELINE="593 2320 2369 2325" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="593 2320 591 2336 617 2346 619 2346 621 2346 2367 2338 2369 2325 2367 2294 593 2288 593 2320"/>
+                        </Shape>
+                        <String CONTENT="cries or hootings. The winner snatches the prize, and the race is over. Often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l24" HPOS="593" VPOS="2349" WIDTH="1778" HEIGHT="60" BASELINE="595 2379 2371 2385" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2379 593 2392 615 2405 617 2405 619 2405 1165 2396 1777 2409 1780 2409 2369 2398 2371 2385 2369 2355 595 2349 595 2379"/>
+                        </Shape>
+                        <String CONTENT="one or two minor prizes are also put up by other people of the camp. These"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l25" HPOS="593" VPOS="2409" WIDTH="1778" HEIGHT="50" BASELINE="595 2442 2371 2446" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2442 593 2455 2367 2459 2371 2446 2369 2413 595 2409 595 2442"/>
+                        </Shape>
+                        <String CONTENT="are taken by the next comers in order. Sometimes there is also a small stake"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l26" HPOS="593" VPOS="2468" WIDTH="1776" HEIGHT="58" BASELINE="595 2498 2369 2507" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2498 593 2511 625 2524 628 2524 630 2526 2367 2526 2369 2507 2367 2474 595 2468 595 2498"/>
+                        </Shape>
+                        <String CONTENT="for the last comer, partly in derision, partly (according to a native saying)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l27" HPOS="602" VPOS="2526" WIDTH="1769" HEIGHT="63" BASELINE="604 2556 2371 2563" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="604 2556 602 2572 641 2585 643 2585 645 2585 1156 2576 1208 2587 1210 2587 1639 2578 1780 2589 1782 2589 2369 2578 2371 2563 2369 2533 604 2526 604 2556"/>
+                        </Shape>
+                        <String CONTENT="“to console him for his disgrace.” The host takes part in the race, but it is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l28" HPOS="593" VPOS="2580" WIDTH="1776" HEIGHT="59" BASELINE="595 2623 2369 2619" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2623 595 2639 2367 2636 2369 2619 2364 2591 1489 2580 1487 2580 1485 2580 1483 2580 1483 2582 1472 2591 725 2582 723 2582 593 2593 595 2623"/>
+                        </Shape>
+                        <String CONTENT="regarded as discourteous if he seriously tries to beat his guests out of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l29" HPOS="595" VPOS="2641" WIDTH="1776" HEIGHT="63" BASELINE="595 2684 2371 2684" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2684 595 2704 2371 2697 2371 2684 2371 2654 2221 2654 2198 2641 2195 2641 2193 2641 2105 2652 2076 2641 2074 2641 2072 2641 2070 2641 2068 2641 2050 2652 2007 2641 2005 2641 2003 2641 2001 2641 1998 2641 1983 2654 1871 2654 1816 2641 1814 2641 1745 2652 1693 2641 1691 2641 1689 2641 1656 2652 1624 2641 1622 2641 1619 2641 1617 2641 1615 2641 1600 2654 1435 2654 1375 2641 1373 2641 1316 2652 1262 2641 1260 2641 1258 2641 1227 2652 1149 2641 1147 2641 1145 2641 1115 2652 1078 2641 1076 2641 1074 2641 1071 2641 1069 2641 1054 2654 894 2654 773 2641 770 2641 710 2652 647 2641 645 2641 595 2652 595 2684"/>
+                        </Shape>
+                        <String CONTENT="prize. If he comes in first, he will not touch the prize; or, if there is more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l30" HPOS="595" VPOS="2695" WIDTH="1728" HEIGHT="67" BASELINE="597 2736 2323 2747" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 2736 595 2751 2319 2762 2323 2747 2321 2717 2001 2704 1998 2704 1996 2704 1994 2704 1977 2714 1899 2701 1897 2701 1691 2712 1583 2699 1580 2699 1578 2699 1544 2710 1442 2699 1440 2699 1331 2710 1288 2697 1286 2697 1284 2697 1282 2697 1258 2708 1082 2697 1080 2697 998 2708 972 2697 970 2697 968 2697 965 2697 942 2708 890 2695 887 2695 885 2695 883 2695 853 2708 654 2708 638 2695 636 2695 634 2695 632 2695 630 2695 597 2704 597 2736"/>
+                        </Shape>
+                        <String CONTENT="than one prize, he will take the smallest, leaving the others for his guests."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-342_r6" HPOS="602" VPOS="2763" WIDTH="1778" HEIGHT="476" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="602 2763 2380 2763 2380 3239 602 3239"/>
+                    </Shape>
+                    <TextLine ID="mz_1-342_l31" HPOS="706" VPOS="2753" WIDTH="1661" HEIGHT="72" BASELINE="708 2797 2367 2810" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="708 2797 706 2810 721 2820 723 2820 725 2820 727 2820 831 2812 987 2823 989 2825 2364 2825 2367 2810 2364 2777 2133 2764 2130 2764 2128 2764 2096 2775 2076 2762 2074 2762 2072 2762 2070 2762 1845 2773 1773 2760 1771 2760 1665 2771 1648 2760 1645 2760 1643 2760 1641 2760 1513 2769 1498 2758 1496 2758 1494 2758 1492 2758 1489 2758 1461 2769 1418 2758 1416 2758 1414 2758 1412 2758 1381 2769 1284 2758 1282 2758 998 2766 985 2756 985 2753 983 2753 981 2753 978 2753 976 2753 957 2764 935 2753 933 2753 931 2753 929 2753 926 2753 909 2764 883 2753 881 2753 879 2753 708 2760 708 2797"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee are passionately fond of reindeer-racing. In the spring,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l32" HPOS="595" VPOS="2827" WIDTH="1774" HEIGHT="52" BASELINE="597 2857 2369 2864" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="597 2857 595 2872 2364 2879 2369 2864 2367 2833 597 2827 597 2857"/>
+                        </Shape>
+                        <String CONTENT="which is the usual season for the sport, some of the young people undertake"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l33" HPOS="593" VPOS="2877" WIDTH="1776" HEIGHT="67" BASELINE="595 2918 2369 2924" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2918 593 2931 664 2944 667 2944 2367 2937 2369 2924 2367 2894 2245 2894 2230 2881 2228 2881 2226 2881 2037 2881 2035 2881 2033 2881 2031 2881 2014 2892 1775 2879 1773 2879 1771 2879 1747 2892 1570 2892 1546 2879 1544 2879 1541 2879 1476 2890 1295 2879 1292 2879 1221 2890 1186 2877 1184 2877 1182 2877 1113 2888 595 2883 595 2918"/>
+                        </Shape>
+                        <String CONTENT="long journeys to try their reindeer against a possible rival. Doubtful races"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l34" HPOS="593" VPOS="2944" WIDTH="1780" HEIGHT="54" BASELINE="595 2976 2373 2983" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 2976 593 2992 2369 2998 2373 2983 2369 2944 595 2944 595 2976"/>
+                        </Shape>
+                        <String CONTENT="often lead to quarrels, and even to feuds. I had a chance to observe one of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l35" HPOS="593" VPOS="3005" WIDTH="1776" HEIGHT="51" BASELINE="595 3037 2369 3043" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 3037 593 3050 2364 3056 2369 3043 2367 3011 595 3005 595 3037"/>
+                        </Shape>
+                        <String CONTENT="these in 1896 in the East Anui camps on the Wolverene River. Two rivals"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l36" HPOS="593" VPOS="3067" WIDTH="1776" HEIGHT="48" BASELINE="595 3098 2369 3102" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 3098 593 3111 2364 3115 2369 3102 2367 3072 595 3067 595 3098"/>
+                        </Shape>
+                        <String CONTENT="of several years standing met in a race. When one had almost reached the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l37" HPOS="595" VPOS="3115" WIDTH="1772" HEIGHT="65" BASELINE="595 3156 2367 3163" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="595 3156 595 3180 2364 3180 2367 3163 2364 3132 2167 3119 2165 3119 2096 3130 2063 3119 2061 3119 2059 3119 2057 3119 2020 3130 1970 3119 1968 3119 1901 3130 1849 3119 1847 3119 1845 3119 1812 3130 1777 3117 1775 3117 1773 3117 1719 3128 1706 3117 1704 3117 1702 3117 1700 3117 1648 3128 1600 3117 1598 3117 1596 3117 1381 3128 1347 3117 1344 3117 1342 3117 1340 3117 1312 3128 1256 3117 1253 3117 1184 3128 1104 3115 1102 3115 595 3124 595 3156"/>
+                        </Shape>
+                        <String CONTENT="goal, one of his reindeer suddenly stumbled and fell, thus allowing the other"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-342_l38" HPOS="593" VPOS="3186" WIDTH="1774" HEIGHT="52" BASELINE="595 3217 2367 3221" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2360 3189 595 3186 595 3217 593 3234 2362 3238 2367 3221 2364 3202 2360 3189"/>
+                        </Shape>
+                        <String CONTENT="man to capture the prize. A quarrel ensued; and the winner, who had the"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-342_r7" HPOS="602" VPOS="3239" WIDTH="1778" HEIGHT="85" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="602 3239 2380 3239 2380 3324 602 3324"/>
+                    </Shape>
+                    <TextLine ID="mz_1-342_l39" HPOS="1422" VPOS="3245" WIDTH="115" HEIGHT="78" BASELINE="1422 3288 1537 3288" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1422 3288 1422 3321 1535 3323 1537 3288 1535 3245 1422 3247 1422 3288"/>
+                        </Shape>
+                        <String CONTENT="[264]"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

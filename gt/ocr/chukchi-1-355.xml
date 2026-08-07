@@ -1,0 +1,392 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-355.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-355.png; regions_from: zones/chukchi-1-355.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_6" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-355_r1" HPOS="433" VPOS="623" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_5">
+<Shape>
+                        <Polygon POINTS="433 623 2211 623 2211 713 433 713"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l1" HPOS="1009" VPOS="636" WIDTH="621" HEIGHT="54" BASELINE="1011 671 1630 675" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1617 638 1020 636 1011 640 1011 671 1009 686 1626 690 1630 675 1628 664 1617 638"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l2" HPOS="2111" VPOS="647" WIDTH="87" HEIGHT="60" BASELINE="2111 684 2198 684" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2111 684 2111 707 2198 699 2198 684 2198 647 2111 647 2111 684"/>
+                        </Shape>
+                        <String CONTENT="273"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r2" HPOS="433" VPOS="738" WIDTH="1778" HEIGHT="303" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="433 738 2211 738 2211 1041 433 1041"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l3" HPOS="435" VPOS="751" WIDTH="1771" HEIGHT="47" BASELINE="435 781 2206 781" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 781 435 798 2206 798 2206 781 2206 751 435 751 435 781"/>
+                        </Shape>
+                        <String CONTENT="winner has the right to give the loser a stroke on the palm of his hand with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l4" HPOS="433" VPOS="801" WIDTH="1773" HEIGHT="58" BASELINE="435 842 2206 837" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 842 435 859 2204 855 2206 837 2202 809 452 801 450 801 448 801 446 801 433 807 435 842"/>
+                        </Shape>
+                        <String CONTENT="the stick used in the game, for every point he has gained on him. The game"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l5" HPOS="435" VPOS="868" WIDTH="1769" HEIGHT="56" BASELINE="435 902 2204 902" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 902 435 917 2202 924 2204 902 2204 872 435 868 435 902"/>
+                        </Shape>
+                        <String CONTENT="is sometimes varied by throwing a bundle of sticks into the air and catching"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l6" HPOS="433" VPOS="917" WIDTH="1773" HEIGHT="68" BASELINE="435 959 2206 963" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 959 433 976 446 985 448 985 450 985 452 985 2204 976 2206 963 2204 933 1780 920 1777 920 1713 930 1682 920 1680 920 1678 920 1676 920 1654 930 1628 920 1626 920 1624 920 1509 930 1470 920 1468 920 1466 920 1463 920 1461 920 1444 933 1340 933 1323 917 1321 917 1318 917 1316 917 1253 928 1210 917 1208 917 1206 917 1128 928 1050 917 1048 917 1046 917 1013 928 918 917 916 917 913 917 868 928 825 917 822 917 820 917 818 917 796 928 734 917 731 917 729 917 706 928 660 917 658 917 656 917 435 926 435 959"/>
+                        </Shape>
+                        <String CONTENT="them with the hand as they fall. The scoring and the ultimate reward are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l7" HPOS="433" VPOS="987" WIDTH="885" HEIGHT="56" BASELINE="435 1017 1318 1021" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1017 433 1034 439 1041 439 1043 441 1043 443 1043 446 1043 1316 1034 1318 1021 1316 991 435 987 435 1017"/>
+                        </Shape>
+                        <String CONTENT="identical with those of the hoop-game."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r3" HPOS="433" VPOS="1041" WIDTH="1778" HEIGHT="363" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 1041 2211 1041 2211 1404 433 1404"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l8" HPOS="537" VPOS="1045" WIDTH="1674" HEIGHT="59" BASELINE="539 1078 2211 1082" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="539 1078 537 1091 563 1104 565 1104 567 1104 2208 1095 2211 1082 2208 1050 539 1045 539 1078"/>
+                        </Shape>
+                        <String CONTENT="Gambling-games are little known among the Chukchee. I was told that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l9" HPOS="430" VPOS="1097" WIDTH="1778" HEIGHT="61" BASELINE="433 1143 2208 1138" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="433 1143 433 1158 2206 1153 2208 1138 2204 1110 1687 1097 1684 1097 1682 1097 1648 1108 1550 1097 1548 1097 1546 1097 1507 1108 1388 1097 1386 1097 1271 1110 723 1099 721 1099 718 1099 693 1110 630 1099 628 1099 625 1099 623 1099 608 1112 430 1112 433 1143"/>
+                        </Shape>
+                        <String CONTENT="among the Maritime Chukchee on the Arctic shore there is a simple game"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l10" HPOS="435" VPOS="1171" WIDTH="1776" HEIGHT="54" BASELINE="435 1201 2211 1201" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1201 435 1225 2211 1216 2211 1201 2211 1171 435 1171 435 1201"/>
+                        </Shape>
+                        <String CONTENT="played for stakes, which consists in throwing a small piece of gristle against"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l11" HPOS="433" VPOS="1216" WIDTH="1775" HEIGHT="59" BASELINE="435 1262 2208 1257" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1262 435 1275 2206 1270 2208 1257 2206 1229 2156 1216 2154 1216 2152 1216 2150 1216 2105 1227 1903 1216 1901 1216 1829 1227 1801 1216 1799 1216 1797 1216 1723 1227 1700 1216 1697 1216 1695 1216 1693 1216 1648 1227 1613 1216 1611 1216 1609 1216 1606 1216 1576 1227 1479 1216 1476 1216 1474 1216 1472 1216 1459 1227 1433 1216 1431 1216 1429 1216 1342 1227 1325 1216 1323 1216 1321 1216 1318 1216 1316 1216 1269 1229 1238 1218 1236 1218 1234 1218 1156 1229 994 1218 991 1218 989 1218 987 1218 968 1231 725 1231 654 1218 651 1218 649 1218 615 1229 502 1218 500 1218 433 1231 435 1262"/>
+                        </Shape>
+                        <String CONTENT="a large flat stone so that it will rebound high in the air. The one who"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l12" HPOS="433" VPOS="1277" WIDTH="1773" HEIGHT="63" BASELINE="435 1322 2206 1318" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1322 435 1337 2202 1340 2206 1318 2202 1290 1550 1277 1548 1277 1546 1277 1544 1277 1526 1290 1420 1290 1327 1277 1325 1277 1323 1277 1286 1290 1199 1279 1197 1279 874 1290 777 1279 775 1279 706 1290 645 1279 643 1279 641 1279 604 1290 500 1279 498 1279 433 1292 435 1322"/>
+                        </Shape>
+                        <String CONTENT="catches the gristle gets the stakes, which are usually matches, copper caps,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l13" HPOS="435" VPOS="1335" WIDTH="589" HEIGHT="61" BASELINE="437 1381 1024 1376" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 1381 437 1396 1022 1394 1024 1376 1020 1348 801 1335 799 1335 796 1335 775 1346 567 1337 565 1337 563 1337 537 1348 508 1337 506 1337 504 1337 435 1350 437 1381"/>
+                        </Shape>
+                        <String CONTENT="and similar small objects."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r4" HPOS="433" VPOS="1404" WIDTH="1778" HEIGHT="233" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 1404 2211 1404 2211 1637 433 1637"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l14" HPOS="545" VPOS="1409" WIDTH="1666" HEIGHT="48" BASELINE="545 1439 2211 1439" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="545 1439 545 1457 2211 1457 2211 1439 2211 1409 545 1409 545 1439"/>
+                        </Shape>
+                        <String CONTENT="At the present time many camps and villages have learned to play cards"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l15" HPOS="433" VPOS="1457" WIDTH="1775" HEIGHT="60" BASELINE="435 1498 2208 1493" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1498 435 1517 2206 1513 2208 1493 2204 1465 450 1457 448 1457 446 1457 443 1457 433 1463 435 1498"/>
+                        </Shape>
+                        <String CONTENT="from their Russian neighbors or from American whalers. Among the Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l16" HPOS="433" VPOS="1517" WIDTH="1775" HEIGHT="59" BASELINE="435 1558 2208 1554" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1558 435 1576 2206 1571 2208 1554 2204 1526 450 1517 448 1517 446 1517 443 1517 433 1524 435 1558"/>
+                        </Shape>
+                        <String CONTENT="Chukchee of the Kolyma, passionate gamblers may now be met who have lost"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l17" HPOS="435" VPOS="1589" WIDTH="1284" HEIGHT="58" BASELINE="435 1619 1719 1619" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1619 435 1634 693 1634 703 1643 703 1645 706 1645 708 1645 710 1647 796 1647 796 1645 799 1645 801 1645 801 1643 812 1634 848 1645 851 1645 853 1645 991 1634 1479 1634 1544 1645 1546 1645 1719 1632 1719 1619 1719 1589 435 1589 435 1619"/>
+                        </Shape>
+                        <String CONTENT="their all in play against more clever Russian neighbors."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r5" HPOS="433" VPOS="1637" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 1637 2211 1637 2211 1935 433 1935"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l18" HPOS="539" VPOS="1636" WIDTH="1676" HEIGHT="59" BASELINE="541 1680 2215 1675" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="541 1680 541 1695 2213 1690 2215 1675 2211 1641 560 1636 558 1636 556 1636 554 1636 539 1643 541 1680"/>
+                        </Shape>
+                        <String CONTENT="Children have various toys, most of them small imitations of objects of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l19" HPOS="435" VPOS="1708" WIDTH="1776" HEIGHT="47" BASELINE="435 1738 2211 1738" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 1738 435 1755 2211 1755 2211 1738 2211 1708 435 1708 435 1738"/>
+                        </Shape>
+                        <String CONTENT="every-day life, such as little boots, sledges, wooden or ivory dogs and reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l20" HPOS="437" VPOS="1766" WIDTH="1774" HEIGHT="50" BASELINE="437 1799 2211 1799" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 1799 437 1816 2211 1816 2211 1799 2208 1766 437 1766 437 1799"/>
+                        </Shape>
+                        <String CONTENT="with the proper harness, snowshoes, bows and arrows. Grasping in each hand"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l21" HPOS="435" VPOS="1816" WIDTH="1776" HEIGHT="61" BASELINE="437 1859 2211 1855" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 1859 437 1877 2208 1872 2211 1855 2206 1827 1353 1816 1351 1816 1349 1816 1318 1827 517 1818 515 1818 435 1829 437 1859"/>
+                        </Shape>
+                        <String CONTENT="a slender willow branch having many offshoots to represent antlers, the boys"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l22" HPOS="435" VPOS="1874" WIDTH="983" HEIGHT="72" BASELINE="437 1920 1418 1916" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 1920 437 1935 667 1946 669 1946 671 1946 703 1935 744 1946 747 1946 749 1946 751 1946 753 1946 753 1944 764 1935 1197 1944 1199 1944 1201 1944 1204 1944 1204 1942 1214 1933 1416 1933 1418 1916 1414 1887 1266 1874 1264 1874 1169 1885 1134 1874 1132 1874 1130 1874 1128 1874 1102 1885 1069 1874 1067 1874 1065 1874 1063 1874 1041 1885 903 1877 900 1877 898 1877 874 1887 851 1877 848 1877 846 1877 844 1877 842 1877 842 1879 831 1890 680 1890 593 1877 591 1877 534 1887 476 1877 474 1877 472 1877 435 1890 437 1920"/>
+                        </Shape>
+                        <String CONTENT="will gallop up and down, playing reindeer."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r6" HPOS="433" VPOS="1935" WIDTH="1778" HEIGHT="788" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 1935 2211 1935 2211 2723 433 2723"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l23" HPOS="547" VPOS="1939" WIDTH="1668" HEIGHT="67" BASELINE="550 1980 2215 1972" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="550 1980 550 1993 922 2006 924 2006 1002 1993 1366 2004 1368 2004 1370 2004 1414 1991 1587 1991 1611 2002 1613 2002 1615 2002 1736 1991 1769 2002 1771 2002 1773 2002 1775 2002 1777 2002 1795 1989 1808 2000 1810 2000 1812 2000 1814 2000 2213 1987 2215 1972 2208 1939 547 1939 550 1980"/>
+                        </Shape>
+                        <String CONTENT="Tops (Fig. 197, b) are favorite toys. Their shape is similar to that of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l24" HPOS="435" VPOS="1993" WIDTH="1769" HEIGHT="63" BASELINE="437 2039 2204 2035" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 2039 437 2056 2202 2052 2204 2035 2200 2006 2048 1993 2046 1993 2044 1993 2042 1993 2027 2006 1860 2006 1832 1993 1829 1993 1827 1993 1771 2004 1741 1993 1739 1993 1736 1993 1734 1993 1691 2004 1658 1993 1656 1993 1654 1993 1496 2004 1472 1993 1470 1993 1468 1993 1466 1993 1463 1993 1448 2004 550 1996 547 1996 545 1996 515 2006 461 1996 459 1996 456 1996 454 1996 435 2004 437 2039"/>
+                        </Shape>
+                        <String CONTENT="the American Eskimo top. Buzzes (Fig. 197, c) are made of various materials, —"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l25" HPOS="435" VPOS="2067" WIDTH="1773" HEIGHT="48" BASELINE="435 2097 2208 2097" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 2097 435 2115 2208 2115 2208 2097 2208 2067 435 2067 435 2097"/>
+                        </Shape>
+                        <String CONTENT="ivory, wood, tough skin, and even a piece of dried fish. Much of the ivory"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l26" HPOS="437" VPOS="2128" WIDTH="1774" HEIGHT="45" BASELINE="437 2156 2211 2156" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 2156 437 2173 2211 2173 2211 2156 2211 2128 437 2128 437 2156"/>
+                        </Shape>
+                        <String CONTENT="carving is also used by children for toys. An implement exactly like that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l27" HPOS="435" VPOS="2186" WIDTH="1776" HEIGHT="48" BASELINE="435 2216 2211 2216" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 2216 435 2234 2211 2234 2211 2216 2211 2186 435 2186 435 2216"/>
+                        </Shape>
+                        <String CONTENT="represented by Nelson¹ is used by the Chukchee as a kind of top. A specimen"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l28" HPOS="435" VPOS="2245" WIDTH="1778" HEIGHT="49" BASELINE="435 2277 2213 2277" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 2277 435 2294 2213 2294 2213 2277 2211 2245 435 2245 435 2277"/>
+                        </Shape>
+                        <String CONTENT="of it was obtained on Anadyr Bay (Fig. 197, d). It consists of a horizontal"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l29" HPOS="435" VPOS="2294" WIDTH="1776" HEIGHT="61" BASELINE="435 2338 2211 2338" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="435 2338 435 2355 2211 2355 2211 2338 2211 2305 2185 2294 2182 2294 2180 2294 2074 2305 2037 2294 2035 2294 2033 2294 2031 2294 1996 2305 1570 2294 1567 2294 1444 2305 1416 2294 1414 2294 1412 2294 1340 2305 1310 2294 1308 2294 1305 2294 1303 2294 1269 2305 1210 2294 1208 2294 1206 2294 1169 2305 1061 2294 1059 2294 872 2305 816 2294 814 2294 744 2305 697 2294 695 2294 693 2294 690 2294 651 2305 608 2294 606 2294 604 2294 602 2294 576 2305 513 2294 511 2294 435 2305 435 2338"/>
+                        </Shape>
+                        <String CONTENT="antler handle with one end broadened and containing a hole, through which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l30" HPOS="435" VPOS="2355" WIDTH="1778" HEIGHT="69" BASELINE="437 2400 2213 2394" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 2400 437 2418 955 2413 1020 2424 1022 2424 1024 2424 1026 2424 1041 2411 1191 2411 1210 2422 1212 2422 1214 2422 1217 2422 1531 2411 1617 2422 1619 2422 1622 2422 1650 2409 1671 2420 1674 2420 1676 2420 2211 2407 2213 2394 2208 2364 1065 2355 1063 2355 1000 2366 615 2357 612 2357 435 2368 437 2400"/>
+                        </Shape>
+                        <String CONTENT="passes the rod of the top to be spun. This is kept from slipping out of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l31" HPOS="435" VPOS="2424" WIDTH="1776" HEIGHT="50" BASELINE="437 2459 2211 2455" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 2459 437 2474 2208 2470 2211 2455 2206 2424 435 2424 437 2459"/>
+                        </Shape>
+                        <String CONTENT="handle by a knob at the upper end and a square piece of wood at the bottom."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l32" HPOS="439" VPOS="2478" WIDTH="1772" HEIGHT="55" BASELINE="441 2515 2211 2511" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="441 2515 441 2533 2208 2528 2211 2511 2204 2478 439 2481 441 2515"/>
+                        </Shape>
+                        <String CONTENT="The latter forms the body of the top. In spinning the top, a cord is wound"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l33" HPOS="435" VPOS="2533" WIDTH="1778" HEIGHT="60" BASELINE="437 2578 2213 2574" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 2578 437 2593 2211 2589 2213 2574 2208 2543 1351 2533 1349 2533 1347 2533 1318 2543 578 2535 576 2535 435 2546 437 2578"/>
+                        </Shape>
+                        <String CONTENT="around the rod above where it passes through the handle and just under the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l34" HPOS="435" VPOS="2589" WIDTH="1773" HEIGHT="65" BASELINE="437 2639 2208 2632" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 2639 437 2654 2206 2649 2208 2632 2202 2595 1884 2600 1847 2589 1845 2589 1842 2589 1747 2600 1726 2589 1723 2589 1721 2589 1719 2589 1717 2589 1702 2600 1598 2591 1596 2591 1511 2602 1472 2591 1470 2591 1468 2591 1394 2602 1373 2591 1370 2591 1368 2591 1273 2602 1167 2591 1165 2591 835 2604 757 2593 755 2593 753 2593 751 2593 736 2604 708 2593 706 2593 703 2593 701 2593 699 2593 682 2604 619 2593 617 2593 560 2604 547 2593 545 2593 543 2593 448 2593 446 2593 443 2593 441 2593 441 2595 435 2600 437 2639"/>
+                        </Shape>
+                        <String CONTENT="knob. By holding the top vertically and pulling the string off quickly, it will"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l35" HPOS="435" VPOS="2656" WIDTH="1531" HEIGHT="58" BASELINE="437 2699 1966 2693" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 2699 437 2714 1964 2714 1966 2693 1962 2662 493 2656 491 2656 435 2667 437 2699"/>
+                        </Shape>
+                        <String CONTENT="spin rapidly for a short time with the knob resting on the handle."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r7" HPOS="433" VPOS="2723" WIDTH="1778" HEIGHT="471" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="433 2723 2211 2723 2211 3194 433 3194"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l36" HPOS="550" VPOS="2721" WIDTH="1658" HEIGHT="52" BASELINE="550 2758 2208 2758" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="550 2758 550 2773 2208 2773 2208 2758 2208 2725 550 2721 550 2758"/>
+                        </Shape>
+                        <String CONTENT="I obtained from the Kerek three specimens of the same implement (Fig."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l37" HPOS="441" VPOS="2773" WIDTH="1767" HEIGHT="63" BASELINE="443 2823 2208 2814" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="443 2823 443 2836 2206 2829 2208 2814 2204 2782 1355 2773 1353 2773 1351 2773 1314 2784 961 2775 959 2775 441 2788 443 2823"/>
+                        </Shape>
+                        <String CONTENT="197, e). They are made of ivory and adorned with various geometrical designs."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l38" HPOS="439" VPOS="2838" WIDTH="1767" HEIGHT="60" BASELINE="441 2872 2206 2877" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="441 2872 439 2888 454 2898 456 2898 459 2898 461 2898 2204 2894 2206 2877 2204 2844 441 2838 441 2872"/>
+                        </Shape>
+                        <String CONTENT="The handle is bent slightly downwards. The hole and the knob are serrated,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l39" HPOS="437" VPOS="2894" WIDTH="1771" HEIGHT="59" BASELINE="439 2937 2208 2933" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="439 2937 439 2953 2206 2948 2208 2933 2204 2905 1347 2894 1344 2894 1271 2905 537 2896 534 2896 437 2907 439 2937"/>
+                        </Shape>
+                        <String CONTENT="so that in revolving the constant chafing produces a sort of buzzing noise."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l40" HPOS="439" VPOS="2950" WIDTH="1774" HEIGHT="61" BASELINE="441 2996 2213 2992" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="441 2996 441 3011 2211 3007 2213 2992 2211 2963 2161 2950 2159 2950 2156 2950 2096 2961 2001 2950 1998 2950 1944 2961 1875 2950 1873 2950 1871 2950 1847 2961 1561 2950 1559 2950 1409 2961 1379 2950 1377 2950 1375 2950 1373 2950 1323 2963 1308 2953 1305 2953 1303 2953 1301 2953 1206 2963 1167 2953 1165 2953 1162 2953 1082 2963 996 2953 994 2953 935 2963 842 2953 840 2953 838 2953 803 2963 727 2953 725 2953 723 2953 695 2963 667 2953 664 2953 662 2953 660 2953 623 2963 589 2953 586 2953 584 2953 582 2953 552 2963 500 2953 498 2953 439 2959 441 2996"/>
+                        </Shape>
+                        <String CONTENT="The knob has four sides, with similar face designs on opposite sides. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l41" HPOS="437" VPOS="3024" WIDTH="1776" HEIGHT="48" BASELINE="437 3054 2213 3054" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="437 3054 437 3072 2213 3072 2213 3054 2213 3026 437 3024 437 3054"/>
+                        </Shape>
+                        <String CONTENT="implement is used for a kind of game in which four persons take part, two"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l42" HPOS="435" VPOS="3072" WIDTH="1778" HEIGHT="65" BASELINE="437 3115 2213 3111" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2198 3080 1409 3072 1407 3072 1318 3082 597 3074 595 3074 435 3085 437 3115 437 3128 2189 3137 2191 3137 2193 3137 2195 3137 2213 3126 2213 3111 2211 3108 2198 3080"/>
+                        </Shape>
+                        <String CONTENT="on a side. Two of the faces on one specimen have big round eyes; on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-355_l43" HPOS="435" VPOS="3134" WIDTH="1776" HEIGHT="59" BASELINE="437 3178 2211 3171" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="2204 3139 480 3134 478 3134 476 3134 435 3145 437 3178 437 3193 2211 3186 2211 3171 2206 3141 2204 3139"/>
+                        </Shape>
+                        <String CONTENT="other specimens they are marked with a curved line across the cheeks. These"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r8" HPOS="433" VPOS="3219" WIDTH="1778" HEIGHT="49" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="433 3219 2211 3219 2211 3268 433 3268"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l44" HPOS="1115" VPOS="3215" WIDTH="429" HEIGHT="47" BASELINE="1115 3241 1544 3241" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="1115 3241 1115 3262 1544 3262 1544 3241 1544 3215 1115 3215 1115 3241"/>
+                        </Shape>
+                        <String CONTENT="¹ Nelson, Fig. 31, p. 112."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-355_r9" HPOS="433" VPOS="3292" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="433 3292 2211 3292 2211 3352 433 3352"/>
+                    </Shape>
+                    <TextLine ID="mz_1-355_l45" HPOS="437" VPOS="3286" WIDTH="697" HEIGHT="52" BASELINE="439 3321 1134 3312" TAGREFS="TYPE_6">
+                        <Shape>
+                            <Polygon POINTS="439 3321 439 3338 1132 3331 1134 3312 1128 3286 437 3292 439 3321"/>
+                        </Shape>
+                        <String CONTENT="35—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

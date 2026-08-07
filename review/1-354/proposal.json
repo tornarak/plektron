@@ -1,0 +1,19 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "272", "note": "Folio in RunningTitleZone; line box strangles it (width 24px) but the full number 272 is legible on the composite. §2.12: plain ASCII digits.", "class": "layout"},
+    "2": {"text": "A game which is called oˊkkal is played with a slender stick and a",
+          "resolved": "oˊkkal = o, U+02CA, k, k, a, l",
+          "note": "Raised mark before kkal keyed as stress U+02CA per §4/keying_spec.md 'read every raised mark as stress by default' — no attested apostrophe/spirant instance corpus-wide.",
+          "class": "doubt"},
+    "3": {"text": "number of small wooden hoops of various sizes (Fig. 197, a). The hoops"},
+    "4": {"text": "are thrown upwards in a bunch, and one of the party tries to catch on the"},
+    "5": {"text": "stick as many hoops as possible. The hoops caught are taken off in pairs"},
+    "6": {"text": "and returned to the general bunch. If there is an odd hoop left over, it is"},
+    "7": {"text": "said to be “killed.” It is left out of the lot thrown up, and counts one for"},
+    "8": {"text": "the lucky catcher. This odd hoop also gives him the right to try again. If"},
+    "9": {"text": "no hoop, or an even number of hoops, is caught, the turn is forfeited, and"},
+    "10": {"text": "the next party begins to play. After all the hoops have been “killed,” the"}
+  },
+  "contamination": {"blind": true}
+}

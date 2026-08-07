@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-318.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-318.png; regions_from: zones/chukchi-1-318.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-318_r1" HPOS="580" VPOS="624" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="580 624 2358 624 2358 719 580 719"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l1" HPOS="1156" VPOS="638" WIDTH="617" HEIGHT="56" BASELINE="1158 675 1773 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1762 651 1741 640 1734 638 1169 640 1156 651 1158 675 1158 694 1771 690 1773 671 1767 653 1762 651"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l2" HPOS="584" VPOS="636" WIDTH="109" HEIGHT="71" BASELINE="586 684 693 679" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 636 651 636 595 649 584 673 586 684 586 694 636 707 638 707 641 707 693 690 693 679 690 649 656 636 654 636"/>
+                        </Shape>
+                        <String CONTENT="248"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-318_r2" HPOS="580" VPOS="742" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="580 742 2358 742 2358 929 580 929"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l3" HPOS="684" VPOS="749" WIDTH="1667" HEIGHT="52" BASELINE="686 783 2351 777" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2330 751 2308 751 2286 749 2265 749 684 749 686 783 686 801 2349 794 2351 777 2347 751 2330 751"/>
+                        </Shape>
+                        <String CONTENT="Women’s caps and mittens are quite similar to those of men. The women"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l4" HPOS="573" VPOS="801" WIDTH="1781" HEIGHT="75" BASELINE="576 848 2354 837" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="576 848 576 876 669 863 872 874 874 874 877 874 931 861 1489 868 1492 868 1728 857 1868 868 1871 868 1983 866 1985 866 1988 866 2001 855 2180 866 2182 866 2289 855 2310 866 2312 866 2315 866 2317 866 2354 853 2354 837 2349 801 1310 801 1308 801 1305 801 1273 811 1117 803 1115 803 926 814 606 805 604 805 602 805 573 814 576 848"/>
+                        </Shape>
+                        <String CONTENT="also tie bright cotton handkerchiefs around their heads, after the manner of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l5" HPOS="578" VPOS="861" WIDTH="312" HEIGHT="61" BASELINE="578 904 890 904" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 904 578 922 890 922 890 904 890 874 680 861 677 861 628 872 606 861 604 861 602 861 599 861 578 872 578 904"/>
+                        </Shape>
+                        <String CONTENT="the Russians."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-318_r3" HPOS="580" VPOS="929" WIDTH="1778" HEIGHT="605" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="580 929 2358 929 2358 1534 580 1534"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l6" HPOS="682" VPOS="922" WIDTH="1669" HEIGHT="60" BASELINE="684 965 2351 961" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="684 965 684 982 2349 982 2351 961 2347 930 695 922 693 922 690 922 688 922 688 924 682 928 684 965"/>
+                        </Shape>
+                        <String CONTENT="SUMMER CLOTHING. — The Chukchee have no special summer garments,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l7" HPOS="576" VPOS="976" WIDTH="1775" HEIGHT="71" BASELINE="578 1028 2351 1019" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 1028 578 1047 2349 1032 2351 1019 2347 989 2280 976 2278 976 2276 976 2254 987 2156 976 2154 976 2055 987 2029 976 2027 976 2024 976 2022 976 1981 987 1949 976 1946 976 1944 976 1881 989 1842 978 1840 978 1838 978 1836 978 1808 989 1689 978 1687 978 1565 989 1470 978 1468 978 1466 978 1463 978 1450 991 1416 980 1414 980 1412 980 1409 980 1386 991 1275 980 1273 980 1271 980 1232 991 1217 980 1214 980 1212 980 1063 980 1061 980 1059 980 1015 993 723 982 721 982 576 995 578 1028"/>
+                        </Shape>
+                        <String CONTENT="properly speaking. Indeed, there is little need for them in those latitudes."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l8" HPOS="576" VPOS="1039" WIDTH="1778" HEIGHT="60" BASELINE="578 1082 2354 1078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 1082 578 1099 2351 1095 2354 1078 2349 1050 1476 1039 1474 1039 1414 1052 576 1052 578 1082"/>
+                        </Shape>
+                        <String CONTENT="Fur clothes are used all the year round; the old, half-worn clothes, which are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l9" HPOS="576" VPOS="1099" WIDTH="1778" HEIGHT="59" BASELINE="578 1143 2354 1138" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 1143 578 1158 2351 1153 2354 1138 2349 1110 1489 1099 1487 1099 1422 1110 617 1101 615 1101 612 1101 576 1112 578 1143"/>
+                        </Shape>
+                        <String CONTENT="of little use in the coldest season, being worn during the summer months."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l10" HPOS="578" VPOS="1158" WIDTH="1773" HEIGHT="60" BASELINE="580 1203 2351 1197" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="580 1203 580 1218 2349 1214 2351 1197 2347 1169 1782 1158 1780 1158 1777 1158 1754 1171 578 1171 580 1203"/>
+                        </Shape>
+                        <String CONTENT="Dampness and rain are much more destructive to fur clothing than the dry"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l11" HPOS="578" VPOS="1216" WIDTH="1773" HEIGHT="63" BASELINE="580 1264 2351 1257" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="580 1264 580 1279 2349 1275 2351 1257 2345 1225 2182 1227 2154 1216 2152 1216 2150 1216 2092 1227 2022 1216 2020 1216 2018 1216 2016 1216 2003 1227 1975 1216 1972 1216 1970 1216 1968 1216 1923 1227 1897 1216 1894 1216 1892 1216 1825 1227 1769 1216 1767 1216 1765 1216 1762 1216 1749 1227 1684 1218 1682 1218 1613 1229 1583 1218 1580 1218 1578 1218 1524 1229 1500 1218 1498 1218 1496 1218 1401 1229 1353 1218 1351 1218 1349 1218 1347 1218 1344 1218 1329 1229 1223 1218 1221 1218 1219 1218 1217 1218 1201 1229 857 1221 855 1221 853 1221 816 1231 779 1221 777 1221 775 1221 773 1221 749 1234 578 1234 580 1264"/>
+                        </Shape>
+                        <String CONTENT="snows of winter. So the Chukchee, who in mid-winter is clad in clean and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l12" HPOS="576" VPOS="1290" WIDTH="1778" HEIGHT="47" BASELINE="578 1322 2354 1318" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 1322 578 1337 2351 1333 2354 1318 2349 1290 576 1290 578 1322"/>
+                        </Shape>
+                        <String CONTENT="handsome furs, in the summer wears the worst clothing he has. Even the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l13" HPOS="578" VPOS="1337" WIDTH="1776" HEIGHT="61" BASELINE="580 1383 2354 1379" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="580 1383 580 1398 2351 1394 2354 1379 2351 1350 2302 1337 2299 1337 2297 1337 2295 1337 2265 1348 2191 1337 2189 1337 2187 1337 2152 1348 1966 1337 1964 1337 1897 1348 1769 1337 1767 1337 1765 1337 1723 1348 1684 1337 1682 1337 1680 1337 1678 1337 1650 1348 1600 1337 1598 1337 1463 1350 1433 1340 1431 1340 1429 1340 1427 1340 1396 1350 1370 1340 1368 1340 1366 1340 1364 1340 1331 1350 1117 1340 1115 1340 1059 1350 870 1340 868 1340 792 1350 753 1340 751 1340 749 1340 747 1340 725 1350 645 1340 643 1340 578 1353 580 1383"/>
+                        </Shape>
+                        <String CONTENT="well-to-do reindeer-breeders then look exceedingly shabby. The people, who"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l14" HPOS="576" VPOS="1409" WIDTH="1778" HEIGHT="52" BASELINE="578 1446 2354 1439" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="578 1446 578 1461 2351 1454 2354 1439 2347 1409 576 1409 578 1446"/>
+                        </Shape>
+                        <String CONTENT="have accustomed themselves to severe cold, apparently consider it not worth"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l15" HPOS="580" VPOS="1461" WIDTH="1750" HEIGHT="58" BASELINE="582 1504 2330 1500" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 1504 582 1519 2328 1515 2330 1500 2325 1470 619 1461 617 1461 615 1461 580 1472 582 1504"/>
+                        </Shape>
+                        <String CONTENT="while to prepare for the milder, damp weather of the short summer months."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-318_r4" HPOS="580" VPOS="1534" WIDTH="1778" HEIGHT="892" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="580 1534 2358 1534 2358 2426 580 2426"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l16" HPOS="686" VPOS="1528" WIDTH="1665" HEIGHT="52" BASELINE="688 1563 2351 1558" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="688 1563 688 1576 2347 1580 2351 1558 2347 1530 686 1528 688 1563"/>
+                        </Shape>
+                        <String CONTENT="In the summer-time coats are worn either single or double. If single,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l17" HPOS="578" VPOS="1578" WIDTH="1773" HEIGHT="63" BASELINE="580 1623 2351 1619" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="580 1623 580 1638 2347 1641 2351 1619 2347 1589 1466 1578 1463 1578 1461 1578 1416 1589 597 1580 595 1580 593 1580 591 1580 578 1586 580 1623"/>
+                        </Shape>
+                        <String CONTENT="they are always worn with the hair side in. Among the Reindeer Chukchee,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l18" HPOS="580" VPOS="1647" WIDTH="1774" HEIGHT="50" BASELINE="582 1677 2354 1682" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 1677 580 1693 2349 1697 2354 1682 2351 1651 582 1647 582 1677"/>
+                        </Shape>
+                        <String CONTENT="trousers and shoes are made of strongly smoked tent-covering (retteˊm), which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l19" HPOS="580" VPOS="1708" WIDTH="1774" HEIGHT="49" BASELINE="582 1742 2354 1736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 1742 582 1757 2351 1751 2354 1736 2349 1708 580 1708 582 1742"/>
+                        </Shape>
+                        <String CONTENT="has the advantage of not shrinking after having been wetted.¹ The trousers"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l20" HPOS="580" VPOS="1766" WIDTH="1774" HEIGHT="52" BASELINE="582 1803 2354 1799" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 1803 582 1818 2351 1814 2354 1799 2349 1768 580 1766 582 1803"/>
+                        </Shape>
+                        <String CONTENT="have the usual cut. The soles of the boots are made of hard thong-seal hide."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l21" HPOS="584" VPOS="1825" WIDTH="1772" HEIGHT="52" BASELINE="584 1861 2356 1861" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 1861 584 1877 2356 1877 2356 1861 2356 1831 584 1825 584 1861"/>
+                        </Shape>
+                        <String CONTENT="The boots often have small guards around the front to keep the toes from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l22" HPOS="580" VPOS="1887" WIDTH="1776" HEIGHT="50" BASELINE="582 1922 2356 1918" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 1922 582 1937 2354 1933 2356 1918 2351 1890 580 1887 582 1922"/>
+                        </Shape>
+                        <String CONTENT="being hurt by striking against stones and roots that lie exposed during the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l23" HPOS="580" VPOS="1937" WIDTH="1774" HEIGHT="59" BASELINE="582 1980 2354 1976" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 1980 582 1996 2351 1991 2354 1976 2349 1948 1507 1937 1505 1937 1375 1948 829 1939 827 1939 580 1950 582 1980"/>
+                        </Shape>
+                        <String CONTENT="summer. These shoes are worn with thick grass insoles, but without socks."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l24" HPOS="582" VPOS="1996" WIDTH="1776" HEIGHT="62" BASELINE="584 2043 2358 2037" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2043 584 2058 2356 2052 2358 2037 2354 2009 2094 2009 2079 1996 2076 1996 2074 1996 2072 1996 1905 2006 1873 1996 1871 1996 1868 1996 1866 1996 1838 2006 1782 1996 1780 1996 1777 1996 1749 2009 1645 1998 1643 1998 1533 2009 1446 1998 1444 1998 1392 2009 1321 1998 1318 1998 1316 1998 1279 2009 582 2006 584 2043"/>
+                        </Shape>
+                        <String CONTENT="They fit the foot closely, so that when walking ankle-deep in the numerous"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l25" HPOS="580" VPOS="2056" WIDTH="1776" HEIGHT="61" BASELINE="582 2104 2356 2097" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 2104 582 2117 2354 2113 2356 2097 2354 2069 2308 2056 2306 2056 2304 2056 2241 2067 2124 2056 2122 2056 2120 2056 2096 2067 2033 2056 2031 2056 2029 2056 1996 2067 1873 2056 1871 2056 1758 2071 1489 2071 1470 2058 1468 2058 1466 2058 1463 2058 1368 2069 1184 2058 1182 2058 1180 2058 1145 2069 1069 2061 1067 2061 1065 2061 1063 2061 1050 2071 1015 2061 1013 2061 1011 2061 580 2065 582 2104"/>
+                        </Shape>
+                        <String CONTENT="bogs and mountain brooks, very little water can remain in the shoe. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l26" HPOS="582" VPOS="2119" WIDTH="1774" HEIGHT="61" BASELINE="582 2162 2356 2162" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 2162 582 2177 2354 2180 2356 2162 2356 2130 2310 2119 2308 2119 2187 2119 2185 2119 2182 2119 2180 2119 2167 2130 2102 2119 2100 2119 2027 2130 1988 2119 1985 2119 1983 2119 1860 2130 1710 2119 1708 2119 1706 2119 1684 2130 1598 2119 1596 2119 1593 2119 1565 2132 1334 2132 1318 2119 1316 2119 1314 2119 1089 2119 1087 2119 1084 2119 1061 2132 697 2132 636 2119 634 2119 582 2130 582 2162"/>
+                        </Shape>
+                        <String CONTENT="soles, moreover, are pierced with two rows of small holes made with a bodkin,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l27" HPOS="582" VPOS="2186" WIDTH="1774" HEIGHT="52" BASELINE="584 2219 2356 2223" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2219 582 2232 2351 2238 2356 2223 2354 2190 584 2186 584 2219"/>
+                        </Shape>
+                        <String CONTENT="to facilitate the outlet of the water. Even after a long walk through water,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l28" HPOS="582" VPOS="2238" WIDTH="1776" HEIGHT="59" BASELINE="584 2281 2358 2277" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2281 584 2297 2356 2292 2358 2277 2354 2249 1483 2238 1481 2238 1479 2238 1476 2238 1463 2249 619 2240 617 2240 615 2240 582 2251 584 2281"/>
+                        </Shape>
+                        <String CONTENT="when a stretch of dry ground is reached, the shoes dry very rapidly under"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l29" HPOS="584" VPOS="2299" WIDTH="1776" HEIGHT="58" BASELINE="584 2340 2360 2340" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2340 584 2357 2360 2357 2360 2340 2360 2312 2308 2299 2306 2299 2191 2310 1897 2299 1894 2299 1892 2299 1890 2299 1875 2310 1842 2299 1840 2299 1838 2299 1767 2310 1700 2299 1697 2299 1695 2299 1693 2299 1678 2312 1377 2312 1323 2299 1321 2299 1318 2299 1286 2310 1240 2299 1238 2299 1236 2299 1234 2299 1232 2299 1214 2312 1117 2312 1082 2299 1080 2299 1078 2299 1076 2299 1046 2310 994 2299 991 2299 989 2299 987 2299 972 2310 937 2299 935 2299 933 2299 931 2299 903 2312 662 2312 606 2299 604 2299 602 2299 599 2299 584 2307 584 2340"/>
+                        </Shape>
+                        <String CONTENT="the pressure of the foot. As there are no stockings inside, the feet will be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l30" HPOS="582" VPOS="2355" WIDTH="756" HEIGHT="67" BASELINE="584 2396 1338 2400" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2396 582 2416 591 2422 593 2422 595 2422 597 2422 1336 2416 1338 2400 1336 2370 1167 2357 1165 2357 1097 2368 1074 2357 1071 2357 1069 2357 989 2368 963 2355 961 2355 959 2355 957 2355 918 2366 907 2357 907 2355 905 2355 903 2355 900 2355 898 2355 872 2366 838 2355 835 2355 833 2355 831 2355 807 2366 749 2355 747 2355 744 2355 742 2355 725 2366 658 2355 656 2355 584 2364 584 2396"/>
+                        </Shape>
+                        <String CONTENT="quite dry in half an hour’s time."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-318_r5" HPOS="580" VPOS="2426" WIDTH="1778" HEIGHT="300" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="580 2426 2358 2426 2358 2726 580 2726"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l31" HPOS="693" VPOS="2420" WIDTH="1667" HEIGHT="54" BASELINE="695 2455 2360 2459" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="695 2455 693 2470 2356 2474 2360 2459 2358 2429 695 2420 695 2455"/>
+                        </Shape>
+                        <String CONTENT="The summer trousers and boots of the Maritime Chukchee, as has been"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l32" HPOS="582" VPOS="2489" WIDTH="1776" HEIGHT="48" BASELINE="582 2520 2358 2520" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 2520 582 2537 2358 2537 2358 2520 2358 2489 582 2489 582 2520"/>
+                        </Shape>
+                        <String CONTENT="noted before, are made of seal-skin, which is much more suitable for this pur-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l33" HPOS="582" VPOS="2533" WIDTH="1778" HEIGHT="69" BASELINE="584 2580 2360 2574" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2580 584 2602 2358 2591 2360 2574 2356 2546 2247 2546 2230 2533 2228 2533 2226 2533 2224 2533 2107 2543 2092 2533 2089 2533 2087 2533 2085 2533 2083 2533 2081 2533 2066 2543 2042 2533 2040 2533 2037 2533 1966 2543 1944 2533 1942 2533 1940 2533 1938 2533 1916 2543 1899 2533 1897 2533 1894 2533 1892 2533 1890 2533 1888 2533 1873 2543 1667 2535 1665 2535 1663 2535 1643 2546 1622 2535 1619 2535 1617 2535 1505 2546 1442 2535 1440 2535 1375 2546 1310 2535 1308 2535 1236 2546 1199 2535 1197 2535 1195 2535 1046 2548 1022 2537 1020 2537 1017 2537 812 2548 723 2537 721 2537 718 2537 716 2537 701 2550 582 2550 584 2580"/>
+                        </Shape>
+                        <String CONTENT="pose than any kind of reindeer-skin. The seal-skin is curried and the epidermis"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l34" HPOS="582" VPOS="2606" WIDTH="1778" HEIGHT="48" BASELINE="584 2639 2360 2634" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2639 584 2654 2358 2649 2360 2634 2356 2606 582 2606 584 2639"/>
+                        </Shape>
+                        <String CONTENT="is left on, or the skin is well scraped and blackened with soot. Thanks to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l35" HPOS="582" VPOS="2662" WIDTH="1635" HEIGHT="52" BASELINE="584 2693 2217 2699" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2693 582 2708 2213 2714 2217 2699 2215 2669 584 2662 584 2693"/>
+                        </Shape>
+                        <String CONTENT="thickness and oiliness of seal-skin, they are nearly impervious to water."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-318_r6" HPOS="580" VPOS="2726" WIDTH="1778" HEIGHT="243" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="580 2726 2358 2726 2358 2969 580 2969"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l36" HPOS="695" VPOS="2714" WIDTH="1665" HEIGHT="61" BASELINE="697 2756 2360 2760" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="697 2756 695 2771 2356 2775 2360 2760 2358 2730 2295 2717 2293 2717 2215 2727 2085 2717 2083 2717 2081 2717 2046 2727 1977 2717 1975 2717 1907 2730 1745 2730 1721 2717 1719 2717 1717 2717 1715 2717 1671 2727 1433 2714 1431 2714 1429 2714 1403 2725 1364 2714 1362 2714 1360 2714 1357 2714 1323 2727 1208 2727 1193 2714 1191 2714 1188 2714 1186 2714 1184 2714 1154 2725 697 2719 697 2756"/>
+                        </Shape>
+                        <String CONTENT="The typical boot reaches to the knee (Fig. 181, a), and has clumsy, rather"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l37" HPOS="584" VPOS="2788" WIDTH="1776" HEIGHT="56" BASELINE="584 2818 2360 2818" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2818 584 2831 716 2844 718 2844 790 2833 1002 2844 1004 2844 1069 2833 1390 2844 1392 2844 1485 2833 1762 2833 1803 2844 1806 2844 1808 2844 1892 2833 2182 2844 2185 2844 2360 2831 2360 2818 2360 2788 584 2788 584 2818"/>
+                        </Shape>
+                        <String CONTENT="full legs. The large soles are crimped around the edge. This latter process"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l38" HPOS="582" VPOS="2842" WIDTH="1778" HEIGHT="52" BASELINE="584 2875 2360 2879" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2875 582 2890 2356 2894 2360 2879 2358 2846 584 2842 584 2875"/>
+                        </Shape>
+                        <String CONTENT="is quite similar to that used by the American Eskimo. Since the Asiatic women"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l39" HPOS="582" VPOS="2903" WIDTH="1665" HEIGHT="52" BASELINE="584 2933 2247 2940" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 2933 582 2948 2243 2955 2247 2940 2245 2909 584 2903 584 2933"/>
+                        </Shape>
+                        <String CONTENT="have no special boot-sole creasers, they use their teeth for this purpose."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-318_r7" HPOS="580" VPOS="2969" WIDTH="1778" HEIGHT="235" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="580 2969 2358 2969 2358 3204 580 3204"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l40" HPOS="695" VPOS="2955" WIDTH="1667" HEIGHT="65" BASELINE="697 2994 2362 2998" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="697 2994 695 3009 712 3020 714 3020 716 3020 718 3020 2360 3011 2362 2998 2362 2968 697 2955 697 2994"/>
+                        </Shape>
+                        <String CONTENT="The Koryak women have small ivory knives which are similar to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l41" HPOS="582" VPOS="3020" WIDTH="1778" HEIGHT="54" BASELINE="584 3052 2360 3059" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 3052 582 3067 2356 3074 2360 3059 2358 3028 584 3020 584 3052"/>
+                        </Shape>
+                        <String CONTENT="boot-sole creasers of the Alaskan Eskimo; but, curiously enough, they do not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l42" HPOS="582" VPOS="3080" WIDTH="1793" HEIGHT="63" BASELINE="584 3113 2375 3121" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="584 3113 582 3128 602 3139 604 3139 606 3139 989 3130 1043 3141 1046 3143 2373 3143 2375 3121 2373 3089 584 3080 584 3113"/>
+                        </Shape>
+                        <String CONTENT="use them in boot-making, but only for tracing patterns on soft curried leather,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-318_l43" HPOS="584" VPOS="3141" WIDTH="1778" HEIGHT="54" BASELINE="586 3171 2362 3178" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="586 3171 584 3189 2358 3195 2362 3178 2360 3147 586 3141 586 3171"/>
+                        </Shape>
+                        <String CONTENT="or cloth for the embroidered fringe of the overcoat. Boots of the style just"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-318_r8" HPOS="580" VPOS="3213" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="580 3213 2358 3213 2358 3273 580 3273"/>
+                    </Shape>
+                    <TextLine ID="mz_1-318_l44" HPOS="1321" VPOS="3217" WIDTH="307" HEIGHT="45" BASELINE="1321 3243 1628 3243" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1321 3243 1321 3262 1628 3262 1628 3243 1628 3217 1321 3217 1321 3243"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare p. 220."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
