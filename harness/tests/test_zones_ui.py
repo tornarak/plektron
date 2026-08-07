@@ -599,6 +599,37 @@ def test_the_page_says_which_track_the_pointer_is_on(tmp_path):
     assert "data-track='zone'" in html and "data-track='fig'" in html
 
 
+def test_a_committed_figure_box_can_be_resized_and_moved(tmp_path):
+    """The one place the figure track was worse than the zone track: a box could
+    only be deleted and drawn again, where a zone has had edge handles and
+    `Shift+Arrow` since it existed.
+
+    Eight handles rather than four corners, and that is the substantive choice —
+    a caption's *height* is the commonest correction, because the box was drawn
+    round the wrong number of printed lines, and only an edge handle changes
+    height alone.
+    """
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    assert "HANDLES" in html and "resizeTo" in html
+    assert "'nw'" in html and "'n'" in html and "'se'" in html
+    assert "S.figMove" in html                  # shift-drag translates
+    assert "drag a handle to resize" in html    # and the status line says so
+
+
+def test_an_armed_corner_owns_the_next_click(tmp_path):
+    """Handles and the armed corner both want the click, so one has to yield.
+
+    The corner wins: it is mid-gesture and the handle is not. Without this a
+    caption whose opposite corner fell near an existing box would refuse to
+    finish, and nothing on screen would explain why.
+    """
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    assert "S.figGrab = S.figPending ? null : handleAt(p);" in html
+    assert "S.figPending ? null : handleAt(pt)" in html
+
+
 def test_the_unaccounted_ink_stays_outside_the_dimming(tmp_path):
     """The one piece of zone-track furniture that must not fade on the figure
     track: a band no zone accounts for is very often the undeclared picture you

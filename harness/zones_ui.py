@@ -500,6 +500,7 @@ let S = {
   figTrack: false, figs: (ST.figs || []).map(f => ({...f})),
   figCur: null, figSel: -1, figHover: -1, figDrag: null, figsDirty: false,
   figExempt: (ST.fig_exempt || []).slice(), figPending: null, capBeside: false,
+  figResize: null, figMove: null, figGrab: null,
   hoverX: null,
 };
 const FT = {};
@@ -648,6 +649,60 @@ function addFig(box) {
   S.figsDirty = true; S.figSel = -1;
   if (box.label === 'GraphicZone') armCaption(box); else S.figPending = null;
 }
+// ---- resizing a committed box
+//
+// The zone track has had edge handles and `Shift+Arrow` since it existed, and a
+// figure box could only be deleted and drawn again. Eight handles rather than
+// four corners: a caption's *height* is the commonest adjustment by a distance —
+// the box is drawn round the wrong number of printed lines — and that wants an
+// edge, not a corner.
+//
+// Handles are drawn only on the hovered or selected box, and grabbing one is
+// therefore always grabbing something visible. That is what lets a plain drag
+// keep meaning "draw a new box" everywhere else: the two gestures never compete
+// for the same pixels, because the handle is not there until you are on the box.
+const HANDLES = [['nw', 0, 0], ['n', .5, 0], ['ne', 1, 0],
+                 ['w', 0, .5], ['e', 1, .5],
+                 ['sw', 0, 1], ['s', .5, 1], ['se', 1, 1]];
+
+function grabPx() {
+  // In page coordinates, and scaled by the zoom so the grab area stays the same
+  // size under the hand however far in the view is.
+  const r = img.getBoundingClientRect();
+  const scale = r.width ? ST.page.w / r.width : 1;
+  return Math.max(12, ((CFG.figures || {}).handle_px || 14) * scale);
+}
+
+function figTarget() {
+  return S.figSel >= 0 ? S.figSel : S.figHover;
+}
+
+function handleAt(p) {
+  const i = figTarget();
+  if (i < 0) return null;
+  const f = S.figs[i], g = grabPx();
+  for (const [name, fx, fy] of HANDLES) {
+    const hx = f.x0 + (f.x1 - f.x0) * fx, hy = f.y0 + (f.y1 - f.y0) * fy;
+    if (Math.abs(p.x - hx) <= g && Math.abs(p.y - hy) <= g)
+      return {i, name};
+  }
+  return null;
+}
+
+// Apply a handle drag. Each letter moves the edges it names and nothing else, so
+// `n` changes the height alone — the whole reason the edge handles are here.
+function resizeTo(f, name, p) {
+  if (name.includes('n')) f.y0 = p.y;
+  if (name.includes('s')) f.y1 = p.y;
+  if (name.includes('w')) f.x0 = p.x;
+  if (name.includes('e')) f.x1 = p.x;
+  // Dragging an edge past its opposite inverts the box. Normalising here rather
+  // than clamping lets the gesture carry on through the flip, which is what a
+  // hand actually does when it overshoots a short caption.
+  if (f.x0 > f.x1) { const t = f.x0; f.x0 = f.x1; f.x1 = t; }
+  if (f.y0 > f.y1) { const t = f.y0; f.y0 = f.y1; f.y1 = t; }
+}
+
 // The rectangle an armed corner and the cursor describe between them.
 function pendingRect() {
   if (!S.figPending || S.hoverX === null || S.hoverY === null) return null;
@@ -805,6 +860,20 @@ function render() {
     parts.push(`<text x="${f.x0 + 10}" y="${f.y0 + 42}" font-size="34"
        fill="${c}" opacity="${dim}" font-family="ui-sans-serif,sans-serif"
        >${t ? t.name : f.label}${ST.fig_proposal ? ' (proposed)' : ''}</text>`);
+    // Grab handles, on the hovered or selected box only. Eight, not four: a
+    // caption's height is the commonest correction — the box was drawn round the
+    // wrong number of printed lines — and an edge handle is what changes height
+    // alone. Drawn last so they sit above the box and above its neighbours.
+    if (on) {
+      const g = grabPx() * 0.8;
+      for (const [name, fx, fy] of HANDLES) {
+        const hx = f.x0 + (f.x1 - f.x0) * fx, hy = f.y0 + (f.y1 - f.y0) * fy;
+        const live = S.figGrab && S.figGrab.i === i && S.figGrab.name === name;
+        parts.push(`<rect x="${hx - g}" y="${hy - g}" width="${g * 2}"
+           height="${g * 2}" rx="4" fill="${live ? 'var(--fg)' : c}"
+           stroke="var(--bg)" stroke-width="3"/>`);
+      }
+    }
   });
   // The armed corner, and the box it and the cursor describe. Nothing is
   // committed until a click; the corner is drawn whether or not the pointer is
@@ -923,8 +992,9 @@ function bar() {
     else if (j >= 0) {
       const f = S.figs[j], ft = FT[f.label];
       tgt.textContent = `${ft ? ft.name : f.label} · `
-        + (S.figSel === j ? 'press a figure key to change it · Esc deselects'
-                          : 'click to select')
+        + (S.figGrab ? 'drag the handle to resize'
+           : 'drag a handle to resize · shift-drag to move')
+        + (S.figSel === j ? ' · a figure key retypes it · Esc deselects' : '')
         + ' · x deletes';
     } else {
       tgt.textContent = figT
@@ -1183,12 +1253,27 @@ ov.addEventListener('mousemove', e => {
   if (S.figTrack) {
     const p = ptAt(e);
     S.hoverY = p.y; S.hoverX = p.x; S.inside = true;
-    S.figHover = figHit(p);
-    if (S.figDrag) {
+    if (S.figResize) {
+      resizeTo(S.figs[S.figResize.i], S.figResize.name, p);
+      S.figsDirty = true;
+    } else if (S.figMove) {
+      const f = S.figs[S.figMove.i], w = f.x1 - f.x0, h = f.y1 - f.y0;
+      f.x0 = p.x - S.figMove.dx; f.y0 = p.y - S.figMove.dy;
+      f.x1 = f.x0 + w; f.y1 = f.y0 + h;
+      S.figsDirty = true;
+    } else if (S.figDrag) {
       S.figDrag.x0 = Math.min(S.figDrag._ax, p.x);
       S.figDrag.x1 = Math.max(S.figDrag._ax, p.x);
       S.figDrag.y0 = Math.min(S.figDrag._ay, p.y);
       S.figDrag.y1 = Math.max(S.figDrag._ay, p.y);
+    } else {
+      // Hover is frozen mid-gesture: losing the box under the pointer would take
+      // its handles off screen halfway through dragging one of them.
+      S.figHover = figHit(p);
+      // **Never while a corner is armed.** The armed corner owns the next click,
+      // and a live handle would swallow it — the caption would refuse to finish
+      // wherever its opposite corner happened to fall near an existing box.
+      S.figGrab = S.figPending ? null : handleAt(p);
     }
     edgeScroll(e.clientY);
     render();
@@ -1259,12 +1344,36 @@ ov.addEventListener('mousedown', e => {
   // as long as the line editor has existed. Nothing here is shift-modified,
   // because unlike a zone edge there is no second thing a drag could mean.
   if (S.figTrack) {
+    const pt = ptAt(e);
+    // A handle takes the drag before anything else. Handles are drawn only on
+    // the hovered or selected box, so grabbing one is always grabbing something
+    // visible — which is what lets a plain drag keep meaning "draw a new box"
+    // everywhere else. The two gestures never compete for the same pixels.
+    const grab = S.figPending ? null : handleAt(pt);
+    if (grab) {
+      e.preventDefault();
+      S.figResize = grab; S.figSel = grab.i; S.figPending = null;
+      render();
+      return;
+    }
+    // Shift-drag moves the whole box, which is this editor's existing modifier
+    // for adjusting geometry that is already there rather than making more.
+    if (e.shiftKey) {
+      const i = figTarget();
+      if (i < 0) return;
+      e.preventDefault();
+      const f = S.figs[i];
+      S.figMove = {i, dx: pt.x - f.x0, dy: pt.y - f.y0};
+      S.figSel = i;
+      render();
+      return;
+    }
     // With a corner armed the gesture is click-to-finish, not drag: starting a
     // fresh rectangle here would silently discard the hand-off. Right-click or
     // Esc drops the corner, after which dragging works as usual.
-    if (e.shiftKey || !S.figCur || S.figPending) return;
+    if (!S.figCur || S.figPending) return;
     e.preventDefault();
-    const p = ptAt(e);
+    const p = pt;
     S.figDrag = {_ax: p.x, _ay: p.y, x0: p.x, y0: p.y, x1: p.x, y1: p.y};
     return;
   }
@@ -1279,6 +1388,19 @@ ov.addEventListener('mousedown', e => {
 });
 window.addEventListener('mouseup', () => {
   edgeStop();
+  if (S.figResize || S.figMove) {
+    // A resize can be dragged below the floor the same way a fresh box can, and
+    // the answer has to differ: the box already exists and was already accepted,
+    // so refusing to shrink it would leave the hand stuck. It is reported by
+    // `fig check`'s `tiny-picture` instead, which is a warning and survives.
+    const i = (S.figResize || S.figMove).i;
+    const f = S.figs[i];
+    f.x0 = Math.round(f.x0); f.y0 = Math.round(f.y0);
+    f.x1 = Math.round(f.x1); f.y1 = Math.round(f.y1);
+    S.figResize = null; S.figMove = null;
+    render();
+    return;
+  }
   if (S.figDrag) {
     const d = S.figDrag;
     S.figDrag = null;
@@ -1296,6 +1418,10 @@ window.addEventListener('mouseup', () => {
 ov.addEventListener('click', e => {
   if (S.figTrack) {
     if (e.shiftKey) return;
+    // The click that ends a resize or a move must not also select or complete —
+    // mouseup has already cleared the gesture, so `figGrab` is what remembers
+    // that the pointer was on a handle when this began.
+    if (S.figGrab) { render(); return; }
     // Mid-placement a click always finishes the box, exactly as it does on the
     // zone track — only an idle click can mean "select", or landing on the
     // picture you just drew would select it instead of completing its caption.
@@ -1914,6 +2040,10 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
         h.append("<div class='key'><span>draw a box</span><kbd>drag</kbd></div>")
         h.append("<div class='key'><span>set the opposite corner</span>"
                  "<kbd>click</kbd></div>")
+        h.append("<div class='key'><span>resize a box</span>"
+                 "<kbd>drag a handle</kbd></div>")
+        h.append("<div class='key'><span>move a box</span>"
+                 "<kbd>shift-drag</kbd></div>")
         h.append("<div class='key'><span>drop it</span>"
                  "<kbd>right-click</kbd></div>")
         h.append("<div id='flags'>The figure track is a <em>parallel</em> store: "
