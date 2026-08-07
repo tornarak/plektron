@@ -61,6 +61,41 @@ the height was a guess; and a box that arrives complete has no handle, so
 correcting it meant deleting it and drawing it again. A corner imputes nothing and
 still saves the placement, which is the part that is actually predictable.
 
+A committed box resizes by **eight handles**, not four corners, and that is the
+substantive choice: a caption's height is the commonest correction — the box gets
+drawn round the wrong number of printed lines — and only an edge handle changes
+height alone. Handles are drawn on the hovered or selected box only, which is what
+lets a plain drag keep meaning "draw a new box" everywhere else; the two gestures
+never compete for the same pixels because the handle is not there until you are on
+the box. Shift-drag moves the whole box. Dragging an edge past its opposite
+normalises rather than clamps, so the gesture carries through the flip.
+
+**Two ordering conflicts were resolved by rule rather than left to chance**, both
+invisible when wrong. An armed caption corner and a resize handle both want the
+next click, and the corner wins — it is mid-gesture and the handle is not; without
+that, a caption whose opposite corner fell near an existing box would silently
+refuse to finish. And a resize is *not* held to `min_size_px` the way a fresh box
+is: the box already exists and was already accepted, so refusing to shrink it
+would leave the hand stuck. `fig check` reports it as `tiny-picture` instead.
+
+**Two tracks on one page had to stop competing.** A keyed page carries eight or
+ten body zones against two or three figure boxes, so at equal strength the figure
+track was unusable on any page with text on it. The inactive track recedes — two
+configured amounts, since the layers are not equally in the way — and neither goes
+to zero: where the text sits is how you judge where a picture ends, and a figure
+you cannot see is a figure you will draw a zone over. **The unaccounted-ink
+hatching is exempt and stays at full strength**, because on the figure track a
+band no zone accounts for is very often the undeclared picture you are about to
+draw. It is how `1-191` surfaced, and a test holds it outside the dimming group.
+
+The mode itself needed saying four ways, and the reason is worth recording: the
+visible consequence of switching tracks is that something *stops* — the zone
+preview no longer follows the cursor — so silence read as the editor freezing.
+There is a track pill in the topbar, the switch is narrated, the other track's
+chips dim, and the pointer draws a **crosshair** rather than a single rule. That
+last is not decoration: a zone takes only a y, so a vertical guide on the zone
+track would advertise a freedom the page does not have.
+
 A save sends the figure list **only when that layer was touched** — `zones blot`
 keys the zone segmenter's training rasters off `gt/fig/` mtimes, so rewriting the
 store during ordinary zone keying would stale everything that model learns from.

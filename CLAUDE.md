@@ -181,14 +181,15 @@ every byte of this file on every page.
 | `.claude/skills/transcribe-page/` | dispatching a batch of collators, and the seam afterwards |
 | `.claude/agents/groundtruth-reader.md` | the raster→ALTO reading contract, whole — a reader's system prompt, spec transcluded |
 | `.claude/skills/rebuild-groundtruth/` | dispatching and adjudicating a batch of readers |
-| `.claude/skills/train-zones/` | the segmenter's train→score→install loop, its measured state, and the judgement in it |
+| `.claude/skills/train-zones/` | the zone segmenter's train→score→install loop, its measured state, and the judgement in it |
+| `.claude/skills/train-figures/` | the same for the figure segmenter — trains on raw scans, and why its negatives had to be witnessed |
 | `.claude/rules/zones.md` | code-facing zones/raster internals; loads itself when those modules are open |
 | `harness/VERBS.md` | the CLI surface: every action, its reads, writes, exit contract and flags. Gated by `test_cli_surface.py` |
 | `harness/README.md` | the package: module responsibilities, stores, caller invariants |
 | `concordance.md` | the evidence set behind the spec — aligned pairs, flag register, per-glyph attestation |
 | `docs/segmentation.md` | the second segmentation attempt: the design and why each piece is shaped as it is |
 | `docs/pipeline.md` | the pipeline stage by stage, and the design reasoning behind the built stages |
-| `docs/apparatus.md` | the figure track, the List of Illustrations and Authorities Quoted stores |
+| `docs/apparatus.md` | the figure track and its editor, the List of Illustrations and Authorities Quoted stores |
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |

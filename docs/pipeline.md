@@ -89,8 +89,8 @@ the stages that are built.
 ## Final Product
 
 1. **Original Scan Page** - `scans/chukchi-PP-NNN.png`
-2. **Figure geometry** - `gt/fig/chukchi-PP-NNN.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks. No lines, no text.
-3. **Figure captions** - `data/readings.md`, keyed `1-123|<zone-id suffix>`. The only caption store.
+2. **Figure geometry** - `gt/fig/chukchi-PP-NNN.xml`. ALTO containing only `GraphicZone` and `GraphicZone-FigDesc` blocks, as **bounding boxes**. No lines, no text. Written in the zone editor's figure track (`b`); checked by `harness fig check`; **absence of the file is how the store records "no figures on this page"**, so it never holds an empty one. `docs/apparatus.md` is the track's record.
+3. **Figure captions** - `data/readings.md`, keyed `1-123|<zone-id suffix>` — the last field of the block id, which makes it a **foreign key**: `figures.save_figs` preserves ids for that reason where `zones.save_zones` re-mints them. The only caption store.
 4. **OCR transcript** - `ocr/chukchi-PP-NNN.xml`, the view: `gt/ocr/` where a human
    has been through the page, `mz/ocr/` otherwise. ALTO carrying the zones as
    regions and the lines within them, dumped to plain text for the collation pass.
