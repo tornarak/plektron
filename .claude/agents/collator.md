@@ -1211,6 +1211,12 @@ the character inventory, and binds both passes and the human keying track.
   may modernize glossed Russian (harness rev 2); ground truth does not —
   pre-reform Cyrillic sorts are keyed as printed. See §2.7 for the closed list and
   what each is confusable with, and §2.14 for the typo rule and its one exception.
+  **Species names go the same way**: `Oncorhynchus horbusha`, `niarka` — key the
+  epithet as set, never the modern binomial it corresponds to. Mapping obsolete
+  names onto current ones is a post-collation pass with its own record. These two
+  attest in Bogoras and Jochelson and nowhere else, so "correcting" one to the
+  expected Russian yields a form with no attestation anywhere — inference about
+  what the name *should* be, which is the firewall's subject in another costume.
 - **Two-tier settlement.** SETTLED rows carry the editor's stamp or the key's
   authority and are law, stated flat. PROPOSED rows are the best available
   disposition, awaiting the stamp; they enter force via changelog, not by
