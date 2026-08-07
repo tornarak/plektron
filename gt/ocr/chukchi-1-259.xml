@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-259.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-259.png; regions_from: zones/chukchi-1-259.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-259_r1" HPOS="383" VPOS="602" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="383 602 2161 602 2161 692 383 692"/>
+                    </Shape>
+                    <TextLine ID="mz_1-259_l1" HPOS="957" VPOS="617" WIDTH="617" HEIGHT="56" BASELINE="959 651 1574 655" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1544 621 1522 621 1500 621 1479 621 1457 621 1435 621 1424 619 968 617 959 619 959 651 957 668 1570 673 1574 655 1565 621 1544 621"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l2" HPOS="2053" VPOS="627" WIDTH="90" HEIGHT="54" BASELINE="2055 664 2143 660" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2128 627 2053 630 2055 664 2055 681 2143 681 2143 660 2137 632 2128 627"/>
+                        </Shape>
+                        <String CONTENT="203"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-259_r2" HPOS="383" VPOS="717" WIDTH="1778" HEIGHT="248" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="383 717 2161 717 2161 965 383 965"/>
+                    </Shape>
+                    <TextLine ID="mz_1-259_l3" HPOS="493" VPOS="723" WIDTH="1659" HEIGHT="62" BASELINE="493 764 2152 764" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="493 764 493 785 2152 785 2152 764 2152 736 2066 723 2063 723 2061 723 2014 736 1907 736 1892 723 1890 723 1888 723 1886 723 1834 733 1780 723 1777 723 1710 733 1697 723 1695 723 1693 723 1691 723 1689 723 1661 733 1626 723 1624 723 1622 723 1619 723 1585 733 1500 723 1498 723 1496 723 1466 733 1353 723 1351 723 1349 723 1312 733 1219 723 1217 723 1082 733 493 725 493 764"/>
+                        </Shape>
+                        <String CONTENT="With the pipe are kept a stout iron pin to clean the bowl, and a small to-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l4" HPOS="387" VPOS="785" WIDTH="613" HEIGHT="57" BASELINE="387 822 1000 822" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 822 387 842 1000 842 1000 822 1000 794 387 785 387 822"/>
+                        </Shape>
+                        <String CONTENT="bacco-pouch made of leath-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l5" HPOS="389" VPOS="853" WIDTH="611" HEIGHT="49" BASELINE="389 883 1000 883" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 883 389 902 1000 902 1000 883 998 853 389 853 389 883"/>
+                        </Shape>
+                        <String CONTENT="er and sometimes adorned"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l6" HPOS="387" VPOS="913" WIDTH="520" HEIGHT="48" BASELINE="387 943 907 943" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 943 387 961 907 961 907 943 907 913 387 913 387 943"/>
+                        </Shape>
+                        <String CONTENT="with crude embroidery."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-259_r3" HPOS="383" VPOS="965" WIDTH="1778" HEIGHT="1793" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="383 965 2161 965 2161 2758 383 2758"/>
+                    </Shape>
+                    <TextLine ID="mz_1-259_l7" HPOS="493" VPOS="972" WIDTH="509" HEIGHT="49" BASELINE="493 1002 1002 1002" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="493 1002 493 1021 1002 1021 1002 1002 1002 972 493 972 493 1002"/>
+                        </Shape>
+                        <String CONTENT="All the pipes described"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l8" HPOS="383" VPOS="1019" WIDTH="619" HEIGHT="67" BASELINE="385 1065 1002 1060" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="385 1065 385 1078 985 1086 987 1086 989 1086 991 1086 1002 1076 1002 1060 998 1030 887 1019 885 1019 783 1030 747 1019 744 1019 742 1019 740 1019 684 1032 511 1021 508 1021 383 1032 385 1065"/>
+                        </Shape>
+                        <String CONTENT="resemble the pipes of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l9" HPOS="385" VPOS="1080" WIDTH="613" HEIGHT="69" BASELINE="385 1123 998 1123" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="385 1123 385 1136 400 1147 402 1147 404 1147 407 1149 569 1149 569 1147 571 1147 573 1147 573 1145 584 1136 628 1147 630 1147 632 1147 807 1136 981 1147 983 1147 985 1147 987 1147 998 1136 998 1123 998 1093 972 1080 970 1080 968 1080 762 1093 628 1080 625 1080 623 1080 621 1080 621 1082 608 1095 545 1095 495 1080 493 1080 491 1080 489 1080 487 1080 472 1093 411 1080 409 1080 407 1080 404 1080 385 1091 385 1123"/>
+                        </Shape>
+                        <String CONTENT="Alaskan Eskimo. This"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l10" HPOS="383" VPOS="1149" WIDTH="617" HEIGHT="61" BASELINE="385 1184 1000 1177" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="385 1184 385 1195 469 1210 472 1210 474 1210 476 1210 476 1208 489 1197 530 1208 532 1208 534 1208 537 1208 591 1195 695 1205 697 1205 699 1205 721 1195 766 1208 768 1208 770 1208 773 1208 775 1208 794 1192 807 1203 809 1203 812 1203 972 1205 974 1205 976 1205 978 1205 1000 1190 1000 1177 994 1149 383 1153 385 1184"/>
+                        </Shape>
+                        <String CONTENT="may be seen by compari-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l11" HPOS="385" VPOS="1199" WIDTH="606" HEIGHT="58" BASELINE="387 1242 991 1240" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1242 387 1257 989 1255 991 1240 983 1199 957 1210 625 1199 623 1199 621 1199 589 1210 534 1199 532 1199 530 1199 528 1199 528 1201 517 1212 385 1212 387 1242"/>
+                        </Shape>
+                        <String CONTENT="son with Nelson’s plates.¹"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l12" HPOS="385" VPOS="1257" WIDTH="615" HEIGHT="63" BASELINE="387 1305 1000 1301" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1305 387 1320 998 1316 1000 1301 998 1270 974 1257 972 1257 970 1257 814 1268 788 1257 786 1257 783 1257 781 1257 760 1268 701 1257 699 1257 697 1257 695 1257 695 1260 693 1260 684 1270 396 1260 394 1260 391 1260 389 1260 389 1262 387 1262 385 1262 387 1305"/>
+                        </Shape>
+                        <String CONTENT="Some of the Alaskan Eski-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l13" HPOS="385" VPOS="1331" WIDTH="617" HEIGHT="50" BASELINE="387 1366 1002 1361" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1366 387 1381 1002 1376 1002 1361 996 1331 385 1333 387 1366"/>
+                        </Shape>
+                        <String CONTENT="mo pipes, however, have the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l14" HPOS="385" VPOS="1376" WIDTH="615" HEIGHT="74" BASELINE="387 1420 1000 1426" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1420 385 1435 398 1446 400 1446 402 1446 404 1448 493 1448 493 1446 495 1446 498 1446 498 1444 508 1435 615 1446 617 1446 833 1439 870 1450 872 1450 874 1450 998 1439 1000 1426 998 1394 922 1381 920 1381 742 1389 731 1381 731 1379 729 1379 727 1379 725 1379 595 1389 586 1379 584 1379 584 1376 582 1376 580 1376 578 1376 387 1385 387 1420"/>
+                        </Shape>
+                        <String CONTENT="body of the bowl higher,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l15" HPOS="387" VPOS="1437" WIDTH="613" HEIGHT="65" BASELINE="389 1485 1000 1478" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 1485 389 1502 998 1496 1000 1478 996 1450 857 1437 855 1437 853 1437 851 1437 851 1439 840 1448 697 1439 695 1439 693 1439 647 1450 595 1439 593 1439 591 1439 589 1439 571 1452 454 1441 452 1441 387 1454 389 1485"/>
+                        </Shape>
+                        <String CONTENT="and the rim wider and more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l16" HPOS="387" VPOS="1498" WIDTH="615" HEIGHT="58" BASELINE="387 1541 1002 1541" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1541 387 1556 1002 1556 1002 1541 1002 1513 803 1498 801 1498 799 1498 796 1498 796 1500 783 1513 727 1513 714 1500 714 1498 712 1498 710 1498 664 1498 662 1498 660 1498 658 1498 658 1500 645 1513 597 1513 573 1498 571 1498 569 1498 567 1498 565 1498 563 1498 563 1500 550 1513 446 1513 409 1498 407 1498 404 1498 402 1498 400 1498 387 1506 387 1541"/>
+                        </Shape>
+                        <String CONTENT="flattened. The difference"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l17" HPOS="387" VPOS="1569" WIDTH="613" HEIGHT="59" BASELINE="389 1602 1000 1597" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 1602 389 1617 521 1628 524 1628 842 1615 909 1625 911 1625 913 1625 916 1625 931 1615 983 1625 985 1625 987 1625 989 1625 989 1623 1000 1612 1000 1597 994 1569 387 1571 389 1602"/>
+                        </Shape>
+                        <String CONTENT="was pointed out to me by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l18" HPOS="387" VPOS="1628" WIDTH="611" HEIGHT="56" BASELINE="389 1660 998 1664" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 1660 387 1677 396 1684 398 1684 400 1684 402 1684 996 1682 998 1664 996 1632 389 1628 389 1660"/>
+                        </Shape>
+                        <String CONTENT="the natives. Furthermore,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l19" HPOS="387" VPOS="1682" WIDTH="620" HEIGHT="67" BASELINE="389 1723 1007 1719" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 1723 389 1736 695 1749 697 1749 699 1749 755 1736 883 1747 885 1747 944 1736 965 1747 968 1747 970 1747 972 1747 1007 1732 1007 1719 1002 1684 407 1682 404 1682 402 1682 400 1682 387 1688 389 1723"/>
+                        </Shape>
+                        <String CONTENT="American pipes carved of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l20" HPOS="387" VPOS="1749" WIDTH="615" HEIGHT="50" BASELINE="387 1781 1002 1781" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1781 387 1799 1002 1799 1002 1781 1002 1751 387 1749 387 1781"/>
+                        </Shape>
+                        <String CONTENT="ivory retain the same form"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l21" HPOS="385" VPOS="1799" WIDTH="619" HEIGHT="60" BASELINE="387 1842 1004 1838" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1842 387 1859 1002 1855 1004 1838 1000 1809 755 1799 753 1799 385 1812 387 1842"/>
+                        </Shape>
+                        <String CONTENT="as the simpler pipes; while"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l22" HPOS="387" VPOS="1872" WIDTH="617" HEIGHT="48" BASELINE="387 1900 1004 1900" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1900 387 1920 1004 1920 1004 1900 1004 1872 387 1872 387 1900"/>
+                        </Shape>
+                        <String CONTENT="the Asiatic carved pipes, as"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l23" HPOS="387" VPOS="1931" WIDTH="617" HEIGHT="47" BASELINE="387 1961 1004 1961" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 1961 387 1978 1004 1978 1004 1961 1004 1931 387 1931 387 1961"/>
+                        </Shape>
+                        <String CONTENT="noted before, resemble the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l24" HPOS="389" VPOS="1976" WIDTH="615" HEIGHT="61" BASELINE="389 2022 1004 2022" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 2022 389 2037 1004 2037 1004 2022 1004 1989 972 1976 970 1976 968 1976 965 1976 939 1989 920 1976 918 1976 916 1976 913 1976 911 1976 887 1989 866 1976 864 1976 861 1976 859 1976 857 1976 809 1989 796 1978 796 1976 794 1976 792 1976 749 1976 747 1976 744 1976 742 1976 742 1978 729 1991 619 1991 606 1978 606 1976 604 1976 602 1976 599 1976 519 1987 459 1976 456 1976 454 1976 452 1976 452 1978 443 1987 424 1976 422 1976 420 1976 417 1976 389 1989 389 2022"/>
+                        </Shape>
+                        <String CONTENT="civilized form. The Asiatic"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l25" HPOS="389" VPOS="2039" WIDTH="613" HEIGHT="67" BASELINE="389 2080 1002 2080" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 2080 389 2095 716 2095 727 2104 727 2106 729 2106 731 2106 734 2106 1002 2093 1002 2080 1002 2050 957 2039 955 2039 952 2039 887 2050 781 2039 779 2039 777 2039 738 2050 389 2045 389 2080"/>
+                        </Shape>
+                        <String CONTENT="Eskimo have pipes quite"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l26" HPOS="385" VPOS="2095" WIDTH="619" HEIGHT="70" BASELINE="387 2141 1004 2136" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2141 387 2154 664 2154 680 2165 682 2165 684 2165 686 2165 751 2152 987 2162 989 2162 991 2162 994 2162 994 2160 1004 2149 1004 2136 1000 2108 790 2095 788 2095 716 2106 695 2095 693 2095 690 2095 688 2095 686 2095 667 2108 413 2097 411 2097 409 2097 385 2108 387 2141"/>
+                        </Shape>
+                        <String CONTENT="similar to the Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l27" HPOS="385" VPOS="2158" WIDTH="617" HEIGHT="67" BASELINE="387 2201 1002 2197" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2201 387 2221 738 2212 942 2225 944 2225 946 2225 1002 2210 1002 2197 998 2169 744 2158 742 2158 385 2171 387 2201"/>
+                        </Shape>
+                        <String CONTENT="patterns. The ivory pipes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l28" HPOS="387" VPOS="2229" WIDTH="617" HEIGHT="48" BASELINE="387 2260 1004 2260" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2260 387 2277 1004 2277 1004 2260 1004 2229 387 2229 387 2260"/>
+                        </Shape>
+                        <String CONTENT="of St. Lawrence Island, on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l29" HPOS="387" VPOS="2290" WIDTH="615" HEIGHT="54" BASELINE="387 2318 1002 2318" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2318 387 2331 775 2344 777 2344 779 2344 807 2333 985 2344 987 2344 989 2344 991 2344 1002 2333 1002 2318 1002 2290 387 2290 387 2318"/>
+                        </Shape>
+                        <String CONTENT="the other hand, already"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l30" HPOS="387" VPOS="2340" WIDTH="615" HEIGHT="65" BASELINE="387 2381 1002 2381" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2381 387 2394 539 2394 550 2403 550 2405 552 2405 554 2405 556 2405 662 2394 959 2405 961 2405 963 2405 1002 2392 1002 2381 1002 2353 924 2340 922 2340 511 2351 413 2340 411 2340 409 2340 387 2351 387 2381"/>
+                        </Shape>
+                        <String CONTENT="show quite an American"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l31" HPOS="383" VPOS="2405" WIDTH="619" HEIGHT="50" BASELINE="385 2439 1002 2435" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="385 2439 385 2455 1000 2450 1002 2435 996 2405 383 2407 385 2439"/>
+                        </Shape>
+                        <String CONTENT="shape. Their stems, more-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l32" HPOS="389" VPOS="2470" WIDTH="613" HEIGHT="54" BASELINE="389 2498 1002 2498" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 2498 389 2511 489 2524 491 2524 493 2524 519 2513 708 2524 710 2524 1002 2511 1002 2498 1002 2470 389 2470 389 2498"/>
+                        </Shape>
+                        <String CONTENT="over, are engraved with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l33" HPOS="385" VPOS="2515" WIDTH="606" HEIGHT="67" BASELINE="387 2561 991 2559" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2561 387 2582 989 2582 991 2559 987 2526 422 2515 420 2515 417 2515 385 2526 387 2561"/>
+                        </Shape>
+                        <String CONTENT="pictographic etchings (Fig."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l34" HPOS="391" VPOS="2574" WIDTH="613" HEIGHT="60" BASELINE="394 2621 1004 2617" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 2621 394 2634 1002 2630 1004 2617 1000 2587 907 2574 905 2574 903 2574 881 2585 864 2574 861 2574 859 2574 857 2574 792 2585 768 2574 766 2574 764 2574 762 2574 760 2574 742 2585 567 2576 565 2576 502 2587 476 2576 474 2576 472 2576 391 2589 394 2621"/>
+                        </Shape>
+                        <String CONTENT="122), while on the Asiatic"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l35" HPOS="385" VPOS="2643" WIDTH="619" HEIGHT="61" BASELINE="387 2673 1004 2678" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2673 385 2691 394 2699 394 2701 396 2701 398 2701 400 2704 474 2704 474 2701 476 2701 478 2701 478 2699 489 2691 521 2701 524 2701 526 2701 589 2691 615 2701 617 2701 619 2701 1002 2691 1004 2678 1002 2647 387 2643 387 2673"/>
+                        </Shape>
+                        <String CONTENT="side the pipe-makers use"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l36" HPOS="387" VPOS="2693" WIDTH="368" HEIGHT="69" BASELINE="389 2732 755 2738" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 2732 387 2753 396 2760 398 2760 400 2760 402 2760 502 2751 508 2760 511 2760 511 2762 513 2762 515 2762 517 2762 753 2753 755 2738 755 2708 727 2695 725 2695 723 2695 638 2704 632 2695 630 2695 630 2693 628 2693 625 2693 623 2693 389 2699 389 2732"/>
+                        </Shape>
+                        <String CONTENT="only relief-work."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-259_r4" HPOS="383" VPOS="2758" WIDTH="1778" HEIGHT="431" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="383 2758 2161 2758 2161 3189 383 3189"/>
+                    </Shape>
+                    <TextLine ID="mz_1-259_l37" HPOS="500" VPOS="2753" WIDTH="504" HEIGHT="70" BASELINE="500 2797 1004 2797" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="500 2797 500 2812 513 2820 515 2820 517 2820 519 2820 599 2810 636 2820 638 2820 641 2820 708 2810 744 2820 747 2820 749 2820 751 2820 788 2810 818 2820 820 2820 822 2823 918 2823 918 2820 920 2820 922 2820 922 2818 933 2810 987 2820 989 2820 991 2820 994 2820 1004 2810 1004 2797 1004 2766 974 2753 972 2753 970 2753 968 2753 965 2753 948 2766 931 2753 929 2753 926 2753 924 2753 861 2769 805 2769 792 2756 792 2753 790 2753 788 2753 786 2753 783 2753 742 2766 500 2760 500 2797"/>
+                        </Shape>
+                        <String CONTENT="The use of snuff is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l38" HPOS="387" VPOS="2829" WIDTH="617" HEIGHT="54" BASELINE="387 2857 1004 2857" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="387 2857 387 2870 848 2883 851 2883 1004 2870 1004 2857 1004 2829 387 2829 387 2857"/>
+                        </Shape>
+                        <String CONTENT="found rather among the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l39" HPOS="391" VPOS="2875" WIDTH="611" HEIGHT="58" BASELINE="391 2918 1002 2918" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 2918 391 2933 1002 2933 1002 2918 1002 2888 926 2875 924 2875 922 2875 894 2885 779 2875 777 2875 723 2885 645 2875 643 2875 641 2875 617 2885 578 2875 576 2875 573 2875 571 2875 534 2885 517 2875 515 2875 513 2875 511 2875 391 2877 391 2918"/>
+                        </Shape>
+                        <String CONTENT="Russianized natives than"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l40" HPOS="387" VPOS="2931" WIDTH="613" HEIGHT="63" BASELINE="389 2979 1000 2972" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="389 2979 389 2994 998 2987 1000 2972 996 2944 924 2931 922 2931 920 2931 918 2931 903 2942 775 2933 773 2933 770 2933 751 2944 729 2933 727 2933 725 2933 723 2933 699 2944 645 2933 643 2933 641 2933 638 2933 638 2935 628 2944 573 2935 571 2935 569 2935 567 2935 552 2946 476 2937 474 2937 387 2948 389 2979"/>
+                        </Shape>
+                        <String CONTENT="among the Chukchee. To-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l41" HPOS="389" VPOS="3000" WIDTH="615" HEIGHT="63" BASELINE="391 3037 1004 3033" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 3037 391 3050 543 3050 576 3061 578 3061 580 3061 641 3050 667 3061 669 3061 671 3061 734 3048 747 3059 747 3061 749 3061 751 3061 753 3063 896 3063 896 3061 898 3061 946 3048 983 3061 985 3061 987 3061 989 3061 991 3061 991 3059 1004 3046 1004 3033 1000 3005 389 3000 391 3037"/>
+                        </Shape>
+                        <String CONTENT="bacco for this purpose is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l42" HPOS="391" VPOS="3056" WIDTH="613" HEIGHT="63" BASELINE="391 3098 1004 3098" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="391 3098 391 3119 1004 3111 1004 3098 1002 3065 638 3067 597 3056 595 3056 593 3056 591 3056 565 3067 534 3056 532 3056 530 3056 391 3067 391 3098"/>
+                        </Shape>
+                        <String CONTENT="ground in a very small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-259_l43" HPOS="391" VPOS="3119" WIDTH="1763" HEIGHT="67" BASELINE="394 3150 2154 3160" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 3150 391 3171 407 3180 409 3180 411 3180 413 3180 1093 3173 1450 3186 1453 3186 2152 3178 2154 3160 2152 3130 394 3119 394 3150"/>
+                        </Shape>
+                        <String CONTENT="wooden mortar (Fig. 123) by means of a long, heavy, wooden pestle. The"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-259_r5" HPOS="383" VPOS="3203" WIDTH="1778" HEIGHT="54" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="383 3203 2161 3203 2161 3257 383 3257"/>
+                    </Shape>
+                    <TextLine ID="mz_1-259_l44" HPOS="615" VPOS="3189" WIDTH="1314" HEIGHT="67" BASELINE="617 3217 1929 3228" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1914 3225 1905 3197 617 3189 617 3217 615 3236 1212 3253 1214 3253 1386 3245 1401 3256 1403 3256 1405 3256 1407 3256 1927 3247 1929 3228 1927 3225 1914 3225"/>
+                        </Shape>
+                        <String CONTENT="¹ Nelson, Plates LXXXVIII and LXXXIX; also Fig. 94, p. 281; and Fig. 95, p. 284."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

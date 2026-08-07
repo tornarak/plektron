@@ -1,0 +1,378 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-230.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-230.png; regions_from: zones/chukchi-1-230.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-230_r1" HPOS="559" VPOS="594" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="559 594 2337 594 2337 684 559 684"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l1" HPOS="1132" VPOS="608" WIDTH="617" HEIGHT="54" BASELINE="1134 643 1749 647" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1741 614 1734 610 1134 608 1134 643 1132 658 1745 662 1749 647 1747 627 1741 614"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l2" HPOS="563" VPOS="606" WIDTH="106" HEIGHT="58" BASELINE="563 649 669 649" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="651 614 619 608 606 608 593 606 563 617 563 649 563 664 669 664 669 649 669 645 651 614"/>
+                        </Shape>
+                        <String CONTENT="180"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-230_r2" HPOS="559" VPOS="709" WIDTH="1778" HEIGHT="310" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="559 709 2337 709 2337 1019 559 1019"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l3" HPOS="664" VPOS="705" WIDTH="1668" HEIGHT="65" BASELINE="667 755 2332 749" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2310 725 2289 725 2267 723 2245 723 2224 720 2202 720 2180 718 2159 718 2137 718 2111 718 2107 716 2094 716 2072 714 2066 714 2061 716 2055 714 2050 714 2029 714 2007 712 1985 712 1983 710 1949 716 1929 707 1920 707 1907 707 1881 716 1812 705 1810 705 1736 718 1684 707 1682 707 1539 718 1515 707 1513 707 1511 707 1509 707 1483 718 1450 707 1448 707 1446 707 1444 707 1414 718 1383 707 1381 707 1379 707 1377 707 1338 718 1243 707 1240 707 1238 707 1201 720 974 710 972 710 970 710 935 720 905 710 903 710 900 710 822 720 766 710 764 710 762 710 734 720 690 710 688 710 686 710 684 710 682 710 664 718 667 755 667 770 2330 764 2332 749 2328 725 2310 725"/>
+                        </Shape>
+                        <String CONTENT="At the end of May the winter abode is usually abolished, and the summer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l4" HPOS="556" VPOS="766" WIDTH="1774" HEIGHT="65" BASELINE="558 816 2330 807" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="558 816 558 831 2328 822 2330 807 2323 777 2226 777 2204 766 2202 766 2200 766 2198 766 2195 766 2178 779 2057 779 2018 766 2016 766 2014 766 1957 777 1929 766 1927 766 1925 766 1923 766 1881 779 1847 768 1845 768 1842 768 1732 779 1708 768 1706 768 1704 768 1702 768 1678 779 1570 768 1567 768 1420 781 1286 770 1284 770 1223 781 1191 770 1188 770 1186 770 1184 770 1182 770 1167 781 760 772 757 772 755 772 716 783 675 772 673 772 671 772 556 783 558 816"/>
+                        </Shape>
+                        <String CONTENT="tent is pitched adjacent to it. The cover of this is made of walrus or thong-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l5" HPOS="556" VPOS="840" WIDTH="1774" HEIGHT="51" BASELINE="558 872 2330 868" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="558 872 558 891 2328 887 2330 868 2323 840 556 842 558 872"/>
+                        </Shape>
+                        <String CONTENT="seal skins, to afford protection against rains and rough weather. The sleeping-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l6" HPOS="556" VPOS="891" WIDTH="1776" HEIGHT="59" BASELINE="558 937 2332 930" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="558 937 558 950 2330 943 2332 930 2328 900 1191 891 1188 891 1186 891 1143 902 712 894 710 894 556 904 558 937"/>
+                        </Shape>
+                        <String CONTENT="room is similar to that of the Reindeer people, but its cover is also made"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l7" HPOS="556" VPOS="952" WIDTH="490" HEIGHT="59" BASELINE="558 995 1046 991" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="558 995 558 1011 1043 1006 1046 991 1041 961 597 952 595 952 593 952 556 963 558 995"/>
+                        </Shape>
+                        <String CONTENT="of tough walrus-hide."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-230_r3" HPOS="559" VPOS="1019" WIDTH="1778" HEIGHT="304" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="559 1019 2337 1019 2337 1323 559 1323"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l8" HPOS="669" VPOS="1006" WIDTH="1665" HEIGHT="65" BASELINE="671 1056 2334 1050" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="671 1056 671 1071 2332 1065 2334 1050 2330 1019 1957 1006 1955 1006 1953 1006 1951 1006 1936 1019 1775 1019 1743 1008 1741 1008 1739 1008 1736 1008 1704 1019 1667 1008 1665 1008 1663 1008 1574 1019 1544 1008 1541 1008 1539 1008 1485 1019 1357 1008 1355 1008 1353 1008 1323 1019 1279 1008 1277 1008 1275 1008 1195 1019 1169 1011 1167 1011 1165 1011 1162 1011 1160 1011 1147 1021 1089 1011 1087 1011 996 1021 898 1011 896 1011 669 1017 671 1056"/>
+                        </Shape>
+                        <String CONTENT="The Eskimo of the Asiatic shore and of St. Lawrence Island nowadays"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l9" HPOS="556" VPOS="1071" WIDTH="1778" HEIGHT="59" BASELINE="558 1117 2334 1108" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="558 1117 558 1130 2332 1121 2334 1108 2330 1080 1446 1071 1444 1071 1373 1082 1061 1073 1059 1073 556 1086 558 1117"/>
+                        </Shape>
+                        <String CONTENT="arrange their winter houses in a quite similar way, only the outer cover is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l10" HPOS="558" VPOS="1127" WIDTH="1776" HEIGHT="63" BASELINE="560 1175 2334 1169" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="560 1175 560 1190 2332 1184 2334 1169 2330 1140 2247 1127 2245 1127 2243 1127 2217 1138 2029 1127 2027 1127 2024 1127 1998 1140 1827 1140 1793 1127 1790 1127 1788 1127 1786 1127 1784 1127 1769 1138 1687 1130 1684 1130 1682 1130 1645 1140 1160 1130 1158 1130 1050 1143 1007 1132 1004 1132 1002 1132 885 1143 762 1132 760 1132 757 1132 714 1143 589 1132 586 1132 584 1132 558 1143 560 1175"/>
+                        </Shape>
+                        <String CONTENT="almost always made of sail-cloth and has a wooden door, — often the door"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l11" HPOS="558" VPOS="1190" WIDTH="1776" HEIGHT="70" BASELINE="560 1236 2334 1229" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="560 1236 560 1249 991 1249 1033 1260 1035 1260 1037 1260 1412 1247 1600 1257 1602 1257 1604 1257 1641 1247 1658 1257 1661 1257 1663 1257 1665 1257 1667 1257 1700 1247 1866 1255 1868 1255 1871 1255 1916 1244 2124 1255 2126 1255 2128 1255 2152 1244 2167 1255 2169 1255 2172 1255 2174 1257 2312 1257 2312 1255 2315 1255 2317 1255 2334 1242 2334 1229 2330 1199 1152 1190 1149 1190 1147 1190 1104 1201 599 1192 597 1192 595 1192 558 1203 560 1236"/>
+                        </Shape>
+                        <String CONTENT="of a boat’s cabin picked up from wreckage or received from the whalers"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l12" HPOS="560" VPOS="1249" WIDTH="447" HEIGHT="71" BASELINE="560 1296 1007 1296" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="560 1296 560 1311 569 1320 571 1320 573 1320 576 1320 1007 1311 1007 1296 1007 1262 983 1249 981 1249 978 1249 976 1249 974 1249 946 1264 833 1249 831 1249 829 1249 827 1249 827 1251 812 1266 697 1266 582 1249 580 1249 578 1249 576 1249 560 1260 560 1296"/>
+                        </Shape>
+                        <String CONTENT="(Plate XVI, Fig. 2)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-230_r4" HPOS="559" VPOS="1323" WIDTH="1778" HEIGHT="290" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="559 1323 2337 1323 2337 1613 559 1613"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l13" HPOS="669" VPOS="1318" WIDTH="1665" HEIGHT="52" BASELINE="669 1350 2334 1350" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="669 1350 669 1370 2334 1370 2334 1350 2334 1320 669 1318 669 1350"/>
+                        </Shape>
+                        <String CONTENT="In the summer, besides the double tent (lɪˊê-ran) before described, sheds"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l14" HPOS="558" VPOS="1379" WIDTH="1774" HEIGHT="52" BASELINE="560 1413 2332 1407" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="560 1413 560 1431 2330 1424 2332 1407 2325 1379 558 1383 560 1413"/>
+                        </Shape>
+                        <String CONTENT="of irregular form are sometimes constructed of poles, and covered with walrus-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l15" HPOS="558" VPOS="1428" WIDTH="1774" HEIGHT="70" BASELINE="560 1474 2332 1470" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="560 1474 560 1487 968 1498 970 1498 972 1498 1000 1487 1082 1498 1084 1498 1087 1498 1132 1487 1188 1498 1191 1498 1193 1498 1214 1487 1269 1498 1271 1498 1273 1498 1275 1498 1290 1487 2330 1487 2332 1470 2328 1441 2267 1428 2265 1428 2263 1428 2219 1439 2156 1428 2154 1428 2152 1428 2118 1439 1990 1428 1988 1428 1985 1428 1983 1428 1968 1441 1864 1441 1734 1428 1732 1428 1680 1439 1626 1428 1624 1428 1528 1439 1474 1428 1472 1428 1470 1428 1435 1441 1375 1431 1373 1431 1370 1431 1329 1441 1007 1431 1004 1431 1002 1431 1000 1431 985 1444 840 1444 723 1431 721 1431 718 1431 680 1441 589 1431 586 1431 584 1431 558 1441 560 1474"/>
+                        </Shape>
+                        <String CONTENT="skins (Plate XVII, Figs. 3, 4). Sometimes the shelter consists only of a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l16" HPOS="560" VPOS="1489" WIDTH="1774" HEIGHT="58" BASELINE="563 1532 2334 1528" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="563 1532 563 1547 2332 1543 2334 1528 2330 1500 1463 1489 1461 1489 1407 1500 645 1491 643 1491 560 1502 563 1532"/>
+                        </Shape>
+                        <String CONTENT="tent-cover thrown over a few stakes joined together. Tents of cloth bought"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l17" HPOS="560" VPOS="1552" WIDTH="641" HEIGHT="56" BASELINE="563 1593 1201 1589" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="563 1593 563 1608 1199 1606 1201 1589 1197 1560 573 1552 571 1552 569 1552 567 1552 567 1554 560 1558 563 1593"/>
+                        </Shape>
+                        <String CONTENT="from whalers are also used."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-230_r5" HPOS="559" VPOS="1613" WIDTH="1778" HEIGHT="119" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="559 1613 2337 1613 2337 1732 559 1732"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l18" HPOS="669" VPOS="1608" WIDTH="1661" HEIGHT="63" BASELINE="669 1651 2330 1651" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="669 1651 669 1664 2328 1671 2330 1651 2330 1621 2254 1608 2252 1608 2011 1619 1992 1608 1990 1608 1988 1608 1847 1608 1845 1608 1726 1619 1678 1608 1676 1608 1674 1608 1671 1608 1669 1608 1652 1621 1531 1621 1500 1608 1498 1608 1496 1608 1494 1608 1463 1619 1431 1608 1429 1608 1427 1608 1424 1608 1381 1619 1338 1608 1336 1608 1334 1608 1236 1619 1178 1608 1175 1608 1173 1608 1139 1619 1100 1608 1097 1608 1095 1608 961 1619 900 1608 898 1608 896 1608 894 1608 879 1621 755 1621 695 1608 693 1608 690 1608 669 1619 669 1651"/>
+                        </Shape>
+                        <String CONTENT="Hut. — The small village that in former times existed in Anadyr Bay,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l19" HPOS="558" VPOS="1667" WIDTH="1453" HEIGHT="62" BASELINE="560 1714 2011 1708" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="560 1714 560 1729 2009 1727 2011 1708 2007 1677 1526 1667 1524 1667 1522 1667 1520 1667 1502 1677 1089 1669 1087 1669 1002 1682 558 1682 560 1714"/>
+                        </Shape>
+                        <String CONTENT="had huts constructed of wood and covered with earth and sod."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-230_r6" HPOS="559" VPOS="1732" WIDTH="1778" HEIGHT="424" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="559 1732 2337 1732 2337 2156 559 2156"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l20" HPOS="671" VPOS="1725" WIDTH="1663" HEIGHT="63" BASELINE="673 1773 2334 1766" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="673 1773 673 1788 2332 1781 2334 1766 2330 1736 1799 1725 1797 1725 1795 1725 1793 1725 1773 1738 671 1738 673 1773"/>
+                        </Shape>
+                        <String CONTENT="Two families of those living in Veᵋñ (Mariinsky Post), not far from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l21" HPOS="558" VPOS="1790" WIDTH="1776" HEIGHT="65" BASELINE="560 1833 2334 1827" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="560 1833 560 1846 1730 1855 1732 1855 1734 1855 1758 1844 2315 1853 2317 1853 2319 1853 2321 1853 2334 1842 2334 1827 2330 1796 589 1790 586 1790 584 1790 558 1799 560 1833"/>
+                        </Shape>
+                        <String CONTENT="site of the village mentioned, still construct for their winter lodges small huts"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l22" HPOS="563" VPOS="1848" WIDTH="1771" HEIGHT="61" BASELINE="565 1894 2334 1887" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="565 1894 565 1909 2332 1903 2334 1887 2330 1857 1191 1848 1188 1848 1136 1859 604 1851 602 1851 599 1851 563 1861 565 1894"/>
+                        </Shape>
+                        <String CONTENT="with wooden frames covered over with earth and stones. The hut has a hole"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l23" HPOS="565" VPOS="1909" WIDTH="1769" HEIGHT="56" BASELINE="565 1950 2334 1950" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="565 1950 565 1965 2334 1965 2334 1950 2334 1920 2289 1909 2286 1909 2284 1909 2189 1922 2011 1922 1988 1909 1985 1909 1983 1909 1923 1920 1907 1909 1905 1909 1903 1909 1901 1909 1899 1909 1862 1920 1769 1909 1767 1909 1765 1909 1736 1920 1706 1909 1704 1909 1702 1909 1598 1920 1580 1909 1578 1909 1576 1909 1574 1909 1496 1920 1409 1909 1407 1909 1405 1909 1373 1920 1286 1909 1284 1909 1282 1909 1236 1920 565 1916 565 1950"/>
+                        </Shape>
+                        <String CONTENT="in the roof for the escape of smoke, and within is a sleeping-room of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l24" HPOS="563" VPOS="1970" WIDTH="1773" HEIGHT="67" BASELINE="565 2011 2336 2006" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="565 2011 565 2026 809 2037 812 2037 814 2037 861 2026 1288 2026 1355 2037 1357 2037 1453 2024 1892 2035 1894 2035 1983 2024 2087 2035 2089 2035 2092 2035 2111 2024 2128 2035 2130 2035 2133 2035 2135 2037 2250 2037 2250 2035 2252 2035 2273 2024 2291 2035 2293 2035 2295 2035 2297 2035 2299 2035 2336 2022 2336 2006 2332 1970 664 1970 662 1970 563 1980 565 2011"/>
+                        </Shape>
+                        <String CONTENT="usual shape. The hut has a square wooden door covered with scraps of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l25" HPOS="563" VPOS="2030" WIDTH="1771" HEIGHT="59" BASELINE="565 2071 2334 2067" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="565 2071 565 2089 2332 2084 2334 2067 2330 2039 612 2030 610 2030 608 2030 563 2041 565 2071"/>
+                        </Shape>
+                        <String CONTENT="reindeer-skin for greater warmth. Plate XVII, Fig. 2, represents one of these"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l26" HPOS="563" VPOS="2087" WIDTH="1429" HEIGHT="67" BASELINE="565 2126 1992 2130" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="565 2126 563 2145 576 2154 578 2154 580 2154 582 2154 1990 2145 1992 2130 1992 2104 1897 2102 1884 2089 1881 2089 1879 2089 1877 2089 1810 2100 1797 2089 1795 2089 1793 2089 1687 2089 1684 2089 1682 2089 1680 2089 1667 2100 1606 2089 1604 2089 1602 2089 1563 2100 1498 2089 1496 2089 1494 2089 1470 2100 1424 2089 1422 2089 1420 2089 1418 2089 1390 2100 1195 2100 1160 2087 1158 2087 1156 2087 1154 2087 1126 2097 1074 2087 1071 2087 1069 2087 1037 2097 991 2087 989 2087 987 2087 985 2087 963 2097 907 2087 905 2087 903 2087 877 2100 792 2100 779 2087 777 2087 775 2087 773 2087 565 2095 565 2126"/>
+                        </Shape>
+                        <String CONTENT="huts. The poles in the front serve for hanging dried fish on."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-230_r7" HPOS="559" VPOS="2156" WIDTH="1778" HEIGHT="957" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="559 2156 2337 2156 2337 3113 559 3113"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l27" HPOS="675" VPOS="2147" WIDTH="1661" HEIGHT="59" BASELINE="675 2190 2336 2190" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="675 2190 675 2206 2336 2206 2336 2190 2336 2160 2247 2147 2245 2147 2243 2147 2215 2158 2141 2147 2139 2147 2137 2147 2135 2147 2120 2160 2005 2160 1972 2147 1970 2147 1968 2147 1912 2158 1860 2147 1858 2147 1855 2147 1823 2158 1765 2147 1762 2147 1760 2147 1723 2158 1678 2147 1676 2147 1674 2147 1671 2147 1626 2158 1609 2147 1606 2147 1604 2147 1485 2147 1483 2147 1424 2158 1399 2147 1396 2147 1394 2147 1392 2147 1366 2158 1338 2147 1336 2147 1334 2147 1247 2158 1193 2147 1191 2147 1188 2147 1147 2158 1121 2147 1119 2147 1117 2147 1030 2158 1007 2147 1004 2147 1002 2147 1000 2147 981 2158 959 2147 957 2147 955 2147 952 2147 950 2147 937 2158 877 2147 874 2147 796 2158 770 2147 768 2147 766 2147 764 2147 727 2158 703 2147 701 2147 699 2147 697 2147 675 2158 675 2190"/>
+                        </Shape>
+                        <String CONTENT="A few Chukchee families of the Middle Anadyr live in wooden huts"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l28" HPOS="563" VPOS="2221" WIDTH="1771" HEIGHT="45" BASELINE="563 2251 2334 2251" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="563 2251 563 2266 2334 2266 2334 2251 2334 2221 563 2221 563 2251"/>
+                        </Shape>
+                        <String CONTENT="somewhat similar to the Yakut “yurta.” These were copied from the yurtas"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l29" HPOS="565" VPOS="2281" WIDTH="1769" HEIGHT="46" BASELINE="565 2310 2334 2310" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="565 2310 565 2327 2334 2327 2334 2310 2334 2281 565 2281 565 2310"/>
+                        </Shape>
+                        <String CONTENT="of the Anadyr Russians, who of late years, however, have replaced their"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l30" HPOS="563" VPOS="2327" WIDTH="1773" HEIGHT="67" BASELINE="565 2372 2336 2368" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="565 2372 565 2394 2334 2383 2336 2368 2332 2338 1476 2327 1474 2327 1472 2327 1442 2338 762 2329 760 2329 563 2340 565 2372"/>
+                        </Shape>
+                        <String CONTENT="yurtas with log-cabins of the usual Northeast-Siberian type. In ancient times"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l31" HPOS="567" VPOS="2400" WIDTH="1765" HEIGHT="48" BASELINE="567 2431 2332 2431" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2431 567 2448 2332 2448 2332 2431 2332 2400 567 2400 567 2431"/>
+                        </Shape>
+                        <String CONTENT="wooden huts of this type may have been in more common use in this territory."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l32" HPOS="565" VPOS="2446" WIDTH="1767" HEIGHT="58" BASELINE="567 2491 2332 2487" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2491 567 2504 2330 2500 2332 2487 2328 2459 2195 2459 2172 2446 2169 2446 2167 2446 2113 2457 2100 2446 2098 2446 2096 2446 2094 2446 2092 2446 2053 2457 1962 2446 1959 2446 1957 2446 1929 2459 1624 2459 1606 2446 1604 2446 1602 2446 1470 2446 1468 2446 1466 2446 1463 2446 1444 2459 1366 2448 1364 2448 1362 2448 1318 2459 1266 2448 1264 2448 1262 2448 1225 2461 1130 2461 1115 2448 1113 2448 1110 2448 996 2448 994 2448 991 2448 989 2448 974 2459 887 2448 885 2448 565 2455 567 2491"/>
+                        </Shape>
+                        <String CONTENT="Remains of huts found on the Bear Islands are more or less of this type."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l33" HPOS="565" VPOS="2504" WIDTH="1767" HEIGHT="65" BASELINE="567 2552 2332 2548" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2552 567 2565 2328 2569 2332 2548 2328 2517 2252 2504 2250 2504 2247 2504 2224 2515 2167 2504 2165 2504 2163 2504 2133 2515 2089 2504 2087 2504 1970 2504 1968 2504 1966 2504 1964 2504 1951 2515 1892 2504 1890 2504 1888 2504 1862 2517 1762 2517 1747 2504 1745 2504 1743 2504 1741 2504 1652 2515 1613 2504 1611 2504 1609 2504 1606 2504 1576 2515 1522 2504 1520 2504 1455 2515 1340 2507 1338 2507 1336 2507 1334 2507 1321 2517 1266 2507 1264 2507 1262 2507 1234 2517 1212 2507 1210 2507 1208 2507 1206 2507 1165 2520 1056 2520 1039 2507 1037 2507 1035 2507 1033 2507 968 2517 937 2507 935 2507 933 2507 565 2513 567 2552"/>
+                        </Shape>
+                        <String CONTENT="In the deserted villages of the Yukaghir situated on the Middle Omolon,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l34" HPOS="565" VPOS="2569" WIDTH="1769" HEIGHT="57" BASELINE="567 2610 2334 2604" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2610 567 2626 2332 2619 2334 2604 2330 2576 634 2569 632 2569 565 2580 567 2610"/>
+                        </Shape>
+                        <String CONTENT="and inhabited about seventy-five years ago, I have seen huts of the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l35" HPOS="565" VPOS="2623" WIDTH="1771" HEIGHT="70" BASELINE="567 2673 2336 2665" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2673 567 2686 1448 2693 1450 2693 1453 2693 1455 2693 1470 2682 1580 2682 1671 2693 1674 2693 1676 2693 1704 2682 1739 2693 1741 2693 1743 2693 1745 2693 1769 2682 1849 2693 1851 2693 2334 2680 2336 2665 2332 2634 1894 2623 1892 2623 1838 2634 1500 2626 1498 2626 1444 2636 582 2630 580 2630 578 2630 576 2630 565 2636 567 2673"/>
+                        </Shape>
+                        <String CONTENT="type. It is not easy to decide whether this type of dwelling is due to Yakut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l36" HPOS="565" VPOS="2684" WIDTH="1769" HEIGHT="63" BASELINE="567 2730 2334 2725" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2730 567 2747 2332 2743 2334 2725 2330 2695 1548 2684 1546 2684 1444 2697 565 2697 567 2730"/>
+                        </Shape>
+                        <String CONTENT="influence, or whether it is an ancient type that developed independently. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l37" HPOS="565" VPOS="2745" WIDTH="1771" HEIGHT="58" BASELINE="567 2788 2336 2784" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2788 567 2803 2334 2799 2336 2784 2332 2756 1515 2745 1513 2745 1403 2756 764 2747 762 2747 565 2758 567 2788"/>
+                        </Shape>
+                        <String CONTENT="construction of the fireplace differs in all of them from that of the Yakut"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l38" HPOS="567" VPOS="2812" WIDTH="1769" HEIGHT="52" BASELINE="567 2849 2336 2849" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 2849 567 2864 2336 2864 2336 2849 2334 2812 567 2812 567 2849"/>
+                        </Shape>
+                        <String CONTENT="houses. They had no stove with wooden chimney, but simply a central"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l39" HPOS="567" VPOS="2875" WIDTH="1769" HEIGHT="49" BASELINE="569 2909 2336 2903" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="569 2909 569 2924 2334 2918 2336 2903 2332 2875 567 2875 569 2909"/>
+                        </Shape>
+                        <String CONTENT="hearth, with a square hole in the roof just above it. In modern times the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l40" HPOS="569" VPOS="2931" WIDTH="1767" HEIGHT="56" BASELINE="571 2970 2336 2963" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="571 2970 571 2987 2334 2981 2336 2963 2332 2933 569 2931 571 2970"/>
+                        </Shape>
+                        <String CONTENT="Yakut, arrangement of the fireplace has been copied by most of the Russians"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l41" HPOS="565" VPOS="2985" WIDTH="1771" HEIGHT="61" BASELINE="567 3031 2336 3022" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="567 3031 567 3046 2334 3039 2336 3022 2332 2992 1009 2985 1007 2985 1004 2985 983 2996 638 2987 636 2987 565 2998 567 3031"/>
+                        </Shape>
+                        <String CONTENT="and Yukaghir in their log-cabins and huts, and the Chukchee of the Middle"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l42" HPOS="567" VPOS="3043" WIDTH="684" HEIGHT="68" BASELINE="569 3091 1251 3085" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="569 3091 569 3106 1236 3111 1238 3111 1240 3111 1243 3111 1243 3108 1251 3100 1251 3085 1247 3054 1039 3043 1037 3043 1035 3043 1002 3054 913 3046 911 3046 790 3056 586 3048 584 3048 582 3048 580 3048 567 3054 569 3091"/>
+                        </Shape>
+                        <String CONTENT="Anadyr have also adopted it."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-230_r8" HPOS="559" VPOS="3113" WIDTH="1778" HEIGHT="122" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="559 3113 2337 3113 2337 3235 559 3235"/>
+                    </Shape>
+                    <TextLine ID="mz_1-230_l43" HPOS="671" VPOS="3102" WIDTH="1667" HEIGHT="67" BASELINE="673 3147 2338 3143" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="673 3147 673 3160 2319 3169 2321 3169 2323 3169 2325 3169 2338 3158 2338 3143 2334 3115 2263 3102 2260 3102 2258 3102 2237 3113 1825 3102 1823 3102 1689 3113 1663 3102 1661 3102 1658 3102 1656 3102 1654 3102 1639 3113 1615 3102 1613 3102 1611 3102 1609 3102 1587 3113 1533 3102 1531 3102 1528 3102 1500 3115 1463 3104 1461 3104 1459 3104 1457 3104 1429 3115 1264 3104 1262 3104 1260 3104 1258 3104 1243 3117 1097 3117 1022 3104 1020 3104 1017 3104 1015 3104 1004 3113 994 3104 991 3104 989 3104 695 3104 693 3104 690 3104 688 3104 671 3113 673 3147"/>
+                        </Shape>
+                        <String CONTENT="Underground House. — In all the Chukchee and Eskimo villages that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-230_l44" HPOS="567" VPOS="3173" WIDTH="1767" HEIGHT="52" BASELINE="569 3206 2334 3202" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="569 3206 569 3225 2334 3221 2334 3202 2330 3173 567 3173 569 3206"/>
+                        </Shape>
+                        <String CONTENT="I visited on the Pacific coast, ruins of the so-called “jaw-bone houses” (Plate"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

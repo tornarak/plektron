@@ -1,0 +1,60 @@
+{
+  "lines": {
+    "0": {"text": "BOGORAS, THE CHUKCHEE."},
+    "1": {"text": "175"},
+    "2": {"text": "inside of the outer room, even while cooking is going on, is almost the same"},
+    "3": {"text": "as that outside. The herdsmen or hunters, when sleeping in the open, although"},
+    "4": {"text": "they may have an abundance of fuel, are often content to make a small"},
+    "5": {"text": "smouldering fire from which to light their pipes, or do not make any fire;"},
+    "6": {"text": "whereas the Lamut and the Yukaghir send up a blaze that wards off the"},
+    "7": {"text": "cold from a space of several yards around, and often keep it up during the"},
+    "8": {"text": "whole night in order to get a chance to sleep comfortably."},
+    "9": {"text": "Movable House. — The type of tent and sleeping-room here described"},
+    "10": {"text": "is especially used in moving about with the herd. That used by the family"},
+    "11": {"text": "is very heavy, and requires — with poles, cover, and bedding — six or seven"},
+    "12": {"text": "sledges. Whenever the herdsmen leave their principal camp, they carry with"},
+    "13": {"text": "them a small sleeping-room, with a light tent, which is often not properly"},
+    "14": {"text": "pitched, but only loosely thrown over the sleeping-room to keep off the"},
+    "15": {"text": "snow. In this type of house it is difficult to dry damp clothing. Fur clothing"},
+    "16": {"text": "generally becomes damp quickly, even in dry, cold weather, especially when"},
+    "17": {"text": "it is worn directly on the skin, without any underclothing. When damp, it"},
+    "18": {"text": "does not protect the body from the cold: therefore it must be dried every"},
+    "19": {"text": "night while its owner is asleep. In the sleeping-room of the Reindeer Chukchee"},
+    "20": {"text": "the only place for drying things is directly over the lamp. Only small articles,"},
+    "21": {"text": "such as mittens, socks, and boots, can be placed there. Large pieces of"},
+    "22": {"text": "clothing, such as shirt or trousers, are dried in a way similar to that used"},
+    "23": {"text": "in drying the sleeping-room cover; i. e., by freezing the dampness out, then"},
+    "24": {"text": "shaking it off with the snow-beater, and finally drying for a long time in"},
+    "25": {"text": "the cold dry wind. The Chukchee herdsman sometimes walks for a fortnight"},
+    "26": {"text": "in damp clothes without a chance to dry them, and takes off his undershirt"},
+    "27": {"text": "only when it is quite spoiled and unfit for further use. On this account the"},
+    "28": {"text": "Reindeer Chukchee are always anxious to avoid the damp. For instance,"},
+    "29": {"text": "before coming into the inner room, the whole dress, from the cap to the"},
+    "30": {"text": "shaggy boot-soles, is well beaten with the beater to remove the slightest"},
+    "31": {"text": "trace of snow, which otherwise would melt in the warm interior and cause"},
+    "32": {"text": "additional trouble. In the evening, when the sleeping-tents are put in place"},
+    "33": {"text": "ready for occupancy, the entire camp begins to resound on all sides with the"},
+    "34": {"text": "short rapping of the snow-beaters, which lasts for half an hour before all the"},
+    "35": {"text": "people are ready to retire. Travellers and herdsmen often have beaters of"},
+    "36": {"text": "their own, which are carried on the belt or are attached to the sledge-grating."},
+    "37": {"text": "The snow-beaters for clothing (Fig. 98) are more slender than those used"},
+    "38": {"text": "for the room-covers. The knob is often fashioned in the shape of a human"},
+    "39": {
+      "text": "or dog’s head, which then plays the rôle of the protecting spirit, the so-called",
+      "resolved": "rôle: ô = o + U+0302 (French loanword, printed with circumflex, not Tier-1 notation)"
+    },
+    "40": {
+      "text": "“travelling-companion” (leiˊhu-tuˊmg̣ɪn).¹",
+      "resolved": "leiˊhu-tuˊmg̣ɪn: ˊ = U+02CA (stress, twice: after i, after u); g̣ = g + U+0323 combining dot below; ɪ = U+026A LATIN LETTER SMALL CAPITAL I; footnote marker ¹ = U+00B9",
+      "note": "4x confirmed dot below g (g̣, U+0323) and small-cap ɪ (U+026A) in 'mg̣ɪn'; both raised marks after 'lei' and 'tu' read as stress U+02CA per keying_spec.md §4 ('read every raised mark as stress by default'), not apostrophe. Quotes around the English gloss 'travelling-companion' are curly per §1/§5.6 (mz draft had straight ASCII quotes). mz draft also carried a spurious extra ')' after the period which is not on the page (verified at 4x: only one closing paren, before the period).",
+      "class": "print"
+    },
+    "41": {"text": "Winter House. — Late in the fall most of the families, especially those"},
+    "42": {
+      "text": "¹ See chapter on charms.",
+      "note": "Footnote opener keyed as superscript U+00B9 per keying_spec.md §2.10 ('the marker is the superscript sort, at the reference and at the opener alike').",
+      "class": "print"
+    }
+  },
+  "contamination": {"blind": true}
+}

@@ -1,0 +1,354 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-233.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-233.png; regions_from: zones/chukchi-1-233.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-233_r1" HPOS="440" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="440 618 2218 618 2218 708 440 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-233_l1" HPOS="1017" VPOS="623" WIDTH="620" HEIGHT="54" BASELINE="1020 655 1637 660" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1628 623 1327 623 1323 623 1301 623 1279 623 1258 623 1236 623 1214 623 1193 623 1171 623 1149 623 1128 623 1106 623 1084 623 1063 623 1041 623 1020 625 1020 655 1017 673 1632 677 1637 660 1635 630 1628 623"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l2" HPOS="2113" VPOS="632" WIDTH="95" HEIGHT="47" BASELINE="2115 664 2208 660" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2200 643 2178 638 2156 634 2150 632 2113 632 2115 664 2115 679 2206 677 2208 660 2206 658 2200 643"/>
+                        </Shape>
+                        <String CONTENT="181"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-233_r2" HPOS="440" VPOS="733" WIDTH="1778" HEIGHT="2537" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="440 733 2218 733 2218 3270 440 3270"/>
+                    </Shape>
+                    <TextLine ID="mz_1-233_l3" HPOS="443" VPOS="725" WIDTH="1778" HEIGHT="60" BASELINE="446 772 2221 768" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="595 729 573 731 569 731 560 740 443 740 446 772 446 785 2219 781 2221 768 2219 738 2169 725 2167 725 2165 725 2163 725 2139 736 1474 725 1472 725 1470 725 1468 725 1453 736 1182 727 1180 727 1117 738 1069 727 1067 727 1065 727 1063 727 1015 738 788 727 786 727 783 727 762 738 731 727 729 727 727 727 669 738 599 729 595 729"/>
+                        </Shape>
+                        <String CONTENT="XVII, Fig. 1) (waˊlkar; pl., waˊlkarat) are found. These ruins seem to be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l4" HPOS="443" VPOS="796" WIDTH="1778" HEIGHT="48" BASELINE="443 829 2221 829" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="443 829 443 844 2221 844 2221 829 2219 796 443 796 443 829"/>
+                        </Shape>
+                        <String CONTENT="ancient, and are either circular holes or flat mounds, with some battered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l5" HPOS="446" VPOS="859" WIDTH="1771" HEIGHT="50" BASELINE="446 889 2217 889" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 889 446 904 2215 909 2217 889 2217 859 446 859 446 889"/>
+                        </Shape>
+                        <String CONTENT="rafters and beams of bone of the whale. In some villages — as, for example,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l6" HPOS="443" VPOS="909" WIDTH="1778" HEIGHT="65" BASELINE="446 950 2221 946" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 950 446 963 1405 972 1407 972 1762 961 1777 972 1780 972 1782 972 1784 974 1936 974 1936 972 1938 972 1962 961 2001 972 2003 972 2005 972 2007 972 2029 961 2133 972 2135 972 2137 972 2159 961 2195 972 2198 972 2200 972 2202 972 2204 972 2221 959 2221 946 2215 909 443 915 446 950"/>
+                        </Shape>
+                        <String CONTENT="in ᴇˊnmɪlɪn — the inhabitants have forgotten the exact location of most of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l7" HPOS="446" VPOS="978" WIDTH="1771" HEIGHT="48" BASELINE="446 1008 2217 1008" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1008 446 1026 2217 1026 2217 1008 2217 978 446 978 446 1008"/>
+                        </Shape>
+                        <String CONTENT="the ruins, because the village has been shifted several times since. In Euˊnmun"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l8" HPOS="446" VPOS="1026" WIDTH="1773" HEIGHT="67" BASELINE="448 1067 2219 1063" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 1067 448 1082 1093 1093 1095 1093 1097 1093 1132 1082 1251 1093 1253 1093 1256 1093 1288 1082 1600 1091 1602 1091 1604 1091 1606 1091 1619 1080 1632 1091 1635 1091 1637 1091 1639 1091 1708 1080 2072 1091 2074 1091 2076 1091 2102 1080 2198 1091 2200 1091 2202 1091 2204 1091 2219 1078 2219 1063 2215 1034 515 1026 513 1026 446 1037 448 1067"/>
+                        </Shape>
+                        <String CONTENT="and Wuteˊen the “jaw-bone houses” overhanging the flat sandy shore were,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l9" HPOS="446" VPOS="1084" WIDTH="1773" HEIGHT="65" BASELINE="448 1130 2219 1125" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 1130 448 1149 2219 1138 2219 1125 2215 1095 1399 1084 1396 1084 1327 1095 537 1086 534 1086 446 1097 448 1130"/>
+                        </Shape>
+                        <String CONTENT="gradually destroyed by the weather, and crumbled down, together with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l10" HPOS="446" VPOS="1145" WIDTH="1771" HEIGHT="58" BASELINE="446 1186 2217 1186" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1186 446 1203 2217 1203 2217 1186 2217 1156 2180 1145 2178 1145 2068 1145 2066 1145 2063 1145 2061 1145 2048 1156 2027 1145 2024 1145 2022 1145 2020 1145 1996 1156 1814 1145 1812 1145 1810 1145 1782 1156 1741 1145 1739 1145 1736 1145 1734 1145 1704 1156 1580 1145 1578 1145 1511 1156 1433 1145 1431 1145 1379 1156 1327 1145 1325 1145 1323 1145 1290 1156 1238 1145 1236 1145 1234 1145 1188 1158 1059 1158 1043 1145 1041 1145 1039 1145 1037 1145 1035 1145 1004 1156 970 1145 968 1145 965 1145 859 1158 762 1158 747 1145 744 1145 742 1145 740 1145 738 1145 708 1156 645 1145 643 1145 641 1145 599 1156 446 1153 446 1186"/>
+                        </Shape>
+                        <String CONTENT="ledge of rock on which they stood. In other villages, for instance, in Čeˊčin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l11" HPOS="443" VPOS="1212" WIDTH="1770" HEIGHT="54" BASELINE="446 1244 2213 1249" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1244 443 1260 2208 1266 2213 1249 2211 1216 446 1212 446 1244"/>
+                        </Shape>
+                        <String CONTENT="and at Indian Point, they are in the immediate vicinity of the present habitations,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l12" HPOS="443" VPOS="1262" WIDTH="1768" HEIGHT="69" BASELINE="446 1303 2211 1309" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1303 443 1320 454 1329 456 1329 459 1329 461 1329 985 1320 1041 1331 1043 1331 2208 1322 2211 1309 2208 1279 1788 1266 1786 1266 1624 1277 1563 1264 1450 1264 1448 1264 1446 1264 1444 1264 1429 1275 1347 1264 1344 1264 1169 1275 1143 1264 1141 1264 1139 1264 1035 1275 959 1262 957 1262 887 1275 757 1275 738 1262 736 1262 734 1262 731 1262 729 1262 684 1273 595 1262 593 1262 591 1262 565 1273 532 1262 530 1262 528 1262 446 1270 446 1303"/>
+                        </Shape>
+                        <String CONTENT="and the villagers still remember to what families most of the ruins belong."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l13" HPOS="446" VPOS="1327" WIDTH="1769" HEIGHT="56" BASELINE="448 1368 2215 1361" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 1368 448 1383 2213 1381 2215 1361 2211 1333 467 1327 465 1327 463 1327 461 1327 446 1333 448 1368"/>
+                        </Shape>
+                        <String CONTENT="As before mentioned, they claim that these houses went out of use three"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l14" HPOS="443" VPOS="1385" WIDTH="1774" HEIGHT="63" BASELINE="446 1428 2217 1424" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1428 446 1448 2215 1439 2217 1424 2213 1396 1373 1385 1370 1385 1303 1396 604 1387 602 1387 443 1398 446 1428"/>
+                        </Shape>
+                        <String CONTENT="generations ago. At the time of Hooper’s visit in 1848, houses of the modern"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l15" HPOS="443" VPOS="1452" WIDTH="1774" HEIGHT="54" BASELINE="446 1489 2217 1483" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1489 446 1506 2215 1500 2217 1483 2211 1452 443 1457 446 1489"/>
+                        </Shape>
+                        <String CONTENT="type were already in use, and he mentions having seen half-ruined underground"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l16" HPOS="446" VPOS="1513" WIDTH="1771" HEIGHT="50" BASELINE="448 1547 2217 1543" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 1547 448 1563 2215 1558 2217 1543 2213 1515 446 1513 448 1547"/>
+                        </Shape>
+                        <String CONTENT="houses which were in no better condition when I found them, fifty-two years"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l17" HPOS="443" VPOS="1558" WIDTH="1772" HEIGHT="63" BASELINE="446 1608 2215 1602" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1608 446 1621 2213 1619 2215 1602 2211 1571 1879 1558 1877 1558 1875 1558 1838 1569 1812 1558 1810 1558 1808 1558 1806 1558 1784 1569 1760 1558 1758 1558 1756 1558 1754 1558 1734 1569 1717 1558 1715 1558 1713 1558 1710 1558 1708 1558 1669 1569 1648 1558 1645 1558 1643 1558 1641 1558 1639 1558 1617 1571 1197 1560 1195 1560 1193 1560 1169 1571 1113 1560 1110 1560 1002 1573 976 1563 974 1563 972 1563 970 1563 935 1573 835 1563 833 1563 773 1573 669 1563 667 1563 443 1571 446 1608"/>
+                        </Shape>
+                        <String CONTENT="later. The waˊlkar of the Maritime Chukchee and Asiatic Eskimo had a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l18" HPOS="443" VPOS="1625" WIDTH="1774" HEIGHT="57" BASELINE="446 1667 2217 1662" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1667 446 1682 2215 1677 2217 1662 2213 1634 456 1625 454 1625 452 1625 450 1625 450 1628 443 1632 446 1667"/>
+                        </Shape>
+                        <String CONTENT="frame made of jaw-bones. Heavy pieces were set in the ground in an upright"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l19" HPOS="443" VPOS="1682" WIDTH="1774" HEIGHT="67" BASELINE="446 1727 2217 1721" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1727 446 1749 2215 1738 2217 1721 2213 1693 1697 1682 1695 1682 1609 1693 1162 1684 1160 1684 1030 1695 521 1686 519 1686 443 1697 446 1727"/>
+                        </Shape>
+                        <String CONTENT="position at intervals all around the house, and were held in place by earth"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l20" HPOS="446" VPOS="1757" WIDTH="1771" HEIGHT="46" BASELINE="446 1786 2217 1786" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1786 446 1803 2217 1803 2217 1786 2217 1757 446 1757 446 1786"/>
+                        </Shape>
+                        <String CONTENT="and stones. Sometimes there were about sixteen of these supports, so that"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l21" HPOS="443" VPOS="1805" WIDTH="1776" HEIGHT="65" BASELINE="446 1846 2219 1842" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1846 446 1859 1310 1870 1312 1870 1314 1870 1316 1870 1334 1859 2040 1868 2042 1868 2219 1855 2219 1842 2215 1814 463 1805 461 1805 459 1805 456 1805 443 1812 446 1846"/>
+                        </Shape>
+                        <String CONTENT="they formed a regular fence. Large pieces of jaw-bone or of whale’s ribs"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l22" HPOS="446" VPOS="1877" WIDTH="1771" HEIGHT="45" BASELINE="446 1905 2217 1905" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1905 446 1922 2217 1922 2217 1905 2217 1877 446 1877 446 1905"/>
+                        </Shape>
+                        <String CONTENT="were superposed as rafters, and smaller pieces were inserted to make the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l23" HPOS="443" VPOS="1933" WIDTH="1774" HEIGHT="47" BASELINE="446 1965 2217 1961" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 1965 446 1980 2215 1976 2217 1961 2211 1933 443 1935 446 1965"/>
+                        </Shape>
+                        <String CONTENT="structure more compact. The floor, or at least the middle part of it, was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l24" HPOS="446" VPOS="1980" WIDTH="1771" HEIGHT="70" BASELINE="448 2026 2217 2022" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 2026 448 2050 2215 2037 2217 2022 2215 1993 2189 1980 2187 1980 2185 1980 2111 1991 2087 1980 2085 1980 2083 1980 2018 1993 1580 1993 1541 1980 1539 1980 1537 1980 1535 1980 1533 1980 1520 1991 1492 1980 1489 1980 1487 1980 1409 1991 1379 1980 1377 1980 1375 1980 1312 1993 1275 1983 1273 1983 1271 1983 896 1993 861 1983 859 1983 857 1983 855 1983 812 1993 744 1983 742 1983 740 1983 710 1993 647 1983 645 1983 643 1983 604 1993 567 1983 565 1983 563 1983 446 1996 448 2026"/>
+                        </Shape>
+                        <String CONTENT="paved with flat pieces of bone. Then the whole structure was covered with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l25" HPOS="443" VPOS="2043" WIDTH="1774" HEIGHT="59" BASELINE="446 2087 2217 2080" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2087 446 2102 2215 2095 2217 2080 2213 2052 1037 2043 1035 2043 1033 2043 989 2054 506 2045 504 2045 443 2056 446 2087"/>
+                        </Shape>
+                        <String CONTENT="sod, and a thick layer of loose earth was strewn around the bottom. Often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l26" HPOS="443" VPOS="2106" WIDTH="1772" HEIGHT="56" BASELINE="446 2147 2215 2141" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2147 446 2162 2213 2156 2215 2141 2208 2106 443 2115 446 2147"/>
+                        </Shape>
+                        <String CONTENT="the waˊlkar was started with a circular excavation, and, after being well covered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l27" HPOS="443" VPOS="2165" WIDTH="1772" HEIGHT="58" BASELINE="446 2208 2215 2199" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2208 446 2223 2213 2214 2215 2199 2211 2171 900 2165 898 2165 801 2175 485 2167 482 2167 480 2167 443 2177 446 2208"/>
+                        </Shape>
+                        <String CONTENT="with earth, appeared to be a half-underground house, with only the roof pro-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l28" HPOS="443" VPOS="2221" WIDTH="1772" HEIGHT="63" BASELINE="446 2266 2215 2262" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2266 446 2281 2211 2284 2215 2262 2211 2232 1351 2221 1349 2221 1347 2221 1325 2232 528 2223 526 2223 443 2234 446 2266"/>
+                        </Shape>
+                        <String CONTENT="truding above the surface. Even the “jaw-bone houses” built above ground,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l29" HPOS="446" VPOS="2292" WIDTH="1769" HEIGHT="52" BASELINE="448 2327 2215 2323" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 2327 448 2344 2213 2344 2215 2323 2211 2292 446 2292 448 2327"/>
+                        </Shape>
+                        <String CONTENT="in the course of a long period of time, assumed the shape of small hillocks,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l30" HPOS="446" VPOS="2338" WIDTH="1771" HEIGHT="65" BASELINE="448 2387 2217 2379" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 2387 448 2403 2215 2396 2217 2379 2213 2351 1940 2338 1938 2338 1873 2349 1845 2338 1842 2338 1840 2338 1838 2338 1836 2338 1819 2349 1669 2340 1667 2340 1548 2351 1520 2340 1518 2340 1515 2340 1513 2340 1481 2351 1440 2340 1437 2340 1435 2340 1433 2340 1401 2351 1336 2340 1334 2340 1331 2340 1329 2340 1314 2353 1141 2342 1139 2342 1054 2353 1022 2342 1020 2342 1017 2342 952 2353 916 2342 913 2342 911 2342 799 2355 487 2344 485 2344 482 2344 446 2357 448 2387"/>
+                        </Shape>
+                        <String CONTENT="with a human lodging-place inside. Of all the waˊlkarat that I have seen,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l31" HPOS="446" VPOS="2403" WIDTH="1771" HEIGHT="58" BASELINE="448 2444 2217 2439" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 2444 448 2461 2215 2457 2217 2439 2213 2407 545 2403 543 2403 446 2413 448 2444"/>
+                        </Shape>
+                        <String CONTENT="on the Pacific coast, only one, in the village of Nuˊnlig̣ren, retains its original"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l32" HPOS="446" VPOS="2465" WIDTH="1771" HEIGHT="57" BASELINE="448 2507 2217 2500" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 2507 448 2522 2215 2515 2217 2500 2213 2468 467 2465 465 2465 463 2465 461 2465 446 2472 448 2507"/>
+                        </Shape>
+                        <String CONTENT="shape. A comparison with other ruins shows that it is a typical underground"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l33" HPOS="452" VPOS="2530" WIDTH="1765" HEIGHT="50" BASELINE="454 2563 2217 2559" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="454 2563 454 2580 2215 2576 2217 2559 2211 2530 452 2533 454 2563"/>
+                        </Shape>
+                        <String CONTENT="“jaw-bone house.” It is a large rectangular apartment, 20 feet long, 14 feet"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l34" HPOS="448" VPOS="2582" WIDTH="1769" HEIGHT="59" BASELINE="450 2623 2217 2617" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="450 2623 450 2641 2215 2634 2217 2617 2213 2587 491 2582 489 2582 487 2582 448 2593 450 2623"/>
+                        </Shape>
+                        <String CONTENT="wide, and 7½ feet high in the middle. A strong “jaw-bone” frame incrusted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l35" HPOS="446" VPOS="2639" WIDTH="1769" HEIGHT="71" BASELINE="448 2686 2215 2680" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 2686 448 2699 857 2699 916 2710 918 2710 1193 2697 1383 2708 1386 2708 1388 2708 1422 2697 1435 2708 1437 2708 1440 2708 1442 2710 1537 2710 1537 2708 1539 2708 1541 2708 1557 2697 1669 2706 1671 2706 1674 2706 1676 2706 1695 2695 1925 2695 1994 2706 1996 2706 1998 2706 2022 2695 2143 2706 2146 2706 2213 2693 2215 2680 2211 2652 2156 2639 2154 2639 1981 2649 1899 2639 1897 2639 1894 2639 1847 2649 1734 2639 1732 2639 1678 2649 1652 2639 1650 2639 1648 2639 1645 2639 1598 2652 1505 2641 1502 2641 1431 2652 1392 2641 1390 2641 1388 2641 1305 2652 1236 2641 1234 2641 1232 2641 1201 2652 446 2652 448 2686"/>
+                        </Shape>
+                        <String CONTENT="in the hardened earth supports its walls (Fig. 100). Most of the uprights"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l36" HPOS="448" VPOS="2699" WIDTH="1769" HEIGHT="63" BASELINE="450 2745 2217 2736" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="450 2745 450 2762 2215 2753 2217 2736 2213 2708 1334 2699 1331 2699 1329 2699 1327 2699 1314 2710 900 2701 898 2701 896 2701 894 2701 879 2712 485 2704 482 2704 480 2704 448 2714 450 2745"/>
+                        </Shape>
+                        <String CONTENT="which support the side-walls are formed of two parts, the upper being thinner"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l37" HPOS="443" VPOS="2760" WIDTH="1774" HEIGHT="60" BASELINE="446 2805 2217 2799" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2805 446 2820 2215 2814 2217 2799 2213 2771 1626 2760 1624 2760 1622 2760 1596 2771 1476 2762 1474 2762 1028 2773 463 2764 461 2764 459 2764 456 2764 443 2771 446 2805"/>
+                        </Shape>
+                        <String CONTENT="than that below. The upper parts are not fastened to those below, but are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l38" HPOS="443" VPOS="2823" WIDTH="1776" HEIGHT="58" BASELINE="446 2864 2219 2857" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2864 446 2881 2217 2875 2219 2857 2215 2829 461 2823 459 2823 456 2823 454 2823 443 2829 446 2864"/>
+                        </Shape>
+                        <String CONTENT="firmly implanted on their top. The pressure of the rafters, and the weight"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l39" HPOS="443" VPOS="2883" WIDTH="1772" HEIGHT="57" BASELINE="446 2927 2215 2916" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2927 446 2940 2213 2933 2215 2916 2211 2888 799 2883 796 2883 736 2894 480 2885 478 2885 476 2885 443 2896 446 2927"/>
+                        </Shape>
+                        <String CONTENT="of the soil which covers the structure, help to hold them in place. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l40" HPOS="443" VPOS="2942" WIDTH="1772" HEIGHT="58" BASELINE="446 2985 2215 2979" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="446 2985 446 2998 2211 3000 2215 2979 2211 2950 1071 2942 1069 2942 1009 2953 528 2944 526 2944 443 2955 446 2985"/>
+                        </Shape>
+                        <String CONTENT="roof is formed of several curved beams, which rest on other uprights,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l41" HPOS="446" VPOS="3000" WIDTH="1769" HEIGHT="59" BASELINE="448 3043 2215 3039" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="448 3043 448 3059 2215 3059 2215 3039 2211 3011 1349 3000 1347 3000 1344 3000 1342 3000 1323 3011 472 3002 469 3002 467 3002 446 3011 448 3043"/>
+                        </Shape>
+                        <String CONTENT="short and stout, leaned against the front and the rear wall (Plate XVIII,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l42" HPOS="450" VPOS="3067" WIDTH="1765" HEIGHT="57" BASELINE="452 3108 2215 3098" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="452 3108 452 3124 2213 3113 2215 3098 2208 3067 450 3067 452 3108"/>
+                        </Shape>
+                        <String CONTENT="Figs. 2, 3). Like the underground house of other tribes, it has two entrances."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l43" HPOS="448" VPOS="3126" WIDTH="1767" HEIGHT="65" BASELINE="450 3165 2215 3154" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="450 3165 450 3180 794 3191 796 3191 799 3191 829 3178 1152 3189 1154 3189 1318 3178 1494 3186 1496 3186 1498 3186 1546 3173 1665 3173 1680 3184 1682 3184 1684 3184 1687 3184 1797 3173 1858 3182 1860 3182 1862 3182 1864 3182 1884 3171 2211 3173 2215 3154 2208 3126 448 3134 450 3165"/>
+                        </Shape>
+                        <String CONTENT="One is through a long underground passage, and could be used only in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-233_l44" HPOS="448" VPOS="3182" WIDTH="1769" HEIGHT="63" BASELINE="450 3225 2217 3215" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2208 3184 835 3182 833 3182 831 3182 799 3193 487 3184 485 3184 482 3184 448 3195 450 3225 450 3245 2215 3234 2217 3215 2215 3208 2208 3184"/>
+                        </Shape>
+                        <String CONTENT="winter, because in summer it was filled with water. The level of the floor"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

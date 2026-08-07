@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-243.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-243.png; regions_from: zones/chukchi-1-243.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-243_r1" HPOS="385" VPOS="612" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="385 612 2163 612 2163 702 385 702"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l1" HPOS="961" VPOS="630" WIDTH="622" HEIGHT="56" BASELINE="963 666 1583 662" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="961 643 963 666 963 686 1580 681 1583 662 1576 630 972 632 961 643"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l2" HPOS="2059" VPOS="625" WIDTH="89" HEIGHT="61" BASELINE="2061 671 2148 666" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2059 645 2061 671 2061 686 2146 684 2148 666 2146 636 2105 625 2102 625 2100 625 2098 625 2066 636 2059 645"/>
+                        </Shape>
+                        <String CONTENT="187"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-243_r2" HPOS="385" VPOS="727" WIDTH="1778" HEIGHT="194" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="385 727 2163 727 2163 921 385 921"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l3" HPOS="387" VPOS="736" WIDTH="1772" HEIGHT="54" BASELINE="387 775 2159 775" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 775 387 790 2159 790 2159 775 2156 736 387 742 387 775"/>
+                        </Shape>
+                        <String CONTENT="occasion to test display baking not less complete than any earthenware of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l4" HPOS="387" VPOS="790" WIDTH="1767" HEIGHT="60" BASELINE="389 835 2154 831" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 835 389 850 2152 846 2154 831 2150 803 2096 790 2094 790 2092 790 2066 803 1860 803 1823 790 1821 790 1819 790 1816 790 1784 801 1741 790 1739 790 1736 790 1734 790 1704 801 1645 790 1643 790 1541 801 1489 790 1487 790 1418 801 1375 790 1373 790 1370 790 1253 803 1152 792 1149 792 1147 792 1113 803 1067 792 1065 792 1063 792 751 803 693 792 690 792 604 803 407 792 404 792 402 792 400 792 387 801 389 835"/>
+                        </Shape>
+                        <String CONTENT="American make. Some of the fragments from Baron Korff’s Bay seem also"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l5" HPOS="387" VPOS="863" WIDTH="483" HEIGHT="48" BASELINE="387 894 870 894" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 894 387 911 870 911 870 894 870 863 387 863 387 894"/>
+                        </Shape>
+                        <String CONTENT="to have been baked."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-243_r3" HPOS="385" VPOS="921" WIDTH="1778" HEIGHT="467" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 921 2163 921 2163 1388 385 1388"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l6" HPOS="495" VPOS="917" WIDTH="1661" HEIGHT="55" BASELINE="495 954 2156 954" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="495 954 495 972 2156 972 2156 954 2156 924 495 917 495 954"/>
+                        </Shape>
+                        <String CONTENT="I am not aware of the occurrence of any soapstone kettles or lamps on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l7" HPOS="387" VPOS="982" WIDTH="1767" HEIGHT="52" BASELINE="387 1013 2154 1013" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1013 387 1028 2150 1034 2154 1013 2152 982 387 982 387 1013"/>
+                        </Shape>
+                        <String CONTENT="the Asiatic side,¹ but the customs of the Chukchee concerning the taking"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l8" HPOS="387" VPOS="1043" WIDTH="1769" HEIGHT="45" BASELINE="387 1073 2156 1073" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1073 387 1088 2156 1088 2156 1073 2156 1043 387 1043 387 1073"/>
+                        </Shape>
+                        <String CONTENT="from the cliffs of pieces of sandstone fit for the manufacture of lamps cor-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l9" HPOS="383" VPOS="1091" WIDTH="1773" HEIGHT="58" BASELINE="385 1134 2156 1130" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 1134 385 1149 2154 1147 2156 1130 2152 1101 1271 1091 1269 1091 1182 1101 541 1093 539 1093 383 1104 385 1134"/>
+                        </Shape>
+                        <String CONTENT="respond to those of the American Eskimo regarding soapstone. Thus every"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l10" HPOS="385" VPOS="1149" WIDTH="1771" HEIGHT="67" BASELINE="387 1195 2156 1190" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1195 387 1216 2154 1205 2156 1190 2152 1160 1271 1149 1269 1149 1193 1160 422 1151 420 1151 417 1151 385 1162 387 1195"/>
+                        </Shape>
+                        <String CONTENT="piece of sandstone has to be “bought” from the cliff with a little blubber or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l11" HPOS="385" VPOS="1210" WIDTH="1774" HEIGHT="58" BASELINE="387 1255 2159 1251" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1255 387 1268 2156 1264 2159 1251 2154 1223 1845 1210 1842 1210 1840 1210 1838 1210 1823 1223 1730 1223 1674 1210 1671 1210 1604 1221 1567 1210 1565 1210 1563 1210 1349 1221 1273 1210 1271 1210 1269 1210 1240 1223 1206 1212 1204 1212 1201 1212 493 1223 428 1212 426 1212 424 1212 385 1225 387 1255"/>
+                        </Shape>
+                        <String CONTENT="with a small piece of tobacco-leaf. The man going for sandstone has to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l12" HPOS="383" VPOS="1270" WIDTH="1776" HEIGHT="61" BASELINE="385 1316 2159 1311" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="385 1316 385 1331 2156 1327 2159 1311 2156 1283 2107 1270 2105 1270 2102 1270 2100 1270 2070 1281 2016 1270 2014 1270 2011 1270 1979 1283 1639 1283 1528 1270 1526 1270 1472 1281 1416 1270 1414 1270 1245 1283 1204 1273 1201 1273 1199 1273 1197 1273 1162 1283 994 1273 991 1273 935 1283 898 1273 896 1273 894 1273 792 1283 734 1273 731 1273 656 1283 595 1273 593 1273 491 1283 450 1273 448 1273 446 1273 383 1286 385 1316"/>
+                        </Shape>
+                        <String CONTENT="strip to the waist, or in winter at least to take off his outer coat, or else the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l13" HPOS="385" VPOS="1331" WIDTH="1616" HEIGHT="63" BASELINE="387 1372 2001 1370" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1372 387 1387 1996 1394 2001 1370 1996 1342 409 1331 407 1331 404 1331 385 1340 387 1372"/>
+                        </Shape>
+                        <String CONTENT="displeasure of the “owner of the place”² will bring on a heavy storm."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-243_r4" HPOS="385" VPOS="1388" WIDTH="1778" HEIGHT="668" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 1388 2163 1388 2163 2056 385 2056"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l14" HPOS="495" VPOS="1394" WIDTH="1668" HEIGHT="56" BASELINE="498 1435 2163 1431" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="498 1435 498 1450 2161 1446 2163 1431 2156 1394 495 1396 498 1435"/>
+                        </Shape>
+                        <String CONTENT="The clay kettle of northeastern Asia, as well as the soapstone kettle of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l15" HPOS="385" VPOS="1448" WIDTH="1769" HEIGHT="63" BASELINE="387 1496 2154 1489" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1496 387 1511 2152 1509 2154 1489 2152 1461 2109 1448 2107 1448 2105 1448 2102 1448 2079 1459 1777 1448 1775 1448 1773 1448 1728 1459 1700 1448 1697 1448 1695 1448 1693 1448 1691 1448 1676 1459 1650 1448 1648 1448 1645 1448 1546 1461 1193 1450 1191 1450 1043 1461 998 1450 996 1450 994 1450 844 1463 560 1452 558 1452 556 1452 517 1463 472 1452 469 1452 467 1452 385 1465 387 1496"/>
+                        </Shape>
+                        <String CONTENT="arctic America, is evidently one of the contrivances of the Maritime people."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l16" HPOS="389" VPOS="1519" WIDTH="1770" HEIGHT="59" BASELINE="391 1554 2159 1550" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1554 391 1567 892 1578 894 1578 996 1567 1054 1578 1056 1578 1197 1567 1271 1578 1273 1578 1386 1565 1578 1565 1598 1576 1600 1576 1602 1576 1604 1576 1719 1565 1756 1576 1758 1576 1760 1576 1762 1576 1801 1565 1823 1576 1825 1576 1827 1576 1899 1565 1920 1576 1923 1576 1925 1578 2024 1578 2024 1576 2027 1576 2029 1576 2044 1565 2135 1576 2137 1576 2139 1576 2141 1576 2159 1563 2159 1550 2154 1521 389 1519 391 1554"/>
+                        </Shape>
+                        <String CONTENT="Its elongated rectangular form is adapted to the shape of the lamp over"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l17" HPOS="389" VPOS="1571" WIDTH="1772" HEIGHT="67" BASELINE="391 1612 2161 1608" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1612 391 1628 1113 1638 1115 1638 1117 1638 1119 1638 1136 1628 1323 1636 1325 1636 1327 1636 1355 1625 1728 1625 1752 1636 1754 1636 1756 1636 1758 1636 1786 1625 1918 1636 1920 1636 1923 1636 1946 1625 1998 1636 2001 1636 2159 1623 2161 1608 2156 1571 430 1571 428 1571 426 1571 389 1582 391 1612"/>
+                        </Shape>
+                        <String CONTENT="which it was hung in cooking. Perhaps in former times a square frame of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l18" HPOS="389" VPOS="1630" WIDTH="1772" HEIGHT="69" BASELINE="391 1673 2161 1669" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1673 391 1699 2159 1686 2161 1669 2156 1641 1275 1630 1273 1630 1271 1630 1236 1641 448 1632 446 1632 389 1643 391 1673"/>
+                        </Shape>
+                        <String CONTENT="poles connected by cross-bars was used to suspend it, as is the case with the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l19" HPOS="389" VPOS="1686" WIDTH="1770" HEIGHT="65" BASELINE="391 1734 2159 1727" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1734 391 1751 2156 1744 2159 1727 2154 1699 2085 1686 2083 1686 2081 1686 2057 1699 1931 1699 1912 1686 1910 1686 1907 1686 1905 1686 1903 1686 1881 1697 1860 1686 1858 1686 1855 1686 1853 1686 1829 1699 1669 1699 1611 1686 1609 1686 1606 1686 1559 1699 981 1688 978 1688 976 1688 974 1688 957 1701 903 1690 900 1690 762 1701 628 1690 625 1690 623 1690 602 1701 411 1690 409 1690 407 1690 404 1690 389 1699 391 1734"/>
+                        </Shape>
+                        <String CONTENT="American Eskimo. The Chukchee woman, when cooking out of doors, often"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l20" HPOS="387" VPOS="1760" WIDTH="1774" HEIGHT="49" BASELINE="389 1792 2161 1788" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 1792 389 1809 2159 1805 2161 1788 2156 1760 387 1760 389 1792"/>
+                        </Shape>
+                        <String CONTENT="builds, instead of the wooden tripod generally used in Siberia, a square frame"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l21" HPOS="385" VPOS="1812" WIDTH="1774" HEIGHT="67" BASELINE="387 1853 2159 1848" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 1853 387 1868 890 1879 892 1879 1178 1868 1249 1879 1251 1879 1253 1879 1256 1879 1277 1866 1487 1877 1489 1877 1572 1866 1713 1877 1715 1877 2156 1866 2159 1848 2154 1820 426 1812 424 1812 422 1812 385 1822 387 1853"/>
+                        </Shape>
+                        <String CONTENT="of sticks with cross-pieces at the top. Nowadays, however, the clumsy clay"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l22" HPOS="387" VPOS="1872" WIDTH="1772" HEIGHT="57" BASELINE="389 1913 2159 1909" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 1913 389 1929 2156 1924 2159 1909 2154 1881 502 1872 500 1872 387 1883 389 1913"/>
+                        </Shape>
+                        <String CONTENT="vessels have long been superseded by copper and iron kettles and teapots."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l23" HPOS="389" VPOS="1926" WIDTH="1772" HEIGHT="63" BASELINE="391 1974 2161 1967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 1974 391 1989 2159 1983 2161 1967 2156 1939 2001 1926 1998 1926 1942 1937 1920 1926 1918 1926 1916 1926 1914 1926 1868 1937 1840 1926 1838 1926 1836 1926 1834 1926 1808 1937 1782 1926 1780 1926 1777 1926 1565 1939 1500 1929 1498 1929 1496 1929 1459 1939 1414 1929 1412 1929 1409 1929 1407 1929 1377 1939 1314 1929 1312 1929 1310 1929 1282 1939 1240 1929 1238 1929 1236 1929 1234 1929 1199 1939 1119 1929 1117 1929 1115 1929 1082 1939 1028 1929 1026 1929 881 1942 842 1931 840 1931 838 1931 835 1931 807 1942 703 1931 701 1931 699 1931 664 1942 651 1931 649 1931 647 1931 645 1931 389 1937 391 1974"/>
+                        </Shape>
+                        <String CONTENT="No special frame is used for them in the sleeping-room, and the kettles are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l24" HPOS="385" VPOS="1989" WIDTH="1776" HEIGHT="61" BASELINE="387 2035 2161 2030" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2035 387 2050 2159 2045 2161 2030 2156 2000 1401 1989 1399 1989 385 2002 387 2035"/>
+                        </Shape>
+                        <String CONTENT="suspended simply on a peg or a hook fastened to the wooden frame of the wall."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-243_r5" HPOS="385" VPOS="2056" WIDTH="1778" HEIGHT="423" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 2056 2163 2056 2163 2479 385 2479"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l25" HPOS="493" VPOS="2048" WIDTH="1666" HEIGHT="62" BASELINE="495 2095 2159 2089" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="495 2095 495 2110 2156 2104 2159 2089 2154 2058 1604 2048 1602 2048 1600 2048 1576 2061 493 2061 495 2095"/>
+                        </Shape>
+                        <String CONTENT="I have already spoken about the hooks used for hanging the kettle in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l26" HPOS="385" VPOS="2106" WIDTH="1776" HEIGHT="69" BASELINE="387 2154 2161 2147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2154 387 2169 2139 2175 2141 2175 2143 2175 2146 2175 2161 2162 2161 2147 2156 2119 1916 2106 1914 2106 1860 2117 1834 2106 1832 2106 1829 2106 1780 2117 1749 2106 1747 2106 1745 2106 1613 2117 1580 2106 1578 2106 1576 2106 1574 2106 1572 2106 1552 2119 1500 2108 1498 2108 1496 2108 1463 2119 1357 2108 1355 2108 1277 2119 1225 2108 1223 2108 1221 2108 1219 2108 1208 2119 1195 2108 1193 2108 1191 2108 1100 2108 1097 2108 1028 2119 991 2108 989 2108 987 2108 985 2108 983 2108 970 2119 877 2110 874 2110 872 2110 870 2110 857 2121 818 2110 816 2110 814 2110 469 2121 411 2110 409 2110 407 2110 404 2110 385 2119 387 2154"/>
+                        </Shape>
+                        <String CONTENT="the outer tent. The Reindeer Chukchee of the Omolon employ for this purpose"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l27" HPOS="385" VPOS="2167" WIDTH="1774" HEIGHT="65" BASELINE="387 2216 2159 2210" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="387 2216 387 2232 2156 2225 2159 2210 2156 2177 2137 2167 2135 2167 2133 2167 2130 2167 2079 2177 1998 2167 1996 2167 1910 2177 1888 2167 1886 2167 1884 2167 1881 2167 1836 2177 1810 2167 1808 2167 1806 2167 1803 2167 1801 2167 1784 2180 1615 2180 1585 2167 1583 2167 1580 2167 1578 2167 1533 2180 976 2169 974 2169 972 2169 944 2182 916 2171 913 2171 911 2171 909 2171 883 2182 866 2171 864 2171 861 2171 859 2171 712 2182 673 2171 671 2171 669 2171 615 2182 543 2171 541 2171 385 2184 387 2216"/>
+                        </Shape>
+                        <String CONTENT="a special pole, which is fastened in an upright position near the hearth, with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l28" HPOS="387" VPOS="2232" WIDTH="1774" HEIGHT="58" BASELINE="389 2273 2161 2268" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2273 389 2290 2159 2286 2161 2268 2156 2240 409 2232 407 2232 404 2232 402 2232 387 2238 389 2273"/>
+                        </Shape>
+                        <String CONTENT="the upper end protruding through the vent-hole. The pole is made from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l29" HPOS="387" VPOS="2288" WIDTH="1774" HEIGHT="63" BASELINE="389 2336 2161 2329" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2336 389 2351 2159 2344 2161 2329 2156 2299 1570 2288 1567 2288 1565 2288 1563 2288 1548 2299 413 2292 411 2292 409 2292 387 2301 389 2336"/>
+                        </Shape>
+                        <String CONTENT="slender trunk of a larch-tree, and one of the branches is retained. The line"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l30" HPOS="389" VPOS="2344" WIDTH="1765" HEIGHT="74" BASELINE="391 2392 2154 2385" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 2392 391 2409 1134 2407 1260 2418 1262 2418 1570 2405 1827 2416 1829 2416 1886 2405 1920 2416 1923 2416 1925 2418 2115 2418 2115 2416 2118 2416 2154 2403 2154 2385 2148 2349 2011 2355 1994 2344 1992 2344 1990 2344 1988 2344 1985 2344 1942 2355 1929 2344 1927 2344 1925 2344 1923 2344 1864 2355 1838 2344 1836 2344 1834 2344 1832 2344 1829 2344 1814 2355 1799 2344 1797 2344 1795 2344 1793 2344 1790 2344 1760 2355 1730 2344 1728 2344 1726 2344 1723 2344 1695 2355 1671 2344 1669 2344 1667 2344 1665 2344 1626 2355 1609 2344 1606 2344 1604 2344 1602 2344 1600 2344 1598 2344 1583 2355 1457 2346 1455 2346 1381 2357 1366 2346 1364 2346 1362 2346 1360 2346 1357 2346 1323 2357 1301 2346 1299 2346 1297 2346 1197 2357 1134 2346 1132 2346 1069 2357 1043 2346 1041 2346 1039 2346 1037 2346 1035 2346 1020 2357 890 2349 887 2349 885 2349 848 2359 825 2349 822 2349 820 2349 818 2349 796 2359 773 2349 770 2349 768 2349 716 2359 703 2349 701 2349 699 2349 556 2349 554 2349 552 2349 550 2349 532 2359 428 2349 426 2349 424 2349 389 2362 391 2392"/>
+                        </Shape>
+                        <String CONTENT="of the kettle-hook is tied to it. The pole is called “single Jack,” “single man”"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l31" HPOS="389" VPOS="2409" WIDTH="1419" HEIGHT="59" BASELINE="391 2455 1808 2450" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 2455 391 2468 1806 2465 1808 2450 1803 2420 1104 2409 1102 2409 1100 2409 1097 2409 1097 2411 1087 2420 404 2411 402 2411 400 2411 398 2411 389 2418 391 2455"/>
+                        </Shape>
+                        <String CONTENT="(yanřaᵋ-laˊul), and is used also in some of the Koryak camps."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-243_r6" HPOS="385" VPOS="2479" WIDTH="1778" HEIGHT="285" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 2479 2163 2479 2163 2764 385 2764"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l32" HPOS="498" VPOS="2478" WIDTH="1665" HEIGHT="50" BASELINE="498 2511 2163 2511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="498 2511 498 2528 2163 2528 2163 2511 2163 2481 498 2478 498 2511"/>
+                        </Shape>
+                        <String CONTENT="BONE-BREAKING SET. — Another important household utensil, especially"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l33" HPOS="389" VPOS="2528" WIDTH="1774" HEIGHT="61" BASELINE="391 2574 2163 2567" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 2574 391 2589 2161 2582 2163 2567 2159 2537 981 2528 978 2528 976 2528 950 2539 430 2530 428 2530 426 2530 389 2541 391 2574"/>
+                        </Shape>
+                        <String CONTENT="with the Reindeer Chukchee, is the bone-breaking set (Fig. 105), which con-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l34" HPOS="389" VPOS="2591" WIDTH="1774" HEIGHT="56" BASELINE="391 2632 2163 2628" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 2632 391 2647 2161 2643 2163 2628 2159 2600 417 2591 415 2591 413 2591 389 2600 391 2632"/>
+                        </Shape>
+                        <String CONTENT="sists of several stone mauls (Fig. 105, b), a large flat stone upon which to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l35" HPOS="391" VPOS="2658" WIDTH="1770" HEIGHT="54" BASELINE="391 2691 2161 2691" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 2691 391 2708 2159 2712 2161 2691 2161 2660 391 2658 391 2691"/>
+                        </Shape>
+                        <String CONTENT="lay the bones, and a flat cylindrical vessel made out of walrus-hide, and serving"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l36" HPOS="391" VPOS="2710" WIDTH="1185" HEIGHT="59" BASELINE="391 2753 1576 2753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 2753 391 2766 1574 2769 1576 2753 1576 2721 1554 2710 1552 2710 1550 2710 1548 2710 1520 2721 944 2710 942 2710 939 2710 894 2721 868 2710 866 2710 864 2710 805 2721 773 2710 770 2710 768 2710 766 2710 736 2721 701 2710 699 2710 697 2710 695 2710 693 2710 677 2723 391 2723 391 2753"/>
+                        </Shape>
+                        <String CONTENT="as a receptacle for the broken bones (Fig. 105, a)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-243_r7" HPOS="385" VPOS="2764" WIDTH="1778" HEIGHT="317" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="385 2764 2163 2764 2163 3081 385 3081"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l37" HPOS="498" VPOS="2766" WIDTH="1667" HEIGHT="63" BASELINE="500 2812 2165 2808" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="500 2812 500 2829 2163 2827 2165 2808 2161 2777 1379 2766 1377 2766 1286 2779 498 2779 500 2812"/>
+                        </Shape>
+                        <String CONTENT="The stone maul (rɪˊpeˊñɪ) is oblong in shape, with a groove in the middle,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l38" HPOS="387" VPOS="2827" WIDTH="1776" HEIGHT="61" BASELINE="389 2872 2163 2868" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="389 2872 389 2888 2161 2883 2163 2868 2161 2840 2133 2827 2130 2827 2128 2827 2126 2827 2079 2838 1905 2827 1903 2827 1901 2827 1879 2838 1845 2827 1842 2827 1840 2827 1838 2827 1836 2827 1821 2840 1726 2840 1661 2827 1658 2827 1656 2827 1654 2827 1641 2838 1606 2827 1604 2827 1602 2827 1548 2838 1409 2827 1407 2827 1260 2840 716 2829 714 2829 712 2829 688 2840 593 2829 591 2829 498 2840 465 2829 463 2829 461 2829 387 2842 389 2872"/>
+                        </Shape>
+                        <String CONTENT="and a short handle tied to it by means of strong lashings. It has exactly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l39" HPOS="389" VPOS="2890" WIDTH="1774" HEIGHT="60" BASELINE="391 2933 2163 2929" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 2933 391 2950 2161 2948 2163 2929 2159 2898 411 2890 409 2890 407 2890 404 2890 389 2896 391 2933"/>
+                        </Shape>
+                        <String CONTENT="the same form among the Markova Russianized natives, who call it mangaˊuda,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l40" HPOS="391" VPOS="2946" WIDTH="1772" HEIGHT="69" BASELINE="394 2994 2163 2985" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="394 2994 394 3007 922 3015 924 3015 1113 3005 1266 3015 1269 3015 1338 3002 1498 3013 1500 3013 1502 3013 1531 3002 1559 3013 1561 3013 1563 3013 2161 3000 2163 2985 2159 2957 1795 2946 1793 2946 1682 2957 1373 2948 1370 2948 1273 2959 547 2953 545 2953 391 2963 394 2994"/>
+                        </Shape>
+                        <String CONTENT="a word which is supposed to belong to the old Chuvantzy language. It is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l41" HPOS="394" VPOS="3005" WIDTH="1769" HEIGHT="62" BASELINE="396 3050 2163 3043" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="396 3050 396 3067 2161 3061 2163 3043 2159 3015 1574 3005 1572 3005 1509 3015 1011 3007 1009 3007 1007 3007 978 3018 534 3009 532 3009 394 3020 396 3050"/>
+                        </Shape>
+                        <String CONTENT="one of the most familiar of the kitchen tools, and is especially used for split-"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-243_r8" HPOS="385" VPOS="3113" WIDTH="1778" HEIGHT="157" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="385 3113 2163 3113 2163 3270 385 3270"/>
+                    </Shape>
+                    <TextLine ID="mz_1-243_l42" HPOS="502" VPOS="3121" WIDTH="1663" HEIGHT="48" BASELINE="502 3147 2165 3147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="502 3147 502 3169 2165 3169 2165 3147 2165 3121 502 3121 502 3147"/>
+                        </Shape>
+                        <String CONTENT="¹ W. Hough, in Lamp (Plate 17), calls one of the Siberian specimens of the National Museum a soap-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l43" HPOS="389" VPOS="3163" WIDTH="1137" HEIGHT="49" BASELINE="391 3195 1526 3189" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="391 3195 391 3212 1526 3206 1526 3189 1520 3163 389 3167 391 3195"/>
+                        </Shape>
+                        <String CONTENT="stone lamp, but on closer investigation it proved to be also sandstone."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-243_l44" HPOS="500" VPOS="3204" WIDTH="578" HEIGHT="49" BASELINE="502 3232 1078 3236" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="502 3232 500 3249 1074 3253 1078 3236 1076 3208 502 3204 502 3232"/>
+                        </Shape>
+                        <String CONTENT="² See Chapter XII; cf. also p. 101."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

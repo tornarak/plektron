@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-264.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-264.png; regions_from: zones/chukchi-1-264.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-264_r1" HPOS="665" VPOS="575" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="665 575 2443 575 2443 665 665 665"/>
+                    </Shape>
+                    <TextLine ID="mz_1-264_l1" HPOS="1245" VPOS="593" WIDTH="619" HEIGHT="54" BASELINE="1245 625 1864 625" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1851 593 1245 593 1245 625 1245 647 1864 647 1864 625 1862 617 1851 593"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l2" HPOS="669" VPOS="588" WIDTH="104" HEIGHT="65" BASELINE="671 627 773 632" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="755 588 753 588 751 588 671 595 671 627 669 649 671 651 673 651 673 653 675 653 677 653 680 653 770 643 773 632 773 597 757 588 755 588"/>
+                        </Shape>
+                        <String CONTENT="208"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-264_r2" HPOS="665" VPOS="690" WIDTH="1778" HEIGHT="549" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="665 690 2443 690 2443 1239 665 1239"/>
+                    </Shape>
+                    <TextLine ID="mz_1-264_l3" HPOS="662" VPOS="692" WIDTH="1776" HEIGHT="70" BASELINE="664 738 2438 733" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="664 738 664 759 1275 751 1373 762 1375 762 1435 751 1535 762 1537 762 1539 762 1541 762 1559 749 1752 759 1754 759 2141 749 2230 759 2232 759 2436 746 2438 733 2434 703 1606 692 1604 692 1546 703 773 694 770 694 662 705 664 738"/>
+                        </Shape>
+                        <String CONTENT="people the offering of a single drop when liquor is scarce is considered a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l4" HPOS="667" VPOS="755" WIDTH="1771" HEIGHT="56" BASELINE="669 796 2438 792" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 796 669 811 2436 807 2438 792 2434 764 727 755 725 755 667 766 669 796"/>
+                        </Shape>
+                        <String CONTENT="quite acceptable treat. They feel that it adds to the general enjoyment."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l5" HPOS="667" VPOS="809" WIDTH="1771" HEIGHT="63" BASELINE="669 857 2438 850" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 857 669 872 2436 866 2438 850 2434 822 2328 809 2325 809 2323 809 2321 809 2306 822 2070 822 2044 809 2042 809 2040 809 2037 809 2035 809 2020 822 1931 822 1875 809 1873 809 1871 809 1836 822 1812 811 1810 811 1808 811 1806 811 1777 822 1756 811 1754 811 1752 811 1749 811 1723 822 1700 811 1697 811 1695 811 1693 811 1661 822 1576 811 1574 811 1232 827 1087 827 1063 814 1061 814 1059 814 1056 814 1028 824 948 814 946 814 667 820 669 857"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee do not approve of diluting alcohol with much water. I have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l6" HPOS="664" VPOS="872" WIDTH="1774" HEIGHT="61" BASELINE="667 917 2438 913" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 917 667 933 2436 928 2438 913 2434 885 2234 872 2232 872 2230 872 2195 883 2167 872 2165 872 2163 872 2057 883 2024 872 2022 872 2020 872 2018 872 2016 872 1998 885 1884 885 1797 872 1795 872 1793 872 1771 883 1736 872 1734 872 1732 872 1730 872 1687 883 1637 872 1635 872 1585 883 1554 872 1552 872 1550 872 1548 872 1520 885 708 874 706 874 703 874 664 887 667 917"/>
+                        </Shape>
+                        <String CONTENT="witnessed them drink large glasses of 95% alcohol, one drop of which was"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l7" HPOS="662" VPOS="937" WIDTH="1776" HEIGHT="56" BASELINE="664 978 2438 972" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="664 978 664 993 2436 987 2438 972 2434 939 721 937 718 937 662 948 664 978"/>
+                        </Shape>
+                        <String CONTENT="sufficient to make my mouth burn for several minutes. Even the unrefined"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l8" HPOS="664" VPOS="993" WIDTH="1774" HEIGHT="59" BASELINE="667 1037 2438 1032" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="667 1037 667 1052 2436 1047 2438 1032 2434 1000 699 993 697 993 695 993 664 1002 667 1037"/>
+                        </Shape>
+                        <String CONTENT="alcohol of the Kolyma country is drunk undiluted when possible. The so-called"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l9" HPOS="673" VPOS="1052" WIDTH="1765" HEIGHT="60" BASELINE="675 1095 2438 1091" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="675 1095 675 1112 2436 1108 2438 1091 2434 1060 686 1052 684 1052 682 1052 680 1052 680 1054 673 1058 675 1095"/>
+                        </Shape>
+                        <String CONTENT="“principal chief” of the Reindeer Chukchee, previously mentioned,¹ died sud-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l10" HPOS="667" VPOS="1110" WIDTH="1771" HEIGHT="63" BASELINE="669 1156 2438 1151" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1156 669 1173 2436 1169 2438 1151 2434 1123 2373 1110 2371 1110 2369 1110 2345 1121 2105 1110 2102 1110 2100 1110 2061 1121 2031 1110 2029 1110 2027 1110 2024 1110 1994 1121 1910 1110 1907 1110 1905 1110 1879 1123 1710 1123 1682 1110 1680 1110 1678 1110 1593 1121 1567 1110 1565 1110 1563 1110 1466 1123 1396 1112 1394 1112 1002 1123 913 1112 911 1112 855 1123 820 1112 818 1112 816 1112 814 1112 790 1123 686 1112 684 1112 682 1112 680 1112 667 1121 669 1156"/>
+                        </Shape>
+                        <String CONTENT="denly in 1898 on the day of his arrival at the town of Sredne-Kolymsk, after"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l11" HPOS="671" VPOS="1173" WIDTH="899" HEIGHT="58" BASELINE="671 1216 1570 1216" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 1216 671 1231 1570 1231 1570 1216 1570 1184 1548 1173 1546 1173 1544 1173 1541 1173 1511 1184 1498 1173 1496 1173 1494 1173 1492 1173 1489 1173 1459 1184 1437 1173 1435 1173 1433 1173 1381 1184 1357 1173 1355 1173 1353 1173 1351 1173 1349 1173 1349 1175 1338 1184 1279 1173 1277 1173 1143 1184 1115 1173 1113 1173 1110 1173 1059 1184 1046 1173 1043 1173 1041 1173 957 1173 955 1173 952 1173 950 1173 950 1175 939 1186 671 1186 671 1216"/>
+                        </Shape>
+                        <String CONTENT="a generous drink of unrectified alcohol."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-264_r3" HPOS="665" VPOS="1239" WIDTH="1778" HEIGHT="295" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="665 1239 2443 1239 2443 1534 665 1534"/>
+                    </Shape>
+                    <TextLine ID="mz_1-264_l12" HPOS="777" VPOS="1231" WIDTH="1663" HEIGHT="61" BASELINE="777 1275 2440 1275" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="777 1275 777 1292 2440 1292 2440 1275 2440 1242 2408 1231 2406 1231 2403 1231 2315 1242 2200 1231 2198 1231 2143 1242 2120 1231 2118 1231 2115 1231 2055 1242 2014 1231 2011 1231 2009 1231 2007 1231 1977 1242 1897 1231 1894 1231 1892 1231 1860 1242 1747 1231 1745 1231 1743 1231 1704 1242 1665 1231 1663 1231 1661 1231 1658 1231 1630 1242 777 1238 777 1275"/>
+                        </Shape>
+                        <String CONTENT="The Reindeer people are more eager for liquor than the Maritime. This"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l13" HPOS="667" VPOS="1292" WIDTH="1771" HEIGHT="61" BASELINE="669 1337 2438 1331" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1337 669 1353 2436 1348 2438 1331 2434 1303 1847 1292 1845 1292 1842 1292 1840 1292 1821 1303 1325 1294 1323 1294 1253 1305 794 1296 792 1296 667 1307 669 1337"/>
+                        </Shape>
+                        <String CONTENT="may be because they have less chance to satisfy their craving. When they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l14" HPOS="669" VPOS="1361" WIDTH="1769" HEIGHT="50" BASELINE="669 1394 2438 1394" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1394 669 1411 2438 1411 2438 1394 2438 1366 669 1361 669 1394"/>
+                        </Shape>
+                        <String CONTENT="know that there is some strong liquor within their reach, most of them are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l15" HPOS="669" VPOS="1424" WIDTH="1769" HEIGHT="48" BASELINE="669 1454 2438 1454" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1454 669 1472 2438 1472 2438 1454 2438 1424 669 1424 669 1454"/>
+                        </Shape>
+                        <String CONTENT="ready to pay an exorbitant price for it. I was assured by many that if necessary"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l16" HPOS="669" VPOS="1485" WIDTH="1702" HEIGHT="45" BASELINE="669 1515 2371 1515" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 1515 669 1530 2369 1530 2371 1515 2369 1485 669 1485 669 1515"/>
+                        </Shape>
+                        <String CONTENT="they would be quite ready to give a piece of their own flesh for a drink."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-264_r4" HPOS="665" VPOS="1534" WIDTH="1778" HEIGHT="842" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="665 1534 2443 1534 2443 2376 665 2376"/>
+                    </Shape>
+                    <TextLine ID="mz_1-264_l17" HPOS="775" VPOS="1532" WIDTH="1663" HEIGHT="59" BASELINE="775 1576 2438 1576" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="775 1576 775 1591 2438 1591 2438 1576 2438 1545 2375 1532 2373 1532 2098 1543 2050 1532 2048 1532 2046 1532 2044 1532 2007 1543 1966 1532 1964 1532 1962 1532 1959 1532 1916 1543 1838 1532 1836 1532 1834 1532 1806 1543 1777 1532 1775 1532 1773 1532 1693 1543 1613 1532 1611 1532 1554 1543 1531 1532 1528 1532 1526 1532 1524 1532 1479 1543 1392 1532 1390 1532 1321 1543 1286 1532 1284 1532 1282 1532 1186 1543 1141 1532 1139 1532 1136 1532 1134 1532 1095 1543 1037 1532 1035 1532 920 1543 881 1532 879 1532 877 1532 874 1532 848 1543 790 1532 788 1532 786 1532 783 1532 775 1539 775 1576"/>
+                        </Shape>
+                        <String CONTENT="Small wooden kegs, in which the liquor is brought from the Russian"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l18" HPOS="662" VPOS="1593" WIDTH="1778" HEIGHT="56" BASELINE="664 1636 2440 1632" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="664 1636 664 1649 2440 1647 2440 1632 2436 1602 747 1593 744 1593 662 1604 664 1636"/>
+                        </Shape>
+                        <String CONTENT="settlements, are carefully washed with hot water, and if possible boiled in large"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l19" HPOS="1609" VPOS="1662" WIDTH="829" HEIGHT="59" BASELINE="1609 1695 2438 1695" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1609 1695 1609 1710 2109 1710 2120 1719 2120 1721 2122 1721 2124 1721 2126 1721 2438 1710 2438 1695 2438 1664 1609 1662 1609 1695"/>
+                        </Shape>
+                        <String CONTENT="kettles. I have seen people sitting"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l20" HPOS="1604" VPOS="1712" WIDTH="834" HEIGHT="67" BASELINE="1606 1755 2438 1751" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1606 1755 1606 1768 1942 1779 1944 1779 1946 1779 1949 1779 1949 1777 1959 1768 2241 1777 2243 1777 2245 1777 2247 1777 2263 1768 2271 1775 2271 1777 2273 1777 2276 1777 2278 1779 2393 1779 2393 1777 2395 1777 2438 1764 2438 1751 2434 1721 2020 1712 2018 1712 2016 1712 1968 1723 1745 1714 1743 1714 1604 1725 1606 1755"/>
+                        </Shape>
+                        <String CONTENT="around a keg, which finally refused"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l21" HPOS="1606" VPOS="1786" WIDTH="834" HEIGHT="45" BASELINE="1606 1814 2440 1814" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1606 1814 1606 1831 2440 1831 2440 1814 2440 1786 1606 1786 1606 1814"/>
+                        </Shape>
+                        <String CONTENT="to yield any more, weep bitter tears"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l22" HPOS="1609" VPOS="1844" WIDTH="703" HEIGHT="46" BASELINE="1609 1872 2312 1872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1609 1872 1609 1890 2312 1890 2312 1872 2312 1844 1609 1844 1609 1872"/>
+                        </Shape>
+                        <String CONTENT="over the end of their festivity."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l23" HPOS="1717" VPOS="1900" WIDTH="721" HEIGHT="50" BASELINE="1717 1933 2438 1933" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1717 1933 1717 1950 2438 1950 2438 1933 2438 1900 1717 1900 1717 1933"/>
+                        </Shape>
+                        <String CONTENT="Between the native villages and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l24" HPOS="1604" VPOS="1963" WIDTH="836" HEIGHT="56" BASELINE="1604 1991 2440 1991" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1604 1991 1604 2004 1697 2019 1700 2019 1702 2019 1758 2006 1875 2006 1914 2019 1916 2019 1918 2019 2009 2006 2323 2006 2410 2019 2412 2019 2414 2019 2440 2004 2440 1991 2440 1963 1604 1963 1604 1991"/>
+                        </Shape>
+                        <String CONTENT="camps the liquor is carried in bags"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l25" HPOS="1604" VPOS="2011" WIDTH="836" HEIGHT="67" BASELINE="1606 2054 2440 2050" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1606 2054 1606 2067 1894 2078 1897 2078 1899 2078 1901 2078 1916 2067 2011 2076 2014 2076 2167 2065 2204 2076 2206 2076 2208 2076 2211 2076 2239 2065 2247 2074 2247 2076 2250 2076 2252 2076 2254 2078 2421 2078 2421 2076 2423 2076 2425 2076 2440 2063 2440 2050 2436 2022 2087 2011 2085 2011 1604 2024 1606 2054"/>
+                        </Shape>
+                        <String CONTENT="made of the stomachs or bladders"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l26" HPOS="1604" VPOS="2069" WIDTH="834" HEIGHT="70" BASELINE="1606 2115 2438 2110" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1606 2115 1606 2128 1825 2139 1827 2139 1829 2139 1832 2139 1845 2128 2016 2136 2018 2136 2020 2136 2022 2136 2035 2128 2046 2136 2046 2139 2048 2139 2050 2139 2053 2139 2055 2139 2089 2128 2133 2139 2135 2139 2137 2139 2139 2139 2176 2126 2273 2139 2276 2139 2278 2139 2280 2139 2295 2126 2351 2136 2354 2136 2436 2123 2438 2110 2436 2082 2388 2069 2386 2069 2384 2069 2141 2080 2055 2069 2053 2069 1964 2082 1749 2071 1747 2071 1678 2082 1648 2071 1645 2071 1643 2071 1641 2071 1604 2084 1606 2115"/>
+                        </Shape>
+                        <String CONTENT="of various animals (Fig. 125). The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l27" HPOS="1606" VPOS="2143" WIDTH="834" HEIGHT="54" BASELINE="1609 2175 2440 2171" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1609 2175 1609 2186 1825 2197 1827 2197 1972 2186 2016 2197 2018 2197 2020 2197 2102 2184 2421 2195 2423 2195 2425 2195 2427 2195 2440 2182 2440 2171 2436 2143 1606 2143 1609 2175"/>
+                        </Shape>
+                        <String CONTENT="bags resemble those used by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l28" HPOS="1604" VPOS="2190" WIDTH="836" HEIGHT="68" BASELINE="1606 2234 2440 2229" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1606 2234 1606 2249 2282 2258 2284 2258 2286 2258 2289 2258 2289 2255 2299 2247 2438 2247 2440 2229 2436 2201 2029 2190 2027 2190 2024 2190 2022 2190 2022 2193 2020 2193 2014 2201 1626 2193 1624 2193 1622 2193 1619 2193 1604 2199 1606 2234"/>
+                        </Shape>
+                        <String CONTENT="Alaskan Eskimo for carrying water"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l29" HPOS="671" VPOS="2253" WIDTH="1769" HEIGHT="57" BASELINE="671 2294 2440 2290" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2294 671 2310 2438 2305 2440 2290 2436 2255 783 2253 781 2253 682 2264 671 2294"/>
+                        </Shape>
+                        <String CONTENT="or oil,² but they do not have an ivory nozzle, and are merely tied around"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l30" HPOS="669" VPOS="2312" WIDTH="537" HEIGHT="58" BASELINE="671 2353 1206 2357" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2353 669 2366 1201 2370 1206 2357 1204 2327 1091 2314 1089 2314 987 2325 939 2312 937 2312 935 2312 933 2312 894 2323 861 2312 859 2312 857 2312 855 2312 822 2325 723 2325 712 2314 712 2312 710 2312 708 2312 706 2312 703 2312 684 2316 671 2353"/>
+                        </Shape>
+                        <String CONTENT="the neck with a string."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-264_r5" HPOS="665" VPOS="2376" WIDTH="1778" HEIGHT="426" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="665 2376 2443 2376 2443 2802 665 2802"/>
+                    </Shape>
+                    <TextLine ID="mz_1-264_l31" HPOS="775" VPOS="2372" WIDTH="1667" HEIGHT="59" BASELINE="777 2416 2442 2407" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="777 2416 777 2431 2440 2424 2442 2407 2436 2372 775 2379 777 2416"/>
+                        </Shape>
+                        <String CONTENT="The Maritime Koryak and the Kamchadal sometimes distil a kind of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l32" HPOS="671" VPOS="2431" WIDTH="1767" HEIGHT="60" BASELINE="671 2476 2438 2470" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2476 671 2491 2436 2485 2438 2470 2434 2439 1260 2431 1258 2431 1204 2442 682 2433 680 2433 677 2433 671 2476"/>
+                        </Shape>
+                        <String CONTENT="brandy from berries of Vaccinium uliginosum. They use for this a large iron"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l33" HPOS="667" VPOS="2496" WIDTH="1773" HEIGHT="56" BASELINE="669 2535 2440 2526" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2535 669 2552 2438 2543 2440 2526 2434 2496 667 2498 669 2535"/>
+                        </Shape>
+                        <String CONTENT="kettle with a wooden cover pasted over with dough. An old gun-barrel serves"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l34" HPOS="667" VPOS="2554" WIDTH="1773" HEIGHT="56" BASELINE="669 2598 2440 2589" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2598 669 2610 2438 2604 2440 2589 2436 2561 1110 2554 1108 2554 1106 2554 1071 2565 688 2556 686 2556 684 2556 682 2556 667 2563 669 2598"/>
+                        </Shape>
+                        <String CONTENT="as a condenser. This art was learned from the cossacks, though at present"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l35" HPOS="667" VPOS="2608" WIDTH="1771" HEIGHT="61" BASELINE="669 2654 2438 2649" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2654 669 2669 2436 2665 2438 2649 2436 2621 2393 2608 2390 2608 2388 2608 2323 2619 1756 2608 1754 2608 1684 2619 1552 2608 1550 2608 1548 2608 1515 2621 1080 2610 1078 2610 898 2621 777 2610 775 2610 773 2610 747 2621 695 2610 693 2610 690 2610 667 2621 669 2654"/>
+                        </Shape>
+                        <String CONTENT="the latter are strictly forbidden to distil in private any strong liquor. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l36" HPOS="667" VPOS="2671" WIDTH="1773" HEIGHT="69" BASELINE="669 2712 2440 2708" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="669 2712 669 2730 1548 2740 1550 2740 1609 2730 2165 2738 2167 2738 2440 2725 2440 2708 2436 2673 684 2671 682 2671 680 2671 677 2671 667 2678 669 2712"/>
+                        </Shape>
+                        <String CONTENT="Chukchee, however, do not have enough berries for this purpose, or the skill"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l37" HPOS="669" VPOS="2730" WIDTH="448" HEIGHT="60" BASELINE="671 2771 1117 2775" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="671 2771 669 2786 1113 2790 1117 2775 1115 2745 894 2730 892 2730 890 2730 859 2743 790 2743 779 2732 779 2730 777 2730 775 2730 773 2730 682 2738 671 2771"/>
+                        </Shape>
+                        <String CONTENT="to thus distil them."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-264_r6" HPOS="665" VPOS="2823" WIDTH="1778" HEIGHT="71" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="665 2823 2443 2823 2443 2894 665 2894"/>
+                    </Shape>
+                    <TextLine ID="mz_1-264_l38" HPOS="775" VPOS="2823" WIDTH="216" HEIGHT="58" BASELINE="777 2851 991 2855" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="777 2851 775 2866 883 2881 885 2881 989 2870 991 2855 991 2827 777 2823 777 2851"/>
+                        </Shape>
+                        <String CONTENT="¹ See p. 73."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-264_l39" HPOS="1639" VPOS="2823" WIDTH="284" HEIGHT="56" BASELINE="1641 2851 1923 2853" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1641 2851 1639 2866 1758 2879 1760 2879 1920 2868 1923 2853 1920 2825 1641 2823 1641 2851"/>
+                        </Shape>
+                        <String CONTENT="² Nelson, p. 73."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

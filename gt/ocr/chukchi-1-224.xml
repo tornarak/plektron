@@ -1,0 +1,363 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-224.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-224.png; regions_from: zones/chukchi-1-224.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-224_r1" HPOS="656" VPOS="631" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="656 631 2434 631 2434 721 656 721"/>
+                    </Shape>
+                    <TextLine ID="mz_1-224_l1" HPOS="1230" VPOS="640" WIDTH="617" HEIGHT="59" BASELINE="1232 673 1847 681" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1838 671 1821 645 1383 640 1383 640 1362 640 1340 640 1318 640 1297 640 1275 640 1253 640 1232 649 1232 673 1230 690 1842 699 1847 681 1845 647 1838 645 1838 671"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l2" HPOS="662" VPOS="643" WIDTH="89" HEIGHT="54" BASELINE="667 686 751 681" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="667 686 667 697 749 694 751 681 744 643 662 645 667 686"/>
+                        </Shape>
+                        <String CONTENT="176"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-224_r2" HPOS="656" VPOS="746" WIDTH="1778" HEIGHT="1322" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="656 746 2434 746 2434 2068 656 2068"/>
+                    </Shape>
+                    <TextLine ID="mz_1-224_l3" HPOS="654" VPOS="757" WIDTH="1771" HEIGHT="50" BASELINE="654 788 2425 788" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2408 759 2386 759 2364 757 2343 757 654 757 654 788 654 807 2425 807 2425 788 2425 759 2408 759"/>
+                        </Shape>
+                        <String CONTENT="who have small children, cease to move about, and settle down for three or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l4" HPOS="1968" VPOS="816" WIDTH="459" HEIGHT="45" BASELINE="1968 846 2427 846" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1968 846 1968 861 2427 861 2427 846 2427 816 1968 816 1968 846"/>
+                        </Shape>
+                        <String CONTENT="four months within"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l5" HPOS="1966" VPOS="863" WIDTH="459" HEIGHT="65" BASELINE="1968 904 2425 909" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1968 904 1966 920 1979 928 1981 928 1983 928 1985 928 2423 922 2425 909 2423 878 2360 866 2358 866 2291 876 2278 866 2276 866 2273 866 2271 866 2217 876 2120 863 2118 863 1968 872 1968 904"/>
+                        </Shape>
+                        <String CONTENT="the forest border,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l6" HPOS="1968" VPOS="939" WIDTH="457" HEIGHT="46" BASELINE="1968 967 2425 967" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1968 967 1968 985 2425 985 2425 967 2425 939 1968 939 1968 967"/>
+                        </Shape>
+                        <String CONTENT="and construct a spe-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l7" HPOS="1968" VPOS="985" WIDTH="455" HEIGHT="58" BASELINE="1970 1028 2423 1024" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1970 1028 1970 1043 2423 1043 2423 1024 2419 993 2001 985 1998 985 1996 985 1968 995 1970 1028"/>
+                        </Shape>
+                        <String CONTENT="cial winter dwelling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l8" HPOS="1968" VPOS="1041" WIDTH="453" HEIGHT="73" BASELINE="1970 1091 2421 1086" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1970 1091 1970 1104 1994 1114 1996 1114 1998 1114 2204 1101 2234 1112 2237 1112 2239 1112 2241 1112 2284 1101 2328 1112 2330 1112 2332 1112 2334 1112 2336 1112 2351 1101 2395 1112 2397 1112 2399 1112 2401 1112 2403 1112 2421 1099 2421 1086 2416 1056 2256 1041 2254 1041 2252 1041 2189 1056 2079 1043 2076 1043 2074 1043 2072 1043 2072 1045 2059 1056 1985 1043 1983 1043 1981 1043 1979 1043 1979 1045 1968 1054 1970 1091"/>
+                        </Shape>
+                        <String CONTENT="(see Plate V, Fig. 2)."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l9" HPOS="1970" VPOS="1101" WIDTH="455" HEIGHT="63" BASELINE="1972 1147 2425 1143" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1972 1147 1972 1164 2423 1160 2425 1143 2421 1114 2289 1101 2286 1101 2284 1101 2258 1114 1970 1114 1972 1147"/>
+                        </Shape>
+                        <String CONTENT="This consists of three"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l10" HPOS="1968" VPOS="1166" WIDTH="457" HEIGHT="61" BASELINE="1970 1210 2425 1205" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1970 1210 1970 1227 2423 1221 2425 1205 2421 1175 2055 1166 2053 1166 1968 1177 1970 1210"/>
+                        </Shape>
+                        <String CONTENT="parts. The entrance-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l11" HPOS="1966" VPOS="1225" WIDTH="459" HEIGHT="67" BASELINE="1968 1268 2425 1264" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1968 1268 1968 1281 2124 1281 2159 1292 2161 1292 2163 1292 2369 1279 2401 1290 2403 1290 2406 1290 2408 1290 2410 1290 2425 1277 2425 1264 2421 1234 2191 1225 2189 1225 1966 1236 1968 1268"/>
+                        </Shape>
+                        <String CONTENT="room (tɪˊʟɪ-ran) is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l12" HPOS="1966" VPOS="1286" WIDTH="459" HEIGHT="64" BASELINE="1968 1327 2425 1322" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1968 1327 1968 1337 2120 1350 2122 1350 2124 1350 2167 1337 2187 1350 2189 1350 2191 1350 2193 1350 2195 1350 2228 1335 2265 1348 2267 1348 2269 1348 2271 1348 2302 1335 2401 1348 2403 1348 2406 1348 2408 1348 2425 1333 2425 1322 2421 1294 1979 1286 1977 1286 1975 1286 1972 1286 1972 1288 1966 1292 1968 1327"/>
+                        </Shape>
+                        <String CONTENT="formed of a few"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l13" HPOS="654" VPOS="1355" WIDTH="1773" HEIGHT="47" BASELINE="654 1385 2427 1385" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 1385 654 1402 2427 1402 2427 1385 2427 1355 654 1355 654 1385"/>
+                        </Shape>
+                        <String CONTENT="stakes tied together, and loosely covered with an old tent-cover. It serves"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l14" HPOS="651" VPOS="1400" WIDTH="1774" HEIGHT="70" BASELINE="654 1446 2425 1441" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 1446 654 1459 1007 1470 1009 1470 1011 1470 1013 1470 1030 1459 1526 1467 1528 1467 1531 1467 1576 1457 1814 1457 2009 1467 2011 1467 2014 1467 2055 1457 2094 1467 2096 1467 2098 1467 2100 1467 2102 1467 2115 1457 2128 1467 2130 1467 2133 1467 2135 1470 2406 1470 2406 1467 2408 1467 2410 1467 2425 1454 2425 1441 2421 1413 2291 1413 2273 1400 2271 1400 2269 1400 2267 1400 2191 1411 2169 1400 2167 1400 2165 1400 2102 1411 2076 1400 2074 1400 2072 1400 2070 1400 2068 1400 2050 1413 1793 1413 1741 1400 1739 1400 1656 1411 1604 1400 1602 1400 1515 1413 1442 1402 1440 1402 1208 1413 1156 1402 1154 1402 1152 1402 1130 1413 1084 1402 1082 1402 1080 1402 1015 1413 909 1402 907 1402 905 1402 879 1413 846 1402 844 1402 842 1402 840 1402 807 1413 680 1402 677 1402 675 1402 651 1413 654 1446"/>
+                        </Shape>
+                        <String CONTENT="chiefly to keep off the wind and snow from the entrance. It often has no"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l15" HPOS="656" VPOS="1476" WIDTH="1767" HEIGHT="45" BASELINE="656 1504 2423 1504" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 1504 656 1521 2421 1521 2423 1504 2421 1476 656 1476 656 1504"/>
+                        </Shape>
+                        <String CONTENT="door; and in order to get in, one has to crawl in under the tent-cover. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l16" HPOS="654" VPOS="1530" WIDTH="1771" HEIGHT="50" BASELINE="656 1563 2425 1567" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 1563 654 1576 2421 1580 2425 1567 2423 1530 656 1530 656 1563"/>
+                        </Shape>
+                        <String CONTENT="main tent is constructed in the ordinary way, only, for the most part, an old"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l17" HPOS="654" VPOS="1589" WIDTH="1769" HEIGHT="56" BASELINE="656 1621 2423 1628" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 1621 654 1636 667 1645 669 1645 671 1645 673 1645 2421 1638 2423 1628 2421 1595 656 1589 656 1621"/>
+                        </Shape>
+                        <String CONTENT="cover is used, because it is likely to be damaged by the hearth-fire within."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l18" HPOS="656" VPOS="1645" WIDTH="1771" HEIGHT="65" BASELINE="658 1682 2427 1688" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="658 1682 656 1695 814 1708 816 1708 1214 1699 1256 1710 1258 1710 1260 1710 2425 1701 2427 1688 2425 1656 658 1645 658 1682"/>
+                        </Shape>
+                        <String CONTENT="This fire is kept up all day long; and on this account, as well as on account"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l19" HPOS="654" VPOS="1710" WIDTH="1769" HEIGHT="58" BASELINE="656 1740 2423 1747" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 1740 654 1755 669 1766 671 1766 673 1766 675 1768 2421 1768 2423 1747 2421 1716 656 1710 656 1740"/>
+                        </Shape>
+                        <String CONTENT="of the well-sheltered entrance, the temperature of the tent is not very low,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l20" HPOS="651" VPOS="1764" WIDTH="1768" HEIGHT="65" BASELINE="654 1801 2419 1805" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 1801 651 1816 667 1827 669 1827 671 1827 673 1827 1340 1818 1544 1829 1546 1829 2416 1818 2419 1805 2414 1764 654 1768 654 1801"/>
+                        </Shape>
+                        <String CONTENT="usually 10°-12° above zero Fahrenheit, while outside it may range from 50°"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l21" HPOS="651" VPOS="1825" WIDTH="1774" HEIGHT="67" BASELINE="654 1859 2425 1868" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 1859 651 1877 664 1885 667 1885 669 1885 671 1885 1513 1879 1539 1890 1541 1890 1544 1890 1905 1881 1981 1892 1983 1892 2423 1881 2425 1868 2423 1838 2014 1838 1983 1825 1981 1825 1979 1825 654 1827 654 1859"/>
+                        </Shape>
+                        <String CONTENT="to 60° below. The sledges are piled up near the tent, high enough not to be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l22" HPOS="651" VPOS="1890" WIDTH="1776" HEIGHT="58" BASELINE="654 1920 2427 1926" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 1920 651 1935 667 1946 669 1946 671 1946 673 1946 1214 1937 1247 1948 1249 1948 1251 1948 2425 1939 2427 1926 2425 1896 654 1890 654 1920"/>
+                        </Shape>
+                        <String CONTENT="covered by the drifting snow, and after this are tied with thongs to prevent"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l23" HPOS="651" VPOS="1948" WIDTH="1776" HEIGHT="58" BASELINE="654 1980 2427 1987" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 1980 651 1996 667 2006 669 2006 671 2006 673 2006 2425 2000 2427 1987 2425 1954 654 1948 654 1980"/>
+                        </Shape>
+                        <String CONTENT="the wind from throwing down the pile. Only a few driving-sledges are left"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l24" HPOS="654" VPOS="2013" WIDTH="420" HEIGHT="45" BASELINE="654 2043 1074 2043" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2043 654 2058 1074 2058 1074 2043 1074 2013 654 2013 654 2043"/>
+                        </Shape>
+                        <String CONTENT="free for daily use."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-224_r3" HPOS="656" VPOS="2068" WIDTH="1778" HEIGHT="778" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="656 2068 2434 2068 2434 2846 656 2846"/>
+                    </Shape>
+                    <TextLine ID="mz_1-224_l25" HPOS="760" VPOS="2065" WIDTH="1667" HEIGHT="67" BASELINE="762 2102 2427 2108" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="762 2102 760 2113 846 2128 848 2128 851 2128 853 2128 868 2117 937 2128 939 2128 1284 2117 1340 2128 1342 2128 1842 2119 1875 2130 1877 2130 1879 2130 1996 2121 2128 2132 2130 2132 2425 2119 2427 2108 2425 2074 762 2065 762 2102"/>
+                        </Shape>
+                        <String CONTENT="The sleeping-room is much larger than that of the movable tent, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l26" HPOS="651" VPOS="2119" WIDTH="1774" HEIGHT="61" BASELINE="654 2162 2425 2167" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2162 651 2175 2421 2180 2425 2167 2423 2134 2371 2121 2369 2121 2282 2132 2241 2121 2239 2121 2237 2121 2234 2121 2211 2132 2187 2121 2185 2121 2182 2121 2180 2121 2156 2132 2122 2121 2120 2121 2118 2121 2115 2121 2079 2134 1970 2134 1955 2121 1953 2121 1951 2121 1949 2121 1946 2121 1925 2132 1903 2121 1901 2121 1899 2121 1897 2121 1875 2132 1853 2121 1851 2121 1849 2121 1795 2132 1591 2121 1589 2121 1587 2121 1541 2132 1524 2119 1522 2119 1520 2119 1518 2119 1515 2119 1492 2130 1470 2119 1468 2119 1466 2119 1463 2119 1429 2130 1347 2119 1344 2119 1342 2119 1312 2130 1160 2119 1158 2119 1156 2119 1128 2130 1115 2119 1113 2119 1110 2119 1108 2119 1106 2119 1063 2130 1035 2119 1033 2119 1030 2119 1028 2119 1026 2119 1011 2130 974 2119 972 2119 970 2119 968 2119 926 2130 911 2119 909 2119 907 2119 905 2119 903 2119 877 2130 654 2126 654 2162"/>
+                        </Shape>
+                        <String CONTENT="bears marked similarity to that of the Maritime Chukchee, only it is dirtier"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l27" HPOS="651" VPOS="2190" WIDTH="1770" HEIGHT="50" BASELINE="654 2223 2421 2227" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2223 651 2236 2416 2240 2421 2227 2419 2193 654 2190 654 2223"/>
+                        </Shape>
+                        <String CONTENT="and is made more carelessly. The usual dimensions are 5 feet in height, 8"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l28" HPOS="651" VPOS="2251" WIDTH="1774" HEIGHT="61" BASELINE="654 2281 2425 2286" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2281 651 2297 662 2305 664 2305 667 2305 669 2305 840 2297 905 2307 907 2307 1509 2297 1541 2310 1544 2310 1546 2310 1676 2299 1790 2299 1808 2310 1810 2310 1812 2310 1814 2312 1972 2312 1972 2310 1975 2310 1977 2310 1992 2299 2334 2310 2336 2310 2338 2310 2364 2299 2399 2310 2401 2310 2403 2310 2406 2310 2408 2310 2423 2297 2425 2286 2423 2255 654 2251 654 2281"/>
+                        </Shape>
+                        <String CONTENT="feet in breadth, and 14-16 feet in length. It occupies the whole rear of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l29" HPOS="651" VPOS="2301" WIDTH="1772" HEIGHT="67" BASELINE="654 2342 2423 2346" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2342 651 2355 838 2368 840 2368 2421 2359 2423 2346 2423 2316 2377 2303 2375 2303 2373 2303 2308 2314 2189 2303 2187 2303 2070 2314 1970 2303 1968 2303 1966 2303 1940 2316 1840 2316 1825 2303 1823 2303 1821 2303 1819 2303 1816 2303 1786 2314 1734 2303 1732 2303 1676 2314 1617 2303 1615 2303 1613 2303 1578 2314 1362 2314 1347 2301 1344 2301 1342 2301 1340 2301 1288 2312 1132 2301 1130 2301 1128 2301 1087 2312 981 2301 978 2301 976 2301 937 2312 896 2301 894 2301 892 2301 890 2301 857 2312 697 2301 695 2301 654 2310 654 2342"/>
+                        </Shape>
+                        <String CONTENT="the tent, leaving only a small space on the sides for storing provisions. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l30" HPOS="654" VPOS="2359" WIDTH="1769" HEIGHT="61" BASELINE="656 2400 2423 2405" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 2400 654 2416 2419 2420 2423 2405 2423 2375 2397 2362 2395 2362 2393 2362 2390 2362 2360 2372 2159 2362 2156 2362 2154 2362 2118 2372 2092 2362 2089 2362 2087 2362 2085 2362 2061 2372 2037 2362 2035 2362 2033 2362 1983 2372 1962 2362 1959 2362 1957 2362 1955 2362 1916 2372 1845 2362 1842 2362 1788 2372 1760 2362 1758 2362 1756 2362 1754 2362 1715 2372 1682 2362 1680 2362 1678 2362 1676 2362 1630 2372 1574 2362 1572 2362 1570 2362 1546 2372 1485 2359 1483 2359 1424 2370 1360 2359 1357 2359 1297 2370 1212 2359 1210 2359 1123 2370 1067 2359 1065 2359 1063 2359 1035 2370 931 2359 929 2359 926 2359 903 2372 751 2372 727 2359 725 2359 723 2359 656 2368 656 2400"/>
+                        </Shape>
+                        <String CONTENT="skin cover is made of fawn-skins taken late in the fall, the hair side out. It"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l31" HPOS="654" VPOS="2426" WIDTH="1771" HEIGHT="61" BASELINE="656 2459 2425 2465" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 2459 654 2472 777 2485 779 2485 1243 2476 1260 2487 1262 2487 1264 2487 1266 2487 2423 2478 2425 2465 2423 2435 656 2426 656 2459"/>
+                        </Shape>
+                        <String CONTENT="is drawn tightly across a rectangular frame made of flat, narrow sticks. On"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l32" HPOS="654" VPOS="2487" WIDTH="1771" HEIGHT="54" BASELINE="656 2517 2425 2526" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 2517 654 2533 2421 2541 2425 2526 2423 2496 656 2487 656 2517"/>
+                        </Shape>
+                        <String CONTENT="the outside it is covered with a thick layer of dried grass tied up in sheaves"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l33" HPOS="651" VPOS="2548" WIDTH="1774" HEIGHT="58" BASELINE="654 2578 2425 2587" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2578 651 2591 790 2604 792 2604 1074 2595 1095 2606 1097 2606 1100 2606 2423 2600 2425 2587 2423 2556 654 2548 654 2578"/>
+                        </Shape>
+                        <String CONTENT="and fastened side by side. The frame is so strong that a man can walk on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l34" HPOS="651" VPOS="2608" WIDTH="1772" HEIGHT="61" BASELINE="654 2639 2423 2645" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2639 651 2652 690 2665 693 2665 695 2665 1749 2658 1832 2669 1834 2669 2421 2658 2423 2645 2421 2615 654 2608 654 2639"/>
+                        </Shape>
+                        <String CONTENT="top of it. The whole structure is covered with a piece of tent-covering, with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l35" HPOS="651" VPOS="2658" WIDTH="1774" HEIGHT="61" BASELINE="654 2699 2425 2706" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2699 651 2712 2421 2719 2425 2706 2425 2675 2375 2662 2373 2662 2371 2662 2122 2673 2066 2662 2063 2662 2061 2662 2022 2673 1994 2662 1992 2662 1990 2662 1836 2673 1797 2660 1795 2660 1793 2660 1790 2660 1762 2671 1407 2660 1405 2660 1403 2660 1401 2660 1386 2671 1360 2660 1357 2660 1355 2660 1353 2660 1325 2671 1295 2660 1292 2660 1290 2660 1288 2660 1286 2660 1271 2671 1245 2658 1243 2658 1240 2658 654 2667 654 2699"/>
+                        </Shape>
+                        <String CONTENT="the ends carefully tucked in below. The floor is covered with skins of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l36" HPOS="651" VPOS="2730" WIDTH="1774" HEIGHT="49" BASELINE="654 2760 2425 2766" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2760 651 2773 2421 2779 2425 2766 2423 2736 654 2730 654 2760"/>
+                        </Shape>
+                        <String CONTENT="thong-seal or of the walrus, and over them some scraps of reindeer-skin are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l37" HPOS="654" VPOS="2786" WIDTH="1767" HEIGHT="58" BASELINE="654 2818 2421 2829" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="654 2818 654 2844 2419 2844 2421 2829 2419 2797 654 2786 654 2818"/>
+                        </Shape>
+                        <String CONTENT="put for seats, while the bedding is rolled up and taken away during the day."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-224_r4" HPOS="656" VPOS="2846" WIDTH="1778" HEIGHT="427" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="656 2846 2434 2846 2434 3273 656 3273"/>
+                    </Shape>
+                    <TextLine ID="mz_1-224_l38" HPOS="760" VPOS="2849" WIDTH="1663" HEIGHT="60" BASELINE="762 2879 2423 2885" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="762 2879 760 2892 1513 2907 1515 2907 1793 2898 1871 2909 1873 2909 2421 2898 2423 2885 2421 2855 762 2849 762 2879"/>
+                        </Shape>
+                        <String CONTENT="One or two lamps burn constantly within, to keep the place dry. There"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l39" HPOS="649" VPOS="2907" WIDTH="1774" HEIGHT="54" BASELINE="651 2940 2423 2948" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="651 2940 649 2953 2419 2961 2423 2948 2421 2916 651 2907 651 2940"/>
+                        </Shape>
+                        <String CONTENT="is no kind of ventilation whatsoever: therefore the sleeping-room, although"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l40" HPOS="654" VPOS="2970" WIDTH="1769" HEIGHT="58" BASELINE="656 3000 2423 3005" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 3000 654 3013 1676 3028 1678 3028 2421 3018 2423 3005 2421 2974 656 2970 656 3000"/>
+                        </Shape>
+                        <String CONTENT="warm enough, in course of time becomes very unclean, and acquires an odor"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l41" HPOS="654" VPOS="3015" WIDTH="1769" HEIGHT="67" BASELINE="656 3056 2423 3067" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 3056 654 3072 669 3082 671 3082 673 3082 675 3082 2421 3080 2423 3067 2423 3037 2390 3024 2388 3024 2386 3024 2124 3035 2092 3024 2089 3024 2087 3024 2085 3024 2083 3024 2070 3035 2011 3022 2009 3022 1754 3033 1717 3020 1715 3020 1429 3020 1427 3020 1424 3020 1422 3020 1407 3031 1217 3018 1214 3018 1212 3018 1180 3028 1126 3018 1123 3018 1121 3018 1091 3028 829 3028 801 3015 799 3015 796 3015 656 3024 656 3056"/>
+                        </Shape>
+                        <String CONTENT="offensive even to the inmates. Notwithstanding the burning lamp, the skin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l42" HPOS="654" VPOS="3087" WIDTH="1767" HEIGHT="60" BASELINE="656 3117 2421 3126" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 3117 654 3130 764 3143 766 3143 1024 3134 1110 3145 1113 3145 1494 3137 2416 3147 2421 3126 2419 3095 656 3087 656 3117"/>
+                        </Shape>
+                        <String CONTENT="cover becomes damp and covered with mildew. When newly constructed,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l43" HPOS="654" VPOS="3147" WIDTH="1769" HEIGHT="65" BASELINE="656 3178 2423 3186" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 3178 654 3191 835 3206 838 3206 1087 3195 1704 3210 1706 3210 1845 3199 1981 3212 1983 3212 2035 3202 2421 3202 2423 3186 2421 3156 656 3147 656 3178"/>
+                        </Shape>
+                        <String CONTENT="the sleeping-room is dried by carrying in a pile of burning coals on an iron"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-224_l44" HPOS="654" VPOS="3206" WIDTH="1765" HEIGHT="65" BASELINE="656 3238 2419 3247" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="656 3238 654 3264 2414 3271 2419 3247 2416 3215 656 3206 656 3238"/>
+                        </Shape>
+                        <String CONTENT="pan. The same method is sometimes applied afterwards, though it is dangerous,"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

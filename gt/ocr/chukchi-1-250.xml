@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-250.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-250.png; regions_from: zones/chukchi-1-250.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-250_r1" HPOS="627" VPOS="623" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="627 623 2405 623 2405 713 627 713"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l1" HPOS="1227" VPOS="632" WIDTH="615" HEIGHT="56" BASELINE="1230 666 1842 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1836 643 1821 634 1230 632 1230 666 1227 684 1838 688 1842 671 1840 651 1836 643"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l2" HPOS="660" VPOS="645" WIDTH="95" HEIGHT="62" BASELINE="662 681 755 677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="662 681 662 694 703 707 706 707 708 707 710 707 755 690 755 677 749 645 660 647 662 681"/>
+                        </Shape>
+                        <String CONTENT="194"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-250_r2" HPOS="627" VPOS="738" WIDTH="1778" HEIGHT="484" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="627 738 2405 738 2405 1222 627 1222"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l3" HPOS="649" VPOS="733" WIDTH="1767" HEIGHT="65" BASELINE="651 781 2416 777" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2403 751 2382 751 2360 749 2338 749 2317 746 2295 746 2273 746 2252 744 2230 744 2208 742 2187 742 2165 740 2143 744 2115 738 2100 738 2079 738 2070 736 2055 744 2024 736 2014 736 2003 733 1907 744 1373 736 1370 736 1368 736 1366 736 1351 746 1271 736 1269 736 840 746 731 736 729 736 649 749 651 781 651 796 2412 798 2416 777 2412 751 2403 751"/>
+                        </Shape>
+                        <String CONTENT="tradition among the Reindeer Chukchee, according to which, in olden times,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l4" HPOS="649" VPOS="798" WIDTH="1772" HEIGHT="59" BASELINE="651 840 2421 835" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="651 840 651 857 2419 853 2421 835 2416 807 671 798 669 798 667 798 664 798 649 805 651 840"/>
+                        </Shape>
+                        <String CONTENT="their forefathers had no clay kettles, and the meat was roasted on large flat"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l5" HPOS="647" VPOS="859" WIDTH="1774" HEIGHT="58" BASELINE="649 900 2421 894" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="649 900 649 917 2419 911 2421 894 2416 866 688 859 686 859 684 859 647 870 649 900"/>
+                        </Shape>
+                        <String CONTENT="stones heated for the purpose. The Lamut tell the same story of their ances-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l6" HPOS="649" VPOS="920" WIDTH="1772" HEIGHT="58" BASELINE="651 961 2421 952" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="651 961 651 978 2419 969 2421 952 2416 924 669 920 667 920 664 920 662 920 649 926 651 961"/>
+                        </Shape>
+                        <String CONTENT="tors; but such a method of cooking is possible only within the borders of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l7" HPOS="645" VPOS="976" WIDTH="1776" HEIGHT="67" BASELINE="647 1019 2421 1015" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1019 647 1032 1217 1043 1219 1043 1321 1032 1403 1043 1405 1043 1407 1043 1435 1032 1466 1043 1468 1043 1470 1043 1472 1043 1474 1043 1487 1032 1531 1041 1533 1041 1782 1030 1801 1041 1803 1041 1806 1041 1808 1041 1979 1030 2022 1041 2024 1041 2027 1041 2252 1030 2306 1041 2308 1041 2310 1041 2312 1041 2330 1030 2397 1041 2399 1041 2401 1041 2403 1041 2421 1028 2421 1015 2416 987 1537 976 1535 976 1533 976 1511 987 664 978 662 978 660 978 658 978 645 985 647 1019"/>
+                        </Shape>
+                        <String CONTENT="forest, where the supply of fuel is abundant. On the tundra and on the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l8" HPOS="645" VPOS="1039" WIDTH="1776" HEIGHT="71" BASELINE="647 1080 2421 1073" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1080 647 1110 822 1095 1195 1104 1197 1104 1301 1093 1468 1106 1470 1106 1472 1106 1474 1106 1489 1093 1550 1104 1552 1104 1554 1104 1600 1093 1682 1106 1684 1106 1784 1093 1823 1101 1825 1101 1827 1101 2126 1091 2250 1104 2252 1104 2254 1104 2291 1091 2419 1091 2421 1073 2416 1045 667 1039 664 1039 662 1039 660 1039 645 1045 647 1080"/>
+                        </Shape>
+                        <String CONTENT="treeless coast a method of cooking that requires less fuel must always have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l9" HPOS="647" VPOS="1093" WIDTH="1772" HEIGHT="65" BASELINE="649 1143 2419 1134" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="649 1143 649 1158 2416 1149 2419 1134 2414 1104 2031 1093 2029 1093 1968 1106 647 1106 649 1143"/>
+                        </Shape>
+                        <String CONTENT="been in use. Therefore it seems probable that the lamp and the kettle were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l10" HPOS="645" VPOS="1160" WIDTH="901" HEIGHT="56" BASELINE="647 1201 1546 1195" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1201 647 1216 1544 1214 1546 1195 1541 1166 654 1160 651 1160 649 1160 647 1160 647 1162 645 1162 647 1201"/>
+                        </Shape>
+                        <String CONTENT="in use in former times as well as now."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-250_r3" HPOS="627" VPOS="1222" WIDTH="1778" HEIGHT="366" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="627 1222 2405 1222 2405 1588 627 1588"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l11" HPOS="757" VPOS="1208" WIDTH="1662" HEIGHT="69" BASELINE="760 1262 2419 1251" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="760 1262 760 1277 2416 1266 2419 1251 2414 1221 2304 1221 2286 1208 2284 1208 2282 1208 2280 1208 2278 1208 2252 1218 2234 1208 2232 1208 2230 1208 2228 1208 2226 1208 2224 1208 2208 1221 2083 1221 1981 1210 1979 1210 1977 1210 1949 1221 1933 1210 1931 1210 1929 1210 1927 1210 1925 1210 1892 1221 1862 1210 1860 1210 1858 1210 1855 1210 1829 1221 1806 1210 1803 1210 1801 1210 1799 1210 1749 1223 1528 1212 1526 1212 1524 1212 1492 1223 1466 1212 1463 1212 1461 1212 1459 1212 1405 1225 1377 1214 1375 1214 1373 1214 1321 1225 1262 1214 1260 1214 1258 1214 1232 1225 1204 1214 1201 1214 1199 1214 1147 1225 757 1225 760 1262"/>
+                        </Shape>
+                        <String CONTENT="The Yukaghir and the Kamchadal used to boil their meat and fish in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l12" HPOS="645" VPOS="1275" WIDTH="1771" HEIGHT="62" BASELINE="647 1322 2416 1316" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1322 647 1335 2412 1337 2416 1316 2412 1286 1886 1275 1884 1275 1821 1288 645 1288 647 1322"/>
+                        </Shape>
+                        <String CONTENT="bark or wooden vessels by means of heated stones. This method of boiling"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l13" HPOS="645" VPOS="1337" WIDTH="1774" HEIGHT="63" BASELINE="647 1385 2419 1374" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1385 647 1400 2416 1389 2419 1374 2414 1344 1355 1337 1353 1337 1351 1337 1349 1337 1329 1348 1030 1340 1028 1340 645 1353 647 1385"/>
+                        </Shape>
+                        <String CONTENT="meat is still used occasionally by the hunter, who carries no kettle, and who"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l14" HPOS="645" VPOS="1392" WIDTH="1776" HEIGHT="65" BASELINE="647 1444 2421 1435" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1444 647 1457 2419 1448 2421 1435 2416 1405 2364 1392 2362 1392 2360 1392 2332 1402 2120 1392 2118 1392 2031 1402 1985 1392 1983 1392 1981 1392 1912 1405 1879 1394 1877 1394 1875 1394 1700 1405 1637 1394 1635 1394 1632 1394 1604 1405 1533 1394 1531 1394 1528 1394 1526 1394 1502 1407 1201 1396 1199 1396 1197 1396 1160 1407 1128 1396 1126 1396 1123 1396 1121 1396 1119 1396 1104 1407 779 1398 777 1398 775 1398 773 1398 757 1411 645 1411 647 1444"/>
+                        </Shape>
+                        <String CONTENT="may boil his meat in the old way. The Kamchadal of Central Kamchatka"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l15" HPOS="645" VPOS="1452" WIDTH="1774" HEIGHT="67" BASELINE="647 1502 2419 1491" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1502 647 1519 2416 1509 2419 1491 2414 1463 2063 1452 2061 1452 2059 1452 2029 1463 1028 1459 1026 1459 1024 1459 996 1470 792 1461 790 1461 645 1472 647 1502"/>
+                        </Shape>
+                        <String CONTENT="extract the fish-oil of Salmo sanguinolentus by trying out the fish in a dug-out"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l16" HPOS="647" VPOS="1517" WIDTH="444" HEIGHT="59" BASELINE="649 1560 1091 1556" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="649 1560 649 1576 1091 1571 1091 1556 1087 1528 898 1517 896 1517 894 1517 864 1528 688 1519 686 1519 684 1519 647 1530 649 1560"/>
+                        </Shape>
+                        <String CONTENT="with heated stones."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-250_r4" HPOS="627" VPOS="1588" WIDTH="1778" HEIGHT="295" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="627 1588 2405 1588 2405 1883 627 1883"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l17" HPOS="755" VPOS="1576" WIDTH="1664" HEIGHT="60" BASELINE="757 1619 2419 1610" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="757 1619 757 1636 2416 1628 2419 1610 2414 1582 1191 1576 1188 1576 1095 1586 779 1578 777 1578 775 1578 755 1586 757 1619"/>
+                        </Shape>
+                        <String CONTENT="At present the Chukchee use little roasted meat. They hardly know how"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l18" HPOS="643" VPOS="1643" WIDTH="1773" HEIGHT="52" BASELINE="645 1680 2416 1673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 1680 645 1695 2414 1688 2416 1673 2410 1643 643 1647 645 1680"/>
+                        </Shape>
+                        <String CONTENT="to roast it properly. Fish and lungs, which are sometimes roasted near the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l19" HPOS="645" VPOS="1701" WIDTH="1771" HEIGHT="56" BASELINE="647 1740 2416 1729" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1740 647 1757 2414 1747 2416 1729 2410 1701 645 1710 647 1740"/>
+                        </Shape>
+                        <String CONTENT="fire, are always covered with ashes, charred from without, and quite raw"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l20" HPOS="645" VPOS="1753" WIDTH="1771" HEIGHT="63" BASELINE="647 1801 2416 1792" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1801 647 1816 2414 1807 2416 1792 2412 1762 1531 1753 1528 1753 1463 1764 1104 1755 1102 1755 1100 1755 1078 1766 690 1757 688 1757 686 1757 645 1768 647 1801"/>
+                        </Shape>
+                        <String CONTENT="within. The Yukaghir and Kamchadal roast fish and meat very well on thin"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l21" HPOS="645" VPOS="1818" WIDTH="1132" HEIGHT="59" BASELINE="647 1861 1777 1855" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 1861 647 1877 1775 1872 1777 1855 1773 1827 1041 1818 1039 1818 645 1831 647 1861"/>
+                        </Shape>
+                        <String CONTENT="wooden spits stuck into the ground near the fire."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-250_r5" HPOS="627" VPOS="1883" WIDTH="1778" HEIGHT="417" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="627 1883 2405 1883 2405 2300 627 2300"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l22" HPOS="751" VPOS="1870" WIDTH="1665" HEIGHT="67" BASELINE="753 1920 2416 1909" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="753 1920 753 1937 2414 1926 2416 1909 2412 1881 2154 1870 2152 1870 2079 1881 1752 1872 1749 1872 1747 1872 1715 1883 1435 1874 1433 1874 1431 1874 1429 1874 1412 1885 1173 1877 1171 1877 751 1887 753 1920"/>
+                        </Shape>
+                        <String CONTENT="RAW AND PUTRID MEAT AND CARRION. — Raw, frozen meat is eaten by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l23" HPOS="641" VPOS="1931" WIDTH="1775" HEIGHT="65" BASELINE="643 1980 2416 1972" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 1980 643 1996 2414 1987 2416 1972 2412 1942 2369 1931 2367 1931 2234 1942 2211 1931 2208 1931 2206 1931 2204 1931 2167 1942 2126 1931 2124 1931 2122 1931 2057 1942 1996 1931 1994 1931 1992 1931 1966 1944 1578 1933 1576 1933 1574 1933 1522 1946 1362 1935 1360 1935 1357 1935 1325 1946 1290 1935 1288 1935 1286 1935 1169 1946 1117 1935 1115 1935 1052 1948 1035 1937 1033 1937 1030 1937 1028 1937 907 1948 885 1937 883 1937 757 1937 755 1937 753 1937 721 1948 669 1937 667 1937 664 1937 641 1946 643 1980"/>
+                        </Shape>
+                        <String CONTENT="the Reindeer Chukchee and all the neighboring tribes. The Arctic people"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l24" HPOS="643" VPOS="1993" WIDTH="1773" HEIGHT="63" BASELINE="645 2041 2416 2035" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 2041 645 2056 2414 2050 2416 2035 2412 2004 1864 1993 1862 1993 1860 1993 1812 2004 744 1998 742 1998 643 2009 645 2041"/>
+                        </Shape>
+                        <String CONTENT="consider meat that is raw and hard-frozen just as palatable as cooked meat."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l25" HPOS="645" VPOS="2052" WIDTH="1767" HEIGHT="65" BASELINE="647 2104 2412 2093" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="647 2104 647 2117 2410 2110 2412 2093 2408 2063 2094 2052 2092 2052 2089 2052 2053 2063 1838 2054 1836 2054 1700 2065 1468 2056 1466 2056 1336 2069 645 2069 647 2104"/>
+                        </Shape>
+                        <String CONTENT="I must acknowledge that I soon learned to eat it and to like its taste."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l26" HPOS="643" VPOS="2110" WIDTH="1773" HEIGHT="67" BASELINE="645 2165 2416 2154" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 2165 645 2177 2414 2167 2416 2154 2414 2123 2388 2110 2386 2110 2384 2110 2278 2121 2208 2110 2206 2110 2204 2110 2174 2121 2124 2110 2122 2110 2040 2123 1849 2113 1847 2113 1782 2123 1678 2115 1676 2115 1674 2115 1671 2115 1656 2126 1412 2115 1409 2115 1288 2128 1212 2117 1210 2117 1108 2128 643 2128 645 2165"/>
+                        </Shape>
+                        <String CONTENT="Especially when we had to live for a long time exclusively on fat fish, with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l27" HPOS="643" VPOS="2177" WIDTH="1773" HEIGHT="61" BASELINE="645 2223 2416 2210" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 2223 645 2238 2416 2225 2416 2210 2412 2182 1249 2177 1247 2177 1245 2177 1223 2188 712 2182 710 2182 643 2193 645 2223"/>
+                        </Shape>
+                        <String CONTENT="not so much as a pinch of salt to season it, we found this diet more tolerable"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l28" HPOS="645" VPOS="2238" WIDTH="1068" HEIGHT="56" BASELINE="645 2279 1713 2279" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 2279 645 2294 1713 2294 1713 2279 1713 2247 1697 2238 1695 2238 1693 2238 1589 2238 1587 2238 1585 2238 1583 2238 1583 2240 1572 2249 1394 2238 1392 2238 1329 2251 959 2251 892 2238 890 2238 833 2249 809 2238 807 2238 805 2238 714 2249 693 2238 690 2238 688 2238 686 2238 645 2249 645 2279"/>
+                        </Shape>
+                        <String CONTENT="when the fish was eaten raw and frozen hard."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-250_r6" HPOS="627" VPOS="2300" WIDTH="1778" HEIGHT="420" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="627 2300 2405 2300 2405 2720 627 2720"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l29" HPOS="749" VPOS="2297" WIDTH="1665" HEIGHT="60" BASELINE="751 2340 2414 2333" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="751 2340 751 2357 2412 2357 2414 2333 2410 2303 762 2297 760 2297 757 2297 755 2297 755 2299 749 2303 751 2340"/>
+                        </Shape>
+                        <String CONTENT="Liver and kidneys, heart, tendons of the legs, gristle of the nose, eyes,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l30" HPOS="641" VPOS="2359" WIDTH="1773" HEIGHT="57" BASELINE="643 2400 2414 2390" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2400 643 2416 2412 2407 2414 2390 2408 2359 641 2368 643 2400"/>
+                        </Shape>
+                        <String CONTENT="and marrow are consumed raw summer and winter, immediately after the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l31" HPOS="641" VPOS="2413" WIDTH="1773" HEIGHT="63" BASELINE="643 2461 2414 2452" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2461 643 2476 2412 2468 2414 2452 2410 2422 1531 2413 1528 2413 1526 2413 1496 2424 1117 2416 1115 2416 1113 2416 1080 2426 693 2418 690 2418 641 2429 643 2461"/>
+                        </Shape>
+                        <String CONTENT="reindeer has been slaughtered. Blood is also consumed raw, fresh, or half-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l32" HPOS="641" VPOS="2476" WIDTH="1775" HEIGHT="65" BASELINE="643 2522 2416 2513" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2522 643 2541 2414 2535 2416 2513 2412 2483 1106 2476 1104 2476 641 2489 643 2522"/>
+                        </Shape>
+                        <String CONTENT="putrid. The Chukchee are averse to eating other parts of the animal raw;"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l33" HPOS="638" VPOS="2539" WIDTH="1776" HEIGHT="56" BASELINE="641 2578 2414 2569" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2578 641 2595 2412 2587 2414 2569 2408 2539 638 2546 641 2578"/>
+                        </Shape>
+                        <String CONTENT="and I know of cases where a herdsman who had no kettle killed one buck"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l34" HPOS="638" VPOS="2591" WIDTH="1774" HEIGHT="67" BASELINE="641 2641 2412 2632" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2641 641 2658 2410 2658 2412 2632 2408 2602 1977 2591 1975 2591 1972 2591 1970 2591 1970 2593 1959 2602 1541 2593 1539 2593 1537 2593 1535 2593 1518 2604 680 2598 677 2598 675 2598 638 2608 641 2641"/>
+                        </Shape>
+                        <String CONTENT="after another, and ate only those parts that are considered fit to be eaten raw,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l35" HPOS="638" VPOS="2654" WIDTH="949" HEIGHT="60" BASELINE="641 2699 1587 2695" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2699 641 2714 1585 2710 1587 2695 1585 2665 1567 2654 1565 2654 1563 2654 1561 2654 1559 2654 1513 2667 1214 2667 1186 2654 1184 2654 1182 2654 1180 2654 1178 2654 1165 2665 1139 2654 1136 2654 1134 2654 1132 2654 1104 2667 647 2656 645 2656 643 2656 641 2656 641 2658 638 2658 641 2699"/>
+                        </Shape>
+                        <String CONTENT="leaving all the rest of the meat to spoil."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-250_r7" HPOS="627" VPOS="2720" WIDTH="1778" HEIGHT="358" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="627 2720 2405 2720 2405 3078 627 3078"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l36" HPOS="751" VPOS="2710" WIDTH="1665" HEIGHT="65" BASELINE="753 2760 2416 2749" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="753 2760 753 2775 2414 2766 2416 2749 2410 2721 2050 2721 2027 2710 2024 2710 2022 2710 2020 2710 2018 2710 2005 2723 1927 2723 1858 2710 1855 2710 1806 2721 1780 2710 1777 2710 1775 2710 1773 2710 1732 2723 1717 2712 1715 2712 1713 2712 1710 2712 1708 2712 1680 2723 1630 2712 1628 2712 1446 2723 1420 2712 1418 2712 1416 2712 1414 2712 1370 2725 1251 2714 1104 2714 1102 2714 1100 2714 1097 2714 1080 2727 1007 2717 1004 2717 751 2721 753 2760"/>
+                        </Shape>
+                        <String CONTENT="The Reindeer Chukchee, and especially the herdsmen, however, are not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l37" HPOS="638" VPOS="2775" WIDTH="1774" HEIGHT="61" BASELINE="641 2820 2412 2814" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2820 641 2833 2408 2836 2412 2814 2408 2784 1236 2775 1234 2775 1167 2786 855 2777 853 2777 638 2788 641 2820"/>
+                        </Shape>
+                        <String CONTENT="very particular as to their food. They eat the maggots of the reindeer-fly,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l38" HPOS="638" VPOS="2838" WIDTH="1776" HEIGHT="56" BASELINE="641 2879 2414 2872" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2879 641 2894 2412 2888 2414 2872 2410 2840 708 2838 706 2838 638 2849 641 2879"/>
+                        </Shape>
+                        <String CONTENT="and various herbs which taste to us unsavory or repugnant. In exceptional"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l39" HPOS="638" VPOS="2892" WIDTH="1776" HEIGHT="65" BASELINE="641 2940 2414 2929" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2940 641 2957 2412 2946 2414 2929 2410 2901 1704 2892 1702 2892 1700 2892 1697 2892 1680 2903 996 2896 994 2896 638 2909 641 2940"/>
+                        </Shape>
+                        <String CONTENT="cases they gather toadstools and the green, half-liquid dung of the reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l40" HPOS="638" VPOS="2957" WIDTH="1776" HEIGHT="63" BASELINE="641 2998 2414 2989" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2998 641 3015 1968 3020 1970 3020 2412 3007 2414 2989 2410 2959 660 2957 658 2957 656 2957 654 2957 638 2963 641 2998"/>
+                        </Shape>
+                        <String CONTENT="that has taken to eating leaves in the spring. This is mixed with herbs and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l41" HPOS="638" VPOS="3026" WIDTH="1031" HEIGHT="48" BASELINE="638 3056 1669 3056" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="638 3056 638 3074 1669 3074 1669 3056 1669 3026 638 3026 638 3056"/>
+                        </Shape>
+                        <String CONTENT="a little blood or putrid liver, and eaten raw."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-250_r8" HPOS="627" VPOS="3078" WIDTH="1778" HEIGHT="195" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="627 3078 2405 3078 2405 3273 627 3273"/>
+                    </Shape>
+                    <TextLine ID="mz_1-250_l42" HPOS="749" VPOS="3082" WIDTH="1665" HEIGHT="50" BASELINE="751 3115 2414 3111" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="751 3115 751 3132 2414 3128 2414 3111 2410 3082 749 3082 751 3115"/>
+                        </Shape>
+                        <String CONTENT="The herdsmen among the Telqäˊp people are accused by their neighbors"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l43" HPOS="636" VPOS="3132" WIDTH="1776" HEIGHT="61" BASELINE="638 3178 2412 3171" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="638 3178 638 3193 2412 3191 2412 3171 2408 3143 1821 3132 1819 3132 1760 3143 680 3137 677 3137 675 3137 636 3147 638 3178"/>
+                        </Shape>
+                        <String CONTENT="of catching mice and eating them raw, after removing the intestines. During"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-250_l44" HPOS="636" VPOS="3191" WIDTH="1774" HEIGHT="71" BASELINE="638 3238 2410 3232" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="638 3238 638 3253 1749 3262 1752 3262 2410 3247 2410 3232 2408 3204 2373 3191 2371 3191 2369 3191 1981 3202 1925 3191 1923 3191 1799 3204 1329 3193 1327 3193 1325 3193 1303 3204 1275 3193 1273 3193 1271 3193 1269 3193 1223 3206 827 3195 825 3195 773 3206 690 3195 688 3195 686 3195 636 3208 638 3238"/>
+                        </Shape>
+                        <String CONTENT="calving-time, when short of drinking-water, they are said to drink the birth-"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

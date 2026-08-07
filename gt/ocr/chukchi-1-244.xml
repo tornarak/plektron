@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-244.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-244.png; regions_from: zones/chukchi-1-244.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-244_r1" HPOS="638" VPOS="599" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="638 599 2416 599 2416 689 638 689"/>
+                    </Shape>
+                    <TextLine ID="mz_1-244_l1" HPOS="1214" VPOS="608" WIDTH="620" HEIGHT="54" BASELINE="1217 640 1834 645" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1823 625 1808 610 1232 608 1217 617 1217 640 1214 658 1829 662 1834 645 1829 634 1823 625"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l2" HPOS="641" VPOS="606" WIDTH="103" HEIGHT="56" BASELINE="641 647 744 647" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 614 701 606 684 606 667 606 641 614 641 647 641 662 744 662 744 647 744 621 736 614"/>
+                        </Shape>
+                        <String CONTENT="188"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-244_r2" HPOS="638" VPOS="714" WIDTH="1778" HEIGHT="354" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="638 714 2416 714 2416 1068 638 1068"/>
+                    </Shape>
+                    <TextLine ID="mz_1-244_l3" HPOS="634" VPOS="714" WIDTH="1778" HEIGHT="54" BASELINE="636 755 2412 751" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="636 755 636 768 2412 766 2412 751 2408 723 654 714 651 714 649 714 647 714 634 720 636 755"/>
+                        </Shape>
+                        <String CONTENT="ting marrow-bones to extract the marrow from them; it is also used for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l4" HPOS="1470" VPOS="768" WIDTH="940" HEIGHT="61" BASELINE="1472 814 2410 809" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 814 1472 829 2408 824 2410 809 2408 781 2382 768 2380 768 2377 768 2029 779 2005 768 2003 768 2001 768 1998 768 1996 768 1996 770 1988 779 1964 768 1962 768 1959 768 1957 768 1955 768 1933 781 1877 770 1875 770 1873 770 1849 781 1726 770 1723 770 1641 781 1619 770 1617 770 1479 770 1476 770 1474 770 1472 770 1472 772 1470 772 1472 814"/>
+                        </Shape>
+                        <String CONTENT="breaking all kinds of bones from which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l5" HPOS="1474" VPOS="844" WIDTH="936" HEIGHT="47" BASELINE="1474 872 2410 872" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1474 872 1474 891 2410 891 2410 872 2410 844 1474 844 1474 872"/>
+                        </Shape>
+                        <String CONTENT="tallow is to be extracted, and for crushing"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l6" HPOS="1470" VPOS="887" WIDTH="938" HEIGHT="63" BASELINE="1472 930 2408 935" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 930 1470 946 2403 950 2408 935 2406 902 2328 889 2189 889 2187 889 2185 889 2182 889 2182 891 2172 900 2089 889 2087 889 2027 900 1784 900 1771 887 1769 887 1767 887 1765 887 1472 896 1472 930"/>
+                        </Shape>
+                        <String CONTENT="all kinds of frozen meat, fish and blubber,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l7" HPOS="1470" VPOS="950" WIDTH="942" HEIGHT="58" BASELINE="1472 993 2412 989" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 993 1472 1008 2410 1004 2412 989 2408 961 1946 950 1944 950 1942 950 1918 961 1511 952 1509 952 1507 952 1470 963 1472 993"/>
+                        </Shape>
+                        <String CONTENT="which form some of the standard items"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l8" HPOS="1472" VPOS="1006" WIDTH="418" HEIGHT="70" BASELINE="1474 1054 1890 1050" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1474 1054 1474 1067 1875 1076 1877 1076 1879 1076 1881 1076 1881 1073 1890 1065 1890 1050 1886 1019 1797 1006 1795 1006 1793 1006 1790 1006 1790 1008 1780 1019 1713 1019 1689 1006 1687 1006 1684 1006 1682 1006 1680 1006 1667 1019 1652 1008 1650 1008 1648 1008 1645 1008 1643 1008 1606 1019 1557 1008 1554 1008 1552 1008 1550 1008 1550 1011 1541 1019 1515 1008 1513 1008 1511 1008 1509 1008 1472 1021 1474 1054"/>
+                        </Shape>
+                        <String CONTENT="of Chukchee fare."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-244_r3" HPOS="638" VPOS="1068" WIDTH="1778" HEIGHT="1140" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="638 1068 2416 1068 2416 2208 638 2208"/>
+                    </Shape>
+                    <TextLine ID="mz_1-244_l9" HPOS="1585" VPOS="1071" WIDTH="827" HEIGHT="63" BASELINE="1587 1108 2412 1112" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1587 1108 1585 1123 1604 1134 1606 1134 1609 1134 2410 1125 2412 1112 2410 1082 1587 1071 1587 1108"/>
+                        </Shape>
+                        <String CONTENT="WATER-SUPPLY. — One of the great"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l10" HPOS="1472" VPOS="1127" WIDTH="938" HEIGHT="61" BASELINE="1474 1171 2410 1166" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1474 1171 1474 1188 2408 1184 2410 1166 2406 1138 2014 1127 2011 1127 1472 1140 1474 1171"/>
+                        </Shape>
+                        <String CONTENT="needs of the Chukchee household in win-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l11" HPOS="1472" VPOS="1201" WIDTH="938" HEIGHT="48" BASELINE="1472 1231 2410 1231" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 1231 1472 1249 2410 1249 2410 1231 2410 1201 1472 1201 1472 1231"/>
+                        </Shape>
+                        <String CONTENT="ter-time is a sufficient supply of water for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l12" HPOS="1472" VPOS="1262" WIDTH="938" HEIGHT="47" BASELINE="1472 1290 2410 1290" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 1290 1472 1309 2410 1309 2410 1290 2410 1262 1472 1262 1472 1290"/>
+                        </Shape>
+                        <String CONTENT="cooking and drinking, especially at pres-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l13" HPOS="1472" VPOS="1322" WIDTH="940" HEIGHT="54" BASELINE="1472 1350 2412 1350" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 1350 1472 1363 1548 1376 1550 1376 1552 1376 1578 1366 1929 1376 1931 1376 2412 1363 2412 1350 2412 1322 1472 1322 1472 1350"/>
+                        </Shape>
+                        <String CONTENT="ent, when the drinking of hot tea has"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l14" HPOS="1472" VPOS="1376" WIDTH="942" HEIGHT="52" BASELINE="1472 1411 2414 1411" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 1411 1472 1428 2414 1428 2414 1411 2412 1376 1472 1381 1472 1411"/>
+                        </Shape>
+                        <String CONTENT="almost entirely superseded the eating of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l15" HPOS="1470" VPOS="1439" WIDTH="940" HEIGHT="57" BASELINE="1472 1472 2410 1467" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1472 1472 1472 1485 1886 1496 1888 1496 1890 1496 1920 1485 1931 1493 1931 1496 1933 1496 1936 1496 1938 1496 2011 1483 2046 1493 2048 1493 2050 1496 2148 1496 2148 1493 2150 1493 2152 1493 2152 1491 2161 1483 2182 1493 2185 1493 2187 1493 2189 1493 2232 1483 2254 1493 2256 1493 2258 1496 2390 1496 2390 1493 2393 1493 2395 1493 2410 1480 2410 1467 2406 1439 1470 1439 1472 1472"/>
+                        </Shape>
+                        <String CONTENT="hard snow, which was usual in former"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l16" HPOS="1470" VPOS="1502" WIDTH="940" HEIGHT="45" BASELINE="1470 1532 2410 1532" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1470 1532 1470 1547 2410 1547 2410 1532 2410 1502 1470 1502 1470 1532"/>
+                        </Shape>
+                        <String CONTENT="times. Cooking over the lamp, even in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l17" HPOS="1466" VPOS="1547" WIDTH="942" HEIGHT="63" BASELINE="1468 1593 2408 1589" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1468 1593 1468 1610 2406 1610 2408 1589 2403 1558 2128 1547 2126 1547 2124 1547 2122 1547 2107 1560 1983 1560 1955 1547 1953 1547 1951 1547 1886 1560 1845 1550 1842 1550 1840 1550 1786 1560 1665 1550 1663 1550 1661 1550 1658 1550 1641 1560 1554 1550 1552 1550 1550 1550 1548 1550 1548 1552 1537 1563 1466 1563 1468 1593"/>
+                        </Shape>
+                        <String CONTENT="an iron kettle, is at best a slow process,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l18" HPOS="1468" VPOS="1606" WIDTH="940" HEIGHT="65" BASELINE="1470 1651 2408 1647" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1470 1651 1470 1671 2406 1662 2408 1647 2403 1617 1970 1606 1968 1606 1966 1606 1931 1617 1563 1608 1561 1608 1468 1619 1470 1651"/>
+                        </Shape>
+                        <String CONTENT="particularly so if the kettle is filled with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l19" HPOS="1468" VPOS="1671" WIDTH="942" HEIGHT="67" BASELINE="1470 1710 2410 1706" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1470 1710 1470 1723 1691 1723 1715 1736 1717 1736 1719 1736 1721 1736 1784 1723 1797 1734 1797 1736 1799 1736 1801 1736 1803 1738 1858 1738 1858 1736 1860 1736 1890 1723 1916 1734 1918 1734 1920 1736 2011 1736 2011 1734 2014 1734 2016 1734 2029 1721 2063 1734 2066 1734 2068 1734 2070 1734 2115 1721 2167 1734 2169 1734 2172 1734 2230 1721 2252 1734 2254 1734 2256 1734 2258 1736 2393 1736 2393 1734 2395 1734 2397 1734 2410 1721 2410 1706 2406 1675 1697 1671 1695 1671 1468 1682 1470 1710"/>
+                        </Shape>
+                        <String CONTENT="snow or ice that must be first melted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l20" HPOS="1468" VPOS="1729" WIDTH="942" HEIGHT="65" BASELINE="1470 1773 2410 1766" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1470 1773 1470 1786 1777 1794 1780 1794 1929 1783 2009 1794 2011 1794 2014 1794 2016 1794 2031 1783 2089 1794 2092 1794 2202 1792 2204 1792 2206 1792 2219 1781 2380 1792 2382 1792 2384 1792 2410 1779 2410 1766 2406 1738 1842 1729 1840 1729 1468 1742 1470 1773"/>
+                        </Shape>
+                        <String CONTENT="and then heated. The process is con-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l21" HPOS="1470" VPOS="1801" WIDTH="940" HEIGHT="47" BASELINE="1470 1831 2410 1831" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1470 1831 1470 1848 2410 1848 2410 1831 2410 1801 1470 1801 1470 1831"/>
+                        </Shape>
+                        <String CONTENT="siderably shortened when begun with water"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l22" HPOS="1463" VPOS="1846" WIDTH="947" HEIGHT="67" BASELINE="1466 1890 2410 1885" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1466 1890 1466 1903 1726 1903 1788 1913 1790 1913 1793 1913 1823 1903 1862 1913 1864 1913 1866 1913 1868 1913 1901 1903 1931 1913 1933 1913 1936 1913 2027 1911 2029 1911 2031 1911 2031 1909 2042 1900 2386 1911 2388 1911 2390 1911 2393 1911 2410 1898 2410 1885 2406 1857 2083 1846 2081 1846 2079 1846 2076 1846 2076 1848 2066 1859 1771 1859 1739 1848 1736 1848 1734 1848 1732 1848 1730 1848 1730 1851 1719 1859 1691 1848 1689 1848 1687 1848 1684 1848 1643 1859 1632 1851 1632 1848 1630 1848 1628 1848 1474 1848 1472 1848 1470 1848 1468 1848 1468 1851 1463 1853 1466 1890"/>
+                        </Shape>
+                        <String CONTENT="instead of ice or snow. When a river"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l23" HPOS="638" VPOS="1909" WIDTH="1772" HEIGHT="56" BASELINE="641 1950 2410 1946" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 1950 641 1965 2408 1961 2410 1946 2406 1918 714 1909 712 1909 638 1920 641 1950"/>
+                        </Shape>
+                        <String CONTENT="or lake is near by, and the ice is not too thick to be broken through, water"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l24" HPOS="641" VPOS="1963" WIDTH="1769" HEIGHT="63" BASELINE="643 2011 2410 2004" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2011 643 2026 2408 2022 2410 2004 2406 1976 2081 1963 2079 1963 2076 1963 2074 1963 2057 1976 641 1976 643 2011"/>
+                        </Shape>
+                        <String CONTENT="is taken from a hole in the ice. Otherwise the largest vessel in the house"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l25" HPOS="641" VPOS="2024" WIDTH="1771" HEIGHT="63" BASELINE="643 2071 2412 2067" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2071 643 2087 2410 2080 2412 2067 2410 2039 2375 2024 2373 2024 2371 2024 2369 2024 2367 2024 2349 2037 2330 2024 2328 2024 2325 2024 2323 2024 2321 2024 2293 2039 2148 2039 2130 2024 2128 2024 2126 2024 2124 2024 2122 2024 2068 2039 2009 2039 1992 2024 1990 2024 1988 2024 1985 2024 1925 2035 1910 2024 1907 2024 1905 2024 1903 2024 1901 2024 1899 2024 1879 2039 1732 2039 1715 2024 1713 2024 1710 2024 1708 2024 1706 2024 1669 2037 1630 2024 1628 2024 1626 2024 1624 2024 1585 2037 1468 2026 1466 2026 1463 2026 1461 2026 1444 2039 1331 2026 1329 2026 1327 2026 1299 2039 1232 2026 1230 2026 1227 2026 1197 2039 1169 2026 1167 2026 1165 2026 1162 2026 1113 2039 1041 2026 1039 2026 948 2039 916 2026 913 2026 853 2026 851 2026 848 2026 846 2026 829 2039 731 2026 729 2026 727 2026 697 2039 664 2026 662 2026 660 2026 658 2026 641 2032 643 2071"/>
+                        </Shape>
+                        <String CONTENT="is kept full of ice all the time. This dissolves gradually. The vessel is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l26" HPOS="641" VPOS="2100" WIDTH="1769" HEIGHT="47" BASELINE="641 2130 2410 2130" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2130 641 2147 2410 2147 2410 2130 2410 2100 641 2100 641 2130"/>
+                        </Shape>
+                        <String CONTENT="usually hung up to escape casualties, and a large wooden dish is put under"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l27" HPOS="638" VPOS="2145" WIDTH="585" HEIGHT="71" BASELINE="641 2188 1223 2193" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2188 638 2203 647 2212 647 2214 649 2214 651 2214 654 2214 656 2214 686 2203 708 2214 710 2214 712 2214 907 2203 1054 2216 1056 2216 1221 2203 1223 2193 1221 2160 1015 2147 1013 2147 955 2158 935 2145 933 2145 931 2145 929 2145 926 2145 905 2156 872 2145 870 2145 868 2145 641 2154 641 2188"/>
+                        </Shape>
+                        <String CONTENT="it to catch the drippings."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-244_r4" HPOS="638" VPOS="2208" WIDTH="1778" HEIGHT="547" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="638 2208 2416 2208 2416 2755 638 2755"/>
+                    </Shape>
+                    <TextLine ID="mz_1-244_l28" HPOS="749" VPOS="2203" WIDTH="1663" HEIGHT="63" BASELINE="751 2251 2412 2247" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="751 2251 751 2266 2410 2262 2412 2247 2408 2216 1786 2203 1784 2203 1706 2214 1674 2203 1671 2203 1669 2203 1667 2203 1665 2203 1652 2214 1580 2203 1578 2203 1576 2203 1539 2216 1494 2206 1492 2206 1489 2206 1487 2206 1461 2216 1450 2206 1448 2206 1446 2206 1444 2206 1442 2206 1401 2219 1223 2219 1199 2206 1197 2206 1195 2206 749 2214 751 2251"/>
+                        </Shape>
+                        <String CONTENT="The movable sleeping-room of the Reindeer Chukchee is not suitable to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l29" HPOS="638" VPOS="2264" WIDTH="1774" HEIGHT="63" BASELINE="641 2312 2412 2305" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2312 641 2327 2410 2320 2412 2305 2408 2275 1825 2264 1823 2264 1821 2264 1777 2275 1277 2266 1275 2266 1136 2277 708 2268 706 2268 638 2279 641 2312"/>
+                        </Shape>
+                        <String CONTENT="melt ice in. For the night-time a kettleful of ice-cold water or of broth cooled"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l30" HPOS="641" VPOS="2325" WIDTH="1769" HEIGHT="60" BASELINE="643 2372 2410 2366" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2372 643 2385 2408 2379 2410 2366 2408 2338 2362 2325 2360 2325 2358 2325 2356 2325 2325 2336 1782 2327 1780 2327 1777 2327 1775 2327 1762 2338 1719 2327 1717 2327 1715 2327 1578 2338 1459 2327 1457 2327 1455 2327 1453 2327 1435 2340 1323 2340 1286 2327 1284 2327 1282 2327 1279 2327 1277 2327 1262 2340 1143 2340 1113 2329 1110 2329 1108 2329 911 2340 799 2329 796 2329 794 2329 747 2340 684 2329 682 2329 680 2329 641 2342 643 2372"/>
+                        </Shape>
+                        <String CONTENT="with pieces of hard snow is put inside for the benefit of the inmates. Its"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l31" HPOS="641" VPOS="2385" WIDTH="1767" HEIGHT="70" BASELINE="643 2433 2408 2429" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2433 643 2455 2406 2442 2408 2429 2403 2398 2310 2385 2308 2385 2306 2385 2278 2396 2042 2385 2040 2385 1990 2396 1962 2385 1959 2385 1957 2385 1955 2385 1953 2385 1936 2396 1894 2385 1892 2385 1890 2385 1888 2385 1858 2396 1829 2385 1827 2385 1825 2385 1749 2396 1656 2385 1654 2385 1518 2398 1500 2387 1498 2387 1496 2387 1494 2387 1492 2387 1457 2398 1420 2387 1418 2387 1416 2387 1301 2398 1201 2387 1199 2387 1197 2387 1165 2398 1130 2387 1128 2387 1126 2387 1123 2387 1102 2398 1030 2387 1028 2387 1026 2387 994 2398 937 2387 935 2387 825 2398 788 2387 786 2387 783 2387 716 2398 677 2387 675 2387 673 2387 671 2387 641 2398 643 2433"/>
+                        </Shape>
+                        <String CONTENT="place is on the skin in front of the lamp, where nobody is allowed to sleep."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l32" HPOS="641" VPOS="2448" WIDTH="1771" HEIGHT="59" BASELINE="643 2489 2412 2485" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2489 643 2507 2410 2502 2412 2485 2406 2448 641 2455 643 2489"/>
+                        </Shape>
+                        <String CONTENT="Because of the general lack of room, the kettle is often upset by the foot of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l33" HPOS="641" VPOS="2504" WIDTH="1769" HEIGHT="61" BASELINE="643 2552 2410 2546" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2552 643 2565 2408 2559 2410 2546 2408 2517 2377 2504 2375 2504 2373 2504 2122 2515 2087 2504 2085 2504 2083 2504 2020 2515 1996 2504 1994 2504 1992 2504 1990 2504 1968 2515 1726 2507 1723 2507 1721 2507 1678 2520 1334 2520 1275 2507 1273 2507 1271 2507 1249 2517 1236 2507 1234 2507 1232 2507 1230 2507 1143 2520 790 2509 788 2509 641 2522 643 2552"/>
+                        </Shape>
+                        <String CONTENT="one of the inmates, and the contents are spilled over the sleepers. This"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l34" HPOS="641" VPOS="2580" WIDTH="1771" HEIGHT="46" BASELINE="641 2610 2412 2610" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2403 2580 641 2580 641 2610 641 2626 2412 2626 2412 2610 2412 2604 2403 2580"/>
+                        </Shape>
+                        <String CONTENT="arrangement presents another proof that the movable type of sleeping-room"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l35" HPOS="645" VPOS="2634" WIDTH="1767" HEIGHT="61" BASELINE="645 2669 2412 2669" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 2669 645 2684 1074 2695 1076 2695 1078 2695 1080 2695 1097 2684 1756 2684 1968 2695 1970 2695 1972 2695 2001 2684 2113 2695 2115 2695 2118 2695 2120 2695 2137 2684 2410 2684 2412 2669 2410 2641 645 2634 645 2669"/>
+                        </Shape>
+                        <String CONTENT="is a comparatively recent variation from the stationary type, and is not"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l36" HPOS="643" VPOS="2699" WIDTH="1204" HEIGHT="46" BASELINE="643 2727 1847 2727" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2727 643 2743 1845 2745 1847 2727 1847 2699 643 2699 643 2727"/>
+                        </Shape>
+                        <String CONTENT="thoroughly adapted to the conditions it has to meet."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-244_r5" HPOS="638" VPOS="2755" WIDTH="1778" HEIGHT="499" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="638 2755 2416 2755 2416 3254 638 3254"/>
+                    </Shape>
+                    <TextLine ID="mz_1-244_l37" HPOS="749" VPOS="2745" WIDTH="1663" HEIGHT="58" BASELINE="751 2788 2412 2784" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="751 2788 751 2803 2410 2799 2412 2784 2408 2756 1767 2745 1765 2745 749 2756 751 2788"/>
+                        </Shape>
+                        <String CONTENT="DISHES, BOWLS, ETC. — Wooden trays and dishes, bowls, and dippers"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l38" HPOS="638" VPOS="2803" WIDTH="1774" HEIGHT="65" BASELINE="641 2855 2412 2846" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2855 641 2868 2410 2859 2412 2846 2410 2816 2369 2803 2367 2803 2364 2803 2362 2803 2341 2814 2304 2803 2302 2803 2299 2803 2137 2814 2061 2803 2059 2803 1966 2816 1949 2805 1946 2805 1944 2805 1942 2805 1940 2805 1916 2816 1682 2805 1680 2805 1626 2816 1589 2805 1587 2805 1585 2805 1509 2818 1162 2808 1160 2808 1022 2820 985 2810 983 2810 981 2810 753 2820 656 2810 654 2810 651 2810 649 2810 638 2816 641 2855"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 106, a-f) of various sizes are made of wood, and used by the Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l39" HPOS="643" VPOS="2866" WIDTH="1771" HEIGHT="58" BASELINE="643 2907 2414 2907" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 2907 643 2924 2414 2924 2414 2907 2414 2879 2321 2866 2319 2866 1923 2877 1838 2866 1836 2866 1771 2877 1676 2866 1674 2866 1671 2866 1648 2877 1622 2866 1619 2866 1617 2866 1546 2877 1515 2866 1513 2866 1511 2866 1509 2866 1476 2877 1446 2866 1444 2866 1442 2866 1379 2877 1349 2866 1347 2866 1344 2866 1247 2877 1217 2866 1214 2866 1212 2866 1210 2866 1182 2879 946 2879 892 2866 890 2866 887 2866 846 2877 790 2866 788 2866 725 2877 673 2866 671 2866 669 2866 643 2877 643 2907"/>
+                        </Shape>
+                        <String CONTENT="chee for the purpose of serving food and drink. Those with sides of bent"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l40" HPOS="638" VPOS="2924" WIDTH="1770" HEIGHT="65" BASELINE="641 2968 2408 2972" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="641 2968 638 2989 2406 2989 2408 2972 2408 2937 2388 2927 2386 2927 2384 2927 2382 2927 2289 2937 2230 2927 2228 2927 2150 2937 2135 2927 2133 2927 2130 2927 1905 2927 1903 2927 1901 2927 1899 2927 1884 2940 1648 2940 1587 2927 1585 2927 1583 2927 1550 2937 1524 2924 1522 2924 1520 2924 1518 2924 1483 2935 1381 2924 1379 2924 1260 2935 1169 2924 1167 2924 1091 2935 1020 2924 1017 2924 1015 2924 972 2937 885 2937 870 2924 868 2924 866 2924 864 2924 861 2924 835 2935 690 2924 688 2924 641 2933 641 2968"/>
+                        </Shape>
+                        <String CONTENT="pine-wood sewed together, and fastened with pegs to a flat bottom (Fig. 107),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l41" HPOS="643" VPOS="2998" WIDTH="1765" HEIGHT="48" BASELINE="643 3028 2408 3028" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="643 3028 643 3046 2408 3046 2408 3028 2408 2998 643 2998 643 3028"/>
+                        </Shape>
+                        <String CONTENT="are brought from Alaska across Bering Sea or from St. Lawrence Island."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l42" HPOS="643" VPOS="3046" WIDTH="1771" HEIGHT="62" BASELINE="645 3091 2414 3082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 3091 645 3108 2412 3100 2414 3082 2408 3046 643 3052 645 3091"/>
+                        </Shape>
+                        <String CONTENT="In several tales there appears, as an object of luxury, a carved drinking-cup of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l43" HPOS="643" VPOS="3104" WIDTH="1771" HEIGHT="61" BASELINE="645 3150 2414 3145" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 3150 645 3165 2412 3160 2414 3145 2412 3117 2362 3104 2360 3104 2358 3104 2356 3104 2330 3115 1814 3104 1812 3104 1524 3117 669 3106 667 3106 664 3106 662 3106 643 3115 645 3150"/>
+                        </Shape>
+                        <String CONTENT="sheep-horn (Fig. 108). Such cups are even now valued more highly than the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-244_l44" HPOS="645" VPOS="3173" WIDTH="1767" HEIGHT="57" BASELINE="645 3208 2412 3208" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="645 3208 645 3230 2410 3230 2412 3208 2410 3178 645 3173 645 3208"/>
+                        </Shape>
+                        <String CONTENT="imported hardware. Drinking-tubes made of the leg-bones of swans (Fig. 109) are"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

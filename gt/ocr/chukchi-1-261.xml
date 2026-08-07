@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-261.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-261.png; regions_from: zones/chukchi-1-261.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-261_r1" HPOS="370" VPOS="558" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="370 558 2148 558 2148 648 370 648"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l1" HPOS="946" VPOS="571" WIDTH="619" HEIGHT="52" BASELINE="946 604 1565 604" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1552 571 1076 571 1054 571 1033 573 1011 573 989 575 968 578 946 578 946 604 946 623 1565 623 1565 604 1563 591 1552 571"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l2" HPOS="2024" VPOS="573" WIDTH="98" HEIGHT="52" BASELINE="2027 606 2122 610" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2113 578 2107 575 2027 573 2027 606 2024 621 2118 625 2122 610 2120 578 2113 578"/>
+                        </Shape>
+                        <String CONTENT="205"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-261_r2" HPOS="370" VPOS="673" WIDTH="1778" HEIGHT="541" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="370 673 2148 673 2148 1214 370 1214"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l3" HPOS="372" VPOS="684" WIDTH="1774" HEIGHT="47" BASELINE="372 714 2146 714" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2143 684 372 684 372 714 372 731 2146 731 2146 714 2146 686 2143 684"/>
+                        </Shape>
+                        <String CONTENT="and sometimes are ornamented with geometrical designs scratched in with a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l4" HPOS="374" VPOS="738" WIDTH="1772" HEIGHT="50" BASELINE="374 772 2146 772" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 772 374 788 2146 788 2146 772 2146 742 374 738 374 772"/>
+                        </Shape>
+                        <String CONTENT="knife or impressed in the soft bark with sharp stamps. The Chukchee use"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l5" HPOS="372" VPOS="803" WIDTH="1771" HEIGHT="47" BASELINE="372 833 2143 833" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 833 372 850 2143 850 2143 833 2143 803 372 803 372 833"/>
+                        </Shape>
+                        <String CONTENT="these boxes for holding snuff, chewing-tobacco, and any small objects which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l6" HPOS="370" VPOS="848" WIDTH="1773" HEIGHT="69" BASELINE="372 889 2143 894" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 889 370 904 437 917 439 917 2141 911 2143 894 2141 863 1799 850 1797 850 1795 850 1756 861 1717 850 1715 850 1713 850 1531 861 1466 850 1463 850 1353 861 1318 850 1316 850 1314 850 1260 861 1225 848 1223 848 1221 848 1169 859 1117 848 1115 848 1113 848 1082 859 1011 848 1009 848 1007 848 968 859 861 848 859 848 857 848 829 859 805 848 803 848 801 848 731 859 703 848 701 848 699 848 372 857 372 889"/>
+                        </Shape>
+                        <String CONTENT="they are afraid of losing. Occasionally a lump of sugar gets in with the mixture,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l7" HPOS="370" VPOS="917" WIDTH="1771" HEIGHT="50" BASELINE="372 950 2141 954" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 950 370 963 2137 967 2141 954 2139 922 372 917 372 950"/>
+                        </Shape>
+                        <String CONTENT="and its sweetness is improved, to their taste, by the additional tobacco flavor."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l8" HPOS="374" VPOS="965" WIDTH="1769" HEIGHT="65" BASELINE="376 1013 2143 1008" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 1013 376 1030 2141 1026 2143 1008 2139 978 1946 965 1944 965 1942 965 1916 978 1771 978 1756 965 1754 965 1752 965 1749 965 1747 965 1745 965 1732 976 1689 965 1687 965 1684 965 1682 965 1680 965 1663 976 1550 965 1548 965 1496 976 1448 965 1446 965 1444 965 1290 976 1273 965 1271 965 1269 965 1266 965 1264 965 1262 965 1243 978 1212 967 1210 967 1208 967 1206 967 1184 978 1123 967 1121 967 1119 967 1084 978 1026 967 1024 967 1022 967 998 978 935 967 933 967 931 967 905 978 859 967 857 967 855 967 803 978 744 967 742 967 740 967 710 978 649 967 647 967 374 974 376 1013"/>
+                        </Shape>
+                        <String CONTENT="The Koryak, the Kerek, the Russianized Yukaghir, and also the Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l9" HPOS="372" VPOS="1041" WIDTH="1774" HEIGHT="50" BASELINE="372 1073 2146 1073" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 1073 372 1091 2146 1091 2146 1073 2143 1041 372 1041 372 1073"/>
+                        </Shape>
+                        <String CONTENT="of the Kolyma, make snuff-boxes of the same styles, using wood, antler, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l10" HPOS="368" VPOS="1088" WIDTH="1775" HEIGHT="70" BASELINE="370 1134 2143 1130" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 1134 370 1147 1247 1156 1249 1156 1563 1145 1684 1156 1687 1156 1689 1156 1713 1145 1752 1156 1754 1156 1756 1156 1758 1156 1760 1156 1777 1145 1847 1156 1849 1156 1851 1156 1853 1156 1866 1145 1879 1156 1881 1156 1884 1156 1886 1158 2018 1158 2018 1156 2020 1156 2022 1156 2037 1145 2115 1156 2118 1156 2120 1156 2143 1143 2143 1130 2139 1101 1342 1088 1340 1088 1219 1101 1201 1091 1199 1091 1197 1091 1195 1091 1134 1101 1078 1091 1076 1091 978 1104 851 1104 831 1091 829 1091 827 1091 825 1091 822 1091 790 1101 608 1091 606 1091 368 1099 370 1134"/>
+                        </Shape>
+                        <String CONTENT="ivory. The same is true of the Alaskan Eskimo. Many of the shapes rep-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l11" HPOS="370" VPOS="1149" WIDTH="1223" HEIGHT="59" BASELINE="372 1192 1593 1188" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 1192 372 1208 1591 1203 1593 1188 1589 1160 1007 1149 1004 1149 1002 1149 976 1160 498 1151 495 1151 370 1162 372 1192"/>
+                        </Shape>
+                        <String CONTENT="resented by Nelson¹ have their counterparts in Asia."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-261_r3" HPOS="370" VPOS="1217" WIDTH="1778" HEIGHT="358" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 1217 2148 1217 2148 1575 370 1575"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l12" HPOS="478" VPOS="1218" WIDTH="1668" HEIGHT="50" BASELINE="478 1253 2146 1253" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="478 1253 478 1268 2143 1268 2146 1253 2143 1223 478 1218 478 1253"/>
+                        </Shape>
+                        <String CONTENT="I have met men and women who used tobacco in all three ways at the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l13" HPOS="370" VPOS="1270" WIDTH="1776" HEIGHT="59" BASELINE="370 1314 2146 1314" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="370 1314 370 1329 2146 1329 2146 1314 2146 1283 2094 1270 2092 1270 2089 1270 2063 1281 1600 1270 1598 1270 1596 1270 1561 1281 1531 1270 1528 1270 1526 1270 1424 1281 1386 1270 1383 1270 1381 1270 1299 1281 1210 1270 1208 1270 1087 1281 903 1270 900 1270 898 1270 857 1281 690 1270 688 1270 593 1281 537 1270 534 1270 532 1270 530 1270 515 1283 370 1283 370 1314"/>
+                        </Shape>
+                        <String CONTENT="same time. Usually, however, snuff is only used when smoking cannot be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l14" HPOS="370" VPOS="1331" WIDTH="1776" HEIGHT="56" BASELINE="372 1372 2146 1368" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 1372 372 1387 2143 1383 2146 1368 2139 1331 370 1331 372 1372"/>
+                        </Shape>
+                        <String CONTENT="continued because it causes a cough, or for some other reason. Taking snuff"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l15" HPOS="372" VPOS="1392" WIDTH="1774" HEIGHT="54" BASELINE="374 1426 2146 1431" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1426 372 1444 2141 1446 2146 1431 2141 1392 374 1392 374 1426"/>
+                        </Shape>
+                        <String CONTENT="is considered a cure for rheum, weakness of the eyes, and even dulness of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l16" HPOS="374" VPOS="1450" WIDTH="1772" HEIGHT="59" BASELINE="374 1491 2146 1491" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1491 374 1509 2146 1509 2146 1491 2146 1463 2009 1450 2007 1450 1929 1461 1838 1450 1836 1450 1834 1450 1790 1463 1641 1463 1617 1450 1615 1450 1613 1450 1498 1461 1474 1450 1472 1450 1470 1450 1392 1461 1314 1450 1312 1450 1247 1461 1091 1450 1089 1450 1087 1450 1048 1461 883 1450 881 1450 781 1461 729 1450 727 1450 725 1450 690 1461 645 1450 643 1450 641 1450 638 1450 595 1461 374 1457 374 1491"/>
+                        </Shape>
+                        <String CONTENT="hearing. In the Kolyma region, smoking and chewing are of equal impor-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l17" HPOS="372" VPOS="1509" WIDTH="1302" HEIGHT="64" BASELINE="374 1547 1674 1554" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1547 372 1565 383 1573 385 1573 387 1573 389 1573 1671 1567 1674 1554 1671 1524 1182 1511 1180 1511 853 1519 809 1509 807 1509 805 1509 374 1515 374 1547"/>
+                        </Shape>
+                        <String CONTENT="tance, but on the Pacific chewing is much more general."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-261_r4" HPOS="370" VPOS="1575" WIDTH="1778" HEIGHT="352" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 1575 2148 1575 2148 1927 370 1927"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l18" HPOS="476" VPOS="1578" WIDTH="1670" HEIGHT="50" BASELINE="478 1610 2146 1606" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="478 1610 478 1628 2143 1628 2146 1606 2141 1578 476 1578 478 1610"/>
+                        </Shape>
+                        <String CONTENT="INTOXICANTS. — Fly-agaric is the only means of intoxication discovered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l19" HPOS="372" VPOS="1636" WIDTH="1771" HEIGHT="50" BASELINE="374 1671 2143 1667" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1671 374 1686 2141 1684 2143 1667 2139 1638 372 1636 374 1671"/>
+                        </Shape>
+                        <String CONTENT="by the natives of northeastern Asia. Its use is more common in the Koryak"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l20" HPOS="372" VPOS="1688" WIDTH="1771" HEIGHT="59" BASELINE="374 1732 2143 1727" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1732 374 1747 2141 1744 2143 1727 2139 1699 1258 1688 1256 1688 1141 1699 413 1690 411 1690 409 1690 372 1701 374 1732"/>
+                        </Shape>
+                        <String CONTENT="tribe, as agaric does not grow outside of the forest border. For the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l21" HPOS="370" VPOS="1747" WIDTH="1771" HEIGHT="62" BASELINE="372 1792 2141 1788" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="372 1792 372 1807 2137 1809 2141 1788 2137 1760 2063 1747 2061 1747 1998 1757 1981 1747 1979 1747 1977 1747 1975 1747 1912 1757 1886 1747 1884 1747 1881 1747 1879 1747 1858 1757 1836 1747 1834 1747 1832 1747 1829 1747 1827 1747 1812 1760 1611 1760 1580 1747 1578 1747 1576 1747 1574 1747 1572 1747 1557 1760 1316 1760 1262 1747 1260 1747 1258 1747 1256 1747 1243 1757 755 1749 753 1749 751 1749 749 1749 736 1760 675 1749 673 1749 671 1749 643 1760 597 1749 595 1749 593 1749 370 1762 372 1792"/>
+                        </Shape>
+                        <String CONTENT="reason only the Southern Pacific Chukchee — e. g., those around the Anadyr,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l22" HPOS="372" VPOS="1805" WIDTH="1771" HEIGHT="63" BASELINE="374 1853 2143 1848" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 1853 374 1868 2141 1864 2143 1848 2139 1818 2007 1818 1992 1805 1990 1805 1988 1805 1985 1805 1983 1805 1981 1805 1966 1818 1838 1818 1821 1805 1819 1805 1816 1805 1814 1805 1812 1805 1790 1816 1639 1805 1637 1805 1635 1805 1613 1816 1567 1805 1565 1805 1563 1805 1561 1805 1537 1816 1500 1805 1498 1805 1496 1805 1230 1820 994 1820 965 1807 963 1807 961 1807 898 1818 851 1807 848 1807 846 1807 372 1814 374 1853"/>
+                        </Shape>
+                        <String CONTENT="Big River, and Opuka River — are supplied with the intoxicating mushroom."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l23" HPOS="378" VPOS="1872" WIDTH="1729" HEIGHT="57" BASELINE="378 1909 2107 1909" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 1909 378 1929 2107 1929 2107 1909 2107 1881 378 1872 378 1909"/>
+                        </Shape>
+                        <String CONTENT="They do not compare with the Koryak, however, in their passion for agaric."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-261_r5" HPOS="370" VPOS="1927" WIDTH="1778" HEIGHT="541" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 1927 2148 1927 2148 2468 370 2468"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l24" HPOS="485" VPOS="1931" WIDTH="1658" HEIGHT="56" BASELINE="485 1967 2143 1967" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="485 1967 485 1987 2143 1987 2143 1967 2143 1939 485 1931 485 1967"/>
+                        </Shape>
+                        <String CONTENT="The Russianized natives of the Anadyr until recently shared in the con-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l25" HPOS="372" VPOS="1996" WIDTH="1771" HEIGHT="60" BASELINE="374 2028 2143 2032" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2028 372 2041 454 2054 456 2054 1208 2045 1266 2056 1269 2056 2141 2045 2143 2032 2141 2000 374 1996 374 2028"/>
+                        </Shape>
+                        <String CONTENT="sumption of this intoxicant, but now they have almost wholly given up its use."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l26" HPOS="374" VPOS="2052" WIDTH="1767" HEIGHT="56" BASELINE="376 2089 2141 2087" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2089 376 2108 2139 2106 2141 2087 2135 2052 374 2054 376 2089"/>
+                        </Shape>
+                        <String CONTENT="The reason of this change is that they consider the strong intoxication produced"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l27" HPOS="376" VPOS="2108" WIDTH="1767" HEIGHT="59" BASELINE="376 2152 2143 2152" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2152 376 2167 2141 2167 2143 2152 2143 2121 2094 2108 2092 2108 2089 2108 2087 2108 2061 2119 1983 2108 1981 2108 1979 2108 1949 2119 1884 2108 1881 2108 1879 2108 1832 2119 1715 2108 1713 2108 1710 2108 1678 2119 1580 2108 1578 2108 1515 2119 1403 2108 1277 2108 1275 2108 1273 2108 1271 2108 1253 2121 1152 2121 1136 2108 1134 2108 1132 2108 1130 2108 1128 2108 1102 2119 1076 2108 1074 2108 1071 2108 998 2119 920 2108 918 2108 916 2108 887 2119 376 2113 376 2152"/>
+                        </Shape>
+                        <String CONTENT="by this stimulant as shameful for a Christian. They also realize that the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l28" HPOS="374" VPOS="2177" WIDTH="1769" HEIGHT="50" BASELINE="374 2210 2143 2210" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2210 374 2227 2143 2227 2143 2210 2141 2177 374 2180 374 2210"/>
+                        </Shape>
+                        <String CONTENT="consumption of fly-agaric involves some danger. With a person unaccustomed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l29" HPOS="374" VPOS="2236" WIDTH="1769" HEIGHT="52" BASELINE="374 2271 2143 2271" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2271 374 2288 2143 2288 2143 2271 2141 2236 374 2238 374 2271"/>
+                        </Shape>
+                        <String CONTENT="to its use it may even cause death. The abstinence from agaric is also noticed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l30" HPOS="374" VPOS="2290" WIDTH="1769" HEIGHT="59" BASELINE="376 2331 2143 2327" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2331 376 2349 2141 2344 2143 2327 2139 2299 571 2290 569 2290 374 2301 376 2331"/>
+                        </Shape>
+                        <String CONTENT="among the northern Kamchadal, and to some degree among the Maritime"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l31" HPOS="374" VPOS="2357" WIDTH="1769" HEIGHT="52" BASELINE="376 2390 2143 2385" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2390 376 2409 2141 2405 2143 2385 2139 2357 374 2357 376 2390"/>
+                        </Shape>
+                        <String CONTENT="Koryak of northern Kamchatka, though all of these people gather it assiduously"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l32" HPOS="376" VPOS="2416" WIDTH="1592" HEIGHT="52" BASELINE="376 2450 1968 2450" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2450 376 2468 1966 2468 1968 2450 1966 2420 376 2416 376 2450"/>
+                        </Shape>
+                        <String CONTENT="in order to trade it to their less civilized reindeer-breeding neighbors."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-261_r6" HPOS="370" VPOS="2468" WIDTH="1778" HEIGHT="483" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 2468 2148 2468 2148 2951 370 2951"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l33" HPOS="478" VPOS="2476" WIDTH="1665" HEIGHT="52" BASELINE="478 2511 2143 2511" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="478 2511 478 2528 2143 2528 2143 2511 2143 2481 478 2476 478 2511"/>
+                        </Shape>
+                        <String CONTENT="Fortunately for the tribes consuming the fly-agaric, it grows only in cer-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l34" HPOS="372" VPOS="2530" WIDTH="1771" HEIGHT="57" BASELINE="374 2572 2143 2565" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="374 2572 374 2587 2141 2585 2143 2565 2139 2537 391 2530 389 2530 387 2530 385 2530 372 2537 374 2572"/>
+                        </Shape>
+                        <String CONTENT="tain places, and the supply is often limited. The mushrooms are usually"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l35" HPOS="374" VPOS="2589" WIDTH="1767" HEIGHT="67" BASELINE="376 2630 2141 2626" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2630 376 2645 844 2656 846 2656 848 2656 851 2656 866 2645 944 2656 946 2656 1052 2645 2139 2645 2141 2626 2137 2598 394 2589 391 2589 389 2589 387 2589 374 2595 376 2630"/>
+                        </Shape>
+                        <String CONTENT="dried up and strung together in threes, that number being an average dose."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l36" HPOS="376" VPOS="2658" WIDTH="1767" HEIGHT="48" BASELINE="378 2691 2143 2686" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="378 2691 378 2706 2141 2701 2143 2686 2139 2658 376 2658 378 2691"/>
+                        </Shape>
+                        <String CONTENT="Some of the natives of course require much more to produce any effect. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l37" HPOS="376" VPOS="2714" WIDTH="1767" HEIGHT="52" BASELINE="376 2749 2143 2749" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2749 376 2766 2141 2766 2143 2749 2141 2719 376 2714 376 2749"/>
+                        </Shape>
+                        <String CONTENT="intoxication may be followed by sickness, or the after-effect may be very slight."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l38" HPOS="378" VPOS="2766" WIDTH="1765" HEIGHT="59" BASELINE="381 2803 2143 2810" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 2803 378 2818 2139 2825 2143 2810 2141 2773 381 2766 381 2803"/>
+                        </Shape>
+                        <String CONTENT="When eaten, the mushrooms are torn to small shreds, and these are chewed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l39" HPOS="374" VPOS="2825" WIDTH="1769" HEIGHT="67" BASELINE="376 2872 2143 2866" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2872 376 2892 2141 2881 2143 2866 2141 2838 2092 2825 2089 2825 2087 2825 2085 2825 2061 2836 1877 2825 1875 2825 1873 2825 1827 2836 1801 2825 1799 2825 1797 2825 1671 2836 1611 2825 1609 2825 1548 2838 965 2827 963 2827 877 2840 855 2829 853 2829 851 2829 591 2840 519 2829 517 2829 515 2829 513 2829 498 2840 409 2829 407 2829 404 2829 374 2840 376 2872"/>
+                        </Shape>
+                        <String CONTENT="piece by piece, and swallowed with a little water. Among the Koryak the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l40" HPOS="376" VPOS="2898" WIDTH="1765" HEIGHT="50" BASELINE="376 2927 2141 2927" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 2927 376 2948 2141 2948 2141 2927 2141 2898 376 2898 376 2927"/>
+                        </Shape>
+                        <String CONTENT="woman chews the mushroom, and offers the ready quid to her husband to swallow."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-261_r7" HPOS="370" VPOS="2951" WIDTH="1778" HEIGHT="176" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="370 2951 2148 2951 2148 3127 370 3127"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l41" HPOS="485" VPOS="2953" WIDTH="1656" HEIGHT="52" BASELINE="485 2987 2141 2987" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="485 2987 485 3005 2141 3005 2141 2987 2141 2959 485 2953 485 2987"/>
+                        </Shape>
+                        <String CONTENT="I witnessed a few times the progress of intoxication by means of agaric."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l42" HPOS="381" VPOS="3009" WIDTH="1762" HEIGHT="56" BASELINE="381 3048 2143 3048" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="381 3048 381 3065 2143 3065 2143 3048 2143 3018 381 3009 381 3048"/>
+                        </Shape>
+                        <String CONTENT="The symptoms are analogous to those produced by opium or hasheesh. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-261_l43" HPOS="374" VPOS="3076" WIDTH="1769" HEIGHT="48" BASELINE="376 3108 2143 3104" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="376 3108 376 3124 2143 3119 2143 3104 2139 3076 374 3076 376 3108"/>
+                        </Shape>
+                        <String CONTENT="intoxication comes on rather suddenly, in about a quarter of an hour after"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-261_r8" HPOS="370" VPOS="3148" WIDTH="1778" HEIGHT="63" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="370 3148 2148 3148 2148 3211 370 3211"/>
+                    </Shape>
+                    <TextLine ID="mz_1-261_l44" HPOS="816" VPOS="3141" WIDTH="890" HEIGHT="54" BASELINE="818 3169 1706 3176" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="818 3169 816 3189 1702 3195 1706 3176 1704 3147 818 3141 818 3169"/>
+                        </Shape>
+                        <String CONTENT="¹ See Nelson, Plate LXXXVI, Figs. 5, 6, 20, 23, p. 270."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

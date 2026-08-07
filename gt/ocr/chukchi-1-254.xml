@@ -1,0 +1,281 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-254.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-254.png; regions_from: zones/chukchi-1-254.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-254_r1" HPOS="692" VPOS="623" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="692 623 2470 623 2470 713 692 713"/>
+                    </Shape>
+                    <TextLine ID="mz_1-254_l1" HPOS="1269" VPOS="640" WIDTH="617" HEIGHT="50" BASELINE="1271 671 1886 675" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1877 640 1855 640 1834 640 1812 640 1790 640 1769 640 1747 640 1726 640 1704 640 1682 640 1661 640 1639 640 1617 640 1596 640 1574 640 1552 640 1531 640 1509 640 1487 640 1466 640 1444 640 1422 640 1401 640 1379 640 1357 640 1336 640 1314 640 1292 640 1271 643 1271 671 1269 686 1881 690 1886 675 1884 645 1877 640"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l2" HPOS="706" VPOS="645" WIDTH="88" HEIGHT="52" BASELINE="706 679 794 679" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="706 679 706 697 794 697 794 679 794 645 706 645 706 679"/>
+                        </Shape>
+                        <String CONTENT="198"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-254_r2" HPOS="692" VPOS="738" WIDTH="1778" HEIGHT="492" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="692 738 2470 738 2470 1230 692 1230"/>
+                    </Shape>
+                    <TextLine ID="mz_1-254_l3" HPOS="796" VPOS="736" WIDTH="1668" HEIGHT="69" BASELINE="799 783 2464 777" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2291 738 2278 738 2260 746 2230 736 2226 736 2224 736 2221 736 2206 749 2042 749 2016 736 2014 736 2011 736 1901 749 1825 738 1823 738 1697 749 1682 738 1680 738 1678 738 1561 738 1559 738 1557 738 1554 738 1541 749 1422 738 1420 738 1342 751 1299 740 1297 740 1295 740 1292 740 1247 751 1232 740 1230 740 1227 740 1225 740 796 749 799 783 799 798 2438 805 2440 805 2442 805 2464 792 2464 777 2460 749 2310 749 2293 738 2291 738"/>
+                        </Shape>
+                        <String CONTENT="The roots of Claytonia acutifolia Willd, Hedisarum obscurum, Polygonum"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l4" HPOS="688" VPOS="801" WIDTH="1774" HEIGHT="62" BASELINE="690 846 2462 840" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="690 846 690 863 2460 857 2462 840 2458 809 1303 801 1301 801 1249 811 731 803 729 803 727 803 688 814 690 846"/>
+                        </Shape>
+                        <String CONTENT="viviparum, Polygonum polymorphum, Pedicularis sudetica, Potentilla fragi-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l5" HPOS="688" VPOS="861" WIDTH="1774" HEIGHT="72" BASELINE="690 907 2462 898" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="690 907 690 933 2460 915 2462 898 2458 870 1576 861 1574 861 1128 874 710 866 708 866 706 866 703 866 688 872 690 907"/>
+                        </Shape>
+                        <String CONTENT="formis, Oxytropis, various species of Carex, and several others, are used by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l6" HPOS="693" VPOS="933" WIDTH="1767" HEIGHT="56" BASELINE="693 963 2460 963" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="693 963 693 976 1167 989 1169 989 1171 989 1210 978 1496 989 1498 989 1500 989 1544 978 1604 989 1606 989 2458 976 2460 963 2458 933 693 933 693 963"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee. They are the only vegetable food that is really relished."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l7" HPOS="695" VPOS="987" WIDTH="1765" HEIGHT="63" BASELINE="697 1024 2460 1019" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="697 1024 697 1039 1505 1050 1507 1050 1509 1050 1533 1039 2458 1039 2460 1019 2455 991 695 987 697 1024"/>
+                        </Shape>
+                        <String CONTENT="During the summer women often go digging roots (Plate XIX, Fig. 1). They"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l8" HPOS="693" VPOS="1052" WIDTH="1769" HEIGHT="58" BASELINE="693 1082 2462 1082" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="693 1082 693 1095 898 1108 900 1110 1143 1110 1143 1108 1145 1108 1147 1108 1162 1097 1710 1097 1780 1108 1782 1108 2462 1095 2462 1082 2462 1052 693 1052 693 1082"/>
+                        </Shape>
+                        <String CONTENT="use a digging-pick, which in former times consisted of a handle with bone"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l9" HPOS="693" VPOS="1097" WIDTH="1769" HEIGHT="69" BASELINE="693 1143 2462 1147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="693 1130 693 1143 693 1166 2460 1160 2462 1147 2462 1114 2434 1099 2432 1099 2429 1099 2427 1099 2397 1112 2169 1099 2167 1099 2165 1099 2163 1099 2146 1112 2066 1099 2063 1099 2061 1099 2016 1112 1985 1099 1983 1099 1981 1099 1879 1112 1849 1099 1847 1099 1845 1099 1842 1099 1810 1112 1793 1099 1790 1099 1788 1099 1689 1099 1687 1099 1615 1112 1535 1097 1533 1097 1531 1097 1500 1110 1431 1097 1429 1097 1427 1097 1381 1110 1336 1097 1334 1097 1240 1097 1238 1097 1236 1097 1234 1097 1214 1112 1132 1112 1115 1097 1113 1097 1110 1097 1108 1097 1106 1097 1076 1112 931 1112 896 1097 894 1097 892 1097 701 1108 693 1130"/>
+                        </Shape>
+                        <String CONTENT="point (Fig. 117, b) or simply of a sharp-pointed piece of antler (Fig. 117, c),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l10" HPOS="697" VPOS="1173" WIDTH="1763" HEIGHT="50" BASELINE="697 1203 2460 1203" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="697 1182 697 1203 697 1223 2460 1223 2460 1203 2460 1173 701 1173 697 1182"/>
+                        </Shape>
+                        <String CONTENT="while at present it has an iron point tied to a wooden handle (Fig. 117, a)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-254_r3" HPOS="692" VPOS="1989" WIDTH="1778" HEIGHT="845" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="692 1989 2470 1989 2470 2834 692 2834"/>
+                    </Shape>
+                    <TextLine ID="mz_1-254_l11" HPOS="1749" VPOS="1989" WIDTH="717" HEIGHT="61" BASELINE="1752 2035 2466 2030" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="2442 1998 2421 1998 2412 1998 2399 1998 2377 1996 2356 1996 2334 1996 2328 1996 2317 1998 2278 1993 2269 1993 2247 1993 2226 1993 2204 1993 2182 1991 2176 1991 2092 2000 2020 1989 2018 1989 2016 1989 1988 2000 1951 1989 1949 1989 1946 1989 1944 1989 1901 2000 1749 1998 1752 2035 1752 2050 2464 2045 2466 2030 2464 2000 2460 1998 2442 1998"/>
+                        </Shape>
+                        <String CONTENT="Nests of mice are also robbed."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l12" HPOS="1745" VPOS="2048" WIDTH="719" HEIGHT="65" BASELINE="1747 2095 2464 2087" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1747 2095 1747 2113 2462 2104 2464 2087 2460 2058 2351 2048 2349 2048 2278 2058 2115 2050 2113 2050 2111 2050 2109 2050 2096 2061 1951 2052 1949 2052 1745 2063 1747 2095"/>
+                        </Shape>
+                        <String CONTENT="It is considered dangerous, how-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l13" HPOS="1743" VPOS="2110" WIDTH="721" HEIGHT="59" BASELINE="1745 2154 2464 2149" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1745 2154 1745 2169 2462 2165 2464 2149 2460 2121 2102 2110 2100 2110 2098 2110 2063 2121 1990 2113 1988 2113 1743 2123 1745 2154"/>
+                        </Shape>
+                        <String CONTENT="ever, to take all the roots from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l14" HPOS="1743" VPOS="2182" WIDTH="725" HEIGHT="56" BASELINE="1745 2214 2468 2210" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1745 2214 1745 2227 2096 2238 2098 2238 2191 2225 2278 2236 2280 2236 2282 2236 2284 2236 2302 2225 2328 2236 2330 2236 2332 2236 2466 2223 2468 2210 2462 2182 1743 2184 1745 2214"/>
+                        </Shape>
+                        <String CONTENT="the nests, because the owner"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l15" HPOS="1743" VPOS="2232" WIDTH="725" HEIGHT="67" BASELINE="1745 2275 2468 2271" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1745 2275 1745 2288 1834 2299 1836 2299 1914 2288 1953 2299 1955 2299 1957 2299 2228 2286 2362 2297 2364 2297 2367 2297 2408 2286 2447 2297 2449 2297 2451 2297 2453 2297 2455 2297 2468 2284 2468 2271 2462 2232 1884 2242 1793 2232 1790 2232 1788 2232 1743 2245 1745 2275"/>
+                        </Shape>
+                        <String CONTENT="might retaliate by means of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l16" HPOS="1743" VPOS="2290" WIDTH="723" HEIGHT="59" BASELINE="1745 2336 2466 2331" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1745 2336 1745 2349 2464 2344 2466 2331 2464 2303 2429 2290 2427 2290 2425 2290 2423 2290 2388 2301 2377 2292 2377 2290 2375 2290 2373 2290 2371 2290 2263 2301 2234 2290 2232 2290 2230 2290 2228 2290 2226 2290 2211 2303 2074 2303 1845 2292 1842 2292 1743 2305 1745 2336"/>
+                        </Shape>
+                        <String CONTENT="magic. Moreover, the Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l17" HPOS="1745" VPOS="2353" WIDTH="723" HEIGHT="54" BASELINE="1747 2392 2468 2387" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1747 2392 1747 2407 2466 2403 2468 2387 2464 2362 1773 2353 1771 2353 1769 2353 1745 2362 1747 2392"/>
+                        </Shape>
+                        <String CONTENT="chee believe that some of the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l18" HPOS="1745" VPOS="2411" WIDTH="721" HEIGHT="57" BASELINE="1747 2455 2466 2448" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1747 2455 1747 2468 2464 2463 2466 2448 2462 2420 2007 2411 2005 2411 1745 2424 1747 2455"/>
+                        </Shape>
+                        <String CONTENT="roots and herbs found in the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l19" HPOS="1745" VPOS="2470" WIDTH="723" HEIGHT="58" BASELINE="1747 2513 2468 2509" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1747 2513 1747 2528 2466 2524 2468 2509 2464 2481 2130 2470 2128 2470 2126 2470 2092 2481 1782 2472 1780 2472 1777 2472 1745 2483 1747 2513"/>
+                        </Shape>
+                        <String CONTENT="storehouses of mice are poison-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l20" HPOS="1745" VPOS="2530" WIDTH="723" HEIGHT="59" BASELINE="1747 2574 2468 2569" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1747 2574 1747 2589 2466 2585 2468 2569 2464 2541 2156 2530 2154 2530 1745 2543 1747 2574"/>
+                        </Shape>
+                        <String CONTENT="ous, and are gathered by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l21" HPOS="1743" VPOS="2593" WIDTH="728" HEIGHT="65" BASELINE="1745 2632 2471 2628" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1745 2632 1745 2649 2377 2658 2380 2658 2468 2645 2471 2628 2462 2593 1743 2602 1745 2632"/>
+                        </Shape>
+                        <String CONTENT="mice partly for the purpose of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l22" HPOS="1745" VPOS="2652" WIDTH="719" HEIGHT="69" BASELINE="1747 2695 2464 2688" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1747 2695 1747 2719 1955 2721 1957 2721 1959 2721 1985 2708 2284 2717 2286 2717 2289 2717 2291 2717 2291 2714 2302 2706 2447 2717 2449 2717 2451 2717 2453 2717 2453 2714 2464 2704 2464 2688 2460 2660 2014 2652 2011 2652 2009 2652 1979 2662 1799 2654 1797 2654 1745 2665 1747 2695"/>
+                        </Shape>
+                        <String CONTENT="poisoning the robbers, partly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l23" HPOS="1743" VPOS="2723" WIDTH="725" HEIGHT="48" BASELINE="1743 2753 2468 2753" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1743 2753 1743 2771 2468 2771 2468 2753 2468 2723 1743 2723 1743 2753"/>
+                        </Shape>
+                        <String CONTENT="as an intoxicant, like fly-agaric"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l24" HPOS="699" VPOS="2771" WIDTH="1072" HEIGHT="67" BASELINE="701 2818 1771 2812" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1587 2771 1576 2771 1565 2777 1559 2771 1544 2771 1537 2771 1524 2777 1431 2771 1414 2771 1394 2771 1386 2779 1364 2771 1349 2771 1331 2771 1245 2779 1193 2771 1175 2771 1171 2771 1145 2779 1126 2771 1110 2771 1104 2771 1046 2782 721 2771 712 2771 699 2779 701 2818 701 2838 1769 2827 1771 2812 1767 2779 1604 2779 1596 2771 1587 2771"/>
+                        </Shape>
+                        <String CONTENT="(Agaricus muscarius),¹ which is used by man."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-254_r4" HPOS="692" VPOS="2834" WIDTH="1778" HEIGHT="187" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="692 2834 2470 2834 2470 3021 692 3021"/>
+                    </Shape>
+                    <TextLine ID="mz_1-254_l25" HPOS="803" VPOS="2842" WIDTH="1665" HEIGHT="50" BASELINE="803 2872 2468 2872" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="803 2872 803 2890 2466 2892 2468 2872 2468 2844 803 2842 803 2872"/>
+                        </Shape>
+                        <String CONTENT="Roots are eaten raw, added to meat-soup as vegetables, or pounded fine,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l26" HPOS="695" VPOS="2892" WIDTH="1773" HEIGHT="58" BASELINE="697 2935 2468 2929" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="697 2935 697 2950 2466 2944 2468 2929 2464 2898 716 2892 714 2892 712 2892 710 2892 695 2898 697 2935"/>
+                        </Shape>
+                        <String CONTENT="together with the choicest meat and tallow, and made into a pudding, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l27" HPOS="699" VPOS="2948" WIDTH="1516" HEIGHT="61" BASELINE="699 2994 2215 2994" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="699 2994 699 3009 2215 3009 2215 2994 2215 2961 2128 2948 2126 2948 2050 2959 2020 2948 2018 2948 2016 2948 1938 2959 1862 2948 1860 2948 1858 2948 1838 2959 1816 2948 1814 2948 1812 2948 1810 2948 1808 2948 1790 2959 1767 2948 1765 2948 1762 2948 1708 2959 1650 2948 1648 2948 1645 2948 1619 2959 1604 2948 1602 2948 1600 2948 1598 2948 1596 2948 1561 2959 1511 2948 1509 2948 1442 2959 1342 2948 1253 2948 1251 2948 1249 2948 1247 2948 1234 2961 1061 2961 1048 2948 1046 2948 1043 2948 1041 2948 1039 2948 1015 2959 991 2948 989 2948 987 2948 985 2948 963 2959 896 2948 894 2948 699 2957 699 2994"/>
+                        </Shape>
+                        <String CONTENT="is considered the most delicious dish of the Chukchee bill of fare."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-254_r5" HPOS="692" VPOS="3021" WIDTH="1778" HEIGHT="184" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="692 3021 2470 3021 2470 3205 692 3205"/>
+                    </Shape>
+                    <TextLine ID="mz_1-254_l28" HPOS="803" VPOS="3020" WIDTH="1665" HEIGHT="52" BASELINE="805 3054 2468 3048" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="805 3054 805 3072 2466 3072 2468 3048 2464 3020 803 3020 805 3054"/>
+                        </Shape>
+                        <String CONTENT="Berries are gathered and eaten on the spot. They are very seldom stored,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l29" HPOS="697" VPOS="3067" WIDTH="1767" HEIGHT="65" BASELINE="699 3115 2464 3106" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="699 3115 699 3132 2462 3130 2464 3106 2460 3078 2031 3067 2029 3067 2027 3067 2024 3067 2011 3078 718 3074 716 3074 714 3074 712 3074 697 3080 699 3115"/>
+                        </Shape>
+                        <String CONTENT="since the tundra is not very rich in berries. Those occurring most frequently"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-254_l30" HPOS="701" VPOS="3143" WIDTH="1105" HEIGHT="50" BASELINE="701 3173 1806 3173" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="701 3173 701 3193 1806 3193 1806 3173 1806 3143 701 3143 701 3173"/>
+                        </Shape>
+                        <String CONTENT="are Empetrum nigrum and Rubus chamæmorus."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-254_r6" HPOS="692" VPOS="3222" WIDTH="1778" HEIGHT="56" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="692 3222 2470 3222 2470 3278 692 3278"/>
+                    </Shape>
+                    <TextLine ID="mz_1-254_l31" HPOS="1396" VPOS="3221" WIDTH="375" HEIGHT="50" BASELINE="1399 3249 1771 3253" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1399 3249 1396 3266 1767 3271 1771 3253 1769 3225 1399 3221 1399 3249"/>
+                        </Shape>
+                        <String CONTENT="¹ See p. 141, footnote."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

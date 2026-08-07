@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-229.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-229.png; regions_from: zones/chukchi-1-229.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-229_r1" HPOS="470" VPOS="599" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="470 599 2248 599 2248 689 470 689"/>
+                    </Shape>
+                    <TextLine ID="mz_1-229_l1" HPOS="1037" VPOS="612" WIDTH="617" HEIGHT="56" BASELINE="1039 647 1654 651" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1645 614 1039 612 1039 647 1037 664 1650 668 1654 651 1652 630 1645 614"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-229_r2" HPOS="470" VPOS="714" WIDTH="1778" HEIGHT="137" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="470 714 2248 714 2248 851 470 851"/>
+                    </Shape>
+                    <TextLine ID="mz_1-229_l2" HPOS="461" VPOS="714" WIDTH="1769" HEIGHT="74" BASELINE="463 759 2230 755" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="463 759 465 788 513 777 1232 785 1234 785 1349 775 2230 775 2230 755 2228 727 2198 714 2195 714 2193 714 2191 714 2161 727 2027 727 2009 714 2007 714 2005 714 2003 714 2001 714 1968 727 1799 727 1784 714 1782 714 1780 714 1682 714 1680 714 1678 714 1676 714 1661 725 1570 714 1567 714 1565 714 1535 725 1440 714 1437 714 1295 729 1169 729 1154 716 1152 716 1149 716 1147 716 1145 716 1110 727 1035 716 1033 716 1030 716 1000 727 955 716 952 716 950 716 948 716 920 727 461 725 463 759"/>
+                        </Shape>
+                        <String CONTENT="It has three or even four lamps of various sizes, which are used not only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l3" HPOS="463" VPOS="772" WIDTH="1137" HEIGHT="72" BASELINE="465 816 1600 822" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="465 816 463 840 465 842 467 842 467 844 469 844 472 844 474 844 1598 837 1600 822 1600 788 1580 777 1578 777 1576 777 1574 777 1572 777 1544 788 1420 777 1418 777 1416 777 1414 777 1414 779 1403 790 1303 790 1221 775 1219 775 1217 775 1173 785 1059 775 1056 775 937 785 911 775 909 775 907 775 851 785 835 772 833 772 831 772 829 772 827 772 790 783 708 772 706 772 703 772 677 783 621 772 619 772 465 781 465 816"/>
+                        </Shape>
+                        <String CONTENT="for light, but also for cooking (Plate XV, Fig. 4)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-229_r3" HPOS="470" VPOS="2379" WIDTH="1778" HEIGHT="425" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="470 2379 2248 2379 2248 2804 470 2804"/>
+                    </Shape>
+                    <TextLine ID="mz_1-229_l4" HPOS="578" VPOS="2383" WIDTH="1665" HEIGHT="59" BASELINE="578 2424 2243 2424" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2228 2392 2161 2383 2037 2383 2035 2383 2033 2383 2031 2383 2018 2394 1975 2383 1972 2383 1970 2383 1879 2394 1687 2383 1684 2383 1591 2394 578 2387 578 2424 578 2442 2243 2442 2243 2424 2243 2416 2228 2392"/>
+                        </Shape>
+                        <String CONTENT="It is usually larger than the inner room of the tents of the Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l5" HPOS="469" VPOS="2442" WIDTH="1768" HEIGHT="67" BASELINE="472 2487 2237 2483" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="469 2463 472 2487 472 2509 2234 2498 2237 2483 2232 2455 2113 2442 2111 2442 2033 2452 2009 2442 2007 2442 2005 2442 2003 2442 1975 2452 1946 2442 1944 2442 1942 2442 1875 2452 1851 2442 1849 2442 1847 2442 1845 2442 1842 2442 1825 2455 1665 2455 1639 2442 1637 2442 1635 2442 1632 2442 1587 2452 1539 2442 1537 2442 1535 2442 1533 2442 1531 2442 1513 2455 1399 2455 1368 2442 1366 2442 1364 2442 1362 2442 1360 2442 1344 2455 1301 2444 1299 2444 1297 2444 1152 2455 1115 2444 1113 2444 1110 2444 1108 2444 1080 2455 1000 2444 998 2444 768 2455 727 2444 725 2444 723 2444 623 2455 576 2444 573 2444 571 2444 476 2457 469 2463"/>
+                        </Shape>
+                        <String CONTENT="people; and among well-to-do families it may be about 30 feet in length, 10"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l6" HPOS="469" VPOS="2500" WIDTH="1768" HEIGHT="63" BASELINE="472 2546 2237 2541" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 2546 472 2563 2234 2563 2237 2541 2232 2513 2156 2500 2154 2500 2152 2500 2128 2513 2011 2513 1996 2500 1994 2500 1992 2500 1990 2500 1988 2500 1966 2511 1907 2500 1905 2500 1903 2500 1875 2511 1819 2500 1816 2500 1814 2500 1812 2500 1797 2511 1295 2502 1292 2502 1290 2502 1288 2502 1275 2513 1262 2502 1260 2502 1258 2502 1256 2502 1253 2502 1225 2513 1063 2502 1061 2502 1059 2502 1033 2513 1009 2502 1007 2502 1004 2502 1002 2502 974 2513 944 2502 942 2502 939 2502 838 2513 822 2502 820 2502 818 2502 662 2502 660 2502 658 2502 632 2513 591 2502 589 2502 586 2502 584 2502 582 2502 567 2513 487 2502 485 2502 482 2502 480 2502 469 2511 472 2546"/>
+                        </Shape>
+                        <String CONTENT="feet in breadth, and 6 feet in height. The outer tent is also larger than"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l7" HPOS="469" VPOS="2569" WIDTH="1770" HEIGHT="59" BASELINE="472 2602 2239 2606" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 2602 469 2617 482 2626 485 2626 487 2626 489 2626 1327 2617 1357 2628 1360 2628 1362 2628 2237 2617 2239 2606 2237 2574 472 2569 472 2602"/>
+                        </Shape>
+                        <String CONTENT="that of the Reindeer Chukchee. I saw one house which was forty feet in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l8" HPOS="472" VPOS="2630" WIDTH="1765" HEIGHT="56" BASELINE="474 2660 2237 2665" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="474 2660 472 2675 2232 2686 2237 2665 2234 2634 474 2630 474 2660"/>
+                        </Shape>
+                        <String CONTENT="diameter and had eleven stretchers to support the frame. In the outer tent,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l9" HPOS="469" VPOS="2688" WIDTH="1770" HEIGHT="55" BASELINE="472 2721 2239 2727" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 2721 469 2736 2234 2743 2239 2727 2237 2695 472 2688 472 2721"/>
+                        </Shape>
+                        <String CONTENT="on both sides of the sleeping-room, are placed two huge seal-skin bags, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l10" HPOS="469" VPOS="2756" WIDTH="774" HEIGHT="45" BASELINE="469 2786 1243 2786" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="469 2786 469 2801 1243 2801 1243 2786 1243 2756 469 2756 469 2786"/>
+                        </Shape>
+                        <String CONTENT="are used for purposes of storage."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-229_r4" HPOS="470" VPOS="2804" WIDTH="1778" HEIGHT="423" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="470 2804 2248 2804 2248 3227 470 3227"/>
+                    </Shape>
+                    <TextLine ID="mz_1-229_l11" HPOS="580" VPOS="2803" WIDTH="1659" HEIGHT="63" BASELINE="582 2838 2239 2842" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="582 2838 580 2853 660 2866 662 2866 2237 2864 2239 2842 2237 2812 582 2803 582 2838"/>
+                        </Shape>
+                        <String CONTENT="The bottom of the sleeping-room is covered with a large walrus-hide,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l12" HPOS="467" VPOS="2857" WIDTH="1774" HEIGHT="70" BASELINE="469 2901 2241 2905" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="467 2918 480 2927 482 2927 485 2927 487 2927 2239 2918 2241 2905 2239 2875 1825 2862 1823 2862 1684 2872 1619 2862 1617 2862 1615 2862 1613 2862 1598 2875 1489 2875 1459 2862 1457 2862 1455 2862 1353 2872 1197 2859 1195 2859 1193 2859 1158 2870 1130 2859 1128 2859 1126 2859 1074 2870 937 2859 935 2859 855 2870 827 2859 825 2859 822 2859 820 2859 790 2870 744 2859 742 2859 740 2859 738 2859 736 2859 721 2872 615 2872 578 2859 576 2859 573 2859 521 2870 472 2857 469 2901 467 2918"/>
+                        </Shape>
+                        <String CONTENT="forming a hard and smooth floor to tread on. The steadily burning lamps"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l13" HPOS="469" VPOS="2929" WIDTH="1770" HEIGHT="52" BASELINE="472 2959 2239 2966" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 2959 469 2974 2234 2981 2239 2966 2237 2935 472 2929 472 2959"/>
+                        </Shape>
+                        <String CONTENT="make the room warm and dry, and even afford a chance for ventilation, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l14" HPOS="472" VPOS="2981" WIDTH="1767" HEIGHT="65" BASELINE="472 3024 2239 3024" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 3024 472 3039 2234 3046 2239 3024 2239 2992 2219 2981 2217 2981 2215 2981 2213 2981 2211 2981 2165 2992 2070 2981 2068 2981 2066 2981 2037 2992 1992 2981 1990 2981 1988 2981 1985 2981 1964 2992 1936 2981 1933 2981 1931 2981 1929 2981 1901 2992 1886 2981 1884 2981 1881 2981 1879 2981 1780 2994 1609 2994 1589 2981 1587 2981 1585 2981 1583 2981 1580 2981 1544 2992 1407 2981 1405 2981 1403 2981 1375 2992 1219 2981 1217 2981 1214 2981 1184 2992 1130 2981 1128 2981 1126 2981 1095 2992 1022 2981 1020 2981 935 2992 892 2981 890 2981 887 2981 885 2981 855 2992 794 2981 792 2981 729 2992 703 2981 701 2981 699 2981 472 2985 472 3024"/>
+                        </Shape>
+                        <String CONTENT="is effected either by lifting the front or by opening a special hole in the wall,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l15" HPOS="469" VPOS="3037" WIDTH="1768" HEIGHT="69" BASELINE="472 3078 2237 3087" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 3078 469 3091 491 3104 493 3104 495 3104 844 3095 913 3106 916 3106 2234 3100 2237 3087 2237 3056 2193 3043 2191 3043 2189 3043 2124 3054 1910 3043 1907 3043 1853 3054 1788 3041 1786 3041 1784 3041 1743 3052 1680 3041 1678 3041 1676 3041 1630 3052 1585 3041 1583 3041 1580 3041 1524 3052 1297 3052 1282 3039 1279 3039 1277 3039 1275 3039 1067 3050 1015 3039 1013 3039 1011 3039 1009 3039 991 3050 968 3039 965 3039 963 3039 961 3039 926 3050 887 3037 885 3037 883 3037 881 3037 848 3048 773 3037 770 3037 768 3037 742 3050 606 3050 589 3037 586 3037 584 3037 582 3037 472 3046 472 3078"/>
+                        </Shape>
+                        <String CONTENT="which may be closed by a round stopper made of a piece of reindeer-skin."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l16" HPOS="469" VPOS="3106" WIDTH="1768" HEIGHT="57" BASELINE="472 3143 2237 3139" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 3143 472 3163 2237 3163 2237 3139 2232 3111 469 3106 472 3143"/>
+                        </Shape>
+                        <String CONTENT="Damp clothes are dried by hanging them on pegs or by stretching them on"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-229_l17" HPOS="469" VPOS="3167" WIDTH="648" HEIGHT="63" BASELINE="472 3199 1117 3204" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="472 3199 469 3215 833 3230 835 3230 1115 3219 1117 3204 1115 3171 472 3167 472 3199"/>
+                        </Shape>
+                        <String CONTENT="strings tied along the walls."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

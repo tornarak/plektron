@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-260.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-260.png; regions_from: zones/chukchi-1-260.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-260_r1" HPOS="685" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="685 618 2463 618 2463 708 685 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-260_l1" HPOS="1264" VPOS="630" WIDTH="624" HEIGHT="51" BASELINE="1264 662 1888 662" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1873 630 1264 630 1264 662 1264 681 1888 681 1888 662 1886 653 1873 630"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-260_l2" HPOS="690" VPOS="638" WIDTH="104" HEIGHT="43" BASELINE="690 666 794 666" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="690 666 690 681 794 681 794 666 794 638 690 638 690 666"/>
+                        </Shape>
+                        <String CONTENT="204"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-260_r2" HPOS="685" VPOS="733" WIDTH="1778" HEIGHT="134" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="685 733 2463 733 2463 867 685 867"/>
+                    </Shape>
+                    <TextLine ID="mz_1-260_l3" HPOS="682" VPOS="727" WIDTH="1778" HEIGHT="71" BASELINE="684 772 2460 766" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2445 736 1920 727 1918 727 1853 738 783 731 781 731 682 742 684 772 684 788 1271 798 1273 798 1440 788 1845 796 1847 796 1927 785 2434 794 2436 794 2438 794 2460 781 2460 766 2458 753 2445 736"/>
+                        </Shape>
+                        <String CONTENT="mortar is placed on the ground, between the operator’s feet. The small end"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-260_l4" HPOS="682" VPOS="790" WIDTH="1773" HEIGHT="69" BASELINE="684 831 2455 827" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="682 820 684 831 684 848 1565 859 1567 859 1570 859 1598 848 2455 848 2455 827 2451 798 723 790 721 790 718 790 690 796 682 820"/>
+                        </Shape>
+                        <String CONTENT="of the pestle is put into the mortar, while the other end is moved slowly"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-260_r3" HPOS="685" VPOS="2831" WIDTH="1778" HEIGHT="298" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="685 2831 2463 2831 2463 3129 685 3129"/>
+                    </Shape>
+                    <TextLine ID="mz_1-260_l5" HPOS="682" VPOS="2823" WIDTH="1776" HEIGHT="60" BASELINE="684 2868 2458 2862" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2447 2829 1275 2823 1273 2823 1271 2823 1269 2823 1253 2833 848 2825 833 2827 812 2829 790 2829 768 2831 747 2833 725 2836 703 2836 682 2838 684 2868 684 2883 2455 2877 2458 2862 2453 2833 2447 2829"/>
+                        </Shape>
+                        <String CONTENT="around with the hand. Mortars used by various tribes of northeastern Asia"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-260_l6" HPOS="682" VPOS="2881" WIDTH="1771" HEIGHT="61" BASELINE="684 2927 2453 2922" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="684 2927 684 2942 2451 2937 2453 2922 2449 2894 2386 2881 2384 2881 2382 2881 2347 2892 2260 2881 2258 2881 2159 2892 2137 2881 2135 2881 2133 2881 2040 2892 1981 2881 1979 2881 1858 2892 1812 2881 1810 2881 1808 2881 1708 2892 1576 2881 1574 2881 1572 2881 1570 2881 1554 2894 1485 2883 1483 2883 1481 2883 1453 2894 1437 2883 1435 2883 1433 2883 1431 2883 1253 2894 1197 2883 1195 2883 1193 2883 1191 2883 1173 2894 1152 2883 1149 2883 1147 2883 1009 2894 931 2883 929 2883 926 2883 881 2894 818 2883 816 2883 682 2896 684 2927"/>
+                        </Shape>
+                        <String CONTENT="resemble those used by the Alaskan Eskimo. Some white ashes of poplar-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-260_l7" HPOS="684" VPOS="2944" WIDTH="1771" HEIGHT="58" BASELINE="686 2985 2455 2981" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="686 2985 686 3002 2453 2998 2455 2981 2451 2953 794 2944 792 2944 684 2955 686 2985"/>
+                        </Shape>
+                        <String CONTENT="wood is added to the tobacco, and often a pinch of pulverized glass, to increase"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-260_l8" HPOS="682" VPOS="3002" WIDTH="1773" HEIGHT="59" BASELINE="684 3048 2455 3043" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="684 3048 684 3061 2455 3056 2455 3043 2451 3013 1585 3002 1583 3002 1580 3002 1578 3002 1561 3013 708 3005 706 3005 703 3005 682 3013 684 3048"/>
+                        </Shape>
+                        <String CONTENT="the irritation of the snuff. On the Pacific coast, ground tobacco is used very"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-260_l9" HPOS="686" VPOS="3063" WIDTH="1169" HEIGHT="65" BASELINE="688 3111 1855 3106" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="688 3111 688 3128 1853 3117 1855 3106 1851 3074 1362 3063 1360 3063 686 3076 688 3111"/>
+                        </Shape>
+                        <String CONTENT="generally, but for chewing rather than for snuffing."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-260_r4" HPOS="685" VPOS="3129" WIDTH="1778" HEIGHT="131" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="685 3129 2463 3129 2463 3260 685 3260"/>
+                    </Shape>
+                    <TextLine ID="mz_1-260_l10" HPOS="803" VPOS="3119" WIDTH="1657" HEIGHT="70" BASELINE="805 3167 2460 3163" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="805 3167 805 3178 1628 3189 1630 3189 1632 3189 1656 3178 2438 3186 2440 3186 2442 3186 2445 3186 2460 3176 2460 3163 2455 3132 2403 3119 2401 3119 2399 3119 2375 3130 2250 3119 2247 3119 2191 3130 2143 3119 2141 3119 2139 3119 1836 3130 1788 3119 1786 3119 1784 3119 1732 3130 1704 3119 1702 3119 1700 3119 1611 3132 1574 3121 1572 3121 1570 3121 1567 3121 1539 3134 1424 3134 1409 3121 1407 3121 1405 3121 1403 3121 1338 3132 803 3126 805 3167"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee buy snuff-boxes from the Russianized Yukaghir or the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-260_l11" HPOS="693" VPOS="3191" WIDTH="1760" HEIGHT="56" BASELINE="693 3228 2453 3228" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="693 3228 693 3245 2451 3247 2453 3228 2453 3195 693 3191 693 3228"/>
+                        </Shape>
+                        <String CONTENT="Maritime Koryak. These boxes are made of birch wood or bark (Fig. 124),"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

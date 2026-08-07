@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-248.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-248.png; regions_from: zones/chukchi-1-248.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-248_r1" HPOS="659" VPOS="626" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="659 626 2437 626 2437 716 659 716"/>
+                    </Shape>
+                    <TextLine ID="mz_1-248_l1" HPOS="1245" VPOS="645" WIDTH="619" HEIGHT="56" BASELINE="1247 679 1864 684" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1853 649 1851 647 1247 645 1247 679 1245 697 1860 701 1864 684 1862 666 1853 649"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-248_l2" HPOS="675" VPOS="651" WIDTH="85" HEIGHT="63" BASELINE="677 688 760 684" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="677 688 677 703 712 714 714 714 716 714 718 714 760 699 760 684 753 651 675 653 677 688"/>
+                        </Shape>
+                        <String CONTENT="192"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-248_r2" HPOS="659" VPOS="741" WIDTH="1778" HEIGHT="83" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="659 741 2437 741 2437 824 659 824"/>
+                    </Shape>
+                    <TextLine ID="mz_1-248_l3" HPOS="770" VPOS="744" WIDTH="1664" HEIGHT="74" BASELINE="773 788 2434 792" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="773 788 770 803 1604 818 1606 818 2432 807 2434 792 2434 757 2410 746 2408 746 2406 746 2328 757 2295 746 2293 746 2291 746 2115 759 1762 759 1734 746 1732 746 1730 746 1728 746 1726 746 1708 759 1606 759 1546 744 1440 744 1437 744 1435 744 1433 744 1418 755 1342 744 1340 744 1338 744 1295 755 1253 744 1251 744 1249 744 1188 755 1141 744 1139 744 1136 744 1134 744 1113 755 1091 744 1089 744 1087 744 1028 755 773 751 773 788"/>
+                        </Shape>
+                        <String CONTENT="The bags filled with oil or blubber, on the contrary, are rounded, with"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-248_r3" HPOS="659" VPOS="1285" WIDTH="1778" HEIGHT="89" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="659 1285 2437 1285 2437 1374 659 1374"/>
+                    </Shape>
+                    <TextLine ID="mz_1-248_l4" HPOS="660" VPOS="1294" WIDTH="1774" HEIGHT="61" BASELINE="660 1337 2434 1337" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2432 1305 2408 1294 2406 1294 2403 1294 2401 1294 2367 1305 2332 1294 2330 1294 2328 1294 2325 1294 2291 1305 2234 1294 2232 1294 1786 1305 1691 1294 1689 1294 1613 1305 1583 1294 1580 1294 1578 1294 1576 1294 1533 1305 1392 1294 1390 1294 1388 1294 1347 1305 1284 1294 1282 1294 1217 1305 1191 1294 1188 1294 1186 1294 985 1305 955 1294 952 1294 950 1294 948 1294 922 1305 877 1294 874 1294 872 1294 870 1294 833 1305 742 1294 740 1294 660 1305 660 1337 660 1355 2434 1355 2434 1337 2434 1307 2432 1305"/>
+                        </Shape>
+                        <String CONTENT="a short slit for a mouth. The blubber is pulled out of the bag with a hook"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-248_r4" HPOS="659" VPOS="1575" WIDTH="1778" HEIGHT="138" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="659 1575 2437 1575 2437 1713 659 1713"/>
+                    </Shape>
+                    <TextLine ID="mz_1-248_l5" HPOS="660" VPOS="1571" WIDTH="1769" HEIGHT="76" BASELINE="662 1630 2429 1617" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2419 1580 2390 1571 2388 1571 2386 1571 2384 1571 2362 1582 2245 1571 2243 1571 2241 1571 2200 1582 2174 1571 2172 1571 2169 1571 2167 1571 2128 1584 1962 1573 1959 1573 1957 1573 1916 1584 1892 1573 1890 1573 1888 1573 1823 1589 1656 1589 1626 1576 1624 1576 1622 1576 1511 1589 1407 1578 1405 1578 1403 1578 1370 1589 1266 1578 1264 1578 1141 1591 972 1580 970 1580 968 1580 933 1593 900 1582 898 1582 896 1582 777 1593 677 1582 675 1582 673 1582 671 1582 660 1591 662 1630 662 1647 2427 1647 2429 1617 2427 1610 2419 1580"/>
+                        </Shape>
+                        <String CONTENT="(Fig. 116), which is essentially the same also among the Eskimo, the Koryak,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-248_l6" HPOS="662" VPOS="1636" WIDTH="472" HEIGHT="67" BASELINE="664 1682 1134 1686" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="664 1682 662 1699 1130 1703 1134 1686 1134 1654 1121 1641 1121 1638 1119 1638 1117 1638 1115 1638 1026 1649 1002 1638 1000 1638 998 1638 935 1651 900 1636 898 1636 896 1636 894 1636 859 1649 809 1636 807 1636 805 1636 803 1636 775 1649 664 1649 664 1682"/>
+                        </Shape>
+                        <String CONTENT="and the Kamchadal."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

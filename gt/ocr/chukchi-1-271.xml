@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-271.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-271.png; regions_from: zones/chukchi-1-271.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-271_r1" HPOS="389" VPOS="610" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="389 610 2167 610 2167 700 389 700"/>
+                    </Shape>
+                    <TextLine ID="mz_1-271_l1" HPOS="968" VPOS="617" WIDTH="619" HEIGHT="54" BASELINE="968 649 1587 649" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1583 617 985 617 968 640 968 649 968 671 1587 671 1587 649 1587 619 1583 617"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l2" HPOS="2076" VPOS="619" WIDTH="39" HEIGHT="60" BASELINE="2076 658 2115 658" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2076 658 2076 679 2115 679 2115 658 2115 621 2076 619 2076 658"/>
+                        </Shape>
+                        <String CONTENT="213"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-271_r2" HPOS="389" VPOS="713" WIDTH="1778" HEIGHT="260" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="389 713 2167 713 2167 973 389 973"/>
+                    </Shape>
+                    <TextLine ID="mz_1-271_l3" HPOS="495" VPOS="712" WIDTH="1661" HEIGHT="63" BASELINE="498 762 2156 757" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="788 714 786 714 783 714 755 727 727 716 712 716 690 718 669 718 647 718 625 720 604 720 582 723 560 723 539 723 517 725 495 725 498 762 498 775 2154 772 2156 757 2154 727 2124 712 2122 712 2120 712 2118 712 2115 712 2094 725 2053 712 2050 712 2048 712 2046 712 2020 725 1957 712 1875 712 1873 712 1871 712 1868 712 1851 727 1793 727 1775 712 1773 712 1771 712 1769 712 1767 712 1765 712 1745 725 1719 712 1717 712 1715 712 1713 712 1663 725 1598 712 1596 712 1509 725 1463 712 1461 712 1459 712 1403 723 1340 712 1338 712 1336 712 1305 727 1286 714 1284 714 1282 714 1279 714 1277 714 1247 729 1134 729 1117 714 1115 714 1113 714 1110 714 1108 714 1106 714 1082 729 961 729 933 714 931 714 859 714 857 714 855 714 853 714 835 727 790 714 788 714"/>
+                        </Shape>
+                        <String CONTENT="This knife is similar to the crooked knife of the Alaskan Eskimo.¹ It"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l4" HPOS="385" VPOS="788" WIDTH="1774" HEIGHT="49" BASELINE="385 820 2159 820" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2152 788 385 788 385 820 385 837 2159 837 2159 820 2159 796 2152 788"/>
+                        </Shape>
+                        <String CONTENT="is used with the same characteristic motion of the hand toward the body which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l5" HPOS="385" VPOS="833" WIDTH="1769" HEIGHT="69" BASELINE="387 881 2154 874" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2143 844 2098 833 2096 833 2094 833 2072 844 2044 833 2042 833 2040 833 2037 833 2035 833 2020 846 1910 846 1890 833 1888 833 1886 833 1884 833 1825 844 1784 833 1782 833 1780 833 1777 833 1730 844 1667 833 1665 833 1600 844 1570 833 1567 833 1565 833 1476 846 1214 835 1212 835 1147 846 1108 835 1106 835 1104 835 920 848 495 837 493 837 491 837 465 848 407 837 404 837 402 837 400 837 385 846 387 881 387 896 2137 902 2139 902 2141 902 2143 902 2154 891 2154 874 2152 872 2143 844"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee employs when using the ordinary knife. The Russian and the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l6" HPOS="391" VPOS="896" WIDTH="1735" HEIGHT="76" BASELINE="394 939 2126 937" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="394 939 394 972 651 954 781 969 783 972 879 972 879 969 881 969 883 969 905 954 1230 969 1232 969 1424 954 1734 969 1736 969 1739 969 1780 956 2070 969 2072 969 2124 956 2126 937 2124 909 2079 896 2076 896 2074 896 2072 896 2048 907 2009 896 2007 896 2005 896 2003 896 1981 907 1940 896 1938 896 1936 896 1933 896 1903 907 1810 896 1808 896 1806 896 1777 909 1639 909 1624 896 1622 896 1619 896 1617 896 1520 907 1468 896 1466 896 1463 896 1433 907 391 900 394 939"/>
+                        </Shape>
+                        <String CONTENT="Russianized Yukaghir, on the contrary, move the knife away from the body."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-271_r3" HPOS="389" VPOS="1778" WIDTH="1778" HEIGHT="488" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="389 1778 2167 1778 2167 2266 389 2266"/>
+                    </Shape>
+                    <TextLine ID="mz_1-271_l7" HPOS="491" VPOS="1777" WIDTH="1661" HEIGHT="65" BASELINE="491 1822 2152 1822" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2137 1781 2118 1781 2098 1788 1873 1781 1855 1781 1834 1781 1812 1781 1790 1781 1769 1781 1747 1781 1726 1779 1715 1779 1689 1788 1667 1779 1661 1779 1639 1779 1630 1779 1522 1788 1483 1779 1466 1779 1461 1779 1455 1786 1446 1779 1444 1779 1422 1779 1401 1779 1379 1779 1357 1779 1336 1779 1310 1788 1266 1777 1264 1777 1262 1777 1260 1777 1258 1777 1238 1790 1089 1790 1063 1777 1061 1777 1059 1777 1056 1777 1013 1788 983 1777 981 1777 978 1777 976 1777 933 1788 894 1777 892 1777 890 1777 887 1777 864 1788 842 1777 840 1777 838 1777 775 1788 747 1777 744 1777 742 1777 664 1788 623 1777 621 1777 619 1777 617 1777 591 1788 569 1777 567 1777 565 1777 563 1777 541 1788 519 1777 517 1777 515 1777 513 1777 491 1788 491 1822 491 1838 2150 1842 2152 1822 2152 1786 2143 1781 2137 1781"/>
+                        </Shape>
+                        <String CONTENT="A knife quite similar in shape to the Chukchee crooked knife (Fig. 132, d)"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l8" HPOS="378" VPOS="1835" WIDTH="1776" HEIGHT="65" BASELINE="381 1885 2154 1877" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 1885 381 1900 2152 1892 2154 1877 2150 1846 1728 1835 1726 1835 1723 1835 1721 1835 1704 1846 1394 1838 1392 1838 378 1851 381 1885"/>
+                        </Shape>
+                        <String CONTENT="is used by the Russians on the Kolyma and Anadyr for the special purpose"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l9" HPOS="381" VPOS="1898" WIDTH="1773" HEIGHT="59" BASELINE="383 1942 2154 1937" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 1942 383 1957 2152 1952 2154 1937 2150 1907 424 1898 422 1898 420 1898 381 1909 383 1942"/>
+                        </Shape>
+                        <String CONTENT="of finishing the hollowed tree-trunks scooped out for canoes. This knife is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l10" HPOS="381" VPOS="1954" WIDTH="1773" HEIGHT="65" BASELINE="383 2002 2154 1996" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2002 383 2019 2154 2011 2154 1996 2150 1967 1953 1967 1929 1954 1927 1954 1925 1954 1923 1954 1886 1965 1860 1954 1858 1954 1855 1954 1853 1954 1829 1965 1780 1954 1777 1954 1697 1965 1645 1954 1643 1954 1528 1967 1481 1957 1479 1957 1476 1957 1312 1967 1282 1957 1279 1957 1277 1957 1275 1957 1253 1967 1178 1957 1175 1957 1080 1967 1043 1957 1041 1957 1039 1957 935 1970 918 1959 916 1959 913 1959 911 1959 708 1970 677 1959 675 1959 673 1959 498 1970 422 1959 420 1959 417 1959 381 1972 383 2002"/>
+                        </Shape>
+                        <String CONTENT="often grasped with both hands, and it is moved away from the body, as are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l11" HPOS="381" VPOS="2022" WIDTH="1771" HEIGHT="56" BASELINE="383 2063 2152 2054" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2063 383 2078 2150 2074 2152 2054 2148 2026 400 2022 398 2022 396 2022 394 2022 381 2028 383 2063"/>
+                        </Shape>
+                        <String CONTENT="the other knives used by these tribes. An adze of peculiar shape is used by"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l12" HPOS="381" VPOS="2080" WIDTH="1771" HEIGHT="56" BASELINE="383 2121 2152 2117" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2121 383 2136 2150 2132 2152 2117 2148 2084 402 2080 400 2080 398 2080 396 2080 381 2087 383 2121"/>
+                        </Shape>
+                        <String CONTENT="the Russians for the rougher part of this work. One variety of this crooked"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l13" HPOS="381" VPOS="2134" WIDTH="1771" HEIGHT="65" BASELINE="383 2184 2152 2175" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2184 383 2199 2150 2190 2152 2175 2148 2147 2022 2134 2020 2134 2018 2134 1998 2145 1977 2134 1975 2134 1972 2134 1970 2134 1968 2134 1953 2147 1777 2147 1754 2134 1752 2134 1749 2134 1747 2134 1693 2147 1648 2136 1645 2136 1643 2136 1446 2147 1403 2136 1401 2136 1399 2136 1396 2136 1357 2147 1266 2136 1264 2136 1167 2149 1110 2139 1108 2139 1043 2152 890 2152 866 2139 864 2139 861 2139 779 2154 625 2154 597 2141 595 2141 593 2141 381 2147 383 2184"/>
+                        </Shape>
+                        <String CONTENT="knife (Fig. 132, e) is commonly used by all tribes of northeastern Asia for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l14" HPOS="378" VPOS="2208" WIDTH="483" HEIGHT="63" BASELINE="381 2238 861 2242" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2238 378 2260 387 2266 389 2266 391 2266 571 2268 573 2268 576 2268 602 2258 710 2271 712 2271 859 2258 861 2242 859 2212 381 2208 381 2238"/>
+                        </Shape>
+                        <String CONTENT="scooping out spoons."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-271_r4" HPOS="389" VPOS="2266" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="389 2266 2167 2266 2167 2445 389 2445"/>
+                    </Shape>
+                    <TextLine ID="mz_1-271_l15" HPOS="485" VPOS="2253" WIDTH="1667" HEIGHT="65" BASELINE="487 2303 2152 2294" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 2303 487 2318 2150 2314 2152 2294 2150 2266 2115 2253 2113 2253 2111 2253 2109 2253 2107 2253 2089 2264 2014 2253 2011 2253 2009 2253 2007 2253 1992 2266 1899 2266 1871 2253 1868 2253 1866 2253 1790 2264 1734 2253 1732 2253 1730 2253 1728 2253 1704 2266 1394 2255 1392 2255 1227 2268 1160 2258 1158 2258 1156 2258 1123 2268 803 2260 801 2260 799 2260 796 2260 781 2271 498 2260 495 2260 493 2260 491 2260 491 2262 485 2266 487 2303"/>
+                        </Shape>
+                        <String CONTENT="Neither the Chukchee nor the other tribes have special tools used only"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l16" HPOS="378" VPOS="2323" WIDTH="1774" HEIGHT="64" BASELINE="381 2364 2152 2355" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2364 381 2377 643 2387 645 2387 749 2377 820 2387 822 2387 970 2385 972 2385 974 2385 989 2375 1056 2385 1059 2385 1123 2375 2150 2375 2152 2355 2148 2327 391 2323 389 2323 387 2323 385 2323 385 2325 378 2329 381 2364"/>
+                        </Shape>
+                        <String CONTENT="for carving or engraving ivory or bone. This work is done with various"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l17" HPOS="378" VPOS="2377" WIDTH="1750" HEIGHT="62" BASELINE="381 2424 2128 2418" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2424 381 2439 2126 2433 2128 2418 2124 2387 1583 2377 1580 2377 1492 2390 378 2390 381 2424"/>
+                        </Shape>
+                        <String CONTENT="knives, crooked or straight, but those with short slender blades are preferred."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-271_r5" HPOS="389" VPOS="2445" WIDTH="1778" HEIGHT="291" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="389 2445 2167 2445 2167 2736 389 2736"/>
+                    </Shape>
+                    <TextLine ID="mz_1-271_l18" HPOS="485" VPOS="2433" WIDTH="1665" HEIGHT="69" BASELINE="487 2485 2150 2476" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="487 2485 487 2502 2148 2496 2150 2476 2146 2446 1972 2433 1970 2433 1892 2444 1845 2433 1842 2433 1840 2433 1767 2444 1741 2433 1739 2433 1736 2433 1734 2433 1732 2433 1715 2446 1479 2435 1476 2435 1474 2435 1431 2446 1394 2435 1392 2435 1390 2435 1301 2448 983 2437 981 2437 978 2437 976 2437 961 2450 485 2450 487 2485"/>
+                        </Shape>
+                        <String CONTENT="Fig. 133 represents a knife used for carving ivory from the village Tɪˊḷḷɪran"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l19" HPOS="376" VPOS="2496" WIDTH="940" HEIGHT="60" BASELINE="378 2541 1316 2537" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 2541 378 2556 1314 2552 1316 2537 1312 2507 1162 2496 1160 2496 1158 2496 1156 2496 1156 2498 1145 2509 1061 2509 1009 2496 1007 2496 1004 2496 1002 2496 991 2507 955 2496 952 2496 950 2496 890 2507 861 2496 859 2496 857 2496 792 2509 768 2498 766 2498 764 2498 493 2509 420 2498 417 2498 415 2498 376 2507 378 2541"/>
+                        </Shape>
+                        <String CONTENT="of the Olutora Koryak. It has a double-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l20" HPOS="378" VPOS="2552" WIDTH="940" HEIGHT="69" BASELINE="381 2602 1318 2593" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2602 381 2621 1316 2613 1318 2593 1316 2565 1305 2554 1305 2552 1303 2552 1301 2552 1299 2552 1297 2552 1295 2552 1277 2565 1175 2565 1145 2552 1143 2552 1141 2552 1139 2552 1136 2552 1126 2563 1110 2552 1108 2552 1106 2552 1104 2552 1102 2552 1067 2565 970 2554 968 2554 887 2565 855 2554 853 2554 851 2554 848 2554 805 2567 725 2556 723 2556 643 2567 615 2556 612 2556 610 2556 608 2556 606 2556 591 2569 569 2559 567 2559 422 2559 420 2559 417 2559 378 2572 381 2602"/>
+                        </Shape>
+                        <String CONTENT="edged blade, rather thin and broad, inserted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l21" HPOS="378" VPOS="2615" WIDTH="940" HEIGHT="63" BASELINE="381 2662 1318 2654" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2662 381 2678 1316 2669 1318 2654 1314 2626 1123 2615 1121 2615 1061 2626 872 2617 870 2617 868 2617 842 2630 378 2630 381 2662"/>
+                        </Shape>
+                        <String CONTENT="in a slender piece of wood, and wound"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l22" HPOS="381" VPOS="2691" WIDTH="545" HEIGHT="47" BASELINE="381 2721 926 2721" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="381 2721 381 2738 926 2738 926 2721 926 2691 381 2691 381 2721"/>
+                        </Shape>
+                        <String CONTENT="all around with leather."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-271_r6" HPOS="389" VPOS="2736" WIDTH="1778" HEIGHT="423" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="389 2736 2167 2736 2167 3159 389 3159"/>
+                    </Shape>
+                    <TextLine ID="mz_1-271_l23" HPOS="489" VPOS="2734" WIDTH="832" HEIGHT="63" BASELINE="491 2779 1321 2775" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="491 2779 491 2797 1321 2792 1321 2775 1318 2747 1282 2734 1279 2734 1277 2734 1275 2734 1251 2745 1240 2734 1238 2734 1236 2734 1234 2734 1232 2734 1208 2747 1043 2747 1033 2736 1033 2734 1030 2734 1028 2734 1026 2734 952 2745 909 2734 907 2734 905 2734 903 2734 900 2734 879 2747 805 2736 803 2736 801 2736 768 2747 489 2745 491 2779"/>
+                        </Shape>
+                        <String CONTENT="With most tribes of northeastern Asia"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l24" HPOS="374" VPOS="2795" WIDTH="674" HEIGHT="71" BASELINE="376 2838 1048 2842" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 2838 374 2855 385 2864 387 2864 389 2864 391 2864 604 2855 712 2866 714 2866 1046 2855 1048 2842 1048 2810 1002 2797 1000 2797 998 2797 911 2810 898 2799 898 2797 896 2797 894 2797 892 2797 831 2808 807 2797 805 2797 803 2797 801 2797 799 2797 779 2810 703 2795 701 2795 699 2795 669 2808 430 2808 415 2795 413 2795 411 2795 409 2795 407 2795 376 2805 376 2838"/>
+                        </Shape>
+                        <String CONTENT="the stout straight knife (Fig."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l25" HPOS="381" VPOS="2855" WIDTH="669" HEIGHT="63" BASELINE="383 2907 1050 2898" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="383 2907 383 2918 1048 2909 1050 2898 1046 2868 933 2855 931 2855 929 2855 926 2855 909 2866 887 2855 885 2855 883 2855 881 2855 879 2855 879 2857 877 2857 868 2868 803 2857 801 2857 751 2868 716 2857 714 2857 712 2857 710 2857 708 2857 708 2859 706 2859 697 2870 610 2859 608 2859 530 2872 398 2864 396 2864 394 2864 391 2864 381 2870 383 2907"/>
+                        </Shape>
+                        <String CONTENT="134), carried in the belt or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l26" HPOS="378" VPOS="2929" WIDTH="674" HEIGHT="45" BASELINE="378 2959 1052 2959" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 2959 378 2974 1052 2974 1052 2959 1052 2929 378 2929 378 2959"/>
+                        </Shape>
+                        <String CONTENT="tied to the hip, furnishes the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l27" HPOS="374" VPOS="2972" WIDTH="676" HEIGHT="65" BASELINE="376 3022 1050 3015" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 3022 376 3037 1050 3031 1050 3015 1048 2983 1033 2972 1030 2972 1028 2972 1026 2972 1024 2972 1022 2972 1007 2983 905 2972 903 2972 851 2983 829 2972 827 2972 825 2972 822 2972 820 2972 820 2974 818 2974 812 2983 796 2974 794 2974 792 2974 790 2974 788 2974 786 2974 768 2987 632 2987 608 2974 606 2974 604 2974 602 2974 599 2974 599 2976 597 2976 591 2985 582 2976 580 2976 578 2976 576 2976 515 2987 407 2976 404 2976 402 2976 374 2987 376 3022"/>
+                        </Shape>
+                        <String CONTENT="chief tool, because it is adapted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l28" HPOS="374" VPOS="3041" WIDTH="672" HEIGHT="63" BASELINE="376 3082 1046 3074" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="376 3082 376 3095 621 3104 623 3104 625 3104 628 3104 645 3093 706 3104 708 3104 710 3104 757 3091 1020 3100 1022 3100 1024 3100 1026 3100 1046 3087 1046 3074 1041 3046 391 3041 389 3041 387 3041 385 3041 374 3048 376 3082"/>
+                        </Shape>
+                        <String CONTENT="to so many uses. The Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-271_l29" HPOS="376" VPOS="3095" WIDTH="1776" HEIGHT="63" BASELINE="378 3141 2152 3132" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="378 3141 378 3158 2150 3150 2152 3132 2148 3102 822 3095 820 3095 818 3095 781 3106 404 3098 402 3098 400 3098 376 3106 378 3141"/>
+                        </Shape>
+                        <String CONTENT="chee, however, prefer to use the crooked knife for regular work. The straight"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-271_r7" HPOS="389" VPOS="3189" WIDTH="1778" HEIGHT="52" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="389 3189 2167 3189 2167 3241 389 3241"/>
+                    </Shape>
+                    <TextLine ID="mz_1-271_l30" HPOS="827" VPOS="3186" WIDTH="877" HEIGHT="50" BASELINE="829 3215 1704 3219" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="829 3215 827 3232 1700 3236 1704 3219 1702 3191 829 3186 829 3215"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare Nelson, Plate XXXVIII, Figs. 21, 23, p. 94."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

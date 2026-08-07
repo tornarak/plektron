@@ -1,0 +1,386 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-257.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-257.png; regions_from: zones/chukchi-1-257.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-257_r1" HPOS="347" VPOS="588" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="347 588 2125 588 2125 678 347 678"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l1" HPOS="924" VPOS="597" WIDTH="620" HEIGHT="54" BASELINE="926 632 1544 627" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1531 597 931 599 924 604 926 632 926 651 1541 647 1544 627 1539 612 1531 597"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l2" HPOS="2020" VPOS="604" WIDTH="98" HEIGHT="45" BASELINE="2020 632 2118 632" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2107 625 2085 604 2031 604 2020 610 2020 632 2020 649 2118 649 2118 632 2118 619 2107 625"/>
+                        </Shape>
+                        <String CONTENT="201"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-257_r2" HPOS="347" VPOS="697" WIDTH="1778" HEIGHT="363" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="347 697 2125 697 2125 1060 347 1060"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l3" HPOS="454" VPOS="692" WIDTH="1674" HEIGHT="72" BASELINE="456 740 2128 736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 740 456 753 1282 764 1284 764 1286 764 1329 753 2100 762 2102 762 2105 762 2128 749 2128 736 2124 705 1379 692 1377 692 1375 692 1331 703 1308 692 1305 692 1303 692 1301 692 1299 692 1286 705 1264 694 1262 694 1260 694 1206 707 881 707 868 694 866 694 864 694 861 694 803 705 734 694 731 694 729 694 703 705 693 694 690 694 688 694 686 694 454 703 456 740"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee like to try every kind of “alien food,” and even become"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l4" HPOS="344" VPOS="757" WIDTH="1778" HEIGHT="61" BASELINE="346 803 2122 796" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="344 779 346 803 346 818 2120 811 2122 796 2118 757 944 757 942 757 939 757 937 757 924 768 582 759 580 759 353 770 344 779"/>
+                        </Shape>
+                        <String CONTENT="accustomed to condiments, like mustard and pepper. They even offer sacrifices of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l5" HPOS="346" VPOS="818" WIDTH="1776" HEIGHT="63" BASELINE="348 863 2122 855" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 863 348 881 2120 872 2122 855 2118 818 838 818 835 818 760 829 498 820 495 820 346 831 348 863"/>
+                        </Shape>
+                        <String CONTENT="sugar, bread, etc., to the spirits, supposing that they are also fond of new kinds of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l6" HPOS="346" VPOS="878" WIDTH="1776" HEIGHT="59" BASELINE="348 920 2122 915" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 920 348 937 2120 933 2122 915 2118 887 359 878 357 878 355 878 353 878 353 881 346 885 348 920"/>
+                        </Shape>
+                        <String CONTENT="food. In cases of voluntary death, the self-doomed man often declares his last"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l7" HPOS="350" VPOS="950" WIDTH="1772" HEIGHT="43" BASELINE="350 978 2122 978" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 978 350 993 2122 993 2122 978 2122 950 350 950 350 978"/>
+                        </Shape>
+                        <String CONTENT="wish to be to taste “alien food.” In the next world, he argues, there will be"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l8" HPOS="350" VPOS="1008" WIDTH="1744" HEIGHT="48" BASELINE="350 1039 2094 1039" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 1039 350 1056 2094 1056 2094 1039 2094 1008 350 1008 350 1039"/>
+                        </Shape>
+                        <String CONTENT="no place for other tribes, so this will be his last chance to taste foreign foods."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-257_r3" HPOS="347" VPOS="1060" WIDTH="1778" HEIGHT="362" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="347 1060 2125 1060 2125 1422 347 1422"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l9" HPOS="454" VPOS="1067" WIDTH="1668" HEIGHT="50" BASELINE="456 1099 2122 1095" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="456 1099 456 1117 2120 1112 2122 1095 2118 1067 454 1067 456 1099"/>
+                        </Shape>
+                        <String CONTENT="I have already mentioned the passion for tobacco among the native tribes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l10" HPOS="346" VPOS="1114" WIDTH="1774" HEIGHT="70" BASELINE="348 1160 2120 1153" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1160 348 1175 1089 1173 1249 1184 1251 1184 1253 1184 1277 1173 1446 1173 1526 1184 1528 1184 1635 1171 1773 1182 1775 1184 2016 1184 2016 1182 2018 1182 2020 1182 2033 1171 2087 1182 2089 1182 2092 1182 2120 1169 2120 1153 2115 1125 1528 1114 1526 1114 1442 1125 957 1117 955 1117 952 1117 950 1117 931 1127 387 1119 385 1119 383 1119 346 1130 348 1160"/>
+                        </Shape>
+                        <String CONTENT="of northeastern Siberia. It is stronger in the Kolyma country, possibly be-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l11" HPOS="346" VPOS="1177" WIDTH="1776" HEIGHT="59" BASELINE="348 1221 2122 1214" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1221 348 1236 2120 1229 2122 1214 2118 1186 939 1177 937 1177 874 1188 504 1179 502 1179 346 1190 348 1221"/>
+                        </Shape>
+                        <String CONTENT="cause tobacco is more difficult to get there. Among the Chukchee very few"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l12" HPOS="346" VPOS="1238" WIDTH="1776" HEIGHT="65" BASELINE="348 1281 2122 1275" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1281 348 1303 2120 1290 2122 1275 2118 1247 968 1238 965 1238 896 1249 452 1240 450 1240 346 1251 348 1281"/>
+                        </Shape>
+                        <String CONTENT="people are met in that region who do not use tobacco in some form. Even"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l13" HPOS="350" VPOS="1299" WIDTH="1770" HEIGHT="58" BASELINE="350 1342 2120 1342" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 1342 350 1357 2120 1357 2120 1342 2120 1311 2048 1299 2046 1299 1916 1309 1364 1299 1362 1299 1282 1309 1199 1299 1197 1299 1195 1299 1193 1299 1175 1311 1061 1311 1004 1299 1002 1299 942 1309 881 1299 879 1299 877 1299 874 1299 855 1311 677 1311 580 1299 578 1299 524 1309 376 1299 374 1299 372 1299 350 1309 350 1342"/>
+                        </Shape>
+                        <String CONTENT="children three years old, who are just toddling about, are seen smoking."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l14" HPOS="350" VPOS="1355" WIDTH="1488" HEIGHT="69" BASELINE="353 1396 1838 1400" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="353 1396 350 1411 1147 1424 1149 1424 1836 1413 1838 1400 1836 1370 1765 1357 1762 1357 1687 1368 1645 1357 1643 1357 1641 1357 1554 1368 1531 1357 1528 1357 1526 1357 1429 1368 1210 1357 1208 1357 1154 1368 1091 1355 1089 1355 1087 1355 1054 1368 870 1368 851 1355 848 1355 846 1355 844 1355 842 1355 805 1366 762 1355 760 1355 757 1355 755 1355 725 1366 712 1355 710 1355 708 1355 706 1355 703 1355 675 1366 602 1355 599 1355 597 1355 567 1366 353 1361 353 1396"/>
+                        </Shape>
+                        <String CONTENT="Mothers give their pipes to suckling babes to quiet their crying."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-257_r4" HPOS="347" VPOS="1422" WIDTH="1778" HEIGHT="179" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="347 1422 2125 1422 2125 1601 347 1601"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l15" HPOS="461" VPOS="1424" WIDTH="1665" HEIGHT="59" BASELINE="463 1452 2126 1457" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="463 1452 461 1467 502 1480 504 1480 506 1480 1145 1472 1297 1483 1299 1483 2124 1472 2126 1457 2126 1424 463 1424 463 1452"/>
+                        </Shape>
+                        <String CONTENT="“The tobacco-weed knows no shame,” says a proverb of the Russianized"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l16" HPOS="353" VPOS="1483" WIDTH="1769" HEIGHT="51" BASELINE="355 1517 2122 1513" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 1517 355 1534 2120 1530 2122 1513 2118 1485 353 1483 355 1517"/>
+                        </Shape>
+                        <String CONTENT="Yukaghir. Of the same nature is another common saying in this tribe, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l17" HPOS="348" VPOS="1534" WIDTH="1412" HEIGHT="61" BASELINE="350 1578 1760 1573" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 1578 350 1595 1758 1595 1760 1573 1756 1545 1054 1534 1052 1534 1050 1534 1024 1545 407 1537 404 1537 348 1547 350 1578"/>
+                        </Shape>
+                        <String CONTENT="refers to their girls selling their virtue for a stem of tobacco."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-257_r5" HPOS="347" VPOS="1601" WIDTH="1778" HEIGHT="593" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="347 1601 2125 1601 2125 2194 347 2194"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l18" HPOS="459" VPOS="1608" WIDTH="1667" HEIGHT="46" BASELINE="459 1636 2126 1636" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="459 1636 459 1654 2124 1654 2126 1636 2124 1608 459 1608 459 1636"/>
+                        </Shape>
+                        <String CONTENT="Scarcity of tobacco is felt as keenly as a food or tea famine. The same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l19" HPOS="348" VPOS="1667" WIDTH="1778" HEIGHT="47" BASELINE="348 1697 2126 1697" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="348 1697 348 1714 2126 1714 2126 1697 2126 1667 348 1667 348 1697"/>
+                        </Shape>
+                        <String CONTENT="term is used to express all three ideas in local Russian and in the native"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l20" HPOS="348" VPOS="1725" WIDTH="1778" HEIGHT="50" BASELINE="350 1757 2126 1753" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 1757 350 1775 2124 1770 2126 1753 2122 1725 348 1725 350 1757"/>
+                        </Shape>
+                        <String CONTENT="languages. When tobacco gives out, the people use the black deposit which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l21" HPOS="350" VPOS="1777" WIDTH="1776" HEIGHT="65" BASELINE="353 1820 2126 1814" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="353 1820 353 1842 2124 1829 2126 1814 2122 1783 420 1777 417 1777 350 1788 353 1820"/>
+                        </Shape>
+                        <String CONTENT="gathers inside of the pipe-stem. Indeed, one of the reasons for making pipes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l22" HPOS="350" VPOS="1833" WIDTH="1776" HEIGHT="61" BASELINE="353 1879 2126 1874" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="353 1879 353 1894 2124 1890 2126 1874 2122 1844 1260 1833 1258 1833 1256 1833 1234 1844 394 1835 391 1835 389 1835 350 1846 353 1879"/>
+                        </Shape>
+                        <String CONTENT="with cleft stems is for the convenience of extracting this nicotine deposit, which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l23" HPOS="350" VPOS="1905" WIDTH="1774" HEIGHT="52" BASELINE="350 1939 2124 1939" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 1939 350 1952 2122 1957 2124 1939 2124 1907 350 1905 350 1939"/>
+                        </Shape>
+                        <String CONTENT="is stored in a bag for future use. It is considered especially suited to chewing,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l24" HPOS="348" VPOS="1954" WIDTH="1778" HEIGHT="61" BASELINE="350 2000 2126 1993" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="350 2000 350 2015 2124 2009 2126 1993 2122 1963 959 1954 957 1954 955 1954 929 1965 417 1957 415 1957 348 1967 350 2000"/>
+                        </Shape>
+                        <String CONTENT="and during prolonged hard work it drives away drowsiness and fatigue more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l25" HPOS="350" VPOS="2013" WIDTH="1776" HEIGHT="61" BASELINE="353 2058 2126 2054" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="353 2058 353 2074 2124 2069 2126 2054 2120 2019 1955 2024 1925 2013 1923 2013 1920 2013 1862 2024 1836 2013 1834 2013 1832 2013 1769 2024 1743 2013 1741 2013 1739 2013 1736 2013 1734 2013 1719 2026 1598 2026 1544 2013 1541 2013 1539 2013 1507 2024 1466 2013 1463 2013 1461 2013 1214 2026 1147 2015 1145 2015 1143 2015 1141 2015 1126 2028 1009 2028 955 2015 952 2015 890 2026 829 2015 827 2015 825 2015 822 2015 805 2028 699 2028 612 2015 610 2015 608 2015 580 2026 558 2015 556 2015 391 2015 389 2015 387 2015 350 2028 353 2058"/>
+                        </Shape>
+                        <String CONTENT="effectually than genuine tobacco. More commonly they use for chewing small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l26" HPOS="350" VPOS="2078" WIDTH="1776" HEIGHT="63" BASELINE="353 2119 2126 2113" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="353 2119 353 2141 2124 2130 2126 2113 2122 2080 381 2078 378 2078 376 2078 350 2087 353 2119"/>
+                        </Shape>
+                        <String CONTENT="pieces of tobacco-leaf without any preparation. The stamens are considered"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l27" HPOS="353" VPOS="2134" WIDTH="1208" HEIGHT="59" BASELINE="353 2175 1561 2175" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="353 2175 353 2193 1561 2193 1561 2175 1561 2143 1550 2134 1548 2134 1546 2134 1544 2134 1541 2134 1500 2145 1479 2134 1476 2134 1474 2134 1472 2134 1448 2145 1399 2134 1396 2134 1394 2134 1366 2145 1355 2134 1353 2134 1351 2134 1349 2134 1347 2134 1305 2145 1149 2134 1147 2134 1067 2145 1043 2134 1041 2134 1039 2134 1037 2134 991 2145 961 2134 959 2134 957 2134 955 2134 952 2134 952 2136 942 2147 872 2147 846 2134 844 2134 842 2134 840 2134 799 2145 736 2134 734 2134 731 2134 708 2145 684 2134 682 2134 680 2134 677 2134 675 2134 660 2145 625 2134 623 2134 621 2134 545 2145 511 2134 508 2134 506 2134 504 2134 459 2145 435 2134 433 2134 430 2134 353 2145 353 2175"/>
+                        </Shape>
+                        <String CONTENT="to be less desirable than the broad part of the leaf."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-257_r6" HPOS="347" VPOS="2194" WIDTH="1778" HEIGHT="594" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="347 2194 2125 2194 2125 2788 347 2788"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l28" HPOS="463" VPOS="2188" WIDTH="1665" HEIGHT="63" BASELINE="465 2232 2128 2236" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="465 2232 463 2247 2124 2251 2128 2236 2126 2201 1721 2203 1667 2193 1665 2193 1663 2193 1641 2203 1617 2193 1615 2193 1613 2193 1520 2203 1472 2193 1470 2193 1468 2193 1312 2203 1297 2190 1295 2190 1292 2190 1290 2190 1165 2201 1128 2190 1126 2190 1123 2190 1121 2190 1119 2190 1106 2203 998 2203 974 2190 972 2190 970 2190 909 2201 851 2190 848 2190 846 2190 844 2190 827 2203 714 2203 690 2190 688 2190 686 2190 684 2190 682 2190 667 2203 554 2203 465 2188 465 2232"/>
+                        </Shape>
+                        <String CONTENT="Tobacco for smoking is cut fine with an ordinary knife on a small board"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l29" HPOS="350" VPOS="2253" WIDTH="1778" HEIGHT="59" BASELINE="353 2297 2128 2292" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="353 2297 353 2312 2126 2307 2128 2292 2124 2264 1266 2253 1264 2253 1173 2264 391 2255 389 2255 387 2255 350 2266 353 2297"/>
+                        </Shape>
+                        <String CONTENT="of the same shape as a woman’s tailoring-board. Two parts of tobacco are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l30" HPOS="353" VPOS="2316" WIDTH="1775" HEIGHT="56" BASELINE="355 2357 2128 2353" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 2357 355 2372 2126 2368 2128 2353 2124 2320 372 2316 370 2316 368 2316 365 2316 353 2323 355 2357"/>
+                        </Shape>
+                        <String CONTENT="then mixed with one part of wood to weaken it properly. The wood used"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l31" HPOS="353" VPOS="2379" WIDTH="1775" HEIGHT="54" BASELINE="355 2418 2128 2413" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 2418 355 2433 2126 2429 2128 2413 2122 2379 353 2381 355 2418"/>
+                        </Shape>
+                        <String CONTENT="is dry poplar or aspen bark, or pieces of young willow, which are scraped"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l32" HPOS="355" VPOS="2442" WIDTH="1771" HEIGHT="49" BASELINE="357 2474 2126 2478" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="357 2474 355 2487 2122 2491 2126 2478 2124 2446 357 2442 357 2474"/>
+                        </Shape>
+                        <String CONTENT="fine and rubbed with the fingers. The Russian leaf-tobacco is too strong,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l33" HPOS="355" VPOS="2494" WIDTH="1771" HEIGHT="62" BASELINE="355 2537 2126 2537" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 2537 355 2550 2124 2556 2126 2537 2126 2507 1609 2494 1606 2494 1481 2504 1396 2494 1394 2494 1329 2504 1208 2494 1206 2494 1080 2504 1024 2494 1022 2494 1020 2494 974 2504 939 2494 937 2494 935 2494 933 2494 931 2494 916 2507 827 2507 790 2494 788 2494 786 2494 667 2504 599 2494 597 2494 515 2504 485 2494 482 2494 480 2494 409 2504 383 2494 381 2494 378 2494 376 2494 355 2504 355 2537"/>
+                        </Shape>
+                        <String CONTENT="though a few people use it without mixture. The so-called “Turkish” tobacco,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l34" HPOS="357" VPOS="2565" WIDTH="1771" HEIGHT="48" BASELINE="357 2595 2128 2595" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="357 2595 357 2610 2126 2613 2128 2595 2128 2565 357 2565 357 2595"/>
+                        </Shape>
+                        <String CONTENT="which in reality is grown in southern Russia and in the Crimea, is used pure,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l35" HPOS="353" VPOS="2610" WIDTH="1777" HEIGHT="61" BASELINE="355 2658 2130 2652" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 2658 355 2671 2128 2665 2130 2652 2126 2621 1541 2610 1539 2610 1537 2610 1535 2610 1520 2623 353 2623 355 2658"/>
+                        </Shape>
+                        <String CONTENT="because it is much weaker. The same may be said of Manchurian tobacco"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l36" HPOS="353" VPOS="2675" WIDTH="1777" HEIGHT="59" BASELINE="355 2717 2130 2710" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 2717 355 2734 2128 2727 2130 2710 2126 2680 422 2675 420 2675 353 2686 355 2717"/>
+                        </Shape>
+                        <String CONTENT="and the lighter American tobaccos. All strong American tobaccos are smoked"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l37" HPOS="355" VPOS="2732" WIDTH="571" HEIGHT="58" BASELINE="357 2777 926 2773" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="357 2777 357 2790 924 2788 926 2773 924 2743 907 2732 905 2732 903 2732 900 2732 898 2732 874 2743 753 2732 751 2732 749 2732 723 2743 573 2734 571 2734 569 2734 532 2745 396 2734 394 2734 391 2734 355 2747 357 2777"/>
+                        </Shape>
+                        <String CONTENT="with a mixture of wood."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-257_r7" HPOS="347" VPOS="2788" WIDTH="1778" HEIGHT="431" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="347 2788 2125 2788 2125 3219 347 3219"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l38" HPOS="465" VPOS="2792" WIDTH="1665" HEIGHT="61" BASELINE="465 2836 2130 2836" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="465 2836 465 2851 2128 2853 2130 2836 2130 2805 1936 2805 1912 2792 1910 2792 1907 2792 1905 2792 1868 2805 1702 2805 1684 2792 1682 2792 1680 2792 1678 2792 1676 2792 1648 2803 1589 2792 1587 2792 1585 2792 1548 2803 1485 2792 1483 2792 1394 2803 1366 2792 1364 2792 1362 2792 1360 2792 1316 2803 1279 2792 1277 2792 1275 2792 1273 2792 1245 2803 1201 2792 1199 2792 1197 2792 1195 2792 1160 2803 1121 2792 1119 2792 1117 2792 1115 2792 1087 2803 972 2792 970 2792 909 2803 853 2792 851 2792 848 2792 818 2803 783 2792 781 2792 779 2792 777 2792 744 2803 465 2799 465 2836"/>
+                        </Shape>
+                        <String CONTENT="The receptacle for tobacco in the bowl of the pipe is extremely narrow,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l39" HPOS="355" VPOS="2866" WIDTH="1775" HEIGHT="45" BASELINE="355 2894 2130 2894" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 2894 355 2911 2130 2911 2130 2894 2130 2866 355 2866 355 2894"/>
+                        </Shape>
+                        <String CONTENT="and each dose for smoking is therefore very small. The smoker consumes a"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l40" HPOS="353" VPOS="2909" WIDTH="1775" HEIGHT="70" BASELINE="355 2957 2128 2950" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="355 2957 355 2979 2126 2966 2128 2950 2124 2922 1957 2922 1929 2909 1927 2909 1925 2909 1827 2920 1797 2909 1795 2909 1793 2909 1790 2909 1788 2909 1769 2922 1637 2922 1589 2909 1587 2909 1585 2909 1583 2909 1528 2922 1286 2911 1284 2911 1217 2922 1184 2911 1182 2911 1180 2911 1117 2922 1052 2911 1050 2911 976 2922 948 2911 946 2911 944 2911 803 2924 742 2914 740 2914 738 2914 708 2927 591 2927 571 2914 569 2914 567 2914 565 2914 563 2914 532 2924 519 2914 517 2914 515 2914 389 2914 387 2914 385 2914 353 2924 355 2957"/>
+                        </Shape>
+                        <String CONTENT="pipeful at once by several prolonged puffs. The northern smokers, in conse-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l41" HPOS="355" VPOS="2974" WIDTH="1780" HEIGHT="65" BASELINE="357 3013 2135 3009" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="357 3013 357 3028 1240 3039 1243 3039 1245 3039 1266 3028 2109 3037 2111 3037 2113 3037 2135 3024 2135 3009 2130 2974 606 2974 604 2974 355 2985 357 3013"/>
+                        </Shape>
+                        <String CONTENT="quence, refill their pipes almost every ten minutes. After a long period of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l42" HPOS="355" VPOS="3039" WIDTH="1775" HEIGHT="59" BASELINE="357 3069 2130 3074" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="357 3069 355 3089 368 3098 370 3098 372 3098 374 3098 2128 3089 2130 3074 2128 3043 357 3039 357 3069"/>
+                        </Shape>
+                        <String CONTENT="abstinence, a passionate smoker, on consuming his first pipe in this hasty"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l43" HPOS="355" VPOS="3089" WIDTH="1773" HEIGHT="74" BASELINE="357 3134 2128 3128" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="357 3134 357 3152 534 3163 537 3163 2128 3147 2128 3128 2124 3100 1561 3089 1559 3089 1557 3089 1533 3100 994 3091 991 3091 989 3091 942 3102 593 3093 591 3093 355 3104 357 3134"/>
+                        </Shape>
+                        <String CONTENT="manner, often becomes so giddy that he falls unconscious. This is particularly"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-257_l44" HPOS="359" VPOS="3165" WIDTH="1065" HEIGHT="50" BASELINE="359 3195 1424 3195" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="359 3195 359 3215 1424 3215 1424 3195 1424 3165 359 3165 359 3195"/>
+                        </Shape>
+                        <String CONTENT="noticeable among the young men and women."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-257_r8" HPOS="347" VPOS="3238" WIDTH="1778" HEIGHT="76" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="347 3238 2125 3238 2125 3314 347 3314"/>
+                    </Shape>
+                    <TextLine ID="mz_1-257_l45" HPOS="359" VPOS="3247" WIDTH="689" HEIGHT="50" BASELINE="359 3275 1048 3275" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="359 3275 359 3297 1048 3297 1048 3275 1048 3247 359 3247 359 3275"/>
+                        </Shape>
+                        <String CONTENT="26—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

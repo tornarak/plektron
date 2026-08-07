@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-275.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-275.png; regions_from: zones/chukchi-1-275.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-275_r1" HPOS="363" VPOS="624" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="363 624 2141 624 2141 719 363 719"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l1" HPOS="944" VPOS="638" WIDTH="623" HEIGHT="54" BASELINE="946 675 1567 671" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1550 638 952 640 944 647 946 675 946 692 1565 688 1567 671 1563 651 1550 638"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l2" HPOS="2046" VPOS="645" WIDTH="82" HEIGHT="58" BASELINE="2046 684 2128 684" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2046 684 2046 694 2126 703 2128 684 2126 645 2046 645 2046 684"/>
+                        </Shape>
+                        <String CONTENT="215"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-275_r2" HPOS="363" VPOS="745" WIDTH="1778" HEIGHT="306" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="363 745 2141 745 2141 1051 363 1051"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l3" HPOS="478" VPOS="738" WIDTH="1659" HEIGHT="67" BASELINE="480 781 2137 785" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 781 478 794 493 805 495 805 498 805 500 805 2135 803 2137 785 2135 753 1873 740 1871 740 1765 751 1734 740 1732 740 1730 740 1728 740 1697 751 1684 740 1682 740 1680 740 1678 740 1676 740 1645 751 1600 740 1598 740 1596 740 1593 740 1567 751 1483 740 1481 740 1479 740 1453 751 1431 740 1429 740 1427 740 1424 740 1377 751 1152 738 1149 738 1147 738 1119 749 1061 738 1059 738 972 751 881 751 868 738 866 738 864 738 861 738 859 738 835 749 755 738 753 738 751 738 727 749 710 738 708 738 706 738 703 738 701 738 680 749 656 738 654 738 651 738 649 738 602 749 480 742 480 781"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee have little chance to split logs in their treeless country,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l4" HPOS="368" VPOS="801" WIDTH="1769" HEIGHT="69" BASELINE="368 844 2137 844" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 844 368 857 725 870 727 870 729 870 762 859 779 870 781 870 783 870 786 870 918 859 1013 870 1015 870 1104 859 1691 859 1717 870 1719 870 1721 870 2137 859 2137 844 2137 811 2115 801 2113 801 2111 801 2109 801 2072 811 2007 801 2005 801 2003 801 1972 811 1591 801 1589 801 1587 801 1550 811 1494 801 1492 801 1489 801 1448 811 1422 801 1420 801 1418 801 1290 811 1201 801 1199 801 1197 801 1195 801 1180 814 1091 814 1052 801 1050 801 1048 801 1046 801 1020 811 974 801 972 801 970 801 920 811 868 801 866 801 712 811 682 801 680 801 677 801 675 801 643 811 617 801 615 801 612 801 610 801 578 811 491 801 489 801 487 801 485 801 472 811 443 801 441 801 439 801 368 811 368 844"/>
+                        </Shape>
+                        <String CONTENT="and indeed they prefer simply to hew wood with their light adzes, though"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l5" HPOS="368" VPOS="861" WIDTH="1769" HEIGHT="63" BASELINE="370 904 2137 900" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 904 370 920 2133 924 2137 900 2133 872 1271 861 1269 861 1266 861 1264 861 1245 872 491 863 489 863 368 874 370 904"/>
+                        </Shape>
+                        <String CONTENT="sometimes it takes a day to cut a single sledge-runner. They have learned,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l6" HPOS="365" VPOS="930" WIDTH="1772" HEIGHT="50" BASELINE="368 961 2137 956" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 961 368 980 2135 976 2137 956 2133 930 365 930 368 961"/>
+                        </Shape>
+                        <String CONTENT="however, from the Yukaghir, who have more skill in handling wood, how to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l7" HPOS="368" VPOS="989" WIDTH="1377" HEIGHT="56" BASELINE="370 1019 1745 1024" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="370 1019 368 1039 372 1043 374 1043 374 1045 376 1045 378 1045 381 1045 1743 1037 1745 1024 1743 993 370 989 370 1019"/>
+                        </Shape>
+                        <String CONTENT="split wood by means of wedges made of the same material."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-275_r3" HPOS="363" VPOS="1051" WIDTH="1778" HEIGHT="358" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="363 1051 2141 1051 2141 1409 363 1409"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l8" HPOS="476" VPOS="1045" WIDTH="1663" HEIGHT="52" BASELINE="476 1082 2139 1082" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="476 1082 476 1097 2139 1097 2139 1082 2139 1052 476 1045 476 1082"/>
+                        </Shape>
+                        <String CONTENT="WORK IN IRON. — Work in iron has been but little developed up to the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l9" HPOS="365" VPOS="1097" WIDTH="1772" HEIGHT="69" BASELINE="368 1145 2137 1140" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1145 368 1166 2135 1156 2137 1140 2133 1110 2031 1097 2029 1097 2027 1097 1998 1108 1879 1097 1877 1097 1797 1108 1771 1097 1769 1097 1767 1097 1765 1097 1762 1097 1743 1110 1598 1110 1563 1097 1561 1097 1559 1097 1557 1097 1535 1108 1370 1097 1368 1097 1299 1108 1273 1097 1271 1097 1269 1097 1266 1097 1264 1097 1247 1110 1178 1099 1175 1099 1173 1099 1149 1110 1132 1099 1130 1099 1128 1099 1126 1099 896 1110 868 1099 866 1099 864 1099 861 1099 825 1110 729 1099 727 1099 632 1110 580 1099 578 1099 576 1099 573 1099 554 1112 365 1112 368 1145"/>
+                        </Shape>
+                        <String CONTENT="present time. This is explained by the difficulty in preparing charcoal, an"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l10" HPOS="368" VPOS="1169" WIDTH="1771" HEIGHT="52" BASELINE="368 1201 2139 1201" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1201 368 1221 2139 1221 2139 1201 2139 1171 368 1169 368 1201"/>
+                        </Shape>
+                        <String CONTENT="indispensable material for the smith. The Chukchee work chiefly on cold iron"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l11" HPOS="365" VPOS="1216" WIDTH="1772" HEIGHT="65" BASELINE="368 1264 2137 1257" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1264 368 1281 2135 1275 2137 1257 2133 1229 2024 1216 2022 1216 2020 1216 1994 1227 1979 1216 1977 1216 1975 1216 1972 1216 1877 1227 1855 1216 1853 1216 1851 1216 1849 1216 1825 1227 1773 1216 1771 1216 1624 1227 1596 1216 1593 1216 1591 1216 1589 1216 1541 1229 1518 1218 1515 1218 1513 1218 1511 1218 1483 1229 1340 1218 1338 1218 1264 1229 1240 1218 1238 1218 1236 1218 1182 1229 1102 1218 1100 1218 1097 1218 1095 1218 1080 1229 874 1221 872 1221 870 1221 868 1221 853 1231 491 1221 489 1221 487 1221 485 1221 472 1231 409 1221 407 1221 404 1221 365 1234 368 1264"/>
+                        </Shape>
+                        <String CONTENT="with file and hammer (Plate XX, Fig. 2). A few clay forges with large bellows"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l12" HPOS="363" VPOS="1279" WIDTH="1774" HEIGHT="69" BASELINE="365 1322 2137 1318" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 1322 365 1337 909 1337 1013 1348 1015 1348 1017 1348 1054 1337 1110 1348 1113 1348 1182 1337 1214 1348 1217 1348 1219 1348 1221 1348 1223 1348 1238 1337 1502 1346 1505 1346 1587 1335 1663 1346 1665 1346 1667 1346 1713 1335 1795 1346 1797 1346 1799 1346 1821 1335 1912 1346 1914 1346 1916 1346 1942 1335 2001 1346 2003 1346 2005 1346 2007 1346 2022 1335 2107 1346 2109 1346 2111 1346 2137 1333 2137 1318 2133 1290 1266 1279 1264 1279 1262 1279 1260 1279 1243 1292 363 1292 365 1322"/>
+                        </Shape>
+                        <String CONTENT="have been observed. Their form is directly copied after that used by Rus-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l13" HPOS="365" VPOS="1342" WIDTH="373" HEIGHT="58" BASELINE="368 1383 738 1379" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1383 368 1400 738 1396 738 1379 734 1350 391 1342 389 1342 387 1342 365 1350 368 1383"/>
+                        </Shape>
+                        <String CONTENT="sianized natives."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-275_r4" HPOS="363" VPOS="1409" WIDTH="1778" HEIGHT="838" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="363 1409 2141 1409 2141 2247 363 2247"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l14" HPOS="476" VPOS="1396" WIDTH="1659" HEIGHT="69" BASELINE="478 1444 2135 1439" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2130 1409 2130 1409 2079 1396 2076 1396 2074 1396 2035 1407 2011 1396 2009 1396 2007 1396 2005 1396 1983 1407 1914 1396 1912 1396 1910 1396 1907 1396 1890 1407 1819 1396 1816 1396 1814 1396 1812 1396 1793 1409 1630 1409 1617 1396 1615 1396 1613 1396 1611 1396 1609 1396 1576 1407 1461 1396 1459 1396 1342 1407 1314 1396 1312 1396 1310 1396 1308 1396 1305 1396 1288 1409 1247 1398 1245 1398 1243 1398 1240 1398 1199 1409 1106 1398 1104 1398 1102 1398 1078 1409 1024 1398 1022 1398 1020 1398 1017 1398 1000 1409 911 1398 909 1398 818 1409 749 1398 747 1398 744 1398 714 1409 703 1398 701 1398 699 1398 697 1398 476 1405 478 1444 478 1461 2130 1465 2135 1439 2133 1431 2130 1409"/>
+                        </Shape>
+                        <String CONTENT="The Chukchee bellows in the collection (Fig. 136) are made of seal-skin,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l15" HPOS="365" VPOS="1461" WIDTH="564" HEIGHT="56" BASELINE="368 1502 929 1500" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1502 368 1517 926 1517 929 1500 924 1472 409 1461 407 1461 404 1461 365 1472 368 1502"/>
+                        </Shape>
+                        <String CONTENT="with boards on the top"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l16" HPOS="365" VPOS="1524" WIDTH="566" HEIGHT="54" BASELINE="368 1565 931 1558" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1565 368 1578 929 1573 931 1558 926 1526 433 1524 430 1524 365 1534 368 1565"/>
+                        </Shape>
+                        <String CONTENT="and bottom. A barrel"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l17" HPOS="365" VPOS="1580" WIDTH="568" HEIGHT="61" BASELINE="368 1625 933 1619" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1625 368 1641 931 1634 933 1619 929 1589 558 1580 556 1580 365 1593 368 1625"/>
+                        </Shape>
+                        <String CONTENT="of an old gun is inserted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l18" HPOS="363" VPOS="1636" WIDTH="570" HEIGHT="61" BASELINE="365 1682 933 1677" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 1682 365 1697 933 1693 933 1677 929 1647 669 1636 667 1636 664 1636 662 1636 641 1649 576 1638 573 1638 571 1638 569 1638 556 1651 413 1651 383 1638 381 1638 378 1638 376 1638 374 1638 363 1643 365 1682"/>
+                        </Shape>
+                        <String CONTENT="for a nozzle. The bellows"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l19" HPOS="365" VPOS="1699" WIDTH="566" HEIGHT="69" BASELINE="368 1742 931 1738" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1742 368 1757 521 1768 524 1768 929 1753 931 1738 926 1710 684 1699 682 1699 680 1699 643 1710 554 1701 552 1701 365 1712 368 1742"/>
+                        </Shape>
+                        <String CONTENT="are worked simply with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l20" HPOS="365" VPOS="1762" WIDTH="566" HEIGHT="65" BASELINE="368 1803 931 1799" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 1803 368 1816 586 1827 589 1827 658 1814 825 1827 827 1827 829 1827 831 1827 831 1825 842 1816 855 1825 857 1825 859 1825 861 1825 929 1812 931 1799 926 1770 385 1762 383 1762 381 1762 378 1762 365 1768 368 1803"/>
+                        </Shape>
+                        <String CONTENT="the hands. Among the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l21" HPOS="365" VPOS="1812" WIDTH="1770" HEIGHT="67" BASELINE="368 1861 2135 1853" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2120 1825 2098 1825 2076 1825 2055 1822 2033 1822 2011 1822 1990 1820 1968 1820 1946 1820 1925 1818 1903 1818 1881 1818 1860 1818 1838 1816 1816 1816 1795 1816 1773 1814 1752 1814 1730 1814 1717 1812 1687 1822 1312 1814 1310 1814 1245 1825 890 1816 887 1816 803 1829 365 1829 368 1861 368 1879 2133 1870 2135 1853 2130 1825 2120 1825"/>
+                        </Shape>
+                        <String CONTENT="Russianized natives and the Koryak a string is sometimes tied to an iron eye"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l22" HPOS="363" VPOS="1881" WIDTH="1774" HEIGHT="56" BASELINE="365 1922 2137 1913" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 1922 365 1937 2135 1929 2137 1913 2130 1881 363 1887 365 1922"/>
+                        </Shape>
+                        <String CONTENT="fastened to the handle of the bellows. This string is passed over a smooth"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l23" HPOS="363" VPOS="1937" WIDTH="1774" HEIGHT="63" BASELINE="365 1983 2137 1972" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 1983 365 1998 1780 2000 1782 2000 2135 1987 2137 1972 2130 1937 363 1946 365 1983"/>
+                        </Shape>
+                        <String CONTENT="beam; and the operator can thus work the bellows by pulling the string, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l24" HPOS="363" VPOS="1991" WIDTH="1774" HEIGHT="67" BASELINE="365 2043 2137 2032" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2043 365 2058 2135 2048 2137 2032 2130 1998 1977 2002 1914 1991 1912 1991 1840 2002 1793 1991 1790 1991 1788 1991 1786 1991 1784 1991 1765 2006 1678 2006 1578 1993 1576 1993 1574 1993 1528 2004 1466 1993 1463 1993 1461 1993 1459 1993 1442 2004 1370 1996 1368 1996 1366 1996 1364 1996 1349 2009 1167 2009 1074 1996 1071 1996 1069 1996 1067 1996 1052 2011 911 2011 894 1998 892 1998 890 1998 788 1998 786 1998 712 2011 697 2000 695 2000 693 2000 690 2000 474 2011 387 2000 385 2000 383 2000 363 2009 365 2043"/>
+                        </Shape>
+                        <String CONTENT="does not need to bend over. The eye on the side of the specimen illustrated"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l25" HPOS="365" VPOS="2061" WIDTH="1770" HEIGHT="58" BASELINE="368 2104 2135 2093" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 2104 368 2119 2133 2108 2135 2093 2128 2061 365 2065 368 2104"/>
+                        </Shape>
+                        <String CONTENT="in Fig. 136, however, is hardly placed in the proper place for such an ar-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l26" HPOS="363" VPOS="2119" WIDTH="1774" HEIGHT="71" BASELINE="365 2165 2137 2149" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2165 365 2177 469 2190 472 2190 621 2177 757 2186 760 2186 942 2175 1308 2184 1310 2184 1483 2171 1515 2182 1518 2182 1520 2182 1669 2169 1756 2180 1758 2180 2135 2171 2137 2149 2130 2119 363 2132 365 2165"/>
+                        </Shape>
+                        <String CONTENT="rangement. Iron is cut with files bought from traders. Sometimes a stout"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l27" HPOS="363" VPOS="2173" WIDTH="1501" HEIGHT="65" BASELINE="365 2225 1864 2216" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2225 365 2238 1864 2234 1864 2216 1860 2184 1626 2173 1624 2173 1622 2173 1619 2173 1606 2184 1197 2175 1195 2175 1110 2188 1050 2177 1048 2177 1046 2177 1009 2188 968 2177 965 2177 963 2177 961 2177 935 2188 890 2177 887 2177 885 2177 807 2188 363 2188 365 2225"/>
+                        </Shape>
+                        <String CONTENT="iron saw of native make is also used for this purpose (Fig. 137)."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-275_r5" HPOS="363" VPOS="2247" WIDTH="1778" HEIGHT="656" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="363 2247 2141 2247 2141 2903 363 2903"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l28" HPOS="474" VPOS="2236" WIDTH="671" HEIGHT="69" BASELINE="476 2284 1145 2277" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="476 2284 476 2294 695 2305 697 2305 803 2294 1128 2301 1130 2301 1132 2301 1134 2301 1145 2290 1145 2277 1139 2238 755 2247 723 2236 721 2236 718 2236 649 2249 612 2238 610 2238 608 2238 543 2249 482 2238 480 2238 478 2238 476 2238 476 2240 474 2240 476 2284"/>
+                        </Shape>
+                        <String CONTENT="The Reindeer Chukchee of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l29" HPOS="363" VPOS="2294" WIDTH="780" HEIGHT="74" BASELINE="365 2344 1143 2336" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2344 365 2357 556 2368 558 2368 654 2355 744 2364 747 2364 749 2364 751 2364 751 2362 753 2362 760 2353 786 2364 788 2364 790 2366 885 2366 885 2364 887 2364 890 2364 890 2362 900 2353 1056 2362 1059 2362 1061 2362 1063 2362 1063 2359 1074 2351 1121 2362 1123 2362 1126 2362 1128 2362 1143 2349 1143 2336 1139 2307 998 2294 996 2294 994 2294 942 2307 840 2297 838 2297 621 2310 558 2299 556 2299 461 2312 381 2301 378 2301 376 2301 374 2301 363 2307 365 2344"/>
+                        </Shape>
+                        <String CONTENT="the Kolyma are quite unable to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l30" HPOS="363" VPOS="2355" WIDTH="780" HEIGHT="65" BASELINE="365 2403 1143 2394" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2403 365 2420 1141 2411 1143 2394 1139 2366 946 2355 944 2355 942 2355 939 2355 926 2366 582 2359 580 2359 363 2372 365 2403"/>
+                        </Shape>
+                        <String CONTENT="mend their iron tools and articles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l31" HPOS="363" VPOS="2420" WIDTH="782" HEIGHT="67" BASELINE="365 2463 1145 2457" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2463 365 2476 547 2487 550 2487 625 2474 727 2485 729 2485 731 2485 755 2474 790 2485 792 2485 794 2485 846 2474 859 2485 861 2485 864 2485 866 2485 1063 2483 1065 2483 1067 2483 1067 2481 1078 2472 1115 2483 1117 2483 1119 2483 1121 2483 1145 2470 1145 2457 1141 2429 625 2420 623 2420 621 2420 619 2420 619 2422 617 2422 610 2431 378 2422 376 2422 374 2422 372 2422 363 2426 365 2463"/>
+                        </Shape>
+                        <String CONTENT="they use. They are compelled to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l32" HPOS="363" VPOS="2478" WIDTH="780" HEIGHT="59" BASELINE="365 2522 1143 2515" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2522 365 2537 1141 2530 1143 2515 1139 2487 621 2478 619 2478 617 2478 591 2489 437 2481 435 2481 363 2491 365 2522"/>
+                        </Shape>
+                        <String CONTENT="seek the Lamut or the Russians"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l33" HPOS="363" VPOS="2541" WIDTH="780" HEIGHT="63" BASELINE="365 2582 1143 2576" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="363 2556 365 2582 365 2595 818 2604 820 2604 822 2604 825 2604 825 2602 835 2593 896 2602 898 2602 1004 2591 1015 2600 1015 2602 1017 2602 1020 2602 1022 2604 1110 2604 1110 2602 1113 2602 1143 2589 1143 2576 1139 2548 376 2541 374 2541 372 2541 363 2556"/>
+                        </Shape>
+                        <String CONTENT="for the most trifling cases. Rein-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l34" HPOS="363" VPOS="2598" WIDTH="780" HEIGHT="58" BASELINE="365 2641 1143 2634" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2641 365 2656 1141 2649 1143 2634 1139 2606 621 2598 619 2598 617 2598 615 2598 595 2608 385 2600 383 2600 381 2600 378 2600 363 2606 365 2641"/>
+                        </Shape>
+                        <String CONTENT="deer-Chukchee blacksmiths are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l35" HPOS="363" VPOS="2660" WIDTH="780" HEIGHT="63" BASELINE="365 2701 1143 2697" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2701 365 2714 1015 2723 1017 2723 1020 2723 1022 2723 1022 2721 1033 2712 1141 2712 1143 2697 1139 2665 500 2660 498 2660 363 2671 365 2701"/>
+                        </Shape>
+                        <String CONTENT="exceedingly few in number, and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l36" HPOS="363" VPOS="2719" WIDTH="784" HEIGHT="67" BASELINE="365 2762 1147 2756" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2762 365 2773 606 2786 608 2786 610 2786 612 2786 628 2773 654 2784 656 2784 658 2784 721 2773 835 2784 838 2784 840 2784 868 2773 879 2782 879 2784 881 2784 883 2784 885 2784 952 2771 1126 2782 1128 2782 1130 2782 1132 2782 1147 2769 1147 2756 1143 2719 658 2719 656 2719 654 2719 619 2730 383 2721 381 2721 378 2721 376 2721 363 2727 365 2762"/>
+                        </Shape>
+                        <String CONTENT="throughout the tribe the craft of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l37" HPOS="365" VPOS="2790" WIDTH="780" HEIGHT="50" BASELINE="365 2820 1145 2820" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2820 365 2840 1145 2840 1145 2820 1145 2790 365 2790 365 2820"/>
+                        </Shape>
+                        <String CONTENT="the smith is esteemed as the height"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l38" HPOS="363" VPOS="2840" WIDTH="490" HEIGHT="58" BASELINE="365 2883 853 2879" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 2883 365 2898 851 2894 853 2879 848 2851 628 2840 625 2840 623 2840 602 2851 402 2842 400 2842 398 2842 363 2853 365 2883"/>
+                        </Shape>
+                        <String CONTENT="of human cleverness."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-275_r6" HPOS="363" VPOS="2903" WIDTH="1778" HEIGHT="241" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="363 2903 2141 2903 2141 3144 363 3144"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l39" HPOS="472" VPOS="2885" WIDTH="1665" HEIGHT="74" BASELINE="474 2944 2137 2929" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2007 2885 1933 2896 1912 2885 1910 2885 1907 2885 1905 2885 1903 2885 1888 2898 1726 2888 1723 2888 1604 2901 1424 2890 1422 2890 1362 2903 1193 2892 1191 2892 1128 2905 1104 2894 1102 2894 1100 2894 1002 2905 950 2894 948 2894 946 2894 944 2894 931 2905 918 2896 916 2896 913 2896 911 2896 790 2907 736 2896 734 2896 658 2911 530 2911 511 2898 508 2898 506 2898 504 2898 502 2898 472 2907 474 2944 474 2959 2135 2953 2137 2929 2133 2898 2009 2885 2007 2885"/>
+                        </Shape>
+                        <String CONTENT="In one of the Chukchee tales¹ borrowed from the Russians, and curiously"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l40" HPOS="361" VPOS="2950" WIDTH="1778" HEIGHT="68" BASELINE="363 3005 2139 2989" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="363 3005 363 3018 2137 3005 2139 2989 2135 2957 1619 2950 1617 2950 1615 2950 1587 2961 1401 2953 1399 2953 361 2970 363 3005"/>
+                        </Shape>
+                        <String CONTENT="adapted to their own ideas about the civilized world, the hero is a young son"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l41" HPOS="363" VPOS="3009" WIDTH="1774" HEIGHT="69" BASELINE="365 3063 2137 3050" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="365 3063 365 3078 2135 3065 2137 3050 2130 3015 1936 3020 1903 3009 1901 3009 1899 3009 1730 3022 1624 3011 1622 3011 1487 3024 1459 3013 1457 3013 1455 3013 1453 3013 1427 3024 1364 3013 1362 3013 1360 3013 1357 3013 1340 3024 1212 3015 1210 3015 1208 3015 1206 3015 1188 3028 1002 3028 972 3015 970 3015 968 3015 965 3015 963 3015 950 3028 922 3018 920 3018 918 3018 781 3028 701 3018 699 3018 697 3018 695 3018 680 3031 554 3031 407 3020 404 3020 402 3020 363 3033 365 3063"/>
+                        </Shape>
+                        <String CONTENT="of the great Sun chief; i. e., a prince. He is described as handsome and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-275_l42" HPOS="365" VPOS="3072" WIDTH="1077" HEIGHT="71" BASELINE="368 3124 1442 3113" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="368 3124 368 3137 1009 3143 1011 3143 1013 3143 1043 3132 1418 3139 1420 3139 1422 3139 1424 3139 1442 3128 1442 3113 1433 3072 1412 3082 1394 3072 1392 3072 1390 3072 1388 3072 1292 3082 1266 3072 1264 3072 1262 3072 1260 3072 1258 3072 1243 3082 1182 3074 1180 3074 1119 3085 1091 3074 1089 3074 1087 3074 994 3087 983 3078 983 3076 981 3076 978 3076 976 3076 900 3087 827 3076 825 3076 822 3076 790 3089 580 3078 578 3078 576 3078 539 3091 391 3080 389 3080 387 3080 385 3080 365 3091 368 3124"/>
+                        </Shape>
+                        <String CONTENT="clever, with a face “like that of a blacksmith.”"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-275_r7" HPOS="363" VPOS="3144" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="363 3144 2141 3144 2141 3204 363 3204"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l43" HPOS="478" VPOS="3128" WIDTH="1659" HEIGHT="67" BASELINE="480 3180 2137 3169" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="480 3180 480 3195 2137 3186 2137 3169 2135 3139 2115 3128 2113 3128 2111 3128 2109 3128 2022 3139 1998 3128 1996 3128 1994 3128 1992 3128 1990 3128 1975 3139 1907 3128 1905 3128 1799 3143 1656 3143 1632 3130 1630 3130 1628 3130 1626 3130 1624 3130 1611 3143 1509 3143 1476 3130 1474 3130 1472 3130 1470 3130 1431 3143 1266 3132 1264 3132 1212 3143 1186 3132 1184 3132 1182 3132 1180 3132 1136 3147 1000 3147 987 3134 985 3134 983 3134 844 3134 842 3134 840 3134 805 3147 734 3137 731 3137 680 3147 654 3137 651 3137 649 3137 478 3143 480 3180"/>
+                        </Shape>
+                        <String CONTENT="The Maritime Chukchee on the Pacific side are better acquainted with"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-275_r8" HPOS="363" VPOS="3213" WIDTH="1778" HEIGHT="60" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="363 3213 2141 3213 2141 3273 363 3273"/>
+                    </Shape>
+                    <TextLine ID="mz_1-275_l44" HPOS="939" VPOS="3219" WIDTH="633" HEIGHT="47" BASELINE="939 3245 1572 3245" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="939 3245 939 3266 1572 3266 1572 3245 1572 3219 939 3219 939 3245"/>
+                        </Shape>
+                        <String CONTENT="¹ Bogoras, Chukchee Materials, p. 324."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

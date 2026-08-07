@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-262.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-262.png; regions_from: zones/chukchi-1-262.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-262_r1" HPOS="733" VPOS="539" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="733 539 2511 539 2511 629 733 629"/>
+                    </Shape>
+                    <TextLine ID="mz_1-262_l1" HPOS="1316" VPOS="554" WIDTH="615" HEIGHT="54" BASELINE="1318 584 1931 591" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="1925 554 1726 554 1708 554 1687 554 1665 554 1643 554 1622 554 1600 554 1578 554 1557 554 1535 554 1513 554 1492 554 1470 554 1448 554 1427 554 1405 554 1383 554 1362 554 1340 554 1318 554 1318 584 1316 601 1927 608 1931 591 1929 562 1925 554"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l2" HPOS="738" VPOS="558" WIDTH="108" HEIGHT="56" BASELINE="740 593 846 588" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 565 740 593 740 604 790 614 792 614 846 601 846 588 827 558 740 560 738 565"/>
+                        </Shape>
+                        <String CONTENT="206"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-262_r2" HPOS="733" VPOS="654" WIDTH="1778" HEIGHT="959" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="733 654 2511 654 2511 1613 733 1613"/>
+                    </Shape>
+                    <TextLine ID="mz_1-262_l3" HPOS="731" VPOS="655" WIDTH="1778" HEIGHT="61" BASELINE="731 699 2509 699" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2486 664 2464 664 2442 664 2421 662 2416 662 2406 666 2380 662 2377 662 2356 660 2334 660 2312 660 2299 660 2241 666 2174 655 2172 655 1855 666 1803 655 1801 655 1799 655 1767 666 1743 655 1741 655 1598 655 1596 655 1593 655 1591 655 1576 668 1444 668 1373 655 1370 655 1264 666 1160 655 1158 655 1100 666 1035 655 1033 655 809 666 757 655 755 655 753 655 731 666 731 699 731 716 2509 716 2509 699 2509 668 2486 664 2486 664"/>
+                        </Shape>
+                        <String CONTENT="the consumption of the mushrooms. Usually the person remains awake; but"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l4" HPOS="731" VPOS="723" WIDTH="1776" HEIGHT="52" BASELINE="734 755 2507 759" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 755 731 770 2503 775 2507 759 2505 727 734 723 734 755"/>
+                        </Shape>
+                        <String CONTENT="the natives say that if a person falls asleep immediately after eating mushrooms,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l5" HPOS="731" VPOS="775" WIDTH="1778" HEIGHT="58" BASELINE="734 820 2509 816" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 820 734 833 2507 829 2509 816 2505 788 2315 788 2289 775 2286 775 2284 775 2189 785 2137 775 2135 775 2074 785 2027 775 2024 775 2022 775 1972 785 1920 775 1918 775 1916 775 1881 785 1790 775 1788 775 1786 775 1784 775 1769 788 1678 788 1635 775 1632 775 1630 775 1628 775 1626 775 1615 785 1585 777 1583 777 1580 777 1518 788 1453 777 1450 777 968 788 898 777 896 777 844 788 751 777 749 777 747 777 744 777 731 785 734 820"/>
+                        </Shape>
+                        <String CONTENT="they will work more effectively, and in a short time he will awaken more"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l6" HPOS="734" VPOS="835" WIDTH="1775" HEIGHT="59" BASELINE="734 878 2509 878" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 878 734 894 2509 894 2509 878 2509 848 2458 835 2455 835 2453 835 2423 846 2377 835 2375 835 2373 835 2371 835 2338 848 2085 848 2040 835 2037 835 2035 835 1953 846 1925 835 1923 835 1920 835 1868 846 1836 835 1834 835 1832 835 1829 835 1793 846 1758 835 1756 835 1754 835 1752 835 1710 846 1654 835 1652 835 1650 835 1624 846 1541 835 1539 835 1537 835 1535 835 1518 848 1377 848 1286 835 1284 835 1282 835 1279 835 1264 846 1180 835 1178 835 1110 846 1076 835 1074 835 1071 835 981 846 911 835 909 835 792 846 762 835 760 835 757 835 755 835 734 846 734 878"/>
+                        </Shape>
+                        <String CONTENT="thoroughly under their influence. The intoxication has three stages. In the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l7" HPOS="734" VPOS="894" WIDTH="1771" HEIGHT="60" BASELINE="736 937 2505 935" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 937 736 954 2503 952 2505 935 2501 907 2425 894 2423 894 2421 894 2390 904 2369 894 2367 894 2364 894 2362 894 2325 904 2269 894 2267 894 2204 907 1968 907 1938 894 1936 894 1933 894 1931 894 1894 904 1836 894 1834 894 1756 904 1684 894 1682 894 1630 904 1535 894 1533 894 1453 904 1407 894 1405 894 1403 894 1318 904 1258 894 1256 894 1253 894 1208 904 1119 894 1117 894 1115 894 1113 894 1097 907 922 907 866 894 864 894 861 894 827 904 753 894 751 894 749 894 747 894 734 902 736 937"/>
+                        </Shape>
+                        <String CONTENT="first the person feels pleasantly excited. His agility increases, and he displays"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l8" HPOS="736" VPOS="954" WIDTH="1773" HEIGHT="61" BASELINE="736 998 2509 998" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 998 736 1015 2509 1015 2509 998 2509 967 2449 954 2447 954 2445 954 2421 965 2360 954 2358 954 2356 954 2332 965 2295 954 2293 954 2291 954 2124 965 2048 954 2046 954 2044 954 2018 967 1875 967 1840 954 1838 954 1836 954 1777 965 1747 954 1745 954 1743 954 1741 954 1739 954 1723 965 1632 954 1630 954 1567 965 1511 954 1509 954 1507 954 1505 954 1485 967 1327 967 1282 954 1279 954 1277 954 1275 954 1243 965 1219 954 1217 954 1214 954 1063 965 1046 954 1043 954 1041 954 900 954 898 954 896 954 872 967 736 967 736 998"/>
+                        </Shape>
+                        <String CONTENT="more physical strength than normally. Reindeer-hunters of the Middle Anadyr"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l9" HPOS="734" VPOS="1026" WIDTH="1775" HEIGHT="47" BASELINE="734 1056 2509 1056" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1056 734 1073 2509 1073 2509 1056 2509 1026 734 1026 734 1056"/>
+                        </Shape>
+                        <String CONTENT="told me that before starting in canoes in pursuit of animals, they would chew"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l10" HPOS="734" VPOS="1086" WIDTH="1775" HEIGHT="48" BASELINE="734 1117 2509 1117" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1117 734 1134 2509 1134 2509 1117 2509 1086 734 1086 734 1117"/>
+                        </Shape>
+                        <String CONTENT="agaric because that made them more nimble on the hunt. A native fellow-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l11" HPOS="731" VPOS="1143" WIDTH="1778" HEIGHT="58" BASELINE="734 1173 2509 1177" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1173 731 1188 747 1199 749 1199 751 1199 753 1199 1479 1190 1624 1201 1626 1201 2507 1190 2509 1177 2507 1143 734 1143 734 1173"/>
+                        </Shape>
+                        <String CONTENT="traveller of mine, after taking agaric, would lay aside his snow-shoes and"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l12" HPOS="731" VPOS="1201" WIDTH="1778" HEIGHT="59" BASELINE="734 1234 2509 1238" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1234 731 1247 753 1260 755 1260 757 1260 2507 1251 2509 1238 2507 1205 734 1201 734 1234"/>
+                        </Shape>
+                        <String CONTENT="walk through the deep snow hour after hour by the side of his dogs for the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l13" HPOS="731" VPOS="1255" WIDTH="1778" HEIGHT="67" BASELINE="734 1299 2509 1294" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1299 734 1311 1349 1322 1351 1322 1353 1322 1355 1322 1370 1311 1940 1320 1942 1320 1944 1320 1946 1320 1964 1309 2182 1320 2185 1320 2187 1320 2228 1309 2241 1320 2243 1320 2245 1320 2247 1322 2490 1322 2490 1320 2492 1320 2494 1320 2509 1307 2509 1294 2505 1264 905 1255 903 1255 731 1266 734 1299"/>
+                        </Shape>
+                        <String CONTENT="mere pleasure of exercise, and without any feeling of fatigue. During this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l14" HPOS="736" VPOS="1322" WIDTH="1773" HEIGHT="59" BASELINE="736 1357 2509 1357" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1357 736 1381 2509 1370 2509 1357 2507 1322 736 1324 736 1357"/>
+                        </Shape>
+                        <String CONTENT="period the agaric-eater sings and dances. He frequently bursts into loud"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l15" HPOS="734" VPOS="1379" WIDTH="1778" HEIGHT="60" BASELINE="734 1418 2512 1418" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="734 1418 734 1439 2512 1431 2512 1418 2509 1379 734 1385 734 1418"/>
+                        </Shape>
+                        <String CONTENT="peals of laughter without any apparent reason. It is a state altogether of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l16" HPOS="736" VPOS="1446" WIDTH="1773" HEIGHT="47" BASELINE="736 1476 2509 1476" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1476 736 1493 2509 1493 2509 1476 2509 1446 736 1446 736 1476"/>
+                        </Shape>
+                        <String CONTENT="noisy joviality. His face acquires a darker hue and twitches nervously; his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l17" HPOS="734" VPOS="1500" WIDTH="1773" HEIGHT="52" BASELINE="736 1530 2507 1534" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1530 734 1547 2503 1552 2507 1534 2505 1504 736 1500 736 1530"/>
+                        </Shape>
+                        <String CONTENT="eyes are now contracted, and again almost bursting from their sockets; his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l18" HPOS="736" VPOS="1567" WIDTH="1295" HEIGHT="45" BASELINE="736 1595 2031 1595" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1595 736 1612 2031 1612 2031 1595 2031 1567 736 1567 736 1595"/>
+                        </Shape>
+                        <String CONTENT="mouth puckers and grins or spreads into a broad smile."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-262_r3" HPOS="733" VPOS="1613" WIDTH="1778" HEIGHT="600" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="733 1613 2511 1613 2511 2213 733 2213"/>
+                    </Shape>
+                    <TextLine ID="mz_1-262_l19" HPOS="835" VPOS="1619" WIDTH="1677" HEIGHT="63" BASELINE="838 1651 2512 1656" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="838 1651 835 1667 851 1677 853 1677 855 1677 1000 1680 1002 1680 1004 1680 1007 1680 1020 1669 1054 1680 1056 1680 1059 1680 1061 1680 1097 1669 1210 1669 1230 1680 1232 1680 1234 1680 1236 1680 1674 1669 1702 1682 1704 1682 1706 1682 1836 1671 1938 1682 1940 1682 2005 1671 2135 1682 2137 1682 2139 1682 2176 1671 2509 1671 2512 1656 2512 1625 838 1619 838 1651"/>
+                        </Shape>
+                        <String CONTENT="Flashes of the second stage often appear early, shortly after the first"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l20" HPOS="734" VPOS="1671" WIDTH="1773" HEIGHT="63" BASELINE="736 1716 2507 1712" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1716 736 1734 2505 1734 2507 1712 2505 1684 2471 1671 2468 1671 2466 1671 2464 1671 2440 1682 2297 1671 2295 1671 2293 1671 2291 1671 2276 1684 1964 1684 1918 1671 1916 1671 1914 1671 1912 1671 1888 1682 1847 1671 1845 1671 1842 1671 1840 1671 1795 1682 1769 1671 1767 1671 1765 1671 1762 1671 1728 1682 1641 1671 1639 1671 1637 1671 1635 1671 1615 1684 1570 1673 1567 1673 1565 1673 1199 1684 1180 1673 1178 1673 1175 1673 933 1673 931 1673 929 1673 903 1684 753 1675 751 1675 749 1675 747 1675 734 1682 736 1716"/>
+                        </Shape>
+                        <String CONTENT="traces of intoxication become visible; indeed, all three stages are frequently"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l21" HPOS="736" VPOS="1742" WIDTH="1771" HEIGHT="50" BASELINE="736 1775 2507 1775" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 1775 736 1792 2507 1792 2507 1775 2507 1744 736 1742 736 1775"/>
+                        </Shape>
+                        <String CONTENT="intermingled. This is noticeable especially among elderly inveterate agaric-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l22" HPOS="738" VPOS="1805" WIDTH="1771" HEIGHT="48" BASELINE="738 1835 2509 1835" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 1835 738 1853 2509 1853 2509 1835 2509 1805 738 1805 738 1835"/>
+                        </Shape>
+                        <String CONTENT="eaters. During the second stage the intoxicated person hears strange voices"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l23" HPOS="736" VPOS="1855" WIDTH="1776" HEIGHT="58" BASELINE="738 1896 2512 1892" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 1896 738 1913 2509 1909 2512 1892 2505 1855 736 1859 738 1896"/>
+                        </Shape>
+                        <String CONTENT="bidding him perform more or less incongruous actions; he sees the spirits of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l24" HPOS="738" VPOS="1924" WIDTH="1769" HEIGHT="52" BASELINE="738 1954 2507 1954" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 1954 738 1970 2505 1976 2507 1954 2507 1924 738 1924 738 1954"/>
+                        </Shape>
+                        <String CONTENT="fly-agaric and talks to them. He still recognizes surrounding objects, however,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l25" HPOS="734" VPOS="1974" WIDTH="1775" HEIGHT="56" BASELINE="736 2015 2509 2011" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 2015 736 2030 2507 2026 2509 2011 2505 1980 803 1974 801 1974 734 1985 736 2015"/>
+                        </Shape>
+                        <String CONTENT="and when talked to is able to answer. All things appear to him increased"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l26" HPOS="736" VPOS="2037" WIDTH="1773" HEIGHT="56" BASELINE="738 2074 2509 2078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2074 736 2087 2505 2093 2509 2078 2507 2045 738 2037 738 2074"/>
+                        </Shape>
+                        <String CONTENT="in size. For instance, when entering a room and stepping over the door-sill,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l27" HPOS="738" VPOS="2100" WIDTH="1774" HEIGHT="52" BASELINE="738 2134 2512 2134" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2134 738 2152 2512 2152 2512 2134 2512 2104 738 2100 738 2134"/>
+                        </Shape>
+                        <String CONTENT="he will raise his feet exceedingly high. The handle of a knife seems to him"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l28" HPOS="736" VPOS="2160" WIDTH="1165" HEIGHT="61" BASELINE="738 2193 1901 2197" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2193 736 2208 749 2219 751 2219 753 2219 755 2219 757 2219 794 2208 829 2219 831 2219 833 2219 898 2208 959 2219 961 2219 963 2219 1004 2208 1295 2208 1314 2221 1316 2221 1318 2221 1321 2221 1899 2208 1901 2197 1899 2165 738 2160 738 2193"/>
+                        </Shape>
+                        <String CONTENT="so big that he wants to grasp it with both hands."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-262_r4" HPOS="733" VPOS="2213" WIDTH="1778" HEIGHT="602" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="733 2213 2511 2213 2511 2815 733 2815"/>
+                    </Shape>
+                    <TextLine ID="mz_1-262_l29" HPOS="844" VPOS="2210" WIDTH="1668" HEIGHT="67" BASELINE="846 2251 2512 2255" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="846 2251 844 2264 926 2277 929 2277 2509 2268 2512 2255 2509 2216 920 2221 846 2210 846 2251"/>
+                        </Shape>
+                        <String CONTENT="The spirits of fly-agaric have an outward appearance similar to that of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l30" HPOS="736" VPOS="2281" WIDTH="1773" HEIGHT="57" BASELINE="738 2312 2509 2316" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2312 736 2325 766 2338 768 2338 770 2338 2507 2329 2509 2316 2509 2286 738 2281 738 2312"/>
+                        </Shape>
+                        <String CONTENT="the actual mushrooms, and the agaric-eater feels impelled to imitate them."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l31" HPOS="738" VPOS="2338" WIDTH="1774" HEIGHT="54" BASELINE="738 2375 2512 2375" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2375 738 2392 2512 2392 2512 2375 2512 2344 738 2338 738 2375"/>
+                        </Shape>
+                        <String CONTENT="For example, I saw one man suddenly snatch a small narrow bag and pull"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l32" HPOS="736" VPOS="2396" WIDTH="1773" HEIGHT="63" BASELINE="738 2431 2509 2435" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2431 736 2444 812 2457 814 2457 1572 2448 1626 2459 1628 2459 2507 2448 2509 2435 2509 2403 738 2396 738 2431"/>
+                        </Shape>
+                        <String CONTENT="it with all his might over his head, trying to break through the bottom. He"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l33" HPOS="738" VPOS="2463" WIDTH="1774" HEIGHT="50" BASELINE="738 2494 2512 2494" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2494 738 2513 2512 2513 2512 2494 2512 2463 738 2463 738 2494"/>
+                        </Shape>
+                        <String CONTENT="was evidently imitating the mushroom bursting forth from the ground. Another"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l34" HPOS="738" VPOS="2524" WIDTH="1774" HEIGHT="45" BASELINE="738 2554 2512 2554" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2503 2524 738 2524 738 2554 738 2569 2512 2569 2512 2554 2512 2546 2503 2524"/>
+                        </Shape>
+                        <String CONTENT="walked around with his neck drawn in, and assured every one that he had"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l35" HPOS="738" VPOS="2572" WIDTH="1774" HEIGHT="58" BASELINE="738 2615 2512 2615" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2615 738 2630 2512 2630 2512 2615 2512 2582 2479 2572 2477 2572 2475 2572 2423 2582 2358 2572 2356 2572 2354 2572 2323 2582 2291 2572 2289 2572 2286 2572 2284 2572 2254 2582 2092 2572 2089 2572 2087 2572 2085 2572 2068 2585 1754 2585 1723 2572 1721 2572 1719 2572 1557 2582 1502 2572 1500 2572 1498 2572 1466 2582 1407 2572 1405 2572 1403 2572 1401 2572 1390 2582 1377 2572 1375 2572 1373 2572 1269 2572 1266 2572 1264 2572 1262 2572 1249 2582 1193 2572 1191 2572 1074 2582 1002 2572 1000 2572 998 2572 959 2582 946 2572 944 2572 942 2572 838 2572 835 2572 738 2582 738 2615"/>
+                        </Shape>
+                        <String CONTENT="no head. He would bend his knees and move very quickly, swinging his"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l36" HPOS="736" VPOS="2632" WIDTH="1773" HEIGHT="59" BASELINE="736 2675 2509 2675" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 2675 736 2691 2509 2691 2509 2675 2509 2645 2458 2632 2455 2632 2453 2632 2412 2643 2349 2632 2347 2632 2345 2632 2317 2643 2204 2632 2202 2632 1743 2643 1721 2632 1719 2632 1583 2632 1580 2632 1578 2632 1557 2643 1524 2632 1522 2632 1520 2632 1518 2632 1515 2632 1498 2645 1392 2645 1292 2632 1290 2632 1225 2643 1126 2632 1123 2632 1071 2643 909 2632 907 2632 905 2632 881 2645 736 2645 736 2675"/>
+                        </Shape>
+                        <String CONTENT="arms violently about. This was in imitation of the spirits of fly-agaric, who"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l37" HPOS="736" VPOS="2693" WIDTH="1773" HEIGHT="58" BASELINE="736 2736 2509 2736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 2736 736 2751 2509 2749 2509 2736 2509 2704 2483 2693 2481 2693 2479 2693 2375 2704 2308 2693 2306 2693 1825 2704 1749 2693 1747 2693 1745 2693 1702 2704 1615 2693 1613 2693 1611 2693 1609 2693 1593 2706 1502 2706 1455 2693 1453 2693 1450 2693 1260 2704 1154 2693 1152 2693 1063 2704 1030 2693 1028 2693 1026 2693 736 2704 736 2736"/>
+                        </Shape>
+                        <String CONTENT="are supposed to have no necks or legs, but stout cylindrical bodies which"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l38" HPOS="736" VPOS="2760" WIDTH="457" HEIGHT="56" BASELINE="738 2795 1193 2790" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 2795 738 2808 1178 2816 1180 2816 1182 2816 1184 2816 1184 2814 1193 2805 1193 2790 1186 2760 736 2762 738 2795"/>
+                        </Shape>
+                        <String CONTENT="move about swiftly."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-262_r5" HPOS="733" VPOS="2815" WIDTH="1778" HEIGHT="371" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="733 2815 2511 2815 2511 3186 733 3186"/>
+                    </Shape>
+                    <TextLine ID="mz_1-262_l39" HPOS="848" VPOS="2812" WIDTH="1664" HEIGHT="60" BASELINE="848 2855 2512 2855" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="848 2855 848 2872 2512 2872 2512 2855 2512 2825 2458 2812 2455 2812 2453 2812 2425 2825 2133 2825 2118 2812 2115 2812 2113 2812 2111 2812 1931 2825 1808 2825 1788 2812 1786 2812 1784 2812 1782 2812 1622 2823 1596 2812 1593 2812 1591 2812 1485 2823 848 2814 848 2855"/>
+                        </Shape>
+                        <String CONTENT="The spirits of fly-agaric are fond of playing practical jokes on men under"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l40" HPOS="734" VPOS="2879" WIDTH="1778" HEIGHT="61" BASELINE="736 2909 2512 2914" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 2909 734 2924 1046 2937 1048 2937 1513 2929 1626 2940 1628 2940 2509 2929 2512 2914 2509 2883 736 2879 736 2909"/>
+                        </Shape>
+                        <String CONTENT="their influence. They begin with asking for homage either for themselves or"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l41" HPOS="734" VPOS="2940" WIDTH="1775" HEIGHT="58" BASELINE="736 2970 2509 2974" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 2970 734 2983 770 2996 773 2996 775 2996 1622 2987 1654 2998 1656 2998 1658 2998 2507 2987 2509 2974 2507 2944 736 2940 736 2970"/>
+                        </Shape>
+                        <String CONTENT="for surrounding objects, — the hills, the river, the moon, etc. Then they"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l42" HPOS="734" VPOS="2987" WIDTH="1773" HEIGHT="67" BASELINE="736 3028 2507 3035" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 3028 734 3046 747 3054 749 3054 751 3054 753 3054 2505 3048 2507 3035 2507 3002 2479 2992 2477 2992 2475 2992 2414 3002 2362 2992 2360 2992 2306 3002 2293 2992 2291 2992 2289 2992 2286 2992 2187 3002 2074 2992 2072 2992 1777 3000 1730 2989 1728 2989 1726 2989 1360 3000 1277 2987 1275 2987 1212 2998 1139 2987 1136 2987 1134 2987 1106 2998 1080 2987 1078 2987 1076 2987 1074 2987 1035 3000 796 3000 781 2987 779 2987 777 2987 775 2987 773 2987 736 2996 736 3028"/>
+                        </Shape>
+                        <String CONTENT="show some of the objects under a delusive aspect. When asked why this"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l43" HPOS="734" VPOS="3059" WIDTH="1773" HEIGHT="60" BASELINE="736 3089 2507 3093" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="736 3089 734 3102 842 3117 844 3117 913 3106 1033 3117 1035 3117 1102 3106 1416 3117 1418 3117 1420 3117 1446 3106 1459 3117 1461 3117 1463 3117 1466 3117 1537 3106 1576 3117 1578 3117 1580 3117 2007 3108 2066 3119 2068 3119 2505 3106 2507 3093 2505 3063 736 3059 736 3089"/>
+                        </Shape>
+                        <String CONTENT="strange change has occurred, the spirits answer that it portends danger to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-262_l44" HPOS="736" VPOS="3119" WIDTH="1769" HEIGHT="61" BASELINE="738 3150 2505 3154" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="738 3150 736 3165 1821 3180 1823 3180 2503 3169 2505 3154 2503 3124 738 3119 738 3150"/>
+                        </Shape>
+                        <String CONTENT="the man’s life unless he makes obeisance in a particular way. To illustrate."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

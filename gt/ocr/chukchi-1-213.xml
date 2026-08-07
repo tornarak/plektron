@@ -1,0 +1,352 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-213.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-213.png; regions_from: zones/chukchi-1-213.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Other"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="QuireMarksZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-213_r1" HPOS="423" VPOS="892" WIDTH="1778" HEIGHT="78" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="423 892 2201 892 2201 970 423 970"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l1" HPOS="664" VPOS="907" WIDTH="1280" HEIGHT="54" BASELINE="664 943 1944 943" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1942 907 664 907 664 943 664 961 1944 961 1944 943 1944 935 1942 907"/>
+                        </Shape>
+                        <String CONTENT="VII. — HABITATIONS, HOUSEHOLD UTENSILS."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-213_r2" HPOS="423" VPOS="1005" WIDTH="1778" HEIGHT="68" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="423 1005 2201 1005 2201 1073 423 1073"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l2" HPOS="1158" VPOS="1017" WIDTH="308" HEIGHT="52" BASELINE="1158 1050 1466 1050" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1158 1050 1158 1069 1466 1069 1466 1050 1466 1017 1158 1017 1158 1050"/>
+                        </Shape>
+                        <String CONTENT="HABITATIONS."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-213_r3" HPOS="423" VPOS="1103" WIDTH="1778" HEIGHT="312" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="423 1103 2201 1103 2201 1415 423 1415"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l3" HPOS="539" VPOS="1114" WIDTH="1654" HEIGHT="50" BASELINE="539 1147 2193 1147" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="539 1147 539 1164 2191 1164 2193 1147 2191 1117 539 1114 539 1147"/>
+                        </Shape>
+                        <String CONTENT="“GENUINE HOUSE.” — The general type of the Chukchee habitation is"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l4" HPOS="420" VPOS="1164" WIDTH="1775" HEIGHT="63" BASELINE="422 1212 2195 1205" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="422 1212 422 1227 2193 1221 2195 1205 2193 1177 2143 1164 2141 1164 2139 1164 2137 1164 2111 1175 1970 1164 1968 1164 1966 1164 1933 1175 1842 1164 1840 1164 1838 1164 1806 1175 1539 1166 1537 1166 1535 1166 1533 1166 1518 1179 1316 1179 1240 1166 1238 1166 1063 1177 1015 1166 1013 1166 1011 1166 1009 1166 972 1179 937 1169 935 1169 933 1169 773 1179 656 1169 654 1169 651 1169 649 1169 632 1179 569 1169 567 1169 565 1169 524 1179 446 1169 443 1169 441 1169 439 1169 420 1179 422 1212"/>
+                        </Shape>
+                        <String CONTENT="that of a large, round, skin tent, with a square inner room, which during the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l5" HPOS="422" VPOS="1227" WIDTH="1771" HEIGHT="61" BASELINE="424 1273 2193 1266" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="424 1273 424 1288 2191 1281 2193 1266 2189 1236 1013 1227 1011 1227 846 1238 463 1229 461 1229 459 1229 422 1240 424 1273"/>
+                        </Shape>
+                        <String CONTENT="winter forms the dwelling-room, and is carefully protected against the cold."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l6" HPOS="426" VPOS="1294" WIDTH="1769" HEIGHT="63" BASELINE="428 1333 2195 1327" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 1333 428 1346 628 1357 630 1357 632 1357 664 1346 920 1346 1000 1357 1002 1357 1004 1357 1007 1357 1022 1344 1442 1355 1444 1355 1446 1355 1448 1355 1463 1344 2174 1353 2176 1353 2178 1353 2180 1353 2195 1340 2195 1327 2191 1296 426 1294 428 1333"/>
+                        </Shape>
+                        <String CONTENT="This type of house has several variations, and is always called “genuine"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l7" HPOS="422" VPOS="1344" WIDTH="381" HEIGHT="74" BASELINE="424 1392 803 1387" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="424 1392 424 1407 586 1407 606 1418 608 1418 610 1418 612 1418 615 1418 651 1405 775 1415 777 1415 779 1415 781 1415 803 1402 803 1387 796 1344 595 1355 433 1346 430 1346 428 1346 426 1346 426 1348 424 1348 422 1348 424 1392"/>
+                        </Shape>
+                        <String CONTENT="house” (lɪˊê-ran).¹"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-213_r4" HPOS="423" VPOS="1415" WIDTH="1778" HEIGHT="176" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="423 1415 2201 1415 2201 1591 423 1591"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l8" HPOS="528" VPOS="1402" WIDTH="1670" HEIGHT="65" BASELINE="530 1452 2198 1444" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="530 1452 530 1467 2195 1461 2198 1444 2193 1413 1806 1402 1803 1402 1743 1413 1433 1405 1431 1405 1357 1418 528 1418 530 1452"/>
+                        </Shape>
+                        <String CONTENT="HOUSE OF THE REINDEER CHUKCHEE. — The tent (yaraˊñɪ) of the Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l9" HPOS="424" VPOS="1463" WIDTH="1771" HEIGHT="65" BASELINE="426 1511 2195 1506" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 1511 426 1528 2193 1524 2195 1506 2191 1476 1832 1463 1829 1463 1827 1463 1799 1474 1786 1463 1784 1463 1782 1463 1780 1463 1777 1463 1752 1474 1708 1463 1706 1463 1704 1463 1609 1474 1561 1463 1559 1463 1557 1463 1481 1474 1448 1463 1446 1463 1444 1463 1442 1463 1420 1474 1386 1463 1383 1463 1381 1463 1379 1463 1355 1474 1312 1463 1310 1463 1308 1463 1305 1463 1269 1476 1243 1465 1240 1465 1238 1465 1236 1465 1214 1476 673 1465 671 1465 599 1476 576 1465 573 1465 571 1465 569 1465 547 1476 443 1465 441 1465 439 1465 437 1465 424 1474 426 1511"/>
+                        </Shape>
+                        <String CONTENT="Chukchee (Plate XII, Fig. 1) is round with flaring sides. Its height in the centre"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l10" HPOS="422" VPOS="1526" WIDTH="1771" HEIGHT="60" BASELINE="424 1573 2193 1567" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="424 1573 424 1586 2191 1580 2193 1567 2189 1537 1617 1526 1615 1526 1613 1526 1611 1526 1596 1539 422 1539 424 1573"/>
+                        </Shape>
+                        <String CONTENT="is from ten to fifteen feet; and its diameter, from fifteen to twenty-five feet."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-213_r5" HPOS="423" VPOS="1591" WIDTH="1778" HEIGHT="1549" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="423 1591 2201 1591 2201 3140 423 3140"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l11" HPOS="532" VPOS="1595" WIDTH="1663" HEIGHT="50" BASELINE="534 1630 2195 1625" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="534 1630 534 1645 2193 1641 2195 1625 2191 1597 532 1595 534 1630"/>
+                        </Shape>
+                        <String CONTENT="The framework of the outer tent is of the same construction for both"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l12" HPOS="424" VPOS="1649" WIDTH="1771" HEIGHT="72" BASELINE="426 1690 2195 1684" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 1690 426 1721 565 1710 1013 1719 1015 1719 1093 1708 2102 1714 2105 1714 2195 1701 2195 1684 2191 1656 465 1649 463 1649 461 1649 424 1660 426 1690"/>
+                        </Shape>
+                        <String CONTENT="winter and summer (Fig. 92). Its central supports are three large, stout poles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l13" HPOS="426" VPOS="1708" WIDTH="617" HEIGHT="69" BASELINE="428 1751 1043 1747" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 1751 428 1766 500 1777 502 1777 504 1777 506 1777 506 1775 517 1764 848 1764 922 1775 924 1775 1041 1762 1043 1747 1039 1716 439 1708 437 1708 435 1708 433 1708 433 1710 426 1714 428 1751"/>
+                        </Shape>
+                        <String CONTENT="(a), which are tied together"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l14" HPOS="428" VPOS="1779" WIDTH="613" HEIGHT="48" BASELINE="428 1812 1041 1812" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 1812 428 1825 1039 1827 1041 1812 1041 1779 428 1779 428 1812"/>
+                        </Shape>
+                        <String CONTENT="through holes in their tops,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l15" HPOS="426" VPOS="1831" WIDTH="617" HEIGHT="63" BASELINE="428 1872 1043 1868" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 1872 428 1883 729 1894 731 1894 734 1894 736 1894 736 1892 738 1892 747 1881 805 1892 807 1892 859 1881 1026 1892 1028 1892 1030 1892 1033 1892 1033 1890 1043 1879 1043 1868 1039 1840 528 1831 526 1831 426 1842 428 1872"/>
+                        </Shape>
+                        <String CONTENT="so that they can be set"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l16" HPOS="426" VPOS="1894" WIDTH="617" HEIGHT="60" BASELINE="428 1929 1043 1922" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 1929 428 1946 833 1954 835 1954 1041 1939 1043 1922 1037 1894 426 1898 428 1929"/>
+                        </Shape>
+                        <String CONTENT="up firmly on the ground to"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l17" HPOS="426" VPOS="1950" WIDTH="617" HEIGHT="61" BASELINE="428 1991 1043 1983" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 1991 428 2006 1017 2011 1020 2011 1022 2011 1024 2011 1043 1998 1043 1983 1039 1954 439 1950 437 1950 435 1950 433 1950 433 1952 426 1957 428 1991"/>
+                        </Shape>
+                        <String CONTENT="form a tripod. These poles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l18" HPOS="424" VPOS="2013" WIDTH="622" HEIGHT="52" BASELINE="426 2050 1046 2043" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 2050 426 2065 1046 2058 1046 2043 1039 2013 424 2017 426 2050"/>
+                        </Shape>
+                        <String CONTENT="are considered as the foun-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l19" HPOS="426" VPOS="2069" WIDTH="617" HEIGHT="57" BASELINE="428 2110 1043 2106" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2110 428 2126 1041 2121 1043 2106 1039 2078 448 2069 446 2069 443 2069 441 2069 426 2076 428 2110"/>
+                        </Shape>
+                        <String CONTENT="dation of the tent, and be-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l20" HPOS="428" VPOS="2132" WIDTH="622" HEIGHT="50" BASELINE="428 2165 1050 2165" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2165 428 2182 1050 2182 1050 2165 1050 2132 428 2132 428 2165"/>
+                        </Shape>
+                        <String CONTENT="long to the sacred objects of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l21" HPOS="426" VPOS="2177" WIDTH="617" HEIGHT="63" BASELINE="428 2221 1043 2225" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2221 426 2234 1039 2240 1043 2225 1041 2195 942 2180 939 2180 874 2193 861 2182 861 2180 859 2180 857 2180 809 2180 807 2180 805 2180 755 2193 740 2180 740 2177 738 2177 736 2177 734 2177 731 2177 680 2190 664 2177 662 2177 660 2177 658 2177 656 2177 625 2193 552 2193 541 2182 541 2180 539 2180 537 2180 534 2180 532 2180 530 2180 515 2190 465 2180 463 2180 461 2180 428 2188 428 2221"/>
+                        </Shape>
+                        <String CONTENT="the household. Therefore,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l22" HPOS="426" VPOS="2242" WIDTH="620" HEIGHT="59" BASELINE="428 2286 1046 2281" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2286 428 2301 1043 2297 1046 2281 1041 2253 734 2242 731 2242 677 2253 463 2245 461 2245 459 2245 426 2255 428 2286"/>
+                        </Shape>
+                        <String CONTENT="when a new house is found-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l23" HPOS="426" VPOS="2301" WIDTH="620" HEIGHT="58" BASELINE="428 2346 1046 2342" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2346 428 2359 1043 2355 1046 2342 1041 2314 803 2301 801 2301 799 2301 796 2301 781 2312 753 2301 751 2301 749 2301 747 2301 721 2314 539 2303 537 2303 534 2303 502 2314 474 2303 472 2303 469 2303 467 2303 426 2316 428 2346"/>
+                        </Shape>
+                        <String CONTENT="ed, this set of three poles"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l24" HPOS="424" VPOS="2359" WIDTH="622" HEIGHT="72" BASELINE="426 2407 1046 2398" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 2407 426 2422 638 2431 641 2431 643 2431 645 2431 645 2429 654 2420 677 2429 680 2429 682 2429 799 2418 885 2429 887 2429 1043 2413 1046 2398 1041 2368 855 2359 853 2359 851 2359 829 2370 805 2359 803 2359 801 2359 799 2359 796 2359 796 2362 786 2370 703 2362 701 2362 638 2372 586 2362 584 2362 437 2364 435 2364 433 2364 424 2368 426 2407"/>
+                        </Shape>
+                        <String CONTENT="(teˊwrɪril), after being pre-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l25" HPOS="424" VPOS="2422" WIDTH="622" HEIGHT="63" BASELINE="426 2468 1046 2463" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 2468 426 2485 1043 2478 1046 2463 1041 2433 734 2422 731 2422 729 2422 727 2422 712 2433 537 2424 534 2424 424 2435 426 2468"/>
+                        </Shape>
+                        <String CONTENT="pared and tied together,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l26" HPOS="422" VPOS="2494" WIDTH="624" HEIGHT="45" BASELINE="422 2522 1046 2522" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="422 2522 422 2539 1046 2539 1046 2522 1046 2494 422 2494 422 2522"/>
+                        </Shape>
+                        <String CONTENT="receives a separate sacri-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l27" HPOS="428" VPOS="2539" WIDTH="615" HEIGHT="61" BASELINE="430 2585 1043 2580" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="430 2585 430 2600 1041 2595 1043 2580 1041 2550 1022 2539 1020 2539 1017 2539 1015 2539 922 2550 911 2541 911 2539 909 2539 907 2539 803 2539 801 2539 725 2552 441 2541 439 2541 437 2541 435 2541 435 2543 433 2543 428 2546 430 2585"/>
+                        </Shape>
+                        <String CONTENT="fice, and is anointed with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l28" HPOS="428" VPOS="2613" WIDTH="620" HEIGHT="45" BASELINE="428 2643 1048 2643" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2643 428 2658 1048 2658 1048 2643 1048 2613 428 2613 428 2643"/>
+                        </Shape>
+                        <String CONTENT="blood. A number of short"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l29" HPOS="426" VPOS="2658" WIDTH="620" HEIGHT="63" BASELINE="428 2704 1046 2699" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2704 428 2721 1043 2717 1046 2699 1041 2669 734 2658 731 2658 729 2658 727 2658 712 2669 452 2660 450 2660 448 2660 426 2669 428 2704"/>
+                        </Shape>
+                        <String CONTENT="thin stakes (vaˊrêt) joined"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l30" HPOS="426" VPOS="2719" WIDTH="615" HEIGHT="71" BASELINE="428 2766 1041 2758" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2766 428 2779 528 2790 530 2790 619 2777 851 2786 853 2786 855 2786 857 2786 868 2777 879 2786 881 2786 883 2786 885 2786 1039 2773 1041 2758 1037 2730 890 2719 887 2719 885 2719 883 2719 883 2721 881 2721 874 2730 740 2721 738 2721 736 2721 734 2721 721 2734 426 2734 428 2766"/>
+                        </Shape>
+                        <String CONTENT="in pairs or threes (b) are"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l31" HPOS="428" VPOS="2779" WIDTH="1772" HEIGHT="70" BASELINE="430 2825 2200 2814" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="430 2825 430 2849 1492 2836 1842 2844 1845 2844 1972 2833 2059 2842 2061 2842 2200 2829 2200 2814 2195 2784 788 2779 786 2779 783 2779 757 2790 459 2782 456 2782 454 2782 428 2790 430 2825"/>
+                        </Shape>
+                        <String CONTENT="placed around the central poles, forming a wide circle. They support cross-bars"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l32" HPOS="426" VPOS="2833" WIDTH="1772" HEIGHT="68" BASELINE="428 2885 2198 2877" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 2885 428 2901 2195 2898 2198 2877 2187 2842 2163 2833 2161 2833 2159 2833 2156 2833 2124 2844 1988 2833 1985 2833 1983 2833 1942 2844 1910 2833 1907 2833 1905 2833 1903 2833 1875 2844 1836 2833 1834 2833 1832 2833 1749 2846 1680 2836 1678 2836 1567 2846 1539 2836 1537 2836 1535 2836 1468 2846 1437 2836 1435 2836 1433 2836 1431 2836 1407 2846 1381 2836 1379 2836 1377 2836 1297 2849 1282 2838 1279 2838 1277 2838 1275 2838 1100 2849 1084 2838 1082 2838 1080 2838 942 2838 939 2838 937 2838 892 2849 870 2838 868 2838 866 2838 864 2838 816 2851 446 2840 443 2840 441 2840 439 2840 426 2849 428 2885"/>
+                        </Shape>
+                        <String CONTENT="(učviˊčɪt), c, the ends of which are tied to them. Long thin roof-poles (uˊttᴀmɪt),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l33" HPOS="424" VPOS="2898" WIDTH="1774" HEIGHT="61" BASELINE="426 2944 2198 2933" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 2944 426 2959 2195 2950 2198 2933 2185 2901 1130 2898 1128 2898 1126 2898 1095 2909 974 2901 972 2901 424 2911 426 2944"/>
+                        </Shape>
+                        <String CONTENT="d, are tied at one end to these points of junction, while their other ends"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l34" HPOS="426" VPOS="2961" WIDTH="1772" HEIGHT="57" BASELINE="428 3002 2198 2996" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 3002 428 3018 2195 3011 2198 2996 2189 2966 454 2961 452 2961 450 2961 426 2970 428 3002"/>
+                        </Shape>
+                        <String CONTENT="simply rest on the top of the central tripod, supported by it, and in turn"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l35" HPOS="426" VPOS="3011" WIDTH="1772" HEIGHT="69" BASELINE="428 3065 2198 3052" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 3065 428 3080 2195 3069 2198 3052 2187 3024 2031 3024 2007 3011 2005 3011 2003 3011 1897 3024 1723 3013 1721 3013 1719 3013 1717 3013 1702 3024 1557 3015 1554 3015 1552 3015 1520 3026 1494 3015 1492 3015 1489 3015 1396 3026 1351 3015 1349 3015 1347 3015 1260 3028 1245 3018 1243 3018 1240 3018 1238 3018 1165 3028 1078 3018 1076 3018 1074 3018 1071 3018 1056 3031 426 3031 428 3065"/>
+                        </Shape>
+                        <String CONTENT="bracing it upon all sides. The whole frame is firm and elastic at the same"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l36" HPOS="426" VPOS="3080" WIDTH="1772" HEIGHT="61" BASELINE="428 3124 2198 3113" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="428 3124 428 3141 2195 3130 2198 3113 2189 3082 779 3080 777 3080 775 3080 736 3091 446 3082 443 3082 441 3082 439 3082 426 3089 428 3124"/>
+                        </Shape>
+                        <String CONTENT="time. The poles are stronger, and the lashings are more carefully made, than"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-213_r6" HPOS="423" VPOS="3165" WIDTH="1778" HEIGHT="86" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="423 3165 2201 3165 2201 3251 423 3251"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l37" HPOS="545" VPOS="3154" WIDTH="1650" HEIGHT="52" BASELINE="547 3189 2195 3180" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="547 3189 547 3206 2193 3197 2195 3180 2189 3154 545 3160 547 3189"/>
+                        </Shape>
+                        <String CONTENT="¹ In the same way the Chukchee language is called liˊi-yiˊliil (“genuine language”); the village or the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-213_l38" HPOS="424" VPOS="3199" WIDTH="1774" HEIGHT="50" BASELINE="426 3230 2198 3225" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="426 3230 426 3249 2198 3245 2198 3225 2185 3199 424 3202 426 3230"/>
+                        </Shape>
+                        <String CONTENT="camp, liˊi-nɪˊmnɪm (“genuine habitation”); and the people themselves, liˊê-oraˊwêʟat (“genuine men”). See p. 11."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-213_r7" HPOS="423" VPOS="3254" WIDTH="1778" HEIGHT="73" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="423 3254 2201 3254 2201 3327 423 3327"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l39" HPOS="1258" VPOS="3245" WIDTH="112" HEIGHT="82" BASELINE="1260 3288 1368 3297" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1260 3288 1258 3321 1310 3314 1360 3327 1368 3297 1370 3245 1262 3245 1260 3288"/>
+                        </Shape>
+                        <String CONTENT="[169]"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-213_r8" HPOS="423" VPOS="3322" WIDTH="1778" HEIGHT="51" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="423 3322 2201 3322 2201 3373 423 3373"/>
+                    </Shape>
+                    <TextLine ID="mz_1-213_l40" HPOS="415" VPOS="3314" WIDTH="708" HEIGHT="56" BASELINE="417 3349 1123 3342" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="417 3349 417 3370 1121 3362 1123 3342 1117 3314 415 3318 417 3349"/>
+                        </Shape>
+                        <String CONTENT="22—JESUP NORTH PACIFIC EXPED., VOL. VII."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
