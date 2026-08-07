@@ -128,7 +128,11 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
     "uv run harness proposal check --all",
     "uv run harness ocr lines 1-031 --store mz | head -5",
     "uv run harness ocr lines 1-031 --store mz > /tmp/x",
-    "uv run harness ocr gaps 1-031 && uv run harness ocr lines 1-031",
+    # A chain of two allowed verbs used to live here. It moved to
+    # `test_gt_a_chain_of_allowed_verbs_is_allowed` when the scan learned to split:
+    # sequencing runs what the segments would run anyway, so refusing it taxed the
+    # exact economy the turn budget asks for. Chaining a *forbidden* verb is still
+    # refused, one class down.
 ])
 def test_gt_everything_else_is_refused(cmd):
     blocked(GT_GUARD, "Bash", command=cmd)
@@ -191,6 +195,58 @@ def test_gt_an_operator_outside_quotes_is_still_refused(cmd):
     """Quote-awareness is not permissiveness — single quotes are literal and safe,
     double quotes still expand, and bare metacharacters are operators."""
     blocked(GT_GUARD, "Bash", command=cmd)
+
+
+@pytest.mark.parametrize("cmd", [
+    # The two chains readers actually wrote, verbatim from the 2026-08-07 batch,
+    # where 26 of 50 refusals were exactly this shape.
+    "uv run harness ocr gaps 1-243 --store mz && uv run harness ocr lines 1-243 --store mz",
+    "uv run harness proposal fix 1-257 && uv run harness proposal check 1-257",
+    "uv run harness proposal fix 1-226; uv run harness proposal check 1-226",
+    # Three segments, and a trailing separator with nothing after it.
+    "uv run harness ocr gaps 1-031 --store mz && uv run harness ocr lines 1-031 --store mz && uv run harness proposal check 1-031",
+    "uv run harness proposal fix 1-031 ;",
+    # The commonest spelling of all: a label between two reports, 13 of the 26.
+    'uv run harness ocr gaps 1-031 --store mz && echo "---LINES---" && uv run harness ocr lines 1-031 --store mz',
+    "uv run harness ocr gaps 1-031 --store mz; echo ---; uv run harness ocr lines 1-031 --store mz",
+    # A trailing stderr redirect still strips, because that happens to the whole
+    # command before the scan. A redirect on a *non-final* segment does not, and is
+    # refused — the strip would have to run before the split, and a blind global
+    # strip could reach inside `--reason "2>&1"`. Unobserved in any batch; a reader
+    # who wants both can put the redirect last.
+    "uv run harness proposal check 1-031 && ls review/1-031 2>/dev/null",
+])
+def test_gt_a_chain_of_allowed_verbs_is_allowed(cmd):
+    """Turns are the budget a reader can see, so joining two cheap verbs is the
+    economy the contract asks for. `A && B` runs what `A` then `B` would run, so
+    the only question is whether both are allowed — and that has an answer."""
+    allowed(GT_GUARD, "Bash", command=cmd)
+
+
+@pytest.mark.parametrize("cmd", [
+    # One allowed segment does not carry a forbidden one.
+    "uv run harness ocr gaps 1-031 --store mz && rm -rf gt/",
+    "uv run harness proposal check 1-031 && uv run harness ocr restore 1-031 --commit",
+    "uv run harness proposal check 1-031 && git commit -am done",
+    # The per-segment rules are the same rules: `--all` is refused wherever it sits.
+    "uv run harness proposal marks --all && uv run harness proposal check 1-031",
+    "uv run harness proposal check 1-031 && uv run harness proposal marks --all",
+    # A lone `&` is backgrounding, not sequencing, and stays an operator.
+    "uv run harness ocr gaps 1-031 --store mz & rm -rf gt/",
+])
+def test_gt_a_chain_is_allowed_only_if_every_segment_is(cmd):
+    """The split must not become a hole: splitting is safe *because* each piece
+    faces the whole allowlist again, so a chain is exactly as permissive as its
+    least permissive member and no more."""
+    blocked(GT_GUARD, "Bash", command=cmd)
+
+
+def test_gt_a_separator_inside_quotes_does_not_split(cmd=None):
+    """`--reason` and `--value` carry the book's own punctuation. If the splitter
+    saw those semicolons it would hand the allowlist half a sentence, which is the
+    same bug as the substring `case` this scan replaced — one layer later."""
+    allowed(GT_GUARD, "Bash",
+            command='uv run harness ocr zoom 1-031 12@50 --store mz --reason "the mark; then the word"')
 
 
 @pytest.mark.parametrize("cmd", [

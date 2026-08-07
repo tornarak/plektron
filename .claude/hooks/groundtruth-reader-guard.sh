@@ -137,8 +137,23 @@ COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 COMMAND=${COMMAND% 2>/dev/null}
 COMMAND=${COMMAND% 2>&1}
 
-# One plain invocation: no chaining, substitution, or redirection. A pipe or
-# `&&` is how an allowed verb smuggles a forbidden one.
+# No substitution or redirection, and **`&&`/`;` chaining is split rather than
+# refused.** A pipe or a substitution is how an allowed verb smuggles a forbidden
+# one; a sequence is not — `A && B` runs exactly what `A` then `B` would run, so
+# the question it asks is "are both allowed", and that has an answer.
+#
+# Measured over the fifty readers of 2026-08-07: 26 of 50 refusals were a chain of
+# two allowlisted verbs, `ocr gaps X && ocr lines X` and `proposal fix X && proposal
+# check X` being most of them. Readers reach for it because turns are the budget
+# they can see — the ladder tells them images are expensive and the cap is 80 — so
+# joining two cheap verbs is exactly the economy the contract asks for, and refusing
+# it taxed correct behaviour and taught nothing.
+#
+# Each segment is re-validated **by this same script**, so there is one allowlist
+# and no second copy to drift: a chain is allowed iff every segment would have been
+# allowed alone. Segments carry no separators by construction, so the split cannot
+# recurse. `--all` stays refused per segment, and a forbidden operator anywhere
+# still refuses the whole command before any splitting happens.
 #
 # **Scanned with quote state, not as a substring.** The test used to be a `case`
 # over the raw string, which cannot tell an operator from the same character
@@ -152,29 +167,61 @@ COMMAND=${COMMAND% 2>&1}
 # Single quotes are literal, so nothing inside them can execute. Double quotes
 # still expand, so `$(` and a backtick stay forbidden there; a bare `;` does not.
 # Outside quotes everything is an operator and everything is refused.
-BAD=$(printf '%s' "$COMMAND" | awk '
-  BEGIN { q = "" }
+SEP=$(printf '\001')
+SCAN=$(printf '%s' "$COMMAND" | awk -v SEP="$SEP" '
+  BEGIN { q = ""; out = ""; bad = "" }
   {
+    if (NR > 1) out = out "\n"
     n = length($0)
     for (i = 1; i <= n; i++) {
       c = substr($0, i, 1)
-      if (q != "\x27" && c == "\\") { i++; continue }   # escape, outside '"'"'...'"'"'
+      if (q != "\x27" && c == "\\") {                   # escape, outside '"'"'...'"'"'
+        out = out c substr($0, i + 1, 1); i++; continue
+      }
       if (q == "") {
-        if (c == "\x27" || c == "\"") { q = c; continue }
-        if (c ~ /[;|&<>`]/) { print "op"; exit }
-        if (c == "$" && substr($0, i + 1, 1) == "(") { print "sub"; exit }
+        if (c == "\x27" || c == "\"") { q = c; out = out c; continue }
+        if (c ~ /[|<>`]/) { bad = "op"; exit }
+        if (c == "$" && substr($0, i + 1, 1) == "(") { bad = "sub"; exit }
+        if (c == "&") {                                  # `&&` splits, lone `&` backgrounds
+          if (substr($0, i + 1, 1) == "&") { out = out SEP; i++; continue }
+          bad = "op"; exit
+        }
+        if (c == ";") { out = out SEP; continue }
       } else if (c == q) {
         q = ""
       } else if (q == "\"") {
-        if (c == "`") { print "sub"; exit }
-        if (c == "$" && substr($0, i + 1, 1) == "(") { print "sub"; exit }
+        if (c == "`") { bad = "sub"; exit }
+        if (c == "$" && substr($0, i + 1, 1) == "(") { bad = "sub"; exit }
       }
+      out = out c
     }
-  }')
-if [ -n "$BAD" ]; then
-  echo "Blocked: run one plain command at a time — no pipes, chaining, substitution or redirection. Your verbs emit TOON down a pipe already; read their output whole. (Punctuation inside a quoted argument is fine — this fired on an operator outside quotes.)" >&2
-  exit 2
-fi
+  }
+  END { if (bad != "") print bad; else print out }')
+case "$SCAN" in
+  op|sub)
+    echo "Blocked: no pipes, substitution or redirection. Your verbs emit TOON down a pipe already; read their output whole. Sequencing with '&&' or ';' IS allowed — every segment is checked on its own — so chain two verbs freely; it is only the operators that reshape or reroute output that are refused. (Punctuation inside a quoted argument is fine — this fired outside quotes.)" >&2
+    exit 2 ;;
+esac
+
+# A chain: hand every segment back to this script and require all of them.
+case "$SCAN" in
+  *"$SEP"*)
+    OLD_IFS=$IFS
+    IFS=$SEP
+    set -f
+    # shellcheck disable=SC2086
+    set -- $SCAN
+    set +f
+    IFS=$OLD_IFS
+    for seg in "$@"; do
+      seg=$(printf '%s' "$seg" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+      [ -z "$seg" ] && continue
+      printf '{"tool_name":"Bash","tool_input":{"command":%s}}' \
+        "$(printf '%s' "$seg" | jq -Rs .)" | "$0" >/dev/null || exit 2
+    done
+    allow "groundtruth-reader chaining allowed commands — every segment checked separately"
+    ;;
+esac
 
 # **`ls` over a page's working directory, and nowhere else.** Measured across
 # four batches, every reader tried it and each was refused: 2 to 4 refusals per
@@ -309,6 +356,20 @@ esac
 # a guard that blocks it defeats the instrument it was written to serve. Reading
 # the ledger cannot deal a reader a page or settle a band; it only makes the
 # reader's own spending visible to the reader.
+# **`echo` is on the surface because it is half of how readers chain.** The
+# commonest spelling in the 2026-08-07 batch was
+# `ocr gaps X --store mz && echo "---LINES---" && ocr lines X` — a label between two
+# reports, so the reader can tell one table from the other in a single turn's
+# output. Splitting chains without allowing the separator would have fixed the
+# minority spelling and left the majority refused.
+#
+# It reaches nothing: every operator that could make `echo` write a file, feed a
+# pipe or expand a substitution is refused before a segment is ever tested, so what
+# is allowed here is literally printing a string back to the reader that wrote it.
+if printf '%s' "$COMMAND" | grep -qE '^echo( |$)'; then
+  allow "groundtruth-reader labelling its own output"
+fi
+
 if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lines|numbered|sheets|zoom)|proposal (fix|check|codepoints|set|replace|marks)|corpus normalize|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes)|find [a-z]+|verbs show)( |$)'; then
   case "$COMMAND" in
     *--all*)
@@ -318,5 +379,5 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (ocr (claim|calls|gaps|lin
   allow "groundtruth-reader running a verb from its closed surface, on one page"
 fi
 
-echo "Blocked: Glob answers existence, Read answers content, and the verbs answer everything else — reach for those three before the shell. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *, verbs show}, plus 'ls' over review/ and your own memory — one plain command, no --all. If you want to know what a command does, that is 'verbs show ocr zoom', not a Read of the reference. Everything else (restore, review, clean, views, git, python3) is not yours. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
+echo "Blocked: Glob answers existence, Read answers content, and the verbs answer everything else — reach for those three before the shell. Your Bash surface is exactly: uv run harness {ocr calls|gaps|lines|numbered|sheets|zoom, proposal fix|check|codepoints|set|replace|marks, corpus normalize, lexicon *, find *, verbs show}, plus 'ls'/'cat' over review/ and your own memory, and 'echo'. Chain them with '&&' or ';' as much as you like — each segment is checked on its own — but no pipes, redirection or substitution, and no --all. If you want to know what a command does, that is 'verbs show ocr zoom', not a Read of the reference. Everything else (restore, review, clean, views, git, python3) is not yours. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2
