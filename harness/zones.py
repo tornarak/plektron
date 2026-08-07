@@ -8,6 +8,13 @@ page's zones form a vertical partition of a column whose width was decided by th
 printer. Letting the editor drag an x-edge would offer a freedom the page does not
 have, and every hand-drawn width would then be a small lie the trainer learns.
 
+**The claim is about zones, and `gt/fig/` is where it stops.** A figure is a freely
+placed rectangle whose edges only the person looking at the picture can supply, and
+it lives in its own store for exactly that reason — `harness/figures.py`. The two
+tracks share one editor and one keyboard and no geometry; when reading the rule
+above, keep its subject attached, or the figure half reads as an exemption from
+something it was never inside.
+
 **Why a second store rather than more of `gt/seg/`.** That directory held 122
 pages under the full SegmOnto vocabulary, drawn as free polygons around ink. Both
 the label set and the geometry regime differed from this one, and nothing in an

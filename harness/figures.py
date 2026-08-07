@@ -745,8 +745,15 @@ def readings(root: Path = Path(".")) -> dict[str, dict]:
     # between edits; folding here means a caption's normal form cannot depend on
     # which session keyed it. NFD, never NFKC — NFKC rewrites U+1D4B and U+02D9,
     # which are inventory glyphs.
-    text = unicodedata.normalize(
-        "NFD", (root / READINGS).read_text(encoding="utf-8"))
+    p = root / READINGS
+    if not p.exists():
+        # Absence is `{}`, not an exception — the same disposition `read_blocks`
+        # keeps for a missing ALTO, and for the same reason: this module's callers
+        # ask "what has been read here" and "nothing" is a legitimate answer. It
+        # matters beyond tidiness now that the editor asks on every page it draws,
+        # where a corpus with no caption track at all must simply show none.
+        return {}
+    text = unicodedata.normalize("NFD", p.read_text(encoding="utf-8"))
     hits = list(_HDR.finditer(text))
     out = {}
     for i, m in enumerate(hits):

@@ -4,13 +4,20 @@ The browser half is not tested here — there is no harness for it in this repo,
 `review.py`'s page has none either. What *is* tested is the contract across the
 wire, which is where the design guarantees actually live:
 
-**The client cannot save a zone of the wrong width.** It sends a column index;
+**The client cannot save a *zone* of the wrong width.** It sends a column index;
 `save_payload` re-measures the page and resolves the x-pair itself. There is no
 field in which to put a hand-sized zone, so the fixed-measure claim holds by
 construction rather than by an editor's care. The one exception is a zone that
 matched no column when the page was opened — passed through untouched, because
 rewriting geometry the tool did not understand would repair the symptom and lose
 the finding.
+
+**That guarantee is about zones and does not generalise.** The figure track,
+sharing this editor, inverts it on purpose: a picture's edges are a property of
+that picture, so the client's rectangle is taken as given and bounded only to the
+page. Read "the server supplies x" with its subject attached, or the figure path
+looks like a hole in a rule it was never inside. The two are held apart at the
+bottom of this file.
 
 **The column is measured off each page, not configured per part.** The measure is
 stable across the book (~1780 px) but its position drifts up to 236 px inside a
@@ -330,14 +337,25 @@ def test_save_reports_the_counts_the_topbar_redraws_itself_from(tmp_path):
 
 def test_the_new_editor_actions_are_bound_and_documented(tmp_path):
     """A key in the config that no `case` handles is a key that does nothing, and
-    the help would still list it."""
+    the help would still list it.
+
+    **Every configured action, not a chosen few.** This walked a hardcoded tuple
+    of three while the config grew past it, which is the shape of gate that stops
+    catching things — the figure track added two actions in a second namespace and
+    the tuple would not have noticed either. Both namespaces are swept now, since
+    they share one keyboard and one `switch`.
+    """
     scans(tmp_path, "1-048")
     c = cfg()
     html = ui.render_html("1-048", tmp_path, c)
-    for act in ("merge_down", "sel_up", "sel_down"):
-        assert act in c["actions"], act
+    acts = {k: v for k, v in c["actions"].items() if not k.startswith("_")}
+    acts.update({k: v for k, v in
+                 ((c.get("figures") or {}).get("actions") or {}).items()
+                 if not k.startswith("_")})
+    assert {"merge_down", "toggle_track", "caption_beside"} <= set(acts)
+    for act, key in acts.items():
         assert f"case '{act}':" in html, act
-        assert f"<kbd>{c['actions'][act]}</kbd>" in html, act
+        assert f"<kbd>{key}</kbd>" in html, act
 
 
 def test_every_store_pill_carries_a_count_the_client_can_replace(tmp_path):
@@ -387,3 +405,175 @@ def test_html_does_not_inline_the_raster(tmp_path):
     html = ui.render_html("1-048", tmp_path, cfg())
     assert "data:image" not in html
     assert len(html) < 200_000
+
+
+# ------------------------------------------------------- the figure track
+#
+# One editor, two tracks, and the seam between them is where this can go wrong.
+# The zone half's central guarantee is that **the client cannot supply an x** —
+# tested above, three ways. The figure half inverts it deliberately: a picture's
+# edges are a property of that picture and only the person looking can say where
+# they are. So the invariant is not "the server supplies x", it is "the server
+# supplies x *for a zone*", and these hold the two apart.
+
+from harness import figures as fg  # noqa: E402
+
+G, D = fg.GRAPHIC, fg.FIGDESC
+
+
+def _fig(label, x0, y0, x1, y1, **kw):
+    return {"label": label, "x0": x0, "y0": y0, "x1": x1, "y1": y1, **kw}
+
+
+def _zone():
+    return {"label": "MainZone-P", "y0": 600, "y1": 900, "column": 0}
+
+
+def _save(tmp_path, **extra):
+    payload = {"ref": "1-048", "split": "train", "exempt": [],
+               "zones": [_zone()], **extra}
+    return ui.save_payload(payload, tmp_path, cfg())
+
+
+def test_a_page_with_no_figures_carries_an_empty_layer(tmp_path):
+    scans(tmp_path, "1-048")
+    st = ui.page_state("1-048", tmp_path, cfg())
+    assert st["figs"] == [] and st["fig_proposal"] == ""
+    assert st["fig_present"] == {"gt": None, "mz": None}
+
+
+def test_the_figure_layer_is_not_mixed_into_the_zone_layer(tmp_path):
+    """Two stores, two lists. Nothing derives one from the other, and a reader of
+    `zones` must never be handed a picture."""
+    scans(tmp_path, "1-048")
+    fg.save_figs("1-048", [_fig(G, 400, 900, 2200, 2500)], tmp_path)
+    zn.save_zones("1-048", [{"label": "MainZone-P", "x0": V0, "y0": 600,
+                             "x1": V1, "y1": 900}], tmp_path)
+    st = ui.page_state("1-048", tmp_path, cfg())
+    assert len(st["zones"]) == 1 and len(st["figs"]) == 1
+    assert st["zones"][0]["label"] == "MainZone-P"
+    assert st["figs"][0]["label"] == G
+
+
+def test_the_client_supplies_x_for_a_figure(tmp_path):
+    """The deliberate inverse of `test_the_server_supplies_x_the_client_only_
+    supplies_y`. Both are true; neither generalises to the other track."""
+    scans(tmp_path, "1-048")
+    _save(tmp_path, figs=[_fig(G, 431, 902, 2203, 2501)])
+    b = fg.zones("1-048", tmp_path)[0]
+    assert (b["hpos"], b["width"]) == (431, 2203 - 431)
+    # …and the zone saved in the same request still got its x from the server.
+    assert zn.read_zones("1-048", tmp_path)[0]["x0"] == V0
+
+
+def test_a_figure_is_bounded_to_the_page(tmp_path):
+    """The server's only claim over a rectangle: it must describe part of a page
+    that exists. Everything inside that is the human's."""
+    scans(tmp_path, "1-048")
+    _save(tmp_path, figs=[_fig(G, -50, -10, 99999, 99999)])
+    b = fg.zones("1-048", tmp_path)[0]
+    assert (b["hpos"], b["vpos"]) == (0, 0)
+    assert b["hpos"] + b["width"] == 2824 and b["vpos"] + b["height"] == 3897
+
+
+def test_no_figs_key_leaves_the_figure_store_untouched(tmp_path):
+    """**The mtime guarantee.** `zones blot` keys the zone segmenter's training
+    rasters off `gt/fig/`'s mtimes, so an ordinary zone save that rewrote all 252
+    figure files would stale every raster the model learns from. Absence of the
+    key, not an equality check, is what prevents it."""
+    scans(tmp_path, "1-048")
+    fg.save_figs("1-048", [_fig(G, 400, 900, 2200, 2500)], tmp_path)
+    p = fg.alto_for("1-048", tmp_path)
+    before = p.stat().st_mtime_ns
+    res = _save(tmp_path)
+    assert p.stat().st_mtime_ns == before
+    assert "figs_saved" not in res and "blot_stale" not in res
+
+
+def test_a_figure_save_says_the_blot_is_stale(tmp_path):
+    scans(tmp_path, "1-048")
+    res = _save(tmp_path, figs=[_fig(G, 400, 900, 2200, 2500)])
+    assert res["blot_stale"] is True and res["figs_saved"] == 1
+
+
+def test_gt_ids_round_trip_and_machine_ids_do_not(tmp_path):
+    """An `mz` proposal's ids are the segmenter's and key nothing in
+    `data/readings.md`; carrying one into a save would put a string shaped like a
+    caption key into the store with no reading behind it."""
+    scans(tmp_path, "1-048")
+    fg.save_figs("1-048", [_fig(G, 400, 900, 2200, 2500)], tmp_path)
+    kept = _save(tmp_path, fig_ids="gt",
+                 figs=[_fig(G, 400, 900, 2200, 2500, id="fig_1-048_001"),
+                       _fig(D, 400, 2530, 2200, 2640)])
+    assert kept["figs_saved"] == 2
+    assert {b["id"] for b in fg.zones("1-048", tmp_path)} == {
+        "fig_1-048_001", "fig_1-048_002"}
+
+    _save(tmp_path, fig_ids="", figs=[_fig(G, 400, 900, 2200, 2500, id="mz_x_9")])
+    assert [b["id"] for b in fg.zones("1-048", tmp_path)] == ["fig_1-048_003"]
+
+
+def test_a_caption_with_no_reading_is_named_back_to_the_editor(tmp_path):
+    """The one thing a human leaves the editor to finish. Not an error — the box
+    is drawn before the text is keyed, by design — but said at once, naming the
+    block, rather than surfacing later as an orphan in `corpus figures`."""
+    scans(tmp_path, "1-048")
+    res = _save(tmp_path, figs=[_fig(G, 400, 900, 2200, 2500),
+                                _fig(D, 400, 2530, 2200, 2640)])
+    assert res["readings_missing"] == ["1-048|002"]
+
+
+def test_emptying_the_layer_is_refused_and_routes_to_fig_delete(tmp_path):
+    """Absence of the file is how this store says 'no figures here', so an empty
+    one would assert the opposite. A human who deleted the last box has an intent
+    and the editor must name the verb for it rather than relay a stack trace."""
+    scans(tmp_path, "1-048")
+    fg.save_figs("1-048", [_fig(G, 400, 900, 2200, 2500)], tmp_path)
+    res = _save(tmp_path, figs=[])
+    assert "fig delete 1-048" in res["fig_error"]
+    assert fg.alto_for("1-048", tmp_path).exists()
+
+
+def test_an_mz_proposal_shows_only_where_gt_is_absent(tmp_path):
+    """The store rule, and here it is not merely symmetry with the zone half: a
+    machine figure box adopted unread would be painted white by `zones blot` into
+    the rasters the *zone* segmenter trains on. A wrong one teaches."""
+    scans(tmp_path, "1-048")
+    (tmp_path / "mz/fig").mkdir(parents=True)
+    fg.save_figs("1-048", [_fig(G, 100, 100, 900, 900)], tmp_path)
+    mz = fg.alto_for("1-048", tmp_path, fg.MZFIGDIR)
+    mz.write_bytes(fg.alto_for("1-048", tmp_path).read_bytes())
+
+    st = ui.page_state("1-048", tmp_path, cfg())
+    assert st["fig_proposal"] == "" and st["fig_ids"] == "gt"
+
+    fg.delete_figs("1-048", tmp_path, commit=True)
+    st = ui.page_state("1-048", tmp_path, cfg())
+    assert st["fig_proposal"] == "mz" and st["fig_ids"] == ""
+
+
+def test_the_figure_rules_are_transcribed_faithfully_into_the_js(tmp_path):
+    """The two-copies gate, `test_zones_order.py`'s shape.
+
+    `zones_config.fig_warnings` and the page's `figWarnings()` are one vocabulary
+    written twice — the server evaluates it on save, the browser on every
+    keystroke — so a rule added to the config has to reach both. A rule the JS
+    cannot see would be a banner that appears only after a save, which is the
+    surface a human is not looking at by then.
+    """
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    for rule in (cfg().get("figures") or {}).get("rules") or []:
+        # Only the rules the *editor* can evaluate live client-side: the count
+        # rule is about the boxes on screen. The geometry rules are the server's,
+        # and are reported from the save rather than predicted.
+        if rule["id"] == "captions-lte-figures":
+            assert f"'{rule['id']}'" in html, rule["id"]
+
+
+def test_the_figure_types_are_listed_with_their_keys(tmp_path):
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    for t in (cfg().get("figures") or {})["types"]:
+        assert f"<kbd>{t['key']}</kbd>" in html
+        assert t["label"] in html

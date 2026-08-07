@@ -40,6 +40,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from . import figures as fg
 from . import webui
 from . import zones as zn
 from . import zones_config as zc
@@ -186,6 +187,47 @@ def _uncovered(ref: str, root: Path, cfg: dict) -> list[dict]:
     return r["uncovered"]
 
 
+def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
+    """The figure track's half of one page's state.
+
+    `gt/fig/` wins wherever it exists; `mz/fig/` shows only where it does not, and
+    then as a **proposal** — the same rule the zone half keeps, for the same reason,
+    and the reason is not symmetry. A machine figure box that reached `gt/fig/`
+    unexamined would be painted white by `zones blot` into the rasters the *zone*
+    segmenter trains on, so a wrong one does not merely sit there being wrong: it
+    teaches. That is why there is no read view over the pair, and why promoting a
+    proposal is an explicit act here as well.
+
+    Rectangles pass through untouched in both directions. No snap, no column.
+    """
+    gt = fg.zones(ref, root)
+    proposal = ""
+    if not gt and fg.alto_for(ref, root, fg.MZFIGDIR).exists():
+        gt = fg.zones(ref, root, fg.MZFIGDIR)
+        proposal = "mz"
+    figs = [{"id": b["id"], "label": b["label"],
+             "x0": b["hpos"], "y0": b["vpos"],
+             "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
+            for b in gt]
+    exempt = fg.load_rule_exempt(root).get(ref, [])
+    return {
+        "figs": figs,
+        "fig_proposal": proposal,
+        # An `mz` proposal's ids are the machine's and mean nothing to
+        # `data/readings.md`, so they are dropped rather than carried into a save
+        # where they would look like keys. `save_figs` mints real ones.
+        "fig_ids": "" if proposal else "gt",
+        "fig_exempt": exempt,
+        "fig_warnings": zc.fig_warnings(cfg, gt, exempt),
+        "fig_present": {
+            "gt": len(fg.zones(ref, root)) or None,
+            "mz": (len(fg.zones(ref, root, fg.MZFIGDIR))
+                   if fg.alto_for(ref, root, fg.MZFIGDIR).exists() else None),
+        },
+        "fig_readings": sorted(fg.readings_for(ref, root)),
+    }
+
+
 def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
                itinerary: list[str] | None = None, store: str = "zones") -> dict:
     """Everything the editor needs for one page, resolved server-side.
@@ -285,6 +327,15 @@ def page_state(ref: str, root: Path, cfg: dict, nudge: int = 0,
         # so the page list is a reader of work already done rather than a job.
         "uncovered": _uncovered(ref, root, cfg) if zones else [],
         "ink_exempt": zn.load_ink_exempt(root).get(ref, []),
+        # --- the figure track, parallel and not inside the above ---------------
+        #
+        # It rides the same page state because it is the same page and the same
+        # human looking at it, but every field is its own: `figs` never mixes into
+        # `zones`, and neither list is derivable from the other. Note there is no
+        # column resolution here and no `_snap_column` — a picture's x is what
+        # somebody saw, and this is the exact inverse of the guarantee the zone
+        # half rests on.
+        **_fig_state(ref, root, cfg),
         "prev": scans[i - 1] if i > 0 else None,
         "next": scans[i + 1] if 0 <= i < len(scans) - 1 else None,
         "index": i + 1, "total": len(scans),
@@ -338,7 +389,74 @@ def save_payload(payload: dict, root: Path, cfg: dict) -> dict:
     # beside a fresh one is the kind of thing this project reads as a live number.
     res["paras_zones"] = len(zn.split_at_paragraphs(
         zn.read_zones(ref, root), ref, root, cfg))
+    res.update(_save_figs(payload, ref, root, cfg))
     return res
+
+
+def _save_figs(payload: dict, ref: str, root: Path, cfg: dict) -> dict:
+    """The figure half of a save, and it is **opt-in by the payload's shape**.
+
+    No `figs` key means the figure store is not touched — not read, not rewritten,
+    not stamped. That is not an optimisation. `zones blot` keys its rasters off
+    `gt/fig/`'s mtimes, so rewriting 252 identical files during ordinary zone
+    keying would stale the entire blot tree and, through it, everything the zone
+    segmenter trains on. A pure zone edit must leave no trace here.
+
+    **The client's rectangles are taken as given**, bounded to the page and
+    otherwise unaltered — the deliberate inverse of the zone half above, where the
+    server supplies x precisely so a hand-sized zone cannot be saved. The claim
+    differs: a zone's width is a property of the book, so a drawn one is a small
+    lie; a picture's edges are a property of that picture, and only the person
+    looking at it can say where they are.
+    """
+    if "figs" not in payload:
+        return {}
+    w, h = zn.raster_size(ref, root)
+    blocks = []
+    for f in payload.get("figs") or []:
+        x0, x1 = sorted((int(round(f["x0"])), int(round(f["x1"]))))
+        y0, y1 = sorted((int(round(f["y0"])), int(round(f["y1"]))))
+        b = {"label": f["label"],
+             "x0": max(0, x0), "y0": max(0, y0),
+             "x1": min(w, x1), "y1": min(h, y1)}
+        # An id survives only when it came from `gt/fig/`. A machine proposal's
+        # ids are the segmenter's and key nothing, so carrying them into a save
+        # would put a string shaped like a `data/readings.md` key into the store
+        # with no reading behind it.
+        if f.get("id") and payload.get("fig_ids") == "gt":
+            b["id"] = f["id"]
+        blocks.append(b)
+
+    rules = payload.get("fig_exempt") or []
+    if not blocks:
+        # The store's refusal is right and the editor must not merely relay it:
+        # a human who deleted the last box has an intent, and `fig delete` is it.
+        return {"fig_error": (
+            "no figure boxes left on this page. Absence of the file is how this "
+            "store records 'no figures here', so an empty one would say the "
+            f"opposite — withdraw the page instead: harness fig delete {ref} "
+            "--commit")}
+    res = fg.save_figs(ref, blocks, root, rules=rules)
+    check = fg.validate_fig_page(ref, root, cfg)
+    return {
+        "figs_saved": res["blocks"],
+        "fig_errors": check["errors"],
+        "fig_warnings": check["warnings"],
+        # A caption box with no reading behind it is not an error — the geometry
+        # is drawn before the text is keyed, in that order, by design. But it is
+        # the one thing a human leaves the editor to do, so the page says which
+        # block is waiting rather than letting `corpus figures` find it later.
+        "readings_missing": [
+            f"{ref}|{fg.zone_suffix(b['id'])}"
+            for b in fg.zones(ref, root)
+            if b["label"] == fg.FIGDESC
+            and fg.zone_suffix(b["id"]) not in {
+                r["zone_suffix"] for r in fg.readings_for(ref, root).values()}],
+        # `zones blot` paints this page's raster from these boxes, so the blot is
+        # now stale and the zone segmenter's input with it. Said here because
+        # `blot_all` is unconditional and nothing else will mention it.
+        "blot_stale": True,
+    }
 
 
 # ------------------------------------------------------------------ the page
@@ -351,6 +469,12 @@ CFG.types.forEach(t => { T[t.label] = t; KEY[t.key] = t.label; });
 const ACT = {};
 for (const [name, k] of Object.entries(CFG.actions || {}))
   if (!name.startsWith('_')) ACT[k] = name;
+// The figure track's actions join the same map — one keyboard, and the config
+// loader has already refused any key bound in two of the three namespaces.
+for (const [name, k] of Object.entries((CFG.figures || {}).actions || {}))
+  if (!name.startsWith('_')) ACT[k] = name;
+const FKEY = {};
+((CFG.figures || {}).types || []).forEach(t => { FKEY[t.key] = t.label; });
 
 let S = {
   zones: ST.zones.map(z => ({...z})),
@@ -366,7 +490,20 @@ let S = {
   issues: [], drag: null, nudge: ST.anchor.nudge || 0,
   ink: (ST.uncovered || []).map(b => ({...b})),
   inkEx: (ST.ink_exempt || []).map(r => ({...r})),
+  // ---- the figure track, parallel to everything above --------------------
+  // `figTrack` switches what the pointer does, never what is drawn: the layer
+  // renders either way, dimmed when it is not the one being edited, because a
+  // picture you cannot see is a picture you will draw a zone over.
+  // `figsDirty` is separate from `dirty` so that a pure zone edit sends no
+  // `figs` key at all — `zones blot` reads `gt/fig/`'s mtimes, so rewriting the
+  // figure store during ordinary keying would stale every training raster.
+  figTrack: false, figs: (ST.figs || []).map(f => ({...f})),
+  figCur: null, figSel: -1, figHover: -1, figDrag: null, figsDirty: false,
+  figExempt: (ST.fig_exempt || []).slice(), capPending: null, capBeside: false,
 };
+const FT = {};
+((CFG.figures || {}).types || []).forEach(t => { FT[t.label] = t; });
+const FIG_ACTIONS = (CFG.figures || {}).actions || {};
 let zoom = parseFloat(localStorage.getItem('zonesZoom') || '0') || 0;
 
 const img = document.getElementById('img'), ov = document.getElementById('ov');
@@ -454,6 +591,64 @@ function yAt(ev) {
   const r = img.getBoundingClientRect();
   return Math.max(0, Math.min(ST.page.h,
     Math.round((ev.clientY - r.top) * (ST.page.h / r.height))));
+}
+// The figure track's pointer, and the reason it is a *pair* where the zone
+// track's is a scalar. There is no `xAt` above because a zone has no x to take
+// from the pointer; here the pointer is the only thing that knows.
+function ptAt(ev) {
+  const r = img.getBoundingClientRect();
+  return {
+    x: Math.max(0, Math.min(ST.page.w,
+       Math.round((ev.clientX - r.left) * (ST.page.w / r.width)))),
+    y: yAt(ev),
+  };
+}
+// Topmost box under a point, searched back to front so the one drawn last — the
+// one a human sees on top — is the one that answers.
+function figHit(p) {
+  for (let i = S.figs.length - 1; i >= 0; i--) {
+    const f = S.figs[i];
+    if (p.x >= f.x0 && p.x <= f.x1 && p.y >= f.y0 && p.y <= f.y1) return i;
+  }
+  return -1;
+}
+// Arm the caption preview off a picture just committed. This is `resume()` in
+// two dimensions: there, a zone's foot becomes the next zone's top and the
+// chain carries; here, a picture's foot becomes a caption box the width of the
+// picture, because that is where this book sets ~85% of them.
+function armCaption(fig) {
+  const cap = ((CFG.figures || {}).types || [])
+    .find(t => t.auto_place && t.auto_place.after === fig.label);
+  if (!cap) { S.capPending = null; return; }
+  const a = cap.auto_place;
+  S.capPending = S.capBeside
+    ? {label: cap.label, x0: fig.x1 + a.gap_px, y0: fig.y0,
+       x1: fig.x1 + a.gap_px + (a.beside_px || a.height_px), y1: fig.y1}
+    : {label: cap.label, x0: fig.x0, y0: fig.y1 + a.gap_px,
+       x1: fig.x1, y1: fig.y1 + a.gap_px + a.height_px};
+}
+function addFig(box) {
+  S.figs.push(box);
+  S.figsDirty = true; S.figSel = -1;
+  if (box.label === 'GraphicZone') armCaption(box); else S.capPending = null;
+}
+// ---- the caption-count rule, transcribed from zones_config.fig_warnings.
+// Held to that function by harness/tests/test_zones_ui.py, the same way
+// test_zones_order.py holds `orderWarnings` — two copies of one vocabulary, and
+// the gate points at the copy that would otherwise drift silently.
+function figWarnings() {
+  const on = new Set(((CFG.figures || {}).rules || []).map(r => r.id));
+  const out = [];
+  if (on.has('captions-lte-figures')) {
+    const nf = S.figs.filter(f => f.label === 'GraphicZone').length;
+    const nc = S.figs.filter(f => f.label === 'GraphicZone-FigDesc').length;
+    if (nc > nf)
+      out.push({rule: 'captions-lte-figures',
+                detail: `${nc} captions to ${nf} ${nf === 1 ? 'picture'
+                        : 'pictures'} — this book never sets more`,
+                exempted: S.figExempt.includes('captions-lte-figures')});
+  }
+  return out;
 }
 
 // ---- the order rules, transcribed from zones_config.order_warnings.
@@ -556,8 +751,41 @@ function render() {
        : 'unaccounted ink — i'}</text>`);
   });
 
+  // ---- the figure layer ---------------------------------------------------
+  // Always drawn, dimmed when the pointer is not on this track. Free rectangles:
+  // x comes from the box, never from `win()`, which is the whole difference
+  // between this track and the one above.
+  S.figs.forEach((f, i) => {
+    const t = FT[f.label], c = t ? t.color : '#999';
+    const on = S.figTrack && (i === S.figSel || i === S.figHover);
+    const dim = S.figTrack ? 1 : .45;
+    parts.push(`<rect x="${f.x0}" y="${f.y0}" width="${f.x1 - f.x0}"
+       height="${f.y1 - f.y0}" fill="${c}" fill-opacity="${on ? .26 : .12}"
+       stroke="${c}" stroke-width="${on ? 6 : 3}" opacity="${dim}"
+       ${ST.fig_proposal ? 'stroke-dasharray="18 10"' : ''}/>`);
+    parts.push(`<text x="${f.x0 + 10}" y="${f.y0 + 42}" font-size="34"
+       fill="${c}" opacity="${dim}" font-family="ui-sans-serif,sans-serif"
+       >${t ? t.name : f.label}${ST.fig_proposal ? ' (proposed)' : ''}</text>`);
+  });
+  // The armed caption. A preview and nothing more until a click adopts it — the
+  // chain's `resume()` in two dimensions, and the reason a caption is one
+  // keystroke rather than a drag on the ~85% of pages that set it below.
+  if (S.capPending) {
+    const p = S.capPending, c = FT[p.label] ? FT[p.label].color : 'var(--accent)';
+    parts.push(`<rect x="${p.x0}" y="${p.y0}" width="${p.x1 - p.x0}"
+       height="${p.y1 - p.y0}" fill="${c}" fill-opacity=".18" stroke="${c}"
+       stroke-width="4" stroke-dasharray="14 9"/>`);
+  }
+  if (S.figDrag) {
+    const d = S.figDrag, c = S.figCur && FT[S.figCur] ? FT[S.figCur].color
+                                                     : 'var(--accent)';
+    parts.push(`<rect x="${d.x0}" y="${d.y0}" width="${d.x1 - d.x0}"
+       height="${d.y1 - d.y0}" fill="${c}" fill-opacity=".22" stroke="${c}"
+       stroke-width="4"/>`);
+  }
+
   const pv = preview();
-  if (pv) {
+  if (pv && !S.figTrack) {
     const c = S.cur && T[S.cur] ? T[S.cur].color : 'var(--accent)';
     parts.push(`<rect x="${w.x0}" y="${pv[0]}" width="${w.x1 - w.x0}"
        height="${pv[1] - pv[0]}" fill="${c}" fill-opacity=".22" stroke="${c}"
@@ -837,6 +1065,20 @@ function edgesSharing(y) {
 }
 
 ov.addEventListener('mousemove', e => {
+  if (S.figTrack) {
+    const p = ptAt(e);
+    S.hoverY = p.y; S.inside = true;
+    S.figHover = figHit(p);
+    if (S.figDrag) {
+      S.figDrag.x0 = Math.min(S.figDrag._ax, p.x);
+      S.figDrag.x1 = Math.max(S.figDrag._ax, p.x);
+      S.figDrag.y0 = Math.min(S.figDrag._ay, p.y);
+      S.figDrag.y1 = Math.max(S.figDrag._ay, p.y);
+    }
+    edgeScroll(e.clientY);
+    render();
+    return;
+  }
   S.hoverY = yAt(e);
   S.inside = true;
   S.hover = hit(S.hoverY);
@@ -891,11 +1133,23 @@ ov.addEventListener('mouseleave', e => {
 // reaching for Escape mid-click is a hand off the mouse every time.
 ov.addEventListener('contextmenu', e => {
   e.preventDefault();
+  if (S.figTrack) { S.capPending = null; S.figSel = -1; render(); return; }
   S.pending = null;
   S.sel = -1;
   render();
 });
 ov.addEventListener('mousedown', e => {
+  // On the figure track a plain drag *is* the placement gesture — the idiom is
+  // `lines_ui.py`'s, which has drawn free rectangles over this same raster for
+  // as long as the line editor has existed. Nothing here is shift-modified,
+  // because unlike a zone edge there is no second thing a drag could mean.
+  if (S.figTrack) {
+    if (e.shiftKey || !S.figCur) return;
+    e.preventDefault();
+    const p = ptAt(e);
+    S.figDrag = {_ax: p.x, _ay: p.y, x0: p.x, y0: p.y, x1: p.x, y1: p.y};
+    return;
+  }
   // Shift makes a drag an edge adjustment. Plain clicks stay unambiguous — the
   // primary flow must never have to wonder whether it was a click or a grab, and
   // chain mode puts the cursor on an existing edge constantly.
@@ -907,9 +1161,33 @@ ov.addEventListener('mousedown', e => {
 });
 window.addEventListener('mouseup', () => {
   edgeStop();
+  if (S.figDrag) {
+    const d = S.figDrag;
+    S.figDrag = null;
+    // Below the floor it was a click, not a drag, and a click is how an armed
+    // caption is adopted. Committing a 3 px box instead would be the editor
+    // taking a slip of the hand as a claim about the page.
+    const min = ((CFG.figures || {}).min_size_px) || 24;
+    if (d.x1 - d.x0 >= min && d.y1 - d.y0 >= min)
+      addFig({label: S.figCur, x0: d.x0, y0: d.y0, x1: d.x1, y1: d.y1});
+    render();
+    return;
+  }
   if (S.drag) { S.drag = null; render(); }
 });
 ov.addEventListener('click', e => {
+  if (S.figTrack) {
+    if (e.shiftKey) return;
+    // A click adopts the armed caption; otherwise it selects what is under it.
+    if (S.capPending) {
+      addFig({...S.capPending});
+      S.capPending = null;
+    } else {
+      S.figSel = figHit(ptAt(e));
+    }
+    render();
+    return;
+  }
   if (e.shiftKey) return;
   const y = yAt(e);
   // Mid-placement, a click always finishes the zone. Only an idle click can mean
@@ -978,12 +1256,24 @@ async function save() {
     return;
   }
   if (!confirmAdoption()) { say('not adopted', 'bad'); return; }
-  const res = await post('/save', {
+  const body = {
     ref: ST.ref, split: S.split, exempt: S.exempt, nudge: S.nudge,
     ink_exempt: S.inkEx,
     zones: S.zones.map(z => ({label: z.label, y0: z.y0, y1: z.y1,
                               column: z.column, x0: z.x0, x1: z.x1})),
-  });
+  };
+  // **The `figs` key goes only when the figure track was actually touched.**
+  // `zones blot` keys the segmenter's training rasters off `gt/fig/`'s mtimes,
+  // so sending an unchanged figure list on every ordinary zone save would stale
+  // all 252 blots and, through them, everything the zone model learns from.
+  if (S.figsDirty) {
+    body.fig_ids = ST.fig_ids;
+    body.fig_exempt = S.figExempt;
+    body.figs = S.figs.map(f => ({id: f.id, label: f.label,
+                                  x0: f.x0, y0: f.y0, x1: f.x1, y1: f.y1}));
+  }
+  const res = await post('/save', body);
+  if (res.fig_error) { say(res.fig_error, 'bad'); return res; }
   // The bands are re-measured against what was just written, so what is on screen
   // is always the finding for the zones as they now stand.
   S.ink = (res.uncovered || []).map(b => ({...b}));
@@ -1001,7 +1291,21 @@ async function save() {
   if (ST.present) ST.present.gt = res.zones;
   ST.paras_zones = res.paras_zones;
   renderStores();
-  say(`saved ${res.zones} zones to gt` +
+  let extra = '';
+  if (S.figsDirty) {
+    S.figsDirty = false;
+    ST.fig_proposal = ''; ST.fig_ids = 'gt';
+    if (ST.fig_present) ST.fig_present.gt = res.figs_saved;
+    extra = ` · ${res.figs_saved} figure box(es)`;
+    // The one thing a human has to leave the editor to finish. Said now, naming
+    // the block, rather than left for `corpus figures` to find as an orphan.
+    if ((res.readings_missing || []).length)
+      extra += ` · key ${res.readings_missing.join(', ')} in data/readings.md`;
+    S.issues = S.issues
+      .concat((res.fig_errors || []).map(e => ({...e, kind: 'e', exempted: false})))
+      .concat((res.fig_warnings || []).map(w => ({...w, kind: 'w'})));
+  }
+  say(`saved ${res.zones} zones to gt` + extra +
       (res.errors.length ? ` · ${res.errors.length} error(s)` : ''),
       res.errors.length ? 'bad' : 'ok');
   render();
@@ -1028,7 +1332,7 @@ async function nav(ref) {
   if (!ref) return;
   // Dirty only. An unconditional save would mint an empty zone file for every
   // page skimmed past, and an empty file is a claim: "looked at, holds nothing".
-  if (S.dirty) { try { await save(); } catch (err) {
+  if (S.dirty || S.figsDirty) { try { await save(); } catch (err) {
     say('not saved: ' + err.message, 'bad'); return; } }
   // The nudge rides along: a page needing one usually has neighbours that do too,
   // and the next page re-measures its own anchor regardless.
@@ -1042,7 +1346,7 @@ async function nav(ref) {
 // It saves first for the same reason `nav` does — and a proposal is never dirty on
 // arrival, so cycling away from one still writes nothing.
 async function navStore(name) {
-  if (S.dirty) { try { await save(); } catch (err) {
+  if (S.dirty || S.figsDirty) { try { await save(); } catch (err) {
     say('not saved: ' + err.message, 'bad'); return; } }
   location = `/?ref=${ST.ref}` + (S.nudge ? `&nudge=${S.nudge}` : '') +
     (name !== 'zones' ? `&store=${name}` : '');
@@ -1064,7 +1368,17 @@ window.addEventListener('keydown', async e => {
     S.dirty = true; S.issues = [];
     render(); e.preventDefault(); return;
   }
-  if (KEY[k]) { S.cur = KEY[k]; S.issues = []; render(); e.preventDefault(); return; }
+  // On the figure track the type keys select a figure type and the zone types are
+  // out of reach — one keyboard, but the track decides which half of it is live,
+  // so `p` cannot place a paragraph band while somebody is drawing pictures.
+  if (S.figTrack && FKEY[k]) {
+    if (S.figSel >= 0) { S.figs[S.figSel].label = FKEY[k]; S.figsDirty = true; }
+    else { S.figCur = FKEY[k]; S.capPending = null; }
+    render(); e.preventDefault(); return;
+  }
+  if (!S.figTrack && KEY[k]) {
+    S.cur = KEY[k]; S.issues = []; render(); e.preventDefault(); return;
+  }
   // A named key carries its shift as a prefix, since it has no case to carry it in.
   // Looked up before the bare name, so `Shift+ArrowUp` cannot fall through to
   // whatever plain `ArrowUp` does — the two are a selection and a resize.
@@ -1073,7 +1387,24 @@ window.addEventListener('keydown', async e => {
   if (!a) return;
   e.preventDefault();
   switch (a) {
-    case 'cancel': S.pending = null; S.sel = -1; break;
+    case 'toggle_track':
+      S.figTrack = !S.figTrack;
+      // Each track drops whatever it had half-placed. Carrying an armed anchor
+      // across the switch would fire it on a click meant for the other track.
+      S.pending = null; S.sel = -1; S.capPending = null; S.figSel = -1;
+      if (S.figTrack && !S.figCur) S.figCur = 'GraphicZone';
+      break;
+    case 'caption_beside':
+      // Flips the armed preview to the picture's right edge, for the ~19 plate
+      // captions this book sets vertically beside their picture rather than
+      // under it. Only ever re-poses a preview; it commits nothing.
+      S.capBeside = !S.capBeside;
+      if (S.capPending) {
+        const last = [...S.figs].reverse().find(f => f.label === 'GraphicZone');
+        if (last) armCaption(last);
+      }
+      break;
+    case 'cancel': S.pending = null; S.sel = -1; S.capPending = null; break;
     case 'undo':
       if (S.zones.length) {
         S.zones.pop(); S.dirty = true; S.issues = []; S.sel = -1;
@@ -1082,6 +1413,13 @@ window.addEventListener('keydown', async e => {
       }
       break;
     case 'delete': {
+      if (S.figTrack) {
+        const j = S.figSel >= 0 ? S.figSel : S.figHover;
+        if (j < 0) break;
+        S.figs.splice(j, 1);
+        S.figSel = -1; S.figHover = -1; S.capPending = null; S.figsDirty = true;
+        break;
+      }
       const i = target();
       if (i < 0) break;
       S.zones.splice(i, 1);
@@ -1219,6 +1557,14 @@ window.addEventListener('keydown', async e => {
       return;
     }
     case 'exempt': {
+      if (S.figTrack) {
+        const g = figWarnings().find(w => !w.exempted);
+        if (g) { S.figExempt.push(g.rule); S.figsDirty = true;
+                 say(`exempted ${g.rule}`, 'ok'); }
+        else if (S.figExempt.length) { S.figExempt = []; S.figsDirty = true;
+                                       say('figure exemptions cleared', 'ok'); }
+        break;
+      }
       const f = orderWarnings().find(w => !w.exempted);
       if (f) { S.exempt.push(f.rule); S.dirty = true;
                say(`exempted ${f.rule}`, 'ok'); }
@@ -1246,7 +1592,7 @@ window.addEventListener('keydown', async e => {
     case 'page_list':
       // Save first: the list reports what is on disk, so walking to it with
       // unsaved work would show this page as it was before the last few zones.
-      if (S.dirty) { try { await save(); } catch (err) {
+      if (S.dirty || S.figsDirty) { try { await save(); } catch (err) {
         say('not saved: ' + err.message, 'bad'); return; } }
       location = `/list?ref=${ST.ref}`;
       return;
@@ -1261,7 +1607,7 @@ window.addEventListener('keydown', async e => {
 });
 
 async function done() {
-  try { if (S.dirty) await save(); } catch (err) {
+  try { if (S.dirty || S.figsDirty) await save(); } catch (err) {
     say('not saved — not stopping: ' + err.message, 'bad'); return; }
   await post('/done', {});
   say('server stopped — you can close this tab', 'ok');
@@ -1277,7 +1623,7 @@ document.querySelectorAll('.pill.store').forEach(el =>
   el.addEventListener('click', () => navStore(el.dataset.store)));
 window.addEventListener('resize', render);
 window.addEventListener('beforeunload', e => {
-  if (S.dirty) { e.preventDefault(); e.returnValue = ''; }
+  if (S.dirty || S.figsDirty) { e.preventDefault(); e.returnValue = ''; }
 });
 
 // Auto-select on load is the same rule as after a commit, applied to whatever the
@@ -1321,7 +1667,16 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
               "prev_page": "previous page", "next_page": "next page",
               "nudge_back": "resize: edge up 2 px",
               "nudge_forward": "resize: edge down 2 px",
-              "zoom_in": "zoom in", "zoom_out": "zoom out"}
+              "zoom_in": "zoom in", "zoom_out": "zoom out",
+              "toggle_track": "switch to the figure track (and back)",
+              "caption_beside": "put the armed caption beside, not below"}
+    # One keyboard, so the figure track's actions are listed with the rest rather
+    # than in their own panel. `load_config` has already refused any key bound in
+    # two of the three namespaces, and `test_zones_ui.py` requires every action
+    # here to have both a `case` in the JS and a `<kbd>` below.
+    acts.update({k: v for k, v in
+                 ((cfg.get("figures") or {}).get("actions") or {}).items()
+                 if not k.startswith("_")})
 
     h = ["<!doctype html><html><head><meta charset='utf-8'>",
          f"<title>zones {st['ref']}</title><style>{CSS}</style></head><body>"]
@@ -1413,6 +1768,27 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
     h.append("<div class='key'><span>move a boundary</span><kbd>shift-drag</kbd></div>")
     h.append("<div class='key'><span>jump a screen</span>"
              "<kbd>hover top / bottom</kbd></div>")
+    figs_cfg = cfg.get("figures") or {}
+    if figs_cfg.get("types"):
+        h.append("<h4>figure track</h4>")
+        for t in figs_cfg["types"]:
+            h.append(f"<div class='tk' data-label=\"{t['label']}\">"
+                     f"<i style='background:{t.get('color', '#999')}'></i>"
+                     f"<span>{t.get('name', t['label'])}</span>"
+                     f"<kbd>{t['key']}</kbd></div>")
+        h.append("<div class='key'><span>draw a box</span><kbd>drag</kbd></div>")
+        h.append("<div class='key'><span>take the armed caption</span>"
+                 "<kbd>click</kbd></div>")
+        h.append("<div class='key'><span>drop it</span>"
+                 "<kbd>right-click</kbd></div>")
+        h.append("<div id='flags'>The figure track is a <em>parallel</em> store: "
+                 "freely-placed rectangles over the picture and its caption, not "
+                 "bands of the column, and its x comes from the pointer rather "
+                 "than the measure — the one place in this editor where it does. "
+                 "Committing a picture arms a caption box at its foot, which one "
+                 "click takes and a drag replaces. The caption's <em>text</em> is "
+                 "not keyed here: draw the box, save, and the banner names the "
+                 "block to key in data/readings.md.</div>")
     h.append("<div id='flags'>Chain mode carries the last bottom edge into the next "
              "zone, so a run of prose is one key and one click each; right-click "
              "breaks it where the page leaves whitespace. The dashed guide is the "
