@@ -1,0 +1,361 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-200.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-200.png; regions_from: zones/chukchi-1-200.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="MarginTextZone-Notes"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-200_r1" HPOS="651" VPOS="596" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+<Shape>
+                        <Polygon POINTS="651 596 2429 596 2429 686 651 686"/>
+                    </Shape>
+                    <TextLine ID="mz_1-200_l1" HPOS="1225" VPOS="612" WIDTH="620" HEIGHT="56" BASELINE="1227 647 1845 651" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1834 614 1227 612 1227 647 1225 664 1840 668 1845 651 1842 630 1834 614"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-200_r2" HPOS="651" VPOS="711" WIDTH="1778" HEIGHT="547" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="651 711 2429 711 2429 1258 651 1258"/>
+                    </Shape>
+                    <TextLine ID="mz_1-200_l2" HPOS="647" VPOS="716" WIDTH="1774" HEIGHT="76" BASELINE="649 762 2421 757" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="647 753 649 762 649 777 727 790 729 790 786 779 1039 790 1041 792 1147 792 1147 790 1149 790 1152 790 1169 779 1386 790 1388 790 1390 790 1392 790 1407 779 1492 790 1494 790 1496 790 1535 777 1611 788 1613 788 1723 777 2206 788 2208 788 2282 777 2403 785 2406 785 2408 785 2410 785 2421 775 2421 757 2414 725 2009 727 1985 716 1983 716 1981 716 1868 727 1821 716 1819 716 1816 716 1697 727 1570 716 1567 716 1565 716 1528 729 1301 718 1299 718 1297 718 1295 718 1279 731 1145 731 1000 718 998 718 996 718 963 729 844 718 842 718 786 729 673 718 671 718 669 718 667 718 649 727 647 753"/>
+                        </Shape>
+                        <String CONTENT="shape of the trigger, etc. (Fig. 77). Sticks, small round stones, and small"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l3" HPOS="1585" VPOS="792" WIDTH="834" HEIGHT="41" BASELINE="1585 820 2419 820" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1585 820 1585 833 2419 833 2419 820 2419 792 1585 792 1585 820"/>
+                        </Shape>
+                        <String CONTENT="arrows are shot from them. The"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l4" HPOS="1585" VPOS="837" WIDTH="834" HEIGHT="70" BASELINE="1587 876 2419 881" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1587 876 1585 894 1598 902 1600 902 1602 902 1604 902 1910 894 1920 902 1920 904 1923 904 1925 904 2085 907 2087 907 2089 907 2124 896 2182 907 2185 907 2416 894 2419 881 2416 850 2029 850 2005 837 2003 837 2001 837 1587 844 1587 876"/>
+                        </Shape>
+                        <String CONTENT="crossbow was probably copied from"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l5" HPOS="1585" VPOS="907" WIDTH="836" HEIGHT="49" BASELINE="1587 937 2421 941" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1587 937 1585 952 2416 956 2421 941 2419 911 1587 907 1587 937"/>
+                        </Shape>
+                        <String CONTENT="the Russians, since the Cossacks were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l6" HPOS="1585" VPOS="956" WIDTH="836" HEIGHT="68" BASELINE="1587 1002 2421 998" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1587 1002 1587 1015 2403 1024 2406 1024 2408 1024 2410 1024 2421 1013 2421 998 2416 967 2005 956 2003 956 1585 969 1587 1002"/>
+                        </Shape>
+                        <String CONTENT="armed partly with bows and arbalets"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l7" HPOS="1585" VPOS="1030" WIDTH="834" HEIGHT="48" BASELINE="1585 1058 2419 1058" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1585 1058 1585 1078 2419 1078 2419 1058 2419 1030 1585 1030 1585 1058"/>
+                        </Shape>
+                        <String CONTENT="as late as the forties of the nineteenth"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l8" HPOS="1585" VPOS="1076" WIDTH="831" HEIGHT="69" BASELINE="1587 1114 2416 1123" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1587 1114 1585 1132 1596 1140 1598 1140 1600 1140 1602 1143 1745 1143 1745 1140 1747 1140 1771 1130 1862 1143 1864 1143 1968 1132 2057 1145 2059 1145 2414 1138 2416 1123 2414 1093 2289 1080 2286 1080 2284 1080 2247 1091 2204 1078 2202 1078 2200 1078 2102 1088 2050 1078 2048 1078 1944 1086 1923 1076 1920 1076 1918 1076 1587 1082 1587 1114"/>
+                        </Shape>
+                        <String CONTENT="century. Whips of peculiar shape,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l9" HPOS="1585" VPOS="1134" WIDTH="831" HEIGHT="74" BASELINE="1587 1177 2416 1184" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1587 1177 1585 1188 1637 1203 1639 1203 1641 1203 1643 1203 1645 1203 1661 1192 1862 1205 1864 1205 1866 1205 1892 1195 1929 1205 1931 1205 1933 1205 2174 1197 2185 1205 2185 1208 2187 1208 2189 1208 2191 1208 2193 1208 2228 1197 2239 1208 2241 1208 2243 1208 2245 1208 2414 1197 2416 1184 2416 1151 2390 1138 2388 1138 2386 1138 2319 1149 2252 1138 2250 1138 2096 1147 2079 1136 2076 1136 2074 1136 2072 1136 2070 1136 2042 1147 1979 1136 1977 1136 1847 1145 1825 1134 1823 1134 1821 1134 1587 1143 1587 1177"/>
+                        </Shape>
+                        <String CONTENT="for throwing light darts (Fig. 78),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l10" HPOS="1583" VPOS="1192" WIDTH="602" HEIGHT="68" BASELINE="1585 1234 2185 1240" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1585 1234 1583 1253 1591 1260 1593 1260 1596 1260 1598 1260 2182 1255 2185 1240 2182 1210 2018 1197 2016 1197 2014 1197 1983 1208 1938 1195 1936 1195 1933 1195 1931 1195 1907 1205 1899 1197 1899 1195 1897 1195 1894 1195 1892 1195 1890 1195 1866 1205 1745 1205 1730 1192 1728 1192 1726 1192 1723 1192 1585 1201 1585 1234"/>
+                        </Shape>
+                        <String CONTENT="are also used by children."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-200_r3" HPOS="651" VPOS="1258" WIDTH="1778" HEIGHT="1438" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="651 1258 2429 1258 2429 2696 651 2696"/>
+                    </Shape>
+                    <TextLine ID="mz_1-200_l11" HPOS="1693" VPOS="1266" WIDTH="726" HEIGHT="52" BASELINE="1693 1299 2419 1299" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1693 1299 1693 1318 2419 1318 2419 1299 2419 1270 1693 1266 1693 1299"/>
+                        </Shape>
+                        <String CONTENT="FIRE-ARMS, LANCES, AND OTHER"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l12" HPOS="1589" VPOS="1316" WIDTH="827" HEIGHT="67" BASELINE="1591 1359 2416 1355" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1591 1359 1591 1374 2386 1383 2388 1383 2390 1383 2416 1370 2416 1355 2412 1329 2208 1329 2182 1316 2180 1316 2178 1316 1998 1329 1955 1318 1953 1318 1951 1318 1888 1329 1589 1324 1591 1359"/>
+                        </Shape>
+                        <String CONTENT="WEAPONS. — Fire-arms of every pos-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l13" HPOS="1583" VPOS="1385" WIDTH="833" HEIGHT="59" BASELINE="1585 1415 2416 1420" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1585 1415 1583 1431 1596 1441 1598 1441 1600 1441 1602 1441 1992 1431 2005 1441 2005 1444 2007 1444 2009 1444 2011 1444 2414 1431 2416 1420 2414 1389 1585 1385 1585 1415"/>
+                        </Shape>
+                        <String CONTENT="sible description are used by the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l14" HPOS="649" VPOS="1439" WIDTH="1767" HEIGHT="57" BASELINE="651 1470 2416 1478" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="651 1465 651 1470 649 1487 2412 1496 2416 1478 2414 1448 662 1439 651 1465"/>
+                        </Shape>
+                        <String CONTENT="Chukchee. From the Russians they receive, even at the present time, clumsy"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l15" HPOS="651" VPOS="1496" WIDTH="1763" HEIGHT="64" BASELINE="654 1530 2414 1541" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="654 1530 651 1550 2410 1560 2414 1541 2412 1509 2113 1509 2061 1496 2059 1496 654 1496 654 1530"/>
+                        </Shape>
+                        <String CONTENT="firelocks (Fig. 79), while the Americans bring percussion-guns and breach-loaders."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l16" HPOS="1693" VPOS="1554" WIDTH="723" HEIGHT="61" BASELINE="1695 1599 2416 1595" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1695 1599 1695 1615 2414 1612 2416 1595 2414 1567 2386 1554 2384 1554 2382 1554 2243 1565 2232 1556 2232 1554 2230 1554 2228 1554 2105 1554 2102 1554 2033 1567 1713 1556 1710 1556 1708 1556 1706 1556 1693 1565 1695 1599"/>
+                        </Shape>
+                        <String CONTENT="All fire-arms are furnished with"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l17" HPOS="1691" VPOS="1619" WIDTH="712" HEIGHT="65" BASELINE="1693 1660 2403 1656" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1693 1660 1693 1671 1739 1684 1741 1684 1743 1684 1873 1682 1875 1682 1877 1682 1890 1671 2027 1682 2029 1682 2031 1682 2033 1682 2048 1669 2068 1682 2070 1682 2072 1682 2074 1682 2167 1671 2289 1682 2291 1682 2293 1682 2295 1682 2295 1680 2308 1669 2399 1680 2403 1656 2399 1628 1847 1619 1845 1619 1691 1630 1693 1660"/>
+                        </Shape>
+                        <String CONTENT="supports¹ and gun-cases. A"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l18" HPOS="1693" VPOS="1675" WIDTH="726" HEIGHT="65" BASELINE="1695 1721 2419 1714" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1695 1721 1695 1740 2419 1732 2419 1714 2414 1684 1933 1675 1931 1675 1929 1675 1894 1686 1723 1677 1721 1677 1719 1677 1693 1686 1695 1721"/>
+                        </Shape>
+                        <String CONTENT="piece of cloth is tied around the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l19" HPOS="1691" VPOS="1734" WIDTH="721" HEIGHT="69" BASELINE="1693 1775 2412 1779" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1693 1775 1691 1790 1700 1799 1700 1801 1702 1801 1704 1801 1706 1803 1786 1803 1786 1801 1788 1801 1790 1801 1790 1799 1799 1790 1821 1801 1823 1801 1825 1801 1827 1801 1866 1790 1981 1801 1983 1801 1985 1801 2014 1790 2124 1803 2126 1803 2410 1790 2412 1779 2412 1749 2382 1736 2380 1736 2377 1736 2375 1736 2328 1747 2159 1736 2156 1736 2089 1747 2055 1734 2053 1734 2050 1734 2048 1734 2016 1747 1918 1747 1905 1734 1903 1734 1901 1734 1899 1734 1897 1734 1868 1744 1693 1742 1693 1775"/>
+                        </Shape>
+                        <String CONTENT="lock to keep off moisture. To"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l20" HPOS="1691" VPOS="1794" WIDTH="721" HEIGHT="67" BASELINE="1693 1833 2412 1838" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1693 1833 1691 1851 1702 1859 1704 1859 1706 1859 1708 1861 2410 1861 2412 1838 2410 1807 2079 1807 2055 1794 2053 1794 2050 1794 1693 1801 1693 1833"/>
+                        </Shape>
+                        <String CONTENT="the firelock belong two flasks,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l21" HPOS="1697" VPOS="1866" WIDTH="719" HEIGHT="56" BASELINE="1700 1894 2416 1898" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1700 1894 1697 1907 2109 1922 2111 1922 2414 1911 2416 1898 2414 1870 1700 1866 1700 1894"/>
+                        </Shape>
+                        <String CONTENT="— one for powder, and one for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l22" HPOS="1693" VPOS="1916" WIDTH="723" HEIGHT="69" BASELINE="1693 1957 2416 1957" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1693 1957 1693 1974 1851 1974 1862 1983 1862 1985 1864 1985 1866 1985 1868 1985 1871 1985 1903 1974 1916 1985 1918 1985 1920 1985 1923 1985 1977 1974 2037 1985 2040 1985 2416 1972 2416 1957 2416 1929 2349 1916 2347 1916 2286 1929 2111 1929 2100 1918 2100 1916 2098 1916 2096 1916 2094 1916 2092 1916 2068 1926 2005 1916 2003 1916 2001 1916 1972 1926 1929 1916 1927 1916 1925 1916 1693 1922 1693 1957"/>
+                        </Shape>
+                        <String CONTENT="bullets (Fig. 80, a), — a powder-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l23" HPOS="1691" VPOS="1983" WIDTH="725" HEIGHT="52" BASELINE="1693 2013 2416 2017" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1693 2013 1691 2030 2412 2035 2416 2017 2414 1987 1693 1983 1693 2013"/>
+                        </Shape>
+                        <String CONTENT="measure, a ramrod (the latter two"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l24" HPOS="1689" VPOS="2032" WIDTH="723" HEIGHT="65" BASELINE="1691 2074 2412 2080" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2074 1689 2089 2408 2097 2412 2080 2412 2050 2386 2037 2384 2037 2382 2037 2250 2048 2172 2035 2169 2035 2167 2035 2165 2035 2165 2037 2154 2045 2018 2035 2016 2035 2014 2035 1977 2045 1931 2032 1929 2032 1927 2032 1691 2041 1691 2074"/>
+                        </Shape>
+                        <String CONTENT="often combined as in Fig. 80, b),"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l25" HPOS="1691" VPOS="2108" WIDTH="725" HEIGHT="46" BASELINE="1691 2139 2416 2139" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2139 1691 2154 2416 2154 2416 2139 2416 2108 1691 2108 1691 2139"/>
+                        </Shape>
+                        <String CONTENT="and sometimes a small double"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l26" HPOS="1691" VPOS="2152" WIDTH="725" HEIGHT="69" BASELINE="1693 2193 2416 2197" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1693 2193 1691 2208 1814 2221 1816 2221 2414 2212 2416 2197 2414 2167 2310 2154 2308 2154 2159 2165 2111 2154 2109 2154 2107 2154 2059 2165 2044 2152 2042 2152 2040 2152 2037 2152 2035 2152 2033 2152 2016 2162 1957 2152 1955 2152 1953 2152 1927 2162 1881 2152 1879 2152 1877 2152 1693 2160 1693 2193"/>
+                        </Shape>
+                        <String CONTENT="tube (Fig. 80, c) with a partition"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l27" HPOS="1689" VPOS="2212" WIDTH="727" HEIGHT="61" BASELINE="1691 2255 2416 2260" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2255 1689 2268 2412 2273 2416 2260 2416 2227 2406 2216 2406 2214 2403 2214 2401 2214 2399 2214 2397 2214 2373 2225 2308 2214 2306 2214 2304 2214 2273 2227 2141 2227 2130 2216 2130 2214 2128 2214 2126 2214 2124 2214 2003 2223 1981 2212 1979 2212 1977 2212 1691 2219 1691 2255"/>
+                        </Shape>
+                        <String CONTENT="in the middle, each part closed"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l28" HPOS="1687" VPOS="2277" WIDTH="723" HEIGHT="65" BASELINE="1689 2316 2410 2323" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1689 2316 1687 2329 1704 2340 1706 2340 1708 2340 1710 2340 1713 2340 1747 2329 1782 2340 1784 2340 1786 2340 1849 2329 2031 2342 2033 2342 2085 2331 2406 2340 2410 2323 2408 2290 2338 2277 2336 2277 2334 2277 2293 2288 2271 2277 2269 2277 2267 2277 1689 2281 1689 2316"/>
+                        </Shape>
+                        <String CONTENT="at the end with a small plug,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l29" HPOS="1691" VPOS="2349" WIDTH="723" HEIGHT="56" BASELINE="1691 2377 2414 2377" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2377 1691 2392 2001 2405 2003 2405 2005 2405 2048 2394 2397 2405 2399 2405 2401 2405 2403 2405 2414 2394 2414 2377 2414 2349 1691 2349 1691 2377"/>
+                        </Shape>
+                        <String CONTENT="and containing a charge ready"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l30" HPOS="1687" VPOS="2392" WIDTH="727" HEIGHT="67" BASELINE="1689 2433 2414 2437" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1689 2433 1687 2450 1697 2459 1700 2459 1702 2459 1704 2459 2412 2450 2414 2437 2412 2407 2302 2394 2299 2394 2297 2394 2276 2405 2254 2394 2252 2394 2250 2394 2247 2394 2245 2394 2245 2396 2234 2407 2092 2407 2053 2392 2050 2392 2048 2392 2046 2392 2024 2403 1964 2392 1962 2392 1689 2400 1689 2433"/>
+                        </Shape>
+                        <String CONTENT="for use. The plugs are held in"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l31" HPOS="1691" VPOS="2468" WIDTH="723" HEIGHT="56" BASELINE="1691 2496 2414 2496" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2496 1691 2517 1834 2513 1875 2524 1877 2524 1879 2524 1881 2524 1884 2524 1884 2522 1894 2513 1966 2513 2100 2524 2102 2524 2105 2524 2128 2513 2291 2524 2293 2524 2414 2511 2414 2496 2414 2468 1691 2468 1691 2496"/>
+                        </Shape>
+                        <String CONTENT="place by a string, which passes"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l32" HPOS="1689" VPOS="2520" WIDTH="725" HEIGHT="58" BASELINE="1691 2552 2414 2559" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2552 1689 2567 1717 2578 1719 2578 1721 2578 2412 2574 2414 2559 2412 2526 1691 2520 1691 2552"/>
+                        </Shape>
+                        <String CONTENT="through the middle of the tube,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l33" HPOS="1687" VPOS="2578" WIDTH="729" HEIGHT="63" BASELINE="1689 2610 2416 2615" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1689 2610 1687 2626 2130 2641 2133 2641 2414 2630 2416 2615 2414 2578 1689 2578 1689 2610"/>
+                        </Shape>
+                        <String CONTENT="and is slung around the belt of"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l34" HPOS="1689" VPOS="2632" WIDTH="253" HEIGHT="61" BASELINE="1691 2673 1942 2669" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2673 1691 2688 1940 2693 1942 2669 1938 2643 1706 2632 1704 2632 1702 2632 1700 2632 1689 2639 1691 2673"/>
+                        </Shape>
+                        <String CONTENT="the hunter."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-200_r4" HPOS="651" VPOS="2696" WIDTH="1778" HEIGHT="474" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="651 2696 2429 2696 2429 3170 651 3170"/>
+                    </Shape>
+                    <TextLine ID="mz_1-200_l35" HPOS="1801" VPOS="2691" WIDTH="613" HEIGHT="60" BASELINE="1801 2736 2414 2736" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1801 2736 1801 2751 2414 2751 2414 2736 2414 2704 2367 2693 2364 2693 2362 2693 2360 2693 2334 2704 2321 2691 2319 2691 2317 2691 2315 2691 2312 2691 2269 2706 2230 2706 2217 2693 2217 2691 2215 2691 2213 2691 2211 2691 2208 2691 2182 2704 2148 2691 2146 2691 2143 2691 2066 2706 1959 2706 1940 2691 1938 2691 1936 2691 1933 2691 1931 2691 1903 2704 1860 2691 1858 2691 1855 2691 1801 2695 1801 2736"/>
+                        </Shape>
+                        <String CONTENT="The lance, with the Chuk-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l36" HPOS="1691" VPOS="2766" WIDTH="723" HEIGHT="54" BASELINE="1691 2795 2414 2795" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2795 1691 2808 1793 2820 1795 2820 1797 2820 1821 2810 2044 2820 2046 2820 2048 2820 2085 2810 2315 2820 2317 2820 2319 2820 2321 2820 2334 2810 2395 2820 2397 2820 2399 2820 2401 2820 2414 2810 2414 2795 2414 2766 1691 2766 1691 2795"/>
+                        </Shape>
+                        <String CONTENT="chee, was chiefly a weapon for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l37" HPOS="1689" VPOS="2818" WIDTH="721" HEIGHT="59" BASELINE="1691 2849 2410 2859" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2849 1689 2868 1697 2875 1700 2875 1702 2875 2406 2877 2410 2859 2408 2829 1691 2818 1691 2849"/>
+                        </Shape>
+                        <String CONTENT="defence and war; and among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l38" HPOS="1689" VPOS="2870" WIDTH="723" HEIGHT="72" BASELINE="1691 2911 2412 2916" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2911 1689 2927 2074 2942 2076 2942 2410 2931 2412 2916 2410 2885 2308 2885 2297 2875 2297 2872 2295 2872 2293 2872 2291 2872 2224 2883 2182 2872 2180 2872 2178 2872 2176 2872 2174 2872 2156 2883 2126 2872 2124 2872 2122 2872 1942 2881 1925 2870 1923 2870 1920 2870 1918 2870 1691 2879 1691 2911"/>
+                        </Shape>
+                        <String CONTENT="the Reindeer people it still par-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l39" HPOS="1689" VPOS="2931" WIDTH="723" HEIGHT="69" BASELINE="1691 2970 2412 2976" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1691 2970 1689 2983 2204 3000 2206 3000 2410 2989 2412 2976 2410 2946 2120 2933 2118 2933 1955 2942 1933 2931 1931 2931 1929 2931 1691 2937 1691 2970"/>
+                        </Shape>
+                        <String CONTENT="tially retains its former impor-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l40" HPOS="1687" VPOS="2989" WIDTH="725" HEIGHT="61" BASELINE="1689 3031 2412 3037" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1689 3031 1687 3043 2408 3050 2412 3037 2410 3007 2336 2994 2334 2994 2187 3002 2174 2992 2172 2992 2169 2992 2167 2992 2165 2992 2120 3002 2024 2992 2022 2992 1942 3002 1923 2989 1920 2989 1918 2989 1916 2989 1689 2998 1689 3031"/>
+                        </Shape>
+                        <String CONTENT="tance. Since the arrival of Rus-"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l41" HPOS="1684" VPOS="3059" WIDTH="730" HEIGHT="52" BASELINE="1687 3089 2414 3095" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1687 3089 1684 3104 2410 3111 2414 3095 2414 3065 1687 3059 1687 3089"/>
+                        </Shape>
+                        <String CONTENT="sians, iron has been utilized for"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-200_l42" HPOS="647" VPOS="3098" WIDTH="1765" HEIGHT="75" BASELINE="649 3139 2412 3158" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="649 3132 649 3139 647 3154 2408 3173 2412 3158 2410 3126 2079 3113 2076 3113 2029 3121 1970 3111 1968 3111 1825 3119 1795 3108 1793 3108 1790 3108 1661 3117 1630 3106 1628 3106 1626 3106 1282 3113 1212 3102 1210 3102 1046 3111 1030 3100 1028 3100 1026 3100 1024 3100 848 3108 831 3098 829 3098 827 3098 825 3098 662 3106 649 3132"/>
+                        </Shape>
+                        <String CONTENT="the point, which was formerly made of flint or bone. Iron lance-points are"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-200_r5" HPOS="651" VPOS="3186" WIDTH="1778" HEIGHT="49" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="651 3186 2429 3186 2429 3235 651 3235"/>
+                    </Shape>
+                    <TextLine ID="mz_1-200_l43" HPOS="1149" VPOS="3182" WIDTH="763" HEIGHT="56" BASELINE="1152 3210 1912 3219" TAGREFS="TYPE_5">
+                        <Shape>
+                            <Polygon POINTS="1152 3210 1149 3230 1907 3238 1912 3219 1910 3191 1152 3182 1152 3210"/>
+                        </Shape>
+                        <String CONTENT="¹ Compare Nelson, Plate LXIII, Fig. 31, p. 164."/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

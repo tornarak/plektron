@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-198.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-198.png; regions_from: zones/chukchi-1-198.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-198_r1" HPOS="697" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="697 618 2475 618 2475 708 697 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-198_l1" HPOS="1277" VPOS="634" WIDTH="620" HEIGHT="54" BASELINE="1277 668 1897 668" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="1884 634 1277 634 1277 668 1277 688 1897 688 1897 668 1894 651 1884 634"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-198_l2" HPOS="714" VPOS="630" WIDTH="74" HEIGHT="60" BASELINE="716 675 788 673" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="779 634 768 630 723 638 714 647 716 675 716 690 786 690 788 673 781 634 779 634"/>
+                        </Shape>
+                        <String CONTENT="156"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-198_r2" HPOS="697" VPOS="733" WIDTH="1778" HEIGHT="205" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="697 733 2475 733 2475 938 697 938"/>
+                    </Shape>
+                    <TextLine ID="mz_1-198_l3" HPOS="697" VPOS="733" WIDTH="1776" HEIGHT="61" BASELINE="697 779 2473 779" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2451 736 2447 733 2445 733 2442 733 2356 744 2291 733 2289 733 2286 733 2254 744 2152 733 2150 733 2031 744 2001 733 1998 733 1996 733 1994 733 1992 733 1977 746 1812 746 1728 733 1726 733 1669 744 1645 733 1643 733 1641 733 1554 744 1472 733 1470 733 1468 733 1466 733 1450 744 1427 733 1424 733 1422 733 1420 733 1381 744 1321 733 1318 733 1206 744 1141 733 1139 733 1136 733 1134 733 1115 746 918 746 890 733 887 733 885 733 883 733 851 744 809 733 807 733 805 733 803 733 773 744 742 733 740 733 738 733 736 733 697 744 697 779 697 794 2473 794 2473 779 2471 770 2451 736"/>
+                        </Shape>
+                        <String CONTENT="of all these materials combined (Fig. 74). They were fastened to the shaft"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-198_l4" HPOS="695" VPOS="801" WIDTH="1773" HEIGHT="62" BASELINE="697 840 2468 835" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="697 840 697 853 1269 863 1271 863 2466 850 2468 835 2462 801 695 805 697 840"/>
+                        </Shape>
+                        <String CONTENT="in various ways, — wedged in and occasionally wrapped with sinew, or inserted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-198_l5" HPOS="697" VPOS="861" WIDTH="1769" HEIGHT="54" BASELINE="697 898 2466 898" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="697 898 697 913 2464 915 2466 898 2464 861 697 861 697 898"/>
+                        </Shape>
+                        <String CONTENT="in a hole in the tip of the shaft. I was told that some were simply slanted"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-198_r3" HPOS="697" VPOS="3064" WIDTH="1778" HEIGHT="190" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="697 3064 2475 3064 2475 3254 697 3254"/>
+                    </Shape>
+                    <TextLine ID="mz_1-198_l6" HPOS="695" VPOS="3076" WIDTH="1776" HEIGHT="56" BASELINE="695 3106 2471 3106" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2462 3076 695 3076 695 3106 695 3119 1212 3132 1214 3132 1217 3132 1247 3121 1349 3132 1351 3132 1424 3121 1557 3132 1559 3132 1611 3121 1717 3121 1732 3132 1734 3132 1736 3132 1739 3132 2323 3121 2421 3132 2423 3132 2425 3132 2471 3119 2471 3106 2471 3085 2462 3076"/>
+                        </Shape>
+                        <String CONTENT="and tied to the shaft, though among the specimens obtained not a single"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-198_l7" HPOS="695" VPOS="3119" WIDTH="1771" HEIGHT="72" BASELINE="697 3169 2466 3163" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="697 3169 697 3182 1868 3191 1871 3191 1873 3191 1875 3191 1875 3189 1886 3180 2449 3189 2451 3189 2453 3189 2455 3189 2466 3178 2466 3163 2462 3132 2018 3119 2016 3119 1962 3130 1940 3119 1938 3119 1936 3119 1847 3132 1808 3121 1806 3121 1803 3121 1801 3121 1777 3132 1630 3121 1628 3121 1626 3121 1624 3121 1609 3134 1446 3134 1381 3121 1379 3121 1327 3132 1301 3121 1299 3121 1297 3121 1295 3121 1245 3134 1217 3124 1214 3124 1212 3124 1210 3124 1182 3134 1149 3124 1147 3124 1017 3124 1015 3124 1013 3124 994 3134 981 3124 978 3124 976 3124 879 3124 877 3124 825 3134 747 3124 744 3124 742 3124 695 3137 697 3169"/>
+                        </Shape>
+                        <String CONTENT="splice of this kind is found. However, this method of splicing is well known"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-198_l8" HPOS="695" VPOS="3189" WIDTH="1769" HEIGHT="56" BASELINE="697 3223 2464 3228" TAGREFS="TYPE_3">
+                        <Shape>
+                            <Polygon POINTS="2455 3189 697 3189 697 3223 695 3241 2460 3245 2464 3228 2462 3210 2455 3189"/>
+                        </Shape>
+                        <String CONTENT="in northeastern Siberia, and is used, for instance, in lashing a man’s crooked"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>

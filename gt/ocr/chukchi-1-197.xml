@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/standards/alto/ns-v4#" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-3.xsd">
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>chukchi-1-197.png</fileName>
+        </sourceImageInformation>
+        <Processing ID="OCR_harness-ocr-predict-lines">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>baseline segmentation, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/blla.mlmodel; sha256: 77a638a83c9e535620827a09e410ed36391e9e8e8126d5796a0f15b978186056; device: cuda:0; input: scans/w-figs-blotted/chukchi-1-197.png; regions_from: zones/chukchi-1-197.xml</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+        <Processing ID="OCR_harness-ocr-predict-text">
+            <processingCategory>contentGeneration</processingCategory>
+            <processingStepDescription>recognition, harness ocr predict</processingStepDescription>
+            <processingStepSettings>model: models/catmus-print-fondue-large.mlmodel; sha256: 1ed39e732b26ccdd0f14b9abd3edc66c4b04a02e3d827d7f9e96a7fe7b585b64; device: cuda:0</processingStepSettings>
+            <processingSoftware>
+                <softwareName>kraken</softwareName>
+                <softwareVersion>7.0.3</softwareVersion>
+            </processingSoftware>
+        </Processing>
+    </Description>
+    <Tags>
+        <OtherTag DESCRIPTION="" ID="TYPE_1" TYPE="type" LABEL="MainZone-Continued"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_2" TYPE="type" LABEL="MainZone-P"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_3" TYPE="type" LABEL="RunningTitleZone"/>
+        <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
+    </Tags>
+    <Layout>
+        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+                <TextBlock ID="mz_1-197_r1" HPOS="407" VPOS="618" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+<Shape>
+                        <Polygon POINTS="407 618 2185 618 2185 708 407 708"/>
+                    </Shape>
+                    <TextLine ID="mz_1-197_l1" HPOS="985" VPOS="630" WIDTH="619" HEIGHT="56" BASELINE="987 664 1604 668" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="987 634 987 664 985 681 1600 686 1604 668 1602 634 994 630 987 634"/>
+                        </Shape>
+                        <String CONTENT="BOGORAS, THE CHUKCHEE."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l2" HPOS="2098" VPOS="636" WIDTH="50" HEIGHT="67" BASELINE="2098 681 2148 681" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2141 636 2098 636 2098 681 2098 694 2146 703 2148 681 2148 636 2141 636"/>
+                        </Shape>
+                        <String CONTENT="155"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-197_r2" HPOS="407" VPOS="733" WIDTH="1778" HEIGHT="367" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="407 733 2185 733 2185 1100 407 1100"/>
+                    </Shape>
+                    <TextLine ID="mz_1-197_l3" HPOS="508" VPOS="733" WIDTH="1670" HEIGHT="63" BASELINE="511 779 2178 772" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="511 779 511 796 2176 790 2178 772 2174 742 1065 733 1063 733 1061 733 1037 744 530 736 528 736 526 736 524 736 508 744 511 779"/>
+                        </Shape>
+                        <String CONTENT="Among the Chukchee, however, plain bows without recurving ends have"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l4" HPOS="402" VPOS="807" WIDTH="1774" HEIGHT="48" BASELINE="402 837 2176 837" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 837 402 855 2176 855 2176 837 2176 807 402 807 402 837"/>
+                        </Shape>
+                        <String CONTENT="always been in use side by side with those of better workmanship. The plain"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l5" HPOS="402" VPOS="863" WIDTH="1776" HEIGHT="52" BASELINE="402 898 2178 898" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 898 402 915 2178 915 2178 898 2178 868 402 863 402 898"/>
+                        </Shape>
+                        <String CONTENT="bows consisted of a single piece of wood, without elastic cover, but they were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l6" HPOS="400" VPOS="915" WIDTH="1776" HEIGHT="59" BASELINE="402 959 2176 952" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 959 402 974 2174 969 2176 952 2172 924 994 915 991 915 989 915 987 915 968 926 506 917 504 917 400 928 402 959"/>
+                        </Shape>
+                        <String CONTENT="supplied with a heavy sinew backing of the combined Arctic and western"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l7" HPOS="402" VPOS="969" WIDTH="1774" HEIGHT="68" BASELINE="404 1021 2176 1013" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 1021 404 1037 2174 1030 2176 1013 2172 982 1968 969 1966 969 1877 980 1853 969 1851 969 1849 969 1847 969 1845 969 1827 980 1803 969 1801 969 1799 969 1797 969 1795 969 1777 980 1743 969 1741 969 1739 969 1736 969 1734 969 1719 982 1663 972 1661 972 1658 972 1656 972 1639 985 1370 985 1344 972 1342 972 1340 972 1338 972 1316 982 1292 972 1290 972 1288 972 1286 972 1284 972 1269 985 1030 974 1028 974 968 985 935 974 933 974 931 974 929 974 926 974 913 985 877 974 874 974 872 974 755 987 697 976 695 976 558 987 422 978 420 978 417 978 415 978 402 985 404 1021"/>
+                        </Shape>
+                        <String CONTENT="types of John Murdoch. I found such bows among the Reindeer Chukchee"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l8" HPOS="407" VPOS="1034" WIDTH="548" HEIGHT="59" BASELINE="407 1078 955 1078" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="407 1078 407 1093 955 1093 955 1078 955 1047 576 1034 573 1034 571 1034 526 1045 500 1034 498 1034 495 1034 493 1034 491 1034 474 1045 452 1034 450 1034 448 1034 446 1034 407 1045 407 1078"/>
+                        </Shape>
+                        <String CONTENT="of the Kolyma country."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-197_r3" HPOS="407" VPOS="1100" WIDTH="1778" HEIGHT="301" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="407 1100 2185 1100 2185 1401 407 1401"/>
+                    </Shape>
+                    <TextLine ID="mz_1-197_l9" HPOS="513" VPOS="1101" WIDTH="1665" HEIGHT="50" BASELINE="515 1138 2178 1134" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="515 1138 515 1151 2176 1147 2178 1134 2174 1101 513 1101 515 1138"/>
+                        </Shape>
+                        <String CONTENT="The bow is held vertically, and the arrow is on its left. The so-called"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l10" HPOS="404" VPOS="1164" WIDTH="1774" HEIGHT="48" BASELINE="407 1197 2178 1192" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="407 1197 407 1212 2176 1208 2178 1192 2174 1164 404 1164 407 1197"/>
+                        </Shape>
+                        <String CONTENT="Mediterranean arrow-release was used, in which the first two fingers were"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l11" HPOS="404" VPOS="1227" WIDTH="1768" HEIGHT="46" BASELINE="404 1257 2172 1257" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 1257 404 1273 2169 1273 2172 1257 2169 1227 404 1227 404 1257"/>
+                        </Shape>
+                        <String CONTENT="employed for drawing the string, and the arrow was held between them."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l12" HPOS="404" VPOS="1277" WIDTH="1774" HEIGHT="58" BASELINE="407 1318 2178 1314" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="407 1318 407 1335 2176 1331 2178 1314 2174 1281 424 1277 422 1277 420 1277 417 1277 404 1283 407 1318"/>
+                        </Shape>
+                        <String CONTENT="Arrows were often flattened around the nock, to make them better adapted"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l13" HPOS="404" VPOS="1348" WIDTH="817" HEIGHT="48" BASELINE="404 1376 1221 1376" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 1376 404 1392 1219 1396 1221 1376 1221 1348 404 1348 404 1376"/>
+                        </Shape>
+                        <String CONTENT="to the position between the fingers."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-197_r4" HPOS="407" VPOS="1401" WIDTH="1778" HEIGHT="296" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="407 1401 2185 1401 2185 1697 407 1697"/>
+                    </Shape>
+                    <TextLine ID="mz_1-197_l14" HPOS="513" VPOS="1402" WIDTH="1665" HEIGHT="50" BASELINE="515 1437 2178 1433" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="515 1437 515 1452 2176 1448 2178 1433 2174 1405 513 1402 515 1437"/>
+                        </Shape>
+                        <String CONTENT="The secondary release was also in use, at least among the Reindeer"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l15" HPOS="404" VPOS="1465" WIDTH="1774" HEIGHT="50" BASELINE="404 1496 2178 1496" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 1496 404 1515 2178 1515 2178 1496 2178 1465 404 1465 404 1496"/>
+                        </Shape>
+                        <String CONTENT="Chukchee, and perhaps also the Mongolian release, if we may judge from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l16" HPOS="402" VPOS="1526" WIDTH="1774" HEIGHT="47" BASELINE="402 1556 2176 1556" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 1556 402 1571 2174 1573 2176 1556 2176 1526 402 1526 402 1556"/>
+                        </Shape>
+                        <String CONTENT="occurrence of the thumb-guard. Specimens of thumb-guards were found among"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l17" HPOS="400" VPOS="1573" WIDTH="1774" HEIGHT="61" BASELINE="402 1619 2174 1612" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 1619 402 1634 2172 1628 2174 1612 2169 1582 991 1573 989 1573 987 1573 963 1584 426 1576 424 1576 422 1576 400 1584 402 1619"/>
+                        </Shape>
+                        <String CONTENT="the Chukchee (Fig. 71, b), though the owners could not exactly tell their use."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l18" HPOS="402" VPOS="1632" WIDTH="1583" HEIGHT="61" BASELINE="404 1677 1985 1673" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="404 1677 404 1693 1983 1688 1985 1673 1981 1645 1708 1632 1706 1632 1622 1643 1554 1632 1552 1632 1550 1632 1505 1643 1479 1632 1476 1632 1474 1632 1472 1632 1470 1632 1455 1643 1429 1632 1427 1632 1424 1632 1299 1643 1273 1632 1271 1632 1269 1632 1182 1645 1136 1634 1134 1634 1132 1634 1130 1634 1102 1645 1084 1634 1082 1634 1080 1634 1078 1634 1030 1645 1017 1634 1015 1634 1013 1634 1011 1634 1009 1634 981 1645 957 1634 955 1634 952 1634 870 1645 641 1634 638 1634 636 1634 602 1645 502 1634 500 1634 402 1643 404 1677"/>
+                        </Shape>
+                        <String CONTENT="Perhaps they were used similarly to those of the Mongolian archers."/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-197_r5" HPOS="407" VPOS="1697" WIDTH="1778" HEIGHT="189" TAGREFS="TYPE_2">
+<Shape>
+                        <Polygon POINTS="407 1697 2185 1697 2185 1886 407 1886"/>
+                    </Shape>
+                    <TextLine ID="mz_1-197_l19" HPOS="517" VPOS="1695" WIDTH="1659" HEIGHT="56" BASELINE="517 1736 2176 1736" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="517 1736 517 1749 2174 1751 2176 1736 2176 1708 2063 1695 2061 1695 1920 1706 1905 1695 1903 1695 1901 1695 1899 1695 1897 1695 1849 1706 1793 1695 1790 1695 1671 1706 1624 1695 1622 1695 1619 1695 1567 1706 517 1697 517 1736"/>
+                        </Shape>
+                        <String CONTENT="Tradition speaks also of bows that were made wholly of whalebone,"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l20" HPOS="400" VPOS="1751" WIDTH="1776" HEIGHT="61" BASELINE="402 1799 2176 1792" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="402 1799 402 1812 2176 1807 2176 1792 2172 1757 1920 1751 1918 1751 1812 1762 1674 1751 1671 1751 1669 1751 1667 1751 1652 1762 1515 1753 1513 1753 1511 1753 1509 1753 1494 1766 1279 1766 1223 1753 1221 1753 1219 1753 1217 1753 1199 1766 1061 1766 1000 1753 998 1753 996 1753 970 1764 851 1755 848 1755 706 1766 638 1755 636 1755 634 1755 608 1766 595 1755 593 1755 591 1755 435 1755 433 1755 430 1755 400 1766 402 1799"/>
+                        </Shape>
+                        <String CONTENT="although this material could not make a strong bow. However, children still"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l21" HPOS="415" VPOS="1814" WIDTH="1754" HEIGHT="67" BASELINE="415 1857 2169 1857" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="415 1857 415 1877 2167 1881 2169 1857 2169 1822 1680 1814 1678 1814 1619 1825 1598 1814 1596 1814 1593 1814 1511 1825 1429 1814 1427 1814 1325 1825 1310 1814 1308 1814 1305 1814 1210 1814 1208 1814 1206 1814 1171 1825 1141 1814 1139 1814 1136 1814 1084 1825 1046 1814 1043 1814 1041 1814 1039 1814 1037 1814 1020 1825 991 1814 989 1814 987 1814 896 1825 861 1814 859 1814 857 1814 677 1825 593 1814 591 1814 589 1814 565 1827 415 1827 415 1857"/>
+                        </Shape>
+                        <String CONTENT="use small bows made entirely of whalebone (Fig. 72). Wrist-guards (Fig. 73)"/>
+                    </TextLine>
+</TextBlock>
+                <TextBlock ID="mz_1-197_r6" HPOS="407" VPOS="3067" WIDTH="1778" HEIGHT="190" TAGREFS="TYPE_1">
+<Shape>
+                        <Polygon POINTS="407 3067 2185 3067 2185 3257 407 3257"/>
+                    </Shape>
+                    <TextLine ID="mz_1-197_l22" HPOS="407" VPOS="3063" WIDTH="1771" HEIGHT="67" BASELINE="409 3108 2178 3102" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="2165 3072 1632 3063 1630 3063 1574 3074 1063 3065 1061 3065 907 3076 489 3067 487 3067 407 3078 409 3108 409 3124 2105 3130 2107 3130 2178 3117 2178 3102 2176 3098 2165 3072"/>
+                        </Shape>
+                        <String CONTENT="made of ivory or of strong leather served for protecting the hands from the"/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l23" HPOS="407" VPOS="3132" WIDTH="413" HEIGHT="57" BASELINE="409 3165 820 3171" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="409 3165 407 3182 816 3189 820 3171 818 3139 409 3132 409 3165"/>
+                        </Shape>
+                        <String CONTENT="rebounding string."/>
+                    </TextLine>
+
+                    <TextLine ID="mz_1-197_l24" HPOS="515" VPOS="3189" WIDTH="1661" HEIGHT="58" BASELINE="517 3228 2176 3221" TAGREFS="TYPE_4">
+                        <Shape>
+                            <Polygon POINTS="517 3228 517 3247 2176 3241 2176 3221 2169 3189 515 3193 517 3228"/>
+                        </Shape>
+                        <String CONTENT="In recent times arrow-points were made of iron, bone, ivory, wood, and"/>
+                    </TextLine>
+</TextBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
