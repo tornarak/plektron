@@ -1528,6 +1528,21 @@ tooling, not on a reader: someone looking at the whole page may of course use
 where the ink sits — the opener block is still below the body wherever the
 boundary falls, and a raised digit mid-sentence is a reference.
 
+**An opener carrying no marker has been abraded, so supply it.** Where the note
+at the foot begins straight into its text and the body reference is present and
+marked, the mark has been lost — the printer did not set the note unanchored.
+Key the marker and say in `note` that it was supplied rather than read. This is
+not an invention and does not need to be flagged as one: the body reference
+attests the value, the opener attests the position, and both witnesses are on
+the page. Where the body reference is missing *too*, nothing attests a value and
+the page is reported rather than repaired. Attested `1-279` and `1-280`, both
+adjudicated 2026-08-07, both zoomed to 4× by their readers before the gap was
+believed.
+
+The licence is the apparatus's alone. §2.14 is unchanged for letters: wear is
+still not a letter, and no glyph is reconstructed from what a word ought to
+contain.
+
 **Known limit.** A page keying *every* marker as ASCII has no superscript to
 establish a convention, so it has no gaps, no singletons and no flagged opener,
 and passes clean. That was `1-073` and `1-151` before repair, and it is what a
@@ -1597,8 +1612,33 @@ them as puzzles:
 
 **One case is genuinely ambiguous and it is page 1**, where the arabic `1` is set
 as a bare serifed stem indistinguishable from a roman `I`. It is a digit, on the
-same rule as everything above. Nowhere else does the question arise, and a reader
-spending a 4× look on either slot is spending it in the wrong place.
+same rule as everything above.
+
+**The ambiguity is not confined to the folio, and no zoom resolves it: `1` and
+`I` are homographs in this face.** The arabic `1` is an x-height serifed stem
+with no flag — `Fig. 188` on `1-328` prints one four words from the `ɪ`s of
+`xxɪx`, and at 4× they are the same shape. A reader who reaches for a
+magnifier here will come back with a confident reading and no evidence, so
+**settle it by the numbering scheme instead, which is fixed:**
+
+- **Plates** take an **uppercase roman** number, their subdivisions **arabic** —
+  `Plate XXVI, Fig. 1`.
+- **Figures** take an **arabic** number, their subdivisions a **lowercase
+  letter**, and a point of interest on one of those an **arabic** numeral —
+  `Fig. 148, a, b`; `Fig. 17, f¹`.
+
+So a numeral after `Fig.` is arabic at every level of this book, and a roman
+`Fig. I` is a misreading rather than a variant setting.
+
+**A plate cited out of another book carries that book's scheme, and no rule
+here reaches across the citation.** `1-143`'s `Nelson, Plate LXXVI, Fig. 1`
+was settled by opening Nelson and finding that he subdivides arabic too — a
+human act, and the only kind available. Key this book's scheme for this book's
+plates; for a citation, flag it and let a human decide.
+
+Attested by its own failure: `1-143`, `1-157`, `1-169`, `1-324` and `1-328` all
+carried roman `Fig. I` into adjudication, three of them into restored ground
+truth, before this was written down. All five repaired 2026-08-07.
 
 ### 2.13 Run-in section headings — key the setting (SETTLED, editor ruling)
 

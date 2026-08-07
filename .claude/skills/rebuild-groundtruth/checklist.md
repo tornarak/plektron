@@ -22,6 +22,8 @@ evidence, it is what both readings that were wrong said.
 - [ ] Quotation marks curly `“…”`, never straight — §1, §5.6
 - [ ] Every raised mark keyed stress U+02CA, never apostrophe U+0027 — §5.8
 - [ ] Footnote markers are superscript sorts `¹²³⁴⁵⁶⁷⁸⁹`, never ASCII digits — §2.10
+- [ ] A note opener printing no marker, where the body reference is marked: the
+      marker **supplied** and noted as supplied, not flagged as absent — §2.10
 - [ ] Dashes are em U+2014 — §2.11
 - [ ] Roman numerals and folio slots plain ASCII — §2.12
 - [ ] Page number located by zone — `RunningTitleZone` (plain digits) **or**
