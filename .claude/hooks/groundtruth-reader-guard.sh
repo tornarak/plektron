@@ -123,6 +123,20 @@ esac
 COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 [ -z "$COMMAND" ] && exit 0
 
+# **A trailing `2>/dev/null` or `2>&1` is dropped before anything else looks.**
+# Measured over one day's 63 readers: 25 of 116 refusals were an `ls` this hook
+# already allows, refused by the operator scan below because the reader had
+# appended a stderr redirect. The listing was permitted, the tree was permitted,
+# and the turn was spent on punctuation.
+#
+# It gives up nothing the scan is for. That scan exists so an allowed verb cannot
+# smuggle a forbidden one — chaining, a pipe, a substitution. Discarding or
+# merging this command's own stderr adds no second command and reaches no second
+# file. Only a *trailing* one, and only these two spellings: `2>file` would be a
+# write, and `>` in any other position stays an operator.
+COMMAND=${COMMAND% 2>/dev/null}
+COMMAND=${COMMAND% 2>&1}
+
 # One plain invocation: no chaining, substitution, or redirection. A pipe or
 # `&&` is how an allowed verb smuggles a forbidden one.
 #
@@ -228,9 +242,47 @@ case "$COMMAND" in
     exit 2 ;;
 esac
 
+# **`cat` over the two trees the reader may already read.** The single largest
+# refusal family measured — 24 of 116 in one day, and 22 of those the same reach:
+# `cat` of this agent's own memory directory, which the contract tells it to
+# consult. Every reader opened that way, every one was refused, and every one
+# then read the same bytes through `Read`. Four batches of that is a property of
+# the instruction, not of any reader, and the same finding that put `ls` here.
+#
+# Narrower than `Read`, deliberately, because `cat` takes a glob and `Read` does
+# not: `cat memory/*.md` is the reach that has no `Read` spelling at all, and it
+# is why pointing at the tool did not stick. The docs, `data/` and the skill stay
+# `Read`-only — those are large, and the offset-and-limit argument is real there.
+#
+# **`decision.json` is refused here exactly as `readable()` refuses it**, or this
+# arm becomes the hole: a glob over `review/` would otherwise hand a reader the
+# adjudications, which is the one thing under that tree it must not see.
+case "$COMMAND" in
+  cat|cat\ *)
+    bad=""; hits=0
+    set -- $COMMAND
+    shift
+    for arg in "$@"; do
+      case "$arg" in
+        -*) continue ;;
+        *..*|*decision.json*) bad=1 ;;
+        */review/*|review/*|*"$MEMORY"*) hits=$((hits + 1)) ;;
+        *) bad=1 ;;
+      esac
+    done
+    if [ -z "$bad" ] && [ "$hits" -gt 0 ]; then
+      allow "groundtruth-reader reading its working directory or its own memory"
+    fi
+    case "$COMMAND" in
+      *decision.json*)
+        echo "Blocked: decision.json is the adjudication — a human's, made after you finish. Reading one is reading the answers to a page someone else already keyed. Your deliverable is a proposal." >&2
+        exit 2 ;;
+    esac ;;
+esac
+
 case "$COMMAND" in
   cat|cat\ *|head|head\ *|tail|tail\ *|less|less\ *|more|more\ *)
-    echo "Blocked: use Read, not cat — it opens every file you are allowed (your page's working directory, keying_spec.md, the docs, your own memory), it numbers the lines so you can cite one, and it renders a raster as an image instead of as bytes. head/tail are the same answer: Read takes an offset and a limit. Nothing about this file is refused; the shell is." >&2
+    echo "Blocked: use Read for this one. 'cat' is yours over review/ — your page's working directory — and over your own memory under $MEMORY, which is where a glob earns it; everywhere else Read is the better tool and the only one: it numbers the lines so you can cite one, it takes an offset and a limit (which is head and tail's whole answer), and it renders a raster as an image instead of as bytes. If the path you want is outside those two trees, the file is the question, not the shell — check what you are allowed to read at all." >&2
     exit 2 ;;
 esac
 

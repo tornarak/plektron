@@ -120,7 +120,11 @@ def test_gt_the_whole_loop_runs_unprompted(cmd):
     "ls review/1-031 /etc",                       # one allowed argument is not enough
     "ls review/1-031/../../gt/ocr",
     "cat keying_spec.md",
-    "cat review/1-031/proposal.json",             # allowed to Read, not to shell at
+    "cat review/1-031/decision.json",             # the adjudication, by any route
+    "cat review/1-031/proposal.json review/1-032/decision.json",   # one bad arg is enough
+    "cat review/1-031/../../gt/ocr/chukchi-1-030.xml",
+    "head -5 review/1-031/proposal.json",         # Read takes an offset and a limit
+    "cat review/1-031/proposal.json > /tmp/x",    # a redirect that is not stderr
     "uv run harness proposal check --all",
     "uv run harness ocr lines 1-031 --store mz | head -5",
     "uv run harness ocr lines 1-031 --store mz > /tmp/x",
@@ -202,6 +206,11 @@ def test_gt_an_operator_outside_quotes_is_still_refused(cmd):
     "ls .claude/agent-memory/groundtruth-reader",
     "ls /home/x/machine_press/.claude/agent-memory/groundtruth-reader",
     "ls review/1-031 review/1-031/sheets",
+    # A trailing stderr redirect, which is how readers actually type this — 25 of
+    # one day's 116 refusals were an `ls` this arm already allowed, refused by the
+    # operator scan for punctuation that reaches no second file.
+    "ls review/1-031 2>/dev/null",
+    "ls .claude/agent-memory/groundtruth-reader/ 2>&1",
 ])
 def test_gt_ls_is_allowed_over_the_trees_it_may_already_read(cmd):
     """The one shell command in the surface, and it gives up nothing.
@@ -213,6 +222,30 @@ def test_gt_ls_is_allowed_over_the_trees_it_may_already_read(cmd):
     reader tried `ls` and each was refused, 2 to 4 refusals per reader per batch
     at a turn apiece against a budget of 80. Four independent batches make that a
     property of the instruction, not of any reader.
+    """
+    allowed(GT_GUARD, "Bash", command=cmd)
+
+
+@pytest.mark.parametrize("cmd", [
+    "cat review/1-031/proposal.json",
+    "cat .claude/agent-memory/groundtruth-reader/MEMORY.md",
+    "cat /home/x/machine_press/.claude/agent-memory/groundtruth-reader/MEMORY.md",
+    # The reach with no `Read` spelling at all, and the reason this arm exists
+    # rather than a better-worded refusal pointing at the tool.
+    "cat .claude/agent-memory/groundtruth-reader/*.md",
+    "cat review/1-031/proposal.json 2>/dev/null",
+])
+def test_gt_cat_is_allowed_over_those_same_two_trees(cmd):
+    """Same finding as `ls`, larger: 24 of one day's 116 refusals were `cat`, and
+    22 of those were this agent's own memory directory — which its contract tells
+    it to consult. Every reader opened that way, every one was refused, and every
+    one then read the same bytes through `Read`.
+
+    Narrower than `Read` on purpose. `cat` is here for the glob, which `Read` has
+    no spelling for; the docs, `data/` and the skill stay `Read`-only, where the
+    offset-and-limit argument is real. And `decision.json` is refused by this arm
+    exactly as `readable()` refuses it, or a glob over `review/` would hand a
+    reader the adjudications — see `test_gt_everything_else_is_refused`.
     """
     allowed(GT_GUARD, "Bash", command=cmd)
 
