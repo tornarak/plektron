@@ -1,7 +1,7 @@
 {
  "ref": "1-047",
  "proposal": "review/1-047/proposal.json",
- "saved_at": "2026-08-05T15:04:50-0400",
+ "saved_at": "2026-08-07T14:54:39-0400",
  "lines": {
   "0": {
    "text": "BOGORAS, THE CHUKCHEE.",
@@ -128,8 +128,9 @@
    "edited": false
   },
   "31": {
-   "text": "eastern people Uˊnmɪ-nuteˊkinet (“those from the inland country”).",
-   "edited": false
+   "text": "eastern people Uˊnmɪ-nuteˊkinet (“those from the inland country”).²",
+   "edited": true,
+   "note": "you missed the footnote marker DUMMY!!!"
   },
   "32": {
    "text": "The whole number of reindeer camps amounts to about 650, with a",
