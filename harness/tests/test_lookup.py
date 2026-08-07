@@ -218,6 +218,39 @@ def test_fix_refuses_the_whole_page_on_a_bad_handle(tmp_path):
     assert text == "{C^e'win} is spelled two ways"
 
 
+def test_fix_refuses_a_handle_the_floor_declined(tmp_path):
+    """**The brace must not be a way around `--min-pages`.**
+
+    `lexicon lookup` answers a one-page form with an empty `key` and a `why` saying
+    so, but nothing stops a reader typing the handle it would have had. If `fix`
+    resolved that, the floor would hold only for readers who read the `why` column
+    — and a form witnessed by a single neighbouring page would enter the store
+    wearing `as_typed`, which asserts the corpus supplied it.
+
+    That is the firewall's own case: one page is a neighbour, not a convention, and
+    a provenance record is worth exactly what it excludes.
+    """
+    # A store holding the form on exactly one page — the shape the floor exists for,
+    # built rather than borrowed so it cannot drift as `gt/ocr/` grows.
+    root = tmp_path / "one-page"
+    (root / "gt" / "ocr").mkdir(parents=True)
+    (root / "data").mkdir()
+    (root / "data" / "marks_config.json").write_text(
+        (REPO / "data" / "marks_config.json").read_text(encoding="utf-8"),
+        encoding="utf-8")
+    src = next((REPO / "gt" / "ocr").glob("chukchi-1-051.xml"))
+    (root / "gt" / "ocr" / src.name).write_text(src.read_text(encoding="utf-8"),
+                                                encoding="utf-8")
+    assert resolve("Nu'nlig.ren", root)[0] is None       # the premise, not assumed
+
+    p = _proposal(root, "The village of {Nu'nlig.ren} stands there.")
+    with pytest.raises(ValueError, match="below the floor"):
+        fix(p, root)
+    rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
+    assert rec["text"] == "The village of {Nu'nlig.ren} stands there."
+    assert "as_typed" not in rec
+
+
 def test_nothing_half_expands(tmp_path):
     """One bad handle aborts the write. A partly-expanded line records neither what
     was read nor what was meant."""

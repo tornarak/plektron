@@ -90,7 +90,33 @@ _SPACE_BEFORE_PUNCT = re.compile(r"[ \t]+([;:,])")
 # substring precheck is a thousand times cheaper still but filters *nothing* — `"  "`
 # is in every indented JSON file in the corpus, which is exactly why the real pattern
 # demands a non-space on each side.
-_SPACING_ANY = re.compile(r"\S {2,}\S|[ \t][;:,]")
+_SPACING_ANY = re.compile(r"\S {2,}\S|[ \t][;:,]|[ \t][¹²³⁴⁵⁶⁷⁸⁹]|\"[¹²³⁴⁵⁶⁷⁸⁹]\S")
+
+# §2.10 marker spacing, and it is **two rules with opposite signs**, which is why
+# neither is `_SPACE_BEFORE_PUNCT` with a wider class.
+#
+# A body reference sets tight against whatever precedes it — `mouth.¹`, `tales¹`,
+# `Steller,¹`. An opener sets marker, space, text — `¹ See, for instance`. Measured
+# over `gt/ocr/` the day this was written: 225 tight against 13 spaced in the body,
+# 208 spaced against 1 tight in openers. Both leans are the print's, not a keyer's
+# preference.
+#
+# **Position is read off the quote, not off a parse** — `convert`'s safety argument
+# is that it rewrites raw source and never parses, so the two file shapes have to be
+# recognised by their punctuation. Both put the transcribed line immediately after a
+# `"`: JSON as `"text": "…` and ALTO as `CONTENT="…`. So a marker preceded by `"` is
+# at the head of a line and is an opener; anything else is a reference. The
+# lookbehind excludes `"` for exactly that reason — without it the opener rule and
+# the body rule would fight over the same character.
+#
+# The thirteen body offenders included `Nelson ¹)`, `Kiˊhi ¹)` and `[albino] ¹)`,
+# which the print really does space and which were kept spaced deliberately, to stop
+# the marker being lumped into the Tier-1 token beside it. That fear was unfounded:
+# `detectors.EDGE_PUNCT` already carries `¹²³⁴⁵⁶⁷⁸⁹` and `str.strip` eats from both
+# ends, so `Kiˊhi¹)` and `Kiˊhi` tokenize identically. Closing the space costs the
+# lexicon nothing, which is the whole reason this rule can be mechanical.
+_MARKER_TIGHT = re.compile(r"(?<=[^\s\"])[ \t]+([¹²³⁴⁵⁶⁷⁸⁹])")
+_MARKER_OPENER = re.compile(r"(?<=\")([¹²³⁴⁵⁶⁷⁸⁹])(?=\S)")
 
 # A proposal's or decision's `note` and `resolved` are editorial commentary *about*
 # the page, not print-reproduction content, so §2.9 does not reach them: an
@@ -130,6 +156,8 @@ def _fix_spacing(text: str, commentary: bool = False) -> str:
             continue
         line = _MULTI_SPACE.sub(" ", line)
         line = _SPACE_BEFORE_PUNCT.sub(r"\1", line)
+        line = _MARKER_TIGHT.sub(r"\1", line)
+        line = _MARKER_OPENER.sub(r"\1 ", line)
         out.append(line)
     return "\n".join(out)
 
@@ -150,7 +178,9 @@ def _spacing_hits(text: str, commentary: bool = False) -> list[dict]:
         if _skip_line(line, commentary):
             continue
         for pat, label in ((_MULTI_SPACE, "2+ spaces (§2.9 sentence spacing)"),
-                           (_SPACE_BEFORE_PUNCT, "space before ;/:/, (§2.9)")):
+                           (_SPACE_BEFORE_PUNCT, "space before ;/:/, (§2.9)"),
+                           (_MARKER_TIGHT, "space before a footnote marker (§2.10)"),
+                           (_MARKER_OPENER, "no space after a note opener (§2.10)")):
             for m in pat.finditer(line):
                 hits.append({"issue": label, "line": lineno,
                             "token": _token_at(line, m.start())})

@@ -308,7 +308,23 @@ telling where; `--out` is for a one-off outside the pass, and is not yours.
   `Kuluˊči`, 15 times over 12 pages, and "south of Kuluˊči Bay", which is what makes
   the word a place rather than a string. It prints a **key** beside each form:
   `Kulu'c^i`. Write that key in braces in your reading — `The bay of {Kulu'c^i}` —
-  and `proposal set` substitutes the ratified glyphs on write.
+  and the ratified glyphs are substituted for you. **However you author the line:**
+  a handle typed straight into `proposal.json` with `Write` expands when you run
+  `proposal fix`, which you run on every page anyway, and one sent through
+  `proposal set` expands on write. There is no path that leaves a brace in the
+  store, and none you have to choose in advance.
+
+  **Use one wherever the lookup gives you a key.** Not as a shortcut for you —
+  the saving is the adjudicator's. Every form you retype by hand is a form a human
+  must re-read against the raster to confirm you did not drop a U+0323; a form you
+  hand over as a key is one they can see was ratified elsewhere and pass over. The
+  reading half of this pass runs fifteen at a time and the adjudicating half runs
+  one at a time, so a minute you save there is worth many of yours.
+
+  **A lookup that returns a form but no key has answered you**: the floor is two
+  pages, so a word attested on one page yields a form you may read *and no handle
+  to use*. That is the tool declining, not you missing something — key it by hand,
+  say in `note` that you saw it attested, and move on.
 
   **A handle is a claim that the corpus supplied these characters, not a reading.**
   It is recorded as such, in `as_typed`, and the review UI shows the adjudicator the
@@ -690,6 +706,8 @@ evidence, it is what both readings that were wrong said.
 - [ ] Every `note` carries a `class`: doubt / semantic / print / layout / artifact
 - [ ] Every `{handle}` names a form you *read* and would have retyped — never one
       the raster left in doubt, which is a flag and not a lookup
+- [ ] …and the converse: no Tier-1 form retyped by hand that `lexicon lookup`
+      offered a key for. A key you saw and did not use is adjudicator time spent
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them
 <!-- /transclude -->
@@ -1032,6 +1050,25 @@ multi-letter word before a paren (`Ciˊṛluk⁶)`) and spaced off the word
 (`Nelson ¹)`), and either half of the rule alone would swallow one of them. The
 locant is still *reported*, at the advisory tier: an exclusion that says nothing
 is indistinguishable from a check that never ran.
+
+**Spacing, and it runs opposite ways at the two ends.** A body reference sets
+**tight** against whatever precedes it — `mouth.¹`, `tales¹`, `Steller,¹`,
+`“alien food.”²` — and a note opener sets **marker, space, text**: `¹ See, for
+instance`. Measured over `gt/ocr/`: 225 tight against 13 spaced in the body, 208
+spaced against 1 tight in openers. Both leans are the print's.
+
+Mechanical, so it is not a reader's judgement: `harness corpus normalize` reports
+both and `--convert` writes them, the same standing as §2.9. Key it right anyway —
+a rule the tool repairs silently is one nobody learns.
+
+**The draft is not a witness to a locant.** Over the fifty-page run of 2026-08-07
+the recognizer garbled them in three directions: an italic letter read as a digit
+(`b` → `6`, sixteen times across eleven pages, four of them on `1-258` alone), and
+a raised numeral read as punctuation (`a¹` as `a’)` and as `a°)`, both on `1-241`).
+Two of those directions produce something that still parses as a locant, so nothing
+downstream can flag them. Read a locant off the raster. A digit interrupting a
+letter series — `(Fig. 118, a, 6)` — is the draft's error until the page says
+otherwise.
 
 **Position on the page is not used by the checks, and must not be** — the scan
 is not consistent enough for the *detectors* to carry geometric judgement, and

@@ -1157,7 +1157,7 @@ single store can answer it.
 ```
 
 ### corpus normalize REF|PATH [REF|PATH ...]
-**Does** NFD conformance, §2.9 spacing, and the lookalike census across every store. It prints the census **and** what a `--commit` would rewrite — two tables, because they are two code paths and a preview agreeing with itself is no preview.
+**Does** NFD conformance, §2.9 spacing, §2.10 marker spacing (a body reference sets tight, a note opener sets marker-space-text), and the lookalike census across every store. It prints the census **and** what a `--commit` would rewrite — two tables, because they are two code paths and a preview agreeing with itself is no preview.
 **Reads** every corpus store, deduped by real path (`ocr/` and `gt/ocr/` are two names over one inode).
 **Writes** corpus files in place under `--commit` — raw source, never a parsed tree, so element and attribute order cannot move.
 **Exit** 1 on NFD drift, an unlicensed mark, or spacing drift. The lookalike census does **not** gate: it is a worklist needing a human ruling on what the page prints. `--commit` always exits 0. Exit 2 for nothing named, or for targets together with `--all`. **Also printed, as a closing `verdict` section** — see `proposal check`; a clean scan and one whose findings do not block but which `--commit` would still rewrite are both exit 0 and are not the same result.

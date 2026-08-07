@@ -322,6 +322,25 @@ multi-letter word before a paren (`Ciˊṛluk⁶)`) and spaced off the word
 locant is still *reported*, at the advisory tier: an exclusion that says nothing
 is indistinguishable from a check that never ran.
 
+**Spacing, and it runs opposite ways at the two ends.** A body reference sets
+**tight** against whatever precedes it — `mouth.¹`, `tales¹`, `Steller,¹`,
+`“alien food.”²` — and a note opener sets **marker, space, text**: `¹ See, for
+instance`. Measured over `gt/ocr/`: 225 tight against 13 spaced in the body, 208
+spaced against 1 tight in openers. Both leans are the print's.
+
+Mechanical, so it is not a reader's judgement: `harness corpus normalize` reports
+both and `--convert` writes them, the same standing as §2.9. Key it right anyway —
+a rule the tool repairs silently is one nobody learns.
+
+**The draft is not a witness to a locant.** Over the fifty-page run of 2026-08-07
+the recognizer garbled them in three directions: an italic letter read as a digit
+(`b` → `6`, sixteen times across eleven pages, four of them on `1-258` alone), and
+a raised numeral read as punctuation (`a¹` as `a’)` and as `a°)`, both on `1-241`).
+Two of those directions produce something that still parses as a locant, so nothing
+downstream can flag them. Read a locant off the raster. A digit interrupting a
+letter series — `(Fig. 118, a, 6)` — is the draft's error until the page says
+otherwise.
+
 **Position on the page is not used by the checks, and must not be** — the scan
 is not consistent enough for the *detectors* to carry geometric judgement, and
 a half-footnote page would defeat any fixed cut. That is a constraint on the

@@ -63,5 +63,7 @@ evidence, it is what both readings that were wrong said.
 - [ ] Every `note` carries a `class`: doubt / semantic / print / layout / artifact
 - [ ] Every `{handle}` names a form you *read* and would have retyped — never one
       the raster left in doubt, which is a flag and not a lookup
+- [ ] …and the converse: no Tier-1 form retyped by hand that `lexicon lookup`
+      offered a key for. A key you saw and did not use is adjudicator time spent
 - [ ] `contamination` block present; `blind: true` unless something nameable
 - [ ] Every line index present, `text` non-empty on all of them

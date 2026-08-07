@@ -93,6 +93,61 @@ class TestSpacing:
         assert [h["line"] for h in _spacing_hits(self.COMMENTARY)] == [2, 3, 4]
 
 
+class TestMarkerSpacing:
+    """§2.10: a body reference sets tight, a note opener sets marker-space-text.
+
+    Two rules with opposite signs over the same character, told apart by whether a
+    `"` precedes — which is how both file shapes mark the head of a transcribed
+    line without anything parsing them.
+    """
+
+    # Verbatim from the store the rule was measured on: the body offenders sit in
+    # ALTO `CONTENT`, the opener in a decision's `text`.
+    ALTO = ('    <String CONTENT="Nelson ¹) misspell it “Circassian”"/>\n'
+            '    <String CONTENT="a well-known spit of whalebone ¹ (Fig. 51, a)"/>')
+    OPENER = '   "text": "¹Bogoras, Chukchee Materials, p. 350."'
+    RIGHT = ('    <String CONTENT="from both sides of his mouth.¹"/>\n'
+             '   "text": "¹ See, for instance, Bogoras, p. 258."')
+
+    def test_a_spaced_body_reference_is_reported_and_closed(self):
+        assert [h["line"] for h in _spacing_hits(self.ALTO)] == [1, 2]
+        out = _fix_spacing(self.ALTO)
+        assert "Nelson¹)" in out and "whalebone¹ (Fig." in out
+
+    def test_an_opener_with_no_space_is_reported_and_opened(self):
+        assert len(_spacing_hits(self.OPENER)) == 1
+        assert '"¹ Bogoras,' in _fix_spacing(self.OPENER)
+
+    def test_the_two_rules_do_not_fight_over_the_same_marker(self):
+        """The opener's marker is preceded by `"`, which the body rule's lookbehind
+        excludes. Without that, tightening would eat the opener's space and the
+        opener rule would put it straight back — an oscillation, not a fix."""
+        assert _spacing_hits(self.RIGHT) == []
+        assert _fix_spacing(self.RIGHT) == self.RIGHT
+
+    def test_the_writer_agrees_with_the_reporter(self):
+        """Same pairing `_spacing_hits`/`_fix_spacing` owe each other elsewhere: a
+        silent rewrite of ground truth is the worse half of any bug here."""
+        for text in (self.ALTO, self.OPENER):
+            assert (_fix_spacing(text) != text) == bool(_spacing_hits(text))
+
+    def test_the_fast_probe_does_not_reject_a_marker_hit(self):
+        """`_spacing_hits` returns early on `_SPACING_ANY`, so a pattern missing
+        from that probe is a rule that never runs on a real file."""
+        assert _spacing_hits(self.ALTO) and _spacing_hits(self.OPENER)
+
+    def test_a_marker_quoted_in_commentary_is_left_alone(self):
+        """`_skip_line` scopes every spacing rule, not just §2.9's two, and this one
+        inherits that — an adjudicator describing what the page prints is quoting,
+        not keying, and rewriting their sentence to match a rule about print is the
+        `1-194` bug that put the scoping there."""
+        note = '   "note": "the opener on line 43 reads ¹Compare, tight"'
+        assert _spacing_hits(note, commentary=True) == []
+        assert _fix_spacing(note, commentary=True) == note
+        # …and off by default, so ALTO and the data files still report.
+        assert len(_spacing_hits(note)) == 1
+
+
 class TestNFD:
     """NFD corpus-wide, and never NFKC."""
 
