@@ -43,7 +43,8 @@ def test_the_vocabulary_is_closed():
     """Five classes, and the set is the contract two modules share — the review
     UI colours off it and `check` refuses off it, so a sixth added in one place
     and not the other is a badge nobody styled."""
-    assert NOTE_CLASSES == ("doubt", "semantic", "print", "layout", "artifact")
+    assert NOTE_CLASSES == ("doubt", "semantic", "print", "draft", "layout",
+                            "artifact")
 
 
 def test_an_unknown_class_is_a_defect(tmp_path):

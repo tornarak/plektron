@@ -62,7 +62,8 @@ evidence, it is what both readings that were wrong said.
 - [ ] Every `keying_spec.md` citation in a note quotes its sentence — §5.11
 - [ ] No note claims what another witness said unless it was consulted — §5.12
 - [ ] Notes written in codepoints, not glyphs — §5.12
-- [ ] Every `note` carries a `class`: doubt / semantic / print / layout / artifact
+- [ ] Every `note` carries a `class`: doubt / semantic / print / draft / layout /
+      artifact — `print` is the compositor's error, `draft` the recognizer's
 - [ ] Every `{handle}` names a form you *read* and would have retyped — never one
       the raster left in doubt, which is a flag and not a lookup
 - [ ] …and the converse: no Tier-1 form retyped by hand that `lexicon lookup`

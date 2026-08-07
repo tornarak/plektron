@@ -100,7 +100,7 @@ ADVISORY = "advisory"
 # the classes apart instead of rendering one undifferentiated amber paragraph.
 #
 # The set is closed and small on purpose: an open vocabulary is a free-text field
-# with extra steps, and the whole value here is that the adjudicator learns four
+# with extra steps, and the whole value here is that the adjudicator learns six
 # colours and can then skip on sight. Each is a different question:
 #
 #   doubt     the reader could not close it at the 4x ceiling. The only class
@@ -111,6 +111,10 @@ ADVISORY = "advisory"
 #   print     a letter or a word the compositor set wrong, keyed verbatim per
 #             keying_spec §2.14. Letters and words only: a stray mark of
 #             punctuation is a blot, and blots are `artifact`.
+#   draft     the *recognizer* read a character wrong and a settled rule says
+#             what it is — italic `b` as `6`, a marker as `!` or `?`, `ɪ` as
+#             `r`. About `mz/ocr`, not about the book, and the reader cites the
+#             rule rather than asking for a ruling.
 #   layout    a band, gap, dropped line or covered zone — about geometry rather
 #             than glyphs, and settled by a different instrument.
 #   artifact  an ink speck ruled not-type. A ruling already made, worth a
@@ -126,7 +130,15 @@ ADVISORY = "advisory"
 # Five readers of one fifteen-page batch keyed a blot as punctuation and filed it
 # here, each having zoomed first, each reporting the ink confirmed; every one was
 # struck by the adjudicator. Zooming shows a mark is there, never that it is type.
-NOTE_CLASSES = ("doubt", "semantic", "print", "layout", "artifact")
+#
+# `draft` was added because its absence was pushing the same error the other way.
+# Correcting the recognizer against a settled rule is the commonest thing a reader
+# does and it fitted nothing: not `doubt`, since nothing is uncertain; not `print`,
+# since the book is not wrong. Over 2026-08-06/07 four readers left the field unset
+# and said so, and six filed it as `print` — which asserts a compositor's error
+# that did not happen, putting a false claim about the book into the record to
+# describe a machine's misreading. A class is cheaper than that.
+NOTE_CLASSES = ("doubt", "semantic", "print", "draft", "layout", "artifact")
 
 # What `_added_terminal_punctuation` will question at the end of a line. Sentence
 # punctuation only: a closing bracket or quote is structural, routinely spans a

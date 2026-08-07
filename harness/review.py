@@ -1036,6 +1036,14 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
          ".nb-doubt{background:#b00020}",
          ".nb-semantic{background:#6a1b9a}",
          ".nb-print{background:#00695c}",
+         # `draft` sits next to `print` in the vocabulary and must not sit next
+         # to it on screen: telling the compositor's error from the recognizer's
+         # is the whole reason the class exists, so the two badges are separated
+         # by hue rather than by shade. Green against teal, not a lighter teal.
+         # It is also the class a reader reaches for most often, which argues for
+         # the quieter of the two — a frequent badge in an alarming colour is how
+         # a palette stops being read at all.
+         ".nb-draft{background:#33691e}",
          ".nb-layout{background:#37474f}",
          ".nb-artifact{background:#795548}",
          ".nb-note{background:#8d6e00}",
