@@ -143,7 +143,7 @@
 
   "figures": {
     "_about": "The figure track, which runs parallel to the zone track and not inside it. Its store is `gt/fig/`, its geometry is **freely-placed rectangles** rather than fixed-width bands of the measure, and that difference is the reason it is a separate store rather than two more labels here: a zone's x comes from the page's column and a hand-drawn width would be a small lie the trainer learns, while a picture's x is exactly what a human saw and nothing else can supply it. The two tracks share one editor, one keyboard and one config file; they share no geometry and no split lists.",
-    "_shape_fields": "`auto_place` is the caption's analogue of the zone chain's `gap_after`: after a picture is committed the editor arms a caption preview at its foot, `gap_px` below, `height_px` tall and the picture's own width. `beside_px` is the width used when the preview is flipped to the picture's right edge for a caption set vertically — the minority arrangement, ~19 plate captions over 14 pages.",
+    "_shape_fields": "`auto_place.after` names the type whose commit arms this one. It is the zone chain's `resume()` in two dimensions and it hands over exactly as much: the chain gives the next zone its *top edge* and the human supplies the bottom, so this gives the next box its *first corner* and the human supplies the opposite one. Nothing is imputed — an assumed height was tried first and was wrong more often than not, and worse, could not be adjusted without deleting the box and drawing it again. A caption's corner is the picture's bottom-left, which is where the reading continues; `caption_beside` re-arms at the top-right instead, for the ~19 plate captions this book sets vertically beside their picture.",
     "types": [
       {
         "label": "GraphicZone",
@@ -157,15 +157,17 @@
         "key": "d",
         "color": "#2aa5a0",
         "auto_place": {
-          "after": "GraphicZone",
-          "gap_px": 18,
-          "height_px": 110,
-          "beside_px": 150
+          "after": "GraphicZone"
         }
       }
     ],
     "min_size_px": 24,
     "max_overlap_px": 8,
+    "view": {
+      "_about": "How far the track you are not editing recedes. Two numbers and not one, because the layers are not equally in the way: a keyed page carries eight or ten body zones against two or three figure boxes, so the zone layer has to go much quieter under the figure track than the figure layer does under the zone track. Neither goes to zero — where the text sits is how you judge where a picture ends, and a figure you cannot see is a figure you will draw a zone over. The unaccounted-ink hatching is exempt from both and stays at full strength: on the figure track a band no zone accounts for is very often the undeclared picture you are about to draw, which is exactly how 1-191 surfaced.",
+      "dim_zones": 0.14,
+      "dim_figs": 0.45
+    },
     "rules": [
       {
         "id": "captions-lte-figures",

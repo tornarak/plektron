@@ -48,9 +48,18 @@ while a picture's edges are a property of that picture and only the person looki
 can supply them. The zone half's guarantee — *the client never sends an x* — is
 therefore inverted here on purpose. Both are true; neither generalises.
 
-Captions run on the way paragraphs do: committing a picture arms a caption preview
-at its foot, the picture's width, which one click takes and a drag replaces. `B`
-flips it beside the picture for the ~19 plate captions this book sets vertically.
+Captions run on the way paragraphs do, and hand over exactly as much. The zone
+chain gives the next zone its *top edge* and asks the human for the bottom; so
+committing a picture arms the caption's **first corner** — the picture's
+bottom-left, where the reading continues — and one further click puts the
+opposite corner. `B` moves the corner to the top-right instead, for the ~19 plate
+captions this book sets vertically beside their picture.
+
+It armed a whole finished rectangle first, the picture's width and an assumed
+height, and that was wrong twice over: captions here run from one line to five, so
+the height was a guess; and a box that arrives complete has no handle, so
+correcting it meant deleting it and drawing it again. A corner imputes nothing and
+still saves the placement, which is the part that is actually predictable.
 
 A save sends the figure list **only when that layer was touched** — `zones blot`
 keys the zone segmenter's training rasters off `gt/fig/` mtimes, so rewriting the

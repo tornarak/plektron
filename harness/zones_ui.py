@@ -499,7 +499,8 @@ let S = {
   // figure store during ordinary keying would stale every training raster.
   figTrack: false, figs: (ST.figs || []).map(f => ({...f})),
   figCur: null, figSel: -1, figHover: -1, figDrag: null, figsDirty: false,
-  figExempt: (ST.fig_exempt || []).slice(), capPending: null, capBeside: false,
+  figExempt: (ST.fig_exempt || []).slice(), figPending: null, capBeside: false,
+  hoverX: null,
 };
 const FT = {};
 ((CFG.figures || {}).types || []).forEach(t => { FT[t.label] = t; });
@@ -510,6 +511,12 @@ const img = document.getElementById('img'), ov = document.getElementById('ov');
 const stage = document.getElementById('stage'), wrap = document.getElementById('wrap');
 const VIEW = Object.assign({column_margin: 0.10, edge_band_px: 80,
                             edge_overlap_px: 140}, CFG.view || {});
+// How far the track you are *not* editing recedes. Two numbers rather than one
+// because the two layers are not equally in the way: a keyed page carries eight
+// or ten body zones against two or three figure boxes, so the zone layer has to
+// go much quieter under the figure track than the other way round.
+const FIGV = Object.assign({dim_zones: 0.14, dim_figs: 0.45},
+                           (CFG.figures || {}).view || {});
 
 // ---- column geometry: measured on the server off this page's own ink, then
 // shifted by the manual nudge. Not computed here from a per-part constant — the
@@ -612,25 +619,42 @@ function figHit(p) {
   }
   return -1;
 }
-// Arm the caption preview off a picture just committed. This is `resume()` in
-// two dimensions: there, a zone's foot becomes the next zone's top and the
-// chain carries; here, a picture's foot becomes a caption box the width of the
-// picture, because that is where this book sets ~85% of them.
+// Arm the next box's **first corner** off the one just committed. This is
+// `resume()` in two dimensions, and it hands over exactly as much: the zone
+// chain gives the next zone its top edge and asks the human for the bottom, so
+// this gives the next box one corner and asks for the opposite one.
+//
+// It armed a whole finished rectangle once — the picture's width, an assumed
+// height — and that was wrong twice over. The height was a guess, and captions
+// in this book run from one line to five; and a box that arrives complete has
+// no handle, so correcting it meant deleting it and drawing it again. A corner
+// imputes nothing and still saves the placement, which is the part that is
+// actually predictable.
+//
+// The caption's corner is the picture's **bottom-left** — where the reading
+// continues, the same edge `resume()` returns. `caption_beside` re-arms at the
+// top-right for the captions set vertically alongside.
 function armCaption(fig) {
   const cap = ((CFG.figures || {}).types || [])
     .find(t => t.auto_place && t.auto_place.after === fig.label);
-  if (!cap) { S.capPending = null; return; }
-  const a = cap.auto_place;
-  S.capPending = S.capBeside
-    ? {label: cap.label, x0: fig.x1 + a.gap_px, y0: fig.y0,
-       x1: fig.x1 + a.gap_px + (a.beside_px || a.height_px), y1: fig.y1}
-    : {label: cap.label, x0: fig.x0, y0: fig.y1 + a.gap_px,
-       x1: fig.x1, y1: fig.y1 + a.gap_px + a.height_px};
+  if (!cap) { S.figPending = null; return; }
+  S.figPending = S.capBeside
+    ? {label: cap.label, x: fig.x1, y: fig.y0, from: fig}
+    : {label: cap.label, x: fig.x0, y: fig.y1, from: fig};
+  S.figCur = cap.label;
 }
 function addFig(box) {
   S.figs.push(box);
   S.figsDirty = true; S.figSel = -1;
-  if (box.label === 'GraphicZone') armCaption(box); else S.capPending = null;
+  if (box.label === 'GraphicZone') armCaption(box); else S.figPending = null;
+}
+// The rectangle an armed corner and the cursor describe between them.
+function pendingRect() {
+  if (!S.figPending || S.hoverX === null || S.hoverY === null) return null;
+  const p = S.figPending;
+  return {label: p.label,
+          x0: Math.min(p.x, S.hoverX), x1: Math.max(p.x, S.hoverX),
+          y0: Math.min(p.y, S.hoverY), y1: Math.max(p.y, S.hoverY)};
 }
 // ---- the caption-count rule, transcribed from zones_config.fig_warnings.
 // Held to that function by harness/tests/test_zones_ui.py, the same way
@@ -695,11 +719,24 @@ function render() {
   parts.push(`<svg xmlns="http://www.w3.org/2000/svg"
     viewBox="0 ${C.y0} ${P.w} ${C.y1 - C.y0}"
     preserveAspectRatio="none" width="100%" height="100%">`);
+  // ---- how loud the *other* track is ------------------------------------
+  // The inactive track stays on the page and stops competing for the eye. A
+  // keyed page carries eight or ten body zones, and at full strength they bury
+  // the two or three boxes being drawn over them; hiding them outright is worse,
+  // because where the text sits is how you judge where a picture ends.
+  //
+  // The ink bands are deliberately **not** dimmed with them. On the figure track
+  // an unaccounted band is the most useful mark on the page — very often it *is*
+  // the undeclared picture you are about to draw, which is exactly how `1-191`
+  // surfaced — so it is the one piece of zone-track furniture that gets louder
+  // by comparison rather than quieter.
+  const zoneDim = S.figTrack ? (FIGV.dim_zones ?? 0.14) : 1;
   // the live column guide, so the measure a click will use is never a surprise
   const w = win();
   parts.push(`<rect x="${w.x0}" y="${C.y0}" width="${w.x1 - w.x0}"
      height="${C.y1 - C.y0}" fill="none" stroke="var(--accent)" stroke-width="2"
-     stroke-dasharray="14 10" opacity=".38"/>`);
+     stroke-dasharray="14 10" opacity="${.38 * zoneDim}"/>`);
+  parts.push(`<g opacity="${zoneDim}">`);
   const dragging = new Set((S.drag || []).map(g => g.i));
   S.zones.forEach((z, i) => {
     const g = zoneX(z), t = T[z.label], c = t ? t.color : '#999';
@@ -731,9 +768,11 @@ function render() {
            fill-opacity=".9"/>`);
     }
   });
+  parts.push('</g>');
   // Ink the zones do not account for. Drawn under the preview so it never hides
   // what is being placed, and hatched rather than filled so it reads as a question
-  // about the page rather than as another zone.
+  // about the page rather than as another zone. **Outside the dimming group**: see
+  // `zoneDim` above — on the figure track this is the mark worth following.
   parts.push(`<defs><pattern id="hatch" width="18" height="18"
      patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
      <rect width="18" height="18" fill="var(--warn)" fill-opacity=".12"/>
@@ -758,7 +797,7 @@ function render() {
   S.figs.forEach((f, i) => {
     const t = FT[f.label], c = t ? t.color : '#999';
     const on = S.figTrack && (i === S.figSel || i === S.figHover);
-    const dim = S.figTrack ? 1 : .45;
+    const dim = S.figTrack ? 1 : (FIGV.dim_figs ?? 0.45);
     parts.push(`<rect x="${f.x0}" y="${f.y0}" width="${f.x1 - f.x0}"
        height="${f.y1 - f.y0}" fill="${c}" fill-opacity="${on ? .26 : .12}"
        stroke="${c}" stroke-width="${on ? 6 : 3}" opacity="${dim}"
@@ -767,14 +806,22 @@ function render() {
        fill="${c}" opacity="${dim}" font-family="ui-sans-serif,sans-serif"
        >${t ? t.name : f.label}${ST.fig_proposal ? ' (proposed)' : ''}</text>`);
   });
-  // The armed caption. A preview and nothing more until a click adopts it — the
-  // chain's `resume()` in two dimensions, and the reason a caption is one
-  // keystroke rather than a drag on the ~85% of pages that set it below.
-  if (S.capPending) {
-    const p = S.capPending, c = FT[p.label] ? FT[p.label].color : 'var(--accent)';
-    parts.push(`<rect x="${p.x0}" y="${p.y0}" width="${p.x1 - p.x0}"
-       height="${p.y1 - p.y0}" fill="${c}" fill-opacity=".18" stroke="${c}"
-       stroke-width="4" stroke-dasharray="14 9"/>`);
+  // The armed corner, and the box it and the cursor describe. Nothing is
+  // committed until a click; the corner is drawn whether or not the pointer is
+  // on the page, because it is the thing that stays true when the cursor wanders.
+  if (S.figPending) {
+    const p = S.figPending;
+    const c = FT[p.label] ? FT[p.label].color : 'var(--accent)';
+    const pr = pendingRect();
+    if (pr)
+      parts.push(`<rect x="${pr.x0}" y="${pr.y0}" width="${pr.x1 - pr.x0}"
+         height="${pr.y1 - pr.y0}" fill="${c}" fill-opacity=".18" stroke="${c}"
+         stroke-width="4" stroke-dasharray="14 9"/>`);
+    // The corner itself. Deliberately direction-neutral — a mark implying which
+    // way the box grows would be wrong, since the opposite corner may be put
+    // anywhere. A ring so it reads against both a white margin and a halftone.
+    parts.push(`<circle cx="${p.x}" cy="${p.y}" r="15" fill="${c}"
+       stroke="var(--bg)" stroke-width="5"/>`);
   }
   if (S.figDrag) {
     const d = S.figDrag, c = S.figCur && FT[S.figCur] ? FT[S.figCur].color
@@ -801,19 +848,46 @@ function render() {
   }
   // The cursor guide, which is the one thing that genuinely has no meaning once
   // the pointer is off the page.
-  if (S.inside && S.hoverY !== null)
+  //
+  // **A crosshair on the figure track, a single rule on the zone track**, and the
+  // difference is the point rather than decoration: a zone takes only a y, so a
+  // vertical line there would promise a freedom the page does not have. Toggling
+  // the track used to look like the editor freezing — the zone preview correctly
+  // stops following the cursor and nothing took its place — so the pointer now
+  // says which of the two it is doing.
+  if (S.inside && S.hoverY !== null) {
+    const c = S.figTrack && S.figCur && FT[S.figCur]
+            ? FT[S.figCur].color : 'var(--accent)';
     parts.push(`<line x1="0" y1="${S.hoverY}" x2="${P.w}" y2="${S.hoverY}"
-       stroke="var(--accent)" stroke-width="2" opacity=".8"/>`);
+       stroke="${c}" stroke-width="2" opacity=".8"/>`);
+    if (S.figTrack && S.hoverX !== null)
+      parts.push(`<line x1="${S.hoverX}" y1="${C.y0}" x2="${S.hoverX}"
+         y2="${C.y1}" stroke="${c}" stroke-width="2" opacity=".8"/>`);
+  }
   parts.push('</svg>');
   ov.innerHTML = parts.join('');
   bar();
+  trackChips();
   issues();
 }
 
 function bar() {
-  const t = S.cur ? T[S.cur] : null;
+  // The track pill, and the swatch reads off whichever track is live. Before
+  // this the bar went on describing zone state while the pointer was drawing
+  // figures, so the one control that had changed was the one thing unmentioned.
+  const tp = document.getElementById('track');
+  const figT = S.figTrack ? FT[S.figCur] : null;
+  tp.textContent = S.figTrack ? 'FIGURES' : 'zones';
+  tp.className = 'pill' + (S.figTrack ? ' on' : '');
+  tp.title = `${CFG.actions.toggle_track || (FIG_ACTIONS.toggle_track || 'b')}`
+           + ' switches track';
+  if (S.figTrack) tp.style.background = figT ? figT.color : '';
+  else tp.style.background = '';
+
+  const t = S.figTrack ? figT : (S.cur ? T[S.cur] : null);
   document.getElementById('swatch').style.background = t ? t.color : 'transparent';
-  document.getElementById('cur').textContent = t ? t.name : '(no type)';
+  document.getElementById('cur').textContent =
+    t ? t.name : (S.figTrack ? '(no figure type)' : '(no type)');
   const anc = document.getElementById('anchor');
   anc.textContent = (ST.anchor.measured ? 'anchored' : ST.anchor.source) +
     (S.nudge ? ` ${S.nudge > 0 ? '+' : ''}${S.nudge}` : '');
@@ -827,12 +901,42 @@ function bar() {
                            S.split === 'eval' ? ' on' : ' off');
   const ch = document.getElementById('chain');
   ch.textContent = 'chain'; ch.className = 'pill' + (S.chain ? ' on' : '');
-  document.getElementById('count').textContent =
-    S.zones.length + ' zone' + (S.zones.length === 1 ? '' : 's') +
-    (S.dirty ? ' •' : '');
+  document.getElementById('count').textContent = S.figTrack
+    ? (S.figs.length + ' box' + (S.figs.length === 1 ? '' : 'es') +
+       (S.figsDirty ? ' •' : ''))
+    : (S.zones.length + ' zone' + (S.zones.length === 1 ? '' : 's') +
+       (S.dirty ? ' •' : ''));
   // Say what is under the cursor and what can be done to it. These operations
   // existed before this line did, and were undiscoverable for want of it.
   const tgt = document.getElementById('target');
+  if (S.figTrack) {
+    // The figure track has no measure and no chain, so the zone affordances
+    // below are all false here. Saying what *is* available is the whole fix: the
+    // track draws on a drag, and a drag leaves nothing on screen until it starts.
+    const j = S.figSel >= 0 ? S.figSel : S.figHover;
+    if (S.figPending)
+      tgt.textContent = 'corner set at the picture’s '
+        + (S.capBeside ? 'top-right' : 'foot')
+        + ' · click the opposite corner · '
+        + (FIG_ACTIONS.caption_beside || 'B') + ' moves it beside · '
+        + 'right-click drops it';
+    else if (j >= 0) {
+      const f = S.figs[j], ft = FT[f.label];
+      tgt.textContent = `${ft ? ft.name : f.label} · `
+        + (S.figSel === j ? 'press a figure key to change it · Esc deselects'
+                          : 'click to select')
+        + ' · x deletes';
+    } else {
+      tgt.textContent = figT
+        ? `drag to draw a ${figT.name}`
+        : 'pick a figure type first';
+    }
+    tgt.className = S.figSel >= 0 ? 'sel' : '';
+    document.querySelectorAll('.tk').forEach(el =>
+      el.classList.toggle('sel', el.dataset.track === 'fig'
+                                 && el.dataset.label === S.figCur));
+    return;
+  }
   const i = target();
   // The boundary case first, because on a partition it is the commonest one and it
   // now *overrides* selecting. Saying so is what keeps the override from reading as
@@ -849,7 +953,18 @@ function bar() {
     tgt.className = S.sel === i ? 'sel' : '';
   } else { tgt.textContent = ''; tgt.className = ''; }
   document.querySelectorAll('.tk').forEach(el =>
-    el.classList.toggle('sel', el.dataset.label === S.cur));
+    el.classList.toggle('sel', el.dataset.track !== 'fig'
+                               && el.dataset.label === S.cur));
+}
+
+// The chips of the track you are not on go quiet, so the panel says which half
+// of the keyboard is live. Pressing `p` on the figure track does nothing, and a
+// chip that still looks armed is the panel promising otherwise.
+function trackChips() {
+  document.querySelectorAll('.tk').forEach(el => {
+    const mine = (el.dataset.track === 'fig') === S.figTrack;
+    el.style.opacity = mine ? '1' : String(FIGV.dim_figs ?? 0.45);
+  });
 }
 
 function issues() {
@@ -1067,7 +1182,7 @@ function edgesSharing(y) {
 ov.addEventListener('mousemove', e => {
   if (S.figTrack) {
     const p = ptAt(e);
-    S.hoverY = p.y; S.inside = true;
+    S.hoverY = p.y; S.hoverX = p.x; S.inside = true;
     S.figHover = figHit(p);
     if (S.figDrag) {
       S.figDrag.x0 = Math.min(S.figDrag._ax, p.x);
@@ -1133,7 +1248,7 @@ ov.addEventListener('mouseleave', e => {
 // reaching for Escape mid-click is a hand off the mouse every time.
 ov.addEventListener('contextmenu', e => {
   e.preventDefault();
-  if (S.figTrack) { S.capPending = null; S.figSel = -1; render(); return; }
+  if (S.figTrack) { S.figPending = null; S.figSel = -1; render(); return; }
   S.pending = null;
   S.sel = -1;
   render();
@@ -1144,7 +1259,10 @@ ov.addEventListener('mousedown', e => {
   // as long as the line editor has existed. Nothing here is shift-modified,
   // because unlike a zone edge there is no second thing a drag could mean.
   if (S.figTrack) {
-    if (e.shiftKey || !S.figCur) return;
+    // With a corner armed the gesture is click-to-finish, not drag: starting a
+    // fresh rectangle here would silently discard the hand-off. Right-click or
+    // Esc drops the corner, after which dragging works as usual.
+    if (e.shiftKey || !S.figCur || S.figPending) return;
     e.preventDefault();
     const p = ptAt(e);
     S.figDrag = {_ax: p.x, _ay: p.y, x0: p.x, y0: p.y, x1: p.x, y1: p.y};
@@ -1178,10 +1296,18 @@ window.addEventListener('mouseup', () => {
 ov.addEventListener('click', e => {
   if (S.figTrack) {
     if (e.shiftKey) return;
-    // A click adopts the armed caption; otherwise it selects what is under it.
-    if (S.capPending) {
-      addFig({...S.capPending});
-      S.capPending = null;
+    // Mid-placement a click always finishes the box, exactly as it does on the
+    // zone track — only an idle click can mean "select", or landing on the
+    // picture you just drew would select it instead of completing its caption.
+    const pr = pendingRect();
+    if (pr) {
+      const min = ((CFG.figures || {}).min_size_px) || 24;
+      if (pr.x1 - pr.x0 >= min && pr.y1 - pr.y0 >= min) {
+        S.figPending = null;
+        addFig(pr);
+      } else {
+        say('too small — the opposite corner has to clear min_size_px', 'bad');
+      }
     } else {
       S.figSel = figHit(ptAt(e));
     }
@@ -1373,7 +1499,7 @@ window.addEventListener('keydown', async e => {
   // so `p` cannot place a paragraph band while somebody is drawing pictures.
   if (S.figTrack && FKEY[k]) {
     if (S.figSel >= 0) { S.figs[S.figSel].label = FKEY[k]; S.figsDirty = true; }
-    else { S.figCur = FKEY[k]; S.capPending = null; }
+    else { S.figCur = FKEY[k]; S.figPending = null; }
     render(); e.preventDefault(); return;
   }
   if (!S.figTrack && KEY[k]) {
@@ -1387,24 +1513,28 @@ window.addEventListener('keydown', async e => {
   if (!a) return;
   e.preventDefault();
   switch (a) {
-    case 'toggle_track':
+    case 'toggle_track': {
       S.figTrack = !S.figTrack;
       // Each track drops whatever it had half-placed. Carrying an armed anchor
       // across the switch would fire it on a click meant for the other track.
-      S.pending = null; S.sel = -1; S.capPending = null; S.figSel = -1;
+      S.pending = null; S.sel = -1; S.figPending = null; S.figSel = -1;
       if (S.figTrack && !S.figCur) S.figCur = 'GraphicZone';
-      break;
+      // Announced, because the visible consequence of the switch is that
+      // something *stops*: the zone preview no longer follows the cursor. Silence
+      // there reads as a freeze rather than a mode.
+      const ft = S.figTrack && FT[S.figCur];
+      say(S.figTrack
+          ? `figure track — drag to draw a ${ft ? ft.name : 'box'}`
+          : 'zone track — click a top, then a bottom', 'ok');
+      break; }
     case 'caption_beside':
-      // Flips the armed preview to the picture's right edge, for the ~19 plate
+      // Moves the armed corner to the picture's top-right, for the ~19 plate
       // captions this book sets vertically beside their picture rather than
-      // under it. Only ever re-poses a preview; it commits nothing.
+      // under it. Only ever re-poses the corner; it commits nothing.
       S.capBeside = !S.capBeside;
-      if (S.capPending) {
-        const last = [...S.figs].reverse().find(f => f.label === 'GraphicZone');
-        if (last) armCaption(last);
-      }
+      if (S.figPending && S.figPending.from) armCaption(S.figPending.from);
       break;
-    case 'cancel': S.pending = null; S.sel = -1; S.capPending = null; break;
+    case 'cancel': S.pending = null; S.sel = -1; S.figPending = null; break;
     case 'undo':
       if (S.zones.length) {
         S.zones.pop(); S.dirty = true; S.issues = []; S.sel = -1;
@@ -1417,7 +1547,7 @@ window.addEventListener('keydown', async e => {
         const j = S.figSel >= 0 ? S.figSel : S.figHover;
         if (j < 0) break;
         S.figs.splice(j, 1);
-        S.figSel = -1; S.figHover = -1; S.capPending = null; S.figsDirty = true;
+        S.figSel = -1; S.figHover = -1; S.figPending = null; S.figsDirty = true;
         break;
       }
       const i = target();
@@ -1690,6 +1820,11 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
                  + f" · {st['done']} done</span>")
     else:
         h.append(f"<span class='pill'>{st['index']}/{st['total']}</span>")
+    # **Which track the pointer is on, first and loudest.** Everything else in
+    # this bar describes the page; this describes what a click will do, and
+    # without it pressing the toggle read as the editor freezing — the zone
+    # preview stops following the cursor, which is correct and looked broken.
+    h.append("<span class='pill' id='track'></span>")
     h.append("<span><i id='swatch'></i><span id='cur'></span></span>")
     h.append("<span class='pill' id='anchor'></span>")
     h.append("<span class='pill' id='col'></span>")
@@ -1749,7 +1884,7 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
         if t.get("chain_after") is False:
             note += ("<em title='the chain stops here — the next top is left "
                      "unset rather than guessed'>ends</em>")
-        h.append(f"<div class='tk' data-label=\"{t['label']}\">"
+        h.append(f"<div class='tk' data-track='zone' data-label=\"{t['label']}\">"
                  f"<i style='background:{t.get('color', '#999')}'></i>"
                  f"<span>{t.get('name', t['label'])}</span>{note}"
                  f"<kbd>{t['key']}</kbd></div>")
@@ -1772,12 +1907,12 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
     if figs_cfg.get("types"):
         h.append("<h4>figure track</h4>")
         for t in figs_cfg["types"]:
-            h.append(f"<div class='tk' data-label=\"{t['label']}\">"
+            h.append(f"<div class='tk' data-track='fig' data-label=\"{t['label']}\">"
                      f"<i style='background:{t.get('color', '#999')}'></i>"
                      f"<span>{t.get('name', t['label'])}</span>"
                      f"<kbd>{t['key']}</kbd></div>")
         h.append("<div class='key'><span>draw a box</span><kbd>drag</kbd></div>")
-        h.append("<div class='key'><span>take the armed caption</span>"
+        h.append("<div class='key'><span>set the opposite corner</span>"
                  "<kbd>click</kbd></div>")
         h.append("<div class='key'><span>drop it</span>"
                  "<kbd>right-click</kbd></div>")
@@ -1785,8 +1920,10 @@ def render_html(ref: str, root: Path, cfg: dict, nudge: int = 0,
                  "freely-placed rectangles over the picture and its caption, not "
                  "bands of the column, and its x comes from the pointer rather "
                  "than the measure — the one place in this editor where it does. "
-                 "Committing a picture arms a caption box at its foot, which one "
-                 "click takes and a drag replaces. The caption's <em>text</em> is "
+                 "Committing a picture arms the caption's first corner at its "
+                 "bottom-left, and one further click sets the opposite one — the "
+                 "chain's hand-off in two dimensions, imputing no size. The "
+                 "caption's <em>text</em> is "
                  "not keyed here: draw the box, save, and the banner names the "
                  "block to key in data/readings.md.</div>")
     h.append("<div id='flags'>Chain mode carries the last bottom edge into the next "

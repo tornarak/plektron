@@ -127,17 +127,21 @@ def load_config(root: Path = Path(".")) -> dict:
                 "be unreachable from the keyboard and nothing would say so")
         seen_label.add(t["label"])
         seen_key.add(t["key"])
+        # `auto_place` carries a type name and nothing else. It had a height and a
+        # gap once, so that committing a picture armed a whole finished caption
+        # box; the imputed height was wrong more often than right and could not be
+        # adjusted without deleting the box and drawing it again. What it hands
+        # over now is one corner — the zone chain gives the next zone its top edge
+        # and asks for the bottom, and this asks for the opposite corner.
         ap = t.get("auto_place")
         if ap is not None:
             if not ap.get("after"):
                 raise ConfigError(
                     f"{p}: auto_place on {t['label']!r} names no 'after' type")
-            for field in ("gap_px", "height_px"):
-                v = ap.get(field)
-                if not isinstance(v, int) or v <= 0:
-                    raise ConfigError(
-                        f"{p}: auto_place.{field} on {t['label']!r} must be a "
-                        "positive integer — a zero would arm an invisible preview")
+            if ap["after"] not in {x.get("label") for x in fig_types_}:
+                raise ConfigError(
+                    f"{p}: auto_place on {t['label']!r} follows "
+                    f"{ap['after']!r}, which is not a figure type")
 
     # Actions share the keyboard with types, so they share the collision check.
     # A key bound to both "paragraph start" and "undo" would fire exactly one of

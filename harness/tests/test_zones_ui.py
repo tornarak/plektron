@@ -571,6 +571,51 @@ def test_the_figure_rules_are_transcribed_faithfully_into_the_js(tmp_path):
             assert f"'{rule['id']}'" in html, rule["id"]
 
 
+def test_the_inactive_track_dims_by_two_configured_amounts(tmp_path):
+    """Not one number: a keyed page carries eight or ten body zones against two
+    or three figure boxes, so the zone layer has to go much quieter under the
+    figure track than the figure layer does under the zone track."""
+    view = (cfg().get("figures") or {}).get("view") or {}
+    assert 0 < view["dim_zones"] < view["dim_figs"] < 1
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    assert "dim_zones" in html and "dim_figs" in html
+
+
+def test_the_page_says_which_track_the_pointer_is_on(tmp_path):
+    """The toggle's visible consequence is that something *stops* — the zone
+    preview no longer follows the cursor — so without a mode readout pressing it
+    reads as the editor freezing. Four independent tells, because one that a
+    later edit removes leaves the same confusion.
+    """
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    assert "id='track'" in html                 # a pill in the topbar
+    assert "figure track — drag" in html        # narrated on the switch
+    assert "trackChips" in html                 # the inactive half dims
+    assert "S.hoverX" in html                   # a crosshair, not a single rule
+    # …and the chips declare which keyboard they belong to, or the panel cannot
+    # say which half is live.
+    assert "data-track='zone'" in html and "data-track='fig'" in html
+
+
+def test_the_unaccounted_ink_stays_outside_the_dimming(tmp_path):
+    """The one piece of zone-track furniture that must not fade on the figure
+    track: a band no zone accounts for is very often the undeclared picture you
+    are about to draw, which is exactly how `1-191` surfaced. Held by source
+    order, since the dimming is an SVG group and the hatching has to close it
+    first — a `</g>` moved below the bands would dim them with everything else,
+    and nothing else in this repo would notice.
+    """
+    scans(tmp_path, "1-048")
+    html = ui.render_html("1-048", tmp_path, cfg())
+    opened = html.index("<g opacity=")
+    closed = html.index("parts.push('</g>')")
+    hatch = html.index('id="hatch"')
+    assert opened < closed < hatch
+    assert html.count("<g opacity=") == html.count("parts.push('</g>')") == 1
+
+
 def test_the_figure_types_are_listed_with_their_keys(tmp_path):
     scans(tmp_path, "1-048")
     html = ui.render_html("1-048", tmp_path, cfg())

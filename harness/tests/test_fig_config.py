@@ -79,11 +79,21 @@ def test_auto_place_must_name_a_type_to_follow(tmp_path):
         zc.load_config(root)
 
 
-def test_a_zero_height_preview_is_refused(tmp_path):
-    """It would arm an invisible caption box on every picture and report nothing."""
+def test_auto_place_carries_a_type_name_and_nothing_else(tmp_path):
+    """It had a height and a gap once, so committing a picture armed a whole
+    finished caption box. The imputed height was wrong more often than right and
+    the box arrived with no handle, so correcting it meant deleting and redrawing.
+    What it hands over now is one corner — the zone chain gives the next zone its
+    top edge and asks for the bottom; this asks for the opposite corner."""
+    ap = zc.fig_types(zc.load_config(REPO))[1]["auto_place"]
+    assert set(ap) == {"after"}
+
+
+def test_auto_place_following_a_type_that_is_not_a_figure_is_refused(tmp_path):
+    """A typo would arm nothing, silently, on every picture on every page."""
     root = _write(tmp_path, lambda c: c["figures"]["types"][1][
-        "auto_place"].__setitem__("height_px", 0))
-    with pytest.raises(ConfigError, match="positive integer"):
+        "auto_place"].__setitem__("after", "MainZone-P"))
+    with pytest.raises(ConfigError, match="not a figure type"):
         zc.load_config(root)
 
 
