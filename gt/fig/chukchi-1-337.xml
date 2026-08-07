@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
-      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
   <Description>
     <MeasurementUnit>pixel</MeasurementUnit>
     <sourceImageInformation>
@@ -9,33 +7,21 @@
     </sourceImageInformation>
   </Description>
   <Tags>
-    <OtherTag ID="BT77" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT78" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
-    <OtherTag ID="LT10" LABEL="default" DESCRIPTION="line type default"/>
+    <OtherTag ID="BT1" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
+    <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824"
-          HEIGHT="3897"
-          PHYSICAL_IMG_NR="151"
-          ID="eSc_dummypage_">
-      <PrintSpace HPOS="0"
-                  VPOS="0"
-                  WIDTH="2824"
-                  HEIGHT="3897">
-        <TextBlock HPOS="1212.0"
-                   VPOS="2259.0"
-                   WIDTH="1012.0"
-                   HEIGHT="136.0"
-                   ID="eSc_textblock_7c207608"
-                   TAGREFS="BT77">
-          <Shape><Polygon POINTS="2214 2259 2224 2343 2214 2395 1220 2387 1212 2277 1264 2259"/></Shape>
+    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
+        <TextBlock HPOS="1220" VPOS="882" WIDTH="984" HEIGHT="1391" ID="fig_1-337_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="1220 882 2204 882 2204 2273 1220 2273"/>
+          </Shape>
         </TextBlock>
-        <TextBlock HPOS="1220.0"
-                   VPOS="882.0"
-                   WIDTH="984.0"
-                   HEIGHT="1391.0"
-                   ID="eSc_textblock_947c5852"
-                   TAGREFS="BT78">
-          <Shape><Polygon POINTS="2200 886 2204 2263 1220 2273 1226 882"/></Shape>
+        <TextBlock HPOS="1212" VPOS="2259" WIDTH="1012" HEIGHT="136" ID="fig_1-337_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="1212 2259 2224 2259 2224 2395 1212 2395"/>
+          </Shape>
         </TextBlock>
       </PrintSpace>
     </Page>

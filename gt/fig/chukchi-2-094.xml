@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
-      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
   <Description>
     <MeasurementUnit>pixel</MeasurementUnit>
     <sourceImageInformation>
@@ -9,49 +7,31 @@
     </sourceImageInformation>
   </Description>
   <Tags>
-    <OtherTag ID="BT77" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT78" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
-    <OtherTag ID="LT10" LABEL="default" DESCRIPTION="line type default"/>
+    <OtherTag ID="BT1" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
+    <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2550"
-          HEIGHT="3525"
-          PHYSICAL_IMG_NR="211"
-          ID="eSc_dummypage_">
-      <PrintSpace HPOS="0"
-                  VPOS="0"
-                  WIDTH="2550"
-                  HEIGHT="3525">
-        <TextBlock HPOS="632.0"
-                   VPOS="1494.0"
-                   WIDTH="744.0"
-                   HEIGHT="68.0"
-                   ID="eSc_textblock_863bf42d"
-                   TAGREFS="BT77">
-          <Shape><Polygon POINTS="632 1562 632 1494 1376 1494 1376 1562"/></Shape>
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="428" VPOS="1136" WIDTH="1114" HEIGHT="354" ID="fig_2-094_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="428 1136 1542 1136 1542 1490 428 1490"/>
+          </Shape>
         </TextBlock>
-        <TextBlock HPOS="500.0"
-                   VPOS="1949.0"
-                   WIDTH="780.0"
-                   HEIGHT="100.0"
-                   ID="eSc_textblock_e4baea3c"
-                   TAGREFS="BT77">
-          <Shape><Polygon POINTS="1280 1957 1280 2033 524 2049 500 2033 520 1949"/></Shape>
+        <TextBlock HPOS="632" VPOS="1494" WIDTH="744" HEIGHT="68" ID="fig_2-094_002" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="632 1494 1376 1494 1376 1562 632 1562"/>
+          </Shape>
         </TextBlock>
-        <TextBlock HPOS="442.0"
-                   VPOS="1730.0"
-                   WIDTH="926.0"
-                   HEIGHT="225.0"
-                   ID="eSc_textblock_804fe8d6"
-                   TAGREFS="BT78">
-          <Shape><Polygon POINTS="1364 1730 1368 1945 442 1955 444 1738"/></Shape>
+        <TextBlock HPOS="442" VPOS="1730" WIDTH="926" HEIGHT="225" ID="fig_2-094_003" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="442 1730 1368 1730 1368 1955 442 1955"/>
+          </Shape>
         </TextBlock>
-        <TextBlock HPOS="428.0"
-                   VPOS="1136.0"
-                   WIDTH="1114.0"
-                   HEIGHT="354.0"
-                   ID="eSc_textblock_77ff2eca"
-                   TAGREFS="BT78">
-          <Shape><Polygon POINTS="428 1136 428 1490 1542 1490 1542 1136"/></Shape>
+        <TextBlock HPOS="500" VPOS="1949" WIDTH="780" HEIGHT="100" ID="fig_2-094_004" TAGREFS="BT2">
+          <Shape>
+            <Polygon POINTS="500 1949 1280 1949 1280 2049 500 2049"/>
+          </Shape>
         </TextBlock>
       </PrintSpace>
     </Page>

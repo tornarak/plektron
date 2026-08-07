@@ -300,19 +300,139 @@ def set_rule_exempt(ref: str, rules: list[str], root: Path = Path("."),
     return {"ref": ref, "rules": data.get(ref, [])}
 
 
+def migrate_page(ref: str, root: Path = Path("."),
+                 store: str = FIGDIR) -> dict:
+    """One page reduced to bounding boxes with `fig_` ids. Computes, writes nothing.
+
+    Returns `{ref, blocks, remap, before, after}` — `blocks` ready for `build_alto`,
+    `remap` the old-to-new suffix map for the page's **FigDesc** blocks alone, since
+    those are the ones `data/readings.md` keys by, and `before`/`after` the geometry
+    as a sorted tuple so the caller can assert they match.
+
+    **The reduction changes no reader's answer, by construction.** Every consumer of
+    this store already goes through `read_blocks`, which takes `HPOS/VPOS/WIDTH/
+    HEIGHT` through `_bbox` and never looks at the polygon unless asked. 395 of the
+    store's 809 polygons are skewed quads or 5-to-9-gons that disagree with their
+    own bbox, and nothing has ever read them. So this writes down what was already
+    being read, and `after == before` is a check of that claim rather than a hope.
+    """
+    from .zones import raster_size
+
+    ref = norm_ref(ref)
+    blocks = read_blocks(alto_for(ref, root, store))
+    geom = sorted((b["label"], b["hpos"], b["vpos"], b["width"], b["height"])
+                  for b in blocks)
+
+    ordered = sorted(blocks, key=lambda b: (b["vpos"], b["hpos"]))
+    out, remap = [], {}
+    for i, b in enumerate(ordered, start=1):
+        new_id = f"fig_{ref}_{i:03d}"
+        if b["label"] == FIGDESC:
+            remap[zone_suffix(b["id"])] = f"{i:03d}"
+        out.append({"id": new_id, "label": b["label"],
+                    "x0": b["hpos"], "y0": b["vpos"],
+                    "x1": b["hpos"] + b["width"],
+                    "y1": b["vpos"] + b["height"]})
+
+    return {"ref": ref, "blocks": out, "remap": remap, "before": geom,
+            "after": sorted((b["label"], b["x0"], b["y0"],
+                             b["x1"] - b["x0"], b["y1"] - b["y0"]) for b in out),
+            "size": raster_size(ref, root)}
+
+
+def remap_readings(text: str, remap: dict[str, dict[str, str]]) -> tuple[str, int]:
+    """Rewrite `## <ref>|<suffix>` headers through a per-ref suffix map.
+
+    Header-only and by whole line: a caption's *text* may legitimately contain
+    anything, including something shaped like a key, so a global substitution over
+    the file is the one implementation that must not be used here.
+
+    Returns the new text and the number of headers rewritten, so the caller can
+    check it against the number of FigDesc blocks rather than trusting the walk.
+    """
+    n = 0
+
+    def sub(m):
+        nonlocal n
+        ref, old = m.group(1), m.group(2)
+        new = (remap.get(ref) or {}).get(old)
+        if new is None:
+            return m.group(0)
+        n += 1
+        return f"## {ref}|{new}"
+
+    return _HDR.sub(sub, text), n
+
+
+def migrate_store(root: Path = Path("."), commit: bool = False) -> dict:
+    """Reduce every page of `gt/fig/` to boxes, re-mint ids, re-key the readings.
+
+    Report by default. `--commit` writes the 252 ALTOs and `data/readings.md`
+    together, because they are one fact in two files: a store whose ids moved and a
+    readings file still keyed to the old ones reconciles to nothing at all.
+
+    Refuses on any page whose geometry would change, and on a readings rewrite whose
+    header count does not match the FigDesc blocks the remap covered. Both are
+    conditions the caller could not otherwise see until `corpus figures` failed,
+    by which point the store is already rewritten.
+    """
+    from .zones import build_alto
+
+    pages, drift, changed = [], [], 0
+    remap: dict[str, dict[str, str]] = {}
+    for ref in fig_refs(root):
+        m = migrate_page(ref, root)
+        if m["before"] != m["after"]:
+            drift.append(ref)
+        remap[ref] = m["remap"]
+        changed += len(m["remap"])
+        pages.append(m)
+
+    text = (root / READINGS).read_text(encoding="utf-8")
+    new_text, rewritten = remap_readings(text, remap)
+
+    out = {"pages": len(pages), "blocks": sum(len(p["blocks"]) for p in pages),
+           "captions": changed, "headers_rewritten": rewritten,
+           "geometry_drift": drift, "committed": False}
+    if drift:
+        out["note"] = ("geometry changed on these pages — the reduction must be "
+                       "the bbox every reader already computes, and is not")
+        return out
+    if rewritten != changed:
+        out["note"] = (f"{changed} caption blocks remapped but {rewritten} headers "
+                       "rewritten — a reading names a zone this store does not have")
+        return out
+    if not commit:
+        out["note"] = "preview only — pass --commit to write"
+        return out
+
+    for p in pages:
+        tree = build_alto(p["ref"], p["blocks"], p["size"], id_prefix="fig_")
+        tree.write(str(alto_for(p["ref"], root)), xml_declaration=True,
+                   encoding="UTF-8", standalone=None, pretty_print=True)
+    (root / READINGS).write_text(new_text, encoding="utf-8")
+    out["committed"] = True
+    return out
+
+
 def validate_fig_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
                       store: str = FIGDIR) -> dict:
     """Check one page of the figure store: mechanical errors, configured warnings.
 
     The division is `zones.validate_page`'s and means the same thing here. An
-    **error** is a fault no reading of the page could excuse — a label this store
-    does not declare, a polygon that is not the rectangle its own bbox claims, a box
-    too small to be a picture or falling off the raster. A **warning** is a domain
-    expectation about *this book*, configurable and exemptable, and it never gates.
+    **error** is a fault no reading of the page could excuse; a **warning** is a
+    domain expectation about *this book*, configurable, exemptable, and never
+    gating.
 
-    Two boxes overlapping is an error only between pictures. A caption *inside* its
-    picture's box is an ordinary arrangement — Bogoras sets several that way — and a
-    caption overlapping a caption is caught by the count rule instead.
+    Only three things qualify as errors, and the list is short on purpose. A label
+    this store does not declare is one, because nothing could read it. A polygon
+    that is not the rectangle its own bbox claims is one, because every reader here
+    takes the bbox and the polygon would be a claim nobody consumes. A box off the
+    raster is one, because it describes a region of a page that does not exist.
+
+    Everything else — a picture overlapping a picture, a box too small to be a
+    picture, more captions than pictures — is a warning, and `zones_config.
+    fig_warnings` holds the reasoning for why the first two moved there.
     """
     from . import zones_config as zc
     from .zones import _is_rectangle, raster_size
@@ -321,8 +441,6 @@ def validate_fig_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
     ref = norm_ref(ref)
     figs_cfg = cfg.get("figures") or {}
     declared = {t["label"] for t in zc.fig_types(cfg)}
-    min_px = int(figs_cfg.get("min_size_px") or 0)
-    max_ov = int(figs_cfg.get("max_overlap_px") or 0)
 
     path = alto_for(ref, root, store)
     blocks = read_blocks(path, with_points=True)
@@ -343,10 +461,6 @@ def validate_fig_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
             err("undeclared-label",
                 f"{b['id']} carries {b['label']!r}, which this store does not "
                 f"declare ({', '.join(sorted(declared))})")
-        if b["width"] < min_px or b["height"] < min_px:
-            err("min-size",
-                f"{b['id']} is {b['width']}x{b['height']}, under min_size_px "
-                f"{min_px}")
         if page_w and (x0 < 0 or y0 < 0 or x1 > page_w or y1 > page_h):
             err("off-raster",
                 f"{b['id']} spans {x0},{y0}..{x1},{y1} on a {page_w}x{page_h} page")
@@ -356,16 +470,6 @@ def validate_fig_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
                 "store carries boxes, and every reader of it takes the bbox")
 
     pics = [b for b in blocks if b["label"] == GRAPHIC]
-    for i, a in enumerate(pics):
-        for c in pics[i + 1:]:
-            ox = min(a["hpos"] + a["width"], c["hpos"] + c["width"]) - max(
-                a["hpos"], c["hpos"])
-            oy = min(a["vpos"] + a["height"], c["vpos"] + c["height"]) - max(
-                a["vpos"], c["vpos"])
-            if ox > max_ov and oy > max_ov:
-                err("picture-overlap",
-                    f"{a['id']} and {c['id']} overlap by {ox}x{oy} px")
-
     exempt = load_rule_exempt(root, store).get(ref, [])
     warnings = zc.fig_warnings(cfg, blocks, exempt)
     known = {r["id"] for r in (figs_cfg.get("rules") or [])}

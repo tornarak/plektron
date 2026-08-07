@@ -171,6 +171,16 @@
         "id": "captions-lte-figures",
         "severity": "warn",
         "description": "A page never carries more captions than pictures. True of this book and not of printing in general, which is why it is here and not compiled in: 414 graphics against 395 captions over 252 pages, and every caption-heavy page that ever existed in this store was a segmentation fault — clipped body-text slivers, an unlabelled graphic, and on 2-094 the cheek line-work of fig. 260 read as a line of type. Those boxes and their readings were deleted, so the class is empty and a new member means a new fault. Exemptable per page in gt/fig/_rule_exempt.json; an exempted rule still reports, flagged."
+      },
+      {
+        "id": "tiny-picture",
+        "severity": "warn",
+        "description": "A GraphicZone smaller than min_size_px on either side. A warning and not an error, because nothing forbids a small picture — it is just that at this size the likelier explanation is dirt the segmenter boxed. One live instance: 2-085's 14x38 px block, which the eScriptorium pass left behind and nobody has ruled on."
+      },
+      {
+        "id": "picture-overlap",
+        "severity": "warn",
+        "description": "Two GraphicZones overlapping by more than max_overlap_px on both axes. A warning, and this one was briefly written as an error by importing the zone track's rule — wrongly. Zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused; figures are freely placed, an inset legitimately sits inside the frame it insets, and two pictures on a plate may abut. Two live instances, both marginal grazes over a long shared edge: 1-189 (1244x14 px) and 1-334 (12x782 px)."
       }
     ],
     "actions": {

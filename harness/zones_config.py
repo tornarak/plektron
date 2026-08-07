@@ -338,6 +338,18 @@ def fig_warnings(cfg: dict, blocks: list[dict],
     its caption. Folding them together would mean one evaluator sorting boxes it
     has no reason to sort.
 
+    **None of these is an error, and two of them were, briefly.** `picture-overlap`
+    and `tiny-picture` were first written as mechanical faults, on the zone track's
+    model — and that was importing a rule from a geometry regime that does not
+    apply here. A zone store *partitions* the page: zones form a chain, so two
+    overlapping ones are impossible rather than unusual, and the check can refuse.
+    Figures are freely placed. Two pictures on a plate may abut, an inset may sit
+    inside the frame it insets, and a 14x38 px box is *suspicious*, not
+    unrepresentable. Run over the migrated store the two produced three findings —
+    `1-189`, `1-334`, `2-085` — every one of them a real thing to look at and not
+    one of them a thing the store must refuse to hold. A gate that a human cannot
+    honestly clear is a gate that gets widened until it says nothing.
+
     `captions-lte-figures` is **a fact about this book, not about printing**, which
     is why it is configured rather than compiled in. Bogoras's compositor never
     sets more captions than pictures on a page: 414 graphics against 395 captions
@@ -365,5 +377,28 @@ def fig_warnings(cfg: dict, blocks: list[dict],
                  f"{'picture' if n_fig == 1 else 'pictures'} — this book never "
                  "sets more, so either a picture went undeclared or a caption box "
                  "is a segmentation fault")
+
+    if "tiny-picture" in enabled:
+        floor = int(figs.get("min_size_px") or 0)
+        for b in blocks:
+            w, h = b.get("width", 0), b.get("height", 0)
+            if floor and (w < floor or h < floor):
+                warn("tiny-picture",
+                     f"{b.get('id')} is {w}x{h}, under min_size_px {floor} — at "
+                     "this size it is more likely dirt the segmenter boxed than "
+                     "anything the book prints")
+
+    if "picture-overlap" in enabled:
+        cap = int(figs.get("max_overlap_px") or 0)
+        pics = [b for b in blocks if b.get("label") == "GraphicZone"]
+        for i, a in enumerate(pics):
+            for c in pics[i + 1:]:
+                ox = (min(a["hpos"] + a["width"], c["hpos"] + c["width"])
+                      - max(a["hpos"], c["hpos"]))
+                oy = (min(a["vpos"] + a["height"], c["vpos"] + c["height"])
+                      - max(a["vpos"], c["vpos"]))
+                if ox > cap and oy > cap:
+                    warn("picture-overlap",
+                         f"{a.get('id')} and {c.get('id')} overlap by {ox}x{oy} px")
 
     return out

@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<alto xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns="http://www.loc.gov/standards/alto/ns-v4#"
-      xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
+<?xml version='1.0' encoding='UTF-8'?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4# http://www.loc.gov/standards/alto/v4/alto-4-2.xsd">
   <Description>
     <MeasurementUnit>pixel</MeasurementUnit>
     <sourceImageInformation>
@@ -9,25 +7,15 @@
     </sourceImageInformation>
   </Description>
   <Tags>
-    <OtherTag ID="BT77" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/><OtherTag ID="BT78" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
-    <OtherTag ID="LT10" LABEL="default" DESCRIPTION="line type default"/>
+    <OtherTag ID="BT1" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2481"
-          HEIGHT="3508"
-          PHYSICAL_IMG_NR="247"
-          ID="eSc_dummypage_">
-      <PrintSpace HPOS="0"
-                  VPOS="0"
-                  WIDTH="2481"
-                  HEIGHT="3508">
-        <TextBlock HPOS="406.0"
-                   VPOS="546.0"
-                   WIDTH="1733.0"
-                   HEIGHT="392.0"
-                   ID="eSc_textblock_9a50cbdb"
-                   TAGREFS="BT78">
-          <Shape><Polygon POINTS="406 546 406 938 2133 938 2139 550"/></Shape>
+    <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
+        <TextBlock HPOS="406" VPOS="546" WIDTH="1733" HEIGHT="392" ID="fig_3-007_001" TAGREFS="BT1">
+          <Shape>
+            <Polygon POINTS="406 546 2139 546 2139 938 406 938"/>
+          </Shape>
         </TextBlock>
       </PrintSpace>
     </Page>
