@@ -776,11 +776,14 @@ The band is the **per-page** spread over ground-truth pages clearing `--min-type
 ```
 
 ### proposal fix [REF ...]
-**Does** applies the one unambiguous correction — a single mark `resolved` names that `text` lacks, swapped for the single mark `text` has that `resolved` lacks.
-**Reads** the proposal.
+**Does** expands every `{key}` handle in a `text` field to the ratified form, recording the line as typed in `as_typed`; then applies the one unambiguous correction — a single mark `resolved` names that `text` lacks, swapped for the single mark `text` has that `resolved` lacks.
+**Reads** the proposal, and `gt/ocr/` + `data/marks_config.json` when a line carries a handle.
 **Writes** the proposal, in place.
-**Exit** always 0.
+**Exit** always 0; raises on a handle that does not resolve, and writes nothing.
 **Note** nothing to clobber under `--all`: it repairs only what is already wrong, so a page with nothing to fix is untouched.
+**Note** **the expansion is here because this is the path a reader takes.** It lived only in `proposal set` for as long as the handle existed, and over one measured day of 63 readers it fired zero times — they author `proposal.json` with `Write` (63 whole-file writes against 16 `proposal set` calls, all of those later edits), so a handle typed per the contract would have reached the store as a literal brace. Four readers looked a form up, were handed its key, and retyped the glyphs by hand — the act the handle replaces, and the one that produced three `ᴇ` U+1D07 → `ᴀ` U+1D00 slips on a single name across three pages that day. `fix` runs on every page and already writes, so this costs no new step.
+**Note** expansion runs **before** the mark swap: the swap reconciles `text` against `resolved`, and a line still holding a brace would be reconciling a handle against a codepoint list.
+**Note** **nothing half-expands**, same rule as `proposal set` and `ocr restore` — one unresolvable handle refuses the whole page, because `fix` writes and a half-expanded page reaches the adjudicator looking finished.
 ```
 --all        every review/ page with a proposal
 --path FILE  proposal file, one ref only [review/PP-NNN/proposal.json]

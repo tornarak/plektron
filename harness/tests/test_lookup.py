@@ -25,7 +25,7 @@ import pytest
 from harness.detectors import INVENTORY_CHARS, native_corpus
 from harness.lookup import expand, index, resolve, search
 from harness.marks import HANDLE_MARKERS, handle_key
-from harness.proposal_check import check, set_field, set_fields
+from harness.proposal_check import check, fix, set_field, set_fields
 
 REPO = Path(__file__).resolve().parent.parent.parent
 
@@ -175,6 +175,47 @@ def test_a_handle_expands_inline_inside_english_prose(tmp_path):
     rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
     assert rec["text"] == nfd("The bay of Kuluˊči, they say.")
     assert rec["as_typed"] == "The bay of {Kulu'c^i}, they say."
+
+
+# --- the path a reader actually takes -------------------------------------
+#
+# Measured over one day of 63 readers: 63 whole-file `Write`s of proposal.json
+# against 16 `proposal set` calls, every one of those a later edit. So for a year
+# the handle lived only on a verb nobody authored with, and it fired zero times —
+# four readers looked a form up, were given its key, and retyped the glyphs by
+# hand, which is the act it exists to replace and which produced three
+# ᴇ U+1D07 → ᴀ U+1D00 slips on one name across three pages that day.
+#
+# `fix` runs on every page and already writes, so the expansion belongs there too.
+
+
+def test_fix_expands_a_handle_written_straight_into_the_file(tmp_path):
+    """The whole point: a reader that authors with `Write`, per the contract, must
+    end up with ratified glyphs and a provenance record — not a literal brace in
+    the store."""
+    p = _proposal(tmp_path, "The bay of {Kulu'c^i}, they say.")
+    fix(p, REPO)
+    rec = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
+    assert rec["text"] == nfd("The bay of Kuluˊči, they say.")
+    assert rec["as_typed"] == "The bay of {Kulu'c^i}, they say."
+
+
+def test_fix_leaves_an_unhandled_line_alone(tmp_path):
+    """No `as_typed` on a line that claimed nothing — the badge is derived from the
+    field's presence, so writing it empty would badge every hand-read line."""
+    p = _proposal(tmp_path, nfd("Kuluˊči read off the page"))
+    fix(p, REPO)
+    assert "as_typed" not in json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]
+
+
+def test_fix_refuses_the_whole_page_on_a_bad_handle(tmp_path):
+    """Same rule as `set_field`, and it has to be: `fix` writes the file, so a
+    half-expanded page here would reach the adjudicator looking finished."""
+    p = _proposal(tmp_path, "{C^e'win} is spelled two ways")
+    with pytest.raises(ValueError, match="more than one way"):
+        fix(p, REPO)
+    text = json.loads(p.read_text(encoding="utf-8"))["lines"]["1"]["text"]
+    assert text == "{C^e'win} is spelled two ways"
 
 
 def test_nothing_half_expands(tmp_path):

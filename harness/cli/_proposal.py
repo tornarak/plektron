@@ -246,7 +246,7 @@ def run_check(a) -> int:
 
 
 def run_fix(a) -> int:
-    out_per_ref(a, [(r, fix_proposal(_path(a, r))) for r in _proposals(a)])
+    out_per_ref(a, [(r, fix_proposal(_path(a, r), a.root)) for r in _proposals(a)])
     return 0
 
 

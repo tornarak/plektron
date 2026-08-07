@@ -837,7 +837,7 @@ def _footnote_issues(data: dict) -> list[dict]:
     return out + [issue("-", "footnote markers", detail=detail)]
 
 
-def fix(path: Path) -> dict:
+def fix(path: Path, root: Path | None = None) -> dict:
     """Apply the one unambiguous class of correction: a single wrong mark.
 
     Only touches a line where exactly one notation codepoint in `text` has no
@@ -867,6 +867,29 @@ def fix(path: Path) -> dict:
         # which would delete the finding along with the field.
         del data["segmenter_missed"]
         changed.append({"line": "-", "replaced": "segmenter_missed", "with": ""})
+    # **Handles are expanded here because this is where the page is.** The
+    # mechanism used to live only in `set_field`, and over one measured day of 63
+    # readers it fired zero times: every one of them authored `proposal.json` with
+    # `Write` (63 whole-file writes against 16 `proposal set` calls, all of those
+    # later edits), so a `{Mec^i'wmi_n}` typed into the file per the contract would
+    # have survived into the store as a literal brace. Four readers looked a form
+    # up, got its key, and retyped the glyphs by hand — which is the act the handle
+    # exists to replace, and the act that produced three ᴇ U+1D07 → ᴀ U+1D00 slips
+    # on one name across three pages that day.
+    #
+    # `fix` runs on every page and already writes, so putting the expansion on this
+    # path costs no new step in the loop and no new instruction to remember.
+    #
+    # Before the codepoint swap below, deliberately: expansion is what makes `text`
+    # ratified, and the swap reconciles `text` against `resolved`. Reconciling a
+    # line that still holds a brace would compare a handle to a codepoint list.
+    for idx, rec in data.get("lines", {}).items():
+        text, typed = _expanded(rec.get("text", ""), "text", root)
+        if typed is not None:
+            rec["text"] = unicodedata.normalize("NFD", text)
+            _set_as_typed(rec, "text", typed)
+            changed.append({"line": idx, "replaced": typed, "with": rec["text"]})
+
     for idx, rec in data.get("lines", {}).items():
         text = rec.get("text", "")
         resolved = rec.get("resolved", "")
