@@ -33,7 +33,14 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # Headroom over the ~12 KB the router-plus-invariants rewrite landed at. Bytes,
 # not tokens: deterministic, no tokenizer dependency (this corpus measures
 # ~0.35 tokens/byte, so this is roughly a 5k-token ceiling).
-CLAUDE_MD_MAX_BYTES = 14_000
+#
+# **Raised once, 14_000 → 14_500, and the reason is the one that licenses a
+# raise at all**: routing a reader to `corpus state` instead of `ocr pages` cost
+# more bytes than the wrong pointer did, and a router that misroutes is not
+# cheaper for being small. A raise to make room for *material* is the accretion
+# this gate exists to stop; a raise to make a pointer correct is the gate
+# working. Say which one it is here whenever this number moves.
+CLAUDE_MD_MAX_BYTES = 14_500
 
 CITE_RE = re.compile(r"CLAUDE\.md, [\"'“]([^\"'”)]{4,80})")
 

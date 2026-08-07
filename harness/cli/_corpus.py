@@ -77,6 +77,15 @@ def register(cli):
         help="counts per rung instead of the rows. Every rung is listed, "
              "including the empty ones — a rung nothing has reached and one "
              "everything has passed are different facts")
+    opt(p, "--refs", is_flag=True,
+        help="the bare ref list instead of the rows, in scan order — a "
+             "worklist to hand a dispatch loop. Refused with --tally, which "
+             "reports no refs to list")
+    opt(p, "--limit", type=int, default=None, metavar="N",
+        help="report at most N rows, taken from the front of the scan order. "
+             "The truncation is the caller's, named at the call site, so it is "
+             "not the silent kind. Refused with --tally, where a truncated "
+             "census would be a false one")
 
     action(g, "figures", run_figures,
            help="reconcile the figure track — gt/fig/ zone geometry "
@@ -141,6 +150,13 @@ def run_state(a) -> int:
     here worth stating: a page no store holds is the most interesting row this
     verb has, and enumerating a store would have hidden exactly those. It is also
     why `absent` is a stage rather than an omission.
+
+    **`--refs` and `--limit` are the worklist pair**, and both are refused with
+    `--tally` rather than quietly ignored: a tally has no refs to list, and a
+    count taken over a truncated row set is a census that is simply wrong while
+    looking exactly like one that is right. `--limit` truncating is not the
+    silent truncation this project forbids — the caller named the number, so the
+    bound is at the call site, which is where every other cost here sits.
     """
     from ..context import all_scans, with_context
     from ..pipeline import survey, tally
@@ -160,7 +176,19 @@ def run_state(a) -> int:
         rows = [r for r in rows if r["stage"] in allowed]
     if a.skipped:
         rows = [r for r in rows if r["skipped"]]
-    out(a, tally(rows) if a.tally else rows)
+    if a.tally and (a.refs or a.limit is not None):
+        raise ValueError("--tally with --refs or --limit: a tally lists no refs, "
+                         "and a count over a truncated row set is a false census")
+    if a.limit is not None:
+        if a.limit < 1:
+            raise ValueError(f"--limit {a.limit}: a row count, so at least 1")
+        rows = rows[:a.limit]
+    if a.tally:
+        out(a, tally(rows))
+    elif a.refs:
+        out(a, [r["ref"] for r in rows])
+    else:
+        out(a, rows)
     return 0
 
 

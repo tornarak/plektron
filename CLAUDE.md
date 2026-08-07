@@ -110,8 +110,9 @@ Layout, all at the repo root:
     harness/  tools/  docs/  concordance.md  keying_spec.md — the tests live in
             harness/tests/, beside the package they cover.
 
-Counts deliberately absent — they go stale in a file nothing regenerates;
-`harness ocr pages`, `harness zones check` and `harness views check` answer.
+Counts deliberately absent — they go stale in a file nothing regenerates.
+**`harness corpus state` answers**, across every store at once as no store's own
+verb can; `--stage`/`--refs`/`--limit` make it a worklist.
 
 **The frontier is collation.** The apparatus stores are done and reconciled, so
 what is left is the pass that consumes them.

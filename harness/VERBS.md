@@ -1140,6 +1140,7 @@ single store can answer it.
 **Note** **`--all` enumerates `scans/`, not any store.** A page no store holds is the most interesting row this verb has, and enumerating a store would hide exactly those — which is also why `absent` is a stage rather than an omission.
 **Note** **`skipped` is the point of the ladder.** `2-030` reached `gt/ocr/` by the eScriptorium route before the review loop existed; 18 pages carry `gt/ocr/` with no prediction behind them, the eScriptorium-shell cohort; `1-359` carries human zones with no `mz/zones/`. Each is a provenance fact no single store's verb could see. **A rung a route legitimately omits is not a skip**: `zoned-mz` first counted against every exempt page, which put 83 plates in the report and left `1-359` indistinguishable among them — 84 rows saying nothing where 1 says something.
 **Note** the same row, minus `ref`, is `page_state` in `harness tei context` — so a collation pass is never left inferring the rank of its own input. An empty `tier1_terms` means "no ground truth" on 802 pages and "ground truth with no marked forms" on `3-063`, and those call for opposite behaviour.
+**Note** **`--refs` and `--limit` are the worklist pair** — a bare ref list in scan order, capped, which is what a dispatch loop wants and what saved every caller from re-deriving it. Both are **refused with `--tally`** (exit 2) rather than quietly ignored: a tally lists no refs, and a count taken over a truncated row set is a census that is simply wrong while looking exactly like one that is right. `--limit` is not the silent truncation this project forbids — the caller named the number, so the bound sits at the call site, where every other cost here sits. `corpus state --all --stage ocr-gt --refs --limit 2` is "the first two pages ready to collate".
 **Note** **`--context` windows over `scans/`, not over arithmetic.** `PP-NNN` says nothing about how long its part is, so a window is applied to the observed index list rather than computed — which clamps it at each part's end for free, steps over a gap in the sequence instead of counting it as a page, and never crosses a part boundary. `1-362` and `2-001` are neighbours in the binding and nowhere else, and a context spanning them would assert a continuity the scan index does not carry.
 ```
 --all           every scan in scans/, whether or not any store holds it
@@ -1153,6 +1154,10 @@ single store can answer it.
 --tally         counts per rung instead of the rows; every rung listed, empty ones
                 included — nothing-has-reached-it and everything-has-passed-it are
                 different facts
+--refs          the bare ref list instead of the rows, in scan order [off].
+                Refused with --tally
+--limit N       at most N rows, from the front of the scan order [no cap].
+                Refused with --tally
 --root --json --toon --pager
 ```
 
