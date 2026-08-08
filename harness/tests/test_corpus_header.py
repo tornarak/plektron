@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from harness.entities import ENTITY_CLASSES
 from harness.validate import CORPUS_HEADER, RESP_RANKS, check_corpus_header
 
 REPO = Path(__file__).resolve().parent.parent.parent
@@ -27,6 +28,13 @@ TEI_NS = "http://www.tei-c.org/ns/1.0"
 # the place a real finding would have to be noticed.
 RANK_IDS = tuple(r.lstrip("#") for r in RESP_RANKS)
 ALL_RANKS = "".join(f'<respStmt xml:id="{r}"/>' for r in RANK_IDS)
+# The entity classes are the same arrangement one store over, and derived for the
+# same reason: a test about licences has no opinion about how many classes there
+# are, and should not fail when one is added.
+ALL_PREFIXES = "<encodingDesc><listPrefixDef>" + "".join(
+    f'<prefixDef ident="{c}" matchPattern="(.+)" '
+    f'replacementPattern="entities/{c}/$1.md"/>' for c in ENTITY_CLASSES
+) + "</listPrefixDef></encodingDesc>"
 
 
 def header(tmp_path: Path, ranks=RANK_IDS, body=None) -> Path:
@@ -34,22 +42,23 @@ def header(tmp_path: Path, ranks=RANK_IDS, body=None) -> Path:
         f'<respStmt xml:id="{r}"><resp>{r}</resp><name>x</name></respStmt>'
         for r in ranks
     )
+    text = body if body is not None else (
+        f'<teiHeader xmlns="{TEI_NS}"><fileDesc>'
+        f"<titleStmt><title>t</title>{stmts}</titleStmt>"
+        f"<publicationStmt><p>p</p></publicationStmt>"
+        f"<sourceDesc><p>s</p></sourceDesc>"
+        f"</fileDesc></teiHeader>"
+    )
+    # The class prefixes go in unless a test is about them. Every `body=` below
+    # is testing one specific failure direction — a missing sourceDesc, an
+    # unsettled licence — and none has an opinion about entity classes; pasting
+    # eleven prefixDefs into each would bury what each test is actually saying,
+    # and the next store to need a header declaration would bury it further.
+    if "<prefixDef" not in text:
+        text = text.replace("</teiHeader>", ALL_PREFIXES + "</teiHeader>")
     p = tmp_path / CORPUS_HEADER
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(
-        (
-            body
-            if body is not None
-            else (
-                f'<teiHeader xmlns="{TEI_NS}"><fileDesc>'
-                f"<titleStmt><title>t</title>{stmts}</titleStmt>"
-                f"<publicationStmt><p>p</p></publicationStmt>"
-                f"<sourceDesc><p>s</p></sourceDesc>"
-                f"</fileDesc></teiHeader>"
-            )
-        ),
-        encoding="utf-8",
-    )
+    p.write_text(text, encoding="utf-8")
     return p
 
 

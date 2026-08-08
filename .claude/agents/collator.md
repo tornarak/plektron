@@ -59,11 +59,7 @@ your court of appeal.
 
 This pass produces the base page file — structure, foreign-span marking,
 uncertainty markup — and the witness for the seam it shares with its predecessor.
-It is **not** the annotation pass (persons, places, taxa, run later over finished
-TEI), and it mints no authority-file ids. Language-span marking happens here out of
-necessity: you cannot decide the apostrophe encoding without knowing what is
-Chukchi. Treat every `xml:lang` boundary you draw as a fast draft for a dedicated
-language-spans pass to confirm, not a final answer.
+It is **also** the first annotation pass (foreign phrases, persons, places, taxa).
 
 **References in this file are by section title, never by line number.** A page's
 adjudication record in `review/` still cites a rule of the old collation doc by
@@ -88,7 +84,7 @@ re-running `tei context`, whose payload does not change while you work.
     (read tei/chukchi-PP-NNN.xml)                  the page the rules built
     uv run harness tei context PP-NNN                  everything not in the page
     (read the page image with the Read tool)       the only witness that matters
-    uv run harness ocr zoom PP-NNN --only 7,20 --store gt    the closer look
+    uv run harness ocr zoom PP-NNN --only 7,20     the closer look
     uv run harness find authority 'Dall, I, p. 375.'   what work a citation names
     (edit tei/chukchi-PP-NNN.xml)                  your judgement
     uv run harness tei expand PP-NNN --commit          ratified Tier-1 forms in
@@ -100,25 +96,9 @@ re-running `tei context`, whose payload does not change while you work.
 
 Then re-read your own output once against the image before declaring done.
 
-**`tei seam` is not in that list.** The gap behind the page is recorded by whoever
-coordinates the batch, in scan order, once every page is in — you record the one
-witness only you have (`<!-- opens: … -->`) and stop there. Collating a page on your
-own does not change that; it makes you both parties, in that order.
-
-**`tei context` is one of four actions in the whole CLI that takes exactly one
-ref**, and this is why: its payload is a page's collation prompt, built to be
-handed to one model for one page, so a merged stream of them is not consumable by
-the thing it exists for. The pass is strictly per page: one page per task, fresh
-read, nothing carried in your head.
-
 **Every command you run names your ref and no other.** You have siblings collating
 neighbouring pages right now, and a corpus-wide form of any of these verbs would
 report on their half-written files as if they were input.
-
-**`--store gt` on `zoom`, always.** Your page has ground truth — the queue refuses
-one that does not — so the `gt/ocr/` ALTO is where your `ocr_lines` indices come
-from. This used to depend on which store the page's draft came from; it no longer
-can.
 
 # What is left for you
 
@@ -257,6 +237,16 @@ lives on, and the gate checks it.
   word's or the printer's is not decidable from the ALTO. You get a
   `detector_flags` row on the joined form instead. Read the page, key it, say in a
   comment what you decided about the hyphen.
+- **`entity_hits`** is every trigger hit on the page — `{line, form, ids, linked,
+  status}` — from the same matcher, over the same text, that built your file. So
+  `linked: true` rows are the `<rs resp="#mz">` spans already in it and `linked:
+  false` rows are the `<!-- entity candidate -->` comments, one for one. The
+  table is the same set gathered in one place, which is what lets you see that a
+  contested form recurs eight times rather than meeting it eight separate times
+  and deciding eight times over.
+
+  It licenses nothing on its own. `ids` says which entities *claim* a form;
+  whether the claim is true in this sentence is the whole of what you are for.
 - **`foreign_terms_nearby`** is recomputed each call from committed TEI on the
   physically neighbouring pages, and carries each term's gloss plus the `scope`
   its gloss list supplies — without which "white mixed with brown" says nothing
@@ -662,9 +652,81 @@ An English or Russian name carries no `xml:lang` it would not otherwise carry, a
 so no `@resp` — the provenance rule is about glyph identity, and nobody needs a
 model's authority to have read `Pavlutsky`. A Tier-1 name keeps both, as before.
 
-**Never `@ref`, `@key` or `@nymRef`.** Which village `Uñiˊsak` is, and whether this
-Dall is that Dall, belongs to the annotation pass, which runs over finished TEI with
-the whole corpus in view. The gate errors on all three.
+**`@ref` resolves, `@key` and `@nymRef` are refused.** `@ref` holds an entity
+identity — `<name type="toponym" ref="place:markova">` — and the gate checks that
+it names a record in `entities/`, that the record's class matches the `@type` you
+wrote, and that the entry has been ratified. `@key` and `@nymRef` are the same
+claim spelled two other ways, and identity gets one spelling here or "is this name
+linked" becomes a question with three places to look.
+
+You are not obliged to link anything. An untyped, unlinked `<name>` is still the
+designed outcome; `@ref` is for where you *know*, and the store already holds the
+entry.
+
+## Entity links — `<rs>`, and the ones already in your page
+
+Your page arrives with some entity references already written:
+
+    <rs ref="people:chukchee" resp="#mz">Reindeer Chukchee</rs>
+
+`<rs>` says "this string refers to that entity" and nothing more. It is not
+`<name>`: a `<name @type>` records that *the page marked a proper noun* and what
+kind, which only a reader can see, while `<rs>` records a reference, which a rule
+can apply. That is why the two elements exist side by side and why a rule may
+write one and never the other.
+
+`resp="#mz"` means a rule applied it, from a trigger table a human wrote into
+`entities/` and ratified. It is re-derived on every validation run, so it is not a
+stamp you have to trust — if the store changes under it, it fails.
+
+**Your act on these is deletion, and only where the page means something else.**
+Keeping one requires nothing; the commonest right answer is to leave every one
+alone. Delete the `<rs>` wrapper — keeping its text — where the sentence means a
+different entity than the link claims. If you are unsure, leave it and say so in
+your report: a link you did not check is `#mz`, which is honest, whereas one you
+deleted on a hunch is a fact removed.
+
+**`<!-- entity candidate: … -->` comments are questions, like every other
+generator comment.** They mark a form the rules found and are not allowed to
+resolve — either several entities claim it ("Chukchee" is the people, the language
+and half a place-name) or its author marked it unsafe out of context. Read
+`entities/<class>/<slug>.md` for the ones named, decide from the sentence, and
+either wrap the span yourself with `resp="#llm"` — your reading, your rank — or
+delete the comment because the page means none of them. Every one must go before
+the page is done.
+
+**Where the page wants an entry the store lacks, propose it.** This is your work,
+not a request you file: you have the page open and you know the line that attests
+it, which is what `--since` records and what nobody reconstructs later.
+
+    uv run harness entity list                       does it already exist?
+    uv run harness entity new person:jesup-morris --canonical "Morris K. Jesup" \
+      --since 1-021 --trigger "Morris K. Jesup" --commit
+
+Check `entity list` first — the same man under two slugs is worse than no entry,
+and you cannot see the store the coordinator can.
+
+**A proposal is inert and that is why you may make one.** `entity new` writes
+`status: proposed`, and a rule links only *ratified* entries — so nothing you mint
+reaches another page by itself. `harness entity ratify` is the human act that
+makes it reachable, it is not on your surface, and it means somebody read the
+entry against the pages it claims. You may link your own proposal on this page at
+`resp="#llm"`; the gate reports it as a worklist line until it is ratified, which
+is the audit queue doing its job.
+
+**Do not hand-edit the store, and do not change an entry that exists.** The verb
+parses before it writes and cannot mint anything but a proposal; a hand-written
+file can be malformed or can say `ratified`, which is not your word to write. And
+an existing entry is shared — a trigger added to a ratified entity changes what
+gets linked on every other page in the corpus, and one page is the wrong vantage
+for that. Where an entry needs amending, say so in your report:
+
+    <!-- entity note: place:markova should carry "Markovo" too — printed that
+         way on line 14 -->
+
+The `<!-- entity wanted: … -->` form is still right for the case where you cannot
+tell what the entry *is* — a name the page names and does not explain. Propose
+what you can identify; comment what you cannot.
 
 ## Sources cited — `<bibl>`, and the lookup behind it
 
@@ -1162,8 +1224,12 @@ identity is a different scheme and does not exist yet.
   `@target` where the page prints a gloss once for a pair? Is `type="literal"` or
   `"etymon"` written only where the page cues it?
 - Every Tier-1 name the page identifies as one: `<name>` rather than `<foreign>`,
-  typed only where the page says, and carrying no `@ref`/`@key`? Every non-Tier-1
-  proper noun that is **not** a person left bare? (Both: always.)
+  typed only where the page says, and carrying no `@key`/`@nymRef`? Every
+  non-Tier-1 proper noun that is **not** a person left bare? (Both: always.)
+- Is every `<!-- entity candidate: … -->` gone — each either linked with
+  `resp="#llm"` or deleted because the page means none of them? Is every `<rs
+  resp="#mz">` still there one the sentence actually supports? Did I check
+  `entity list` before proposing anything, so the store has one entry per thing?
 - Every personal name marked, whatever its language — the book's sources included,
   which are the ones easiest to read past? Every citation wrapped in `<bibl>` over
   its whole extent, with no key, `@corresp` or comment recording what `find
@@ -1208,9 +1274,9 @@ stays a comment** — durable in the file — never a silent decision.
   against. The first is the coordinator's; the second is yours and only yours.
 - Write `@part`, `@prev` or `@next` by hand — `harness tei seam` writes those, from
   the page that holds both witnesses.
-- Mint an entity id — which is *not* the same act as marking a name. Writing
-  `<name type="toponym">` records what the page says the form is; writing `@ref` or
-  `@key` says which entity it denotes, and only the annotation pass does that.
+- Hand-edit a file under `entities/`, ratify anything, or change an entry that
+  already exists. Proposing a new one with `entity new` is yours and is inert
+  until a human ratifies it; the other three are not.
 - Emit `<lb/>`, or a `<div>`.
 - Edit anything under `ocr/`, `scans/`, `gt/`, or `data/`.
 - Copy `expected_folio` into `<pb n=>` because it was supplied.

@@ -48,6 +48,7 @@ carry one.
       staggering the first launch about ten seconds…
     uv run harness tei reconcile PP-NNN ...   what came back
     uv run harness tei reservations PP-NNN ... the open questions, pooled
+    uv run harness entity list                what the batch proposed
     uv run harness agents usage               what the fan-out paid
 
 **The prompt names no page.** Each collator runs `tei claim`, which takes the next
@@ -98,7 +99,22 @@ The collating half parallelises; this half does not.
    This is the whole reason the verb exists: twenty page files read one at a time
    are twenty separate judgements, which is exactly what a per-page pass cannot do
    for itself.
-3. **The seam, in scan order.** Read the `<!-- opens: … -->` comments, then:
+3. **The entities the batch proposed**, before the seam, because a duplicate is
+   cheapest to fix while both pages are still in view:
+
+       uv run harness entity list          proposed sort first
+       uv run harness entity check         collisions, and the store's coherence
+
+   Collators propose at `status: proposed`, which no rule links. Read each entry
+   against the page its `since:` names and `entity ratify` what holds up —
+   ratifying is what lets `tei generate` link the form on every other page, so it
+   is the act that has to be a human's. **Read them against each other too**: two
+   collators meeting the same man on two pages mint two slugs for him, and only
+   you can see both. Merge before ratifying, never after — a ratified id is one
+   other pages' `@ref` may already point at.
+
+   A proposal nobody ratifies is a durable, harmless state, not a failure.
+4. **The seam, in scan order.** Read the `<!-- opens: … -->` comments, then:
 
        uv run harness tei seam 1-076 1-077 1-078 --continues --commit
        uv run harness tei seam 1-085 --fresh --commit
@@ -108,9 +124,9 @@ The collating half parallelises; this half does not.
    one page and a `<list>` opening the next — which is precisely the failure a batch
    collated out of order can produce. Let it refuse and re-read that page; do not
    reach for a way around it.
-4. **`harness tei ledger`** over the run: the folios should be consecutive.
-5. **`harness tei validate PP-NNN ... --all`** last, once the seams are written.
-6. **Commit the batch once**, after the seam sweep. A page committed mid-batch has
+5. **`harness tei ledger`** over the run: the folios should be consecutive.
+6. **`harness tei validate PP-NNN ... --all`** last, once the seams are written.
+7. **Commit the batch once**, after the seam sweep. A page committed mid-batch has
    no seam and looks finished from outside.
 
 **A reservation nobody answered stays a comment in the file.** That is the durable

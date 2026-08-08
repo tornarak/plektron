@@ -26,6 +26,8 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
 | `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
+| `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
+| `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the trigger vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
@@ -268,6 +270,28 @@ two, and `gt/ocr/` for the text. Emits a comment naming every judgement it decli
 of a Tier-1 form. `diff` compares it against the collated page; the generation stamp
 is what lets that comparison tell a difference review made from one a regeneration
 made under it.
+
+**`entities.py`** — the encyclopedia store, and the one matcher over it. Parses
+`entities/<class>/<slug>.md` on the `readings.md` pattern (heading-sliced, NFD on
+read, absence is `{}`); an identity is `class:slug` and lives twice, as the
+directory and in the heading, so `check` can compare them — a file's role must not
+live only in its directory name. `auto_forms` is the whole bar for a machine link:
+one claimant, `auto: yes`, ratified. **`match` is called by three modules** —
+`generate` links with it, `context` reports with it, `validate` re-derives `#mz`
+against it — because three implementations of one rule would be three witnesses
+that are one.
+
+**`tei_html.py`** — committed TEI to HTML, for the reading view. The apparatus is
+rendered rather than tidied away: an unratified rank is marked and an editorial
+comment becomes a flag, because a page with an open question must not look
+finished. `crop_style` places a raster box inside a clipping frame in percentages
+only, so a crop scales to whatever width the panel has.
+
+**`edition_ui.py`** — the reading view on the `webui` shell: two columns, a stack
+of entity/note/scan cards, the encyclopedia and its audit queue. Serves committed
+`tei/` only. Writes `entities/` on a click without `--commit`, as the other editors
+write their stores, and **rolls a write back if `entity check` fails on the
+result** — every `@ref` in the corpus resolves against that store.
 
 **`state.py`** — derived seam state. Folio comes from a committed TEI's `<pb n>` and
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is

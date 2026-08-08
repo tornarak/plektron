@@ -68,6 +68,12 @@ readable() {
     # The apparatus the verbs read off: authorities.json, loi.json, toc.json,
     # readings.md, the schema.
     */data/*|data/*) return 0 ;;
+    # **The encyclopedia.** Deciding whether a page means people:chukchee or
+    # language:chukchee is reading the two glosses and the sentence; a collator
+    # asked to judge a candidate with the entries withheld would be guessing, and
+    # a guess is what the candidate comment exists to prevent. Writing is the
+    # verb's, not the editor's — see the Write arm.
+    */entities/*|entities/*) return 0 ;;
   esac
   return 1
 }
@@ -102,6 +108,20 @@ case "$TOOL" in
       # silently become no comparison at all.
       */mz/tei/*|mz/tei/*)
         echo "Blocked: mz/tei/ is the generated baseline, and nothing you do touches it. 'harness tei claim' already copied it to tei/chukchi-PP-NNN.xml — that copy is your working file and the one you edit. The difference between the two IS the record of what you judged, so a write here would leave 'tei diff' comparing the review against itself. Regenerating is 'harness tei generate', and that is the coordinator's." >&2
+        exit 2 ;;
+      # **The file is refused; the verb is not.** `entity new` is on the Bash
+      # surface below, so a collator proposes entries — that is the point of
+      # running this pass with the encyclopedia open. What it may not do is edit
+      # the store by hand, and the two reasons are different from "no minting":
+      #
+      #   - the verb parses before it writes and can only ever mint at
+      #     `status: proposed`, which no rule will link; a hand-written file can
+      #     be malformed, or can say `ratified`, which is the human's word.
+      #   - an existing entry is shared. Adding a trigger to a ratified entity
+      #     changes what `tei generate` links on every other page in the corpus,
+      #     and one page is the wrong vantage for that.
+      */entities/*|entities/*)
+        echo "Blocked: don't hand-edit the store — 'uv run harness entity new class:slug --canonical NAME --since PP-NNN --trigger FORM --commit' is yours and does this properly. It parses before writing and mints at status: proposed, which no rule links until a human ratifies it, so proposing costs nothing and asserts nothing. What the verb will not do is change an entry that already exists, and neither may you: a trigger added to a ratified entity changes what gets linked on every other page, which one page is the wrong vantage for. Put that in your report instead." >&2
         exit 2 ;;
       */tei/chukchi-*.xml|tei/chukchi-*.xml) allow "collator authoring its page's TEI" ;;
       *"$MEMORY"*) allow "collator writing its own memory" ;;
@@ -178,7 +198,15 @@ esac
 # from the view, and a hook pinning `gt` would refuse the ordinary case. Which store
 # to cite is the contract's rule, not the guard's — the guard's business is that no
 # other page is touched.
-if printf '%s' "$COMMAND" | grep -qE '^uv run harness (tei (claim|context|expand|ids|pair|validate)|ocr zoom|corpus normalize|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes)|find [a-z]+|verbs show)( |$)'; then
+#
+# **`entity new|list|show` and not `ratify|check`.** Proposing an entry is this
+# pass's work — it has the page open and knows the line that attests it — and a
+# proposal is inert: `entity new` writes `status: proposed`, and `auto_forms`
+# links only ratified entries, so nothing a collator mints can reach another
+# page by rule. `ratify` is the human act that makes it reachable and is
+# therefore not here. `list` and `show` are what stop a collator proposing a
+# second entry for something the store already holds under another slug.
+if printf '%s' "$COMMAND" | grep -qE '^uv run harness (tei (claim|context|expand|ids|pair|validate)|ocr zoom|corpus normalize|entity (new|list|show)|lexicon (conflicts|digraphs|glosses|lookup|marks|misses|suffixes)|find [a-z]+|verbs show)( |$)'; then
   case "$COMMAND" in
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page, and your siblings' files are half-written while you work." >&2
@@ -187,5 +215,5 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (tei (claim|context|expand
   allow "collator running a verb from its closed surface, on one page"
 fi
 
-echo "Blocked: Read answers content and the verbs answer everything else — reach for those before the shell. Your Bash surface is exactly: uv run harness {tei claim|context|expand|ids|pair|validate, ocr zoom, corpus normalize, lexicon *, find *, verbs show} — one plain command, no --all. If you want to know what a command does, that is 'verbs show tei expand', not a Read of the reference. Everything else (tei seam|queue|reconcile|ledger, git, python3, the other groups) is not yours. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
+echo "Blocked: Read answers content and the verbs answer everything else — reach for those before the shell. Your Bash surface is exactly: uv run harness {tei claim|context|expand|ids|pair|validate, ocr zoom, corpus normalize, entity new|list|show, lexicon *, find *, verbs show} — one plain command, no --all. If you want to know what a command does, that is 'verbs show tei expand', not a Read of the reference. Everything else (tei seam|queue|reconcile|ledger, git, python3, the other groups) is not yours. If a tool you genuinely need is missing from this list, say so in your report rather than working around it." >&2
 exit 2

@@ -53,6 +53,7 @@ from .context import (
     tier1_terms,
 )
 from .detectors import join_broken_words
+from .entities import auto_forms, load, trigger_index
 from .lines import page_lines
 from .zones import read_zones, split_at_paragraphs
 
@@ -60,7 +61,7 @@ from .zones import read_zones, split_at_paragraphs
 #: different artifact rather than an older copy of the same one. It rides in the
 #: stamp, so `tei diff` can say "this baseline predates the current rules" instead
 #: of reporting the difference as something review did.
-VERSION = 1
+VERSION = 2
 
 GENDIR = "mz/tei"
 
@@ -176,8 +177,9 @@ def _assign(recs: list[dict], bands: list[dict]) -> list[list[dict]]:
     return buckets
 
 
-def _markup(text: str, terms: list[dict]) -> str:
-    """One line's text, with its ratified Tier-1 tokens lifted out into handles.
+def _tier1_spans(rows: list[tuple[int, str]], by_line: dict[int, list[dict]],
+                 offsets: list[int]) -> list[tuple[int, int, str]]:
+    """Ratified Tier-1 tokens, as spans over the block's joined text.
 
     The handle is `<foreign index="N"/>` — empty, and carrying no `xml:lang`,
     because **which language a form is in is a judgement and this is a rule**.
@@ -191,32 +193,126 @@ def _markup(text: str, terms: list[dict]) -> str:
     lang-less `<foreign>`, which turns every one of them into a question the
     reviewer has to answer: name the language, and `tei expand` writes the adjudicated
     glyphs in; or unwrap, because it was never a foreign form.
+
+    Located per line and then translated to block offsets, rather than searched
+    for in the joined block: `tier1_terms` reports which line it found a token
+    on, and a token that occurs on two lines would otherwise both times resolve
+    to the first.
     """
-    out, pos = [], 0
-    for t in terms:
-        i = text.find(t["text"], pos)
-        if i < 0:
-            # The token was found on this line by `tier1_terms` and is not in the
-            # joined text — a broken word rejoined onto its neighbour. Skipping is
-            # right: `detector_flags` still carries it, so the reviewer is told to
-            # read the page rather than handed a handle pointing at half a word.
+    spans = []
+    for (index, text), base in zip(rows, offsets, strict=True):
+        pos = 0
+        for t in by_line.get(index, []):
+            i = text.find(t["text"], pos)
+            if i < 0:
+                # The token was found on this line by `tier1_terms` and is not in
+                # the joined text — a broken word rejoined onto its neighbour.
+                # Skipping is right: `detector_flags` still carries it, so the
+                # reviewer is told to read the page rather than handed a handle
+                # pointing at half a word.
+                continue
+            spans.append((base + i, base + i + len(t["text"]),
+                          f'<foreign index="{t["index"]}"/>'))
+            pos = i + len(t["text"])
+    return spans
+
+
+def _entity_spans(full: str, taken: list[tuple[int, int, str]], ents: dict,
+                  autos: dict) -> tuple[list[tuple[int, int, str]], list[dict]]:
+    """Trigger hits over the block: the ones a rule may link, and the ones it may not.
+
+    **Matched over the joined block, not per line**, because the printed line
+    breaks fall inside the most reliable triggers — `1-021` sets "the Jesup North
+    / Pacific Expedition" across two lines — and a matcher that stopped at a line
+    end would miss exactly the multi-word forms that are unambiguous enough to
+    link.
+
+    A hit overlapping a Tier-1 handle is dropped rather than linked. Linking a
+    Tier-1 form is the collator's act, after judging what language it is in;
+    a rule that reached inside a handle would be resolving an identity for a
+    string whose glyphs it is forbidden even to name.
+    """
+    from .entities import match
+
+    links, candidates = [], []
+    for h in match(full, ents):
+        if any(h["start"] < e and s < h["end"] for s, e, _ in taken):
             continue
-        out.append(escape(text[pos:i]))
-        out.append(f'<foreign index="{t["index"]}"/>')
-        pos = i + len(t["text"])
-    out.append(escape(text[pos:]))
-    return "".join(out)
+        owner = autos.get(h["form"])
+        if owner:
+            links.append((h["start"], h["end"],
+                          f'<rs ref="{owner}" resp="#mz">', "</rs>"))
+        else:
+            candidates.append(h)
+    return links, candidates
 
 
-def _block(lines: list[str], indent: str) -> str:
-    """Line texts, one per printed line, indented for the first only.
+def _emit(full: str, spans: list, indent: str) -> str:
+    """The block's text with its spans marked, printed line breaks preserved.
 
     **The printed line breaks are kept**, as the hand-collated pages keep them.
     They cost nothing — TEI collapses whitespace in prose — and they are what lets
     a reviewer read the file against the raster a line at a time, which is the
-    comparison the whole pass is built on.
+    comparison the whole pass is built on. A span that straddles one keeps it: the
+    break is inside the element, where it belongs.
     """
-    return f"\n{indent}".join(lines) if lines else ""
+    def wrap(s: str) -> str:
+        return escape(s).replace("\n", f"\n{indent}")
+
+    out, pos = [], 0
+    for span in sorted(spans):
+        start, end, open_ = span[0], span[1], span[2]
+        if start < pos:
+            continue                          # overlapping; first one wins
+        out.append(wrap(full[pos:start]))
+        if len(span) > 3:                     # a wrapper: text goes inside it
+            out.append(open_ + wrap(full[start:end]) + span[3])
+        else:                                 # an empty handle: text goes away
+            out.append(open_)
+        pos = end
+    out.append(wrap(full[pos:]))
+    return "".join(out)
+
+
+def page_blocks(ref: str, root: Path = Path(".")
+                ) -> tuple[list[tuple[dict | None, list[tuple[int, str]]]], str]:
+    """The page's text in the blocks the rules read it as, plus what the split rested on.
+
+    One entry per band, in order, each `(band, [(line index, joined text), …])`;
+    the last entry's band is None and holds the lines inside no zone. Captions
+    and empty lines are dropped, and each line's text is the *joined* one, so a
+    word broken across two lines is whole on the first of them.
+
+    **A block is the unit a trigger is matched over**, which is why this is one
+    function and not two. The generator marks up a block at a time, so a trigger
+    straddling a printed line break inside one — "the Jesup North / Pacific
+    Expedition" on `1-021` — is found and linked; `tei context` reports the same
+    hits to the reviewer, and if it derived its own text differently the table
+    and the file would disagree about which questions are still open. They would
+    disagree quietly, and in the direction that makes the file look finished.
+    """
+    ocr, _ = _inputs(ref, root)
+    recs = page_lines(ocr, root, ref=ref)
+    joined = join_broken_words(recs)
+    text_of = {r["index"]: t for r, t in zip(recs, joined, strict=True)}
+    bands, split_by = _bands(ref, root)
+    buckets = _assign(recs, bands)
+
+    def rows_of(bucket: list[dict]) -> list[tuple[int, str]]:
+        out = []
+        for r in bucket:
+            if r.get("in_figdesc"):
+                continue          # the project holds a human reading in readings.md
+            text = text_of.get(r["index"], r.get("text") or "")
+            if not text.strip():
+                continue
+            out.append((r["index"], text))
+        return out
+
+    out: list[tuple[dict | None, list[tuple[int, str]]]] = [
+        (b, rows_of(k)) for b, k in zip(bands, buckets[:-1], strict=True)]
+    out.append((None, rows_of(buckets[-1])))
+    return out, split_by
 
 
 def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
@@ -225,39 +321,74 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     _require(ref, root)
     ocr, _ = _inputs(ref, root)
 
-    recs = page_lines(ocr, root, ref=ref)
-    # Page-wide and before any filtering, so this stays positional with `recs` and
-    # with the `survives` set `tier1_terms` computed the same way. A join taken over
-    # a filtered list would shift by the number of lines removed above it.
-    joined = join_broken_words(recs)
-    # Keyed by `index`, the record's identity, rather than by position in a list
-    # search: two lines of a page can carry identical text, and `list.index` over
-    # dicts would return the first of them for both.
-    text_of = {r["index"]: t for r, t in zip(recs, joined, strict=True)}
-    running = _running_title(recs, ref, root)
-    bands, split_by = _bands(ref, root)
-    buckets = _assign(recs, bands)
+    running = _running_title(page_lines(ocr, root, ref=ref), ref, root)
+    blocks, split_by = page_blocks(ref, root)
+    bands = [b for b, _ in blocks[:-1]]
+    buckets = [rows for _, rows in blocks]
 
     by_line: dict[int, list[dict]] = {}
     for t in tier1_terms(ref, root):
         by_line.setdefault(t["line"], []).append(t)
 
-    def rendered(bucket: list[dict]) -> list[str]:
-        """A band's lines as markup, captions and empties dropped."""
-        out = []
-        for r in bucket:
-            if r.get("in_figdesc"):
-                continue          # the project holds a human reading in readings.md
-            text = text_of.get(r["index"], r.get("text") or "")
-            if not text.strip():
-                continue
-            out.append(_markup(text, by_line.get(r["index"], [])))
-        return out
+    store = load(root)
+    ents = trigger_index(store)
+    autos = auto_forms(ents)
+    pending: list[dict] = []          # candidates, to be commented after the block
+
+    def rendered(rows: list[tuple[int, str]], indent: str = "") -> str:
+        """One block of lines, marked up whole. Records its candidates in `pending`."""
+        if not rows:
+            return ""
+        texts = [t for _, t in rows]
+        offsets, at = [], 0
+        for t in texts:
+            offsets.append(at)
+            at += len(t) + 1                  # +1 for the joining newline
+        full = "\n".join(texts)
+        spans = _tier1_spans(rows, by_line, offsets)
+        links, cands = _entity_spans(full, spans, ents, autos)
+        pending.extend(cands)
+        return _emit(full, spans + links, indent)
 
     body: list[str] = []
     rep = {"ref": ref, "folio": None, "folio_from": "", "split_by": split_by,
            "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
-           "handles": 0, "outside_zones": 0, "unknown_labels": ""}
+           "handles": 0, "links": 0, "candidates": 0,
+           "outside_zones": 0, "unknown_labels": ""}
+
+    def flush_candidates() -> None:
+        """One comment per distinct unlinked trigger, after the block it sits in.
+
+        Every one is a question, in the same shape as every other question the
+        generator leaves: the rules found something they are not allowed to
+        resolve, and say so where a reader will meet it. Ambiguity is the usual
+        reason — "Chukchee" is the people, the language and half a place-name —
+        and the entry that is right is the one the sentence decides.
+        """
+        seen = set()
+        for h in pending:
+            key = (h["form"], tuple(h["ids"]))
+            if key in seen:
+                continue
+            seen.add(key)
+            rep["candidates"] += 1
+            # The two reasons a hit is a candidate are different questions, so
+            # they are different sentences. Ambiguous: several entities claim the
+            # form and only the sentence decides. Uncontested but not automatic:
+            # one entity claims it, and its author declared the form unsafe out
+            # of context — the book uses it for other things too.
+            if len(h["ids"]) > 1:
+                say = (f'ambiguous — {escape(" or ".join(h["ids"]))}. Link the '
+                       f'one this sentence means, or delete this comment if it '
+                       f'means neither')
+            else:
+                say = (f'{escape(h["ids"][0])}, but the store marks this form '
+                       f'`auto: no` — it means other things elsewhere in the '
+                       f'book. Link it if the page means this one, or delete '
+                       f'this comment')
+            body.append(f'      <!-- entity candidate: {escape(h["form"])!r} '
+                        f'— {say} -->')
+        pending.clear()
 
     folio = (running or {}).get("folio")
     rep["folio"] = folio
@@ -296,33 +427,35 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         label = band["label"]
         if label in APPARATUS_ZONES:
             continue              # the printer's text; its folio is in <pb> above
-        lines = rendered(bucket)
-        rep["handles"] += sum(s.count("<foreign index=") for s in lines)
-        if not lines:
+        rows = bucket
+        if not rows:
+            continue
+        if label == NOTES_ZONE:
+            notes += rows
             continue
         if label in PROSE:
             tag = PROSE[label]
             if tag == "quote":
                 rep["quotes"] += 1
-                body.append(f'      <quote>\n        <p>{_block(lines, "        ")}'
+                block = rendered(rows, "        ")
+                body.append(f'      <quote>\n        <p>{block}'
                             f'</p>\n      </quote>')
             else:
                 rep["paragraphs"] += 1
-                body.append(f'      <p>{_block(lines, "")}</p>')
-        elif label == NOTES_ZONE:
-            notes += lines
+                body.append(f'      <p>{rendered(rows)}</p>')
         elif label == OTHER_ZONE:
             rep["unresolved"] += 1
             body.append('      <!-- unresolved zone (MainZone-Other): a heading, a '
                         'table, verse, or a caption — the store does not '
                         'distinguish them. Give it its real shape, and if it is a '
                         'heading check toc_window for a milestone -->')
-            body.append(f'      <p>{_block(lines, "")}</p>')
+            body.append(f'      <p>{rendered(rows)}</p>')
         else:
             unknown.add(label)
             body.append(f'      <!-- unknown zone label {label!r}: the generator '
                         f'has no rule for it, so its lines are here as prose -->')
-            body.append(f'      <p>{_block(lines, "")}</p>')
+            body.append(f'      <p>{rendered(rows)}</p>')
+        flush_candidates()
 
     if notes:
         rep["notes"] = 1
@@ -332,16 +465,18 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                     'belongs to is a reading. Split them, move each <note> to its '
                     'marker in the prose above, and set @n from the printed '
                     'marker -->')
-        body.append(f'      <note place="bottom">{_block(notes, "")}</note>')
+        body.append(f'      <note place="bottom">{rendered(notes)}</note>')
+        flush_candidates()
 
     if buckets[-1]:
         rep["outside_zones"] = len(buckets[-1])
-        lines = rendered(buckets[-1])
-        if lines:
+        rows = buckets[-1]
+        if rows:
             body.append(f'      <!-- {len(buckets[-1])} line(s) inside no zone. '
                         f'Usually artwork the segmenter raised a baseline on; '
                         f'occasionally a missing zone. Delete or place them -->')
-            body.append(f'      <p>{_block(lines, "")}</p>')
+            body.append(f'      <p>{rendered(rows)}</p>')
+            flush_candidates()
 
     figs = _figures_on_page(ref, root)
     if figs:
@@ -350,6 +485,12 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                     f'Not anchored: a <figure n="N"/> goes where the prose first '
                     f'refers to it, which is a reading -->')
     rep["unknown_labels"] = ",".join(sorted(unknown))
+    # Counted off the emitted markup rather than tallied as it is built: what the
+    # file actually carries is the thing a reviewer meets, and a counter kept
+    # alongside can disagree with it.
+    doc_body = "\n".join(body)
+    rep["handles"] = doc_body.count("<foreign index=")
+    rep["links"] = doc_body.count('resp="#mz"')
 
     src = f"see corpus teiHeader; page {folio}" if folio is not None \
         else "see corpus teiHeader; folio not parsed"
@@ -397,7 +538,17 @@ def generate(ref: str, root: Path = Path("."), force: bool = False) -> dict:
 #: be a check nobody kept.
 GEN_MARKS = ("generated:", "zone-opens:", "unresolved zone",
              "the footnote apparatus", "figures printed on this page",
-             "line(s) inside no zone", "unknown zone label")
+             "line(s) inside no zone", "unknown zone label",
+             "entity candidate")
+
+#: The two that are *supposed* to survive review, and so are not counted as
+#: questions left open. The stamp is the baseline's identity, and `zone-opens:` is
+#: the second seam witness — `tei seam` reads it against the collator's `opens:`
+#: after the batch, so a page that deleted it would have destroyed the comparison.
+#: Counting them made a correctly finished page report an unanswered question,
+#: which is the kind of standing false positive that teaches a reader to skip a
+#: column.
+SURVIVING = ("generated:", "zone-opens:")
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 
@@ -428,7 +579,7 @@ def _counts(path: Path) -> dict:
     n["stamp"] = next((c for c in comments if c.startswith("generated:")), "")
     n["gen_comments"] = sum(1 for c in comments
                             if c.startswith(GEN_MARKS) and
-                            not c.startswith("generated:"))
+                            not c.startswith(SURVIVING))
     n["lang_less"] = len([e for e in scope.findall(f".//{{{TEI_NS}}}foreign")
                           if not e.get("{http://www.w3.org/XML/1998/namespace}lang")])
     return n
@@ -497,5 +648,6 @@ def skipped(ref: str, why: str = "") -> dict:
     """
     return {"ref": norm_ref(ref), "folio": None, "folio_from": "", "split_by": "",
             "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
-            "handles": 0, "outside_zones": 0, "unknown_labels": "",
+            "handles": 0, "links": 0, "candidates": 0,
+            "outside_zones": 0, "unknown_labels": "",
             "written": False, "why": why}

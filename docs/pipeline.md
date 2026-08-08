@@ -117,8 +117,25 @@ the stages that are built.
    telling the model not to trust its own input. `docs/decisions.md` carries the
    reversal.
 
-5. **Annotation** — TBD
-6. **Compilation** — TBD
+5. **Annotation** — partly built, and it turned out not to be a stage after the
+   others so much as a store the earlier ones consult. `entities/` holds one
+   markdown record per entity; `tei generate` links the unambiguous forms by rule
+   at `#mz` while it is building the page, and everything contested arrives as a
+   candidate comment for the collator to settle. So annotation is **continuous with
+   collation** rather than a pass over finished TEI, which is what makes it
+   affordable: the reader who is already looking at the page decides, once, and
+   `entity occurrences` finds every other instance afterwards.
+
+   What is not built is the **published indices** — the toponym gazetteer, the
+   species list, the D-PLACE linkage — which are derivable from the store plus
+   committed TEI and want an ordering nothing has yet chosen. `docs/edition.md`
+   owns the store and the rule; `docs/open-questions.md` carries what is left.
+
+6. **Compilation** — TBD for epub and print. The **reading view exists**:
+   `harness edition serve` renders committed `tei/` in two columns with the
+   entities, notes and scan crops beside it, and is the surface the eventual export
+   has to match. It is not a compiler — nothing is assembled, and the corpus
+   teiHeader is still spliced by nothing — but it is where the edition is now read.
 
 ## Final Product
 

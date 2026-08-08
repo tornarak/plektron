@@ -24,11 +24,13 @@ what Bogoras's system "should" contain, from a neighbouring page, or from any co
 pattern. Book-internal apparatus (the p. 10 key, the List of Illustrations, the printed
 TOC) is *not* subject to this — it is evidence, and it binds.
 
-In the TEI this is `@resp` on every element bearing a Tier-1 `xml:lang`, pointing at one
-of four ranks: `#ed` ratified (a human keyed or confirmed it against the page), `#llm`
-proposed (a model read it), `#htr` unexamined (recognizer output), and `#gt` adopted
-(transcluded whole out of adjudicated ground truth by `harness tei expand`, and re-checked
-against it on every run — the collator's "A Tier-1 span the pass did not key").
+In the TEI this is `@resp`, on every Tier-1 `xml:lang` and every entity reference,
+naming one of five ranks: `#ed` ratified (a human confirmed it against the page),
+`#llm` proposed (a model read it), `#htr` unexamined (recognizer output), `#gt`
+adopted (transcluded from adjudicated ground truth), `#mz` rule-applied (an entity
+link from a human's trigger table). The last two assert nothing on their own —
+**re-derived from their store on every run**, so they fail rather than go stale,
+which is the whole of what admits a rank no human wrote directly.
 The ranks are declared once, in the corpus teiHeader, never in a page file. The
 collation pass may emit `#llm` and nothing else; `harness tei validate` errors on a
 higher claim and on a missing `@resp` equally, because an unmarked span is
@@ -62,19 +64,17 @@ gate; `--convert` writes the fixes.
 destroys them: `ᵋ` U+1D4B → plain U+025B, `˙` U+02D9 → space + combining dot.
 Any `normalize()` call must name its form.
 
-**The ASCII policy is scoped to Tier-1** (`keying_spec.md` §1). Inside
-the five Tier-1 codes, U+0027 and U+002D are the only apostrophe and hyphen; English
-prose reproduces the print, **curly quotes included**. The lookalike tables
-differ by scope and **must not be merged** — `harness/README.md` states the
-rule, `test_lookalike_scope.py` holds them apart.
+**The ASCII policy is scoped to Tier-1** (`keying_spec.md` §1). Inside the seven
+Tier-1 codes, U+0027 and U+002D are the only apostrophe and hyphen; English prose
+reproduces the print, **curly quotes included**. The lookalike tables differ by
+scope and **must not be merged** — `test_lookalike_scope.py` holds them apart.
 
 # Source rasters
 
 **`scans/` is derived, not source** — `pdftoppm` over `pdfs/`, then
-`tools/greyscale_scans.py --commit`, and a rebuild that skips the converter
-makes every raster sweep cost three times what it should. The master's
-geometry, the greyscale conversion's safety argument and the 150↔300 dpi
-mapping rule are `docs/rasters.md`.
+`tools/greyscale_scans.py --commit`, and a rebuild that skips the converter makes
+every raster sweep cost three times what it should. `docs/rasters.md` has the
+master's geometry, the conversion's safety argument and the dpi mapping rule.
 
 **Page refs are `PP-NNN`** — part, and scan index within that part (`1-048`) —
 everywhere: filenames, CLI, commit messages. NNN is a *scan
@@ -100,6 +100,9 @@ Layout, all at the repo root:
             file always winning. Derived; ignored. Never written through.
     tei/    the collated pages, plus corpus-header.xml — the corpus teiHeader,
             a fragment gated by `harness tei header`.
+    entities/  the encyclopedia, one markdown file per entity under its class
+            (person/, place/, event/ …). An identity is `class:slug`, which is
+            what every `@ref` holds. Tracked; `entity check` gates it.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
             zones_config.json  lines_config.json  tei_all.rng (the schema).
     review/ one directory per page: proposal.json (a reading, not truth) and
@@ -114,10 +117,8 @@ Layout, all at the repo root:
 
 Counts deliberately absent — they go stale in a file nothing regenerates.
 **`harness corpus state` answers**, across every store at once as no store's own
-verb can; `--stage`/`--refs`/`--limit` make it a worklist.
-
-**The frontier is collation**, and its input is ground truth: a page is ready when
-`corpus state` puts it at `ocr-gt`.
+verb can; `--stage`/`--refs`/`--limit` make it a worklist, and a page is ready to
+collate when it puts one at `ocr-gt`.
 
 ## The ground-truth loss
 
@@ -142,9 +143,9 @@ modules are open.
 `harness/` is a small package exposed as a console script, run from the repo
 root — all paths resolve relative to the cwd unless `--root` says otherwise.
 
-**Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`,
-`fig`, `views`, `lexicon`, `find`, `corpus`, `agents`. The group names what the
-command touches; the action names what it does to it.
+**Two tiers: a group, then an action** — `tei`, `ocr`, `proposal`, `zones`, `fig`,
+`views`, `lexicon`, `entity`, `edition`, `find`, `corpus`, `agents`. The group names
+what the command touches; the action names what it does to it.
 
 **`harness/VERBS.md` is the reference** — one entry per action: what it does,
 what it reads, what it writes, what its exit code means, and every flag with
@@ -190,22 +191,26 @@ every byte of this file on every page.
 | `docs/segmentation.md` | the second segmentation attempt: the design and why each piece is shaped as it is |
 | `docs/pipeline.md` | the pipeline stage by stage, and the design reasoning behind the built stages |
 | `docs/apparatus.md` | the figure track and its editor, the List of Illustrations and Authorities Quoted stores |
+| `docs/edition.md` | the entity store, the rule that links a form, `#mz`, and the reading view |
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
 
-Two passes, not one job: the ground-truth loop (raster → ALTO, `gt/ocr/`) and
-collation (generated TEI → `tei/`). Both dispatch one agent per page off a queue,
-contract in the agent body. Ground truth disqualifies a page from the first and is
-a **precondition** of the second.
+Two passes: the ground-truth loop (raster → ALTO, `gt/ocr/`) and collation
+(generated TEI → `tei/`). Both dispatch one agent per page off a queue, contract in
+the agent body. Ground truth ends the first and is a **precondition** of the second.
+
+What crosses a page boundary crosses through the **committed TEI**, folded by
+`harness tei ledger`. The seam is the coordinator's, after the batch: a page
+records only `<!-- opens: … -->`, the witness nobody else saw.
 
 # Current pipeline
 
 `zones predict` → editor → `gt/zones/` → `ocr predict` → `/rebuild-groundtruth` →
 `gt/ocr/` → **`tei generate` → `mz/tei/`** (by rule: the keyed zone labels are the
 paragraph boundaries) → collation (an LLM reviews that page against the scan, gated
-by `tei validate`) → `tei/` → annotation (TBD) → compilation (TBD). Stage by stage,
-with the reasoning: `docs/pipeline.md`.
+by `tei validate`) → `tei/` → `harness edition serve`, the reading view. Stage by
+stage, with the reasoning: `docs/pipeline.md`.
 
 # Collation
 
@@ -216,33 +221,19 @@ can — a heading from a table, where a note anchors, what language a form is �
 formula and the measurements that shaped the tools.
 
 **Transcription Detection** (speculative, mechanical, no judgement): inventory-glyph
-  match ∪ word-medial `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **English-lexicon
-  miss**. It is a **floor**: unmarked ASCII inventory members (`c` = English *sh*,
-  plain `s`, `j`, `x`) are undetectable by construction, and a hit is never a verdict
-  — an inventory mark also fires on ordinary German (`Döring`).
+match ∪ word-medial `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **English-lexicon
+miss**. A **floor**: unmarked ASCII inventory members (`c` = English *sh*, plain `s`,
+`j`, `x`) are undetectable by construction, and a hit is never a verdict — an
+inventory mark fires on ordinary German too. A floor is not licence for noise above
+it: `data/lexicon_extra.txt` holds the binomials and coinages no dictionary carries,
+and **suppresses `lexicon_miss` and nothing else**.
 
-  A floor is not licence for noise above it: a detector firing on ordinary
-  English buries the real hits. `data/lexicon_extra.txt` (committed, seeded via
-  `harness lexicon misses`) holds the binomials, ethnonyms and coinages no
-  dictionary carries, and **suppresses `lexicon_miss` and nothing else**.
+**Density, measured** on the two densest pages: inventory glyphs are **3.3% of
+characters** but fall in **43.8% of lines** — the expensive act is re-orienting to a
+new line, not reading one already open, so **review is line-based**.
 
-**Density, measured** on `1-048` and `2-030`, the two densest pages: inventory
-glyphs are **3.3% of characters** but fall in **43.8% of lines**. That asymmetry
-decides tool shape — the expensive act is re-orienting to a different line, not
-reading one already open — **so review is line-based**.
-
-## Cross-page state
-
-Dispatched a batch at a time; what crosses a page boundary crosses through the
-**committed TEI**, folded by `harness tei ledger`. The seam is the coordinator's:
-a page records `<!-- opens: … -->`, the witness only it saw, and `tei seam` writes
-the verdict after the batch.
-
-## TEI
+**Entities**, and the reading view over them, are `docs/edition.md`'s.
 
 **Assembly is still unsettled**; the corpus teiHeader is not, and is
 `tei/corpus-header.xml`. Every encoding rule is the collator's in full.
 
-## Open
-
-An entry leaves `docs/open-questions.md` by being settled, and says so when it goes.

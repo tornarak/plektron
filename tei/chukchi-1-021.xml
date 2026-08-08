@@ -1,0 +1,54 @@
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <!-- generated: harness tei generate v2 inputs=38264f3d72b07ad6 -->
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>see corpus teiHeader</title>
+      </titleStmt>
+      <publicationStmt>
+        <p>see corpus teiHeader</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>see corpus teiHeader; page 1</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <pb n="1"/>
+      <!-- opens: no witness -->
+      <!-- page opens with a heading block, "THE CHUKCHEE." / "INTRODUCTORY.", not a paragraph: no measure to judge indentation against -->
+      <!-- zone-opens: fresh (from the zone label; the opens: witness above is yours, off the raster) -->
+      <!-- heading-shaped text, no ToC match, no list/table follows: this is the Part-title block ("THE CHUKCHEE."), not itself a toc_window entry (only front.introductory and front.authorities-quoted are nearby); needs a human call on where this attaches -->
+      <p>THE CHUKCHEE.</p>
+      <!-- heading matches toc_window entry front.introductory (level 0, distance 0, starts_here true) — level 0 is front matter and never produces a milestone per spec; left as plain text -->
+      <p>INTRODUCTORY.</p>
+      <p>THE following account of the <rs ref="people:chukchee" resp="#mz">Chukchee tribe</rs> contains chiefly the results
+of my own observations, made during a protracted stay in the Kolyma district
+from 1890 to 1898; and later during a journey to Kamchatka, Anadyr, and
+the <rs ref="place:chukchee-peninsula" resp="#mz">Chukchee Peninsula</rs>, in 1900-01. From 1895 to 1898 the work was
+performed in connection with the <name type="event" ref="event:sibiryakoff-expedition">Sibiryakoff Expedition</name>, and part of the
+material was published in Russian by the Imperial Academy of Sciences in
+St. Petersburg.<note n="1" place="bottom">See list of authorities quoted, p. 3.</note> The expedition of 1900-01 formed part of the <rs ref="event:jesup-expedition" resp="#mz"><name type="event">Jesup North
+Pacific Expedition</name></rs>. The collections made during this period are deposited in
+the American Museum of Natural History.</p>
+      <!-- resolved: event:sibiryakoff-expedition written and ratified per editor; the <name> above now carries the @ref the collator asked for -->
+      <p>On these journeys I visited nearly all parts of the country inhabited by
+the <rs ref="people:chukchee" resp="#mz">Reindeer Chukchee</rs>, from central Kamchatka and the Upper Omolon to
+Chaun Bay and Cape Chukotsky; but I saw only the maritime villages that
+are located on the Pacific coast, between the mouth of the <rs ref="water:anadyr" resp="#llm">Anadyr</rs> and Indian
+Point. These are inhabited by <rs ref="people:chukchee" resp="#llm">Chukchee</rs> and by Asiatic Eskimo.</p>
+      <p>In my protracted intercourse with the northern Reindeer camps I had
+ample opportunity to see people from Arctic villages, and was able to obtain
+a variety of information regarding their customs and manner of living.</p>
+      <p>The material life of the <rs ref="people:chukchee" resp="#mz">Reindeer Chukchee</rs> is quite uniform throughout
+all the extensive territory occupied by their camps. The same may be said
+of the maritime villages, which have exactly the same material culture, whether
+they belong to <rs ref="people:chukchee" resp="#llm">Chukchee</rs> or to Eskimo tribes.</p>
+      <p>In order to avoid repetition, I have found it advisable to describe together
+the main features of the material life of both <rs ref="people:chukchee" resp="#mz">Maritime Chukchee</rs> and Eskimo.
+The provenience of the specimens illustrated, however, is indicated in the
+legends to the figures.</p>
+    </body>
+  </text>
+</TEI>

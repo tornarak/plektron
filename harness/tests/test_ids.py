@@ -582,12 +582,36 @@ def test_taxon_is_not_a_declared_type(tmp_path):
     assert "taxon" not in NAME_TYPES
 
 
-@pytest.mark.parametrize("attr", ["ref", "key", "nymRef"])
-def test_a_name_may_not_resolve_an_identity(tmp_path, attr):
-    """The deferral made mechanical. It was prose in the skill's never-do list, and
-    a checkable rule does not depend on the pass behaving."""
-    rep = named(tmp_path, f'<name {attr}="#x">Karagha</name>')
-    assert any("resolves an identity" in e for e in rep.errors)
+@pytest.mark.parametrize("attr", ["key", "nymRef"])
+def test_identity_has_one_spelling_and_these_are_not_it(tmp_path, attr):
+    """`@ref` resolves against `entities/` now; these two stay refused, and not as
+    leftovers of the old blanket deferral.
+
+    One spelling for one fact. Three attributes meaning "which entity" would make
+    "is this name linked" a question with three places to look, and the
+    referential-integrity check would be a gate that misses two thirds of what it
+    is for. `@key` is TEI's *unresolved* identifier — a bare string with no
+    scheme — which is exactly what the `class:slug` prefix replaces.
+    """
+    rep = named(tmp_path, f'<name {attr}="x">Karagha</name>')
+    assert any("spells identity a way this corpus does not" in e
+               for e in rep.errors)
+
+
+def test_a_ref_that_resolves_to_nothing_is_an_error(tmp_path):
+    """A pointer to nothing is worse than no pointer: it reads as resolved. This is
+    the check that made lifting the refusal safe — the store is what the gate
+    consults, and it consults it on every run rather than once when the link was
+    written."""
+    rep = named(tmp_path, '<name ref="person:nobody">Karagha</name>')
+    assert any("resolves to nothing" in e for e in rep.errors)
+
+
+def test_a_bare_slug_is_not_an_identity(tmp_path):
+    """`person:jochelson` and `source:jochelson` are different entities, so a bare
+    slug names neither."""
+    rep = named(tmp_path, '<name ref="jochelson">Karagha</name>')
+    assert any("an identity is `class:slug`" in e for e in rep.errors)
 
 
 def test_a_tier1_name_needs_its_rank_like_any_other_span(tmp_path):

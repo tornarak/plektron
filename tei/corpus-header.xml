@@ -49,13 +49,21 @@
         editor's, which is why it does not sit below #ed; its subject is a
         different artifact, which is why it is not #ed.
 
+        #mz is the second of that kind and the last one admitted on those terms.
+        It says a human wrote a trigger row into entities/ declaring what a form
+        means in this book and ratified the entry, and a rule applied it here. It
+        is confined to entity reference — @ref on rs — and may never carry a
+        glyph, a language or a name's type. Like #gt it is re-derived on every
+        validation run against the store as it stands, so weakening the entry
+        fails every link resting on it.
+
         These xml:ids are the referents of every @resp in the corpus, and the set
-        is closed: harness/validate.py's RESP_RANKS is the same four, and it
-        rejects a fifth. Rank rises only by a human act, so no pass may promote a
+        is closed: harness/validate.py's RESP_RANKS is the same five, and it
+        rejects a sixth. Rank rises only by a human act, so no pass may promote a
         span it did not itself ratify — the collation pass may emit #llm and
-        nothing else, and #gt is written only by `harness tei expand`, which
-        asserts nothing on its own: every #gt span is re-derived from gt/ocr/ on
-        every validation run, so it fails rather than going stale.
+        nothing else, and #gt and #mz are written only by tooling that asserts
+        nothing on its own: both are re-derived from the store they came from on
+        every validation run, so they fail rather than going stale.
 
         #ed carries no personal name yet. Left open deliberately rather than
         filled with a plausible one; it wants the editor's own decision.
@@ -82,6 +90,18 @@
       <respStmt xml:id="htr">
         <resp>unexamined — handwritten-text-recognition output nobody has looked at</resp>
         <name type="role">recognizer</name>
+      </respStmt>
+      <respStmt xml:id="mz">
+        <resp>rule-applied — an entity reference derived from the trigger table
+          in entities/, where a human declared what the form means in this book
+          and ratified the entry. No model chose it and no human read this page;
+          the responsible act happened one artifact upstream, and this records
+          where. Re-derived against the store on every validation run — entry
+          present, ratified, trigger intact, claimed by nobody else, text still
+          matching — so it fails rather than going stale. Confined to entity
+          reference: it never carries a glyph, a language or a name's
+          type.</resp>
+        <name type="role">the entity store, applied by rule</name>
       </respStmt>
     </titleStmt>
 
@@ -120,8 +140,9 @@
           <p>Creative Commons Attribution 4.0 International. Applies to the
             editorial apparatus: the TEI encoding and structural decisions, the
             provenance and adjudication notes, data/loi.json, data/toc.json,
-            data/authorities.json and their research, the indices, and the
-            annotation layer.</p>
+            data/authorities.json and their research, the entity records and
+            trigger vocabulary in entities/, the indices, and the annotation
+            layer.</p>
         </licence>
         <p>The two are separable in principle and interleaved in practice. Where a
           reuse cannot separate them, treat it as CC BY: attribution costs the
@@ -285,6 +306,48 @@
   </fileDesc>
 
   <encodingDesc>
+
+    <!--
+      How an @ref resolves. An identity in this corpus is `class:slug` and never
+      a bare slug: person:jochelson is the man, source:jochelson-yukaghir is the
+      book he wrote, and the same string names both on the same page. A scheme
+      without the class could not hold them apart, so the class is half the name
+      rather than a prefix on it.
+
+      One prefixDef per class, and the set is closed the way the ranks are:
+      harness/entities.py's ENTITY_CLASSES is this list, and `harness tei header`
+      fails if the two drift. The replacement is the file on disk, so a reference
+      resolves to a readable record and not to an abstraction.
+
+      Four classes have no counterpart in the <name @type> vocabulary — language,
+      taxon, institution, source. That asymmetry is the reason rs exists here: a
+      rule may say what a string refers to, but only a reader of the page can say
+      the page marked a proper noun and what kind it is.
+    -->
+    <listPrefixDef>
+      <prefixDef ident="person" matchPattern="(.+)"
+                 replacementPattern="entities/person/$1.md"/>
+      <prefixDef ident="people" matchPattern="(.+)"
+                 replacementPattern="entities/people/$1.md"/>
+      <prefixDef ident="place" matchPattern="(.+)"
+                 replacementPattern="entities/place/$1.md"/>
+      <prefixDef ident="water" matchPattern="(.+)"
+                 replacementPattern="entities/water/$1.md"/>
+      <prefixDef ident="animal" matchPattern="(.+)"
+                 replacementPattern="entities/animal/$1.md"/>
+      <prefixDef ident="being" matchPattern="(.+)"
+                 replacementPattern="entities/being/$1.md"/>
+      <prefixDef ident="event" matchPattern="(.+)"
+                 replacementPattern="entities/event/$1.md"/>
+      <prefixDef ident="language" matchPattern="(.+)"
+                 replacementPattern="entities/language/$1.md"/>
+      <prefixDef ident="taxon" matchPattern="(.+)"
+                 replacementPattern="entities/taxon/$1.md"/>
+      <prefixDef ident="institution" matchPattern="(.+)"
+                 replacementPattern="entities/institution/$1.md"/>
+      <prefixDef ident="source" matchPattern="(.+)"
+                 replacementPattern="entities/source/$1.md"/>
+    </listPrefixDef>
 
     <projectDesc>
       <p>A proof of concept for an open ethnographic-atlas effort: web and epub

@@ -536,6 +536,30 @@ def test_the_generated_baseline_is_readable_and_not_writable():
     assert "tei diff" in err
 
 
+def test_the_encyclopedia_is_readable_and_not_hand_editable():
+    """Judging whether a page means people:chukchee or language:chukchee *is*
+    reading the two glosses, so the entries are open. Editing them is not: the verb
+    parses before it writes and can only mint at `proposed`, while a hand-written
+    file can be malformed or can say `ratified`, which is a human's word."""
+    allowed(COLLATOR_GUARD, "Read", file_path="entities/people/chukchee.md")
+    err = blocked(COLLATOR_GUARD, "Write",
+                  file_path="entities/people/chukchee.md")
+    assert "entity new" in err
+
+
+def test_the_collator_may_propose_an_entry_and_not_ratify_one():
+    """The safety property that makes proposing safe: `entity new` writes
+    `status: proposed`, and `auto_forms` links only ratified entries, so nothing a
+    model mints reaches another page by itself. `ratify` is the act that changes
+    that, and it is off the surface."""
+    allowed(COLLATOR_GUARD, "Bash",
+            command="uv run harness entity new person:x --canonical X "
+                    "--since 1-021 --commit")
+    allowed(COLLATOR_GUARD, "Bash", command="uv run harness entity list")
+    blocked(COLLATOR_GUARD, "Bash",
+            command="uv run harness entity ratify person:x --commit")
+
+
 @pytest.mark.parametrize("path", [
     "gt/ocr/chukchi-1-075.xml",
     "mz/ocr/chukchi-1-075.xml",

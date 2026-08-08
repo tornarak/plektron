@@ -654,6 +654,59 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
     return out
 
 
+def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
+    """Every entity-trigger hit on this page, linked or not.
+
+    **The same matcher the generator ran**, over the same joined text, so the
+    rows and the page agree by construction rather than by two implementations
+    happening to. `linked` is the generator's own bar — one ratified entity
+    claims the form and its author marked it `auto: yes` — so a row with
+    `linked: false` is a question standing open in the file, and the two counts
+    are the same count.
+
+    `ids` is every entity claiming the form. Where there are several the string
+    is ambiguous by construction and only the sentence decides; where there is
+    one and `linked` is still false, its author declared the form unsafe out of
+    context. Both are the reader's to settle and neither is the tool's.
+    """
+    from .entities import auto_forms, load, match, trigger_index
+    from .generate import page_blocks
+
+    path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
+    if not path.exists():
+        return []
+    store = load(root)
+    idx = trigger_index(store)
+    if not idx:
+        return []
+    autos = auto_forms(idx)
+    blocks, _ = page_blocks(ref, root)
+    out = []
+    for band, rows in blocks:
+        if band is not None and band["label"] in APPARATUS_ZONES:
+            continue
+        if not rows:
+            continue
+        # Joined exactly as the generator joins it, and the hit's offset resolved
+        # back to the line it *starts* on — a cross-line match belongs to its
+        # first line, which is where a reader looking for it will be.
+        starts, at = [], 0
+        for _, t in rows:
+            starts.append(at)
+            at += len(t) + 1
+        full = "\n".join(t for _, t in rows)
+        for h in match(full, idx):
+            line = next(ln for (ln, _), s in zip(reversed(rows),
+                                                 reversed(starts), strict=True)
+                        if s <= h["start"])
+            out.append({"line": line, "form": h["form"],
+                        "ids": " ".join(h["ids"]),
+                        "linked": autos.get(h["form"]) is not None,
+                        "status": h["status"] or "(several claim it)"})
+    out.sort(key=lambda r: (r["line"], r["form"]))
+    return out
+
+
 def build_context(ref: str, root: Path = Path(".")) -> dict:
     """The whole per-page input contract for the collation pass, as one dict.
 
@@ -824,6 +877,16 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # ways — never a source to copy from; this page's draft is the only
         # source for this page's Tier-1 content.
         "foreign_terms_nearby": foreign_terms_nearby(ref, root),
+        # Every trigger hit on this page, whether the generator linked it or not
+        # — `linked` says which. An aid to judgement and never an input to
+        # composition, in the same disposition `foreign_terms_nearby` keeps: the
+        # rows say what the store claims about a string, and whether the claim
+        # is true *here* is what the reader is for. The unlinked ones are the
+        # interesting half, and each already carries a comment in the generated
+        # page; this is the same set gathered into one table, so a reader can see
+        # at a glance that one form recurs eight times rather than meeting it
+        # eight separate times.
+        "entity_hits": entity_hits(ref, root),
         # Two tables, not one: token-level hits and paragraph-level balance
         # complaints are different record shapes and are kept apart so each
         # stays uniform.

@@ -22,6 +22,7 @@ from pathlib import Path
 from lxml import etree
 
 from .detectors import unlicensed_marks
+from .entities import ENTITY_CLASSES, auto_forms, load, split_id, trigger_index
 from .state import load_toc
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -43,6 +44,7 @@ RESP_RANKS = {
     "#gt": "adopted — transcluded whole from adjudicated ground truth",
     "#llm": "proposed — a model read it off the page image",
     "#htr": "unexamined — recognizer output nobody has looked at",
+    "#mz": "rule-applied — an entity link derived from the entity store",
 }
 PROPOSED = "#llm"
 RATIFIED = "#ed"
@@ -63,6 +65,29 @@ RATIFIED = "#ed"
 # later and a span that used to match stops matching and says so, where an
 # attribute written once would go stale in silence.
 ADOPTED = "#gt"
+# The fifth rank, admitted on exactly the terms `#gt` was and refused anything
+# more.
+#
+# It says: a human wrote a trigger row into `entities/` declaring that this form,
+# in this book, means this entity, and ratified the entry; a rule then applied
+# that declaration here. No model chose it, so `#llm` is false; no human read
+# this page, so `#ed` is false. As with `#gt` the responsible act happened one
+# artifact upstream, and this records where.
+#
+# **It is not taken on trust either**, and that is the whole of its licence.
+# Every `#mz` link is re-derived on every validation run from the store as it
+# stands now — the entity still exists, it is still ratified, the trigger is
+# still there, still says `auto: yes`, is still claimed by no one else, and the
+# element's own text still matches it. Weaken the entry, delete the trigger, or
+# let a second entity claim the form, and every link resting on it fails. An
+# attribute written once and never rechecked would go stale in silence, which is
+# the failure this whole arrangement exists to make impossible.
+#
+# It is confined to `<rs>` and to `@ref`. A rule may say *what a string refers
+# to*; it may never say what kind of name the page marked, what language a form
+# is in, or what its glyphs are — see the `<name @type>` comment below, and the
+# Tier-1 branch that refuses `#mz` outright.
+RULED = "#mz"
 # Why a <supplied> stands where it does. Closed, and extended only here — a required
 # attribute with a free value guarantees a string rather than a distinction.
 #   context   the frame the surrounding prose supplies and the entries do not repeat
@@ -145,11 +170,19 @@ GLOSS_TYPES = {"literal", "etymon"}
 # failure mode one category over from glyphs.
 NAME_TYPES = {"anthroponym", "ethnonym", "toponym", "hydronym",
               "zoonym", "mythonym", "event"}
-# Identity is the annotation pass's, over finished TEI. These attributes are how TEI
-# spells it, so refusing them is the deferral made mechanical rather than left as a
-# line in a skill's never-do list — a checkable rule does not depend on the pass
-# behaving.
-NAME_IDENTITY_ATTRS = ("ref", "key", "nymRef")
+# Identity used to be refused outright, because there was nothing to resolve it
+# against and a pointer to nothing is worse than no pointer: it reads as resolved.
+# `entities/` is that referent now, so `@ref` is legal and *gated* — it must be a
+# `class:slug` naming a record on disk, and the check runs on every page on every
+# run rather than once when the link was written.
+#
+# `@key` and `@nymRef` stay refused, and not as leftovers. One spelling for one
+# fact: three attributes meaning "which entity" would make "is this name linked"
+# a question with three places to look, and a referential-integrity check that
+# missed one would be worse than none. `@key` in particular is TEI's *unresolved*
+# identifier — a bare string with no scheme — which is exactly what the class
+# prefix exists to replace.
+NAME_IDENTITY_ATTRS = ("key", "nymRef")
 # The same deferral on <bibl>, which marks a citation's extent and nothing more. The
 # attributes differ because TEI spells bibliographic identity differently — @corresp
 # and @sameAs point a citation at the work it names — but the rule is one rule: this
@@ -351,6 +384,22 @@ def check_corpus_header(root: Path, schema: bool = False) -> Report:
         r.errors.append(
             f"<respStmt xml:id=\"{extra}\"> declares a rank RESP_RANKS does not "
             f"know — validate would reject resp='#{extra}' on every page that used it")
+
+    # The same correspondence, one store over. An @ref is `class:slug`, and the
+    # class is a TEI private URI prefix that has to be declared here or the
+    # reference resolves to nothing once a page is assembled. Both directions
+    # again, and the extra one is the worse: a prefixDef the code does not know
+    # advertises a class `entity check` would refuse to create.
+    prefixes = {p.get("ident") for p in root_el.iter(q("prefixDef"))}
+    prefixes.discard(None)
+    for missing in sorted(set(ENTITY_CLASSES) - prefixes):
+        r.errors.append(
+            f"entity class {missing!r} has no <prefixDef ident=\"{missing}\"> — "
+            f"a @ref of the form '{missing}:…' would resolve to nothing")
+    for extra in sorted(prefixes - set(ENTITY_CLASSES)):
+        r.errors.append(
+            f"<prefixDef ident=\"{extra}\"> declares a class ENTITY_CLASSES does "
+            f"not know — nothing can author an entity under it")
 
     for name in ("titleStmt", "publicationStmt", "sourceDesc"):
         if root_el.find(f".//{q(name)}") is None:
@@ -922,6 +971,18 @@ def validate(tei_path: Path, ctx: dict | None = None,
             r.errors.append(
                 f"PROVENANCE: <{name}> resp={resp!r} is not a declared rank "
                 f"({', '.join(sorted(RESP_RANKS))})")
+        elif resp == RULED:
+            # Refused here rather than left to fall through, and in *both* modes.
+            # Unratified, the "this pass may only emit #llm" branch below would
+            # have caught it; ratified, it would have been a worklist line — a
+            # rank asserting a machine read a Tier-1 glyph, reported as work
+            # pending rather than as the firewall breach it is. The rank is
+            # confined to entity reference, and a Tier-1 span is the one place
+            # nothing mechanical may speak at all.
+            r.errors.append(
+                f"PROVENANCE: <{name}> {span!r} claims resp={RULED!r}, which says "
+                f"a rule applied it. No rule may originate a Tier-1 reading — "
+                f"{RULED} is confined to @ref on <rs>, and never carries a glyph")
         elif resp == ADOPTED:
             # Checked, not accepted. `adopted` holds the page's ratified token set;
             # empty means the page has no ground truth at all, so the claim cannot
@@ -1046,25 +1107,114 @@ def validate(tei_path: Path, ctx: dict | None = None,
             "reading here; what is unratified about them is which token the pass "
             "chose, not what it says")
 
-    # Proper nouns. The pass marks *category* and never identity: which village
-    # Uñiˊsak is, or whether this Allen is that Allen, is the annotation pass's,
-    # over finished TEI and with the whole corpus in view.
-    names = untyped = 0
-    for el in root.iter(q("name")):
-        names += 1
+    # Proper nouns, and the entity references over them. The pass marks
+    # *category* from the page; identity now resolves, against `entities/`.
+    store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
+    idx = trigger_index(store)
+    autos = auto_forms(idx)
+    names = untyped = refs = ruled = 0
+    for el in root.iter(q("name"), q("rs")):
+        local = etree.QName(el).localname
         kind = el.get("type")
-        if kind is None:
-            untyped += 1
-        elif kind not in NAME_TYPES:
-            r.errors.append(
-                f"<name type={kind!r}> is not a declared type "
-                f"({', '.join(sorted(NAME_TYPES))})")
-        for attr in NAME_IDENTITY_ATTRS:
-            if el.get(attr) is not None:
+        if local == "name":
+            names += 1
+            if kind is None:
+                untyped += 1
+            elif kind not in NAME_TYPES:
                 r.errors.append(
-                    f"<name @{attr}> resolves an identity, which this pass does "
-                    "not do — mark what the page says the name is and leave "
-                    "@ref/@key for the annotation pass over finished TEI")
+                    f"<name type={kind!r}> is not a declared type "
+                    f"({', '.join(sorted(NAME_TYPES))})")
+            for attr in NAME_IDENTITY_ATTRS:
+                if el.get(attr) is not None:
+                    r.errors.append(
+                        f"<name @{attr}> spells identity a way this corpus does "
+                        f"not — @ref is the one spelling, and it holds a "
+                        f"`class:slug` pointing into entities/")
+        span = " ".join("".join(el.itertext()).split())
+        ref = el.get("ref")
+        if local == "rs" and not ref:
+            r.errors.append(
+                f"<rs> {span[:40]!r} carries no @ref. `rs` is this corpus's "
+                "entity reference and nothing else — it says which entity a "
+                "string names, so one with no referent marks nothing. Give it a "
+                "@ref or unwrap it")
+            continue
+        if ref is None:
+            continue
+        refs += 1
+        rec = store.get(ref)
+        if rec is None:
+            try:
+                split_id(ref)
+                why = "no such entity in entities/"
+            except ValueError as e:
+                why = str(e).split(": ", 1)[-1]
+            r.errors.append(
+                f"<{local} ref={ref!r}> resolves to nothing — {why}. Either the "
+                f"entry has not been written (`harness entity new {ref}`) or the "
+                f"reference is wrong")
+            continue
+        # A type from the page and a class from the store are two witnesses to
+        # one fact, so they are compared rather than one overwriting the other.
+        # An *untyped* <name ref> is fine: untyped is a designed state, and the
+        # class does not fill it in — only a reader of the page can say the page
+        # marked a proper noun of some kind.
+        if local == "name" and kind is not None:
+            want = ENTITY_CLASSES[rec["class"]]
+            if want != kind:
+                says = repr(want) if want else "(none — it is never a <name>)"
+                r.errors.append(
+                    f"<name type={kind!r} ref={ref!r}> — {ref} is class "
+                    f"{rec['class']!r}, whose name-type is {says}. One of the "
+                    f"two is about the wrong entity")
+        if local == "rs" and kind is not None:
+            r.errors.append(
+                f"<rs type={kind!r} ref={ref!r}> — an rs carries no @type here. "
+                f"The class is the ref's prefix, so a second copy of it can only "
+                f"disagree with the first")
+        if rec["status"] != "ratified":
+            r.worklist.append(
+                f"<{local} ref={ref!r}> points at a proposed entry — resolvable, "
+                f"but nobody has audited it. `harness entity ratify {ref}` after "
+                f"reading it against the pages it claims")
+        resp = el.get("resp")
+        if resp is not None and resp not in RESP_RANKS:
+            r.errors.append(f"<{local} ref={ref!r}> carries resp={resp!r}, which "
+                            f"is not a declared rank")
+        elif resp == RULED:
+            ruled += 1
+            # **The whole licence of #mz, re-derived here on every run.** The
+            # claim is not "a rule wrote this once" but "the store says this
+            # right now": the entry is ratified, the trigger is still there and
+            # still uncontested, and the text still matches it. Weaken any of
+            # those in `entities/` and the link fails rather than going quietly
+            # stale — the same maintenance property #gt has, and the only reason
+            # a machine-applied rank is admissible at all.
+            form = " ".join(span.split())
+            owner = autos.get(form)
+            if owner is None:
+                claims = idx.get(form, [])
+                if not claims:
+                    why = (f"the store has no trigger {form!r} — it was removed, "
+                           f"or the text was edited after the link was made")
+                elif len(claims) > 1:
+                    why = (f"{form!r} is now claimed by "
+                           f"{' and '.join(sorted(c['id'] for c in claims))}, so "
+                           f"it is ambiguous and no rule may resolve it")
+                elif not claims[0]["auto"]:
+                    why = f"{form!r} is `auto: no` — it needs a reader, not a rule"
+                else:
+                    why = (f"{claims[0]['id']} is {store[claims[0]['id']]['status']}"
+                           f", and a rule may only apply a ratified entry")
+                r.errors.append(
+                    f"<{local} ref={ref!r} resp=\"{RULED}\"> no longer derives: {why}. "
+                    f"Re-run `harness tei generate` for this page, or judge the "
+                    f"span yourself and set resp=\"{PROPOSED}\"")
+            elif owner != ref:
+                r.errors.append(
+                    f"<{local} ref={ref!r} resp=\"{RULED}\"> — the store now resolves "
+                    f"{form!r} to {owner}. A rule-applied link that disagrees "
+                    f"with the rule is the stale stamp {RULED} exists to prevent")
 
     # A citation's extent, and nothing about which work it names. Counted rather
     # than gated for presence: a page citing nothing is the ordinary page.
@@ -1134,6 +1284,14 @@ def validate(tei_path: Path, ctx: dict | None = None,
         # to avoid. Unlike the Tier-1 census above, this count trends nowhere.
         "names": names,
         "names_untyped": untyped,
+        # Entity references, and how many of them a rule wrote rather than a
+        # reader. The second is not a quality measure and must not be read as one:
+        # it counts links that still *derive*, not links the sentence supports —
+        # only a collator's deletion says that, and an unreviewed page carries its
+        # rule-applied links unexamined. It is here because a page where the two
+        # numbers are equal has had no entity judged by anybody.
+        "entity_refs": refs,
+        "ruled_links": ruled,
         "bibls": bibls,
         "measures": measures,
         "measure_groups": groups,

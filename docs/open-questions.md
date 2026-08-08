@@ -7,24 +7,25 @@ in for an unread glyph.
 
 ## Open
 
-- **The lookup's index and the toponym authority want to be the same object, and
-  the pass boundary is in the way.** `lexicon lookup` builds, per run, exactly what
-  an index of place-names needs: every ratified Tier-1 form, its attestations, and
-  the lines it was printed on. The annotation pass will want that object persisted,
-  scoped to the forms that are toponyms, and linked out — which is a different pass
-  reading a different store, and the collation pass in between is where a form
-  acquires the `<placeName>` that would say it is one. `1-359` is the densest single
-  source in the book for it, a two-column gazetteer setting native names against
-  their pre-reform Russian equivalents, and it is ground truth now.
+- **Where the index lives is answered, and the answer is that there are two
+  objects, not one.** This entry asked whether `lexicon lookup`'s per-run index of
+  ratified Tier-1 forms should be persisted as the toponym authority, and refused
+  both available answers: persisting under `data/` freezes a store that grows every
+  batch, and rebuilding it in the annotation pass makes two passes derive the same
+  forms by two paths.
 
-  What is deliberately unresolved is **where the index lives**, not whether it is
-  wanted. Persisting it under `data/` before any pass consumes it would freeze a
-  snapshot of a store that grows every batch — the failure `native_corpus`'s own
-  docstring names, "recompute rather than trust a stale run". Building it in the
-  annotation pass instead means the reading pass and the annotation pass derive the
-  same forms by two paths, which is the two-witnesses-that-are-one collapse in a
-  new place. Neither is chosen; the lookup recomputes on every invocation, which is
-  correct for a reader's question and would be wrong for a published index.
+  `entities/` resolves it by being neither. It is **authored, not derived** — a
+  human writes an entry and its trigger forms — so it is not a snapshot of anything
+  and cannot go stale against a store it was computed from. The trigger index *is*
+  recomputed on every run, from the store, which keeps the recompute-don't-trust
+  rule where it belongs. `lexicon lookup` stays what it was: a reader's instrument
+  over ratified ground truth, and the place an editor finds the attested spellings
+  to put in an entry.
+
+  **What is not yet done is the toponym index itself** — the published, ordered
+  thing. `entity occurrences --all` is most of its data. `1-359` is still the
+  densest single source, a two-column gazetteer setting native names against their
+  pre-reform Russian equivalents, and it is ground truth and uncollated.
 - **No part is named by a part title page** — the surrogate has none. Parts II and III
   are named by librarian typescript over an archival sheet that contradicts itself
   (typed 1907/1909 against a printed 1904 imprint), and part I only by the AMNH
@@ -71,20 +72,45 @@ in for an unread glyph.
   one Tier-1 handle it raised was `Döring`, which the human pass had also declined
   to mark as foreign. **One page is not a rate**, and the honest open question is
   whether that holds over a batch — the first real batch is the evidence.
-- **Corpus-stable identity is not settled**, and the id scheme deliberately does
-  not provide it: ordinals move when content is inserted, so a pointer held
-  outside the page would break silently. These ids are stable within a page file's
-  current version and nothing outside the corpus may cite one. The annotation
-  passes need their own scheme, over finished TEI. What has changed is the *scope*
-  of what is deferred: a Tier-1 name's **category** is now recorded by the
-  collation pass, because only a reader of the page can see it, and only the
-  **identity** waits — `@ref`/`@key` are gate errors until that scheme exists.
-  What is decided, and waits only on the store to point at: the refusal is lifted
-  rather than routed around, `validate` gains a referential-integrity check that
-  `@ref` resolves in the entity store, and a link a trigger-match proposed
-  mechanically carries a rank of its own (`#mz`, declared with that store and
-  deliberately not before — a rank with no referent in committed TEI is a
-  declaration nothing checks).
+
+  `1-021` has since been collated under the review contract, and is the corpus's
+  one committed page. What it measured is the entity half: six `#mz` links
+  survived review untouched, three ambiguous candidates the collator resolved
+  itself at `#llm`, four candidate comments cleared, and one `entity wanted` that
+  became `event:sibiryakoff-expedition`. Still one page.
+- **The geography view is deferred to a sprint of its own**, deliberately and not
+  by omission. Entity records already carry `geo:` and `within:`, and
+  `entity check` already refuses a dangling parent and a cycle, so the store can be
+  populated correctly before anything reads it that way. What is missing is the
+  design: the shape wanted is a **hierarchy of locations** — russian far east →
+  chukotka → chukchi peninsula → uelen, anadyr basin → markova, kamchatka → paren —
+  where each location appears in its parent's map and the selected chain is
+  navigable as a tree. There is dumped GeoJSON for watersheds and language regions
+  in `scratch/` to build it from, and no external tiles will ever be used: the
+  server is loopback and the edition is meant to be self-contained.
+- **Nothing enforces that a `#mz` link was *wanted*, only that it derives.** The
+  gate re-checks that the store still supports every rule-applied link, which is
+  what makes the rank honest about provenance. It cannot check that the sentence
+  means that entity — that is the collator's deletion, and a page nobody reviewed
+  carries its `#mz` links unexamined. This is by design and is why `#mz` renders as
+  unsettled in the reading view, but it means **the corpus-wide link count is not a
+  correctness measure** and should not be reported as one.
+- **Entity identity is settled and the entry that stood here is gone.** It said
+  `@ref`/`@key` were gate errors until a scheme existed, and named the shape the
+  answer would have to take: lift the refusal rather than route around it, gate
+  `@ref` on a referential-integrity check, and give a mechanically-proposed link
+  its own rank. All three were built. `entities/<class>/<slug>.md` is the store,
+  an identity is `class:slug` because `person:jochelson` and
+  `source:jochelson-yukaghir` are the same string and different things, and `#mz`
+  is the rank — admitted on `#gt`'s terms, re-derived from the store on every run.
+  `docs/edition.md` owns it. `@key` and `@nymRef` stay refused, so the deferral
+  survives exactly where it was load-bearing: identity gets one spelling.
+
+  **What is still open is the *ordinal* scheme**, which is a different question
+  wearing the same name. Structural `xml:id`s move when content is inserted, so a
+  pointer to one held outside the page still breaks silently; they remain stable
+  only within a page file's current version, and nothing outside the corpus may
+  cite one. An entity `@ref` is not affected — it names a file, not a position.
 - **The TEI is validated against TEI**, and the entry that stood here saying
   otherwise wanted "a committed schema and an assembly step". It needed the first
   and not the second. `data/tei_all.rng` is P5 4.12.0 (1.1 MB, committed so the

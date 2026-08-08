@@ -1129,6 +1129,89 @@ An exempt row is **kept and flagged** (`exempt: true`, carrying its `note`), nev
 
 ---
 
+## entity
+
+The encyclopedia: one markdown file per entity at `entities/<class>/<slug>.md`,
+identified as `class:slug`. It is the referent of every `@ref` in the corpus and
+the source of the trigger vocabulary `tei generate` applies by rule.
+
+**An identity is always class-prefixed.** `person:jochelson` is the man and
+`source:jochelson-yukaghir` is the book he wrote; the same string names both on
+the same page, and a scheme without the class could not hold them apart. The
+class lives twice — as the directory and as the first half of the heading — and
+`check` compares them, because a file whose role lives only in its directory
+name is the shape that cost this project 18 pages.
+
+Human-authored and tracked, so `--commit` gates the two actions that write.
+
+### entity new ID
+**Does** scaffold an entry at `status: proposed`. Nothing mints one ratified — a form a rule may link has to have been read by a human first, and `entity ratify` is that act. Parses the result before writing, so a bad `--since` fails as a message rather than as a file.
+**Reads** — **Writes** `entities/<class>/<slug>.md` under `--commit`. **Exit** 0, or 1 if the entry already exists.
+```
+--canonical NAME  the display name, written into the heading. Not a trigger unless you also pass it as one. Required
+--since PP-NNN  the page whose reading prompted the entry. Required — an apparatus store that cannot be traced back to a page is one nobody can audit
+--trigger FORM  a form that means this entity, added at `auto: no`. Repeatable. Raising one to `auto: yes` is a separate act, in the file or the browser, because it licenses a link nobody will be asked about
+--commit  write it; without this the file is reported and not created
+--root --json --toon --pager
+```
+
+### entity check
+**Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves and the chain is acyclic, and no form is `auto: yes` for two entities at once. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
+**Reads** `entities/`. **Writes** — **Exit** 0 clean, 1 on any defect.
+```
+--root --json --toon --pager
+```
+
+### entity list
+**Does** every entry — id, status, canonical name, trigger and auto-trigger counts, and the page that prompted it. Proposed first: the list is read as a worklist more often than as a census.
+**Reads** `entities/`. **Writes** — **Exit** 0.
+```
+--root --json --toon --pager
+```
+
+### entity show ID...
+**Does** whole records, triggers and gloss included.
+**Reads** `entities/`. **Writes** — **Exit** 0.
+```
+--root --json --toon --pager
+```
+
+### entity ratify ID...
+**Does** `proposed` → `ratified`. **The human act**, and the only thing that lets a rule link the entry's forms without asking — so it means the entry has been read against the pages it claims, not that it looks plausible.
+**Reads** `entities/`. **Writes** the named files under `--commit`. **Exit** 0.
+```
+--commit
+--root --json --toon --pager
+```
+
+### entity occurrences [ID...]
+**Does** where an entity appears, by two routes: the `@ref` links already in committed TEI, and the trigger hits nobody has linked. The second is the interesting half — a large unlinked count on a ratified entity means pages collated before the entry existed, and `tei generate` will link them on the next run. Measurement; never gates.
+**Reads** `entities/`, committed `tei/`. **Writes** — **Exit** 0.
+```
+--all
+--root --json --toon --pager
+```
+
+---
+
+## edition
+
+The reading view. Its own group rather than an action under `tei` or `entity`,
+because it is over neither one: the page, the entities it links and the raster it
+was read from are three stores, and the point of the view is that they are in one
+place.
+
+### edition serve
+**Does** open the reading view on 127.0.0.1 — collated TEI in a main column, a stack of entity, note and scan cards beside it, plus the encyclopedia and its audit queue. Shows committed `tei/` only; a generated baseline is a draft nobody has read, and an end-user preview is the last place it belongs. Ratifying an entry in the browser writes `entities/` without `--commit`, as the other editors write their stores — the click is the human act, the store is tracked, git is the witness — and every write is rolled back if `entity check` would fail on the result. Blocks until the page or ctrl-c stops it.
+**Reads** `tei/`, `entities/`, `scans/`. **Writes** `entities/` on an explicit click. **Exit** 0.
+```
+--port N  the port to bind on 127.0.0.1 [8734]
+--no-open  do not open a browser; print the URL and wait. For a headless run, and for the tests
+--root --json --toon
+```
+
+---
+
 ## find
 
 Apparatus lookups. Every one returns candidates a human then reads; none

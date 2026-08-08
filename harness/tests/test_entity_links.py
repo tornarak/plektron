@@ -1,0 +1,200 @@
+"""Entity references in committed TEI, and the rank that lets a rule write one.
+
+`#mz` is the second rank admitted on the terms `#gt` was: the responsible human
+act happened one artifact upstream, and the claim is **re-derived on every
+validation run** rather than stamped once. These tests are mostly about that
+re-derivation, because a rank that quietly stopped being checked would look
+exactly like one that was.
+
+The other half is referential integrity. `@ref` was refused outright until there
+was a store to resolve it against — a pointer to nothing is worse than no
+pointer, since it reads as resolved.
+"""
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+from test_entities import entry
+
+from harness.validate import RESP_RANKS, validate
+
+TEI_NS = "http://www.tei-c.org/ns/1.0"
+
+
+def page(root: Path, ref: str, body: str) -> Path:
+    p = root / "tei" / f"chukchi-{ref}.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        f'<TEI xmlns="{TEI_NS}"><teiHeader><fileDesc><titleStmt><title>t</title>'
+        f"</titleStmt><publicationStmt><p>p</p></publicationStmt>"
+        f"<sourceDesc><p>s</p></sourceDesc></fileDesc></teiHeader>"
+        f"<text><body>{body}</body></text></TEI>", encoding="utf-8")
+    return p
+
+
+def gate(root: Path, ref: str = "1-021", body: str = "") -> list[str]:
+    p = page(root, ref, f'<pb n="1"/><!-- opens: indented -->{body}')
+    return validate(p, ctx={"root": str(root), "page_ref": ref,
+                            "expected_folio": None, "folio_basis": ""}).errors
+
+
+def worklist(root: Path, body: str) -> list[str]:
+    p = page(root, "1-021", f'<pb n="1"/><!-- opens: indented -->{body}')
+    return validate(p, ctx={"root": str(root), "page_ref": "1-021",
+                            "expected_folio": None, "folio_basis": ""}).worklist
+
+
+def seeded(root: Path, *, status="ratified", auto=True, form="Markova"):
+    entry(root, "place:markova", status=status, triggers=[(form, auto)])
+
+
+# ------------------------------------------------------- referential integrity
+
+def test_a_ref_that_resolves_is_accepted(tmp_path):
+    seeded(tmp_path)
+    assert not gate(tmp_path, body='<p>At <name type="toponym" '
+                                   'ref="place:markova">Markova</name>.</p>')
+
+
+def test_a_ref_to_nothing_is_refused(tmp_path):
+    """The check that made lifting the old blanket refusal safe."""
+    seeded(tmp_path)
+    assert any("resolves to nothing" in e for e in
+               gate(tmp_path, body='<p><rs ref="place:nowhere">x</rs></p>'))
+
+
+def test_a_type_that_contradicts_the_class_is_refused(tmp_path):
+    """Two witnesses to one fact — the type a reader saw on the page, the class the
+    store holds — compared rather than one overwriting the other."""
+    seeded(tmp_path)
+    assert any("is about the wrong entity" in e for e in
+               gate(tmp_path, body='<p><name type="event" '
+                                   'ref="place:markova">Markova</name></p>'))
+
+
+def test_an_untyped_name_may_still_carry_a_ref(tmp_path):
+    """Untyped is a designed state — "type only what's evidenced" — and the class
+    does not fill it in: only a reader of the page can say the page marked a proper
+    noun and what kind."""
+    seeded(tmp_path)
+    assert not gate(tmp_path, body='<p><name ref="place:markova">M</name></p>')
+
+
+def test_an_rs_needs_a_ref(tmp_path):
+    """`rs` is this corpus's entity reference and nothing else, so one with no
+    referent marks nothing at all."""
+    seeded(tmp_path)
+    assert any("carries no @ref" in e for e in
+               gate(tmp_path, body="<p><rs>Markova</rs></p>"))
+
+
+def test_an_rs_carries_no_type(tmp_path):
+    """The class is the ref's prefix, so a second copy of it can only disagree."""
+    seeded(tmp_path)
+    assert any("carries no @type here" in e for e in
+               gate(tmp_path, body='<p><rs type="toponym" '
+                                   'ref="place:markova">M</rs></p>'))
+
+
+def test_a_link_to_a_proposed_entry_is_a_worklist_line_not_an_error(tmp_path):
+    """Resolvable, but nobody has audited it — which is a queue, not a defect. This
+    is what makes a collator's own proposal linkable on the page that proposed it."""
+    seeded(tmp_path, status="proposed")
+    assert any("proposed entry" in w for w in
+               worklist(tmp_path, '<p><rs ref="place:markova" '
+                                  'resp="#llm">Markova</rs></p>'))
+
+
+# ------------------------------------------------ #mz, re-derived every run
+
+def test_the_rank_is_declared(tmp_path):
+    assert "#mz" in RESP_RANKS
+
+
+def test_a_ruled_link_the_store_still_supports_passes(tmp_path):
+    seeded(tmp_path)
+    assert not gate(tmp_path, body='<p><rs ref="place:markova" '
+                                   'resp="#mz">Markova</rs></p>')
+
+
+def test_a_ruled_link_fails_when_the_trigger_is_removed(tmp_path):
+    """The whole licence of the rank. An attribute written once and never rechecked
+    would go stale in silence; this fails instead."""
+    seeded(tmp_path, form="Markovo")
+    assert any("no longer derives" in e for e in
+               gate(tmp_path, body='<p><rs ref="place:markova" '
+                                   'resp="#mz">Markova</rs></p>'))
+
+
+def test_a_ruled_link_fails_when_the_entry_is_no_longer_ratified(tmp_path):
+    seeded(tmp_path, status="proposed")
+    assert any("may only apply a ratified entry" in e for e in
+               gate(tmp_path, body='<p><rs ref="place:markova" '
+                                   'resp="#mz">Markova</rs></p>'))
+
+
+def test_a_ruled_link_fails_when_the_form_becomes_ambiguous(tmp_path):
+    """A second entity claiming the form makes it ambiguous by construction, and
+    every rule-applied link resting on it stops deriving — including the ones
+    written before the second entity existed."""
+    seeded(tmp_path)
+    entry(tmp_path, "water:markova", triggers=[("Markova", True)])
+    assert any("ambiguous" in e for e in
+               gate(tmp_path, body='<p><rs ref="place:markova" '
+                                   'resp="#mz">Markova</rs></p>'))
+
+
+def test_a_ruled_link_fails_when_the_form_is_only_a_suggestion(tmp_path):
+    seeded(tmp_path, auto=False)
+    assert any("needs a reader, not a rule" in e for e in
+               gate(tmp_path, body='<p><rs ref="place:markova" '
+                                   'resp="#mz">Markova</rs></p>'))
+
+
+def test_a_ruled_link_fails_when_its_text_no_longer_matches(tmp_path):
+    """An editor who changed the span's text without touching the attribute would
+    otherwise leave a link claiming a derivation that no longer holds."""
+    seeded(tmp_path)
+    assert any("no longer derives" in e for e in
+               gate(tmp_path, body='<p><rs ref="place:markova" '
+                                   'resp="#mz">Anadyr</rs></p>'))
+
+
+def test_a_ruled_link_fails_when_the_store_resolves_the_form_elsewhere(tmp_path):
+    seeded(tmp_path)
+    entry(tmp_path, "water:anadyr", triggers=[("Anadyr", True)])
+    assert any("the store now resolves" in e for e in
+               gate(tmp_path, body='<p><rs ref="place:markova" '
+                                   'resp="#mz">Anadyr</rs></p>'))
+
+
+def test_an_already_linked_span_is_not_also_counted_as_unlinked():
+    """`entity occurrences` counted every link twice — once linked, once unlinked —
+    which inverts what the second column is for. An unlinked hit means work
+    outstanding, so a page where every instance was linked must not report the same
+    number as one where none was."""
+    from lxml import etree
+
+    from harness.cli._entity import _unlinked_text
+    body = etree.fromstring(
+        '<body><p>At <rs ref="place:markova">Markova</rs> and at Markova.</p></body>')
+    assert "Markova" in _unlinked_text(body)
+    assert _unlinked_text(body).count("Markova") == 1
+
+
+@pytest.mark.parametrize("ratified", [False, True])
+def test_no_tier1_span_may_claim_the_rule_applied_rank(tmp_path, ratified):
+    """A rule may say what a string refers to. It may never originate a reading of
+    a glyph, and a Tier-1 span is the one place nothing mechanical may speak at
+    all. Checked in both modes: unratified it would have fallen through to the
+    "this pass may only emit #llm" branch, but under `--ratified` it would have
+    been a mere worklist line."""
+    seeded(tmp_path)
+    p = page(tmp_path, "1-021",
+             '<pb n="1"/><!-- opens: indented -->'
+             '<p><foreign xml:lang="ckt" resp="#mz">a</foreign></p>')
+    rep = validate(p, ctx={"root": str(tmp_path), "page_ref": "1-021",
+                           "expected_folio": None, "folio_basis": ""},
+                   ratified=ratified)
+    assert any("confined to @ref" in e for e in rep.errors)

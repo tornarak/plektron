@@ -204,6 +204,16 @@ def _spacing_hits(text: str, commentary: bool = False) -> list[dict]:
 # are the whitespace kraken sets inside `<SP>` attributes. Naming the real store
 # keeps every gt page in scope, since the view never held anything else.
 SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
+               # The entity store is hand-authored and holds two kinds of text
+               # at once: gloss prose, which is English and sets curly quotes,
+               # and trigger forms, which may be Tier-1 and where a straight
+               # apostrophe is the licensed stress mark. Both need NFD — a
+               # trigger the store spells precomposed silently fails to match a
+               # page that spells it decomposed, and a silent miss is the
+               # failure class the whole project is organised against — so the
+               # NFD arm sweeps the file whole and the two prose arms skip the
+               # table rows. See `_is_entity`.
+               "entities/*/*.md",
                "data/readings.md", "data/*.json", "data/lexicon_extra.txt",
                # decision.json is an editorial act — the adjudicated record that
                # `restore` actually writes to gt/ocr/ — so it stays in the default
@@ -227,6 +237,16 @@ SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
 # `1-151` protection for the one place it matters — mid-pass, before `--convert`
 # is run on the file currently being authored.
 PATH_ONLY_GLOBS = ("review/*/proposal.json",)
+
+
+def _is_entity(p: Path) -> bool:
+    """An `entities/<class>/<slug>.md` record.
+
+    By position rather than by suffix: `.md` alone would also catch every
+    document in the repo if one were ever added to a glob, and the two prose
+    arms below scope themselves on this answer.
+    """
+    return p.suffix == ".md" and p.parent.parent.name == "entities"
 
 # Codepoints with no legitimate use in English prose *or* in the transcription system,
 # so their presence is a defect regardless of which one a given span is. The curly
@@ -400,9 +420,9 @@ def _quote_hits(p: Path, root: Path) -> list[dict]:
                     hits.append({"path": rel, "trap": STRAIGHT_QUOTE_TRAP,
                                 "line": i, "token": _token_at(content, pos)})
                     start = pos + 1
-    elif p.name == "readings.md":
+    elif p.name == "readings.md" or _is_entity(p):
         for lineno, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
-            if line.startswith("@note"):
+            if line.startswith("@note") or line.startswith("|"):
                 continue
             start = 0
             while (pos := line.find('"', start)) != -1:
@@ -458,9 +478,9 @@ def _apostrophe_hits(p: Path, root: Path) -> list[dict]:
                 for h in apostrophe_flags(content):
                     hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
                                 "line": i, "token": h["token"]})
-    elif p.name == "readings.md":
+    elif p.name == "readings.md" or _is_entity(p):
         for lineno, line in enumerate(p.read_text(encoding="utf-8").splitlines(), start=1):
-            if line.startswith("@note"):
+            if line.startswith("@note") or line.startswith("|"):
                 continue
             for h in apostrophe_flags(line):
                 hits.append({"path": rel, "trap": _APOSTROPHE_TRAPS[h["kind"]],
