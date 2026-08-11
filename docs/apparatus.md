@@ -244,6 +244,21 @@ routinely tile one irregularly-shaped figure — so an ordinal would have report
 that settles it is prose inside the caption, which is why no geometric handle
 could.
 
+**The generated TEI now carries the figures themselves**, `<figure n><figDesc>`
+with the caption from `data/readings.md`, one per printed figure on the same
+dedupe as `_figures_on_page` — 197 of them over 131 pages. They are positioned
+where their boxes physically sit, which is deliberately not where they belong: the
+anchor is the first textual reference and that is a reading, so each carries a
+comment saying move me. A figure whose box falls inside a paragraph is emitted
+after it rather than splitting it, since splitting would undo what
+`MainZone-Continued` records.
+
+That the *generator* reads geometry while `_figures_on_page` withholds it from the
+model is not an inconsistency but the same rule twice. Handing a model coordinates
+invites it to place a figure by eye instead of finding the sentence — the failure
+the two earlier payload shapes above both produced. A rule cannot be persuaded by
+what it sees, so it may use what a model may not.
+
 Only 3 of the 20 OCR'd pilot pages also have figure ALTOs —
 `1-151`, `2-030`, `3-006` — so the figure path is thinly exercised, and thinner
 than that for captions: `3-006` is one of the two zone-with-no-caption pages, and

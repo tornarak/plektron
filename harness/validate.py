@@ -778,21 +778,27 @@ def validate(tei_path: Path, ctx: dict | None = None,
     #
     # **A note that is a direct child of `<body>` is not anchored at all**, and the
     # whitespace rule has nothing to say about it: there is no character it sets
-    # tight against. That is the state every generated page arrives in — the store
-    # holds `MarginTextZone-Notes` as one zone for the whole apparatus, so which
-    # body marker a note belongs to is a reading and the generator leaves it at the
-    # foot. It gets its own error, because the two proxy complaints it used to draw
-    # (a stray space, a missing `@n`) both described symptoms of being unanchored
-    # while naming something else, and a reviewer who fixes what the message says
-    # has not fixed the page.
+    # tight against. It gets its own error, because the two proxy complaints it
+    # used to draw (a stray space, a missing `@n`) both described symptoms of being
+    # unanchored while naming something else, and a reviewer who fixes what the
+    # message says has not fixed the page.
+    #
+    # **This is no longer the state a generated page ordinarily arrives in.** The
+    # generator splits the apparatus at the printed markers and anchors each note
+    # at the matching marker in the prose, both being the printer's own marks. What
+    # reaches here is what it refused: a marker that reads nowhere in the body, or
+    # one that reads in more than one place. So the error names a page where the
+    # evidence ran out rather than the ordinary case — which is what makes it worth
+    # reading — and the generator has left a comment beside each one saying which
+    # of the two happened.
     for note in root.iter(q("note")):
         if etree.QName(note.getparent()).localname == "body":
             r.errors.append(
                 f"<note n={note.get('n')!r}> is a child of <body> — it has not been "
-                "anchored. Move it inline to the character its printed marker "
-                "follows, and set @n from that marker. Where the apparatus holds "
-                "several notes, split them first: the store zones the whole foot as "
-                "one block and cannot say how many there are")
+                "anchored. The generator could not find its marker in the prose, "
+                "or found it more than once; the comment beside it says which. "
+                "Read the page, move it inline to the character its printed marker "
+                "follows, and set @n from that marker")
             continue
         prev = note.getprevious()
         before = prev.tail if prev is not None else note.getparent().text

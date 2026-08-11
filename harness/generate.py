@@ -16,9 +16,28 @@ here needs a page in front of it, and none of them is a fact already written dow
 paragraphs begin, which lines are apparatus, which block is the footnote
 apparatus, which is a quotation, and what folio the page prints. It does not know
 a heading from a table from a caption — all three land in `MainZone-Other`, whose
-`rank: null` says as much — nor where a note anchors in the body, nor what
-language a form is in, nor where a figure is discussed. Every one of those leaves
-a comment naming itself, and the review contract is the list of comments to clear.
+`rank: null` says as much — nor what language a form is in, nor where a figure is
+discussed. Every one of those leaves a comment naming itself, and the review
+contract is the list of comments to clear.
+
+**The line runs between what the printer marked and what a reader must decide**,
+and the footnotes are where it moved. Splitting the apparatus at its superscripts
+and anchoring each note at the same character in the body are *character
+identity* — the compositor set both marks and the recognizer read both — so they
+belong on this side of the line, and 241 of the corpus's 250 notes place that way.
+The 9 that do not are the cases where the evidence is short: a marker that reads
+nowhere in the prose, or reads in two places. Those stay at the foot saying which,
+which is what a rule that will not guess looks like when it declines.
+
+**Figures are the mirror case: emitted here, positioned wrongly on purpose.** The
+box's position is real evidence and puts the figure on the right part of the right
+page, but the anchor the edition wants is where the prose says "(Fig. 87, a)". So
+the figure and its caption arrive complete and the placement is explicitly a
+first draft, with a comment at each one. Note that `context._figures_on_page`
+withholds geometry from the *model* deliberately — placing a figure is not the
+collator's competence — and this reads it anyway. Not an inconsistency: a rule
+cannot be talked into anything by what it sees, so it may use what a model may
+not.
 
 **`mz/tei/` is to `tei/` what `mz/zones/` is to `gt/zones/`**, and the pairing is
 the point: the generated file stays on disk, so `harness tei diff` can say what
@@ -47,8 +66,8 @@ from xml.sax.saxutils import escape
 
 from .context import (
     APPARATUS_ZONES,
-    _figures_on_page,
     _running_title,
+    figure_number,
     norm_ref,
     tier1_terms,
 )
@@ -74,8 +93,181 @@ NOTES_ZONE = "MarginTextZone-Notes"
 OTHER_ZONE = "MainZone-Other"
 
 
+#: The printed footnote markers. Superscript digits and nothing else: a census of
+#: the generated corpus finds ¹–⁶ and no `*`, `†`, `‡` or `§` anywhere, so a rule
+#: written for symbols would be a rule for a book other than this one.
+NOTE_MARKERS = "⁰¹²³⁴⁵⁶⁷⁸⁹"
+
+#: `@n` is the digit, not the raised glyph. Three reasons and they agree: the
+#: collator contract has always specified an integer, `.noteref` raises and shrinks
+#: whatever `@n` holds so a superscript character there is superscripted twice, and
+#: the number is what a reader cites. Written out rather than reached through
+#: `unicodedata.normalize("NFKC", …)`, which would do it — and which CLAUDE.md
+#: forbids outright, because the same call destroys two inventory glyphs.
+NOTE_N = {m: str(i) for i, m in enumerate(NOTE_MARKERS)}
+
+
 def gen_dir(root: Path = Path(".")) -> Path:
     return root / GENDIR
+
+
+def _split_notes(rows: list[tuple[int, str]]) \
+        -> list[tuple[str, list[tuple[int, str]]]]:
+    """`MarginTextZone-Notes` cut into the individual notes the printer set.
+
+    **The marker is the printer's, not a guess.** Every note in this book opens
+    with its own superscript — 148 of the corpus's 152 note blocks demonstrably
+    so — which makes the cut mechanical and auditable: the character is either at
+    the head of the line or it is not.
+
+    The four blocks that open without one lost it to the recognizer at the very
+    start of the zone (`1-075`, `1-091`, `1-203`, `1-243`). Those become a note
+    with **no `@n`** rather than being folded into the note after them, because a
+    marker nobody read is a question and folding would answer it.
+    """
+    out: list[tuple[str, list[tuple[int, str]]]] = []
+    for idx, text in rows:
+        head = text.lstrip()
+        if head and head[0] in NOTE_MARKERS:
+            out.append((head[0], []))
+        elif not out:
+            out.append(("", []))
+        out[-1][1].append((idx, text))
+    return out
+
+
+def _figures_with_geometry(ref: str, root: Path) -> list[dict]:
+    """The page's figures — number, caption, and where the box sits — top first.
+
+    **`_figures_on_page` deliberately drops geometry and this deliberately keeps
+    it**, and the two are not in tension. That function builds the *model's*
+    payload, where geometry is withheld on purpose: placing a figure is not the
+    collator's competence, and handing it coordinates invites it to place one by
+    eye instead of finding the sentence that says "(Fig. 87, a)". This is a rule
+    reading a store a human keyed, which is the other half of the same design —
+    the generator may use what the model may not, because a rule cannot be
+    persuaded by what it sees.
+
+    Deduped on the caption exactly as `_figures_on_page` dedupes, so the two
+    pictures sharing fig. 253's caption are one figure here too. The survivor is
+    the topmost, `paired` having sorted by position already.
+    """
+    from .figures import paired
+    from .figures import zones as fig_zones
+    boxes = {z["id"]: z for z in fig_zones(ref, root)}
+    out: list[dict] = []
+    seen: set[str] = set()
+    for f in paired(ref, root)["figures"]:
+        if f["caption"] and f["caption"] in seen:
+            continue
+        seen.add(f["caption"])
+        tops = [boxes[z]["vpos"] for z in (f["zone_id"], f["caption_zone"])
+                if z in boxes]
+        out.append({"n": figure_number(f["caption"]), "caption": f["caption"],
+                    "y": min(tops) if tops else 0})
+    return sorted(out, key=lambda f: f["y"])
+
+
+def _place_notes(body: list[str], rows: list[tuple[int, str]], rendered) \
+        -> tuple[int, list[tuple[str, str, str]]]:
+    """Splice each note into the prose at its marker. Returns how many were placed
+    and the ones that could not be, as `(marker, rendered text, why not)`.
+
+    **Every site is found before any note is inserted**, and that is the whole of
+    why this is two loops. Splicing note ¹ changes the string note ² is then
+    searched in, and a note whose text cites another note's marker — this book
+    does it — would anchor inside the note just placed. Sites first, then edits
+    applied from the back so the earlier offsets stay valid.
+    """
+    parts = _split_notes(rows)
+    sites: dict[int, list[tuple[int, str]]] = {}
+    unplaced: list[tuple[str, str, str]] = []
+    for marker, note_rows in parts:
+        text = rendered(note_rows)
+        # The printed marker moves to `@n` and comes out of the text, where it
+        # would otherwise be set twice: once as the attribute the renderer draws
+        # the marker from, once as a stray character at the head of the note.
+        # Stripped from the rendered string rather than from the row, because the
+        # Tier-1 spans are offsets into the row's own text and shortening it
+        # underneath them would shift every one by the width of the marker.
+        if marker and text.startswith(marker):
+            text = text[len(marker):].lstrip()
+        if not marker:
+            unplaced.append((marker, text,
+                             "no marker at the head of this note. Either the "
+                             "recognizer dropped it, or this is foot-text running "
+                             "over from the previous page — which the book does "
+                             "once or twice. Read the page: if it is a note, set "
+                             "@n and anchor it; if it is a continuation, leave it "
+                             "here with no @n"))
+            continue
+        hits = _marker_sites(body, marker)
+        if len(hits) == 1:
+            i, at = hits[0]
+            sites.setdefault(i, []).append(
+                (at, len(marker),
+                 f'<note n="{NOTE_N[marker]}" place="bottom">{text}</note>'))
+        elif not hits:
+            unplaced.append((marker, text,
+                             f"nothing in this page's prose reads {marker}, so "
+                             f"there is nothing to anchor it to — the marker did "
+                             f"not read. Find it on the page and place it"))
+        else:
+            unplaced.append((marker, text,
+                             f"{len(hits)} places in this page's prose read "
+                             f"{marker}. Which one anchors it is a reading"))
+    placed = 0
+    for i, edits in sites.items():
+        # Back to front, so an earlier edit cannot move a later one's offset.
+        for at, width, element in sorted(edits, reverse=True):
+            # **The printed marker is replaced by the note, not preceded by it.**
+            # `@n` already records it and the reading view draws its marker from
+            # there — so leaving the original in the text puts two superscript
+            # ones side by side, which is the display half of the bug this pass is
+            # fixing.
+            #
+            # **And the space before it goes too.** The book sets a thin space
+            # ahead of the raised digit (`1-100`: `[albino] ¹)`), which is
+            # typesetting rather than lexical — the same class as the French
+            # spacing keying spec §2.9 already overrides. Consuming the marker and
+            # not the space would strand it, and `validate` errors on exactly that
+            # ("space before <note>"): the element stands in for the marker, so it
+            # sets tight against the character the marker followed.
+            # Spaces and tabs only. A bare `rstrip()` would eat a newline where the
+            # compositor broke the line before the marker, silently joining two
+            # printed lines — and those breaks are kept on purpose, so a reviewer
+            # can read the file against the raster a line at a time.
+            head = body[i][:at - width].rstrip(" \t")
+            body[i] = head + element + body[i][at:]
+            placed += 1
+    return placed, unplaced
+
+
+def _marker_sites(body: list[str], marker: str) -> list[tuple[int, int]]:
+    """Where this marker occurs in the prose already emitted: `(block, offset)`,
+    the offset being just past the character.
+
+    Comments are skipped, and that is not tidiness — the generator's own comments
+    quote page text, so a marker inside one would count as an anchor and the note
+    would be spliced into a comment, where it is both invisible and unparseable.
+
+    Figures are skipped for a different reason. A `<figDesc>` is caption text
+    transcluded from `data/readings.md`, a store this file does not author; a note
+    anchoring inside one would splice this page's apparatus into another store's
+    text. **No caption in the corpus carries a superscript today**, so the guard
+    catches nothing — it is here because `readings.md` is hand-edited and the
+    failure would be silent, not because anything has gone wrong.
+    """
+    out = []
+    for i, block in enumerate(body):
+        head = block.lstrip()
+        if head.startswith("<!--") or head.startswith("<figure"):
+            continue
+        at = block.find(marker)
+        while at != -1:
+            out.append((i, at + len(marker)))
+            at = block.find(marker, at + 1)
+    return out
 
 
 def gen_path(ref: str, root: Path = Path(".")) -> Path:
@@ -178,26 +370,39 @@ def _assign(recs: list[dict], bands: list[dict]) -> list[list[dict]]:
 
 
 def _tier1_spans(rows: list[tuple[int, str]], by_line: dict[int, list[dict]],
-                 offsets: list[int]) -> list[tuple[int, int, str]]:
+                 offsets: list[int]) -> list[tuple[int, int, str, str]]:
     """Ratified Tier-1 tokens, as spans over the block's joined text.
 
-    The handle is `<foreign index="N"/>` — empty, and carrying no `xml:lang`,
-    because **which language a form is in is a judgement and this is a rule**.
-    `tier1_terms` is a floor over inventory marks with no language awareness, so it
-    catches an ordinary German surname carrying a combining diaeresis exactly as it
-    catches a Chukchee form; `Döring` on `1-022` is the standing case. A generator
-    that named a language would be inferring one from the shape of a word, which is
-    the firewall's failure mode one category over from glyphs.
+    The wrap is `<foreign index="N">Uweˊlen</foreign>` — **the ratified text in
+    place**, carrying no `xml:lang`, because which language a form is in is a
+    judgement and this is a rule. `tier1_terms` is a floor over inventory marks
+    with no language awareness, so it catches an ordinary German surname carrying
+    a combining diaeresis exactly as it catches a Chukchee form; `Döring` on
+    `1-022` is the standing case. A generator that named a language would be
+    inferring one from the shape of a word, which is the firewall's failure mode
+    one category over from glyphs.
 
-    So the wrap says only "a ratified token sits here" and the gate refuses a
-    lang-less `<foreign>`, which turns every one of them into a question the
-    reviewer has to answer: name the language, and `tei expand` writes the adjudicated
-    glyphs in; or unwrap, because it was never a foreign form.
+    So the wrap says only "a ratified token sits here", and the gate refuses a
+    lang-less `<foreign>` — which turns every one into a question the reviewer has
+    to answer: name the language, or unwrap it because it was never a foreign form.
 
-    Located per line and then translated to block offsets, rather than searched
-    for in the joined block: `tier1_terms` reports which line it found a token
-    on, and a token that occurs on two lines would otherwise both times resolve
-    to the first.
+    **The handle used to be empty**, and that was right when the collation pass
+    authored the whole file from a plaintext draft: a model that never typed the
+    glyphs could not corrupt them, and `tei expand` filled them in from `gt/ocr/`
+    afterwards. That argument died when the generator started writing the file.
+    A rule copies these characters exactly as it copies every other character on
+    the page, so putting them in costs nothing in fidelity — while leaving them
+    out cost the reviewer a lookup from `index="7"` to `tier1_terms[7]` *before it
+    could judge the language*, which is a judgement about a word it cannot see.
+    `1-032` is what that costs when `tei context` is unavailable: fourteen
+    numbered blanks, and a collator that went to the raster to find out what they
+    said.
+
+    `@index` stays, and is what `tei expand` verifies the text against before
+    stamping `#gt`. Located per line and then translated to block offsets, rather
+    than searched for in the joined block: `tier1_terms` reports which line it
+    found a token on, and a token occurring on two lines would otherwise resolve
+    to the first both times.
     """
     spans = []
     for (index, text), base in zip(rows, offsets, strict=True):
@@ -212,13 +417,13 @@ def _tier1_spans(rows: list[tuple[int, str]], by_line: dict[int, list[dict]],
                 # pointing at half a word.
                 continue
             spans.append((base + i, base + i + len(t["text"]),
-                          f'<foreign index="{t["index"]}"/>'))
+                          f'<foreign index="{t["index"]}">', "</foreign>"))
             pos = i + len(t["text"])
     return spans
 
 
-def _entity_spans(full: str, taken: list[tuple[int, int, str]], ents: dict,
-                  autos: dict) -> tuple[list[tuple[int, int, str]], list[dict]]:
+def _entity_spans(full: str, taken: list[tuple], ents: dict,
+                  autos: dict) -> tuple[list[tuple], list[dict]]:
     """Trigger hits over the block: the ones a rule may link, and the ones it may not.
 
     **Matched over the joined block, not per line**, because the printed line
@@ -236,9 +441,9 @@ def _entity_spans(full: str, taken: list[tuple[int, int, str]], ents: dict,
 
     links, candidates = [], []
     for h in match(full, ents):
-        if any(h["start"] < e and s < h["end"] for s, e, _ in taken):
+        if any(h["start"] < span[1] and span[0] < h["end"] for span in taken):
             continue
-        owner = autos.get(h["form"])
+        owner = None if h["hyphenated"] else autos.get(h["form"])
         if owner:
             links.append((h["start"], h["end"],
                           f'<rs ref="{owner}" resp="#mz">', "</rs>"))
@@ -351,10 +556,15 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         return _emit(full, spans + links, indent)
 
     body: list[str] = []
+    # Every key present from the start, `figures` and `notes_anchored` included:
+    # they are filled conditionally below, and a page with no notes would
+    # otherwise return a row one key short — which collapses the whole sweep's
+    # table to the nested form (`skipped`, same argument).
     rep = {"ref": ref, "folio": None, "folio_from": "", "split_by": split_by,
            "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
            "handles": 0, "links": 0, "candidates": 0,
-           "outside_zones": 0, "unknown_labels": ""}
+           "outside_zones": 0, "unknown_labels": "",
+           "figures": 0, "notes_anchored": 0}
 
     def flush_candidates() -> None:
         """One comment per distinct unlinked trigger, after the block it sits in.
@@ -367,9 +577,11 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         """
         seen = set()
         for h in pending:
-            key = (h["form"], tuple(h["ids"]))
+            key = (h["form"], h["hyphenated"], tuple(h["ids"]))
             if key in seen:
                 continue
+            # Keyed on the page's spelling too, so `Chukchee` and `Chuk-chee` in
+            # one block are two questions — they are.
             seen.add(key)
             rep["candidates"] += 1
             # The two reasons a hit is a candidate are different questions, so
@@ -377,7 +589,15 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             # form and only the sentence decides. Uncontested but not automatic:
             # one entity claims it, and its author declared the form unsafe out
             # of context — the book uses it for other things too.
-            if len(h["ids"]) > 1:
+            if h["hyphenated"]:
+                say = (f'{escape(h["ids"][0] if len(h["ids"]) == 1 else " or ".join(h["ids"]))}'
+                       f', spelt with a hyphen the store does not have — the '
+                       f'compositor broke the word across a line and the join '
+                       f'keeps its hyphen, since nothing can tell that hyphen '
+                       f'from the word\'s own. Read the page: if the break is the '
+                       f'printer\'s, link it; if the hyphen is really there, say '
+                       f'so and leave it unlinked')
+            elif len(h["ids"]) > 1:
                 say = (f'ambiguous — {escape(" or ".join(h["ids"]))}. Link the '
                        f'one this sentence means, or delete this comment if it '
                        f'means neither')
@@ -386,7 +606,8 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                        f'`auto: no` — it means other things elsewhere in the '
                        f'book. Link it if the page means this one, or delete '
                        f'this comment')
-            body.append(f'      <!-- entity candidate: {escape(h["form"])!r} '
+            shown = " ".join(h["text"].split()) if h["hyphenated"] else h["form"]
+            body.append(f'      <!-- entity candidate: {escape(shown)!r} '
                         f'— {say} -->')
         pending.clear()
 
@@ -423,10 +644,90 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
 
     notes: list[str] = []
     unknown: set[str] = set()
+
+    #: Lines of the paragraph currently open across one or more bands.
+    para: list[tuple[int, str]] = []
+
+    figs = _figures_with_geometry(ref, root)
+    rep["figures"] = len(figs)
+    fig_at = 0
+    at_y = 0
+
+    def emit_figures(before: int | None) -> None:
+        """Emit the figures whose boxes sit above `before`, or all of them.
+
+        **Placed at a paragraph boundary and never inside one**, which is the
+        whole of the compromise here. The box's position is real evidence and it
+        puts the figure on the right part of the right page; but a picture the
+        text wraps around sits *inside* a paragraph, and splitting the prose at it
+        would undo exactly what `MainZone-Continued` records. So a figure whose
+        box falls within a paragraph comes out after it.
+
+        That the placement is approximate is the point rather than a defect: this
+        is a first draft for a reader who moves it. The anchor the edition wants
+        is where the prose says "(Fig. 87, a)", which is a reading, and the
+        comment says so at every figure.
+        """
+        nonlocal fig_at
+        while fig_at < len(figs) and (before is None or figs[fig_at]["y"] < before):
+            f = figs[fig_at]
+            fig_at += 1
+            n = f["n"]
+            body.append(
+                f'      <!-- figure placed where its box sits on the page, which '
+                f'is not where it belongs: anchor it where the prose first refers '
+                f'to it{"" if n else ", and read its number off the page — this "
+                        "caption prints none"} -->')
+            attr = f' n="{escape(n)}"' if n else ""
+            if f["caption"]:
+                body.append(f'      <figure{attr}>\n'
+                            f'        <figDesc>{escape(f["caption"])}</figDesc>\n'
+                            f'      </figure>')
+            else:
+                # `3-006` and `3-007`: artwork the book captions nowhere. An empty
+                # <figDesc> would assert a caption exists and read as one lost.
+                body.append(f'      <figure{attr}/>')
+
+    def close_paragraph() -> None:
+        """Emit whatever prose bands have accumulated as one `<p>`.
+
+        **`MainZone-Continued` means "no paragraph opens here", and a `<p>` per
+        band said the opposite.** The label is the human's assertion that these
+        lines continue what came before, so a run of `P, Continued, Continued` is
+        one paragraph and used to leave three, each break landing mid-sentence. The
+        zone store held the right answer the whole time and the generator was
+        throwing it away, which is the exact shape this module exists to avoid.
+
+        Worth 15 paragraphs over the corpus, no more: 213 of the 228 `Continued`
+        bands are the first body band on their page and still open a `<p>` here,
+        having nothing above them to join. That is the common case and it is not
+        what this fixes.
+
+        Rendering the run whole rather than concatenating rendered bands also puts
+        a trigger that straddles a band boundary inside one call to `rendered`,
+        so it is found and linked like any other — the same reason the block is
+        marked up whole rather than line by line.
+        """
+        if not para:
+            return
+        rep["paragraphs"] += 1
+        body.append(f'      <p>{rendered(para)}</p>')
+        flush_candidates()
+        para.clear()
+        # Any figure the paragraph ran past comes out now that it is closed.
+        emit_figures(at_y)
+
     for band, bucket in zip(bands, buckets[:-1], strict=True):
         label = band["label"]
+        at_y = band["y0"]
+        if not para:
+            emit_figures(at_y)
         if label in APPARATUS_ZONES:
-            continue              # the printer's text; its folio is in <pb> above
+            # The printer's text; its folio is in <pb> above. Deliberately does
+            # not close an open paragraph: a running title is *around* the prose,
+            # not in it, and a page whose head sits between two body bands must
+            # not have its paragraph broken by it.
+            continue
         rows = bucket
         if not rows:
             continue
@@ -436,14 +737,29 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         if label in PROSE:
             tag = PROSE[label]
             if tag == "quote":
+                close_paragraph()
                 rep["quotes"] += 1
                 block = rendered(rows, "        ")
                 body.append(f'      <quote>\n        <p>{block}'
                             f'</p>\n      </quote>')
             else:
-                rep["paragraphs"] += 1
-                body.append(f'      <p>{rendered(rows)}</p>')
-        elif label == OTHER_ZONE:
+                # Either witness opens a paragraph: the keyed label, and the
+                # measured first-line indent `split_at_paragraphs` cut this band
+                # at.
+                #
+                # **The second is redundant as the config stands** —
+                # `paragraph_split.labels` lists `MainZone-P` alone, so every
+                # piece of every split band is labelled `MainZone-P` and the first
+                # test already fires. It is read anyway because that list is a
+                # value in a JSON file: add `MainZone-Continued` to it and a merge
+                # reading labels alone would run a measured cut's two paragraphs
+                # together, silently and as plausible prose.
+                if label == "MainZone-P" or band.get("paragraph_open"):
+                    close_paragraph()
+                para.extend(rows)
+            continue
+        close_paragraph()
+        if label == OTHER_ZONE:
             rep["unresolved"] += 1
             body.append('      <!-- unresolved zone (MainZone-Other): a heading, a '
                         'table, verse, or a caption — the store does not '
@@ -457,15 +773,35 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             body.append(f'      <p>{rendered(rows)}</p>')
         flush_candidates()
 
+    close_paragraph()
+    emit_figures(None)          # anything below the last band of prose
+
     if notes:
-        rep["notes"] = 1
-        body.append('      <!-- the footnote apparatus, whole. MarginTextZone-Notes '
-                    'is one zone for the page, so these are not split into '
-                    'individual notes and none is anchored: which body marker each '
-                    'belongs to is a reading. Split them, move each <note> to its '
-                    'marker in the prose above, and set @n from the printed '
-                    'marker -->')
-        body.append(f'      <note place="bottom">{rendered(notes)}</note>')
+        # **Split at the printed marker, anchored at the matching one, and only on
+        # an exact unique match.** The zone is one band for the whole page, so the
+        # old shape was every note in a single unanchored `<note>` — which the
+        # reading view renders as one marker at the foot carrying three notes'
+        # text, and which left the collator retyping structure the page states
+        # plainly.
+        #
+        # Both halves are mechanical. A note begins where the printer set its
+        # superscript; it anchors where the *same character* stands in the prose.
+        # That is character identity, not inference — the compositor put both
+        # marks there and the recognizer read both. What it is not allowed to do
+        # is settle a case where the evidence is short: no match, or more than
+        # one, and the note stays at the foot saying which of the two happened.
+        #
+        # Notes in this book anchor on their own page, so an unmatched marker
+        # means the marker did not read — not that it belongs to a facing page.
+        # The comment says that, because the two send a reader to different
+        # places.
+        placed, unplaced = _place_notes(body, notes, rendered)
+        rep["notes"] = placed + len(unplaced)
+        rep["notes_anchored"] = placed
+        for marker, text, why in unplaced:
+            n = f' n="{NOTE_N[marker]}"' if marker else ""
+            body.append(f'      <!-- note {marker or "(no marker)"}: {why} -->')
+            body.append(f'      <note{n} place="bottom">{text}</note>')
         flush_candidates()
 
     if buckets[-1]:
@@ -478,12 +814,6 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             body.append(f'      <p>{rendered(rows)}</p>')
             flush_candidates()
 
-    figs = _figures_on_page(ref, root)
-    if figs:
-        listed = "; ".join(f'{f["n"] or "?"}: {f["caption"][:60]}' for f in figs)
-        body.append(f'      <!-- figures printed on this page — {escape(listed)}. '
-                    f'Not anchored: a <figure n="N"/> goes where the prose first '
-                    f'refers to it, which is a reading -->')
     rep["unknown_labels"] = ",".join(sorted(unknown))
     # Counted off the emitted markup rather than tallied as it is built: what the
     # file actually carries is the thing a reviewer meets, and a counter kept
@@ -537,7 +867,14 @@ def generate(ref: str, root: Path = Path("."), force: bool = False) -> dict:
 #: and will be reworded, and a check that broke when the prose was improved would
 #: be a check nobody kept.
 GEN_MARKS = ("generated:", "zone-opens:", "unresolved zone",
-             "the footnote apparatus", "figures printed on this page",
+             # Was "the footnote apparatus", one comment for the whole foot.
+             # There is now one per note the generator would not place, and it
+             # names which of the two refusals happened.
+             "note ",
+             # Was "figures printed on this page", a comment standing in for
+             # figures that were not emitted at all. Now one per figure, and the
+             # figure is really there.
+             "figure placed where its box sits",
              "line(s) inside no zone", "unknown zone label",
              "entity candidate")
 
@@ -650,4 +987,5 @@ def skipped(ref: str, why: str = "") -> dict:
             "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
             "handles": 0, "links": 0, "candidates": 0,
             "outside_zones": 0, "unknown_labels": "",
+            "figures": 0, "notes_anchored": 0,
             "written": False, "why": why}

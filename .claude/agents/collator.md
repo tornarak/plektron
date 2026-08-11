@@ -109,12 +109,20 @@ is a comment in your file**, and clearing those is what this pass is:
   headings, tables, verse and captions alike, and its `rank: null` says it declines
   to tell them apart. Give the block its real shape: a heading (check `toc_window`
   for a milestone), a `<list type="gloss">`, a `<table>`, or prose.
-- The footnote block — `MarginTextZone-Notes` is **one zone for the whole
-  apparatus**, so the notes arrive undivided and unanchored at the foot. Split them,
-  move each `<note>` to its marker in the prose, set `@n` from the printed marker.
-- `<foreign index="N"/>` with no `xml:lang` — see the firewall sections below.
-- The figures comment — anchor `<figure n="N"/>` where the prose first refers to
-  one, or leave it if the page never does.
+- `<!-- note … -->` — a note the generator would **not** place, and the comment
+  says which of the two reasons. The apparatus arrives split at its printed
+  markers and each note anchored at the matching marker in the prose, both being
+  the printer's own marks; what is left at the foot is a marker that reads nowhere
+  in the body, or one that reads in more than one place. Read the page, anchor it,
+  and set `@n`. **A note already anchored is not yours to move** unless the page
+  says the rule got it wrong — it is the same character in both places.
+- `<foreign index="N">…</foreign>` with no `xml:lang` — the word is there and
+  adjudicated; the language is not. See the firewall sections below.
+- `<!-- figure placed where its box sits … -->` — the `<figure n="N">` is already
+  in the file, with its caption, positioned where the picture physically sits on
+  the page. That is **not** where it belongs: move it to where the prose first
+  refers to it ("Fig. 87, a"), and delete the comment. If the page never refers to
+  it, leave it where it is and say so in your report.
 - `<!-- opens: … -->` is **missing and yours to write**, from the image. The
   generator wrote `<!-- zone-opens: … -->` instead, which is the *other* witness —
   what a human keyed as the first body zone's label, months ago. They are compared
@@ -222,13 +230,13 @@ lives on, and the gate checks it.
   one `harness ocr zoom --only` takes. It exists so a Tier-1 span can cite which
   line it was read from. Never infer text from an index.
 - **`tier1_terms`** is `{index, line, text}` — the tokens on this page a human
-  **already keyed at the raster**, which the generator has already lifted into the
-  empty `<foreign index="N"/>` handles in your file. This field is what lets you
-  see *which word* each handle stands for, so you can judge its language or decide
-  it was never a foreign form; see "The empty handles" below for the two
-  dispositions. It is a **floor**: a form with no marks at all is undetectable and
-  gets no handle, and that one you wrap and key yourself at `#llm`, like any other
-  reading of yours.
+  **already keyed at the raster**, which the generator has wrapped in place as
+  `<foreign index="N">…</foreign>` in your file. You do not need this field to
+  read a handle: the word is *in* the handle, and the `index` is only what `tei
+  expand` checks it against. It is here because it says which line each came from,
+  so a handle is resolvable against the raster with `ocr zoom`. It is a **floor**:
+  a form with no marks at all is undetectable and gets no handle, and that one you
+  wrap and key yourself at `#llm`, like any other reading of yours.
 
   **A form the compositor broke across two lines is absent too**, deliberately.
   `1-101` prints `Torwaˊwaq` as `(Tor-` / `waˊwaq)`, and offering you `waˊwaq`
@@ -447,12 +455,22 @@ boundary -->`.
 
 ## Footnotes
 
+**Most of this is already done in your file.** The generator splits the apparatus
+at its printed markers and anchors each note at the matching marker in the prose —
+character identity, not judgement — so what you meet is usually a page whose notes
+are in place. What follows is the standard they were built to, and the cases they
+were not built for.
+
 - `<note n="{marker}" place="bottom">`, the marker exactly as printed (an integer
-  in this book). Copy it; do not renumber, do not infer it from position.
+  in this book). Copy it; do not renumber, do not infer it from position. The
+  generator writes the digit, not the raised glyph: `¹` on the page is `n="1"`.
 - **Anchor every note at its exact marker position** in the running text — not
   gathered at the foot, not moved to the nearest sentence boundary. If the marker
   falls mid-clause or inside a parenthetical, the note goes there, however awkward
   the nesting.
+- **A note the generator anchored is not yours to move** on stylistic grounds. It
+  sits where the same character stands in the body; move it only if the page shows
+  the rule was wrong, and say so in your report if you do.
 - **No whitespace immediately before a `<note>`.** The element stands in for the
   printed marker, and the book sets a thin space before the raised digit
   (`1-100`: `[albino] ¹)`). That is the same class of thing as the French spacing
@@ -467,8 +485,17 @@ boundary -->`.
 
 ## Figures
 
-Anchor `<figure n="291"/>` at the first textual reference ("Fig. 291"), where
-`n` is the number the caption prints — the same one `figures_on_page` carries.
+**The figures are already in your file**, as `<figure n="291"><figDesc>` carrying
+the caption from the store, each one placed where its picture physically sits on
+the page and each one under a comment saying that is not where it belongs. Your
+job is to **move** it to the first textual reference ("Fig. 291") and delete the
+comment. `n` is the number the caption prints — the same one `figures_on_page`
+carries.
+
+Do not retype a `<figDesc>`: the caption lives in `data/readings.md` and reached
+your file from there. If it is wrong, that is a finding for your report, not an
+edit here.
+
 **Never write `@facs` on a figure**: which zones a figure occupies is the build's
 join through `data/readings.md`, and it is not a 1:1 question — a box can hold
 two lettered figures, and several boxes routinely tile one irregular figure.
@@ -477,7 +504,9 @@ If a textual reference names a figure **no caption on this page prints**, commen
 naming it and emit no `<figure>`; the figure is on another page and the gate will
 say so. A supplied figure that is never referenced needs **no comment at all** —
 full-page plates and uncaptioned artwork are the ordinary case, and remarking on
-each of them was a permanent known-false note on every figure page.
+each of them was a permanent known-false note on every figure page. Leave such a
+figure where the generator put it and delete its comment: geometric position is
+the best answer available when the prose never points at one.
 
 ## Content shape — prose vs. gloss list vs. table
 
@@ -874,18 +903,24 @@ value.
 
 # Language spans and the firewall — read this twice
 
-## The empty handles, and the two ways to dispose of one
+## The unjudged handles, and the two ways to dispose of one
 
-Your file arrives carrying `<foreign index="N"/>` — empty, no `xml:lang`, no
-`@resp` — one for every token on the page that `tier1_terms` matched. **The gate
-errors on every one of them**, and that is deliberate: it makes each a question you
-have to answer rather than a mark you can scroll past. There are exactly two
-answers, and neither is "leave it".
+Your file arrives carrying `<foreign index="N">kełiˊlın</foreign>` — the word in
+place, no `xml:lang`, no `@resp` — one for every token on the page that
+`tier1_terms` matched. **The gate errors on every one of them**, and that is
+deliberate: it makes each a question you have to answer rather than a mark you can
+scroll past. There are exactly two answers, and neither is "leave it".
 
-**Assign a language.** Add `xml:lang` and `resp="#llm"`, judging the language by the
-rules below; `harness tei expand --commit` then writes the adjudicated glyphs in
-from `gt/ocr/` and rewrites the rank to `#gt`. Your judgement is *which* token and
-*what language*; the glyphs are never yours to originate.
+The glyphs are already the adjudicated ones. A rule copied them out of `gt/ocr/`
+when it built your file, exactly as it copied every other character on the page,
+so they are right by construction and **they are not yours to edit**. What is
+missing is the language, which no rule can supply.
+
+**Assign a language.** Add `xml:lang` and `resp="#llm"`, judging the language by
+the rules below; `harness tei expand --commit` then checks the string still is
+what `gt/ocr/` says, drops `@index`, and rewrites the rank to `#gt`. Your
+judgement is *which* token and *what language*; the glyphs are never yours to
+originate.
 
 **Or unwrap it entirely**, leaving the bare word. What put the handle there is a
 mechanical detector with no language awareness — it fires on any inventory mark, and

@@ -27,6 +27,11 @@ from harness.zones import save_zones
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
+#: The real repo, for the one thing a `tmp_path` cannot supply: `data/tei_all.rng`
+#: is the committed schema and conformance is a claim about that file, not about a
+#: copy of it.
+REPO = Path(__file__).resolve().parent.parent.parent
+
 # A page's worth of geometry, in the real store's pixel scale — the zone track is
 # fixed-width bands of a measured column, so x is constant and only y separates
 # them. Heights are well over `min_zone_h_px` (30) so nothing is consolidated away.
@@ -103,15 +108,75 @@ def lines_at(texts: list[str], y0: int = 200) -> list[tuple[str, int]]:
 def test_the_keyed_labels_are_the_paragraph_boundaries(tmp_path):
     """`MainZone-P` opens a paragraph and `MainZone-Continued` does not — a human
     keyed that on all 832 pages, and it is the fact the collation pass used to
-    re-derive by looking at the raster."""
+    re-derive by looking at the raster.
+
+    **A continued band joins the paragraph above it rather than starting one.**
+    This test asserted three paragraphs for years while its own first sentence
+    said why there are two: `Continued` was mapped to `p` like `P` and emitted a
+    block of its own, so a paragraph running across a band boundary came out broken
+    mid-sentence. The store said so the whole time.
+
+    Fifteen paragraphs over the corpus — most `Continued` bands open their page and
+    are unaffected (`test_a_page_opening_continued_is_still_one_paragraph`).
+    """
     blocks = [("MainZone-P", lines_at(["First para line one.",
                                        "First para line two."])),
               ("MainZone-P", lines_at(["Second para opens here."], 290)),
               ("MainZone-Continued", lines_at(["and this continues it."], 335))]
     doc, rep = page(tmp_path, "1-021", blocks)
-    assert rep["paragraphs"] == 3
+    assert rep["paragraphs"] == 2
     assert "<p>First para line one.\nFirst para line two.</p>" in doc
-    assert "<p>Second para opens here.</p>" in doc
+    assert "<p>Second para opens here.\nand this continues it.</p>" in doc
+
+
+def test_a_run_of_continued_bands_is_one_paragraph(tmp_path):
+    """Three bands, one paragraph. The run is what a page with a figure in it
+    looks like: prose, picture, prose, all one paragraph, and the middle band
+    keyed `Continued` precisely to say so."""
+    blocks = [("MainZone-P", lines_at(["It opens here"])),
+              ("MainZone-Continued", lines_at(["and runs on"], 245)),
+              ("MainZone-Continued", lines_at(["and ends here."], 290))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["paragraphs"] == 1
+    assert "<p>It opens here\nand runs on\nand ends here.</p>" in doc
+
+
+def test_a_page_opening_continued_is_still_one_paragraph(tmp_path):
+    """A page whose first band is `Continued` continues the page before it. There
+    is nothing above it to join, so it opens a paragraph here — the alternative is
+    dropping the band, and a `<p>` that begins mid-sentence is the honest record of
+    what the page prints."""
+    blocks = [("MainZone-Continued", lines_at(["continues from the page before."])),
+              ("MainZone-P", lines_at(["A fresh one."], 245))]
+    _, rep = page(tmp_path, "1-021", blocks)
+    assert rep["paragraphs"] == 2
+
+
+def test_a_measured_cut_opens_a_paragraph_inside_a_continued_band(
+        tmp_path, monkeypatch):
+    """The two witnesses do not collapse into one. Every piece of a split zone
+    inherits that zone's label, so a `Continued` band the indent detector cut in
+    two yields two `Continued` bands — of which the second opens a paragraph. Were
+    the merge keyed on the label alone, the second would be swallowed by the first
+    and the measured cut would have bought nothing.
+
+    `paragraph_open` is set by `split_at_paragraphs` at run time and is not in the
+    store — the fixture writes its bands through `save_zones`, which keeps only
+    what the ALTO holds — so the split is stubbed here. That it is *set* at all is
+    `test_zones_stores.py`'s.
+    """
+    blocks = [("MainZone-Continued", lines_at(["continues the page before."])),
+              ("MainZone-Continued", lines_at(["A new paragraph the raster found."],
+                                              245))]
+    stores(tmp_path, "1-021", blocks)
+
+    def split(zones, ref, root):
+        return [{**z, "paragraph_open": i > 0} for i, z in enumerate(zones)]
+
+    monkeypatch.setattr(gen, "split_at_paragraphs", split)
+    doc, rep = gen.build("1-021", tmp_path)
+    assert rep["paragraphs"] == 2
+    assert "<p>continues the page before.</p>" in doc
 
 
 def test_the_printed_line_breaks_survive(tmp_path):
@@ -151,20 +216,97 @@ def test_an_unparsed_folio_is_a_hole_not_a_guess(tmp_path):
     assert "<pb/>" in doc and "no folio parsed" in doc
 
 
-def test_the_footnote_block_is_found_and_left_unanchored(tmp_path):
-    """Half mechanical, half not, and the split is the point. *Which lines are the
-    apparatus* is the zone label and is emitted; *which body marker each note
-    belongs to* is a reading, so every note stays at the foot under a comment
-    saying so. `MarginTextZone-Notes` is one zone for the whole apparatus, so the
-    generator cannot even say how many notes there are."""
+def test_a_note_is_split_at_its_marker_and_anchored_at_the_matching_one(tmp_path):
+    """Both halves are the printer's own marks, so both are rules rather than
+    readings. The note begins where its superscript is set; it anchors where the
+    same character stands in the prose.
+
+    The character is then *replaced* by the note rather than preceded by it —
+    `@n` records which note it is, and the reading view raises the marker from
+    there, so leaving the glyph would set it twice. `@n` is the **digit**: the
+    collator contract has always specified an integer, and `.noteref` superscripts
+    whatever it holds."""
     blocks = [("MainZone-P", lines_at(["Body text.¹"])),
               ("MarginTextZone-Notes",
                lines_at(["¹ See the authorities quoted."], 245))]
     doc, rep = page(tmp_path, "1-021", blocks)
-    assert rep["notes"] == 1
-    assert '<note place="bottom">¹ See the authorities quoted.</note>' in doc
-    assert "which body marker each belongs to is a reading" in doc
-    assert 'n="1"' not in doc          # the marker is not assumed to be the number
+    assert rep["notes"] == 1 and rep["notes_anchored"] == 1
+    assert ('<p>Body text.<note n="1" place="bottom">See the authorities '
+            'quoted.</note></p>') in doc
+
+
+def test_the_thin_space_before_a_marker_goes_with_it(tmp_path):
+    """The book sets a space ahead of the raised digit (`1-100`: `[albino] ¹)`).
+    The `<note>` stands in for the marker, so it sets tight against the character
+    the marker followed — consuming the glyph and leaving the space would strand
+    it, and `validate` errors on precisely that."""
+    blocks = [("MainZone-P", lines_at(["the albino ¹ was taken."])),
+              ("MarginTextZone-Notes", lines_at(["¹ A note."], 245))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert '<p>the albino<note n="1" place="bottom">A note.</note> was taken.</p>' in doc
+
+
+def test_a_line_break_before_a_marker_is_not_eaten(tmp_path):
+    """Only spaces and tabs are consumed with the marker. The printed line breaks
+    are kept on purpose — they are what lets a reviewer read the file against the
+    raster a line at a time — so a marker the compositor pushed onto the next line
+    must not silently join the two."""
+    blocks = [("MainZone-P", lines_at(["the albino", "¹ was taken."])),
+              ("MarginTextZone-Notes", lines_at(["¹ A note.", "and more."], 290))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "the albino\n<note" in doc
+
+
+def test_several_notes_in_one_zone_become_several_notes(tmp_path):
+    """`MarginTextZone-Notes` is one zone for the whole apparatus, which used to
+    mean one `<note>` holding every note's text — rendered as a single marker at
+    the foot carrying three notes at once."""
+    blocks = [("MainZone-P", lines_at(["One¹ and two² here."])),
+              ("MarginTextZone-Notes",
+               lines_at(["¹ First note.", "² Second note, which",
+                         "runs to a second line."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["notes"] == 2 and rep["notes_anchored"] == 2
+    assert '<note n="1" place="bottom">First note.</note>' in doc
+    assert ('<note n="2" place="bottom">Second note, which\n'
+            'runs to a second line.</note>') in doc
+
+
+def test_a_marker_that_reads_nowhere_in_the_prose_stays_at_the_foot(tmp_path):
+    """The refusal half. Notes in this book anchor on their own page, so a marker
+    with no match means it did not read — and the comment says that rather than
+    inventing a facing page for it to belong to."""
+    blocks = [("MainZone-P", lines_at(["Body text with no marker in it."])),
+              ("MarginTextZone-Notes", lines_at(["¹ An orphan."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["notes"] == 1 and rep["notes_anchored"] == 0
+    assert "the marker did not read" in doc
+    assert '<note n="1" place="bottom">An orphan.</note>' in doc
+
+
+def test_a_marker_printed_twice_is_a_reading_and_is_refused(tmp_path):
+    """Two candidate anchors is not a near miss to be resolved by taking the
+    first: which one the note belongs to is exactly the judgement a rule may not
+    make."""
+    blocks = [("MainZone-P", lines_at(["First¹ and again¹ here."])),
+              ("MarginTextZone-Notes", lines_at(["¹ Ambiguous."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["notes_anchored"] == 0
+    assert "2 places in this page's prose read ¹" in doc
+
+
+def test_a_note_whose_marker_did_not_read_gets_no_n(tmp_path):
+    """Four blocks in the corpus open with note text and no superscript — the
+    recognizer dropped it at the head of the zone. That note is kept whole with no
+    `@n` rather than folded into the note below it, which would answer the
+    question of which note it is."""
+    blocks = [("MainZone-P", lines_at(["Body text.¹"])),
+              ("MarginTextZone-Notes",
+               lines_at(["Jackson, II, p. 17.", "¹ A real one."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["notes"] == 2
+    assert '<note place="bottom">Jackson, II, p. 17.</note>' in doc
+    assert "the recognizer dropped it" in doc
 
 
 def test_a_quote_zone_becomes_a_quote(tmp_path):
@@ -206,17 +348,25 @@ def test_mainzone_other_is_a_question_and_not_an_answer(tmp_path):
     assert "<head>" not in doc and "<table>" not in doc
 
 
-def test_a_ratified_form_arrives_as_an_empty_handle_with_no_language(tmp_path):
-    """The glyphs are adjudicated, so they are never retyped — the handle is what
-    `tei expand` fills from `gt/ocr/`. The *language* is not adjudicated by
-    anything: `tier1_terms` is a floor over inventory marks with no language
-    awareness, so it fires on a German surname carrying a combining diaeresis
-    exactly as on a Chukchee form. A generator naming a language would be inferring
-    one from the shape of a word."""
+def test_a_ratified_form_arrives_in_place_with_no_language(tmp_path):
+    """The word is *there*, and the language is not.
+
+    The glyphs are adjudicated and a rule copies them, exactly as it copies every
+    other character of the line — so putting them in costs nothing in fidelity.
+    They used to be withheld, which was right when the pass authored the file from
+    a plaintext draft and a model might have retyped them; once the generator
+    wrote the file that stopped buying anything and started costing the reviewer a
+    lookup from `index="1"` to `tier1_terms[1]` before it could judge a word it
+    could not see.
+
+    The *language* is not adjudicated by anything: `tier1_terms` is a floor over
+    inventory marks with no language awareness, so it fires on a German surname
+    carrying a combining diaeresis exactly as on a Chukchee form. A generator
+    naming a language would be inferring one from the shape of a word."""
     blocks = [("MainZone-P", lines_at(["the form kełiˊlın here"]))]
     doc, rep = page(tmp_path, "1-021", blocks)
     assert rep["handles"] == 1
-    assert '<foreign index="1"/>' in doc
+    assert '<foreign index="1">kełiˊlın</foreign>' in doc
     assert "xml:lang" not in doc
 
 
@@ -371,7 +521,7 @@ def test_diff_shows_the_shape_of_what_review_did(tmp_path):
     doc, _ = page(tmp_path, "1-021", blocks)
     gen.generate("1-021", tmp_path)
     _reviewed(tmp_path, "1-021", doc,
-              lambda d: d.replace('<foreign index="1"/>',
+              lambda d: d.replace('<foreign index="1">kełiˊlın</foreign>',
                                   '<name type="ethnonym">Chukchee</name>'))
     row = gen.diff("1-021", tmp_path)
     assert row["foreign"] == "1->0" and row["name"] == "0->1"
@@ -380,10 +530,10 @@ def test_diff_shows_the_shape_of_what_review_did(tmp_path):
 
 # --- the gate speaks once per open question ----------------------------------
 
-def _validated(tmp_path, ref="1-021"):
+def _validated(tmp_path, ref="1-021", body=None):
     from harness.validate import validate
     doc, _ = page(tmp_path, ref, [
-        ("MainZone-P", lines_at(["the form kełiˊlın here.¹"])),
+        ("MainZone-P", lines_at(body or ["the form kełiˊlın here.¹"])),
         ("MarginTextZone-Notes", lines_at(["¹ See the authorities."], 245))])
     out = tmp_path / "tei" / f"chukchi-{ref}.xml"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -405,15 +555,25 @@ def test_a_langless_handle_is_not_also_reported_as_unexpanded(tmp_path):
     assert not [e for e in errs if "never expanded" in e]
 
 
-def test_an_unanchored_note_is_named_as_such(tmp_path):
-    """It used to draw two proxy complaints — a stray space before it, and a missing
-    `@n` — both describing symptoms of being unanchored while naming something else.
-    A reviewer who fixed what those said had not fixed the page."""
+def test_an_anchored_note_draws_no_complaint(tmp_path):
+    """The gate used to fire on every generated page, because every generated page
+    left its notes at the foot. Now that the generator anchors what it can, an
+    error here means the marker really did read nowhere — which is the only
+    condition under which it is worth reading."""
     errs = _validated(tmp_path)
-    anchor = [e for e in errs if "has not been anchored" in e]
-    assert len(anchor) == 1 and "@n from that marker" in anchor[0]
+    assert not [e for e in errs if "has not been anchored" in e]
     assert not [e for e in errs if "space before <note" in e]
     assert not [e for e in errs if "without n=" in e]
+
+
+def test_a_note_the_generator_could_not_place_is_still_named_as_such(tmp_path):
+    """The rule has not gone away, it has stopped firing on the ordinary case. A
+    note left at the foot draws one error naming the anchoring, not the two proxy
+    complaints — a stray space, a missing `@n` — that used to describe symptoms of
+    being unanchored while naming something else."""
+    errs = _validated(tmp_path, body=["no marker anywhere in this line."])
+    anchor = [e for e in errs if "has not been anchored" in e]
+    assert len(anchor) == 1 and "@n from that marker" in anchor[0]
 
 
 def test_the_missing_opens_witness_is_the_error_that_remains(tmp_path):
@@ -421,3 +581,58 @@ def test_the_missing_opens_witness_is_the_error_that_remains(tmp_path):
     the raster — so its absence is the correct state of a generated page and the
     gate is what makes the collator go and look."""
     assert [e for e in _validated(tmp_path) if "opens:" in e]
+
+
+# --- the shapes the generator emits are conformant TEI -----------------------
+#
+# `tei validate --schema` reads `tei/`, so nothing checked the *generator's* own
+# markup against the grammar until a collator had copied a page into the store.
+# That is the wrong end: a shape the generator emits on all 832 pages is worth
+# refusing here, once, rather than on each page after review.
+
+
+def _conformance(tmp_path, blocks) -> list[str]:
+    from lxml import etree
+
+    from harness.schema import check
+    doc, _ = page(tmp_path, "1-021", blocks)
+    return check(etree.ElementTree(etree.fromstring(doc.encode())), REPO)
+
+
+def test_an_anchored_note_is_conformant(tmp_path):
+    """`<note>` inline in a `<p>`, which is where anchoring puts it."""
+    assert _conformance(tmp_path, [
+        ("MainZone-P", lines_at(["Body text.¹"])),
+        ("MarginTextZone-Notes", lines_at(["¹ See the authorities."], 245))]) == []
+
+
+def test_a_note_left_at_the_foot_is_conformant(tmp_path):
+    """The refusal path emits `<note>` as a child of `<body>`. `validate` calls
+    that an unanchored note and says so; the *grammar* has to permit it, or the
+    page could not be written down for a human to fix."""
+    assert _conformance(tmp_path, [
+        ("MainZone-P", lines_at(["No marker here."])),
+        ("MarginTextZone-Notes", lines_at(["¹ An orphan."], 245))]) == []
+
+
+def test_the_figure_shape_is_conformant_on_a_real_figure_page(tmp_path):
+    """`<figure n><figDesc>` against the committed grammar, on a page that has a
+    figure — which the fixtures above cannot build, the geometry coming from
+    `gt/fig/` rather than from the two stores they write.
+
+    The `index` handles are expected and excluded: a lang-less `<foreign
+    index="N">` is deliberately not conformant, being the one thing every
+    generated page carries that review must replace
+    (`test_the_handle_is_what_the_gate_refuses`). Excluded **by name**, so a
+    different non-conformance still fails this.
+    """
+    from lxml import etree
+
+    from harness.schema import check
+    if not (REPO / "gt" / "fig" / "chukchi-1-151.xml").exists():
+        pytest.skip("1-151 has no figure store in this checkout")
+    doc, rep = gen.build("1-151", REPO)
+    assert rep["figures"] == 1
+    errs = [e for e in check(etree.ElementTree(etree.fromstring(doc.encode())), REPO)
+            if "attribute index for element foreign" not in e]
+    assert errs == []

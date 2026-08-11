@@ -86,8 +86,10 @@ the stages that are built.
    Paragraph boundaries come from the keyed `MainZone-P`/`MainZone-Continued`
    labels, split further inside a band by `zones.paragraph_starts`; `<pb n>` from
    the running title's folio; apparatus zones and caption lines dropped;
-   `MarginTextZone-Notes` collected into one unanchored `<note>`; every ratified
-   `tier1_terms` hit lifted into an empty `<foreign index="N"/>`.
+   `MarginTextZone-Notes` split at its printed markers and each note anchored at
+   the matching marker in the prose; figures emitted as `<figure n><figDesc>`
+   where their boxes sit; every ratified `tier1_terms` hit lifted into an empty
+   `<foreign index="N"/>`.
 
    **This stage exists because the collation pass was re-deriving adjudicated
    facts.** A collator read the raster and decided where paragraphs began — on
@@ -95,12 +97,45 @@ the stages that are built.
    derivation can disagree with the first, nothing downstream can tell which is
    right, and the disagreement is invisible because both look like prose.
 
+   **A `Continued` band joins the paragraph above it.** Obvious from the label and
+   wrong here for a long time: both labels mapped to `p` and each band emitted its
+   own block, so a paragraph the printer ran across a band boundary came out broken
+   mid-sentence. The store had said so all along, which is this stage's whole
+   premise, applied to itself.
+
+   **It is a small fix and worth sizing honestly**: 15 paragraphs over the 274
+   generated pages. 213 of the corpus's 228 `Continued` bands are the *first* body
+   band on their page — the ordinary case of a paragraph running over from the page
+   before — and those still open a `<p>` here, because there is nothing above them
+   on this page to join. Rejoining across the page boundary is the seam's problem,
+   not this stage's.
+
+   **What the printer marked is a rule; what a reader must decide is not**, and
+   the footnotes are where that line moved. Splitting the apparatus at its
+   superscripts and anchoring each note at the same character in the body are both
+   character identity — the compositor set both marks and the recognizer read
+   both — so the generator does them, and the reading view gets one clickable
+   marker instead of a single `<note>` carrying three notes' text. What it still
+   refuses is the case where the evidence is short: a marker that reads nowhere in
+   the prose, or reads in two places, leaves the note at the foot saying which of
+   the two happened. Notes in this book anchor on their own page, so an unmatched
+   marker means the marker did not read.
+
+   **Figures are placed by geometry and are meant to be moved.** The box's
+   position is real evidence and puts the figure on the right part of the right
+   page; the anchor the edition wants is where the prose says "(Fig. 87, a)",
+   which is a reading. So each one carries a comment saying exactly that. A figure
+   whose box falls inside a paragraph comes out *after* it rather than splitting
+   it — which would undo what `MainZone-Continued` records. Note that
+   `context._figures_on_page` withholds geometry from the *model* on purpose and
+   this stage keeps it: a rule may use what a model may not, because a rule cannot
+   be persuaded by what it sees.
+
    **What it will not do is the other half.** Headings, tables, verse and captions
    all land in `MainZone-Other`, whose `rank: null` says the store declines to tell
-   them apart; note anchoring is a reading; a figure's place in the prose is a
-   reading; language is a judgement no inventory-mark detector can make. Each of
-   those leaves a comment naming itself, and the set of those comments is the next
-   stage's worklist.
+   them apart; a figure's place in the prose is a reading; language is a judgement
+   no inventory-mark detector can make. Each of those leaves a comment naming
+   itself, and the set of those comments is the next stage's worklist.
 
 4. **Collation** — an LLM reviews the generated page against the scan, and its
    deliverable is `tei/`. `harness tei claim` copies the baseline into place, so
