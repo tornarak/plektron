@@ -19,18 +19,29 @@ a reload, a second tab or a re-run of the command agree with each other.
 from __future__ import annotations
 
 import json
-import socket
-import threading
-import urllib.error
-import urllib.request
 from pathlib import Path
 
 import pytest
 
-from harness.review import decisions_path, render_queue_html, serve
+from harness.review import decisions_path, page_context
 from harness.tests.conftest import write_scan
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
+
+
+def render_queue_html(ref, alto_dir, root, **kw):
+    """The review page as a string, through the template the server uses.
+
+    The renderer used to return HTML directly; it returns a context now and the
+    markup is a template, so a test that wants the page has to go through the
+    same two steps the server does. One renderer, so the served page and the
+    `--html` file cannot drift.
+    """
+    from harness.web import templates
+
+    ctx = page_context(ref, alto_dir, root, **kw)
+    return templates.get_template("review/page.html").render(
+        **ctx, base="/review", static="/static", request=None)
 
 
 def _page(root: Path, ref: str, n: int = 2) -> None:
@@ -65,64 +76,64 @@ def _page(root: Path, ref: str, n: int = 2) -> None:
     }), encoding="utf-8")
 
 
-def _free_port() -> int:
-    with socket.socket() as s:
-        s.bind(("127.0.0.1", 0))
-        return s.getsockname()[1]
-
-
 class Session:
-    """A served session, driven over real HTTP.
+    """A served session, driven over a `TestClient`.
 
-    Real requests rather than calling the handler directly: the routing, the
-    payload shape and the shutdown-on-last-page are the contract, and all three
-    live in the wiring rather than in a function that could be called in isolation.
+    Real requests rather than calling handlers directly: the routing, the payload
+    shape and the shutdown-on-last-page are the contract, and all three live in
+    the wiring rather than in a function that could be called in isolation. What
+    is gone is the *socket* — a free port, a daemon thread and a 200-iteration
+    poll waiting for a bind, none of which tested anything. The invariants that
+    really are about a socket are `test_web_shell.py`'s.
     """
 
     def __init__(self, refs, root):
+        from starlette.testclient import TestClient
+
+        from harness.web import Sessions, create_app
+
         self.refs, self.root = list(dict.fromkeys(refs)), root
-        self.port = _free_port()
-        self.base = f"http://127.0.0.1:{self.port}"
-        self.thread = threading.Thread(
-            target=serve, args=(refs, "mz/ocr", root, self.port), daemon=True)
+        self.base = "/review"
+        session = {"queue": self.refs, "alto_dir": "mz/ocr"}
+        self.app = create_app(root, Sessions(root=root,
+                                             by_editor={"review": session}),
+                              editor="review")
+
+        class _Stoppable:
+            should_exit = False
+
+        self.app.state.server = _Stoppable()
+        self.client = TestClient(self.app, raise_server_exceptions=False)
 
     def __enter__(self):
-        self.thread.start()
-        for _ in range(200):  # bind is not instantaneous; poll rather than sleep
-            try:
-                self.get("/")
-                return self
-            except Exception:
-                threading.Event().wait(0.02)
-        raise RuntimeError("server never came up")
+        return self
 
     def __exit__(self, *exc):
-        # Stop it the way the page does, rather than abandoning the thread and
-        # waiting out a join timeout: mark everything adjudicated on disk, then one
-        # Done finds nothing left and shuts down. Leaving daemon threads holding
-        # ports across a suite is how a later test fails for an unrelated reason.
-        if self.thread.is_alive():
-            try:
-                for r in self.refs:
-                    p = decisions_path(r, self.root)
-                    p.parent.mkdir(parents=True, exist_ok=True)
-                    if not p.exists():
-                        p.write_text(json.dumps({"lines": {}}), encoding="utf-8")
-                self.post("/done", {"ref": self.refs[-1]})
-            except Exception:
-                pass
-        self.thread.join(timeout=5)
+        return False
 
     def get(self, path):
-        with urllib.request.urlopen(self.base + path, timeout=5) as r:
-            return r.read().decode("utf-8")
+        r = self.client.get(self.base + path)
+        if r.status_code >= 400:
+            raise HTTPError(r.status_code, r.text)
+        return r.text
 
     def post(self, path, payload):
-        req = urllib.request.Request(
-            self.base + path, data=json.dumps(payload).encode(),
-            headers={"Content-Type": "application/json"}, method="POST")
-        with urllib.request.urlopen(req, timeout=5) as r:
-            return json.loads(r.read() or b"{}")
+        r = self.client.post(self.base + path, json=payload)
+        if r.status_code >= 400:
+            raise HTTPError(r.status_code, r.text)
+        return r.json()
+
+
+class HTTPError(Exception):
+    """Carries the status and the body, the two things the old `urllib` error
+    gave these tests."""
+
+    def __init__(self, code: int, body: str):
+        super().__init__(f"HTTP {code}")
+        self.code, self.body = code, body
+
+    def read(self):
+        return self.body.encode("utf-8")
 
 
 @pytest.fixture(autouse=True)
@@ -168,8 +179,8 @@ def test_the_strip_marks_current_and_done_distinctly(two):
     html = render_queue_html("2-046", "mz/ocr", two, queue=[
         {"ref": "2-046", "done": False}, {"ref": "2-047", "done": True}])
     assert "<span class=cur>2-046</span>" in html
-    assert "href='/p/2-047'" in html
-    assert "class='done'" in html
+    assert 'href="/review/p/2-047"' in html
+    assert 'class="done"' in html
     assert "1/2 adjudicated" in html
 
 
@@ -190,7 +201,8 @@ def test_the_page_carries_its_own_ref_for_every_write(two):
     server holding a 'current page' the browser could contradict."""
     html = render_queue_html("2-046", "mz/ocr", two)
     assert 'REF="2-046"' in html
-    assert "{ref:REF,lines:collect()}" in html
+    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    assert "{ref:REF,lines:collect()}" in js
 
 
 # --- the session -----------------------------------------------------------
@@ -234,7 +246,11 @@ def test_a_save_naming_no_page_is_refused_rather_than_guessed(two):
     with Session(["2-046", "2-047"], two) as s:
         with pytest.raises(Exception) as e:
             s.post("/save", {"lines": {"0": {"text": "nowhere"}}})
-        assert "500" in str(e.value)
+        # 422 rather than 500: `ref` is a required field on the declared payload
+        # now, so a save naming no page is refused by the parser before any
+        # writer sees it. Same guard — a save must never fall back to "the
+        # current page" — enforced one layer earlier.
+        assert "422" in str(e.value)
         assert not decisions_path("2-046", two).exists()
         assert not decisions_path("2-047", two).exists()
 
@@ -245,14 +261,15 @@ def test_done_advances_and_only_the_last_one_stops_the_server(two):
     with Session(["2-046", "2-047"], two) as s:
         s.post("/save", {"ref": "2-046", "lines": {"0": {"text": "a"}}})
         assert s.post("/done", {"ref": "2-046"})["next"] == "2-047"
-        assert s.thread.is_alive(), "a session with a page left must stay up"
+        assert not s.app.state.server.should_exit, \
+            "a session with a page left must stay up"
         # Still serving, and now showing 2-046 as done.
-        assert "class='done'" in s.get("/p/2-047")
+        assert 'class="done"' in s.get("/p/2-047")
 
         s.post("/save", {"ref": "2-047", "lines": {"0": {"text": "b"}}})
         assert s.post("/done", {"ref": "2-047"})["next"] is None
-        s.thread.join(timeout=5)
-        assert not s.thread.is_alive(), "the last Done must stop the server"
+        assert s.app.state.server.should_exit, \
+            "the last Done must stop the server"
 
 
 def test_adjudicatedness_comes_from_the_disk_not_the_process(two):
@@ -281,7 +298,7 @@ def test_the_page_links_to_its_own_full_scan(two):
     """
     with Session(["2-046", "2-047"], two) as s:
         html = s.get("/p/2-046")
-        assert "href='/scan/2-046'" in html
+        assert 'href="/review/scan/2-046"' in html
         assert "target=_blank" in html
 
 
@@ -289,9 +306,9 @@ def test_the_scan_route_serves_the_raster_and_only_for_queued_refs(two):
     """A route rather than a data URI, because the sheet is megabytes and the
     review page is reloaded constantly to carry something opened occasionally."""
     with Session(["2-046"], two) as s:
-        with urllib.request.urlopen(s.base + "/scan/2-046", timeout=5) as r:
-            assert r.headers["Content-Type"] == "image/png"
-            assert r.read()[:8] == b"\x89PNG\r\n\x1a\n"
+        r = s.client.get(s.base + "/scan/2-046")
+        assert r.headers["content-type"] == "image/png"
+        assert r.content[:8] == b"\x89PNG\r\n\x1a\n"
         # Same containment rule the page route has: a ref nobody queued is not
         # reachable, so one session cannot be used to browse the corpus.
         with pytest.raises(Exception) as e:
@@ -315,7 +332,7 @@ def test_a_human_note_is_opt_in_and_absent_until_written(two):
     html = render_queue_html("2-046", "mz/ocr", two)
     assert "class=hnb" in html, "no button to open a note"
     # Present in the markup but not shown: opening one must not cost a round trip.
-    assert "data-note='0'" in html
+    assert 'data-note="0"' in html
     assert html.count("hidden></textarea>") >= 2, "note fields should start hidden"
 
 
@@ -340,7 +357,7 @@ def test_a_saved_note_renders_open(two):
                          "lines": {"1": {"text": "b", "note": "scanner smudge"}}})
         html = s.get("/p/2-046")
         assert "scanner smudge" in html
-        assert "class=hnb data-line='1' hidden" in html
+        assert 'class=hnb data-line="1" hidden' in html
 
 
 def test_an_emptied_note_folds_back_to_the_button(two):
@@ -350,10 +367,11 @@ def test_an_emptied_note_folds_back_to_the_button(two):
     scoped to note fields (`data-note`), and reverting is conditional on the field
     being blank, so a note with content is never closed out from under the typist.
     """
-    html = render_queue_html("2-046", "mz/ocr", two)
-    assert "t.dataset.note!==undefined" in html, "blur handler not scoped to notes"
-    assert "addEventListener('blur'" in html
-    assert "if(t.value.trim()) return;" in html
+    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    assert "t.dataset.note!==undefined" in js, "blur handler not scoped to notes"
+    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    assert "addEventListener('blur'" in js
+    assert "if(t.value.trim()) return;" in js
 
 
 def test_restore_reports_a_note_on_a_line_nobody_edited(two):
@@ -380,9 +398,9 @@ def test_notes_are_not_posted_as_line_readings(two):
     """The note boxes are textareas too. Every selector that means "a line's
     reading" is scoped to [data-line] for this reason — an unscoped one would
     collect them and post a note as if it were the text of some line."""
-    html = render_queue_html("2-046", "mz/ocr", two)
-    assert "querySelectorAll('textarea[data-line]')" in html
-    assert "for(const t of document.querySelectorAll('textarea'))\n" not in html
+    js = Path("harness/web/static/js/review.js").read_text(encoding="utf-8")
+    assert "querySelectorAll('textarea[data-line]')" in js
+    assert "for(const t of document.querySelectorAll('textarea'))\n" not in js
 
 
 def test_a_repeated_ref_is_queued_once(two):
@@ -394,7 +412,7 @@ def test_a_repeated_ref_is_queued_once(two):
 
 # --- failure is reported where it happened ---------------------------------
 
-def test_a_store_that_cannot_answer_refuses_before_the_socket_is_bound(two):
+def test_a_store_that_cannot_answer_refuses_before_the_socket_is_bound(two, capsys):
     """Naming the wrong `--store` is a fact about the invocation, so it is
     reported by the invocation.
 
@@ -405,10 +423,16 @@ def test_a_store_that_cannot_answer_refuses_before_the_socket_is_bound(two):
     under `--serve` is always a background log. `serve` resolves every ref's
     geometry first, the same rule `page_refs` applies to ref parsing.
     """
+    from harness.cli import main
+
     (two / "mz" / "ocr" / "chukchi-2-047.xml").unlink()
-    with pytest.raises(FileNotFoundError) as e:
-        serve(["2-046", "2-047"], "mz/ocr", two, _free_port())
-    msg = str(e.value)
+    # Driven through the CLI, because that is where the check now lives: the
+    # server binds every registered editor's port, so "before the socket is
+    # bound" means before `serve` is reached at all. Exit 2 is the usage-error
+    # code the conventions already give an invocation that named the wrong thing.
+    assert main(["ocr", "review", "2-046", "2-047", "--serve",
+                 "--root", str(two)]) == 2
+    msg = capsys.readouterr().err
     assert "2-047" in msg and "2-046" not in msg, "names the pages that are missing"
     assert "--store gt" in msg, "names the store that would answer"
 
@@ -426,7 +450,7 @@ def test_a_failed_request_renders_the_reason_instead_of_resetting(two, monkeypat
         def boom(*a, **kw):
             raise RuntimeError("the crop scaler fell over")
         monkeypatch.setattr(L, "write_line_crops", boom)
-        with pytest.raises(urllib.error.HTTPError) as e:
+        with pytest.raises(HTTPError) as e:
             s.get("/p/2-046")
         assert e.value.code == 500
         body = e.value.read().decode("utf-8")
@@ -490,7 +514,9 @@ def test_a_box_of_zero_lines_is_not_reachable(tmp_path):
 def test_the_box_floor_does_not_cap_growth(tmp_path):
     """`min-height`, never `rows`: a long line still expands to hold itself, and
     a reviewer who drags the box larger keeps it."""
-    _page(tmp_path, "2-046")
-    html = render_queue_html("2-046", "mz/ocr", tmp_path)
-    assert "min-height:calc(var(--bl) * 1.45em" in html
-    assert "resize:vertical" in html
+    # The rule lives in `review.css` now rather than in the page — a floor, not a
+    # size, so the box autogrows past it and a reviewer who wants room to see a
+    # wrapped line gets it without the box shrinking back on every keystroke.
+    css = Path("harness/web/static/css/review.css").read_text(encoding="utf-8")
+    assert "min-height:calc(var(--bl) * 1.45em" in css
+    assert "resize:vertical" in css

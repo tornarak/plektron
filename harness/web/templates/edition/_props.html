@@ -1,0 +1,39 @@
+{# Every remaining field of the record, as rows.
+
+   The rule this exists to keep is that **an entity file has no invisible
+   fields**. A store a human hand-maintains whose values never reach the page is
+   one where a wrong value is never noticed — the same failure as an unratified
+   span rendered like a ratified one, one store over.
+
+   Rows arrive typed (`row.kind`) rather than as pre-built markup, so the
+   escaping stays the template's and a new field cannot smuggle raw HTML in
+   through a value.
+
+   The `contains` row's key is `entries` and not `items`: Jinja resolves
+   `row.items` to the dict *method* before it looks for the key, so the
+   multi-value row silently iterated a bound method. Renamed rather than written
+   as `row['items']`, because the next person to add a row would hit it again. #}
+{% if props %}
+<table class='props'>
+{% for row in props %}
+<tr><th>{{ row.label }}</th><td>
+{%- if row.kind == 'entity' -%}
+  <a class='ent' data-ref='{{ row.id }}' href='{{ base }}/entity/{{ row.id }}'>{{ row.name }}</a>
+{%- elif row.kind == 'entities' -%}
+  {% for it in row.entries %}<a class='ent' data-ref='{{ it.id }}'
+     href='{{ base }}/entity/{{ it.id }}'>{{ it.name }}</a>
+  {%- if not loop.last %}, {% endif %}{% endfor %}
+{%- elif row.kind == 'area' -%}
+  <code>{{ row.id }}</code>{% if row.detail %} — {{ row.detail }}{% endif %}
+{%- elif row.kind == 'point' -%}
+  {{ row.lat }}, {{ row.lon }} <span class='dim'>(WGS84)</span>
+{%- elif row.kind == 'authority' -%}
+  <code>{{ row.id }}</code>
+  {%- if row.title %} — {{ row.title }}
+  {%- else %} — <span class='dangling'>no such key in
+  data/authorities.json</span>{% endif %}
+{%- endif -%}
+</td></tr>
+{% endfor %}
+</table>
+{% endif %}

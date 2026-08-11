@@ -99,12 +99,18 @@ Layout, all at the repo root:
     ocr/  zones/  the read views over the paired stores — symlinks, the human
             file always winning. Derived; ignored. Never written through.
     tei/    the collated pages, plus corpus-header.xml — the corpus teiHeader,
-            a fragment gated by `harness tei header`.
+            a fragment gated by `harness tei header`. The header is tracked; the
+            pages are **temporarily ignored** while the generator is rewritten,
+            for the reason and the expiry in .gitignore.
     entities/  the encyclopedia, one markdown file per entity under its class
             (person/, place/, event/ …). An identity is `class:slug`, which is
             what every `@ref` holds. Tracked; `entity check` gates it.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
             zones_config.json  lines_config.json  tei_all.rng (the schema).
+    data/geo/  the atlas's shapes — watersheds, language areas, coastline.
+            **Derived but tracked**, the one store that is: its sources are
+            outside the repo, so a clone cannot rebuild it. tools/build_geo.py
+            builds, SOURCES.md records provenance, `geo list` is the census.
     review/ one directory per page: proposal.json (a reading, not truth) and
             decision.json (adjudicated) are tracked; the images are derived and
             ignored. See harness/paths.py.

@@ -28,6 +28,33 @@ dependencies = [
     "tensorboard>=2.21.0",
     "toon-format>=0.9.0b1",
     "cloup>=3.1.0",
+    # **The Russian morphological dictionary**, for the lexicon check over the
+    # gloss column of the annexed dictionaries (Moll & Inenlikej 1957 first).
+    # The asymmetry it exploits is the one the English `lexicon_miss` detector
+    # rests on: Russian has a dictionary and Chukchi does not, so a misread
+    # gloss word is catchable by one reader plus a wordlist where a misread
+    # headword needs two independent readers. Declared rather than supplied by
+    # `uv run --with` because the check is part of the pass now, and a check
+    # that only runs when someone remembers a flag is not a gate on anything.
+    "pymorphy3>=2.0",
+    # **The web layer** (`harness/web/`), which the four browser editors and the
+    # reading view are served from. `fastapi` is the router and, through
+    # pydantic, the declared shape of every POST body — the editors' saves were
+    # dicts dug out of `json.loads` by hand. `uvicorn` is the ASGI server, and
+    # the multi-socket form of its `serve()` is load-bearing rather than
+    # incidental: one process listens on all four editors' ports, which is what
+    # lets them share a template tree and cross-link.
+    #
+    # `starlette`, `pydantic` and `anyio` arrive through fastapi and are
+    # deliberately **not** declared — they are fastapi's interface, not ours,
+    # and pinning them here would be asserting a compatibility we do not test.
+    "fastapi>=0.120",
+    "uvicorn>=0.38",
+    # Declared for the reason `numpy` and `pillow` are, one paragraph up: it was
+    # already here transitively, and the harness now imports it directly, so a
+    # release that dropped it would break this package with an ImportError
+    # naming neither it nor the reason.
+    "jinja2>=3.1",
 ]
 
 [project.scripts]
@@ -49,6 +76,15 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.16.1",
     "ty>=0.0.65",
+    # `starlette.testclient.TestClient` is built on it. Dev-only because the
+    # tests are the only caller: the web layer serves requests, it does not make
+    # them. This is what replaced standing a real server up on a real port and
+    # polling it — see `harness/tests/test_web_shell.py`.
+    #
+    # **`httpx2`, not `httpx`.** Starlette 1.6 deprecates the latter for the test
+    # client and says so on every import. Taking the warning on a dependency
+    # added today would be inheriting a migration we can simply not need.
+    "httpx2>=2.9",
 ]
 
 # ---------------------------------------------------------------------- ruff

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}zones {{ st.ref }}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/editor.css">
+{% endblock %}
+
+{% block body %}
+<div id='bar'>
+<b>{{ st.ref }}</b>
+{% if itinerary_name %}
+<span class='pill' title='itinerary: {{ itinerary_name }}'>
+{%- if st.on_list %}{{ st.index }}/{{ st.total }}
+{%- else %}off-list · {{ st.total }}{% endif %} · {{ st.done }} done</span>
+{% else %}
+<span class='pill'>{{ st.index }}/{{ st.total }}</span>
+{% endif %}
+{# **Which track the pointer is on, first and loudest.** Everything else in this
+   bar describes the page; this describes what a click will do, and without it
+   pressing the toggle read as the editor freezing — the zone preview stops
+   following the cursor, which is correct and looked broken. #}
+<span class='pill' id='track'></span>
+<span><i id='swatch'></i><span id='cur'></span></span>
+<span class='pill' id='anchor'></span>
+<span class='pill' id='col'></span>
+<span class='pill' id='split'></span>
+<span class='pill' id='chain'></span>
+{# The store selector: which store is being looked at, what each holds, and which
+   one answered. Three facts rather than one, because the useful question at a
+   glance is "is there anything in the other store" — visible here instead of
+   discovered by switching. `/` cycles. #}
+{% for s in stores %}
+<span class="pill store{{ ' on' if s.on }}" id='store-{{ s.name }}'
+  data-store='{{ s.name }}' title="press / to cycle · {{ s.help }}">{{ s.name }}
+  <span class='n'>{{ s.count }}</span></span>
+{% endfor %}
+{% if st.proposal %}
+{# Only ever set when the machine store is what answered. An unlabelled proposal
+   would look exactly like a page someone had already keyed, which is the one
+   confusion the two stores exist to prevent. #}
+<span class='pill on' id='proposal' title='predicted by the segmenter, not yet
+ruled on — correct it and save, and it becomes ground truth'>machine proposal
+{%- if st.proposal_short %} · {{ st.proposal_short }} sliver(s) under the minimum
+height dropped{% endif %}
+{%- if st.proposal_dropped %} · {{ st.proposal_dropped | length }} label(s)
+dropped: {{ st.proposal_dropped | join(', ') }}{% endif %}</span>
+{% endif %}
+<span id='count'></span>
+<span id='target'></span>
+<span id='msg'></span>
+<button id='btnsave'>save</button><button id='btndone'>Done</button>
+</div>
+
+<div id='wrap'><div id='stage'>
+<img id='img' src="{{ base }}/page/{{ st.ref }}.png" alt="page {{ st.ref }}">
+<div id='ov'></div>
+</div></div>
+
+<div id='panel'><h4>types</h4>
+{% for t in types %}
+<div class='tk' data-track='zone' data-label="{{ t.label }}">
+<i style="background:{{ t.color }}"></i><span>{{ t.name }}</span>
+{%- if t.oneclick %}<em title="{{ t.oneclick }}">1&#8203;click</em>{% endif %}
+{%- if t.ends %}<em title='the chain stops here — the next top is left unset
+rather than guessed'>ends</em>{% endif %}
+<kbd>{{ t.key }}</kbd></div>
+{% endfor %}
+<h4>actions</h4>
+{% for a in actions %}
+<div class='key'><span>{{ a.label }}</span><kbd>{{ a.key }}</kbd></div>
+{% endfor %}
+<h4>drawing</h4>
+<div class='key'><span>set top, then bottom</span><kbd>click ×2</kbd></div>
+<div class='key'><span>cancel / break chain</span><kbd>right-click</kbd></div>
+<h4>existing zones</h4>
+<div class='key'><span>select one</span><kbd>click it</kbd></div>
+<div class='key'><span>then change its type</span><kbd>type key</kbd></div>
+<div class='key'><span>retype without selecting</span><kbd>shift + type key</kbd></div>
+<div class='key'><span>move a boundary</span><kbd>shift-drag</kbd></div>
+<div class='key'><span>jump a screen</span><kbd>hover top / bottom</kbd></div>
+{% if fig_types %}
+<h4>figure track</h4>
+{% for t in fig_types %}
+<div class='tk' data-track='fig' data-label="{{ t.label }}">
+<i style="background:{{ t.color }}"></i><span>{{ t.name }}</span>
+<kbd>{{ t.key }}</kbd></div>
+{% endfor %}
+<div class='key'><span>draw a box</span><kbd>drag</kbd></div>
+<div class='key'><span>set the opposite corner</span><kbd>click</kbd></div>
+<div class='key'><span>resize a box</span><kbd>drag a handle</kbd></div>
+<div class='key'><span>move a box</span><kbd>shift-drag</kbd></div>
+<div class='key'><span>drop it</span><kbd>right-click</kbd></div>
+<div id='flags'>The figure track is a <em>parallel</em> store: freely-placed
+rectangles over the picture and its caption, not bands of the column, and its x
+comes from the pointer rather than the measure — the one place in this editor
+where it does. Committing a picture arms the caption's first corner at its
+bottom-left, and one further click sets the opposite one — the chain's hand-off
+in two dimensions, imputing no size. The caption's <em>text</em> is not keyed
+here: draw the box, save, and the banner names the block to key in
+data/readings.md.</div>
+{% endif %}
+<div id='flags'>Chain mode carries the last bottom edge into the next zone, so a
+run of prose is one key and one click each; right-click breaks it where the page
+leaves whitespace. The dashed guide is the column a click will use. Zones share
+their boundaries, so dragging one moves both sides of it and the partition stays
+whole.</div>
+</div>
+
+<div id='issues'></div>
+{% endblock %}
+
+{% block scripts %}
+<script>const CFG={{ cfg | tojson }};const ST={{ st | tojson }};</script>
+<script src="/static/js/zones.js"></script>
+{% endblock %}

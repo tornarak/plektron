@@ -1,0 +1,777 @@
+{
+ "window": [
+  79.51391504887165,
+  39.71041,
+  216.88720552300003,
+  76.55121496780525
+ ],
+ "lon_base": 60.0,
+ "absent": {
+  "ypk": "Siberian Yupik — the book's “Asiatic Eskimo”. Asher 2007 draws the Alaskan Yupik varieties and no Asian one.",
+  "xcv": "Chuvan. No polygon in Asher 2007.",
+  "kerek": "Kerek. No polygon in Asher 2007.",
+  "yukaghir-tundra": "Tundra (Northern) Yukaghir. Asher 2007 draws Southern Yukaghir only."
+ },
+ "shapes": [
+  {
+   "id": "base:lakes",
+   "kind": "base",
+   "name": "lakes",
+   "source": "naturalearth-50m",
+   "file": "base/lakes.json",
+   "points": 415,
+   "bounds": [
+    79.514,
+    41.825,
+    213.527,
+    75.16
+   ]
+  },
+  {
+   "id": "base:land",
+   "kind": "base",
+   "name": "land",
+   "source": "naturalearth-50m",
+   "file": "base/land.json",
+   "points": 1542,
+   "bounds": [
+    79.514,
+    39.71,
+    216.887,
+    76.551
+   ]
+  },
+  {
+   "id": "langarea:aleu1260",
+   "kind": "langarea",
+   "name": "Aleut",
+   "family": "Eskimo-Aleut",
+   "glottocode": "aleu1260",
+   "tier1": "",
+   "source": "asher2007",
+   "file": "langarea/aleu1260.json",
+   "points": 166,
+   "bounds": [
+    165.746,
+    54.503,
+    200.17,
+    56.387
+   ]
+  },
+  {
+   "id": "langarea:cent2127",
+   "kind": "langarea",
+   "name": "Central Alaskan Yupik",
+   "family": "Eskimo-Aleut",
+   "glottocode": "cent2127",
+   "tier1": "",
+   "source": "asher2007",
+   "file": "langarea/cent2127.json",
+   "points": 482,
+   "bounds": [
+    192.547,
+    58.23,
+    206.123,
+    65.361
+   ]
+  },
+  {
+   "id": "langarea:chuk1273",
+   "kind": "langarea",
+   "name": "Chukchi",
+   "family": "Chukotko-Kamchatkan",
+   "glottocode": "chuk1273",
+   "tier1": "ckt",
+   "source": "asher2007",
+   "file": "langarea/chuk1273.json",
+   "points": 469,
+   "bounds": [
+    151.902,
+    61.017,
+    180.0,
+    71.099
+   ]
+  },
+  {
+   "id": "langarea:even1259",
+   "kind": "langarea",
+   "name": "Evenki",
+   "family": "Tungusic",
+   "glottocode": "even1259",
+   "tier1": "",
+   "source": "asher2007",
+   "file": "langarea/even1259.json",
+   "points": 1610,
+   "bounds": [
+    81.514,
+    42.045,
+    146.933,
+    73.444
+   ]
+  },
+  {
+   "id": "langarea:even1260",
+   "kind": "langarea",
+   "name": "Even (Lamut)",
+   "family": "Tungusic",
+   "glottocode": "even1260",
+   "tier1": "eve",
+   "source": "asher2007",
+   "file": "langarea/even1260.json",
+   "points": 1010,
+   "bounds": [
+    123.871,
+    54.254,
+    177.674,
+    73.549
+   ]
+  },
+  {
+   "id": "langarea:itel1242",
+   "kind": "langarea",
+   "name": "West Itelmen",
+   "family": "Chukotko-Kamchatkan",
+   "glottocode": "itel1242",
+   "tier1": "itl",
+   "source": "asher2007",
+   "file": "langarea/itel1242.json",
+   "points": 53,
+   "bounds": [
+    155.71,
+    55.769,
+    159.407,
+    58.264
+   ]
+  },
+  {
+   "id": "langarea:kory1246",
+   "kind": "langarea",
+   "name": "Koryak",
+   "family": "Chukotko-Kamchatkan",
+   "glottocode": "kory1246",
+   "tier1": "kpy",
+   "source": "asher2007",
+   "file": "langarea/kory1246.json",
+   "points": 485,
+   "bounds": [
+    156.35,
+    53.425,
+    175.165,
+    64.24
+   ]
+  },
+  {
+   "id": "langarea:nort2943",
+   "kind": "langarea",
+   "name": "North Alaskan Inupiatun",
+   "family": "Eskimo-Aleut",
+   "glottocode": "nort2943",
+   "tier1": "ipk",
+   "source": "asher2007",
+   "file": "langarea/nort2943.json",
+   "points": 362,
+   "bounds": [
+    193.171,
+    65.191,
+    210.731,
+    71.413
+   ]
+  },
+  {
+   "id": "langarea:nort2945",
+   "kind": "langarea",
+   "name": "Seward Alaska Inupiatun",
+   "family": "Eskimo-Aleut",
+   "glottocode": "nort2945",
+   "tier1": "ipk",
+   "source": "asher2007",
+   "file": "langarea/nort2945.json",
+   "points": 90,
+   "bounds": [
+    191.863,
+    64.448,
+    196.92,
+    66.603
+   ]
+  },
+  {
+   "id": "langarea:paci1278",
+   "kind": "langarea",
+   "name": "Pacific Gulf Yupik",
+   "family": "Eskimo-Aleut",
+   "glottocode": "paci1278",
+   "tier1": "",
+   "source": "asher2007",
+   "file": "langarea/paci1278.json",
+   "points": 831,
+   "bounds": [
+    199.811,
+    55.572,
+    214.887,
+    61.442
+   ]
+  },
+  {
+   "id": "langarea:sout2750",
+   "kind": "langarea",
+   "name": "Southern Yukaghir",
+   "family": "Yukaghir",
+   "glottocode": "sout2750",
+   "tier1": "",
+   "source": "asher2007",
+   "file": "langarea/sout2750.json",
+   "points": 31,
+   "bounds": [
+    150.76,
+    62.536,
+    153.212,
+    65.694
+   ]
+  },
+  {
+   "id": "langarea:yaku1245",
+   "kind": "langarea",
+   "name": "Sakha (Yakut)",
+   "family": "Turkic",
+   "glottocode": "yaku1245",
+   "tier1": "",
+   "source": "asher2007",
+   "file": "langarea/yaku1245.json",
+   "points": 1362,
+   "bounds": [
+    85.436,
+    50.5,
+    161.415,
+    74.551
+   ]
+  },
+  {
+   "id": "watershed:alazeya",
+   "kind": "watershed",
+   "name": "alazeya",
+   "area_km2": 64000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 64,000 km² (25,000 sq. miles) with an outlet near coordinates: 70.824, 153.667.",
+   "wid": "M35001986",
+   "retrieved": "2026-08-07T03:03:05.546Z",
+   "rivers_kept": 124,
+   "rivers_total": 386,
+   "sorder_floor": 5,
+   "file": "watershed/alazeya.json",
+   "points": 1269,
+   "bounds": [
+    147.542,
+    67.465,
+    155.784,
+    70.845
+   ]
+  },
+  {
+   "id": "watershed:amur",
+   "kind": "watershed",
+   "name": "amur",
+   "area_km2": 1900000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 1,900,000 km² (720,000 sq. miles) with an outlet near coordinates: 52.932, 141.219.",
+   "wid": "M42007759",
+   "retrieved": "2026-08-07T02:55:31.931Z",
+   "rivers_kept": 914,
+   "rivers_total": 2945,
+   "sorder_floor": 7,
+   "file": "watershed/amur.json",
+   "points": 4885,
+   "bounds": [
+    108.742,
+    41.71,
+    141.232,
+    55.937
+   ]
+  },
+  {
+   "id": "watershed:anadyr",
+   "kind": "watershed",
+   "name": "anadyr",
+   "area_km2": 190000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 190,000 km² (74,000 sq. miles) with an outlet near coordinates: 64.917, 176.069.",
+   "wid": "M35031075",
+   "retrieved": "2026-08-07T03:29:44.983Z",
+   "rivers_kept": 123,
+   "rivers_total": 589,
+   "sorder_floor": 6,
+   "file": "watershed/anadyr.json",
+   "points": 1302,
+   "bounds": [
+    165.286,
+    62.249,
+    178.279,
+    68.285
+   ]
+  },
+  {
+   "id": "watershed:baranikha-or-rauchua",
+   "kind": "watershed",
+   "name": "rauchua or baranikha",
+   "area_km2": 15000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 15,000 km² (5,900 sq. miles) with an outlet near coordinates: 69.479, 166.644.",
+   "wid": "P7a12c89595b9",
+   "retrieved": "2026-08-07T03:04:47.626Z",
+   "rivers_kept": 53,
+   "rivers_total": 175,
+   "sorder_floor": 4,
+   "file": "watershed/baranikha-or-rauchua.json",
+   "points": 372,
+   "bounds": [
+    165.398,
+    67.643,
+    169.384,
+    69.52
+   ]
+  },
+  {
+   "id": "watershed:chaun",
+   "kind": "watershed",
+   "name": "chaun",
+   "area_km2": 24000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 24,000 km² (9,300 sq. miles) with an outlet near coordinates: 68.884, 170.668.",
+   "wid": "Pf0d841bb33eb",
+   "retrieved": "2026-08-07T02:54:57.938Z",
+   "rivers_kept": 11,
+   "rivers_total": 152,
+   "sorder_floor": 5,
+   "file": "watershed/chaun.json",
+   "points": 424,
+   "bounds": [
+    170.446,
+    67.117,
+    177.747,
+    69.065
+   ]
+  },
+  {
+   "id": "watershed:dry-anui-or-bolshoy-anyuy",
+   "kind": "watershed",
+   "name": "bolshoy anyuy",
+   "area_km2": 57000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 57,000 km² (22,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
+   "wid": "M35009707",
+   "retrieved": "2026-08-07T02:53:05.374Z",
+   "rivers_kept": 140,
+   "rivers_total": 649,
+   "sorder_floor": 4,
+   "file": "watershed/dry-anui-or-bolshoy-anyuy.json",
+   "points": 958,
+   "bounds": [
+    159.216,
+    65.576,
+    169.187,
+    68.495
+   ]
+  },
+  {
+   "id": "watershed:gizhiga",
+   "kind": "watershed",
+   "name": "gizhiga",
+   "area_km2": 12000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 12,000 km² (4,600 sq. miles) with an outlet near coordinates: 61.939, 160.368.",
+   "wid": "Pe3d06b51d17e",
+   "retrieved": "2026-08-07T03:06:07.189Z",
+   "rivers_kept": 24,
+   "rivers_total": 143,
+   "sorder_floor": 4,
+   "file": "watershed/gizhiga.json",
+   "points": 232,
+   "bounds": [
+    158.498,
+    61.918,
+    161.458,
+    63.243
+   ]
+  },
+  {
+   "id": "watershed:indigirka",
+   "kind": "watershed",
+   "name": "indigirka",
+   "area_km2": 19000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "The point you requested is outside the extent of the high-resolution gridded data. Reverting to low-precision mode.  Delineated a watershed of 19,000 km² (7,300 sq. miles) with an outlet near coordinates: 71.516, 149.994.",
+   "wid": "M35001156",
+   "retrieved": "2026-08-07T02:58:39.850Z",
+   "rivers_kept": 59,
+   "rivers_total": 208,
+   "sorder_floor": 4,
+   "file": "watershed/indigirka.json",
+   "points": 790,
+   "bounds": [
+    142.054,
+    69.57,
+    149.998,
+    71.531
+   ]
+  },
+  {
+   "id": "watershed:kanchalan",
+   "kind": "watershed",
+   "name": "kanchalan",
+   "area_km2": 21000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 21,000 km² (8,200 sq. miles) with an outlet near coordinates: 65.062, 176.413.",
+   "wid": "M35031229",
+   "retrieved": "2026-08-07T03:07:03.014Z",
+   "rivers_kept": 65,
+   "rivers_total": 258,
+   "sorder_floor": 4,
+   "file": "watershed/kanchalan.json",
+   "points": 462,
+   "bounds": [
+    175.665,
+    65.03,
+    180.0,
+    66.869
+   ]
+  },
+  {
+   "id": "watershed:kolyma",
+   "kind": "watershed",
+   "name": "kolyma",
+   "area_km2": 650000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 650,000 km² (250,000 sq. miles) with an outlet near coordinates: 69.498, 161.706.",
+   "wid": "M35006945",
+   "retrieved": "2026-08-07T02:51:22.487Z",
+   "rivers_kept": 377,
+   "rivers_total": 1990,
+   "sorder_floor": 6,
+   "file": "watershed/kolyma.json",
+   "points": 2932,
+   "bounds": [
+    144.435,
+    60.523,
+    170.94,
+    69.503
+   ]
+  },
+  {
+   "id": "watershed:lena",
+   "kind": "watershed",
+   "name": "lena",
+   "area_km2": 2500000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 2,500,000 km² (950,000 sq. miles) with an outlet near coordinates: 72.017, 129.047.",
+   "wid": "M34000656",
+   "retrieved": "2026-08-07T02:47:28.196Z",
+   "rivers_kept": 859,
+   "rivers_total": 3729,
+   "sorder_floor": 7,
+   "file": "watershed/lena.json",
+   "points": 5962,
+   "bounds": [
+    103.403,
+    52.114,
+    141.53,
+    72.882
+   ]
+  },
+  {
+   "id": "watershed:main",
+   "kind": "watershed",
+   "name": "main",
+   "area_km2": 32000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 32,000 km² (13,000 sq. miles) with an outlet near coordinates: 65.118, 172.240.",
+   "wid": "Pcb8ed1dda648",
+   "retrieved": "2026-08-07T03:09:51.795Z",
+   "rivers_kept": 89,
+   "rivers_total": 362,
+   "sorder_floor": 4,
+   "file": "watershed/main.json",
+   "points": 718,
+   "bounds": [
+    168.474,
+    62.25,
+    173.061,
+    65.12
+   ]
+  },
+  {
+   "id": "watershed:marich",
+   "kind": "watershed",
+   "name": "marich",
+   "area_km2": 480.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": "Delineated a watershed of 480 km² (180 sq. miles) with an outlet near (64.932, -172.529).",
+   "wid": "H8000021740",
+   "retrieved": "2026-08-07T03:59:54.909Z",
+   "rivers_kept": 21,
+   "rivers_total": 44,
+   "sorder_floor": 2,
+   "file": "watershed/marich.json",
+   "points": 93,
+   "bounds": [
+    186.646,
+    64.87,
+    187.496,
+    65.067
+   ]
+  },
+  {
+   "id": "watershed:okhota",
+   "kind": "watershed",
+   "name": "okhota",
+   "area_km2": 19000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 19,000 km² (7,300 sq. miles) with an outlet near coordinates: 59.338, 143.070.",
+   "wid": "P72b5fd6452d3",
+   "retrieved": "2026-08-07T03:14:44.848Z",
+   "rivers_kept": 70,
+   "rivers_total": 209,
+   "sorder_floor": 4,
+   "file": "watershed/okhota.json",
+   "points": 504,
+   "bounds": [
+    141.213,
+    59.337,
+    143.094,
+    62.387
+   ]
+  },
+  {
+   "id": "watershed:oloi",
+   "kind": "watershed",
+   "name": "oloi",
+   "area_km2": 23000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 23,000 km² (8,800 sq. miles) with an outlet near coordinates: 66.471, 159.454.",
+   "wid": "Pe786ae817468",
+   "retrieved": "2026-08-07T03:16:57.373Z",
+   "rivers_kept": 73,
+   "rivers_total": 258,
+   "sorder_floor": 4,
+   "file": "watershed/oloi.json",
+   "points": 472,
+   "bounds": [
+    159.454,
+    64.676,
+    165.734,
+    66.525
+   ]
+  },
+  {
+   "id": "watershed:omolon",
+   "kind": "watershed",
+   "name": "omolon",
+   "area_km2": 120000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 120,000 km² (45,000 sq. miles) with an outlet near coordinates: 68.713, 158.707.",
+   "wid": "M35009709",
+   "retrieved": "2026-08-07T03:15:11.055Z",
+   "rivers_kept": 197,
+   "rivers_total": 742,
+   "sorder_floor": 5,
+   "file": "watershed/omolon.json",
+   "points": 1363,
+   "bounds": [
+    157.016,
+    62.595,
+    165.734,
+    68.718
+   ]
+  },
+  {
+   "id": "watershed:opuka",
+   "kind": "watershed",
+   "name": "opuka",
+   "area_km2": 4700.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 4,700 km² (1,800 sq. miles) with an outlet near coordinates: 61.780, 174.137.",
+   "wid": "P8fdffff4afde",
+   "retrieved": "2026-08-07T03:21:57.226Z",
+   "rivers_kept": 47,
+   "rivers_total": 95,
+   "sorder_floor": 2,
+   "file": "watershed/opuka.json",
+   "points": 245,
+   "bounds": [
+    172.437,
+    61.73,
+    174.31,
+    62.558
+   ]
+  },
+  {
+   "id": "watershed:poqach-or-pakhacha",
+   "kind": "watershed",
+   "name": "poqach",
+   "area_km2": 12000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 12,000 km² (4,500 sq. miles) with an outlet near coordinates: 60.553, 169.221.",
+   "wid": "Pcc94dffa5ba6",
+   "retrieved": "2026-08-07T03:25:11.013Z",
+   "rivers_kept": 40,
+   "rivers_total": 133,
+   "sorder_floor": 4,
+   "file": "watershed/poqach-or-pakhacha.json",
+   "points": 335,
+   "bounds": [
+    167.415,
+    60.548,
+    170.19,
+    62.281
+   ]
+  },
+  {
+   "id": "watershed:small-anui-or-maliy-anyuy",
+   "kind": "watershed",
+   "name": "maliy anyuy",
+   "area_km2": 50000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 50,000 km² (19,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
+   "wid": "M35009858",
+   "retrieved": "2026-08-07T02:52:50.798Z",
+   "rivers_kept": 100,
+   "rivers_total": 290,
+   "sorder_floor": 5,
+   "file": "watershed/small-anui-or-maliy-anyuy.json",
+   "points": 757,
+   "bounds": [
+    160.778,
+    66.747,
+    170.94,
+    69.358
+   ]
+  },
+  {
+   "id": "watershed:tumanskaya",
+   "kind": "watershed",
+   "name": "tumanskaya",
+   "area_km2": 9500.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 9,500 km² (3,700 sq. miles) with an outlet near coordinates: 64.017, 178.651.",
+   "wid": "P1dcca5cb1e2f",
+   "retrieved": "2026-08-07T03:26:34.392Z",
+   "rivers_kept": 70,
+   "rivers_total": 239,
+   "sorder_floor": 3,
+   "file": "watershed/tumanskaya.json",
+   "points": 410,
+   "bounds": [
+    175.914,
+    62.863,
+    178.702,
+    64.117
+   ]
+  },
+  {
+   "id": "watershed:white-or-belaya",
+   "kind": "watershed",
+   "name": "belaya or white",
+   "area_km2": 45000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 45,000 km² (17,000 sq. miles) with an outlet near coordinates: 65.518, 173.277.",
+   "wid": "Pfe3a072b681e",
+   "retrieved": "2026-08-07T03:08:38.629Z",
+   "rivers_kept": 76,
+   "rivers_total": 289,
+   "sorder_floor": 5,
+   "file": "watershed/white-or-belaya.json",
+   "points": 643,
+   "bounds": [
+    171.137,
+    65.516,
+    177.445,
+    68.285
+   ]
+  },
+  {
+   "id": "watershed:wolverine-or-keperveyem",
+   "kind": "watershed",
+   "name": "wolverine or keperveyem",
+   "area_km2": 2800.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 2,800 km² (1,100 sq. miles) with an outlet near coordinates: 67.840, 166.213.",
+   "wid": "Pe2d1e98adbae",
+   "retrieved": "2026-08-07T03:35:02.163Z",
+   "rivers_kept": 17,
+   "rivers_total": 63,
+   "sorder_floor": 3,
+   "file": "watershed/wolverine-or-keperveyem.json",
+   "points": 129,
+   "bounds": [
+    165.53,
+    67.837,
+    167.68,
+    68.434
+   ]
+  },
+  {
+   "id": "watershed:yana",
+   "kind": "watershed",
+   "name": "yana",
+   "area_km2": 230000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 230,000 km² (88,000 sq. miles) with an outlet near coordinates: 71.400, 134.986.",
+   "wid": "M35001149",
+   "retrieved": "2026-08-07T02:46:37.906Z",
+   "rivers_kept": 157,
+   "rivers_total": 740,
+   "sorder_floor": 6,
+   "file": "watershed/yana.json",
+   "points": 1598,
+   "bounds": [
+    128.041,
+    64.265,
+    140.582,
+    71.426
+   ]
+  },
+  {
+   "id": "watershed:yeropol",
+   "kind": "watershed",
+   "name": "yeropol",
+   "area_km2": 11000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 11,000 km² (4,200 sq. miles) with an outlet near coordinates: 65.253, 168.623.",
+   "wid": "Pc86ac7acce5d",
+   "retrieved": "2026-08-07T03:39:26.559Z",
+   "rivers_kept": 32,
+   "rivers_total": 117,
+   "sorder_floor": 4,
+   "file": "watershed/yeropol.json",
+   "points": 243,
+   "bounds": [
+    165.286,
+    64.518,
+    168.623,
+    65.487
+   ]
+  }
+ ]
+}

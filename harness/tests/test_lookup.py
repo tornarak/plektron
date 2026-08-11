@@ -386,10 +386,10 @@ def test_the_corpus_badge_is_derived_and_the_line_never_dims(tmp_path):
     })
     import re
     cls = {m.group(2): m.group(1) for m in
-           re.finditer(r"<div class='(ln[^']*)' id='l(\d+)'", html)}
+           re.finditer(r'<div class="(ln[^"]*)" id="l(\d+)"', html)}
     assert "noted" in cls["0"], "the handled line would dim for agreeing"
     assert "noted" not in cls["1"]
-    assert "nb-corpus" in html.split("id='l0'")[1].split("id='l1'")[0]
+    assert "nb-corpus" in html.split('id="l0"')[1].split('id="l1"')[0]
     assert "as typed:" in html
 
 

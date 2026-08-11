@@ -1,0 +1,51 @@
+{% extends "edition/base.html" %}
+{% block title %}{{ ref }} — The Chukchee{% endblock %}
+
+{% block btn_extra %}
+    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
+    <button id='reader-btn' title='Reader View'>📕</button>
+{% endblock %}
+
+{% block main %}
+{% if doc.ok %}
+<aside id='secondary'></aside>
+{% endif %}
+<div id='primary'>
+{% if not doc.ok %}
+<p>This page will not render: {{ doc.why }}</p>
+{% else %}
+{% if rank == 'draft' %}
+{# On the page itself, not only in the listing that led here: a link shared or a
+   URL typed straight in skips the listing entirely, and the whole point of the
+   mark is that unread text is never mistaken for collated text. #}
+<p class='draft-note'><span class='draft-tag'>draft</span> — this is
+<code>mz/tei/</code>, built by <code>tei generate</code> from the zone and OCR
+stores. Nobody has read it against the scan: its paragraph shape is a rule's
+guess, its foreign-language spans are unresolved <code>index</code> handles, and
+no <code>@resp</code> on it claims anything.</p>
+{% endif %}
+{% if prev or next %}
+<div class='neighbours'>
+  <span>{% if prev %}<a id='prev-page' tabindex="1" href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
+  <span>{% if next %}<a id='next-page' tabindex="2" href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
+</div>
+{% endif %}
+{# `doc.html` is `tei_html`'s output, which escapes every text node and every
+   attribute it emits. It is the one thing on this page that arrives as markup
+   on purpose, so it is the one thing marked safe. #}
+<article>{{ doc.html | safe }}</article>
+{% if doc.notes %}
+<div id='foot'><ol>
+{% for n in doc.notes %}
+<li id='note-{{ n.i }}' data-n='{{ n.n }}'><a href='#ref-{{ n.i }}'>{{ n.n }}</a>
+{{ n.html | safe }}</li>
+{% endfor %}
+</ol></div>
+{% endif %}
+{% endif %}
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="/static/js/edition.js"></script>
+{% endblock %}

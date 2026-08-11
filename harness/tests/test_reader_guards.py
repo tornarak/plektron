@@ -536,6 +536,19 @@ def test_the_generated_baseline_is_readable_and_not_writable():
     assert "tei diff" in err
 
 
+def test_normalize_is_measurement_here_and_never_a_write():
+    """Caught in the act on `1-031`: a collator ran `corpus normalize --commit` and
+    rewrote `review/1-031/proposal.json`, a signed reading record. The change was
+    correct by the spec and nobody's to make from inside a page review — the verb's
+    scope is the corpus and the collator's is one file. The contract asks for the
+    bare form; this holds the surface to it."""
+    allowed(COLLATOR_GUARD, "Bash",
+            command="uv run harness corpus normalize 1-031")
+    err = blocked(COLLATOR_GUARD, "Bash",
+                  command="uv run harness corpus normalize 1-031 --commit")
+    assert "review/1-031/proposal.json" in err
+
+
 def test_the_encyclopedia_is_readable_and_not_hand_editable():
     """Judging whether a page means people:chukchee or language:chukchee *is*
     reading the two glosses, so the entries are open. Editing them is not: the verb

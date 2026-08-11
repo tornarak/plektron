@@ -40,6 +40,7 @@ from __future__ import annotations
 import difflib
 import json
 import os
+import re
 import unicodedata
 from pathlib import Path
 
@@ -799,12 +800,6 @@ def restore(ref: str, alto_dir: str = DEFAULT_ALTO_DIR, root: Path = Path("."),
             "view": view}
 
 
-def _data_uri(path: Path) -> str:
-    import base64
-    return ("data:image/png;base64,"
-            + base64.b64encode(path.read_bytes()).decode("ascii"))
-
-
 def _esc(s: str) -> str:
     return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
              .replace('"', "&quot;"))
@@ -856,6 +851,14 @@ def font_stack(font: str | None = None) -> str:
     did not load is exactly the failure this view cannot afford.
     """
     name = (font or DEFAULT_FONT).strip()
+    # **Confined to what a CSS family name can hold**, because the result is
+    # interpolated into a `<style>` block and marked safe there — it has to be,
+    # since the quotes a stack needs would otherwise be escaped into `&#39;` and
+    # the whole declaration silently ignored, leaving the reviewer comparing a
+    # Brill crop against the browser's default serif with nothing to say so.
+    # Sanitising here rather than escaping there is the narrower fix: a family
+    # name has no legitimate use for `<`, `;` or a newline.
+    name = re.sub(r"[^\w \-'\"]", "", name).strip()
     if not name:
         return _FALLBACK
     quoted = name if name.startswith(("'", '"')) else f"'{name}'"
@@ -866,26 +869,26 @@ def font_stack(font: str | None = None) -> str:
     return ", ".join([quoted, *rest])
 
 
-def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
-                      root: Path = Path("."), crops: Path | None = None,
-                      queue: list[dict] | None = None,
-                      scan_href: str | None = None,
-                      font: str | None = None, font_size: int | None = None,
-                      box_lines: int | None = None) -> str:
-    """Self-contained review page for one ref: one entry per line, reading order.
+def page_context(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
+                 root: Path = Path("."), crops: Path | None = None,
+                 queue: list[dict] | None = None,
+                 scan_href: str | None = None,
+                 crop_base: str = "crops",
+                 font: str | None = None, font_size: int | None = None,
+                 box_lines: int | None = None) -> dict:
+    """Everything one ref's review page needs, as data.
 
     `queue` is the session's other pages — `[{"ref", "done"}, …]` in the order the
     reviewer asked for them — and it only ever adds a nav strip and changes what
-    the Done button says. **A one-page session passes `None` and renders byte-for-
-    byte what it always did**, which is the property that keeps the multi-page work
-    from being a rewrite of the single-page page: the queue is a frame around this
-    function, never a mode inside it.
+    the Done button says. A one-page session passes `None` and gets neither: a
+    nav bar over a queue of one is furniture that says "there is somewhere else
+    to be" when there is not. The queue is a frame around this, never a mode
+    inside it.
 
-    The strip is the only thing that knows a session spans pages. Everything below
-    it — the line list, the crops, the keyboard, the save payload — is still about
-    one ref, because a review *is* one page at a time and pretending otherwise is
-    how a reviewer keys 1-073's text into 1-151's fields (see the session-restore
-    guard). Pages are reached by navigation, never merged into one document.
+    Everything below the strip is about one ref, because a review *is* one page
+    at a time and pretending otherwise is how a reviewer keys 1-073's text into
+    1-151's fields (see the session-restore guard). Pages are reached by
+    navigation, never merged into one document.
 
     **The unit is the line, not the span.** An earlier version grouped by
     substitution class on the grounds that glyphs are 3.3% of characters, but that
@@ -895,23 +898,19 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     of the line is nearly free. Span-grouping also scattered one line's corrections
     across the queue, so their sum could not be seen.
 
-    It organised around the wrong thing besides. The spans are diffs against
-    CATMuS, which reads no inventory glyph at all, so a class like `'` -> `ˊ`
-    describes the recognizer's failure modes rather than the text. `group_spans`
-    survives as *measurement* for the eval, not as the review unit.
+    **Every line is listed**, including the ones CATMuS agrees with: agreement
+    about ASCII is weak evidence and it has no vote on a glyph whatsoever, so
+    agreement only sets emphasis.
 
-    Reading order, not difference-first: consecutive lines carry each other's
-    context, and a line the two witnesses agree on can still have both of them
-    wrong — CATMuS agreeing about ASCII is weak evidence and it has no vote on a
-    glyph whatsoever. So every line is present; agreement only sets emphasis.
-
-    **"Reading order" was a claim this function did not honour** until the ordering
-    work: it iterated `sorted(recs)`, i.e. the segmenter's index order, which is
-    not reading order on 18 of the 20 restored pages — a running head lands
-    mid-sequence, a folio last. It now walks `y_rank`. The consequence on screen is
-    that the line labels are *not* consecutive, and that is correct: the label is
-    the identity `decision.json` is keyed by, not a position in the queue.
+    **`crop_base` is why the crops are no longer base64.** They are files on disk
+    under `review/<ref>/crops/`, and they were inlined into a `<style>` block —
+    311 KB on 1-021, re-sent uncached on every navigation — because the old
+    handler had exactly one image route and no way to *address* one. Served, it
+    is a URL; written by `--html`, it is the relative path from the page to the
+    directory beside it, which works straight off the filesystem.
     """
+    from PIL import Image
+
     from .lines import write_line_crops
     ref = norm_ref(ref)
     crops = crops or crops_dir(ref, root)
@@ -920,922 +919,124 @@ def render_queue_html(ref: str, alto_dir: str = DEFAULT_ALTO_DIR,
     # identity the client submits and `save_decisions` stores under; but iterating
     # `sorted(recs)` would walk the *segmenter's* order, which is not reading order on
     # 18 of the 20 restored pages — a running head lands mid-sequence, a folio last.
-    # The queue's whole premise is that consecutive lines carry each other's context,
-    # so it must walk the page as a reader does. Order here, identity everywhere else.
     order = sorted(recs, key=lambda i: recs[i]["y_rank"])
     prop = load_proposal(ref, root)
     saved = load_decisions(ref, root)
     spans = page_spans(ref, alto_dir, root)
     summ = summary(spans, len(recs))
 
-    h = [f"<title>review {ref}</title>", "<style>",
-         # Three knobs, as CSS variables so the in-page steppers can move them
-         # without a reload and the server flags only decide where they start.
-         # `--fs` is the entry text; `--bl` is how many lines the box holds before
-         # it grows, which is a separate want from size — Brill's small eye means
-         # a comfortable reading size still leaves a one-line box looking cramped.
-         f":root{{--f:{font_stack(font)};"
-         f"--fs:{int(font_size or DEFAULT_FONT_SIZE)}px;"
-         f"--bl:{max(1, int(box_lines or DEFAULT_BOX_LINES))}}}",
-         "body{font:15px var(--f);margin:0;padding:1.5rem;max-width:1100px}",
-         "h1{font-size:1.1rem;margin:0 0 .3rem}",
-         # The session strip. Deliberately plain and above everything: it is the
-         # only thing on the page that is not about the page, and a reviewer who
-         # loses track of which ref they are keying is the failure it prevents.
-         ".q{margin:0 0 1rem;font:12px ui-monospace,monospace}",
-         ".q a,.q span.cur{display:inline-block;padding:.15rem .5rem;margin-right:.3rem;"
-         "border:1px solid #ccc;border-radius:3px;text-decoration:none;color:#333}",
-         ".q span.cur{background:#333;color:#fff;border-color:#333}",
-         # Done is a fact about the file on disk, not about this tab's history —
-         # it is recomputed server-side per request, so a reload after a save
-         # shows what was actually written rather than what the page remembers.
-         ".q a.done{color:#137333;border-color:#b7dfc0;background:#f2fbf5}",
-         ".q .qlab{color:#777;margin-right:.5rem}",
-         # Sits in the h1 but must not read as part of the count — normal weight,
-         # normal size, so the heading still scans as one sentence about the page.
-         "a.scan{font-size:.85rem;font-weight:400;margin-left:.6rem;"
-         "color:#1a56b8;text-decoration:none;white-space:nowrap}",
-         "a.scan:hover{text-decoration:underline}",
-         # Machine's account left, human's right. `min-width:0` on the left column
-         # is what stops a long catmus line from pushing the note column off the
-         # row: a flex item's default `min-width:auto` refuses to shrink below its
-         # content, and an overflowing `<div class=ref>` is exactly that case.
-         ".meta{display:flex;gap:.75rem;align-items:flex-start;margin-top:.25rem}",
-         ".metaL{flex:1 1 auto;min-width:0}",
-         # Fixed at ~15 characters of its own 12px type, and it neither grows into
-         # the left column nor shrinks under it — a note field that resized with
-         # its content would move every line below it as the reviewer typed.
-         ".hn{flex:0 0 15ch;font-size:12px}",
-         # Quiet until used. A dashed outline reads as "nothing here yet" where a
-         # solid button would read as an action the line is waiting on.
-         "button.hnb{font:12px var(--f);color:#888;background:none;width:100%;"
-         "border:1px dashed #c4c4c4;border-radius:3px;padding:.15rem .3rem;"
-         "cursor:pointer}",
-         "button.hnb:hover{color:#333;border-color:#888}",
-         # Tinted, so an open note is never mistaken for the reading field beside
-         # it at a glance down the page.
-         "textarea.hnt{font:12px/1.4 var(--f);background:#fffdf0;"
-         "border-color:#ded4a4;padding:.15rem .3rem}",
-         "textarea.hnt:focus{outline-color:#b59b2e;border-color:#b59b2e}",
-         ".sum{color:#555;font-size:.85rem;margin-bottom:1.4rem}",
-         ".ln{border-top:1px solid #ddd;padding:.7rem 0}",
-         # Agreement is de-emphasis, never omission: CATMuS agreeing about ASCII is
-         # weak evidence, and on a glyph it has no vote at all, so a quiet line is
-         # still a line somebody has to look at.
-         ".agree{opacity:.62}",
-         ".agree:focus-within{opacity:1}",
-         # A Tier-1 line is where the reviewer is the only witness there will ever
-         # be, so it is marked in three redundant ways — rule, tint, and a badge
-         # naming the glyphs — rather than by one colour a reader can scroll past.
-         # It also overrides `.agree`: agreement with CATMuS is no evidence at all
-         # about a glyph, so a dimmed Tier-1 line would be dimmed for a reason that
-         # does not apply to the part of it that matters.
-         ".t1{border-left:5px solid #b8860b;padding-left:.7rem;"
-         "background:linear-gradient(90deg,#fdf6e3,transparent 45%)}",
-         ".t1.agree{opacity:1}",
-         # A reader's note overrides `.agree` for the same reason `.t1` does, and
-         # it is the more general case: agreement with CATMuS is evidence about
-         # the *characters*, and a note is the reader saying the characters were
-         # never the question. `1-099`'s `Kuvár` is why the rule exists — an
-         # uncatalogued combining acute raised no Tier-1 badge, matched the draft,
-         # and dimmed, so the one line on the page that wanted a ruling was styled
-         # exactly like the forty-four that did not.
-         ".noted.agree{opacity:1}",
-         ".badge{display:inline-block;font:11px ui-monospace,monospace;"
-         "background:#b8860b;color:#fff;border-radius:3px;padding:.05rem .35rem;"
-         "margin-right:.4rem;letter-spacing:.04em}",
-         ".t1glyphs{font-size:1.05rem;color:#7a4a00;letter-spacing:.12em}",
-         ".jump{font:12px ui-monospace,monospace;margin:.5rem 0 0}",
-         ".type{font:12px ui-monospace,monospace;margin:.5rem 0 0;color:#666}",
-         "button.tb{font:11px ui-monospace,monospace;border:1px solid #bbb;"
-         "background:#fff;border-radius:4px;padding:.1rem .35rem;margin-left:.3rem;"
-         "cursor:pointer}",
-         ".tv{margin-left:.35rem;color:#888}",
-         ".jump a{color:#8a5a00;margin-right:.45rem;text-decoration:none;"
-         "border-bottom:1px dotted #b8860b}",
-         ".jump.edit a{color:#1a7f37;border-color:#1a7f37}",
-         ".editflag{color:#1a7f37}",
-         # Transient — added to a just-saved line's own textarea (not just the
-         # row) so it is unmissable which field a save just touched, not only a
-         # count in the status bar. A thin outline on the row read as too subtle;
-         # this is the same idea moved onto the textbox itself and made bolder.
-         # Removed by the same timeout that adds it (see `save()`), not by CSS.
-         "textarea.justsaved{outline:3px solid #1a7f37;outline-offset:1px}",
-         ".floor{color:#8a2b2b;font-size:.8rem;margin-top:.35rem;max-width:80ch}",
-         ".cp{font:12px ui-monospace,monospace;color:#036;margin:.2rem 0}",
-         ".tags{font:11px ui-monospace,monospace;color:#666}",
-         ".ref{font:13px ui-monospace,monospace;color:#777;margin-top:.2rem}",
-         ".note{font-size:12px;color:#7a4a00;margin-top:.2rem;max-width:70ch}",
-         # One badge per note class, coloured apart rather than merely labelled:
-         # the classes are read at a glance while scrolling, and a row of
-         # identically-styled words is what the eye learns to skip. `doubt` is the
-         # only one that asks for a ruling, so it is the only one in alarm red.
-         ".nb{display:inline-block;font:10px ui-monospace,monospace;color:#fff;"
-         "border-radius:3px;padding:.05rem .3rem;margin-right:.35rem;"
-         "letter-spacing:.05em;vertical-align:.05em}",
-         ".nb-doubt{background:#b00020}",
-         ".nb-semantic{background:#6a1b9a}",
-         ".nb-print{background:#00695c}",
-         # `draft` sits next to `print` in the vocabulary and must not sit next
-         # to it on screen: telling the compositor's error from the recognizer's
-         # is the whole reason the class exists, so the two badges are separated
-         # by hue rather than by shade. Green against teal, not a lighter teal.
-         # It is also the class a reader reaches for most often, which argues for
-         # the quieter of the two — a frequent badge in an alarming colour is how
-         # a palette stops being read at all.
-         ".nb-draft{background:#33691e}",
-         ".nb-layout{background:#37474f}",
-         ".nb-artifact{background:#795548}",
-         ".nb-note{background:#8d6e00}",
-         # **Not a note class.** The CORPUS badge is derived from `as_typed`, so
-         # it appears on exactly the lines where a handle supplied the glyphs and
-         # cannot be omitted by the reader whose claim it describes. Blue, apart
-         # from every note colour, because it answers a different question: not
-         # "what did the reader think" but "who read this".
-         ".nb-corpus{background:#1565c0}",
-         ".astyped{font:11px ui-monospace,monospace;color:#666;margin-top:.15rem}",
-         ".astyped b{color:#1565c0;font-weight:600}",
-         # Crops are emitted as one CSS rule per line and referenced by class, not
-         # inlined per occurrence. Inlining embedded a line's image once per queue
-         # entry; on 1-074 that was 676 KB against 209.
-         #
-         # `margin: auto` centres the crop, and the entry below it is centred to
-         # match (see the textarea rule). A crop is as wide as its line, so a short
-         # line left-aligned puts print and typed text on two different axes and the
-         # reviewer's eye has to travel to compare them. Centred, the two sit on one.
-         ".crop{border:1px solid #ddd;background-repeat:no-repeat;"
-         "background-size:contain;background-color:#fff;margin:.2rem auto}",
-         # `min-height` rather than `rows`: the box autogrows past it, so this is a
-         # floor and not a size, and a reviewer who wants room to see a wrapped
-         # line gets it without the box shrinking back on every keystroke.
-         "textarea{font:var(--fs)/1.45 var(--f);width:100%;border:1px solid #bbb;"
-         "border-radius:4px;padding:.35rem .5rem;resize:vertical;overflow:hidden;"
-         "min-height:calc(var(--bl) * 1.45em + .8rem);text-align:center}",
-         "textarea:focus{outline:2px solid #47f;border-color:#47f}",
-         # Fixed to the bottom, full width, always visible. It is the reference for
-         # what the mode does as much as it is an input device, so hiding it behind a
-         # scroll position would defeat both jobs.
-         #
-         # #pctl and #pgroups stack (column), #pctl on top — not side by side. Side
-         # by side, #pctl's status text (the growing "saved · N/M edited (...line
-         # numbers...)" list) competed with #pgroups for horizontal space: as that
-         # text grew wide it starved #pgroups's width, which made the wrapped key
-         # rows pile up vertically instead, and #pal's height (shared by both flex
-         # children) grew with them — on a long session the keyboard could end up
-         # consuming the whole viewport for a reason that had nothing to do with the
-         # keyboard. Stacked, #pctl's width no longer bounds #pgroups's at all.
-         "#pal{position:fixed;left:0;right:0;bottom:0;z-index:5;background:#fff;"
-         "border-top:1px solid #999;box-shadow:0 -2px 10px #0002;"
-         "display:flex;flex-direction:column}",
-         "#pgroups{display:flex;flex-wrap:wrap;gap:.35rem .9rem;padding:.5rem .8rem}",
-         ".pgrp{display:flex;flex-direction:column;gap:.15rem}",
-         ".plabel{font:10px ui-monospace,monospace;color:#888;letter-spacing:.02em}",
-         ".pkeys{display:flex;flex-wrap:wrap;gap:.2rem}",
-         ".pk{font:inherit;min-width:2.5rem;padding:.15rem .25rem;cursor:pointer;"
-         "display:flex;flex-direction:column;align-items:center;line-height:1.1;"
-         "background:#fafafa;border:1px solid #bbb;border-radius:4px}",
-         ".pk b{font-size:1.15rem;font-weight:500}",
-         ".pk span{font:10px ui-monospace,monospace;color:#888;min-height:1em}",
-         ".pk.mk{background:#eef3ff}",
-         # order:-1 puts this ahead of #pgroups regardless of DOM position (pgroups
-         # is emitted first, since the palette-group loop is simplest that way).
-         "#pctl{order:-1;display:flex;flex-direction:column;gap:.3rem;"
-         "padding:.5rem .8rem;border-bottom:1px solid #ddd;font-size:.85rem}",
-         # kb / st / the button group are the three controls worth a glance at
-         # once — same row, same box model, so the eye reads them as one strip
-         # rather than a badge, a caption and a toolbar stacked by accident.
-         ".pctlrow{display:flex;align-items:stretch;justify-content:space-between;"
-         "gap:.4rem;width:100%}",
-         ".pctlrow>span{display:flex;gap:.4rem}",
-         "#kb,#st,#pctl button{font:12px ui-monospace,monospace;border:1px solid #bbb;"
-         "border-radius:3px;padding:.25rem .5rem;line-height:1.1}",
-         "#st{color:#555;min-width:13ch;text-align:right;border-color:#ddd}",
-         "#st.bad{color:#b00;font-weight:600;border-color:#b00}",
-         "#kb{color:#777;cursor:pointer;user-select:none}",
-         "#kb.on{color:#fff;background:#1a7f37;border-color:#1a7f37;font-weight:700}",
-         "#pctl button{cursor:pointer}",
-         # The mode has to be unmissable, since with it on every letter key means
-         # something else. A badge alone is too easy to lose track of.
-         "body.kbdon textarea:focus{outline-color:#1a7f37;border-color:#1a7f37;"
-         "background:#f2fbf4}",
-         # The glyph grid is only worth the screen space while a line is actually
-         # being keyed. Retracted by default; #pgroups reappears (and the page
-         # regains its clearance below) on the kbd toggle or the alt-p override —
-         # never gone, since #pctl (status, save, the shortcut hint) stays put
-         # either way, now as the bar above rather than a sidebar beside it.
-         "#pgroups{display:none}", "body.palopen #pgroups{display:flex}",
-         "body{padding-bottom:2.6rem}", "body.palopen{padding-bottom:16rem}",
-         "@media(prefers-color-scheme:dark){body{background:#161616;color:#e6e6e6}"
-         ".ln{border-color:#2f2f2f}.cp{color:#8ec7ff}.ref{color:#8f8f8f}"
-         ".note{color:#d9b26a}"
-         "button.tb{background:#1e1e1e;color:#ccc;border-color:#444}"
-         ".t1{border-color:#d1a02a;background:linear-gradient(90deg,#2a2211,"
-         "transparent 45%)}"
-         ".badge{background:#d1a02a;color:#161616}"
-         ".t1glyphs{color:#e8c874}"
-         ".jump a{color:#e0b552;border-color:#8a6a1e}"
-         ".jump.edit a{color:#4fd47a;border-color:#1a7f37}"
-         ".editflag{color:#4fd47a}"
-         "textarea.justsaved{outline-color:#4fd47a}"
-         "button.hnb{color:#8a8a8a;border-color:#3d3d3d}"
-         "button.hnb:hover{color:#e6e6e6;border-color:#7a7a7a}"
-         "textarea.hnt{background:#221e12;border-color:#5c4f22;color:#f0e6c8}"
-         "textarea.hnt:focus{outline-color:#d1a02a;border-color:#d1a02a}"
-         ".floor{color:#e88d8d}"
-         "textarea{background:#111;color:#eee;border-color:#444}"
-         "#st{color:#bbb;border-color:#444}"
-         "#pal{background:#1b1b1b;border-color:#444}"
-         "#pctl{border-color:#3a3a3a}"
-         "#pctl button{border-color:#555;background:#242424;color:#eee}"
-         ".pk{background:#242424;border-color:#484848;color:#eee}"
-         ".pk.mk{background:#1b2436}"
-         "#kb{color:#aaa;border-color:#555}"
-         "body.kbdon textarea:focus{background:#0f1a12}"
-         ".crop{filter:invert(1) hue-rotate(180deg)}}",
-         "</style>"]
-
-    # One rule per unique line crop, scaled down to fit the column while keeping
-    # aspect ratio, so the div reserves the right height before the image paints.
-    from PIL import Image
-    # Every rendered line needs a rule, not only the differing ones. Deriving this
-    # from the span instances left the agreeing lines as empty bordered boxes.
-    css = []
-    for idx in order:
-        rec = recs[idx]
-        path = Path(rec["crop"])
-        w, ht = Image.open(path).size
-        # Full column width. Never upscaled past 1:1 — a magnified bitonal crop
-        # invents smoothness, and the reviewer should see the raster it is.
-        scale = min(1.0, 1040 / w)
-        css.append(f".c{idx}{{background-image:url({_data_uri(path)});"
-                   f"width:{round(w * scale)}px;height:{round(ht * scale)}px}}")
-    h += ["<style>", "\n".join(css), "</style>"]
     # Computed over the text on screen — saved edits included — not over the
     # proposal alone, so a glyph the reviewer has just typed flags its line at once.
     t1 = {idx: tier1_glyphs(_nfd((saved.get(idx) or prop[idx])["text"]))
           for idx in order if idx in prop}
     t1 = {k: v for k, v in t1.items() if v}
 
-    # The strip, only when there is a session to describe. One page passes `None`
-    # and gets nothing — a nav bar over a queue of one is furniture that says
-    # "there is somewhere else to be" when there is not.
-    if queue and len(queue) > 1:
-        cells = ["<span class=qlab>this session:</span>"]
-        for q in queue:
-            cls = "done" if q["done"] else ""
-            if q["ref"] == ref:
-                cells.append(f"<span class=cur>{q['ref']}</span>")
-            else:
-                cells.append(f"<a class='{cls}' href='/p/{q['ref']}'>{q['ref']}</a>")
-        done_n = sum(1 for q in queue if q["done"])
-        cells.append(f"<span class=qlab>&nbsp;{done_n}/{len(queue)} adjudicated</span>")
-        h.append("<div class=q>" + "".join(cells) + "</div>")
-    # The whole page, one click away. The crops answer "what does this line set";
-    # they cannot answer "what is around it", and a reviewer settling a speck, a
-    # dropped line or a heading has to see the sheet. Groping for the file by hand
-    # was the alternative, and `scans/` is gitignored and not where the review is.
-    #
     # Default is the on-disk relative path, computed rather than spelled, so the
-    # `--html` file works opened straight off the filesystem; `serve` overrides it
-    # with a route, since a browser will not follow file:// from an http origin.
+    # `--html` file works opened straight off the filesystem; the server overrides
+    # it with a route, since a browser will not follow file:// from an http origin.
     if scan_href is None:
-        scan_href = os.path.relpath(raster_path(ref, root), html_path(ref, root).parent)
-    h += [
-         f"<h1>{ref} — {summ['lines']} lines, "
-         f"{summ['lines'] - summ['lines_identical']} differing from catmus, "
-         f"{len(t1)} carrying notation "
-         f"<a class=scan href='{scan_href}' target=_blank rel=noopener>full scan ↗</a>"
-         "</h1>",
-         "<div class=sum>"
-         f"{summ['spans']} differing spans in {summ['classes']} substitution "
-         f"classes · {summ['inventory_spans']} touch inventory glyphs · "
-         f"{summ['lookalikes_in_proposal']} lookalike traps in the proposal<br>"
-         "Every line is listed, in reading order. CATMuS is shown for reference "
-         "only: it is a witness to geometry and English, and produced no inventory "
-         "glyph anywhere in this book, so on a glyph the image is the sole witness "
-         "— and a line the two agree on can still have both of them wrong.</div>"]
-    # **Type controls, live.** The flags decide where the page starts; these decide
-    # where it ends up, because the right size for a face is a thing you find by
-    # looking at it against a crop rather than by predicting it at a command line.
-    # Persisted per browser, so the next page and the next session open where this
-    # one was left — a setting that has to be re-found every page is not a setting.
-    h.append(
-        "<div class=type><b>Type:</b> "
-        "<button class=tb data-var=fs data-by='-1'>A−</button>"
-        "<button class=tb data-var=fs data-by='1'>A+</button>"
-        "<span class=tv id=tvfs></span>"
-        "<button class=tb data-var=bl data-by='-1'>box −</button>"
-        "<button class=tb data-var=bl data-by='1'>box +</button>"
-        "<span class=tv id=tvbl></span>"
-        "<button class=tb id=treset>reset</button></div>")
-    if t1:
-        h.append("<div class=jump><b>Tier-1 lines:</b> " + " ".join(
-            f"<a href='#l{i}'>{i}</a>" for i in t1) + "</div>")
-    # Edited lines get the same jump-list treatment as Tier-1, and for the same
-    # reason: "38 lines edited" told a reader nothing about *which* 38 until the
-    # session-restore incident forced the question. `editjump` is rewritten by
-    # `save()` after every save, so this list never goes stale without a reload.
-    edited_now = [idx for idx in order if idx in prop
-                 and idx in saved and _nfd(saved[idx]["text"]) != _nfd(prop[idx]["text"])]
-    h.append("<div class='jump edit' id=editjump>" + _edit_jump_inner(edited_now)
-             + "</div>")
-    h.append(
-        "<div class=floor>Notation flags are a <b>floor, not a census</b>: four "
-        "inventory members are unmarked ASCII (<code>c</code> for English "
-        "<i>sh</i>, plain <code>s</code>, <code>j</code>, <code>x</code>), so a "
-        "Tier-1 form spelled only in those raises no flag. An unflagged line means "
-        "nothing was detected, not that the line is English.</div>")
+        scan_href = os.path.relpath(raster_path(ref, root),
+                                    html_path(ref, root).parent)
+
+    edited_now = [idx for idx in order if idx in prop and idx in saved
+                  and _nfd(saved[idx]["text"]) != _nfd(prop[idx]["text"])]
 
     differing = {s["index"] for s in spans}
+    lines = []
     for idx in order:
         rec = recs[idx]
-        mine = prop.get(idx)
         # A line in the ALTO with no proposal entry used to be skipped in silence,
         # which is the same class of defect as a hole in ground truth: the queue
-        # rendered as complete while a line was unreachable, the human could never
-        # adjudicate it, and `restore` would then refuse the page forever. It
-        # happens for real — a line recovered in `ocr edit` has geometry before it
-        # has any reading, which is the whole shape of that pass. Render it empty
-        # and say so.
-        if mine is None:
-            mine = {"text": ""}
+        # rendered as complete while a line was unreachable. It happens for real —
+        # a line recovered in `ocr edit` has geometry before it has any reading.
+        # Render it empty and say so.
+        mine = prop.get(idx) or {"text": ""}
         proposed = _nfd(mine["text"])
         # Saved work wins on reload, so a session can be resumed. The proposal is
         # still what `edited` is measured against, server-side.
         full = _nfd(saved[idx]["text"]) if idx in saved else proposed
-        marks = codepoints("".join(dict.fromkeys(c for c in full if ord(c) > 127)))
         agree = idx not in differing
         glyphs = t1.get(idx, "")
         # An unclassed note still counts as noted — the undimming is the reader's
         # to earn by writing anything at all, and the class only decides which
-        # badge it wears. A class the vocabulary does not know renders under the
-        # neutral badge rather than vanishing; `proposal check` is what refuses it.
+        # badge it wears.
         nclass = (mine.get("class") or "note") if mine.get("note") else ""
         if nclass not in NOTE_CLASSES:
             nclass = "note" if nclass else ""
         # **Derived, never asserted.** A line whose glyphs came out of ratified
         # ground truth rather than off this raster is a claim about provenance, and
         # the reader making the claim is the last party who should get to decide
-        # whether it shows. `as_typed` exists iff a handle was expanded, so the
-        # badge follows it, and the line joins `noted` — never dimmed for agreeing
-        # with CATMuS, because agreement is exactly what a corpus form guarantees
-        # and exactly what would hide it.
+        # whether it shows.
         typed = mine.get("as_typed", "")
-        cls = ("ln" + (" agree" if agree else "") + (" t1" if glyphs else "")
-               + (" noted" if nclass or typed else ""))
-        h.append(f"<div class='{cls}' id='l{idx}'"
-                 + (" data-t1=1" if glyphs else "") + ">")
-        h.append("<div class=tags>"
-                 + ("<span class='nb nb-corpus'>CORPUS</span>" if typed else "")
-                 + (f"<span class=badge>TIER 1</span>"
-                    f"<span class=t1glyphs>{_esc(glyphs)}</span> · "
-                    if glyphs else "")
-                 + f"line {idx} · {_esc(rec['line_id'])}"
-                 + (" · <b>NO PROPOSAL — key from the scan</b>"
-                    if idx not in prop else "")
-                 # Off `src` rather than off the id's spelling: a recovered line
-                 # is one the merge added from `gt/lines/`, which is a fact the
-                 # record already carries.
-                 + (" · recovered line (segmenter missed it)"
-                    if rec.get("src") == "corr" else "")
-                 + ("" if agree else " · differs from catmus")
-                 + f"<span class=editflag id='ef{idx}' "
-                   f"style='display:{'inline' if full != proposed else 'none'}'>"
-                   " · <b>edited</b></span>" + "</div>")
-        h.append(f"<div class='crop c{idx}' role=img "
-                 f"aria-label='scan of line {idx}'></div>")
-        # The value is carried in `data-text` and assigned by script on load, not
-        # written as element content — see SESSION-RESTORE below. `autocomplete=off`
-        # asks the browser not to restore it; the JS assignment is what guarantees it.
-        # `data-proposed` is what the live edited-flag toggle (on input, and after
-        # a save) compares the current value against — the same comparison
-        # `save_decisions` makes server-side, just available to the page too.
-        h.append(f"<textarea data-line='{idx}' rows=1 spellcheck=false "
-                 f"autocomplete=off data-text=\"{_esc(full)}\" "
-                 f"data-proposed=\"{_esc(proposed)}\"></textarea>")
-        # Everything under the reading is one row: the machine's account of the
-        # line on the left, the human's on the right. They are read at different
-        # moments — the left while keying, the right when ruling — so stacking
-        # them put the one thing the reviewer authors at the bottom of a pile of
-        # things they only consult.
-        h.append("<div class=meta><div class=metaL>")
-        if marks:
-            h.append(f"<div class=cp>{_esc(marks)}</div>")
-        h.append(f"<div class=ref>catmus: {_esc(rec['text']) or '(empty)'}</div>")
-        if mine.get("note"):
-            h.append(f"<div class=note><span class='nb nb-{nclass}'>"
-                     f"{nclass.upper()}</span>{_esc(mine['note'])}</div>")
-        # The claim itself, under the reading it produced, so the adjudicator sees
-        # what was asserted and what it resolved to at the same glance. Without
-        # this the badge says a corpus form is in the line and nothing says which.
-        if typed:
-            h.append("<div class=astyped>as typed: "
-                     + HANDLE.sub(lambda m: f"<b>{_esc(m.group(0))}</b>",
-                                  _esc(typed)) + "</div>")
-        for key in ("resolved", "corrected"):
-            if mine.get(key):
-                h.append(f"<div class=note>{key}: {_esc(mine[key])}</div>")
-        h.append("</div>")
-        # The adjudicator's note, opt-in per line. A textarea on all 45 lines would
-        # be 45 empty boxes competing with the 45 that matter, so it starts as a
-        # button and becomes a field only when asked for — and a line that already
-        # carries one renders open, since a note nobody can see is not a record.
-        hnote = (saved.get(idx) or {}).get("note", "")
-        h.append("<div class=hn>"
-                 f"<button type=button class=hnb data-line='{idx}'"
-                 + (" hidden" if hnote else "") + ">+ note</button>"
-                 f"<textarea class=hnt data-note='{idx}' rows=1 spellcheck=false "
-                 f"autocomplete=off data-text=\"{_esc(hnote)}\""
-                 + ("" if hnote else " hidden") + "></textarea></div>")
-        h.append("</div>")
-        h.append("</div>")
+        path = Path(rec["crop"])
+        # `.size` reads the header only, so this is a stat rather than a decode.
+        w, ht = Image.open(path).size
+        # Full column width. Never upscaled past 1:1 — a magnified bitonal crop
+        # invents smoothness, and the reviewer should see the raster it is.
+        scale = min(1.0, 1040 / w)
+        lines.append({
+            "idx": idx,
+            "cls": ("ln" + (" agree" if agree else "") + (" t1" if glyphs else "")
+                    + (" noted" if nclass or typed else "")),
+            "line_id": rec["line_id"], "glyphs": glyphs, "typed": typed,
+            "typed_html": HANDLE.sub(lambda m: f"<b>{_esc(m.group(0))}</b>",
+                                     _esc(typed)) if typed else "",
+            "has_proposal": idx in prop,
+            # Off `src` rather than off the id's spelling: a recovered line is one
+            # the merge added from `gt/lines/`, a fact the record already carries.
+            "recovered": rec.get("src") == "corr",
+            "agree": agree, "edited": full != proposed,
+            "crop": f"{crop_base}/{path.name}",
+            "w": round(w * scale), "h": round(ht * scale),
+            "full": full, "proposed": proposed,
+            "marks": codepoints("".join(
+                dict.fromkeys(c for c in full if ord(c) > 127))),
+            "catmus": rec["text"], "note": mine.get("note", ""), "nclass": nclass,
+            "extra": [(k, mine[k]) for k in ("resolved", "corrected")
+                      if mine.get(k)],
+            "hnote": (saved.get(idx) or {}).get("note", ""),
+        })
 
-    # Fixed to the bottom of the viewport, and the save controls live in the same
-    # panel: two floating widgets competing for the corner is one too many.
     binding = {g: k for k, g in KBD_GLYPHS.items()}
     binding.update({m: k for k, m in KBD_MARKS.items()})
-
-    pal = ["<div id=pal>", "<div id=pgroups>"]
+    palette = []
     for label, glyphs in PALETTE:
-        pal.append(f"<div class=pgrp><div class=plabel>{_esc(label)}</div>"
-                   "<div class=pkeys>")
+        keys = []
         for g in glyphs:
-            key = binding.get(g, "")
             combining = len(g) == 1 and unicodedata.category(g) == "Mn"
-            shown = ("◌" + g) if combining else g
-            tip = codepoints(g) + (
-                " — attaches to the character before the caret" if combining else "")
-            pal.append(f"<button class='pk{' mk' if combining else ''}' "
-                       f"data-ins='{_esc(g)}' title='{_esc(tip)}'>"
-                       f"<b>{_esc(shown)}</b>"
-                       f"<span>{_esc(key) or '&nbsp;'}</span></button>")
-        pal.append("</div></div>")
-    pal.append("</div>")
+            keys.append({
+                "glyph": g, "key": binding.get(g, ""),
+                "combining": combining,
+                "shown": ("◌" + g) if combining else g,
+                "tip": codepoints(g) + (" — attaches to the character before "
+                                        "the caret" if combining else ""),
+            })
+        # `glyphs`, not `keys`: Jinja resolves `grp.keys` to the dict
+        # *method* before it looks for the key, so the palette group would
+        # silently iterate a bound method. Same trap as `row.items` in the
+        # entity card — named around rather than worked around, because the
+        # next person adding a group would hit it too.
+        palette.append({"label": label, "glyphs": keys})
+
     # Is there another page waiting after this one? Only pages *other* than this
     # one count: re-opening a page already marked done and pressing Done again
     # must not claim there is somewhere to go when this was the last of them.
     pending = [q["ref"] for q in (queue or [])
                if q["ref"] != ref and not q["done"]]
-    dn_label = f"Done → next ({len(pending)} left)" if pending else "Done"
-    dn_title = ("save, mark this page adjudicated, and open the next one"
-                if pending else "save if needed, then stop the server")
-    pal.append("<div id=pctl><div class=pctlrow>"
-               "<span><span id=kb>kbd off</span><span id=st>no changes</span></span>"
-               # Notation lines are the ones worth walking deliberately, so they get
-               # their own traversal rather than only a colour to spot while scrolling.
-               f"<span><button id=t1p>&uarr;</button>"
-               f"<button id=t1n>&darr; tier-1 ({len(t1)})</button>"
-               "<button id=sv>Save</button>"
-               # Stops the server from the page, so finishing a review does not
-               # leave a process bound to a page that is about to be restored.
-               #
-               # With a queue, "finish this page" and "finish the session" stop
-               # being the same act, and the button says which one it is about to
-               # do rather than leaving the reviewer to infer it from how many
-               # pages they remember keying. The server still decides — this label
-               # is rendered from the same `done` state the strip is, and the POST
-               # response is what actually navigates.
-               f"<button id=dn title='{_esc(dn_title)}'>{_esc(dn_label)}</button>"
-               "</span></div>"
-               "<div class=tags>alt-p shows/hides the keyboard panel (overrides "
-               "kbd on/off) · ctrl-space toggles kbd · off = plain typing · "
-               "alt-j / alt-k walk tier-1 lines</div></div>")
-    pal.append("</div>")
-    h += pal
-    # Autosave on a debounce *and* an explicit button, plus a beforeunload guard.
-    # Belt and braces on purpose: the alternative to a save that fires by itself is
-    # a reviewer who closes the tab on forty adjudicated lines.
-    # `REF` travels in every save and every done. The server could track a "current
-    # page" instead, but that is state the browser can contradict — a second tab,
-    # a back button, a reload after navigating — and the failure it would produce
-    # is one page's adjudicated text written into another page's decision.json.
-    # That is the session-restore incident again, so the payload says which page
-    # it is about and the server writes where it is told.
-    h.append("<script>const GL=" + json.dumps(KBD_GLYPHS, ensure_ascii=False)
-             + ",MK=" + json.dumps(KBD_MARKS, ensure_ascii=False)
-             + ",REF=" + json.dumps(ref) + ";</script>")
-    h.append("""<script>
-const st=document.getElementById('st'), sv=document.getElementById('sv');
-const dn=document.getElementById('dn');
-const kb=document.getElementById('kb');
-let kbdOn=false, last=null;
-function setKbd(v){kbdOn=v;kb.textContent='kbd '+(v?'ON':'off');
-  kb.className=v?'on':'';document.body.classList.toggle('kbdon',v);syncPal()}
-function insert(el,s){
-  const a=el.selectionStart,b=el.selectionEnd;
-  el.setRangeText(s,a,b,'end');
-  el.dispatchEvent(new Event('input',{bubbles:true}));
-}
-// Click-to-insert targets whichever field was last focused, so the palette works
-// without stealing the caret.
-document.addEventListener('mousedown',e=>{
-  if(e.target.closest('#pal')) e.preventDefault();
-});
-for(const b of document.querySelectorAll('.pk')){
-  b.addEventListener('click',()=>{ if(last) insert(last,b.dataset.ins) });
-}
-kb.addEventListener('click',()=>setKbd(!kbdOn));
-// Retract the glyph grid except while it's actually wanted: kbd mode is on, or
-// the reviewer pinned it open (alt-p) to browse without keeping a caret in a
-// field. Visibility is a pure function of those two toggles — SOLELY the
-// shortcuts (ctrl-space, alt-p) — and never of focus. It used to also require
-// a focused textarea, on the theory that plain typing in an ordinary English
-// line shouldn't pop the grid; in practice that made the panel jump open the
-// instant a field was focused whenever kbd mode was already on, which is the
-// opposite of "no keyboard until you asked for it", and no different from a
-// docked-vs-undocked distinction if a focus event overrides it either way. So
-// focus no longer participates at all: turn kbd mode on and the panel is
-// open, everywhere, until you turn it off. #pctl (status/save/hint) is
-// unaffected — see the CSS.
-//
-// palOverride is a tri-state, not a bool ORed with kbdOn: null means "follow
-// kbdOn", true/false means alt-p has said otherwise and wins regardless of
-// kbdOn. The OR version couldn't represent "kbd mode on, panel hidden" at
-// all — kbdOn=true forced the OR to true no matter what alt-p did, which is
-// exactly the state a reviewer wants when they know the mode they're in and
-// don't need the grid on screen to use it. alt-p flips whatever is currently
-// showing, so it always does something visible, and the override sticks
-// until alt-p is pressed again — toggling kbd mode itself doesn't clear it.
-let palOverride=null;
-const syncPal=()=>document.body.classList.toggle(
-  'palopen', palOverride===null?kbdOn:palOverride);
-document.addEventListener('focusin',e=>{
-  // The panel occupying 16rem when kbd mode is on can cover the very field
-  // just focused, if it was near the bottom of the page. scrollIntoView
-  // (nearest, not goT1's center) nudges just enough to clear it without
-  // recentering on an ordinary tab/click. Scroll-only now — it no longer
-  // toggles the panel itself, since that depends only on kbdOn/palOverride.
-  if(e.target.tagName==='TEXTAREA'&&kbdOn){
-    e.target.scrollIntoView({block:'nearest',behavior:'smooth'});
-  }
-});
-addEventListener('keydown',e=>{
-  if(e.altKey&&!e.ctrlKey&&!e.metaKey&&e.key==='p'){
-    e.preventDefault();
-    const shown=palOverride===null?kbdOn:palOverride;
-    palOverride=!shown;syncPal();
-  }
-});
-addEventListener('keydown',e=>{
-  if(e.ctrlKey&&e.code==='Space'){e.preventDefault();setKbd(!kbdOn);return}
-  if(!kbdOn||!last||document.activeElement!==last) return;
-  if(e.ctrlKey||e.altKey||e.metaKey) return;
-  const g=Object.prototype.hasOwnProperty.call(GL,e.key)?GL[e.key]
-        :(Object.prototype.hasOwnProperty.call(MK,e.key)?MK[e.key]:null);
-  if(g===null) return;
-  e.preventDefault(); insert(last,g);
-});
-let dirty=false, timer=null;
-const grow=t=>{t.style.height='auto';t.style.height=t.scrollHeight+'px'};
-
-// TYPE CONTROLS. The two CSS variables the entry boxes are sized from, moved
-// live and remembered per browser. The server flags set the starting values and
-// stay the reset target, so `reset` means "back to what this server was started
-// with" rather than to a constant compiled in here — otherwise a coordinator who
-// passed --font-size would find the button undoing their flag.
-const TYPE={fs:{min:11,max:34,unit:'px'},bl:{min:1,max:8,unit:''}};
-const typeStart={};
-for(const k in TYPE) typeStart[k]=parseFloat(
-  getComputedStyle(document.documentElement).getPropertyValue('--'+k));
-function typeSet(k,v){
-  v=Math.min(TYPE[k].max,Math.max(TYPE[k].min,v));
-  document.documentElement.style.setProperty('--'+k,v+TYPE[k].unit);
-  const lab=document.getElementById('tv'+k);
-  if(lab) lab.textContent=(k==='fs'?v+'px':v+(v===1?' line':' lines'));
-  try{localStorage.setItem('review.'+k,v)}catch(e){}
-  // Every box was sized against the old metrics, so re-grow them all: a box left
-  // at its previous pixel height after a size change is the one thing that would
-  // make this look broken.
-  for(const t of document.querySelectorAll('textarea')) grow(t);
-}
-for(const k in TYPE){
-  let v=typeStart[k];
-  try{const s=localStorage.getItem('review.'+k); if(s!==null) v=parseFloat(s)}catch(e){}
-  typeSet(k,v);
-}
-for(const b of document.querySelectorAll('button.tb[data-var]')){
-  b.addEventListener('click',()=>{
-    const k=b.dataset.var;
-    typeSet(k,parseFloat(getComputedStyle(document.documentElement)
-      .getPropertyValue('--'+k))+parseFloat(b.dataset.by));
-  });
-}
-{const r=document.getElementById('treset');
- if(r) r.addEventListener('click',()=>{for(const k in TYPE) typeSet(k,typeStart[k])});}
-// `[data-line]` throughout, never a bare `textarea`: the note boxes are textareas
-// too, and an unscoped selector would post them as if they were line readings.
-function collect(){const o={};
-  for(const t of document.querySelectorAll('textarea[data-line]')){
-    const n=document.querySelector(`textarea[data-note='${t.dataset.line}']`);
-    o[t.dataset.line]={text:t.value,note:n?n.value:''};}
-  return o}
-// Live edited-flag, kept in sync with typing rather than only with the last save,
-// so a line that was reverted back to its proposed text stops claiming "edited"
-// before the next save round-trips. `ef{idx}` is the same span the server rendered.
-function refreshEditFlag(t){
-  const ef=document.getElementById('ef'+t.dataset.line);
-  if(ef) ef.style.display=(t.value!==t.dataset.proposed)?'inline':'none';
-}
-function rebuildEditJump(){
-  const idxs=[...document.querySelectorAll('textarea[data-line]')]
-    .filter(t=>t.value!==t.dataset.proposed)
-    .map(t=>parseInt(t.dataset.line,10)).sort((a,b)=>a-b);
-  document.getElementById('editjump').innerHTML=idxs.length
-    ? '<b>Edited lines:</b> '+idxs.map(i=>`<a href='#l${i}'>${i}</a>`).join(' ')
-    : '<b>Edited lines:</b> none yet';
-}
-async function save(){
-  st.textContent='saving…';
-  try{
-    const r=await fetch('/save',{method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ref:REF,lines:collect()})});
-    if(!r.ok) throw new Error(await r.text());
-    const j=await r.json();
-    dirty=false;
-    const editedTxt=j.edited_lines.length?` (lines ${j.edited_lines.join(',')})`:'';
-    const changedTxt=j.changed_lines.length?` (lines ${j.changed_lines.join(',')})`:'';
-    st.textContent=`saved · ${j.edited}/${j.lines} edited${editedTxt} · `+
-                   `${j.changed} changed${changedTxt}`;
-    // A save that moved many lines at once is the only visible sign of a bulk
-    // overwrite — a browser session-restore looks like ordinary work otherwise.
-    if(j.changed>3) st.className='bad';
-    rebuildEditJump();
-    // Flash exactly the textboxes this save touched — the status line names them
-    // too, but the field itself changing color is what actually catches the eye,
-    // rather than something you have to go read.
-    for(const i of j.changed_lines){
-      const box=document.querySelector(`textarea[data-line='${i}']`);
-      if(!box) continue;
-      box.classList.add('justsaved');
-      setTimeout(()=>box.classList.remove('justsaved'),2500);
+    return {
+        "ref": ref, "summ": summ, "t1": t1, "lines": lines, "palette": palette,
+        "queue": queue or [], "done_n": sum(1 for q in (queue or []) if q["done"]),
+        "scan_href": scan_href,
+        "edit_jump": _edit_jump_inner(edited_now),
+        "done_label": f"Done → next ({len(pending)} left)" if pending else "Done",
+        "done_title": ("save, mark this page adjudicated, and open the next one"
+                       if pending else "save if needed, then stop the server"),
+        "type": {"font": font_stack(font),
+                 "size": int(font_size or DEFAULT_FONT_SIZE),
+                 "box_lines": max(1, int(box_lines or DEFAULT_BOX_LINES))},
+        "kbd_glyphs": KBD_GLYPHS, "kbd_marks": KBD_MARKS,
     }
-  }catch(e){ st.textContent='SAVE FAILED: '+e.message; st.className='bad'; }
-}
-// Finish the session from the page. **Always saves**, and refuses to stop if that
-// save fails — the server is the only thing holding the decisions, so stopping on
-// a failed save would discard them silently.
-//
-// Unconditional, not gated on `dirty`, and that distinction is the whole point:
-// "I changed nothing" is an adjudication, not an absence of one. It means every
-// proposed line was read and accepted, and `save_decisions` stores every line's
-// full text for exactly that reason. Gating on `dirty` was the first version of
-// this button and it silently did nothing on a page reviewed without edits —
-// including one whose ALTO had just gained a recovered line, so `decision.json`
-// stayed a line short and `restore` would have refused it forever.
-async function done(){
-  await save();
-  if(st.className==='bad'){
-    st.textContent='NOT stopping — save failed, your work is still here';
-    return;
-  }
-  // The server decides what happens next, not the page. It knows which refs are
-  // still unadjudicated *on disk*, which is the only account of that fact that
-  // survives a reload, a second tab, or a page opened out of order.
-  let next=null;
-  try{
-    const r=await fetch('/done',{method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ref:REF})});
-    if(r.ok) next=(await r.json()).next;
-  }catch(e){}
-  dirty=false;
-  if(next){ location.href='/p/'+next; return; }
-  document.body.innerHTML='<div style="font:15px var(--f);padding:2rem">'+
-    '<b>Review server stopped.</b><br>Decisions are saved. '+
-    'You can close this tab.</div>';
-}
-// SESSION-RESTORE GUARD. Firefox restores textarea values across a crash-and-reopen,
-// and it restores them BY POSITION, so reopening this page after a crash refilled
-// 1-073's fields with 1-151's text — then one keystroke made the debounce save all 47
-// of them, and the file said 38 lines edited. Nothing in the page or the server could
-// tell that from real work: the payload was well-formed and the text was real
-// transcription, just of a different page.
-//
-// So the server-rendered text is authoritative and is assigned here, after any restore
-// has happened. `autocomplete=off` alone is advisory; this is not. Values are compared
-// before overwriting only to keep `dirty` honest — an assignment is not an edit.
-// Deliberately unscoped: the note boxes are restored by position too, and a note
-// that silently belonged to another page would be worse than a misplaced reading,
-// since a note is read as a human's ruling and nothing checks it against the scan.
-for(const t of document.querySelectorAll('textarea')){
-  const want=t.dataset.text;
-  if(t.value!==want) t.value=want;
-  grow(t);
-  t.addEventListener('focus',()=>{last=t});
-  // An empty note is stored as nothing, so an empty *field* is a control asserting
-  // a state the file does not have. Emptied and left, it folds back to the button
-  // and the line reads exactly as it would after a reload.
-  if(t.dataset.note!==undefined) t.addEventListener('blur',()=>{
-    if(t.value.trim()) return;
-    t.hidden=true;
-    const b=document.querySelector(`button.hnb[data-line='${t.dataset.note}']`);
-    if(b) b.hidden=false;});
-  t.addEventListener('input',()=>{grow(t);dirty=true;st.className='';
-    st.textContent='unsaved…';
-    // Only a reading has an edited-flag; a note is never "edited from proposed",
-    // there being nothing proposed to differ from.
-    if(t.dataset.line){refreshEditFlag(t);rebuildEditJump();}
-    clearTimeout(timer);timer=setTimeout(save,1200)});
-}
-// Opt-in notes: the button hands over to the field, and the blur handler above
-// hands back whenever the field is left empty, so the two are one control with
-// two faces rather than a door that only opens.
-for(const b of document.querySelectorAll('button.hnb')){
-  b.addEventListener('click',()=>{
-    const t=document.querySelector(`textarea[data-note='${b.dataset.line}']`);
-    if(!t) return;
-    t.hidden=false; b.hidden=true; grow(t); t.focus(); last=t;});
-}
-sv.addEventListener('click',save);
-dn.addEventListener('click',done);
-// Tier-1 traversal. Focuses the field rather than only scrolling: the point of
-// arriving at the line is to key it.
-const T1=[...document.querySelectorAll('.ln[data-t1]')];
-let t1i=-1;
-function goT1(d){
-  if(!T1.length) return;
-  t1i=(t1i+d+T1.length*2)%T1.length;
-  const el=T1[t1i];
-  el.scrollIntoView({block:'center',behavior:'smooth'});
-  const t=el.querySelector('textarea[data-line]'); if(t){t.focus();last=t}
-}
-document.getElementById('t1n').addEventListener('click',()=>goT1(1));
-document.getElementById('t1p').addEventListener('click',()=>goT1(-1));
-addEventListener('keydown',e=>{
-  if(!e.altKey||e.ctrlKey||e.metaKey) return;
-  if(e.key==='j'){e.preventDefault();goT1(1)}
-  else if(e.key==='k'){e.preventDefault();goT1(-1)}
-});
-addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-</script>""")
-    return "\n".join(h)
 
-
-def serve(refs: str | list[str], alto_dir: str = DEFAULT_ALTO_DIR,
-          root: Path = Path("."), port: int = 8731, font: str | None = None,
-          font_size: int | None = None, box_lines: int | None = None) -> None:
-    """Serve a session's reviews at 127.0.0.1 and accept saves.
-
-    Loopback only, and no path routing beyond the endpoints it needs: this holds
-    unpublished editorial work and has no business being reachable.
-
-    **One server, several pages, one page at a time.** A batch is normal now that
-    the reading half of the pass fans out to one agent per page, and standing a
-    server up and tearing it down per page made the human's half the part that
-    waited on the machine's. What it is deliberately *not* is one document holding
-    several pages: the reviewer sees exactly one ref's lines, reached by
-    navigation, because a field belonging to a different page than the one you
-    think you are keying is this file's oldest and worst failure.
-
-    **Adjudicated-ness is read off the disk, never held in memory.** A page is done
-    when its `decision.json` exists, which is a fact `save_decisions` establishes
-    and a reload, a second tab, a back button or a restart cannot contradict. The
-    alternative — a set of finished refs in this process — is state the browser can
-    disagree with, and the disagreement would express itself as the server writing
-    one page's adjudicated text into another page's file.
-
-    Two consequences, both wanted. A session re-run after finishing two of three
-    pages opens the third, so the batch resumes rather than restarting. And a page
-    that already carried decisions before the session is shown done and is still
-    reachable from the strip — visible, not hidden, since "already adjudicated" is
-    an answer and silently re-queuing it would discard the earlier one.
-    """
-    import time
-
-    from . import webui
-
-    queue = [norm_ref(r) for r in ([refs] if isinstance(refs, str) else refs)]
-    # Order is the caller's, duplicates dropped: `review 2-045 2-045` is a typo,
-    # and a queue that showed the page twice would make "2/3 adjudicated" a lie.
-    queue = list(dict.fromkeys(queue))
-
-    def _done(r: str) -> bool:
-        return decisions_path(r, root).exists()
-
-    def _state() -> list[dict]:
-        return [{"ref": r, "done": _done(r)} for r in queue]
-
-    # Every ref's geometry is resolved before the socket is bound, for the reason
-    # `page_refs` parses every ref before any work is done: a store that cannot
-    # answer for a page is a fact about the invocation, and the invocation is
-    # where it should be reported. It used to surface as a 500 on navigation —
-    # the CLI printed the URL and three reassuring `decisions -> …` lines, then
-    # the browser got a traceback that only existed on the server's stderr, which
-    # in the ordinary backgrounded case is a log nobody is reading. `--store`
-    # defaults to `mz` here, so the ordinary way to meet this is a page restored
-    # before `ocr predict` existed: name the store that does hold it.
-    missing = [(r, alto_for_lines(r, alto_dir, root)) for r in queue]
-    missing = [(r, p) for r, p in missing if not p.exists()]
-    if missing:
-        other = "gt" if "mz" in alto_dir else "mz"
-        raise FileNotFoundError(
-            "no ALTO in this store for "
-            + ", ".join(f"{r} ({p})" for r, p in missing)
-            + f" — review reads --store mz by default; try --store {other}, or "
-              "`harness ocr predict` to write the prediction.")
-
-    def _next_after(cur: str) -> str | None:
-        """The next page still wanting a decision — never `cur` itself.
-
-        Walks the caller's order rather than resuming after `cur`'s position, so a
-        page reached out of order from the strip still hands back to the front of
-        what is left instead of skipping everything before it.
-        """
-        return next((r for r in queue if r != cur and not _done(r)), None)
-
-    class Handler(webui.EditorHandler):
-        editor = "review"
-
-        def get(self):
-            if self.path in ("/", "/index.html"):
-                # Bare `/` is "wherever this session is up to": the first page
-                # still wanting a decision, falling back to the first page when
-                # every one of them already has decisions — a session opened over
-                # finished work must still show something rather than 404.
-                cur = next((r for r in queue if not _done(r)), queue[0])
-            elif self.path.startswith("/scan/"):
-                r = self.path[6:]
-                if r not in queue:
-                    self.send_error(404)
-                    return
-                self.send_png(raster_path(r, root),
-                              f"no raster for {r} — scans/ is derived; "
-                              "render it with pdftoppm over pdfs/")
-                return
-            elif self.path.startswith("/p/"):
-                cur = self.path[3:]
-                # Only refs this session was asked for. Not a security boundary —
-                # it is loopback — but a URL naming a page nobody queued would
-                # render a review whose Done button belongs to another session.
-                if cur not in queue:
-                    self.send_error(404)
-                    return
-            else:
-                self.send_error(404)
-                return
-            self.send_html(render_queue_html(cur, alto_dir, root, queue=_state(),
-                                             scan_href=f"/scan/{cur}", font=font,
-                                             font_size=font_size,
-                                             box_lines=box_lines))
-
-        def post(self):
-            payload = self.body_json()
-            if self.path == "/done":
-                # The page has finished with *one* ref. Whether that ends the
-                # session depends on what is left, and the answer comes from the
-                # disk rather than from the page — `save` has already written this
-                # page's decisions, so it is done by definition of the file.
-                try:
-                    cur = norm_ref(payload.get("ref") or queue[0])
-                except Exception:
-                    cur = queue[0]
-                nxt = _next_after(cur) if cur in queue else None
-                self.send_json({"next": nxt})
-                if nxt:
-                    print(f"{cur} adjudicated -> next {nxt}")
-                    return
-                # Last one. Stop, so nobody has to hunt the process afterwards: a
-                # server left bound to a page that has since been restored is how a
-                # later save lands on stale text — the rebuild skill warns about
-                # exactly that, and telling a human to remember it is a worse fix
-                # than a button.
-                self.stop_from_page()
-                return
-            if self.path != "/save":
-                self.send_error(404)
-                return
-            # The page says which ref it is; refuse anything else rather than fall
-            # back to a "current page", which is the assumption that would write
-            # one page's text into another's file. A raise here is reported to the
-            # page as JSON by the shell — never a blank failure.
-            cur = norm_ref(payload.get("ref") or "")
-            if cur not in queue:
-                raise ValueError(
-                    f"save names {cur or '(no ref)'}, which is not in this "
-                    f"review session ({', '.join(queue)})")
-            res = save_decisions(cur, payload.get("lines") or {}, root,
-                                 stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
-            edited_str = ",".join(map(str, res["edited_lines"])) or "none"
-            changed_str = f" · changed this save: {','.join(map(str, res['changed_lines']))}" \
-                if res["changed_lines"] else ""
-            print(f"saved {res['path']}: {res['edited']}/{res['lines']} edited "
-                  f"(lines {edited_str}){changed_str}")
-            self.send_json(res)
-
-    url = f"http://127.0.0.1:{port}/"
-    banner = [f"review {' '.join(queue)} -> {url}   "
-              "(Done button on the page, or ctrl-c)"]
-    # Say which pages arrive already adjudicated *before* the reviewer meets a
-    # strip full of green. A resumed session is the ordinary case; a page
-    # unexpectedly carrying decisions is a question, and it should be asked here
-    # rather than discovered by the reviewer wondering what they missed.
-    banner += [f"decisions -> {decisions_path(r, root)}"
-               f"{'   (already present)' if _done(r) else ''}" for r in queue]
-    # The shell's closing line — "done — server stopped from the page" — matters
-    # here: the process exiting is the signal that the review is finished and the
-    # page is ready to `restore`, so whoever is driving does not have to ask.
-    webui.run(Handler, port, url, banner)
 
 
 def summary(spans: list[dict], n_lines: int) -> dict:

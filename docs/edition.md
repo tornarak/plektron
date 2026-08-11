@@ -91,12 +91,26 @@ silent miss is the failure class the project is organised against.
   apparatus store that skipped this is now unauditable; `data/toc.json` is the
   standing case and a logged defect.
 - **`status:`** is `proposed` or `ratified`, and only a human moves it.
-- **`geo:` and `within:`** are the geography sprint's, shaped now and consumed
-  later. `within:` must resolve and the chain must be acyclic — a cycle would
-  hang a tree walk rather than fail it.
+- **`geo:`, `within:` and `area:`** are the atlas's, below. `within:` must
+  resolve and the chain must be acyclic — a cycle would hang a tree walk rather
+  than fail it. `area:` names a shape in `data/geo/` and must resolve there; a
+  shape *kind* may never be an entity class, for a reason worth reading before
+  adding either.
 - **`authority:`** may cross-link `data/authorities.json`. Resolving a `<bibl>`
   to that key is still deferred; `BIBL_IDENTITY_ATTRS` is untouched.
+- **`link:`** holds an *identifier*, never a URL — `wikipedia:Chukchi_people`,
+  not the address. `edition_ui.LINK_KINDS` maps the prefix to the address and to
+  the site's mark, so a site that moves its paths costs one line there rather
+  than an edit to every record. Repeatable.
 - No `canonical:` field — the heading carries it, so there is one place for it.
+
+**One entry names another in double brackets**: `[[people:chukchee]]`, in a gloss
+or in a trigger note. A bare `class:slug` in prose was unclickable and, worse,
+indistinguishable from prose that merely mentions the shape of an identity — the
+brackets say "this is a reference", and `entity check` then **refuses one that
+resolves to nothing**, on the same argument as a dangling `within:`. A gloss is
+escaped before anything else and gets `*em*` and `` `code` `` besides, because
+the records already use them.
 
 ## When a rule may link a form, and when it must ask
 
@@ -177,9 +191,56 @@ other pages' `@ref` may already point at.
 
 ## The reading view
 
-`harness edition serve` (port 8734), on the `webui` shell like the other
-editors. Committed `tei/` only: `mz/tei/` is a draft nobody has read, and an
-end-user preview is the last place it belongs.
+`harness edition serve` (port 8734). Committed `tei/` only: `mz/tei/` is a draft
+nobody has read, and an end-user preview is the last place it belongs.
+
+**`--drafts` shows it anyway, and turns the same server into a workstation over
+the generator's output.** The flag exists because `tei generate` is being fixed
+and the fastest way to judge what it emits is to read it as a page rather than as
+XML. What it does not do is blur the two: the draft is marked in the listing, on
+the page itself and beside every search hit — on the page because a URL typed
+straight in skips the listing that would otherwise carry the warning — and it is
+read-only, since a store that can be edited here is a store that needs an
+adjudication story this does not have.
+
+**It reaches `mz/tei/` by naming it.** There is no view over the tei pair, and a
+symlink farm here is a defect rather than a convenience: nine callers read "a file
+is in `tei/`" as "somebody collated this" — `_collated`, the folio fold, the seam,
+`validate`, `dispatch`, `pipeline`, `tei diff` — and to every one of them a link
+is indistinguishable from a signature. One such farm existed, of 274 links, and it
+made every draft a collated predecessor: `expected_folio` then predicted a folio
+for a page with nothing collated before it, which is precisely the manufactured
+second witness CLAUDE.md's firewall rule forbids. `tei_html.page_source` is the
+shape that replaced it — it hands back the rank *with* the path, so a caller
+cannot hold one without the other.
+
+**Attestations stay signed-only regardless.** An attestation says a form was read
+in a language on a page; a generated page has read nothing, and this is not the
+server's call to make — `_attestations` sweeps `collated`, never `readable`.
+
+**Served by the shared web layer**, with the three editors: one FastAPI app in
+one process listening on four ports, mounted at `/edition`. Its routes are
+`harness/web/edition.py` and its markup the templates beside them;
+`harness/edition_ui.py` keeps what a different front end would still need — the
+little markup a gloss may use, what an imputed pronunciation may claim, which
+fields of a record must reach a reader, and the two guarded writes.
+
+**The templates autoescape, and that is a correctness property rather than a
+tidiness one.** The page was built by concatenating f-strings, where a value was
+escaped if whoever wrote that line remembered: `entity_card` escaped `canonical`
+and `entity_index` interpolated the same field raw two functions later, so an
+apostrophe in a gloss broke the encyclopedia index — and the search query reached
+`<title>` unescaped. Exactly three things are marked safe, each a renderer that
+escapes its own inputs: `tei_html`'s page HTML, `geomap`'s SVG, and the gloss
+markup `edition_ui.gloss_html` builds.
+
+**The stores are read through a cache keyed on their contents**
+(`harness/web/cache.py`). Every request re-walked and re-parsed the whole
+encyclopedia — `entity_index` did it twice, once for `load` and once for
+`check` — and `search` re-rendered every collated page per query. Contents and
+not mtime, because these stores are edited underneath the running server and a
+timestamp key is not fine-grained enough to notice; the measurements are in that
+module.
 
 **Two columns.** The text, and a **stack** of cards beside it. Clicking an
 entity link, a footnote marker or "consult the scan" pushes a card to the top;
@@ -202,6 +263,78 @@ unanswered question is the honest state of the page, and an edition that tidied
 it away would present a draft as finished — the failure this project is arranged
 against, appearing at the last possible moment.
 
+**A Tier-1 form is a link too**, into `/lexicon/<lang>:<form>` — `ckt:Uweˊlen`,
+url-encoded, the key NFD like everything else so the same word reached from two
+pages opens one card. What it opens is **deliberately almost empty**: the form,
+its language, the committed pages it is attested on, and a line saying no entry
+stands behind it yet. There is no lexicon store — `harness lexicon lookup`
+recomputes an index per run and is a reader's instrument rather than a published
+object — and an empty card that admits it is empty is worth more than a link that
+goes nowhere. It is also the shape an entry will fill.
+
+Attestation is whole-element equality, not a substring search: `Qeˊñ` inside
+`Qeˊñu` is the boundary the Tier-1 machinery protects everywhere else.
+
+## The pronunciation on that card, and why it may be there
+
+The card also carries `/uːweːleːn/` and a speaker. Both are **imputed**, labelled
+so, and the label is the load-bearing part.
+
+**The firewall is not what this answers to.** `harness/ipa.py` reads no scan and
+proposes no glyph identity: it is a rule table applied to a form a human already
+keyed and ratified, so nothing here can adopt a reading or promote one. What it
+answers to is the other governing concern — fluent nonsense — because IPA *looks*
+like a finding. Hence: the pill says imputed on every card, a character with no
+row makes the whole form `partial` and is named rather than skipped, and the
+speaker's tooltip says outright that espeak is reading the phonemes with no
+Chukchi voice behind it. The sketch is two guesses deep and says which two.
+
+**The table has two grades and one abstention rule.** `myth` is Bogoras's own
+account of his notation in the front matter to *Chukchee Mythology* (1910) — the
+same notation this volume sets, described by the man who devised it. `key` is the
+p. 10 key, already binding apparatus here, and it supplies the unmarked ASCII
+sorts that account does not reach (`c` is English *sh*, `j` is French *jour*, `x`
+is *Bach*) plus the seventh member of the palatalization series. Where a source
+gives two values — `g̣` is ɣ ~ ɡ, `ʟ` is ʎ̥˔ ≈ ɬʲ — the **first** is emitted and
+the row is reported `hedged`; choosing per row by which value looked better would
+be judgement dressed as a table. Where a sort has only a *gloss* — "like *a* in
+*make*", "velar r" — there is **no row at all**, because turning a gloss into a
+symbol is a judgement and not a lookup. Same for U+0027, which is both the
+spirant and the pause mark and which `keying_spec.md` says not to propose.
+
+Stress is dropped: U+02CA follows the stressed vowel where IPA's `ˈ` precedes the
+stressed *syllable*, and placing it needs syllabification. It still earns its
+keep on the way out — `au` is one diphthong and `aˊu` is two vowels, because
+longest match sees the mark standing between them.
+
+**580 of the corpus's 609 native forms resolve completely** (`lexicon ipa --all`).
+The 29 that do not are a worklist, not noise: 6 want a row for plain `g`, 15 carry
+`ṛ`/`ḷ`/`š`, 6 are European names sitting inside a Tier-1 span, and 2 carry a
+curly apostrophe the Tier-1 ASCII policy forbids — a ground-truth defect the
+imputation happened to surface.
+
+**The audio's phoneme table carries its own witness.** `harness/speech.py` is the
+Moll reader's `tts.py` with a new table, and the one thing added to it is that
+each row records *what espeak read that mnemonic back as*, measured in a frame,
+with the test comparing the table against the installed binary rather than against
+a symbol someone hoped it matched. The Moll pass found `gruut-ipa`'s truncation by
+timing the audio, which is a symptom; asking espeak to say what it thinks a string
+is shows the missing segments outright. It caught two rows here — a bare `r`
+becomes the English approximant ɹ before any vowel, and `r^` renders while
+swallowing whatever follows — and one sandhi, an English linking ɹ inserted
+between a schwa and a following vowel, which five `-qäi`/`-qäu` forms hit and a
+zero-length pause suppresses.
+
+Speech needs **no Python dependency** — it shells out to the system `espeak-ng`,
+which `edition serve` probes once at startup and reports on its banner. Without
+it the speaker buttons disable themselves on the first press and everything else
+works; that is a supported state, not a broken one.
+
+`/tts/<ipa>` is a **pure function of the string in the URL** and deliberately does
+not check that the IPA is one this edition imputed, which is what makes it
+cacheable on the string alone. Nothing from the URL reaches a command line: the
+phoneme string handed to espeak is assembled only from table values.
+
 **Crops are computed, never cut.** A figure or a line is the whole page raster,
 scaled and offset inside a clipping box, in percentages (`tei_html.crop_style`).
 The browser fetches one image per page however many crops the stack holds, and
@@ -218,17 +351,187 @@ done where the evidence is. Every write runs `entity check` on the result and
 the corpus resolves against it and a broken store breaks pages nobody is looking
 at.
 
-## The geography view is a sprint of its own
+## The atlas
 
-Deferred deliberately, not forgotten. Entity files already carry `geo:` and
-`within:`; what is missing is the design, and it is more than a map. The shape
-wanted is a **hierarchy of locations** — russian far east → chukotka → chukchi
-peninsula → uelen, and anadyr basin → markova, and kamchatka → paren — where each
-location appears in its parent's map and the selected chain is navigable as a
-tree. There is dumped GeoJSON for watersheds and language regions in `scratch/`
-to build it from. No external tiles, ever: the server is loopback and the edition
-is meant to be self-contained.
+`within:` was always going to carry it, which is why `entity check` refused a
+dangling parent and a cycle long before anything read the store that way. What
+this section adds is the shapes, the authored link to them, and the view.
 
-`within:` is the field that will carry it, which is why `entity check` already
-refuses a dangling parent and a cycle — the store can be populated correctly
-before anything reads it that way.
+### The store: `data/geo/`, compiled and tracked
+
+Three sources, none of them in the repository: 24 watershed delineations and a
+53 MB world language atlas in `scratch/` (gitignored, one of them a symlink into
+a download directory), and Natural Earth for the coastline. `tools/build_geo.py`
+compiles them to `data/geo/`, which **is** tracked — a clone can neither rebuild
+this nor be told why the atlas is empty. The same split `scans/` has: a `tools/`
+script builds from what only one machine holds, the harness reads what is
+committed. `shapely` is a build-time dependency declared inline (PEP 723);
+`edition serve` reads plain JSON and imports nothing new for it.
+
+`data/geo/SOURCES.md` is authored by hand and is a **precondition of the build**,
+not a by-product. Asher 2007 is CC BY 4.0, so its citation goes in the corpus
+`teiHeader`'s rights statement as well — this file ships with the repository and
+the reading view does not.
+
+**One source's licence is heavier than its content and is not settled.** The
+basins come from Global Watersheds (mghydro.com) over MERIT-Hydro, which is
+dual-licensed **CC BY-NC 4.0 or ODbL 1.0**: the first forbids commercial use by
+anyone who clones this, and the second is share-alike on the *database*, which
+`data/geo/watershed/` is. Which branch this edition takes, and whether those
+files must therefore carry ODbL rather than the corpus's CC BY, is a human's
+decision recorded as open in `SOURCES.md`. Nothing is blocked meanwhile — the
+server is loopback and a repository is not a distribution — but a rights
+statement quietly saying "CC BY" over those files would be a claim with nothing
+behind it.
+
+The compilation is roughly 10:1 (9.8 MB of watersheds to ~1 MB): the top two
+Strahler orders of each river network, simplified at 0.01°, rounded to 3
+decimals, and the properties every feature repeated hoisted to the collection.
+Base layers are simplified an order harder — a coastline is context, always seen
+at whole-region scale, and carrying it at subject resolution put 70 KB of
+Eurasia into a card showing a 2,800 km² basin.
+
+### The antimeridian is a build problem before it is a rendering problem
+
+Chukotka spans 180°, where a ring stepping 179.9 → −179.9 is a self-crossing
+horror in any planar library. Two shapes of the hazard: a regional shape *cut*
+at the meridian into two halves (RFC 7946 says to do that), and a global base
+layer whose Eurasia polygon runs from −10° to 190°, which a naive "add 360 to the
+negatives" pass tears in half.
+
+One recipe for both — clip in **native** coordinates against two boxes either
+side of the meridian, shift the western result by +360, union. A cut shape's
+halves meet at exactly 180 and the union welds them; a global polygon is clipped
+before anything is shifted, so nothing tears. Everything downstream lives in one
+continuous window (`[60, 420)`, so >180 is west of the meridian) and containment,
+extents and culling are all ordinary planar arithmetic.
+
+**What it will not do is close a shape up.** Asher's Chukchi polygon has ten
+vertices on 180° and no counterpart west of it: East Cape and Uelen, Chukchi-
+speaking by every account including this book's, are outside it. The build
+reports that on every run and draws it as it is. Extending a speaker area past
+where its publisher drew it would be inventing evidence in the one place a reader
+would never check.
+
+### `area:`, and why it is typed rather than matched
+
+A new optional entity field naming a shape: `area: watershed:anadyr`.
+**Human-authored, and that is the point** — identifying a toponym Bogoras wrote
+in 1904 with a polygon a modern delineation service returned is an assertion
+about the world, and a rule that matched them by name would be the confident
+guess this project is arranged against. `watershed:main` and the English word are
+one keystroke apart in that file listing.
+
+A shape kind is held **disjoint from `ENTITY_CLASSES`** — `langarea:`, never
+`language:` — because an entity file carries `within: place:chukotka` two lines
+from `area: langarea:chuk1273`, and a reader who cannot tell them apart by
+looking is one keystroke from an `area:` that resolves as an entity reference.
+`entities.parse` refuses a colliding kind outright.
+
+`entity check` gates exactly one thing here: that the id resolves. That is a
+fact about names, like `within:` resolving. Everything geometric is
+`geo verify`'s and **reports**.
+
+### The witness inside the river chain
+
+A basin delineated from a tributary's outlet is contained in its trunk's *by
+construction*, so `within:` on a `water:` entity can be checked against the
+geometry — the Wolverine inside the Small Anui inside the Kolyma. It is a real
+second witness, and it is the reason the river hierarchy was worth authoring in
+the store rather than inferring from the shapes.
+
+Three things keep it honest.
+
+**It names the pair, never a culprit.** A disagreement says one of two authored
+facts is wrong and the geometry cannot say which.
+
+**It respects the source's declaration of precision.** The delineator reverts to
+a coarse DEM above 50,000 km² and says so in the file it returns. Every
+containment pair in the store today has such a member, and a true tributary
+measured against a coarse parent lands at 0.70–0.87 rather than 1.00 — the Small
+Anui visibly pokes outside the Kolyma outline on its own map. Reading that as
+"disagrees" would make the check a machine for rejecting true rows on the
+strength of a limitation the source announced in advance.
+
+**The floor sits in a measured gap, not near either side.** Relations the book
+and the map both support land at 0.68–0.82; a river paired with a basin it has
+nothing to do with lands at 0.00–0.11. Kanchalan and Tumanskaya came back at 11%
+and 0% against the Anadyr, which is how they ended up as its siblings rather than
+its tributaries.
+
+A `geo:` point outside its own shape is likewise reported with a distance and is
+not a defect: a river's natural point is its **mouth**, which sits on the very
+boundary the basin was delineated from. `water:anadyr` is 0.59° out, at the
+estuary. And a shape two entities claim is legal — `people:chukchee` and
+`language:chukchee` both point at the one Asher polygon, and forcing a choice
+would be this edition deciding something the source does not.
+
+### The map: server-rendered SVG, no tiles, ever
+
+The server is loopback and the edition is meant to be self-contained, so there is
+no map library and no tile fetch. One `<svg>`, shapes as `<path>`, every
+coordinate projected on the server. It suits the material: the polygons *are* the
+content and there is no imagery to want.
+
+**Lambert azimuthal equal-area, centred per map on its own subject.** Not taste.
+It goes through `sin`/`cos` of longitude, which are periodic, so 185° and −175°
+project to the same point and no window convention can leak into the picture —
+the antimeridian is closed for good rather than merely handled. Equal-area makes
+the one comparison a reader actually makes, this basin against that one inside
+the same frame, mean what it looks like. Per-map because the store spans 137° of
+longitude and a single centre would visibly shear the Amur; nothing compares two
+separately-framed maps, so there is nothing to lose.
+
+Every map's `viewBox` is the same 1000-unit square and the element carries no
+width or height — `tei_html.crop_style`'s discipline, and normalizing the frame
+is also what lets one decimal place be enough at every zoom. Emitting projected
+radians at fixed precision gives a continental frame more resolution than any
+screen and a small basin about two hundred visibly-faceted steps across.
+
+A frame is measured **along** its box's edges rather than at its four corners: at
+70°N the top edge bows well past them, and a frame taken from the corners clips
+the shape it was computed for.
+
+### The tree
+
+`/atlas` is the `within:` forest, each node's map beside it, **scoped to located
+subtrees** — a root is an entity with no `within:` that has somewhere to put on a
+map, itself or below it. Without that scope every person and source in the store
+is an atlas root and the tree is the encyclopedia index with worse navigation.
+
+**A shapeless node is framed by its members, and the map says so.** No source
+holds a polygon for Chukotka or the Russian Far East, and none should: they are
+tree structure, not shapes. So a node without `area:` gets the padded union of
+the extents beneath it and is captioned as framed by its members rather than by
+an authored boundary. A frame is a viewport, not a claim — which is why computing
+one is legal where inferring a *boundary* for Chukotka would not be.
+
+**A node draws what lies beneath it**, back to front: land, siblings, members,
+the parent's outline, the subject, its rivers. The members are the nearest
+descendants that *have* a shape, descending through those that do not — one
+level down is right for the Kolyma, whose children are basins, and wrong at the
+top of the tree, whose children are structure: the Russian Far East's are
+Chukotka and Kamchatka, which no source draws, so a one-level rule left its map
+showing an arbitrary half of the country.
+
+The extent union always includes the children, even where the node has an extent
+of its own. Stopping at the first source found was a bug invisible in every number and
+obvious on the first map: a parent with a `geo:` point framed on that point
+alone, and Uelen — inside the Chukchee Peninsula by the store's own `within:` —
+fell outside its own parent's map.
+
+An entity with no shape, no point and no located descendant says so rather than
+rendering an empty frame. Chuvan, Kerek, Siberian Yupik and Tundra Yukaghir are
+the live instances: `index.json` carries them as `absent` rows with the reason,
+because an entity pointing at nothing and an entity nobody has got to yet look
+identical from outside, and only one of them is finished.
+
+### What is still open
+
+Eleven shapes are unclaimed (`geo verify`), most of them basins the book names
+in passing — the Oloi is the interesting one, measuring 80% inside the Kolyma and
+68% inside the Omolon, which is exactly the case the two-witness rule forbids
+settling from the geometry alone. The watershed delineation **service is not
+named** in the files it returned and is the one provenance row weaker than its
+content. And `place:paren`, from the original sketch, is unauthored: the book
+names it, and no coordinate for it is in hand that is not a guess.

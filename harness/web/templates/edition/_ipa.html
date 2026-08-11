@@ -1,0 +1,33 @@
+{# The imputed IPA, its speaker, and what is wrong with it.
+
+   **Everything in this block is labelled and nothing in it is evidence.** The
+   IPA is a rule table applied to a keyed form (`ipa.py`) and the audio is
+   espeak-ng reading those phonemes with no Chukchi voice behind it, so the row
+   is two guesses deep and says so where a reader will see it rather than in a
+   page nobody opens.
+
+   A partial imputation still shows — with the characters that fell through
+   named. Withholding it would say the form is unpronounceable, when what is
+   true is that this table does not reach one of its letters. #}
+{% if ipa %}
+<div class='ipa'>
+  <span class='val' lang='und-fonipa'>/{{ ipa.value }}/</span>
+  {%- if ipa.speakable %}
+  <button class='speak' data-ipa='{{ ipa.value }}'
+    title='espeak-ng reading the imputed phonemes — there is no Chukchi voice,
+so this is a sketch of a sketch'>&#128266;</button>
+  {%- endif %}
+  <span class='pill imputed'>imputed</span>
+</div>
+{% if not ipa.complete %}
+<div class='meta'>partial — no rule reaches
+{% for c in ipa.unresolved %}<code>{{ c }}</code>{% if not loop.last %}, {% endif %}{% endfor %},
+so {{ 'that sort is' if ipa.unresolved | length == 1 else 'those sorts are' }}
+carried across unread</div>
+{% endif %}
+{% if ipa.hedged %}
+<div class='meta'>the source gives two values for
+{% for h in ipa.hedged %}<code>{{ h }}</code>{% if not loop.last %}, {% endif %}{% endfor %};
+the first is what is shown</div>
+{% endif %}
+{% endif %}

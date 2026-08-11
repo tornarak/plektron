@@ -1,0 +1,26 @@
+{% extends "edition/base.html" %}
+{% block title %}The Chukchee{% endblock %}
+
+{% block main %}
+<div id='primary'>
+<h3>The edition</h3>
+{% if drafts %}
+{# Said once, at the top, and then per row: a reader who takes in the banner and
+   nothing else must still not mistake the list for the edition. #}
+<p class='draft-note'>Showing <code>mz/tei/</code> as well. A <span
+class='draft-tag'>draft</span> is what <code>tei generate</code> built from the
+zone and OCR stores; nobody has read it against the page.</p>
+{% endif %}
+{% if refs %}
+<ul>{% for r in refs %}<li><a href='{{ base }}/page/{{ r }}'>{{ r }}</a>{%
+ if drafts and r not in signed %} <span class='draft-tag'>draft</span>{% endif %}</li>{% endfor %}</ul>
+{% else %}
+{# Committed `tei/` only unless `--drafts`. `mz/tei/` is a generated baseline
+   nobody has read, and an end-user preview is the last place it belongs. #}
+<p>No page is collated yet. The reading view shows committed <code>tei/</code>
+only — a generated baseline in <code>mz/tei/</code> is a draft nobody has read,
+and this is the one place it must not appear unasked. Start the server with
+<code>--drafts</code> to read the generator's output anyway.</p>
+{% endif %}
+</div>
+{% endblock %}

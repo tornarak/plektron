@@ -43,6 +43,7 @@ import unicodedata
 from pathlib import Path
 
 from .context import REF_RE, norm_ref
+from .geo import index as geo_index
 
 ENTDIR = "entities"
 
@@ -79,6 +80,11 @@ ENTITY_CLASSES = {
 #: linked by rule — a machine link resting on an unaudited entry would be the
 #: pass promoting its own proposal, one artifact removed.
 STATUSES = ("proposed", "ratified")
+
+#: How one entry names another, in a gloss or a trigger note. Brackets rather
+#: than a bare `class:slug`, so a reference is distinguishable from prose that
+#: merely mentions the shape of one, and so `check` can refuse a dangling target.
+WIKILINK = re.compile(r"\[\[([a-z]+:[a-z0-9][a-z0-9-]*)\]\]")
 
 _HDR = re.compile(r"^#\s+([a-z]+):([a-z0-9][a-z0-9-]*)\s+—\s+(.+?)\s*$", re.M)
 _FIELD = re.compile(r"^-\s+([a-z]+):\s*(.*?)\s*$", re.M)
@@ -181,6 +187,26 @@ def parse(text: str, where: str = "") -> dict:
     if within:
         split_id(within)          # raises with the same message as everywhere else
 
+    # `area:` names a shape in `data/geo/`, not an entity. Its form is
+    # `kind:slug` — the same shape an identity has, and that resemblance is
+    # exactly why the shape kinds are held disjoint from `ENTITY_CLASSES`
+    # (`langarea:`, never `language:`): the two appear two lines apart in this
+    # file, and a reader who cannot tell them apart by looking is one keystroke
+    # from an `area:` that quietly resolves as an entity ref.
+    area = one("area")
+    if area:
+        kind, _, name = area.partition(":")
+        if not name or not kind:
+            raise Malformed(
+                f"{at}`area: {area}` — a shape id is `kind:slug`, e.g. "
+                f"`watershed:anadyr`. `harness geo list` names them")
+        if kind in ENTITY_CLASSES:
+            raise Malformed(
+                f"{at}`area: {area}` — {kind!r} is an entity class, so this "
+                f"reads as an entity reference. Shape kinds are held disjoint "
+                f"from entity classes for that reason; a language area is "
+                f"`langarea:`")
+
     sections: dict[str, str] = {}
     marks = list(_SECTION.finditer(text))
     for i, s in enumerate(marks):
@@ -232,6 +258,7 @@ def parse(text: str, where: str = "") -> dict:
         "since": norm_ref(since),
         "within": within,
         "geo": coords,
+        "area": area,
         "links": fields.get("link", []),
         "authority": one("authority"),
         "triggers": triggers,
@@ -317,22 +344,40 @@ def _pattern(forms) -> re.Pattern | None:
     two printed lines still matches. The generated page keeps the printed line
     breaks, so without this the longest and most reliable triggers — the multi-word
     ones — would be exactly the ones that failed at a line end.
+
+    **A hyphen may stand between any two characters**, because
+    `join_broken_words` keeps the compositor's line-break hyphen: `Maritime Chuk-`
+    / `chee` rejoins as `Maritime Chuk-chee`, and whether that hyphen belongs to
+    the word is not decidable from the ALTO, so nothing removes it. Without the
+    tolerance the store cannot see 39 occurrences across the corpus at 13
+    entities — a form that is present and invisible, which is the silent miss this
+    project is organised against. What it buys is a *question*: `match` marks such
+    a hit `hyphenated`, and no rule may link one.
     """
     forms = sorted(forms, key=len, reverse=True)
     if not forms:
         return None
-    alts = [r"\s+".join(re.escape(w) for w in f.split()) for f in forms]
+    alts = [r"\s+".join("-?".join(re.escape(c) for c in w) for w in f.split())
+            for f in forms]
     return re.compile(_BEFORE + "(?:" + "|".join(alts) + ")" + _AFTER)
 
 
 def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     """Every trigger hit in `text`, non-overlapping, longest-first.
 
-    Returns `{start, end, text, form, ids, auto, status}` per hit, where `form`
-    is the trigger as the store spells it and `text` is what the page spells —
-    the two differ wherever a line break fell inside the match. `ids` is every
-    entity claiming the form, so a caller can tell an unambiguous hit from a
+    Returns `{start, end, text, form, ids, auto, hyphenated, status}` per hit,
+    where `form` is the trigger as the store spells it and `text` is what the page
+    spells — the two differ wherever a line break fell inside the match. `ids` is
+    every entity claiming the form, so a caller can tell an unambiguous hit from a
     contested one without going back to the index.
+
+    **`hyphenated` says the page spells the form with a hyphen the store does
+    not**, which is what a compositor's line-break hyphen looks like after
+    `join_broken_words` rejoins the two halves. Such a hit is never `auto`, no
+    matter how safe the trigger: deciding that a hyphen is the printer's and not
+    the word's is a reading, and `Rein-deer` being obvious does not make it
+    mechanical. It arrives as a candidate, the reader settles it, and the
+    generator's comment says which kind of question it is.
 
     Case-sensitive. These are proper nouns in running prose, and a
     case-insensitive match on a short form would fire on ordinary words.
@@ -341,16 +386,25 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     pat = _pattern(idx)
     if pat is None:
         return []
+    # Only consulted when the exact spelling is not in the index, so a trigger
+    # that legitimately carries a hyphen (`Sredne-Kolymsk`) still resolves as
+    # itself rather than through this.
+    dehyphenated = {f.replace("-", ""): f for f in idx}
     out = []
     for m in pat.finditer(text):
-        form = " ".join(m.group(0).split())
+        got = " ".join(m.group(0).split())
+        form, hyphenated = got, False
+        if form not in idx:
+            form = dehyphenated.get(got.replace("-", ""), "")
+            hyphenated = True
         claims = idx.get(form, [])
         if not claims:
             continue
         out.append({
             "start": m.start(), "end": m.end(), "text": m.group(0), "form": form,
             "ids": [c["id"] for c in claims],
-            "auto": len(claims) == 1 and claims[0]["auto"],
+            "auto": (not hyphenated and len(claims) == 1 and claims[0]["auto"]),
+            "hyphenated": hyphenated,
             "status": claims[0]["status"] if len(claims) == 1 else "",
         })
     return out
@@ -397,10 +451,30 @@ def check(root: Path = Path(".")) -> dict:
             errors.append(f"{p}: sits outside a class directory. An entity lives "
                           f"at entities/<class>/<slug>.md")
 
+    # The shape store, read once. `area:` resolving is the same kind of claim
+    # as `within:` resolving — a named thing either exists or it does not — and
+    # `data/geo/` is tracked, so it is always there to check against. Anything
+    # *geometric* is `harness geo verify`'s and reports rather than gates.
+    shapes = geo_index(root).get("shapes", {})
     for rec in store.values():
         w = rec["within"]
         if w and w not in store:
             errors.append(f"{rec['path']}: `within: {w}` resolves to nothing")
+        if rec["area"] and rec["area"] not in shapes:
+            errors.append(
+                f"{rec['path']}: `area: {rec['area']}` resolves to nothing in "
+                f"data/geo/. `harness geo list` names every shape; if the "
+                f"source has no polygon for it, leave `area:` off and say so "
+                f"in the gloss rather than pointing at an approximation")
+        # `[[class:slug]]` in a gloss or a trigger note is a reference, and a
+        # reference to nothing is the failure this whole store exists to stop —
+        # it renders as a link and goes nowhere. Checked here rather than at
+        # render time because a reader should never be the one to find it.
+        for target in sorted(set(WIKILINK.findall(rec["gloss"]))
+                             | {m for t in rec["triggers"]
+                                for m in WIKILINK.findall(t["note"])}):
+            if target not in store:
+                errors.append(f"{rec['path']}: [[{target}]] resolves to nothing")
     # Acyclic, so a containment chain terminates. A cycle would hang the
     # geography sprint's tree walk rather than fail it, which is the worse
     # outcome of the two.

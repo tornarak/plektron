@@ -1,0 +1,37 @@
+{# One entity's card. Rendered alone into the stack (`?partial=1`) or wrapped in
+   a page of its own — the same fragment either way, which is why it is a
+   partial rather than two renderers that could drift. #}
+{% if not rec %}
+<p>No entry for <code>{{ ident }}</code>.</p>
+{% else %}
+<h4>{{ rec.canonical }}<span class='pill {{ rec.status }}'>{{ rec.status }}</span></h4>
+<div class='meta'><code>{{ ident }}</code> · first read on
+  <a href='{{ base }}/page/{{ rec.since }}'>{{ rec.since }}</a>
+  {%- if located %} · <a class='mapref' data-ref='{{ ident }}'
+     href='{{ base }}/map/{{ ident }}'>map</a>{% endif %}</div>
+{% if contested %}
+<div class='meta'>shares a form with
+{% for c in contested %}<a class='ent' data-ref='{{ c.id }}'
+   href='{{ base }}/entity/{{ c.id }}'>{{ c.canonical }}</a>
+{%- if not loop.last %}, {% endif %}{% endfor %}</div>
+{% endif %}
+<div class='gloss'>{{ gloss | safe }}</div>
+{% include "edition/_props.html" %}
+{% for ln in links %}{{ ln | safe }}{% endfor %}
+{% if rec.triggers %}
+<table><tr><th>form</th><th></th><th></th></tr>
+{% for t in rec.triggers %}
+<tr><td>{{ t.form }}</td>
+    <td>{{ 'auto' if t.auto else 'suggest' }}</td>
+    {# The notes carry `[[…]]` too — they are where an author explains *why* a
+       form is suggest-only, and the explanation is almost always "it is also
+       that other entity", which wants to be clickable. #}
+    <td>{{ t.note_html | safe }}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+{% if rec.status != 'ratified' %}
+<div class='ratify-row'><button class='ratify' data-id='{{ ident }}'>ratify — a
+rule may then link its forms</button></div>
+{% endif %}
+{% endif %}

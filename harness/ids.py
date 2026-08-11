@@ -180,6 +180,15 @@ def text_of(el) -> str:
     copy = etree.fromstring(etree.tostring(el, with_tail=False))
     for note in list(copy.iter(f"{{{TEI_NS}}}note")):
         parent = note.getparent()
+        # `iter` yields the root as well, and the root has no parent. Reached
+        # whenever the element *is* a note, which is what a generated page's body
+        # ends with — the unanchored `<note place="bottom">` the collator has yet
+        # to move. `seam.tail` reads exactly that element off a predecessor still
+        # being collated, so this crashed a live sibling in a dispatched batch
+        # (`1-032`, reading half-written `1-031`). Nothing to strip from a note
+        # but itself; its own text is its text.
+        if parent is None:
+            continue
         if note.tail:
             prev = note.getprevious()
             if prev is not None:

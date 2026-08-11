@@ -57,6 +57,18 @@ def register(cli):
         help="a form that means this entity, added at `auto: no`. Raising one "
              "to `auto: yes` is a separate act, done in the file or the browser, "
              "because it licenses a link nobody will be asked about")
+    opt(p, "--within", metavar="ID",
+        help="the entity that contains this one, `class:slug`. The atlas's "
+             "whole structure, and the only thing that puts a location "
+             "somewhere rather than merely on a map — a tributary inside its "
+             "trunk, a village inside its basin")
+    opt(p, "--area", metavar="KIND:SLUG",
+        help="the shape in data/geo/ this entity is drawn as, e.g. "
+             "`watershed:anadyr`. **Identifying a name Bogoras wrote in 1904 "
+             "with a polygon a modern service returned is a human's act**, "
+             "which is why it is typed here and never matched by name: "
+             "`watershed:main` and the English word are one keystroke apart. "
+             "`harness geo list` names every shape")
     opt(p, "--commit", is_flag=True,
         help="write it. Without this the file is reported and not created")
 
@@ -130,7 +142,7 @@ TEMPLATE = """# {ident} — {canonical}
 
 - status: proposed
 - since: {since}
-
+{extra}
 ## triggers
 
 | form | auto | note |
@@ -153,8 +165,10 @@ def run_new(a) -> int:
         return 1
     rows = "\n".join(f"| {unicodedata.normalize('NFD', t)} | no | |"
                      for t in a.triggers) or "| | no | |"
+    extra = "".join(f"- {k}: {v}\n" for k, v in
+                    (("within", a.within), ("area", a.area)) if v)
     text = TEMPLATE.format(ident=ident, canonical=a.canonical, since=a.since,
-                           rows=rows)
+                           extra=extra, rows=rows)
     # Parsed before it is written, so a bad `--since` or an empty `--trigger`
     # fails as a message rather than as a file the next `check` complains about.
     from ..entities import parse
@@ -302,8 +316,11 @@ def run_occurrences(a) -> int:
         for h in match(_unlinked_text(body), wanted):
             for i in h["ids"]:
                 if i in unlinked:
-                    unlinked[i].append({"id": i, "ref": ref, "form": h["form"],
-                                        "ambiguous": len(h["ids"]) > 1})
+                    unlinked[i].append({
+                        "id": i, "ref": ref, "form": h["form"],
+                        "as_printed": " ".join(h["text"].split()),
+                        "ambiguous": len(h["ids"]) > 1,
+                        "hyphenated": h["hyphenated"]})
     out(a, [{"id": i, "linked": len(linked[i]), "unlinked": len(unlinked[i]),
              "status": store[i]["status"]} for i in ids])
     rows = [r for i in ids for r in linked[i]]

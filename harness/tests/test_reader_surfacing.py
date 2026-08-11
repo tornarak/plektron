@@ -109,7 +109,17 @@ def _rendered(root: Path, lines: dict, draft: dict | None = None) -> str:
     arm needs: its whole subject is the two disagreeing.
     """
     draft = draft or {}
-    from harness.review import render_queue_html
+    from harness.review import page_context
+    from harness.web import templates
+
+    def render_queue_html(ref, alto_dir, root, **kw):
+        # The renderer returns a context now and the markup is a template, so a
+        # test that wants the page goes through the same two steps the server
+        # does. One renderer, so the served page and `--html` cannot drift.
+        ctx = page_context(ref, alto_dir, root, **kw)
+        return templates.get_template("review/page.html").render(
+            **ctx, base="/review", static="/static", request=None)
+
     from harness.tests.conftest import write_scan
     write_scan(root, "1-048")
     body = "".join(
@@ -144,8 +154,8 @@ def test_an_agreeing_line_dims_and_a_noted_one_does_not(tmp_path):
         "1": {"text": "the herd was large", "note": "acute on this vowel",
               "class": "doubt"},
     })
-    quiet = html.split("id='l0'")[0].rsplit("<div class='", 1)[1]
-    loud = html.split("id='l1'")[0].rsplit("<div class='", 1)[1]
+    quiet = html.split('id="l0"')[0].rsplit('<div class="', 1)[1]
+    loud = html.split('id="l1"')[0].rsplit('<div class="', 1)[1]
     assert "agree" in quiet and "noted" not in quiet
     assert "agree" in loud and "noted" in loud
 

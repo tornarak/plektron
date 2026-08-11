@@ -15,6 +15,8 @@ the exemptible question is about the corpus, not about a reader: see
 """
 from __future__ import annotations
 
+import click
+
 from ..detectors import (
     digraph_frequency,
     mark_base_frequency,
@@ -23,6 +25,7 @@ from ..detectors import (
     suggest_native_forms,
 )
 from ..ids import glossary
+from ..ipa import rows as ipa_rows
 from ..lookup import search
 from ..marks import gt_conflicts
 from ._common import action, arg, group, opt, out
@@ -95,6 +98,26 @@ def register(cli):
         help="lines of surrounding text per matched form, which is what makes a "
              "form's sense readable without opening the page [2]")
 
+    p = action(g, "ipa", run_ipa,
+               help="imputed IPA for a keyed native form. **The table is a rule "
+               "table and nothing here is evidence** — it reads no scan, settles "
+               "no glyph, and is a pronunciation sketch of a form a human already "
+               "keyed. Rows are graded: `myth` is Bogoras's own account of his "
+               "notation in the front matter to *Chukchee Mythology*, `key` is the "
+               "printed key at Part 1 p. 10 for the unmarked ASCII sorts it does "
+               "not reach. A form containing a sort with no row, or the "
+               "undecidable U+0027, comes back `partial` with the characters "
+               "named, rather than silently skipping one. Reports; never gates"
+               "\n\nFORM: a keyed form, NFD or not; several are several rows")
+    arg(p, "forms", nargs=-1, required=False, metavar="FORM")
+    opt(p, "--all", "every_form", is_flag=True,
+        help="every native form in restored gt/ocr/ instead of the named ones — "
+             "the coverage report, which is what says whether the table reaches "
+             "the corpus [off]")
+    opt(p, "--partial", is_flag=True,
+        help="only the forms that did not resolve, which is the worklist "
+             "the table is extended from [off]")
+
     add("glosses", glossary,
         help="the corpus's term<->gloss pairs from committed TEI — "
             "the dictionary the <gloss target> links make queryable. Pairs come "
@@ -113,6 +136,24 @@ def run_lookup(a) -> int:
         name="scope")
     out(a, r["matches"], name="matches", heading=True)
     out(a, r["context"], name="context", heading=True)
+    return 0
+
+
+def run_ipa(a) -> int:
+    if a.every_form:
+        forms = [r["form"] for r in suggest_native_forms(a.root)]
+    else:
+        forms = list(a.forms)
+    if not forms:
+        raise click.UsageError("name a FORM, or --all for every native form in gt/ocr/")
+    rows = ipa_rows(forms)
+    scope = {"forms": len(rows),
+             "complete": sum(r["state"] == "complete" for r in rows),
+             "partial": sum(r["state"] == "partial" for r in rows)}
+    if a.partial:
+        rows = [r for r in rows if r["state"] == "partial"]
+    out(a, [scope], name="scope")
+    out(a, rows, name="forms", heading=True)
     return 0
 
 

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+{# Before the stylesheet, so a reader-view session does not flash its apparatus
+   on every page load. The Moll reader's lesson. Inline on purpose: an external
+   script is fetched after the CSS and would flash regardless, which is the one
+   thing this exists to stop. #}
+<script>try{if(localStorage.getItem('edition-reader'))
+     document.documentElement.classList.add('reader');
+if(localStorage.getItem('edition-cols-reversed'))
+     document.documentElement.classList.add('cols-reversed')
+ }catch(e){}</script>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/edition.css">
+<link rel="stylesheet" href="/static/css/geomap.css">
+{% endblock %}
+
+{% block body %}
+<div id='bar'>
+  <a href='{{ base }}/'><b>The Chukchee</b></a>
+  <span class='location'>{{ here }}</span>
+  <span class='page-specific-buttons'>
+      <button id='cols-reverse-btn' title='Reverse Columns'>⇄</button>
+      {% block btn_extra %}{% endblock %}
+  </span>
+  <a href='{{ base }}/entities'>encyclopedia</a>
+  <a href='{{ base }}/atlas'>atlas</a>
+  <form action='{{ base }}/search' style='display:inline'>
+    <input name='q' placeholder='search'>
+  </form>
+</div>
+<main class='cols'>{% block main %}{% endblock %}</main>
+{% endblock %}
+
+{% block scripts %}
+<script>const STATE = {{ state | tojson }};</script>
+{% block page_scripts %}{% endblock %}
+<script src="/static/js/speak.js"></script>
+<script type="text/javascript">
+ document.getElementById('cols-reverse-btn').addEventListener('click', () => {
+     const on = document.documentElement.classList.toggle('cols-reversed');
+     localStorage.setItem('edition-cols-reversed', on ? '1' : '');
+ });
+</script>
+{% endblock %}

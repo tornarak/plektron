@@ -372,7 +372,17 @@ def test_a_plural_action_has_a_corpus_form_unless_declared_otherwise(parser_surf
 # the list of action names, which is the cheapest answer to "what can I run" and
 # the reason a caller reaches for it first. The rule guards against a *sweep*
 # spelled as an omission, not against a default.
-STAR_WITHOUT_ALL_OK = {("verbs", "show"): "lists the action names; touches no store"}
+STAR_WITHOUT_ALL_OK = {
+    ("verbs", "show"): "lists the action names; touches no store",
+    # The rule this gate holds is about *sweeps* — `zones check` bare walking 832
+    # pages with nothing at the call site saying so. A bare `find authority`
+    # prints the 73 rows of one small JSON file, which is the printed
+    # bibliography and not a corpus run, and the omission has meant that since
+    # the verb existed. The `*` here is what made several citations askable at
+    # once; requiring `--all` to keep the listing would be the gate reshaping a
+    # tool it was not aimed at.
+    ("find", "authority"): "lists data/authorities.json; walks no store",
+}
 
 
 def test_a_star_positional_always_has_all():

@@ -1,0 +1,20 @@
+{# A Tier-1 form's card. **Deliberately almost empty, and says so.**
+
+   There is no lexicon store yet. An empty card that admits it is empty is worth
+   more than a link that goes nowhere: it is the same form as every other
+   unresolved thing in this edition. #}
+{% if not lang_name %}
+<p>Not a lexicon key: <code>{{ key }}</code>. It is <code>lang:form</code>, the
+language a Tier-1 code.</p>
+{% else %}
+<h4 lang='{{ lang }}' class='tier1'>{{ form }}</h4>
+<div class='meta'>{{ lang_name }} · <code>{{ lang }}</code></div>
+{% include "edition/_ipa.html" %}
+{% if pages %}
+<div class='meta'>on {% for r in pages %}<a href='{{ base }}/page/{{ r }}'>{{ r }}</a>
+{%- if not loop.last %}, {% endif %}{% endfor %}</div>
+{% endif %}
+<p class='meta'>No lexicon entry stands behind this yet — the form is keyed and
+ratified, and nothing has been written about it. <code>harness lexicon
+lookup</code> is what reads the corpus for its other spellings.</p>
+{% endif %}

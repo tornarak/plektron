@@ -23,7 +23,26 @@ from PIL import Image
 
 from harness import corrections as corr
 from harness import zones as zn
-from harness.lines_ui import page_state, render_html, save_payload
+from harness.lines_ui import page_state, save_payload
+
+
+def client(root, walk=None, cur="1-048"):
+    """The editor over a `TestClient`, with a session as a verb would set one.
+
+    The rendered assertions below used to call `render_html` and grep the string
+    it returned. They go through the app now because that is where the markup is
+    assembled — the template, the state blob and the mount prefix are three
+    separate things and only the response has all three.
+    """
+    from starlette.testclient import TestClient
+
+    from harness.web import Sessions, create_app
+
+    session = {"start": cur, "alto_dir": "gt/ocr",
+               "itinerary": walk or [cur], "itinerary_name": "unsettled"}
+    app = create_app(root, Sessions(root=root, by_editor={"lines": session}),
+                     editor="lines")
+    return TestClient(app)
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 IN_ZONE = {"x0": 300, "y0": 620, "x1": 420, "y1": 660}
@@ -154,9 +173,61 @@ def test_a_correction_reaches_the_state_as_its_own_layer(root):
 
 
 def test_the_page_says_when_it_has_no_zoning(root):
-    html = render_html("1-048", root, "gt/ocr")
+    html = client(root).get("/lines/?ref=1-048").text
     assert "no zoning" in html
     assert "zones edit" in html
+
+
+def test_every_bound_action_has_a_row_and_a_handler(root):
+    """The help panel is generated from the bindings so it cannot lie about the
+    tool — but now the rows are in a template and the dispatch is in a static
+    file, so the check has to read both. That is the cost of the split, and it is
+    worth paying: a keystroke listed in the panel and bound to nothing is exactly
+    the kind of quiet wrongness a help panel should not be able to have.
+    """
+    import re
+    from pathlib import Path as P
+
+    from harness.lines_ui import ACTION_NAMES
+
+    html = client(root).get("/lines/?ref=1-048").text
+    js = P("harness/web/static/js/lines.js").read_text(encoding="utf-8")
+    # The dispatch table is an object literal, so an action is a bare key rather
+    # than a quoted string — `rule_band: () => …`.
+    dispatched = set(re.findall(r"^\s{2}(\w+):", js, re.M))
+    for name in ACTION_NAMES:
+        assert f'data-act="{name}"' in html, f"{name} has no row in the panel"
+        assert name in dispatched, f"{name} is listed but nothing dispatches it"
+
+
+def test_the_script_and_styles_are_linked_not_inlined(root):
+    """The whole point of the port for this editor: it is navigated page-to-page
+    with the arrow keys, and 19 KB of JS plus three stylesheets were re-sent on
+    every one of those."""
+    html = client(root).get("/lines/?ref=1-048").text
+    assert '<script src="/static/js/lines.js"></script>' in html
+    assert "/static/css/editor.css" in html
+    assert "<style>" not in html
+
+
+def test_the_mount_prefix_reaches_the_client(root):
+    """`lines.js` is one cached file served from one place, so it cannot hold the
+    prefix itself — a bare '/save' would post to whichever editor owned the root.
+    The server puts it in the state blob."""
+    html = client(root).get("/lines/?ref=1-048").text
+    assert '"base": "/lines"' in html or '"base":"/lines"' in html
+
+
+def test_the_generated_layer_css_carries_a_validator(root):
+    """It is derived from `data/lines_config.json`, so it cannot be a static
+    file — but it is still an asset, and it gets an ETag keyed on the config's
+    own contents so an edit invalidates it and nothing else does."""
+    c = client(root)
+    r = c.get("/lines/layers.css")
+    assert r.status_code == 200 and "ly-zone" in r.text
+    etag = r.headers["etag"]
+    assert c.get("/lines/layers.css",
+                 headers={"If-None-Match": etag}).status_code == 304
 
 
 # --- the walk is measured, never saved -------------------------------------
@@ -180,8 +251,7 @@ def test_a_rows_counts_are_measured_not_remembered(root):
 def test_the_list_draws_unknown_rather_than_blank(root):
     """`?` until a row is fetched. Blank would be indistinguishable from none,
     which is the same silence this whole detector exists to break."""
-    from harness.lines_ui import render_list_html
-    html = render_list_html(["1-048", "1-049"], "unsettled", root, "1-048")
+    html = client(root, walk=["1-048", "1-049"]).get("/lines/list?ref=1-048").text
     assert html.count("?") >= 6      # three unknown columns per row
     assert "1-049" in html
     assert "measure" in html         # and it says the cost is on request

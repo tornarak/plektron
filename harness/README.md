@@ -29,6 +29,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the trigger vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
+| `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
@@ -265,9 +266,13 @@ exclusion.
 **`generate.py`** — the first-draft TEI page, by rule, into `mz/tei/`. Reads
 `gt/zones/` for the paragraph boundaries (`MainZone-P` opens one,
 `MainZone-Continued` does not), `zones.split_at_paragraphs` to cut a band that holds
-two, and `gt/ocr/` for the text. Emits a comment naming every judgement it declines
-— the `MainZone-Other` catch-all, note anchoring, figure placement, and the language
-of a Tier-1 form. `diff` compares it against the collated page; the generation stamp
+two, and `gt/ocr/` for the text. A `Continued` band joins the paragraph above it
+rather than opening one. Splits the footnote apparatus at its printed markers and
+anchors each note at the matching marker in the body — both the printer's own
+marks, so both rules — and emits `<figure n><figDesc>` where each box sits. Emits a
+comment naming every judgement it declines: the `MainZone-Other` catch-all, a note
+whose marker reads nowhere or reads twice, a figure's place in the prose, and the
+language of a Tier-1 form. `diff` compares it against the collated page; the generation stamp
 is what lets that comparison tell a difference review made from one a regeneration
 made under it.
 
@@ -287,9 +292,35 @@ comment becomes a flag, because a page with an open question must not look
 finished. `crop_style` places a raster box inside a clipping frame in percentages
 only, so a crop scales to whatever width the panel has.
 
-**`edition_ui.py`** — the reading view on the `webui` shell: two columns, a stack
-of entity/note/scan cards, the encyclopedia and its audit queue. Serves committed
-`tei/` only. Writes `entities/` on a click without `--commit`, as the other editors
+**`ipa.py`** — a keyed Bogoras form to imputed IPA, by rule. Reads no scan and
+proposes no glyph, so the firewall is not what it answers to; what it answers to is
+fluent nonsense, which is why a character with no row makes the whole form
+`partial` and is *named* rather than skipped. Five sorts have a gloss in the p. 10
+key and no IPA value, and turning a gloss into a symbol is a judgement.
+
+**`speech.py`** — that IPA to a WAV, by shelling out to `espeak-ng`. Lifted from the
+Moll reader's `tts.py`, so its rejected-library reasoning is not re-argued here; what
+is new is that **every row of the phoneme table carries the readback espeak actually
+gave it**, measured in a frame, and the test compares the table against the installed
+binary. That is what caught a bare `r` becoming the English approximant before any
+vowel, and `r^` rendering while swallowing what came after.
+
+**`geo.py`** — the compiled shape store, read-only, and the checks over it. Imports
+no geometry library: the store's longitudes are already normalized into one
+continuous window, so what is left is arithmetic — the heavy work happened once, at
+build time. `entity check` gates that an `area:` *resolves*; everything geometric is
+`geo verify` and **reports**, because a containment disagreement says one of two
+authored facts is wrong and cannot say which.
+
+**`geomap.py`** — shapes to an inline SVG map. Lambert azimuthal equal-area, centred
+per map: it goes through `sin`/`cos` of longitude, so the antimeridian closes for
+good rather than being handled. One 1000-unit `viewBox` for every map, which is what
+lets one decimal place be enough at every zoom and keeps a pixel dimension out of it.
+
+**`edition_ui.py`** — the reading view's domain layer; its routes are
+`harness/web/edition.py`. Two columns, a stack of entity/lexicon/map/scan cards, the encyclopedia and its audit queue. A footnote marker is not a card — it keeps its href and jumps to the note at the foot, which is already on the page. Serves committed
+`tei/` only, or `mz/tei/` too under `edition serve --drafts`, every draft marked.
+Writes `entities/` on a click without `--commit`, as the other editors
 write their stores, and **rolls a write back if `entity check` fails on the
 result** — every `@ref` in the corpus resolves against that store.
 
@@ -568,16 +599,62 @@ store *mechanism* is shared and lives here — band-scoped, reason-required,
 midpoint-matched — with `zones.py` calling it for its own directory; what differs
 is only which question the file answers, which is what each file's `_about` says.
 
-**`webui.py`** — the shell the browser editors share: loopback bind, silent request
-log, a failure rendered on the page rather than reset onto the server's stderr, a
-PNG straight off disk, shutdown from the page. Two copies of that were a
-coincidence; the third was a module. The one decision in it that is not moved code
-is `fetched` — the GET paths a page **fetches** rather than navigates to, whose
-failures are reported as `{"error": …}` because an HTML traceback raises inside the
-`fetch` and throws away the very reason the page was trying to show.
+**`web/`** — the web layer: one FastAPI app, one process, one socket per editor.
+The four browser tools were four hand-rolled `http.server` handlers with their
+HTML in f-strings and their CSS and JS in Python string constants; they are one
+app with templates (`harness/web/templates/`), static files (`harness/web/static/`) and declared
+request bodies. Four things in it are load-bearing:
 
-**`zones_ui.py`** — the segmentation editor, on that shell, with a
-`GET /page/<ref>.png` route because a full page as a data URI is ~10 MB of markup.
+  * **Endpoints are declared `def`, not `async def`.** Every handler body here
+    blocks — lxml parses a page, PIL opens a raster, the zones segmenter runs a
+    torch forward pass. Starlette runs a *sync* endpoint in the anyio worker
+    threadpool, which is the thread-per-request behaviour the stdlib shell gave,
+    so the bodies came across unchanged. One `async def` doing any of that stalls
+    the event loop for every editor at once.
+  * **`serve()` binds the ports of the editors in `EDITORS`**, and
+    `uvicorn.Server.serve(sockets=[…])` takes them all — so 8731–8734 are four
+    doors into one app rather than four servers. That is what lets them share a
+    template tree and a store cache. Derived from the registry rather than
+    written as a literal, which is what let the four move over one at a time.
+  * **`errors.fetched` marks a route the page `fetch`es** rather than navigates
+    to. Its failures are reported as `{"error": …}` because an HTML traceback
+    raises inside the `fetch` and throws away the very reason the page was
+    trying to show. The mark is on the endpoint, so a re-pathed route cannot
+    drift away from its own error shape.
+  * **`files.send_file` is how a file is served**, and not `FileResponse`
+    directly: that sets `ETag` and `Last-Modified` and does *not* check
+    `If-None-Match` — the conditional logic lives only in `StaticFiles` — so a
+    bare `FileResponse` re-sends the whole body behind headers saying it need
+    not.
+
+**Two rules for adding a template or an editor**, both learned the hard way:
+
+  * **Never name a context key `items`, `keys`, `values`, `get`, `pop`, `copy`,
+    `update` or `clear`.** Jinja resolves `row.items` to the dict *method* before
+    it looks for the key, so the loop silently iterates a bound method instead of
+    failing. It cost the entity card's `contains` row and the review palette's
+    key grid; both were renamed (`entries`, `glyphs`) rather than written as
+    `row['items']`, because the next person adding a row would hit it again.
+  * **A test that asserts on behaviour reads the `.js` file, not the page.** The
+    scripts are static assets now, so grepping the HTML for a handler finds
+    nothing — and the tempting fix is to re-inline the script, which undoes the
+    change. `test_zones_ui.py` and `test_review_session.py` both read
+    `harness/web/static/js/` directly for this reason.
+
+**`harness/web/cache.py`** — store reads memoised on a **digest of the file's contents**,
+not on its mtime. Measured on this filesystem: 190 of 200 immediate rewrites
+produce an identical `st_mtime_ns`, because inode timestamps come from a coarse
+~1 ms clock and the nanosecond field reports that granularity rather than
+removing it. A timestamp key would not have narrowed the staleness window, only
+made it hard to reproduce — and these are tools whose stores are edited
+underneath the running server. What makes hashing affordable is measured too:
+parsing a TEI page costs ~22× reading and hashing it. `harness/web/stores.py` applies it,
+and lives in the web layer because a cache is a property of a *server*: the CLI
+reads a store once and exits.
+
+**`zones_ui.py`** — the segmentation editor's state and writes; its routes are
+`harness/web/zones.py` and its markup the templates beside it. `GET /page/<ref>.png` is a
+route because a full page as a data URI is ~10 MB of markup.
 The client sends a column index and never an x — the geometry is re-measured
 server-side on save, so a zone of the wrong measure has no field to travel in.
 

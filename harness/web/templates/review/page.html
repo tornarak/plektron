@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}review {{ ref }}{% endblock %}
+
+{% block styles %}
+{# Three knobs, as CSS variables so the in-page steppers can move them without a
+   reload and the server flags only decide where they start. `--fs` is the entry
+   text; `--bl` is how many lines the box holds before it grows, which is a
+   separate want from size — Brill's small eye means a comfortable reading size
+   still leaves a one-line box looking cramped. Inline because they are the one
+   per-request part of the sheet. #}
+<style>:root{--f:{{ type.font | safe }};--fs:{{ type.size }}px;--bl:{{ type.box_lines }}}</style>
+{% if inline %}
+{# The `--html` file is opened straight off the filesystem, where `/static/…`
+   resolves to nothing. Standalone means standalone: the sheet and the script go
+   in the file. Served, they are links and the browser caches them. #}
+<style>{{ inline.css | safe }}</style>
+{% else %}<link rel="stylesheet" href="{{ static }}/css/review.css">{% endif %}
+{% endblock %}
+
+{% block body %}
+{% if queue and queue | length > 1 %}
+{# The session strip. Deliberately plain and above everything: it is the only
+   thing on the page that is not about the page, and a reviewer who loses track
+   of which ref they are keying is the failure it prevents. #}
+<div class=q><span class=qlab>this session:</span>
+{%- for q in queue %}
+  {%- if q.ref == ref %}<span class=cur>{{ q.ref }}</span>
+  {%- else %}<a class="{{ 'done' if q.done }}" href="{{ base }}/p/{{ q.ref }}">{{ q.ref }}</a>
+  {%- endif %}
+{%- endfor %}
+<span class=qlab>&nbsp;{{ done_n }}/{{ queue | length }} adjudicated</span></div>
+{% endif %}
+
+<h1>{{ ref }} — {{ summ.lines }} lines, {{ summ.lines - summ.lines_identical }}
+differing from catmus, {{ t1 | length }} carrying notation
+<a class=scan href="{{ scan_href }}" target=_blank rel=noopener>full scan ↗</a></h1>
+
+<div class=sum>{{ summ.spans }} differing spans in {{ summ.classes }} substitution
+classes · {{ summ.inventory_spans }} touch inventory glyphs ·
+{{ summ.lookalikes_in_proposal }} lookalike traps in the proposal<br>
+Every line is listed, in reading order. CATMuS is shown for reference only: it is
+a witness to geometry and English, and produced no inventory glyph anywhere in
+this book, so on a glyph the image is the sole witness — and a line the two agree
+on can still have both of them wrong.</div>
+
+{# **Type controls, live.** The flags decide where the page starts; these decide
+   where it ends up, because the right size for a face is a thing you find by
+   looking at it against a crop rather than by predicting it at a command line. #}
+<div class=type><b>Type:</b>
+<button class=tb data-var=fs data-by='-1'>A−</button>
+<button class=tb data-var=fs data-by='1'>A+</button>
+<span class=tv id=tvfs></span>
+<button class=tb data-var=bl data-by='-1'>box −</button>
+<button class=tb data-var=bl data-by='1'>box +</button>
+<span class=tv id=tvbl></span>
+<button class=tb id=treset>reset</button></div>
+
+{% if t1 %}
+<div class=jump><b>Tier-1 lines:</b>
+{% for i in t1 %}<a href='#l{{ i }}'>{{ i }}</a> {% endfor %}</div>
+{% endif %}
+<div class='jump edit' id=editjump>{{ edit_jump | safe }}</div>
+
+<div class=floor>Notation flags are a <b>floor, not a census</b>: four inventory
+members are unmarked ASCII (<code>c</code> for English <i>sh</i>, plain
+<code>s</code>, <code>j</code>, <code>x</code>), so a Tier-1 form spelled only in
+those raises no flag. An unflagged line means nothing was detected, not that the
+line is English.</div>
+
+{% for ln in lines %}
+<div class="{{ ln.cls }}" id="l{{ ln.idx }}"{% if ln.glyphs %} data-t1=1{% endif %}>
+<div class=tags>
+{%- if ln.typed %}<span class='nb nb-corpus'>CORPUS</span>{% endif %}
+{%- if ln.glyphs %}<span class=badge>TIER 1</span><span class=t1glyphs>{{ ln.glyphs }}</span> · {% endif %}
+line {{ ln.idx }} · {{ ln.line_id }}
+{%- if not ln.has_proposal %} · <b>NO PROPOSAL — key from the scan</b>{% endif %}
+{%- if ln.recovered %} · recovered line (segmenter missed it){% endif %}
+{%- if not ln.agree %} · differs from catmus{% endif %}
+<span class=editflag id="ef{{ ln.idx }}"
+  style="display:{{ 'inline' if ln.edited else 'none' }}"> · <b>edited</b></span></div>
+{# The crop is an `<img>` off disk, not a base64 background. `loading=lazy` so a
+   400-line page does not fetch every crop before showing anything, and the
+   dimensions are attributes so the box reserves its height before the image
+   paints — which is what the generated CSS rule used to do. #}
+<img class=crop src="{{ ln.crop }}" width="{{ ln.w }}" height="{{ ln.h }}"
+     loading=lazy alt="scan of line {{ ln.idx }}">
+{# The value is carried in `data-text` and assigned by script on load, not
+   written as element content. `autocomplete=off` asks the browser not to restore
+   it; the JS assignment is what guarantees it. #}
+<textarea data-line="{{ ln.idx }}" rows=1 spellcheck=false autocomplete=off
+  data-text="{{ ln.full }}" data-proposed="{{ ln.proposed }}"></textarea>
+{# Everything under the reading is one row: the machine's account of the line on
+   the left, the human's on the right. They are read at different moments — the
+   left while keying, the right when ruling. #}
+<div class=meta><div class=metaL>
+{% if ln.marks %}<div class=cp>{{ ln.marks }}</div>{% endif %}
+<div class=ref>catmus: {{ ln.catmus or '(empty)' }}</div>
+{% if ln.note %}<div class=note><span class="nb nb-{{ ln.nclass }}">{{ ln.nclass | upper }}</span>{{ ln.note }}</div>{% endif %}
+{% if ln.typed %}<div class=astyped>as typed: {{ ln.typed_html | safe }}</div>{% endif %}
+{% for k, v in ln.extra %}<div class=note>{{ k }}: {{ v }}</div>{% endfor %}
+</div>
+{# The adjudicator's note, opt-in per line. A textarea on all 45 lines would be
+   45 empty boxes competing with the 45 that matter, so it starts as a button and
+   becomes a field only when asked for — and a line that already carries one
+   renders open, since a note nobody can see is not a record. #}
+<div class=hn>
+<button type=button class=hnb data-line="{{ ln.idx }}"{% if ln.hnote %} hidden{% endif %}>+ note</button>
+<textarea class=hnt data-note="{{ ln.idx }}" rows=1 spellcheck=false
+  autocomplete=off data-text="{{ ln.hnote }}"{% if not ln.hnote %} hidden{% endif %}></textarea></div>
+</div></div>
+{% endfor %}
+
+{# Fixed to the bottom of the viewport, and the save controls live in the same
+   panel: two floating widgets competing for the corner is one too many. #}
+<div id=pal><div id=pgroups>
+{% for grp in palette %}
+<div class=pgrp><div class=plabel>{{ grp.label }}</div><div class=pkeys>
+{% for k in grp.glyphs %}
+<button class="pk{{ ' mk' if k.combining }}" data-ins="{{ k.glyph }}" title="{{ k.tip }}">
+<b>{{ k.shown }}</b><span>{{ k.key or '&nbsp;' | safe }}</span></button>
+{% endfor %}
+</div></div>
+{% endfor %}
+</div>
+<div id=pctl><div class=pctlrow>
+<span><span id=kb>kbd off</span><span id=st>no changes</span></span>
+<span><button id=t1p>&uarr;</button>
+<button id=t1n>&darr; tier-1 ({{ t1 | length }})</button>
+<button id=sv>Save</button>
+{# With a queue, "finish this page" and "finish the session" stop being the same
+   act, and the button says which one it is about to do rather than leaving the
+   reviewer to infer it from how many pages they remember keying. #}
+<button id=dn title="{{ done_title }}">{{ done_label }}</button></span></div>
+<div class=tags>alt-p shows/hides the keyboard panel (overrides kbd on/off) ·
+ctrl-space toggles kbd · off = plain typing · alt-j / alt-k walk tier-1 lines</div>
+</div></div>
+{% endblock %}
+
+{% block scripts %}
+{# `REF` travels in every save and every done. The server could track a "current
+   page" instead, but that is state the browser can contradict — a second tab, a
+   back button, a reload after navigating — and the failure it would produce is
+   one page's adjudicated text written into another page's decision.json. #}
+<script>const GL={{ kbd_glyphs | tojson }},MK={{ kbd_marks | tojson }},
+REF={{ ref | tojson }},REF_BASE={{ base | tojson }};</script>
+{% if inline %}<script>{{ inline.js | safe }}</script>
+{% else %}<script src="{{ static }}/js/review.js"></script>{% endif %}
+{% endblock %}

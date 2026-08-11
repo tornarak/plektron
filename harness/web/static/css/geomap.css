@@ -1,0 +1,17 @@
+svg.map { width:100%; height:auto; display:block; background:var(--sea);
+  border:1px solid var(--rule); border-radius:.3rem }
+svg.map .land { fill:var(--land); stroke:none }
+svg.map .lakes { fill:var(--sea); stroke:none }
+svg.map .kin { fill:none; stroke:var(--dim); stroke-width:.15%; opacity:.5 }
+svg.map .members { fill:color-mix(in srgb,var(--accent) 8%,transparent);
+  stroke:var(--accent); stroke-width:.18%; opacity:.75 }
+svg.map .parent { fill:none; stroke:var(--dim); stroke-width:.25%;
+  stroke-dasharray:1%,.8% }
+svg.map .subject { fill:color-mix(in srgb,var(--accent) 22%,transparent);
+  stroke:var(--accent); stroke-width:.35% }
+svg.map .rivers { fill:none; stroke:var(--water); stroke-width:.22%;
+  stroke-linecap:round; opacity:.85 }
+svg.map .pin { fill:var(--accent); stroke:var(--card); stroke-width:.15% }
+svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
+  paint-order:stroke; stroke:var(--sea); stroke-width:.4%;
+  stroke-linejoin:round }

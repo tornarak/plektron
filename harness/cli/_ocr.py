@@ -60,6 +60,7 @@ from ..parallel import ptrack
 from ..paths import (
     clean,
     crops_dir,
+    decisions_path,
     ensure_page_link,
     html_path,
     numbered_path,
@@ -74,15 +75,15 @@ from ..review import (
     DEFAULT_FONT_SIZE,
     corrections,
     group_spans,
+    page_context,
     page_spans,
-    render_queue_html,
     restore,
-    serve,
     summary,
 )
 from ._common import (
     action,
     add_jobs,
+    arg,
     exclusive,
     group,
     one_page_only,
@@ -186,6 +187,32 @@ def register(cli):
     opt(p, "--full", is_flag=True,
                    help="include baseline and polygon points, which are long "
                         "enough to make the table unreadable by default")
+
+    _store(refs_arg(add("text", help="the page as plain text, one keyed line per "
+           "line, in reading order with the empties dropped. The dump `ocr lines` "
+           "was being run through jq for: the same reading, with the geometry and "
+           "the identities taken off"),
+           all_="every page the store read holds",
+           extra=", and several print under a `# PP-NNN` heading each"))
+
+    # **The pattern is declared before the refs, and has to be.** `ref` is the
+    # variadic, and click hands a variadic everything it can reach — a required
+    # positional sitting after one is a parse nobody can predict.
+    p = add("grep", help="lines matching a regular expression, across whichever "
+            "pages are named — the corpus text search `ocr lines --all | rg` was "
+            "standing in for. The pattern is normalized to NFD before it "
+            "compiles, so a composed character pasted from anywhere matches the "
+            "decomposed text the store holds")
+    arg(p, "pattern", metavar="PATTERN")
+    _store(refs_arg(p, all_="every page the store read holds"))
+    opt(p, "-i", "--ignore-case", is_flag=True,
+        help="fold case. Not the default: this corpus sets Tier-1 forms with "
+             "case that carries information, and a native form is more often "
+             "sought exactly than approximately")
+    opt(p, "--context", type=int, default=0, metavar="N",
+        help="lines of surrounding text per hit, on `lexicon lookup --context`'s "
+             "reasoning — a form alone is a string, a form in its line is a "
+             "sense. Context rows carry hit=false [0]")
 
     p = _store(refs_arg(add("gaps", help="bands of ink on the raster that no TextLine "
               "covers — the dropped-line detector. The segmentation this corpus "
@@ -548,6 +575,85 @@ def run_lines(a) -> int:
     return 0
 
 
+def _keyed_lines(a, ref: str) -> list[dict]:
+    """One page's non-empty lines, in reading order.
+
+    The empties are dropped here and kept by `ocr lines`, and the split is by
+    what the two are for: an empty record is a *box* with nothing keyed in it,
+    which is a fact about the segmentation and belongs in the table a corrector
+    reads. In a text dump it is a blank line carrying no information, and in a
+    search it is a line that can never match.
+    """
+    recs = page_lines(alto_for_lines(ref, _alto_dir(a), a.root), a.root, ref=ref)
+    return [rec for rec in recs if (rec.get("text") or "").strip()]
+
+
+def run_text(a) -> int:
+    from ..emit import emit_lines
+
+    refs = _store_refs(a)
+    pages = [(r, [rec["text"] for rec in _keyed_lines(a, r)]) for r in refs]
+    if getattr(a, "json", False):
+        out(a, [{"ref": r, "lines": lines} for r, lines in pages])
+        return 0
+    # Plain lines, not a table, on `tei ledger --untranscribed`'s precedent: the
+    # payload is a pipe target and structure is in the way of it. The heading is
+    # printed only for several pages, so the one-page form — which is the form
+    # anything downstream is likeliest to be reading — is the page and nothing
+    # else.
+    for r, lines in pages:
+        if len(pages) > 1:
+            print(f"# {r}")
+        print(emit_lines(lines))
+    return 0
+
+
+def run_grep(a) -> int:
+    import unicodedata
+
+    # NFD, because the store is NFD corpus-wide and a pattern typed or pasted
+    # anywhere else may not be: a composed `č` would match nothing and report a
+    # clean corpus-wide negative, which is the worst answer this verb could give.
+    # Never NFKC — it destroys two inventory glyphs (see CLAUDE.md, "Encoding").
+    pattern = unicodedata.normalize("NFD", a.pattern)
+    try:
+        rx = re.compile(pattern, re.IGNORECASE if a.ignore_case else 0)
+    except re.error as e:
+        raise ValueError(f"{a.pattern!r}: not a regular expression — {e}") from None
+    if a.context < 0:
+        raise ValueError("--context: a count of lines, so not negative")
+
+    refs = _store_refs(a)
+    rows: dict[tuple[str, int], dict] = {}
+    hits = read = 0
+    for r in refs:
+        recs = _keyed_lines(a, r)
+        read += len(recs)
+        for i, rec in enumerate(recs):
+            if not rx.search(rec["text"]):
+                continue
+            hits += 1
+            lo = max(0, i - a.context)
+            for j in range(lo, min(len(recs), i + a.context + 1)):
+                # Keyed by identity, so two hits whose context windows overlap
+                # yield one row each and not one per window — and a line that is
+                # both a hit and another hit's context stays a hit.
+                key = (r, int(recs[j]["index"]))
+                if j == i or key not in rows:
+                    rows[key] = {"ref": r, "index": recs[j]["index"],
+                                 "zone": recs[j]["zone"], "hit": j == i,
+                                 "text": recs[j]["text"]}
+    # **The scope row prints on every run, empty result or not.** A search that
+    # found nothing has two readings — the corpus does not say this, or the
+    # pages searched do not hold it — and only `pages`/`store` separate them.
+    # Unkeyed pages are not searched and cannot be: `--store gt` over the corpus
+    # is a search of the pages a human has been through, not of the book.
+    out(a, [{"pattern": a.pattern, "store": a.store or "view", "pages": len(refs),
+             "lines": read, "hits": hits}], name="scope", heading=True)
+    out(a, list(rows.values()), name="matches", heading=True)
+    return 0
+
+
 def run_gaps(a) -> int:
     from ..corrections import load_lines
     from ..parallel import pmap
@@ -594,6 +700,20 @@ def run_gaps(a) -> int:
     if faults:
         out(a, {"covered_faults": faults}, "covered_faults")
     return 0
+
+
+def _review_html(ctx: dict) -> str:
+    """The standalone review page, rendered from the same template the server
+    uses. One renderer, so the `--html` file and the served page cannot drift —
+    which was the whole argument for the queue being a frame around the page
+    rather than a mode inside it."""
+    from ..web import STATIC, templates
+
+    return templates.get_template("review/page.html").render(
+        **ctx, base="", static="", request=None, inline={
+            "css": (STATIC / "css" / "review.css").read_text(encoding="utf-8"),
+            "js": (STATIC / "js" / "review.js").read_text(encoding="utf-8"),
+        })
 
 
 def _page_link(a, ref: str | None = None) -> None:
@@ -898,7 +1018,8 @@ def run_zoom(a) -> int:
 
 
 def run_edit(a) -> int:
-    from ..lines_ui import serve as serve_lines
+    from ..web import Sessions
+    from ..web import serve as web
 
     refs = page_refs(a)
     # **Several refs *are* the walk**, the same rule `zones edit` follows: the
@@ -946,7 +1067,32 @@ def run_edit(a) -> int:
               "--all for the whole book (--unsettled narrows it to the pages "
               "still carrying a band)", file=sys.stderr)
         return 2
-    serve_lines(start, a.root, a.port, _alto_dir(a), walk, label)
+    session = {"start": start, "alto_dir": _alto_dir(a), "itinerary": walk,
+               "itinerary_name": label}
+    # **Try the running server before binding one.** The four editors share a
+    # process now, so a second verb started while one is up hands its work over
+    # and opens a tab rather than dying on a held port — which is what they did
+    # when each had a server to itself.
+    joined = web.handoff("lines", session, open_at=f"/?ref={start}",
+                         port=a.port)
+    if joined:
+        import webbrowser
+
+        print(f"lines {start} -> {joined}   (joined the running server)")
+        webbrowser.open(joined)
+        return 0
+
+    from ..corrections import lines_dir
+
+    banner = [f"lines {start} -> "
+              f"{web.url_for('lines', f'/?ref={start}', port=a.port)}"
+              "   (Done button on the page, or ctrl-c)"]
+    if walk:
+        banner.append(f"itinerary {label}: {len(walk)} pages")
+    banner.append(f"store -> {lines_dir(a.root)}")
+    web.serve("lines", a.root, Sessions(root=a.root, by_editor={"lines": session}),
+              banner=banner, open_at=f"/?ref={start}",
+              ports={"lines": a.port} if a.port else None)
     return 0
 
 
@@ -1000,22 +1146,70 @@ def _pending_review(root: Path) -> list[str]:
 
 
 def run_review(a) -> int:
+    from ..web import Sessions
+    from ..web import serve as web
+
     refs = page_refs(a) or _pending_review(a.root)
     if a.serve:
         for r in refs:
             _page_link(a, r)
-        serve(refs, _alto_dir(a), a.root, a.port, font=a.font,
-              font_size=a.font_size, box_lines=a.box_lines)
+        # Every ref's geometry is resolved before the socket is bound, for the
+        # reason `page_refs` parses every ref before any work is done: a store
+        # that cannot answer for a page is a fact about the invocation, and the
+        # invocation is where it should be reported. It used to surface as a 500
+        # on navigation — the CLI printed the URL and three reassuring
+        # `decisions -> …` lines, then the browser got a traceback that only
+        # existed on the server's stderr, which in the ordinary backgrounded case
+        # is a log nobody is reading.
+        queue = list(dict.fromkeys(norm_ref(r) for r in refs))
+        gone = [(r, alto_for_lines(r, _alto_dir(a), a.root)) for r in queue]
+        gone = [(r, p) for r, p in gone if not p.exists()]
+        if gone:
+            other = "gt" if "mz" in _alto_dir(a) else "mz"
+            print("ERROR: no ALTO in this store for "
+                  + ", ".join(f"{r} ({p})" for r, p in gone)
+                  + f" — review reads --store mz by default; try --store {other}, "
+                    "or `harness ocr predict` to write the prediction.",
+                  file=sys.stderr)
+            return 2
+        session = {"queue": queue, "alto_dir": _alto_dir(a), "font": a.font,
+                   "font_size": a.font_size, "box_lines": a.box_lines}
+        joined = web.handoff("review", session, port=a.port)
+        if joined:
+            import webbrowser
+
+            print(f"review {' '.join(queue)} -> {joined}   "
+                  "(joined the running server)")
+            webbrowser.open(joined)
+            return 0
+        banner = [f"review {' '.join(queue)} -> "
+                  f"{web.url_for('review', port=a.port)}   "
+                  "(Done button on the page, or ctrl-c)"]
+        # Say which pages arrive already adjudicated *before* the reviewer meets
+        # a strip full of green. A resumed session is the ordinary case; a page
+        # unexpectedly carrying decisions is a question, and it should be asked
+        # here rather than discovered by the reviewer wondering what they missed.
+        banner += [f"decisions -> {decisions_path(r, a.root)}"
+                   f"{'   (already present)' if decisions_path(r, a.root).exists() else ''}"
+                   for r in queue]
+        web.serve("review", a.root,
+                  Sessions(root=a.root, by_editor={"review": session}),
+                  banner=banner, ports={"review": a.port} if a.port else None)
         return 0
     if a.html:
         for r in refs:
             _page_link(a, r)
             dest = html_path(r, a.root)
             dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_text(render_queue_html(r, _alto_dir(a), a.root,
-                                              font=a.font, font_size=a.font_size,
-                                              box_lines=a.box_lines),
-                            encoding="utf-8")
+            # `crop_base` defaults to the directory beside the file, so the
+            # standalone page references the crops as `crops/…` and works opened
+            # straight off the filesystem — where it used to carry them base64'd
+            # because there was no server to address them through.
+            dest.write_text(
+                _review_html(page_context(r, _alto_dir(a), a.root, font=a.font,
+                                          font_size=a.font_size,
+                                          box_lines=a.box_lines)),
+                encoding="utf-8")
             print(f"{dest}: review page for {r}")
         return 0
     # The bare span diff measures a proposal against a *second witness*. If the

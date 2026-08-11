@@ -37,6 +37,31 @@ from harness import zones as zn
 from harness import zones_config as zc
 from harness import zones_ui as ui
 
+
+def _render(name, ctx):
+    from harness.web import templates
+
+    return templates.get_template(name).render(**ctx, request=None)
+
+
+def render_html(*a, **kw):
+    """The editor page, through the template the server uses.
+
+    `render_html` returned a string; it is `page_context` plus a template now, so
+    a test that wants the page takes the same two steps the server does.
+    """
+    return _render("zones/page.html", ui.page_context(*a, **kw))
+
+
+def render_list_html(*a, **kw):
+    return _render("zones/list.html", ui.list_context(*a, **kw))
+
+
+#: The behaviour, which is a cached static file rather than a blob interpolated
+#: into every page — 68 KB of it, on the editor navigated with the arrow keys.
+JS = (Path(__file__).parent.parent / "web" / "static" / "js"
+      / "zones.js").read_text(encoding="utf-8")
+
 REPO = Path(__file__).resolve().parent.parent.parent
 
 # The synthetic page's ink, and the column the anchor derives from it.
@@ -347,20 +372,20 @@ def test_the_new_editor_actions_are_bound_and_documented(tmp_path):
     """
     scans(tmp_path, "1-048")
     c = cfg()
-    html = ui.render_html("1-048", tmp_path, c)
+    html = render_html("1-048", tmp_path, c)
     acts = {k: v for k, v in c["actions"].items() if not k.startswith("_")}
     acts.update({k: v for k, v in
                  ((c.get("figures") or {}).get("actions") or {}).items()
                  if not k.startswith("_")})
     assert {"merge_down", "toggle_track", "caption_beside"} <= set(acts)
     for act, key in acts.items():
-        assert f"case '{act}':" in html, act
+        assert f"case '{act}':" in JS, act
         assert f"<kbd>{key}</kbd>" in html, act
 
 
 def test_every_store_pill_carries_a_count_the_client_can_replace(tmp_path):
     scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
+    html = render_html("1-048", tmp_path, cfg())
     for name in ui.STORES:
         assert f"id='store-{name}'" in html
     # `split` is the train/eval/exempt mark and nothing else in this UI.
@@ -387,14 +412,14 @@ def test_a_full_page_round_trips_through_state_and_back(tmp_path):
 
 def test_html_embeds_the_config_and_the_state(tmp_path):
     scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
+    html = render_html("1-048", tmp_path, cfg())
     assert "const CFG=" in html and "const ST=" in html
     assert "/page/1-048.png" in html
 
 
 def test_html_lists_every_type_with_its_key(tmp_path):
     scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
+    html = render_html("1-048", tmp_path, cfg())
     for t in cfg()["types"]:
         assert t["name"] in html and f"<kbd>{t['key']}</kbd>" in html
 
@@ -402,7 +427,7 @@ def test_html_lists_every_type_with_its_key(tmp_path):
 def test_html_does_not_inline_the_raster(tmp_path):
     """A 2824x3897 page as base64 is ~10 MB of markup per render."""
     scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
+    html = render_html("1-048", tmp_path, cfg())
     assert "data:image" not in html
     assert len(html) < 200_000
 
@@ -561,14 +586,12 @@ def test_the_figure_rules_are_transcribed_faithfully_into_the_js(tmp_path):
     cannot see would be a banner that appears only after a save, which is the
     surface a human is not looking at by then.
     """
-    scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
     for rule in (cfg().get("figures") or {}).get("rules") or []:
         # Only the rules the *editor* can evaluate live client-side: the count
         # rule is about the boxes on screen. The geometry rules are the server's,
         # and are reported from the save rather than predicted.
         if rule["id"] == "captions-lte-figures":
-            assert f"'{rule['id']}'" in html, rule["id"]
+            assert f"'{rule['id']}'" in JS, rule["id"]
 
 
 def test_the_inactive_track_dims_by_two_configured_amounts(tmp_path):
@@ -578,7 +601,7 @@ def test_the_inactive_track_dims_by_two_configured_amounts(tmp_path):
     view = (cfg().get("figures") or {}).get("view") or {}
     assert 0 < view["dim_zones"] < view["dim_figs"] < 1
     scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
+    html = render_html("1-048", tmp_path, cfg())
     assert "dim_zones" in html and "dim_figs" in html
 
 
@@ -589,11 +612,11 @@ def test_the_page_says_which_track_the_pointer_is_on(tmp_path):
     later edit removes leaves the same confusion.
     """
     scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
+    html = render_html("1-048", tmp_path, cfg())
     assert "id='track'" in html                 # a pill in the topbar
-    assert "figure track — drag" in html        # narrated on the switch
-    assert "trackChips" in html                 # the inactive half dims
-    assert "S.hoverX" in html                   # a crosshair, not a single rule
+    assert "figure track — drag" in JS          # narrated on the switch
+    assert "trackChips" in JS                   # the inactive half dims
+    assert "S.hoverX" in JS                     # a crosshair, not a single rule
     # …and the chips declare which keyboard they belong to, or the panel cannot
     # say which half is live.
     assert "data-track='zone'" in html and "data-track='fig'" in html
@@ -609,12 +632,10 @@ def test_a_committed_figure_box_can_be_resized_and_moved(tmp_path):
     round the wrong number of printed lines, and only an edge handle changes
     height alone.
     """
-    scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
-    assert "HANDLES" in html and "resizeTo" in html
-    assert "'nw'" in html and "'n'" in html and "'se'" in html
-    assert "S.figMove" in html                  # shift-drag translates
-    assert "drag a handle to resize" in html    # and the status line says so
+    assert "HANDLES" in JS and "resizeTo" in JS
+    assert "'nw'" in JS and "'n'" in JS and "'se'" in JS
+    assert "S.figMove" in JS                    # shift-drag translates
+    assert "drag a handle to resize" in JS      # and the status line says so
 
 
 def test_an_armed_corner_owns_the_next_click(tmp_path):
@@ -624,10 +645,8 @@ def test_an_armed_corner_owns_the_next_click(tmp_path):
     caption whose opposite corner fell near an existing box would refuse to
     finish, and nothing on screen would explain why.
     """
-    scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
-    assert "S.figGrab = S.figPending ? null : handleAt(p);" in html
-    assert "S.figPending ? null : handleAt(pt)" in html
+    assert "S.figGrab = S.figPending ? null : handleAt(p);" in JS
+    assert "S.figPending ? null : handleAt(pt)" in JS
 
 
 def test_the_unaccounted_ink_stays_outside_the_dimming(tmp_path):
@@ -638,18 +657,16 @@ def test_the_unaccounted_ink_stays_outside_the_dimming(tmp_path):
     first — a `</g>` moved below the bands would dim them with everything else,
     and nothing else in this repo would notice.
     """
-    scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
-    opened = html.index("<g opacity=")
-    closed = html.index("parts.push('</g>')")
-    hatch = html.index('id="hatch"')
+    opened = JS.index("<g opacity=")
+    closed = JS.index("parts.push('</g>')")
+    hatch = JS.index('id="hatch"')
     assert opened < closed < hatch
-    assert html.count("<g opacity=") == html.count("parts.push('</g>')") == 1
+    assert JS.count("<g opacity=") == JS.count("parts.push('</g>')") == 1
 
 
 def test_the_figure_types_are_listed_with_their_keys(tmp_path):
     scans(tmp_path, "1-048")
-    html = ui.render_html("1-048", tmp_path, cfg())
+    html = render_html("1-048", tmp_path, cfg())
     for t in (cfg().get("figures") or {})["types"]:
         assert f"<kbd>{t['key']}</kbd>" in html
         assert t["label"] in html

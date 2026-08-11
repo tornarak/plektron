@@ -211,6 +211,16 @@ if printf '%s' "$COMMAND" | grep -qE '^uv run harness (tei (claim|context|expand
     *--all*)
       echo "Blocked: no --all form of anything; you have exactly one page, and your siblings' files are half-written while you work." >&2
       exit 2 ;;
+    # **`corpus normalize --commit` is a write to stores that are not yours.**
+    # Caught in the act on `1-031`: a collator ran it and rewrote
+    # `review/1-031/proposal.json`, a signed reading record, with a change that
+    # was correct by the spec and nobody's to make from here. The verb is on this
+    # surface to *measure* the collator's own file, which is what the contract
+    # asks for and what the bare form does. `entity new --commit` is the one
+    # legitimate `--commit`, and it is named rather than pattern-matched.
+    *"corpus normalize"*--commit*)
+      echo "Blocked: run 'corpus normalize PP-NNN' without --commit. Its scope is the corpus, not your page, so --commit here rewrites gt/, review/ and data/ files that are nobody's to change from inside a page review — a collator did exactly that to review/1-031/proposal.json. Report what it flags; where the defect is in YOUR file, fix it with Edit." >&2
+      exit 2 ;;
   esac
   allow "collator running a verb from its closed surface, on one page"
 fi

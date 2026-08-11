@@ -1,0 +1,19 @@
+{# The one page skeleton. There were six, in five files, drifting.
+
+   Blocks rather than a single `content`: an editor needs to put its stylesheet
+   links in the head and its state blob after the body, and a template that can
+   only fill a middle forces every page back to string concatenation for the
+   two ends. #}<!doctype html>
+<html lang="en"{% block html_attrs %}{% endblock %}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}harness{% endblock %}</title>
+{% block styles %}{% endblock %}
+{% block head %}{% endblock %}
+</head>
+<body{% block body_attrs %}{% endblock %}>
+{% block body %}{% endblock %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

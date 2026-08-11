@@ -30,6 +30,35 @@ def _write(tmp_path: Path, cfg: dict) -> Path:
     return tmp_path
 
 
+def _page(tmp_path: Path, cfg: dict, ref: str = "1-048") -> str:
+    """The editor page under a config, rendered through the app.
+
+    Goes through a request rather than calling a renderer, because the page is
+    now a template plus a state blob plus a mount prefix and only the response
+    holds all three. Everything before the request is the fixture the old
+    renderer needed anyway — a config, a zones config, and a raster to size the
+    stage against.
+    """
+    import shutil
+
+    from PIL import Image
+    from starlette.testclient import TestClient
+
+    from harness.web import Sessions, create_app
+
+    root = _write(tmp_path, cfg)
+    shutil.copy(Path("data") / "zones_config.json", root / "data")
+    (root / "scans").mkdir(exist_ok=True)
+    Image.new("RGB", (600, 800), "white").save(
+        root / "scans" / f"chukchi-{ref}.png")
+
+    session = {"start": ref, "alto_dir": "gt/ocr", "itinerary": [ref],
+               "itinerary_name": ""}
+    app = create_app(root, Sessions(root=root, by_editor={"lines": session}),
+                     editor="lines")
+    return TestClient(app).get(f"/lines/?ref={ref}").text
+
+
 def test_the_shipped_config_loads():
     cfg = lc.load_config()
     assert {lay["name"] for lay in cfg["layers"]} >= set(lc.REQUIRED_LAYERS)
@@ -111,21 +140,9 @@ def test_a_colour_change_reaches_the_stylesheet(tmp_path):
 def test_the_editor_binds_what_the_config_says(tmp_path):
     """The page's dispatch table and its help panel are both generated from the
     bindings, so a rebound key moves in one place and the panel cannot lie."""
-    import shutil
-
-    from PIL import Image
-
-    from harness.lines_ui import render_html
-
     cfg = json.loads(json.dumps(REAL))
     cfg["actions"]["blot"] = "B"
-    root = _write(tmp_path, cfg)
-    shutil.copy(Path("data") / "zones_config.json", root / "data")
-    (root / "scans").mkdir()
-    Image.new("RGB", (600, 800), "white").save(
-        root / "scans" / "chukchi-1-048.png")
-
-    html = render_html("1-048", root, "gt/ocr")
+    html = _page(tmp_path, cfg)
     assert '"blot": "B"' in html or '"blot":"B"' in html
     assert "<kbd>B</kbd>" in html
 
@@ -152,20 +169,8 @@ def test_two_cleared_bindings_do_not_collide(tmp_path):
 def test_a_cleared_action_still_renders_as_a_control(tmp_path):
     """The row is the control; the key is a shortcut for the row. Unbound, the
     row is still there with a dash where its key would be."""
-    import shutil
-
-    from PIL import Image
-
-    from harness.lines_ui import render_html
-
     cfg = json.loads(json.dumps(REAL))
     cfg["actions"]["blot"] = None
-    root = _write(tmp_path, cfg)
-    shutil.copy(Path("data") / "zones_config.json", root / "data")
-    (root / "scans").mkdir()
-    Image.new("RGB", (600, 800), "white").save(
-        root / "scans" / "chukchi-1-048.png")
-
-    html = render_html("1-048", root, "gt/ocr")
+    html = _page(tmp_path, cfg)
     assert 'data-act="blot"' in html
     assert "kbd class=none" in html

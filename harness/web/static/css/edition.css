@@ -1,0 +1,189 @@
+:root {
+  --bg:#fbfaf7; --fg:#1c1a17; --dim:#6b6560; --rule:#ddd8d0; --card:#fff;
+  --accent:#7a4b28; --mark:#b8860b; --pin:#1a6b5a;
+  --sea:#eef2f4; --land:#e7e2d8; --water:#5a86a8;
+  --sel: #c15252;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19;
+  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6;
+  --sea:#14181b; --land:#2a2621; --water:#6f9cbd;
+  --sel: #c15252;
+} }
+* { box-sizing:border-box }
+body { margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.65 Charter,Georgia,"Times New Roman",serif; }
+a { color:var(--accent) }
+#bar { z-index:9; display:flex; gap:.75rem;
+  align-items:center; padding:.5rem .9rem; background:var(--bg);
+  border-bottom:1px solid var(--rule); font-family:system-ui,sans-serif;
+  font-size:.85rem; }
+#bar .page-specific-buttons {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    gap: 0.5em;
+    justify-content: center;
+}
+#bar a { text-decoration:none }
+button, .btn { font:inherit; font-family:system-ui,sans-serif; font-size:.8rem;
+  padding:.25rem .6rem; border:1px solid var(--rule); border-radius:.3rem;
+  background:var(--card); color:var(--fg); cursor:pointer; }
+button:hover { border-color:var(--accent) }
+main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
+  max-width:80rem; margin:0 auto; }
+.cols-reversed main.cols { flex-direction: row; }
+#primary { flex:1 1 auto; padding: 1em; min-width:0; max-width:44rem }
+#primary:first-child:last-child, #secondary:empty + #primary { margin: auto; }
+#secondary { flex: 1; padding: 1em; position:sticky; top:3rem;
+  max-height:calc(100vh - 4rem); overflow-y:auto; }
+#secondary:empty { display: none; }
+@media (max-width:880px) {
+  main.cols { display:block }
+  #secondary { position:static; max-height:none; margin-top:2rem;
+    border-top:1px solid var(--rule); padding-top:1rem }
+}
+/* --- the text --- */
+#primary p { margin:0 0 .35rem; text-indent:1.4rem }
+#primary p:first-of-type { text-indent:0 }
+blockquote { margin:.8rem 0 .8rem 1.5rem; color:var(--dim) }
+h2.milestone { font-size:1.05rem; letter-spacing:.06em; text-transform:uppercase;
+  margin:1.6rem 0 .6rem }
+h3 { font-size:1rem; margin:1.2rem 0 .4rem }
+table { border-collapse:collapse; margin:.8rem 0 }
+td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
+.folio { float:right; color:var(--dim); font-size:.75rem;
+  font-family:system-ui,sans-serif; }
+.tier1 { font-style:italic }
+.unclear { border-bottom:1px dotted var(--mark) }
+.supplied { color:var(--dim) }
+.noteref { vertical-align:super; font-size:.7em; text-decoration:none;
+  padding:0 .1em }
+.ent { text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent) }
+.ent:hover { border-bottom-color:var(--accent); background:color-mix(in srgb,var(--accent) 8%,transparent) }
+.figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
+#foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
+  font-size:.85rem; color:var(--dim) }
+#foot li { margin-bottom:.3rem; padding: 5px }
+/* **The list draws no counter of its own.** Each `<li>` already opens with the
+   note's `@n` — the marker the printer actually set — and an `<ol>`'s counter
+   printed beside it gave every note its number twice ("1. ¹ Dyachkoff, p. 101.").
+   Suppressing `@n` instead would have been the wrong half to drop: the counter is
+   this list's position, `@n` is the page's own mark, and the two part company the
+   moment a marker does not read or a note's text runs on from the page before. */
+#foot li:target { background-color: rgba(205, 50, 50, 0.2); border-radius: 5px; }
+#foot ol { list-style:none; padding-left:0; margin:0 }
+/* --- apparatus, hidden in reader view --- */
+.flag { font-family:system-ui,sans-serif; font-size:.7rem; color:var(--mark);
+  border:1px solid var(--mark); border-radius:.25rem; padding:0 .25em;
+  cursor:help; margin:0 .15em; vertical-align:super }
+.flag.question { background:color-mix(in srgb,var(--mark) 15%,transparent) }
+.unsettled { background:color-mix(in srgb,var(--mark) 12%,transparent);
+  border-bottom:1px dashed var(--mark) }
+html.reader .flag { display:none }
+html.reader .unsettled { background:none; border-bottom-style:solid }
+/* --- a page nobody has read ---
+   `--sel`, the one warm red in the palette, and deliberately not `--mark`: an
+   inventory flag and an unsettled span are marks *within* a page somebody
+   collated, and this says the whole page is machine output. It has to not read as
+   one more of those.
+   Reader view keeps it, unlike `.flag` and `.unsettled` above. Those hide because
+   reader view is for reading a settled page without the apparatus; this one is
+   the statement that the page is not settled at all, and a reader who has hidden
+   the apparatus needs it more, not less. */
+.draft-tag { font-family:system-ui,sans-serif; font-size:.7rem;
+  text-transform:uppercase; letter-spacing:.04em; vertical-align:.15em;
+  color:var(--sel); border:1px solid var(--sel); border-radius:.25rem;
+  padding:0 .3em; white-space:nowrap }
+.draft-note { font-family:system-ui,sans-serif; font-size:.85rem;
+  color:var(--dim); border-left:3px solid var(--sel); margin:0 0 1rem;
+  padding:.4rem .75rem;
+  background:color-mix(in srgb,var(--sel) 7%,transparent) }
+.draft-note code { font-size:.9em }
+/* --- the stack --- */
+.card { background:var(--card); border:1px solid var(--rule);
+  border-radius:.4rem; padding:.6rem .75rem; margin-bottom:.6rem;
+  font-family:system-ui,sans-serif; font-size:.85rem; line-height:1.5 }
+.card.pinned { border-color:var(--pin) }
+.card.selected { border-color:var(--sel) }
+#secondary.selected .card.selected { border-width: 3px;  }
+.card h4 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
+.card .meta { color:var(--dim); font-size:.75rem; margin-bottom:.4rem }
+.card .tools { float:right; display:flex; gap:.25rem }
+.card .tools button { padding:.05rem .35rem; font-size:.7rem; line-height:1.4 }
+/* No `white-space:pre-wrap`. It was right when the gloss went in as raw text and
+   is wrong now that it arrives as paragraphs: the records are hard-wrapped at 79
+   columns for editing, and pre-wrap reproduced that wrapping in a panel of a
+   completely different width. */
+.card table { font-size:.75rem; margin:.4rem 0 0 }
+.crop { position:relative; overflow:hidden; width:100%;
+  border:1px solid var(--rule); border-radius:.3rem; margin-top:.4rem;
+  background:var(--bg) }
+.crop img { position:absolute; max-width:none }
+html[data-theme="dark"] .crop img, .dark-raster .crop img { filter:none }
+.card .gloss p { margin:0 0 .4rem }
+.card .gloss p:last-child { margin-bottom:0 }
+.card .meta a.out { display:inline-flex; align-items:center; gap:.3em;
+  text-decoration:none }
+.card .meta a.out:hover { text-decoration:underline }
+/* Scaled by height with the width left free: the Wikidata mark is 1050x590 and
+   a square box would squash it. */
+.site { height:1em; width:auto; opacity:.8; flex:none }
+.dangling { color:var(--mark); border-bottom-style:dotted }
+a.lex { text-decoration:none; border-bottom:1px dotted var(--accent);
+  font-style:italic }
+a.lex:hover { border-bottom-style:solid;
+  background:color-mix(in srgb,var(--accent) 8%,transparent) }
+a.mapref { text-decoration:none; border-bottom:1px dotted var(--accent) }
+table.props { font-size:.75rem; margin:.4rem 0; border-collapse:collapse }
+table.props th { text-align:right; color:var(--dim); font-weight:400;
+  padding:.1rem .5rem .1rem 0; border:none; vertical-align:top;
+  white-space:nowrap }
+table.props td { border:none; padding:.1rem 0 }
+.dim { color:var(--dim) }
+h4.tier1 { font-style:italic; font-size:1.1rem }
+#empty { color:var(--dim); font-size:.85rem; font-family:system-ui,sans-serif }
+.pill { display:inline-block; font-size:.7rem; padding:0 .35em; border-radius:.25rem;
+  border:1px solid var(--rule); color:var(--dim); margin-left:.3rem }
+.pill.proposed { border-color:var(--mark); color:var(--mark) }
+.pill.imputed { border-style:dashed }
+.ipa { display:flex; align-items:center; gap:.45rem; margin:.5rem 0 .3rem }
+ul.tree, ul.tree ul { list-style:none; margin:0; padding-left:1.1rem }
+ul.tree { padding-left:0; font-family:system-ui,sans-serif; font-size:.85rem }
+ul.tree li { margin:.15rem 0; border-left:1px solid var(--rule);
+  padding-left:.6rem }
+ul.tree > li { border-left:none; padding-left:0 }
+a.node { text-decoration:none; border-bottom:1px solid transparent }
+a.node:hover { border-bottom-color:var(--accent) }
+a.node.sel { font-weight:600; border-bottom-color:var(--accent) }
+.ipa .val { font-family:"Charis SIL","Doulos SIL","Gentium Plus",serif;
+  font-size:1.05rem; color:var(--dim) }
+button.speak { padding:.1rem .4rem; line-height:1.2 }
+button.speak:disabled { opacity:.4; cursor:not-allowed }
+
+/* --- what used to be `style="…"` attributes ----------------------------------
+ *
+ * Every rule below replaces an inline style that was interpolated into a Python
+ * f-string. They are named for what they are rather than what they do, so a
+ * second page wanting the same treatment asks for it by name instead of copying
+ * a declaration list.
+ */
+#bar form input{font:inherit;padding:.2rem .4rem;border:1px solid var(--rule);
+                border-radius:.3rem;background:var(--card);color:var(--fg)}
+/* The scan/reader controls above the card stack. */
+#bar2{display:flex;gap:.4rem;margin-bottom:.6rem}
+/* Previous/next among *collated* pages — what the reader can actually reach. */
+.neighbours{display:flex;justify-content:space-between;
+            font-family:system-ui,sans-serif;font-size:.8rem;margin-bottom:1rem}
+.ratify-row{margin-top:.5rem}
+/* Two reading widths: the encyclopedia index is a table of names, the search
+   results carry a line of context either side of the hit and want the room. */
+#primary.index-width{max-width:60rem}
+#primary.search-width{max-width:70rem}
+.wide{width:100%}
+.hits{width:100%;font-size:.85rem}
+.hits td.before{text-align:right}
+.note-small{font-family:system-ui,sans-serif;font-size:.8rem}
+#lightbox {width: 100%;height: 100%;background-color: rgba(1, 1, 1, 0.4);position: fixed;z-index: 10;top: 0;}
+#lightbox-image {max-height: 100%;max-width: 100%;overflow: auto;padding: 2em;}
+#lightbox img {max-height: 100%;max-width: 100%;object-fit: cover;}

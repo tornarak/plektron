@@ -2,6 +2,7 @@
 
 - status: ratified
 - since: 1-131
+- link: wikipedia:Franz_Boas
 - link: wikidata:Q76512
 
 ## triggers
@@ -12,6 +13,6 @@
 
 ## gloss
 
-Franz Boas (1858–1942), editor of the Jesup North Pacific Expedition
-publications and of this volume, and the expedition’s director under Morris K.
-Jesup. Named as series editor on the title page (1-005).
+Franz Boas (1858–1942), editor of the [[event:jesup-expedition]]’s publications
+and of this volume, and the expedition’s director under Morris K. Jesup. Named as
+series editor on the title page (1-005).

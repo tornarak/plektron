@@ -1,0 +1,36 @@
+{% extends "edition/base.html" %}
+{% block title %}Atlas — The Chukchee{% endblock %}
+
+{% macro node(n) %}
+<li><a class='node {{ "sel" if n.selected }}' href='{{ base }}/atlas?at={{ n.id }}'>{{ n.canonical }}</a>
+<span class='pill'>{{ n.mark }}</span>
+<a class='ent' data-ref='{{ n.id }}' href='{{ base }}/entity/{{ n.id }}'
+   title='the entry'>&para;</a>
+{%- if n.children %}<ul>{% for k in n.children %}{{ node(k) }}{% endfor %}</ul>{% endif %}
+</li>
+{% endmacro %}
+
+{% block main %}
+{# **Scoped to located subtrees.** A root here is an entity with no `within:`
+   that has somewhere to put on a map, itself or below it — otherwise every
+   person, source and event in the store is an atlas root, and the tree becomes
+   the encyclopedia index with worse navigation. #}
+<div id='secondary'>
+  <div class='card'><div class='body'>
+  {% if selected %}
+  {% include "edition/_map.html" %}
+  {% else %}
+  <p class='meta'>Pick a location. The tree holds every entity with somewhere to
+  put on a map — a shape a source drew, a point a human keyed, or an extent
+  framed by what lies beneath it.</p>
+  {% endif %}
+  </div></div>
+</div>
+<div id='primary'>
+<ul class='tree'>{% for r in tree %}{{ node(r) }}{% endfor %}</ul>
+{% if gaps %}
+<div class='card'><h4>what no source draws</h4>
+<ul class='meta'>{% for g in gaps %}<li>{{ g }}</li>{% endfor %}</ul></div>
+{% endif %}
+</div>
+{% endblock %}

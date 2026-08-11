@@ -68,6 +68,7 @@ from . import (
     _entity,
     _fig,
     _find,
+    _geo,
     _lexicon,
     _ocr,
     _proposal,
@@ -88,7 +89,7 @@ from ._common import (
     walk_surface,
 )
 
-GROUPS = (_tei, _ocr, _proposal, _zones, _fig, _lexicon, _entity, _edition,
+GROUPS = (_tei, _ocr, _proposal, _zones, _fig, _lexicon, _entity, _geo, _edition,
           _find, _corpus, _views, _agents, _verbs)
 
 

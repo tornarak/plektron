@@ -117,6 +117,31 @@ def test_page_link_is_gitignored_by_a_star_shaped_rule():
     assert "page.png" not in gitignored_review_names()
 
 
+def test_tei_is_a_store_and_never_a_farm():
+    """`tei/` holds pages a reader signed; `mz/tei/` holds what the rules produced.
+    Nine callers read "a file is in `tei/`" as "somebody collated this" — `_collated`,
+    the folio fold, the seam, `validate`, `dispatch`, `pipeline`, `tei diff` — and a
+    symlink is indistinguishable from a signature to every one of them.
+
+    Not hypothetical. A hand-made farm of 274 links into `mz/tei/` existed here and
+    broke two things at once, neither of them obviously about symlinks: every draft
+    counted as a collated predecessor, so `expected_folio` predicted 53 for a page
+    with nothing collated before it — the manufactured second witness `_window_folio`
+    exists precisely to refuse — and the schema gate failed on a draft still carrying
+    the `<foreign index="N">` scaffolds collation is supposed to replace.
+
+    `zones/` and `ocr/` are farms because their two stores hold the same kind of
+    thing at different ranks, and a caller wants the best one without caring which.
+    These two hold *different* things, and every caller above cares. The edition UI
+    reaches the generated store by naming it, not by following a link.
+    """
+    store = REPO / "tei"
+    if not store.is_dir():
+        pytest.skip("no tei store in this checkout")
+    links = sorted(p.name for p in store.glob("*.xml") if p.is_symlink())
+    assert links == [], f"tei/ is a store, not a view over mz/tei/: {links}"
+
+
 def test_page_link_is_relative_and_points_at_the_raster(tmp_path):
     """Relative, so it survives a clone to a different path."""
     from harness.paths import ensure_page_link, page_link

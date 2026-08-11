@@ -478,3 +478,53 @@ on a Chukchee form. A generator that named a language there would be inferring o
 from the shape of a word, which is the firewall's failure mode one category over from
 glyphs. The gate closes a hole that predates all of this besides: a hand-written
 `<foreign>` with text and no language used to pass in silence.
+
+## The request models were rewritten from memory, and two of three failures were silent
+
+Splitting `webui.py` into `harness/web/` moved each editor's routes into its own
+module and gave each POST a Pydantic model. The zones save model was written from
+recollection of the payload rather than from the file that builds it, and got
+three fields wrong at once: `exempt` declared a `bool` where the client sends the
+list of exempted order rules, `anchor` where it sends `nudge`, and `figures` where
+it sends `figs`.
+
+**Only the first was loud.** A type mismatch is a 422, so `Enter` saved nothing and
+the editor was visibly broken — annoying, immediately noticed, fixed in a line.
+The other two are the shape worth recording: **Pydantic drops undeclared fields
+silently**, so once the type error was gone the save would have returned 200,
+printed its usual `saved gt/zones/…: 5 zones` line, and written neither the column
+nudge nor anything at all from the figure track. A save that reports success and
+stores less than it was handed is this project's defining failure in miniature.
+
+Two things made it possible and both are now closed.
+
+**Nothing tested the route.** Every existing zones test calls `save_payload`
+directly with a hand-built dict — the right shape for testing the store writer, and
+it means the model was in no test's path. `test_web_contracts.py` goes through the
+router, against a `tmp_path` root because `gt/zones/` is tracked and somebody may
+have the page open while the suite runs.
+
+**The contract is written twice in files that do not import each other**, so
+agreement was nobody's property. The same file now holds each endpoint's real
+client body beside its model and asserts in three directions: the model accepts
+what the client sends, drops none of it, and declares every field the server-side
+consumer reads. The third direction found a second live bug on its first run —
+the edition server's entity-creation route reads `triggers` and `since` off a
+model that declared neither, so an entry created with either would have been
+written with the placeholder trigger row and no `since:`, and would have looked
+complete.
+
+**A default is not always harmless, and `figs` is the case.** `save_payload` asks
+`"figs" not in payload` to decide whether the figure store is touched at all,
+because `zones blot` keys the segmenter's training rasters off `gt/fig/`'s mtimes
+and rewriting 252 identical files during ordinary zone keying would stale every one
+of them. A `list[dict] = []` default puts the key in *every* dump, which on a
+figure-less page trips the store's deliberate refusal to write an empty figure file
+and fails the save outright. The field defaults to `None` and the route dumps with
+`exclude_unset=True`; both halves are pinned, since either alone restores the bug.
+
+The same refactor left `nav()` and `navStore()` navigating to a bare `/` while the
+editors are mounted under `/zones` — so the arrow keys walked to the shell's front
+door and read as dead keys. Every other URL in every editor's JS was already built
+from `B`, which is what made the two exceptions easy to miss and easy to find once
+looked for.

@@ -700,8 +700,14 @@ def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
                                                  reversed(starts), strict=True)
                         if s <= h["start"])
             out.append({"line": line, "form": h["form"],
+                        "as_printed": " ".join(h["text"].split()),
                         "ids": " ".join(h["ids"]),
-                        "linked": autos.get(h["form"]) is not None,
+                        # The generator's own bar, re-derived: a hyphenated
+                        # spelling is never linked by rule, so it must not show
+                        # as linked here either or the table and the file
+                        # disagree about which questions are open.
+                        "linked": (not h["hyphenated"]
+                                   and autos.get(h["form"]) is not None),
                         "status": h["status"] or "(several claim it)"})
     out.sort(key=lambda r: (r["line"], r["form"]))
     return out

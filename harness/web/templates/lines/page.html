@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}lines {{ st.ref }}{% endblock %}
+
+{% block styles %}
+{# Linked, not inlined. This editor is navigated page-to-page with the arrow keys,
+   and the stylesheets were re-sent in full on every one of those. `layers.css` is
+   generated from `data/lines_config.json` rather than written by hand, because
+   two places naming a colour is how one of them goes stale — and this editor's
+   whole subject is a mark you have to be able to see. #}
+<link rel="stylesheet" href="/static/css/editor.css">
+<link rel="stylesheet" href="/static/css/lines.css">
+<link rel="stylesheet" href="{{ base }}/layers.css">
+{% endblock %}
+
+{% block body %}
+<div id=bar>
+  <b>lines</b><span id=cur>{{ st.ref }}</span>
+  <span class=pill id=bp>b · blot</span>
+  <span class=pill id=zl>1.00×</span>
+  <span id=tally>
+    <span>corrections <b id=nc>0</b></span>
+    <span>bands left <b id=nb>0</b></span>
+    <span>ruled <b id=nx>0</b></span>
+  </span>
+  <span id=dirty>unsaved</span>
+  <span id=msg></span>
+  <button id=save>save</button><button id=done>done</button>
+</div>
+<div id=wrap><div id=stage><img id=img src="{{ base }}/page/{{ st.ref }}.png">
+<svg id=ov xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"></svg>
+</div></div>
+<div id=panel>
+  <h4>what to do</h4>
+  {# Every row is a control, not a legend. An action reachable only by a keystroke
+     is unreachable to anyone who has rebound it away or has not learnt it yet, and
+     this is a tool a human meets a few dozen times a book. So the row does the
+     thing, and the key is a shortcut for the row rather than the only way in. #}
+  <div class=key><span>adopt a band</span><kbd>click</kbd></div>
+  <div class=key><span>draw a box</span><kbd>drag</kbd></div>
+  {% for row in keys %}
+  <div class=key data-act="{{ row.name }}" title="{{ row.label }}">
+    <span>{{ row.label }}</span>
+    {% if row.key %}<kbd>{{ row.key }}</kbd>
+    {% else %}<kbd class=none>—</kbd>{% endif %}
+  </div>
+  {% endfor %}
+  <h4>ruled not a line</h4>
+  <ul id=rulings></ul>
+  <h4>this editor draws</h4>
+  <div id=flags>It never keys. The text of a recovered line is adjudicated in
+  <code>ocr review</code> and written by <code>restore</code>, like any other
+  line's.</div>
+  <h4>the walk</h4>
+  <div id=flags>{{ itinerary_name or '—' }}
+  {% if position %}· {{ position }}{% endif %}<br>
+  <a href="{{ base }}/list?ref={{ st.ref }}">list, with live counts</a></div>
+</div>
+<div id=issues>
+  {% if not st.has_zones %}
+  <div class="iss e">This page has no zoning. Line correction comes after it —
+  key the regions in <code>zones edit</code> first.</div>
+  {% endif %}
+  {% if no_zone %}
+  <div class="iss w">{{ no_zone }} band(s) lie in no zone. That is a gap in the
+  zoning, not a line to adopt here: draw the region in <code>zones edit</code>,
+  or rule the band not type.</div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# `tojson` rather than a bare dump: it escapes the sequences that would close
+   this script element early, which the hand-rolled version did not. #}
+<script>const STATE = {{ st | tojson }}; const CFG = {{ cfg | tojson }};</script>
+<script src="/static/js/lines.js"></script>
+{% endblock %}

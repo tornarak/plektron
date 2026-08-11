@@ -93,9 +93,10 @@ review/*/*.png
 review/_queue.txt
 review/_claims/
 # The collation pass's pair, same argument. They live beside `tei/` because that is
-# the store this batch deals out, exactly as the two above live beside `review/` —
-# and `tei/` is otherwise entirely tracked, so these two lines are the only holes in
-# it and are worth being able to see at a glance.
+# the store this batch deals out, exactly as the two above live beside `review/`.
+# These two used to be the only holes in an otherwise fully tracked `tei/`; the
+# temporary `/tei/chukchi-*.xml` entry below is a third and much larger one, and
+# unlike these it is meant to be removed.
 tei/_queue.txt
 tei/_claims/
 
@@ -221,6 +222,25 @@ train/
 # repo root, and a store silently untracked is the failure this repo has already
 # paid for once.
 /mz/tei/
+# **TEMPORARY, and the only entry in this file that is.** The collated pages are
+# out of history while the generator is being fixed: `tei generate` is going to be
+# rewritten repeatedly — figures anchored by default, footnote parsing, consecutive
+# `MainZone-Continued` — and every rewrite invalidates every page downstream of it,
+# so what is in `tei/` right now is a draft against a generator nobody trusts yet.
+# Committing that is committing churn, not judgement.
+#
+# **Delete this entry the moment the generator settles**, and re-add the store. A
+# collated page IS somebody's judgement — the one property that decides every other
+# line in this file — so this is a store that belongs in history and is being kept
+# out of it on purpose, for a stated and expiring reason. The longer this sits the
+# more it looks like a rule.
+#
+# Named by pattern rather than `/tei/*` with a negation for `corpus-header.xml`, for
+# the reason `review/` spells out above: under a negation rule a *new* authored file
+# in `tei/` is silently ignored unless somebody remembers to negate it too, which is
+# the losable-file failure in a different costume. This way a new authored name shows
+# up in `git status` and only the page files are dropped.
+/tei/chukchi-*.xml
 # The two read views, one name per page, the human file winning: `harness zones link`
 # builds the first, `harness ocr link` the second.
 #

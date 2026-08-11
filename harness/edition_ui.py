@@ -20,20 +20,43 @@ on the result first and refuses one that would leave the store incoherent.
 
 Committed `tei/` only. `mz/tei/` is a generated baseline nobody has read, and an
 end-user preview is the last place it belongs.
+
+**This module no longer renders a page.** The routes and every piece of markup
+are `harness/web/edition.py` and the templates beside it. What stays is what a
+different front end would still need: the little markup a gloss may use, what an
+imputed pronunciation is allowed to claim, which fields of a record must reach a
+reader, and the two guarded writes — each of which is a rule about the edition
+rather than about HTTP.
 """
+
 from __future__ import annotations
 
-import json
 import re
+import unicodedata
+from html import escape
 from pathlib import Path
 
-from . import tei_html, webui
+from . import geo, geomap, tei_html
 from .cli._entity import TEMPLATE
 from .context import norm_ref
-from .entities import check, load, path_for, split_id, trigger_index
+from .entities import (
+    WIKILINK,
+    check,
+    load,
+    path_for,
+    split_id,
+)
 
 PORT = 8734
 REF_OK = re.compile(r"^\d+-\d+$")
+XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
+
+#: Where the reading view is mounted. The four tools share one server, so a bare
+#: `/entity/…` in a link would resolve against whichever of them owned the root.
+#: A constant rather than a per-request value because the mount point is fixed
+#: at registration (`harness/web/edition.py`), and threading a request through
+#: `gloss_html` to reach it would put a web concern inside a text transform.
+BASE = "/edition"
 
 
 def scan_for(ref: str, root: Path) -> Path:
@@ -41,274 +64,6 @@ def scan_for(ref: str, root: Path) -> Path:
 
 
 # --------------------------------------------------------------- the page
-
-CSS = """
-:root {
-  --bg:#fbfaf7; --fg:#1c1a17; --dim:#6b6560; --rule:#ddd8d0; --card:#fff;
-  --accent:#7a4b28; --mark:#b8860b; --pin:#1a6b5a;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19;
-  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6;
-} }
-* { box-sizing:border-box }
-body { margin:0; background:var(--bg); color:var(--fg);
-  font:16px/1.65 Charter,Georgia,"Times New Roman",serif; }
-a { color:var(--accent) }
-#bar { position:sticky; top:0; z-index:9; display:flex; gap:.75rem;
-  align-items:center; padding:.5rem .9rem; background:var(--bg);
-  border-bottom:1px solid var(--rule); font-family:system-ui,sans-serif;
-  font-size:.85rem; }
-#bar .grow { flex:1 }
-#bar a { text-decoration:none }
-button, .btn { font:inherit; font-family:system-ui,sans-serif; font-size:.8rem;
-  padding:.25rem .6rem; border:1px solid var(--rule); border-radius:.3rem;
-  background:var(--card); color:var(--fg); cursor:pointer; }
-button:hover { border-color:var(--accent) }
-main.cols { display:flex; gap:1.5rem; align-items:flex-start;
-  max-width:80rem; margin:0 auto; padding:1.2rem .9rem 4rem; }
-.primary { flex:1 1 auto; min-width:0; max-width:44rem }
-.secondary { flex:0 0 clamp(20rem,32%,26rem); position:sticky; top:3rem;
-  max-height:calc(100vh - 4rem); overflow-y:auto; }
-@media (max-width:880px) {
-  main.cols { display:block }
-  .secondary { position:static; max-height:none; margin-top:2rem;
-    border-top:1px solid var(--rule); padding-top:1rem }
-}
-/* --- the text --- */
-.primary p { margin:0 0 .35rem; text-indent:1.4rem }
-.primary p:first-of-type { text-indent:0 }
-blockquote { margin:.8rem 0 .8rem 1.5rem; color:var(--dim) }
-h2.milestone { font-size:1.05rem; letter-spacing:.06em; text-transform:uppercase;
-  margin:1.6rem 0 .6rem }
-h3 { font-size:1rem; margin:1.2rem 0 .4rem }
-table { border-collapse:collapse; margin:.8rem 0 }
-td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
-.folio { float:right; color:var(--dim); font-size:.75rem;
-  font-family:system-ui,sans-serif; }
-.tier1 { font-style:italic }
-.unclear { border-bottom:1px dotted var(--mark) }
-.supplied { color:var(--dim) }
-.noteref { vertical-align:super; font-size:.7em; text-decoration:none;
-  padding:0 .1em }
-.ent { text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent) }
-.ent:hover { border-bottom-color:var(--accent); background:color-mix(in srgb,var(--accent) 8%,transparent) }
-.figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
-#foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
-  font-size:.85rem; color:var(--dim) }
-#foot li { margin-bottom:.3rem }
-/* --- apparatus, hidden in reader view --- */
-.flag { font-family:system-ui,sans-serif; font-size:.7rem; color:var(--mark);
-  border:1px solid var(--mark); border-radius:.25rem; padding:0 .25em;
-  cursor:help; margin:0 .15em; vertical-align:super }
-.flag.question { background:color-mix(in srgb,var(--mark) 15%,transparent) }
-.unsettled { background:color-mix(in srgb,var(--mark) 12%,transparent);
-  border-bottom:1px dashed var(--mark) }
-html.reader .flag { display:none }
-html.reader .unsettled { background:none; border-bottom-style:solid }
-/* --- the stack --- */
-.card { background:var(--card); border:1px solid var(--rule);
-  border-radius:.4rem; padding:.6rem .75rem; margin-bottom:.6rem;
-  font-family:system-ui,sans-serif; font-size:.85rem; line-height:1.5 }
-.card.pinned { border-color:var(--pin) }
-.card h4 { margin:0 0 .3rem; font-size:.9rem; font-family:inherit }
-.card .meta { color:var(--dim); font-size:.75rem; margin-bottom:.4rem }
-.card .tools { float:right; display:flex; gap:.25rem }
-.card .tools button { padding:.05rem .35rem; font-size:.7rem; line-height:1.4 }
-.card .gloss { white-space:pre-wrap }
-.card table { font-size:.75rem; margin:.4rem 0 0 }
-.crop { position:relative; overflow:hidden; width:100%;
-  border:1px solid var(--rule); border-radius:.3rem; margin-top:.4rem;
-  background:var(--bg) }
-.crop img { position:absolute; max-width:none }
-html[data-theme="dark"] .crop img, .dark-raster .crop img { filter:none }
-#empty { color:var(--dim); font-size:.85rem; font-family:system-ui,sans-serif }
-.pill { display:inline-block; font-size:.7rem; padding:0 .35em; border-radius:.25rem;
-  border:1px solid var(--rule); color:var(--dim); margin-left:.3rem }
-.pill.proposed { border-color:var(--mark); color:var(--mark) }
-"""
-
-JS = r"""
-const STACK = document.getElementById('stack');
-const KEY = 'edition-pins-' + STATE.ref;
-
-// Pins survive a reload because a pinned card is a deliberate act — you put it
-// there to keep it while you read — and losing it to a refresh would teach you
-// not to bother. Everything else is per-visit and deliberately not stored.
-let pins = [];
-try { pins = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) {}
-
-function savePins() {
-  const ids = [...STACK.children].filter(c => c.classList.contains('pinned'))
-                                 .map(c => c.dataset.id);
-  localStorage.setItem(KEY, JSON.stringify(ids));
-}
-
-function empty() {
-  const e = document.getElementById('empty');
-  if (e) e.style.display = STACK.children.length ? 'none' : '';
-}
-
-/* A card already open is raised rather than duplicated: the stack is a set in
-   most-recent order, not a log. Raising stops below the pinned block, so a pin
-   actually holds its place. */
-function push(id, build) {
-  let card = STACK.querySelector(`[data-id="${CSS.escape(id)}"]`);
-  if (!card) { card = build(); card.dataset.id = id; }
-  const firstLoose = [...STACK.children].find(c => !c.classList.contains('pinned'));
-  if (card.classList.contains('pinned')) STACK.prepend(card);
-  else STACK.insertBefore(card, firstLoose === card ? card.nextSibling : firstLoose);
-  empty();
-  card.scrollIntoView({block:'nearest'});
-  return card;
-}
-
-function card(id, title, meta, html, extra) {
-  const el = document.createElement('div');
-  el.className = 'card';
-  el.dataset.id = id;
-  el.innerHTML = `<div class="tools">
-      <button data-act="pin" title="keep this above the rest">pin</button>
-      <button data-act="close" title="remove">×</button></div>
-    <h4>${title}</h4>${meta ? `<div class="meta">${meta}</div>` : ''}${html}`;
-  if (extra) extra(el);
-  el.addEventListener('click', ev => {
-    const b = ev.target.closest('button'); if (!b) return;
-    if (b.dataset.act === 'close') { el.remove(); savePins(); empty(); }
-    if (b.dataset.act === 'pin') {
-      el.classList.toggle('pinned');
-      b.textContent = el.classList.contains('pinned') ? 'unpin' : 'pin';
-      if (el.classList.contains('pinned')) STACK.prepend(el);
-      savePins();
-    }
-  });
-  return el;
-}
-
-async function openEntity(ref) {
-  const c = push('ent:' + ref, () => card('ent:' + ref, ref, 'loading…', ''));
-  const r = await fetch('/entity/' + encodeURIComponent(ref) + '?partial=1');
-  const h = await r.text();
-  c.querySelector('h4').outerHTML = h;   // server sends <h4>…</h4> + body
-  return c;
-}
-
-function openNote(i) {
-  const src = document.getElementById('note-' + i);
-  if (!src) return;
-  push('note:' + i, () => card('note:' + i, 'Note ' + src.dataset.n, '',
-                               `<div>${src.innerHTML}</div>`));
-}
-
-function openScan(box, label) {
-  const id = 'scan:' + (box ? box.join(',') : 'page');
-  push(id, () => card(id, label || 'The page', STATE.ref,
-    `<div class="crop" style="${STATE.crops[id] ? STATE.crops[id].outer : 'aspect-ratio:'+STATE.size[0]+'/'+STATE.size[1]}">
-       <img src="/page/${STATE.ref}.png" style="${STATE.crops[id] ? STATE.crops[id].inner : 'width:100%;left:0;top:0'}">
-     </div>
-     <div class="meta" style="margin-top:.4rem">
-       <a href="/page/${STATE.ref}.png" target="_blank">open the full raster</a></div>`));
-}
-
-document.addEventListener('click', ev => {
-  const a = ev.target.closest('a.ent');
-  if (a) { ev.preventDefault(); openEntity(a.dataset.ref); return; }
-  const n = ev.target.closest('a.noteref');
-  if (n) { ev.preventDefault(); openNote(n.dataset.note); return; }
-  const f = ev.target.closest('.figure-anchor');
-  if (f) { openScan(null, 'Figure ' + f.dataset.figure); return; }
-});
-
-document.getElementById('scan-btn').addEventListener('click', () => openScan());
-
-// Reader view: applied to <html> so it can be set before first paint (see the
-// inline script in the head) and never flashes the apparatus on load.
-document.getElementById('reader-btn').addEventListener('click', () => {
-  const on = document.documentElement.classList.toggle('reader');
-  localStorage.setItem('edition-reader', on ? '1' : '');
-});
-
-for (const id of pins) {
-  if (id.startsWith('ent:')) openEntity(id.slice(4)).then(c => {
-    c.classList.add('pinned');
-    c.querySelector('[data-act=pin]').textContent = 'unpin';
-    STACK.prepend(c);
-  });
-  else if (id.startsWith('note:')) openNote(id.slice(5));
-}
-empty();
-"""
-
-
-def _head(title: str, extra_css: str = "") -> str:
-    return (
-        "<!doctype html><meta charset='utf-8'>"
-        "<meta name='viewport' content='width=device-width,initial-scale=1'>"
-        f"<title>{title}</title>"
-        # Before the stylesheet, so a reader-view session does not flash its
-        # apparatus on every page load. The Moll reader's lesson.
-        "<script>try{if(localStorage.getItem('edition-reader'))"
-        "document.documentElement.classList.add('reader')}catch(e){}</script>"
-        f"<style>{CSS}{extra_css}</style>"
-    )
-
-
-def _bar(here: str = "") -> str:
-    return (
-        "<div id='bar'>"
-        "<a href='/'><b>The Chukchee</b></a>"
-        f"<span class='grow'>{here}</span>"
-        "<a href='/entities'>encyclopedia</a>"
-        "<form action='/search' style='display:inline'>"
-        "<input name='q' placeholder='search' style='font:inherit;padding:.2rem .4rem;"
-        "border:1px solid var(--rule);border-radius:.3rem;background:var(--card);"
-        "color:var(--fg)'></form>"
-        "</div>"
-    )
-
-
-def render_page(ref: str, root: Path) -> str:
-    doc = tei_html.render(tei_html.page_path(ref, root))
-    if not doc["ok"]:
-        return (_head(ref) + _bar()
-                + f"<main class='cols'><div class='primary'><p>This page will not "
-                  f"render: {doc['why']}</p></div></main>")
-    refs = collated_neighbours(ref, root)
-    notes = "".join(
-        f"<li id='note-{n['i']}' data-n='{n['n']}'><a href='#ref-{n['i']}'>"
-        f"{n['n']}</a> {n['html']}</li>" for n in doc["notes"])
-    size = _raster_size(ref, root)
-    state = {"ref": ref, "size": size, "crops": {}}
-    return (
-        _head(f"{ref} — The Chukchee")
-        + _bar(f"scan {ref}" + (f" · folio {doc['folio']}" if doc["folio"] else ""))
-        + "<main class='cols'><div class='primary'>"
-        + refs
-        + f"<article>{doc['html']}</article>"
-        + (f"<div id='foot'><ol>{notes}</ol></div>" if notes else "")
-        + "</div><aside class='secondary'><div id='bar2' style='display:flex;"
-          "gap:.4rem;margin-bottom:.6rem'>"
-          "<button id='scan-btn'>consult the scan</button>"
-          "<button id='reader-btn'>reader view</button></div>"
-          "<div id='stack'></div>"
-          "<div id='empty'>Click an entity, a footnote marker or "
-          "<em>consult the scan</em>, and it collects here.</div>"
-          "</aside></main>"
-        + f"<script>const STATE={json.dumps(state)};</script><script>{JS}</script>"
-    )
-
-
-def collated_neighbours(ref: str, root: Path) -> str:
-    """Previous/next among *collated* pages, which is what the reader can reach."""
-    refs = tei_html.collated(root)
-    if ref not in refs:
-        return ""
-    i = refs.index(ref)
-    prev = f"<a href='/page/{refs[i-1]}'>← {refs[i-1]}</a>" if i else ""
-    nxt = f"<a href='/page/{refs[i+1]}'>{refs[i+1]} →</a>" if i + 1 < len(refs) else ""
-    return (f"<div style='display:flex;justify-content:space-between;"
-            f"font-family:system-ui,sans-serif;font-size:.8rem;margin-bottom:1rem'>"
-            f"<span>{prev}</span><span>{nxt}</span></div>")
 
 
 def _raster_size(ref: str, root: Path) -> tuple[int, int]:
@@ -320,6 +75,7 @@ def _raster_size(ref: str, root: Path) -> tuple[int, int]:
     """
     try:
         from PIL import Image
+
         with Image.open(scan_for(ref, root)) as im:
             return im.size
     except Exception:
@@ -328,205 +84,380 @@ def _raster_size(ref: str, root: Path) -> tuple[int, int]:
 
 # ------------------------------------------------------------- the entities
 
-def entity_card(ent_id: str, root: Path, partial: bool) -> str:
-    store = load(root)
-    rec = store.get(ent_id)
-    if rec is None:
-        body = f"<p>No entry for <code>{ent_id}</code>.</p>"
-        return body if partial else _head(ent_id) + _bar() + \
-            f"<main class='cols'><div class='primary'>{body}</div></main>"
-    idx = trigger_index(store)
-    pill = (f"<span class='pill {rec['status']}'>{rec['status']}</span>")
-    rows = "".join(
-        f"<tr><td>{t['form']}</td><td>{'auto' if t['auto'] else 'suggest'}</td>"
-        f"<td>{t['note']}</td></tr>" for t in rec["triggers"])
-    contested = sorted({c["id"] for t in rec["triggers"]
-                        for c in idx.get(t["form"], []) if c["id"] != ent_id})
-    also = ("<div class='meta'>shares a form with "
-            + ", ".join(f"<a class='ent' data-ref='{c}' href='/entity/{c}'>{c}</a>"
-                        for c in contested) + "</div>") if contested else ""
-    links = "".join(f"<div class='meta'>{ln}</div>" for ln in rec["links"])
-    ratify = ("" if rec["status"] == "ratified" else
-              f"<div style='margin-top:.5rem'><button onclick=\"ratify('{ent_id}')\">"
-              f"ratify — a rule may then link its forms</button></div>")
-    head = (f"<h4>{rec['canonical']}{pill}</h4>"
-            f"<div class='meta'><code>{ent_id}</code> · first read on "
-            f"<a href='/page/{rec['since']}'>{rec['since']}</a></div>")
-    body = (f"{also}<div class='gloss'>{rec['gloss']}</div>{links}"
-            + (f"<table><tr><th>form</th><th></th><th></th></tr>{rows}</table>"
-               if rows else "")
-            + ratify)
-    if partial:
-        return head + body
-    return (_head(f"{rec['canonical']} — The Chukchee") + _bar()
-            + f"<main class='cols'><div class='primary'><div class='card'>"
-              f"{head}{body}</div></div></main>"
-            + "<script>" + _RATIFY_JS + "</script>")
-
-
-_RATIFY_JS = """
-async function ratify(id) {
-  const r = await fetch('/ratify', {method:'POST',
-    headers:{'Content-Type':'application/json'}, body: JSON.stringify({id})});
-  const j = await r.json();
-  if (j.error) { alert(j.error); return; }
-  location.reload();
+#: How a `link:` row renders. The prefix is the whole vocabulary — an entity
+#: record says `wikipedia:Chukchi_people`, not a URL, so the store holds the
+#: *identifier* and this holds the address. A site that moves its paths then
+#: costs one line here rather than an edit to every record.
+LINK_KINDS = {
+    "wikipedia": ("https://en.wikipedia.org/wiki/{}", "Wikipedia", "wikipedia"),
+    "wikidata": ("https://www.wikidata.org/wiki/{}", "Wikidata", "wikidata"),
+    "dplace": ("https://d-place.org/parameters/{}", "D-PLACE", ""),
+    "url": ("{}", "", ""),
 }
-"""
+
+_EM = re.compile(r"\*([^*\n]+)\*")
+_CODE = re.compile(r"`([^`\n]+)`")
 
 
-def entity_index(root: Path) -> str:
-    store = load(root)
-    rep = check(root)
-    rows = sorted(store.values(),
-                  key=lambda r: (r["status"] != "proposed", r["id"]))
-    trs = "".join(
-        f"<tr><td><a href='/entity/{r['id']}'>{r['canonical']}</a></td>"
-        f"<td><code>{r['id']}</code></td>"
-        f"<td><span class='pill {r['status']}'>{r['status']}</span></td>"
-        f"<td>{len(r['triggers'])}</td>"
-        f"<td><a href='/page/{r['since']}'>{r['since']}</a></td></tr>"
-        for r in rows)
-    problems = "".join(f"<li>{e}</li>" for e in rep["errors"])
-    return (
-        _head("Encyclopedia — The Chukchee")
-        + _bar(f"{rep['entities']} entries · {rep['proposed']} awaiting audit")
-        + "<main class='cols'><div class='primary' style='max-width:60rem'>"
-        + (f"<div class='card'><h4>the store does not check out</h4>"
-           f"<ul>{problems}</ul></div>" if problems else "")
-        + "<table style='width:100%'><tr><th>name</th><th>id</th><th>status</th>"
-          "<th>triggers</th><th>since</th></tr>"
-        + trs + "</table>"
-        + "<p class='meta' style='font-family:system-ui,sans-serif;font-size:.8rem'>"
-          "Proposed entries come first: nothing links them by rule until a human "
-          "has read one against the page it was proposed from.</p>"
-        + "</div></main>" + f"<script>{_RATIFY_JS}</script>")
+def inline_html(text: str, store: dict) -> str:
+    """One line of authored text: escaped, then `[[…]]`, `*em*` and `` `code` ``.
 
-
-def index(root: Path) -> str:
-    refs = tei_html.collated(root)
-    if not refs:
-        body = ("<p>No page is collated yet. The reading view shows committed "
-                "<code>tei/</code> only — a generated baseline in "
-                "<code>mz/tei/</code> is a draft nobody has read, and this is "
-                "the one place it must not appear.</p>")
-    else:
-        body = "<ul>" + "".join(
-            f"<li><a href='/page/{r}'>{r}</a></li>" for r in refs) + "</ul>"
-    return (_head("The Chukchee") + _bar(f"{len(refs)} page(s) collated")
-            + f"<main class='cols'><div class='primary'><h3>The edition</h3>"
-              f"{body}</div></main>")
-
-
-def search(q: str, root: Path) -> str:
-    """Text over committed pages, plus entity names and trigger forms.
-
-    Two tables rather than one ranked list: a hit in the text and a hit in the
-    encyclopedia answer different questions, and merging them would need a
-    relevance score this has no basis for inventing.
+    No paragraph wrapping — this is for a table cell or a caption, where
+    `gloss_html`'s `<p>`s would be wrong.
     """
-    hits, ents = [], []
-    if q:
-        store = load(root)
-        for ident, rec in sorted(store.items()):
-            hay = [rec["canonical"], ident, rec["gloss"]] + \
-                  [t["form"] for t in rec["triggers"]]
-            if any(q.lower() in h.lower() for h in hay):
-                ents.append(rec)
-        for ref in tei_html.collated(root):
-            doc = tei_html.render(tei_html.page_path(ref, root))
-            if not doc["ok"]:
+    out = escape(text)
+    out = WIKILINK.sub(lambda m: _entity_link(m.group(1), store), out)
+    out = _CODE.sub(r"<code>\1</code>", out)
+    return _EM.sub(r"<em>\1</em>", out)
+
+
+def _entity_link(ident: str, store: dict) -> str:
+    rec = store.get(ident)
+    return (
+        f'<a class="ent{"" if rec else " dangling"}" data-ref="{ident}" '
+        f'href="{BASE}/entity/{ident}" title="{escape(ident)}">'
+        f'{escape(rec["canonical"] if rec else ident)}</a>'
+    )
+
+
+def gloss_html(text: str, store: dict) -> str:
+    """An entity's gloss as HTML: escaped first, then the little markup it may use.
+
+    **`[[class:slug]]` is how one entry names another.** Bare `person:jochelson`
+    in running prose was unmarked and unclickable, and worse, indistinguishable
+    from prose that merely mentions the shape — the brackets say "this is a
+    reference" the way they do in every wiki, and `entity check` can then refuse
+    one that resolves to nothing.
+
+    Escaped before anything else, so a gloss is text and never markup. `*em*` and
+    `` `code` `` are recognised because the records already use them and the
+    alternative is a gloss that shows its own asterisks.
+    """
+    return "".join(
+        f"<p>{inline_html(p, store)}</p>"
+        for p in re.split(r"\n\s*\n", text.strip())
+        if p.strip()
+    )
+
+
+def link_html(row: str) -> str:
+    """One `link:` row as an outbound link, with its site's mark where there is one.
+
+    `target=_blank`: these leave the edition, and a reader who followed one out of
+    a page they were reading would have to find their place again.
+    """
+    kind, _, rest = row.partition(":")
+    fmt, label, icon = LINK_KINDS.get(kind, ("", "", ""))
+    if not fmt:
+        return f"<div class='meta'>{escape(row)}</div>"
+    href = fmt.format(rest)
+    mark = (
+        f"<img class='site' src='/static/site/{icon}.svg' alt=''>"
+        if icon
+        else "<span class='site'>↗</span>"
+    )
+    return (
+        f"<div class='meta'><a class='out' href='{escape(href)}' "
+        f"target='_blank' rel='noopener noreferrer'>{mark}"
+        f"{escape(label or rest)}</a></div>"
+    )
+
+
+#: The Tier-1 languages, by the name a reader wants rather than the code. The
+#: codes themselves are `validate.TIER1`, which is what a lexicon key carries.
+LANG_NAMES = {
+    "ckt": "Chukchi",
+    "kpy": "Koryak",
+    "ypk": "Yupik (the book's “Eskimo”)",
+    "xcv": "Chuvan",
+    "eve": "Lamut (Even)",
+    "ipk": "Inupiat",
+    "itl": "Itelmen (the book's “Kamchadal”)",
+}
+
+
+#: Fields the card renders somewhere other than the properties block, and the
+#: two that are the identity itself. Named rather than left implicit, because
+#: `test_edition.py` asserts that every key `entities.parse` produces is either
+#: here or rendered by `property_rows` — **a field nobody displays is a field a
+#: human maintains for nothing**, and the store gained `within:`, `geo:` and
+#: `area:` before anything showed them.
+SHOWN_ELSEWHERE = {
+    "id",
+    "class",
+    "slug",  # the identity, in the heading and the code
+    "canonical",
+    "status",
+    "since",
+    "links",
+    "triggers",
+    "gloss",
+    "dir_class",
+    "stem",
+    "path",  # `load`'s bookkeeping, not the record
+}
+
+
+#: The fields `property_rows` renders. Together with `SHOWN_ELSEWHERE` this must
+#: cover every key `entities.parse` returns, and `test_edition.py` says so.
+PROPERTY_FIELDS = ("within", "area", "geo", "authority")
+
+
+def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
+    """Every remaining field of the record, as typed rows.
+
+    The rule this exists to keep is that **an entity file has no invisible
+    fields**. A store a human hand-maintains whose values never reach the page
+    is one where a wrong value is never noticed — which is the same failure as
+    an unratified span rendered like a ratified one, one store over.
+
+    `contains` is the one row that is not a field. It is the inverse of
+    `within:` and it is here because the tree is the whole point of the
+    geography, and a parent that could not list its own members would send a
+    reader to the atlas to find out what it holds.
+
+    **Rows carry a `kind`, not markup.** They used to be built here as HTML
+    strings, which meant every value's escaping was this function's to remember
+    — and a field added later would inherit whatever the line beside it happened
+    to do. The template renders each kind and escapes everything, so a new field
+    cannot smuggle raw markup in through a store value.
+    """
+    rows: list[dict] = []
+
+    if rec["within"]:
+        parent = store.get(rec["within"])
+        rows.append(
+            {
+                "kind": "entity",
+                "label": "within",
+                "id": rec["within"],
+                "name": parent["canonical"] if parent else rec["within"],
+            }
+        )
+
+    kids = geo.children(store).get(rec["id"], [])
+    if kids:
+        rows.append(
+            {
+                "kind": "entities",
+                "label": "contains",
+                "entries": [{"id": k, "name": store[k]["canonical"]} for k in kids],
+            }
+        )
+
+    if rec["area"]:
+        s = geo.index(root)["shapes"].get(rec["area"], {})
+        km2 = s.get("area_km2")
+        detail = " · ".join(
+            x
+            for x in (
+                s.get("name", ""),
+                f"{int(km2):,} km²" if km2 else "",
+                s.get("source", ""),
+                # The delineator's own admission, carried to the page. A basin
+                # outline a reader is about to trust is one whose publisher may
+                # have said it was coarse.
+                "coarse delineation" if s.get("precision") == "low" else "",
+            )
+            if x
+        )
+        rows.append(
+            {"kind": "area", "label": "area", "id": rec["area"], "detail": detail}
+        )
+
+    if rec["geo"]:
+        lat, lon = rec["geo"]
+        rows.append(
+            {
+                "kind": "point",
+                "label": "point",
+                "lat": f"{lat:.4f}",
+                "lon": f"{lon:.4f}",
+            }
+        )
+
+    if rec["authority"]:
+        from . import authorities
+
+        got = authorities.record(authorities.load(root), rec["authority"])
+        rows.append(
+            {
+                "kind": "authority",
+                "label": "authority",
+                "id": rec["authority"],
+                "title": got.get("title", "") if got else "",
+            }
+        )
+
+    return rows
+
+
+def strip_markup(html: str) -> str:
+    """Rendered page HTML back to plain text, for the search index.
+
+    Unescapes after stripping the tags, which the version this replaces did not:
+    the input is already-escaped HTML, so what came out carried `&amp;` where
+    the page had `&` — and it was then interpolated back into a result row as
+    markup, so the entity was re-emitted rather than shown.
+    """
+    from html import unescape
+
+    return unescape(re.sub("<[^>]+>", "", html))
+
+
+def map_context(
+    ent_id: str, root: Path, base: str = BASE, store: dict | None = None, shape=None
+) -> dict:
+    """One entity on a map, drawn inside its parent's extent — as a context.
+
+    `store` and `shape` are injected so the server can hand in its cached
+    readers: one map card asks for six or more shapes out of a 1.2 MB store, and
+    every one of them was a fresh read and JSON decode. They default to the
+    plain ones, so this stays callable without a server behind it — the caching
+    is the web layer's business and does not belong in a module the CLI imports.
+
+    The framing is the argument. A shape shown alone says only what it looks
+    like; shown inside the thing that contains it, it says where it *is* — which
+    is the whole reason the Small Anui wants the Kolyma around it and the reason
+    the hierarchy is worth authoring at all.
+
+    Three kinds of subject, and the caption distinguishes them because they are
+    not equally well founded: a shape a source drew, a point a human keyed, and
+    an extent computed from what lies beneath. Only the first two are claims
+    about a boundary.
+    """
+    store = load(root) if store is None else store
+    if shape is None:
+
+        def shape(ident):
+            return geo.shape(ident, root)
+
+    rec = store.get(ent_id)
+    out: dict = {
+        "ident": ent_id,
+        "base": base,
+        "rec": None,
+        "svg": "",
+        "parent": None,
+        "basis": {},
+        "absent_note": "",
+    }
+    if rec is None:
+        return out
+    out["rec"] = rec
+
+    box = geo.extent_of(ent_id, store, root)
+    if box is None:
+        why = geo.index(root)["absent"]
+        for _k, text in sorted(why.items()):
+            if rec["canonical"].split()[0].lower() in text.lower():
+                out["absent_note"] = text
+                break
+        return out
+
+    parent = store.get(rec["within"]) if rec["within"] else None
+    frame_box = (geo.extent_of(parent["id"], store, root) if parent else None) or box
+    frame = geomap.Frame(frame_box)
+
+    layers: dict[str, list] = {}
+    for name, ident in (("land", "base:land"), ("lakes", "base:lakes")):
+        doc = shape(ident)
+        if doc:
+            layers[name] = frame.paths(doc)
+
+    # Siblings before the parent outline before the subject: the subject drawn
+    # under its own siblings would be the one shape you cannot see.
+    kin = (
+        [
+            k
+            for k in geo.children(store).get(rec["within"], [])
+            if k != ent_id and store[k]["area"]
+        ]
+        if rec["within"]
+        else []
+    )
+    if kin:
+        layers["kin"] = [d for k in kin for d in frame.paths(shape(store[k]["area"]))]
+    if parent and parent["area"]:
+        layers["parent"] = frame.paths(shape(parent["area"]))
+
+    # **What lies beneath, drawn.** For a node with no boundary of its own this
+    # is the whole map — the Russian Far East is not a shape, and a frame with
+    # nothing in it but two pins says less than the tree already did. For a node
+    # that has one it is still the useful layer: the Kolyma showing the Anuis
+    # and the Omolon inside it is the picture the hierarchy was authored for.
+    members = geo.member_shapes(ent_id, store)
+    if members:
+        layers["members"] = [d for s in members for d in frame.paths(shape(s))]
+
+    subject_doc = shape(rec["area"]) if rec["area"] else {}
+    if subject_doc:
+        layers["subject"] = frame.paths(subject_doc)
+        layers["rivers"] = frame.rivers(subject_doc)
+    elif parent and parent["area"]:
+        layers["rivers"] = frame.rivers(shape(parent["area"]))
+
+    pins = []
+    for lon, lat, label in geo.pins_under(ent_id, store, root):
+        p = frame.point(lon, lat)
+        if p:
+            pins.append((p[0], p[1], label))
+
+    if rec["area"]:
+        row = geo.index(root)["shapes"].get(rec["area"], {})
+        km2 = row.get("area_km2")
+        out["basis"] = {
+            "kind": "shape",
+            "id": rec["area"],
+            "km2": f"{int(km2):,}" if km2 else "",
+            "source": row.get("source", ""),
+        }
+    elif rec["geo"]:
+        out["basis"] = {
+            "kind": "point",
+            "lat": f"{rec['geo'][0]:.3f}",
+            "lon": f"{rec['geo'][1]:.3f}",
+        }
+    else:
+        out["basis"] = {"kind": "framed"}
+    out["parent"] = parent
+    out["svg"] = geomap.render(frame, layers, pins)
+    return out
+
+
+def _attestations(lang: str, form: str, root: Path) -> list[str]:
+    """Committed pages carrying this exact form in this language.
+
+    Whole-element equality, not a substring search: `Qeˊñ` inside `Qeˊñu` is the
+    boundary the Tier-1 machinery protects everywhere else, and a card that
+    listed the longer form's pages under the shorter one would be asserting an
+    attestation nobody made.
+    """
+    from lxml import etree
+
+    want = unicodedata.normalize("NFD", form)
+    out = []
+    # `collated`, never `readable`: an attestation is a claim that this form was
+    # read in this language on this page, and a generated draft has read nothing.
+    # It would mostly fail to match anyway — the generator emits bare
+    # `<foreign index="N">` with no `xml:lang` for exactly this reason — but
+    # "the data happens not to match" is not the reason, and would stop being true
+    # the moment the generator learned to guess.
+    for ref in tei_html.collated(root):
+        try:
+            doc = etree.parse(str(tei_html.page_path(ref, root))).getroot()
+        except (OSError, etree.XMLSyntaxError):
+            continue
+        for el in doc.iter():
+            if not isinstance(el.tag, str) or el.get(XML_LANG) != lang:
                 continue
-            text = re.sub("<[^>]+>", "", doc["html"])
-            for m in re.finditer(re.escape(q), text, re.I):
-                a, b = max(0, m.start() - 60), m.end() + 60
-                hits.append((ref, text[a:m.start()], m.group(), text[m.end():b]))
-                if len(hits) > 200:
-                    break
-    rows = "".join(
-        f"<tr><td><a href='/page/{r}'>{r}</a></td><td style='text-align:right'>"
-        f"…{a}</td><td><mark>{m}</mark></td><td>{b}…</td></tr>"
-        for r, a, m, b in hits)
-    erows = "".join(
-        f"<li><a href='/entity/{r['id']}'>{r['canonical']}</a> "
-        f"<code>{r['id']}</code> <span class='pill {r['status']}'>{r['status']}"
-        f"</span></li>" for r in ents)
-    return (_head(f"{q} — search") + _bar(f"{len(hits)} in the text, "
-                                          f"{len(ents)} in the encyclopedia")
-            + "<main class='cols'><div class='primary' style='max-width:70rem'>"
-            + (f"<h3>Encyclopedia</h3><ul>{erows}</ul>" if erows else "")
-            + (f"<h3>The text</h3><table style='width:100%;font-size:.85rem'>"
-               f"{rows}</table>" if rows else "")
-            + ("" if hits or ents else "<p>Nothing found.</p>")
-            + "</div></main>")
-
-
-# ---------------------------------------------------------------- the server
-
-def serve(root: Path = Path("."), port: int = PORT,
-          open_browser: bool = True) -> None:
-    class Handler(webui.EditorHandler):
-        editor = "edition"
-
-        def get(self) -> None:
-            path, _, query = self.path.partition("?")
-            args = dict(p.split("=", 1) for p in query.split("&") if "=" in p)
-            from urllib.parse import unquote_plus
-            args = {k: unquote_plus(v) for k, v in args.items()}
-
-            if path == "/":
-                return self.send_html(index(root))
-            if path == "/entities":
-                return self.send_html(entity_index(root))
-            if path == "/search":
-                return self.send_html(search(args.get("q", ""), root))
-            if path.startswith("/entity/"):
-                ident = unquote_plus(path[len("/entity/"):])
-                try:
-                    split_id(ident)
-                except ValueError as e:
-                    return self.send_html(f"<p>{e}</p>", 400)
-                return self.send_html(
-                    entity_card(ident, root, partial="partial" in args))
-            if path.startswith("/page/"):
-                ref = path[len("/page/"):]
-                png = ref.endswith(".png")
-                ref = ref[:-4] if png else ref
-                # The traversal guard, in the shape `zones_ui` uses: the ref is
-                # matched against its own form rather than sanitized, so nothing
-                # depends on having thought of every escape.
-                if not REF_OK.match(ref):
-                    return self.send_error(404)
-                if png:
-                    return self.send_png(scan_for(ref, root),
-                                         f"no raster for {ref} — scans/ is "
-                                         f"derived and not in git")
-                if not tei_html.page_path(ref, root).exists():
-                    return self.send_html(
-                        _head(ref) + _bar()
-                        + f"<main class='cols'><div class='primary'><p>{ref} is "
-                          f"not collated. The reading view shows committed "
-                          f"<code>tei/</code> only.</p></div></main>", 404)
-                return self.send_html(render_page(ref, root))
-            self.send_error(404)
-
-        def post(self) -> None:
-            if self.path == "/stop":
-                self.send_json({"ok": True})
-                return self.stop_from_page()
-            body = self.body_json()
-            if self.path == "/ratify":
-                return self.send_json(_ratify(body.get("id", ""), root))
-            if self.path == "/entity/new":
-                return self.send_json(_new(body, root))
-            self.send_error(404)
-
-    webui.run(Handler, port, f"http://127.0.0.1:{port}/",
-              [f"edition: http://127.0.0.1:{port}/",
-               f"  {len(tei_html.collated(root))} page(s) collated, "
-               f"{len(load(root))} entities",
-               "  ctrl-c to stop"],
-              open_browser=open_browser)
+            text = unicodedata.normalize(
+                "NFD", " ".join("".join(el.itertext()).split())
+            )
+            if text == want:
+                out.append(ref)
+                break
+    return out
 
 
 def _guarded(root: Path, write) -> dict:
@@ -542,8 +473,10 @@ def _guarded(root: Path, write) -> dict:
     rep = check(root)
     if not rep["ok"]:
         undo()
-        return {"error": "refused — the store would not check out: "
-                         + "; ".join(rep["errors"][:3])}
+        return {
+            "error": "refused — the store would not check out: "
+            + "; ".join(rep["errors"][:3])
+        }
     return {"ok": True}
 
 
@@ -560,8 +493,10 @@ def _ratify(ent_id: str, root: Path) -> dict:
         return {"error": "not a proposed entry"}
 
     def write():
-        p.write_text(before.replace("- status: proposed", "- status: ratified", 1),
-                     encoding="utf-8")
+        p.write_text(
+            before.replace("- status: proposed", "- status: ratified", 1),
+            encoding="utf-8",
+        )
         return lambda: p.write_text(before, encoding="utf-8")
 
     return _guarded(root, write)
@@ -576,11 +511,16 @@ def _new(body: dict, root: Path) -> dict:
     p = path_for(ident, root)
     if p.exists():
         return {"error": f"{ident} already exists"}
-    rows = "\n".join(f"| {t.strip()} | no | |"
-                     for t in (body.get("triggers") or []) if t.strip())
-    text = TEMPLATE.format(ident=ident, canonical=body.get("canonical") or ident,
-                           since=body.get("since") or "",
-                           rows=rows or "| | no | |")
+    rows = "\n".join(
+        f"| {t.strip()} | no | |" for t in (body.get("triggers") or []) if t.strip()
+    )
+    text = TEMPLATE.format(
+        ident=ident,
+        canonical=body.get("canonical") or ident,
+        since=body.get("since") or "",
+        extra="",
+        rows=rows or "| | no | |",
+    )
 
     def write():
         p.parent.mkdir(parents=True, exist_ok=True)

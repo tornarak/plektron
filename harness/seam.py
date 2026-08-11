@@ -195,7 +195,15 @@ def tail(ref: str, root: Path = Path(".")) -> dict | None:
     els = body_elements(etree.parse(str(path)).getroot())
     if not els:
         return None
-    el = els[-1]
+    # **The last element of the running prose, not the last element.** A body-level
+    # `<note>` is a validate error on a finished page and the ordinary state of an
+    # unfinished one — the generator leaves the footnote apparatus at the foot for
+    # the collator to anchor. Reading it as the predecessor's tail would answer the
+    # seam question with a footnote, which is apparatus and not the prose the gap
+    # runs through. Under a dispatched batch the predecessor is routinely
+    # half-collated, so this is the common case rather than the odd one.
+    prose = [e for e in els if etree.QName(e).localname != "note"]
+    el = (prose or els)[-1]
     # Computed on note-stripped text: a footnote is anchored in the running text
     # but is not part of it, so its closing sentence must not decide this.
     stripped = _running_text(el).rstrip("”’\")] ")

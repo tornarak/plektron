@@ -1,0 +1,18 @@
+/* The zone editor's additions to the shared work-list sheet.
+ * Was `LIST_CSS = webui.LIST_CSS + """…"""` — concatenated in Python and
+ * inlined on every navigation. The base sheet is `worklist.css`; this is what
+ * only the zones list wears. */
+/* Zones-only: one bar per zone, in reading order — the page's composition at a
+   glance, which a count cannot give. Hover names the type. */
+.z{display:inline-block;width:7px;height:15px;border-radius:2px;margin-right:2px;
+   vertical-align:-2px;cursor:help}
+#inkrun{margin-left:auto}
+td.ink{font-size:12px;color:var(--dim);white-space:nowrap;cursor:help}
+td.ink[data-ink="ink"]{color:var(--warn);font-weight:600}
+td.ink[data-ink="unknown"]{opacity:.5}
+/* The scope link sits in the title because it changes what the title names — the
+   universe of rows, not which of them are shown. It is not a filter. */
+#scope{font-weight:400;text-decoration:none;color:inherit}
+/* The force box is a control, not a selector; it never lights and never filters. */
+#force{cursor:pointer}
+#force input{cursor:pointer;margin:0}

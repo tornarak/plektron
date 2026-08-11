@@ -18,9 +18,13 @@ Almquist
 Argentoff
 Argentov
 Boas
+# Two variant spellings
 Bogdanovich
+Bogdanovitch
 Bogoras
 Dall
+# Two variant spellings
+Dyachkoff
 Dyachkov
 Gilder
 Gondatti
@@ -30,6 +34,8 @@ Jackson
 Jochelson
 Kjellman
 Kotzebue
+# Two variant spellings
+Krasheninnikoff
 Krasheninnikov
 Krause
 Kroeber
@@ -65,11 +71,16 @@ Aiwan
 Chaun
 Chukchee
 Chukchi
+Chuvantzy
 Cossacks
+Gilyak
 Kamchadal
 Kerek
 Koryak
 Lamut
+Shelag
+Shelags
+Tuski
 # Mentioned in passing
 Manitou
 Namollo
@@ -80,24 +91,55 @@ Yukaghir
 
 ### --- Proper Nouns (Toponyms)
 ## Rivers
+Alaseya
 Anadyr
 Anui
+Gishiga
+Indighirka
+Oloi
+Omolon
+Opuka
+# (sic)
+Wolverene
 ## Islands
 # "Diomede Islands"
 Diomede
 ## Bays
 # "Karagha Bay"
 Karagha
+## Topographic Features
+# "Cape Anannon" (where is this?)
+Anannon
+# "Cape Chukotsky"
+Chukotsky
+# "Cape Erri"
+Erri
+# "Cape Olutorsky" / "Cape Alutorsky"
+Olutorsky
+Alutorsky
+# "Parapolsky Dol"
+Parapolsky
 ## Settlements
+Anadyrsk
 Chikayeva 
+# Where is this?
+Gishiginsk
 # "Mariinsky Post"
 Mariinsky
+Markova
+Petersburg
+# "Sredne-Kolymsk" and "Nishne-Kolymsk" - currently no support for hyphenated nouns
+Sredne
+Nishne
+Kolymsk
 
 ### --- Proper Nouns (Persons)
 Pavlutsky
 
-### --- Proper Nouns (Anthropology)
-# The "Wakan Tanka" of the Lakota, not the African one
+### --- Proper Nouns (Mythology)
+# The hero of the folk-tale "Elendi and His Sons", printed in full in the Russian-language "Chukchee Tales"
+Elendi
+# The "Wakan Tanka" of the Lakota (mentioned in passing), not the African one
 Wakanda
 
 ### --- anthropology
@@ -124,13 +166,37 @@ barbatus
 # data/authorities.json — that store is the book's own bibliography.
 Pallas
 
-### --- Idiosyncratic Terms
+### --- Idiosyncratic Terms or spellings
+affluents
+agaric
 augmentative
+# "Aurora Borealis"
+Borealis
+brindle
+centimetres
+centre
 corralful
 cosmogonical
+defence
+firelocks
 grayling
 lanceolate
+lashings
+# "marline-spike"
+marline
+moulting
+nocks
+peltries
+pubes
+puds
+quirt
+shamanism
+shamanistic
+# "tea-shunners"
+shunners
 
-### --- Repeated Publisher Marks
+### --- Repeated Abbreviations
 # "JESUP NORTH PACIFIC EXPED."
 Exped
+# "Lieut. Nordquist" et al.
+Lieut

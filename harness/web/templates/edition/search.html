@@ -1,0 +1,33 @@
+{% extends "edition/base.html" %}
+{# The query reached `<title>` unescaped before this. It is the one value on the
+   page that comes straight off the URL. #}
+{% block title %}{{ q }} — search{% endblock %}
+
+{% block main %}
+{# Two tables rather than one ranked list: a hit in the text and a hit in the
+   encyclopedia answer different questions, and merging them would need a
+   relevance score this has no basis for inventing. #}
+<div id='primary search-width'>
+{% if ents %}
+<h3>Encyclopedia</h3>
+<ul>{% for r in ents %}
+<li><a href='{{ base }}/entity/{{ r.id }}'>{{ r.canonical }}</a>
+<code>{{ r.id }}</code>
+<span class='pill {{ r.status }}'>{{ r.status }}</span></li>
+{% endfor %}</ul>
+{% endif %}
+{% if hits %}
+<h3>The text</h3>
+<table class='hits'>
+{% for h in hits %}
+<tr><td><a href='{{ base }}/page/{{ h.ref }}'>{{ h.ref }}</a>{%
+ if h.rank == 'draft' %} <span class='draft-tag'>draft</span>{% endif %}</td>
+    <td class='before'>…{{ h.before }}</td>
+    <td><mark>{{ h.match }}</mark></td>
+    <td>{{ h.after }}…</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+{% if not hits and not ents %}<p>Nothing found.</p>{% endif %}
+</div>
+{% endblock %}

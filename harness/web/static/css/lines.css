@@ -1,0 +1,19 @@
+#ov rect{vector-effect:non-scaling-stroke}
+#ov .ly-band,#ov .ly-band_no_zone,#ov .ly-correction,
+#ov .ly-correction_selected{cursor:pointer}
+#tally{display:flex;gap:14px;color:var(--dim)}
+#tally b{color:var(--fg)}
+#dirty{color:var(--warn);font-weight:600}
+#rulings{font-size:12px}
+#rulings li{list-style:none;margin:0 0 5px;padding-left:10px;
+            border-left:2px solid var(--warn)}
+#rulings .y{color:var(--dim);font-variant-numeric:tabular-nums}
+#rulings button{padding:0 6px;font-size:11px;margin-left:4px}
+#rulings .none{color:var(--dim);font-style:italic}
+/* The key rows are controls: clicking one does the thing, so an action is
+   reachable without knowing (or having kept) its shortcut. */
+.key[data-act]{cursor:pointer;border-radius:4px;padding:1px 4px;margin:0 -4px}
+.key[data-act]:hover{background:var(--line)}
+.key.off{opacity:.38;cursor:default}
+.key.off:hover{background:none}
+kbd.none{opacity:.45}

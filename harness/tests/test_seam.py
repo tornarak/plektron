@@ -232,6 +232,35 @@ def test_tail_reports_the_last_element_and_its_end(tmp_path):
     assert t["ends_sentence"] is False
 
 
+def test_a_predecessor_still_being_collated_does_not_crash_its_neighbour(tmp_path):
+    """**Found by a live collator in a dispatched batch.** `1-032` could not run
+    `tei context` at all: `1-031` was mid-collation, its body still ended with the
+    generator's unanchored `<note place="bottom">`, and stripping notes out of an
+    element that *is* a note dereferenced a null parent.
+
+    A body-level note is a validate error on a finished page and the ordinary
+    state of an unfinished one, so under a batch this is the common case rather
+    than the odd one — which is exactly the condition dispatching the pass was
+    supposed to make survivable."""
+    page(tmp_path, "1-010",
+         '<pb n="1"/><p>the prose runs on</p>'
+         '<note place="bottom">Resin, p. 156.</note>')
+    t = seam.tail("1-011", tmp_path)
+    assert t is not None
+
+
+def test_the_tail_is_the_prose_and_not_the_footnote_apparatus(tmp_path):
+    """A footnote is anchored in the running text and is not part of it, so it
+    cannot be what the next page's opening continues. Answering the seam question
+    with a note would give a confident wrong answer — the note usually ends on a
+    full stop while the prose above it does not."""
+    page(tmp_path, "1-010",
+         '<pb n="1"/><p>the prose runs on</p>'
+         '<note place="bottom">Resin, p. 156.</note>')
+    t = seam.tail("1-011", tmp_path)
+    assert t["element"] == "p" and t["ends_sentence"] is False
+
+
 def test_the_tail_is_markup_and_keeps_the_numbering(tmp_path):
     """The live case for why this is a subtree and not a text excerpt: whether
     the list resuming at 15 on the next page is the same list is settled by

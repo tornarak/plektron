@@ -144,6 +144,27 @@ def test_a_dangling_within_is_an_error(tmp_path):
     assert any("resolves to nothing" in e for e in E.check(tmp_path)["errors"])
 
 
+def test_a_dangling_wikilink_is_an_error(tmp_path):
+    """`[[class:slug]]` renders as a link, so one that resolves to nothing is a
+    link that goes nowhere — and a reader should never be the one to find it."""
+    entry(tmp_path, "place:markova", gloss="near [[water:nowhere]] somewhere")
+    assert any("[[water:nowhere]] resolves to nothing" in e
+               for e in E.check(tmp_path)["errors"])
+
+
+def test_a_wikilink_in_a_trigger_note_is_checked_too(tmp_path):
+    """The notes are where an author explains why a form is suggest-only, and the
+    explanation is almost always "it is also that other entity"."""
+    entry(tmp_path, "place:markova",
+          triggers=[("Markova", False)],
+          extra="", gloss="x")
+    p = tmp_path / "entities" / "place" / "markova.md"
+    p.write_text(p.read_text(encoding="utf-8").replace(
+        "| Markova | no | |", "| Markova | no | see [[person:ghost]] |"),
+        encoding="utf-8")
+    assert any("[[person:ghost]]" in e for e in E.check(tmp_path)["errors"])
+
+
 def test_a_within_cycle_is_an_error(tmp_path):
     """A cycle would hang the geography sprint's tree walk rather than fail it,
     which is the worse of the two outcomes."""

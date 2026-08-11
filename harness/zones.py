@@ -2544,7 +2544,22 @@ def split_at_paragraphs(zones: list[dict], ref: str, root: Path = Path("."),
         edges = [z["y0"], *cuts, z["y1"]]
         segs = [[a, b, z["label"]] for a, b in pairwise(edges) if b > a]
         for a, b, _lab in _consolidate(segs, min_h, direction):
-            out.append({**z, "y0": a, "y1": b})
+            # **`paragraph_open` is the piece's own witness.** Every piece of a
+            # split zone inherits that zone's label (`_consolidate`, same-label
+            # rule), so the label records what the *zone* was and cannot say which
+            # pieces begin a paragraph. This can, and `tei generate` reads it when
+            # deciding where a `<p>` starts.
+            #
+            # As `paragraph_split.labels` stands — `MainZone-P` alone — it tells
+            # that caller nothing the label does not, since the only bands cut are
+            # ones whose label already opens a paragraph. It is set regardless, so
+            # that adding a label to that list cannot quietly make the generator
+            # run two measured paragraphs together.
+            #
+            # `a > z["y0"]` rather than an enumerate index because `_consolidate`
+            # may fold a sliver away: what makes a piece an opening is that it
+            # begins at a *measured cut*, which is exactly this test.
+            out.append({**z, "y0": a, "y1": b, "paragraph_open": a > z["y0"]})
     return out
 
 

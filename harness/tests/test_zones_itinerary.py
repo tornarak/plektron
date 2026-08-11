@@ -26,6 +26,15 @@ from harness import zones as zn
 from harness import zones_config as zc
 from harness import zones_ui as ui
 
+
+def render_list_html(*a, **kw):
+    """The work-list, through the template the server uses. `render_list_html`
+    returned a string; it is `list_context` plus a template now."""
+    from harness.web import templates
+
+    return templates.get_template("zones/list.html").render(
+        **ui.list_context(*a, **kw), request=None)
+
 REPO = Path(__file__).resolve().parent.parent.parent
 
 
@@ -171,7 +180,7 @@ def test_the_list_shows_every_page_on_the_itinerary(tmp_path):
     for r in ("1-005", "1-019", "1-020"):
         make_scan(tmp_path, r)
     zn.save_zones("1-019", [], tmp_path, split="exempt")
-    h = ui.render_list_html(tmp_path, cfg(), ["1-005", "1-019", "1-020"], "work")
+    h = render_list_html(tmp_path, cfg(), ["1-005", "1-019", "1-020"], "work")
     for r in ("1-005", "1-019", "1-020"):
         assert f"/?ref={r}" in h
     assert "3 pages" in h and "1 keyed" in h and "2 to do" in h
@@ -181,15 +190,19 @@ def test_the_list_states_each_page(tmp_path):
     for r in ("1-005", "1-019"):
         make_scan(tmp_path, r)
     zn.save_zones("1-019", [], tmp_path, split="exempt")
-    h = ui.render_list_html(tmp_path, cfg(), ["1-005", "1-019"], "work")
-    assert h.count("s-todo") == 2  # the style rule, plus 1-005's row
-    assert h.count("s-ok") == 2  # the style rule, plus 1-019's row
+    h = render_list_html(tmp_path, cfg(), ["1-005", "1-019"], "work")
+    # One now, not two: the `.s-todo` style rule moved to `worklist.css`, so the
+    # only occurrence left in the page is 1-005's own row.
+    assert h.count("s-todo") == 1
+    # One, not two: `.s-ok`'s style rule is in `worklist.css` now, so 1-019's
+    # row is its only occurrence in the page.
+    assert h.count("s-ok") == 1
 
 
 def test_the_list_marks_the_page_you_came_from(tmp_path):
     for r in ("1-005", "1-019"):
         make_scan(tmp_path, r)
-    h = ui.render_list_html(
+    h = render_list_html(
         tmp_path, cfg(), ["1-005", "1-019"], "work", current="1-019"
     )
     assert "class='here'" in h
@@ -198,7 +211,7 @@ def test_the_list_marks_the_page_you_came_from(tmp_path):
 def test_the_list_falls_back_to_the_store_with_no_itinerary(tmp_path):
     make_scan(tmp_path, "1-019")
     zn.save_zones("1-019", [], tmp_path, split="exempt")
-    h = ui.render_list_html(tmp_path, cfg())
+    h = render_list_html(tmp_path, cfg())
     assert "1 pages" in h and "/?ref=1-019" in h
 
 
@@ -226,7 +239,7 @@ def test_the_list_shows_the_recorded_ink_verdict(tmp_path):
         },
         tmp_path,
     )
-    h = ui.render_list_html(tmp_path, cfg(), ["1-019"], "work")
+    h = render_list_html(tmp_path, cfg(), ["1-019"], "work")
     assert "<th>ink</th>" in h
     assert "data-ref='1-019' data-ink='ink'" in h and "1 band" in h
 
@@ -236,7 +249,7 @@ def test_an_unchecked_page_reads_as_unknown_not_clean(tmp_path):
     has to say which it is or it is worse than absent."""
     make_scan(tmp_path, "1-019")
     keyed(tmp_path)
-    h = ui.render_list_html(tmp_path, cfg(), ["1-019"], "work")
+    h = render_list_html(tmp_path, cfg(), ["1-019"], "work")
     assert "data-ref='1-019' data-ink='unknown'" in h
     assert "check ink · 1 page" in h  # the explicit, and only, way to run it
 
@@ -245,14 +258,14 @@ def test_a_page_still_to_do_is_never_queued_for_a_check(tmp_path):
     """It has no zones, so there is nothing for ink to be left over from — and a
     fresh itinerary is nearly all such pages."""
     make_scan(tmp_path, "1-005")
-    h = ui.render_list_html(tmp_path, cfg(), ["1-005"], "work")
+    h = render_list_html(tmp_path, cfg(), ["1-005"], "work")
     assert "data-ref='1-005' data-ink='skip'" in h
     assert "check ink" not in h
 
 
 def test_the_ink_filter_is_offered(tmp_path):
     make_scan(tmp_path, "1-005")
-    h = ui.render_list_html(tmp_path, cfg(), ["1-005"], "work")
+    h = render_list_html(tmp_path, cfg(), ["1-005"], "work")
     assert "data-ink='ink'>uncovered ink" in h
 
 

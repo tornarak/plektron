@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}lines · {{ label or 'walk' }}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/editor.css">
+<link rel="stylesheet" href="/static/css/worklist.css">
+<link rel="stylesheet" href="/static/css/lines.css">
+{% endblock %}
+
+{% block body %}
+{# A view over what is being walked, not a saved work-list. The obvious itinerary
+   for this editor is "the pages that still carry a band", and writing that to a
+   file would freeze it: every page worked makes the file wrong, and nothing would
+   ever check it. So the list measures when asked and says so — `?` until a row has
+   been fetched, never blank, because blank is indistinguishable from none. #}
+<div id=head>
+  <h1>{{ label or 'the walk' }} — {{ walk | length }} pages
+    <a class=chip href="{{ base }}/?ref={{ back }}">back to the page</a></h1>
+  <p><span id=shownum>unmeasured</span> — a live count is a raster read a page,
+  so it is a button rather than something this page spends a minute on before
+  showing you anything. <kbd>Esc</kbd> or a ref goes back.<span id=shown></span></p>
+  <div id=filters>
+    <span class=chip id=go>measure every row</span>
+    <span class=chip data-filter=live><i class=s-warn></i> still live</span>
+    <span class=chip data-filter=done><i class=s-ok></i> settled</span>
+  </div>
+</div>
+<div id=wrapl>
+<table><tr><th>page</th><th class=num>live</th><th class=num>ruled</th>
+<th class=num>corrections</th></tr>
+{% for r in walk %}
+<tr{% if r == cur %} class=here{% endif %} data-ref="{{ r }}" data-state="todo">
+<td class=ref><span class="dot s-todo"></span>
+<a href="{{ base }}/?ref={{ r }}">{{ r }}</a></td>
+<td class=num data-live>?</td>
+<td class="num dim" data-ruled>?</td>
+<td class=num data-corr>?</td></tr>
+{% endfor %}
+</table></div>
+{% endblock %}
+
+{% block scripts %}
+<script>const LIST = {{ {"base": base, "back": back} | tojson }};</script>
+<script src="/static/js/lines-list.js"></script>
+{% endblock %}

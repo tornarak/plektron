@@ -2042,12 +2042,25 @@ def write_line_crops(ref: str, out_dir: Path, alto_dir: str = DEFAULT_ALTO_DIR,
     `index` stays in the name straight after it, because it is the identity every
     other artefact is keyed by and a filename that cannot be joined back to a
     decision is a filename that has to be re-derived.
+
+    **A crop newer than both its inputs is left alone.** It used to be re-saved
+    unconditionally, which was invisible while the review page inlined the images
+    — they were re-sent on every load regardless. Served as files, it was the
+    thing stopping them from ever caching: every render rewrote every crop, so
+    every crop got a new mtime, a new `ETag`, and a fresh download. The name
+    encodes the geometry (`y_rank`, `index`, `line_id`), so a crop whose name
+    still matches and whose file postdates the ALTO and the raster is the crop
+    those two produce.
     """
     ref = norm_ref(ref)
     out_dir.mkdir(parents=True, exist_ok=True)
+    src = max((p.stat().st_mtime for p in
+               (alto_for_lines(ref, alto_dir, root), raster_path(ref, root, scans))
+               if p.exists()), default=0.0)
     out = []
     for rec, crop in line_crops(ref, alto_dir, root, scans):
         path = out_dir / f"{rec['y_rank']:03d}-{rec['index']:03d}-{rec['line_id']}.png"
-        crop.save(path)
+        if not (path.exists() and path.stat().st_mtime >= src):
+            crop.save(path)
         out.append({**rec, "crop": str(path)})
     return out

@@ -25,6 +25,32 @@ from conftest import write_scan
 
 from harness import zones as zn
 from harness import zones_config as zc
+from harness import zones_ui as ui
+
+
+def _render(name, ctx):
+    from harness.web import templates
+
+    return templates.get_template(name).render(**ctx, request=None)
+
+
+def render_html(*a, **kw):
+    """The editor page, through the template the server uses.
+
+    `render_html` returned a string; it is `page_context` plus a template now, so
+    a test that wants the page takes the same two steps the server does.
+    """
+    return _render("zones/page.html", ui.page_context(*a, **kw))
+
+
+def render_list_html(*a, **kw):
+    return _render("zones/list.html", ui.list_context(*a, **kw))
+
+
+#: The behaviour, which is a cached static file rather than a blob interpolated
+#: into every page — 68 KB of it, on the editor navigated with the arrow keys.
+JS = (Path(__file__).parent.parent / "web" / "static" / "js"
+      / "zones.js").read_text(encoding="utf-8")
 
 REPO = Path(__file__).resolve().parent.parent.parent
 
@@ -308,8 +334,7 @@ def test_a_page_with_no_ground_truth_opens_on_the_prediction(tmp_path):
     model was never shown that the measure is fixed, so its x is not a claim about
     the column — where a *stored* zone matching no column is a finding worth
     keeping, a predicted one has nothing to lose by being snapped."""
-    from harness import zones_ui as ui
-
+    
     write_page(tmp_path, "1-102", zn.MZDIR, x0=812, y0=700, x1=2301, y1=980)
     make_scan(tmp_path, "1-102")
     st = ui.page_state("1-102", tmp_path, zc.load_config(REPO))
@@ -325,8 +350,7 @@ def test_a_page_with_no_ground_truth_opens_on_the_prediction(tmp_path):
 def test_ground_truth_wins_in_the_editor_too(tmp_path):
     """The precedence is the store rule, so it cannot hold in the view and not
     here — this is the surface that reads from both."""
-    from harness import zones_ui as ui
-
+    
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P")
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone")
     make_scan(tmp_path, "1-048")
@@ -339,8 +363,7 @@ def test_the_selector_shows_each_store_on_a_page_that_has_both(tmp_path):
     the view resolves to the human file but either can still be looked at. Without
     this, the machine's reading of the 117 pages that also have gt is unreachable
     from the one surface built for looking at zones."""
-    from harness import zones_ui as ui
-
+    
     cfg = zc.load_config(REPO)
     write_page(tmp_path, "1-048", zn.ZONEDIR, label="MainZone-P", y0=600, y1=900)
     write_page(tmp_path, "1-048", zn.MZDIR, label="RunningTitleZone", y0=610, y1=880)
@@ -367,8 +390,7 @@ def test_an_empty_store_is_an_answer_not_an_error(tmp_path):
     keyed, is a fair question. Both report nothing shown rather than falling back
     to the other store — a selector that silently redirected would make the two
     indistinguishable, which is the whole thing these stores are kept apart for."""
-    from harness import zones_ui as ui
-
+    
     cfg = zc.load_config(REPO)
     write_page(tmp_path, "1-102", zn.MZDIR)
     make_scan(tmp_path, "1-102")
@@ -379,8 +401,7 @@ def test_an_empty_store_is_an_answer_not_an_error(tmp_path):
 
 
 def test_an_unknown_store_is_refused(tmp_path):
-    from harness import zones_ui as ui
-
+    
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     make_scan(tmp_path, "1-048")
     with pytest.raises(ValueError, match="store must be one of"):
@@ -390,8 +411,7 @@ def test_an_unknown_store_is_refused(tmp_path):
 def test_the_selector_is_orthogonal_to_the_itinerary(tmp_path):
     """Two independent axes — the itinerary picks the pages, the store picks whose
     reading of them. Neighbours must not change when the store does."""
-    from harness import zones_ui as ui
-
+    
     cfg = zc.load_config(REPO)
     for r in ("1-048", "1-102", "1-103"):
         write_page(tmp_path, r, zn.MZDIR)
@@ -415,8 +435,7 @@ def test_an_undeclared_label_is_dropped_and_named(tmp_path):
     """Never mapped to something plausible: `validate_page` calls an undeclared
     label an error, so quietly renaming one would hide a model trained against a
     different class map behind a page that looks ordinary."""
-    from harness import zones_ui as ui
-
+    
     write_page(tmp_path, "1-102", zn.MZDIR, label="NoSuchZone")
     make_scan(tmp_path, "1-102")
     st = ui.page_state("1-102", tmp_path, zc.load_config(REPO))
@@ -427,33 +446,31 @@ def test_the_banner_marks_a_proposal_and_only_a_proposal(tmp_path):
     """An unlabelled proposal on screen is indistinguishable from work someone had
     already done — the one confusion the two stores exist to prevent, arriving
     through the single surface that reads from both."""
-    from harness import zones_ui as ui
-
+    
     cfg = zc.load_config(REPO)
     write_page(tmp_path, "1-102", zn.MZDIR)
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     make_scan(tmp_path, "1-102")
     make_scan(tmp_path, "1-048")
-    assert "id='proposal'" in ui.render_html("1-102", tmp_path, cfg)
-    assert "id='proposal'" not in ui.render_html("1-048", tmp_path, cfg)
+    assert "id='proposal'" in render_html("1-102", tmp_path, cfg)
+    assert "id='proposal'" not in render_html("1-048", tmp_path, cfg)
 
 
 def test_the_page_list_separates_predicted_from_untouched(tmp_path):
     """Two kinds of "to do", and the difference is the whole review queue."""
     import re
 
-    from harness import zones_ui as ui
-
+    
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-102", zn.MZDIR)
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
-    html = ui.render_list_html(
+    html = render_list_html(
         tmp_path, zc.load_config(REPO), itinerary=["1-048", "1-102", "1-103"]
     )
     states = {
         ref: re.search(
-            rf"<a href='/\?ref={ref}'>.*?<i class='dot s-(\w+)'", html, re.S
+            rf'href="[^"]*\?ref={ref}".*?class="dot s-(\w+)"', html, re.S
         ).group(1)
         for ref in ("1-048", "1-102", "1-103")
     }
@@ -466,20 +483,19 @@ def test_the_page_list_counts_both_stores_per_page(tmp_path):
     "is there anything to compare against" is what sends you to a page."""
     import re
 
-    from harness import zones_ui as ui
-
+    
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     write_page(tmp_path, "1-048", zn.MZDIR)
     write_page(tmp_path, "1-102", zn.MZDIR)
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
-    html = ui.render_list_html(
+    html = render_list_html(
         tmp_path, zc.load_config(REPO), itinerary=["1-048", "1-102", "1-103"]
     )
     cells = {
         ref: re.search(
-            rf"<a href='/\?ref={ref}'>.*?<td class='num'>(\d*)</td>"
-            rf"<td class='num dim mz'>(\d*)</td>",
+            rf'href="[^"]*\?ref={ref}".*?'
+            rf"<td class='num'>(\d*)</td>\s*<td class='num dim mz'>(\d*)</td>",
             html,
             re.S,
         ).groups()
@@ -494,14 +510,13 @@ def test_the_page_list_counts_both_stores_per_page(tmp_path):
 def test_the_list_can_widen_to_every_scan(tmp_path):
     """The pages worth predicting are precisely the ones neither store has heard
     of, so the default view cannot show one."""
-    from harness import zones_ui as ui
-
+    
     write_page(tmp_path, "1-048", zn.ZONEDIR)
     for r in ("1-048", "1-102", "1-103"):
         make_scan(tmp_path, r)
     cfg = zc.load_config(REPO)
-    assert ui.render_list_html(tmp_path, cfg).count("<tr ") == 1
-    assert ui.render_list_html(tmp_path, cfg, scope="all").count("<tr ") == 3
+    assert render_list_html(tmp_path, cfg).count("<tr ") == 1
+    assert render_list_html(tmp_path, cfg, scope="all").count("<tr ") == 3
 
 
 # ------------------------------------------------------- what a sweep leaves alone
@@ -874,6 +889,37 @@ def test_splitting_cuts_at_the_opening_line(tmp_path):
     out = zn.split_at_paragraphs(zones, "1-048", tmp_path, CFG)
     assert [(z["y0"], z["y1"]) for z in out] == [(580, 800), (800, 900)]
     assert all(z["label"] == "MainZone-P" and z["x0"] == 700 for z in out)
+
+
+def test_a_split_piece_carries_that_it_opens_a_paragraph(tmp_path):
+    """**The piece's own witness, because the label is not one.** Every piece of a
+    split zone inherits the parent's label, so the label says what the *zone* was
+    and cannot say which pieces begin a paragraph. `paragraph_open` does, and it is
+    true of exactly the pieces that begin at a measured cut.
+
+    **It is belt-and-braces today, and that is worth stating plainly rather than
+    dressed up.** `paragraph_split.labels` lists `MainZone-P` alone, so the only
+    zones ever cut are ones whose label already opens a paragraph, and
+    `tei generate` would reach the same answer from the label. What this buys is
+    that it would keep reaching it if that list grew — a `MainZone-Continued`
+    holding two paragraphs would otherwise be run together by a merge reading
+    labels alone. The list is config a human edits, and the generator's
+    correctness should not be a property of a value in a JSON file."""
+    ruled_page(tmp_path, "1-048", [(600, 120, 1600), (700, 15, 1600), (800, 122, 1600)])
+    zones = [{"label": "MainZone-P", "x0": 700, "x1": 2478, "y0": 580, "y1": 900}]
+    out = zn.split_at_paragraphs(zones, "1-048", tmp_path, CFG)
+    assert [z["paragraph_open"] for z in out] == [False, True]
+
+
+def test_an_uncut_zone_makes_no_claim_either_way(tmp_path):
+    """Returned as it came, so the key is absent rather than False. There was no
+    measurement here, and a caller reading `.get("paragraph_open")` gets the same
+    answer — the difference matters only to anyone tempted to read the key as "the
+    raster says this is a continuation", which it never says."""
+    ruled_page(tmp_path, "1-048", [(600, 120, 1600), (700, 15, 1600)])
+    zones = [{"label": "MainZone-P", "x0": 700, "x1": 2478, "y0": 580, "y1": 800}]
+    assert "paragraph_open" not in zn.split_at_paragraphs(
+        zones, "1-048", tmp_path, CFG)[0]
 
 
 def test_a_sliver_folds_into_a_neighbour_of_the_same_label(tmp_path):

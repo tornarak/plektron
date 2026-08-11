@@ -1,0 +1,17 @@
+{# A card on a page of its own, when something linked straight to it rather than
+   opening it into the stack. The body is the same partial the stack injects, so
+   there is one renderer and not two that could drift. #}
+{% extends "edition/base.html" %}
+{% block title %}{{ card_title }} — The Chukchee{% endblock %}
+
+{% block main %}
+<div id='primary'>
+  <div class='card'><div class='body'>
+  {% include partial %}
+  </div></div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="/static/js/ratify.js"></script>
+{% endblock %}

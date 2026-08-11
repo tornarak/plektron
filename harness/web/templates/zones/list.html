@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}zones · {{ itinerary_name or 'store' }}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/editor.css">
+<link rel="stylesheet" href="/static/css/worklist.css">
+<link rel="stylesheet" href="/static/css/zones.css">
+{% endblock %}
+
+{% block body %}
+<div id='head'>
+{# Named for what it enumerates. Keyed off the mz *column* rather than off the
+   `proposed` state, which only ever fires where there is no ground truth — with
+   a prediction over the whole corpus that count is zero and the heading would
+   have read `gt/zones` over a table half of which is the machine's. #}
+<h1>{{ title }} — {{ rows | length }} pages
+{%- if scope_link %}
+{# A link, not a filter chip: it changes what the server enumerates, and a page
+   in neither store has no row to hide or show. Absent under an itinerary, which
+   overrides the universe outright. #}
+<a class='chip' id='scope' href="{{ scope_link.href }}"
+   title="{{ scope_link.title }}">{{ scope_link.label }}</a>
+{%- endif %}</h1>
+<p>{{ n_keyed }} keyed · {{ rows | length - n_keyed }} to do
+{%- if n_prop %} ({{ n_prop }} predicted){% endif %}
+{%- if n_mz_rows %} · {{ n_mz_rows }} with mz{% endif %} ·
+{{ n_err }} error{{ '' if n_err == 1 else 's' }} ·
+{{ n_warn }} warning{{ '' if n_warn == 1 else 's' }} ·
+<span id='inkprog'>{{ n_ink }} with uncovered ink, {{ n_unknown }} unchecked</span>
+— press <kbd>Esc</kbd> or click a ref to go back<span id='shown'></span></p>
+{# Filter chips. Types carry their own colour so the strip in each row and the
+   chip that selects it are recognisably the same thing. #}
+<div id='filters'>
+<span class='chip' id='segrun' title='run the segmenter on the checked pages —
+shift-click a checkbox to take a range. Writes mz/zones/; gt is untouched'>segment
+selected</span>
+{# Off by default, and the default is the safe one: a page that already has a
+   prediction is left alone. Over a whole-book run the pages worth the GPU time
+   are the ones with nothing, and re-predicting the rest would overwrite the very
+   files someone may be comparing against — including, after a retrain, replacing
+   output whose ProcessingStep records a *different* model sha. #}
+<label class='chip' id='force' title='by default a page that already has mz is
+skipped; tick this to re-run the segmenter over it'>
+<input type='checkbox' id='forcebox'> overwrite existing mz</label>
+<span class='chip' data-state='todo'>still to do</span>
+<span class='chip' data-state='proposed'>machine proposal</span>
+<span class='chip' data-state='err'>has errors</span>
+<span class='chip' data-ink='ink'>uncovered ink</span>
+{% if n_unknown %}
+{# Explicit, because it is ~0.20 s a page of raster work and the only slow thing
+   this list can do. Everything else here is already paid for. #}
+<span class='chip' id='inkrun'>check ink · {{ n_unknown }} page{{ '' if n_unknown == 1 else 's' }}</span>
+{% endif %}
+{% for t in types %}
+<span class='chip' data-label="{{ t.label }}">
+<i style="background:{{ t.color }}"></i>{{ t.name }}</span>
+{% endfor %}
+</div></div>
+
+<div id='wrapl'><table><thead><tr>
+<th class='pick'><input type='checkbox' id='pickall'></th>
+<th>page</th><th>status</th><th>split</th>
+<th class='num' title='zones in gt/zones/'>gt</th>
+<th class='num' title='zones in mz/zones/'>mz</th>
+<th>composition</th><th>ink</th><th>findings</th>
+</tr></thead><tbody>
+{% for r in rows %}
+<tr {% if r.here %}class='here' {% endif %}data-state="{{ r.state }}" data-ink="{{ r.ink_state }}" data-mz="{{ 'y' if r.has_mz else 'n' }}" data-labels="{{ r.label_set }}">
+<td class='pick'><input type='checkbox' data-ref="{{ r.ref }}"></td>
+<td class='ref'><a href="{{ base }}/?ref={{ r.ref }}">{{ r.ref }}</a></td>
+<td><i class="dot s-{{ r.state }}"></i>{{ r.state }}</td>
+<td>{{ r.split }}</td>
+{# A keyed page holding nothing prints `0`, not blank: that is a plate a human
+   ruled on, and blank is what a page nobody has reached looks like. #}
+<td class='num'>{{ r.gt_cell }}</td>
+<td class='num dim mz'>{{ r.mz_cell }}</td>
+{# One bar per zone, in reading order. A count says how many; this says what kind
+   and in what order, which is what a glance down the list is for. #}
+<td>{% for z in r.strip %}<i class='z' style="background:{{ z.color }}"
+  title="{{ z.name }}"></i>{% endfor %}</td>
+<td class='ink' data-ref='{{ r.ref }}' data-ink='{{ r.ink_state }}' title="{{ r.ink_note }}">{{ r.ink_cell }}</td>
+<td class='detail'>{{ r.detail | safe }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endblock %}
+
+{% block scripts %}
+<script>const LIST = {{ {"base": base, "back": back} | tojson }};</script>
+<script src="/static/js/zones-list.js"></script>
+{% endblock %}

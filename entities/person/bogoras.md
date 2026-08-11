@@ -2,6 +2,7 @@
 
 - status: ratified
 - since: 1-067
+- link: wikipedia:Vladimir_Bogoraz
 - link: wikidata:Q1815414
 
 ## triggers
@@ -12,7 +13,8 @@
 
 ## gloss
 
-Waldemar Bogoras (Владимир Богораз, 1865–1936), the author. Exiled to the
-Kolyma in 1890, he worked among the Chukchee from 1890 to 1898 and again in
-1900–01 as part of the Jesup expedition. Where the body cites “Bogoras” it is
-citing his earlier publications, listed in Authorities Quoted.
+Waldemar Bogoras (Владимир Богораз, 1865–1936), the author. Exiled to the Kolyma
+in 1890, he worked among the [[people:chukchee]] from 1890 to 1898 under the
+[[event:sibiryakoff-expedition]] and again in 1900–01 as part of the
+[[event:jesup-expedition]]. Where the body cites “Bogoras” it is citing his
+earlier publications, listed in Authorities Quoted.

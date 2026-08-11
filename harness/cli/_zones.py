@@ -316,8 +316,30 @@ def run_edit(a) -> int:
               "--itinerary to take one from, or --all for the whole book",
               file=sys.stderr)
         return 2
-    from ..zones_ui import serve as serve_zones
-    serve_zones(start, a.root, a.port, itin, a.itinerary or "")
+    from ..web import Sessions
+    from ..web import serve as web
+
+    session = {"start": start, "itinerary": itin,
+               "itinerary_name": a.itinerary or ""}
+    joined = web.handoff("zones", session, open_at=f"/?ref={start}", port=a.port)
+    if joined:
+        import webbrowser
+
+        print(f"zones {start} -> {joined}   (joined the running server)")
+        webbrowser.open(joined)
+        return 0
+
+    banner = [f"zones {start} -> "
+              f"{web.url_for('zones', f'/?ref={start}', port=a.port)}"
+              "   (Done button on the page, or ctrl-c)"]
+    if itin:
+        done = sum(1 for r in itin if zmod.has_zones(r, a.root))
+        banner.append(
+            f"itinerary {a.itinerary or ''}: {len(itin)} pages, {done} keyed")
+    banner.append(f"store -> {zmod.zone_dir(a.root)}")
+    web.serve("zones", a.root, Sessions(root=a.root, by_editor={"zones": session}),
+              banner=banner, open_at=f"/?ref={start}",
+              ports={"zones": a.port} if a.port else None)
     return 0
 
 

@@ -183,12 +183,15 @@ view exists to give one name to a page's current best reading, and here naming
 them apart is the entire point of `tei diff`.
 
 ### tei generate [REF ...]
-**Does** builds a first-draft TEI page into `mz/tei/`, by rule. Paragraph boundaries from the keyed `MainZone-P`/`MainZone-Continued` labels, split further inside a band by `zones.paragraph_starts`; `<pb n>` from the running title's folio; apparatus zones and caption lines dropped; `MarginTextZone-Notes` collected into one `<note place="bottom">`; `MainZone-Quote` → `<quote>`; every ratified `tier1_terms` hit lifted into an empty `<foreign index="N"/>`.
+**Does** builds a first-draft TEI page into `mz/tei/`, by rule. Paragraph boundaries from the keyed `MainZone-P`/`MainZone-Continued` labels, split further inside a band by `zones.paragraph_starts`; `<pb n>` from the running title's folio; apparatus zones and caption lines dropped; `MarginTextZone-Notes` split at its printed markers and each note anchored at the matching marker in the prose; figures emitted as `<figure n><figDesc>` where their boxes sit; `MainZone-Quote` → `<quote>`; every ratified `tier1_terms` hit wrapped in place as `<foreign index="N">…</foreign>`, the adjudicated glyphs present and the language absent.
 **Reads** `gt/ocr/`, `gt/zones/`, `scans/w-figs-blotted/` (or `scans/`), `gt/fig/`, `data/readings.md`.
 **Writes** `mz/tei/chukchi-PP-NNN.xml` — derived, gitignored.
 **Exit** always 0. A page it cannot build reports `written: false` with the verb that fixes it; that is a worklist line, not a failure of the run.
 **Note** **no `--commit`.** The conventions reserve it for the authored stores and this writes `mz/`, exactly as `zones predict` and `ocr predict` do. `--force` is the guard instead, and it guards something specific: a baseline a collator has already copied is one half of `tei diff`, so replacing it mid-review makes that comparison a lie.
-**Note** **it authors nothing the stores already hold, and guesses nothing they do not.** Every judgement it cannot make leaves a comment naming itself — `unresolved zone (MainZone-Other)` for the catch-all that holds headings, tables, verse and captions alike; the notes block unanchored, because which body marker a note belongs to is a reading; figures listed but never placed. Clearing those comments is what review *is*.
+**Note** **it authors nothing the stores already hold, and guesses nothing they do not.** Every judgement it cannot make leaves a comment naming itself — `unresolved zone (MainZone-Other)` for the catch-all that holds headings, tables, verse and captions alike; a note whose marker reads nowhere in the prose or reads in two places; a figure's place in the prose. Clearing those comments is what review *is*.
+**Note** **a `Continued` band joins the paragraph above it.** Both labels used to map to `p` with a block per band, so a paragraph running across a band boundary came out broken mid-sentence — 15 of them over the 274 generated pages. The other 213 `Continued` bands are page-initial and still open a `<p>`, there being nothing above them on their own page to join. A figure whose box falls inside a paragraph is emitted *after* it for the same reason the merge exists.
+**Note** **the footnote rules are the printer's marks, so the generator applies them.** A note begins where its superscript is set and anchors where the same character stands in the body: character identity, not inference. `@n` is the digit (`¹` → `n="1"`), the glyph and any thin space before it are consumed since the element stands in for the marker, and 241 of the corpus's 250 notes place this way. The 9 that do not are the refusals — a marker that reads nowhere, or in more than one place — and each says which.
+**Note** **figures are placed by geometry and meant to be moved.** `context._figures_on_page` withholds geometry from the *model* on purpose, because placing a figure is not the collator's competence; this reads it anyway, a rule being unable to be persuaded by what it sees. The box puts the figure on the right part of the right page; the anchor the edition wants is where the prose says "(Fig. 87, a)", and the comment at each figure says so.
 **Note** **the `opens:` witness is never generated.** It records what a reader saw on the raster, and deriving it from the zone label would leave `tei seam` comparing a value with itself. The label goes in as `<!-- zone-opens: … -->`, the *other* witness; the missing `opens:` is a `validate` error the collator clears by looking at the page.
 **Note** **a lang-less `<foreign>` is deliberate and is a `validate` error.** `tier1_terms` is a floor over inventory marks with no language awareness — it fires on a German surname carrying a combining diaeresis exactly as on a Chukchee form — so naming a language would be inferring one from the shape of a word. The wrap says only "a ratified token sits here", and the gate turns each into a question with two answers: assign the language and let `tei expand` write the adjudicated glyphs in, or unwrap because it was never a foreign form.
 **Note** **without a blotted raster the split degrades to keyed zone boundaries alone and the file says so.** A band a human keyed as one zone that sets two paragraphs stays one `<p>`. A page silently short of paragraphs is indistinguishable from a complete one, which is why the degradation is written into the output rather than only into the report.
@@ -249,11 +252,11 @@ them apart is the entire point of `tei diff`.
 ```
 
 ### tei expand [REF ...]
-**Does** writes ratified Tier-1 forms into a collated page, resolving `index=` handles on Tier-1 elements against `tier1_terms`.
+**Does** verifies a collated page's Tier-1 forms against `tier1_terms`, drops `index=`, and stamps `#gt`. Fills an empty handle where it finds one.
 **Reads** `tei/`, `gt/ocr/`.
 **Writes** `tei/`, under `--commit`.
 **Exit** always 0.
-**Note** the collation pass names a native term by its handle — `<foreign xml:lang="ckt" index="7"/>` — instead of retyping it, and this fills in the string a human adjudicated at the raster. **The model's judgement is which token; the glyphs are never its to originate.** Retyping `ɪᵋplɪˊlᴇ` character by character puts §5's two residual classes back on the table (a dropped U+0323, an `ɪ` read as `i`), and both are unfalsifiable downstream — the form still looks like a form, no lexicon knows it, no second reader exists, and CATMuS reads 0% of the inventory.
+**Note** the generator puts the adjudicated string in when it builds the page — `<foreign index="7">Uweˊlen</foreign>` — and the reviewer adds the language; this confirms the string still is what `gt/ocr/` says before rewriting the rank, and reports a disagreement rather than overwriting it. **The model's judgement is which token and what language; the glyphs are never its to originate.** The handle used to arrive empty and be filled here, which was right when the pass authored the page from a plaintext draft; once a rule was making the copy, the emptiness bought no fidelity and cost the reviewer a lookup before it could judge a word it could not see. Retyping `ɪᵋplɪˊlᴇ` character by character puts §5's two residual classes back on the table (a dropped U+0323, an `ɪ` read as `i`), and both are unfalsifiable downstream — the form still looks like a form, no lexicon knows it, no second reader exists, and CATMuS reads 0% of the inventory.
 **Note** **`gt/ocr/` only.** `tier1_terms` is empty on the 802 pages with no ground truth, so there is nothing to expand there and that is correct: a list built from `mz/ocr/` would be garbled forms offered to be copied verbatim, which is this failure inverted rather than avoided. On those pages the pass reads the raster, writes its best attempt and flags the line.
 **Note** a handle naming no term is left **exactly as it is** — not dropped, not guessed at. `tei validate` errors on a surviving `@index` and names the missing step rather than a dangling reference, `@index` not being a TEI attribute. Removing it would leave a Tier-1 element holding whatever the pass typed, indistinguishable from one that never asked.
 **Note** a handle on an element that **already holds text** is a conflict, not an override: two claims about the same glyphs, reported with neither written. Same for a handle on an element with no Tier-1 `xml:lang` — English is not transcluded.
@@ -379,6 +382,21 @@ them apart is the entire point of `tei diff`.
 **Writes** —
 **Exit** 1 on FAIL.
 **Note** `--json` swaps the rendered report for the structured verdict.
+
+**The four browser tools share one server.** `edition serve`, `zones edit`,
+`ocr edit` and `ocr review --serve` are one FastAPI app in one process listening
+on four ports — 8731 review, 8732 zones, 8733 lines, 8734 edition — so `--port`
+names *this editor's door onto it* rather than a server of its own. Two
+consequences worth knowing at the command line:
+
+  * **A second invocation joins the running server** rather than failing on a
+    held port. It hands over its session — the itinerary, the queue, the walk —
+    prints `(joined the running server)` and opens a tab. Which is what the four
+    separate processes used to give for free, and what one process binding all
+    four ports would otherwise have taken away.
+  * **A leftover process holds every port, not just its own.** A `zones edit`
+    nobody stopped will refuse an `edition serve`, and says which port and which
+    editor is holding it. Exit 2, the usage-error code.
 **Note** `--schema` checks conformance too, as on `tei validate` and on by default. The header is a bare `<teiHeader>` and `teiCorpus` requires a `TEI` child, so there is no conformant container for it — it is wrapped in a minimal `<TEI>` **in memory** to be checkable, never on disk, since inventing a container there would settle the assembly scheme by accident. This found the first defect on its first run: `version="stock"` on `<application>`, where `teidata.versionNumber` is a pattern that does not match it, in a file read by hand more than once.
 ```
 --schema     also check the header is conformant TEI, wrapped in memory [on]
@@ -423,6 +441,40 @@ writes the overlay, and geometry only.
 --root --json --toon --pager
 ```
 
+### ocr text [REF ...]
+**Does** the page as plain text, one keyed line per line, in reading order with the empties dropped.
+**Reads** the `--store` store, or the view, `gt/lines/_ink_exempt.json`.
+**Writes** —
+**Exit** always 0.
+**Note** **not a table.** Bare newline-separated lines, `tei ledger --untranscribed`'s shape and for its reason: the payload is a pipe target and structure is in the way of one. `--json` gives `{ref, lines}` records instead. Several refs print under a `# PP-NNN` heading each; **one ref prints the page and nothing else**, which is the form anything downstream is likeliest to be reading.
+**Note** **the empties are dropped here and kept by `ocr lines`.** An empty record is a *box with nothing keyed in it* — a fact about the segmentation, and the corrector's table is where it belongs. In a dump it is a blank line carrying no information.
+**Note** the apparatus lines stay in — a running head, a folio, a signature line is part of what the store holds for that page. `tei context`'s `ocr_lines` is the body-only reading, and it drops them for a reason that does not apply here: that list is the set of `@facs` targets, and this is not.
+```
+--store {gt,mz}  which store to read [omit: the ocr/ view]
+--all       every page the store read holds
+--root --json --toon --pager
+```
+
+### ocr grep PATTERN [REF ...]
+**Does** lines matching a regular expression, across whichever pages are named — the corpus text search. Measurement; never gates.
+**Reads** the `--store` store, or the view, `gt/lines/_ink_exempt.json`.
+**Writes** —
+**Exit** always 0, a search that found nothing included. Nothing here is a gate, and an absent form is not a defect.
+**Note** **the pattern is normalized to NFD before it compiles.** The store is NFD corpus-wide and a pattern typed or pasted anywhere else may not be: a composed `č` would match nothing and report a clean corpus-wide negative, which is the worst answer this verb could give. Never NFKC — it destroys two inventory glyphs.
+**Note** **the `scope` row prints on every run, empty result or not.** A search that found nothing has two readings — the corpus does not say this, or the pages searched do not hold it — and only `store` and `pages` separate them. An unkeyed page is not searched and cannot be, so `--store gt --all` is a search of the pages a human has been through and **not of the book**; through the view it is a search of what the recognizer read, at that reading's rank.
+**Note** case is significant by default. This corpus sets Tier-1 forms with case that carries information, and a native form is more often sought exactly than approximately; `-i` folds it.
+**Note** `--context N` adds the surrounding lines, carrying `hit: false`, on `lexicon lookup --context`'s reasoning — `Kuluˊči` alone is a string, "around Kuluˊči Bay" is a place. Rows are keyed by `(ref, index)`, so two hits whose windows overlap yield one row each rather than one per window, and a line that is both a hit and another hit's context stays a hit.
+**Note** **`lexicon lookup` is the other search and is not this one.** That one is over *ratified native forms*, reached by a typeable ASCII key and folded across the axes this pass gets wrong; this one is over raw line text, reaches English prose, and knows nothing about spelling variants — a word the book sets two ways answers here twice and there not at all.
+```
+PATTERN          a Python regular expression, normalized to NFD before it compiles
+--store {gt,mz}  which store to read [omit: the ocr/ view]
+--all            every page the store read holds
+--ignore-case, -i  fold case [off]
+--context N      lines of surrounding text per hit [0]
+--root --json --toon --pager
+```
+**Emits** `scope` (`pattern`, `store`, `pages`, `lines`, `hits`) and `matches` (`ref`, `index`, `zone`, `hit`, `text`).
+
 ### ocr gaps [REF ...]
 **Does** bands of ink no TextLine covers — the dropped-line detector. A band is a place to look, not a verdict.
 **Reads** the `--store` store, or the view, `scans/`, `gt/fig/`, `gt/zones/`, and both `_ink_exempt.json` layers.
@@ -461,7 +513,7 @@ writes the overlay, and geometry only.
 --store {gt,mz}  which store to read [omit: the ocr/ view]
 --all       every page the store read holds — the editor walks them with the arrow keys
 --unsettled  narrow --all to pages still carrying a band nobody has settled
---port N    port for the editor [8733]
+--port N    this editor's door onto the shared server [8733]
 --jobs N    worker threads for --unsettled; 1 runs serially [cores, capped]
 --root --json --toon --pager
 ```
@@ -638,7 +690,7 @@ The header links to the **full page scan**, new tab — the crops say what a lin
 --html    write review.html per ref         } mutually exclusive
 --spans   bare diff: every span, ungrouped  }
 --all     every page with a proposal and no decision
---port N  port for --serve [8731]
+--port N  this editor's door onto the shared server, for --serve [8731]
 --font NAME     entry-box family, prepended to the fallbacks [Brill]
 --font-size PX  entry text size [24]
 --box-lines N   lines a box holds before it grows — a floor, not a cap [1]
@@ -912,7 +964,7 @@ opinion of which pages are held out.
 ```
 --all            every scan, in order
 --itinerary LST  walk this work-list; name no ref to resume at its first unkeyed page
---port N         port [8732; ocr review --serve holds 8731]
+--port N         this editor's door onto the shared server [8732]
 --root --json --toon --pager
 ```
 
@@ -1085,6 +1137,22 @@ QUERY...       any substring; several are an OR
 **Note** **the floor counts pages per fold, over all a word's spellings together, and ambiguity is judged before it applies.** Per-form would delete that same instance rather than refuse it — one page each, both below the default — so a floor could hide a conflict. It may withhold a handle from a form the corpus barely attests; it may never do the other thing.
 **Note** the `floor` row is printed on every run because **an empty result is not a corpus-wide negative**: selection requires an inventory glyph, so a native token carrying no mark at all (a bare `c`, `s`, `j`, `x`, `h`) is invisible here by construction. `unkeyable` counts forms carrying something the marker table does not reach — two today, both English possessives on a native name.
 
+### lexicon ipa [FORM...]
+**Does** imputes IPA for a keyed native form, by rule. Feeds the pronunciation line and the speaker on a lexicon card in `edition serve`.
+**Reads** `gt/ocr/` (with `--all`). **Writes** — **Exit** 0.
+```
+FORM...        a keyed form, NFD or not; several are several rows
+--all          every native form in gt/ocr/ instead of the named ones [off]
+--partial      only the forms that did not fully resolve [off]
+--root --json --toon --pager
+```
+**Emits** `scope` (`forms`, `complete`, `partial`) and `forms` (one row per form: `form`, `ipa`, `state`, `unresolved`, `hedged`, `grades`).
+**Note** **nothing here is evidence, and the firewall is not what is at stake.** The table reads no scan and proposes no glyph — it is applied to a form a human already keyed and ratified. What is at stake is the other failure mode: a pronunciation that reads as authoritative because it is spelled in IPA. So the card labels it imputed, and `state` goes `partial` the moment a character falls through.
+**Note** rows are graded. `myth` is Bogoras's own account of his notation in the front matter to *Chukchee Mythology* (1910); `key` is the printed key at Part 1 p. 10, which supplies the unmarked ASCII sorts that account does not reach (`c` is English *sh*, `j` is French *jour*, `x` is *Bach*) and the seventh member of the palatalization series. A row whose source gives two values (`g̣` is ɣ ~ ɡ) emits the first and names itself in `hedged` rather than the choice being made by which value looked better.
+**Note** **five sorts have no row on purpose** — `š`, `ë`, `ṛ`, `ḷ` and plain `g`. Each has a *gloss* in the p. 10 key and no IPA value, and turning "like *a* in *make*" into a symbol is a judgement rather than a lookup. They fall through, are named in `unresolved`, and `--partial` is the worklist. Likewise U+0027, which is both the spirant and the pause mark and which `keying_spec.md` says outright not to propose: it is refused rather than read in one direction for the sake of a complete-looking answer.
+**Note** stress is dropped. U+02CA follows the stressed vowel where IPA's `ˈ` precedes the stressed *syllable*, so placing it needs syllabification and any rule for that is a guess. It still does work on the way out: `au` is one diphthong and `aˊu` is two vowels, because longest match sees the mark between them.
+**Note** 580 of the corpus's 609 native forms resolve completely. Of the 29 that do not, 6 are the bare `g` above, 6 are European names inside a Tier-1 span (`Nordenskiöld`, `Lütke`), 15 carry `ṛ`/`ḷ`/`š`, and 2 carry a curly apostrophe — which the Tier-1 ASCII policy forbids and which is a ground-truth defect rather than a gap here.
+
 ### lexicon marks
 **Does** bare-vs-marked frequency per base letter — is a bare `g` or a dotted `g̣` the likelier reading, prior to the raster.
 **Reads** `gt/ocr/`. **Writes** — **Exit** 0.
@@ -1151,13 +1219,16 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 --canonical NAME  the display name, written into the heading. Not a trigger unless you also pass it as one. Required
 --since PP-NNN  the page whose reading prompted the entry. Required — an apparatus store that cannot be traced back to a page is one nobody can audit
 --trigger FORM  a form that means this entity, added at `auto: no`. Repeatable. Raising one to `auto: yes` is a separate act, in the file or the browser, because it licenses a link nobody will be asked about
+--within ID  the entity that contains this one, `class:slug`. The atlas's whole structure, and the only thing that puts a location somewhere rather than merely on a map
+--area KIND:SLUG  the shape in `data/geo/` this entity is drawn as, e.g. `watershed:anadyr`. Identifying a name Bogoras wrote in 1904 with a polygon a modern service returned is a human's act, which is why it is typed rather than matched by name — `watershed:main` and the English word are one keystroke apart. `geo list` names every shape
 --commit  write it; without this the file is reported and not created
 --root --json --toon --pager
 ```
 
 ### entity check
-**Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves and the chain is acyclic, and no form is `auto: yes` for two entities at once. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
-**Reads** `entities/`. **Writes** — **Exit** 0 clean, 1 on any defect.
+**Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves and the chain is acyclic, every `area:` names a shape that exists in `data/geo/`, and no form is `auto: yes` for two entities at once. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
+**Reads** `entities/`, `data/geo/index.json`. **Writes** — **Exit** 0 clean, 1 on any defect.
+**Note** `area:` **resolving** is gated here and everything *geometric* is `geo verify`'s. Resolution is a fact about names, like `within:`; whether a child's shape actually falls inside its parent's is a fact about two delineations, and a gate there would reject true rows on the strength of a coarseness the source declared in advance.
 ```
 --root --json --toon --pager
 ```
@@ -1194,6 +1265,49 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ---
 
+## geo
+
+The compiled shape store at `data/geo/` — watersheds, language areas and the
+coastline the atlas draws — and the geometry checked against the hierarchy a
+human authored.
+
+**The store is built by `tools/build_geo.py`, not by this group.** Its sources
+live outside the repository (`scratch/`, which is gitignored, and a symlink into
+a download directory), so the compiled store is **tracked** and nothing here
+writes. That is the split `scans/` has: a `tools/` script builds from what only
+one machine holds, the harness reads what is committed. `data/geo/SOURCES.md`
+is the provenance record and carries the one licence condition — Asher 2007 is
+CC BY 4.0, so its citation is in the corpus `teiHeader` as well.
+
+**A shape id is `kind:slug` and a kind is never an entity class.** `langarea:`,
+not `language:`: an entity file carries `within: place:chukotka` two lines from
+`area: langarea:chuk1273`, and a reader who cannot tell the two apart by looking
+is one keystroke from an `area:` that resolves as an entity reference.
+`entities.parse` refuses a kind that collides.
+
+### geo list
+**Does** every shape in the store — id, kind, name, point count, area, source, and the entity that claims it. **Also the absences**: four of this edition's seven Tier-1 codes have no polygon in Asher 2007, and they are rows here rather than silences, because an entity pointing at nothing and an entity nobody has got to yet look identical from outside.
+**Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
+```
+--root --json --toon --pager
+```
+**Emits** `scope` (`shapes`, `claimed`, the longitude `window`, `absent`), `shapes`, and `absent`.
+**Note** longitudes are normalized into `[60, 420)`, so anything above 180 is west of the antimeridian and Chukotka runs continuously rather than tearing from +179 to −179. It is what lets every planar operation downstream treat a meridian-spanning shape as an ordinary one.
+
+### geo verify
+**Does** the geometry against the authored hierarchy. Four reports, none of which gates.
+**Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
+```
+--root --json --toon --pager
+```
+**Emits** `containment` (one row per child/parent pair that both carry an `area:`), `points`, `shared`, `unclaimed`.
+**Note** **containment names the pair, never a culprit.** A basin delineated from a tributary's outlet is contained in its trunk's by construction, so this is a real second witness on the river chain — but a disagreement says one of two authored facts is wrong and the geometry cannot say which.
+**Note** **the reading respects the source's own declaration of precision.** The delineator reverts to a coarse DEM above 50,000 km² and says so in the file; a coarse parent's boundary wanders by tens of kilometres, and a true tributary measured against one lands at 0.70–0.87 rather than 1.00. Every containment pair in the store today has such a member. Measured on the real shapes: relations the book and the map both support land at 0.68–0.82, and a river paired with a basin it has nothing to do with lands at 0.00–0.11 — so the floor sits in the gap, and `coarse` names the member that put it there.
+**Note** a `geo:` point outside its own shape is reported **with the distance and is not a defect by itself**: a river's natural point is its mouth, which sits *on* the boundary the basin was delineated from. `water:anadyr` is 0.59° out, at the estuary.
+**Note** a shape two entities claim is legal and reported. `people:chukchee` and `language:chukchee` both point at the one Asher polygon; forcing a choice would be this edition deciding something the source does not.
+
+---
+
 ## edition
 
 The reading view. Its own group rather than an action under `tei` or `entity`,
@@ -1202,11 +1316,14 @@ was read from are three stores, and the point of the view is that they are in on
 place.
 
 ### edition serve
-**Does** open the reading view on 127.0.0.1 — collated TEI in a main column, a stack of entity, note and scan cards beside it, plus the encyclopedia and its audit queue. Shows committed `tei/` only; a generated baseline is a draft nobody has read, and an end-user preview is the last place it belongs. Ratifying an entry in the browser writes `entities/` without `--commit`, as the other editors write their stores — the click is the human act, the store is tracked, git is the witness — and every write is rolled back if `entity check` would fail on the result. Blocks until the page or ctrl-c stops it.
-**Reads** `tei/`, `entities/`, `scans/`. **Writes** `entities/` on an explicit click. **Exit** 0.
+**Does** open the reading view on 127.0.0.1 — collated TEI in a main column, a stack of entity, note, map and scan cards beside it, plus the encyclopedia, its audit queue, and `/atlas`: the `within:` hierarchy as a navigable tree with each node drawn inside its parent's extent. Shows committed `tei/` only unless `--drafts`; a generated baseline is a draft nobody has read, and an end-user preview is the last place it belongs. Ratifying an entry in the browser writes `entities/` without `--commit`, as the other editors write their stores — the click is the human act, the store is tracked, git is the witness — and every write is rolled back if `entity check` would fail on the result. Blocks until the page or ctrl-c stops it.
+**Reads** `tei/`, `entities/`, `data/geo/`, `scans/`, and `mz/tei/` under `--drafts`. **Writes** `entities/` on an explicit click. **Exit** 0.
+**Note** `--drafts` is **read-only and marked everywhere it shows**: in the listing, on the page itself and beside every search hit, because a URL typed straight in skips the listing that would otherwise carry the warning. It reaches `mz/tei/` **by naming it** — `tei/` is a store and never a symlink farm over the generated one, since nine callers read "a file is in `tei/`" as "somebody collated this" and a link is indistinguishable from a signature to all of them (`test_tei_is_a_store_and_never_a_farm`). Entity attestations stay signed-only whatever this flag says: an attestation is a claim about a reading, and a draft has read nothing.
+**Note** the atlas is **scoped to located subtrees** — a root is an entity with no `within:` that has somewhere to put on a map, itself or below it — otherwise every person and source in the store is an atlas root. A node with no `area:` and no `geo:` is framed by the union of what lies beneath it, and the map says so: no source draws a boundary for Chukotka, and a frame is a viewport rather than a claim.
 ```
---port N  the port to bind on 127.0.0.1 [8734]
+--port N  this editor's door onto the shared server [8734]
 --no-open  do not open a browser; print the URL and wait. For a headless run, and for the tests
+--drafts   also show `mz/tei/` — the pages `tei generate` built and nobody has read. Every one is marked as a draft, in the listing, on the page and in search results. Read-only: this is a window onto the generator's output while it is being fixed, not a way to collate
 --root --json --toon
 ```
 
@@ -1233,12 +1350,13 @@ resolves anything, and no hit is a legitimate outcome.
 --root --json --toon --pager
 ```
 
-### find authority [QUERY]
+### find authority [QUERY...]
 **Does** works matching a citation read in the body — siglum, bare name in prose, title, or a string off the printed entry. Every match returned and ranked by which field caught it: 51 sigla share 34 names, so a single answer would be manufactured. A footnote form (`Dall, I, p. 375.`) goes in whole; the lifted volume is echoed on stderr, because a silently rewritten query is an unexplainable miss.
+**Several queries pool into one table** with a leading `query` column, and a query that matched nothing gets a row saying so — dropping it would make "no such work" indistinguishable from "I forgot to ask". One query emits exactly what it always did. A page's footnotes name half a dozen works, and asking six times was six turns against a collator's budget. Bare, it lists all 73: the printed bibliography, not a corpus sweep.
 **Reads** `data/authorities.json`. **Writes** — **Exit** 0.
 ```
 --volume V    volume the citation names (II or 2); excludes on contradiction, not absence
---sigla       the resolution table instead: one row per cited_as, so collisions show
+--sigla       the resolution table instead: one row per cited_as, so collisions show. Refused with several queries, which the table has no column to distinguish
 --key KEY     one record in full, printed blocks included
 --unlocated   only works with neither doi nor url — the worklist
 --root --json --toon --pager

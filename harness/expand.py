@@ -1,9 +1,20 @@
-"""Write ratified Tier-1 forms into a collated page, so no model retypes one.
+"""Verify a collated page's Tier-1 forms against ground truth and stamp the rank.
 
-The collation pass names a native term by a handle into `tier1_terms` —
-`<foreign xml:lang="ckt" index="7"/>` — and this fills in the exact string a
-human adjudicated at the raster. The model's judgement is *which* token; the
-glyphs are never its to originate.
+A ratified term arrives as `<foreign xml:lang="ckt" index="7">Uweˊlen</foreign>`:
+the generator put the adjudicated string there, straight out of `gt/ocr/`, and the
+reviewer added the language. This checks the string still is what `tier1_terms`
+says and rewrites `@resp` to `#gt`. The model's judgement is *which* token and
+what language; the glyphs are never its to originate.
+
+**It used to fill an empty handle**, and refused one that already held text. That
+was right when the collation pass authored the page from a plaintext draft — a
+model that never typed the glyphs could not corrupt them. Once the generator
+began writing the file, the copy was already being made by a rule, and the
+emptiness bought nothing while costing the reviewer a lookup from `index="7"` to
+`tier1_terms[7]` before it could judge the language of a word it could not see.
+So the text comes in with the file and this became the check rather than the
+copy. An empty handle is still accepted and still filled: a page authored under
+the old contract, or a span a reviewer wrapped by hand, both land here.
 
 **Why this and not "read harder".** Where `gt/ocr/` holds the page, the marks
 have already been settled once, at magnification, by an editor. Retyping
@@ -33,6 +44,7 @@ no such number, so there is nothing to name it by except the ratified text.
 """
 from __future__ import annotations
 
+import unicodedata
 from pathlib import Path
 
 from lxml import etree
@@ -85,8 +97,16 @@ def expand_page(ref: str, root: Path = Path("."), commit: bool = False) -> dict:
                       f"{len(terms)} ratified term(s) available"
                       if terms else
                       "this page has no ratified terms; gt/ocr/ does not hold it")
-        elif held:
-            reason = f"already holds text ({held[:24]!r}) — write one or the other"
+        elif held and unicodedata.normalize("NFD", held) != \
+                unicodedata.normalize("NFD", got["text"]):
+            # The span says one thing and the ground truth says another. Never a
+            # thing to fix silently: either the reviewer edited glyphs it may not
+            # edit, or the wrap moved and `@index` now points at a different
+            # token. Both want a reader, and overwriting would erase the evidence
+            # of which it was.
+            reason = (f"holds {held[:24]!r} but term {idx} is "
+                      f"{got['text'][:24]!r} — the span was edited, or @index "
+                      f"points at the wrong token")
         else:
             del el.attrib["index"]
             el.text = got["text"]

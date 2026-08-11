@@ -104,9 +104,15 @@ def test_an_unresolvable_handle_is_left_exactly_as_it_is(tmp_path):
     assert 'index="9"' in p.read_text(encoding="utf-8")
 
 
-def test_a_handle_on_an_element_holding_text_is_a_conflict(tmp_path):
+def test_text_that_disagrees_with_the_ground_truth_is_a_conflict(tmp_path):
     """Two claims about the same glyphs. Ranking them silently is the thing this
-    whole mechanism exists to avoid, so it reports and writes neither."""
+    whole mechanism exists to avoid, so it reports and writes neither.
+
+    Holding text is no longer the conflict — the generator puts the adjudicated
+    string in and this verifies it. Holding *different* text is, and it says which
+    of the two things went wrong: a reviewer edited glyphs it may not edit, or the
+    wrap moved and `@index` now points at another token. Overwriting would erase
+    the evidence of which."""
     from harness.expand import expand_page
     _gt_page(tmp_path)
     p = _tei(tmp_path, "1-151",
@@ -114,8 +120,24 @@ def test_a_handle_on_an_element_holding_text_is_a_conflict(tmp_path):
 
     got = expand_page("1-151", tmp_path, commit=True)
     assert got["resolved"] == []
-    assert "already holds text" in got["unresolved"][0]["reason"]
+    assert "points at the wrong token" in got["unresolved"][0]["reason"]
     assert "kelilin" in p.read_text(encoding="utf-8")
+
+
+def test_text_that_agrees_with_the_ground_truth_is_stamped(tmp_path):
+    """The ordinary path now: the generator wrote the string, the reviewer named
+    the language, and this confirms the string still is what `gt/ocr/` says before
+    rewriting the rank. The check runs on every invocation, so a later correction
+    to the ground truth breaks it rather than leaving it stale."""
+    from harness.expand import expand_page
+    _gt_page(tmp_path)
+    p = _tei(tmp_path, "1-151",
+             '<foreign xml:lang="ckt" index="1">kełiˊlın</foreign>')
+
+    got = expand_page("1-151", tmp_path, commit=True)
+    assert got["unresolved"] == []
+    text = p.read_text(encoding="utf-8")
+    assert 'resp="#gt"' in text and "index=" not in text
 
 
 def test_a_handle_outside_a_tier1_element_is_refused(tmp_path):

@@ -58,9 +58,12 @@ def register(cli):
                "sentence: matching is word-set containment, so 'Krause' finds the "
                "prose reference and 'Krause reports' finds nothing. A footnote "
                "form ('Dall, I, p. 375.') is accepted whole — the volume and page "
-               "locator are lifted out and the lift is echoed on stderr. Omit to "
-               "list all 73.")
-    arg(p, "query", required=False, default="")
+               "locator are lifted out and the lift is echoed on stderr. Several "
+               "queries are pooled into one table with a `query` column, which is "
+               "the ordinary case — a page's footnotes name half a dozen works, "
+               "and asking six times is six turns against a collator's budget. "
+               "Omit to list all 73.")
+    arg(p, "queries", nargs=-1, required=False, metavar="QUERY")
     opt(p, "--volume", default=None,
         help="volume the citation names (II or 2, either form); "
              "normally read out of the query itself. Excludes on "
@@ -91,21 +94,52 @@ def run_folio(a) -> int:
 
 def run_authority(a) -> int:
     works = load_authorities(a.root)
+    queries = [q for q in (a.queries or ()) if q]
     if a.key:
         out(a, authority_record(works, a.key))
         return 0
     if a.sigla:
-        out(a, sigla(works, a.query or None))
+        if len(queries) > 1:
+            raise ValueError(
+                "--sigla with several queries: the table is one row per cited_as "
+                "and a pooled one could not say which query reached which row. "
+                "Ask for the whole table and read it, or query one name")
+        out(a, sigla(works, queries[0] if queries else None))
         return 0
-    # A footnote-form query carries a volume and a page locator that are not
-    # searchable text; parse_citation lifts them out. Echoed on stderr rather
-    # than folded into the payload, so stdout stays the same bare table every
-    # other action emits — but echoed at all, because a silently rewritten query
-    # is an unexplainable miss.
-    q, vol = authority_parse(a.query)
-    if a.volume is None and vol is not None:
-        print(f"note: read volume {vol} out of the query; searching {q!r}",
-              file=sys.stderr)
-    out(a, authority_search(works, q, volume=a.volume or vol,
-                            unlocated=a.unlocated))
+    if not queries:
+        out(a, authority_search(works, "", volume=a.volume,
+                                unlocated=a.unlocated))
+        return 0
+    # **Pooled into one table**, with `query` first where there is more than one.
+    # Several tables would each be uniform and the set of them ragged, which is
+    # what degrades TOON's tabular collapse; and a reader comparing what six
+    # citations resolved to wants them beside each other anyway. With a single
+    # query the column is absent and the output is byte-identical to what it was.
+    rows = []
+    for raw in queries:
+        # A footnote-form query carries a volume and a page locator that are not
+        # searchable text; parse_citation lifts them out. Echoed on stderr rather
+        # than folded into the payload, so stdout stays the same bare table every
+        # other action emits — but echoed at all, because a silently rewritten
+        # query is an unexplainable miss.
+        q, vol = authority_parse(raw)
+        if a.volume is None and vol is not None:
+            print(f"note: read volume {vol} out of {raw!r}; searching {q!r}",
+                  file=sys.stderr)
+        got = authority_search(works, q, volume=a.volume or vol,
+                               unlocated=a.unlocated)
+        if len(queries) == 1:
+            out(a, got)
+            return 0
+        # A query that matched nothing gets a row saying so. Dropping it would
+        # make "no such work" indistinguishable from "I forgot to ask", which is
+        # the distinction a pooled table exists to keep.
+        rows.extend([{"query": raw, **r} for r in got]
+                    or [{"query": raw, "matched": "(no match)"}])
+    # **Every row carries every key**, filled with "" where a no-match row has
+    # nothing to say. One short row degrades TOON's tabular collapse for the
+    # whole table — the same reason `generate.skipped` is padded — and a pooled
+    # table that renders as nested blocks is worse than the six calls it replaced.
+    keys = list(dict.fromkeys(k for r in rows for k in r))
+    out(a, [{k: r.get(k, "") for k in keys} for r in rows])
     return 0
