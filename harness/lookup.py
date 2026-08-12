@@ -53,19 +53,34 @@ def index(root: Path = Path(".")) -> dict:
     """Every attested form, bucketed, keyed, and carrying the lines it occurs on.
 
     Returns `{"buckets": {bucket: {...}}, "by_key": {key: bucket}, "unkeyable":
-    [...]}`. `unkeyable` is named and never silently dropped: a token whose key
-    cannot be built is one this instrument cannot offer, and a caller that reports
-    "not found" without saying so has converted a gap into a corpus-wide negative.
+    {form: {...}}}`. `unkeyable` is named and never silently dropped: a token whose
+    key cannot be built is one this instrument cannot offer, and a caller that
+    reports "not found" without saying so has converted a gap into a corpus-wide
+    negative.
+
+    **`unkeyable` carries the same record a bucket's form does** — count, refs,
+    lines, and a `key` of `None` — because a caller that wants every attested
+    form rather than every *addressable* one has to be able to union the two
+    without going back to the corpus. The reading view is that caller: pre-1918
+    Russian is full of `й`, which is и + U+0306 under NFD and so trips the
+    inventory detector, and every one of those words was invisible to the
+    lexicon while this was a list of bare occurrences.
     """
     contrasts = load_config(root)["contrasts"]
     buckets: dict[str, dict] = {}
-    unkeyable: list[dict] = []
+    unkeyable: dict[str, dict] = {}
     for r in native_corpus_context(root):
         tok = r["token"]
         try:
             key = handle_key(tok)
         except ValueError as e:
-            unkeyable.append({"form": tok, "ref": r["ref"], "why": str(e)})
+            u = unkeyable.setdefault(tok, {
+                "form": tok, "key": None, "count": 0, "refs": set(),
+                "lines": [], "why": str(e)})
+            u["count"] += 1
+            u["refs"].add(r["ref"])
+            u["lines"].append({"ref": r["ref"], "line": r["line"],
+                               "text": r["text"]})
             continue
         b = buckets.setdefault(fold(tok, contrasts),
                                {"forms": {}, "refs": set(), "count": 0})
@@ -190,6 +205,9 @@ def search(queries: list[str], root: Path = Path("."), min_pages: int = 2,
         # here by construction. "Not found" means not found *by this instrument*.
         "floor": "forms carrying no inventory glyph are invisible to this index; "
                  "an empty result is not evidence the corpus lacks the word",
+        # Distinct forms, not occurrences: the number is read as "how much of
+        # the corpus this instrument cannot offer", and a form set twenty times
+        # is one word missing from the index rather than twenty.
         "unkeyable": len(idx["unkeyable"]),
         "matches": rows,
         "context": lines,

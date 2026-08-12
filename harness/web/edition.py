@@ -238,30 +238,51 @@ def _forms(root: Path) -> list[dict]:
     where an editor has written one. A form with no entry is not missing from
     this list; it is a form nobody has written about, which is most of them.
     """
-    native = stores.native(root)
     attested = stores.attestations(root)
     store = stores.lexicon_store(root)
     out = []
-    for bucket in native["buckets"].values():
-        for f in bucket["forms"].values():
-            form = lexicon.norm_form(f["form"])
-            langs = sorted({lang for _ref, lang in attested.get(form, [])})
-            rec = store.get(form)
-            out.append({
-                "form": form,
-                "key": f["key"],
-                "count": f["count"],
-                # Blank rather than a guess where collation has not reached the
-                # form, and the *first* of several rather than a silent pick
-                # where it has read one string as two languages — the row says
-                # `langs` too, so the grouping never hides the disagreement.
-                "lang": langs[0] if len(langs) == 1 else "",
-                "langs": langs,
-                "note": bool(rec and rec["note"]),
-                "status": rec["status"] if rec else "",
-            })
-    out.sort(key=lambda r: (r["key"].lower(), r["form"]))
+    for f in _attested_forms(stores.native(root)):
+        form = lexicon.norm_form(f["form"])
+        langs = sorted({lang for _ref, lang in attested.get(form, [])})
+        rec = store.get(form)
+        out.append({
+            "form": form,
+            "key": f["key"] or "",
+            "count": f["count"],
+            # Blank rather than a guess where collation has not reached the
+            # form, and the *first* of several rather than a silent pick
+            # where it has read one string as two languages — the row says
+            # `langs` too, so the grouping never hides the disagreement.
+            "lang": langs[0] if len(langs) == 1 else "",
+            "langs": langs,
+            "note": bool(rec and rec["note"]),
+            "status": rec["status"] if rec else "",
+        })
+    # By the key where there is one, by the form where there is not — and the
+    # keyless sort last within their letter rather than first, so a group of
+    # them cannot look like the head of the list.
+    out.sort(key=lambda r: ((r["key"] or r["form"]).lower(), not r["key"],
+                            r["form"]))
     return out
+
+
+def _attested_forms(native: dict) -> list[dict]:
+    """Every Tier-1 form `gt/ocr/` attests, addressable or not.
+
+    **The union is the point.** `lookup.index` buckets only what `handle_key`
+    can spell and files the rest under `unkeyable` — right for an instrument
+    whose product *is* the key, wrong for a lexicon, whose question is what the
+    corpus contains. Three forms are in that position today: `□ña`, whose first
+    character is a reader's mark for an unread glyph, and `Kereˊt-kun’s` /
+    `Kereˊtkun’s`, a Tier-1 stem taking an English possessive in U+2019. All
+    three are real Tier-1 forms and every one was invisible here.
+
+    A form with no key is reachable by its exact spelling and by nothing else.
+    That is a real limitation of the address, not of the entry, and the index
+    says so in the row rather than leaving the column blank.
+    """
+    return [f for b in native["buckets"].values() for f in b["forms"].values()] \
+        + list(native["unkeyable"].values())
 
 
 @router.get("/lexicon/{key:path}")
@@ -345,8 +366,7 @@ def lexicon_card(request: Request, key: str, partial: str = ""):
 
 
 def _all_forms(native: dict) -> set[str]:
-    return {lexicon.norm_form(f["form"])
-            for b in native["buckets"].values() for f in b["forms"].values()}
+    return {lexicon.norm_form(f["form"]) for f in _attested_forms(native)}
 
 
 def _printed_lines(native: dict, form: str) -> list[dict]:
@@ -356,10 +376,9 @@ def _printed_lines(native: dict, form: str) -> list[dict]:
     anybody has written a word about the form: `Kuluˊči` alone is a string,
     "south of Kuluˊči Bay" is a place.
     """
-    for b in native["buckets"].values():
-        for f in b["forms"].values():
-            if lexicon.norm_form(f["form"]) == form:
-                return f["lines"][:8]
+    for f in _attested_forms(native):
+        if lexicon.norm_form(f["form"]) == form:
+            return f["lines"][:8]
     return []
 
 

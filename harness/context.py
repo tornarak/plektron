@@ -615,7 +615,7 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
     `detector_flags` carry, so a term resolves with `harness ocr zoom REF --only
     <line> --store gt` like everything else.
     """
-    from .detectors import EDGE_PUNCT, INVENTORY_CHARS, TOKEN
+    from .detectors import EDGE_PUNCT, INVENTORY_CHARS, TOKEN, cyrillic
     from .lines import page_lines
 
     path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
@@ -647,7 +647,17 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
         text = unicodedata.normalize("NFD", rec.get("text") or "")
         for m in TOKEN.finditer(text):
             tok = m.group().strip(EDGE_PUNCT)
-            if (tok and tok in whole
+            # `cyrillic` is `native_corpus`'s exclusion, shared rather than
+            # restated. Pre-1918 Russian sets `й`, which is и + U+0306 under
+            # NFD, and U+0306 is an inventory member — so `Чукотскій` on 1-031
+            # trips this selection exactly as a Chukchee form does. The two arms
+            # disagreed until the reading view made it visible: the generator
+            # wrapped the word as a Tier-1 handle while every frequency table
+            # excluded it, and the page then offered a link to a lexicon that
+            # correctly held nothing. Russian is Tier-2; the ASCII policy does
+            # not reach it and no Cyrillic string is evidence about Bogoras's
+            # notation.
+            if (tok and tok in whole and not cyrillic(tok)
                     and any(c in INVENTORY_CHARS or c == "'" for c in tok)):
                 out.append({"index": len(out) + 1, "line": rec["index"],
                             "text": tok})

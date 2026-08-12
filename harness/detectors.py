@@ -992,8 +992,15 @@ def native_corpus(root: Path = Path(".")) -> list[tuple[str, str]]:
     return [(ref, tok) for ref, _, tok in native_corpus_lines(root)]
 
 
-def _cyrillic(token: str) -> bool:
+def cyrillic(token: str) -> bool:
     """Is this Russian rather than Tier-1?
+
+    **Public because two arms select Tier-1 tokens and both must apply it.**
+    `native_corpus` builds the frequency tables; `context.tier1_terms` builds
+    the handles the generator wraps. They disagreed for a while, and the
+    disagreement was visible only from the reading view: `Чукотскій` on 1-031
+    got a Tier-1 handle from one and was excluded from the other, so the page
+    linked a Russian word to a lexicon that correctly held no card for it.
 
     **`й` is `и` + U+0306, and U+0306 is an inventory member**, so pre-reform
     Russian walked straight into the native corpus on a breve the inventory means
@@ -1055,7 +1062,7 @@ def native_corpus_context(root: Path = Path(".")) -> list[dict]:
         for rec, line in zip(recs, texts, strict=True):
             for m in TOKEN.finditer(line):
                 tok = m.group().strip(EDGE_PUNCT)
-                if tok and not _cyrillic(tok) and any(c in INVENTORY_CHARS
+                if tok and not cyrillic(tok) and any(c in INVENTORY_CHARS
                                                       for c in tok):
                     out.append({"ref": ref, "line": str(rec["index"]),
                                 "token": tok, "text": line})

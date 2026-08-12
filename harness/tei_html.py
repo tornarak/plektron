@@ -43,6 +43,39 @@ LEXICON_LANGS = TIER1
 _TAGS = re.compile(r"<[^>]+>")
 
 
+def _lang_attr(lang: str) -> str:
+    """` lang="ckt"`, or nothing at all where no language is known.
+
+    An empty `lang=""` is not "no language" to a screen reader or a font stack —
+    it is a claim that the element has no language, which is a different and
+    wrong thing to say about a Chukchi word nobody has judged yet.
+    """
+    return f' lang="{escape(lang)}"' if lang else ""
+
+
+def _is_tier1(el) -> bool:
+    """Does this span hold a form the lexicon keys?
+
+    **Two ways to be one, and the second is why a draft page links.** A judged
+    span says so: `xml:lang` in `TIER1`. An *unjudged* one is the generator's
+    handle — a lang-less element carrying `@index`, which `tier1_terms` put
+    there off adjudicated ground truth. The glyphs in it are as settled as the
+    collated page's; the only thing missing is the language, and the lexicon
+    does not key on language.
+
+    So the discriminator is `@index` and not "has no language". `<foreign
+    xml:lang="de">Döring</foreign>` is a foreign span this edition does not key,
+    and a rule that linked every lang-less `<foreign>` would eventually link
+    that too — the detector fires on a combining diaeresis exactly as on a
+    Chukchee form, which is the standing case the generator's own docstring
+    names.
+    """
+    lang = el.get(XML_LANG)
+    if lang is not None:
+        return lang in LEXICON_LANGS
+    return el.get("index") is not None
+
+
 def strip_tags(html: str) -> str:
     """The text of a rendered fragment, for building a key out of it.
 
@@ -250,23 +283,26 @@ class Renderer:
     def _tier1(self, el, body: str, cls: str, why: str, extra: str = "") -> str:
         """A Tier-1 span as a link into the lexicon, or a plain span if it is not one.
 
-        The key is `lang:form` — `ckt:Uweˊlen` — url-encoded on the way out. It
-        names the form itself and not a record, because **there is no lexicon
-        store**: the card it opens says so. That is deliberate rather than a stub.
-        A reader meeting a keyed Chukchi word wants somewhere to put it, and the
-        honest answer today is "this form, this language, these pages, nothing
-        written yet" — which is also exactly the shape an entry will fill.
+        **The key is the bare form**, url-encoded on the way out, because that is
+        the lexicon's identity: an entry carries no language, since a form only
+        becomes `ckt` when a collator judges it. The language rides as `lang=`
+        where one is known and changes nothing about which card opens — so the
+        same word reached from a collated page and from a generated draft is one
+        card, which is the whole point of keying it this way.
+
+        `lang:form` used to be the key and still resolves; the route accepts all
+        three spellings.
         """
         lang = el.get(XML_LANG) or ""
-        if lang not in LEXICON_LANGS or not body.strip():
+        if not _is_tier1(el) or not body.strip():
             return (
-                f'<span class="tier1{cls}" lang="{escape(lang)}" '
+                f'<span class="tier1{cls}"{_lang_attr(lang)} '
                 f'title="{escape(why)}"{extra}>{body}</span>'
             )
-        key = f"{lang}:{unicodedata.normalize('NFD', strip_tags(body))}"
+        key = unicodedata.normalize("NFD", strip_tags(body))
         self.forms.append(key)
         return (
-            f'<a class="tier1 lex{cls}" lang="{escape(lang)}" '
+            f'<a class="tier1 lex{cls}"{_lang_attr(lang)} '
             f'href="{BASE}/lexicon/{quote(key, safe="")}" '
             f'data-key="{escape(key)}" title="{escape(why)}"{extra}>'
             f"{body}</a>"
@@ -290,7 +326,7 @@ class Renderer:
         cls, why = _rank_marks(el)
         body = self.inline(el)
         extra = f' id="{escape(ident)}"' if ident else ""
-        if el.get(XML_LANG) in LEXICON_LANGS:
+        if _is_tier1(el):
             return self._tier1(el, body, cls, why, extra)
         return f'<span class="term{cls}"{extra} title="{escape(why)}">{body}</span>'
 

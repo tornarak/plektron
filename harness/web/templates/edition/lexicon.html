@@ -17,8 +17,13 @@
 <ul>{% for r in g.rows %}
 <li><a class='tier1 lex'{% if r.lang %} lang='{{ r.lang }}'{% endif %}
        data-key='{{ r.form }}'
-       href='{{ base }}/lexicon/{{ r.key | urlencode }}'>{{ r.form }}</a>
-    <code class='dim'>{{ r.key }}</code>
+       href='{{ base }}/lexicon/{{ (r.key or r.form) | urlencode }}'>{{ r.form }}</a>
+{#- A form the handle key cannot spell — Cyrillic, mostly — is reachable by its
+    exact spelling and by nothing else. Said rather than left blank: the missing
+    key is a real limitation of the instrument, not a gap in the row. #}
+    {% if r.key %}<code class='dim'>{{ r.key }}</code>
+    {%- else %}<span class='dim' title='no handle key: this form carries a
+character outside the inventory, so it has no typeable address'>—</span>{% endif %}
     <span class='dim'>{{ r.count }}×</span>
     {%- if r.langs | length > 1 %}
     <span class='pill unsettled'>read as {{ r.langs | join(", ") }}</span>

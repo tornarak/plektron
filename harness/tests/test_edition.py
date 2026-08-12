@@ -125,13 +125,39 @@ def test_a_crop_is_all_ratios(tmp_path):
 
 
 def test_a_tier1_form_becomes_a_lexicon_link(tmp_path):
-    """A reader meeting a keyed Chukchi word wants somewhere to put it. The key is
-    `lang:form` and names the form itself, because there is no lexicon store — the
-    card it opens says so rather than pretending otherwise."""
+    """A reader meeting a keyed Chukchi word wants somewhere to put it.
+
+    **The key is the bare form**, not `lang:form` as it was: the lexicon's
+    identity carries no language, because a form only becomes `ckt` when a
+    collator judges it. The language rides as `lang=` and decides nothing about
+    which card opens."""
     got = render(tmp_path, '<p><foreign xml:lang="ckt" resp="#ed">Uweˊlen</foreign></p>')
-    assert 'class="tier1 lex' in got["html"]
-    assert "ckt%3AUwe" in got["html"]
-    assert got["forms"] == ["ckt:Uweˊlen"]
+    assert 'class="tier1 lex' in got["html"] and "lang=\"ckt\"" in got["html"]
+    assert "ckt%3A" not in got["html"]
+    assert got["forms"] == [unicodedata.normalize("NFD", "Uweˊlen")]
+
+
+def test_an_unjudged_handle_links_the_same_word_to_the_same_card(tmp_path):
+    """**A generated page links too.** The handle's glyphs came off adjudicated
+    ground truth and are as settled as the collated page's; the only thing
+    missing is the language, which the lexicon does not key on. So a reader
+    meets the same card whether or not the page has been collated — which is
+    most of the book, for a long while yet."""
+    judged = render(tmp_path,
+                    '<p><foreign xml:lang="ckt" resp="#ed">Uweˊlen</foreign></p>')
+    draft = render(tmp_path, '<p><foreign index="1">Uweˊlen</foreign></p>')
+    assert 'class="tier1 lex' in draft["html"]
+    assert judged["forms"] == draft["forms"]
+    assert "lang=" not in draft["html"]
+
+
+def test_a_langless_span_without_a_handle_is_not_a_lexicon_link(tmp_path):
+    """The discriminator is `@index` and not "has no language". The detector
+    fires on a combining diaeresis exactly as on a Chukchee form, so a rule
+    linking every lang-less `<foreign>` would reach ordinary German the moment
+    one arrived unmarked."""
+    got = render(tmp_path, "<p><foreign>Döring</foreign></p>")
+    assert "lex" not in got["html"] and got["forms"] == []
 
 
 def test_a_non_tier1_foreign_is_not_a_lexicon_link(tmp_path):
@@ -146,7 +172,7 @@ def test_a_lexicon_key_is_nfd(tmp_path):
     from two pages would open two cards."""
     got = render(tmp_path, '<p><foreign xml:lang="ckt" resp="#ed">'
                            + unicodedata.normalize("NFC", "ré") + "</foreign></p>")
-    assert got["forms"] == ["ckt:" + unicodedata.normalize("NFD", "ré")]
+    assert got["forms"] == [unicodedata.normalize("NFD", "ré")]
 
 
 # --------------------------------------------------------- authored markup

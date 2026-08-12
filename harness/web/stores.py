@@ -104,7 +104,7 @@ def _native(root: str, _key: bytes) -> dict:
         # no buckets — the same answer `entities.load` gives for a missing
         # store, and for the same reason: absence is emptiness, not a 500 on a
         # page that would otherwise render.
-        return {"buckets": {}, "by_key": {}, "unkeyable": []}
+        return {"buckets": {}, "by_key": {}, "unkeyable": {}}
 
 
 def native(root: Path) -> dict:

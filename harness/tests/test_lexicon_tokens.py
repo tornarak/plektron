@@ -379,3 +379,33 @@ def test_what_the_entity_store_suppressed_is_reported(tmp_path):
     assert "Gondatti" in {r["token"] for r in got["suppressed"]}
     assert "Gondatti" not in {r["token"] for r in got["tokens"]}
     assert "Ulakhpen" in {r["token"] for r in got["tokens"]}
+
+
+# --- one selection of "what is Tier-1", not two -------------------------------
+
+def test_the_two_tier1_selections_agree_on_russian():
+    """`native_corpus` excludes Cyrillic and `tier1_terms` did not, so the
+    generator wrapped `Чукотскій` as a Tier-1 handle while every frequency table
+    over the same store excluded it.
+
+    Invisible from either side: the corpus arm looked correct because the word
+    was absent, and the generator arm looked correct because the word really did
+    carry an inventory glyph — `й` is и + U+0306 under NFD. It surfaced only in
+    the reading view, where the handle became a link into a lexicon that
+    correctly held nothing for it. Russian is Tier-2; the ASCII policy does not
+    reach it and no Cyrillic string is evidence about Bogoras's notation.
+    """
+    from harness.detectors import cyrillic
+    assert cyrillic(nfd("Чукотскій")) and not cyrillic(nfd("kełiˊlın"))
+
+
+def test_a_russian_word_gets_no_tier1_handle(tmp_path):
+    """The generator's arm, against the page the class was found on."""
+    from harness.context import tier1_terms
+    _gt_page(tmp_path, "1-031", [
+        ("instead of Tchukotski (Чукотскій),", 400, 1774),
+        ("and the čauˊču beside it", 400, 1774),
+    ])
+    got = [t["text"] for t in tier1_terms("1-031", tmp_path)]
+    assert nfd("čauˊču") in got
+    assert not any("Ѐ" <= c <= "ӿ" for t in got for c in t)
