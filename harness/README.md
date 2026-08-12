@@ -263,6 +263,14 @@ in `build_context` and **not** in `_lines_from_alto`, which also feeds the lexic
 frequency tables that `keying_spec.md` §5.1 cites. Same reader, two consumers, one
 exclusion.
 
+`tier1_terms` is the other selection of Tier-1 tokens, and it calls
+`detectors.cyrillic` for the same reason `native_corpus` does. The two disagreed
+about Russian until the reading view linked the handles: `й` is `и` + U+0306 and
+U+0306 is an inventory member, so `Чукотскій` got a handle from one arm and was
+excluded by the other, invisibly from both sides. It also refuses a token that
+does not survive `join_broken_words` whole — a handle is what `tei expand` stamps
+`#gt`, and the rejoined form is a string no line holds.
+
 **`generate.py`** — the first-draft TEI page, by rule, into `mz/tei/`. Reads
 `gt/zones/` for the paragraph boundaries (`MainZone-P` opens one,
 `MainZone-Continued` does not), `zones.split_at_paragraphs` to cut a band that holds
@@ -303,6 +311,13 @@ rendered rather than tidied away: an unratified rank is marked and an editorial
 comment becomes a flag, because a page with an open question must not look
 finished. `crop_style` places a raster box inside a clipping frame in percentages
 only, so a crop scales to whatever width the panel has.
+
+A Tier-1 span becomes a lexicon link **keyed by the bare form**, so a generated
+page links as a collated one does: the handle is lang-less by design, and the
+lexicon does not key on language. `_is_tier1` is the discriminator — `xml:lang`
+in `TIER1`, *or* no language and an `@index`, which is the generator's handle. Not
+"no language" alone: the detector fires on a combining diaeresis, so that would
+link ordinary German.
 
 **`ipa.py`** — a keyed Bogoras form to imputed IPA, by rule. Reads no scan and
 proposes no glyph, so the firewall is not what it answers to; what it answers to is

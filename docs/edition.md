@@ -452,10 +452,65 @@ it away would present a draft as finished — the failure this project is arrang
 against, appearing at the last possible moment.
 
 **A Tier-1 form is a link too**, into the lexicon — the next section is what it
-opens.
+opens. **The key is the bare form**, not `lang:form` as it was at first, and that
+is what lets a *generated* page link: the generator's handle is deliberately
+lang-less, because which language a form is in is the collator's judgement, so a
+key holding a language linked nothing until a page had been collated. The
+handle's glyphs came off adjudicated ground truth and are as settled as a
+collated page's; the only thing missing is the language, which the lexicon does
+not key on. So the same word opens the same card from either — which matters for
+a while yet, since almost every page is a draft.
+
+The discriminator for an unjudged span is **`@index`, not "has no language"**.
+`<foreign xml:lang="de">Döring</foreign>` is a foreign span this edition does not
+key, and the detector fires on a combining diaeresis exactly as on a Chukchee
+form, so "link every lang-less `<foreign>`" would reach ordinary German the
+moment one arrived unmarked. `lang` is emitted only where one is known: an empty
+`lang=""` is a claim that an element has no language, which is a different and
+wrong thing to say about a word nobody has judged yet.
 
 Attestation is whole-element equality, not a substring search: `Qeˊñ` inside
 `Qeˊñu` is the boundary the Tier-1 machinery protects everywhere else.
+
+### Linking the handles found a disagreement about what Tier-1 is
+
+Two arms select Tier-1 tokens out of `gt/ocr/`: `detectors.native_corpus`, which
+builds every frequency table, and `context.tier1_terms`, which builds the handles
+the generator wraps. They disagreed about Russian.
+
+Pre-1918 Russian sets `й`, which is `и` + U+0306 under NFD, and U+0306 is an
+inventory member — so the selection fires on `Чукотскій` exactly as on a Chukchee
+form. `native_corpus` excludes it, and the argument is written out in
+`detectors.cyrillic`: Russian is Tier-2, the ASCII policy does not reach it, and
+no Cyrillic string is evidence about Bogoras's notation. `tier1_terms` never
+applied that exclusion.
+
+**It was invisible from both sides.** The corpus arm looked right because the
+word was absent from its tables; the generator arm looked right because the word
+genuinely does carry an inventory glyph. What made it visible was linking the
+handles: the page offered a link into a lexicon that correctly held nothing for
+it. `cyrillic` is public now and both arms call it — one rule, two callers, the
+shape `entities.match` is held to for the same reason.
+
+### A form broken across a printed line has no handle, and so no link
+
+`1-033` sets `(Lhê-qoˊya-` at the end of one line and `yo-yêˊᵋḷhɪn).` at the
+start of the next. The form is in the lexicon, citing that page, and the page
+does not mark it. Both are correct and the asymmetry is deliberate.
+
+`tier1_terms` offers a token only if it survives `join_broken_words` **as a whole
+token**, and does not offer the rejoined form in its place. A handle is what `tei
+expand` fills and stamps `#gt`, and `Lhê-qoˊya-yo-yêˊᵋḷhɪn` is a string no line
+holds — whether that last hyphen is the word's or the compositor's is an
+ambiguity the store preserved rather than decided, and a rule picking one would
+write a form nobody read. The lexicon's population comes from
+`native_corpus_context`, which reads the *joined* text, so the word is there with
+its page.
+
+It is "not yet", not "never": the collator gets it as a `detector_flags` row
+naming the joined form and its line, reads the page, and wraps the span across
+the break — `_emit` keeps printed line breaks *inside* an element for exactly
+this. After collation it links like anything else.
 
 ## The lexicon, which does not wait on collation
 
@@ -495,6 +550,21 @@ is not.
 files against thousands of proper nouns; it is not a census, it is where somebody
 had something to say. A form with no file is not missing from the lexicon — its
 card renders in full from the derived half, and says which part of it is absent.
+
+**The population is every attested form, not every addressable one.** That
+distinction cost three forms before it was noticed. `lookup.index` buckets what
+`handle_key` can spell and files the rest under `unkeyable`, which is right for
+an instrument whose product *is* the key and wrong for a lexicon, whose question
+is what the corpus contains — and `lookup.py`'s own docstring says why: "a caller
+that reports 'not found' without saying so has converted a gap into a corpus-wide
+negative." Building the index from the buckets alone did exactly that to `□ña`,
+whose first character is a reader's mark for an unread glyph, and to
+`Kereˊt-kun’s` / `Kereˊtkun’s`, a Tier-1 stem taking an English possessive in
+U+2019. All three are real forms. `unkeyable` now carries the same record a
+bucket's form does, so a caller wanting every attested form can union the two
+without going back to the corpus, and the index prints `—` in the key column
+rather than leaving it blank: the missing address is a limitation of the
+instrument, not a gap in the row.
 
 ### The address, and why it is not the filename
 
