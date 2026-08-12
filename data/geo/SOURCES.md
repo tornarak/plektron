@@ -19,6 +19,7 @@ conditions.
 | `langarea/*.json` | Glottography `asher2007world`, "Traditional speaker areas derived from Asher & Moseley 2007" | **CC BY 4.0 — attribution required** |
 | `watershed/*.json` | Global Watersheds (mghydro.com), over MERIT-Hydro and HydroSHEDS | **CC BY-NC 4.0 or ODbL 1.0 — see below, and it is a live question** |
 | `base/*.json` | Natural Earth 1:50m `land` and `lakes` | public domain |
+| `region/*.json` `marine/*.json` | Natural Earth 1:10m `geography_regions_polys` and `geography_marine_polys` | public domain |
 
 ### Asher & Moseley 2007, via Glottography
 
@@ -37,9 +38,9 @@ source itself carries and the only stable one; a title can be re-spelled and a
 family re-assigned.
 
 **Four of this edition's seven Tier-1 codes have no polygon in it**, and
-`index.json` carries them as an `absent` block so the atlas can say the source
-does not draw them rather than render a blank frame. Established against the
-full title list of every Asher feature reaching north of 50°N, not against a
+`index.json` carries them in the `absent` block (below) so the atlas can say the
+source does not draw them rather than render a blank frame. Established against
+the full title list of every Asher feature reaching north of 50°N, not against a
 keyword guess:
 
 - **Siberian Yupik** — the book's "Asiatic Eskimo", `ypk`. Asher draws Central
@@ -57,6 +58,14 @@ are simply outside the polygon. The build reports this on every run and does
 drew it would be inventing evidence in the one place a reader would never
 check. A map of Chukchi therefore stops at 180°, and that is the source's
 statement, not this edition's.
+
+**And that is still true**, now that the edition draws the land past it. What
+closes the gap is not a redrawn polygon but a composite `area:` on the entity —
+`langarea:chuk1273, base:chukotka-east-of-meridian` — whose second member is
+Natural Earth land and says nothing whatever about speech. See
+`base:chukotka-east-of-meridian` below: the geometry in this store stays
+sourced, and the one inference lives in an entity file, under a `status:`, with
+a name on it.
 
 ### The watersheds
 
@@ -125,6 +134,76 @@ Kept in `scratch/naturalearth/`, which is gitignored; the URLs above are what
 re-fetching needs. 1:50m rather than 1:10m is the ruling: at the widths this
 edition draws a map, the finer set costs several times the bytes for detail no
 reader can see, and the coastline here is context rather than subject.
+
+#### The 1:10m gazetteer, and why the ruling above does not apply to it
+
+    Natural Earth, 1:10m cultural/physical labels —
+    `ne_10m_geography_regions_polys`, `ne_10m_geography_marine_polys`
+    https://www.naturalearthdata.com/  ·  public domain
+
+**The 50m ruling was about context and these are subjects.** A coastline is
+seen only at whole-region scale, so detail below a pixel is waste; a reader who
+opens `water:chaun-bay` has come to look at Chaun Bay, and the frame is the bay.
+So these two layers are taken at 1:10m and simplified at the language-area
+tolerance rather than the base one.
+
+Three features, and **each is named in a declared table** in `tools/build_geo.py`
+exactly as the source spells it — `LANGAREAS`'s rule, for `LANGAREAS`'s reason.
+Searching this file for "Chukchi" returns a sea, a range and a peninsula, and
+choosing among them is a human's act, not a match:
+
+| shape | NE layer | NE `NAME` | `FEATURECLA` |
+|---|---|---|---|
+| `region:chukchi-peninsula` | regions | `CHUKCHI PENINSULA` | Pen/cape |
+| `region:st-lawrence-island` | regions | `St. Lawrence I.` | Island |
+| `marine:chaun-bay` | marine | `Chaun Bay` | bay |
+
+A declared name the layer does not carry is a build **note**, not a silence: the
+source may re-spell one, and a table that quietly matched nothing would leave an
+entity pointing at a shape that was never built. Each row keeps the source's own
+`ne_name`, `featurecla` and `WIKIDATAID` into `index.json`, which is what let the
+store's `wikidata:` link for the Chukchi Peninsula be caught reading `Q193527` —
+a facial bone — against Natural Earth's `Q1002`.
+
+#### `base:chukotka-east-of-meridian` — sourced land, cut by a declared rule
+
+Natural Earth 1:50m land again, and **nothing else is in it**. It exists so that
+a human can join the land east of 180° to Asher's clipped Chukchi area without
+anything redrawing that area, and it is emitted under `base:` because that is
+what it is: coastline, not a speaker area.
+
+The cut is topological, not a longitude window, and that is the whole of its
+correctness. "Asia east of 180" is not expressible as a box — in the store's
+shifted frame East Cape sits at 190.4, St. Lawrence Island at 190 and the Seward
+Peninsula at 195, so any box wide enough for Chukotka's tip contains Alaska. The
+rule is instead:
+
+1. the prepared, **unsimplified** land, already welded across the meridian;
+2. of its components, the **largest one intersecting `langarea:chuk1273`** — the
+   Asian mainland by construction. Smaller components that also touch it are
+   islands inside the speaker area (Ayon, in Chaun Bay, is the standing case)
+   and are reported and excluded: they are not the continent;
+3. intersected with the half-plane east of 180°, and simplified.
+
+Alaska is a different component and the Bering Sea islands are components of
+their own, so neither can enter however the longitudes fall. Measured on the
+built shape: 180.0–190.271°E, 64.28–68.98°N.
+
+### The `absent` block holds two kinds of absence
+
+It began as one — "a Tier-1 code Asher 2007 draws no polygon for", the four
+above — and now also holds **a feature no gazetteer in hand carries at all**.
+Those are different claims. The first is about one atlas's coverage of
+languages; the second is about every source this edition has. Read as the first,
+the second would say Asher omitted a strait, which Asher was never asked about.
+
+So a row carries `sought` and `source` — what was looked for, and where — and
+`why` says only what is particular to it. The live second case is **Bering
+Strait**: neither Natural Earth 10m layer carries it, the marine gazetteer names
+32 straits worldwide and not this one, and hydrographic sources generally draw a
+strait as a line between two capes rather than as an extent. `water:bering-strait`
+therefore carries a `geo:` point (Wikidata Q11769) and no `area:`, which locates
+it without claiming a boundary nothing in hand draws.
 
 ## What the compiled files are
 

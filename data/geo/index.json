@@ -7,12 +7,48 @@
  ],
  "lon_base": 60.0,
  "absent": {
-  "ypk": "Siberian Yupik — the book's “Asiatic Eskimo”. Asher 2007 draws the Alaskan Yupik varieties and no Asian one.",
-  "xcv": "Chuvan. No polygon in Asher 2007.",
-  "kerek": "Kerek. No polygon in Asher 2007.",
-  "yukaghir-tundra": "Tundra (Northern) Yukaghir. Asher 2007 draws Southern Yukaghir only."
+  "ypk": {
+   "sought": "Siberian Yupik speaker area",
+   "source": "asher2007",
+   "why": "The book's “Asiatic Eskimo”. Asher 2007 draws the Alaskan Yupik varieties and no Asian one; they are its comparanda, not substitutes for it."
+  },
+  "xcv": {
+   "sought": "Chuvan speaker area",
+   "source": "asher2007",
+   "why": "No polygon in Asher 2007."
+  },
+  "kerek": {
+   "sought": "Kerek speaker area",
+   "source": "asher2007",
+   "why": "No polygon in Asher 2007."
+  },
+  "yukaghir-tundra": {
+   "sought": "Tundra (Northern) Yukaghir speaker area",
+   "source": "asher2007",
+   "why": "Asher 2007 draws Southern Yukaghir only."
+  },
+  "bering-strait": {
+   "sought": "Bering Strait, as an area",
+   "source": "naturalearth-10m marine and regions",
+   "why": "Neither layer carries it: the marine gazetteer names 32 straits worldwide and not this one, and hydrographic sources generally draw a strait as a line between two capes rather than as an extent. `place:bering-strait` therefore carries a `geo:` point and no `area:`, which locates it without claiming a boundary nothing in hand draws."
+  }
  },
  "shapes": [
+  {
+   "id": "base:chukotka-east-of-meridian",
+   "kind": "base",
+   "name": "Chukotka east of the antimeridian",
+   "source": "naturalearth-50m",
+   "rule": "the land component intersecting langarea:chuk1273, clipped to longitudes east of 180. Natural Earth land only — it says nothing about who speaks what",
+   "file": "base/chukotka-east-of-meridian.json",
+   "points": 169,
+   "bounds": [
+    180.0,
+    64.28,
+    190.271,
+    68.983
+   ]
+  },
   {
    "id": "base:lakes",
    "kind": "base",
@@ -243,6 +279,57 @@
     50.5,
     161.415,
     74.551
+   ]
+  },
+  {
+   "id": "marine:chaun-bay",
+   "kind": "marine",
+   "name": "Chaun Bay",
+   "ne_name": "Chaun Bay",
+   "featurecla": "bay",
+   "wikidata": "Q915250",
+   "source": "naturalearth-10m",
+   "file": "marine/chaun-bay.json",
+   "points": 21,
+   "bounds": [
+    168.15,
+    68.786,
+    170.997,
+    69.837
+   ]
+  },
+  {
+   "id": "region:chukchi-peninsula",
+   "kind": "region",
+   "name": "Chukchi Peninsula",
+   "ne_name": "CHUKCHI PENINSULA",
+   "featurecla": "Pen/cape",
+   "wikidata": "Q1002",
+   "source": "naturalearth-10m",
+   "file": "region/chukchi-peninsula.json",
+   "points": 152,
+   "bounds": [
+    180.868,
+    64.286,
+    190.266,
+    68.54
+   ]
+  },
+  {
+   "id": "region:st-lawrence-island",
+   "kind": "region",
+   "name": "St. Lawrence Island",
+   "ne_name": "St. Lawrence I.",
+   "featurecla": "Island",
+   "wikidata": "Q638407",
+   "source": "naturalearth-10m",
+   "file": "region/st-lawrence-island.json",
+   "points": 25,
+   "bounds": [
+    188.181,
+    62.958,
+    191.275,
+    63.727
    ]
   },
   {
@@ -664,7 +751,7 @@
    ]
   },
   {
-   "id": "watershed:tumanskaya",
+   "id": "watershed:tumanskaya-or-telqap",
    "kind": "watershed",
    "name": "tumanskaya",
    "area_km2": 9500.0,
@@ -676,7 +763,7 @@
    "rivers_kept": 70,
    "rivers_total": 239,
    "sorder_floor": 3,
-   "file": "watershed/tumanskaya.json",
+   "file": "watershed/tumanskaya-or-telqap.json",
    "points": 410,
    "bounds": [
     175.914,

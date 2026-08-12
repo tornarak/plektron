@@ -59,6 +59,56 @@ LANGUAGES = REPO / "scratch" / "languages.geojson"
 NATURALEARTH = REPO / "scratch" / "naturalearth"
 OUT = REPO / "data" / "geo"
 
+#: The Natural Earth **10m** gazetteer layers, and the named features this
+#: edition takes from them. 10m rather than the 50m used for the coastline
+#: because these are *subjects* — a reader opens the page to look at Chaun Bay —
+#: where the coastline is context; the size argument in `TOLERANCE` runs the
+#: other way for a shape somebody is looking at.
+#:
+#: **Selected by a declared table, never by keyword.** The same rule `LANGAREAS`
+#: obeys, and for the same reason: a search for "Chukchi" in this file returns a
+#: sea, a range and a peninsula, and picking one of them is a human's act. The
+#: NE name is on the left exactly as the source spells it, capitals and
+#: abbreviation included, so a source that re-spells one fails loudly here
+#: rather than silently matching nothing.
+NE_GAZETTEER = {
+    "ne_10m_geography_regions_polys.geojson": {
+        "CHUKCHI PENINSULA": ("region:chukchi-peninsula", "Chukchi Peninsula"),
+        "St. Lawrence I.": ("region:st-lawrence-island", "St. Lawrence Island"),
+    },
+    "ne_10m_geography_marine_polys.geojson": {
+        "Chaun Bay": ("marine:chaun-bay", "Chaun Bay"),
+    },
+}
+
+#: The name field differs between the two layers — the regions layer capitalizes
+#: its keys, the marine layer does not — so both are tried rather than one being
+#: assumed. A feature matching neither is not a candidate.
+NE_NAME_KEYS = ("NAME", "name")
+
+#: The land east of the antimeridian, cut from Natural Earth by a declared rule
+#: and emitted as an ordinary `base:` shape. **It asserts nothing about speech.**
+#:
+#: `langarea:chuk1273` stops dead at 180 because that is where Asher drew it,
+#: and `SOURCES.md` argues at length that closing it up here would be inventing
+#: evidence in the one place a reader would never check. So the build does not
+#: close it up. What it does instead is emit the *land* — sourced, mechanical,
+#: no claim in it — and leave the join to a human, who makes it by writing
+#: `area: langarea:chuk1273, base:chukotka-east-of-meridian` onto the entity
+#: with `harness entity locate`. The inference then lives in the entity file
+#: under a `status:` and a name, where a reader can see whose it is.
+#:
+#: THE SELECTION RULE, AND WHY IT IS NOT A LONGITUDE BOX. "Asia east of 180" is
+#: not expressible as a window: in the shifted frame East Cape sits at 190.4,
+#: St. Lawrence Island at 190 and the Seward Peninsula at 195, so any box wide
+#: enough for Chukotka's tip contains Alaska. The rule is instead topological —
+#: **the land component that touches the Asher polygon**, which is the Asian
+#: mainland by construction — intersected with the half-plane east of 180.
+#: Alaska is a different component and the islands are components of their own,
+#: so neither can enter however the longitudes fall.
+EAST_OF_MERIDIAN = "base:chukotka-east-of-meridian"
+EAST_SEED = "langarea:chuk1273"
+
 #: Longitudes are normalized into [LON_BASE, LON_BASE+360). 60 degrees East is
 #: chosen because it is far west of anything this edition touches — the
 #: westernmost source shape starts at 81E — so the wrap point never falls
@@ -123,17 +173,46 @@ LANGAREAS = {
     "aleu1260": ("Aleut", ""),
 }
 
-#: Peoples and languages of the book that Asher 2007 does not draw. Recorded so
+#: What this edition looked for and no source in hand draws. Recorded so
 #: `index.json` is a census rather than a list of what happened to be found:
 #: an entity pointing at nothing and an entity nobody has got to yet look
 #: identical from outside, and only one of them is finished.
+#:
+#: **The block holds two kinds of absence now, and a row says which.** It began
+#: as "a Tier-1 code Asher 2007 draws no polygon for" — four of the seven — and
+#: a marine feature no gazetteer carries at all is a different thing entirely:
+#: the first is a statement about one atlas's coverage of languages, the second
+#: about every source in hand. Read as the first, the second would say Asher
+#: omitted a strait, which Asher was never asked about. So each row carries
+#: `sought` (what was looked for) and `source` (where), and `why` is left to say
+#: only what is particular to it.
 ABSENT = {
-    "ypk": "Siberian Yupik — the book's “Asiatic Eskimo”. Asher 2007 draws the "
-           "Alaskan Yupik varieties and no Asian one.",
-    "xcv": "Chuvan. No polygon in Asher 2007.",
-    "kerek": "Kerek. No polygon in Asher 2007.",
-    "yukaghir-tundra": "Tundra (Northern) Yukaghir. Asher 2007 draws Southern "
-                       "Yukaghir only.",
+    "ypk": {
+        "sought": "Siberian Yupik speaker area",
+        "source": "asher2007",
+        "why": "The book's “Asiatic Eskimo”. Asher 2007 draws the Alaskan "
+               "Yupik varieties and no Asian one; they are its comparanda, "
+               "not substitutes for it.",
+    },
+    "xcv": {"sought": "Chuvan speaker area", "source": "asher2007",
+            "why": "No polygon in Asher 2007."},
+    "kerek": {"sought": "Kerek speaker area", "source": "asher2007",
+              "why": "No polygon in Asher 2007."},
+    "yukaghir-tundra": {
+        "sought": "Tundra (Northern) Yukaghir speaker area",
+        "source": "asher2007",
+        "why": "Asher 2007 draws Southern Yukaghir only.",
+    },
+    "bering-strait": {
+        "sought": "Bering Strait, as an area",
+        "source": "naturalearth-10m marine and regions",
+        "why": "Neither layer carries it: the marine gazetteer names 32 "
+               "straits worldwide and not this one, and hydrographic sources "
+               "generally draw a strait as a line between two capes rather "
+               "than as an extent. `water:bering-strait` therefore carries a "
+               "`geo:` point and no `area:`, which locates it without "
+               "claiming a boundary nothing in hand draws.",
+    },
 }
 
 
@@ -170,6 +249,27 @@ def prepare(geom, window):
         return None
     out = unary_union(parts) if len(parts) > 1 else parts[0]
     return None if out.is_empty else out
+
+
+def polygonal(geom):
+    """The polygonal parts of a geometry, or `None` if it has none.
+
+    Clipping a polygon against a box returns a GeometryCollection wherever the
+    boundary merely *grazes* the cut: the coast touches 180 at a point and
+    follows it for a stretch, and shapely hands back that point and that line
+    beside the areas. They are artifacts of the cut and not part of the land —
+    a stray LineString in an area shape would draw as a hairline off the coast
+    and count toward nothing.
+
+    Filtering rather than `.buffer(0)`, which is this file's standing rule:
+    buffer(0) would also silently repair anything genuinely broken, and a
+    repair nobody was told about is the failure this store is arranged against.
+    """
+    parts = [g for g in getattr(geom, "geoms", [geom])
+             if g.geom_type in ("Polygon", "MultiPolygon") and not g.is_empty]
+    if not parts:
+        return None
+    return unary_union(parts) if len(parts) > 1 else parts[0]
 
 
 def touches_meridian(geom) -> bool:
@@ -311,8 +411,15 @@ def read_langareas(window, notes):
 
 
 def read_base(window, notes):
-    """Natural Earth land and lakes, as one backdrop shape each."""
-    out = {}
+    """Natural Earth land and lakes, as one backdrop shape each.
+
+    Returns the records and, beside them, the **unsimplified** prepared land —
+    `east_of_meridian` cuts from that rather than from what is written out.
+    Simplifying the whole northern hemisphere at 0.08 degrees and then clipping
+    a 400 km sliver out of the result would give the sliver nine kilometres of
+    error along a coast that is the entire subject.
+    """
+    out, raw_land = {}, None
     for layer, fname in (("land", "ne_50m_land.geojson"),
                          ("lakes", "ne_50m_lakes.geojson")):
         path = NATURALEARTH / fname
@@ -325,11 +432,118 @@ def read_base(window, notes):
                     window)
         if g is None:
             continue
+        if layer == "land":
+            raw_land = g
         ident = f"base:{layer}"
         out[ident] = {"id": ident, "kind": "base", "name": layer,
                       "source": "naturalearth-50m",
                       "_shape": reduce(g, TOLERANCE["base"], ident, notes),
                       "_lines": []}
+    return out, raw_land
+
+
+def east_of_meridian(land, seed, window, notes):
+    """The Asian mainland east of 180, cut from Natural Earth by the declared rule.
+
+    `land` is the prepared, unsimplified backdrop; `seed` is the Asher Chukchi
+    polygon, used only to *identify* which land component is Asia. Nothing of
+    the seed's geometry survives into the result — this is Natural Earth land
+    and nothing else, which is what lets it sit under `base:` and claim nothing
+    about who speaks what.
+
+    Returns `None`, with a note, wherever the rule cannot be applied: a missing
+    seed, a land layer that did not build, or a component that turns out to have
+    nothing east of the meridian. A silent empty shape here would be the worst
+    outcome available — the map would simply stop at 180 again, and look exactly
+    like the thing this was written to distinguish itself from.
+    """
+    if land is None or seed is None:
+        notes.append(f"{EAST_OF_MERIDIAN}: needs both base:land and "
+                     f"{EAST_SEED}; one of them did not build — not emitted")
+        return None
+    parts = list(getattr(land, "geoms", [land]))
+    touching = sorted((p for p in parts if p.intersects(seed)),
+                      key=lambda g: g.area, reverse=True)
+    if not touching:
+        notes.append(f"{EAST_OF_MERIDIAN}: no land component touches "
+                     f"{EAST_SEED}, so the Asian mainland cannot be identified "
+                     f"— not emitted")
+        return None
+    # **The largest, not the union.** The Asher polygon reaches the coast, so it
+    # also touches the offshore islands inside it — Ayon, in Chaun Bay, is the
+    # standing case. They are not the mainland, and unioning them in would make
+    # "the Asian continent" mean "Asia and whatever it happens to abut". The
+    # discarded ones are reported so the choice is visible rather than assumed;
+    # a run where a second component is large is a run where the coastline broke.
+    mainland, rest = touching[0], touching[1:]
+    if rest:
+        notes.append(
+            f"{EAST_OF_MERIDIAN}: {len(rest)} smaller land component(s) also "
+            f"touch {EAST_SEED} (largest {max(p.area for p in rest):.3f} deg² "
+            f"against the mainland's {mainland.area:.0f}) — islands inside the "
+            f"speaker area, not the continent; excluded")
+    east = polygonal(mainland.intersection(
+        box(180.0, window[1], window[2], window[3])))
+    if east is None or east.is_empty:
+        notes.append(f"{EAST_OF_MERIDIAN}: the mainland component has nothing "
+                     f"east of 180 — not emitted")
+        return None
+    return {
+        "id": EAST_OF_MERIDIAN, "kind": "base",
+        "name": "Chukotka east of the antimeridian",
+        "source": "naturalearth-50m",
+        "rule": f"the land component intersecting {EAST_SEED}, clipped to "
+                f"longitudes east of 180. Natural Earth land only — it says "
+                f"nothing about who speaks what",
+        "_shape": reduce(east, TOLERANCE["langarea"], EAST_OF_MERIDIAN, notes),
+        "_lines": [],
+    }
+
+
+def read_gazetteer(window, notes):
+    """The named Natural Earth 10m features this edition declares.
+
+    Two layers, one table, and a feature is taken only if the table names it —
+    `LANGAREAS`'s rule. A declared name the layer does not carry is a **note**
+    rather than a silence: the source may have re-spelled it, and a table that
+    quietly matched nothing would leave an entity pointing at a shape that was
+    never built.
+    """
+    out = {}
+    for fname, wanted in NE_GAZETTEER.items():
+        path = NATURALEARTH / fname
+        if not path.exists():
+            notes.append(f"{fname} is missing — see SOURCES.md for where it "
+                         f"comes from; {len(wanted)} shape(s) not built")
+            continue
+        doc = json.loads(path.read_text())
+        seen = set()
+        for f in doc["features"]:
+            props = f["properties"]
+            name = next((props[k] for k in NE_NAME_KEYS if props.get(k)), None)
+            if name not in wanted:
+                continue
+            ident, title = wanted[name]
+            g = prepare(shape(f["geometry"]), window)
+            if g is None:
+                notes.append(f"{ident}: falls outside the region — skipped")
+                continue
+            seen.add(name)
+            kind = ident.partition(":")[0]
+            out[ident] = {
+                "id": ident, "kind": kind, "name": title,
+                "ne_name": name, "featurecla": props.get("FEATURECLA")
+                or props.get("featurecla") or "",
+                "wikidata": props.get("WIKIDATAID") or props.get("wikidataid")
+                or "",
+                "source": "naturalearth-10m",
+                "_shape": reduce(g, TOLERANCE["langarea"], ident, notes),
+                "_lines": [],
+            }
+        for name, (ident, _t) in wanted.items():
+            if name not in seen:
+                notes.append(f"{ident}: {fname} has no feature named "
+                             f"{name!r} — the source may have re-spelled it")
     return out
 
 
@@ -414,9 +628,18 @@ def main(argv=None) -> int:
           f"antimeridian)\n")
 
     shapes = {}
-    shapes.update(read_base(window, notes))
+    base, raw_land = read_base(window, notes)
+    shapes.update(base)
     shapes.update(read_watersheds(window, notes))
-    shapes.update(read_langareas(window, notes))
+    langareas = read_langareas(window, notes)
+    shapes.update(langareas)
+    shapes.update(read_gazetteer(window, notes))
+    # After the language areas, because the rule reads one of them to identify
+    # which land component is Asia — and reads nothing else from it.
+    seed = langareas.get(EAST_SEED, {}).get("_shape")
+    east = east_of_meridian(raw_land, seed, window, notes)
+    if east:
+        shapes[EAST_OF_MERIDIAN] = east
 
     index = {"window": list(window), "lon_base": LON_BASE,
              "absent": ABSENT, "shapes": []}
