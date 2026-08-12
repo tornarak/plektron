@@ -30,7 +30,7 @@
   "bering-strait": {
    "sought": "Bering Strait, as an area",
    "source": "naturalearth-10m marine and regions",
-   "why": "Neither layer carries it: the marine gazetteer names 32 straits worldwide and not this one, and hydrographic sources generally draw a strait as a line between two capes rather than as an extent. `place:bering-strait` therefore carries a `geo:` point and no `area:`, which locates it without claiming a boundary nothing in hand draws."
+   "why": "Neither layer carries it: the marine gazetteer names 32 straits worldwide and not this one, and hydrographic sources generally draw a strait as a line between two capes rather than as an extent. `water:bering-strait` therefore carries a `geo:` point and no `area:`, which locates it without claiming a boundary nothing in hand draws."
   }
  },
  "shapes": [
