@@ -30,9 +30,8 @@ from ..entities import (
     split_id,
     trigger_index,
 )
-from ..geo import canonical_area
+from ..geo import canonical_area, split_area
 from ..geo import index as geo_index
-from ..geo import split_area
 from ._common import (
     action,
     add_all,
