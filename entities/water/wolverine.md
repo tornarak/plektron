@@ -10,6 +10,7 @@
 | form | auto | note |
 |---|---|---|
 | Wolverine River | no | |
+| Wolverene River | no | the book's spelling on 1-336 |
 
 ## gloss
 

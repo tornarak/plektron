@@ -935,6 +935,22 @@ the commoner of the two answers.
 Nothing may push you toward wrapping. The detector is a **floor**, not a verdict,
 and a handle you cannot justify a language for is one to remove.
 
+**A handle may arrive already inside an `<rs>`.** Where the entity store carries
+the same string as a trigger — `place:anadyr` holds `Veᵋñ` — the generator
+encloses the handle rather than dropping the link:
+
+```xml
+<rs ref="place:anadyr" resp="#mz"><foreign index="4">Veᵋñ</foreign></rs>
+```
+
+Each `@resp` is a claim about its own element, and the two are separate
+questions. The `<rs>` says which entity the string names, applied by rule from a
+human's trigger table, and `validate` re-derives it on every run. The
+`<foreign>` is still yours, unchanged: assign the language, or unwrap it. If you
+unwrap it, **leave the `<rs>` standing** — that a word names Anadyr does not
+depend on what language it is in, and removing it would delete a link no
+judgement of yours contradicted.
+
 Non-English content splits into two tiers, treated differently, because the risk
 differs by language and not just by "is it English".
 
@@ -1258,6 +1274,13 @@ identity is a different scheme and does not exist yet.
   extent rather than stopping at the quotation marks, and name both terms in one
   `@target` where the page prints a gloss once for a pair? Is `type="literal"` or
   `"etymon"` written only where the page cues it?
+- Every Tier-1 span the gate reports as **neither glossed nor identified**: is
+  that the page's answer or mine? Three dispositions and no fourth — link the
+  gloss the page prints, type the `<name>` where the page identifies one, or
+  leave it, because the book does print bare forms and inventing a gloss for one
+  is the failure this whole apparatus exists to prevent. It is a warning for
+  that reason; clearing it by writing English the page does not say is worse
+  than leaving it standing.
 - Every Tier-1 name the page identifies as one: `<name>` rather than `<foreign>`,
   typed only where the page says, and carrying no `@key`/`@nymRef`? Every
   non-Tier-1 proper noun that is **not** a person left bare? (Both: always.)

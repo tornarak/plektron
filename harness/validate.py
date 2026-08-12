@@ -27,6 +27,7 @@ from .state import load_toc
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
+XML_ID_ATTR = "{http://www.w3.org/XML/1998/namespace}id"
 # The closed set the firewall covers: languages the book renders in the same
 # ambiguous Americanist notation, so a glyph inside one carries the inventory and
 # the ASCII policy. `.claude/skills/transcribe-page/SKILL.md` says when each fires.
@@ -1113,6 +1114,70 @@ def validate(tei_path: Path, ctx: dict | None = None,
             "reading here; what is unratified about them is which token the pass "
             "chose, not what it says")
 
+    # A Tier-1 span a reader can do nothing with. Neither glossed nor identified
+    # is a warning and not an error, because the book genuinely leaves forms
+    # bare and no model may write a gloss the page does not carry — the remedy
+    # is to link the printed gloss, mark the name, or say why neither applies.
+    #
+    # **Glossed is decided by `xml:id` membership, and a span with no id is
+    # unglossed exactly rather than approximately.** `ids.py` and this file both
+    # state the scheme's rule as "no id without a referrer": an id exists *iff*
+    # something points at it. So absence of an id is absence of an incoming
+    # gloss, by construction and not by luck — which is why there is no
+    # containment fallback here, the inference `ids.pair_glosses` and
+    # `ids.page_glossary` both refuse in writing.
+    #
+    # **Identified is a `<name>` carrying an approved `@type`, or an `@ref`.**
+    # A bare `<name>` is not enough here, and the `names_untyped` comment below
+    # does not license one: that argument is about the page's names at large,
+    # most of which are English prose and typed only where the page evidences a
+    # category. A Tier-1 span is a handful per page and the question asked of it
+    # is different — a native word a reader cannot place is exactly the thing
+    # this edition exists to resolve, and "it is a name of some kind" places it
+    # nowhere. `@ref` counts because a rule-applied link is an `<rs>`, which
+    # carries no `@type` at all: the class is the ref's own prefix.
+    #
+    # **A re-mention does not fire.** `1-101` glosses `qeˊñu` in one item and
+    # uses it inside another item's gloss; demanding a second gloss there asks
+    # for the same fact twice. Compared case-sensitively — folding here would
+    # import `marks.fold`'s judgement that two settings are one word, which is
+    # not this gate's to make.
+    from .ids import glossed_ids
+
+    def _span(el) -> str:
+        return unicodedata.normalize(
+            "NFD", " ".join("".join(el.itertext()).split()))
+
+    glossed = glossed_ids(root)
+    by_id = {i: el for el in root.iter()
+             if isinstance(el.tag, str) and (i := el.get(XML_ID_ATTR))}
+    glossed_text = {_span(by_id[i]) for i in glossed if i in by_id}
+    tier1_unglossed = 0
+    for el in root.iter():
+        if not isinstance(el.tag, str) or el.get(XML_LANG) not in TIER1:
+            continue
+        parent = el.getparent()
+        if (el.get(XML_ID_ATTR) in glossed
+                or any(isinstance(d.tag, str)
+                       and etree.QName(d).localname == "name"
+                       and d.get("type") in NAME_TYPES
+                       for d in el.iter())
+                or el.get("ref")
+                or (parent is not None and parent.get("ref"))):
+            continue
+        span = _span(el)
+        if span in glossed_text:
+            continue
+        tier1_unglossed += 1
+        r.warnings.append(
+            f"<{etree.QName(el).localname} xml:lang={el.get(XML_LANG)!r}> "
+            f"{span[:40]!r} is "
+            "neither glossed nor identified — no <gloss target> points at it, "
+            "no <name> with a declared @type covers it, and no entity @ref "
+            "stands over it, so a reader meeting it has nowhere to go. Link "
+            "the printed gloss, type the name, or leave it if the page really "
+            "says nothing about the word")
+
     # Proper nouns, and the entity references over them. The pass marks
     # *category* from the page; identity now resolves, against `entities/`.
     store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
@@ -1290,6 +1355,11 @@ def validate(tei_path: Path, ctx: dict | None = None,
         # to avoid. Unlike the Tier-1 census above, this count trends nowhere.
         "names": names,
         "names_untyped": untyped,
+        # Tier-1 spans with nowhere for a reader to go. A count beside the
+        # warnings, so the corpus-wide trend is visible whatever any one page's
+        # warnings do — and so a page whose forms the book genuinely leaves bare
+        # reads as a number rather than as a page full of defects.
+        "tier1_unglossed": tier1_unglossed,
         # Entity references, and how many of them a rule wrote rather than a
         # reader. The second is not a quality measure and must not be read as one:
         # it counts links that still *derive*, not links the sentence supports —

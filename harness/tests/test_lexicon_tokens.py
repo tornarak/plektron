@@ -28,6 +28,7 @@ from pathlib import Path
 
 from harness.detectors import (
     EDGE_PUNCT,
+    _lexicon,
     detect_all,
     english_genitive,
     join_broken_words,
@@ -35,6 +36,7 @@ from harness.detectors import (
     native_corpus_lines,
     suggest_lexicon,
 )
+from harness.tests.test_entities import entry
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
 
@@ -211,7 +213,7 @@ def test_broken_english_words_leave_the_miss_list(tmp_path):
         ("the Chuk-", 400, 1774),
         ("chee reindeer-herds", 400, 1774),
     ])
-    tokens = {r["token"] for r in suggest_lexicon(tmp_path)}
+    tokens = {r["token"] for r in suggest_lexicon(tmp_path)["tokens"]}
     assert "Chuk" not in tokens and "chee" not in tokens
     assert "Chuk-chee" not in tokens
     assert "reindeer-herds" not in tokens
@@ -291,3 +293,89 @@ def test_a_second_lookalike_in_the_token_defeats_the_explanation():
 def test_without_a_lexicon_nothing_is_suppressed():
     """Fails closed: no dictionary, no claim about what English knows."""
     assert not english_genitive("reindeer’s", set())
+
+
+# --- the entity store as the corpus's proper-noun dictionary ------------------
+#
+# The proper nouns used to be listed twice: once in `data/lexicon_extra.txt` and
+# once as an entity's canonical or trigger. `detectors.entity_forms` made the
+# second the only one. What these hold is the direction of the move — a name
+# filed in `entities/` stops being a miss — and the structural fact that keeps it
+# from becoming a hole: the detector cannot see a marked form either way.
+
+
+def _extra(root: Path, *terms: str) -> None:
+    (root / "data").mkdir(parents=True, exist_ok=True)
+    (root / "data" / "lexicon_extra.txt").write_text(
+        "\n".join(terms) + "\n", encoding="utf-8")
+
+
+def test_a_trigger_form_is_not_a_miss(tmp_path):
+    _extra(tmp_path, "placeholder")
+    entry(tmp_path, "person:gondatti", canonical="Nikolai Gondatti",
+          triggers=[("Gondatti", False)])
+    assert not lexicon_miss("Gondatti", _lexicon(tmp_path))
+
+
+def test_a_canonical_is_split_into_its_components(tmp_path):
+    """`Bering Strait` is filed as one canonical and reaches `_unknown_word` as
+    two components, so an entry contributing only the joined string would leave
+    both of them missing. Hyphen too: `Sredne-Kolymsk` splits the way
+    `lexicon_miss` splits it."""
+    _extra(tmp_path, "placeholder")
+    entry(tmp_path, "water:bering-strait", canonical="Bering Strait")
+    entry(tmp_path, "place:sredne-kolymsk", canonical="Sredne-Kolymsk")
+    lex = _lexicon(tmp_path)
+    assert not lexicon_miss("Bering", lex)
+    assert not lexicon_miss("Strait", lex)
+    assert not lexicon_miss("Sredne", lex)
+    assert not lexicon_miss("Kolymsk", lex)
+
+
+def test_a_native_trigger_reaches_the_dictionary_and_changes_nothing(tmp_path):
+    """**The structural guard, and the one a refactor breaks silently.** An
+    entity may carry a native alias as a trigger — `place:anadyr` carries `Veᵋñ`
+    — and that form does land in this dictionary. It is inert there: a marked
+    form is not ASCII, and `_unknown_word` reports only on ASCII components. So
+    the trigger table cannot blind `lexicon_miss`, which is the only detector
+    that could catch an unmarked romanized form.
+
+    Asserted as an equality between two dictionaries rather than as a property
+    of the form, because what must hold is that adding the trigger changed the
+    *answer* nowhere, not merely that this one token still misses."""
+    _extra(tmp_path, "placeholder")
+    entry(tmp_path, "place:anadyr", canonical="Anadyr")
+    before = _lexicon(tmp_path)
+    verdicts = {t: lexicon_miss(t, before)
+                for t in ("Anadyr", nfd("Veᵋñ"), "Ulakhpen", "reindeer")}
+    entry(tmp_path, "place:anadyr", canonical="Anadyr",
+          triggers=[(nfd("Veᵋñ"), True)])
+    after = _lexicon(tmp_path)
+    assert {t: lexicon_miss(t, after) for t in verdicts} == verdicts
+
+
+def test_an_entity_filed_after_the_first_call_is_seen(tmp_path):
+    """The dictionary is cached per root, and `entities/` changes *inside* a
+    process — `edition_ui._guarded` writes it on a browser click. Keyed on the
+    store's stamp, so the cache follows the store rather than outliving it."""
+    _extra(tmp_path, "placeholder")
+    assert lexicon_miss("Gondatti", _lexicon(tmp_path))
+    entry(tmp_path, "person:gondatti", canonical="Nikolai Gondatti")
+    assert not lexicon_miss("Gondatti", _lexicon(tmp_path))
+
+
+def test_what_the_entity_store_suppressed_is_reported(tmp_path):
+    """A second source could absorb a name silently. `misses` detects against
+    the dictionary and `lexicon_extra.txt` alone and re-tests each hit against
+    the store, so a token the store accounts for moves to `suppressed` rather
+    than off the report."""
+    _extra(tmp_path, "placeholder")
+    entry(tmp_path, "person:gondatti", canonical="Nikolai Gondatti",
+          triggers=[("Gondatti", False)])
+    _gt_page(tmp_path, "1-002", [
+        ("Gondatti reports the Ulakhpen", 400, 1774),
+    ])
+    got = suggest_lexicon(tmp_path)
+    assert "Gondatti" in {r["token"] for r in got["suppressed"]}
+    assert "Gondatti" not in {r["token"] for r in got["tokens"]}
+    assert "Ulakhpen" in {r["token"] for r in got["tokens"]}

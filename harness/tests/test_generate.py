@@ -23,6 +23,8 @@ import pytest
 from conftest import write_scan
 
 from harness import generate as gen
+from harness.tests.test_entities import entry
+from harness.tests.test_lexicon_tokens import nfd
 from harness.zones import save_zones
 
 ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
@@ -636,3 +638,61 @@ def test_the_figure_shape_is_conformant_on_a_real_figure_page(tmp_path):
     errs = [e for e in check(etree.ElementTree(etree.fromstring(doc.encode())), REPO)
             if "attribute index for element foreign" not in e]
     assert errs == []
+
+
+# --- a Tier-1 form that is also an entity alias -------------------------------
+#
+# The rule used to drop every trigger hit touching a Tier-1 handle, on the ground
+# that a rule resolving an identity for a string whose glyphs it may not name is
+# the firewall's failure shape. That holds for reaching *inside* a handle. A store
+# that carries `Veᵋñ` as a trigger for `place:anadyr` has already made the
+# judgement; enclosing the handle applies it without touching a glyph.
+
+
+def test_a_trigger_coinciding_with_a_handle_is_wrapped_not_dropped(tmp_path):
+    """The `<rs>` encloses the `<foreign>`; neither element loses anything.
+
+    Each `@resp` stays a claim about its own element — the outer names the
+    entity, the inner says a ratified token sits here — so the handle still
+    carries no `xml:lang` and the collator's question is untouched."""
+    entry(tmp_path, "place:anadyr", canonical="Anadyr",
+          triggers=[(nfd("Veᵋñ"), True)])
+    blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert nfd('<rs ref="place:anadyr" resp="#mz"><foreign index="1">Veᵋñ'
+               "</foreign></rs>") in doc
+    assert rep["handles"] == 1
+    assert "xml:lang" not in doc
+
+
+def test_a_trigger_merely_overlapping_a_handle_is_still_dropped(tmp_path):
+    """Coincidence is the only relation that needs no opinion about where the
+    form ends. Here the trigger runs past the handle, so the store and the
+    detector disagree about the token's extent and the rule declines to pick."""
+    entry(tmp_path, "place:anadyr", canonical="Anadyr",
+          triggers=[(nfd("Veᵋñ there"), True)])
+    blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "<rs" not in doc
+    assert nfd('<foreign index="1">Veᵋñ</foreign>') in doc
+
+
+def test_the_wrapped_link_still_re_derives_at_the_gate(tmp_path):
+    """`#mz` asserts nothing on its own: `validate` recomputes the owner from the
+    store on every run. The nesting must not put the link out of that loop — the
+    `<rs>`'s own text is the Tier-1 string, which is the form the trigger table
+    is keyed on."""
+    from harness.validate import validate
+    entry(tmp_path, "place:anadyr", canonical="Anadyr",
+          triggers=[(nfd("Veᵋñ"), True)])
+    blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    out = tmp_path / "tei" / "chukchi-1-021.xml"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(doc, encoding="utf-8")
+    errs = validate(out, {"page_ref": "1-021", "root": str(tmp_path),
+                          "figures_on_page": [], "ocr_lines": [],
+                          "toc_window": []}).errors
+    assert not any("no longer derives" in e or "resolves the form" in e
+                   for e in errs)
+    assert not any("never carries a glyph" in e for e in errs)

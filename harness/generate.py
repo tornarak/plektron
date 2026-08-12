@@ -423,8 +423,12 @@ def _tier1_spans(rows: list[tuple[int, str]], by_line: dict[int, list[dict]],
 
 
 def _entity_spans(full: str, taken: list[tuple], ents: dict,
-                  autos: dict) -> tuple[list[tuple], list[dict]]:
+                  autos: dict) -> tuple[list[tuple], list[tuple], list[dict]]:
     """Trigger hits over the block: the ones a rule may link, and the ones it may not.
+
+    Returns `(tier1, links, candidates)` — the Tier-1 spans back, because a hit
+    that coincides with one is expressed by rewriting that span rather than by
+    adding a second one beside it.
 
     **Matched over the joined block, not per line**, because the printed line
     breaks fall inside the most reliable triggers — `1-021` sets "the Jesup North
@@ -432,24 +436,51 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
     end would miss exactly the multi-word forms that are unambiguous enough to
     link.
 
-    A hit overlapping a Tier-1 handle is dropped rather than linked. Linking a
-    Tier-1 form is the collator's act, after judging what language it is in;
-    a rule that reached inside a handle would be resolving an identity for a
-    string whose glyphs it is forbidden even to name.
+    **A hit that merely overlaps a Tier-1 handle is dropped; one that exactly
+    coincides with it is wrapped.** The rule this used to state — that a rule
+    linking a Tier-1 form "would be resolving an identity for a string whose
+    glyphs it is forbidden even to name" — holds for *reaching inside* a handle
+    and not for *enclosing* one:
+
+        <rs ref="place:uelen" resp="#mz"
+          ><foreign index="7">Uweˊlen</foreign></rs>
+
+    Each `@resp` is a claim about its own element. The outer says which entity
+    this string names, which is the trigger table's judgement applied by rule;
+    the inner says a ratified token sits here, and still carries no `xml:lang`,
+    so the collator's question is untouched and `tei expand` still stamps `#gt`
+    on the element that holds the glyphs. `validate`'s rule that `#mz` "is
+    confined to `@ref` on `<rs>`, and never carries a glyph" is honoured
+    literally: the element carrying `#mz` has no text of its own.
+
+    Coincidence is required rather than containment because it is the only
+    relation that needs no opinion about where the form ends. `place:anadyr`
+    already carries `Veᵋñ` as a trigger; a partial overlap would mean the store
+    and the detector disagree about the extent of the token, and picking a side
+    there is exactly the inference this refuses.
     """
     from .entities import match
 
+    by_bounds = {(s[0], s[1]): i for i, s in enumerate(taken)}
+    tier1 = list(taken)
     links, candidates = [], []
     for h in match(full, ents):
-        if any(h["start"] < span[1] and span[0] < h["end"] for span in taken):
-            continue
+        at = by_bounds.get((h["start"], h["end"]))
         owner = None if h["hyphenated"] else autos.get(h["form"])
-        if owner:
+        if at is None and any(h["start"] < s[1] and s[0] < h["end"]
+                              for s in taken):
+            continue
+        if not owner:
+            candidates.append(h)
+            continue
+        if at is None:
             links.append((h["start"], h["end"],
                           f'<rs ref="{owner}" resp="#mz">', "</rs>"))
-        else:
-            candidates.append(h)
-    return links, candidates
+            continue
+        start, end, open_, close = tier1[at]
+        tier1[at] = (start, end, f'<rs ref="{owner}" resp="#mz">{open_}',
+                     f"{close}</rs>")
+    return tier1, links, candidates
 
 
 def _emit(full: str, spans: list, indent: str) -> str:
@@ -551,7 +582,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             at += len(t) + 1                  # +1 for the joining newline
         full = "\n".join(texts)
         spans = _tier1_spans(rows, by_line, offsets)
-        links, cands = _entity_spans(full, spans, ents, autos)
+        spans, links, cands = _entity_spans(full, spans, ents, autos)
         pending.extend(cands)
         return _emit(full, spans + links, indent)
 

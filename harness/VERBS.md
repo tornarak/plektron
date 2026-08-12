@@ -239,6 +239,7 @@ them apart is the entire point of `tei diff`.
 **Reads** `tei/`, plus everything `context` reads.
 **Writes** —
 **Exit** 1 on FAIL — the worst across refs, so one failing page fails the batch.
+**Note** a Tier-1 span that is **neither glossed nor identified** is a warning, plus the metric `tier1_unglossed`. Glossed means a `<gloss target>` points at its `xml:id`, and nothing else — a span with no id is unglossed exactly, since the id scheme's own rule is that an id exists iff something points at it, so there is no containment fallback to write. Identified means a `<name>` with a declared `@type`, or an entity `@ref` on the span or its wrapper; a bare `<name>` does not clear it, deliberately and unlike `names_untyped`, because "a name of some kind" places a native word nowhere. A form the same page glosses elsewhere does not warn again. A **warning** and not an error: the book leaves forms bare, and no model may write a gloss the page does not carry.
 **Note** `--json` swaps the rendered report for `{ok, errors, warnings, worklist, metrics}`.
 **Note** **the one action that does not pool.** Its payload is a rendered report and prose does not tabulate, so several refs print several reports under `# REF` lines. One ref prints exactly what it always did, with no header.
 **Note** **every page carries one `<!-- opens: … -->`**, immediately after `<pb>` and ahead of any other comment, from the closed set `indented` / `flush to the measure` / `no witness`. It is the seam's third witness — the first line's indent — and the only one that does not survive into the TEI: the previous page's tail is in its own file and this page's opening text is in this one, while the indent is on the raster. The collator has the image; the coordinator writing `@part` does not, and re-deriving it means reopening a page to answer a question already answered. **Witness, not verdict**: `@part` is the verdict and `tei seam` is the only thing that writes one, so the two are not one fact stated twice. Checked as the first *comment after* `<pb>` rather than the first node — a comment is not an element, so the "pb is first" rule steps over one placed before it, and starting the walk at `<pb>` is what keeps a fixed form from quietly becoming two. `no witness` is in the set because a heading or a plate has no measure to judge against, and left to the comment's absence that answer is indistinguishable from a collator that never looked.
@@ -1115,9 +1116,10 @@ Frequency reports over the native corpus in restored `gt/ocr/`, plus the gloss
 dictionary, which reads committed TEI instead. All report-only, all exit 0.
 
 ### lexicon misses
-**Does** frequency-ranked `lexicon_miss` tokens, for bulk approval into `data/lexicon_extra.txt` — which suppresses `lexicon_miss` and nothing else.
-**Reads** `gt/ocr/`, `data/lexicon_extra.txt`. **Named, not the view**: every recognizer error in `mz/ocr/` is a token no dictionary carries, i.e. a `lexicon_miss`, and this list feeds a committed human-edited file that suppresses the detector meant to catch them.
+**Does** frequency-ranked `lexicon_miss` tokens, for bulk approval — a proper noun into `entities/`, anything else into `data/lexicon_extra.txt`. Two lists: `tokens` is what neither source accounts for, `suppressed` what the entity store already does.
+**Reads** `gt/ocr/`, `data/lexicon_extra.txt`, `entities/`. **Named, not the view**: every recognizer error in `mz/ocr/` is a token no dictionary carries, i.e. a `lexicon_miss`, and this list feeds committed human-edited stores that suppress the detector meant to catch them.
 **Writes** — **Exit** 0.
+**Note** `suppressed` exists because the entity store is the *second* source and could otherwise absorb a name silently. Detection runs against the dictionary and `lexicon_extra.txt` alone; each hit is then re-tested against the store's canonicals and trigger forms, so what the move to `entities/` took off this list is on it, named. A Tier-1 form in either source is inert regardless — `lexicon_miss` tests only ASCII components of length > 3.
 ```
 --root --json --toon --pager
 ```

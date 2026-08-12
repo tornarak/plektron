@@ -9,136 +9,43 @@
 # Do NOT add Chukchi, Koryak or Yupik forms. Those are the signal.
 # Matching is case-folded, on hyphen/apostrophe-split components of a token.
 #
+# **Proper nouns are not kept here.** They are entries in `entities/`, whose
+# canonical names and trigger forms `detectors.entity_forms` reads back into
+# this dictionary — one file per name, saying which page first attested it,
+# instead of a bare line in a list nothing can audit. `harness lexicon misses`
+# prints what the entity store accounts for under `suppressed`, so the second
+# source is visible rather than silent.
+#
+# What is left below under a proper-noun heading is the residue of that move:
+# names no page in `gt/ocr/` attests, so `entity new --since` has no witness to
+# name and the entry cannot honestly be filed yet. They suppress nothing today —
+# the detector only ever runs over adjudicated ground truth — and are kept
+# against the pages still to be keyed.
+#
 # One term per line; `#` starts a comment. Seed the list from real counts with
-#     uv run harness lexicon --suggest
+#     uv run harness lexicon misses
 
-### --- Proper Nouns (Author / Source)
-Adler
+### --- Proper Nouns (Author / Source), unattested in gt/ocr/
 Almquist
-Argentoff
-Argentov
-Boas
-# Two variant spellings
-Bogdanovich
-Bogdanovitch
-Bogoras
-Dall
-# Two variant spellings
-Dyachkoff
-Dyachkov
-Gilder
-Gondatti
-Hooper
-Hough
-Jackson
-Jochelson
 Kjellman
 Kotzebue
-# Two variant spellings
-Krasheninnikoff
-Krasheninnikov
-Krause
-Kroeber
-Kyber
-Laufer
 Litke
-Mason
-Maydell
-Melikoff
-Middendorff
 Morse
-Murdoch
 Neimann
-Nelson
-Nordenskiöld
-Nordquist
 Olsufyev
-Ratzel
-Resin
 Sarychev
-Sauer
-Schrenck
 Shklovsky
 Sieroszewski
-Slunin
 Stein
-Steller
-Teit
-Wrangell
 
-### --- Proper Nouns (Ethnicities)
+### --- Proper Nouns (Ethnicities), unattested in gt/ocr/
+# The book sets the marked Aiˊwan; this is the bare romanization
 Aiwan
-Chaun
-Chukchee
+# The book sets "Chukchee" throughout; this is the modern spelling
 Chukchi
-Chuvantzy
-Cossacks
-Gilyak
-Kamchadal
-Kerek
-Koryak
-Lamut
-Shelag
-Shelags
-Tuski
-# Mentioned in passing
 Manitou
-Namollo
-Russianized
-Tungus
-Yakut
-Yukaghir
 
-### --- Proper Nouns (Toponyms)
-## Rivers
-Alaseya
-Anadyr
-Anui
-Gishiga
-Indighirka
-Oloi
-Omolon
-Opuka
-# (sic)
-Wolverene
-## Islands
-# "Diomede Islands"
-Diomede
-## Bays
-# "Karagha Bay"
-Karagha
-## Topographic Features
-# "Cape Anannon" (where is this?)
-Anannon
-# "Cape Chukotsky"
-Chukotsky
-# "Cape Erri"
-Erri
-# "Cape Olutorsky" / "Cape Alutorsky"
-Olutorsky
-Alutorsky
-# "Parapolsky Dol"
-Parapolsky
-## Settlements
-Anadyrsk
-Chikayeva 
-# Where is this?
-Gishiginsk
-# "Mariinsky Post"
-Mariinsky
-Markova
-Petersburg
-# "Sredne-Kolymsk" and "Nishne-Kolymsk" - currently no support for hyphenated nouns
-Sredne
-Nishne
-Kolymsk
-
-### --- Proper Nouns (Persons)
-Pavlutsky
-
-### --- Proper Nouns (Mythology)
-# The hero of the folk-tale "Elendi and His Sons", printed in full in the Russian-language "Chukchee Tales"
-Elendi
+### --- Proper Nouns (Mythology), unattested in gt/ocr/
 # The "Wakan Tanka" of the Lakota (mentioned in passing), not the African one
 Wakanda
 
@@ -148,23 +55,6 @@ weregild
 ### --- biology
 # "membrum virile"
 membrum
-
-### --- Taxonomic Names
-## Genus
-Phoca
-Erignathus
-Histriophoca
-## Species
-hispida
-ochotensis
-macrodens
-fasciata
-barbatus
-## Authorities
-# The describing author, printed after the binomial and part of the name:
-# "Phoca foetida Pallas". Not a genus, and not an authority in the sense of
-# data/authorities.json — that store is the book's own bibliography.
-Pallas
 
 ### --- Idiosyncratic Terms or spellings
 affluents

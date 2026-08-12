@@ -293,6 +293,35 @@ def list_scope(el, ref: str, root: Path = Path("."),
     return "", False
 
 
+def glossed_ids(root_el) -> set[str]:
+    """Every `xml:id` on this page that a `<gloss>` points at.
+
+    The one implementation of "is this term glossed", because two callers ask it
+    — this page's dictionary, and `validate`'s check that a Tier-1 span has
+    somewhere for a reader to go. Two walks of the same rule would drift in the
+    direction that hides the drift.
+
+    `@target` is a space-separated URI list in TEI, and one printed span
+    routinely glosses two terms: 1-101's age list sets "from one to two years
+    old" once for the male and female forms it follows. Reading the attribute
+    whole silently dropped every such gloss, which is the same defect as pairing
+    by containment — a gap in the dictionary invisible from inside it.
+
+    A target that resolves to something other than `<term>` or `<name>` is not
+    counted. A gloss may point at a list or a note for other reasons, and only
+    those two elements are headwords.
+    """
+    by_id = ids_in(root_el)
+    out = set()
+    for gl in root_el.iter(f"{{{TEI_NS}}}gloss"):
+        for target in (gl.get("target") or "").split():
+            target = target.lstrip("#")
+            el = by_id.get(target)
+            if el is not None and localname(el) in ("term", "name"):
+                out.add(target)
+    return out
+
+
 def page_glossary(root_el, ref: str, root: Path = Path("."),
                   cache: dict | None = None) -> dict:
     """Resolved term↔gloss pairs on one page, plus what is *not* resolved.
@@ -307,20 +336,17 @@ def page_glossary(root_el, ref: str, root: Path = Path("."),
     dictionary, which is the only place anyone would look for it.
     """
     by_id = ids_in(root_el)
-    linked, seen_terms = [], set()
+    seen_terms = glossed_ids(root_el)
+    linked = []
     for gl in root_el.iter(f"{{{TEI_NS}}}gloss"):
-        # `@target` is a space-separated URI list in TEI, and one printed span
-        # routinely glosses two terms: 1-101's age list sets "from one to two years
-        # old" once for the male and female forms it follows. `pointers_in` has
-        # always split it; reading the attribute whole here silently dropped every
-        # such gloss, which is the same defect as pairing by containment — a gap in
-        # the dictionary invisible from inside the dictionary.
+        # Which targets count is `glossed_ids`', not restated here: the
+        # space-split, the `#`, and the rule that only a `<term>` or `<name>` is
+        # a headword all live there, and `validate` asks the same question.
         for target in (gl.get("target") or "").split():
             target = target.lstrip("#")
-            term = by_id.get(target)
-            if term is None or localname(term) not in ("term", "name"):
+            if target not in seen_terms:
                 continue
-            seen_terms.add(target)
+            term = by_id[target]
             scope, scope_supplied = list_scope(gl, ref, root, cache)
             linked.append({
                 "term": text_of(term),

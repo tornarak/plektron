@@ -441,3 +441,22 @@ def test_an_unbroken_form_on_the_same_page_still_gets_one(tmp_path):
     _gt_page(tmp_path, "1-102")
     assert [t["text"] for t in tier1_terms("1-102", tmp_path)] == [
         "kełiˊlın", "uˊᵋnel"]
+
+
+def test_a_handle_inside_an_entity_link_still_expands(tmp_path):
+    """`tei generate` now encloses a handle in `<rs>` where the trigger table
+    names the same string, so the two passes meet on one element. Expansion
+    reads the element and not its position, and the `<rs>` carries no glyph —
+    so the nesting changes nothing here, which is the claim worth pinning."""
+    from harness.expand import expand_page
+    _gt_page(tmp_path)
+    p = _tei(tmp_path, "1-151",
+             'the seal <rs ref="animal:ringed-seal" resp="#mz">'
+             '<foreign xml:lang="ckt" resp="#llm" index="2"/></rs> is taken')
+
+    got = expand_page("1-151", tmp_path, commit=True)
+    assert [(r["index"], r["text"]) for r in got["resolved"]] == [
+        ("2", nfd("uˊᵋnel"))]
+    written = p.read_text(encoding="utf-8")
+    assert nfd(">uˊᵋnel</foreign></rs>") in written
+    assert 'resp="#gt"' in written and 'resp="#mz"' in written

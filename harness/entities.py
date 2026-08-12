@@ -26,9 +26,17 @@ judgement a human makes once with the corpus in view. Applying it is a rule.
 The bar for applying it *without* asking is deliberately high and mechanical,
 not disciplinary — see `auto_forms`: a form two entities claim is ambiguous by
 construction, whatever either file says about it, and no amount of care by the
-author of one of them can make it unambiguous. That is the same shape as
-`data/lexicon_extra.txt`, which suppresses `lexicon_miss` and nothing else
-because it *structurally cannot* reach anything else.
+author of one of them can make it unambiguous.
+
+**This store is also the corpus's proper-noun dictionary**, and the direction of
+that is worth being exact about. `data/lexicon_extra.txt` suppresses
+`lexicon_miss` and nothing else because it *structurally cannot* reach anything
+else; the entity store can, so `detectors.entity_forms` reads only the one thing
+out of it that a spellcheck can use — the components of every canonical and
+trigger form — and `lexicon_miss` tests only ASCII components of length > 3, so
+a native alias in a trigger table is inert there by construction. The proper
+nouns that used to be listed in both files now live here alone, one entry each,
+each naming the page that first attested it.
 
 **One matcher, three callers.** `harness tei generate` links what clears the
 bar, `harness tei context` shows the reviewer every hit including the ones that

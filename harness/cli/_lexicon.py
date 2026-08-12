@@ -40,10 +40,12 @@ def register(cli):
     add = lambda name, fn, **kw: action(g, name, lambda a: _emit(a, fn), **kw)
 
     add("misses", suggest_lexicon, help="frequency-ranked lexicon_miss tokens across every "
-            "OCR'd page, for bulk approval into data/lexicon_extra.txt. That "
-            "file suppresses lexicon_miss and nothing else — a Tier-1 form "
-            "listed there is inert by construction, since the detector only "
-            "ever tests ASCII components")
+            "OCR'd page, for bulk approval — a proper noun into entities/, "
+            "anything else into data/lexicon_extra.txt. Both suppress "
+            "lexicon_miss and nothing else, and a Tier-1 form in either is "
+            "inert by construction, since the detector only ever tests ASCII "
+            "components. `suppressed` names what the entity store already "
+            "accounts for, so the second source is never a silent one")
 
     add("native", suggest_native_forms,
         help="invert: the most frequent native (Tier-1) word forms "

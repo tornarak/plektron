@@ -379,35 +379,100 @@ def _same_column(a: dict, b: dict) -> bool:
 # error silence a lexicon miss, which is exactly the mask the docstring warns of.
 NON_ENGLISH_HITS = {"inventory_glyph", "apostrophe_adjacency"}
 
-_WORDS: dict[str, set[str]] = {}
+_WORDS: dict[tuple, set[str]] = {}
+
+
+def _base_lexicon(root: Path = Path(".")) -> set[str]:
+    """System dictionary plus `data/lexicon_extra.txt`, without the entity store.
+
+    Named apart from `_lexicon` because `suggest_lexicon` needs both: the
+    difference between the two is exactly what the entity store suppressed, and
+    a suppression nobody can see is the thing this whole arrangement is supposed
+    not to have.
+    """
+    words: set[str] = set()
+    for cand in (Path("/usr/share/dict/american-english"),
+                 Path("/usr/share/dict/words"),
+                 root / "data" / "english_lexicon.txt"):
+        if cand.exists():
+            words = {w.strip().lower()
+                     for w in cand.read_text(encoding="utf-8").splitlines()}
+            break
+    return words | load_extra_lexicon(root)
+
+
+def entity_forms(root: Path = Path(".")) -> set[str]:
+    """Every component of every entity canonical and trigger form, lowercased.
+
+    Split the way `lexicon_miss` splits, on whitespace *and* on the internal
+    hyphen and apostrophe, because that is the shape the question is asked in:
+    `Sredne-Kolymsk` reaches `_unknown_word` as two components, and an entry
+    contributing only the joined string would leave both of them missing.
+
+    **Status is not consulted.** `auto_forms` demands `ratified` because a
+    machine link into committed TEI is at stake; this writes nothing and only
+    removes a triage flag from a report, so the higher bar would be the reason
+    cargo-culted without the stake. What makes it safe is the other half —
+    re-derived from the store on every load, so deleting an entry starts the
+    token missing again on the same run.
+    """
+    from .entities import load
+
+    out: set[str] = set()
+    for rec in load(root).values():
+        for form in [rec["canonical"], *(t["form"] for t in rec["triggers"])]:
+            for part in re.split(r"[\s\-'’]+", form):
+                if part:
+                    out.add(part.lower())
+    return out
+
+
+def _entities_stamp(root: Path) -> tuple:
+    """Cheap identity for the entity store, for `_lexicon`'s cache key.
+
+    `data/lexicon_extra.txt` only ever changed between processes, so a cache
+    keyed on the root alone was safe. `entities/` changes *inside* one:
+    `edition_ui._guarded` writes it on a browser click. Stat rather than
+    contents because this is recomputed once per page of a corpus sweep and a
+    content hash over the store would be ~100 reads each time; the write path
+    that matters here goes through `_guarded`, which rewrites whole files.
+    """
+    d = root / "entities"
+    if not d.is_dir():
+        return ()
+    return tuple(sorted(
+        (str(p.relative_to(d)), st.st_mtime_ns, st.st_size)
+        for p in d.glob("*/*.md") if (st := p.stat())))
 
 
 def _lexicon(root: Path = Path(".")) -> set[str]:
-    """System dictionary, plus the project's own additions. Cached per root.
+    """System dictionary, the project's additions, and the entity store's names.
 
     `data/lexicon_extra.txt` holds what a general English dictionary cannot be
-    expected to carry — Latin binomials, ethnonyms, Bogoras's recurring
-    coinages. It suppresses `lexicon_miss` and nothing else: the inventory,
-    apostrophe, dot-above-g and smart-quote detectors never consult it. A
-    whitelist able to blind a Tier-1 detector would be a hole in the firewall,
-    so it is denied the opportunity structurally rather than by discipline.
+    expected to carry — Latin binomials, Bogoras's recurring coinages, the
+    abbreviations his running heads repeat. It suppresses `lexicon_miss` and
+    nothing else: the inventory, apostrophe, dot-above-g and smart-quote
+    detectors never consult it. A whitelist able to blind a Tier-1 detector
+    would be a hole in the firewall, so it is denied the opportunity
+    structurally rather than by discipline.
 
-    Stronger than that, and worth stating because it is what actually holds the
-    line: `lexicon_miss` only ever tests ASCII components, so a Tier-1 form
-    listed in the whitelist is inert there — it could not have been a lexicon
-    miss in the first place.
+    **The entity store is the second source, and the proper nouns moved there.**
+    They used to be listed in both places — 20 of the whitelist's terms were
+    already an entity's canonical or trigger — which is one fact in two
+    hand-maintained files, each able to go stale against the other. Now a name
+    is filed once, as an entry that says which page first attested it, and this
+    reads it back out.
+
+    Stronger than either, and worth stating because it is what actually holds
+    the line: `lexicon_miss` only ever tests ASCII components of length > 3, so
+    a Tier-1 form in *either* source is inert here — it could not have been a
+    lexicon miss in the first place. That is what lets an entity carry a native
+    alias as a trigger without the trigger table becoming a way to blind the one
+    detector that can catch an unmarked romanized form.
     """
-    key = str(root.resolve())
+    key = (str(root.resolve()), _entities_stamp(root))
     if key not in _WORDS:
-        words: set[str] = set()
-        for cand in (Path("/usr/share/dict/american-english"),
-                     Path("/usr/share/dict/words"),
-                     root / "data" / "english_lexicon.txt"):
-            if cand.exists():
-                words = {w.strip().lower()
-                         for w in cand.read_text(encoding="utf-8").splitlines()}
-                break
-        _WORDS[key] = words | load_extra_lexicon(root)
+        _WORDS[key] = _base_lexicon(root) | entity_forms(root)
     return _WORDS[key]
 
 
@@ -712,7 +777,8 @@ def footnote_report(texts: list[str]) -> dict:
 
 
 def detect_all(lines: list[str], root: Path = Path("."),
-               indices: list[str] | None = None) -> dict[str, list[dict]]:
+               indices: list[str] | None = None,
+               lex: set[str] | None = None) -> dict[str, list[dict]]:
     """Token-level flags and paragraph-level balance flags, kept apart.
 
     Two lists rather than one because they are two different record shapes —
@@ -737,12 +803,17 @@ def detect_all(lines: list[str], root: Path = Path("."),
     `indices` is positional to `lines`. Omitted — or the wrong length, which
     would misalign every flag rather than fail — `index` is `null`, never a
     guess. `suggest_lexicon` passes nothing, reading only `type` and `token`.
+
+    `lex` overrides the dictionary. One caller passes it — `suggest_lexicon`,
+    which detects against `_base_lexicon` so it can report what the entity store
+    took off the list. Everything else wants the real one and omits it.
     """
     if indices is not None and len(indices) != len(lines):
         indices = None
     flags: list[dict] = []
     balance: list[dict] = []
-    lex = _lexicon(root)
+    if lex is None:
+        lex = _lexicon(root)
     para, para_no = [], 1
     for i, line in enumerate(lines, start=1):
         idx = indices[i - 1] if indices else None
@@ -803,15 +874,24 @@ def detect_all(lines: list[str], root: Path = Path("."),
     return {"tokens": flags, "balance": balance}
 
 
-def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
+def suggest_lexicon(root: Path = Path(".")) -> dict:
     """Frequency-ranked `lexicon_miss` tokens across every hand-keyed page.
 
-    Terms get approved into `data/lexicon_extra.txt` in bulk from a real count,
-    rather than one page at a time as they happen to surface. Tokens already in
-    the file do not appear, so the list shortens as it is worked through.
+    Terms get approved in bulk from a real count, rather than one page at a time
+    as they happen to surface. Tokens already accounted for do not appear, so
+    the list shortens as it is worked through.
 
-    Judgement about what belongs in the file stays with the human: this only
-    says what is frequent, not what is English.
+    Judgement about what belongs where stays with the human: this only says what
+    is frequent, not what is English, and not which store a name belongs in.
+
+    **Two lists, because there are now two sources.** Detection runs against
+    `_base_lexicon` — the dictionary and `data/lexicon_extra.txt` — and each hit
+    is then tested against the full lexicon, so a token the *entity store*
+    accounts for comes back under `suppressed` instead of vanishing. A whitelist
+    that silently absorbed names would be the same defect as a whitelist nobody
+    can audit: the moved proper nouns are still visible, and so is any Tier-1
+    form that reaches a trigger table and turns out to be ASCII enough to
+    matter.
 
     **`gt/ocr/` by name, not the `ocr/` view.** This used to walk the view, which
     was an alias for the ground truth and nothing else; since `ocr predict` it also
@@ -825,6 +905,7 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
     from .context import _draft_text, all_refs, stem_for
     from .lines import page_lines
 
+    base, full = _base_lexicon(root), _lexicon(root)
     counts: dict[str, int] = {}
     where: dict[str, str] = {}
     for ref in all_refs(root, "gt/ocr"):
@@ -840,7 +921,7 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
         lines = [t for t in join_broken_words(page_lines(ocr, root, ref=ref))
                  if t.strip()]
         draft = _draft_text(lines)
-        for f in detect_all(draft.split("\n"), root)["tokens"]:
+        for f in detect_all(draft.split("\n"), root, lex=base)["tokens"]:
             if f["type"] != "lexicon_miss":
                 continue
             # No second strip: `detect_all` publishes the token already cut, so
@@ -849,8 +930,11 @@ def suggest_lexicon(root: Path = Path(".")) -> list[dict]:
             tok = f["token"]
             counts[tok] = counts.get(tok, 0) + 1
             where.setdefault(tok, ref)
-    return [{"token": t, "count": c, "first_seen": where[t]}
+    rows = [{"token": t, "count": c, "first_seen": where[t]}
             for t, c in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
+    return {"tokens": [r for r in rows if lexicon_miss(r["token"], full)],
+            "suppressed": [r for r in rows
+                           if not lexicon_miss(r["token"], full)]}
 
 
 # Marks that visibly attach after a base letter, for `mark_base_frequency`. Not
