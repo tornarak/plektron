@@ -94,19 +94,55 @@ LINK_KINDS = {
     "url": ("{}", "", ""),
 }
 
+_STRONG = re.compile(r"\*\*([^*\n]+)\*\*")
 _EM = re.compile(r"\*([^*\n]+)\*")
 _CODE = re.compile(r"`([^`\n]+)`")
+#: `[text](url)`, on already-escaped input — so the URL arrives with `&` as
+#: `&amp;` and `"` as `&quot;`, and the character class can simply refuse the
+#: rest. No parentheses inside the target: a Wikipedia disambiguator such as
+#: `Anadyr_(river)` is exactly the case that would break, and it belongs in a
+#: `link:` row where the store holds the identifier rather than the address.
+_LINK = re.compile(r"\[([^\]\n]+)\]\(([^\s()<>]+)\)")
+#: A gloss may link out to `http` and `https` and to nothing else. **The
+#: allowlist is the point of escaping first**: `javascript:` in an `href` is the
+#: injection that surviving `escape()` would otherwise walk straight past, since
+#: escaping fixes the *text* of an attribute and says nothing about its scheme.
+LINK_SCHEMES = ("http://", "https://")
+#: A markdown bullet: `- ` or `* ` at the start of a line.
+_BULLET = re.compile(r"^[-*]\s+(.*)$")
+
+
+def _link_html(m: re.Match) -> str:
+    """`[text](url)` → an anchor, or the literal text where the scheme is not ours.
+
+    Rendered as the source wrote it rather than dropped, because a gloss that
+    silently loses an author's link is worse than one that shows its brackets:
+    the second is visible and gets fixed.
+    """
+    label, href = m.group(1), m.group(2)
+    if not href.lower().startswith(LINK_SCHEMES):
+        return m.group(0)
+    return (f'<a class="out" href="{href}" target="_blank" '
+            f'rel="noopener noreferrer">{label}</a>')
 
 
 def inline_html(text: str, store: dict) -> str:
-    """One line of authored text: escaped, then `[[…]]`, `*em*` and `` `code` ``.
+    """One line of authored text: escaped, then the small markup a gloss may use.
 
-    No paragraph wrapping — this is for a table cell or a caption, where
-    `gloss_html`'s `<p>`s would be wrong.
+    `[[…]]`, `[text](url)`, `**strong**`, `*em*` and `` `code` ``. No paragraph
+    wrapping and no lists — this is for a table cell or a caption, where
+    `gloss_html`'s block elements would be wrong.
+
+    **Escaped first, then a closed set of rules**, which is the whole safety
+    argument: a store value cannot smuggle markup in, and each rule adds exactly
+    the element it names. `**strong**` is tried before `*em*` or the em rule
+    would eat the first asterisk of each pair.
     """
     out = escape(text)
     out = WIKILINK.sub(lambda m: _entity_link(m.group(1), store), out)
+    out = _LINK.sub(_link_html, out)
     out = _CODE.sub(r"<code>\1</code>", out)
+    out = _STRONG.sub(r"<strong>\1</strong>", out)
     return _EM.sub(r"<em>\1</em>", out)
 
 
@@ -128,15 +164,41 @@ def gloss_html(text: str, store: dict) -> str:
     reference" the way they do in every wiki, and `entity check` can then refuse
     one that resolves to nothing.
 
-    Escaped before anything else, so a gloss is text and never markup. `*em*` and
-    `` `code` `` are recognised because the records already use them and the
-    alternative is a gloss that shows its own asterisks.
+    Escaped before anything else, so a gloss is text and never markup. The rest
+    is a closed set of rules — `*em*`, `**strong**`, `` `code` ``, `[text](url)`
+    and `- ` bullets — recognised **because the records already use them**, which
+    is the whole argument for each one. `entities/people/eskimo.md` was written
+    with a list and an external link before either rendered, so the card showed
+    a paragraph of literal `- ` lines and a bare `[…](…)`: an author writing
+    markdown in a markdown file is not a mistake to be trained out.
+
+    No markdown library. Escape-first plus a closed set is what keeps a store
+    value from reaching the page as markup, and a general parser would trade
+    that for a much larger surface nobody here needs.
     """
-    return "".join(
-        f"<p>{inline_html(p, store)}</p>"
-        for p in re.split(r"\n\s*\n", text.strip())
-        if p.strip()
-    )
+    out = []
+    for para in re.split(r"\n\s*\n", text.strip()):
+        if not para.strip():
+            continue
+        # A block is a list when its *first* line is a bullet. Deciding per line
+        # would let a paragraph that happens to wrap onto a dash open a `<ul>`
+        # around one sentence.
+        lines = para.split("\n")
+        if _BULLET.match(lines[0].strip()):
+            items = []
+            for line in lines:
+                m = _BULLET.match(line.strip())
+                if m:
+                    items.append(m.group(1))
+                elif items:
+                    # A continuation line belongs to the item above it, which is
+                    # how markdown reads a wrapped bullet.
+                    items[-1] += " " + line.strip()
+            out.append("<ul>" + "".join(
+                f"<li>{inline_html(i, store)}</li>" for i in items) + "</ul>")
+        else:
+            out.append(f"<p>{inline_html(para, store)}</p>")
+    return "".join(out)
 
 
 def link_html(row: str) -> str:

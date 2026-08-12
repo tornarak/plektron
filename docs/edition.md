@@ -203,9 +203,37 @@ it, and a reader who assumed tagging one had changed the detector would be wrong
 or in an alias note. A bare `class:slug` in prose was unclickable and, worse,
 indistinguishable from prose that merely mentions the shape of an identity — the
 brackets say "this is a reference", and `entity check` then **refuses one that
-resolves to nothing**, on the same argument as a dangling `within:`. A gloss is
-escaped before anything else and gets `*em*` and `` `code` `` besides, because
-the records already use them.
+resolves to nothing**, on the same argument as a dangling `within:`.
+
+### What else a gloss may be written in
+
+`*em*`, `**strong**`, `` `code` ``, `- ` bullet lists and `[text](url)`.
+**Every one of them is there because a record already used it**, which is the
+only argument any of them needs: `entities/people/eskimo.md` was written with a
+list and an external link before either rendered, so its card showed a paragraph
+of literal `- ` lines and a bare `[…](…)`. An author writing markdown in a
+markdown file is not a mistake to be trained out.
+
+No markdown library. **Escape first, then a closed set of rules** — that
+ordering is the whole safety argument, and it is why a store value cannot reach
+the page as markup and why each rule adds exactly the element it names. Two
+details follow from it and are easy to get wrong:
+
+- **The scheme allowlist.** `escape()` fixes the *text* of an attribute and says
+  nothing about what it means, so `javascript:` in an `href` walks straight past
+  it. Only `http` and `https` become anchors; anything else renders as the
+  literal `[text](url)` the author wrote — visible, and therefore fixed, where a
+  silently dropped link is neither.
+- **`**strong**` is tried before `*em*`**, or the em rule eats the leading
+  asterisk of each pair and leaves a stray one either side.
+
+A block is a list when its *first* line is a bullet, not per line: deciding per
+line would open a `<ul>` around a paragraph that happened to wrap onto a dash,
+and would split every bullet the records hard-wrap. A continuation line joins
+the item above it, as markdown reads a wrapped bullet.
+
+`inline_html` — an alias note, a caption — takes the same inline rules and no
+block ones, since a `<p>` or a `<ul>` inside a table cell would be wrong.
 
 ## When a rule may link a form, and when it must ask
 

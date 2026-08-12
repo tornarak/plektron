@@ -199,6 +199,51 @@ def test_a_gloss_becomes_paragraphs_and_not_preformatted_text(tmp_path):
     assert "<br" not in got
 
 
+def test_a_gloss_may_be_written_as_a_list(tmp_path):
+    """`entities/people/eskimo.md` was written with a list before one rendered,
+    so the card showed a paragraph of literal `- ` lines. An author writing
+    markdown in a markdown file is not a mistake to be trained out."""
+    got = edition_ui.gloss_html("three groups:\n\n- one\n- two\n- three", {})
+    assert got.count("<li>") == 3
+    assert "<ul>" in got and got.count("<p>") == 1
+    assert "- one" not in got
+
+
+def test_a_wrapped_bullet_stays_one_item(tmp_path):
+    """Deciding per line would open a `<ul>` around a paragraph that happens to
+    wrap onto a dash, and split every bullet the records hard-wrap."""
+    got = edition_ui.gloss_html("- one item that runs\n  onto a second line\n- two", {})
+    assert got.count("<li>") == 2
+    assert "runs onto a second line" in got
+
+
+def test_a_gloss_may_link_out_and_only_over_http(tmp_path):
+    """The allowlist is the point of escaping first: `escape()` fixes the *text*
+    of an attribute and says nothing about its scheme, so `javascript:` in an
+    `href` walks straight past it."""
+    got = edition_ui.gloss_html("see [Eskaleut](https://en.wikipedia.org/wiki/E)", {})
+    assert 'href="https://en.wikipedia.org/wiki/E"' in got
+    assert 'rel="noopener noreferrer"' in got and "Eskaleut" in got
+
+    bad = edition_ui.gloss_html("see [click](javascript:alert(1))", {})
+    assert "<a" not in bad and "javascript" in bad   # shown, never linked
+
+
+def test_a_gloss_takes_strong_before_em(tmp_path):
+    """`*em*` tried first would eat the leading asterisk of each pair and leave
+    a stray one either side."""
+    got = edition_ui.gloss_html("**bold** and *italic*", {})
+    assert "<strong>bold</strong>" in got and "<em>italic</em>" in got
+    assert "*" not in got
+
+
+def test_the_search_index_still_sees_text_and_not_markup(tmp_path):
+    """A list and a link are new elements in the haystack `/search` greps, and
+    a query for a word inside one must still find it."""
+    html = edition_ui.gloss_html("- see [Anadyr](https://example.org/a) basin", {})
+    assert "Anadyr basin" in edition_ui.strip_markup(html)
+
+
 def test_a_link_row_holds_an_identifier_and_not_a_url(tmp_path):
     """`wikipedia:Chukchi_people`, so the store holds what the thing *is* and the
     address lives in one place. A site that moves its paths costs one line."""
