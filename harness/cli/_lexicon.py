@@ -1,22 +1,25 @@
-"""`harness lexicon` — frequency reports over the corpus, and the gloss dictionary.
+"""`harness lexicon` — the edition lexicon, its reports, and the gloss dictionary.
 
-Seven actions where there were six mutually-exclusive-in-fact flags on one verb,
-declared independent and resolved by if-chain precedence, so `--marks --native`
-silently ran `--marks`.
+Two halves under one group, and the split is worth naming because the group used
+to be only the first. **The reports** are frequency arms over restored ground
+truth in `gt/ocr/` — misses to file, forms to compare against, marks, affixes,
+n-grams — plus `glosses`, which reads committed TEI instead and says so in its
+help rather than letting the group heading imply one store. They are report-only
+and exit 0. `conflicts` is the only one that consults a *ruling*,
+`data/marks_exempt.json`; it is here rather than beside `proposal marks` because
+the exemptible question is about the corpus, not about a reader.
 
-Six read restored ground truth in `gt/ocr/`; `glosses` reads committed TEI
-instead, which is why it is worth naming its source in the help rather than
-letting the group heading imply one store. All are report-only and exit 0.
-
-`conflicts` is the seventh and the only one that consults a *ruling* —
-`data/marks_exempt.json`. It is here rather than beside `proposal marks` because
-the exemptible question is about the corpus, not about a reader: see
-`marks.gt_conflicts`.
+**The store** is `new` / `check` / `show` / `ratify`, over `lexicon/`, and takes
+the `--commit` discipline every authored store takes. It is thin on purpose: an
+entry holds an editor's note and nothing else, because everything else a card
+shows — the pronunciation, the attesting pages, the glosses the book prints — is
+derived on every load. See `harness/lexicon.py`.
 """
 from __future__ import annotations
 
 import click
 
+from .. import lexicon as lex
 from ..detectors import (
     digraph_frequency,
     mark_base_frequency,
@@ -28,14 +31,14 @@ from ..ids import glossary
 from ..ipa import rows as ipa_rows
 from ..lookup import search
 from ..marks import gt_conflicts
-from ._common import action, arg, group, opt, out
+from ._common import action, arg, group, opt, out, verdict
 
 
 def register(cli):
-    g = group(cli, "lexicon", "frequency reports over the native corpus "
-              "— misses to whitelist, forms to compare against, marks, "
-              "affixes and n-grams — plus the term<->gloss dictionary "
-              "from committed TEI",
+    g = group(cli, "lexicon", "the edition lexicon — one entry per Tier-1 form "
+              "an editor has written a note about — plus the frequency reports "
+              "over the native corpus and the term<->gloss dictionary from "
+              "committed TEI",
               section="Apparatus and reports")
     add = lambda name, fn, **kw: action(g, name, lambda a: _emit(a, fn), **kw)
 
@@ -130,6 +133,150 @@ def register(cli):
             "nothing about what is white. It can arrive from the previous page: "
             "a list running across a seam carries no second head, so the scope "
             "resolves back through @prev")
+
+    p = action(g, "new", run_new,
+               help="scaffold an entry at `status: proposed`. **The identity is "
+               "the form itself** — the exact string as the page sets it, NFD, "
+               "with no language: a form only becomes `ckt` when a collator "
+               "judges it, and most of the corpus is unjudged, so a key holding "
+               "a language would leave those forms unaddressable. The file name "
+               "is a slug you choose; the default is the typeable key reduced "
+               "to what a filesystem is safe with, which is not the key itself "
+               "because `handle_key` keeps case and emits colons"
+               "\n\nFORM: the form, e.g. `Kuluˊči`")
+    arg(p, "form", metavar="FORM")
+    opt(p, "--since", required=True, metavar="PP-NNN",
+        help="the page whose reading prompted the entry. Required, for the "
+             "reason `entity new --since` is: an apparatus store that cannot be "
+             "traced back to a page is one nobody can audit")
+    opt(p, "--slug", metavar="SLUG",
+        help="the file name, without `.md`. Defaults to the reduced key; give "
+             "one where that collides or reads badly")
+    opt(p, "--see", metavar="FORM",
+        help="another form in the store this one points at — a variant setting, "
+             "a related word. **A pointer and not a claim that the two are one "
+             "word**: where the book sets a word two ways that difference is a "
+             "finding, and no field here overrides it")
+    opt(p, "--commit", is_flag=True,
+        help="write it. Without this the file is reported and not created")
+
+    action(g, "check", run_check,
+           help="the store gate: every file parses, every identity is unique, no "
+           "two slugs differ only in case — which a case-insensitive filesystem "
+           "would collapse to one file, silently — and every `see:` resolves. "
+           "Exit 1 on any of it. A form the handle key cannot spell is reported "
+           "and never fatal: the entry is fine, what it has not got is a "
+           "canonical URL, and a reader is owed that fact")
+
+    p = action(g, "show", run_show,
+               help="whole records, the editor's note included"
+               "\n\nFORM: the form as the heading sets it; several are allowed")
+    arg(p, "forms", nargs=-1, required=True, metavar="FORM")
+
+    p = action(g, "ratify", run_ratify,
+               help="proposed -> ratified. The human act, and it means the note "
+               "has been read against the pages the form occurs on"
+               "\n\nFORM: several are allowed")
+    arg(p, "forms", nargs=-1, required=True, metavar="FORM")
+    opt(p, "--commit", is_flag=True, help="write the change")
+
+
+LEX_TEMPLATE = """# {form}
+
+- status: proposed
+- since: {since}
+{extra}
+## editor's note
+
+(unwritten)
+"""
+
+
+def _resolve_forms(a, store: dict) -> list[str]:
+    """The forms named on the command line, refused up front if any is unknown."""
+    forms = [lex.norm_form(str(f)) for f in a.forms]
+    missing = [f for f in forms if f not in store]
+    if missing:
+        raise ValueError(f"no such lexicon entry: {', '.join(missing)}")
+    return forms
+
+
+def run_new(a) -> int:
+    form = lex.norm_form(str(a.form))
+    if not form:
+        raise ValueError("the form is empty")
+    slug = a.slug or lex.suggest_slug(form)
+    p = lex.path_for(slug, a.root)
+    if p.exists():
+        out(a, {"form": form, "path": str(p), "wrote": False,
+                "means": "already exists"})
+        return 1
+    extra = f"- see: {lex.norm_form(a.see)}\n" if a.see else ""
+    text = LEX_TEMPLATE.format(form=form, since=a.since, extra=extra)
+    # Parsed before it is written, as `entity new` does: a bad `--since` fails
+    # as a message rather than as a file the next `check` has to explain.
+    lex.parse(text, where=str(p))
+    if a.commit:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with open(p, "x", encoding="utf-8") as fh:
+                fh.write(text)
+        except FileExistsError:
+            out(a, {"form": form, "path": str(p), "wrote": False,
+                    "means": "already exists — written while this ran"})
+            return 1
+    out(a, {"form": form, "slug": slug, "path": str(p), "wrote": bool(a.commit),
+            "means": "written, status proposed" if a.commit
+                     else "would write — pass --commit"})
+    return 0
+
+
+def run_check(a) -> int:
+    try:
+        r = lex.check(a.root)
+    except (lex.Malformed, ValueError) as e:
+        out(a, [{"error": str(e)}], "errors", heading=True)
+        return verdict(a, 1, "the store does not parse")
+    out(a, {k: v for k, v in r.items()
+            if k not in ("unkeyable", "errors", "ok")})
+    if r["unkeyable"]:
+        out(a, r["unkeyable"], "unkeyable", heading=True)
+    if r["errors"]:
+        out(a, [{"error": e} for e in r["errors"]], "errors", heading=True)
+    return verdict(a, 0 if r["ok"] else 1,
+                   "the store is coherent" if r["ok"]
+                   else "the store has defects; nothing was written")
+
+
+def run_show(a) -> int:
+    store = lex.load(a.root)
+    for f in _resolve_forms(a, store):
+        out(a, store[f], name=f, heading=True)
+    return 0
+
+
+def run_ratify(a) -> int:
+    from pathlib import Path
+
+    store = lex.load(a.root)
+    rows = []
+    for f in _resolve_forms(a, store):
+        rec = store[f]
+        if rec["status"] == "ratified":
+            rows.append({"form": f, "was": "ratified", "now": "ratified",
+                         "wrote": False})
+            continue
+        p = Path(rec["path"])
+        text = p.read_text(encoding="utf-8")
+        new = text.replace("- status: proposed", "- status: ratified", 1)
+        if new == text:
+            raise ValueError(f"{p}: no `- status: proposed` line to change")
+        if a.commit:
+            p.write_text(new, encoding="utf-8")
+        rows.append({"form": f, "was": "proposed", "now": "ratified",
+                     "wrote": bool(a.commit)})
+    out(a, rows)
+    return 0
 
 
 def run_lookup(a) -> int:

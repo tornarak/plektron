@@ -286,6 +286,18 @@ one claimant, `auto: yes`, ratified. **`match` is called by three modules** —
 against it — because three implementations of one rule would be three witnesses
 that are one.
 
+**`lexicon.py`** — the edition lexicon, `lexicon/<slug>.md`, on `entities.py`'s
+pattern and **deliberately thin**: an entry holds an editor's note and nothing
+else, because the pronunciation, the attesting pages and the printed glosses are
+all derived on every load and a copy of one would go stale while still reading as
+an entry. The identity is the **exact surface form**, NFD, carrying no language —
+a form only becomes `ckt` when a collator judges it, and an id holding one would
+leave every unjudged form unaddressable. The slug is authored, not the form's
+`handle_key`: over the corpus's 609 forms that key yields 23 pairs differing only
+in case and 34 containing a colon, and it is non-injective by design, so the
+check that would catch a collision passes on both files while only one can exist.
+`check` refuses two slugs a case-insensitive filesystem could not tell apart.
+
 **`tei_html.py`** — committed TEI to HTML, for the reading view. The apparatus is
 rendered rather than tidied away: an unratified rank is marked and an editorial
 comment becomes a flag, because a page with an open question must not look

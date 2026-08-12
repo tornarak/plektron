@@ -14,6 +14,7 @@ import unicodedata
 from pathlib import Path
 
 import pytest
+from markupsafe import escape
 from test_entities import entry
 
 from harness import edition_ui, speech, tei_html
@@ -432,11 +433,16 @@ def test_search_finds_the_text_and_the_encyclopedia(server):
 
 
 def test_a_lexicon_card_says_that_nothing_stands_behind_it(server):
-    """An empty card that admits it is empty is worth more than a link that goes
-    nowhere — it is the same shape as every other unresolved thing here."""
+    """A card that admits what is missing is worth more than a link that goes
+    nowhere — it is the same shape as every other unresolved thing here.
+
+    What is missing narrowed when the store arrived: it used to be the whole
+    lexicon, and now it is this form's note. The rest of the card is not empty
+    and never was — the notation is phonetic, so the pronunciation follows by
+    rule whether or not anybody has written a word."""
     base, _ = server
     got = get(base + "/lexicon/ckt%3AUwe%CB%8Alen?partial=1")
-    assert "No lexicon entry" in got and "Chukchi" in got
+    assert "No editor's note" in got and "Chukchi" in got
 
 
 def test_every_field_in_a_record_reaches_the_card(tmp_path):
@@ -548,9 +554,14 @@ def test_a_string_with_nothing_speakable_in_it_is_a_400_not_a_crash(server):
     assert _client().get(base + "/tts/%E2%96%A1%E2%96%A1").status_code == 400
 
 
-def test_a_lexicon_key_in_an_unknown_language_is_refused(server):
+def test_a_key_nothing_answers_to_is_refused(server):
+    """Refused on what the corpus knows, not on the key's shape. Any string
+    could be a Tier-1 form, so there is nothing here to validate — and a card
+    that rendered an arbitrary one as a headword, with an imputed pronunciation
+    under it, would be inventing a word."""
     base, _ = server
-    assert "Not a lexicon key" in get(base + "/lexicon/xx%3Afoo?partial=1")
+    assert "Nothing in the lexicon" in get(base + "/lexicon/xx%3Afoo?partial=1")
+    assert "Nothing in the lexicon" in get(base + "/lexicon/notaform?partial=1")
 
 
 def test_the_site_marks_are_served(server):
@@ -657,10 +668,135 @@ def test_search_reaches_exactly_what_the_listing_does(tmp_path):
 def test_attestations_never_come_from_a_draft(tmp_path):
     """An attestation says a form was read in a language on a page. Nothing has
     read a generated page, so it cannot witness one — whatever the server was
-    started with, since this is not the server's call to make."""
+    started with, since this is not the server's call to make.
+
+    The invariant outlived its first implementation. This used to be a per-form
+    walk in `edition_ui`, which is one parse of every collated page *per form
+    asked about*; the index that replaced it sweeps once, and had to inherit the
+    rule rather than restate it — so the assertion moved with it and the old
+    reader is gone."""
+    from harness.web import stores
+
+    form = unicodedata.normalize("NFD", "mêˊmêl")
     draft(tmp_path, "1-022",
           '<pb n="2"/><p><foreign xml:lang="ckt">mêˊmêl</foreign></p>')
-    assert edition_ui._attestations("ckt", "mêˊmêl", tmp_path) == []
+    assert stores.attestations(tmp_path).get(form) is None
     page(tmp_path, "1-021",
          '<pb n="1"/><p><foreign xml:lang="ckt">mêˊmêl</foreign></p>')
-    assert edition_ui._attestations("ckt", "mêˊmêl", tmp_path) == ["1-021"]
+    assert stores.attestations(tmp_path)[form] == [("1-021", "ckt")]
+
+
+# --- the lexicon, which does not wait on collation ----------------------------
+#
+# Americanist notation is phonetic: a form's sound follows from the notation by
+# rule, without anyone knowing what language it is in. So the reading view can
+# stand a lexicon up on adjudicated ground truth today, with the language and the
+# printed gloss arriving later from collated TEI as two more derived facts. These
+# hold that direction — the card is worth reading *before* an editor has written
+# anything, and what an entry adds is the one thing nothing derives.
+
+REPO = Path(__file__).resolve().parent.parent.parent
+ALTO_NS = "http://www.loc.gov/standards/alto/ns-v4#"
+
+
+def _gt(root: Path, ref: str, lines: list[str]) -> None:
+    """A ground-truth page, plus the committed fold table `lookup.index` needs.
+
+    The real `data/marks_config.json` and not a copy of one: the fold is what
+    decides whether two settings are one word, and a test writing its own would
+    be asserting against a table nothing in the corpus uses.
+    """
+    (root / "data").mkdir(parents=True, exist_ok=True)
+    shutil.copy(REPO / "data" / "marks_config.json", root / "data")
+    p = root / "gt" / "ocr" / f"chukchi-{ref}.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    body = "".join(
+        f'<TextLine ID="l{i}" HPOS="400" VPOS="{300 + i * 60}" WIDTH="1774" '
+        f'HEIGHT="50"><String CONTENT="{unicodedata.normalize("NFD", t)}"/>'
+        "</TextLine>" for i, t in enumerate(lines))
+    p.write_text(
+        f'<alto xmlns="{ALTO_NS}"><Layout><Page><PrintSpace>'
+        f'<TextBlock ID="b1">{body}</TextBlock>'
+        "</PrintSpace></Page></Layout></alto>", encoding="utf-8")
+
+
+def test_an_unwritten_unjudged_form_still_renders_a_card(server):
+    """**The load-bearing one.** No entry, no collated page, no language — and
+    the card still carries the imputed pronunciation and the lines the form was
+    printed on, because all three are derived from stores that already exist."""
+    base, root = server
+    _gt(root, "1-042", ["south of Kuluˊči Bay lies the", "second settlement"])
+    got = get(base + "/lexicon/Kulu'c^i?partial=1")
+    assert "language unjudged" in got
+    assert "south of" in got and "1-042" in got
+    assert "No editor's note" in got
+
+
+def test_all_three_key_forms_reach_the_same_card(server):
+    """The handle key is canonical because it is ASCII and half the length; the
+    exact form works because that is what `data-key` holds; `lang:form` works
+    because a URL somebody wrote down should not stop resolving."""
+    base, root = server
+    _gt(root, "1-042", ["south of Kuluˊči Bay lies the"])
+    from urllib.parse import quote
+    form = unicodedata.normalize("NFD", "Kuluˊči")
+    for key in ("Kulu'c^i", form, f"ckt:{form}"):
+        got = get(base + "/lexicon/" + quote(key, safe="") + "?partial=1")
+        assert "south of" in got, key
+
+
+def test_an_ambiguous_handle_key_refuses_and_names_the_candidates(server):
+    """`handle_key` is non-injective by design — `marks.py` says the marker
+    classes collide on purpose — so picking one of two forms would resolve the
+    corpus's own ambiguity by an accident of iteration order.
+
+    `ᵋ` U+1D4B and `ᵉ` U+1D49 are the real pair: both key to `e^`, and both are
+    inventory glyphs, so two forms differing only in which one they carry are
+    two words with one address."""
+    base, root = server
+    _gt(root, "1-042", ["the keᵋlin here", "and the keᵉlin there"])
+    got = get(base + "/lexicon/kee%5Elin?partial=1")
+    assert "more than one form" in got
+    assert unicodedata.normalize("NFD", "keᵋlin") in got
+    assert unicodedata.normalize("NFD", "keᵉlin") in got
+
+
+def test_the_key_is_case_sensitive_where_a_filename_could_not_be(server):
+    """`Aiˊwan` and `aiˊwan` are both this corpus's and key to `Ai'wan` and
+    `ai'wan`. A URL keeps them apart; the filesystem the store is *filed* on may
+    not, which is why the slug is authored and the key is only the address."""
+    base, root = server
+    _gt(root, "1-042", ["the Aiˊwan came", "and the aiˊwan went"])
+    upper = get(base + "/lexicon/Ai'wan?partial=1")
+    lower = get(base + "/lexicon/ai'wan?partial=1")
+    assert "more than one form" not in upper
+    assert unicodedata.normalize("NFD", "Aiˊwan") in upper
+    assert unicodedata.normalize("NFD", "aiˊwan") in lower
+
+
+def test_the_index_lists_every_language_and_the_unjudged(server):
+    """Every one of the seven codes whether or not it holds anything, on the
+    class tree's reasoning — and *unassigned* last, which is where nearly
+    everything sits until collation reaches it."""
+    base, root = server
+    _gt(root, "1-042", ["south of Kuluˊči Bay lies the"])
+    got = get(base + "/lexicon")
+    # Escaped, because the names carry apostrophes — the page is autoescaped and
+    # asserting against the raw string would be testing the wrong bytes.
+    for name in edition_ui.LANG_NAMES.values():
+        assert escape(name) in got
+    assert "unassigned" in got.lower()
+    assert unicodedata.normalize("NFD", "Kuluˊči") in got
+
+
+def test_an_editors_note_reaches_the_card(server):
+    base, root = server
+    _gt(root, "1-042", ["south of Kuluˊči Bay lies the"])
+    (root / "lexicon").mkdir()
+    (root / "lexicon" / "kulu-c-i.md").write_text(
+        "# Kuluˊči\n\n- status: proposed\n- since: 1-042\n\n"
+        "## editor's note\n\nA bay on the [[place:markova]] side.\n",
+        encoding="utf-8")
+    got = get(base + "/lexicon/Kulu'c^i?partial=1")
+    assert "A bay on the" in got
+    assert "No editor's note" not in got

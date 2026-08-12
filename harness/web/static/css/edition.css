@@ -220,6 +220,19 @@ h4.tier1 { font-style:italic; font-size:1.1rem }
   border:1px solid var(--rule); color:var(--dim); margin-left:.3rem }
 .pill.proposed { border-color:var(--mark); color:var(--mark) }
 .pill.imputed { border-style:dashed }
+/* One form read as two languages on two collated pages. `--mark` is the
+   apparatus colour and this is apparatus: it says the corpus disagrees with
+   itself, which is a finding and not a defect in the card. */
+.pill.unsettled { border-color:var(--mark); color:var(--mark) }
+/* The lines a Tier-1 form was printed on, from gt/ocr/. `lexicon lookup`'s
+   reasoning: a form alone is a string, a form in its line is a sense. Kept
+   small and unbulleted — it is evidence under a headword, not a list a reader
+   works through. */
+ul.lines { list-style:none; margin:.2rem 0 .4rem; padding-left:0;
+  font-size:.85rem }
+ul.lines li { margin:.1rem 0 }
+ul.lines a { font-family:ui-monospace,monospace; font-size:.8rem;
+  margin-right:.4rem }
 .ipa { display:flex; align-items:center; gap:.45rem; margin:.5rem 0 .3rem }
 ul.tree, ul.tree ul { list-style:none; margin:0; padding-left:1.1rem }
 ul.tree { padding-left:0; font-family:system-ui,sans-serif; font-size:.85rem }

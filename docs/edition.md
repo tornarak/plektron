@@ -1,9 +1,15 @@
-# The encyclopedia, and the reading view over it
+# The encyclopedia, the lexicon, and the reading view over them
 
-Two things that arrived together because neither is much use alone: a store of
-entities the corpus can point at, and a browser that shows a collated page with
-those entities beside it. This document owns the store's format, the rule that
-decides when a machine may link a form, and the design of the view.
+Things that arrived together because none is much use alone: a store of entities
+the corpus can point at, a second store of what an editor has written about a
+native word, and a browser that shows a collated page with both beside it. This
+document owns both stores' formats, the rule that decides when a machine may link
+a form, and the design of the view.
+
+The two stores are shaped by the same question answered twice. An entity entry is
+mostly authored, because who Nordenskiöld was is not derivable from the page; a
+lexicon entry is almost entirely derived, because a form's sound, its pages and
+its printed gloss all are. What each file holds is what nothing else could say.
 
 ## Why an entity store at all
 
@@ -165,6 +171,42 @@ It is confined to `@ref` on `<rs>`. A Tier-1 span claiming `#mz` is refused in
 both validation modes: a rule may say what a string refers to and may never
 originate a reading of a glyph.
 
+### A Tier-1 alias is linked by enclosing the handle, never by reaching into it
+
+The generator used to drop every trigger hit that touched a Tier-1 handle,
+reasoning that a rule resolving an identity for a string whose glyphs it may not
+name is the firewall's failure shape. The reasoning is right about *reaching
+inside* a handle and wrong about *enclosing* one — and the store had already
+made the judgement anyway: `place:anadyr` carries `Veᵋñ` as a trigger, written by
+a human with the corpus in view.
+
+```xml
+<rs ref="place:anadyr" resp="#mz"><foreign index="4">Veᵋñ</foreign></rs>
+```
+
+Each `@resp` is a claim about its own element. The outer says which entity this
+string names; the inner says a ratified token sits here, still carrying no
+`xml:lang`, so the collator's question is untouched and `tei expand` still stamps
+`#gt` on the element holding the glyphs. The rule that `#mz` never carries a
+glyph is honoured **literally**: the element carrying it has no text of its own.
+All four nestings validate against `data/tei_all.rng`, and `tei expand` walks
+elements rather than positions, so it needed no change at all.
+
+**Only exact coincidence fires.** A hit whose span is byte-identical to a
+handle's is wrapped; one that merely overlaps is dropped, as before. Coincidence
+is the one relation that needs no opinion about where the form ends — an overlap
+would mean the store and the detector disagree about the extent of the token, and
+picking a side there is the inference this refuses.
+
+The `<rs>` stays an `<rs>`, never a typed `<name>`: a rule may say *this string
+refers to that record* and not *this is a toponym*. That is why the unglossed
+gate below accepts a bare `@ref` alongside a typed name — the rule-applied link
+has no `@type` to offer, by design.
+
+A collator that later unwraps the `<foreign>` — deciding it was never a foreign
+span — **leaves the `<rs>` standing**. That a word names Anadyr does not depend on
+what language it is in.
+
 ## Who writes what
 
 | act | who | how |
@@ -188,6 +230,45 @@ After a batch, the coordinator reads the proposals **against each other**: two
 collators meeting the same man on two pages mint two slugs for him, and only the
 coordinator sees both. Merge before ratifying, never after — a ratified id is one
 other pages' `@ref` may already point at.
+
+### The store is also the corpus's proper-noun dictionary
+
+`data/lexicon_extra.txt` used to hold the book's proper nouns — authors,
+ethnicities, toponyms — so that `lexicon_miss` reported transcription candidates
+rather than vocabulary. **Twenty of its lines were already an entity's canonical
+or a trigger**: one fact in two hand-maintained files, each able to go stale
+against the other, which is the defect this project is organised against showing
+up inside the apparatus that guards against it.
+
+So the proper nouns moved. 98 whitelist lines and 9 taxonomic ones became entity
+files, and `detectors.entity_forms` reads the store's canonicals and trigger
+forms back into the dictionary, split the way `lexicon_miss` splits them so
+`Sredne-Kolymsk` contributes both halves. The trim cost nothing measurable — the
+miss list is 361 tokens before and after — and it bought the thing a list of bare
+words cannot have: every name now says which page first attested it, and variant
+spellings that were two unrelated lines (`Krasheninnikoff`, `Krasheninnikov`) are
+two triggers on one man.
+
+**Eleven names did not move, and that is the field working.** No adjudicated page
+attests Almquist, Kotzebue or Sarychev, so `--since` has no witness to name and
+the entry cannot honestly exist yet. They stay in the whitelist under a heading
+that says why.
+
+Two properties keep this from being a hole in the firewall. `lexicon_miss` tests
+only ASCII components of length > 3, so a Tier-1 form in a trigger table is inert
+there **by construction** — which is what lets an entity carry a native alias
+without the trigger table becoming a way to blind the one detector that could
+catch an unmarked romanized form. And `harness lexicon misses` reports what the
+store suppressed, under `suppressed`, so the second source is never a silent one:
+detection runs against the dictionary and the whitelist alone, and each hit is
+re-tested against the store.
+
+Status is deliberately not consulted. `auto_forms` demands `ratified` because a
+machine link into committed TEI is at stake; suppression writes nothing and only
+removes a triage flag, so the higher bar would be that reason cargo-culted
+without the stake. What makes it safe is the other half — the dictionary is
+re-derived from the store on every load, so deleting an entry starts its token
+missing again on the same run.
 
 ## The reading view
 
@@ -370,17 +451,113 @@ unanswered question is the honest state of the page, and an edition that tidied
 it away would present a draft as finished — the failure this project is arranged
 against, appearing at the last possible moment.
 
-**A Tier-1 form is a link too**, into `/lexicon/<lang>:<form>` — `ckt:Uweˊlen`,
-url-encoded, the key NFD like everything else so the same word reached from two
-pages opens one card. What it opens is **deliberately almost empty**: the form,
-its language, the committed pages it is attested on, and a line saying no entry
-stands behind it yet. There is no lexicon store — `harness lexicon lookup`
-recomputes an index per run and is a reader's instrument rather than a published
-object — and an empty card that admits it is empty is worth more than a link that
-goes nowhere. It is also the shape an entry will fill.
+**A Tier-1 form is a link too**, into the lexicon — the next section is what it
+opens.
 
 Attestation is whole-element equality, not a substring search: `Qeˊñ` inside
 `Qeˊñu` is the boundary the Tier-1 machinery protects everywhere else.
+
+## The lexicon, which does not wait on collation
+
+The card behind a Tier-1 form used to say, in as many words, that there was no
+lexicon store. There is one now, and the interesting thing about it is how
+little it holds.
+
+**Americanist notation is phonetic.** A form's sound follows from the notation by
+rule, without anyone knowing what language it is in — which is why `ipa.impute`
+takes a form and no language, and why the lexicon could be stood up on ground
+truth years before collation reaches most of the book. `gt/ocr/` holds **609
+adjudicated Tier-1 forms** with the pages and printed lines they occur on;
+`tei/` holds no collated page at all. A store keyed on anything only collation
+produces would have been an empty room with a sign on it.
+
+**So the identity is the exact surface form, NFD, and carries no language.** Two
+things follow, both wanted. A form only becomes `ckt` when a collator judges it,
+so an id holding a language would leave every unjudged form unaddressable. And
+the book sets one word two ways — `Čeˊwɪn` on 1-042, `Čeˊwin` on 1-052, ruled a
+real ambiguity in `data/marks_exempt.json` — where a headword scheme would have
+to pick a side, which is exactly what that ruling says not to do. Here they are
+two entries, and `see:` may point one at the other without claiming they are one
+word. The inverse of `see:` is derived at render time, as `contains` is: a
+hand-maintained pair of pointers is two facts that will disagree.
+
+**An entry holds an editor's note and nothing else.** Everything else on the card
+— the imputed pronunciation, the pages and printed lines from `gt/ocr/`, the
+language and the printed gloss from committed TEI — is derived on every load and
+never copied in. A stored copy would go stale in the direction that hides it: the
+entry would still read as an entry. `## glosses` and `## attestations` are
+refused at the parser so they cannot be written by accident, not merely left
+unused. What is left is the one thing nothing derives — the extra-textual
+clarification the book cannot make, because it was written in 1904 and the reader
+is not.
+
+**A file exists only where somebody wrote a note.** `entities/` holds a hundred
+files against thousands of proper nouns; it is not a census, it is where somebody
+had something to say. A form with no file is not missing from the lexicon — its
+card renders in full from the derived half, and says which part of it is absent.
+
+### The address, and why it is not the filename
+
+The canonical URL is the **handle key**: `/lexicon/Kulu'c^i`. Measured over all
+609 forms, `handle_key`'s alphabet is `)-.:=^_~'` plus ASCII alphanumerics, every
+character of which is RFC 3986 path-safe except `^` — 305 keys carry one, from
+`č` → `c^`. Mean URL length is **14.6 against 31.7** for the form itself, max
+**42 against 85**: `Kulu%27c%5Ei` against `ckt%3AKulu%CB%8Ac%CC%8Ci`. The exact
+form still resolves, because that is what `data-key` holds and what the reading
+view's own links send, and so does `lang:form`, because a URL somebody wrote down
+should not stop resolving.
+
+A key naming two forms **refuses and names both**. `handle_key` is non-injective
+by design — `marks.py` says the marker classes collide on purpose — and the pair
+is real: `ᵋ` U+1D4B and `ᵉ` U+1D49 both key to `e^`, and both are inventory
+glyphs. Resolution scans every bucket rather than going through `lookup`'s
+`by_key`, which holds one bucket per key and would drop the second silently.
+
+**The same key is unusable as a filename**, and that is not a contradiction: URLs
+are case-sensitive and filesystems are not reliably. Over the 609 forms the key
+yields **23 pairs differing only in case** — `Aiˊwan` and `aiˊwan` both reduce to
+`ai'wan` — which a case-insensitive filesystem collapses to one file, and **34
+keys containing `:`**, the portability trap `entities.py` says the
+class-as-directory layout exists to avoid. Worse, the obvious check cannot see
+it: "the heading's form re-keys to the filename" passes on *both* of a colliding
+pair while only one file can exist. So the slug is authored, `lexicon new` prints
+the reduced key as a suggestion, and `check` refuses two slugs a filesystem might
+not tell apart.
+
+### The index is the collation worklist
+
+`/lexicon` is a tree over the seven Tier-1 codes plus an **unassigned** branch,
+every code shown whether or not it holds anything — the class tree's reasoning,
+that a vocabulary listing only its populated half misrepresents its own size.
+Today essentially everything sits under *unassigned*, because a form's language
+is a judgement made during collation and collation has not started. That is the
+honest picture and it doubles as the worklist; a tree over only the assigned
+forms would have shown an encouraging empty list.
+
+A form two collated pages read as two different languages is listed under
+neither, and carries a pill saying so. The corpus disagreeing with itself is a
+finding, not something for the index to settle.
+
+### The gate that sends a reader here
+
+`tei validate` warns when a Tier-1 span is **neither glossed nor identified** —
+no `<gloss target>` points at its `xml:id`, no `<name>` with a declared `@type`
+covers it, no entity `@ref` stands over it. The reader has nowhere to go, which
+is the same condition this store exists to answer.
+
+It is deliberately **not** satisfied by a lexicon entry. What the gate asks is
+whether *this page* says anything about the form; an entry written elsewhere is
+not that, and a gate coupled to the store would go quiet exactly as the store
+filled — failing in the direction nobody would notice.
+
+Glossed is decided by `xml:id` membership and nothing else. A span with no id is
+unglossed *exactly* rather than approximately, because the id scheme's own rule
+is that an id exists iff something points at it — so there is no containment
+fallback to write, and writing one would be the inference `ids.pair_glosses`
+refuses in writing. A form the same page glosses elsewhere does not warn twice.
+
+A warning and not an error: the book prints bare forms, and clearing the warning
+by writing English the page does not say is worse than leaving it standing.
 
 ## The pronunciation on that card, and why it may be there
 

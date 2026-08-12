@@ -25,7 +25,7 @@ from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 
 from .. import edition_ui as ui
-from .. import geo, ipa, speech, tei_html
+from .. import geo, ipa, lexicon, speech, tei_html
 from ..entities import ENTITY_CLASSES, split_id, trigger_index
 from . import Editor, register, stores, templates
 from .files import send_file
@@ -196,22 +196,145 @@ def entity(request: Request, ident: str, partial: str = ""):
     )
 
 
-@router.get("/lexicon/{key:path}")
-def lexicon(request: Request, key: str, partial: str = ""):
-    lang, _, form = key.partition(":")
+@router.get("/lexicon")
+def lexicon_index(request: Request):
+    """Every attested Tier-1 form, grouped by the language a collator assigned.
+
+    **Grouped by language, and mostly *unassigned*, which is the honest
+    picture.** A form's language is a judgement made during collation; `tei/`
+    holds no collated page yet, so nearly the whole corpus sits in the last
+    branch. Showing it that way makes the index double as the collation
+    worklist, where a tree over only the assigned forms would show an
+    encouraging empty list.
+
+    Every one of the seven codes appears whether or not it holds anything, for
+    the reason the class tree shows its empty classes: a vocabulary that lists
+    only its populated half quietly misrepresents its own size.
+    """
     root = _root(request)
+    forms = _forms(root)
+    groups = [{"lang": lang,
+               # The empty branch is labelled rather than left blank: it is the
+               # collation worklist and by far the largest, and a heading with
+               # no text would read as a rendering fault.
+               "name": ui.LANG_NAMES.get(lang) or "unassigned",
+               "rows": [r for r in forms if r["lang"] == lang]}
+              for lang in [*ui.LANG_NAMES, ""]]
+    written = sum(1 for r in forms if r["note"])
+    return templates.TemplateResponse(
+        request,
+        "edition/lexicon.html",
+        _ctx(request, groups=groups,
+             here=f"{len(forms)} forms · {written} with an editor's note"),
+    )
+
+
+def _forms(root: Path) -> list[dict]:
+    """The lexicon's population: every form `gt/ocr/` attests, in one list.
+
+    Assembled from three stores and owned by none of them — the forms and their
+    counts from adjudicated ground truth, the language and attesting pages from
+    committed TEI where a collator has judged one, the note from `lexicon/`
+    where an editor has written one. A form with no entry is not missing from
+    this list; it is a form nobody has written about, which is most of them.
+    """
+    native = stores.native(root)
+    attested = stores.attestations(root)
+    store = stores.lexicon_store(root)
+    out = []
+    for bucket in native["buckets"].values():
+        for f in bucket["forms"].values():
+            form = lexicon.norm_form(f["form"])
+            langs = sorted({lang for _ref, lang in attested.get(form, [])})
+            rec = store.get(form)
+            out.append({
+                "form": form,
+                "key": f["key"],
+                "count": f["count"],
+                # Blank rather than a guess where collation has not reached the
+                # form, and the *first* of several rather than a silent pick
+                # where it has read one string as two languages — the row says
+                # `langs` too, so the grouping never hides the disagreement.
+                "lang": langs[0] if len(langs) == 1 else "",
+                "langs": langs,
+                "note": bool(rec and rec["note"]),
+                "status": rec["status"] if rec else "",
+            })
+    out.sort(key=lambda r: (r["key"].lower(), r["form"]))
+    return out
+
+
+@router.get("/lexicon/{key:path}")
+def lexicon_card(request: Request, key: str, partial: str = ""):
+    """One form's card. The key arrives three ways and all three are real.
+
+    The canonical one is the **handle key** — `/lexicon/Kulu'c^i` — because it is
+    ASCII, short and legible where the form itself percent-encodes to twice the
+    length. The **exact form** works because that is what `data-key` holds and
+    what the reading view's own links send. And `lang:form` works because it is
+    what those links used to hold, and a URL somebody has already written down
+    should not stop resolving.
+
+    An ambiguous handle key **refuses and names the candidates**. `handle_key`
+    is non-injective by design — `marks.py` says the classes collide on purpose
+    — so picking one of two forms would be the corpus's own ambiguity resolved
+    by an accident of iteration order.
+    """
+    root = _root(request)
+    native = stores.native(root)
+    store = stores.lexicon_store(root)
+
+    lang, sep, rest = key.partition(":")
+    form = lexicon.norm_form(rest if sep and lang in ui.LANG_NAMES else key)
+    if not sep or lang not in ui.LANG_NAMES:
+        lang = ""
+
+    candidates: list[str] = []
+    if form not in store and form not in _all_forms(native):
+        # Scanned across every bucket rather than through `by_key`, which holds
+        # one bucket per key and so drops the second silently when two buckets
+        # share one. That is not hypothetical: `ᵋ` U+1D4B and `ᵉ` U+1D49 both
+        # key to `e^` — `marks.py` says the marker classes collide on purpose —
+        # and the two need not fold together.
+        matched = sorted({lexicon.norm_form(f["form"])
+                          for b in native["buckets"].values()
+                          for f in b["forms"].values()
+                          if f["key"] in (form, key)})
+        if len(matched) == 1:
+            form = matched[0]
+        elif len(matched) > 1:
+            candidates = matched
+
+    rec = store.get(form)
+    attested = stores.attestations(root).get(form, [])
+    # The key's own language counts as one of the readings. It came off a
+    # collated page's link, where a collator wrote it; dropping it and reporting
+    # "unjudged" would be the card contradicting the URL that opened it.
+    langs = sorted({la for _r, la in attested} | ({lang} if lang else set()))
     ctx: dict = {
         "key": key,
-        "lang": lang,
         "form": form,
         "base": BASE,
-        "lang_name": ui.LANG_NAMES.get(lang) if form else None,
-        "pages": [],
-        "ipa": None,
+        "candidates": candidates,
+        # **Known, and the two key shapes are known differently.** A
+        # `lang:form` key carries an assertion with it — it is what a collated
+        # page's own link holds, and the language in it is a judgement somebody
+        # made — so it renders on its own authority, as it always has. A bare
+        # form or handle key asserts nothing, so it has to be corroborated by
+        # the corpus or the store; rendering an arbitrary string as a headword
+        # with an imputed pronunciation under it would be inventing a word.
+        "known": bool(lang or rec or attested or form in _all_forms(native)),
+        "lang": lang or (langs[0] if len(langs) == 1 else ""),
+        "langs": [{"code": la, "name": ui.LANG_NAMES.get(la, la)}
+                  for la in langs],
+        "lang_name": ui.LANG_NAMES.get(lang) if lang else None,
+        "pages": sorted({r for r, _la in attested}),
+        "lines": _printed_lines(native, form),
+        "ipa": _ipa_ctx(form) if form else None,
+        "rec": rec,
+        "note": ui.gloss_html(rec["note"], stores.load(root)) if rec else "",
+        "seen_by": sorted(f for f, r in store.items() if r["see"] == form),
     }
-    if ctx["lang_name"]:
-        ctx["pages"] = ui._attestations(lang, form, root)
-        ctx["ipa"] = _ipa_ctx(form)
     if partial:
         return templates.TemplateResponse(request, "edition/_lexicon.html", ctx)
     return templates.TemplateResponse(
@@ -219,6 +342,25 @@ def lexicon(request: Request, key: str, partial: str = ""):
         "edition/card.html",
         _ctx(request, partial="edition/_lexicon.html", card_title=form or key, **ctx),
     )
+
+
+def _all_forms(native: dict) -> set[str]:
+    return {lexicon.norm_form(f["form"])
+            for b in native["buckets"].values() for f in b["forms"].values()}
+
+
+def _printed_lines(native: dict, form: str) -> list[dict]:
+    """The lines `gt/ocr/` printed this form on, at most a handful.
+
+    `lexicon lookup`'s reasoning, and the reason a card is worth reading before
+    anybody has written a word about the form: `Kuluˊči` alone is a string,
+    "south of Kuluˊči Bay" is a place.
+    """
+    for b in native["buckets"].values():
+        for f in b["forms"].values():
+            if lexicon.norm_form(f["form"]) == form:
+                return f["lines"][:8]
+    return []
 
 
 def _ipa_ctx(form: str) -> dict | None:

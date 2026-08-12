@@ -47,7 +47,17 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # clone rebuilds them. Here a clone cannot: the sources are outside the
 # repository. An agent that read nothing else would delete it as derived cruft
 # or try to regenerate it, so the exception has to be visible where the rule is.
-CLAUDE_MD_MAX_BYTES = 15_000
+#
+# **Raised a third time, 15_000 → 15_200, for `lexicon/`**, and it is the same
+# kind of raise as the two above rather than the kind this gate exists to stop.
+# The layout block enumerates *every* top-level store; a new tracked one missing
+# from it does not make the block shorter, it makes it wrong, and wrong in the
+# direction that costs something — an agent reading only this file would meet an
+# unlisted directory and take it for the derived cruft the block says everything
+# unlisted is. The entry is three lines and says what the store is for and what
+# gates it. Nothing else about the lexicon is here: `docs/edition.md` owns it,
+# and the row that routes there already existed.
+CLAUDE_MD_MAX_BYTES = 15_200
 
 CITE_RE = re.compile(r"CLAUDE\.md, [\"'“]([^\"'”)]{4,80})")
 

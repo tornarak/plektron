@@ -1,0 +1,44 @@
+{% extends "edition/base.html" %}
+{% block title %}Lexicon — The Chukchee{% endblock %}
+
+{% block main %}
+<div id='primary' class='index-width'>
+{# A tree over the language, on the class tree's pattern and sharing `ul.tree`
+   with it. The last branch is the one that matters: a form's language is a
+   judgement made during collation, and until a page is collated the form sits
+   under *unassigned*. That is nearly all of them today, so this index doubles
+   as the collation worklist — which a tree over only the assigned forms would
+   have hidden behind an encouraging empty list. #}
+<ul class='tree'>
+{% for g in groups %}
+<li><code class='cls{{ " empty" if not g.rows }}'>{{ g.name }}</code>
+    <span class='dim'>({{ g.rows | length }})</span>
+{%- if g.rows %}
+<ul>{% for r in g.rows %}
+<li><a class='tier1 lex'{% if r.lang %} lang='{{ r.lang }}'{% endif %}
+       data-key='{{ r.form }}'
+       href='{{ base }}/lexicon/{{ r.key | urlencode }}'>{{ r.form }}</a>
+    <code class='dim'>{{ r.key }}</code>
+    <span class='dim'>{{ r.count }}×</span>
+    {%- if r.langs | length > 1 %}
+    <span class='pill unsettled'>read as {{ r.langs | join(", ") }}</span>
+    {%- endif %}
+    {%- if r.status %}<span class='pill {{ r.status }}'>{{ r.status }}</span>{% endif %}
+</li>
+{% endfor %}</ul>
+{%- endif %}
+</li>
+{% endfor %}
+</ul>
+<p class='meta note-small'>Every Tier-1 form <code>gt/ocr/</code> attests,
+whether or not anything has been written about it — the notation is phonetic, so
+a form's sound is readable before anyone knows its language. A form is listed
+under a language only where a collator judged one on a collated page; one read
+two ways is listed under neither, and says so. The monospaced string beside each
+form is its typeable key, which is also its address here.</p>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="/static/js/hover.js"></script>
+{% endblock %}

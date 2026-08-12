@@ -105,6 +105,9 @@ Layout, all at the repo root:
     entities/  the encyclopedia, one markdown file per entity under its class
             (person/, place/, event/ …). An identity is `class:slug`, which is
             what every `@ref` holds. Tracked; `entity check` gates it.
+    lexicon/  one file per Tier-1 form an editor has written a note about; the
+            identity is the form, and the rest of its card is derived. Tracked;
+            `lexicon check` gates it.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
             zones_config.json  lines_config.json  tei_all.rng (the schema).
     data/geo/  the atlas's shapes — watersheds, language areas, named
@@ -198,7 +201,7 @@ every byte of this file on every page.
 | `docs/segmentation.md` | the second segmentation attempt: the design and why each piece is shaped as it is |
 | `docs/pipeline.md` | the pipeline stage by stage, and the design reasoning behind the built stages |
 | `docs/apparatus.md` | the figure track and its editor, the List of Illustrations and Authorities Quoted stores |
-| `docs/edition.md` | the entity store, the rule that links a form, `#mz`, and the reading view |
+| `docs/edition.md` | the entity and lexicon stores, the rule that links a form, `#mz`, and the reading view |
 | `docs/rasters.md` | the source rasters, the derived trees and the `tools/` scripts |
 | `docs/decisions.md` | what was settled the hard way, intact — the reasoning behind the rules |
 | `docs/open-questions.md` | what is deliberately unresolved |
@@ -232,14 +235,14 @@ match ∪ word-medial `[AEIL]` ∪ dot-above-g ∪ apostrophe-adjacency ∪ **En
 miss**. A **floor**: unmarked ASCII inventory members (`c` = English *sh*, plain `s`,
 `j`, `x`) are undetectable by construction, and a hit is never a verdict — an
 inventory mark fires on ordinary German too. A floor is not licence for noise above
-it: `data/lexicon_extra.txt` holds the binomials and coinages no dictionary carries,
-and **suppresses `lexicon_miss` and nothing else**.
+it: the entity store's names and `data/lexicon_extra.txt`'s coinages both
+**suppress `lexicon_miss` and nothing else**.
 
 **Density, measured** on the two densest pages: inventory glyphs are **3.3% of
 characters** but fall in **43.8% of lines** — the expensive act is re-orienting to a
 new line, not reading one already open, so **review is line-based**.
 
-**Entities**, and the reading view over them, are `docs/edition.md`'s.
+**Entities**, the **lexicon**, and the reading view are `docs/edition.md`'s.
 
 **Assembly is still unsettled**; the corpus teiHeader is not, and is
 `tei/corpus-header.xml`. Every encoding rule is the collator's in full.

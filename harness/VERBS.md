@@ -1112,8 +1112,60 @@ opinion of which pages are held out.
 
 ## lexicon
 
-Frequency reports over the native corpus in restored `gt/ocr/`, plus the gloss
-dictionary, which reads committed TEI instead. All report-only, all exit 0.
+Two halves. **The store** — `new`, `check`, `show`, `ratify` — is `lexicon/`,
+one entry per Tier-1 form an editor has written a note about; it takes the
+`--commit` discipline and `check` exits 1 on a defect. **The reports** are
+frequency arms over the native corpus in restored `gt/ocr/`, plus `glosses`,
+which reads committed TEI instead; those are report-only and exit 0.
+
+An entry is deliberately thin. The identity is the **exact surface form**, NFD,
+carrying no language — a form only becomes `ckt` when a collator judges it, and
+most of the corpus is unjudged, so an id holding a language would leave those
+forms unaddressable in a store whose premise is that Americanist notation is
+phonetic and a form is readable before anyone knows its language. Everything a
+card shows except the note is derived on every load: the pronunciation by rule
+from the notation, the attesting pages and printed lines from `gt/ocr/`, the
+language and the printed gloss from committed TEI. A copy of any of it here
+would go stale in the direction that hides it — the entry would still read as an
+entry.
+
+### lexicon new FORM
+**Does** scaffolds an entry at `status: proposed`. The file name is a slug you choose; the default is `handle_key` reduced to `[a-z0-9-]`.
+**Reads** `lexicon/`. **Writes** `lexicon/<slug>.md`, with `--commit`.
+**Exit** 0, or 1 if the file exists.
+**Note** the slug is **not** the key. Over the corpus's 609 attested forms `handle_key` yields 23 pairs differing only in case (`Aiˊwan`/`aiˊwan` → `ai'wan`), which a case-insensitive filesystem collapses, and 34 keys containing `:`. It is also non-injective by design, so a check of the form "the heading re-keys to the filename" would pass on *both* of a colliding pair while only one file can exist. A human names the file; `check` refuses two names a filesystem might not tell apart.
+**Note** `--see` is a pointer and never a claim that two forms are one word. The book sets `Čeˊwɪn` and `Čeˊwin`, and `data/marks_exempt.json` rules that ambiguity real; nothing in this store overrides that ruling.
+```
+--since PP-NNN   the page whose reading prompted the entry (required)
+--slug SLUG      the file name, without `.md` [the reduced key]
+--see FORM       another form in the store this one points at
+--commit         write it
+--root --json --toon --pager
+```
+
+### lexicon check
+**Does** the store gate: every file parses, every identity is unique, no two slugs differ only in case, every `see:` resolves.
+**Reads** `lexicon/`. **Writes** — **Exit** 1 on any defect.
+**Note** a form `handle_key` cannot spell is **reported, never fatal**. Three of the corpus's 609 carry a character outside the inventory (`Kereˊt-kun’s`, `□ña`). The entry is fine; what it has not got is a canonical URL, and a reader is owed that fact rather than left to discover it.
+```
+--root --json --toon --pager
+```
+
+### lexicon show FORM...
+**Does** whole records, the editor's note included.
+**Reads** `lexicon/`. **Writes** — **Exit** 0, or 1 if a named form is not in the store.
+```
+--root --json --toon --pager
+```
+
+### lexicon ratify FORM...
+**Does** `proposed` → `ratified`.
+**Reads** `lexicon/`. **Writes** `lexicon/<slug>.md`, with `--commit`. **Exit** 0.
+**Note** unlike `entity ratify` this licenses no rule — nothing links a form because its note was ratified. It says the note has been read against the pages the form occurs on.
+```
+--commit         write the change
+--root --json --toon --pager
+```
 
 ### lexicon misses
 **Does** frequency-ranked `lexicon_miss` tokens, for bulk approval — a proper noun into `entities/`, anything else into `data/lexicon_extra.txt`. Two lists: `tokens` is what neither source accounts for, `suppressed` what the entity store already does.

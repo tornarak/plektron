@@ -33,11 +33,10 @@ rather than about HTTP.
 from __future__ import annotations
 
 import re
-import unicodedata
 from html import escape
 from pathlib import Path
 
-from . import geo, geomap, tei_html
+from . import geo, geomap
 from .cli._entity import TEMPLATE
 from .context import norm_ref
 from .entities import (
@@ -50,7 +49,6 @@ from .entities import (
 
 PORT = 8734
 REF_OK = re.compile(r"^\d+-\d+$")
-XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 
 #: Where the reading view is mounted. The four tools share one server, so a bare
 #: `/entity/…` in a link would resolve against whichever of them owned the root.
@@ -466,40 +464,6 @@ def map_context(
     out["svg"] = geomap.render(frame, layers, pins, mark=mark)
     return out
 
-
-def _attestations(lang: str, form: str, root: Path) -> list[str]:
-    """Committed pages carrying this exact form in this language.
-
-    Whole-element equality, not a substring search: `Qeˊñ` inside `Qeˊñu` is the
-    boundary the Tier-1 machinery protects everywhere else, and a card that
-    listed the longer form's pages under the shorter one would be asserting an
-    attestation nobody made.
-    """
-    from lxml import etree
-
-    want = unicodedata.normalize("NFD", form)
-    out = []
-    # `collated`, never `readable`: an attestation is a claim that this form was
-    # read in this language on this page, and a generated draft has read nothing.
-    # It would mostly fail to match anyway — the generator emits bare
-    # `<foreign index="N">` with no `xml:lang` for exactly this reason — but
-    # "the data happens not to match" is not the reason, and would stop being true
-    # the moment the generator learned to guess.
-    for ref in tei_html.collated(root):
-        try:
-            doc = etree.parse(str(tei_html.page_path(ref, root))).getroot()
-        except (OSError, etree.XMLSyntaxError):
-            continue
-        for el in doc.iter():
-            if not isinstance(el.tag, str) or el.get(XML_LANG) != lang:
-                continue
-            text = unicodedata.normalize(
-                "NFD", " ".join("".join(el.itertext()).split())
-            )
-            if text == want:
-                out.append(ref)
-                break
-    return out
 
 
 def _guarded(root: Path, write) -> dict:

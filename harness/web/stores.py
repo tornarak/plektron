@@ -16,12 +16,20 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from .. import entities, geo, tei_html
+from .. import entities, geo, lexicon, lookup, tei_html
 from .cache import MAXSIZE, by_file, stamp
 
 
 def _entity_files(root: Path) -> list[Path]:
     return sorted((Path(root) / "entities").glob("*/*.md"))
+
+
+def _lexicon_files(root: Path) -> list[Path]:
+    return sorted((Path(root) / "lexicon").glob("*.md"))
+
+
+def _gt_ocr_files(root: Path) -> list[Path]:
+    return sorted((Path(root) / "gt" / "ocr").glob("chukchi-*.xml"))
 
 
 def _tei_files(root: Path) -> list[Path]:
@@ -74,6 +82,79 @@ def _readable(root: str, _key: bytes) -> list[str]:
 def readable(root: Path) -> list[str]:
     """`collated` plus the generated drafts. The draft server's page list."""
     return _readable(str(root), stamp(_readable_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _lexicon(root: str, _key: bytes) -> dict:
+    return lexicon.load(Path(root))
+
+
+def lexicon_store(root: Path) -> dict:
+    """The edition lexicon — the authored half, which is one field per form."""
+    return _lexicon(str(root), stamp(_lexicon_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _native(root: str, _key: bytes) -> dict:
+    from ..marks import MarksConfigError
+    try:
+        return lookup.index(Path(root))
+    except MarksConfigError:
+        # A root with no `data/marks_config.json` has no fold table, so it has
+        # no buckets — the same answer `entities.load` gives for a missing
+        # store, and for the same reason: absence is emptiness, not a 500 on a
+        # page that would otherwise render.
+        return {"buckets": {}, "by_key": {}, "unkeyable": []}
+
+
+def native(root: Path) -> dict:
+    """Every Tier-1 form attested in `gt/ocr/`, bucketed and keyed.
+
+    **This is the lexicon's population**, and the reason the reading view does
+    not wait on collation: 609 forms with the pages and printed lines they occur
+    on, out of a store a human has already been through. A whole-corpus parse,
+    so it is read once per change to `gt/ocr/` rather than once per card.
+    """
+    return _native(str(root), stamp(_gt_ocr_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _attestations(root: str, _key: bytes) -> dict:
+    """`{form: [(ref, lang), …]}` over every collated page, in one sweep.
+
+    Per-form it was one parse of every collated page *per form asked about*,
+    which is fine for a card and quadratic for an index: 730 pages against 609
+    forms is ~445,000 parses for one page view. Free today, since `tei/` holds
+    no collated page yet — and that is exactly the kind of cost nothing would
+    announce when it stopped being free.
+    """
+    from lxml import etree
+
+    from ..validate import TIER1, XML_LANG
+
+    out: dict[str, list[tuple[str, str]]] = {}
+    for ref in tei_html.collated(Path(root)):
+        try:
+            doc = etree.parse(str(tei_html.page_path(ref, Path(root)))).getroot()
+        except (OSError, etree.XMLSyntaxError):
+            continue
+        seen = set()
+        for el in doc.iter():
+            if not isinstance(el.tag, str):
+                continue
+            lang = el.get(XML_LANG)
+            if lang not in TIER1:
+                continue
+            text = lexicon.norm_form("".join(el.itertext()))
+            if (text, lang) in seen or not text:
+                continue
+            seen.add((text, lang))
+            out.setdefault(text, []).append((ref, lang))
+    return out
+
+
+def attestations(root: Path) -> dict:
+    return _attestations(str(root), stamp(_tei_files(root)))
 
 
 #: The expensive one, and the reason the ratio in `cache.py` was measured:

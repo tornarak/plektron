@@ -1,20 +1,82 @@
-{# A Tier-1 form's card. **Deliberately almost empty, and says so.**
+{# A Tier-1 form's card.
 
-   There is no lexicon store yet. An empty card that admits it is empty is worth
-   more than a link that goes nowhere: it is the same form as every other
-   unresolved thing in this edition. #}
-{% if not lang_name %}
-<p>Not a lexicon key: <code>{{ key }}</code>. It is <code>lang:form</code>, the
-language a Tier-1 code.</p>
+   **It does not wait on collation, and that is the design.** Americanist
+   notation is phonetic, so the pronunciation follows from the form by rule
+   without anyone knowing what language it is in; the pages and the printed
+   lines come from adjudicated ground truth. So a form nobody has written a word
+   about still renders as something worth reading, and what an entry adds is the
+   one thing nothing can derive — an editor's note.
+
+   Nothing here is stored. The languages, the attesting pages and the note come
+   from three different stores and are re-read on every request, so the card
+   fails rather than goes stale. #}
+{% if candidates %}
+<p>The key <code>{{ key }}</code> names more than one form, and this corpus does
+not pick between two settings of a word: {% for f in candidates %}<a
+class='tier1 lex' data-key='{{ f }}'
+href='{{ base }}/lexicon/{{ f | urlencode }}'>{{ f }}</a>{% if not loop.last %},
+{% endif %}{% endfor %}.</p>
+{% elif not form or not known %}
+{# Refused on what the corpus knows, not on the key's shape: any string could be
+   a form, so there is nothing here to validate. Rendering one as a headword with
+   an imputed pronunciation under it would be inventing a word. #}
+<p>Nothing in the lexicon answers to <code>{{ key }}</code>. A key is a Tier-1
+form as the page sets it, its typeable key — <code>Kulu'c^i</code> — or
+<code>lang:form</code>. <a href='{{ base }}/lexicon'>Every attested form</a> is
+one list.</p>
 {% else %}
-<h4 lang='{{ lang }}' class='tier1'>{{ form }}</h4>
-<div class='meta'>{{ lang_name }} · <code>{{ lang }}</code></div>
+{# `lang` only where one is known. An empty `lang=""` is not "no language" to a
+   screen reader or a font stack — it is a claim that the element has no language
+   at all, which is a different and wrong thing to say about a Chukchi word
+   nobody has judged yet. #}
+<h4{% if lang %} lang='{{ lang }}'{% endif %} class='tier1'>{{ form }}</h4>
+<div class='meta'>
+{%- if langs %}{% for l in langs %}{{ l.name }} · <code>{{ l.code }}</code>
+{%- if not loop.last %} + {% endif %}{% endfor %}
+{%- else %}language unjudged — no collated page names one{% endif %}</div>
 {% include "edition/_ipa.html" %}
-{% if pages %}
-<div class='meta'>on {% for r in pages %}<a href='{{ base }}/page/{{ r }}'>{{ r }}</a>
+
+{% if note %}
+<div class='gloss'>{{ note | safe }}</div>
+<div class='meta'>an editor's note{% if rec %} · <span
+class='pill {{ rec.status }}'>{{ rec.status }}</span> · first read on <a
+href='{{ base }}/page/{{ rec.since }}'>{{ rec.since }}</a>{% endif %}</div>
+{% endif %}
+
+{% if rec and rec.see %}
+<div class='meta'>see also <a class='tier1 lex' data-key='{{ rec.see }}'
+href='{{ base }}/lexicon/{{ rec.see | urlencode }}'>{{ rec.see }}</a> — a
+pointer, not a claim that the two are one word</div>
+{% endif %}
+{# The inverse is derived rather than written back: a hand-maintained pair of
+   pointers is two facts that will disagree. #}
+{% if seen_by %}
+<div class='meta'>pointed at by {% for f in seen_by %}<a class='tier1 lex'
+data-key='{{ f }}' href='{{ base }}/lexicon/{{ f | urlencode }}'>{{ f }}</a>
 {%- if not loop.last %}, {% endif %}{% endfor %}</div>
 {% endif %}
-<p class='meta'>No lexicon entry stands behind this yet — the form is keyed and
-ratified, and nothing has been written about it. <code>harness lexicon
-lookup</code> is what reads the corpus for its other spellings.</p>
+
+{% if pages %}
+<div class='meta'>collated on {% for r in pages %}<a
+href='{{ base }}/page/{{ r }}'>{{ r }}</a>{% if not loop.last %}, {% endif %}
+{%- endfor %}</div>
+{% endif %}
+
+{# `lexicon lookup`'s reasoning, and why the card is worth reading before
+   anybody has written about the form: `Kuluˊči` alone is a string, "south of
+   Kuluˊči Bay" is a place. #}
+{% if lines %}
+<div class='meta'>printed on:</div>
+<ul class='lines'>{% for l in lines %}
+<li><a href='{{ base }}/page/{{ l.ref }}'>{{ l.ref }}</a>
+    <span>{{ l.text }}</span></li>
+{% endfor %}</ul>
+{% endif %}
+
+{% if not note %}
+<p class='meta'>No editor's note stands behind this form yet. Everything above is
+derived — the pronunciation by rule from the notation, the lines from
+<code>gt/ocr/</code> — and <code>harness lexicon lookup</code> is what reads the
+corpus for its other spellings.</p>
+{% endif %}
 {% endif %}
