@@ -95,7 +95,10 @@ def test_a_box_off_the_raster_is_an_error(tmp_path):
 
 def test_a_tiny_box_warns_rather_than_gating(tmp_path):
     """Nothing forbids a small picture; at this size the likelier explanation is
-    dirt the segmenter boxed. `2-085` carries the one live instance."""
+    dirt the segmenter boxed. `2-085`'s 14×38 px block was the one live instance
+    and has since been keyed out, so the corpus now has none — which is the rule
+    working rather than the rule going unused: it was a warning, somebody looked,
+    and the box turned out to be dirt."""
     out = _page(tmp_path, [_box(G, 400, 900, 414, 938)])
     assert out["errors"] == []
     assert [w["rule"] for w in out["warnings"]] == ["tiny-picture"]

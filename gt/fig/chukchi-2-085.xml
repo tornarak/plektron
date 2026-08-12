@@ -13,11 +13,6 @@
   <Layout>
     <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
       <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
-        <TextBlock HPOS="414" VPOS="500" WIDTH="14" HEIGHT="38" ID="fig_2-085_001" TAGREFS="BT1">
-          <Shape>
-            <Polygon POINTS="414 500 428 500 428 538 414 538"/>
-          </Shape>
-        </TextBlock>
         <TextBlock HPOS="1864" VPOS="908" WIDTH="304" HEIGHT="1581" ID="fig_2-085_002" TAGREFS="BT1">
           <Shape>
             <Polygon POINTS="1864 908 2168 908 2168 2489 1864 2489"/>

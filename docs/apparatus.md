@@ -121,10 +121,17 @@ not apply**. A zone store partitions the page and its zones form a chain, so an
 overlap there is unrepresentable and can be refused. Figures are freely placed: an
 inset sits inside the frame it insets, two pictures on a plate may abut, and a
 14×38 px box is suspicious rather than impossible. Over the migrated store the two
-produce exactly three findings — `1-189` and `1-334` (marginal grazes, 1244×14 and
+produced exactly three findings — `1-189` and `1-334` (marginal grazes, 1244×14 and
 12×782 px) and `2-085`'s 14×38 px block — every one a real thing to look at, and
 not one a thing the store must refuse to hold. A gate a human cannot honestly
 clear is a gate that gets widened until it says nothing.
+
+**`2-085`'s speck has since been keyed out**, so `tiny-picture` now has no live
+instance and `fig check --all` reports the two overlaps alone. That is the
+argument above finishing rather than being overturned: the warning was looked at,
+the box turned out to be dirt the segmenter had boxed, and it was withdrawn by a
+human. Had it been an error the page would have been ungateable until someone
+did that — which is the same act, extracted under duress and at the wrong moment.
 
 ## The segmenter, and why its negatives had to be witnessed
 
