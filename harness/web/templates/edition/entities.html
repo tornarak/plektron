@@ -14,34 +14,45 @@
    to break the page that was supposed to be reporting the problem. #}
 <ul>{% for e in problems %}<li>{{ e }}</li>{% endfor %}</ul></div>
 {% endif %}
-{# A tree over the class, two levels deep. It is a list and not the table it
-   replaced because the class is the first thing worth knowing about an entry and
-   a column of it says so far more weakly than a heading does — and because the
-   link colours now group by the same families, so the shape on the page and the
-   colour on the link tell one story.
+{# A tree over the class, then over `within:` inside it. It is a list and not the
+   table it replaced because the class is the first thing worth knowing about an
+   entry and a column of it says so far more weakly than a heading does — and
+   because the link colours now group by the same families, so the shape on the
+   page and the colour on the link tell one story.
 
-   Not the `node` macro from `atlas.html`: that one recurses over `within:`
-   children, and this tree has none. The two share `ul.tree` and nothing else. #}
+   Its own macro rather than `atlas.html`'s, which is shaped for a shape: that one
+   carries `absent` rows and frames to the located subtree, and neither means
+   anything here. The two share `ul.tree` and the recursion, not the node. #}
+{% macro node(n) %}
+<li><a class='ent' data-ref='{{ n.rec.id }}'
+       href='{{ base }}/entity/{{ n.rec.id }}'>{{ n.rec.canonical }}</a>
+    <span class='pill {{ n.rec.status }}'>{{ n.rec.status }}</span>
+    <span class='dim'>{{ n.rec.aliases | length }} alias(es) · first read on</span>
+    <a href='{{ base }}/page/{{ n.rec.since }}'>{{ n.rec.since }}</a>
+{%- if n.kids %}
+<ul>{% for k in n.kids %}{{ node(k) }}{% endfor %}</ul>
+{%- endif %}
+</li>
+{% endmacro %}
 <ul class='tree'>
 {% for g in groups %}
-<li><code class='cls{{ " empty" if not g.rows }}'>{{ g.cls }}</code>
-    <span class='dim'>({{ g.rows | length }})</span>
-{%- if g.rows %}
-<ul>{% for r in g.rows %}
-<li><a class='ent' data-ref='{{ r.id }}'
-       href='{{ base }}/entity/{{ r.id }}'>{{ r.canonical }}</a>
-    <span class='pill {{ r.status }}'>{{ r.status }}</span>
-    <span class='dim'>{{ r.aliases | length }} alias(es) · first read on</span>
-    <a href='{{ base }}/page/{{ r.since }}'>{{ r.since }}</a></li>
-{% endfor %}</ul>
+<li><code class='cls{{ " empty" if not g.count }}'>{{ g.cls }}</code>
+    <span class='dim'>({{ g.count }})</span>
+{%- if g.nodes %}
+<ul>{% for n in g.nodes %}{{ node(n) }}{% endfor %}</ul>
 {%- endif %}
 </li>
 {% endfor %}
 </ul>
 <p class='meta note-small'>Every class the store declares, including the four
-nothing has been filed under yet. Within a class, proposed entries come first:
-nothing links them by rule until a human has read one against the page it was
-proposed from.</p>
+nothing has been filed under yet. Inside a class, an entry nests under its
+<code>within:</code> parent where that parent is in the same class — the
+Maritime and Reindeer Chukchi under the Chukchi. A parent in another class does
+not nest, because following the field across classes would file the rivers under
+<em>place</em> and leave <em>water</em> a list of orphans; those entries sit at
+the top of their own class and their card names the parent. At each level,
+proposed entries come first: nothing links them by rule until a human has read
+one against the page it was proposed from.</p>
 </div>
 {% endblock %}
 

@@ -2,6 +2,7 @@
 
 - status: ratified
 - since: 1-036
+- within: people:yukaghir
 - link: wikipedia:Chuvans
 
 ## aliases

@@ -148,11 +148,16 @@ silent miss is the failure class the project is organised against.
   apparatus store that skipped this is now unauditable; `data/toc.json` is the
   standing case and a logged defect.
 - **`status:`** is `proposed` or `ratified`, and only a human moves it.
-- **`geo:`, `within:` and `area:`** are the atlas's, below. `within:` must
-  resolve and the chain must be acyclic — a cycle would hang a tree walk rather
-  than fail it. `area:` names a shape in `data/geo/` and must resolve there; a
-  shape *kind* may never be an entity class, for a reason worth reading before
-  adding either.
+- **`within:` is containment in general**, and the atlas is one reader of it.
+  It must resolve and the chain must be acyclic — a cycle would hang a tree walk
+  rather than fail it. `entities.children` and `entities.relatives` walk it and
+  read no geometry; they lived in `geo.py` while the tree was the geography's
+  alone, which made a caller wanting `people:maritime-chukchi` under
+  `people:chukchi` import the atlas to get it. `geo` re-exports both, since it
+  is still the heaviest caller and the map's own reasoning is written there.
+- **`geo:` and `area:`** are the atlas's, below. `area:` names a shape in
+  `data/geo/` and must resolve there; a shape *kind* may never be an entity
+  class, for a reason worth reading before adding either.
 - **`authority:`** may cross-link `data/authorities.json`. Resolving a `<bibl>`
   to that key is still deferred; `BIBL_IDENTITY_ATTRS` is untouched.
 - **`link:`** holds an *identifier*, never a URL — `wikipedia:Chukchi_people`,
@@ -995,6 +1000,15 @@ is an atlas root, and the atlas becomes a second encyclopedia index with a map
 stapled to it — the same names, grouped by nothing, beside a panel that has
 nothing to draw for most of them. The two views answer different questions: the
 index is the whole store by class, this is the located part by containment.
+
+The encyclopedia index nests too, now that `within:` is not read as the
+geography's. Inside a class an entry sits under its parent — the Maritime and
+Reindeer Chukchi under the Chukchi — and **only where the parent is in the same
+class**. Following the field across classes would put `water:anadyr` under
+`place:chukotka` and leave the *water* branch a list of orphans; such a child
+stays at the top of its own class, and its card is where the cross-class chain
+is legible. So the index nests within a class and the atlas nests across them,
+which is the one place the two trees are allowed to differ.
 
 **A shapeless node is framed by its members, and the map says so.** No source
 holds a polygon for Chukotka or the Russian Far East, and none should: they are

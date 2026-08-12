@@ -25,7 +25,7 @@ from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 
 from .. import edition_ui as ui
-from .. import geo, ipa, langs, lexicon, speech, tei_html
+from .. import entities, geo, ipa, langs, lexicon, speech, tei_html
 from ..entities import ENTITY_CLASSES, alias_index, split_id
 from . import Editor, register, stores, templates
 from .files import send_file
@@ -480,12 +480,20 @@ def atlas(request: Request, at: str = ""):
 
 @router.get("/entities")
 def entity_index(request: Request):
-    """The encyclopedia, grouped by class.
+    """The encyclopedia, grouped by class and then by containment.
 
-    **Two levels and no deeper.** `within:` exists and the atlas draws the forest
-    over it, but it is the *geography* tree — nothing yet makes a people a child
-    of a people — so this groups by class and stops rather than pretending to a
-    hierarchy the store does not hold.
+    **`within:` is containment in general, not the geography's.** This page used
+    to stop at two levels on the ground that nothing made a people a child of a
+    people — which was already false when it was written: `people:maritime-chukchi`
+    and `people:reindeer-chukchi` sit under `people:chukchi`, and the fact was
+    visible only on the atlas, which will not draw a people. So a class's entries
+    nest under their parent where the parent is in the same class.
+
+    **Same class only, and that is the honest cut.** `water:anadyr` is inside
+    `place:chukotka`, so following the field across classes would file half the
+    rivers under *place* and leave the *water* branch a list of orphans. A child
+    whose parent is elsewhere sits at its own class's top level and its card
+    names the parent, which is where a cross-class chain is legible.
 
     **Classes in `ENTITY_CLASSES` order, and every class whether or not it holds
     anything.** The order is authored (person, people, place, water, … ) and says
@@ -493,22 +501,32 @@ def entity_index(request: Request):
     today, so a list of only the populated ones would quietly show half the
     vocabulary. That is the silence the atlas's `absent` rows exist to break.
 
-    Proposed-first is preserved from the flat listing, now within each class:
+    Proposed-first is preserved from the flat listing, now within each level:
     nothing links an unaudited entry by rule, so it is what wants reading first.
     """
     root = _root(request)
     store = stores.load(root)
     rep = stores.check(root)
-    groups = [
-        {
-            "cls": cls,
-            "rows": sorted(
-                (r for r in store.values() if r["class"] == cls),
-                key=lambda r: (r["status"] != "proposed", r["id"]),
-            ),
-        }
-        for cls in ENTITY_CLASSES
-    ]
+    kids = entities.children(store)
+
+    def rank(ident: str) -> tuple:
+        return (store[ident]["status"] != "proposed", ident)
+
+    def node(ident: str, cls: str) -> dict:
+        return {"rec": store[ident],
+                "kids": [node(k, cls) for k in sorted(kids.get(ident, []), key=rank)
+                         if store[k]["class"] == cls]}
+
+    groups = []
+    for cls in ENTITY_CLASSES:
+        here = [r["id"] for r in store.values() if r["class"] == cls]
+        # A parent in another class does not nest, so it is a top-level row of
+        # its own class rather than one this page silently drops.
+        tops = [i for i in here
+                if not store[i]["within"]
+                or store[store[i]["within"]]["class"] != cls]
+        groups.append({"cls": cls, "count": len(here),
+                       "nodes": [node(i, cls) for i in sorted(tops, key=rank)]})
     return templates.TemplateResponse(
         request,
         "edition/entities.html",

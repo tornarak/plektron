@@ -432,6 +432,38 @@ def test_the_encyclopedia_puts_proposed_entries_first(server):
     assert "awaiting audit" in body
 
 
+def test_the_encyclopedia_nests_a_people_inside_a_people(server):
+    """`within:` is containment in general. The index stopped at two levels on
+    the ground that nothing made a people a child of a people, which was already
+    false — the Maritime and Reindeer Chukchi sit under the Chukchi, and the
+    fact was visible only on the atlas, which will not draw a people."""
+    base, root = server
+    entry(root, "people:chukchi", aliases=[("Chukchi", True)])
+    entry(root, "people:maritime-chukchi", extra="- within: people:chukchi\n")
+    body = get(base + "/entities")
+
+    parent = body.index("data-ref='people:chukchi'")
+    child = body.index("data-ref='people:maritime-chukchi'")
+    assert parent < child
+    # Nested, not merely adjacent: a `<ul>` opens between the two.
+    assert "<ul>" in body[parent:child]
+
+
+def test_a_parent_in_another_class_does_not_nest(server):
+    """Following the field across classes would file the rivers under *place*
+    and leave *water* a list of orphans. Such a child sits at the top of its own
+    class, where its card is what names the parent."""
+    base, root = server
+    entry(root, "place:chukotka", aliases=[("Chukotka", True)])
+    entry(root, "water:anadyr", extra="- within: place:chukotka\n")
+    body = get(base + "/entities")
+
+    water = body.index(">water</code>")
+    assert body.index("water:anadyr") > water
+    # And it is not also drawn under `place`, which would show it twice.
+    assert body.count("data-ref='water:anadyr'") == 1
+
+
 def test_ratifying_writes_the_store(server):
     """The click is the human act — the `zones edit` precedent — and git is the
     witness. What it changes is what a rule may then link corpus-wide."""

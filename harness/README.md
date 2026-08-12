@@ -292,7 +292,12 @@ live only in its directory name. `auto_forms` is the whole bar for a machine lin
 one claimant, `auto: yes`, ratified. **`match` is called by three modules** —
 `generate` links with it, `context` reports with it, `validate` re-derives `#mz`
 against it — because three implementations of one rule would be three witnesses
-that are one.
+that are one. `children`/`relatives`/`roots` walk `within:`, which is
+containment in general and not the geography's: they read no coordinate and no
+shape, and they lived in `geo.py` until a caller wanting a people inside a
+people had to import the atlas to get one. `geo` re-exports the first two.
+`rename` (in `cli/_entity.py`) is the only thing that moves an identity, and it
+refuses while committed `tei/` names the old one.
 
 **`lexicon.py`** — the edition lexicon, `lexicon/<slug>.md`, on `entities.py`'s
 pattern and **deliberately thin**: an entry holds an editor's note and nothing

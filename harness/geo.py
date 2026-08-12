@@ -376,47 +376,22 @@ POINT_BOX = 0.5
 
 
 def children(store: dict) -> dict[str, list[str]]:
-    """`within:` inverted — parent id to the ids directly under it."""
-    kids: dict[str, list[str]] = {}
-    for rec in store.values():
-        if rec["within"]:
-            kids.setdefault(rec["within"], []).append(rec["id"])
-    for v in kids.values():
-        v.sort()
-    return kids
+    """`within:` inverted. **`entities.children`**, re-exported.
+
+    It lived here while the tree was the atlas's alone, and it reads no
+    geometry — it walks a field of the entity record and nothing else. Two of
+    the store's chains are already `people` inside `people`, so a caller
+    wanting the tree over a non-geographic class had to import the geography to
+    get it. Imported lazily because `entities` imports this module at the top.
+    """
+    from .entities import children as _children
+    return _children(store)
 
 
 def relatives(ent_id: str, store: dict) -> list[str]:
-    """Every ancestor and every descendant, at any depth.
-
-    **Not the same set as what a map draws**, and that is the point of it
-    existing. `member_shapes` stops at the nearest descendant *with* a shape, so
-    Chukotka is skipped on the Russian Far East's map and the Chukchee Peninsula
-    below it never appears at all — yet both are one click from where a reader
-    is standing, and both are what the pane exists to make cheap to reach.
-
-    Cycle-safe by the same `seen` discipline as `extent_of`: `entity check`
-    gates acyclicity, but this runs inside a page render, where a hang is worse
-    than a wrong answer.
-    """
-    kids = children(store)
-    out, seen = [], {ent_id}
-
-    def down(ident: str) -> None:
-        for k in kids.get(ident, []):
-            if k in seen:
-                continue
-            seen.add(k)
-            out.append(k)
-            down(k)
-
-    down(ent_id)
-    up = store.get(ent_id, {}).get("within") or ""
-    while up and up not in seen:
-        seen.add(up)
-        out.append(up)
-        up = store.get(up, {}).get("within") or ""
-    return sorted(out)
+    """Every ancestor and descendant. **`entities.relatives`**, re-exported."""
+    from .entities import relatives as _relatives
+    return _relatives(ent_id, store)
 
 
 def member_extents(ent_id: str, store: dict,

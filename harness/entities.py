@@ -346,6 +346,70 @@ def load(root: Path = Path(".")) -> dict[str, dict]:
     return out
 
 
+def children(store: dict) -> dict[str, list[str]]:
+    """`within:` inverted — parent id to the ids directly under it.
+
+    **`within:` is containment in general, and the atlas is one reader of it.**
+    This lived in `geo.py` while the tree was the geography's alone, which made
+    a caller wanting `people:chuvans` under `people:yukaghir` import the
+    geography to get it. It reads no coordinate and no shape — only the field —
+    so it belongs beside the field. `geo.children` re-exports it, since the
+    atlas is still the heaviest caller and its own reasoning is written there.
+    """
+    kids: dict[str, list[str]] = {}
+    for rec in store.values():
+        if rec["within"]:
+            kids.setdefault(rec["within"], []).append(rec["id"])
+    for v in kids.values():
+        v.sort()
+    return kids
+
+
+def relatives(ent_id: str, store: dict) -> list[str]:
+    """Every ancestor and every descendant, at any depth.
+
+    **Not the same set as what a map draws**, and that is the point of it
+    existing. `geo.member_shapes` stops at the nearest descendant *with* a
+    shape, so Chukotka is skipped on the Russian Far East's map and the Chukchi
+    Peninsula below it never appears at all — yet both are one click from where
+    a reader is standing, and both are what the pane exists to make cheap to
+    reach.
+
+    Cycle-safe by the same `seen` discipline as `geo.extent_of`: `check` gates
+    acyclicity, but this runs inside a page render, where a hang is worse than a
+    wrong answer.
+    """
+    kids = children(store)
+    out, seen = [], {ent_id}
+
+    def down(ident: str) -> None:
+        for k in kids.get(ident, []):
+            if k in seen:
+                continue
+            seen.add(k)
+            out.append(k)
+            down(k)
+
+    down(ent_id)
+    up = store.get(ent_id, {}).get("within") or ""
+    while up and up not in seen:
+        seen.add(up)
+        out.append(up)
+        up = store.get(up, {}).get("within") or ""
+    return sorted(out)
+
+
+def roots(store: dict) -> list[str]:
+    """Every entity with no parent, in id order.
+
+    The tops of the forest, whatever their class. `/atlas` takes this and then
+    narrows to the *located* ones, because a map of an unplaceable thing is a
+    blank; the encyclopedia takes it whole, because an entry with no coordinate
+    still has somewhere it belongs.
+    """
+    return sorted(i for i, r in store.items() if not r["within"])
+
+
 def alias_index(store: dict[str, dict]) -> dict[str, list[dict]]:
     """`{form: [{id, lang, auto, status}, …]}` — every claim on every form.
 
