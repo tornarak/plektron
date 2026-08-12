@@ -3,7 +3,7 @@
 - status: ratified
 - since: 1-080
 - within: place:chukotka
-- area: watershed:tumanskaya
+- area: watershed:tumanskaya-or-telqap
 
 ## triggers
 
