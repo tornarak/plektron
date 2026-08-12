@@ -107,7 +107,8 @@ Layout, all at the repo root:
             what every `@ref` holds. Tracked; `entity check` gates it.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
             zones_config.json  lines_config.json  tei_all.rng (the schema).
-    data/geo/  the atlas's shapes — watersheds, language areas, coastline.
+    data/geo/  the atlas's shapes — watersheds, language areas, named
+            features, coastline.
             **Derived but tracked**, the one store that is: its sources are
             outside the repo, so a clone cannot rebuild it. tools/build_geo.py
             builds, SOURCES.md records provenance, `geo list` is the census.

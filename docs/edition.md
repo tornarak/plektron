@@ -539,6 +539,50 @@ looking is one keystroke from an `area:` that resolves as an entity reference.
 fact about names, like `within:` resolving. Everything geometric is
 `geo verify`'s and **reports**.
 
+### A composite `area:`, resolved at lookup and never materialized
+
+Several shapes, comma-separated — `area: langarea:chuk1273,
+base:chukotka-east-of-meridian` — because no source draws together what a human
+can see belongs together. The identity of a composite **is** its canonical
+member list, sorted and comma-joined, so nothing mints a name and two spellings
+of one union cannot exist.
+
+**It is not a row in the store.** `index()["shapes"]` still enumerates precisely
+what the build wrote — `geo list` and `verify`'s `unclaimed` census
+`data/geo/`, not `entities/` — and only `.get()` and `in` resolve a composite,
+and only when *every* member is a real row. So a union is re-derived on every
+run and fails rather than goes stale, which is the same property that lets `#gt`
+and `#mz` exist at all; and `entity check` still refuses one naming a shape that
+does not exist, with the message naming the member rather than the whole field.
+A composite counts as a claim on **each** of its members, or the members would
+read as unclaimed while the union read as a shape `data/geo/` does not hold —
+two wrong answers out of one right authored field.
+
+`geo.shape()` returns the members' features **concatenated**, not unioned: this
+module imports no geometry library on purpose and every operation downstream is
+per-polygon. That concatenation is what turned up a latent bug in `in_shape`,
+which counted ray-crossing parity across every ring in a collection — the same
+arithmetic as per-polygon parity only while no two polygons overlap, and a hole
+punched exactly where two shapes agree otherwise.
+
+### Item 7: the land east of the meridian is land, and the claim is a human's
+
+Asher's Chukchi polygon stops at 180° and this edition does not move it. What it
+adds is `base:chukotka-east-of-meridian` — Natural Earth land, cut by a declared
+topological rule (`data/geo/SOURCES.md` has the rule and why a longitude box
+cannot express it), asserting **nothing whatever about speech**.
+
+The join is then one human act, in the entity file, where a reader can see whose
+it is:
+
+    harness entity locate language:chukchee \
+        --area langarea:chuk1273,base:chukotka-east-of-meridian --commit
+
+That separation is the design. Sourced geometry in the store; the inference in
+an entity, under a `status:`, with a name on it. A shape kind that meant "this
+edition inferred it" would have put the inference back in `data/geo/`, where
+every consumer treats a row as a thing a source drew.
+
 ### The witness inside the river chain
 
 A basin delineated from a tributary's outlet is contained in its trunk's *by
@@ -647,6 +691,30 @@ rendering an empty frame. Chuvan, Kerek, Siberian Yupik and Tundra Yukaghir are
 the live instances: `index.json` carries them as `absent` rows with the reason,
 because an entity pointing at nothing and an entity nobody has got to yet look
 identical from outside, and only one of them is finished.
+
+### Providing a coordinate or a boundary
+
+`geo verify` reports the worklist from both ends. `unclaimed` is what the atlas
+holds that no entity points at; **`unlocated`** is its inverse — entities inside
+a subtree the atlas can draw that carry neither `geo:` nor `area:`, so they ride
+on a parent's frame and put nothing on it. Scoped by the tree rather than by
+class, because every person and source in the store is unlocated and always will
+be, and a worklist mostly made of rows nobody will act on is one nobody reads.
+Its `wants` column separates an entity that needs a coordinate from one already
+framed by its members: asking for a boundary for Chukotka is the one thing this
+atlas refuses to invent.
+
+`harness entity locate ID` answers a row of it, setting `geo:`, `area:`, or
+both. It re-parses the file before writing, as `entity new` does, and refuses an
+`area:` naming a shape `data/geo/` does not hold. That is the whole of the
+workflow, and it ends the hand-edit: item 11 alone was four of them.
+
+**Where a bound comes from is still a provenance question**, and there are only
+two answers so far. Either a source draws it — the three Natural Earth 1:10m
+gazetteer features are that case — or nothing in hand does, and the entity gets
+a point and says so in its gloss, as `water:bering-strait` does. Tracing a shape
+by hand over a georeferenced plate of the book's own maps is the third answer
+and is **not built**; it is deferred with the rest of the land-painting work.
 
 ### What is still open
 
