@@ -514,3 +514,20 @@ def test_the_index_is_reread_when_the_store_changes(tmp_path):
     import os
     os.utime(p, (0, 0))
     assert set(geo.index(tmp_path)["shapes"]) == {"watershed:b"}
+
+
+@built
+def test_an_entity_with_no_extent_gets_a_note_rather_than_a_traceback():
+    """`data/geo/`'s `absent` block holds records — `sought`, `source`, `why` —
+    and `map_context` read them as strings, so `.lower()` raised on every entry
+    with neither `area:` nor `geo:` nor a located descendant. It stayed hidden
+    while almost every entry had an extent; a batch of bays and capes carrying
+    neither made it the ordinary path. `geo.absent_row` is the one flattener."""
+    store = entities.load(ROOT)
+    absent = [i for i in store
+              if geo.extent_of(i, store, ROOT) is None]
+    assert absent, "the fixture store has an extent for everything"
+    for i in absent:
+        ctx = edition_ui.map_context(i, ROOT, "/edition", store=store)
+        assert ctx["svg"] == ""
+        assert isinstance(ctx["absent_note"], str)

@@ -594,3 +594,58 @@ the working tree. `gt/` is tracked, a page was open in a browser, and I had
 refused this exact call for the zones store in the same script one case earlier —
 the reasoning was available and applied too narrowly. Endpoint probing belongs
 against a temp root, or in a test, or not at all.
+
+## The double-duty toponym, and the alias that swallowed its own link
+
+This book names a bay, a cape and an island off the village on it. `Kuluˊči` is
+the village; `Kuluˊči Bay` is the bay, eight times over; `Čeˊčin Bay` is the bay
+at `Čeˊčin`, `Karagha Bay` the bay opposite the island `Karagha`, `Kanchalan
+Hills` the hills above the `Kanchalan`. There are eleven of them. Until this
+sweep the store held only the inland member of each pair, so every one of those
+spans linked the wrong referent — and the reading view showed the reader an
+encyclopedia entry for a village where the sentence said a bay.
+
+Adding the bay looked like it would fix it and did the opposite. `match` is
+non-overlapping and longest-first, so `Kuluˊči Bay` claimed the span; and
+`_entity_spans` refused any hit that overlapped a Tier-1 handle without exactly
+coinciding with it, so the claim was then dropped. The refusal was correct on the
+rule as written. It was also silent: the page lost the bay's link, lost the
+village's link along with it, and said nothing about either. **A rule that
+refuses has to say so, or an editor reads the absence as "no name here".**
+
+Two changes, and they are different in kind.
+
+**Containment now encloses.** The old rule admitted only coincidence, on the
+argument that it is the only relation needing no opinion about where the form
+ends. Containment needs none either — *both* of the handle's ends are inside the
+alias — and it is what every one of these eleven looks like: an English feature
+word wrapped around a native form. What is written is the coincide case one step
+out:
+
+    <rs ref="water:kolyuchin-bay" resp="#mz"
+      ><foreign index="2">Kuluˊči</foreign> Bay</rs>
+
+with the alias's remaining text required to be ASCII, so the `#mz` element still
+carries no glyph a rule would be originating, and the inner `<foreign>` untouched
+and keeping its own rank. `_emit` learned to nest for it, and nests only on
+containment — a partial overlap is still first-one-wins.
+
+**A partial overlap is still refused, and now leaves a comment.** It is
+reachable: `_AFTER` forbids a following letter or combining mark but not a
+hyphen, so an alias can cover the first half of a hyphenated handle and stop
+inside it. Nothing may pick the extent there. What changed is that the reader
+hears about it.
+
+Alongside them, a smaller instance of the same failure. `auto_forms` withholds a
+link for three reasons — contested form, `auto: no`, unratified entry — and the
+generator's comment named the second whatever the reason was. Forty-two entries
+scaffolded in one afternoon are all `proposed`, so the ordinary message was
+telling an editor to raise an `auto:` field that already read `yes`. Each reason
+now says itself, and the unratified one prints the verb that settles it.
+
+The same afternoon turned up a third: `map_context` read `data/geo/`'s `absent`
+block as strings when its rows are records, so `.lower()` raised on every entity
+with no extent. It had been latent since the block widened, because almost every
+entry had a shape; a batch of bays and capes with neither `area:` nor `geo:` made
+it the common path, and the map view 500'd. `geo.absent_row` was already the
+flattener and already tolerated both forms — it simply had one caller too few.

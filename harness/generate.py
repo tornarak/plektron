@@ -453,11 +453,25 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
     confined to `@ref` on `<rs>`, and never carries a glyph" is honoured
     literally: the element carrying `#mz` has no text of its own.
 
-    Coincidence is required rather than containment because it is the only
-    relation that needs no opinion about where the form ends. `place:anadyr`
-    already carries `Veᵋñ` as an alias; a partial overlap would mean the store
-    and the detector disagree about the extent of the token, and picking a side
-    there is exactly the inference this refuses.
+    **An alias that wholly contains a handle encloses it**, on the same argument
+    one further step. `water:kolyuchin-bay` carries `Kuluˊči Bay`, which reaches
+    over the handle `Kuluˊči` and two ASCII characters more:
+
+        <rs ref="water:kolyuchin-bay" resp="#mz"
+          ><foreign index="2">Kuluˊči</foreign> Bay</rs>
+
+    Containment is decidable without an opinion — the handle's *both* ends are
+    inside the alias — which is what a partial overlap is not, and it is the
+    shape every double-duty toponym in this book takes: a bay, a cape or an
+    island named off a village, in English, around the village's own form. The
+    extra text is required to be ASCII, so the `#mz` element still carries no
+    glyph a rule would be originating; the inner `<foreign>` is untouched and
+    keeps its own rank.
+
+    **A partial overlap is still refused, and now says so.** Nothing may pick
+    where the form ends. It used to be dropped in silence, which cost the page
+    the shorter alias's link too — `match` is non-overlapping, so the longer
+    hit had already taken the span — leaving neither a link nor a question.
     """
     from .entities import match
 
@@ -467,9 +481,19 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
     for h in match(full, ents):
         at = by_bounds.get((h["start"], h["end"]))
         owner = None if h["hyphenated"] else autos.get(h["form"])
-        if at is None and any(h["start"] < s[1] and s[0] < h["end"]
-                              for s in taken):
-            continue
+        over = [s for s in taken if h["start"] < s[1] and s[0] < h["end"]]
+        if at is None and over:
+            held = all(h["start"] <= s[0] and s[1] <= h["end"] for s in over)
+            rest = full[h["start"]:h["end"]]
+            for s in sorted(over, reverse=True):
+                rest = rest[:s[0] - h["start"]] + rest[s[1] - h["start"]:]
+            if not (held and rest.isascii()):
+                candidates.append(dict(h, straddles=True))
+                continue
+            if owner:
+                links.append((h["start"], h["end"],
+                              f'<rs ref="{owner}" resp="#mz">', "</rs>"))
+                continue
         if not owner:
             candidates.append(h)
             continue
@@ -491,23 +515,42 @@ def _emit(full: str, spans: list, indent: str) -> str:
     a reviewer read the file against the raster a line at a time, which is the
     comparison the whole pass is built on. A span that straddles one keeps it: the
     break is inside the element, where it belongs.
+
+    **Containment nests; anything else is still first-one-wins.** A span wholly
+    inside another is rendered inside it, because that is the one relation where
+    both can hold at once — an entity reference around a Tier-1 handle. A partial
+    overlap stays undecidable and the earlier span keeps the text.
     """
     def wrap(s: str) -> str:
         return escape(s).replace("\n", f"\n{indent}")
 
-    out, pos = [], 0
-    for span in sorted(spans):
-        start, end, open_ = span[0], span[1], span[2]
-        if start < pos:
-            continue                          # overlapping; first one wins
-        out.append(wrap(full[pos:start]))
-        if len(span) > 3:                     # a wrapper: text goes inside it
-            out.append(open_ + wrap(full[start:end]) + span[3])
-        else:                                 # an empty handle: text goes away
-            out.append(open_)
-        pos = end
-    out.append(wrap(full[pos:]))
-    return "".join(out)
+    # Outermost first where two spans start together, so the container is the one
+    # that claims the text and the contained one renders inside it.
+    ordered = sorted(spans, key=lambda s: (s[0], -(s[1] - s[0])))
+
+    def render(items: list, lo: int, hi: int) -> str:
+        out, pos, i = [], lo, 0
+        while i < len(items):
+            span = items[i]
+            start, end, open_ = span[0], span[1], span[2]
+            if start < pos:                   # overlapping; first one wins
+                i += 1
+                continue
+            out.append(wrap(full[pos:start]))
+            held, j = [], i + 1
+            while j < len(items) and items[j][0] < end:
+                if items[j][1] <= end:
+                    held.append(items[j])
+                j += 1
+            if len(span) > 3:                 # a wrapper: text goes inside it
+                out.append(open_ + render(held, start, end) + span[3])
+            else:                             # an empty handle: text goes away
+                out.append(open_)
+            pos, i = end, j
+        out.append(wrap(full[pos:hi]))
+        return "".join(out)
+
+    return render(ordered, 0, len(full))
 
 
 def page_blocks(ref: str, root: Path = Path(".")
@@ -608,7 +651,8 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         """
         seen = set()
         for h in pending:
-            key = (h["form"], h["hyphenated"], tuple(h["ids"]))
+            key = (h["form"], h["hyphenated"], h.get("straddles", False),
+                   tuple(h["ids"]))
             if key in seen:
                 continue
             # Keyed on the page's spelling too, so `Chukchee` and `Chuk-chee` in
@@ -628,10 +672,26 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                        f'from the word\'s own. Read the page: if the break is the '
                        f'printer\'s, link it; if the hyphen is really there, say '
                        f'so and leave it unlinked')
+            elif h.get("straddles"):
+                say = (f'{escape(h["ids"][0] if len(h["ids"]) == 1 else " or ".join(h["ids"]))}'
+                       f', but the form straddles a Tier-1 handle without '
+                       f'matching it — no rule may say where the name ends. '
+                       f'Link it around the handle if the page means this one, '
+                       f'or delete this comment')
             elif len(h["ids"]) > 1:
                 say = (f'ambiguous — {escape(" or ".join(h["ids"]))}. Link the '
                        f'one this sentence means, or delete this comment if it '
                        f'means neither')
+            elif h["auto"] and h["status"] != "ratified":
+                # `auto_forms` withholds a link for three reasons and the reader
+                # can act on only one of them at a time. Saying `auto: no` when
+                # the author wrote `auto: yes` sends them to edit a field that
+                # is already right.
+                say = (f'{escape(h["ids"][0])}, whose entry is still '
+                       f'`{escape(h["status"])}` — a rule may not link an '
+                       f'unaudited entry. Link it if the page means this one; '
+                       f'`harness entity ratify {escape(h["ids"][0])}` is what '
+                       f'lets the rule do it everywhere else')
             else:
                 say = (f'{escape(h["ids"][0])}, but the store marks this form '
                        f'`auto: no` — it means other things elsewhere in the '

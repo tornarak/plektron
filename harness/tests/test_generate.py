@@ -665,16 +665,19 @@ def test_an_alias_coinciding_with_a_handle_is_wrapped_not_dropped(tmp_path):
     assert "xml:lang" not in doc
 
 
-def test_an_alias_merely_overlapping_a_handle_is_still_dropped(tmp_path):
-    """Coincidence is the only relation that needs no opinion about where the
-    form ends. Here the alias runs past the handle, so the store and the
-    detector disagree about the token's extent and the rule declines to pick."""
+def test_an_alias_that_contains_a_handle_encloses_it(tmp_path):
+    """Containment is decidable without an opinion — *both* of the handle's ends
+    are inside the alias — which is what a partial overlap is not. It used to be
+    refused with the partial case, on the argument that only coincidence needs no
+    opinion about where the form ends; but it is the shape every double-duty
+    toponym in this book takes, a bay or a cape named in English around a
+    village's own form, and refusing it left those pages linking the village."""
     entry(tmp_path, "place:anadyr", canonical="Anadyr",
           aliases=[(nfd("Veᵋñ there"), True)])
     blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
     doc, _ = page(tmp_path, "1-021", blocks)
-    assert "<rs" not in doc
-    assert nfd('<foreign index="1">Veᵋñ</foreign>') in doc
+    assert ('<rs ref="place:anadyr" resp="#mz">'
+            f'<foreign index="1">{nfd("Veᵋñ")}</foreign> there</rs>') in doc
 
 
 def test_the_wrapped_link_still_re_derives_at_the_gate(tmp_path):
@@ -696,3 +699,34 @@ def test_the_wrapped_link_still_re_derives_at_the_gate(tmp_path):
     assert not any("no longer derives" in e or "resolves the form" in e
                    for e in errs)
     assert not any("never carries a glyph" in e for e in errs)
+
+
+def test_a_partial_overlap_is_refused_and_leaves_the_question(tmp_path):
+    """The refusal that stands. Nothing may say where the form ends when the two
+    extents cross — and refusing it in silence used to take the shorter alias's
+    hit with it, since `match` is non-overlapping and the longer one had already
+    claimed the span. The page lost the link *and* the question.
+
+    Reachable because `_AFTER` forbids a following letter or combining mark but
+    not a hyphen: the alias covers the first half of a hyphenated handle and
+    stops inside it."""
+    entry(tmp_path, "water:keinu-weem", canonical="Bear River",
+          aliases=[(nfd("Keiˊñu"), True)])
+    blocks = [("MainZone-P",
+               lines_at([nfd("beside the Keiˊñu-weˊem they camp")]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "straddles a Tier-1 handle" in doc
+    assert "<rs" not in doc
+
+
+def test_an_unratified_owner_is_named_as_unratified_and_not_as_auto_no(tmp_path):
+    """`auto_forms` withholds a link for three reasons; the comment used to name
+    one of them whatever the reason was. A reader sent to raise an `auto:` that
+    already reads `yes` learns nothing and edits nothing."""
+    entry(tmp_path, "place:markova", status="proposed", canonical="Markova",
+          aliases=[("Markova", True)])
+    blocks = [("MainZone-P", lines_at(["the fair at Markova is large"]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "still `proposed`" in doc
+    assert "harness entity ratify place:markova" in doc
+    assert "auto: no" not in doc

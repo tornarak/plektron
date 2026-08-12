@@ -410,10 +410,18 @@ def map_context(
 
     box = geo.extent_of(ent_id, store, root)
     if box is None:
-        why = geo.index(root)["absent"]
-        for _k, text in sorted(why.items()):
-            if rec["canonical"].split()[0].lower() in text.lower():
-                out["absent_note"] = text
+        # `absent` rows are records, not strings — `sought`, `source`, `why` —
+        # and this read them as strings, so every shapeless entry raised
+        # AttributeError on `.lower()` instead of rendering the note. It stayed
+        # hidden while almost every entry had an extent; a batch of bays and
+        # capes with neither `area:` nor `geo:` made it the ordinary path.
+        # `geo.absent_row` is the one flattener, and it tolerates the old form.
+        head = (rec["canonical"].split() or [""])[0].lower()
+        for key, raw in sorted(geo.index(root)["absent"].items()):
+            row = geo.absent_row(key, raw)
+            hay = f'{row["what"]} {row["sought"]} {row["why"]}'.lower()
+            if head and head in hay:
+                out["absent_note"] = row["why"]
                 break
         return out
 
