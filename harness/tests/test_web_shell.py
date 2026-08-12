@@ -22,7 +22,7 @@ import pytest
 from fastapi import APIRouter
 from starlette.testclient import TestClient
 
-from harness.web import Editor, Sessions, create_app, errors, serve
+from harness.web import Editor, Sessions, create_app, errors, load_editors, serve
 
 BANG = "the specific thing that broke"
 
@@ -34,7 +34,17 @@ def editor(monkeypatch):
     Registered into a *copy* of the registry: `EDITORS` is module state that the
     real editors populate at import, and a test that appended to it would leak
     into every later test in the session.
+
+    **The real registry is filled first, and that is not belt-and-braces.**
+    `register()` mutates whatever `EDITORS` names *when it runs*, and the editor
+    modules register on first import — so if the session's first `create_app`
+    happens under the patch, all four register into this throwaway dict and the
+    real one is left permanently empty when monkeypatch reverts. It made
+    `pytest harness/tests/test_web_shell.py` fail on its own two registry tests
+    while passing in the full suite, where some earlier file imports the editors
+    unpatched. Order-dependent, and invisible until this file is run alone.
     """
+    load_editors()
     router = APIRouter()
 
     @router.get("/")
@@ -229,3 +239,129 @@ def test_static_files_are_served_with_a_validator(client):
     assert etag, "no validator — the asset would be re-sent on every navigation"
     again = client.get("/static/css/editor.css", headers={"If-None-Match": etag})
     assert again.status_code == 304
+
+
+# --- each port answers for one editor -----------------------------------------
+#
+# Every route used to answer on every port: `:8732` served `/lines/save` exactly
+# as `:8733` did, so a stale tab or a mistyped path could write through a tool
+# nobody had opened. The routers are still all mounted — one app is what lets the
+# four share a Sessions, a store cache and the handoff — so the isolation is
+# enforced per request, off the socket the request arrived on.
+
+
+def _two_editors(monkeypatch):
+    """Two registered editors, so "another editor's prefix" is a thing that
+    exists. The single-editor fixture above cannot express this case.
+
+    `load_editors()` first, for the reason that fixture's docstring gives: the
+    editor modules register into whatever `EDITORS` names when they are first
+    imported, and under a patch that is this dict."""
+    load_editors()
+    a = APIRouter()
+
+    @a.get("/save")
+    def a_save():
+        return {"wrote": "alpha"}
+
+    b = APIRouter()
+
+    @b.get("/save")
+    def b_save():
+        return {"wrote": "beta"}
+
+    eds = {"alpha": Editor(name="alpha", port=8801, home="/", router=a),
+           "beta": Editor(name="beta", port=8802, home="/", router=b)}
+    monkeypatch.setattr("harness.web.EDITORS", eds, raising=False)
+    monkeypatch.setattr("harness.web.shell.EDITORS", eds, raising=False)
+    return eds
+
+
+def test_a_port_serves_only_its_own_editor(tmp_path, monkeypatch):
+    """The property the four ports did not have. A write reaching the wrong tool
+    is the shape that deleted a page's corrections through a save nobody made.
+
+    Driven by the **port**, not by `state.editor`: `base_url` puts the address in
+    `scope["server"]`, which is where uvicorn puts the receiving socket, so this
+    exercises the mechanism rather than the fallback. One app, two doors."""
+    _two_editors(monkeypatch)
+    app = create_app(tmp_path, Sessions(root=tmp_path), editor="alpha")
+    app.state.ports = {"alpha": 8801, "beta": 8802}
+
+    on_alpha = TestClient(app, base_url="http://127.0.0.1:8801")
+    on_beta = TestClient(app, base_url="http://127.0.0.1:8802")
+
+    assert on_alpha.get("/alpha/save").json() == {"wrote": "alpha"}
+    assert on_beta.get("/beta/save").json() == {"wrote": "beta"}
+
+    # …and neither reaches the other, though both routers are mounted here.
+    bad = on_alpha.get("/beta/save")
+    assert bad.status_code == 404
+    assert "beta is served on port 8802" in bad.json()["error"]
+    assert on_beta.get("/alpha/save").status_code == 404
+
+
+def test_the_port_wins_over_the_editor_the_process_was_started_for(tmp_path,
+                                                                   monkeypatch):
+    """`state.editor` names the verb that started the process, and one process
+    serves all four. It is the fallback for a request with no port, never the
+    answer when there is one — otherwise a `zones edit` process would refuse the
+    lines editor on its own port, and the handoff that shares the process would
+    have nothing to hand to."""
+    _two_editors(monkeypatch)
+    app = create_app(tmp_path, Sessions(root=tmp_path), editor="alpha")
+    app.state.ports = {"alpha": 8801, "beta": 8802}
+    on_beta = TestClient(app, base_url="http://127.0.0.1:8802")
+    assert on_beta.get("/beta/save").json() == {"wrote": "beta"}
+
+
+def test_a_moved_port_moves_the_ownership_with_it(tmp_path, monkeypatch):
+    """`--port` binds one editor's socket somewhere else, and `state.ports` is
+    the record of what was actually bound. Reading the registered default instead
+    would refuse the editor on the very port it was told to use."""
+    _two_editors(monkeypatch)
+    app = create_app(tmp_path, Sessions(root=tmp_path), editor="alpha")
+    app.state.ports = {"alpha": 9901, "beta": 8802}
+    moved = TestClient(app, base_url="http://127.0.0.1:9901")
+    assert moved.get("/alpha/save").json() == {"wrote": "alpha"}
+    assert moved.get("/beta/save").status_code == 404
+
+
+def test_the_shared_routes_answer_whatever_the_port(tmp_path, monkeypatch):
+    """`/static` and the shell's three belong to the process, not to a page.
+    `handoff` posts `/session/{editor}` to the *target* editor's port, so
+    refusing it there would leave a second invocation unable to join — the
+    regression the shell router exists to prevent."""
+    _two_editors(monkeypatch)
+    app = create_app(tmp_path, Sessions(root=tmp_path), editor="alpha")
+    app.state.ports = {"alpha": 8801, "beta": 8802}
+    c = TestClient(app)
+
+    r = c.post("/session/beta", json={"session": {"q": 1}, "open_at": ""})
+    assert r.status_code == 200 and r.json()["ok"] is True
+    assert app.state.sessions.get("beta") == {"q": 1}
+    assert c.get("/static/css/editor.css").status_code == 200
+    assert c.post("/stop").status_code == 200
+
+
+def test_an_app_that_can_name_no_editor_lets_everything_through(tmp_path,
+                                                                monkeypatch):
+    """Falls open rather than closed when there is no port *and* no editor. The
+    isolation is about real sockets; refusing here would break every suite that
+    builds an app to exercise one route, to guard against a request that cannot
+    arrive."""
+    _two_editors(monkeypatch)
+    app = create_app(tmp_path, Sessions(root=tmp_path))   # editor defaults
+    c = TestClient(app)
+    assert c.get("/alpha/save").status_code == 200
+    assert c.get("/beta/save").status_code == 200
+
+
+def test_an_unrouted_path_still_404s_normally(tmp_path, monkeypatch):
+    """The middleware must not turn "no such route" into "wrong port" — the two
+    send a reader somewhere different."""
+    _two_editors(monkeypatch)
+    app = create_app(tmp_path, Sessions(root=tmp_path), editor="alpha")
+    c = TestClient(app)
+    r = c.get("/nope")
+    assert r.status_code == 404 and "served on port" not in r.text

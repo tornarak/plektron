@@ -386,8 +386,11 @@ them apart is the entire point of `tei diff`.
 **The four browser tools share one server.** `edition serve`, `zones edit`,
 `ocr edit` and `ocr review --serve` are one FastAPI app in one process listening
 on four ports — 8731 review, 8732 zones, 8733 lines, 8734 edition — so `--port`
-names *this editor's door onto it* rather than a server of its own. Two
-consequences worth knowing at the command line:
+names *this editor's door onto it* rather than a server of its own. **Each door
+admits one editor**: a request for another editor's prefix is refused with a 404
+naming the port that owns it, so a stale tab or a mistyped path cannot write
+through a tool nobody opened. Three consequences worth knowing at the command
+line:
 
   * **A second invocation joins the running server** rather than failing on a
     held port. It hands over its session — the itinerary, the queue, the walk —
@@ -397,6 +400,11 @@ consequences worth knowing at the command line:
   * **A leftover process holds every port, not just its own.** A `zones edit`
     nobody stopped will refuse an `edition serve`, and says which port and which
     editor is holding it. Exit 2, the usage-error code.
+  * **The handoff still crosses ports, and only it does.** A second invocation
+    posts its session to the *target* editor's port, so `/session/{editor}` is
+    exempt from the isolation above, along with `/stop` and `/static` — those
+    three belong to the process rather than to a page. Everything else is scoped
+    to the door it arrived at.
 **Note** `--schema` checks conformance too, as on `tei validate` and on by default. The header is a bare `<teiHeader>` and `teiCorpus` requires a `TEI` child, so there is no conformant container for it — it is wrapped in a minimal `<TEI>` **in memory** to be checkable, never on disk, since inventing a container there would settle the assembly scheme by accident. This found the first defect on its first run: `version="stock"` on `<application>`, where `teidata.versionNumber` is a pattern that does not match it, in a file read by hand more than once.
 ```
 --schema     also check the header is conformant TEI, wrapped in memory [on]

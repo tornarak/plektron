@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 
-from . import EDITORS
+from . import EDITORS, port_editor
 
 router = APIRouter()
 
@@ -75,23 +75,15 @@ def home(request: Request) -> RedirectResponse:
     """Send a bare `/` to whichever editor owns the port it arrived on.
 
     ASGI records the receiving socket in `scope["server"]`, so one app can tell
-    `:8732/` from `:8734/` and land each on its own tool. Every route stays
-    reachable from every port — this decides only where the front door opens.
+    `:8732/` from `:8734/` and land each on its own tool. That resolution is
+    `port_editor`'s, shared with the middleware that refuses another editor's
+    routes on this port — this decides only where the front door opens, and the
+    two must agree about which door that is.
     """
     port = (request.scope.get("server") or (None, None))[1]
-
-    # The ports actually bound, which is not the registered defaults when
-    # `--port` moved one. Consulted first, because a bare `/` that 404s under an
-    # override is a front door that works only at the default — found by running
-    # it, like the two before it.
-    bound = getattr(request.app.state, "ports", None) or {}
-    for name, at in bound.items():
-        if at == port and name in EDITORS:
-            return RedirectResponse(f"/{name}{EDITORS[name].home}")
-
-    for ed in EDITORS.values():
-        if ed.port == port:
-            return RedirectResponse(f"/{ed.name}{ed.home}")
+    owner = port_editor(request.app, port)
+    if owner is not None:
+        return RedirectResponse(f"/{owner}{EDITORS[owner].home}")
 
     # Nothing matched the port: fall back to the editor this process was started
     # for. It is the honest answer rather than a guess — the verb named one, and

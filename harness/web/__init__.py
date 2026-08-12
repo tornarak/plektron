@@ -15,13 +15,26 @@ doing any of that inside it stalls the event loop for the whole process, every
 editor at once. `async def` is for something genuinely awaiting, and there is
 almost nothing here that is.
 
-**One process, several ports.** `uvicorn.Server.serve(sockets=[...])` takes a
-list of pre-bound sockets, and ASGI puts the receiving port in
-`scope["server"]`, so the four editors' ports are four doors into one app rather
-than four servers. That is what lets them share a template tree, a stylesheet
-and a store cache, and lets a page in one link to a page in another. The ports
-are unchanged from when they were separate servers, so nothing at the command
-line moved.
+**One process, several ports, and each port answers for one editor only.**
+`uvicorn.Server.serve(sockets=[...])` takes a list of pre-bound sockets, so the
+four editors run in one app rather than four servers — which is what lets them
+share a template tree, a stylesheet, a store cache and a `Sessions`, and what
+lets a second invocation hand its work to the process already running.
+
+ASGI puts the *receiving* socket in `scope["server"]`, and `_port_editor` reads
+it: a request for another editor's prefix is refused, naming the port that owns
+it. That was not true for most of this layer's life — every route answered on
+every port, so `:8732` served `/lines/save` exactly as `:8733` did, and a stray
+request or a stale tab could write through a tool nobody had opened. The ports
+carried no meaning; now they do.
+
+What stays reachable everywhere is what belongs to the process rather than to a
+page: `/static`, and the shell's `/`, `/session/{editor}` and `/stop`. Handoff
+posts to the *target* editor's port and would break without that, which is why
+the shell router is mounted unprefixed and exempt.
+
+The ports are unchanged from when they were separate servers, so nothing at the
+command line moved.
 
 `EDITORS` is the registry, and `serve()` binds exactly the ports of the editors
 registered in it. That was load-bearing while the port was in progress — a
@@ -35,6 +48,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -89,6 +103,44 @@ def load_editors() -> dict[str, Editor]:
     from . import edition, lines, review, zones  # noqa: F401 — registration
 
     return EDITORS
+
+
+#: Paths that belong to the process rather than to any one editor, and so answer
+#: on every port. `/static` because each editor needs its assets whichever door
+#: it was reached through; the shell's three because `handoff` posts
+#: `/session/{editor}` to the *target* editor's port — refusing it there would
+#: leave a second invocation unable to join, which is the regression the shell
+#: router was written to prevent.
+SHARED_PREFIXES = ("/static", "/session", "/stop")
+
+
+def port_editor(app, port: int | None) -> str | None:
+    """Which editor owns the port a request arrived on, or None.
+
+    One resolution, two callers: `shell.home` sends a bare `/` to the right front
+    door, and the middleware refuses everything that is not that editor's. They
+    were one function's worth of logic in one place and are now read by two, so
+    they are written once — two copies would drift, and the failure would be a
+    port that homes to one tool and serves another.
+
+    `app.state.ports` first, because it holds what was actually bound: `--port`
+    moves one editor's socket and the registered default then names the wrong
+    door. The registry is the fallback for an app nobody called `serve()` on.
+
+    Returns None rather than guessing. The callers want different things from
+    that — `home` falls back to the editor the process was started for, the
+    middleware falls back to letting the request through — and neither should be
+    decided here.
+    """
+    if port is not None:
+        bound = getattr(app.state, "ports", None) or {}
+        for name, at in bound.items():
+            if at == port and name in EDITORS:
+                return name
+        for ed in EDITORS.values():
+            if ed.port == port:
+                return ed.name
+    return None
 
 
 @dataclass
@@ -147,5 +199,49 @@ def create_app(root: Path = Path("."), sessions: Sessions | None = None,
         if ed.router is not None:
             app.include_router(ed.router, prefix=f"/{ed.name}")
 
+    _install_port_scope(app)
     errors.install(app, editor)
     return app
+
+
+def _install_port_scope(app: FastAPI) -> None:
+    """Refuse a request for an editor that does not own the port it arrived on.
+
+    **The routers are all mounted and that is deliberate.** One app is what lets
+    the four share a `Sessions`, a store cache and a template tree, and what lets
+    `handoff` reach a running process on another editor's port; four apps would
+    mean four `uvicorn.Server`s and lose all of it. So the isolation is enforced
+    per request, where the receiving socket is known, rather than by mounting
+    less.
+
+    **Falls open when the port names no editor**, and that is the one judgement
+    here worth stating. A `TestClient` has no meaningful port, and so does any
+    caller that built an app without `serve()`; refusing those would break every
+    suite in the tree to guard against a request that cannot arrive, since the
+    isolation only means anything once real sockets are bound. `state.editor` is
+    consulted first — a single-editor app knows what it is for even without a
+    port — and only a process that can name neither lets everything through.
+    """
+    @app.middleware("http")
+    async def _scope(request, call_next):
+        path = request.url.path
+        if not path.startswith("/") or path == "/" \
+                or any(path == p or path.startswith(p + "/")
+                       for p in SHARED_PREFIXES):
+            return await call_next(request)
+
+        first = path.split("/", 2)[1]
+        if first not in EDITORS:
+            return await call_next(request)      # unrouted; let 404 handle it
+
+        port = (request.scope.get("server") or (None, None))[1]
+        owner = port_editor(app, port) or getattr(app.state, "editor", "")
+        if owner not in EDITORS or owner == first:
+            return await call_next(request)
+
+        ed = EDITORS[first]
+        at = (getattr(app.state, "ports", None) or {}).get(first, ed.port)
+        return JSONResponse(
+            {"error": f"{first} is served on port {at}, not {port}. Every editor "
+                      f"answers on its own port only — this one is {owner}'s."},
+            status_code=404)

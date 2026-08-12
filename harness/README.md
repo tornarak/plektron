@@ -614,8 +614,20 @@ request bodies. Four things in it are load-bearing:
   * **`serve()` binds the ports of the editors in `EDITORS`**, and
     `uvicorn.Server.serve(sockets=[…])` takes them all — so 8731–8734 are four
     doors into one app rather than four servers. That is what lets them share a
-    template tree and a store cache. Derived from the registry rather than
-    written as a literal, which is what let the four move over one at a time.
+    template tree, a store cache and a `Sessions`, and what lets a second
+    invocation hand its work to the process already running. Derived from the
+    registry rather than written as a literal, which is what let the four move
+    over one at a time.
+  * **Each door admits one editor.** `port_editor` reads the receiving socket out
+    of `scope["server"]`, and a request for another editor's prefix is refused
+    naming the port that owns it — every route used to answer on every port, so
+    `:8732` served `/lines/save` exactly as `:8733` did. The routers are still all
+    mounted, because four apps would mean four `uvicorn.Server`s and lose
+    everything the shared process buys; the isolation is per request instead.
+    `/static` and the shell's `/`, `/session/{editor}` and `/stop` stay reachable
+    everywhere — they belong to the process, and `handoff` posts to the *target*
+    editor's port. With no port resolvable the middleware falls open, since a
+    `TestClient` has none and the guard is about real sockets.
   * **`errors.fetched` marks a route the page `fetch`es** rather than navigates
     to. Its failures are reported as `{"error": …}` because an HTML traceback
     raises inside the `fetch` and throws away the very reason the page was
