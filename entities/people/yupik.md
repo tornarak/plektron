@@ -2,7 +2,7 @@
 
 - status: ratified
 - since: 1-021
-- area: langarea:paci1278
+- area: langarea:cent2127,langarea:paci1278
 - link: wikipedia:Yupik_peoples
 - link: wikidata:Q37014
 

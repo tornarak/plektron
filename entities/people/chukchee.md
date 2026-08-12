@@ -2,7 +2,7 @@
 
 - status: ratified
 - since: 1-021
-- area: langarea:chuk1273
+- area: base:chukotka-east-of-meridian,langarea:chuk1273
 - link: wikipedia:Chukchi_people
 
 ## triggers

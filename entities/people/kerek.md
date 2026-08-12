@@ -2,7 +2,6 @@
 
 - status: ratified
 - since: 1-031
-- area: langarea:nort2943
 - link: wikipedia:Kereks
 - link: wikidata:Q1190792
 
