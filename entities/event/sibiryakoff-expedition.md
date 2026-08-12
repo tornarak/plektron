@@ -3,11 +3,11 @@
 - status: ratified
 - since: 1-021
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Sibiryakoff Expedition | yes | uncontested; the book uses no shorter form for it |
+| form | lang | auto | note |
+|---|---|---|---|
+| Sibiryakoff Expedition | | yes | uncontested; the book uses no shorter form for it |
 
 ## gloss
 

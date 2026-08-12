@@ -5,14 +5,14 @@
 - link: wikipedia:Cape_Chaplino
 - link: wikidata:Q3313853
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Chaplino | yes | |
-| Indian Point | yes |  |
-| Uñiˊin | yes | lang:ckt |
-| Uñiˊsak | yes | lang:ypk |
+| form | lang | auto | note |
+|---|---|---|---|
+| Chaplino | | yes | |
+| Indian Point | | yes |  |
+| Uñiˊin | ckt | yes | |
+| Uñiˊsak | ypk | yes | |
 
 ## gloss
 

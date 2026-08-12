@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-132
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Schrenck | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Schrenck | | no | |
 
 ## gloss
 

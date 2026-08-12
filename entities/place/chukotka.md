@@ -4,11 +4,11 @@
 - since: 1-021
 - within: place:russian-far-east
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| | | no | |
 
 ## gloss
 

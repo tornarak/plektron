@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-196
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Adler | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Adler | | no | |
 
 ## gloss
 

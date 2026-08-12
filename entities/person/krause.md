@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-047
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Krause | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Krause | | no | |
 
 ## gloss
 

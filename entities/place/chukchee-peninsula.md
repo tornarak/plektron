@@ -8,11 +8,11 @@
 - link: wikipedia:Chukchi_Peninsula
 - link: wikidata:Q1002
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Chukchee Peninsula | yes | longest-first is what keeps the bare "Chukchee" from taking this |
+| form | lang | auto | note |
+|---|---|---|---|
+| Chukchee Peninsula | | yes | longest-first is what keeps the bare "Chukchee" from taking this |
 
 ## gloss
 

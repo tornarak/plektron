@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-103
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Middendorff | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Middendorff | | no | |
 
 ## gloss
 

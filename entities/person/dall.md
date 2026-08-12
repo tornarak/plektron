@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-031
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Dall | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Dall | | no | |
 
 ## gloss
 

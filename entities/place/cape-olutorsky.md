@@ -3,12 +3,12 @@
 - status: proposed
 - since: 1-032
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Cape Olutorsky | no | |
-| Cape Alutorsky | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Cape Olutorsky | | no | |
+| Cape Alutorsky | | no | |
 
 ## gloss
 

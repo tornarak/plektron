@@ -5,11 +5,11 @@
 - within: water:anadyr
 - area: watershed:white-or-belaya
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| White River | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| White River | | no | |
 
 ## gloss
 

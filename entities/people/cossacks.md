@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-036
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Cossacks | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Cossacks | | no | |
 
 ## gloss
 

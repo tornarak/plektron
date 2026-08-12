@@ -5,11 +5,11 @@
 - within: water:anadyr
 - area: watershed:main
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Maiˊn | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Maiˊn | | no | |
 
 ## gloss
 

@@ -5,11 +5,11 @@
 - within: place:chukotka
 - area: watershed:kanchalan
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Kanchalan | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Kanchalan | | no | |
 
 ## gloss
 

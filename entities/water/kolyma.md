@@ -5,11 +5,11 @@
 - within: place:russian-far-east
 - area: watershed:kolyma
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Kolyma | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Kolyma | | yes | |
 
 ## gloss
 

@@ -642,21 +642,21 @@ def test_the_figure_shape_is_conformant_on_a_real_figure_page(tmp_path):
 
 # --- a Tier-1 form that is also an entity alias -------------------------------
 #
-# The rule used to drop every trigger hit touching a Tier-1 handle, on the ground
+# The rule used to drop every alias hit touching a Tier-1 handle, on the ground
 # that a rule resolving an identity for a string whose glyphs it may not name is
 # the firewall's failure shape. That holds for reaching *inside* a handle. A store
-# that carries `Veᵋñ` as a trigger for `place:anadyr` has already made the
+# that carries `Veᵋñ` as an alias for `place:anadyr` has already made the
 # judgement; enclosing the handle applies it without touching a glyph.
 
 
-def test_a_trigger_coinciding_with_a_handle_is_wrapped_not_dropped(tmp_path):
+def test_an_alias_coinciding_with_a_handle_is_wrapped_not_dropped(tmp_path):
     """The `<rs>` encloses the `<foreign>`; neither element loses anything.
 
     Each `@resp` stays a claim about its own element — the outer names the
     entity, the inner says a ratified token sits here — so the handle still
     carries no `xml:lang` and the collator's question is untouched."""
     entry(tmp_path, "place:anadyr", canonical="Anadyr",
-          triggers=[(nfd("Veᵋñ"), True)])
+          aliases=[(nfd("Veᵋñ"), True)])
     blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
     doc, rep = page(tmp_path, "1-021", blocks)
     assert nfd('<rs ref="place:anadyr" resp="#mz"><foreign index="1">Veᵋñ'
@@ -665,12 +665,12 @@ def test_a_trigger_coinciding_with_a_handle_is_wrapped_not_dropped(tmp_path):
     assert "xml:lang" not in doc
 
 
-def test_a_trigger_merely_overlapping_a_handle_is_still_dropped(tmp_path):
+def test_an_alias_merely_overlapping_a_handle_is_still_dropped(tmp_path):
     """Coincidence is the only relation that needs no opinion about where the
-    form ends. Here the trigger runs past the handle, so the store and the
+    form ends. Here the alias runs past the handle, so the store and the
     detector disagree about the token's extent and the rule declines to pick."""
     entry(tmp_path, "place:anadyr", canonical="Anadyr",
-          triggers=[(nfd("Veᵋñ there"), True)])
+          aliases=[(nfd("Veᵋñ there"), True)])
     blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
     doc, _ = page(tmp_path, "1-021", blocks)
     assert "<rs" not in doc
@@ -680,11 +680,11 @@ def test_a_trigger_merely_overlapping_a_handle_is_still_dropped(tmp_path):
 def test_the_wrapped_link_still_re_derives_at_the_gate(tmp_path):
     """`#mz` asserts nothing on its own: `validate` recomputes the owner from the
     store on every run. The nesting must not put the link out of that loop — the
-    `<rs>`'s own text is the Tier-1 string, which is the form the trigger table
+    `<rs>`'s own text is the Tier-1 string, which is the form the alias table
     is keyed on."""
     from harness.validate import validate
     entry(tmp_path, "place:anadyr", canonical="Anadyr",
-          triggers=[(nfd("Veᵋñ"), True)])
+          aliases=[(nfd("Veᵋñ"), True)])
     blocks = [("MainZone-P", lines_at([nfd("they call it Veᵋñ there")]))]
     doc, _ = page(tmp_path, "1-021", blocks)
     out = tmp_path / "tei" / "chukchi-1-021.xml"

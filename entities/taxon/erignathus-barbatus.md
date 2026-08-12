@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-151
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Erignathus barbatus | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Erignathus barbatus | | no | |
 
 ## gloss
 

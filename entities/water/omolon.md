@@ -5,11 +5,11 @@
 - within: water:kolyma
 - area: watershed:omolon
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Omolon | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Omolon | | yes | |
 
 ## gloss
 

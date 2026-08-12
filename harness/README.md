@@ -27,7 +27,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
-| `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the trigger vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
+| `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
 | `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |

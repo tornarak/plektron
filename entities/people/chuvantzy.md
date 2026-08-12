@@ -4,12 +4,12 @@
 - since: 1-036
 - link: wikipedia:Chuvans
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Čaˊačên | yes | lang:ckt |
-| Russianized natives | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Čaˊačên | ckt | yes | |
+| Russianized natives | | no | |
 
 ## gloss
 

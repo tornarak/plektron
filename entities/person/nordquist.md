@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-047
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Nordquist | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Nordquist | | no | |
 
 ## gloss
 

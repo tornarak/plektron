@@ -4,13 +4,13 @@
 - since: 1-021
 - link: wikipedia:Jesup_North_Pacific_Expedition
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Jesup North Pacific Expedition | yes | the full printed title; 1-021 breaks it across a line |
-| Jesup Expedition | yes | |
-| Jesup | no | also Morris K. Jesup the man, whom it is named after |
+| form | lang | auto | note |
+|---|---|---|---|
+| Jesup North Pacific Expedition | | yes | the full printed title; 1-021 breaks it across a line |
+| Jesup Expedition | | yes | |
+| Jesup | | no | also Morris K. Jesup the man, whom it is named after |
 
 ## gloss
 

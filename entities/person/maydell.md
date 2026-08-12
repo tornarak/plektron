@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-037
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Maydell | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Maydell | | no | |
 
 ## gloss
 

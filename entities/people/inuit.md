@@ -5,9 +5,9 @@
 - link: wikipedia:Inuit
 - link: wikidata:Q189975
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Central Eskimo | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Central Eskimo | | yes | |
 

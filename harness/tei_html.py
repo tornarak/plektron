@@ -103,7 +103,7 @@ RANK_NOTE = {
     "#gt": ("adopted", "keyed at the raster in the ground-truth pass"),
     "#llm": ("proposed", "a model read this off the page; awaiting ratification"),
     "#htr": ("unexamined", "recognizer output nobody has looked at"),
-    "#mz": ("rule-applied", "linked from the entity store's trigger table"),
+    "#mz": ("rule-applied", "linked from the entity store's alias table"),
 }
 UNSETTLED = ("#llm", "#htr", "#mz")
 

@@ -7,12 +7,12 @@
 - geo: 64.72 177.5
 - link: wikipedia:Anadyr_(river)
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Anadyr River | yes | |
-| Anadyr | no | also the region, the bay and the town; 1-021 has "the mouth of the Anadyr" |
+| form | lang | auto | note |
+|---|---|---|---|
+| Anadyr River | | yes | |
+| Anadyr | | no | also the region, the bay and the town; 1-021 has "the mouth of the Anadyr" |
 
 ## gloss
 

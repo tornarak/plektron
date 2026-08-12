@@ -11,7 +11,7 @@ nothing in any page.
 
 `occurrences` is measurement and never gates. It answers "where does this
 entity appear", by two routes at once — the links already written, and the
-trigger hits nobody has linked — which is the question an editor asks when
+alias hits nobody has linked — which is the question an editor asks when
 deciding whether an entry earns its keep.
 """
 from __future__ import annotations
@@ -23,12 +23,12 @@ from pathlib import Path
 from ..entities import (
     _SECTION,
     Malformed,
+    alias_index,
     check,
     load,
     match,
     path_for,
     split_id,
-    trigger_index,
 )
 from ..geo import canonical_area, split_area
 from ..geo import index as geo_index
@@ -48,7 +48,7 @@ def register(cli):
     g = group(cli, "entity",
               "the encyclopedia: one markdown file per entity, keyed "
               "`class:slug`. The referent of every @ref in the corpus and the "
-              "source of the trigger vocabulary the TEI generator applies by "
+              "source of the alias vocabulary the TEI generator applies by "
               "rule",
               section="Apparatus and reports")
 
@@ -59,17 +59,24 @@ def register(cli):
                "\n\nID: `class:slug`, e.g. `person:bogoras`")
     arg(p, "ident", metavar="ID")
     opt(p, "--canonical", required=True, metavar="NAME",
-        help="the display name, written into the heading. Not a trigger unless "
+        help="the display name, written into the heading. Not an alias unless "
              "you also pass it as one — how a thing is titled and how the book "
              "spells it in running prose are different questions")
     opt(p, "--since", required=True, metavar="PP-NNN",
         help="the page whose reading prompted the entry. Required, because an "
              "apparatus store that cannot be traced back to a page is one "
              "nobody can audit — data/toc.json is the standing case")
-    opt(p, "--trigger", "triggers", multiple=True, metavar="FORM",
+    opt(p, "--alias", "aliases", multiple=True, metavar="FORM",
         help="a form that means this entity, added at `auto: no`. Raising one "
              "to `auto: yes` is a separate act, done in the file or the browser, "
-             "because it licenses a link nobody will be asked about")
+             "because it licenses a link nobody will be asked about. A native "
+             "form is the NFD surface spelling, never a lexicon handle key — "
+             "the key is a fold and collides on purpose")
+    opt(p, "--lang", metavar="CODE",
+        help="the language every `--alias` on this run is a name in, e.g. `ckt` "
+             "or `ru`. Shortest BCP-47, the same string a page writes in "
+             "`xml:lang`. Left off, the aliases are filed with the language "
+             "unstated, which `entity check` counts rather than refuses")
     opt(p, "--within", metavar="ID",
         help="the entity that contains this one, `class:slug`. The atlas's "
              "whole structure, and the only thing that puts a location "
@@ -124,12 +131,12 @@ def register(cli):
            "the generator surfaces it as a question")
 
     action(g, "list", run_list,
-           help="every entry: id, status, canonical name, trigger count, and "
+           help="every entry: id, status, canonical name, alias count, and "
            "the page that prompted it. Proposed entries first — they are the "
            "audit queue")
 
     p = action(g, "show", run_show,
-               help="whole records, triggers and gloss included"
+               help="whole records, aliases and gloss included"
                "\n\nID: `class:slug`; several are allowed")
     arg(p, "idents", nargs=-1, required=True, metavar="ID")
 
@@ -144,7 +151,7 @@ def register(cli):
 
     p = action(g, "occurrences", run_occurrences,
                help="where an entity appears, by two routes: the @ref links "
-               "already written into committed TEI, and the trigger hits nobody "
+               "already written into committed TEI, and the alias hits nobody "
                "has linked. The second is the interesting one — a large unlinked "
                "count on a ratified entity means pages collated before the entry "
                "existed, and `tei generate` will link them on the next run. "
@@ -185,10 +192,10 @@ TEMPLATE = """# {ident} — {canonical}
 - status: proposed
 - since: {since}
 {extra}
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
+| form | lang | auto | note |
+|---|---|---|---|
 {rows}
 
 ## gloss
@@ -205,14 +212,16 @@ def run_new(a) -> int:
         out(a, {"id": ident, "path": str(p), "wrote": False,
                 "means": "already exists"})
         return 1
-    rows = "\n".join(f"| {unicodedata.normalize('NFD', t)} | no | |"
-                     for t in a.triggers) or "| | no | |"
+    lang = (a.lang or "").strip()
+    rows = "\n".join(f"| {unicodedata.normalize('NFD', t)} | {lang} | no | |"
+                     for t in a.aliases) or f"| | {lang} | no | |"
     extra = "".join(f"- {k}: {v}\n" for k, v in
                     (("within", a.within), ("area", a.area)) if v)
     text = TEMPLATE.format(ident=ident, canonical=a.canonical, since=a.since,
                            extra=extra, rows=rows)
-    # Parsed before it is written, so a bad `--since` or an empty `--trigger`
-    # fails as a message rather than as a file the next `check` complains about.
+    # Parsed before it is written, so a bad `--since`, an unknown `--lang` or an
+    # empty `--alias` fails as a message rather than as a file the next `check`
+    # complains about.
     from ..entities import parse
     parse(text, where=str(p))
     if a.commit:
@@ -335,8 +344,8 @@ def run_check(a) -> int:
 def run_list(a) -> int:
     store = _store(a)
     rows = [{"id": r["id"], "status": r["status"], "canonical": r["canonical"],
-             "triggers": len(r["triggers"]),
-             "auto": sum(1 for t in r["triggers"] if t["auto"]),
+             "aliases": len(r["aliases"]),
+             "auto": sum(1 for t in r["aliases"] if t["auto"]),
              "since": r["since"]}
             for r in store.values()]
     # Proposed first: the list is read as a worklist more often than as a census,
@@ -352,9 +361,9 @@ def run_show(a) -> int:
     for i in ids:
         r = store[i]
         out(a, {k: v for k, v in r.items()
-                if k not in ("triggers", "gloss", "dir_class", "stem")},
+                if k not in ("aliases", "gloss", "dir_class", "stem")},
             name=i, heading=True)
-        out(a, r["triggers"], name=f"{i} triggers", heading=True)
+        out(a, r["aliases"], name=f"{i} aliases", heading=True)
     return 0
 
 
@@ -405,9 +414,9 @@ def run_occurrences(a) -> int:
 
     store = _store(a)
     ids = _resolve(a, store)
-    idx = trigger_index(store)
+    idx = alias_index(store)
     # Only the named entities' forms, so a sweep over one entity does not pay for
-    # the whole store's trigger alternation.
+    # the whole store's alias alternation.
     wanted = {f: c for f, c in idx.items()
               if any(x["id"] in set(ids) for x in c)}
 

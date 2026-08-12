@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-278
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Teit | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Teit | | no | |
 
 ## gloss
 

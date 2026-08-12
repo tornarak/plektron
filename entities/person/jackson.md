@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-090
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Jackson | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Jackson | | no | |
 
 ## gloss
 

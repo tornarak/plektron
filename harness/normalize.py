@@ -206,9 +206,9 @@ def _spacing_hits(text: str, commentary: bool = False) -> list[dict]:
 SCOPE_GLOBS = ("gt/ocr/*.xml", "gt/fig/*.xml", "tei/*.xml",
                # The entity store is hand-authored and holds two kinds of text
                # at once: gloss prose, which is English and sets curly quotes,
-               # and trigger forms, which may be Tier-1 and where a straight
+               # and alias forms, which may be Tier-1 and where a straight
                # apostrophe is the licensed stress mark. Both need NFD — a
-               # trigger the store spells precomposed silently fails to match a
+               # alias the store spells precomposed silently fails to match a
                # page that spells it decomposed, and a silent miss is the
                # failure class the whole project is organised against — so the
                # NFD arm sweeps the file whole and the two prose arms skip the

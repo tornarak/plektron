@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-151
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Histriophoca fasciata | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Histriophoca fasciata | | no | |
 
 ## gloss
 

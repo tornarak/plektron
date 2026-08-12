@@ -5,11 +5,11 @@
 - within: place:russian-far-east
 - area: watershed:opuka
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Opuka | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Opuka | | no | |
 
 ## gloss
 

@@ -72,7 +72,7 @@ from .context import (
     tier1_terms,
 )
 from .detectors import join_broken_words
-from .entities import auto_forms, load, trigger_index
+from .entities import alias_index, auto_forms, load
 from .lines import page_lines
 from .zones import read_zones, split_at_paragraphs
 
@@ -431,7 +431,7 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
     adding a second one beside it.
 
     **Matched over the joined block, not per line**, because the printed line
-    breaks fall inside the most reliable triggers — `1-021` sets "the Jesup North
+    breaks fall inside the most reliable aliases — `1-021` sets "the Jesup North
     / Pacific Expedition" across two lines — and a matcher that stopped at a line
     end would miss exactly the multi-word forms that are unambiguous enough to
     link.
@@ -446,7 +446,7 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
           ><foreign index="7">Uweˊlen</foreign></rs>
 
     Each `@resp` is a claim about its own element. The outer says which entity
-    this string names, which is the trigger table's judgement applied by rule;
+    this string names, which is the alias table's judgement applied by rule;
     the inner says a ratified token sits here, and still carries no `xml:lang`,
     so the collator's question is untouched and `tei expand` still stamps `#gt`
     on the element that holds the glyphs. `validate`'s rule that `#mz` "is
@@ -455,7 +455,7 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
 
     Coincidence is required rather than containment because it is the only
     relation that needs no opinion about where the form ends. `place:anadyr`
-    already carries `Veᵋñ` as a trigger; a partial overlap would mean the store
+    already carries `Veᵋñ` as an alias; a partial overlap would mean the store
     and the detector disagree about the extent of the token, and picking a side
     there is exactly the inference this refuses.
     """
@@ -519,8 +519,8 @@ def page_blocks(ref: str, root: Path = Path(".")
     and empty lines are dropped, and each line's text is the *joined* one, so a
     word broken across two lines is whole on the first of them.
 
-    **A block is the unit a trigger is matched over**, which is why this is one
-    function and not two. The generator marks up a block at a time, so a trigger
+    **A block is the unit an alias is matched over**, which is why this is one
+    function and not two. The generator marks up a block at a time, so an alias
     straddling a printed line break inside one — "the Jesup North / Pacific
     Expedition" on `1-021` — is found and linked; `tei context` reports the same
     hits to the reviewer, and if it derived its own text differently the table
@@ -567,7 +567,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         by_line.setdefault(t["line"], []).append(t)
 
     store = load(root)
-    ents = trigger_index(store)
+    ents = alias_index(store)
     autos = auto_forms(ents)
     pending: list[dict] = []          # candidates, to be commented after the block
 
@@ -598,7 +598,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
            "figures": 0, "notes_anchored": 0}
 
     def flush_candidates() -> None:
-        """One comment per distinct unlinked trigger, after the block it sits in.
+        """One comment per distinct unlinked alias, after the block it sits in.
 
         Every one is a question, in the same shape as every other question the
         generator leaves: the rules found something they are not allowed to
@@ -735,7 +735,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         what this fixes.
 
         Rendering the run whole rather than concatenating rendered bands also puts
-        a trigger that straddles a band boundary inside one call to `rendered`,
+        an alias that straddles a band boundary inside one call to `rendered`,
         so it is found and linked like any other — the same reason the block is
         marked up whole rather than line by line.
         """

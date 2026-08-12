@@ -5,12 +5,12 @@
 - within: people:chukchee
 - link: wikipedia:Chukchi_people
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Reindeer Chukchee | yes | |
-| Reindeer people | no | also used of the Koryak in places |
+| form | lang | auto | note |
+|---|---|---|---|
+| Reindeer Chukchee | | yes | |
+| Reindeer people | | no | also used of the Koryak in places |
 
 ## gloss
 

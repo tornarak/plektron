@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-121
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Gilyak | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Gilyak | | no | |
 
 ## gloss
 

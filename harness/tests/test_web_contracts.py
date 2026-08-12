@@ -75,8 +75,8 @@ CASES = [
     ("edition /ratify", E.Ratify, {"id": "place:markova"}, ("id",)),
     # No JS posts this one today; the fields are `edition_ui._new`'s.
     ("edition /entity/new", E.NewEntity,
-     {"id": "place:x", "canonical": "X", "triggers": ["X"], "since": "1900"},
-     ("id", "canonical", "triggers", "since")),
+     {"id": "place:x", "canonical": "X", "aliases": ["X"], "since": "1900"},
+     ("id", "canonical", "aliases", "since")),
 ]
 
 
@@ -101,9 +101,9 @@ def test_the_model_drops_nothing_the_client_sends(name, model, body, reads):
                          CASES, ids=[c[0] for c in CASES])
 def test_the_model_carries_what_the_server_reads(name, model, body, reads):
     """The third direction: a field the consumer looks for and the model never
-    declares can only ever be its default. `_new` reading `triggers` off a model
+    declares can only ever be its default. `_new` reading `aliases` off a model
     that had no such field is how an entity would have been written with the
-    placeholder trigger row and looked finished."""
+    placeholder alias row and looked finished."""
     missing = [f for f in reads if f not in model.model_fields]
     assert missing == [], f"{name}: consumer reads {missing}, model declares none"
 

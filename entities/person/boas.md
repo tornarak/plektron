@@ -4,11 +4,11 @@
 - since: 1-131
 - link: wikipedia:Franz_Boas
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Boas | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Boas | | yes | |
 
 ## gloss
 

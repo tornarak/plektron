@@ -17,7 +17,7 @@ import pytest
 from markupsafe import escape
 from test_entities import entry
 
-from harness import edition_ui, speech, tei_html
+from harness import edition_ui, langs, speech, tei_html
 from harness.entities import ENTITY_CLASSES
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
@@ -230,7 +230,7 @@ def server(tmp_path):
     """
     global _CLIENT
     entry(tmp_path, "place:markova", status="proposed",
-          triggers=[("Markova", True)])
+          aliases=[("Markova", True)])
     page(tmp_path, "1-021", '<pb n="1"/><p>At '
          '<rs ref="place:markova" resp="#mz">Markova</rs>.</p>')
 
@@ -426,7 +426,7 @@ def test_the_encyclopedia_puts_proposed_entries_first(server):
     whatever the order was and true if the list were empty. Proposed-first is now
     within a class, and this is what says so."""
     base, root = server
-    entry(root, "place:anadyrsk", status="ratified", triggers=[("Anadyrsk", True)])
+    entry(root, "place:anadyrsk", status="ratified", aliases=[("Anadyrsk", True)])
     body = get(base + "/entities")
     assert body.index("place:markova") < body.index("place:anadyrsk")
     assert "awaiting audit" in body
@@ -445,7 +445,7 @@ def test_a_write_that_would_break_the_store_is_rolled_back(server):
     """Every `@ref` in the corpus resolves against this store, so a browser that
     could leave it incoherent would break pages nobody is looking at."""
     base, root = server
-    entry(root, "water:markova", triggers=[("Markova", True)])
+    entry(root, "water:markova", aliases=[("Markova", True)])
     got = post(base + "/ratify", {"id": "place:markova"})
     assert "refused" in got.get("error", "")
     assert "- status: proposed" in (
@@ -486,8 +486,8 @@ def test_every_field_in_a_record_reaches_the_card(tmp_path):
     text.write_text(
         "# place:x — X\n\n- status: proposed\n- since: 1-021\n"
         "- within: place:y\n- geo: 66.0 170.0\n- area: watershed:anadyr\n"
-        "- authority: k\n- link: wikidata:Q1\n\n## triggers\n\n"
-        "| form | auto | note |\n|---|---|---|\n| X | no | |\n\n"
+        "- authority: k\n- link: wikidata:Q1\n\n## aliases\n\n"
+        "| form | lang | auto | note |\n|---|---|---|---|\n| X | no | |\n\n"
         "## gloss\n\nx\n", encoding="utf-8")
     rec = entities.parse(text.read_text(encoding="utf-8"))
     covered = set(edition_ui.SHOWN_ELSEWHERE) | set(edition_ui.PROPERTY_FIELDS)
@@ -497,11 +497,11 @@ def test_every_field_in_a_record_reaches_the_card(tmp_path):
 def test_the_properties_block_shows_the_geography(tmp_path):
     """The three geography fields, on the card, where a reader can check them
     against the map beside it."""
-    entry(tmp_path, "place:y", triggers=[("Y", False)])
+    entry(tmp_path, "place:y", aliases=[("Y", False)])
     p = tmp_path / "entities" / "place" / "x.md"
     p.write_text("# place:x — X\n\n- status: ratified\n- since: 1-021\n"
-                 "- within: place:y\n- geo: 66.0 170.0\n\n## triggers\n\n"
-                 "| form | auto | note |\n|---|---|---|\n\n## gloss\n\nx\n",
+                 "- within: place:y\n- geo: 66.0 170.0\n\n## aliases\n\n"
+                 "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
                  encoding="utf-8")
     from starlette.testclient import TestClient
 
@@ -547,7 +547,7 @@ def test_the_atlas_lists_only_located_roots(server):
     """Without the scope every person and source in the store is an atlas root,
     and the tree becomes the encyclopedia index with worse navigation."""
     base, root = server
-    entry(root, "person:nobody", triggers=[("Nobody", False)])
+    entry(root, "person:nobody", aliases=[("Nobody", False)])
     got = get(base + "/atlas")
     assert "Nobody" not in got
 
@@ -557,11 +557,11 @@ def test_a_node_with_no_boundary_says_its_frame_is_a_frame(server):
     map is computed from its members and captioned as such, because a frame is
     a viewport and not a claim."""
     base, root = server
-    entry(root, "place:parent", triggers=[("P", False)])
+    entry(root, "place:parent", aliases=[("P", False)])
     p = root / "entities" / "place" / "kid.md"
     p.write_text("# place:kid — Kid\n\n- status: ratified\n- since: 1-021\n"
-                 "- within: place:parent\n- geo: 66.0 170.0\n\n## triggers\n\n"
-                 "| form | auto | note |\n|---|---|---|\n\n## gloss\n\nx\n",
+                 "- within: place:parent\n- geo: 66.0 170.0\n\n## aliases\n\n"
+                 "| form | lang | auto | note |\n|---|---|---|---|\n\n## gloss\n\nx\n",
                  encoding="utf-8")
     got = get(base + "/map/place%3Aparent?partial=1")
     assert "framed by what lies beneath it" in got and "<svg" in got
@@ -569,7 +569,7 @@ def test_a_node_with_no_boundary_says_its_frame_is_a_frame(server):
 
 def test_an_entity_with_nowhere_to_put_says_so_rather_than_drawing_nothing(server):
     base, root = server
-    entry(root, "person:nobody2", triggers=[("N", False)])
+    entry(root, "person:nobody2", aliases=[("N", False)])
     assert "Nothing to draw" in get(base + "/map/person%3Anobody2?partial=1")
 
 
@@ -809,7 +809,7 @@ def test_the_index_lists_every_language_and_the_unjudged(server):
     got = get(base + "/lexicon")
     # Escaped, because the names carry apostrophes — the page is autoescaped and
     # asserting against the raw string would be testing the wrong bytes.
-    for name in edition_ui.LANG_NAMES.values():
+    for name in langs.TIER1_NAMES.values():
         assert escape(name) in got
     assert "unassigned" in got.lower()
     assert unicodedata.normalize("NFD", "Kuluˊči") in got

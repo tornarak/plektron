@@ -31,7 +31,7 @@
 <li><a class='ent' data-ref='{{ r.id }}'
        href='{{ base }}/entity/{{ r.id }}'>{{ r.canonical }}</a>
     <span class='pill {{ r.status }}'>{{ r.status }}</span>
-    <span class='dim'>{{ r.triggers | length }} trigger(s) · first read on</span>
+    <span class='dim'>{{ r.aliases | length }} alias(es) · first read on</span>
     <a href='{{ base }}/page/{{ r.since }}'>{{ r.since }}</a></li>
 {% endfor %}</ul>
 {%- endif %}

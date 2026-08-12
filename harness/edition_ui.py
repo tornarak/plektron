@@ -162,17 +162,10 @@ def link_html(row: str) -> str:
     )
 
 
-#: The Tier-1 languages, by the name a reader wants rather than the code. The
-#: codes themselves are `validate.TIER1`, which is what a lexicon key carries.
-LANG_NAMES = {
-    "ckt": "Chukchi",
-    "kpy": "Koryak",
-    "ypk": "Yupik (the book's “Eskimo”)",
-    "xcv": "Chuvan",
-    "eve": "Lamut (Even)",
-    "ipk": "Inupiat",
-    "itl": "Itelmen (the book's “Kamchadal”)",
-}
+# The Tier-1 languages by the name a reader wants are `langs.TIER1_NAMES`, and
+# every language the edition can name is `langs.LANGS`. They were stated here
+# and again in `validate.TIER1`, which is the duplication that module exists to
+# remove — the alias column would have made it three.
 
 
 #: Fields the card renders somewhere other than the properties block, and the
@@ -189,7 +182,7 @@ SHOWN_ELSEWHERE = {
     "status",
     "since",
     "links",
-    "triggers",
+    "aliases",
     "gloss",
     "dir_class",
     "stem",
@@ -518,7 +511,7 @@ def _new(body: dict, root: Path) -> dict:
     if p.exists():
         return {"error": f"{ident} already exists"}
     rows = "\n".join(
-        f"| {t.strip()} | no | |" for t in (body.get("triggers") or []) if t.strip()
+        f"| {t.strip()} | | no | |" for t in (body.get("aliases") or []) if t.strip()
     )
     text = TEMPLATE.format(
         ident=ident,

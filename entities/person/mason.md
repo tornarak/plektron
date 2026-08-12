@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-184
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Mason | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Mason | | no | |
 
 ## gloss
 

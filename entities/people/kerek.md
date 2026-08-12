@@ -5,11 +5,11 @@
 - link: wikipedia:Kereks
 - link: wikidata:Q1190792
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Kerek | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Kerek | | no | |
 
 ## gloss
 

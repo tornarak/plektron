@@ -5,12 +5,12 @@
 - within: water:kolyma
 - area: watershed:dry-anui-or-bolshoy-anyuy
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Dry Anui | no | |
-| Large Anui | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Dry Anui | | no | |
+| Large Anui | | no | |
 
 ## gloss
 

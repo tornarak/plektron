@@ -3,11 +3,11 @@
 - status: ratified
 - since: 1-021
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| | | no | |
 
 ## gloss
 

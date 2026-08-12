@@ -6,11 +6,11 @@
 - geo: 64.68 170.42
 - link: wikipedia:Markovo,_Chukotka_Autonomous_Okrug
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Markova | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Markova | | yes | |
 
 ## gloss
 

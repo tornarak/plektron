@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-204
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Ratzel | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Ratzel | | no | |
 
 ## gloss
 

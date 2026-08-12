@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-151
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Pallas | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Pallas | | no | |
 
 ## gloss
 

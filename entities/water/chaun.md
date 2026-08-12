@@ -7,11 +7,11 @@
 - link: wikipedia:Chaun
 - link: wikidata:Q2045664
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Chaun | no | Can be the river, the bay, or the surrounding plain |
+| form | lang | auto | note |
+|---|---|---|---|
+| Chaun | | no | Can be the river, the bay, or the surrounding plain |
 
 ## gloss
 

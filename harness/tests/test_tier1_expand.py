@@ -444,7 +444,7 @@ def test_an_unbroken_form_on_the_same_page_still_gets_one(tmp_path):
 
 
 def test_a_handle_inside_an_entity_link_still_expands(tmp_path):
-    """`tei generate` now encloses a handle in `<rs>` where the trigger table
+    """`tei generate` now encloses a handle in `<rs>` where the alias table
     names the same string, so the two passes meet on one element. Expansion
     reads the element and not its position, and the `<rs>` carries no glyph —
     so the nesting changes nothing here, which is the claim worth pinning."""

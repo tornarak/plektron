@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-358
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Kroeber | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Kroeber | | no | |
 
 ## gloss
 

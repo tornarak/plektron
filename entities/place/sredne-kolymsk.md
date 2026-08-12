@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-044
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Sredne-Kolymsk | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Sredne-Kolymsk | | no | |
 
 ## gloss
 

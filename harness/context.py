@@ -665,7 +665,7 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
 
 
 def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
-    """Every entity-trigger hit on this page, linked or not.
+    """Every entity-alias hit on this page, linked or not.
 
     **The same matcher the generator ran**, over the same joined text, so the
     rows and the page agree by construction rather than by two implementations
@@ -679,14 +679,14 @@ def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
     one and `linked` is still false, its author declared the form unsafe out of
     context. Both are the reader's to settle and neither is the tool's.
     """
-    from .entities import auto_forms, load, match, trigger_index
+    from .entities import alias_index, auto_forms, load, match
     from .generate import page_blocks
 
     path = root / "gt" / "ocr" / f"chukchi-{norm_ref(ref)}.xml"
     if not path.exists():
         return []
     store = load(root)
-    idx = trigger_index(store)
+    idx = alias_index(store)
     if not idx:
         return []
     autos = auto_forms(idx)
@@ -893,7 +893,7 @@ def build_context(ref: str, root: Path = Path(".")) -> dict:
         # ways — never a source to copy from; this page's draft is the only
         # source for this page's Tier-1 content.
         "foreign_terms_nearby": foreign_terms_nearby(ref, root),
-        # Every trigger hit on this page, whether the generator linked it or not
+        # Every alias hit on this page, whether the generator linked it or not
         # — `linked` says which. An aid to judgement and never an input to
         # composition, in the same disposition `foreign_terms_nearby` keeps: the
         # rows say what the store claims about a string, and whether the claim

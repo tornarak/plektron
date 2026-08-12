@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-021
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Petersburg | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Petersburg | | no | |
 
 ## gloss
 

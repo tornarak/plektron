@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-034
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Cape Erri | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Cape Erri | | no | |
 
 ## gloss
 

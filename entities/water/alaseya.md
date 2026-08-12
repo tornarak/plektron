@@ -5,11 +5,11 @@
 - within: place:russian-far-east
 - area: watershed:alazeya
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Alaseya | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Alaseya | | no | |
 
 ## gloss
 

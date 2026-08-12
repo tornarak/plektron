@@ -3,12 +3,12 @@
 - status: proposed
 - since: 1-040
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Bogdanovitch | no | the running text's spelling |
-| Bogdanovich | no | `data/authorities.json`'s spelling; unattested in `gt/ocr/` |
+| form | lang | auto | note |
+|---|---|---|---|
+| Bogdanovitch | | no | the running text's spelling |
+| Bogdanovich | | no | `data/authorities.json`'s spelling; unattested in `gt/ocr/` |
 
 ## gloss
 

@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-067
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Elendi | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Elendi | | no | |
 
 ## gloss
 

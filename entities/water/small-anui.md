@@ -5,11 +5,11 @@
 - within: water:kolyma
 - area: watershed:small-anui-or-maliy-anyuy
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Small Anui | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Small Anui | | no | |
 
 ## gloss
 

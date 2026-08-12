@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-031
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Hooper | no | two men share the surname; see the gloss |
+| form | lang | auto | note |
+|---|---|---|---|
+| Hooper | | no | two men share the surname; see the gloss |
 
 ## gloss
 

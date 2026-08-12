@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-031
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Resin | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Resin | | no | |
 
 ## gloss
 

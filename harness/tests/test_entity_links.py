@@ -46,7 +46,7 @@ def worklist(root: Path, body: str) -> list[str]:
 
 
 def seeded(root: Path, *, status="ratified", auto=True, form="Markova"):
-    entry(root, "place:markova", status=status, triggers=[(form, auto)])
+    entry(root, "place:markova", status=status, aliases=[(form, auto)])
 
 
 # ------------------------------------------------------- referential integrity
@@ -118,7 +118,7 @@ def test_a_ruled_link_the_store_still_supports_passes(tmp_path):
                                    'resp="#mz">Markova</rs></p>')
 
 
-def test_a_ruled_link_fails_when_the_trigger_is_removed(tmp_path):
+def test_a_ruled_link_fails_when_the_alias_is_removed(tmp_path):
     """The whole licence of the rank. An attribute written once and never rechecked
     would go stale in silence; this fails instead."""
     seeded(tmp_path, form="Markovo")
@@ -139,7 +139,7 @@ def test_a_ruled_link_fails_when_the_form_becomes_ambiguous(tmp_path):
     every rule-applied link resting on it stops deriving — including the ones
     written before the second entity existed."""
     seeded(tmp_path)
-    entry(tmp_path, "water:markova", triggers=[("Markova", True)])
+    entry(tmp_path, "water:markova", aliases=[("Markova", True)])
     assert any("ambiguous" in e for e in
                gate(tmp_path, body='<p><rs ref="place:markova" '
                                    'resp="#mz">Markova</rs></p>'))
@@ -163,7 +163,7 @@ def test_a_ruled_link_fails_when_its_text_no_longer_matches(tmp_path):
 
 def test_a_ruled_link_fails_when_the_store_resolves_the_form_elsewhere(tmp_path):
     seeded(tmp_path)
-    entry(tmp_path, "water:anadyr", triggers=[("Anadyr", True)])
+    entry(tmp_path, "water:anadyr", aliases=[("Anadyr", True)])
     assert any("the store now resolves" in e for e in
                gate(tmp_path, body='<p><rs ref="place:markova" '
                                    'resp="#mz">Anadyr</rs></p>'))

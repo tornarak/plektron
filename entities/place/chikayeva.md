@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-048
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Chikayeva | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Chikayeva | | no | |
 
 ## gloss
 

@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-061
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Phoca hispida | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Phoca hispida | | no | |
 
 ## gloss
 

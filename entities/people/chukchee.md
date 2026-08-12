@@ -5,20 +5,20 @@
 - area: base:chukotka-east-of-meridian,langarea:chuk1273
 - link: wikipedia:Chukchi_people
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Chukchee tribe | yes | |
-| Chukchee people | yes | |
-| Tuski | yes | |
-| Tjutzchi | yes | lang:lat |
-| Чукча | yes | lang:rus - noun |
-| Чукотскій | yes | lang:rus - adjective |
-| oraˊwêʟ̣at | yes | lang:ckt |
-| lɪˊê-oraˊwêʟ̣at | yes | lang:ckt |
-| Luoravetlan | yes | see above |
-| Chukchee | no | also the language — only the sentence decides. See [[language:chukchee]] |
+| form | lang | auto | note |
+|---|---|---|---|
+| Chukchee tribe | | yes | |
+| Chukchee people | | yes | |
+| Tuski | | yes | |
+| Tjutzchi | la | yes | |
+| Чукча | ru | yes | the noun |
+| Чукотскій | ru | yes | the adjective |
+| oraˊwêʟ̣at | ckt | yes | |
+| lɪˊê-oraˊwêʟ̣at | ckt | yes | |
+| Luoravetlan | | yes | see above |
+| Chukchee | | no | also the language — only the sentence decides. See [[language:chukchee]] |
 
 ## gloss
 

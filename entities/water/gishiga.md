@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-095
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Gishiga | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Gishiga | | no | |
 
 ## gloss
 

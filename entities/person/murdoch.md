@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-039
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Murdoch | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Murdoch | | no | |
 
 ## gloss
 

@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-036
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Wrangell | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Wrangell | | no | |
 
 ## gloss
 

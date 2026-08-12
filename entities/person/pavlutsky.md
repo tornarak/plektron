@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-038
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Pavlutsky | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Pavlutsky | | no | |
 
 ## gloss
 

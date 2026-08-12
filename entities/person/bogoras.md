@@ -4,11 +4,11 @@
 - since: 1-067
 - link: wikipedia:Vladimir_Bogoraz
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Bogoras | yes | the author; in the body it is always a citation of his own earlier work |
+| form | lang | auto | note |
+|---|---|---|---|
+| Bogoras | | yes | the author; in the body it is always a citation of his own earlier work |
 
 ## gloss
 

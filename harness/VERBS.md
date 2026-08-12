@@ -1171,7 +1171,7 @@ entry.
 **Does** frequency-ranked `lexicon_miss` tokens, for bulk approval — a proper noun into `entities/`, anything else into `data/lexicon_extra.txt`. Two lists: `tokens` is what neither source accounts for, `suppressed` what the entity store already does.
 **Reads** `gt/ocr/`, `data/lexicon_extra.txt`, `entities/`. **Named, not the view**: every recognizer error in `mz/ocr/` is a token no dictionary carries, i.e. a `lexicon_miss`, and this list feeds committed human-edited stores that suppress the detector meant to catch them.
 **Writes** — **Exit** 0.
-**Note** `suppressed` exists because the entity store is the *second* source and could otherwise absorb a name silently. Detection runs against the dictionary and `lexicon_extra.txt` alone; each hit is then re-tested against the store's canonicals and trigger forms, so what the move to `entities/` took off this list is on it, named. A Tier-1 form in either source is inert regardless — `lexicon_miss` tests only ASCII components of length > 3.
+**Note** `suppressed` exists because the entity store is the *second* source and could otherwise absorb a name silently. Detection runs against the dictionary and `lexicon_extra.txt` alone; each hit is then re-tested against the store's canonicals and alias forms, so what the move to `entities/` took off this list is on it, named. A Tier-1 form in either source is inert regardless — `lexicon_miss` tests only ASCII components of length > 3.
 ```
 --root --json --toon --pager
 ```
@@ -1263,7 +1263,15 @@ An exempt row is **kept and flagged** (`exempt: true`, carrying its `note`), nev
 
 The encyclopedia: one markdown file per entity at `entities/<class>/<slug>.md`,
 identified as `class:slug`. It is the referent of every `@ref` in the corpus and
-the source of the trigger vocabulary `tei generate` applies by rule.
+the source of the alias vocabulary `tei generate` applies by rule.
+
+**An alias may declare its language**, from the vocabulary in `harness/langs.py`
+— `ckt`, `ru`, `la`, shortest BCP-47, the same string a page writes in
+`xml:lang`. It is optional and blank means *unstated*, which `check` counts as
+`aliases_untagged` and never gates on; a code outside the vocabulary is an error,
+because that is a typo rather than a gap. The column records the fact and nothing
+infers from it — in particular an alias suppresses `lexicon_miss` whatever its
+language, exactly as before.
 
 **An identity is always class-prefixed.** `person:jochelson` is the man and
 `source:jochelson-yukaghir` is the book he wrote; the same string names both on
@@ -1278,9 +1286,10 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 **Does** scaffold an entry at `status: proposed`. Nothing mints one ratified — a form a rule may link has to have been read by a human first, and `entity ratify` is that act. Parses the result before writing, so a bad `--since` fails as a message rather than as a file.
 **Reads** — **Writes** `entities/<class>/<slug>.md` under `--commit`. **Exit** 0, or 1 if the entry already exists.
 ```
---canonical NAME  the display name, written into the heading. Not a trigger unless you also pass it as one. Required
+--canonical NAME  the display name, written into the heading. Not an alias unless you also pass it as one. Required
 --since PP-NNN  the page whose reading prompted the entry. Required — an apparatus store that cannot be traced back to a page is one nobody can audit
---trigger FORM  a form that means this entity, added at `auto: no`. Repeatable. Raising one to `auto: yes` is a separate act, in the file or the browser, because it licenses a link nobody will be asked about
+--alias FORM  a form that means this entity, added at `auto: no`. Repeatable. Raising one to `auto: yes` is a separate act, in the file or the browser, because it licenses a link nobody will be asked about. A native form is the NFD surface spelling, never a lexicon handle key — the key is a fold and collides on purpose
+--lang CODE  the language every `--alias` on this run is a name in. Left off, they are filed with the language unstated
 --within ID  the entity that contains this one, `class:slug`. The atlas's whole structure, and the only thing that puts a location somewhere rather than merely on a map
 --area KIND:SLUG  the shape in `data/geo/` this entity is drawn as, e.g. `watershed:anadyr`. Identifying a name Bogoras wrote in 1904 with a polygon a modern service returned is a human's act, which is why it is typed rather than matched by name — `watershed:main` and the English word are one keystroke apart. Several, comma-separated, is a composite. `geo list` names every shape
 --commit  write it; without this the file is reported and not created
@@ -1301,7 +1310,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 **Note** the worklist it answers is `geo verify`'s `unlocated`.
 
 ### entity check
-**Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves and the chain is acyclic, every `area:` names a shape that exists in `data/geo/`, and no form is `auto: yes` for two entities at once. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
+**Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves and the chain is acyclic, every `area:` names a shape that exists in `data/geo/`, and no form is `auto: yes` for two entities at once, and every alias's `lang` is in the vocabulary. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
 **Reads** `entities/`, `data/geo/index.json`. **Writes** — **Exit** 0 clean, 1 on any defect.
 **Note** `area:` **resolving** is gated here and everything *geometric* is `geo verify`'s. Resolution is a fact about names, like `within:`; whether a child's shape actually falls inside its parent's is a fact about two delineations, and a gate there would reject true rows on the strength of a coarseness the source declared in advance.
 ```
@@ -1309,14 +1318,14 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 ```
 
 ### entity list
-**Does** every entry — id, status, canonical name, trigger and auto-trigger counts, and the page that prompted it. Proposed first: the list is read as a worklist more often than as a census.
+**Does** every entry — id, status, canonical name, alias and auto-alias counts, and the page that prompted it. Proposed first: the list is read as a worklist more often than as a census.
 **Reads** `entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
 
 ### entity show ID...
-**Does** whole records, triggers and gloss included.
+**Does** whole records, aliases and gloss included.
 **Reads** `entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
@@ -1331,7 +1340,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 ```
 
 ### entity occurrences [ID...]
-**Does** where an entity appears, by two routes: the `@ref` links already in committed TEI, and the trigger hits nobody has linked. The second is the interesting half — a large unlinked count on a ratified entity means pages collated before the entry existed, and `tei generate` will link them on the next run. Measurement; never gates.
+**Does** where an entity appears, by two routes: the `@ref` links already in committed TEI, and the alias hits nobody has linked. The second is the interesting half — a large unlinked count on a ratified entity means pages collated before the entry existed, and `tei generate` will link them on the next run. Measurement; never gates.
 **Reads** `entities/`, committed `tei/`. **Writes** — **Exit** 0.
 ```
 --all

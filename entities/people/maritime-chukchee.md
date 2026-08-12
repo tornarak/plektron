@@ -5,11 +5,11 @@
 - within: people:chukchee
 - link: wikipedia:Chukchi_people
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Maritime Chukchee | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Maritime Chukchee | | yes | |
 
 ## gloss
 

@@ -7,11 +7,11 @@
 - link: wikipedia:St._Lawrence_Island
 - link: wikidata:Q638407
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| St. Lawrence Island | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| St. Lawrence Island | | no | |
 
 ## gloss
 

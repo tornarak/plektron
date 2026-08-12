@@ -10,8 +10,8 @@
 Outlet of the [[water:chaun]] river.
 The [[people:chuvantzy]] historically lived here.
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Chaun Bay | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Chaun Bay | | yes | |

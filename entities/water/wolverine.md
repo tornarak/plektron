@@ -5,12 +5,12 @@
 - within: water:small-anui
 - area: watershed:wolverine-or-keperveyem
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Wolverine River | no | |
-| Wolverene River | no | the book's spelling on 1-336 |
+| form | lang | auto | note |
+|---|---|---|---|
+| Wolverine River | | no | |
+| Wolverene River | | no | the book's spelling on 1-336 |
 
 ## gloss
 

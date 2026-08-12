@@ -1,7 +1,7 @@
 """The entity store: its parser, its gate, and the bar a rule has to clear.
 
 The store is the referent of every `@ref` in the corpus and the source of the
-trigger vocabulary `tei generate` applies. What is checkable about it is
+alias vocabulary `tei generate` applies. What is checkable about it is
 mechanical — identities resolve, classes are known, a file agrees with its
 directory — and what is not is `status`, which is a human's word and is why the
 `proposed`/`ratified` split exists at all.
@@ -23,17 +23,22 @@ REPO = Path(__file__).resolve().parent.parent.parent
 
 
 def entry(root: Path, ident: str, *, status: str = "ratified",
-          since: str = "1-021", triggers=(), canonical: str = "",
+          since: str = "1-021", aliases=(), canonical: str = "",
           extra: str = "", gloss: str = "a gloss") -> Path:
+    """One store file. An alias is `(form, auto)` or `(form, auto, lang)` — the
+    two-tuple stays legal because the language is optional in the store too, and
+    a helper that forced it would make every caller state a fact the schema
+    calls unstated."""
     cls, slug = ident.split(":")
-    rows = "\n".join(f"| {f} | {'yes' if a else 'no'} | |" for f, a in triggers)
+    rows = "\n".join(f"| {a[0]} | {a[2] if len(a) > 2 else ''} | "
+                     f"{'yes' if a[1] else 'no'} | |" for a in aliases)
     p = root / "entities" / cls / f"{slug}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(
         f"# {ident} — {canonical or slug.title()}\n\n"
         f"- status: {status}\n- since: {since}\n{extra}"
-        f"\n## triggers\n\n| form | auto | note |\n|---|---|---|\n{rows}\n"
-        f"\n## gloss\n\n{gloss}\n", encoding="utf-8")
+        f"\n## aliases\n\n| form | lang | auto | note |\n|---|---|---|---|\n"
+        f"{rows}\n\n## gloss\n\n{gloss}\n", encoding="utf-8")
     return p
 
 
@@ -68,21 +73,22 @@ def test_every_class_maps_to_a_name_type_or_to_nothing():
 # --------------------------------------------------------------- the parser
 
 def test_a_record_parses(tmp_path):
-    entry(tmp_path, "place:markova", triggers=[("Markova", True)])
+    entry(tmp_path, "place:markova", aliases=[("Markova", True)])
     rec = E.load(tmp_path)["place:markova"]
     assert rec["class"] == "place" and rec["status"] == "ratified"
-    assert rec["triggers"] == [{"form": "Markova", "auto": True, "note": ""}]
+    assert rec["aliases"] == [
+        {"form": "Markova", "lang": "", "auto": True, "note": ""}]
 
 
 def test_the_file_is_read_as_nfd(tmp_path):
-    """The store is hand-maintained and can drift between edits. A trigger held
+    """The store is hand-maintained and can drift between edits. An alias held
     precomposed would fail to match a page held decomposed — a silent miss, which
     is the failure class this project is organised against."""
-    p = entry(tmp_path, "person:doring", triggers=[("x", False)])
+    p = entry(tmp_path, "person:doring", aliases=[("x", False)])
     p.write_text(p.read_text(encoding="utf-8").replace(
         "| x |", "| " + unicodedata.normalize("NFC", "Döring") + " |"),
         encoding="utf-8")
-    form = E.load(tmp_path)["person:doring"]["triggers"][0]["form"]
+    form = E.load(tmp_path)["person:doring"]["aliases"][0]["form"]
     assert form == unicodedata.normalize("NFD", "Döring")
     assert form != unicodedata.normalize("NFC", "Döring")
 
@@ -101,21 +107,79 @@ def test_since_is_required(tmp_path):
         E.load(tmp_path)
 
 
-def test_a_trigger_needs_an_explicit_auto(tmp_path):
+def test_an_alias_needs_an_explicit_auto(tmp_path):
     """`auto` is the author's declaration that a form is safe out of context, so
     there is no sensible default for it — either answer is a real claim."""
     p = entry(tmp_path, "place:markova")
     p.write_text(p.read_text(encoding="utf-8").replace(
-        "|---|---|---|\n", "|---|---|---|\n| Markova | maybe | |\n"),
+        "|---|---|---|---|\n", "|---|---|---|---|\n| Markova | | maybe | |\n"),
         encoding="utf-8")
     with pytest.raises(E.Malformed, match="auto"):
         E.load(tmp_path)
 
 
+# ---------------------------------------------------- the language column
+
+def test_the_old_section_name_is_refused_and_names_the_rename(tmp_path):
+    """No compatibility shim. Every file in the store spelled the section and its
+    header row identically, so accepting both would put one schema in two
+    spellings — which is the defect the column was added to remove, one level up.
+    The message has to name the rename, or the author of a file written from
+    memory gets "no aliases" and a store that silently links nothing."""
+    p = entry(tmp_path, "place:markova", aliases=[("Markova", True)])
+    p.write_text(p.read_text(encoding="utf-8")
+                 .replace("## aliases", "## triggers"), encoding="utf-8")
+    with pytest.raises(E.Malformed, match="`## triggers` is now `## aliases`"):
+        E.load(tmp_path)
+
+
+def test_a_declared_language_is_carried(tmp_path):
+    entry(tmp_path, "place:uelen", aliases=[("Uweˊlen", True, "ckt")])
+    assert E.load(tmp_path)["place:uelen"]["aliases"][0]["lang"] == "ckt"
+
+
+def test_a_blank_language_is_unstated_and_not_an_error(tmp_path):
+    """Most of the store is blank — 128 of 141 rows are the book's own English,
+    where saying so adds nothing. Requiring the column would have made an
+    editorial pass out of a schema change."""
+    entry(tmp_path, "place:markova", aliases=[("Markova", True)])
+    assert E.load(tmp_path)["place:markova"]["aliases"][0]["lang"] == ""
+    assert E.check(tmp_path)["ok"]
+
+
+def test_a_language_outside_the_vocabulary_is_an_error(tmp_path):
+    """A gap and a typo want opposite treatment. `rus` is the case that matters:
+    it is what the notes used to say, it is a real ISO code, and it is not the
+    string a page writes in `xml:lang` — so accepting it would let the store and
+    the corpus disagree about one language under two spellings."""
+    entry(tmp_path, "people:chukchee", aliases=[("Чукча", True, "rus")])
+    with pytest.raises(E.Malformed, match="unknown language 'rus'"):
+        E.load(tmp_path)
+
+
+def test_untagged_aliases_are_counted_and_never_gate(tmp_path):
+    """A worklist. "Every foreign name is in the table, tagged" is a standing
+    editorial job, and a gate on it would be answered by deleting the alias."""
+    entry(tmp_path, "place:uelen",
+          aliases=[("Uelen", True), ("Uweˊlen", True, "ckt"), ("Uˊlak", True)])
+    got = E.check(tmp_path)
+    assert got["aliases_untagged"] == 2
+    assert got["ok"]
+
+
+def test_the_tier1_codes_are_the_language_tables_own(tmp_path):
+    """`validate.TIER1` and the lexicon index's names were two hand-kept copies
+    of one set, and the alias column would have made a third. Derived, so a code
+    cannot be Tier-1 in one file and not in another."""
+    from harness import langs, validate
+    assert validate.TIER1 is langs.TIER1
+    assert set(langs.TIER1_NAMES) == set(langs.TIER1) <= langs.ALIAS_LANGS
+
+
 # ----------------------------------------------------------------- the gate
 
 def test_a_clean_store_checks_out(tmp_path):
-    entry(tmp_path, "place:markova", triggers=[("Markova", True)])
+    entry(tmp_path, "place:markova", aliases=[("Markova", True)])
     assert E.check(tmp_path)["ok"]
 
 
@@ -152,15 +216,15 @@ def test_a_dangling_wikilink_is_an_error(tmp_path):
                for e in E.check(tmp_path)["errors"])
 
 
-def test_a_wikilink_in_a_trigger_note_is_checked_too(tmp_path):
+def test_a_wikilink_in_an_alias_note_is_checked_too(tmp_path):
     """The notes are where an author explains why a form is suggest-only, and the
     explanation is almost always "it is also that other entity"."""
     entry(tmp_path, "place:markova",
-          triggers=[("Markova", False)],
+          aliases=[("Markova", False)],
           extra="", gloss="x")
     p = tmp_path / "entities" / "place" / "markova.md"
     p.write_text(p.read_text(encoding="utf-8").replace(
-        "| Markova | no | |", "| Markova | no | see [[person:ghost]] |"),
+        "| Markova |  | no | |", "| Markova | | no | see [[person:ghost]] |"),
         encoding="utf-8")
     assert any("[[person:ghost]]" in e for e in E.check(tmp_path)["errors"])
 
@@ -176,8 +240,8 @@ def test_a_within_cycle_is_an_error(tmp_path):
 def test_two_entities_may_share_a_form_and_that_is_reported_not_refused(tmp_path):
     """"Chukchee" really is the people and the language. The store's job is to say
     so, and the generator's is to ask rather than resolve it."""
-    entry(tmp_path, "people:chukchee", triggers=[("Chukchee", False)])
-    entry(tmp_path, "language:chukchee", triggers=[("Chukchee", False)])
+    entry(tmp_path, "people:chukchee", aliases=[("Chukchee", False)])
+    entry(tmp_path, "language:chukchee", aliases=[("Chukchee", False)])
     rep = E.check(tmp_path)
     assert rep["ok"]
     assert rep["collisions"][0]["claimed_by"] == "language:chukchee people:chukchee"
@@ -186,8 +250,8 @@ def test_two_entities_may_share_a_form_and_that_is_reported_not_refused(tmp_path
 def test_two_entities_may_not_both_claim_a_form_unconditionally(tmp_path):
     """`auto: yes` asserts the form means this entity wherever it appears. Two such
     claims on one form are a contradiction, and one of them is wrong."""
-    entry(tmp_path, "people:chukchee", triggers=[("Chukchee", True)])
-    entry(tmp_path, "language:chukchee", triggers=[("Chukchee", True)])
+    entry(tmp_path, "people:chukchee", aliases=[("Chukchee", True)])
+    entry(tmp_path, "language:chukchee", aliases=[("Chukchee", True)])
     rep = E.check(tmp_path)
     assert not rep["ok"]
     assert any("cannot both own a form" in e for e in rep["errors"])
@@ -200,7 +264,7 @@ def idx(*specs):
             for form, claims in specs}
 
 
-def test_a_trigger_matches_whole_words_only():
+def test_an_alias_matches_whole_words_only():
     i = idx(("Ana", [("place:ana", True, "ratified")]))
     assert E.match("Anadyr basin", i) == []
     assert [h["form"] for h in E.match("the Ana river", i)] == ["Ana"]
@@ -217,7 +281,7 @@ def test_a_combining_mark_is_a_word_character_here():
 
 def test_the_longest_form_wins():
     """Otherwise the bare "Chukchee" would take "Chukchee Peninsula" apart, and the
-    unambiguous multi-word triggers — the only ones safe to link — would be the ones
+    unambiguous multi-word aliases — the only ones safe to link — would be the ones
     that never fired."""
     i = idx(("Chukchee", [("people:chukchee", False, "ratified")]),
             ("Chukchee Peninsula", [("place:cp", True, "ratified")]))
@@ -228,7 +292,7 @@ def test_the_longest_form_wins():
 def test_a_form_broken_across_a_printed_line_still_matches():
     """`1-021` sets "the Jesup North / Pacific Expedition" across two lines. The
     generated page keeps the printed breaks, so without this the longest and most
-    reliable triggers would be exactly the ones that failed at a line end."""
+    reliable aliases would be exactly the ones that failed at a line end."""
     i = idx(("Jesup North Pacific Expedition",
              [("event:jesup", True, "ratified")]))
     hits = E.match("part of the Jesup North\nPacific Expedition. The", i)

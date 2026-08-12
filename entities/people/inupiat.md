@@ -6,9 +6,9 @@
 - link: wikipedia:Iñupiat
 - link: wikidata:Q1417088
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| American Eskimo | yes | |
-| Eskimo | no |  |
+| form | lang | auto | note |
+|---|---|---|---|
+| American Eskimo | | yes | |
+| Eskimo | | no |  |

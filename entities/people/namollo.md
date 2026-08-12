@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-041
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Namollo | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Namollo | | no | |
 
 ## gloss
 

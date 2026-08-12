@@ -6,9 +6,9 @@
 - link: wikipedia:Koryaks
 - link: wikidata:Q281117
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Koryak | no | |
-| Taˊn˙ñɪt | no | lang:ckt |
+| form | lang | auto | note |
+|---|---|---|---|
+| Koryak | | no | |
+| Taˊn˙ñɪt | ckt | no | |

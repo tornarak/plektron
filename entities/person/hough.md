@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-204
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Hough | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Hough | | no | |
 
 ## gloss
 

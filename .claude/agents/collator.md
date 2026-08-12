@@ -245,7 +245,7 @@ lives on, and the gate checks it.
   word's or the printer's is not decidable from the ALTO. You get a
   `detector_flags` row on the joined form instead. Read the page, key it, say in a
   comment what you decided about the hyphen.
-- **`entity_hits`** is every trigger hit on the page — `{line, form, ids, linked,
+- **`entity_hits`** is every alias hit on the page — `{line, form, ids, linked,
   status}` — from the same matcher, over the same text, that built your file. So
   `linked: true` rows are the `<rs resp="#mz">` spans already in it and `linked:
   false` rows are the `<!-- entity candidate -->` comments, one for one. The
@@ -704,7 +704,7 @@ kind, which only a reader can see, while `<rs>` records a reference, which a rul
 can apply. That is why the two elements exist side by side and why a rule may
 write one and never the other.
 
-`resp="#mz"` means a rule applied it, from a trigger table a human wrote into
+`resp="#mz"` means a rule applied it, from an alias table a human wrote into
 `entities/` and ratified. It is re-derived on every validation run, so it is not a
 stamp you have to trust — if the store changes under it, it fails.
 
@@ -730,10 +730,24 @@ it, which is what `--since` records and what nobody reconstructs later.
 
     uv run harness entity list                       does it already exist?
     uv run harness entity new person:jesup-morris --canonical "Morris K. Jesup" \
-      --since 1-021 --trigger "Morris K. Jesup" --commit
+      --since 1-021 --alias "Morris K. Jesup" --commit
 
 Check `entity list` first — the same man under two slugs is worse than no entry,
 and you cannot see the store the coordinator can.
+
+**A native name is an alias like any other, and `--lang` is where you say so.**
+Where the page gives an entity its Chukchi or Russian name — the kind of form
+your `tier1_terms` row carries — file it:
+
+    uv run harness entity new place:uelen --canonical "Uelen" \
+      --since 1-021 --alias "Uweˊlen" --lang ckt --commit
+
+Every `--alias` on one run takes that one language, so a run per language. Pass
+the **form as the page sets it**, NFD, never a lexicon handle key: the key is a
+fold and collides on purpose, so `Kulu'c^i` names a class of forms and not a
+word. Codes are the ones you write in `xml:lang` — `ckt`, `kpy`, `ru`, `la`. An
+alias filed without `--lang` says the language is unstated, which is honest and
+is what most of the store says; guessing is not.
 
 **A proposal is inert and that is why you may make one.** `entity new` writes
 `status: proposed`, and a rule links only *ratified* entries — so nothing you mint
@@ -746,7 +760,7 @@ is the audit queue doing its job.
 **Do not hand-edit the store, and do not change an entry that exists.** The verb
 parses before it writes and cannot mint anything but a proposal; a hand-written
 file can be malformed or can say `ratified`, which is not your word to write. And
-an existing entry is shared — a trigger added to a ratified entity changes what
+an existing entry is shared — an alias added to a ratified entity changes what
 gets linked on every other page in the corpus, and one page is the wrong vantage
 for that. Where an entry needs amending, say so in your report:
 
@@ -936,7 +950,7 @@ Nothing may push you toward wrapping. The detector is a **floor**, not a verdict
 and a handle you cannot justify a language for is one to remove.
 
 **A handle may arrive already inside an `<rs>`.** Where the entity store carries
-the same string as a trigger — `place:anadyr` holds `Veᵋñ` — the generator
+the same string as an alias — `place:anadyr` holds `Veᵋñ` — the generator
 encloses the handle rather than dropping the link:
 
 ```xml
@@ -945,7 +959,7 @@ encloses the handle rather than dropping the link:
 
 Each `@resp` is a claim about its own element, and the two are separate
 questions. The `<rs>` says which entity the string names, applied by rule from a
-human's trigger table, and `validate` re-derives it on every run. The
+human's alias table, and `validate` re-derives it on every run. The
 `<foreign>` is still yours, unchanged: assign the language, or unwrap it. If you
 unwrap it, **leave the `<rs>` standing** — that a word names Anadyr does not
 depend on what language it is in, and removing it would delete a link no

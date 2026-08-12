@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-196
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Laufer | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Laufer | | no | |
 
 ## gloss
 

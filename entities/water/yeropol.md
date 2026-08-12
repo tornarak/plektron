@@ -5,11 +5,11 @@
 - within: water:anadyr
 - area: watershed:yeropol
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Yeropol | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Yeropol | | no | |
 
 ## gloss
 

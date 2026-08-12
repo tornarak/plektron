@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-021
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Cape Chukotsky | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Cape Chukotsky | | no | |
 
 ## gloss
 

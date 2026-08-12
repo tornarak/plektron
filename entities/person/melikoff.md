@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-044
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Melikoff | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Melikoff | | no | |
 
 ## gloss
 

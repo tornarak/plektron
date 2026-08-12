@@ -402,7 +402,7 @@ def _base_lexicon(root: Path = Path(".")) -> set[str]:
 
 
 def entity_forms(root: Path = Path(".")) -> set[str]:
-    """Every component of every entity canonical and trigger form, lowercased.
+    """Every component of every entity canonical and alias form, lowercased.
 
     Split the way `lexicon_miss` splits, on whitespace *and* on the internal
     hyphen and apostrophe, because that is the shape the question is asked in:
@@ -420,7 +420,7 @@ def entity_forms(root: Path = Path(".")) -> set[str]:
 
     out: set[str] = set()
     for rec in load(root).values():
-        for form in [rec["canonical"], *(t["form"] for t in rec["triggers"])]:
+        for form in [rec["canonical"], *(t["form"] for t in rec["aliases"])]:
             for part in re.split(r"[\s\-'’]+", form):
                 if part:
                     out.add(part.lower())
@@ -458,7 +458,7 @@ def _lexicon(root: Path = Path(".")) -> set[str]:
 
     **The entity store is the second source, and the proper nouns moved there.**
     They used to be listed in both places — 20 of the whitelist's terms were
-    already an entity's canonical or trigger — which is one fact in two
+    already an entity's canonical or alias — which is one fact in two
     hand-maintained files, each able to go stale against the other. Now a name
     is filed once, as an entry that says which page first attested it, and this
     reads it back out.
@@ -467,7 +467,7 @@ def _lexicon(root: Path = Path(".")) -> set[str]:
     the line: `lexicon_miss` only ever tests ASCII components of length > 3, so
     a Tier-1 form in *either* source is inert here — it could not have been a
     lexicon miss in the first place. That is what lets an entity carry a native
-    alias as a trigger without the trigger table becoming a way to blind the one
+    alias as an alias without the alias table becoming a way to blind the one
     detector that can catch an unmarked romanized form.
     """
     key = (str(root.resolve()), _entities_stamp(root))
@@ -890,7 +890,7 @@ def suggest_lexicon(root: Path = Path(".")) -> dict:
     accounts for comes back under `suppressed` instead of vanishing. A whitelist
     that silently absorbed names would be the same defect as a whitelist nobody
     can audit: the moved proper nouns are still visible, and so is any Tier-1
-    form that reaches a trigger table and turns out to be ASCII enough to
+    form that reaches an alias table and turns out to be ASCII enough to
     matter.
 
     **`gt/ocr/` by name, not the `ocr/` view.** This used to walk the view, which

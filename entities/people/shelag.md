@@ -3,12 +3,12 @@
 - status: proposed
 - since: 1-036
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Shelag | no | |
-| Shelags | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Shelag | | no | |
+| Shelags | | no | |
 
 ## gloss
 

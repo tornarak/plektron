@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-038
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Tungus | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Tungus | | no | |
 
 ## gloss
 

@@ -63,7 +63,7 @@ it to refuse a `<name type="toponym" ref="event:…">`.
 **The four with no name-type are why `<rs>` exists here.** `NAME_TYPES` is
 scoped to what a reader of a page can see and record; it excludes `taxon`
 outright and has no member for a language or an institution. Those are exactly
-the entities a trigger table finds reliably, and linking them says "this string
+the entities an alias table finds reliably, and linking them says "this string
 refers to that entity", not "the page marked a proper noun".
 
 ## The file
@@ -77,19 +77,19 @@ refers to that entity", not "the page marked a proper noun".
     - within: place:chukotka
     - authority: jochelson1900
 
-    ## triggers
+    ## aliases
 
-    | form | auto | note |
-    |---|---|---|
-    | Jesup North Pacific Expedition | yes | the full printed title |
-    | Jesup | no | also Morris K. Jesup the man |
+    | form | lang | auto | note |
+    |---|---|---|---|
+    | Jesup North Pacific Expedition | en | yes | the full printed title |
+    | Jesup | | no | also Morris K. Jesup the man |
 
     ## gloss
 
     Free markdown, authored English, CC BY.
 
 Parsed on the `data/readings.md` precedent: heading-sliced, **NFD on read**,
-absence is `{}`. NFD matters more here than tidiness — a trigger the store holds
+absence is `{}`. NFD matters more here than tidiness — an alias the store holds
 precomposed silently fails to match a page that holds it decomposed, and a
 silent miss is the failure class the project is organised against.
 
@@ -110,8 +110,41 @@ silent miss is the failure class the project is organised against.
   than an edit to every record. Repeatable.
 - No `canonical:` field — the heading carries it, so there is one place for it.
 
+### An alias says what language it is a name in
+
+The column is `lang`, from the vocabulary in `harness/langs.py`: shortest
+BCP-47, so `ru` and never `rus`, `ckt` where no two-letter code exists. It is
+the same string a collated page writes in `xml:lang` and the same one
+`data/authorities.json` already carries, and that is the whole reason the
+spelling is not free — a fourth spelling of one code is how two stores stop
+agreeing without anyone finding out.
+
+**It was already there, in prose.** Seven entries wrote `lang:ckt` and
+`lang:rus` into the *note* column: an entity's Russian and Chukchi names are
+exactly what a reader of an ethnography wants, the authors knew it, and the only
+place to put the fact was a free-text field nothing could read or check. Thirteen
+rows moved into the column. `people:chukchee` is the one worth looking at — it
+now says in a column that Чукча is Russian and oraˊwêʟ̣at is the autonym.
+
+- **Blank means unstated**, and most of the store is blank: 128 of 141 rows are
+  the book's own English, where saying so adds nothing. Requiring the column
+  would have made an editorial pass out of a schema change.
+- **A code outside the vocabulary is an error.** That is a typo, not a gap, and
+  the two want opposite treatment.
+- `entity check` reports `aliases_untagged`. A worklist, never a gate: "every
+  foreign name is in the table and tagged" is a standing editorial job, and a
+  gate on it would be answered by deleting the alias.
+
+**And it buys nothing mechanical, deliberately.** It does *not* narrow
+`detectors.entity_forms`: an alias suppresses `lexicon_miss` whatever language
+it is in, exactly as before. So the case sprint C left open — an unmarked
+romanized native form, which no mechanical test separates from an English proper
+noun — is still suppressed and still open. `Tjutzchi` is now declared Latin and
+still absent from the miss list. The field records the fact; nothing infers from
+it, and a reader who assumed tagging one had changed the detector would be wrong.
+
 **One entry names another in double brackets**: `[[people:chukchee]]`, in a gloss
-or in a trigger note. A bare `class:slug` in prose was unclickable and, worse,
+or in an alias note. A bare `class:slug` in prose was unclickable and, worse,
 indistinguishable from prose that merely mentions the shape of an identity — the
 brackets say "this is a reference", and `entity check` then **refuses one that
 resolves to nothing**, on the same argument as a dangling `within:`. A gloss is
@@ -142,7 +175,7 @@ link.
 Matching is whole-word, case-sensitive, NFD, longest-first, and
 **whitespace-flexible across printed line breaks**: `1-021` sets "the Jesup
 North / Pacific Expedition" across two lines, and a matcher that stopped at a
-line end would miss exactly the multi-word triggers reliable enough to link.
+line end would miss exactly the multi-word aliases reliable enough to link.
 
 **One matcher, three callers.** `entities.match` is what `tei generate` links
 with, what `tei context` reports to the reviewer, and what `validate` re-derives
@@ -155,14 +188,14 @@ which questions are still open.
 ## `#mz`, and why it is admissible
 
 The fifth provenance rank, on exactly the terms `#gt` was admitted and nothing
-more. It says: a human wrote a trigger row and ratified the entry; a rule applied
+more. It says: a human wrote an alias row and ratified the entry; a rule applied
 it here. No model chose it, so `#llm` is false; no human read this page, so `#ed`
 is false. The responsible act happened one artifact upstream.
 
 **It is not taken on trust, and that is its whole licence.** Every `#mz` link is
-re-derived on every validation run — entry present, still ratified, trigger
+re-derived on every validation run — entry present, still ratified, alias
 intact, still uncontested, element text still matching. Weaken the entry, delete
-the trigger, or let a second entity claim the form, and every link resting on it
+the alias, or let a second entity claim the form, and every link resting on it
 fails. `harness/tests/test_entity_links.py` pins each of those failure modes,
 because a rank that quietly stopped being checked would look exactly like one
 that was.
@@ -173,11 +206,11 @@ originate a reading of a glyph.
 
 ### A Tier-1 alias is linked by enclosing the handle, never by reaching into it
 
-The generator used to drop every trigger hit that touched a Tier-1 handle,
+The generator used to drop every alias hit that touched a Tier-1 handle,
 reasoning that a rule resolving an identity for a string whose glyphs it may not
 name is the firewall's failure shape. The reasoning is right about *reaching
 inside* a handle and wrong about *enclosing* one — and the store had already
-made the judgement anyway: `place:anadyr` carries `Veᵋñ` as a trigger, written by
+made the judgement anyway: `place:anadyr` carries `Veᵋñ` as an alias, written by
 a human with the corpus in view.
 
 ```xml
@@ -221,7 +254,7 @@ what language it is in.
 writes `status: proposed`; `auto_forms` links only ratified entries; `ratify` is
 not on the collator's surface. So nothing a model mints can reach another page by
 itself. What a collator may not do is hand-edit the store or touch an entry that
-exists — a trigger added to a ratified entity changes what gets linked on every
+exists — an alias added to a ratified entity changes what gets linked on every
 other page, and one page is the wrong vantage for that. The guard hook enforces
 both: reads allowed, file writes refused, `entity new|list|show` on the Bash
 surface and `ratify` off it.
@@ -236,18 +269,18 @@ other pages' `@ref` may already point at.
 `data/lexicon_extra.txt` used to hold the book's proper nouns — authors,
 ethnicities, toponyms — so that `lexicon_miss` reported transcription candidates
 rather than vocabulary. **Twenty of its lines were already an entity's canonical
-or a trigger**: one fact in two hand-maintained files, each able to go stale
+or an alias**: one fact in two hand-maintained files, each able to go stale
 against the other, which is the defect this project is organised against showing
 up inside the apparatus that guards against it.
 
 So the proper nouns moved. 98 whitelist lines and 9 taxonomic ones became entity
-files, and `detectors.entity_forms` reads the store's canonicals and trigger
+files, and `detectors.entity_forms` reads the store's canonicals and alias
 forms back into the dictionary, split the way `lexicon_miss` splits them so
 `Sredne-Kolymsk` contributes both halves. The trim cost nothing measurable — the
 miss list is 361 tokens before and after — and it bought the thing a list of bare
 words cannot have: every name now says which page first attested it, and variant
 spellings that were two unrelated lines (`Krasheninnikoff`, `Krasheninnikov`) are
-two triggers on one man.
+two aliases on one man.
 
 **Eleven names did not move, and that is the field working.** No adjudicated page
 attests Almquist, Kotzebue or Sarychev, so `--since` has no witness to name and
@@ -255,9 +288,9 @@ the entry cannot honestly exist yet. They stay in the whitelist under a heading
 that says why.
 
 Two properties keep this from being a hole in the firewall. `lexicon_miss` tests
-only ASCII components of length > 3, so a Tier-1 form in a trigger table is inert
+only ASCII components of length > 3, so a Tier-1 form in an alias table is inert
 there **by construction** — which is what lets an entity carry a native alias
-without the trigger table becoming a way to blind the one detector that could
+without the alias table becoming a way to blind the one detector that could
 catch an unmarked romanized form. And `harness lexicon misses` reports what the
 store suppressed, under `suppressed`, so the second source is never a silent one:
 detection runs against the dictionary and the whitelist alone, and each hit is

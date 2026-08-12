@@ -28,7 +28,7 @@ In the TEI this is `@resp`, on every Tier-1 `xml:lang` and every entity referenc
 naming one of five ranks: `#ed` ratified (a human confirmed it against the page),
 `#llm` proposed (a model read it), `#htr` unexamined (recognizer output), `#gt`
 adopted (transcluded from adjudicated ground truth), `#mz` rule-applied (an entity
-link from a human's trigger table). The last two assert nothing on their own —
+link from a human's alias table). The last two assert nothing on their own —
 **re-derived from their store on every run**, so they fail rather than go stale,
 which is the whole of what admits a rank no human wrote directly.
 The ranks are declared once, in the corpus teiHeader, never in a page file. The

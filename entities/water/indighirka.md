@@ -5,12 +5,12 @@
 - within: place:russian-far-east
 - area: watershed:indigirka
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Indighirka | no | |
-| Indighirka River | yes | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Indighirka | | no | |
+| Indighirka River | | yes | |
 
 ## gloss
 

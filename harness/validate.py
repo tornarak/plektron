@@ -22,18 +22,16 @@ from pathlib import Path
 from lxml import etree
 
 from .detectors import unlicensed_marks
-from .entities import ENTITY_CLASSES, auto_forms, load, split_id, trigger_index
+from .entities import ENTITY_CLASSES, alias_index, auto_forms, load, split_id
+from .langs import TIER1
 from .state import load_toc
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
 XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 XML_ID_ATTR = "{http://www.w3.org/XML/1998/namespace}id"
-# The closed set the firewall covers: languages the book renders in the same
-# ambiguous Americanist notation, so a glyph inside one carries the inventory and
-# the ASCII policy. `.claude/skills/transcribe-page/SKILL.md` says when each fires.
-# Where the source does not distinguish members of a family, neither does this —
-# `ypk` and `ipk` are family and macrolanguage codes on purpose.
-TIER1 = {"ckt", "kpy", "ypk", "xcv", "eve", "ipk", "itl"}
+# TIER1 — the closed set the firewall covers — is `langs.TIER1`, re-exported here
+# because this module is where every caller has always looked for it.
+# `.claude/skills/transcribe-page/SKILL.md` says when each fires.
 # Provenance ranks, strictly ordered, declared as respStmt/@xml:id once in the corpus
 # teiHeader and never in a page file — a page is a fragment and defers. `harness tei header`
 # (check_corpus_header below) is what holds this dict and that file together; without
@@ -69,7 +67,7 @@ ADOPTED = "#gt"
 # The fifth rank, admitted on exactly the terms `#gt` was and refused anything
 # more.
 #
-# It says: a human wrote a trigger row into `entities/` declaring that this form,
+# It says: a human wrote an alias row into `entities/` declaring that this form,
 # in this book, means this entity, and ratified the entry; a rule then applied
 # that declaration here. No model chose it, so `#llm` is false; no human read
 # this page, so `#ed` is false. As with `#gt` the responsible act happened one
@@ -77,9 +75,9 @@ ADOPTED = "#gt"
 #
 # **It is not taken on trust either**, and that is the whole of its licence.
 # Every `#mz` link is re-derived on every validation run from the store as it
-# stands now — the entity still exists, it is still ratified, the trigger is
+# stands now — the entity still exists, it is still ratified, the alias is
 # still there, still says `auto: yes`, is still claimed by no one else, and the
-# element's own text still matches it. Weaken the entry, delete the trigger, or
+# element's own text still matches it. Weaken the entry, delete the alias, or
 # let a second entity claim the form, and every link resting on it fails. An
 # attribute written once and never rechecked would go stale in silence, which is
 # the failure this whole arrangement exists to make impossible.
@@ -1181,7 +1179,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # Proper nouns, and the entity references over them. The pass marks
     # *category* from the page; identity now resolves, against `entities/`.
     store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
-    idx = trigger_index(store)
+    idx = alias_index(store)
     autos = auto_forms(idx)
     names = untyped = refs = ruled = 0
     for el in root.iter(q("name"), q("rs")):
@@ -1256,7 +1254,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
             ruled += 1
             # **The whole licence of #mz, re-derived here on every run.** The
             # claim is not "a rule wrote this once" but "the store says this
-            # right now": the entry is ratified, the trigger is still there and
+            # right now": the entry is ratified, the alias is still there and
             # still uncontested, and the text still matches it. Weaken any of
             # those in `entities/` and the link fails rather than going quietly
             # stale — the same maintenance property #gt has, and the only reason
@@ -1266,7 +1264,7 @@ def validate(tei_path: Path, ctx: dict | None = None,
             if owner is None:
                 claims = idx.get(form, [])
                 if not claims:
-                    why = (f"the store has no trigger {form!r} — it was removed, "
+                    why = (f"the store has no alias {form!r} — it was removed, "
                            f"or the text was edited after the link was made")
                 elif len(claims) > 1:
                     why = (f"{form!r} is now claimed by "

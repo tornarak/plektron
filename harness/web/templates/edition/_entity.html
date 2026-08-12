@@ -18,10 +18,14 @@
 <div class='gloss'>{{ gloss | safe }}</div>
 {% include "edition/_props.html" %}
 {% for ln in links %}{{ ln | safe }}{% endfor %}
-{% if rec.triggers %}
-<table><tr><th>form</th><th></th><th></th></tr>
-{% for t in rec.triggers %}
+{% if rec.aliases %}
+<table><tr><th>form</th><th></th><th></th><th></th></tr>
+{% for t in rec.aliases %}
 <tr><td>{{ t.form }}</td>
+    {# The language, where the author stated one. Blank is unstated and prints
+       as nothing rather than as "unknown": most of these are the book's own
+       English, and a column of "unknown" would read as a defect per row. #}
+    <td class='meta'>{{ t.lang_name }}</td>
     <td>{{ 'auto' if t.auto else 'suggest' }}</td>
     {# The notes carry `[[…]]` too — they are where an author explains *why* a
        form is suggest-only, and the explanation is almost always "it is also

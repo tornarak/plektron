@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-035
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Parapolsky Dol | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Parapolsky Dol | | no | |
 
 ## gloss
 

@@ -15,26 +15,41 @@ directory was gone. Here the file says what it is, `check` compares the two, and
 a moved file is an error rather than a reclassification.
 
 **What the store is for.** It is the referent of every `@ref` in the corpus,
-and the source of the trigger vocabulary that the generator applies by rule. It
+and the source of the alias vocabulary that the generator applies by rule. It
 is human-authored: a model may propose an entry in its report and the
 coordinator runs `entity new`, but nothing mints one unreviewed — the same
 remit that keeps a model from originating a glyph.
 
-**The triggers are the mechanical half, and their firewall is structural.** A
-trigger table says "this form, in this book, means this entity", which is a
+**The aliases are the mechanical half, and their firewall is structural.** An
+alias table says "this form, in this book, means this entity", which is a
 judgement a human makes once with the corpus in view. Applying it is a rule.
 The bar for applying it *without* asking is deliberately high and mechanical,
 not disciplinary — see `auto_forms`: a form two entities claim is ambiguous by
 construction, whatever either file says about it, and no amount of care by the
 author of one of them can make it unambiguous.
 
+**An alias carries the language it is a name in**, from `langs.ALIAS_LANGS`.
+Seven entries used to write `lang:ckt` and `lang:rus` into the *note* column,
+where the fact was real, unreadable and uncheckable — an entity's Russian and
+Chukchi names are exactly what a reader of an ethnography wants and exactly what
+no free-text column can be asked for. It is optional, because requiring it would
+make an editorial pass out of a schema change; blank means **unstated**, which
+`check` counts as a worklist and never gates on. A code outside the vocabulary
+*is* an error: that is a typo, not a gap.
+
+The column deliberately buys nothing mechanical yet. In particular it does
+**not** narrow `detectors.entity_forms` — an alias suppresses `lexicon_miss`
+whatever language it is in, exactly as before — so the one case no mechanical
+test separates, an unmarked romanized native form, is still suppressed and still
+open. The field records the fact; nothing infers from it.
+
 **This store is also the corpus's proper-noun dictionary**, and the direction of
 that is worth being exact about. `data/lexicon_extra.txt` suppresses
 `lexicon_miss` and nothing else because it *structurally cannot* reach anything
 else; the entity store can, so `detectors.entity_forms` reads only the one thing
 out of it that a spellcheck can use — the components of every canonical and
-trigger form — and `lexicon_miss` tests only ASCII components of length > 3, so
-a native alias in a trigger table is inert there by construction. The proper
+alias form — and `lexicon_miss` tests only ASCII components of length > 3, so
+a native alias in an alias table is inert there by construction. The proper
 nouns that used to be listed in both files now live here alone, one entry each,
 each naming the page that first attested it.
 
@@ -53,6 +68,7 @@ from pathlib import Path
 from .context import REF_RE, norm_ref
 from .geo import canonical_area, split_area
 from .geo import index as geo_index
+from .langs import ALIAS_LANGS
 
 ENTDIR = "entities"
 
@@ -68,7 +84,7 @@ ENTDIR = "entities"
 #: scoped to what a reader of a page can see and record — it excludes `taxon`
 #: outright ("the binomials are Latin in English prose and out of scope") and has
 #: no member for a language or an institution. Those are exactly the entities a
-#: trigger table can find reliably, and linking them says "this string refers to
+#: an alias table can find reliably, and linking them says "this string refers to
 #: that entity", not "the page marked a proper noun here".
 ENTITY_CLASSES = {
     "person": "anthroponym",
@@ -90,7 +106,11 @@ ENTITY_CLASSES = {
 #: pass promoting its own proposal, one artifact removed.
 STATUSES = ("proposed", "ratified")
 
-#: How one entry names another, in a gloss or a trigger note. Brackets rather
+#: The section an entity's alias table lives under. Named as a constant because
+#: the parser refuses the *old* spelling by name, and the two must not drift.
+ALIASES = "aliases"
+
+#: How one entry names another, in a gloss or an alias note. Brackets rather
 #: than a bare `class:slug`, so a reference is distinguishable from prose that
 #: merely mentions the shape of one, and so `check` can refuse a dangling target.
 WIKILINK = re.compile(r"\[\[([a-z]+:[a-z0-9][a-z0-9-]*)\]\]")
@@ -99,7 +119,7 @@ _HDR = re.compile(r"^#\s+([a-z]+):([a-z0-9][a-z0-9-]*)\s+—\s+(.+?)\s*$", re.M)
 _FIELD = re.compile(r"^-\s+([a-z]+):\s*(.*?)\s*$", re.M)
 _SECTION = re.compile(r"^##\s+(\S+)\s*$", re.M)
 _ROW = re.compile(r"^\|(.*)\|\s*$", re.M)
-#: A trigger boundary. `\w` alone is not enough on NFD text: a combining mark is
+#: An alias boundary. `\w` alone is not enough on NFD text: a combining mark is
 #: not a word character to Python, so `\bJesup\b` would happily match the first
 #: five characters of a Tier-1 form whose sixth is a combining diaeresis.
 #: Spelled with `chr()` rather than as literal characters: a combining mark
@@ -152,8 +172,8 @@ def parse(text: str, where: str = "") -> dict:
     """One entity file's text → its record. Raises `Malformed` on anything unclear.
 
     NFD on read, as `figures.readings` does and for the same reason: the file is
-    hand-maintained, it can drift between edits, and a trigger's normal form must
-    not depend on which session keyed it. A trigger that fails to match because
+    hand-maintained, it can drift between edits, and an alias's normal form must
+    not depend on which session keyed it. An alias that fails to match because
     the store holds a precomposed `ö` and the page holds a decomposed one is a
     silent miss, which is the failure class this project is organised against.
     """
@@ -229,28 +249,47 @@ def parse(text: str, where: str = "") -> dict:
         end = marks[i + 1].start() if i + 1 < len(marks) else len(text)
         sections[s.group(1)] = text[s.end():end].strip("\n")
 
-    triggers = []
+    if "triggers" in sections and ALIASES not in sections:
+        raise Malformed(
+            f"{at}`## triggers` is now `## aliases`, and the table has gained a "
+            f"`lang` column between `form` and `auto`: "
+            f"`| form | lang | auto | note |`. Leave `lang` blank where the "
+            f"language is unstated; a code goes in the column and never in the "
+            f"note")
+
+    aliases = []
     seen = set()
-    for row in _ROW.finditer(sections.get("triggers", "")):
+    for row in _ROW.finditer(sections.get(ALIASES, "")):
         cells = _cells(row.group(1))
-        if len(cells) < 2 or set("".join(cells)) <= set("-: "):
+        if len(cells) < 3 or set("".join(cells)) <= set("-: "):
             continue              # the header rule, or the header row's own labels
         if cells[0].lower() == "form":
             continue
         form = " ".join(cells[0].split())
         if not form:
-            raise Malformed(f"{at}a trigger row with an empty form")
+            raise Malformed(f"{at}an alias row with an empty form")
         if form in seen:
-            raise Malformed(f"{at}trigger {form!r} listed twice in one file")
+            raise Malformed(f"{at}alias {form!r} listed twice in one file")
         seen.add(form)
-        auto = cells[1].lower()
+        # Blank is unstated, which is a claim the store is allowed to make. A
+        # code that is not in the vocabulary is a typo, and the message names
+        # what is on offer rather than leaving the author to find the table.
+        lang = cells[1].strip()
+        if lang and lang not in ALIAS_LANGS:
+            raise Malformed(
+                f"{at}alias {form!r}: unknown language {lang!r}. One of: "
+                f"{', '.join(sorted(ALIAS_LANGS))} — or blank, which says the "
+                f"language is unstated. Codes are the shortest BCP-47 form, the "
+                f"same string a collator writes in `xml:lang`, so it is `ru` "
+                f"and never `rus`")
+        auto = cells[2].lower()
         if auto not in ("yes", "no"):
             raise Malformed(
-                f"{at}trigger {form!r}: `auto` is `yes` or `no` (got {auto!r}). "
+                f"{at}alias {form!r}: `auto` is `yes` or `no` (got {auto!r}). "
                 f"It is the author's declaration that the form is safe out of "
                 f"context, so there is no default for it")
-        triggers.append({"form": form, "auto": auto == "yes",
-                         "note": cells[2] if len(cells) > 2 else ""})
+        aliases.append({"form": form, "lang": lang, "auto": auto == "yes",
+                        "note": cells[3] if len(cells) > 3 else ""})
 
     geo = one("geo")
     coords = None
@@ -282,7 +321,7 @@ def parse(text: str, where: str = "") -> dict:
         "area": area,
         "links": fields.get("link", []),
         "authority": one("authority"),
-        "triggers": triggers,
+        "aliases": aliases,
         "gloss": sections.get("gloss", "").strip(),
     }
 
@@ -307,18 +346,19 @@ def load(root: Path = Path(".")) -> dict[str, dict]:
     return out
 
 
-def trigger_index(store: dict[str, dict]) -> dict[str, list[dict]]:
-    """`{form: [{id, auto, status}, …]}` — every claim on every form.
+def alias_index(store: dict[str, dict]) -> dict[str, list[dict]]:
+    """`{form: [{id, lang, auto, status}, …]}` — every claim on every form.
 
     A form appears once whoever claims it, so a collision is visible here and
     nowhere else: no single entity file can see that another one claims its
-    trigger.
+    alias.
     """
     idx: dict[str, list[dict]] = {}
     for rec in store.values():
-        for t in rec["triggers"]:
+        for t in rec["aliases"]:
             idx.setdefault(t["form"], []).append(
-                {"id": rec["id"], "auto": t["auto"], "status": rec["status"]})
+                {"id": rec["id"], "lang": t["lang"], "auto": t["auto"],
+                 "status": rec["status"]})
     return idx
 
 
@@ -355,7 +395,7 @@ def auto_forms(idx: dict[str, list[dict]]) -> dict[str, str]:
 
 
 def _pattern(forms) -> re.Pattern | None:
-    """One alternation over every trigger form, longest first.
+    """One alternation over every alias form, longest first.
 
     Longest-first is what makes "Jesup North Pacific Expedition" win over the
     "Jesup" that is inside it — Python's alternation takes the first branch that
@@ -363,7 +403,7 @@ def _pattern(forms) -> re.Pattern | None:
 
     Whitespace in a form matches any run of whitespace, so a title broken across
     two printed lines still matches. The generated page keeps the printed line
-    breaks, so without this the longest and most reliable triggers — the multi-word
+    breaks, so without this the longest and most reliable aliases — the multi-word
     ones — would be exactly the ones that failed at a line end.
 
     **A hyphen may stand between any two characters**, because
@@ -384,10 +424,10 @@ def _pattern(forms) -> re.Pattern | None:
 
 
 def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
-    """Every trigger hit in `text`, non-overlapping, longest-first.
+    """Every alias hit in `text`, non-overlapping, longest-first.
 
     Returns `{start, end, text, form, ids, auto, hyphenated, status}` per hit,
-    where `form` is the trigger as the store spells it and `text` is what the page
+    where `form` is the alias as the store spells it and `text` is what the page
     spells — the two differ wherever a line break fell inside the match. `ids` is
     every entity claiming the form, so a caller can tell an unambiguous hit from a
     contested one without going back to the index.
@@ -395,7 +435,7 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     **`hyphenated` says the page spells the form with a hyphen the store does
     not**, which is what a compositor's line-break hyphen looks like after
     `join_broken_words` rejoins the two halves. Such a hit is never `auto`, no
-    matter how safe the trigger: deciding that a hyphen is the printer's and not
+    matter how safe the alias: deciding that a hyphen is the printer's and not
     the word's is a reading, and `Rein-deer` being obvious does not make it
     mechanical. It arrives as a candidate, the reader settles it, and the
     generator's comment says which kind of question it is.
@@ -407,7 +447,7 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     pat = _pattern(idx)
     if pat is None:
         return []
-    # Only consulted when the exact spelling is not in the index, so a trigger
+    # Only consulted when the exact spelling is not in the index, so an alias
     # that legitimately carries a hyphen (`Sredne-Kolymsk`) still resolves as
     # itself rather than through this.
     dehyphenated = {f.replace("-", ""): f for f in idx}
@@ -492,12 +532,12 @@ def check(root: Path = Path(".")) -> dict:
                 f"`harness geo list` names every shape; if the source has no "
                 f"polygon for it, leave `area:` off and say so in the gloss "
                 f"rather than pointing at an approximation")
-        # `[[class:slug]]` in a gloss or a trigger note is a reference, and a
+        # `[[class:slug]]` in a gloss or an alias note is a reference, and a
         # reference to nothing is the failure this whole store exists to stop —
         # it renders as a link and goes nowhere. Checked here rather than at
         # render time because a reader should never be the one to find it.
         for target in sorted(set(WIKILINK.findall(rec["gloss"]))
-                             | {m for t in rec["triggers"]
+                             | {m for t in rec["aliases"]
                                 for m in WIKILINK.findall(t["note"])}):
             if target not in store:
                 errors.append(f"{rec['path']}: [[{target}]] resolves to nothing")
@@ -513,7 +553,7 @@ def check(root: Path = Path(".")) -> dict:
             seen.append(cur)
             cur = store[cur]["within"]
 
-    idx = trigger_index(store)
+    idx = alias_index(store)
     collisions = []
     for form in sorted(idx):
         claims = idx[form]
@@ -525,17 +565,26 @@ def check(root: Path = Path(".")) -> dict:
                            "auto": len(autos)})
         if len(autos) > 1:
             errors.append(
-                f"trigger {form!r} is `auto: yes` for {' and '.join(sorted(autos))}. "
+                f"alias {form!r} is `auto: yes` for {' and '.join(sorted(autos))}. "
                 f"Two entities cannot both own a form unconditionally — set all "
                 f"but one to `auto: no` and let the reader choose, or narrow the "
                 f"forms until they no longer collide")
+
+    # **A worklist, never a gate.** An alias whose language nobody has stated is
+    # not a defect — most of the store's forms are the book's own English and
+    # saying so adds nothing — but "every foreign name is in the table, tagged"
+    # is the standing editorial job, and a number nobody prints is a job nobody
+    # does. Counted here, reported by `entity check`, gating nothing: measurement
+    # never gates, and a gate here would be answered by deleting the alias.
+    untagged = sum(1 for r in store.values() for t in r["aliases"] if not t["lang"])
 
     auto = auto_forms(idx)
     return {
         "entities": len(store),
         "proposed": sum(1 for r in store.values() if r["status"] == "proposed"),
-        "triggers": len(idx),
-        "auto_triggers": len(auto),
+        "aliases": len(idx),
+        "auto_aliases": len(auto),
+        "aliases_untagged": untagged,
         "collisions": collisions,
         "errors": errors,
         "ok": not errors,

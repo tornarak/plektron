@@ -5,13 +5,13 @@
 - link: Anadyr_(town)
 - link: wikidata:Q7978
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Anadyrsk | yes | |
-| Mariinsky Post | yes |  |
-| Veᵋñ | yes | lang:ckt |
+| form | lang | auto | note |
+|---|---|---|---|
+| Anadyrsk | | yes | |
+| Mariinsky Post | | yes |  |
+| Veᵋñ | ckt | yes | |
 
 ## gloss
 

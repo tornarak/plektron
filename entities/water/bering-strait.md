@@ -6,11 +6,11 @@
 - link: wikipedia:Bering_Strait
 - link: wikidata:Q11769
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Bering Strait | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Bering Strait | | no | |
 
 ## gloss
 

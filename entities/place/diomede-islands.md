@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-040
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Diomede Islands | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Diomede Islands | | no | |
 
 ## gloss
 

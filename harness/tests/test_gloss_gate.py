@@ -91,7 +91,7 @@ def test_an_entity_ref_over_the_span_does_not_warn(tmp_path):
     """A rule-applied link is an `<rs>`, which carries no `@type` at all — the
     class is the ref's own prefix — so a gate keyed on `@type` alone would fire
     on every form `tei generate` had just linked."""
-    entry(tmp_path, "place:uelen", triggers=[("Uweˊlen", True)])
+    entry(tmp_path, "place:uelen", aliases=[("Uweˊlen", True)])
     body = ('<p><rs ref="place:uelen" resp="#mz">'
             f"<foreign {CKT}>Uweˊlen</foreign></rs></p>")
     assert not any("neither glossed" in w for w in warns(tmp_path, body))

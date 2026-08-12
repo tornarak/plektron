@@ -5,12 +5,12 @@
 - within: place:chukchee-peninsula
 - geo: 66.159 -169.812
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Uweˊlen | yes | lang:ckt |
-| Uˊlak | yes | lang:ypk |
+| form | lang | auto | note |
+|---|---|---|---|
+| Uweˊlen | ckt | yes | |
+| Uˊlak | ypk | yes | |
 
 ## gloss
 

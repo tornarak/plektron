@@ -15,8 +15,8 @@ in for an unread glyph.
   forms by two paths.
 
   `entities/` resolves it by being neither. It is **authored, not derived** — a
-  human writes an entry and its trigger forms — so it is not a snapshot of anything
-  and cannot go stale against a store it was computed from. The trigger index *is*
+  human writes an entry and its alias forms — so it is not a snapshot of anything
+  and cannot go stale against a store it was computed from. The alias index *is*
   recomputed on every run, from the store, which keeps the recompute-don't-trust
   rule where it belongs. `lexicon lookup` stays what it was: a reader's instrument
   over ratified ground truth, and the place an editor finds the attested spellings

@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-032
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Cape Anannon | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Cape Anannon | | no | |
 
 ## gloss
 

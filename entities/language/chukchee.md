@@ -6,12 +6,12 @@
 - link: wikipedia:Chukchi_language
 - link: wikidata:Q33170
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Chukchee language | yes | |
-| Chukchee | no | also the people — only the sentence decides. See [[people:chukchee]] |
+| form | lang | auto | note |
+|---|---|---|---|
+| Chukchee language | | yes | |
+| Chukchee | | no | also the people — only the sentence decides. See [[people:chukchee]] |
 
 ## gloss
 

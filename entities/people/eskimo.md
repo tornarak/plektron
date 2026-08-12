@@ -4,11 +4,11 @@
 - since: 1-021
 - link: wikipedia:Eskimo
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Eskimo | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Eskimo | | no | |
 
 ## gloss
 

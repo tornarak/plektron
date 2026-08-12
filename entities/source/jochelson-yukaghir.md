@@ -4,12 +4,12 @@
 - since: 1-028
 - authority: jochelson1900
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Yukaghir Materials | yes | the short title the book cites it by |
-| Jochelson | no | also the man — see [[person:jochelson]] |
+| form | lang | auto | note |
+|---|---|---|---|
+| Yukaghir Materials | | yes | the short title the book cites it by |
+| Jochelson | | no | also the man — see [[person:jochelson]] |
 
 ## gloss
 

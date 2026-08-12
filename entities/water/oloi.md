@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-035
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Oloi | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Oloi | | no | |
 
 ## gloss
 

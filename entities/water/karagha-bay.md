@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-048
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Karagha Bay | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Karagha Bay | | no | |
 
 ## gloss
 

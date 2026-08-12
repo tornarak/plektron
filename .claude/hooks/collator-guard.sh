@@ -117,11 +117,11 @@ case "$TOOL" in
       #   - the verb parses before it writes and can only ever mint at
       #     `status: proposed`, which no rule will link; a hand-written file can
       #     be malformed, or can say `ratified`, which is the human's word.
-      #   - an existing entry is shared. Adding a trigger to a ratified entity
+      #   - an existing entry is shared. Adding an alias to a ratified entity
       #     changes what `tei generate` links on every other page in the corpus,
       #     and one page is the wrong vantage for that.
       */entities/*|entities/*)
-        echo "Blocked: don't hand-edit the store — 'uv run harness entity new class:slug --canonical NAME --since PP-NNN --trigger FORM --commit' is yours and does this properly. It parses before writing and mints at status: proposed, which no rule links until a human ratifies it, so proposing costs nothing and asserts nothing. What the verb will not do is change an entry that already exists, and neither may you: a trigger added to a ratified entity changes what gets linked on every other page, which one page is the wrong vantage for. Put that in your report instead." >&2
+        echo "Blocked: don't hand-edit the store — 'uv run harness entity new class:slug --canonical NAME --since PP-NNN --alias FORM --commit' is yours and does this properly. It parses before writing and mints at status: proposed, which no rule links until a human ratifies it, so proposing costs nothing and asserts nothing. What the verb will not do is change an entry that already exists, and neither may you: an alias added to a ratified entity changes what gets linked on every other page, which one page is the wrong vantage for. Put that in your report instead." >&2
         exit 2 ;;
       */tei/chukchi-*.xml|tei/chukchi-*.xml) allow "collator authoring its page's TEI" ;;
       *"$MEMORY"*) allow "collator writing its own memory" ;;

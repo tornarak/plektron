@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-034
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Gishiginsk | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Gishiginsk | | no | |
 
 ## gloss
 

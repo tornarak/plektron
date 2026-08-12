@@ -298,7 +298,7 @@ def test_without_a_lexicon_nothing_is_suppressed():
 # --- the entity store as the corpus's proper-noun dictionary ------------------
 #
 # The proper nouns used to be listed twice: once in `data/lexicon_extra.txt` and
-# once as an entity's canonical or trigger. `detectors.entity_forms` made the
+# once as an entity's canonical or alias. `detectors.entity_forms` made the
 # second the only one. What these hold is the direction of the move — a name
 # filed in `entities/` stops being a miss — and the structural fact that keeps it
 # from becoming a hole: the detector cannot see a marked form either way.
@@ -310,10 +310,10 @@ def _extra(root: Path, *terms: str) -> None:
         "\n".join(terms) + "\n", encoding="utf-8")
 
 
-def test_a_trigger_form_is_not_a_miss(tmp_path):
+def test_an_alias_form_is_not_a_miss(tmp_path):
     _extra(tmp_path, "placeholder")
     entry(tmp_path, "person:gondatti", canonical="Nikolai Gondatti",
-          triggers=[("Gondatti", False)])
+          aliases=[("Gondatti", False)])
     assert not lexicon_miss("Gondatti", _lexicon(tmp_path))
 
 
@@ -332,16 +332,16 @@ def test_a_canonical_is_split_into_its_components(tmp_path):
     assert not lexicon_miss("Kolymsk", lex)
 
 
-def test_a_native_trigger_reaches_the_dictionary_and_changes_nothing(tmp_path):
+def test_a_native_alias_reaches_the_dictionary_and_changes_nothing(tmp_path):
     """**The structural guard, and the one a refactor breaks silently.** An
-    entity may carry a native alias as a trigger — `place:anadyr` carries `Veᵋñ`
+    entity may carry a native alias as an alias — `place:anadyr` carries `Veᵋñ`
     — and that form does land in this dictionary. It is inert there: a marked
     form is not ASCII, and `_unknown_word` reports only on ASCII components. So
-    the trigger table cannot blind `lexicon_miss`, which is the only detector
+    the alias table cannot blind `lexicon_miss`, which is the only detector
     that could catch an unmarked romanized form.
 
     Asserted as an equality between two dictionaries rather than as a property
-    of the form, because what must hold is that adding the trigger changed the
+    of the form, because what must hold is that adding the alias changed the
     *answer* nowhere, not merely that this one token still misses."""
     _extra(tmp_path, "placeholder")
     entry(tmp_path, "place:anadyr", canonical="Anadyr")
@@ -349,7 +349,7 @@ def test_a_native_trigger_reaches_the_dictionary_and_changes_nothing(tmp_path):
     verdicts = {t: lexicon_miss(t, before)
                 for t in ("Anadyr", nfd("Veᵋñ"), "Ulakhpen", "reindeer")}
     entry(tmp_path, "place:anadyr", canonical="Anadyr",
-          triggers=[(nfd("Veᵋñ"), True)])
+          aliases=[(nfd("Veᵋñ"), True)])
     after = _lexicon(tmp_path)
     assert {t: lexicon_miss(t, after) for t in verdicts} == verdicts
 
@@ -371,7 +371,7 @@ def test_what_the_entity_store_suppressed_is_reported(tmp_path):
     than off the report."""
     _extra(tmp_path, "placeholder")
     entry(tmp_path, "person:gondatti", canonical="Nikolai Gondatti",
-          triggers=[("Gondatti", False)])
+          aliases=[("Gondatti", False)])
     _gt_page(tmp_path, "1-002", [
         ("Gondatti reports the Ulakhpen", 400, 1774),
     ])

@@ -25,8 +25,8 @@ from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 
 from .. import edition_ui as ui
-from .. import geo, ipa, lexicon, speech, tei_html
-from ..entities import ENTITY_CLASSES, split_id, trigger_index
+from .. import geo, ipa, langs, lexicon, speech, tei_html
+from ..entities import ENTITY_CLASSES, alias_index, split_id
 from . import Editor, register, stores, templates
 from .files import send_file
 
@@ -143,20 +143,22 @@ def _entity_ctx(ident: str, root: Path) -> dict:
     rec = store.get(ident)
     if rec is None:
         return {"rec": None, "ident": ident, "base": BASE}
-    idx = trigger_index(store)
+    idx = alias_index(store)
     contested = sorted(
         {
             c["id"]
-            for t in rec["triggers"]
+            for t in rec["aliases"]
             for c in idx.get(t["form"], [])
             if c["id"] != ident
         }
     )
-    triggers = [
-        {**t, "note_html": ui.inline_html(t["note"], store)} for t in rec["triggers"]
+    aliases = [
+        {**t, "note_html": ui.inline_html(t["note"], store),
+         "lang_name": langs.name(t["lang"]) if t["lang"] else ""}
+        for t in rec["aliases"]
     ]
     return {
-        "rec": {**rec, "triggers": triggers},
+        "rec": {**rec, "aliases": aliases},
         "ident": ident,
         "base": BASE,
         "gloss": ui.gloss_html(rec["gloss"], store),
@@ -217,9 +219,9 @@ def lexicon_index(request: Request):
                # The empty branch is labelled rather than left blank: it is the
                # collation worklist and by far the largest, and a heading with
                # no text would read as a rendering fault.
-               "name": ui.LANG_NAMES.get(lang) or "unassigned",
+               "name": langs.TIER1_NAMES.get(lang) or "unassigned",
                "rows": [r for r in forms if r["lang"] == lang]}
-              for lang in [*ui.LANG_NAMES, ""]]
+              for lang in [*langs.TIER1_NAMES, ""]]
     written = sum(1 for r in forms if r["note"])
     return templates.TemplateResponse(
         request,
@@ -306,8 +308,8 @@ def lexicon_card(request: Request, key: str, partial: str = ""):
     store = stores.lexicon_store(root)
 
     lang, sep, rest = key.partition(":")
-    form = lexicon.norm_form(rest if sep and lang in ui.LANG_NAMES else key)
-    if not sep or lang not in ui.LANG_NAMES:
+    form = lexicon.norm_form(rest if sep and lang in langs.TIER1 else key)
+    if not sep or lang not in langs.TIER1:
         lang = ""
 
     candidates: list[str] = []
@@ -331,7 +333,10 @@ def lexicon_card(request: Request, key: str, partial: str = ""):
     # The key's own language counts as one of the readings. It came off a
     # collated page's link, where a collator wrote it; dropping it and reporting
     # "unjudged" would be the card contradicting the URL that opened it.
-    langs = sorted({la for _r, la in attested} | ({lang} if lang else set()))
+    # Named `assigned`, not `langs`: this function imports the `langs` module,
+    # and a local of that name shadows it three lines later — the same shadow
+    # that once hid the `lexicon` module from this file.
+    assigned = sorted({la for _r, la in attested} | ({lang} if lang else set()))
     ctx: dict = {
         "key": key,
         "form": form,
@@ -345,10 +350,9 @@ def lexicon_card(request: Request, key: str, partial: str = ""):
         # the corpus or the store; rendering an arbitrary string as a headword
         # with an imputed pronunciation under it would be inventing a word.
         "known": bool(lang or rec or attested or form in _all_forms(native)),
-        "lang": lang or (langs[0] if len(langs) == 1 else ""),
-        "langs": [{"code": la, "name": ui.LANG_NAMES.get(la, la)}
-                  for la in langs],
-        "lang_name": ui.LANG_NAMES.get(lang) if lang else None,
+        "lang": lang or (assigned[0] if len(assigned) == 1 else ""),
+        "langs": [{"code": la, "name": langs.name(la)} for la in assigned],
+        "lang_name": langs.name(lang) if lang else None,
         "pages": sorted({r for r, _la in attested}),
         "lines": _printed_lines(native, form),
         "ipa": _ipa_ctx(form) if form else None,
@@ -525,7 +529,7 @@ def search(request: Request, q: str = ""):
         store = stores.load(root)
         for ident, rec in sorted(store.items()):
             hay = [rec["canonical"], ident, rec["gloss"]] + [
-                t["form"] for t in rec["triggers"]
+                t["form"] for t in rec["aliases"]
             ]
             if any(q.lower() in h.lower() for h in hay):
                 ents.append(rec)
@@ -587,14 +591,14 @@ class Ratify(BaseModel):
 
 
 class NewEntity(BaseModel):
-    """The four fields `edition_ui._new` reads. `triggers` and `since` were absent
+    """The four fields `edition_ui._new` reads. `aliases` and `since` were absent
     and are not cosmetic: Pydantic drops what it does not declare, so an entry
-    created with either would have been written with the placeholder trigger row
+    created with either would have been written with the placeholder alias row
     and no `since:` — the record would exist, look complete, and assert nothing."""
 
     id: str = ""
     canonical: str = ""
-    triggers: list[str] = []
+    aliases: list[str] = []
     since: str = ""
     gloss: str = ""
     since: str = ""

@@ -4,12 +4,12 @@
 - since: 1-044
 - link: wikipedia:Waldemar_Jochelson
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Jochelson | no | also his books — see [[source:jochelson-yukaghir]] |
-| W. Jochelson | yes | the form Bogoras uses for the man in narrative |
+| form | lang | auto | note |
+|---|---|---|---|
+| Jochelson | | no | also his books — see [[source:jochelson-yukaghir]] |
+| W. Jochelson | | yes | the form Bogoras uses for the man in narrative |
 
 ## gloss
 

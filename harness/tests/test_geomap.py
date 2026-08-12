@@ -66,23 +66,23 @@ def test_an_area_naming_an_entity_class_is_refused():
     a well-formed id and resolves to nothing, in a file whose next field is a
     genuine entity reference."""
     text = ("# place:x — X\n\n- status: proposed\n- since: 1-021\n"
-            "- area: language:chukchee\n\n## triggers\n\n| form | auto | note |\n"
-            "|---|---|---|\n\n## gloss\n\nx\n")
+            "- area: language:chukchee\n\n## aliases\n\n| form | lang | auto | note |\n"
+            "|---|---|---|---|\n\n## gloss\n\nx\n")
     with pytest.raises(entities.Malformed, match="entity class"):
         entities.parse(text)
 
 
 def test_a_wellformed_area_parses_and_is_carried():
     text = ("# place:x — X\n\n- status: proposed\n- since: 1-021\n"
-            "- area: watershed:anadyr\n\n## triggers\n\n| form | auto | note |\n"
-            "|---|---|---|\n\n## gloss\n\nx\n")
+            "- area: watershed:anadyr\n\n## aliases\n\n| form | lang | auto | note |\n"
+            "|---|---|---|---|\n\n## gloss\n\nx\n")
     assert entities.parse(text)["area"] == "watershed:anadyr"
 
 
 def _entity_text(area: str) -> str:
     return ("# place:x — X\n\n- status: proposed\n- since: 1-021\n"
-            f"- area: {area}\n\n## triggers\n\n| form | auto | note |\n"
-            "|---|---|---|\n\n## gloss\n\nx\n")
+            f"- area: {area}\n\n## aliases\n\n| form | lang | auto | note |\n"
+            "|---|---|---|---|\n\n## gloss\n\nx\n")
 
 
 def test_a_composite_area_is_parsed_and_stored_canonically():
@@ -306,7 +306,7 @@ def _store(tmp_path, *recs):
         p = tmp_path / "entities" / cls / f"{slug}.md"
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(f"# {ident} — {slug}\n\n- status: ratified\n- since: 1-021\n"
-                     f"{extra}\n## triggers\n\n| form | auto | note |\n|---|---|---|\n"
+                     f"{extra}\n## aliases\n\n| form | lang | auto | note |\n|---|---|---|---|\n"
                      f"\n## gloss\n\nx\n", encoding="utf-8")
     return entities.load(tmp_path)
 

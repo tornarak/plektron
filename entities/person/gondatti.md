@@ -3,11 +3,11 @@
 - status: proposed
 - since: 1-040
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Gondatti | no | |
+| form | lang | auto | note |
+|---|---|---|---|
+| Gondatti | | no | |
 
 ## gloss
 

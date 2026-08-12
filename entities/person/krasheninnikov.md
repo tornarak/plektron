@@ -3,12 +3,12 @@
 - status: proposed
 - since: 1-031
 
-## triggers
+## aliases
 
-| form | auto | note |
-|---|---|---|
-| Krasheninnikoff | no | the running text's spelling |
-| Krasheninnikov | no | `data/authorities.json`'s spelling; unattested in `gt/ocr/` |
+| form | lang | auto | note |
+|---|---|---|---|
+| Krasheninnikoff | | no | the running text's spelling |
+| Krasheninnikov | | no | `data/authorities.json`'s spelling; unattested in `gt/ocr/` |
 
 ## gloss
 
