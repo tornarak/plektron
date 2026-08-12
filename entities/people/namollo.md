@@ -1,7 +1,6 @@
 # people:namollo — Namollo
 
-- status: proposed
-- since: 1-041
+- status: ratified
 
 ## aliases
 

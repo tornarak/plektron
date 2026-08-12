@@ -1,7 +1,6 @@
 # person:laufer — Berthold Laufer
 
-- status: proposed
-- since: 1-196
+- status: ratified
 
 ## aliases
 

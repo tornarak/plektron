@@ -1,7 +1,6 @@
 # place:cape-anannon — Cape Anannon
 
-- status: proposed
-- since: 1-032
+- status: ratified
 
 ## aliases
 

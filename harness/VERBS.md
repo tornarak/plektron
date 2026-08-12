@@ -1136,7 +1136,6 @@ entry.
 **Note** the slug is **not** the key. Over the corpus's 609 attested forms `handle_key` yields 23 pairs differing only in case (`Aiˊwan`/`aiˊwan` → `ai'wan`), which a case-insensitive filesystem collapses, and 34 keys containing `:`. It is also non-injective by design, so a check of the form "the heading re-keys to the filename" would pass on *both* of a colliding pair while only one file can exist. A human names the file; `check` refuses two names a filesystem might not tell apart.
 **Note** `--see` is a pointer and never a claim that two forms are one word. The book sets `Čeˊwɪn` and `Čeˊwin`, and `data/marks_exempt.json` rules that ambiguity real; nothing in this store overrides that ruling.
 ```
---since PP-NNN   the page whose reading prompted the entry (required)
 --slug SLUG      the file name, without `.md` [the reduced key]
 --see FORM       another form in the store this one points at
 --commit         write it
@@ -1283,15 +1282,16 @@ name is the shape that cost this project 18 pages.
 Human-authored and tracked, so `--commit` gates the two actions that write.
 
 ### entity new ID
-**Does** scaffold an entry at `status: proposed`. Nothing mints one ratified — a form a rule may link has to have been read by a human first, and `entity ratify` is that act. Parses the result before writing, so a bad `--since` fails as a message rather than as a file.
+**Does** scaffold an entry at `status: proposed`. Nothing mints one ratified — a form a rule may link has to have been read by a human first, and `entity ratify` is that act. Parses the result before writing, so a bad `--within` fails as a message rather than as a file.
 **Reads** — **Writes** `entities/<class>/<slug>.md` under `--commit`. **Exit** 0, or 1 if the entry already exists.
+**Note** **there is no `--since`.** Both stores carried one — the page whose reading prompted the entry — required on the argument that an apparatus store which cannot be traced back to a page is unauditable. That argument was right and its answer got better: the card derives *every* page the entry is attested on, from the corpus, on every load. **A `since:` is satisfied by typing a plausible ref and a derived attestation list is not**, so the field was the weaker witness while keeping out entries the book plainly contains whose attesting page is among the 558 not yet transcribed. `entity occurrences --all` is where an unwitnessed entry shows now, as a row reading 0 and 0.
 ```
 --canonical NAME  the display name, written into the heading. Not an alias unless you also pass it as one. Required
---since PP-NNN  the page whose reading prompted the entry. Required — an apparatus store that cannot be traced back to a page is one nobody can audit
 --alias FORM  a form that means this entity, added at `auto: no`. Repeatable. Raising one to `auto: yes` is a separate act, in the file or the browser, because it licenses a link nobody will be asked about. A native form is the NFD surface spelling, never a lexicon handle key — the key is a fold and collides on purpose
 --lang CODE  the language every `--alias` on this run is a name in. Left off, they are filed with the language unstated
 --within ID  the entity that contains this one, `class:slug`. The atlas's whole structure, and the only thing that puts a location somewhere rather than merely on a map
 --area KIND:SLUG  the shape in `data/geo/` this entity is drawn as, e.g. `watershed:anadyr`. Identifying a name Bogoras wrote in 1904 with a polygon a modern service returned is a human's act, which is why it is typed rather than matched by name — `watershed:main` and the English word are one keystroke apart. Several, comma-separated, is a composite. `geo list` names every shape
+--authority KEY  the entry in `data/authorities.json` this entity is the work of, e.g. `steller1774`. What puts the printed title on the card without the entry restating it
 --commit  write it; without this the file is reported and not created
 --root --json --toon --pager
 ```

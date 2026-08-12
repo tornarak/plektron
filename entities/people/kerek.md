@@ -1,7 +1,6 @@
 # people:kerek — Kerek
 
 - status: ratified
-- since: 1-031
 - link: wikipedia:Kereks
 - link: wikidata:Q1190792
 

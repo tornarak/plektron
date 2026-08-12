@@ -1,7 +1,6 @@
 # person:maydell — Gerhard von Maydell
 
-- status: proposed
-- since: 1-037
+- status: ratified
 
 ## aliases
 

@@ -23,7 +23,7 @@ REPO = Path(__file__).resolve().parent.parent.parent
 
 
 def entry(root: Path, ident: str, *, status: str = "ratified",
-          since: str = "1-021", aliases=(), canonical: str = "",
+          aliases=(), canonical: str = "",
           extra: str = "", gloss: str = "a gloss") -> Path:
     """One store file. An alias is `(form, auto)` or `(form, auto, lang)` — the
     two-tuple stays legal because the language is optional in the store too, and
@@ -36,7 +36,7 @@ def entry(root: Path, ident: str, *, status: str = "ratified",
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(
         f"# {ident} — {canonical or slug.title()}\n\n"
-        f"- status: {status}\n- since: {since}\n{extra}"
+        f"- status: {status}\n{extra}"
         f"\n## aliases\n\n| form | lang | auto | note |\n|---|---|---|---|\n"
         f"{rows}\n\n## gloss\n\n{gloss}\n", encoding="utf-8")
     return p
@@ -97,14 +97,20 @@ def test_an_absent_store_is_empty_not_an_error(tmp_path):
     assert E.load(tmp_path) == {}
 
 
-def test_since_is_required(tmp_path):
-    """Every apparatus store that skipped this is now unauditable; data/toc.json is
-    the standing case, and it is a logged defect rather than a choice."""
+def test_there_is_no_since_field(tmp_path):
+    """It was required, as the page whose reading prompted the entry, on the
+    argument that an unauditable apparatus store is the `data/toc.json` defect.
+    The argument held and the answer got better: the card derives *every* page
+    that mentions the entity. **A `since:` is satisfied by typing a plausible
+    ref and an empty mentions list is not**, so it was the weaker witness of the
+    two while keeping out entries the book plainly contains whose attesting page
+    is among the 558 not yet transcribed. Left in a file it is inert — no key,
+    no gate, nothing rendering it."""
     p = entry(tmp_path, "place:markova")
-    p.write_text(p.read_text(encoding="utf-8").replace("- since: 1-021\n", ""),
-                 encoding="utf-8")
-    with pytest.raises(E.Malformed, match="since"):
-        E.load(tmp_path)
+    p.write_text(p.read_text(encoding="utf-8").replace(
+        "- status: ratified\n", "- status: ratified\n- since: 1-021\n"),
+        encoding="utf-8")
+    assert "since" not in E.load(tmp_path)["place:markova"]
 
 
 def test_an_alias_needs_an_explicit_auto(tmp_path):
@@ -339,7 +345,7 @@ def test_a_field_that_exists_is_replaced_where_it_stands():
     of an entity file a reordering with a change somewhere inside it."""
     from harness.cli._entity import _set_field
 
-    text = ("# place:x — X\n\n- status: ratified\n- since: 1-021\n"
+    text = ("# place:x — X\n\n- status: ratified\n"
             "- within: place:y\n- geo: 1.0 2.0\n- link: wikidata:Q1\n\n"
             "## gloss\n\nx\n")
     got = _set_field(text, "geo", "3.0 4.0")
@@ -352,12 +358,12 @@ def test_a_field_that_is_missing_is_inserted_where_the_scaffold_puts_it():
     divided into what was typed and what a command set."""
     from harness.cli._entity import FIELD_ORDER, _set_field
 
-    text = ("# place:x — X\n\n- status: ratified\n- since: 1-021\n"
+    text = ("# place:x — X\n\n- status: ratified\n"
             "- link: wikidata:Q1\n\n## gloss\n\nx\n")
     got = _set_field(text, "area", "watershed:anadyr")
     fields = [line[2:].split(":")[0] for line in got.splitlines()
               if line.startswith("- ")]
-    assert fields == ["status", "since", "area", "link"]
+    assert fields == ["status", "area", "link"]
     assert fields == sorted(fields, key=FIELD_ORDER.index)
 
 

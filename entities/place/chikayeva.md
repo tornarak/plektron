@@ -1,7 +1,6 @@
 # place:chikayeva — Chikayeva
 
-- status: proposed
-- since: 1-048
+- status: ratified
 
 ## aliases
 

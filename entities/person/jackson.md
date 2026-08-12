@@ -1,7 +1,6 @@
 # person:jackson — Sheldon Jackson
 
-- status: proposed
-- since: 1-090
+- status: ratified
 
 ## aliases
 

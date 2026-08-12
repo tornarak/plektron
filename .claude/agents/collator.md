@@ -725,12 +725,18 @@ delete the comment because the page means none of them. Every one must go before
 the page is done.
 
 **Where the page wants an entry the store lacks, propose it.** This is your work,
-not a request you file: you have the page open and you know the line that attests
-it, which is what `--since` records and what nobody reconstructs later.
+not a request you file: you have the page open, which is the whole of what the
+proposal costs.
 
     uv run harness entity list                       does it already exist?
     uv run harness entity new person:jesup-morris --canonical "Morris K. Jesup" \
-      --since 1-021 --alias "Morris K. Jesup" --commit
+      --alias "Morris K. Jesup" --commit
+
+**Get the alias right and the attestation follows.** There is no field recording
+which page prompted the entry — the card derives every page the entity is
+mentioned on, and it derives them by matching the aliases. So an entry whose
+alias does not match what the page prints is an entry that reads as attested
+nowhere, which is exactly the signal it should give.
 
 Check `entity list` first — the same man under two slugs is worse than no entry,
 and you cannot see the store the coordinator can.
@@ -749,7 +755,7 @@ Where the page gives an entity its Chukchi or Russian name — the kind of form
 your `tier1_terms` row carries — file it:
 
     uv run harness entity new place:uelen --canonical "Uelen" \
-      --since 1-021 --alias "Uweˊlen" --lang ckt --commit
+      --alias "Uweˊlen" --lang ckt --commit
 
 Every `--alias` on one run takes that one language, so a run per language. Pass
 the **form as the page sets it**, NFD, never a lexicon handle key: the key is a

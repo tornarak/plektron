@@ -1,7 +1,6 @@
 # people:chukchi — Chukchi
 
 - status: ratified
-- since: 1-021
 - area: base:chukotka-east-of-meridian,langarea:chuk1273
 - link: wikipedia:Chukchi_people
 

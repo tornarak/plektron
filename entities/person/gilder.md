@@ -1,7 +1,6 @@
 # person:gilder — William Henry Gilder
 
-- status: proposed
-- since: 1-066
+- status: ratified
 
 ## aliases
 

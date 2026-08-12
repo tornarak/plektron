@@ -1,7 +1,6 @@
 # person:pallas — Pallas
 
-- status: proposed
-- since: 1-151
+- status: ratified
 
 ## aliases
 

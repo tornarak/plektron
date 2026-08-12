@@ -1,7 +1,6 @@
 # water:bering-strait — Bering Strait
 
-- status: proposed
-- since: 1-041
+- status: ratified
 - geo: 65.75 -168.977
 - link: wikipedia:Bering_Strait
 - link: wikidata:Q11769

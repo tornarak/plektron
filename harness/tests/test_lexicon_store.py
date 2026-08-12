@@ -23,10 +23,10 @@ FORM = "Kuluˊči"
 
 
 def entry(root: Path, form: str, *, slug: str = "", status: str = "proposed",
-          since: str = "1-042", see: str = "", note: str = "a note") -> Path:
+          see: str = "", note: str = "a note") -> Path:
     p = lex.lex_dir(root) / f"{slug or lex.suggest_slug(form)}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(f"# {form}\n\n- status: {status}\n- since: {since}\n"
+    p.write_text(f"# {form}\n\n- status: {status}\n"
                  + (f"- see: {see}\n" if see else "")
                  + f"\n## editor's note\n\n{note}\n", encoding="utf-8")
     return p
@@ -100,13 +100,15 @@ def test_the_suggested_slug_is_a_reduction_and_not_the_key(tmp_path):
 
 # --- the fields ---------------------------------------------------------------
 
-def test_since_is_required(tmp_path):
+def test_there_is_no_since_field(tmp_path):
+    """It went the same way as the entity store's, for the same reason: the card
+    lists every printed line the form occurs on, derived from `gt/ocr/` on every
+    load, and that cannot be satisfied by typing a plausible ref."""
     p = lex.lex_dir(tmp_path) / "x.md"
     p.parent.mkdir(parents=True)
-    p.write_text(f"# {FORM}\n\n- status: proposed\n\n## editor's note\n\nx\n",
-                 encoding="utf-8")
-    with pytest.raises(lex.Malformed, match="since"):
-        lex.load(tmp_path)
+    p.write_text(f"# {FORM}\n\n- status: proposed\n- since: 1-042\n"
+                 "\n## editor's note\n\nx\n", encoding="utf-8")
+    assert "since" not in lex.load(tmp_path)[lex.norm_form(FORM)]
 
 
 def test_a_dangling_see_is_an_error(tmp_path):

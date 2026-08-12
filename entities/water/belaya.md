@@ -1,7 +1,6 @@
 # water:belaya — Belaya
 
 - status: ratified
-- since: 1-047
 - within: water:anadyr
 - area: watershed:white-or-belaya
 

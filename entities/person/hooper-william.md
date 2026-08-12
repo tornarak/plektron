@@ -1,7 +1,6 @@
 # person:hooper-william — William Hulme Hooper
 
-- status: proposed
-- since: 1-031
+- status: ratified
 
 ## aliases
 

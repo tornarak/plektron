@@ -1,7 +1,8 @@
 # place:chaplino — Chaplino (town)
 
 - status: ratified
-- since: 1-035
+- within: place:chukchi-peninsula
+- geo: 64.4051 -172.2409
 - link: wikipedia:Cape_Chaplino
 - link: wikidata:Q3313853
 
@@ -10,7 +11,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Chaplino | | yes | |
-| Indian Point | | yes |  |
+| Indian Point | | yes | |
 | Uñiˊin | ckt | yes | |
 | Uñiˊsak | ypk | yes | |
 

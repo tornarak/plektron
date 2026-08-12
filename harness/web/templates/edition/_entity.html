@@ -5,8 +5,10 @@
 <p>No entry for <code>{{ ident }}</code>.</p>
 {% else %}
 <h4>{{ rec.canonical }}<span class='pill {{ rec.status }}'>{{ rec.status }}</span></h4>
-<div class='meta'><code>{{ ident }}</code> · first read on
-  <a href='{{ base }}/page/{{ rec.since }}'>{{ rec.since }}</a>
+{# No "first read on" line: it was `since:`, an authored field, and the mentions
+   block below derives every page instead — which cannot be satisfied by typing
+   a plausible ref, as that field could. #}
+<div class='meta'><code>{{ ident }}</code>
   {%- if located %} · <a class='mapref' data-ref='{{ ident }}'
      href='{{ base }}/map/{{ ident }}'>map</a>{% endif %}</div>
 {% if contested %}
@@ -21,7 +23,12 @@
 {% if rec.aliases %}
 <table><tr><th>form</th><th></th><th></th><th></th></tr>
 {% for t in rec.aliases %}
-<tr><td>{{ t.form }}</td>
+{# A Tier-1 alias is a lexicon headword too, and the card is where that link
+   lives: in the page text the entity reference is the anchor, because an
+   anchor inside an anchor is not markup HTML has. #}
+<tr><td>{% if t.lex %}<a class='tier1 lex' data-key='{{ t.lex }}'
+        href='{{ base }}/lexicon/{{ t.lex | urlencode }}'>{{ t.form }}</a>
+    {%- else %}{{ t.form }}{% endif %}</td>
     {# The language, where the author stated one. Blank is unstated and prints
        as nothing rather than as "unknown": most of these are the book's own
        English, and a column of "unknown" would read as a defect per row. #}
@@ -34,10 +41,9 @@
 {% endfor %}
 </table>
 {% endif %}
-{# Where the entry actually occurs, which the card could not say until now: it
-   named one page, `since:`, an authored field — while the lexicon card beside it
-   listed every printed line. `linked` rows already carry an @ref; the rest are
-   alias hits nobody has resolved, which is the work outstanding. #}
+{# Where the entry actually occurs, and the store's whole witness now that
+   `since:` is gone. `linked` rows already carry an @ref; the rest are alias hits
+   nobody has resolved, which is the work outstanding. #}
 {% if mentions.rows %}
 {# One line: the newline a wrap would put here lands in the rendered text. #}
 <div class='meta'>mentioned on {{ mentions.pages }} of {{ mentions.swept }} page(s), {{ mentions.total }} time(s):</div>

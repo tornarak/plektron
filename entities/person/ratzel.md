@@ -1,7 +1,6 @@
 # person:ratzel — Friedrich Ratzel
 
-- status: proposed
-- since: 1-204
+- status: ratified
 
 ## aliases
 

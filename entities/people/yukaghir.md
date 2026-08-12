@@ -1,7 +1,6 @@
 # people:yukaghir — Yukaghir
 
 - status: ratified
-- since: 1-036
 - area: langarea:sout2750
 - link: wikipedia:Yukaghir_people
 - link: wikidata:Q720386

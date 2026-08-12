@@ -1,7 +1,6 @@
 # people:chuvans — Chuvans
 
 - status: ratified
-- since: 1-036
 - within: people:yukaghir
 - link: wikipedia:Chuvans
 
@@ -11,7 +10,7 @@
 |---|---|---|---|
 | Čaˊačên | ckt | yes | |
 | Russianized natives | | no | |
-| Chuvantzy |  | no | the book's spelling |
+| Chuvantzy | | no | the book's spelling |
 
 ## gloss
 

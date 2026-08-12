@@ -1,7 +1,6 @@
 # event:jesup-expedition — Jesup North Pacific Expedition
 
 - status: ratified
-- since: 1-021
 - link: wikipedia:Jesup_North_Pacific_Expedition
 
 ## aliases

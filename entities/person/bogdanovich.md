@@ -1,7 +1,6 @@
 # person:bogdanovich — Karl Bogdanovich
 
-- status: proposed
-- since: 1-040
+- status: ratified
 
 ## aliases
 

@@ -1,7 +1,6 @@
 # person:resin — A. A. Resin
 
-- status: proposed
-- since: 1-031
+- status: ratified
 
 ## aliases
 

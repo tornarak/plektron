@@ -1,7 +1,7 @@
 # water:karagha-bay — Karagha Bay
 
-- status: proposed
-- since: 1-048
+- status: ratified
+- within: place:kamchatka
 
 ## aliases
 

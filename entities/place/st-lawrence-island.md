@@ -1,7 +1,6 @@
 # place:st-lawrence-island — St. Lawrence Island
 
-- status: proposed
-- since: 1-040
+- status: ratified
 - within: water:bering-strait
 - area: region:st-lawrence-island
 - link: wikipedia:St._Lawrence_Island

@@ -1,7 +1,6 @@
 # person:hough — Walter Hough
 
-- status: proposed
-- since: 1-204
+- status: ratified
 
 ## aliases
 

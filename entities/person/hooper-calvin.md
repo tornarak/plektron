@@ -1,7 +1,6 @@
 # person:hooper-calvin — Calvin L. Hooper
 
-- status: proposed
-- since: 1-031
+- status: ratified
 
 ## aliases
 

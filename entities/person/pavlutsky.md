@@ -1,7 +1,6 @@
 # person:pavlutsky — Pavlutsky
 
-- status: proposed
-- since: 1-038
+- status: ratified
 
 ## aliases
 

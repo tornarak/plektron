@@ -1,7 +1,6 @@
 # place:markovo — Markovo
 
 - status: ratified
-- since: 1-035
 - within: water:anadyr
 - geo: 64.68 170.42
 - link: wikipedia:Markovo,_Chukotka_Autonomous_Okrug

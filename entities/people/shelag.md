@@ -1,7 +1,6 @@
 # people:shelag — Shelag
 
-- status: proposed
-- since: 1-036
+- status: ratified
 
 ## aliases
 

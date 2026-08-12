@@ -1,7 +1,6 @@
 # event:sibiryakoff-expedition — Sibiryakoff Expedition
 
 - status: ratified
-- since: 1-021
 
 ## aliases
 

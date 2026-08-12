@@ -1,13 +1,12 @@
-# people:gilyak — Gilyak
+# place:st-petersburg — St. Petersburg
 
-- status: proposed
-- since: 1-121
+- status: ratified
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gilyak | | no | |
+| Petersburg | | no | |
 
 ## gloss
 

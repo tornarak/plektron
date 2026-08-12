@@ -1,7 +1,8 @@
 # water:oloi — Oloi
 
-- status: proposed
-- since: 1-035
+- status: ratified
+- within: water:kolyma
+- area: watershed:oloi
 
 ## aliases
 

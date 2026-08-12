@@ -1,7 +1,7 @@
 # place:diomede-islands — Diomede Islands
 
-- status: proposed
-- since: 1-040
+- status: ratified
+- within: water:bering-strait
 
 ## aliases
 

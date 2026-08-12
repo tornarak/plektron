@@ -1,7 +1,7 @@
 # place:cape-erri — Cape Erri
 
-- status: proposed
-- since: 1-034
+- status: ratified
+- geo: 70.1069 170.4873
 
 ## aliases
 

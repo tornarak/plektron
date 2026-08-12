@@ -1,7 +1,6 @@
 # person:kyber — Dr. Kyber
 
-- status: proposed
-- since: 1-038
+- status: ratified
 
 ## aliases
 

@@ -1,7 +1,6 @@
 # taxon:erignathus-barbatus — Erignathus barbatus
 
-- status: proposed
-- since: 1-151
+- status: ratified
 
 ## aliases
 

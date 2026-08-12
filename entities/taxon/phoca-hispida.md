@@ -1,7 +1,6 @@
 # taxon:phoca-hispida — Phoca hispida
 
-- status: proposed
-- since: 1-061
+- status: ratified
 
 ## aliases
 

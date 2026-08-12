@@ -1,7 +1,6 @@
 # person:dyachkov — Grigory Dyachkov
 
-- status: proposed
-- since: 1-034
+- status: ratified
 
 ## aliases
 

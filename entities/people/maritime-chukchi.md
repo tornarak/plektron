@@ -1,7 +1,6 @@
 # people:maritime-chukchi — Maritime Chukchi
 
 - status: ratified
-- since: 1-021
 - within: people:chukchi
 - link: wikipedia:Chukchi_people
 

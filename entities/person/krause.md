@@ -1,7 +1,6 @@
 # person:krause — Aurel Krause
 
-- status: proposed
-- since: 1-047
+- status: ratified
 
 ## aliases
 

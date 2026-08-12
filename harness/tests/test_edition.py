@@ -72,6 +72,36 @@ def test_an_entity_link_is_a_link_with_its_ref(tmp_path):
     assert got["refs"] == ["place:markova"]
 
 
+def test_an_entity_reference_over_a_tier1_handle_is_one_anchor(tmp_path):
+    """**The bug this pins renders perfectly and breaks only in a browser.** The
+    generator encloses a Tier-1 handle in `<rs>` rather than reaching into it,
+    and the handle renders as a link into the lexicon — so both were emitting an
+    `<a>`, one inside the other. HTML has no anchor inside an anchor: the parser
+    closes the outer one, so the entity link was discarded and every linked
+    native toponym read as a lexicon entry. Nothing in the markup said so.
+
+    The entity link is the one that survives. The handle keeps its class and
+    `data-key`, so it is still styled as Tier-1 and still previewable, and the
+    card it opens is where its lexicon entry is reachable."""
+    got = render(tmp_path,
+                 '<p><rs ref="place:uelen" resp="#mz">'
+                 '<foreign xml:lang="ckt" resp="#gt">Uweˊlen</foreign>'
+                 "</rs></p>")
+    html = got["html"]
+    assert 'href="/edition/entity/place:uelen"' in html
+    assert "/edition/lexicon/" not in html
+    assert 'data-key="Uweˊlen"' in html          # still a known form
+    assert not re.search(r"<a\b[^>]*>(?:(?!</a>).)*<a\b", html, re.S)
+    # And the form is still counted, so the lexicon's census does not move.
+    assert "Uweˊlen" in got["forms"]
+
+
+def test_a_tier1_handle_outside_an_entity_reference_still_links_to_the_lexicon(tmp_path):
+    got = render(tmp_path,
+                 '<p><foreign xml:lang="ckt" resp="#gt">Kuluˊči</foreign></p>')
+    assert "/edition/lexicon/" in got["html"]
+
+
 def test_an_unsettled_rank_is_marked_and_a_settled_one_is_not(tmp_path):
     """The audit affordance. `#llm` and `#mz` are readings nobody has ratified, and
     an edition that showed them identically to `#ed` would be asserting a

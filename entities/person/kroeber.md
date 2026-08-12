@@ -1,7 +1,6 @@
 # person:kroeber — Alfred Louis Kroeber
 
-- status: proposed
-- since: 1-358
+- status: ratified
 
 ## aliases
 

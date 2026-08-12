@@ -122,7 +122,6 @@ refers to that entity", not "the page marked a proper noun".
     # event:jesup-expedition — Jesup North Pacific Expedition
 
     - status: ratified
-    - since: 1-021
     - link: wikidata:Q1683389
     - geo: 66.05 -169.6
     - within: place:chukotka
@@ -144,9 +143,21 @@ absence is `{}`. NFD matters more here than tidiness — an alias the store hold
 precomposed silently fails to match a page that holds it decomposed, and a
 silent miss is the failure class the project is organised against.
 
-- **`since:` is required.** The page whose reading prompted the entry. Every
-  apparatus store that skipped this is now unauditable; `data/toc.json` is the
-  standing case and a logged defect.
+**There is no `since:`.** Both this store and the lexicon carried one — the page
+whose reading prompted the entry — required on the argument that an apparatus
+store which cannot be traced back to a page is unauditable. `data/toc.json` is
+still the standing case for that, and the argument was right. Its answer got
+better: the card now derives *every* page the entry is attested on, from the
+corpus, on every load.
+
+**A `since:` is satisfied by typing a plausible ref; a derived attestation list
+is not.** So the field was the weaker of the two witnesses, and the cost of
+keeping it was real — it kept out entries the book plainly contains whose
+attesting page happens to be among the 558 not yet transcribed, which is how the
+`language:` and unclaimed-watershed seeding stalled. `entity occurrences --all`
+is where an unwitnessed entry shows up now, as a row reading 0 and 0, and that
+row cannot be answered by writing a number in a file.
+
 - **`status:`** is `proposed` or `ratified`, and only a human moves it.
 - **`within:` is containment in general**, and the atlas is one reader of it.
   It must resolve and the chain must be acyclic — a cycle would hang a tree walk
@@ -198,6 +209,27 @@ romanized native form, which no mechanical test separates from an English proper
 noun — is still suppressed and still open. `Tjutzchi` is now declared Latin and
 still absent from the miss list. The field records the fact; nothing infers from
 it, and a reader who assumed tagging one had changed the detector would be wrong.
+
+### The entity link wins over the lexicon link, and it had to
+
+`tei generate` encloses a Tier-1 handle in `<rs>` rather than reaching into it,
+and `tei_html` renders a Tier-1 handle as a link into the lexicon. Both are
+right and together they emitted **an anchor inside an anchor**, which HTML has
+no such thing as: the parser closes the outer one, so the *entity* link was
+discarded by the browser and every linked native toponym read as a lexicon
+entry. Nothing in the markup said so — it validated, it rendered, and only a
+reader clicking `Uweˊlen` and landing on a word rather than a village would find
+it.
+
+So a Tier-1 handle inside a referring element renders as a `<span>`, keeping its
+class and `data-key` — still styled as Tier-1, still previewable, still counted
+in the page's form census. Outside one it is a link as before.
+
+**The lexicon entry moves to the card**, which is the better place for it
+anyway: an alias whose `lang` is Tier-1 is a lexicon headword, and the alias row
+is the one spot that says "this entity is called that, in Chukchi". A reader on
+a linked toponym wants the place; a reader who wants the word is one click away
+and now has a row that says which word.
 
 **One entry names another in double brackets**: `[[people:chukchi]]`, in a gloss
 or in an alias note. A bare `class:slug` in prose was unclickable and, worse,
@@ -425,10 +457,14 @@ words cannot have: every name now says which page first attested it, and variant
 spellings that were two unrelated lines (`Krasheninnikoff`, `Krasheninnikov`) are
 two aliases on one man.
 
-**Eleven names did not move, and that is the field working.** No adjudicated page
-attests Almquist, Kotzebue or Sarychev, so `--since` has no witness to name and
-the entry cannot honestly exist yet. They stay in the whitelist under a heading
-that says why.
+**Eleven names did not move, and at the time that was the field working.** No
+adjudicated page attested Almquist, Kotzebue or Sarychev, so `--since` had no
+witness to name and the entry could not honestly exist. They stayed in the
+whitelist under a heading that says why — and that heading is now the record of
+why `since:` went: the eleven are authors of works the book cites, listed in
+Authorities Quoted, and `data/authorities.json` had adjudicated every one of
+them. The gate was refusing entries on the strength of a field, not of the
+evidence.
 
 Two properties keep this from being a hole in the firewall. `lexicon_miss` tests
 only ASCII components of length > 3, so a Tier-1 form in an alias table is inert
@@ -1087,6 +1123,17 @@ is an atlas root, and the atlas becomes a second encyclopedia index with a map
 stapled to it — the same names, grouped by nothing, beside a panel that has
 nothing to draw for most of them. The two views answer different questions: the
 index is the whole store by class, this is the located part by containment.
+
+**It is grouped by class, because two relations were sharing one level.**
+`place` and `water` nest — a tributary inside its trunk, a village inside its
+basin — and that containment forest is what the atlas was built to walk. A
+people or a language nests in neither: it has an extent and no parent. So once
+every ethnicity carried its sprachraum, all nine peoples and all nine languages
+landed flat at the top beside the one `place` root, **in pairs drawing the same
+polygon** — `people:koryak` and `language:koryak` both point at
+`langarea:kory1246`, which the store allows on purpose and which reads as a
+duplicate when the two sit adjacent with nothing saying why. The class heading
+is what says those are overlays rather than another rung of the tree.
 
 The encyclopedia index nests too, now that `within:` is not read as the
 geography's. Inside a class an entry sits under its parent — the Maritime and

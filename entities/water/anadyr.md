@@ -1,7 +1,6 @@
 # water:anadyr — Anadyr
 
 - status: ratified
-- since: 1-021
 - within: place:chukotka
 - area: watershed:anadyr
 - geo: 64.72 177.5

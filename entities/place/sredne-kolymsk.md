@@ -1,7 +1,7 @@
 # place:sredne-kolymsk — Sredne-Kolymsk
 
-- status: proposed
-- since: 1-044
+- status: ratified
+- within: water:kolyma
 
 ## aliases
 

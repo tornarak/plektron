@@ -1,7 +1,7 @@
-# people:lamut — Lamut
+# people:even — Even
 
-- status: proposed
-- since: 1-035
+- status: ratified
+- area: langarea:even1260
 
 ## aliases
 

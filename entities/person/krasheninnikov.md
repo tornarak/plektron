@@ -1,7 +1,6 @@
 # person:krasheninnikov — Stepan Krasheninnikov
 
-- status: proposed
-- since: 1-031
+- status: ratified
 
 ## aliases
 

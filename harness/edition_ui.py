@@ -242,7 +242,6 @@ SHOWN_ELSEWHERE = {
     "slug",  # the identity, in the heading and the code
     "canonical",
     "status",
-    "since",
     "links",
     "aliases",
     "gloss",
@@ -578,9 +577,8 @@ def _new(body: dict, root: Path) -> dict:
     text = TEMPLATE.format(
         ident=ident,
         canonical=body.get("canonical") or ident,
-        since=body.get("since") or "",
         extra="",
-        rows=rows or "| | no | |",
+        rows=rows or "| | | no | |",
     )
 
     def write():

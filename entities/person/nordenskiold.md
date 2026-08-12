@@ -1,7 +1,6 @@
-# person:nordenskiold — Adolf Erik Nordenskiöld
+# person:nordenskiold — Adolf Erik Nordenskiöld
 
-- status: proposed
-- since: 1-041
+- status: ratified
 
 ## aliases
 

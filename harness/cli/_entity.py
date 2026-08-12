@@ -62,10 +62,6 @@ def register(cli):
         help="the display name, written into the heading. Not an alias unless "
              "you also pass it as one — how a thing is titled and how the book "
              "spells it in running prose are different questions")
-    opt(p, "--since", required=True, metavar="PP-NNN",
-        help="the page whose reading prompted the entry. Required, because an "
-             "apparatus store that cannot be traced back to a page is one "
-             "nobody can audit — data/toc.json is the standing case")
     opt(p, "--alias", "aliases", multiple=True, metavar="FORM",
         help="a form that means this entity, added at `auto: no`. Raising one "
              "to `auto: yes` is a separate act, done in the file or the browser, "
@@ -92,6 +88,12 @@ def register(cli):
              "no single source draws together, and the assertion that they "
              "belong together is likewise the human's. `harness geo list` "
              "names every shape")
+    opt(p, "--authority", metavar="KEY",
+        help="the entry in data/authorities.json this entity is the work of, "
+             "e.g. `steller1774`. What puts the full printed title on the card "
+             "without the entry restating it — the title lives in the "
+             "authorities store, which read it off the Authorities Quoted "
+             "pages, and a copy here would be the one that goes stale")
     opt(p, "--commit", is_flag=True,
         help="write it. Without this the file is reported and not created")
 
@@ -210,7 +212,6 @@ def _resolve(a, store: dict) -> list[str]:
 TEMPLATE = """# {ident} — {canonical}
 
 - status: proposed
-- since: {since}
 {extra}
 ## aliases
 
@@ -232,16 +233,20 @@ def run_new(a) -> int:
         out(a, {"id": ident, "path": str(p), "wrote": False,
                 "means": "already exists"})
         return 1
-    lang = (a.lang or "").strip()
-    rows = "\n".join(f"| {unicodedata.normalize('NFD', t)} | {lang} | no | |"
-                     for t in a.aliases) or f"| | {lang} | no | |"
+    # An empty `lang` cell is `| |` and never `|  |`: two spaces are §2.9 sentence
+    # spacing to `corpus normalize`, so the naive f-string made every scaffolded
+    # entry fail the NFD gate on the run after it was written.
+    cell = f" {(a.lang or '').strip()} ".replace("  ", " ")
+    rows = "\n".join(f"| {unicodedata.normalize('NFD', t)} |{cell}| no | |"
+                     for t in a.aliases) or f"| |{cell}| no | |"
     extra = "".join(f"- {k}: {v}\n" for k, v in
-                    (("within", a.within), ("area", a.area)) if v)
-    text = TEMPLATE.format(ident=ident, canonical=a.canonical, since=a.since,
+                    (("within", a.within), ("area", a.area),
+                     ("authority", a.authority)) if v)
+    text = TEMPLATE.format(ident=ident, canonical=a.canonical,
                            extra=extra, rows=rows)
-    # Parsed before it is written, so a bad `--since`, an unknown `--lang` or an
-    # empty `--alias` fails as a message rather than as a file the next `check`
-    # complains about.
+    # Parsed before it is written, so a bad `--within`, an unknown `--lang` or
+    # an empty `--alias` fails as a message rather than as a file the next
+    # `check` complains about.
     from ..entities import parse
     parse(text, where=str(p))
     if a.commit:
@@ -267,7 +272,7 @@ def run_new(a) -> int:
 #: The order a scaffolded entry writes its fields in. A field this verb adds
 #: goes where `entity new` would have put it, so a file a human later reads is
 #: not visibly divided into what was typed and what was set by a command.
-FIELD_ORDER = ("status", "since", "within", "geo", "area", "link", "authority")
+FIELD_ORDER = ("status", "within", "geo", "area", "link", "authority")
 
 
 def _set_field(text: str, key: str, value: str) -> str:
@@ -365,8 +370,7 @@ def run_list(a) -> int:
     store = _store(a)
     rows = [{"id": r["id"], "status": r["status"], "canonical": r["canonical"],
              "aliases": len(r["aliases"]),
-             "auto": sum(1 for t in r["aliases"] if t["auto"]),
-             "since": r["since"]}
+             "auto": sum(1 for t in r["aliases"] if t["auto"])}
             for r in store.values()]
     # Proposed first: the list is read as a worklist more often than as a census,
     # and what wants doing should not be sorted in among what is done.

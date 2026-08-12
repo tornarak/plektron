@@ -75,8 +75,8 @@ CASES = [
     ("edition /ratify", E.Ratify, {"id": "place:markova"}, ("id",)),
     # No JS posts this one today; the fields are `edition_ui._new`'s.
     ("edition /entity/new", E.NewEntity,
-     {"id": "place:x", "canonical": "X", "aliases": ["X"], "since": "1900"},
-     ("id", "canonical", "aliases", "since")),
+     {"id": "place:x", "canonical": "X", "aliases": ["X"]},
+     ("id", "canonical", "aliases")),
 ]
 
 

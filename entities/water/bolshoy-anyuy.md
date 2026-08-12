@@ -1,7 +1,6 @@
 # water:bolshoy-anyuy — Bolshoy Anyuy
 
 - status: ratified
-- since: 1-035
 - within: water:kolyma
 - area: watershed:dry-anui-or-bolshoy-anyuy
 

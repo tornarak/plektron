@@ -16,27 +16,17 @@
 # prints what the entity store accounts for under `suppressed`, so the second
 # source is visible rather than silent.
 #
-# What is left below under a proper-noun heading is the residue of that move:
-# names no page in `gt/ocr/` attests, so `entity new --since` has no witness to
-# name and the entry cannot honestly be filed yet. They suppress nothing today —
-# the detector only ever runs over adjudicated ground truth — and are kept
-# against the pages still to be keyed.
+# Eleven author names stayed behind at the time, under a heading saying that no
+# page in `gt/ocr/` attested them, so `entity new --since` had no witness and the
+# entry could not honestly be filed. They have since moved too, and the way they
+# moved is the record of why `since:` was removed: every one of the eleven is the
+# author of a work listed in Authorities Quoted, `data/authorities.json` had
+# adjudicated all of them, and the store now carries a `source:` entry per work
+# with the surname as an alias. The gate was refusing entries on the strength of
+# a field rather than of the evidence.
 #
 # One term per line; `#` starts a comment. Seed the list from real counts with
 #     uv run harness lexicon misses
-
-### --- Proper Nouns (Author / Source), unattested in gt/ocr/
-Almquist
-Kjellman
-Kotzebue
-Litke
-Morse
-Neimann
-Olsufyev
-Sarychev
-Shklovsky
-Sieroszewski
-Stein
 
 ### --- Proper Nouns (Ethnicities), unattested in gt/ocr/
 # The book sets the marked Aiˊwan; this is the bare romanization

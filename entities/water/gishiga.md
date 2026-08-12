@@ -1,7 +1,8 @@
 # water:gishiga — Gishiga
 
-- status: proposed
-- since: 1-095
+- status: ratified
+- within: place:russian-far-east
+- area: watershed:gizhiga
 
 ## aliases
 

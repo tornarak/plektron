@@ -1,7 +1,6 @@
 # person:murdoch — John Murdoch
 
-- status: proposed
-- since: 1-039
+- status: ratified
 
 ## aliases
 

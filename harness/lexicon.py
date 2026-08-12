@@ -46,7 +46,6 @@ import re
 import unicodedata
 from pathlib import Path
 
-from .context import REF_RE
 from .marks import handle_key
 
 LEXDIR = "lexicon"
@@ -133,13 +132,6 @@ def parse(text: str, where: str = "") -> dict:
     if status not in STATUSES:
         raise Malformed(
             f"{at}status {status!r} — one of {', '.join(STATUSES)}")
-    since = one("since")
-    if not since or not REF_RE.match(since):
-        raise Malformed(
-            f"{at}`since:` is required and is the PP-NNN page whose reading "
-            f"prompted the entry (got {since!r}). Every apparatus store that "
-            f"skipped this is now unauditable — data/toc.json is the case")
-
     sections: dict[str, str] = {}
     marks = list(_SECTION.finditer(text))
     for i, s in enumerate(marks):
@@ -155,7 +147,6 @@ def parse(text: str, where: str = "") -> dict:
     return {
         "form": form,
         "status": status,
-        "since": since,
         # A pointer, never a claim that the two are one word. The inverse is
         # derived at render time, as `property_rows` does for `contains`: a
         # hand-maintained back-link is two facts that will disagree.

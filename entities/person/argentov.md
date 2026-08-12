@@ -1,7 +1,6 @@
 # person:argentov — A. Argentov
 
-- status: proposed
-- since: 1-073
+- status: ratified
 
 ## aliases
 

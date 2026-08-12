@@ -1,7 +1,6 @@
 # place:chukchi-peninsula — Chukchi Peninsula
 
 - status: ratified
-- since: 1-021
 - within: place:chukotka
 - geo: 66.0 -173.0
 - area: region:chukchi-peninsula

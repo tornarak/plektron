@@ -228,6 +228,10 @@ class Renderer:
         self.refs: list[str] = []
         self.forms: list[str] = []
         self.figures: list[str] = []
+        #: True while rendering the body of an element that carries a `@ref`.
+        #: An anchor inside an anchor is not markup HTML has, so the entity link
+        #: is the one that survives and a Tier-1 handle inside it renders flat.
+        self.in_ref = False
 
     # -- inline ------------------------------------------------------------
 
@@ -301,6 +305,16 @@ class Renderer:
             )
         key = unicodedata.normalize("NFD", strip_tags(body))
         self.forms.append(key)
+        # Inside an entity reference the enclosing `<a>` is the link, so this is
+        # a span. `data-key` stays on it: the form is still what it is, and the
+        # index of forms above is what `lexicon` counts, so neither the styling
+        # nor the census changes — only which of two nested anchors survives.
+        if self.in_ref:
+            return (
+                f'<span class="tier1{cls}"{_lang_attr(lang)} '
+                f'data-key="{escape(key)}" title="{escape(why)}"{extra}>'
+                f"{body}</span>"
+            )
         return (
             f'<a class="tier1 lex{cls}"{_lang_attr(lang)} '
             f'href="{BASE}/lexicon/{quote(key, safe="")}" '
@@ -346,7 +360,20 @@ class Renderer:
     def _referring(self, el, kind: str, typ: str) -> str:
         ref = el.get("ref") or ""
         cls, why = _rank_marks(el)
-        body = self.inline(el)
+        # **The entity link wins over the lexicon link, and it has to.** A
+        # Tier-1 handle inside an `<rs>` is the normal case — `tei generate`
+        # encloses the handle rather than reaching into it — and both renderers
+        # were emitting an `<a>`, which is an anchor inside an anchor. HTML has
+        # no such thing: the parser closes the outer one, so the entity link was
+        # discarded by the browser and every linked native toponym read as a
+        # lexicon entry. The inner span keeps its class and `data-key`, so the
+        # form is still styled as Tier-1 and still previewable, and the card it
+        # opens lists its own aliases as lexicon links.
+        inside, self.in_ref = self.in_ref, bool(ref)
+        try:
+            body = self.inline(el)
+        finally:
+            self.in_ref = inside
         if not ref:
             return f'<span class="{kind}" data-type="{escape(typ)}">{body}</span>'
         self.tabindex += 1

@@ -1,7 +1,7 @@
-# people:tungus — Tungus
+# people:evenki — Evenki
 
-- status: proposed
-- since: 1-038
+- status: ratified
+- area: langarea:even1259
 
 ## aliases
 

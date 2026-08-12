@@ -1,7 +1,6 @@
 # water:chaun — Chaun
 
 - status: ratified
-- since: 1-021
 - within: place:chukotka
 - area: watershed:chaun
 - link: wikipedia:Chaun

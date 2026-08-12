@@ -1,7 +1,6 @@
 # person:melikoff — D. I. Melikoff
 
-- status: proposed
-- since: 1-044
+- status: ratified
 
 ## aliases
 

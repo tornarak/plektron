@@ -1,7 +1,6 @@
 # person:teit — James Teit
 
-- status: proposed
-- since: 1-278
+- status: ratified
 
 ## aliases
 

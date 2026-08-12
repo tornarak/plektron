@@ -38,9 +38,10 @@ one list.</p>
 
 {% if note %}
 <div class='gloss'>{{ note | safe }}</div>
+{# No "first read on": the printed-lines list below names every page the form
+   occurs on, derived from `gt/ocr/` on every load. #}
 <div class='meta'>an editor's note{% if rec %} · <span
-class='pill {{ rec.status }}'>{{ rec.status }}</span> · first read on <a
-href='{{ base }}/page/{{ rec.since }}'>{{ rec.since }}</a>{% endif %}</div>
+class='pill {{ rec.status }}'>{{ rec.status }}</span>{% endif %}</div>
 {% endif %}
 
 {% if rec and rec.see %}

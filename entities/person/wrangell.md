@@ -1,7 +1,6 @@
 # person:wrangell — Ferdinand von Wrangell
 
-- status: proposed
-- since: 1-036
+- status: ratified
 
 ## aliases
 

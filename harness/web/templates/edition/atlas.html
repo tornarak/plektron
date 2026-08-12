@@ -19,7 +19,14 @@
 {# **Scoped to located subtrees.** A root here is an entity with no `within:`
    that has somewhere to put on a map, itself or below it — otherwise every
    person, source and event in the store is an atlas root, and the tree becomes
-   the encyclopedia index with worse navigation. #}
+   the encyclopedia index with worse navigation.
+
+   **Grouped by class, because two relations were sharing one level.** `place`
+   and `water` nest; a people or a language has an extent and no parent, so once
+   every ethnicity carried its sprachraum they all landed flat at the top — in
+   pairs drawing the same polygon, since `people:koryak` and `language:koryak`
+   both point at `langarea:kory1246`. The heading is what says those are
+   overlays rather than another rung of the containment tree. #}
 <div id='secondary'>
   {% if selected %}
   {% include "edition/_pane.html" %}
@@ -32,7 +39,13 @@
   {% endif %}
 </div>
 <div id='primary'>
-<ul class='tree'>{% for r in tree %}{{ node(r) }}{% endfor %}</ul>
+<ul class='tree'>
+{% for g in groups %}
+<li><code class='cls'>{{ g.cls }}</code> <span class='dim'>({{ g.tree | length }})</span>
+<ul>{% for r in g.tree %}{{ node(r) }}{% endfor %}</ul>
+</li>
+{% endfor %}
+</ul>
 {% if gaps %}
 <div class='card'><h4>what no source draws</h4>
 <ul class='meta'>{% for g in gaps %}<li>{{ g }}</li>{% endfor %}</ul></div>

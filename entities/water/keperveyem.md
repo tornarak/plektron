@@ -1,7 +1,6 @@
 # water:keperveyem — Keperveyem
 
 - status: ratified
-- since: 1-064
 - within: water:maliy-anyuy
 - area: watershed:wolverine-or-keperveyem
 

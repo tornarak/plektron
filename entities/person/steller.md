@@ -1,7 +1,6 @@
 # person:steller — Georg Wilhelm Steller
 
-- status: proposed
-- since: 1-076
+- status: ratified
 
 ## aliases
 

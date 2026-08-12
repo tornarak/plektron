@@ -1,7 +1,6 @@
 # person:nordquist — Oscar Nordquist
 
-- status: proposed
-- since: 1-047
+- status: ratified
 
 ## aliases
 

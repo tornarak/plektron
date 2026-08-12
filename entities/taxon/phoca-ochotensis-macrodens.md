@@ -1,7 +1,6 @@
 # taxon:phoca-ochotensis-macrodens — Phoca ochotensis macrodens
 
-- status: proposed
-- since: 1-151
+- status: ratified
 
 ## aliases
 

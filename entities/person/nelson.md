@@ -1,7 +1,6 @@
 # person:nelson — Edward William Nelson
 
-- status: proposed
-- since: 1-055
+- status: ratified
 
 ## aliases
 

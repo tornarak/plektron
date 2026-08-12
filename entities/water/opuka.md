@@ -1,7 +1,6 @@
 # water:opuka — Opuka
 
 - status: ratified
-- since: 1-035
 - within: place:russian-far-east
 - area: watershed:opuka
 

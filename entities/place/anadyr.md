@@ -1,8 +1,8 @@
 # place:anadyr — Anadyr (town)
 
 - status: ratified
-- since: 1-035
-- link: Anadyr_(town)
+- within: water:anadyr
+- link: wikipedia:Anadyr_(town)
 - link: wikidata:Q7978
 
 ## aliases
@@ -10,7 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Anadyrsk | | yes | |
-| Mariinsky Post | | yes |  |
+| Mariinsky Post | | yes | |
 | Veᵋñ | ckt | yes | |
 
 ## gloss

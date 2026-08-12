@@ -1,7 +1,6 @@
 # person:adler — Bruno Adler
 
-- status: proposed
-- since: 1-196
+- status: ratified
 
 ## aliases
 

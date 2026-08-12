@@ -1,7 +1,6 @@
 # person:mason — Otis Tufton Mason
 
-- status: proposed
-- since: 1-184
+- status: ratified
 
 ## aliases
 

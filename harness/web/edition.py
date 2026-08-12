@@ -197,9 +197,14 @@ def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
             if c["id"] != ident
         }
     )
+    # **A Tier-1 alias links to its lexicon card.** In the page text the entity
+    # link wins, since an anchor inside an anchor is not markup — so the card is
+    # where the form's own entry has to be reachable, and this row is the place:
+    # it is the one spot that says "this entity is called that, in Chukchi".
     aliases = [
         {**t, "note_html": ui.inline_html(t["note"], store),
-         "lang_name": langs.name(t["lang"]) if t["lang"] else ""}
+         "lang_name": langs.name(t["lang"]) if t["lang"] else "",
+         "lex": t["form"] if t["lang"] in langs.TIER1 else ""}
         for t in rec["aliases"]
     ]
     return {
@@ -505,13 +510,30 @@ def atlas(request: Request, at: str = ""):
             ],
         }
 
+    # **Grouped by class, because two different relations were sharing one
+    # level.** `place` and `water` nest — a tributary inside its trunk, a
+    # village inside its basin — and that containment forest is what the atlas
+    # was built to walk. A people or a language nests in neither: it has an
+    # extent and no parent, so once every ethnicity carried its sprachraum all
+    # nine of each landed flat at the top, beside the one `place` root and above
+    # the rivers. Worse, they landed in pairs drawing the same polygon —
+    # `people:koryak` and `language:koryak` both point at `langarea:kory1246`,
+    # which the store allows on purpose and which reads as a duplicate when the
+    # two sit adjacent with nothing saying why.
+    #
+    # So the class is the heading and the containment tree lives under it. The
+    # encyclopedia index does the same thing for the same reason; what differs
+    # is that this one is still scoped to located subtrees.
+    groups = [{"cls": cls,
+               "tree": [node(r) for r in roots if store[r]["class"] == cls]}
+              for cls in ENTITY_CLASSES]
     ctx = _map_ctx(at, root, store=store) if at in store else {}
     return templates.TemplateResponse(
         request,
         "edition/atlas.html",
         _ctx(
             request,
-            tree=[node(r) for r in roots],
+            groups=[g for g in groups if g["tree"]],
             selected=at in store,
             map=at in store,
             gaps=[v for _k, v in sorted(geo.index(root)["absent"].items())],
@@ -655,17 +677,15 @@ class Ratify(BaseModel):
 
 
 class NewEntity(BaseModel):
-    """The four fields `edition_ui._new` reads. `aliases` and `since` were absent
-    and are not cosmetic: Pydantic drops what it does not declare, so an entry
-    created with either would have been written with the placeholder alias row
-    and no `since:` — the record would exist, look complete, and assert nothing."""
+    """The fields `edition_ui._new` reads. `aliases` was absent once and that is
+    not cosmetic: Pydantic drops what it does not declare, so an entry created
+    without it went in carrying the placeholder alias row — a record that exists,
+    looks complete and asserts nothing."""
 
     id: str = ""
     canonical: str = ""
     aliases: list[str] = []
-    since: str = ""
     gloss: str = ""
-    since: str = ""
     form: str = ""
 
 

@@ -1,7 +1,7 @@
 # place:parapolsky-dol — Parapolsky Dol
 
-- status: proposed
-- since: 1-035
+- status: ratified
+- within: place:kamchatka
 
 ## aliases
 

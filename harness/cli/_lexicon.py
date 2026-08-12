@@ -145,10 +145,6 @@ def register(cli):
                "because `handle_key` keeps case and emits colons"
                "\n\nFORM: the form, e.g. `Kuluˊči`")
     arg(p, "form", metavar="FORM")
-    opt(p, "--since", required=True, metavar="PP-NNN",
-        help="the page whose reading prompted the entry. Required, for the "
-             "reason `entity new --since` is: an apparatus store that cannot be "
-             "traced back to a page is one nobody can audit")
     opt(p, "--slug", metavar="SLUG",
         help="the file name, without `.md`. Defaults to the reduced key; give "
              "one where that collides or reads badly")
@@ -184,7 +180,6 @@ def register(cli):
 LEX_TEMPLATE = """# {form}
 
 - status: proposed
-- since: {since}
 {extra}
 ## editor's note
 
@@ -212,9 +207,9 @@ def run_new(a) -> int:
                 "means": "already exists"})
         return 1
     extra = f"- see: {lex.norm_form(a.see)}\n" if a.see else ""
-    text = LEX_TEMPLATE.format(form=form, since=a.since, extra=extra)
-    # Parsed before it is written, as `entity new` does: a bad `--since` fails
-    # as a message rather than as a file the next `check` has to explain.
+    text = LEX_TEMPLATE.format(form=form, extra=extra)
+    # Parsed before it is written, as `entity new` does: a bad `--see` fails as
+    # a message rather than as a file the next `check` has to explain.
     lex.parse(text, where=str(p))
     if a.commit:
         p.parent.mkdir(parents=True, exist_ok=True)

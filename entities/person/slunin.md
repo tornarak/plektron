@@ -1,7 +1,6 @@
 # person:slunin — N. V. Slunin
 
-- status: proposed
-- since: 1-066
+- status: ratified
 
 ## aliases
 

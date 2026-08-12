@@ -1,7 +1,7 @@
 # people:yakut — Yakut
 
-- status: proposed
-- since: 1-036
+- status: ratified
+- area: langarea:yaku1245
 
 ## aliases
 

@@ -27,8 +27,7 @@
 <li><a class='ent' data-ref='{{ n.rec.id }}'
        href='{{ base }}/entity/{{ n.rec.id }}'>{{ n.rec.canonical }}</a>
     <span class='pill {{ n.rec.status }}'>{{ n.rec.status }}</span>
-    <span class='dim'>{{ n.rec.aliases | length }} alias(es) · first read on</span>
-    <a href='{{ base }}/page/{{ n.rec.since }}'>{{ n.rec.since }}</a>
+    <span class='dim'>{{ n.rec.aliases | length }} alias(es)</span>
 {%- if n.kids %}
 <ul>{% for k in n.kids %}{{ node(k) }}{% endfor %}</ul>
 {%- endif %}

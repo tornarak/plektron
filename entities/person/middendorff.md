@@ -1,7 +1,6 @@
 # person:middendorff — Alexander Theodor von Middendorff
 
-- status: proposed
-- since: 1-103
+- status: ratified
 
 ## aliases
 

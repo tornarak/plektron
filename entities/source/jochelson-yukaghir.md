@@ -1,7 +1,6 @@
 # source:jochelson-yukaghir — Jochelson, Yukaghir Materials
 
 - status: ratified
-- since: 1-028
 - authority: jochelson1900
 
 ## aliases

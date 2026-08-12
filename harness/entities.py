@@ -43,6 +43,16 @@ whatever language it is in, exactly as before — so the one case no mechanical
 test separates, an unmarked romanized native form, is still suppressed and still
 open. The field records the fact; nothing infers from it.
 
+**There is no `since:`.** The store carried one — the page whose reading
+prompted the entry — required on the argument that an apparatus store which
+cannot be traced back to a page is unauditable. That argument was right and its
+answer is now better: the card derives *every* page the entity is mentioned on,
+from the corpus, on every load. **A `since:` is satisfied by typing a plausible
+ref; an empty mentions list is not**, so the field was the weaker witness of the
+two, and requiring it kept out entries the book plainly contains whose attesting
+page happens to be among the 558 not yet transcribed. `entity occurrences --all`
+is where an unwitnessed entry shows up now, as a row reading 0 and 0.
+
 **This store is also the corpus's proper-noun dictionary**, and the direction of
 that is worth being exact about. `data/lexicon_extra.txt` suppresses
 `lexicon_miss` and nothing else because it *structurally cannot* reach anything
@@ -65,7 +75,6 @@ import re
 import unicodedata
 from pathlib import Path
 
-from .context import REF_RE, norm_ref
 from .geo import canonical_area, split_area
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
@@ -206,12 +215,6 @@ def parse(text: str, where: str = "") -> dict:
     status = one("status")
     if status not in STATUSES:
         raise Malformed(f"{at}status {status!r} — one of {', '.join(STATUSES)}")
-    since = one("since")
-    if not since or not REF_RE.match(since):
-        raise Malformed(
-            f"{at}`since:` is required and is the PP-NNN page whose reading "
-            f"prompted the entry (got {since!r}). Every other apparatus store "
-            f"that skipped this is now unauditable — data/toc.json is the case")
     within = one("within")
     if within:
         split_id(within)          # raises with the same message as everywhere else
@@ -310,7 +313,6 @@ def parse(text: str, where: str = "") -> dict:
         "slug": slug,
         "canonical": canonical,
         "status": status,
-        "since": norm_ref(since),
         "within": within,
         "geo": coords,
         # Canonical, and **one field, not two**. The member list is

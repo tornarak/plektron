@@ -1,13 +1,12 @@
-# being:elendi — Elendi
+# people:nivkh — Nivkh
 
-- status: proposed
-- since: 1-067
+- status: ratified
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Elendi | | no | |
+| Gilyak | | no | |
 
 ## gloss
 
