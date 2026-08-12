@@ -518,8 +518,27 @@ the best answer available when the prose never points at one.
   a sub-entry: nest it in its own `<list type="gloss">` inside the parent
   `<item>`, one nesting level per visible indent level, never flattened, never
   invented.
-- **`<table>`** only for genuine multi-column tabular data with column headers —
-  not for the term/gloss pattern above, even where it uses dot leaders.
+- **`<table>`** when the page *sets* the material as a table — aligned columns,
+  or dot leaders, which are a compositor's way of ruling a table without rules.
+  **The printed arrangement decides this, not the semantic relation.** A page
+  that sets term against gloss in two columns is a table however dictionary-like
+  its content, and encoding it as a list makes it less readable than the page it
+  came from, which is the wrong direction for an edition.
+
+  This used to read "only for genuine multi-column tabular data with column
+  headers — not for the term/gloss pattern above, even where it uses dot
+  leaders", and it was wrong twice: column headers are rare in this book's
+  tables, and dot leaders are evidence *for* a table rather than against one.
+  `1-359` is the case that settled it — seven two-column tables of native names
+  against their Russian equivalents, which as lists read as nothing the page
+  shows.
+
+  **The term/gloss pairing does not depend on the container.** Put the
+  `<term xml:id>` in one cell and the `<gloss target>` in the other; `@target`
+  is what `harness lexicon glosses` reads, and it resolves out of a `<cell>`
+  exactly as out of an `<item>`. What a table gives up is a list's shared
+  `<head>` scope, which `ids.list_scope` walks list ancestors for — so a table
+  whose entries need a common frame is the one case still wanting a list.
 - If the shape matches neither cleanly, default to `<p>` and comment the
   ambiguity rather than forcing a structure onto it.
 

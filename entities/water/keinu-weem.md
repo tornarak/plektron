@@ -1,0 +1,15 @@
+# water:keinu-weem — Keiˊñu-weˊem
+
+- status: proposed
+
+## aliases
+
+| form | lang | auto | note |
+|---|---|---|---|
+| Keiˊñu-weˊem | ckt | yes | |
+| Медвѣжья рѣка | ru | yes | |
+| Bear River | | no | |
+
+## gloss
+
+(unwritten)

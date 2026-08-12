@@ -742,8 +742,9 @@ rule, without anyone knowing what language it is in — which is why `ipa.impute
 takes a form and no language, and why the lexicon could be stood up on ground
 truth years before collation reaches most of the book. `gt/ocr/` holds **609
 adjudicated Tier-1 forms** with the pages and printed lines they occur on;
-`tei/` holds no collated page at all. A store keyed on anything only collation
-produces would have been an empty room with a sign on it.
+`tei/` held no collated page at all when the store was built, and holds one now.
+A store keyed on anything only collation produces would have been an empty room
+with a sign on it.
 
 **So the identity is the exact surface form, NFD, and carries no language.** Two
 things follow, both wanted. A form only becomes `ckt` when a collator judges it,

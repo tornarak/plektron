@@ -102,6 +102,104 @@ def test_a_tier1_handle_outside_an_entity_reference_still_links_to_the_lexicon(t
     assert "/edition/lexicon/" in got["html"]
 
 
+def test_a_tier1_name_the_store_has_no_entry_for_falls_back_to_the_lexicon(tmp_path):
+    """**It reached neither.** `el_term` and `el_foreign` route a Tier-1 span
+    through `_tier1`; `el_name` went straight to `_referring`, which renders a
+    plain span when there is no `@ref`. So a native toponym the store has no
+    entry for was the one kind of Tier-1 span on a page that linked nowhere at
+    all — and 1-359, a gazetteer, is a page of them.
+
+    The order is the nested-anchor fix's: an entity reference is the more
+    specific claim and wins where there is one; the lexicon is the fallback."""
+    got = render(tmp_path,
+                 '<p><name type="hydronym" xml:lang="eve" resp="#gt">'
+                 "Buks˙unda</name></p>")
+    assert "/edition/lexicon/" in got["html"]
+    assert 'data-type="hydronym"' in got["html"]
+
+
+def test_a_name_with_an_entity_still_links_to_the_entity(tmp_path):
+    """The fallback is a fallback — it must not overtake the specific claim."""
+    got = render(tmp_path,
+                 '<p><name type="toponym" ref="place:markova" xml:lang="ckt" '
+                 'resp="#gt">Uweˊlen</name></p>')
+    assert "/edition/entity/place:markova" in got["html"]
+    assert "/edition/lexicon/" not in got["html"]
+
+
+def test_a_tables_head_becomes_its_caption(tmp_path):
+    """**It was dropped, and nothing said so.** `el_table` filtered its children
+    to `row`, so a `<head>` validated, sat in the file and rendered as nothing —
+    while `el_list` had always kept its own. 1-359 is where it showed: seven
+    tables whose only titles are their heads, rendering as seven untitled grids
+    with the markup saying otherwise and no error in between."""
+    got = render(tmp_path,
+                 "<p>x</p><table><head>Gishiga Bay.</head>"
+                 "<row><cell>a</cell><cell>b</cell></row></table>")
+    assert "<caption>Gishiga Bay.</caption>" in got["html"]
+    # First child of the table, which is where HTML requires a caption.
+    assert re.search(r"<table>\s*<caption>", got["html"])
+
+
+def test_a_table_keeps_its_trailing_matter_too(tmp_path):
+    """The schema ends `<table>` with `model.divBottom`, so a `<trailer>` is
+    legal there and would have gone the way the head did. Rendered after the
+    table, because HTML admits no element between `<table>` and `<tr>`."""
+    got = render(tmp_path,
+                 "<p>x</p><table><row><cell>a</cell></row>"
+                 "<trailer>after the table</trailer></table>")
+    assert "after the table" in got["html"]
+    assert got["html"].index("</table>") < got["html"].index("after the table")
+
+
+def test_no_element_loses_its_text_between_the_tei_and_the_page(tmp_path):
+    """**The guard for the whole class, and the one that would have caught the
+    head.** A renderer that filters its children by name drops what it does not
+    name, and `element()`'s fallback — keep an unknown element's text — never
+    runs, because the filter got there first. Nothing about the markup, the
+    schema or the gate says so; the words are simply gone from the page.
+
+    So: every word in the TEI body reaches the rendered HTML. Asserted as a
+    multiset, since a renderer may reorder — a table's head moves ahead of its
+    rows, and notes are gathered at the foot."""
+    import unicodedata as u
+    from collections import Counter
+
+    from lxml import etree
+
+    body = ("<p>lead in</p>"
+            "<table><head>a caption</head>"
+            "<row><cell cols='2'>a wide cell</cell></row>"
+            "<row><cell>left</cell><cell>right</cell></row>"
+            "<trailer>trailing matter</trailer></table>"
+            "<list type='gloss'><head>a list head</head>"
+            "<item><term xml:id='term-1-021-1'>a term</term>"
+            "<gloss target='#term-1-021-1'>a gloss</gloss></item></list>")
+    got = render(tmp_path, body)
+
+    def words(t):
+        return Counter(u.normalize("NFD", t).split())
+
+    # Tags become a space rather than nothing. `strip_markup` drops them
+    # outright, which welds `</caption><td>` into one token — harmless for the
+    # search haystack it feeds, since that matches substrings, and wrong for a
+    # word-level comparison.
+    src = etree.fromstring(f'<body xmlns="{TEI_NS}">{body}</body>'.encode())
+    missing = (words(" ".join(src.itertext()))
+               - words(re.sub(r"<[^>]+>", " ", got["html"])))
+    assert not missing, f"lost between the TEI and the page: {sorted(missing)}"
+
+
+def test_a_cell_spanning_the_measure_says_so(tmp_path):
+    """TEI spells it `@cols`, HTML `colspan`. Dropped, a cell the print runs
+    across the measure renders in the first column and misaligns its row."""
+    got = render(tmp_path,
+                 "<p>x</p><table><row><cell cols='2'>wide</cell></row>"
+                 "<row><cell rows='2'>tall</cell></row></table>")
+    assert '<td colspan="2">wide</td>' in got["html"]
+    assert '<td rowspan="2">tall</td>' in got["html"]
+
+
 def test_an_unsettled_rank_is_marked_and_a_settled_one_is_not(tmp_path):
     """The audit affordance. `#llm` and `#mz` are readings nobody has ratified, and
     an edition that showed them identically to `#ed` would be asserting a

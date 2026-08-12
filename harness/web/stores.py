@@ -152,9 +152,9 @@ def _attestations(root: str, _key: bytes) -> dict:
 
     Per-form it was one parse of every collated page *per form asked about*,
     which is fine for a card and quadratic for an index: 730 pages against 609
-    forms is ~445,000 parses for one page view. Free today, since `tei/` holds
-    no collated page yet — and that is exactly the kind of cost nothing would
-    announce when it stopped being free.
+    forms is ~445,000 parses for one page view. Nearly free while `tei/` held
+    one page — and that is exactly the kind of cost nothing would announce as it
+    stopped being free, which is why the sweep was written before it mattered.
     """
     from lxml import etree
 

@@ -159,8 +159,9 @@ def _mentions(ident: str, refs: list[str], root: Path) -> dict:
     The snippet prefers an *unlinked* hit, which carries the prose either side —
     a linked one's text is the form itself, and a row saying "Markova: Markova"
     is a row that has said nothing. `swept` is on the card because a bare zero
-    cannot be told from "never mentioned", and today it means one of two other
-    things: nothing is collated, or `mz/tei/` was never generated in this clone.
+    cannot be told from "never mentioned", and today it usually means one of two
+    other things: collation has reached one page, so the default corpus is that
+    page, or `mz/tei/` was never generated and `--drafts` has nothing to add.
     """
     got = stores.occurrences(root).get(ident) or {"linked": [], "unlinked": []}
     keep = set(refs)
@@ -254,11 +255,11 @@ def lexicon_index(request: Request):
     """Every attested Tier-1 form, grouped by the language a collator assigned.
 
     **Grouped by language, and mostly *unassigned*, which is the honest
-    picture.** A form's language is a judgement made during collation; `tei/`
-    holds no collated page yet, so nearly the whole corpus sits in the last
-    branch. Showing it that way makes the index double as the collation
-    worklist, where a tree over only the assigned forms would show an
-    encouraging empty list.
+    picture.** A form's language is a judgement made during collation, and
+    collation has reached one page — so 18 forms carry a code and the rest of
+    the corpus sits in the last branch. Showing it that way makes the index
+    double as the collation worklist, where a tree over only the assigned forms
+    would show an encouraging empty list.
 
     Every one of the seven codes appears whether or not it holds anything, for
     the reason the class tree shows its empty classes: a vocabulary that lists

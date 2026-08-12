@@ -284,7 +284,8 @@ class Renderer:
 
     # -- inline elements ---------------------------------------------------
 
-    def _tier1(self, el, body: str, cls: str, why: str, extra: str = "") -> str:
+    def _tier1(self, el, body: str, cls: str, why: str, extra: str = "",
+               base: str = "tier1 lex") -> str:
         """A Tier-1 span as a link into the lexicon, or a plain span if it is not one.
 
         **The key is the bare form**, url-encoded on the way out, because that is
@@ -316,7 +317,7 @@ class Renderer:
                 f"{body}</span>"
             )
         return (
-            f'<a class="tier1 lex{cls}"{_lang_attr(lang)} '
+            f'<a class="{base}{cls}"{_lang_attr(lang)} '
             f'href="{BASE}/lexicon/{quote(key, safe="")}" '
             f'data-key="{escape(key)}" title="{escape(why)}"{extra}>'
             f"{body}</a>"
@@ -352,7 +353,25 @@ class Renderer:
         )
 
     def el_name(self, el) -> str:
-        return self._referring(el, "name", el.get("type") or "")
+        """A name: the entity it refers to, or — failing that — its lexicon entry.
+
+        **A Tier-1 `<name>` used to reach neither.** `el_term` and `el_foreign`
+        both route a Tier-1 span through `_tier1`, and this one went straight to
+        `_referring`, which renders a plain `<span>` when there is no `@ref`. So
+        a native toponym the store has no entry for was the one kind of Tier-1
+        span on a page that linked nowhere at all, and 1-359 is a page of them.
+
+        The order is the same one the nested-anchor fix settled: an entity
+        reference is the more specific claim and wins where there is one, and
+        the lexicon is what a form falls back to. Both are a link; what changes
+        is where it goes.
+        """
+        if el.get("ref") or not _is_tier1(el):
+            return self._referring(el, "name", el.get("type") or "")
+        cls, why = _rank_marks(el)
+        typ = el.get("type") or ""
+        return self._tier1(el, self.inline(el), cls, why,
+                           extra=f' data-type="{escape(typ)}"', base="name tier1 lex")
 
     def el_rs(self, el) -> str:
         return self._referring(el, "rs", "")
@@ -482,12 +501,45 @@ class Renderer:
         return f'<li class="label">{self.inline(el)}</li>'
 
     def el_table(self, el) -> str:
-        rows = "".join(
-            self.element(r)
-            for r in el
-            if isinstance(r.tag, str) and etree.QName(r).localname == "row"
-        )
-        return f"<table>{rows}</table>"
+        """A table, and **its `<head>` as the caption**.
+
+        The head used to be dropped: this filtered its children to `row` and
+        nothing else, so a `<head>` on a table validated, sat in the file, and
+        rendered as nothing. `el_list` had always kept its own. 1-359 is where
+        it showed — seven tables whose only titles are their heads, so the page
+        rendered as seven untitled grids and the markup said otherwise with no
+        error anywhere between them.
+
+        `<caption>` rather than a heading above the table, because that is what
+        HTML has for exactly this and it stays attached when the table scrolls.
+        It must be the table's first child, which is why the head is emitted
+        ahead of the rows rather than in document order.
+
+        **Nothing is filtered out.** The schema ends `<table>` with
+        `model.divBottom`, so a `<trailer>` is legal there and would have gone
+        the same way the head did. `element()` already promises that an element
+        it does not know keeps its text; a filter here defeated that promise
+        before the fallback could run, which is what made the loss silent. So
+        every child is rendered — head as the caption, rows inside the table,
+        and anything else after it, since HTML admits no other element between
+        `<table>` and `<tr>`.
+        """
+        head, rows, after = [], [], []
+        for k in el:
+            if not isinstance(k.tag, str):
+                continue
+            name = etree.QName(k).localname
+            if name == "head":
+                head.append(f"<caption>{self.inline(k)}</caption>")
+            elif name == "row":
+                rows.append(self.element(k))
+            else:
+                after.append(self.element(k))
+        return (f"<table>{''.join(head)}{''.join(rows)}</table>"
+                f"{''.join(after)}")
+
+    def el_trailer(self, el) -> str:
+        return f'<p class="trailer">{self.inline(el)}</p>'
 
     def el_row(self, el) -> str:
         cells = "".join(
@@ -498,8 +550,17 @@ class Renderer:
         return f"<tr>{cells}</tr>"
 
     def el_cell(self, el) -> str:
+        # TEI spells the spans `@cols`/`@rows`; HTML spells them `colspan`/
+        # `rowspan`. Dropped, a cell the print runs across the measure — 1-359's
+        # "Cape Alutorsky, Cape Anannon", which has no Russian equivalent —
+        # renders in the first column and silently misaligns the row.
         tag = "th" if el.get("role") == "label" else "td"
-        return f"<{tag}>{self.inline(el)}</{tag}>"
+        span = "".join(
+            f' {html_attr}="{escape(v)}"'
+            for tei_attr, html_attr in (("cols", "colspan"), ("rows", "rowspan"))
+            if (v := el.get(tei_attr)) and v.isdigit()
+        )
+        return f"<{tag}{span}>{self.inline(el)}</{tag}>"
 
     def el_pb(self, el) -> str:
         n = el.get("n")
