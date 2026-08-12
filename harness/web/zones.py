@@ -132,6 +132,7 @@ class Delete(BaseModel):
 
 
 @router.post("/save")
+@fetched
 def save(request: Request, body: Save):
     # `exclude_unset`, so a field the client did not send does not arrive as a
     # default that means something else. `save_payload` asks `"figs" not in
@@ -147,6 +148,7 @@ def save(request: Request, body: Save):
 
 
 @router.post("/predict")
+@fetched
 def predict(request: Request, body: Predict):
     """One page per call, the model resident between them. The client drives the
     loop so it can show progress, exactly as the ink runner does."""
@@ -169,6 +171,7 @@ def predict(request: Request, body: Predict):
 
 
 @router.post("/delete")
+@fetched
 def delete(request: Request, body: Delete):
     """The only route that removes keyed work. Confirmed on the page and
     journalled here; `.prev` keeps it one deep either way."""

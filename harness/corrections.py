@@ -152,21 +152,34 @@ def build_fragment(ref: str, boxes: list[dict], size: tuple[int, int]):
     return etree.ElementTree(root_el)
 
 
-def save_lines(ref: str, boxes: list[dict], root: Path = Path(".")) -> dict:
-    """Write this page's corrections. No store parameter, on purpose.
+def save_lines(ref: str, boxes: list[dict], root: Path = Path("."),
+               withdraw: bool = False) -> dict:
+    """Write this page's corrections. No **store** parameter, on purpose.
 
     `save_zones`' property: there is no argument in which to name somewhere else,
     so nothing can write a human's geometry into a machine store by passing the
     wrong string. Durability is that function's too — `.prev` beside the file,
     write to `.tmp`, `replace`.
 
-    **An empty save deletes the file**, which is the opposite of `save_zones`'
-    rule and for the same underlying reason. There, an empty page and an unvisited
-    page are byte-identical, so an empty save would erase the difference between
-    having judged and not; here the file's *existence* is the whole record, and a
-    file holding no corrections would claim a human drew something when they
-    withdrew everything. Withdrawing the last correction is a real act and this is
-    how it is recorded.
+    **An empty save deletes the file, and `withdraw` is how that is said.** The
+    deletion is the right behaviour and stays: here the file's *existence* is the
+    whole record, so a file holding no corrections would claim a human drew
+    something when in fact they withdrew everything. Withdrawing the last
+    correction is a real act. What changed is that it must now be *stated*.
+
+    An empty list is not a statement. It is what an absent key, a malformed
+    payload, a mistyped ref or a probe all look like by the time they reach here
+    — and one of those deleted `1-097`'s only record of the folio "71", a box a
+    human drew over ink the segmenter missed, through `POST /lines/save` carrying
+    `{"lines": []}`. The `.prev` beside the file is one save deep and was the only
+    reason it came back.
+
+    So the flag, and not a confirmation elsewhere: this is the last place that can
+    tell the two apart, and it has callers — the CLI, `restore`, whatever comes
+    next — that no browser dialog protects. `figures.save_figs` refuses an empty
+    page outright and names `harness fig delete`; that store can, because it has a
+    withdrawal verb. This one has none, the editor *is* the way a correction is
+    withdrawn, so the intent travels with the call instead.
 
     **Text already in the store is carried forward by id**, never taken from the
     caller for a line that already exists. The editor is geometry-only and has no
@@ -185,6 +198,16 @@ def save_lines(ref: str, boxes: list[dict], root: Path = Path(".")) -> dict:
 
     if not boxes:
         existed = p.exists()
+        if existed and not withdraw:
+            held = len(load_lines(ref, root))
+            raise ValueError(
+                f"{ref}: refusing to delete {held} correction(s) on an empty "
+                f"save. Absence of the file is how this store records 'nothing "
+                f"was corrected here', so an empty save would withdraw a human's "
+                f"geometry — boxes drawn over ink the segmenter missed, which "
+                f"exist nowhere else. If that is what you mean, say so: "
+                f"`withdraw=True`, which the editor sends after asking. "
+                f"{p.with_suffix('.xml.prev').name} holds one save either way.")
         if existed:
             p.with_suffix(".xml.prev").write_bytes(p.read_bytes())
             p.unlink()

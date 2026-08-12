@@ -62,6 +62,11 @@ class Save(BaseModel):
     ref: str
     lines: list[dict] = Field(default_factory=list)
     ink_exempt: list[dict] = Field(default_factory=list)
+    #: "I mean to delete this page's corrections", sent only after the editor has
+    #: asked. An empty `lines` alone is refused by the store, because that is what
+    #: an absent key and a stray payload also look like — one of them destroyed
+    #: `1-097`'s only record of its folio.
+    withdraw: bool = False
 
 
 @router.get("/")
@@ -182,9 +187,13 @@ def blot(request: Request, ref: str):
 
 
 @router.post("/save")
+@fetched
 def save(request: Request, body: Save):
     s = _session(request)
-    res = ui.save_payload(body.model_dump(), _root(request),
+    # `exclude_unset`, so a key the client did not send does not arrive as a
+    # default the store reads as an instruction — `save_payload` asks
+    # `"ink_exempt" in payload` for exactly that reason.
+    res = ui.save_payload(body.model_dump(exclude_unset=True), _root(request),
                           s.get("alto_dir") or "")
     print(f"saved {res['path']}: {res['lines']} correction(s), "
           f"{len(res['live_bands'])} band(s) left")

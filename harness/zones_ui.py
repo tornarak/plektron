@@ -372,10 +372,18 @@ def save_payload(payload: dict, root: Path, cfg: dict) -> dict:
             x0, x1 = int(w["x0"]), int(w["x1"])
         out.append({"label": z["label"], "x0": x0, "y0": y0, "x1": x1, "y1": y1})
 
-    res = zn.save_zones(ref, out, root,
-                        split=payload.get("split"),
-                        exempt=payload.get("exempt") or [])
-    zn.set_ink_exempt(ref, payload.get("ink_exempt") or [], root)
+    # **`in`, not `or []`, for both exemption layers.** `save_zones` passes
+    # `exempt` through to `set_exempt` whenever it is not None, and `set_exempt`
+    # and `set_ink_exempt` both pop the page's entry and rewrite their JSON with
+    # no `.prev` and no journal. `.get(...) or []` made "the client never
+    # mentioned this" identical to "the client cleared it", which is the one
+    # reading a route must never manufacture — and it is what defeats the
+    # `exclude_unset=True` the route already sends.
+    exempt = (payload["exempt"] or []) if "exempt" in payload else None
+    res = zn.save_zones(ref, out, root, split=payload.get("split"),
+                        exempt=exempt)
+    if "ink_exempt" in payload:
+        zn.set_ink_exempt(ref, payload["ink_exempt"] or [], root)
     check = zn.validate_page(ref, root, cfg, ink=True)
     zn.record_ink(ref, check, root)
     res["errors"] = check["errors"]
@@ -425,7 +433,10 @@ def _save_figs(payload: dict, ref: str, root: Path, cfg: dict) -> dict:
             b["id"] = f["id"]
         blocks.append(b)
 
-    rules = payload.get("fig_exempt") or []
+    # None where the key was absent, so `save_figs` leaves the rule exemptions
+    # standing rather than clearing them — `set_rule_exempt` pops and rewrites
+    # with no backup, like the two above.
+    rules = (payload["fig_exempt"] or []) if "fig_exempt" in payload else None
     if not blocks:
         # The store's refusal is right and the editor must not merely relay it:
         # a human who deleted the last box has an intent, and `fig delete` is it.

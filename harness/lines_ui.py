@@ -163,8 +163,16 @@ def save_payload(payload: dict, root: Path = Path("."),
             f"zone in `harness zones edit {ref}` first, or rule the band not type "
             "if it is not printing.")
 
-    res = corr.save_lines(ref, boxes, root)
-    corr.set_ink_exempt(ref, payload.get("ink_exempt") or [], root)
+    res = corr.save_lines(ref, boxes, root,
+                          withdraw=bool(payload.get("withdraw")))
+    # **`in`, not `or []`.** These two are the same value to `.get(...) or []` —
+    # a client that never mentioned `ink_exempt` and one that cleared it — and
+    # `set_ink_exempt` pops the page's entry and rewrites the file with no `.prev`
+    # and no journal, so the collapse turns silence into the most destructive
+    # thing this payload can say. `exclude_unset=True` on the route is the other
+    # half; without this guard it would still be undone here.
+    if "ink_exempt" in payload:
+        corr.set_ink_exempt(ref, payload["ink_exempt"] or [], root)
     # Re-measured after the write, so the page reports what is *left* rather than
     # what the client believed before it saved — and through the same store the
     # page was opened against, or a `--store gt` session would save and then

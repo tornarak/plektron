@@ -258,7 +258,16 @@ function coverWith(idx) {
   draw();
 }
 
-function say(m, cls) { const e = $('#msg'); e.textContent = m; e.className = cls || ''; }
+/* The message bar at the foot — see the note in `editor.css`. `textContent = ''`
+   removes the child node, which is what `#msg:empty` needs to hide it again;
+   `--msgh` lifts `#issues` clear of it. */
+function say(m, cls) {
+  const e = $('#msg');
+  e.textContent = m || '';
+  e.className = m ? (cls || '') : '';
+  document.body.style.setProperty('--msgh', m ? e.offsetHeight + 'px' : '0px');
+}
+$('#msg').addEventListener('click', () => say(''));
 
 ov.addEventListener('mousedown', e => {
   const t = e.target;
@@ -299,14 +308,37 @@ window.addEventListener('mouseup', () => {
 async function post(path, body) {
   const r = await fetch(path, {method: 'POST',
     headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
-  const j = await r.json();
-  if (!r.ok) throw new Error(j.error || r.statusText);
-  return j;
+  // Status first, and the body parsed defensively. A failure only carries JSON
+  // if the endpoint is marked `@fetched` server-side; anything else — an
+  // unmarked route, a 404 from another editor's port — answers in HTML, and
+  // parsing that threw a parse error over the top of the real one. The store's
+  // refusals are written to be read by whoever has to act on them.
+  if (!r.ok) {
+    let why = r.statusText;
+    try { why = (await r.json()).error || why; } catch (e) { /* not JSON */ }
+    throw new Error(why);
+  }
+  return r.json();
 }
 
 async function save() {
+  // **Emptying this page is a withdrawal, and it is asked about.** The store
+  // refuses an empty save that does not say so, because an empty list is also
+  // what an absent key and a stray request look like — one of those deleted
+  // 1-097's only record of its folio. Only the case that can *prove* a human did
+  // it asks: the page arrived holding corrections and now holds none.
+  const withdraw = corr.length === 0 && S.corr.length > 0;
+  if (withdraw && !confirm(
+        `Delete this page's ${S.corr.length} correction(s)?\n\n`
+        + 'They are boxes drawn over ink the segmenter missed, and this file is '
+        + 'the only record of them. One save is recoverable from the .prev '
+        + 'beside it; the one before that is not.')) {
+    say('not saved — withdrawal cancelled', 'bad');
+    return;
+  }
   try {
-    const r = await post(B + '/save', {ref: S.ref, lines: corr, ink_exempt: exempt});
+    const r = await post(B + '/save',
+                         {ref: S.ref, lines: corr, ink_exempt: exempt, withdraw});
     dirty = false;
     S.bands = r.live_bands;
     say(`saved · ${r.lines} correction(s) · ${r.live_bands.length} band(s) left`, 'ok');

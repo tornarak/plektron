@@ -126,41 +126,69 @@ def test_a_new_box_never_inherits_a_neighbours_text(root):
     assert got[0]["text"] == ""
 
 
-def test_an_empty_save_removes_the_file(root):
+def test_a_stated_withdrawal_removes_the_file(root):
     """The opposite of `save_zones`' rule, for the same underlying reason. There,
     an empty page and an unvisited page are byte-identical, so an empty save
     erases the difference between judging and not. Here the file's existence *is*
     the record, so a file holding nothing would claim a human drew something when
-    they withdrew everything."""
+    they withdrew everything.
+
+    The deletion is right and stays. What changed is that it must be **said**:
+    `withdraw=True` is the difference between a human emptying the page and an
+    empty list arriving from somewhere else."""
     corr.save_lines("1-048", [BOX], root)
-    res = corr.save_lines("1-048", [], root)
+    res = corr.save_lines("1-048", [], root, withdraw=True)
     assert res["removed"] is True
     assert not corr.lines_path("1-048", root).exists()
     assert corr.load_lines("1-048", root) == []
 
 
+def test_an_unstated_empty_save_is_refused(root):
+    """**The guard, and why it exists.** An empty list is what an absent key, a
+    malformed payload and a careless probe all look like by the time they arrive
+    here — and one of them deleted `1-097`'s only record of the folio "71", a box
+    a human drew over ink the segmenter missed, through `POST /lines/save`
+    carrying `{"lines": []}`. Nothing above this call could tell that from a
+    withdrawal, so this call is where the two are told apart."""
+    corr.save_lines("1-048", [BOX], root)
+    with pytest.raises(ValueError, match="refusing to delete 1 correction"):
+        corr.save_lines("1-048", [], root)
+    assert corr.lines_path("1-048", root).exists()
+    assert len(corr.load_lines("1-048", root)) == 1
+
+
 def test_a_withdrawal_is_recoverable_for_one_save(root):
     """`.prev` beside the file, as everywhere else in the authored stores — the
-    deletion is the one act with nothing else to fall back on."""
+    deletion is the one act with nothing else to fall back on. It is what brought
+    `1-097` back."""
     corr.save_lines("1-048", [BOX], root)
-    corr.save_lines("1-048", [], root)
+    corr.save_lines("1-048", [], root, withdraw=True)
     prev = corr.lines_path("1-048", root).with_suffix(".xml.prev")
     assert prev.exists()
     assert b"corr_1-048-400" in prev.read_bytes()
 
 
 def test_saving_over_nothing_is_not_a_removal(root):
-    """Reported honestly rather than as a no-op that looks like a deletion."""
+    """Reported honestly rather than as a no-op that looks like a deletion. Not
+    refused, either, with or without the flag: there is nothing to destroy, so
+    there is nothing to be sure about."""
     assert corr.save_lines("1-048", [], root)["removed"] is False
+    assert corr.save_lines("1-048", [], root, withdraw=True)["removed"] is False
 
 
 def test_the_writer_names_no_store(root):
     """`save_zones`' property: there is no argument in which to name somewhere
     else, so no caller can put a human's geometry into a machine store by passing
-    the wrong string."""
+    the wrong string.
+
+    Asserted as an absence rather than as an exact signature, which is what the
+    rule actually says. The exact-set form failed when `withdraw` was added — a
+    parameter that carries *intent*, not a destination, and is the opposite of the
+    thing being prohibited."""
     import inspect
     params = set(inspect.signature(corr.save_lines).parameters)
-    assert params == {"ref", "boxes", "root"}
+    assert params >= {"ref", "boxes", "root"}
+    assert not [p for p in params if "store" in p or "dir" in p]
 
 
 def test_a_negative_covered_by_is_refused(tmp_path):

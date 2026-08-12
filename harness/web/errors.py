@@ -31,7 +31,16 @@ _MARK = "__web_fetched__"
 
 
 def fetched[F](fn: F) -> F:
-    """Mark an endpoint as one the page `fetch`es rather than navigates to."""
+    """Mark an endpoint as one the page `fetch`es rather than navigates to.
+
+    **Every write endpoint needs this, and none of them had it.** The mark decides
+    whether a failure comes back as `{"error": …}` or as an HTML page, and the
+    clients `fetch` their saves — `lines.js` calls `r.json()` before it checks
+    `r.ok`, `zones.js` parses JSON on the error path — so an unmarked write
+    endpoint turns every domain refusal into a JSON parse error in the browser.
+    The two the stores already raise, "no zoning" and "boxes lie in no zone",
+    were unreadable for exactly that reason: carefully worded, and never seen.
+    """
     setattr(fn, _MARK, True)
     return fn
 

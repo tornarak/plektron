@@ -520,3 +520,38 @@ def test_the_box_floor_does_not_cap_growth(tmp_path):
     css = Path("harness/web/static/css/review.css").read_text(encoding="utf-8")
     assert "min-height:calc(var(--bl) * 1.45em" in css
     assert "resize:vertical" in css
+
+
+def test_clearing_a_page_is_refused_unless_it_is_stated(two):
+    """**An empty payload replaces the page's whole adjudication with nothing**,
+    and no workflow does that — a human clears a page line by line, not in one
+    stroke. What arrives `{}` is a dropped key, a mistyped ref, or a careless
+    probe, and the same collapse in the corrections store deleted `1-097`'s only
+    record of its folio.
+
+    Worse here than there, in one respect: `.prev` is a single save deep, and the
+    append-only journal that survives anything would record the truncation
+    without recording what it took."""
+    with Session(["2-046", "2-047"], two) as s:
+        s.get("/p/2-047")
+        s.post("/save", {"ref": "2-047", "lines": {"0": {"text": "adjudicated"}}})
+
+        with pytest.raises(HTTPError) as e:
+            s.post("/save", {"ref": "2-047", "lines": {}})
+        # Asserted on the body, not on `str(e.value)`, which carries the status
+        # alone — and the body is JSON rather than an HTML page because the route
+        # is marked `@fetched`. That mark is what lets the refusal reach the human
+        # instead of dying as a parse error in the browser.
+        assert "refusing to replace 1 adjudicated line" in e.value.body
+
+        got = json.loads(decisions_path("2-047", two).read_text())
+        assert got["lines"]["0"]["text"] == "adjudicated"
+
+
+def test_a_first_save_of_nothing_is_not_refused(two):
+    """Nothing to destroy, nothing to be sure about. The guard is about replacing
+    a record, not about the empty page that has none yet."""
+    with Session(["2-046", "2-047"], two) as s:
+        s.get("/p/2-047")
+        s.post("/save", {"ref": "2-047", "lines": {}})
+        assert decisions_path("2-047", two).exists()

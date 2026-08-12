@@ -670,3 +670,42 @@ def test_the_figure_types_are_listed_with_their_keys(tmp_path):
     for t in (cfg().get("figures") or {})["types"]:
         assert f"<kbd>{t['key']}</kbd>" in html
         assert t["label"] in html
+
+
+def test_an_absent_exemption_key_leaves_the_rulings_standing(tmp_path):
+    """**Absent is not empty**, for both exemption layers. `set_exempt` and
+    `set_ink_exempt` pop the page's entry and rewrite their JSON with no `.prev`
+    and no journal, so a route reading silence as "clear it" destroys a human's
+    rulings with nothing to fall back on.
+
+    `exclude_unset=True` on the route is the other half of this and does nothing
+    on its own: `payload.get("exempt") or []` collapsed the two back together
+    immediately afterwards, which is how the same defect survived being fixed for
+    `figs` one commit earlier."""
+    scans(tmp_path, "1-048")
+    zone = {"label": "MainZone-P", "y0": 600, "y1": 900, "column": 0}
+    ui.save_payload({"ref": "1-048", "zones": [zone], "exempt": ["rank-monotone"],
+                     "ink_exempt": [{"y0": 1500, "y1": 1540, "note": "smudge"}]},
+                    tmp_path, cfg())
+    assert zn.load_exempt(tmp_path) == {"1-048": ["rank-monotone"]}
+    assert zn.load_ink_exempt(tmp_path).get("1-048")
+
+    # A save mentioning neither key: both rulings stand.
+    ui.save_payload({"ref": "1-048", "zones": [zone]}, tmp_path, cfg())
+    assert zn.load_exempt(tmp_path) == {"1-048": ["rank-monotone"]}
+    assert zn.load_ink_exempt(tmp_path).get("1-048")
+
+
+def test_an_explicit_empty_exemption_still_clears(tmp_path):
+    """Clearing is a real act and stays available. An exemption is a ruling that
+    can be re-asserted by making it again — which is why this layer gets the route
+    guard and not the store flag `save_lines` carries."""
+    scans(tmp_path, "1-048")
+    zone = {"label": "MainZone-P", "y0": 600, "y1": 900, "column": 0}
+    ui.save_payload({"ref": "1-048", "zones": [zone], "exempt": ["rank-monotone"],
+                     "ink_exempt": [{"y0": 1500, "y1": 1540, "note": "smudge"}]},
+                    tmp_path, cfg())
+    ui.save_payload({"ref": "1-048", "zones": [zone], "exempt": [],
+                     "ink_exempt": []}, tmp_path, cfg())
+    assert zn.load_exempt(tmp_path) == {}
+    assert not zn.load_ink_exempt(tmp_path).get("1-048")

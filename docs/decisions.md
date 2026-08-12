@@ -528,3 +528,69 @@ editors are mounted under `/zones` — so the arrow keys walked to the shell's f
 door and read as dead keys. Every other URL in every editor's JS was already built
 from `B`, which is what made the two exceptions easy to miss and easy to find once
 looked for.
+
+## An empty list meant "delete everything", in six places
+
+A probe of the editors' HTTP endpoints posted `{"ref": "1-097", "lines": []}` to
+`/lines/save` against the working tree. `lines_ui.save_payload` writes before it
+reaches the call that then raised, so the request deleted
+`gt/lines/chukchi-1-097.xml` — a box a human had drawn over the folio "71", ink
+the segmenter missed — and the unrelated `OSError` that followed read as a
+session-state problem. Nothing was lost: `.prev` is written before the unlink and
+the file was committed. The `.prev` and `_ink_exempt.json` mtimes, both 19:14, are
+what identified it, after the cause was first reported as unknown and the user
+went looking for a bug in their editor.
+
+**The defect is a collapse of two different things into one value**, and it was
+in six places. `corrections.save_lines` deleted the file on an empty list.
+`corrections.set_ink_exempt`, `zones.set_ink_exempt`, `zones.set_exempt` and
+`figures.set_rule_exempt` all pop the page's entry and rewrite their JSON on one —
+with no `.prev` and no journal, so they are *less* protected than the thing that
+actually broke. `review.save_decisions({})` replaces a page's whole adjudication
+with nothing, in the store this project has already lost work in once.
+
+**This is the `figs` presence rule with its siblings unlooked-for.** One commit
+earlier, `/zones/save` learned to send `exclude_unset=True` precisely because an
+always-present `figs: []` would have meant "the figure track was emptied". The
+same reasoning was never carried to the neighbouring keys, and it could not have
+worked there anyway: `payload.get("ink_exempt") or []` turns an absent key back
+into an empty one on the very next line. A guard at the model that the consumer
+undoes is not a guard.
+
+**The rule that replaced it has two layers, chosen by what the destruction
+costs.** A *route* may never manufacture an intention: absent is not empty,
+enforced with `if "k" in payload` rather than `or []`. A *store* that destroys an
+authored artifact demands explicit intent: `save_lines` and `save_decisions` take
+`withdraw=`, and refuse an unstated empty save naming what it would have taken.
+The four exemption sidecars get only the first layer, and that asymmetry is
+deliberate rather than an oversight — an exemption is a ruling that can be
+re-asserted by making it again, while a box drawn over unrecognised ink exists
+nowhere else.
+
+The two existing precedents were already right and were not generalised in time.
+`figures.save_figs` refuses an empty page and names `harness fig delete`;
+`zones.save_zones` refuses one and names three verbs that say different things.
+Both could refuse outright because both stores have a withdrawal verb.
+`gt/lines/` has none — the editor *is* how a correction is withdrawn — so the
+intent travels with the call instead, and the browser asks before sending it.
+
+**A refusal that cannot be read is a refusal that did not happen.** None of this
+would have reached a human: `errors.install` answers in JSON only for endpoints
+marked `@fetched`, and every write endpoint was unmarked, so a raised `ValueError`
+came back as an HTML page. `lines.js` parsed the body before checking the status
+and `zones.js` parsed it on the error path, so both turned the message into a JSON
+parse error. Two carefully worded refusals — "no zoning", "boxes lie in no zone" —
+had been unreadable since they were written. The write endpoints are marked now
+and both clients check the status first.
+
+The message bar moved with it. It was a `<span>` in a `white-space:nowrap` top bar
+with `margin-left:auto`, so a sentence was clipped to whatever room the counts
+left, and on a crowded bar to nothing. It is a full-width strip at the foot now,
+absent until there is something to say, dismissed by a click, with the issue strip
+riding above it on a measured offset rather than under it.
+
+**And the process lesson, which is mine.** The probe should never have run against
+the working tree. `gt/` is tracked, a page was open in a browser, and I had
+refused this exact call for the zones store in the same script one case earlier —
+the reasoning was available and applied too narrowly. Endpoint probing belongs
+against a temp root, or in a test, or not at all.

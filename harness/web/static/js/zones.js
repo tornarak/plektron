@@ -583,10 +583,21 @@ function issues() {
     `${w.rule}: ${w.detail}${w.exempted ? ' — exempted' : ''}</div>`).join('');
 }
 
+/* The message bar at the foot. `textContent = ''` removes the child node rather
+   than leaving an empty one, which is what lets `#msg:empty` hide the bar —
+   assigning `' '` or leaving markup in the template would keep it on screen for
+   good. `--msgh` carries the bar's measured height to `#issues`, which is fixed
+   to the same corner: the issue strip is the standing finding and rides above
+   the passing remark rather than under it. */
 function say(m, cls) {
   const el = document.getElementById('msg');
-  el.textContent = m; el.className = cls || '';
+  el.textContent = m || '';
+  el.className = m ? (cls || '') : '';
+  document.body.style.setProperty('--msgh', m ? el.offsetHeight + 'px' : '0px');
 }
+// Click to dismiss. A refusal stays until it is read and let go, rather than
+// being timed out from under whoever is halfway through it.
+document.getElementById('msg').addEventListener('click', () => say(''));
 
 // ---- editing
 // A type may declare its own height, for a shape the book repeats at one size —
@@ -1019,7 +1030,14 @@ ov.addEventListener('click', e => {
 async function post(path, body) {
   const r = await fetch(path, {method: 'POST',
     headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
-  if (!r.ok) throw new Error((await r.json()).error || r.statusText);
+  // Parsed defensively: a failure carries JSON only from an endpoint marked
+  // `@fetched`, and anything else — a 404 from another editor's port, say —
+  // answers in HTML, where `.json()` threw a parse error over the real message.
+  if (!r.ok) {
+    let why = r.statusText;
+    try { why = (await r.json()).error || why; } catch (e) { /* not JSON */ }
+    throw new Error(why);
+  }
   return r.json();
 }
 // Writing `gt/zones/` from a view that is not `gt` is an **adoption**, not a save,

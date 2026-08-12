@@ -23,9 +23,12 @@
     <span>ruled <b id=nx>0</b></span>
   </span>
   <span id=dirty>unsaved</span>
-  <span id=msg></span>
   <button id=save>save</button><button id=done>done</button>
 </div>
+{# At the foot, not in the bar: `#bar` is `white-space:nowrap`, so a sentence in
+   here was clipped to whatever room the tally left. Closed up because `:empty`
+   hides it and `:empty` does not match an element holding a newline. #}
+<div id=msg></div>
 <div id=wrap><div id=stage><img id=img src="{{ base }}/page/{{ st.ref }}.png">
 <svg id=ov xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"></svg>
 </div></div>

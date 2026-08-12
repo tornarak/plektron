@@ -47,9 +47,14 @@ dropped: {{ st.proposal_dropped | join(', ') }}{% endif %}</span>
 {% endif %}
 <span id='count'></span>
 <span id='target'></span>
-<span id='msg'></span>
 <button id='btnsave'>save</button><button id='btndone'>Done</button>
 </div>
+{# The message bar, at the foot rather than in the bar above: `#bar` is
+   `white-space:nowrap` and this was a span with `margin-left:auto` in it, so a
+   sentence was clipped to whatever space the counts left. Written closed-up —
+   `:empty` hides it, and `:empty` does not match an element holding so much as a
+   newline. Populated only by `say()`. #}
+<div id='msg'></div>
 
 <div id='wrap'><div id='stage'>
 <img id='img' src="{{ base }}/page/{{ st.ref }}.png" alt="page {{ st.ref }}">

@@ -83,11 +83,18 @@ def root(tmp_path: Path) -> Path:
     return tmp_path
 
 
-def _save(root, lines=(), ink=()):
+def _save(root, lines=(), ink=(), **extra):
     # `gt/ocr` rather than the view: the fixture has no symlink farm, and the
     # store the editor was opened against is the one it must re-measure through.
     return save_payload({"ref": "1-048", "lines": list(lines),
-                         "ink_exempt": list(ink)}, root, "gt/ocr")
+                         "ink_exempt": list(ink), **extra}, root, "gt/ocr")
+
+
+def _save_bare(root, payload):
+    """A payload with only the keys named, so a test can leave one out. The
+    difference between an absent key and an empty one is the whole subject of
+    two tests below, and `_save`'s defaults would erase it."""
+    return save_payload({"ref": "1-048", **payload}, root, "gt/ocr")
 
 
 def test_a_page_with_no_zoning_is_refused_outright(root):
@@ -255,3 +262,58 @@ def test_the_list_draws_unknown_rather_than_blank(root):
     assert html.count("?") >= 6      # three unknown columns per row
     assert "1-049" in html
     assert "measure" in html         # and it says the cost is on request
+
+
+# --- an empty payload is not an instruction ----------------------------------
+#
+# A `POST /lines/save` carrying `{"ref": "1-097", "lines": []}` deleted that
+# page's only record of its folio — a box a human drew over ink the segmenter
+# missed. Two separate collapses made it possible and both are tested here: the
+# store could not tell a withdrawal from an accident, and the route turned a key
+# the client never sent into an instruction to clear.
+
+
+def test_emptying_the_page_is_refused_unless_it_is_stated(root):
+    """The editor asks before it sends this; nothing else may send it by
+    accident. The refusal names what it would have destroyed, because the number
+    is the thing that makes a stray save recognisable as one."""
+    _zones(root)
+    _save(root, [IN_ZONE])
+    with pytest.raises(ValueError) as e:
+        _save(root, [])
+    assert "refusing to delete 1 correction" in str(e.value)
+    assert len(corr.load_lines("1-048", root)) == 1
+
+
+def test_a_stated_withdrawal_goes_through(root):
+    """The other half — otherwise the guard is indistinguishable from having
+    broken withdrawal, and the editor would have no way to empty a page."""
+    _zones(root)
+    _save(root, [IN_ZONE])
+    res = _save(root, [], withdraw=True)
+    assert res["removed"] is True
+    assert corr.load_lines("1-048", root) == []
+
+
+def test_an_absent_ink_exempt_key_leaves_the_rulings_standing(root):
+    """**Absent is not empty.** `set_ink_exempt` pops the page's entry and
+    rewrites the file with no `.prev` and no journal, so a route that read
+    silence as "clear it" would destroy a human's band rulings with nothing to
+    fall back on. The zone save already sends `exclude_unset`; that is undone if
+    this end collapses the two back together."""
+    _zones(root)
+    _save(root, [IN_ZONE], ink=[{"y0": 700, "y1": 740, "note": "printed rule"}])
+    assert corr.load_ink_exempt(root).get("1-048")
+
+    _save_bare(root, {"lines": [IN_ZONE]})          # no ink_exempt key at all
+    assert corr.load_ink_exempt(root).get("1-048")
+
+
+def test_an_explicit_empty_ink_exempt_still_clears(root):
+    """Clearing a page's rulings is a real act and stays available — an exemption
+    can be re-asserted by making it again, which is why this layer needs the route
+    to stop manufacturing the instruction rather than a flag of its own."""
+    _zones(root)
+    _save(root, [IN_ZONE], ink=[{"y0": 700, "y1": 740, "note": "printed rule"}])
+    _save_bare(root, {"lines": [IN_ZONE], "ink_exempt": []})
+    assert not corr.load_ink_exempt(root).get("1-048")

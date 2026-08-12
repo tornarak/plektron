@@ -23,6 +23,7 @@ from ..context import norm_ref
 from ..lines import raster_path
 from ..paths import crops_dir, decisions_path
 from . import Editor, register, templates
+from .errors import fetched
 from .files import send_file
 
 BASE = "/review"
@@ -140,6 +141,11 @@ class Save(BaseModel):
 
     ref: str
     lines: dict = Field(default_factory=dict)
+    #: "I mean to clear this page's adjudication." Never sent by the page — no
+    #: workflow clears a decision file — so it exists to make the store's refusal
+    #: overridable by a caller that means it, and to keep an empty payload from
+    #: meaning it by accident.
+    withdraw: bool = False
 
 
 class Done(BaseModel):
@@ -147,10 +153,12 @@ class Done(BaseModel):
 
 
 @router.post("/save")
+@fetched
 def save(request: Request, body: Save):
     cur = _in_queue(request, body.ref)
     res = rv.save_decisions(cur, body.lines, _root(request),
-                            stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"))
+                            stamp=time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                            withdraw=body.withdraw)
     edited = ",".join(map(str, res["edited_lines"])) or "none"
     changed = (f" · changed this save: {','.join(map(str, res['changed_lines']))}"
                if res["changed_lines"] else "")

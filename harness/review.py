@@ -298,8 +298,17 @@ def load_decisions(ref: str, root: Path = Path(".")) -> dict[int, dict]:
 
 
 def save_decisions(ref: str, lines: dict, root: Path = Path("."),
-                   stamp: str | None = None) -> dict:
+                   stamp: str | None = None, withdraw: bool = False) -> dict:
     """Write adjudicated lines, recording for each whether it differs from the proposal.
+
+    **An empty `lines` replaces the page's whole adjudication with nothing**, and
+    `withdraw` is how that is said. This is the same guard `corrections.save_lines`
+    carries and it belongs here more, not less: `.prev` is one save deep, and
+    while the journal below survives anything, an empty save appends a record of
+    *nothing changed* — so the journal preserves the fact of the truncation and
+    none of what it took. A payload that arrives `{}` because a key was dropped,
+    a ref was mistyped or a probe was careless is indistinguishable from a human
+    clearing every line, which nobody has ever wanted to do.
 
     **Every line's full text is stored, not just the edited ones**, and the apparent
     redundancy against the proposal is the point. `restore` builds ground truth from
@@ -339,6 +348,14 @@ def save_decisions(ref: str, lines: dict, root: Path = Path("."),
     ref = norm_ref(ref)
     prop = load_proposal(ref, root)
     before = load_decisions(ref, root)
+    if not lines and before and not withdraw:
+        raise ValueError(
+            f"{ref}: refusing to replace {len(before)} adjudicated line(s) with "
+            f"nothing. An empty save is what a dropped key or a mistyped ref "
+            f"looks like by the time it arrives here, and it is not a ruling "
+            f"anybody makes — clearing a page line by line is. If it is really "
+            f"meant, say so: `withdraw=True`. `.prev` holds one save, and the "
+            f"journal would record the truncation without recording what it took.")
     out = {}
     for k, v in lines.items():
         idx = int(k)

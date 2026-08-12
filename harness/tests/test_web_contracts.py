@@ -63,12 +63,13 @@ CASES = [
     ("zones /delete", Z.Delete, {"ref": "1-097"}, ("ref",)),
     # static/js/lines.js `save()`.
     ("lines /save", L.Save,
-     {"ref": "1-097", "lines": [{"y0": 1}], "ink_exempt": [{"y0": 2}]},
-     ("ref", "lines", "ink_exempt")),
+     {"ref": "1-097", "lines": [{"y0": 1}], "ink_exempt": [{"y0": 2}],
+      "withdraw": False},
+     ("ref", "lines", "ink_exempt", "withdraw")),
     # static/js/review.js `save()` — `lines` is an object keyed by line number.
     ("review /save", R.Save,
      {"ref": "1-080", "lines": {"1": {"text": "a", "note": ""}}},
-     ("ref", "lines")),
+     ("ref", "lines", "withdraw")),
     ("review /done", R.Done, {"ref": "1-080"}, ("ref",)),
     # static/js/ratify.js.
     ("edition /ratify", E.Ratify, {"id": "place:markova"}, ("id",)),
@@ -194,3 +195,23 @@ def test_a_zone_save_leaves_the_figure_store_alone(tmp_path):
     assert not (tmp_path / "gt" / "fig").exists()
     # And the response says nothing about figures, since none were considered.
     assert "figs_saved" not in r.json()
+
+
+def test_the_write_endpoints_can_answer_in_json():
+    """**A refusal that cannot be read is a refusal that did not happen.**
+    `errors.install` returns `{"error": …}` only for endpoints marked `@fetched`,
+    and every write endpoint was unmarked — so the domain refusals these stores
+    raise ("no zoning", "boxes lie in no zone", and now the withdrawal guards)
+    came back as an HTML 500. `lines.js` parsed the body before checking the
+    status and `zones.js` parsed it on the error path, so both turned the message
+    into a JSON parse error.
+
+    The clients `fetch` these; none of them is navigated to."""
+    from harness.web import errors, lines, review, zones
+    for name, fn in (("zones/save", zones.save), ("zones/predict", zones.predict),
+                     ("zones/delete", zones.delete), ("lines/save", lines.save),
+                     ("review/save", review.save)):
+        assert getattr(fn, "__web_fetched__", False), f"{name} is not @fetched"
+    # The mark is read off the resolved endpoint, so it has to survive the
+    # decorator order the routes are written in.
+    assert errors.fetched is not None
