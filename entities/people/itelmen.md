@@ -1,4 +1,4 @@
-# people:kamchadal — Kamchadal
+# people:itelmen — Itelmen
 
 - status: ratified
 - area: langarea:itel1242

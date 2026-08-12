@@ -81,11 +81,18 @@ the geo store's own adjudication of the same question, made when it was built.
 Twelve entries moved on that evidence and one, `people:inupiat`, took the title
 alone because a slug cannot hold `ñ`.
 
-Everything else stayed, including cases where the modern name is not in doubt —
-`Gilyak`/Nivkh, `Lamut`/Even, `Kamchadal`/Itelmen, `Tungus`/Evenks,
-`Indighirka`/Indigirka. Nothing in the repo attests those, so the witness would
+Everything else stayed at first, including cases where the modern name is not in
+doubt — `Gilyak`/Nivkh, `Lamut`/Even, `Kamchadal`/Itelmen, `Tungus`/Evenki. The
+stated reason was that nothing in the repo attested those, so the witness would
 have been a model's recall, which is the one thing this store does not accept
-for an identity. They are a worklist, not a decision.
+for an identity.
+
+**That reason stopped being true, and it is worth being exact about when.** The
+moment the `language:` entries were filed against their `langarea:` shapes, the
+repo did attest the mapping: `data/geo/` names its own shape *Even (Lamut)*, and
+`langarea:itel1242` is West Itelmen. The four moved on the editor's word, with
+the shape store agreeing. `Indighirka`/Indigirka still has no witness and still
+has not moved — a river's spelling is not settled by a langarea.
 
 `person:bogoras` is the deliberate refusal. Wikipedia files him as *Vladimir
 Bogoraz*; the book prints *Waldemar Bogoras* on its own title page and the
