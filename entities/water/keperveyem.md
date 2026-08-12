@@ -10,6 +10,7 @@
 |---|---|---|---|
 | Wolverine River | | no | |
 | Wolverene River | | no | the book's spelling on 1-336 |
+| Россомашья рѣка | ru | yes | 1-359's list pairs it with "Wolverine River" |
 
 ## gloss
 

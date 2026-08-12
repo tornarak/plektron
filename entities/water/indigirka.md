@@ -1,4 +1,4 @@
-# water:indighirka — Indighirka
+# water:indigirka — Indigirka
 
 - status: ratified
 - within: place:russian-far-east

@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Kuluˊči | ckt | yes | |
+| Колючинъ | ru | yes | 1-359's list |
 
 ## gloss
 

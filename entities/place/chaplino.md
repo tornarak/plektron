@@ -14,6 +14,7 @@
 | Indian Point | | yes | |
 | Uñiˊin | ckt | yes | |
 | Uñiˊsak | ypk | yes | |
+| Мысъ Чаплинъ | ru | yes | 1-359's list pairs it with "Indian Point" |
 
 ## gloss
 

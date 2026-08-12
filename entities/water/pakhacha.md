@@ -11,6 +11,7 @@
 | Pakhacha | | no | |
 | Poqaˊč | ckt | yes | the marked form; `Poqach` below is its ASCII romanization, which is what the geo slug carries |
 | Poqach | | no | |
+| Похача | ru | yes | 1-035, "(Похача)" beside the native form |
 
 ## gloss
 
