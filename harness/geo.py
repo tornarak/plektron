@@ -116,6 +116,29 @@ def rings(doc: dict, layer: str | None = None):
                 yield [(c[0], c[1]) for c in ring]
 
 
+def polygons(doc: dict, layer: str | None = None):
+    """The same rings, **grouped by polygon** — outer ring first, then its holes.
+
+    This is the grouping GeoJSON actually declares, and `in_shape` needs it:
+    parity counted across every ring in a collection makes two *overlapping*
+    polygons cancel, so a point inside both reads as outside. A single source's
+    MultiPolygon does not overlap itself, which is why the flat count survived
+    this long, but nothing enforced that and nothing announced it.
+    """
+    for f in doc.get("features", []):
+        if layer and f["properties"].get("layer") != layer:
+            continue
+        g = f["geometry"]
+        if g["type"] == "Polygon":
+            polys = [g["coordinates"]]
+        elif g["type"] == "MultiPolygon":
+            polys = g["coordinates"]
+        else:
+            continue
+        for poly in polys:
+            yield [[(c[0], c[1]) for c in ring] for ring in poly]
+
+
 def lines(doc: dict, layer: str = "rivers"):
     for f in doc.get("features", []):
         if f["properties"].get("layer") != layer:
@@ -162,15 +185,24 @@ def in_ring(pt, ring) -> bool:
 
 
 def in_shape(pt, doc: dict) -> bool:
-    """Point in a collection's outer rings, holes honoured by parity.
+    """Point inside any one of a collection's polygons, holes honoured by parity.
 
-    Parity across every ring rather than an outer/hole distinction: GeoJSON
+    Parity **within a polygon** rather than an outer/hole distinction: GeoJSON
     winding order is advisory and the sources here do not follow it
     consistently, so counting crossings is the reading that does not depend on
     a convention nobody enforced.
+
+    **But the count is per polygon and the polygons are OR'd.** Parity across
+    the whole collection is the same arithmetic only while no two polygons
+    overlap: where they do, a point inside both crosses an even number of rings
+    and reads as outside — a hole punched exactly where two shapes agree, which
+    is the last place anyone would look for one. Nothing in the store overlaps
+    itself today, so this was latent rather than visible; it is a correctness
+    fix to the primitive `contains` and `verify` are built on, not a
+    consequence of anything above it.
     """
-    hits = sum(1 for r in rings(doc) if in_ring(pt, r))
-    return hits % 2 == 1
+    return any(sum(1 for r in poly if in_ring(pt, r)) % 2 == 1
+               for poly in polygons(doc))
 
 
 def distance_to(pt, doc: dict) -> float:

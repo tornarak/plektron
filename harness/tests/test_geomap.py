@@ -81,6 +81,55 @@ def test_a_wellformed_area_parses_and_is_carried():
 
 # ------------------------------------------------------------ containment
 
+def _square(x0, y0, x1, y1) -> list:
+    return [[[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]]]
+
+
+def _collection(*polys) -> dict:
+    return {"type": "FeatureCollection",
+            "features": [{"type": "Feature", "properties": {"layer": "test"},
+                          "geometry": {"type": "Polygon", "coordinates": p}}
+                         for p in polys]}
+
+
+def test_two_overlapping_polygons_do_not_cancel_each_other_out():
+    """The parity count is **per polygon**, OR'd — not across the collection.
+
+    Across a whole collection the arithmetic is the same only while no two
+    polygons overlap. Where they do, a point inside both crosses an even number
+    of rings and reads as *outside*: a hole punched exactly where two shapes
+    agree, which is the last place anyone would look for one. Written against a
+    fixture rather than the store because the store has no overlapping pair to
+    catch it with, which is precisely why this went unnoticed.
+    """
+    doc = _collection(_square(0, 0, 10, 10), _square(5, 0, 15, 10))
+    assert geo.in_shape((7, 5), doc)      # in both — the regression
+    assert geo.in_shape((2, 5), doc)      # in the first only
+    assert geo.in_shape((12, 5), doc)     # in the second only
+    assert not geo.in_shape((20, 5), doc)
+
+
+def test_a_hole_is_still_a_hole():
+    """The fix must not cost what parity was there for. An inner ring is a hole
+    in *its own* polygon, and winding order is advisory in these sources, so
+    counting crossings within the polygon is still the reading that does not
+    depend on a convention nobody enforced."""
+    ring = _square(0, 0, 10, 10)[0]
+    hole = _square(4, 4, 6, 6)[0]
+    doc = _collection([ring, hole])
+    assert geo.in_shape((1, 1), doc)
+    assert not geo.in_shape((5, 5), doc)
+
+
+def test_polygons_groups_the_rings_that_rings_flattens():
+    """Both views over one collection, and the difference between them is the
+    whole of the fix."""
+    doc = _collection([_square(0, 0, 10, 10)[0], _square(4, 4, 6, 6)[0]],
+                      _square(20, 0, 30, 10))
+    assert len(list(geo.rings(doc))) == 3
+    assert [len(p) for p in geo.polygons(doc)] == [2, 1]
+
+
 @built
 def test_containment_separates_a_true_relation_from_a_false_one():
     """The check has to be able to fail, or its passing says nothing.
