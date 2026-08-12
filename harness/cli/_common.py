@@ -171,6 +171,15 @@ def exclusive(*names: str) -> BoundConstraintSpec:
     return BoundConstraintSpec(mutually_exclusive, list(names))
 
 
+def require_any(*names: str) -> BoundConstraintSpec:
+    """At least one of `names`, and two is fine. `entity locate`'s
+    `--geo`/`--area`: a point and a shape are independent facts about one
+    entity, and setting both in one act is the normal case, not a conflict.
+    What is refused is the invocation that names an entity and changes nothing,
+    which would report a no-op as a success."""
+    return BoundConstraintSpec(cloup.constraints.require_any, list(names))
+
+
 def require_exactly_one(*names: str) -> BoundConstraintSpec:
     """Exactly one of `names`, neither zero nor two. `tei seam`'s
     `--continues`/`--fresh`, which was argparse's one *required* mutually

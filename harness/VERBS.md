@@ -1228,10 +1228,23 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 --since PP-NNN  the page whose reading prompted the entry. Required — an apparatus store that cannot be traced back to a page is one nobody can audit
 --trigger FORM  a form that means this entity, added at `auto: no`. Repeatable. Raising one to `auto: yes` is a separate act, in the file or the browser, because it licenses a link nobody will be asked about
 --within ID  the entity that contains this one, `class:slug`. The atlas's whole structure, and the only thing that puts a location somewhere rather than merely on a map
---area KIND:SLUG  the shape in `data/geo/` this entity is drawn as, e.g. `watershed:anadyr`. Identifying a name Bogoras wrote in 1904 with a polygon a modern service returned is a human's act, which is why it is typed rather than matched by name — `watershed:main` and the English word are one keystroke apart. `geo list` names every shape
+--area KIND:SLUG  the shape in `data/geo/` this entity is drawn as, e.g. `watershed:anadyr`. Identifying a name Bogoras wrote in 1904 with a polygon a modern service returned is a human's act, which is why it is typed rather than matched by name — `watershed:main` and the English word are one keystroke apart. Several, comma-separated, is a composite. `geo list` names every shape
 --commit  write it; without this the file is reported and not created
 --root --json --toon --pager
 ```
+
+### entity locate ID
+**Does** set or replace an existing entry's `geo:` point, its `area:` shape, or both. **The act that puts a name on the map**, and it is a human's: a coordinate for a toponym Bogoras wrote in 1904, or the judgement that two sourced polygons are one speaker area, is an assertion about the world no rule may make. Re-parses the file before writing, as `entity new` does, and refuses an `area:` naming a shape `data/geo/` does not hold — a composite resolves only when every member does.
+**Reads** `entities/`, `data/geo/index.json`. **Writes** the named file under `--commit`. **Exit** 0, or 1 if the entity does not exist.
+```
+--geo "LAT LON"  two WGS84 decimal degrees, latitude then longitude. Negative longitudes are west, as the store's sources write them; the shift into the atlas's continuous window is the reader's
+--area KIND:SLUG  the shape this entity is drawn as, or several comma-separated for a composite. Stored in its canonical spelling, members sorted, so one union has one spelling
+--commit  write it; without this the change is reported and not made
+--root --json --toon --pager
+```
+**Note** at least one of `--geo`/`--area` is required, and both together is the normal case rather than a conflict. What is refused is the invocation that names an entity and changes nothing.
+**Note** singular ID, because the flags name one entity's fields — the same reason `proposal set` is singular. A new action rather than a flag on `entity new`, because creating an entry and amending one are different acts and `new` exits 1 on an entry that already exists.
+**Note** the worklist it answers is `geo verify`'s `unlocated`.
 
 ### entity check
 **Does** the store gate: every file parses, every class is known, every heading agrees with its directory and its filename, every `within:` resolves and the chain is acyclic, every `area:` names a shape that exists in `data/geo/`, and no form is `auto: yes` for two entities at once. Collisions that are not errors are reported anyway — an ambiguous form is the normal state, and the generator surfaces it as a question rather than resolving it.
@@ -1299,16 +1312,19 @@ is one keystroke from an `area:` that resolves as an entity reference.
 ```
 --root --json --toon --pager
 ```
-**Emits** `scope` (`shapes`, `claimed`, the longitude `window`, `absent`), `shapes`, and `absent`.
+**Emits** `scope` (`shapes`, `claimed`, the longitude `window`, `absent`, `composites`), `shapes`, `composites`, and `absent`.
+**Note** **a composite `area:` counts as a claim on each of its members.** A union is a fact about `entities/` and this census is a fact about `data/geo/`, so the unions are listed after the store's own rows and never among them — nothing mints a shape by naming one.
+**Note** **the `absent` block holds two kinds of absence and says which.** It began as "a Tier-1 code Asher 2007 draws no polygon for"; it now also holds a feature no gazetteer in hand carries at all — Bering Strait, which is in neither Natural Earth layer at 10m. A row therefore carries `sought` and `source`, what was looked for and where, so the second is not read as the first.
 **Note** longitudes are normalized into `[60, 420)`, so anything above 180 is west of the antimeridian and Chukotka runs continuously rather than tearing from +179 to −179. It is what lets every planar operation downstream treat a meridian-spanning shape as an ordinary one.
 
 ### geo verify
-**Does** the geometry against the authored hierarchy. Four reports, none of which gates.
+**Does** the geometry against the authored hierarchy. Five reports, none of which gates.
 **Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
 ```
 --root --json --toon --pager
 ```
-**Emits** `containment` (one row per child/parent pair that both carry an `area:`), `points`, `shared`, `unclaimed`.
+**Emits** `containment` (one row per child/parent pair that both carry an `area:`), `points`, `shared`, `unclaimed`, `unlocated`.
+**Note** `unlocated` **is `unclaimed` from the other side** — entities inside a subtree the atlas can draw that carry neither `geo:` nor `area:`. `unclaimed` says what the store has that nobody points an entity at; this says what the tree names that nothing puts on a map, which is the worklist a human supplying coordinates actually has. `entity locate` answers a row of it. Scoped by the tree rather than by class, because every person and source in the store is unlocated and always will be, and a worklist mostly made of rows nobody will act on is one nobody reads. `wants` distinguishes an entity that needs a coordinate from one already framed by its members — asking for a boundary for Chukotka is exactly what the atlas refuses to do.
 **Note** **containment names the pair, never a culprit.** A basin delineated from a tributary's outlet is contained in its trunk's by construction, so this is a real second witness on the river chain — but a disagreement says one of two authored facts is wrong and the geometry cannot say which.
 **Note** **the reading respects the source's own declaration of precision.** The delineator reverts to a coarse DEM above 50,000 km² and says so in the file; a coarse parent's boundary wanders by tens of kilometres, and a true tributary measured against one lands at 0.70–0.87 rather than 1.00. Every containment pair in the store today has such a member. Measured on the real shapes: relations the book and the map both support land at 0.68–0.82, and a river paired with a basin it has nothing to do with lands at 0.00–0.11 — so the floor sits in the gap, and `coarse` names the member that put it there.
 **Note** a `geo:` point outside its own shape is reported **with the distance and is not a defect by itself**: a river's natural point is its mouth, which sits *on* the boundary the basin was delineated from. `water:anadyr` is 0.59° out, at the estuary.

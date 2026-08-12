@@ -268,6 +268,61 @@ def test_the_three_conditions_together_are_what_licenses_a_link():
     assert E.auto_forms(i) == {"Markova": "place:markova"}
 
 
+# --------------------------------------------------- setting a field in place
+
+def test_a_field_that_exists_is_replaced_where_it_stands():
+    """In place, because a field that moved on every edit would make every diff
+    of an entity file a reordering with a change somewhere inside it."""
+    from harness.cli._entity import _set_field
+
+    text = ("# place:x — X\n\n- status: ratified\n- since: 1-021\n"
+            "- within: place:y\n- geo: 1.0 2.0\n- link: wikidata:Q1\n\n"
+            "## gloss\n\nx\n")
+    got = _set_field(text, "geo", "3.0 4.0")
+    assert "- geo: 3.0 4.0\n- link:" in got
+    assert got.count("- geo:") == 1
+
+
+def test_a_field_that_is_missing_is_inserted_where_the_scaffold_puts_it():
+    """`entity new`'s order, so a file a human later reads is not visibly
+    divided into what was typed and what a command set."""
+    from harness.cli._entity import FIELD_ORDER, _set_field
+
+    text = ("# place:x — X\n\n- status: ratified\n- since: 1-021\n"
+            "- link: wikidata:Q1\n\n## gloss\n\nx\n")
+    got = _set_field(text, "area", "watershed:anadyr")
+    fields = [line[2:].split(":")[0] for line in got.splitlines()
+              if line.startswith("- ")]
+    assert fields == ["status", "since", "area", "link"]
+    assert fields == sorted(fields, key=FIELD_ORDER.index)
+
+
+def test_a_field_is_never_written_into_the_gloss():
+    """`- foo: bar` below a `##` is prose, and the parser already draws that
+    line the same way."""
+    from harness.cli._entity import _set_field
+
+    text = ("# place:x — X\n\n- status: ratified\n- since: 1-021\n\n"
+            "## gloss\n\n- authority: this is prose\n")
+    got = _set_field(text, "authority", "k")
+    head, _, gloss = got.partition("## gloss")
+    assert "- authority: k" in head
+    assert "- authority: this is prose" in gloss
+
+
+def test_a_set_field_round_trips_through_the_parser(tmp_path):
+    """The guarantee `locate` rests on: it re-parses before it writes, so a bad
+    value fails as a message and not as a file."""
+    from harness.cli._entity import _set_field
+
+    p = entry(tmp_path, "place:x", extra="- within: place:y\n")
+    text = _set_field(p.read_text(encoding="utf-8"), "geo", "66.0 -170.0")
+    text = _set_field(text, "area", "watershed:anadyr,marine:chaun-bay")
+    rec = E.parse(text)
+    assert rec["geo"] == (66.0, -170.0)
+    assert rec["area"] == "marine:chaun-bay,watershed:anadyr"
+
+
 # ------------------------------------------------------------ the live store
 
 def test_the_committed_store_checks_out():

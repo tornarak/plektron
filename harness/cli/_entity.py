@@ -16,10 +16,12 @@ deciding whether an entry earns its keep.
 """
 from __future__ import annotations
 
+import re
 import unicodedata
 from pathlib import Path
 
 from ..entities import (
+    _SECTION,
     Malformed,
     check,
     load,
@@ -28,7 +30,19 @@ from ..entities import (
     split_id,
     trigger_index,
 )
-from ._common import action, add_all, arg, group, opt, out, verdict
+from ..geo import canonical_area
+from ..geo import index as geo_index
+from ..geo import split_area
+from ._common import (
+    action,
+    add_all,
+    arg,
+    group,
+    opt,
+    out,
+    require_any,
+    verdict,
+)
 
 
 def register(cli):
@@ -68,9 +82,38 @@ def register(cli):
              "with a polygon a modern service returned is a human's act**, "
              "which is why it is typed here and never matched by name: "
              "`watershed:main` and the English word are one keystroke apart. "
-             "`harness geo list` names every shape")
+             "Several, comma-separated, is a composite — the union of shapes "
+             "no single source draws together, and the assertion that they "
+             "belong together is likewise the human's. `harness geo list` "
+             "names every shape")
     opt(p, "--commit", is_flag=True,
         help="write it. Without this the file is reported and not created")
+
+    p = action(g, "locate", run_locate,
+               help="set or replace an existing entry's `geo:` point, its "
+               "`area:` shape, or both. **The act that puts a name on the "
+               "map**, and it is a human's: a coordinate for a toponym Bogoras "
+               "wrote in 1904, or the judgement that two sourced polygons are "
+               "one speaker area, is an assertion about the world that no rule "
+               "may make. `geo verify`'s `unlocated` report is the worklist "
+               "this answers a row of. One ID, because the flags name one "
+               "entity's fields"
+               "\n\nID: `class:slug`, e.g. `place:chukchee-peninsula`",
+               constraints=(require_any("geo", "area"),))
+    arg(p, "ident", metavar="ID")
+    opt(p, "--geo", metavar="LAT LON",
+        help="two WGS84 decimal degrees, latitude then longitude, "
+             "space-separated — `66.05 -169.6`. Negative longitudes are west, "
+             "as the store's sources write them; the shift into the atlas's "
+             "continuous window is the reader's, not the author's")
+    opt(p, "--area", metavar="KIND:SLUG",
+        help="the shape this entity is drawn as, or several comma-separated "
+             "for a composite. **A composite is not a shape the store holds** "
+             "— it is resolved from its members on every run, so the union "
+             "cannot go stale, and the claim that the members belong together "
+             "lives here in the entity file where a reader can see whose it is")
+    opt(p, "--commit", is_flag=True,
+        help="write it. Without this the change is reported and not made")
 
     action(g, "check", run_check,
            help="the store gate: every file parses, every class is known, every "
@@ -190,6 +233,86 @@ def run_new(a) -> int:
     out(a, {"id": ident, "path": str(p), "wrote": bool(a.commit),
             "means": "written, status proposed" if a.commit
                      else "would write — pass --commit"})
+    return 0
+
+
+#: The order a scaffolded entry writes its fields in. A field this verb adds
+#: goes where `entity new` would have put it, so a file a human later reads is
+#: not visibly divided into what was typed and what was set by a command.
+FIELD_ORDER = ("status", "since", "within", "geo", "area", "link", "authority")
+
+
+def _set_field(text: str, key: str, value: str) -> str:
+    """`- key: value` replaced in place, or inserted in `FIELD_ORDER`.
+
+    In place matters: a field that moved on every edit would make every diff of
+    an entity file a reordering with a change somewhere inside it, which is the
+    diff nobody reads. Insertion is only for a key the file does not have yet.
+    """
+    # **Everything here is scoped to the field block** — the text above the
+    # first `##`. A `- authority: …` inside a gloss is prose, `entities.parse`
+    # draws that line the same way, and an unscoped substitution would silently
+    # rewrite a sentence instead of a field.
+    sect = _SECTION.search(text)
+    head_end = sect.start() if sect else len(text)
+    head, rest = text[:head_end], text[head_end:]
+
+    pat = re.compile(rf"^-\s+{re.escape(key)}:.*$", re.M)
+    if pat.search(head):
+        return pat.sub(lambda _m: f"- {key}: {value}", head, count=1) + rest
+
+    rank = FIELD_ORDER.index(key) if key in FIELD_ORDER else len(FIELD_ORDER)
+    fields = list(re.finditer(r"^-\s+([a-z]+):.*$", head, re.M))
+    if not fields:
+        raise ValueError("the entry has no field block to add to")
+    for m in fields:
+        k = m.group(1)
+        r = FIELD_ORDER.index(k) if k in FIELD_ORDER else len(FIELD_ORDER)
+        if r > rank:
+            return head[:m.start()] + f"- {key}: {value}\n" + head[m.start():] + rest
+    at = fields[-1].end() + 1
+    return head[:at] + f"- {key}: {value}\n" + head[at:] + rest
+
+
+def run_locate(a) -> int:
+    store = _store(a)
+    ident = str(a.ident)
+    split_id(ident)
+    rec = store.get(ident)
+    if rec is None:
+        out(a, {"id": ident, "wrote": False, "means": "no such entity"})
+        return 1
+
+    p = Path(rec["path"])
+    text = p.read_text(encoding="utf-8")
+    rows = []
+    for key, given, before in (
+            ("geo", a.geo, " ".join(f"{v:g}" for v in rec["geo"]) if rec["geo"] else ""),
+            ("area", a.area, rec["area"])):
+        if not given:
+            continue
+        # Normalized on the way in so the file holds one spelling of a union
+        # and `geo verify` cannot see the same composite as two.
+        value = canonical_area(given) if key == "area" else " ".join(str(given).split())
+        text = _set_field(text, key, value)
+        rows.append({"id": ident, "field": key, "was": before or "—",
+                     "now": value, "wrote": bool(a.commit)})
+
+    # Parsed before it is written, as `entity new` does: a malformed coordinate
+    # or a shape kind that collides with an entity class fails as a message
+    # here, rather than as a file the next `check` has to explain.
+    from ..entities import parse
+    got = parse(text, where=str(p))
+    unknown = [m for m in split_area(got["area"])
+               if m not in geo_index(a.root)["shapes"]]
+    if unknown:
+        raise ValueError(
+            f"{ident}: {', '.join(unknown)} names nothing in data/geo/. "
+            f"`harness geo list` names every shape — and a composite resolves "
+            f"only when every member does")
+    if a.commit:
+        p.write_text(text, encoding="utf-8")
+    out(a, rows)
     return 0
 
 
