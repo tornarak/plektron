@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Nishne-Kolymsk | | no | |
+| Nishne-Kolymsk | | yes | |
 
 ## gloss
 

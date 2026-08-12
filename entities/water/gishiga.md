@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gishiga | | no | |
+| Gishiga | | no | the river, the town [[place:gishiginsk]], [[water:gishiga-bay]] and the district all bear it |
 
 ## gloss
 

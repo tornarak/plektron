@@ -8,7 +8,7 @@
 |---|---|---|---|
 | Keiˊñu-weˊem | ckt | yes | |
 | Медвѣжья рѣка | ru | yes | |
-| Bear River | | no | |
+| Bear River | | yes | |
 
 ## gloss
 

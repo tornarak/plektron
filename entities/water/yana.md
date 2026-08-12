@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Yana | | no | |
+| Yana | | yes | |
 
 ## gloss
 

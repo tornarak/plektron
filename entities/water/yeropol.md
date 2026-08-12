@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Yeropol | | no | |
+| Yeropol | | yes | |
 
 ## gloss
 

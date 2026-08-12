@@ -7,7 +7,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Karbaschan | eve | yes | |
-| Small Boat | | no | |
+| Small Boat | | yes | |
 
 ## gloss
 

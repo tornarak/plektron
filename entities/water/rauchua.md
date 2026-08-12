@@ -8,8 +8,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Rauchua | | no | |
-| Baranikha | | no | |
+| Rauchua | | yes | |
+| Baranikha | | yes | |
 
 ## gloss
 

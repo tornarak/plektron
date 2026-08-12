@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Okhota | | no | |
+| Okhota | | yes | |
 
 ## gloss
 

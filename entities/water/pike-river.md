@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Pike River | | no | |
+| Pike River | | yes | |
 | Щучья рѣка | ru | yes | |
 
 ## gloss

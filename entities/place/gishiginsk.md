@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gishiginsk | | no | |
+| Gishiginsk | | yes | |
 
 ## gloss
 

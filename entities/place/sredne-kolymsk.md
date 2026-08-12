@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Sredne-Kolymsk | | no | |
+| Sredne-Kolymsk | | yes | |
 
 ## gloss
 

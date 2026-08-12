@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Bering Strait | | no | |
+| Bering Strait | | yes | |
 
 ## gloss
 

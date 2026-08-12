@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Chikayeva | | no | |
+| Chikayeva | | yes | |
 
 ## gloss
 

@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Under the Cliffs | | no | |
+| Under the Cliffs | | yes | |
 | У Утесика | ru | yes | |
 
 ## gloss

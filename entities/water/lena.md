@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Lena | | no | |
+| Lena | | yes | |
 
 ## gloss
 

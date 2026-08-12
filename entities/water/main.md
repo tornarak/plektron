@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Maiˊn | | no | |
+| Maiˊn | | yes | |
 
 ## gloss
 

@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Small Anui | | no | |
+| Small Anui | | yes | |
 
 ## gloss
 

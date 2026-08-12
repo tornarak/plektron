@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| East Cape | | no | |
+| East Cape | | yes | |
 | Мысъ Дежневъ | ru | yes | |
 
 ## gloss

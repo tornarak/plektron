@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cape Anannon | | no | |
+| Cape Anannon | | yes | |
 
 ## gloss
 

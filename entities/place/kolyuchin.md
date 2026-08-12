@@ -1,4 +1,4 @@
-# place:kuluchi — Kuluˊči
+# place:kolyuchin — Kolyuchin
 
 - status: ratified
 - within: place:chukchi-peninsula

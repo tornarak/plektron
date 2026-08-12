@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Indighirka | | no | |
+| Indighirka | | yes | |
 | Indighirka River | | yes | |
 
 ## gloss

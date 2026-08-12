@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Large Chukchee River | | no | |
+| Large Chukchee River | | yes | |
 | Большая Чукочья рѣка | ru | yes | |
 
 ## gloss

@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Oloi | | no | |
+| Oloi | | yes | |
 
 ## gloss
 

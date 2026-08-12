@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Opuka | | no | |
+| Opuka | | yes | |
 
 ## gloss
 

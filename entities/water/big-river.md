@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Big River | | no | |
+| Big River | | yes | |
 | Большая рѣка | ru | yes | |
 
 ## gloss

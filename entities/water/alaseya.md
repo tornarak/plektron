@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Alaseya | | no | |
+| Alaseya | | yes | |
 
 ## gloss
 

@@ -7,8 +7,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cape Olutorsky | | no | |
-| Cape Alutorsky | | no | |
+| Cape Olutorsky | | yes | |
+| Cape Alutorsky | | yes | |
 
 ## gloss
 

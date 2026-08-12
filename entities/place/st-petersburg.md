@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Petersburg | | no | |
+| Petersburg | | yes | |
 
 ## gloss
 

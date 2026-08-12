@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Parapolsky Dol | | no | |
+| Parapolsky Dol | | yes | |
 
 ## gloss
 

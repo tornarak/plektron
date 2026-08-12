@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Small Chukchee River | | no | |
+| Small Chukchee River | | yes | |
 | Малая Чукочья рѣка | ru | yes | |
 
 ## gloss

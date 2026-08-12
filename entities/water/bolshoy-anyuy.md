@@ -8,8 +8,8 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Dry Anui | | no | |
-| Large Anui | | no | |
+| Dry Anui | | yes | |
+| Large Anui | | yes | |
 
 ## gloss
 

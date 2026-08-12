@@ -8,8 +8,8 @@
 |---|---|---|---|
 | Vatɪˊrkan | ckt | yes | |
 | Хатырка | ru | no | ambiguous with [[place:ilpi]], which the Russians also call this — 1-359 fn 1 |
-| Hatɪˊykan | | no | |
-| Hatɪˊrkan | | no | |
+| Hatɪˊykan | | yes | |
+| Hatɪˊrkan | | yes | |
 
 ## gloss
 

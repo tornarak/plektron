@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Marich | | no | |
+| Marich | | yes | |
 
 ## gloss
 

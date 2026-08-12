@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Amur | | no | |
+| Amur | | yes | |
 
 ## gloss
 

@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Two Brooks | | no | |
+| Two Brooks | | yes | |
 | У Двухъ Високъ | ru | yes | |
 
 ## gloss

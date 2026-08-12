@@ -7,8 +7,11 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cape Erri | | no | |
+| Cape Erri | | yes | |
+| Cape Shelagskoy | | yes | Bogoras equates them outright: "Cape Shelagskoy (Cape Erri)" (1-041), "the name of Cape Shelagskoy (Cape Erri)" (1-036) |
 
 ## gloss
 
-(unwritten)
+The northwestern corner of the Chukchee coast. Named for the
+[[people:shelag]], per 1-036; with [[place:east-cape]] it bounds the Arctic
+shore that tradition says the [[people:shelag]] once held (1-041).

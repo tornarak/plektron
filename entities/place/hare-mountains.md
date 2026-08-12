@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Hare Mountains | | no | |
+| Hare Mountains | | yes | |
 | Ушканій хребетъ | ru | yes | |
 
 ## gloss

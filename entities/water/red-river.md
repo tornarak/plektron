@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Red River | | no | |
+| Red River | | yes | |
 | Краснина | ru | yes | |
 | Красная | ru | yes | |
 

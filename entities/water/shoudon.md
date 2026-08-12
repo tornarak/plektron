@@ -6,11 +6,11 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Shoudon | | no | |
+| Shoudon | | yes | |
 | Лаудонъ | ru | yes | |
 | Сухая | ru | yes | |
 | Buks˙unda | eve | yes | |
-| Buyunda | | no | |
+| Buyunda | | yes | |
 
 ## gloss
 

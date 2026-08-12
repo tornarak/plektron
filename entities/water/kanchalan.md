@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Kanchalan | | no | |
+| Kanchalan | | yes | |
 
 ## gloss
 

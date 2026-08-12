@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| With the Mosquito | | no | |
+| With the Mosquito | | yes | |
 | У Комарка | ru | yes | |
 
 ## gloss

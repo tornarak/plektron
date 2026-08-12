@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Diomede Islands | | no | |
+| Diomede Islands | | yes | |
 
 ## gloss
 

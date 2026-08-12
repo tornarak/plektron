@@ -6,7 +6,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Forest Border | | no | |
+| Forest Border | | yes | |
 | Край Лѣсовъ | ru | yes | |
 
 ## gloss

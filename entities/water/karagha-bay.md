@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Karagha Bay | | no | |
+| Karagha Bay | | yes | the bare form belongs to [[place:karagha-island]] and stays unlinked |
 
 ## gloss
 

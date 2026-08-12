@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Cape Chukotsky | | no | |
+| Cape Chukotsky | | yes | |
 
 ## gloss
 

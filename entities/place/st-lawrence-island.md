@@ -10,7 +10,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| St. Lawrence Island | | no | |
+| St. Lawrence Island | | yes | |
 
 ## gloss
 
