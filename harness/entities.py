@@ -83,7 +83,7 @@ ENTDIR = "entities"
 #: The four with no name-type are the reason `<rs>` exists here. `NAME_TYPES` is
 #: scoped to what a reader of a page can see and record — it excludes `taxon`
 #: outright ("the binomials are Latin in English prose and out of scope") and has
-#: no member for a language or an institution. Those are exactly the entities a
+#: no member for a language or an institution. Those are exactly the entities
 #: an alias table can find reliably, and linking them says "this string refers to
 #: that entity", not "the page marked a proper noun here".
 ENTITY_CLASSES = {
@@ -368,7 +368,7 @@ def auto_forms(idx: dict[str, list[dict]]) -> dict[str, str]:
     Three conditions, all mechanical, all checkable from the store alone:
 
     - **exactly one entity claims the form.** Two claims make it ambiguous *by
-      construction* — this is the `people:chukchee` / `language:chukchee` case,
+      construction* — this is the `people:chukchi` / `language:chukchi` case,
       where the string is genuinely both and only the sentence around it decides.
       Neither author can fix that from their own file, which is why the rule
       reads the whole store and not the entry.

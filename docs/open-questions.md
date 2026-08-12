@@ -83,7 +83,7 @@ in for an unread glyph.
   `entity check` already refuses a dangling parent and a cycle, so the store can be
   populated correctly before anything reads it that way. What is missing is the
   design: the shape wanted is a **hierarchy of locations** — russian far east →
-  chukotka → chukchi peninsula → uelen, anadyr basin → markova, kamchatka → paren —
+  chukotka → chukchi peninsula → uelen, anadyr basin → markovo, kamchatka → paren —
   where each location appears in its parent's map and the selected chain is
   navigable as a tree. There is dumped GeoJSON for watersheds and language regions
   in `scratch/` to build it from, and no external tiles will ever be used: the

@@ -290,7 +290,7 @@ def test_unlocated_is_scoped_by_the_tree_and_not_by_class(tmp_path):
 
 @built
 def test_two_entities_may_share_one_shape():
-    """`people:chukchee` and `language:chukchee` both point at the one Asher
+    """`people:chukchi` and `language:chukchi` both point at the one Asher
     polygon. Forcing a choice would be this edition deciding something the
     source does not — so it is reported, not refused."""
     assert entities.check(ROOT)["ok"]
@@ -415,7 +415,7 @@ def test_the_subject_is_marked_a_basin_only_when_its_shape_is_a_watershed():
     assert "class='map basin'" in basin["svg"]
     assert basin["basis"]["id"] == "watershed:anadyr"
 
-    plain = edition_ui.map_context("place:markova", ROOT, "/edition", store=store)
+    plain = edition_ui.map_context("place:markovo", ROOT, "/edition", store=store)
     assert plain["svg"] and "basin" not in plain["svg"]
 
 
@@ -471,13 +471,13 @@ def test_what_is_warmed_is_wider_than_what_is_drawn():
     """The map is the authority on what can be highlighted, never on what a
     reader is about to open. The Omolon has a shape of its own and is still on no
     layer of the Russian Far East's map: `member_shapes` stopped at the Kolyma
-    above it. Markova is a point three levels down, past `pins_under`'s depth.
+    above it. Markovo is a point three levels down, past `pins_under`'s depth.
     Both are a click or two from where the reader is standing."""
     store = entities.load(ROOT)
     ctx = edition_ui.map_context("place:russian-far-east", ROOT, "/e", store=store)
     drawn = set(re.findall(r"data-ent='([^']*)'", ctx["svg"]))
-    assert {"water:omolon", "place:markova"} <= set(ctx["warm"])
-    assert not ({"water:omolon", "place:markova"} & drawn)
+    assert {"water:omolon", "place:markovo"} <= set(ctx["warm"])
+    assert not ({"water:omolon", "place:markovo"} & drawn)
     assert "place:russian-far-east" not in ctx["warm"]   # never itself
 
 
@@ -494,7 +494,7 @@ def test_a_member_is_named_by_its_entity_and_not_by_its_shape():
 def test_a_pin_label_is_escaped_and_turns_inward_at_the_edge():
     f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
     svg = geomap.render(f, {}, pins=[(950.0, 500.0, "<script>", "place:x"),
-                                     (100.0, 500.0, "Markova", "place:markova")])
+                                     (100.0, 500.0, "Markovo", "place:markovo")])
     assert "<script>" not in svg and "&lt;script&gt;" in svg
     assert svg.count("text-anchor='end'") == 1
     assert svg.count("text-anchor='start'") == 1

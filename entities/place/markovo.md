@@ -1,4 +1,4 @@
-# place:markova — Markova
+# place:markovo — Markovo
 
 - status: ratified
 - since: 1-035

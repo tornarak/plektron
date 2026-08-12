@@ -1,4 +1,4 @@
-# people:chuvantzy — Chuvantzy
+# people:chuvans — Chuvans
 
 - status: ratified
 - since: 1-036
@@ -10,7 +10,8 @@
 |---|---|---|---|
 | Čaˊačên | ckt | yes | |
 | Russianized natives | | no | |
+| Chuvantzy |  | no | the book's spelling |
 
 ## gloss
 
-[[people:yukaghir]] subgroup living around [[water:chaun-bay]]
+[[people:yukaghir]] subgroup living around [[water:chaunskaya-bay]]

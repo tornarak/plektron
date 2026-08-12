@@ -1,4 +1,4 @@
-# people:inupiat — Inupiat
+# people:inupiat — Iñupiat
 
 - status: ratified
 - since: 1-065
@@ -12,3 +12,4 @@
 |---|---|---|---|
 | American Eskimo | | yes | |
 | Eskimo | | no |  |
+| Inupiat | en | no | the ASCII spelling; the title carries the ñ and the slug cannot |

@@ -1,4 +1,4 @@
-# place:chukchee-peninsula — Chukchee Peninsula
+# place:chukchi-peninsula — Chukchi Peninsula
 
 - status: ratified
 - since: 1-021

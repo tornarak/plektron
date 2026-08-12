@@ -1,4 +1,4 @@
-# people:chukchee — Chukchee
+# people:chukchi — Chukchi
 
 - status: ratified
 - since: 1-021
@@ -18,13 +18,13 @@
 | oraˊwêʟ̣at | ckt | yes | |
 | lɪˊê-oraˊwêʟ̣at | ckt | yes | |
 | Luoravetlan | | yes | see above |
-| Chukchee | | no | also the language — only the sentence decides. See [[language:chukchee]] |
+| Chukchee | | no | also the language — only the sentence decides. See [[language:chukchi]] |
 
 ## gloss
 
 The people this book is about, in the book’s own spelling. Bogoras divides them
-throughout into the [[people:reindeer-chukchee]] of the interior and the
-[[people:maritime-chukchee]] of the coast, and treats the division as the
+throughout into the [[people:reindeer-chukchi]] of the interior and the
+[[people:maritime-chukchi]] of the coast, and treats the division as the
 organising fact of their material life (1-021). Those two carry their own
 triggers; this entry is the people as a whole.
 

@@ -387,6 +387,116 @@ def test_a_set_field_round_trips_through_the_parser(tmp_path):
     assert rec["area"] == "marine:chaun-bay,watershed:anadyr"
 
 
+# ---------------------------------------------------------------- renaming
+
+class _Args:
+    """`run_rename`'s argument object. The CLI builds one out of click; here it
+    is spelled out, so a test names exactly the flags it is exercising."""
+
+    def __init__(self, root, old, new, canonical="", commit=True):
+        self.root, self.old, self.new = root, old, new
+        self.canonical, self.commit = canonical, commit
+        self.json = self.toon = self.pager = False
+
+
+def _rename(tmp_path, old, new, **kw):
+    from harness.cli._entity import run_rename
+    return run_rename(_Args(tmp_path, old, new, **kw))
+
+
+def test_a_rename_repoints_within_and_wikilinks(tmp_path):
+    """The two ways one entry points at another, and `entity check` gates both —
+    so a rename that missed one would fail the gate rather than go quiet."""
+    entry(tmp_path, "people:chukchee", aliases=[("Chukchee tribe", True)])
+    entry(tmp_path, "place:markova", extra="- within: people:chukchee\n",
+          gloss="home of the [[people:chukchee]]")
+    _rename(tmp_path, "people:chukchee", "people:chukchi")
+
+    store = E.load(tmp_path)
+    assert "people:chukchi" in store and "people:chukchee" not in store
+    assert not (tmp_path / "entities" / "people" / "chukchee.md").exists()
+    assert store["place:markova"]["within"] == "people:chukchi"
+    assert "[[people:chukchi]]" in store["place:markova"]["gloss"]
+    assert E.check(tmp_path)["ok"]
+
+
+def test_a_retitled_entry_keeps_the_book_spelling_as_an_alias(tmp_path):
+    """Not politeness. `detectors.entity_forms` splits canonicals into the
+    corpus's proper-noun dictionary, so a rename that only moved the heading
+    would take "Chukchee" out of the dictionary and start reporting it as a
+    transcription candidate on every page that prints it."""
+    entry(tmp_path, "people:chukchee", canonical="Chukchee",
+          aliases=[("Chukchee tribe", True)])
+    _rename(tmp_path, "people:chukchee", "people:chukchi", canonical="Chukchi")
+
+    rec = E.load(tmp_path)["people:chukchi"]
+    assert rec["canonical"] == "Chukchi"
+    assert "Chukchee" in {t["form"] for t in rec["aliases"]}
+
+
+def test_the_old_canonical_is_not_filed_twice(tmp_path):
+    """`parse` refuses a form listed twice in one file, so the naive append
+    would break the file the verb had just written."""
+    entry(tmp_path, "people:chukchee", canonical="Chukchee",
+          aliases=[("Chukchee", False)])
+    _rename(tmp_path, "people:chukchee", "people:chukchi", canonical="Chukchi")
+
+    forms = [t["form"] for t in E.load(tmp_path)["people:chukchi"]["aliases"]]
+    assert forms.count("Chukchee") == 1
+
+
+def test_a_rename_is_refused_while_a_committed_page_points_at_it(tmp_path):
+    """A rule may not rewrite a page a human signed. `mz/tei/` is derived and
+    comes back from `tei generate`, so it is named and not refused — the
+    distinction is handed to the caller rather than left to be inferred from a
+    path, which is the property the symlink farm destroyed."""
+    entry(tmp_path, "place:markova")
+    for d, ref in (("tei", "1-021"), (("mz", "tei"), "1-022")):
+        p = tmp_path.joinpath(*([d] if isinstance(d, str) else d))
+        p.mkdir(parents=True, exist_ok=True)
+        (p / f"chukchi-{ref}.xml").write_text(
+            '<TEI><rs ref="place:markova">M</rs></TEI>', encoding="utf-8")
+
+    assert _rename(tmp_path, "place:markova", "place:markovo") == 1
+    assert (tmp_path / "entities" / "place" / "markova.md").exists()
+    assert not (tmp_path / "entities" / "place" / "markovo.md").exists()
+
+
+def test_a_draft_only_ref_does_not_refuse_the_rename(tmp_path):
+    entry(tmp_path, "place:markova")
+    d = tmp_path / "mz" / "tei"
+    d.mkdir(parents=True)
+    (d / "chukchi-1-022.xml").write_text(
+        '<TEI><rs ref="place:markova">M</rs></TEI>', encoding="utf-8")
+
+    assert _rename(tmp_path, "place:markova", "place:markovo") == 0
+    assert "place:markovo" in E.load(tmp_path)
+
+
+def test_a_rename_may_not_change_the_class(tmp_path):
+    """The class is half the identity, so every `@ref` would mean a different
+    thing afterwards. That is a delete and a create, and it should be typed."""
+    entry(tmp_path, "place:markova")
+    with pytest.raises(ValueError, match="changes the class"):
+        _rename(tmp_path, "place:markova", "water:markova")
+
+
+def test_a_rename_onto_an_existing_id_is_refused(tmp_path):
+    entry(tmp_path, "place:markova")
+    entry(tmp_path, "place:anadyr")
+    with pytest.raises(ValueError, match="already exists"):
+        _rename(tmp_path, "place:markova", "place:anadyr")
+
+
+def test_a_reported_rename_writes_nothing(tmp_path):
+    entry(tmp_path, "place:markova", gloss="x")
+    entry(tmp_path, "place:other", gloss="near [[place:markova]]")
+    _rename(tmp_path, "place:markova", "place:markovo", commit=False)
+
+    assert (tmp_path / "entities" / "place" / "markova.md").exists()
+    assert "[[place:markova]]" in E.load(tmp_path)["place:other"]["gloss"]
+
+
 # ------------------------------------------------------------ the live store
 
 def test_the_committed_store_checks_out():

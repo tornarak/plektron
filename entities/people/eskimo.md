@@ -16,6 +16,6 @@ Broad, now-outdated (and arguably offensive) grouping of ethnicities who speak [
 
 Three groups are referred to as "Eskimo" in this text:
 
-- [[people:yupik]] - the "Siberian" or "Asiatic Eskimo"; in [[person:bogoras]]' time, friends and cohabitants of the [[people:chukchee]], thus by far the most common referent of "Eskimo" in the text
-- [[people:inupiat]] - the "American Eskimo", who the [[people:chukchee]] occasionally crossed the Bering Strait to trade with
+- [[people:yupik]] - the "Siberian" or "Asiatic Eskimo"; in [[person:bogoras]]' time, friends and cohabitants of the [[people:chukchi]], thus by far the most common referent of "Eskimo" in the text
+- [[people:inupiat]] - the "American Eskimo", who the [[people:chukchi]] occasionally crossed the Bering Strait to trade with
 - [[people:inuit]] - [[person:boas]]'s "Central Eskimo"

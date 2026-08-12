@@ -16,7 +16,7 @@
 
 ## gloss
 
-Trading post on Cape Chaplino inhabited by [[people:chukchee]] and [[people:yupik]].
+Trading post on Cape Chaplino inhabited by [[people:chukchi]] and [[people:yupik]].
 Important trading and whaling center.
 Dismantled and the natives resettled by the Soviets in the late 50s. The
 settlement has no article or Wikidata item of its own — only the resettlement,

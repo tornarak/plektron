@@ -1,4 +1,4 @@
-# water:dry-anui — Dry Anui
+# water:bolshoy-anyuy — Bolshoy Anyuy
 
 - status: ratified
 - since: 1-035

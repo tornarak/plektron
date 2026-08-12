@@ -1,8 +1,8 @@
-# water:wolverine — Wolverine River
+# water:keperveyem — Keperveyem
 
 - status: ratified
 - since: 1-064
-- within: water:small-anui
+- within: water:maliy-anyuy
 - area: watershed:wolverine-or-keperveyem
 
 ## aliases

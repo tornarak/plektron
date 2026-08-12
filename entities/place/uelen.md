@@ -2,7 +2,7 @@
 
 - status: ratified
 - since: 1-041
-- within: place:chukchee-peninsula
+- within: place:chukchi-peninsula
 - geo: 66.159 -169.812
 
 ## aliases

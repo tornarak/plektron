@@ -1331,6 +1331,18 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 --root --json --toon --pager
 ```
 
+### entity rename OLD NEW
+**Does** move an entity to a new identity: the file, its heading, and every `within:` and `[[wikilink]]` in the store that names it. With `--canonical`, files the old display name as an alias — `detectors.entity_forms` splits canonicals into the corpus's proper-noun dictionary, so retitling without it would drop the book's own spelling out of the dictionary and start reporting it as a transcription candidate. Skipped where the entry already lists the form, since `parse` refuses a form listed twice.
+**Reads** `entities/`, `tei/`, `mz/tei/`. **Writes** the moved file and every re-pointed entry under `--commit`. **Exit** 0, or 1 if committed `tei/` names the old identity.
+```
+--canonical NAME  the new display name; the old one is filed as an alias
+--commit  write it; without this every edit is reported and none is made
+--root --json --toon --pager
+```
+**Note** it **refuses outright when a committed `tei/` page carries a `@ref` to the old id**, and reports rather than refuses for `mz/tei/`. A rule may not rewrite a page a human signed — those pages have to be amended by whoever collated them — while `mz/tei/` is derived and comes back from `tei generate`. The `links` table says which store each stale ref is in, because the two are the same string in the same attribute and only the directory tells them apart.
+**Note** the class may not change. That is a delete and a create: the class is half the identity, so every `@ref` would mean a different thing afterwards.
+**Note** this is cheap only while the corpus holds few `@ref`s. It is the verb that makes an identity decision reversible, which is why the modern-romanization pass could be made at all.
+
 ### entity ratify ID...
 **Does** `proposed` → `ratified`. **The human act**, and the only thing that lets a rule link the entry's forms without asking — so it means the entry has been read against the pages it claims, not that it looks plausible.
 **Reads** `entities/`. **Writes** the named files under `--commit`. **Exit** 0.
@@ -1391,7 +1403,7 @@ is one keystroke from an `area:` that resolves as an entity reference.
 **Note** **containment names the pair, never a culprit.** A basin delineated from a tributary's outlet is contained in its trunk's by construction, so this is a real second witness on the river chain — but a disagreement says one of two authored facts is wrong and the geometry cannot say which.
 **Note** **the reading respects the source's own declaration of precision.** The delineator reverts to a coarse DEM above 50,000 km² and says so in the file; a coarse parent's boundary wanders by tens of kilometres, and a true tributary measured against one lands at 0.70–0.87 rather than 1.00. Every containment pair in the store today has such a member. Measured on the real shapes: relations the book and the map both support land at 0.68–0.82, and a river paired with a basin it has nothing to do with lands at 0.00–0.11 — so the floor sits in the gap, and `coarse` names the member that put it there.
 **Note** a `geo:` point outside its own shape is reported **with the distance and is not a defect by itself**: a river's natural point is its mouth, which sits *on* the boundary the basin was delineated from. `water:anadyr` is 0.59° out, at the estuary.
-**Note** a shape two entities claim is legal and reported. `people:chukchee` and `language:chukchee` both point at the one Asher polygon; forcing a choice would be this edition deciding something the source does not.
+**Note** a shape two entities claim is legal and reported. `people:chukchi` and `language:chukchi` both point at the one Asher polygon; forcing a choice would be this edition deciding something the source does not.
 
 ---
 

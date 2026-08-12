@@ -28,7 +28,7 @@ whose members do not. Nothing downstream had to learn a second kind of identity.
 
 **A composite exists only by being named**, so it always has at least one
 claimant and is displayed under that entity's canonical name. Two entities may
-name the same one, as `people:chukchee` and `language:chukchee` already share
+name the same one, as `people:chukchi` and `language:chukchi` already share
 `langarea:chuk1273`, so the label names every claimant rather than picking one.
 
 THE TWO CHECKS, AND WHY NEITHER GATES. `verify` compares an authored `within:`
@@ -471,8 +471,8 @@ def member_shapes(ent_id: str, store: dict, _seen=None) -> list[tuple[str, str]]
     shape ids alone, which is all a renderer needs to draw them — but a reader
     hovering a child's name wants that child lit up on the map, and the descent
     above is exactly what makes the drawn member *not* reliably a direct child.
-    Two entities may also share one shape (`people:chukchee` and
-    `language:chukchee` both point at the one Asher polygon), so the shape
+    Two entities may also share one shape (`people:chukchi` and
+    `language:chukchi` both point at the one Asher polygon), so the shape
     cannot identify the member even in principle.
     """
     seen = _seen or set()
@@ -668,8 +668,8 @@ def verify(root: Path = Path(".")) -> dict:
       disagree and cannot say which of them is wrong.
     - **a `geo:` point away from its own shape**, with the distance, because a
       river's point is its mouth and the mouth is on the boundary.
-    - **a shape two entities claim**, which is legal — `people:chukchee` and
-      `language:chukchee` may both point at the one Asher polygon, and forcing
+    - **a shape two entities claim**, which is legal — `people:chukchi` and
+      `language:chukchi` may both point at the one Asher polygon, and forcing
       a choice would be this edition deciding something the source does not.
     - **a shape nothing claims**, and its inverse, **an entity nothing locates**.
 

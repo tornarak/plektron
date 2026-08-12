@@ -40,10 +40,61 @@ live only in its directory name**, or nothing can tell what a file is once the
 directory is gone.
 
 In TEI the class is a private-URI prefix, one `<prefixDef>` per class in the
-corpus header's `<encodingDesc>`, so `ref="place:markova"` resolves to the file
+corpus header's `<encodingDesc>`, so `ref="place:markovo"` resolves to the file
 on disk by machinery TEI already defines. `harness tei header` checks that the
 declared set is exactly `entities.ENTITY_CLASSES` — the same two-files-one-fact
 gate the provenance ranks get, for the same reason.
+
+### Renaming one, and why the entries carry modern titles
+
+An identity is what every `@ref` holds, so moving one is cheap exactly as long
+as the corpus holds few of them. It held **none**: `tei/` had no collated page
+when this was done, and the 684 refs in `mz/tei/` are derived and come back from
+`tei generate`. That is the whole reason `harness entity rename` exists and the
+whole reason it was used when it was — the same pass a year later would mean
+amending signed pages.
+
+`entity rename OLD NEW --canonical NAME` moves the file, rewrites the heading,
+and re-points every `within:` and `[[wikilink]]` in the store. Three rules in it
+are load-bearing:
+
+- **It refuses when committed `tei/` names the old identity**, and only reports
+  for `mz/tei/`. A rule may not rewrite a page a human signed; a derived one it
+  need not rewrite at all. The `links` table says which store each stale ref is
+  in, because the two are the same string in the same attribute and only the
+  directory tells them apart.
+- **The old canonical is filed as an alias.** Not politeness:
+  `detectors.entity_forms` splits canonicals into the corpus's proper-noun
+  dictionary, so a rename that only moved the heading would take the book's own
+  spelling *out* of the dictionary and start reporting it as a transcription
+  candidate on every page that prints it. Skipped where the entry already lists
+  the form, since `parse` refuses a form listed twice.
+- **The class may not change.** That is a delete and a create — the class is
+  half the identity, so every `@ref` would mean a different thing afterwards.
+
+**The titles that moved were the ones the repo could already witness.** The
+brief was "what gets the most results today", which is a judgement, so the pass
+was scoped to entries where a second witness was already committed: a
+`wikipedia:` link whose article is titled differently, or an `area:` naming a
+shape whose slug carries both names — `watershed:small-anui-or-maliy-anyuy` is
+the geo store's own adjudication of the same question, made when it was built.
+Twelve entries moved on that evidence and one, `people:inupiat`, took the title
+alone because a slug cannot hold `ñ`.
+
+Everything else stayed, including cases where the modern name is not in doubt —
+`Gilyak`/Nivkh, `Lamut`/Even, `Kamchadal`/Itelmen, `Tungus`/Evenks,
+`Indighirka`/Indigirka. Nothing in the repo attests those, so the witness would
+have been a model's recall, which is the one thing this store does not accept
+for an identity. They are a worklist, not a decision.
+
+`person:bogoras` is the deliberate refusal. Wikipedia files him as *Vladimir
+Bogoraz*; the book prints *Waldemar Bogoras* on its own title page and the
+English literature cites him that way. The witness and the brief disagree, so
+the entry did not move.
+
+**The miss list is identical before and after** — 361 tokens either side. That
+is the check that matters: the dictionary gained the modern spellings and lost
+none of the book's, which is precisely what the alias rule is for.
 
 ### The classes
 
@@ -123,7 +174,7 @@ agreeing without anyone finding out.
 `lang:rus` into the *note* column: an entity's Russian and Chukchi names are
 exactly what a reader of an ethnography wants, the authors knew it, and the only
 place to put the fact was a free-text field nothing could read or check. Thirteen
-rows moved into the column. `people:chukchee` is the one worth looking at — it
+rows moved into the column. `people:chukchi` is the one worth looking at — it
 now says in a column that Чукча is Russian and oraˊwêʟ̣at is the autonym.
 
 - **Blank means unstated**, and most of the store is blank: 128 of 141 rows are
@@ -143,7 +194,7 @@ noun — is still suppressed and still open. `Tjutzchi` is now declared Latin an
 still absent from the miss list. The field records the fact; nothing infers from
 it, and a reader who assumed tagging one had changed the detector would be wrong.
 
-**One entry names another in double brackets**: `[[people:chukchee]]`, in a gloss
+**One entry names another in double brackets**: `[[people:chukchi]]`, in a gloss
 or in an alias note. A bare `class:slug` in prose was unclickable and, worse,
 indistinguishable from prose that merely mentions the shape of an identity — the
 brackets say "this is a reference", and `entity check` then **refuses one that
@@ -157,8 +208,8 @@ the records already use them.
 are mechanical:
 
 1. **Exactly one entity claims the form.** Two claims make it ambiguous *by
-   construction*, whatever either file says. `people:chukchee` and
-   `language:chukchee` both claim "Chukchee" and both are right; only the
+   construction*, whatever either file says. `people:chukchi` and
+   `language:chukchi` both claim "Chukchee" and both are right; only the
    sentence decides, and neither author can see the other's claim. This is why
    the rule reads the whole store and not the entry.
 2. **That claim says `auto: yes`** — the author's declaration that the form
@@ -382,7 +433,7 @@ running text — lights up its shape. That identity has to be carried because
 nothing about a path recovers it: a drawn member is the nearest descendant
 *with* a shape, found by descending through those without, so it is not reliably
 the child whose name you are on; and two entities may share one polygon outright
-(`people:chukchee` and `language:chukchee` point at the one Asher shape), so the
+(`people:chukchi` and `language:chukchi` point at the one Asher shape), so the
 shape could not name the member even in principle. `geo.member_shapes` and
 `geo.pins_under` return the entity beside the thing to draw for this reason, and
 `geomap.owned` is what attaches it. The coastline claims nothing, which is
@@ -855,7 +906,7 @@ cannot express it), asserting **nothing whatever about speech**.
 The join is then one human act, in the entity file, where a reader can see whose
 it is:
 
-    harness entity locate language:chukchee \
+    harness entity locate language:chukchi \
         --area langarea:chuk1273,base:chukotka-east-of-meridian --commit
 
 That separation is the design. Sourced geometry in the store; the inference in
@@ -893,8 +944,8 @@ its tributaries.
 A `geo:` point outside its own shape is likewise reported with a distance and is
 not a defect: a river's natural point is its **mouth**, which sits on the very
 boundary the basin was delineated from. `water:anadyr` is 0.59° out, at the
-estuary. And a shape two entities claim is legal — `people:chukchee` and
-`language:chukchee` both point at the one Asher polygon, and forcing a choice
+estuary. And a shape two entities claim is legal — `people:chukchi` and
+`language:chukchi` both point at the one Asher polygon, and forcing a choice
 would be this edition deciding something the source does not.
 
 ### The map: server-rendered SVG, no tiles, ever

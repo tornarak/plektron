@@ -15,6 +15,6 @@
 
 ## gloss
 
-The Chukchee's westerly neighbors - hunters, fishers and herders - much apter than the Chukchee to fraternize with Russians. When the Cossacks withdrew the [[people:chukchee]] slaughtered the Yukaghir en masse and usurped much of their former territory. [[person:jochelson]] describes their dying rump-culture in his own volume (TBD)
+The Chukchee's westerly neighbors - hunters, fishers and herders - much apter than the Chukchee to fraternize with Russians. When the Cossacks withdrew the [[people:chukchi]] slaughtered the Yukaghir en masse and usurped much of their former territory. [[person:jochelson]] describes their dying rump-culture in his own volume (TBD)
 
-An important subgroup is the [[people:chuvantzy]]
+An important subgroup is the [[people:chuvans]]

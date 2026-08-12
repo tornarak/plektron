@@ -1,4 +1,4 @@
-# water:chaun-bay — Chaun Bay
+# water:chaunskaya-bay — Chaunskaya Bay
 
 - status: ratified
 - since: 1-021
@@ -8,7 +8,7 @@
 - link: wikidata:Q915250
 
 Outlet of the [[water:chaun]] river.
-The [[people:chuvantzy]] historically lived here.
+The [[people:chuvans]] historically lived here.
 
 ## aliases
 

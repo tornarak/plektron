@@ -22,6 +22,7 @@ from pathlib import Path
 
 from ..entities import (
     _SECTION,
+    ALIASES,
     Malformed,
     alias_index,
     check,
@@ -104,7 +105,7 @@ def register(cli):
                "may make. `geo verify`'s `unlocated` report is the worklist "
                "this answers a row of. One ID, because the flags name one "
                "entity's fields"
-               "\n\nID: `class:slug`, e.g. `place:chukchee-peninsula`",
+               "\n\nID: `class:slug`, e.g. `place:chukchi-peninsula`",
                constraints=(require_any("geo", "area"),))
     arg(p, "ident", metavar="ID")
     opt(p, "--geo", metavar="LAT LON",
@@ -139,6 +140,26 @@ def register(cli):
                help="whole records, aliases and gloss included"
                "\n\nID: `class:slug`; several are allowed")
     arg(p, "idents", nargs=-1, required=True, metavar="ID")
+
+    p = action(g, "rename", run_rename,
+               help="move an entity to a new identity, re-pointing every "
+               "`within:` and `[[wikilink]]` in the store. **The identity is "
+               "what every @ref holds**, so this is cheap only while the corpus "
+               "holds few of them — it reports every @ref it finds and refuses "
+               "outright if one is in committed `tei/`, where a rule may not "
+               "rewrite a page a human signed"
+               "\n\nOLD and NEW are both `class:slug`; the class may not change",
+               constraints=())
+    arg(p, "old", metavar="OLD")
+    arg(p, "new", metavar="NEW")
+    opt(p, "--canonical", metavar="NAME",
+        help="the new display name. **The old one is filed as an alias**, "
+             "because `detectors.entity_forms` splits canonicals into the "
+             "corpus's proper-noun dictionary — retitling without it would "
+             "drop the book's own spelling out of the dictionary silently. "
+             "Skipped where the entry already lists the form")
+    opt(p, "--commit", is_flag=True,
+        help="write it. Without this every edit is reported and none is made")
 
     p = action(g, "ratify", run_ratify,
                help="proposed -> ratified. **The human act**, and the only thing "
@@ -364,6 +385,130 @@ def run_show(a) -> int:
                 if k not in ("aliases", "gloss", "dir_class", "stem")},
             name=i, heading=True)
         out(a, r["aliases"], name=f"{i} aliases", heading=True)
+    return 0
+
+
+def _refs_to(ident: str, root: Path) -> list[dict]:
+    """Every `@ref` naming this identity, by store and page.
+
+    Both stores, and the row says which — `mz/tei/` is derived and regenerates,
+    committed `tei/` is a page a human signed. The two are the same string in
+    the same attribute and only the directory tells them apart, which is exactly
+    why the caller is handed the distinction rather than left to infer it.
+    """
+    out_rows = []
+    for store, d in (("tei", root / "tei"), ("mz/tei", root / "mz" / "tei")):
+        for p in sorted(d.glob("chukchi-*.xml")) if d.is_dir() else []:
+            n = p.read_text(encoding="utf-8").count(f'ref="{ident}"')
+            if n:
+                out_rows.append({"store": store,
+                                 "ref": p.stem.replace("chukchi-", ""),
+                                 "links": n})
+    return out_rows
+
+
+def _alias_rows(text: str) -> tuple[int, int]:
+    """Where the alias table's rows start and end in `text`."""
+    marks = list(_SECTION.finditer(text))
+    for i, m in enumerate(marks):
+        if m.group(1) != ALIASES:
+            continue
+        end = marks[i + 1].start() if i + 1 < len(marks) else len(text)
+        return m.end(), end
+    raise ValueError("the entry has no `## aliases` section")
+
+
+def run_rename(a) -> int:
+    old, new = str(a.old), str(a.new)
+    store = _store(a)
+    if old not in store:
+        raise ValueError(f"no such entity: {old}")
+    old_cls, _ = split_id(old)
+    new_cls, _ = split_id(new)
+    if old_cls != new_cls:
+        raise ValueError(
+            f"{old} → {new} changes the class. That is a delete and a create, "
+            f"not a rename: the class is half the identity, so every @ref "
+            f"pointing at it would mean a different thing afterwards")
+    if new in store:
+        raise ValueError(f"{new} already exists at {store[new]['path']}")
+
+    # **Refused before anything is written**, not reported after. A rule may not
+    # rewrite a page a human signed, so if the old identity is live in committed
+    # `tei/` the rename is not this verb's to make — the pages have to be
+    # amended first, by whoever collated them. `mz/tei/` is derived and comes
+    # back from `tei generate`, so it only wants naming.
+    links = _refs_to(old, a.root)
+    signed = [r for r in links if r["store"] == "tei"]
+
+    rec = store[old]
+    src = Path(rec["path"])
+    dst = path_for(new, a.root)
+    text = src.read_text(encoding="utf-8")
+
+    canonical = a.canonical or rec["canonical"]
+    text = re.sub(r"^#\s+.*$", f"# {new} — {canonical}", text, count=1, flags=re.M)
+
+    # The book's own spelling has to survive the retitling. `entity_forms`
+    # splits canonicals into the corpus's proper-noun dictionary, so a rename
+    # that only moved the heading would take the old name out of the dictionary
+    # and start reporting it as a transcription candidate on every page it is
+    # printed on. Skipped where the entry already lists it — `parse` refuses a
+    # form listed twice, so the naive append would break the file just written.
+    filed = ""
+    if a.canonical and a.canonical != rec["canonical"]:
+        if rec["canonical"] not in {t["form"] for t in rec["aliases"]}:
+            start, end = _alias_rows(text)
+            rows = text[start:end].rstrip("\n")
+            text = (text[:start] + rows + f"\n| {rec['canonical']} |  | no | "
+                    f"the book's spelling |\n\n" + text[end:])
+            filed = rec["canonical"]
+
+    # Every other file that names the old identity. `within:` and `[[…]]` are
+    # the two ways one entry points at another, and `entity check` gates both,
+    # so a rename that missed one would fail the gate rather than go quiet.
+    others = []
+    for other in store.values():
+        if other["id"] == old:
+            continue
+        t0 = Path(other["path"]).read_text(encoding="utf-8")
+        t1 = t0.replace(f"[[{old}]]", f"[[{new}]]")
+        # `[^\S\n]*`, not `\s*`: `\s` eats newlines, so a greedy trailing run
+        # swallows the blank line before `## aliases` and the field block runs
+        # into the section heading.
+        t1 = re.sub(rf"^(-[^\S\n]+within:[^\S\n]*){re.escape(old)}[^\S\n]*$",
+                    rf"\g<1>{new}", t1, flags=re.M)
+        if t1 != t0:
+            others.append((Path(other["path"]), t1, other["id"]))
+
+    from ..entities import parse
+    parse(text, where=str(dst))
+
+    if signed:
+        out(a, {"old": old, "new": new, "wrote": False,
+                "means": f"refused — {sum(r['links'] for r in signed)} @ref(s) "
+                         f"in committed tei/ name it"})
+        out(a, links, "links", heading=True)
+        return 1
+
+    if a.commit:
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        with open(dst, "x", encoding="utf-8") as fh:
+            fh.write(text)
+        src.unlink()
+        for p, t1, _i in others:
+            p.write_text(t1, encoding="utf-8")
+
+    out(a, {"old": old, "new": new, "canonical": canonical,
+            "filed_as_alias": filed, "repointed": len(others),
+            "stale_refs": sum(r["links"] for r in links),
+            "wrote": bool(a.commit),
+            "means": "renamed" if a.commit else "would rename — pass --commit"})
+    if others:
+        out(a, [{"id": i, "path": str(p)} for p, _t, i in others],
+            "repointed", heading=True)
+    if links:
+        out(a, links, "stale refs", heading=True)
     return 0
 
 

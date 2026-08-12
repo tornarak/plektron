@@ -696,7 +696,7 @@ entry.
 
 Your page arrives with some entity references already written:
 
-    <rs ref="people:chukchee" resp="#mz">Reindeer Chukchee</rs>
+    <rs ref="people:reindeer-chukchi" resp="#mz">Reindeer Chukchee</rs>
 
 `<rs>` says "this string refers to that entity" and nothing more. It is not
 `<name>`: a `<name @type>` records that *the page marked a proper noun* and what

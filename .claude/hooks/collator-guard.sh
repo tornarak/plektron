@@ -68,8 +68,8 @@ readable() {
     # The apparatus the verbs read off: authorities.json, loi.json, toc.json,
     # readings.md, the schema.
     */data/*|data/*) return 0 ;;
-    # **The encyclopedia.** Deciding whether a page means people:chukchee or
-    # language:chukchee is reading the two glosses and the sentence; a collator
+    # **The encyclopedia.** Deciding whether a page means people:chukchi or
+    # language:chukchi is reading the two glosses and the sentence; a collator
     # asked to judge a candidate with the entries withheld would be guessing, and
     # a guess is what the candidate comment exists to prevent. Writing is the
     # verb's, not the editor's — see the Write arm.

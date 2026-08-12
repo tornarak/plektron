@@ -1,4 +1,4 @@
-# water:small-anui — Small Anui
+# water:maliy-anyuy — Maliy Anyuy
 
 - status: ratified
 - since: 1-067

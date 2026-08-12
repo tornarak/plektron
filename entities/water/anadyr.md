@@ -17,6 +17,6 @@
 ## gloss
 
 The river draining the Anadyr basin into the Bering Sea. [[person:bogoras]]
-places [[people:maritime-chukchee]] settlements “between the mouth of the Anadyr
+places [[people:maritime-chukchi]] settlements “between the mouth of the Anadyr
 and Indian Point” (1-021). The bare form is not auto-linked because the book uses
 it for the region and the bay as freely as for the river.

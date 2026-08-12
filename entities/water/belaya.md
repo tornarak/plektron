@@ -1,4 +1,4 @@
-# water:white — White River
+# water:belaya — Belaya
 
 - status: ratified
 - since: 1-047

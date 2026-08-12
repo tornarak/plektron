@@ -49,7 +49,7 @@ def register(cli):
            "`geo:` point sitting away from its own shape (with the distance — "
            "a river's point is its mouth, which is *on* the basin boundary, so "
            "this is not a defect by itself), a shape two entities claim (legal: "
-           "`people:chukchee` and `language:chukchee` may share the one Asher "
+           "`people:chukchi` and `language:chukchi` may share the one Asher "
            "polygon), and shapes nothing claims. **And the inverse of that "
            "last one** — entities inside a subtree the atlas can draw that "
            "carry neither `geo:` nor `area:`, which is the worklist a human "
