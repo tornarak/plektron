@@ -535,6 +535,104 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
     return out
 
 
+#: How much prose to keep either side of a mention. The same window `/search`
+#: shows for a query hit, because a reader sizing up "does this entry earn its
+#: keep" is doing the same thing they do with a search result — reading enough
+#: to tell whether the sentence is about the entity or merely contains its name.
+WINDOW = 60
+
+
+def window(text: str, start: int, end: int) -> tuple[str, str, str]:
+    """`(before, match, after)` around a span, with `WINDOW` characters either side."""
+    return (text[max(0, start - WINDOW):start], text[start:end],
+            text[end:end + WINDOW])
+
+
+def _unlinked_text(el) -> str:
+    """An element's text with every already-referring subtree elided.
+
+    A tail is kept where its element's body is dropped: the words on either side
+    of a link are still adjacent prose, and joining them would be inventing a
+    phrase the page does not set.
+    """
+    out = [el.text or ""]
+    for kid in el:
+        if not isinstance(kid.tag, str):
+            out.append(kid.tail or "")
+            continue
+        out.append(" " if kid.get("ref") else _unlinked_text(kid))
+        out.append(kid.tail or "")
+    return "".join(out)
+
+
+def occurrences(ids, refs, store: dict, root: Path = Path(".")) -> dict:
+    """Where these entities appear across `refs`: `{id: {linked, unlinked}}`.
+
+    **The corpus is the caller's and not this function's opinion.** `entity
+    occurrences` passes `tei_html.collated`, because it is an audit of what is
+    committed; the reading view passes the page list it is actually serving,
+    which is collated-only by default and includes the generated drafts under
+    `--drafts`. Neither inherits the other's scope, and a mentions list that
+    named pages the view would 404 was the trap this shape exists to avoid.
+
+    A row's `rank` comes from `tei_html.page_source`, which hands it back with
+    the path rather than leaving it to be read off the directory — the property
+    the symlink farm destroyed. `mz/tei/` is not a second witness against the
+    page: it is `generate.page_blocks`' output written down, so a mention and
+    the page's own `<rs>` are one derivation, and reading it costs a second
+    where re-sweeping the ALTO costs twenty.
+
+    **Linked and unlinked are counted apart**, and the unlinked pass runs over
+    the body with the already-referring subtrees elided. Matching the whole body
+    counted every link twice and inverted what the column is for: an unlinked
+    hit means work outstanding, and a page where every instance was linked
+    reported the same number as a page where none was.
+    """
+    from lxml import etree
+
+    from .ids import TEI_NS
+    from .tei_html import page_source
+
+    ids = list(ids)
+    idx = alias_index(store)
+    # Only the named entities' forms, so a sweep over one entity does not pay
+    # for the whole store's alias alternation.
+    wanted = {f: c for f, c in idx.items() if any(x["id"] in set(ids) for x in c)}
+    out: dict[str, dict] = {i: {"linked": [], "unlinked": []} for i in ids}
+
+    for ref in refs:
+        path, rank = page_source(ref, root)
+        if path is None:
+            continue
+        try:
+            doc = etree.parse(str(path)).getroot()
+        except (OSError, etree.XMLSyntaxError):
+            continue
+        for el in doc.iter():
+            r = el.get("ref")
+            if r in out:
+                out[r]["linked"].append({
+                    "id": r, "ref": ref, "rank": rank,
+                    "element": etree.QName(el).localname,
+                    "resp": el.get("resp") or "",
+                    "text": " ".join("".join(el.itertext()).split())})
+        body = doc.find(f".//{{{TEI_NS}}}body")
+        if body is None:
+            continue
+        text = " ".join(_unlinked_text(body).split())
+        for h in match(text, wanted):
+            before, got, after = window(text, h["start"], h["end"])
+            for i in h["ids"]:
+                if i in out:
+                    out[i]["unlinked"].append({
+                        "id": i, "ref": ref, "rank": rank, "form": h["form"],
+                        "as_printed": " ".join(h["text"].split()),
+                        "before": before, "match": got, "after": after,
+                        "ambiguous": len(h["ids"]) > 1,
+                        "hyphenated": h["hyphenated"]})
+    return out
+
+
 def check(root: Path = Path(".")) -> dict:
     """The store gate. Errors are defects; rows are what a reader should see.
 

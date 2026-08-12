@@ -407,6 +407,93 @@ def test_the_entity_panel_is_the_same_content_bare(server):
     assert "Markova" in bare
 
 
+def test_an_entity_card_says_where_it_is_mentioned(server):
+    """The card named exactly one page — `since:`, an authored field — while the
+    lexicon card beside it listed every printed line. A linked mention is one the
+    page already carries an `@ref` for; an unlinked one is an alias hit nobody
+    has resolved, and it arrives with the prose either side of it."""
+    base, root = server
+    page(root, "1-030", "<pb n='2'/><p>They wintered at Markova that year.</p>")
+    body = get(base + "/entity/place:markova")
+
+    assert "mentioned on 2 of 2 page(s), 2 time(s)" in body
+    assert "1-021" in body and "1-030" in body
+    assert "1 linked" in body                     # the 1-021 `<rs>`
+    assert "<mark>Markova</mark>" in body         # the 1-030 alias hit
+    assert "wintered at" in body                  # the window before it
+
+
+def test_a_draft_mention_is_out_of_scope_until_drafts_is_on(server):
+    """The sweep is over the whole readable corpus and the card is filtered to
+    what the view is serving. Without `--drafts` a generated page 404s by design,
+    so a row naming one would send a reader nowhere."""
+    base, root = server
+    draft(root, "1-040", "<pb n='3'/><p>Beyond Markova lies the pass.</p>")
+    body = get(base + "/entity/place:markova")
+    assert "1-040" not in body
+
+    _CLIENT.app.state.drafts = True
+    try:
+        body = get(base + "/entity/place:markova")
+        assert "1-040" in body and "draft" in body
+    finally:
+        _CLIENT.app.state.drafts = False
+
+
+def test_no_mention_says_how_many_pages_it_looked_at(server):
+    """A bare zero cannot be told from "never mentioned", and today it means one
+    of two other things entirely — nothing collated, or `mz/tei/` not built."""
+    base, root = server
+    entry(root, "person:ghost", aliases=[("Nobody", True)])
+    body = get(base + "/entity/person:ghost")
+    assert "No mention found across the 1 page(s)" in body
+
+
+def test_a_linked_mention_is_not_also_counted_unlinked(server):
+    """The double-count `_unlinked_text` exists to stop: matching over the whole
+    body reported the same number for a page where every instance was linked as
+    for one where none was, which inverts what the column is for."""
+    from harness.web import stores
+
+    _, root = server
+    got = stores.occurrences(root)["place:markova"]
+    assert [r["ref"] for r in got["linked"]] == ["1-021"]
+    assert got["unlinked"] == []
+    # And the rank travels with the row rather than being read off the path.
+    assert got["linked"][0]["rank"] == "collated"
+
+
+def test_the_mention_list_is_capped_and_says_what_it_left_out(server):
+    """A card is for sizing an entry up, not for reading the corpus through. What
+    must not happen is the cap being silent — a truncated list reads as coverage
+    — so the page count and the verb that prints the rest are both on the card."""
+    from harness.web.edition import MENTIONS
+
+    base, root = server
+    for i in range(MENTIONS + 3):
+        page(root, f"1-1{i:02}", f"<pb n='{i}'/><p>Past Markova, mile {i}.</p>")
+    body = get(base + "/entity/place:markova")
+
+    # `MENTIONS` rows, of which 1-021 sorts first and is the linked one.
+    assert body.count("<mark>Markova</mark>") == MENTIONS - 1
+    assert f"mentioned on {MENTIONS + 4} of {MENTIONS + 4} page(s)" in body
+    assert f"and {4} more page(s)" in body
+    assert "harness entity occurrences place:markova" in body
+
+
+def test_several_mentions_on_one_page_are_one_row_with_a_count(server):
+    """"Where does this appear" is a page question. Per-occurrence rows answered
+    it badly: four hits on one page filled half the card with the same word."""
+    base, root = server
+    page(root, "1-030", "<pb n='2'/><p>Markova, and beyond Markova, and "
+                        "past Markova again.</p>")
+    body = get(base + "/entity/place:markova")
+
+    assert "mentioned on 2 of 2 page(s), 4 time(s)" in body
+    assert "3 unlinked" in body
+    assert body.count(">1-030</a>") == 1
+
+
 def test_the_encyclopedia_is_a_tree_over_the_whole_class_vocabulary(server):
     """**Every class, including the ones nothing is filed under.** Four of the
     eleven are empty today, and a list of only the populated ones would show half

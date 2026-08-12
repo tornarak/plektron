@@ -296,8 +296,11 @@ that are one. `children`/`relatives`/`roots` walk `within:`, which is
 containment in general and not the geography's: they read no coordinate and no
 shape, and they lived in `geo.py` until a caller wanting a people inside a
 people had to import the atlas to get one. `geo` re-exports the first two.
-`rename` (in `cli/_entity.py`) is the only thing that moves an identity, and it
-refuses while committed `tei/` names the old one.
+`occurrences` finds where an entity appears across a **caller-supplied** page
+list, so `entity occurrences` can audit committed `tei/` while the reading view
+sweeps what it is actually serving, and neither inherits the other's corpus.
+`harness entity rename` is the only thing that moves an identity, and it refuses
+while committed `tei/` names the old one.
 
 **`lexicon.py`** — the edition lexicon, `lexicon/<slug>.md`, on `entities.py`'s
 pattern and **deliberately thin**: an entry holds an editor's note and nothing

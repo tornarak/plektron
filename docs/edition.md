@@ -320,6 +320,65 @@ collators meeting the same man on two pages mint two slugs for him, and only the
 coordinator sees both. Merge before ratifying, never after — a ratified id is one
 other pages' `@ref` may already point at.
 
+### What a gloss is for, now that the card carries the mentions
+
+Until the mentions block existed, a gloss was the only thing on the card that
+said anything, so the glosses grew to carry the explaining — which is how an
+apparatus store starts editorializing. The card now lists where the entity
+occurs, with the prose either side, out of the corpus itself. So:
+
+**A gloss disambiguates; the mentions explain.** What belongs in it is what a
+reader cannot get from the passages: which of two entities this is, what the
+book's term covers that the modern one does not, why an identification was made,
+and what the entry deliberately does *not* claim. `people:eskimo` is the model —
+it exists to say that the book's word is a grouping over three entries and which
+one usually stands behind it.
+
+What does not belong is a précis of the passages. If the gloss is telling you
+what Bogoras says about the Chukchi, the card is about to tell you in his own
+words, twice as well and with a page number.
+
+**A `<!-- entity note: … -->` is not a gloss.** A collator meeting a fact worth
+recording reports it; the coordinator decides whether it disambiguates anything.
+
+### Mentions on the card
+
+Every occurrence across the pages the view is serving, linked and unlinked apart:
+a linked one already carries an `@ref`, an unlinked one is an alias hit nobody has
+resolved and so is the work outstanding. `entities.occurrences` is the one
+implementation — `entity occurrences` passes committed `tei/` because it audits
+what is committed, and the reading view passes the list it is actually serving.
+
+**The corpus is the caller's, and that is the whole design.** Without `--drafts`
+the view serves collated pages only and 404s a generated one, so a mentions row
+naming a draft would send a reader nowhere. The sweep is over everything, cached
+on both stores' stamps — the pages and the alias table, either of which can change
+the answer — and the narrowing is a filter at the route. Keying the cache on the
+mode instead would double it to answer what a filter answers.
+
+**The source is `tei/` where a page is collated and `mz/tei/` otherwise**, which
+`tei_html.page_source` resolves, handing back the rank with the path rather than
+leaving it to be read off the directory — the property the symlink farm
+destroyed, and why a draft row is captioned as one. `mz/tei/` is not a second
+witness against the page: it is `generate.page_blocks`' output written down, so a
+mention row and the page's own `<rs>` are one derivation. It is also what makes
+this affordable — 3,746 rows over 105 entities and 274 pages in under a second,
+where re-sweeping the ALTO through `page_blocks` costs twenty.
+
+**One row per page, not per occurrence**, with the counts on it. "Where does
+this appear" is a page question, and the per-occurrence list answered it badly:
+`place:markovo` is linked four times on 1-045 alone, so the first eight rows
+were four pages with the same word in them and said less than a count would have
+in a quarter of the space. The snippet prefers an *unlinked* hit, because a
+linked one's text is the form itself and a row reading "Markova: Markova" has
+said nothing.
+
+**An empty list names how many pages it looked at.** A bare zero cannot be told
+from "never mentioned", and today it means one of two other things: nothing is
+collated, or `mz/tei/` was never generated in this clone. The cap is eight pages,
+with the page count, the occurrence count and the verb that prints the rest all
+beside it — a silent truncation reads as coverage.
+
 ### The store is also the corpus's proper-noun dictionary
 
 `data/lexicon_extra.txt` used to hold the book's proper nouns — authors,

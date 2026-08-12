@@ -176,7 +176,7 @@ def test_an_already_linked_span_is_not_also_counted_as_unlinked():
     number as one where none was."""
     from lxml import etree
 
-    from harness.cli._entity import _unlinked_text
+    from harness.entities import _unlinked_text
     body = etree.fromstring(
         '<body><p>At <rs ref="place:markova">Markova</rs> and at Markova.</p></body>')
     assert "Markova" in _unlinked_text(body)

@@ -34,6 +34,33 @@
 {% endfor %}
 </table>
 {% endif %}
+{# Where the entry actually occurs, which the card could not say until now: it
+   named one page, `since:`, an authored field — while the lexicon card beside it
+   listed every printed line. `linked` rows already carry an @ref; the rest are
+   alias hits nobody has resolved, which is the work outstanding. #}
+{% if mentions.rows %}
+{# One line: the newline a wrap would put here lands in the rendered text. #}
+<div class='meta'>mentioned on {{ mentions.pages }} of {{ mentions.swept }} page(s), {{ mentions.total }} time(s):</div>
+<ul class='lines'>{% for m in mentions.rows %}
+<li><a href='{{ base }}/page/{{ m.ref }}'>{{ m.ref }}</a>
+    {%- if m.rank == 'draft' %} <span class='pill proposed'>draft</span>{% endif %}
+    {%- if m.linked %} <span class='dim'>{{ m.linked }} linked</span>{% endif %}
+    {%- if m.unlinked %} <span class='dim'>{{ m.unlinked }} unlinked</span>{% endif %}
+    {%- if m.before or m.match %}
+    <span>{{ m.before }}<mark>{{ m.match }}</mark>{{ m.after }}</span>
+    {%- else %} <span>{{ m.text }}</span>{% endif %}</li>
+{% endfor %}</ul>
+{% if mentions.pages > mentions.rows | length %}
+<div class='meta'>and {{ mentions.pages - (mentions.rows | length) }} more page(s) — <code>harness entity occurrences {{ ident }}</code> for all of them</div>
+{% endif %}
+{% else %}
+{# A bare zero cannot be told from "never mentioned", and today it means one of
+   two other things entirely. #}
+<p class='meta'>No mention found across the {{ mentions.swept }} page(s) this
+view is serving. Nothing is collated yet, so that is the whole corpus only under
+<code>edition serve --drafts</code>, and only where <code>mz/tei/</code> has been
+generated.</p>
+{% endif %}
 {% if rec.status != 'ratified' %}
 <div class='ratify-row'><button class='ratify' data-id='{{ ident }}'>ratify — a
 rule may then link its forms</button></div>

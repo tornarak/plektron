@@ -119,6 +119,34 @@ def native(root: Path) -> dict:
 
 
 @lru_cache(maxsize=MAXSIZE)
+def _occurrences(root: str, _key: bytes, _ekey: bytes) -> dict:
+    r = Path(root)
+    return entities.occurrences(sorted(entities.load(r)), tei_html.readable(r),
+                                entities.load(r), r)
+
+
+def occurrences(root: Path) -> dict:
+    """Every entity's mentions across the readable corpus, in one sweep.
+
+    **One sweep for the whole store, not one per entity.** A card asks about a
+    single entity, and answering it by parsing every page would make the index
+    quadratic the moment anything listed more than one — the trap `_attestations`
+    below documents, arrived at the same way.
+
+    Widest corpus here and **narrowed per request** at the route, because the
+    reading view serves collated pages only unless `--drafts` says otherwise and
+    a mentions row pointing at a page it would 404 is worse than no row. Keying
+    the cache on the mode instead would double it to answer a question a filter
+    answers.
+
+    Two stamps, because two stores can change the answer: the pages, and the
+    alias table the sweep matches with.
+    """
+    return _occurrences(str(root), stamp(_readable_files(root)),
+                        stamp(_entity_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
 def _attestations(root: str, _key: bytes) -> dict:
     """`{form: [(ref, lang), …]}` over every collated page, in one sweep.
 

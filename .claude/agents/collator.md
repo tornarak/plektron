@@ -735,6 +735,15 @@ it, which is what `--since` records and what nobody reconstructs later.
 Check `entity list` first — the same man under two slugs is worse than no entry,
 and you cannot see the store the coordinator can.
 
+**A gloss disambiguates; it does not explain.** The card lists every passage the
+entity occurs in, with the prose either side, out of the corpus — so a gloss that
+summarises what Bogoras says about the Chukchi is about to be outdone by Bogoras,
+on the same card, with a page number. What belongs in it is what the passages
+cannot give: which of two entities this is, what the book's term covers that the
+modern one does not, why you identified it, and what the entry does *not* claim.
+`entity new` leaves the gloss unwritten and that is a fine state to leave it in;
+an empty gloss costs a reader nothing, and a wrong one costs them the page.
+
 **A native name is an alias like any other, and `--lang` is where you say so.**
 Where the page gives an entity its Chukchi or Russian name — the kind of form
 your `tier1_terms` row carries — file it:

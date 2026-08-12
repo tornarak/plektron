@@ -138,7 +138,52 @@ def page(request: Request, ref: str):
 # -------------------------------------------------------------- the entities
 
 
-def _entity_ctx(ident: str, root: Path) -> dict:
+#: How many pages a card's mention list names. A card is for sizing an entry up,
+#: not for reading the corpus through; `entity occurrences` is the whole list.
+MENTIONS = 8
+
+
+def _mentions(ident: str, refs: list[str], root: Path) -> dict:
+    """One entity's mentions, out of the cached whole-store sweep, **by page**.
+
+    **One row per page and not per occurrence.** "Where does this appear" is a
+    page question, and the per-occurrence list answered it badly: `place:markovo`
+    is linked four times on 1-045 alone, so the first eight rows were four pages
+    with the same word in them and the reader learned nothing a count would not
+    have told them in a quarter of the space.
+
+    **Filtered to `refs`, which is the page list the view is serving.** Without
+    `--drafts` a generated page 404s by design, so a row naming one would send a
+    reader nowhere; the sweep is over everything and the narrowing happens here.
+
+    The snippet prefers an *unlinked* hit, which carries the prose either side —
+    a linked one's text is the form itself, and a row saying "Markova: Markova"
+    is a row that has said nothing. `swept` is on the card because a bare zero
+    cannot be told from "never mentioned", and today it means one of two other
+    things: nothing is collated, or `mz/tei/` was never generated in this clone.
+    """
+    got = stores.occurrences(root).get(ident) or {"linked": [], "unlinked": []}
+    keep = set(refs)
+    pages: dict[str, dict] = {}
+    for kind in ("linked", "unlinked"):
+        for r in got[kind]:
+            if r["ref"] not in keep:
+                continue
+            row = pages.setdefault(r["ref"], {
+                "ref": r["ref"], "rank": r["rank"], "linked": 0, "unlinked": 0,
+                "before": "", "match": "", "after": "", "text": ""})
+            row[kind] += 1
+            if kind == "unlinked" and not row["before"]:
+                row |= {k: r[k] for k in ("before", "match", "after")}
+            elif kind == "linked" and not row["text"]:
+                row["text"] = r["text"]
+    rows = sorted(pages.values(), key=lambda r: r["ref"])
+    return {"rows": rows[:MENTIONS], "pages": len(rows),
+            "total": sum(r["linked"] + r["unlinked"] for r in rows),
+            "swept": len(refs)}
+
+
+def _entity_ctx(ident: str, refs: list[str], root: Path) -> dict:
     store = stores.load(root)
     rec = store.get(ident)
     if rec is None:
@@ -166,6 +211,7 @@ def _entity_ctx(ident: str, root: Path) -> dict:
         "contested": [{"id": c, "canonical": store[c]["canonical"]} for c in contested],
         "located": bool(geo.located(ident, store, root)),
         "props": ui.property_rows(rec, store, root),
+        "mentions": _mentions(ident, refs, root),
     }
 
 
@@ -180,7 +226,7 @@ def entity(request: Request, ident: str, partial: str = ""):
     hover. The pane is the one place a map is.
     """
     root = _root(request)
-    ctx = _entity_ctx(_ident(ident), root)
+    ctx = _entity_ctx(_ident(ident), _listing(request), root)
     if partial:
         return templates.TemplateResponse(request, "edition/_entity.html", ctx)
     rec = ctx.get("rec")

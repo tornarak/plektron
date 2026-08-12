@@ -24,10 +24,9 @@ from ..entities import (
     _SECTION,
     ALIASES,
     Malformed,
-    alias_index,
     check,
     load,
-    match,
+    occurrences,
     path_for,
     split_id,
 )
@@ -535,74 +534,22 @@ def run_ratify(a) -> int:
     return 0
 
 
-def _unlinked_text(el) -> str:
-    """An element's text with every already-referring subtree elided.
-
-    A tail is kept where its element's body is dropped: the words on either side
-    of a link are still adjacent prose, and joining them would be inventing a
-    phrase the page does not set.
-    """
-    out = [el.text or ""]
-    for kid in el:
-        if not isinstance(kid.tag, str):
-            out.append(kid.tail or "")
-            continue
-        out.append(" " if kid.get("ref") else _unlinked_text(kid))
-        out.append(kid.tail or "")
-    return "".join(out)
-
-
 def run_occurrences(a) -> int:
-    from lxml import etree
-
-    from ..ids import TEI_NS
+    from ..tei_html import collated
 
     store = _store(a)
     ids = _resolve(a, store)
-    idx = alias_index(store)
-    # Only the named entities' forms, so a sweep over one entity does not pay for
-    # the whole store's alias alternation.
-    wanted = {f: c for f, c in idx.items()
-              if any(x["id"] in set(ids) for x in c)}
+    # **Committed `tei/` alone**, which is what this action has always audited
+    # and what `VERBS.md` documents. `entities.occurrences` takes its corpus
+    # from its caller precisely so that the reading view's wider one — which
+    # includes the generated drafts under `--drafts` — does not leak in here.
+    got = occurrences(ids, collated(a.root), store, a.root)
 
-    linked: dict[str, list[dict]] = {i: [] for i in ids}
-    unlinked: dict[str, list[dict]] = {i: [] for i in ids}
-    tei = a.root / "tei"
-    for p in sorted(tei.glob("chukchi-*.xml")) if tei.is_dir() else []:
-        ref = p.stem.replace("chukchi-", "")
-        try:
-            root = etree.parse(str(p)).getroot()
-        except etree.XMLSyntaxError:
-            continue
-        for el in root.iter():
-            r = el.get("ref")
-            if r in linked:
-                linked[r].append({"id": r, "ref": ref,
-                                  "element": etree.QName(el).localname,
-                                  "resp": el.get("resp") or "",
-                                  "text": " ".join("".join(el.itertext()).split())})
-        body = root.find(f".//{{{TEI_NS}}}body")
-        if body is None:
-            continue
-        # **The text with the already-linked spans taken out.** Matching over the
-        # whole body counted every link twice — once as linked, once as unlinked —
-        # which inverts what the column is for: an unlinked hit is supposed to mean
-        # work outstanding, and a page where every instance was linked reported the
-        # same number as a page where none was.
-        for h in match(_unlinked_text(body), wanted):
-            for i in h["ids"]:
-                if i in unlinked:
-                    unlinked[i].append({
-                        "id": i, "ref": ref, "form": h["form"],
-                        "as_printed": " ".join(h["text"].split()),
-                        "ambiguous": len(h["ids"]) > 1,
-                        "hyphenated": h["hyphenated"]})
-    out(a, [{"id": i, "linked": len(linked[i]), "unlinked": len(unlinked[i]),
+    out(a, [{"id": i, "linked": len(got[i]["linked"]),
+             "unlinked": len(got[i]["unlinked"]),
              "status": store[i]["status"]} for i in ids])
-    rows = [r for i in ids for r in linked[i]]
-    if rows:
-        out(a, rows, "linked", heading=True)
-    rows = [r for i in ids for r in unlinked[i]]
-    if rows:
-        out(a, rows, "unlinked", heading=True)
+    for kind in ("linked", "unlinked"):
+        rows = [r for i in ids for r in got[i][kind]]
+        if rows:
+            out(a, rows, kind, heading=True)
     return 0

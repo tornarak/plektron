@@ -1354,6 +1354,7 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 ### entity occurrences [ID...]
 **Does** where an entity appears, by two routes: the `@ref` links already in committed TEI, and the alias hits nobody has linked. The second is the interesting half — a large unlinked count on a ratified entity means pages collated before the entry existed, and `tei generate` will link them on the next run. Measurement; never gates.
 **Reads** `entities/`, committed `tei/`. **Writes** — **Exit** 0.
+**Note** **committed `tei/` alone.** `entities.occurrences` takes its page list from its caller, and the reading view passes a wider one — the drafts too, under `edition serve --drafts` — so that the card can show mentions before anything is collated. This action audits what is committed and does not inherit that scope. Neither is a flag on the other: they are different questions asked of the same function.
 ```
 --all
 --root --json --toon --pager
