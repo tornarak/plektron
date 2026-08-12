@@ -4,12 +4,13 @@
 is for is auditing, which is why both live in one page behind a toggle rather
 than in two renderers that could drift.
 
-The layout is two columns: the text, and a **stack** of cards beside it. A click
-on an entity link, a footnote marker or the scan button pushes a card to the top
+The layout is two columns: the text, and beside it a **map pane** over a **stack**
+of cards. A click on an entity link or the scan button pushes a card to the top
 of the stack; the stack keeps what you have opened, in the order you opened it,
-and a pinned card stays above the rest. That is the whole interaction, and it is
-what makes an annotated edition readable at all — the alternative is a tooltip
-that vanishes, or a footnote that costs you your place.
+and a pinned card stays above the rest. It is what makes an annotated edition
+readable at all: what you consulted stays consulted, and a footnote never costs
+you your place. A map is not a card — there is only ever one *here*, so it is the
+pane, and clicking a place moves it rather than adding to it.
 
 **It writes to `entities/`, and the click is the human act.** That is the
 `zones edit` precedent, not a new licence: a loopback server, a tracked store, and
@@ -311,7 +312,7 @@ def map_context(
     """One entity on a map, drawn inside its parent's extent — as a context.
 
     `store` and `shape` are injected so the server can hand in its cached
-    readers: one map card asks for six or more shapes out of a 1.2 MB store, and
+    readers: one map asks for six or more shapes out of a 1.2 MB store, and
     every one of them was a fresh read and JSON decode. They default to the
     plain ones, so this stays callable without a server behind it — the caching
     is the web layer's business and does not belong in a module the CLI imports.
@@ -341,10 +342,19 @@ def map_context(
         "parent": None,
         "basis": {},
         "absent_note": "",
+        "warm": [],
     }
     if rec is None:
         return out
     out["rec"] = rec
+    # **Everything one step from here, not everything drawn.** The map is the
+    # authority on what can be *highlighted*; it is not the authority on what a
+    # reader is about to open. `member_shapes` stops at the nearest descendant
+    # with a shape, so the Chukchee Peninsula — two levels under the Russian Far
+    # East and one click away — is on no layer at all. This is the whole of "an
+    # entry preloads its ancestors and descendants", and it is computed before
+    # the extent, so an entity with nothing to draw still warms its kin.
+    out["warm"] = geo.relatives(ent_id, store)
 
     box = geo.extent_of(ent_id, store, root)
     if box is None:
@@ -356,14 +366,22 @@ def map_context(
         return out
 
     parent = store.get(rec["within"]) if rec["within"] else None
-    frame_box = (geo.extent_of(parent["id"], store, root) if parent else None) or box
+    # **A node with neither a shape nor a point is drawn to itself.** Framing on
+    # the parent is what makes a *shape* mean something — the Small Anui says
+    # where it is only with the Kolyma around it — but a framed node *is* its
+    # extent, and framing that on the parent gave Chukotka and the Russian Far
+    # East the identical viewBox: the RFE has no parent, so both fell back to the
+    # RFE's own. Two maps of two different regions, pixel for pixel the same.
+    framed = not rec["area"] and not rec["geo"]
+    frame_box = box if framed else (
+        (geo.extent_of(parent["id"], store, root) if parent else None) or box)
     frame = geomap.Frame(frame_box)
 
     layers: dict[str, list] = {}
     for name, ident in (("land", "base:land"), ("lakes", "base:lakes")):
         doc = shape(ident)
         if doc:
-            layers[name] = frame.paths(doc)
+            layers[name] = geomap.owned(frame.paths(doc))
 
     # Siblings before the parent outline before the subject: the subject drawn
     # under its own siblings would be the one shape you cannot see.
@@ -377,9 +395,10 @@ def map_context(
         else []
     )
     if kin:
-        layers["kin"] = [d for k in kin for d in frame.paths(shape(store[k]["area"]))]
+        layers["kin"] = [p for k in kin
+                         for p in geomap.owned(frame.paths(shape(store[k]["area"])), k)]
     if parent and parent["area"]:
-        layers["parent"] = frame.paths(shape(parent["area"]))
+        layers["parent"] = geomap.owned(frame.paths(shape(parent["area"])), parent["id"])
 
     # **What lies beneath, drawn.** For a node with no boundary of its own this
     # is the whole map — the Russian Far East is not a shape, and a frame with
@@ -388,20 +407,33 @@ def map_context(
     # and the Omolon inside it is the picture the hierarchy was authored for.
     members = geo.member_shapes(ent_id, store)
     if members:
-        layers["members"] = [d for s in members for d in frame.paths(shape(s))]
+        layers["members"] = [p for ent, s in members
+                             for p in geomap.owned(frame.paths(shape(s)), ent)]
 
     subject_doc = shape(rec["area"]) if rec["area"] else {}
     if subject_doc:
-        layers["subject"] = frame.paths(subject_doc)
+        layers["subject"] = geomap.owned(frame.paths(subject_doc), ent_id)
         layers["rivers"] = frame.rivers(subject_doc)
     elif parent and parent["area"]:
         layers["rivers"] = frame.rivers(shape(parent["area"]))
 
+    # **Every descendant that no other layer identifies, as an extent — drawn
+    # only under the pointer.** A node with neither a shape nor a point is
+    # skipped by `member_shapes`, which descends *through* it to the basins
+    # below, so Chukotka appears nowhere on the Russian Far East's map and its
+    # name lit up nothing. A box is what there is to draw for it, and a box on
+    # every one of them at once is a field of rectangles over the thing you were
+    # reading. So the layer is drawn transparent and only the highlight paints
+    # it: the answer is there when the question is asked and not before.
+    layers["extents"] = [p for ent, ebox in geo.member_extents(ent_id, store, root)
+                         if (d := frame.viewport(ebox))
+                         for p in geomap.owned([d], ent)]
+
     pins = []
-    for lon, lat, label in geo.pins_under(ent_id, store, root):
+    for lon, lat, label, ent in geo.pins_under(ent_id, store, root):
         p = frame.point(lon, lat)
         if p:
-            pins.append((p[0], p[1], label))
+            pins.append((p[0], p[1], label, ent))
 
     if rec["area"]:
         row = geo.index(root)["shapes"].get(rec["area"], {})
@@ -421,7 +453,17 @@ def map_context(
     else:
         out["basis"] = {"kind": "framed"}
     out["parent"] = parent
-    out["svg"] = geomap.render(frame, layers, pins)
+    # **`basin` is read off the shape's type, not the entity's class.** `area:`
+    # is typed — `watershed:anadyr` names where the polygon came from — and "this
+    # outline is a drainage divide" is a fact about the shape's provenance, not
+    # about what kind of thing the record is. Today every `watershed:` in the
+    # store happens to sit on a `water:` entity and the two predicates agree;
+    # they are still different questions, and only this one answers why the
+    # boundary must not be drawn in the colour of the rivers running inside it.
+    # The members are left alone: they are the nearest descendants that have a
+    # shape, chosen without reference to what drew them.
+    mark = "basin" if (rec["area"] or "").startswith("watershed:") else ""
+    out["svg"] = geomap.render(frame, layers, pins, mark=mark)
     return out
 
 

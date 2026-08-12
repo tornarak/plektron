@@ -3,12 +3,16 @@
   --accent:#7a4b28; --mark:#b8860b; --pin:#1a6b5a;
   --sea:#eef2f4; --land:#e7e2d8; --water:#5a86a8;
   --sel: #c15252;
+  --flora:#3f7a35; --abstract:#7d6a10; --lex:#c2620c; --basin:#8c3a3a;
+  --hi:#e0342a;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19;
   --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6;
   --sea:#14181b; --land:#2a2621; --water:#6f9cbd;
   --sel: #c15252;
+  --flora:#8fbf7a; --abstract:#e0c97a; --lex:#e07b20; --basin:#c97a72;
+  --hi:#ff5f4d;
 } }
 * { box-sizing:border-box }
 body { margin:0; background:var(--bg); color:var(--fg);
@@ -34,10 +38,28 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
   max-width:80rem; margin:0 auto; }
 .cols-reversed main.cols { flex-direction: row; }
 #primary { flex:1 1 auto; padding: 1em; min-width:0; max-width:44rem }
-#primary:first-child:last-child, #secondary:empty + #primary { margin: auto; }
+/* **Idle** is the state that used to be `:empty`, and could not stay so: the
+   column now always holds a `#stack` and a `#map-pane`, either of which may have
+   nothing in it. Idle means both — no cards and the pane shut — and it is what
+   collapses the column and re-centres the text. */
+#primary:first-child:last-child,
+#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) + #primary
+  { margin: auto; }
 #secondary { flex: 1; padding: 1em; position:sticky; top:3rem;
   max-height:calc(100vh - 4rem); overflow-y:auto; }
-#secondary:empty { display: none; }
+#secondary:not(:has(.card)):not(:has(#map-pane:not([hidden]))) { display: none; }
+/* --- the map pane ---
+   One map per sitting, above the stack rather than in it: there is only ever one
+   *here*, and a map that could be pushed out of sight by the next three cards
+   was answering a question you had not stopped asking. */
+#map-pane{position:relative;background:var(--card);border:1px solid var(--rule);
+  border-radius:.4rem;padding:.6rem .75rem;margin-bottom:.6rem;
+  font-family:system-ui,sans-serif;font-size:.85rem;line-height:1.5}
+#map-pane[hidden]{display:none}
+#map-pane .dismiss{position:absolute;top:.4rem;right:.5rem;z-index:1;
+  padding:.05rem .35rem;font-size:.7rem;line-height:1.4}
+#map-pane h4{margin:0 0 .3rem;font-size:.9rem;font-family:inherit}
+#map-pane .meta{color:var(--dim);font-size:.75rem;margin-bottom:.4rem}
 @media (max-width:880px) {
   main.cols { display:block }
   #secondary { position:static; max-height:none; margin-top:2rem;
@@ -59,8 +81,45 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
 .supplied { color:var(--dim) }
 .noteref { vertical-align:super; font-size:.7em; text-decoration:none;
   padding:0 .1em }
-.ent { text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent) }
-.ent:hover { border-bottom-color:var(--accent); background:color-mix(in srgb,var(--accent) 8%,transparent) }
+/* --- what a link points at -------------------------------------------------
+ *
+ * **The class is already on every link** — it is the prefix of `data-ref`, which
+ * is the entity identity `class:slug` verbatim (`tei_html._referring`, and every
+ * template that links a record). So nothing new is emitted; the stylesheet reads
+ * what the corpus already carries.
+ *
+ * `--link` is the indirection that makes it one declaration per family instead
+ * of one per rule: every link rule below is written in terms of it and defaults
+ * it to `--accent`, and the family rules set nothing else.
+ *
+ * **Eleven classes, five families.** Eleven hues would be several pairs nobody
+ * can tell apart, twice over for dark mode, and a twelfth class would need a
+ * colour that does not exist. A family is the coarsest grouping that still
+ * answers the question a reader is asking — is this a place, a creature, a
+ * person, a record, or a word?
+ *
+ * `--abstract` is its own token and not `--mark`, which is the *apparatus*
+ * colour: `.flag`, `.unclear`, `.unsettled` and `.pill.proposed` are all
+ * `--mark`, and an event link drawn in it would read as an editorial mark on the
+ * word rather than as a link. The two are the same hue family — the todo asks
+ * for yellow and yellow is what it gets — so they are held apart by lightness
+ * instead, and by the fact that a flag is a bordered box and a link is an
+ * underline.
+ *
+ * `harness/entities.py`'s ENTITY_CLASSES is the authority and this is a copy of
+ * it, so `test_edition.py` walks that dict and fails on any class with no rule
+ * here, or with more than one.
+ */
+.ent { --link:var(--accent); color:var(--link); text-decoration:none;
+  border-bottom:1px solid color-mix(in srgb,var(--link) 40%,transparent) }
+.ent:hover { border-bottom-color:var(--link);
+  background:color-mix(in srgb,var(--link) 8%,transparent) }
+a[data-ref^="place:"],  a[data-ref^="water:"]        { --link:var(--water) }
+a[data-ref^="animal:"], a[data-ref^="taxon:"]        { --link:var(--flora) }
+a[data-ref^="person:"], a[data-ref^="people:"],
+a[data-ref^="language:"]                             { --link:var(--accent) }
+a[data-ref^="event:"],  a[data-ref^="source:"],
+a[data-ref^="institution:"], a[data-ref^="being:"]   { --link:var(--abstract) }
 .figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
 #foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
   font-size:.85rem; color:var(--dim) }
@@ -129,12 +188,26 @@ html[data-theme="dark"] .crop img, .dark-raster .crop img { filter:none }
 /* Scaled by height with the width left free: the Wikidata mark is 1050x590 and
    a square box would squash it. */
 .site { height:1em; width:auto; opacity:.8; flex:none }
+/* Something that points at nothing: a wikilink to an absent entity, or an
+   authority key `data/authorities.json` does not hold. The bare class carries
+   the span case in `_props.html`; the anchor case needs `a.ent.dangling`
+   specifically, because a family rule is `a[data-ref^=…]` and would otherwise
+   outrank a lone class and repaint a broken link as a sound one. "This goes
+   nowhere" has to beat "this is a place". */
 .dangling { color:var(--mark); border-bottom-style:dotted }
-a.lex { text-decoration:none; border-bottom:1px dotted var(--accent);
-  font-style:italic }
+a.ent.dangling { --link:var(--mark) }
+/* A Tier-1 form. In dark mode `--lex` and `--accent` are both warm and the
+   colour alone is thin; the italic and the dotted rule are what actually tell a
+   keyed form from an entity link, and they are why that is tolerable. */
+a.lex { --link:var(--lex); color:var(--link); text-decoration:none;
+  border-bottom:1px dotted var(--link); font-style:italic }
 a.lex:hover { border-bottom-style:solid;
-  background:color-mix(in srgb,var(--accent) 8%,transparent) }
-a.mapref { text-decoration:none; border-bottom:1px dotted var(--accent) }
+  background:color-mix(in srgb,var(--link) 8%,transparent) }
+/* `data-ref` here is the entity's *own* id, so "map" takes the colour of the
+   thing it maps. That is the point rather than an accident: the control sits on
+   the record's own card and reads as part of it. */
+a.mapref { --link:var(--accent); color:var(--link); text-decoration:none;
+  border-bottom:1px dotted var(--link) }
 table.props { font-size:.75rem; margin:.4rem 0; border-collapse:collapse }
 table.props th { text-align:right; color:var(--dim); font-weight:400;
   padding:.1rem .5rem .1rem 0; border:none; vertical-align:top;
@@ -153,9 +226,19 @@ ul.tree { padding-left:0; font-family:system-ui,sans-serif; font-size:.85rem }
 ul.tree li { margin:.15rem 0; border-left:1px solid var(--rule);
   padding-left:.6rem }
 ul.tree > li { border-left:none; padding-left:0 }
-a.node { text-decoration:none; border-bottom:1px solid transparent }
-a.node:hover { border-bottom-color:var(--accent) }
-a.node.sel { font-weight:600; border-bottom-color:var(--accent) }
+/* A class heading in the encyclopedia tree. Not a link — there is no page for a
+   class, and making one would be a filter pretending to be a place. A class
+   nothing is filed under is dimmed rather than dropped. */
+ul.tree code.cls { font-size:.85rem; color:var(--fg) }
+ul.tree code.cls.empty { color:var(--dim) }
+/* The atlas tree's node link. It carries `data-ref` like every other link to a
+   record, so it takes its family colour the same way — the tree is the one place
+   a reader sees a hundred entity names at once, and the classes are exactly what
+   is worth telling apart there. */
+a.node { --link:var(--accent); color:var(--link); text-decoration:none;
+  border-bottom:1px solid transparent }
+a.node:hover { border-bottom-color:var(--link) }
+a.node.sel { font-weight:600; border-bottom-color:var(--link) }
 .ipa .val { font-family:"Charis SIL","Doulos SIL","Gentium Plus",serif;
   font-size:1.05rem; color:var(--dim) }
 button.speak { padding:.1rem .4rem; line-height:1.2 }
@@ -172,9 +255,12 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
                 border-radius:.3rem;background:var(--card);color:var(--fg)}
 /* The scan/reader controls above the card stack. */
 #bar2{display:flex;gap:.4rem;margin-bottom:.6rem}
-/* Previous/next among *collated* pages — what the reader can actually reach. */
+/* Previous/next among *collated* pages — what the reader can actually reach.
+   Rendered at both ends of the text; the second copy is the last thing in
+   `#primary`, and wants its rule above rather than below. */
 .neighbours{display:flex;justify-content:space-between;
             font-family:system-ui,sans-serif;font-size:.8rem;margin-bottom:1rem}
+#primary > .neighbours:last-child{margin:1.5rem 0 0}
 .ratify-row{margin-top:.5rem}
 /* Two reading widths: the encyclopedia index is a table of names, the search
    results carry a line of context either side of the hit and want the room. */
@@ -184,6 +270,30 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .hits{width:100%;font-size:.85rem}
 .hits td.before{text-align:right}
 .note-small{font-family:system-ui,sans-serif;font-size:.8rem}
+/* --- the hover preview ---
+ *
+ * The same fragment the stack would show, floated for a moment beside the link.
+ * It reuses `.card` for its skin and has to undo three things `.card` gets from
+ * living in `#secondary`: it takes its width from that column and has none of
+ * its own, its `.tools` have nothing to float against, and its pinned/selected
+ * borders mean nothing here. A fixed width rather than shrink-to-fit, so a long
+ * gloss and a one-line one float the same shape and the preview does not jump
+ * about as the pointer crosses a paragraph.
+ *
+ * **`pointer-events:none` is load-bearing, not polish.** It is what keeps the
+ * preview a look rather than a place: the click always lands on the link
+ * underneath, so nothing about clicking changes, and `mouseover` never fires
+ * inside a preview, so a preview cannot open a preview.
+ *
+ * Above `#lightbox`, which is `z-index:10` — a preview under an open lightbox
+ * would be a card you can see the edge of and nothing else.
+ */
+.card.preview{position:fixed;z-index:11;width:24rem;max-width:calc(100vw - 2rem);
+  max-height:60vh;overflow:hidden;pointer-events:none;
+  box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.card.preview .tools{display:none}
+.card.preview.pinned,.card.preview.selected{border-color:var(--rule);
+  border-width:1px}
 #lightbox {width: 100%;height: 100%;background-color: rgba(1, 1, 1, 0.4);position: fixed;z-index: 10;top: 0;}
 #lightbox-image {max-height: 100%;max-width: 100%;overflow: auto;padding: 2em;}
 #lightbox img {max-height: 100%;max-width: 100%;object-fit: cover;}

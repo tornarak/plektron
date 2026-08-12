@@ -9,6 +9,11 @@
    not equally well founded: a shape a source drew, a point a human keyed, and
    an extent computed from what lies beneath. Only the first two are claims
    about a boundary. #}
+{# Who to fetch, stated by the fragment that knows. It is not the same set as the
+   `data-ent`s below it: those are what can be *highlighted*, and a descendant
+   two levels down with no shape of its own is on no layer while still being one
+   click away. #}
+{% if warm %}<span hidden class='warm' data-warm='{{ warm | join(" ") }}'></span>{% endif %}
 {% if not rec %}
 <p>No entry for <code>{{ ident }}</code>.</p>
 {% elif not svg %}

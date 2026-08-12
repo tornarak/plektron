@@ -1,8 +1,13 @@
 {% extends "edition/base.html" %}
 {% block title %}Atlas — The Chukchee{% endblock %}
 
+{# The node name carries `data-ref` as well as the `¶` beside it. It is the thing
+   a reader's pointer is actually on — the `¶` is a 6px target — and without it
+   the highlight, the preview and the family colour all keyed off the one link
+   nobody hovers. #}
 {% macro node(n) %}
-<li><a class='node {{ "sel" if n.selected }}' href='{{ base }}/atlas?at={{ n.id }}'>{{ n.canonical }}</a>
+<li><a class='node {{ "sel" if n.selected }}' data-ref='{{ n.id }}'
+       href='{{ base }}/atlas?at={{ n.id }}'>{{ n.canonical }}</a>
 <span class='pill'>{{ n.mark }}</span>
 <a class='ent' data-ref='{{ n.id }}' href='{{ base }}/entity/{{ n.id }}'
    title='the entry'>&para;</a>
@@ -16,15 +21,15 @@
    person, source and event in the store is an atlas root, and the tree becomes
    the encyclopedia index with worse navigation. #}
 <div id='secondary'>
-  <div class='card'><div class='body'>
   {% if selected %}
-  {% include "edition/_map.html" %}
+  {% include "edition/_pane.html" %}
   {% else %}
+  <div class='card'><div class='body'>
   <p class='meta'>Pick a location. The tree holds every entity with somewhere to
   put on a map — a shape a source drew, a point a human keyed, or an extent
   framed by what lies beneath it.</p>
-  {% endif %}
   </div></div>
+  {% endif %}
 </div>
 <div id='primary'>
 <ul class='tree'>{% for r in tree %}{{ node(r) }}{% endfor %}</ul>
@@ -33,4 +38,13 @@
 <ul class='meta'>{% for g in gaps %}<li>{{ g }}</li>{% endfor %}</ul></div>
 {% endif %}
 </div>
+{% endblock %}
+
+{# The ¶ beside every node is an `a.ent`, so the tree previews its own entries —
+   which is the one place a reader is looking at a hundred entity names at once,
+   and the one place the highlight has most to say: everything drawn on the
+   selected node's map is a name somewhere in the list beside it. #}
+{% block page_scripts %}
+<script src="/static/js/hover.js"></script>
+<script src="/static/js/map.js"></script>
 {% endblock %}

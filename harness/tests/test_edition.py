@@ -8,6 +8,7 @@ true is that it cannot leave the store in a state `entity check` rejects.
 """
 from __future__ import annotations
 
+import re
 import shutil
 import unicodedata
 from pathlib import Path
@@ -16,8 +17,10 @@ import pytest
 from test_entities import entry
 
 from harness import edition_ui, speech, tei_html
+from harness.entities import ENTITY_CLASSES
 
 TEI_NS = "http://www.tei-c.org/ns/1.0"
+CSS = Path(__file__).resolve().parent.parent / "web" / "static" / "css" / "edition.css"
 
 
 def page(root: Path, ref: str, body: str) -> Path:
@@ -272,6 +275,102 @@ def test_a_ref_shaped_like_a_path_is_refused(server):
     assert "404" in str(e.value)
 
 
+def test_a_page_carries_its_neighbours_at_both_ends(server):
+    """A page is a screenful or several, and a reader who has got to the bottom
+    should not have to go back up to leave. Two copies, and **no `id` on either**
+    — they used to be `id='prev-page'`/`'next-page'`, which two copies would make
+    invalid, with `getElementById` silently answering with the first."""
+    base, root = server
+    for r in ("1-020", "1-022"):
+        page(root, r, '<pb n="1"/><p>x</p>')
+    body = get(base + "/page/1-021")
+    assert body.count("class='neighbours'") == 2
+    assert "prev-page" not in body and "next-page" not in body
+    assert body.count("page-prev") == 2 and body.count("page-next") == 2
+
+
+def test_a_page_with_no_neighbour_carries_no_block_at_either_end(server):
+    """The `{% if prev or next %}` guard lives in the macro, so it is written
+    once and cannot come apart between the two call sites."""
+    base, _ = server
+    assert "class='neighbours'" not in get(base + "/page/1-021")
+
+
+def test_the_neighbours_claim_no_tabindex(server):
+    """They held 1 and 2 while `tei_html` numbered the text's own links from 3 —
+    one number in three files. Worse, `edition.js` counted the anchors and then
+    addressed them by attribute value, so the first or last page of any listing,
+    which has only one neighbour, left a gap: the count fell one short of the
+    highest live index and the last link on the page could not be reached. The
+    arrow keys go to a neighbour directly; the up/down walk is for the text."""
+    base, root = server
+    page(root, "1-022", '<pb n="1"/><p>x</p>')
+    body = get(base + "/page/1-021")
+    assert "class='neighbours'" in body
+    assert 'tabindex="1"' not in body and 'tabindex="2"' not in body
+
+
+def test_every_entity_class_has_exactly_one_link_colour():
+    """`ENTITY_CLASSES` is the authority, the corpus header's `prefixDef` set is a
+    second copy held to it by `harness tei header`, and the stylesheet is a third.
+    A class added there and forgotten here would fall back to the accent silently,
+    which is indistinguishable from one deliberately left at the default; a class
+    named in two families would take whichever rule came last."""
+    css = CSS.read_text(encoding="utf-8")
+    for cls in ENTITY_CLASSES:
+        assert css.count(f'[data-ref^="{cls}:"]') == 1, cls
+
+
+def test_every_link_colour_is_defined_in_both_themes():
+    """The drift far likelier than a missing class: a token added to `:root` and
+    not to the dark block inherits the light value, and a colour code that holds
+    in one theme only is worse than none."""
+    css = CSS.read_text(encoding="utf-8")
+    for token in ("--flora", "--abstract", "--lex", "--basin", "--hi"):
+        assert len(re.findall(rf"{token}\s*:", css)) == 2, token
+
+
+def test_an_entry_that_can_be_drawn_arrives_with_its_map(server):
+    """Reaching an entry and then having to ask for the map made the geography an
+    optional extra, and it is not — `within:` is half of what an entry says about
+    a place. The pane is what carries it: there is only ever one *here*, and a map
+    that could be pushed out of sight by the next three cards was answering a
+    question nobody had stopped asking."""
+    base, root = server
+    entry(root, "place:uelen", extra="- geo: 66.16 -169.8\n")
+    body = get(base + "/entity/place:uelen")
+    assert "id='map-pane'" in body and "<svg class='map" in body
+    assert "data-ent='place:uelen'" in body   # the pin, for the highlight
+
+
+def test_an_entry_with_nothing_to_draw_opens_no_pane(server):
+    """Chuvan, Kerek, Siberian Yupik and Tundra Yukaghir are the live cases. An
+    empty pane saying so would be a second statement of what the card's own
+    `contains`/`within` rows already do not claim."""
+    base, _ = server
+    assert "id='map-pane'" not in get(base + "/entity/place:markova")
+
+
+def test_the_fragment_the_stack_and_the_preview_use_carries_no_map(server):
+    """A hover preview and a card in the stack are both read *while* the pane is
+    showing the geography. A second copy inside the card would answer a question
+    nothing was asking, and cost a map render per hover."""
+    base, root = server
+    entry(root, "place:uelen", extra="- geo: 66.16 -169.8\n")
+    bare = get(base + "/entity/place:uelen?partial=1")
+    assert "Uelen" in bare
+    assert "<svg" not in bare and "map-pane" not in bare
+
+
+def test_the_page_view_ships_the_pane_shut_and_the_stack_apart_from_it(server):
+    """`edition.js` indexes `STACK.childNodes` as cards — selected, surfaced,
+    pinned, deleted. A pane among them would be all four."""
+    base, _ = server
+    body = get(base + "/page/1-021")
+    assert "id='map-pane' hidden" in body
+    assert "id='stack'" in body
+
+
 def test_the_entity_panel_is_the_same_content_bare(server):
     """One template, wrapped or bare, so a permalink and a click land identically."""
     base, _ = server
@@ -281,9 +380,29 @@ def test_the_entity_panel_is_the_same_content_bare(server):
     assert "Markova" in bare
 
 
-def test_the_encyclopedia_puts_proposed_entries_first(server):
+def test_the_encyclopedia_is_a_tree_over_the_whole_class_vocabulary(server):
+    """**Every class, including the ones nothing is filed under.** Four of the
+    eleven are empty today, and a list of only the populated ones would show half
+    the vocabulary while looking complete — the silence the atlas's `absent` rows
+    exist to break, one store over."""
     base, _ = server
-    assert "awaiting audit" in get(base + "/entities")
+    body = get(base + "/entities")
+    for cls in ENTITY_CLASSES:
+        assert f">{cls}</code>" in body, cls
+    # The one populated class says how many; the empty ones say nothing is there.
+    assert "(1)" in body and "(0)" in body
+
+
+def test_the_encyclopedia_puts_proposed_entries_first(server):
+    """It is named for an ordering and used to assert only that the words
+    "awaiting audit" appeared — a substring of the count in the title bar, true
+    whatever the order was and true if the list were empty. Proposed-first is now
+    within a class, and this is what says so."""
+    base, root = server
+    entry(root, "place:anadyrsk", status="ratified", triggers=[("Anadyrsk", True)])
+    body = get(base + "/entities")
+    assert body.index("place:markova") < body.index("place:anadyrsk")
+    assert "awaiting audit" in body
 
 
 def test_ratifying_writes_the_store(server):

@@ -87,7 +87,7 @@ def _shape(ident: str, root: str, _key: bytes) -> dict:
 
 
 def shape(ident: str, root: Path) -> dict:
-    """One GeoJSON shape. A single map card asks for six or more of these out of
+    """One GeoJSON shape. A single map asks for six or more of these out of
     a 1.2 MB store, each one re-read and re-decoded.
 
     Keyed on the index plus that one file: `geo.shape` resolves the identity

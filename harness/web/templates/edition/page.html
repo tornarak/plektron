@@ -6,9 +6,38 @@
     <button id='reader-btn' title='Reader View'>📕</button>
 {% endblock %}
 
+{# Prev/next among the pages this sitting can read, at both ends of the text: a
+   page is a screenful or several, and a reader who has got to the bottom should
+   not have to go back up to leave.
+
+   **Neither copy carries a `tabindex`, and that is what makes two copies safe.**
+   These anchors used to be `tabindex="1"` and `"2"`, with `tei_html` starting the
+   text's own links at 3 and `edition.js` holding a matching offset — one number
+   in three files, and wrong whenever a page had only one neighbour, because the
+   walk counted anchors and addressed them by attribute value. The arrow keys
+   reach these two directly (← and →); they were never what the up/down walk was
+   for. The classes are what the script finds them by, and duplicating a class is
+   not the error duplicating an id would be.
+
+   The `{% raw %}{% if prev or next %}{% endraw %}` guard lives inside the macro
+   so the condition is written once and not once per call site. #}
+{% macro neighbours() %}
+{% if prev or next %}
+<div class='neighbours'>
+  <span>{% if prev %}<a class='page-prev'
+     href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
+  <span>{% if next %}<a class='page-next'
+     href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
+</div>
+{% endif %}
+{% endmacro %}
+
 {% block main %}
 {% if doc.ok %}
-<aside id='secondary'></aside>
+{# The pane is empty and hidden until the first click on a located entity, and
+   `#secondary:empty` in the stylesheet means the column would not collapse with
+   a hidden child in it — so it is inside the aside, not beside it. #}
+<aside id='secondary'>{% include "edition/_pane.html" %}<div id='stack'></div></aside>
 {% endif %}
 <div id='primary'>
 {% if not doc.ok %}
@@ -24,12 +53,7 @@ stores. Nobody has read it against the scan: its paragraph shape is a rule's
 guess, its foreign-language spans are unresolved <code>index</code> handles, and
 no <code>@resp</code> on it claims anything.</p>
 {% endif %}
-{% if prev or next %}
-<div class='neighbours'>
-  <span>{% if prev %}<a id='prev-page' tabindex="1" href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
-  <span>{% if next %}<a id='next-page' tabindex="2" href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
-</div>
-{% endif %}
+{{ neighbours() }}
 {# `doc.html` is `tei_html`'s output, which escapes every text node and every
    attribute it emits. It is the one thing on this page that arrives as markup
    on purpose, so it is the one thing marked safe. #}
@@ -42,10 +66,14 @@ no <code>@resp</code> on it claims anything.</p>
 {% endfor %}
 </ol></div>
 {% endif %}
+{{ neighbours() }}
 {% endif %}
 </div>
 {% endblock %}
 
+{# hover.js first: `edition.js`'s `fill` reads the memo it publishes. #}
 {% block page_scripts %}
+<script src="/static/js/hover.js"></script>
+<script src="/static/js/map.js"></script>
 <script src="/static/js/edition.js"></script>
 {% endblock %}

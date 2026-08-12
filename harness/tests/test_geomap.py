@@ -9,11 +9,12 @@ reports the disagreements rather than this suite pretending to adjudicate them.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
 
-from harness import entities, geo, geomap
+from harness import edition_ui, entities, geo, geomap
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 built = pytest.mark.skipif(
@@ -212,15 +213,113 @@ def test_a_ring_that_cannot_touch_the_frame_is_dropped():
 @built
 def test_a_map_is_svg_with_no_pixel_dimension_on_it():
     f = geomap.Frame(geo.bounds(geo.shape("watershed:anadyr", ROOT)))
-    svg = geomap.render(f, {"subject": f.paths(geo.shape("watershed:anadyr", ROOT))})
+    doc = geo.shape("watershed:anadyr", ROOT)
+    svg = geomap.render(f, {"subject": geomap.owned(f.paths(doc), "water:anadyr")})
     assert svg.startswith("<svg") and "viewBox='0 0 1000 1000'" in svg
     assert "px" not in svg and "width=" not in svg
 
 
+def test_a_mark_joins_the_root_class_and_is_absent_by_default():
+    """`render` is told what the subject *is*; it cannot read it off the paths.
+    Inferring a drainage basin from the shape of a ring is exactly the guess this
+    project refuses, so the caller decides and this only carries it."""
+    f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
+    assert "class='map'" in geomap.render(f, {})
+    assert "class='map basin'" in geomap.render(f, {}, mark="basin")
+
+
+@built
+def test_the_subject_is_marked_a_basin_only_when_its_shape_is_a_watershed():
+    """Read off the shape's *type* — `area:` is typed, and `watershed:anadyr`
+    says where the polygon came from. Every watershed in the store happens to sit
+    on a `water:` entity today, so the entity's class would give the same answer;
+    it is a different question, and only this one says why the outline must not be
+    drawn in the colour of the rivers inside it."""
+    store = entities.load(ROOT)
+    basin = edition_ui.map_context("water:anadyr", ROOT, "/edition", store=store)
+    assert "class='map basin'" in basin["svg"]
+    assert basin["basis"]["id"] == "watershed:anadyr"
+
+    plain = edition_ui.map_context("place:markova", ROOT, "/edition", store=store)
+    assert plain["svg"] and "basin" not in plain["svg"]
+
+
+def test_every_drawn_record_says_which_record_it_is():
+    """What the highlight rests on. Nothing about a path's geometry leads back to
+    an entity: a member is the nearest descendant *with* a shape, found by
+    descending through those without, so the drawn thing is not reliably the
+    child whose name a reader is resting on. The coastline claims nothing,
+    because no record owns it."""
+    f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
+    svg = geomap.render(f, {
+        "land": geomap.owned(["M0 0L1 1"]),
+        "subject": geomap.owned(["M0 0L1 1"], "water:kolyma"),
+        "members": geomap.owned(["M0 0L1 1"], "water:small-anui"),
+    })
+    assert "data-ent='water:kolyma'" in svg
+    assert "data-ent='water:small-anui'" in svg
+    assert svg.count("data-ent") == 2   # the land carries none
+
+
+@built
+def test_a_framed_place_is_drawn_to_itself_and_not_to_its_parent():
+    """Chukotka and the Russian Far East came out pixel for pixel identical.
+    Framing on the parent is right for a *shape* — the Small Anui says where it
+    is only with the Kolyma around it — but a node with neither shape nor point
+    *is* its extent, and the RFE has no parent, so both fell back to the RFE's."""
+    store = entities.load(ROOT)
+    rfe = edition_ui.map_context("place:russian-far-east", ROOT, "/e", store=store)
+    chu = edition_ui.map_context("place:chukotka", ROOT, "/e", store=store)
+    assert rfe["basis"]["kind"] == chu["basis"]["kind"] == "framed"
+    assert rfe["svg"] and rfe["svg"] != chu["svg"]
+
+
+@built
+def test_a_framed_descendant_is_on_the_map_and_nothing_else_is():
+    """`member_shapes` descends *through* a shapeless node to the basins below,
+    so Chukotka appears on no layer of its parent's map and its name lit up
+    nothing. Its extent is what there is to offer. A descendant that has a shape
+    or a point is already drawn and gets no box — a rectangle over every one of
+    them at once is a field of rectangles over the thing you were reading."""
+    store = entities.load(ROOT)
+    got = dict(geo.member_extents("place:russian-far-east", store, ROOT))
+    assert "place:chukotka" in got
+    assert not any(store[e]["area"] or store[e]["geo"] for e in got)
+    layer = re.search(r"<g class='extents'>.*?</g>",
+                      edition_ui.map_context("place:russian-far-east", ROOT,
+                                             "/e", store=store)["svg"], re.S)
+    assert layer and "data-ent='place:chukotka'" in layer.group()
+
+
+@built
+def test_what_is_warmed_is_wider_than_what_is_drawn():
+    """The map is the authority on what can be highlighted, never on what a
+    reader is about to open. The Omolon has a shape of its own and is still on no
+    layer of the Russian Far East's map: `member_shapes` stopped at the Kolyma
+    above it. Markova is a point three levels down, past `pins_under`'s depth.
+    Both are a click or two from where the reader is standing."""
+    store = entities.load(ROOT)
+    ctx = edition_ui.map_context("place:russian-far-east", ROOT, "/e", store=store)
+    drawn = set(re.findall(r"data-ent='([^']*)'", ctx["svg"]))
+    assert {"water:omolon", "place:markova"} <= set(ctx["warm"])
+    assert not ({"water:omolon", "place:markova"} & drawn)
+    assert "place:russian-far-east" not in ctx["warm"]   # never itself
+
+
+@built
+def test_a_member_is_named_by_its_entity_and_not_by_its_shape():
+    """Two entities may share one polygon — `people:chukchee` and
+    `language:chukchee` both point at the one Asher shape — so the shape cannot
+    identify the member even in principle."""
+    store = entities.load(ROOT)
+    pairs = geo.member_shapes("water:kolyma", store)
+    assert pairs and all(e in store and s.startswith("watershed:") for e, s in pairs)
+
+
 def test_a_pin_label_is_escaped_and_turns_inward_at_the_edge():
     f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
-    svg = geomap.render(f, {}, pins=[(950.0, 500.0, "<script>"),
-                                     (100.0, 500.0, "Markova")])
+    svg = geomap.render(f, {}, pins=[(950.0, 500.0, "<script>", "place:x"),
+                                     (100.0, 500.0, "Markova", "place:markova")])
     assert "<script>" not in svg and "&lt;script&gt;" in svg
     assert svg.count("text-anchor='end'") == 1
     assert svg.count("text-anchor='start'") == 1

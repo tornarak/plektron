@@ -5,6 +5,14 @@
 {% block title %}{{ card_title }} — The Chukchee{% endblock %}
 
 {% block main %}
+{# An entity that has somewhere to put on a map arrives with the map already
+   drawn, in the same column the atlas uses. Reaching an entry and then having to
+   ask for its map made the geography an optional extra, and it is not: `within:`
+   is half of what an entry says about a place. `map` is set only by the entity
+   route, so a lexicon or standalone-map page keeps its single column. #}
+{% if map %}
+<div id='secondary'>{% include "edition/_pane.html" %}</div>
+{% endif %}
 <div id='primary'>
   <div class='card'><div class='body'>
   {% include partial %}
@@ -14,4 +22,6 @@
 
 {% block page_scripts %}
 <script src="/static/js/ratify.js"></script>
+<script src="/static/js/hover.js"></script>
+<script src="/static/js/map.js"></script>
 {% endblock %}

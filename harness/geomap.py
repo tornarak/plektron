@@ -43,7 +43,10 @@ from . import geo
 
 #: Layer order, back to front, with the class each gets. Order is the whole of
 #: the legibility: the subject drawn under its own siblings would be lost.
-LAYERS = ("land", "lakes", "kin", "members", "parent", "subject", "rivers")
+#: `extents` is last because it is painted only under the pointer — a highlight
+#: buried beneath the shapes it is meant to pick out would be no highlight.
+LAYERS = ("land", "lakes", "kin", "members", "parent", "subject", "rivers",
+          "extents")
 
 #: Padding around the framed extent, as a fraction of the larger dimension. A
 #: shape flush against the frame reads as clipped — which, for `langarea:chuk1273`,
@@ -190,38 +193,66 @@ class Frame:
                 out.append((d, sorder))
         return out
 
+    def viewport(self, box) -> str:
+        """A lon/lat box as a closed ring — an extent, drawn.
+
+        Walked along its edges rather than taken at its corners, for the reason
+        `__init__` measures the same way: a rectangle in lon/lat is not a
+        straight-sided figure once projected, and at these latitudes its top
+        bows well past its own corners.
+        """
+        w, s, e, n = box
+        steps = 24
+        edge = [(w + (e - w) * i / steps, s) for i in range(steps + 1)]
+        edge += [(e, s + (n - s) * i / steps) for i in range(1, steps + 1)]
+        edge += [(e - (e - w) * i / steps, n) for i in range(1, steps + 1)]
+        edge += [(w, n - (n - s) * i / steps) for i in range(1, steps + 1)]
+        pts = self._ring(edge)
+        return _path(pts, close=True) if pts else ""
+
     def point(self, lon: float, lat: float):
         return self._at(lon, lat)
 
 
-CSS = """
-svg.map { width:100%; height:auto; display:block; background:var(--sea);
-  border:1px solid var(--rule); border-radius:.3rem }
-svg.map .land { fill:var(--land); stroke:none }
-svg.map .lakes { fill:var(--sea); stroke:none }
-svg.map .kin { fill:none; stroke:var(--dim); stroke-width:.15%; opacity:.5 }
-svg.map .members { fill:color-mix(in srgb,var(--accent) 8%,transparent);
-  stroke:var(--accent); stroke-width:.18%; opacity:.75 }
-svg.map .parent { fill:none; stroke:var(--dim); stroke-width:.25%;
-  stroke-dasharray:1%,.8% }
-svg.map .subject { fill:color-mix(in srgb,var(--accent) 22%,transparent);
-  stroke:var(--accent); stroke-width:.35% }
-svg.map .rivers { fill:none; stroke:var(--water); stroke-width:.22%;
-  stroke-linecap:round; opacity:.85 }
-svg.map .pin { fill:var(--accent); stroke:var(--card); stroke-width:.15% }
-svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
-  paint-order:stroke; stroke:var(--sea); stroke-width:.4%;
-  stroke-linejoin:round }
-"""
+def owned(paths, ent: str = "") -> list[tuple[str, str]]:
+    """`Frame.paths` output, tagged with the entity it belongs to.
 
-
-def render(frame: Frame, layers: dict, pins=()) -> str:
-    """One map. `layers` maps a `LAYERS` name to a list of path `d` strings.
-
-    Rivers arrive as `(d, sorder)` so the higher orders can be drawn heavier —
-    the trunk should read as the trunk. `pins` are `(x, y, label)` already
-    projected, which keeps the label-placement question out of here.
+    Every layer but `rivers` is a list of these. The empty string is honest for
+    the coastline and the lakes: they are `base:land` and `base:lakes`, which no
+    entity claims and nothing should ever highlight.
     """
+    return [(d, ent) for d in paths]
+
+
+def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
+    """One map. `layers` maps a `LAYERS` name to a list of `(d, entity)` pairs.
+
+    **Every path says whose it is, and that is what makes the map answerable.**
+    A reader hovering a child's name in a card or in the atlas tree wants that
+    child lit up here, and nothing about a path's geometry can be traced back to
+    a record: the members are the nearest descendants *with* a shape, found by
+    descending through those without, and two entities may share one shape
+    outright. So the identity travels with the path or it is not recoverable.
+    `owned()` is how a caller attaches it; the empty string means the layer
+    belongs to no record, which is true of the coastline and of nothing else.
+
+    Rivers are the one exception, arriving as `(d, sorder)` so the higher orders
+    can be drawn heavier — the trunk should read as the trunk. They are the
+    subject's own drainage and carry no separate identity.
+
+    `pins` are `(x, y, label, entity)` already projected, which keeps the
+    label-placement question out of here.
+
+    `mark` joins the root element's class list and says something about the
+    subject that the geometry cannot: `basin` is what the caller sets when the
+    subject's shape came from the watershed delineation, so a drainage boundary
+    is not drawn in the same colour as the rivers inside it. This module does not
+    decide it — it does not know where a path came from, and inferring a basin
+    from the shape of a ring is exactly the kind of guess this project refuses.
+    """
+    def _of(ent: str) -> str:
+        return f" data-ent='{escape(ent)}'" if ent else ""
+
     parts = []
     for name in LAYERS:
         got = layers.get(name)
@@ -235,13 +266,14 @@ def render(frame: Frame, layers: dict, pins=()) -> str:
                 if s >= top - 1 else f"<path d='{d}'/>"
                 for d, s in got) + "</g>")
         else:
-            parts.append(f"<g class='{name}'>"
-                         + "".join(f"<path d='{d}'/>" for d in got) + "</g>")
+            parts.append(f"<g class='{name}'>" + "".join(
+                f"<path d='{d}'{_of(e)}/>" for d, e in got) + "</g>")
     # The pin radius and the label offset are percentages of the viewBox, so a
     # marker keeps its size on the page whatever extent the frame ended up with.
     r = SPAN * 0.012
-    for x, y, label in pins:
-        parts.append(f"<circle class='pin' cx='{_fmt(x)}' cy='{_fmt(y)}' r='{r:.1f}'/>")
+    for x, y, label, ent in pins:
+        parts.append(f"<circle class='pin'{_of(ent)} cx='{_fmt(x)}' "
+                     f"cy='{_fmt(y)}' r='{r:.1f}'/>")
         if not label:
             continue
         # A label always sits to the right of its pin until the pin is near the
@@ -255,6 +287,7 @@ def render(frame: Frame, layers: dict, pins=()) -> str:
             f"y='{_fmt(y + r * 0.5)}' "
             f"text-anchor='{'end' if flip else 'start'}' "
             f"font-size='{r * 2.2:.1f}'>{escape(label)}</text>")
-    return (f"<svg class='map' viewBox='{frame.viewbox}' "
+    return (f"<svg class='map{' ' + escape(mark) if mark else ''}' "
+            f"viewBox='{frame.viewbox}' "
             f"preserveAspectRatio='xMidYMid meet' role='img'>"
             + "".join(parts) + "</svg>")

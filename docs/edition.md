@@ -242,14 +242,121 @@ not mtime, because these stores are edited underneath the running server and a
 timestamp key is not fine-grained enough to notice; the measurements are in that
 module.
 
-**Two columns.** The text, and a **stack** of cards beside it. Clicking an
-entity link, a footnote marker or "consult the scan" pushes a card to the top;
-the stack keeps what you opened, in the order you opened it, and a pinned card
-stays above the rest. That is the whole interaction, and it is what makes an
-annotated edition readable — the alternative is a tooltip that vanishes, or a
-footnote that costs you your place. Pins persist per page in `localStorage`,
-because a pin is a deliberate act and losing it to a refresh teaches you not to
-bother.
+**Two columns.** The text, and beside it a map pane over a **stack** of cards.
+Clicking an entity link or "consult the scan" pushes a card to the top; the stack
+keeps what you opened, in the order you opened it, and a pinned card stays above
+the rest.
+It is what makes an annotated edition readable: what you consulted stays
+consulted, and a footnote never costs you your place. Pins persist per page in
+`localStorage`, because a pin is a deliberate act and losing it to a refresh
+teaches you not to bother.
+
+**A map is not a card — it is a pane above the stack.** There is only ever one
+*here*, and a map that was a card like any other could sit in the stack twice
+saying different things about where you are, or be pushed out of sight by the
+next three. So: one pane, at the top, and clicking a place moves it rather than
+adding to it. An entity's own page and `/atlas?at=` render it filled; the page
+view ships it shut and the first click on a located entity opens it. Dismissal
+is "not this one" rather than a setting — nothing is written down, and the next
+such click brings it back. An entity the atlas cannot draw leaves the pane
+alone: swapping a map you were reading for a sentence about an absence loses
+more than it says, and the card's own rows already say it.
+
+**Every path on that map carries the entity it belongs to**, so resting on a
+name anywhere — a `contains` row, a node in the atlas tree, a word in the
+running text — lights up its shape. That identity has to be carried because
+nothing about a path recovers it: a drawn member is the nearest descendant
+*with* a shape, found by descending through those without, so it is not reliably
+the child whose name you are on; and two entities may share one polygon outright
+(`people:chukchee` and `language:chukchee` point at the one Asher shape), so the
+shape could not name the member even in principle. `geo.member_shapes` and
+`geo.pins_under` return the entity beside the thing to draw for this reason, and
+`geomap.owned` is what attaches it. The coastline claims nothing, which is
+correct: no record owns it.
+
+**A descendant with nothing to draw is on the map anyway, unpainted.** A node
+with neither a shape nor a point is skipped by that same descent — so Chukotka
+appeared nowhere on the Russian Far East's map and its name lit up nothing. Its
+extent is what there is to offer, and offering it is legal where inferring a
+*boundary* would not be: computed from what lies beneath, and a rectangle, which
+nothing mistakes for a coastline. The layer is drawn transparent and only the
+highlight paints it, because a box on every such node at once is a field of
+rectangles over the thing you were reading. The answer is there when the question
+is asked and not before. What remains unanswerable is a node with no located
+issue either — Kamchatka, Chaun Bay — which has no extent to draw and so lights
+up nowhere. That is the absence `geo verify` already reports, and there is no
+honest box to invent for it.
+
+**A framed place is drawn to itself.** A map frames on its parent's extent —
+that is what makes a shape mean something, the Small Anui saying where it is
+only with the Kolyma around it. But a node that *is* its extent has nothing to
+gain from it, and Chukotka and the Russian Far East came out pixel for pixel
+identical: the RFE has no parent, so both fell back to the RFE's own box. So the
+parent frames a shape or a point, and a framed node frames itself — at the cost,
+still open, of no longer showing where it sits.
+
+**What gets prefetched is wider than what is drawn**, and the fragment says so
+rather than the drawing implying it. Being on the map is a strong condition: the
+Omolon has a shape of its own and is still on no layer of the RFE's, because the
+descent stopped at the Kolyma above it, and Markova is a point three levels down
+past `pins_under`'s depth. Both are a click away. So `geo.relatives` — every
+ancestor and descendant at any depth — rides in `_map.html`, and the pane warms
+that union with its own `data-ent`s when it loads. That is the whole of "an entry
+preloads its ancestors and descendants".
+
+**Resting on a link fetches its card, and resting longer floats it**
+(`static/js/hover.js`). Two behaviours over one fetch, memoised by URL — the one
+string this and the stack both already hold, so a card rested on before it was
+clicked opens with nothing to wait for. The preview renders the *same*
+`?partial=1` fragment the stack renders; there is one template per kind of card
+and this adds no second one.
+
+A floating preview used to be argued against here, and the argument was that a
+tooltip which vanishes is no substitute for a stack. It is not, and the preview
+does not try to be one: it never replaces the click, it holds nothing the card
+would not, and it is `pointer-events:none` — the click lands on the link
+underneath, and nothing can be *done* in a preview. It answers the question you
+have *before* clicking — is this the one I mean? — and the stack answers
+everything after. Being pointer-inert is also what stops a preview opening a
+preview, which is why it loads safely on a page that is itself a card.
+
+**That fragment deliberately carries no map**, which is why an entity's page
+composes the entry and the pane rather than putting the map inside the card.
+Both a preview and a card in the stack are read *while* the pane is showing the
+geography, and the same hover that floats the preview is lighting the shape up
+over there — a second copy inside the card would answer a question nothing was
+asking, at a map render per hover.
+
+None of it is apparatus: reader view hides `.flag` and flattens `.unsettled`,
+because those are the edition talking about itself, and a preview, a highlight
+and a link's colour are the edition's own content.
+
+**Prev/next at both ends of a page**, and the arrow keys. Neither anchor claims a
+`tabindex`: they held 1 and 2 while `tei_html` numbered the text's links from 3,
+one number in three files — and `edition.js` counted the anchors and then
+addressed them by attribute value, so the first and last page of any listing,
+which have only one neighbour, left a gap that put the last link on the page out
+of reach. The up/down walk now indexes the list by position and the neighbours
+have left it, which is what makes two copies of the block free.
+
+**A link's colour says what class it points at**, in five families over the
+eleven — geographic, natural, human, abstract, and the lexicon's own orange.
+Eleven hues would be several pairs nobody could tell apart, twice over for dark
+mode. Nothing new is emitted for it: the class is the prefix of `data-ref`, which
+is the identity verbatim, so `edition.css` reads what the corpus already carries.
+That makes the stylesheet a *third* copy of `ENTITY_CLASSES` — the corpus
+header's `prefixDef` set is the second, held by `harness tei header` — so it gets
+the same treatment, and `test_edition.py` fails on a class with no rule or with
+two. The abstract family is deliberately not `--mark`: that is the apparatus
+colour, and an event link drawn in it would read as an editorial mark on the
+word.
+
+**The encyclopedia index is a tree over the class**, two levels and no deeper.
+`within:` exists and the atlas draws the forest over it, but that is the
+*geography* tree — nothing yet makes a people a child of a people — so this
+groups and stops rather than claiming a hierarchy the store does not hold. Every
+class appears, including the four nothing is filed under: a list of only the
+populated ones would show half the vocabulary while looking complete.
 
 **Two audiences, one renderer, one toggle.** The apparatus is visible by default
 — an unratified span is marked, an editorial comment is a flag that opens —
@@ -482,6 +589,18 @@ the same frame, mean what it looks like. Per-map because the store spans 137° o
 longitude and a single centre would visibly shear the Amur; nothing compares two
 separately-framed maps, so there is nothing to lose.
 
+**A drainage divide is not drawn in the colour of the rivers inside it.** The
+subject's outline goes dark red when its `area:` names a watershed, which is why
+`render` takes a `mark` it does not compute: it sees paths and cannot tell a
+basin from a coastline, and inferring one from the shape of a ring is the kind of
+guess this project is arranged against. The predicate is the *shape's* type —
+`area:` is typed, and `watershed:anadyr` says where the polygon came from. Every
+watershed in the store happens to sit on a `water:` entity today, so the entity's
+class would answer the same; it is a different question, and only this one says
+why the boundary must not be blue. The members are left in the accent: they are
+the nearest descendants that have a shape, chosen without reference to what drew
+them.
+
 Every map's `viewBox` is the same 1000-unit square and the element carries no
 width or height — `tei_html.crop_style`'s discipline, and normalizing the frame
 is also what lets one decimal place be enough at every zoom. Emitting projected
@@ -497,7 +616,10 @@ the shape it was computed for.
 `/atlas` is the `within:` forest, each node's map beside it, **scoped to located
 subtrees** — a root is an entity with no `within:` that has somewhere to put on a
 map, itself or below it. Without that scope every person and source in the store
-is an atlas root and the tree is the encyclopedia index with worse navigation.
+is an atlas root, and the atlas becomes a second encyclopedia index with a map
+stapled to it — the same names, grouped by nothing, beside a panel that has
+nothing to draw for most of them. The two views answer different questions: the
+index is the whole store by class, this is the located part by containment.
 
 **A shapeless node is framed by its members, and the map says so.** No source
 holds a polygon for Chukotka or the Russian Far East, and none should: they are

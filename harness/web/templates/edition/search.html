@@ -7,11 +7,18 @@
 {# Two tables rather than one ranked list: a hit in the text and a hit in the
    encyclopedia answer different questions, and merging them would need a
    relevance score this has no basis for inventing. #}
-<div id='primary search-width'>
+{# `id` and `class`, not one id of "primary search-width" — same fault as the
+   encyclopedia index had, with the same consequence: `#primary` never matched
+   here either. #}
+<div id='primary' class='search-width'>
 {% if ents %}
 <h3>Encyclopedia</h3>
+{# `class='ent' data-ref` and not a bare anchor. This is the one page a reader
+   reaches holding a list of entities, and it was the only one where they carried
+   neither their family's colour nor a preview on hover. #}
 <ul>{% for r in ents %}
-<li><a href='{{ base }}/entity/{{ r.id }}'>{{ r.canonical }}</a>
+<li><a class='ent' data-ref='{{ r.id }}'
+       href='{{ base }}/entity/{{ r.id }}'>{{ r.canonical }}</a>
 <code>{{ r.id }}</code>
 <span class='pill {{ r.status }}'>{{ r.status }}</span></li>
 {% endfor %}</ul>

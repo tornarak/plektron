@@ -232,9 +232,78 @@ def children(store: dict) -> dict[str, list[str]]:
     return kids
 
 
-def member_shapes(ent_id: str, store: dict, _seen=None) -> list[str]:
-    """The nearest descendants that have a shape, descending through those that
-    do not.
+def relatives(ent_id: str, store: dict) -> list[str]:
+    """Every ancestor and every descendant, at any depth.
+
+    **Not the same set as what a map draws**, and that is the point of it
+    existing. `member_shapes` stops at the nearest descendant *with* a shape, so
+    Chukotka is skipped on the Russian Far East's map and the Chukchee Peninsula
+    below it never appears at all — yet both are one click from where a reader
+    is standing, and both are what the pane exists to make cheap to reach.
+
+    Cycle-safe by the same `seen` discipline as `extent_of`: `entity check`
+    gates acyclicity, but this runs inside a page render, where a hang is worse
+    than a wrong answer.
+    """
+    kids = children(store)
+    out, seen = [], {ent_id}
+
+    def down(ident: str) -> None:
+        for k in kids.get(ident, []):
+            if k in seen:
+                continue
+            seen.add(k)
+            out.append(k)
+            down(k)
+
+    down(ent_id)
+    up = store.get(ent_id, {}).get("within") or ""
+    while up and up not in seen:
+        seen.add(up)
+        out.append(up)
+        up = store.get(up, {}).get("within") or ""
+    return sorted(out)
+
+
+def member_extents(ent_id: str, store: dict,
+                   root: Path = Path(".")) -> list[tuple[str, tuple]]:
+    """Descendants no other layer of a map can identify, with their extents.
+
+    **The complement of what gets drawn.** A descendant with a shape is a
+    member; one with a point is a pin; and a descendant with neither is skipped
+    entirely by `member_shapes`, which descends *through* it to whatever lies
+    below. Chukotka is the standing case — it appears nowhere on the Russian Far
+    East's map, and its name lights up nothing, while every basin under it does.
+
+    An extent is all there is to offer for such a node, and it is legal to offer
+    where a *boundary* would not be: it is computed from what lies beneath, it is
+    a rectangle, and nothing mistakes a rectangle for a coastline. What makes it
+    tolerable on the page is that the caller draws it invisible — see
+    `edition_ui.map_context`.
+    """
+    kids = children(store)
+    out, seen = [], {ent_id}
+
+    def walk(ident: str) -> None:
+        for k in kids.get(ident, []):
+            if k in seen:
+                continue
+            seen.add(k)
+            rec = store.get(k)
+            if rec is None:
+                continue
+            if not rec["area"] and not rec["geo"]:
+                box = extent_of(k, store, root)
+                if box:
+                    out.append((k, box))
+            walk(k)
+
+    walk(ent_id)
+    return out
+
+
+def member_shapes(ent_id: str, store: dict, _seen=None) -> list[tuple[str, str]]:
+    """The nearest descendants that have a shape, as `(entity, shape)`.
 
     One level down is right where the children are shapes — the Kolyma showing
     its tributaries. It is wrong at the top of the tree, where the children are
@@ -243,6 +312,14 @@ def member_shapes(ent_id: str, store: dict, _seen=None) -> list[str]:
     only the basins that happened to hang off the root directly. Descending
     until a shape turns up is what makes a structural node draw the country
     under it rather than an arbitrary half of it.
+
+    **Pairs, and the entity is the half that is not obvious.** It used to return
+    shape ids alone, which is all a renderer needs to draw them — but a reader
+    hovering a child's name wants that child lit up on the map, and the descent
+    above is exactly what makes the drawn member *not* reliably a direct child.
+    Two entities may also share one shape (`people:chukchee` and
+    `language:chukchee` both point at the one Asher polygon), so the shape
+    cannot identify the member even in principle.
     """
     seen = _seen or set()
     if ent_id in seen:
@@ -254,7 +331,7 @@ def member_shapes(ent_id: str, store: dict, _seen=None) -> list[str]:
         if rec is None:
             continue
         if rec["area"]:
-            out.append(rec["area"])
+            out.append((kid, rec["area"]))
         else:
             out += member_shapes(kid, store, seen)
     return out
@@ -312,12 +389,16 @@ def located(ent_id: str, store: dict, root: Path = Path(".")) -> bool:
 
 
 def pins_under(ent_id: str, store: dict, root: Path = Path("."),
-               depth: int = 2) -> list[tuple[float, float, str]]:
-    """`geo:` points at and below an entity, as (lon, lat, label).
+               depth: int = 2) -> list[tuple[float, float, str, str]]:
+    """`geo:` points at and below an entity, as (lon, lat, label, entity).
 
     Bounded by depth rather than by count: a map of the Russian Far East that
     plotted every village in the store would be a field of dots, and the two
     levels below the subject are the ones whose position the subject explains.
+
+    The entity rides along for the same reason it does on a member shape: an
+    entity whose only geography is a point is highlighted by lighting its pin,
+    and the label is a canonical name, which is not an identity.
     """
     idx = index(root)
     kids = children(store)
@@ -329,7 +410,7 @@ def pins_under(ent_id: str, store: dict, root: Path = Path("."),
             return
         if rec["geo"]:
             lat, lon = rec["geo"]
-            out.append((_shifted(lon, idx), lat, rec["canonical"]))
+            out.append((_shifted(lon, idx), lat, rec["canonical"], ident))
         if d > 0:
             for k in kids.get(ident, []):
                 walk(k, d - 1)

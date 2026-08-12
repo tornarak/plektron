@@ -1,9 +1,11 @@
 const B = STATE.base;
+// The scrolling column, and the cards inside it. They were the same element
+// until the map pane moved in above the stack: everything here indexes
+// `STACK.childNodes` as cards, and a pane among them would be selected,
+// surfaced, pinned and deleted like one.
 const PANE = document.getElementById('secondary');
-const STACK = document.getElementById('secondary');
+const STACK = document.getElementById('stack');
 const KEY = 'edition-pins-' + STATE.ref;
-
-const TABINDEX_OFFSET = 2;
 
 // Pins survive a reload because a pinned card is a deliberate act — you put it
 // there to keep it while you read — and losing it to a refresh would teach you
@@ -56,10 +58,15 @@ function card(id, title, meta, html, extra) {
   return el;
 }
 
+/* Through `hover.js`'s memo when it is there, so a card rested on before it was
+   clicked is already fetched and the `loading…` state never paints. The direct
+   fetch is the fallback rather than the norm: it keeps this file working if that
+   one did not load, which is cheaper than making the load order load-bearing. */
 async function fill(id, url, title) {
   const c = push(id, () => card(id, title, 'loading…', ''));
-  const r = await fetch(url);
-  c.querySelector('.body').innerHTML = await r.text();
+  const html = window.CARDS ? await window.CARDS.get(url)
+                            : await fetch(url).then(r => r.text());
+  c.querySelector('.body').innerHTML = html;
   return c;
 }
 
@@ -156,18 +163,26 @@ new MutationObserver((list, _) => {
 }).observe(STACK, { childList: true });
 
 let article = document.querySelector("#primary");
-let selected_tab_idx = TABINDEX_OFFSET;
+let selected_tab_idx = -1;
 
+/* **Indexed by position in the list, not by the value of `tabindex`.** The two
+   agree only when every index from 1 to the count is actually on the page, and
+   they did not: the neighbour block held 1 and 2, and a page with only one
+   neighbour — the first and the last of any listing — left a gap. `count` then
+   fell one short of the highest live index and the last link in the text could
+   not be reached at all, while one keystroke early in the walk focused nothing.
+   `tei_html` still numbers the anchors, and that numbering is what puts them in
+   reading order here; nothing on this side needs to know what the numbers are,
+   which is also what let the neighbours stop claiming two of them. */
 function selectTabIdx(idx = null, inc = 0) {
+    let links = [...article.querySelectorAll("a[tabindex]")];
+    if (!links.length) return;
     idx = (idx == null) ? selected_tab_idx : idx;
     if (inc) idx += inc;
-    let count = article.querySelectorAll("a[tabindex]").length;
-    if (idx == -1) idx = count;
-    else if (idx > count) idx = 1;
-
-    selected_tab_idx = clamp(idx, 1, count);
-    let sel = article.querySelector(`a[tabindex="${selected_tab_idx}"]`);
-    if (sel) sel.focus();
+    if (idx < 0) idx = links.length - 1;
+    else if (idx >= links.length) idx = 0;
+    selected_tab_idx = idx;
+    links[idx].focus();
 }
 
 const openEntity = ref =>
@@ -175,9 +190,6 @@ const openEntity = ref =>
 
 const openLexicon = key =>
   fill('lex:' + key, B + '/lexicon/' + encodeURIComponent(key) + '?partial=1', key);
-
-const openMap = ref =>
-  fill('map:' + ref, B + '/map/' + encodeURIComponent(ref) + '?partial=1', ref);
 
 function openScan(box, label) {
   const id = 'scan:' + (box ? box.join(',') : 'page');
@@ -218,11 +230,19 @@ document.addEventListener('click', ev => {
      this edition holds, not for the open web. */
   if (ev.target.closest('a.out')) return;
   const a = ev.target.closest('a.ent');
-  if (a) { ev.preventDefault(); openEntity(a.dataset.ref); return; }
+  /* Both, and in that order: the card says what it is, the pane says where. A
+     click on something with nothing to draw leaves the pane on whatever it was
+     showing — `map.js` decides that, because only the fetched fragment knows. */
+  if (a) {
+    ev.preventDefault();
+    openEntity(a.dataset.ref);
+    if (window.MAP) window.MAP.show(a.dataset.ref);
+    return;
+  }
   const x = ev.target.closest('a.lex');
   if (x) { ev.preventDefault(); openLexicon(x.dataset.key); return; }
-  const m = ev.target.closest('a.mapref');
-  if (m) { ev.preventDefault(); openMap(m.dataset.ref); return; }
+  /* `a.mapref` is `map.js`'s — it drives the pane on every page, not just this
+     one, and intercepting it here would have been the same rule written twice. */
   /* A footnote marker is deliberately NOT intercepted: it keeps its href and
      jumps to the note at the foot of the page, where the note already is. A card
      in the stack was a third place to read one — beside the foot and the page
@@ -234,8 +254,11 @@ document.addEventListener('click', ev => {
   if (l) { ev.preventDefault(); let i = l.querySelector("img"); if (i && i.src) setLightbox(i.src); }
 });
 
-let prev = document.getElementById("prev-page");
-let next = document.getElementById("next-page");
+/* By class and not by id: the neighbour block is rendered at both ends of the
+   page, so there are two of each. `querySelector` takes the first, and both
+   carry the same href — which one it finds cannot matter. */
+let prev = document.querySelector("a.page-prev");
+let next = document.querySelector("a.page-next");
 
 document.addEventListener('keydown', ev => {
     if (ev.key == "Tab" && STACK.childNodes.length) { ev.preventDefault(); toggleStack(); }
@@ -268,9 +291,9 @@ function repin(c) {
 for (const id of pins) {
   if (id.startsWith('ent:')) openEntity(id.slice(4)).then(repin);
   else if (id.startsWith('lex:')) openLexicon(id.slice(4)).then(repin);
-  else if (id.startsWith('map:')) openMap(id.slice(4)).then(repin);
-  /* No `note:` branch — notes are read at the foot, not in the stack. A pin
-     saved before that changed names a card nothing opens now, and is ignored
-     rather than special-cased: it costs an unrestored pin once. */
+  /* No `note:` branch, and no `map:` branch any more — notes are read at the
+     foot and a map is the pane's, neither of them a card. A pin saved before
+     either changed names a card nothing opens now, and is ignored rather than
+     special-cased: it costs an unrestored pin once. */
   else if (id == 'scan:page') openScan();
 }

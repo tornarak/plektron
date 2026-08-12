@@ -2,7 +2,11 @@
 {% block title %}Encyclopedia — The Chukchee{% endblock %}
 
 {% block main %}
-<div id='primary index-width'>
+{# `id` and `class`, not one id of "primary index-width". It was the latter for
+   this page's whole life, which meant `#primary` itself never matched either —
+   so the index has been rendering with none of that rule's padding, flex or
+   measure, and `#primary.index-width` has never applied at all. #}
+<div id='primary' class='index-width'>
 {% if problems %}
 <div class='card'><h4>the store does not check out</h4>
 {# Escaped like everything else. These strings carry file paths and file
@@ -10,21 +14,39 @@
    to break the page that was supposed to be reporting the problem. #}
 <ul>{% for e in problems %}<li>{{ e }}</li>{% endfor %}</ul></div>
 {% endif %}
-<table class='wide'>
-<tr><th>name</th><th>id</th><th>status</th><th>triggers</th><th>since</th></tr>
-{% for r in rows %}
-<tr><td><a href='{{ base }}/entity/{{ r.id }}'>{{ r.canonical }}</a></td>
-    <td><code>{{ r.id }}</code></td>
-    <td><span class='pill {{ r.status }}'>{{ r.status }}</span></td>
-    <td>{{ r.triggers | length }}</td>
-    <td><a href='{{ base }}/page/{{ r.since }}'>{{ r.since }}</a></td></tr>
+{# A tree over the class, two levels deep. It is a list and not the table it
+   replaced because the class is the first thing worth knowing about an entry and
+   a column of it says so far more weakly than a heading does — and because the
+   link colours now group by the same families, so the shape on the page and the
+   colour on the link tell one story.
+
+   Not the `node` macro from `atlas.html`: that one recurses over `within:`
+   children, and this tree has none. The two share `ul.tree` and nothing else. #}
+<ul class='tree'>
+{% for g in groups %}
+<li><code class='cls{{ " empty" if not g.rows }}'>{{ g.cls }}</code>
+    <span class='dim'>({{ g.rows | length }})</span>
+{%- if g.rows %}
+<ul>{% for r in g.rows %}
+<li><a class='ent' data-ref='{{ r.id }}'
+       href='{{ base }}/entity/{{ r.id }}'>{{ r.canonical }}</a>
+    <span class='pill {{ r.status }}'>{{ r.status }}</span>
+    <span class='dim'>{{ r.triggers | length }} trigger(s) · first read on</span>
+    <a href='{{ base }}/page/{{ r.since }}'>{{ r.since }}</a></li>
+{% endfor %}</ul>
+{%- endif %}
+</li>
 {% endfor %}
-</table>
-<p class='meta note-small'>Proposed entries come first: nothing links them by
-rule until a human has read one against the page it was proposed from.</p>
+</ul>
+<p class='meta note-small'>Every class the store declares, including the four
+nothing has been filed under yet. Within a class, proposed entries come first:
+nothing links them by rule until a human has read one against the page it was
+proposed from.</p>
 </div>
 {% endblock %}
 
+{# `ratify.js` used to load here and had nothing to act on: it is delegated on
+   `button.ratify`, which lives on an entity card and never on this page. #}
 {% block page_scripts %}
-<script src="/static/js/ratify.js"></script>
+<script src="/static/js/hover.js"></script>
 {% endblock %}

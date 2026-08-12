@@ -1,0 +1,21 @@
+{# The map pane: one map per sitting, above the stack rather than in it.
+
+   A map was a card like any other, which meant two of them could sit in the
+   stack at once saying different things about where you are, and a third could
+   push both out of sight. There is only ever one *here*, so there is one pane,
+   it stays at the top, and clicking a place moves it rather than adding to it.
+
+   **Dismissal is "not this one", not a setting.** Nothing is written down: the ×
+   closes the pane for now and the next click on a located entity brings it back
+   with that entity as its subject. A dismissal that persisted would need a
+   control to undo it, and a map you cannot see and cannot ask for is worse than
+   one you have to close again.
+
+   Rendered filled where the page already has a subject — an entity's own page,
+   `/atlas?at=` — and empty and hidden in the page view, where the first click
+   fills it. The markup is the same either way so `map.js` has one shape to
+   write into. #}
+<div id='map-pane'{% if not map %} hidden{% endif %}>
+  <button class='dismiss' title='close the map'>×</button>
+  <div class='body'>{% if map %}{% include "edition/_map.html" %}{% endif %}</div>
+</div>

@@ -316,9 +316,15 @@ authored facts is wrong and cannot say which.
 per map: it goes through `sin`/`cos` of longitude, so the antimeridian closes for
 good rather than being handled. One 1000-unit `viewBox` for every map, which is what
 lets one decimal place be enough at every zoom and keeps a pixel dimension out of it.
+`render`'s `mark` is carried, never computed: it sees paths and cannot tell a drainage
+basin from a coastline, so `edition_ui.map_context` decides from the shape's *type* and
+this only puts it on the root element. Every path also carries the entity it belongs to
+(`owned`), because nothing about a path recovers it — a member is the nearest descendant
+*with* a shape, and two entities may share one polygon — and that is what a hover
+highlights on.
 
 **`edition_ui.py`** — the reading view's domain layer; its routes are
-`harness/web/edition.py`. Two columns, a stack of entity/lexicon/map/scan cards, the encyclopedia and its audit queue. A footnote marker is not a card — it keeps its href and jumps to the note at the foot, which is already on the page. Serves committed
+`harness/web/edition.py`. Two columns, a stack of entity/lexicon/scan cards under one map pane, the encyclopedia as a tree over the class, and its audit queue. A footnote marker is not a card — it keeps its href and jumps to the note at the foot, which is already on the page. A map is not a card either: there is only ever one *here*, so it is the pane, and clicking a place moves it. A hover *is* a card, fetched early and floated pointer-inert, which is why it never competes with the stack. Serves committed
 `tei/` only, or `mz/tei/` too under `edition serve --drafts`, every draft marked.
 Writes `entities/` on a click without `--commit`, as the other editors
 write their stores, and **rolls a write back if `entity check` fails on the

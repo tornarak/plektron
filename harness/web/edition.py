@@ -26,7 +26,7 @@ from pydantic import BaseModel
 
 from .. import edition_ui as ui
 from .. import geo, ipa, speech, tei_html
-from ..entities import split_id, trigger_index
+from ..entities import ENTITY_CLASSES, split_id, trigger_index
 from . import Editor, register, stores, templates
 from .files import send_file
 
@@ -169,10 +169,21 @@ def _entity_ctx(ident: str, root: Path) -> dict:
 
 @router.get("/entity/{ident:path}")
 def entity(request: Request, ident: str, partial: str = ""):
-    ctx = _entity_ctx(_ident(ident), _root(request))
+    """The entry, and — on a page of its own — its map beside it.
+
+    **`?partial=1` deliberately carries no map.** That fragment is what the stack
+    injects and what a hover preview floats, and both of those are read *while*
+    the pane is showing the geography already; a second copy of it inside the
+    card would answer a question nothing was asking and cost a map render per
+    hover. The pane is the one place a map is.
+    """
+    root = _root(request)
+    ctx = _entity_ctx(_ident(ident), root)
     if partial:
         return templates.TemplateResponse(request, "edition/_entity.html", ctx)
     rec = ctx.get("rec")
+    if ctx.get("located"):
+        ctx = {**_map_ctx(ident, root), **ctx, "map": True}
     return templates.TemplateResponse(
         request,
         "edition/card.html",
@@ -233,7 +244,7 @@ def _ipa_ctx(form: str) -> dict | None:
 def _map_ctx(ident: str, root: Path, store: dict | None = None) -> dict:
     """`map_context` with the server's cached readers handed in.
 
-    One map card resolves six or more shapes out of `data/geo/`, and every one
+    One map resolves six or more shapes out of `data/geo/`, and every one
     of them was a fresh read and JSON decode of a file that had not changed.
     """
     return ui.map_context(
@@ -291,6 +302,7 @@ def atlas(request: Request, at: str = ""):
             request,
             tree=[node(r) for r in roots],
             selected=at in store,
+            map=at in store,
             gaps=[v for _k, v in sorted(geo.index(root)["absent"].items())],
             here=f"{len(roots)} root(s) · {len(store)} entities",
             **ctx,
@@ -303,16 +315,41 @@ def atlas(request: Request, at: str = ""):
 
 @router.get("/entities")
 def entity_index(request: Request):
+    """The encyclopedia, grouped by class.
+
+    **Two levels and no deeper.** `within:` exists and the atlas draws the forest
+    over it, but it is the *geography* tree — nothing yet makes a people a child
+    of a people — so this groups by class and stops rather than pretending to a
+    hierarchy the store does not hold.
+
+    **Classes in `ENTITY_CLASSES` order, and every class whether or not it holds
+    anything.** The order is authored (person, people, place, water, … ) and says
+    something alphabetical order would not; and four of the eleven are empty
+    today, so a list of only the populated ones would quietly show half the
+    vocabulary. That is the silence the atlas's `absent` rows exist to break.
+
+    Proposed-first is preserved from the flat listing, now within each class:
+    nothing links an unaudited entry by rule, so it is what wants reading first.
+    """
     root = _root(request)
     store = stores.load(root)
     rep = stores.check(root)
-    rows = sorted(store.values(), key=lambda r: (r["status"] != "proposed", r["id"]))
+    groups = [
+        {
+            "cls": cls,
+            "rows": sorted(
+                (r for r in store.values() if r["class"] == cls),
+                key=lambda r: (r["status"] != "proposed", r["id"]),
+            ),
+        }
+        for cls in ENTITY_CLASSES
+    ]
     return templates.TemplateResponse(
         request,
         "edition/entities.html",
         _ctx(
             request,
-            rows=rows,
+            groups=groups,
             problems=rep["errors"],
             here=f"{rep['entities']} entries · {rep['proposed']} awaiting audit",
         ),

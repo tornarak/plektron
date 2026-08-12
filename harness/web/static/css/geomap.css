@@ -9,9 +9,57 @@ svg.map .parent { fill:none; stroke:var(--dim); stroke-width:.25%;
   stroke-dasharray:1%,.8% }
 svg.map .subject { fill:color-mix(in srgb,var(--accent) 22%,transparent);
   stroke:var(--accent); stroke-width:.35% }
+/* A drainage divide, set by `edition_ui.map_context` when the subject's `area:`
+   names a watershed. The rivers inside it are `--water`, and an outline in the
+   accent brown against a blue trunk reads as two unrelated things; this is the
+   one boundary on the map that is *about* the water. */
+svg.map.basin .subject { stroke:var(--basin);
+  fill:color-mix(in srgb,var(--basin) 14%,transparent) }
+/* **Present and unpainted.** The extents of descendants no other layer can
+   identify — Chukotka on the Russian Far East's map, which `member_shapes`
+   descends straight through. Drawn at all so a hover has something to find;
+   drawn invisible because a box on every one of them at once is a field of
+   rectangles over the thing you were reading. Set on the group so the `.hi`
+   rule on a path simply overrides it, no specificity contest. */
+svg.map .extents { fill:none; stroke:none }
 svg.map .rivers { fill:none; stroke:var(--water); stroke-width:.22%;
   stroke-linecap:round; opacity:.85 }
 svg.map .pin { fill:var(--accent); stroke:var(--card); stroke-width:.15% }
 svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
   paint-order:stroke; stroke:var(--sea); stroke-width:.4%;
   stroke-linejoin:round }
+
+/* --- the highlight ---
+ *
+ * Whatever the pointer is resting on, wherever the link is: a `contains` row, a
+ * node in the atlas tree, a name in the running text. Every path and pin carries
+ * the entity it belongs to (`geomap.owned`), because nothing about a path's
+ * geometry leads back to a record — a member is the nearest descendant *with* a
+ * shape, found by descending through those without, and two entities may share
+ * one polygon outright.
+ *
+ * **Last in the file, and `.subject.hi` written out.** Every rule above is a
+ * layer, and a highlight has to beat all of them; `svg.map.basin .subject` is
+ * more specific than a bare `.hi` and would otherwise keep its basin red while
+ * the pointer sat on it — the subject being the one shape a reader hovers first.
+ *
+ * `--hi` is its own colour rather than `--sel`. `--sel` is a *state* — the
+ * selected card, the draft tag — and it is muted so it can sit beside text all
+ * day. This has to carry across a frame of coastline and half a dozen basins at
+ * a glance, so it is louder, thicker, and haloed: the stroke is nearly four times
+ * a member's, and the pin gets a ring rather than a bigger dot, because `r` is
+ * geometry and not something a stylesheet should be reaching into.
+ */
+svg.map .hi, svg.map.basin .subject.hi {
+  stroke:var(--hi); stroke-width:.75%; stroke-linejoin:round;
+  fill:color-mix(in srgb,var(--hi) 45%,transparent);
+  paint-order:stroke; opacity:1 }
+/* The parent outline is dashed to say it is context rather than subject; under
+   the pointer it is the thing being asked about, so it closes up. An extent
+   keeps its dashes for the opposite reason — it is a viewport and not a
+   boundary, and that stays true while you are looking straight at it. */
+svg.map .parent .hi { fill:none; stroke-dasharray:none }
+svg.map .extents .hi { stroke-dasharray:1.6%,1.2%; stroke-width:.55%;
+  fill:color-mix(in srgb,var(--hi) 16%,transparent) }
+svg.map circle.pin.hi { fill:var(--hi); stroke:var(--hi);
+  stroke-width:1.2%; stroke-opacity:.35 }
