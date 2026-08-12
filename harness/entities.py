@@ -43,6 +43,7 @@ import unicodedata
 from pathlib import Path
 
 from .context import REF_RE, norm_ref
+from .geo import canonical_area, split_area
 from .geo import index as geo_index
 
 ENTDIR = "entities"
@@ -187,25 +188,32 @@ def parse(text: str, where: str = "") -> dict:
     if within:
         split_id(within)          # raises with the same message as everywhere else
 
-    # `area:` names a shape in `data/geo/`, not an entity. Its form is
+    # `area:` names one or more shapes in `data/geo/`, not an entity. Each is
     # `kind:slug` — the same shape an identity has, and that resemblance is
     # exactly why the shape kinds are held disjoint from `ENTITY_CLASSES`
     # (`langarea:`, never `language:`): the two appear two lines apart in this
     # file, and a reader who cannot tell them apart by looking is one keystroke
     # from an `area:` that quietly resolves as an entity ref.
-    area = one("area")
-    if area:
-        kind, _, name = area.partition(":")
+    #
+    # **Several, comma-separated, is a composite** — a shape the store does not
+    # hold, resolved from members that it does. Held here as its canonical
+    # spelling so two orderings of the same union are one thing, with the
+    # members beside it in `areas` for anything that wants them apart.
+    areas = split_area(one("area"))
+    for a in areas:
+        kind, _, name = a.partition(":")
         if not name or not kind:
             raise Malformed(
-                f"{at}`area: {area}` — a shape id is `kind:slug`, e.g. "
-                f"`watershed:anadyr`. `harness geo list` names them")
+                f"{at}`area: …{a}…` — a shape id is `kind:slug`, e.g. "
+                f"`watershed:anadyr`, and several are comma-separated. "
+                f"`harness geo list` names them")
         if kind in ENTITY_CLASSES:
             raise Malformed(
-                f"{at}`area: {area}` — {kind!r} is an entity class, so this "
+                f"{at}`area: …{a}…` — {kind!r} is an entity class, so this "
                 f"reads as an entity reference. Shape kinds are held disjoint "
                 f"from entity classes for that reason; a language area is "
                 f"`langarea:`")
+    area = canonical_area(areas)
 
     sections: dict[str, str] = {}
     marks = list(_SECTION.finditer(text))
@@ -258,6 +266,11 @@ def parse(text: str, where: str = "") -> dict:
         "since": norm_ref(since),
         "within": within,
         "geo": coords,
+        # Canonical, and **one field, not two**. The member list is
+        # `geo.split_area(rec["area"])` at every call site rather than a second
+        # record key: a record key is a field of the file by the store's own
+        # gate, and a restatement of `area:` that no card displays would be an
+        # invisible field — which is exactly the shape that gate exists to stop.
         "area": area,
         "links": fields.get("link", []),
         "authority": one("authority"),
@@ -460,12 +473,17 @@ def check(root: Path = Path(".")) -> dict:
         w = rec["within"]
         if w and w not in store:
             errors.append(f"{rec['path']}: `within: {w}` resolves to nothing")
-        if rec["area"] and rec["area"] not in shapes:
+        # A composite resolves only when every member does, so the message has
+        # to name the member and not the whole field: "langarea:a,marine:b
+        # resolves to nothing" sends a reader to check the one that was fine.
+        missing = [m for m in split_area(rec["area"]) if m not in shapes]
+        if missing:
             errors.append(
-                f"{rec['path']}: `area: {rec['area']}` resolves to nothing in "
-                f"data/geo/. `harness geo list` names every shape; if the "
-                f"source has no polygon for it, leave `area:` off and say so "
-                f"in the gloss rather than pointing at an approximation")
+                f"{rec['path']}: `area: {rec['area']}` — "
+                f"{', '.join(missing)} resolves to nothing in data/geo/. "
+                f"`harness geo list` names every shape; if the source has no "
+                f"polygon for it, leave `area:` off and say so in the gloss "
+                f"rather than pointing at an approximation")
         # `[[class:slug]]` in a gloss or a trigger note is a reference, and a
         # reference to nothing is the failure this whole store exists to stop —
         # it renders as a link and goes nowhere. Checked here rather than at

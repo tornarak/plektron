@@ -25,12 +25,18 @@ def register(cli):
               section="Apparatus and reports")
 
     action(g, "list", run_list,
-           help="every shape in the store, with the entity that claims it. "
+           help="every shape in the store, with the entity that claims it — and "
+           "a composite `area:` counts as a claim on each of its members, since "
+           "a union is a fact about `entities/` and this census is a fact about "
+           "`data/geo/`. The unions themselves are listed after, separately. "
            "**Also the absences**: four of this edition's seven Tier-1 codes "
            "have no polygon in Asher 2007 — Siberian Yupik, Chuvan, Kerek and "
            "Tundra Yukaghir — and they are rows here rather than silences, "
            "because an entity pointing at nothing and an entity nobody has got "
-           "to yet look identical from outside. Reports; never gates")
+           "to yet look identical from outside. A row says what was `sought` "
+           "and in which `source`, because the block also holds a feature no "
+           "gazetteer in hand carries at all, which is a different absence. "
+           "Reports; never gates")
 
     action(g, "verify", run_verify,
            help="the geometry against the authored hierarchy. Where a child "
@@ -44,13 +50,20 @@ def register(cli):
            "a river's point is its mouth, which is *on* the basin boundary, so "
            "this is not a defect by itself), a shape two entities claim (legal: "
            "`people:chukchee` and `language:chukchee` may share the one Asher "
-           "polygon), and shapes nothing claims. Reports; never gates")
+           "polygon), and shapes nothing claims. **And the inverse of that "
+           "last one** — entities inside a subtree the atlas can draw that "
+           "carry neither `geo:` nor `area:`, which is the worklist a human "
+           "supplying coordinates actually wants; `entity locate` answers a "
+           "row of it. Scoped by the tree rather than by class, because every "
+           "person and source in the store is unlocated and always will be. "
+           "Reports; never gates")
 
 
 def run_list(a) -> int:
     r = listing(a.root)
     out(a, r["scope"], name="scope")
     out(a, r["shapes"], name="shapes", heading=True)
+    out(a, r["composites"], name="composites", heading=True)
     out(a, r["absent"], name="absent", heading=True)
     return 0
 
@@ -62,4 +75,5 @@ def run_verify(a) -> int:
     out(a, r["points"], name="points", heading=True)
     out(a, r["shared"], name="shared", heading=True)
     out(a, r["unclaimed"], name="unclaimed", heading=True)
+    out(a, r["unlocated"], name="unlocated", heading=True)
     return 0

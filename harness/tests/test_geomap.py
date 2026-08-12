@@ -79,6 +79,100 @@ def test_a_wellformed_area_parses_and_is_carried():
     assert entities.parse(text)["area"] == "watershed:anadyr"
 
 
+def _entity_text(area: str) -> str:
+    return ("# place:x — X\n\n- status: proposed\n- since: 1-021\n"
+            f"- area: {area}\n\n## triggers\n\n| form | auto | note |\n"
+            "|---|---|---|\n\n## gloss\n\nx\n")
+
+
+def test_a_composite_area_is_parsed_and_stored_canonically():
+    """Several shapes, comma-separated, and the field holds one spelling of the
+    union however the author typed it."""
+    rec = entities.parse(_entity_text("watershed:anadyr, langarea:chuk1273"))
+    assert rec["area"] == "langarea:chuk1273,watershed:anadyr"
+    assert geo.split_area(rec["area"]) == ["langarea:chuk1273", "watershed:anadyr"]
+
+
+def test_every_member_of_a_composite_is_held_to_the_same_rule():
+    """The kind check is per member, not on the first one. A composite whose
+    second member is an entity class is the same silent collision as a lone one,
+    and the message names the member rather than the whole field."""
+    with pytest.raises(entities.Malformed, match="language:chukchee"):
+        entities.parse(_entity_text("watershed:anadyr, language:chukchee"))
+    with pytest.raises(entities.Malformed, match="kind:slug"):
+        entities.parse(_entity_text("watershed:anadyr, bare-slug"))
+
+
+# --------------------------------------------------- a composite `area:`
+
+def test_a_composite_id_is_canonical_however_it_was_typed():
+    """`a, b` and `b,a` are one composite. An ordering carries no meaning a
+    reader could have intended, and a store where one union had two spellings
+    would report the same member as claimed and unclaimed at once."""
+    assert geo.canonical_area("langarea:b, langarea:a") == \
+        geo.canonical_area("langarea:a,langarea:b")
+    assert geo.split_area("watershed:anadyr") == ["watershed:anadyr"]
+    assert geo.split_area(" a:1 ,, a:1 , b:2 ") == ["a:1", "b:2"]
+
+
+@built
+def test_a_composite_resolves_but_is_not_a_row_in_the_store():
+    """**The census is what the build wrote.** A union some entity happened to
+    author is a fact about `entities/`, and minting a row for it would make the
+    atlas claim a shape no source drew."""
+    idx = geo.index(ROOT)["shapes"]
+    spec = geo.canonical_area("langarea:chuk1273,base:chukotka-east-of-meridian")
+    assert spec in idx and idx.get(spec)["composite"]
+    assert spec not in set(idx)          # iteration is the plain dict's
+    assert spec not in list(idx.keys())
+
+
+@built
+def test_a_composite_naming_a_shape_that_does_not_exist_is_absent():
+    """So `entity check` still refuses it, and can name the member that failed
+    rather than the whole field."""
+    idx = geo.index(ROOT)["shapes"]
+    assert "langarea:chuk1273,watershed:nonesuch" not in idx
+    assert idx.get("langarea:chuk1273,watershed:nonesuch") is None
+
+
+@built
+def test_a_composite_shape_is_its_members_features_together():
+    """Concatenated rather than geometrically unioned — this module imports no
+    geometry library, and every operation downstream is per-polygon."""
+    spec = geo.canonical_area("langarea:chuk1273,base:chukotka-east-of-meridian")
+    doc = geo.shape(spec, ROOT)
+    n = sum(len(geo.shape(m, ROOT)["features"]) for m in spec.split(","))
+    assert len(doc["features"]) == n
+    # And the union reaches past the meridian where the Asher polygon alone
+    # stops dead at it — the whole point of item 7.
+    assert max(x for r in geo.rings(doc) for x, _ in r) > 180.0
+    assert max(x for r in geo.rings(geo.shape("langarea:chuk1273", ROOT))
+               for x, _ in r) == 180.0
+
+
+@built
+def test_the_asher_polygon_is_left_exactly_as_its_publisher_drew_it():
+    """The join is a composite on an entity, never a redrawn `langarea:`.
+    Extending a speaker area past where its publisher drew it would be
+    inventing evidence in the one place a reader would never check."""
+    doc = geo.shape("langarea:chuk1273", ROOT)
+    assert any(abs(x - 180.0) < 1e-9 for r in geo.rings(doc) for x, _ in r)
+    assert geo.index(ROOT)["shapes"]["langarea:chuk1273"]["source"] == "asher2007"
+
+
+@built
+def test_the_land_east_of_the_meridian_is_land_and_claims_nothing_else():
+    """`base:`, from Natural Earth, by a declared clip — it says nothing about
+    who speaks what. The claim lives in the entity file that composes it."""
+    row = geo.index(ROOT)["shapes"]["base:chukotka-east-of-meridian"]
+    assert row["kind"] == "base" and row["source"] == "naturalearth-50m"
+    w, s, e, n = row["bounds"]
+    assert w >= 180.0                      # nothing west of the meridian
+    assert e < 194.0                       # and nothing as far east as Alaska
+    assert s > 63.9                        # nor as far south as St Lawrence I.
+
+
 # ------------------------------------------------------------ containment
 
 def _square(x0, y0, x1, y1) -> list:
@@ -158,8 +252,40 @@ def test_a_coarse_delineation_is_not_read_as_a_disagreement():
 @built
 def test_verify_reports_and_never_gates():
     r = geo.verify(ROOT)
-    assert set(r) == {"scope", "containment", "points", "shared", "unclaimed"}
+    assert set(r) == {"scope", "containment", "points", "shared", "unclaimed",
+                      "unlocated"}
     assert all("reading" in row for row in r["containment"])
+
+
+@built
+def test_a_composite_counts_as_a_claim_on_each_of_its_members():
+    """Otherwise the members read as unclaimed *and* the union reads as a shape
+    `data/geo/` does not hold — two wrong answers from one right field."""
+    store = {"place:x": {"id": "place:x",
+                         "area": "langarea:chuk1273,watershed:anadyr"}}
+    claims = geo.member_claims(store)
+    assert claims["langarea:chuk1273"] == ["place:x"]
+    assert claims["watershed:anadyr"] == ["place:x"]
+
+
+def test_unlocated_is_scoped_by_the_tree_and_not_by_class(tmp_path):
+    """The inverse of `unclaimed`, and the worklist `entity locate` answers.
+
+    Scoped so that a person or a source — unlocated forever, and rightly — is
+    not in it. What earns a row is sitting under something the atlas can draw:
+    `place:kid` does, `person:someone` does not, and `place:top` is framed by
+    its members rather than wanting a boundary of its own.
+    """
+    _store(tmp_path,
+           ("place:top", ""),
+           ("place:kid", "- within: place:top\n- geo: 66.0 170.0\n"),
+           ("place:bare", "- within: place:top\n"),
+           ("person:someone", ""))
+    rows = {r["id"]: r for r in geo.unlocated(entities.load(tmp_path), tmp_path)}
+    assert "place:bare" in rows and rows["place:bare"]["wants"] == "geo: or area:"
+    assert rows["place:top"]["wants"] == "framed by its members"
+    assert "place:kid" not in rows          # it has a point
+    assert "person:someone" not in rows     # nothing above or below it is drawn
 
 
 @built
