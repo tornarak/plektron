@@ -6,7 +6,6 @@
 - area: watershed:anadyr
 - geo: 64.72 177.5
 - link: wikipedia:Anadyr_(river)
-- link: wikidata:Q207286
 
 ## triggers
 

@@ -3,7 +3,6 @@
 - status: ratified
 - since: 1-067
 - link: wikipedia:Vladimir_Bogoraz
-- link: wikidata:Q1815414
 
 ## triggers
 

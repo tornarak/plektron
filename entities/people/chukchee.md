@@ -4,7 +4,6 @@
 - since: 1-021
 - area: langarea:chuk1273
 - link: wikipedia:Chukchi_people
-- link: wikidata:Q216271
 
 ## triggers
 

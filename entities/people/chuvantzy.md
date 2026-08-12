@@ -3,7 +3,6 @@
 - status: ratified
 - since: 1-036
 - link: wikipedia:Chuvans
-- link: wikidata:Q720386
 
 ## triggers
 

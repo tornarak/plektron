@@ -3,7 +3,6 @@
 - status: ratified
 - since: 1-131
 - link: wikipedia:Franz_Boas
-- link: wikidata:Q76512
 
 ## triggers
 

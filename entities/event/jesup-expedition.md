@@ -3,7 +3,6 @@
 - status: ratified
 - since: 1-021
 - link: wikipedia:Jesup_North_Pacific_Expedition
-- link: wikidata:Q1683389
 
 ## triggers
 

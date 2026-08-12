@@ -3,7 +3,6 @@
 - status: ratified
 - since: 1-044
 - link: wikipedia:Waldemar_Jochelson
-- link: wikidata:Q4108236
 
 ## triggers
 
