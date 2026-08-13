@@ -307,6 +307,44 @@ def parse(text: str, where: str = "") -> dict:
                 f"{at}`geo: {geo}` — two WGS84 decimal degrees, latitude then "
                 f"longitude, space-separated") from None
 
+    # **A frame is not an extent.** It says where the map should *look*, which is
+    # a different question from where the entity *is*, and the default answer is
+    # wrong at both ends of the store. A container with no shape takes the union
+    # of everything beneath it: `place:russian-far-east` reached 103°E and 41.7°N
+    # on the strength of the Lena and the Amur, two rivers named ten times
+    # between them — a quarter of the northern hemisphere, curving round the
+    # pole, with Alaska in shot. A *shape* frames on its parent, which is what
+    # makes it mean something; but `place:chukchi-peninsula` is dense with
+    # villages and Chukotka's box packs them into a corner.
+    #
+    # So it overrides whichever frame would have been derived, and nothing else:
+    # `extent_of` is untouched, so an entity that contains this one still sizes
+    # itself on the real geometry, and `member_shapes` still draws everything
+    # beneath. Where to look, not what is there.
+    #
+    # West south east north, the order `index.json`'s `window` is written in and
+    # the order `geo.extent_of` returns — a frame is a box, and `geo:`'s
+    # latitude-first order is for a point. East may exceed 180: the atlas's frame
+    # is continuous across the antimeridian and the Chukchi Peninsula sits at 190.
+    frame = one("frame")
+    box = None
+    if frame:
+        parts = frame.split()
+        try:
+            if len(parts) != 4:
+                raise ValueError
+            box = tuple(float(p) for p in parts)
+        except ValueError:
+            raise Malformed(
+                f"{at}`frame: {frame}` — four WGS84 decimal degrees, west south "
+                f"east north, space-separated. A box, so longitude comes first, "
+                f"unlike `geo:`") from None
+        if box[0] >= box[2] or box[1] >= box[3]:
+            raise Malformed(
+                f"{at}`frame: {frame}` — west must be less than east and south "
+                f"less than north. East may exceed 180 in the atlas's continuous "
+                f"frame; west may not wrap past it")
+
     return {
         "id": f"{cls}:{slug}",
         "class": cls,
@@ -315,6 +353,7 @@ def parse(text: str, where: str = "") -> dict:
         "status": status,
         "within": within,
         "geo": coords,
+        "frame": box,
         # Canonical, and **one field, not two**. The member list is
         # `geo.split_area(rec["area"])` at every call site rather than a second
         # record key: a record key is a field of the file by the store's own

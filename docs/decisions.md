@@ -649,3 +649,79 @@ with no extent. It had been latent since the block widened, because almost every
 entry had a shape; a batch of bays and capes with neither `area:` nor `geo:` made
 it the common path, and the map view 500'd. `geo.absent_row` was already the
 flattener and already tolerated both forms — it simply had one caller too few.
+
+## The atlas drew a box nobody could have declared
+
+`place:russian-far-east` has no shape, so its map's viewBox came from the union
+of every descendant's extent. Two of them set three of its four sides: the
+[[water:lena]] reaching 103°E and 72.9°N, the [[water:amur]] reaching 41.7°N —
+rivers Bogoras names ten times between them, as distant comparanda. The map was
+a quarter of the northern hemisphere, bent round the pole, with Alaska in shot,
+and every one of the sixty-odd entries under it inherited that frame.
+
+**Three separate defects, found one behind the other, each hiding the next.**
+
+**A frame that could be declared.** New optional `frame:` on an entity — four
+degrees, west south east north — overriding whichever frame would otherwise have
+been derived and nothing else. `extent_of` is untouched, so an ancestor still
+sizes itself on the real geometry and `member_shapes` still draws everything
+beneath: *where to look*, not *what is there*. Both defaults have a case they get
+wrong, and one field answers both — a shapeless container sized by whichever
+descendant strayed farthest, and a shape framed on its parent, which is what
+makes a shape mean something until the shape is `place:chukchi-peninsula` and
+Chukotka's box packs thirty-four villages into a corner. A parent's declared
+frame is what its children frame on, or the field would fix one page and leave
+every page under it drawn to the box just declared wrong.
+
+**A viewBox that was always square.** With the frame declared, the map barely
+changed. `Frame` scaled to `max(width, height)` and emitted a 1000-unit square,
+so a wide frame was zoomed to its width and padded with empty sea: measured, the
+Northeast Siberia box filled 89% of the square horizontally and 42% vertically.
+More than half the picture was margin, and the map came out at very nearly the
+zoom of the thing it was drawn to improve on. The viewBox takes the frame's
+aspect now; `svg.map` is `width:100%; height:auto`, so that is simply a shorter
+map. `CULL` had to learn the same lesson — culling y against the width would
+keep half a coastline nothing can see.
+
+**And the projection, which is why no declared frame could have worked.**
+Lambert azimuthal equal-area, centred per map. Meridians converge toward the
+pole, so a latitude/longitude box is a curved trapezoid: on the Northeast
+Siberia box the west bound projected **twice as far out at its southern end as
+at its northern one**. A viewBox is a rectangle and had to be fitted to the
+bounding box of that, so it was sized by the southern corners — which is how a
+frame declared from the Yana to Cape Prince of Wales reached Manchuria. The box
+was not what got drawn, and no number a human wrote in it would have been.
+
+It is equidistant cylindrical now, standard parallel per map: meridians parallel,
+parallels horizontal, **a latitude/longitude box a rectangle**. The cost is equal
+area, which was the old projection's second argument — comparing this basin
+against that one inside one frame. It is real and bounded: scale error is
+`cos(lat0)/cos(lat)`, so across the 21° of the widest frame in the store a shape
+is at worst about a third too wide at the north edge, and the ordinary case — one
+basin, one village — is a zoom at which every projection agrees. The old
+projection's *first* argument was never load-bearing: the antimeridian is safe
+because `tools/build_geo.py` normalizes longitudes into one continuous window and
+welds across 180 before anything is drawn. `project` wraps the longitude
+difference into (−180, 180] anyway, so 185 and −175 still land on one point
+whatever window a caller holds.
+
+**Then the map became legible and turned out not to be.** Land regions,
+watersheds, open water and settlements all drew in one accent, which on a narrow
+frame is one or two shapes and on a wide one is fourteen watersheds, five regions
+and three stretches of sea in a single field of outlines. The shape kind is
+declared in `data/geo/` and now travels on the path as `data-kind`, one hue each.
+Deliberately **not** the prose vocabulary: `edition.css` groups `place:` and
+`water:` into one hue because in a sentence "place or person" is the question,
+and on a map that is the wrong axis twice over — `place:` covers a peninsula and
+a mountain range alike, and land from water is exactly what needs separating.
+The pins took `--pin`, a theme token that had been declared and never used.
+
+**What this cost, and the lesson.** Four rounds, each fix revealing that the
+previous symptom had a second cause underneath it, and each round I reported the
+thing fixed rather than checking whether the picture had actually changed. The
+frame and the aspect were both real defects and neither was *the* defect; a
+render compared against the previous render, rather than against the
+description of what should happen, would have found the projection two rounds
+earlier. `harness/tests/test_geomap.py` now holds the box-is-a-rectangle
+property directly, which is the assertion none of the three rounds could have
+been argued past.

@@ -6,25 +6,39 @@ tile server would make the reading view depend on somebody else's uptime to
 show a river. One `<svg>` with a `viewBox`, shapes as `<path>`, every
 coordinate projected on the server.
 
-**Lambert azimuthal equal-area, centred per map on its own subject.** Two
-reasons, and neither is taste.
+**Equidistant cylindrical, standard parallel per map.** `x` is degrees of
+longitude scaled by `cos` of the frame's mid-latitude; `y` is degrees of
+latitude. Meridians are parallel vertical lines and parallels horizontal ones,
+so **a latitude/longitude box is a rectangle** — which is the property the whole
+frame mechanism rests on.
 
-The first is the antimeridian. A longitude-as-x projection tears every shape
-that crosses 180 into two halves at opposite edges — Chukotka, which is most of
-this book. The store already normalizes longitudes into one continuous window
-so a *planar* library can work on them (see `tools/build_geo.py`), and an
-azimuthal projection then closes the question for good: it goes through
-`sin`/`cos` of longitude, which are periodic, so 185 and −175 project to the
-same point and no window convention can leak into the picture.
+This replaced Lambert azimuthal equal-area, and the reason is worth keeping
+because the old choice was not wrong, it was wrong *here*. Under an azimuthal
+projection centred on the frame, meridians converge toward the pole: on the
+frame declared for Northeast Siberia — 128°E to 192°E, 50.9°N to 71.7°N — the
+west bound projected **twice as far out at its southern end as at its northern
+one**. The viewBox is a rectangle and had to be fitted to the bounding box of
+that curved trapezoid, so it was sized by the southern corners; the region
+proper got half the width, the map bent around the pole, and the fitted box
+reached Manchuria in the west and most of Alaska in the east. No frame a human
+could declare would have fixed it, because the box was not what got drawn.
 
-The second is that equal-area makes the one comparison a reader actually makes
-— this basin against that one, inside the same frame — mean what it looks like.
-A conformal or plate-carrée map at 65°N would show the northern half of a basin
-half again too large.
+What it costs is equal area, which was the old projection's second argument:
+comparing this basin against that one inside one frame. The cost is real and
+bounded — scale error is `cos(lat0)/cos(lat)`, so across the 21° of the widest
+frame in the store a shape is at worst about a third too wide at the north edge
+— and it does not touch the ordinary case, a single basin or a village, where
+every projection agrees. `docs/decisions.md` has the trade in full.
 
-Centred per map rather than once for the store, because the store spans 137
-degrees of longitude: a single centre would put the Amur 60 degrees off-axis
-and visibly shear it. Nothing compares two separately-framed maps, so there is
+The antimeridian is still safe, and not by the projection: `tools/build_geo.py`
+normalizes every longitude into one continuous window and welds shapes across
+180 before anything is drawn. That is what made a cylindrical projection
+admissible at all — the azimuthal one closed the question a second time, which
+was belt and braces rather than the load-bearing part.
+
+The standard parallel is per map rather than one for the store, because the
+store spans 31 degrees of latitude and one parallel would stretch the Amur
+against Wrangel. Nothing compares two separately-framed maps, so there is
 nothing to lose by it.
 
 Sized in nothing. Every map's `viewBox` is the same 1000-unit square and the
@@ -61,24 +75,24 @@ MIN_SPAN = 0.02
 
 
 def project(lon: float, lat: float, lon0: float, lat0: float):
-    """Lambert azimuthal equal-area, in radians of the unit sphere.
+    """Equidistant cylindrical, standard parallel `lat0`, in radians.
 
-    Returns `None` for the antipode of the centre, where the projection is
-    undefined. Nothing in this store is 180 degrees from its own subject, so
-    this is a guard rather than a case — but an unguarded `sqrt` of a negative
-    would raise from inside a page render, which is the wrong place to find out.
+    Returns `None` never — the azimuthal projection this replaced was undefined
+    at its own antipode and this one is defined everywhere. Callers keep their
+    guard: it costs nothing, and a projection that can fail is the kind of thing
+    a later change reintroduces.
     """
-    p, p0 = math.radians(lat), math.radians(lat0)
-    dl = math.radians(lon - lon0)
-    denom = 1 + math.sin(p0) * math.sin(p) + math.cos(p0) * math.cos(p) * math.cos(dl)
-    if denom <= 1e-12:
-        return None
-    k = math.sqrt(2.0 / denom)
-    return (k * math.cos(p) * math.sin(dl),
+    # **Wrapped into (−180, 180] so the antimeridian has no seam.** A cylindrical
+    # projection is linear in longitude, which is what tears a shape crossing 180
+    # into two halves at opposite edges — Chukotka, which is most of this book.
+    # The store already normalizes into one continuous window, so this is the
+    # second lock rather than the only one; it costs a modulo and means 185 and
+    # −175 project to the same x whatever window a caller happens to hold.
+    dl = (lon - lon0 + 180.0) % 360.0 - 180.0
+    return (math.radians(dl) * math.cos(math.radians(lat0)),
             # SVG's y grows downward and latitude grows upward, so the sign is
             # flipped here rather than in every caller.
-            -k * (math.cos(p0) * math.sin(p)
-                  - math.sin(p0) * math.cos(p) * math.cos(dl)))
+            -math.radians(lat))
 
 
 def centre_of(box) -> tuple[float, float]:
@@ -143,19 +157,32 @@ class Frame:
                     ys.append(p[1])
         x0, x1 = min(xs), max(xs)
         y0, y1 = min(ys), max(ys)
-        span = max(x1 - x0, y1 - y0, MIN_SPAN) * (1 + 2 * PAD)
+        # **The viewBox takes the frame's own aspect, and the scale takes its
+        # longer side.** One scale for both axes, so nothing shears; but forcing
+        # the box to a square meant a wide frame was zoomed to its *width* and
+        # then padded with empty sea above and below. Measured on the frame
+        # declared for Northeast Siberia — the Yana to Cape Prince of Wales,
+        # Kamchatka's tip to Wrangel — the content filled 89% of the square
+        # horizontally and 42% vertically: 58% of the picture was margin, and
+        # the map came out at very nearly the zoom of the Russian Far East it
+        # was drawn to improve on. `svg.map` is `width:100%; height:auto`, so a
+        # shorter viewBox is a shorter map at the same width, which is the whole
+        # of the fix.
+        w_proj = max(x1 - x0, MIN_SPAN) * (1 + 2 * PAD)
+        h_proj = max(y1 - y0, MIN_SPAN) * (1 + 2 * PAD)
+        self._scale = SPAN / max(w_proj, h_proj)
+        self.width = w_proj * self._scale
+        self.height = h_proj * self._scale
         self._cx, self._cy = (x0 + x1) / 2, (y0 + y1) / 2
-        self._scale = SPAN / span
-
-    viewbox = f"0 0 {SPAN:.0f} {SPAN:.0f}"
+        self.viewbox = f"0 0 {self.width:.0f} {self.height:.0f}"
 
     def _at(self, lon: float, lat: float):
         """Projected, then normalized into the viewBox. `None` off the sphere."""
         p = project(lon, lat, self.lon0, self.lat0)
         if p is None:
             return None
-        return (SPAN / 2 + (p[0] - self._cx) * self._scale,
-                SPAN / 2 + (p[1] - self._cy) * self._scale)
+        return (self.width / 2 + (p[0] - self._cx) * self._scale,
+                self.height / 2 + (p[1] - self._cy) * self._scale)
 
     def _ring(self, ring):
         """One ring's points, or `None` if it cannot touch the frame.
@@ -171,9 +198,12 @@ class Frame:
                 pts.append(p)
         if not pts:
             return None
-        lo, hi = -CULL * SPAN, (1 + CULL) * SPAN
-        if (max(x for x, _ in pts) < lo or min(x for x, _ in pts) > hi
-                or max(y for _, y in pts) < lo or min(y for _, y in pts) > hi):
+        # Per axis, since the viewBox is no longer square: culling y against the
+        # width would keep half a coastline nothing can see.
+        if (max(x for x, _ in pts) < -CULL * self.width
+                or min(x for x, _ in pts) > (1 + CULL) * self.width
+                or max(y for _, y in pts) < -CULL * self.height
+                or min(y for _, y in pts) > (1 + CULL) * self.height):
             return None
         return pts
 
@@ -214,14 +244,22 @@ class Frame:
         return self._at(lon, lat)
 
 
-def owned(paths, ent: str = "") -> list[tuple[str, str]]:
-    """`Frame.paths` output, tagged with the entity it belongs to.
+def owned(paths, ent: str = "", kind: str = "") -> list[tuple[str, str, str]]:
+    """`Frame.paths` output, tagged with the entity it belongs to and its shape kind.
 
     Every layer but `rivers` is a list of these. The empty string is honest for
     the coastline and the lakes: they are `base:land` and `base:lakes`, which no
     entity claims and nothing should ever highlight.
+
+    **The kind is the shape's, not the entity's**, and that is the point of
+    carrying it. On the map the question a reader has is whether a boundary is
+    a drainage divide, a stretch of open water, a coastline or a speaker area —
+    and the entity class does not answer it: `place:` covers both a peninsula
+    and a mountain range, and the prose stylesheet lumps `place:` and `water:`
+    into one hue because in a sentence that is the right grouping. `data/geo/`
+    declares the kind, so nothing here infers one.
     """
-    return [(d, ent) for d in paths]
+    return [(d, ent, kind) for d in paths]
 
 
 def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
@@ -250,8 +288,9 @@ def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
     decide it — it does not know where a path came from, and inferring a basin
     from the shape of a ring is exactly the kind of guess this project refuses.
     """
-    def _of(ent: str) -> str:
-        return f" data-ent='{escape(ent)}'" if ent else ""
+    def _of(ent: str, kind: str = "") -> str:
+        return ((f" data-ent='{escape(ent)}'" if ent else "")
+                + (f" data-kind='{escape(kind)}'" if kind else ""))
 
     parts = []
     for name in LAYERS:
@@ -267,9 +306,12 @@ def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
                 for d, s in got) + "</g>")
         else:
             parts.append(f"<g class='{name}'>" + "".join(
-                f"<path d='{d}'{_of(e)}/>" for d, e in got) + "</g>")
-    # The pin radius and the label offset are percentages of the viewBox, so a
-    # marker keeps its size on the page whatever extent the frame ended up with.
+                f"<path d='{d}'{_of(e, k)}/>" for d, e, k in got) + "</g>")
+    # The pin radius and the label offset are a fraction of `SPAN`, which is the
+    # frame's *longer* side whatever its aspect — so a marker keeps its size on
+    # the page whatever extent the frame ended up with. The edge test below is
+    # the one thing that must ask the frame instead: `x` runs to `frame.width`,
+    # and on a frame taller than it is wide that is less than `SPAN`.
     r = SPAN * 0.012
     for x, y, label, ent in pins:
         parts.append(f"<circle class='pin'{_of(ent)} cx='{_fmt(x)}' "
@@ -281,7 +323,7 @@ def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
         # both did, and a truncated place name on a map reads as a data problem
         # rather than as a layout one. The flip is on the *frame*, not on the
         # text width, because this module cannot measure text.
-        flip = x > SPAN * 0.72
+        flip = x > frame.width * 0.72
         parts.append(
             f"<text class='pin-label' x='{_fmt(x + (-r * 1.4 if flip else r * 1.4))}' "
             f"y='{_fmt(y + r * 0.5)}' "

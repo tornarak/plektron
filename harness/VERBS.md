@@ -1297,15 +1297,17 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 ```
 
 ### entity locate ID
-**Does** set or replace an existing entry's `geo:` point, its `area:` shape, or both. **The act that puts a name on the map**, and it is a human's: a coordinate for a toponym Bogoras wrote in 1904, or the judgement that two sourced polygons are one speaker area, is an assertion about the world no rule may make. Re-parses the file before writing, as `entity new` does, and refuses an `area:` naming a shape `data/geo/` does not hold — a composite resolves only when every member does.
+**Does** set or replace an existing entry's `geo:` point, its `area:` shape, its `frame:` box, or any of them. **The act that puts a name on the map**, and it is a human's: a coordinate for a toponym Bogoras wrote in 1904, or the judgement that two sourced polygons are one speaker area, is an assertion about the world no rule may make. Re-parses the file before writing, as `entity new` does, and refuses an `area:` naming a shape `data/geo/` does not hold — a composite resolves only when every member does.
 **Reads** `entities/`, `data/geo/index.json`. **Writes** the named file under `--commit`. **Exit** 0, or 1 if the entity does not exist.
 ```
 --geo "LAT LON"  two WGS84 decimal degrees, latitude then longitude. Negative longitudes are west, as the store's sources write them; the shift into the atlas's continuous window is the reader's
 --area KIND:SLUG  the shape this entity is drawn as, or several comma-separated for a composite. Stored in its canonical spelling, members sorted, so one union has one spelling
+--frame "W S E N"  four WGS84 decimal degrees, west south east north, saying where the map should look. Longitude first, unlike `--geo`, because it is a box; east may exceed 180
 --commit  write it; without this the change is reported and not made
 --root --json --toon --pager
 ```
-**Note** at least one of `--geo`/`--area` is required, and both together is the normal case rather than a conflict. What is refused is the invocation that names an entity and changes nothing.
+**Note** at least one of `--geo`/`--area`/`--frame` is required, and together is the normal case rather than a conflict. What is refused is the invocation that names an entity and changes nothing.
+**Note** **`--frame` is where the map looks; `--geo` and `--area` are where the thing is.** It overrides whichever frame would otherwise have been derived and nothing else — `extent_of` is untouched, so an ancestor still sizes itself on the real geometry, and every member is still drawn. Two cases earn one, and both are defaults being wrong rather than missing: a container with no shape takes the union of everything beneath it, so `place:russian-far-east` reached 103°E and 41.7°N on the strength of the Lena and the Amur; a shape frames on its *parent*, which is what makes a shape mean something, but `place:chukchi-peninsula` is dense with villages and Chukotka's box packs them into a corner. A declared frame descends: the children of a framed entity frame on it, or the field would fix one page and leave every page under it drawn to the box just declared wrong.
 **Note** singular ID, because the flags name one entity's fields — the same reason `proposal set` is singular. A new action rather than a flag on `entity new`, because creating an entry and amending one are different acts and `new` exits 1 on an entry that already exists.
 **Note** the worklist it answers is `geo verify`'s `unlocated`.
 

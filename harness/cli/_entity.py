@@ -99,7 +99,8 @@ def register(cli):
 
     p = action(g, "locate", run_locate,
                help="set or replace an existing entry's `geo:` point, its "
-               "`area:` shape, or both. **The act that puts a name on the "
+               "`area:` shape, its `frame:` box, or any of them. **The act that "
+               "puts a name on the "
                "map**, and it is a human's: a coordinate for a toponym Bogoras "
                "wrote in 1904, or the judgement that two sourced polygons are "
                "one speaker area, is an assertion about the world that no rule "
@@ -107,7 +108,7 @@ def register(cli):
                "this answers a row of. One ID, because the flags name one "
                "entity's fields"
                "\n\nID: `class:slug`, e.g. `place:chukchi-peninsula`",
-               constraints=(require_any("geo", "area"),))
+               constraints=(require_any("geo", "area", "frame"),))
     arg(p, "ident", metavar="ID")
     opt(p, "--geo", metavar="LAT LON",
         help="two WGS84 decimal degrees, latitude then longitude, "
@@ -120,6 +121,16 @@ def register(cli):
              "— it is resolved from its members on every run, so the union "
              "cannot go stale, and the claim that the members belong together "
              "lives here in the entity file where a reader can see whose it is")
+    opt(p, "--frame", metavar="W S E N",
+        help="four WGS84 decimal degrees — west south east north — saying where "
+             "the map should *look*, which is a different question from where "
+             "the entity *is*. Longitude first, unlike `--geo`, because this is "
+             "a box; east may exceed 180, the atlas's frame being continuous "
+             "across the antimeridian. Two cases earn one: a container with no "
+             "shape, whose viewBox is otherwise the union of everything beneath "
+             "it and so is set by whichever descendant strays farthest; and a "
+             "shape dense with members, which frames on its parent by default "
+             "and so draws its settlements on top of each other")
     opt(p, "--commit", is_flag=True,
         help="write it. Without this the change is reported and not made")
 
@@ -272,7 +283,7 @@ def run_new(a) -> int:
 #: The order a scaffolded entry writes its fields in. A field this verb adds
 #: goes where `entity new` would have put it, so a file a human later reads is
 #: not visibly divided into what was typed and what was set by a command.
-FIELD_ORDER = ("status", "within", "geo", "area", "link", "authority")
+FIELD_ORDER = ("status", "within", "geo", "area", "frame", "link", "authority")
 
 
 def _set_field(text: str, key: str, value: str) -> str:
@@ -321,7 +332,9 @@ def run_locate(a) -> int:
     rows = []
     for key, given, before in (
             ("geo", a.geo, " ".join(f"{v:g}" for v in rec["geo"]) if rec["geo"] else ""),
-            ("area", a.area, rec["area"])):
+            ("area", a.area, rec["area"]),
+            ("frame", a.frame,
+             " ".join(f"{v:g}" for v in rec["frame"]) if rec["frame"] else "")):
         if not given:
             continue
         # Normalized on the way in so the file holds one spelling of a union

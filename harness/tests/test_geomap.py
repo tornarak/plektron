@@ -339,31 +339,57 @@ def test_a_within_cycle_does_not_hang_the_extent_walk(tmp_path):
 # ------------------------------------------------------------ the map
 
 def test_the_projection_has_no_seam_at_the_antimeridian():
-    """The reason it is azimuthal. 185 and −175 are the same meridian, and a
-    projection that disagreed would tear every shape in Chukotka in half."""
+    """185 and −175 are the same meridian, and a projection that disagreed would
+    tear every shape in Chukotka in half. The azimuthal projection got this from
+    going through `sin`/`cos` of longitude; the cylindrical one that replaced it
+    is linear in longitude and so has to wrap the difference itself."""
     a = geomap.project(185.0, 66.0, 176.0, 65.0)
     b = geomap.project(-175.0, 66.0, 176.0, 65.0)
     assert a == pytest.approx(b)
 
 
-def test_the_projection_is_undefined_at_the_antipode_and_says_so():
-    assert geomap.project(-4.0, -65.0, 176.0, 65.0) is None
+def test_a_latlon_box_projects_to_a_rectangle():
+    """**The property the whole `frame:` mechanism rests on**, and the reason the
+    projection changed. Under Lambert azimuthal equal-area, centred on the frame,
+    meridians converge toward the pole: on the box declared for Northeast Siberia
+    the west bound projected twice as far out at its southern end as at its
+    northern one, the viewBox had to be fitted to the bounding box of that curved
+    trapezoid, and a reader who declared the Yana to Cape Prince of Wales got
+    Manchuria and most of Alaska. No frame a human could write would have fixed
+    it, because the box was not what got drawn."""
+    box = (128.0, 50.9, 192.0, 71.7)
+    f = geomap.Frame(box)
+    w, s, e, n = box
+    sw, se, nw, ne = (f._at(w, s), f._at(e, s), f._at(w, n), f._at(e, n))
+    assert sw[0] == pytest.approx(nw[0])      # the west bound is one vertical
+    assert se[0] == pytest.approx(ne[0])
+    assert sw[1] == pytest.approx(se[1])      # the south bound is one horizontal
+    assert nw[1] == pytest.approx(ne[1])
 
 
-def test_a_frame_is_a_unit_box_whatever_it_frames():
-    """One viewBox for every map, so one decimal place is enough at every zoom
-    — and so no map carries a size in pixels."""
-    boxes = [(100.0, 40.0, 200.0, 75.0), (176.0, 65.0, 176.2, 65.2)]
-    frames = [geomap.Frame(b) for b in boxes]
-    assert {f.viewbox for f in frames} == {"0 0 1000 1000"}
-    # Not "the projection centre lands at 500,500": at 70°N the projected
-    # extent of a box is not symmetric about its own centre, and a frame that
-    # forced it to be would have to crop one edge to do it. What must hold is
-    # that what was asked for is inside what is drawn.
-    for f, (w, s, e, n) in zip(frames, boxes, strict=True):
+def test_a_frame_takes_the_aspect_of_what_it_frames():
+    """`SPAN` is the longer side, whatever the frame's shape, so one decimal
+    place is still enough at every zoom and no map carries a size in pixels.
+
+    It used to be both sides. A square viewBox meant a wide frame was scaled to
+    its *width* and then padded with empty sea: measured on the Northeast Siberia
+    box, the content filled 89% of the square horizontally and 42% vertically, so
+    well over half the picture was margin. `svg.map` is `width:100%; height:auto`,
+    so a viewBox that follows the frame is simply a shorter map."""
+    wide, tall, square = ((100.0, 60.0, 200.0, 70.0), (176.0, 50.0, 178.0, 75.0),
+                          (176.0, 65.0, 176.2, 65.2))
+    assert geomap.Frame(wide).viewbox.split()[2] == "1000"      # "0 0 W H"
+    assert float(geomap.Frame(wide).viewbox.split()[3]) < geomap.SPAN
+    assert geomap.Frame(wide).width == geomap.SPAN
+    assert geomap.Frame(tall).height == geomap.SPAN
+    assert geomap.Frame(tall).width < geomap.SPAN
+    # Whatever the aspect, what was asked for is inside what is drawn.
+    for box in (wide, tall, square):
+        f = geomap.Frame(box)
+        w, s, e, n = box
         for lon, lat in ((w, s), (e, n), (w, n), (e, s)):
             x, y = f._at(lon, lat)
-            assert 0 <= x <= 1000 and 0 <= y <= 1000
+            assert 0 <= x <= f.width and 0 <= y <= f.height
 
 
 def test_the_frame_measures_along_its_edges_and_not_at_its_corners():
@@ -389,9 +415,26 @@ def test_a_ring_that_cannot_touch_the_frame_is_dropped():
 def test_a_map_is_svg_with_no_pixel_dimension_on_it():
     f = geomap.Frame(geo.bounds(geo.shape("watershed:anadyr", ROOT)))
     doc = geo.shape("watershed:anadyr", ROOT)
-    svg = geomap.render(f, {"subject": geomap.owned(f.paths(doc), "water:anadyr")})
-    assert svg.startswith("<svg") and "viewBox='0 0 1000 1000'" in svg
+    svg = geomap.render(f, {"subject": geomap.owned(f.paths(doc), "water:anadyr",
+                                                    "watershed")})
+    assert svg.startswith("<svg") and f"viewBox='{f.viewbox}'" in svg
     assert "px" not in svg and "width=" not in svg
+
+
+def test_a_path_carries_the_kind_of_shape_it_is():
+    """One accent for every boundary made a wide frame unreadable — the Northeast
+    Siberia map draws fourteen watersheds, five land regions and three stretches
+    of open water at once, and in one hue they are a field of overlapping
+    outlines. The kind is declared in `data/geo/` and travels on the path, so the
+    stylesheet looks it up rather than guessing from the geometry."""
+    f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
+    doc = geo.shape("watershed:anadyr", ROOT)
+    svg = geomap.render(f, {"members": geomap.owned(f.paths(doc), "water:anadyr",
+                                                    "watershed")})
+    assert "data-kind='watershed'" in svg
+    # Absent rather than empty where there is none: the coastline is `base:land`,
+    # which no entity claims and no rule should colour.
+    assert "data-kind" not in geomap.render(f, {"land": geomap.owned(f.paths(doc))})
 
 
 def test_a_mark_joins_the_root_class_and_is_absent_by_default():

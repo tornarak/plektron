@@ -253,7 +253,7 @@ SHOWN_ELSEWHERE = {
 
 #: The fields `property_rows` renders. Together with `SHOWN_ELSEWHERE` this must
 #: cover every key `entities.parse` returns, and `test_edition.py` says so.
-PROPERTY_FIELDS = ("within", "area", "geo", "authority")
+PROPERTY_FIELDS = ("within", "area", "geo", "frame", "authority")
 
 
 def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
@@ -326,6 +326,20 @@ def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
                 "label": "point",
                 "lat": f"{lat:.4f}",
                 "lon": f"{lon:.4f}",
+            }
+        )
+
+    if rec["frame"]:
+        w, s, e, n = rec["frame"]
+        rows.append(
+            {
+                "kind": "plain",
+                "label": "frame",
+                # Said in words as well as numbers, because four bare degrees are
+                # the one field on this card a reader cannot check by looking:
+                # the map above is *drawn* to them, so it can never disagree.
+                "value": f"{w:g}–{e:g}°E, {s:g}–{n:g}°N — the map's view, "
+                         f"not a boundary",
             }
         )
 
@@ -433,9 +447,34 @@ def map_context(
     # East the identical viewBox: the RFE has no parent, so both fell back to the
     # RFE's own. Two maps of two different regions, pixel for pixel the same.
     framed = not rec["area"] and not rec["geo"]
-    frame_box = box if framed else (
-        (geo.extent_of(parent["id"], store, root) if parent else None) or box)
+    # **A parent's declared frame is what its children frame on**, or the field
+    # would fix one page and leave every page under it drawn to the box the
+    # editor had just said was the wrong one — the villages of the Chukchee
+    # Peninsula are exactly the pages that needed it.
+    up = (parent["frame"] or geo.extent_of(parent["id"], store, root)) \
+        if parent else None
+    frame_box = box if framed else (up or box)
+    # **A declared `frame:` wins over whichever of the two was derived**, and
+    # over nothing else: `box` is untouched, so an ancestor still sizes itself on
+    # the real geometry and `member_shapes` still draws everything beneath. Both
+    # defaults have a case they get wrong — a shapeless container sized by its
+    # farthest-strayed descendant, a dense shape squeezed into its parent's box —
+    # and one field answers both.
+    if rec["frame"]:
+        frame_box = rec["frame"]
     frame = geomap.Frame(frame_box)
+
+    def _kind(area: str) -> str:
+        """The shape kind an `area:` names — `watershed`, `marine`, `region`, …
+
+        A composite takes its first member's, which is all a composite can
+        honestly say: the two unclaimed language areas that make up
+        `people:inupiat` are both `langarea:`, and a union of two *different*
+        kinds would be a claim about the world nobody has made. Read off the
+        declared id and never inferred from the geometry.
+        """
+        got = geo.split_area(area)
+        return got[0].partition(":")[0] if got else ""
 
     layers: dict[str, list] = {}
     for name, ident in (("land", "base:land"), ("lakes", "base:lakes")):
@@ -456,9 +495,11 @@ def map_context(
     )
     if kin:
         layers["kin"] = [p for k in kin
-                         for p in geomap.owned(frame.paths(shape(store[k]["area"])), k)]
+                         for p in geomap.owned(frame.paths(shape(store[k]["area"])),
+                                               k, _kind(store[k]["area"]))]
     if parent and parent["area"]:
-        layers["parent"] = geomap.owned(frame.paths(shape(parent["area"])), parent["id"])
+        layers["parent"] = geomap.owned(frame.paths(shape(parent["area"])),
+                                        parent["id"], _kind(parent["area"]))
 
     # **What lies beneath, drawn.** For a node with no boundary of its own this
     # is the whole map — the Russian Far East is not a shape, and a frame with
@@ -468,11 +509,13 @@ def map_context(
     members = geo.member_shapes(ent_id, store)
     if members:
         layers["members"] = [p for ent, s in members
-                             for p in geomap.owned(frame.paths(shape(s)), ent)]
+                             for p in geomap.owned(frame.paths(shape(s)), ent,
+                                                   _kind(s))]
 
     subject_doc = shape(rec["area"]) if rec["area"] else {}
     if subject_doc:
-        layers["subject"] = geomap.owned(frame.paths(subject_doc), ent_id)
+        layers["subject"] = geomap.owned(frame.paths(subject_doc), ent_id,
+                                         _kind(rec["area"]))
         layers["rivers"] = frame.rivers(subject_doc)
     elif parent and parent["area"]:
         layers["rivers"] = frame.rivers(shape(parent["area"]))

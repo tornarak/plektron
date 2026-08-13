@@ -3,12 +3,38 @@ svg.map { width:100%; height:auto; display:block; background:var(--sea);
 svg.map .land { fill:var(--land); stroke:none }
 svg.map .lakes { fill:var(--sea); stroke:none }
 svg.map .kin { fill:none; stroke:var(--dim); stroke-width:.15%; opacity:.5 }
-svg.map .members { fill:color-mix(in srgb,var(--accent) 8%,transparent);
-  stroke:var(--accent); stroke-width:.18%; opacity:.75 }
+svg.map .members { fill:color-mix(in srgb,var(--shape) 8%,transparent);
+  stroke:var(--shape); stroke-width:.18%; opacity:.75 }
 svg.map .parent { fill:none; stroke:var(--dim); stroke-width:.25%;
   stroke-dasharray:1%,.8% }
-svg.map .subject { fill:color-mix(in srgb,var(--accent) 22%,transparent);
-  stroke:var(--accent); stroke-width:.35% }
+svg.map .subject { fill:color-mix(in srgb,var(--shape) 22%,transparent);
+  stroke:var(--shape); stroke-width:.35% }
+
+/* --- one hue per shape kind ---
+ *
+ * A wide frame draws land regions, watersheds, open water and settlements at
+ * once — the Northeast Siberia map has all four — and in one accent they read as
+ * a single field of overlapping outlines with no way to tell a drainage divide
+ * from a coastline from a bay. The kind is declared in `data/geo/` and travels
+ * on the path as `data-kind` (`geomap.owned`), so this is a lookup and not a
+ * guess.
+ *
+ * **Not the prose vocabulary.** `edition.css` groups `place:` and `water:` into
+ * one hue on purpose — in a sentence "is this a place or a person" is the
+ * question. On a map it is the wrong axis twice over: `place:` covers a
+ * peninsula and a mountain range alike, and the thing a reader needs separated
+ * is exactly land from water. Five kinds, five hues, and `--shape` is the
+ * indirection that keeps it one declaration each rather than one per layer.
+ *
+ * `--basin` for a watershed was already here, as the `.basin` mark on the
+ * subject; this generalises it to every watershed on the map instead of only
+ * the one being looked at, and the old mark stays because it also decides the
+ * *rivers*' relationship to their divide. */
+svg.map { --shape:var(--accent) }
+svg.map [data-kind="watershed"] { --shape:var(--basin) }
+svg.map [data-kind="marine"]    { --shape:var(--water) }
+svg.map [data-kind="langarea"]  { --shape:var(--abstract) }
+svg.map [data-kind="region"]    { --shape:var(--accent) }
 /* A drainage divide, set by `edition_ui.map_context` when the subject's `area:`
    names a watershed. The rivers inside it are `--water`, and an outline in the
    accent brown against a blue trunk reads as two unrelated things; this is the
@@ -24,7 +50,12 @@ svg.map.basin .subject { stroke:var(--basin);
 svg.map .extents { fill:none; stroke:none }
 svg.map .rivers { fill:none; stroke:var(--water); stroke-width:.22%;
   stroke-linecap:round; opacity:.85 }
-svg.map .pin { fill:var(--accent); stroke:var(--card); stroke-width:.15% }
+/* **A settlement is not a region and must not share its colour.** A pin sits on
+   top of whatever boundary contains it, and in the accent brown it read as one
+   more mark in the same family — on the Chukchee Peninsula that is 34 dots over
+   a brown outline. `--pin` was declared in the theme and used nowhere; this is
+   what it was for. */
+svg.map .pin { fill:var(--pin); stroke:var(--card); stroke-width:.15% }
 svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
   paint-order:stroke; stroke:var(--sea); stroke-width:.4%;
   stroke-linejoin:round }

@@ -176,6 +176,17 @@ row cannot be answered by writing a number in a file.
 - **`geo:` and `area:`** are the atlas's, below. `area:` names a shape in
   `data/geo/` and must resolve there; a shape *kind* may never be an entity
   class, for a reason worth reading before adding either.
+- **`frame:` is where the map looks**, which is a different question from where
+  the thing is: four degrees, west south east north — longitude first, unlike
+  `geo:`, because it is a box, and east may exceed 180 in the atlas's continuous
+  window. It overrides whichever frame would otherwise have been *derived* and
+  nothing else, so `extent_of` still measures the real geometry and every member
+  is still drawn. Two entries carry one and both are a default getting it wrong:
+  `place:northeast-siberia`, a container with no shape, whose viewBox was
+  otherwise the union of everything beneath it; and `place:chukchi-peninsula`,
+  which frames on Chukotka by default and had thirty-four villages in a corner.
+  A parent's frame is what its children frame on. `docs/decisions.md` has why no
+  frame worked at all until the projection changed with it.
 - **`authority:`** may cross-link `data/authorities.json`. Resolving a `<bibl>`
   to that key is still deferred; `BIBL_IDENTITY_ATTRS` is untouched.
 - **`link:`** holds an *identifier*, never a URL — `wikipedia:Chukchi_people`,
