@@ -32,7 +32,7 @@ from pathlib import Path
 
 from lxml import etree
 
-from .context import norm_ref, parse_ref
+from .context import figure_number, norm_ref, parse_ref
 
 GRAPHIC = "GraphicZone"
 FIGDESC = "GraphicZone-FigDesc"
@@ -1360,6 +1360,81 @@ def paired(ref: str, root: Path = Path(".")) -> dict:
     }
 
 
+def figure_boxes(ref: str, root: Path = Path(".")) -> list[dict]:
+    """One record per **printed** figure on a page, top first.
+
+    `paired` returns one row per `GraphicZone`; the book does not. 16 figures in
+    this corpus are set in several boxes — `1-276`'s fig. 138 *a, b, c*,
+    `2-085`'s fig. 253 *a, b* — and the lettering that tells them apart lives
+    inside the one caption. So this folds `paired`'s rows on the caption and each
+    record is a thing the book numbers:
+
+        {"key": "001",                    # the topmost picture zone's suffix
+         "n": "87" | None,                # context.figure_number(caption)
+         "zone_ids": ["fig_1-207_001",…], # every picture box under this caption
+         "caption_zone": "fig_1-207_004", # full id, as `paired` gives it; "" if none
+         "caption": "Fig. 87, a …",
+         "box": (x0, y0, x1, y1),         # union of the pictures; caption excluded
+         "y": 938}                        # None box only if every zone id is dangling
+
+    **`box` excludes the caption and `y` does not, and the difference is the
+    point.** `box` is what gets cropped, and a crop wants the picture: the
+    caption is already carried as text, and on the ~19 plates whose caption is
+    set rotated beside the picture, including it would widen the crop by the
+    height of a line of type turned on its side. `y` is where the *figure* sits
+    for placement purposes, which is the top of whichever of its parts comes
+    first — the definition `generate._figures_with_geometry` has always used, and
+    it is preserved exactly so that folding that function onto this one cannot
+    move a single figure in `mz/tei/`. Measured: the two agree on all 398 figures
+    today, a caption never being set above its picture. The byte-identical
+    regeneration is what witnesses it if that ever stops being true.
+
+    **Captionless artwork is never folded.** `3-006` and `3-007` carry a picture
+    the book captions nowhere, and an empty caption is not evidence that two such
+    pictures are one figure, so each keys on its own zone id instead. That is the
+    same reasoning as `paired`'s `text: ""` note, one level up.
+
+    `key` is the topmost picture's zone suffix, which is what names the crop.
+    Deliberately not the figure number — plate figures restart at 1 on every
+    plate and collide with the text-figure series, 10 figures print no number at
+    all, and a number is a *reading* of the caption where a zone id is the
+    store's own foreign key, the one `save_figs` preserves where `zones.save_zones`
+    re-mints. Deliberately not a page-local ordinal either: `docs/apparatus.md`
+    records that shape failing twice, the zone count not being the figure count
+    in either direction.
+    """
+    ref = norm_ref(ref)
+    boxes = {b["id"]: b for b in zones(ref, root)}
+    groups: dict[str, list[dict]] = {}
+    for f in paired(ref, root)["figures"]:
+        # An empty caption groups by zone id, i.e. not at all. `paired` has
+        # already sorted by position, so first-seen is topmost throughout.
+        groups.setdefault(f["caption"] or f"\0{f['zone_id']}", []).append(f)
+
+    out = []
+    for members in groups.values():
+        pics = [boxes[m["zone_id"]] for m in members if m["zone_id"] in boxes]
+        first = members[0]
+        # `y` exactly as the generator has always computed it: over the first
+        # member's own picture and caption zones, not over the union.
+        tops = [boxes[z]["vpos"] for z in (first["zone_id"], first["caption_zone"])
+                if z in boxes]
+        rec = {
+            "key": zone_suffix(first["zone_id"]),
+            "n": figure_number(first["caption"]),
+            "zone_ids": [m["zone_id"] for m in members],
+            "caption_zone": first["caption_zone"],
+            "caption": first["caption"],
+            "box": (min(p["hpos"] for p in pics),
+                    min(p["vpos"] for p in pics),
+                    max(p["hpos"] + p["width"] for p in pics),
+                    max(p["vpos"] + p["height"] for p in pics)) if pics else None,
+            "y": min(tops) if tops else 0,
+        }
+        out.append(rec)
+    return sorted(out, key=lambda f: f["y"])
+
+
 def reconcile(root: Path = Path(".")) -> dict:
     """Cross-check `gt/fig/` against `data/readings.md` in both directions.
 
@@ -1464,6 +1539,166 @@ def _scale_for(alto_page, image_size) -> tuple[float, float]:
     aw = float(alto_page.get("WIDTH"))
     ah = float(alto_page.get("HEIGHT"))
     return image_size[0] / aw, image_size[1] / ah
+
+
+CROPDIR = "scans/fig-crops"
+
+
+def crop_name(ref: str, key: str) -> str:
+    """The filename one figure's crop takes. `1-151`, `001` -> `chukchi-1-151-001.png`.
+
+    One function because three callers need to agree exactly — the writer, the
+    farm's membership computation, and the route that serves them — and a name
+    re-derived per caller is the drift this module's `read_blocks` docstring
+    already records the cost of.
+    """
+    return f"chukchi-{norm_ref(ref)}-{key}.png"
+
+
+def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
+                scans: str = "scans", force: bool = False) -> list[dict]:
+    """Crop every printed figure on one page out of its raster. Returns the records.
+
+    **Pad 0 — the declared box and not a pixel more.** This is the blot's rule,
+    and `docs/pipeline.md` records why it is the blot's rule: the pad was
+    "rejected precisely because body text sits hard against an inset figure on
+    `1-283`". A pad would pull prose into the crop on every page shaped like that
+    one. Note this is the opposite choice from `lines.line_box`, which pads
+    (`PAD_X = 56`) on purpose — a line crop exists for a human to read *in
+    context*, and a figure crop exists to be the figure.
+
+    **One crop per declared `GraphicZone`, never a union of several.** A union was
+    tried first, on the reasoning that the book calls `1-276`'s fig. 140 one
+    figure and letters its parts inside a single caption — and the area cost
+    looked negligible, the worst union being 1.75× its parts. Looking at the
+    output is what refuted it: fig. 140's two boxes are stacked at different
+    widths, so their bounding rectangle spans the text column beside the upper
+    one and the crop came out with six lines of body prose in it. **1.75× of
+    *area* was 1.75× of *page*, and the page there is text.** A bounding box over
+    boxes a human drew separately is a region no human drew, which is the whole
+    of why this store holds rectangles rather than one box per figure.
+
+    So the mechanical act stays mechanical — a declared box becomes an image —
+    and holding the parts of fig. 140 together is presentation: `figure_boxes`
+    groups them under their one caption and the reader stacks that group's crops
+    beneath a single `<figcaption>`. Nothing is lost and nothing is invented.
+
+    **A crop newer than both its inputs is left alone**, `lines.write_line_crops`'
+    rule verbatim and for its reason: served as files, an unconditional re-save
+    gives every crop a new mtime and a new `ETag` on every build, so nothing ever
+    caches. The name encodes the geometry via the zone id, so a crop whose name
+    still matches and whose file postdates the ALTO and the raster is the crop
+    those two produce. `force` overrides it.
+    """
+    from PIL import Image
+
+    from .lines import raster_path
+    ref = norm_ref(ref)
+    figs = figure_boxes(ref, root)
+    if not figs:
+        return []
+
+    alto = alto_for(ref, root)
+    raster = raster_path(ref, root, scans)
+    page = etree.parse(str(alto)).find(".//{*}Page")
+    src = max((p.stat().st_mtime for p in (alto, raster) if p.exists()), default=0.0)
+
+    boxes = {b["id"]: b for b in zones(ref, root)}
+    # Flattened to (figure, picture) pairs first, so the write loop is one level
+    # deep and every part still knows the figure it belongs to.
+    parts = [(f, boxes[z]) for f in figs for z in f["zone_ids"] if z in boxes]
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    img = None
+    sx = sy = 1.0
+    recs = []
+    for f, z in parts:
+        key = zone_suffix(z["id"])
+        path = out_dir / crop_name(ref, key)
+        # `n` and `group` travel with every part, so a consumer can stack the
+        # three crops of fig. 138 under its one caption without re-deriving the
+        # grouping `figure_boxes` already did.
+        rec = {"ref": ref, "key": key, "n": f["n"], "group": f["key"],
+               "name": path.name}
+        if not force and path.exists() and path.stat().st_mtime >= src:
+            recs.append(rec | {"written": False, "why": "fresh"})
+            continue
+        # Opened once, and only if something actually needs writing — the decode
+        # is the whole cost of this pass (see .claude/rules/zones.md).
+        if img is None:
+            img = Image.open(raster)
+            sx, sy = _scale_for(page, img.size)
+        x0, y0 = z["hpos"], z["vpos"]
+        x1, y1 = x0 + z["width"], y0 + z["height"]
+        box = (max(0, round(x0 * sx)), max(0, round(y0 * sy)),
+               min(img.size[0], round(x1 * sx)), min(img.size[1], round(y1 * sy)))
+        if box[2] <= box[0] or box[3] <= box[1]:
+            # A box entirely off the raster. `fig check` already errors on this;
+            # here it is a row rather than a crash, so one bad page cannot stop a
+            # corpus sweep.
+            recs.append(rec | {"written": False, "why": "off-raster"})
+            continue
+        img.crop(box).save(path)
+        recs.append(rec | {"written": True, "why": ""})
+    return recs
+
+
+def crop_all(refs: list[str] | None = None, root: Path = Path("."),
+             out_dir: Path | None = None, scans: str = "scans",
+             force: bool = False, jobs: int | None = None) -> dict:
+    """Crop the named pages, or every page the figure store holds.
+
+    Threaded on `parallel.pmap` for `zones blot`'s reason: the PNG decode is the
+    whole cost and it releases the GIL, so threads get most of the win without an
+    interpreter per worker. `--jobs 1` builds no pool and is the control arm.
+    """
+    from .parallel import pmap
+    dest = Path(out_dir) if out_dir is not None else root / CROPDIR
+    todo = [norm_ref(r) for r in refs] if refs else fig_refs(root)
+
+    def one(ref: str) -> dict:
+        try:
+            recs = write_crops(ref, dest, root, scans, force)
+        except FileNotFoundError as e:
+            return {"ref": ref, "figures": 0, "written": 0, "fresh": 0,
+                    "off_raster": 0, "note": str(e).split(":")[0]}
+        return {
+            "ref": ref,
+            "figures": len(recs),
+            "written": sum(1 for r in recs if r["written"]),
+            "fresh": sum(1 for r in recs if r["why"] == "fresh"),
+            "off_raster": sum(1 for r in recs if r["why"] == "off-raster"),
+            "note": "",
+        }
+
+    rows = list(pmap(one, todo, jobs=jobs))
+    return {
+        "dir": str(dest.relative_to(root)) if dest.is_relative_to(root) else str(dest),
+        "pages": len(rows),
+        "figures": sum(r["figures"] for r in rows),
+        "written": sum(r["written"] for r in rows),
+        "fresh": sum(r["fresh"] for r in rows),
+        "off_raster": sum(r["off_raster"] for r in rows),
+        "rows": rows,
+    }
+
+
+def crops_wanted(root: Path = Path(".")) -> dict[str, str]:
+    """`{crop filename: the ref it comes from}` over the whole figure store.
+
+    The farm's membership, computed from `gt/fig/` rather than from what happens
+    to be on disk — which is what lets `views check` say `stale` when a keyed box
+    gained or lost a crop, instead of only noticing an empty directory.
+
+    **One entry per `GraphicZone`, which is what `write_crops` writes.** These two
+    have to enumerate the same set or the farm reports drift against itself
+    forever, so this reads the zones directly rather than going through
+    `figure_boxes`' grouping — the grouping is about captions and has no say in
+    how many images exist.
+    """
+    return {crop_name(ref, zone_suffix(b["id"])): ref
+            for ref in fig_refs(root)
+            for b in zones(ref, root) if b["label"] == GRAPHIC}
 
 
 def _chunk_sheets(items, per_sheet: int, max_h: int | None):

@@ -79,6 +79,9 @@ CLI settled on `--all` for every corpus form; the old spelling is trapped.)
     ocr/  zones/                 the read views over the paired stores
     scans/w-figs-blotted/        the segmenter's training rasters
     scans/w-figs/  scans/w-ocr/  selections over scans/, by criterion
+    scans/fig-crops/             the figures themselves, cut out: one PNG per
+                                 GraphicZone in gt/fig/, for the edition and
+                                 whatever builds an epub. `harness fig crops`
     scans/                       reported, never built here: pdftoppm over pdfs/
                                  (symlinks outside the repo), then
                                  tools/greyscale_scans.py --commit

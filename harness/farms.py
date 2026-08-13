@@ -49,6 +49,7 @@ FIGS_BLOT = "scans/w-figs-blotted"
 LINE_BLOT = "scans/w-blotted"
 W_FIGS = "scans/w-figs"
 W_OCR = "scans/w-ocr"
+FIG_CROPS = "scans/fig-crops"
 TRAIN_WORK = "train/bogoras-seg"
 
 
@@ -114,6 +115,14 @@ FARMS = (
          "harness views build w-figs", "membership"),
     Farm("w-ocr", W_OCR, "select", ("gt/ocr",),
          "harness views build w-ocr", "membership"),
+    # The figure crops. `raster` and not `select`: these are cut pixels, not links
+    # into `scans/`, so an absent `scans/` stops the builder outright rather than
+    # leaving something that dangles loudly. `gt/fig/` is a *read* too, unlike the
+    # blot's — `blot_one` tolerates a page with no figure ALTO by linking it
+    # through, while here a page with no ALTO has no crops to cut and the store is
+    # what says which pages those are.
+    Farm("fig-crops", FIG_CROPS, "raster", (SCANS, "gt/fig"),
+         "harness fig crops --all", "membership"),
     # Reported, never built here. `scans/` has no builder in this repo — it is
     # `pdftoppm` over `pdfs/`, whose three entries are symlinks pointing outside the
     # repo, so on a clone the rasters cannot be regenerated at all. `train/` is
@@ -341,6 +350,11 @@ def build(name: str, root: Path = Path(".")) -> dict:
         rep = blot_all(root)
         return {"farm": name, "dir": rep["dir"], "linked": rep["total"],
                 "removed": 0, "skipped": ""}
+    if name == "fig-crops":
+        from .figures import crop_all
+        rep = crop_all(root=root)
+        return {"farm": name, "dir": rep["dir"], "linked": rep["written"],
+                "removed": 0, "skipped": ""}
     rep = build_w_figs(root) if name == "w-figs" else build_w_ocr(root)
     return {**rep, "skipped": ""}
 
@@ -377,6 +391,16 @@ def _wanted_for(name: str, root: Path) -> dict[str, Path] | None:
     if name == "w-ocr":
         pngs, xmls = _w_ocr_wanted(root)
         return {**pngs, **xmls}
+    if name == "fig-crops":
+        # Membership is one crop per declared `GraphicZone`, computed from
+        # `gt/fig/` rather than from what is on disk — which is what lets the
+        # survey say `stale` when a keyed box gained or lost a crop instead of
+        # only noticing an empty directory. The value is the *source raster*,
+        # since that is what `rebuild`'s callers use to explain a member; a crop
+        # is cut from it rather than linked to it.
+        from .figures import crops_wanted
+        return {name_: root / SCANS / f"chukchi-{ref}.png"
+                for name_, ref in crops_wanted(root).items()}
     return None
 
 

@@ -67,7 +67,6 @@ from xml.sax.saxutils import escape
 from .context import (
     APPARATUS_ZONES,
     _running_title,
-    figure_number,
     norm_ref,
     tier1_terms,
 )
@@ -151,21 +150,18 @@ def _figures_with_geometry(ref: str, root: Path) -> list[dict]:
     Deduped on the caption exactly as `_figures_on_page` dedupes, so the two
     pictures sharing fig. 253's caption are one figure here too. The survivor is
     the topmost, `paired` having sorted by position already.
+
+    **That fold is `figures.figure_boxes`' now, and this keeps only the three
+    fields the emitter uses.** It was written out here as well, and two copies of
+    one rule is the shape this project treats as a defect: nothing held them
+    together, so a change to either would have been invisible until a page came
+    out wrong. What stays here is the projection, because the geometry that
+    function also returns is exactly what a *placement* rule may read and the
+    model may not — the asymmetry above, unchanged.
     """
-    from .figures import paired
-    from .figures import zones as fig_zones
-    boxes = {z["id"]: z for z in fig_zones(ref, root)}
-    out: list[dict] = []
-    seen: set[str] = set()
-    for f in paired(ref, root)["figures"]:
-        if f["caption"] and f["caption"] in seen:
-            continue
-        seen.add(f["caption"])
-        tops = [boxes[z]["vpos"] for z in (f["zone_id"], f["caption_zone"])
-                if z in boxes]
-        out.append({"n": figure_number(f["caption"]), "caption": f["caption"],
-                    "y": min(tops) if tops else 0})
-    return sorted(out, key=lambda f: f["y"])
+    from .figures import figure_boxes
+    return [{"n": f["n"], "caption": f["caption"], "y": f["y"]}
+            for f in figure_boxes(ref, root)]
 
 
 def _place_notes(body: list[str], rows: list[tuple[int, str]], rendered) \

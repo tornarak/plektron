@@ -89,8 +89,8 @@ only where a transcribed page recorded one, and propagates via the seam ledger
 
 Layout, all at the repo root:
 
-    scans/  the 832 rasters, 300 dpi greyscale. Derived; not in git. Selection farms over it (w-figs/, w-ocr/, w-figs-blotted/)
-            are derived too and point into it: a clone gets dangling links.
+    scans/  the 832 rasters, 300 dpi greyscale. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
+            fig-crops/) are derived too and point into it: a clone gets dangling links.
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
             pictures and their captions; no lines), zones/ (the current
             segmentation), lines/ (the corrections overlay). Tracked.

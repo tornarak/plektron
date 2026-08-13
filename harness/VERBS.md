@@ -1597,6 +1597,24 @@ PP-NNN...     which pages; several may be given
 **Note** **it does not touch `data/readings.md`.** The captions that named the deleted blocks become orphans, and that is the intended outcome: a geometry withdrawal cascading silently into hand-read text would be far worse than a loud reconciliation failure. The row counts the captions it orphans and `harness corpus figures` is what names them.
 **Note** no `--all`, for `zones delete`'s reason and one more: a corpus form would strand all 395 hand-read captions in one keystroke.
 
+### fig crops [PP-NNN ...]
+**Does** cuts every declared picture out of its raster — one PNG per `GraphicZone`, named `chukchi-PP-NNN-KKK.png` after the zone's own id suffix.
+**Reads** `gt/fig/`, `scans/`.
+**Writes** `scans/fig-crops/` (derived).
+**Exit** always 0. A page whose box falls off the raster is a row saying so, not a crash — `fig check` is where that gates.
+**Note** **no `--commit`, because the tree is derived** — `--commit` gates the authored stores, and `zones blot` is the precedent for a raster tree that writes on invocation. Named pages get their per-page rows; `--all` reports totals only, since 252 rows of mostly zeroes bury the one number that answers "did the sweep run".
+**Note** **pad 0 — the declared box and not a pixel more.** The blot's rule and for its reason, which `docs/pipeline.md` records: the pad was "rejected precisely because body text sits hard against an inset figure on `1-283`". The opposite choice from `lines.line_box`, which pads `PAD_X = 56` on purpose, a line crop being for a human to read *in context*.
+**Note** **one crop per box, not one per printed figure.** A union was tried first — the book calls `1-276`'s fig. 140 one figure and letters its parts inside a single caption, and the worst union measured only 1.75× the area of its parts. The output refuted it: fig. 140's two boxes are stacked at different widths, so their bounding rectangle spans the text column beside the upper one and the crop came out carrying six lines of body prose. **1.75× of area was 1.75× of page, and the page there is text.** A bounding box over boxes a human drew separately is a region no human drew. Holding a figure's parts together is the reader's job, and `figures.figure_boxes` is what groups them; every crop carries its `group` so nothing has to re-derive that.
+**Note** **a crop newer than both its inputs is left alone**, `lines.write_line_crops`' rule verbatim: served as files, an unconditional re-save gives every crop a new mtime and a new `ETag` on every build, so nothing ever caches. `--force` overrides it. There is no mtime *skip* beyond that, for `zones blot`'s reason — skip policy belongs with the dependency graph, which is a sprint of its own.
+```
+PP-NNN...     which pages; several may be given
+--all         every page the figure store holds
+--force       re-cut crops that are newer than both their inputs
+--out DIR     where to write them [scans/fig-crops/]
+--jobs N      worker threads; 1 runs serially and builds no pool [cores, capped]
+--root --json --toon --pager
+```
+
 ### fig mets --out DIR
 **Does** writes a METS manifest over `gt/fig/` for importing the store into eScriptorium.
 **Reads** the filenames in `gt/fig/`.

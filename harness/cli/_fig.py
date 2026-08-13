@@ -57,6 +57,27 @@ def register(cli):
         help="actually delete. Without it the row is a preview and nothing is "
              "written")
 
+    p = action(g, "crops", run_crops, section="The store",
+               help="cut every declared picture out of its raster into "
+               "scans/fig-crops/, one PNG per GraphicZone. Pad 0 — the declared "
+               "box and not a pixel more, the blot's rule and for its reason: a "
+               "pad pulls body text into the crop wherever prose sits hard "
+               "against an inset figure. One crop per box rather than one per "
+               "printed figure, because a bounding box over boxes a human drew "
+               "separately is a region nobody drew, and on 1-276 that region is "
+               "six lines of prose; holding a figure's parts together is the "
+               "reader's job. Derived output, so it writes on invocation and "
+               "takes no --commit")
+    _refs(p, "every page the figure store holds")
+    opt(p, "--force", is_flag=True,
+        help="re-cut crops that are newer than both their inputs. Without it a "
+             "fresh crop is left alone, so a rebuild does not give every file a "
+             "new mtime and a new ETag and stop the browser ever caching one")
+    opt(p, "--out", metavar="DIR", default=None,
+        help="where to write them [scans/fig-crops/]")
+    opt(p, "--jobs", type=int, default=None, metavar="N",
+        help="worker threads; 1 runs serially and builds no pool [cores, capped]")
+
     p = action(g, "mets", run_mets, section="The store", pageable=False,
                help="write a METS manifest over gt/fig/ into a directory you "
                "name, for importing the store into eScriptorium. Built on "
@@ -178,6 +199,19 @@ def run_check(a) -> int:
 def run_delete(a) -> int:
     rows = [F.delete_figs(r, a.root, commit=a.commit) for r in page_refs(a)]
     out(a, rows)
+    return 0
+
+
+def run_crops(a) -> int:
+    from pathlib import Path
+    rep = F.crop_all(page_refs(a) or None, root=a.root,
+                     out_dir=Path(a.out) if a.out else None,
+                     force=a.force, jobs=a.jobs)
+    rows = rep.pop("rows")
+    # The per-page rows only when pages were named. Over the whole store 252 rows
+    # of mostly zeroes buries the totals, which are the answer to "did the sweep
+    # run"; naming a page means the page is the question.
+    out(a, {**rep, "rows": rows} if page_refs(a) else rep)
     return 0
 
 

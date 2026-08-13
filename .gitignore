@@ -171,6 +171,14 @@ scans/w-blotted/
 # the 580 figure-less pages here are symlinks into the already-ignored `scans/`,
 # so a tracked copy would dangle in every clone exactly as `scans/w-figs/` would.
 scans/w-figs-blotted/
+# `harness fig crops`: one PNG per declared `GraphicZone`, cut out of `scans/` for
+# the edition and whatever eventually builds an epub. 414 files, every one of them
+# a rectangle already recorded in `gt/fig/` applied to a raster that is itself
+# derived — so there is nothing here a clone cannot rebuild in one command, and a
+# tracked copy would be 414 pictures of a book in a repo that deliberately carries
+# none. Covered by `scans/` above and spelled out for the reason its neighbours
+# are: the entry is where the rationale lives.
+scans/fig-crops/
 # Training scratch: `--assemble`'s symlink farm, its two .lst files, and whatever
 # checkpoints a run writes. **Pure scratch, and that is a property worth keeping** —
 # the split a model trained on travels in that model's own manifest under
