@@ -10,6 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Tkachen Bay | | yes | |
+| Čeˊčin Bay | | yes | |
 | Admiral Butakoff’s Bay | | yes | |
 | Marquis Bay | | yes | the American whalers' name |
 | Marcus Bay | | yes | Krause's misreading of Marquis, per the note at 1-051 |

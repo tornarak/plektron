@@ -1,7 +1,7 @@
 # water:karaginsky-gulf — Karaginsky Gulf
 
 - status: ratified
-- within: water:bering-sea
+- within: land:kamchatka
 - area: marine:karagha-bay
 
 ## aliases

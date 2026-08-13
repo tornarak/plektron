@@ -262,3 +262,6 @@ train/
 # lost once. Verified with `git check-ignore -v`.
 /zones/
 /ocr/
+
+# Agent worktrees — real git worktrees of this repo, never content of it.
+.claude/worktrees/

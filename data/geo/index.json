@@ -475,14 +475,14 @@
    "ne_name": "Wrangel I.",
    "featurecla": "Island",
    "wikidata": "Q106594",
-   "source": "naturalearth-10m",
+   "source": "naturalearth-50m",
    "file": "region/wrangel-island.json",
-   "points": 21,
+   "points": 18,
    "bounds": [
     178.628,
     70.822,
-    182.493,
-    71.594
+    182.502,
+    71.596
    ]
   },
   {
