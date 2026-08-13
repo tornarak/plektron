@@ -733,6 +733,59 @@ def nesting(store: dict) -> list[dict]:
     return out
 
 
+#: How far from 180 an outer ring's edge may sit and still count as *on* the cut.
+#: Wider than `build_geo.MERIDIAN_SNAP` on purpose: that one decides whether to
+#: move a vertex, and this one only decides whether to say something.
+MERIDIAN_EPS = 0.05
+
+
+def meridian(root: Path = Path(".")) -> list[dict]:
+    """Shapes drawn as more than one piece cut at the antimeridian.
+
+    **The seam nothing could see.** A publisher cutting a shape at 180 leaves two
+    halves, and `build_geo.prepare` welds them — when they meet. Natural Earth's
+    10m Wrangel Island left its halves 0.011° apart and its Bering Sea flush but
+    unmerged, so the store held two rings where the world has one thing, and
+    `geomap.paths` emits one stroked path per ring: a line down the middle of
+    every such shape, on every map that drew it. No gate said anything. It was
+    found by a reader looking at the atlas, which is the one way a rendering
+    defect gets found when nothing measures it.
+
+    A ring that *crosses* 180 is welded and is the healthy case. What this counts
+    is an outer ring whose boundary **ends at** the meridian without crossing it,
+    and a shape with more than one of those is a shape cut into pieces.
+
+    **One is not reported and that is deliberate.** `langarea:chuk1273` stops
+    dead at 180 because that is where Asher drew it, with nothing on the far side
+    to weld to — the build already says so as a note, and repeating it here would
+    be a permanent row about a source's honest limit.
+
+    **Composites are not walked either.** `people:chukchi` draws Asher's polygon
+    beside `base:chukotka-east-of-meridian`, two shapes abutting at 180 by
+    design, and the seam between them is the visible trace of an editorial
+    decision recorded in `SOURCES.md`. A row would fire every run about something
+    nobody intends to change, which is how a report stops being read.
+    """
+    idx = index(root)
+    out = []
+    for ident, row in sorted(idx["shapes"].items()):
+        doc = shape(ident, root)
+        cut = 0
+        for poly in polygons(doc):
+            xs = [x for x, _ in poly[0]]
+            lo, hi = min(xs), max(xs)
+            if lo < 180.0 - MERIDIAN_EPS and hi > 180.0 + MERIDIAN_EPS:
+                continue                      # crosses the meridian: welded
+            if abs(hi - 180.0) <= MERIDIAN_EPS or abs(lo - 180.0) <= MERIDIAN_EPS:
+                cut += 1
+        if cut > 1:
+            out.append({
+                "shape": ident, "pieces": cut, "source": row.get("source", ""),
+                "reading": "cut at the antimeridian and not welded — every ring "
+                           "is stroked, so this draws a seam"})
+    return out
+
+
 def verify(root: Path = Path(".")) -> dict:
     """The geometry against what a human authored. Reports; never gates.
 
@@ -795,15 +848,18 @@ def verify(root: Path = Path(".")) -> dict:
                        if s.get("kind") != "base" and i not in claims)
     open_rows = unlocated(store, root)
     nested = nesting(store)
+    seams = meridian(root)
     return {
         "scope": [{"pairs_checked": len(containment),
                    "disagree": sum(1 for c in containment
                                    if c["reading"] == "disagrees"),
                    "nesting": len(nested),
+                   "seams": len(seams),
                    "shared": len(shared),
                    "unclaimed": len(unclaimed),
                    "unlocated": len(open_rows)}],
         "nesting": nested,
+        "meridian": seams,
         "containment": containment,
         "shared": shared,
         "unclaimed": [{"shape": i} for i in unclaimed],

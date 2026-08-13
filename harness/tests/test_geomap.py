@@ -252,7 +252,7 @@ def test_a_coarse_delineation_is_not_read_as_a_disagreement():
 @built
 def test_verify_reports_and_never_gates():
     r = geo.verify(ROOT)
-    assert set(r) == {"scope", "nesting", "containment", "shared",
+    assert set(r) == {"scope", "nesting", "meridian", "containment", "shared",
                       "unclaimed", "unlocated"}
     assert all("reading" in row for row in r["containment"])
 
@@ -753,3 +753,64 @@ def test_a_framed_entity_with_nothing_else_still_draws():
     # supplies the boxes for nodes no other layer can identify.
     boxes = dict(geo.member_extents(rec["within"], store, ROOT))
     assert boxes.get("land:parapolsky-dol") == rec["frame"]
+
+
+# ------------------------------------------------- the seam nothing could see
+
+def _geo_store(tmp_path, ident, polys):
+    """A one-shape store. `polys` is a list of outer rings, each (lon, lat)."""
+    d = tmp_path / "data" / "geo"
+    (d / "region").mkdir(parents=True, exist_ok=True)
+    (d / "region" / "x.json").write_text(json.dumps({
+        "type": "FeatureCollection", "properties": {},
+        "features": [{"type": "Feature", "properties": {},
+                      "geometry": {"type": "MultiPolygon",
+                                   "coordinates": [[p] for p in polys]}}]}))
+    (d / "index.json").write_text(json.dumps({
+        "window": [79.5, 39.7, 216.9, 76.6], "lon_base": 60.0, "absent": {},
+        "shapes": [{"id": ident, "kind": "region", "file": "region/x.json",
+                    "source": "test"}]}))
+    return tmp_path
+
+
+def test_a_shape_cut_at_the_meridian_is_reported(tmp_path):
+    """The defect a reader found by looking at the atlas, because nothing
+    measured it. Natural Earth's 10m Wrangel Island arrived as two halves 0.011°
+    apart, `build_geo.prepare` had nothing to weld, and `geomap.paths` emits one
+    stroked path per ring — so a line ran down the middle of every shape that
+    straddled 180, on every map that drew one."""
+    _geo_store(tmp_path, "region:w", [
+        [(178.6, 71.0), (180.0, 71.0), (180.0, 71.5), (178.6, 71.5), (178.6, 71.0)],
+        [(180.0, 71.1), (182.5, 71.1), (182.5, 71.4), (180.0, 71.4), (180.0, 71.1)],
+    ])
+    rows = geo.meridian(tmp_path)
+    assert [r["shape"] for r in rows] == ["region:w"]
+    assert rows[0]["pieces"] == 2
+
+
+def test_a_ring_that_crosses_the_meridian_is_the_healthy_case(tmp_path):
+    """Welded is one ring spanning 180, which is what the 50m coastline draws
+    and what the store now holds. Reporting it would make the check fire on
+    every shape it was written to vindicate."""
+    _geo_store(tmp_path, "region:w", [
+        [(178.6, 71.0), (182.5, 71.0), (182.5, 71.5), (178.6, 71.5), (178.6, 71.0)],
+    ])
+    assert geo.meridian(tmp_path) == []
+
+
+def test_one_piece_stopping_at_the_meridian_is_not_a_seam(tmp_path):
+    """`langarea:chuk1273` stops dead at 180 because that is where Asher drew
+    it, with nothing on the far side to weld to. The build already says so as a
+    note; a row here would be a permanent complaint about a source's honest
+    limit, which is how a report stops being read."""
+    _geo_store(tmp_path, "langarea:c", [
+        [(170.0, 66.0), (180.0, 66.0), (180.0, 68.0), (170.0, 68.0), (170.0, 66.0)],
+    ])
+    assert geo.meridian(tmp_path) == []
+
+
+@built
+def test_the_committed_store_draws_no_seam():
+    """The store's own witness, and the reason the check is worth having: it
+    passes now and did not before `MERIDIAN_SNAP` and the Wrangel override."""
+    assert geo.meridian(ROOT) == []
