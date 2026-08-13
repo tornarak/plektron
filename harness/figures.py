@@ -1526,6 +1526,36 @@ def layout(ref: str, root: Path = Path(".")) -> dict:
             "source": "zones", "figures": out}
 
 
+def in_printed_order(figs: list[dict]) -> list[dict]:
+    """The page's figures in the order the book numbers them, where it can be.
+
+    `figure_boxes` sorts by position, which is right for placing a figure in
+    prose and wrong for showing a page's figures in succession: **a rotated
+    plate numbers as the turned page reads.** `1-049` runs 3, 1, 2 down the
+    sheet and `1-227` runs 2, 4, 1, 3 — 20 of the 115 exempt pages present their
+    figures in an order the book does not use, so position would show a reader
+    Fig. 3 first on a page whose own caption says Fig. 1.
+
+    **Only when every figure on the page prints a number**, because a partial
+    ordering would have to decide where the unnumbered one goes, and there is
+    nothing to decide it with. `1-215` is the live instance and keeps its
+    geometric order. Same discipline as everywhere else here: the rule takes what
+    is mechanical and declines the rest rather than inventing a tiebreak.
+
+    Not a reading, and not a claim about the sheet: the printed numbers are the
+    book's own sequence, read off captions a human keyed.
+    """
+    if not all(f.get("n") for f in figs):
+        return list(figs)
+    try:
+        return sorted(figs, key=lambda f: int(f["n"]))
+    except (TypeError, ValueError):
+        # A book whose figure numbers are not integers ("12a", "IV"). Position is
+        # the honest fallback; guessing a collation order for arbitrary strings
+        # would be a rule about one book's numbering pretending to be general.
+        return list(figs)
+
+
 def resolve_figures(handles: list[dict], figs: list[dict]) -> list[dict]:
     """Match each `<figure>` in a page's TEI to the figures the store holds.
 

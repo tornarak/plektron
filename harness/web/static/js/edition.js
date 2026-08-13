@@ -252,16 +252,17 @@ document.addEventListener('click', ev => {
      in the stack was a third place to read one — beside the foot and the page
      itself — and the stack is for what a reader has to go and fetch: an entity,
      a lexicon form, a map, the raster. A note is already on the page. */
-  /* Clicking a figure shows it where it sits on the page, which is the one thing
-     the inline crop cannot show: the crop is the picture with the page removed.
-     `STATE.crops` carries a `crop_style` per figure, so the card frames the box
-     inside the whole raster the scan card already loads. */
-  const f = ev.target.closest('.figure');
-  if (f && !ev.target.closest('a')) {
-    openScan('fig-' + f.dataset.i,
-      f.dataset.figure ? 'Figure ' + f.dataset.figure : 'Figure');
-    return;
-  }
+  /* A picture goes to the lightbox, and for the same reason a note does not go
+     to the stack: the stack is for what a reader has to fetch and then read
+     *beside* the text. A figure is already on the page, and the only thing
+     wanted from it is to see it bigger — which is what the lightbox is for.
+
+     Bound to the image and not to the <figure>, so a click on the caption
+     selects its text the way a click on any other text does. Covers the inline
+     figures, the plates on an exempt page, and the whole leaf on one with no
+     figure boxes. */
+  const pic = ev.target.closest('.figure img, .plates img, .whole-scan img');
+  if (pic) { ev.preventDefault(); setLightbox(pic.src); return; }
   const l = ev.target.closest('.crop a, #lightbox-image');
   if (l) { ev.preventDefault(); let i = l.querySelector("img"); if (i && i.src) setLightbox(i.src); }
 });

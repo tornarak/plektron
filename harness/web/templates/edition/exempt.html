@@ -1,0 +1,76 @@
+{% extends "edition/base.html" %}
+{% block title %}{{ ref }} — The Chukchee{% endblock %}
+
+{# Both buttons, and the empty aside below, exist because `edition.js` looks all
+   of them up unconditionally at load — a missing one throws and takes the arrow
+   keys with it, which are how a reader crosses a plate. Cheaper and steadier
+   than making the script defensive about a page shape it will meet 115 times. #}
+{% block btn_extra %}
+    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
+    <button id='reader-btn' title='Reader View'>📕</button>
+{% endblock %}
+
+{# The same neighbours macro as `page.html`, and it has to be: a reader walking
+   the book crosses plates, and prev/next threading through them is the whole
+   reason the exempt pages are in one listing with the prose. #}
+{% macro neighbours() %}
+{% if prev or next %}
+<div class='neighbours'>
+  <span>{% if prev %}<a class='page-prev'
+     href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
+  <span>{% if next %}<a class='page-next'
+     href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% block main %}
+<aside id='secondary'><div id='stack'></div></aside>
+<div id='primary'>
+{{ neighbours() }}
+
+{# Marked on the page and not only in the listing, for `page.html`'s draft-note
+   reason: a URL typed straight in skips whatever would otherwise carry the
+   warning. What it says is exactly what the store says and no more — a human
+   ruled this not a text page. It does not say plate, or map, or blank. #}
+<p class='draft-note'><span class='draft-tag'>not a text page</span> —
+a human ruled scan {{ ref }} out of the transcription tracks, so there is no
+prose here to read. {% if plates %}Its {{ plates | length }} figure(s) are
+below.{% else %}The whole leaf is shown.{% endif %}</p>
+
+{% if plates %}
+<article class='plates'>
+{% for p in plates %}
+  <figure class='figure plate'>
+    {# No anchor round the image: a click goes to the lightbox, which is what a
+       reader wants from a picture and what `edition.js` binds to `.plates img`.
+       A `target='_blank'` here would win the click and take them out of the
+       book instead. #}
+    <div class='figure-plates'>
+    {% for src in p.crops %}
+      <img src='{{ src }}' loading='lazy'
+       alt='{% if p.n %}Figure {{ p.n }}{% else %}Figure{% endif %}'>
+    {% endfor %}
+    </div>
+    {% if p.caption %}<figcaption>{{ p.caption }}</figcaption>{% endif %}
+  </figure>
+{% endfor %}
+</article>
+{% else %}
+{# No figure boxes, so the leaf itself is the answer. This is also the honest
+   rendering of a blank: the reader sees the leaf and can see it is blank, where
+   a page saying "blank" would be asserting something no store witnesses — 113
+   of the 115 exempt pages hold zero zones, and a full-page map nobody drew boxes
+   on is indistinguishable from an empty one at that level. #}
+<article class='whole-scan'>
+  <img src='{{ base }}/page/{{ ref }}.png' alt='scan {{ ref }}'>
+</article>
+{% endif %}
+
+{{ neighbours() }}
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="/static/js/edition.js"></script>
+{% endblock %}

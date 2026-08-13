@@ -173,6 +173,26 @@ def readable(root: Path = Path(".")) -> list[str]:
     return _sorted_refs(_refs_in(root / "tei") + _refs_in(root / "mz" / "tei"))
 
 
+def exempt(root: Path = Path(".")) -> list[str]:
+    """Pages a human ruled not a text page, in scan order.
+
+    These reach the reader as themselves rather than as prose. `dispatch.py`
+    refuses them for both the ground-truth and the collation tracks — the ruling
+    is a statement, not an absence — so no amount of transcription will ever
+    produce a `tei/` page for one, and leaving them out of the edition would drop
+    every plate, foldout and piece of front matter out of the book silently.
+
+    The ruling itself is the zone track's, in `gt/zones/_exempt.lst`, and this
+    does not second-guess it or subdivide it. A page here shows its figures if
+    the figure store has any and its whole scan if not, which needs no
+    classification of *what kind* of not-a-text-page it is — and so cannot get
+    that classification wrong on the next book.
+    """
+    from .zones import load_splits
+    return _sorted_refs(r for r, split in load_splits(root).items()
+                        if split == "exempt")
+
+
 def crop_style(
     box: tuple[int, int, int, int], size: tuple[int, int], pad: int = 12
 ) -> dict:

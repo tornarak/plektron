@@ -574,6 +574,45 @@ straight in skips the listing that would otherwise carry the warning — and it 
 read-only, since a store that can be edited here is a store that needs an
 adjudication story this does not have.
 
+### Pages that will never be prose
+
+115 pages are on `gt/zones/_exempt.lst` — a human ruled them not text pages —
+and `dispatch.py` refuses them for both the ground-truth and the collation
+tracks. **No amount of transcription will ever produce a `tei/` page for one**,
+so leaving them to the "not collated" 404 would drop every plate, foldout and
+piece of front matter out of the book silently. They are shown as what they are,
+threaded into the same scan-ordered listing as the prose so prev/next crosses
+them; a reader walking the book would otherwise fall off it at every plate.
+
+**One rule decides the shape: figures if the figure store has boxes on the page,
+the whole leaf if it has none.** That is the entire classification and it is
+meant to be. Sorting these into plates, maps, half-titles and blanks would mean
+deciding what a page *is* from evidence no store carries — on this book the
+plate/text-figure split is recoverable only from prose in a `readings.md`
+`@note`, and on the next book it may not be recoverable at all. Whether somebody
+drew figure boxes here is a fact, and it is the only one needed.
+
+A page with no boxes therefore shows its scan rather than nothing, which is also
+the honest rendering of a blank leaf: the reader sees the leaf and can see that
+it is blank. Nothing asserts that it is — 113 of the 115 exempt pages hold zero
+zones, and a full-page map nobody boxed is indistinguishable from an empty sheet
+at that level. The page says only what the store says, "not a text page", and
+names neither plate nor blank.
+
+**Figures run in the order the book numbers them, not down the sheet.** A
+rotated plate numbers as the *turned* page reads: `1-049` runs 3, 1, 2 down the
+paper and `1-227` runs 2, 4, 1, 3, and 20 of the exempt pages present their
+figures in an order the book does not use. `figures.in_printed_order` sorts by
+the printed number and only when every figure on the page has one — `1-215` has
+a caption reading "Fig 2." without the point, which does not parse as a number,
+so that page keeps its geometric order rather than having its odd one placed by
+guess.
+
+**A picture opens in the lightbox, never in the stack.** The stack is for what a
+reader has to fetch and then read *beside* the text — an entity, a lexicon form,
+the raster. A figure is already on the page and the only thing wanted from it is
+to see it bigger.
+
 **It reaches `mz/tei/` by naming it.** There is no view over the tei pair, and a
 symlink farm here is a defect rather than a convenience: nine callers read "a file
 is in `tei/`" as "somebody collated this" — `_collated`, the folio fold, the seam,

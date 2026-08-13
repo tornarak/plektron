@@ -47,8 +47,8 @@ def _drafts(request: Request) -> bool:
 
 
 def _listing(request: Request) -> list[str]:
-    root = _root(request)
-    return stores.readable(root) if _drafts(request) else stores.collated(root)
+    """Every page the edition shows, prose and plates in one scan-ordered run."""
+    return stores.in_reading_order(_root(request), _drafts(request))
 
 
 def _ident(raw: str) -> str:
@@ -141,13 +141,15 @@ def _figure_state(ref: str, root, doc: dict, size) -> dict:
     the ordinary case, not an edge one — the store spells `1-276`'s fig. 140 in
     two boxes, and they stack under its one caption.
 
-    `crops` drives the scan card, and is a different question with a different
-    answer: `crop_style` over the whole-page raster, showing the figure *in its
-    page*. No build step and it shares the raster the card already loads.
+    **A figure opens in the lightbox, not in the stack**, so nothing here builds
+    a `crop_style` for one. The stack is for what a reader has to fetch and then
+    read beside the text; a picture is already on the page and the only thing
+    wanted from it is size. `crops` stays in the payload for the scan card, which
+    is a different feature and still keys into it.
     """
     lay = stores.fig_layout(ref, root)
     rows = F.resolve_figures(doc.get("figures") or [], lay["figures"])
-    figs, crops = [], {}
+    figs = []
     for r in rows:
         f = r["figure"]
         if f is None:
@@ -160,9 +162,52 @@ def _figure_state(ref: str, root, doc: dict, size) -> dict:
             "side": f.get("side", "full"),
             "width": f.get("width_frac", 1.0),
         })
-        if f["box"] and size:
-            crops[f"fig-{r['i']}"] = tei_html.crop_style(f["box"], size)
-    return {"figs": figs, "crops": crops}
+    return {"figs": figs, "crops": {}}
+
+
+def _exempt_page(request: Request, ref: str, root):
+    """A page a human ruled not a text page, shown as what it actually is.
+
+    Two shapes and one rule to pick between them: **if the figure store has boxes
+    on this page, show those pictures in succession; if it has none, show the
+    whole scan.** That is the entire classification, and deliberately so. Sorting
+    these pages into plates, foldouts, maps, half-titles and blanks would mean
+    deciding what a page *is* from evidence no store carries — on this book the
+    plate/text-figure split is recoverable only from prose in a `@note`, and on
+    the next book it may not be recoverable at all. Whether a human drew figure
+    boxes here is a fact, and it is the only one this needs.
+
+    A page with no boxes therefore shows the scan rather than nothing, which is
+    also the honest answer for a blank leaf: the reader sees the leaf and can see
+    that it is blank. Nothing here asserts that it is.
+    """
+    figs = [f for f in stores.fig_layout(ref, root)["figures"]
+            if f["box"] is not None]
+    plates = [{
+        "n": f["n"],
+        "caption": f["caption"],
+        "crops": [f"{BASE}/fig/{ref}/{F.zone_suffix(z)}.png"
+                  for z in f["zone_ids"]],
+    } for f in F.in_printed_order(figs)]
+
+    refs = _listing(request)
+    i = refs.index(ref) if ref in refs else -1
+    here = f"scan {ref} · " + (f"{len(plates)} figure(s)" if plates
+                               else "not a text page")
+    return templates.TemplateResponse(
+        request,
+        "edition/exempt.html",
+        _ctx(
+            request,
+            ref=ref,
+            plates=plates,
+            here=here,
+            state={"base": BASE, "ref": ref,
+                   "size": ui._raster_size(ref, root), "figs": [], "crops": {}},
+            prev=refs[i - 1] if i > 0 else "",
+            next=refs[i + 1] if 0 <= i < len(refs) - 1 else "",
+        ),
+    )
 
 
 @router.get("/page/{ref}")
@@ -171,6 +216,8 @@ def page(request: Request, ref: str):
     if not ui.REF_OK.match(ref):
         raise HTTPException(404, f"{ref!r} is not a PP-NNN ref")
     path, rank = tei_html.page_source(ref, root)
+    if path is None and ref in stores.exempt(root):
+        return _exempt_page(request, ref, root)
     if path is None or (rank == "draft" and not _drafts(request)):
         raise HTTPException(
             404,

@@ -85,6 +85,28 @@ def readable(root: Path) -> list[str]:
 
 
 @lru_cache(maxsize=MAXSIZE)
+def _exempt(root: str, _key: bytes) -> list[str]:
+    return tei_html.exempt(Path(root))
+
+
+def exempt(root: Path) -> list[str]:
+    """The not-a-text-page rulings, keyed on the split list that holds them."""
+    return _exempt(str(root), stamp([Path(root) / "gt/zones/_exempt.lst"]))
+
+
+def in_reading_order(root: Path, drafts: bool) -> list[str]:
+    """Every page the edition can show, in scan order — prose and plates alike.
+
+    **Prev/next has to cross a plate**, or a reader walking the book falls off it
+    at every illustration and has no way back on. So the exempt pages are threaded
+    into the same list rather than given a listing of their own, and the ordering
+    is the scan index, which is the order the binding puts them in.
+    """
+    seen = readable(root) if drafts else collated(root)
+    return tei_html._sorted_refs([*seen, *exempt(root)])
+
+
+@lru_cache(maxsize=MAXSIZE)
 def _lexicon(root: str, _key: bytes) -> dict:
     return lexicon.load(Path(root))
 

@@ -171,6 +171,13 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
 /* A paragraph after a float must not tuck under it unless it is wrapping. The
    page's own <p> flow does the wrapping; the foot and the headings clear. */
 #foot, .figure + h3, h3 { clear:both }
+/* An exempt page: figures one under the other, or the whole leaf. Both are
+   images the reader is meant to look at rather than read past, so they get the
+   column's full width and a click through to the file. */
+.plates .plate { margin:0 0 2.5rem; cursor:default }
+.whole-scan img, .plates img { max-width:100%; height:auto; display:block;
+  margin:0 auto; border:1px solid var(--rule); cursor:zoom-in }
+.figure img { cursor:zoom-in }
 .figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
 #foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
   font-size:.85rem; color:var(--dim) }
@@ -366,5 +373,14 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .card.preview.pinned,.card.preview.selected{border-color:var(--rule);
   border-width:1px}
 #lightbox {width: 100%;height: 100%;background-color: rgba(1, 1, 1, 0.4);position: fixed;z-index: 10;top: 0;}
-#lightbox-image {max-height: 100%;max-width: 100%;overflow: auto;padding: 2em;}
-#lightbox img {max-height: 100%;max-width: 100%;object-fit: cover;}
+/* Centred, which only started to matter once figures went in here. A page
+   raster fills the viewport so left-aligned and centred look the same; a figure
+   crop is often a third of the measure wide and sat against the left edge.
+   `margin:auto` as well as the flex centring is the standard overflow fix — a
+   flex-centred child that is larger than its container cannot be scrolled back
+   to its own top-left, and a figure zoomed past the viewport is exactly that. */
+#lightbox-image {max-height: 100%;max-width: 100%;overflow: auto;padding: 2em;
+  height: 100%;display: flex;align-items: center;justify-content: center;}
+/* `contain`, never `cover`: cover crops to fill, and a lightbox that quietly
+   trims the edges off a figure is showing the reader a different picture. */
+#lightbox img {max-height: 100%;max-width: 100%;object-fit: contain;margin: auto;}
