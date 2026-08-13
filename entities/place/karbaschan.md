@@ -1,6 +1,7 @@
 # place:karbaschan — Karbaschan
 
 - status: proposed
+- within: river:omolon
 
 ## aliases
 

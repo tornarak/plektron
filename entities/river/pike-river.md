@@ -1,6 +1,7 @@
 # river:pike-river — Pike River
 
 - status: proposed
+- within: river:anadyr
 
 ## aliases
 

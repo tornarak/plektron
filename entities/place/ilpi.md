@@ -1,6 +1,7 @@
 # place:ilpi — Iˊlpi
 
 - status: proposed
+- within: land:kamchatka
 - geo: 62.061 175.29
 - link: wikipedia:Khatyrka
 - link: wikidata:Q4496601

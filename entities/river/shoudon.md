@@ -1,6 +1,7 @@
 # river:shoudon — Shoudon
 
 - status: proposed
+- within: river:kolyma
 
 ## aliases
 

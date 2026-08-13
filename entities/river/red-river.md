@@ -1,6 +1,7 @@
 # river:red-river — Red River
 
 - status: proposed
+- within: river:anadyr
 
 ## aliases
 

@@ -1,6 +1,7 @@
 # river:egach — Egaˊč
 
 - status: proposed
+- within: land:northeast-siberia
 
 ## aliases
 

@@ -1,6 +1,9 @@
 # place:pitkahen — Pitkaˊheñ
 
 - status: proposed
+- within: land:kamchatka
+- geo: 60.2833 161.967
+- link: geonames:2121996
 
 ## aliases
 
@@ -8,6 +11,7 @@
 |---|---|---|---|
 | Pitkaˊheñ | ckt | yes | |
 | Подкагерно | ru | yes | |
+| Подкагерное | ru | no | the modern spelling; not printed in the book |
 
 ## gloss
 

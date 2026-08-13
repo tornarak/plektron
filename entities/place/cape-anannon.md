@@ -1,6 +1,7 @@
 # place:cape-anannon — Cape Anannon
 
 - status: ratified
+- within: land:kamchatka
 
 ## aliases
 

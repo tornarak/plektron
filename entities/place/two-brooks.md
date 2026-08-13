@@ -1,6 +1,7 @@
 # place:two-brooks — Two Brooks
 
 - status: proposed
+- within: river:kolyma
 
 ## aliases
 
