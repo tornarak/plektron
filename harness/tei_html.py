@@ -227,7 +227,10 @@ class Renderer:
         self.notes: list[dict] = []
         self.refs: list[str] = []
         self.forms: list[str] = []
-        self.figures: list[str] = []
+        #: `{n, i}` per `<figure>`, in document order — the handles the route
+        #: needs to hang the right pictures on the right block. Was a list of
+        #: bare numbers, which could not name the ten figures that print none.
+        self.figures: list[dict] = []
         #: True while rendering the body of an element that carries a `@ref`.
         #: An anchor inside an anchor is not markup HTML has, so the entity link
         #: is the one that survives and a Tier-1 handle inside it renders flat.
@@ -456,11 +459,35 @@ class Renderer:
         )
 
     def el_figure(self, el) -> str:
+        """A figure becomes a real block with its caption, and no geometry.
+
+        **The caption used to be dropped outright** — this method never called
+        `inline`, so the `<figDesc>` the generator had gone to `data/readings.md`
+        for reached the reader as nothing at all, behind a `[fig. N]` chip.
+
+        **No coordinates are emitted here, and that is a cache argument as much
+        as a store one.** `stores.render` is `cache.by_file`, keyed on the TEI
+        file's bytes alone; geometry baked into this HTML would leave a corrected
+        `gt/fig/` box serving the old placement out of a cache with nothing to
+        signal it. So the page carries only what the TEI says, the route joins
+        the pictures in against a key that includes `gt/fig/`, and the two facts
+        stay keyed to the stores they came from.
+
+        `data-n` is the printed number and is the handle: over the whole store no
+        page has two figures with the same one. `data-i` is document order and
+        exists for the ten figures whose caption prints no number — the generator
+        emits those as a bare `<figure/>` with no attribute at all, so without it
+        they would have no handle whatever. Neither is a claim about geometry.
+        """
         n = el.get("n") or ""
-        self.figures.append(n)
+        i = len(self.figures)
+        self.figures.append({"n": n, "i": i})
+        desc = el.find(f"{{{TEI_NS}}}figDesc")
+        cap = ("" if desc is None else
+               f'<figcaption>{self.inline(desc)}</figcaption>')
         return (
-            f'<span class="figure-anchor" data-figure="{escape(n)}">'
-            f"[fig. {escape(n)}]</span>"
+            f'<figure class="figure" data-figure="{escape(n)}" data-i="{i}">'
+            f'{cap}</figure>'
         )
 
     # -- block elements ----------------------------------------------------

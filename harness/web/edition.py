@@ -26,6 +26,7 @@ from pydantic import BaseModel
 
 from .. import edition_ui as ui
 from .. import entities, geo, ipa, langs, lexicon, speech, tei_html
+from .. import figures as F
 from ..entities import ENTITY_CLASSES, alias_index, split_id
 from . import Editor, register, stores, templates
 from .files import send_file
@@ -101,6 +102,69 @@ def raster(request: Request, ref: str):
     )
 
 
+@router.get("/fig/{ref}/{key}.png")
+def figure_crop(request: Request, ref: str, key: str):
+    """One cut-out picture. Named by the zone's own id suffix, as the store is.
+
+    A separate tree from `/page/{ref}.png` because these are different artefacts
+    for different jobs: this is the picture inline in the prose and the thing an
+    epub will embed, where the page raster behind the scan card shows a figure
+    where it sits. `missing=` names the verb rather than the path, as the raster
+    route does — a derived tree that has not been built is a command away, and
+    saying which command is the whole difference between a 404 and a fix.
+
+    **Resolved through `figures.crop_source`, so a human's touched-up version in
+    `gt/fig-img/` wins over the machine crop** — one resolver, shared with every
+    other consumer, rather than a second opinion about which file is current.
+    """
+    if not ui.REF_OK.match(ref) or not key.isalnum():
+        raise HTTPException(404, f"{ref!r}/{key!r} is not a figure crop")
+    path, _rank = F.crop_source(ref, key, _root(request))
+    return send_file(
+        request, path,
+        missing=f"no crop for {ref}|{key} — scans/fig-crops/ is derived; "
+                "build it with `harness fig crops --all`",
+    )
+
+
+def _figure_state(ref: str, root, doc: dict, size) -> dict:
+    """`figs` and `crops` for one page: which pictures hang on which `<figure>`.
+
+    **This is the join the renderer refuses to do**, and it is here because here
+    is where both keys are in hand — the TEI's bytes, which `stores.render` is
+    cached on, and the three figure stores, which `stores.fig_layout` is cached
+    on. A `<figure>` in the HTML says only what the page says; the boxes arrive
+    beside it and are re-derived whenever their stores move.
+
+    `figs` drives the inline picture: the built crops out of `scans/fig-crops/`,
+    plus the float side and width the box implies. Several crops per figure is
+    the ordinary case, not an edge one — the store spells `1-276`'s fig. 140 in
+    two boxes, and they stack under its one caption.
+
+    `crops` drives the scan card, and is a different question with a different
+    answer: `crop_style` over the whole-page raster, showing the figure *in its
+    page*. No build step and it shares the raster the card already loads.
+    """
+    lay = stores.fig_layout(ref, root)
+    rows = F.resolve_figures(doc.get("figures") or [], lay["figures"])
+    figs, crops = [], {}
+    for r in rows:
+        f = r["figure"]
+        if f is None:
+            figs.append({"i": r["i"], "n": r["n"], "why": r["why"], "crops": []})
+            continue
+        figs.append({
+            "i": r["i"], "n": r["n"], "why": "",
+            "crops": [f"{BASE}/fig/{ref}/{k}.png"
+                      for k in (F.zone_suffix(z) for z in f["zone_ids"])],
+            "side": f.get("side", "full"),
+            "width": f.get("width_frac", 1.0),
+        })
+        if f["box"] and size:
+            crops[f"fig-{r['i']}"] = tei_html.crop_style(f["box"], size)
+    return {"figs": figs, "crops": crops}
+
+
 @router.get("/page/{ref}")
 def page(request: Request, ref: str):
     root = _root(request)
@@ -118,7 +182,9 @@ def page(request: Request, ref: str):
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
     here = f"scan {ref}" + (f" · folio {doc['folio']}" if doc.get("folio") else "")
-    state = {"base": BASE, "ref": ref, "size": ui._raster_size(ref, root), "crops": {}}
+    size = ui._raster_size(ref, root)
+    state = {"base": BASE, "ref": ref, "size": size,
+             **_figure_state(ref, root, doc, size)}
     return templates.TemplateResponse(
         request,
         "edition/page.html",

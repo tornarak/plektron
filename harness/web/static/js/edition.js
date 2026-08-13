@@ -191,12 +191,16 @@ const openEntity = ref =>
 const openLexicon = key =>
   fill('lex:' + key, B + '/lexicon/' + encodeURIComponent(key) + '?partial=1', key);
 
-function openScan(box, label) {
-  const id = 'scan:' + (box ? box.join(',') : 'page');
+/* `key` names an entry in STATE.crops, or is falsy for the whole page. It used
+   to be the box itself, joined into the id — which meant the server had to know
+   how this function spells an id in order to key a crop for it. */
+function openScan(key, label) {
+  const id = 'scan:' + (key || 'page');
+  const c = key ? STATE.crops[key] : null;
   push(id, () => card(id, label || 'The page', STATE.ref,
-    `<div class="crop" style="${STATE.crops[id] ? STATE.crops[id].outer : 'aspect-ratio:'+STATE.size[0]+'/'+STATE.size[1]}">
+    `<div class="crop" style="${c ? c.outer : 'aspect-ratio:'+STATE.size[0]+'/'+STATE.size[1]}">
         <a href="${B}/page/${STATE.ref}.png" target="_blank">
-        <img src="${B}/page/${STATE.ref}.png" style="${STATE.crops[id] ? STATE.crops[id].inner : 'width:100%;left:0;top:0'}">
+        <img src="${B}/page/${STATE.ref}.png" style="${c ? c.inner : 'width:100%;left:0;top:0'}">
         </a>
      </div>`));
 }
@@ -248,8 +252,16 @@ document.addEventListener('click', ev => {
      in the stack was a third place to read one — beside the foot and the page
      itself — and the stack is for what a reader has to go and fetch: an entity,
      a lexicon form, a map, the raster. A note is already on the page. */
-  const f = ev.target.closest('.figure-anchor');
-  if (f) { openScan(null, 'Figure ' + f.dataset.figure); return; }
+  /* Clicking a figure shows it where it sits on the page, which is the one thing
+     the inline crop cannot show: the crop is the picture with the page removed.
+     `STATE.crops` carries a `crop_style` per figure, so the card frames the box
+     inside the whole raster the scan card already loads. */
+  const f = ev.target.closest('.figure');
+  if (f && !ev.target.closest('a')) {
+    openScan('fig-' + f.dataset.i,
+      f.dataset.figure ? 'Figure ' + f.dataset.figure : 'Figure');
+    return;
+  }
   const l = ev.target.closest('.crop a, #lightbox-image');
   if (l) { ev.preventDefault(); let i = l.querySelector("img"); if (i && i.src) setLightbox(i.src); }
 });
@@ -296,4 +308,50 @@ for (const id of pins) {
      either changed names a card nothing opens now, and is ignored rather than
      special-cased: it costs an unrestored pin once. */
   else if (id == 'scan:page') openScan();
+}
+
+/* ---------------------------------------------------------------- figures
+
+   The server sends `STATE.figs`, one entry per <figure> in document order,
+   already matched to the store by printed number (or, for the ten figures whose
+   caption prints none, by that order). The markup carries no geometry — see
+   `stores.render`'s note — so the pictures are hung here.
+
+   A figure can have several pictures: the store spells 1-276's fig. 140 in two
+   boxes and the book letters them a and b inside its one caption, so they stack
+   above the single <figcaption>.
+
+   Progressive enhancement, and not only as a courtesy: with no script the
+   caption still reads, which is the half that comes from an adjudicated store.
+   The float is marked `data-float-basis="geometry"` because it reproduces where
+   the box sat, which is evidence for how the print wrapped and not a record of
+   it — zones are always the full measure, so nothing witnesses the wrap. */
+for (const f of (STATE.figs || [])) {
+  const el = document.querySelector(`.figure[data-i="${f.i}"]`);
+  if (!el) continue;
+  if (!f.crops.length) {
+    /* Unresolved: say so, and never fall back to the next unused crop. A wrong
+       picture under a right caption reads as correct and is the failure this
+       edition is organised against. */
+    const p = document.createElement('p');
+    p.className = 'figure-missing';
+    p.textContent = f.why || 'no picture for this figure';
+    el.prepend(p);
+    continue;
+  }
+  const holder = document.createElement('div');
+  holder.className = 'figure-plates';
+  for (const src of f.crops) {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = f.n ? 'Figure ' + f.n : 'Figure';
+    img.loading = 'lazy';
+    holder.append(img);
+  }
+  el.prepend(holder);
+  if (f.side && f.side != 'full') {
+    el.dataset.float = f.side;
+    el.dataset.floatBasis = 'geometry';
+    el.style.width = Math.round(f.width * 100) + '%';
+  }
 }

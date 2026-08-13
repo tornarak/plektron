@@ -164,6 +164,8 @@
     "min_size_px": 24,
     "max_overlap_px": 8,
     "handle_px": 14,
+    "_about_float_min_residual": "How much of the measure must be left beside a picture before the reading view floats it and wraps prose round it; below this the figure sets full-measure. A presentation default and **a knob, not a measurement** — over this book the figure-width distribution is flat with no natural gap, so nothing in the data picks a number and another book may want a different one. It lives in config rather than in Python for exactly that reason. Note what it is not: a rule for placing any individual figure. Where a figure belongs is a reading, and a reading is the collator's.",
+    "float_min_residual": 0.33,
     "view": {
       "_about": "How far the track you are not editing recedes. Two numbers and not one, because the layers are not equally in the way: a keyed page carries eight or ten body zones against two or three figure boxes, so the zone layer has to go much quieter under the figure track than the figure layer does under the zone track. Neither goes to zero — where the text sits is how you judge where a picture ends, and a figure you cannot see is a figure you will draw a zone over. The unaccounted-ink hatching is exempt from both and stays at full strength: on the figure track a band no zone accounts for is very often the undeclared picture you are about to draw, which is exactly how 1-191 surfaced.",
       "dim_zones": 0.14,

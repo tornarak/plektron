@@ -92,8 +92,8 @@ Layout, all at the repo root:
     scans/  the 832 rasters, 300 dpi greyscale. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
             fig-crops/) are derived too and point into it: a clone gets dangling links.
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
-            pictures and their captions; no lines), zones/ (the current
-            segmentation), lines/ (the corrections overlay). Tracked.
+            pictures and their captions; no lines), zones/ (the segmentation),
+            lines/ (corrections), fig-img/ (touch-ups). Tracked.
     mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them, and
             tei/ as the rules built it. Derived; ignored. No view over fig or tei.
     ocr/  zones/  the read views over the paired stores — symlinks, the human

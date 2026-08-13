@@ -218,3 +218,61 @@ def test_a_box_off_the_raster_is_a_row_not_a_crash(tmp_path):
     recs = write_crops("1-998", tmp_path / "out", tmp_path)
     assert [r["why"] for r in recs] == ["off-raster"]
     assert not any(r["written"] for r in recs)
+
+
+def test_a_human_touched_up_picture_survives_a_forced_rebuild(tmp_path):
+    """The property `gt/fig-img/` exists for.
+
+    `scans/fig-crops/` is derived and gitignored: a picture enhanced in place
+    there is destroyed by the next `--force` with no copy anywhere, which is this
+    repository's one catastrophic failure re-enacted. So the human's version goes
+    in a tracked store the cropper never writes to, and `crop_source` resolves it
+    first.
+    """
+    from harness.figures import FIG_IMG, crop_name, crop_source, write_crops
+    _fig_alto(tmp_path, "1-276", _1_276)
+    _readings(tmp_path, _1_276_CAPS)
+    _raster(tmp_path, "1-276")
+    out = tmp_path / "out"
+    write_crops("1-276", out, tmp_path)
+
+    human = tmp_path / FIG_IMG / crop_name("1-276", "005")
+    human.parent.mkdir(parents=True, exist_ok=True)
+    human.write_bytes(b"a person's enhanced version")
+
+    recs = write_crops("1-276", out, tmp_path, force=True)
+    assert human.read_bytes() == b"a person's enhanced version", (
+        "a forced rebuild must not touch the human store")
+    assert [r["human"] for r in recs if r["key"] == "005"] == [True], (
+        "and it must say the human version is there, or the work looks lost")
+
+    path, rank = crop_source("1-276", "005", tmp_path)
+    assert (path, rank) == (human, "ed"), "the human file is what a reader gets"
+    assert crop_source("1-276", "006", tmp_path)[1] == "mz"
+
+
+def test_nothing_enhances_a_crop(tmp_path):
+    """Enhancement is manual by design: a crop is the raster's own pixels.
+
+    Asserted against a gradient, where any resample, sharpen or contrast pass
+    would show up as a changed pixel.
+    """
+    from PIL import Image
+
+    from harness.figures import write_crops
+    _fig_alto(tmp_path, "1-999", [
+        ("fig_1-999_001", "GraphicZone", 100, 200, 64, 32)])
+    _readings(tmp_path, {})
+    src = tmp_path / "scans" / "chukchi-1-999.png"
+    src.parent.mkdir(parents=True, exist_ok=True)
+    page = Image.new("L", (2824, 3897))
+    page.putdata([(x * 7 + y * 13) % 256
+                  for y in range(3897) for x in range(2824)])
+    page.save(src)
+
+    write_crops("1-999", tmp_path / "out", tmp_path)
+    with Image.open(tmp_path / "out" / "chukchi-1-999-001.png") as got:
+        assert got.size == (64, 32)
+        assert list(got.get_flattened_data()) == list(
+            page.crop((100, 200, 164, 232)).get_flattened_data()), (
+            "the crop must be the raster's pixels, unmodified")

@@ -240,6 +240,28 @@ crop being for a human to read *in context*. A crop newer than both its inputs i
 left alone, `lines.write_line_crops`' rule, so a rebuild does not hand every file
 a new `ETag`.
 
+## Enhancement is manual, and has a tracked home
+
+Nothing in the crop path sharpens, denoises, upscales or otherwise improves a
+picture — a crop is the raster's own pixels inside a box a human drew, and a test
+asserts it against a gradient where any resample would show. An enhanced figure
+is a **new artefact somebody made and vouches for**, which is a different kind of
+thing from a mechanical derivative and gets a different kind of home.
+
+That home is **`gt/fig-img/chukchi-PP-NNN-KKK.png`, tracked**, and
+`figures.crop_source` resolves it ahead of the machine crop for every consumer.
+The split is the whole safety property: `harness fig crops` rewrites everything
+in `scans/fig-crops/` and nothing in `gt/fig-img/`, and it reports a `human`
+count so a rebuild can never quietly shadow the work.
+
+**Touching up a file in `scans/fig-crops/` instead would destroy it** at the next
+`--force`, in a tree git does not carry — this repository's one catastrophic
+failure exactly, where a file's role lived only in the name of the directory
+holding it. `gt/` is what a human has been through; that is what the directory
+means and it means it here too. Named `fig-img/` rather than `figs/` because the
+latter sits one character from the `gt/fig/` geometry store, the same near-miss
+`_exempt.lst`/`_exempt.json` was renamed to avoid.
+
 **GraphicZone↔FigDesc pairing is not in the data.** Pair by geometry and record
 the result; never re-derive it per consumer. **17 of the 252 pages are not 1:1,
 and every one of them is zone-heavy** — max on a page is 4 zones / 4 captions:

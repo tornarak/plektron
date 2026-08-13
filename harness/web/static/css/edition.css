@@ -153,6 +153,24 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
   border-bottom:1px solid color-mix(in srgb,var(--link) 40%,transparent) }
 .ent:hover { border-bottom-color:var(--link);
   background:color-mix(in srgb,var(--link) 8%,transparent) }
+/* A figure sets as its own block, and floats only when the box it was cut from
+   left room beside it for a line of type. `[data-float]` is set by the script
+   off the server's `side`; without the script the figure stays a block and the
+   caption still reads. */
+.figure { margin:1rem 0; cursor:pointer }
+.figure[data-float=left]  { float:left;  margin:.3rem 1.2rem .6rem 0; clear:left }
+.figure[data-float=right] { float:right; margin:.3rem 0 .6rem 1.2rem; clear:right }
+.figure-plates { display:flex; flex-direction:column; gap:.5rem; align-items:center }
+.figure-plates img { max-width:100%; height:auto; display:block }
+.figure figcaption { font-size:.85rem; color:var(--dim); margin-top:.4rem;
+  text-align:center }
+/* An unresolved figure says so where the picture would be. It must look like a
+   gap rather than a caption, or it reads as part of the book. */
+.figure-missing { font-size:.8rem; color:var(--dim); font-style:italic;
+  border:1px dashed var(--rule); padding:.6rem; text-align:center }
+/* A paragraph after a float must not tuck under it unless it is wrapping. The
+   page's own <p> flow does the wrapping; the foot and the headings clear. */
+#foot, .figure + h3, h3 { clear:both }
 .figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
 #foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
   font-size:.85rem; color:var(--dim) }

@@ -1435,6 +1435,161 @@ def figure_boxes(ref: str, root: Path = Path(".")) -> list[dict]:
     return sorted(out, key=lambda f: f["y"])
 
 
+#: Fallback for `figures.float_min_residual` when the book's config omits it.
+#: **A knob, not a discovery** — the real one lives in `data/zones_config.json`,
+#: because it is a fact about how a particular book sets its pictures and this
+#: pipeline is meant for more than one. A default here only keeps a config that
+#: predates the key working.
+FLOAT_MIN_RESIDUAL = 0.33
+
+
+def layout(ref: str, root: Path = Path(".")) -> dict:
+    """The page's figures with their placement relative to the text column.
+
+    **The column is read, not measured, and that is what makes this cheap.**
+    `zones.measure_frame` derives a column from the page's ink, which costs a
+    raster decode and can fall back; but every zone a human keys is drawn against
+    the configured column, so the answer is already in `gt/zones/`. Measured over
+    all **719 keyed pages: every page's zones share exactly one `(x0, x1)`**, and
+    its width is exactly the part's configured measure. So one zone is the whole
+    answer, no pixels are opened, and the reading view can call this per request.
+
+    `source` is `"zones"` or `"none"`, decided by whether the page has zones at
+    all — **never by whether it is a plate.** 113 of the 115 exempt pages have
+    none, which is right (a plate has no prose to wrap), but `1-245` and `1-316`
+    do, and a rule keyed on plate-hood would get those two wrong in a way nothing
+    would notice.
+
+    Per figure, on top of `figure_boxes`:
+
+        left_frac   where the picture starts, as a share of the measure
+        width_frac  how much of the measure it covers, clamped to 1.0
+        overflows   True if the box runs outside the column at all
+        side        "left" | "right" | "full"
+
+    `side` is `full` when the residual gutter is under `FLOAT_MIN_RESIDUAL` of
+    the measure — what is left could not hold a line of type — and otherwise the
+    side with the smaller gutter, ties left.
+
+    **What this reproduces is where the box sat, which is not the same as knowing
+    the print wrapped text around it.** Zones are always the full measure, so the
+    store cannot witness a wrap; a figure that sat in the left half of the
+    measure is evidence for floating it left and no more than that. The reading
+    view marks it as such rather than presenting recovered layout.
+    """
+    from . import zones_config as zc
+    from .zones import read_zones
+    ref = norm_ref(ref)
+    figs = figure_boxes(ref, root)
+    zs = read_zones(ref, root)
+    if not zs:
+        return {"ref": ref, "column": None, "source": "none", "figures": figs}
+    # Read off the raw config rather than through `load_config`, which validates
+    # the whole document and raises `ConfigError` — a `ValueError` subclass — for
+    # defects that have nothing to do with this number. Going through it would
+    # mean an unrelated typo in `types` silently reverted the threshold to the
+    # module default, which is precisely the quiet decision this project refuses.
+    # A presentation default is not worth refusing to render a page over, so a
+    # missing key falls back; a *malformed* one does not, and says so.
+    residual = FLOAT_MIN_RESIDUAL
+    try:
+        raw = json.loads(zc.config_path(root).read_text(encoding="utf-8"))
+        val = (raw.get("figures") or {}).get("float_min_residual")
+    except (OSError, ValueError):
+        val = None
+    if val is not None:
+        residual = float(val)
+
+    cx0, cx1 = zs[0]["x0"], zs[0]["x1"]
+    measure = max(1, cx1 - cx0)
+    out = []
+    for f in figs:
+        if f["box"] is None:
+            out.append({**f, "left_frac": 0.0, "width_frac": 1.0,
+                        "overflows": False, "side": "full"})
+            continue
+        x0, y0, x1, y1 = f["box"]
+        overflows = x0 < cx0 - 5 or x1 > cx1 + 5
+        # Clamped before the gutters are taken, so a box that overruns the column
+        # cannot produce a negative gutter and read as hugging the opposite side.
+        lo, hi = max(x0, cx0), min(x1, cx1)
+        width = max(0, hi - lo)
+        gl, gr = lo - cx0, cx1 - hi
+        side = ("full" if (measure - width) / measure < residual
+                else "left" if gl <= gr else "right")
+        out.append({**f,
+                    "left_frac": round(gl / measure, 4),
+                    "width_frac": round(min(1.0, width / measure), 4),
+                    "overflows": overflows,
+                    "side": side})
+    return {"ref": ref, "column": {"x0": cx0, "x1": cx1, "measure": measure},
+            "source": "zones", "figures": out}
+
+
+def resolve_figures(handles: list[dict], figs: list[dict]) -> list[dict]:
+    """Match each `<figure>` in a page's TEI to the figures the store holds.
+
+    `handles` is `tei_html`'s `[{n, i}]` in document order; `figs` is `layout`'s
+    list. Returns one row per handle, `figure` being the matched record or None.
+
+    **`@n` first, because a printed number is the book's own handle**, and it is
+    matched only when it identifies exactly one figure on the page. Over Bogoras
+    no page has two figures sharing a number; a book where one does gets an
+    unresolved row naming the collision rather than the first of the pair.
+
+    **The unnumbered fall back to document order, and only while there is one of
+    them on the page.** The generator emits a numberless caption as a bare
+    `<figure/>` with no attribute at all, so order is the only handle left — but
+    order in the *file* stops matching order on the *page* the moment a collator
+    moves a figure to the sentence that refers to it, which is exactly what the
+    collation contract asks them to do. With one such figure the question does
+    not arise. With two it is unanswerable by rule, and this refuses instead of
+    pairing them off in the order they happen to appear.
+
+    **Anything unresolved shows as a marked gap.** Never "the next unused crop":
+    a wrong picture under a right caption is precisely the fluent nonsense this
+    project is built against, and it is invisible — the caption reads correctly
+    and the image is simply of something else. An unresolved figure is a question
+    on the page, and a question is what a collator answers. That is the division
+    throughout: the rule takes what is mechanical and hands over what is not.
+
+    One function because the reading view and `corpus figures`' gate both need
+    this answer, and two implementations of it could disagree about a page while
+    each looked right on its own.
+    """
+    by_n: dict[str, list[dict]] = {}
+    for f in figs:
+        if f["n"]:
+            by_n.setdefault(f["n"], []).append(f)
+    unnumbered = [f for f in figs if not f["n"]]
+
+    # More than one numberless figure on a page makes document order a guess
+    # rather than a handle, because collation moves figures. Refuse the lot.
+    ambiguous = len([h for h in handles if not h["n"]]) > 1 or len(unnumbered) > 1
+
+    out, used = [], 0
+    for h in handles:
+        if h["n"]:
+            hit = by_n.get(h["n"]) or []
+            # Two figures sharing a printed number on one page is a store defect,
+            # not something to break a tie in. Report it unresolved and say why.
+            match = hit[0] if len(hit) == 1 else None
+            why = "" if match else ("no figure with this number" if not hit
+                                    else f"{len(hit)} figures share n={h['n']}")
+        elif ambiguous:
+            match, why = None, (
+                "several figures here print no number, and once a figure has been "
+                "moved to its anchor the order in the file is not the order on the "
+                "page — say which picture this is")
+        elif used < len(unnumbered):
+            match, why = unnumbered[used], ""
+            used += 1
+        else:
+            match, why = None, "unnumbered, and the store has no figure left"
+        out.append({**h, "figure": match, "why": why})
+    return out
+
+
 def reconcile(root: Path = Path(".")) -> dict:
     """Cross-check `gt/fig/` against `data/readings.md` in both directions.
 
@@ -1543,6 +1698,46 @@ def _scale_for(alto_page, image_size) -> tuple[float, float]:
 
 CROPDIR = "scans/fig-crops"
 
+#: Where a human's version of a picture goes, and the whole reason it is a
+#: *separate, tracked* directory rather than an edit in place.
+#:
+#: `scans/fig-crops/` is derived: `fig crops --force` rewrites every file in it
+#: and it is gitignored, so a touched-up figure left there would be destroyed by
+#: the next rebuild with no copy anywhere. That is this repository's one
+#: catastrophic failure re-enacted — 17 of 20 hand-keyed pages were once
+#: replaced by export shells because a file's role lived only in the name of the
+#: directory holding it. The rule that came out of it holds here unchanged:
+#: **`gt/` is what a human has been through, and nothing writes through a view.**
+#:
+#: Named `fig-img/` and deliberately not `figs/`, which sits one character from
+#: the `gt/fig/` geometry store — the same near-miss `_exempt.lst` /
+#: `_exempt.json` was renamed to avoid.
+#:
+#: Enhancement is **manual by design**. Nothing in this module sharpens,
+#: denoises, upscales or otherwise improves a picture: a crop is the pixels the
+#: raster has inside a box a human drew. An enhanced figure is a new artefact
+#: somebody made and vouches for, so it arrives as a file in a tracked store,
+#: not as a filter in a pipeline.
+FIG_IMG = "gt/fig-img"
+
+
+def crop_source(ref: str, key: str, root: Path = Path(".")) -> tuple[Path, str]:
+    """Where one figure's picture comes from, and whose it is.
+
+    Returns `(path, rank)` — `"ed"` for a human's file in `gt/fig-img/`, `"mz"`
+    for the machine crop. The human file wins, exactly as `ocr/` resolves over
+    `gt/ocr/` and `mz/ocr/`, and for the same reason: a reader wants the best
+    available version and every consumer must resolve it the same way.
+
+    The path is returned whether or not it exists; the caller reports a missing
+    machine crop as a build that has not run.
+    """
+    ref = norm_ref(ref)
+    human = root / FIG_IMG / crop_name(ref, key)
+    if human.exists():
+        return human, "ed"
+    return root / CROPDIR / crop_name(ref, key), "mz"
+
 
 def crop_name(ref: str, key: str) -> str:
     """The filename one figure's crop takes. `1-151`, `001` -> `chukchi-1-151-001.png`.
@@ -1617,9 +1812,13 @@ def write_crops(ref: str, out_dir: Path, root: Path = Path("."),
         path = out_dir / crop_name(ref, key)
         # `n` and `group` travel with every part, so a consumer can stack the
         # three crops of fig. 138 under its one caption without re-deriving the
-        # grouping `figure_boxes` already did.
+        # grouping `figure_boxes` already did. `human` says a person's version of
+        # this picture exists in `gt/fig-img/` and is what readers will see —
+        # reported on every run, because a rebuild that silently shadowed one
+        # would make the manual work look lost.
         rec = {"ref": ref, "key": key, "n": f["n"], "group": f["key"],
-               "name": path.name}
+               "name": path.name,
+               "human": (root / FIG_IMG / crop_name(ref, key)).exists()}
         if not force and path.exists() and path.stat().st_mtime >= src:
             recs.append(rec | {"written": False, "why": "fresh"})
             continue
@@ -1661,13 +1860,14 @@ def crop_all(refs: list[str] | None = None, root: Path = Path("."),
             recs = write_crops(ref, dest, root, scans, force)
         except FileNotFoundError as e:
             return {"ref": ref, "figures": 0, "written": 0, "fresh": 0,
-                    "off_raster": 0, "note": str(e).split(":")[0]}
+                    "off_raster": 0, "human": 0, "note": str(e).split(":")[0]}
         return {
             "ref": ref,
             "figures": len(recs),
             "written": sum(1 for r in recs if r["written"]),
             "fresh": sum(1 for r in recs if r["why"] == "fresh"),
             "off_raster": sum(1 for r in recs if r["why"] == "off-raster"),
+            "human": sum(1 for r in recs if r["human"]),
             "note": "",
         }
 
@@ -1679,6 +1879,7 @@ def crop_all(refs: list[str] | None = None, root: Path = Path("."),
         "written": sum(r["written"] for r in rows),
         "fresh": sum(r["fresh"] for r in rows),
         "off_raster": sum(r["off_raster"] for r in rows),
+        "human": sum(r["human"] for r in rows),
         "rows": rows,
     }
 

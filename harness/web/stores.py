@@ -16,7 +16,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from .. import entities, geo, lexicon, lookup, tei_html
+from .. import entities, figures, geo, lexicon, lookup, tei_html
 from .cache import MAXSIZE, by_file, stamp
 
 
@@ -187,7 +187,36 @@ def attestations(root: Path) -> dict:
 
 #: The expensive one, and the reason the ratio in `cache.py` was measured:
 #: `search` renders every collated page for every query.
+#:
+#: **Keyed on the TEI file's bytes and nothing else, which is why the figure
+#: geometry is deliberately not in what it returns.** `tei_html` emits a
+#: `<figure>` carrying only what the page says; the pictures are joined in at the
+#: route, off `fig_layout` below, whose key names the three stores that can
+#: change the answer. Putting a box in the rendered HTML would let a corrected
+#: `gt/fig/` serve stale placement out of this cache with nothing to signal it.
 render = by_file(tei_html.render)
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _fig_layout(ref: str, root: str, _key: bytes) -> dict:
+    return figures.layout(ref, Path(root))
+
+
+def fig_layout(ref: str, root: Path) -> dict:
+    """One page's figures and where they sat in the measure.
+
+    Three files can change this answer and all three are in the key: the figure
+    geometry, the zones the column is read from, and `data/readings.md` — the
+    captions, which decide the fold and therefore which boxes belong to which
+    figure. `stamp` folds a missing file in as absent, so a page with no figures
+    is a cheap and correct empty rather than a special case.
+    """
+    root = Path(root)
+    return _fig_layout(ref, str(root), stamp([
+        root / "gt" / "fig" / f"chukchi-{ref}.xml",
+        root / "gt" / "zones" / f"chukchi-{ref}.xml",
+        root / "data" / "readings.md",
+    ]))
 
 
 @lru_cache(maxsize=MAXSIZE)
