@@ -993,6 +993,72 @@ script builds from what only one machine holds, the harness reads what is
 committed. `shapely` is a build-time dependency declared inline (PEP 723);
 `edition serve` reads plain JSON and imports nothing new for it.
 
+### Locating an entity: `tools/wikidata.py`
+
+`data/geo/` answers "what shape is this drawn as". It does not answer "where is
+this village", and for most of the store nothing does: 73 geographical entries
+carry no `geo:`, no `area:` and no `frame:`. The gazetteer cannot help — Natural
+Earth's 10m layers hold eight features in this window and every one is already
+claimed — so the remaining work is identification, and identification off a name
+is exactly where a confident guess is cheapest to make. Natural Earth's
+`King I.` is King Island, **Tasmania**.
+
+So the pass is two steps and they are deliberately not one verb.
+
+- **`propose` reports and writes nothing.** It searches Wikidata on the entry's
+  own canonical and aliases — both scripts, because the Russian alias is very
+  often the only modern identification the store holds, `Хатырка` finding what
+  `Vatɪˊrkan` never will — and then tests every candidate coordinate against
+  the shapes already committed.
+- **`fill` derives `geo:` from an authored `link: wikidata:Q…` and from nothing
+  else.** The human's act is choosing the identity; the coordinate follows from
+  it mechanically, is re-derivable, and carries its provenance in the entry
+  beside it. That is the same argument `#gt` and `#mz` rest on in the TEI — a
+  fact re-derived from its store on every run fails rather than goes stale.
+
+**Two mechanical disambiguators, and the second is new.** Geometry first: is the
+candidate in the edition's window, is it inside the shape of the entity's
+nearest `within:` ancestor that has one, and which store shapes contain it at
+all. That alone reduces eleven King Islands to one. But it cannot separate
+Khatyrka the village from Khatyrka the river, which are in the same place — and
+that is precisely the shape this edition is full of, the Anadyr and the Gishiga
+and the Kolyuchin all naming a river, a settlement and a bay at once. **The
+four-class split is what settles those**: `CLASS_WORDS` scores a candidate's
+description against the entity's own class, so `river:vatirkan` ranks the one
+described as a river first and `place:ilpi` ranks the settlement first. A miss
+ranks a candidate lower and never drops it — a description is free text written
+by a stranger.
+
+**A third check, and the only one that applies to an entity already located:**
+the kilometres between the entry's own `geo:` and the candidate's. Thirty-odd
+points in this store were read off Operational Navigation Charts by hand and had
+never been checked against anything — the chart and Wikidata share no ancestor,
+so agreement is a real corroboration. `place:anadyr` and `place:chaplino` both
+come in at **0.5 km**, and `place:kolyuchin` at 0.4. Reported in kilometres and
+not degrees, unlike every other distance here: those measure a point against a
+polygon in the polygon's units, this measures two points, and a degree of
+longitude at 65°N is 47 km against a degree of latitude's 111. It is a finding
+for a `place:` only — a `land:` or `water:` point is a nominal centre, and the
+Chukchi Peninsula reads 45.2 km out while saying nothing about either source.
+So `fill` over a located entry is an audit rather than a no-op, and its rows are
+marked `+` would write, `~` would replace, `=` compared only.
+
+It is a `tools/` script rather than a harness verb because Wikidata is live:
+the harness is offline and deterministic over what is committed, which is the
+same split `build_geo.py` sits on.
+
+**Two lookups, and the report says which ran.** The per-name search API does
+prefix matching, which is how `Kolyuchin` reaches Kolyuchin Island — but it is a
+round trip per name, and asked three hundred times it takes an immediate `429`
+with no `Retry-After`, so the retry falls back to its own backoff and each entry
+costs forty seconds. That is not a throttle to tune around; it is the wrong
+shape of request. One SPARQL query with a `VALUES` block asks every name at
+once, against labels *and* aliases in any language: **73 entries in 3.1 seconds,
+42 of them with candidates.** The trade is exact matching — `Тилечики` will not
+reach Тиличики where a prefix search would — so a small run does both and a
+sweep does SPARQL alone, and the header states which, because an entry with no
+candidates means something different under each.
+
 `data/geo/SOURCES.md` is authored by hand and is a **precondition of the build**,
 not a by-product. Asher 2007 is CC BY 4.0, so its citation goes in the corpus
 `teiHeader`'s rights statement as well — this file ships with the repository and

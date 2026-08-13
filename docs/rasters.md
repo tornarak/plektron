@@ -40,10 +40,17 @@ error: it predicts 2782 for the covers where poppler renders 2781.
 
 ## The tools/ scripts
 
-`tools/` holds three scripts, none of them part of a loop.
+`tools/` is where work against something outside the repository lives — the
+harness is offline and deterministic over what is committed. None of it is part
+of a loop.
+
 `greyscale_scans.py` is live but **only after a re-render**: it converts `scans/`
 to greyscale, is idempotent (a page already in mode `L` is left alone), and has
 to run whenever poppler has written the tree afresh.
+`build_geo.py` compiles `data/geo/` from three sources in `scratch/` and is
+`docs/edition.md`'s; `wikidata.py` proposes identities for unlocated entities
+against a live API and derives `geo:` from the ones a human adopted, and is
+`docs/edition.md`'s too.
 `migrate_coords.py` (150→300 dpi) and `migrate_fig_bboxes.py` (which reduced
 `gt/fig/` to bounding boxes and re-keyed `data/readings.md` with it) are **spent
 one-shot migrations**, kept for the reasoning in their docstrings; re-running
