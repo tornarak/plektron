@@ -76,7 +76,7 @@ are load-bearing:
 brief was "what gets the most results today", which is a judgement, so the pass
 was scoped to entries where a second witness was already committed: a
 `wikipedia:` link whose article is titled differently, or an `area:` naming a
-shape whose slug carries both names — `watershed:small-anui-or-maliy-anyuy` is
+shape whose slug carries both names — `watershed:dry-or-maliy-anyuy` is
 the geo store's own adjudication of the same question, made when it was built.
 Twelve entries moved on that evidence and one, `people:inupiat`, took the title
 alone because a slug cannot hold `ñ`.

@@ -645,25 +645,25 @@
    ]
   },
   {
-   "id": "watershed:dry-anui-or-bolshoy-anyuy",
+   "id": "watershed:dry-or-maliy-anyuy",
    "kind": "watershed",
-   "name": "bolshoy anyuy",
-   "area_km2": 57000.0,
+   "name": "maliy anyuy",
+   "area_km2": 50000.0,
    "source": "mghydro",
    "precision": "low",
-   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 57,000 km² (22,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
-   "wid": "M35009707",
-   "retrieved": "2026-08-07T02:53:05.374Z",
-   "rivers_kept": 140,
-   "rivers_total": 649,
-   "sorder_floor": 4,
-   "file": "watershed/dry-anui-or-bolshoy-anyuy.json",
-   "points": 958,
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 50,000 km² (19,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
+   "wid": "M35009858",
+   "retrieved": "2026-08-07T02:52:50.798Z",
+   "rivers_kept": 100,
+   "rivers_total": 290,
+   "sorder_floor": 5,
+   "file": "watershed/dry-or-maliy-anyuy.json",
+   "points": 757,
    "bounds": [
-    159.216,
-    65.576,
-    169.187,
-    68.495
+    160.778,
+    66.747,
+    170.94,
+    69.358
    ]
   },
   {
@@ -733,6 +733,28 @@
    ]
   },
   {
+   "id": "watershed:keynuveem-or-bear",
+   "kind": "watershed",
+   "name": "keynuveem or bear",
+   "area_km2": 2000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 2,000 km² (760 sq. miles) with an outlet near coordinates: 69.654, 162.478.",
+   "wid": "Pd86f291cd6e8",
+   "retrieved": "2026-08-13T09:49:31.710Z",
+   "rivers_kept": 16,
+   "rivers_total": 53,
+   "sorder_floor": 3,
+   "file": "watershed/keynuveem-or-bear.json",
+   "points": 91,
+   "bounds": [
+    162.325,
+    69.177,
+    163.75,
+    69.655
+   ]
+  },
+  {
    "id": "watershed:kolyma",
    "kind": "watershed",
    "name": "kolyma",
@@ -752,6 +774,28 @@
     60.523,
     170.94,
     69.503
+   ]
+  },
+  {
+   "id": "watershed:large-or-bolshoy-anyuy",
+   "kind": "watershed",
+   "name": "bolshoy anyuy",
+   "area_km2": 57000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 57,000 km² (22,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
+   "wid": "M35009707",
+   "retrieved": "2026-08-07T02:53:05.374Z",
+   "rivers_kept": 140,
+   "rivers_total": 649,
+   "sorder_floor": 4,
+   "file": "watershed/large-or-bolshoy-anyuy.json",
+   "points": 958,
+   "bounds": [
+    159.216,
+    65.576,
+    169.187,
+    68.495
    ]
   },
   {
@@ -928,28 +972,6 @@
     60.548,
     170.19,
     62.281
-   ]
-  },
-  {
-   "id": "watershed:small-anui-or-maliy-anyuy",
-   "kind": "watershed",
-   "name": "maliy anyuy",
-   "area_km2": 50000.0,
-   "source": "mghydro",
-   "precision": "low",
-   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 50,000 km² (19,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
-   "wid": "M35009858",
-   "retrieved": "2026-08-07T02:52:50.798Z",
-   "rivers_kept": 100,
-   "rivers_total": 290,
-   "sorder_floor": 5,
-   "file": "watershed/small-anui-or-maliy-anyuy.json",
-   "points": 757,
-   "bounds": [
-    160.778,
-    66.747,
-    170.94,
-    69.358
    ]
   },
   {

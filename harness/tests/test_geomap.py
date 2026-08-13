@@ -472,10 +472,10 @@ def test_every_drawn_record_says_which_record_it_is():
     svg = geomap.render(f, {
         "land": geomap.owned(["M0 0L1 1"]),
         "subject": geomap.owned(["M0 0L1 1"], "river:kolyma"),
-        "members": geomap.owned(["M0 0L1 1"], "water:small-anui"),
+        "members": geomap.owned(["M0 0L1 1"], "river:maliy-anyuy"),
     })
     assert "data-ent='river:kolyma'" in svg
-    assert "data-ent='water:small-anui'" in svg
+    assert "data-ent='river:maliy-anyuy'" in svg
     assert svg.count("data-ent") == 2   # the land carries none
 
 

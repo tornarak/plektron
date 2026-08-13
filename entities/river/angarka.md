@@ -1,6 +1,6 @@
 # river:angarka — Angarka
 
-- status: proposed
+- status: ratified
 - within: river:bolshoy-anyuy
 - area: watershed:angarka
 - link: geonames:2127158
