@@ -565,10 +565,16 @@ def test_an_entity_with_no_extent_gets_a_note_rather_than_a_traceback():
     and `map_context` read them as strings, so `.lower()` raised on every entry
     with neither `area:` nor `geo:` nor a located descendant. It stayed hidden
     while almost every entry had an extent; a batch of bays and capes carrying
-    neither made it the ordinary path. `geo.absent_row` is the one flattener."""
+    neither made it the ordinary path. `geo.absent_row` is the one flattener.
+
+    **"No extent" has to mean no frame either.** A declared `frame:` is a box to
+    draw to even though `extent_of` ignores it — that function answers how big a
+    thing is, which a parent sizes itself on, and a viewport is not that. So the
+    set here is the entities with genuinely nothing to look at, which is what the
+    note is for."""
     store = entities.load(ROOT)
     absent = [i for i in store
-              if geo.extent_of(i, store, ROOT) is None]
+              if geo.extent_of(i, store, ROOT) is None and not store[i]["frame"]]
     assert absent, "the fixture store has an extent for everything"
     for i in absent:
         ctx = edition_ui.map_context(i, ROOT, "/edition", store=store)
@@ -723,3 +729,27 @@ def test_a_marine_parent_is_reported_as_not_measurable():
     assert geo._reading(0.999, False, False) == "contained"
     assert geo._reading(0.5, False, False) == "disagrees"
     assert geo._reading(0.8, True, False).startswith("consistent")
+
+
+@built
+def test_a_framed_entity_with_nothing_else_still_draws():
+    """`land:parapolsky-dol` has a `frame:` and no shape, no point and no
+    children, and appeared on no map at all — its own said "nothing to draw"
+    about a box `geo bounds` had measured from the two bays that define it, and
+    its parent's did not show it either.
+
+    Two different questions again. `extent_of` says how big a thing is and a
+    parent sizes itself on that, so it must go on ignoring viewports; "what
+    should this page look at" and "what box stands in for a node with nothing
+    else" are both answered by the frame."""
+    store = entities.load(ROOT)
+    rec = store.get("land:parapolsky-dol")
+    assert rec and rec["frame"] and not rec["area"] and not rec["geo"]
+    ctx = edition_ui.map_context("land:parapolsky-dol", ROOT, "/e", store=store)
+    assert ctx["svg"], "a framed entity should have a map of its own"
+    assert geo.extent_of("land:parapolsky-dol", store, ROOT) is None
+
+    # And it stands in for itself on the parent's map, where `member_extents`
+    # supplies the boxes for nodes no other layer can identify.
+    boxes = dict(geo.member_extents(rec["within"], store, ROOT))
+    assert boxes.get("land:parapolsky-dol") == rec["frame"]

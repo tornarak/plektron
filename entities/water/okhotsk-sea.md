@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:russian-far-east
-- area: marine:okhotsk-sea
+- area: marine:okhotsk-sea,marine:shelikhov-gulf
 
 ## aliases
 

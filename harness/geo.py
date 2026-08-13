@@ -429,7 +429,16 @@ def member_extents(ent_id: str, store: dict,
             if rec is None:
                 continue
             if not rec["area"] and not rec["geo"]:
-                box = extent_of(k, store, root)
+                # **A declared `frame:` is the extent here, though `extent_of`
+                # ignores it.** That function answers "how big is this thing",
+                # which a parent must not size itself on — a viewport carries
+                # padding somebody chose for another map. This layer asks a
+                # different question: what box can stand in for a node that has
+                # nothing else to draw. `land:parapolsky-dol` has a frame, no
+                # shape, no point and no children, so it appeared on no map at
+                # all — not its parent's, and not its own, which reported
+                # "nothing to draw" about an entity whose extent the store knew.
+                box = extent_of(k, store, root) or rec["frame"]
                 if box:
                     out.append((k, box))
             walk(k)

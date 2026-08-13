@@ -87,6 +87,16 @@ NE_GAZETTEER = {
         "Sea of Okhotsk": ("marine:okhotsk-sea", "Sea of Okhotsk"),
         "Gulf of Anadyr'": ("marine:anadyr-bay", "Gulf of Anadyr"),
         "Karaginskiy Gulf": ("marine:karagha-bay", "Karaginskiy Gulf"),
+        # **Taken although no entity is named after it.** Natural Earth's marine
+        # polygons tile rather than nest, so the Sea of Okhotsk is drawn with a
+        # gulf-shaped hole in it — and both `water:penzhina-bay` and
+        # `water:gishiga-bay` sit inside that hole, being arms of the gulf. The
+        # shape exists so `water:okhotsk-sea` can compose the two into the sea
+        # this edition means. Bogoras never names Shelikhov Gulf in 274 pages,
+        # so it gets no *entity*; the inference that the sea includes it lives in
+        # the entity's `area:`, re-derived every run, which is where this store
+        # puts an inference a source did not make.
+        "Shelikhova Gulf": ("marine:shelikhov-gulf", "Shelikhov Gulf"),
     },
 }
 
@@ -316,16 +326,14 @@ def prepare(geom, window):
     if not parts:
         return None
     parts = [_on_meridian(p) for p in parts]
-    if len(parts) > 1:
-        # **Snapping to the line is not enough; they have to share an edge.**
-        # Pulling both halves onto 180 closed the Bering Sea and the Gulf of
-        # Anadyr, whose cut edges then coincided. Wrangel Island's did not: its
-        # halves met the meridian at different latitudes, so they touched at
-        # points and `unary_union` returned the pair unchanged. `snap` moves the
-        # western vertices onto the eastern *geometry* rather than onto a
-        # coordinate, which is what gives the union a boundary to dissolve.
-        from shapely.ops import snap
-        parts[1:] = [snap(p, parts[0], MERIDIAN_SNAP) for p in parts[1:]]
+    # **Snapping the parts to each other was tried and removed.** `shapely.ops.
+    # snap(west, east, tol)` moves vertices onto the other half's geometry rather
+    # than onto a coordinate, which is the textbook way to make two boundaries
+    # coincide — and here it produced invalid rings: `unary_union` raised
+    # "side location conflict at 180.00034, 71.5296", Wrangel Island's pinch
+    # point, and the build stopped. It also never welded the island it was added
+    # for. A repair that breaks the build on one shape and fixes none is not a
+    # repair, and the residual seams are named in `MERIDIAN_SNAP` instead.
     out = unary_union(parts) if len(parts) > 1 else parts[0]
     return None if out.is_empty else out
 

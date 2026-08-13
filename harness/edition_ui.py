@@ -427,7 +427,13 @@ def map_context(
     # the extent, so an entity with nothing to draw still warms its kin.
     out["warm"] = geo.relatives(ent_id, store)
 
-    box = geo.extent_of(ent_id, store, root)
+    # **A declared frame is a box to draw to**, and `extent_of` deliberately does
+    # not return one — it answers how big a thing is, which a parent sizes itself
+    # on, and a viewport is not that. Here the question is only "what should this
+    # page look at", so the frame answers it. Without this,
+    # `land:parapolsky-dol` reported "nothing to draw" while carrying the very
+    # box `geo bounds` had measured for it from the two bays that define it.
+    box = geo.extent_of(ent_id, store, root) or rec["frame"]
     if box is None:
         # `absent` rows are records, not strings — `sought`, `source`, `why` —
         # and this read them as strings, so every shapeless entry raised

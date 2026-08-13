@@ -367,6 +367,23 @@
    ]
   },
   {
+   "id": "marine:shelikhov-gulf",
+   "kind": "marine",
+   "name": "Shelikhov Gulf",
+   "ne_name": "Shelikhova Gulf",
+   "featurecla": "gulf",
+   "wikidata": "Q639399",
+   "source": "naturalearth-10m",
+   "file": "marine/shelikhov-gulf.json",
+   "points": 104,
+   "bounds": [
+    154.15,
+    57.768,
+    165.417,
+    62.705
+   ]
+  },
+  {
    "id": "region:bear-islands",
    "kind": "region",
    "name": "Bear Islands",

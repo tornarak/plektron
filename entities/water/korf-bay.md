@@ -1,6 +1,6 @@
 # water:korf-bay — Korf Bay
 
-- status: proposed
+- status: ratified
 - within: land:kamchatka
 - geo: 60.0333 165.733
 - link: wikidata:Q1108019
@@ -10,6 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Baron Korff’s Bay | | yes | the book's only form, curly apostrophe as printed |
+| Залив Корфа | ru | no | |
 
 ## gloss
 

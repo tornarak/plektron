@@ -1,6 +1,6 @@
 # place:east-cape — East Cape
 
-- status: proposed
+- status: ratified
 - within: land:chukchi-peninsula
 - geo: 66.0809 -169.652
 - link: wikipedia:Cape_Dezhnev
