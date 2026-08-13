@@ -199,6 +199,27 @@ PRECISION = 3
 #: than the damage.
 MERIDIAN_SNAP = 0.02
 
+#: Gazetteer shapes taken from the 50m *land* layer instead of the 10m one that
+#: names them, each with the box that selects it.
+#:
+#: **One entry, and it is a repair of a source and not a preference between
+#: two.** Natural Earth's 10m regions layer draws Wrangel Island cut at the
+#: antimeridian and *pinched*: the eastern lobe meets 180 at a single vertex,
+#: 71.53, while the western piece carries a straight cut edge from 71.538 down
+#: to 70.99. There is no shared boundary for any union to dissolve — snapping
+#: the halves onto the meridian does not help, and snapping them to each other
+#: produces invalid rings — so the island stays two polygons and the renderer
+#: strokes the cut edge as a seam down its middle. The 50m coastline draws the
+#: same island whole. Same island, two layers, and only one of them usable.
+#:
+#: The cost is resolution: 50m against 10m for one island, at a scale where it
+#: is drawn a few hundred pixels wide. The alternative is a line through it.
+#: The box is generous and the rule takes every land component inside it, so a
+#: re-render that moved the coastline slightly cannot silently select nothing.
+LAND_INSTEAD = {
+    "region:wrangel-island": (177.0, 70.0, 185.0, 72.5),
+}
+
 #: The Asher 2007 polygons this edition draws, by glottocode — the id the
 #: source itself carries, and the only stable one.
 #:
@@ -700,6 +721,39 @@ def extent(geo):
     return (min(xs), min(ys), max(xs), max(ys))
 
 
+def take_from_land(shapes, raw_land, notes) -> None:
+    """Re-cut the `LAND_INSTEAD` shapes out of the 50m coastline, in place.
+
+    `raw_land` is the *unsimplified* prepared land — the same geometry
+    `east_of_meridian` clips from, and for the same reason: simplifying the
+    hemisphere and then taking a piece out of it would give the piece the
+    hemisphere's tolerance. This reduces at the gazetteer's own instead, so the
+    replacement is no coarser than what it replaces except in the source layer.
+
+    A shape not in `shapes` is a note rather than a silence, exactly as an
+    unmatched gazetteer name is: a table entry matching nothing would leave the
+    seam in place with nobody told.
+    """
+    for ident, (w, s, e, n) in LAND_INSTEAD.items():
+        rec = shapes.get(ident)
+        if rec is None:
+            notes.append(f"{ident}: named in LAND_INSTEAD but not built — "
+                         f"nothing was replaced")
+            continue
+        cut = polygonal(raw_land.intersection(box(w, s, e, n)))
+        if cut is None or cut.is_empty:
+            notes.append(f"{ident}: LAND_INSTEAD box selects no land — kept the "
+                         f"gazetteer polygon, seam and all")
+            continue
+        before = len(getattr(rec["_shape"], "geoms", [rec["_shape"]]))
+        rec["_shape"] = reduce(cut, TOLERANCE["langarea"], ident, notes)
+        after = len(getattr(rec["_shape"], "geoms", [rec["_shape"]]))
+        rec["source"] = "naturalearth-50m"
+        notes.append(f"{ident}: taken from the 50m coastline instead of the 10m "
+                     f"gazetteer — {before} ring(s) to {after}, the 10m cut "
+                     f"leaving the island pinched at the antimeridian")
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--commit", action="store_true",
@@ -721,6 +775,7 @@ def main(argv=None) -> int:
     langareas = read_langareas(window, notes)
     shapes.update(langareas)
     shapes.update(read_gazetteer(window, notes))
+    take_from_land(shapes, raw_land, notes)
     # After the language areas, because the rule reads one of them to identify
     # which land component is Asia — and reads nothing else from it.
     seed = langareas.get(EAST_SEED, {}).get("_shape")

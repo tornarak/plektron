@@ -1,6 +1,6 @@
-# place:poitin — Poiˊtɪn
+# place:paren — Paren
 
-- status: proposed
+- status: ratified
 - within: land:northeast-siberia
 - geo: 62.4173 163.092
 - link: geonames:2122227

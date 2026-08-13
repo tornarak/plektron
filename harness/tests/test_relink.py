@@ -61,16 +61,54 @@ def test_an_already_linked_form_is_left_alone(tmp_path):
     assert got == src and applied == []
 
 
-def test_a_tier1_handle_is_not_pierced_and_says_so(tmp_path):
-    """A reference encloses a handle and never reaches inside it. Enclosing means
-    editing the parent's markup rather than its text, which this does not do —
-    so it reports rather than going quiet."""
+def test_a_tier1_handle_is_enclosed_and_never_pierced(tmp_path):
+    """A reference encloses a handle and never reaches inside it. That is an
+    edit to the element's *markup*, and this module rewrites text — so it used
+    to do nothing at all, and, worse, said nothing while doing it, in a module
+    whose docstring promises every refusal is reported. A ratified entity whose
+    only form on a page was Tier-1 therefore linked on regeneration and never on
+    a page a collator had signed."""
     entry(tmp_path, "place:uelen", status="ratified", canonical="Uelen",
           aliases=[("Uelen", True)])
     s = entities.load(tmp_path)
     src = f'{HEAD}<p><foreign index="1">Uelen</foreign></p>{FOOT}'
     got, applied, _ = relink.relink(src, s)
+    assert '<rs ref="place:uelen" resp="#mz"><foreign index="1">Uelen</foreign></rs>' \
+        in got
+    assert [a["id"] for a in applied] == ["place:uelen"]
+    # The handle's own text is untouched — enclosed, not pierced.
+    assert '<foreign index="1">Uelen</foreign>' in got
+
+
+def test_the_innermost_handle_is_enclosed_and_not_its_wrapper(tmp_path):
+    """`tei generate` writes `<term><rs><name>…</name></rs></term>`, and a page
+    already collated has to end up with the same shape rather than a second,
+    outer wrapping of the `<term>`."""
+    entry(tmp_path, "place:uelen", status="ratified", canonical="Uelen",
+          aliases=[("Uelen", True)])
+    s = entities.load(tmp_path)
+    src = (f'{HEAD}<p><term xml:id="t1"><name xml:lang="ckt">Uelen</name>'
+           f'</term></p>{FOOT}')
+    got, _applied, _ = relink.relink(src, s)
+    assert '<term xml:id="t1"><rs ref="place:uelen" resp="#mz">' \
+        '<name xml:lang="ckt">Uelen</name></rs></term>' in got
+    assert got.count("<rs ") == 1
+
+
+def test_a_handle_that_is_only_part_of_its_element_is_refused_with_a_row(tmp_path):
+    """Enclosure is offered only where the element's whole content is the form.
+    A hit spanning the handle and the words after it — "Kuluˊči Bay" — crosses
+    an element boundary, and picking where such a span ends is
+    `generate._entity_spans`' judgement, not this module's. Reported, not
+    silently dropped."""
+    entry(tmp_path, "place:uelen", status="ratified", canonical="Uelen",
+          aliases=[("Uelen", True)])
+    s = entities.load(tmp_path)
+    src = f'{HEAD}<p><foreign index="1">Uelen and beyond</foreign></p>{FOOT}'
+    got, applied, skipped = relink.relink(src, s)
     assert got == src and applied == []
+    assert [k["form"] for k in skipped] == ["Uelen"]
+    assert "whole content" in skipped[0]["why"]
 
 
 def test_an_unratified_entry_is_not_applied(tmp_path):

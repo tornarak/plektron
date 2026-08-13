@@ -107,6 +107,7 @@ def run_verify(a) -> int:
     # every `within:` in the store, where containment can only speak about the
     # dozen pairs both of whose members somebody drew.
     out(a, r["nesting"], name="nesting", heading=True)
+    out(a, r["meridian"], name="meridian", heading=True)
     out(a, r["containment"], name="containment", heading=True)
     out(a, r["shared"], name="shared", heading=True)
     out(a, r["unclaimed"], name="unclaimed", heading=True)

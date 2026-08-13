@@ -98,6 +98,36 @@ def register(cli):
     opt(p, "--commit", is_flag=True,
         help="write it. Without this the file is reported and not created")
 
+    p = action(g, "alias", run_alias,
+               help="add one alias row to an entry that exists. **For the "
+               "form's fidelity, and for nothing else** — a `link:` or a "
+               "`within:` is a line of ASCII a text editor sets as well as a "
+               "flag would, but an alias is a native form, and typing one by "
+               "hand is where this store gets hurt: a precomposed `й` against "
+               "an NFD store, an `i` for an `ɪ`, an apostrophe for `ˊ`. None of "
+               "them shows in the file afterwards. So the form may be a "
+               "**lexicon handle in braces** — `{Kulu'c^i}` — which `lookup "
+               "expand` replaces with the form the corpus prints; a key the "
+               "book spells two ways resolves to nothing, and nothing "
+               "half-expands. A literal form is normalized to NFD and "
+               "otherwise trusted, since Cyrillic and English aliases have no "
+               "handle to resolve"
+               "\n\nID: `class:slug`   FORM: a form, or `{key}` to expand")
+    arg(p, "ident", metavar="ID")
+    arg(p, "form", metavar="FORM")
+    opt(p, "--lang", metavar="CODE",
+        help="the language the form is a name in, from `harness/langs.py`. "
+             "Omitted means *unstated*, which most of the store says and which "
+             "is a different claim from a wrong code")
+    opt(p, "--auto", is_flag=True,
+        help="the form is safe to link out of context. **No default and no "
+             "inverse**: `auto` is the author's declaration, so the flag's "
+             "absence is `no` and says so in the file")
+    opt(p, "--note", metavar="TEXT",
+        help="the note cell — where the form is attested, or why it is `no`")
+    opt(p, "--commit", is_flag=True,
+        help="write it. Without this the row is reported and not added")
+
     p = action(g, "locate", run_locate,
                help="set or replace an existing entry's `geo:` point, its "
                "`area:` shape, its `frame:` box, or any of them. **The act that "
@@ -422,6 +452,80 @@ def _refs_to(ident: str, root: Path) -> list[dict]:
                                  "ref": p.stem.replace("chukchi-", ""),
                                  "links": n})
     return out_rows
+
+
+def run_alias(a) -> int:
+    """Add one alias row to an entry that exists.
+
+    **The verb is here for the form's fidelity and nothing else.** A `link:` or a
+    `within:` is a line of ASCII that a text editor sets as well as a flag would;
+    an alias is a *native form*, and typing one by hand is where this store gets
+    hurt. Three ways, all of which happened during the pass that prompted this:
+    a precomposed `й` where the store is NFD and nothing matches; a guessed `ɪ`
+    for an `i`, the corpus's largest correction family; an `ˊ` typed as an
+    apostrophe. None of them is visible in the file afterwards.
+
+    So the form may be given as a **lexicon handle in braces** — `{Kulu'c^i}` —
+    and `lookup.expand` substitutes the ratified form the corpus actually
+    prints. That is transcription rather than typing, and it inherits two
+    properties worth more than the convenience: a key the book spells more than
+    one way resolves to nothing at all, and **nothing half-expands**, so a line
+    with one bad handle is not written rather than written wrong.
+
+    A form given literally is normalized to NFD and otherwise trusted, because
+    Cyrillic and English aliases have no handle to resolve and refusing them
+    would leave the verb useless for most of the store.
+    """
+    from ..langs import ALIAS_LANGS
+    from ..lookup import expand
+
+    store = _store(a)
+    ident = str(a.ident)
+    rec = store.get(ident)
+    if rec is None:
+        raise ValueError(f"no such entity: {ident}")
+
+    # **Only a braced form goes near the lexicon.** `expand` builds the handle
+    # index off the corpus and the marks config, which a literal form has no use
+    # for — and asking for them anyway made this verb refuse to run in a tree
+    # that has none, for an alias that never needed resolving.
+    form = str(a.form)
+    if "{" in form or "}" in form:
+        form, refusals = expand(form, a.root, min_pages=1)
+        if refusals:
+            raise ValueError(f"{ident}: {refusals[0]}")
+    form = unicodedata.normalize("NFD", form).strip()
+    if not form:
+        raise ValueError(f"{ident}: the form is empty")
+
+    lang = (a.lang or "").strip()
+    if lang and lang not in ALIAS_LANGS:
+        raise ValueError(
+            f"{ident}: `{lang}` is not in the alias vocabulary. One of: "
+            f"{', '.join(sorted(ALIAS_LANGS))}. A blank language is legal and "
+            f"means unstated, which is a different claim from a wrong one")
+    if form in {t["form"] for t in rec["aliases"]}:
+        raise ValueError(f"{ident}: already lists {form!r}. `parse` refuses a "
+                         f"form twice, so this would break the file it wrote")
+
+    p = Path(rec["path"])
+    text = p.read_text(encoding="utf-8")
+    start, end = _alias_rows(text)
+    # `| |` and never `|  |`: two spaces are §2.9 sentence spacing to the
+    # normalizer, which `entity new` learned the same way.
+    cell = f" {lang} ".replace("  ", " ")
+    row = f"| {form} |{cell}| {'yes' if a.auto else 'no'} | {a.note or ''} |"
+    body = text[start:end].rstrip("\n")
+    text = text[:start] + body + f"\n{row}\n\n" + text[end:]
+
+    from ..entities import parse
+    parse(text, where=str(p))
+    if a.commit:
+        p.write_text(text, encoding="utf-8")
+    out(a, {"id": ident, "form": form, "lang": lang or "—",
+            "auto": bool(a.auto), "expanded": form != str(a.form),
+            "wrote": bool(a.commit)})
+    return 0
 
 
 def _alias_rows(text: str) -> tuple[int, int]:

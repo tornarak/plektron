@@ -661,6 +661,64 @@ def tier1_terms(ref: str, root: Path = Path(".")) -> list[dict]:
                     and any(c in INVENTORY_CHARS or c == "'" for c in tok)):
                 out.append({"index": len(out) + 1, "line": rec["index"],
                             "text": tok})
+    return _with_keys(out, root)
+
+
+def _with_keys(rows: list[dict], root: Path) -> list[dict]:
+    """Add the lexicon handle to each term, where one resolves back to it.
+
+    **`index` addresses this page and `key` addresses the corpus**, and the
+    second is what makes a form typeable anywhere else. `tei expand` takes the
+    index and writes the ratified string into *this* page; `{key}` is what
+    `entity alias` and `proposal set` expand, so a collator proposing an entity
+    for a Tier-1 toponym can name the form without keying a single glyph of it.
+    Without this the key was reachable only by running `lexicon lookup` against
+    a form the reader would have had to type first, which is the copying this
+    whole list exists to avoid.
+
+    **A key is printed only where it resolves back to the very form beside it.**
+    `handle_key` is a spelling and `resolve` is a promise: a bucket the book
+    spells two ways refuses, and a precise key pointing into a contested bucket
+    is refused with it. Emitting a key that will not expand would hand a reader
+    a handle that fails at the far end, which is worse than an empty cell — the
+    empty cell says "type this one", and the store's own §5 says which forms
+    those are.
+
+    **`min_pages=1`, and the difference from `tei expand` is the point.** That
+    floor — "one page is a neighbour, not a corpus" — guards writing a
+    barely-attested form *into* a page. Naming a form is a different act: a
+    toponym printed once is still that toponym, and 1-359 is a gazetteer where
+    nearly every form is a hapax. At the default floor this column came back
+    empty for fifteen of twenty terms on the one page it was asked for. The
+    ambiguity refusal is untouched and is the one that matters, since it is the
+    book disagreeing with itself rather than the corpus being small.
+
+    The index is built once for the page and passed down; `lookup.index` walks
+    the whole ground-truth corpus and is not cached. A tree with no lexicon
+    config is a tree where no key exists, so every cell is empty and nothing
+    raises: `tier1_terms` still answers its own question.
+    """
+    if not rows:
+        return rows
+    from .lookup import index, resolve
+    from .marks import handle_key
+
+    try:
+        idx = index(root)
+    except Exception:                                         # noqa: BLE001
+        return [{**r, "key": ""} for r in rows]
+    out = []
+    for r in rows:
+        key = ""
+        try:
+            cand = handle_key(r["text"])
+        except ValueError:
+            cand = ""
+        if cand:
+            form, _why = resolve(cand, root, min_pages=1, idx=idx)
+            if form == r["text"]:
+                key = cand
+        out.append({**r, "key": key})
     return out
 
 

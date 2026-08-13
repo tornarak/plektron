@@ -558,3 +558,78 @@ def test_a_reported_rename_writes_nothing(tmp_path):
 
 def test_the_committed_store_checks_out():
     assert E.check(REPO)["ok"]
+
+
+# ------------------------------------------------------------- adding an alias
+
+class _AliasArgs:
+    def __init__(self, root, ident, form, lang="", auto=False, note="",
+                 commit=True):
+        self.root, self.ident, self.form = root, ident, form
+        self.lang, self.auto, self.note, self.commit = lang, auto, note, commit
+        self.json = self.toon = self.pager = False
+
+
+def _alias(tmp_path, ident, form, **kw):
+    from harness.cli._entity import run_alias
+    return run_alias(_AliasArgs(tmp_path, ident, form, **kw))
+
+
+def test_an_alias_is_normalized_to_nfd_on_the_way_in(tmp_path):
+    """The reason this verb exists at all. A `link:` or a `within:` is a line of
+    ASCII that a text editor sets as well as a flag would; an alias is a native
+    form, and a precomposed character against an NFD store matches nothing and
+    shows nothing in the file afterwards."""
+    entry(tmp_path, "place:x", aliases=[("X", False)])
+    _alias(tmp_path, "place:x", "Йош")      # composed Й
+    forms = [t["form"] for t in E.load(tmp_path)["place:x"]["aliases"]]
+    assert "Йош" in forms             # decomposed
+    assert "Йош" not in forms
+
+
+def test_an_unresolvable_handle_refuses_and_writes_nothing(tmp_path):
+    """`lookup.expand`'s rule, inherited whole: **nothing half-expands.** A row
+    with one bad handle is not written rather than written wrong, and a brace
+    that survives is its own refusal — no page keys a brace."""
+    p = entry(tmp_path, "place:x", aliases=[("X", False)])
+    before = p.read_text(encoding="utf-8")
+    with pytest.raises(ValueError, match="brace|handle"):
+        _alias(tmp_path, "place:x", "{no-such-key}")
+    assert p.read_text(encoding="utf-8") == before
+
+
+def test_a_duplicate_form_is_refused_before_it_breaks_the_file(tmp_path):
+    """`parse` refuses a form listed twice, so the naive append would break the
+    file the verb had just written. Caught with a message instead."""
+    entry(tmp_path, "place:x", aliases=[("Markova", True)])
+    with pytest.raises(ValueError, match="already lists"):
+        _alias(tmp_path, "place:x", "Markova")
+
+
+def test_the_language_is_checked_and_blank_is_legal(tmp_path):
+    """An unstated language is what most of the store says and is a different
+    claim from a wrong one, so blank passes and an invented code does not."""
+    entry(tmp_path, "place:x", aliases=[("X", False)])
+    with pytest.raises(ValueError, match="alias vocabulary"):
+        _alias(tmp_path, "place:x", "Y", lang="klingon")
+    _alias(tmp_path, "place:x", "Y")
+    row = [t for t in E.load(tmp_path)["place:x"]["aliases"] if t["form"] == "Y"]
+    assert row and row[0]["lang"] == "" and row[0]["auto"] is False
+
+
+def test_auto_has_no_default_and_the_flag_is_the_declaration(tmp_path):
+    """`auto` is the author's declaration that a form is safe out of context —
+    the store's own words — so the flag's absence is `no` and says so in the
+    file rather than leaving the cell to be guessed at."""
+    entry(tmp_path, "place:x", aliases=[("X", False)])
+    _alias(tmp_path, "place:x", "Loud", auto=True)
+    _alias(tmp_path, "place:x", "Quiet")
+    got = {t["form"]: t["auto"] for t in E.load(tmp_path)["place:x"]["aliases"]}
+    assert got["Loud"] is True and got["Quiet"] is False
+
+
+def test_a_reported_alias_writes_nothing(tmp_path):
+    p = entry(tmp_path, "place:x", aliases=[("X", False)])
+    before = p.read_text(encoding="utf-8")
+    _alias(tmp_path, "place:x", "Y", commit=False)
+    assert p.read_text(encoding="utf-8") == before

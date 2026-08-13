@@ -1,6 +1,7 @@
 # place:cape-navarin — Cape Navarin
 
-- status: proposed
+- status: ratified
+- within: land:chukotka
 - geo: 62.2753 179.099
 - link: wikidata:Q3562501
 - link: geonames:2122984
