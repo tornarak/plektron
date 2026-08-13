@@ -1,7 +1,7 @@
 # place:chukotka — Chukotka
 
 - status: ratified
-- within: place:russian-far-east
+- within: place:northeast-siberia
 
 ## aliases
 

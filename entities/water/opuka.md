@@ -1,7 +1,7 @@
 # water:opuka — Opuka
 
 - status: ratified
-- within: place:russian-far-east
+- within: place:northeast-siberia
 - area: watershed:opuka
 
 ## aliases

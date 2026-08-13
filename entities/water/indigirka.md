@@ -1,7 +1,7 @@
 # water:indigirka — Indigirka
 
 - status: ratified
-- within: place:russian-far-east
+- within: place:northeast-siberia
 - area: watershed:indigirka
 
 ## aliases

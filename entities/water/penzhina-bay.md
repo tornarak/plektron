@@ -1,7 +1,7 @@
 # water:penzhina-bay — Penzhina Bay
 
 - status: proposed
-- within: place:russian-far-east
+- within: place:northeast-siberia
 
 ## aliases
 

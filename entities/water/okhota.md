@@ -1,7 +1,7 @@
 # water:okhota — Okhota
 
 - status: ratified
-- within: place:russian-far-east
+- within: place:northeast-siberia
 - area: watershed:okhota
 
 ## aliases

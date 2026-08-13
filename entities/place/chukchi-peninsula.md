@@ -4,6 +4,7 @@
 - within: place:chukotka
 - geo: 66.0 -173.0
 - area: region:chukchi-peninsula
+- frame: 180.7 63.7 190.9 68.6
 - link: wikipedia:Chukchi_Peninsula
 - link: wikidata:Q1002
 
