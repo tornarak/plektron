@@ -1388,6 +1388,18 @@ not `language:`: an entity file carries `within: place:chukotka` two lines from
 is one keystroke from an `area:` that resolves as an entity reference.
 `entities.parse` refuses a kind that collides.
 
+### geo bounds ID...
+**Does** the bounding box of each named region and their union — **the measurement a `frame:` is written from**. Takes entity ids and shape ids in one list. An entity's box is `geo.extent_of`: its own shape, else its own point, else the union of everything beneath it, which is what the atlas frames on; a shape's is the polygon's own. The union row carries `span_lon`/`span_lat` and a `frame` field spelled exactly as `entity locate --frame` takes it.
+**Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.
+```
+--margin DEG  degrees added on all four sides of the union
+--root --json --toon --pager
+```
+**Note** the two vocabularies are told apart **by their prefix, with no flag**, and that is decidable only because a shape kind may never be an entity class — the rule `entities.parse` enforces so that `area: language:x` cannot quietly read as an entity reference. The invariant pays for itself here.
+**Note** `--margin` is **content, not breathing room**: `geomap.Frame` already pads a drawn map on every side, so this answers the different question of how much more of the world to show. Degrees rather than a percentage, because a percentage of a box 60° wide and 20° tall is two distances and the caller would have to know which.
+**Note** longitudes are the store's shifted window — the same one `--frame` and `frame:` read — so the printed string pastes straight through.
+**Note** an id with no extent is a **row reading null, not a silence**, and it does not enter the union. `place:cape-prince-of-wales` is named by the book and located by nothing, and it is the east edge of `place:northeast-siberia`'s frame: that edge was estimated by hand, and a tool that dropped the row would have made the estimate look like a measurement. An unknown id says which vocabulary it was looked for in.
+
 ### geo list
 **Does** every shape in the store — id, kind, name, point count, area, source, and the entity that claims it. **Also the absences**: four of this edition's seven Tier-1 codes have no polygon in Asher 2007, and they are rows here rather than silences, because an entity pointing at nothing and an entity nobody has got to yet look identical from outside.
 **Reads** `data/geo/`, `entities/`. **Writes** — **Exit** 0.

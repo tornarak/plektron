@@ -13,8 +13,8 @@ when they disagree, so it names the pair and stops.
 """
 from __future__ import annotations
 
-from ..geo import listing, verify
-from ._common import action, group, out
+from ..geo import boxes, listing, verify
+from ._common import action, arg, group, opt, out
 
 
 def register(cli):
@@ -57,6 +57,38 @@ def register(cli):
            "row of it. Scoped by the tree rather than by class, because every "
            "person and source in the store is unlocated and always will be. "
            "Reports; never gates")
+
+
+    p = action(g, "bounds", run_bounds,
+               help="the bounding box of one or more regions, and their union "
+               "— **the measurement a `frame:` is written from**, which was "
+               "otherwise a `python -c` around `geo.extent_of`. Takes entity "
+               "ids and shape ids in one list, told apart by their prefix: "
+               "that is decidable only because a shape kind may never be an "
+               "entity class, so it needs no flag and can make no wrong guess. "
+               "An entity's box is its shape, else its point, else the union of "
+               "everything beneath it — the same three sources the atlas frames "
+               "on — and a shape's is the polygon's own. Longitudes are the "
+               "store's shifted window, the one `--frame` also takes, so the "
+               "printed `frame` field pastes straight into `entity locate`. "
+               "Reports; never writes"
+               "\n\nID: `class:slug` or `kind:slug`, e.g. `place:kamchatka` or "
+               "`watershed:anadyr`. Several are unioned")
+    arg(p, "idents", metavar="ID", nargs=-1, required=True)
+    opt(p, "--margin", type=float, default=0.0, metavar="DEG",
+        help="degrees added on all four sides of the union. **Content, not "
+             "breathing room** — `geomap.Frame` already pads a drawn map on "
+             "every side, so this is the different question of how much more "
+             "of the world to show. Degrees rather than a percentage, because "
+             "a percentage of a box 60° wide and 20° tall is two distances and "
+             "the caller would have to know which")
+
+
+def run_bounds(a) -> int:
+    r = boxes(a.idents, a.root, margin=a.margin)
+    out(a, r["rows"], name="bounds")
+    out(a, r["union"], name="union", heading=True)
+    return 0
 
 
 def run_list(a) -> int:

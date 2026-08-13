@@ -794,3 +794,65 @@ def _reading(frac: float, coarse: bool) -> str:
 def _shifted(lon: float, idx: dict) -> float:
     base = idx.get("lon_base", LON_BASE)
     return lon + 360.0 if lon < base else lon
+
+
+def boxes(idents, root: Path = Path("."), margin: float = 0.0) -> dict:
+    """A box per id and their union — what a human writing a `frame:` needs.
+
+    **Entity ids and shape ids in one list**, told apart by their prefix. That
+    is only decidable because the two vocabularies are held disjoint — a shape
+    kind may never be an entity class, the rule `entities.parse` enforces so
+    that `area: language:x` cannot quietly read as an entity reference — so
+    this needs no flag and can make no wrong guess.
+
+    An entity's box is `extent_of`: its shape, else its point, else the union of
+    everything beneath it. A shape's is the polygon's own. Longitudes are the
+    store's shifted window, which is what `frame:` and `--frame` also take, so
+    the printed `frame` field is paste-ready.
+
+    **`margin` is content, not breathing room.** `geomap.Frame` already pads a
+    map by `PAD` on every side; a margin here says *show this much more of the
+    world*, which is a different question and the one a person asking for a
+    frame is usually asking. Degrees, applied to all four sides — deliberately
+    not a percentage, because a percentage of a box 60° wide and 20° tall is
+    two different distances and the caller would have to know which.
+    """
+    from .entities import ENTITY_CLASSES, load
+
+    store = load(root)
+    rows, got = [], []
+    for i in idents:
+        kind = str(i).partition(":")[0]
+        if kind in ENTITY_CLASSES:
+            box = extent_of(str(i), store, root)
+            what = "entity" if str(i) in store else "unknown entity"
+        else:
+            doc = shape(str(i), root)
+            box = bounds(doc) if doc else None
+            what = "shape" if doc else "unknown shape"
+        rows.append({"id": str(i), "kind": what,
+                     "west": round(box[0], 4) if box else None,
+                     "south": round(box[1], 4) if box else None,
+                     "east": round(box[2], 4) if box else None,
+                     "north": round(box[3], 4) if box else None})
+        if box:
+            got.append(box)
+
+    if not got:
+        return {"rows": rows, "union": []}
+    w = min(b[0] for b in got) - margin
+    s = min(b[1] for b in got) - margin
+    e = max(b[2] for b in got) + margin
+    n = max(b[3] for b in got) + margin
+    return {
+        "rows": rows,
+        "union": [{
+            "west": round(w, 4), "south": round(s, 4),
+            "east": round(e, 4), "north": round(n, 4),
+            "span_lon": round(e - w, 4), "span_lat": round(n - s, 4),
+            "margin": margin,
+            # The exact string `entity locate --frame` takes, so the answer is
+            # pasted rather than retyped from four columns.
+            "frame": f"{w:g} {s:g} {e:g} {n:g}",
+        }],
+    }
