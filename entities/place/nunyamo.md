@@ -1,7 +1,7 @@
 # place:nunyamo — Nunyamo
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.6037 -170.6491
 
 ## aliases

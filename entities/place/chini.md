@@ -1,7 +1,7 @@
 # place:chini — Chini
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.7466 -170.5318
 
 ## aliases

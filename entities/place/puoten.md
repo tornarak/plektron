@@ -1,7 +1,7 @@
 # place:puoten — Puoˊten
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.8495 -170.5215
 
 ## aliases

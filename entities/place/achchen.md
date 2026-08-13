@@ -1,7 +1,7 @@
 # place:achchen — Achchen
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.8391 -174.5917
 
 ## aliases

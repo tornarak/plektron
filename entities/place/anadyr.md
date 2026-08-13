@@ -1,7 +1,8 @@
 # place:anadyr — Anadyr (town)
 
 - status: ratified
-- within: water:anadyr
+- within: river:anadyr
+- geo: 64.7337 177.5153
 - link: wikipedia:Anadyr_(town)
 - link: wikidata:Q7978
 
@@ -15,6 +16,6 @@
 
 ## gloss
 
-Present capital of [[place:chukotka]]
+Present capital of [[land:chukotka]]
 and historical limit of Russian Siberia.
 Destroyed and rebuilt many times, under many names.

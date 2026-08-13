@@ -1,7 +1,7 @@
 # place:inchoun — Inchoun
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.2971 -170.2757
 
 ## aliases

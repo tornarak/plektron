@@ -95,11 +95,32 @@ ENTDIR = "entities"
 #: no member for a language or an institution. Those are exactly the entities
 #: an alias table can find reliably, and linking them says "this string refers to
 #: that entity", not "the page marked a proper noun here".
+#:
+#: **Four geographical classes, not two, and the cut is by what a map draws.**
+#: `place:` used to hold a village and a peninsula alike and `water:` a river and
+#: an ocean, which made the class useless for the two things a class is for: an
+#: atlas that shows a settlement, a land region, a drainage and a body of open
+#: water in one hue is a field of overlapping outlines, and a `within:` chain
+#: that cannot tell a point from a region cannot say that a town inside a bay is
+#: an error. So: `place:` a terrestrial **point**, `land:` a terrestrial
+#: **region**, `river:` a watercourse and the basin it drains, `water:` a body of
+#: standing or open water. `geo`'s four shape kinds — `region`, `watershed`,
+#: `marine`, and a bare `geo:` point — are what each one is drawn from, so the
+#: class and the shape are one fact stated once.
+#:
+#: **`land:` and `river:` carry the same `@type` as the class they split from**,
+#: which is not a convenience: a page's `<name type="toponym">` records that a
+#: reader saw a place-name, and whether that name denotes a point or a region is
+#: the store's business and never the page's. That equality is exactly what
+#: licenses `entity rename` to move an entry between them (`cli/_entity.py`)
+#: while it still refuses `place:` → `water:`, which would contradict the page.
 ENTITY_CLASSES = {
     "person": "anthroponym",
     "people": "ethnonym",
     "place": "toponym",
+    "land": "toponym",
     "water": "hydronym",
+    "river": "hydronym",
     "animal": "zoonym",
     "being": "mythonym",
     "event": "event",

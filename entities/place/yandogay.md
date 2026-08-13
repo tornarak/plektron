@@ -1,7 +1,7 @@
 # place:yandogay — Yandogay
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.4772 -171.0185
 
 ## aliases

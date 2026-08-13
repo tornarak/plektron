@@ -1,7 +1,7 @@
 # water:konyam-bay — Konyam Bay
 
 - status: proposed
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 
 ## aliases
 

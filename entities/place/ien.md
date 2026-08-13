@@ -1,7 +1,7 @@
 # place:ien — Iˊᵋen
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.3983 -173.3291
 
 ## aliases

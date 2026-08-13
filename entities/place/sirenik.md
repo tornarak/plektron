@@ -1,7 +1,7 @@
 # place:sirenik — Sirenik
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.4072 -173.9428
 
 ## aliases

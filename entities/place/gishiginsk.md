@@ -1,7 +1,7 @@
 # place:gishiginsk — Gishiginsk
 
 - status: ratified
-- within: water:gishiga
+- within: river:gishiga
 
 ## aliases
 

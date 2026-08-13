@@ -760,6 +760,18 @@ nowhere, which is exactly the signal it should give.
 Check `entity list` first — the same man under two slugs is worse than no entry,
 and you cannot see the store the coordinator can.
 
+**Geography has four classes and the cut is by shape, not by importance.**
+`place:` a point on the ground — a village, a camp, a cape, a single peak.
+`land:` a terrestrial *region* — a peninsula, a range, an upland, an island, a
+district. `river:` a watercourse and the basin it drains. `water:` a body of
+standing or open water — a sea, a bay, a strait, a lake. A name that does double
+duty gets an entry per class and not one entry stretched over both: the Anadyr is
+`river:anadyr`, `place:anadyr`, `water:anadyr-bay`, and the page decides which of
+them a given sentence means. Both toponym classes take `<name type="toponym">`
+and both hydronym classes take `type="hydronym"`, so the class you choose never
+contradicts the type you wrote — which is also why picking the wrong one is a
+rename later and not a re-reading of your page.
+
 **A gloss disambiguates; it does not explain.** The card lists every passage the
 entity occurs in, with the prose either side, out of the corpus — so a gloss that
 summarises what Bogoras says about the Chukchi is about to be outdone by Bogoras,

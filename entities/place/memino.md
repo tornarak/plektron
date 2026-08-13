@@ -1,7 +1,7 @@
 # place:memino — Memino
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 67.0031 -172.7833
 
 ## aliases

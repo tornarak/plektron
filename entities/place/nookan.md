@@ -1,7 +1,7 @@
 # place:nookan — Nɵˊɵkan
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.0267 -169.7019
 
 ## aliases

@@ -25,12 +25,23 @@ svg.map .subject path { fill:color-mix(in srgb,var(--shape) 22%,transparent);
  * on the path as `data-kind` (`geomap.owned`), so this is a lookup and not a
  * guess.
  *
- * **Not the prose vocabulary.** `edition.css` groups `place:` and `water:` into
- * one hue on purpose — in a sentence "is this a place or a person" is the
- * question. On a map it is the wrong axis twice over: `place:` covers a
- * peninsula and a mountain range alike, and the thing a reader needs separated
- * is exactly land from water. Five kinds, five hues, and `--shape` is the
- * indirection that keeps it one declaration each rather than one per layer.
+ * **Still the shape kind and not the entity class, though the two now agree.**
+ * This axis was chosen when `place:` covered a village and a peninsula alike, so
+ * the class could not have told a coastline from a drainage divide. The four
+ * geographical classes fixed that — `land:`↔`region`, `river:`↔`watershed`,
+ * `water:`↔`marine`, `place:`↔a pin — and the rules still key off `data-kind`,
+ * because that is what `data/geo/` declares and what actually travels on the
+ * path. Reading the class instead would be a second copy of a fact the store
+ * already states, held to it by nothing.
+ *
+ * `edition.css`'s families are a *coarser* cut of the same axis, not a different
+ * one: prose separates land from water and stops, because "point or region" is a
+ * question about a map and the map is right here to answer it. The one place the
+ * two agree exactly is `--pin`, which paints a settlement's dot here and its name
+ * in the sentence beside it.
+ *
+ * Five kinds, five hues, and `--shape` is the indirection that keeps it one
+ * declaration each rather than one per layer.
  *
  * `--basin` for a watershed was already here, as the `.basin` mark on the
  * subject; this generalises it to every watershed on the map instead of only

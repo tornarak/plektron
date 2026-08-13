@@ -1,7 +1,7 @@
 # place:cape-chukotsky — Cape Chukotsky
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 
 ## aliases
 

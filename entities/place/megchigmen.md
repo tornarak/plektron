@@ -1,7 +1,7 @@
 # place:megchigmen — Megchigmen
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.5571 -172.0368
 
 ## aliases

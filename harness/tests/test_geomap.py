@@ -34,7 +34,7 @@ def test_an_unbuilt_store_is_empty_rather_than_an_error(tmp_path):
 @built
 def test_the_shape_kinds_are_disjoint_from_the_entity_classes():
     """`langarea:`, never `language:`. An entity file carries `within:
-    place:chukotka` two lines from `area: langarea:chuk1273`, and a kind that
+    land:chukotka` two lines from `area: langarea:chuk1273`, and a kind that
     was also a class would make the second readable as the first."""
     kinds = {i.split(":")[0] for i in geo.index(ROOT)["shapes"]}
     assert kinds and not (kinds & set(entities.ENTITY_CLASSES))
@@ -252,8 +252,8 @@ def test_a_coarse_delineation_is_not_read_as_a_disagreement():
 @built
 def test_verify_reports_and_never_gates():
     r = geo.verify(ROOT)
-    assert set(r) == {"scope", "containment", "points", "shared", "unclaimed",
-                      "unlocated"}
+    assert set(r) == {"scope", "nesting", "containment", "points", "shared",
+                      "unclaimed", "unlocated"}
     assert all("reading" in row for row in r["containment"])
 
 
@@ -415,7 +415,7 @@ def test_a_ring_that_cannot_touch_the_frame_is_dropped():
 def test_a_map_is_svg_with_no_pixel_dimension_on_it():
     f = geomap.Frame(geo.bounds(geo.shape("watershed:anadyr", ROOT)))
     doc = geo.shape("watershed:anadyr", ROOT)
-    svg = geomap.render(f, {"subject": geomap.owned(f.paths(doc), "water:anadyr",
+    svg = geomap.render(f, {"subject": geomap.owned(f.paths(doc), "river:anadyr",
                                                     "watershed")})
     assert svg.startswith("<svg") and f"viewBox='{f.viewbox}'" in svg
     assert "px" not in svg and "width=" not in svg
@@ -429,7 +429,7 @@ def test_a_path_carries_the_kind_of_shape_it_is():
     stylesheet looks it up rather than guessing from the geometry."""
     f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
     doc = geo.shape("watershed:anadyr", ROOT)
-    svg = geomap.render(f, {"members": geomap.owned(f.paths(doc), "water:anadyr",
+    svg = geomap.render(f, {"members": geomap.owned(f.paths(doc), "river:anadyr",
                                                     "watershed")})
     assert "data-kind='watershed'" in svg
     # Absent rather than empty where there is none: the coastline is `base:land`,
@@ -454,7 +454,7 @@ def test_the_subject_is_marked_a_basin_only_when_its_shape_is_a_watershed():
     it is a different question, and only this one says why the outline must not be
     drawn in the colour of the rivers inside it."""
     store = entities.load(ROOT)
-    basin = edition_ui.map_context("water:anadyr", ROOT, "/edition", store=store)
+    basin = edition_ui.map_context("river:anadyr", ROOT, "/edition", store=store)
     assert "class='map basin'" in basin["svg"]
     assert basin["basis"]["id"] == "watershed:anadyr"
 
@@ -471,10 +471,10 @@ def test_every_drawn_record_says_which_record_it_is():
     f = geomap.Frame((150.0, 60.0, 200.0, 72.0))
     svg = geomap.render(f, {
         "land": geomap.owned(["M0 0L1 1"]),
-        "subject": geomap.owned(["M0 0L1 1"], "water:kolyma"),
+        "subject": geomap.owned(["M0 0L1 1"], "river:kolyma"),
         "members": geomap.owned(["M0 0L1 1"], "water:small-anui"),
     })
-    assert "data-ent='water:kolyma'" in svg
+    assert "data-ent='river:kolyma'" in svg
     assert "data-ent='water:small-anui'" in svg
     assert svg.count("data-ent") == 2   # the land carries none
 
@@ -486,8 +486,8 @@ def test_a_framed_place_is_drawn_to_itself_and_not_to_its_parent():
     is only with the Kolyma around it — but a node with neither shape nor point
     *is* its extent, and the RFE has no parent, so both fell back to the RFE's."""
     store = entities.load(ROOT)
-    rfe = edition_ui.map_context("place:russian-far-east", ROOT, "/e", store=store)
-    chu = edition_ui.map_context("place:chukotka", ROOT, "/e", store=store)
+    rfe = edition_ui.map_context("land:russian-far-east", ROOT, "/e", store=store)
+    chu = edition_ui.map_context("land:chukotka", ROOT, "/e", store=store)
     assert rfe["basis"]["kind"] == chu["basis"]["kind"] == "framed"
     assert rfe["svg"] and rfe["svg"] != chu["svg"]
 
@@ -500,13 +500,13 @@ def test_a_framed_descendant_is_on_the_map_and_nothing_else_is():
     or a point is already drawn and gets no box — a rectangle over every one of
     them at once is a field of rectangles over the thing you were reading."""
     store = entities.load(ROOT)
-    got = dict(geo.member_extents("place:russian-far-east", store, ROOT))
-    assert "place:chukotka" in got
+    got = dict(geo.member_extents("land:russian-far-east", store, ROOT))
+    assert "land:chukotka" in got
     assert not any(store[e]["area"] or store[e]["geo"] for e in got)
     layer = re.search(r"<g class='extents'>.*?</g>",
-                      edition_ui.map_context("place:russian-far-east", ROOT,
+                      edition_ui.map_context("land:russian-far-east", ROOT,
                                              "/e", store=store)["svg"], re.S)
-    assert layer and "data-ent='place:chukotka'" in layer.group()
+    assert layer and "data-ent='land:chukotka'" in layer.group()
 
 
 @built
@@ -517,11 +517,11 @@ def test_what_is_warmed_is_wider_than_what_is_drawn():
     above it. Markovo is a point three levels down, past `pins_under`'s depth.
     Both are a click or two from where the reader is standing."""
     store = entities.load(ROOT)
-    ctx = edition_ui.map_context("place:russian-far-east", ROOT, "/e", store=store)
+    ctx = edition_ui.map_context("land:russian-far-east", ROOT, "/e", store=store)
     drawn = set(re.findall(r"data-ent='([^']*)'", ctx["svg"]))
-    assert {"water:omolon", "place:markovo"} <= set(ctx["warm"])
-    assert not ({"water:omolon", "place:markovo"} & drawn)
-    assert "place:russian-far-east" not in ctx["warm"]   # never itself
+    assert {"river:omolon", "place:markovo"} <= set(ctx["warm"])
+    assert not ({"river:omolon", "place:markovo"} & drawn)
+    assert "land:russian-far-east" not in ctx["warm"]   # never itself
 
 
 @built
@@ -530,7 +530,7 @@ def test_a_member_is_named_by_its_entity_and_not_by_its_shape():
     `language:chukchee` both point at the one Asher shape — so the shape cannot
     identify the member even in principle."""
     store = entities.load(ROOT)
-    pairs = geo.member_shapes("water:kolyma", store)
+    pairs = geo.member_shapes("river:kolyma", store)
     assert pairs and all(e in store and s.startswith("watershed:") for e, s in pairs)
 
 
@@ -574,3 +574,67 @@ def test_an_entity_with_no_extent_gets_a_note_rather_than_a_traceback():
         ctx = edition_ui.map_context(i, ROOT, "/edition", store=store)
         assert ctx["svg"] == ""
         assert isinstance(ctx["absent_note"], str)
+
+
+# ------------------------------------------------------ the ontology's own check
+
+def _nest(tmp_path, *pairs) -> list[dict]:
+    """A store made of nothing but `within:` — `nesting` reads no geometry, so
+    the shapes a real store carries would only be scenery here."""
+    from harness.tests.test_entities import entry
+
+    for ident, parent in pairs:
+        entry(tmp_path, ident,
+              extra=f"- within: {parent}\n" if parent else "")
+    return geo.nesting(entities.load(tmp_path))
+
+
+def test_a_point_is_reported_as_containing_nothing(tmp_path):
+    """The finding the four-class split was made to make possible. While
+    `place:` held a village and a peninsula alike, "X is inside Y" was untestable
+    — every parent might have been a region. Now a `place:` is a point, and a
+    point holds nothing whatever its child is."""
+    got = _nest(tmp_path, ("place:uelen", ""), ("land:chukotka", "place:uelen"))
+    assert [(r["child"], r["parent"]) for r in got] == \
+        [("land:chukotka", "place:uelen")]
+    assert "point contains nothing" in got[0]["reading"]
+
+
+def test_a_settlement_or_a_basin_inside_open_water_is_reported(tmp_path):
+    """Kamenskoye was filed under Penzhina Bay and stands on the river above it.
+    A drainage basin is dry ground however wet the thing it drains into, so it
+    is the same finding and not a second one."""
+    got = _nest(tmp_path,
+                ("water:penzhina-bay", ""),
+                ("place:kamenskoye", "water:penzhina-bay"),
+                ("river:penzhina", "water:penzhina-bay"))
+    assert {r["child"] for r in got} == {"place:kamenskoye", "river:penzhina"}
+
+
+def test_an_island_inside_a_strait_is_not_a_finding(tmp_path):
+    """The rule was wider once and said this, about the Diomedes and about St.
+    Lawrence Island — which are islands, which is what land inside water *is*,
+    and which have nowhere else to go: `within:` is the store's only relation and
+    an island 60 km offshore belongs to no land region. Two true rows in three is
+    how a report stops being read, so `land:` came out of the list."""
+    assert _nest(tmp_path,
+                 ("water:bering-strait", ""),
+                 ("land:diomede-islands", "water:bering-strait")) == []
+
+
+def test_a_river_holding_a_town_and_a_sea_holding_a_bay_are_both_silent(tmp_path):
+    """The ordinary shapes, stated so a widening of `NESTING` has to break
+    something. A `river:` is a watershed and holds the settlements in it; a
+    `water:` holds the water inside it."""
+    assert _nest(tmp_path,
+                 ("river:anadyr", ""), ("place:markovo", "river:anadyr"),
+                 ("water:okhotsk-sea", ""),
+                 ("water:penzhina-bay", "water:okhotsk-sea")) == []
+
+
+@built
+def test_the_committed_store_nests_coherently():
+    """The migration's own witness. Every `within:` in the store, not the twelve
+    pairs both of whose members somebody drew — which is the whole reason this
+    check needs no geometry."""
+    assert geo.nesting(entities.load(ROOT)) == []

@@ -1,7 +1,7 @@
 # place:akkani — Akkani
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.4970 -171.1729
 
 ## aliases

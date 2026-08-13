@@ -13,7 +13,7 @@
 
 ## gloss
 
-The water between [[place:chukchi-peninsula]] and the Alaskan shore, and the
+The water between [[land:chukchi-peninsula]] and the Alaskan shore, and the
 route the book's traders and boat crews take east.
 
 **No `area:`, deliberately.** No source in hand draws the strait as an extent:

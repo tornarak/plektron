@@ -1,7 +1,7 @@
 # place:nishne-kolymsk — Nishne-Kolymsk
 
 - status: ratified
-- within: water:kolyma
+- within: river:kolyma
 
 ## aliases
 

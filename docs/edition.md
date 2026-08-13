@@ -109,14 +109,54 @@ none of the book's, which is precisely what the alias rule is for.
 `None`:
 
     person → anthroponym    people → ethnonym     place → toponym
-    water  → hydronym       animal → zoonym       being → mythonym
-    event  → event
+    land   → toponym        water  → hydronym     river → hydronym
+    animal → zoonym         being  → mythonym     event → event
     language, taxon, institution, source → (none)
 
 The vocabulary is its own rather than `NAME_TYPES` verbatim, because a class is
 written into every `@ref` in the corpus and wants to be `person:`, not
 `anthroponym:`. The mapping is what holds the two together, and `validate` uses
 it to refuse a `<name type="toponym" ref="event:…">`.
+
+### The four geographical classes
+
+`place:` a terrestrial **point** — a village, a camp, a cape, a single peak.
+`land:` a terrestrial **region** — a peninsula, a range, an upland, an island, a
+district. `river:` a watercourse and the **basin** it drains. `water:` a body of
+standing or open **water** — a sea, a bay, a strait, a lake.
+
+It used to be two, `place:` and `water:`, and each held two unlike things: a
+village and a peninsula under one, the Anadyr river and the Bering Sea under the
+other. That cost two things a class is for.
+
+- **The atlas could not colour what it drew.** `geomap.css` had been colouring by
+  *shape kind* — `region`, `watershed`, `marine` — precisely because the entity
+  class could not tell them apart, and the prose beside it drew all four in one
+  blue. The classes now stand 1:1 against the shape kinds they are drawn from, so
+  the two views agree without either copying the other's table.
+- **`within:` could not be checked at all.** "X is inside Y" says nothing
+  testable while every parent might be a region; with the split, two
+  impossibilities fall straight out — a *point* contains nothing, and open
+  *water* holds no settlement and no drainage basin. That is `geo.NESTING`, run
+  by `geo verify`, and it needs no geometry, so it speaks about every pair in the
+  store rather than the dozen both of whose members somebody drew. It found one:
+  Kamenskoye filed under Penzhina Bay, the village standing on the river above
+  it. It deliberately does **not** flag `land:` inside `water:` — an island in a
+  strait is exactly that, and has nowhere else to go.
+
+**A name that does double duty gets an entry per class**, not one entry stretched
+over both: `river:anadyr`, `place:anadyr`, `water:anadyr-bay`, `land:chukotka`.
+That is also what ended the shadowing in the reading view, where the town and the
+river had shared the head token `anadyr` and only one of them could be reached.
+
+**Both toponym classes carry `type="toponym"` and both hydronym classes
+`type="hydronym"`**, which is not tidiness. What a page asserts is its `@type` —
+a reader saw a place-name — and whether that name denotes a point or a region is
+the store's business and was never recorded on the page. That equality is what
+lets `entity rename` move an entry between `place:` and `land:` while still
+refusing `place:` → `water:`; the 54 entries were migrated through the verb, with
+their `within:` chains, wikilinks and collated `@ref`s carried along, rather than
+by a pass over the files.
 
 **The four with no name-type are why `<rs>` exists here.** `NAME_TYPES` is
 scoped to what a reader of a page can see and record; it excludes `taxon`
@@ -131,7 +171,7 @@ refers to that entity", not "the page marked a proper noun".
     - status: ratified
     - link: wikidata:Q1683389
     - geo: 66.05 -169.6
-    - within: place:chukotka
+    - within: land:chukotka
     - authority: jochelson1900
 
     ## aliases
@@ -182,8 +222,8 @@ row cannot be answered by writing a number in a file.
   window. It overrides whichever frame would otherwise have been *derived* and
   nothing else, so `extent_of` still measures the real geometry and every member
   is still drawn. Two entries carry one and both are a default getting it wrong:
-  `place:northeast-siberia`, a container with no shape, whose viewBox was
-  otherwise the union of everything beneath it; and `place:chukchi-peninsula`,
+  `land:northeast-siberia`, a container with no shape, whose viewBox was
+  otherwise the union of everything beneath it; and `land:chukchi-peninsula`,
   which frames on Chukotka by default and had thirty-four villages in a corner.
   A parent's frame is what its children frame on. `docs/decisions.md` has why no
   frame worked at all until the projection changed with it.
@@ -1008,7 +1048,7 @@ guess this project is arranged against. `watershed:main` and the English word ar
 one keystroke apart in that file listing.
 
 A shape kind is held **disjoint from `ENTITY_CLASSES`** — `langarea:`, never
-`language:` — because an entity file carries `within: place:chukotka` two lines
+`language:` — because an entity file carries `within: land:chukotka` two lines
 from `area: langarea:chuk1273`, and a reader who cannot tell them apart by
 looking is one keystroke from an `area:` that resolves as an entity reference.
 `entities.parse` refuses a colliding kind outright.
@@ -1090,7 +1130,7 @@ its tributaries.
 
 A `geo:` point outside its own shape is likewise reported with a distance and is
 not a defect: a river's natural point is its **mouth**, which sits on the very
-boundary the basin was delineated from. `water:anadyr` is 0.59° out, at the
+boundary the basin was delineated from. `river:anadyr` is 0.59° out, at the
 estuary. And a shape two entities claim is legal — `people:chukchi` and
 `language:chukchi` both point at the one Asher polygon, and forcing a choice
 would be this edition deciding something the source does not.
@@ -1157,8 +1197,8 @@ is what says those are overlays rather than another rung of the tree.
 The encyclopedia index nests too, now that `within:` is not read as the
 geography's. Inside a class an entry sits under its parent — the Maritime and
 Reindeer Chukchi under the Chukchi — and **only where the parent is in the same
-class**. Following the field across classes would put `water:anadyr` under
-`place:chukotka` and leave the *water* branch a list of orphans; such a child
+class**. Following the field across classes would put `river:anadyr` under
+`land:chukotka` and leave the *river* branch a list of orphans; such a child
 stays at the top of its own class, and its card is where the cross-class chain
 is legible. So the index nests within a class and the atlas nests across them,
 which is the one place the two trees are allowed to differ.

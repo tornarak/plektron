@@ -12,4 +12,4 @@
 ## gloss
 
 The sea south of [[water:bering-strait]]. The book's usual name for the water
-off the Pacific coast of [[place:chukotka]].
+off the Pacific coast of [[land:chukotka]].

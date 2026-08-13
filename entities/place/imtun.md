@@ -1,7 +1,7 @@
 # place:imtun — Iˊmtun
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.4216 -173.7807
 
 ## aliases

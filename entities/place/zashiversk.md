@@ -1,7 +1,7 @@
 # place:zashiversk — Zashiversk
 
 - status: proposed
-- within: water:indigirka
+- within: river:indigirka
 
 ## aliases
 
@@ -11,6 +11,6 @@
 
 ## gloss
 
-Зашиверск, on the [[water:indigirka]]; abandoned in the nineteenth century.
+Зашиверск, on the [[river:indigirka]]; abandoned in the nineteenth century.
 Named for its chief officer Banner, who had a hand in the founding of the Anui
 fair at [[place:ostrovnoye]].

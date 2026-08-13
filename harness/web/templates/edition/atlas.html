@@ -8,6 +8,14 @@
 {% macro node(n) %}
 <li><a class='node {{ "sel" if n.selected }}' data-ref='{{ n.id }}'
        href='{{ base }}/atlas?at={{ n.id }}'>{{ n.canonical }}</a>
+{# Two pills, because they answer two questions and one used to answer neither.
+   `cls` is what the thing is — a point on the ground, a land region, a river
+   and its basin, a body of open water — and it is the reason those four are
+   separate classes at all. `mark` is how the atlas can draw it. A node reading
+   `land · framed` has no shape of its own and is boxed by what lies beneath;
+   `place · point` is a keyed coordinate. The class pill takes the node's own
+   family colour so the tree reads as a legend for the map beside it. #}
+<span class='pill cls' data-ref='{{ n.id }}'>{{ n.cls }}</span>
 <span class='pill'>{{ n.mark }}</span>
 <a class='ent' data-ref='{{ n.id }}' href='{{ base }}/entity/{{ n.id }}'
    title='the entry'>&para;</a>

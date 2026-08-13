@@ -1,7 +1,7 @@
 # place:enurmino — Enurmino
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.9537 -171.8627
 
 ## aliases

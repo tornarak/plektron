@@ -1,7 +1,7 @@
 # water:korf-bay — Korf Bay
 
 - status: proposed
-- within: place:kamchatka
+- within: land:kamchatka
 
 ## aliases
 
@@ -11,6 +11,6 @@
 
 ## gloss
 
-Залив Корфа, on the Bering-Sea side of northern [[place:kamchatka]]. Bogoras
+Залив Корфа, on the Bering-Sea side of northern [[land:kamchatka]]. Bogoras
 places [[place:cape-olutorsky]] close to it (1-032) and uses it with
-[[water:penzhina-bay]] to bound the [[place:parapolsky-dol]] (1-035).
+[[water:penzhina-bay]] to bound the [[land:parapolsky-dol]] (1-035).

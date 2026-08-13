@@ -103,6 +103,10 @@ def run_list(a) -> int:
 def run_verify(a) -> int:
     r = verify(a.root)
     out(a, r["scope"], name="scope")
+    # First, because it is the only section that needs no shape: it speaks about
+    # every `within:` in the store, where containment can only speak about the
+    # dozen pairs both of whose members somebody drew.
+    out(a, r["nesting"], name="nesting", heading=True)
     out(a, r["containment"], name="containment", heading=True)
     out(a, r["points"], name="points", heading=True)
     out(a, r["shared"], name="shared", heading=True)

@@ -1,7 +1,7 @@
 # place:pitlekai — Pitlekai
 
 - status: proposed
-- within: place:chukotka
+- within: land:chukotka
 
 ## aliases
 

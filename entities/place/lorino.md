@@ -1,7 +1,7 @@
 # place:lorino — Lorino
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.5036 -171.7014
 
 ## aliases

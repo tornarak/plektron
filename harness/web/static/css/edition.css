@@ -92,11 +92,28 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
  * of one per rule: every link rule below is written in terms of it and defaults
  * it to `--accent`, and the family rules set nothing else.
  *
- * **Eleven classes, five families.** Eleven hues would be several pairs nobody
- * can tell apart, twice over for dark mode, and a twelfth class would need a
- * colour that does not exist. A family is the coarsest grouping that still
- * answers the question a reader is asking — is this a place, a creature, a
- * person, a record, or a word?
+ * **Thirteen classes, five families.** Thirteen hues would be several pairs
+ * nobody can tell apart, twice over for dark mode, and a fourteenth class would
+ * need a colour that does not exist. A family is the coarsest grouping that
+ * still answers the question a reader is asking — is this somewhere on land,
+ * somewhere in the water, a creature, a person, or a record?
+ *
+ * **Land and water are two families and were one.** The old rule put `place:`
+ * and `water:` in a single blue, on the reading that a sentence asks "place or
+ * person" and nothing finer. That reading was thin even then and the four-class
+ * split makes it wrong: `land:`/`place:` and `water:`/`river:` are the pair a
+ * reader of this book separates constantly — the Anadyr is a river, a bay, a
+ * town and a gulf within three pages — and the atlas beside the text has drawn
+ * them apart since `geomap.css` took `data-kind`. `--pin` is the terrestrial
+ * one because it is already what the map paints a settlement, so a village's
+ * dot and its name in the sentence beside it are the same colour rather than
+ * two unrelated conventions. Its near neighbour in light mode is `--flora`
+ * (animal/taxon), which is the one pair here worth watching.
+ *
+ * The **point/region** cut inside each family carries no hue. Five families is
+ * what the palette holds, the question "land or water" is the one a reader asks
+ * mid-sentence, and "point or region" is a question about a map — so the atlas
+ * answers it, on the node's own pill, and the prose does not try.
  *
  * `--abstract` is its own token and not `--mark`, which is the *apparatus*
  * colour: `.flag`, `.unclear`, `.unsettled` and `.pill.proposed` are all
@@ -109,17 +126,33 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
  * `harness/entities.py`'s ENTITY_CLASSES is the authority and this is a copy of
  * it, so `test_edition.py` walks that dict and fails on any class with no rule
  * here, or with more than one.
+ *
+ * **The default is on `:root` and the selectors carry no element**, which is
+ * what makes the family rules actually win. They used to be `a[data-ref^=…]` —
+ * (0,1,1) — against consumers that each declared their own `--link:var(--accent)`
+ * fallback at the same (0,1,1) and further down the file, so `a.node` in the
+ * atlas beat every one of them and the whole tree came out accent-coloured.
+ * A default that ties with the rule overriding it is not a default. Now nothing
+ * but `:root` and these five lines declares `--link` at all: `--link` inherits,
+ * an element's own declaration beats an inherited one whatever its specificity,
+ * and a consumer can no longer take part in the contest by accident.
+ *
+ * Dropping the `a` is also what lets a non-link wear the colour: the atlas puts
+ * the class on a `span.pill` beside each node, and it takes the family hue from
+ * the same declaration rather than from a copy of the table.
  */
-.ent { --link:var(--accent); color:var(--link); text-decoration:none;
+:root { --link:var(--accent) }
+[data-ref^="place:"],  [data-ref^="land:"]         { --link:var(--pin) }
+[data-ref^="water:"],  [data-ref^="river:"]        { --link:var(--water) }
+[data-ref^="animal:"], [data-ref^="taxon:"]        { --link:var(--flora) }
+[data-ref^="person:"], [data-ref^="people:"],
+[data-ref^="language:"]                            { --link:var(--accent) }
+[data-ref^="event:"],  [data-ref^="source:"],
+[data-ref^="institution:"], [data-ref^="being:"]   { --link:var(--abstract) }
+.ent { color:var(--link); text-decoration:none;
   border-bottom:1px solid color-mix(in srgb,var(--link) 40%,transparent) }
 .ent:hover { border-bottom-color:var(--link);
   background:color-mix(in srgb,var(--link) 8%,transparent) }
-a[data-ref^="place:"],  a[data-ref^="water:"]        { --link:var(--water) }
-a[data-ref^="animal:"], a[data-ref^="taxon:"]        { --link:var(--flora) }
-a[data-ref^="person:"], a[data-ref^="people:"],
-a[data-ref^="language:"]                             { --link:var(--accent) }
-a[data-ref^="event:"],  a[data-ref^="source:"],
-a[data-ref^="institution:"], a[data-ref^="being:"]   { --link:var(--abstract) }
 .figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
 #foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
   font-size:.85rem; color:var(--dim) }
@@ -247,8 +280,15 @@ ul.tree code.cls.empty { color:var(--dim) }
 /* The atlas tree's node link. It carries `data-ref` like every other link to a
    record, so it takes its family colour the same way — the tree is the one place
    a reader sees a hundred entity names at once, and the classes are exactly what
-   is worth telling apart there. */
-a.node { --link:var(--accent); color:var(--link); text-decoration:none;
+   is worth telling apart there.
+   **`.node`, not `a.node`, and that was the whole of why the tree was one
+   colour.** A family rule is `a[data-ref^="…"]` — an element and an attribute,
+   specificity (0,1,1). `a.node` is an element and a class, the same (0,1,1), and
+   it sits two hundred lines further down the file, so its `--link` default won
+   every tie and every node in the atlas came out in the accent whatever it was.
+   It declares no `--link` of its own: the default lives on `:root` now, for the
+   reason written out at the family table above. */
+.node { color:var(--link); text-decoration:none;
   border-bottom:1px solid transparent }
 a.node:hover { border-bottom-color:var(--link) }
 a.node.sel { font-weight:600; border-bottom-color:var(--link) }

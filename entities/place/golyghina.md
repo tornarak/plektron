@@ -1,7 +1,7 @@
 # place:golyghina — Golyghina
 
 - status: proposed
-- within: place:kamchatka
+- within: land:kamchatka
 
 ## aliases
 
@@ -11,5 +11,5 @@
 
 ## gloss
 
-Голыгино, southwestern [[place:kamchatka]]; named once, with
+Голыгино, southwestern [[land:kamchatka]]; named once, with
 [[place:yavina]], for its dogs (1-134).

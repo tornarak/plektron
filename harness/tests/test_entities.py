@@ -491,12 +491,46 @@ def test_a_draft_only_ref_does_not_refuse_the_rename(tmp_path):
     assert "place:markovo" in E.load(tmp_path)
 
 
-def test_a_rename_may_not_change_the_class(tmp_path):
-    """The class is half the identity, so every `@ref` would mean a different
-    thing afterwards. That is a delete and a create, and it should be typed."""
+def test_a_rename_may_not_cross_a_name_type(tmp_path):
+    """`place:` → `water:` is toponym to hydronym. A collated page carries
+    `<name type="toponym" ref="place:markova">`, and moving the entry would leave
+    the ref contradicting the type beside it — which is a re-reading of the page,
+    not a rename."""
     entry(tmp_path, "place:markova")
     with pytest.raises(ValueError, match="changes the class"):
         _rename(tmp_path, "place:markova", "water:markova")
+
+
+def test_a_rename_within_one_name_type_moves_the_class(tmp_path):
+    """The other half of the same rule, and what the four geographical classes
+    were migrated by. `place:` and `land:` are both `toponym`: a page recorded
+    that a reader saw a place-name, and whether that name denotes a point or a
+    region is a fact about the store that no page ever asserted. So the collated
+    `@ref` is re-pointed like any other rename and the page stays true."""
+    entry(tmp_path, "place:kamchatka")
+    entry(tmp_path, "place:golyghina", extra="- within: place:kamchatka\n")
+    (tmp_path / "tei").mkdir()
+    (tmp_path / "tei" / "chukchi-1-021.xml").write_text(
+        '<TEI><name type="toponym" ref="place:kamchatka">K</name></TEI>',
+        encoding="utf-8")
+
+    assert _rename(tmp_path, "place:kamchatka", "land:kamchatka") == 0
+    store = E.load(tmp_path)
+    assert "land:kamchatka" in store and "place:kamchatka" not in store
+    assert store["place:golyghina"]["within"] == "land:kamchatka"
+    page = (tmp_path / "tei" / "chukchi-1-021.xml").read_text(encoding="utf-8")
+    assert 'type="toponym" ref="land:kamchatka"' in page
+    assert E.check(tmp_path)["ok"]
+
+
+def test_a_rename_between_two_typeless_classes_is_still_refused(tmp_path):
+    """The licence is "the `@type` does not move", and four classes have no
+    `@type` at all. Reading `None == None` as "does not move" would let
+    `taxon:` → `source:` through on the strength of two absences, which is the
+    one way a mechanical rule about equality can be worse than a flat refusal."""
+    entry(tmp_path, "taxon:rangifer")
+    with pytest.raises(ValueError, match="changes the class"):
+        _rename(tmp_path, "taxon:rangifer", "source:rangifer")
 
 
 def test_a_rename_onto_an_existing_id_is_refused(tmp_path):

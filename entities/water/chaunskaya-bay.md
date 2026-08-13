@@ -1,12 +1,12 @@
 # water:chaunskaya-bay — Chaunskaya Bay
 
 - status: ratified
-- within: place:chukotka
+- within: land:chukotka
 - area: marine:chaun-bay
 - link: wikipedia:Chaunskaya_Bay
 - link: wikidata:Q915250
 
-Outlet of the [[water:chaun]] river.
+Outlet of the [[river:chaun]] river.
 The [[people:chuvans]] historically lived here.
 
 ## aliases

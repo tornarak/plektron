@@ -1,7 +1,7 @@
 # place:valkalen — Valkaˊʟ̣ên
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.0517 -175.7774
 
 ## aliases

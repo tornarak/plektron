@@ -1,7 +1,7 @@
 # place:yanrakenot — Yanřaˊkê-not
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.9105 -172.4979
 
 ## aliases

@@ -1,7 +1,7 @@
 # place:uelen — Uelen
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.1607 -169.8183
 
 ## aliases

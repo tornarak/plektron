@@ -1,7 +1,7 @@
 # place:chutpen — Chutpen
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.5218 -170.9582
 
 ## aliases

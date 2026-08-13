@@ -1,7 +1,7 @@
 # place:cape-olutorsky — Cape Olutorsky
 
 - status: ratified
-- within: place:kamchatka
+- within: land:kamchatka
 
 ## aliases
 

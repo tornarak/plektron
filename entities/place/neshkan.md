@@ -1,7 +1,7 @@
 # place:neshkan — Neshkan
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 67.0375 -172.9632
 
 ## aliases

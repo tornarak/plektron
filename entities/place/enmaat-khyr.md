@@ -1,7 +1,7 @@
 # place:enmaat-khyr — Enmaat'khyr
 
 - status: ratified
-- within: place:chukotka
+- within: land:chukotka
 - geo: 69.6517 176.8416
 
 ## aliases

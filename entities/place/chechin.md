@@ -1,7 +1,7 @@
 # place:chechin — Čeˊčin
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.4338 -172.7683
 
 ## aliases

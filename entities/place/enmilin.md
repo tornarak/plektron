@@ -1,7 +1,7 @@
 # place:enmilin — ᴇˊnmɪlɪn
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.0125 -175.8414
 
 ## aliases

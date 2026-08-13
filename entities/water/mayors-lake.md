@@ -1,7 +1,7 @@
 # water:mayors-lake — Mayor’s Lake
 
 - status: proposed
-- within: water:anadyr
+- within: river:anadyr
 
 ## aliases
 

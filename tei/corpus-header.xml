@@ -331,8 +331,12 @@
                  replacementPattern="entities/people/$1.md"/>
       <prefixDef ident="place" matchPattern="(.+)"
                  replacementPattern="entities/place/$1.md"/>
+      <prefixDef ident="land" matchPattern="(.+)"
+                 replacementPattern="entities/land/$1.md"/>
       <prefixDef ident="water" matchPattern="(.+)"
                  replacementPattern="entities/water/$1.md"/>
+      <prefixDef ident="river" matchPattern="(.+)"
+                 replacementPattern="entities/river/$1.md"/>
       <prefixDef ident="animal" matchPattern="(.+)"
                  replacementPattern="entities/animal/$1.md"/>
       <prefixDef ident="being" matchPattern="(.+)"

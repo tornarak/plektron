@@ -633,11 +633,65 @@ def composite_claims(store: dict) -> dict[str, list[str]]:
     return out
 
 
+#: What a `within:` parent of each geographical class can hold, and why not.
+#: Keyed by the *parent*'s class; the value is the set of child classes that are
+#: a finding under it, with the reading.
+#:
+#: **This is the check the four-class split was for.** While `place:` held a
+#: village and a peninsula alike, "X is inside Y" said nothing a rule could
+#: test: every parent might be a region. Now a class states the shape of the
+#: thing, and two impossibilities fall straight out of it — a *point* holds
+#: nothing at all, and a *body of open water* holds no ground.
+#:
+#: **`land:` is deliberately not a finding under `water:`.** It was, on the
+#: reading that a body of open water holds no ground, and the first run said so
+#: about the Diomedes and St. Lawrence Island — which are islands, which is what
+#: land inside water *is*, and which have nowhere else to go: `within:` is the
+#: only relation the store has, and an island 60 km offshore belongs to no land
+#: region. Two true rows in three is how a report stops being read. What is left
+#: is what cannot be true at any scale: a settlement adrift in open water, and a
+#: drainage basin — dry ground by definition, whatever it drains into — inside
+#: the bay it empties to.
+#:
+#: Reports and never gates, like everything else `verify` returns.
+NESTING = {
+    "place": (("place", "land", "water", "river"),
+              "a point contains nothing"),
+    "water": (("place", "river"),
+              "a settlement or a drainage basin inside open water"),
+}
+
+
+def nesting(store: dict) -> list[dict]:
+    """Every `within:` whose two classes cannot both be true. No geometry.
+
+    Deliberately separate from `verify`'s containment rows, which compare two
+    *shapes* and can only ever speak about the pairs where both were drawn. This
+    speaks about every pair in the store, including the ones nothing locates,
+    which is most of them — and it is the half a shape could never supply, since
+    a point and a region look identical to a polygon test the moment one of them
+    is missing.
+    """
+    out = []
+    for rec in sorted(store.values(), key=lambda r: r["id"]):
+        parent = store.get(rec["within"]) if rec["within"] else None
+        if not parent:
+            continue
+        bad, why = NESTING.get(parent["class"], ((), ""))
+        if rec["class"] in bad:
+            out.append({"child": rec["id"], "parent": parent["id"],
+                        "reading": why})
+    return out
+
+
 def verify(root: Path = Path(".")) -> dict:
     """The geometry against what a human authored. Reports; never gates.
 
     Findings, and the wording of each is load-bearing:
 
+    - **nesting**, where the two classes of a `within:` pair contradict each
+      other — a child under a `place:`, which is a point, or dry ground under a
+      `water:`, which is open water. `NESTING` carries the argument.
     - **containment**, where a child and its `within:` parent both have a
       shape. Named as a *pair*: the geometry says the two authored facts
       disagree and cannot say which of them is wrong.
@@ -699,14 +753,17 @@ def verify(root: Path = Path(".")) -> dict:
     unclaimed = sorted(i for i, s in idx["shapes"].items()
                        if s.get("kind") != "base" and i not in claims)
     open_rows = unlocated(store, root)
+    nested = nesting(store)
     return {
         "scope": [{"pairs_checked": len(containment),
                    "disagree": sum(1 for c in containment
                                    if c["reading"] == "disagrees"),
+                   "nesting": len(nested),
                    "points_out": len(points),
                    "shared": len(shared),
                    "unclaimed": len(unclaimed),
                    "unlocated": len(open_rows)}],
+        "nesting": nested,
         "containment": containment,
         "points": points,
         "shared": shared,

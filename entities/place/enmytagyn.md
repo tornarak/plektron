@@ -1,7 +1,7 @@
 # place:enmytagyn — Enmytagyn
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.3508 -170.5969
 
 ## aliases

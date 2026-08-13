@@ -1,7 +1,7 @@
 # place:cape-ulakhpen — Cape Ulakhpen
 
 - status: proposed
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 
 ## aliases
 

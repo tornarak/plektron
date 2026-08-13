@@ -1,7 +1,7 @@
 # place:ryrkaypiy — Ryrkaypiy
 
 - status: ratified
-- within: place:chukotka
+- within: land:chukotka
 - geo: 68.9177 -179.4841
 
 ## aliases

@@ -1,7 +1,7 @@
 # place:yavina — Yavina
 
 - status: proposed
-- within: place:kamchatka
+- within: land:kamchatka
 
 ## aliases
 

@@ -23,6 +23,7 @@ from pathlib import Path
 from ..entities import (
     _SECTION,
     ALIASES,
+    ENTITY_CLASSES,
     Malformed,
     check,
     load,
@@ -441,11 +442,24 @@ def run_rename(a) -> int:
         raise ValueError(f"no such entity: {old}")
     old_cls, _ = split_id(old)
     new_cls, _ = split_id(new)
+    # **A class change is permitted exactly where the `<name @type>` does not
+    # move.** The refusal used to be flat, on "every @ref would mean a different
+    # thing afterwards" — true of `place:` → `event:`, and false of the pair the
+    # geographical split is made of. What a page asserts is its `@type`: a reader
+    # wrote `<name type="toponym">`, meaning they saw a place-name. Whether that
+    # name denotes a point (`place:`) or a region (`land:`) is a fact about the
+    # store, and no page ever recorded it. Where the two classes map to one type
+    # the page is untouched by the move; where they do not — `place:` → `water:`,
+    # toponym to hydronym — the ref would contradict the type beside it, and that
+    # is a re-reading of the page, which is a human's and not a verb's.
     if old_cls != new_cls:
-        raise ValueError(
-            f"{old} → {new} changes the class. That is a delete and a create, "
-            f"not a rename: the class is half the identity, so every @ref "
-            f"pointing at it would mean a different thing afterwards")
+        want, got = ENTITY_CLASSES[old_cls], ENTITY_CLASSES[new_cls]
+        if want is None or want != got:
+            raise ValueError(
+                f"{old} → {new} changes the class from one <name @type> to "
+                f"another ({want or 'none'} → {got or 'none'}). That is a delete "
+                f"and a create, not a rename: a page's @type records what a "
+                f"reader saw, and the ref would contradict it afterwards")
     if new in store:
         raise ValueError(f"{new} already exists at {store[new]['path']}")
 

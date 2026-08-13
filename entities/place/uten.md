@@ -1,7 +1,7 @@
 # place:uten — Uˊten
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.3757 -170.6167
 
 ## aliases

@@ -524,9 +524,19 @@ def test_every_entity_class_has_exactly_one_link_colour():
 def test_every_link_colour_is_defined_in_both_themes():
     """The drift far likelier than a missing class: a token added to `:root` and
     not to the dark block inherits the light value, and a colour code that holds
-    in one theme only is worse than none."""
+    in one theme only is worse than none.
+
+    **The family tokens are read off the family rules**, not listed here. A hand
+    list is a fourth copy of the same fact and the one nobody updates: `--pin`
+    became a link colour when land and water split into two families, and a
+    literal tuple would have gone on asserting about the five it was written
+    with. What stays literal is the apparatus tokens, which no `--link` rule
+    names and which would otherwise leave the set on the day the last rule using
+    one moved."""
     css = CSS.read_text(encoding="utf-8")
-    for token in ("--flora", "--abstract", "--lex", "--basin", "--hi"):
+    families = set(re.findall(r"--link:\s*var\((--[a-z]+)\)", css))
+    assert families, "no --link family rules found; the selector shape moved"
+    for token in families | {"--lex", "--basin", "--hi", "--mark", "--sel"}:
         assert len(re.findall(rf"{token}\s*:", css)) == 2, token
 
 

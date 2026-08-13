@@ -1,7 +1,7 @@
 # place:misqan — Mɪˊs˙qᴀn
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.4777 -178.7466
 
 ## aliases

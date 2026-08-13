@@ -1,7 +1,7 @@
 # place:nutepelmen — Nutepelmen
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 67.4263 -174.9253
 
 ## aliases

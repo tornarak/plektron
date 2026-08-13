@@ -1,7 +1,7 @@
 # water:provideniya-bay — Provideniya Bay
 
 - status: proposed
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 
 ## aliases
 

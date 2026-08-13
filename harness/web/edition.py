@@ -504,6 +504,13 @@ def atlas(request: Request, at: str = ""):
         return {
             "id": ident,
             "canonical": rec["canonical"],
+            # **The class on every node, not only on the root it hangs under.**
+            # The tree nests across classes — a river inside a land region, a
+            # village inside a river's basin — so the heading says what the root
+            # is and nothing said what any of the hundred names below it were.
+            # Read against `mark`, which is a different question: `cls` is what
+            # the thing *is*, `mark` is how the atlas knows where it is.
+            "cls": rec["class"],
             "mark": "shape" if rec["area"] else "point" if rec["geo"] else "framed",
             "selected": ident == at,
             "children": [

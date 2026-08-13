@@ -652,9 +652,9 @@ flattener and already tolerated both forms — it simply had one caller too few.
 
 ## The atlas drew a box nobody could have declared
 
-`place:russian-far-east` has no shape, so its map's viewBox came from the union
+`land:russian-far-east` has no shape, so its map's viewBox came from the union
 of every descendant's extent. Two of them set three of its four sides: the
-[[water:lena]] reaching 103°E and 72.9°N, the [[water:amur]] reaching 41.7°N —
+[[river:lena]] reaching 103°E and 72.9°N, the [[river:amur]] reaching 41.7°N —
 rivers Bogoras names ten times between them, as distant comparanda. The map was
 a quarter of the northern hemisphere, bent round the pole, with Alaska in shot,
 and every one of the sixty-odd entries under it inherited that frame.
@@ -668,7 +668,7 @@ sizes itself on the real geometry and `member_shapes` still draws everything
 beneath: *where to look*, not *what is there*. Both defaults have a case they get
 wrong, and one field answers both — a shapeless container sized by whichever
 descendant strayed farthest, and a shape framed on its parent, which is what
-makes a shape mean something until the shape is `place:chukchi-peninsula` and
+makes a shape mean something until the shape is `land:chukchi-peninsula` and
 Chukotka's box packs thirty-four villages into a corner. A parent's declared
 frame is what its children frame on, or the field would fix one page and leave
 every page under it drawn to the box just declared wrong.
@@ -710,11 +710,26 @@ watersheds, open water and settlements all drew in one accent, which on a narrow
 frame is one or two shapes and on a wide one is fourteen watersheds, five regions
 and three stretches of sea in a single field of outlines. The shape kind is
 declared in `data/geo/` and now travels on the path as `data-kind`, one hue each.
-Deliberately **not** the prose vocabulary: `edition.css` groups `place:` and
-`water:` into one hue because in a sentence "place or person" is the question,
-and on a map that is the wrong axis twice over — `place:` covers a peninsula and
-a mountain range alike, and land from water is exactly what needs separating.
-The pins took `--pin`, a theme token that had been declared and never used.
+Deliberately **not** the prose vocabulary, which then grouped `place:` and
+`water:` into one hue because in a sentence "place or person" is the question —
+and on a map that was the wrong axis twice over, `place:` covering a peninsula
+and a mountain range alike. The pins took `--pin`, a theme token that had been
+declared and never used.
+
+**That "wrong axis twice over" was the first statement of the defect, and it was
+about the classes and not about the map.** Colouring by shape kind was correct
+and remains so, but it had been *forced*: the entity class could not tell a
+coastline from a drainage divide because two classes were carrying four kinds of
+thing. Splitting them into `place:`/`land:`/`river:`/`water:` — a point, a
+region, a basin, a body of water — put the class 1:1 against the shape kind it is
+drawn from, so `geomap.css` keys off `data-kind` by choice now rather than for
+want of an alternative, and `edition.css` can separate land from water in prose
+with the map already agreeing. Fixing that also uncovered a plain CSS defect the
+palette had been hiding: `a.node` declared its own `--link` fallback at the same
+specificity as the family rules and two hundred lines below them, so every node
+in the atlas tree came out accent-coloured whatever its class. A default that
+ties with the rule overriding it is not a default; the default moved to `:root`
+and no consumer declares `--link` at all any more.
 
 **What this cost, and the lesson.** Four rounds, each fix revealing that the
 previous symptom had a second cause underneath it, and each round I reported the

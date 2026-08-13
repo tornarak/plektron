@@ -1,7 +1,7 @@
 # place:nunligren — Nuˊnlig̣ren
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.7978 -175.3788
 
 ## aliases

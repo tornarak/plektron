@@ -1,7 +1,7 @@
 # place:retken — Rêˊtkên
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 65.5304 -177.1762
 
 ## aliases

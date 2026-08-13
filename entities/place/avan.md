@@ -1,7 +1,7 @@
 # place:avan — Avan
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 64.2854 -173.2909
 
 ## aliases

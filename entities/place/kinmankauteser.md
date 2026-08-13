@@ -1,7 +1,7 @@
 # place:kinmankauteser — Kinmankauteser
 
 - status: ratified
-- within: place:chukotka
+- within: land:chukotka
 - geo: 69.5992 177.2827
 
 ## aliases

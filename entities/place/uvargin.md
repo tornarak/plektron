@@ -1,7 +1,7 @@
 # place:uvargin — Uvargin
 
 - status: ratified
-- within: place:chukotka
+- within: land:chukotka
 - geo: 69.7599 176.3612
 
 ## aliases

@@ -1,7 +1,7 @@
 # place:kolyuchin — Kolyuchin
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 67.4633 -174.6155
 
 ## aliases

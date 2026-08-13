@@ -1,7 +1,7 @@
 # place:seshan — Seshan
 
 - status: ratified
-- within: place:chukchi-peninsula
+- within: land:chukchi-peninsula
 - geo: 66.7688 -171.4139
 
 ## aliases

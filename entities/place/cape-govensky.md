@@ -1,7 +1,7 @@
 # place:cape-govensky — Cape Govensky
 
 - status: proposed
-- within: place:kamchatka
+- within: land:kamchatka
 
 ## aliases
 
