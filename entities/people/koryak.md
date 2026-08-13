@@ -10,4 +10,6 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Koryak | | no | |
+| Reindeer Koryak | | yes | |
+| Maritime Koryak | | yes | |
 | Taˊn˙ñɪt | ckt | yes | |

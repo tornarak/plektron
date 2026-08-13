@@ -1,6 +1,6 @@
 # water:lavrentiya-bay — Lavrentiya Bay
 
-- status: proposed
+- status: ratified
 - within: place:chukchi-peninsula
 
 ## aliases

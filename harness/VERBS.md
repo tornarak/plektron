@@ -1346,12 +1346,16 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 **Note** this is cheap only while the corpus holds few `@ref`s. It is the verb that makes an identity decision reversible, which is why the modern-romanization pass could be made at all.
 
 ### entity ratify ID...
-**Does** `proposed` → `ratified`. **The human act**, and the only thing that lets a rule link the entry's forms without asking — so it means the entry has been read against the pages it claims, not that it looks plausible.
-**Reads** `entities/`. **Writes** the named files under `--commit`. **Exit** 0.
+**Does** `proposed` → `ratified`, **and applies the links that ratification licenses to every collated page**. **The human act**, and the only thing that lets a rule link the entry's forms without asking — so it means the entry has been read against the pages it claims, not that it looks plausible.
+**Reads** `entities/`, committed `tei/`. **Writes** the named files and every page that gained a link, under `--commit`. **Exit** 0.
 ```
 --commit
 --root --json --toon --pager
 ```
+**Note** the page pass is why this is one act and not two. `tei generate` links every auto form the store held *when it ran*, and collation follows generation — so an entry ratified afterwards left plain text on every page already collated, invisibly, because `tei validate` re-derives the links a page *has* and had nothing to say about the ones it lacks. Both directions are checked now: validate reports the gap as a worklist line, and this closes it.
+**Note** **collated pages are relinked; drafts are regenerated.** A draft carries the generator's own questions beside its text, so applying the link without answering the comment would leave a fresh `<rs>` next to a note saying no rule may write one — two halves of a file contradicting each other with neither marked stale. `tei generate --force` rebuilds both from the same store in one pass, and it is scoped to the pages that mention the entity rather than sweeping the corpus on every ratify. A page a collator has claimed is in `tei/` and so is not a draft, which is what keeps the force from moving a baseline under a review in progress. A draft that cannot be rebuilt — no `gt/ocr/` — is reported still out of date rather than raised: ratifying an entry is not the act that should fail because a derived file will not build.
+**Note** it rewrites the page source rather than round-tripping a parse tree, so everything the rule did not touch comes back byte-identical and the diff is exactly the links. `harness/relink.py` names the four things it will not do — text already inside an `<rs>`, text inside a `<name>`/`<foreign>`/`<term>` (a Tier-1 handle is *enclosed* by a reference, never pierced by one), a segment carrying an XML entity, and a match crossing an element boundary — and reports each rather than skipping in silence.
+**Note** without `--commit` the page rows are a preview of what ratifying would apply, computed against the store as it would be.
 
 ### entity occurrences [ID...]
 **Does** where an entity appears, by two routes: the `@ref` links already in committed TEI, and the alias hits nobody has linked. The second is the interesting half — a large unlinked count on a ratified entity means pages collated before the entry existed, and `tei generate` will link them on the next run. Measurement; never gates.

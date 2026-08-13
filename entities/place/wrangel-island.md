@@ -1,6 +1,6 @@
 # place:wrangel-island — Wrangel Island
 
-- status: proposed
+- status: ratified
 - within: place:chukotka
 - area: region:wrangel-island
 

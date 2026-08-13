@@ -571,8 +571,14 @@ def map_context(
 
 
 
-def _guarded(root: Path, write) -> dict:
+def _guarded(root: Path, write, report=None) -> dict:
     """Run a write, then refuse it if the store no longer checks out.
+
+    `report` is a thunk read *after* the write survives the gate, so a caller can
+    say what the act did. `{"ok": True}` alone was indistinguishable from "it
+    worked and changed nothing", which is the answer to a different question:
+    ratifying an entity whose form no page has yet printed is a success, and a
+    reader watching for links needs to be told that rather than left to infer it.
 
     The browser is a human acting, not a pass proposing, so it does not need
     `--commit` — the click is the act, and git is the witness. What it does need
@@ -588,7 +594,7 @@ def _guarded(root: Path, write) -> dict:
             "error": "refused — the store would not check out: "
             + "; ".join(rep["errors"][:3])
         }
-    return {"ok": True}
+    return {"ok": True, **(report() if report else {})}
 
 
 def _ratify(ent_id: str, root: Path) -> dict:
@@ -608,9 +614,44 @@ def _ratify(ent_id: str, root: Path) -> dict:
             before.replace("- status: proposed", "- status: ratified", 1),
             encoding="utf-8",
         )
-        return lambda: p.write_text(before, encoding="utf-8")
+        # **The same second half as `harness entity ratify`**, because there are
+        # two ways to ratify and only one of them applying the links it licenses
+        # would leave the browser and the terminal putting the corpus in
+        # different states. `relink.apply_to_corpus` is the one implementation;
+        # its undo list joins this one so a store that fails the gate takes the
+        # pages back with it.
+        from .relink import apply_to_corpus
 
-    return _guarded(root, write)
+        got, _left, undo = apply_to_corpus(root, load(root))
+        applied.extend(got)
+
+        def back():
+            for fn in undo:
+                fn()
+            p.write_text(before, encoding="utf-8")
+
+        return back
+
+    applied: list[dict] = []
+
+    def report() -> dict:
+        # **The drafts too, and by regenerating them.** `relink` touches
+        # committed `tei/` alone, which is one page — so an entry that page does
+        # not print linked nothing however often the book printed it, and the
+        # click looked like it had failed. The drafts are where a reader with
+        # `--drafts` is actually reading, and leaving them was the wrong half of
+        # the act. They are *regenerated* rather than relinked because a draft
+        # carries the generator's own questions beside its text, and a fresh
+        # `<rs>` standing next to a comment saying no rule may write one is two
+        # halves of a file contradicting each other.
+        from .relink import refresh_drafts
+
+        stale = refresh_drafts(root, load(root), [ent_id])
+        return {"linked": applied,
+                "pages": sorted({r["ref"] for r in applied}),
+                "drafts": stale}
+
+    return _guarded(root, write, report=report)
 
 
 def _new(body: dict, root: Path) -> dict:

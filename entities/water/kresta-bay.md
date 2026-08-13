@@ -1,6 +1,6 @@
 # water:kresta-bay — Kresta Bay
 
-- status: proposed
+- status: ratified
 - within: place:chukchi-peninsula
 
 ## aliases

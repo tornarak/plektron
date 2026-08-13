@@ -728,7 +728,11 @@ def test_ratifying_writes_the_store(server):
     """The click is the human act — the `zones edit` precedent — and git is the
     witness. What it changes is what a rule may then link corpus-wide."""
     base, root = server
-    assert post(base + "/ratify", {"id": "place:markova"}) == {"ok": True}
+    got = post(base + "/ratify", {"id": "place:markova"})
+    # The response says what the act *did*, not only that it worked: ratifying is
+    # also what applies the entry's links to every collated page, and "linked
+    # nothing" is an ordinary outcome a caller must be able to tell from a failure.
+    assert got["ok"] and got["linked"] == [] and got["pages"] == []
     assert "- status: ratified" in (
         root / "entities" / "place" / "markova.md").read_text(encoding="utf-8")
 

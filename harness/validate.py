@@ -1285,6 +1285,25 @@ def validate(tei_path: Path, ctx: dict | None = None,
                     f"{form!r} to {owner}. A rule-applied link that disagrees "
                     f"with the rule is the stale stamp {RULED} exists to prevent")
 
+    # **The other direction of the same check.** Everything above re-derives the
+    # `#mz` links this page *has*; nothing looked for the ones it lacks. A page
+    # is collated after it is generated, so an entry ratified afterwards leaves
+    # its form in plain text here — and from the outside that is indistinguishable
+    # from a page whose text never printed the form at all. A worklist line, not
+    # an error: the page is not wrong, it is out of date with a store that moved
+    # under it, and `harness entity ratify` is what brings it up.
+    from .relink import missing
+
+    unlinked = missing(tei_path.read_text(encoding="utf-8"), store)
+    if unlinked:
+        forms = sorted({f"{u['form']} → {u.get('id') or u['why']}"
+                        for u in unlinked})
+        r.worklist.append(
+            f"{len(unlinked)} form(s) a ratified entry now claims sit unlinked "
+            f"here: {'; '.join(forms[:6])}"
+            f"{' …' if len(forms) > 6 else ''}. The page was collated before the "
+            f"store said so; `harness entity ratify` applies them")
+
     # A citation's extent, and nothing about which work it names. Counted rather
     # than gated for presence: a page citing nothing is the ordinary page.
     bibls = 0

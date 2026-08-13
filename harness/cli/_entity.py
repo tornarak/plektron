@@ -562,6 +562,31 @@ def run_ratify(a) -> int:
         rows.append({"id": i, "was": was, "now": "ratified",
                      "wrote": bool(a.commit)})
     out(a, rows)
+
+    # **Ratifying is what licenses the rule, so the pages it licenses it over
+    # are brought up to date here.** `tei generate` links every auto form the
+    # store held when it ran, and collation follows generation: an entry
+    # ratified afterwards leaves plain text on every page already collated,
+    # invisibly — `validate` re-derives the links a page *has* and has nothing
+    # to say about the ones it lacks. The store is re-read rather than mutated
+    # in place, so what gets applied is what the files now say.
+    from ..relink import apply_to_corpus, refresh_drafts
+
+    after = _store(a) if a.commit else {
+        **store, **{i: {**store[i], "status": "ratified"} for i in ids}}
+    links, notes, _undo = apply_to_corpus(a.root, after, write=bool(a.commit))
+    # The drafts are regenerated rather than relinked: a draft carries the
+    # generator's own questions beside its text, and answering the link while
+    # leaving the comment would put two halves of one file in contradiction.
+    drafts = refresh_drafts(a.root, after, ids, write=bool(a.commit))
+    if links:
+        out(a, links, "links applied to collated pages", heading=True)
+    if drafts:
+        # Named without a verb, because the heading has to read true in both
+        # modes: `--commit` regenerates these and a report-only run does not.
+        out(a, [{"ref": r} for r in drafts], "draft pages out of date", heading=True)
+    if notes:
+        out(a, notes, "not applied", heading=True)
     return 0
 
 

@@ -14,5 +14,22 @@ document.addEventListener('click', async ev => {
     body: JSON.stringify({id: b.dataset.id})});
   const j = await r.json();
   if (j.error) { alert(j.error); return; }
-  location.reload();
+  /* **Say what it did before reloading.** Ratifying is also what applies the
+     entry's links to every collated page, and a silent reload left "it linked
+     nothing" looking exactly like "it did not run". Nothing is the ordinary
+     answer, too: the corpus holds one collated page and every other mention is
+     in `mz/tei/`, which `tei generate` links on its next run. */
+  /* Two numbers, because "linked: 0" alone was accurate and useless: `relink`
+     runs over committed `tei/`, which is one page, so an entry that page does
+     not print links nothing however often the book prints it. The drafts are
+     where a reader with `--drafts` is actually reading, and they are counted
+     separately because they were *regenerated* rather than relinked. */
+  const n = (j.linked || []).length, d = (j.drafts || []).length;
+  b.disabled = true;
+  b.textContent = [
+    n ? `ratified — ${n} link(s) in ${(j.pages || []).join(', ')}`
+      : 'ratified — no collated page prints its forms',
+    d ? `${d} draft page(s) regenerated` : '',
+  ].filter(Boolean).join(' · ');
+  setTimeout(() => location.reload(), d || n ? 2600 : 1600);
 });
