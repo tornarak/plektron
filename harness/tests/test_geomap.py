@@ -638,3 +638,36 @@ def test_the_committed_store_nests_coherently():
     pairs both of whose members somebody drew — which is the whole reason this
     check needs no geometry."""
     assert geo.nesting(entities.load(ROOT)) == []
+
+
+def test_a_declared_frame_counts_as_located_and_extent_of_still_ignores_it(tmp_path):
+    """Two different questions, and the split is the point. `extent_of` answers
+    "how big is this thing", which is what a *parent* sizes itself on — and a
+    frame is a viewport, usually wider than its subject, so unioning one into an
+    ancestor's box would inflate it with padding chosen for a different map. But
+    "can the atlas draw this" is answered yes by a frame alone: the frame *is*
+    the viewBox.
+
+    `land:russian-far-east` and `water:bering-strait` were reading as unlocated
+    and as framed-by-their-members, and neither is true of either — their frames
+    were authored precisely because the derived box was wrong."""
+    from harness.tests.test_entities import entry
+
+    entry(tmp_path, "land:rfe", extra="- frame: 108.0 45.0 190.0 75.0\n")
+    store = entities.load(tmp_path)
+    assert geo.located("land:rfe", store, tmp_path)
+    assert geo.extent_of("land:rfe", store, tmp_path) is None
+    assert [r["id"] for r in geo.unlocated(store, tmp_path)] == []
+
+
+def test_a_container_with_neither_is_still_a_worklist_row(tmp_path):
+    """The other direction, so the rule above cannot quietly empty the report:
+    a shapeless container whose children are drawn still wants a frame, and says
+    which of the two would settle it."""
+    from harness.tests.test_entities import entry
+
+    entry(tmp_path, "land:chukotka")
+    entry(tmp_path, "place:uelen", extra="- within: land:chukotka\n"
+                                         "- geo: 66.16 -169.81\n")
+    rows = {r["id"]: r for r in geo.unlocated(entities.load(tmp_path), tmp_path)}
+    assert rows["land:chukotka"]["wants"] == "framed by its members"

@@ -227,12 +227,26 @@ row cannot be answered by writing a number in a file.
   `geo:`, because it is a box, and east may exceed 180 in the atlas's continuous
   window. It overrides whichever frame would otherwise have been *derived* and
   nothing else, so `extent_of` still measures the real geometry and every member
-  is still drawn. Two entries carry one and both are a default getting it wrong:
+  is still drawn. The entries that carry one are all a default getting it wrong:
   `land:northeast-siberia`, a container with no shape, whose viewBox was
-  otherwise the union of everything beneath it; and `land:chukchi-peninsula`,
-  which frames on Chukotka by default and had thirty-four villages in a corner.
-  A parent's frame is what its children frame on. `docs/decisions.md` has why no
-  frame worked at all until the projection changed with it.
+  otherwise the union of everything beneath it; `land:chukchi-peninsula`, which
+  frames on Chukotka by default and had thirty-four villages in a corner;
+  `land:russian-far-east`, whose derived box reached 103°E on the strength of
+  the Amur and stopped at 72.9°N, short of the Arctic the book is about, and
+  which this edition simply declares as Baikal eastward; `water:bering-strait`;
+  and `land:chukotka`, whose derived box *was* right and is frozen so it stays
+  so. A parent's frame is what its children frame on. `docs/decisions.md` has
+  why no frame worked at all until the projection changed with it.
+
+  **A frame counts as a location and `extent_of` still ignores it**, which is
+  not a contradiction: they answer different questions. `extent_of` says how big
+  a thing is, and a *parent* sizes itself on that, so unioning a viewport into
+  an ancestor's box would inflate it with padding chosen for another map.
+  `geo.located` says whether the atlas can draw this at all, and a frame answers
+  that by itself — it *is* the viewBox. Until they were separated, the Russian
+  Far East and the Bering Strait counted as unlocated and as framed-by-their-
+  members, when their frames had been written by hand precisely because neither
+  was true.
 - **`authority:`** may cross-link `data/authorities.json`. Resolving a `<bibl>`
   to that key is still deferred; `BIBL_IDENTITY_ATTRS` is untouched.
 - **`link:`** holds an *identifier*, never a URL — `wikipedia:Chukchi_people`,

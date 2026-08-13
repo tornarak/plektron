@@ -1,6 +1,7 @@
 # land:russian-far-east — Russian Far East
 
 - status: ratified
+- frame: 108 45 190 75
 
 ## aliases
 
@@ -10,4 +11,7 @@
 
 ## gloss
 
-(unwritten)
+The outermost container in the atlas, and a frame rather than a boundary: for
+this edition's purposes it starts at **Baikal** and runs east. That is the
+editor's declaration, not a claim about where anyone else draws the region, and
+the `frame:` field above carries the degrees so they are written once.

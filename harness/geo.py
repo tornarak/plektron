@@ -520,7 +520,23 @@ def extent_of(ent_id: str, store: dict, root: Path = Path("."),
 
 
 def located(ent_id: str, store: dict, root: Path = Path(".")) -> bool:
-    """Whether this entity has anywhere to put on a map, itself or below it."""
+    """Whether this entity has anywhere to put on a map, itself or below it.
+
+    **A declared `frame:` counts, and `extent_of` still ignores it.** Those are
+    two different questions and the split is deliberate. `extent_of` answers
+    "how big is this thing", which is what a *parent* sizes itself on, and a
+    frame is a viewport — usually wider than its subject — so unioning one into
+    an ancestor's box would inflate it with padding somebody chose for a
+    different map. But "can the atlas draw this" is answered yes by a frame
+    alone: the frame *is* the viewBox.
+
+    Without this, `land:russian-far-east` and `water:bering-strait` counted as
+    unlocated and as framed-by-their-members, and neither is true of either —
+    their frames were authored precisely because the derived box was wrong.
+    """
+    rec = store.get(ent_id)
+    if rec is not None and rec["frame"]:
+        return True
     return extent_of(ent_id, store, root) is not None
 
 
@@ -768,7 +784,7 @@ def verify(root: Path = Path(".")) -> dict:
 
 
 def unlocated(store: dict, root: Path = Path(".")) -> list[dict]:
-    """Entities inside a locatable subtree that carry neither `geo:` nor `area:`.
+    """Entities inside a locatable subtree that carry no `geo:`, `area:` or `frame:`.
 
     The inverse of `unclaimed`, and the half of the atlas's worklist that faces
     a human rather than the store: these are the rows an editor is looking for
@@ -783,11 +799,18 @@ def unlocated(store: dict, root: Path = Path(".")) -> list[dict]:
     `wants` says which of the two would settle it: a thing with children that
     are drawn needs no shape of its own, and asking for one would be asking a
     human to invent a boundary for Chukotka.
+
+    **A `frame:` settles a row as surely as a shape does.** It is an authored
+    statement of where the map should look, and it is written in exactly the
+    cases where the derived box was wrong — `land:russian-far-east` and
+    `water:bering-strait` are not framed by their members in any useful sense,
+    which is why somebody framed them by hand. Listing them as wanting a
+    coordinate asks for work that has already been done.
     """
     kids = children(store)
     rows = []
     for rec in sorted(store.values(), key=lambda r: r["id"]):
-        if rec["area"] or rec["geo"]:
+        if rec["area"] or rec["geo"] or rec["frame"]:
             continue
         parent = store.get(rec["within"]) if rec["within"] else None
         under = bool(parent) and located(parent["id"], store, root)
