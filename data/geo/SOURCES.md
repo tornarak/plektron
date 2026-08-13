@@ -238,9 +238,40 @@ shape build, and for the same reason: the source lives outside the repository.
 
 **CC BY 4.0 obliges attribution wherever the data is published**, exactly as
 Asher 2007 does. A `geo:` derived from it is published in the reading view, so
-the corpus `teiHeader`'s rights statement must name GeoNames alongside Asher
-once any such point is committed — **this is not yet done**, and is the one
-open action this section carries.
+the corpus `teiHeader`'s rights statement names GeoNames alongside Asher.
+
+### The three sources of coordinates, which draw no shape at all
+
+Nothing below compiles into `data/geo/` either. They are here because this file
+is the provenance record for the atlas, the atlas is points as well as polygons,
+and a coordinate whose origin is written down nowhere is the defect this whole
+document exists to prevent. All three are also in the `teiHeader`.
+
+    Operational Navigation Charts — US Defense Mapping Agency / NGA
+    Scanned sheets: https://maps.lib.utexas.edu/maps/onc/
+    US Government work, uncopyrighted; no attribution required
+
+**The largest single source of coordinates in this edition.** Roughly thirty
+points were read off these by hand, and each says so in the gloss of the record
+that carries it (`place:achchen` is the model). The sheets consulted are **C-7,
+C-8, D-8, D-9, D-10** (southern Kamchatka) and **E-10** (Bering Strait); the
+maritime gazetteer is very nearly all **C-8**.
+
+    OpenStreetMap — © OpenStreetMap contributors
+    https://www.openstreetmap.org/  ·  ODbL 1.0, attribution + share-alike
+
+The second of the two cross-references behind every hand-located point: 36
+entity records name it. **Whether that extraction is substantial enough to
+engage ODbL's share-alike term is unsettled**, and it is the same question the
+watersheds raise from the other branch of the same licence. Not answered here.
+
+    Wikidata — https://www.wikidata.org/  ·  CC0 1.0, no attribution required
+
+Named despite the CC0 dedication, for the same reason Natural Earth is: a source
+list that recorded only what it was compelled to record would be an accounting
+of obligations rather than of provenance. It is the source of the `geo:` on
+every record carrying a `link: wikidata:` identifier, by way of
+`tools/gazetteer.py fill`.
 
 ### The `absent` block holds two kinds of absence
 

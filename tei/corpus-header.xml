@@ -126,6 +126,15 @@
         Scope is stated on each licence rather than left to be inferred, since the
         two live in the same files and a reuser has to be able to tell which
         covers what.
+
+        A third block, because two of them are not this edition's to grant. The
+        atlas draws shapes compiled from outside sources and a growing number of
+        entity coordinates are derived from a gazetteer; two of those sources are
+        CC BY, which obliges attribution wherever the data is published, and the
+        reading view publishes it. data/geo/SOURCES.md is the full provenance
+        record and long said this citation was carried here — it was not, until
+        now, which is a claim about a file with nothing behind it and precisely
+        what that record exists to prevent.
       -->
       <authority>(no distribution venue settled)</authority>
       <availability status="free">
@@ -147,6 +156,68 @@
         <p>The two are separable in principle and interleaved in practice. Where a
           reuse cannot separate them, treat it as CC BY: attribution costs the
           reuser nothing the CC0 grant was meant to save them.</p>
+        <p>Third-party geodata, licensed by its own publishers and not by this
+          edition. The shapes in data/geo/ and the coordinates on the records in
+          entities/ derive from the seven sources below. Two of them oblige
+          attribution, one is share-alike, one is unsettled, and three ask for
+          nothing — and the three are listed anyway, because a source list that
+          named only what it was compelled to name would be an accounting of
+          obligations rather than of provenance. data/geo/SOURCES.md carries the
+          detail and the one live question.</p>
+        <p><bibl><title>Atlas of the World's Languages</title>, 2nd edn., ed.
+          <author>R. E. Asher</author> and <author>Christopher J. Moseley</author>,
+          Routledge <date>2007</date>; traditional speaker areas via Glottography
+          <ref target="https://github.com/Glottography/asher2007world"
+            >asher2007world</ref>. Licensed
+          <ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref>,
+          attribution required. Drawn as the langarea: shapes.</bibl></p>
+        <p><bibl><title>GeoNames</title>,
+          <ref target="https://www.geonames.org/">geonames.org</ref>, country dumps
+          RU and US. Licensed
+          <ref target="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ref>,
+          attribution required. The source of the geo: coordinate on every entity
+          record carrying a link: geonames: identifier beside it.</bibl></p>
+        <p><bibl><title>Global Watersheds</title>,
+          <ref target="https://mghydro.com/">mghydro.com</ref>, over MERIT-Hydro and
+          HydroSHEDS. Dual-licensed CC BY-NC 4.0 or ODbL 1.0. <hi rend="bold">Which
+          branch this edition takes is unsettled</hi> and is recorded as open in
+          data/geo/SOURCES.md rather than answered here: the first forbids
+          commercial reuse by anyone who clones this, the second is share-alike on
+          the database. A rights statement quietly asserting one of them would be
+          the overclaim this whole block exists to avoid. Drawn as the watershed:
+          shapes.</bibl></p>
+        <p><bibl><title>OpenStreetMap</title>,
+          <ref target="https://www.openstreetmap.org/">openstreetmap.org</ref>,
+          &#169; OpenStreetMap contributors. Licensed
+          <ref target="https://opendatacommons.org/licenses/odbl/">ODbL 1.0</ref>,
+          attribution required and share-alike on a derived database. Consulted as
+          one of the two cross-references behind every hand-located geo: point —
+          36 entity records name it, and each says so in its own gloss. Whether
+          that extraction is substantial enough to engage the share-alike term is
+          the same unsettled question the watersheds raise, and is deliberately
+          not answered here.</bibl></p>
+        <p><bibl><title>Wikidata</title>,
+          <ref target="https://www.wikidata.org/">wikidata.org</ref>. Dedicated
+          <ref target="https://creativecommons.org/publicdomain/zero/1.0/">CC0
+          1.0</ref>; no attribution required. Named because it is the source of the
+          geo: coordinate on every record carrying a link: wikidata: identifier,
+          and a coordinate whose origin is not written down is what the provenance
+          ranks exist to prevent, whatever the licence permits.</bibl></p>
+        <p><bibl><title>Operational Navigation Charts</title>, US Defense Mapping
+          Agency / National Geospatial-Intelligence Agency; scanned sheets at the
+          University of Texas Perry-Castañeda Library Map Collection,
+          <ref target="https://maps.lib.utexas.edu/maps/onc/"
+            >maps.lib.utexas.edu/maps/onc/</ref>. A work of the United States
+          Government and so uncopyrighted; no attribution required. Named because
+          it is the largest single source of coordinates in this edition — the
+          roughly thirty points a human read off it by hand, each recorded in the
+          gloss of the record that carries it. The sheets consulted are C-7, C-8,
+          D-8, D-9, D-10 (southern Kamchatka) and E-10 (Bering Strait); the
+          maritime gazetteer is very nearly all C-8.</bibl></p>
+        <p><bibl><title>Natural Earth</title>,
+          <ref target="https://www.naturalearthdata.com/">naturalearthdata.com</ref>,
+          1:50m physical and 1:10m label vectors. Public domain; no attribution
+          required. Drawn as the base:, region: and marine: shapes.</bibl></p>
       </availability>
     </publicationStmt>
 
