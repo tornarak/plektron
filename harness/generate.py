@@ -739,6 +739,9 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     rep["figures"] = len(figs)
     fig_at = 0
     at_y = 0
+    #: The foot of the paragraph being accumulated. `at_y` is the top of the
+    #: band in hand, which is the next paragraph's start and not this one's end.
+    para_y1 = 0
 
     def emit_figures(before: int | None, at: int | None = None) -> None:
         """Emit the figures whose boxes sit above `before`, or all of them.
@@ -822,8 +825,17 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         body.append(f'      <p>{rendered(para)}</p>')
         flush_candidates()
         para.clear()
-        # Any figure the paragraph ran past goes to the head of it.
-        emit_figures(at_y, at=top)
+        # **Against the paragraph's own bottom, not against the band that
+        # happened to close it.** `at_y` is the top of whatever came *next*, and
+        # for the last paragraph on a page nothing comes next — it is closed
+        # after the loop with `at_y` still holding its own first band's y0. A
+        # figure inside it then failed this test, fell through to the final
+        # `emit_figures(None)`, and was appended at the very foot of the page:
+        # `1-157` sets fig. 36 at y 1602 inside a band running 1393–3249 and put
+        # it after the paragraph that wraps it. Tracking the bottom fixes the
+        # last paragraph and changes nothing for the others, a paragraph's own
+        # end being at or above the next one's start.
+        emit_figures(para_y1, at=top)
 
     for band, bucket in zip(bands, buckets[:-1], strict=True):
         label = band["label"]
@@ -865,6 +877,9 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                 if label == "MainZone-P" or band.get("paragraph_open"):
                     close_paragraph()
                 para.extend(rows)
+                # The foot of the prose accumulated so far, which is what a
+                # figure inside this paragraph has to be measured against.
+                para_y1 = band["y1"]
             continue
         close_paragraph()
         if label == OTHER_ZONE:

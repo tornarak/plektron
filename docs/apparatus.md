@@ -334,9 +334,22 @@ neither is the anchor, so the only question is which makes the better draft, and
 the top wins twice: a picture the text wraps around begins level with the
 paragraph's first lines, so the head is the nearer edge to where the page has
 it, and a reader meets the figure before the prose discussing it rather than
-after. Measured when the rule changed — of 197 figures **189 moved earlier and
-none moved later**, and figures stranded past the last paragraph of a page, with
-nothing to belong to, fell from 29 to 5.
+after. Over the 197 generated figures, those immediately followed by a paragraph
+rose from **141 to 167** and those stranded at the foot of a page, with nothing
+below them to belong to, fell from **27 to 3**. The three that remain sit
+genuinely below the last paragraph on their page (`1-187`, `1-210`, `1-278`).
+
+**A figure inside the *last* paragraph was the case that broke it**, and it is
+worth recording because the rule looked right and was wrong on a seventh of the
+corpus. The flush at each paragraph's close tested figures against the top of
+whatever band came next — which is the next paragraph's start, and works for
+every paragraph that has one. The last paragraph on a page has none: it is
+closed after the loop with that variable still holding its *own* first band's
+y0, so a figure inside it failed the test, fell through to the final flush and
+was appended at the very foot of the page. `1-157` sets fig. 36 at y 1602 inside
+a band running 1393–3249 and put it after the paragraph that wraps it. The fix
+is to measure against the paragraph's own bottom, which is the same number for
+every other paragraph and the right one for the last.
 
 That the *generator* reads geometry while `_figures_on_page` withholds it from the
 model is not an inconsistency but the same rule twice. Handing a model coordinates

@@ -651,10 +651,9 @@ def test_a_figure_heads_the_paragraph_it_is_adjacent_to(tmp_path):
     where the page has it; and a reader meets the figure before the discussion of
     it rather than after.
 
-    Measured over the generated corpus when the rule changed: of 197 figures,
-    189 moved earlier and none moved later, and figures stranded at the end of a
-    page — after the last paragraph, with nothing to belong to — fell from 29 to
-    5.
+    Over the 197 generated figures, those immediately followed by a paragraph
+    rose from 141 to 167 and those stranded at the foot of a page fell from 27 to
+    3.
 
     Uses `1-151`, the one ordinary text-figure page in the OCR'd pilot set, so
     the geometry is the store's rather than a fixture's.
@@ -677,6 +676,34 @@ def test_a_figure_heads_the_paragraph_it_is_adjacent_to(tmp_path):
     # And the comment that says to move it travels with it rather than being
     # stranded where the figure used to be.
     assert body.index("figure placed where its box sits") < body.index("<figure")
+
+
+def test_a_figure_inside_the_last_paragraph_still_heads_it(tmp_path):
+    """The case that broke the rule, and the reason it broke on a seventh of the
+    corpus while looking right.
+
+    Each paragraph's close flushed the figures above **the top of whatever band
+    came next**, which is the next paragraph's start — correct for every
+    paragraph that has one. The last paragraph on a page has none: it is closed
+    after the loop with that variable still holding its own first band's y0, so a
+    figure inside it failed the test, fell through to the final flush and landed
+    at the very foot of the page. Measuring against the paragraph's own bottom is
+    the same number everywhere else and the right one here.
+
+    `1-157` is the page that reported it: fig. 36 sits at y 1602 inside a band
+    running 1393–3249, the last prose on the page.
+    """
+    if not (REPO / "gt" / "fig" / "chukchi-1-157.xml").exists():
+        pytest.skip("1-157 has no figure store in this checkout")
+    import re
+    doc, rep = gen.build("1-157", REPO)
+    assert rep["figures"] == 1
+    body = doc[doc.index("<body>"):]
+    blocks = [m.group(1) for m in re.finditer(r"<(p|figure|quote|table|head)\b", body)]
+    assert blocks[-1] != "figure", (
+        "the figure is inside the last paragraph, not below it")
+    i = blocks.index("figure")
+    assert blocks[i + 1:i + 2] == ["p"], f"got {blocks}"
 
 
 # --- a Tier-1 form that is also an entity alias -------------------------------
