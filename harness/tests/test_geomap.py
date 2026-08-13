@@ -671,3 +671,37 @@ def test_a_container_with_neither_is_still_a_worklist_row(tmp_path):
                                          "- geo: 66.16 -169.81\n")
     rows = {r["id"]: r for r in geo.unlocated(entities.load(tmp_path), tmp_path)}
     assert rows["land:chukotka"]["wants"] == "framed by its members"
+
+
+def test_a_people_with_no_shape_falls_back_to_its_parents_extent(tmp_path):
+    """The one class where the fallback is not a guess: a subgroup of an
+    ethnicity lives inside that ethnicity's area by what the word means, so the
+    parent's box bounds the child truthfully even where no source has drawn the
+    child. The Reindeer and Maritime Chukchi, the Kavraˊlɪt and the Chuvans are
+    otherwise invisible in an atlas largely about them.
+
+    A bound, not a boundary — the card says the extent is the parent's."""
+    from harness.tests.test_entities import entry
+
+    entry(tmp_path, "people:chukchi", extra="- geo: 66.0 -175.0\n")
+    entry(tmp_path, "people:kavralit", extra="- within: people:chukchi\n")
+    store = entities.load(tmp_path)
+    assert geo.extent_of("people:kavralit", store, tmp_path) == \
+        geo.extent_of("people:chukchi", store, tmp_path)
+    assert geo.located("people:kavralit", store, tmp_path)
+
+
+def test_the_fallback_is_scoped_to_peoples_and_terminates(tmp_path):
+    """Any other class would make every entity in the store located, which is
+    the report saying nothing. And the parent unions its children back in, so
+    the recursion has to be guarded — it is, by `seen`."""
+    from harness.tests.test_entities import entry
+
+    entry(tmp_path, "land:kamchatka", extra="- geo: 56.0 159.0\n")
+    entry(tmp_path, "place:golyghina", extra="- within: land:kamchatka\n")
+    store = entities.load(tmp_path)
+    assert geo.extent_of("place:golyghina", store, tmp_path) is None
+
+    entry(tmp_path, "people:a", extra="- within: people:b\n")
+    entry(tmp_path, "people:b", extra="- within: people:a\n")
+    assert geo.extent_of("people:a", entities.load(tmp_path), tmp_path) is None

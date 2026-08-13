@@ -2,12 +2,15 @@
 
 - status: proposed
 - within: water:penzhina-bay
+- geo: 61.367 158.152
+- link: geonames:2125556
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
 | Gishiga Bay | | yes | longer than the bare `Gishiga`, which [[river:gishiga]] leaves unlinked |
+| Гижигинская губа | ru | no | the modern name; not printed in the book |
 
 ## gloss
 

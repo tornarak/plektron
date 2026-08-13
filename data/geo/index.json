@@ -535,6 +535,50 @@
    ]
   },
   {
+   "id": "watershed:anapka",
+   "kind": "watershed",
+   "name": "anapka",
+   "area_km2": 1100.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 1,100 km² (410 sq. miles) with an outlet near coordinates: 60.031, 163.993.",
+   "wid": "P0ea127bfda54",
+   "retrieved": "2026-08-13T08:53:46.885Z",
+   "rivers_kept": 12,
+   "rivers_total": 25,
+   "sorder_floor": 2,
+   "file": "watershed/anapka.json",
+   "points": 64,
+   "bounds": [
+    163.288,
+    60.03,
+    164.117,
+    60.404
+   ]
+  },
+  {
+   "id": "watershed:angarka",
+   "kind": "watershed",
+   "name": "angarka",
+   "area_km2": 6100.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 6,100 km² (2,300 sq. miles) with an outlet near coordinates: 66.858, 164.263.",
+   "wid": "P3c5112191f64",
+   "retrieved": "2026-08-13T08:49:29.912Z",
+   "rivers_kept": 38,
+   "rivers_total": 143,
+   "sorder_floor": 3,
+   "file": "watershed/angarka.json",
+   "points": 223,
+   "bounds": [
+    163.286,
+    66.833,
+    165.96,
+    67.721
+   ]
+  },
+  {
    "id": "watershed:baranikha-or-rauchua",
    "kind": "watershed",
    "name": "rauchua or baranikha",
@@ -554,6 +598,28 @@
     67.643,
     169.384,
     69.52
+   ]
+  },
+  {
+   "id": "watershed:bolshaya-chukochka-or-large-chukchee",
+   "kind": "watershed",
+   "name": "bolshaya chukochka or large chukchee",
+   "area_km2": 21000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 21,000 km² (8,200 sq. miles) with an outlet near coordinates: 70.105, 159.637.",
+   "wid": "P333e7b3e6fc0",
+   "retrieved": "2026-08-13T08:43:40.386Z",
+   "rivers_kept": 78,
+   "rivers_total": 244,
+   "sorder_floor": 4,
+   "file": "watershed/bolshaya-chukochka-or-large-chukchee.json",
+   "points": 827,
+   "bounds": [
+    154.729,
+    67.89,
+    159.93,
+    70.265
    ]
   },
   {

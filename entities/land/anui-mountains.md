@@ -2,12 +2,15 @@
 
 - status: proposed
 - within: land:chukotka
+- geo: 67.5 166
+- link: geonames:2127119
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
 | Anui Mountains | | yes | |
+| Анюйский хребет | ru | no | the range's modern name; not printed in the book |
 
 ## gloss
 

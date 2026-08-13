@@ -558,6 +558,13 @@ def map_context(
             "lat": f"{rec['geo'][0]:.3f}",
             "lon": f"{rec['geo'][1]:.3f}",
         }
+    elif rec["class"] == "people" and rec["within"] and not geo.children(
+            store).get(ent_id):
+        # A people with no sprachraum of its own is shown at its parent's, and
+        # the card has to say so: a subgroup lives inside its ethnicity's area
+        # by what the word means, which bounds it truthfully and draws no
+        # boundary anybody has claimed. `extent_of` carries the argument.
+        out["basis"] = {"kind": "inherited", "id": rec["within"]}
     else:
         out["basis"] = {"kind": "framed"}
     out["parent"] = parent

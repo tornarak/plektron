@@ -23,3 +23,10 @@ A separate entry rather than a sense of the parent because the book uses the two
 divisions as distinct subjects throughout — they herd or they hunt sea-mammals,
 they migrate or they do not — and an index that collapsed them would lose the
 distinction the ethnography is built on.
+
+**Coextensive with [[people:chukchi]] for the atlas's purposes**, so the map is
+drawn at the parent's extent rather than at a boundary nobody has drawn. That is
+an editorial call and not a source's: the Reindeer Chukchi occupy the inland
+whole of the Chukchee range, which is the range, where
+[[people:maritime-chukchi]] occupy a coastal strip of it that no source in hand
+delineates.

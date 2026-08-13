@@ -2,12 +2,15 @@
 
 - status: proposed
 - within: land:kamchatka
+- geo: 59.8035 166.092
+- link: geonames:2125456
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
 | Cape Govensky | | yes | |
+| Мыс Говена | ru | no | the modern name; not printed in the book |
 
 ## gloss
 

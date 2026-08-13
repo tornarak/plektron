@@ -30,6 +30,10 @@
 {%- elif basis.kind == 'point' -%}
   a keyed point at {{ basis.lat }}, {{ basis.lon }} — no source draws a boundary
   for it
+{%- elif basis.kind == 'inherited' -%}
+  shown at the extent of <code>{{ basis.id }}</code> — a subgroup lives inside
+  its people's area by what the word means, so this bounds it without drawing a
+  boundary anybody has claimed
 {%- else -%}
   framed by what lies beneath it — no source draws a boundary for this, and the
   frame is a viewport, not one

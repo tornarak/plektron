@@ -2,6 +2,8 @@
 
 - status: ratified
 - within: land:kamchatka
+- geo: 59.926 170.287
+- link: geonames:2122521
 
 ## aliases
 
@@ -9,6 +11,7 @@
 |---|---|---|---|
 | Cape Olutorsky | | yes | |
 | Cape Alutorsky | | yes | |
+| Мыс Олюторский | ru | no | the modern name; not printed in the book |
 
 ## gloss
 

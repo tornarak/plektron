@@ -1,7 +1,7 @@
 # river:large-chukchee-river — Large Chukchee River
 
 - status: proposed
-- geo: 70.0906 159.922
+- area: watershed:bolshaya-chukochka-or-large-chukchee
 - link: geonames:2126618
 
 ## aliases

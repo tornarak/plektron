@@ -513,6 +513,23 @@ def extent_of(ent_id: str, store: dict, root: Path = Path("."),
               for k in children(store).get(ent_id, [])]
 
     boxes = [b for b in boxes if b]
+    # **A people with nothing of its own falls back to its parent's extent.**
+    # Scoped to `people:` and to nothing else, because it is the one class where
+    # the fallback is not a guess: a subgroup of an ethnicity lives inside that
+    # ethnicity's area by what the word means, so the parent's box is a true
+    # bound on the child even where no source has drawn the child at all. The
+    # Reindeer and Maritime Chukchi, the Kavraˊlɪt and the Chuvans are otherwise
+    # invisible in an atlas that is largely about them.
+    #
+    # **A bound, not a boundary**, which is the same distinction `frame:` makes:
+    # the map shows where to look, and the card says the extent is the parent's.
+    # `geo verify` goes on listing them, because a real shape would still be
+    # better and two of the four might one day get one.
+    #
+    # The cycle guard makes this terminate: the parent unions its children back
+    # in, this child is already in `seen`, and so contributes nothing.
+    if not boxes and rec["class"] == "people" and rec["within"]:
+        return extent_of(rec["within"], store, root, seen)
     if not boxes:
         return None
     return (min(b[0] for b in boxes), min(b[1] for b in boxes),
@@ -827,7 +844,10 @@ def unlocated(store: dict, root: Path = Path(".")) -> list[dict]:
             "id": rec["id"],
             "canonical": rec["canonical"],
             "within": rec["within"],
-            "wants": "framed by its members" if beneath else "geo: or area:",
+            "wants": ("its parent's extent, inherited"
+                      if rec["class"] == "people" and not kids.get(rec["id"])
+                      else "framed by its members" if beneath
+                      else "geo: or area:"),
             "children": len(kids.get(rec["id"], [])),
         })
     return rows

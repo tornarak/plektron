@@ -14,4 +14,7 @@
 
 ## gloss
 
-(unwritten)
+**Coextensive with [[people:chukchi]] for the atlas's purposes**, so the map is
+drawn at the parent's extent rather than at a boundary nobody has drawn: the
+kavraˊlɪt are the itinerant traders of the Chukchee range, not a population of
+one part of it.
