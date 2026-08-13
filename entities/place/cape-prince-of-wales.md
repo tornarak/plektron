@@ -1,6 +1,7 @@
 # place:cape-prince-of-wales — Cape Prince of Wales
 
 - status: proposed
+- within: land:alaska
 - geo: 65.5948 -168.092
 - link: geonames:5872091
 
@@ -9,6 +10,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Cape Prince of Wales | | yes | |
+| Kiˊhi | ypk | yes | 1-041 fn 2: what the Asiatic Eskimo call the cape and its village |
 
 ## gloss
 

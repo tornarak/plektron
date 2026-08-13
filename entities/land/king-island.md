@@ -1,6 +1,7 @@
 # land:king-island — King Island
 
 - status: proposed
+- within: land:alaska
 - geo: 64.9667 -168.083
 - link: wikipedia:King_Island_(Alaska)
 - link: wikidata:Q126043
