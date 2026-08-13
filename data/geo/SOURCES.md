@@ -147,16 +147,38 @@ opens `water:chaun-bay` has come to look at Chaun Bay, and the frame is the bay.
 So these two layers are taken at 1:10m and simplified at the language-area
 tolerance rather than the base one.
 
-Three features, and **each is named in a declared table** in `tools/build_geo.py`
-exactly as the source spells it — `LANGAREAS`'s rule, for `LANGAREAS`'s reason.
-Searching this file for "Chukchi" returns a sea, a range and a peninsula, and
-choosing among them is a human's act, not a match:
+Eleven features, and **each is named in a declared table** in
+`tools/build_geo.py` exactly as the source spells it — `LANGAREAS`'s rule, for
+`LANGAREAS`'s reason. Searching this file for "Chukchi" returns a sea, a range
+and a peninsula, and choosing among them is a human's act, not a match:
 
 | shape | NE layer | NE `NAME` | `FEATURECLA` |
 |---|---|---|---|
 | `region:chukchi-peninsula` | regions | `CHUKCHI PENINSULA` | Pen/cape |
 | `region:st-lawrence-island` | regions | `St. Lawrence I.` | Island |
+| `region:kamchatka` | regions | `KAMCHATKA PENINSULA` | Pen/cape |
+| `region:wrangel-island` | regions | `Wrangel I.` | Island |
+| `region:karagha-island` | regions | `Karaginskiy I.` | Island |
+| `region:bear-islands` | regions | `Bear Is.` | Island group |
 | `marine:chaun-bay` | marine | `Chaun Bay` | bay |
+| `marine:bering-sea` | marine | `Bering Sea` | sea |
+| `marine:okhotsk-sea` | marine | `Sea of Okhotsk` | sea |
+| `marine:anadyr-bay` | marine | `Gulf of Anadyr'` | gulf |
+| `marine:karagha-bay` | marine | `Karaginskiy Gulf` | gulf |
+
+**Two features the layer carries and this edition declines**, both recorded in
+`build_geo.py` beside the table so the omission reads as a ruling rather than an
+oversight. `Arctic Ocean` and `North Pacific Ocean` clip to a rectangle at this
+window — the frame already says that much — and would be the store's two largest
+shapes for it. `Smith Sound` is in Greenland, outside the window entirely; the
+book names it once, quoting Kroeber, and a comparandum is not a subject.
+
+**What the layer does not carry is most of what this edition wants.** Of the
+eleven double-duty bays the encyclopedia now holds, the 1:10m marine gazetteer
+draws four — Chaun, Anadyr, Karaginskiy and, as their parent, Shelikhov. It has
+no Kolyuchin, Kresta, Provideniya, Lavrentiya, Tkachen, Konyam, Korf, Gizhiga or
+Penzhina bay, and no cape at all. Those stay unlocated rather than being placed
+from anywhere else.
 
 A declared name the layer does not carry is a build **note**, not a silence: the
 source may re-spell one, and a table that quietly matched nothing would leave an

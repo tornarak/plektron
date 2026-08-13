@@ -1,7 +1,8 @@
 # place:kamchatka — Kamchatka
 
 - status: ratified
-- within: place:russian-far-east
+- within: place:northeast-siberia
+- area: region:kamchatka
 
 ## aliases
 

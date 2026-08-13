@@ -2,6 +2,7 @@
 
 - status: proposed
 - within: place:chukotka
+- area: region:wrangel-island
 
 ## aliases
 

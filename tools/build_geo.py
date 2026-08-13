@@ -75,11 +75,32 @@ NE_GAZETTEER = {
     "ne_10m_geography_regions_polys.geojson": {
         "CHUKCHI PENINSULA": ("region:chukchi-peninsula", "Chukchi Peninsula"),
         "St. Lawrence I.": ("region:st-lawrence-island", "St. Lawrence Island"),
+        "KAMCHATKA PENINSULA": ("region:kamchatka", "Kamchatka Peninsula"),
+        "Wrangel I.": ("region:wrangel-island", "Wrangel Island"),
+        "Karaginskiy I.": ("region:karagha-island", "Karaginskiy Island"),
+        "Bear Is.": ("region:bear-islands", "Bear Islands"),
     },
     "ne_10m_geography_marine_polys.geojson": {
         "Chaun Bay": ("marine:chaun-bay", "Chaun Bay"),
+        "Bering Sea": ("marine:bering-sea", "Bering Sea"),
+        "Sea of Okhotsk": ("marine:okhotsk-sea", "Sea of Okhotsk"),
+        "Gulf of Anadyr'": ("marine:anadyr-bay", "Gulf of Anadyr"),
+        "Karaginskiy Gulf": ("marine:karagha-bay", "Karaginskiy Gulf"),
     },
 }
+
+#: `Smith Sound` is in the marine layer and is **not** taken: it is in Greenland,
+#: outside this edition's window, and the build would report it as both "falls
+#: outside the region" and "the source may have re-spelled it". Bogoras names it
+#: once, comparatively, quoting Kroeber. A comparandum is not a subject.
+
+#: **The two oceans are deliberately not taken.** `Arctic Ocean` and `North
+#: Pacific Ocean` are both in the marine layer and both would build, but a
+#: world-spanning polygon clipped to this edition's window is a rectangle: it
+#: tells a reader nothing they did not already know from the frame, and it costs
+#: the store its two largest shapes to say it. `water:arctic-ocean` and
+#: `water:pacific-ocean` stay unlocated, which is the honest state — the book
+#: uses both as directions rather than as places.
 
 #: The name field differs between the two layers — the regions layer capitalizes
 #: its keys, the marine layer does not — so both are tried rather than one being

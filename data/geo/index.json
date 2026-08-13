@@ -282,6 +282,40 @@
    ]
   },
   {
+   "id": "marine:anadyr-bay",
+   "kind": "marine",
+   "name": "Gulf of Anadyr",
+   "ne_name": "Gulf of Anadyr'",
+   "featurecla": "gulf",
+   "wikidata": "Q483824",
+   "source": "naturalearth-10m",
+   "file": "marine/anadyr-bay.json",
+   "points": 110,
+   "bounds": [
+    174.549,
+    61.654,
+    186.305,
+    66.401
+   ]
+  },
+  {
+   "id": "marine:bering-sea",
+   "kind": "marine",
+   "name": "Bering Sea",
+   "ne_name": "Bering Sea",
+   "featurecla": "sea",
+   "wikidata": "Q44725",
+   "source": "naturalearth-10m",
+   "file": "marine/bering-sea.json",
+   "points": 469,
+   "bounds": [
+    162.762,
+    50.987,
+    198.562,
+    66.056
+   ]
+  },
+  {
    "id": "marine:chaun-bay",
    "kind": "marine",
    "name": "Chaun Bay",
@@ -296,6 +330,57 @@
     68.786,
     170.997,
     69.837
+   ]
+  },
+  {
+   "id": "marine:karagha-bay",
+   "kind": "marine",
+   "name": "Karaginskiy Gulf",
+   "ne_name": "Karaginskiy Gulf",
+   "featurecla": "gulf",
+   "wikidata": "Q2391874",
+   "source": "naturalearth-10m",
+   "file": "marine/karagha-bay.json",
+   "points": 59,
+   "bounds": [
+    161.96,
+    57.712,
+    166.352,
+    60.485
+   ]
+  },
+  {
+   "id": "marine:okhotsk-sea",
+   "kind": "marine",
+   "name": "Sea of Okhotsk",
+   "ne_name": "Sea of Okhotsk",
+   "featurecla": "sea",
+   "wikidata": "Q41602",
+   "source": "naturalearth-10m",
+   "file": "marine/okhotsk-sea.json",
+   "points": 309,
+   "bounds": [
+    137.222,
+    43.28,
+    157.136,
+    59.77
+   ]
+  },
+  {
+   "id": "region:bear-islands",
+   "kind": "region",
+   "name": "Bear Islands",
+   "ne_name": "Bear Is.",
+   "featurecla": "Island group",
+   "wikidata": "",
+   "source": "naturalearth-10m",
+   "file": "region/bear-islands.json",
+   "points": 11,
+   "bounds": [
+    160.311,
+    70.557,
+    162.591,
+    70.998
    ]
   },
   {
@@ -316,6 +401,40 @@
    ]
   },
   {
+   "id": "region:kamchatka",
+   "kind": "region",
+   "name": "Kamchatka Peninsula",
+   "ne_name": "KAMCHATKA PENINSULA",
+   "featurecla": "Pen/cape",
+   "wikidata": "Q993",
+   "source": "naturalearth-10m",
+   "file": "region/kamchatka.json",
+   "points": 160,
+   "bounds": [
+    155.596,
+    50.978,
+    166.308,
+    62.558
+   ]
+  },
+  {
+   "id": "region:karagha-island",
+   "kind": "region",
+   "name": "Karaginskiy Island",
+   "ne_name": "Karaginskiy I.",
+   "featurecla": "Island",
+   "wikidata": "Q1146381",
+   "source": "naturalearth-10m",
+   "file": "region/karagha-island.json",
+   "points": 16,
+   "bounds": [
+    163.427,
+    58.509,
+    164.662,
+    59.227
+   ]
+  },
+  {
    "id": "region:st-lawrence-island",
    "kind": "region",
    "name": "St. Lawrence Island",
@@ -330,6 +449,23 @@
     62.958,
     191.275,
     63.727
+   ]
+  },
+  {
+   "id": "region:wrangel-island",
+   "kind": "region",
+   "name": "Wrangel Island",
+   "ne_name": "Wrangel I.",
+   "featurecla": "Island",
+   "wikidata": "Q106594",
+   "source": "naturalearth-10m",
+   "file": "region/wrangel-island.json",
+   "points": 19,
+   "bounds": [
+    178.628,
+    70.822,
+    182.493,
+    71.594
    ]
   },
   {

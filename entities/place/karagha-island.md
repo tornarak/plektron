@@ -2,6 +2,7 @@
 
 - status: proposed
 - within: place:kamchatka
+- area: region:karagha-island
 
 ## aliases
 
