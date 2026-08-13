@@ -2,6 +2,8 @@
 
 - status: proposed
 - within: land:chukchi-peninsula
+- geo: 64.474 -172.817
+- link: geonames:4031484
 
 ## aliases
 

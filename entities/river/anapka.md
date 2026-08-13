@@ -2,6 +2,8 @@
 
 - status: proposed
 - within: land:kamchatka
+- geo: 60.0149 164.005
+- link: geonames:2127185
 
 ## aliases
 

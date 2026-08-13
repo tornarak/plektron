@@ -49,8 +49,8 @@ def test_the_parent_shape_is_the_nearest_ancestor_that_has_one(tmp_path):
     from harness.entities import load
 
     store = load(tmp_path)
-    assert w._parent_shape("place:golyghina", store) == "region:kamchatka"
-    assert w._parent_shape("land:kamchatka", store) == ""
+    assert w._parent_shape("place:golyghina", store) == ("region:kamchatka", None)
+    assert w._parent_shape("land:kamchatka", store) == ("", None)
 
 
 def test_a_within_cycle_does_not_hang_the_walk(tmp_path):
@@ -62,7 +62,33 @@ def test_a_within_cycle_does_not_hang_the_walk(tmp_path):
     entry(tmp_path, "land:b", extra="- within: land:a\n")
     from harness.entities import load
 
-    assert w._parent_shape("land:a", load(tmp_path)) == ""
+    assert w._parent_shape("land:a", load(tmp_path)) == ("", None)
+
+
+def test_a_frame_is_taken_where_no_ancestor_carries_a_shape(tmp_path):
+    """The chain above most of this store is *entirely* shapeless — Chukotka,
+    Northeast Siberia and the Russian Far East are framed by their members and
+    drawn by nobody — so the containment test was blind in exactly the region
+    the edition is about. It cost a real error: `place:kamenskoye` matched a
+    Kamenskoye in Tomsk oblast, 3,000 km away, and nothing in the report
+    objected. A box is a weaker witness than a polygon and an enormously
+    stronger one than nothing; an `area:` still wins where there is one."""
+    w = _tool()
+    from harness.entities import load
+
+    entry(tmp_path, "land:northeast-siberia",
+          extra="- frame: 128.0 51.0 192.0 72.0\n")
+    entry(tmp_path, "land:chukotka", extra="- within: land:northeast-siberia\n")
+    entry(tmp_path, "place:x", extra="- within: land:chukotka\n")
+    area, frame = w._parent_shape("place:x", load(tmp_path))
+    assert area == ""
+    assert frame == ("land:northeast-siberia", (128.0, 51.0, 192.0, 72.0))
+
+    # An `area:` anywhere up the chain still wins: a polygon says more than a box.
+    entry(tmp_path, "land:chukotka", extra="- within: land:northeast-siberia\n"
+                                           "- area: region:chukchi-peninsula\n")
+    assert w._parent_shape("place:x", load(tmp_path)) == \
+        ("region:chukchi-peninsula", None)
 
 
 def test_the_class_words_separate_a_river_from_the_village_on_it():

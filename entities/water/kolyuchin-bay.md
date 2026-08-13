@@ -2,6 +2,9 @@
 
 - status: ratified
 - within: land:chukchi-peninsula
+- geo: 66.8333 -174.4
+- link: wikipedia:Kolyuchin_Bay
+- link: wikidata:Q2056703
 
 ## aliases
 

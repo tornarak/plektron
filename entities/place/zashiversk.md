@@ -2,6 +2,8 @@
 
 - status: proposed
 - within: river:indigirka
+- geo: 67.45 142.617
+- link: geonames:2119377
 
 ## aliases
 

@@ -213,9 +213,15 @@ row cannot be answered by writing a number in a file.
   alone, which made a caller wanting `people:maritime-chukchi` under
   `people:chukchi` import the atlas to get it. `geo` re-exports both, since it
   is still the heaviest caller and the map's own reasoning is written there.
-- **`geo:` and `area:`** are the atlas's, below. `area:` names a shape in
-  `data/geo/` and must resolve there; a shape *kind* may never be an entity
-  class, for a reason worth reading before adding either.
+- **`geo:` and `area:`** are the atlas's, below, and **a record may carry one or
+  the other and never both** — `entity check` refuses it. A shape *is* the
+  location: `extent_of` reads it and would never look at a point beside it, so
+  the point could only be a second, weaker statement of the same fact, kept in
+  step by nothing. Where a point names a *different* thing — a river's mouth, a
+  settlement on a bay — that thing gets its own entry, which is what
+  `place:anadyr` is. `area:` names a shape in `data/geo/` and must resolve
+  there; a shape *kind* may never be an entity class, for a reason worth reading
+  before adding either.
 - **`frame:` is where the map looks**, which is a different question from where
   the thing is: four degrees, west south east north — longitude first, unlike
   `geo:`, because it is a box, and east may exceed 180 in the atlas's continuous
@@ -1226,10 +1232,18 @@ nothing to do with lands at 0.00–0.11. Kanchalan and Tumanskaya came back at 1
 and 0% against the Anadyr, which is how they ended up as its siblings rather than
 its tributaries.
 
-A `geo:` point outside its own shape is likewise reported with a distance and is
-not a defect: a river's natural point is its **mouth**, which sits on the very
-boundary the basin was delineated from. `river:anadyr` is 0.59° out, at the
-estuary. And a shape two entities claim is legal — `people:chukchi` and
+**There was a third check and it is gone.** A `geo:` point was measured against
+its own `area:` and reported with a distance, not as a defect: a river's natural
+point is its **mouth**, which sits on the very boundary the basin was delineated
+from, and `river:anadyr` was 0.59° out at the estuary. That tolerance was the
+width of the thing being measured rather than slack — and the whole arrangement
+was an accommodation for a record saying two things about one location. A
+basin plus a mouth is two *things*, and if the mouth is worth naming it is worth
+an entry; `place:anadyr` is that entry. So `entity check` now refuses a record
+carrying both, the check has nothing left to measure, and the section is gone
+rather than left as a row that can never fire.
+
+A shape two entities claim is legal — `people:chukchi` and
 `language:chukchi` both point at the one Asher polygon, and forcing a choice
 would be this edition deciding something the source does not.
 

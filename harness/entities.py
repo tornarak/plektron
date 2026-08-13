@@ -366,6 +366,27 @@ def parse(text: str, where: str = "") -> dict:
                 f"less than north. East may exceed 180 in the atlas's continuous "
                 f"frame; west may not wrap past it")
 
+    # **`geo:` and `area:` are mutually exclusive, and the shape wins.** A record
+    # says where one thing is, once. `extent_of` reads the shape and would never
+    # look at a point beside it, so the point is unreachable by construction —
+    # it can only be a second, weaker statement of the same fact, and one that
+    # nothing keeps in step. `geo verify` used to carry a whole section for the
+    # disagreement it invited, and the rationale for tolerating it was the
+    # river's case: a basin plus its mouth. That is two things, not one, and if
+    # the mouth is worth naming it is worth an entry — `place:anadyr` is exactly
+    # that entry, and it is why the Anadyr's own point came out.
+    #
+    # A rule about what a record may *say*, so it belongs here with the other
+    # field rules and not with the geometry: it needs no shape store to check,
+    # and it holds in a tree where `data/geo/` was never built.
+    if coords and area:
+        raise Malformed(
+            f"{at}carries both `geo: {geo}` and `area: {area}`. A shape is the "
+            f"location and `extent_of` never reads a point beside one, so the "
+            f"two can only disagree. Keep the shape; if the point names a "
+            f"different thing — a river's mouth, a settlement on a bay — give "
+            f"that thing its own entry")
+
     return {
         "id": f"{cls}:{slug}",
         "class": cls,

@@ -2,6 +2,8 @@
 
 - status: ratified
 - within: water:bering-strait
+- geo: 65.7658 -168.988
+- link: geonames:4031746
 
 ## aliases
 

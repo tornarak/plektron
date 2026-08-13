@@ -2,6 +2,8 @@
 
 - status: proposed
 - within: river:bolshoy-anyuy
+- geo: 66.8573 164.26
+- link: geonames:2127158
 
 ## aliases
 

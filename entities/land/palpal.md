@@ -2,6 +2,8 @@
 
 - status: proposed
 - within: land:chukotka
+- geo: 62.957 169.467
+- link: geonames:2122249
 
 ## aliases
 

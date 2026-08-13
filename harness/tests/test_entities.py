@@ -386,11 +386,16 @@ def test_a_set_field_round_trips_through_the_parser(tmp_path):
     from harness.cli._entity import _set_field
 
     p = entry(tmp_path, "place:x", extra="- within: place:y\n")
-    text = _set_field(p.read_text(encoding="utf-8"), "geo", "66.0 -170.0")
-    text = _set_field(text, "area", "watershed:anadyr,marine:chaun-bay")
-    rec = E.parse(text)
-    assert rec["geo"] == (66.0, -170.0)
-    assert rec["area"] == "marine:chaun-bay,watershed:anadyr"
+    base = p.read_text(encoding="utf-8")
+    assert E.parse(_set_field(base, "geo", "66.0 -170.0"))["geo"] == (66.0, -170.0)
+    got = _set_field(base, "area", "watershed:anadyr,marine:chaun-bay")
+    assert E.parse(got)["area"] == "marine:chaun-bay,watershed:anadyr"
+
+    # And the guarantee working: setting the second one produces a file that
+    # does not parse, so `locate` reports it instead of writing it. A shape is
+    # the location and `extent_of` never reads a point beside one.
+    with pytest.raises(E.Malformed, match="both"):
+        E.parse(_set_field(got, "geo", "66.0 -170.0"))
 
 
 # ---------------------------------------------------------------- renaming

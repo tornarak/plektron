@@ -1,6 +1,8 @@
 # place:st-michael — St. Michael
 
 - status: proposed
+- geo: 63.4781 -162.039
+- link: geonames:5873200
 
 ## aliases
 

@@ -2,6 +2,7 @@
 
 - status: ratified
 - within: land:northeast-siberia
+- link: geonames:2126099
 
 ## aliases
 

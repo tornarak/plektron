@@ -2,6 +2,8 @@
 
 - status: ratified
 - within: river:kolyma
+- geo: 67.4559 153.704
+- link: geonames:2121025
 
 ## aliases
 

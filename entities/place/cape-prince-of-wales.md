@@ -1,6 +1,8 @@
 # place:cape-prince-of-wales — Cape Prince of Wales
 
 - status: proposed
+- geo: 65.5948 -168.092
+- link: geonames:5872091
 
 ## aliases
 

@@ -1,6 +1,8 @@
 # place:cape-nome — Cape Nome
 
 - status: proposed
+- geo: 64.4349 -165.01
+- link: geonames:5870141
 
 ## aliases
 

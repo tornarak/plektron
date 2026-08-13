@@ -790,8 +790,13 @@ def test_every_field_in_a_record_reaches_the_card(tmp_path):
     from harness import entities
     text = (tmp_path / "x.md")
     text.write_text(
+        # No `geo:` beside the `area:` — `parse` refuses a record carrying both,
+        # since a shape is the location and `extent_of` never reads a point next
+        # to one. It costs this test nothing: the record dict carries every key
+        # whether or not the file sets it, and keys are all this asserts about.
         "# place:x — X\n\n- status: proposed\n- since: 1-021\n"
-        "- within: place:y\n- geo: 66.0 170.0\n- area: watershed:anadyr\n"
+        "- within: place:y\n- area: watershed:anadyr\n"
+        "- frame: 160.0 60.0 170.0 70.0\n"
         "- authority: k\n- link: wikidata:Q1\n\n## aliases\n\n"
         "| form | lang | auto | note |\n|---|---|---|---|\n| X | no | |\n\n"
         "## gloss\n\nx\n", encoding="utf-8")

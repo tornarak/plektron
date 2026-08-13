@@ -31,15 +31,20 @@ claimant and is displayed under that entity's canonical name. Two entities may
 name the same one, as `people:chukchi` and `language:chukchi` already share
 `langarea:chuk1273`, so the label names every claimant rather than picking one.
 
-THE TWO CHECKS, AND WHY NEITHER GATES. `verify` compares an authored `within:`
-against containment, and an authored `geo:` point against its own shape. Both
-report. A basin delineated from a tributary's outlet is contained in its
-trunk's by construction, so containment is a real check — but a disagreement
-says *one of two authored facts is wrong* and the geometry cannot say which, so
-the row names the pair rather than a culprit. And a river's natural point is
-its mouth, which sits **on** the boundary the basin was delineated from, so a
-gate on point-in-shape would false-positive by construction; the report carries
-the distance instead, and a boundary-hugging point is not a finding.
+THE CHECKS HERE REPORT AND DO NOT GATE. `verify` compares an authored `within:`
+against containment: a basin delineated from a tributary's outlet is contained
+in its trunk's by construction, so it is a real check — but a disagreement says
+*one of two authored facts is wrong* and the geometry cannot say which, so the
+row names the pair rather than a culprit.
+
+**A `geo:` point against its own shape was a third check and is gone**, because
+the case it measured is now refused outright: `entities.parse` will not accept a
+record carrying both. It was tolerated for the river's sake — a basin plus its
+mouth, the mouth sitting on the boundary the basin was delineated from, which is
+why `POINT_SLACK` was the width of the thing being measured and not slack. But
+that is two things and not one, and if the mouth is worth naming it is worth an
+entry: `place:anadyr` *is* that entry. A shape is the location, `extent_of`
+never reads a point beside one, and a field nothing reads can only drift.
 """
 from __future__ import annotations
 
@@ -56,10 +61,12 @@ GEODIR = "data/geo"
 #: before the field existed.
 LON_BASE = 60.0
 
-#: How far outside its own shape a `geo:` point may sit before `verify` says
-#: anything, in degrees. A river's point is its mouth and the mouth is *on* the
-#: watershed boundary, so the tolerance is not slack — it is the width of the
-#: thing being measured against.
+#: How far outside its own shape a `geo:` point may sit before anything says so,
+#: in degrees. **Nothing measures this any more** — `entities.parse` refuses a
+#: record carrying both a point and a shape, so the case cannot arise. Kept
+#: because it is the one number that records what the tolerance *was for*: a
+#: river's point is its mouth and the mouth is *on* the watershed boundary, so
+#: this was never slack, it was the width of the thing being measured against.
 POINT_SLACK = 0.05
 
 
@@ -695,8 +702,6 @@ def verify(root: Path = Path(".")) -> dict:
     - **containment**, where a child and its `within:` parent both have a
       shape. Named as a *pair*: the geometry says the two authored facts
       disagree and cannot say which of them is wrong.
-    - **a `geo:` point away from its own shape**, with the distance, because a
-      river's point is its mouth and the mouth is on the boundary.
     - **a shape two entities claim**, which is legal — `people:chukchi` and
       `language:chukchi` may both point at the one Asher polygon, and forcing
       a choice would be this edition deciding something the source does not.
@@ -722,7 +727,7 @@ def verify(root: Path = Path(".")) -> dict:
             docs[ident] = shape(ident, root)
         return docs[ident]
 
-    containment, points, shared = [], [], []
+    containment, shared = [], []
     claims = member_claims(store)
     for rec in sorted(store.values(), key=lambda r: r["id"]):
         parent = store.get(rec["within"]) if rec["within"] else None
@@ -738,14 +743,6 @@ def verify(root: Path = Path(".")) -> dict:
                 "reading": _reading(frac, bool(coarse)),
             })
 
-        if rec["geo"] and rec["area"]:
-            lat, lon = rec["geo"]
-            d = distance_to((_shifted(lon, idx), lat), doc_for(rec["area"]))
-            if d > POINT_SLACK:
-                points.append({"id": rec["id"], "area": rec["area"],
-                               "degrees_out": round(d, 3),
-                               "reading": "outside its own shape"})
-
     for ident, ids in sorted(claims.items()):
         if len(ids) > 1:
             shared.append({"shape": ident, "claimed_by": " ".join(ids)})
@@ -759,13 +756,11 @@ def verify(root: Path = Path(".")) -> dict:
                    "disagree": sum(1 for c in containment
                                    if c["reading"] == "disagrees"),
                    "nesting": len(nested),
-                   "points_out": len(points),
                    "shared": len(shared),
                    "unclaimed": len(unclaimed),
                    "unlocated": len(open_rows)}],
         "nesting": nested,
         "containment": containment,
-        "points": points,
         "shared": shared,
         "unclaimed": [{"shape": i} for i in unclaimed],
         "unlocated": open_rows,

@@ -2,6 +2,8 @@
 
 - status: ratified
 - within: land:chukchi-peninsula
+- geo: 65.6642 -171.097
+- link: geonames:2119248
 
 ## aliases
 

@@ -2,6 +2,9 @@
 
 - status: ratified
 - within: land:chukchi-peninsula
+- geo: 66 -179.25
+- link: wikipedia:Kresta_Bay
+- link: wikidata:Q2630374
 
 ## aliases
 

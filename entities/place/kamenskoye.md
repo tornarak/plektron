@@ -2,6 +2,10 @@
 
 - status: proposed
 - within: land:northeast-siberia
+- geo: 62.4687 166.207
+- link: wikipedia:Kamenskoye,_Kamchatka_Krai
+- link: wikidata:Q984829
+- link: geonames:2125034
 
 ## aliases
 

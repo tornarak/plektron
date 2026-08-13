@@ -124,9 +124,22 @@ SESSION.headers["User-Agent"] = UA
 SESSION.mount("https://", HTTPAdapter(max_retries=_RETRY))
 
 
+#: **`maxlag` was here and is gone, and the reason is worth keeping.** It is a
+#: write-side courtesy: it asks the API to refuse while the replicas are behind.
+#: At 5 it refused constantly — the lag is routinely half a minute — and the
+#: refusal reached the caller as "no coordinate", a failed lookup rendered as a
+#: fact about the world. Exactly the defect the 429 comment above describes,
+#: reintroduced a few lines below it by a politeness knob.
+#:
+#: Raising it did not help, and the error says why: the lag reported is
+#: `wdqs1013`'s, the *Query Service*, which has nothing to do with whether
+#: `wbgetentities` returns a correct record. It was guarding the wrong thing.
+#: The courtesy that does apply here is the pause and the 429 backoff, which
+#: stay. The lasting fix is one file over: a failed fetch is now recorded as
+#: `failed` and printed as LOOKUP FAILED, so no outage can ever again be read as
+#: an absence.
 def _get(params: dict) -> dict:
-    r = SESSION.get(API, params={**params, "format": "json", "maxlag": "5"},
-                    timeout=30)
+    r = SESSION.get(API, params={**params, "format": "json"}, timeout=30)
     r.raise_for_status()
     time.sleep(PAUSE)
     got = r.json()
@@ -242,9 +255,13 @@ FCODES = {
     "place": {"PPL", "PPLA", "PPLA2", "PPLA3", "PPLA4", "PPLC", "PPLF",
               "PPLG", "PPLL", "PPLQ", "PPLR", "PPLS", "PPLW", "PPLX",
               "STLMT", "CAPE", "PT", "FRM", "MSTY", "MN", "RUIN"},
+    # `ADM*` is here and not under `place:` because an administrative division is
+    # an *area*, where `PPLA2` — which stays a `place:` — is the settlement that
+    # administers one. `land:chukotka` is the okrug, and without these the right
+    # answer for it read "NOT a land:".
     "land":  {"ISL", "ISLS", "ISLET", "PEN", "MT", "MTS", "HLL", "HLLS",
               "PLN", "PLAT", "UPLD", "RGN", "AREA", "VAL", "CNYN", "RDGE",
-              "RVN", "GRAZ", "FRST"},
+              "RVN", "GRAZ", "FRST", "ADM1", "ADM2", "ADM3", "ADM4", "PCLI"},
     "water": {"BAY", "BAYS", "GULF", "SD", "STRT", "LK", "LKS", "SEA",
               "OCN", "LGN", "COVE", "INLT", "ESTY", "CHN", "FJD", "LKO"},
     "river": {"STM", "STMS", "STMI", "STMX", "STMB", "STMD", "STMC", "STMA"},
@@ -274,6 +291,33 @@ GENERICS = {
     "бухта", "залив", "губа", "мыс", "озеро", "река", "гора", "горы", "остров",
     "острова", "пролив", "хребет", "море", "полуостров", "село",
 }
+
+
+#: A generic term in the entry's *own* name, and the feature code it implies.
+#:
+#: **`place:` is a point and says nothing finer, which is right for the store and
+#: too coarse for matching.** A cape and the village beside it are both points,
+#: so the class check cannot part `Cape Nome` the headland from `Cape Nome` the
+#: settlement — both `place:`, both typed, both named exactly that, 4 km apart.
+#: But the entry calls itself a *cape*, and the gazetteer publishes a code for
+#: that, so the name the editor wrote is itself evidence. Used only to break a
+#: tie: a candidate with the implied code sorts above one without, and nothing is
+#: rejected for lacking it — plenty of features are named `Mount X` and coded
+#: something else entirely.
+IMPLIED = {
+    "cape": "CAPE", "mys": "CAPE",
+    "mount": "MT", "gora": "MT",
+    "lake": "LK", "ozero": "LK",
+    "bay": "BAY", "bukhta": "BAY", "zaliv": "BAY", "guba": "BAY",
+    "island": "ISL", "ostrov": "ISL",
+    "river": "STM", "reka": "STM",
+}
+
+
+def _implied(names) -> str:
+    """The feature code an entry's own names imply, if they agree on one."""
+    got = {IMPLIED[w] for n in names for w in _fold(n).split() if w in IMPLIED}
+    return got.pop() if len(got) == 1 else ""
 
 
 def _fold(s: str) -> str:
@@ -433,7 +477,13 @@ def entities(qids: list[str]) -> dict:
                       "props": "labels|descriptions|claims|sitelinks",
                       "languages": "en|ru", "sitefilter": "enwiki"})
         except Exception as e:                            # noqa: BLE001
+            # **A failed chunk is recorded, not skipped.** Skipping made a dead
+            # request indistinguishable from an item with no P625, and the
+            # caller printed the second. Nothing downstream could have known.
             print(f"  ! fetch {chunk[0]}…: {e}", file=sys.stderr)
+            for q in chunk:
+                out[q] = {"qid": q, "failed": str(e), "geo": None,
+                          "label": "", "desc": "", "enwiki": ""}
             continue
         for qid, ent in (r.get("entities") or {}).items():
             if "missing" in ent:
@@ -493,25 +543,38 @@ def _km(a, b) -> float:
     return 2 * EARTH_KM * math.asin(min(1.0, math.sqrt(h)))
 
 
-def _parent_shape(ident: str, store: dict) -> str:
-    """The nearest ancestor's `area:` — what a candidate should fall inside.
+def _parent_shape(ident: str, store: dict):
+    """What a candidate coordinate should fall inside: `(area, frame)`.
 
     Walks up rather than reading `within:` once, because the immediate parent is
     very often shapeless: a village's parent is Chukotka, which no source draws,
     and its grandparent is Northeast Siberia, which none draws either. Stopping
     at the first `within:` would report "no parent shape" for most of the store
     and throw away the check.
+
+    **A `frame:` is taken where no ancestor has an `area:`, and that is not a
+    consolation prize.** The chain above most of this store is *entirely*
+    shapeless — Chukotka, Northeast Siberia and the Russian Far East are all
+    framed by their members and drawn by nobody — so the containment test was
+    blind in exactly the region the edition is about. It cost a real error:
+    `place:kamenskoye` matched a Kamenskoye in Tomsk oblast, 3,000 km away, and
+    nothing in the report objected. Northeast Siberia's frame would have refused
+    it on the longitude alone. A box is a weaker witness than a polygon and it is
+    an enormously stronger one than nothing, so the row says which it used.
     """
     seen, at = set(), store.get(ident, {}).get("within", "")
+    frame = None
     while at and at not in seen:
         seen.add(at)
         rec = store.get(at)
         if rec is None:
-            return ""
+            break
         if rec.get("area"):
-            return rec["area"]
+            return rec["area"], None
+        if frame is None and rec.get("frame"):
+            frame = (at, rec["frame"])
         at = rec.get("within", "")
-    return ""
+    return "", frame
 
 
 def _tests(pt, store: dict, root: Path, ident: str, idx: dict,
@@ -554,7 +617,7 @@ def _tests(pt, store: dict, root: Path, ident: str, idx: dict,
             docs[i] = geo.shape(i, root)
         return docs[i]
 
-    area = _parent_shape(ident, store)
+    area, frame = _parent_shape(ident, store)
     if area:
         d = doc(area)
         if d:
@@ -563,6 +626,13 @@ def _tests(pt, store: dict, root: Path, ident: str, idx: dict,
                 got["parent_out"] = 0.0
             else:
                 got["parent_out"] = round(geo.distance_to((slon, lat), d), 3)
+    elif frame:
+        # A box, in the store's shifted longitudes, so it needs no antimeridian
+        # handling of its own — `frame:` is authored in that window already.
+        who, (fw, fs, fe, fn) = frame
+        got["parent"] = f"{who} (frame)"
+        got["parent_out"] = 0.0 if (fs <= lat <= fn and fw <= slon <= fe) else \
+            round(max(fs - lat, lat - fn, fw - slon, slon - fe), 3)
 
     for i, row in sorted(idx["shapes"].items()):
         # **The parent is not listed again here.** It has its own mark, which
@@ -706,12 +776,21 @@ def run_propose(a) -> int:
         # the code itself and not just the verdict.
         words = CLASS_WORDS.get(rec["class"], ())
         codes = FCODES.get(rec["class"], set())
+        mine = {_fold(t) for t, _lg in wanted.get(ident, [])}
+        implied = _implied(t for t, _lg in wanted.get(ident, []))
         for r, t in cands:
+            t["implied"] = bool(implied) and r.get("fcode") == implied
             if r.get("fcode"):
                 t["class_match"] = r["fcode"] in codes
             else:
                 blob = f"{r['desc']} {r['label']}".lower()
                 t["class_match"] = any(w in blob for w in words)
+            # **Whether the candidate's *own* name is the one searched.** A row
+            # can match on an alternate — a former name, a nearby feature's
+            # name — and those are worth showing and not worth ranking first.
+            # `Ust'-Penzhino` carries "Kamenskoye" as a former name and outranked
+            # the actual Kamenskoye, 30 km away, because every other test tied.
+            t["label_exact"] = _fold(r["label"]) in mine
         # Where the entry is already located, its own point outranks everything
         # below it: two sources naming the same coordinate is a stronger answer
         # than any description or containment test, and the nearest candidate is
@@ -720,6 +799,8 @@ def run_propose(a) -> int:
                                    rt[1]["own_km"] if rt[1]["own_km"] is not None
                                    else 0,
                                    not rt[1]["class_match"],
+                                   not rt[1]["label_exact"],
+                                   not rt[1]["implied"],
                                    rt[1]["parent_out"] if rt[1]["parent"] else 9e9,
                                    -len(rt[1]["inside"])))
         # Everything in the window, or — where nothing is — the best single row,
@@ -738,6 +819,8 @@ def run_propose(a) -> int:
             typed = " (typed)" if r.get("fcode") else ""
             marks.append(f"reads as {rec['class']}:{typed}" if t["class_match"]
                          else f"NOT a {rec['class']}:{typed}")
+            if not t["label_exact"]:
+                marks.append("matched on an alternate name")
             if t["parent"]:
                 marks.append("in " + t["parent"] if t["parent_out"] == 0
                              else f"{t['parent_out']}° from {t['parent']}")
@@ -797,6 +880,12 @@ def run_fill(a) -> int:
         # them against a source with no common ancestor is a second witness on
         # work that has never had one. Whether it *writes* is still gated by
         # `--replace`; the comparison is free and always reported.
+        #
+        # An entry with an `area:` is a different case and is compared rather
+        # than written to, without `--replace`. A shape *is* the location —
+        # `extent_of` prefers it and would never read the point — so the only
+        # thing a nominal centre could add there is a second, weaker statement of
+        # the same fact, and a `geo verify` row the day the two disagree.
         todo.append((ident, rec, f"{src}:{ids[src]}"))
 
     if not todo:
@@ -808,13 +897,17 @@ def run_fill(a) -> int:
     for r in {x["qid"]: x for v in gn.values() for x in v}.values():
         rows.setdefault(f"gn:{r['qid']}", r)
     idx = geo.index(root)
+    kids = geo.children(store)
     docs: dict = {}
     wrote = held = 0
     for ident, rec, key in todo:
         src, _, qid = key.partition(":")
         got = rows.get(qid) if src == "wikidata" else rows.get(f"gn:{qid}")
+        if got and got.get("failed"):
+            print(f"! {ident:30} {key:20} LOOKUP FAILED — {got['failed'][:60]}")
+            continue
         if not got or not got["geo"]:
-            print(f"{ident:30} {key:20} no coordinate — left alone")
+            print(f"  {ident:30} {key:20} no coordinate on the record")
             continue
         lat, lon = got["geo"]
         t = _tests(got["geo"], store, root, ident, idx, docs)
@@ -829,11 +922,36 @@ def run_fill(a) -> int:
         # A located entry is a *comparison*, not a pending write, and the row
         # says which it is — otherwise a clean audit line reads as a fill that
         # `--commit` is about to make.
-        act = ("=" if rec["geo"] and not a.replace
-               else "~" if rec["geo"] else "+")
+        # **Anything the entry already says about where it is counts.** A
+        # `geo:` is the obvious one. An `area:` is stronger — `extent_of` prefers
+        # the shape and would never read a point beside it, so a nominal centre
+        # could only be a second, weaker statement of the same fact and a
+        # `geo verify` row the day the two disagree. And a `frame:` is a *choice*:
+        # `water:bering-strait` had a point and a human took it out in favour of
+        # a box, and writing the same point back is undoing an editorial decision
+        # by default, which is the one thing --commit must never do quietly.
+        # **A container is framed by its members and a point would replace
+        # that.** `extent_of` reads a shape, else a point, else the union of
+        # everything beneath — so writing a nominal centre onto Chukotka, which
+        # has twenty located descendants and no polygon, swapped a map of the
+        # whole region for a dot. The atlas said so immediately and two tests
+        # caught it; the rule is that anything already locatable *through its
+        # members* is as settled as one carrying its own shape.
+        framed_by_kids = (not rec["geo"] and not rec["area"]
+                          and any(geo.located(k, store, root)
+                                  for k in kids.get(ident, [])))
+        held_by = ("geo:" if rec["geo"] else "area:" if rec["area"]
+                   else "frame:" if rec["frame"]
+                   else "members" if framed_by_kids else "")
+        settled = bool(held_by) and not a.replace
+        act = "=" if settled else "~" if held_by else "+"
+        if held_by == "members":
+            note.append("framed by its located members")
+        elif held_by and held_by != "geo:":
+            note.append(f"the entry already carries a {held_by}")
         print(f"{act} {ident:30} {key:20} {lat:>9.4f} {lon:>10.4f}  "
               f"{'; '.join(note) or '—'}")
-        if rec["geo"] and not a.replace:
+        if settled:
             held += 1
             continue
         if a.commit:

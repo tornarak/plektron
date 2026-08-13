@@ -1,6 +1,9 @@
 # river:vatirkan — Vatɪˊrkan
 
 - status: proposed
+- geo: 62.3009 171.485
+- link: wikipedia:Khatyrka_(river)
+- link: wikidata:Q4496598
 
 ## aliases
 

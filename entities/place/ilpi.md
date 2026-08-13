@@ -1,6 +1,9 @@
 # place:ilpi — Iˊlpi
 
 - status: proposed
+- geo: 62.061 175.29
+- link: wikipedia:Khatyrka
+- link: wikidata:Q4496601
 
 ## aliases
 

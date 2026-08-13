@@ -108,7 +108,6 @@ def run_verify(a) -> int:
     # dozen pairs both of whose members somebody drew.
     out(a, r["nesting"], name="nesting", heading=True)
     out(a, r["containment"], name="containment", heading=True)
-    out(a, r["points"], name="points", heading=True)
     out(a, r["shared"], name="shared", heading=True)
     out(a, r["unclaimed"], name="unclaimed", heading=True)
     out(a, r["unlocated"], name="unlocated", heading=True)

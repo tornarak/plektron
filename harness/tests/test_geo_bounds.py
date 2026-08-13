@@ -62,13 +62,26 @@ def test_margin_is_degrees_on_all_four_sides():
 
 @built
 def test_an_id_with_no_extent_is_a_row_and_not_a_silence():
-    """`place:cape-prince-of-wales` is named by the book and located by nothing,
-    and it is the east edge of `land:northeast-siberia`'s frame — which had to
-    be estimated by hand. A tool that dropped it from the list would have made
-    that estimate look like a measurement."""
-    got = geo.boxes(["place:cape-prince-of-wales", "river:yana"], ROOT)
+    """An entity the book names and nothing locates gets a row of nulls, because
+    a tool that dropped it would make every estimate resting on it look like a
+    measurement. `land:northeast-siberia`'s east edge was exactly that — hand-set
+    to Cape Prince of Wales, which had no coordinate.
+
+    **The subject is found rather than named.** This test was pinned to that
+    cape and broke the day `tools/gazetteer.py` located it, which is the test
+    rotting rather than the property failing: the store is being filled in, and a
+    fixture that names one gap asserts about how far that work has got. It is
+    skipped if the store ever runs out of gaps, which would be the good ending.
+    """
+    store = entities.load(ROOT)
+    gap = next((i for i, r in sorted(store.items())
+                if r["class"] in ("place", "land", "water", "river")
+                and geo.extent_of(i, store, ROOT) is None), "")
+    if not gap:
+        pytest.skip("every geographical entity is located — nothing left to gap")
+    got = geo.boxes([gap, "river:yana"], ROOT)
     rows = {r["id"]: r for r in got["rows"]}
-    assert rows["place:cape-prince-of-wales"]["west"] is None
+    assert rows[gap]["west"] is None
     # And it does not drag the union anywhere.
     assert got["union"][0]["west"] == rows["river:yana"]["west"]
 

@@ -252,7 +252,7 @@ def test_a_coarse_delineation_is_not_read_as_a_disagreement():
 @built
 def test_verify_reports_and_never_gates():
     r = geo.verify(ROOT)
-    assert set(r) == {"scope", "nesting", "containment", "points", "shared",
+    assert set(r) == {"scope", "nesting", "containment", "shared",
                       "unclaimed", "unlocated"}
     assert all("reading" in row for row in r["containment"])
 
