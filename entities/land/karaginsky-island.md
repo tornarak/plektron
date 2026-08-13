@@ -1,7 +1,7 @@
 # land:karaginsky-island — Karaginsky Island
 
 - status: ratified
-- within: land:kamchatka
+- within: water:karaginsky-gulf
 - area: region:karagha-island
 
 ## aliases

@@ -705,3 +705,21 @@ def test_the_fallback_is_scoped_to_peoples_and_terminates(tmp_path):
     entry(tmp_path, "people:a", extra="- within: people:b\n")
     entry(tmp_path, "people:b", extra="- within: people:a\n")
     assert geo.extent_of("people:a", entities.load(tmp_path), tmp_path) is None
+
+
+def test_a_marine_parent_is_reported_as_not_measurable():
+    """Natural Earth's marine polygons *tile* the ocean. Karaginskiy Gulf abuts
+    the Bering Sea rather than sitting inside it and measures 0.068 against it —
+    worse than against the Kamchatka peninsula it is not part of. They are also
+    drawn around land, so an island in a gulf reads 0.625 while being exactly
+    where it says it is.
+
+    Both authored facts are true and this geometry witnesses neither, so the row
+    says that rather than calling a source wrong for never having claimed to
+    nest. Same argument as `coarse`, one source over."""
+    assert geo._reading(0.068, False, True).startswith("not measurable")
+    assert geo._reading(0.999, False, True).startswith("not measurable")
+    # And it changes nothing where the parent is a real container.
+    assert geo._reading(0.999, False, False) == "contained"
+    assert geo._reading(0.5, False, False) == "disagrees"
+    assert geo._reading(0.8, True, False).startswith("consistent")

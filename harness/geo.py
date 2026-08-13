@@ -773,7 +773,9 @@ def verify(root: Path = Path(".")) -> dict:
                 "parent": parent["id"], "parent_area": parent["area"],
                 "inside": round(frac, 3),
                 "coarse": " ".join(coarse),
-                "reading": _reading(frac, bool(coarse)),
+                "reading": _reading(
+                    frac, bool(coarse),
+                    parent["area"].startswith("marine:")),
             })
 
     for ident, ids in sorted(claims.items()):
@@ -864,7 +866,7 @@ EXACT = 0.98
 COARSE_FLOOR = 0.6
 
 
-def _reading(frac: float, coarse: bool) -> str:
+def _reading(frac: float, coarse: bool, marine_parent: bool = False) -> str:
     """What a containment fraction is allowed to be read as.
 
     **The service declares its own precision and this respects it.** Above
@@ -877,7 +879,18 @@ def _reading(frac: float, coarse: bool) -> str:
 
     So the bar moves with the evidence, and the row names the coarse member so
     the number is never read as better than what produced it.
+
+    **A `marine:` parent is not a container at all**, and that is the same
+    argument again. Natural Earth's marine polygons *tile* the ocean: Karaginskiy
+    Gulf abuts the Bering Sea rather than sitting inside it, and it measured 0.068
+    against it — worse than against the Kamchatka peninsula it is not part of.
+    They are also drawn around land, so an island in a gulf reads 0.625 while
+    being exactly where it says it is. Both authored facts are true and this
+    geometry cannot witness either, so the row says so instead of saying
+    "disagrees" about a source that never claimed to nest.
     """
+    if marine_parent:
+        return "not measurable — marine shapes tile rather than nest"
     if frac >= EXACT:
         return "contained"
     if coarse:
