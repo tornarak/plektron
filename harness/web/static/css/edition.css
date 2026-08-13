@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --bg:#fbfaf7; --fg:#1c1a17; --dim:#6b6560; --rule:#ddd8d0; --card:#fff;
   --accent:#7a4b28; --mark:#b8860b; --pin:#1a6b5a;
   --sea:#eef2f4; --land:#e7e2d8; --water:#5a86a8;
@@ -6,6 +7,14 @@
   --flora:#3f7a35; --abstract:#7d6a10; --lex:#c2620c; --basin:#8c3a3a;
   --hi:#e0342a;
 }
+/* **Three states, and the two dark blocks are the same tokens on purpose.**
+   No `data-theme` means follow the system, which is what a reader who has never
+   touched the toggle wants and the only thing that works with no JS at all.
+   `data-theme="light"` and `="dark"` are an explicit choice and must win in
+   *both* directions — the media query alone could force light on a dark system
+   but never dark on a light one, so the toggle had nothing to set.
+   CSS cannot union a media query with an attribute selector, so the block is
+   written twice; the values are identical and belong to `:root` either way. */
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19;
   --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6;
@@ -13,7 +22,20 @@
   --sel: #c15252;
   --flora:#8fbf7a; --abstract:#e0c97a; --lex:#e07b20; --basin:#997a72;
   --hi:#ff5f4d;
+  color-scheme: dark;
 } }
+:root[data-theme="dark"] {
+  --bg:#161513; --fg:#e6e2db; --dim:#948d84; --rule:#332f2a; --card:#1e1c19;
+  --accent:#d99a63; --mark:#d4a63c; --pin:#5fbfa6;
+  --sea:#14181b; --land:#2a2621; --water:#6f9cbd;
+  --sel: #c15252;
+  --flora:#8fbf7a; --abstract:#e0c97a; --lex:#e07b20; --basin:#997a72;
+  --hi:#ff5f4d;
+  color-scheme: dark;
+}
+/* `color-scheme` so the browser's own furniture follows — the search field, the
+   scrollbars, the focus ring. Without it a dark page carries a white input. */
+:root[data-theme="light"] { color-scheme: light }
 * { box-sizing:border-box }
 body { margin:0; background:var(--bg); color:var(--fg);
   font:16px/1.65 Charter,Georgia,"Times New Roman",serif; }
@@ -22,13 +44,34 @@ a { color:var(--accent) }
   align-items:center; padding:.5rem .9rem; background:var(--bg);
   border-bottom:1px solid var(--rule); font-family:system-ui,sans-serif;
   font-size:.85rem; }
+/* Three zones: the site's name left, the controls centred, the page's identity
+   hard right. The centre is the only one that grows, so it stays centred in the
+   window rather than centred in whatever is left over — and the two ends are
+   given the same basis so an unusually long identity cannot drag the middle off
+   centre. */
+#bar .site, #bar .bar-right { flex:1 1 0; min-width:0 }
+#bar .bar-right { display:flex; align-items:center; gap:.75rem;
+  justify-content:flex-end }
+#bar .bar-right input { min-width:0 }
+#bar .location { color:var(--dim); white-space:nowrap }
 #bar .page-specific-buttons {
     display: flex;
-    flex: 1;
+    flex: 0 0 auto;
     flex-direction: row;
     gap: 0.5em;
     justify-content: center;
 }
+/* --- the site's own apparatus, at the foot ---
+   The other views, the search field and the theme control. Off the top of the
+   window on purpose: none of it is wanted while reading, and the header is the
+   one strip that is on screen the whole time. */
+#site-foot { display:flex; flex-direction:column; align-items:center; gap:.6rem;
+  max-width:80rem; margin:2rem auto 0; padding:1rem .9rem 2rem;
+  border-top:1px solid var(--rule);
+  font-family:system-ui,sans-serif; font-size:.85rem }
+#site-foot .refs { display:flex; gap:.9rem; flex-wrap:wrap;
+  justify-content:center }
+#site-foot a { text-decoration:none }
 #bar a { text-decoration:none }
 button, .btn { font:inherit; font-family:system-ui,sans-serif; font-size:.8rem;
   padding:.25rem .6rem; border:1px solid var(--rule); border-radius:.3rem;
@@ -64,6 +107,22 @@ main.cols { display:flex; align-items:flex-start; flex-direction: row-reverse;
   main.cols { display:block }
   #secondary { position:static; max-height:none; margin-top:2rem;
     border-top:1px solid var(--rule); padding-top:1rem }
+}
+/* **The bar sets the page's minimum width, which is why it stretched the whole
+   page rather than merely looking cramped.** It is one flex row of eight things
+   — title, location, buttons, three links and a search field — and a flex item
+   does not shrink below its own content, `min-width` being `auto` on one. So the
+   row establishes a floor wider than a phone, the body inherits it, and every
+   column below is dragged out to match.
+   Stacked here, and `min-width:0` on the field as well: columning alone leaves
+   the input's default size holding the floor up. `.location` can be long — it
+   carries the ref and the folio — so it wraps rather than pushing. */
+@media (max-width:600px) {
+  #bar { flex-wrap:wrap; gap:.4rem .75rem }
+  #bar .site { flex:0 0 auto }
+  #bar .bar-right { flex:1 1 100%; justify-content:space-between }
+  #bar .bar-right form { flex:1 1 auto; display:flex; max-width:14rem }
+  #bar .bar-right input { width:100% }
 }
 /* --- the text --- */
 #primary p { margin:0 0 .35rem; text-indent:1.4rem }

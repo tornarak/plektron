@@ -192,8 +192,9 @@ def _exempt_page(request: Request, ref: str, root):
 
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
-    here = f"scan {ref} · " + (f"{len(plates)} figure(s)" if plates
-                               else "not a text page")
+    # No folio: an exempt page has no TEI and so no `<pb>` that recorded one, and
+    # these are the pages that print none anyway.
+    here = ref
     return templates.TemplateResponse(
         request,
         "edition/exempt.html",
@@ -228,7 +229,11 @@ def page(request: Request, ref: str):
     doc = stores.render(path)
     refs = _listing(request)
     i = refs.index(ref) if ref in refs else -1
-    here = f"scan {ref}" + (f" · folio {doc['folio']}" if doc.get("folio") else "")
+    # `PP-NNN (folio)`, both systems at once, because neither is derivable from
+    # the other (CLAUDE.md, Page refs). No folio prints none rather than a dash:
+    # plates and front matter genuinely print none, and this is not the place to
+    # make that look like missing data.
+    here = ref + (f" ({doc['folio']})" if doc.get("folio") else "")
     size = ui._raster_size(ref, root)
     state = {"base": BASE, "ref": ref, "size": size,
              **_figure_state(ref, root, doc, size)}

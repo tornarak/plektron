@@ -21,21 +21,17 @@
 
    The `{% raw %}{% if prev or next %}{% endraw %}` guard lives inside the macro
    so the condition is written once and not once per call site. #}
-{# The middle cell names the page in both systems, because neither is derivable
-   from the other (CLAUDE.md, Page refs): `PP-NNN` is a scan index within a part
-   and the folio is what the printer set, known only where a transcribed page
-   recorded one. A page with no folio prints none rather than a dash — plates and
-   front matter genuinely print none, and this row is not the place to make that
-   look like missing data.
+{# The middle cell repeats what the header's right corner says, deliberately.
+   The header is fixed furniture at the top of the window; this row sits at the
+   two places a reader actually arrives at and leaves from, and having the page's
+   name there — in both systems, since neither `PP-NNN` nor the printed folio is
+   derivable from the other — costs a few characters and saves looking up.
 
-   The folio used to be a `float:right` span in the text and moved here because a
-   figure floated to the head of the page displaced it. Page identity was never
-   prose; it belongs with the navigation that already carries the ref.
-
-   The row is rendered whether or not there are neighbours: it is now the only
-   thing that says which page you are on. #}
+   Rendered whether or not there are neighbours, because it names the page and a
+   page that named itself only when it happened to have a neighbour would be a
+   worse rule than no rule. The *links* are what is conditional. #}
 {% macro neighbours() %}
-<div class='neighbours'>
+<nav class='neighbours' aria-label='page'>
   <span>{% if prev %}<a class='page-prev'
      href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
   <span class='here'>{{ ref }}{% if doc and doc.folio %}
@@ -43,7 +39,7 @@
   {% endif %}</span>
   <span>{% if next %}<a class='page-next'
      href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
-</div>
+</nav>
 {% endmacro %}
 
 {% block main %}

@@ -8,7 +8,13 @@
 <script>try{if(localStorage.getItem('edition-reader'))
      document.documentElement.classList.add('reader');
 if(localStorage.getItem('edition-cols-reversed'))
-     document.documentElement.classList.add('cols-reversed')
+     document.documentElement.classList.add('cols-reversed');
+/* The theme belongs here for the same reason and more sharply: applied after
+   the stylesheet, a stored choice would paint the system's theme first and
+   flip it, which is a white flash on every page load for a dark reader. No
+   stored value sets no attribute, and the stylesheet follows the system. */
+var t=localStorage.getItem('edition-theme');
+if(t==='dark'||t==='light') document.documentElement.dataset.theme=t;
  }catch(e){}</script>
 {% endblock %}
 
@@ -17,22 +23,52 @@ if(localStorage.getItem('edition-cols-reversed'))
 <link rel="stylesheet" href="/static/css/geomap.css">
 {% endblock %}
 
+{# `<header>`, `<main>` and `<footer>` rather than three divs, and the two link
+   runs are `<nav>`. The elements are the document's own account of what its
+   parts are — a screen reader offers "navigation" and "main" as landmarks to
+   jump between, and until now every one of them was an anonymous div. #}
 {% block body %}
-<div id='bar'>
-  <a href='{{ base }}/'><b>The Chukchee</b></a>
-  <span class='location'>{{ here }}</span>
+<header id='bar'>
+  <a class='site' href='{{ base }}/'><b>The Chukchee</b></a>
   <span class='page-specific-buttons'>
       <button id='cols-reverse-btn' title='Reverse Columns'>⇄</button>
       {% block btn_extra %}{% endblock %}
   </span>
-  <a href='{{ base }}/entities'>encyclopedia</a>
-  <a href='{{ base }}/lexicon'>lexicon</a>
-  <a href='{{ base }}/atlas'>atlas</a>
-  <form action='{{ base }}/search' style='display:inline'>
-    <input name='q' placeholder='search'>
-  </form>
-</div>
+  {# Search and the page's identity, hard right. Search is on top with the
+     reading rather than below with the reference links: it is reached mid-page
+     and constantly, which is the opposite of the three section links, and a
+     control you need while reading does not belong at the end of the document.
+
+     `here` is the ref and the printed folio on a page view and a count
+     elsewhere, so the header names where you are in whichever terms the view
+     has. It sits here rather than in the text because it used to be a
+     `float:right` span in the prose, where a figure floated to the head of the
+     page shouldered it out of the corner. #}
+  <span class='bar-right'>
+    {# No inline `display:inline`: the form is a flex item, so it is blockified
+       whatever it asks for, and the declaration's only real effect was to
+       outrank the stylesheet on specificity — which made a mobile rule a no-op
+       that looked like a fix. #}
+    <form action='{{ base }}/search'>
+      <input name='q' placeholder='search'>
+    </form>
+    <span class='location'>{{ here }}</span>
+  </span>
+</header>
 <main class='cols'>{% block main %}{% endblock %}</main>
+{# The apparatus of the site rather than of the page: the other three views, the
+   search field, and the one control that belongs to the sitting rather than to
+   anything on screen. None of it is wanted while reading, which is the argument
+   for the foot — and it is why the theme button moved out of the header it was
+   in for all of ten minutes. #}
+<footer id='site-foot'>
+  <nav class='refs' aria-label='sections'>
+    <a href='{{ base }}/entities'>encyclopedia</a>
+    <a href='{{ base }}/lexicon'>lexicon</a>
+    <a href='{{ base }}/atlas'>atlas</a>
+  </nav>
+  <button id='theme-btn' title='Light / dark'>◐</button>
+</footer>
 {% endblock %}
 
 {% block scripts %}
@@ -43,6 +79,20 @@ if(localStorage.getItem('edition-cols-reversed'))
  document.getElementById('cols-reverse-btn').addEventListener('click', () => {
      const on = document.documentElement.classList.toggle('cols-reversed');
      localStorage.setItem('edition-cols-reversed', on ? '1' : '');
+ });
+ /* Flips whatever is on screen, which is not the same as flipping a stored
+    value: until the toggle is first pressed there is no stored value and the
+    page is showing the system's theme, so the current state has to be *read*
+    rather than assumed. Reading it from the attribute when there is one and
+    from `matchMedia` when there is not means the first press always does the
+    visible thing. */
+ document.getElementById('theme-btn').addEventListener('click', () => {
+     const root = document.documentElement;
+     const dark = root.dataset.theme
+         ? root.dataset.theme === 'dark'
+         : matchMedia('(prefers-color-scheme: dark)').matches;
+     root.dataset.theme = dark ? 'light' : 'dark';
+     localStorage.setItem('edition-theme', root.dataset.theme);
  });
 </script>
 {% endblock %}

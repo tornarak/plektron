@@ -17,13 +17,13 @@
    so no `<pb>` to have recorded one, and these are exactly the pages — plates,
    front matter, blanks — that print no folio in the first place. #}
 {% macro neighbours() %}
-<div class='neighbours'>
+<nav class='neighbours' aria-label='page'>
   <span>{% if prev %}<a class='page-prev'
      href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
   <span class='here'>{{ ref }}</span>
   <span>{% if next %}<a class='page-next'
      href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
-</div>
+</nav>
 {% endmacro %}
 
 {% block main %}

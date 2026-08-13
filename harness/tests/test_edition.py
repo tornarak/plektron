@@ -549,8 +549,35 @@ def test_every_link_colour_is_defined_in_both_themes():
     css = CSS.read_text(encoding="utf-8")
     families = set(re.findall(r"--link:\s*var\((--[a-z]+)\)", css))
     assert families, "no --link family rules found; the selector shape moved"
+    # **Three blocks, not two, since the theme toggle went in.** Light on bare
+    # `:root`; dark under `prefers-color-scheme` for a reader who has never
+    # touched the control; dark again under `[data-theme="dark"]` for one who
+    # has. CSS cannot union a media query with an attribute selector, so the
+    # third is a copy — which is exactly why the next assertion exists.
     for token in families | {"--lex", "--basin", "--hi", "--mark", "--sel"}:
-        assert len(re.findall(rf"{token}\s*:", css)) == 2, token
+        assert len(re.findall(rf"{token}\s*:", css)) == 3, token
+
+
+def test_the_two_dark_palettes_are_the_same_palette():
+    """The duplication the toggle forced, held to being a duplication.
+
+    A token edited in the media-query block and not in the `[data-theme="dark"]`
+    one gives two different dark themes: the reader who set the toggle sees a
+    different page from the reader whose system set it, and neither has any way
+    to tell. Nothing in CSS prevents that, so it is asserted here — the two
+    blocks must carry the identical set of declarations.
+    """
+    css = CSS.read_text(encoding="utf-8")
+    blocks = re.findall(
+        r"(?::root:not\(\[data-theme=\"light\"\]\)|:root\[data-theme=\"dark\"\])"
+        r"\s*\{(.*?)\}", css, re.S)
+    assert len(blocks) == 2, f"expected two dark blocks, found {len(blocks)}"
+
+    def decls(b):
+        return sorted(d.strip() for d in b.split(";") if d.strip())
+
+    assert decls(blocks[0]) == decls(blocks[1]), (
+        "the two dark palettes have drifted apart")
 
 
 def test_an_entry_that_can_be_drawn_arrives_with_its_map(server):
