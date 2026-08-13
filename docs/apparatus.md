@@ -188,7 +188,14 @@ belong here when it has happened.
 the count sat at 250 pages while two were missing, because 250 was also what the
 List of Illustrations implies, and the two absences cancelled exactly against
 `3-006`/`3-007`, which carry a zone and no caption and are not LoI pages at all.
-Only the per-entry check catches that. It now passes: every LoI text-figure
+Only the per-entry check catches that. **It is a check somebody ran by hand and
+no code performs** — `figures.reconcile` opens `gt/fig/` and `data/readings.md`
+and never `data/loi.json`, so nothing re-runs this and nothing would notice it
+ceasing to hold. Writing it waits on chapter assembly, because an LoI entry
+places a figure by *folio*; `docs/open-questions.md` carries the reasoning.
+
+What that hand check found, as a record of one moment rather than a live
+result: every LoI text-figure
 **1–302** has a reading, no reading cites a figure number outside the LoI, and all
 **35 plates I–XXXV** are located. 91 LoI plate segments map to 93 caption blocks,
 and all four deviations are known — Plate II (the LoI makes the shared "Anui Fair"

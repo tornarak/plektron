@@ -1553,7 +1553,7 @@ single store can answer it.
 
 ### corpus figures
 **Does** reconciles `gt/fig/` zone geometry against `data/readings.md` captions, in both directions.
-**Reads** `gt/fig/`, `data/readings.md`, `data/loi.json`.
+**Reads** `gt/fig/`, `data/readings.md`. **Not `data/loi.json`**, which this line claimed for as long as the entry existed: `figures.reconcile` has never opened it, and the per-entry List of Illustrations check `docs/apparatus.md` describes is a hand check living in no code. Building it waits on chapter assembly — an LoI entry places a figure by *folio*, which is a question about the assembled book — and `docs/open-questions.md` carries the reasoning and the measured state.
 **Writes** —
 **Exit** 1 if `missing` or `orphan` is non-empty. The counts alone never decide it: 250 pages was once the expected total *and* wrong in two compensating directions at once.
 ```

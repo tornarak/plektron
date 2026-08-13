@@ -7,6 +7,45 @@ in for an unread glyph.
 
 ## Open
 
+- **The List of Illustrations has no reader, and the cross-check waits on chapter
+  assembly.** `docs/apparatus.md` describes a per-entry reconciliation — every LoI
+  text-figure located on a page, no caption numbering outside the LoI, all 35
+  plates placed — and it is a hand check living in no code: `figures.reconcile`
+  opens `gt/fig/` and `data/readings.md` only, while `harness/VERBS.md` lists
+  `data/loi.json` under `corpus figures`' **Reads**, which is currently untrue.
+  Building it was scoped and deferred rather than attempted, and the reason is
+  sequencing: an LoI entry says which *folio* a figure falls on, so checking it
+  is a question about where a figure sits in the assembled book, and the book is
+  not assembled — 1 page is collated against 274 drafted. The same holds for
+  `data/toc.json`. Both belong with chapter assembly, after collation, when there
+  is a running text for a folio to be a position in.
+
+  Two things not to lose in the meantime. The reconciliation is also the most
+  book-specific work in the figure track — plate numbering restarting at 1 per
+  plate, the 35-plates/9-full-page-figures split, the LoI's own segment
+  conventions — so whatever is built should be reachable only from a book that
+  *has* a List of Illustrations, not assumed by the pipeline. And the measured
+  state is worth keeping: of 302 LoI text-figures, 300 resolve to exactly one
+  page and none to two, with no caption numbering outside the LoI. The two that
+  do not are fig. 1 on `1-037`, whose number the printer set below the title, and
+  fig. 240 on `2-068`, the corpus's one unpaired caption. Both are correct as
+  recorded, so a flat gate on "unlocated is empty" would fail on the day it was
+  written.
+
+- **Where a plate's rotation is recorded, given that no plate reaches a
+  collator.** Rotation is a reading — whether a sideways figure or a
+  bottom-to-top plate caption should be turned upright is a judgement about what
+  the page means, and this pipeline hands judgements to the collation pass. But
+  `dispatch.py` refuses an exempt page for both tracks, and every plate is
+  exempt, so the one person entitled to make that call never sees the page. The
+  gap is not that the evidence is missing: `figures.paired`'s removed
+  `misordered` check found that `1-227` numbers 2, 4, 1, 3 upright and 1, 2, 3, 4
+  once the sheet is turned, so the corpus already contains evidence of rotation
+  in its caption order. It is that the only witness is an inference and there is
+  no store for a human to overrule it in. Crops are taken as the box sits and
+  nothing rotates them; `gt/fig-img/` will hold a corrected picture if somebody
+  makes one, which is a workaround for the image and not an answer for the fact.
+
 - **Where the index lives is answered, and the answer is that there are two
   objects, not one.** This entry asked whether `lexicon lookup`'s per-run index of
   ratified Tier-1 forms should be persisted as the toponym authority, and refused
