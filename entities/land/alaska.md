@@ -1,6 +1,6 @@
 # land:alaska — Alaska
 
-- status: proposed
+- status: ratified
 - link: wikipedia:Alaska
 - link: wikidata:Q797
 - link: geonames:5879092

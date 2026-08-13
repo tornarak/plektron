@@ -1,6 +1,6 @@
 # land:anui-mountains — Anui Mountains
 
-- status: proposed
+- status: ratified
 - within: land:chukotka
 - geo: 67.5 166
 - link: geonames:2127119

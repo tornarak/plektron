@@ -1,6 +1,6 @@
 # water:gishiga-bay — Gishiga Bay
 
-- status: proposed
+- status: ratified
 - within: water:penzhina-bay
 - geo: 61.367 158.152
 - link: geonames:2125556

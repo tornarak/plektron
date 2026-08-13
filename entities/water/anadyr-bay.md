@@ -1,6 +1,6 @@
 # water:anadyr-bay — Anadyr Bay
 
-- status: proposed
+- status: ratified
 - within: land:chukotka
 - area: marine:anadyr-bay
 

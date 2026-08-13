@@ -50,6 +50,7 @@ import sys
 import unicodedata
 from pathlib import Path
 
+import numpy as np
 from shapely.geometry import box, mapping, shape
 from shapely.ops import unary_union
 
@@ -169,6 +170,25 @@ TOLERANCE = {"watershed": 0.01, "rivers": 0.01, "langarea": 0.02, "base": 0.08}
 #: simplify has not already spent.
 PRECISION = 3
 
+#: How far from 180 a vertex may sit and still be pulled onto it, in degrees.
+#:
+#: **The union could only weld halves that actually met, and some do not.**
+#: Natural Earth's 10m regions layer cuts Wrangel Island at the antimeridian and
+#: leaves the two halves 0.011° apart — the eastern piece begins at −179.989,
+#: not −180 — so `unary_union` had nothing to join and the store carried two
+#: rings where the world has one island. The renderer then strokes both, and a
+#: seam runs down the middle of every shape that straddles the meridian. The 50m
+#: land layer cuts the same island and *does* meet, which is how one store held
+#: both outcomes for one coastline.
+#:
+#: 0.02° is under a kilometre at these latitudes and an order of magnitude below
+#: the coarsest simplification here, so it can only close a publisher's cut: any
+#: real feature that narrow was already lost to `TOLERANCE`. It is applied to the
+#: cut line and nowhere else, which is why this is a snap and not a `buffer(0)` —
+#: the standing rule in this file is that a repair nobody was told about is worse
+#: than the damage.
+MERIDIAN_SNAP = 0.02
+
 #: The Asher 2007 polygons this edition draws, by glottocode — the id the
 #: source itself carries, and the only stable one.
 #:
@@ -249,14 +269,41 @@ def slug(text: str) -> str:
 
 # ------------------------------------------------------------ the meridian
 
+def _on_meridian(geom):
+    """Pull every vertex within `MERIDIAN_SNAP` of 180 onto it exactly.
+
+    Only the x ordinate moves, and only near the cut. Two halves whose edges
+    then coincide vertex-for-vertex are what `unary_union` can dissolve; without
+    it the union returns the pair unchanged and the shape stays two rings.
+    """
+    from shapely.ops import transform
+
+    def snap(x, y, z=None):
+        try:
+            x = np.where(np.abs(np.asarray(x) - 180.0) <= MERIDIAN_SNAP,
+                         180.0, x)
+        except Exception:                                     # noqa: BLE001
+            if abs(x - 180.0) <= MERIDIAN_SNAP:
+                x = 180.0
+        return (x, y) if z is None else (x, y, z)
+
+    return transform(snap, geom)
+
+
 def prepare(geom, window):
     """Clip to the region and land in one continuous longitude window.
 
     The order is the whole trick. Clipping happens in NATIVE coordinates
     against two boxes, so a global polygon is cut down before any arithmetic
     touches it; only the western piece is then shifted. A shape cut at the
-    meridian by its own publisher arrives as two halves that meet exactly at
-    180, and the union at the end welds them back into one.
+    meridian by its own publisher arrives as two halves that meet at 180, and
+    the union at the end welds them back into one.
+
+    **"Meet at 180" is a hope, and `_on_meridian` is what makes it true.** Some
+    publishers cut exactly and some do not: Natural Earth's 10m Wrangel Island
+    leaves an 0.011° gap between its halves, and its 50m coastline does not.
+    Snapping the cut line before the union is the difference between one island
+    and two rings with a seam stroked down the middle of them.
     """
     w, s, e, n = window
     east = geom.intersection(box(w, s, min(e, 180.0), n))
@@ -268,6 +315,17 @@ def prepare(geom, window):
             parts.append(translate(west, xoff=360.0))
     if not parts:
         return None
+    parts = [_on_meridian(p) for p in parts]
+    if len(parts) > 1:
+        # **Snapping to the line is not enough; they have to share an edge.**
+        # Pulling both halves onto 180 closed the Bering Sea and the Gulf of
+        # Anadyr, whose cut edges then coincided. Wrangel Island's did not: its
+        # halves met the meridian at different latitudes, so they touched at
+        # points and `unary_union` returned the pair unchanged. `snap` moves the
+        # western vertices onto the eastern *geometry* rather than onto a
+        # coordinate, which is what gives the union a boundary to dissolve.
+        from shapely.ops import snap
+        parts[1:] = [snap(p, parts[0], MERIDIAN_SNAP) for p in parts[1:]]
     out = unary_union(parts) if len(parts) > 1 else parts[0]
     return None if out.is_empty else out
 

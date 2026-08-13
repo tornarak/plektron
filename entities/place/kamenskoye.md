@@ -1,7 +1,7 @@
 # place:kamenskoye — Kamenskoye
 
-- status: proposed
-- within: land:northeast-siberia
+- status: ratified
+- within: land:kamchatka
 - geo: 62.4687 166.207
 - link: wikipedia:Kamenskoye,_Kamchatka_Krai
 - link: wikidata:Q984829
@@ -12,7 +12,6 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Kamenskoye | | yes | |
-| Kamen-skoye | | yes | the line-break spelling at 1-080 |
 | Vaiˊkenan | ckt | yes | |
 | Каменское | ru | yes | |
 

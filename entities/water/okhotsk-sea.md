@@ -1,6 +1,7 @@
 # water:okhotsk-sea — Sea of Okhotsk
 
-- status: proposed
+- status: ratified
+- within: land:russian-far-east
 - area: marine:okhotsk-sea
 
 ## aliases

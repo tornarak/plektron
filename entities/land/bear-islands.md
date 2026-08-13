@@ -1,6 +1,6 @@
 # land:bear-islands — Bear Islands
 
-- status: proposed
+- status: ratified
 - within: land:northeast-siberia
 - area: region:bear-islands
 
@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Bear Islands | | yes | |
+| Медвежьи острова | ru | no | |
 
 ## gloss
 

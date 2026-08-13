@@ -1,6 +1,6 @@
 # water:provideniya-bay — Provideniya Bay
 
-- status: proposed
+- status: ratified
 - within: land:chukchi-peninsula
 - geo: 64.4167 -173.4
 - link: wikidata:Q4100560

@@ -41,7 +41,7 @@
    "source": "naturalearth-50m",
    "rule": "the land component intersecting langarea:chuk1273, clipped to longitudes east of 180. Natural Earth land only — it says nothing about who speaks what",
    "file": "base/chukotka-east-of-meridian.json",
-   "points": 169,
+   "points": 168,
    "bounds": [
     180.0,
     64.28,
@@ -69,7 +69,7 @@
    "name": "land",
    "source": "naturalearth-50m",
    "file": "base/land.json",
-   "points": 1542,
+   "points": 1535,
    "bounds": [
     79.514,
     39.71,
@@ -307,7 +307,7 @@
    "wikidata": "Q44725",
    "source": "naturalearth-10m",
    "file": "marine/bering-sea.json",
-   "points": 469,
+   "points": 470,
    "bounds": [
     162.762,
     50.987,
@@ -460,7 +460,7 @@
    "wikidata": "Q106594",
    "source": "naturalearth-10m",
    "file": "region/wrangel-island.json",
-   "points": 19,
+   "points": 21,
    "bounds": [
     178.628,
     70.822,

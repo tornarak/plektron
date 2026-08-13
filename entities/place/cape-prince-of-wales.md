@@ -1,6 +1,6 @@
 # place:cape-prince-of-wales — Cape Prince of Wales
 
-- status: proposed
+- status: ratified
 - within: land:alaska
 - geo: 65.5948 -168.092
 - link: geonames:5872091

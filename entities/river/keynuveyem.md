@@ -1,6 +1,6 @@
 # river:keynuveyem — Keynuveyem
 
-- status: proposed
+- status: ratified
 - within: land:northeast-siberia
 - area: watershed:keynuveem-or-bear
 - link: geonames:2124828
@@ -12,6 +12,7 @@
 | Keiˊñu-weˊem | ckt | yes | |
 | Медвѣжья рѣка | ru | yes | |
 | Bear River | | yes | |
+| Brown Bear River | | yes | |
 | Кейнувеем | ru | no | the modern spelling; not printed in the book |
 
 ## gloss

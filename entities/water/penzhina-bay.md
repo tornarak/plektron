@@ -1,6 +1,6 @@
 # water:penzhina-bay — Penzhina Bay
 
-- status: proposed
+- status: ratified
 - within: land:northeast-siberia
 - geo: 61.25 163
 - link: wikipedia:Penzhina_Bay
@@ -11,6 +11,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Penshina Bay | | yes | the book's spelling |
+| Пенжинская губа | ru | no | |
 
 ## gloss
 
