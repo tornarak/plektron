@@ -3,11 +3,17 @@ svg.map { width:100%; height:auto; display:block; background:var(--sea);
 svg.map .land { fill:var(--land); stroke:none }
 svg.map .lakes { fill:var(--sea); stroke:none }
 svg.map .kin { fill:none; stroke:var(--dim); stroke-width:.15%; opacity:.5 }
-svg.map .members { fill:color-mix(in srgb,var(--shape) 8%,transparent);
+/* **On the paths, not on the groups.** `--shape` is set per path from its
+   `data-kind`, and a `fill:var(--shape)` on the enclosing `<g>` resolves the
+   variable *once, at the group*, then paints every child by inheriting the
+   computed colour — so every kind came out in the group's own fallback and the
+   colour-coding was invisible. Custom properties inherit; the declaration that
+   reads one has to live where the value does. */
+svg.map .members path { fill:color-mix(in srgb,var(--shape) 8%,transparent);
   stroke:var(--shape); stroke-width:.18%; opacity:.75 }
 svg.map .parent { fill:none; stroke:var(--dim); stroke-width:.25%;
   stroke-dasharray:1%,.8% }
-svg.map .subject { fill:color-mix(in srgb,var(--shape) 22%,transparent);
+svg.map .subject path { fill:color-mix(in srgb,var(--shape) 22%,transparent);
   stroke:var(--shape); stroke-width:.35% }
 
 /* --- one hue per shape kind ---
@@ -35,12 +41,15 @@ svg.map [data-kind="watershed"] { --shape:var(--basin) }
 svg.map [data-kind="marine"]    { --shape:var(--water) }
 svg.map [data-kind="langarea"]  { --shape:var(--abstract) }
 svg.map [data-kind="region"]    { --shape:var(--accent) }
-/* A drainage divide, set by `edition_ui.map_context` when the subject's `area:`
-   names a watershed. The rivers inside it are `--water`, and an outline in the
-   accent brown against a blue trunk reads as two unrelated things; this is the
-   one boundary on the map that is *about* the water. */
-svg.map.basin .subject { stroke:var(--basin);
-  fill:color-mix(in srgb,var(--basin) 14%,transparent) }
+/* The `basin` mark on the root — set by `edition_ui.map_context` when the
+   subject's `area:` names a watershed — used to carry a colour rule here: a
+   drainage divide drawn in the accent brown against the blue trunk inside it
+   read as two unrelated things. `data-kind="watershed"` now says the same thing
+   about *every* watershed on the map rather than only the one being looked at,
+   so the rule is gone and the mark is left to the class list, where `map.js` and
+   anything else that wants to know what kind of subject this is can still read
+   it. Reinstating a paint rule here would also put it in a specificity contest
+   with `.hi`, which the comment at the foot of this file exists to warn about. */
 /* **Present and unpainted.** The extents of descendants no other layer can
    identify — Chukotka on the Russian Far East's map, which `member_shapes`
    descends straight through. Drawn at all so a hover has something to find;
@@ -69,10 +78,16 @@ svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
  * shape, found by descending through those without, and two entities may share
  * one polygon outright.
  *
- * **Last in the file, and `.subject.hi` written out.** Every rule above is a
- * layer, and a highlight has to beat all of them; `svg.map.basin .subject` is
- * more specific than a bare `.hi` and would otherwise keep its basin red while
- * the pointer sat on it — the subject being the one shape a reader hovers first.
+ * **Last in the file, and every layer rule kept below it in specificity.** A
+ * highlight has to beat all of them, and it does so on class count: `.hi` sits
+ * on the path, so `svg.map .hi` is two classes to `svg.map .members path`'s one.
+ * It used to need `svg.map.basin .subject.hi` spelled out beside it, because a
+ * `.basin` colour rule outweighed a bare `.hi` and kept the subject red under
+ * the pointer — the one shape a reader hovers first. That rule is gone:
+ * `data-kind` colours every watershed rather than only the subject, and it sets
+ * a custom property instead of a paint, so it enters no contest at all. **A
+ * paint rule with more than two class-level selectors above here breaks the
+ * highlight silently.**
  *
  * `--hi` is its own colour rather than `--sel`. `--sel` is a *state* — the
  * selected card, the draft tag — and it is muted so it can sit beside text all
@@ -81,7 +96,7 @@ svg.map .pin-label { fill:var(--fg); font-family:system-ui,sans-serif;
  * a member's, and the pin gets a ring rather than a bigger dot, because `r` is
  * geometry and not something a stylesheet should be reaching into.
  */
-svg.map .hi, svg.map.basin .subject.hi {
+svg.map .hi {
   stroke:var(--hi); stroke-width:.75%; stroke-linejoin:round;
   fill:color-mix(in srgb,var(--hi) 45%,transparent);
   paint-order:stroke; opacity:1 }

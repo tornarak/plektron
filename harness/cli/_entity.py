@@ -449,11 +449,16 @@ def run_rename(a) -> int:
     if new in store:
         raise ValueError(f"{new} already exists at {store[new]['path']}")
 
-    # **Refused before anything is written**, not reported after. A rule may not
-    # rewrite a page a human signed, so if the old identity is live in committed
-    # `tei/` the rename is not this verb's to make — the pages have to be
-    # amended first, by whoever collated them. `mz/tei/` is derived and comes
-    # back from `tei generate`, so it only wants naming.
+    # **The committed pages are rewritten too, and that is not the firewall
+    # bending.** This used to refuse outright, on "a rule may not rewrite a page
+    # a human signed" — which conflated two different things. The rule protects
+    # what a page *asserts*; an `@ref` asserts "this string names that entity",
+    # and a rename changes neither side of it. Only the spelling of the pointer
+    # moves, and leaving it behind is what would break the assertion: the ref
+    # would resolve to nothing, which `validate` calls worse than no ref at all.
+    #
+    # `mz/tei/` is derived and comes back from `tei generate`, so it is named and
+    # not touched — rewriting it would only race the next regeneration.
     links = _refs_to(old, a.root)
     signed = [r for r in links if r["store"] == "tei"]
 
@@ -500,12 +505,13 @@ def run_rename(a) -> int:
     from ..entities import parse
     parse(text, where=str(dst))
 
-    if signed:
-        out(a, {"old": old, "new": new, "wrote": False,
-                "means": f"refused — {sum(r['links'] for r in signed)} @ref(s) "
-                         f"in committed tei/ name it"})
-        out(a, links, "links", heading=True)
-        return 1
+    # Committed pages only. The whole-word `ref="…"` match is exact: an identity
+    # is never a prefix of another inside those quotes.
+    pages = []
+    for r in signed:
+        p = a.root / "tei" / f"chukchi-{r['ref']}.xml"
+        t0 = p.read_text(encoding="utf-8")
+        pages.append((p, t0.replace(f'ref="{old}"', f'ref="{new}"'), r["ref"]))
 
     if a.commit:
         dst.parent.mkdir(parents=True, exist_ok=True)
@@ -514,17 +520,25 @@ def run_rename(a) -> int:
         src.unlink()
         for p, t1, _i in others:
             p.write_text(t1, encoding="utf-8")
+        for p, t1, _i in pages:
+            p.write_text(t1, encoding="utf-8")
 
     out(a, {"old": old, "new": new, "canonical": canonical,
             "filed_as_alias": filed, "repointed": len(others),
-            "stale_refs": sum(r["links"] for r in links),
+            "pages": sum(r["links"] for r in signed),
+            "stale_refs": sum(r["links"] for r in links
+                              if r["store"] != "tei"),
             "wrote": bool(a.commit),
             "means": "renamed" if a.commit else "would rename — pass --commit"})
+    if pages:
+        out(a, [{"ref": i, "path": str(p)} for p, _t, i in pages],
+            "collated pages rewritten", heading=True)
     if others:
         out(a, [{"id": i, "path": str(p)} for p, _t, i in others],
             "repointed", heading=True)
-    if links:
-        out(a, links, "stale refs", heading=True)
+    stale = [r for r in links if r["store"] != "tei"]
+    if stale:
+        out(a, stale, "stale refs", heading=True)
     return 0
 
 

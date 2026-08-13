@@ -1334,15 +1334,15 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 ```
 
 ### entity rename OLD NEW
-**Does** move an entity to a new identity: the file, its heading, and every `within:` and `[[wikilink]]` in the store that names it. With `--canonical`, files the old display name as an alias — `detectors.entity_forms` splits canonicals into the corpus's proper-noun dictionary, so retitling without it would drop the book's own spelling out of the dictionary and start reporting it as a transcription candidate. Skipped where the entry already lists the form, since `parse` refuses a form listed twice.
-**Reads** `entities/`, `tei/`, `mz/tei/`. **Writes** the moved file and every re-pointed entry under `--commit`. **Exit** 0, or 1 if committed `tei/` names the old identity.
+**Does** move an entity to a new identity: the file, its heading, every `within:` and `[[wikilink]]` in the store that names it, and every `@ref` in a **committed `tei/` page**. With `--canonical`, files the old display name as an alias — `detectors.entity_forms` splits canonicals into the corpus's proper-noun dictionary, so retitling without it would drop the book's own spelling out of the dictionary and start reporting it as a transcription candidate. Skipped where the entry already lists the form, since `parse` refuses a form listed twice.
+**Reads** `entities/`, `tei/`, `mz/tei/`. **Writes** the moved file, every re-pointed entry and every collated page under `--commit`. **Exit** 0, or 1 on a usage error.
 ```
 --canonical NAME  the new display name; the old one is filed as an alias
 --commit  write it; without this every edit is reported and none is made
 --root --json --toon --pager
 ```
-**Note** it **refuses outright when a committed `tei/` page carries a `@ref` to the old id**, and reports rather than refuses for `mz/tei/`. A rule may not rewrite a page a human signed — those pages have to be amended by whoever collated them — while `mz/tei/` is derived and comes back from `tei generate`. The `links` table says which store each stale ref is in, because the two are the same string in the same attribute and only the directory tells them apart.
-**Note** the class may not change. That is a delete and a create: the class is half the identity, so every `@ref` would mean a different thing afterwards.
+**Note** it **rewrites the collated pages and does not refuse them**, and names but does not touch `mz/tei/`. This used to refuse, on "a rule may not rewrite a page a human signed" — which conflated two things. That rule protects what a page *asserts*; an `@ref` asserts "this string names that entity", and a rename changes neither side of it, only the spelling of the pointer between them. Leaving it behind is what breaks the assertion, since the ref then resolves to nothing — which `tei validate` calls worse than no ref at all. `mz/tei/` is derived, `tei generate` brings it back, and rewriting it would only race the next regeneration; the `stale refs` table names it so the distinction is handed to the caller rather than inferred from a path.
+**Note** the class may not change. That is a delete and a create: the class is half the identity, and `ENTITY_CLASSES` maps it to the `@type` a reader wrote on the page, so a `<name type="toponym">` would contradict its own `@ref` afterwards.
 **Note** this is cheap only while the corpus holds few `@ref`s. It is the verb that makes an identity decision reversible, which is why the modern-romanization pass could be made at all.
 
 ### entity ratify ID...

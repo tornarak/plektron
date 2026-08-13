@@ -451,11 +451,18 @@ def test_the_old_canonical_is_not_filed_twice(tmp_path):
     assert forms.count("Chukchee") == 1
 
 
-def test_a_rename_is_refused_while_a_committed_page_points_at_it(tmp_path):
-    """A rule may not rewrite a page a human signed. `mz/tei/` is derived and
-    comes back from `tei generate`, so it is named and not refused — the
-    distinction is handed to the caller rather than left to be inferred from a
-    path, which is the property the symlink farm destroyed."""
+def test_a_rename_carries_a_committed_page_with_it(tmp_path):
+    """This used to refuse, on "a rule may not rewrite a page a human signed" —
+    which conflated two things. The rule protects what a page *asserts*, and an
+    `@ref` asserts "this string names that entity": a rename changes neither
+    side of it, only the spelling of the pointer between them. Leaving it behind
+    is what breaks the assertion, since the ref then resolves to nothing —
+    which `validate` calls worse than no ref at all.
+
+    `mz/tei/` is still named and not touched: it is derived, `tei generate`
+    brings it back, and rewriting it would only race the next regeneration. The
+    distinction is handed to the caller rather than inferred from a path, which
+    is the property the symlink farm destroyed."""
     entry(tmp_path, "place:markova")
     for d, ref in (("tei", "1-021"), (("mz", "tei"), "1-022")):
         p = tmp_path.joinpath(*([d] if isinstance(d, str) else d))
@@ -463,9 +470,14 @@ def test_a_rename_is_refused_while_a_committed_page_points_at_it(tmp_path):
         (p / f"chukchi-{ref}.xml").write_text(
             '<TEI><rs ref="place:markova">M</rs></TEI>', encoding="utf-8")
 
-    assert _rename(tmp_path, "place:markova", "place:markovo") == 1
-    assert (tmp_path / "entities" / "place" / "markova.md").exists()
-    assert not (tmp_path / "entities" / "place" / "markovo.md").exists()
+    assert _rename(tmp_path, "place:markova", "place:markovo") == 0
+    assert not (tmp_path / "entities" / "place" / "markova.md").exists()
+    assert (tmp_path / "entities" / "place" / "markovo.md").exists()
+    assert 'ref="place:markovo"' in (
+        tmp_path / "tei" / "chukchi-1-021.xml").read_text(encoding="utf-8")
+    # Derived, and left alone on purpose.
+    assert 'ref="place:markova"' in (
+        tmp_path / "mz" / "tei" / "chukchi-1-022.xml").read_text(encoding="utf-8")
 
 
 def test_a_draft_only_ref_does_not_refuse_the_rename(tmp_path):
