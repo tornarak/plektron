@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
-"""Propose Wikidata identities for unlocated entities, and derive `geo:` from
+"""Propose gazetteer identities for unlocated entities, and derive `geo:` from
 the ones a human has adopted.
+
+**Two sources, because neither has what the other has.** Wikidata is live, rich
+and uneven — it knows Khatyrka is both a village and a river, and it has never
+heard of Пусторецк. **GeoNames** is a flat file, offline, and carries the small
+Siberian features the book is actually full of: 2,636 bays, 2,764 capes and
+2,102 *abandoned* settlements inside this edition's window alone, each with a
+typed feature code and a list of alternate names in Russian. Between them they
+answer nearly the whole store; separately, each leaves a third of it dark.
 
 **Why this is two verbs and not one.** The expensive, error-prone half of
 locating a place is deciding *which* place it is; the coordinate that follows is
 arithmetic. Collapsing the two would produce exactly the failure this project is
 organised against — a coordinate that looks measured and is actually a search
 engine's first result. So `propose` reports candidates and writes nothing, a
-human writes the `link: wikidata:Q…` they believe, and `fill` derives the point
-from that link alone. The authored fact is the *identity*; the coordinate is
-re-derivable from it and fails rather than goes stale, which is the same
-argument `#gt` and `#mz` rest on in the TEI.
+human writes the `link: wikidata:Q…` or `link: geonames:…` they believe, and
+`fill` derives the point from that link alone. The authored fact is the
+*identity*; the coordinate is re-derivable from it and fails rather than goes
+stale, which is the same argument `#gt` and `#mz` rest on in the TEI.
 
 **Geometry is the second witness, and it is why `propose` is worth running at
 all.** Natural Earth's `King I.` is King Island, *Tasmania* — 144 E, 40 S — and
@@ -26,22 +34,25 @@ spelling.
 point a human read off a chart outranks one a query returned, and silently
 replacing the first with the second is how provenance is lost.
 
-**`fill` over an already-located entry is an audit, not a no-op.** It fetches
-and compares anyway, reporting the kilometres between the entry's point and
-Wikidata's. Thirty-odd points in this store came off Operational Navigation
-Charts and had never been checked against anything; the chart and Wikidata share
-no ancestor, so 0.5 km apart on Anadyr is a real corroboration and a hundred
-would be a real finding. Rows are marked `+` would write, `~` would replace,
-`=` compared only.
+**`fill` over an already-located entry is an audit, not a no-op.** It looks the
+identity up anyway and reports the kilometres between the entry's point and the
+gazetteer's. Thirty-odd points in this store came off Operational Navigation
+Charts and had never been checked against anything; the chart and the gazetteer
+share no ancestor, so 0.5 km apart on Anadyr is a real corroboration and a
+hundred would be a real finding. Rows are marked `+` would write, `~` would
+replace, `=` compared only.
 
-Wikidata is a live external source, so this is a `tools/` script and not a
-harness verb: the harness is offline and deterministic over what is committed,
-which is the same split `build_geo.py` sits on.
+These are outside sources — one live, one a download — so this is a `tools/`
+script and not a harness verb: the harness is offline and deterministic over
+what is committed, which is the same split `build_geo.py` sits on.
+`scratch/geonames/window.tsv` is built by `--build-window` from the country
+dumps, and is the same reduce-once-then-match-locally shape.
 
-    tools/wikidata.py propose --unlocated          73 entries, one query, 3 s
-    tools/wikidata.py propose place:cape-navarin   small runs also prefix-search
-    tools/wikidata.py fill --all                   audit + what would be written
-    tools/wikidata.py fill --all --commit
+    tools/gazetteer.py --build-window              cut RU/US dumps to the window
+    tools/gazetteer.py propose --unlocated         73 entries, seconds
+    tools/gazetteer.py propose place:cape-navarin  small runs also prefix-search
+    tools/gazetteer.py fill --all                  audit + what would be written
+    tools/gazetteer.py fill --all --commit
 """
 from __future__ import annotations
 
@@ -49,6 +60,8 @@ import argparse
 import math
 import sys
 import time
+import unicodedata
+from functools import lru_cache
 from pathlib import Path
 
 import requests
@@ -200,6 +213,198 @@ def _wkt(v: str):
         return float(lat), float(lon)
     except ValueError:
         return None, None
+
+
+# --------------------------------------------------------------- GeoNames
+#
+# A flat file, matched locally, and it answers what Wikidata cannot: the small
+# named things. Inside this edition's window its dumps hold 2,636 `BAY`, 2,764
+# `CAPE` and 2,102 `PPLQ` — *abandoned* populated places, which is the category
+# Gizhiginsk and Zashiversk belong to and which no live encyclopedia bothers to
+# carry.
+
+GEONAMES = Path("scratch/geonames")
+WINDOW_TSV = "window.tsv"
+
+#: GeoNames feature codes, grouped by the entity class each answers.
+#:
+#: **This is a typed check where Wikidata's is a textual one.** `CLASS_WORDS`
+#: greps an English description written by a stranger; this reads a code from a
+#: controlled vocabulary the source maintains. So a GeoNames candidate whose
+#: code disagrees with the entity's class is a much stronger negative than a
+#: Wikidata description that happens not to contain the right noun — and a
+#: `BAY` under a `water:` is a much stronger positive.
+#:
+#: `CAPE` and `PT` sit under `place:` on purpose: a headland is a point on the
+#: ground, which is what this edition's `place:` means, and filing them with the
+#: regions would put Cape Dezhnev in the same class as Kamchatka.
+FCODES = {
+    "place": {"PPL", "PPLA", "PPLA2", "PPLA3", "PPLA4", "PPLC", "PPLF",
+              "PPLG", "PPLL", "PPLQ", "PPLR", "PPLS", "PPLW", "PPLX",
+              "STLMT", "CAPE", "PT", "FRM", "MSTY", "MN", "RUIN"},
+    "land":  {"ISL", "ISLS", "ISLET", "PEN", "MT", "MTS", "HLL", "HLLS",
+              "PLN", "PLAT", "UPLD", "RGN", "AREA", "VAL", "CNYN", "RDGE",
+              "RVN", "GRAZ", "FRST"},
+    "water": {"BAY", "BAYS", "GULF", "SD", "STRT", "LK", "LKS", "SEA",
+              "OCN", "LGN", "COVE", "INLT", "ESTY", "CHN", "FJD", "LKO"},
+    "river": {"STM", "STMS", "STMI", "STMX", "STMB", "STMD", "STMC", "STMA"},
+}
+
+
+#: The 1918 Russian orthographic reform, as a character fold.
+#:
+#: **Bogoras prints pre-reform and every modern gazetteer is post-reform**, so
+#: `Пусторѣцкъ` and `Пусторецк` are the same village and no amount of case or
+#: accent folding brings them together. The reform is a documented, mechanical
+#: substitution — this is not a guess about spelling, it is the rule the language
+#: actually changed by. Terminal hard sign is dropped separately, since ъ is
+#: still a letter mid-word (`объ-`).
+PREREFORM = str.maketrans({"ѣ": "е", "і": "и", "ѳ": "ф", "ѵ": "и", "ѧ": "я"})
+
+#: Generic terms a gazetteer puts on one side of a name and this book's editor on
+#: the other: `Tkachen Bay` against `Bukhta Tkachen`, `Baron Korff's Bay` against
+#: `Zaliv Korfa`. Stripping them leaves the part that actually identifies, and it
+#: is the only reason the two stores meet at all on the bays.
+GENERICS = {
+    "bay", "bays", "gulf", "sound", "strait", "lake", "river", "cape", "mount",
+    "mountain", "mountains", "island", "islands", "isle", "hills", "range",
+    "sea", "inlet", "cove", "lagoon", "creek", "point", "fort", "st", "the",
+    "bukhta", "zaliv", "guba", "mys", "ozero", "reka", "gora", "gory", "ostrov",
+    "ostrova", "proliv", "khrebet", "more", "poluostrov", "selo", "urochishche",
+    "бухта", "залив", "губа", "мыс", "озеро", "река", "гора", "горы", "остров",
+    "острова", "пролив", "хребет", "море", "полуостров", "село",
+}
+
+
+def _fold(s: str) -> str:
+    """The match key: NFD, casefolded, de-accented, pre-reform folded.
+
+    Fixes the noise either side of a name — a hard space, the curly apostrophe
+    in `Baron Korff's Bay`, a stray accent — and the orthography of a century
+    ago, which is the difference between the store's Russian and everyone
+    else's.
+    """
+    s = unicodedata.normalize("NFD", str(s)).casefold().translate(PREREFORM)
+    s = "".join(c for c in s
+                if not unicodedata.combining(c) and (c.isalnum() or c == " "))
+    # Terminal hard sign, per the reform. Word-final only: mid-word ъ survived it.
+    return " ".join(w.rstrip("ъ") or w for w in s.split()).strip()
+
+
+def _specific(key: str) -> str:
+    """What is left of a folded name once the generic terms are taken off.
+
+    `tkachen bay` and `bukhta tkachen` both reduce to `tkachen`, which is the
+    only way those two stores meet.
+
+    **Four characters, not three, and three was measured to be too few.** This
+    is a *secondary* key — the full name always indexes as well — so a short
+    remainder costs nothing but noise: `Big River` reduces to `big` and `Red
+    River` to `red`, each of which matches half of Siberia, and every hit still
+    has to be read by a human. Anything shorter than a distinguishing word is
+    not a fuzzy match, it is a wildcard.
+    """
+    rest = [w for w in key.split() if w not in GENERICS]
+    out = " ".join(rest)
+    return out if len(out) >= 4 and rest else ""
+
+
+@lru_cache(maxsize=1)
+def geonames_index(root: str = ".") -> dict[str, list[dict]]:
+    """`{folded name: [row, …]}` over the window file, every alternate included.
+
+    **The alternate names are the whole value of this source.** The primary name
+    is a romanization — `Bukhta Tkachen`, `Zaliv Lavrentiya` — which no entry in
+    this store spells that way; the Russian the editor keyed sits in column 4
+    among a dozen others. Indexing only the primary would find almost nothing.
+    """
+    p = Path(root) / GEONAMES / WINDOW_TSV
+    if not p.exists():
+        return {}
+    idx: dict[str, list[dict]] = {}
+    with p.open(encoding="utf-8") as fh:
+        for line in fh:
+            f = line.rstrip("\n").split("\t")
+            if len(f) < 8:
+                continue
+            try:
+                lat, lon = float(f[4]), float(f[5])
+            except ValueError:
+                continue
+            row = {"qid": f[0], "label": f[1], "geo": (lat, lon),
+                   "desc": f"{f[7]} ({f[6]})", "fcode": f[7],
+                   "enwiki": "", "src": "geonames"}
+            names = {f[1], f[2], *(f[3].split(",") if len(f) > 3 else ())}
+            keys = set()
+            for n in names:
+                k = _fold(n)
+                if not k:
+                    continue
+                keys.add(k)
+                # Indexed under the specific part too, so `Bukhta Tkachen` is
+                # reachable from `Tkachen Bay`. Both keys point at the same row,
+                # so a name that matches either way is still one candidate.
+                if sp := _specific(k):
+                    keys.add(sp)
+            for k in keys:
+                idx.setdefault(k, []).append(row)
+    return idx
+
+
+def geonames_names(terms: list[str], root: str = ".") -> dict[str, list[dict]]:
+    """`{searched name: [candidate, …]}`, same row shape as the SPARQL path."""
+    idx = geonames_index(root)
+    out: dict[str, list[dict]] = {}
+    for t in terms:
+        k = _fold(t)
+        got, seen = [], set()
+        for key in (k, _specific(k)):
+            for r in idx.get(key, []) if key else ():
+                if r["qid"] not in seen:
+                    seen.add(r["qid"])
+                    got.append(r)
+        if got:
+            out[t] = got
+    return out
+
+
+def build_window(root: str = ".") -> int:
+    """Cut the country dumps down to this edition's window, once.
+
+    2.65 M rows in and 155 k out, 17 MB — small enough to index on every run,
+    which is what lets the match be a dict lookup rather than a scan. The same
+    reduce-once shape `build_geo.py` has, and for the same reason: the source is
+    outside the repository and only this machine holds it.
+    """
+    d = Path(root) / GEONAMES
+    dumps = sorted(d.glob("*.txt"))
+    dumps = [p for p in dumps if p.name != "readme.txt"]
+    if not dumps:
+        print(f"no country dumps in {d} — download RU.zip and US.zip from "
+              f"https://download.geonames.org/export/dump/ and unzip them there",
+              file=sys.stderr)
+        return 2
+    w, s, e, n = 79.0, 39.5, -142.0, 77.0
+    kept = total = 0
+    with (d / WINDOW_TSV).open("w", encoding="utf-8") as out_fh:
+        for p in dumps:
+            with p.open(encoding="utf-8") as fh:
+                for line in fh:
+                    total += 1
+                    f = line.split("\t")
+                    if len(f) < 9:
+                        continue
+                    try:
+                        lat, lon = float(f[4]), float(f[5])
+                    except ValueError:
+                        continue
+                    if not (s <= lat <= n and (lon >= w or lon <= e)):
+                        continue
+                    out_fh.write("\t".join(f[:9]) + "\n")
+                    kept += 1
+    print(f"{total} rows in {len(dumps)} dump(s) → {kept} in the window, "
+          f"{d / WINDOW_TSV}")
+    return 0
 
 
 def search(term: str, lang: str = "en", limit: int = 6) -> list[str]:
@@ -427,18 +632,36 @@ def run_propose(a) -> int:
     # each, and a silence that does not say which question was asked is the
     # thing this whole tool exists to avoid.
     wanted = {i: _terms(store[i])[:a.terms] for i in idents if i in store}
+    all_terms = [t for ts in wanted.values() for t, _lg in ts]
     use_api = len(idents) <= a.api_limit
+    want_wd = a.source in ("wikidata", "both")
+    want_gn = a.source in ("geonames", "both")
+
+    gn = geonames_index(a.root) if want_gn else {}
+    lookups = []
+    if want_gn:
+        lookups.append(f"GeoNames ({len(gn)} indexed names)" if gn
+                       else "GeoNames MISSING — run --build-window")
+    if want_wd:
+        lookups.append("SPARQL exact label/alias match")
+        if use_api:
+            lookups.append("per-name prefix search")
     print(f"# {len(idents)} entit(ies), against the window "
           f"{' '.join(f'{v:g}' for v in idx['window'])}")
-    print("# lookup: SPARQL exact label/alias match"
-          + (" + per-name prefix search" if use_api else
-             f" only — over {a.api_limit} entries the prefix search is "
-             f"rate-limited; name them explicitly for that"))
-    try:
-        pool = sparql_names([t for ts in wanted.values() for t, _lg in ts])
-    except Exception as e:                                    # noqa: BLE001
-        print(f"  ! SPARQL: {e}", file=sys.stderr)
-        pool = {}
+    print(f"# lookup: {' + '.join(lookups)}"
+          + ("" if use_api or not want_wd else
+             f" (over {a.api_limit} entries the prefix search is rate-limited; "
+             f"name them explicitly for that)"))
+
+    pool: dict[str, list[dict]] = {}
+    if want_gn:
+        pool = {k: list(v) for k, v in geonames_names(all_terms, a.root).items()}
+    if want_wd:
+        try:
+            for k, v in sparql_names(all_terms).items():
+                pool.setdefault(k, []).extend(v)
+        except Exception as e:                                # noqa: BLE001
+            print(f"  ! SPARQL: {e}", file=sys.stderr)
     print()
 
     for ident in idents:
@@ -449,11 +672,18 @@ def run_propose(a) -> int:
         rows = {}
         for term, _lang in wanted.get(ident, []):
             for r in pool.get(term, []):
-                rows.setdefault(r["qid"], r)
-        if use_api:
-            qids = [q for term, lang in wanted.get(ident, [])
-                    for q in search(term, lang) if q not in rows]
-            rows.update(entities(qids))
+                rows.setdefault(f"{r.get('src', 'wikidata')}:{r['qid']}", r)
+        if want_wd and use_api:
+            for term, lang in wanted.get(ident, []):
+                for q in search(term, lang):
+                    if f"wikidata:{q}" not in rows:
+                        rows[f"wikidata:{q}"] = None
+            missing = [k.partition(":")[2] for k, v in rows.items() if v is None]
+            got = entities(missing)
+            for k in list(rows):
+                if rows[k] is None:
+                    rows[k] = got.get(k.partition(":")[2])
+            rows = {k: v for k, v in rows.items() if v}
 
         print(f"{ident} — {rec['canonical']}"
               + (f"   within: {rec['within']}" if rec["within"] else ""))
@@ -467,10 +697,21 @@ def run_propose(a) -> int:
         # contains it in. The ordering *is* the finding: eleven King Islands
         # with the Alaskan one buried sixth is the same list as ten rejects and
         # one survivor, and only one of the two is readable.
+        # **Typed where the source has a type, textual where it does not.**
+        # GeoNames publishes a controlled feature code, so `BAY` under a `water:`
+        # is a real agreement and `STM` under one is a real disagreement.
+        # Wikidata publishes a sentence somebody wrote, so the same test there is
+        # a grep over free text and a miss means much less. Same field in the
+        # report, two different strengths behind it, which is why the row prints
+        # the code itself and not just the verdict.
         words = CLASS_WORDS.get(rec["class"], ())
+        codes = FCODES.get(rec["class"], set())
         for r, t in cands:
-            blob = f"{r['desc']} {r['label']}".lower()
-            t["class_match"] = any(w in blob for w in words)
+            if r.get("fcode"):
+                t["class_match"] = r["fcode"] in codes
+            else:
+                blob = f"{r['desc']} {r['label']}".lower()
+                t["class_match"] = any(w in blob for w in words)
         # Where the entry is already located, its own point outranks everything
         # below it: two sources naming the same coordinate is a stronger answer
         # than any description or containment test, and the nearest candidate is
@@ -494,40 +735,50 @@ def run_propose(a) -> int:
                 marks.append("OUTSIDE WINDOW")
             if t["own_km"] is not None:
                 marks.append(_own_mark(rec["class"], t["own_km"]))
-            marks.append(f"reads as {rec['class']}:" if t["class_match"]
-                         else f"NOT described as a {rec['class']}:")
+            typed = " (typed)" if r.get("fcode") else ""
+            marks.append(f"reads as {rec['class']}:{typed}" if t["class_match"]
+                         else f"NOT a {rec['class']}:{typed}")
             if t["parent"]:
                 marks.append("in " + t["parent"] if t["parent_out"] == 0
                              else f"{t['parent_out']}° from {t['parent']}")
             if t["inside"]:
                 marks.append("inside " + " ".join(t["inside"]))
-            print(f"  {r['qid']:10} {lat:>9.4f} {lon:>10.4f}  {r['label'][:34]:34}"
-                  f"  {r['desc'][:44]}")
-            print(f"  {'':10} {'':>9} {'':>10}  {'; '.join(marks) or '—'}")
-            # **The QID line prints whether or not there is an article.** It is
-            # the one `fill` reads; a bare Wikidata item with a coordinate and no
+            src = r.get("src", "wikidata")
+            print(f"  {src[:2]}/{r['qid']:<11} {lat:>9.4f} {lon:>10.4f}  "
+                  f"{r['label'][:30]:30}  {r['desc'][:40]}")
+            print(f"  {'':14} {'':>9} {'':>10}  {'; '.join(marks) or '—'}")
+            # **The identity line prints whether or not there is an article.** It
+            # is the one `fill` reads; a bare item with a coordinate and no
             # Wikipedia page is an ordinary and useful result, and printing the
             # pair only when both exist quietly hid Cape Navarin.
             wp = (f"link: wikipedia:{r['enwiki'].replace(' ', '_')}  "
                   if r["enwiki"] else "")
-            print(f"  {'':10} {wp}link: wikidata:{r['qid']}")
+            print(f"  {'':14} {wp}link: {src}:{r['qid']}")
         if hidden:
             print(f"  {'':10} ({hidden} further candidate(s) outside the "
                   f"window, hidden — --all-candidates shows them)")
         print()
     print("report only — nothing was written. Author the `link:` lines you "
-          "believe, then `tools/wikidata.py fill --all --commit`.")
+          "believe, then `tools/gazetteer.py fill --all --commit`.")
     return 0
 
 
 def run_fill(a) -> int:
-    """`geo:` derived from an authored `link: wikidata:Q…`, and from nothing else."""
+    """`geo:` derived from an authored `link:`, and from nothing else.
+
+    **Either identity, and `wikidata:` wins a tie.** An entry may carry both; the
+    two agree on the ordinary case and where they do not, the one a human is more
+    likely to have looked at is the one to derive from. The row prints which
+    source it used, so an unexpected coordinate can be traced without opening the
+    file.
+    """
     from harness.cli._entity import _set_field
 
     root = Path(a.root)
     store = load(root)
     idents = (sorted(i for i, r in store.items() if r["class"] in GEO_CLASSES)
               if a.all else list(a.idents))
+    gn = geonames_index(a.root)
 
     todo = []
     for ident in idents:
@@ -535,30 +786,35 @@ def run_fill(a) -> int:
         if rec is None:
             print(f"{ident}: no such entity", file=sys.stderr)
             continue
-        qid = next((v.partition(":")[2] for v in rec["links"]
-                    if v.startswith("wikidata:")), "")
-        if not qid:
+        ids = {v.partition(":")[0]: v.partition(":")[2] for v in rec["links"]}
+        src = ("wikidata" if "wikidata" in ids
+               else "geonames" if "geonames" in ids else "")
+        if not src:
             continue
-        # **An entry that already has a point is fetched anyway.** It used to be
-        # skipped with one line, which threw away the most valuable thing here:
-        # thirty-odd points in this store came off a chart, and comparing them
-        # against a source with no common ancestor is a second witness on work
-        # that has never had one. Whether it *writes* is still gated by
+        # **An entry that already has a point is looked up anyway.** It used to
+        # be skipped with one line, which threw away the most valuable thing
+        # here: thirty-odd points in this store came off a chart, and comparing
+        # them against a source with no common ancestor is a second witness on
+        # work that has never had one. Whether it *writes* is still gated by
         # `--replace`; the comparison is free and always reported.
-        todo.append((ident, rec, qid))
+        todo.append((ident, rec, f"{src}:{ids[src]}"))
 
     if not todo:
         print("nothing to fill")
         return 0
 
-    rows = entities([q for _i, _r, q in todo])
+    rows = entities([q.partition(":")[2] for _i, _r, q in todo
+                     if q.startswith("wikidata:")])
+    for r in {x["qid"]: x for v in gn.values() for x in v}.values():
+        rows.setdefault(f"gn:{r['qid']}", r)
     idx = geo.index(root)
     docs: dict = {}
     wrote = held = 0
-    for ident, rec, qid in todo:
-        got = rows.get(qid)
+    for ident, rec, key in todo:
+        src, _, qid = key.partition(":")
+        got = rows.get(qid) if src == "wikidata" else rows.get(f"gn:{qid}")
         if not got or not got["geo"]:
-            print(f"{ident:30} {qid:10} no P625 coordinate — left alone")
+            print(f"{ident:30} {key:20} no coordinate — left alone")
             continue
         lat, lon = got["geo"]
         t = _tests(got["geo"], store, root, ident, idx, docs)
@@ -575,7 +831,7 @@ def run_fill(a) -> int:
         # `--commit` is about to make.
         act = ("=" if rec["geo"] and not a.replace
                else "~" if rec["geo"] else "+")
-        print(f"{act} {ident:30} {qid:10} {lat:>9.4f} {lon:>10.4f}  "
+        print(f"{act} {ident:30} {key:20} {lat:>9.4f} {lon:>10.4f}  "
               f"{'; '.join(note) or '—'}")
         if rec["geo"] and not a.replace:
             held += 1
@@ -600,11 +856,22 @@ def run_fill(a) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--root", default=".", help="repo root (default .)")
-    sub = ap.add_subparsers(dest="action", required=True)
+    ap.add_argument("--build-window", action="store_true",
+                    help="cut scratch/geonames/*.txt down to the edition's "
+                         "window and stop. Run once after downloading RU.zip "
+                         "and US.zip from download.geonames.org")
+    sub = ap.add_subparsers(dest="action", required=not any(
+        x == "--build-window" for x in sys.argv))
 
     p = sub.add_parser("propose", help="candidate identities, tested against "
                                        "the shapes the store already holds")
     p.add_argument("idents", nargs="*")
+    p.add_argument("--source", choices=("both", "wikidata", "geonames"),
+                   default="both",
+                   help="which gazetteer to ask (default both). GeoNames is "
+                        "offline, typed and strong on small Siberian features; "
+                        "Wikidata is live, richer, and knows what is a river "
+                        "and what is the village on it")
     p.add_argument("--unlocated", action="store_true",
                    help="every geographical entry with no geo:, area: or frame:")
     p.add_argument("--terms", type=int, default=4,
@@ -620,7 +887,9 @@ def main() -> int:
                         "returns a dozen of them and the rejects are the noise")
     p.set_defaults(fn=run_propose)
 
-    p = sub.add_parser("fill", help="geo: from an authored link: wikidata:Q…")
+    p = sub.add_parser("fill",
+                       help="geo: from an authored link: wikidata:Q… or "
+                            "link: geonames:…")
     p.add_argument("idents", nargs="*")
     p.add_argument("--all", action="store_true")
     p.add_argument("--replace", action="store_true",
@@ -630,6 +899,8 @@ def main() -> int:
     p.set_defaults(fn=run_fill)
 
     a = ap.parse_args()
+    if a.build_window:
+        return build_window(a.root)
     return a.fn(a)
 
 

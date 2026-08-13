@@ -48,7 +48,7 @@ of a loop.
 to greyscale, is idempotent (a page already in mode `L` is left alone), and has
 to run whenever poppler has written the tree afresh.
 `build_geo.py` compiles `data/geo/` from three sources in `scratch/` and is
-`docs/edition.md`'s; `wikidata.py` proposes identities for unlocated entities
+`docs/edition.md`'s; `gazetteer.py` proposes identities for unlocated entities
 against a live API and derives `geo:` from the ones a human adopted, and is
 `docs/edition.md`'s too.
 `migrate_coords.py` (150→300 dpi) and `migrate_fig_bboxes.py` (which reduced

@@ -211,6 +211,37 @@ Alaska is a different component and the Bering Sea islands are components of
 their own, so neither can enter however the longitudes fall. Measured on the
 built shape: 180.0–190.271°E, 64.28–68.98°N.
 
+### GeoNames — not a shape source, and listed here anyway
+
+    GeoNames, country dumps `RU` and `US`
+    https://download.geonames.org/export/dump/  ·  CC BY 4.0 — attribution required
+
+**Nothing in `data/geo/` comes from it.** It carries points, not polygons, so it
+compiles no shape and `build_geo.py` never opens it. It is recorded here because
+it *is* where a growing number of `entities/` `geo:` values come from, by way of
+`tools/gazetteer.py`, and a coordinate whose provenance is written down nowhere
+is the thing this file exists to prevent. The entry carries `link: geonames:ID`
+beside the point, so each one names its own source; this says what that source
+is and under what terms.
+
+**Why it is worth having next to Natural Earth.** The 1:10m gazetteer holds
+**eleven** features in this window and all eleven are claimed. GeoNames holds
+**155,330** — 2,636 bays, 2,764 capes, 60,831 streams and 2,102 *abandoned*
+populated places, which is the category Gizhiginsk and Zashiversk belong to and
+which no live encyclopedia bothers to carry. It also ships alternate names, so
+the Russian an editor keyed off the page is a key into it.
+
+Kept in `scratch/geonames/`, gitignored, reduced once to `window.tsv` by
+`tools/gazetteer.py --build-window` — 2.65 M rows in, 155 k out, 17 MB, small
+enough to index on every run. Same reduce-once-then-match-locally shape as the
+shape build, and for the same reason: the source lives outside the repository.
+
+**CC BY 4.0 obliges attribution wherever the data is published**, exactly as
+Asher 2007 does. A `geo:` derived from it is published in the reading view, so
+the corpus `teiHeader`'s rights statement must name GeoNames alongside Asher
+once any such point is committed — **this is not yet done**, and is the one
+open action this section carries.
+
 ### The `absent` block holds two kinds of absence
 
 It began as one — "a Tier-1 code Asher 2007 draws no polygon for", the four

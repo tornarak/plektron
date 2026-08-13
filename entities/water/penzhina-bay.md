@@ -2,6 +2,9 @@
 
 - status: proposed
 - within: land:northeast-siberia
+- geo: 61.25 163
+- link: wikipedia:Penzhina_Bay
+- link: wikidata:Q786805
 
 ## aliases
 

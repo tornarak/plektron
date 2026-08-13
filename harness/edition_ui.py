@@ -90,6 +90,11 @@ def _raster_size(ref: str, root: Path) -> tuple[int, int]:
 LINK_KINDS = {
     "wikipedia": ("https://en.wikipedia.org/wiki/{}", "Wikipedia", "wikipedia"),
     "wikidata": ("https://www.wikidata.org/wiki/{}", "Wikidata", "wikidata"),
+    # The gazetteer that carries the small Siberian features Wikidata does not —
+    # abandoned settlements, unnamed bays — and the identity a `geo:` derived by
+    # `tools/gazetteer.py` was derived *from*. Without a row here that provenance
+    # would be a number in a file nothing resolves.
+    "geonames": ("https://www.geonames.org/{}", "GeoNames", ""),
     "dplace": ("https://d-place.org/parameters/{}", "D-PLACE", ""),
     "url": ("{}", "", ""),
 }

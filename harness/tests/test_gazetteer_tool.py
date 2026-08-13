@@ -1,4 +1,4 @@
-"""`tools/wikidata.py`'s two offline judgements.
+"""`tools/gazetteer.py`'s two offline judgements.
 
 The network half cannot be tested here and is not the part that can go wrong
 quietly: a failed request is loud. What can go wrong quietly is the ranking —
@@ -29,9 +29,9 @@ def _tool():
     """
     pytest.importorskip("requests")
     spec = importlib.util.spec_from_file_location(
-        "_wikidata_tool", ROOT / "tools" / "wikidata.py")
+        "_gazetteer_tool", ROOT / "tools" / "gazetteer.py")
     mod = importlib.util.module_from_spec(spec)
-    sys.modules["_wikidata_tool"] = mod
+    sys.modules["_gazetteer_tool"] = mod
     spec.loader.exec_module(mod)
     return mod
 
@@ -170,3 +170,58 @@ def test_the_sparql_values_block_tags_cyrillic_as_russian():
     values = re.search(r"VALUES \?name \{(.*?)\}", seen["q"], re.S).group(1)
     assert '"Хатырка"@ru' in values
     assert '"Cape Navarin"@en' in values
+
+
+def test_the_prereform_fold_is_the_1918_reform_and_nothing_looser():
+    """Bogoras prints pre-reform and every gazetteer is post-reform, so
+    `Пусторѣцкъ` and `Пусторецк` are one village that no case or accent folding
+    brings together. The reform is a documented substitution — this is the rule
+    the language actually changed by, not a guess about spelling. It is also
+    where the line is: `Тилечики`/`Тиличики` is *not* the reform, so it stays a
+    miss rather than being folded on a hunch."""
+    w = _tool()
+    assert w._fold("Пусторѣцкъ") == w._fold("Пусторецк")
+    assert w._fold("Мысъ Дежневъ") == w._fold("Мыс Дежнев")
+    assert w._fold("Тилечики") != w._fold("Тиличики")
+    # Mid-word ъ survived the reform and must not be stripped with the terminal.
+    assert "ъ" in w._fold("объявление")
+
+
+def test_a_generic_term_is_stripped_so_the_two_stores_meet():
+    """`Tkachen Bay` against `Bukhta Tkachen`, `Kresta Bay` against `Zaliv
+    Kresta` — the gazetteer puts the generic on one side of the name and this
+    book's editor on the other, and stripping it leaves the part that actually
+    identifies. It is the only reason the bays match at all."""
+    w = _tool()
+    assert w._specific(w._fold("Tkachen Bay")) == w._specific(w._fold("Bukhta Tkachen"))
+    assert w._specific(w._fold("Kresta Bay")) == w._specific(w._fold("Zaliv Kresta"))
+    assert w._specific(w._fold("Baron Korff’s Bay")).startswith("baron korff")
+
+
+def test_a_short_or_all_generic_name_indexes_under_nothing():
+    """`Big River` reduces to `big` and `Red River` to `red`, each of which
+    matches half of Siberia. The floor is four characters and three was measured
+    to be too few — this is a *secondary* key, the full name always indexes as
+    well, so a short remainder costs nothing but hits a human has to read.
+    Anything shorter than a distinguishing word is a wildcard, not a match."""
+    w = _tool()
+    assert w._specific(w._fold("Big River")) == ""
+    assert w._specific(w._fold("Red River")) == ""
+    assert w._specific(w._fold("The Lake")) == ""
+    assert w._specific(w._fold("Pike River")) == "pike"
+
+
+def test_the_feature_codes_partition_the_four_classes():
+    """A code in two classes would make the typed check answer both ways at
+    once, and the whole reason it is stronger than the description grep is that
+    the source maintains the vocabulary. `CAPE` under `place:` is the deliberate
+    call: a headland is a point on the ground, and filing it with the regions
+    would put Cape Dezhnev in Kamchatka's class."""
+    w = _tool()
+    seen = set()
+    for cls, codes in w.FCODES.items():
+        assert not (codes & seen), f"{cls} shares a code with an earlier class"
+        seen |= codes
+    assert set(w.FCODES) == set(w.GEO_CLASSES)
+    assert "CAPE" in w.FCODES["place"] and "BAY" in w.FCODES["water"]
+    assert "STM" in w.FCODES["river"] and "ISL" in w.FCODES["land"]

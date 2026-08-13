@@ -1,7 +1,7 @@
 # water:bering-strait — Bering Strait
 
 - status: ratified
-- geo: 65.75 -168.977
+- frame: 180.0 60.0 200.0 70.0
 - link: wikipedia:Bering_Strait
 - link: wikidata:Q11769
 

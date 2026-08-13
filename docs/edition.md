@@ -993,7 +993,7 @@ script builds from what only one machine holds, the harness reads what is
 committed. `shapely` is a build-time dependency declared inline (PEP 723);
 `edition serve` reads plain JSON and imports nothing new for it.
 
-### Locating an entity: `tools/wikidata.py`
+### Locating an entity: `tools/gazetteer.py`
 
 `data/geo/` answers "what shape is this drawn as". It does not answer "where is
 this village", and for most of the store nothing does: 73 geographical entries
@@ -1047,7 +1047,39 @@ It is a `tools/` script rather than a harness verb because Wikidata is live:
 the harness is offline and deterministic over what is committed, which is the
 same split `build_geo.py` sits on.
 
-**Two lookups, and the report says which ran.** The per-name search API does
+**Two gazetteers, because neither has what the other has.** Wikidata is live,
+rich and uneven — it knows Khatyrka is both a village and a river, and it has
+never heard of Пусторецк. GeoNames is a flat file, offline, and carries the small
+Siberian features the book is full of: inside this window alone **2,636 bays,
+2,764 capes, 60,831 streams and 2,102 *abandoned* populated places**, against
+Natural Earth's eleven features total. It also ships alternate names, so the
+Russian an editor keyed off the page is a key into it.
+
+Its feature code makes the class check **typed** rather than textual. `BAY` under
+a `water:` is agreement from a controlled vocabulary the source maintains; a
+Wikidata description containing the word "bay" is a grep over a sentence somebody
+wrote. Same field in the report, and the row prints the code so the difference is
+visible.
+
+Two folds get the stores to meet, and both are rules rather than guesses. The
+**1918 orthographic reform** (`ѣ`→`е`, terminal `ъ` dropped, `і`→`и`), because
+Bogoras prints pre-reform and every gazetteer is post-reform — that is what turns
+`Пусторѣцкъ` into `Пусторецк`. And **stripping the generic term**, because the
+gazetteer puts it on one side of the name and the editor on the other:
+`Tkachen Bay` against `Bukhta Tkachen`, `Kresta Bay` against `Zaliv Kresta`. The
+stripped form is a *secondary* key with a four-character floor — `Big River`
+reduces to `big` and `Red River` to `red`, and a key that matches half of Siberia
+costs a human every hit it returns.
+
+**What is deliberately not folded** is transliteration variance: `Gishiga`
+against `Gizhiginskaya`, `Nishne-Kolymsk` against `Nizhnekolymsk`, `Cape
+Olutorsky` against `Mys Olyutorskiy` — Bogoras's German-influenced romanization
+against BGN/PCGN. It accounts for most of the 22 entries the sweep still misses,
+and it is exactly where a fuzzy rule would start returning plausible wrong
+matches. The cheap fix is a human adding the modern name as an alias, after
+which the sweep finds it for free.
+
+**Two Wikidata lookups, and the report says which ran.** The per-name search API does
 prefix matching, which is how `Kolyuchin` reaches Kolyuchin Island — but it is a
 round trip per name, and asked three hundred times it takes an immediate `429`
 with no `Retry-After`, so the retry falls back to its own backoff and each entry
