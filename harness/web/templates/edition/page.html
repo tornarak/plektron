@@ -21,15 +21,29 @@
 
    The `{% raw %}{% if prev or next %}{% endraw %}` guard lives inside the macro
    so the condition is written once and not once per call site. #}
+{# The middle cell names the page in both systems, because neither is derivable
+   from the other (CLAUDE.md, Page refs): `PP-NNN` is a scan index within a part
+   and the folio is what the printer set, known only where a transcribed page
+   recorded one. A page with no folio prints none rather than a dash — plates and
+   front matter genuinely print none, and this row is not the place to make that
+   look like missing data.
+
+   The folio used to be a `float:right` span in the text and moved here because a
+   figure floated to the head of the page displaced it. Page identity was never
+   prose; it belongs with the navigation that already carries the ref.
+
+   The row is rendered whether or not there are neighbours: it is now the only
+   thing that says which page you are on. #}
 {% macro neighbours() %}
-{% if prev or next %}
 <div class='neighbours'>
   <span>{% if prev %}<a class='page-prev'
      href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
+  <span class='here'>{{ ref }}{% if doc and doc.folio %}
+    <span class='folio' title='printed folio'>(folio {{ doc.folio }})</span>
+  {% endif %}</span>
   <span>{% if next %}<a class='page-next'
      href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
 </div>
-{% endif %}
 {% endmacro %}
 
 {% block main %}

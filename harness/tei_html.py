@@ -610,14 +610,20 @@ class Renderer:
         return f"<{tag}{span}>{self.inline(el)}</{tag}>"
 
     def el_pb(self, el) -> str:
-        n = el.get("n")
-        # The folio, in the margin, as the print has it. A page with none says so
-        # rather than showing a blank: an unnumbered page is a real state here
-        # (plates and front matter print no folio at all).
-        return (
-            f'<span class="folio" title="printed folio">'
-            f'{escape(n) if n else "—"}</span>'
-        )
+        """Nothing in the text. The folio is reported in `render`'s `folio` and
+        the page navigation prints it beside the scan ref.
+
+        **It used to be a `float:right` span in the margin, and a float in the
+        running text is what it could not go on being.** A figure floated to the
+        head of a page tucked in beside it and shouldered it out of the corner,
+        and the fix is not to make the two floats negotiate: a folio is not part
+        of the prose, it identifies the page, and the place a reader looks for
+        page identity is the navigation that already carries the scan ref. One
+        row now says which page this is, in both of the numbering systems that
+        name it, and `CLAUDE.md`'s rule that neither is derivable from the other
+        is exactly why it wants both at once.
+        """
+        return ""
 
     def blocks(self, parent) -> str:
         out = []

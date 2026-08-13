@@ -489,11 +489,24 @@ def test_a_page_carries_its_neighbours_at_both_ends(server):
     assert body.count("page-prev") == 2 and body.count("page-next") == 2
 
 
-def test_a_page_with_no_neighbour_carries_no_block_at_either_end(server):
-    """The `{% if prev or next %}` guard lives in the macro, so it is written
-    once and cannot come apart between the two call sites."""
+def test_a_page_with_no_neighbour_still_says_which_page_it_is(server):
+    """**The row is no longer only navigation, so it no longer vanishes.**
+
+    It used to be wrapped in `{% if prev or next %}` and disappear on a page with
+    neither neighbour, which was right while it held nothing but two links. It
+    now carries the page's identity — the scan ref, and the printed folio beside
+    it — because the folio had to come out of the running text: it was a
+    `float:right` span in the margin, and a figure floated to the head of the
+    page tucked in beside it and shouldered it out of the corner.
+
+    So the *links* are conditional and the row is not. A page that named itself
+    only when it happened to have a neighbour would be worse than the float.
+    """
     base, _ = server
-    assert "class='neighbours'" not in get(base + "/page/1-021")
+    body = get(base + "/page/1-021")
+    assert body.count("class='neighbours'") == 2
+    assert "1-021" in body
+    assert "page-prev" not in body and "page-next" not in body
 
 
 def test_the_neighbours_claim_no_tabindex(server):

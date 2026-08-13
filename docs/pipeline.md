@@ -125,7 +125,7 @@ the stages that are built.
    position is real evidence and puts the figure on the right part of the right
    page; the anchor the edition wants is where the prose says "(Fig. 87, a)",
    which is a reading. So each one carries a comment saying exactly that. A figure
-   whose box falls inside a paragraph comes out *after* it rather than splitting
+   whose box falls inside a paragraph comes out at the *head* of it rather than splitting
    it — which would undo what `MainZone-Continued` records. Note that
    `context._figures_on_page` withholds geometry from the *model* on purpose and
    this stage keeps it: a rule may use what a model may not, because a rule cannot

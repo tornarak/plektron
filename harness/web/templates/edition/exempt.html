@@ -13,15 +13,17 @@
 {# The same neighbours macro as `page.html`, and it has to be: a reader walking
    the book crosses plates, and prev/next threading through them is the whole
    reason the exempt pages are in one listing with the prose. #}
+{# Same row as `page.html`'s, with no folio branch: an exempt page has no TEI and
+   so no `<pb>` to have recorded one, and these are exactly the pages — plates,
+   front matter, blanks — that print no folio in the first place. #}
 {% macro neighbours() %}
-{% if prev or next %}
 <div class='neighbours'>
   <span>{% if prev %}<a class='page-prev'
      href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
+  <span class='here'>{{ ref }}</span>
   <span>{% if next %}<a class='page-next'
      href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
 </div>
-{% endif %}
 {% endmacro %}
 
 {% block main %}

@@ -640,6 +640,45 @@ def test_the_figure_shape_is_conformant_on_a_real_figure_page(tmp_path):
     assert errs == []
 
 
+def test_a_figure_heads_the_paragraph_it_is_adjacent_to(tmp_path):
+    """**A figure the prose ran past goes to the top of that paragraph.**
+
+    It used to come out after it. Both ends are a paragraph boundary and neither
+    is the true anchor — that is where the prose says "(Fig. 87, a)", which is a
+    reading and the collator's — so the question is only which is the better
+    draft, and the top wins twice over. A picture the text wraps around begins
+    level with the paragraph's first lines, so the top is the nearer edge to
+    where the page has it; and a reader meets the figure before the discussion of
+    it rather than after.
+
+    Measured over the generated corpus when the rule changed: of 197 figures,
+    189 moved earlier and none moved later, and figures stranded at the end of a
+    page — after the last paragraph, with nothing to belong to — fell from 29 to
+    5.
+
+    Uses `1-151`, the one ordinary text-figure page in the OCR'd pilot set, so
+    the geometry is the store's rather than a fixture's.
+    """
+    if not (REPO / "gt" / "fig" / "chukchi-1-151.xml").exists():
+        pytest.skip("1-151 has no figure store in this checkout")
+    doc, rep = gen.build("1-151", REPO)
+    assert rep["figures"] == 1
+
+    import re
+    body = doc[doc.index("<body>"):]
+    # The block sequence, which is what placement is a statement about. Compared
+    # against the *neighbouring* block and not against the first paragraph on the
+    # page: the figure heads the paragraph it is adjacent to, which on `1-151` is
+    # well down the page.
+    blocks = [m.group(1) for m in re.finditer(r"<(p|figure|quote|table|head)\b", body)]
+    i = blocks.index("figure")
+    assert blocks[i + 1:i + 2] == ["p"], (
+        f"a figure heads a paragraph; got {blocks[i:i + 2]}")
+    # And the comment that says to move it travels with it rather than being
+    # stranded where the figure used to be.
+    assert body.index("figure placed where its box sits") < body.index("<figure")
+
+
 # --- a Tier-1 form that is also an entity alias -------------------------------
 #
 # The rule used to drop every alias hit touching a Tier-1 handle, on the ground

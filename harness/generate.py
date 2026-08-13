@@ -740,15 +740,24 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     fig_at = 0
     at_y = 0
 
-    def emit_figures(before: int | None) -> None:
+    def emit_figures(before: int | None, at: int | None = None) -> None:
         """Emit the figures whose boxes sit above `before`, or all of them.
 
         **Placed at a paragraph boundary and never inside one**, which is the
         whole of the compromise here. The box's position is real evidence and it
         puts the figure on the right part of the right page; but a picture the
-        text wraps around sits *inside* a paragraph, and splitting the prose at it
-        would undo exactly what `MainZone-Continued` records. So a figure whose
-        box falls within a paragraph comes out after it.
+        text wraps around sits *inside* a paragraph, and splitting the prose at
+        it would undo exactly what `MainZone-Continued` records.
+
+        **So a figure the prose ran past goes at the top of that paragraph, not
+        after it** — `at` is where the paragraph began, and the lines are spliced
+        in there rather than appended. Both ends are a boundary and neither is
+        the true anchor, so the question is which is the better draft, and the
+        top wins for two reasons. A picture the text wraps around begins level
+        with the paragraph's first lines and ends inside it, so the top is the
+        nearer edge to where the page actually has it. And a reader meets the
+        figure before the prose that discusses it rather than after, which is the
+        order the book itself uses whenever the reference is forward-looking.
 
         That the placement is approximate is the point rather than a defect: this
         is a first draft for a reader who moves it. The anchor the edition wants
@@ -756,24 +765,31 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         comment says so at every figure.
         """
         nonlocal fig_at
+        out: list[str] = []
         while fig_at < len(figs) and (before is None or figs[fig_at]["y"] < before):
             f = figs[fig_at]
             fig_at += 1
             n = f["n"]
-            body.append(
+            out.append(
                 f'      <!-- figure placed where its box sits on the page, which '
                 f'is not where it belongs: anchor it where the prose first refers '
                 f'to it{"" if n else ", and read its number off the page — this "
                         "caption prints none"} -->')
             attr = f' n="{escape(n)}"' if n else ""
             if f["caption"]:
-                body.append(f'      <figure{attr}>\n'
-                            f'        <figDesc>{escape(f["caption"])}</figDesc>\n'
-                            f'      </figure>')
+                out.append(f'      <figure{attr}>\n'
+                           f'        <figDesc>{escape(f["caption"])}</figDesc>\n'
+                           f'      </figure>')
             else:
                 # `3-006` and `3-007`: artwork the book captions nowhere. An empty
                 # <figDesc> would assert a caption exists and read as one lost.
-                body.append(f'      <figure{attr}/>')
+                out.append(f'      <figure{attr}/>')
+        if not out:
+            return
+        if at is None:
+            body.extend(out)
+        else:
+            body[at:at] = out
 
     def close_paragraph() -> None:
         """Emit whatever prose bands have accumulated as one `<p>`.
@@ -798,11 +814,16 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         if not para:
             return
         rep["paragraphs"] += 1
+        # Where this paragraph starts, so a figure it ran past can be spliced in
+        # above it. Taken before the `<p>` is appended and before
+        # `flush_candidates`, whose comments belong *after* the prose they are
+        # about and must not be pushed below the figure.
+        top = len(body)
         body.append(f'      <p>{rendered(para)}</p>')
         flush_candidates()
         para.clear()
-        # Any figure the paragraph ran past comes out now that it is closed.
-        emit_figures(at_y)
+        # Any figure the paragraph ran past goes to the head of it.
+        emit_figures(at_y, at=top)
 
     for band, bucket in zip(bands, buckets[:-1], strict=True):
         label = band["label"]

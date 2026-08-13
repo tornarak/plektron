@@ -325,9 +325,18 @@ with the caption from `data/readings.md`, one per printed figure on the same
 dedupe as `_figures_on_page` — 197 of them over 131 pages. They are positioned
 where their boxes physically sit, which is deliberately not where they belong: the
 anchor is the first textual reference and that is a reading, so each carries a
-comment saying move me. A figure whose box falls inside a paragraph is emitted
-after it rather than splitting it, since splitting would undo what
-`MainZone-Continued` records.
+comment saying move me. A figure whose box falls inside a paragraph is emitted at
+the **head** of that paragraph rather than splitting it, since splitting would
+undo what `MainZone-Continued` records.
+
+**The head and not the foot, which is a change.** Both ends are a boundary and
+neither is the anchor, so the only question is which makes the better draft, and
+the top wins twice: a picture the text wraps around begins level with the
+paragraph's first lines, so the head is the nearer edge to where the page has
+it, and a reader meets the figure before the prose discussing it rather than
+after. Measured when the rule changed — of 197 figures **189 moved earlier and
+none moved later**, and figures stranded past the last paragraph of a page, with
+nothing to belong to, fell from 29 to 5.
 
 That the *generator* reads geometry while `_figures_on_page` withholds it from the
 model is not an inconsistency but the same rule twice. Handing a model coordinates

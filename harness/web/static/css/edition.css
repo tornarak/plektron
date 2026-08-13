@@ -74,8 +74,11 @@ h2.milestone { font-size:1.05rem; letter-spacing:.06em; text-transform:uppercase
 h3 { font-size:1rem; margin:1.2rem 0 .4rem }
 table { border-collapse:collapse; margin:.8rem 0 }
 td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
-.folio { float:right; color:var(--dim); font-size:.75rem;
-  font-family:system-ui,sans-serif; }
+/* In the page navigation now, not floated in the margin of the text. A float in
+   the running prose is what it could not go on being: a figure floated to the
+   head of a page tucked in beside it and shouldered it out of the corner. */
+.folio { color:var(--dim); }
+.neighbours .here { color:var(--dim); }
 .tier1 { font-style:italic }
 .unclear { border-bottom:1px dotted var(--mark) }
 .supplied { color:var(--dim) }
@@ -157,9 +160,16 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
    left room beside it for a line of type. `[data-float]` is set by the script
    off the server's `side`; without the script the figure stays a block and the
    caption still reads. */
+/* **`flow-root` contains the floats**, and it is the fix rather than a tidy-up.
+   Without a block formatting context here, a floated figure taller than the
+   prose beside it hangs out of the bottom of the article and lands on whatever
+   follows — the footnotes, and the prev/next row. `clear` on those would not do
+   it: clearing moves a block below a float, and these are floats escaping their
+   own container. */
+article { display:flow-root }
 .figure { margin:1rem 0; cursor:pointer }
-.figure[data-float=left]  { float:left;  margin:.3rem 1.2rem .6rem 0; clear:left }
-.figure[data-float=right] { float:right; margin:.3rem 0 .6rem 1.2rem; clear:right }
+.figure[data-float=left]  { float:left;  margin:.3rem 1.2rem .6rem 0; clear:both }
+.figure[data-float=right] { float:right; margin:.3rem 0 .6rem 1.2rem; clear:both }
 .figure-plates { display:flex; flex-direction:column; gap:.5rem; align-items:center }
 .figure-plates img { max-width:100%; height:auto; display:block }
 .figure figcaption { font-size:.85rem; color:var(--dim); margin-top:.4rem;
@@ -170,7 +180,12 @@ td,th { border:1px solid var(--rule); padding:.2rem .5rem; text-align:left }
   border:1px dashed var(--rule); padding:.6rem; text-align:center }
 /* A paragraph after a float must not tuck under it unless it is wrapping. The
    page's own <p> flow does the wrapping; the foot and the headings clear. */
-#foot, .figure + h3, h3 { clear:both }
+/* A heading must not sit in a float's gutter — it reads as a caption for the
+   picture rather than as the head of what follows. `#foot` and `.neighbours`
+   belong to the page rather than to the column of prose, and `article`'s
+   `flow-root` already keeps floats off them; these clears are the second line of
+   defence for a float that starts outside the article. */
+#foot, .neighbours, .figure + h3, h3 { clear:both }
 /* An exempt page: figures one under the other, or the whole leaf. Both are
    images the reader is meant to look at rather than read past, so they get the
    column's full width and a click through to the file. */
