@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Petersburg | | yes | |
+| St. Petersburg | | yes | |
 
 ## gloss
 
