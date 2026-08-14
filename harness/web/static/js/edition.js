@@ -188,6 +188,13 @@ function selectTabIdx(idx = null, inc = 0) {
 const openEntity = ref =>
   fill('ent:' + ref, B + '/entity/' + encodeURIComponent(ref) + '?partial=1', ref);
 
+/* The stack, for `map.js` to reach when a click turns out to want a card. That
+   file owns the pane and this one owns the stack, and neither reaches into the
+   other's DOM — the atlas loads `map.js` without this file at all, and falls
+   back to navigating, which is why the hand-off is a named function and not an
+   assumption that a stack exists. */
+window.EDITION = {openEntity: ref => openEntity(ref)};
+
 const openLexicon = key =>
   fill('lex:' + key, B + '/lexicon/' + encodeURIComponent(key) + '?partial=1', key);
 
@@ -234,13 +241,22 @@ document.addEventListener('click', ev => {
      this edition holds, not for the open web. */
   if (ev.target.closest('a.out')) return;
   const a = ev.target.closest('a.ent');
-  /* Both, and in that order: the card says what it is, the pane says where. A
-     click on something with nothing to draw leaves the pane on whatever it was
-     showing — `map.js` decides that, because only the fetched fragment knows. */
+  /* **The map first, and the card only when the map cannot take it.** A click
+     used to do both, which meant every name in the text cost a card whether or
+     not the reader wanted to read one — and with the map now accumulating, the
+     second click on a place has an obvious other job. So `map.js` answers what
+     the click meant: `'map'` when it put the place on the map, `'card'` when the
+     map is already showing it (the reader has asked twice, and the entry is what
+     is left to give) or when the atlas cannot draw it at all. Only that file can
+     answer it, because only the store knows which entities have somewhere to go.
+
+     No `await` in the handler: `preventDefault` has to run synchronously, and
+     everything after it is the promise's. */
   if (a) {
     ev.preventDefault();
-    openEntity(a.dataset.ref);
-    if (window.MAP) window.MAP.show(a.dataset.ref);
+    const ref = a.dataset.ref;
+    if (window.MAP) window.MAP.click(ref).then(w => { if (w == 'card') openEntity(ref); });
+    else openEntity(ref);
     return;
   }
   const x = ev.target.closest('a.lex');
@@ -274,6 +290,7 @@ let prev = document.querySelector("a.page-prev");
 let next = document.querySelector("a.page-next");
 
 document.addEventListener('keydown', ev => {
+    if (ev.ctrlKey || ev.altKey || ev.shiftKey || ev.metaKey) return false;
     if (ev.key == "Tab" && STACK.childNodes.length) { ev.preventDefault(); toggleStack(); }
     if (ev.key == "ArrowLeft" && !selected_stack && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
     if (ev.key == "ArrowRight" && !selected_stack && next && next.href) { ev.preventDefault(); window.location = next.href; }

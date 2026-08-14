@@ -9,6 +9,7 @@ reports the disagreements rather than this suite pretending to adjudicate them.
 from __future__ import annotations
 
 import json
+import math
 import re
 from pathlib import Path
 
@@ -814,3 +815,288 @@ def test_the_committed_store_draws_no_seam():
     """The store's own witness, and the reason the check is worth having: it
     passes now and did not before `MERIDIAN_SNAP` and the Wrangel override."""
     assert geo.meridian(ROOT) == []
+
+
+# ---------------------------------------------------- a selection, not a subject
+
+def _sel(*idents, hidden=(), store=None):
+    return edition_ui.map_context(list(idents), ROOT, "/e",
+                                  store=store or entities.load(ROOT),
+                                  hidden=set(hidden))
+
+
+@built
+def test_the_tree_names_everything_the_map_drew():
+    """**The tree is a legend, so it is built from the picture.** Putting a
+    parent on the map draws its members, and for a while it drew nine basins and
+    thirty-four villages inside Chukotka against a tree holding one name — a
+    shape a reader can see and cannot ask about.
+
+    `on_map` is collected by the layer building itself, so this is not two walks
+    of the store agreeing today; there is one walk, and the tree is its record.
+    The converse does not hold and should not: the containing nodes are in the
+    tree without being drawn, which is what the tree is *for*.
+    """
+    ctx = _sel("land:chukotka")
+    drawn = set(re.findall(r"data-ent='([^']*)'", ctx["svg"]))
+    named = set()
+
+    def walk(ns):
+        for n in ns:
+            named.add(n["id"])
+            # Both, because folding is a rule about how much of the tree is open
+            # on arrival and not about what is in it.
+            walk(n["children"] + n["folded"])
+
+    walk(ctx["tree"])
+    assert drawn, "the fixture draws nothing"
+    assert drawn <= named
+
+
+@built
+def test_the_tree_ends_at_the_first_common_ancestor():
+    """Two villages in different basins are one picture only because something
+    holds them both, and that node is where the map is framed. Above it is not on
+    the map, so it is not in the tree — a tree that ran to the top of the store
+    would be the atlas with the map's own contents buried in it."""
+    ctx = _sel("place:uelen", "place:markovo")
+    roots = [n["id"] for n in ctx["tree"]]
+    store = entities.load(ROOT)
+    assert roots == geo.common_ancestors(["place:uelen", "place:markovo"],
+                                         store)[:1]
+    assert roots and store[roots[0]]["within"], "the fixture root has no parent"
+
+
+def _find(nodes, ident: str) -> dict:
+    """The node for `ident`, wherever the fold put it."""
+    for n in nodes:
+        if n["id"] == ident:
+            return n
+        if got := _find(n["children"] + n["folded"], ident):
+            return got
+    return {}
+
+
+def _view(ctx) -> list[float]:
+    return [float(v) for v in
+            re.search(r"viewBox='([^']*)'", ctx["svg"]).group(1).split()]
+
+
+@built
+def test_a_place_is_framed_on_itself_and_not_on_what_contains_it():
+    """**Context is selected, not assumed.** Framing on the first common ancestor
+    meant every map of a village was a map of the peninsula with a dot on it —
+    most of the picture spent answering a question nobody had asked, and no way
+    to ask the tighter one at all.
+
+    The argument that a shape shown inside its container says where it *is* has
+    not gone anywhere; the selection now carries it. Putting the container on the
+    map is one click, it shows in the tree, and the frame widens to hold both —
+    which is the same picture as before, arrived at on purpose.
+    """
+    store = entities.load(ROOT)
+    alone = _sel("place:uelen", store=store)
+    with_parent = _sel("place:uelen", "land:chukchi-peninsula", store=store)
+    assert _view(alone)[2] < _view(with_parent)[2]
+    # And what it is framed on is its own extent: the degree box around the
+    # point, not the peninsula's — which is a couple of hundred times the area.
+    box = geo.extent_of("place:uelen", store, ROOT)
+    big = geo.extent_of("land:chukchi-peninsula", store, ROOT)
+    assert box and big and (box[2] - box[0]) < (big[2] - big[0]) / 4
+
+
+@built
+def test_hiding_a_selection_tightens_the_frame_and_asks_nothing():
+    """The frame is the union of what is selected, so taking one out of the union
+    can only tighten it — and each selection's own box travels already projected
+    into the sheet's units, which is what lets the browser re-frame without
+    asking again. The sheet is that same union, so nothing it can re-frame to was
+    culled as off-sheet."""
+    both = ["place:uelen", "place:markovo"]
+    wide = _sel(*both)
+    tight = _sel(*both, hidden=["place:markovo"])
+    assert set(wide["frames"]["own"]) == set(both)
+    assert _view(tight)[2] < _view(wide)[2]
+    sheet = [float(v) for v in
+             re.search(r"data-sheet='([^']*)'", wide["svg"]).group(1).split()]
+    x, y, w, h = _view(tight)
+    assert x >= -0.05 and y >= -0.05
+    assert x + w <= sheet[2] + 0.05 and y + h <= sheet[3] + 0.05
+
+
+@built
+def test_a_hidden_node_is_still_drawn_and_still_in_the_tree():
+    """Hiding is a rule about paint and about what the frame may sit on, applied
+    in the browser — so showing a node again costs nothing. If the server dropped
+    it from the drawing, undoing would be a round trip, and if it dropped it from
+    the tree there would be nothing left to click."""
+    ctx = _sel("place:uelen", "place:markovo", hidden=["place:uelen"])
+    assert "place:uelen" in ctx["drawn"]
+    assert "data-ent='place:uelen'" in ctx["svg"]
+    named = []
+
+    def walk(ns):
+        for n in ns:
+            named.append((n["id"], n["hidden"]))
+            walk(n["children"] + n["folded"])
+
+    walk(ctx["tree"])
+    assert ("place:uelen", True) in named
+
+
+@built
+def test_a_map_nobody_has_re_framed_opens_on_the_whole_of_what_was_drawn():
+    """`viewBox` is where the reader is looking and `data-sheet` is what was
+    drawn, and with one subject and nothing hidden they are one rectangle: the
+    frame is the selection's extent and so is the sheet. Only hiding moves them
+    apart, and only inward.
+
+    A subject whose extent is smaller than `MIN_SPAN` is excluded rather than
+    special-cased — the sheet is widened to that floor and the view is not, which
+    is a real difference and not this test's subject. A village is that case."""
+    ctx = _sel("river:anadyr")
+    svg = ctx["svg"]
+    assert re.search(r"viewBox='([^']*)'", svg).group(1) == \
+        re.search(r"data-sheet='([^']*)'", svg).group(1)
+
+
+@built
+def test_a_place_the_atlas_cannot_draw_is_reported_rather_than_dropped():
+    """The click that put it here has to fall back to opening the card, and only
+    `drawn` says so. Silence would leave the reader with a click that did
+    nothing at all."""
+    store = entities.load(ROOT)
+    absent = [i for i in store
+              if geo.extent_of(i, store, ROOT) is None and not store[i]["frame"]]
+    assert absent, "the fixture store has an extent for everything"
+    ctx = _sel(absent[0], store=store)
+    assert ctx["drawn"] == []
+    assert ctx["svg"] == ""
+    assert ctx["tree"], "and there is still a node to click"
+
+
+def test_a_common_ancestor_is_strict_and_nearest_first(tmp_path):
+    """Strict, because a selection is never its own frame: the argument that a
+    shape shown inside its container says where it *is* does not stop applying
+    because the container was selected too. Nearest first, because "the first
+    common ancestor" has to name one node."""
+    from harness.entities import common_ancestors
+    from harness.tests.test_entities import entry
+
+    for ident, parent in (("place:top", ""), ("place:mid", "place:top"),
+                          ("place:a", "place:mid"), ("place:b", "place:mid")):
+        entry(tmp_path, ident, extra=f"- within: {parent}\n" if parent else "")
+    store = entities.load(tmp_path)
+    assert common_ancestors(["place:a", "place:b"], store) == \
+        ["place:mid", "place:top"]
+    assert common_ancestors(["place:mid", "place:a"], store) == ["place:top"]
+    assert common_ancestors(["place:top"], store) == []
+
+
+@built
+def test_only_a_chosen_place_gets_a_pin():
+    """Selecting the Chukchee Peninsula put thirty-four village dots and
+    thirty-four labels over the outline, and named all thirty-four in the tree
+    below it — `pins_under` plots two levels down and none of them had been asked
+    for. The framing rule's argument, applied to the markers: context is
+    selected, not assumed.
+
+    Member *shapes* are deliberately still drawn. A region with nothing inside it
+    is an empty outline, and the basins under a land region are the picture the
+    hierarchy was authored for."""
+    store = entities.load(ROOT)
+    region = "land:chukchi-peninsula"
+    assert len(geo.pins_under(region, store, ROOT)) > 5, "the fixture has no kids"
+    ctx = _sel(region, store=store)
+    assert "<circle class='pin'" not in ctx["svg"]
+    assert "<g class='members'>" in ctx["svg"]
+    # And the village itself, chosen, is a pin — one, not its neighbours'.
+    one = _sel("place:uelen", store=store)
+    assert one["svg"].count("<circle class='pin'") == 1
+
+
+@built
+def test_the_open_rows_are_the_legend_and_the_fold_is_the_offer():
+    """A flat list makes the pane taller than the map it explains — you scroll
+    past the names to reach the picture. But the names have to be *there*: a pin
+    is drawn only for a chosen place, so the villages of a selected region are on
+    no layer, and a tree holding only what was drawn left nowhere to find one.
+
+    Keying the fold on drawn-ness rather than on whose child it is answers both.
+    Open is what is on the picture; folded is what is on offer."""
+    ctx = _sel("land:chukchi-peninsula")
+    peninsula = _find(ctx["tree"], "land:chukchi-peninsula")
+    assert peninsula["selected"]
+    assert all(c["drawn"] or c["carries"] for c in peninsula["children"])
+    assert peninsula["folded"], "its villages are on offer and on no layer"
+    assert not any(c["drawn"] or c["carries"] for c in peninsula["folded"])
+
+
+@built
+def test_a_selected_region_offers_its_children_even_though_none_are_drawn():
+    """Select a town, then the peninsula holding it, and the peninsula's other
+    towns vanished from the tree — they were there only as pins, and a pin is now
+    drawn for a chosen place alone. The drill-down is the fix: a chosen node
+    lists what is directly inside it, whether or not the map drew any of it."""
+    store = entities.load(ROOT)
+    ctx = _sel("place:uelen", "land:chukchi-peninsula", store=store)
+    peninsula = _find(ctx["tree"], "land:chukchi-peninsula")
+    named = {c["id"] for c in peninsula["children"] + peninsula["folded"]}
+    assert named == set(geo.children(store)["land:chukchi-peninsula"])
+    assert len(named) > 5, "the fixture peninsula holds nothing"
+
+
+@built
+def test_the_tree_root_is_the_common_ancestor_and_climbs_no_further():
+    """Walking up and breaking on the root never breaks for the root *itself* —
+    its own ancestors are all above it. A map of one village draws its parent's
+    outline, that parent is the root, and the chain ran from there to the top of
+    the store: a two-node tree came out four levels deep under the Russian Far
+    East."""
+    store = entities.load(ROOT)
+    ctx = _sel("place:uelen", store=store)
+    roots = [n["id"] for n in ctx["tree"]]
+    assert roots == ["land:chukchi-peninsula"] == \
+        geo.common_ancestors(["place:uelen"], store)[:1]
+
+
+@built
+def test_chosen_places_sort_above_the_rest():
+    """The names a reader put there are the ones they are looking for."""
+    ctx = _sel("place:uelen", "land:chukchi-peninsula")
+    peninsula = ctx["tree"][0]["children"][0]
+    assert peninsula["id"] == "land:chukchi-peninsula"
+    kids = peninsula["children"]
+    assert kids and kids[0]["id"] == "place:uelen" and kids[0]["selected"]
+    assert not kids[-1]["selected"]
+
+
+@built
+def test_a_keyed_point_is_boxed_square_on_the_ground():
+    """A degree of longitude is `cos(lat)` of a degree of latitude, and this book
+    is at 66°N where that is 0.41 — so ±0.5° in both coordinates was a box 110 km
+    tall and 45 km wide, and every village framed on its own extent came out a
+    tall thin sliver with the settlement lost in the middle of it.
+
+    Asserted after projecting, because that is the claim: the two sides are the
+    same distance on the ground, not the same number of degrees."""
+    store = entities.load(ROOT)
+    for ident in ("place:uelen", "place:markovo"):
+        rec = store[ident]
+        assert rec["geo"] and not rec["area"], f"{ident} is not a bare point"
+        w, s, e, n = geo.extent_of(ident, store, ROOT)
+        lat0 = (s + n) / 2
+        x0, y0 = geomap.project(w, s, w, lat0)
+        x1, y1 = geomap.project(e, n, w, lat0)
+        assert abs((x1 - x0) / (y0 - y1) - 1.0) < 0.01
+
+
+def test_the_widening_stops_short_of_the_pole():
+    """`1/cos` runs away at 90°, and a runaway box is a map of the Arctic with a
+    village somewhere in it. Nothing in this store is near the clamp — Wrangel is
+    the northernmost record at about 71° — so this guards the arithmetic rather
+    than a live case."""
+    w, s, e, n = geo.point_box(89.9, 170.0)
+    assert n - s == 2 * geo.POINT_BOX
+    assert (e - w) / 2 == pytest.approx(
+        geo.POINT_BOX / math.cos(math.radians(geo.POINT_BOX_MAX_LAT)))

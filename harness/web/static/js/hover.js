@@ -88,6 +88,10 @@
     /* Unreachable while the preview is `pointer-events:none`, and here for the
        day it is not: without it a preview could open a preview. */
     if (a.closest('.card.preview')) return;
+    /* Not in the map's own tree. Those names sit directly under the map, so a
+       preview opens on top of the thing the hover was asking about — and the
+       hover already answers it, by lighting the shape. */
+    if (a.closest('.map-tree')) { hide(); return; }
     /* An entity link's body routinely holds an `<em>` or a `.flag`, and
        `mouseover` fires again on each. Restarting the timers there would mean
        the preview never appears on exactly the links most worth previewing. */

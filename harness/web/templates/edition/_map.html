@@ -1,9 +1,12 @@
-{# One entity on a map, drawn inside its parent's extent.
+{# A selection of places on one map, and the tree that says why it is framed
+   the way it is.
 
    The framing is the argument. A shape shown alone says only what it looks
    like; shown inside the thing that contains it, it says where it *is* — which
    is the whole reason the Small Anui wants the Kolyma around it and the reason
-   the hierarchy is worth authoring at all.
+   the hierarchy is worth authoring at all. Several places generalise that
+   rather than replacing it: the map frames on the first thing that holds them
+   all, and the tree beneath names it.
 
    Three kinds of subject, and the caption distinguishes them because they are
    not equally well founded: a shape a source drew, a point a human keyed, and
@@ -14,15 +17,31 @@
    two levels down with no shape of its own is on no layer while still being one
    click away. #}
 {% if warm %}<span hidden class='warm' data-warm='{{ warm | join(" ") }}'></span>{% endif %}
-{% if not rec %}
+{# What the map accepted, which is not what was asked for: an entity the atlas
+   cannot draw is reported here rather than silently missing, because the click
+   that put it here has to fall back to opening its card and only this says so. #}
+<span hidden class='drawn' data-drawn='{{ drawn | join(" ") }}'
+      data-sel='{{ subjects | map(attribute="id") | join(" ") }}'></span>
+{% if not subjects %}
 <p>No entry for <code>{{ ident }}</code>.</p>
-{% elif not svg %}
-<h4>{{ rec.canonical }}</h4>
-<p class='meta'>Nothing to draw. It carries no <code>area:</code> and no
-<code>geo:</code>, and nothing beneath it does either.{% if absent_note %}
-{{ absent_note }}{% endif %}</p>
 {% else %}
+{% if rec %}
 <h4>{{ rec.canonical }}</h4>
+{% else %}
+<h4>{{ subjects | length }} places</h4>
+{% endif %}
+{% if not svg %}
+<p class='meta'>
+{%- if rec -%}
+  Nothing to draw. It carries no <code>area:</code> and no <code>geo:</code>, and
+  nothing beneath it does either.{% if absent_note %} {{ absent_note }}{% endif %}
+{%- else -%}
+  Nothing to draw: everything on this map is hidden, or carries no
+  <code>area:</code>, no <code>geo:</code> and nothing located beneath it.
+{%- endif -%}
+</p>
+{% else %}
+{% if rec %}
 <div class='meta'>
 {%- if basis.kind == 'shape' -%}
   <code>{{ basis.id }}</code>{% if basis.km2 %} · {{ basis.km2 }} km²{% endif %}
@@ -41,7 +60,68 @@
 {%- if parent %} · inside <a class='ent' data-ref='{{ parent.id }}'
   href='{{ base }}/entity/{{ parent.id }}'>{{ parent.canonical }}</a>{% endif %}
 </div>
+{% endif %}
 {# `geomap.render` escapes every pin label and emits no pixel units; it is the
    one thing here that is markup by design. #}
 {{ svg | safe }}
+{% endif %}
+
+{# --- the tree ---
+
+   **It ends at the first common ancestor**, which is the node the map is framed
+   on, so the tree is a picture of the frame rather than a second navigation. A
+   selection's own descendants are on the map already, as members; putting the
+   store's whole subtree here would bury the names the reader actually chose.
+
+   `data-frames` is the frame rule's *answer*, not the rule: the candidates in
+   the order Python tries them, each already projected into the sheet's units,
+   plus each selection's own box for the fallback. Hiding a node is then a
+   `viewBox` rewrite and nothing is re-projected or re-fetched — which is the
+   whole reason the map is drawn to a sheet wider than its frame. The rule
+   itself stays in `edition_ui.map_context`, in one copy. #}
+{# **The name toggles, the `¶` reads, the `●` paints.** There was a `×` here that
+   meant "take this off the map" and worked on selected places only — dead on
+   every containing node, which is where a reader most wants to act. Clicking the
+   name now does that job wherever the name is, so the button went and the gesture
+   took its place: one act, one meaning, nothing to learn.
+
+   `¶` is the atlas's own spelling for "the entry", and it is a separate mark
+   because it is a separate act — the alternative was loading a second meaning
+   onto the same click and asking a reader to remember which press they were on.
+
+   `●` is the paint toggle. It is the only control a containing node needs: it no
+   longer moves the frame, that being the selection's job now, so what is left is
+   whether the outline is drawn. #}
+{% macro node(n) %}
+<li class='{{ "sel" if n.selected }} {{ "off" if n.hidden }}'>
+  <a class='node' data-ref='{{ n.id }}'
+     href='{{ base }}/entity/{{ n.id }}'>{{ n.canonical }}</a>
+  <span class='pill cls' data-ref='{{ n.id }}'>{{ n.cls }}</span>
+  <a class='entry' data-ref='{{ n.id }}' href='{{ base }}/entity/{{ n.id }}'
+     title='the entry'>&para;</a>
+  <button class='hide' data-ref='{{ n.id }}'
+          title='{{ "paint this again" if n.hidden else "do not paint this" }}'
+          >{{ '◌' if n.hidden else '●' }}</button>
+  {%- if n.children or n.folded %}<ul>
+    {%- for k in n.children %}{{ node(k) }}{% endfor %}
+    {%- if n.folded %}
+    {# `<details>` and not a scripted toggle: it opens with no JavaScript and is
+       keyboard-reachable and screen-reader-announced for free. `data-fold` names
+       the node it hangs under, which is what `map.js` reopens it by: choosing a
+       place from inside the fold repaints the tree, and the fold came back shut
+       every time — so selecting three villages from one list meant opening it
+       three times. #}
+    <li class='more'><details data-fold='{{ n.id }}'>
+      <summary>{{ n.folded | length }} more</summary>
+      <ul>{% for k in n.folded %}{{ node(k) }}{% endfor %}</ul>
+    </details></li>
+    {%- endif %}
+  </ul>{% endif %}
+</li>
+{% endmacro %}
+{% if tree %}
+<div class='map-tree' data-frames='{{ frames | tojson }}'>
+  <ul>{% for n in tree %}{{ node(n) }}{% endfor %}</ul>
+</div>
+{% endif %}
 {% endif %}

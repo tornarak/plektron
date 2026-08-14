@@ -120,3 +120,51 @@ svg.map .extents .hi { stroke-dasharray:1.6%,1.2%; stroke-width:.55%;
   fill:color-mix(in srgb,var(--hi) 16%,transparent) }
 svg.map circle.pin.hi { fill:var(--hi); stroke:var(--hi);
   stroke-width:1.2%; stroke-opacity:.35 }
+
+/* --- the tree under the map ---
+ *
+ * What the map is framed on, and why. It ends at the first common ancestor
+ * because that is the node the frame sits on: the tree is a picture of the
+ * frame rather than a second navigation, and a reader who wants to know why
+ * two villages are shown across half of Chukotka can read the answer directly
+ * under the picture that raised the question.
+ *
+ * Selected places are the ones the reader put there; the rest of the nodes are
+ * the chain that holds them, and they are dimmed so the two read apart at a
+ * glance. `.off` is a hidden node — still present, still clickable, saying so.
+ */
+.map-tree { font-size:.82rem; margin:.4rem 0 .1rem }
+.map-tree ul { list-style:none; margin:0; padding:0 0 0 .85rem }
+.map-tree > ul { padding-left:0 }
+/* The rail is what makes a three-deep chain readable in a narrow pane, where
+   indentation alone is a couple of characters. */
+.map-tree ul ul { border-left:1px solid var(--rule) }
+.map-tree li { padding:.08rem 0; line-height:1.5 }
+.map-tree a.node { color:var(--dim); text-decoration:none }
+.map-tree a.node:hover { color:var(--fg); text-decoration:underline }
+.map-tree li.sel > a.node { color:var(--fg); font-weight:600 }
+.map-tree li.off > a.node, .map-tree li.off > .pill { opacity:.4;
+  text-decoration:line-through }
+.map-tree button { border:0; background:none; cursor:pointer; padding:0 .18rem;
+  color:var(--dim); font-size:.72rem; line-height:1 }
+.map-tree button:hover { color:var(--fg) }
+/* The controls appear on the row under the pointer, and on the row a keyboard
+   has reached. A column of marks down the side of the tree reads as a toolbar
+   rather than as a list of places — and the names are the content here.
+   A hidden row keeps its `◌` showing, or the only way back would be to guess
+   that hovering a struck-through name reveals one. */
+.map-tree a.entry { color:var(--dim); text-decoration:none; font-size:.72rem }
+.map-tree a.entry:hover { color:var(--fg) }
+.map-tree button, .map-tree a.entry { visibility:hidden }
+.map-tree li:hover > button, .map-tree li:hover > a.entry,
+.map-tree button:focus-visible, .map-tree a.entry:focus-visible,
+.map-tree li.off > button.hide { visibility:visible }
+/* The fold. A count and nothing else — "9 more" says what opening it costs,
+   where a bare ▸ makes a reader open it to find out. */
+.map-tree li.more > details > summary { color:var(--dim); cursor:pointer;
+  font-size:.76rem; list-style:none }
+.map-tree li.more > details > summary::-webkit-details-marker { display:none }
+.map-tree li.more > details > summary::before { content:'▸ ' }
+.map-tree li.more > details[open] > summary::before { content:'▾ ' }
+.map-tree li.more > details > summary:hover { color:var(--fg) }
+.map-tree li.more > details > ul { padding-left:0; border:0 }

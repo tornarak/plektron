@@ -19,8 +19,9 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 
@@ -576,34 +577,57 @@ def _ipa_ctx(form: str) -> dict | None:
     }
 
 
-def _map_ctx(ident: str, root: Path, store: dict | None = None) -> dict:
+def _map_ctx(idents, root: Path, store: dict | None = None, hidden=()) -> dict:
     """`map_context` with the server's cached readers handed in.
 
     One map resolves six or more shapes out of `data/geo/`, and every one
     of them was a fresh read and JSON decode of a file that had not changed.
     """
     return ui.map_context(
-        ident,
+        idents,
         root,
         BASE,
         store=store if store is not None else stores.load(root),
         shape=lambda i: stores.shape(i, root),
+        hidden=hidden,
     )
 
 
 # ------------------------------------------------------------------- the map
 
 
-@router.get("/map/{ident:path}")
-def map_view(request: Request, ident: str, partial: str = ""):
-    ctx = _map_ctx(_ident(ident), _root(request))
+@router.get("/map")
+def map_pane(request: Request,
+             at: Annotated[list[str], Query()] = (),
+             hide: Annotated[list[str], Query()] = (),
+             partial: str = ""):
+    """The map as a *selection*, which is the shape the pane actually has.
+
+    Repeated `at` rather than one path segment, because adding a place to the
+    map is the ordinary act here and the request has to be able to say what is
+    already on it. `hide` is the reader's "not this one" — it changes what is
+    painted and what the frame may sit on, and it is deliberately not stored:
+    nothing about it is written down, so there is nothing to undo but a click.
+
+    `/map/{ident}` stays beside this as the one-place spelling — a permalink and
+    what `a.mapref` points at — and goes through the same context.
+    """
+    refs = [_ident(i) for i in at if i]
+    ctx = _map_ctx(refs, _root(request), hidden={_ident(h) for h in hide if h})
     if partial:
         return templates.TemplateResponse(request, "edition/_map.html", ctx)
+    title = refs[0] if len(refs) == 1 else f"{len(refs)} place(s)"
     return templates.TemplateResponse(
         request,
         "edition/card.html",
-        _ctx(request, partial="edition/_map.html", card_title=f"{ident} — map", **ctx),
+        _ctx(request, partial="edition/_map.html", card_title=f"{title} — map",
+             **ctx),
     )
+
+
+@router.get("/map/{ident:path}")
+def map_view(request: Request, ident: str, partial: str = ""):
+    return map_pane(request, at=[ident], hide=[], partial=partial)
 
 
 @router.get("/atlas")

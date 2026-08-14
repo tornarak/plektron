@@ -375,11 +375,34 @@ def contains(outer: dict, inner: dict, sample: int = 200) -> float:
 
 # ------------------------------------------------- an entity's own extent
 
-#: Half-width of the box a lone `geo:` point is given, in degrees. A point has
-#: no extent, and a frame computed from one is a division by zero dressed up as
-#: infinite zoom. Half a degree is roughly a day's travel here, which is about
-#: the scale at which a village is worth looking at.
+#: Half-height of the box a lone `geo:` point is given, in degrees of latitude.
+#: A point has no extent, and a frame computed from one is a division by zero
+#: dressed up as infinite zoom. Half a degree is roughly a day's travel here,
+#: which is about the scale at which a village is worth looking at.
 POINT_BOX = 0.5
+
+#: How far north `point_box` will still trust `1/cos`. Beyond it the widening
+#: runs away, and the store's northernmost record is Wrangel at about 71°.
+POINT_BOX_MAX_LAT = 80.0
+
+
+def point_box(lat: float, lon: float) -> tuple[float, float, float, float]:
+    """A box around a keyed point that is **square on the ground, not in degrees**.
+
+    A degree of longitude is `cos(lat)` of a degree of latitude, and this book is
+    at 66°N, where that is 0.41. So ±0.5° in both coordinates is a box 110 km
+    tall and 45 km wide, and every village framed on its own extent came out a
+    tall thin sliver with the settlement lost in the middle of it. Widening the
+    longitude by `1/cos` makes the two sides the same distance on the ground,
+    which is what "half a degree around the village" was always meant to say.
+
+    It is a better *extent* as well as a better frame, which is why it is here
+    rather than in the framing: an ancestor unions this box in, and the old one
+    under-reported how far a coastal village reached along its coast.
+    """
+    span = POINT_BOX / max(math.cos(math.radians(
+        min(abs(lat), POINT_BOX_MAX_LAT))), 1e-6)
+    return (lon - span, lat - POINT_BOX, lon + span, lat + POINT_BOX)
 
 
 def children(store: dict) -> dict[str, list[str]]:
@@ -399,6 +422,16 @@ def relatives(ent_id: str, store: dict) -> list[str]:
     """Every ancestor and descendant. **`entities.relatives`**, re-exported."""
     from .entities import relatives as _relatives
     return _relatives(ent_id, store)
+
+
+def common_ancestors(idents, store: dict) -> list[str]:
+    """What contains all of these, nearest first. **`entities.common_ancestors`**.
+
+    Re-exported for the same reason `children` is: it reads `within:` and no
+    geometry, so it belongs beside the field, and the map is its heaviest caller.
+    """
+    from .entities import common_ancestors as _common
+    return _common(idents, store)
 
 
 def member_extents(ent_id: str, store: dict,
@@ -510,8 +543,7 @@ def extent_of(ent_id: str, store: dict, root: Path = Path("."),
     elif rec["geo"]:
         lat, lon = rec["geo"]
         lon = _shifted(lon, index(root))
-        boxes.append((lon - POINT_BOX, lat - POINT_BOX,
-                      lon + POINT_BOX, lat + POINT_BOX))
+        boxes.append(point_box(lat, lon))
     # **Always union the children in, even when the entity has an extent of its
     # own.** Stopping at the first source found meant a parent with a `geo:`
     # point framed on that point alone, and Uelen — inside the Chukchee

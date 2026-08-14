@@ -664,13 +664,103 @@ teaches you not to bother.
 **A map is not a card — it is a pane above the stack.** There is only ever one
 *here*, and a map that was a card like any other could sit in the stack twice
 saying different things about where you are, or be pushed out of sight by the
-next three. So: one pane, at the top, and clicking a place moves it rather than
-adding to it. An entity's own page and `/atlas?at=` render it filled; the page
-view ships it shut and the first click on a located entity opens it. Dismissal
-is "not this one" rather than a setting — nothing is written down, and the next
-such click brings it back. An entity the atlas cannot draw leaves the pane
-alone: swapping a map you were reading for a sentence about an absence loses
-more than it says, and the card's own rows already say it.
+next three. So: one pane, at the top. An entity's own page and `/atlas?at=`
+render it filled; the page view ships it shut and the first click on a located
+entity opens it. Dismissal is "not this one" rather than a setting — nothing is
+written down, and the next such click brings it back. An entity the atlas cannot
+draw leaves the pane alone: swapping a map you were reading for a sentence about
+an absence loses more than it says, and the card's own rows already say it.
+
+### The map is a selection, and the tree is its legend
+
+**A click on a place toggles it on the map.** Wherever the name is: in the
+running text, in the tree, or on the shape itself. Clicking used to open a card
+as well, which meant every name in the running text cost an entry whether or not
+a reader wanted to read one; the map is the cheap answer to "where is this" and
+the entry is the expensive answer to "what is this". Reading the entry is the `¶`
+beside the name in the tree — the atlas's own spelling, and a separate mark for a
+separate act rather than a second meaning loaded onto the same click. An entity
+the atlas cannot draw has no map act to perform, so its click opens the card at
+once; the server says which is which (`drawn`), because only the store knows.
+
+**A second place joins the first rather than replacing it.** The question a
+reader has after looking up two villages is where they are with respect to each
+other, and a map that holds one place cannot be asked it. The selection is a
+sitting's, kept in `sessionStorage`: it survives paging through the book, which
+is the whole point of being able to build one up, and dies with the tab rather
+than greeting you tomorrow with yesterday's map. Pins are `localStorage` for the
+opposite reason.
+
+### Context is selected, never assumed
+
+**The frame is the box that holds what is selected, and nothing else.** It was
+briefly the first common ancestor's extent, on the old argument that a shape
+shown inside its container says where it *is*. That argument still holds and the
+selection is now what carries it: a reader who wants a place in its parent's
+context puts the parent on the map too — one click, visible in the tree, and the
+frame widens to hold both. Framing on the ancestor by default meant every map of
+a village was a map of the peninsula with a dot on it: most of the picture spent
+on a question nobody had asked, and no way to ask the tighter one at all.
+
+A declared `frame:` still wins for the one entity selected, that field existing
+to say "look at this box" about exactly this map. **It no longer reaches a
+child's map**, which it did while children framed on their parents — a frame is a
+viewport authored for one subject, and the subject is now always what was
+chosen.
+
+**A pin is drawn for a place that was chosen, and for no other.** The same rule
+again. `pins_under` plotted two levels down, so selecting the Chukchee Peninsula
+put thirty-four village dots and thirty-four labels over the outline and named
+all thirty-four in the tree — none of them asked for. Member *shapes* are still
+drawn, because a region with nothing inside it is an empty outline and the nine
+basins under Chukotka are the picture the hierarchy was authored for.
+
+### The tree is the map's legend
+
+**It runs from the first common ancestor down through every record the map
+drew** — the members and the extents nothing else can identify — and it is built
+from the layer construction itself rather than from a second walk of the store,
+because the two would agree today and diverge on the first change to either. A
+shape on the map with no name under it is a shape a reader cannot ask about. Its
+links light shapes exactly as the running text's do, and clicking one toggles
+that place exactly as the running text's does.
+
+**And it lists what a chosen node offers, which is not the same set.** Since a
+pin is drawn only for a chosen place, selecting the Chukchee Peninsula gives its
+outline and no villages — and with the tree holding only what was drawn there was
+nowhere left to find one. So the direct children of a selected node are listed
+whether or not the map drew any of them: select a region, read what is in it,
+choose one. Direct children and no deeper, and only under a node the reader
+chose, or the tree would be the whole atlas with the map buried in it.
+
+**Open is the legend; the fold is the offer.** A flat list makes the pane taller
+than the map it explains — you scroll past the names to reach the picture — and
+the peninsula's forty villages are exactly that list. Keying the fold on whether
+a row is *drawn*, rather than on whose child it is, answers both at once: what is
+on the picture is open, what is merely available is behind a count, and chosen
+rows sort to the top. A node carrying a selection is never folded whatever else
+is true of it, or a place the reader chose could be buried in a closed summary,
+drawn on the map with no name anywhere to light it.
+
+The fold is `<details>`, which opens without JavaScript and is keyboard-reachable
+and screen-reader-announced for free. Which folds are open *is* remembered, in
+the pane and not on disk: choosing a place from inside one repaints the tree, and
+a fold that came back shut every time meant opening the same list once per
+village. It is where you are in a list rather than a decision, so it does not
+outlive the page any more than a scroll position does.
+
+The one control left on a node is **hide** — do not paint this. It used to move
+the frame as well, which is the selection's job now.
+
+**Hiding costs no request, and that is what the sheet is for.** The server draws
+into the union of the per-entity boxes and opens the `viewBox` on the frame
+inside it, handing over each entity's rectangle already in the sheet's units.
+Choosing a frame is then writing one of them into the `viewBox`: nothing is
+re-projected, nothing is re-fetched, and the framing rule itself stays in
+`edition_ui.map_context` in one copy — what travels is its answer. Since the
+frame is a union of those same boxes, hiding can only tighten it, so a re-frame
+never wants a ring that was culled as off-sheet. Adding and removing do go back
+to the server, because they change what is drawn and not only what is seen.
 
 **Every path on that map carries the entity it belongs to**, so resting on a
 name anywhere — a `contains` row, a node in the atlas tree, a word in the

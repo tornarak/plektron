@@ -10,7 +10,8 @@ of the stack; the stack keeps what you have opened, in the order you opened it,
 and a pinned card stays above the rest. It is what makes an annotated edition
 readable at all: what you consulted stays consulted, and a footnote never costs
 you your place. A map is not a card — there is only ever one *here*, so it is the
-pane, and clicking a place moves it rather than adding to it.
+pane; what it holds is a *selection*, and clicking a place adds it, with the tree
+beneath naming what contains them all.
 
 **It writes to `entities/`, and the click is the human act.** That is the
 `zones edit` precedent, not a new licence: a loopback server, a tracked store, and
@@ -378,9 +379,10 @@ def strip_markup(html: str) -> str:
 
 
 def map_context(
-    ent_id: str, root: Path, base: str = BASE, store: dict | None = None, shape=None
+    idents, root: Path, base: str = BASE, store: dict | None = None, shape=None,
+    hidden=(),
 ) -> dict:
-    """One entity on a map, drawn inside its parent's extent — as a context.
+    """A selection of entities on one map, with the tree that frames it.
 
     `store` and `shape` are injected so the server can hand in its cached
     readers: one map asks for six or more shapes out of a 1.2 MB store, and
@@ -391,12 +393,23 @@ def map_context(
     The framing is the argument. A shape shown alone says only what it looks
     like; shown inside the thing that contains it, it says where it *is* — which
     is the whole reason the Small Anui wants the Kolyma around it and the reason
-    the hierarchy is worth authoring at all.
+    the hierarchy is worth authoring at all. **The selection generalises that
+    rather than replacing it**: a map of several places frames on the first thing
+    that contains them all, so a reader who puts Uelen beside Mariinsky Post is
+    shown what it takes to hold both, and the tree beneath the map names it.
 
     Three kinds of subject, and the caption distinguishes them because they are
     not equally well founded: a shape a source drew, a point a human keyed, and
     an extent computed from what lies beneath. Only the first two are claims
     about a boundary.
+
+    **The sheet is not the frame.** Everything is drawn into the widest extent
+    the reader can reach from here — the outermost node of the tree — and
+    `view` opens on the frame within it. That split is what lets hiding a node
+    re-frame the map with no round trip and nothing re-projected: the candidate
+    rectangles travel as numbers (`frames`), already in sheet units, and
+    choosing one is writing it into the `viewBox`. For a single subject the
+    sheet *is* the frame and the output is what it always was.
     """
     store = load(root) if store is None else store
     if shape is None:
@@ -404,9 +417,16 @@ def map_context(
         def shape(ident):
             return geo.shape(ident, root)
 
-    rec = store.get(ent_id)
+    # **A bare id is one selection, spelled the short way.** Not defensiveness: a
+    # string is iterable, so without this the commonest call in the codebase
+    # would select each of its own characters, find none of them in the store and
+    # report "no entry" about an entity that is right there. A wrong answer that
+    # looks like a legitimate one is the failure this edition is organised
+    # against, and it costs a line to make impossible.
+    sel = list(dict.fromkeys([idents] if isinstance(idents, str) else idents))
+    hidden = {h for h in hidden if h}
     out: dict = {
-        "ident": ent_id,
+        "ident": sel[0] if sel else "",
         "base": base,
         "rec": None,
         "svg": "",
@@ -414,10 +434,37 @@ def map_context(
         "basis": {},
         "absent_note": "",
         "warm": [],
+        "subjects": [],
+        "drawn": [],
+        "tree": [],
+        "frames": {"order": [], "box": {}, "own": {}},
     }
-    if rec is None:
+    known = [i for i in sel if i in store]
+    if not known:
         return out
-    out["rec"] = rec
+
+    def _own(i):
+        """How big this thing is — what a container sizes itself on.
+
+        **A declared frame is a box to draw to**, and `extent_of` deliberately
+        does not return one — a viewport carries padding somebody chose for
+        another map. It is the fallback here rather than the answer, so an
+        ancestor still sizes itself on real geometry; without it at all,
+        `land:parapolsky-dol` reported "nothing to draw" while carrying the very
+        box `geo bounds` had measured for it from the two bays that define it.
+        """
+        return geo.extent_of(i, store, root) or store[i]["frame"]
+
+    # **A hidden node is drawn and not painted.** Everything the selection
+    # implies goes into the SVG whatever is hidden; hiding is a rule about paint
+    # and about what the frame may sit on, and it is applied out in the browser
+    # so that showing a node again costs nothing. What `hidden` changes *here* is
+    # only the framing — which is why `live` appears in the frame rule below and
+    # nowhere in the drawing.
+    live = [i for i in known if i not in hidden]
+    boxes = {i: _own(i) for i in known}
+    out["drawn"] = [i for i in known if boxes[i]]
+
     # **Everything one step from here, not everything drawn.** The map is the
     # authority on what can be *highlighted*; it is not the authority on what a
     # reader is about to open. `member_shapes` stops at the nearest descendant
@@ -425,55 +472,77 @@ def map_context(
     # East and one click away — is on no layer at all. This is the whole of "an
     # entry preloads its ancestors and descendants", and it is computed before
     # the extent, so an entity with nothing to draw still warms its kin.
-    out["warm"] = geo.relatives(ent_id, store)
+    warm = {w for i in known for w in geo.relatives(i, store)}
+    out["warm"] = sorted(warm - set(known))
 
-    # **A declared frame is a box to draw to**, and `extent_of` deliberately does
-    # not return one — it answers how big a thing is, which a parent sizes itself
-    # on, and a viewport is not that. Here the question is only "what should this
-    # page look at", so the frame answers it. Without this,
-    # `land:parapolsky-dol` reported "nothing to draw" while carrying the very
-    # box `geo bounds` had measured for it from the two bays that define it.
-    box = geo.extent_of(ent_id, store, root) or rec["frame"]
-    if box is None:
+    solo = known[0] if len(known) == 1 else ""
+    rec = store[solo] if solo else None
+    out["rec"] = rec
+    out["subjects"] = [{"id": i, "rec": store[i], "hidden": i in hidden,
+                        "drawn": bool(boxes.get(i)),
+                        "basis": _basis(i, store, root)} for i in known]
+    if rec:
+        out["basis"] = out["subjects"][0]["basis"]
+
+    order = [a for a in geo.common_ancestors(known, store) if a in store]
+
+    if not any(boxes.values()):
+        # The tree is built whatever the geometry says, because it is the only
+        # way back: a reader who has put a shapeless entity on the map still
+        # needs the node to click. Nothing is drawn, so nothing is in it but the
+        # selection and what holds it.
+        out["tree"] = _map_tree(known, hidden, store, order, set())
         # `absent` rows are records, not strings — `sought`, `source`, `why` —
         # and this read them as strings, so every shapeless entry raised
         # AttributeError on `.lower()` instead of rendering the note. It stayed
         # hidden while almost every entry had an extent; a batch of bays and
         # capes with neither `area:` nor `geo:` made it the ordinary path.
         # `geo.absent_row` is the one flattener, and it tolerates the old form.
-        head = (rec["canonical"].split() or [""])[0].lower()
-        for key, raw in sorted(geo.index(root)["absent"].items()):
-            row = geo.absent_row(key, raw)
-            hay = f'{row["what"]} {row["sought"]} {row["why"]}'.lower()
-            if head and head in hay:
-                out["absent_note"] = row["why"]
-                break
+        if rec:
+            head = (rec["canonical"].split() or [""])[0].lower()
+            for key, raw in sorted(geo.index(root)["absent"].items()):
+                row = geo.absent_row(key, raw)
+                hay = f'{row["what"]} {row["sought"]} {row["why"]}'.lower()
+                if head and head in hay:
+                    out["absent_note"] = row["why"]
+                    break
         return out
 
-    parent = store.get(rec["within"]) if rec["within"] else None
-    # **A node with neither a shape nor a point is drawn to itself.** Framing on
-    # the parent is what makes a *shape* mean something — the Small Anui says
-    # where it is only with the Kolyma around it — but a framed node *is* its
-    # extent, and framing that on the parent gave Chukotka and the Russian Far
-    # East the identical viewBox: the RFE has no parent, so both fell back to the
-    # RFE's own. Two maps of two different regions, pixel for pixel the same.
-    framed = not rec["area"] and not rec["geo"]
-    # **A parent's declared frame is what its children frame on**, or the field
-    # would fix one page and leave every page under it drawn to the box the
-    # editor had just said was the wrong one — the villages of the Chukchee
-    # Peninsula are exactly the pages that needed it.
-    up = (parent["frame"] or geo.extent_of(parent["id"], store, root)) \
-        if parent else None
-    frame_box = box if framed else (up or box)
-    # **A declared `frame:` wins over whichever of the two was derived**, and
-    # over nothing else: `box` is untouched, so an ancestor still sizes itself on
-    # the real geometry and `member_shapes` still draws everything beneath. Both
-    # defaults have a case they get wrong — a shapeless container sized by its
-    # farthest-strayed descendant, a dense shape squeezed into its parent's box —
-    # and one field answers both.
-    if rec["frame"]:
-        frame_box = rec["frame"]
-    frame = geomap.Frame(frame_box)
+    # **The frame is the box that holds what is selected, and nothing else.**
+    #
+    # It used to be the first common ancestor's extent, on the argument that a
+    # shape shown inside its container says where it *is*. That argument is
+    # sound and the selection is now what carries it: a reader who wants a place
+    # in its parent's context says so by putting the parent on the map too, one
+    # click, visible in the tree. Framing on the ancestor by default meant every
+    # map of a village was a map of the peninsula with a dot on it — most of the
+    # picture spent on the answer to a question nobody had asked, and no way to
+    # ask the tighter one at all.
+    #
+    # A declared `frame:` on the one selected entity still wins, because that
+    # field exists to say "look at this box" about exactly this map. It no longer
+    # reaches a *child's* map, which it did while children framed on their
+    # parents: a frame is a viewport authored for one subject, and the subject is
+    # now always the thing selected.
+    cand: list[str] = [solo] if solo and store[solo]["frame"] else []
+    frame_box = next((store[a]["frame"] for a in cand if a not in hidden), None)
+    if frame_box is None:
+        frame_box = geomap.union_box([boxes[i] for i in live]) \
+            or geomap.union_box(boxes.values())
+
+    # The sheet: every frame the reader can reach without asking again. Now that
+    # the frame is a union of the per-entity boxes, hiding one can only tighten
+    # it — so the sheet is that union, the map opens on the whole of it, and a
+    # re-frame never wants a ring that was culled as off-sheet.
+    sheet_box = geomap.union_box(
+        [frame_box, *boxes.values()] + [store[a]["frame"] for a in cand])
+    frame = geomap.Frame(sheet_box)
+    view = frame.rect(frame_box)
+    out["frames"] = {
+        "order": list(cand),
+        "box": {a: _rect_str(frame.rect(store[a]["frame"])) for a in cand},
+        "own": {i: _rect_str(frame.rect(b)) for i, b in boxes.items() if b},
+    }
 
     def _kind(area: str) -> str:
         """The shape kind an `area:` names — `watershed`, `marine`, `region`, …
@@ -487,49 +556,100 @@ def map_context(
         got = geo.split_area(area)
         return got[0].partition(":")[0] if got else ""
 
+    # **Every record the map draws, collected as it is drawn.** The tree below is
+    # built from this set and not from a second walk of the store, because the
+    # tree is a *legend* for the picture: a shape on the map with no name under
+    # it is unreadable, and a name under it for something not drawn points at
+    # nothing. Two walks would agree today and diverge on the first change to
+    # either — the failure this edition is organised against, in miniature. The
+    # coastline is in no record's name and joins nothing.
+    on_map: set[str] = set()
+
+    def owned(paths, ent: str = "", kind: str = ""):
+        if ent:
+            on_map.add(ent)
+        return geomap.owned(paths, ent, kind)
+
     layers: dict[str, list] = {}
     for name, ident in (("land", "base:land"), ("lakes", "base:lakes")):
         doc = shape(ident)
         if doc:
-            layers[name] = geomap.owned(frame.paths(doc))
+            layers[name] = owned(frame.paths(doc))
 
     # Siblings before the parent outline before the subject: the subject drawn
     # under its own siblings would be the one shape you cannot see.
+    #
+    # **Only for a single subject.** Siblings are context for a thing that has
+    # none of its own; once the reader has put several places on the map, the
+    # selection *is* the context, and every sibling of every one of them is a
+    # field of outlines over the shapes they asked to compare.
     kin = (
         [
             k
-            for k in geo.children(store).get(rec["within"], [])
-            if k != ent_id and store[k]["area"]
+            for k in geo.children(store).get(store[solo]["within"], [])
+            if k != solo and store[k]["area"]
         ]
-        if rec["within"]
+        if solo and store[solo]["within"]
         else []
     )
     if kin:
         layers["kin"] = [p for k in kin
-                         for p in geomap.owned(frame.paths(shape(store[k]["area"])),
-                                               k, _kind(store[k]["area"]))]
-    if parent and parent["area"]:
-        layers["parent"] = geomap.owned(frame.paths(shape(parent["area"])),
-                                        parent["id"], _kind(parent["area"]))
+                         for p in owned(frame.paths(shape(store[k]["area"])),
+                                        k, _kind(store[k]["area"]))]
+    # The outline of whatever the map is framed on, dashed to say it is context
+    # rather than subject. For a single subject that is its parent, which is what
+    # this layer has always drawn.
+    # **The tree's root, not the frame's.** They were one node while the frame
+    # sat on the common ancestor; now the frame is the selection's own box and
+    # the containing outline is pure context — which is what it was drawn dashed
+    # to say. Skipped when hidden, that being what hiding a containing node now
+    # means: it no longer moves the frame, so paint is all it has left to change.
+    holder = next((a for a in order[:1] if a not in hidden), "")
+    if holder and store[holder]["area"]:
+        layers["parent"] = owned(frame.paths(shape(store[holder]["area"])),
+                                 holder, _kind(store[holder]["area"]))
+        out["parent"] = store[holder]
+
+    # **A place drawn twice is drawn once, as the subject.** Selecting the Kolyma
+    # and one of its tributaries puts the tributary in both layers, and the paths
+    # are identical, so the pair would differ only in which stroke won.
+    drawn: set[str] = set()
+    subject = []
+    for i in known:
+        if store[i]["area"]:
+            subject += owned(frame.paths(shape(store[i]["area"])), i,
+                             _kind(store[i]["area"]))
+            drawn.add(i)
+    if subject:
+        layers["subject"] = subject
 
     # **What lies beneath, drawn.** For a node with no boundary of its own this
     # is the whole map — the Russian Far East is not a shape, and a frame with
     # nothing in it but two pins says less than the tree already did. For a node
     # that has one it is still the useful layer: the Kolyma showing the Anuis
     # and the Omolon inside it is the picture the hierarchy was authored for.
-    members = geo.member_shapes(ent_id, store)
+    members = []
+    for i in known:
+        for ent, s in geo.member_shapes(i, store):
+            if ent in drawn:
+                continue
+            drawn.add(ent)
+            members += owned(frame.paths(shape(s)), ent, _kind(s))
     if members:
-        layers["members"] = [p for ent, s in members
-                             for p in geomap.owned(frame.paths(shape(s)), ent,
-                                                   _kind(s))]
+        layers["members"] = members
 
-    subject_doc = shape(rec["area"]) if rec["area"] else {}
-    if subject_doc:
-        layers["subject"] = geomap.owned(frame.paths(subject_doc), ent_id,
-                                         _kind(rec["area"]))
-        layers["rivers"] = frame.rivers(subject_doc)
-    elif parent and parent["area"]:
-        layers["rivers"] = frame.rivers(shape(parent["area"]))
+    # The subjects' own drainage, or — when not one of them has a shape of its
+    # own — the holder's, so a map of a shapeless node still shows the rivers
+    # running through what it frames. Never both: the fallback is for the case
+    # where there is no subject drainage to show, not for the case where the
+    # subject's happens to be empty.
+    if any(store[i]["area"] for i in known):
+        rivers = [r for i in known if store[i]["area"]
+                  for r in frame.rivers(shape(store[i]["area"]))]
+        if rivers:
+            layers["rivers"] = rivers
+    elif holder and store[holder]["area"]:
+        layers["rivers"] = frame.rivers(shape(store[holder]["area"]))
 
     # **Every descendant that no other layer identifies, as an extent — drawn
     # only under the pointer.** A node with neither a shape nor a point is
@@ -539,41 +659,43 @@ def map_context(
     # every one of them at once is a field of rectangles over the thing you were
     # reading. So the layer is drawn transparent and only the highlight paints
     # it: the answer is there when the question is asked and not before.
-    layers["extents"] = [p for ent, ebox in geo.member_extents(ent_id, store, root)
-                         if (d := frame.viewport(ebox))
-                         for p in geomap.owned([d], ent)]
+    extents, seen = [], set()
+    for i in known:
+        for ent, ebox in geo.member_extents(i, store, root):
+            if ent in drawn or ent in seen:
+                continue
+            seen.add(ent)
+            if d := frame.viewport(ebox):
+                extents += owned([d], ent)
+    layers["extents"] = extents
 
-    pins = []
-    for lon, lat, label, ent in geo.pins_under(ent_id, store, root):
-        p = frame.point(lon, lat)
-        if p:
-            pins.append((p[0], p[1], label, ent))
+    # **A pin for a place that was chosen, and for no other.** `pins_under`
+    # plotted two levels down, so selecting the Chukchee Peninsula put thirty-four
+    # village dots and thirty-four labels over the outline — and named all
+    # thirty-four in the tree below it. None of them had been asked for. It is
+    # the framing rule again and the same answer: context is selected, not
+    # assumed, and a place a reader wants on the map is one click away in the
+    # running text or in the atlas. `depth=0` is `pins_under` plotting the
+    # entity and nothing beneath it, which keeps the longitude shifting in the
+    # one place that owns it.
+    pins, plotted = [], set()
+    for i in known:
+        for lon, lat, label, ent in geo.pins_under(i, store, root, depth=0):
+            if ent in plotted:
+                continue
+            plotted.add(ent)
+            p = frame.point(lon, lat)
+            if p:
+                pins.append((p[0], p[1], label, ent))
+                on_map.add(ent)
 
-    if rec["area"]:
-        row = geo.index(root)["shapes"].get(rec["area"], {})
-        km2 = row.get("area_km2")
-        out["basis"] = {
-            "kind": "shape",
-            "id": rec["area"],
-            "km2": f"{int(km2):,}" if km2 else "",
-            "source": row.get("source", ""),
-        }
-    elif rec["geo"]:
-        out["basis"] = {
-            "kind": "point",
-            "lat": f"{rec['geo'][0]:.3f}",
-            "lon": f"{rec['geo'][1]:.3f}",
-        }
-    elif rec["class"] == "people" and rec["within"] and not geo.children(
-            store).get(ent_id):
-        # A people with no sprachraum of its own is shown at its parent's, and
-        # the card has to say so: a subgroup lives inside its ethnicity's area
-        # by what the word means, which bounds it truthfully and draws no
-        # boundary anybody has claimed. `extent_of` carries the argument.
-        out["basis"] = {"kind": "inherited", "id": rec["within"]}
-    else:
-        out["basis"] = {"kind": "framed"}
-    out["parent"] = parent
+    # The tree is a legend for the picture, so it is built from the picture:
+    # `on_map` is what the layers above actually put on it, collected as they
+    # went. A village drawn as a pin, a basin drawn as a member and a region
+    # drawn only as an invisible extent all get a name under the map, and each
+    # of those names lights its own shape.
+    out["tree"] = _map_tree(known, hidden, store, order, on_map)
+
     # **`basin` is read off the shape's type, not the entity's class.** `area:`
     # is typed — `watershed:anadyr` names where the polygon came from — and "this
     # outline is a drainage divide" is a fact about the shape's provenance, not
@@ -583,9 +705,156 @@ def map_context(
     # boundary must not be drawn in the colour of the rivers running inside it.
     # The members are left alone: they are the nearest descendants that have a
     # shape, chosen without reference to what drew them.
-    mark = "basin" if (rec["area"] or "").startswith("watershed:") else ""
-    out["svg"] = geomap.render(frame, layers, pins, mark=mark)
+    #
+    # Every subject, not any: with several on the map the mark can only speak
+    # for the map, and a selection that mixes a basin with a coastline is not a
+    # basin map. One subject reduces it to what it always was.
+    mark = "basin" if all((store[i]["area"] or "").startswith("watershed:")
+                          for i in live) else ""
+    out["svg"] = geomap.render(frame, layers, pins, mark=mark, view=view)
     return out
+
+
+def _rect_str(rect) -> str:
+    """A `Frame.rect` as the four numbers a `viewBox` wants, or `""`."""
+    return " ".join(f"{v:.1f}" for v in rect) if rect else ""
+
+
+def _basis(ent_id: str, store: dict, root: Path) -> dict:
+    """How well founded this subject's outline is — a shape, a point, or a box.
+
+    Three kinds, and they are not equally well founded: a shape a source drew, a
+    point a human keyed, and an extent computed from what lies beneath. Only the
+    first two are claims about a boundary, and the caption says which it is
+    looking at rather than leaving a reader to assume the strongest.
+    """
+    rec = store[ent_id]
+    if rec["area"]:
+        row = geo.index(root)["shapes"].get(rec["area"], {})
+        km2 = row.get("area_km2")
+        return {
+            "kind": "shape",
+            "id": rec["area"],
+            "km2": f"{int(km2):,}" if km2 else "",
+            "source": row.get("source", ""),
+        }
+    if rec["geo"]:
+        return {"kind": "point",
+                "lat": f"{rec['geo'][0]:.3f}", "lon": f"{rec['geo'][1]:.3f}"}
+    if rec["class"] == "people" and rec["within"] and not geo.children(
+            store).get(ent_id):
+        # A people with no sprachraum of its own is shown at its parent's, and
+        # the card has to say so: a subgroup lives inside its ethnicity's area
+        # by what the word means, which bounds it truthfully and draws no
+        # boundary anybody has claimed. `extent_of` carries the argument.
+        return {"kind": "inherited", "id": rec["within"]}
+    return {"kind": "framed"}
+
+
+def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
+              on_map: set) -> list[dict]:
+    """**A legend for the map: every record it drew, and what holds them.**
+
+    A map of several places is unreadable as a list — Uelen, the Anadyr and the
+    Chukchee Peninsula say nothing about each other in a row — and the thing
+    that makes them one picture is the node that contains them all. So the tree
+    runs from that node, the first common ancestor of the selection, down
+    through the branches that reach everything drawn.
+
+    **Everything drawn, not only what was selected.** Putting a parent on the
+    map draws its members, and a shape with no name under it is a shape a reader
+    cannot ask about — they could see nine basins inside Chukotka and find one
+    name in the tree. `on_map` comes from the layer building itself rather than
+    from a second walk of the store, so the two cannot come to disagree about
+    what is on the picture.
+
+    **And what a chosen node offers, which is not the same set.** Since a pin is
+    drawn only for a place that was chosen, a reader who selects the Chukchee
+    Peninsula sees its outline and no villages — and with the tree holding only
+    what was drawn, there was nowhere left to find one. So the direct children of
+    a selected node are listed too, whether or not they are on the picture. That
+    is the drill-down: select a region, read what is in it, choose one. Direct
+    children and no deeper, and only under a node the reader chose, or the tree
+    would be the whole atlas with the map buried in it.
+
+    It still ends at the common ancestor going *up*: above that is not on the
+    map, and a tree that ran to the top of the store would be the atlas with the
+    map's own contents buried in it.
+
+    **Hidden nodes stay in the tree.** Hiding is "do not paint this and do not
+    frame on it", which is only useful if there is something left to click to
+    undo it. Dismissing is the other control, and it takes a place out of the
+    selection entirely.
+    """
+    from .entities import ancestors
+
+    kids_of = geo.children(store)
+    offered = {k for i in sel for k in kids_of.get(i, []) if k in store}
+    stop = order[0] if order else ""
+    nodes = {i for i in set(sel) | set(on_map) | offered if i in store}
+    for i in list(nodes):
+        chain = [a for a in ancestors(i, store) if a in store]
+        if stop:
+            # **A node that *is* the root climbs no further.** Walking up and
+            # breaking on `stop` never breaks for `stop` itself — its own
+            # ancestors are all above it — so a map of one village, whose parent
+            # outline is drawn and whose parent is the root, ran the chain to the
+            # top of the store and rooted the tree at the Russian Far East. A
+            # node not under the root does not climb either: it is its own root,
+            # which is the honest shape for something the frame does not contain.
+            if i == stop or stop not in chain:
+                continue
+            chain = chain[:chain.index(stop) + 1]
+        nodes.update(chain)
+
+    kids: dict[str, list[str]] = {}
+    for n in nodes:
+        up = store[n]["within"]
+        if up in nodes:
+            kids.setdefault(up, []).append(n)
+
+    def by_name(ids):
+        # By what the reader sees, not by id: `place:` sorts before `water:`, so
+        # id order interleaves the classes and puts the Anadyr after every
+        # village on it.
+        return sorted(ids, key=lambda k: (store[k]["canonical"], k))
+
+    def build(ident: str) -> dict:
+        rec = store[ident]
+        chosen = ident in sel
+        below = [build(k) for k in by_name(kids.get(ident, []))]
+        # **What is on the map is open; what is merely on offer is folded.**
+        # A flat list makes the pane taller than the map it explains — you scroll
+        # past the names to reach the picture — and the thirty-four villages of
+        # the Chukchee Peninsula are exactly that list. But they have to be
+        # *there*: they are how a reader adds one, and nothing else names them.
+        #
+        # Keying on drawn-ness rather than on whose child it is answers both. The
+        # open rows are the legend, which is what the tree is for; the fold is
+        # the offer, which is what it grew. A node carrying a selection is never
+        # folded whatever else is true of it, or a place the reader chose could
+        # end up buried in a closed summary, drawn on the map with no name
+        # anywhere to light it.
+        out_kids, folded = [], []
+        for c in below:
+            (out_kids if c["carries"] or c["drawn"] else folded).append(c)
+        out_kids.sort(key=lambda c: (not c["selected"], c["canonical"]))
+        return {
+            "id": ident,
+            "canonical": rec["canonical"],
+            "cls": rec["class"],
+            "selected": chosen,
+            "hidden": ident in hidden,
+            "drawn": ident in on_map,
+            "carries": chosen or any(c["carries"] for c in below),
+            "children": out_kids,
+            "folded": folded,
+        }
+
+    roots = by_name(n for n in nodes if store[n]["within"] not in nodes)
+    built = [build(r) for r in roots]
+    built.sort(key=lambda c: (not c["selected"], c["canonical"]))
+    return built
 
 
 

@@ -50,6 +50,7 @@ lets one decimal place be enough at every zoom.
 """
 from __future__ import annotations
 
+import json
 import math
 from html import escape
 
@@ -72,6 +73,19 @@ PAD = 0.06
 #: point has no extent at all, and a village would otherwise be rendered at
 #: infinite zoom onto a blank field.
 MIN_SPAN = 0.02
+
+#: How a pin and its label are sized and placed, as fractions of the **view's**
+#: longer side — not of the sheet's. A marker has to keep its size on the page
+#: whatever the frame, and once the frame can move without the map being
+#: re-drawn, "whatever the frame" includes frames chosen after this ran.
+#:
+#: They are here, in one place, and travel to the client on the root element
+#: (`data-pin`) rather than being written down a second time in JavaScript. The
+#: client re-derives a label's position from them on every re-frame, which is the
+#: one piece of drawing it does — and it does it because the answer genuinely
+#: changes: `flip` asks whether a label would run off the right edge, and where
+#: that edge is, is the whole of what re-framing changes.
+PIN = {"r": 0.012, "dx": 1.4, "dy": 0.5, "font": 2.2, "flip": 0.72}
 
 
 def project(lon: float, lat: float, lon0: float, lat0: float):
@@ -125,7 +139,10 @@ CULL = 1.0
 
 
 def _fmt(v: float) -> str:
-    return f"{v:.1f}".rstrip("0").rstrip(".")
+    # `-0` is what a frame's own left edge rounds to — legal in a `viewBox` and
+    # in a path, and legible in neither.
+    s = f"{v:.1f}".rstrip("0").rstrip(".")
+    return "0" if s in ("-0", "") else s
 
 
 def _path(points, close: bool) -> str:
@@ -140,6 +157,9 @@ class Frame:
 
     def __init__(self, box, lon0=None, lat0=None):
         self.lon0, self.lat0 = (lon0, lat0) if lon0 is not None else centre_of(box)
+        #: The lon/lat box this was built from — the *sheet* when the caller is
+        #: drawing one, which `rect` needs in order to report the whole viewBox.
+        self.box = tuple(box)
         xs, ys = [], []
         w, s, e, n = box
         # The corners alone under-report a curved edge, so the frame is measured
@@ -174,7 +194,9 @@ class Frame:
         self.width = w_proj * self._scale
         self.height = h_proj * self._scale
         self._cx, self._cy = (x0 + x1) / 2, (y0 + y1) / 2
-        self.viewbox = f"0 0 {self.width:.0f} {self.height:.0f}"
+        # Formatted like every other coordinate here, so the sheet a client is
+        # told about and the view it is opened on are the same numbers.
+        self.viewbox = f"0 0 {_fmt(self.width)} {_fmt(self.height)}"
 
     def _at(self, lon: float, lat: float):
         """Projected, then normalized into the viewBox. `None` off the sphere."""
@@ -243,6 +265,44 @@ class Frame:
     def point(self, lon: float, lat: float):
         return self._at(lon, lat)
 
+    def rect(self, box):
+        """A lon/lat box as `(x, y, w, h)` **in this frame's own units**.
+
+        What lets the frame move without anything being re-projected. A map is
+        drawn once into a *sheet* — the extent of the outermost node of its tree,
+        which is the widest thing the reader can re-frame to — and every node's
+        own extent travels as one of these rectangles. Choosing a frame is then
+        writing one of them into the `viewBox`, which is arithmetic a browser
+        already does and needs no projection on the far side. Every coordinate in
+        this project is still projected here, in Python, once.
+
+        Walked along the edges rather than taken at the corners, for the reason
+        `__init__` and `viewport` do: a lon/lat rectangle bows past its own
+        corners at these latitudes, and a frame taken from them clips the shape
+        it was computed for.
+
+        Padded per axis by `PAD`, exactly as `__init__` pads the sheet — so
+        `sheet.rect(sheet.box)` is the whole viewBox and re-framing to the
+        outermost node is a no-op rather than a visible nudge.
+        """
+        w, s, e, n = box
+        steps = 24
+        pts = []
+        for i in range(steps + 1):
+            t = i / steps
+            for lon, lat in ((w + (e - w) * t, s), (w + (e - w) * t, n),
+                             (w, s + (n - s) * t), (e, s + (n - s) * t)):
+                p = self._at(lon, lat)
+                if p is not None:
+                    pts.append(p)
+        if not pts:
+            return None
+        x0, x1 = min(x for x, _ in pts), max(x for x, _ in pts)
+        y0, y1 = min(y for _, y in pts), max(y for _, y in pts)
+        dx = max(x1 - x0, MIN_SPAN * self._scale) * PAD
+        dy = max(y1 - y0, MIN_SPAN * self._scale) * PAD
+        return (x0 - dx, y0 - dy, (x1 - x0) + 2 * dx, (y1 - y0) + 2 * dy)
+
 
 def owned(paths, ent: str = "", kind: str = "") -> list[tuple[str, str, str]]:
     """`Frame.paths` output, tagged with the entity it belongs to and its shape kind.
@@ -262,7 +322,7 @@ def owned(paths, ent: str = "", kind: str = "") -> list[tuple[str, str, str]]:
     return [(d, ent, kind) for d in paths]
 
 
-def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
+def render(frame: Frame, layers: dict, pins=(), mark: str = "", view=None) -> str:
     """One map. `layers` maps a `LAYERS` name to a list of `(d, entity)` pairs.
 
     **Every path says whose it is, and that is what makes the map answerable.**
@@ -280,6 +340,13 @@ def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
 
     `pins` are `(x, y, label, entity)` already projected, which keeps the
     label-placement question out of here.
+
+    `view` is the rectangle to open on, in `frame`'s units — `Frame.rect` of
+    whichever node the map is framed on. It defaults to the whole frame, which
+    is the only answer for a caller drawing one map of one thing. Where it earns
+    its keep is a map whose frame can move: `frame` is then the *sheet*, sized to
+    the widest extent the reader can reach, and `view` is where they are looking
+    now. Nothing downstream of here knows the difference.
 
     `mark` joins the root element's class list and says something about the
     subject that the geometry cannot: `basin` is what the caller sets when the
@@ -312,7 +379,8 @@ def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
     # the page whatever extent the frame ended up with. The edge test below is
     # the one thing that must ask the frame instead: `x` runs to `frame.width`,
     # and on a frame taller than it is wide that is less than `SPAN`.
-    r = SPAN * 0.012
+    vx, vy, vw, vh = view or (0.0, 0.0, frame.width, frame.height)
+    r = max(vw, vh) * PIN["r"]
     for x, y, label, ent in pins:
         parts.append(f"<circle class='pin'{_of(ent)} cx='{_fmt(x)}' "
                      f"cy='{_fmt(y)}' r='{r:.1f}'/>")
@@ -321,15 +389,29 @@ def render(frame: Frame, layers: dict, pins=(), mark: str = "") -> str:
         # A label always sits to the right of its pin until the pin is near the
         # right edge, where it would run off — `Uelen` and `Chukchee Peninsula`
         # both did, and a truncated place name on a map reads as a data problem
-        # rather than as a layout one. The flip is on the *frame*, not on the
+        # rather than as a layout one. The flip is on the *view*, not on the
         # text width, because this module cannot measure text.
-        flip = x > frame.width * 0.72
+        #
+        # `data-x`/`data-y` are the pin's own position, carried so the client can
+        # redo this line — and only this line — when the reader re-frames. The
+        # label's `x` is the pin's plus an offset that depends on the answer, so
+        # the position alone is not recoverable from the attribute it lands in.
+        flip = x > vx + vw * PIN["flip"]
         parts.append(
-            f"<text class='pin-label' x='{_fmt(x + (-r * 1.4 if flip else r * 1.4))}' "
-            f"y='{_fmt(y + r * 0.5)}' "
+            f"<text class='pin-label' data-x='{_fmt(x)}' data-y='{_fmt(y)}' "
+            f"x='{_fmt(x + (-r * PIN['dx'] if flip else r * PIN['dx']))}' "
+            f"y='{_fmt(y + r * PIN['dy'])}' "
             f"text-anchor='{'end' if flip else 'start'}' "
-            f"font-size='{r * 2.2:.1f}'>{escape(label)}</text>")
+            f"font-size='{r * PIN['font']:.1f}'>{escape(label)}</text>")
+    # **`viewBox` is the frame; the sheet is what was drawn.** They are the same
+    # box on a map nobody has re-framed, and the two attributes are why they need
+    # not stay that way: every path here is in sheet units, so moving the frame
+    # is writing a rectangle into `viewBox` and re-projects nothing. `data-sheet`
+    # is what a client falls back to — the widest frame the drawing supports,
+    # beyond which it would be showing rings that were culled as off-sheet.
     return (f"<svg class='map{' ' + escape(mark) if mark else ''}' "
-            f"viewBox='{frame.viewbox}' "
+            f"viewBox='{_fmt(vx)} {_fmt(vy)} {_fmt(vw)} {_fmt(vh)}' "
+            f"data-sheet='{frame.viewbox}' "
+            f"data-pin='{escape(json.dumps(PIN))}' "
             f"preserveAspectRatio='xMidYMid meet' role='img'>"
             + "".join(parts) + "</svg>")

@@ -482,6 +482,49 @@ def relatives(ent_id: str, store: dict) -> list[str]:
     return sorted(out)
 
 
+def ancestors(ent_id: str, store: dict) -> list[str]:
+    """Every entity above this one, **nearest first** and never itself.
+
+    `relatives` returns the same nodes sorted by id, mixed in with the
+    descendants, which answers "what is one click away" and not "what contains
+    this". The order is the whole of the difference: a map framed on the first
+    ancestor that will hold its subjects has to walk outward, and a tree that
+    ends at a common ancestor has to know which of two candidates is nearer.
+
+    Cycle-safe by the same `seen` discipline as the rest of this module.
+    """
+    out: list[str] = []
+    seen = {ent_id}
+    up = store.get(ent_id, {}).get("within") or ""
+    while up and up not in seen:
+        seen.add(up)
+        out.append(up)
+        up = store.get(up, {}).get("within") or ""
+    return out
+
+
+def common_ancestors(idents, store: dict) -> list[str]:
+    """What contains every one of `idents`, **strictly and nearest first**.
+
+    Strictly: a selection is never its own frame. Selecting the Kolyma and one
+    of its tributaries frames on what holds the Kolyma, not on the Kolyma — the
+    same argument the single-subject map has always made, that a shape shown
+    alone says what it looks like and a shape shown inside its container says
+    where it is.
+
+    Nearest-first over the *first* ident's chain, which is what makes "the first
+    common ancestor" a well-defined node rather than a set. An empty selection
+    has no container and gets no chain; two selections in unrelated trees get
+    none either, and the caller falls back to the box that holds them both.
+    """
+    idents = list(idents)
+    if not idents:
+        return []
+    chains = [set(ancestors(i, store)) for i in idents]
+    return [a for a in ancestors(idents[0], store)
+            if all(a in c for c in chains[1:])]
+
+
 def roots(store: dict) -> list[str]:
     """Every entity with no parent, in id order.
 
