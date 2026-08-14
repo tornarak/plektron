@@ -156,10 +156,16 @@ def _figure_state(ref: str, root, doc: dict, size) -> dict:
         if f is None:
             figs.append({"i": r["i"], "n": r["n"], "why": r["why"], "crops": []})
             continue
+        # **One width per crop, taken from that crop's own box.** `side` is the
+        # figure's — it floats as one block — but the pictures inside it keep their
+        # own sizes. Handing the group's `width_frac` to every crop is what drew
+        # `2-085`'s 304 px part at 1202 px; see `figures.layout`.
+        parts = {p["zone_id"]: p for p in f.get("parts") or []}
         figs.append({
             "i": r["i"], "n": r["n"], "why": "",
-            "crops": [f"{BASE}/fig/{ref}/{k}.png"
-                      for k in (F.zone_suffix(z) for z in f["zone_ids"])],
+            "crops": [{"url": f"{BASE}/fig/{ref}/{F.zone_suffix(z)}.png",
+                       "width": (parts.get(z) or f).get("width_frac", 1.0)}
+                      for z in f["zone_ids"]],
             "side": f.get("side", "full"),
             "width": f.get("width_frac", 1.0),
         })

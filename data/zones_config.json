@@ -98,11 +98,11 @@
   },
 
   "columns": {
-    "_about": "The measure is configured; the position is measured off each page. See _provenance.anchor for why that split exists.",
+    "_about": "The measure is configured; the position is measured off each page. See _provenance.anchor for why that split exists. The measures survived the move into master space untouched, because a width does not change under a translation — only the positional fallback_x0 shifted, by each part's dx: part 1 500->479, part 3 380->415, part 2 unmoved.",
     "parts": {
-      "1": {"measure": 1778, "fallback_x0": 500},
+      "1": {"measure": 1778, "fallback_x0": 479},
       "2": {"measure": 1776, "fallback_x0": 390},
-      "3": {"measure": 1782, "fallback_x0": 380}
+      "3": {"measure": 1782, "fallback_x0": 415}
     },
     "anchor": {
       "band_top": 0.12,
@@ -188,6 +188,16 @@
         "id": "picture-overlap",
         "severity": "warn",
         "description": "Two GraphicZones overlapping by more than max_overlap_px on both axes. A warning, and this one was briefly written as an error by importing the zone track's rule — wrongly. Zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused; figures are freely placed, an inset legitimately sits inside the frame it insets, and two pictures on a plate may abut. Two live instances, both marginal grazes over a long shared edge: 1-189 (1244x14 px) and 1-334 (12x782 px)."
+      },
+      {
+        "id": "unaccounted-picture",
+        "severity": "error",
+        "description": "A photograph the source PDF separated out that no keyed GraphicZone overlaps. The scans are MRC-layered — a bitonal master plus embedded JPEGs — so the scanner's own segmentation is an independent witness to where the pictures are, read from data/pdf_images.json and compared **by overlap, never by containment**: the rect sits proud of a hand-drawn box by 1-3 px at the median, and a containment rule reports 131 findings on a store that is in fact complete. An error where the geometry rules beside it are warnings, because this is not a judgement about layout but a picture in the book the store does not mention — and because it is honestly clearable rather than a gate that gets widened until it says nothing: 0 over all 371 rects today. Exemptable per page in gt/fig/_rule_exempt.json; an exempted rule still reports, flagged."
+      },
+      {
+        "id": "picture-outside-boxes",
+        "severity": "warn",
+        "description": "More than 5% of a photograph's rect lies outside every keyed GraphicZone, padded by 20 px. Reported and never gated, because a large share means one of two things and neither is a fault in the keying: a figure the book letters a, b, c, whose one photograph spans several part-boxes with gutters belonging to no box; or a rect that is not the picture's extent at all, because the scanner's own segmentation swept something else into the photo layer. Both are reasons to look rather than to fix, and the per-page ruling in gt/fig/_rule_exempt.json is where the looking gets recorded."
       }
     ],
     "actions": {

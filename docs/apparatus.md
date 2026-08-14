@@ -134,6 +134,78 @@ the box turned out to be dirt the segmenter had boxed, and it was withdrawn by a
 human. Had it been an error the page would have been ungateable until someone
 did that — which is the same act, extracted under duress and at the wrong moment.
 
+### The source's own segmentation, which is a fourth kind of evidence
+
+The scans are MRC-layered — a bitonal master plus separate embedded JPEGs — so the
+scanner recorded, when the book was digitised, which pixels it took for photograph
+and which for type. `tools/extract_scans.py` writes those rects to
+`data/pdf_images.json`, and **that is a witness neither a person nor a model
+produced**. `figures.fig_ink` compares it against `gt/fig/` on the model of the
+zone track's uncovered ink, with two departures each worth its line.
+
+**Accounted for means overlapped, never contained**, and the measurement forced it.
+Of 371 photographs, 255 merely *partially* overlap their best-matching keyed box,
+86 are contained by it and 17 contain it: the rect stands a pixel or three proud of
+what a hand drew. A containment rule reports **131 findings on a store that is
+complete**. Overlap reports the truth, which is **0 unaccounted photographs and 0
+pages carrying one with no figure ALTO at all**. That number is the strongest single
+statement this track can make about itself, and it was got by choosing the right
+comparison rather than by keying anything.
+
+**It computes live and caches nothing.** `zones.cached_ink` exists because uncovered
+ink is "the one check that reads the raster"; this one reads a small tracked JSON,
+so a cache could only go stale.
+
+A companion warning, `picture-outside-boxes`, reports how much of a rect falls
+outside every keyed box, and **never gates**, because a large share means one of two
+things and neither is a fault in the keying. It is a figure the book letters *a, b,
+c*, whose one photograph spans several part-boxes with gutters belonging to no box —
+14 of them. Or the rect is not a boundary at all: on `1-287` it runs to x=2190
+across a rotated caption sitting at 2098..2206, because the scanner swept the
+caption into the photo layer. Growing the box onto that would pull the caption
+inside the picture, so the page is ruled rather than fixed.
+
+**Which is why the exemptions now carry their reasons.** `gt/fig/_rule_exempt.json`
+held bare rule ids until this pass — a record that somebody silenced a warning and
+nothing about why, which no later reader can tell from a keystroke. It is
+`{ref: {rule: ruling}}` now, `set_rule_exempt` refuses a blank one on
+`zones.set_ink_exempt`'s rule that "a reason is required and is the point of the
+file", the editor prompts and declines to exempt without an answer, and the ruling
+prints *with* the finding rather than in a file you would have to go and open. A
+legacy noteless entry still loads and still excuses — the human did rule — but
+reports `unruled-exemption` so the gap is visible rather than inherited.
+
+### `fig extend`: growing a box onto its photograph
+
+Where a box stops inside its photograph, the blot used to paint around an
+antialiased rim of halftone. `harness fig extend` closes that by growing the box to
+the union with the rect — **union only, never intersection**, because some figures
+carry line work *outside* the JPEG (rules, lettering, a plate border, all living in
+the master) and contracting would uncover them. 85 of the 371 boxes were already
+larger than their photograph, which is that rule earning itself 85 times.
+
+**1:1 correspondences only, and that is the verb's scope rather than a stage of
+it.** For the 14 lettered figures there is no correct mechanical answer — unioning
+each part with the spanning rect makes them duplicates and destroys the grouping
+`figure_boxes` folds on, while apportioning it invents boundaries the source does
+not draw. They report `out_of_scope` and stay there.
+
+**`--max-growth` has no default and `--commit` without it is a usage error.** The
+ceiling is a judgement about how far a mechanical rule may move a rectangle a person
+drew; a default would make that judgement silently and then let it read as the
+operator's. A report run prints what every box would gain and the distribution it
+falls in — p50 +0.59 %, p90 +1.74 %, max +9.81 % over the 272 that moved.
+
+The guard is a **caption-assignment diff**, and the shape of it is the lesson.
+`_gap` pairs a picture to a caption by *direction* first — a landscape caption must
+sit below its picture, a rotated one to its right — and distance second, so a
+caption between two plates can only ever be claimed by the one before it. That is
+what makes growth safe. But the first version compared whole `paired` rows, which
+carry a top-to-bottom `index`, and refused `1-167`, `1-227` and `1-325`: three
+plates where every picture kept its own caption and two boats merely swapped
+ordinals after a 12 px growth. **Compare the assignment, not the ordering** — a box
+that now starts higher genuinely does start higher.
+
 ## The segmenter, and why its negatives had to be witnessed
 
 `harness fig` carries the zone track's quartet — `remark-eval`, `assemble`,
@@ -208,13 +280,34 @@ printed figures against three segments, two sharing a caption on each).
 named `chukchi-PP-NNN-KKK.png` after the zone's own id suffix. 414 files, a
 registered farm (`views check fig-crops`), derived and gitignored.
 
-**Cropped from `scans/` at 300 dpi as it stands, and the cost is accepted rather
-than unnoticed.** The ~300 dpi master is the *text* layer only — the photographs
-are embedded JPEGs already at their native 150 dpi, so a photo crop is a 2×
-upsample carrying no detail the original had not. One raster tree and one code
-path is worth that. Their bboxes matched the embedded JPEG dimensions exactly at
-150 dpi, which stays available as a free check on the segmentation, and as the
-diagnostic if a crop ever looks wrong.
+**Cropped from `scans/` at 300 dpi, and a photograph's crop is still a 2× of a
+150 ppi original** — the master is the *type* layer and the photographs are
+separate embedded JPEGs at their own resolution. What changed with the raster
+rebuild is that the doubling is now **nearest at an integral scale** rather than
+poppler's resample, so every native JPEG sample survives as an exact 2×2 block and
+the crop and the embedded original are the same pixels at two sizes. Nothing is
+recoverable by cutting from the JPEG instead: side by side at 1:1 there is nothing
+in one that is not in the other, and the difference was always interpolation blur
+rather than detail.
+
+The tree is **72 MB over 414 files**, halved by the rebuild because a line-art crop
+is now bitonal. Worth stating plainly, since it was 142 MB and the temptation is to
+blame the source: for `1-037`, the crop is 1027 KB as PNG, 409 KB as JPEG q88 at
+the same pixels, 140 KB downsampled to 150 ppi, and 107 KB as the embedded original.
+**Most of that spread is the encoder, not the source.**
+
+Their bboxes matching the embedded JPEG dimensions was once noted here as a free
+check that stayed available. It is no longer merely available — see
+`unaccounted-picture` above, which is that check, run.
+
+**Cutting from the embedded JPEG instead was designed and not built**, and the
+reason it was dropped is worth more than the option: once the composite pastes each
+photograph nearest at its integral scale, a native crop and a composite crop are the
+*same samples* at two sizes. A `--source native` flag would therefore buy file size
+and nothing else — and the encoder comparison above shows the size is mostly the
+encoder anyway. A second source path through `crop_source`, with its own fallback
+for the pictures the PDF never separated out, is not worth a saving that re-encoding
+would get for free.
 
 **Named by zone suffix, not by figure number.** Plate figures restart at 1 on
 every plate and collide with the text-figure series; 10 figures print no number

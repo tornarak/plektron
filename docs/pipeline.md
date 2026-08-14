@@ -27,6 +27,22 @@ the stages that are built.
    inset figure on `1-283`. Figure captions do go, and should — they live in
    `data/readings.md` and are not body text.
 
+   **It also paints the source's own photograph rects**, from
+   `data/pdf_images.json`, and that buys two things the old blot argued for
+   instead of having. A human box stopping a few pixels inside a photograph used
+   to leave a rim of antialiased halftone at its edge; the rect is the
+   photograph's exact extent as the scanner recorded it, so the region is blank by
+   construction. And what remains after painting is the bitonal master's two
+   values plus white, so the tree converts to mode `1` losslessly and **every one
+   of the 829 trainable pages has the same colour depth**. The old rule — keep the
+   source mode, or depth correlates with "has a figure" — was managing exactly the
+   confound this removes. The 3 RGB pages have no master, are `exempt`, and reach
+   no trainer. 18 MB for the tree, against 726 MB of rasters before the rebuild.
+
+   The human boxes stay authoritative: 21 keyed pictures are line work the scanner
+   left in the master and have no rect, and every caption is type and has none.
+   The manifest supplements the store; it does not replace it.
+
    **A store keeps every line the page sets; a consumer filters by zone label.**
    That rule has now been derived three times from scratch — for `mz/ocr/`, for
    `catmus_draft`/`ocr_lines`, and for the reading proposal — so it is stated here

@@ -165,26 +165,6 @@ new MutationObserver((list, _) => {
 let article = document.querySelector("#primary");
 let selected_tab_idx = -1;
 
-/* **Indexed by position in the list, not by the value of `tabindex`.** The two
-   agree only when every index from 1 to the count is actually on the page, and
-   they did not: the neighbour block held 1 and 2, and a page with only one
-   neighbour — the first and the last of any listing — left a gap. `count` then
-   fell one short of the highest live index and the last link in the text could
-   not be reached at all, while one keystroke early in the walk focused nothing.
-   `tei_html` still numbers the anchors, and that numbering is what puts them in
-   reading order here; nothing on this side needs to know what the numbers are,
-   which is also what let the neighbours stop claiming two of them. */
-function selectTabIdx(idx = null, inc = 0) {
-    let links = [...article.querySelectorAll("a[tabindex]")];
-    if (!links.length) return;
-    idx = (idx == null) ? selected_tab_idx : idx;
-    if (inc) idx += inc;
-    if (idx < 0) idx = links.length - 1;
-    else if (idx >= links.length) idx = 0;
-    selected_tab_idx = idx;
-    links[idx].focus();
-}
-
 const openEntity = ref =>
   fill('ent:' + ref, B + '/entity/' + encodeURIComponent(ref) + '?partial=1', ref);
 
@@ -297,9 +277,6 @@ document.addEventListener('keydown', ev => {
     if (selected_stack) {
         if (ev.key == "ArrowUp") { ev.preventDefault(); selectIdx(null, -1); }
         if (ev.key == "ArrowDown") { ev.preventDefault(); selectIdx(null, 1); }
-    } else {
-        if (ev.key == "ArrowUp") { ev.preventDefault(); selectTabIdx(null, -1); }
-        if (ev.key == "ArrowDown") { ev.preventDefault(); selectTabIdx(null, 1); }
     }
     if (ev.key == "Enter" && selected_stack) { ev.preventDefault(); surfaceSelection(); }
     if (ev.key == "Backspace" && selected_stack) { ev.preventDefault(); deleteSelection(); }
@@ -359,11 +336,19 @@ for (const f of (STATE.figs || [])) {
   }
   const holder = document.createElement('div');
   holder.className = 'figure-plates';
-  for (const src of f.crops) {
+  for (const c of f.crops) {
     const img = document.createElement('img');
-    img.src = src;
+    img.src = c.url;
     img.alt = f.n ? 'Figure ' + f.n : 'Figure';
     img.loading = 'lazy';
+    /* **Each picture at its own width, relative to the group's.** A lettered
+       figure is several boxes under one caption and each is cut separately, so
+       sizing them all by the group would stretch the narrow ones — 24 of 32
+       parts in this store, worst x3.95. `f.width` is the block's share of the
+       measure, so a part's share of the *block* is the ratio of the two. */
+    if (f.width > 0 && c.width < f.width) {
+      img.style.width = Math.round((c.width / f.width) * 100) + '%';
+    }
     holder.append(img);
   }
   el.prepend(holder);

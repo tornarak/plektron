@@ -57,6 +57,32 @@ FIGDIR = "gt/fig"
 MZFIGDIR = "mz/fig"
 READINGS = "data/readings.md"
 
+# The source PDFs' own embedded-image geometry, built by `tools/extract_scans.py`.
+# Derived but tracked, `data/geo/`'s split: the sources are symlinks outside the
+# repository, so a clone cannot rebuild it, and the harness reads only what is
+# committed. See `pdf_images`.
+PDF_IMAGES = "data/pdf_images.json"
+
+#: The rule id `fig check` reports an unaccounted photograph under, and the key a
+#: page excuses it by in `gt/fig/_rule_exempt.json`. Declared in
+#: `data/zones_config.json` under `figures.rules` so that `unknown-exemption`
+#: catches a typo in the excuse rather than letting it read as a judgement.
+UNACCOUNTED_RULE = "unaccounted-picture"
+
+#: Its non-gating companion: how much of a photo's rect falls outside every keyed
+#: picture. Reported and never gated — a rect legitimately spans the part-boxes of
+#: one lettered figure, and the gutter between them belongs to no box.
+OUTSIDE_RULE = "picture-outside-boxes"
+
+#: Share of a rect's area outside the keyed boxes above which `OUTSIDE_RULE` fires.
+OUTSIDE_SHARE = 0.05
+
+#: Slack when measuring how much of a photo's rect lies outside the keyed boxes.
+#: The rect sits proud of a human's box by 1-3 px at the median and 11-18 at p95,
+#: so this is set above that: the measure is meant to find a *region* nobody keyed,
+#: not to relitigate where an edge was drawn.
+UNACCOUNTED_PAD = 20
+
 
 def zone_suffix(block_id: str) -> str:
     """The part of a block id that keys `data/readings.md`.
@@ -270,7 +296,20 @@ def set_split(ref: str, split: str, root: Path = Path("."),
 
 
 def load_rule_exempt(root: Path = Path("."),
-                     store: str = FIGDIR) -> dict[str, list[str]]:
+                     store: str = FIGDIR) -> dict[str, dict[str, str]]:
+    """`{ref: {rule_id: the ruling}}` — which warnings a page has been ruled on.
+
+    **The note is the file**, not decoration on it. `zones.set_ink_exempt` says so
+    outright for the ink ledgers — "a reason is required and is the point of the
+    file" — and this store spent longer than it should have holding bare rule ids,
+    which records that somebody silenced a warning and nothing about why. A reader
+    then cannot tell a considered ruling from a keystroke.
+
+    A legacy `[rule, ...]` list still loads, mapping to empty notes rather than
+    being dropped: the exemptions are real even where their reasons were never
+    written down. `validate_fig_page` reports an empty one as *unruled* so the gap
+    is visible instead of inherited.
+    """
     p = fig_dir(root, store) / RULE_EXEMPT_JSON
     if not p.exists():
         return {}
@@ -278,28 +317,59 @@ def load_rule_exempt(root: Path = Path("."),
         data = json.loads(p.read_text(encoding="utf-8"))
     except (ValueError, OSError):
         return {}
-    return {k: list(v) for k, v in data.items()} if isinstance(data, dict) else {}
+    if not isinstance(data, dict):
+        return {}
+    out: dict[str, dict[str, str]] = {}
+    for ref, v in data.items():
+        if ref.startswith("_"):
+            continue
+        if isinstance(v, dict):
+            out[ref] = {str(k): str(n or "") for k, n in v.items()}
+        else:
+            out[ref] = {str(r): "" for r in v}
+    return out
 
 
-def set_rule_exempt(ref: str, rules: list[str], root: Path = Path("."),
-                    store: str = FIGDIR) -> dict:
-    """Record which warnings a human has accepted on this page.
+RULE_EXEMPT_ABOUT = (
+    "Figure-track warnings a human has ruled on, per page, each with the reason. "
+    "An exempted rule STILL REPORTS, flagged and carrying its note — a warning "
+    "that vanished when excused would leave no way to notice the excuse had "
+    "outlived the page it was written for. An entry with an empty note is an "
+    "exemption nobody wrote a reason for, and `fig check` says so."
+)
 
-    An exempted rule **still reports**, flagged — the zone store's discipline, for
-    its reason: a warning that vanishes when excused leaves no way to notice that
-    the excuse has outlived the page it was written for.
+
+def set_rule_exempt(ref: str, rules, root: Path = Path("."),
+                    store: str = FIGDIR, require_note: bool = True) -> dict:
+    """Record which warnings a human has accepted on this page, and why.
+
+    `rules` is `{rule_id: note}`. A list is accepted for the legacy shape and, with
+    `require_note`, refused — because that is exactly the call that loses the
+    reason. An exempted rule **still reports**, flagged: a warning that vanishes
+    when excused leaves no way to notice that the excuse has outlived the page it
+    was written for.
     """
     ref = norm_ref(ref)
+    if not isinstance(rules, dict):
+        rules = dict.fromkeys(rules or [], "")
+    blank = sorted(r for r, note in rules.items() if not str(note).strip())
+    if blank and require_note:
+        raise ValueError(
+            f"{ref}: no reason given for {', '.join(blank)}. An exemption without "
+            "one records that somebody silenced a warning and nothing about why; "
+            "see gt/fig/_rule_exempt.json's _about.")
     data = load_rule_exempt(root, store)
     if rules:
-        data[ref] = sorted(set(rules))
+        data[ref] = {r: str(rules[r]) for r in sorted(rules)}
     else:
         data.pop(ref, None)
     p = fig_dir(root, store) / RULE_EXEMPT_JSON
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, indent=2, sort_keys=True,
+    doc = {"_about": RULE_EXEMPT_ABOUT}
+    doc.update({k: data[k] for k in sorted(data, key=parse_ref)})
+    p.write_text(json.dumps(doc, indent=2, sort_keys=False,
                             ensure_ascii=False) + "\n", encoding="utf-8")
-    return {"ref": ref, "rules": data.get(ref, [])}
+    return {"ref": ref, "rules": data.get(ref, {})}
 
 
 # ---------------------------------------------------------- the segmenter
@@ -584,6 +654,235 @@ def _predict_one(ref, root, net, dev, model_path, sha, dest) -> dict:
     return {"ref": ref, "wrote": True,
             "figures": sum(1 for b in blocks if b["label"] == GRAPHIC),
             "captions": sum(1 for b in blocks if b["label"] == FIGDESC)}
+
+
+def propose_from_pdf(refs: list[str], root: Path = Path("."),
+                     force: bool = False) -> list[dict]:
+    """Write `mz/fig/` proposals from the source PDF's own image placements.
+
+    `predict` writes the same store from the figure segmenter. This writes it from
+    the scanner's MRC segmentation — the decision, taken when the book was
+    digitised, about which pixels were photograph and which were type. It is not a
+    better model; it is a **different kind of witness**, and the store is where a
+    claim nobody has examined belongs either way.
+
+    **`GraphicZone` only.** The PDF layer says where a *picture* is and says nothing
+    whatever about captions, so minting a `GraphicZone-FigDesc` here would be
+    authoring a claim the source does not make — the one thing a proposal must not
+    do, since what reaches `gt/fig/` is painted into the rasters the zone segmenter
+    trains on.
+
+    Refuses to overwrite a page `predict` wrote unless `force`, and says so. The two
+    are not interchangeable and an `mz/` file's processing step is the only record
+    of which one spoke.
+
+    On **this** book it proposes nothing anyone needs: all 371 photographs sit on
+    pages `gt/fig/` already covers, and `zones_ui._fig_state` shows `mz/fig/` only
+    where `gt/fig/` is absent, so every proposal here is correctly invisible. It
+    earns its keep on the next book, where it is the first pass rather than a
+    second opinion — and here as the input to `fig extend`.
+
+    **Writes master-space coordinates**, which is the manifest's space and the one
+    the rasters are moving to, and declares it in the `Page` box as every store
+    here does. Until `scans/` is rebuilt that is *not* the space `gt/fig/` is in,
+    so a proposal written today and read today would sit up to 35 px out. Nothing
+    reads one today — no page in this book has an `mz/fig/` file without a `gt/fig/`
+    file to outrank it — but that is a fact about this corpus rather than a
+    guarantee, so run this after the migration and not before.
+    """
+    from .zones import ALTO_NS, build_alto
+
+    manifest = pdf_images(root)
+    out = []
+    for ref in refs:
+        ref = norm_ref(ref)
+        entry = manifest.get(ref) or {}
+        images = entry.get("images") or []
+        if not images:
+            out.append({"ref": ref, "wrote": False, "figures": 0,
+                        "note": "no photographs in the manifest"})
+            continue
+        dest = alto_for(ref, root, MZFIGDIR)
+        if dest.exists() and not force:
+            out.append({"ref": ref, "wrote": False, "figures": 0,
+                        "note": "exists; --force"})
+            continue
+        m = entry["master"]
+        blocks = [{"label": GRAPHIC, "x0": im["rect"][0], "y0": im["rect"][1],
+                   "x1": im["rect"][2], "y1": im["rect"][3]} for im in images]
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        tree = build_alto(ref, blocks, (m["w"], m["h"]), id_prefix="mzfig_")
+        desc = tree.getroot().find("{*}Description")
+        steps = etree.SubElement(desc, f"{{{ALTO_NS}}}Processing")
+        # Names the manifest and not a model, so a reader can tell a scanner's
+        # segmentation from a segmenter's guess without opening either.
+        etree.SubElement(steps, f"{{{ALTO_NS}}}processingStepDescription").text = (
+            f"{PDF_IMAGES} embedded-image placement")
+        tmp = dest.with_suffix(".xml.tmp")
+        tree.write(str(tmp), xml_declaration=True, encoding="UTF-8",
+                   standalone=None, pretty_print=True)
+        tmp.replace(dest)
+        out.append({"ref": ref, "wrote": True, "figures": len(blocks),
+                    "note": ""})
+    return out
+
+
+def _assignment(ref: str, root: Path) -> tuple:
+    """Which caption belongs to which picture, and nothing else about the page.
+
+    `paired`'s rows also carry an `index` — a top-to-bottom ordinal — and that is
+    presentation, not a claim about the book: a picture whose box grew upward
+    genuinely does start higher, and re-sorting is the store telling the truth.
+    Comparing whole rows made `1-167` refuse a correct 12 px growth because two
+    boats swapped ordinals while keeping their own captions.
+    """
+    p = paired(ref, root)
+    return (tuple(sorted((f["zone_id"], f["caption_zone"]) for f in p["figures"])),
+            tuple(sorted(p["unpaired_captions"])))
+
+
+def extend_to_rects(ref: str, root: Path = Path("."),
+                    max_growth: float | None = None,
+                    commit: bool = False) -> dict:
+    """Grow keyed pictures to cover the photograph the source separated out.
+
+    **Union only, never intersection.** The rect is the photograph's exact extent,
+    so a box that stops inside it leaves an antialiased rim the blot then paints
+    around — the fringe this whole change exists to remove. But a box *larger* than
+    its rect is left exactly as it is: some figures carry bitonal fringe outside the
+    photograph — rules, lettering, a plate border, all living in the master rather
+    than the JPEG — and contracting onto the rect would uncover them.
+
+    **Only a clean 1:1 pair is ever touched, and that is the scope of the verb
+    rather than a stage of it.** The rect must overlap exactly one picture and that
+    picture must be overlapped by exactly one rect. 14 figures in this corpus are
+    one photograph spanning several keyed boxes — a figure the book letters
+    *a, b, c* under one caption — and there is no correct mechanical answer for
+    them: unioning each part with the whole rect makes them duplicates and destroys
+    the structure `figure_boxes` folds on, while apportioning the rect between the
+    parts would be inventing boundaries the source does not draw. They are reported
+    as out of scope and stay that way; a human with the editor is the remedy.
+
+    **`max_growth` is required to write, and is the caller's number.** It is the
+    largest area increase, as a fraction, this run may apply to any one box; a box
+    that would grow more is refused, counted and named. Nothing is assumed: the
+    report says what each box would gain so the ceiling can be chosen from the
+    evidence rather than from a default nobody chose. `None` means report only.
+
+    Measured over this store, and the three numbers sum to the 371 photographs:
+    **272 grow, 85 are already large enough, 14 are out of scope.** Over the 272
+    that move, area growth is **p50 +0.59 %, p90 +1.74 %, max +9.81 %** — a fringe
+    correction, not a re-keying. (Taken over all 357 in-scope pairs the medians read
+    lower, because 85 of them gain nothing; the distribution that matters is the one
+    over boxes that actually change, and that is what the verb prints.) The 85 are
+    the union-only rule earning itself: every one is a box a human drew *outside*
+    the photograph, which contracting would have spoiled.
+
+    **The caption assignment must not move**, and *only* the assignment. `_gap`
+    pairs a picture to a caption by distance with a perpendicular-overlap
+    requirement, so growing a picture moves it toward one; the growth is far below
+    any plausible gap, but that is a prediction and the diff is a fact.
+
+    What the diff compares is `{picture: caption}` and the unpaired list — **not
+    `paired`'s `index`**, which is a top-to-bottom ordinal and moves for reasons
+    that are not faults. `1-167` is the case that taught this: Plate XI's four
+    boats, where box 002 grew *upward* by 12 px and overtook 001 in the sort, so
+    every picture kept its own caption and the whole page was refused anyway. A
+    box that now starts higher genuinely does start higher; ordering is a fact
+    about geometry, and this verb is allowed to change geometry.
+    """
+    ref = norm_ref(ref)
+    rep: dict = {"ref": ref, "grew": 0, "unchanged": 0, "out_of_scope": 0,
+                 "over": 0, "growth": [], "wrote": False, "note": ""}
+    entry = pdf_images_for(ref, root)
+    if not (entry.get("images") or []):
+        return rep
+    path = alto_for(ref, root)
+    if not path.exists():
+        rep["note"] = "no figure ALTO"
+        return rep
+    pw, ph = _page_box(path)
+    rects, space = _rects_in(entry, pw, ph)
+    if not space:
+        rep["note"] = f"page box {pw}x{ph} is in neither known space"
+        return rep
+
+    blocks = read_blocks(path)
+    pics = [b for b in blocks if b["label"] == GRAPHIC]
+    boxes = {b["id"]: [b["hpos"], b["vpos"], b["hpos"] + b["width"],
+                       b["vpos"] + b["height"]] for b in pics}
+
+    def area(b) -> int:
+        return max(1, (b[2] - b[0]) * (b[3] - b[1]))
+
+    grown: dict[str, list[int]] = {}
+    for r in rects:
+        hit = [i for i, box in boxes.items() if _overlaps(r, tuple(box))]
+        if len(hit) != 1:
+            rep["out_of_scope"] += 1
+            continue
+        bid = hit[0]
+        if sum(1 for r2 in rects if _overlaps(r2, tuple(boxes[bid]))) != 1:
+            rep["out_of_scope"] += 1
+            continue
+        box = boxes[bid]
+        union = [min(box[0], r[0]), min(box[1], r[1]),
+                 max(box[2], r[2]), max(box[3], r[3])]
+        if union == box:
+            rep["unchanged"] += 1
+            continue
+        growth = area(union) / area(box) - 1.0
+        rep["growth"].append({"id": bid, "pct": round(growth * 100, 2),
+                              "from": list(box), "to": union})
+        if max_growth is not None and growth > max_growth:
+            rep["over"] += 1
+            continue
+        grown[bid] = union
+
+    rep["grew"] = len(grown)
+    # `max_growth` is what separates a report from a write, so a caller that has not
+    # named one gets the measurement and nothing else. Not a default: the number is
+    # a judgement about how far a mechanical rule may move a human's rectangle, and
+    # this file is not the place that judgement is made.
+    if not grown or not commit or max_growth is None:
+        return rep
+
+    before = _assignment(ref, root)
+    out_blocks = []
+    for b in blocks:
+        x0, y0, x1, y1 = (grown[b["id"]] if b["id"] in grown else
+                          [b["hpos"], b["vpos"], b["hpos"] + b["width"],
+                           b["vpos"] + b["height"]])
+        out_blocks.append({"id": b["id"], "label": b["label"],
+                           "x0": x0, "y0": y0, "x1": x1, "y1": y1})
+    save_figs(ref, out_blocks, root)
+    after = _assignment(ref, root)
+    if after != before:
+        # Put it back. A pairing change means a caption now belongs to a different
+        # picture, which is a claim about the book that a fringe correction has no
+        # business making.
+        save_figs(ref, [{"id": b["id"], "label": b["label"], "x0": b["hpos"],
+                         "y0": b["vpos"], "x1": b["hpos"] + b["width"],
+                         "y1": b["vpos"] + b["height"]} for b in blocks], root)
+        rep["grew"] = 0
+        rep["note"] = "refused: this would change which caption goes with which "\
+                      "picture"
+        return rep
+    rep["wrote"] = True
+    return rep
+
+
+def extend_all(refs: list[str] | None = None, root: Path = Path("."),
+               max_growth: float | None = None,
+               commit: bool = False) -> list[dict]:
+    """`extend_to_rects` over a set of pages, reporting only what it touched."""
+    refs = refs if refs is not None else sorted(pdf_images(root))
+    out = []
+    for ref in refs:
+        rec = extend_to_rects(ref, root, max_growth=max_growth, commit=commit)
+        if rec["grew"] or rec["out_of_scope"] or rec["over"] or rec["note"]:
+            out.append(rec)
+    return out
 
 
 def _iou(a: dict, b: dict) -> float:
@@ -988,13 +1287,53 @@ def validate_fig_page(ref: str, root: Path = Path("."), cfg: dict | None = None,
                 "store carries boxes, and every reader of it takes the bbox")
 
     pics = [b for b in blocks if b["label"] == GRAPHIC]
-    exempt = load_rule_exempt(root, store).get(ref, [])
+    exempt = load_rule_exempt(root, store).get(ref, {})
     warnings = zc.fig_warnings(cfg, blocks, exempt)
     known = {r["id"] for r in (figs_cfg.get("rules") or [])}
     for r in exempt:
         if r not in known:
             err("unknown-exemption",
                 f"{ref} exempts {r!r}, which is not a rule this config declares")
+    # An exemption carrying no reason is reported, not honoured silently. It still
+    # suppresses the gate — the human did rule — but a store that cannot tell a
+    # considered ruling from a keystroke is the thing `_rule_exempt.json`'s note
+    # exists to prevent, so the gap is surfaced rather than inherited.
+    unruled = sorted(r for r, note in exempt.items() if not str(note).strip())
+    for r in unruled:
+        warnings.append({"rule": "unruled-exemption", "exempted": False,
+                         "detail": f"{ref} exempts {r!r} with no reason recorded"})
+
+    # The two manifest rules. **Evaluated here and not in `zc.fig_warnings`**, which
+    # is pure over the page's own blocks — this one has to read
+    # `data/pdf_images.json`, and putting I/O behind that signature would make a
+    # declarative evaluator lie about what it depends on.
+    ink = fig_ink(ref, root, store) if UNACCOUNTED_RULE in known else None
+    if ink and ink["state"] in ("unaccounted", "ruled"):
+        detail = (
+            f"{len(ink['uncovered'])} of {ink['rects']} photograph(s) the source "
+            f"separates out are overlapped by no GraphicZone: "
+            + "; ".join(f"{r[0]},{r[1]}..{r[2]},{r[3]}" for r in ink["uncovered"])
+            + (f" ({ink['note']})" if ink["note"] else ""))
+        if ink["state"] == "unaccounted":
+            err(UNACCOUNTED_RULE, detail)
+        else:
+            # Excused, and therefore **still reported** — as a flagged warning,
+            # since the error channel has no exempted lane. Dropping it here
+            # because a page once ruled on it is the failure `set_rule_exempt`'s
+            # docstring names: a warning that vanishes when excused leaves no way
+            # to notice the excuse has outlived the page it was written for.
+            warnings.append({"rule": UNACCOUNTED_RULE,
+                             "detail": _ruled(detail, exempt, UNACCOUNTED_RULE),
+                             "exempted": True})
+    if ink and OUTSIDE_RULE in known:
+        for o in ink["outside"]:
+            base = (f"{o['share'] * 100:.1f}% of the photograph at "
+                    f"{o['rect'][0]},{o['rect'][1]}..{o['rect'][2]},"
+                    f"{o['rect'][3]} lies outside every keyed picture")
+            warnings.append({
+                "rule": OUTSIDE_RULE,
+                "detail": _ruled(base, exempt, OUTSIDE_RULE),
+                "exempted": OUTSIDE_RULE in exempt})
 
     return {
         "ref": ref, "keyed": path.exists(), "blocks": len(blocks),
@@ -1128,7 +1467,7 @@ def delete_figs(ref: str, root: Path = Path("."), commit: bool = False,
     ref = norm_ref(ref)
     p = alto_for(ref, root)
     splits = load_splits(root)
-    rules = load_rule_exempt(root).get(ref, [])
+    rules = load_rule_exempt(root).get(ref, {})
     blocks = read_blocks(p) if p.exists() else []
     caps = sum(1 for b in blocks if b["label"] == FIGDESC)
 
@@ -1239,6 +1578,214 @@ def readings_for(ref: str, root: Path = Path(".")) -> dict[str, dict]:
     ref = norm_ref(ref)
     return {r["zone_suffix"]: r for r in readings(root).values()
             if r["ref"] == ref}
+
+
+def pdf_images(root: Path = Path(".")) -> dict[str, dict]:
+    """`data/pdf_images.json` — the source PDFs' own embedded-image geometry.
+
+    **The one witness to a figure's place that no model and no human produced.**
+    The scans are MRC-layered: a 1-bit master per page plus separate embedded JPEGs
+    for the photographs, and the scanner's own segmentation decided which pixels
+    were which. `tools/extract_scans.py` reads the placement out; this reads what it
+    wrote. Derived but tracked, on `data/geo/`'s precedent — `pdfs/` are symlinks
+    outside the repository, so a clone cannot rebuild it.
+
+    Per ref: `master` (`w`, `h`, `bpc`, `cs`, `rendered`), `offset` — the integer
+    shift from the legacy `pdftoppm` render space into master space, such that
+    `master = render - offset` — and `images`, each with `rect` in **master**
+    pixels.
+
+    Missing file is `{}`, `readings`' disposition and for its reason: a corpus that
+    has never run the extractor must show none rather than raise.
+    """
+    p = root / PDF_IMAGES
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    return {k: v for k, v in data.items() if not k.startswith("_")}
+
+
+def pdf_images_for(ref: str, root: Path = Path(".")) -> dict:
+    """One page's manifest entry, or `{}`."""
+    return pdf_images(root).get(norm_ref(ref), {})
+
+
+def _rects_in(entry: dict, page_w: int, page_h: int) -> tuple[list[list[int]], str]:
+    """This page's photo rects in the coordinate space a store of size `page_w` x
+    `page_h` is using, plus the name of that space.
+
+    **The manifest speaks master space and a store may not.** Until the rasters are
+    rebuilt, `gt/fig/` holds the legacy render's coordinates, which differ from the
+    master's by a translation of up to 35 px — enough to turn a correct box into a
+    finding. So the space is *decided from the file's own declared page box* rather
+    than assumed, which is `_scale_for`'s philosophy applied to translation instead
+    of to scale.
+
+    Three answers and no fourth: `master` when the box is the master's own size,
+    `render` when it is the legacy render's, and `""` when it is neither — for which
+    the caller reports `skip`. A guess here would be a comparison between two
+    coordinate systems presented as a fact about figures.
+
+    **The render size is read from the manifest, never computed as master + offset.**
+    That arithmetic is wrong by the right-hand margin — part 1's master is 2781x3866
+    at (21, 15) inside a 2824x3897 page, so it predicts 2802x3881 — and being wrong
+    here does not raise: it files every part 1 page as an unrecognised space and
+    reports `skip`, which reads as "nothing to say" about 176 pages that had
+    plenty. It did exactly that before this line was a lookup.
+    """
+    m = entry.get("master") or {}
+    mw, mh = m.get("w"), m.get("h")
+    rw, rh = entry.get("render") or [0, 0]
+    dx, dy = entry.get("offset") or [0, 0]
+    rects = [list(im["rect"]) for im in entry.get("images") or []]
+    if (page_w, page_h) == (mw, mh):
+        return rects, "master"
+    if (page_w, page_h) == (rw, rh):
+        return [[r[0] + dx, r[1] + dy, r[2] + dx, r[3] + dy] for r in rects], "render"
+    return [], ""
+
+
+def _ruled(detail: str, exempt: dict, rule: str) -> str:
+    """A finding's text with the ruling that excused it, where there is one.
+
+    The note travels **with the finding**, not in a file the reader has to go and
+    open, which is what makes "still reports, flagged" worth anything: an excused
+    warning that shows without its reason is indistinguishable from one nobody has
+    looked at.
+    """
+    note = str((exempt or {}).get(rule, "")).strip()
+    return f"{detail} — ruled: {note}" if note else detail
+
+
+def _page_box(path: Path) -> tuple[int, int]:
+    """An ALTO's declared page size, or `(0, 0)`.
+
+    **The file's own statement of which coordinate space it is in.** Every store
+    here records it, and reading it rather than assuming is what lets one check run
+    against both the legacy render's coordinates and the master's.
+    """
+    if not path.exists():
+        return (0, 0)
+    page = etree.parse(str(path)).find(".//{*}Page")
+    try:
+        return (int(float(page.get("WIDTH"))), int(float(page.get("HEIGHT"))))
+    except (AttributeError, TypeError, ValueError):
+        return (0, 0)
+
+
+def _overlaps(a: list[int], b: tuple[int, int, int, int]) -> bool:
+    """Do two boxes share any area at all?"""
+    return min(a[2], b[2]) > max(a[0], b[0]) and min(a[3], b[3]) > max(a[1], b[1])
+
+
+def _outside(rect: list[int], boxes: list[tuple[int, int, int, int]],
+             pad: int, step: int = 4) -> float:
+    """Fraction of `rect` lying outside every box in `boxes`, padded by `pad`.
+
+    Sampled on a grid rather than computed exactly: the boxes overlap freely, so an
+    exact answer wants a union of rectangles, and this number is **reported and
+    never gated on** — a measure that only has to be right to a percent should not
+    carry a geometry library's worth of ways to be wrong.
+    """
+    x0, y0, x1, y1 = rect
+    grown = [(b[0] - pad, b[1] - pad, b[2] + pad, b[3] + pad) for b in boxes]
+    tot = miss = 0
+    for y in range(y0, max(y0 + 1, y1), step):
+        for x in range(x0, max(x0 + 1, x1), step):
+            tot += 1
+            if not any(g[0] <= x <= g[2] and g[1] <= y <= g[3] for g in grown):
+                miss += 1
+    return (miss / tot) if tot else 0.0
+
+
+def fig_ink(ref: str, root: Path = Path("."), store: str = FIGDIR,
+            pad: int = UNACCOUNTED_PAD) -> dict:
+    """Photographs the source separated out that the figure store never accounted
+    for — the figure track's answer to `zones`' uncovered ink.
+
+    **Accounted for means overlapped, not contained**, and that is a measurement
+    rather than a preference. Over the 371 rects in this corpus, 255 merely
+    partially overlap their best-matching keyed box, 86 are contained by it and 17
+    contain it; the rect sits a little proud of what a human drew, by 1-3 px at the
+    median. A containment rule reports 131 findings on a store that is in fact
+    complete. Overlap reports 0, which is the truth.
+
+    **Computed live, with no cache.** `zones.cached_ink` exists because uncovered
+    ink is the one check that reads the raster; this one reads a small tracked JSON
+    already in memory, so a cache would buy nothing and could go stale, which is the
+    only thing it could do.
+
+    Four states, `zones._ink_verdict`'s so the two read alike:
+
+        skip          no photos on this page, or a page box in neither space
+        clean         every rect overlapped by a keyed picture
+        ruled         the uncovered ones are all exempted
+        unaccounted   a rect no keyed picture touches
+
+    A page carrying photos with **no figure ALTO at all is `unaccounted`, not
+    `skip`** — a photograph nobody keyed is the loudest thing this can find, and
+    filing it under "nothing to say" would lose exactly the case it exists for.
+
+    `outside` rides alongside: the share of each rect's area beyond every keyed box.
+    **Reported, never gated**, because a rect legitimately spans several part-boxes
+    of one lettered figure and the gutter between them belongs to no box. Today 14
+    pages exceed 5 %; 13 of those are such figures.
+
+    The fourteenth is why this reports at all. `1-287`'s rect runs to x=2190 across
+    a rotated caption sitting at 2098..2206 — **the scanner put the caption's pixels
+    in the photo layer**, so on that page the rect is not the picture's extent and
+    growing the box onto it would pull the caption inside the picture. A large
+    `outside` share therefore means one of two things: a lettered figure, or a rect
+    that cannot be trusted as a boundary. Neither is a fault in the keying, which is
+    why this never gates — and the thing to watch is whether the list is still these
+    pages, not whether it is empty.
+    """
+    ref = norm_ref(ref)
+    entry = pdf_images_for(ref, root)
+    if not (entry.get("images") or []):
+        return {"ref": ref, "state": "skip", "space": "", "rects": 0,
+                "uncovered": [], "ruled": 0, "outside": [], "note": "no photos"}
+
+    path = alto_for(ref, root, store)
+    blocks = read_blocks(path)
+    if not path.exists():
+        # No keying at all, and the page has photographs. Every rect is unaccounted
+        # for; the page box cannot be read, so the rects are reported in the space
+        # the manifest states.
+        rects = [list(im["rect"]) for im in entry["images"]]
+        return {"ref": ref, "state": "unaccounted", "space": "master",
+                "rects": len(rects), "uncovered": rects, "ruled": 0,
+                "outside": [], "note": "photos on a page with no figure ALTO"}
+
+    pw, ph = _page_box(path)
+    if not pw:
+        return {"ref": ref, "state": "skip", "space": "", "rects": 0,
+                "uncovered": [], "ruled": 0, "outside": [], "note": "no page box"}
+
+    rects, space = _rects_in(entry, pw, ph)
+    if not space:
+        m = entry.get("master") or {}
+        return {"ref": ref, "state": "skip", "space": "", "rects": 0,
+                "uncovered": [], "ruled": 0, "outside": [],
+                "note": f"page box {pw}x{ph} is neither master {m.get('w')}x"
+                        f"{m.get('h')} nor its render"}
+
+    boxes = [(b["hpos"], b["vpos"], b["hpos"] + b["width"], b["vpos"] + b["height"])
+             for b in blocks if b["label"] == GRAPHIC]
+    uncovered = [r for r in rects if not any(_overlaps(r, b) for b in boxes)]
+    outside = [{"rect": r, "share": round(_outside(r, boxes, pad), 4)}
+               for r in rects]
+    exempt = load_rule_exempt(root, store).get(ref, {})
+    ruled = UNACCOUNTED_RULE in exempt
+    state = ("clean" if not uncovered
+             else "ruled" if ruled else "unaccounted")
+    return {"ref": ref, "state": state, "space": space, "rects": len(rects),
+            "uncovered": uncovered, "ruled": len(uncovered) if ruled else 0,
+            "outside": [o for o in outside if o["share"] > OUTSIDE_SHARE],
+            "note": ""}
 
 
 def _gap(g: dict, c: dict) -> float | None:
@@ -1462,10 +2009,20 @@ def layout(ref: str, root: Path = Path(".")) -> dict:
 
     Per figure, on top of `figure_boxes`:
 
-        left_frac   where the picture starts, as a share of the measure
-        width_frac  how much of the measure it covers, clamped to 1.0
-        overflows   True if the box runs outside the column at all
+        left_frac   where the union starts, as a share of the measure
+        width_frac  how much of the measure the union covers, clamped to 1.0
+        overflows   True if the union runs outside the column at all
         side        "left" | "right" | "full"
+        parts       one entry per keyed picture, each with its own left_frac,
+                    width_frac and overflows
+
+    **`side` is the group's and the sizes are the parts'.** A figure is one block in
+    the flow and floats as one, but its pictures keep their own widths: the store
+    spells a lettered figure as several boxes under one caption, `write_crops` cuts
+    one image per box, and sizing every one of them by the union stretches the
+    narrow ones. Measured here: 24 of the 32 parts across 16 multi-part groups, the
+    worst `2-085`'s fig. 253 at x3.95. The union survives for ordering and for
+    `side`, and is not a size.
 
     `side` is `full` when the residual gutter is under `FLOAT_MIN_RESIDUAL` of
     the measure — what is left could not hold a line of type — and otherwise the
@@ -1502,26 +2059,44 @@ def layout(ref: str, root: Path = Path(".")) -> dict:
 
     cx0, cx1 = zs[0]["x0"], zs[0]["x1"]
     measure = max(1, cx1 - cx0)
-    out = []
-    for f in figs:
-        if f["box"] is None:
-            out.append({**f, "left_frac": 0.0, "width_frac": 1.0,
-                        "overflows": False, "side": "full"})
-            continue
-        x0, y0, x1, y1 = f["box"]
-        overflows = x0 < cx0 - 5 or x1 > cx1 + 5
+    boxes = {b["id"]: b for b in zones(ref, root)}
+
+    def place(x0: int, x1: int) -> dict:
+        """One rectangle's share of the measure."""
         # Clamped before the gutters are taken, so a box that overruns the column
         # cannot produce a negative gutter and read as hugging the opposite side.
         lo, hi = max(x0, cx0), min(x1, cx1)
         width = max(0, hi - lo)
+        return {"left_frac": round((lo - cx0) / measure, 4),
+                "width_frac": round(min(1.0, width / measure), 4),
+                "overflows": x0 < cx0 - 5 or x1 > cx1 + 5}
+
+    out = []
+    for f in figs:
+        if f["box"] is None:
+            out.append({**f, "left_frac": 0.0, "width_frac": 1.0,
+                        "overflows": False, "side": "full", "parts": []})
+            continue
+        x0, y0, x1, y1 = f["box"]
+        lo, hi = max(x0, cx0), min(x1, cx1)
+        width = max(0, hi - lo)
         gl, gr = lo - cx0, cx1 - hi
+        # `side` is the **group's**, from the union, and stays that way: a figure is
+        # one block in the flow and floats as one, whatever its parts do inside it.
         side = ("full" if (measure - width) / measure < residual
                 else "left" if gl <= gr else "right")
-        out.append({**f,
-                    "left_frac": round(gl / measure, 4),
-                    "width_frac": round(min(1.0, width / measure), 4),
-                    "overflows": overflows,
-                    "side": side})
+        # `parts` is each keyed picture's own share of the measure. **The size comes
+        # from the part and never from the union**, which is `write_crops`' rule one
+        # layer up: a bounding box over boxes a human drew separately "is a region
+        # no human drew", and `1-276`'s fig. 140 has its two boxes stacked at
+        # different widths. `write_crops` cuts per picture, so a renderer sizing
+        # every crop by the group's union scales the narrow ones up to it —
+        # measured over this store, 24 of the 32 parts in 16 multi-part groups,
+        # worst `2-085` fig. 253 at x3.95, a 304 px woodcut drawn 1202 px wide.
+        parts = [{"zone_id": z, **place(boxes[z]["hpos"],
+                                        boxes[z]["hpos"] + boxes[z]["width"])}
+                 for z in f["zone_ids"] if z in boxes]
+        out.append({**f, **place(x0, x1), "side": side, "parts": parts})
     return {"ref": ref, "column": {"x0": cx0, "x1": cx1, "measure": measure},
             "source": "zones", "figures": out}
 
@@ -1650,12 +2225,61 @@ def reconcile(root: Path = Path(".")) -> dict:
     seen_refs = {r["ref"] for r in known.values()}
     orphan += [k for k, r in sorted(known.items())
                if r["ref"] not in set(fig_refs(root))]
+
+    # The third store, and the only one of the three no person and no model wrote:
+    # the source PDFs' own image placements. `unaccounted` is the gate — a
+    # photograph the book contains and this store does not mention. `unkeyed` is a
+    # page carrying photographs with no figure ALTO at all, which is the same fault
+    # one level up and is listed separately so the fix is obvious. `line_art` is
+    # the reverse direction and **never gates**: a keyed picture the PDF did not
+    # separate out is line work the scanner left in the bitonal master, which is
+    # ordinary.
+    manifest = pdf_images(root)
+    unaccounted, unkeyed, loose = [], [], []
+    rects_total = 0
+    keyed_refs = set(fig_refs(root))
+    for ref, entry in sorted(manifest.items()):
+        n = len(entry.get("images") or [])
+        if not n:
+            continue
+        rects_total += n
+        if ref not in keyed_refs:
+            unkeyed.append(f"{ref}({n})")
+            continue
+        ink = fig_ink(ref, root)
+        if ink["state"] == "unaccounted":
+            unaccounted += [f"{ref}|{r[0]},{r[1]}" for r in ink["uncovered"]]
+        loose += [f"{ref}|{o['share']:.2f}" for o in ink["outside"]]
+
+    # The reverse direction, counted and not listed: a keyed picture no photo rect
+    # overlaps is line work the scanner left in the bitonal master. Ordinary, so it
+    # is a number rather than a worklist. (`read_blocks` directly, because `zones`
+    # the module function is shadowed here by `zones` the counter.)
+    line_art = 0
+    for ref in sorted(keyed_refs):
+        entry = manifest.get(ref) or {}
+        blocks = read_blocks(alto_for(ref, root))
+        pw, ph = _page_box(alto_for(ref, root))
+        rects, space = _rects_in(entry, pw, ph) if entry else ([], "")
+        for b in blocks:
+            if b["label"] != GRAPHIC:
+                continue
+            box = (b["hpos"], b["vpos"], b["hpos"] + b["width"],
+                   b["vpos"] + b["height"])
+            if not any(_overlaps(r, box) for r in rects):
+                line_art += 1
+
     return {
         "pages": len(fig_refs(root)),
         "graphic_zones": zones,
         "figdesc_zones": caps,
         "readings": len(known),
         "refs_in_readings": len(seen_refs),
+        "pdf_photographs": rects_total,
+        "unaccounted": unaccounted,
+        "unkeyed_photo_pages": unkeyed,
+        "line_art_pictures": line_art,
+        "loose_boxes": loose,
         "missing": missing,
         "orphan": sorted(set(orphan)),
         # A caption no picture claimed. Reported rather than gated: `missing` and

@@ -1297,38 +1297,70 @@ def write_fig_blot(ref: str, out_dir: Path, root: Path = Path("."),
     geometry in `gt/fig/` is human-reviewed and reconciled; widening it here would
     be inventing it.
 
+    **The source's own photograph rects are painted alongside the human boxes**,
+    from `data/pdf_images.json`. Two things follow, and both were previously
+    argued for rather than had:
+
+    - *No fringe is possible.* A human box a few pixels inside a photograph's true
+      extent used to leave a rim of antialiased halftone at its edge — exactly the
+      "sliver on pages like `1-167`" this docstring describes tolerating. The rect
+      is the photograph's exact extent as the scanner recorded it, so the region is
+      blank by construction rather than by care.
+    - *The depth confound disappears instead of being managed.* What is left after
+      painting is the bitonal master's two values plus white, so the result
+      converts to mode `1` losslessly and **every trainable page in the tree has
+      the same depth**. The old comment below — keep the source mode, or colour
+      depth correlates with "has a figure" — was managing a hazard that this
+      removes. The three RGB pages have no master, are `exempt`, and reach no
+      trainer; they keep their mode and link through.
+
+    The human boxes are still painted and still authoritative: 21 keyed pictures
+    are line work the scanner left in the master and have no rect at all, and every
+    caption is type and has none either. The manifest supplements the store.
+
     Returns `painted: 0` for the 580 pages with no figure ALTO. The caller links
     those instead of copying — see `zones.blot_all`.
     """
     from PIL import Image, ImageDraw
 
+    from .figures import pdf_images_for
     from .figures import zones as _zones
     ref = norm_ref(ref)
     src = root / scans / f"chukchi-{ref}.png"
     zs = _zones(ref, root)
     img = Image.open(src)
+    rects = []
+    entry = pdf_images_for(ref, root)
+    if entry.get("images") and img.mode != "RGB":
+        # Master space, which is what the rasters and the stores are in now. A page
+        # whose raster is some other size is left to the human boxes alone rather
+        # than painted from coordinates that do not describe it.
+        m = entry.get("master") or {}
+        if img.size == (m.get("w"), m.get("h")):
+            rects = [im["rect"] for im in entry["images"]]
     # The figure ALTOs record geometry in the same raster space, but the ratio is
     # taken per page and per axis anyway — no page in this corpus is a clean x2 of
     # its 150 dpi predecessor, and assuming 1.0 is the same class of error.
-    if zs:
+    if zs or rects:
         alto = _figure_alto_page(ref, root)
         sx, sy = _scale_for(alto, img.size) if alto is not None else (1.0, 1.0)
-        # The source mode is kept, never normalized to "L". The 580 figure-less
-        # pages reach the trainer as symlinks to the untouched scan, so converting
-        # here would hand `ketos segtrain` a corpus that is RGB on one page and
-        # greyscale on the next — a difference correlated with "has a figure",
-        # which is precisely the thing being blotted out.
         white = 255 if img.mode in ("L", "1") else (255,) * len(img.getbands())
         d = ImageDraw.Draw(img)
         for z in zs:
             d.rectangle([z["hpos"] * sx, z["vpos"] * sy,
                          (z["hpos"] + z["width"]) * sx,
                          (z["vpos"] + z["height"]) * sy], fill=white)
+        for r in rects:
+            d.rectangle([r[0], r[1], r[2], r[3]], fill=white)
+        # Only the master's two values are left, so this is lossless — and it is
+        # what makes the tree uniform in depth rather than merely uniform in mode.
+        if img.mode == "L" and len(img.getcolors(maxcolors=4) or [0] * 5) <= 2:
+            img = img.convert("1")
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"chukchi-{ref}.png"
     img.save(path)
     img.close()
-    return {"ref": ref, "path": str(path), "painted": len(zs)}
+    return {"ref": ref, "path": str(path), "painted": len(zs) + len(rects)}
 
 
 def _figure_alto_page(ref: str, root: Path):

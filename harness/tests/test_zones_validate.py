@@ -162,9 +162,16 @@ def test_too_little_ink_falls_back_and_says_so(tmp_path):
     im = Image.new("L", (2824, 3897), 255)
     ImageDraw.Draw(im).rectangle([1400, 1500, 1480, 1540], fill=0)
     im.save(tmp_path / "scans" / "chukchi-1-048.png")
-    m = zn.measure_columns("1-048", tmp_path, cfg_for())
+    cfg = cfg_for()
+    m = zn.measure_columns("1-048", tmp_path, cfg)
     assert m["measured"] is False and m["source"] == "fallback"
-    assert m["columns"][0]["x0"] == 500
+    # **The configured fallback, read rather than repeated.** It was 500 until the
+    # rasters moved into the master's space, where part 1's origin shifts 21 px
+    # left; the number is a property of the corpus and this test is about the
+    # refusal, not about the number. `cfg_for` binds the shipped config precisely
+    # so a value that legitimately moves does not read as a broken test.
+    assert (m["columns"][0]["x0"]
+            == cfg["columns"]["parts"]["1"]["fallback_x0"])
 
 
 def test_a_blank_page_falls_back_rather_than_raising(tmp_path):

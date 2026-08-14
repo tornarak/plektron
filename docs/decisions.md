@@ -740,3 +740,54 @@ description of what should happen, would have found the projection two rounds
 earlier. `harness/tests/test_geomap.py` now holds the box-is-a-rectangle
 property directly, which is the assertion none of the three rounds could have
 been argued past.
+
+## Part 3 was read below source resolution for twenty months
+
+`scans/` was `pdftoppm -r 300` over `pdfs/`, and nobody had read what was inside
+the PDFs. They are MRC-layered: a 1-bit JBIG2 master per page, plus separate
+embedded JPEGs for the photographs. **Every master is placed at scale 1.0 and is
+exactly 300 dpi.** The parts differ only in the arbitrary paper size each scan was
+wrapped in, and rendering the *page box* resampled a master that could have been
+copied.
+
+What that cost, per part:
+
+- **Part 1** — the master sits centred in a box 43 px wider, so the extra is white
+  padding. Harmless in itself, but the offset is *fractional*: 5.13 pt is 21.375 px,
+  so poppler resampled every pixel of every page for a shift of three-eighths of one.
+- **Part 2** — the box already was the master's size, and poppler smeared it anyway.
+  247 grey values out of a 2-value source, 550 KB where the master is 125 KB, 10.2 %
+  RMSE against it with the letterforms perfectly aligned. All of that difference is
+  fabricated edge antialiasing.
+- **Part 3** — part 2's layout jammed onto A4, so the render is **cropped, not
+  squeezed**: ~35 px off each side. Every part 3 page was segmented and OCR'd on a
+  raster missing 2.7 % of its width. Those pixels are verified blank on all 202
+  pages, so nothing was lost — but that was luck, and nothing had checked.
+
+**The doc had the number and the number was wrong.** `docs/rasters.md` said part 1
+was "295.5 dpi" and part 3 "308.4 against an A4 page box". Both came from dividing
+the master's pixel count by the *mediabox* rather than by the image's own placed
+width. It is the arithmetic that made the corpus look like three different scans
+needing a per-page ratio, when it was one uniform scan needing a per-part
+translation. A figure derived from the wrong denominator is worse than no figure: it
+had been sitting there, precise and quotable, for as long as the tree existed.
+
+The correction is `tools/extract_scans.py`, which cuts the rasters from the layers
+instead of rendering them, and `harness/migrate.py`, which translates every stored
+coordinate rather than scaling it. Two things worth keeping from how it went:
+
+**The idempotence guard could not be the dimensions.** Part 2 is 2550×3525 before
+and after. A size check cannot distinguish "correctly untouched" from "not yet
+reached", so a partial run would have looked complete — which is why there is a
+receipt at `data/_migrated.json` instead.
+
+**The integrity gate that came for free was the vacuous one.** The existing
+migration hashed `String/@CONTENT` before and after. `gt/zones/`, `gt/fig/` and
+`mz/zones/` carry no `String` at all, so that digest would have passed on 1,450 of
+the ~2,000 files it touched while checking nothing. What actually holds is a
+structural digest — ids, labels, and every box's extent — and it holds *because* the
+operation is a translation: an extent that moved would mean the code had stopped
+doing what it says. The first version of it also hashed `Page` and `PrintSpace`,
+which are supposed to change, and duly aborted all 832 pages. A gate whose first run
+fails everything is either a real finding or a wrong gate, and the way to tell is to
+name what it should be blind to *before* looking at the count.

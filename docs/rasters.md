@@ -6,37 +6,58 @@ Moved out of `CLAUDE.md` whole; headings kept verbatim so citations resolve.
 
 AMNH Digital Library PDFs (`M11Pt01–03`).
 
-**`scans/` is derived, not source.** It is `pdftoppm -r <dpi>` over `pdfs/` —
-verified pixel-identical — **then `tools/greyscale_scans.py --commit`**, so it is
-regenerable and stays out of git. The PDFs carry a **bitonal JBIG2 text master at
-~300 dpi** (part 1 2781×3866 at 295.5 dpi, part 2 2550×3525 at 300, part 3
-2550×3525 at 308.4 against an A4 page box; the covers `1-001`/`1-002` and the
-foldout `1-361` have no master and are RGB at 150). The figure *photographs* are
-separate embedded JPEGs already at 150 dpi, so nothing is recoverable there —
-only the text gains.
+**`scans/` is derived, not source.** It is **`uv run --script tools/extract_scans.py
+--commit --rasters DIR`** over `pdfs/`, so it is regenerable and stays out of git.
+The PDFs are MRC-layered: a **1-bit JBIG2 master** for each page's type, plus
+separate embedded JPEGs for the photographs. The rasters are cut from those layers
+rather than rendered from the page.
 
-**The rasters are greyscale, and the three that are not are named.** poppler
-writes RGB, but `pdfimages -list` over the three PDFs reports exactly three
-non-gray embedded images in the whole volume — `1-001`, `1-002` and `1-361`,
-the covers and part 1's appended foldout map. Every other page's source is
-`gray 1 1 jbig2`, i.e. one grey value written three times, so converting is
-lossless by arithmetic (PIL's luma weights sum to 1, so R=G=B=v gives L=v) and
-was checked per page against the ink mask besides. **829 converted, 3 kept,
-0 skipped.** 913 MB → 604 MB, and a page decodes in ~0.03 s where it took ~0.11 s.
-All three colour pages are `exempt`, so the segmenter still sees a uniform corpus.
+**Every master is placed at scale 1.0 and is exactly 300 dpi.** Measured against its
+own placement rather than the page box: 470 pages at (300.00, 300.00), 359 at
+(300.00, 300.04), and the 3 masterless RGB pages at 150. An earlier version of this
+file said part 1 was "295.5 dpi" and part 3 "308.4 against an A4 page box" — those
+divided by the mediabox and were wrong. **The scans were always uniform; only the
+page boxes the scans were wrapped in were arbitrary**, and that is the whole of what
+went wrong for twenty months:
 
-Converted **in place rather than re-rendered**, and that is the safety argument:
-`Image.convert("L")` cannot change dimensions, where a re-render that came back a
-pixel different would silently invalidate every coordinate in `gt/zones/`,
-`gt/ocr/` and `gt/fig/` — which is the cost `tools/migrate_coords.py` exists to
-record. A rebuild from `pdfs/` must run the converter afterwards or every raster
-sweep quietly goes back to costing three times what it should.
+| part | mediabox | master | placement | `pdftoppm -r 300` gave |
+|---|---|---|---|---|
+| 1 body (358 pp) | 677.7 × 935.1 | 2781 × 3866 | centred, +5.13/+3.69 pt | 2824 × 3897 — white padding |
+| 2 (268 pp) | 612 × 846 | 2550 × 3525 | (0, 0) | 2550 × 3525 — exact |
+| 3 (202 pp) | 595.27 × 841.89 (A4) | 2550 × 3525 | −8.37/−2.05 pt | 2481 × 3508 — **cropped** |
 
-Rendering at 300 dpi is **not** a clean ×2 of the old 150 dpi rasters — across the
-832 pages, **none** is exactly double, and most are a pixel short on one axis. So
-anything mapping between the two spaces must **take the ratio from the two rasters,
-per page and per axis**. Computing it as `ceil(pt/72*dpi)` fails too, on float
-error: it predicts 2782 for the covers where poppler renders 2781.
+So the parts differed only by a **translation**, and rendering resampled a master
+that could have been copied. Part 1's offset is *fractional* — 5.13 pt is 21.375 px
+— so poppler resampled every pixel of every page for a shift of three-eighths of
+one. Part 2 was at (0, 0) with the right dimensions and poppler smeared it anyway:
+247 grey values out of a 2-value source. And part 3's render **cropped ~35 px from
+each side**, so that part was segmented and OCR'd below source resolution from the
+beginning. Those 35 px are verified blank on all 202 pages; nothing was lost.
+
+**The rasters are bitonal where the page holds no photograph** — 593 of 832 — and
+8-bit `L` where it does, 236 of them. Photographs are pasted back **nearest at
+their integral 2×**, so every native JPEG sample survives as an exact block and a
+crop from the composite shows the same pixels as the embedded original.
+**484 MB → 180 MB** over the page files.
+
+**The 3 with no master are written at their own size**, not the page's. `1-001` and
+`1-002` (the covers) and `1-361` (part 1's appended foldout map) are each one RGB
+photograph of a whole leaf at 150 ppi; rendering the page at 300 doubled them for
+nothing, turning 796 KB of source into 26.5 MB of PNG and visibly costing the
+foldout. They are 1391×1933, 1391×1933 and 1833×1994 now — **the only three pages
+whose two spaces differ by a scale rather than a translation**, which is safe only
+because all three are fully exempt and carry no coordinate at all. `harness/migrate.py`
+checks that rather than assuming it, and refuses a masterless page that holds one.
+
+`tools/greyscale_scans.py` is spent: poppler's RGB output is no longer what `scans/`
+holds. `tools/migrate_coords.py` is spent too, and its successor is
+`tools/migrate_to_master.py` — whose logic lives in `harness/migrate.py` where the
+tests reach it. **The move was a translation, not a rescale**, taken as one rounded
+integer per page from `data/pdf_images.json`: 1942 files migrated, 903 already in
+the target space (part 2 and the four unmoved pages), 0 aborted, 24 coordinates
+clamped and every one of them in `mz/`. `data/_migrated.json` is the receipt, and it
+exists because part 2's dimensions are identical before and after — no size check
+can tell "correctly untouched" from "not yet reached".
 
 ## The tools/ scripts
 
@@ -44,17 +65,27 @@ error: it predicts 2782 for the covers where poppler renders 2781.
 harness is offline and deterministic over what is committed. None of it is part
 of a loop.
 
-`greyscale_scans.py` is live but **only after a re-render**: it converts `scans/`
-to greyscale, is idempotent (a page already in mode `L` is left alone), and has
-to run whenever poppler has written the tree afresh.
+`extract_scans.py` is the live one: it builds `scans/` and `data/pdf_images.json`
+from the PDFs' embedded layers. It declares `pymupdf` **inline (PEP 723)**, as
+`build_geo.py` declares shapely, and that isolation is doing real work rather than
+saving a line in `pyproject.toml` — under `uv run --script` the environment has no
+harness in it, so a script that *cannot* import the package cannot drift into being
+part of a loop. `--commit` gates the tracked manifest; `--rasters DIR` additionally
+cuts the tree, into a sibling that is swapped whole, because `scans/` must never be
+half one coordinate space and half the other.
 `build_geo.py` compiles `data/geo/` from three sources in `scratch/` and is
 `docs/edition.md`'s; `gazetteer.py` proposes identities for unlocated entities
 against a live API and derives `geo:` from the ones a human adopted, and is
 `docs/edition.md`'s too.
+`migrate_to_master.py` moves stored coordinates into the master's space. It is the
+**driver only** — the logic is `harness/migrate.py`, on `migrate_fig_bboxes.py`'s
+rule that "a migration whose correctness argument sits in a script that is run once
+and never imported is a migration nobody can check afterwards".
+`greyscale_scans.py` (poppler wrote RGB and the JBIG2 master is grey),
 `migrate_coords.py` (150→300 dpi) and `migrate_fig_bboxes.py` (which reduced
 `gt/fig/` to bounding boxes and re-keyed `data/readings.md` with it) are **spent
-one-shot migrations**, kept for the reasoning in their docstrings; re-running
-either would corrupt what it already converted, and both say so at the top.
+one-shot migrations**, kept for the reasoning in their docstrings; re-running any
+would corrupt what it already converted, and each says so at the top.
 
 The METS manifest is `harness fig mets --out DIR` now, not a script — and it
 writes only where you point it, because the one that used to sit tracked in
@@ -82,10 +113,18 @@ CLI settled on `--all` for every corpus form; the old spelling is trapped.)
     scans/fig-crops/             the figures themselves, cut out: one PNG per
                                  GraphicZone in gt/fig/, for the edition and
                                  whatever builds an epub. `harness fig crops`
-    scans/                       reported, never built here: pdftoppm over pdfs/
-                                 (symlinks outside the repo), then
-                                 tools/greyscale_scans.py --commit
+    scans/                       reported, never built here: tools/extract_scans.py
+                                 over pdfs/ (symlinks outside the repo)
     train/bogoras-seg/           reported, never built here: assemble's scratch
+
+**Two more trees under `scans/` are deliberately *not* farms**, and saying so is the
+point: `scans/w-blotted/` (`ocr blot`, pink and blue for a human to read) and
+`scans/w-blotted-edit/` (the line editor's per-session cache). Both are built on
+demand and are legitimately absent until someone asks, so registering them would
+make `views check` report a fault for a cache nobody has needed yet — and `absent`
+in that table means "should be here and is not". They went with the old raster tree
+in the master-space rebuild and neither was missed, which is the argument confirming
+itself. Anything that must survive a rebuild belongs in `farms.FARMS`; these do not.
 
 Three things this settled, each of which had been true and unnoticed:
 

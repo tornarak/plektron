@@ -38,7 +38,7 @@ let S = {
   // figure store during ordinary keying would stale every training raster.
   figTrack: false, figs: (ST.figs || []).map(f => ({...f})),
   figCur: null, figSel: -1, figHover: -1, figDrag: null, figsDirty: false,
-  figExempt: (ST.fig_exempt || []).slice(), figPending: null, capBeside: false,
+  figExempt: Object.assign({}, ST.fig_exempt || {}), figPending: null, capBeside: false,
   figResize: null, figMove: null, figGrab: null,
   hoverX: null,
 };
@@ -264,7 +264,7 @@ function figWarnings() {
       out.push({rule: 'captions-lte-figures',
                 detail: `${nc} captions to ${nf} ${nf === 1 ? 'picture'
                         : 'pictures'} — this book never sets more`,
-                exempted: S.figExempt.includes('captions-lte-figures')});
+                exempted: 'captions-lte-figures' in S.figExempt});
   }
   return out;
 }
@@ -1375,10 +1375,23 @@ window.addEventListener('keydown', async e => {
     case 'exempt': {
       if (S.figTrack) {
         const g = figWarnings().find(w => !w.exempted);
-        if (g) { S.figExempt.push(g.rule); S.figsDirty = true;
-                 say(`exempted ${g.rule}`, 'ok'); }
-        else if (S.figExempt.length) { S.figExempt = []; S.figsDirty = true;
-                                       say('figure exemptions cleared', 'ok'); }
+        if (g) {
+          /* **The reason is asked for, and no reason means no exemption.** The
+             store keeps `{rule: ruling}` and `set_rule_exempt` refuses a blank
+             one, on `zones.set_ink_exempt`'s rule that "a reason is required and
+             is the point of the file". A bare id records that somebody silenced a
+             warning and nothing about why, which a later reader cannot tell from
+             a considered judgement. Cancelling leaves the warning standing. */
+          const why = (window.prompt(`Ruling for ${g.rule} — why is this all
+right on this page?`) || '').trim();
+          if (!why) { say('not exempted: a ruling is required', 'warn'); break; }
+          S.figExempt[g.rule] = why; S.figsDirty = true;
+          say(`ruled ${g.rule}`, 'ok');
+        }
+        else if (Object.keys(S.figExempt).length) {
+          S.figExempt = {}; S.figsDirty = true;
+          say('figure exemptions cleared', 'ok');
+        }
         break;
       }
       const f = orderWarnings().find(w => !w.exempted);

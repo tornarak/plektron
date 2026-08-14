@@ -143,7 +143,7 @@ def test_an_exemption_naming_no_rule_is_an_error(tmp_path):
     reading as a considered human judgement."""
     write_scan(tmp_path, "1-191", size=(2824, 3897))
     F.save_figs("1-191", [_box(G, 400, 900, 2200, 2500)], tmp_path,
-                rules=["captions-lte-figure"])
+                rules={"captions-lte-figure": "a typo for the real rule id"})
     out = F.validate_fig_page("1-191", tmp_path, CFG)
     assert [e["rule"] for e in out["errors"]] == ["unknown-exemption"]
 

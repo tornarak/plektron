@@ -188,7 +188,13 @@ The failure modes are distinguishable and the tooling separates them:
 
 **The decode matters more than the model has.** On identical weights: blob
 vectorisation 61.3% precision, the segmental DP 80.1%, DP plus the paragraph split
-90.8%. Two of those three gains cost no training at all. Prefer `--decode dp`.
+90.8%. Two of those three gains cost no training at all. **`--decode` now defaults
+to `dp`**; it defaulted to `raw` while this paragraph said to prefer `dp`, which
+made the 30-point decode the thing you got by leaving an argument off — the hazard
+`--all` exists to prevent, in the other direction. It cost a corpus sweep before
+anyone noticed, because a `raw` file recorded nothing about its decoder and so was
+indistinguishable from a `dp` one. Both arms name themselves in
+`processingStepDescription` now, so ask a store rather than assuming it.
 
 A healthy permutation block reads `bijective: true`, `is_identity: true`, and a
 high `holds_out` — that is a correct map confirming itself, not a fault.

@@ -175,7 +175,7 @@ def test_delete_previews_before_it_commits(root):
 
 def test_delete_removes_the_file_and_every_mark(root):
     F.save_figs("1-191", EXISTING, root, split="eval",
-                rules=["captions-lte-figures"])
+                rules={"captions-lte-figures": "two captions to one plate here"})
     F.delete_figs("1-191", root, commit=True)
     assert not F.alto_for("1-191", root).exists()
     assert F.load_splits(root) == {}

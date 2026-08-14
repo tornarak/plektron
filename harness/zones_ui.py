@@ -185,6 +185,26 @@ def _uncovered(ref: str, root: Path, cfg: dict) -> list[dict]:
     return r["uncovered"]
 
 
+def _fig_photos(ref: str, root: Path) -> list[dict]:
+    """The source's photograph rects for this page, in the editor's coordinates.
+
+    Each carries `covered`, so the track can draw an unaccounted photograph
+    differently from an accounted one without re-deriving the rule the gate uses.
+    An empty list means either no photographs or a page whose stored coordinates
+    are in neither known space — `fig_ink` refuses to guess between them, and the
+    editor inherits that refusal rather than drawing rects in the wrong place.
+    """
+    ink = fg.fig_ink(ref, root)
+    if not ink["space"]:
+        return []
+    entry = fg.pdf_images_for(ref, root)
+    pw, ph = fg._page_box(fg.alto_for(ref, root))
+    rects, _ = fg._rects_in(entry, pw, ph)
+    uncovered = {tuple(r) for r in ink["uncovered"]}
+    return [{"x0": r[0], "y0": r[1], "x1": r[2], "y1": r[3],
+             "covered": tuple(r) not in uncovered} for r in rects]
+
+
 def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
     """The figure track's half of one page's state.
 
@@ -197,6 +217,12 @@ def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
     proposal is an explicit act here as well.
 
     Rectangles pass through untouched in both directions. No snap, no column.
+
+    `fig_photos` is the source PDF's own image placements — a witness neither a
+    person nor a model produced — so the track can draw a photograph the keying has
+    not accounted for, the way the zone editor draws a band of uncovered ink. Sent
+    for every page, not only faulty ones: seeing the rects agree with the boxes is
+    what makes the one that does not legible at a glance.
     """
     gt = fg.zones(ref, root)
     proposal = ""
@@ -207,7 +233,7 @@ def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
              "x0": b["hpos"], "y0": b["vpos"],
              "x1": b["hpos"] + b["width"], "y1": b["vpos"] + b["height"]}
             for b in gt]
-    exempt = fg.load_rule_exempt(root).get(ref, [])
+    exempt = fg.load_rule_exempt(root).get(ref, {})
     return {
         "figs": figs,
         "fig_proposal": proposal,
@@ -217,6 +243,7 @@ def _fig_state(ref: str, root: Path, cfg: dict) -> dict:
         "fig_ids": "" if proposal else "gt",
         "fig_exempt": exempt,
         "fig_warnings": zc.fig_warnings(cfg, gt, exempt),
+        "fig_photos": _fig_photos(ref, root),
         "fig_present": {
             "gt": len(fg.zones(ref, root)) or None,
             "mz": (len(fg.zones(ref, root, fg.MZFIGDIR))
@@ -436,7 +463,7 @@ def _save_figs(payload: dict, ref: str, root: Path, cfg: dict) -> dict:
     # None where the key was absent, so `save_figs` leaves the rule exemptions
     # standing rather than clearing them — `set_rule_exempt` pops and rewrites
     # with no backup, like the two above.
-    rules = (payload["fig_exempt"] or []) if "fig_exempt" in payload else None
+    rules = (payload["fig_exempt"] or {}) if "fig_exempt" in payload else None
     if not blocks:
         # The store's refusal is right and the editor must not merely relay it:
         # a human who deleted the last box has an intent, and `fig delete` is it.

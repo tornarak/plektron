@@ -51,13 +51,19 @@ ITIN_HELP = ("a work-list to walk instead of scan order: an .lst file "
 MODEL_HELP = "the segmentation model (default models/bogoras-seg/zones-seg.safetensors)"
 DEVICE_HELP = "torch device — 'auto' takes cuda:0 when it is available, else cpu"
 DECODE_HELP = (
-    "how a prediction becomes zones. 'raw' vectorises each class heatmap "
-    "blob-wise, as kraken does. 'dp' decodes the page as a chain of bands by "
-    "exact dynamic programming, which makes overlaps and sub-minimum slivers "
-    "unrepresentable and merges a fragmented band — the mechanical rules built "
-    "in rather than checked afterwards. The order rules are deliberately left "
-    "out: they are warnings, and a decoder that could not break them would make "
-    "them unfalsifiable")
+    "how a prediction becomes zones [dp]. 'dp' decodes the page as a chain of "
+    "bands by exact dynamic programming, which makes overlaps and sub-minimum "
+    "slivers unrepresentable and merges a fragmented band — the mechanical rules "
+    "built in rather than checked afterwards — and then applies the paragraph "
+    "split. 'raw' vectorises each class heatmap blob-wise, as kraken does, and is "
+    "kept for measuring the model apart from the decoder. The order rules are "
+    "deliberately left out of 'dp': they are warnings, and a decoder that could "
+    "not break them would make them unfalsifiable. "
+    "**The default is 'dp' because the decode matters more than the model has** — "
+    "on identical weights, blob vectorisation scores 61.3% precision, the DP "
+    "80.1%, and the DP plus the paragraph split 90.8%. It was 'raw', and that made "
+    "the 30-point decode the thing you got by leaving an argument off, which is "
+    "the hazard `--all` exists to prevent one line further up this file")
 
 
 def register(cli):
@@ -135,7 +141,7 @@ def register(cli):
                         "the mz file's sha256 is the store's only witness to "
                         "which model wrote it")
     opt(p, "--model", default=None, help=MODEL_HELP)
-    opt(p, "--decode", type=click.Choice(("raw", "dp")), default="raw",
+    opt(p, "--decode", type=click.Choice(("raw", "dp")), default="dp",
                    help=DECODE_HELP)
     opt(p, "--device", default="auto", help=DEVICE_HELP)
 
@@ -149,7 +155,7 @@ def register(cli):
     opt(p, "--model", default=None,
                    help=f"{MODEL_HELP}. Given, the checkpoint is segmented in "
                         "memory rather than read out of mz/zones/")
-    opt(p, "--decode", type=click.Choice(("raw", "dp")), default="raw",
+    opt(p, "--decode", type=click.Choice(("raw", "dp")), default="dp",
                    help=DECODE_HELP)
     opt(p, "--device", default="auto", help=DEVICE_HELP)
 

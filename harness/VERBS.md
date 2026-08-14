@@ -985,12 +985,13 @@ opinion of which pages are held out.
 **Writes** `mz/zones/` (derived) — never `gt/`.
 **Exit** 1 if any swept page lacked a blot. A single ref exits 0.
 **Note** an exempt mark does not stop a named ref — naming a page is the request — but an existing prediction does, unless `--force`: the mz file's sha256 is the store's only witness to which model wrote it. **Several named refs go through the sweep** so the model loads once, carrying that override with them; without it a named plate would be dropped in silence by the command that named it. Under `--all` the exempt ruling holds, which is what it is for.
+**Note** **`--decode` defaults to `dp`, and used to default to `raw`.** On identical weights the three decodes score 61.3%, 80.1% and 90.8% precision, so leaving the argument off was worth more than any retrain has been — in the wrong direction. It cost a corpus sweep: a re-prediction taken with the old default replaced a dp-decoded store with a raw-decoded one, and the ~20% fall in zone count that followed was read as a property of the rasters it had just been run against. Each arm now names its decoder in the file's `processingStepDescription`, so a store can be asked rather than assumed.
 ```
 --all            every page with a blotted raster
 --force          re-run over pages that already have a prediction [off]
 --itinerary LST  predict over a work-list [every page with a blot, minus exempt]
 --model PATH     the segmentation model [models/bogoras-seg/zones-seg.safetensors]
---decode {raw,dp} blob vectorisation, or the segmental DP over the page [raw]
+--decode {raw,dp} the segmental DP over the page plus the paragraph split, or blob vectorisation [dp]
 --device DEV     torch device [auto]
 --root --json --toon --pager
 ```
@@ -1003,7 +1004,7 @@ opinion of which pages are held out.
 **Note** **read the `independence` row before the recall figure above it.** A held-out set half of which is the model's own segmentation with the edges pulled straight measures how well the model agrees with itself, and the number cannot say so. `_independent` has been the rule `remark-eval` selects on since the set was drawn and nothing reported it afterwards; as of 2026-08-04 the frozen eval set is **64 independent of 138** (77 `geometry only`, 4 `identical`), i.e. the quota was filled past the independent pool. `no_prediction` reads 0 without `--model`, since the scored set is then the intersection of the two stores; with `--model` every keyed page is a candidate and the column is live.
 ```
 --model PATH     segment this checkpoint in memory instead of reading mz/zones/ [read mz/]
---decode {raw,dp} [raw]
+--decode {raw,dp} [dp]
 --device DEV     torch device [auto]
 --root --json --toon --pager
 ```
@@ -1557,10 +1558,11 @@ single store can answer it.
 ```
 
 ### corpus figures
-**Does** reconciles `gt/fig/` zone geometry against `data/readings.md` captions, in both directions.
-**Reads** `gt/fig/`, `data/readings.md`. **Not `data/loi.json`**, which this line claimed for as long as the entry existed: `figures.reconcile` has never opened it, and the per-entry List of Illustrations check `docs/apparatus.md` describes is a hand check living in no code. Building it waits on chapter assembly — an LoI entry places a figure by *folio*, which is a question about the assembled book — and `docs/open-questions.md` carries the reasoning and the measured state.
+**Does** reconciles `gt/fig/` zone geometry against `data/readings.md` captions in both directions, and against the source PDFs' own photograph placements in both directions.
+**Reads** `gt/fig/`, `data/readings.md`, `data/pdf_images.json`. **Not `data/loi.json`**, which this line claimed for as long as the entry existed: `figures.reconcile` has never opened it, and the per-entry List of Illustrations check `docs/apparatus.md` describes is a hand check living in no code. Building it waits on chapter assembly — an LoI entry places a figure by *folio*, which is a question about the assembled book — and `docs/open-questions.md` carries the reasoning and the measured state.
 **Writes** —
 **Exit** 1 if `missing` or `orphan` is non-empty. The counts alone never decide it: 250 pages was once the expected total *and* wrong in two compensating directions at once.
+**Note** **the PDF section is a third store, and the only one no person and no model wrote.** `unaccounted` names a photograph the scanner separated out that no keyed picture overlaps; `unkeyed_photo_pages` is the same fault one level up, a page carrying photographs with no figure ALTO at all. Both are 0 today over 371 photographs, which is the completeness of the figure keying stated against evidence rather than against a count. `line_art_pictures` is the reverse direction — 21 keyed pictures the PDF never separated out, because the scanner left them in the bitonal master — and **never gates**: line work in the type layer is ordinary. `loose_boxes` reports rects lying well outside their boxes and never gates either; see `fig check`'s `picture-outside-boxes`.
 ```
 --root --json --toon --pager
 ```
@@ -1617,6 +1619,39 @@ PP-NNN...     which pages; several may be given
 **Note** **the counterpart to the store's refusal of an empty page.** Absence of a file is how this store records "no figures here" — read that way by `zones blot`, `ocr gaps` and the reader dispatch alike — so an empty ALTO would assert the opposite of what it means, and a page whose last box was deleted has no other way to say so.
 **Note** **it does not touch `data/readings.md`.** The captions that named the deleted blocks become orphans, and that is the intended outcome: a geometry withdrawal cascading silently into hand-read text would be far worse than a loud reconciliation failure. The row counts the captions it orphans and `harness corpus figures` is what names them.
 **Note** no `--all`, for `zones delete`'s reason and one more: a corpus form would strand all 395 hand-read captions in one keystroke.
+
+### fig extend [PP-NNN ...]
+**Does** grows keyed pictures to cover the photograph the source PDF separated out, so nothing is left of a photo outside the box that describes it.
+**Reads** `gt/fig/`, `data/pdf_images.json`.
+**Writes** with `--commit` **and** `--max-growth`: `gt/fig/chukchi-PP-NNN.xml` through `save_figs`, keeping the `.xml.prev` and appending to `gt/fig/_journal.jsonl`. Without both, nothing.
+**Exit** always 0, except 2 when `--commit` is given with no `--max-growth`.
+**Note** **union only, never intersection.** A box that stops inside its photograph leaves an antialiased rim the blot then paints around; a box *larger* than its photograph is left exactly as it is, because some figures carry line work outside the JPEG — rules, lettering, a plate border, all living in the bitonal master — and contracting onto the rect would uncover them. 85 of this corpus's 371 photographs sit inside a box already, which is that rule earning itself 85 times.
+**Note** **1:1 correspondences only, and that is the scope of the verb rather than a stage of it.** The photograph must overlap exactly one picture and that picture be overlapped by exactly one photograph. 14 figures here are one photograph spanning several keyed boxes — a figure the book letters *a, b, c* under one caption — and there is no correct mechanical answer for them: unioning each part with the whole rect makes them duplicates and destroys the grouping `figure_boxes` folds on, while apportioning the rect between parts invents boundaries the source does not draw. They report as `out_of_scope` and stay there; the editor is the remedy.
+**Note** **`--max-growth` has no default, and `--commit` without it is a usage error.** The ceiling is a judgement about how far a mechanical rule may move a rectangle a person drew, and a default would make that judgement silently and then let it read as the operator's. A report run prints what every box would gain and the p50/p90/max of the distribution, so the number is chosen from the evidence. Measured over the 272 that move: p50 +0.59 %, p90 +1.74 %, max +9.81 %.
+**Note** **refuses any page whose growth would change which caption goes with which picture.** `_gap` pairs a picture to a caption by distance, so growing a picture downward moves it toward one; the growth is far below any plausible gap, but that is a prediction and the diff is a fact. `figures.paired` is recomputed and the page is restored if it moved.
+```
+PP-NNN...        which pages; several may be given
+--all            every page with a photograph in the manifest
+--max-growth PCT largest area increase allowed on any one picture; required to commit
+--commit         write gt/fig/; without it, report what would grow and by how much
+--root --json --toon --pager
+```
+
+### fig propose [PP-NNN ...]
+**Does** writes `mz/fig/` proposals from the source PDF's own embedded-image placements.
+**Reads** `data/pdf_images.json`.
+**Writes** `mz/fig/chukchi-PP-NNN.xml` (derived, ignored). Never `gt/fig/`.
+**Exit** always 0.
+**Note** **`GraphicZone` only.** The PDF layer says where a *picture* is and says nothing whatever about captions, so minting a `GraphicZone-FigDesc` here would author a claim the source does not make — the one thing a proposal must not do, since what reaches `gt/fig/` is painted into the rasters the zone segmenter trains on.
+**Note** **not the segmenter, and not a better one.** `fig predict` writes this store from a model; this writes it from the scanner's own MRC segmentation, the decision taken when the book was digitised about which pixels were photograph and which were type. A different kind of witness, and its processing step names `data/pdf_images.json` rather than a model so the two are never confused.
+**Note** **on this book it is correctly invisible.** All 371 photographs sit on pages `gt/fig/` already covers, and the editor shows `mz/fig/` only where `gt/fig/` is absent, so nothing here surfaces. It is the first pass on a book nobody has keyed, and here it is the input to `fig extend`.
+**Note** **writes master-space coordinates** — the manifest's space and the one the rasters are moving to. Until `scans/` is rebuilt that is not the space `gt/fig/` is in, so run this after the rebuild, not before.
+```
+PP-NNN...     which pages; several may be given
+--all         every page with a photograph in the manifest
+--force       overwrite an existing mz/fig/ page
+--root --json --toon --pager
+```
 
 ### fig crops [PP-NNN ...]
 **Does** cuts every declared picture out of its raster — one PNG per `GraphicZone`, named `chukchi-PP-NNN-KKK.png` after the zone's own id suffix.

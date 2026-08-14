@@ -71,10 +71,10 @@ scope and **must not be merged** — `test_lookalike_scope.py` holds them apart.
 
 # Source rasters
 
-**`scans/` is derived, not source** — `pdftoppm` over `pdfs/`, then
-`tools/greyscale_scans.py --commit`, and a rebuild that skips the converter makes
-every raster sweep cost three times what it should. `docs/rasters.md` has the
-master's geometry, the conversion's safety argument and the dpi mapping rule.
+**`scans/` is derived, not source** — `tools/extract_scans.py` **cuts** it from the
+PDFs' own layers, a bitonal master per page plus its photographs, never rendered.
+`docs/rasters.md` has the geometry, the coordinate migration, and what a rebuild
+must swap whole.
 
 **Page refs are `PP-NNN`** — part, and scan index within that part (`1-048`) —
 everywhere: filenames, CLI, commit messages. NNN is a *scan
@@ -89,7 +89,7 @@ only where a transcribed page recorded one, and propagates via the seam ledger
 
 Layout, all at the repo root:
 
-    scans/  the 832 rasters, 300 dpi greyscale. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
+    scans/  the 832 rasters, 300 dpi, bitonal but for the 236 with a photograph. Derived; not in git. The farms over it (w-figs/, w-ocr/, w-figs-blotted/,
             fig-crops/) are derived too and point into it: a clone gets dangling links.
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
             pictures and their captions; no lines), zones/ (the segmentation),

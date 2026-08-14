@@ -166,6 +166,47 @@ def test_a_box_overrunning_the_column_is_clamped_and_flagged(tmp_path):
     assert f["side"] == "full"
 
 
+def test_each_picture_of_a_group_keeps_its_own_width(tmp_path):
+    """Written from `2-085`'s fig. 253: a 304 px part beside a 1002 px one under a
+    single caption.
+
+    `figure_boxes` folds them into one group whose `box` is their union, and
+    `write_crops` cuts one image per box — so a renderer taking its size from the
+    group draws the narrow part at the union's width. Measured over this store that
+    is 24 of the 32 parts in 16 multi-part groups, worst x3.95 here. The union is
+    still the group's own `width_frac`, because the figure floats as one block; it
+    is just not any part's size.
+    """
+    from harness.figures import layout
+    _fig_alto(tmp_path, "1-085", [
+        ("fig_1-085_001", "GraphicZone", 500, 600, 304, 400),
+        ("fig_1-085_002", "GraphicZone", 900, 600, 1002, 400),
+        ("fig_1-085_003", "GraphicZone-FigDesc", 500, 1100, 1402, 80)])
+    _zones_alto(tmp_path, "1-085", 400, 2178)
+    _readings(tmp_path, {"1-085|003": "Fig. 253. — a, b."})
+
+    f = layout("1-085", tmp_path)["figures"][0]
+    parts = {p["zone_id"]: p["width_frac"] for p in f["parts"]}
+    assert len(parts) == 2
+    assert parts["fig_1-085_001"] < parts["fig_1-085_002"] < f["width_frac"]
+    # The narrow part is not drawn at the group's width, which is the whole point.
+    assert round(f["width_frac"] / parts["fig_1-085_001"], 2) > 3.0
+
+
+def test_a_single_picture_figure_has_one_part_matching_the_group(tmp_path):
+    """The ordinary case must not have moved: 382 of 414 pictures stand alone, and
+    for them the group's box *is* the part's box."""
+    from harness.figures import layout
+    _fig_alto(tmp_path, "1-086", [
+        ("fig_1-086_001", "GraphicZone", 836, 600, 900, 400),
+        ("fig_1-086_002", "GraphicZone-FigDesc", 836, 1020, 900, 80)])
+    _zones_alto(tmp_path, "1-086", 836, 2614)
+    _readings(tmp_path, {"1-086|002": "Fig. 87. — A drum."})
+
+    f = layout("1-086", tmp_path)["figures"][0]
+    assert [p["width_frac"] for p in f["parts"]] == [f["width_frac"]]
+
+
 # -- the match ----------------------------------------------------------------
 
 def _fig(n, key="001"):

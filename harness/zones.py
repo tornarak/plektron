@@ -2203,7 +2203,14 @@ def predict(ref: str, root: Path = Path("."), net=None, sha: str = "",
     step = ProcessingStep(
         id="harness-zones-predict",
         category="processing",
-        description="region segmentation, harness zones predict",
+        # **Names its decoder, as the dp path already did.** Only one of the two
+        # said which it was, so a `raw` file was silent and a silent file is
+        # indistinguishable from a dp one to anything that does not already know.
+        # That asymmetry cost a corpus-wide sweep: a re-prediction taken with the
+        # default decoder replaced a dp-decoded store, and the ~20% fall in zone
+        # count that followed was read as a property of the rasters it had just
+        # been run against. Both arms name themselves now.
+        description="region segmentation, harness zones predict --decode raw",
         settings={"model": str(model_path), "sha256": sha, "device": device,
                   "input": f"{BLOTDIR}/chukchi-{ref}.png"})
     xml = serialization.serialize(seg, image_size=size, template="alto",

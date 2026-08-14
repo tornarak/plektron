@@ -16,7 +16,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 
 | path | what | written by |
 |---|---|---|
-| `scans/` | 832 rasters at 300 dpi. **Derived** from `pdfs/`, not in git | `pdftoppm` |
+| `scans/` | 832 rasters at 300 dpi, bitonal where the page has no photograph. **Derived** from `pdfs/`, not in git | `tools/extract_scans.py` |
 | `ocr/` | the **read view** over both OCR stores — symlinks, the human file always winning. Derived, ignored; nothing rebuilds it automatically, so `ocr pages --show-store` reports what each link *actually* reaches | `ocr link`, and `ocr predict` for the page it wrote |
 | `gt/ocr/` | human ground truth — the pages a reader has been through and an adjudicator has signed | `ocr restore --commit` |
 | `gt/lines/` | the **corrections overlay**: boxes a human drew over ink the segmenter left unboxed, per page, in raster coordinates, `+ _ink_exempt.json`. Folded into every page's lines by `lines.page_lines`, so a correction is reachable on the pages that have no ground truth at all | `ocr edit` (geometry), `ocr restore --commit` (text) |
@@ -30,6 +30,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
 | `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
 | `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
+| `data/pdf_images.json` | the source PDFs' own embedded-image geometry: each page's master, the photographs on it, and the shift from the legacy render space. **Derived but tracked**, `data/geo/`'s split and for its reason. The one witness to a figure's place that no person and no model produced | `tools/extract_scans.py --commit` |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
 | `scans/w-figs-blotted/` | training rasters: figures painted **white**. Derived, ignored; the 580 figure-less pages are symlinks | `zones blot`, `views build w-figs-blotted` |
 | `scans/w-figs/` | the raster of every page carrying a `gt/fig/` ALTO — a selection, not a view. Derived, ignored | `views build w-figs` |
@@ -753,6 +754,21 @@ aborts the whole write, on `tei expand`'s rule one stage earlier.
 and its claim markers live beside the directories they deal out, so **no caller may
 glob `review/*` and assume a ref**. Five did, and three survived only by filtering
 on `proposal.json` existing.
+
+**`migrate.py`** — moving every stored coordinate from the legacy `pdftoppm`
+render's space into the extracted master's. A **translation**, taken as one rounded
+integer per page from `data/pdf_images.json`, and that is what makes it checkable:
+extents do not move, so a width that changed means the operation was not the one
+this module claims. Two gates, because the obvious one is vacuous here —
+`content_digest` hashes `String/@CONTENT`, which `gt/zones/`, `gt/fig/` and
+`mz/zones/` have none of, so a **structural** digest carries them: the block-id set,
+the label multiset, and every box's extent. Ids are never re-minted (395 captions
+key on a `gt/fig/` id, and a `gt/lines/` correction id encodes the y it was made
+at). `data/_migrated.json` is the receipt, and it exists because **part 2 does not
+move** — 2550×3525 before and after, so no size check can tell "correctly untouched"
+from "not yet reached". The driver is `tools/migrate_to_master.py`, on
+`migrate_fig_bboxes.py`'s rule that a migration argued for only inside a script
+nobody imports is a migration nobody can check.
 
 **`dispatch.py`** — a dispatched pass's fan-out: `queue` validates a batch and
 writes its queue file, `claim` takes the next ref off it with `O_CREAT|O_EXCL`,

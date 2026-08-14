@@ -125,6 +125,41 @@ def register(cli):
     opt(p, "--model", metavar="M", default=None, help="model path [the installed one]")
     opt(p, "--device", metavar="D", default="auto", help="torch device [auto]")
 
+    p = action(g, "extend", run_extend, section="The store",
+               help="grow keyed pictures to cover the photograph the source PDF "
+               "separated out, so the blot leaves no antialiased rim. UNION "
+               "ONLY: a box already larger than its photograph is left alone, "
+               "because some figures carry line work outside the JPEG that "
+               "contracting would uncover. Only a clean 1:1 pair is touched — a "
+               "photograph spanning several keyed parts of one lettered figure "
+               "is out of scope and stays that way. Refuses any page where the "
+               "growth would change which caption goes with which picture")
+    _refs(p, "every page with a photograph in the manifest")
+    opt(p, "--max-growth", type=float, default=None, metavar="PCT",
+        help="largest area increase, in percent, this run may apply to any one "
+             "picture. REQUIRED with --commit and has no default: a report run "
+             "prints what every box would gain, and the ceiling is picked from "
+             "that. A box that would grow more is refused and named")
+    opt(p, "--commit", is_flag=True,
+        help="write gt/fig/; without it, report what would grow and by how much")
+
+    p = action(g, "propose", run_propose, section="The store",
+               help="write mz/fig/ proposals from the source PDF's own embedded "
+               "image placements, via data/pdf_images.json. GraphicZone only: "
+               "the PDF says where a picture is and nothing at all about "
+               "captions. Not the segmenter — a different kind of witness, the "
+               "scanner's own decision about which pixels were photograph. On "
+               "THIS book it is correctly invisible, since every photograph is "
+               "on a page gt/fig/ already covers and gt wins in the editor; it "
+               "is the first pass on a book nobody has keyed yet. Writes "
+               "master-space coordinates, so run it after the raster rebuild "
+               "and not before")
+    _refs(p, "every page with a photograph in the manifest")
+    opt(p, "--force", is_flag=True,
+        help="overwrite an existing mz/fig/ page. Required because that file's "
+             "ProcessingStep is the only witness to whether the segmenter or "
+             "the PDF wrote it")
+
     p = action(g, "score", run_score, section="The segmenter", pageable=False,
                help="compare mz/fig/ against gt/fig/, per split and per class, "
                "never blended. Pictures and captions are scored apart because "
@@ -242,6 +277,47 @@ def run_predict(a) -> int:
         for p in sorted((a.root / "scans").glob("chukchi-*.png"))]
     out(a, F.predict(refs, a.root, model_path=a.model, device=a.device,
                      force=a.force))
+    return 0
+
+
+def run_extend(a) -> int:
+    if a.commit and a.max_growth is None:
+        # Not a default, deliberately. The ceiling is a judgement about how far a
+        # mechanical rule may move a rectangle a person drew, and a default would
+        # make that judgement on their behalf and then look like their decision.
+        raise click.UsageError(
+            "--commit needs --max-growth PCT: the largest area increase this run "
+            "may apply to any one picture. Run without --commit first — it prints "
+            "what every box would gain, so the ceiling comes from the evidence.")
+    frac = None if a.max_growth is None else a.max_growth / 100.0
+    rows = F.extend_all(page_refs(a) or None, a.root, max_growth=frac,
+                        commit=a.commit)
+    pcts = sorted(g["pct"] for r in rows for g in r["growth"])
+    summary = {"pages": len(rows),
+               "would_grow": sum(len(r["growth"]) for r in rows),
+               "grew": sum(r["grew"] for r in rows),
+               "over_margin": sum(r["over"] for r in rows),
+               "out_of_scope": sum(r["out_of_scope"] for r in rows),
+               "wrote": sum(1 for r in rows if r["wrote"])}
+    if pcts:
+        # The distribution, so a ceiling can be picked from it rather than guessed.
+        summary |= {"growth_p50": f"{pcts[len(pcts) // 2]:.2f}%",
+                    "growth_p90": f"{pcts[int(len(pcts) * 0.9)]:.2f}%",
+                    "growth_max": f"{pcts[-1]:.2f}%"}
+    out(a, summary)
+    if rows:
+        out(a, [{"ref": r["ref"], "grew": r["grew"], "over": r["over"],
+                 "out_of_scope": r["out_of_scope"], "wrote": r["wrote"],
+                 "growth": " ".join(f"{g['pct']:.2f}%" for g in r["growth"]),
+                 "note": r["note"]} for r in rows], "per page", heading=True)
+    if not a.commit:
+        out(a, {"report only": "--commit --max-growth PCT writes gt/fig/"})
+    return 0
+
+
+def run_propose(a) -> int:
+    refs = page_refs(a) or sorted(F.pdf_images(a.root))
+    out(a, F.propose_from_pdf(refs, a.root, force=a.force))
     return 0
 
 

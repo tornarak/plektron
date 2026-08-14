@@ -560,6 +560,24 @@ without the stake. What makes it safe is the other half — the dictionary is
 re-derived from the store on every load, so deleting an entry starts its token
 missing again on the same run.
 
+### A figure's parts keep their own widths
+
+`figures.layout` gives each figure its placement against the text column, and it
+used to give one width to the whole figure. That is wrong wherever the book letters
+a figure *a, b, c*: the store spells it as several boxes under one caption,
+`write_crops` cuts one image per box — deliberately, since "a bounding box over
+boxes a human drew separately is a region no human drew" — and a renderer stacking
+those images under the group's single width scales every one of them to the union.
+
+Measured over this store: **16 multi-part groups, 32 parts, 24 of which would be
+stretched**, worst `2-085`'s fig. 253 at **×3.95** — a 304 px woodcut drawn 1202 px
+wide. So the sizing moved down one level and the grouping stayed where it was.
+A figure carries the group's identity and **one `side`**, because it is one block in
+the flow and floats as one; each part carries its own `left_frac`, `width_frac` and
+`overflows`, taken from its own box. The union survives for ordering and for the
+float decision, and is not a size. The crop and the space it is drawn in now come
+from the same rectangle, which is the property that was missing.
+
 ## The reading view
 
 `harness edition serve` (port 8734). Committed `tei/` only: `mz/tei/` is a draft
