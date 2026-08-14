@@ -1,1 +1,6 @@
-{}
+{
+  "_about": "Figure-track warnings a human has ruled on, per page, each with the reason. An exempted rule STILL REPORTS, flagged and carrying its note — a warning that vanished when excused would leave no way to notice the excuse had outlived the page it was written for. An entry with an empty note is an exemption nobody wrote a reason for, and `fig check` says so.",
+  "1-287": {
+    "picture-outside-boxes": "The scanner put the caption in the photo layer: the rect runs to x=2190 across the rotated caption at 2098..2206, so it is not the picture's extent. Growing the box onto it would pull the caption inside the picture. Reviewed against the scan; the keying is right and the rect is not."
+  }
+}

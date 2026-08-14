@@ -11,26 +11,26 @@
     <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="1452" VPOS="818" WIDTH="666" HEIGHT="566" ID="fig_1-277_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="1431" VPOS="801" WIDTH="666" HEIGHT="573" ID="fig_1-277_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="1452 818 2118 818 2118 1384 1452 1384"/>
+            <Polygon POINTS="1431 801 2097 801 2097 1374 1431 1374"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1430" VPOS="1402" WIDTH="722" HEIGHT="138" ID="fig_1-277_002" TAGREFS="BT2">
+        <TextBlock HPOS="1409" VPOS="1387" WIDTH="722" HEIGHT="138" ID="fig_1-277_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="1430 1402 2152 1402 2152 1540 1430 1540"/>
+            <Polygon POINTS="1409 1387 2131 1387 2131 1525 1409 1525"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1736" VPOS="1774" WIDTH="386" HEIGHT="1127" ID="fig_1-277_003" TAGREFS="BT1">
+        <TextBlock HPOS="1711" VPOS="1756" WIDTH="390" HEIGHT="1130" ID="fig_1-277_003" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="1736 1774 2122 1774 2122 2901 1736 2901"/>
+            <Polygon POINTS="1711 1756 2101 1756 2101 2886 1711 2886"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1700" VPOS="2903" WIDTH="468" HEIGHT="126" ID="fig_1-277_004" TAGREFS="BT2">
+        <TextBlock HPOS="1679" VPOS="2888" WIDTH="468" HEIGHT="126" ID="fig_1-277_004" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="1700 2903 2168 2903 2168 3029 1700 3029"/>
+            <Polygon POINTS="1679 2888 2147 2888 2147 3014 1679 3014"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

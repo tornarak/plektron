@@ -11,16 +11,16 @@
     <OtherTag ID="BT2" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="572" VPOS="656" WIDTH="1778" HEIGHT="90" ID="mz_1-210_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="551" VPOS="641" WIDTH="1778" HEIGHT="90" ID="mz_1-210_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="572 656 2350 656 2350 746 572 746"/>
+            <Polygon POINTS="551 641 2329 641 2329 731 551 731"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="572" VPOS="771" WIDTH="1778" HEIGHT="1048" ID="mz_1-210_002" TAGREFS="BT2">
+        <TextBlock HPOS="551" VPOS="756" WIDTH="1778" HEIGHT="1048" ID="mz_1-210_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="572 771 2350 771 2350 1819 572 1819"/>
+            <Polygon POINTS="551 756 2329 756 2329 1804 551 1804"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

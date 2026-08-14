@@ -31,200 +31,200 @@
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
-        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
-            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-                <TextBlock ID="mz_1-356_r1" HPOS="621" VPOS="615" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
+        <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+                <TextBlock ID="mz_1-356_r1" HPOS="600" VPOS="600" WIDTH="1778" HEIGHT="95" TAGREFS="TYPE_3">
 <Shape>
-                        <Polygon POINTS="621 615 2399 615 2399 710 621 710"/>
+                        <Polygon POINTS="600 600 2378 600 2378 695 600 695"/>
                     </Shape>
-                    <TextLine ID="mz_1-356_l1" HPOS="1206" VPOS="634" WIDTH="617" HEIGHT="54" BASELINE="1206 666 1823 666" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l1" HPOS="1185" VPOS="619" WIDTH="617" HEIGHT="54" BASELINE="1185 651 1802 651" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="1814 634 1212 634 1206 640 1206 666 1206 688 1823 688 1823 666 1823 647 1814 634"/>
+                            <Polygon POINTS="1793 619 1191 619 1185 625 1185 651 1185 673 1802 673 1802 651 1802 632 1793 619"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l2" HPOS="636" VPOS="643" WIDTH="100" HEIGHT="58" BASELINE="636 675 736 675" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l2" HPOS="615" VPOS="628" WIDTH="100" HEIGHT="58" BASELINE="615 660 715 660" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="636 675 636 688 664 701 667 701 669 701 736 688 736 675 736 643 636 643 636 675"/>
+                            <Polygon POINTS="615 660 615 673 643 686 646 686 648 686 715 673 715 660 715 628 615 628 615 660"/>
                         </Shape>
                         <String CONTENT="274"/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-356_r2" HPOS="621" VPOS="727" WIDTH="1778" HEIGHT="304" TAGREFS="TYPE_1">
+                <TextBlock ID="mz_1-356_r2" HPOS="600" VPOS="712" WIDTH="1778" HEIGHT="304" TAGREFS="TYPE_1">
 <Shape>
-                        <Polygon POINTS="621 727 2399 727 2399 1031 621 1031"/>
+                        <Polygon POINTS="600 712 2378 712 2378 1016 600 1016"/>
                     </Shape>
-                    <TextLine ID="mz_1-356_l3" HPOS="619" VPOS="731" WIDTH="1782" HEIGHT="70" BASELINE="621 777 2401 772" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l3" HPOS="598" VPOS="716" WIDTH="1782" HEIGHT="70" BASELINE="600 762 2380 757" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="621 777 621 790 1048 790 1065 801 1067 801 1069 801 1071 801 1074 801 1110 790 1141 801 1143 801 1145 801 1448 790 1502 801 1505 801 1507 801 1559 788 1593 798 1596 798 1598 798 1702 788 1723 798 1726 798 1728 801 1821 801 1821 798 1823 798 1825 798 1838 788 1851 798 1853 798 1855 798 1858 798 1927 788 1953 798 1955 798 1957 801 2068 801 2068 798 2070 798 2072 798 2085 788 2122 798 2124 798 2126 801 2317 801 2317 798 2319 798 2321 798 2334 788 2377 798 2380 798 2382 798 2384 798 2386 798 2401 785 2401 772 2395 738 1762 742 1730 731 1728 731 1726 731 1723 731 1700 742 1626 731 1624 731 1416 744 1399 733 1396 733 1394 733 1286 733 1284 733 1201 744 1154 733 1152 733 1149 733 1147 733 1123 744 1095 733 1093 733 1091 733 1026 744 900 733 898 733 896 733 894 733 877 744 777 733 775 733 619 746 621 777"/>
+                            <Polygon POINTS="600 762 600 775 1027 775 1044 786 1046 786 1048 786 1050 786 1053 786 1089 775 1120 786 1122 786 1124 786 1427 775 1481 786 1484 786 1486 786 1538 773 1572 783 1575 783 1577 783 1681 773 1702 783 1705 783 1707 786 1800 786 1800 783 1802 783 1804 783 1817 773 1830 783 1832 783 1834 783 1837 783 1906 773 1932 783 1934 783 1936 786 2047 786 2047 783 2049 783 2051 783 2064 773 2101 783 2103 783 2105 786 2296 786 2296 783 2298 783 2300 783 2313 773 2356 783 2359 783 2361 783 2363 783 2365 783 2380 770 2380 757 2374 723 1741 727 1709 716 1707 716 1705 716 1702 716 1679 727 1605 716 1603 716 1395 729 1378 718 1375 718 1373 718 1265 718 1263 718 1180 729 1133 718 1131 718 1128 718 1126 718 1102 729 1074 718 1072 718 1070 718 1005 729 879 718 877 718 875 718 873 718 856 729 756 718 754 718 598 731 600 762"/>
                         </Shape>
                         <String CONTENT="are called “faces of the spirits.” Two other faces are called “the faces of"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l4" HPOS="623" VPOS="794" WIDTH="1774" HEIGHT="59" BASELINE="625 840 2397 835" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l4" HPOS="602" VPOS="779" WIDTH="1774" HEIGHT="59" BASELINE="604 825 2376 820" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="625 840 625 853 2395 848 2397 835 2393 807 2317 794 2315 794 2312 794 2267 805 2221 794 2219 794 2217 794 2215 794 2187 805 2046 794 2044 794 2042 794 2040 794 2022 805 1994 794 1992 794 1990 794 1988 794 1985 794 1970 807 1756 807 1691 794 1689 794 1613 805 1522 794 1520 794 1518 794 1515 794 1498 807 1015 796 1013 796 909 807 814 796 812 796 809 796 777 807 734 796 731 796 729 796 623 809 625 840"/>
+                            <Polygon POINTS="604 825 604 838 2374 833 2376 820 2372 792 2296 779 2294 779 2291 779 2246 790 2200 779 2198 779 2196 779 2194 779 2166 790 2025 779 2023 779 2021 779 2019 779 2001 790 1973 779 1971 779 1969 779 1967 779 1964 779 1949 792 1735 792 1670 779 1668 779 1592 790 1501 779 1499 779 1497 779 1494 779 1477 792 994 781 992 781 888 792 793 781 791 781 788 781 756 792 713 781 710 781 708 781 602 794 604 825"/>
                         </Shape>
                         <String CONTENT="men.” The participants stand in a circle, with partners facing each other."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l5" HPOS="625" VPOS="853" WIDTH="1768" HEIGHT="67" BASELINE="628 896 2393 900" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l5" HPOS="604" VPOS="838" WIDTH="1768" HEIGHT="67" BASELINE="607 881 2372 885" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="628 896 625 909 641 920 643 920 645 920 647 920 2390 917 2393 900 2390 868 2321 855 2319 855 2189 868 1938 868 1903 855 1901 855 1899 855 1897 855 1862 866 1782 855 1780 855 1695 866 1624 855 1622 855 1518 866 1368 853 1366 853 1364 853 1338 863 1312 853 1310 853 1308 853 1188 863 1123 853 1121 853 1119 853 1087 863 1043 853 1041 853 1039 853 1037 853 1013 863 628 857 628 896"/>
+                            <Polygon POINTS="607 881 604 894 620 905 622 905 624 905 626 905 2369 902 2372 885 2369 853 2300 840 2298 840 2168 853 1917 853 1882 840 1880 840 1878 840 1876 840 1841 851 1761 840 1759 840 1674 851 1603 840 1601 840 1497 851 1347 838 1345 838 1343 838 1317 848 1291 838 1289 838 1287 838 1167 848 1102 838 1100 838 1098 838 1066 848 1022 838 1020 838 1018 838 1016 838 992 848 607 842 607 881"/>
                         </Shape>
                         <String CONTENT="The rod is spun in the middle by somebody. When the top stops spinning,"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l6" HPOS="623" VPOS="915" WIDTH="1774" HEIGHT="57" BASELINE="625 959 2397 954" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l6" HPOS="602" VPOS="900" WIDTH="1774" HEIGHT="57" BASELINE="604 944 2376 939" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="625 959 625 972 2395 969 2397 954 2393 922 643 915 641 915 638 915 636 915 623 922 625 959"/>
+                            <Polygon POINTS="604 944 604 957 2374 954 2376 939 2372 907 622 900 620 900 617 900 615 900 602 907 604 944"/>
                         </Shape>
                         <String CONTENT="the party that is faced by the spirits has lost. The stakes are small, and"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l7" HPOS="623" VPOS="982" WIDTH="1371" HEIGHT="59" BASELINE="625 1013 1994 1017" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l7" HPOS="602" VPOS="967" WIDTH="1371" HEIGHT="59" BASELINE="604 998 1973 1002" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="625 1013 623 1030 636 1039 638 1039 641 1039 643 1039 1256 1030 1310 1041 1312 1041 1992 1030 1994 1017 1992 987 625 982 625 1013"/>
+                            <Polygon POINTS="604 998 602 1015 615 1024 617 1024 620 1024 622 1024 1235 1015 1289 1026 1291 1026 1971 1015 1973 1002 1971 972 604 967 604 998"/>
                         </Shape>
                         <String CONTENT="consist usually of pieces of sinew, single beads, or matches."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-356_r3" HPOS="621" VPOS="1031" WIDTH="1778" HEIGHT="257" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-356_r3" HPOS="600" VPOS="1016" WIDTH="1778" HEIGHT="257" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="621 1031 2399 1031 2399 1288 621 1288"/>
+                        <Polygon POINTS="600 1016 2378 1016 2378 1273 600 1273"/>
                     </Shape>
-                    <TextLine ID="mz_1-356_l8" HPOS="734" VPOS="1032" WIDTH="1665" HEIGHT="61" BASELINE="734 1076 2399 1076" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l8" HPOS="713" VPOS="1017" WIDTH="1665" HEIGHT="61" BASELINE="713 1061 2378 1061" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="734 1076 734 1093 2399 1093 2399 1076 2399 1045 2323 1032 2321 1032 2265 1043 2143 1032 2141 1032 2085 1043 2031 1032 2029 1032 2027 1032 2003 1043 1959 1032 1957 1032 1955 1032 1886 1045 1728 1045 1715 1032 1713 1032 1710 1032 1708 1032 1656 1043 1615 1032 1613 1032 1611 1032 1609 1032 1572 1043 1479 1032 1476 1032 1474 1032 1448 1043 1338 1032 1336 1032 1334 1032 1310 1045 1204 1045 1186 1032 1184 1032 1182 1032 1180 1032 1130 1043 1113 1032 1110 1032 1108 1032 1106 1032 1104 1032 1078 1043 1035 1032 1033 1032 1030 1032 1028 1032 998 1043 968 1032 965 1032 963 1032 961 1032 931 1043 734 1041 734 1076"/>
+                            <Polygon POINTS="713 1061 713 1078 2378 1078 2378 1061 2378 1030 2302 1017 2300 1017 2244 1028 2122 1017 2120 1017 2064 1028 2010 1017 2008 1017 2006 1017 1982 1028 1938 1017 1936 1017 1934 1017 1865 1030 1707 1030 1694 1017 1692 1017 1689 1017 1687 1017 1635 1028 1594 1017 1592 1017 1590 1017 1588 1017 1551 1028 1458 1017 1455 1017 1453 1017 1427 1028 1317 1017 1315 1017 1313 1017 1289 1030 1183 1030 1165 1017 1163 1017 1161 1017 1159 1017 1109 1028 1092 1017 1089 1017 1087 1017 1085 1017 1083 1017 1057 1028 1014 1017 1012 1017 1009 1017 1007 1017 977 1028 947 1017 944 1017 942 1017 940 1017 910 1028 713 1026 713 1061"/>
                         </Shape>
                         <String CONTENT="Nelson obtained his specimen from St. Lawrence Island. He considers"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l9" HPOS="621" VPOS="1104" WIDTH="1778" HEIGHT="49" BASELINE="623 1136 2399 1132" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l9" HPOS="600" VPOS="1089" WIDTH="1778" HEIGHT="49" BASELINE="602 1121 2378 1117" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="623 1136 623 1153 2399 1147 2399 1132 2395 1104 621 1104 623 1136"/>
+                            <Polygon POINTS="602 1121 602 1138 2378 1132 2378 1117 2374 1089 600 1089 602 1121"/>
                         </Shape>
                         <String CONTENT="it a cord-spinner, or, rather, a cord-twister, and suggests that the idea of it was"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l10" HPOS="625" VPOS="1160" WIDTH="1770" HEIGHT="54" BASELINE="628 1197 2395 1190" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l10" HPOS="604" VPOS="1145" WIDTH="1770" HEIGHT="54" BASELINE="607 1182 2374 1175" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="628 1197 628 1214 2393 1208 2395 1190 2390 1162 625 1160 628 1197"/>
+                            <Polygon POINTS="607 1182 607 1199 2372 1193 2374 1175 2369 1147 604 1145 607 1182"/>
                         </Shape>
                         <String CONTENT="borrowed from the whalers, because no other specimen was seen by him any-"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l11" HPOS="625" VPOS="1225" WIDTH="659" HEIGHT="48" BASELINE="625 1255 1284 1255" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l11" HPOS="604" VPOS="1210" WIDTH="659" HEIGHT="48" BASELINE="604 1240 1263 1240" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="625 1255 625 1273 1284 1273 1284 1255 1284 1225 625 1225 625 1255"/>
+                            <Polygon POINTS="604 1240 604 1258 1263 1258 1263 1240 1263 1210 604 1210 604 1240"/>
                         </Shape>
                         <String CONTENT="where in the regions visited."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-356_r4" HPOS="621" VPOS="1288" WIDTH="1778" HEIGHT="418" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-356_r4" HPOS="600" VPOS="1273" WIDTH="1778" HEIGHT="418" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="621 1288 2399 1288 2399 1706 621 1706"/>
+                        <Polygon POINTS="600 1273 2378 1273 2378 1691 600 1691"/>
                     </Shape>
-                    <TextLine ID="mz_1-356_l12" HPOS="731" VPOS="1268" WIDTH="1664" HEIGHT="65" BASELINE="734 1311 2395 1318" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l12" HPOS="710" VPOS="1253" WIDTH="1664" HEIGHT="65" BASELINE="713 1296 2374 1303" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="734 1311 731 1327 2390 1333 2395 1318 2393 1286 1680 1270 1678 1270 1375 1281 1351 1270 1349 1270 1347 1270 1344 1270 1299 1281 1282 1268 1279 1268 1277 1268 1275 1268 1273 1268 1251 1279 1165 1268 1162 1268 1160 1268 1136 1279 1097 1268 1095 1268 1093 1268 1091 1268 1048 1279 955 1268 952 1268 950 1268 926 1281 783 1281 770 1268 768 1268 766 1268 764 1268 762 1268 734 1277 734 1311"/>
+                            <Polygon POINTS="713 1296 710 1312 2369 1318 2374 1303 2372 1271 1659 1255 1657 1255 1354 1266 1330 1255 1328 1255 1326 1255 1323 1255 1278 1266 1261 1253 1258 1253 1256 1253 1254 1253 1252 1253 1230 1264 1144 1253 1141 1253 1139 1253 1115 1264 1076 1253 1074 1253 1072 1253 1070 1253 1027 1264 934 1253 931 1253 929 1253 905 1266 762 1266 749 1253 747 1253 745 1253 743 1253 741 1253 713 1262 713 1296"/>
                         </Shape>
                         <String CONTENT="Among the collections in the National Museum at Washington, however,"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l13" HPOS="625" VPOS="1340" WIDTH="1770" HEIGHT="56" BASELINE="628 1376 2395 1370" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l13" HPOS="604" VPOS="1325" WIDTH="1770" HEIGHT="56" BASELINE="607 1361 2374 1355" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="628 1376 628 1396 2393 1389 2395 1370 2390 1340 625 1340 628 1376"/>
+                            <Polygon POINTS="607 1361 607 1381 2372 1374 2374 1355 2369 1325 604 1325 607 1361"/>
                         </Shape>
                         <String CONTENT="I found another specimen of this implement (Cat. No. 63382), labelled “Diomede"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l14" HPOS="625" VPOS="1400" WIDTH="1772" HEIGHT="52" BASELINE="625 1435 2397 1435" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l14" HPOS="604" VPOS="1385" WIDTH="1772" HEIGHT="52" BASELINE="604 1420 2376 1420" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="625 1435 625 1452 2397 1452 2397 1435 2397 1405 625 1400 625 1435"/>
+                            <Polygon POINTS="604 1420 604 1437 2376 1437 2376 1420 2376 1390 604 1385 604 1420"/>
                         </Shape>
                         <String CONTENT="Island,” and collected also by Nelson. In the sketch in his book the piece"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l15" HPOS="621" VPOS="1450" WIDTH="1774" HEIGHT="61" BASELINE="623 1498 2395 1493" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l15" HPOS="600" VPOS="1435" WIDTH="1774" HEIGHT="61" BASELINE="602 1483 2374 1478" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="623 1498 623 1511 2393 1506 2395 1493 2393 1463 2360 1450 2358 1450 2356 1450 2354 1450 2351 1450 2334 1461 2243 1450 2241 1450 2239 1450 2237 1450 2219 1463 2079 1463 2055 1450 2053 1450 2050 1450 1998 1461 1975 1450 1972 1450 1970 1450 1968 1450 1925 1461 1851 1450 1849 1450 1752 1461 1687 1450 1684 1450 1604 1461 1515 1450 1513 1450 1511 1450 1476 1463 1321 1452 1318 1452 1316 1452 1314 1452 1299 1463 1277 1452 1275 1452 1273 1452 1271 1452 1240 1465 1022 1465 989 1452 987 1452 985 1452 983 1452 948 1463 859 1452 857 1452 855 1452 827 1463 773 1452 770 1452 768 1452 727 1463 667 1452 664 1452 662 1452 621 1465 623 1498"/>
+                            <Polygon POINTS="602 1483 602 1496 2372 1491 2374 1478 2372 1448 2339 1435 2337 1435 2335 1435 2333 1435 2330 1435 2313 1446 2222 1435 2220 1435 2218 1435 2216 1435 2198 1448 2058 1448 2034 1435 2032 1435 2029 1435 1977 1446 1954 1435 1951 1435 1949 1435 1947 1435 1904 1446 1830 1435 1828 1435 1731 1446 1666 1435 1663 1435 1583 1446 1494 1435 1492 1435 1490 1435 1455 1448 1300 1437 1297 1437 1295 1437 1293 1437 1278 1448 1256 1437 1254 1437 1252 1437 1250 1437 1219 1450 1001 1450 968 1437 966 1437 964 1437 962 1437 927 1448 838 1437 836 1437 834 1437 806 1448 752 1437 749 1437 747 1437 706 1448 646 1437 643 1437 641 1437 600 1450 602 1483"/>
                         </Shape>
                         <String CONTENT="with the hole is represented in a vertical position, while the ivory weight is"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l16" HPOS="619" VPOS="1519" WIDTH="1774" HEIGHT="57" BASELINE="621 1556 2393 1552" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l16" HPOS="598" VPOS="1504" WIDTH="1774" HEIGHT="57" BASELINE="600 1541 2372 1537" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="621 1556 621 1571 2388 1576 2393 1552 2386 1519 619 1521 621 1556"/>
+                            <Polygon POINTS="600 1541 600 1556 2367 1561 2372 1537 2365 1504 598 1506 600 1541"/>
                         </Shape>
                         <String CONTENT="represented as grasped in the hand of the operator for the purpose of setting"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l17" HPOS="621" VPOS="1571" WIDTH="1774" HEIGHT="61" BASELINE="623 1617 2395 1612" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l17" HPOS="600" VPOS="1556" WIDTH="1774" HEIGHT="61" BASELINE="602 1602 2374 1597" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="2386 1580 1509 1571 1507 1571 1505 1571 1474 1582 643 1573 641 1573 638 1573 636 1573 621 1580 623 1617 623 1632 2393 1628 2395 1612 2390 1593 2386 1580"/>
+                            <Polygon POINTS="2365 1565 1488 1556 1486 1556 1484 1556 1453 1567 622 1558 620 1558 617 1558 615 1558 600 1565 602 1602 602 1617 2372 1613 2374 1597 2369 1578 2365 1565"/>
                         </Shape>
                         <String CONTENT="the implement rotating. In the specimens of my collection the weight does"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l18" HPOS="623" VPOS="1641" WIDTH="1258" HEIGHT="60" BASELINE="625 1671 1881 1675" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l18" HPOS="602" VPOS="1626" WIDTH="1258" HEIGHT="60" BASELINE="604 1656 1860 1660" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="625 1671 623 1690 634 1699 636 1699 638 1699 641 1699 710 1688 744 1699 747 1699 749 1699 835 1688 916 1699 918 1699 1375 1690 1386 1699 1386 1701 1388 1701 1390 1701 1392 1701 1879 1688 1881 1675 1879 1645 625 1641 625 1671"/>
+                            <Polygon POINTS="604 1656 602 1675 613 1684 615 1684 617 1684 620 1684 689 1673 723 1684 726 1684 728 1684 814 1673 895 1684 897 1684 1354 1675 1365 1684 1365 1686 1367 1686 1369 1686 1371 1686 1858 1673 1860 1660 1858 1630 604 1626 604 1656"/>
                         </Shape>
                         <String CONTENT="not have a shape adapted to be grasped by the hand."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-356_r5" HPOS="621" VPOS="1706" WIDTH="1778" HEIGHT="182" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-356_r5" HPOS="600" VPOS="1691" WIDTH="1778" HEIGHT="182" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="621 1706 2399 1706 2399 1888 621 1888"/>
+                        <Polygon POINTS="600 1691 2378 1691 2378 1873 600 1873"/>
                     </Shape>
-                    <TextLine ID="mz_1-356_l19" HPOS="734" VPOS="1688" WIDTH="1661" HEIGHT="63" BASELINE="736 1736 2395 1732" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l19" HPOS="713" VPOS="1673" WIDTH="1661" HEIGHT="63" BASELINE="715 1721 2374 1717" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="736 1736 736 1751 2393 1747 2395 1732 2390 1701 2286 1688 2284 1688 2282 1688 2280 1688 2265 1699 2193 1688 2191 1688 2189 1688 2156 1699 2126 1688 2124 1688 2122 1688 2120 1688 2118 1688 2100 1699 1970 1688 1968 1688 1966 1688 1933 1699 1899 1688 1897 1688 1894 1688 1892 1688 1864 1699 1786 1688 1784 1688 1544 1690 1541 1690 1539 1690 1524 1703 1403 1703 1383 1690 1381 1690 1379 1690 1377 1690 1375 1690 1347 1701 1329 1690 1327 1690 1325 1690 1323 1690 1264 1701 1210 1690 1208 1690 1206 1690 1186 1701 1169 1690 1167 1690 1165 1690 1162 1690 1160 1690 1121 1703 970 1703 950 1690 948 1690 946 1690 944 1690 942 1690 905 1701 868 1690 866 1690 864 1690 861 1690 835 1701 792 1690 790 1690 788 1690 734 1697 736 1736"/>
+                            <Polygon POINTS="715 1721 715 1736 2372 1732 2374 1717 2369 1686 2265 1673 2263 1673 2261 1673 2259 1673 2244 1684 2172 1673 2170 1673 2168 1673 2135 1684 2105 1673 2103 1673 2101 1673 2099 1673 2097 1673 2079 1684 1949 1673 1947 1673 1945 1673 1912 1684 1878 1673 1876 1673 1873 1673 1871 1673 1843 1684 1765 1673 1763 1673 1523 1675 1520 1675 1518 1675 1503 1688 1382 1688 1362 1675 1360 1675 1358 1675 1356 1675 1354 1675 1326 1686 1308 1675 1306 1675 1304 1675 1302 1675 1243 1686 1189 1675 1187 1675 1185 1675 1165 1686 1148 1675 1146 1675 1144 1675 1141 1675 1139 1675 1100 1688 949 1688 929 1675 927 1675 925 1675 923 1675 921 1675 884 1686 847 1675 845 1675 843 1675 840 1675 814 1686 771 1675 769 1675 767 1675 713 1682 715 1721"/>
                         </Shape>
                         <String CONTENT="The implements of the Mexican and Zuñi Indians having a similar shape"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l20" HPOS="621" VPOS="1764" WIDTH="1774" HEIGHT="48" BASELINE="621 1794 2395 1794" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l20" HPOS="600" VPOS="1749" WIDTH="1774" HEIGHT="48" BASELINE="600 1779 2374 1779" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="621 1794 621 1812 2395 1812 2395 1794 2395 1764 621 1764 621 1794"/>
+                            <Polygon POINTS="600 1779 600 1797 2374 1797 2374 1779 2374 1749 600 1749 600 1779"/>
                         </Shape>
                         <String CONTENT="serve for twisting grass-fibre and horsehair. In this case they have no weight"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l21" HPOS="623" VPOS="1825" WIDTH="1765" HEIGHT="56" BASELINE="623 1855 2388 1855" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l21" HPOS="602" VPOS="1810" WIDTH="1765" HEIGHT="56" BASELINE="602 1840 2367 1840" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="623 1855 623 1872 2386 1881 2388 1855 2388 1825 623 1825 623 1855"/>
+                            <Polygon POINTS="602 1840 602 1857 2365 1866 2367 1840 2367 1810 602 1810 602 1840"/>
                         </Shape>
                         <String CONTENT="attached, and the piece with the hole in it is no longer used as a handle,"/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-356_r6" HPOS="621" VPOS="3066" WIDTH="1778" HEIGHT="121" TAGREFS="TYPE_1">
+                <TextBlock ID="mz_1-356_r6" HPOS="600" VPOS="3051" WIDTH="1778" HEIGHT="121" TAGREFS="TYPE_1">
 <Shape>
-                        <Polygon POINTS="621 3066 2399 3066 2399 3187 621 3187"/>
+                        <Polygon POINTS="600 3051 2378 3051 2378 3172 600 3172"/>
                     </Shape>
-                    <TextLine ID="mz_1-356_l22" HPOS="619" VPOS="3067" WIDTH="1771" HEIGHT="65" BASELINE="621 3102 2390 3106" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l22" HPOS="598" VPOS="3052" WIDTH="1771" HEIGHT="65" BASELINE="600 3087 2369 3091" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="621 3102 619 3117 1576 3132 1578 3132 2388 3121 2390 3106 2388 3074 621 3067 621 3102"/>
+                            <Polygon POINTS="600 3087 598 3102 1555 3117 1557 3117 2367 3106 2369 3091 2367 3059 600 3052 600 3087"/>
                         </Shape>
                         <String CONTENT="but is much longer and heavier, apparently for the purpose of being revolved"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-356_l23" HPOS="619" VPOS="3130" WIDTH="422" HEIGHT="61" BASELINE="621 3160 1041 3165" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l23" HPOS="598" VPOS="3115" WIDTH="422" HEIGHT="61" BASELINE="600 3145 1020 3150" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="621 3160 619 3176 842 3191 844 3191 1039 3180 1041 3165 1039 3134 621 3130 621 3160"/>
+                            <Polygon POINTS="600 3145 598 3161 821 3176 823 3176 1018 3165 1020 3150 1018 3119 600 3115 600 3145"/>
                         </Shape>
                         <String CONTENT="for twisting cords."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-356_r7" HPOS="621" VPOS="3187" WIDTH="1778" HEIGHT="69" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-356_r7" HPOS="600" VPOS="3172" WIDTH="1778" HEIGHT="69" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="621 3187 2399 3187 2399 3256 621 3256"/>
+                        <Polygon POINTS="600 3172 2378 3172 2378 3241 600 3241"/>
                     </Shape>
-                    <TextLine ID="mz_1-356_l24" HPOS="729" VPOS="3186" WIDTH="1661" HEIGHT="59" BASELINE="731 3221 2390 3228" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-356_l24" HPOS="708" VPOS="3171" WIDTH="1661" HEIGHT="59" BASELINE="710 3206 2369 3213" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="2386 3191 731 3186 731 3221 729 3238 2386 3245 2390 3228 2388 3217 2386 3191"/>
+                            <Polygon POINTS="2365 3176 710 3171 710 3206 708 3223 2365 3230 2369 3213 2367 3202 2365 3176"/>
                         </Shape>
                         <String CONTENT="Perhaps the Northern implement has degenerated from some borrowed"/>
                     </TextLine>

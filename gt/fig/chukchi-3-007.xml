@@ -10,11 +10,11 @@
     <OtherTag ID="BT1" LABEL="GraphicZone" DESCRIPTION="block type GraphicZone"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="406" VPOS="546" WIDTH="1733" HEIGHT="392" ID="fig_3-007_001" TAGREFS="BT1">
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="441" VPOS="555" WIDTH="1733" HEIGHT="392" ID="fig_3-007_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="406 546 2139 546 2139 938 406 938"/>
+            <Polygon POINTS="441 555 2174 555 2174 947 441 947"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

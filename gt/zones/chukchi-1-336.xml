@@ -12,26 +12,26 @@
     <OtherTag ID="BT3" LABEL="MainZone-Continued" DESCRIPTION="block type MainZone-Continued"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="593" VPOS="624" WIDTH="1778" HEIGHT="80" ID="mz_1-336_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="572" VPOS="609" WIDTH="1778" HEIGHT="80" ID="mz_1-336_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="593 624 2371 624 2371 704 593 704"/>
+            <Polygon POINTS="572 609 2350 609 2350 689 572 689"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="593" VPOS="742" WIDTH="1778" HEIGHT="307" ID="mz_1-336_002" TAGREFS="BT2">
+        <TextBlock HPOS="572" VPOS="727" WIDTH="1778" HEIGHT="307" ID="mz_1-336_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="593 742 2371 742 2371 1049 593 1049"/>
+            <Polygon POINTS="572 727 2350 727 2350 1034 572 1034"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="593" VPOS="1049" WIDTH="1778" HEIGHT="668" ID="mz_1-336_003" TAGREFS="BT2">
+        <TextBlock HPOS="572" VPOS="1034" WIDTH="1778" HEIGHT="668" ID="mz_1-336_003" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="593 1049 2371 1049 2371 1717 593 1717"/>
+            <Polygon POINTS="572 1034 2350 1034 2350 1702 572 1702"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="593" VPOS="3131" WIDTH="1778" HEIGHT="149" ID="mz_1-336_004" TAGREFS="BT3">
+        <TextBlock HPOS="572" VPOS="3116" WIDTH="1778" HEIGHT="149" ID="mz_1-336_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="593 3131 2371 3131 2371 3280 593 3280"/>
+            <Polygon POINTS="572 3116 2350 3116 2350 3265 572 3265"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

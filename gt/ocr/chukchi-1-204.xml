@@ -32,369 +32,369 @@
         <OtherTag DESCRIPTION="" ID="TYPE_5" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
-        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
-            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-                <TextBlock ID="mz_1-204_r1" HPOS="635" VPOS="596" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
+        <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+                <TextBlock ID="mz_1-204_r1" HPOS="614" VPOS="581" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_4">
 <Shape>
-                        <Polygon POINTS="635 596 2413 596 2413 686 635 686"/>
+                        <Polygon POINTS="614 581 2392 581 2392 671 614 671"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l1" HPOS="645" VPOS="617" WIDTH="106" HEIGHT="67" BASELINE="647 660 751 655" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l1" HPOS="624" VPOS="602" WIDTH="106" HEIGHT="67" BASELINE="626 645 730 640" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="690 617 660 625 645 653 647 660 647 673 695 684 697 684 699 684 751 668 751 655 747 627 703 617 690 617"/>
+                            <Polygon POINTS="669 602 639 610 624 638 626 645 626 658 674 669 676 669 678 669 730 653 730 640 726 612 682 602 669 602"/>
                         </Shape>
                         <String CONTENT="162"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l2" HPOS="1225" VPOS="623" WIDTH="613" HEIGHT="56" BASELINE="1225 658 1838 658" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l2" HPOS="1204" VPOS="608" WIDTH="613" HEIGHT="56" BASELINE="1204 643 1817 643" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="1832 651 1810 623 1788 623 1767 623 1745 623 1723 623 1702 623 1680 623 1658 623 1637 623 1615 623 1593 623 1572 623 1550 623 1528 623 1507 623 1485 623 1463 623 1442 623 1420 623 1399 623 1377 623 1355 623 1334 623 1312 623 1290 623 1269 623 1247 623 1225 625 1225 658 1225 679 1838 679 1838 658 1838 623 1832 623 1832 651"/>
+                            <Polygon POINTS="1811 636 1789 608 1767 608 1746 608 1724 608 1702 608 1681 608 1659 608 1637 608 1616 608 1594 608 1572 608 1551 608 1529 608 1507 608 1486 608 1464 608 1442 608 1421 608 1399 608 1378 608 1356 608 1334 608 1313 608 1291 608 1269 608 1248 608 1226 608 1204 610 1204 643 1204 664 1817 664 1817 643 1817 608 1811 608 1811 636"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r2" HPOS="635" VPOS="711" WIDTH="1778" HEIGHT="316" TAGREFS="TYPE_1">
+                <TextBlock ID="mz_1-204_r2" HPOS="614" VPOS="696" WIDTH="1778" HEIGHT="316" TAGREFS="TYPE_1">
 <Shape>
-                        <Polygon POINTS="635 711 2413 711 2413 1027 635 1027"/>
+                        <Polygon POINTS="614 696 2392 696 2392 1012 614 1012"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l3" HPOS="641" VPOS="727" WIDTH="1775" HEIGHT="63" BASELINE="643 764 2416 768" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l3" HPOS="620" VPOS="712" WIDTH="1775" HEIGHT="63" BASELINE="622 749 2395 753" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="643 764 641 777 662 790 664 790 667 790 2414 781 2416 768 2414 736 643 727 643 764"/>
+                            <Polygon POINTS="622 749 620 762 641 775 643 775 646 775 2393 766 2395 753 2393 721 622 712 622 749"/>
                         </Shape>
                         <String CONTENT="burg. Another was obtained by Nordenskiöld. Judging from the picture in"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l4" HPOS="643" VPOS="790" WIDTH="1771" HEIGHT="56" BASELINE="643 827 2414 827" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l4" HPOS="622" VPOS="775" WIDTH="1771" HEIGHT="56" BASELINE="622 812 2393 812" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="643 827 643 846 2414 846 2414 827 2414 796 643 790 643 827"/>
+                            <Polygon POINTS="622 812 622 831 2393 831 2393 812 2393 781 622 775 622 812"/>
                         </Shape>
                         <String CONTENT="his book, it is also an incomplete one, because it has only three rows of plates"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l5" HPOS="641" VPOS="853" WIDTH="1773" HEIGHT="58" BASELINE="643 883 2414 887" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l5" HPOS="620" VPOS="838" WIDTH="1773" HEIGHT="58" BASELINE="622 868 2393 872" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="643 883 641 896 768 909 770 909 1526 900 1548 911 1550 911 1552 911 2412 900 2414 887 2412 857 643 853 643 883"/>
+                            <Polygon POINTS="622 868 620 881 747 894 749 894 1505 885 1527 896 1529 896 1531 896 2391 885 2393 872 2391 842 622 838 622 868"/>
                         </Shape>
                         <String CONTENT="and no wooden head-protector. Two specimens are in the Museum of Eth-"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l6" HPOS="638" VPOS="900" WIDTH="1776" HEIGHT="76" BASELINE="641 943 2414 950" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l6" HPOS="617" VPOS="885" WIDTH="1776" HEIGHT="76" BASELINE="620 928 2393 935" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 943 638 956 693 972 695 972 697 974 846 974 846 972 848 972 851 972 868 961 1173 972 1175 972 1178 972 1199 961 1336 974 1338 974 1786 963 2239 976 2241 976 2243 976 2278 965 2317 976 2319 976 2321 976 2412 963 2414 950 2412 913 2167 904 2165 904 2163 904 2130 915 2098 904 2096 904 2094 904 2092 904 2068 915 2042 904 2040 904 2037 904 2035 904 2033 904 2018 917 1910 917 1894 904 1892 904 1890 904 1888 904 1784 913 1754 902 1752 902 1749 902 1695 913 1667 902 1665 902 1663 902 1661 902 1624 913 1591 902 1589 902 1587 902 1585 902 1559 913 1494 902 1492 902 1407 913 1383 902 1381 902 1379 902 1377 902 1338 913 1225 900 1223 900 1221 900 1193 911 1048 900 1046 900 991 911 963 900 961 900 959 900 957 900 933 913 827 913 812 900 809 900 807 900 805 900 803 900 801 900 783 911 641 911 641 943"/>
+                            <Polygon POINTS="620 928 617 941 672 957 674 957 676 959 825 959 825 957 827 957 830 957 847 946 1152 957 1154 957 1157 957 1178 946 1315 959 1317 959 1765 948 2218 961 2220 961 2222 961 2257 950 2296 961 2298 961 2300 961 2391 948 2393 935 2391 898 2146 889 2144 889 2142 889 2109 900 2077 889 2075 889 2073 889 2071 889 2047 900 2021 889 2019 889 2016 889 2014 889 2012 889 1997 902 1889 902 1873 889 1871 889 1869 889 1867 889 1763 898 1733 887 1731 887 1728 887 1674 898 1646 887 1644 887 1642 887 1640 887 1603 898 1570 887 1568 887 1566 887 1564 887 1538 898 1473 887 1471 887 1386 898 1362 887 1360 887 1358 887 1356 887 1317 898 1204 885 1202 885 1200 885 1172 896 1027 885 1025 885 970 896 942 885 940 885 938 885 936 885 912 898 806 898 791 885 788 885 786 885 784 885 782 885 780 885 762 896 620 896 620 928"/>
                         </Shape>
                         <String CONTENT="nography and History, Helsingfors, Finnland, of which one is in fairly good"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l7" HPOS="647" VPOS="969" WIDTH="1553" HEIGHT="65" BASELINE="649 1002 2200 1006" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l7" HPOS="626" VPOS="954" WIDTH="1553" HEIGHT="65" BASELINE="628 987 2179 991" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="649 1002 647 1017 840 1032 842 1034 1043 1034 1043 1032 1046 1032 1048 1032 1063 1021 1340 1032 1342 1032 1424 1021 1671 1021 1684 1034 1687 1034 1689 1034 1691 1034 2009 1024 2098 1034 2100 1034 2198 1021 2200 1006 2195 969 649 969 649 1002"/>
+                            <Polygon POINTS="628 987 626 1002 819 1017 821 1019 1022 1019 1022 1017 1025 1017 1027 1017 1042 1006 1319 1017 1321 1017 1403 1006 1650 1006 1663 1019 1666 1019 1668 1019 1670 1019 1988 1009 2077 1019 2079 1019 2177 1006 2179 991 2174 954 628 954 628 987"/>
                         </Shape>
                         <String CONTENT="condition, judging from the figure in Ratzel’s paper on the subject.¹"/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r3" HPOS="635" VPOS="1027" WIDTH="1778" HEIGHT="892" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-204_r3" HPOS="614" VPOS="1012" WIDTH="1778" HEIGHT="892" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="635 1027 2413 1027 2413 1919 635 1919"/>
+                        <Polygon POINTS="614 1012 2392 1012 2392 1904 614 1904"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l8" HPOS="751" VPOS="1037" WIDTH="1665" HEIGHT="47" BASELINE="751 1067 2416 1067" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l8" HPOS="730" VPOS="1022" WIDTH="1665" HEIGHT="47" BASELINE="730 1052 2395 1052" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="751 1067 751 1084 2416 1084 2416 1067 2416 1037 751 1037 751 1067"/>
+                            <Polygon POINTS="730 1052 730 1069 2395 1069 2395 1052 2395 1022 730 1022 730 1052"/>
                         </Shape>
                         <String CONTENT="A number of specimens of ivory armor, chiefly from the American side"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l9" HPOS="641" VPOS="1095" WIDTH="1773" HEIGHT="50" BASELINE="641 1125 2414 1125" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l9" HPOS="620" VPOS="1080" WIDTH="1773" HEIGHT="50" BASELINE="620 1110 2393 1110" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1125 641 1145 2414 1145 2414 1125 2414 1095 641 1095 641 1125"/>
+                            <Polygon POINTS="620 1110 620 1130 2393 1130 2393 1110 2393 1080 620 1080 620 1110"/>
                         </Shape>
                         <String CONTENT="of Bering Sea, are in the possession of the United States National Museum"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l10" HPOS="638" VPOS="1149" WIDTH="1776" HEIGHT="63" BASELINE="641 1184 2414 1188" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l10" HPOS="617" VPOS="1134" WIDTH="1776" HEIGHT="63" BASELINE="620 1169 2393 1173" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1184 638 1199 649 1208 651 1208 654 1208 656 1208 729 1199 874 1210 877 1210 1526 1199 1656 1212 1658 1212 2412 1199 2414 1188 2412 1156 641 1149 641 1184"/>
+                            <Polygon POINTS="620 1169 617 1184 628 1193 630 1193 633 1193 635 1193 708 1184 853 1195 856 1195 1505 1184 1635 1197 1637 1197 2391 1184 2393 1173 2391 1141 620 1134 620 1169"/>
                         </Shape>
                         <String CONTENT="in Washington, but all of these are incomplete. Those represented in the"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l11" HPOS="641" VPOS="1201" WIDTH="1773" HEIGHT="63" BASELINE="643 1247 2414 1242" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l11" HPOS="620" VPOS="1186" WIDTH="1773" HEIGHT="63" BASELINE="622 1232 2393 1227" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="643 1247 643 1264 2412 1262 2414 1242 2412 1214 2375 1201 2373 1201 2371 1201 2369 1201 2367 1201 2349 1212 2310 1201 2308 1201 2306 1201 2304 1201 2302 1201 2282 1214 1823 1214 1793 1201 1790 1201 1788 1201 1715 1212 1687 1201 1684 1201 1682 1201 1680 1201 1632 1212 1570 1201 1567 1201 1494 1214 695 1203 693 1203 690 1203 641 1216 643 1247"/>
+                            <Polygon POINTS="622 1232 622 1249 2391 1247 2393 1227 2391 1199 2354 1186 2352 1186 2350 1186 2348 1186 2346 1186 2328 1197 2289 1186 2287 1186 2285 1186 2283 1186 2281 1186 2261 1199 1802 1199 1772 1186 1769 1186 1767 1186 1694 1197 1666 1186 1663 1186 1661 1186 1659 1186 1611 1197 1549 1186 1546 1186 1473 1199 674 1188 672 1188 669 1188 620 1201 622 1232"/>
                         </Shape>
                         <String CONTENT="valuable paper by Walter Hough on primitive American armor come respectively"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l12" HPOS="641" VPOS="1264" WIDTH="1773" HEIGHT="58" BASELINE="641 1307 2414 1307" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l12" HPOS="620" VPOS="1249" WIDTH="1773" HEIGHT="58" BASELINE="620 1292 2393 1292" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1307 641 1322 2414 1322 2414 1307 2414 1277 2321 1277 2306 1264 2304 1264 2302 1264 2299 1264 2297 1264 2276 1275 2180 1264 2178 1264 2176 1264 2150 1275 2105 1264 2102 1264 2100 1264 2098 1264 2072 1277 1933 1277 1918 1264 1916 1264 1914 1264 1912 1264 1910 1264 1886 1275 1827 1264 1825 1264 1747 1275 1723 1264 1721 1264 1719 1264 1654 1275 1619 1264 1617 1264 1615 1264 1613 1264 1572 1275 1502 1264 1500 1264 1435 1275 1420 1264 1418 1264 1416 1264 1414 1264 1412 1264 1364 1275 1264 1264 1262 1264 641 1273 641 1307"/>
+                            <Polygon POINTS="620 1292 620 1307 2393 1307 2393 1292 2393 1262 2300 1262 2285 1249 2283 1249 2281 1249 2278 1249 2276 1249 2255 1260 2159 1249 2157 1249 2155 1249 2129 1260 2084 1249 2081 1249 2079 1249 2077 1249 2051 1262 1912 1262 1897 1249 1895 1249 1893 1249 1891 1249 1889 1249 1865 1260 1806 1249 1804 1249 1726 1260 1702 1249 1700 1249 1698 1249 1633 1260 1598 1249 1596 1249 1594 1249 1592 1249 1551 1260 1481 1249 1479 1249 1414 1260 1399 1249 1397 1249 1395 1249 1393 1249 1391 1249 1343 1260 1243 1249 1241 1249 620 1258 620 1292"/>
                         </Shape>
                         <String CONTENT="from Cape Prince of Wales and Diomede Island.² Apparently there is no"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l13" HPOS="638" VPOS="1333" WIDTH="1772" HEIGHT="59" BASELINE="641 1363 2410 1368" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l13" HPOS="617" VPOS="1318" WIDTH="1772" HEIGHT="59" BASELINE="620 1348 2389 1353" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1363 638 1376 842 1389 844 1389 1437 1381 1526 1392 1528 1392 2408 1381 2410 1368 2408 1337 641 1333 641 1363"/>
+                            <Polygon POINTS="620 1348 617 1361 821 1374 823 1374 1416 1366 1505 1377 1507 1377 2387 1366 2389 1353 2387 1322 620 1318 620 1348"/>
                         </Shape>
                         <String CONTENT="difference between them and the specimens brought from the Asiatic shore."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l14" HPOS="643" VPOS="1383" WIDTH="1771" HEIGHT="69" BASELINE="645 1424 2414 1428" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l14" HPOS="622" VPOS="1368" WIDTH="1771" HEIGHT="69" BASELINE="624 1409 2393 1413" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="645 1424 643 1437 853 1450 855 1450 1496 1441 1635 1452 1637 1452 2412 1441 2414 1428 2412 1398 2328 1385 2325 1385 2323 1385 2278 1396 1959 1385 1957 1385 1955 1385 1920 1396 1890 1385 1888 1385 1886 1385 1884 1385 1881 1385 1868 1396 1840 1385 1838 1385 1836 1385 1741 1396 1674 1385 1671 1385 1585 1396 1409 1383 1407 1383 1405 1383 1373 1394 1299 1383 1186 1383 1184 1383 1182 1383 1180 1383 1165 1394 1065 1383 1063 1383 1011 1394 645 1385 645 1424"/>
+                            <Polygon POINTS="624 1409 622 1422 832 1435 834 1435 1475 1426 1614 1437 1616 1437 2391 1426 2393 1413 2391 1383 2307 1370 2304 1370 2302 1370 2257 1381 1938 1370 1936 1370 1934 1370 1899 1381 1869 1370 1867 1370 1865 1370 1863 1370 1860 1370 1847 1381 1819 1370 1817 1370 1815 1370 1720 1381 1653 1370 1650 1370 1564 1381 1388 1368 1386 1368 1384 1368 1352 1379 1278 1368 1165 1368 1163 1368 1161 1368 1159 1368 1144 1379 1044 1368 1042 1368 990 1379 624 1370 624 1409"/>
                         </Shape>
                         <String CONTENT="Mr. Hough mentions, besides, four armor-plates of fossil ivory from Cape"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l15" HPOS="643" VPOS="1444" WIDTH="1771" HEIGHT="60" BASELINE="645 1483 2414 1489" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l15" HPOS="622" VPOS="1429" WIDTH="1771" HEIGHT="60" BASELINE="624 1468 2393 1474" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="645 1483 643 1498 2410 1504 2414 1489 2412 1457 645 1444 645 1483"/>
+                            <Polygon POINTS="624 1468 622 1483 2389 1489 2393 1474 2391 1442 624 1429 624 1468"/>
                         </Shape>
                         <String CONTENT="Wañqarêˊman, on the Arctic shore; also nine iron plates found together with"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l16" HPOS="638" VPOS="1511" WIDTH="1776" HEIGHT="62" BASELINE="641 1539 2414 1547" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l16" HPOS="617" VPOS="1496" WIDTH="1776" HEIGHT="62" BASELINE="620 1524 2393 1532" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1539 638 1552 680 1567 682 1567 684 1567 686 1567 729 1556 1009 1567 1011 1567 1013 1567 1046 1556 1087 1569 1089 1569 1091 1569 1093 1569 1095 1569 1110 1558 1197 1569 1199 1569 1920 1560 2115 1573 2118 1573 2412 1560 2414 1547 2412 1519 641 1511 641 1539"/>
+                            <Polygon POINTS="620 1524 617 1537 659 1552 661 1552 663 1552 665 1552 708 1541 988 1552 990 1552 992 1552 1025 1541 1066 1554 1068 1554 1070 1554 1072 1554 1074 1554 1089 1543 1176 1554 1178 1554 1899 1545 2094 1558 2097 1558 2391 1545 2393 1532 2391 1504 620 1496 620 1524"/>
                         </Shape>
                         <String CONTENT="the ivory armor in a bog at Cape Prince of Wales. According to a com-"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l17" HPOS="638" VPOS="1569" WIDTH="1776" HEIGHT="61" BASELINE="641 1602 2414 1608" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l17" HPOS="617" VPOS="1554" WIDTH="1776" HEIGHT="61" BASELINE="620 1587 2393 1593" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1602 638 1615 710 1628 712 1628 1186 1619 1271 1630 1273 1630 2412 1621 2414 1608 2412 1576 641 1569 641 1602"/>
+                            <Polygon POINTS="620 1587 617 1600 689 1613 691 1613 1165 1604 1250 1615 1252 1615 2391 1606 2393 1593 2391 1561 620 1554 620 1587"/>
                         </Shape>
                         <String CONTENT="munication of Capt. E. P. Herendeen, quoted by Mr. Hough,³ the Chukchee"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l18" HPOS="636" VPOS="1628" WIDTH="1780" HEIGHT="58" BASELINE="638 1660 2416 1669" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l18" HPOS="615" VPOS="1613" WIDTH="1780" HEIGHT="58" BASELINE="617 1645 2395 1654" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="638 1660 636 1673 658 1686 660 1686 662 1686 2414 1682 2416 1669 2412 1628 638 1628 638 1660"/>
+                            <Polygon POINTS="617 1645 615 1658 637 1671 639 1671 641 1671 2393 1667 2395 1654 2391 1613 617 1613 617 1645"/>
                         </Shape>
                         <String CONTENT="of Plover Bay, i. e., probably the Aiˊwan Eskimo, wore a cuirass made of"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l19" HPOS="636" VPOS="1686" WIDTH="1778" HEIGHT="65" BASELINE="638 1721 2414 1727" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l19" HPOS="615" VPOS="1671" WIDTH="1778" HEIGHT="65" BASELINE="617 1706 2393 1712" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="638 1721 636 1738 647 1747 649 1747 651 1747 654 1747 1186 1738 1256 1749 1258 1749 1609 1740 1827 1751 1829 1751 2412 1740 2414 1727 2412 1697 638 1686 638 1721"/>
+                            <Polygon POINTS="617 1706 615 1723 626 1732 628 1732 630 1732 633 1732 1165 1723 1235 1734 1237 1734 1588 1725 1806 1736 1808 1736 2391 1725 2393 1712 2391 1682 617 1671 617 1706"/>
                         </Shape>
                         <String CONTENT="long strips of baleen; but from Capt. Herendeen’s words it is not clear"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l20" HPOS="638" VPOS="1751" WIDTH="1776" HEIGHT="58" BASELINE="641 1781 2414 1788" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l20" HPOS="617" VPOS="1736" WIDTH="1776" HEIGHT="58" BASELINE="620 1766 2393 1773" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1781 638 1794 929 1807 931 1807 1230 1799 1253 1809 1256 1809 1258 1809 2412 1801 2414 1788 2412 1757 641 1751 641 1781"/>
+                            <Polygon POINTS="620 1766 617 1779 908 1792 910 1792 1209 1784 1232 1794 1235 1794 1237 1794 2391 1786 2393 1773 2391 1742 620 1736 620 1766"/>
                         </Shape>
                         <String CONTENT="whether he saw this kind of armor or only repeats the words of the natives."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l21" HPOS="638" VPOS="1805" WIDTH="1774" HEIGHT="56" BASELINE="641 1842 2412 1848" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l21" HPOS="617" VPOS="1790" WIDTH="1774" HEIGHT="56" BASELINE="620 1827 2391 1833" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1842 638 1855 2408 1861 2412 1848 2410 1818 1821 1805 1819 1805 641 1809 641 1842"/>
+                            <Polygon POINTS="620 1827 617 1840 2387 1846 2391 1833 2389 1803 1800 1790 1798 1790 620 1794 620 1827"/>
                         </Shape>
                         <String CONTENT="At the present time no trace of armor made of whalebone can be found on"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l22" HPOS="638" VPOS="1864" WIDTH="217" HEIGHT="65" BASELINE="641 1903 855 1900" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l22" HPOS="617" VPOS="1849" WIDTH="217" HEIGHT="65" BASELINE="620 1888 834 1885" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 1903 641 1916 781 1929 783 1929 855 1913 855 1900 851 1874 654 1864 651 1864 649 1864 647 1864 638 1870 641 1903"/>
+                            <Polygon POINTS="620 1888 620 1901 760 1914 762 1914 834 1898 834 1885 830 1859 633 1849 630 1849 628 1849 626 1849 617 1855 620 1888"/>
                         </Shape>
                         <String CONTENT="the spot."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r4" HPOS="635" VPOS="1919" WIDTH="1778" HEIGHT="246" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-204_r4" HPOS="614" VPOS="1904" WIDTH="1778" HEIGHT="246" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="635 1919 2413 1919 2413 2165 635 2165"/>
+                        <Polygon POINTS="614 1904 2392 1904 2392 2150 614 2150"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l23" HPOS="744" VPOS="1929" WIDTH="1672" HEIGHT="54" BASELINE="747 1961 2416 1967" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l23" HPOS="723" VPOS="1914" WIDTH="1672" HEIGHT="54" BASELINE="726 1946 2395 1952" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="747 1961 744 1976 2412 1983 2416 1967 2414 1929 747 1929 747 1961"/>
+                            <Polygon POINTS="726 1946 723 1961 2391 1968 2395 1952 2393 1914 726 1914 726 1946"/>
                         </Shape>
                         <String CONTENT="One specimen of armor made of hide is represented in my description of"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l24" HPOS="634" VPOS="1985" WIDTH="1772" HEIGHT="65" BASELINE="636 2022 2406 2028" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l24" HPOS="613" VPOS="1970" WIDTH="1772" HEIGHT="65" BASELINE="615 2007 2385 2013" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2022 634 2035 929 2048 931 2048 1225 2039 1249 2050 1251 2050 1253 2050 2403 2041 2406 2028 2401 1985 636 1987 636 2022"/>
+                            <Polygon POINTS="615 2007 613 2020 908 2033 910 2033 1204 2024 1228 2035 1230 2035 1232 2035 2382 2026 2385 2013 2380 1970 615 1972 615 2007"/>
                         </Shape>
                         <String CONTENT="the Chukchee collection of the Museum of Anthropology, St. Petersburg.⁴"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l25" HPOS="636" VPOS="2052" WIDTH="1774" HEIGHT="50" BASELINE="638 2082 2410 2087" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l25" HPOS="615" VPOS="2037" WIDTH="1774" HEIGHT="50" BASELINE="617 2067 2389 2072" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="638 2082 636 2097 2406 2102 2410 2087 2408 2056 638 2052 638 2082"/>
+                            <Polygon POINTS="617 2067 615 2082 2385 2087 2389 2072 2387 2041 617 2037 617 2067"/>
                         </Shape>
                         <String CONTENT="Another one, also from Siberia and quite similar in shape, is represented on"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l26" HPOS="641" VPOS="2102" WIDTH="617" HEIGHT="69" BASELINE="641 2143 1258 2143" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l26" HPOS="620" VPOS="2087" WIDTH="617" HEIGHT="69" BASELINE="620 2128 1237 2128" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="641 2143 641 2160 777 2160 790 2171 792 2171 794 2171 796 2171 799 2171 822 2160 996 2171 998 2171 1258 2158 1258 2143 1258 2115 1093 2115 1076 2102 1074 2102 1071 2102 1069 2102 1004 2113 950 2102 948 2102 641 2106 641 2143"/>
+                            <Polygon POINTS="620 2128 620 2145 756 2145 769 2156 771 2156 773 2156 775 2156 778 2156 801 2145 975 2156 977 2156 1237 2143 1237 2128 1237 2100 1072 2100 1055 2087 1053 2087 1050 2087 1048 2087 983 2098 929 2087 927 2087 620 2091 620 2128"/>
                         </Shape>
                         <String CONTENT="Plate 4 of Hough’s paper."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r5" HPOS="635" VPOS="2165" WIDTH="1778" HEIGHT="295" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-204_r5" HPOS="614" VPOS="2150" WIDTH="1778" HEIGHT="295" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="635 2165 2413 2165 2413 2460 635 2460"/>
+                        <Polygon POINTS="614 2150 2392 2150 2392 2445 614 2445"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l27" HPOS="747" VPOS="2162" WIDTH="1665" HEIGHT="59" BASELINE="749 2203 2412 2208" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l27" HPOS="726" VPOS="2147" WIDTH="1665" HEIGHT="59" BASELINE="728 2188 2391 2193" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="749 2203 747 2216 2408 2221 2412 2208 2412 2175 2382 2162 2380 2162 2377 2162 2375 2162 2347 2175 2100 2175 2076 2162 2074 2162 2072 2162 2070 2162 2035 2173 2020 2162 2018 2162 2016 2162 2014 2162 2011 2162 1972 2173 1914 2162 1912 2162 1860 2173 1803 2162 1801 2162 1799 2162 1775 2173 1713 2162 1710 2162 1708 2162 1680 2173 1645 2162 1643 2162 1641 2162 749 2162 749 2203"/>
+                            <Polygon POINTS="728 2188 726 2201 2387 2206 2391 2193 2391 2160 2361 2147 2359 2147 2356 2147 2354 2147 2326 2160 2079 2160 2055 2147 2053 2147 2051 2147 2049 2147 2014 2158 1999 2147 1997 2147 1995 2147 1993 2147 1990 2147 1951 2158 1893 2147 1891 2147 1839 2158 1782 2147 1780 2147 1778 2147 1754 2158 1692 2147 1689 2147 1687 2147 1659 2158 1624 2147 1622 2147 1620 2147 728 2147 728 2188"/>
                         </Shape>
                         <String CONTENT="This kind of armor is evidently an imitation in skin of plate armor. It"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l28" HPOS="634" VPOS="2227" WIDTH="1778" HEIGHT="54" BASELINE="636 2262 2412 2268" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l28" HPOS="613" VPOS="2212" WIDTH="1778" HEIGHT="54" BASELINE="615 2247 2391 2253" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2262 634 2275 2408 2281 2412 2268 2410 2236 636 2227 636 2262"/>
+                            <Polygon POINTS="615 2247 613 2260 2387 2266 2391 2253 2389 2221 615 2212 615 2247"/>
                         </Shape>
                         <String CONTENT="is made of horizontal bands of seal-skin instead of rows of ivory plates, the"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l29" HPOS="634" VPOS="2290" WIDTH="1778" HEIGHT="63" BASELINE="636 2320 2412 2329" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l29" HPOS="613" VPOS="2275" WIDTH="1778" HEIGHT="63" BASELINE="615 2305 2391 2314" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2320 634 2333 697 2349 699 2349 760 2338 1022 2349 1024 2349 1026 2349 1054 2338 1091 2351 1093 2351 1095 2351 1448 2340 1526 2353 1528 2353 1589 2342 1858 2353 1860 2353 1957 2342 2169 2353 2172 2353 2410 2342 2412 2329 2410 2299 636 2290 636 2320"/>
+                            <Polygon POINTS="615 2305 613 2318 676 2334 678 2334 739 2323 1001 2334 1003 2334 1005 2334 1033 2323 1070 2336 1072 2336 1074 2336 1427 2325 1505 2338 1507 2338 1568 2327 1837 2338 1839 2338 1936 2327 2148 2338 2151 2338 2389 2327 2391 2314 2389 2284 615 2275 615 2305"/>
                         </Shape>
                         <String CONTENT="rings telescoping together like the hoops of a farthingale when the armor is"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l30" HPOS="634" VPOS="2351" WIDTH="1780" HEIGHT="60" BASELINE="636 2381 2414 2387" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l30" HPOS="613" VPOS="2336" WIDTH="1780" HEIGHT="60" BASELINE="615 2366 2393 2372" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2381 634 2394 682 2407 684 2407 686 2407 1225 2398 1238 2409 1240 2409 1243 2409 1245 2409 1732 2400 1832 2411 1834 2411 2412 2400 2414 2387 2412 2351 636 2351 636 2381"/>
+                            <Polygon POINTS="615 2366 613 2379 661 2392 663 2392 665 2392 1204 2383 1217 2394 1219 2394 1222 2394 1224 2394 1711 2385 1811 2396 1813 2396 2391 2385 2393 2372 2391 2336 615 2336 615 2366"/>
                         </Shape>
                         <String CONTENT="not in use. Mr. Hough compares this type of armor to the banded mail of"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l31" HPOS="636" VPOS="2400" WIDTH="390" HEIGHT="59" BASELINE="636 2442 1026 2442" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l31" HPOS="615" VPOS="2385" WIDTH="390" HEIGHT="59" BASELINE="615 2427 1005 2427" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2442 636 2459 1026 2459 1026 2442 1026 2413 781 2400 779 2400 693 2411 664 2400 662 2400 660 2400 658 2400 636 2411 636 2442"/>
+                            <Polygon POINTS="615 2427 615 2444 1005 2444 1005 2427 1005 2398 760 2385 758 2385 672 2396 643 2385 641 2385 639 2385 637 2385 615 2396 615 2427"/>
                         </Shape>
                         <String CONTENT="the middle ages."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r6" HPOS="635" VPOS="2460" WIDTH="1778" HEIGHT="184" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-204_r6" HPOS="614" VPOS="2445" WIDTH="1778" HEIGHT="184" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="635 2460 2413 2460 2413 2644 635 2644"/>
+                        <Polygon POINTS="614 2445 2392 2445 2392 2629 614 2629"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l32" HPOS="744" VPOS="2459" WIDTH="1666" HEIGHT="67" BASELINE="747 2500 2410 2507" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l32" HPOS="723" VPOS="2444" WIDTH="1666" HEIGHT="67" BASELINE="726 2485 2389 2492" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="747 2500 744 2517 755 2526 757 2526 760 2526 762 2526 2408 2520 2410 2507 2410 2476 2375 2463 2373 2463 2371 2463 2206 2474 2167 2463 2165 2463 2163 2463 2161 2463 2124 2476 1920 2476 1886 2463 1884 2463 1881 2463 1747 2472 1734 2461 1732 2461 1730 2461 1728 2461 1726 2461 1691 2472 1656 2461 1654 2461 1652 2461 1650 2461 1602 2474 1520 2474 1507 2461 1505 2461 1502 2461 1500 2461 1498 2461 1470 2472 1427 2461 1424 2461 1422 2461 1420 2461 1396 2472 1210 2472 1173 2459 1171 2459 1169 2459 1167 2459 1128 2470 1087 2459 1084 2459 1082 2459 1080 2459 1048 2470 1013 2459 1011 2459 1009 2459 747 2468 747 2500"/>
+                            <Polygon POINTS="726 2485 723 2502 734 2511 736 2511 739 2511 741 2511 2387 2505 2389 2492 2389 2461 2354 2448 2352 2448 2350 2448 2185 2459 2146 2448 2144 2448 2142 2448 2140 2448 2103 2461 1899 2461 1865 2448 1863 2448 1860 2448 1726 2457 1713 2446 1711 2446 1709 2446 1707 2446 1705 2446 1670 2457 1635 2446 1633 2446 1631 2446 1629 2446 1581 2459 1499 2459 1486 2446 1484 2446 1481 2446 1479 2446 1477 2446 1449 2457 1406 2446 1403 2446 1401 2446 1399 2446 1375 2457 1189 2457 1152 2444 1150 2444 1148 2444 1146 2444 1107 2455 1066 2444 1063 2444 1061 2444 1059 2444 1027 2455 992 2444 990 2444 988 2444 726 2453 726 2485"/>
                         </Shape>
                         <String CONTENT="A stiff hide head-protector is fastened above the armor. It evidently"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l33" HPOS="634" VPOS="2517" WIDTH="1774" HEIGHT="63" BASELINE="636 2561 2408 2567" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l33" HPOS="613" VPOS="2502" WIDTH="1774" HEIGHT="63" BASELINE="615 2546 2387 2552" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="634 2574 2403 2580 2408 2567 2406 2535 1819 2535 1749 2522 1747 2522 1230 2530 1113 2520 1110 2520 667 2528 638 2517 636 2561 634 2574"/>
+                            <Polygon POINTS="613 2559 2382 2565 2387 2552 2385 2520 1798 2520 1728 2507 1726 2507 1209 2515 1092 2505 1089 2505 646 2513 617 2502 615 2546 613 2559"/>
                         </Shape>
                         <String CONTENT="served to protect the neck from behind and from both sides. Mr. Hough"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l34" HPOS="634" VPOS="2578" WIDTH="1449" HEIGHT="71" BASELINE="636 2619 2083 2626" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l34" HPOS="613" VPOS="2563" WIDTH="1449" HEIGHT="71" BASELINE="615 2604 2062 2611" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2619 634 2634 656 2645 658 2645 660 2645 1080 2636 1602 2649 1604 2649 2081 2639 2083 2626 2083 2595 1749 2582 1747 2582 1745 2582 1743 2582 1743 2585 1732 2593 1684 2582 1682 2582 1680 2582 1643 2593 1572 2580 1570 2580 1505 2591 1459 2580 1457 2580 1455 2580 1453 2580 1422 2591 1412 2580 1409 2580 1407 2580 1405 2580 1403 2580 1357 2591 1292 2580 1290 2580 1288 2580 1260 2591 1225 2580 1223 2580 1221 2580 1219 2580 1195 2591 1173 2580 1171 2580 1169 2580 1043 2589 1030 2578 1028 2578 1026 2578 1024 2578 1022 2578 991 2589 890 2578 887 2578 885 2578 859 2589 636 2589 636 2619"/>
+                            <Polygon POINTS="615 2604 613 2619 635 2630 637 2630 639 2630 1059 2621 1581 2634 1583 2634 2060 2624 2062 2611 2062 2580 1728 2567 1726 2567 1724 2567 1722 2567 1722 2570 1711 2578 1663 2567 1661 2567 1659 2567 1622 2578 1551 2565 1549 2565 1484 2576 1438 2565 1436 2565 1434 2565 1432 2565 1401 2576 1391 2565 1388 2565 1386 2565 1384 2565 1382 2565 1336 2576 1271 2565 1269 2565 1267 2565 1239 2576 1204 2565 1202 2565 1200 2565 1198 2565 1174 2576 1152 2565 1150 2565 1148 2565 1022 2574 1009 2563 1007 2563 1005 2563 1003 2563 1001 2563 970 2574 869 2563 866 2563 864 2563 838 2574 615 2574 615 2604"/>
                         </Shape>
                         <String CONTENT="compares it to the neck-fender of the Kingsmill Island⁵ armor."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r7" HPOS="635" VPOS="2644" WIDTH="1778" HEIGHT="242" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-204_r7" HPOS="614" VPOS="2629" WIDTH="1778" HEIGHT="242" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="635 2644 2413 2644 2413 2886 635 2886"/>
+                        <Polygon POINTS="614 2629 2392 2629 2392 2871 614 2871"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l35" HPOS="747" VPOS="2641" WIDTH="1663" HEIGHT="69" BASELINE="749 2682 2410 2686" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l35" HPOS="726" VPOS="2626" WIDTH="1663" HEIGHT="69" BASELINE="728 2667 2389 2671" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="749 2682 747 2695 885 2708 887 2708 1550 2699 1639 2710 1641 2710 2408 2699 2410 2686 2408 2654 749 2641 749 2682"/>
+                            <Polygon POINTS="728 2667 726 2680 864 2693 866 2693 1529 2684 1618 2695 1620 2695 2387 2684 2389 2671 2387 2639 728 2626 728 2667"/>
                         </Shape>
                         <String CONTENT="The specimen of hide armor now in St. Petersburg is made of ground-"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l36" HPOS="632" VPOS="2695" WIDTH="1780" HEIGHT="71" BASELINE="634 2740 2412 2747" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l36" HPOS="611" VPOS="2680" WIDTH="1780" HEIGHT="71" BASELINE="613 2725 2391 2732" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="632 2753 675 2766 677 2766 680 2766 2410 2760 2412 2747 2408 2708 2330 2714 2297 2701 2295 2701 2293 2701 2187 2714 2161 2701 2159 2701 2156 2701 2154 2701 2152 2701 2133 2717 2031 2717 1970 2701 1968 2701 1966 2701 1964 2701 1942 2714 1873 2701 1871 2701 1868 2701 1842 2714 1814 2699 1812 2699 1810 2699 1808 2699 1806 2699 1786 2714 1628 2714 1578 2699 1576 2699 1574 2699 1511 2712 1489 2699 1487 2699 1485 2699 1483 2699 1481 2699 1437 2712 1366 2699 1364 2699 1362 2699 1323 2712 1260 2699 1258 2699 1256 2699 1225 2712 1117 2712 1093 2697 1091 2697 1089 2697 1087 2697 968 2708 942 2697 939 2697 937 2697 935 2697 933 2697 916 2712 844 2712 788 2697 786 2697 783 2697 781 2697 747 2710 731 2697 729 2697 727 2697 725 2697 723 2697 686 2708 636 2695 634 2740 632 2753"/>
+                            <Polygon POINTS="611 2738 654 2751 656 2751 659 2751 2389 2745 2391 2732 2387 2693 2309 2699 2276 2686 2274 2686 2272 2686 2166 2699 2140 2686 2138 2686 2135 2686 2133 2686 2131 2686 2112 2702 2010 2702 1949 2686 1947 2686 1945 2686 1943 2686 1921 2699 1852 2686 1850 2686 1847 2686 1821 2699 1793 2684 1791 2684 1789 2684 1787 2684 1785 2684 1765 2699 1607 2699 1557 2684 1555 2684 1553 2684 1490 2697 1468 2684 1466 2684 1464 2684 1462 2684 1460 2684 1416 2697 1345 2684 1343 2684 1341 2684 1302 2697 1239 2684 1237 2684 1235 2684 1204 2697 1096 2697 1072 2682 1070 2682 1068 2682 1066 2682 947 2693 921 2682 918 2682 916 2682 914 2682 912 2682 895 2697 823 2697 767 2682 765 2682 762 2682 760 2682 726 2695 710 2682 708 2682 706 2682 704 2682 702 2682 665 2693 615 2680 613 2725 611 2738"/>
                         </Shape>
                         <String CONTENT="seal skin. According to Mr. Hough, the armor in Washington is made of"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l37" HPOS="634" VPOS="2769" WIDTH="1774" HEIGHT="51" BASELINE="636 2801 2408 2808" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l37" HPOS="613" VPOS="2754" WIDTH="1774" HEIGHT="51" BASELINE="615 2786 2387 2793" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2801 634 2814 2403 2820 2408 2808 2408 2773 636 2769 636 2801"/>
+                            <Polygon POINTS="615 2786 613 2799 2382 2805 2387 2793 2387 2758 615 2754 615 2786"/>
                         </Shape>
                         <String CONTENT="sea-lion hide; but I should think rather that it also is made of ground-seal"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l38" HPOS="636" VPOS="2827" WIDTH="1770" HEIGHT="56" BASELINE="638 2857 2406 2868" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l38" HPOS="615" VPOS="2812" WIDTH="1770" HEIGHT="56" BASELINE="617 2842 2385 2853" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="638 2857 636 2872 2401 2883 2406 2868 2403 2838 638 2827 638 2857"/>
+                            <Polygon POINTS="617 2842 615 2857 2380 2868 2385 2853 2382 2823 617 2812 617 2842"/>
                         </Shape>
                         <String CONTENT="skin, because sea-lions are scarce near the shores of the Chukchee Peninsula."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r8" HPOS="635" VPOS="2886" WIDTH="1778" HEIGHT="181" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-204_r8" HPOS="614" VPOS="2871" WIDTH="1778" HEIGHT="181" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="635 2886 2413 2886 2413 3067 635 3067"/>
+                        <Polygon POINTS="614 2871 2392 2871 2392 3052 614 3052"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l39" HPOS="744" VPOS="2890" WIDTH="1666" HEIGHT="60" BASELINE="747 2920 2410 2927" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l39" HPOS="723" VPOS="2875" WIDTH="1666" HEIGHT="60" BASELINE="726 2905 2389 2912" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="747 2920 744 2933 933 2946 935 2946 1840 2940 1877 2950 1879 2950 1881 2950 2408 2940 2410 2927 2408 2896 747 2890 747 2920"/>
+                            <Polygon POINTS="726 2905 723 2918 912 2931 914 2931 1819 2925 1856 2935 1858 2935 1860 2935 2387 2925 2389 2912 2387 2881 726 2875 726 2905"/>
                         </Shape>
                         <String CONTENT="As stated before,⁶ iron armor has of late been very common among the"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l40" HPOS="634" VPOS="2948" WIDTH="1776" HEIGHT="63" BASELINE="636 2979 2410 2985" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l40" HPOS="613" VPOS="2933" WIDTH="1776" HEIGHT="63" BASELINE="615 2964 2389 2970" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 2979 634 2992 658 3005 660 3005 662 3005 1143 2996 1262 3009 1264 3009 1752 2998 1816 3011 1819 3011 2408 2998 2410 2985 2410 2955 636 2948 636 2979"/>
+                            <Polygon POINTS="615 2964 613 2977 637 2990 639 2990 641 2990 1122 2981 1241 2994 1243 2994 1731 2983 1795 2996 1798 2996 2387 2983 2389 2970 2389 2940 615 2933 615 2964"/>
                         </Shape>
                         <String CONTENT="Chukchee as well as among the Koryak. The expedition obtained two sets"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l41" HPOS="634" VPOS="2994" WIDTH="1769" HEIGHT="75" BASELINE="636 3037 2403 3054" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l41" HPOS="613" VPOS="2979" WIDTH="1769" HEIGHT="75" BASELINE="615 3022 2382 3039" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="636 3037 634 3052 2399 3069 2403 3054 2403 3020 2380 3007 2377 3007 2375 3007 2373 3007 2371 3007 2323 3020 2276 3007 2273 3007 2271 3007 2269 3007 2243 3020 2185 3005 2182 3005 2180 3005 2037 3015 1905 3002 1903 3002 1836 3015 1793 3002 1790 3002 1788 3002 1786 3002 1784 3002 1767 3015 1687 3000 1684 3000 1587 3013 1533 3002 1531 3002 1457 3011 1437 2998 1435 2998 1433 2998 1431 2998 1429 2998 1401 3011 1351 2998 1349 2998 1347 2998 1230 3009 1210 2996 1208 2996 1206 2996 1204 2996 1123 3009 1080 2994 1078 2994 1076 2994 1074 2994 1071 2994 1052 3007 1002 2994 1000 2994 998 2994 996 2994 970 3007 877 2996 874 2996 636 3002 636 3037"/>
+                            <Polygon POINTS="615 3022 613 3037 2378 3054 2382 3039 2382 3005 2359 2992 2356 2992 2354 2992 2352 2992 2350 2992 2302 3005 2255 2992 2252 2992 2250 2992 2248 2992 2222 3005 2164 2990 2161 2990 2159 2990 2016 3000 1884 2987 1882 2987 1815 3000 1772 2987 1769 2987 1767 2987 1765 2987 1763 2987 1746 3000 1666 2985 1663 2985 1566 2998 1512 2987 1510 2987 1436 2996 1416 2983 1414 2983 1412 2983 1410 2983 1408 2983 1380 2996 1330 2983 1328 2983 1326 2983 1209 2994 1189 2981 1187 2981 1185 2981 1183 2981 1102 2994 1059 2979 1057 2979 1055 2979 1053 2979 1050 2979 1031 2992 981 2979 979 2979 977 2979 975 2979 949 2992 856 2981 853 2981 615 2987 615 3022"/>
                         </Shape>
                         <String CONTENT="of armor from the Chukchee (Fig. 84, a) and three from the Koryak (Fig. 84, b),"/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-204_r9" HPOS="635" VPOS="3108" WIDTH="1778" HEIGHT="160" TAGREFS="TYPE_3">
+                <TextBlock ID="mz_1-204_r9" HPOS="614" VPOS="3093" WIDTH="1778" HEIGHT="160" TAGREFS="TYPE_3">
 <Shape>
-                        <Polygon POINTS="635 3108 2413 3108 2413 3268 635 3268"/>
+                        <Polygon POINTS="614 3093 2392 3093 2392 3253 614 3253"/>
                     </Shape>
-                    <TextLine ID="mz_1-204_l42" HPOS="744" VPOS="3108" WIDTH="616" HEIGHT="52" BASELINE="747 3137 1360 3145" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l42" HPOS="723" VPOS="3093" WIDTH="616" HEIGHT="52" BASELINE="726 3122 1339 3130" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="747 3137 744 3152 1355 3160 1360 3145 1360 3117 747 3108 747 3137"/>
+                            <Polygon POINTS="726 3122 723 3137 1334 3145 1339 3130 1339 3102 726 3093 726 3122"/>
                         </Shape>
                         <String CONTENT="¹ Ratzel, Plate II, Figs. 5, 6, p. 216."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l43" HPOS="1548" VPOS="3115" WIDTH="550" HEIGHT="48" BASELINE="1550 3143 2098 3147" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l43" HPOS="1527" VPOS="3100" WIDTH="550" HEIGHT="48" BASELINE="1529 3128 2077 3132" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="1550 3143 1548 3158 2094 3163 2098 3147 2096 3119 1550 3115 1550 3143"/>
+                            <Polygon POINTS="1529 3128 1527 3143 2073 3148 2077 3132 2075 3104 1529 3100 1529 3128"/>
                         </Shape>
                         <String CONTENT="² Hough, Armor, Plates 2 and 3."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l44" HPOS="744" VPOS="3152" WIDTH="408" HEIGHT="56" BASELINE="747 3180 1152 3186" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l44" HPOS="723" VPOS="3137" WIDTH="408" HEIGHT="56" BASELINE="726 3165 1131 3171" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="747 3180 744 3193 881 3208 883 3208 1149 3199 1152 3186 1149 3158 747 3152 747 3180"/>
+                            <Polygon POINTS="726 3165 723 3178 860 3193 862 3193 1128 3184 1131 3171 1128 3143 726 3137 726 3165"/>
                         </Shape>
                         <String CONTENT="³ Hough, Armor, p. 634."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l45" HPOS="1557" VPOS="3158" WIDTH="849" HEIGHT="50" BASELINE="1559 3186 2406 3191" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l45" HPOS="1536" VPOS="3143" WIDTH="849" HEIGHT="50" BASELINE="1538 3171 2385 3176" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="1559 3186 1557 3204 2401 3208 2406 3191 2403 3163 1559 3158 1559 3186"/>
+                            <Polygon POINTS="1538 3171 1536 3189 2380 3193 2385 3176 2382 3148 1538 3143 1538 3171"/>
                         </Shape>
                         <String CONTENT="⁴ Bogoras, Chukchee Material Life. Plate XII, Fig. 1."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l46" HPOS="744" VPOS="3191" WIDTH="683" HEIGHT="56" BASELINE="747 3219 1427 3230" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l46" HPOS="723" VPOS="3176" WIDTH="683" HEIGHT="56" BASELINE="726 3204 1406 3215" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="747 3219 744 3236 1422 3247 1427 3230 1424 3202 747 3191 747 3219"/>
+                            <Polygon POINTS="726 3204 723 3221 1401 3232 1406 3215 1403 3187 726 3176 726 3204"/>
                         </Shape>
                         <String CONTENT="⁵ In the Pacific Ocean, near the Equator."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-204_l47" HPOS="1554" VPOS="3204" WIDTH="208" HEIGHT="45" BASELINE="1554 3230 1762 3230" TAGREFS="TYPE_5">
+                    <TextLine ID="mz_1-204_l47" HPOS="1533" VPOS="3189" WIDTH="208" HEIGHT="45" BASELINE="1533 3215 1741 3215" TAGREFS="TYPE_5">
                         <Shape>
-                            <Polygon POINTS="1554 3230 1554 3247 1760 3249 1762 3230 1762 3204 1554 3204 1554 3230"/>
+                            <Polygon POINTS="1533 3215 1533 3232 1739 3234 1741 3215 1741 3189 1533 3189 1533 3215"/>
                         </Shape>
                         <String CONTENT="⁶ See p. 54."/>
                     </TextLine>

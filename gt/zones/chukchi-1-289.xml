@@ -12,26 +12,26 @@
     <OtherTag ID="BT3" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="421" VPOS="606" WIDTH="1778" HEIGHT="95" ID="mz_1-289_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="400" VPOS="591" WIDTH="1778" HEIGHT="95" ID="mz_1-289_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="421 606 2199 606 2199 701 421 701"/>
+            <Polygon POINTS="400 591 2178 591 2178 686 400 686"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="421" VPOS="719" WIDTH="1778" HEIGHT="320" ID="mz_1-289_002" TAGREFS="BT2">
+        <TextBlock HPOS="400" VPOS="704" WIDTH="1778" HEIGHT="320" ID="mz_1-289_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="421 719 2199 719 2199 1039 421 1039"/>
+            <Polygon POINTS="400 704 2178 704 2178 1024 400 1024"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="421" VPOS="2875" WIDTH="1778" HEIGHT="286" ID="mz_1-289_003" TAGREFS="BT2">
+        <TextBlock HPOS="400" VPOS="2860" WIDTH="1778" HEIGHT="286" ID="mz_1-289_003" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="421 2875 2199 2875 2199 3161 421 3161"/>
+            <Polygon POINTS="400 2860 2178 2860 2178 3146 400 3146"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="421" VPOS="3187" WIDTH="1778" HEIGHT="61" ID="mz_1-289_004" TAGREFS="BT3">
+        <TextBlock HPOS="400" VPOS="3172" WIDTH="1778" HEIGHT="61" ID="mz_1-289_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="421 3187 2199 3187 2199 3248 421 3248"/>
+            <Polygon POINTS="400 3172 2178 3172 2178 3233 400 3233"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

@@ -13,26 +13,26 @@
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="384" VPOS="594" WIDTH="1778" HEIGHT="90" ID="mz_1-095_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="363" VPOS="579" WIDTH="1778" HEIGHT="90" ID="mz_1-095_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="384 594 2162 594 2162 684 384 684"/>
+            <Polygon POINTS="363 579 2141 579 2141 669 363 669"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="384" VPOS="709" WIDTH="1778" HEIGHT="372" ID="mz_1-095_002" TAGREFS="BT2">
+        <TextBlock HPOS="363" VPOS="694" WIDTH="1778" HEIGHT="372" ID="mz_1-095_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="384 709 2162 709 2162 1081 384 1081"/>
+            <Polygon POINTS="363 694 2141 694 2141 1066 363 1066"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="384" VPOS="1081" WIDTH="1778" HEIGHT="426" ID="mz_1-095_003" TAGREFS="BT3">
+        <TextBlock HPOS="363" VPOS="1066" WIDTH="1778" HEIGHT="426" ID="mz_1-095_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="384 1081 2162 1081 2162 1507 384 1507"/>
+            <Polygon POINTS="363 1066 2141 1066 2141 1492 363 1492"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="384" VPOS="1537" WIDTH="1778" HEIGHT="189" ID="mz_1-095_004" TAGREFS="BT4">
+        <TextBlock HPOS="363" VPOS="1522" WIDTH="1778" HEIGHT="189" ID="mz_1-095_004" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="384 1537 2162 1537 2162 1726 384 1726"/>
+            <Polygon POINTS="363 1522 2141 1522 2141 1711 363 1711"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

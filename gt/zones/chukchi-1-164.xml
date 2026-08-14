@@ -12,31 +12,31 @@
     <OtherTag ID="BT3" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="612" VPOS="615" WIDTH="1778" HEIGHT="90" ID="mz_1-164_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="591" VPOS="600" WIDTH="1778" HEIGHT="90" ID="mz_1-164_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="612 615 2390 615 2390 705 612 705"/>
+            <Polygon POINTS="591 600 2369 600 2369 690 591 690"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="612" VPOS="730" WIDTH="1778" HEIGHT="1021" ID="mz_1-164_002" TAGREFS="BT2">
+        <TextBlock HPOS="591" VPOS="715" WIDTH="1778" HEIGHT="1021" ID="mz_1-164_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="612 730 2390 730 2390 1751 612 1751"/>
+            <Polygon POINTS="591 715 2369 715 2369 1736 591 1736"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="612" VPOS="1751" WIDTH="1778" HEIGHT="546" ID="mz_1-164_003" TAGREFS="BT2">
+        <TextBlock HPOS="591" VPOS="1736" WIDTH="1778" HEIGHT="546" ID="mz_1-164_003" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="612 1751 2390 1751 2390 2297 612 2297"/>
+            <Polygon POINTS="591 1736 2369 1736 2369 2282 591 2282"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="612" VPOS="2297" WIDTH="1778" HEIGHT="849" ID="mz_1-164_004" TAGREFS="BT2">
+        <TextBlock HPOS="591" VPOS="2282" WIDTH="1778" HEIGHT="849" ID="mz_1-164_004" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="612 2297 2390 2297 2390 3146 612 3146"/>
+            <Polygon POINTS="591 2282 2369 2282 2369 3131 591 3131"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="612" VPOS="3159" WIDTH="1778" HEIGHT="106" ID="mz_1-164_005" TAGREFS="BT3">
+        <TextBlock HPOS="591" VPOS="3144" WIDTH="1778" HEIGHT="106" ID="mz_1-164_005" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="612 3159 2390 3159 2390 3265 612 3265"/>
+            <Polygon POINTS="591 3144 2369 3144 2369 3250 591 3250"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

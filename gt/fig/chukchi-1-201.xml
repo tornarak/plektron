@@ -11,26 +11,26 @@
     <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="408" VPOS="800" WIDTH="1704" HEIGHT="1167" ID="fig_1-201_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="387" VPOS="777" WIDTH="1704" HEIGHT="1175" ID="fig_1-201_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="408 800 2112 800 2112 1967 408 1967"/>
+            <Polygon POINTS="387 777 2091 777 2091 1952 387 1952"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="850" VPOS="1957" WIDTH="854" HEIGHT="70" ID="fig_1-201_002" TAGREFS="BT2">
+        <TextBlock HPOS="829" VPOS="1942" WIDTH="854" HEIGHT="70" ID="fig_1-201_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="850 1957 1704 1957 1704 2027 850 2027"/>
+            <Polygon POINTS="829 1942 1683 1942 1683 2012 829 2012"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="430" VPOS="2063" WIDTH="1716" HEIGHT="856" ID="fig_1-201_003" TAGREFS="BT1">
+        <TextBlock HPOS="407" VPOS="2048" WIDTH="1718" HEIGHT="856" ID="fig_1-201_003" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="430 2063 2146 2063 2146 2919 430 2919"/>
+            <Polygon POINTS="407 2048 2125 2048 2125 2904 407 2904"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="466" VPOS="2919" WIDTH="1670" HEIGHT="112" ID="fig_1-201_004" TAGREFS="BT2">
+        <TextBlock HPOS="445" VPOS="2904" WIDTH="1670" HEIGHT="112" ID="fig_1-201_004" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="466 2919 2136 2919 2136 3031 466 3031"/>
+            <Polygon POINTS="445 2904 2115 2904 2115 3016 445 3016"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

@@ -12,26 +12,26 @@
     <OtherTag ID="BT3" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="518" VPOS="686" WIDTH="1782" HEIGHT="94" ID="mz_3-146_001" TAGREFS="BT1">
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="553" VPOS="695" WIDTH="1782" HEIGHT="94" ID="mz_3-146_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="518 686 2300 686 2300 780 518 780"/>
+            <Polygon POINTS="553 695 2335 695 2335 789 553 789"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="518" VPOS="803" WIDTH="1782" HEIGHT="195" ID="mz_3-146_002" TAGREFS="BT2">
+        <TextBlock HPOS="553" VPOS="812" WIDTH="1782" HEIGHT="195" ID="mz_3-146_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="518 803 2300 803 2300 998 518 998"/>
+            <Polygon POINTS="553 812 2335 812 2335 1007 553 1007"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="518" VPOS="1026" WIDTH="1782" HEIGHT="2028" ID="mz_3-146_003" TAGREFS="BT1">
+        <TextBlock HPOS="553" VPOS="1035" WIDTH="1782" HEIGHT="2028" ID="mz_3-146_003" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="518 1026 2300 1026 2300 3054 518 3054"/>
+            <Polygon POINTS="553 1035 2335 1035 2335 3063 553 3063"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="518" VPOS="3052" WIDTH="1782" HEIGHT="67" ID="mz_3-146_004" TAGREFS="BT3">
+        <TextBlock HPOS="553" VPOS="3061" WIDTH="1782" HEIGHT="67" ID="mz_3-146_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="518 3052 2300 3052 2300 3119 518 3119"/>
+            <Polygon POINTS="553 3061 2335 3061 2335 3128 553 3128"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

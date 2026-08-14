@@ -11,21 +11,21 @@
     <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="726" VPOS="850" WIDTH="1546" HEIGHT="568" ID="fig_1-208_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="705" VPOS="835" WIDTH="1546" HEIGHT="568" ID="fig_1-208_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="726 850 2272 850 2272 1418 726 1418"/>
+            <Polygon POINTS="705 835 2251 835 2251 1403 705 1403"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="614" VPOS="1484" WIDTH="588" HEIGHT="523" ID="fig_1-208_002" TAGREFS="BT1">
+        <TextBlock HPOS="589" VPOS="1469" WIDTH="596" HEIGHT="523" ID="fig_1-208_002" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="614 1484 1202 1484 1202 2007 614 2007"/>
+            <Polygon POINTS="589 1469 1185 1469 1185 1992 589 1992"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="598" VPOS="2023" WIDTH="590" HEIGHT="268" ID="fig_1-208_003" TAGREFS="BT2">
+        <TextBlock HPOS="577" VPOS="2008" WIDTH="590" HEIGHT="268" ID="fig_1-208_003" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="598 2023 1188 2023 1188 2291 598 2291"/>
+            <Polygon POINTS="577 2008 1167 2008 1167 2276 577 2276"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

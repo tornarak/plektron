@@ -11,16 +11,16 @@
     <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="1252" VPOS="1478" WIDTH="876" HEIGHT="497" ID="fig_1-183_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="1231" VPOS="1460" WIDTH="876" HEIGHT="500" ID="fig_1-183_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="1252 1478 2128 1478 2128 1975 1252 1975"/>
+            <Polygon POINTS="1231 1460 2107 1460 2107 1960 1231 1960"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1234" VPOS="1989" WIDTH="940" HEIGHT="154" ID="fig_1-183_002" TAGREFS="BT2">
+        <TextBlock HPOS="1213" VPOS="1974" WIDTH="940" HEIGHT="154" ID="fig_1-183_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="1234 1989 2174 1989 2174 2143 1234 2143"/>
+            <Polygon POINTS="1213 1974 2153 1974 2153 2128 1213 2128"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

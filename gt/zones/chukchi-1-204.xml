@@ -13,51 +13,51 @@
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="635" VPOS="596" WIDTH="1778" HEIGHT="90" ID="mz_1-204_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="614" VPOS="581" WIDTH="1778" HEIGHT="90" ID="mz_1-204_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="635 596 2413 596 2413 686 635 686"/>
+            <Polygon POINTS="614 581 2392 581 2392 671 614 671"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="711" WIDTH="1778" HEIGHT="316" ID="mz_1-204_002" TAGREFS="BT2">
+        <TextBlock HPOS="614" VPOS="696" WIDTH="1778" HEIGHT="316" ID="mz_1-204_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="635 711 2413 711 2413 1027 635 1027"/>
+            <Polygon POINTS="614 696 2392 696 2392 1012 614 1012"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="1027" WIDTH="1778" HEIGHT="892" ID="mz_1-204_003" TAGREFS="BT3">
+        <TextBlock HPOS="614" VPOS="1012" WIDTH="1778" HEIGHT="892" ID="mz_1-204_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="635 1027 2413 1027 2413 1919 635 1919"/>
+            <Polygon POINTS="614 1012 2392 1012 2392 1904 614 1904"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="1919" WIDTH="1778" HEIGHT="246" ID="mz_1-204_004" TAGREFS="BT3">
+        <TextBlock HPOS="614" VPOS="1904" WIDTH="1778" HEIGHT="246" ID="mz_1-204_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="635 1919 2413 1919 2413 2165 635 2165"/>
+            <Polygon POINTS="614 1904 2392 1904 2392 2150 614 2150"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="2165" WIDTH="1778" HEIGHT="295" ID="mz_1-204_005" TAGREFS="BT3">
+        <TextBlock HPOS="614" VPOS="2150" WIDTH="1778" HEIGHT="295" ID="mz_1-204_005" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="635 2165 2413 2165 2413 2460 635 2460"/>
+            <Polygon POINTS="614 2150 2392 2150 2392 2445 614 2445"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="2460" WIDTH="1778" HEIGHT="184" ID="mz_1-204_006" TAGREFS="BT3">
+        <TextBlock HPOS="614" VPOS="2445" WIDTH="1778" HEIGHT="184" ID="mz_1-204_006" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="635 2460 2413 2460 2413 2644 635 2644"/>
+            <Polygon POINTS="614 2445 2392 2445 2392 2629 614 2629"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="2644" WIDTH="1778" HEIGHT="242" ID="mz_1-204_007" TAGREFS="BT3">
+        <TextBlock HPOS="614" VPOS="2629" WIDTH="1778" HEIGHT="242" ID="mz_1-204_007" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="635 2644 2413 2644 2413 2886 635 2886"/>
+            <Polygon POINTS="614 2629 2392 2629 2392 2871 614 2871"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="2886" WIDTH="1778" HEIGHT="181" ID="mz_1-204_008" TAGREFS="BT3">
+        <TextBlock HPOS="614" VPOS="2871" WIDTH="1778" HEIGHT="181" ID="mz_1-204_008" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="635 2886 2413 2886 2413 3067 635 3067"/>
+            <Polygon POINTS="614 2871 2392 2871 2392 3052 614 3052"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="635" VPOS="3108" WIDTH="1778" HEIGHT="160" ID="mz_1-204_009" TAGREFS="BT4">
+        <TextBlock HPOS="614" VPOS="3093" WIDTH="1778" HEIGHT="160" ID="mz_1-204_009" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="635 3108 2413 3108 2413 3268 635 3268"/>
+            <Polygon POINTS="614 3093 2392 3093 2392 3253 614 3253"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

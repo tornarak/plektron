@@ -13,26 +13,26 @@
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="589" VPOS="437" WIDTH="1782" HEIGHT="93" ID="mz_3-132_001" TAGREFS="BT1">
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="624" VPOS="446" WIDTH="1782" HEIGHT="93" ID="mz_3-132_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="589 437 2371 437 2371 530 589 530"/>
+            <Polygon POINTS="624 446 2406 446 2406 539 624 539"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="589" VPOS="546" WIDTH="1782" HEIGHT="140" ID="mz_3-132_002" TAGREFS="BT2">
+        <TextBlock HPOS="624" VPOS="555" WIDTH="1782" HEIGHT="140" ID="mz_3-132_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="589 546 2371 546 2371 686 589 686"/>
+            <Polygon POINTS="624 555 2406 555 2406 695 624 695"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="589" VPOS="694" WIDTH="1782" HEIGHT="2222" ID="mz_3-132_003" TAGREFS="BT3">
+        <TextBlock HPOS="624" VPOS="703" WIDTH="1782" HEIGHT="2222" ID="mz_3-132_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="589 694 2371 694 2371 2916 589 2916"/>
+            <Polygon POINTS="624 703 2406 703 2406 2925 624 2925"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="589" VPOS="2939" WIDTH="1782" HEIGHT="148" ID="mz_3-132_004" TAGREFS="BT4">
+        <TextBlock HPOS="624" VPOS="2948" WIDTH="1782" HEIGHT="148" ID="mz_3-132_004" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="589 2939 2371 2939 2371 3087 589 3087"/>
+            <Polygon POINTS="624 2948 2406 2948 2406 3096 624 3096"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

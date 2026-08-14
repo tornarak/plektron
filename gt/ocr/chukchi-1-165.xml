@@ -31,127 +31,127 @@
         <OtherTag DESCRIPTION="" ID="TYPE_4" TYPE="type" LABEL="default"/>
     </Tags>
     <Layout>
-        <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="page_0">
-            <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-                <TextBlock ID="mz_1-165_r1" HPOS="389" VPOS="612" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
+        <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="page_0">
+            <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+                <TextBlock ID="mz_1-165_r1" HPOS="368" VPOS="597" WIDTH="1778" HEIGHT="90" TAGREFS="TYPE_3">
 <Shape>
-                        <Polygon POINTS="389 612 2167 612 2167 702 389 702"/>
+                        <Polygon POINTS="368 597 2146 597 2146 687 368 687"/>
                     </Shape>
-                    <TextLine ID="mz_1-165_l1" HPOS="963" VPOS="623" WIDTH="620" HEIGHT="56" BASELINE="965 660 1583 664" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l1" HPOS="942" VPOS="608" WIDTH="620" HEIGHT="56" BASELINE="944 645 1562 649" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="1574 625 965 623 965 660 963 675 1578 679 1583 664 1580 638 1574 625"/>
+                            <Polygon POINTS="1553 610 944 608 944 645 942 660 1557 664 1562 649 1559 623 1553 610"/>
                         </Shape>
                         <String CONTENT="BOGORAS, THE CHUKCHEE."/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l2" HPOS="2063" VPOS="625" WIDTH="80" HEIGHT="63" BASELINE="2068 671 2143 666" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l2" HPOS="2042" VPOS="610" WIDTH="80" HEIGHT="63" BASELINE="2047 656 2122 651" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="2068 671 2068 684 2141 688 2143 666 2137 625 2063 632 2068 671"/>
+                            <Polygon POINTS="2047 656 2047 669 2120 673 2122 651 2116 610 2042 617 2047 656"/>
                         </Shape>
                         <String CONTENT="125"/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-165_r2" HPOS="389" VPOS="727" WIDTH="1778" HEIGHT="308" TAGREFS="TYPE_1">
+                <TextBlock ID="mz_1-165_r2" HPOS="368" VPOS="712" WIDTH="1778" HEIGHT="308" TAGREFS="TYPE_1">
 <Shape>
-                        <Polygon POINTS="389 727 2167 727 2167 1035 389 1035"/>
+                        <Polygon POINTS="368 712 2146 712 2146 1020 368 1020"/>
                     </Shape>
-                    <TextLine ID="mz_1-165_l3" HPOS="387" VPOS="725" WIDTH="1774" HEIGHT="67" BASELINE="389 772 2161 766" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l3" HPOS="366" VPOS="710" WIDTH="1774" HEIGHT="67" BASELINE="368 757 2140 751" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="647 731 625 731 604 731 582 731 560 731 539 731 517 731 495 733 474 733 452 733 430 733 409 733 402 733 387 740 389 772 389 792 2159 783 2161 766 2156 736 1578 725 1576 725 1574 725 1572 725 1559 736 654 729 647 731"/>
+                            <Polygon POINTS="626 716 604 716 583 716 561 716 539 716 518 716 496 716 474 718 453 718 431 718 409 718 388 718 381 718 366 725 368 757 368 777 2138 768 2140 751 2135 721 1557 710 1555 710 1553 710 1551 710 1538 721 633 714 626 716"/>
                         </Shape>
                         <String CONTENT="plunge down head foremost; but instead of diving, it lands in the net, where"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l4" HPOS="387" VPOS="785" WIDTH="1769" HEIGHT="65" BASELINE="389 833 2156 829" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l4" HPOS="366" VPOS="770" WIDTH="1769" HEIGHT="65" BASELINE="368 818 2135 814" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="2148 792 2135 785 2133 785 2130 785 2128 785 2126 785 2096 796 2055 785 2053 785 2050 785 2048 785 2016 796 1923 785 1920 785 1918 785 1894 796 1812 785 1810 785 1747 796 1684 785 1682 785 1680 785 1635 796 1533 785 1531 785 1528 785 1500 796 1461 785 1459 785 1457 785 1269 798 1227 788 1225 788 1223 788 1134 801 872 801 840 788 838 788 835 788 833 788 803 798 768 788 766 788 764 788 387 794 389 833 389 846 2152 850 2156 829 2154 814 2148 792"/>
+                            <Polygon POINTS="2127 777 2114 770 2112 770 2109 770 2107 770 2105 770 2075 781 2034 770 2032 770 2029 770 2027 770 1995 781 1902 770 1899 770 1897 770 1873 781 1791 770 1789 770 1726 781 1663 770 1661 770 1659 770 1614 781 1512 770 1510 770 1507 770 1479 781 1440 770 1438 770 1436 770 1248 783 1206 773 1204 773 1202 773 1113 786 851 786 819 773 817 773 814 773 812 773 782 783 747 773 745 773 743 773 366 779 368 818 368 831 2131 835 2135 814 2133 799 2127 777"/>
                         </Shape>
                         <String CONTENT="its flippers easily become entangled, and it is drowned. Often the animal,"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l5" HPOS="387" VPOS="846" WIDTH="1772" HEIGHT="58" BASELINE="389 891 2159 887" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l5" HPOS="366" VPOS="831" WIDTH="1772" HEIGHT="58" BASELINE="368 876 2138 872" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="389 891 389 904 2156 900 2159 887 2156 859 2111 846 2109 846 2107 846 2105 846 2076 857 1786 846 1784 846 1695 857 1663 846 1661 846 1658 846 1656 846 1630 857 1585 846 1583 846 1580 846 1459 857 1392 846 1390 846 1388 846 1386 846 1368 857 1340 846 1338 846 1336 846 1271 859 1230 848 1227 848 1225 848 1141 859 1033 848 1030 848 1028 848 1000 861 699 861 636 848 634 848 632 848 591 859 537 848 534 848 532 848 493 859 430 848 428 848 426 848 387 861 389 891"/>
+                            <Polygon POINTS="368 876 368 889 2135 885 2138 872 2135 844 2090 831 2088 831 2086 831 2084 831 2055 842 1765 831 1763 831 1674 842 1642 831 1640 831 1637 831 1635 831 1609 842 1564 831 1562 831 1559 831 1438 842 1371 831 1369 831 1367 831 1365 831 1347 842 1319 831 1317 831 1315 831 1250 844 1209 833 1206 833 1204 833 1120 844 1012 833 1009 833 1007 833 979 846 678 846 615 833 613 833 611 833 570 844 516 833 513 833 511 833 472 844 409 833 407 833 405 833 366 846 368 876"/>
                         </Shape>
                         <String CONTENT="with the net, comes out of the hole and dies on the ice. This net can be"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l6" HPOS="387" VPOS="907" WIDTH="1774" HEIGHT="60" BASELINE="389 952 2161 948" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l6" HPOS="366" VPOS="892" WIDTH="1774" HEIGHT="60" BASELINE="368 937 2140 933" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="389 952 389 967 2159 963 2161 948 2156 917 1277 907 1275 907 1273 907 1271 907 1258 917 474 909 472 909 387 920 389 952"/>
+                            <Polygon POINTS="368 937 368 952 2138 948 2140 933 2135 902 1256 892 1254 892 1252 892 1250 892 1237 902 453 894 451 894 366 905 368 937"/>
                         </Shape>
                         <String CONTENT="used only in the spring, when the ice is several feet thick and blow-holes are"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l7" HPOS="391" VPOS="969" WIDTH="336" HEIGHT="63" BASELINE="391 1011 727 1011" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l7" HPOS="370" VPOS="954" WIDTH="336" HEIGHT="63" BASELINE="370 996 706 996" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="391 1011 391 1032 727 1032 727 1011 727 982 391 969 391 1011"/>
+                            <Polygon POINTS="370 996 370 1017 706 1017 706 996 706 967 370 954 370 996"/>
                         </Shape>
                         <String CONTENT="less numerous."/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-165_r3" HPOS="389" VPOS="1035" WIDTH="1778" HEIGHT="63" TAGREFS="TYPE_2">
+                <TextBlock ID="mz_1-165_r3" HPOS="368" VPOS="1020" WIDTH="1778" HEIGHT="63" TAGREFS="TYPE_2">
 <Shape>
-                        <Polygon POINTS="389 1035 2167 1035 2167 1098 389 1098"/>
+                        <Polygon POINTS="368 1020 2146 1020 2146 1083 368 1083"/>
                     </Shape>
-                    <TextLine ID="mz_1-165_l8" HPOS="502" VPOS="1024" WIDTH="1659" HEIGHT="71" BASELINE="504 1071 2161 1065" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l8" HPOS="481" VPOS="1009" WIDTH="1659" HEIGHT="71" BASELINE="483 1056 2140 1050" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="504 1071 504 1086 1602 1095 1604 1095 1606 1095 1650 1084 2143 1093 2146 1093 2148 1093 2150 1093 2161 1082 2161 1065 2159 1037 2111 1024 2109 1024 2107 1024 2105 1024 2079 1034 2066 1024 2063 1024 2061 1024 2059 1024 1949 1034 1923 1024 1920 1024 1918 1024 1916 1024 1914 1024 1897 1037 1784 1037 1684 1024 1682 1024 1589 1037 1554 1026 1552 1026 1550 1026 1548 1026 1518 1037 1383 1026 1381 1026 1379 1026 1351 1037 985 1028 983 1028 981 1028 978 1028 963 1039 502 1030 504 1071"/>
+                            <Polygon POINTS="483 1056 483 1071 1581 1080 1583 1080 1585 1080 1629 1069 2122 1078 2125 1078 2127 1078 2129 1078 2140 1067 2140 1050 2138 1022 2090 1009 2088 1009 2086 1009 2084 1009 2058 1019 2045 1009 2042 1009 2040 1009 2038 1009 1928 1019 1902 1009 1899 1009 1897 1009 1895 1009 1893 1009 1876 1022 1763 1022 1663 1009 1661 1009 1568 1022 1533 1011 1531 1011 1529 1011 1527 1011 1497 1022 1362 1011 1360 1011 1358 1011 1330 1022 964 1013 962 1013 960 1013 957 1013 942 1024 481 1015 483 1056"/>
                         </Shape>
                         <String CONTENT="The more common kind of seal-net has a shape similar to that of the"/>
                     </TextLine>
 </TextBlock>
-                <TextBlock ID="mz_1-165_r4" HPOS="389" VPOS="2883" WIDTH="1778" HEIGHT="382" TAGREFS="TYPE_1">
+                <TextBlock ID="mz_1-165_r4" HPOS="368" VPOS="2868" WIDTH="1778" HEIGHT="382" TAGREFS="TYPE_1">
 <Shape>
-                        <Polygon POINTS="389 2883 2167 2883 2167 3265 389 3265"/>
+                        <Polygon POINTS="368 2868 2146 2868 2146 3250 368 3250"/>
                     </Shape>
-                    <TextLine ID="mz_1-165_l9" HPOS="389" VPOS="2879" WIDTH="1772" HEIGHT="76" BASELINE="391 2931 2161 2922" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l9" HPOS="368" VPOS="2864" WIDTH="1772" HEIGHT="76" BASELINE="370 2916 2140 2907" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="2100 2881 2079 2881 2068 2879 1829 2890 1741 2879 1739 2879 1736 2879 1734 2879 1713 2892 1570 2881 1567 2881 1565 2881 1539 2892 1513 2881 1511 2881 1509 2881 1507 2881 1485 2892 1217 2883 1214 2883 1100 2894 1048 2883 1046 2883 1043 2883 1020 2894 946 2883 944 2883 942 2883 896 2894 853 2883 851 2883 848 2883 846 2883 844 2883 820 2896 476 2885 474 2885 389 2898 391 2931 391 2942 489 2955 491 2955 569 2944 879 2953 881 2953 883 2953 885 2953 903 2942 1273 2950 1275 2950 1277 2950 1279 2950 1295 2940 1658 2950 1661 2950 1663 2950 1702 2940 1825 2948 1827 2948 1829 2948 1832 2948 1847 2937 1866 2948 1868 2948 1871 2950 1998 2950 1998 2948 2001 2948 2003 2948 2018 2937 2137 2946 2139 2946 2141 2946 2143 2946 2161 2935 2161 2922 2156 2892 2113 2881 2100 2881"/>
+                            <Polygon POINTS="2079 2866 2058 2866 2047 2864 1808 2875 1720 2864 1718 2864 1715 2864 1713 2864 1692 2877 1549 2866 1546 2866 1544 2866 1518 2877 1492 2866 1490 2866 1488 2866 1486 2866 1464 2877 1196 2868 1193 2868 1079 2879 1027 2868 1025 2868 1022 2868 999 2879 925 2868 923 2868 921 2868 875 2879 832 2868 830 2868 827 2868 825 2868 823 2868 799 2881 455 2870 453 2870 368 2883 370 2916 370 2927 468 2940 470 2940 548 2929 858 2938 860 2938 862 2938 864 2938 882 2927 1252 2935 1254 2935 1256 2935 1258 2935 1274 2925 1637 2935 1640 2935 1642 2935 1681 2925 1804 2933 1806 2933 1808 2933 1811 2933 1826 2922 1845 2933 1847 2933 1850 2935 1977 2935 1977 2933 1980 2933 1982 2933 1997 2922 2116 2931 2118 2931 2120 2931 2122 2931 2140 2920 2140 2907 2135 2877 2092 2866 2079 2866"/>
                         </Shape>
                         <String CONTENT="straight fish-net, only that its meshes are much larger (Fig. 43, b). The"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l10" HPOS="394" VPOS="2946" WIDTH="1765" HEIGHT="59" BASELINE="396 2987 2159 2981" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l10" HPOS="373" VPOS="2931" WIDTH="1765" HEIGHT="59" BASELINE="375 2972 2138 2966" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="396 2987 396 3005 2156 2998 2159 2981 2154 2953 493 2946 491 2946 394 2957 396 2987"/>
+                            <Polygon POINTS="375 2972 375 2990 2135 2983 2138 2966 2133 2938 472 2931 470 2931 373 2942 375 2972"/>
                         </Shape>
                         <String CONTENT="specimen obtained is twenty-seven meshes long and ten meshes high, each mesh"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l11" HPOS="394" VPOS="3000" WIDTH="1758" HEIGHT="63" BASELINE="396 3050 2152 3041" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l11" HPOS="373" VPOS="2985" WIDTH="1758" HEIGHT="63" BASELINE="375 3035 2131 3026" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="396 3050 396 3063 2150 3061 2152 3041 2148 3011 1721 3000 1719 3000 1717 3000 1715 3000 1702 3011 1418 3002 1416 3002 394 3013 396 3050"/>
+                            <Polygon POINTS="375 3035 375 3048 2129 3046 2131 3026 2127 2996 1700 2985 1698 2985 1696 2985 1694 2985 1681 2996 1397 2987 1395 2987 373 2998 375 3035"/>
                         </Shape>
                         <String CONTENT="being six inches square. It has large wooden buoys and stone sinkers. It"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l12" HPOS="394" VPOS="3063" WIDTH="1765" HEIGHT="61" BASELINE="396 3111 2159 3100" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l12" HPOS="373" VPOS="3048" WIDTH="1765" HEIGHT="61" BASELINE="375 3096 2138 3085" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="396 3111 396 3124 2156 3117 2159 3100 2152 3063 394 3072 396 3111"/>
+                            <Polygon POINTS="375 3096 375 3109 2135 3102 2138 3085 2131 3048 373 3057 375 3096"/>
                         </Shape>
                         <String CONTENT="is set under the ice between the breathing-holes or along the cracks, and"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l13" HPOS="391" VPOS="3119" WIDTH="1768" HEIGHT="65" BASELINE="394 3169 2159 3160" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l13" HPOS="370" VPOS="3104" WIDTH="1768" HEIGHT="65" BASELINE="373 3154 2138 3145" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="394 3169 394 3184 2156 3176 2159 3160 2154 3130 1717 3119 1715 3119 1713 3119 1710 3119 1695 3130 848 3124 846 3124 844 3124 842 3124 827 3134 417 3126 415 3126 413 3126 391 3134 394 3169"/>
+                            <Polygon POINTS="373 3154 373 3169 2135 3161 2138 3145 2133 3115 1696 3104 1694 3104 1692 3104 1689 3104 1674 3115 827 3109 825 3109 823 3109 821 3109 806 3119 396 3111 394 3111 392 3111 370 3119 373 3154"/>
                         </Shape>
                         <String CONTENT="during the summer in those places to which seals frequently resort. Thus, in"/>
                     </TextLine>
 
-                    <TextLine ID="mz_1-165_l14" HPOS="391" VPOS="3182" WIDTH="1768" HEIGHT="65" BASELINE="394 3228 2159 3217" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_l14" HPOS="370" VPOS="3167" WIDTH="1768" HEIGHT="65" BASELINE="373 3213 2138 3202" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="394 3228 394 3247 2156 3238 2159 3217 2154 3191 1459 3182 1457 3182 1455 3182 1429 3193 790 3186 788 3186 786 3186 740 3197 411 3189 409 3189 407 3189 404 3189 391 3195 394 3228"/>
+                            <Polygon POINTS="373 3213 373 3232 2135 3223 2138 3202 2133 3176 1438 3167 1436 3167 1434 3167 1408 3178 769 3171 767 3171 765 3171 719 3182 390 3174 388 3174 386 3174 383 3174 370 3180 373 3213"/>
                         </Shape>
                         <String CONTENT="the small bay of ᴇˊnmɪlɪn, near the village of the same name, the nets are"/>
                     </TextLine>
 </TextBlock>
                 <TextBlock ID="textblock_5">
                     
-                    <TextLine ID="mz_1-165_unzoned15" HPOS="1271" VPOS="1110" WIDTH="76" HEIGHT="54" BASELINE="1271 1136 1347 1136" TAGREFS="TYPE_4">
+                    <TextLine ID="mz_1-165_unzoned15" HPOS="1250" VPOS="1095" WIDTH="76" HEIGHT="54" BASELINE="1250 1121 1326 1121" TAGREFS="TYPE_4">
                         <Shape>
-                            <Polygon POINTS="1271 1136 1271 1164 1347 1164 1347 1136 1347 1110 1271 1110 1271 1136"/>
+                            <Polygon POINTS="1250 1121 1250 1149 1326 1149 1326 1121 1326 1095 1250 1095 1250 1121"/>
                         </Shape>
                         <String CONTENT=""/>
                     </TextLine>

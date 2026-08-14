@@ -11,26 +11,26 @@
     <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="632" VPOS="804" WIDTH="918" HEIGHT="1026" ID="fig_1-314_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="611" VPOS="788" WIDTH="919" HEIGHT="1027" ID="fig_1-314_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="632 804 1550 804 1550 1830 632 1830"/>
+            <Polygon POINTS="611 788 1530 788 1530 1815 611 1815"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="614" VPOS="1836" WIDTH="942" HEIGHT="66" ID="fig_1-314_002" TAGREFS="BT2">
+        <TextBlock HPOS="593" VPOS="1821" WIDTH="942" HEIGHT="66" ID="fig_1-314_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="614 1836 1556 1836 1556 1902 614 1902"/>
+            <Polygon POINTS="593 1821 1535 1821 1535 1887 593 1887"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="622" VPOS="1995" WIDTH="548" HEIGHT="930" ID="fig_1-314_003" TAGREFS="BT1">
+        <TextBlock HPOS="601" VPOS="1979" WIDTH="548" HEIGHT="931" ID="fig_1-314_003" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="622 1995 1170 1995 1170 2925 622 2925"/>
+            <Polygon POINTS="601 1979 1149 1979 1149 2910 601 2910"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="666" VPOS="2935" WIDTH="482" HEIGHT="110" ID="fig_1-314_004" TAGREFS="BT2">
+        <TextBlock HPOS="645" VPOS="2920" WIDTH="482" HEIGHT="110" ID="fig_1-314_004" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="666 2935 1148 2935 1148 3045 666 3045"/>
+            <Polygon POINTS="645 2920 1127 2920 1127 3030 645 3030"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

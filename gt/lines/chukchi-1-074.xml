@@ -1,17 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <alto xmlns="http://www.loc.gov/standards/alto/ns-v4#">
   <Layout>
-    <Page ID="corr_page_1-074" PHYSICAL_IMG_NR="1" WIDTH="2824" HEIGHT="3897">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock ID="corr_1-074-620_block" HPOS="737" VPOS="620" WIDTH="67" HEIGHT="61">
+    <Page ID="corr_page_1-074" PHYSICAL_IMG_NR="1" WIDTH="2781" HEIGHT="3866">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock ID="corr_1-074-620_block" HPOS="716" VPOS="605" WIDTH="67" HEIGHT="61">
           <Shape>
-            <Polygon POINTS="737 620 804 620 804 681 737 681"/>
+            <Polygon POINTS="716 605 783 605 783 666 716 666"/>
           </Shape>
-          <TextLine ID="corr_1-074-620" BASELINE="737 681 804 681" HPOS="737" VPOS="620" WIDTH="67" HEIGHT="61">
+          <TextLine ID="corr_1-074-620" BASELINE="716 666 783 666" HPOS="716" VPOS="605" WIDTH="67" HEIGHT="61">
             <Shape>
-              <Polygon POINTS="737 620 804 620 804 681 737 681"/>
+              <Polygon POINTS="716 605 783 605 783 666 716 666"/>
             </Shape>
-            <String CONTENT="52" HPOS="737" VPOS="620" WIDTH="67" HEIGHT="61"/>
+            <String CONTENT="52" HPOS="716" VPOS="605" WIDTH="67" HEIGHT="61"/>
           </TextLine>
         </TextBlock>
       </PrintSpace>

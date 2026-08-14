@@ -13,41 +13,41 @@
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="513" VPOS="445" WIDTH="1782" HEIGHT="90" ID="mz_3-116_001" TAGREFS="BT1">
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="548" VPOS="454" WIDTH="1782" HEIGHT="90" ID="mz_3-116_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="513 445 2295 445 2295 535 513 535"/>
+            <Polygon POINTS="548 454 2330 454 2330 544 548 544"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="513" VPOS="560" WIDTH="1782" HEIGHT="165" ID="mz_3-116_002" TAGREFS="BT2">
+        <TextBlock HPOS="548" VPOS="569" WIDTH="1782" HEIGHT="165" ID="mz_3-116_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="513 560 2295 560 2295 725 513 725"/>
+            <Polygon POINTS="548 569 2330 569 2330 734 548 734"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="513" VPOS="738" WIDTH="1782" HEIGHT="611" ID="mz_3-116_003" TAGREFS="BT3">
+        <TextBlock HPOS="548" VPOS="747" WIDTH="1782" HEIGHT="611" ID="mz_3-116_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="513 738 2295 738 2295 1349 513 1349"/>
+            <Polygon POINTS="548 747 2330 747 2330 1358 548 1358"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="513" VPOS="1349" WIDTH="1782" HEIGHT="415" ID="mz_3-116_004" TAGREFS="BT3">
+        <TextBlock HPOS="548" VPOS="1358" WIDTH="1782" HEIGHT="415" ID="mz_3-116_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="513 1349 2295 1349 2295 1764 513 1764"/>
+            <Polygon POINTS="548 1358 2330 1358 2330 1773 548 1773"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="513" VPOS="1764" WIDTH="1782" HEIGHT="1026" ID="mz_3-116_005" TAGREFS="BT3">
+        <TextBlock HPOS="548" VPOS="1773" WIDTH="1782" HEIGHT="1026" ID="mz_3-116_005" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="513 1764 2295 1764 2295 2790 513 2790"/>
+            <Polygon POINTS="548 1773 2330 1773 2330 2799 548 2799"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="513" VPOS="2790" WIDTH="1782" HEIGHT="241" ID="mz_3-116_006" TAGREFS="BT3">
+        <TextBlock HPOS="548" VPOS="2799" WIDTH="1782" HEIGHT="241" ID="mz_3-116_006" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="513 2790 2295 2790 2295 3031 513 3031"/>
+            <Polygon POINTS="548 2799 2330 2799 2330 3040 548 3040"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="513" VPOS="3050" WIDTH="1782" HEIGHT="57" ID="mz_3-116_007" TAGREFS="BT4">
+        <TextBlock HPOS="548" VPOS="3059" WIDTH="1782" HEIGHT="57" ID="mz_3-116_007" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="513 3050 2295 3050 2295 3107 513 3107"/>
+            <Polygon POINTS="548 3059 2330 3059 2330 3116 548 3116"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

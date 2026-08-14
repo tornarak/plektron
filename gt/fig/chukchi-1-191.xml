@@ -11,31 +11,31 @@
     <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="524" VPOS="947" WIDTH="1502" HEIGHT="438" ID="fig_1-191_005" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="503" VPOS="932" WIDTH="1502" HEIGHT="438" ID="fig_1-191_005" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="524 947 2026 947 2026 1385 524 1385"/>
+            <Polygon POINTS="503 932 2005 932 2005 1370 503 1370"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1800" VPOS="1420" WIDTH="346" HEIGHT="1465" ID="fig_1-191_001" TAGREFS="BT1">
+        <TextBlock HPOS="1779" VPOS="1405" WIDTH="346" HEIGHT="1465" ID="fig_1-191_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="1800 1420 2146 1420 2146 2885 1800 2885"/>
+            <Polygon POINTS="1779 1405 2125 1405 2125 2870 1779 2870"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="476" VPOS="1426" WIDTH="1148" HEIGHT="260" ID="fig_1-191_002" TAGREFS="BT1">
+        <TextBlock HPOS="455" VPOS="1411" WIDTH="1148" HEIGHT="260" ID="fig_1-191_002" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="476 1426 1624 1426 1624 1686 476 1686"/>
+            <Polygon POINTS="455 1411 1603 1411 1603 1671 455 1671"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="540" VPOS="1680" WIDTH="1110" HEIGHT="52" ID="fig_1-191_003" TAGREFS="BT2">
+        <TextBlock HPOS="519" VPOS="1665" WIDTH="1110" HEIGHT="52" ID="fig_1-191_003" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="540 1680 1650 1680 1650 1732 540 1732"/>
+            <Polygon POINTS="519 1665 1629 1665 1629 1717 519 1717"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1806" VPOS="2867" WIDTH="350" HEIGHT="152" ID="fig_1-191_004" TAGREFS="BT2">
+        <TextBlock HPOS="1785" VPOS="2852" WIDTH="350" HEIGHT="152" ID="fig_1-191_004" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="1806 2867 2156 2867 2156 3019 1806 3019"/>
+            <Polygon POINTS="1785 2852 2135 2852 2135 3004 1785 3004"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

@@ -13,26 +13,26 @@
     <OtherTag ID="BT4" LABEL="MarginTextZone-Notes" DESCRIPTION="block type MarginTextZone-Notes"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2481" HEIGHT="3508" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2481" HEIGHT="3508">
-        <TextBlock HPOS="311" VPOS="452" WIDTH="1782" HEIGHT="94" ID="mz_3-034_001" TAGREFS="BT1">
+    <Page WIDTH="2550" HEIGHT="3525" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2550" HEIGHT="3525">
+        <TextBlock HPOS="346" VPOS="461" WIDTH="1782" HEIGHT="94" ID="mz_3-034_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="311 452 2093 452 2093 546 311 546"/>
+            <Polygon POINTS="346 461 2128 461 2128 555 346 555"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="311" VPOS="569" WIDTH="1782" HEIGHT="236" ID="mz_3-034_002" TAGREFS="BT2">
+        <TextBlock HPOS="346" VPOS="578" WIDTH="1782" HEIGHT="236" ID="mz_3-034_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="311 569 2093 569 2093 805 311 805"/>
+            <Polygon POINTS="346 578 2128 578 2128 814 346 814"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="311" VPOS="805" WIDTH="1782" HEIGHT="310" ID="mz_3-034_003" TAGREFS="BT3">
+        <TextBlock HPOS="346" VPOS="814" WIDTH="1782" HEIGHT="310" ID="mz_3-034_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="311 805 2093 805 2093 1115 311 1115"/>
+            <Polygon POINTS="346 814 2128 814 2128 1124 346 1124"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="311" VPOS="1154" WIDTH="1782" HEIGHT="292" ID="mz_3-034_004" TAGREFS="BT4">
+        <TextBlock HPOS="346" VPOS="1163" WIDTH="1782" HEIGHT="292" ID="mz_3-034_004" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="311 1154 2093 1154 2093 1446 311 1446"/>
+            <Polygon POINTS="346 1163 2128 1163 2128 1455 346 1455"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

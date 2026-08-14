@@ -10,11 +10,11 @@
     <OtherTag ID="BT1" LABEL="RunningTitleZone" DESCRIPTION="block type RunningTitleZone"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="408" VPOS="596" WIDTH="1778" HEIGHT="90" ID="mz_1-245_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="387" VPOS="581" WIDTH="1778" HEIGHT="90" ID="mz_1-245_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="408 596 2186 596 2186 686 408 686"/>
+            <Polygon POINTS="387 581 2165 581 2165 671 387 671"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

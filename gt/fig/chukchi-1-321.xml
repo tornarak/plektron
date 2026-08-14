@@ -11,26 +11,26 @@
     <OtherTag ID="BT2" LABEL="GraphicZone-FigDesc" DESCRIPTION="block type GraphicZone-FigDesc"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="436" VPOS="752" WIDTH="1814" HEIGHT="1387" ID="fig_1-321_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="413" VPOS="730" WIDTH="1822" HEIGHT="1397" ID="fig_1-321_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="436 752 2250 752 2250 2139 436 2139"/>
+            <Polygon POINTS="413 730 2235 730 2235 2127 413 2127"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="2242" VPOS="952" WIDTH="86" HEIGHT="986" ID="fig_1-321_002" TAGREFS="BT2">
+        <TextBlock HPOS="2221" VPOS="937" WIDTH="86" HEIGHT="986" ID="fig_1-321_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="2242 952 2328 952 2328 1938 2242 1938"/>
+            <Polygon POINTS="2221 937 2307 937 2307 1923 2221 1923"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="432" VPOS="2171" WIDTH="1834" HEIGHT="1022" ID="fig_1-321_003" TAGREFS="BT1">
+        <TextBlock HPOS="408" VPOS="2156" WIDTH="1837" HEIGHT="1030" ID="fig_1-321_003" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="432 2171 2266 2171 2266 3193 432 3193"/>
+            <Polygon POINTS="408 2156 2245 2156 2245 3186 408 3186"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="2252" VPOS="2371" WIDTH="92" HEIGHT="656" ID="fig_1-321_004" TAGREFS="BT2">
+        <TextBlock HPOS="2231" VPOS="2356" WIDTH="92" HEIGHT="656" ID="fig_1-321_004" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="2252 2371 2344 2371 2344 3027 2252 3027"/>
+            <Polygon POINTS="2231 2356 2323 2356 2323 3012 2231 3012"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

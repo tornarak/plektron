@@ -13,26 +13,26 @@
     <OtherTag ID="BT4" LABEL="QuireMarksZone" DESCRIPTION="block type QuireMarksZone"/>
   </Tags>
   <Layout>
-    <Page WIDTH="2824" HEIGHT="3897" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
-      <PrintSpace HPOS="0" VPOS="0" WIDTH="2824" HEIGHT="3897">
-        <TextBlock HPOS="382" VPOS="640" WIDTH="1778" HEIGHT="90" ID="mz_1-187_001" TAGREFS="BT1">
+    <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
+        <TextBlock HPOS="361" VPOS="625" WIDTH="1778" HEIGHT="90" ID="mz_1-187_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="382 640 2160 640 2160 730 382 730"/>
+            <Polygon POINTS="361 625 2139 625 2139 715 361 715"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="382" VPOS="755" WIDTH="1778" HEIGHT="302" ID="mz_1-187_002" TAGREFS="BT2">
+        <TextBlock HPOS="361" VPOS="740" WIDTH="1778" HEIGHT="302" ID="mz_1-187_002" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="382 755 2160 755 2160 1057 382 1057"/>
+            <Polygon POINTS="361 740 2139 740 2139 1042 361 1042"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="382" VPOS="1057" WIDTH="1778" HEIGHT="1742" ID="mz_1-187_003" TAGREFS="BT3">
+        <TextBlock HPOS="361" VPOS="1042" WIDTH="1778" HEIGHT="1742" ID="mz_1-187_003" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="382 1057 2160 1057 2160 2799 382 2799"/>
+            <Polygon POINTS="361 1042 2139 1042 2139 2784 361 2784"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="382" VPOS="3295" WIDTH="1778" HEIGHT="70" ID="mz_1-187_004" TAGREFS="BT4">
+        <TextBlock HPOS="361" VPOS="3280" WIDTH="1778" HEIGHT="70" ID="mz_1-187_004" TAGREFS="BT4">
           <Shape>
-            <Polygon POINTS="382 3295 2160 3295 2160 3365 382 3365"/>
+            <Polygon POINTS="361 3280 2139 3280 2139 3350 361 3350"/>
           </Shape>
         </TextBlock>
       </PrintSpace>
