@@ -521,6 +521,13 @@ why.
   were going to run anyway IS the parse check. Everything else is a verb:
   `proposal codepoints`, `proposal set`, `proposal replace`, `ocr zoom`. Reaching
   for a script is a tell that you are routing around a tool that exists.
+- **`grep` over `gt/ocr/` or `mz/ocr/` is not a search of the corpus, and it fails
+  by answering nothing.** ALTO holds one word per `<String CONTENT=…>`, so a form
+  the page prints is several attributes with markup between them; a literal search
+  matches none of them and returns a clean zero indistinguishable from "the book
+  does not print this". `ocr grep` assembles the line first, which is why it
+  exists. `lexicon lookup` is the other search — over ratified native forms, by a
+  typeable key, folded across the axes a reading gets wrong.
 - **Never take the CATMuS machine text in `mz/ocr/` as a witness to what any
   character is, anywhere an inventory glyph could stand.** It reads 0% of the
   transcription inventory, and **its errors arrive as ASCII** — it substitutes

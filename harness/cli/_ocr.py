@@ -202,7 +202,12 @@ def register(cli):
             "pages are named — the corpus text search `ocr lines --all | rg` was "
             "standing in for. The pattern is normalized to NFD before it "
             "compiles, so a composed character pasted from anywhere matches the "
-            "decomposed text the store holds")
+            "decomposed text the store holds. **`grep` over the store's files "
+            "is not this and will lie to you**: ALTO holds one word per "
+            "`<String CONTENT=…>`, so a form the page prints sits in the file "
+            "as several attributes with markup between them, and a literal "
+            "search for it returns a clean zero that reads as *the corpus does "
+            "not print this*. This assembles the line before matching")
     arg(p, "pattern", metavar="PATTERN")
     _store(refs_arg(p, all_="every page the store read holds"))
     opt(p, "-i", "--ignore-case", is_flag=True,

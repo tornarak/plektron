@@ -122,7 +122,10 @@ def register(cli):
     opt(p, "--auto", is_flag=True,
         help="the form is safe to link out of context. **No default and no "
              "inverse**: `auto` is the author's declaration, so the flag's "
-             "absence is `no` and says so in the file")
+             "absence is `no` and says so in the file. Where the entry is "
+             "already ratified this licenses a link, so the pages it licenses "
+             "it over are brought up to date — collated pages relinked, drafts "
+             "regenerated, exactly as `entity ratify` does")
     opt(p, "--note", metavar="TEXT",
         help="the note cell — where the form is attested, or why it is `no`")
     opt(p, "--commit", is_flag=True,
@@ -188,10 +191,12 @@ def register(cli):
                help="move an entity to a new identity, re-pointing every "
                "`within:` and `[[wikilink]]` in the store. **The identity is "
                "what every @ref holds**, so this is cheap only while the corpus "
-               "holds few of them — it reports every @ref it finds and refuses "
-               "outright if one is in committed `tei/`, where a rule may not "
-               "rewrite a page a human signed"
-               "\n\nOLD and NEW are both `class:slug`; the class may not change",
+               "holds few of them: a committed page is re-pointed in place — a "
+               "@ref asserts that a string names an entity, and a rename moves "
+               "neither side of that, only the pointer's spelling — and a "
+               "generated draft is rebuilt from the moved store"
+               "\n\nOLD and NEW are both `class:slug`; the class may change "
+               "only where the `<name @type>` does not",
                constraints=())
     arg(p, "old", metavar="OLD")
     arg(p, "new", metavar="NEW")
@@ -513,18 +518,63 @@ def run_alias(a) -> int:
     start, end = _alias_rows(text)
     # `| |` and never `|  |`: two spaces are §2.9 sentence spacing to the
     # normalizer, which `entity new` learned the same way.
-    cell = f" {lang} ".replace("  ", " ")
-    row = f"| {form} |{cell}| {'yes' if a.auto else 'no'} | {a.note or ''} |"
+    # **Every cell, not just the language one.** The rule was applied to `lang`
+    # and not to `note`, so an alias added without one wrote `|  |` and the file
+    # failed `corpus normalize` from the moment it was written — a gate the
+    # author of the alias never ran, on a defect invisible in any rendering of
+    # the table. Building both the same way is what stops that recurring: a rule
+    # stated once and applied in one place cannot be applied to one of two.
+    cells = " | ".join(str(v) for v in
+                       (form, lang, "yes" if a.auto else "no", a.note or ""))
+    row = f"| {cells} |".replace("|  |", "| |")
     body = text[start:end].rstrip("\n")
     text = text[:start] + body + f"\n{row}\n\n" + text[end:]
 
-    from ..entities import parse
-    parse(text, where=str(p))
+    from ..entities import alias_index, auto_forms, parse
+    after_rec = parse(text, where=str(p))
     if a.commit:
         p.write_text(text, encoding="utf-8")
+
+    # **An auto form is a licence, and the pages it licenses are brought up to
+    # date here.** `ratify` already does this, on the argument that the rule
+    # links what the store held *when the generator ran* — and adding a form at
+    # `auto: yes` to an entry already ratified is the same licensing event in
+    # miniature. It was not wired, so the new form linked on no collated page
+    # and appeared in no draft until something unrelated regenerated, and
+    # nothing said so: `tei validate` re-derives the links a page *has* and has
+    # nothing to say about the ones it lacks.
+    #
+    # **The trigger is `auto_forms`' own answer, not the three conditions
+    # restated.** A form is rule-linkable when exactly one entity claims it,
+    # that claim says `auto: yes`, and the entity is ratified; asking whether
+    # the form came out the other side of `auto_forms` tests all three at once
+    # and cannot drift from them. A form that fails any — a collision, an entry
+    # still proposed — changes nothing on any page, so the pass is skipped
+    # rather than run for no rows.
+    after = {**store, ident: {**rec, **after_rec}}
+    licensed = auto_forms(alias_index(after)).get(form) == ident
     out(a, {"id": ident, "form": form, "lang": lang or "—",
             "auto": bool(a.auto), "expanded": form != str(a.form),
-            "wrote": bool(a.commit)})
+            "licensed": licensed, "wrote": bool(a.commit)})
+    if licensed:
+        from ..relink import apply_to_corpus, refresh_drafts
+
+        # The store is re-read after a write, so what is applied is what the
+        # file now says; the report-only branch runs against the record `parse`
+        # returned, which is the same entry as it would be.
+        pass_store = _store(a) if a.commit else after
+        links, notes, _undo = apply_to_corpus(
+            a.root, pass_store, write=bool(a.commit))
+        drafts = refresh_drafts(a.root, pass_store, [ident],
+                                write=bool(a.commit))
+        if links:
+            out(a, links, "links applied to collated pages", heading=True)
+        if drafts:
+            # Named without a verb, so the heading reads true in both modes.
+            out(a, [{"ref": r} for r in drafts],
+                "draft pages out of date", heading=True)
+        if notes:
+            out(a, notes, "not applied", heading=True)
     return 0
 
 
@@ -575,10 +625,17 @@ def run_rename(a) -> int:
     # moves, and leaving it behind is what would break the assertion: the ref
     # would resolve to nothing, which `validate` calls worse than no ref at all.
     #
-    # `mz/tei/` is derived and comes back from `tei generate`, so it is named and
-    # not touched — rewriting it would only race the next regeneration.
+    # `mz/tei/` is derived and comes back from `tei generate`, so it is not
+    # rewritten — editing a file the generator is about to replace would only
+    # race it. **What it does instead is run the generator**, below, once the
+    # store has moved. Naming the pages and stopping there was a hand-off with
+    # no receiver: nothing ran the regeneration the table implied, so until
+    # somebody happened to, those drafts carried a `@ref` resolving to an
+    # identity that no longer existed — and `edition serve --drafts` renders
+    # them.
     links = _refs_to(old, a.root)
     signed = [r for r in links if r["store"] == "tei"]
+    stale = [r for r in links if r["store"] != "tei"]
 
     rec = store[old]
     src = Path(rec["path"])
@@ -641,11 +698,36 @@ def run_rename(a) -> int:
         for p, t1, _i in pages:
             p.write_text(t1, encoding="utf-8")
 
+    # **After the store has moved, never before.** The generator reads the
+    # entity store to build its links, so a draft rebuilt while the old file
+    # was still on disk would come back with the old ref in it.
+    #
+    # Scoped to the refs already found, and not through `refresh_drafts`: that
+    # one asks `occurrences` which pages hold an *unlinked mention*, which is
+    # the right question after a ratify and the wrong one here. The pages are
+    # known by name — they are the ones holding `ref="old"` — and a mention
+    # that was already linked is exactly what a rename has to reach.
+    regenerated = []
+    if a.commit and stale:
+        from ..generate import Unready, generate
+
+        for r in stale:
+            try:
+                generate(r["ref"], a.root, force=True)
+            except Unready as e:
+                # Same refusal `refresh_drafts` makes: renaming an entity is a
+                # judgement about the store, and a draft whose ground truth was
+                # withdrawn is a fact about another one. The row says the page
+                # is still out of date rather than the rename failing.
+                regenerated.append({**r, "regenerated": False, "why": str(e)})
+            else:
+                regenerated.append({**r, "regenerated": True, "why": ""})
+
     out(a, {"old": old, "new": new, "canonical": canonical,
             "filed_as_alias": filed, "repointed": len(others),
             "pages": sum(r["links"] for r in signed),
-            "stale_refs": sum(r["links"] for r in links
-                              if r["store"] != "tei"),
+            "stale_refs": sum(r["links"] for r in stale),
+            "regenerated": sum(1 for r in regenerated if r["regenerated"]),
             "wrote": bool(a.commit),
             "means": "renamed" if a.commit else "would rename — pass --commit"})
     if pages:
@@ -654,9 +736,12 @@ def run_rename(a) -> int:
     if others:
         out(a, [{"id": i, "path": str(p)} for p, _t, i in others],
             "repointed", heading=True)
-    stale = [r for r in links if r["store"] != "tei"]
+    # The heading has to read true in both modes: a report-only run regenerates
+    # nothing, and the rows say per page whether the rebuild happened.
     if stale:
-        out(a, stale, "stale refs", heading=True)
+        out(a, regenerated or [{**r, "regenerated": False, "why": ""}
+                               for r in stale],
+            "drafts holding the old ref", heading=True)
     return 0
 
 

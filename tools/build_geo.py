@@ -58,7 +58,39 @@ REPO = Path(__file__).resolve().parent.parent
 WATERSHEDS = REPO / "scratch" / "watersheds"
 LANGUAGES = REPO / "scratch" / "languages.geojson"
 NATURALEARTH = REPO / "scratch" / "naturalearth"
+TRACED = REPO / "scratch" / "geojson"
 OUT = REPO / "data" / "geo"
+
+#: Shapes **the editor drew**, and the only source here that is not a
+#: publisher's file.
+#:
+#: THE PROVENANCE RANK IS DIFFERENT AND THE STORE HAS TO SAY SO. Every other
+#: shape in this build carries a citation: someone outside this project drew it,
+#: published it, and can be checked against. These were traced in QGIS by the
+#: editor, so the only warrant behind them is a human's act — which is the same
+#: rank `entity locate`'s `geo:` points carry, and the reason a shape here is
+#: **not interchangeable with a sourced one** even where both are polygons. It
+#: rides in `source`, which reaches `geo list`, the entity card and this file's
+#: index, so nothing has to infer it from a directory.
+#:
+#: **Selected by a declared table, never by whatever the file happens to hold**,
+#: which is `NE_GAZETTEER`'s rule and matters more here: a working layer in
+#: `scratch/` is where a half-finished tracing lives, and a build that took
+#: every feature would promote one the moment it was saved. A feature the table
+#: does not name is not built; a table entry the file does not carry is a note.
+#:
+#: `basis` is what the tracing was made *over*, and it is per-shape rather than
+#: per-source because that is the fact a reader needs and it can differ within
+#: one sitting. It is prose, deliberately — a coordinate has a schema, a
+#: judgement does not.
+TRACED_SHAPES = {
+    "bogoraspass2_islands.geojson": {
+        "Ipeˊkut": ("region:ipekut", "Ipeˊkut",
+                    "traced by the editor in QGIS"),
+        "Kihiˊni (island)": ("region:kihini", "Kihiˊni",
+                             "traced by the editor in QGIS"),
+    },
+}
 
 #: The Natural Earth **10m** gazetteer layers, and the named features this
 #: edition takes from them. 10m rather than the 50m used for the coastline
@@ -173,7 +205,14 @@ REGION_MAX = (60.0, 35.0, 240.0, 80.0)   # west, south, east(shifted), north
 # them at subject resolution put 70 KB of Eurasia into a card showing a 2,800
 # km² basin. Culling cannot help there: land is one ring spanning the store, so
 # it is never wholly off-frame and is serialized in full every time.
-TOLERANCE = {"watershed": 0.01, "rivers": 0.01, "langarea": 0.02, "base": 0.08}
+# `traced` is an order finer than any of them, and the reason is size rather
+# than rank. The two islands are 8 and 25 km across; 0.02° is ~1 km here, so the
+# gazetteer's tolerance would take an eighth off the width of the smaller one —
+# the same argument that makes the base layers coarse, run the other way. A hand
+# tracing is also digitized at the zoom the digitizer worked at, so there is no
+# publisher's vertex spacing to defer to.
+TOLERANCE = {"watershed": 0.01, "rivers": 0.01, "langarea": 0.02, "base": 0.08,
+             "traced": 0.002}
 
 #: Coordinate precision in the compiled file. 3 decimals is ~100 m, an order of
 #: magnitude finer than the simplification above, so it costs nothing the
@@ -655,6 +694,57 @@ def read_gazetteer(window, notes):
     return out
 
 
+def read_traced(window, notes):
+    """The shapes the editor drew, declared in `TRACED_SHAPES`.
+
+    **Names are matched in NFD**, both sides, because the table and the file
+    both hold Tier-1 forms and QGIS is not the corpus: a `č` composed on one
+    side and decomposed on the other would miss, and a miss here is a note
+    saying the source re-spelled it — a plausible sentence about a file that
+    spells it identically. That is the failure this project is organised
+    against, and it costs one call to avoid.
+
+    Everything else is `read_gazetteer`'s: a declared table, one note per name
+    the file does not carry, one per shape that falls outside the window.
+    """
+    out = {}
+    for fname, wanted in TRACED_SHAPES.items():
+        path = TRACED / fname
+        if not path.exists():
+            notes.append(f"{fname} is missing — see SOURCES.md; "
+                         f"{len(wanted)} editor-traced shape(s) not built")
+            continue
+        want = {unicodedata.normalize("NFD", k): v for k, v in wanted.items()}
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        seen = set()
+        for f in doc["features"]:
+            name = unicodedata.normalize(
+                "NFD", str(f["properties"].get("name") or ""))
+            if name not in want:
+                continue
+            ident, title, basis = want[name]
+            g = prepare(shape(f["geometry"]), window)
+            if g is None:
+                notes.append(f"{ident}: falls outside the region — skipped")
+                continue
+            seen.add(name)
+            out[ident] = {
+                "id": ident, "kind": ident.partition(":")[0], "name": title,
+                # The feature's own provenance cell, carried through rather than
+                # summarised: the editor wrote it while looking at the thing.
+                "attests": f["properties"].get("provenance") or "",
+                "basis": basis, "source": "editor",
+                "_shape": reduce(g, TOLERANCE["traced"], ident, notes),
+                "_lines": [],
+            }
+        for name, (ident, _t, _b) in want.items():
+            if name not in seen:
+                notes.append(f"{ident}: {fname} carries no feature named "
+                             f"{name!r} — the layer may have been re-saved "
+                             f"without it")
+    return out
+
+
 # ------------------------------------------------------------ the emitter
 
 def collection(rec) -> dict:
@@ -697,6 +787,20 @@ def compute_window():
     for f in doc["features"]:
         if f["properties"].get("cldf:languageReference") in LANGAREAS:
             bounds.append(extent(f["geometry"]))
+    # The traced shapes too, on this function's own argument: the window may
+    # never be the reason a declared shape is missing. Both islands sit well
+    # inside the window the other sources already set, so this changes nothing
+    # today — which is exactly when to add it, rather than after a tracing
+    # somewhere new comes back clipped and looks like a tracing error.
+    for fname, wanted in TRACED_SHAPES.items():
+        path = TRACED / fname
+        if not path.exists():
+            continue
+        want = {unicodedata.normalize("NFD", k) for k in wanted}
+        for f in json.loads(path.read_text(encoding="utf-8"))["features"]:
+            if unicodedata.normalize(
+                    "NFD", str(f["properties"].get("name") or "")) in want:
+                bounds.append(extent(f["geometry"]))
     pad = 2.0
     return (max(REGION_MAX[0], min(b[0] for b in bounds) - pad),
             max(REGION_MAX[1], min(b[1] for b in bounds) - pad),
@@ -775,6 +879,7 @@ def main(argv=None) -> int:
     langareas = read_langareas(window, notes)
     shapes.update(langareas)
     shapes.update(read_gazetteer(window, notes))
+    shapes.update(read_traced(window, notes))
     take_from_land(shapes, raw_land, notes)
     # After the language areas, because the rule reads one of them to identify
     # which land component is Asia — and reads nothing else from it.

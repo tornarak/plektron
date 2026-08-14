@@ -157,8 +157,28 @@ _ROW = re.compile(r"^\|(.*)\|\s*$", re.M)
 #: NFD/NFC round trip an editor may apply, and `[\ẁ-ͯ]` is a silently invalid
 #: range rather than a syntax error at import.
 _MARKS = "\\w" + chr(0x300) + "-" + chr(0x36F)
+
+#: The footnote sort, which `\w` matches and which is **not part of the word in
+#: front of it**. `keying_spec.md` §2.10 settles this corpus-wide: a marker is
+#: always the Unicode superscript and a superscript digit is never anything else,
+#: so no reading is being made here — the spec already made it.
+#:
+#: **The failure it fixes was silent in both directions.** `Ciˊṛluk⁶` on 1-051
+#: put the alias in front of a marker, `\w` matched the marker, the right
+#: boundary failed, and `match` returned no hit — so the generator neither linked
+#: the form nor raised it as a candidate, and nothing anywhere said a name had
+#: been passed over. Measured over the keyed corpus: 69 lines set a word against
+#: a marker, and about twenty of those words are entity forms — `Nelson` six
+#: times, `Nordenskiöld` and `Schrenck` twice each, `Kiˊhi`, `Karbaschan`,
+#: `Shoudon`, `Хатырка`. A footnote is what an author hangs on the names that
+#: needed a source, which is why this lands on exactly the wrong words.
+#:
+#: Right side only. A marker sits after its reference, and at the opener it is
+#: followed by a space (§2.10), so nothing is gained by widening the left
+#: boundary and a lookbehind holding a lookbehind is worth avoiding.
+_SUP = "²³¹⁰⁴⁵⁶⁷⁸⁹"
 _BEFORE = f"(?<![{_MARKS}])"
-_AFTER = f"(?![{_MARKS}])"
+_AFTER = f"(?!(?![{_SUP}])[{_MARKS}])"
 
 
 class Malformed(Exception):

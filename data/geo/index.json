@@ -418,6 +418,22 @@
    ]
   },
   {
+   "id": "region:ipekut",
+   "kind": "region",
+   "name": "Ipeˊkut",
+   "attests": "bogoras. yupik Ciˊṛluk",
+   "basis": "traced by the editor in QGIS",
+   "source": "editor",
+   "file": "region/ipekut.json",
+   "points": 30,
+   "bounds": [
+    187.265,
+    64.59,
+    187.555,
+    64.654
+   ]
+  },
+  {
    "id": "region:kamchatka",
    "kind": "region",
    "name": "Kamchatka Peninsula",
@@ -449,6 +465,22 @@
     58.509,
     164.662,
     59.227
+   ]
+  },
+  {
+   "id": "region:kihini",
+   "kind": "region",
+   "name": "Kihiˊni",
+   "attests": "bogoras. yupik Kiˊhi",
+   "basis": "traced by the editor in QGIS",
+   "source": "editor",
+   "file": "region/kihini.json",
+   "points": 43,
+   "bounds": [
+    187.34,
+    64.677,
+    187.937,
+    64.839
    ]
   },
   {

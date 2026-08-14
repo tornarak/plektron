@@ -20,6 +20,7 @@ conditions.
 | `watershed/*.json` | Global Watersheds (mghydro.com), over MERIT-Hydro and HydroSHEDS | **CC BY-NC 4.0 or ODbL 1.0 — see below, and it is a live question** |
 | `base/*.json` | Natural Earth 1:50m `land` and `lakes` | public domain |
 | `region/*.json` `marine/*.json` | Natural Earth 1:10m `geography_regions_polys` and `geography_marine_polys` | public domain |
+| `region/ipekut.json` `region/kihini.json` | **the editor**, traced in QGIS | this edition's |
 
 ### Asher & Moseley 2007, via Glottography
 
@@ -239,6 +240,38 @@ shape build, and for the same reason: the source lives outside the repository.
 **CC BY 4.0 obliges attribution wherever the data is published**, exactly as
 Asher 2007 does. A `geo:` derived from it is published in the reading view, so
 the corpus `teiHeader`'s rights statement names GeoNames alongside Asher.
+
+### The editor's own tracings, which are a different rank and not a source
+
+    Traced in QGIS by this edition's editor, from scratch/geojson/
+    Declared shape by shape in tools/build_geo.py's TRACED_SHAPES
+
+Two islands off the south coast of the Chukchi Peninsula — `region:ipekut` and
+`region:kihini` — which no gazetteer in hand draws as named features. Bogoras
+names both, and locates three villages by them (1-051, 1-052), so the shape has
+work to do that a point cannot: what "on the southwestern end of the island
+Kihiˊni" means is a *place inside a boundary*.
+
+**Every other polygon in this store carries a citation, and these do not.** The
+warrant behind them is a human's act and nothing else — the same rank the `geo:`
+points below carry, and lower than anything above. So they are not
+interchangeable with a sourced shape even though both are rings of coordinates,
+and the store says which is which: `source: editor` rides in the compiled file,
+in `index.json` and in `geo list`, where the distinction can be read rather than
+inferred from a filename. `basis` records what each was traced over, per shape
+rather than per source, because that is the fact a reader wants and it can
+differ within one sitting.
+
+**The build takes only what `TRACED_SHAPES` names.** `scratch/geojson/` is a
+working directory — it is where a half-finished tracing lives — and a build that
+took every feature in it would promote one the moment QGIS saved. This is
+`NE_GAZETTEER`'s declared-table rule, and it carries more weight here, the file
+on the other end being the editor's own.
+
+They are simplified an order finer than anything else (`TOLERANCE["traced"]`,
+0.002° ≈ 200 m), which is a size argument and not a rank one: the smaller island
+is 8 km across, so the gazetteer's 0.02° would take an eighth off its width.
+Measured, both shapes' areas move by under half a percent.
 
 ### The three sources of coordinates, which draw no shape at all
 

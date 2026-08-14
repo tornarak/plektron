@@ -285,6 +285,27 @@ def test_a_combining_mark_is_a_word_character_here():
     assert len(E.match("a Do b", i)) == 1
 
 
+def test_a_footnote_marker_does_not_swallow_the_name_in_front_of_it():
+    """`Ciˊṛluk⁶` on 1-051. Python's `\\w` matches a superscript digit, so the
+    right boundary failed and `match` returned nothing — which cost the page both
+    halves at once: no link, and no candidate comment either, so nothing anywhere
+    recorded that a name had been passed over. `keying_spec.md` §2.10 makes this
+    mechanical rather than a reading: in this corpus a superscript digit is a
+    footnote marker and is never anything else.
+
+    Measured at the time: 69 lines set a word against a marker, ~20 of those
+    words being entity forms — a footnote is what an author hangs on the names
+    that needed a source, so the miss landed on exactly the wrong words."""
+    i = idx(("Nelson", [("person:nelson", True, "ratified")]))
+    for marker in "¹²³⁴⁵⁶⁷⁸⁹⁰":
+        got = E.match(f"as Nelson{marker} reports", i)
+        assert [h["form"] for h in got] == ["Nelson"], marker
+        # The marker is apparatus and stays outside the span.
+        assert got[0]["text"] == "Nelson"
+    # An ordinary digit is not a marker (§2.10) and still ends the word.
+    assert E.match("as Nelson2 reports", i) == []
+
+
 def test_the_longest_form_wins():
     """Otherwise the bare "Chukchee" would take "Chukchee Peninsula" apart, and the
     unambiguous multi-word aliases — the only ones safe to link — would be the ones

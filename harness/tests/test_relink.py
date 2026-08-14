@@ -274,3 +274,149 @@ def test_refresh_drafts_writes_nothing_when_asked_not_to(tmp_path, monkeypatch):
     assert R.refresh_drafts(tmp_path, entities.load(tmp_path),
                             ["place:markovo"], write=False) == ["1-035"]
     assert called == []
+
+
+# ---------------------------------- the other two verbs that move the licence
+
+def _args(root, **kw):
+    from types import SimpleNamespace
+
+    return SimpleNamespace(root=root, json=False, toon=False, pager=False,
+                           **{"commit": False, **kw})
+
+
+def _alias(root, ident, form, **kw):
+    from harness.cli import _entity
+
+    _entity.run_alias(_args(root, ident=ident, form=form,
+                            **{"lang": "", "auto": True, "note": "", **kw}))
+
+
+def _draft(root, ref, body):
+    p = root / "mz" / "tei" / f"chukchi-{ref}.xml"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(f'<TEI xmlns="http://www.tei-c.org/ns/1.0"><teiHeader/>'
+                 f"<text><body>{body}</body></text></TEI>", encoding="utf-8")
+    return p
+
+
+def test_an_auto_alias_on_a_ratified_entry_links_the_pages_it_licenses(tmp_path):
+    """Ratifying is not the only act that widens what a rule may link. Adding a
+    form at `auto: yes` to an entry already ratified is the same licensing
+    event, and it used to reach no page at all — silently, since `validate` has
+    nothing to say about a link a page *lacks*."""
+    entry(tmp_path, "place:markovo", status="ratified", canonical="Markovo",
+          aliases=[("Markova", True)])
+    page = _page(tmp_path, "1-021", "<p>He left Markovo in June.</p>")
+    _alias(tmp_path, "place:markovo", "Markovo", commit=True)
+    assert '<rs ref="place:markovo" resp="#mz">Markovo</rs>' in page.read_text(
+        encoding="utf-8")
+
+
+def test_a_report_only_alias_writes_neither_the_entry_nor_a_page(tmp_path):
+    p = entry(tmp_path, "place:markovo", status="ratified",
+              canonical="Markovo", aliases=[("Markova", True)])
+    page = _page(tmp_path, "1-021", "<p>He left Markovo in June.</p>")
+    before = (p.read_text(encoding="utf-8"), page.read_text(encoding="utf-8"))
+    _alias(tmp_path, "place:markovo", "Markovo")
+    assert (p.read_text(encoding="utf-8"),
+            page.read_text(encoding="utf-8")) == before
+
+
+def test_an_alias_that_licenses_nothing_runs_no_pass(tmp_path, monkeypatch):
+    """The trigger is `auto_forms`' answer, so a proposed entry — or a form two
+    entities claim — leaves every page alone, and does it by asking the rule
+    rather than by restating its three conditions."""
+    from harness import relink as R
+
+    entry(tmp_path, "place:markovo", status="proposed", canonical="Markovo",
+          aliases=[("Markova", True)])
+    _page(tmp_path, "1-021", "<p>He left Markovo in June.</p>")
+    called = []
+    monkeypatch.setattr(R, "apply_to_corpus",
+                        lambda *a, **k: called.append(1) or ([], [], []))
+    _alias(tmp_path, "place:markovo", "Markovo", commit=True)
+    assert called == []
+
+
+def test_an_auto_alias_regenerates_the_drafts_that_print_it(tmp_path,
+                                                            monkeypatch):
+    entry(tmp_path, "place:markovo", status="ratified", canonical="Markovo",
+          aliases=[("Markova", True)])
+    _draft(tmp_path, "1-035", "<p>He left Markovo in June.</p>")
+    called = []
+    monkeypatch.setattr("harness.generate.generate",
+                        lambda ref, root=None, force=False: called.append(ref))
+    _alias(tmp_path, "place:markovo", "Markovo", commit=True)
+    assert called == ["1-035"]
+
+
+def test_a_rename_rebuilds_the_drafts_holding_the_old_ref(tmp_path,
+                                                          monkeypatch):
+    """Naming them and stopping was a hand-off with no receiver: nothing ran the
+    regeneration the `stale refs` table implied, so the drafts went on carrying
+    a ref resolving to an identity that no longer existed."""
+    from harness.cli import _entity
+
+    entry(tmp_path, "place:markovo", status="ratified", canonical="Markovo")
+    _draft(tmp_path, "1-035",
+           '<p><rs ref="place:markovo" resp="#mz">Markova</rs></p>')
+    called = []
+    monkeypatch.setattr("harness.generate.generate",
+                        lambda ref, root=None, force=False: called.append(ref))
+    _entity.run_rename(_args(tmp_path, old="place:markovo", new="place:markovo-1",
+                             canonical="", commit=True))
+    assert called == ["1-035"]
+
+
+def test_a_report_only_rename_rebuilds_nothing(tmp_path, monkeypatch):
+    from harness.cli import _entity
+
+    entry(tmp_path, "place:markovo", status="ratified", canonical="Markovo")
+    _draft(tmp_path, "1-035",
+           '<p><rs ref="place:markovo" resp="#mz">Markova</rs></p>')
+    called = []
+    monkeypatch.setattr("harness.generate.generate",
+                        lambda ref, root=None, force=False: called.append(ref))
+    _entity.run_rename(_args(tmp_path, old="place:markovo",
+                             new="place:markovo-1", canonical=""))
+    assert called == []
+
+
+def test_a_draft_the_generator_will_not_build_does_not_fail_the_rename(
+        tmp_path, monkeypatch):
+    """Renaming is a judgement about the entity store; a draft whose ground
+    truth was withdrawn is a fact about another one. The row says the page is
+    still out of date."""
+    from harness.cli import _entity
+    from harness.generate import Unready
+
+    entry(tmp_path, "place:markovo", status="ratified", canonical="Markovo")
+    _draft(tmp_path, "1-035",
+           '<p><rs ref="place:markovo" resp="#mz">Markova</rs></p>')
+
+    def unready(ref, root=None, force=False):
+        raise Unready(f"{ref}: no gt/ocr/")
+
+    monkeypatch.setattr("harness.generate.generate", unready)
+    _entity.run_rename(_args(tmp_path, old="place:markovo",
+                             new="place:markovo-1", canonical="", commit=True))
+    assert (tmp_path / "entities" / "place" / "markovo-1.md").exists()
+
+
+def test_an_alias_row_has_no_double_space_in_any_cell(tmp_path):
+    """§2.9 reads two spaces as sentence spacing, so `|  |` is a normalizer
+    error in a file that was written correctly by every other measure. The rule
+    was applied to the language cell and not to the note, and an alias added
+    without a note failed `corpus normalize` from the moment it was written —
+    on a defect no rendering of the table shows."""
+    p = entry(tmp_path, "place:markovo", status="ratified", canonical="Markovo")
+    for form, kw in (("Markova", {"lang": "ckt", "auto": True, "note": ""}),
+                     ("Markovskoye", {"lang": "", "auto": False, "note": ""}),
+                     ("Markovo", {"lang": "ru", "auto": False, "note": "1-021"})):
+        _alias(tmp_path, "place:markovo", form, commit=True, **kw)
+    text = p.read_text(encoding="utf-8")
+    assert "|  |" not in text
+    assert "| Markova | ckt | yes | |" in text
+    assert "| Markovskoye | | no | |" in text
+    assert "| Markovo | ru | no | 1-021 |" in text
