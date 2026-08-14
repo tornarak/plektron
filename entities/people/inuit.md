@@ -9,4 +9,4 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Central Eskimo | | yes | |
-
+| Netchillirmiut | | yes | hyponym |

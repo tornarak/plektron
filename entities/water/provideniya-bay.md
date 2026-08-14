@@ -16,4 +16,4 @@
 
 Бухта Провидения. The village [[place:ien]] stands on it (1-051, 1-088).
 Bogoras notes at 1-051 that Gondatti "has confounded Providence Bay with
-[[place:chechin]] Bay" — that is, with [[water:tkachen-bay]].
+[[place:tkachen]] Bay" — that is, with [[water:tkachen-bay]].

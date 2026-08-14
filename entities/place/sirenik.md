@@ -10,6 +10,7 @@
 |---|---|---|---|
 | Wuteˊen | ckt | yes | |
 | Wuˊturen | ckt | yes | the 1-051 variant |
+| Čeṛiˊnak | ypk | yes | |
 | Cape Ulakhpen | | yes | |
 | Улахпенъ | ru | yes | 1-034 prints it in parentheses after the English |
 

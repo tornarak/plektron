@@ -1,4 +1,4 @@
-# place:nookan — Nɵˊɵkan
+# place:naukan — Naukan
 
 - status: ratified
 - within: land:chukchi-peninsula
@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Nɵˊɵkan | ckt | yes | |
+| Nabuˊqak | ypk | yes | |
 
 ## gloss
 

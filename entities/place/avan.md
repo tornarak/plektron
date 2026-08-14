@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Euˊnmun | ckt | yes | |
+| Aˊvak | ypk | yes | |
 
 ## gloss
 

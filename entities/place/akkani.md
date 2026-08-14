@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Akaˊnên | ckt | yes | |
+| Akaˊnik | ypk | yes | |
 
 ## gloss
 

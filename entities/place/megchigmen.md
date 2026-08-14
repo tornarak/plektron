@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Mečiˊwmɪn | ckt | yes | |
+| Meˊsik | ypk | yes | |
 
 ## gloss
 

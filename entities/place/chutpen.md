@@ -9,6 +9,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Čuˊlpen | ckt | yes | |
+| Čuˊlpak | ypk | yes | |
+| Čuˊtpen | ckt | yes | |
 
 ## gloss
 

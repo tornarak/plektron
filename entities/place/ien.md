@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Iˊᵋen | ckt | yes | |
+| Ṛɪˊṛak | ypk | yes | |
 
 ## gloss
 

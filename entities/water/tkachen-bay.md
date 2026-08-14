@@ -19,7 +19,7 @@
 
 ## gloss
 
-The bay at [[place:chechin]], which the book names five ways: "Čeˊčin Bay is
+The bay at [[place:tkachen]], which the book names five ways: "Čeˊčin Bay is
 called Tkachen Bay or Admiral Butakoff’s Bay. American whalers call it Marquis
 Bay, of which Krause made 'Marcus Bay'" (1-051, note 3). The bare native form
 belongs to the village, so it is not listed here.

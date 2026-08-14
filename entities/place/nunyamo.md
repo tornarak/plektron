@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Nunäˊᵋmun | ckt | yes | |
+| Nunaˊmo | ypk | yes | |
 
 ## gloss
 

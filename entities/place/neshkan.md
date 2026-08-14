@@ -9,6 +9,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Neˊs˙qᴀn | ckt | yes | |
+| Neˊᵋs˙qᴀn | ckt | yes | variant spelling used on 1-042 |
+| Naˊs˙kok | ypk | yes | |
 
 ## gloss
 

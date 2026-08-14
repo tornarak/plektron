@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Puoˊten | ckt | yes | |
+| Puwuˊxtak | ypk | yes | |
 
 ## gloss
 

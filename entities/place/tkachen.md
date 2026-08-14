@@ -1,4 +1,4 @@
-# place:chechin — Čeˊčin
+# place:tkachen — Tkachen
 
 - status: ratified
 - within: land:chukchi-peninsula
@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Čeˊčin | ckt | yes | |
+| Teˊsik | ypk | yes | |
 
 ## gloss
 

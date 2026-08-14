@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Inčoˊwɪn | ckt | yes | |
+| Inčoˊṛvik | ypk | yes | |
 
 ## gloss
 

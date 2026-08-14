@@ -9,6 +9,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Luˊᵋren | ckt | yes | |
+| Nuˊkak | ypk | yes | |
 
 ## gloss
 
