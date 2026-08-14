@@ -130,6 +130,11 @@ RULE_EXEMPT_JSON = "_rule_exempt.json"
 # ink check would hide the next genuinely dropped zone on it — and the whole value
 # of the check is that a dropped zone is invisible to everything else.
 INK_EXEMPT_JSON = "_ink_exempt.json"
+#: Rulings on the first-line indent check — measured indents a human has judged
+#: not to be paragraph openings. Its own file and not `_ink_exempt.json`'s,
+#: because the two answer different questions about the same page and a shared
+#: ledger would make "ruled" mean two things.
+PARA_EXEMPT_JSON = "_para_exempt.json"
 INK_CACHE_JSON = "_ink_cache.json"      # derived; ignored, like the journal
 JOURNAL = "_journal.jsonl"
 
@@ -2355,7 +2360,7 @@ def _figure_rects(ref: str, root: Path = Path(".")) -> list[tuple[int, int, int,
 
 def _ink_lines(ink, y0: int, y1: int, x0: int, x1: int,
                min_h: int, min_w: int,
-               figs: list[tuple[int, int, int, int]] | None = None
+               figs: list[tuple[int, int, int, int]] | None = None,
                ) -> list[list]:
     """Lines of type inside a band: `[y0, y1, left, right, strip]`, reading order.
 
@@ -2363,6 +2368,17 @@ def _ink_lines(ink, y0: int, y1: int, x0: int, x1: int,
     run too short to be a line; `min_w` drops one too *narrow* — a run 4 to 21 px
     wide is a speck in the margin, and five of the first twenty spurious paragraph
     breaks found were exactly that.
+
+    **A row counts as inked if any pixel in it is dark, and a floor was measured
+    instead.** One dark pixel in the interline gap therefore welds the lines above
+    and below into a single run, which reports the leftmost ink of both, so an
+    indented opening reads as flush — 113 suspected welds corpus-wide and a
+    `line_h_max` of 586 px against a 49 px median. Requiring a row to carry a
+    minimum of ink breaks those welds and finds the boundaries under them (recall
+    96.8% → 97.7% at 16 px, welds 113 → 9), but it is also a *line-length* filter:
+    a paragraph's short last line carries little ink per row and vanishes whole. It
+    cost 25 false positives → 785, and is not in the code. The knowledge is in
+    `.claude/skills/train-zones/`, with the rest of the sweep.
 
     `left`/`right` are offsets from `x0`, **not yet indents**: they become indents
     only after `_page_margins` subtracts the margin the page's own body establishes.
@@ -2404,6 +2420,28 @@ def _ink_lines(ink, y0: int, y1: int, x0: int, x1: int,
                 lo, hi = max(fr, x0) - x0, x1 - x0
         if hi - lo < min_w:
             continue           # nothing left to read: genuinely unjudgeable
+        # **The run's bounds are the union of its rows', and three statistics over
+        # the rows were measured instead — mean 8375 false positives, median 4532,
+        # bucketed mode 259, against 25 for the union.** The appeal is obvious: a
+        # fleck of dirt in the gutter spans five rows of a fifty-row band and under
+        # a union it takes the line's left edge outright, which is how `1-160` lost
+        # its margin and its one real boundary at once.
+        #
+        # What defeats it is that the rows disagree *bimodally* rather than noisily.
+        # Of a 50 px band roughly 22 rows are x-height and begin at the true left;
+        # ~14 are ascender rows carrying ink only from the first *tall* letter, and
+        # ~12 descender rows only from the first descender, both often hundreds of
+        # px in. So a mean lands between the modes and a median lands in whichever
+        # holds half — and which one that is moves with the letters each line
+        # happens to open with, which is variance far larger than the 40 px being
+        # looked for. The mode is the right statistic for that shape and measured
+        # much the best of the three, with the best recall of anything tried
+        # (99.5%, 9 missed boundaries against 55) — but still ten times the union's
+        # false positives, on 174 pages against 23.
+        #
+        # The union is kept because **a line's left edge is an extremum by nature**,
+        # the leftmost reach of one glyph occupying part of the band's rows, and
+        # what dilutes the fleck is the percentile in `_page_margins` instead.
         cols = np.where(sub[a:b, lo:hi].any(axis=0))[0]
         if len(cols) and cols[-1] - cols[0] >= min_w:
             out.append([ay, by, lo + int(cols[0]), lo + int(cols[-1]), (lo, hi)])
@@ -2411,8 +2449,35 @@ def _ink_lines(ink, y0: int, y1: int, x0: int, x1: int,
     return out
 
 
-def _page_margins(lines: list[list], min_w: int) -> dict[int, int]:
+def _page_margins(lines: list[list], min_w: int, pct: int = 25) -> dict[int, int]:
     """The left margin each column of the **page** sets — `{strip_lo: margin}`.
+
+    **A low percentile of the strip's left edges, not their minimum**, and the
+    difference is a speck of dirt. `1-160` sets its prose beside a figure and
+    scatters flecks down the gutter between them, 4-10 px each, a dozen over 35
+    lines. `min_line_w_px` cannot see one — the run it shares rows with is a whole
+    line wide — so as the minimum the leftmost fleck became the page's margin, every
+    clean line then measured a 40-47 px indent against a 40 px floor, and
+    `tei generate` cut 20 paragraphs into a page the keying gives 3. Corpus-wide
+    that failure was 96 of the 118 false positives, on five pages.
+
+    The minimum is the one statistic a lone outlier owns outright, which is what
+    makes it wrong for a quantity every line on the page attests. `margin_pct`
+    spends a fixed share of the strip on dirt and asks the rest to agree; the
+    line carrying the fleck still measures against the result as a *negative*
+    indent, which is a miss rather than a break — the failure that remains is the
+    one that costs least.
+
+    **The population is every line in the strip, and two attempts to refine it both
+    measured worse.** A *rolling* window tracking the margin down the page bought
+    nothing at 21 lines and lost recall at 11: this book's pages do not drift within
+    a page, whatever they do between pages. Restricting the statistic to lines
+    justified to the measure — on the reasoning that a short line cannot attest a
+    margin — lost 18 more boundaries at the median and changed nothing at the
+    quarter. The reasoning was simply wrong: a paragraph's *last* line is short and
+    flush left, so it is one of the best witnesses there is, and dropping every
+    short line left a population richer in indented openings. A left margin is
+    attested by where a line begins, and nothing about where it ends bears on that.
 
     **Indent is measured against the margin the page's body establishes**, not the
     column edge, not the figure's bbox, and — this is the part that had to be
@@ -2441,41 +2506,77 @@ def _page_margins(lines: list[list], min_w: int) -> dict[int, int]:
         if i and e - edges[i - 1] > min_w:
             cid += 1
         cluster[e] = cid
-    mins: dict[int, int] = {}
+    by_strip: dict[int, list[list]] = {}
     for ln in lines:
-        k = cluster[ln[4][0]]
-        mins[k] = min(mins.get(k, ln[2]), ln[2])
-    return {e: mins[cluster[e]] for e in edges}
+        by_strip.setdefault(cluster[ln[4][0]], []).append(ln)
+    stat: dict[int, int] = {}
+    for k, rows in by_strip.items():
+        lefts = sorted(ln[2] for ln in rows)
+        stat[k] = lefts[len(lefts) * pct // 100]
+    return {e: stat[cluster[e]] for e in edges}
 
 
-def _page_lines(zones: list[dict], ink, figs, min_h: int, min_w: int
+def _page_lines(zones: list[dict], ink, figs, min_h: int, min_w: int,
+                margin_pct: int = 25
                 ) -> dict[int, list[tuple[int, int, int, int]]]:
     """Every zone's lines, with indents normalised against the whole page.
 
     Two passes: detect raw across all zones, establish the page's margins, then
     subtract. One pass per zone cannot do this — the margin is a property of the
     page's typography, not of whichever band happens to be under inspection.
+
+    `margin_pct` is threaded rather than defaulted at every call site because the
+    audit reports the same numbers the decoder acts on: a caller that measured
+    against one margin and reported against another would be describing a page
+    nobody generated.
     """
     raw = {i: _ink_lines(ink, z["y0"], z["y1"], z["x0"], z["x1"],
                          min_h, min_w, figs)
            for i, z in enumerate(zones)}
-    margins = _page_margins([ln for v in raw.values() for ln in v], min_w)
+    margins = _page_margins([ln for v in raw.values() for ln in v], min_w,
+                            margin_pct)
     return {i: [(ay, by, left - margins[lo], right - margins[lo])
                 for ay, by, left, right, (lo, _hi) in v]
             for i, v in raw.items()}
 
 
+def load_para_exempt(root: Path = Path(".")) -> dict[str, list[dict]]:
+    """Rulings: measured indents a human has judged not to be paragraph openings.
+
+    **This check's findings are questions about `gt/zones/`, so they are settled in
+    `gt/zones/`.** Every one of them is answered by editing the zone store or by
+    ruling that there is nothing to answer, and a ruling nobody records is one the
+    next person walks again. `_ink_exempt.json` is the pattern and the shape is the
+    same: keyed by ref, scoped to a band of the page rather than to the page, and
+    the note is required, because "the tool complained and I made it stop" is not a
+    record of anything.
+
+    **A ruled start still reports, flagged.** `1-334`'s 1262 px and `1-196`'s
+    311 px are not paragraph openings, but they are telling us something about text
+    set beside a figure, and a ledger that hid them would lose it.
+    """
+    return _corr.load_exemptions(zone_dir(root), PARA_EXEMPT_JSON)
+
+
 def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
                      zones: list[dict] | None = None, ink=None,
-                     store: str = ZONEDIR) -> list[dict]:
+                     store: str = ZONEDIR,
+                     exempt: dict[str, list[dict]] | None = None) -> list[dict]:
     """Lines that open a paragraph *inside* a body zone — places it should be two.
 
     The one implementation, and it has two consumers on purpose. As a **check** it
     finds keying slips, where several paragraphs were saved as one zone; run over
-    the corpus it found 20 such lines, 15 of which were exactly that and were fixed.
+    the corpus it found 20 such lines, 18 of which were exactly that and were fixed.
     As a **decoder step** it splits a predicted band, which the segmenter cannot do
     at all — two abutting `MainZone-P` rectangles rasterize to one continuous target,
     so the boundary is gone before the network sees it.
+
+    **What it is not is a producer of structure.** `tei generate` used to cut a
+    keyed band on this, which put a measurement over a human's assertion in a file
+    that recorded no difference between them, and one speck of dirt in `1-160`'s
+    gutter was worth 20 paragraphs the keying never had. The TEI is downstream of
+    `gt/zones/` and `gt/ocr/` and of nothing else; this reads the raster, so it
+    gates the zone store instead and stops there.
 
     A zone's own first line is never reported: that boundary already exists. Only
     labels listed in the config's `paragraph_split.labels` are examined, since an
@@ -2483,7 +2584,10 @@ def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
 
     `index` is **1-based, within the zone** — the ordinal a human counts down the
     band — with `zone` likewise 1-based in reading order. `y` rides along for
-    anything that needs to point at the raster.
+    anything that needs to point at the raster. A start inside a band of
+    `_para_exempt.json` carries `exempt` and the ruling's `note`; it is still
+    returned, since a caller that wants the finding hidden can drop it and one that
+    wants it counted cannot invent it.
     """
     cfg = cfg or zc.load_config(root)
     spec = cfg.get("paragraph_split") or {}
@@ -2491,6 +2595,8 @@ def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
     labels = set(spec.get("labels") or [])
     min_h = int(spec.get("min_line_h_px", 6))
     min_w = int(spec.get("min_line_w_px", 50))
+    margin_pct = int(spec.get("margin_pct", 25))
+    min_zone_h = int(cfg.get("min_zone_h_px", 30))
     if not labels:
         return []
 
@@ -2501,7 +2607,8 @@ def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
         ink = _para_ink(ref, root)
 
     figs = _figure_rects(ref, root)
-    by_zone = _page_lines(zones, ink, figs, min_h, min_w)
+    ruled = (load_para_exempt(root) if exempt is None else exempt).get(ref, ())
+    by_zone = _page_lines(zones, ink, figs, min_h, min_w, margin_pct)
     out = []
     for zi, z in enumerate(zones, start=1):
         if z["label"] not in labels:
@@ -2510,10 +2617,27 @@ def paragraph_starts(ref: str, root: Path = Path("."), cfg: dict | None = None,
         for li, (ly0, _ly1, left, right) in enumerate(rows, start=1):
             if li == 1:
                 continue                     # the zone's own head, already a boundary
+            # **And so is a line still at the zone's head.** The exemption above
+            # counts lines, and a sub-line of ink defeats it: on `1-075` the band
+            # opens on 6 px of descender from the paragraph above — ink the keyer's
+            # boundary sits a few pixels too high to exclude — which takes the
+            # exemption as line 1, leaving the paragraph's real opening line to
+            # report as internal at the book's own 107-110 px indent. It was 19 of
+            # 29 findings over the corpus, and the tell is that a page does not
+            # open two paragraphs sixteen pixels apart. `min_zone_h_px` is the
+            # tolerance, the one the audit matches boundaries with and for the same
+            # reason: a cut lands on the opening line's ink, an editor clicks in
+            # the whitespace above it.
+            if ly0 - z["y0"] <= min_zone_h:
+                continue
             if left >= indent:
+                hit = next((r for r in ruled
+                            if r["y0"] <= ly0 <= r["y1"]), None)
                 out.append({"ref": ref, "zone": zi, "label": z["label"],
                             "index": li, "y": ly0,
-                            "indent": left, "width": right - left})
+                            "indent": left, "width": right - left,
+                            "exempt": hit is not None,
+                            "note": hit["note"] if hit else ""})
     return out
 
 
@@ -2532,6 +2656,8 @@ def split_at_paragraphs(zones: list[dict], ref: str, root: Path = Path("."),
 
     marks: dict[int, list[int]] = {}
     for s in paragraph_starts(ref, root, cfg, zones=zones, ink=ink):
+        if s["exempt"]:
+            continue          # ruled not a paragraph opening; do not cut on it
         marks.setdefault(s["zone"], []).append(s["y"])
     if not marks:
         return zones
@@ -2722,7 +2848,8 @@ def page_zone_lines(ref: str, root: Path = Path("."), cfg: dict | None = None,
     if not zones:
         return []
     ink = _para_ink(ref, root)
-    by_zone = _page_lines(zones, ink, _figure_rects(ref, root), min_h, min_w)
+    by_zone = _page_lines(zones, ink, _figure_rects(ref, root), min_h, min_w,
+                          int(spec.get("margin_pct", 25)))
     out = []
     for zi, z in enumerate(zones):
         for li, (a, b, left, right) in enumerate(by_zone[zi], start=1):
@@ -2793,6 +2920,7 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
     labels = set(spec.get("labels") or [])
     min_h = int(spec.get("min_line_h_px", 6))
     min_w = int(spec.get("min_line_w_px", 50))
+    margin_pct = int(spec.get("margin_pct", 25))
     splits = load_splits(root)
 
     rows: list[dict] = []
@@ -2820,7 +2948,7 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
             return None
         figs = _figure_rects(ref, root)
         tol = int(cfg.get("min_zone_h_px", 30))
-        by_zone = _page_lines(zones, ink, figs, min_h, min_w)
+        by_zone = _page_lines(zones, ink, figs, min_h, min_w, margin_pct)
         acc: dict = {
             "heights": [ln[1] - ln[0] for v in by_zone.values() for ln in v],
             "internal": 0, "fired": 0, "asserted": 0, "recovered": 0, "rows": []}
@@ -2835,7 +2963,7 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
             want = [z["y0"] for z in run[1:]]           # what the editor keyed
 
             starts = paragraph_starts(ref, root, cfg, zones=[merged], ink=ink)
-            mlines = _page_lines([merged], ink, figs, min_h, min_w)[0]
+            mlines = _page_lines([merged], ink, figs, min_h, min_w, margin_pct)[0]
             acc["internal"] += max(0, len(mlines) - 1)
             got_zones = split_at_paragraphs([merged], ref, root, cfg, ink)
             got = [z["y0"] for z in got_zones[1:]]      # what survives consolidation
@@ -2864,7 +2992,8 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
                          "index": want.index(w) + 2, "y": w,
                          "indent": ln[2] if ln else -1,
                          "width": (ln[3] - ln[2]) if ln else -1,
-                         "h": (ln[1] - ln[0]) if ln else -1})
+                         "h": (ln[1] - ln[0]) if ln else -1,
+                         "exempt": False, "note": ""})
             for g in got:
                 if g in used:
                     continue
@@ -2875,7 +3004,27 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
                      "index": d.get("index", -1), "y": g,
                      "indent": d.get("indent", -1),
                      "width": d.get("width", -1),
-                     "h": d.get("h", -1)})
+                     "h": d.get("h", -1),
+                     # A ruled start is still a row. It is out of the headline
+                     # count because a human answered it, and in the table because
+                     # the answer was "not a paragraph", not "nothing here".
+                     "exempt": bool(d.get("exempt")),
+                     "note": d.get("note", "")})
+            # **A ruled start never reaches `got`** — the decoder skips it, which
+            # is what the ruling is for — so it is put back here rather than
+            # disappearing. Out of the headline count because a human answered it;
+            # in the table because the answer was "not a paragraph", and the ones
+            # ruled so far are saying something about text set beside a figure
+            # that a hidden row could not.
+            for s in starts:
+                if not s["exempt"] or any(abs(s["y"] - w) <= tol for w in want):
+                    continue
+                acc["rows"].append(
+                    {"kind": "ruled", "ref": ref, "zone": first,
+                     "label": run[0]["label"],
+                     "index": s["index"], "y": s["y"],
+                     "indent": s["indent"], "width": s["width"], "h": -1,
+                     "exempt": True, "note": s["note"]})
         return acc
 
     todo = list(refs if refs is not None else zone_refs(root, store))
@@ -2899,11 +3048,22 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
              # Three ways to miss, and they have different remedies: no line was
              # detected there at all (welded or dropped), a line was seen but sits
              # near the margin, or it is just under the threshold.
-             "fn_no_line_detected": sum(1 for r in fn if r["indent"] < 0),
-             "fn_flush_left": sum(1 for r in fn if 0 <= r["indent"] < 10),
-             "fn_slight_indent": sum(1 for r in fn if 10 <= r["indent"]),
+             #
+             # **`h`, not the sign of `indent`, says whether a line was found.**
+             # Both are set to -1 when none was, and while the margin was the
+             # strip's minimum no real line could measure negative, so the two
+             # were the same test. Under a percentile a line can sit left of the
+             # margin — `1-160`'s fleck line reads -36 — and reading that as "no
+             # line detected" would send someone to the line detector for a page
+             # whose lines are fine. A height cannot be negative and is the
+             # witness the record already holds.
+             "fn_no_line_detected": sum(1 for r in fn if r["h"] < 0),
+             "fn_flush_left": sum(1 for r in fn if r["h"] >= 0 and r["indent"] < 10),
+             "fn_slight_indent": sum(1 for r in fn if r["h"] >= 0 and r["indent"] >= 10),
              "boundaries_produced": fired,
-             "false_positives": len(rows) - len(fn),
+             "false_positives": sum(1 for r in rows
+                                    if r["kind"] == "false_positive"),
+             "ruled": sum(1 for r in rows if r["kind"] == "ruled"),
              "pages_changed": len({r["ref"] for r in rows
                                    if r["kind"] == "false_positive"}),
              **_line_health(line_heights),
@@ -2913,7 +3073,10 @@ def paragraph_audit(root: Path = Path("."), cfg: dict | None = None,
                       "same-label run is merged first, because that is the page a "
                       "segmenter can give. Boundaries match within min_zone_h_px. "
                       "`false_positive` is still a worklist rather than a rate: gt "
-                      "cannot arbitrate, being what the rule corrects")},
+                      "cannot arbitrate, being what the rule corrects. `ruled` is "
+                      "what a human has already answered, in "
+                      "gt/zones/_para_exempt.json — still listed, with its note, "
+                      "and out of the worklist")},
             rows)
 
 

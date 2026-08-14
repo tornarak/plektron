@@ -17,6 +17,7 @@ is the failure mode this repo is organised against, so it is the one worth testi
 
 from __future__ import annotations
 
+import json
 from itertools import pairwise
 from pathlib import Path
 
@@ -872,6 +873,65 @@ def test_a_speck_in_the_margin_is_not_a_line(tmp_path):
     ruled_page(tmp_path, "1-048", [(600, 120, 1600), (700, 15, 1600), (800, 1400, 12)])
     multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 580, 900)])
     assert zn.paragraph_starts("1-048", tmp_path, CFG) == []
+
+
+def test_a_fleck_beside_a_line_does_not_set_the_page_margin(tmp_path):
+    """The other way a speck gets in, and `min_line_w_px` cannot reach this one: it
+    shares its rows with a line of type, so the run it belongs to is a full line
+    wide and passes every width floor there is.
+
+    `1-160` is the page — prose set beside a figure, a dozen flecks down the gutter
+    between them. As the leftmost ink they set the margin, every clean line then
+    measured a 40-47 px indent against a 40 px floor, and `tei generate` cut 20
+    paragraphs into a page keyed as 3. The same flecks hid the one true boundary in
+    the band, which sat on its own line and so measured 0 against itself."""
+    lines = [(600 + 60 * i, 15, 1600) for i in range(12)]
+    lines.append((1320, 120, 1600))            # the one true opening
+    lines += [(660, -50, 6), (900, -55, 8), (1080, -45, 5)]   # flecks in the gutter
+    ruled_page(tmp_path, "1-048", lines)
+    multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 580, 1400)])
+    hits = zn.paragraph_starts("1-048", tmp_path, CFG)
+    assert [h["y"] for h in hits] == [1320]
+
+
+def test_a_short_last_line_still_attests_the_margin(tmp_path):
+    """The refinement that measured worse, kept as a test because the reasoning for
+    it is so plausible. Restricting the margin to lines justified to the measure —
+    a short line cannot attest a margin — lost 18 boundaries corpus-wide, because a
+    paragraph's last line is short and *flush left*, which is exactly what a left
+    margin is attested by. Where a line ends bears on nothing here."""
+    lines = [(600, 120, 1600), (660, 15, 1600), (720, 15, 300), (780, 15, 260)]
+    ruled_page(tmp_path, "1-048", lines)
+    multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 580, 850)])
+    # The two short tails hold the margin at 15, so the head is not re-measured
+    # against the one full line and nothing inside the zone reads as a start.
+    assert zn.paragraph_starts("1-048", tmp_path, CFG) == []
+
+
+def test_a_ruled_start_still_reports_but_does_not_cut(tmp_path):
+    """**The ledger answers the check; it does not silence it.** Every finding here
+    is a question about `gt/zones/` — a real one is answered by splitting the band
+    in the editor, and this is where the other answer goes, so the worklist empties
+    instead of returning on every run.
+
+    A ruled start keeps its row and carries its note, because "not a paragraph
+    opening" is not "nothing here": the six ruled so far run 87-1262 px of indent
+    on ink runs of 279-1085 px against a ~1740 px measure, and that population is
+    worth being able to see. What it must not do is cut a band."""
+    ruled = {"1-048": [{"y0": 780, "y1": 830, "note": "not a paragraph"}]}
+    ruled_path = tmp_path / zn.ZONEDIR / zn.PARA_EXEMPT_JSON
+    ruled_path.parent.mkdir(parents=True, exist_ok=True)
+    ruled_path.write_text(json.dumps(ruled), encoding="utf-8")
+    ruled_page(tmp_path, "1-048",
+               [(600, 120, 1600), (700, 15, 1600), (800, 122, 1600)])
+    zones = [{"label": "MainZone-P", "x0": 700, "x1": 2478, "y0": 580, "y1": 900}]
+    multi_page(tmp_path, "1-048", zn.ZONEDIR, [("MainZone-P", 580, 900)])
+
+    hits = zn.paragraph_starts("1-048", tmp_path, CFG)
+    assert [(h["y"], h["exempt"], h["note"]) for h in hits] == [
+        (800, True, "not a paragraph")]
+    # and the band comes back whole
+    assert zn.split_at_paragraphs(zones, "1-048", tmp_path, CFG) == zones
 
 
 def test_only_the_configured_labels_are_examined(tmp_path):

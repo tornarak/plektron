@@ -184,7 +184,7 @@ them apart is the entire point of `tei diff`.
 
 ### tei generate [REF ...]
 **Does** builds a first-draft TEI page into `mz/tei/`, by rule. Paragraph boundaries from the keyed `MainZone-P`/`MainZone-Continued` labels and from nothing else; `<pb n>` from the running title's folio; apparatus zones and caption lines dropped; `MarginTextZone-Notes` split at its printed markers and each note anchored at the matching marker in the prose; figures emitted as `<figure n><figDesc>` where their boxes sit; `MainZone-Quote` → `<quote>`; every ratified `tier1_terms` hit wrapped in place as `<foreign index="N">…</foreign>`, the adjudicated glyphs present and the language absent.
-**Reads** `gt/ocr/`, `gt/zones/`, `scans/w-figs-blotted/` (or `scans/`), `gt/fig/`, `data/readings.md`.
+**Reads** `gt/ocr/`, `gt/zones/`, `gt/fig/`, `data/readings.md`, the entity and lexicon stores — every one of them tracked, and no raster.
 **Writes** `mz/tei/chukchi-PP-NNN.xml` — derived, gitignored.
 **Exit** always 0. A page it cannot build reports `written: false` with the verb that fixes it; that is a worklist line, not a failure of the run.
 **Note** **no `--commit`.** The conventions reserve it for the authored stores and this writes `mz/`, exactly as `zones predict` and `ocr predict` do. `--force` is the guard instead, and it guards something specific: a baseline a collator has already copied is one half of `tei diff`, so replacing it mid-review makes that comparison a lie.
@@ -1078,10 +1078,11 @@ opinion of which pages are held out.
 
 ### zones paragraphs [REF ...]
 **Does** audits the paragraph-boundary rule both ways. `false_negative` is a recall figure; `false_positive` is a **worklist, not a precision figure**, since gt cannot arbitrate a rule that corrects it.
-**Reads** `gt/zones/`, `scans/w-figs-blotted/`, `data/zones_config.json`.
+**Reads** `gt/zones/`, `scans/w-figs-blotted/`, `data/zones_config.json`, `gt/zones/_para_exempt.json`.
 **Writes** —
 **Exit** always 0 — measurement.
 **Note** an aggregate, like `zones diff`.
+**Note** **this is the check's only home, and the worklist is meant to empty.** It used to run inside `tei generate` as well, cutting keyed bands and later commenting on them; both put a raster measurement into a file that is downstream of `gt/zones/` and `gt/ocr/`. Every finding it makes is answered *here* — a real one by splitting the band in `zones edit`, which fixes the generated page and the segmenter's training data at once, and the rest by a ruling in `gt/zones/_para_exempt.json`. A ruled start still appears, `kind: ruled` with its note, and is counted by `ruled` rather than `false_positives`: "not a paragraph opening" is not "nothing here", and the six ruled so far run 87-1262 px of indent on 279-1085 px ink runs against a ~1740 px measure, which is a population worth being able to see.
 ```
 --all            every keyed page
 --itinerary LST  scope to a work-list [whole corpus]

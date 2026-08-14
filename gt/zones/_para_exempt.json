@@ -1,0 +1,45 @@
+{
+ "_about": "Rulings on the first-line indent check (`harness zones paragraphs`): measured indents a human has judged NOT to be paragraph openings. The check's findings are questions about this store — a real one is answered by splitting the band in the editor — and this is where the other answer goes, so the worklist empties instead of returning on every run. Same shape as _ink_exempt.json: keyed PP-NNN, scoped to a band of the page rather than to the page, and the note is required, because 'the tool complained and I made it stop' is not a record of anything. A ruled start still reports, flagged `ruled` and carrying its note — 1-334's 1262 px and 1-196's 311 px are not paragraphs but they are saying something about short ink runs, and a ledger that hid them would lose it. The book sets its paragraph indent at 107-110 px and its full measure at ~1740 px; every entry below is far from the first, short of the second, or both.",
+ "1-116": [
+  {
+   "y0": 2880,
+   "y1": 2930,
+   "note": "indent 170 px against the book's 107-110, on a 695 px ink run — a short line, not a paragraph opening. Adjudicated in the zones editor 2026-08-14"
+  }
+ ],
+ "1-196": [
+  {
+   "y0": 1608,
+   "y1": 1658,
+   "note": "indent 311 px on a 279 px ink run — a fragment in the middle of the measure, not a line of type opening a paragraph. Adjudicated in the zones editor 2026-08-14"
+  }
+ ],
+ "1-213": [
+  {
+   "y0": 2471,
+   "y1": 2521,
+   "note": "indent 87 px, below the book's 107-110, on a 491 px ink run. Adjudicated in the zones editor 2026-08-14"
+  }
+ ],
+ "1-271": [
+  {
+   "y0": 2191,
+   "y1": 2241,
+   "note": "indent 122 px on a 1085 px ink run, on a page carrying 12 figure boxes — short line beside a picture, not a paragraph opening. Adjudicated in the zones editor 2026-08-14"
+  }
+ ],
+ "1-286": [
+  {
+   "y0": 1135,
+   "y1": 1185,
+   "note": "indent 228 px against the book's 107-110, on an 878 px ink run. Adjudicated in the zones editor 2026-08-14"
+  }
+ ],
+ "1-334": [
+  {
+   "y0": 2938,
+   "y1": 2988,
+   "note": "indent 1262 px on a 482 px ink run — most of the way across the measure, so not an indent at all. Adjudicated in the zones editor 2026-08-14"
+  }
+ ]
+}

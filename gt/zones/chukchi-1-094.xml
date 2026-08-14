@@ -30,27 +30,32 @@
             <Polygon POINTS="825 962 2603 962 2603 1328 825 1328"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="825" VPOS="1328" WIDTH="1778" HEIGHT="775" ID="mz_1-094_004" TAGREFS="BT3">
+        <TextBlock HPOS="825" VPOS="1328" WIDTH="1778" HEIGHT="182" ID="mz_1-094_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="825 1328 2603 1328 2603 2103 825 2103"/>
+            <Polygon POINTS="825 1328 2603 1328 2603 1510 825 1510"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="825" VPOS="2103" WIDTH="1778" HEIGHT="661" ID="mz_1-094_005" TAGREFS="BT3">
+        <TextBlock HPOS="825" VPOS="1510" WIDTH="1778" HEIGHT="593" ID="mz_1-094_005" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="825 1510 2603 1510 2603 2103 825 2103"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="825" VPOS="2103" WIDTH="1778" HEIGHT="661" ID="mz_1-094_006" TAGREFS="BT3">
           <Shape>
             <Polygon POINTS="825 2103 2603 2103 2603 2764 825 2764"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="825" VPOS="2764" WIDTH="1778" HEIGHT="298" ID="mz_1-094_006" TAGREFS="BT3">
+        <TextBlock HPOS="825" VPOS="2764" WIDTH="1778" HEIGHT="298" ID="mz_1-094_007" TAGREFS="BT3">
           <Shape>
             <Polygon POINTS="825 2764 2603 2764 2603 3062 825 3062"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="825" VPOS="3062" WIDTH="1778" HEIGHT="62" ID="mz_1-094_007" TAGREFS="BT3">
+        <TextBlock HPOS="825" VPOS="3062" WIDTH="1778" HEIGHT="62" ID="mz_1-094_008" TAGREFS="BT3">
           <Shape>
             <Polygon POINTS="825 3062 2603 3062 2603 3124 825 3124"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="825" VPOS="3186" WIDTH="1778" HEIGHT="90" ID="mz_1-094_008" TAGREFS="BT4">
+        <TextBlock HPOS="825" VPOS="3186" WIDTH="1778" HEIGHT="90" ID="mz_1-094_009" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="825 3186 2603 3186 2603 3276 825 3276"/>
           </Shape>

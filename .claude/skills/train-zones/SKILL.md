@@ -248,6 +248,54 @@ debugging, because every one of these was wrong first and each looked plausible.
 - **Pool that margin over the page, not the zone.** A zone whose head is flush left
   is its own minimum, so the head measured 0 against itself — 61 boundaries
   vanished and recall read 88.4% where it was 95.3%.
+- **Take a low percentile of the strip's lefts, not their minimum** (`margin_pct`,
+  25). The minimum is the one statistic a lone outlier owns outright, and a page
+  reaches it with one speck: `1-160` sets prose beside a figure and scatters a
+  dozen flecks down the gutter, 4-10 px each. `min_line_w_px` cannot see one, since
+  the run it shares rows with is a whole line wide. The leftmost became the margin,
+  every clean line read 40-47 px against the 40 px floor, and `tei generate` cut 20
+  paragraphs into a page keyed as 3. **118 false positives → 25, at a cost of two
+  boundaries.** The curve has a knee and the value sits in it — FP 118/46/33/28/25
+  at pct 0/10/15/20/25 and flat thereafter (25, 24, 22 at 33/40/50), against FN
+  53/55/55/55/55 then 56/58/62. Two refinements measured *worse* and are not in the
+  code: a **rolling** margin tracking drift down the page (nothing at a 21-line
+  window, recall lost at 11 — this book drifts between pages, not within one), and
+  restricting the statistic to lines **justified to the measure** (18 more
+  boundaries lost at the median, nothing at the quarter — a paragraph's last line
+  is short and flush left, so it is one of the best witnesses to a left margin
+  there is).
+
+**A line's bounds are the union of its rows', and four ways of measuring them more
+carefully were swept and all lost.** Worth the space because every one of them is a
+reasonable idea, and because the failure has a single cause. A run's rows disagree
+about where the line begins *bimodally*, not noisily: of a 50 px band ~22 rows are
+x-height and start at the true left, ~14 are ascender rows starting at the first
+tall letter, ~12 descender rows at the first descender, both often hundreds of px
+in. Which side holds the majority moves with the letters each line opens with, and
+that variance dwarfs the 40 px being looked for. Against the union's **25 false
+positives at 96.8% recall**:
+
+| bounds | recall | FN | FP | pages |
+|---|---|---|---|---|
+| union of rows | 96.8% | 55 | **25** | 23 |
+| bucketed mode over rows | **99.5%** | **9** | 259 | 174 |
+| median over rows | 99.6% | 6 | 1219 | 536 |
+| mean over rows | 98.5% | 25 | 8375 | 682 |
+| discount a leading run narrower than the gap after it | 98.7% | 22 | 340 | 257 |
+
+The mode is the statistic the bimodality calls for and behaves accordingly — it
+finds all but 9 boundaries in the corpus, the best recall of anything measured. It
+is not in the code because the collation path spends false positives, not misses:
+a spurious cut lands in a generated page. **If the decoder path is ever scored on
+its own, the mode is where to start.**
+
+**A minimum ink per row** (proposed as the anti-weld fix, and it is one) breaks the
+welds the audit reports — 113 suspected merges → 9, `line_h_max` 586 px → 212 — and
+lifts recall to 97.7%, because a weld hides the opening under it. It is also a
+line-length filter, since a paragraph's short last line carries little ink per row
+and drops out whole, and it took false positives 25 → 785. Raising it far enough to
+clip the descender rows (128-256 px) does tame the mode/median, but by then recall
+has fallen to 92-97%. Not in the code; the welds remain a known defect.
 
 The threshold curve is flat from 30 to 80, so the residue is a separate population
 rather than a tuning artifact. The **ragged right margin was measured and
@@ -260,12 +308,33 @@ byte-identical to the keying because the cut folded straight back. The audit mer
 each same-label run before the rule sees it, since that is the page a segmenter can
 hand you — reproducing a boundary the input already contains would measure nothing.
 
-Over the complete store — 716 text pages, 1696 asserted boundaries — the rule
-recovers **96.9%**, with 53 false negatives and 118 false positives on 26 pages.
+**This check gates `gt/zones/` and nothing downstream of it.** `tei generate` used
+to run it too — first cutting keyed bands, then commenting on them — and both put
+a raster measurement into a file that is downstream of the zone store. Every
+finding is answered *here*: a real one by splitting the band in `zones edit`, which
+fixes the generated page and the segmenter's training data in one act, and the rest
+by a ruling in `gt/zones/_para_exempt.json`. A ruled start still reports,
+`kind: ruled` with its note, and is counted by `ruled` rather than
+`false_positives`. Six are ruled so far, at 87-1262 px of indent on 279-1085 px ink
+runs against a ~1740 px measure — none of them a paragraph, all of them worth
+seeing.
+
+**A line still at the zone's head is not a start inside it.** The first-line
+exemption counts lines, and a sub-line of ink defeats it: on `1-075` the band opens
+on 6 px of descender from the paragraph above, which takes the exemption as line 1
+and leaves the paragraph's real opening line reporting as internal at the book's
+own 107-110 px indent. That was **19 of 29 findings** over the corpus, and the tell
+is that a page does not open two paragraphs sixteen pixels apart. A start within
+`min_zone_h_px` of its zone's top is now skipped.
+
+Over the complete store — 717 text pages, 1702 asserted boundaries — the rule
+recovers **96.8%**, with 55 false negatives, 16 false positives on 14 pages, and 6
+ruled.
 The false negatives come pre-triaged and the three kinds want different fixes:
-**28 flush left** (the book set no indent — nothing to find), **20 slight indent**
-(under threshold, and moving the threshold is what the flat curve says not to do),
-**5 no line detected at all**. `false_positive` remains a **worklist, not a rate**:
+**37 flush left** (the book set no indent — nothing to find, and a line sitting
+*left* of the margin is in here too), **13 slight indent** (under threshold, and
+moving the threshold is what the flat curve says not to do), **5 no line detected
+at all**. `false_positive` remains a **worklist, not a rate**:
 gt cannot arbitrate a rule that corrects it, and of the first twenty found, fifteen
 were keying slips and were fixed.
 
@@ -289,8 +358,12 @@ a 49 px median (p90 52):
   113 suspects out of 28,807 lines, worst case 586 px; before blotting it was 173
   on a fraction of the pages.
 
-A miss reported with `indent: -1` means no line was detected there at all, which is
-a different failure from "seen, under threshold" and wants a different fix.
+A miss reported with **`h: -1`** means no line was detected there at all, which is a
+different failure from "seen, under threshold" and wants a different fix. Read `h`
+and not `indent` for this: both are -1 when nothing was found, but since the margin
+became a percentile a real line can measure a *negative* indent by sitting left of
+it — `1-160`'s fleck line reads -36 — and that is a page whose line detector is
+working perfectly.
 
 ## Do not
 

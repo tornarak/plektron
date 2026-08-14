@@ -44,12 +44,18 @@ the point: the generated file stays on disk, so `harness tei diff` can say what
 review changed. The collation pass had no baseline before, which made "did the
 collator invent this?" an unanswerable question about every page it produced.
 
-**Two witnesses to a paragraph boundary, and they are kept apart.** The zone
-labels are a human's assertion; `zones.paragraph_starts` measures first-line
-indents off the blotted raster (96.9% recall over 716 pages) and cuts *within* a
-band where one human zone holds two paragraphs. Where the raster is missing the
-split degrades to zone boundaries alone and says so in the file — a page with
-fewer paragraphs than it should have, marked as such, rather than a silent one.
+**The paragraphs are the keyed zones, and this reads no raster at all.**
+`zones.paragraph_starts` measures first-line indents off the scan and used to *cut*
+a keyed band it read as holding two paragraphs — a measurement adding structure
+over a human's assertion, in a file that recorded no difference between the two,
+and `1-160` is what that was worth: one speck of dirt in the gutter, 20 paragraphs
+the keying never had. Reporting them here instead of cutting failed the same test
+one level up. **Every finding that check makes is answered by editing `gt/zones/`**,
+so it is a gate on the zone store and lives there, with its rulings in
+`gt/zones/_para_exempt.json`; leaving it here gave a ruling nowhere to live and
+made the generated page depend on a derived, untracked raster, so a fresh clone
+built *different TEI* from identical stores. What is left is the property that was
+wanted: a pure function of the tracked stores.
 
 **The seam witness is not generated.** `<!-- opens: … -->` means what a reader saw
 on the raster, and seeding it from the zone label would leave `tei seam` comparing
@@ -73,13 +79,13 @@ from .context import (
 from .detectors import join_broken_words
 from .entities import alias_index, auto_forms, load
 from .lines import page_lines
-from .zones import read_zones, split_at_paragraphs
+from .zones import read_zones
 
 #: Bumped when the emitted shape changes in a way that makes an older file a
 #: different artifact rather than an older copy of the same one. It rides in the
 #: stamp, so `tei diff` can say "this baseline predates the current rules" instead
 #: of reporting the difference as something review did.
-VERSION = 2
+VERSION = 3
 
 GENDIR = "mz/tei"
 
@@ -305,23 +311,32 @@ def _require(ref: str, root: Path) -> None:
             f"labels, and a prediction is not one. Key the page in `harness zones edit`")
 
 
-def _bands(ref: str, root: Path) -> tuple[list[dict], str]:
-    """The page's zones, cut at measured paragraph openings where that is possible.
+def _bands(ref: str, root: Path) -> list[dict]:
+    """The page's zones as a human keyed them, uncut.
 
-    Returns the bands and how the split was reached, because those are two
-    different pages: one where the indent detector ran and one where only the
-    keyed boundaries are represented. The second is a real degradation — a human
-    zone holding three paragraphs stays one `<p>` — and a caller that could not
-    tell them apart would publish the short page as if it were the full one.
+    **The paragraphs are the keyed zones and this module reads no raster.** They
+    used to be cut further by `split_at_paragraphs`, which measures first-line
+    indents off the scan — a good rule, 96.8% against this store, running in the
+    one place it is not needed. `_require` refuses a page without `gt/zones/`, so
+    the boundary the measurement exists to recover is never missing here: a human
+    drew it, and the store's 561 abutting pairs are what that looks like. What the
+    measurement added instead were boundaries the human did not key, on its own
+    authority, into a file that records no difference between the two — one speck
+    of dirt in `1-160`'s gutter was worth 20 of them.
+
+    Reporting them here instead of cutting was the next wrong answer, and it failed
+    the same test one level up. **Every finding the check makes is answered by
+    editing `gt/zones/`** — the three real ones it found were fixed there, not in
+    any TEI — so it is a gate on the zone store, `harness zones paragraphs` runs
+    it, and `gt/zones/_para_exempt.json` records the rulings. Leaving it here left
+    a ruling nowhere to live, so the same questions returned on every regeneration;
+    and it made the generated page depend on a derived, untracked raster, so a
+    fresh clone produced *different TEI* from identical stores.
+
+    What is left is the property that was wanted all along: this module is a pure
+    function of the tracked stores.
     """
-    zones = read_zones(ref, root)
-    try:
-        return split_at_paragraphs(zones, ref, root), "raster"
-    except Exception:
-        # The blotted raster and the scan are both derived and neither is in git,
-        # so a fresh clone reaches this. Degrading beats refusing: the zone labels
-        # alone still carry every boundary a human keyed, which is most of them.
-        return zones, "zones-only"
+    return read_zones(ref, root)
 
 
 def _assign(recs: list[dict], bands: list[dict]) -> list[list[dict]]:
@@ -550,8 +565,8 @@ def _emit(full: str, spans: list, indent: str) -> str:
 
 
 def page_blocks(ref: str, root: Path = Path(".")
-                ) -> tuple[list[tuple[dict | None, list[tuple[int, str]]]], str]:
-    """The page's text in the blocks the rules read it as, plus what the split rested on.
+                ) -> list[tuple[dict | None, list[tuple[int, str]]]]:
+    """The page's text in the blocks the rules read it as.
 
     One entry per band, in order, each `(band, [(line index, joined text), …])`;
     the last entry's band is None and holds the lines inside no zone. Captions
@@ -570,7 +585,7 @@ def page_blocks(ref: str, root: Path = Path(".")
     recs = page_lines(ocr, root, ref=ref)
     joined = join_broken_words(recs)
     text_of = {r["index"]: t for r, t in zip(recs, joined, strict=True)}
-    bands, split_by = _bands(ref, root)
+    bands = _bands(ref, root)
     buckets = _assign(recs, bands)
 
     def rows_of(bucket: list[dict]) -> list[tuple[int, str]]:
@@ -587,7 +602,7 @@ def page_blocks(ref: str, root: Path = Path(".")
     out: list[tuple[dict | None, list[tuple[int, str]]]] = [
         (b, rows_of(k)) for b, k in zip(bands, buckets[:-1], strict=True)]
     out.append((None, rows_of(buckets[-1])))
-    return out, split_by
+    return out
 
 
 def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
@@ -597,7 +612,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     ocr, _ = _inputs(ref, root)
 
     running = _running_title(page_lines(ocr, root, ref=ref), ref, root)
-    blocks, split_by = page_blocks(ref, root)
+    blocks = page_blocks(ref, root)
     bands = [b for b, _ in blocks[:-1]]
     buckets = [rows for _, rows in blocks]
 
@@ -630,7 +645,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     # they are filled conditionally below, and a page with no notes would
     # otherwise return a row one key short — which collapses the whole sweep's
     # table to the nested form (`skipped`, same argument).
-    rep = {"ref": ref, "folio": None, "folio_from": "", "split_by": split_by,
+    rep = {"ref": ref, "folio": None, "folio_from": "",
            "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
            "handles": 0, "links": 0, "candidates": 0,
            "outside_zones": 0, "unknown_labels": "",
@@ -724,11 +739,6 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                     f'{"continued" if first == "MainZone-Continued" else "fresh"} '
                     f'(from the zone label; the opens: witness above is yours, off '
                     f'the raster) -->')
-    if split_by == "zones-only":
-        body.append('      <!-- generator: no blotted raster, so paragraphs were '
-                    'split at keyed zone boundaries only. A zone holding two '
-                    'paragraphs is one <p> here — check the page -->')
-
     notes: list[str] = []
     unknown: set[str] = set()
 
@@ -863,18 +873,12 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
                 body.append(f'      <quote>\n        <p>{block}'
                             f'</p>\n      </quote>')
             else:
-                # Either witness opens a paragraph: the keyed label, and the
-                # measured first-line indent `split_at_paragraphs` cut this band
-                # at.
-                #
-                # **The second is redundant as the config stands** —
-                # `paragraph_split.labels` lists `MainZone-P` alone, so every
-                # piece of every split band is labelled `MainZone-P` and the first
-                # test already fires. It is read anyway because that list is a
-                # value in a JSON file: add `MainZone-Continued` to it and a merge
-                # reading labels alone would run a measured cut's two paragraphs
-                # together, silently and as plausible prose.
-                if label == "MainZone-P" or band.get("paragraph_open"):
+                # **The keyed label, and nothing else, opens a paragraph.** A
+                # measured indent used to be able to open one too, by having cut
+                # this band in `_bands` — a rule adding structure on top of a
+                # human's, which is the thing this module exists not to do. That
+                # measurement is a gate on `gt/zones/` now and runs there.
+                if label == "MainZone-P":
                     close_paragraph()
                 para.extend(rows)
                 # The foot of the prose accumulated so far, which is what a
@@ -1106,7 +1110,7 @@ def skipped(ref: str, why: str = "") -> dict:
     here besides: nothing was measured, and a blank is what "not measured" looks
     like beside a page where it was.
     """
-    return {"ref": norm_ref(ref), "folio": None, "folio_from": "", "split_by": "",
+    return {"ref": norm_ref(ref), "folio": None, "folio_from": "",
             "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
             "handles": 0, "links": 0, "candidates": 0,
             "outside_zones": 0, "unknown_labels": "",

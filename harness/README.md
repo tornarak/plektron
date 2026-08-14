@@ -22,7 +22,7 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `gt/lines/` | the **corrections overlay**: boxes a human drew over ink the segmenter left unboxed, per page, in raster coordinates, `+ _ink_exempt.json`. Folded into every page's lines by `lines.page_lines`, so a correction is reachable on the pages that have no ground truth at all | `ocr edit` (geometry), `ocr restore --commit` (text) |
 | `mz/ocr/` | what the models emitted: lines from `blla`, text from CATMuS, structured by the zones. Derived, ignored | `ocr predict` |
 | `gt/fig/` | 252 figure ALTOs, geometry only, **no `TextLine` at all** | by hand, via eScriptorium |
-| `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json` | `zones edit` |
+| `gt/zones/` | the **current** segmentation: seven types, fixed-width bands, `+ _train.lst _eval.lst _exempt.lst _rule_exempt.json _ink_exempt.json _para_exempt.json` | `zones edit` |
 | `mz/zones/` | what the trained segmenter emitted: raw kraken ALTO, free polygons, kraken's ids. Derived, ignored | `zones predict` |
 | `zones/` | the **read view** over both zone stores — symlinks, the human file always winning. Derived, ignored | `zones link` |
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
@@ -273,9 +273,12 @@ does not survive `join_broken_words` whole — a handle is what `tei expand` sta
 
 **`generate.py`** — the first-draft TEI page, by rule, into `mz/tei/`. Reads
 `gt/zones/` for the paragraph boundaries (`MainZone-P` opens one,
-`MainZone-Continued` does not), `zones.split_at_paragraphs` to cut a band that holds
-two, and `gt/ocr/` for the text. A `Continued` band joins the paragraph above it
-rather than opening one. Splits the footnote apparatus at its printed markers and
+`MainZone-Continued` does not) and `gt/ocr/` for the text. A `Continued` band joins
+the paragraph above it rather than opening one. **The keyed bands are the
+paragraphs, no rule adds to them, and this module opens no raster** — its output is
+a pure function of the tracked stores, so a clone reproduces it byte for byte.
+`zones.paragraph_starts` used to cut a band it measured as holding two; it gates
+`gt/zones/` now, that being the store its findings are answered in. Splits the footnote apparatus at its printed markers and
 anchors each note at the matching marker in the body — both the printer's own
 marks, so both rules — and emits `<figure n><figDesc>` where each box sits. Emits a
 comment naming every judgement it declines: the `MainZone-Other` catch-all, a note
@@ -612,13 +615,17 @@ that **does not exist in this version**, and `ketos segtrain` does not write the
 project trains raises `KeyError: 'hyper_params'` on its first inference. See the
 docstring; re-verify after any kraken upgrade.
 
-Two exemption sidecars, and they answer different questions. `_rule_exempt.json`
+Three exemption sidecars, and they answer different questions. `_rule_exempt.json`
 says a page arranges itself unusually and the order rules may stop saying so.
 `_ink_exempt.json` says a particular *band* of ink is not type — a smudge, a gutter
-blob, offset from the facing page — and carries the reason as a required field. The
-second is scoped to a band and never to a page, because the ink check is the only
-thing that can see a dropped zone and a page-wide suppression would hide the next
-one. Both keep reporting what they excuse, flagged.
+blob, offset from the facing page — and carries the reason as a required field.
+`_para_exempt.json` says a measured first-line indent is not a paragraph opening,
+which is the other answer to `zones paragraphs`: the real findings are answered by
+splitting the band in the editor, and without somewhere to put the rest the same
+questions came back on every run. All three are scoped to a band and never to a
+page — the checks are the only thing that can see a dropped zone or a lumped
+paragraph, and a page-wide suppression would hide the next one. All three keep
+reporting what they excuse, flagged and carrying the note.
 
 The editor's **store selector** (`/`, or the three HUD pills) is orthogonal to the
 itinerary: the itinerary chooses the pages, the selector chooses whose reading of

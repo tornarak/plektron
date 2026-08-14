@@ -748,7 +748,7 @@ def entity_hits(ref: str, root: Path = Path(".")) -> list[dict]:
     if not idx:
         return []
     autos = auto_forms(idx)
-    blocks, _ = page_blocks(ref, root)
+    blocks = page_blocks(ref, root)
     out = []
     for band, rows in blocks:
         if band is not None and band["label"] in APPARATUS_ZONES:

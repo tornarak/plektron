@@ -75,13 +75,25 @@ def alto(tmp_path: Path, ref: str, blocks: list[tuple[str, list[tuple[str, int]]
 
 
 def stores(tmp_path: Path, ref: str, blocks, bands=None) -> None:
-    """Both stores for one page, plus the blank raster `save_zones` measures.
+    """Both stores for one page, the blank raster `save_zones` measures, and the
+    zone config.
 
-    The raster is blank, so `paragraph_starts` finds no ink and cuts nothing: the
-    bands that come back are the keyed ones exactly. That isolates what the *labels*
-    carry — the claim these tests make — from what the indent detector adds on top,
-    while still exercising the real code path rather than the degraded one.
+    The raster is blank, so `paragraph_starts` finds no ink and reports nothing:
+    the bands that come back are the keyed ones exactly. That isolates what the
+    *labels* carry — the claim these tests make — from what the indent check says
+    about them, while still exercising the real code path rather than the degraded
+    one.
+
+    **The config is copied in because without it that sentence was false.**
+    `paragraph_starts` loads it, `_bands` catches what it raises, and every fixture
+    here was quietly taking the no-raster path — including the test that asserts
+    the no-raster path, which passed for the wrong reason and would have passed
+    with the raster present.
     """
+    cfg = tmp_path / "data"
+    cfg.mkdir(exist_ok=True)
+    (cfg / "zones_config.json").write_bytes(
+        (REPO / "data" / "zones_config.json").read_bytes())
     write_scan(tmp_path, ref)
     alto(tmp_path, ref, blocks)
     save_zones(ref, bands if bands is not None else bands_for(blocks), tmp_path)
@@ -154,31 +166,28 @@ def test_a_page_opening_continued_is_still_one_paragraph(tmp_path):
     assert rep["paragraphs"] == 2
 
 
-def test_a_measured_cut_opens_a_paragraph_inside_a_continued_band(
-        tmp_path, monkeypatch):
-    """The two witnesses do not collapse into one. Every piece of a split zone
-    inherits that zone's label, so a `Continued` band the indent detector cut in
-    two yields two `Continued` bands — of which the second opens a paragraph. Were
-    the merge keyed on the label alone, the second would be swallowed by the first
-    and the measured cut would have bought nothing.
+def test_the_page_is_a_pure_function_of_the_tracked_stores(tmp_path):
+    """**Delete the raster and the same stores build the same file, byte for
+    byte.** The generated page is `gt/zones/` + `gt/ocr/` + the tracked apparatus
+    and nothing else, so a fresh clone — which has no `scans/`, that tree being
+    derived and gitignored — reproduces what the last run produced.
 
-    `paragraph_open` is set by `split_at_paragraphs` at run time and is not in the
-    store — the fixture writes its bands through `save_zones`, which keeps only
-    what the ALTO holds — so the split is stubbed here. That it is *set* at all is
-    `test_zones_stores.py`'s.
+    It did not hold until the first-line indent check moved out. That check reads
+    the raster, and while it lived here a page built from identical stores differed
+    by whichever specks of dirt the scan happened to carry: as structure at first,
+    since it cut keyed bands, and then as a comment. Both are content in the
+    artifact. It gates `gt/zones/` now, which is the store its findings are
+    answered in — `harness zones paragraphs`, ruled in `gt/zones/_para_exempt.json`.
     """
-    blocks = [("MainZone-Continued", lines_at(["continues the page before."])),
-              ("MainZone-Continued", lines_at(["A new paragraph the raster found."],
-                                              245))]
+    blocks = [("MainZone-P", lines_at(["Opens here.", "and runs on."])),
+              ("MainZone-Continued", lines_at(["and finishes here."], 245))]
     stores(tmp_path, "1-021", blocks)
-
-    def split(zones, ref, root):
-        return [{**z, "paragraph_open": i > 0} for i, z in enumerate(zones)]
-
-    monkeypatch.setattr(gen, "split_at_paragraphs", split)
-    doc, rep = gen.build("1-021", tmp_path)
-    assert rep["paragraphs"] == 2
-    assert "<p>continues the page before.</p>" in doc
+    with_raster, rep = gen.build("1-021", tmp_path)
+    (tmp_path / "scans" / "chukchi-1-021.png").unlink()
+    without_raster, rep2 = gen.build("1-021", tmp_path)
+    assert with_raster == without_raster
+    assert rep == rep2
+    assert rep["paragraphs"] == 1        # the `Continued` band joins the one above
 
 
 def test_the_printed_line_breaks_survive(tmp_path):
@@ -445,17 +454,16 @@ def test_a_page_without_keyed_zones_is_refused_too(tmp_path):
         gen.build("1-021", tmp_path)
 
 
-def test_without_a_raster_the_split_degrades_and_the_page_says_so(tmp_path):
-    """`scans/` is derived and not in git, so a fresh clone reaches this. The keyed
-    boundaries still carry most paragraphs; what is lost is a band a human keyed as
-    one zone that sets two paragraphs. A page silently short of paragraphs would be
-    indistinguishable from a page that has them all."""
+def test_a_missing_raster_is_not_an_error_here(tmp_path):
+    """`scans/` is derived and not in git, so a fresh clone reaches this. It used
+    to be a degraded build that said so in the file; now it is simply a build,
+    there being nothing on this path that wants a raster."""
     stores(tmp_path, "1-021", [("MainZone-P", lines_at(["Body."]))])
     # After the stores are written, not before: `save_zones` measures the raster.
     (tmp_path / "scans" / "chukchi-1-021.png").unlink()
     doc, rep = gen.build("1-021", tmp_path)
-    assert rep["split_by"] == "zones-only"
-    assert "no blotted raster" in doc
+    assert rep["paragraphs"] == 1
+    assert "<p>Body.</p>" in doc
 
 
 def test_a_baseline_is_not_replaced_without_force(tmp_path):

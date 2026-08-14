@@ -30,17 +30,22 @@
             <Polygon POINTS="665 1239 2443 1239 2443 1534 665 1534"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="665" VPOS="1534" WIDTH="1778" HEIGHT="842" ID="mz_1-264_004" TAGREFS="BT3">
+        <TextBlock HPOS="665" VPOS="1534" WIDTH="1778" HEIGHT="362" ID="mz_1-264_004" TAGREFS="BT3">
           <Shape>
-            <Polygon POINTS="665 1534 2443 1534 2443 2376 665 2376"/>
+            <Polygon POINTS="665 1534 2443 1534 2443 1896 665 1896"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="665" VPOS="2376" WIDTH="1778" HEIGHT="426" ID="mz_1-264_005" TAGREFS="BT3">
+        <TextBlock HPOS="665" VPOS="1896" WIDTH="1778" HEIGHT="481" ID="mz_1-264_005" TAGREFS="BT3">
+          <Shape>
+            <Polygon POINTS="665 1896 2443 1896 2443 2377 665 2377"/>
+          </Shape>
+        </TextBlock>
+        <TextBlock HPOS="665" VPOS="2376" WIDTH="1778" HEIGHT="426" ID="mz_1-264_006" TAGREFS="BT3">
           <Shape>
             <Polygon POINTS="665 2376 2443 2376 2443 2802 665 2802"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="665" VPOS="2823" WIDTH="1778" HEIGHT="71" ID="mz_1-264_006" TAGREFS="BT4">
+        <TextBlock HPOS="665" VPOS="2823" WIDTH="1778" HEIGHT="71" ID="mz_1-264_007" TAGREFS="BT4">
           <Shape>
             <Polygon POINTS="665 2823 2443 2823 2443 2894 665 2894"/>
           </Shape>

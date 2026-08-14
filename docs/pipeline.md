@@ -84,7 +84,14 @@ the stages that are built.
 
 3. **Generation** — `harness tei generate` → `mz/tei/`, by rule and no model.
    Paragraph boundaries come from the keyed `MainZone-P`/`MainZone-Continued`
-   labels, split further inside a band by `zones.paragraph_starts`; `<pb n>` from
+   labels and from nothing else, and **the stage reads no raster at all** — its
+   output is a pure function of the tracked stores, so a fresh clone reproduces it.
+   `zones.paragraph_starts` measures first-line indents off the scan and once cut a
+   keyed band it read as holding two, which let a speck of dirt in `1-160`'s gutter
+   add 20 paragraphs the keying never had; commenting instead of cutting failed the
+   same way, since every finding it makes is answered by editing `gt/zones/`. It is
+   a gate on the zone store now (`harness zones paragraphs`, ruled in
+   `gt/zones/_para_exempt.json`); `<pb n>` from
    the running title's folio; apparatus zones and caption lines dropped;
    `MarginTextZone-Notes` split at its printed markers and each note anchored at
    the matching marker in the prose; figures emitted as `<figure n><figDesc>`

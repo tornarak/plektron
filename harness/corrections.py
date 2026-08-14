@@ -226,9 +226,16 @@ def save_lines(ref: str, boxes: list[dict], root: Path = Path("."),
 
 # --------------------------------------------------------------- the shared core
 
-def load_exemptions(store: Path) -> dict[str, list[dict]]:
-    """Every ruling in one layer's file, keyed by ref. `{}` when absent."""
-    p = Path(store) / INK_EXEMPT_JSON
+def load_exemptions(store: Path, name: str = INK_EXEMPT_JSON
+                    ) -> dict[str, list[dict]]:
+    """Every ruling in one layer's file, keyed by ref. `{}` when absent.
+
+    `name` because the *shape* of a ruling ledger is shared and the question each
+    one answers is not — the ink layers ask what the zoning legitimately fails to
+    cover, `_para_exempt.json` asks which measured indents are not paragraph
+    openings. Same file shape, same corrupt-file reading, different question.
+    """
+    p = Path(store) / name
     if not p.exists():
         return {}
     try:
