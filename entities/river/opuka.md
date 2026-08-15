@@ -1,7 +1,7 @@
 # river:opuka — Opuka
 
 - status: ratified
-- within: land:northeast-siberia
+- within: land:chukotka
 - area: watershed:opuka
 
 ## aliases

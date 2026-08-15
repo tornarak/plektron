@@ -1,6 +1,6 @@
 # river:sugoy — Sugoy
 
-- status: proposed
+- status: ratified
 - within: river:kolyma
 - area: watershed:sugoy-or-shoudon
 - link: wikipedia:Sugoy

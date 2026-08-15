@@ -1,6 +1,6 @@
 # place:zashiversk — Zashiversk
 
-- status: proposed
+- status: ratified
 - within: river:indigirka
 - geo: 67.45 142.617
 - link: geonames:2119377

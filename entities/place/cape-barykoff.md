@@ -1,6 +1,7 @@
 # place:cape-barykoff — Cape Barykoff
 
-- status: proposed
+- status: ratified
+- within: land:chukotka
 - geo: 63.063138 179.439430
 
 ## aliases
