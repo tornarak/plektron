@@ -1,0 +1,84 @@
+{% extends "edition/base.html" %}
+{% block title %}{{ run.title }} — The Chukchee{% endblock %}
+
+{# The same two buttons `exempt.html` carries, and for its reason: `edition.js`
+   looks both up unconditionally at load and a missing one throws, taking the
+   arrow keys with it — which are how a reader crosses a run. #}
+{% block btn_extra %}
+    <button id='scan-btn' title='Open Scan in New Tab'>🗗</button>
+    <button id='reader-btn' title='Reader View'>📕</button>
+{% endblock %}
+
+{% macro neighbours() %}
+<nav class='neighbours' aria-label='page'>
+  <span>{% if prev %}<a class='page-prev'
+     href='{{ base }}/page/{{ prev }}'>← {{ prev }}</a>{% endif %}</span>
+  <span class='here'>{{ run.refs | join(' ') }}</span>
+  <span>{% if next %}<a class='page-next'
+     href='{{ base }}/page/{{ next }}'>{{ next }} →</a>{% endif %}</span>
+</nav>
+{% endmacro %}
+
+{# One leaf's mark: the anchor every redirect into this run lands on, set in the
+   margin beside the item it opens rather than as a rule across the flow — a
+   page break is a fact about the binding and should not interrupt the list the
+   binding happens to carry.
+
+   **Emitted for every ref in the run whether or not the store holds an entry
+   printed on it**, because a leaf with no anchor is a redirect that lands
+   nowhere. Both page systems are named — the scan ref and the printed folio —
+   since neither is derivable from the other.
+
+   **It links to itself.** The mark is a permalink to this point in the run,
+   which is what a reader wants from a page break; the scans are the scan
+   button's, which on a run shows the whole span in succession. #}
+{% macro leafmark(l) %}
+<a class='leaf-mark' id='{{ l.anchor }}' href='#{{ l.anchor }}'
+   title='leaf {{ l.ref }}{% if l.printed_folio or l.folio %}, folio {{
+     l.printed_folio or l.folio }}{% endif %}{%
+     if l.editor %} — an editor has worked on this leaf{% endif %}'>{%
+   if l.folio_anchor %}<span id='{{ l.folio_anchor }}'></span>{% endif
+   %}{{ l.printed_folio or l.folio or l.ref }}{%
+   if l.editor %}<span class='run-tag'>ed</span>{% endif %}</a>
+{% endmacro %}
+
+{% block main %}
+<aside id='secondary'><div id='stack'></div></aside>
+<div id='primary'>
+{{ neighbours() }}
+
+<h3>{{ run.title }}</h3>
+{# What this page is and is not, said on the page itself rather than only in the
+   listing: a URL typed straight in skips whatever would otherwise carry it. It
+   is the printed list as a store holds it, not a transcription of these leaves —
+   `page.html`'s draft-note reason, one level over. #}
+<p class='draft-note'><span class='draft-tag'>apparatus</span> — the printed
+{{ run.title | lower }}, over {{ run.refs | length }} leaves
+({{ run.refs | first }}–{{ run.refs | last }}), served as one document from
+<code>{{ run.source }}</code>. The folio in the margin marks where each leaf
+begins and links to itself; 🗗 shows the leaves themselves, in succession.</p>
+
+{# **One list, not one per leaf.** The seven scans of the Contents carry a single
+   printed list, and closing and reopening a `<ul>` at each of them would break
+   the indentation and the reader's eye at boundaries that are facts about the
+   binding. `_run_items` flattens the leaves into one stream and marks where each
+   one opens. #}
+<article class='run run-{{ run.kind }}'>
+{% if run.kind == 'toc' %}{% include "edition/_toc.html" %}
+{% elif run.kind == 'loi' %}{% include "edition/_loi.html" %}
+{% elif run.kind == 'authorities' %}{% include "edition/_authorities.html" %}
+{% elif run.kind == 'alphabet' %}
+  {# The one run whose page is not a list, so it carries its leaf mark itself
+     rather than having `_run_items` hang one off the first entry. #}
+  <div class='alpha-leaf'>{{ leafmark(leaves | first) }}</div>
+  {% include "edition/_alphabet.html" %}
+{% endif %}
+</article>
+
+{{ neighbours() }}
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="/static/js/edition.js"></script>
+{% endblock %}

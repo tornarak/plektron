@@ -16,7 +16,8 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from .. import entities, figures, geo, lexicon, lookup, tei_html
+from .. import alphabet, apparatus, entities, figrefs, figures, geo, lexicon, lookup, tei_html
+from ..context import norm_ref
 from .cache import MAXSIZE, by_file, stamp
 
 
@@ -94,6 +95,149 @@ def exempt(root: Path) -> list[str]:
     return _exempt(str(root), stamp([Path(root) / "gt/zones/_exempt.lst"]))
 
 
+def _runs_files(root: Path) -> list[Path]:
+    """`runs.json` and every store a declared run reads. A run's page changes when
+    either does, and the second half is why this is a function rather than one
+    path: the declaration names its source, so the key follows the declaration."""
+    p = Path(root) / apparatus.RUNS_JSON
+    out = [p]
+    for r in apparatus.load_runs(Path(root)):
+        if r.get("source"):
+            out.append(Path(root) / r["source"])
+    return out
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _runs(root: str, _key: bytes) -> list[dict]:
+    return apparatus.runs(Path(root))
+
+
+def runs(root: Path) -> list[dict]:
+    """Every run the edition serves. Read on every page render, parsed once."""
+    return _runs(str(root), stamp(_runs_files(root)))
+
+
+def run_for(root: Path, ref: str) -> dict | None:
+    ref = norm_ref(ref)
+    for r in runs(root):
+        if ref in [norm_ref(x) for x in r.get("refs") or []]:
+            return r
+    return None
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _run_store(root: str, rid: str, _key: bytes) -> dict:
+    run = next((r for r in apparatus.runs(Path(root)) if r.get("id") == rid), None)
+    return apparatus.store_for(run or {}, Path(root))
+
+
+def run_store(root: Path, run: dict) -> dict:
+    """A run's backing store, normalised. Keyed on the file it names, so an edit
+    to `loi.json` reaches the page and an edit to another store does not."""
+    src = run.get("source")
+    return _run_store(str(root), run.get("id") or "",
+                      stamp([Path(root) / src] if src else []))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _folio_index(root: str, _key: bytes) -> dict:
+    return apparatus.folio_index(Path(root))
+
+
+def folio_index(root: Path) -> dict:
+    """The folio witnesses. Its third witness is one ALTO parse per keyed page —
+    measured at 0.32 s over 275 of them, which is cheap enough that this cache is
+    a courtesy rather than the thing that makes the route possible. Keyed on all
+    three witnesses' stores, so a newly collated page moves it."""
+    return _folio_index(str(root), stamp(
+        _tei_files(root) + _gt_ocr_files(root) + _runs_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _alphabet(root: str, _key: bytes) -> dict:
+    return alphabet.chart(Path(root))
+
+
+def alphabet_chart(root: Path) -> dict:
+    """The alphabet key joined to what this edition knows about it. Keyed on
+    the store and on `gt/ocr/`, since the attestation counts move with the
+    keyed corpus."""
+    return _alphabet(str(root), stamp(
+        [Path(root) / alphabet.STORE] + _gt_ocr_files(root)))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _by_plate(root: str, rid: str, _key: bytes) -> dict:
+    run = next((r for r in apparatus.runs(Path(root)) if r.get("id") == rid), None)
+    doc = apparatus.store_for(run or {}, Path(root))
+    return figures.by_plate([e for e in doc["entries"]
+                             if e.get("kind") == "plate"], Path(root))
+
+
+def by_plate(root: Path, run: dict) -> dict:
+    """Roman plate number -> the leaf it is on and the pictures on it. Keyed on
+    both sides of the join, since either moving changes the answer."""
+    src = run.get("source")
+    return _by_plate(str(root), run.get("id") or "", stamp(
+        ([Path(root) / src] if src else [])
+        + sorted((Path(root) / "gt" / "fig").glob("chukchi-*.xml"))))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _by_number(root: str, _key: bytes) -> dict:
+    return figures.by_number(Path(root))
+
+
+def by_number(root: Path) -> dict:
+    """Printed figure number -> the zones carrying it. The List of Illustrations
+    links through this."""
+    return _by_number(str(root), stamp(
+        sorted((Path(root) / "gt" / "fig").glob("chukchi-*.xml"))))
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _figure_boxes(root: str, ref: str, _key: bytes) -> tuple:
+    return tuple(figures.figure_boxes(ref, Path(root)))
+
+
+def figure_boxes(ref: str, root: Path) -> tuple:
+    """One leaf's figures, with the numbers their captions print. Keyed on that
+    leaf's own `gt/fig/` file, so a re-boxed plate moves only its own pages."""
+    return _figure_boxes(str(root), ref, stamp(
+        [Path(root) / "gt" / "fig" / f"chukchi-{norm_ref(ref)}.xml"]))
+
+
+def loi_run(root: Path) -> dict:
+    """The List of Illustrations run, which is what locates the plates.
+
+    Found by `kind` rather than by id, because the id is one book's word for it
+    and the kind is the vocabulary every book shares — `apparatus.KINDS`.
+    """
+    return next((r for r in apparatus.runs(root) if r.get("kind") == "loi"), {})
+
+
+@lru_cache(maxsize=MAXSIZE)
+def _authority_names(root: str, _key: bytes) -> frozenset:
+    run = next((r for r in apparatus.runs(Path(root))
+                if r.get("kind") == "authorities"), {})
+    doc = apparatus.store_for(run, Path(root)) if run else {"entries": []}
+    return frozenset(figrefs.authority_names(doc["entries"]))
+
+
+def authority_names(root: Path) -> frozenset:
+    """The names Bogoras cites other people's work under.
+
+    A cross-reference is only this book's if no authority stands in front of it,
+    and `Authorities Quoted` is the store of exactly those names. Keyed on the
+    store it comes from, so adding a work reaches the pages that cite it.
+    """
+    run = next((r for r in apparatus.runs(root)
+                if r.get("kind") == "authorities"), {})
+    src = run.get("source")
+    return _authority_names(str(root),
+                            stamp([Path(root) / src] if src else []))
+
+
 def in_reading_order(root: Path, drafts: bool) -> list[str]:
     """Every page the edition can show, in scan order — prose and plates alike.
 
@@ -101,9 +245,20 @@ def in_reading_order(root: Path, drafts: bool) -> list[str]:
     at every illustration and has no way back on. So the exempt pages are threaded
     into the same list rather than given a listing of their own, and the ordering
     is the scan index, which is the order the binding puts them in.
+
+    **A run stands in the list as its first ref and its other leaves are dropped.**
+    Six scans of List of Illustrations are one document, and threading all six
+    would make a reader press *next* six times to cross a list they have already
+    read whole — every one of those leaves redirecting back to the page they are
+    already on. The type stays `list[str]` and so does the `refs.index(ref)`
+    arithmetic every caller does on it; what changes is that one member of the
+    list can now stand for several scans, and `run_for` is how a caller asks.
     """
     seen = readable(root) if drafts else collated(root)
-    return tei_html._sorted_refs([*seen, *exempt(root)])
+    refs = tei_html._sorted_refs([*seen, *exempt(root)])
+    interior = {norm_ref(r) for run in runs(root)
+                for r in (run.get("refs") or [])[1:]}
+    return [r for r in refs if r not in interior]
 
 
 @lru_cache(maxsize=MAXSIZE)

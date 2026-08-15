@@ -117,10 +117,10 @@ TABLE: dict[str, tuple[str, str]] = {
     # -- diphthongs, before their first elements --------------------------
     # espeak writes the off-glide as a lax vowel where this edition writes it
     # non-syllabic; same two segments, two notations.
-    "ei̯ˀ": ("eI?", "eɪʔ"),   # the rising diphthong, glottalized
+    "e̯iˀ": ("eI?", "eɪʔ"),   # the rising diphthong, always glottalized
     "ai̯": ("aI", "aɪ"),
     "ei̯": ("eI", "eɪ"),
-    "oi̯": ("OI", "ɔɪ"),
+    "ɔi̯": ("OI", "ɔɪ"),
     "au̯": ("aU", "aʊ"),
 
     # -- vowels -----------------------------------------------------------
@@ -133,9 +133,8 @@ TABLE: dict[str, tuple[str, str]] = {
     "əː": ("@:", "əː"),
     "ɛː": ("E:", "ɛː"),
     "o̝ː": ("o:", "oː"),    # ɵ -- espeak has no raised o, so the raising is lost
-    "ə̆": ("@", "ə"),       # extra-short is not in espeak's en inventory
-    "ɪ̆": ("I", "ɪ"),       # likewise
-    "ʉ̆": ("u", "u"),       # nor a ʉ; the nearest speakable rounded high vowel
+    "ə": ("@", "ə"),       # ᴀ ᴇ ɪ, the obscure series, all one vowel
+    "ʉ": ("u", "u"),       # ŭ -- espeak's en has no ʉ; nearest rounded high
 
     # -- consonants -------------------------------------------------------
     "ʔ": ("?", "ʔ"),
@@ -143,8 +142,9 @@ TABLE: dict[str, tuple[str, str]] = {
     "ŋ": ("N", "ŋ"),
     "q": ("q", "q"),
     "β": ("B", "β"),          # v is bilabial here, not labiodental
-    "ʎ̥˔": ("l#", "ɬ"),   # ʟ -- espeak's Welsh `ll`, the table's own ≈ ɬʲ
-    "ʎ": ("l^", "ʎ"),         # ʟ̣
+    "ɬʲ": ("l#", "ɬ"),        # ʟ -- espeak's Welsh `ll`; palatalization lost
+    "ɮʲ": ("l", "l"),         # ʟ̣ -- no voiced lateral fricative in this voice
+    "ɡ": ("g", "ɡ"),          # the p. 10 key's plain g, a loanword sort
     "dʲ": ("d;", "dʲ"),
     "tʲ": ("t;", "tʲ"),
     "nʲ": ("n;", "nʲ"),
@@ -163,6 +163,14 @@ TABLE: dict[str, tuple[str, str]] = {
     "k": ("k", "k"), "l": ("l", "l"), "m": ("m", "m"), "n": ("n", "n"),
     "p": ("p", "p"), "s": ("s", "s"), "t": ("t", "t"), "w": ("w", "w"),
     "x": ("x", "x"),
+
+    # -- aspiration on the preceding segment (`ipa.ASPIRATE`) --------------
+    # **A lossy row, and deliberately the lossy direction.** espeak has no
+    # aspiration diacritic, so this is a full `h` after the segment it belongs
+    # to: `lʰ` comes out as l + h rather than as a voiceless l. That is what
+    # Bogoras wrote — `lh`, `čh`, `th` — where dropping it would have the
+    # speaker say a word the page does not spell.
+    "ʰ": ("h", "h"),
 
     # -- standing length, from a macron over an already-long vowel ---------
     # espeak has no overlong, so this adds nothing audible and reads back as

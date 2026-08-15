@@ -25,8 +25,8 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import RedirectResponse, Response
 from pydantic import BaseModel
 
+from .. import apparatus, entities, figrefs, geo, ipa, langs, lexicon, speech, tei_html
 from .. import edition_ui as ui
-from .. import entities, geo, ipa, langs, lexicon, speech, tei_html
 from .. import figures as F
 from ..entities import ENTITY_CLASSES, alias_index, split_id
 from . import Editor, register, stores, templates
@@ -88,7 +88,9 @@ def index(request: Request):
     return templates.TemplateResponse(
         request,
         "edition/index.html",
-        _ctx(request, refs=refs, signed=signed, drafts=_drafts(request), here=here),
+        _ctx(request, refs=refs, signed=signed, drafts=_drafts(request), here=here,
+             run_titles={ui.norm_ref((r.get("refs") or [""])[0]): r.get("title", "")
+                         for r in stores.runs(root) if r.get("refs")}),
     )
 
 
@@ -172,6 +174,55 @@ def _figure_state(ref: str, root, doc: dict, size) -> dict:
     return {"figs": figs, "crops": {}}
 
 
+def _figref_state(doc: dict, root) -> list[dict]:
+    """Where each cross-reference in the prose points — the join the renderer
+    refuses to do, for `_figure_state`'s reason and in its manner.
+
+    One row per handle, positional to `doc["figrefs"]`, carrying what the client
+    needs to open a stack card: `pairs` (`ref/key`, the id a card is built from),
+    `url` (a real crop, so the anchor works without JS and middle-clicks), the
+    label the card is titled with, and `why` where nothing resolved.
+
+    **An unresolved reference is left as text, and says so on hover.** 58 of the
+    corpus's 659 refuse — a plate whose figure `gt/fig/` has not boxed, a bare
+    `Fig. 1` no text page carries — and each names the store that declined. The
+    alternative is linking to the nearest candidate, which on a page of
+    near-identical harnesses and lamps is invisible when wrong.
+
+    **Another author's plate is not a link at all.** Bogoras cites Nelson,
+    Schrenck, Murdoch and Sauer by plate number in his footnotes, in the same
+    words he uses for his own, and `Sauer, Plate XIV` collides with this book's
+    Plate XIV outright. 114 references are suppressed this way, on the authority
+    store's own names.
+    """
+    handles = doc.get("figrefs") or []
+    if not handles:
+        return []
+    names = stores.authority_names(root)
+    by_plate = stores.by_plate(root, stores.loi_run(root))
+    by_number = stores.by_number(root)
+    out = []
+    for h in handles:
+        who = figrefs.foreign_citation(h.get("before") or "", names)
+        if who:
+            out.append({"pairs": [], "url": "", "label": "",
+                        "why": f"{who}'s plate, not this book's"})
+            continue
+        r = figrefs.resolve(h, by_number, by_plate,
+                            lambda leaf: stores.figure_boxes(leaf, root))
+        label = (f"Plate {h['number']}" if h["kind"] == "plate" else
+                 f"Plate {h['plate']}, Fig. {h['number']}" if h["plate"] else
+                 f"Fig. {h['number']}")
+        first = r["pairs"][0].split("/") if r["pairs"] else None
+        out.append({
+            "pairs": r["pairs"],
+            "url": f"{BASE}/fig/{first[0]}/{first[1]}.png" if first else "",
+            "label": label,
+            "why": r["why"],
+        })
+    return out
+
+
 def _exempt_page(request: Request, ref: str, root):
     """A page a human ruled not a text page, shown as what it actually is.
 
@@ -210,6 +261,7 @@ def _exempt_page(request: Request, ref: str, root):
             ref=ref,
             plates=plates,
             here=here,
+            editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
             state={"base": BASE, "ref": ref,
                    "size": ui._raster_size(ref, root), "figs": [], "crops": {}},
             prev=refs[i - 1] if i > 0 else "",
@@ -218,11 +270,283 @@ def _exempt_page(request: Request, ref: str, root):
     )
 
 
+def _neighbours(request: Request, ref: str) -> tuple[str, str]:
+    """Prev and next in the collapsed listing. A run stands in it as its first
+    leaf, so this is also what a run page's own neighbours are computed from."""
+    refs = _listing(request)
+    i = refs.index(ref) if ref in refs else -1
+    return (refs[i - 1] if i > 0 else "",
+            refs[i + 1] if 0 <= i < len(refs) - 1 else "")
+
+
+def _run_leaves(run: dict, root: Path) -> list[dict]:
+    """One record per leaf of a run: its anchors, its folio if anything witnesses
+    one, and the entries the store records as printed on it.
+
+    **Every leaf gets a record, including one the store says nothing about.** The
+    anchor is what a redirect lands on, and a leaf with no anchor is a redirect
+    into an empty fragment — the reader arrives at the top of a long list with no
+    sign of why.
+    """
+    index = stores.folio_index(root)
+    kind = run.get("kind")
+    # One pass over the encyclopedia for the whole run rather than one per entry.
+    # The link is the record's own `authority` field and never a match on the
+    # printed name: 51 sigla over 34 names, so a name match would be a guess.
+    by_authority = {rec["authority"]: ident
+                    for ident, rec in (stores.load(root) or {}).items()
+                    if rec.get("authority")}
+    store = stores.run_store(root, run)
+    # Where each plate actually is. Derived — a plate carries no number on its
+    # own leaf — so it is computed once for the run and handed down, never
+    # recomputed per entry in a template.
+    by_plate = (stores.by_plate(root, run) if kind == "loi" else {})
+    entries_by_ref: dict[str, list] = {}
+    for e in store["entries"]:
+        if e.get("ref"):
+            entries_by_ref.setdefault(ui.norm_ref(e["ref"]), []).append(e)
+
+    # **The printed folio for display comes from the store, the indexable one
+    # from the index, and they are not the same field.** The front matter is
+    # numbered in roman — the Contents runs v-xi, the List of Illustrations
+    # xii-xvii — which is what the leaf carries and what a reader recognises,
+    # and which is *not* a key into a folio index the ToC's own `page_start`
+    # values are arabic. `source.printed_folios` is positional against
+    # `source.refs`, so it is read by position and only where the two agree in
+    # length; a mismatch means the store has been edited on one side and the
+    # right answer is to fall back rather than to pair them off anyway.
+    printed = store["source"].get("printed_folios") or []
+    src_refs = store["source"].get("refs") or []
+    by_ref = (dict(zip([ui.norm_ref(r) for r in src_refs], printed, strict=True))
+              if len(printed) == len(src_refs) else {})
+
+    out = []
+    for ref in [ui.norm_ref(r) for r in run.get("refs") or []]:
+        folio = apparatus.folio_of(ref, index)
+        out.append({
+            "ref": ref,
+            "anchor": apparatus.anchor("leaf", ref),
+            "folio": folio,
+            "printed_folio": by_ref.get(ref, ""),
+            "folio_anchor": apparatus.anchor("folio", folio) if folio else "",
+            "editor": ui.leaf_source(ref, root)[1] == "ed",
+            "entries": [_decorate(e, kind, root, index, by_authority, by_plate)
+                        for e in entries_by_ref.get(ref, [])],
+        })
+    return out
+
+
+def _run_items(leaves: list[dict]) -> list[dict]:
+    """The run's leaves flattened into one stream of list items.
+
+    **The printed list is one list and is rendered as one**, rather than as one
+    list per scan: a `<ul>` closed and reopened at every leaf boundary breaks the
+    numbering, the indentation and the reader's eye at seven arbitrary places
+    that are facts about the binding rather than about the list. So a leaf break
+    becomes a *mark inside* the flow — `first` on the item it opens, and its own
+    item where the leaf carries no entry at all, since the anchor must exist
+    either way for the redirect to land on.
+    """
+    items = []
+    for leaf in leaves:
+        if not leaf["entries"]:
+            items.append({"leaf": leaf, "entry": None})
+            continue
+        for i, entry in enumerate(leaf["entries"]):
+            items.append({"leaf": leaf if i == 0 else None, "entry": entry})
+    return items
+
+
+def _folio_url(folio, index: dict) -> str:
+    """A link to a folio, but only where something witnesses it. A dead link to
+    the refusal page would train a reader to stop following them."""
+    f = apparatus._as_folio(folio)
+    return f"{BASE}/folio/{f}" if f is not None and f in index else ""
+
+
+def _decorate(entry: dict, kind: str, root: Path, index: dict,
+              by_authority: dict, by_plate: dict) -> dict:
+    """One apparatus entry, plus the links the other stores can supply for it.
+
+    Every link here is a store answering a question the printed list poses, and
+    each is omitted rather than guessed where the store cannot answer.
+    """
+    e = dict(entry)
+    # **A plate's number is not its folio and must not be drawn as one.** The
+    # printed list heads that column "Opp. page": a plate is an inserted leaf
+    # carrying no folio of its own, and the number is the page it faces. This
+    # flattened `opposite_folio` into `folio`, so a plate's row showed a bare
+    # number in the same column as a figure's own folio and linked it to the
+    # facing page as though the plate were on it.
+    e["opposite"] = bool(e.get("opposite_folio") and not e.get("folio"))
+    if e["opposite"]:
+        e["folio"] = e["opposite_folio"]
+    e["folio_url"] = _folio_url(e.get("folio"), index)
+
+    if kind == "toc":
+        e["anchor"] = apparatus.anchor("toc", e["id"]) if e.get("id") else ""
+        e["folio_url"] = _folio_url(e.get("page_start"), index)
+    elif kind == "loi":
+        # **One link per printed number, not per entry.** Two entries name
+        # several figures at once ("Figs. 214, 215, 216"), and each numeral is a
+        # different picture; a single link for the entry would have to pick one.
+        #
+        # A number resolving to exactly one zone links; anything else prints
+        # plain. Plate figures restart at 1 on every plate, so 1-4 name a dozen
+        # pictures each, and choosing between them would be inventing the answer
+        # the collision is reporting. Measured: 297 of the LoI's 302 numbers
+        # resolve; the others are 1-4 and 240, the corpus's one unpaired caption.
+        # `pair` is comma-joined because **a figure is not a box**: 16 of them
+        # are drawn in two, lettered a and b under one caption, and naming only
+        # `key` drew the first and dropped the rest. `figures.crop_keys` is the
+        # rule, and `openFigure` splits on the comma exactly as it does for a
+        # plate's several pictures.
+        idx = stores.by_number(root)
+        e["nums"] = [
+            {"n": n,
+             "pair": (",".join(f"{hits[0]['ref']}/{k}" for k in hits[0]["keys"])
+                      if len(hits := idx.get(str(n)) or []) == 1 else ""),
+             "url": (f"{BASE}/fig/{hits[0]['ref']}/{hits[0]['keys'][0]}.png"
+                     if len(hits) == 1 else "")}
+            for n in (e.get("numbers") or [])]
+        # `pair` is `ref/key`, which is what a stack card's id is built from so
+        # that a pinned figure survives a reload without the id carrying a
+        # label. Only the numbers that resolved: a picture under a caption is a
+        # stronger claim than a link, and the wrong one is the kind of confident
+        # wrongness a bare number at least admits to.
+        e["pairs"] = [n["pair"] for n in e["nums"] if n["pair"]]
+        e["thumbs"] = [n["url"] for n in e["nums"] if n["url"]]
+        # A plate has no figure number to resolve through, so it comes the other
+        # way: `by_plate` matched its printed caption to a keyed one and named
+        # the leaf. Same payload as a figure's, so the template links both the
+        # same way and the card is built the same way.
+        if e.get("kind") == "plate":
+            hit = by_plate.get(str(e.get("number"))) or {}
+            e["pairs"] = [f"{hit['ref']}/{k}" for k in hit.get("keys", ())]
+            e["thumbs"] = [f"{BASE}/fig/{hit['ref']}/{k}.png"
+                           for k in hit.get("keys", ())]
+            e["plate_ref"] = hit.get("ref", "")
+    elif kind == "authorities":
+        ident = by_authority.get(e.get("key"))
+        e["entity"] = f"{BASE}/entity/{ident}" if ident else ""
+    return e
+
+
+@router.get("/run/{run_id}")
+def run_page(request: Request, run_id: str):
+    """One printed list, served whole.
+
+    Six scans of List of Illustrations are one document, and paging through them
+    a leaf at a time is reading the binding rather than the book. Every leaf keeps
+    its anchor and its own raster link, so the physical page is never lost — what
+    goes is the pretence that it is six documents.
+    """
+    root = _root(request)
+    run = next((r for r in stores.runs(root) if r.get("id") == run_id), None)
+    if run is None:
+        raise HTTPException(404, f"no run {run_id!r} in data/runs.json")
+    head = ui.norm_ref((run.get("refs") or [""])[0])
+    prev, next_ = _neighbours(request, head)
+    leaves = _run_leaves(run, root)
+    # The alphabet run is the one whose page is not a list. Its store holds
+    # grids as well as entries, and the chart joins them to `ipa.RULES`,
+    # `ipa.MODERN` and the corpus's own attestation counts — four witnesses
+    # that have never been in one room. `stores.alphabet` caches the join.
+    return templates.TemplateResponse(
+        request,
+        "edition/run.html",
+        _ctx(request, run=run, leaves=leaves, items=_run_items(leaves),
+             chart=stores.alphabet_chart(root) if run.get("kind") == "alphabet" else None,
+             here=run["title"],
+             # `leaves` is what makes the scan button show the whole span: the
+             # run is one document and its scans are several.
+             state={"base": BASE, "ref": head,
+                    "leaves": [leaf["ref"] for leaf in leaves],
+                    "size": ui._raster_size(head, root), "figs": [], "crops": {}},
+             prev=prev, next=next_),
+    )
+
+
+def _resolved(out: dict) -> RedirectResponse | None:
+    url = out.get("url")
+    if not url:
+        return None
+    return RedirectResponse(url + (f"#{out['anchor']}" if out["anchor"] else ""),
+                            status_code=302)
+
+
+def _refusal(request: Request, out: dict, asked: str):
+    """What a locator that could not resolve says, as a page.
+
+    **This is the ordinary answer, not an error**, and it has to read like one:
+    280 of the book's 732 folios have a witness today, so a reader following a
+    ToC link will land here more often than not. It names what is nearby and
+    never interpolates — a redirect is a resolution, and a guessed one would be
+    indistinguishable from a witnessed one at the URL.
+    """
+    return templates.TemplateResponse(
+        request, "edition/folio.html",
+        _ctx(request, asked=asked, here=asked,
+             nearest=out.get("nearest") or [],
+             candidates=out.get("candidates") or [],
+             why=out.get("why", "")),
+        status_code=404 if not out.get("candidates") else 300)
+
+
+@router.get("/folio/{n}")
+def folio(request: Request, n: int):
+    """A printed folio, resolved to wherever the corpus says it is."""
+    root = _root(request)
+    out = apparatus.locate(root, folio=n, index=stores.folio_index(root))
+    return _resolved(out) or _refusal(request, out, f"folio {n}")
+
+
+@router.get("/toc/{toc_id}")
+def toc_entry(request: Request, toc_id: str):
+    """A heading, by its `data/toc.json` id, through its opening folio.
+
+    The precursor property, and the reason the locator was built before the
+    renderers: this resolves *today* wherever a witness places the chapter's
+    first folio, and it will keep resolving unchanged the day that chapter
+    becomes a run with a page of its own.
+    """
+    root = _root(request)
+    out = apparatus.locate(root, toc_id=toc_id, index=stores.folio_index(root))
+    return _resolved(out) or _refusal(request, out, f"heading {toc_id}")
+
+
+@router.get("/leaf/{ref}")
+def leaf(request: Request, ref: str):
+    """An editor's own version of a whole leaf, where one exists.
+
+    A route of its own rather than an override on `/page/{ref}.png`, so the raw
+    scan stays reachable at its own address: this is a made artefact and the
+    scan is the evidence, and a reader must be able to get at both.
+    """
+    if not ui.REF_OK.match(ref):
+        raise HTTPException(404, f"{ref!r} is not a PP-NNN ref")
+    path, rank = ui.leaf_source(ref, _root(request))
+    if path is None:
+        raise HTTPException(
+            404, f"no editor's leaf for {ref} in {ui.PAGE_IMG}/ — the scan is at "
+                 f"{BASE}/page/{ref}.png")
+    return send_file(request, path, media_type=ui.LEAF_MEDIA[path.suffix],
+                     missing=f"no editor's leaf for {ref}")
+
+
 @router.get("/page/{ref}")
 def page(request: Request, ref: str):
     root = _root(request)
     if not ui.REF_OK.match(ref):
         raise HTTPException(404, f"{ref!r} is not a PP-NNN ref")
+    # A leaf inside a run is served by its run, at its own anchor — every leaf,
+    # the first included, so a run has one canonical URL rather than a head that
+    # renders and interior leaves that bounce.
+    run = stores.run_for(root, ref)
+    if run is not None:
+        return RedirectResponse(
+            f"{BASE}/run/{run['id']}#{apparatus.anchor('leaf', ref)}",
+            status_code=302)
     path, rank = tei_html.page_source(ref, root)
     if path is None and ref in stores.exempt(root):
         return _exempt_page(request, ref, root)
@@ -243,6 +567,7 @@ def page(request: Request, ref: str):
     here = ref + (f" ({doc['folio']})" if doc.get("folio") else "")
     size = ui._raster_size(ref, root)
     state = {"base": BASE, "ref": ref, "size": size,
+             "figrefs": _figref_state(doc, root),
              **_figure_state(ref, root, doc, size)}
     return templates.TemplateResponse(
         request,

@@ -362,6 +362,53 @@ means and it means it here too. Named `fig-img/` rather than `figs/` because the
 latter sits one character from the `gt/fig/` geometry store, the same near-miss
 `_exempt.lst`/`_exempt.json` was renamed to avoid.
 
+**A whole leaf gets the same treatment, one level up.** `gt/page-img/chukchi-PP-NNN.{svg,png,jpg}`,
+resolved by `edition_ui.leaf_source` with the rank travelling as `crop_source`'s
+does — vector before raster, since `1-361`'s foldout map may become one. Two
+boundaries beyond the crop store's: it is **reading view only**, never
+`zones.scan_for`, because a sharpened leaf is manufactured evidence and must not
+reach anything that measures ink; and it is **exempt pages only**, a file for a
+page the pipeline still owns being reported by `edition runs` rather than quietly
+honoured. Ignored for now and not tracked, the reason and its expiry in
+`.gitignore`. `docs/edition.md` has the rest.
+
+**"Opp. page" is what the List of Illustrations heads its plate column, and the
+number is not the plate's folio.** A plate is an inserted leaf with no folio of
+its own; `loi.json`'s `opposite_folio` is a faithful transcription of that
+column and is not to be "corrected" against where the plates were bound.
+Measured over the 31 plates whose facing page has been keyed: 13 sit exactly
+opposite the stated folio, 9 sit just after it — and those nine are precisely
+the ones whose stated folio is *even*, a parity convention in the printed list
+rather than an offset. The remaining 9 differ by more and cluster where several
+plates share one gap (VII and VIII are both bound between folios 106 and 107),
+which is a binding-versus-list discrepancy in the volume and not in the store.
+
+**`figures.by_plate` is what locates a plate**, since nothing on its leaf names
+it: the list's abbreviated caption against the keyed under-figure caption, every
+segment required and exactly one leaf permitted. All 35 resolve; `edition runs`
+reports the count and does not gate on it.
+
+**Computing the leaf from the stated folio was considered and is worse on every
+axis**, which is worth recording because it looks like the simpler option. The
+parity rule above is real but it is an empirical property of *this* volume,
+where the caption match knows nothing about any book — so the arithmetic is the
+overfit of the two, not the general one. Scored over the 35: parity gets **21
+right, 8 wrong, 6 unresolved** against the match's 35. The 8 wrong are the
+dangerous kind — Plate VI onto `1-123`, which is Plate V's leaf; Plate VII onto
+`1-129`, which is Plate VI's — a confident answer under the wrong caption. And
+the 6 unresolved include every plate in parts 2 and 3, because arithmetic on a
+folio needs the folio index and no page has yet witnessed theirs, while a
+caption needs nothing. The match also carries no book-specific token at all: it
+stripped a leading `Fig. N.` at first, which is this book's convention and
+another book's mistake, and the strip turned out to be unnecessary.
+
+**The List of Illustrations and Authorities Quoted are served as runs.** Both are
+spans of exempt front matter whose content this repository already holds parsed,
+and `docs/edition.md` owns how a run is declared, anchored and resolved. The
+figure link needs `figures.by_number`, a corpus-wide fold of `figure_boxes`;
+**it is not the per-entry reconciliation this file describes** — it links where a
+printed number resolves to one zone and gates nothing.
+
 **GraphicZone↔FigDesc pairing is not in the data.** Pair by geometry and record
 the result; never re-derive it per consumer. **17 of the 252 pages are not 1:1,
 and every one of them is zone-heavy** — max on a page is 4 zones / 4 captions:

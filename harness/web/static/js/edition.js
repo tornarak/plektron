@@ -45,6 +45,16 @@ function card(id, title, meta, html, extra) {
     <div class="body"><h4>${title}</h4>${
       meta ? `<div class="meta">${meta}</div>` : ''}${html}</div>`;
   if (extra) extra(el);
+  /* Middle-click closes it, anywhere on the card. A stack five deep is read by
+     discarding, and reaching for a 12px × each time is the wrong gesture for
+     the commonest act. `mousedown` is where the autoscroll cursor would
+     otherwise appear, so it is refused there and acted on at `auxclick`. */
+  el.addEventListener('mousedown', ev => { if (ev.button === 1) ev.preventDefault(); });
+  el.addEventListener('auxclick', ev => {
+    if (ev.button !== 1) return;
+    ev.preventDefault();
+    el.remove(); savePins(); clampIdx();
+  });
   el.addEventListener('click', ev => {
     const b = ev.target.closest('button'); if (!b) return;
       if (b.dataset.act === 'close') { el.remove(); savePins(); clampIdx(); }
@@ -184,36 +194,159 @@ const openLexicon = key =>
 function openScan(key, label) {
   const id = 'scan:' + (key || 'page');
   const c = key ? STATE.crops[key] : null;
-  push(id, () => card(id, label || 'The page', STATE.ref,
+  /* On a run the card holds every leaf of the span, in binding order. The page
+     is one document and its scans are several, so "consult the scan" has to
+     mean all of them — a card showing only the first would be answering about
+     the head leaf a reader may not be anywhere near. A crop keeps the single
+     path: `key` names one picture on one page. */
+  const refs = (!key && STATE.leaves && STATE.leaves.length) ? STATE.leaves
+                                                            : [STATE.ref];
+  const body = refs.map(r =>
     `<div class="crop" style="${c ? c.outer : 'aspect-ratio:'+STATE.size[0]+'/'+STATE.size[1]}">
-        <a href="${B}/page/${STATE.ref}.png" target="_blank">
-        <img src="${B}/page/${STATE.ref}.png" style="${c ? c.inner : 'width:100%;left:0;top:0'}">
+        <a href="${B}/page/${r}.png" target="_blank">
+        <img src="${B}/page/${r}.png" style="${c ? c.inner : 'width:100%;left:0;top:0'}">
         </a>
-     </div>`));
+     </div>`).join('');
+  push(id, () => card(id, label || (refs.length > 1 ? 'The leaves' : 'The page'),
+                      refs.join(' '), body));
 }
 
+/* A figure in the stack, which everywhere else in this edition is the wrong
+   place for one.
+
+   The rule below is that a picture goes to the lightbox because it is *already
+   on the page* and the only thing wanted from it is to see it bigger. On the
+   List of Illustrations that reason inverts: the picture is not on the page,
+   the page is a catalogue naming it, and pulling one out to read beside the
+   list is exactly what the stack is for. Same rule, opposite answer, because
+   the premise is different.
+
+   **The card is rebuildable from its own id** — `fig:1-112/001,1-113/003` — so
+   a pinned figure survives a reload without the id having to carry a label. The
+   label and caption are decoration when they are there and absent when they are
+   not, which is what the restore path passes. */
+function openFigure(pairs, label, caption) {
+  pairs = pairs.filter(Boolean);
+  if (!pairs.length) return;
+  const id = 'fig:' + pairs.join(',');
+  push(id, () => card(id, label || pairs.join(', '), caption || '',
+    pairs.map(p => `<div class="crop-fig"><img src="${B}/fig/${p}.png"
+      alt="${label || p}"></div>`).join('')));
+}
+
+/* The lightbox, which holds a *set* of pictures and not one.
+
+   A figure card can carry several — `1-276`'s fig. 140 is two boxes, Plate I is
+   three — and opening the third of them used to lose the other two. So the
+   group travels with the picture: whatever images sit in the same card, plate
+   block or figure, in the order they are on the page, and the arrows walk them.
+
+   **It shadows the arrow keys whether or not there is anything to walk to**,
+   and that is deliberate. The same keys turn the page underneath, and a reader
+   pressing → at a single-picture lightbox means "next picture, if any" — never
+   "leave this page". Silently navigating away because the group happened to
+   have one member is the kind of surprise that teaches people not to use the
+   keys at all. */
 let lightbox = null;
 let lightbox_img = null;
+let lightbox_bar = null;
+let lb_items = [];
+let lb_i = 0;
 
-function setLightbox(src) {
+function lightboxOpen() {
+    return !!lightbox && !lightbox.style.visibility;
+}
+
+function setLightbox(src, group) {
     if (!lightbox) {
         lightbox_img = document.createElement('img');
+        lightbox_bar = document.createElement('div');
+        lightbox_bar.id = 'lightbox-bar';
         let lightbox_container = document.createElement('div');
         lightbox_container.id = 'lightbox-image';
         lightbox = document.createElement('div');
         lightbox.id = 'lightbox';
         lightbox_container.append(lightbox_img);
-        lightbox.append(lightbox_container);
+        lightbox.append(lightbox_container, lightbox_bar);
         document.body.append(lightbox);
-    } else {
-        if (lightbox.style.visibility) {
-            lightbox.style.removeProperty('visibility')
-        } else {
-            lightbox.style.visibility = 'hidden';
-        }
     }
+    lb_items = (group && group.length) ? group : [{src, caption: ''}];
+    lb_i = Math.max(0, lb_items.findIndex(it => it.src == src));
+    lightbox.style.removeProperty('visibility');
+    paintLightbox();
+}
 
-    lightbox_img.src = src;
+function paintLightbox() {
+    const it = lb_items[lb_i];
+    lightbox_img.src = it.src;
+    lightbox_img.alt = it.caption || '';
+    /* **The caption is a link to the file**, which is the one thing a lightbox
+       cannot do for you: see it at its own size, save it, put it in a tab. With
+       no caption the bare file name stands in — `chukchi-1-049-002.png` names
+       the leaf and the zone, so even the fallback tells a reader where they are.
+       The arrows appear only when there is somewhere to go; a bar reading
+       "1 / 1" with two dead buttons is furniture. */
+    const many = lb_items.length > 1;
+    lightbox_bar.innerHTML = `
+      <a class="cap" href="${it.src}" target="_blank" rel="noopener"
+         >${it.caption || it.src.split('/').pop()}</a>
+      ${many ? `<div class="nav">
+          <button data-lb="prev" title="previous (←)">‹</button>
+          <span class="count">${lb_i + 1} / ${lb_items.length}</span>
+          <button data-lb="next" title="next (→)">›</button>
+        </div>` : ''}`;
+}
+
+function stepLightbox(d) {
+    if (lb_items.length < 2) return;
+    lb_i = (lb_i + d + lb_items.length) % lb_items.length;
+    paintLightbox();
+}
+
+function closeLightbox() {
+    if (lightbox) lightbox.style.visibility = 'hidden';
+}
+
+/* What a picture is called, from whichever of its neighbours says so.
+
+   **The card is asked before the `alt`**, and that is the whole of the second
+   fix: a figure card's images carry `alt="Fig. 5"`, which is the label and not
+   the caption, so the lightbox announced a picture of a lasso as "Fig. 5". The
+   card knows both — its heading is the label and its meta line the caption —
+   and the two together are what the printed list says. */
+function captionOf(img) {
+    const cap = img.closest('figure')?.querySelector('figcaption');
+    if (cap?.textContent.trim()) return cap.textContent.trim();
+    const card = img.closest('.card');
+    if (card) {
+        const h = card.querySelector('.body h4')?.textContent.trim() || '';
+        const m = card.querySelector('.body .meta')?.textContent.trim() || '';
+        const both = [h, m].filter(Boolean).join(' — ');
+        if (both) return both;
+    }
+    return img.alt?.trim() || '';
+}
+
+/* Every picture the one clicked belongs with, in page order.
+
+   **A page of figures is one group, not one group per figure.** The container
+   is what a reader would call "these pictures": a card is its own, a plate
+   block is its own, and in running prose it is *the page* — six figures down a
+   chapter opening are six pictures a reader walks, and stopping the arrows at
+   the boundary of whichever `<figure>` happened to be clicked is an accident of
+   markup rather than anything they would recognise. */
+function lightboxGroup(img) {
+    const box = img.closest('.card .body') || img.closest('.plates');
+    if (box) return lbItems([...box.querySelectorAll('img')]);
+    if (img.closest('.figure')) {
+        const page = img.closest('#primary') || document;
+        return lbItems([...page.querySelectorAll('.figure img')]);
+    }
+    return lbItems([img]);
+}
+
+function lbItems(imgs) {
+    return imgs.map(i => ({src: i.src, caption: captionOf(i)}));
 }
 
 document.addEventListener('click', ev => {
@@ -235,12 +368,31 @@ document.addEventListener('click', ev => {
   if (a) {
     ev.preventDefault();
     const ref = a.dataset.ref;
-    if (window.MAP) window.MAP.click(ref).then(w => { if (w == 'card') openEntity(ref); });
+    /* **`toggle: false`, and that is the whole difference between the text and
+       the tree.** Taking a place *off* the map is a thing you do to the map, in
+       the tree, where you can see what is on it. In the running prose a second
+       click on a name that is already up meant "and now take it away" — the
+       reader is reading, not editing a selection, and what they want on the
+       second ask is the entry. So the map keeps what it has and answers
+       `'card'`. */
+    if (window.MAP) window.MAP.click(ref, {toggle: false})
+                              .then(w => { if (w == 'card') openEntity(ref); });
     else openEntity(ref);
     return;
   }
   const x = ev.target.closest('a.lex');
   if (x) { ev.preventDefault(); openLexicon(x.dataset.key); return; }
+  /* The List of Illustrations' own links — see `openFigure` for why a picture
+     goes to the stack there and to the lightbox everywhere else. The `href` is
+     a real crop URL, so this works with no JS and a middle-click still opens
+     the picture; the handler is the enhancement rather than the mechanism. */
+  const g = ev.target.closest('a.fig');
+  if (g) {
+    ev.preventDefault();
+    openFigure((g.dataset.fig || '').split(','), g.dataset.label,
+               g.dataset.caption || '');
+    return;
+  }
   /* `a.mapref` is `map.js`'s — it drives the pane on every page, not just this
      one, and intercepting it here would have been the same rule written twice. */
   /* A footnote marker is deliberately NOT intercepted: it keeps its href and
@@ -255,12 +407,31 @@ document.addEventListener('click', ev => {
 
      Bound to the image and not to the <figure>, so a click on the caption
      selects its text the way a click on any other text does. Covers the inline
-     figures, the plates on an exempt page, and the whole leaf on one with no
-     figure boxes. */
-  const pic = ev.target.closest('.figure img, .plates img, .whole-scan img');
-  if (pic) { ev.preventDefault(); setLightbox(pic.src); return; }
-  const l = ev.target.closest('.crop a, #lightbox-image');
-  if (l) { ev.preventDefault(); let i = l.querySelector("img"); if (i && i.src) setLightbox(i.src); }
+     figures, the plates on an exempt page, the whole leaf on one with no figure
+     boxes, and a figure already pulled into a card: the card got it out of a
+     catalogue, and the only thing left to want from it is size. */
+  /* The lightbox closes on a click anywhere in it, image included: it is one
+     surface showing one thing. The bar at the foot is the exception, and has to
+     be — its buttons and its link are the only things in there to aim at. */
+  if (lightboxOpen() && ev.target.closest('#lightbox')) {
+    const step = ev.target.closest('#lightbox-bar button[data-lb]');
+    if (step) {
+      ev.preventDefault();
+      stepLightbox(step.dataset.lb == 'next' ? 1 : -1);
+      return;
+    }
+    if (ev.target.closest('#lightbox-bar a')) return;   // to the file, in a tab
+    ev.preventDefault(); closeLightbox(); return;
+  }
+  const pic = ev.target.closest(
+    '.figure img, .plates img, .whole-scan img, .crop-fig img');
+  if (pic) { ev.preventDefault(); setLightbox(pic.src, lightboxGroup(pic)); return; }
+  const l = ev.target.closest('.crop a');
+  if (l) {
+    ev.preventDefault();
+    const i = l.querySelector("img");
+    if (i && i.src) setLightbox(i.src, lightboxGroup(i));
+  }
 });
 
 /* By class and not by id: the neighbour block is rendered at both ends of the
@@ -271,6 +442,16 @@ let next = document.querySelector("a.page-next");
 
 document.addEventListener('keydown', ev => {
     if (ev.ctrlKey || ev.altKey || ev.shiftKey || ev.metaKey) return false;
+    /* **The lightbox takes the arrows first and unconditionally** — see
+       `setLightbox`. It is the frontmost thing on screen, so it owns the keys
+       while it is up, and turning the page out from under it would be the
+       surprise. Escape and the arrows are the whole of its keyboard. */
+    if (lightboxOpen()) {
+        if (ev.key == "Escape") { ev.preventDefault(); closeLightbox(); }
+        if (ev.key == "ArrowLeft") { ev.preventDefault(); stepLightbox(-1); }
+        if (ev.key == "ArrowRight") { ev.preventDefault(); stepLightbox(1); }
+        return;
+    }
     if (ev.key == "Tab" && STACK.childNodes.length) { ev.preventDefault(); toggleStack(); }
     if (ev.key == "ArrowLeft" && !selected_stack && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
     if (ev.key == "ArrowRight" && !selected_stack && next && next.href) { ev.preventDefault(); window.location = next.href; }
@@ -302,6 +483,7 @@ for (const id of pins) {
      foot and a map is the pane's, neither of them a card. A pin saved before
      either changed names a card nothing opens now, and is ignored rather than
      special-cased: it costs an unrestored pin once. */
+  else if (id.startsWith('fig:')) openFigure(id.slice(4).split(','), '', '');
   else if (id == 'scan:page') openScan();
 }
 
@@ -357,4 +539,40 @@ for (const f of (STATE.figs || [])) {
     el.dataset.floatBasis = 'geometry';
     el.style.width = Math.round(f.width * 100) + '%';
   }
+}
+
+/* ------------------------------------------------- figure cross-references
+
+   The prose points at pictures constantly — `(Plate XXVII, Fig. 3)`, `Fig. 87
+   represents a knife` — and every one of those is a picture the figure store
+   holds. `STATE.figrefs` is one entry per reference in document order, resolved
+   server-side against `gt/fig/` and the List of Illustrations; the markup
+   carries only the number the page prints, for the same reason `<figure>`
+   carries no geometry.
+
+   A resolved reference becomes `a.fig`, which is the List of Illustrations'
+   own class, so the existing click handler opens it in the stack and nothing
+   about the behaviour is written twice. **The stack and not the lightbox**, and
+   for `openFigure`'s reason inverted: the picture is *not* on this page — the
+   reader is being sent to it — so it wants a card that stays open beside the
+   sentence that sent for it.
+
+   An unresolved one is left as plain text with its reason on hover: a bare
+   `Fig. 1` that no text page carries, a plate figure `gt/fig/` has not boxed,
+   or another author's plate. Never a link to the nearest candidate — on a page
+   of near-identical harnesses a wrong picture reads as a right one. */
+for (const [i, r] of (STATE.figrefs || []).entries()) {
+  const el = document.querySelector(`a.figref[data-fr="${i}"]`);
+  if (!el) continue;
+  if (!r.pairs || !r.pairs.length) {
+    el.classList.add('unresolved');
+    el.removeAttribute('tabindex');
+    el.title = r.why || 'no picture for this reference';
+    continue;
+  }
+  el.classList.add('fig');
+  el.href = r.url;
+  el.dataset.fig = r.pairs.join(',');
+  el.dataset.label = r.label;
+  el.title = r.label + (r.pairs.length > 1 ? ` — ${r.pairs.length} pictures` : '');
 }

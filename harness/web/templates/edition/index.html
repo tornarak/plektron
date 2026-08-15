@@ -12,7 +12,12 @@ class='draft-tag'>draft</span> is what <code>tei generate</code> built from the
 zone and OCR stores; nobody has read it against the page.</p>
 {% endif %}
 {% if refs %}
+{# A run stands in the list as its first leaf, so it needs its title said — the
+   Contents would otherwise sit among the plates as a bare scan number, and the
+   span it covers would be invisible. #}
 <ul>{% for r in refs %}<li><a href='{{ base }}/page/{{ r }}'>{{ r }}</a>{%
+ if r in run_titles %} <span class='run-tag'>{{ run_titles[r] }}</span>{%
+ endif %}{%
  if drafts and r not in signed %} <span class='draft-tag'>draft</span>{% endif %}</li>{% endfor %}</ul>
 {% else %}
 {# Committed `tei/` only unless `--drafts`. `mz/tei/` is a generated baseline

@@ -100,6 +100,23 @@ def zone_suffix(block_id: str) -> str:
     return (block_id or "").rsplit("_", 1)[-1]
 
 
+def crop_keys(fig: dict) -> list[str]:
+    """Every crop one figure is spelt in, as `ref/key`'s key half.
+
+    **A figure is not a box.** 16 of this store's figures are drawn in two — the
+    print letters them *a* and *b* under a single caption, and `1-123`'s Plate V
+    sets two pictures with one caption and no number at all. `key` is the first
+    of those boxes and is the figure's identity, which is right for keying a
+    reading and wrong for showing the thing: a card built from `key` alone drew
+    Plate V as one picture and silently dropped the other.
+
+    Falls back to `key` where a record carries no `zone_ids`, so a hand-built
+    fixture or an older shape still resolves to something rather than to nothing.
+    """
+    return [zone_suffix(z) for z in fig.get("zone_ids") or []] or (
+        [fig["key"]] if fig.get("key") else [])
+
+
 def _labels(tree) -> dict[str, str]:
     return {t.get("ID"): t.get("LABEL", "") for t in tree.iter("{*}OtherTag")}
 
@@ -2099,6 +2116,121 @@ def layout(ref: str, root: Path = Path(".")) -> dict:
         out.append({**f, **place(x0, x1), "side": side, "parts": parts})
     return {"ref": ref, "column": {"x0": cx0, "x1": cx1, "measure": measure},
             "source": "zones", "figures": out}
+
+
+def by_number(root: Path = Path(".")) -> dict[str, list[dict]]:
+    """`{printed number: [{"ref", "key"}, …]}` over the whole figure store.
+
+    The List of Illustrations names a figure by its printed number and says
+    nothing about where it is; `figure_boxes` knows where every figure is and
+    what number its caption carries. This is the join, and it is what lets the
+    LoI's entries link to the pictures they describe.
+
+    **A list per number, never one entry.** Plate figures restart at 1 on every
+    plate and so collide with the text-figure series outright, which is the same
+    reason `figure_boxes` keys on a zone suffix rather than a number. A caller
+    that wants a link takes the single-element case and prints plain text
+    otherwise — resolving a two-element list to one would be inventing the
+    answer the collision is telling it nobody has.
+
+    Numbers are the caption's own, as `context.figure_number` read them, and are
+    kept as strings for that reason: `figure_boxes` does not parse them into
+    integers and neither does this.
+    """
+    out: dict[str, list[dict]] = {}
+    for ref in fig_refs(root):
+        for f in figure_boxes(ref, root):
+            if f.get("n"):
+                out.setdefault(str(f["n"]), []).append(
+                    {"ref": ref, "key": f["key"], "keys": crop_keys(f)})
+    return out
+
+
+def _match_key(s: str) -> str:
+    """A caption reduced for matching a printed list's abbreviated version of it
+    against the keyed one under the picture.
+
+    **Combining marks come off, and that is a matching device rather than a
+    claim about a glyph**: the List of Illustrations sets Plate I's village as
+    `Nuˊnligren` where the under-figure caption has `Nuˊnlig̣ren`, one place
+    named twice by one printer. The fold lives inside one comparison and reaches
+    no store.
+
+    **Nothing here knows what book this is.** An earlier version stripped a
+    leading `Fig. N.` from the caption, which is this book's convention and
+    another book's mistake; it turned out to be unnecessary, since the list's
+    segment is a substring of the fuller caption either way. Removing it costs
+    nothing — still 35 of 35 — and takes the last book-specific token out of the
+    match.
+    """
+    s = unicodedata.normalize("NFD", s)
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return " ".join(re.sub(r"[^a-z0-9 ]", " ", s.lower()).split())
+
+
+def by_plate(plates: list[dict], root: Path = Path(".")) -> dict[str, dict]:
+    """`{plate number: {"ref", "keys"}}` — where each plate actually is, `keys`
+    being every picture zone on that leaf, in printed order.
+
+    **The one thing that locates a plate, and it has to be derived.** A plate is
+    an inserted leaf carrying no folio and no number of its own on the page; the
+    printed list gives it a roman numeral and an "Opp. page", and the figure
+    store gives every picture on every leaf. Nothing joins them but the caption
+    the printer set twice — abbreviated in the list, in full under the picture.
+
+    `plates` is passed in rather than read, so this module keeps its back to the
+    apparatus stores: `resolve_figures` takes both sides the same way and for
+    the same reason.
+
+    **Every segment must be found, and exactly one leaf must qualify.** A plate
+    naming three villages must find all three on one page. Anything looser
+    matched `1-227` and `1-231` to each other's plates on a shared word, and
+    anything that resolves to two leaves resolves to none — the caller links
+    what is here and prints the rest plain, since a picture shown under the
+    wrong plate is worse than a plate with no picture.
+
+    Order inside a leaf is `in_printed_order`'s: a rotated plate numbers as the
+    turned page reads, and `1-049` runs 3, 1, 2 down the paper.
+
+    **Why not compute the leaf from the stated folio instead**, which looks like
+    less machinery: because it is both less general and less right. The printed
+    list's numbers do follow a parity rule here — an odd "Opp. page" is the leaf
+    the plate faces, an even one the leaf before it — but that rule is an
+    empirical property of *this* volume, where this match knows nothing about any
+    book. Scored against this function over the 35: parity gets **21 right, 8
+    wrong and 6 unresolved**. The 8 are the dangerous kind — it puts Plate VI on
+    `1-123`, which is Plate V's leaf, and Plate VII on `1-129`, which is Plate
+    VI's — a confident answer under the wrong caption. The 6 include every plate
+    in parts 2 and 3, whose facing folio no page has yet witnessed; a caption
+    needs no folio index and reaches them all.
+    """
+    pages = {ref: [_match_key(f["caption"]) for f in figure_boxes(ref, root)
+                   if f["caption"]]
+             for ref in fig_refs(root)}
+    out: dict[str, dict] = {}
+    for p in plates:
+        segs = [_match_key(s) for s in (p.get("segments") or [p.get("caption", "")])]
+        segs = [s for s in segs if s]
+        if not segs:
+            continue
+        hits = [ref for ref, caps in pages.items()
+                if all(any(s in c for c in caps) for s in segs)]
+        if len(hits) != 1:
+            continue
+        ref = hits[0]
+        out[str(p.get("number"))] = {
+            "ref": ref,
+            # **Every picture on the leaf, not every figure.** `key` names the
+            # topmost box of a folded record, so keying on it showed one part of
+            # a multi-box plate and silently dropped the rest — Plate V is two
+            # boxes under one caption and linked as one. The consumers all take
+            # `ref/key` as a handle on a *crop*, which is a zone, so the leaf's
+            # zone suffixes are what it owes them; the folding stays where it
+            # belongs, in ordering the figures and in what a caption covers.
+            "keys": [k for f in in_printed_order(figure_boxes(ref, root))
+                     for k in crop_keys(f)],
+        }
+    return out
 
 
 def in_printed_order(figs: list[dict]) -> list[dict]:

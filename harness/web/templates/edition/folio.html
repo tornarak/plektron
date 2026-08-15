@@ -1,0 +1,43 @@
+{% extends "edition/base.html" %}
+{% block title %}{{ asked }} — The Chukchee{% endblock %}
+
+{# The locator's two miss shapes, and both are answers rather than errors.
+
+   `nearest` is the common one: only pages that have been read record what page
+   they are, so most of the book's 732 folios have no witness yet. Nothing here
+   interpolates a ref from the neighbours — a redirect is a resolution, and the
+   whole reason this page exists is to refuse to make one up.
+
+   `candidates` is the rarer and more interesting one: two pages claiming one
+   folio at the same rank. That is a finding, not a tie to break, so both are
+   shown and neither is followed. #}
+{% block main %}
+<div id='primary'>
+<h3>{{ asked }}</h3>
+
+{% if candidates %}
+<p class='draft-note'><span class='draft-tag'>disagreement</span> — more than one
+page records {{ asked }}, and at the same rank, so nothing here can say which is
+right. Both are below; the contradiction is what <code>harness edition runs</code>
+reports.</p>
+<ul>{% for c in candidates %}<li><a href='{{ c.url }}{% if c.anchor
+  %}#{{ c.anchor }}{% endif %}'>{{ c.ref }}</a> — {{ c.witness }}</li>{% endfor %}</ul>
+
+{% elif nearest %}
+<p>No page in the corpus records {{ asked }}. A scan's index and the printed
+folio are separate identifiers and neither is derivable from the other, so a
+folio is known only where a page said what page it is — from a collated
+<code>&lt;pb&gt;</code>, from an apparatus store, or from a running title in
+<code>gt/ocr/</code>. The nearest that are recorded:</p>
+<ul class='nearest'>{% for n in nearest %}<li><a href='{{ n.url }}{% if n.anchor
+  %}#{{ n.anchor }}{% endif %}'>folio {{ n.folio }}</a> — {{ n.ref }}
+  <span class='witness'>({{ n.witness }})</span></li>{% endfor %}</ul>
+
+{% else %}
+<p>{{ why or "Nothing in the corpus records " ~ asked ~ ", and no recorded folio
+is near enough to be worth naming." }}</p>
+{% endif %}
+
+<p><a href='{{ base }}/'>← the edition</a></p>
+</div>
+{% endblock %}

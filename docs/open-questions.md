@@ -32,6 +32,22 @@ in for an unread glyph.
   recorded, so a flat gate on "unlocated is empty" would fail on the day it was
   written.
 
+  **The LoI now has a reader, and it is not the cross-check.** `edition serve`
+  renders `data/loi.json` as a run (`docs/edition.md`), linking each printed
+  figure number to its zone through `figures.by_number`. It links and it gates
+  nothing, so the reconciliation above is untouched — but the join it needs now
+  exists, which is worth knowing when it is finally built.
+
+  **Its number differs from the 300 above, and the methods differ with it**, so
+  neither corrects the other. `by_number` folds `figure_boxes` over the *whole*
+  figure store, plate pages included, and reports **297 of 302** resolving to one
+  zone: figures 1–4 collide because the book restarts figure numbering on every
+  plate, and 240 is the unpaired caption. The 300 above counts text-figures
+  against pages with plate figures excluded, and loses fig. 1 for an unrelated
+  reason — the printer set its number below the title on `1-037`, so no caption
+  parses it. Whichever the reconciliation ends up wanting, it should say which it
+  is measuring: the two answers are about different populations.
+
 - **Where a plate's rotation is recorded, given that no plate reaches a
   collator.** Rotation is a reading — whether a sideways figure or a
   bottom-to-top plate caption should be turned upright is a judgement about what
@@ -175,11 +191,13 @@ in for an unread glyph.
   the *library* functions default it off or the test suite would pay it on every
   call. Run it after `tei expand`: `index=` is not a TEI attribute, which is what
   makes an unexpanded page detectable, so it fails here too.
-- **`data/toc.json` (315 entries) records no provenance.** `loi.json` and
-  `authorities.json` both name the scans they were read from; this one does not,
-  and the printed ToC's scan range is not recoverable from the file. Someone who
-  knows should write it down — every other apparatus store is auditable back to a
-  page and this one is not.
+- ~~**`data/toc.json` records no provenance.**~~ **Settled.** It has 316 entries,
+  not the 315 this entry claimed, and it now opens with a `source` block in
+  `loi.json`'s shape plus a per-entry `ref`: the printed Contents is scans
+  `1-007`–`1-013`, folios v–xi. Read off those seven leaves and ratified before
+  writing; `tools/toc_provenance.py` holds the reading, the boundaries and the
+  three assertions that make seven judgements safe over 316 entries. Every
+  apparatus store is now auditable back to a page.
 - **The span diff's second witness is back, and it is `mz/ocr/`.** `end-of-eval/`
   was the recognizer store, it was deleted, and the diff refused rather than
   compare a proposal against the ground truth it produced. This entry used to say

@@ -32,6 +32,7 @@ from urllib.parse import quote
 
 from lxml import etree
 
+from . import figrefs
 from .context import norm_ref
 from .validate import TIER1
 
@@ -255,6 +256,19 @@ class Renderer:
         #: An anchor inside an anchor is not markup HTML has, so the entity link
         #: is the one that survives and a Tier-1 handle inside it renders flat.
         self.in_ref = False
+        #: `{kind, number, plate}` per figure or plate cross-reference in the
+        #: prose, in document order. **Handles, not answers** — where each one
+        #: points is `web/edition._figref_state`'s, for `el_figure`'s reason.
+        self.figrefs: list[dict] = []
+        #: True while rendering a `<figDesc>`. A caption reading `Fig. 101.
+        #: Reindeer-Harness` is the figure's own name, not a pointer at it, and
+        #: linking a picture to itself is noise on every illustrated page.
+        self.in_figdesc = False
+        #: The block's plain text so far, which is what `figrefs` looks back
+        #: through for the authority that owns a cited plate. Kept here rather
+        #: than passed down because the name and the reference are often in
+        #: different elements — `<bibl>Sauer</bibl>, Plate XIV`.
+        self.seen = ""
 
     # -- inline ------------------------------------------------------------
 
@@ -262,17 +276,58 @@ class Renderer:
         """An element's children, marked up. Recursive; text nodes are escaped."""
         out = []
         if el.text:
-            out.append(escape(el.text))
+            out.append(self.text(el.text))
         for kid in el:
             if not isinstance(kid.tag, str):
                 if kid.tag is etree.Comment:
                     out.append(self.comment(kid))
                 if kid.tail:
-                    out.append(escape(kid.tail))
+                    out.append(self.text(kid.tail))
                 continue
             out.append(self.element(kid))
             if kid.tail:
-                out.append(escape(kid.tail))
+                out.append(self.text(kid.tail))
+        return "".join(out)
+
+    def text(self, s: str) -> str:
+        """A text node, escaped, with its cross-references made into handles.
+
+        **The handle says what the page prints and nothing more** — `data-kind`,
+        `data-n`, and the plate that scopes it. Which picture that is depends on
+        `gt/fig/`, which `stores.render`'s cache does not key on, so resolving
+        here would go on serving a link to a box somebody has since moved. Same
+        division as `<figure>`: the renderer emits the handle and
+        `web/edition._figref_state` joins it, where both keys are in hand.
+
+        A reference inside an entity link is left alone — an anchor inside an
+        anchor is not markup HTML has, and `_referring`'s note applies
+        unchanged. Inside a `<figDesc>` it is left alone too, a caption being
+        the picture's name rather than a pointer at it.
+
+        **`before` rides along, and that is what keeps this store-free.** Some
+        of these plates are other people's — `Sauer, Plate XIV` is Sauer's, and
+        this book has a Plate XIV too — and telling them apart takes the
+        `Authorities Quoted` store. Carrying the prose that precedes the
+        reference lets the route make that call with every other one, instead of
+        this method reading a second store the cache does not key on.
+        """
+        if self.in_ref or self.in_figdesc:
+            self.seen += s
+            return escape(s)
+        out, at = [], 0
+        for span in figrefs.scan(s):
+            i = len(self.figrefs)
+            self.figrefs.append({
+                "kind": span["kind"], "number": span["number"],
+                "plate": span["plate"],
+                "before": (self.seen + s[:span["start"]])[-160:],
+            })
+            out.append(escape(s[at:span["start"]]))
+            out.append(f'<a class="figref" data-fr="{i}" tabindex="0">'
+                       f'{escape(s[span["start"]:span["end"]])}</a>')
+            at = span["end"]
+        out.append(escape(s[at:]))
+        self.seen += s
         return "".join(out)
 
     def comment(self, node) -> str:
@@ -503,8 +558,12 @@ class Renderer:
         i = len(self.figures)
         self.figures.append({"n": n, "i": i})
         desc = el.find(f"{{{TEI_NS}}}figDesc")
-        cap = ("" if desc is None else
-               f'<figcaption>{self.inline(desc)}</figcaption>')
+        outside, self.in_figdesc = self.in_figdesc, True
+        try:
+            cap = ("" if desc is None else
+                   f'<figcaption>{self.inline(desc)}</figcaption>')
+        finally:
+            self.in_figdesc = outside
         return (
             f'<figure class="figure" data-figure="{escape(n)}" data-i="{i}">'
             f'{cap}</figure>'
@@ -632,6 +691,10 @@ class Renderer:
                 if kid.tag is etree.Comment:
                     out.append(self.comment(kid))
                 continue
+            # A block is where a citation's reach ends: the authority that owns
+            # a plate is named in the same sentence as the plate, never in the
+            # paragraph above it.
+            self.seen = ""
             out.append(self.element(kid))
         return "\n".join(x for x in out if x)
 
@@ -654,6 +717,7 @@ def render(path: Path) -> dict:
             "refs": [],
             "forms": [],
             "figures": [],
+            "figrefs": [],
             "folio": None,
         }
     body = root.find(f".//{{{TEI_NS}}}body")
@@ -666,6 +730,7 @@ def render(path: Path) -> dict:
             "refs": [],
             "forms": [],
             "figures": [],
+            "figrefs": [],
             "folio": None,
         }
     ref = path.stem.replace("chukchi-", "")
@@ -680,5 +745,6 @@ def render(path: Path) -> dict:
         "refs": sorted(set(r.refs)),
         "forms": sorted(set(r.forms)),
         "figures": r.figures,
+        "figrefs": r.figrefs,
         "folio": (pb.get("n") if pb is not None else None),
     }

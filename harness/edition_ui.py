@@ -63,6 +63,47 @@ def scan_for(ref: str, root: Path) -> Path:
     return root / "scans" / f"chukchi-{norm_ref(ref)}.png"
 
 
+#: Where an editor's own version of a whole leaf lives, and the extensions it may
+#: take, **vector first**. `1-361`, part 1's foldout map, is the leaf this exists
+#: for and it may end up an SVG; a resolver that assumed a raster would have to be
+#: rewritten the day it did.
+PAGE_IMG = "gt/page-img"
+LEAF_MEDIA = {".svg": "image/svg+xml", ".png": "image/png",
+              ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}
+LEAF_EXTS = tuple(LEAF_MEDIA)
+
+
+def leaf_source(ref: str, root: Path) -> tuple[Path | None, str]:
+    """An editor's version of this leaf, or nothing. `(path, rank)`.
+
+    `figures.crop_source`'s doctrine one level up — *"an enhanced figure is a new
+    artefact somebody made and vouches for"* — for a whole leaf rather than a
+    crop, and `tei_html.page_source`'s rule that the rank travels with the answer
+    so no caller can hold the path without knowing whose it is.
+
+    **Two boundaries, and both are the point.**
+
+    It is *reading view only*: `zones.scan_for` is what the segmenters, the ink
+    checks and `fig crops` resolve through, and it never consults this. An
+    upscaled or sharpened leaf is manufactured evidence and must not reach
+    anything that measures ink.
+
+    It is *exempt only*. A file for a page the pipeline still owns is ignored
+    here and reported by `edition runs`, rather than being honoured quietly the
+    day somebody adds a branch.
+    """
+    from .zones import load_splits
+
+    ref = norm_ref(ref)
+    if load_splits(root).get(ref) != "exempt":
+        return None, "scan"
+    for ext in LEAF_EXTS:
+        p = root / PAGE_IMG / f"chukchi-{ref}{ext}"
+        if p.exists():
+            return p, "ed"
+    return None, "scan"
+
+
 # --------------------------------------------------------------- the page
 
 

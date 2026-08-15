@@ -407,8 +407,19 @@ def entry_state(ref: str, root: Path = Path(".")) -> dict:
 
 
 def load_toc(root: Path = Path(".")) -> list[dict]:
+    """The ToC entries, from either of the file's two top-level shapes.
+
+    `toc.json` was written as a bare list, which is why it is the one apparatus
+    store with no provenance: `loi.json` and `authorities.json` both open with a
+    `source` block naming the scans they were read from, and a list has nowhere to
+    put one. So both shapes load — a bare list, and `{"source": …, "entries": […]}`
+    — and every caller keeps receiving the entries either way.
+    """
     p = root / "data/toc.json"
-    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    if not p.exists():
+        return []
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    return doc if isinstance(doc, list) else doc.get("entries", [])
 
 
 _WORD_RE = re.compile(r"[a-z0-9]+")

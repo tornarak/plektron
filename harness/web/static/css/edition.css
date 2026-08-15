@@ -458,3 +458,175 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 /* `contain`, never `cover`: cover crops to fill, and a lightbox that quietly
    trims the edges off a figure is showing the reader a different picture. */
 #lightbox img {max-height: 100%;max-width: 100%;object-fit: contain;margin: auto;}
+
+/* --- runs: an apparatus list served whole --- */
+/* One list across the span's leaves, set the way the book sets it: title left,
+   page number hard right. **No dot leaders.** They are typesetting rather than
+   text — the printer's way of carrying the eye across a gap this layout does
+   not have — and reproducing them would put marks on the page that are in no
+   store. The right edge does the same work. */
+.run ul { list-style:none; padding:0; margin:0 }
+.run li { display:flex; align-items:baseline; gap:.5rem;
+  padding:.1rem 0 .1rem 3.2rem; position:relative }
+.run .page-no { margin-left:auto; font-variant-numeric:tabular-nums;
+  white-space:nowrap; color:var(--dim) }
+.run a.page-no { color:inherit; text-decoration:none;
+  border-bottom:1px dotted var(--rule) }
+.run a.page-no:hover { border-bottom-color:currentColor }
+
+/* The leaf mark: where the printed page turned, out in the left margin so it
+   never interrupts the list. Grey, small, and a **self-link** — a permalink to
+   this point in the run, which is what a reader wants from a page break. The
+   scans belong to the scan button, which on a run shows the whole span. */
+.run .leaf-mark { position:absolute; left:0; width:2.6rem; text-align:right;
+  font-family:system-ui,sans-serif; font-size:.7rem; color:var(--dim);
+  text-decoration:none; opacity:.65 }
+.run .leaf-mark:hover { opacity:1; color:var(--fg) }
+.run .leaf-mark .run-tag { margin-left:.2em; font-size:.85em; opacity:.8 }
+/* A leaf the store records nothing on still gets its row, because the anchor
+   has to exist for the redirect to land on. It holds the mark and nothing. */
+.run li.leaf-only { min-height:1rem }
+
+/* The heading is a link and is drawn as if it were not: a contents page whose
+   316 rows are all coloured is a wall, and the number beside each is already
+   the visible affordance. The underline on hover is what says it is live. */
+.run a.plain { color:inherit; text-decoration:none }
+.run a.plain:hover { text-decoration:underline }
+.run .toc-num { color:var(--dim) }
+.run .toc-l0 { margin-top:.5rem; font-weight:600 }
+.run .toc-l1 { margin-top:.4rem }
+.run .toc-l2 { padding-left:4.4rem }
+.run .toc-l3 { padding-left:5.6rem }
+.run .loi-n { color:var(--dim) }
+.run .loi-plate .loi-n { font-variant:small-caps; letter-spacing:.02em }
+.run .authority { align-items:flex-start; padding-top:.5rem }
+.run .authority-body { flex:1 }
+/* Printed first and parsed under it, in that order and at that weight: the
+   printed block is the record and the parsed fields are a reading of it. */
+.run .printed { margin:0 }
+.run .parsed { margin:.1rem 0 0; font-size:.8rem; color:var(--dim) }
+.run-tag { font-family:system-ui,sans-serif; font-size:.7rem;
+  text-transform:uppercase; letter-spacing:.04em; color:var(--dim) }
+.tier1-note { font-family:system-ui,sans-serif; font-size:.7rem;
+  color:var(--dim); border-bottom:1px dotted currentColor; cursor:help }
+
+/* --- the alphabet chart --- */
+/* The grids keep the print's own geometry: fixed columns, empty cells left
+   empty. **The columns are unlabelled in the source and stay unlabelled here** —
+   naming them stop/affricate/fricative/nasal would put an analysis on the page
+   that Bogoras did not write. */
+.run-alphabet .alpha-leaf { position:relative; height:1.2rem }
+.alpha-grid { border-collapse:collapse; margin:.4rem 0 .6rem;
+  table-layout:fixed }
+.alpha-grid th { text-align:right; font-weight:400; color:var(--dim);
+  font-family:system-ui,sans-serif; font-size:.8rem; padding-right:.6rem;
+  white-space:nowrap }
+.alpha-grid td { padding:.15rem .5rem; text-align:center; min-width:2.6rem }
+.alpha-grid .sort { font-size:1.15rem; text-decoration:none; color:inherit }
+.alpha-grid .sort:hover { text-decoration:underline }
+/* The imputed value under each glyph, small: the grid is for finding a sort,
+   and the value is what you came for once you have. */
+.alpha-grid .cell-ipa { display:block; font-size:.7rem; color:var(--dim) }
+.grid-note { font-size:.85rem; color:var(--dim); margin:.2rem 0 1.2rem;
+  max-width:46rem }
+
+.alpha-sorts { border-collapse:collapse; width:100%; font-size:.9rem }
+.alpha-sorts th { text-align:left; font-weight:400; color:var(--dim);
+  font-family:system-ui,sans-serif; font-size:.75rem; text-transform:uppercase;
+  letter-spacing:.04em; border-bottom:1px solid var(--rule); padding:.2rem .5rem }
+.alpha-sorts td { padding:.3rem .5rem; vertical-align:top;
+  border-bottom:1px solid var(--rule) }
+/* Sort over codepoint: one identity, read as one, and the codepoint one line
+   per part — `c + U+030C + U+02D9` is a base and two marks, and the sorts that
+   look alike are exactly the ones differing by one of them. */
+.alpha-sorts .sort-cell { text-align:center; white-space:nowrap; width:7rem }
+.alpha-sorts .sort-cell .sort { font-size:1.4rem; display:block;
+  line-height:1.3 }
+.alpha-sorts .code { color:var(--dim); font-size:.7rem; white-space:nowrap;
+  font-family:ui-monospace,monospace; display:block; line-height:1.35 }
+/* Imputed over modern: one question, two witnesses, stacked so the
+   disagreement is where the reader meets it rather than a column away. The
+   brackets carry the difference — `[…]` is Bogoras's account of his own
+   notation, `/…/` a current description of the language.
+   **No `nowrap` on the cell**: the modern note is a sentence, and holding the
+   whole cell on one line made this the widest column on the page. */
+.alpha-sorts .value { text-align:center; width:11rem }
+.alpha-sorts .v-imputed, .alpha-sorts .v-modern { display:block;
+  white-space:nowrap; font-size:1.1rem; line-height:1.35 }
+.alpha-sorts .v-modern { color:var(--dim) }
+.alpha-sorts .m-note { display:block; white-space:normal; text-align:left;
+  font-size:.72rem; line-height:1.3; margin-top:.2rem }
+.alpha-sorts .num { text-align:center; font-variant-numeric:tabular-nums;
+  color:var(--dim); width:4rem }
+.alpha-sorts th.c { text-align:center }
+.alpha-sorts .g { display:block }
+/* Which printed key a gloss comes from, on every gloss. The two accounts are
+   not one notation — p. 10 has nine sorts Mythology lacks — so an unattributed
+   gloss would be a claim about both. */
+.alpha-sorts .g-key { font-family:system-ui,sans-serif; font-size:.65rem;
+  text-transform:uppercase; letter-spacing:.04em; color:var(--dim);
+  border:1px solid var(--rule); border-radius:.2rem; padding:0 .25em;
+  margin-right:.3em }
+.alpha-sorts .g-shared, .alpha-sorts .g-note, .alpha-sorts .m-note {
+  color:var(--dim); font-size:.8em }
+.alpha-sorts .g-note, .alpha-sorts .m-note { display:block }
+.alpha-sorts .ipa-val { font-size:1.05em }
+/* A hedge and an absence are different states and are drawn differently: `~ x`
+   is a second value the source offered, `—` is no value at all. Collapsing
+   them would let "unsettled" read as "settled on the first". */
+.alpha-sorts .hedge { color:var(--dim); margin-left:.4em; font-size:.85em }
+.alpha-sorts .none { color:var(--dim); cursor:help }
+.alpha-notes { max-width:46rem; font-size:.9rem; padding-left:0;
+  list-style:none }
+.alpha-notes li { margin:.4rem 0 }
+
+.run .loi-title { flex:1 }
+
+/* A figure inside a stack card. `contain` and a height cap so a tall plate and
+   a wide one both fit the column without the card growing past the viewport. */
+.card .crop-fig { margin:.3rem 0 }
+.card .crop-fig img { width:100%; max-height:24rem; object-fit:contain;
+  background:var(--card); cursor:zoom-in }
+/* "Opp." on a plate's page number: the print's own word for it, and the whole
+   difference between the page a plate is on and the page it faces. */
+.run .page-no .opp { font-family:system-ui,sans-serif; font-size:.7em;
+  text-transform:uppercase; letter-spacing:.03em }
+/* The lightbox's own foot: what this picture is, a way to the file itself, and
+   the arrows when there is more than one. Over the backdrop rather than under
+   the image, so it costs the picture no height. */
+/* Two lines: what the picture is, then how to move between them. The caption is
+   the thing being read and the controls are furniture, so they do not share a
+   line and compete for the middle of it. */
+#lightbox-bar { position:absolute; left:0; right:0; bottom:0; z-index:11;
+  display:flex; flex-direction:column; gap:.35rem; align-items:center;
+  padding:.5rem .9rem; font-family:system-ui,sans-serif; font-size:.85rem;
+  background:color-mix(in srgb, #000 55%, transparent); color:#f2efe9 }
+#lightbox-bar .nav { display:flex; gap:.6rem; align-items:center }
+#lightbox-bar a { color:inherit; text-decoration:none;
+  border-bottom:1px dotted currentColor; max-width:60vw;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+#lightbox-bar a:hover { border-bottom-style:solid }
+#lightbox-bar .count { font-variant-numeric:tabular-nums; opacity:.75 }
+#lightbox-bar button { background:transparent; color:inherit;
+  border-color:color-mix(in srgb, #fff 35%, transparent);
+  font-size:1.1rem; line-height:1; padding:.1rem .5rem }
+#lightbox-bar button:hover { border-color:#f2efe9 }
+
+/* A cross-reference in the prose: `(Plate XXVII, Fig. 3)`, `Fig. 87`.
+
+   **Only the numeral is the link**, never the `Fig.` in front of it — the word
+   is the printer's furniture and one run can name three pictures, so `Figs.
+   214, 215, 216` is three targets and underlining the phrase would make it look
+   like one. Quiet by default: a page of prose carries a dozen of these and
+   colouring them all turns a paragraph into a link farm, so they read as text
+   until the cursor is on one.
+
+   An unresolved reference is not a link at all and is left as plain text. It
+   still carries its reason as a title, which is how a reader finds out that a
+   plate's figure has no box in `gt/fig/` rather than assuming the edition
+   simply does not link. */
+a.figref { color:inherit; text-decoration:none;
+  border-bottom:1px dotted var(--dim); cursor:pointer }
+a.figref:hover, a.figref:focus { color:var(--link); border-bottom-color:var(--link) }
+a.figref.unresolved { border-bottom-style:none; cursor:help; color:inherit }
+.reader a.figref.unresolved { cursor:default }

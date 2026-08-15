@@ -1,0 +1,112 @@
+{# The alphabet key, as a chart rather than as fifty lines of "as in English".
+
+   Not a list, so this partial ignores `items` and renders `chart` — the store's
+   grids joined to `ipa.RULES`, `ipa.MODERN` and the corpus's own attestation
+   counts. Four witnesses, and **where they disagree all four are shown**: that
+   is the whole reason `MODERN` is a second table rather than a column of the
+   first, and the reason a sort with no IPA value keeps its row and says why. #}
+
+{% macro cell(s) %}
+  {%- if s -%}
+    {%- set r = chart.by_sort.get(s) -%}
+    <a class='sort' href='#{{ r.anchor if r else "" }}'
+       title='{{ (r.glosses | first).text if r and r.glosses }}'>{{ s }}</a>
+    {%- if r and r.ipa %}<span class='cell-ipa'>{{ r.ipa }}</span>{% endif -%}
+  {%- else -%}<span class='cell-empty'></span>{%- endif -%}
+{% endmacro %}
+
+{% if chart.grids.vowels %}
+<h4>Vowels</h4>
+<table class='alpha-grid'>
+{% for row in chart.grids.vowels.rows %}
+  <tr>{% for c in row.cells %}<td>{{ cell(c) }}</td>{% endfor %}</tr>
+{% endfor %}
+</table>
+<p class='grid-note'>{{ chart.grids.vowels.note }}</p>
+{% endif %}
+
+{% if chart.grids.consonants %}
+<h4>Consonants</h4>
+<table class='alpha-grid'>
+{% for row in chart.grids.consonants.rows %}
+  <tr><th>{{ row.label }}</th>
+    {% for c in row.cells %}<td>{{ cell(c) }}</td>{% endfor %}</tr>
+{% endfor %}
+</table>
+{# The one caption a modern reader most needs, and it is the store's, not this
+   template's — it is a fact about his page, not a rendering choice. #}
+<p class='grid-note'>{{ chart.grids.consonants.note | replace('**','') }}</p>
+{% endif %}
+
+<h4>Every sort</h4>
+{# `imputed` and `modern` are two different claims and are labelled as two.
+   The first is Bogoras's own account of his notation, applied by rule; the
+   second is what a current description calls the same sound. They part
+   systematically — over length on nearly every form, over a whole
+   palatalization series, and over every voiced obstruent — and a reader who
+   cannot see which is which has been handed one answer where there are two. #}
+{# Four columns, not six. The sort and its codepoint are one identity and read
+   as one; the imputed and the modern value are one *question* asked of two
+   witnesses, and stacking them puts the disagreement where a reader meets it
+   rather than a column apart. What is not merged is the labelling: `[…]` is
+   Bogoras's own account of his notation, `/…/` a current description of the
+   language, and the brackets are the standing convention for exactly that
+   difference. #}
+<table class='alpha-sorts'>
+  <thead><tr>
+    <th class='c'>sort</th><th class='c'>value</th>
+    <th>gloss</th><th class='c'>forms</th>
+  </tr></thead>
+  <tbody>
+  {% for r in chart.sorts %}
+  <tr id='{{ r.anchor }}'>
+    {# Each part of the codepoint on its own line: `c + U+030C + U+02D9` is a
+       base and two marks, and reading it as a sequence is the point — the
+       sorts that look alike are the ones that differ by one of these. #}
+    <td class='sort-cell'><span class='sort'>{{ r.sort }}</span>
+      {% for part in r.codepoint.split(' + ') %}<span
+        class='code'>{{ part }}</span>{% endfor %}</td>
+    <td class='value'>
+      <span class='v-imputed' title='imputed from Bogoras&#39;s own account of
+        his notation'>{% if r.ipa %}[{{ r.ipa }}]{% if r.hedge %}<span
+        class='hedge' title='the source offered two values; this edition emits
+        the first'>~ {{ r.hedge }}</span>{% endif %}{%
+        else %}<span class='none' title='{{ r.why }}'>—</span>{% endif %}</span>
+      <span class='v-modern' title='what a current description of Chukchi calls
+        the same sound'>{% if r.modern %}/{{ r.modern }}/{%
+        else %}<span class='none'>—</span>{% endif %}</span>
+      {% if r.modern_note %}<span class='m-note'>{{ r.modern_note }}</span>{% endif %}
+    </td>
+    <td class='gloss'>
+      {% for g in r.glosses %}<span class='g'><span
+        class='g-key'>{{ g.key }}</span> {{ g.text }}{% if g.shared_with %}
+        <span class='g-shared'>(with {{ g.shared_with | join(', ') }})</span>{%
+        endif %}</span>{% endfor %}
+      {% if r.note %}<span class='g-note'>{{ r.note }}</span>{% endif %}
+    </td>
+    <td class='num'>{{ r.forms or '' }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class='grid-note'>Counted over the {{ chart.attested_forms }} native forms
+keyed so far, not over the book: a sort with no count is absent from what has
+been read, not from what was printed.</p>
+
+{% if chart.rules %}
+<h4>What the keys say about the marks</h4>
+<ul class='alpha-notes'>
+{% for n in chart.rules %}<li><span class='g-key'>{{ n.key }}</span>
+  {{ n.text }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+{% if chart.notes %}
+<h4>How the forms are said</h4>
+{# From Mythology's folio 4, below its key: rules about the language rather than
+   about the notation. Another volume's, and marked as such on every line. #}
+<ul class='alpha-notes'>
+{% for n in chart.notes %}<li><span class='g-key'>{{ n.key }}</span>
+  {{ n.text }}</li>{% endfor %}
+</ul>
+{% endif %}

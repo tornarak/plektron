@@ -7,7 +7,7 @@ three stores, and the whole point of the view is that they are in one place.
 from __future__ import annotations
 
 from .. import edition_ui
-from ._common import action, group, opt
+from ._common import action, group, opt, out
 
 
 def register(cli):
@@ -41,6 +41,41 @@ def register(cli):
              "has read. Every one is marked as a draft, in the listing, on the "
              "page and in search results. Read-only: this is a window onto the "
              "generator's output while it is being fixed, not a way to collate")
+
+
+    p = action(g, "runs", run_runs, pageable=False,
+               help="the page-runs the reading view serves as one document "
+               "instead of a leaf at a time — the printed Contents, List of "
+               "Illustrations and Authorities Quoted — and everything wrong "
+               "with their declarations. Reads and writes nothing; exit 1 on a "
+               "declaration that cannot be true, which is a run over a page the "
+               "pipeline still owns, a span its own store contradicts, a kind "
+               "with no renderer, two pages claiming one folio at one rank, or "
+               "an editor's leaf that is a different leaf. A folio two witnesses "
+               "of *different* rank disagree on is reported, not fatal: rank "
+               "resolves it, and the disagreement is usually a misread running "
+               "title worth seeing")
+
+
+def run_runs(a) -> int:
+    from .. import apparatus
+
+    rep = apparatus.check(a.root)
+    out(a, rep["runs"], name="runs")
+    if rep["leaves"]:
+        out(a, rep["leaves"], name="leaves", heading=True)
+    if rep["editor_leaves"]:
+        out(a, rep["editor_leaves"], name="editor_leaves", heading=True)
+    if rep["warnings"]:
+        out(a, rep["warnings"], name="warnings", heading=True)
+    if rep["errors"]:
+        out(a, rep["errors"], name="errors", heading=True)
+    # The folio count is the one number that says how much of the book the
+    # locator can reach at all, and it belongs with the runs rather than in a
+    # separate verb: every folio link a run renders goes through it.
+    print(f"{len(rep['runs'])} run(s), {rep['folios']} folio(s) witnessed, "
+          f"{len(rep['errors'])} error(s), {len(rep['warnings'])} warning(s)")
+    return 1 if rep["errors"] else 0
 
 
 def run_serve(a) -> int:

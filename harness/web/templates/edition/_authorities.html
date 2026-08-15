@@ -1,0 +1,31 @@
+{# Authorities Quoted, as one list across its seven leaves.
+
+   **Printed is the record**, which is `find authority`'s own rule: the block the
+   store copied off the page is what a reader sees, and the parsed fields ride
+   along beneath it rather than replacing it. A work whose entry the printer set
+   twice prints twice here, because it did on the page.
+
+   The siglum links where an `entities/source/` record names this work's key —
+   the entity store's `authority` field, and nothing inferred from the name.
+   A `<ul>` rather than a `<dl>`: the leaf marks have to sit in the flow with the
+   entries, and a `<dt>`/`<dd>` pair has nowhere to put one. #}
+<ul class='authorities'>
+{% for it in items %}
+  {% set e = it.entry %}
+  <li class='{{ 'authority' if e else 'leaf-only' }}'>
+    {% if it.leaf %}{{ leafmark(it.leaf) }}{% endif %}
+    {% if e %}
+    <div class='authority-body'>
+      {% for b in e.printed %}<p class='printed'
+        lang='{{ b.lang or "en" }}'>{{ b.text }}</p>{% endfor %}
+      <p class='parsed'>{% if e.entity %}<a
+        href='{{ e.entity }}'>{{ e.key }}</a>{% else %}{{ e.key }}{% endif %}{%
+        if e.author %} · {{ e.author }}{% endif %}{%
+        if e.year %} · {{ e.year }}{% endif %}{%
+        if e.lang %} · {{ e.lang }}{% endif %}</p>
+    </div>
+    {% if e.folio %}<span class='page-no'>{{ e.folio }}</span>{% endif %}
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>

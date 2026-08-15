@@ -64,8 +64,18 @@ below.{% else %}The whole leaf is shown.{% endif %}</p>
    a page saying "blank" would be asserting something no store witnesses — 113
    of the 115 exempt pages hold zero zones, and a full-page map nobody drew boxes
    on is indistinguishable from an empty one at that level. #}
+{# An editor's own version of the leaf wins here and only here. It is a made
+   artefact, not evidence — `gt/fig-img/`'s rule one level up — so it is labelled
+   as one and the raw scan keeps its own address beside it. Nothing in the
+   pipeline resolves through this; `zones.scan_for` never consults it. #}
+{% if editor_leaf %}
+<p class='draft-note'><span class='draft-tag'>editor's version</span> — this leaf
+has been worked on by hand. <a href='{{ base }}/page/{{ ref }}.png'
+target='_blank' rel='noopener'>the raw scan</a> is unchanged.</p>
+{% endif %}
 <article class='whole-scan'>
-  <img src='{{ base }}/page/{{ ref }}.png' alt='scan {{ ref }}'>
+  <img src='{{ base }}/{{ "leaf" if editor_leaf else "page" }}/{{ ref }}{{
+    "" if editor_leaf else ".png" }}' alt='scan {{ ref }}'>
 </article>
 {% endif %}
 

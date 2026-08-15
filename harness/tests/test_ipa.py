@@ -66,8 +66,54 @@ def test_a_macron_gives_the_extra_length_it_names():
 
 
 def test_the_dedicated_breve_sort_beats_the_generic_mark():
-    """`ŭ` is its own sort with its own value, not `u` plus a length mark."""
-    assert ipa.impute("ŭ").ipa == "ʉ̆"
+    """`ŭ` is its own sort with its own value, not `u` plus a length mark.
+
+    **Unmarked, and the breve stays with the mark.** Both sources distinguish
+    "short" — which is what this sort is — from "very short", which is what a
+    breve written over a vowel means. Spending the breve on the sort left the
+    mark nothing to say; the contrast is carried instead by the length the
+    plain vowels get and this one does not.
+    """
+    assert ipa.impute("ŭ").ipa == "ʉ"
+    assert ipa.SHORT not in ipa.impute("ŭ").ipa
+
+
+def test_the_obscure_series_is_one_vowel():
+    """ᴀ ᴇ ɪ are glossed jointly as "obscure vowels (short)" and nothing in
+    either source tells them apart. They were rendered three ways — ə̆, ə̆ ~ ɛ̆
+    and ɪ̆ — which read `ɪ` as its own IPA value and invented a distinction the
+    page does not make. Modern Chukchi's pervasive epenthetic schwa is the same
+    distribution."""
+    assert {ipa.impute(c).ipa for c in ("ᴀ", "ᴇ", "ɪ")} == {"ə"}
+
+
+def test_the_rising_diphthong_keeps_its_laryngeal_either_way():
+    """"It always has a laryngeal intonation, ᵉiᵋ" — so the bare spelling is
+    not a plain diphthong, and the two spellings are one thing."""
+    assert ipa.impute("ᵉi").ipa == ipa.impute("ᵉiᵋ").ipa
+    assert ipa.impute("ᵉi").ipa.endswith("ˀ")
+
+
+def test_the_rising_diphthong_is_prominent_on_its_closing_element():
+    """"A diphtong with an accent on *i*", and `keying_spec.md` §2.5's
+    "prominence on the closing element, opening element cast superscript".
+    `ei̯` marks the *i* non-syllabic, which is the other diphthong."""
+    assert ipa.impute("ᵉi").ipa.startswith("e" + "̯")
+
+
+def test_o_is_read_the_same_way_alone_and_in_its_diphthong():
+    """`oi` was `oi̯` while `o` was `ɔ`, in adjacent rows of one table. The
+    gloss is "like *oi* in *choice*"."""
+    assert ipa.impute("o").ipa == "ɔ"
+    assert ipa.impute("oi").ipa.startswith("ɔ")
+
+
+def test_aspiration_attaches_to_what_precedes_it():
+    """`h` is a-semantic aspiration, not a segment: Mythology has it "used
+    after č, t, l" and modern Chukchi has no /h/ at all. Word-initially there
+    is nothing to attach to, and p. 10's plain "as in English" answers."""
+    assert ipa.impute("alha").ipa == "aːlʰaː"
+    assert ipa.impute("ha").ipa == "haː"
 
 
 @pytest.mark.parametrize("form,char", [
@@ -75,12 +121,15 @@ def test_the_dedicated_breve_sort_beats_the_generic_mark():
     ("nɪˊmɪḷu", "̣"),     # ḷ, likewise
     ("Poša", "̌"),        # š, likewise
     ("Kereˊtkun’s", "’"),  # a curly apostrophe, which Tier-1 forbids outright
-    ("Egaˊč", "g"),        # plain g: the source table gives g̣ and not g
 ])
 def test_a_sort_with_no_row_comes_back_partial_and_named(form, char):
-    """Five sorts have a *gloss* in the p. 10 key and no IPA value, and
+    """Four sorts have a *gloss* in the p. 10 key and no IPA value, and
     turning a gloss into a symbol is a judgement. They fall through, and the
-    character is named so the row is a worklist entry rather than a shrug."""
+    character is named so the row is a worklist entry rather than a shrug.
+
+    Plain `g` used to be a fifth entry here, on the reasoning that "the source
+    table gives g̣ and not g" — which was true of Mythology and false of the
+    p. 10 key, where `g` is glossed "like *g* in *good*". It has a row now."""
     r = ipa.impute(form)
     assert not r.complete
     assert char in r.unresolved
@@ -96,13 +145,32 @@ def test_the_undecidable_apostrophe_is_refused_rather_than_read():
 
 
 def test_a_hedged_row_is_reported_as_hedged_and_still_emitted():
-    """`g̣` is ɣ ~ ɡ in the source. The first value is emitted and the row is
-    named, rather than the form being withheld or the choice being made by
-    which value looked better."""
-    r = ipa.impute("g̣a")
+    """`ʟ` is ɬʲ ≈ ɬ. The first value is emitted and the row is named, rather
+    than the form being withheld or the choice being made by which value
+    looked better."""
+    r = ipa.impute("ʟa")
     assert r.complete
-    assert r.ipa.startswith("ɣ")
-    assert "g̣" in [unicodedata.normalize("NFC", h) for h in r.hedged]
+    assert r.ipa.startswith("ɬʲ")
+    assert "ʟ" in [unicodedata.normalize("NFC", h) for h in r.hedged]
+
+
+def test_the_velar_g_is_no_longer_hedged_against_a_voiced_stop():
+    """`g̣` was ɣ ~ ɡ. Modern Chukchi has no native voiced stops — "these are
+    only found in loanwords" — so ɡ was never available for it; and ɡ is the
+    value that belongs to plain `g`, which had no row while this one was
+    offering its value away."""
+    r = ipa.impute("g̣ag")
+    assert r.complete and not r.hedged
+    assert r.ipa == "ɣaːɡ"
+
+
+def test_every_row_has_a_modern_correspondence():
+    """`MODERN` is the reconciliation against current descriptions of the
+    language, kept beside the table rather than folded into it — what `impute`
+    emits is Bogoras's account of his own notation, and the two disagree
+    systematically. A row with no entry is a row nobody has looked at."""
+    have = {unicodedata.normalize("NFD", k) for k in ipa.MODERN}
+    assert {unicodedata.normalize("NFD", s) for s, _, _, _ in ipa.RULES} == have
 
 
 def test_the_grades_of_the_rows_a_form_used_are_reported():

@@ -1470,6 +1470,16 @@ place.
 --root --json --toon
 ```
 
+### edition runs
+**Does** the page-runs the reading view serves as one document instead of a leaf at a time — the printed Contents, List of Illustrations and Authorities Quoted — plus one row per leaf and per editor's leaf, and everything wrong with the declarations. Six scans of List of Illustrations are one printed list, and serving them as six pages is serving the binding rather than the book. Reports the folio count too: every folio link a run renders goes through the index, and that number says how much of the book the locator can reach at all.
+**Reads** `data/runs.json` and each run's `source`, `gt/zones/_exempt.lst`, `tei/`, `gt/ocr/`, `gt/page-img/`, `scans/`. **Writes** — **Exit** 0 clean / 1 on a declaration that cannot be true.
+**Note** the fatal set: a run over a page the pipeline still owns (`not-exempt`), a ref that is no scan, a span that is discontiguous or that two runs both claim, a `kind` with no renderer, a span its own store contradicts, two pages claiming one folio **at the same rank**, and an editor's leaf that is for a non-exempt page or is a different shape from the scan (>0.5% aspect). A folio two witnesses of *different* rank disagree on is a **warning**: rank resolves it, and the disagreement is usually a misread running title worth seeing rather than a fault.
+**Note** `plates_located` is a **measurement and does not gate**: a plate carries no number on its own leaf, so `figures.by_plate` derives it by matching the printed list's abbreviated caption against the keyed under-figure one. What would be wrong is a plate resolving to two leaves, and that resolves to none by construction — the reading view then prints it plain.
+**Note** **three statements of one span, checked rather than merged** — `runs.json`'s `refs`, the store's own `source.refs`, and the set of per-entry `ref` fields inside it. All three were already in the tree; the check is that they agree. A store with no per-entry `ref` is reported unrenderable, because `entries_for` has no fallback: a leaf shows what the store says was printed on it, and attributing a whole list to one leaf would be inventing that.
+```
+--root --json --toon
+```
+
 ---
 
 ## find

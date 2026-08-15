@@ -1,0 +1,68 @@
+{# The printed List of Illustrations, as one list across its six leaves: figures
+   then plates, in the store's own order, which is the book's.
+
+   Two links, and each is a store already in the tree answering a question the
+   printed list poses: the folio through the folio index, and the figure number
+   through `figures.by_number`. **A number that resolves to more than one zone is
+   printed plain**, never guessed — the book restarts figure numbering at 1 on
+   every plate, so 1-4 are genuinely ambiguous, and 240 is the corpus's one
+   unpaired caption. 297 of 302 resolve; the other five are where a link would be
+   an invention.
+
+   **The whole entry is the link, and it opens a card in the stack.** A reader
+   reaches for the caption, not for the numeral, so the caption is the target and
+   is drawn as if it were not a link — `_toc.html`'s reasoning. What it opens is
+   the stack rather than the lightbox, which is the opposite of the rule
+   everywhere else in this edition and for that rule's own reason: a picture goes
+   to the lightbox because it is *already on the page*, and here the page is a
+   catalogue that names it. See `openFigure`.
+
+   **No thumbnails.** They were tried and taken out: 294 pictures down the margin
+   turned a list you read into a contact sheet you scroll, and the printed list
+   is a list. The card is where a picture belongs here — one at a time, beside
+   the entry that sent for it.
+
+   The numerals stay live too and open a card for their own picture alone, which
+   is the only thing that answers a three-figure entry: with several crops no one
+   of them is *the* picture. The `href` is a real crop URL throughout, so this
+   works with no JS and a middle-click still opens the file. #}
+<ul class='loi'>
+{% for it in items %}
+  {% set e = it.entry %}
+  <li class='{{ ('loi-' ~ e.kind) if e else 'leaf-only' }}'>
+    {% if it.leaf %}{{ leafmark(it.leaf) }}{% endif %}
+    {% if e %}
+    {% set label = ('Plate ' ~ e.number) if e.kind == 'plate' else
+                   ('Fig' ~ ('s' if e.nums | length > 1 else '') ~ '. '
+                    ~ (e.nums | map(attribute='n') | join(', '))) %}
+    <span class='loi-title'><span class='loi-n'>{% if e.kind == 'plate'
+      %}{% if e.pairs %}<a class='fig' href='{{ e.thumbs[0] }}'
+        data-fig='{{ e.pairs | join(",") }}' data-label='{{ label }}'
+        data-caption='{{ e.caption }}'>Plate {{ e.number }}</a>.{%
+      else %}Plate {{ e.number }}.{% endif %}{% else %}Fig{{ 's' if e.nums | length > 1 }}.
+      {%- for n in e.nums %} {% if n.url %}<a class='fig' href='{{ n.url }}'
+        data-fig='{{ n.pair }}' data-label='Fig. {{ n.n }}'
+        data-caption='{{ e.caption }}'>{{ n.n }}</a>{%
+        else %}{{ n.n }}{% endif %}{{ ',' if not loop.last }}{% endfor %}.{%
+      endif %}</span>
+      {% if e.pairs %}<a class='fig plain' href='{{ e.thumbs[0] }}'
+        data-fig='{{ e.pairs | join(",") }}' data-label='{{ label }}'
+        data-caption='{{ e.caption }}'>{{ e.caption }}</a>{%
+      else %}{{ e.caption }}{% endif %}{% if e.tier1_spans %} <span
+        class='tier1-note' title='read off a scan and not ratified — a proposal,
+        per the store&#39;s own caveat'>tier 1</span>{% endif %}</span>
+    {# `opp.` where the print says "Opp. page": a plate is an inserted leaf with
+       no folio of its own, and this number is the page it faces, not the page
+       it is on. #}
+    {# A new tab, as on the Contents and for its reason: this is a list you work
+       down, not a page you leave. #}
+    {% if e.folio_url %}<a class='page-no' target='_blank' rel='noopener'
+      title='{{ "the page this plate faces" if e.opposite else "printed folio" }}'
+      href='{{ e.folio_url }}'>{% if e.opposite %}<span
+      class='opp'>opp.</span> {% endif %}{{ e.folio }}</a>{% elif e.folio %}<span
+      class='page-no'>{% if e.opposite %}<span class='opp'>opp.</span> {% endif
+      %}{{ e.folio }}</span>{% endif %}
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>

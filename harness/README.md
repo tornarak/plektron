@@ -28,7 +28,8 @@ the project's rules, `CLAUDE.md` governs; for the character inventory,
 | `tei/` | the collation output, and the system of record for seam state — including `corpus-header.xml`, which is a fragment, not a page | the collation pass, `tei seam --commit` |
 | `mz/tei/` | the generated first-draft page, by rule from `gt/zones/` + `gt/ocr/`. Derived, ignored; **no view over the tei pair**, since naming the two apart is the point | `tei generate` |
 | `entities/` | the encyclopedia: one markdown record per entity under its class directory. The referent of every `@ref`, and the source of the alias vocabulary a rule links by | `entity new --commit`, `entity ratify --commit`, `edition serve` |
-| `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
+| `data/` | `readings.md` `loi.json` `toc.json` `authorities.json` `runs.json` `alphabet.json` `lexicon_extra.txt` `zones_config.json` `lines_config.json` | by hand |
+| `gt/page-img/` | an editor's own version of a whole leaf, `gt/fig-img/`'s doctrine one level up. Resolved by `edition_ui.leaf_source`, **reading view only and exempt pages only**. Ignored *for now*, with the reason in `.gitignore`: the artefact for `1-361` is undecided | by hand |
 | `data/geo/` | the compiled shape store the atlas draws: watersheds, language areas, coastline, `+ index.json SOURCES.md`. **Derived but tracked** — its sources are outside the repository, so a clone cannot rebuild it | `tools/build_geo.py --commit` |
 | `data/pdf_images.json` | the source PDFs' own embedded-image geometry: each page's master, the photographs on it, and the shift from the legacy render space. **Derived but tracked**, `data/geo/`'s split and for its reason. The one witness to a figure's place that no person and no model produced | `tools/extract_scans.py --commit` |
 | `review/<ref>/` | `proposal.json` + `decision.json` authored; crops/sheets/zoom/html derived | `ocr review --serve`, `ocr crops`, `ocr zoom` |
@@ -369,6 +370,21 @@ Writes `entities/` on a click without `--commit`, as the other editors
 write their stores, and **rolls a write back if `entity check` fails on the
 result** — every `@ref` in the corpus resolves against that store.
 
+**`alphabet.py`** — the alphabet key as a chart. Joins `data/alphabet.json` (both
+printed accounts of Bogoras's notation, and Mythology's arrangement of them) to
+`ipa.RULES`, `ipa.MODERN` and the corpus's own attestation counts. **It settles
+nothing**: where the witnesses disagree the chart shows all of them. `check` also
+compares the store's codepoints against `keying_spec.md` §2.2-2.3, which owns the
+inventory — the fact is held twice on purpose and the comparison is what makes
+that safe.
+
+**`apparatus.py`** — page-runs: spans of scans the edition serves as one document
+(`data/runs.json`), the anchor vocabulary, the folio index over three ranked
+witnesses, and `locate`, the single resolver every redirect route goes through.
+**The locator and the anchors are the load-bearing part, not the renderers**: a
+chapter page will be a run with a derived span, and nothing downstream may care
+which kind it got. `edition runs` is the gate. `docs/edition.md` has the model.
+
 **`state.py`** — derived seam state. Folio comes from a committed TEI's `<pb n>` and
 propagates forward; `expected_folio` is null wherever the chain breaks, and null is
 the answer, not a failure. Also `toc_window`/`toc_search`/`toc_near`.
@@ -518,6 +534,21 @@ human's own latest act and the sweep carries `force` on its behalf, the timestam
 establishing the intent the flag would. Deliberately not keyed on the *proposal*'s
 mtime — a proposal is a reading, not an adjudication, and re-authoring one licenses
 no write.
+
+**`figrefs.py`** — the cross-references the prose sets at its own pictures:
+`(Plate XXVII, Fig. 3)`, `Fig. 87 represents a knife`. `scan` reads a string and
+reports what the page prints; `resolve` takes those spans plus `figures.by_number`
+and `figures.by_plate` and says which crop each names. **The two halves never
+meet in one caller by accident** — `tei_html` calls only the first, because
+`stores.render` is cached on the TEI's bytes and a crop handle baked into that
+HTML would outlive the box it named. The join is `_figref_state`'s, in
+`harness/web/edition.py`, as `<figure>`'s is `_figure_state`'s.
+
+`foreign_citation` is the one guard: Bogoras cites Nelson's and Sauer's plates in
+the same words as his own, and `Sauer, Plate XIV` collides with this book's Plate
+XIV outright. The names come from `Authorities Quoted`, so telling them apart is
+a lookup in a store a human keyed. Measured over the corpus: 601 references link,
+114 are another author's, 58 refuse and each names the store that declined.
 
 **`figures.py`** — the figure track whole: `gt/fig/` geometry against
 `data/readings.md` text, reconciled by `reconcile()` (`corpus figures`); the

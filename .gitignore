@@ -279,3 +279,15 @@ train/
 
 # Agent worktrees — real git worktrees of this repo, never content of it.
 .claude/worktrees/
+
+# An editor's own version of a whole leaf, `gt/fig-img/`'s doctrine one level up.
+# **Ignored deliberately and temporarily, and the reason is that the artefact is
+# not decided yet.** `1-361`, part 1's foldout map, is the leaf this store exists
+# for; a touched-up raster of it is 22 MB and a vectorization is being attempted,
+# so committing the raster would put a superseded 22 MB in git permanently for a
+# file nobody will end up using. `edition_ui.leaf_source` resolves `.svg` before
+# `.png`, so dropping either in works today and serves at `/edition/leaf/PP-NNN`.
+# Tracking is a separate act, taken once the format is settled — and the moment it
+# is, this block comes out and `gt/page-img/` joins the tracked stores, since a
+# vouched-for artefact that a clone does not get is not vouched for.
+/gt/page-img/

@@ -646,6 +646,246 @@ cannot hold one without the other.
 in a language on a page; a generated page has read nothing, and this is not the
 server's call to make — `_attestations` sweeps `collated`, never `readable`.
 
+### Runs: a span of leaves served as one document
+
+Three of those exempt spans are not plates at all. They are the book's own
+apparatus — the printed Contents, the List of Illustrations and Authorities
+Quoted — and the repository already holds every one of them parsed, with the
+folio each entry names and the scan it was printed on. A reader who opened
+`1-014` got a photograph of a list this project could have rendered.
+
+Six scans of List of Illustrations are **one printed list**, so the unit the view
+serves is the **run**: an ordered contiguous span of scans presented as one
+document. `data/runs.json` declares them — `{id, kind, title, refs, source}` —
+`harness/apparatus.py` reads them, and `edition runs` is the gate.
+
+**Every leaf of a run redirects into it**, the first included, so a run has one
+canonical URL rather than a head that renders and interior leaves that bounce.
+`in_reading_order` drops the non-head refs, keeping its `list[str]` shape and the
+`refs.index(ref)` arithmetic every caller does on it; prev/next then crosses the
+list in one step instead of six. The leaves are not lost in the process: each
+keeps its anchor, its folio where one is known, and a link to its own raster.
+
+**A run is one list, and the leaf breaks sit in its margin.** Rendering a `<ul>`
+per scan would close and reopen the list at seven places that are facts about the
+binding rather than about the list, breaking the indentation and the reader's eye
+at each. So `_run_items` flattens the leaves into one stream and marks where each
+opens: a small grey **printed folio** in the left margin, linking to *itself* —
+a permalink to that point in the run, which is what a reader wants from a page
+break. A leaf the store records nothing on still gets a row, because the anchor
+has to exist for the redirect to land on.
+
+The folio shown there is the **printed** one, out of `source.printed_folios`,
+which is a different field from the one the folio index keys on: the front matter
+is numbered in roman (Contents v–xi, List of Illustrations xii–xvii) and that is
+what the leaf carries and what a reader recognises, while the index and every
+`page_start` in the ToC are arabic. `printed_folios` is positional against
+`source.refs` and is read only where the two agree in length — pairing them off
+anyway when they disagree would attach a folio to the wrong leaf.
+
+**The scans are the scan button's.** A run is one document whose scans are
+several, so 🗗 shows the whole span in succession in one card; the leaf mark does
+not link to a raster. Page numbers are set hard right, as the book sets them, and
+**without dot leaders**: those are typesetting rather than text — the printer
+carrying the eye across a gap this layout does not have — and reproducing them
+would put marks on the page that are in no store.
+
+**`kind` is a closed vocabulary** and an unknown one is a gate failure, not a
+silent fall back to the bare leaf — `figures`' `unknown-exemption` rule, for the
+same reason. Adding a kind costs a template and an entry in `apparatus.KINDS`;
+the next book declares the runs it has and no others.
+
+**A leaf shows the entries the store records as printed on it, and there is no
+fallback.** A store that cannot say which leaf an entry belongs to is reported
+unrenderable rather than having its whole list attributed to one leaf. That is
+why `data/toc.json` had to gain provenance before the Contents could be served —
+it was the one apparatus store not auditable back to a page, and
+`tools/toc_provenance.py` records the reading that closed it.
+
+**The span is stated three times and the three are checked against each other**:
+`runs.json`'s `refs`, the store's own `source.refs`, and the set of per-entry
+`ref` fields inside it. All three were already in the tree, so this costs a
+comparison rather than a second pass, and a disagreement is a finding rather than
+something to merge.
+
+### The alphabet run: what replaced 1-030
+
+Scan 1-030 is the p. 10 key, and it is the page a reader turns to on meeting
+`taˊn˙ñɪtan`. It answers badly — fifty lines of "as in English", in no order,
+with the structure of the system nowhere on it. Everything needed to answer well
+was already in the repository, in four places that had never been in one room, so
+the run's page is a **join** and `harness/alphabet.py` is the joiner:
+
+| | |
+|---|---|
+| `data/alphabet.json` | both printed accounts transcribed, and Mythology's arrangement of the sorts into grids |
+| `ipa.RULES` | what each sort is worth on Bogoras's own account, with its grade and its hedge |
+| `ipa.MODERN` | what a current description calls the same sound |
+| `lookup.index` | how many keyed forms actually carry the sort |
+
+**The grids are reproduced because the arrangement is the analysis.** Mythology
+sets the vowels in three rows and five columns, and that shows at a glance what
+p. 10's flat list hides completely: ä, ê and ɵ sit *over* a, e and o as their
+long counterparts, and ŭ sits *under* u with the obscure short series rather than
+beside it. **Its columns are unlabelled in the print and stay unlabelled here** —
+naming them stop/affricate/fricative/nasal would put an analysis on the page that
+Bogoras did not write.
+
+**His place names are one step back from modern usage, and saying so is the most
+useful thing on the page.** `k` and `ñ` are on his Palatal row while `q`, `g̣` and
+`h` are on his Velar row, so his "velar" is what a modern description calls
+uvular and his "palatal" what it calls velar. Reading that row label as a place
+claim is exactly what made an audit of `ipa.py` argue `g̣` was uvular, which the
+modern inventory does not support.
+
+**Three things are shown rather than smoothed.** The four sorts with a gloss and
+no IPA value (ë, ḷ, ṛ, š) keep their rows and say why — an omission would read as
+the key not having them. The hedges are marked. And every gloss carries the key
+it came from, because the two accounts are not one notation.
+
+**The store and `keying_spec.md` state every codepoint twice**, and `edition
+runs` compares them rather than merging. The spec owns the inventory (CLAUDE.md's
+precedence table) and a chart needs machine-readable data; neither is derived
+from the other, so the comparison is the only thing keeping them honest — 18
+sorts cross-checked, the same idiom as a run's three statements of one span.
+`alphabet.spec_codepoints` parses §2.2 and §2.3 **by column header and scoped to
+those sections**, because §3's table has the identical shape and the opposite
+meaning: a forbidden lookalike beside the codepoint that should have been keyed
+instead.
+
+Declaring the run also closed a hole. Folio 10 was the single gap between the
+Authorities run's folio 9 and the body's folio 11, so `/edition/toc/front.alphabet`
+refused; every sort is printed on that leaf and carries its folio, so the store
+is now the witness and the ToC's own link resolves.
+
+**The printed key is still the record.** It is binding apparatus — the firewall
+names it — so the leaf is one click away on 🗗, exactly as for the other runs.
+
+### The anchors, and the chapter pages they are for
+
+A chapter page will be a run too, with its span derived from `toc.json` and the
+folio index rather than declared. **Nothing downstream may care which kind it
+got**, which is why the addressing was settled before the three renderers were
+written. `apparatus.anchor(kind, key)` mints all of it, one function because the
+template that emits an id and the locator that builds a URL at it live in
+different modules and only this stops them drifting:
+
+    leaf-PP-NNN   one per ref in a run, emitted whether or not the store holds an
+                  entry printed on that leaf — a redirect must always land
+    folio-N       where that leaf's folio is known
+    toc-ID        on every heading carrying a `toc.json` id, which is what makes
+                  a chapter link resolve before chapters have pages
+
+`apparatus.locate(ref=| folio=| toc_id=)` is the single resolver, and every
+redirect route goes through it: `/edition/page/{ref}`, `/edition/folio/{n}`,
+`/edition/toc/{id}`. So `/edition/toc/chI` works **today**, wherever a witness
+places folio 11, and will keep working unchanged the day chapter I becomes a run.
+
+### The folio index, and its three witnesses
+
+A scan index is not a folio and neither is derivable from the other, so a folio is
+known only where a page said what page it is. Three witnesses say so, ranked, and
+the index is re-derived on every call and never persisted — which is what makes
+the two lower ranks admissible at all: they assert nothing on their own authority
+and fail rather than go stale.
+
+| rank | witness | what it is | today |
+|---|---|---|---|
+| 1 | `tei` | the committed `<pb n>` | a human collated the page |
+| 2 | `apparatus` | a store's own `ref`/`folio` pair | 7 leaves, from `authorities.json` |
+| 3 | `running-title` | `context._running_title` over `gt/ocr/` | 273 pages |
+
+**Rank resolves; it does not silence.** The redirect follows the strongest
+witness; two refs claiming one folio *at the same rank* is a refusal showing both,
+not a tie to break; a weaker witness contradicting a stronger one is reported by
+`edition runs` rather than dropped, since that is usually a misread running title
+and is worth seeing. Measured over this corpus: **280 of 732 folios witnessed, 0
+disagreements, 0 same-rank collisions**, built in 0.32 s.
+
+**Which witness a store supplies had to be declared and could not be guessed, and
+this is the correction worth keeping.** All three apparatus stores carry a `folio`
+beside a `ref`, and in only one do the two describe the same leaf. An
+`authorities.json` entry says "this entry was printed on `1-023`, which is folio
+3" — the entry *is* the thing on that page. An `loi.json` entry says "this figure
+appears on folio 17" while its `ref` is the List-of-Illustrations leaf the caption
+was *read from*: the folio is about the subject, the ref about the description,
+and they are pages apart. Counted as a witness it placed `1-014` at folio 17 at a
+rank above the running titles that had it right, and every folio in the book
+resolved to the List of Illustrations. `KINDS[…]["folio_of_leaf"]` is that
+distinction and a test holds it.
+
+**280 of 732 means the refusal is the ordinary answer**, so `/edition/folio/{n}`
+renders a page naming the nearest recorded folios either side and reads as an
+answer rather than an error. Nothing interpolates: a redirect is a resolution, and
+a guessed one would be indistinguishable from a witnessed one at the URL.
+
+### What a run links, and what it declines to link
+
+Every link on a run page is a store already in the tree answering a question the
+printed list poses, and each is **omitted rather than guessed** where it cannot.
+
+- The ToC's `page_start` and the LoI's folio go through the folio index. 121 of
+  the Contents' 316 entries link today; the rest print plain.
+- **A plate's number is not its folio**, and the printed list says so: it heads
+  that column *"Opp. page"*. A plate is an inserted leaf carrying no folio of
+  its own, so the number is the page it faces, and the page prints `opp. 29`
+  rather than a bare number in the same column a figure's own folio sits in.
+  This was rendered as a folio at first, which sent a reader clicking Plate I's
+  "29" to the page the plate faces as though the plate were on it.
+- **A plate links through its caption**, since it has no number to resolve on:
+  `figures.by_plate` matches the list's abbreviated segments against the keyed
+  under-figure captions and names the leaf. All 35 resolve, and a test pins
+  that. **Every segment must be found and exactly one leaf must qualify** — an
+  earlier matcher took the best-scoring page and bound `1-227` and `1-231` to
+  each other's plates on a shared word, and a picture under the wrong plate is
+  worse than a plate with no picture. The comparison folds combining marks,
+  because the list sets `Nuˊnligren` where the caption has `Nuˊnlig̣ren`; the
+  fold lives inside one comparison and reaches no store. What it then links is
+  **every picture zone on the leaf, not every figure**: two of the photographs
+  under one caption are one folded figure keyed on the topmost box, so linking
+  by figure showed the upper picture of Plate V and dropped the lower.
+- An LoI figure number goes through `figures.by_number`, a corpus-wide fold of
+  `figure_boxes`. **One link per printed number, not per entry** — two entries
+  name several figures at once ("Figs. 214, 215, 216") and each numeral is a
+  different picture. A number resolving to more than one zone prints plain:
+  measured, **297 of 302 resolve**, and the five that do not are figures 1–4,
+  which the book restarts on every plate, and 240, the corpus's one unpaired
+  caption. Choosing among a collision's candidates would invent the answer the
+  collision is reporting. This is emphatically **not** the LoI reconciliation
+  `docs/open-questions.md` defers — it links, and it gates nothing.
+- An authority's siglum goes to `entities/source/…` through the entity record's
+  own `authority` field, never a match on the printed name: 51 sigla over 34
+  names would make that a guess. All 73 resolve.
+
+**Printed is the record**, `find authority`'s own rule: the Authorities run shows
+the block the store copied off the page, and the parsed fields ride beneath it
+rather than replacing it.
+
+### An editor's own leaf
+
+`gt/page-img/chukchi-PP-NNN.{svg,png,jpg}`, resolved by
+`edition_ui.leaf_source` — `gt/fig-img/`'s doctrine (`docs/apparatus.md`) one
+level up, for a whole leaf rather than a crop, with the rank travelling with the
+answer as `crop_source` and `page_source` both do. **Vector before raster**,
+because `1-361`, part 1's foldout map, is the leaf this exists for and may become
+one; a resolver that assumed a raster would need rewriting the day it did.
+
+Two boundaries, and both are the point. It is **reading view only**:
+`zones.scan_for` is what the segmenters, the ink checks and `fig crops` resolve
+through, and it never consults this, because a sharpened or upscaled leaf is
+manufactured evidence and must not reach anything that measures ink. And it is
+**exempt only** — a file for a page the pipeline still owns is ignored and
+reported, rather than being honoured quietly the day somebody adds a branch.
+`/edition/page/{ref}.png` keeps serving the real scan; the made artefact has its
+own route and the page says which it is showing.
+
+The store is **gitignored for now**, with the reason in `.gitignore`: the artefact
+for `1-361` is undecided, a vectorization is being attempted, and committing a
+22 MB raster about to be superseded would put the wrong thing in git permanently.
+Drop a file in and the route serves it. Tracking is a separate act, and when it is
+taken this ignore comes out — a vouched-for artefact a clone does not get is not
+vouched for.
+
 **Served by the shared web layer**, with the three editors: one FastAPI app in
 one process listening on four ports, mounted at `/edition`. Its routes are
 `harness/web/edition.py` and its markup the templates beside them;
@@ -949,6 +1189,70 @@ naming the joined form and its line, reads the page, and wraps the span across
 the break — `_emit` keeps printed line breaks *inside* an element for exactly
 this. After collation it links like anything else.
 
+## The prose points at its own pictures, and now the pointing works
+
+The book cross-references constantly — `(Plate XXVII, Fig. 3)`, `(see Plate
+XXIII, Fig. 2; also Fig. 177)`, `Fig. 87 represents a knife used for` — and every
+one of those names a picture the figure store already holds. `harness/figrefs.py`
+finds them and `web/edition._figref_state` says which. A resolved reference
+becomes `a.fig`, which is the List of Illustrations' own class, so it opens a
+stack card through `openFigure` and the behaviour is not written twice.
+
+**The stack, not the lightbox**, which inverts the rule everywhere else and for
+that rule's own reason: a picture goes to the lightbox because it is already on
+the page, and a cross-reference is precisely a picture that is *not* here. The
+card stays open beside the sentence that sent for it.
+
+### Plate scoping is the whole of the difficulty
+
+**The book restarts figure numbering at 1 on every plate.** So `Fig. 1` names 31
+different pictures and the List of Illustrations has to print it plain — but
+`Plate XXI, Fig. 1` names exactly one, because the plate scopes it. The prose has
+the scope the list does not, and this is a join the list cannot make:
+`by_plate` gives the leaf, and the picture is the one on that leaf whose caption
+prints that number. Matched against the captions, never counted into a list — a
+plate whose caption prints no number resolves to nothing rather than to its
+neighbour, which is `in_printed_order`'s discipline one level up.
+
+Scope ends at punctuation, and only punctuation. `Plate XXIII, Fig. 2; also Fig.
+177` is two references: the `;` is what says the second is a text figure. Getting
+this wrong is not cosmetic — it points a reader at a different leaf, with a
+caption that reads correctly under the wrong picture.
+
+The same fact runs the other way for a *bare* number. A plate's figure number
+means nothing away from its plate, so it is never cited alone; a bare `Fig. 2` is
+therefore the text-figure series, and dropping the plate leaves from `by_number`'s
+answer turns ten of the list's unresolvable collisions into links. `Fig. 1` still
+refuses — 31 pictures print it and none is on a text page, the fold-out map
+having no box in `gt/fig/`.
+
+### Another author's plate is not a link
+
+Bogoras cites other people's plates in his footnotes in the same words he uses
+for his own, and **`Sauer, Plate XIV` collides with this book's Plate XIV
+outright**. Nothing in the reference tells them apart; the name in front of it
+does, and `Authorities Quoted` is a store of exactly those names, keyed by a
+human. Between the name and the reference only citation furniture may stand — a
+comma, a short title, `in`, an opening bracket — so a sentence's worth of prose
+ends the citation and `Nordenskiöld wintered here. Fig. 88 shows the ship` links
+normally.
+
+Measured over the corpus: **601 references link, 114 are another author's, 58
+refuse.** The 114 are Nelson (62), Schrenck, Murdoch, Boas, Laufer, Ratzel, Sauer
+and Teit. Every refusal names the store that declined, and shows it on hover: a
+reader has to be able to tell a gap in `gt/fig/` from an edition that does not
+link.
+
+### A figure is not a box
+
+16 figures are drawn in two — the print letters them *a* and *b* under one
+caption, and `1-123`'s Plate V sets two pictures with one caption and no number
+at all. `key` is the first of those boxes and is the figure's identity, which is
+right for keying a reading and wrong for showing the thing: every path that built
+a card from `key` alone drew the upper picture and silently dropped the lower,
+the List of Illustrations' own links included. `figures.crop_keys` is the one
+rule now, and `by_number`, `by_plate` and `resolve` all go through it.
+
 ## The lexicon, which does not wait on collation
 
 The card behind a Tier-1 form used to say, in as many words, that there was no
@@ -1082,28 +1386,76 @@ speaker's tooltip says outright that espeak is reading the phonemes with no
 Chukchi voice behind it. The sketch is two guesses deep and says which two.
 
 **The table has two grades and one abstention rule.** `myth` is Bogoras's own
-account of his notation in the front matter to *Chukchee Mythology* (1910) — the
-same notation this volume sets, described by the man who devised it. `key` is the
-p. 10 key, already binding apparatus here, and it supplies the unmarked ASCII
-sorts that account does not reach (`c` is English *sh*, `j` is French *jour*, `x`
-is *Bach*) plus the seventh member of the palatalization series. Where a source
-gives two values — `g̣` is ɣ ~ ɡ, `ʟ` is ʎ̥˔ ≈ ɬʲ — the **first** is emitted and
-the row is reported `hedged`; choosing per row by which value looked better would
-be judgement dressed as a table. Where a sort has only a *gloss* — "like *a* in
-*make*", "velar r" — there is **no row at all**, because turning a gloss into a
-symbol is a judgement and not a lookup. Same for U+0027, which is both the
-spirant and the pause mark and which `keying_spec.md` says not to propose.
+account of his notation in the front matter to *Chukchee Mythology* (1910),
+described by the man who devised it — vowel and consonant grids on folio 3, a
+gloss per sort on folio 4. `key` is the p. 10 key, already binding apparatus
+here, and it supplies the unmarked ASCII sorts that account does not reach (`c`
+is English *sh*, `j` is French *jour*, `x` is *Bach*) plus the seventh member of
+the palatalization series. Where a source gives two values — `ʟ` is ɬʲ ≈ ɬ — the
+**first** is emitted and the row is reported `hedged`; choosing per row by which
+value looked better would be judgement dressed as a table. Where a sort has only
+a *gloss* — "like *a* in *make*", "velar r" — there is **no row at all**, because
+turning a gloss into a symbol is a judgement and not a lookup. Same for U+0027,
+which is both the spirant and the pause mark and which `keying_spec.md` says not
+to propose.
+
+**The two grades are not two spellings of one notation**, which this said and
+`ipa.py` said with it. Mythology's is the *reduced* notation of a text volume:
+p. 10 has `g x x˙ š c j ë ḷ ṛ` and the six-member spirant series, none of which
+Mythology carries, and p. 10 has four laterals where Mythology has three. `myth`
+means Bogoras described this sort, not that this volume sets it.
+
+### Reconciled against the modern phonology
+
+`ipa.MODERN` maps each sort to what current descriptions call the same sound
+(/m n ŋ/, /p t t͡ʃ k q ʔ/, /β s ɣ ɬ/, /ɻ j/; /i u e₁ e₂ o a ə/ under
+dominant/recessive harmony). **A second table and not a column, because the two
+disagree systematically** — over length on nearly every form, over a whole
+palatalization series, and over every voiced obstruent — and folding them
+together would make one of them invisible. It is a witness about *value* with no
+standing over the printed key about *glyph identity*, which is what the firewall
+governs; it is a tertiary source; and Bogoras recorded c. 1900 speech across
+dialects it does not separate, so a contrast he heard that it does not list is
+not thereby his error. Its empties are findings rather than gaps: no native
+voiced obstruents, so `b d g ǰ j z` are loanword sorts; no palatalization series;
+and several of his contrasts are one phoneme — three rhotics to /ɻ/, four
+laterals to /ɬ/, `v` and `w` to /β/.
+
+**Length is kept where the two part hardest.** Bogoras says a, e, i, u are
+"always long" and every one of them is emitted with `ː` — 567 of 606 attested
+forms — where modern descriptions give Chukchi no phonemic length. The ruling is
+that this table renders what Bogoras said his letters sound like; `MODERN` is
+where the other reading is written down.
+
+**Six things the audit against those three pages changed**, each of which had
+been a plausible-looking row: plain `g` had no row at all, so every form
+carrying one came back partial — `g̣iˊrgol` resolved its dotted g and choked on
+the bare one two letters later; `g̣`'s `ɡ` alternative is withdrawn, since there
+are no native voiced stops and ɡ is the value that belonged to the missing `g`;
+ᴀ ᴇ ɪ are one vowel, ə, where they had been rendered three ways on a joint
+gloss; `ᵉi` keeps the laryngeal Mythology says it *always* has and takes its
+prominence on the closing element, as `keying_spec.md` §2.5 already said; `oi`
+is ɔi̯, matching the same table's own `o`; and `ʟ`'s hedge was inverted — the
+modern lateral led as the afterthought. `h` is aspiration on the preceding
+segment rather than a segment (editor's ruling), which is what "used after č, t,
+l" describes and where 74 of its 108 corpus occurrences sit.
 
 Stress is dropped: U+02CA follows the stressed vowel where IPA's `ˈ` precedes the
 stressed *syllable*, and placing it needs syllabification. It still earns its
 keep on the way out — `au` is one diphthong and `aˊu` is two vowels, because
 longest match sees the mark standing between them.
 
-**580 of the corpus's 609 native forms resolve completely** (`lexicon ipa --all`).
-The 29 that do not are a worklist, not noise: 6 want a row for plain `g`, 15 carry
-`ṛ`/`ḷ`/`š`, 6 are European names sitting inside a Tier-1 span, and 2 carry a
-curly apostrophe the Tier-1 ASCII policy forbids — a ground-truth defect the
-imputation happened to surface.
+**587 of the corpus's 610 native forms resolve completely** (`lexicon ipa --all`),
+where before the audit it was 580 — the six that plain `g` was failing came back
+with its row. The 23 that do not are a worklist, not noise: 19 want a row for a
+sort that has only a gloss (9 `ṛ`/`ḷ`, 8 `ë`, 2 `š`), 2 carry a curly apostrophe
+the Tier-1 ASCII policy forbids — a ground-truth defect the imputation happened
+to surface — and 2 are a stray `z` and a `□` placeholder.
+
+Two losses on the way to the speaker are worth naming, since neither is a gap in
+the rule table: the connector hyphen and the short `ĭ` have no `speech.TABLE`
+row, so 193 and 4 forms respectively reach espeak with a symbol dropped. The
+hyphen is silent anyway; `ĭ` is not.
 
 **The audio's phoneme table carries its own witness.** `harness/speech.py` is the
 Moll reader's `tts.py` with a new table, and the one thing added to it is that

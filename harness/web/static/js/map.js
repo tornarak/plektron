@@ -209,10 +209,53 @@
      perform. Reading a place's entry is the `¶` beside its name in the tree,
      the way the atlas has always spelled it — a separate mark for a separate
      act, rather than a second meaning loaded onto the same click. */
-  async function click(ref) {
+  /* Every id under a tree node: its own children, or everything below it.
+     Read off the rendered tree rather than fetched, because the tree the reader
+     is looking at is the tree they mean — a folded "12 more" is still a child
+     and is still in the DOM, so it comes along. */
+  function under(ref, deep) {
+    const p = pane();
+    const a = p && p.querySelector(`.map-tree a.node[data-ref="${CSS.escape(ref)}"]`);
+    const ul = a && a.closest('li').querySelector(':scope > ul');
+    if (!ul) return [];
+    const sel = deep ? 'a.node[data-ref]'
+                     : ':scope > li > a.node[data-ref], '
+                       + ':scope > li.more > details > ul > li > a.node[data-ref]';
+    return [...ul.querySelectorAll(sel)].map(n => n.dataset.ref);
+  }
+
+  /* Several at once, painted once. **The clicked node decides the direction for
+     all of them** — if it is on the map the whole subtree comes off, otherwise
+     the whole subtree goes on — because a per-node toggle over a mixed subtree
+     inverts it, which is never what anybody means by shift-clicking a heading. */
+  async function clickMany(refs) {
+    if (!pane() || !refs.length) return 'card';
+    const off = sel.includes(refs[0]);
+    for (const r of refs) {
+      if (off) { sel = sel.filter(x => x != r); hidden.delete(r); }
+      else if (!sel.includes(r)) { sel.push(r); hidden.delete(r); }
+    }
+    save();
+    if (sel.length) await paint(); else { pane().hidden = true; clearHidden(); }
+    return 'map';
+  }
+
+  /* One entry point for "this node, and what the modifiers say goes with it".
+     Shift is the node and its children, shift+ctrl the node and everything under
+     it; anything else is the plain single click it always was. */
+  function subtreeClick(ev, ref) {
+    if (!ev.shiftKey) return click(ref);
+    const kin = under(ref, ev.ctrlKey || ev.metaKey);
+    return clickMany([ref, ...kin]);
+  }
+
+  async function click(ref, opts) {
     /* No pane on this page — an exempt leaf has no apparatus column. There is
        nothing to put a place on, so the entry is the whole of the answer. */
     if (!pane()) return 'card';
+    /* `toggle: false` is the running prose's — see `edition.js`. A name already
+       on the map is not asking to come off; it is asking for its entry. */
+    if (sel.includes(ref) && opts && opts.toggle === false) return 'card';
     if (sel.includes(ref)) {
       sel = sel.filter(r => r != ref);
       /* Or its id would sit in `hidden` for ever, and the set is what every
@@ -284,7 +327,7 @@
        an entity's own page, where the anchor would otherwise navigate away to a
        map with none of the entry beside it. */
     const m = ev.target.closest('a.mapref[data-ref]');
-    if (m) { ev.preventDefault(); click(m.dataset.ref); return; }
+    if (m) { ev.preventDefault(); subtreeClick(ev, m.dataset.ref); return; }
     /* The tree's own names, and the shapes themselves. A click on a member
        polygon promotes it to a subject, which is how a reader walks *down* into
        a map they are already looking at. `window.EDITION` is the reading view's
@@ -296,7 +339,12 @@
       if (!ref) return;
       ev.preventDefault();
       const href = n.href || (B + '/entity/' + encodeURIComponent(ref));
-      click(ref).then(what => {
+      /* **Shift takes the children with it, shift+ctrl the whole subtree.** A
+         node in this tree is usually a container — a district, a river, a
+         language area — and putting its dozen villages on the map one at a time
+         was the commonest thing anybody did here. The plain click is unchanged,
+         so the shortcut costs the reader who does not know it nothing. */
+      subtreeClick(ev, ref).then(what => {
         if (what != 'card') return;
         if (window.EDITION) window.EDITION.openEntity(ref);
         else window.location = href;

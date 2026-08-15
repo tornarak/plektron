@@ -74,6 +74,10 @@ that position is where a keyer's ᵉ/ᵋ misclick would hide. Shape decides only
 at keying, and the sorts differ exactly where bitonal scans fail (bowl
 closure, crossbar): a named F11 client.
 
+**§2.2 and §2.3 are also held machine-readably in `data/alphabet.json`**, which
+this file owns and `harness edition runs` checks against it. Editing either table
+fails that gate until the store follows.
+
 ### 2.2 Letters — marked sorts (SETTLED)
 
 | Sort | Key gloss | NFD | Note |

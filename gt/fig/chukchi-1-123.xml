@@ -13,19 +13,19 @@
   <Layout>
     <Page WIDTH="2781" HEIGHT="3866" PHYSICAL_IMG_NR="0" ID="eSc_dummypage_">
       <PrintSpace HPOS="0" VPOS="0" WIDTH="2781" HEIGHT="3866">
-        <TextBlock HPOS="473" VPOS="595" WIDTH="1986" HEIGHT="1102" ID="fig_1-123_001" TAGREFS="BT1">
+        <TextBlock HPOS="473" VPOS="585" WIDTH="1986" HEIGHT="1112" ID="fig_1-123_001" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="473 595 2459 595 2459 1697 473 1697"/>
+            <Polygon POINTS="473 585 2459 585 2459 1697 473 1697"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="477" VPOS="1934" WIDTH="2016" HEIGHT="1388" ID="fig_1-123_002" TAGREFS="BT1">
+        <TextBlock HPOS="492" VPOS="1900" WIDTH="1986" HEIGHT="1382" ID="fig_1-123_002" TAGREFS="BT1">
           <Shape>
-            <Polygon POINTS="477 1934 2493 1934 2493 3322 477 3322"/>
+            <Polygon POINTS="492 1900 2478 1900 2478 3282 492 3282"/>
           </Shape>
         </TextBlock>
-        <TextBlock HPOS="1267" VPOS="3324" WIDTH="534" HEIGHT="70" ID="fig_1-123_003" TAGREFS="BT2">
+        <TextBlock HPOS="1252" VPOS="3287" WIDTH="534" HEIGHT="70" ID="fig_1-123_003" TAGREFS="BT2">
           <Shape>
-            <Polygon POINTS="1267 3324 1801 3324 1801 3394 1267 3394"/>
+            <Polygon POINTS="1252 3287 1786 3287 1786 3357 1252 3357"/>
           </Shape>
         </TextBlock>
       </PrintSpace>

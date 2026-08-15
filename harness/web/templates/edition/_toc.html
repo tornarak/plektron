@@ -1,0 +1,43 @@
+{# The printed Contents, as one list across its seven leaves.
+
+   Every entry carries its own `toc-{id}` anchor, which is what makes a heading
+   addressable before chapters have pages of their own: `/edition/toc/chI`
+   resolves through the entry's `page_start` today, and will keep resolving
+   unchanged the day chapter I becomes a run.
+
+   `page_start` links through the folio index and is printed plain where no page
+   witnesses that folio — which is most of the book until collation runs. The
+   number is set hard right, as the book sets it; no dot leaders, which are
+   typesetting rather than text.
+
+   **The heading is a link too, and is drawn as if it were not.** A reader
+   reaches for the title, not the folio, and a row where only the number is
+   live makes them aim at a two-character target. Unstyled because this is a
+   contents page: colouring 316 rows would turn the list into a wall and say
+   nothing, since every row that can be followed already carries its number as
+   the visible affordance. Where nothing witnesses the folio the title is not a
+   link either — the two are one target and go live together. #}
+<ul class='toc'>
+{% for it in items %}
+  <li class='toc-l{{ it.entry.level or 0 if it.entry else 0 }}{{
+    ' leaf-only' if not it.entry }}'{% if it.entry and it.entry.id
+    %} id='{{ it.entry.anchor }}'{% endif %}>
+    {% if it.leaf %}{{ leafmark(it.leaf) }}{% endif %}
+    {% if it.entry %}
+    {# **A new tab.** This is a contents page: you come to it to leave, and a
+       reader working down 316 rows should not have to find their way back to it
+       after every one. #}
+    {% if it.entry.folio_url %}<a class='toc-title plain' target='_blank'
+      rel='noopener' href='{{ it.entry.folio_url }}'>{%
+      else %}<span class='toc-title'>{% endif
+      %}{% if it.entry.number
+      %}<span class='toc-num'>{{ it.entry.number }}.</span> {% endif
+      %}{{ it.entry.title }}{% if it.entry.folio_url %}</a>{% else %}</span>{% endif %}
+    {% if it.entry.folio_url %}<a class='page-no' target='_blank' rel='noopener'
+      href='{{ it.entry.folio_url }}'>{{ it.entry.page_start }}</a>{%
+      elif it.entry.page_start %}<span
+      class='page-no'>{{ it.entry.page_start }}</span>{% endif %}
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>
