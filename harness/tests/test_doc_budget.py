@@ -57,7 +57,22 @@ REPO = Path(__file__).resolve().parent.parent.parent
 # unlisted is. The entry is three lines and says what the store is for and what
 # gates it. Nothing else about the lexicon is here: `docs/edition.md` owns it,
 # and the row that routes there already existed.
-CLAUDE_MD_MAX_BYTES = 15_200
+#
+# **Raised a fourth time, 15_200 → 16_000, by the editor**, for `gt/page-img/`
+# and with headroom deliberately left over. Same kind as the three above: the
+# layout block enumerates every top-level store, and `page-img/` is *tracked*
+# while sitting under a `gt/` line and beside an `mz/` line that a reader would
+# otherwise resolve the wrong way — the tracked half is the ChaiNNer master no
+# clone can rebuild, the ignored half is what a leaf is served as. Naming only
+# one of the pair is worse than naming neither.
+#
+# The headroom is the point of the size of the raise. Three of the four raises
+# so far were three-byte squeezes that cost more editorial attention than the
+# bytes were worth, and a cap tight enough that adding a *store name* requires
+# rewording a neighbouring clause is not measuring what it means to measure. It
+# still gates accretion — 800 bytes is a paragraph, not a section — but it no
+# longer taxes correctness.
+CLAUDE_MD_MAX_BYTES = 16_000
 
 CITE_RE = re.compile(r"CLAUDE\.md, [\"'“]([^\"'”)]{4,80})")
 

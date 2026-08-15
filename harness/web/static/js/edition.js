@@ -249,9 +249,87 @@ function openFigure(pairs, label, caption) {
    keys at all. */
 let lightbox = null;
 let lightbox_img = null;
+let lightbox_under = null;
+let lightbox_stack = null;
 let lightbox_bar = null;
 let lb_items = [];
 let lb_i = 0;
+
+/* Zoom, on the pictures rather than on the page.
+
+   A plate is scanned at 300 dpi and shown at whatever the viewport allows, so
+   "fit" is the only view the lightbox used to offer and the detail a reader
+   opened it *for* was the part it threw away. `1-361`'s map is the extreme case
+   — its village names are 6 pt on a foldout — but a lasso diagram at fit is no
+   better.
+
+   Scale 1 means fit, which is what `object-fit:contain` already does, so the
+   transform is identity until somebody asks for more and nothing changes for a
+   reader who never touches it. Panning is in transformed space and clamped
+   nowhere: a picture zoomed past the viewport should be draggable off-centre,
+   because the interesting corner of a map usually is. */
+let z_scale = 1, z_x = 0, z_y = 0, z_drag = null, z_panned = false, z_rot = 0;
+const Z_MAX = 12;
+
+function zoomReset() {
+    z_scale = 1; z_x = 0; z_y = 0; z_rot = 0;
+    zoomPaint();
+}
+
+/* Rotating a fitted picture a quarter turn swaps the footprint it needs, so a
+   landscape plate turned upright is suddenly taller than the window. The
+   scroller is `overflow:hidden` — the transform is what moves the picture now —
+   so an unfitted rotation would simply hide the ends of it. This is the factor
+   that makes the turned picture fit again, and it is 1 at 0 and 180 where
+   nothing changed. */
+function rotFit() {
+    if (z_rot % 180 === 0 || !lightbox_img) return 1;
+    const w = lightbox_img.clientWidth, h = lightbox_img.clientHeight;
+    const box = lightbox_stack?.parentElement;
+    if (!w || !h || !box) return 1;
+    const cs = getComputedStyle(box);
+    const cw = box.clientWidth - parseFloat(cs.paddingLeft)
+        - parseFloat(cs.paddingRight);
+    const ch = box.clientHeight - parseFloat(cs.paddingTop)
+        - parseFloat(cs.paddingBottom);
+    return Math.min(cw / h, ch / w, 1);
+}
+
+function zoomPaint() {
+    if (!lightbox_stack) return;
+    /* Read right to left: the picture turns, then scales, then moves. Rotating
+       last would spin the pan offset with it and send a dragged detail off in an
+       arc, which is not what a reader means by "turn it". */
+    lightbox_stack.style.transform =
+        `translate(${z_x}px, ${z_y}px) scale(${z_scale * rotFit()}) `
+        + `rotate(${z_rot}deg)`;
+    lightbox_stack.classList.toggle('zoomed', z_scale > 1);
+    const pct = lightbox_bar?.querySelector('.zoomlevel');
+    if (pct) pct.textContent = Math.round(z_scale * 100) + '%';
+}
+
+/* Quarter turns only. A free angle is a photo-editor control, and nothing in a
+   printed book is set at 37 degrees — every rotated thing here is a caption or a
+   plate the binder turned, all of them square to the page. */
+function rotate(d) {
+    z_rot = (z_rot + d * 90 + 360) % 360;
+    z_x = 0; z_y = 0;
+    zoomPaint();
+}
+
+/* Zoom about the cursor, so the thing under the pointer stays under it. */
+function zoomAt(factor, cx, cy) {
+    const box = lightbox_stack.getBoundingClientRect();
+    const ns = Math.min(Z_MAX, Math.max(1, z_scale * factor));
+    if (ns === z_scale) return;
+    const ox = cx - (box.left + box.width / 2);
+    const oy = cy - (box.top + box.height / 2);
+    z_x -= ox * (ns / z_scale - 1);
+    z_y -= oy * (ns / z_scale - 1);
+    z_scale = ns;
+    if (z_scale === 1) { z_x = 0; z_y = 0; }
+    zoomPaint();
+}
 
 function lightboxOpen() {
     return !!lightbox && !lightbox.style.visibility;
@@ -260,15 +338,28 @@ function lightboxOpen() {
 function setLightbox(src, group) {
     if (!lightbox) {
         lightbox_img = document.createElement('img');
+        lightbox_img.className = 'top';
+        lightbox_img.draggable = false;
+        lightbox_under = document.createElement('img');
+        lightbox_under.className = 'under';
+        lightbox_under.alt = '';
+        lightbox_under.draggable = false;
+        lightbox_under.hidden = true;
+        /* The two layers go in a wrapper and the *wrapper* is what transforms,
+           so one scale moves both and they cannot drift apart at any zoom. */
+        lightbox_stack = document.createElement('div');
+        lightbox_stack.id = 'lightbox-stack';
+        lightbox_stack.append(lightbox_under, lightbox_img);
         lightbox_bar = document.createElement('div');
         lightbox_bar.id = 'lightbox-bar';
         let lightbox_container = document.createElement('div');
         lightbox_container.id = 'lightbox-image';
         lightbox = document.createElement('div');
         lightbox.id = 'lightbox';
-        lightbox_container.append(lightbox_img);
+        lightbox_container.append(lightbox_stack);
         lightbox.append(lightbox_container, lightbox_bar);
         document.body.append(lightbox);
+        bindZoom(lightbox_container);
     }
     lb_items = (group && group.length) ? group : [{src, caption: ''}];
     lb_i = Math.max(0, lb_items.findIndex(it => it.src == src));
@@ -280,6 +371,15 @@ function paintLightbox() {
     const it = lb_items[lb_i];
     lightbox_img.src = it.src;
     lightbox_img.alt = it.caption || '';
+    /* A leaf delivered as a Mixed Raster pair is *one* picture in two files, so
+       the lightbox stacks it exactly as the page does rather than showing one
+       layer. Without this the map opens as either a colour smear with no names
+       or an outline with no ethnic areas — both of which render happily and look
+       like the map, which is the whole reason `edition_ui.leaf_layers` refuses a
+       half pair on the server side too. */
+    lightbox_under.hidden = !it.under;
+    if (it.under) lightbox_under.src = it.under;
+    zoomReset();
     /* **The caption is a link to the file**, which is the one thing a lightbox
        cannot do for you: see it at its own size, save it, put it in a tab. With
        no caption the bare file name stands in — `chukchi-1-049-002.png` names
@@ -288,13 +388,60 @@ function paintLightbox() {
        "1 / 1" with two dead buttons is furniture. */
     const many = lb_items.length > 1;
     lightbox_bar.innerHTML = `
-      <a class="cap" href="${it.src}" target="_blank" rel="noopener"
-         >${it.caption || it.src.split('/').pop()}</a>
-      ${many ? `<div class="nav">
-          <button data-lb="prev" title="previous (←)">‹</button>
+      <a class="cap" href="${it.full || it.src}" target="_blank" rel="noopener"
+         >${it.caption || (it.full || it.src).split('/').pop()}</a>
+      <div class="nav">
+        <button data-lb="rotl" title="rotate left (shift R)">↺</button>
+        <button data-lb="rotr" title="rotate right (R)">↻</button>
+        <button data-lb="zout" title="zoom out (−)">−</button>
+        <span class="count zoomlevel">100%</span>
+        <button data-lb="zin" title="zoom in (+)">+</button>
+        ${many ? `<button data-lb="prev" title="previous (←)">‹</button>
           <span class="count">${lb_i + 1} / ${lb_items.length}</span>
-          <button data-lb="next" title="next (→)">›</button>
-        </div>` : ''}`;
+          <button data-lb="next" title="next (→)">›</button>` : ''}
+      </div>`;
+    zoomPaint();
+}
+
+/* Wheel to zoom, drag to pan, double-click to toggle. The wheel is captured
+   only inside the lightbox and only with `preventDefault`, so the page beneath
+   never scrolls out from under an open picture. */
+function bindZoom(container) {
+    container.addEventListener('wheel', e => {
+        e.preventDefault();
+        zoomAt(Math.exp(-e.deltaY * 0.0016), e.clientX, e.clientY);
+    }, {passive: false});
+
+    container.addEventListener('dblclick', e => {
+        e.preventDefault();
+        if (z_scale > 1) zoomReset();
+        else zoomAt(3, e.clientX, e.clientY);
+    });
+
+    container.addEventListener('pointerdown', e => {
+        /* A click on the backdrop still closes; only a drag *on the picture*
+           pans, and only when there is somewhere to pan to. */
+        if (z_scale <= 1 || !e.target.closest('#lightbox-stack')) return;
+        z_drag = {x: e.clientX, y: e.clientY};
+        container.setPointerCapture(e.pointerId);
+        container.classList.add('panning');
+    });
+    container.addEventListener('pointermove', e => {
+        if (!z_drag) return;
+        const dx = e.clientX - z_drag.x, dy = e.clientY - z_drag.y;
+        if (dx || dy) z_panned = true;
+        z_x += dx; z_y += dy;
+        z_drag = {x: e.clientX, y: e.clientY};
+        zoomPaint();
+    });
+    const drop = e => {
+        if (!z_drag) return;
+        z_drag = null;
+        container.classList.remove('panning');
+        try { container.releasePointerCapture(e.pointerId); } catch {}
+    };
+    container.addEventListener('pointerup', drop);
+    container.addEventListener('pointercancel', drop);
 }
 
 function stepLightbox(d) {
@@ -336,6 +483,12 @@ function captionOf(img) {
    the boundary of whichever `<figure>` happened to be clicked is an accident of
    markup rather than anything they would recognise. */
 function lightboxGroup(img) {
+    /* A Mixed Raster leaf is one picture whose two files both sit in the same
+       block, so the generic "every img in the container" rule would make it a
+       two-member group a reader could arrow between — half a map each. It is
+       one item carrying both. */
+    const mrc = img.closest('.leaf-mrc');
+    if (mrc) return lbItems([mrc.querySelector('img:last-child')]);
     const box = img.closest('.card .body') || img.closest('.plates');
     if (box) return lbItems([...box.querySelectorAll('img')]);
     if (img.closest('.figure')) {
@@ -346,7 +499,19 @@ function lightboxGroup(img) {
 }
 
 function lbItems(imgs) {
-    return imgs.map(i => ({src: i.src, caption: captionOf(i)}));
+    return imgs.map(i => {
+        const mrc = i.closest('.leaf-mrc');
+        const under = mrc?.querySelector('img:first-child');
+        return {
+            src: i.src,
+            under: under && under !== i ? under.src : null,
+            /* Where "open the file" should go. For a layered leaf neither layer
+               is the artefact — the master is — so the caption links to it and
+               not to the half that happens to be on top. */
+            full: mrc?.dataset.master || null,
+            caption: captionOf(i),
+        };
+    });
 }
 
 document.addEventListener('click', ev => {
@@ -417,10 +582,24 @@ document.addEventListener('click', ev => {
     const step = ev.target.closest('#lightbox-bar button[data-lb]');
     if (step) {
       ev.preventDefault();
-      stepLightbox(step.dataset.lb == 'next' ? 1 : -1);
+      const what = step.dataset.lb;
+      if (what == 'zin' || what == 'zout') {
+        const r = lightbox_stack.getBoundingClientRect();
+        zoomAt(what == 'zin' ? 1.6 : 1 / 1.6,
+               r.left + r.width / 2, r.top + r.height / 2);
+      } else if (what == 'rotl' || what == 'rotr') {
+        rotate(what == 'rotr' ? 1 : -1);
+      } else stepLightbox(what == 'next' ? 1 : -1);
       return;
     }
     if (ev.target.closest('#lightbox-bar a')) return;   // to the file, in a tab
+    /* A pan ends in a click, and closing on it would make a zoomed picture
+       impossible to drag. The drag swallows exactly one click and no more, so
+       a plain click on the backdrop still closes as it always did. */
+    if (z_panned) { z_panned = false; ev.preventDefault(); return; }
+    /* Zoomed in, a click on the picture is aiming at the picture. The backdrop
+       around it still closes, which is the gesture a reader already knows. */
+    if (z_scale > 1 && ev.target.closest('#lightbox-stack')) return;
     ev.preventDefault(); closeLightbox(); return;
   }
   const pic = ev.target.closest(
@@ -441,17 +620,26 @@ let prev = document.querySelector("a.page-prev");
 let next = document.querySelector("a.page-next");
 
 document.addEventListener('keydown', ev => {
-    if (ev.ctrlKey || ev.altKey || ev.shiftKey || ev.metaKey) return false;
-    /* **The lightbox takes the arrows first and unconditionally** — see
+    /* **The lightbox takes the keys first and unconditionally** — see
        `setLightbox`. It is the frontmost thing on screen, so it owns the keys
        while it is up, and turning the page out from under it would be the
-       surprise. Escape and the arrows are the whole of its keyboard. */
+       surprise.
+
+       Ahead of the modifier guard, not after it, because shift is part of one of
+       these bindings: shift-R turns the other way. A guard that dropped every
+       modified key before the lightbox saw it would make that binding
+       unreachable and look, from outside, like a broken button. */
     if (lightboxOpen()) {
+        if (ev.ctrlKey || ev.altKey || ev.metaKey) return;
+        const k = ev.key.toLowerCase();
         if (ev.key == "Escape") { ev.preventDefault(); closeLightbox(); }
-        if (ev.key == "ArrowLeft") { ev.preventDefault(); stepLightbox(-1); }
-        if (ev.key == "ArrowRight") { ev.preventDefault(); stepLightbox(1); }
+        else if (ev.key == "ArrowLeft") { ev.preventDefault(); stepLightbox(-1); }
+        else if (ev.key == "ArrowRight") { ev.preventDefault(); stepLightbox(1); }
+        else if (k == "r") { ev.preventDefault(); rotate(ev.shiftKey ? -1 : 1); }
+        else if (k == "0") { ev.preventDefault(); zoomReset(); }
         return;
     }
+    if (ev.ctrlKey || ev.altKey || ev.shiftKey || ev.metaKey) return false;
     if (ev.key == "Tab" && STACK.childNodes.length) { ev.preventDefault(); toggleStack(); }
     if (ev.key == "ArrowLeft" && !selected_stack && prev && prev.href) { ev.preventDefault(); window.location = prev.href; }
     if (ev.key == "ArrowRight" && !selected_stack && next && next.href) { ev.preventDefault(); window.location = next.href; }

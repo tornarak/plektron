@@ -363,14 +363,58 @@ latter sits one character from the `gt/fig/` geometry store, the same near-miss
 `_exempt.lst`/`_exempt.json` was renamed to avoid.
 
 **A whole leaf gets the same treatment, one level up.** `gt/page-img/chukchi-PP-NNN.{svg,png,jpg}`,
-resolved by `edition_ui.leaf_source` with the rank travelling as `crop_source`'s
-does — vector before raster, since `1-361`'s foldout map may become one. Two
-boundaries beyond the crop store's: it is **reading view only**, never
-`zones.scan_for`, because a sharpened leaf is manufactured evidence and must not
-reach anything that measures ink; and it is **exempt pages only**, a file for a
-page the pipeline still owns being reported by `edition runs` rather than quietly
-honoured. Ignored for now and not tracked, the reason and its expiry in
-`.gitignore`. `docs/edition.md` has the rest.
+**tracked**, resolved by `edition_ui.leaf_source` with the rank travelling as
+`crop_source`'s does. Two boundaries beyond the crop store's: it is **reading
+view only**, never `zones.scan_for`, because a sharpened leaf is manufactured
+evidence and must not reach anything that measures ink; and it is **exempt pages
+only**, a file for a page the pipeline still owns being reported rather than
+quietly honoured. `docs/edition.md` has the rest.
+
+### A leaf is delivered as two layers, and neither is the artefact
+
+`1-361`, part 1's foldout ethnographic map, is the leaf the store was built for.
+`tools/extract_scans.py` writes it as one of three masterless RGB leaves — a
+single 150 ppi photograph at its own size, 1833x1994, which is thin for a sheet
+carrying several hundred toponyms in 6 pt. The master in `gt/page-img/` is a 2x
+ChaiNNer upscale of it, hand-repaired afterwards where `2_MangaScaleV3`
+hallucinated halftone into the legend swatches and turned the Yukaghir key
+orange. Nothing here rebuilds that, which is the whole reason it is in git: a
+vouched-for artefact a clone does not get is not vouched for, `data/geo/`'s
+argument exactly.
+
+It is also 21 MB, which is not a thing to hand a browser, so
+`tools/build_leaf_layers.py` splits it into **Mixed Raster Content** — the
+decomposition DjVu and JBIG2-in-PDF make, arrived at here independently and then
+recognised. It works because the sheet's two kinds of information have opposite
+statistics: linework is high-frequency and one bit deep, colour is low-frequency
+and needs no edges at all. An anti-aliased linework PNG over a colour JPEG at a
+third scale is ~1.6 MB, and every village name in both insets survives, because
+the lettering never has to survive downsampling — only a brightness threshold,
+which it does trivially.
+
+**Vectorizing the linework was tried and abandoned, and the reason is not the
+one it looks like.** A first trace came out 2.6 MB of pixel-staircase polygons,
+and the obvious diagnosis — wrong tool for a halftone — was wrong, the linework
+having been correctly isolated to binary first. The real limit is that **on this
+sheet the village names are the same size as the grain**: every speckle filter
+that removes the paper texture removes the lettering with it, measurably —
+at `-f 8`, `Nuté-pínmin` traced as `Nu é p m n` and `Kuluči Pilhin` as `Ox`.
+They are not separable by size, so the work would have to happen upstream in the
+threshold, and the raster does the job today.
+
+**What the split knowingly drops** are the coloured underlines marking
+town-sized ethnic enclaves. They are thin by construction, which is the one thing
+a closing is defined to remove. Accepted deliberately: those groups' areas of
+settlement are discontinuous, so the value is nearly always inferable from
+context, and the master is one click from the page. Recorded here rather than
+left for somebody to discover while assuming the derivation was lossless.
+
+**The reading view shows the pair and links all three addresses** — what is
+shown, the master it was built from, and the raw scan neither may change.
+`edition_ui.leaf_layers` returns **both layers or neither**: half a pair still
+renders and still looks like the map, colour alone being a smear with no names
+and linework alone an outline with every ethnic area gone, and a confident wrong
+picture of an ethnographic map is this project's own failure mode.
 
 **"Opp. page" is what the List of Illustrations heads its plate column, and the
 number is not the plate's folio.** A plate is an inserted leaf with no folio of

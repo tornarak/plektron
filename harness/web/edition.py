@@ -262,6 +262,7 @@ def _exempt_page(request: Request, ref: str, root):
             plates=plates,
             here=here,
             editor_leaf=ui.leaf_source(ref, root)[1] == "ed",
+            leaf_layers=ui.leaf_layers(ref, root) is not None,
             state={"base": BASE, "ref": ref,
                    "size": ui._raster_size(ref, root), "figs": [], "crops": {}},
             prev=refs[i - 1] if i > 0 else "",
@@ -532,6 +533,32 @@ def leaf(request: Request, ref: str):
                  f"{BASE}/page/{ref}.png")
     return send_file(request, path, media_type=ui.LEAF_MEDIA[path.suffix],
                      missing=f"no editor's leaf for {ref}")
+
+
+@router.get("/leaf/{ref}/{layer}")
+def leaf_layer(request: Request, ref: str, layer: str):
+    """One half of an editor's leaf, split for delivery.
+
+    The master is 21 MB and the pair is under two, so this is what the page
+    actually loads; `/leaf/{ref}` above stays the authored file's own address,
+    reachable and unchanged. Both are the same artefact and the split is
+    `tools/build_leaf_layers.py`'s.
+    """
+    if not ui.REF_OK.match(ref):
+        raise HTTPException(404, f"{ref!r} is not a PP-NNN ref")
+    if layer not in ui.LEAF_LAYERS:
+        raise HTTPException(
+            404, f"{layer!r} is not a leaf layer — "
+                 f"{', '.join(sorted(ui.LEAF_LAYERS))}")
+    layers = ui.leaf_layers(ref, _root(request))
+    if layers is None:
+        raise HTTPException(
+            404, f"no built layers for {ref} — the master is at "
+                 f"{BASE}/leaf/{ref}; `uv run --script "
+                 f"tools/build_leaf_layers.py {ref}` writes them")
+    path = layers[layer]
+    return send_file(request, path, media_type=ui.LEAF_MEDIA[path.suffix],
+                     missing=f"no {layer} layer for {ref}")
 
 
 @router.get("/page/{ref}")

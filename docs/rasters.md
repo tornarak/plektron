@@ -73,6 +73,14 @@ harness in it, so a script that *cannot* import the package cannot drift into be
 part of a loop. `--commit` gates the tracked manifest; `--rasters DIR` additionally
 cuts the tree, into a sibling that is swapped whole, because `scans/` must never be
 half one coordinate space and half the other.
+`build_leaf_layers.py` is the second live one, and the only script here whose
+input is *tracked*: it splits an editor's leaf in `gt/page-img/` into the two
+layers the reading view serves, into the derived `mz/page-img/`. Same PEP 723
+isolation and the same reason. It runs over every master by default and takes
+refs to scope it, so a leaf is a file drop plus one command rather than a
+special case — which matters because Jochelson's *Koryak*, the sibling Jesup
+volume, reproduces this same map. The image processing and what it deliberately
+drops are `docs/apparatus.md`'s.
 `build_geo.py` compiles `data/geo/` from three sources in `scratch/` and is
 `docs/edition.md`'s; `gazetteer.py` proposes identities for unlocated entities
 against a live API and derives `geo:` from the ones a human adopted, and is

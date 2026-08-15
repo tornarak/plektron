@@ -251,6 +251,25 @@ article { display:flow-root }
 .plates .plate { margin:0 0 2.5rem; cursor:default }
 .whole-scan img, .plates img { max-width:100%; height:auto; display:block;
   margin:0 auto; border:1px solid var(--rule); cursor:zoom-in }
+/* A leaf delivered as a Mixed Raster pair: the colour layer sized normally and
+   the linework laid exactly over it. The linework is the master's full size and
+   the colour a third of it, so the browser upscales the colour — which is the
+   whole reason it may be small, smooth colour surviving what lettering would
+   not. Only the second image is in flow; the first is positioned onto it, so
+   the pair cannot drift apart at any width. */
+.leaf-mrc { position:relative; line-height:0 }
+/* The linework stays in flow and sizes the block — it is the master's own
+   dimensions. The colour layer is positioned onto it and **must be given an
+   explicit z-index below it**: a positioned element paints above in-flow
+   content by default, so without this the background covers the lines and the
+   map renders as a colour smear with no coastlines and no names. */
+.leaf-mrc img { position:relative; z-index:1 }
+/* `fill` and an explicit box: the linework in flow decides how big the block is,
+   and the colour layer takes exactly that box. It is a third the linework's
+   pixel size but the same aspect, so filling is exact — anything that sized it
+   from its own intrinsic width would put the two layers at different scales. */
+.leaf-mrc img:first-child { position:absolute; inset:0; width:100%; height:100%;
+  max-width:none; object-fit:fill; z-index:0; border-color:transparent }
 .figure img { cursor:zoom-in }
 .figure-anchor { color:var(--dim); font-size:.85em; cursor:pointer }
 #foot { margin-top:2rem; padding-top:.8rem; border-top:1px solid var(--rule);
@@ -417,6 +436,8 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 /* Two reading widths: the encyclopedia index is a table of names, the search
    results carry a line of context either side of the hit and want the room. */
 #primary.index-width{max-width:60rem}
+/* An exempt page is a picture, not prose — see `exempt.html`. */
+#primary.leaf-width{max-width:72rem}
 #primary.search-width{max-width:70rem}
 .wide{width:100%}
 .hits{width:100%;font-size:.85rem}
@@ -453,11 +474,47 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
    `margin:auto` as well as the flex centring is the standard overflow fix — a
    flex-centred child that is larger than its container cannot be scrolled back
    to its own top-left, and a figure zoomed past the viewport is exactly that. */
-#lightbox-image {max-height: 100%;max-width: 100%;overflow: auto;padding: 2em;
+/* `hidden`, where this was `auto`. Scrolling *was* the only way to see past the
+   edge of a figure larger than the viewport; now the transform is, and a
+   scrollbar moving the picture while a drag also moves it doubles every gesture
+   and fights the pan. */
+#lightbox-image {max-height: 100%;max-width: 100%;overflow: hidden;padding: 2em;
   height: 100%;display: flex;align-items: center;justify-content: center;}
 /* `contain`, never `cover`: cover crops to fill, and a lightbox that quietly
    trims the edges off a figure is showing the reader a different picture. */
 #lightbox img {max-height: 100%;max-width: 100%;object-fit: contain;margin: auto;}
+/* The zoom transform is on the *wrapper*, so one scale carries both layers of a
+   Mixed Raster leaf and they cannot drift apart. */
+#lightbox-stack { position:relative; margin:auto; line-height:0;
+  transform-origin:50% 50%; will-change:transform }
+#lightbox-stack.zoomed { cursor:grab }
+#lightbox-image.panning, #lightbox-image.panning #lightbox-stack {
+  cursor:grabbing }
+
+/* **The top layer is sized against the viewport and not against its parent**,
+   and that is the whole of the fix for a pair that would not line up. The
+   wrapper shrink-wraps its content, so an image constrained to `max-width:100%`
+   *of the wrapper* is asking the parent how big it is while the parent is asking
+   the child — circular, and browsers resolve it to the image's intrinsic size.
+   Both layers then rendered at their own true widths, 3666 px of linework over
+   1222 px of colour, and the map came apart. Bounding the top layer by `vw`/`vh`
+   breaks the cycle: it gets a real size, the wrapper takes it, and the layer
+   below fills that box exactly. */
+#lightbox-stack img.top { display:block; margin:0; width:auto; height:auto;
+  max-width:calc(100vw - 4em); max-height:calc(100vh - 7rem);
+  object-fit:contain; position:relative; z-index:1 }
+/* `fill`, not `contain`: this box was measured from the layer above and the two
+   share an aspect ratio, so filling is exact and letterboxing could only
+   introduce the offset this is here to prevent. Same stacking rule as the page's
+   copy — a positioned element paints above in-flow content, so without the
+   explicit order the colour covers the linework. */
+#lightbox-stack img.under { position:absolute; inset:0; width:100%; height:100%;
+  max-width:none; max-height:none; object-fit:fill; z-index:0; margin:0 }
+/* The pointer belongs to the wrapper. A browser's native image-drag starts a
+   ghost-drag on `pointerdown` and eats the move events, which is what made
+   panning feel like it was fighting back. */
+#lightbox-stack img { -webkit-user-drag:none; user-select:none;
+  pointer-events:none }
 
 /* --- runs: an apparatus list served whole --- */
 /* One list across the span's leaves, set the way the book sets it: title left,

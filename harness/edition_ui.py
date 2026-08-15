@@ -104,6 +104,36 @@ def leaf_source(ref: str, root: Path) -> tuple[Path | None, str]:
     return None, "scan"
 
 
+#: Where `tools/build_leaf_layers.py` writes what it derives from a master, and
+#: what the two layers are called. Derived and gitignored, `mz/tei/`'s disposition:
+#: a rule's output over a tracked store, rebuilt in one command.
+PAGE_IMG_LAYERS = "mz/page-img"
+LEAF_LAYERS = {"colour": ".colour.jpg", "lines": ".lines.png"}
+
+
+def leaf_layers(ref: str, root: Path) -> dict[str, Path] | None:
+    """The master split for delivery — `{"colour": …, "lines": …}` or nothing.
+
+    A master is one artefact and this is the same artefact in two files, so the
+    rank does not travel here the way `leaf_source`'s does: these are *derived
+    from* the vouched-for leaf, and a caller that has them already knows an
+    editor's leaf exists. `leaf_source` remains the authored file's own address.
+
+    **Both or neither.** Half a Mixed Raster pair is not a degraded rendering of
+    the leaf, it is a different picture — the colour layer alone is a blurred
+    smear with no coastlines or names, and the linework alone is a bare outline
+    with every ethnic area gone. Either would render without erroring and look
+    like the map, which is the failure mode this project is built against, so a
+    missing half falls back to the master rather than showing the survivor.
+    """
+    ref = norm_ref(ref)
+    if leaf_source(ref, root)[0] is None:
+        return None
+    out = {name: root / PAGE_IMG_LAYERS / f"chukchi-{ref}{ext}"
+           for name, ext in LEAF_LAYERS.items()}
+    return out if all(p.exists() for p in out.values()) else None
+
+
 # --------------------------------------------------------------- the page
 
 

@@ -280,14 +280,16 @@ train/
 # Agent worktrees — real git worktrees of this repo, never content of it.
 .claude/worktrees/
 
-# An editor's own version of a whole leaf, `gt/fig-img/`'s doctrine one level up.
-# **Ignored deliberately and temporarily, and the reason is that the artefact is
-# not decided yet.** `1-361`, part 1's foldout map, is the leaf this store exists
-# for; a touched-up raster of it is 22 MB and a vectorization is being attempted,
-# so committing the raster would put a superseded 22 MB in git permanently for a
-# file nobody will end up using. `edition_ui.leaf_source` resolves `.svg` before
-# `.png`, so dropping either in works today and serves at `/edition/leaf/PP-NNN`.
-# Tracking is a separate act, taken once the format is settled — and the moment it
-# is, this block comes out and `gt/page-img/` joins the tracked stores, since a
-# vouched-for artefact that a clone does not get is not vouched for.
-/gt/page-img/
+# **`gt/page-img/` is tracked and is deliberately absent from this file**, on
+# `gt/fig-img/`'s terms one level up: an editor's own version of a whole leaf is
+# authored work that exists nowhere else. It was ignored for a while, pending the
+# format — a vectorization of `1-361` was being attempted and committing a 22 MB
+# raster about to be superseded would have put the wrong thing in git permanently.
+# The vector attempt is dead (`tools/build_leaf_layers.py` records why) and the
+# master is settled, so the entry came out. A vouched-for artefact a clone does not
+# get is not vouched for.
+#
+# What is derived from it is the two display layers, and they are ignored here for
+# `/mz/tei/`'s reason exactly: a rule's output over a tracked store, rebuilt in one
+# command, and nobody's judgement. `tools/build_leaf_layers.py` writes them.
+/mz/page-img/

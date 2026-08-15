@@ -93,9 +93,12 @@ Layout, all at the repo root:
             fig-crops/) are derived too and point into it: a clone gets dangling links.
     gt/     what a human has been through: ocr/, fig/ (bounding boxes for the
             pictures and their captions; no lines), zones/ (the segmentation),
-            lines/ (corrections), fig-img/ (touch-ups). Tracked.
-    mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them, and
-            tei/ as the rules built it. Derived; ignored. No view over fig or tei.
+            lines/ (corrections), fig-img/ and page-img/ (touch-ups, a crop and
+            a whole leaf). Tracked — and page-img/ holds work no script rebuilds.
+    mz/     not-yet-human: zones/, ocr/ and fig/ as the models emitted them,
+            tei/ as the rules built it, and page-img/ as a leaf is *served*: two
+            layers built from the tracked master. Derived; ignored. No view over
+            fig or tei.
     ocr/  zones/  the read views over the paired stores — symlinks, the human
             file always winning. Derived; ignored. Never written through.
     tei/    the collated pages, plus corpus-header.xml — the corpus teiHeader,
