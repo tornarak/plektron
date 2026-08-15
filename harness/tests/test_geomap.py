@@ -767,12 +767,25 @@ def test_a_framed_entity_with_nothing_else_still_draws():
     # And it stands in for itself on the parent's map, where `member_extents`
     # supplies the boxes for nodes no other layer can identify. The frame is
     # the *fallback* there — `extent_of` first, wherever there is anything to
-    # derive from — so the frame case is the leaf store's too.
+    # derive from.
     boxes = dict(geo.member_extents(rec["within"], leaf, ROOT))
     assert boxes.get("land:parapolsky-dol") == rec["frame"]
-    live = dict(geo.member_extents(rec["within"], store, ROOT))
-    assert live.get("land:parapolsky-dol") == geo.extent_of(
-        "land:parapolsky-dol", store, ROOT)
+
+    # The other half of the rule needs a framed entity that *has* something to
+    # derive from, and this used to read it off `parapolsky-dol` in the live
+    # store — which worked only while `chukchee-fair` hung from it. The fair
+    # moved (it sits 2.6° east of the Dol's own frame, and the Dol carried no
+    # geometry to test the containment against), leaving the Dol childless, so
+    # the live store and the leaf store now say the same thing about it and the
+    # assertion tested nothing. A fixture whose two halves have quietly become
+    # one is the hazard this repo names elsewhere; `land:chukotka` is framed and
+    # densely populated, so the two halves stay two.
+    framed_parent = store["land:chukotka"]
+    assert framed_parent["frame"] and not framed_parent["area"]
+    live = dict(geo.member_extents(framed_parent["within"], store, ROOT))
+    derived = geo.extent_of("land:chukotka", store, ROOT)
+    assert derived is not None, "the fixture must have something to derive from"
+    assert live.get("land:chukotka") == derived
 
 
 # ------------------------------------------------- the seam nothing could see
