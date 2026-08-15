@@ -130,6 +130,13 @@ ENTITY_CLASSES = {
     "source": None,
 }
 
+#: The classes that name somewhere on the earth, and so the ones a `within:`
+#: chain is *about*. Named here rather than inferred from `ENTITY_CLASSES`'
+#: values, which are onomastic categories and split `place`/`land` from
+#: `water`/`river` on a distinction — toponym against hydronym — that has
+#: nothing to do with whether a thing can contain another.
+GEO_CLASSES = ("place", "land", "water", "river")
+
 #: `proposed` is what `entity new` writes and what a browser audit clears.
 #: Only a human moves an entry to `ratified`, and only a ratified entry may be
 #: linked by rule — a machine link resting on an unaudited entry would be the
@@ -146,7 +153,27 @@ ALIASES = "aliases"
 WIKILINK = re.compile(r"\[\[([a-z]+:[a-z0-9][a-z0-9-]*)\]\]")
 
 _HDR = re.compile(r"^#\s+([a-z]+):([a-z0-9][a-z0-9-]*)\s+—\s+(.+?)\s*$", re.M)
-_FIELD = re.compile(r"^-\s+([a-z]+):\s*(.*?)\s*$", re.M)
+#: `[a-z-]`, not `[a-z]`: `part-of:` is the first field with a hyphen in its
+#: name, and under the old pattern its line simply did not match — so the field
+#: was **silently discarded**, the record carried an empty value, and every gate
+#: passed. A store whose parser drops what it does not recognise is the shape
+#: this repository has already been hurt by once.
+_FIELD = re.compile(r"^-\s+([a-z][a-z-]*):\s*(.*?)\s*$", re.M)
+
+#: Every key `parse` reads. Held as a set so an unrecognised one can be refused
+#: rather than ignored — the second half of the fix above, and the half that
+#: makes the first unnecessary next time. A typo'd `- withn:` used to parse
+#: cleanly into nothing.
+KNOWN_FIELDS = frozenset({
+    "status", "within", "part-of", "area", "geo", "frame", "link", "authority",
+})
+
+#: Fields this store used to have. **Tolerated and inert**, never an error: a
+#: `since:` left in a file carries nothing and renders nowhere, and refusing it
+#: would turn removing a field into a migration of every record that ever had
+#: one. Named here rather than passed over silently, so the difference between
+#: "we dropped this" and "you typed it wrong" is written down.
+RETIRED_FIELDS = frozenset({"since"})
 _SECTION = re.compile(r"^##\s+(\S+)\s*$", re.M)
 _ROW = re.compile(r"^\|(.*)\|\s*$", re.M)
 #: An alias boundary. `\w` alone is not enough on NFD text: a combining mark is
@@ -247,6 +274,14 @@ def parse(text: str, where: str = "") -> dict:
     for f in _FIELD.finditer(head):
         fields.setdefault(f.group(1), []).append(f.group(2))
 
+    unknown = sorted(set(fields) - KNOWN_FIELDS - RETIRED_FIELDS)
+    if unknown:
+        raise Malformed(
+            f"{at}unknown field{'s' if len(unknown) > 1 else ''} "
+            f"{', '.join(f'`{u}:`' for u in unknown)} — "
+            f"one of {', '.join(sorted(KNOWN_FIELDS))}. A field this store does "
+            f"not read is a fact nothing carries, and it used to pass quietly")
+
     def one(key: str) -> str:
         v = fields.get(key, [])
         if len(v) > 1:
@@ -259,6 +294,24 @@ def parse(text: str, where: str = "") -> dict:
     within = one("within")
     if within:
         split_id(within)          # raises with the same message as everywhere else
+
+    # `part-of:` is **where `within:` is not**, and the split is the whole point
+    # of having two fields. `within:` says where a thing *is* and is what the
+    # atlas walks; this says what it *belongs to* and is read by nobody drawing
+    # a map. One field carried both until the Naukans made the conflation
+    # visible: they are a Yupik people who lived in one village, so `within:
+    # people:yupik` inherited the entire Central-plus-Pacific Yupik language
+    # area for a single settlement, and moving them to `within: place:naukan`
+    # bought the extent by dropping the fact that they are Yupik at all.
+    # Neither answer was wrong about its own half, which is the tell that the
+    # question was two questions.
+    #
+    # Same shape as the `geo:`/`area:` rule one section down, inverted: there,
+    # two fields said one thing and the second could only drift; here, one field
+    # said two things and no reader could tell which it meant.
+    part_of = one("part-of")
+    if part_of:
+        split_id(part_of)
 
     # `area:` names one or more shapes in `data/geo/`, not an entity. Each is
     # `kind:slug` — the same shape an identity has, and that resemblance is
@@ -414,6 +467,7 @@ def parse(text: str, where: str = "") -> dict:
         "canonical": canonical,
         "status": status,
         "within": within,
+        "part_of": part_of,
         "geo": coords,
         "frame": box,
         # Canonical, and **one field, not two**. The member list is
@@ -449,8 +503,50 @@ def load(root: Path = Path(".")) -> dict[str, dict]:
     return out
 
 
+def tree_parent(rec: dict) -> str:
+    """Where this entity hangs: `within:` if it has one, else `part-of:`.
+
+    **One function because three callers must agree exactly** — `children`,
+    `geo.extent_of` and the card's *inherited* row — and a tree that disagreed
+    with the extent would draw a node in one place and frame it on another.
+
+    The fallback is scoped to `people:` and that scope is the whole of its
+    honesty. A subgroup of an ethnicity lives inside that ethnicity's area by
+    what the word means, so its parent's box is a true bound on it even where
+    nobody has drawn the child; the Reindeer and Maritime Chukchi, the Kavraˊlɪt
+    and the Chuvans have no shape and no village and would otherwise be absent
+    from an atlas largely about them. Nothing else inherits: a `source:` that is
+    `part-of:` a larger work is not *somewhere* because of it, and letting that
+    edge into the tree would put a bibliography on the map.
+    """
+    if rec["within"]:
+        return rec["within"]
+    return rec["part_of"] if rec["class"] == "people" else ""
+
+
+def kin_parent(rec: dict, store: dict) -> str:
+    """The parent of this entity **within its own class** — `part-of:` first.
+
+    The encyclopedia's counterpart to `tree_parent`, and the two must stay
+    separate: **there are two hierarchies and collapsing them is what the
+    `part-of:` split was for.** The atlas asks where a thing *is*, so it takes
+    `within:` first; a class listing asks what a thing *belongs to*, so it takes
+    `part-of:` first. `people:naukans` is `within: place:naukan` and `part-of:
+    people:yupik` — under the atlas's edge it hangs from a village, which is
+    right on a map and leaves `people:yupik` childless on a page about peoples.
+
+    Returns nothing where neither parent is in the same class, which is what
+    makes such an entry a top-level row of its own class rather than one the
+    page silently drops.
+    """
+    for cand in (rec["part_of"], rec["within"]):
+        if cand and store.get(cand, {}).get("class") == rec["class"]:
+            return cand
+    return ""
+
+
 def children(store: dict) -> dict[str, list[str]]:
-    """`within:` inverted — parent id to the ids directly under it.
+    """The tree inverted — parent id to the ids directly under it.
 
     **`within:` is containment in general, and the atlas is one reader of it.**
     This lived in `geo.py` while the tree was the geography's alone, which made
@@ -458,11 +554,19 @@ def children(store: dict) -> dict[str, list[str]]:
     geography to get it. It reads no coordinate and no shape — only the field —
     so it belongs beside the field. `geo.children` re-exports it, since the
     atlas is still the heaviest caller and its own reasoning is written there.
+
+    Edges come from `tree_parent`, so a people with no geography of its own
+    still hangs from its ethnicity. `within:` alone would have dropped exactly
+    the four subgroups the split moved to `part-of:` — off the tree entirely,
+    and out of `geo verify`'s worklist with them, which scopes to what the atlas
+    can draw. A field split that made four records *less* visible would have
+    been a bad trade.
     """
     kids: dict[str, list[str]] = {}
     for rec in store.values():
-        if rec["within"]:
-            kids.setdefault(rec["within"], []).append(rec["id"])
+        up = tree_parent(rec)
+        if up:
+            kids.setdefault(up, []).append(rec["id"])
     for v in kids.values():
         v.sort()
     return kids
@@ -829,6 +933,24 @@ def check(root: Path = Path(".")) -> dict:
         w = rec["within"]
         if w and w not in store:
             errors.append(f"{rec['path']}: `within: {w}` resolves to nothing")
+        p = rec["part_of"]
+        if p and p not in store:
+            errors.append(f"{rec['path']}: `part-of: {p}` resolves to nothing")
+        # **A thing is not part of itself**, and this is the one-step case of the
+        # cycle check below — worth its own message because it is the mistake a
+        # copied file makes, and "cycle: people:x → people:x" reads as a puzzle.
+        if p and p == rec["id"]:
+            errors.append(f"{rec['path']}: `part-of: {p}` names its own entry")
+        # Across classes it is almost always a `within:` in the wrong field: a
+        # people is not part of a river. Not refused outright — a `source:` being
+        # part of a larger work is legitimate and crosses nothing — but a
+        # geographical parent is the specific confusion this split exists to end,
+        # so it is named.
+        if p and p in store and store[p]["class"] in GEO_CLASSES \
+                and rec["class"] not in GEO_CLASSES:
+            errors.append(
+                f"{rec['path']}: `part-of: {p}` points at a place. `part-of:` is "
+                f"what a thing belongs to; where it *is* goes in `within:`")
         # A composite resolves only when every member does, so the message has
         # to name the member and not the whole field: "langarea:a,marine:b
         # resolves to nothing" sends a reader to check the one that was fine.
@@ -851,15 +973,19 @@ def check(root: Path = Path(".")) -> dict:
                 errors.append(f"{rec['path']}: [[{target}]] resolves to nothing")
     # Acyclic, so a containment chain terminates. A cycle would hang the
     # geography sprint's tree walk rather than fail it, which is the worse
-    # outcome of the two.
-    for rec in store.values():
-        seen, cur = [rec["id"]], rec["within"]
-        while cur and cur in store:
-            if cur in seen:
-                errors.append(f"`within:` cycle: {' → '.join(seen + [cur])}")
-                break
-            seen.append(cur)
-            cur = store[cur]["within"]
+    # outcome of the two. **Both chains, walked separately** — `extent_of` falls
+    # back from one to the other, so a cycle in either hangs the same walk, and
+    # keeping them apart is what lets the message name the field a reader has to
+    # go and edit.
+    for field, label in (("within", "within"), ("part_of", "part-of")):
+        for rec in store.values():
+            seen, cur = [rec["id"]], rec[field]
+            while cur and cur in store:
+                if cur in seen:
+                    errors.append(f"`{label}:` cycle: {' → '.join(seen + [cur])}")
+                    break
+                seen.append(cur)
+                cur = store[cur][field]
 
     idx = alias_index(store)
     collisions = []

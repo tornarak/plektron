@@ -569,8 +569,31 @@ def extent_of(ent_id: str, store: dict, root: Path = Path("."),
     #
     # The cycle guard makes this terminate: the parent unions its children back
     # in, this child is already in `seen`, and so contributes nothing.
-    if not boxes and rec["class"] == "people" and rec["within"]:
-        return extent_of(rec["within"], store, root, seen)
+    #
+    # **`within:` first, then `part-of:`** — where it *is*, before what it
+    # belongs to — and having both is what stopped this being a choice between
+    # two wrong answers. The Naukans are a Yupik people who lived in one
+    # village: under the single old field, `within: people:yupik` inherited the
+    # whole Central-plus-Pacific Yupik language area for one settlement, and
+    # `within: place:naukan` bought the extent by dropping the fact that they
+    # are Yupik. Now the village supplies the box and `part-of:` keeps the
+    # ethnicity, and neither reader has to be wrong. The Reindeer and Maritime
+    # Chukchi, the Kavraˊlɪt and the Chuvans have no village to name and fall
+    # through to the second, which is the case this fallback was written for
+    # and remains true for: a subgroup lives inside its ethnicity's area by
+    # what the word means.
+    # Scoped to `people:` and to nothing else, as it always was: `place:pitlekai`
+    # has a `within:` and no coordinate, and inheriting Chukotka's box would
+    # report it located when the worklist should be asking somebody to place it.
+    # An ethnic subgroup is the one case where the parent's box is a true bound
+    # rather than a guess.
+    if not boxes and rec["class"] == "people":
+        # Lazy: `entities` imports this module at the top, as `children` below.
+        from .entities import tree_parent
+
+        up = tree_parent(rec)
+        if up:
+            return extent_of(up, store, root, seen)
     if not boxes:
         return None
     return (min(b[0] for b in boxes), min(b[1] for b in boxes),
@@ -923,12 +946,21 @@ def unlocated(store: dict, root: Path = Path(".")) -> list[dict]:
     which is why somebody framed them by hand. Listing them as wanting a
     coordinate asks for work that has already been done.
     """
+    from .entities import tree_parent
+
     kids = children(store)
     rows = []
     for rec in sorted(store.values(), key=lambda r: r["id"]):
         if rec["area"] or rec["geo"] or rec["frame"]:
             continue
-        parent = store.get(rec["within"]) if rec["within"] else None
+        # `tree_parent`, not `rec["within"]`: the four ethnic subgroups hang
+        # from `part-of:` and have no `within:` at all, and reading the raw
+        # field dropped every one of them out of this worklist — off the tree
+        # the scope is measured against, and so silently invisible. That is the
+        # blind spot this function's own docstring warns about, reached by a
+        # field split rather than by a missing `within:`.
+        up = tree_parent(rec)
+        parent = store.get(up) if up else None
         under = bool(parent) and located(parent["id"], store, root)
         # `located`, not `member_shapes`: a child's `geo:` point frames its
         # parent exactly as a child's polygon does, and `extent_of` has said so
@@ -942,7 +974,10 @@ def unlocated(store: dict, root: Path = Path(".")) -> list[dict]:
         rows.append({
             "id": rec["id"],
             "canonical": rec["canonical"],
-            "within": rec["within"],
+            # The tree edge, whichever field carried it — a row reading blank
+            # while the entity plainly hangs somewhere would send a reader to
+            # the wrong file.
+            "within": up,
             "wants": ("its parent's extent, inherited"
                       if rec["class"] == "people" and not kids.get(rec["id"])
                       else "framed by its members" if beneath

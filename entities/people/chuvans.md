@@ -1,7 +1,7 @@
 # people:chuvans — Chuvans
 
 - status: ratified
-- within: people:yukaghir
+- part-of: people:yukaghir
 - link: wikipedia:Chuvans
 
 ## aliases

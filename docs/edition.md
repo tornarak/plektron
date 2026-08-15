@@ -209,13 +209,42 @@ is where an unwitnessed entry shows up now, as a row reading 0 and 0, and that
 row cannot be answered by writing a number in a file.
 
 - **`status:`** is `proposed` or `ratified`, and only a human moves it.
-- **`within:` is containment in general**, and the atlas is one reader of it.
-  It must resolve and the chain must be acyclic — a cycle would hang a tree walk
-  rather than fail it. `entities.children` and `entities.relatives` walk it and
-  read no geometry; they lived in `geo.py` while the tree was the geography's
-  alone, which made a caller wanting `people:maritime-chukchi` under
-  `people:chukchi` import the atlas to get it. `geo` re-exports both, since it
-  is still the heaviest caller and the map's own reasoning is written there.
+- **`within:` is where a thing is**, and the atlas is one reader of it. It must
+  resolve and the chain must be acyclic — a cycle would hang a tree walk rather
+  than fail it. `entities.children` and `entities.relatives` walk it and read no
+  geometry; they lived in `geo.py` while the tree was the geography's alone,
+  which made a caller wanting `people:maritime-chukchi` under `people:chukchi`
+  import the atlas to get it. `geo` re-exports both, since it is still the
+  heaviest caller and the map's own reasoning is written there.
+- **`part-of:` is what a thing belongs to**, and nothing drawing a map reads it.
+  Same gates as `within:` — it must resolve, its chain must be acyclic, and
+  `entity rename` re-points it — plus two of its own: an entry may not be part
+  of itself, and a `part-of:` naming a `place:`/`land:`/`water:`/`river:` from a
+  non-geographic class is reported, that being a `within:` typed into the wrong
+  field.
+- **The two were one field, and the Naukans made the conflation visible.** They
+  are a Yupik people who lived in a single village, so `within: people:yupik`
+  inherited the whole Central-plus-Pacific Yupik language area for one
+  settlement — an extent two orders of magnitude too large, drawn with the
+  confidence of a measurement — while `within: place:naukan` bought the extent
+  by dropping the fact that they are Yupik at all. Neither answer was wrong
+  about its own half, which is the tell that the question was two questions.
+  Now the village supplies the box and `part-of:` keeps the ethnicity.
+
+  It is the same defect as the `geo:`/`area:` rule below, inverted: there, two
+  fields said one thing and the second could only drift; here, one field said
+  two things and no reader could tell which it meant.
+
+  **`entities.tree_parent` states the fallback once** — `within:` if there is
+  one, else `part-of:`, and the second half scoped to `people:` — because five
+  callers must agree exactly: `children`, `geo.extent_of`, `geo.unlocated`, the
+  atlas tree and the encyclopedia's class listing. Every one of them read
+  `rec["within"]` directly before the split and every one of them orphaned the
+  four ethnic subgroups the moment the field moved. The scope is the honesty: a
+  subgroup lives inside its ethnicity's area by what the word means, so the
+  parent's box bounds it truthfully, whereas a `source:` that is part of a
+  larger work is not *somewhere* because of it — letting that edge into the tree
+  would put a bibliography on the map.
 - **`geo:` and `area:`** are the atlas's, below, and **a record may carry one or
   the other and never both** — `entity check` refuses it. A shape *is* the
   location: `extent_of` reads it and would never look at a point beside it, so

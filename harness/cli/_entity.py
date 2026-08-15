@@ -79,6 +79,12 @@ def register(cli):
              "whole structure, and the only thing that puts a location "
              "somewhere rather than merely on a map — a tributary inside its "
              "trunk, a village inside its basin")
+    opt(p, "--part-of", metavar="ID",
+        help="what this entity *belongs to*, `class:slug`, where `--within` "
+             "says where it *is*. A subgroup of a people, a work inside a "
+             "larger work. Nothing drawing a map reads it; a people with no "
+             "geography of its own falls back along it for a bound, which is "
+             "the one place the two meet")
     opt(p, "--area", metavar="KIND:SLUG",
         help="the shape in data/geo/ this entity is drawn as, e.g. "
              "`watershed:anadyr`. **Identifying a name Bogoras wrote in 1904 "
@@ -287,8 +293,8 @@ def run_new(a) -> int:
     rows = "\n".join(f"| {unicodedata.normalize('NFD', t)} |{cell}| no | |"
                      for t in a.aliases) or f"| |{cell}| no | |"
     extra = "".join(f"- {k}: {v}\n" for k, v in
-                    (("within", a.within), ("area", a.area),
-                     ("authority", a.authority)) if v)
+                    (("within", a.within), ("part-of", a.part_of),
+                     ("area", a.area), ("authority", a.authority)) if v)
     text = TEMPLATE.format(ident=ident, canonical=a.canonical,
                            extra=extra, rows=rows)
     # Parsed before it is written, so a bad `--within`, an unknown `--lang` or
@@ -319,7 +325,8 @@ def run_new(a) -> int:
 #: The order a scaffolded entry writes its fields in. A field this verb adds
 #: goes where `entity new` would have put it, so a file a human later reads is
 #: not visibly divided into what was typed and what was set by a command.
-FIELD_ORDER = ("status", "within", "geo", "area", "frame", "link", "authority")
+FIELD_ORDER = ("status", "within", "part-of", "geo", "area", "frame", "link",
+               "authority")
 
 
 def _set_field(text: str, key: str, value: str) -> str:
@@ -660,9 +667,10 @@ def run_rename(a) -> int:
                     f"the book's spelling |\n\n" + text[end:])
             filed = rec["canonical"]
 
-    # Every other file that names the old identity. `within:` and `[[…]]` are
-    # the two ways one entry points at another, and `entity check` gates both,
-    # so a rename that missed one would fail the gate rather than go quiet.
+    # Every other file that names the old identity. `within:`, `part-of:` and
+    # `[[…]]` are the three ways one entry points at another, and `entity check`
+    # gates all three, so a rename that missed one would fail the gate rather
+    # than go quiet.
     others = []
     for other in store.values():
         if other["id"] == old:
@@ -672,7 +680,8 @@ def run_rename(a) -> int:
         # `[^\S\n]*`, not `\s*`: `\s` eats newlines, so a greedy trailing run
         # swallows the blank line before `## aliases` and the field block runs
         # into the section heading.
-        t1 = re.sub(rf"^(-[^\S\n]+within:[^\S\n]*){re.escape(old)}[^\S\n]*$",
+        t1 = re.sub(rf"^(-[^\S\n]+(?:within|part-of):[^\S\n]*)"
+                    rf"{re.escape(old)}[^\S\n]*$",
                     rf"\g<1>{new}", t1, flags=re.M)
         if t1 != t0:
             others.append((Path(other["path"]), t1, other["id"]))

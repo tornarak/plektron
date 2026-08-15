@@ -46,6 +46,7 @@ from .entities import (
     load,
     path_for,
     split_id,
+    tree_parent,
 )
 
 PORT = 8734
@@ -330,7 +331,7 @@ SHOWN_ELSEWHERE = {
 
 #: The fields `property_rows` renders. Together with `SHOWN_ELSEWHERE` this must
 #: cover every key `entities.parse` returns, and `test_edition.py` says so.
-PROPERTY_FIELDS = ("within", "area", "geo", "frame", "authority")
+PROPERTY_FIELDS = ("within", "part_of", "area", "geo", "frame", "authority")
 
 
 def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
@@ -354,16 +355,20 @@ def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
     """
     rows: list[dict] = []
 
-    if rec["within"]:
-        parent = store.get(rec["within"])
-        rows.append(
-            {
-                "kind": "entity",
-                "label": "within",
-                "id": rec["within"],
-                "name": parent["canonical"] if parent else rec["within"],
-            }
-        )
+    # Two rows, never merged: `within:` is where the thing is and `part-of:` is
+    # what it belongs to. A card showing one row for both would reintroduce, at
+    # the reader's end, exactly the ambiguity the two fields were split to end.
+    for field, label in (("within", "within"), ("part_of", "part of")):
+        if rec[field]:
+            parent = store.get(rec[field])
+            rows.append(
+                {
+                    "kind": "entity",
+                    "label": label,
+                    "id": rec[field],
+                    "name": parent["canonical"] if parent else rec[field],
+                }
+            )
 
     kids = geo.children(store).get(rec["id"], [])
     if kids:
@@ -657,10 +662,10 @@ def map_context(
     kin = (
         [
             k
-            for k in geo.children(store).get(store[solo]["within"], [])
+            for k in geo.children(store).get(tree_parent(store[solo]), [])
             if k != solo and store[k]["area"]
         ]
-        if solo and store[solo]["within"]
+        if solo and tree_parent(store[solo])
         else []
     )
     if kin:
@@ -812,13 +817,15 @@ def _basis(ent_id: str, store: dict, root: Path) -> dict:
     if rec["geo"]:
         return {"kind": "point",
                 "lat": f"{rec['geo'][0]:.3f}", "lon": f"{rec['geo'][1]:.3f}"}
-    if rec["class"] == "people" and rec["within"] and not geo.children(
-            store).get(ent_id):
+    if rec["class"] == "people" and not geo.children(store).get(ent_id):
         # A people with no sprachraum of its own is shown at its parent's, and
         # the card has to say so: a subgroup lives inside its ethnicity's area
         # by what the word means, which bounds it truthfully and draws no
-        # boundary anybody has claimed. `extent_of` carries the argument.
-        return {"kind": "inherited", "id": rec["within"]}
+        # boundary anybody has claimed. `extent_of` carries the argument, and
+        # the same order — where it is, then what it belongs to.
+        up = tree_parent(rec)
+        if up:
+            return {"kind": "inherited", "id": up}
     return {"kind": "framed"}
 
 
@@ -880,7 +887,7 @@ def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
 
     kids: dict[str, list[str]] = {}
     for n in nodes:
-        up = store[n]["within"]
+        up = tree_parent(store[n])
         if up in nodes:
             kids.setdefault(up, []).append(n)
 
@@ -922,7 +929,7 @@ def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
             "folded": folded,
         }
 
-    roots = by_name(n for n in nodes if store[n]["within"] not in nodes)
+    roots = by_name(n for n in nodes if tree_parent(store[n]) not in nodes)
     built = [build(r) for r in roots]
     built.sort(key=lambda c: (not c["selected"], c["canonical"]))
     return built

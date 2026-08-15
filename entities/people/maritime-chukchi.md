@@ -1,7 +1,7 @@
 # people:maritime-chukchi — Maritime Chukchi
 
 - status: ratified
-- within: people:chukchi
+- part-of: people:chukchi
 - link: wikipedia:Chukchi_people
 
 ## aliases

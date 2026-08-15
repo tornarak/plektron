@@ -298,10 +298,17 @@ live only in its directory name. `auto_forms` is the whole bar for a machine lin
 one claimant, `auto: yes`, ratified. **`match` is called by three modules** —
 `generate` links with it, `context` reports with it, `validate` re-derives `#mz`
 against it — because three implementations of one rule would be three witnesses
-that are one. `children`/`relatives`/`roots` walk `within:`, which is
+that are one. `children`/`relatives`/`roots` walk the tree — which is
 containment in general and not the geography's: they read no coordinate and no
 shape, and they lived in `geo.py` until a caller wanting a people inside a
 people had to import the atlas to get one. `geo` re-exports the first two.
+**`tree_parent` is the edge those walks follow**, `within:` if there is one and
+`part-of:` otherwise, the fallback scoped to `people:`. One function because
+five callers must agree exactly — the three above plus `geo.extent_of` and
+`geo.unlocated` — and a tree disagreeing with the extent would draw a node in
+one place and frame it on another. The parser refuses an unknown field rather
+than dropping it, `RETIRED_FIELDS` excepted: `part-of:` was silently discarded
+by a `[a-z]+` key pattern that could not match a hyphen, and every gate passed.
 `occurrences` finds where an entity appears across a **caller-supplied** page
 list, so `entity occurrences` can audit committed `tei/` while the reading view
 sweeps what it is actually serving, and neither inherits the other's corpus.

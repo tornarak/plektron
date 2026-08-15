@@ -996,7 +996,7 @@ def atlas(request: Request, at: str = ""):
     roots = sorted(
         r["id"]
         for r in store.values()
-        if not r["within"] and geo.located(r["id"], store, root)
+        if not entities.tree_parent(r) and geo.located(r["id"], store, root)
     )
 
     def node(ident: str) -> dict:
@@ -1083,7 +1083,16 @@ def entity_index(request: Request):
     root = _root(request)
     store = stores.load(root)
     rep = stores.check(root)
-    kids = entities.children(store)
+    # **`kin_parent`, not the atlas's edge**: this page asks what a thing
+    # belongs to, so `part-of:` leads. `people:naukans` is `within: place:naukan`
+    # and `part-of: people:yupik`; under the atlas's edge it hangs from a
+    # village, which is correct on a map and leaves `people:yupik` showing no
+    # subgroups at all on a page about peoples.
+    kids: dict[str, list[str]] = {}
+    for r in store.values():
+        up = entities.kin_parent(r, store)
+        if up:
+            kids.setdefault(up, []).append(r["id"])
 
     def rank(ident: str) -> tuple:
         return (store[ident]["status"] != "proposed", ident)
@@ -1098,9 +1107,7 @@ def entity_index(request: Request):
         here = [r["id"] for r in store.values() if r["class"] == cls]
         # A parent in another class does not nest, so it is a top-level row of
         # its own class rather than one this page silently drops.
-        tops = [i for i in here
-                if not store[i]["within"]
-                or store[store[i]["within"]]["class"] != cls]
+        tops = [i for i in here if not entities.kin_parent(store[i], store)]
         groups.append({"cls": cls, "count": len(here),
                        "nodes": [node(i, cls) for i in sorted(tops, key=rank)]})
     return templates.TemplateResponse(
