@@ -2,6 +2,7 @@
 
 - status: proposed
 - within: river:anadyr
+- area: watershed:krasnoye-or-red-river
 
 ## aliases
 

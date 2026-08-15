@@ -2,6 +2,7 @@
 
 - status: proposed
 - within: river:anadyr
+- area: watershed:shuchya-or-pike
 
 ## aliases
 

@@ -2,6 +2,7 @@
 
 - status: proposed
 - within: land:northeast-siberia
+- area: watershed:promoka-chukochya-or-small-chukchee
 
 ## aliases
 

@@ -826,6 +826,28 @@
    ]
   },
   {
+   "id": "watershed:krasnoye-or-red-river",
+   "kind": "watershed",
+   "name": "krasnoye or red river",
+   "area_km2": 10000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 10,000 km² (3,900 sq. miles) with an outlet near coordinates: 64.643, 174.762.",
+   "wid": "Pb033334d4b55",
+   "retrieved": "2026-08-15T00:44:57.894Z",
+   "rivers_kept": 60,
+   "rivers_total": 234,
+   "sorder_floor": 3,
+   "file": "watershed/krasnoye-or-red-river.json",
+   "points": 324,
+   "bounds": [
+    172.662,
+    63.418,
+    175.269,
+    64.698
+   ]
+  },
+  {
    "id": "watershed:large-or-bolshoy-anyuy",
    "kind": "watershed",
    "name": "bolshoy anyuy",
@@ -1021,6 +1043,72 @@
     60.548,
     170.19,
     62.281
+   ]
+  },
+  {
+   "id": "watershed:promoka-chukochya-or-small-chukchee",
+   "kind": "watershed",
+   "name": "small chukchi",
+   "area_km2": 650.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "The point you requested is outside the extent of the high-resolution gridded data. Reverting to low-precision mode.  Delineated a watershed of 650 km² (250 sq. miles) with an outlet near coordinates: 69.653, 160.373.",
+   "wid": "M35005127",
+   "retrieved": "2026-08-15T00:59:49.760Z",
+   "rivers_kept": 6,
+   "rivers_total": 13,
+   "sorder_floor": 2,
+   "file": "watershed/promoka-chukochya-or-small-chukchee.json",
+   "points": 128,
+   "bounds": [
+    160.026,
+    69.118,
+    161.076,
+    69.682
+   ]
+  },
+  {
+   "id": "watershed:shuchya-or-pike",
+   "kind": "watershed",
+   "name": "shuchya or pike",
+   "area_km2": 2300.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 2,300 km² (890 sq. miles) with an outlet near coordinates: 64.914, 170.817.",
+   "wid": "P416ffc3f5093",
+   "retrieved": "2026-08-15T00:42:52.558Z",
+   "rivers_kept": 13,
+   "rivers_total": 49,
+   "sorder_floor": 3,
+   "file": "watershed/shuchya-or-pike.json",
+   "points": 121,
+   "bounds": [
+    169.49,
+    64.698,
+    170.955,
+    65.311
+   ]
+  },
+  {
+   "id": "watershed:sugoy-or-shoudon",
+   "kind": "watershed",
+   "name": "sugoy or shoudon",
+   "area_km2": 26000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 26,000 km² (10,000 sq. miles) with an outlet near coordinates: 64.247, 154.507.",
+   "wid": "Pb7dbe02e5867",
+   "retrieved": "2026-08-15T01:11:09.775Z",
+   "rivers_kept": 82,
+   "rivers_total": 306,
+   "sorder_floor": 4,
+   "file": "watershed/sugoy-or-shoudon.json",
+   "points": 483,
+   "bounds": [
+    154.493,
+    61.985,
+    157.786,
+    64.55
    ]
   },
   {

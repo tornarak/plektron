@@ -2,6 +2,7 @@
 
 - status: proposed
 - within: river:kolyma
+- area: watershed:sugoy-or-shoudon
 
 ## aliases
 

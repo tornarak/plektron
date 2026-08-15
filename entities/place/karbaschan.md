@@ -2,6 +2,7 @@
 
 - status: proposed
 - within: river:omolon
+- geo: 65.653364 159.398822
 
 ## aliases
 
@@ -13,3 +14,5 @@
 ## gloss
 
 A Yukaghir village bearing a [[language:even]] name, per 1-359's footnote 4.
+Bogoras's map puts it at the fork in the middle [[river:omolon]]; the
+coordinate above is the editor's reading of that map.

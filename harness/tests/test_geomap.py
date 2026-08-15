@@ -734,26 +734,45 @@ def test_a_marine_parent_is_reported_as_not_measurable():
 
 @built
 def test_a_framed_entity_with_nothing_else_still_draws():
-    """`land:parapolsky-dol` has a `frame:` and no shape, no point and no
-    children, and appeared on no map at all — its own said "nothing to draw"
-    about a box `geo bounds` had measured from the two bays that define it, and
-    its parent's did not show it either.
+    """`land:parapolsky-dol` has a `frame:` and no shape and no point, and
+    appeared on no map at all — its own said "nothing to draw" about a box
+    `geo bounds` had measured from the two bays that define it, and its
+    parent's did not show it either.
 
     Two different questions again. `extent_of` says how big a thing is and a
     parent sizes itself on that, so it must go on ignoring viewports; "what
     should this page look at" and "what box stands in for a node with nothing
-    else" are both answered by the frame."""
+    else" are both answered by the frame.
+
+    **The leaf is built rather than borrowed.** Both the `extent_of` and the
+    `member_extents` assertion read the frame case off the live store, where it
+    held only while nothing was filed under the Dol — an editorial act away
+    from failing, and both failed the day `place:chukchee-fair` arrived. Neither
+    was measuring the frame: they were measuring a census. Dropping the
+    descendants states the case the frame was added for, and the live store then
+    pins the other half of the same rule — that a derived extent wins where
+    there is one."""
     store = entities.load(ROOT)
     rec = store.get("land:parapolsky-dol")
     assert rec and rec["frame"] and not rec["area"] and not rec["geo"]
     ctx = edition_ui.map_context("land:parapolsky-dol", ROOT, "/e", store=store)
     assert ctx["svg"], "a framed entity should have a map of its own"
-    assert geo.extent_of("land:parapolsky-dol", store, ROOT) is None
+
+    leaf = {k: v for k, v in store.items()
+            if v.get("within") != "land:parapolsky-dol"}
+    assert geo.extent_of("land:parapolsky-dol", leaf, ROOT) is None
+    assert edition_ui.map_context("land:parapolsky-dol", ROOT, "/e",
+                                  store=leaf)["svg"]
 
     # And it stands in for itself on the parent's map, where `member_extents`
-    # supplies the boxes for nodes no other layer can identify.
-    boxes = dict(geo.member_extents(rec["within"], store, ROOT))
+    # supplies the boxes for nodes no other layer can identify. The frame is
+    # the *fallback* there — `extent_of` first, wherever there is anything to
+    # derive from — so the frame case is the leaf store's too.
+    boxes = dict(geo.member_extents(rec["within"], leaf, ROOT))
     assert boxes.get("land:parapolsky-dol") == rec["frame"]
+    live = dict(geo.member_extents(rec["within"], store, ROOT))
+    assert live.get("land:parapolsky-dol") == geo.extent_of(
+        "land:parapolsky-dol", store, ROOT)
 
 
 # ------------------------------------------------- the seam nothing could see

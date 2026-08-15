@@ -74,12 +74,14 @@ a name on it.
     Matt Heberger (matt@mghydro.com), © 2022; the tool is open source.
     Delineated from MERIT-Hydro (2021) and HydroSHEDS (2013).
 
-24 basins in `scratch/watersheds/`, delineated interactively — one file per
+32 basins in `scratch/watersheds/`, delineated interactively — one file per
 outlet, each carrying its own `wid`, `area_km2` and `retrieved` timestamp, and
 several carrying the tool's own message about reverting to low-precision mode
 above 50,000 km². Those properties are preserved into `index.json`, so every
-basin can say when it was delineated and under which id. The timestamps are all
-within one hour of 2026-08-07 — one session, one tool.
+basin can say when it was delineated and under which id. **Three sittings, one
+tool**: 24 within one hour of 2026-08-07, four on 2026-08-13, four on
+2026-08-15. The timestamps are the store's own record of that and nothing here
+restates them per basin.
 
 **A delineation is a model output, not a survey**, which is the whole reason
 `geo verify` reports rather than gates: the Omolon basin is 25% outside the
