@@ -1,6 +1,6 @@
 # place:two-brooks — Two Brooks
 
-- status: proposed
+- status: ratified
 - within: river:kolyma
 - geo: 68.364978 160.750163
 

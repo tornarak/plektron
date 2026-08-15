@@ -1,6 +1,6 @@
 # place:chukchee-fair — Chukchee Fair
 
-- status: proposed
+- status: ratified
 - within: land:parapolsky-dol
 - geo: 62.427460 169.460155
 

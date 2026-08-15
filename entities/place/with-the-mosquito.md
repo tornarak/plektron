@@ -1,6 +1,6 @@
 # place:with-the-mosquito — With the Mosquito
 
-- status: proposed
+- status: ratified
 - within: river:kolyma
 - geo: 68.751808 161.330452
 

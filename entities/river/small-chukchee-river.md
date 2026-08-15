@@ -1,6 +1,6 @@
 # river:small-chukchee-river — Small Chukchee River
 
-- status: proposed
+- status: ratified
 - within: land:northeast-siberia
 - area: watershed:promoka-chukochya-or-small-chukchee
 

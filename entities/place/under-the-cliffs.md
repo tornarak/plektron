@@ -1,6 +1,6 @@
 # place:under-the-cliffs — Under the Cliffs
 
-- status: proposed
+- status: ratified
 - within: river:anadyr
 - geo: 65.409886 173.445792
 
