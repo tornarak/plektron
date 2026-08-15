@@ -118,7 +118,9 @@ class Save(BaseModel):
     # --- the figure track, sent only when it was edited ----------------------
     figs: list[dict] | None = None
     fig_ids: str = ""
-    fig_exempt: list[str] = []
+    # `{rule_id: the ruling}` — the note is the file, per `figures.load_rule_exempt`.
+    # A bare list is the legacy shape that store still *loads*; nothing sends one.
+    fig_exempt: dict[str, str] = {}
 
 
 class Predict(BaseModel):

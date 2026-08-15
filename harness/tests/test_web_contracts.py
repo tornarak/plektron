@@ -50,7 +50,7 @@ CASES = [
     ("zones /save +figs", Z.Save,
      {"ref": "1-097", "split": "train", "exempt": [], "nudge": 0,
       "ink_exempt": [], "zones": [ZONE], "fig_ids": "gt",
-      "fig_exempt": ["captions-lte-figures"],
+      "fig_exempt": {"captions-lte-figures": "the plate's parts share one caption"},
       "figs": [{"id": "f1", "label": "GraphicZone",
                 "x0": 1, "y0": 2, "x1": 3, "y1": 4}]},
      ("figs", "fig_ids", "fig_exempt")),
