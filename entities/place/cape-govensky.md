@@ -1,6 +1,6 @@
 # place:cape-govensky — Cape Govensky
 
-- status: proposed
+- status: ratified
 - within: land:kamchatka
 - geo: 59.8035 166.092
 - link: geonames:2125456

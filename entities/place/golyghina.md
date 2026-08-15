@@ -1,6 +1,6 @@
 # place:golyghina — Golyghina
 
-- status: proposed
+- status: ratified
 - within: land:kamchatka
 - geo: 51.8833 156.75
 - link: geonames:2125505

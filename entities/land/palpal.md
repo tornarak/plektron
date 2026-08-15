@@ -1,8 +1,8 @@
 # land:palpal — Palpal
 
-- status: proposed
+- status: ratified
 - within: land:chukotka
-- geo: 62.3618 170.9486
+- geo: 62.3618 171.5486
 - frame: 169.30 62.10 172.60 62.65
 - link: geonames:2122249
 

@@ -1,7 +1,7 @@
 # river:gizhiga — Gizhiga
 
 - status: ratified
-- within: land:northeast-siberia
+- within: land:kamchatka
 - area: watershed:gizhiga
 
 ## aliases

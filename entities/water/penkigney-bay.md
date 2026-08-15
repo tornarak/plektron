@@ -1,6 +1,6 @@
 # water:penkigney-bay — Penkigney Bay
 
-- status: proposed
+- status: ratified
 - within: land:chukchi-peninsula
 - geo: 64.8167 -172.817
 - link: wikipedia:Penkigney_Bay

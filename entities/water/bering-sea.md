@@ -1,6 +1,6 @@
 # water:bering-sea — Bering Sea
 
-- status: proposed
+- status: ratified
 - area: marine:bering-sea
 
 ## aliases
