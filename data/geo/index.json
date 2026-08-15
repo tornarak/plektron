@@ -848,6 +848,50 @@
    ]
   },
   {
+   "id": "watershed:khatyrka-or-ilpi",
+   "kind": "watershed",
+   "name": "khatyrka or ilpi",
+   "area_km2": 13000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 13,000 km² (5,100 sq. miles) with an outlet near coordinates: 62.059, 175.298.",
+   "wid": "P565bc0875897",
+   "retrieved": "2026-08-15T09:40:16.091Z",
+   "rivers_kept": 28,
+   "rivers_total": 154,
+   "sorder_floor": 4,
+   "file": "watershed/khatyrka-or-ilpi.json",
+   "points": 377,
+   "bounds": [
+    171.38,
+    62.05,
+    176.138,
+    63.112
+   ]
+  },
+  {
+   "id": "watershed:kichiga-or-kichin",
+   "kind": "watershed",
+   "name": "kichiga or kichin",
+   "area_km2": 500.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 500 km² (190 sq. miles) with an outlet near coordinates: 59.823, 163.415.",
+   "wid": "Pabbe9bf2cb21",
+   "retrieved": "2026-08-15T08:38:22.281Z",
+   "rivers_kept": 11,
+   "rivers_total": 11,
+   "sorder_floor": 1,
+   "file": "watershed/kichiga-or-kichin.json",
+   "points": 58,
+   "bounds": [
+    162.575,
+    59.673,
+    163.416,
+    59.835
+   ]
+  },
+  {
    "id": "watershed:kolyma",
    "kind": "watershed",
    "name": "kolyma",
@@ -1090,7 +1134,7 @@
    ]
   },
   {
-   "id": "watershed:promoka-chukochya-or-small-chukchee",
+   "id": "watershed:protoka-chukochya-or-small-chukchee",
    "kind": "watershed",
    "name": "small chukchi",
    "area_km2": 650.0,
@@ -1102,7 +1146,7 @@
    "rivers_kept": 6,
    "rivers_total": 13,
    "sorder_floor": 2,
-   "file": "watershed/promoka-chukochya-or-small-chukchee.json",
+   "file": "watershed/protoka-chukochya-or-small-chukchee.json",
    "points": 128,
    "bounds": [
     160.026,
@@ -1131,6 +1175,28 @@
     64.698,
     170.955,
     65.311
+   ]
+  },
+  {
+   "id": "watershed:shestakova-or-egach",
+   "kind": "watershed",
+   "name": "shesmakova or egach",
+   "area_km2": 630.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 630 km² (240 sq. miles) with an outlet near coordinates: 62.683, 164.608.",
+   "wid": "P92a4c3fe5f82",
+   "retrieved": "2026-08-15T08:15:07.025Z",
+   "rivers_kept": 7,
+   "rivers_total": 15,
+   "sorder_floor": 2,
+   "file": "watershed/shestakova-or-egach.json",
+   "points": 45,
+   "bounds": [
+    164.485,
+    62.593,
+    165.134,
+    62.862
    ]
   },
   {

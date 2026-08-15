@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:northeast-siberia
-- area: watershed:promoka-chukochya-or-small-chukchee
+- area: watershed:protoka-chukochya-or-small-chukchee
 
 ## aliases
 
