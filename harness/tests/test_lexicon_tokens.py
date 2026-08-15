@@ -46,6 +46,8 @@ def nfd(s: str) -> str:
 
 
 def rec(text: str, hpos: int = 400, width: int = 1774) -> dict:
+    """A line record. The geometry is carried for the other readers of these
+    fixtures; `join_broken_words` reads `text` and the order alone."""
     return {"text": text, "hpos": str(hpos), "width": str(width)}
 
 
@@ -105,22 +107,25 @@ def test_only_a_letter_licenses_the_join():
     assert join_broken_words([rec("aside --"), rec("then")])[0] == "aside --"
 
 
-def test_the_join_does_not_cross_a_column_break():
-    """`1-101`'s two-column gloss list, reduced.
+def test_geometry_never_decides_which_line_continues_a_word():
+    """The continuation is the next non-empty line, whatever the boxes say.
 
-    Reading order correctly interleaves the columns, so the line following
-    `stock-` is the right column's, and its own continuation is the line after
-    that. Joining to the next line in reading order produced `stock-23.` and left
-    `ings”)` in the miss list as an unknown word.
+    `1-314`: text set narrow beside a figure (hpos 1536) resumes the full
+    measure once the figure ends (hpos 596), 940 px to the *left* of the stem.
+    A geometric guard read that as a column break, skipped the real
+    continuation and took the first word of the line after — so `mz/tei/`
+    published `The Chuk-their` and the sentence lost `their` outright. Two such
+    guards were tried and each corrupted an order of magnitude more joins than
+    it fixed; `join_broken_words`'s docstring has the measurement. A page whose
+    lines do not read in order is a `gt/zones/` defect and is fixed there.
     """
     out = join_broken_words([
-        rec("16. Keˊmg̣ekem (“both hind-legs in white stock-", 402, 870),
-        rec("23. Rew-ᵉiˊᵋtɪn (“ptarmigan-neck”", 1292, 878),
-        rec("ings”).", 480, 132),
+        rec("with legs spread apart. The Chuk-", 1536, 833),
+        rec("chee retaliate by saying that the Lamut girls are chained", 596, 1776),
+        rec("their aprons are decorated with iron chains", 1159, 1213),
     ])
-    assert out[0].endswith("stock-ings”).")
-    assert out[1].startswith("23. Rew-")
-    assert out[2] == ""
+    assert out[0].endswith("The Chuk-chee")
+    assert out[2].startswith("their aprons")
 
 
 def test_missing_geometry_still_joins():

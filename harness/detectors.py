@@ -285,25 +285,43 @@ _BREAK_HYPHEN = re.compile(r"[^\W\d_][̀-ͯ]*-$")
 def join_broken_words(recs: list[dict]) -> list[str]:
     """Rejoin words the compositor broke across a line end. Same length in, out.
 
-    Takes `lines.page_lines` records — `text`, plus `hpos`/`width` where the
-    store has them — and returns their texts, so the caller's records and this
-    output stay positional to each other and `index` never moves.
+    Takes `lines.page_lines` records and returns their texts, so the caller's
+    records and this output stay positional to each other and `index` never
+    moves. Only `text` is read.
 
     `recs` must already be in **reading order**, the printed sequence, which is
     what `page_lines` returns. ALTO document order is *not* it (harness/README.md, "line
     output is in reading order, but `index` is an identity"), and joining along
     document order would splice the foot of one column onto the head of another.
 
-    Reading order alone does not make that safe, which is why the geometry is
-    read too. `1-101` sets a two-column gloss list, and the banded order
-    correctly interleaves the columns: the left-column line ending `stock-`
-    is followed by the *right* column's `23. Rew-ᵉiˊᵋtɪn …` and only then by its
-    own continuation `ings”)`. So a candidate whose `hpos` is more than half the
-    stem's width away is a different column and is skipped — that page joined
-    `stock-` to `23.` before this guard, and dropped `ings` into the miss list as
-    an unknown word. Where a store carries no geometry the guard cannot apply and
-    the next line is taken, which is the old behaviour rather than a refusal:
-    a single-column page is the ordinary case and joining it is right.
+    **Reading order is the whole answer, and the continuation is simply the next
+    non-empty line.** A geometric guard sat here for a while — first "a candidate
+    more than half the stem's width away in `hpos` is a different column", then a
+    vertical restatement of it — and both were mistakes of the same kind, so the
+    reasoning is worth keeping rather than the code. `gt/ocr/` is adjudicated
+    ground truth in adjudicated order: if the line after a broken word is not its
+    continuation, the *segmentation* is wrong, and no arithmetic over boxes here
+    can do anything but guess at which of two wrong answers to give. Measured
+    over both ALTO stores, the horizontal rule moved 22 joins away from the next
+    line: **2 were the case it was written for and 20 were corruptions** — a
+    figure runaround read as a column (`1-314` printed `The Chuk-their`, the
+    sentence losing `their` outright), a narrow measure beside a figure
+    (`1-116`, `1-240`, `2-088`), a caption line 147 px wide whose tolerance came
+    out at 73 and refused everything (`1-114`), and, having no vertical bound,
+    `1-222` joining `I col-` at vpos 1073 to a word at vpos 3039.
+
+    The 2 it got right are both `1-101`, whose gloss list is mis-segmented: four
+    of its lines merge the two columns into one full-measure line mid-sentence
+    and the rest do not, so that page does not read linearly however this
+    function behaves. **A page whose lines are out of order is fixed in
+    `gt/zones/`, not here.**
+
+    The join is positional and says nothing about language. A line ending in
+    letter + hyphen takes the first whitespace-delimited token of the next
+    non-empty line; that line loses it. Nothing else moves, so the record a token
+    sits on is still the record the *word* started on, and every other token
+    keeps its line — which is what lets `native_corpus_lines` go on citing
+    `index`.
 
     The join is positional and says nothing about language. A line ending in
     letter + hyphen takes the first whitespace-delimited token of the next
@@ -340,32 +358,13 @@ def join_broken_words(recs: list[dict]) -> list[str]:
         stem = out[i].rstrip()
         if not _BREAK_HYPHEN.search(stem):
             continue
-        nxt = next((k for k in range(i + 1, len(out))
-                    if out[k].strip() and _same_column(recs[i], recs[k])), None)
+        nxt = next((k for k in range(i + 1, len(out)) if out[k].strip()), None)
         if nxt is None:
             continue
         parts = out[nxt].split(None, 1)
         out[i] = stem + parts[0]
         out[nxt] = parts[1] if len(parts) > 1 else ""
     return out
-
-
-def _same_column(a: dict, b: dict) -> bool:
-    """Do two line records start in the same column of the page?
-
-    Half the stem's own width as the tolerance, rather than a page constant: the
-    measure that matters is how far a continuation may legitimately be indented,
-    and a line already tells you how wide the setting is. On `1-101` the left
-    column starts at 402 against the right at 1292, so an 870 px line separates
-    them at 435; on a single-column page every line clears it easily, indented
-    paragraph openings included. Missing geometry is not a mismatch — `gt/ocr/`
-    pages predate none of it, but a fixture or a hand-built record may.
-    """
-    try:
-        ha, hb, wa = float(a["hpos"]), float(b["hpos"]), float(a["width"])
-    except (KeyError, TypeError, ValueError):
-        return True
-    return abs(ha - hb) <= wa / 2
 
 
 # Detectors that already establish a token is not English. For these, a
