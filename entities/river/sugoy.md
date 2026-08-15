@@ -1,8 +1,10 @@
-# river:shoudon — Shoudon
+# river:sugoy — Sugoy
 
 - status: proposed
 - within: river:kolyma
 - area: watershed:sugoy-or-shoudon
+- link: wikipedia:Sugoy
+- link: wikidata:Q2301488
 
 ## aliases
 
@@ -13,6 +15,7 @@
 | Сухая | ru | yes | |
 | Buks˙unda | eve | yes | |
 | Buyunda | | yes | |
+| Сугой | ru | no | the modern Russian name; not printed in the book |
 
 ## gloss
 
