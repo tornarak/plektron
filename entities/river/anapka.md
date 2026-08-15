@@ -1,6 +1,6 @@
 # river:anapka — Anapka
 
-- status: proposed
+- status: ratified
 - within: land:kamchatka
 - area: watershed:anapka
 - link: geonames:2127185

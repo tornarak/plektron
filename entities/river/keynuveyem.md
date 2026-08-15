@@ -17,7 +17,7 @@
 
 ## gloss
 
-Кейнувеем, on the Arctic coast west of the Kolyma delta. 1-359 lists it under
+Кейнувеем, on the Arctic coast east of the Kolyma delta. 1-359 lists it under
 "The Lower Kolyma" as Keiˊñu-weˊem / Медвѣжья рѣка, with footnote 3: "Chukchee.
 The meaning is the same as in Russian" — bear, in both. GeoNames keeps the pair
 on one record, `Medvezh'ya` beside `Кейнувеем`, and the neighbourhood confirms
