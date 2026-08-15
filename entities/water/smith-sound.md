@@ -1,6 +1,10 @@
 # water:smith-sound — Smith Sound
 
-- status: proposed
+- status: ratified
+- within: water:arctic-ocean
+- geo: 78.417 -74.0
+- link: wikipedia:Smith_Sound
+- link: wikidata:Q1164842
 
 ## aliases
 
