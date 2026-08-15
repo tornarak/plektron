@@ -1,4 +1,4 @@
-# river:gishiga — Gishiga
+# river:gizhiga — Gizhiga
 
 - status: ratified
 - within: land:northeast-siberia
@@ -8,7 +8,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gishiga | | no | the river, the town [[place:gishiginsk]], [[water:gishiga-bay]] and the district all bear it |
+| Gishiga | | no | the river, the town [[place:gizhiginsk]], [[water:gizhiga-bay]] and the district all bear it |
 
 ## gloss
 

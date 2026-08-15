@@ -1,7 +1,7 @@
 # place:tumanskaya-fair — Tumanskaya Fair
 
-- status: proposed
-- within: river:red-river
+- status: ratified
+- within: river:krasnaya
 - geo: 63.901961 174.481993
 
 ## aliases
@@ -21,8 +21,8 @@ Iˊrg̣u-ñei ('pointed mountain'), chiefly for the Telqäˊp Chukchee" (1-080
 the eastern affluent of Red Lake; the coordinate above is the editor's reading
 of that map, and the mountain the text names is not identified here.
 
-**Filed under [[river:red-river]] and not [[river:tumanskaya]], though it
-carries that river's name.** The point falls inside `watershed:krasnoye-or-red-river`
+**Filed under [[river:krasnaya]] and not [[river:tumanskaya]], though it
+carries that river's name.** The point falls inside `watershed:krasnaya-or-red-river`
 and about 1.4° west of `watershed:tumanskaya-or-telqap`, and the text agrees:
 the fair is "on the west," *chiefly for* the Telqäˊp Chukchee, who came to it
 from their own river. The name says whose fair it was, not where it stood.

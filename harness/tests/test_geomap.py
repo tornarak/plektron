@@ -407,7 +407,7 @@ def test_the_frame_measures_along_its_edges_and_not_at_its_corners():
 @built
 def test_a_ring_that_cannot_touch_the_frame_is_dropped():
     """The cull is the difference between a 130 KB card and an 18 KB one."""
-    f = geomap.Frame(geo.bounds(geo.shape("watershed:wolverine-or-keperveyem", ROOT)))
+    f = geomap.Frame(geo.bounds(geo.shape("watershed:keperveyem-or-wolverine", ROOT)))
     land = geo.shape("base:land", ROOT)
     assert len(f.paths(land)) < len(list(geo.rings(land)))
 

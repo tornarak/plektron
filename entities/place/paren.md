@@ -18,4 +18,4 @@
 The Koryak village on [[water:penzhina-bay]] whose people "have for a long time
 occupied themselves with" iron-working (1-076); named with
 [[place:kamenskoye]] at 1-164, and one end of the stretch
-[[person:jochelson]] travelled from [[place:gishiginsk]] (1-044).
+[[person:jochelson]] travelled from [[place:gizhiginsk]] (1-044).

@@ -650,6 +650,28 @@
    ]
   },
   {
+   "id": "watershed:belaya-or-white",
+   "kind": "watershed",
+   "name": "belaya or white",
+   "area_km2": 45000.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 45,000 km² (17,000 sq. miles) with an outlet near coordinates: 65.518, 173.277.",
+   "wid": "Pfe3a072b681e",
+   "retrieved": "2026-08-07T03:08:38.629Z",
+   "rivers_kept": 76,
+   "rivers_total": 289,
+   "sorder_floor": 5,
+   "file": "watershed/belaya-or-white.json",
+   "points": 643,
+   "bounds": [
+    171.137,
+    65.516,
+    177.445,
+    68.285
+   ]
+  },
+  {
    "id": "watershed:bolshaya-chukochka-or-large-chukchee",
    "kind": "watershed",
    "name": "bolshaya chukochka or large chukchee",
@@ -672,6 +694,28 @@
    ]
   },
   {
+   "id": "watershed:bolshoy-anyuy-or-large",
+   "kind": "watershed",
+   "name": "bolshoy anyuy",
+   "area_km2": 57000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 57,000 km² (22,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
+   "wid": "M35009707",
+   "retrieved": "2026-08-07T02:53:05.374Z",
+   "rivers_kept": 140,
+   "rivers_total": 649,
+   "sorder_floor": 4,
+   "file": "watershed/bolshoy-anyuy-or-large.json",
+   "points": 958,
+   "bounds": [
+    159.216,
+    65.576,
+    169.187,
+    68.495
+   ]
+  },
+  {
    "id": "watershed:chaun",
    "kind": "watershed",
    "name": "chaun",
@@ -691,28 +735,6 @@
     67.117,
     177.747,
     69.065
-   ]
-  },
-  {
-   "id": "watershed:dry-or-maliy-anyuy",
-   "kind": "watershed",
-   "name": "maliy anyuy",
-   "area_km2": 50000.0,
-   "source": "mghydro",
-   "precision": "low",
-   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 50,000 km² (19,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
-   "wid": "M35009858",
-   "retrieved": "2026-08-07T02:52:50.798Z",
-   "rivers_kept": 100,
-   "rivers_total": 290,
-   "sorder_floor": 5,
-   "file": "watershed/dry-or-maliy-anyuy.json",
-   "points": 757,
-   "bounds": [
-    160.778,
-    66.747,
-    170.94,
-    69.358
    ]
   },
   {
@@ -782,7 +804,29 @@
    ]
   },
   {
-   "id": "watershed:keynuveem-or-bear",
+   "id": "watershed:keperveyem-or-wolverine",
+   "kind": "watershed",
+   "name": "wolverine or keperveyem",
+   "area_km2": 2800.0,
+   "source": "mghydro",
+   "precision": "high",
+   "message": " Delineated a watershed of 2,800 km² (1,100 sq. miles) with an outlet near coordinates: 67.840, 166.213.",
+   "wid": "Pe2d1e98adbae",
+   "retrieved": "2026-08-07T03:35:02.163Z",
+   "rivers_kept": 17,
+   "rivers_total": 63,
+   "sorder_floor": 3,
+   "file": "watershed/keperveyem-or-wolverine.json",
+   "points": 129,
+   "bounds": [
+    165.53,
+    67.837,
+    167.68,
+    68.434
+   ]
+  },
+  {
+   "id": "watershed:keynuveyem-or-bear",
    "kind": "watershed",
    "name": "keynuveem or bear",
    "area_km2": 2000.0,
@@ -794,7 +838,7 @@
    "rivers_kept": 16,
    "rivers_total": 53,
    "sorder_floor": 3,
-   "file": "watershed/keynuveem-or-bear.json",
+   "file": "watershed/keynuveyem-or-bear.json",
    "points": 91,
    "bounds": [
     162.325,
@@ -826,7 +870,7 @@
    ]
   },
   {
-   "id": "watershed:krasnoye-or-red-river",
+   "id": "watershed:krasnaya-or-red-river",
    "kind": "watershed",
    "name": "krasnoye or red river",
    "area_km2": 10000.0,
@@ -838,35 +882,13 @@
    "rivers_kept": 60,
    "rivers_total": 234,
    "sorder_floor": 3,
-   "file": "watershed/krasnoye-or-red-river.json",
+   "file": "watershed/krasnaya-or-red-river.json",
    "points": 324,
    "bounds": [
     172.662,
     63.418,
     175.269,
     64.698
-   ]
-  },
-  {
-   "id": "watershed:large-or-bolshoy-anyuy",
-   "kind": "watershed",
-   "name": "bolshoy anyuy",
-   "area_km2": 57000.0,
-   "source": "mghydro",
-   "precision": "low",
-   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 57,000 km² (22,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
-   "wid": "M35009707",
-   "retrieved": "2026-08-07T02:53:05.374Z",
-   "rivers_kept": 140,
-   "rivers_total": 649,
-   "sorder_floor": 4,
-   "file": "watershed/large-or-bolshoy-anyuy.json",
-   "points": 958,
-   "bounds": [
-    159.216,
-    65.576,
-    169.187,
-    68.495
    ]
   },
   {
@@ -911,6 +933,28 @@
     62.25,
     173.061,
     65.12
+   ]
+  },
+  {
+   "id": "watershed:maliy-anyuy-or-dry",
+   "kind": "watershed",
+   "name": "maliy anyuy",
+   "area_km2": 50000.0,
+   "source": "mghydro",
+   "precision": "low",
+   "message": "⚠ Unfortunately, your watershed is too large for higher-precision mode (over 50,000 km²). Reverting to low-precision mode. Delineated a watershed of 50,000 km² (19,000 sq. miles) with an outlet near coordinates: 68.462, 160.804.",
+   "wid": "M35009858",
+   "retrieved": "2026-08-07T02:52:50.798Z",
+   "rivers_kept": 100,
+   "rivers_total": 290,
+   "sorder_floor": 5,
+   "file": "watershed/maliy-anyuy-or-dry.json",
+   "points": 757,
+   "bounds": [
+    160.778,
+    66.747,
+    170.94,
+    69.358
    ]
   },
   {
@@ -1024,7 +1068,7 @@
    ]
   },
   {
-   "id": "watershed:poqach-or-pakhacha",
+   "id": "watershed:pakhacha-or-poqach",
    "kind": "watershed",
    "name": "poqach",
    "area_km2": 12000.0,
@@ -1036,7 +1080,7 @@
    "rivers_kept": 40,
    "rivers_total": 133,
    "sorder_floor": 4,
-   "file": "watershed/poqach-or-pakhacha.json",
+   "file": "watershed/pakhacha-or-poqach.json",
    "points": 335,
    "bounds": [
     167.415,
@@ -1068,7 +1112,7 @@
    ]
   },
   {
-   "id": "watershed:shuchya-or-pike",
+   "id": "watershed:shchuchya-or-pike",
    "kind": "watershed",
    "name": "shuchya or pike",
    "area_km2": 2300.0,
@@ -1080,7 +1124,7 @@
    "rivers_kept": 13,
    "rivers_total": 49,
    "sorder_floor": 3,
-   "file": "watershed/shuchya-or-pike.json",
+   "file": "watershed/shchuchya-or-pike.json",
    "points": 121,
    "bounds": [
     169.49,
@@ -1131,50 +1175,6 @@
     62.863,
     178.702,
     64.117
-   ]
-  },
-  {
-   "id": "watershed:white-or-belaya",
-   "kind": "watershed",
-   "name": "belaya or white",
-   "area_km2": 45000.0,
-   "source": "mghydro",
-   "precision": "high",
-   "message": " Delineated a watershed of 45,000 km² (17,000 sq. miles) with an outlet near coordinates: 65.518, 173.277.",
-   "wid": "Pfe3a072b681e",
-   "retrieved": "2026-08-07T03:08:38.629Z",
-   "rivers_kept": 76,
-   "rivers_total": 289,
-   "sorder_floor": 5,
-   "file": "watershed/white-or-belaya.json",
-   "points": 643,
-   "bounds": [
-    171.137,
-    65.516,
-    177.445,
-    68.285
-   ]
-  },
-  {
-   "id": "watershed:wolverine-or-keperveyem",
-   "kind": "watershed",
-   "name": "wolverine or keperveyem",
-   "area_km2": 2800.0,
-   "source": "mghydro",
-   "precision": "high",
-   "message": " Delineated a watershed of 2,800 km² (1,100 sq. miles) with an outlet near coordinates: 67.840, 166.213.",
-   "wid": "Pe2d1e98adbae",
-   "retrieved": "2026-08-07T03:35:02.163Z",
-   "rivers_kept": 17,
-   "rivers_total": 63,
-   "sorder_floor": 3,
-   "file": "watershed/wolverine-or-keperveyem.json",
-   "points": 129,
-   "bounds": [
-    165.53,
-    67.837,
-    167.68,
-    68.434
    ]
   },
   {

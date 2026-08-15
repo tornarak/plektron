@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:kamchatka
-- area: watershed:poqach-or-pakhacha
+- area: watershed:pakhacha-or-poqach
 
 ## aliases
 

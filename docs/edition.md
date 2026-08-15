@@ -76,8 +76,11 @@ are load-bearing:
 brief was "what gets the most results today", which is a judgement, so the pass
 was scoped to entries where a second witness was already committed: a
 `wikipedia:` link whose article is titled differently, or an `area:` naming a
-shape whose slug carries both names — `watershed:dry-or-maliy-anyuy` is
+shape whose slug carries both names — `watershed:maliy-anyuy-or-dry` is
 the geo store's own adjudication of the same question, made when it was built.
+**Modern name first, book name second**, uniformly: seven slugs ran the other
+way and were renamed, since a convention that holds four times in five is not
+one, and the half a reader wants is not the half the book already gives them.
 Twelve entries moved on that evidence and one, `people:inupiat`, took the title
 alone because a slug cannot hold `ñ`.
 

@@ -1,4 +1,4 @@
-# water:gishiga-bay — Gishiga Bay
+# water:gizhiga-bay — Gizhiga Bay
 
 - status: ratified
 - within: water:okhotsk-sea
@@ -9,14 +9,14 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Gishiga Bay | | yes | longer than the bare `Gishiga`, which [[river:gishiga]] leaves unlinked |
+| Gishiga Bay | | yes | longer than the bare `Gishiga`, which [[river:gizhiga]] leaves unlinked |
 | Гижигинская губа | ru | no | the modern name; not printed in the book |
 
 ## gloss
 
 Гижигинская губа. The head of one of 1-359's gazetteer tables, and third of the
-three things the book calls Gishiga: the river [[river:gishiga]], the town
-[[place:gishiginsk]] at its mouth, and this.
+three things the book calls Gishiga: the river [[river:gizhiga]], the town
+[[place:gizhiginsk]] at its mouth, and this.
 
 **Not inside [[water:penzhina-bay]]**, which this entry used to claim. The two
 are siblings: both are arms of Shelikhov Gulf, the northeastern reach of the

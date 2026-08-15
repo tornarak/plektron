@@ -914,8 +914,26 @@ def main(argv=None) -> int:
     idx = json.dumps(index, indent=1, ensure_ascii=False)
     print(f"\n{len(shapes)} shapes, {total / 1024:.0f} KB "
           f"+ {len(idx.encode()) / 1024:.0f} KB index")
+
+    # A shape whose source file was renamed leaves its old output behind, and
+    # `data/geo/` is *tracked* — so the orphan is committed, and invisible:
+    # `index.json` is rebuilt from `shapes`, so `geo list` never mentions it and
+    # nothing downstream reads it. It is a shape of the atlas that no longer
+    # corresponds to anything, sitting in history looking authored. Renaming
+    # `shuchya_or_pike` to `shchuchya_or_pike` produced exactly one, which is how
+    # this was found. Reported either way; removed only under `--commit`, on the
+    # rule the rest of this script follows.
+    want = {OUT / relpath(i) for i in shapes}
+    stale = sorted(p for p in OUT.rglob("*.json")
+                   if p.name != "index.json" and p not in want)
+    for p in stale:
+        print(f"  stale: {p.relative_to(OUT)}"
+              + ("  removed" if a.commit else "  (--commit removes)"))
+
     if a.commit:
         (OUT / "index.json").write_text(idx + "\n", encoding="utf-8")
+        for p in stale:
+            p.unlink()
 
     if notes:
         print("\nnotes:")

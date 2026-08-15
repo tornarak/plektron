@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:maliy-anyuy
-- area: watershed:wolverine-or-keperveyem
+- area: watershed:keperveyem-or-wolverine
 
 ## aliases
 

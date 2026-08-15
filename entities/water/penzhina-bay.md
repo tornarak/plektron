@@ -17,7 +17,7 @@
 
 Пенжинская губа, the northeast corner of the Sea of Okhotsk
 ([[water:okhotsk-sea]]) — strictly the eastern arm of Shelikhov Gulf, with
-[[water:gishiga-bay]] its western sibling and the Taygonos peninsula between
+[[water:gizhiga-bay]] its western sibling and the Taygonos peninsula between
 them. The gulf itself has no entry: the book never names it. With
 [[water:korf-bay]] it bounds the
 [[land:parapolsky-dol]] (1-035). [[place:kamenskoye]] is on it (2-047). The
