@@ -380,8 +380,13 @@ def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
             }
         )
 
-    if rec["area"]:
-        s = geo.index(root)["shapes"].get(rec["area"], {})
+    # **One row per `geo:` member, in the order the file writes them.** The field
+    # is a union and the card is the place a wrong value gets noticed, so a
+    # record naming two polygons must show two rows: collapsing them to "area"
+    # with a composite id printed once was legible only to somebody who already
+    # knew the spelling.
+    for sid in geo.geo_shapes(rec):
+        s = geo.index(root)["shapes"].get(sid, {})
         km2 = s.get("area_km2")
         detail = " · ".join(
             x
@@ -397,17 +402,30 @@ def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
             if x
         )
         rows.append(
-            {"kind": "area", "label": "area", "id": rec["area"], "detail": detail}
+            {"kind": "area", "label": "area", "id": sid, "detail": detail}
         )
 
-    if rec["geo"]:
-        lat, lon = rec["geo"]
+    for lat, lon in geo.geo_points(rec):
         rows.append(
             {
                 "kind": "point",
                 "label": "point",
                 "lat": f"{lat:.4f}",
                 "lon": f"{lon:.4f}",
+            }
+        )
+
+    # An entity member is a location too, and it is the one kind a reader cannot
+    # check by looking at a number — so it says whose extent this record is
+    # borrowing, by name, and links there.
+    for m in geo.geo_refs(rec):
+        target = store.get(m)
+        rows.append(
+            {
+                "kind": "entity",
+                "label": "extent of",
+                "id": m,
+                "name": target["canonical"] if target else m,
             }
         )
 
@@ -548,7 +566,12 @@ def map_context(
     # East and one click away — is on no layer at all. This is the whole of "an
     # entry preloads its ancestors and descendants", and it is computed before
     # the extent, so an entity with nothing to draw still warms its kin.
+    # `relatives` is the `within:` chain and stays that — the encyclopedia reads
+    # it, and widening it would put a people's villages into the containment
+    # tree. But a `geo:` member is drawn on this map and clickable, so it has to
+    # be warmed here or the first click on a pin fetches nothing.
     warm = {w for i in known for w in geo.relatives(i, store)}
+    warm |= {m for i in known for m in geo.geo_refs(store[i])}
     out["warm"] = sorted(warm - set(known))
 
     solo = known[0] if len(known) == 1 else ""
@@ -663,15 +686,15 @@ def map_context(
         [
             k
             for k in geo.children(store).get(tree_parent(store[solo]), [])
-            if k != solo and store[k]["area"]
+            if k != solo and geo.geo_shapes(store[k])
         ]
         if solo and tree_parent(store[solo])
         else []
     )
     if kin:
         layers["kin"] = [p for k in kin
-                         for p in owned(frame.paths(shape(store[k]["area"])),
-                                        k, _kind(store[k]["area"]))]
+                         for sid in geo.geo_shapes(store[k])
+                         for p in owned(frame.paths(shape(sid)), k, _kind(sid))]
     # The outline of whatever the map is framed on, dashed to say it is context
     # rather than subject. For a single subject that is its parent, which is what
     # this layer has always drawn.
@@ -681,9 +704,10 @@ def map_context(
     # to say. Skipped when hidden, that being what hiding a containing node now
     # means: it no longer moves the frame, so paint is all it has left to change.
     holder = next((a for a in order[:1] if a not in hidden), "")
-    if holder and store[holder]["area"]:
-        layers["parent"] = owned(frame.paths(shape(store[holder]["area"])),
-                                 holder, _kind(store[holder]["area"]))
+    if holder and geo.geo_shapes(store[holder]):
+        layers["parent"] = [p for sid in geo.geo_shapes(store[holder])
+                            for p in owned(frame.paths(shape(sid)),
+                                           holder, _kind(sid))]
         out["parent"] = store[holder]
 
     # **A place drawn twice is drawn once, as the subject.** Selecting the Kolyma
@@ -692,9 +716,8 @@ def map_context(
     drawn: set[str] = set()
     subject = []
     for i in known:
-        if store[i]["area"]:
-            subject += owned(frame.paths(shape(store[i]["area"])), i,
-                             _kind(store[i]["area"]))
+        for sid in geo.geo_shapes(store[i]):
+            subject += owned(frame.paths(shape(sid)), i, _kind(sid))
             drawn.add(i)
     if subject:
         layers["subject"] = subject
@@ -719,13 +742,14 @@ def map_context(
     # running through what it frames. Never both: the fallback is for the case
     # where there is no subject drainage to show, not for the case where the
     # subject's happens to be empty.
-    if any(store[i]["area"] for i in known):
-        rivers = [r for i in known if store[i]["area"]
-                  for r in frame.rivers(shape(store[i]["area"]))]
+    if any(geo.geo_shapes(store[i]) for i in known):
+        rivers = [r for i in known for sid in geo.geo_shapes(store[i])
+                  for r in frame.rivers(shape(sid))]
         if rivers:
             layers["rivers"] = rivers
-    elif holder and store[holder]["area"]:
-        layers["rivers"] = frame.rivers(shape(store[holder]["area"]))
+    elif holder and geo.geo_shapes(store[holder]):
+        layers["rivers"] = [r for sid in geo.geo_shapes(store[holder])
+                            for r in frame.rivers(shape(sid))]
 
     # **Every descendant that no other layer identifies, as an extent — drawn
     # only under the pointer.** A node with neither a shape nor a point is
@@ -785,8 +809,13 @@ def map_context(
     # Every subject, not any: with several on the map the mark can only speak
     # for the map, and a selection that mixes a basin with a coastline is not a
     # basin map. One subject reduces it to what it always was.
-    mark = "basin" if all((store[i]["area"] or "").startswith("watershed:")
-                          for i in live) else ""
+    # **`all(())` is `True`, so the emptiness has to be tested separately.** Once
+    # a record's shapes are a list rather than a single possibly-blank string,
+    # an entity with no shape at all satisfies "every shape is a watershed"
+    # vacuously, and a people or a bare point would have been marked a basin.
+    subject_shapes = [s for i in live for s in geo.geo_shapes(store[i])]
+    mark = "basin" if subject_shapes and all(
+        s.startswith("watershed:") for s in subject_shapes) else ""
     out["svg"] = geomap.render(frame, layers, pins, mark=mark, view=view)
     return out
 
@@ -799,24 +828,41 @@ def _rect_str(rect) -> str:
 def _basis(ent_id: str, store: dict, root: Path) -> dict:
     """How well founded this subject's outline is — a shape, a point, or a box.
 
-    Three kinds, and they are not equally well founded: a shape a source drew, a
-    point a human keyed, and an extent computed from what lies beneath. Only the
-    first two are claims about a boundary, and the caption says which it is
+    Five kinds, and they are not equally well founded: a shape a source drew, a
+    point a human keyed, another entity's extent this one transcludes, a
+    parent's extent inherited, and a box computed from what lies beneath. Only
+    the first two are claims about a boundary, and the caption says which it is
     looking at rather than leaving a reader to assume the strongest.
+
+    **`transcluded` is why the template's catch-all had to stop asserting.** It
+    read "framed by what lies beneath it — no source draws a boundary for this",
+    which was true of the one case that reached it and is false of a people that
+    names its villages: something is drawn, it is just drawn somewhere else. A
+    new kind rendering as the wrong sentence with no error is the failure this
+    edition is arranged against, so the else-branch says only what it knows.
     """
     rec = store[ent_id]
-    if rec["area"]:
-        row = geo.index(root)["shapes"].get(rec["area"], {})
+    shapes = geo.geo_shapes(rec)
+    if shapes:
+        # The first, where a record names several. The caption is a basis and
+        # not a census — `property_rows` lists every member — and a caption that
+        # grew a list would say least about the case it exists for.
+        row = geo.index(root)["shapes"].get(shapes[0], {})
         km2 = row.get("area_km2")
         return {
             "kind": "shape",
-            "id": rec["area"],
+            "id": shapes[0],
             "km2": f"{int(km2):,}" if km2 else "",
             "source": row.get("source", ""),
+            "more": len(shapes) - 1,
         }
-    if rec["geo"]:
+    points = geo.geo_points(rec)
+    if points:
         return {"kind": "point",
-                "lat": f"{rec['geo'][0]:.3f}", "lon": f"{rec['geo'][1]:.3f}"}
+                "lat": f"{points[0][0]:.3f}", "lon": f"{points[0][1]:.3f}"}
+    refs = geo.geo_refs(rec)
+    if refs:
+        return {"kind": "transcluded", "id": refs[0], "more": len(refs) - 1}
     if rec["class"] == "people" and not geo.children(store).get(ent_id):
         # A people with no sprachraum of its own is shown at its parent's, and
         # the card has to say so: a subgroup lives inside its ethnicity's area

@@ -261,9 +261,15 @@ def test_verify_reports_and_never_gates():
 @built
 def test_a_composite_counts_as_a_claim_on_each_of_its_members():
     """Otherwise the members read as unclaimed *and* the union reads as a shape
-    `data/geo/` does not hold — two wrong answers from one right field."""
-    store = {"place:x": {"id": "place:x",
-                         "area": "langarea:chuk1273,watershed:anadyr"}}
+    `data/geo/` does not hold — two wrong answers from one right field.
+
+    Written when several shapes were one comma-joined `area:`, and still the
+    rule: a record may name as many shapes as it likes, and each is a claim.
+    What changed is that the members no longer have to be recovered from a
+    spelling — the field holds them apart already."""
+    store = {"place:x": {"id": "place:x", "geo": [
+        {"kind": "shape", "id": "langarea:chuk1273"},
+        {"kind": "shape", "id": "watershed:anadyr"}]}}
     claims = geo.member_claims(store)
     assert claims["langarea:chuk1273"] == ["place:x"]
     assert claims["watershed:anadyr"] == ["place:x"]
@@ -283,7 +289,7 @@ def test_unlocated_is_scoped_by_the_tree_and_not_by_class(tmp_path):
            ("place:bare", "- within: place:top\n"),
            ("person:someone", ""))
     rows = {r["id"]: r for r in geo.unlocated(entities.load(tmp_path), tmp_path)}
-    assert "place:bare" in rows and rows["place:bare"]["wants"] == "geo: or area:"
+    assert "place:bare" in rows and rows["place:bare"]["wants"] == "a geo:"
     assert rows["place:top"]["wants"] == "framed by its members"
     assert "place:kid" not in rows          # it has a point
     assert "person:someone" not in rows     # nothing above or below it is drawn

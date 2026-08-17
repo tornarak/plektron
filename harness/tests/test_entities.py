@@ -408,15 +408,19 @@ def test_a_set_field_round_trips_through_the_parser(tmp_path):
 
     p = entry(tmp_path, "place:x", extra="- within: place:y\n")
     base = p.read_text(encoding="utf-8")
-    assert E.parse(_set_field(base, "geo", "66.0 -170.0"))["geo"] == (66.0, -170.0)
+    assert E.geo_points(E.parse(_set_field(base, "geo", "66.0 -170.0"))) \
+        == [(66.0, -170.0)]
     got = _set_field(base, "area", "watershed:anadyr,marine:chaun-bay")
     assert E.parse(got)["area"] == "marine:chaun-bay,watershed:anadyr"
 
-    # And the guarantee working: setting the second one produces a file that
-    # does not parse, so `locate` reports it instead of writing it. A shape is
-    # the location and `extent_of` never reads a point beside one.
-    with pytest.raises(E.Malformed, match="both"):
-        E.parse(_set_field(got, "geo", "66.0 -170.0"))
+    # And the guarantee working: a member that is neither two degrees nor a
+    # `kind:slug` fails as a message, so `locate` reports it instead of writing
+    # it. **The rule this used to test is gone with the field it policed** — a
+    # record carrying a point beside a shape was refused while `geo:` and
+    # `area:` were two fields that could only disagree; with one field of
+    # members they are a union, and `extent_of` reads both.
+    with pytest.raises(E.Malformed, match="three things"):
+        E.parse(_set_field(base, "geo", "somewhere near the river"))
 
 
 # ---------------------------------------------------------------- renaming

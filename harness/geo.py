@@ -418,6 +418,30 @@ def children(store: dict) -> dict[str, list[str]]:
     return _children(store)
 
 
+def geo_points(rec: dict) -> list[tuple[float, float]]:
+    """`geo:`'s point members. **`entities.geo_points`**, re-exported."""
+    from .entities import geo_points as _f
+    return _f(rec)
+
+
+def geo_shapes(rec: dict) -> list[str]:
+    """`geo:`'s shape members. **`entities.geo_shapes`**, re-exported."""
+    from .entities import geo_shapes as _f
+    return _f(rec)
+
+
+def geo_refs(rec: dict) -> list[str]:
+    """`geo:`'s entity members. **`entities.geo_refs`**, re-exported."""
+    from .entities import geo_refs as _f
+    return _f(rec)
+
+
+def spell_geo(rec: dict) -> list[str]:
+    """`geo:`'s members as authored. **`entities.spell_geo`**, re-exported."""
+    from .entities import spell_geo as _f
+    return _f(rec)
+
+
 def relatives(ent_id: str, store: dict) -> list[str]:
     """Every ancestor and descendant. **`entities.relatives`**, re-exported."""
     from .entities import relatives as _relatives
@@ -461,7 +485,7 @@ def member_extents(ent_id: str, store: dict,
             rec = store.get(k)
             if rec is None:
                 continue
-            if not rec["area"] and not rec["geo"]:
+            if not rec["geo"]:
                 # **A declared `frame:` is the extent here, though `extent_of`
                 # ignores it.** That function answers "how big is this thing",
                 # which a parent must not size itself on — a viewport carries
@@ -508,8 +532,14 @@ def member_shapes(ent_id: str, store: dict, _seen=None) -> list[tuple[str, str]]
         rec = store.get(kid)
         if rec is None:
             continue
-        if rec["area"]:
-            out.append((kid, rec["area"]))
+        # **One pair per shape**, where this used to append the whole `area:`
+        # field as a single id and lean on `geo.shape` to resolve a composite
+        # back into members. A record may name several shapes, and a caller that
+        # draws them draws each; the composite was only ever a way of spelling
+        # that in a field that held one value.
+        shapes = geo_shapes(rec)
+        if shapes:
+            out += [(kid, sid) for sid in shapes]
         else:
             out += member_shapes(kid, store, seen)
     return out
@@ -519,8 +549,9 @@ def extent_of(ent_id: str, store: dict, root: Path = Path("."),
               _seen=None) -> tuple | None:
     """What to frame a map of this entity on, in store longitudes.
 
-    Three sources, in order: its own shape, its own point, or **the union of
-    what lies beneath it**. The third is what makes the tree navigable at all —
+    Four sources, unioned: its `geo:` shapes, its `geo:` points, the extents of
+    the entities its `geo:` names, and **the union of what lies beneath it**.
+    The last is what makes the tree navigable at all —
     no source holds a polygon for Chukotka or the Russian Far East, and none
     should: they are tree structure, not shapes. A frame is a viewport and not
     a claim, which is why computing one is legal where inferring a *boundary*
@@ -528,6 +559,14 @@ def extent_of(ent_id: str, store: dict, root: Path = Path("."),
 
     Cycle-guarded even though `entity check` gates acyclicity, because this
     runs inside a page render where a hang is worse than a wrong answer.
+
+    **`seen` is a path guard and not a visited set**, which is what lets it
+    cover two edge kinds at once without a second mechanism: it is threaded down
+    each branch functionally (`seen | {ent_id}`), so `geo:` members and tree
+    children share one discipline and a cycle mixing the two — `A geo: B`,
+    `B within: A` — terminates on the same rule `within:` alone always did. A
+    diamond is *not* pruned, and should not be: two peoples naming one village
+    both take its box, and a box unioned twice is the same box.
     """
     rec = store.get(ent_id)
     if rec is None:
@@ -537,13 +576,20 @@ def extent_of(ent_id: str, store: dict, root: Path = Path("."),
         return None
     seen = seen | {ent_id}
 
-    boxes = []
-    if rec["area"]:
-        boxes.append(bounds(shape(rec["area"], root)))
-    elif rec["geo"]:
-        lat, lon = rec["geo"]
-        lon = _shifted(lon, index(root))
-        boxes.append(point_box(lat, lon))
+    # **Four sources, unioned, never a first-one-wins chain.** Three of them are
+    # the record's own `geo:` read three ways — its shapes, its points, and the
+    # entities it names — and the fourth is the tree beneath it. The chain used
+    # to be `area:` *else* `geo:`, which was only ever expressible because the
+    # two were separate fields and a record was forbidden to carry both; one
+    # field of members has nothing to prefer.
+    boxes = [bounds(shape(sid, root)) for sid in geo_shapes(rec)]
+    boxes += [point_box(lat, _shifted(lon, index(root)))
+              for lat, lon in geo_points(rec)]
+    # **A named entity's extent is transcluded, and that is a different relation
+    # from containment.** `people:naukans` is not *inside* Naukan — it is the
+    # people of three villages, and its extent is theirs. Saying that with
+    # `within:` bought the right box by asserting an ethnicity was a place.
+    boxes += [extent_of(m, store, root, seen) for m in geo_refs(rec)]
     # **Always union the children in, even when the entity has an extent of its
     # own.** Stopping at the first source found meant a parent with a `geo:`
     # point framed on that point alone, and Uelen — inside the Chukchee
@@ -632,18 +678,35 @@ def pins_under(ent_id: str, store: dict, root: Path = Path("."),
     The entity rides along for the same reason it does on a member shape: an
     entity whose only geography is a point is highlighted by lighting its pin,
     and the label is a canonical name, which is not an identity.
+
+    **A `geo:` member is followed whatever the depth budget says, and a child is
+    not.** The budget exists to stop a map of the Russian Far East plotting every
+    village in the store — descendants nobody asked for. A member is the
+    opposite: somebody wrote it on this record, and it is the whole of what the
+    record says about where it is. `people:siberian-yupik` names six villages and
+    has no point of its own, so a walk that spent budget on them would draw an
+    empty map at the depth the atlas actually calls this (`depth=0`).
+
+    **Cycle-guarded, which it did not need to be until now.** The old walk
+    followed `within:` children only, and `entity check` gates that chain
+    acyclic; following an authored member reaches a graph, and an unguarded
+    recursion inside a page render is a hang rather than a wrong picture.
     """
     idx = index(root)
     kids = children(store)
-    out = []
+    out, seen = [], set()
 
     def walk(ident: str, d: int):
+        if ident in seen:
+            return
+        seen.add(ident)
         rec = store.get(ident)
         if rec is None:
             return
-        if rec["geo"]:
-            lat, lon = rec["geo"]
+        for lat, lon in geo_points(rec):
             out.append((_shifted(lon, idx), lat, rec["canonical"], ident))
+        for m in geo_refs(rec):
+            walk(m, d)
         if d > 0:
             for k in kids.get(ident, []):
                 walk(k, d - 1)
@@ -723,7 +786,7 @@ def member_claims(store: dict) -> dict[str, list[str]]:
     """
     claims: dict[str, list[str]] = {}
     for rec in sorted(store.values(), key=lambda r: r["id"]):
-        for m in split_area(rec["area"]) if rec["area"] else []:
+        for m in geo_shapes(rec):
             claims.setdefault(m, []).append(rec["id"])
     return claims
 
@@ -732,8 +795,9 @@ def composite_claims(store: dict) -> dict[str, list[str]]:
     """`{composite id: [entity ids]}` for every `area:` naming more than one."""
     out: dict[str, list[str]] = {}
     for rec in sorted(store.values(), key=lambda r: r["id"]):
-        if rec["area"] and len(split_area(rec["area"])) > 1:
-            out.setdefault(rec["area"], []).append(rec["id"])
+        shapes = geo_shapes(rec)
+        if len(shapes) > 1:
+            out.setdefault(canonical_area(shapes), []).append(rec["id"])
     return out
 
 
@@ -881,19 +945,27 @@ def verify(root: Path = Path(".")) -> dict:
     claims = member_claims(store)
     for rec in sorted(store.values(), key=lambda r: r["id"]):
         parent = store.get(rec["within"]) if rec["within"] else None
-        if rec["area"] and parent and parent["area"]:
-            frac = contains(doc_for(parent["area"]), doc_for(rec["area"]))
-            coarse = [i for i in (rec["area"], parent["area"])
-                      if idx["shapes"].get(i, {}).get("precision") == "low"]
-            containment.append({
-                "child": rec["id"], "child_area": rec["area"],
-                "parent": parent["id"], "parent_area": parent["area"],
-                "inside": round(frac, 3),
-                "coarse": " ".join(coarse),
-                "reading": _reading(
-                    frac, bool(coarse),
-                    parent["area"].startswith("marine:")),
-            })
+        if not parent:
+            continue
+        # **One row per (child shape, parent shape) pair**, where a composite
+        # used to be measured whole. Taking the best pair, or the union, would
+        # launder exactly the disagreement this report exists to show: a basin
+        # 90% inside one half of a two-shape parent and 0% inside the other is
+        # two facts, and only one of them is reassuring.
+        for child_id in geo_shapes(rec):
+            for parent_id in geo_shapes(parent):
+                frac = contains(doc_for(parent_id), doc_for(child_id))
+                coarse = [i for i in (child_id, parent_id)
+                          if idx["shapes"].get(i, {}).get("precision") == "low"]
+                containment.append({
+                    "child": rec["id"], "child_area": child_id,
+                    "parent": parent["id"], "parent_area": parent_id,
+                    "inside": round(frac, 3),
+                    "coarse": " ".join(coarse),
+                    "reading": _reading(
+                        frac, bool(coarse),
+                        parent_id.startswith("marine:")),
+                })
 
     for ident, ids in sorted(claims.items()):
         if len(ids) > 1:
@@ -951,7 +1023,15 @@ def unlocated(store: dict, root: Path = Path(".")) -> list[dict]:
     kids = children(store)
     rows = []
     for rec in sorted(store.values(), key=lambda r: r["id"]):
-        if rec["area"] or rec["geo"] or rec["frame"]:
+        # **A shape, a point or a frame settles the row; a pointer does not.**
+        # An entity whose `geo:` holds only other entities has said where to look
+        # without anybody yet having said where *they* are, so the row survives
+        # until `extent_of` can actually resolve it. Reading "has a `geo:`" as
+        # settled would have taken `people:siberian-yupik` off the worklist by
+        # naming six villages, three of which might be unplaced.
+        if geo_shapes(rec) or geo_points(rec) or rec["frame"]:
+            continue
+        if geo_refs(rec) and extent_of(rec["id"], store, root) is not None:
             continue
         # `tree_parent`, not `rec["within"]`: the four ethnic subgroups hang
         # from `part-of:` and have no `within:` at all, and reading the raw
@@ -978,10 +1058,12 @@ def unlocated(store: dict, root: Path = Path(".")) -> list[dict]:
             # while the entity plainly hangs somewhere would send a reader to
             # the wrong file.
             "within": up,
-            "wants": ("its parent's extent, inherited"
+            "wants": ("its members located, then transcluded"
+                      if geo_refs(rec)
+                      else "its parent's extent, inherited"
                       if rec["class"] == "people" and not kids.get(rec["id"])
                       else "framed by its members" if beneath
-                      else "geo: or area:"),
+                      else "a geo:"),
             "children": len(kids.get(rec["id"], [])),
         })
     return rows

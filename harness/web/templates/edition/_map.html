@@ -43,17 +43,29 @@
 {% else %}
 {% if rec %}
 <div class='meta'>
+{#- **The else-branch says only what it knows.** It used to assert "framed by
+    what lies beneath it — no source draws a boundary for this", which was true
+    of the one case that reached it and became false the moment `_basis` grew a
+    fifth kind: a people that names its villages *is* drawn, just from
+    elsewhere. A caption that asserts on behalf of kinds it has never heard of
+    renders a lie with no error, which is the failure this edition is arranged
+    against. `basis.kind == 'framed'` is now tested rather than assumed. -#}
 {%- if basis.kind == 'shape' -%}
   <code>{{ basis.id }}</code>{% if basis.km2 %} · {{ basis.km2 }} km²{% endif %}
-  · {{ basis.source }}
+  · {{ basis.source }}{% if basis.more %} · and {{ basis.more }} more{% endif %}
 {%- elif basis.kind == 'point' -%}
   a keyed point at {{ basis.lat }}, {{ basis.lon }} — no source draws a boundary
+  for it
+{%- elif basis.kind == 'transcluded' -%}
+  shown at the extent of <code>{{ basis.id }}</code>{% if basis.more %} and
+  {{ basis.more }} more{% endif %} — this entry names where it is rather than
+  carrying a coordinate, so the boundary drawn is theirs and not one claimed
   for it
 {%- elif basis.kind == 'inherited' -%}
   shown at the extent of <code>{{ basis.id }}</code> — a subgroup lives inside
   its people's area by what the word means, so this bounds it without drawing a
   boundary anybody has claimed
-{%- else -%}
+{%- elif basis.kind == 'framed' -%}
   framed by what lies beneath it — no source draws a boundary for this, and the
   frame is a viewport, not one
 {%- endif -%}

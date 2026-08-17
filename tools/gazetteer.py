@@ -569,8 +569,13 @@ def _parent_shape(ident: str, store: dict):
         rec = store.get(at)
         if rec is None:
             break
-        if rec.get("area"):
-            return rec["area"], None
+        shapes = geo.geo_shapes(rec) if "geo" in rec else []
+        if shapes:
+            # The first, where an ancestor names several. This is a containment
+            # *test* and a candidate outside one half of a two-shape parent is
+            # not thereby wrong; taking one is what the check always did, and
+            # the row names which.
+            return shapes[0], None
         if frame is None and rec.get("frame"):
             frame = (at, rec["frame"])
         at = rec.get("within", "")
@@ -685,7 +690,7 @@ def run_propose(a) -> int:
     if a.unlocated:
         idents = sorted(i for i, r in store.items()
                         if r["class"] in GEO_CLASSES
-                        and not (r["geo"] or r["area"] or r["frame"]))
+                        and not (r["geo"] or r["frame"]))
     else:
         idents = list(a.idents)
     if not idents:
@@ -937,10 +942,18 @@ def run_fill(a) -> int:
         # whole region for a dot. The atlas said so immediately and two tests
         # caught it; the rule is that anything already locatable *through its
         # members* is as settled as one carrying its own shape.
-        framed_by_kids = (not rec["geo"] and not rec["area"]
+        framed_by_kids = (not rec["geo"]
                           and any(geo.located(k, store, root)
                                   for k in kids.get(ident, [])))
-        held_by = ("geo:" if rec["geo"] else "area:" if rec["area"]
+        # The member kinds are told apart because they are not equally settling.
+        # A point is the thing this tool writes, so an entry that has one is
+        # done; a shape or a transcluded extent is *stronger* than the nominal
+        # centre a gazetteer would return, and writing one beside it would be
+        # the second, weaker statement of the same fact that the old two-field
+        # rule existed to refuse.
+        held_by = ("geo:" if geo.geo_points(rec)
+                   else "area:" if geo.geo_shapes(rec)
+                   else "members:" if geo.geo_refs(rec)
                    else "frame:" if rec["frame"]
                    else "members" if framed_by_kids else "")
         settled = bool(held_by) and not a.replace

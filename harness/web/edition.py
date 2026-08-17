@@ -1011,7 +1011,14 @@ def atlas(request: Request, at: str = ""):
             # Read against `mark`, which is a different question: `cls` is what
             # the thing *is*, `mark` is how the atlas knows where it is.
             "cls": rec["class"],
-            "mark": "shape" if rec["area"] else "point" if rec["geo"] else "framed",
+            # Four, since `geo:` absorbed `area:`: a node whose only members are
+            # other entities is located by transclusion, and reading it as
+            # "framed" would say the atlas computed a box from what lies beneath
+            # when in fact somebody wrote down where to look.
+            "mark": ("shape" if geo.geo_shapes(rec)
+                     else "point" if geo.geo_points(rec)
+                     else "transcluded" if geo.geo_refs(rec)
+                     else "framed"),
             "selected": ident == at,
             "children": [
                 node(k) for k in kids.get(ident, []) if geo.located(k, store, root)

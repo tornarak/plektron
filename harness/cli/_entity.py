@@ -29,6 +29,7 @@ from ..entities import (
     load,
     occurrences,
     path_for,
+    spell_geo,
     split_id,
 )
 from ..geo import canonical_area, split_area
@@ -349,7 +350,13 @@ def _set_field(text: str, key: str, value: str) -> str:
         return pat.sub(lambda _m: f"- {key}: {value}", head, count=1) + rest
 
     rank = FIELD_ORDER.index(key) if key in FIELD_ORDER else len(FIELD_ORDER)
-    fields = list(re.finditer(r"^-\s+([a-z]+):.*$", head, re.M))
+    # `[a-z][a-z-]*`, matching `entities._FIELD`. Under `[a-z]+` the one
+    # hyphenated field in the store did not match, so `part-of:` was invisible
+    # to this scan and ranked as unknown — the same shape of miss that once made
+    # the *parser* discard the field silently, and the reason that pattern
+    # carries the note it does. Here it only mislocated an insertion, which is
+    # why nothing caught it.
+    fields = list(re.finditer(r"^-\s+([a-z][a-z-]*):.*$", head, re.M))
     if not fields:
         raise ValueError("the entry has no field block to add to")
     for m in fields:
@@ -374,7 +381,7 @@ def run_locate(a) -> int:
     text = p.read_text(encoding="utf-8")
     rows = []
     for key, given, before in (
-            ("geo", a.geo, " ".join(f"{v:g}" for v in rec["geo"]) if rec["geo"] else ""),
+            ("geo", a.geo, ", ".join(spell_geo(rec))),
             ("area", a.area, rec["area"]),
             ("frame", a.frame,
              " ".join(f"{v:g}" for v in rec["frame"]) if rec["frame"] else "")):

@@ -245,6 +245,90 @@ def _cells(line: str) -> list[str]:
     return [c.strip() for c in line.strip().strip("|").split("|")]
 
 
+def _geo_member(raw: str, at: str = "") -> dict:
+    """One `- geo:` line → a typed member. Raises `Malformed` on anything else.
+
+    Three forms, told apart by the line's own spelling and by nothing else:
+
+        - geo: 64.4051 -172.2409          a point
+        - geo: langarea:chuk1273          a shape in `data/geo/`
+        - geo: place:naukan               another entity, extent transcluded
+
+    **The disjointness of shape kinds from `ENTITY_CLASSES` is what makes this
+    decidable**, and that invariant is older than this field: a shape kind is
+    `langarea:` and never `language:`, held apart on purpose so that an entity
+    file carrying two ids two lines from each other cannot be misread. It used
+    to be enforced negatively — an `area:` naming an entity class was refused
+    outright, because it *looked* like a reference — and here the same fact is
+    read positively: it *is* one. `geo bounds` has told the two apart by prefix
+    alone since it was written, with no flag and no wrong guess available to it,
+    and this is the same rule doing the same work one store lower down.
+
+    Typed here rather than left as a string because `parse` is the one place
+    that raises `Malformed`. A member whose floats are re-parsed at each of
+    forty call sites is a member whose error message depends on who read it.
+    """
+    parts = raw.split()
+    if len(parts) == 2:
+        try:
+            return {"kind": "point", "lat": float(parts[0]), "lon": float(parts[1])}
+        except ValueError:
+            raise Malformed(
+                f"{at}`geo: {raw}` — two tokens, so this reads as a coordinate, "
+                f"but they are not two WGS84 decimal degrees, latitude then "
+                f"longitude. A shape or an entity is one token, `kind:slug`"
+            ) from None
+    kind, sep, name = raw.partition(":")
+    if sep and kind and name and len(parts) == 1:
+        if kind in ENTITY_CLASSES:
+            split_id(raw)     # raises with the same message as everywhere else
+            return {"kind": "entity", "id": raw}
+        return {"kind": "shape", "id": raw}
+    raise Malformed(
+        f"{at}`geo: {raw}` — a member is one of three things: a point, as two "
+        f"decimal degrees `64.4051 -172.2409`; a shape in `data/geo/`, as "
+        f"`kind:slug` (`harness geo list` names them); or another entity, as "
+        f"`class:slug`, whose extent this one takes. Repeat the field for "
+        f"several; the field is the union of its members")
+
+
+#: The three readings of `geo:`, each as a list. **Accessors and not record
+#: keys**: a key restating a field is an invisible field, which is the rule
+#: `property_rows` exists to keep, so the record holds the members once and
+#: every caller asks for the reading it wants.
+#:
+#: They live here rather than in `geo.py` because classification needs
+#: `ENTITY_CLASSES`, and because `entities` imports `geo` at module top while
+#: `geo` imports `entities` lazily inside functions — a classifier over there
+#: would invert that. `geo.py` re-exports all four, as it re-exports `children`,
+#: for the reason written there: the atlas is the heaviest caller and should not
+#: have to import the encyclopedia to read a field.
+def geo_points(rec: dict) -> list[tuple[float, float]]:
+    """Every point member, as `(lat, lon)` — the spelling `geo:` always had."""
+    return [(m["lat"], m["lon"]) for m in rec["geo"] if m["kind"] == "point"]
+
+
+def geo_shapes(rec: dict) -> list[str]:
+    """Every shape member, as a `data/geo/` id."""
+    return [m["id"] for m in rec["geo"] if m["kind"] == "shape"]
+
+
+def geo_refs(rec: dict) -> list[str]:
+    """Every entity member, as an identity. What `extent_of` transcludes."""
+    return [m["id"] for m in rec["geo"] if m["kind"] == "entity"]
+
+
+def spell_geo(rec: dict) -> list[str]:
+    """The members back as authored, one string per line the file holds.
+
+    For anything that reports the field rather than resolving it — the CLI's
+    "was" column, a migration's diff — so that no caller has to know how a point
+    is spelled in order to print one.
+    """
+    return [f"{m['lat']} {m['lon']}" if m["kind"] == "point" else m["id"]
+            for m in rec["geo"]]
+
+
 def parse(text: str, where: str = "") -> dict:
     """One entity file's text → its record. Raises `Malformed` on anything unclear.
 
@@ -388,18 +472,24 @@ def parse(text: str, where: str = "") -> dict:
         aliases.append({"form": form, "lang": lang, "auto": auto == "yes",
                         "note": cells[3] if len(cells) > 3 else ""})
 
-    geo = one("geo")
-    coords = None
-    if geo:
-        parts = geo.split()
-        try:
-            if len(parts) != 2:
-                raise ValueError
-            coords = (float(parts[0]), float(parts[1]))
-        except ValueError:
-            raise Malformed(
-                f"{at}`geo: {geo}` — two WGS84 decimal degrees, latitude then "
-                f"longitude, space-separated") from None
+    # **One location field, repeatable, and the field is the union of its
+    # members.** It held exactly one point until it absorbed `area:`, and the
+    # two had been one question with two spellings for as long as both existed —
+    # which is why `parse` used to carry a rule refusing a record that answered
+    # it twice. A field that needs a rule against contradicting itself is a
+    # field that should not have been two.
+    #
+    # Deliberately **not** put through `one()`: several members is the ordinary
+    # case now, not a defect.
+    geo = [_geo_member(raw, at) for raw in fields.get("geo", [])]
+    # **`area:` is folded in here while it is being retired**, so that one
+    # implementation reads both spellings and every consumer downstream can be
+    # moved to the accessors in one step rather than being broken for the length
+    # of a migration. It is also what makes the migration checkable: `extent_of`
+    # is computed by the same code before and after a file is rewritten, so
+    # "nothing moved" is an assertion rather than a comparison of two program
+    # versions. Removed with the field.
+    geo += [{"kind": "shape", "id": a} for a in areas]
 
     # **A frame is not an extent.** It says where the map should *look*, which is
     # a different question from where the entity *is*, and the default answer is
@@ -439,27 +529,18 @@ def parse(text: str, where: str = "") -> dict:
                 f"less than north. East may exceed 180 in the atlas's continuous "
                 f"frame; west may not wrap past it")
 
-    # **`geo:` and `area:` are mutually exclusive, and the shape wins.** A record
-    # says where one thing is, once. `extent_of` reads the shape and would never
-    # look at a point beside it, so the point is unreachable by construction —
-    # it can only be a second, weaker statement of the same fact, and one that
-    # nothing keeps in step. `geo verify` used to carry a whole section for the
-    # disagreement it invited, and the rationale for tolerating it was the
-    # river's case: a basin plus its mouth. That is two things, not one, and if
-    # the mouth is worth naming it is worth an entry — `place:anadyr` is exactly
-    # that entry, and it is why the Anadyr's own point came out.
+    # **The rule against a record answering "where is it" twice is gone**, and
+    # it is gone because the question now has one field. It read: `geo:` and
+    # `area:` are mutually exclusive and the shape wins, since `extent_of` would
+    # read the shape and never look at a point beside it, so the point was
+    # unreachable by construction and could only be a second, weaker statement
+    # of the same fact that nothing kept in step.
     #
-    # A rule about what a record may *say*, so it belongs here with the other
-    # field rules and not with the geometry: it needs no shape store to check,
-    # and it holds in a tree where `data/geo/` was never built.
-    if coords and area:
-        raise Malformed(
-            f"{at}carries both `geo: {geo}` and `area: {area}`. A shape is the "
-            f"location and `extent_of` never reads a point beside one, so the "
-            f"two can only disagree. Keep the shape; if the point names a "
-            f"different thing — a river's mouth, a settlement on a bay — give "
-            f"that thing its own entry")
-
+    # Every word of that was true of *two* fields. With one, a point beside a
+    # shape is not a contradiction to adjudicate but two members of a union, and
+    # `extent_of` reads both. What the old rule was protecting — that a record
+    # says where one thing is, once — is now protected by there being one field
+    # to say it in.
     return {
         "id": f"{cls}:{slug}",
         "class": cls,
@@ -468,7 +549,7 @@ def parse(text: str, where: str = "") -> dict:
         "status": status,
         "within": within,
         "part_of": part_of,
-        "geo": coords,
+        "geo": geo,
         "frame": box,
         # Canonical, and **one field, not two**. The member list is
         # `geo.split_area(rec["area"])` at every call site rather than a second
@@ -951,17 +1032,25 @@ def check(root: Path = Path(".")) -> dict:
             errors.append(
                 f"{rec['path']}: `part-of: {p}` points at a place. `part-of:` is "
                 f"what a thing belongs to; where it *is* goes in `within:`")
-        # A composite resolves only when every member does, so the message has
-        # to name the member and not the whole field: "langarea:a,marine:b
-        # resolves to nothing" sends a reader to check the one that was fine.
-        missing = [m for m in split_area(rec["area"]) if m not in shapes]
-        if missing:
-            errors.append(
-                f"{rec['path']}: `area: {rec['area']}` — "
-                f"{', '.join(missing)} resolves to nothing in data/geo/. "
-                f"`harness geo list` names every shape; if the source has no "
-                f"polygon for it, leave `area:` off and say so in the gloss "
-                f"rather than pointing at an approximation")
+        # Per member, so the message names the one that failed: "langarea:a,
+        # marine:b resolves to nothing" sends a reader to check the one that
+        # was fine. Written for a composite `area:` and now simply the ordinary
+        # case, since a record may name as many members as it likes.
+        for m in geo_shapes(rec):
+            if m not in shapes:
+                errors.append(
+                    f"{rec['path']}: `geo: {m}` resolves to nothing in "
+                    f"data/geo/. `harness geo list` names every shape; if the "
+                    f"source has no polygon for it, leave the member off and "
+                    f"say so in the gloss rather than pointing at an "
+                    f"approximation")
+        for m in geo_refs(rec):
+            if m == rec["id"]:
+                errors.append(
+                    f"{rec['path']}: `geo: {m}` names its own entry")
+            elif m not in store:
+                errors.append(
+                    f"{rec['path']}: `geo: {m}` resolves to nothing")
         # `[[class:slug]]` in a gloss or an alias note is a reference, and a
         # reference to nothing is the failure this whole store exists to stop —
         # it renders as a link and goes nowhere. Checked here rather than at
@@ -973,19 +1062,42 @@ def check(root: Path = Path(".")) -> dict:
                 errors.append(f"{rec['path']}: [[{target}]] resolves to nothing")
     # Acyclic, so a containment chain terminates. A cycle would hang the
     # geography sprint's tree walk rather than fail it, which is the worse
-    # outcome of the two. **Both chains, walked separately** — `extent_of` falls
-    # back from one to the other, so a cycle in either hangs the same walk, and
-    # keeping them apart is what lets the message name the field a reader has to
-    # go and edit.
-    for field, label in (("within", "within"), ("part_of", "part-of")):
+    # outcome of the two. **Three edge kinds, walked separately** — `extent_of`
+    # follows all of them, so a cycle in any hangs the same walk, and keeping
+    # them apart is what lets the message name the field a reader has to go and
+    # edit.
+    #
+    # A depth-first walk with a path stack rather than the linear chase this
+    # was, because `geo:` is a *many*-valued edge: a record naming three
+    # entities has three chains out of it and a `cur = store[cur][field]` can
+    # only follow one.
+    #
+    # **The cycle that crosses two fields is deliberately not gated.** `A geo:
+    # B` with `B within: A` is invisible to all three passes and stays that way:
+    # `extent_of`'s path guard makes it terminate rather than hang, and an error
+    # reading "cycle across two fields" names no single line for anybody to go
+    # and fix. A message a reader cannot act on is worse than a shape that
+    # resolves to a smaller box.
+    def _cycles(edges, label: str) -> None:
+        def walk(ident: str, path: list[str], seen: set[str]) -> None:
+            for nxt in edges(store[ident]) if ident in store else ():
+                if nxt not in store:
+                    continue
+                if nxt in path:
+                    errors.append(
+                        f"`{label}:` cycle: {' → '.join(path + [nxt])}")
+                    continue
+                if nxt in seen:
+                    continue
+                seen.add(nxt)
+                walk(nxt, path + [nxt], seen)
+
         for rec in store.values():
-            seen, cur = [rec["id"]], rec[field]
-            while cur and cur in store:
-                if cur in seen:
-                    errors.append(f"`{label}:` cycle: {' → '.join(seen + [cur])}")
-                    break
-                seen.append(cur)
-                cur = store[cur][field]
+            walk(rec["id"], [rec["id"]], set())
+
+    _cycles(lambda r: [r["within"]] if r["within"] else [], "within")
+    _cycles(lambda r: [r["part_of"]] if r["part_of"] else [], "part-of")
+    _cycles(geo_refs, "geo")
 
     idx = alias_index(store)
     collisions = []
