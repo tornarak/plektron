@@ -562,6 +562,7 @@ button.speak:disabled { opacity:.4; cursor:not-allowed }
 .run .toc-l1 { margin-top:.4rem }
 .run .toc-l2 { padding-left:4.4rem }
 .run .toc-l3 { padding-left:5.6rem }
+.run .toc-l4 { padding-left:7.0rem }
 .run .loi-n { color:var(--dim) }
 .run .loi-plate .loi-n { font-variant:small-caps; letter-spacing:.02em }
 .run .authority { align-items:flex-start; padding-top:.5rem }
