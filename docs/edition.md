@@ -75,7 +75,7 @@ are load-bearing:
 **The titles that moved were the ones the repo could already witness.** The
 brief was "what gets the most results today", which is a judgement, so the pass
 was scoped to entries where a second witness was already committed: a
-`wikipedia:` link whose article is titled differently, or an `area:` naming a
+`wikipedia:` link whose article is titled differently, or a `geo:` member naming a
 shape whose slug carries both names — `watershed:maliy-anyuy-or-dry` is
 the geo store's own adjudication of the same question, made when it was built.
 **Modern name first, book name second**, uniformly: seven slugs ran the other
@@ -231,9 +231,11 @@ row cannot be answered by writing a number in a file.
   about its own half, which is the tell that the question was two questions.
   Now the village supplies the box and `part-of:` keeps the ethnicity.
 
-  It is the same defect as the `geo:`/`area:` rule below, inverted: there, two
-  fields said one thing and the second could only drift; here, one field said
-  two things and no reader could tell which it meant.
+  It is the same defect as the `geo:`/`area:` rule below, inverted — and both
+  are now settled the same way, by counting the questions. There, two fields
+  said one thing and the second could only drift, so they became one field;
+  here, one field said two things and no reader could tell which it meant, so it
+  became two.
 
   **`entities.tree_parent` states the fallback once** — `within:` if there is
   one, else `part-of:`, and the second half scoped to `people:` — because five
@@ -245,15 +247,13 @@ row cannot be answered by writing a number in a file.
   parent's box bounds it truthfully, whereas a `source:` that is part of a
   larger work is not *somewhere* because of it — letting that edge into the tree
   would put a bibliography on the map.
-- **`geo:` and `area:`** are the atlas's, below, and **a record may carry one or
-  the other and never both** — `entity check` refuses it. A shape *is* the
-  location: `extent_of` reads it and would never look at a point beside it, so
-  the point could only be a second, weaker statement of the same fact, kept in
-  step by nothing. Where a point names a *different* thing — a river's mouth, a
-  settlement on a bay — that thing gets its own entry, which is what
-  `place:anadyr` is. `area:` names a shape in `data/geo/` and must resolve
-  there; a shape *kind* may never be an entity class, for a reason worth reading
-  before adding either.
+- **`geo:` is the atlas's**, below, and it is **repeatable**: the field is the
+  union of its members, each of them a point, a shape in `data/geo/`, or another
+  entity whose extent this one takes. Every member must resolve, and a shape
+  *kind* may never be an entity class — which is the invariant that lets one
+  field hold all three. It was two fields, `geo:` for a point and `area:` for a
+  shape, with a rule refusing a record that carried both; the rule was right
+  about two fields and the answer was one.
 - **`frame:` is where the map looks**, which is a different question from where
   the thing is: four degrees, west south east north — longitude first, unlike
   `geo:`, because it is a box, and east may exceed 180 in the atlas's continuous
@@ -1548,7 +1548,7 @@ committed. `shapely` is a build-time dependency declared inline (PEP 723);
 
 `data/geo/` answers "what shape is this drawn as". It does not answer "where is
 this village", and for most of the store nothing does: 73 geographical entries
-carry no `geo:`, no `area:` and no `frame:`. The gazetteer cannot help — Natural
+carry no `geo:` and no `frame:`. The gazetteer cannot help — Natural
 Earth's 10m layers hold eight features in this window and every one is already
 claimed — so the remaining work is identification, and identification off a name
 is exactly where a confident guess is cheapest to make. Natural Earth's
@@ -1687,50 +1687,80 @@ reports that on every run and draws it as it is. Extending a speaker area past
 where its publisher drew it would be inventing evidence in the one place a reader
 would never check.
 
-### `area:`, and why it is typed rather than matched
+### One location field, and its three kinds of member
 
-A new optional entity field naming a shape: `area: watershed:anadyr`.
+`geo:` is **repeatable**, and the field is the union of its members. A member is
+one of three things, told apart by its own spelling and by nothing else:
+
+| written | is | resolved by |
+|---|---|---|
+| `64.4051 -172.2409` | a point | `geo.point_box` |
+| `langarea:chuk1273` | a shape in `data/geo/` | `geo.shape` |
+| `place:naukan` | another entity, whose extent this one takes | `geo.extent_of` |
+
 **Human-authored, and that is the point** — identifying a toponym Bogoras wrote
 in 1904 with a polygon a modern delineation service returned is an assertion
 about the world, and a rule that matched them by name would be the confident
-guess this project is arranged against. `watershed:main` and the English word are
-one keystroke apart in that file listing.
+guess this project is arranged against. `watershed:main` and the English word
+are one keystroke apart in that file listing.
 
-A shape kind is held **disjoint from `ENTITY_CLASSES`** — `langarea:`, never
-`language:` — because an entity file carries `within: land:chukotka` two lines
-from `area: langarea:chuk1273`, and a reader who cannot tell them apart by
-looking is one keystroke from an `area:` that resolves as an entity reference.
-`entities.parse` refuses a colliding kind outright.
+**It is decidable because a shape kind is held disjoint from `ENTITY_CLASSES`**
+— `langarea:`, never `language:`. That invariant is older than this field and
+used to be enforced *negatively*: an `area:` naming an entity class was refused
+outright, because it looked like a reference and resolved to nothing. It is read
+positively now — it *is* one — which is the same fact doing more work.
+`geo bounds` has told the two apart by prefix alone since it was written, with
+no flag and no wrong guess available to it.
 
-`entity check` gates exactly one thing here: that the id resolves. That is a
-fact about names, like `within:` resolving. Everything geometric is
-`geo verify`'s and **reports**.
+`entity check` gates exactly this: that a member resolves, as a shape in
+`data/geo/` or as an entity in the store. That is a fact about names, like
+`within:` resolving. Everything geometric is `geo verify`'s and **reports**.
 
-### A composite `area:`, resolved at lookup and never materialized
+### There were two location fields, and the second could only drift
 
-Several shapes, comma-separated — `area: langarea:chuk1273,
-base:chukotka-east-of-meridian` — because no source draws together what a human
-can see belongs together. The identity of a composite **is** its canonical
-member list, sorted and comma-joined, so nothing mints a name and two spellings
-of one union cannot exist.
+`geo:` held a point and `area:` held a shape, and `parse` carried a rule
+refusing a record that had both: `extent_of` read the shape and would never look
+at a point beside it, so the point was unreachable by construction and could
+only be a second, weaker statement of the same fact that nothing kept in step.
+Every word of that was true — of *two* fields. **A rule against a store
+contradicting itself is a rule that should not have been needed**, and the
+answer was one field.
 
-**It is not a row in the store.** `index()["shapes"]` still enumerates precisely
-what the build wrote — `geo list` and `verify`'s `unclaimed` census
-`data/geo/`, not `entities/` — and only `.get()` and `in` resolve a composite,
-and only when *every* member is a real row. So a union is re-derived on every
-run and fails rather than goes stale, which is the same property that lets `#gt`
-and `#mz` exist at all; and `entity check` still refuses one naming a shape that
-does not exist, with the message naming the member rather than the whole field.
-A composite counts as a claim on **each** of its members, or the members would
-read as unclaimed while the union read as a shape `data/geo/` does not hold —
-two wrong answers out of one right authored field.
+The `area:` half brought a whole apparatus with it, because a single-valued
+field that sometimes had to hold two shapes needed one: a comma split, a
+canonical sort so a union could not exist under two spellings, a synthesized
+index row corresponding to nothing the build wrote, and a `dict` subclass whose
+`.get()` resolved a composite while iteration refused to admit it existed. None
+of it survives. `index()["shapes"]` is a plain dict of what the build wrote;
+`geo.shape` takes one id; several shapes are several lines.
 
-`geo.shape()` returns the members' features **concatenated**, not unioned: this
-module imports no geometry library on purpose and every operation downstream is
-per-polygon. That concatenation is what turned up a latent bug in `in_shape`,
-which counted ray-crossing parity across every ring in a collection — the same
-arithmetic as per-polygon parity only while no two polygons overlap, and a hole
-punched exactly where two shapes agree otherwise.
+What is kept is the *reporting*. `geo list` still has a `composites` block,
+because "these two polygons are one speaker area" — `langarea:chuk1273` with
+`base:chukotka-east-of-meridian`, the Alaskan Yupik pair — is a human's
+assertion about `entities/` and earns a row. It claims nothing and resolves to
+nothing; its key is sorted so two entities that named the same pair in either
+order land together, which is all that is left of the canonical spelling.
+
+**A claim is one hop.** An entity reaching a shape only through another entity's
+`geo:` does not claim it, or `unclaimed` would go quiet about shapes nobody has
+actually pointed at.
+
+### Transclusion, and the `within:` it replaced
+
+`geo: place:naukan` is the member kind the store could not express, and its
+absence had been paid for in the wrong field. `people:naukans` was filed
+`within: place:naukan` — a people inside a village — for one reason: `within:`
+was the only field that would fetch a box. It worked, and it cost the thing it
+was borrowed for. A people hanging from a village hung there in the *tree* too,
+so its extent never rolled up to its ethnicity, and the map of the Yupik
+excluded two Yupik peoples.
+
+So `within:` is now **reserved for the four geographical classes at both ends**
+and `entity check` gates it. It answers one question again — what terrestrial
+thing contains this one — which `geo.NESTING` can check and the atlas can walk.
+What a thing *belongs to* is `part-of:`; whose extent it *takes* is a `geo:`
+member; where it *is* is `within:`. Three relations, three fields, and the store
+had three relations all along.
 
 ### Item 7: the land east of the meridian is land, and the claim is a human's
 
@@ -1743,7 +1773,7 @@ The join is then one human act, in the entity file, where a reader can see whose
 it is:
 
     harness entity locate language:chukchi \
-        --area langarea:chuk1273,base:chukotka-east-of-meridian --commit
+        --geo langarea:chuk1273 --geo base:chukotka-east-of-meridian --commit
 
 That separation is the design. Sourced geometry in the store; the inference in
 an entity, under a `status:`, with a name on it. A shape kind that meant "this
@@ -1778,7 +1808,7 @@ and 0% against the Anadyr, which is how they ended up as its siblings rather tha
 its tributaries.
 
 **There was a third check and it is gone.** A `geo:` point was measured against
-its own `area:` and reported with a distance, not as a defect: a river's natural
+its own shape and reported with a distance, not as a defect: a river's natural
 point is its **mouth**, which sits on the very boundary the basin was delineated
 from, and `river:anadyr` was 0.59° out at the estuary. That tolerance was the
 width of the thing being measured rather than slack — and the whole arrangement
@@ -1809,11 +1839,12 @@ longitude and a single centre would visibly shear the Amur; nothing compares two
 separately-framed maps, so there is nothing to lose.
 
 **A drainage divide is not drawn in the colour of the rivers inside it.** The
-subject's outline goes dark red when its `area:` names a watershed, which is why
+subject's outline goes dark red when its `geo:` names a watershed, which is why
 `render` takes a `mark` it does not compute: it sees paths and cannot tell a
 basin from a coastline, and inferring one from the shape of a ring is the kind of
 guess this project is arranged against. The predicate is the *shape's* type —
-`area:` is typed, and `watershed:anadyr` says where the polygon came from. Every
+a shape member is typed, and `watershed:anadyr` says where the polygon came
+from. Every
 watershed in the store happens to sit on a `water:` entity today, so the entity's
 class would answer the same; it is a different question, and only this one says
 why the boundary must not be blue. The members are left in the accent: they are
@@ -1862,7 +1893,7 @@ which is the one place the two trees are allowed to differ.
 
 **A shapeless node is framed by its members, and the map says so.** No source
 holds a polygon for Chukotka or the Russian Far East, and none should: they are
-tree structure, not shapes. So a node without `area:` gets the padded union of
+tree structure, not shapes. So a node with no shape of its own gets the padded union of
 the extents beneath it and is captioned as framed by its members rather than by
 an authored boundary. A frame is a viewport, not a claim — which is why computing
 one is legal where inferring a *boundary* for Chukotka would not be.
@@ -1891,7 +1922,7 @@ identical from outside, and only one of them is finished.
 
 `geo verify` reports the worklist from both ends. `unclaimed` is what the atlas
 holds that no entity points at; **`unlocated`** is its inverse — entities inside
-a subtree the atlas can draw that carry neither `geo:` nor `area:`, so they ride
+a subtree the atlas can draw whose `geo:` puts nothing on it, so they ride
 on a parent's frame and put nothing on it. Scoped by the tree rather than by
 class, because every person and source in the store is unlocated and always will
 be, and a worklist mostly made of rows nobody will act on is one nobody reads.
@@ -1899,9 +1930,11 @@ Its `wants` column separates an entity that needs a coordinate from one already
 framed by its members: asking for a boundary for Chukotka is the one thing this
 atlas refuses to invent.
 
-`harness entity locate ID` answers a row of it, setting `geo:`, `area:`, or
-both. It re-parses the file before writing, as `entity new` does, and refuses an
-`area:` naming a shape `data/geo/` does not hold. That is the whole of the
+`harness entity locate ID` answers a row of it, setting `geo:` or `frame:`.
+`--geo` repeats and **replaces rather than appends** — a flag that only added
+could never take a member off. It re-parses the file before writing, as
+`entity new` does, and refuses a member naming a shape `data/geo/` does not hold
+or an entity the store does not. That is the whole of the
 workflow, and it ends the hand-edit: item 11 alone was four of them.
 
 **Where a bound comes from is still a provenance question**, and there are only

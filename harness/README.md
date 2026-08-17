@@ -306,9 +306,14 @@ people had to import the atlas to get one. `geo` re-exports the first two.
 `part-of:` otherwise, the fallback scoped to `people:`. One function because
 five callers must agree exactly — the three above plus `geo.extent_of` and
 `geo.unlocated` — and a tree disagreeing with the extent would draw a node in
-one place and frame it on another. The parser refuses an unknown field rather
-than dropping it, `RETIRED_FIELDS` excepted: `part-of:` was silently discarded
-by a `[a-z]+` key pattern that could not match a hyphen, and every gate passed.
+one place and frame it on another. `within:` is now held to the four
+geographical classes at both ends and `entity check` gates it: a people filed
+inside a village was borrowing an extent, which `geo:` says directly, and it hung
+from that village in the tree as the price. The parser refuses an unknown field
+rather than dropping it, `RETIRED_FIELDS` excepted: `part-of:` was silently
+discarded by a `[a-z]+` key pattern that could not match a hyphen, and every gate
+passed. `area:` is retired there too — a second location field beside `geo:`,
+which now repeats and holds a point, a shape or another entity's extent.
 `occurrences` finds where an entity appears across a **caller-supplied** page
 list, so `entity occurrences` can audit committed `tei/` while the reading view
 sweeps what it is actually serving, and neither inherits the other's corpus.
@@ -356,7 +361,7 @@ vowel, and `r^` rendering while swallowing what came after.
 **`geo.py`** — the compiled shape store, read-only, and the checks over it. Imports
 no geometry library: the store's longitudes are already normalized into one
 continuous window, so what is left is arithmetic — the heavy work happened once, at
-build time. `entity check` gates that an `area:` *resolves*; everything geometric is
+build time. `entity check` gates that a `geo:` member *resolves*; everything geometric is
 `geo verify` and **reports**, because a containment disagreement says one of two
 authored facts is wrong and cannot say which.
 
