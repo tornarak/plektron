@@ -50,11 +50,6 @@ function card(id, title, meta, html, extra) {
      the commonest act. `mousedown` is where the autoscroll cursor would
      otherwise appear, so it is refused there and acted on at `auxclick`. */
   el.addEventListener('mousedown', ev => { if (ev.button === 1) ev.preventDefault(); });
-  el.addEventListener('auxclick', ev => {
-    if (ev.button !== 1) return;
-    ev.preventDefault();
-    el.remove(); savePins(); clampIdx();
-  });
   el.addEventListener('click', ev => {
     const b = ev.target.closest('button'); if (!b) return;
       if (b.dataset.act === 'close') { el.remove(); savePins(); clampIdx(); }
