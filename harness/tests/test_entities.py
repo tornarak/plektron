@@ -726,3 +726,118 @@ def test_the_placeholder_is_the_only_empty_row_the_store_tolerates(tmp_path):
     p.write_text(text, encoding="utf-8")
     with pytest.raises(E.Malformed, match="empty form"):
         E.load(tmp_path)
+
+
+# --------------------------------------------------- the printed sigla
+
+class _SiglaArgs:
+    def __init__(self, root, commit=True):
+        self.root, self.commit = root, commit
+        self.json = self.toon = self.pager = False
+
+
+def _authorities(root: Path, *works) -> None:
+    """`data/authorities.json` with just the `cited_as` this verb reads."""
+    import json
+    p = root / "data"
+    p.mkdir(parents=True, exist_ok=True)
+    (p / "authorities.json").write_text(json.dumps({"authorities": [
+        {"key": k, "cited_as": [{"name": n, "volume": v, "short_title": t}
+                                for n, v, t in cited]}
+        for k, cited in works]}), encoding="utf-8")
+
+
+def _sigla(tmp_path, **kw):
+    from harness.cli._entity import run_sigla
+    return run_sigla(_SiglaArgs(tmp_path, **kw))
+
+
+def test_a_volume_yields_both_spellings_and_the_name_joins_them(tmp_path):
+    """`Maydell I, p. 331.` and `Maydell, I, pp. 627-680.` sit in one apparatus,
+    so the comma carries no information and the store holds both. The *name* is
+    what `[Cited, MAYDELL, I, II.]` prints — a two-volume work is one work."""
+    _authorities(tmp_path, ("maydell1893", [("Maydell", "I", None),
+                                            ("Maydell", "II", None)]))
+    p = entry(tmp_path, "source:maydell-1893", canonical="Maydell 1893",
+              aliases=[("Maydell", False)], extra="- authority: maydell1893\n")
+    _sigla(tmp_path)
+    rec = E.load(tmp_path)["source:maydell-1893"]
+    assert rec["canonical"] == "Maydell, I, II"
+    assert {t["form"] for t in rec["aliases"]} == {
+        "Maydell", "Maydell, I", "Maydell I", "Maydell, II", "Maydell II"}
+    assert p.read_text(encoding="utf-8").startswith(
+        "# source:maydell-1893 — Maydell, I, II\n")
+
+
+def test_a_bare_surname_siglum_leaves_the_entry_entirely_alone(tmp_path):
+    """**The guard is on both halves and was written on one.** `siglum_forms`
+    returns nothing for a bare surname, so no alias was ever added — but the
+    rename ran anyway and 17 entries came out titled `Steller`, `Nelson`,
+    `Murdoch`.
+
+    Not because a bare surname is undecidable: `Steller, p. 123` names the book
+    and `citations.py` links it on the locator. It is the *alias table* that
+    cannot reach it, an alias being a context-free string match. The rename is
+    refused on the other ground — a siglum earns the heading by saying which
+    work, and this one names the man as readily as the book while costing the
+    heading the year that told them apart."""
+    _authorities(tmp_path, ("nelson1899", [("Nelson", None, None)]))
+    p = entry(tmp_path, "source:nelson-1899", canonical="Nelson 1899",
+              aliases=[("Nelson", False)], extra="- authority: nelson1899\n")
+    before = p.read_text(encoding="utf-8")
+    _sigla(tmp_path)
+    assert p.read_text(encoding="utf-8") == before
+
+
+def test_a_short_title_siglum_is_one_row_and_not_two(tmp_path):
+    """The short title is set with its comma throughout the footnotes, so unlike
+    a volume it has one spelling and yields one row."""
+    _authorities(tmp_path, ("boas1888", [("Boas", None, "Central Eskimo")]))
+    entry(tmp_path, "source:boas-1888", canonical="Boas 1888",
+          aliases=[("Boas", False)], extra="- authority: boas1888\n")
+    _sigla(tmp_path)
+    rec = E.load(tmp_path)["source:boas-1888"]
+    assert rec["canonical"] == "Boas, Central Eskimo"
+    assert {t["form"] for t in rec["aliases"]} == {"Boas", "Boas, Central Eskimo"}
+
+
+def test_a_form_another_entry_claims_is_written_auto_no(tmp_path):
+    """`entity check`'s rule applied before the row is written rather than left
+    for it to catch afterwards — a form two entities claim is a question for a
+    human, not a licence."""
+    _authorities(tmp_path, ("dall1870", [("Dall", "I", None)]))
+    entry(tmp_path, "source:dall-1870", canonical="Dall 1870",
+          extra="- authority: dall1870\n")
+    entry(tmp_path, "person:dall", canonical="William Dall",
+          aliases=[("Dall, I", False)])
+    _sigla(tmp_path)
+    rows = {t["form"]: t["auto"]
+            for t in E.load(tmp_path)["source:dall-1870"]["aliases"]}
+    assert rows["Dall, I"] is False and rows["Dall I"] is True
+
+
+def test_two_entries_with_one_siglum_do_not_both_claim_it_unconditionally(tmp_path):
+    """`alias_index` is a snapshot taken before the first write, so a second
+    entry reaching the same form would be told nothing else claims it. Both
+    would come out `auto: yes`, which `entity check` refuses outright — one
+    commit too late to be cheap."""
+    _authorities(tmp_path, ("a1", [("Krause", "I", None)]),
+                 ("a2", [("Krause", "I", None)]))
+    entry(tmp_path, "source:krause-1881", canonical="Krause 1881",
+          extra="- authority: a1\n")
+    entry(tmp_path, "source:krause-1882", canonical="Krause 1882",
+          extra="- authority: a2\n")
+    _sigla(tmp_path)
+    store = E.load(tmp_path)
+    autos = [t["auto"] for i in ("source:krause-1881", "source:krause-1882")
+             for t in store[i]["aliases"] if t["form"] == "Krause, I"]
+    assert autos.count(True) == 1, autos
+
+
+def test_a_reported_run_writes_nothing(tmp_path):
+    _authorities(tmp_path, ("boas1888", [("Boas", None, "Central Eskimo")]))
+    p = entry(tmp_path, "source:boas-1888", canonical="Boas 1888",
+              extra="- authority: boas1888\n")
+    before = p.read_text(encoding="utf-8")
+    _sigla(tmp_path, commit=False)
+    assert p.read_text(encoding="utf-8") == before

@@ -1,4 +1,4 @@
-# source:bogdanovitch-1901 — Bogdanovitch
+# source:bogdanovitch-1901 — Bogdanovitch 1901
 
 - status: ratified
 - authority: bogdanovitch1901

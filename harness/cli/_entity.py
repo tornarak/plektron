@@ -849,10 +849,24 @@ def run_sigla(a) -> int:
 
     **It adds and it renames.** A row a human wrote is never removed, and an
     entry whose authority lists no siglum, or whose siglum is a bare surname, is
-    not touched at all — the bare name is already the alias, and it is the
-    contested one no rule may link. `auto` is `yes` only where nothing else in
-    the store claims the form, which is `entity check`'s rule applied ahead of
-    it rather than a judgement made here.
+    not touched at all. `auto` is `yes` only where nothing else in the store
+    claims the form, which is `entity check`'s rule applied ahead of it rather
+    than a judgement made here.
+
+    **A bare surname is not unlinkable, and saying so was the overstatement
+    that let the guard be written on half of this.** `Steller, p. 123` names the
+    book and nothing else; `citations.py` links exactly that, by rule, on the
+    locator — 64 of the 130 `source:` links, every one a bare surname. What
+    cannot reach it is the *alias table*, because an alias is a context-free
+    string match and `person:steller` claims the same string. So the bare
+    surname yields no row here, and it needs none.
+
+    The rename follows from that and not from ambiguity. A siglum earns the
+    heading because it says *which work* — `Maydell, I` does, `Steller` does
+    not, naming the man as readily as the book while costing the heading the
+    year that told them apart. `siglum_forms` already returned nothing for a
+    bare surname; the rename ran anyway, and 17 entries came out titled
+    `Steller`, `Nelson`, `Murdoch`. Both halves now mean the same thing.
     """
     from .. import authorities
     from ..entities import alias_index, parse
@@ -860,6 +874,11 @@ def run_sigla(a) -> int:
     store = _store(a)
     works = {w["key"]: w for w in authorities.load(a.root)}
     idx = alias_index(store)
+    #: Forms this run has already written. `idx` is a snapshot taken before the
+    #: first write, so two entries whose sigla collide would both be told
+    #: nothing else claims the form and both come out `auto: yes` — which
+    #: `entity check` refuses outright, one commit too late to be cheap.
+    added: dict[str, str] = {}
     rows, renamed = [], []
     for ident in sorted(store):
         rec = store[ident]
@@ -868,6 +887,8 @@ def run_sigla(a) -> int:
             continue
         forms = authorities.siglum_forms(work["cited_as"])
         name = authorities.siglum_name(work["cited_as"])
+        if not forms:
+            continue
         have = {t["form"] for t in rec["aliases"]}
         want = [f for f in forms if f not in have]
         if not want and rec["canonical"] == name:
@@ -887,8 +908,11 @@ def run_sigla(a) -> int:
                 # Contested here means contested in the file afterwards, which
                 # `entity check` gates and this must not walk into: a form two
                 # entries claim is a question for a human, not a licence.
-                auto = "no" if any(c["id"] != ident for c in idx.get(f, [])) else "yes"
+                claimed = (any(c["id"] != ident for c in idx.get(f, []))
+                           or added.get(f, ident) != ident)
+                auto = "no" if claimed else "yes"
                 note = "" if auto == "yes" else "auto: no — another entry claims it"
+                added.setdefault(f, ident)
                 new.append(f"| {f} | | {auto} | {note} |".replace("|  |", "| |"))
                 rows.append({"id": ident, "form": f, "auto": auto == "yes",
                              "wrote": bool(a.commit)})

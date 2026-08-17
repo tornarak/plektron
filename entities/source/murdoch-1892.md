@@ -1,4 +1,4 @@
-# source:murdoch-1892 — Murdoch
+# source:murdoch-1892 — Murdoch 1892
 
 - status: ratified
 - authority: murdoch1892

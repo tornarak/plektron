@@ -443,13 +443,26 @@ pp. 627-680.` sit in the same apparatus, which is the fact `parse_citation` was
 built around, so the comma carries no information and both spellings are the
 store's.
 
-**A bare surname yields no alias**, and that is the division of labour. It is
-already the entry's row and it is the contested one — `person:maydell` claims it
-too — so no spelling of it tells the man from the book. What the sigla add is the
-uncontested half: `Boas, Central Eskimo` is claimed by one entry, so it links by
-the ordinary rule with no citation evidence needed, and the mark covers the
-siglum whole. 56 rows over 47 works; `auto: yes` only where nothing else in the
-store claims the form, which is condition 1 applied before the row is written.
+**A bare surname leaves the entry alone entirely** — no alias, and no rename
+either — and that is the division of labour. It is already the entry's row, and
+it is the one the *alias table* cannot decide: `person:maydell` claims it too,
+and an alias is a context-free string match. **It is not undecidable, and saying
+so would be the overstatement this whole apparatus is against.** `Steller,
+p. 123` names the book and nothing else, which is what `citations.py` links on —
+64 of the 130 `source:` links, every one a bare surname. What the sigla add is
+the half the alias table *can* take: `Boas, Central Eskimo` is claimed by one
+entry, so it links by the ordinary rule with no citation evidence needed, and the
+mark covers the siglum whole. 56 rows over 47 works; `auto: yes` only where
+nothing else in the store claims the form, which is condition 1 applied before
+the row is written.
+
+**The rename follows from what a siglum is worth as a heading, not from
+ambiguity.** `Maydell, I` earns it because it says *which work*; `Steller` names
+the man as readily as the book and costs the heading the year that told them
+apart. `siglum_forms` already returned nothing for a bare surname, but the guard
+was written on that half only, so 17 entries came out titled `Steller`, `Nelson`,
+`Murdoch` before both halves were made to mean the same thing.
+`source:steller-1774 — Steller 1774` stands.
 
 Measured over the 274 generated pages: **130 `#mz` links to a `source:` entry, 66
 of them the alias table's and 64 the citation rule's** — every one of the 64 a
