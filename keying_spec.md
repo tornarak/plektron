@@ -318,13 +318,37 @@ noise that buries real signal.
 **A figure sub-part locant is not a marker** — `(Fig. 17, f¹)`, a raised numeral
 picking out one labelled detail of a plate. Key it as printed; it anchors no
 note, so it is printed once, and the counting excludes it rather than reading it
-as an unpaired marker. The exclusion is narrow, and taken from what `gt/ocr/`
-attests: a **lone letter** carries the superscript and a close-paren follows.
-Both halves are load-bearing — the same store holds real markers on a
-multi-letter word before a paren (`Ciˊṛluk⁶)`) and spaced off the word
-(`Nelson ¹)`), and either half of the rule alone would swallow one of them. The
-locant is still *reported*, at the advisory tier: an exclusion that says nothing
-is indistinguishable from a check that never ran.
+as an unpaired marker.
+
+**The exclusion is bounded twice, because it is asked twice and the two askers
+see different things.**
+
+*On a keyed line* — `harness corpus normalize`, `detectors.FIGURE_LOCANT`, and
+the reader keying the page — the bound is textual and narrow, taken from what
+`gt/ocr/` attests: a **lone letter** carries the superscript and a close-paren
+follows. Both halves are load-bearing, since the same store holds real markers on
+a multi-letter word before a paren (`Ciˊṛluk⁶)`) and spaced off the word
+(`Nelson ¹)`), and either half alone would swallow one of them. It is
+deliberately not keyed on `Fig.` appearing in the line either: `155, a¹),` is a
+citation wrapped across a line break, and the reader keying that line can see the
+locant and not the word that governs it.
+
+**That bound catches the last locant of a run and misses every earlier one**, and
+the spec did not use to admit it. `1-285` prints `(Fig. 155, d², e¹)` and
+`(Fig. 155, a², c²)`: only `e¹` and `c²` are followed by the paren, so `d²` and
+`a²` fall outside the rule. On a keyed line that is tolerable — the check is
+report-only, and an advisory hit costs a reader a glance.
+
+*In the TEI* it was not. The generator counted those as references to note 2 and
+reported all three of the page's notes as ambiguous, anchoring none. There the
+bound is **structural**: a figure reference is marked, so a locant run is
+whatever `figrefs.LOCANTS` consumes after it — the same pattern that decided
+where the reference ended. A comma-separated list is then no harder than a single
+letter, and `tei validate` re-derives it. One fact, two bounds, and each is as
+tight as its evidence allows.
+
+The locant is still *reported* on the keying side, at the advisory tier: an
+exclusion that says nothing is indistinguishable from a check that never ran.
 
 **Spacing, and it runs opposite ways at the two ends.** A body reference sets
 **tight** against whatever precedes it — `mouth.¹`, `tales¹`, `Steller,¹`,
