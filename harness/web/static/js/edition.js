@@ -272,7 +272,21 @@ let z_scale = 1, z_x = 0, z_y = 0, z_drag = null, z_panned = false, z_rot = 0;
 const Z_MAX = 12;
 
 function zoomReset() {
-    z_scale = 1; z_x = 0; z_y = 0; z_rot = 0;
+    z_rot = 0;
+    zoomResetView();
+}
+
+/* Scale and pan, without the rotation.
+
+   **A turn survives a step through the group**, because it is a fact about how
+   the pictures were bound and not about how this one is being looked at: the
+   three leaves of a foldout plate are all on their sides, and a reader who
+   turned the first upright meant the plate, not the leaf. Zoom and pan do not
+   survive, because they name a place *inside* one picture that the next one has
+   no counterpart for. Opening the lightbox afresh starts square — `setLightbox`
+   zeroes the angle, so a rotation never outlives the set it was made in. */
+function zoomResetView() {
+    z_scale = 1; z_x = 0; z_y = 0;
     zoomPaint();
 }
 
@@ -340,6 +354,12 @@ function setLightbox(src, group) {
         lightbox_img = document.createElement('img');
         lightbox_img.className = 'top';
         lightbox_img.draggable = false;
+        /* `rotFit` measures the *rendered* picture, and a swapped `src` keeps
+           the outgoing one's dimensions until the new file decodes. With the
+           angle now carried across a step, the first paint of the next picture
+           would scale a landscape leaf by the portrait one's factor and hang it
+           off the edge; this repaints once it is real. */
+        lightbox_img.addEventListener('load', zoomPaint);
         lightbox_under = document.createElement('img');
         lightbox_under.className = 'under';
         lightbox_under.alt = '';
@@ -363,6 +383,7 @@ function setLightbox(src, group) {
     }
     lb_items = (group && group.length) ? group : [{src, caption: ''}];
     lb_i = Math.max(0, lb_items.findIndex(it => it.src == src));
+    z_rot = 0;
     lightbox.style.removeProperty('visibility');
     paintLightbox();
 }
@@ -379,7 +400,7 @@ function paintLightbox() {
        half pair on the server side too. */
     lightbox_under.hidden = !it.under;
     if (it.under) lightbox_under.src = it.under;
-    zoomReset();
+    zoomResetView();
     /* **The caption is a link to the file**, which is the one thing a lightbox
        cannot do for you: see it at its own size, save it, put it in a tab. With
        no caption the bare file name stands in — `chukchi-1-049-002.png` names
@@ -414,7 +435,10 @@ function bindZoom(container) {
 
     container.addEventListener('dblclick', e => {
         e.preventDefault();
-        if (z_scale > 1) zoomReset();
+        /* The view only: double-click toggles the zoom, and dropping the
+           reader's rotation on the way back out is not what the gesture says.
+           `0` is the control that undoes everything, and stays that. */
+        if (z_scale > 1) zoomResetView();
         else zoomAt(3, e.clientX, e.clientY);
     });
 
