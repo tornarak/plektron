@@ -11,6 +11,7 @@
 |---|---|---|---|
 | Yukaghir | | no | |
 | Russianized natives | | no | 1-036: "The Russianized natives of the Kolyma consist chiefly of Yukaghir with a strong admixture of Russian blood, and some of the Yakut and the Chuvantzy." |
+| Russianized Yukaghir | | yes | |
 
 ## gloss
 
