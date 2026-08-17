@@ -2,12 +2,14 @@
 
 - status: ratified
 - within: river:anadyr
+- geo: place:under-the-cliffs
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
 | Chikayeva | | yes | |
+| Chikayevo | | yes | sic. (on the same page) |
 
 ## gloss
 
