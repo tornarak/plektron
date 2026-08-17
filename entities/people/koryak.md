@@ -9,7 +9,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Koryak | | no | |
+| Koryak | | once | |
 | Reindeer Koryak | | yes | |
 | Maritime Koryak | | yes | |
 | Taˊn˙ñɪt | ckt | yes | |
