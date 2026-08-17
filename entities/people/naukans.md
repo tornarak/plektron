@@ -1,8 +1,10 @@
 # people:naukans — Naukans
 
 - status: ratified
-- part-of: people:yupik
+- part-of: people:siberian-yupik
 - geo: place:naukan
+- geo: place:dezhnyovo
+- geo: place:uelen
 - link: wikipedia:Naukan_people
 - link: wikidata:Q4833495
 

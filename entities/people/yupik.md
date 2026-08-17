@@ -10,6 +10,4 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| Asiatic Eskimo | | yes | |
-| Siberian Eskimo | | yes | |
 | Eskimo | | no | Ambiguous; but the most common referent of this word by far. See [[people:eskimo]] |

@@ -1,8 +1,9 @@
 # people:sireniks — Sireniks
 
 - status: ratified
-- part-of: people:yupik
+- part-of: people:siberian-yupik
 - geo: place:sirenik
+- geo: place:chenlin
 - link: wikipedia:Sireniks
 - link: wikidata:Q4811111
 
