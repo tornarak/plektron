@@ -287,7 +287,7 @@ def join_broken_words(recs: list[dict]) -> list[str]:
 
     Takes `lines.page_lines` records and returns their texts, so the caller's
     records and this output stay positional to each other and `index` never
-    moves. Only `text` is read.
+    moves. `text` and `zone` are read, and nothing else.
 
     `recs` must already be in **reading order**, the printed sequence, which is
     what `page_lines` returns. ALTO document order is *not* it (harness/README.md, "line
@@ -350,6 +350,28 @@ def join_broken_words(recs: list[dict]) -> list[str]:
     it already owns, by testing the concatenation too (`lexicon_miss`), which is a
     reading of the token rather than an edit to it.
 
+    **The continuation must be in the same zone, and that is not the geometric
+    guard this function threw out.** That one asked whether a box was too far
+    away, which is arithmetic over coordinates and can only guess; this reads the
+    label a human keyed. Where the two lines sit in different zones the store is
+    not silent about it — it has already said one is prose and the other is the
+    apparatus — and a body word's continuation is never a footnote.
+
+    Measured over `gt/ocr/`: **523 joins, of which 4 cross a zone, and all four
+    are `MainZone-P` into `MarginTextZone-Notes`.** There is no other cross-zone
+    join in the adjudicated corpus, so the rule refuses four things and nothing
+    else. All four were corruptions of two texts at once. `1-075` printed
+    `…mouth of the Kolyma west-` as its last body line and the join glued the
+    following footnote's marker onto it — `Kolyma west-¹` — while the note it
+    stole from opened `Bogoras, Chukchee Materials, p. 345.` with no marker left
+    at its head. `1-091`, `1-203` and `1-243` are the same, and those four pages
+    are exactly the four the generator reported as "no marker at the head of this
+    note".
+
+    The stem is left broken, which is the honest outcome: its continuation is the
+    *next page's* first body line, and what crosses a page boundary is the seam's
+    business and not this function's.
+
     Iterates from the last line back, so a word broken twice (a stem, a
     continuation itself ending in a hyphen) resolves in one pass.
     """
@@ -360,6 +382,10 @@ def join_broken_words(recs: list[dict]) -> list[str]:
             continue
         nxt = next((k for k in range(i + 1, len(out)) if out[k].strip()), None)
         if nxt is None:
+            continue
+        # **A word does not continue into another zone.** Absence of a label on
+        # either side is not a barrier — a caller with no zones must still join.
+        if recs[i].get("zone") != recs[nxt].get("zone"):
             continue
         parts = out[nxt].split(None, 1)
         out[i] = stem + parts[0]
