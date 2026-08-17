@@ -261,6 +261,75 @@ def test_a_resolvable_figure_number_links_and_an_ambiguous_one_does_not(
     assert "/edition/fig/1-081/001.png" not in t
 
 
+def test_a_plates_own_numbering_does_not_collide_with_the_text_series(
+        tmp_path: Path):
+    """**The regression that killed the list's first four entries.** Plate
+    figures restart at 1 on every plate, so 31 pictures in this corpus print
+    `Fig. 1`; folding them into one pool made the List of Illustrations' figures
+    1–4 look ambiguous and printed them plain, when a plate's number is only a
+    number within that plate and this list does not enumerate them at all.
+
+    So the located plate leaves come out of the pool first, exactly as
+    `figrefs.resolve` takes them out for a bare reference in prose. Here two
+    plates and one text page all carry a `Fig. 1`, and the entry links the text
+    page — the only leaf whose `1` is in the series being listed."""
+    for ref, cap in (("1-049", "Fig. 1. Village Uñiˊsak."),
+                     ("1-051", "Fig. 1. Anui Fair."),
+                     ("1-086", "Fig. 1. Bundle of Leaf-Tobacco.")):
+        _fig(tmp_path, ref, cap)
+    _write(tmp_path, "data/loi.json", json.dumps({
+        "source": {"refs": ["1-014"]},
+        "figures": [{"kind": "figure", "numbers": [1],
+                     "caption": "Bundle of Leaf-Tobacco",
+                     "folio": 60, "ref": "1-014"}],
+        "plates": [
+            {"kind": "plate", "number": "I", "caption": "Village Uñiˊsak",
+             "opposite_folio": 29, "ref": "1-014",
+             "segments": ["Village Uñiˊsak"]},
+            {"kind": "plate", "number": "II", "caption": "Anui Fair",
+             "opposite_folio": 58, "ref": "1-014",
+             "segments": ["Anui Fair"]}]}))
+    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+        "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
+        "refs": ["1-014"], "source": "data/loi.json"}]}))
+    _exempt(tmp_path, "1-014")
+    _scan(tmp_path, "1-014")
+
+    t = _app(tmp_path).get("/edition/run/illustrations").text
+    assert re.search(r"href='/edition/fig/1-086/001\.png'\s+"
+                     r"data-fig='1-086/001'\s+data-label='Fig\. 1'", t)
+    # …and the plates are still linked as plates, by their own join.
+    assert "data-label='Plate I'" in t and "data-label='Plate II'" in t
+
+
+def test_an_unlocated_plate_leaves_its_numbers_ambiguous(tmp_path: Path):
+    """The filter's safe direction. Which leaves are plates is `by_plate`'s
+    answer, and where it declines the leaf stays in the pool — so a number it
+    shares with a text figure goes back to printing plain rather than linking to
+    whichever of the two the fold happened to visit first."""
+    for ref, cap in (("1-049", "Fig. 1. Village Uñiˊsak."),
+                     ("1-086", "Fig. 1. Bundle of Leaf-Tobacco.")):
+        _fig(tmp_path, ref, cap)
+    _write(tmp_path, "data/loi.json", json.dumps({
+        "source": {"refs": ["1-014"]},
+        "figures": [{"kind": "figure", "numbers": [1],
+                     "caption": "Bundle of Leaf-Tobacco",
+                     "folio": 60, "ref": "1-014"}],
+        # No caption of this text names it, so the plate does not locate.
+        "plates": [{"kind": "plate", "number": "I", "caption": "Reindeer Herd",
+                    "opposite_folio": 29, "ref": "1-014",
+                    "segments": ["Reindeer Herd"]}]}))
+    _write(tmp_path, "data/runs.json", json.dumps({"runs": [{
+        "id": "illustrations", "kind": "loi", "title": "List of Illustrations",
+        "refs": ["1-014"], "source": "data/loi.json"}]}))
+    _exempt(tmp_path, "1-014")
+    _scan(tmp_path, "1-014")
+
+    t = _app(tmp_path).get("/edition/run/illustrations").text
+    assert "/edition/fig/1-086/001.png" not in t
+    assert "/edition/fig/1-049/001.png" not in t
+
+
 def test_every_plate_resolves_to_exactly_one_leaf():
     """**The gate on the plate join.** A plate carries no folio and no number on
     its own leaf; the only thing binding it to a page is a caption the printer

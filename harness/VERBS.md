@@ -1630,9 +1630,9 @@ which asks, or not at all.
 
 ### fig check [PP-NNN ...]
 **Does** the gate. Named pages give their errors, warnings and exemptions in full; `--all` sweeps the store and lists only the pages with something to say.
-**Reads** `gt/fig/` or `mz/fig/` per `--store`, `gt/fig/_rule_exempt.json`, the split lists, `data/zones_config.json`, and each page's raster for its dimensions.
+**Reads** `gt/fig/` or `mz/fig/` per `--store`, `gt/fig/_rule_exempt.json`, the split lists, `data/zones_config.json`, `data/figure_numbers.json`, and each page's raster for its dimensions.
 **Writes** —
-**Exit** 1 if any page in `gt/` has an **error**; 0 otherwise. Always 0 for `--store mz`, which is measurement.
+**Exit** 1 if any page in `gt/` has an **error**, or if the figure-number patch table names a zone the store does not hold; 0 otherwise. Always 0 for `--store mz`, which is measurement.
 ```
 PP-NNN...     which pages; several may be given
 --all         every page the store holds
@@ -1641,6 +1641,7 @@ PP-NNN...     which pages; several may be given
 ```
 **Note** **three errors, and the list is short on purpose.** A label the store does not declare; a `Shape/Polygon` that is not the rectangle its own bbox claims; a box off the raster. Each is unarguable — nothing could read the first, nothing does read the second, and the third describes part of a page that does not exist.
 **Note** everything else is a **warning**: configured in `data/zones_config.json`, exemptable per page, never gating. `captions-lte-figures` is a fact about *this book* (414 pictures to 395 captions, and every caption-heavy page this store ever held turned out to be a segmentation fault). `picture-overlap` and `tiny-picture` were briefly written as errors, on the zone track's model, and that was importing a rule from a geometry regime that does not apply: zones partition the page and form a chain, so an overlap there is unrepresentable and can be refused, while figures are freely placed — an inset sits inside the frame it insets, two pictures on a plate may abut, and a 14×38 px box is suspicious rather than impossible. Over the migrated store the two produce exactly three findings (`1-189`, `1-334`, `2-085`), every one a real thing to look at and not one a thing the store must refuse to hold.
+**Note** a corpus sweep of `gt/` also checks `data/figure_numbers.json`, the hand-keyed table for the three figures whose number no rule can derive (`docs/apparatus.md`). Each entry names picture zones on a leaf, so it is a claim about *this* store and is verified against it rather than trusted — re-box that leaf and the patch must fail, not go stale.
 **Note** an exempted rule **still reports**, flagged, the way the zone track's do — a warning that vanished when excused would leave no way to notice the excuse had outlived its page. An exemption naming a rule the config does not declare is an *error*, since a typo would otherwise excuse nothing while reading as a considered judgement.
 
 ### fig delete PP-NNN ...

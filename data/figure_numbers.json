@@ -1,0 +1,33 @@
+{
+  "what": "Figure numbers a caption cannot supply, keyed by hand.",
+  "why": [
+    "`figures.by_number` derives a figure's number from its own caption, and the",
+    "pairing derives which picture a caption belongs to from the page's geometry.",
+    "Both are rules, and a printer who set a page his own way defeats them. Where",
+    "that happens the derivation does not get bent to fit one leaf — a rule widened",
+    "to admit an oddity mis-fires everywhere else in the corpus. It gets overridden",
+    "here instead, one entry per number, each naming the zones it is and saying",
+    "what the rule saw. An entry replaces every derived answer for its number, and",
+    "`harness fig check` refuses one whose zones are not in gt/fig/."
+  ],
+  "figures": [
+    {
+      "n": "1",
+      "ref": "1-037",
+      "keys": ["001"],
+      "why": "the number is set after the title and the attribution ('… by W. Bogoras and W. Jochelson. Fig. 1.'), so the caption parses no number at all and the map is the corpus's one unnumbered figure"
+    },
+    {
+      "n": "239",
+      "ref": "2-068",
+      "keys": ["004"],
+      "why": "two pictures stand side by side above two stacked captions, so the pairing took both as one two-box figure under the upper caption. 004 is the carved wooden figure with the bead and fur tassel that fig. 239 describes"
+    },
+    {
+      "n": "240",
+      "ref": "2-068",
+      "keys": ["002"],
+      "why": "the other half of the same lump: unpaired once 239 had swallowed it, and the corpus's one caption with no picture. 002 is the long hatched strap with thongs and beads — the leather ornament, 25 cm, that fig. 240 describes"
+    }
+  ]
+}

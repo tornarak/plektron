@@ -228,7 +228,13 @@ def run_check(a) -> int:
     # a broken repository.
     if store == F.MZFIGDIR:
         return 0
-    return 1 if any(r["errors"] for r in rows) else 0
+    # The patch table is a claim about *this* store, so it is checked against it
+    # here rather than trusted: re-box a leaf and a hand-keyed number may be
+    # naming a zone that is gone. Reported only when it has something to say.
+    patches = F.check_number_patches(a.root)
+    if patches:
+        out(a, patches, "figure_numbers.json")
+    return 1 if (patches or any(r["errors"] for r in rows)) else 0
 
 
 def run_delete(a) -> int:

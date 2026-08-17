@@ -289,20 +289,21 @@ def resolve(span: dict, by_number: dict, by_plate: dict,
     - **a plate's figure** — the leaf from `by_plate`, then the picture on that
       leaf whose caption prints that number. **This is a join the List of
       Illustrations cannot make and prose needs.** Plate figures restart at 1 on
-      every plate, so `Fig. 1` on its own names 31 different pictures and the
-      list has to print it plain; `Plate XXI, Fig. 1` names exactly one, because
-      the plate scopes it. Matching the number against the leaf's own captions
+      every plate, so `Fig. 1` on its own names 31 different pictures;
+      `Plate XXI, Fig. 1` names exactly one, because the plate scopes it. Matching the number against the leaf's own captions
       rather than counting into a list keeps it a lookup: a plate missing a
       numbered caption resolves to nothing instead of to its neighbour.
     - **a text figure** — `by_number`, and only where it holds exactly one
       *after the plate leaves come out*. A number on a plate is only a number
       within that plate, so it is never cited without it; a bare `Fig. 2` is
       therefore the text-figure series and nothing else. Which leaves are plates
-      is `by_plate`'s answer, not a guess — and the filter is what turns the
-      collision the List of Illustrations has to print plain into a link, since
-      the list names its numbers with no sentence around them and prose does
-      not. `Fig. 1` still refuses: 31 pictures print it and none is on a text
-      page, the fold-out map having no box in `gt/fig/`.
+      is `by_plate`'s answer, not a guess, and the same filter is what makes the
+      List of Illustrations' own first entries resolve — that list enumerates the
+      text series and the plates as wholes, so its `Fig. 2` is scoped exactly as
+      a bare one in prose is. `Fig. 1` resolves only because a human keyed it:
+      31 pictures print it, and the map on `1-037` that is the text series' own
+      carries its number after the title where no caption parses it, so
+      `data/figure_numbers.json` names the zone instead.
     """
     if span["kind"] == "plate":
         hit = by_plate.get(span["number"])

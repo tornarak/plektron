@@ -134,6 +134,34 @@ the box turned out to be dirt the segmenter had boxed, and it was withdrawn by a
 human. Had it been an error the page would have been ungateable until someone
 did that — which is the same act, extracted under duress and at the wrong moment.
 
+### `data/figure_numbers.json`: where a printer beat the derivation
+
+Two rules stand between a picture and its printed number. `context.figure_number`
+reads the number off the caption, and the pairing decides from the page's geometry
+which picture a caption belongs to. Three figures in this corpus defeat one or the
+other, and **the answer is not to widen the rule**: a derivation loosened to admit
+one odd leaf mis-fires on the several hundred ordinary ones, and it does so
+silently, which is exactly the failure this project is built against. So they are
+keyed by hand instead, one entry per number, each naming the leaf and the picture
+zones it is and recording in `why` what the rule saw.
+
+- **fig. 1** on `1-037`, the distribution map, whose printer set the number after
+  the title and the attribution — `… by W. Bogoras and W. Jochelson. Fig. 1.` —
+  so the caption parses no number at all.
+- **figs. 239 and 240** on `2-068`, two pictures standing side by side above two
+  stacked captions. The pairing read both pictures as one two-box figure under the
+  upper caption, which left 239 holding a picture that is not it and 240 the
+  corpus's one caption with no picture. Which is which was settled from the
+  pictures: 004 is the carved wooden figure with the bead and fur tassel, 002 the
+  long hatched strap with thongs and beads — the leather ornament.
+
+`figures.by_number` applies the table after the fold, and a patch **replaces** its
+number's derived entries rather than joining them; otherwise correcting 240 would
+have made 239 ambiguous by leaving the swallowed picture on it. `fig check` gates
+the table against `gt/fig/` on every run, for the reason `#gt` and `#mz` are
+re-derived: the patch's whole licence is that a human looked at that leaf, so it
+must fail rather than go stale when the leaf is re-boxed.
+
 ### The source's own segmentation, which is a fourth kind of evidence
 
 The scans are MRC-layered — a bitonal master plus separate embedded JPEGs — so the

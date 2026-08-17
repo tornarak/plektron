@@ -112,7 +112,8 @@ Layout, all at the repo root:
             identity is the form, and the rest of its card is derived. Tracked;
             `lexicon check` gates it.
     data/   readings.md  loi.json  toc.json  authorities.json  lexicon_extra.txt
-            zones_config.json  lines_config.json  tei_all.rng (the schema).
+            figure_numbers.json  zones_config.json  lines_config.json
+            tei_all.rng (the schema).
     data/geo/  the atlas's shapes — watersheds, language areas, named
             features, coastline.
             **Derived but tracked**, the one store that is: its sources are

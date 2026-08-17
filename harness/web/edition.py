@@ -395,20 +395,31 @@ def _decorate(entry: dict, kind: str, root: Path, index: dict,
         # different picture; a single link for the entry would have to pick one.
         #
         # A number resolving to exactly one zone links; anything else prints
-        # plain. Plate figures restart at 1 on every plate, so 1-4 name a dozen
-        # pictures each, and choosing between them would be inventing the answer
-        # the collision is reporting. Measured: 297 of the LoI's 302 numbers
-        # resolve; the others are 1-4 and 240, the corpus's one unpaired caption.
+        # plain — **and the plate leaves come out of the pool first**, exactly as
+        # `figrefs.resolve` takes them out for a reference in prose. Plate figures
+        # restart at 1 on every plate, so 31 pictures print `Fig. 1`; none of them
+        # is a text figure, and none of them is listed here, because this list
+        # enumerates the text series and the plates as wholes. The plate scopes
+        # its own numbers, so leaving them in the pool made 1-4 collide with a
+        # series they are not in and the first four entries dead.
+        #
+        # Which leaves are plates is `by_plate`'s answer and not a guess; a plate
+        # that fails to locate stays in the pool and its numbers go back to
+        # printing plain, which is the safe direction. Measured: all 302 of the
+        # LoI's numbers now resolve — the three the rules cannot reach are
+        # hand-keyed in `data/figure_numbers.json`, which `by_number` applies.
         # `pair` is comma-joined because **a figure is not a box**: 16 of them
         # are drawn in two, lettered a and b under one caption, and naming only
         # `key` drew the first and dropped the rest. `figures.crop_keys` is the
         # rule, and `openFigure` splits on the comma exactly as it does for a
         # plate's several pictures.
         idx = stores.by_number(root)
+        on_plates = {h["ref"] for h in by_plate.values() if h.get("ref")}
         e["nums"] = [
             {"n": n,
              "pair": (",".join(f"{hits[0]['ref']}/{k}" for k in hits[0]["keys"])
-                      if len(hits := idx.get(str(n)) or []) == 1 else ""),
+                      if len(hits := [h for h in idx.get(str(n)) or []
+                                      if h["ref"] not in on_plates]) == 1 else ""),
              "url": (f"{BASE}/fig/{hits[0]['ref']}/{hits[0]['keys'][0]}.png"
                      if len(hits) == 1 else "")}
             for n in (e.get("numbers") or [])]

@@ -2136,6 +2136,16 @@ def by_number(root: Path = Path(".")) -> dict[str, list[dict]]:
     Numbers are the caption's own, as `context.figure_number` read them, and are
     kept as strings for that reason: `figure_boxes` does not parse them into
     integers and neither does this.
+
+    **Then `data/figure_numbers.json` overrides, because a printer who set a page
+    his own way is not a rule to be widened.** Three figures in this corpus have
+    no derivable number — the map on `1-037`, whose number is set after the title,
+    and `2-068`'s 239 and 240, two pictures above two stacked captions that the
+    pairing read as one two-box figure. Bending either derivation to admit them
+    would mis-fire on every leaf that is ordinary; a human names them instead. A
+    patch **replaces** its number's derived entries rather than joining them, so a
+    number a rule already got half-right does not end up ambiguous by being
+    corrected — which is also what takes the swallowed picture back off 239.
     """
     out: dict[str, list[dict]] = {}
     for ref in fig_refs(root):
@@ -2143,7 +2153,55 @@ def by_number(root: Path = Path(".")) -> dict[str, list[dict]]:
             if f.get("n"):
                 out.setdefault(str(f["n"]), []).append(
                     {"ref": ref, "key": f["key"], "keys": crop_keys(f)})
+    for p in number_patches(root):
+        out[str(p["n"])] = [{"ref": p["ref"], "key": p["keys"][0],
+                             "keys": list(p["keys"])}]
     return out
+
+
+def number_patches(root: Path = Path(".")) -> list[dict]:
+    """`data/figure_numbers.json`'s entries, or none if the file is absent.
+
+    An editor's table, not a derivation: each entry says which zones on which
+    leaf a printed figure number names, and `why` records what the rule saw
+    instead. Absent is empty rather than an error — a corpus whose printers
+    behaved needs no patches, and this reads as a store like any other.
+    """
+    p = Path(root) / "data" / "figure_numbers.json"
+    if not p.exists():
+        return []
+    return json.loads(p.read_text(encoding="utf-8")).get("figures") or []
+
+
+def check_number_patches(root: Path = Path(".")) -> list[dict]:
+    """What is wrong with the patch table, as a list of rows; empty is clean.
+
+    **A patch asserts a fact about `gt/fig/` and so must fail rather than go
+    stale.** Its whole licence is that a human looked at the leaf; re-box that
+    leaf and the zone it names may be gone, at which point the entry is a claim
+    about a page that no longer exists. So the zones are checked against the
+    store on every run, the same reason `#gt` and `#mz` are re-derived.
+    """
+    bad = []
+    for p in number_patches(root):
+        n, ref, keys = str(p.get("n", "")), p.get("ref", ""), p.get("keys") or []
+        if not n or not ref or not keys:
+            bad.append({"n": n, "ref": ref, "rule": "n, ref and keys are required"})
+            continue
+        if not str(p.get("why", "")).strip():
+            bad.append({"n": n, "ref": ref, "rule": "no `why`: a patch has to say "
+                                                    "what the rule saw instead"})
+        have = {k for f in figure_boxes(ref, root) for k in crop_keys(f)}
+        missing = [k for k in keys if k not in have]
+        if missing:
+            bad.append({"n": n, "ref": ref,
+                        "rule": f"no such picture zone: {', '.join(missing)}"})
+    seen: dict[str, int] = {}
+    for p in number_patches(root):
+        seen[str(p.get("n", ""))] = seen.get(str(p.get("n", "")), 0) + 1
+    bad += [{"n": n, "ref": "", "rule": f"{c} entries patch this number"}
+            for n, c in sorted(seen.items()) if c > 1]
+    return bad
 
 
 def _match_key(s: str) -> str:

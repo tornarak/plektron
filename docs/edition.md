@@ -1056,11 +1056,17 @@ printed list poses, and each is **omitted rather than guessed** where it cannot.
 - An LoI figure number goes through `figures.by_number`, a corpus-wide fold of
   `figure_boxes`. **One link per printed number, not per entry** — two entries
   name several figures at once ("Figs. 214, 215, 216") and each numeral is a
-  different picture. A number resolving to more than one zone prints plain:
-  measured, **297 of 302 resolve**, and the five that do not are figures 1–4,
-  which the book restarts on every plate, and 240, the corpus's one unpaired
-  caption. Choosing among a collision's candidates would invent the answer the
-  collision is reporting. This is emphatically **not** the LoI reconciliation
+  different picture. **The plate leaves come out of the pool first**, as
+  `figrefs.resolve` takes them out for a reference in prose: the book restarts
+  figure numbering on every plate, so 31 pictures print `Fig. 1`, and none of
+  them is in the series this list enumerates. Leaving them in made 1–4 collide
+  with a series they are not in, and the list's first four entries were dead
+  links for it. A number resolving to more than one zone still prints plain,
+  since choosing among a collision's candidates would invent the answer the
+  collision is reporting. **All 302 resolve** — three of them through
+  `data/figure_numbers.json`, the hand-keyed patch table `docs/apparatus.md`
+  describes, because the leaves that defeat the derivation are the printer's
+  oddities and not rules waiting to be widened. This is emphatically **not** the LoI reconciliation
   `docs/open-questions.md` defers — it links, and it gates nothing.
 - An authority's siglum goes to `entities/source/…` through the entity record's
   own `authority` field, never a match on the printed name: 51 sigla over 34

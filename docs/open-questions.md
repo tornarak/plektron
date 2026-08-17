@@ -38,15 +38,16 @@ in for an unread glyph.
   nothing, so the reconciliation above is untouched — but the join it needs now
   exists, which is worth knowing when it is finally built.
 
-  **Its number differs from the 300 above, and the methods differ with it**, so
-  neither corrects the other. `by_number` folds `figure_boxes` over the *whole*
-  figure store, plate pages included, and reports **297 of 302** resolving to one
-  zone: figures 1–4 collide because the book restarts figure numbering on every
-  plate, and 240 is the unpaired caption. The 300 above counts text-figures
-  against pages with plate figures excluded, and loses fig. 1 for an unrelated
-  reason — the printer set its number below the title on `1-037`, so no caption
-  parses it. Whichever the reconciliation ends up wanting, it should say which it
-  is measuring: the two answers are about different populations.
+  **The two the 300 above loses are now keyed by hand, so a reconciliation must
+  not read them as derived.** The view folds `figure_boxes` over the figure store
+  with the located plate leaves taken out — the book restarts figure numbering on
+  every plate, so leaving them in made 1–4 collide with a series they are not in
+  — and then applies `data/figure_numbers.json`, where an editor has named the
+  zones for fig. 1 and for `2-068`'s 239 and 240. All **302 of 302** resolve on
+  that footing. It remains a different count from the 300 above: this one counts
+  LoI numbers against zones, that one text-figures against pages, and only this
+  one is patched. Whichever the reconciliation ends up wanting, it should say
+  which it is measuring and whether the patches are in or out of scope.
 
 - **Where a plate's rotation is recorded, given that no plate reaches a
   collator.** Rotation is a reading — whether a sideways figure or a

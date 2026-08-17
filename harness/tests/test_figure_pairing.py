@@ -259,3 +259,109 @@ def test_a_figure_may_not_carry_a_zone_id(tmp_path):
     assert any("the build resolves the zones" in e for e in validate(p, ctx).errors)
 
 
+
+
+# ------------------------------------- the numbers no derivation can supply
+
+
+def _patches(tmp_path: Path, *figs) -> None:
+    import json
+    p = tmp_path / "data" / "figure_numbers.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"figures": list(figs)}), encoding="utf-8")
+
+
+def _two_o_six_eight(tmp_path: Path) -> None:
+    """`2-068` as the store holds it: 238 and its caption, then two pictures
+    side by side above two stacked captions — the layout that defeats the
+    pairing."""
+    _fig_alto(tmp_path, "2-068", [
+        ("fig_2-068_001", "GraphicZone", 422, 776, 442, 758),
+        ("fig_2-068_002", "GraphicZone", 884, 1238, 225, 1426),
+        ("fig_2-068_003", "GraphicZone-FigDesc", 380, 1534, 494, 126),
+        ("fig_2-068_004", "GraphicZone", 496, 1680, 294, 959),
+        ("fig_2-068_005", "GraphicZone-FigDesc", 382, 2738, 763, 77),
+        ("fig_2-068_006", "GraphicZone-FigDesc", 383, 2803, 767, 96)])
+    _readings(tmp_path, {"2-068|003": "Fig. 238. Amulet.",
+                         "2-068|005": "Fig. 239. Wooden Figure.",
+                         "2-068|006": "Fig. 240. Leather Ornament."})
+
+
+def test_the_layout_that_needs_patching_is_really_this_bad(tmp_path):
+    """The premise, held separately from the patch that answers it. The pairing
+    takes both pictures as one two-box figure under the upper caption, so 239
+    holds a picture that is not it and 240 holds none — and neither is a rule
+    waiting to be widened, which is why the answer is a keyed table."""
+    from harness import figures as F
+    _two_o_six_eight(tmp_path)
+    got = {f["n"]: F.crop_keys(f) for f in F.figure_boxes("2-068", tmp_path)}
+    assert got == {"238": ["001"], "239": ["002", "004"]}
+
+
+def test_a_patch_replaces_its_numbers_derived_answer(tmp_path):
+    """Not joins it. 239 already derives — wrongly, holding 240's picture — and
+    an entry that added itself alongside would make the corrected number
+    ambiguous, which prints plain: a correction that reads as a collision."""
+    from harness import figures as F
+    _two_o_six_eight(tmp_path)
+    _patches(tmp_path,
+             {"n": "239", "ref": "2-068", "keys": ["004"], "why": "the lump"},
+             {"n": "240", "ref": "2-068", "keys": ["002"], "why": "the lump"})
+    idx = F.by_number(tmp_path)
+    assert [(h["ref"], h["keys"]) for h in idx["239"]] == [("2-068", ["004"])]
+    assert [(h["ref"], h["keys"]) for h in idx["240"]] == [("2-068", ["002"])]
+    assert [(h["ref"], h["keys"]) for h in idx["238"]] == [("2-068", ["001"])]
+
+
+def test_a_patch_naming_a_zone_the_store_lost_fails_rather_than_goes_stale(
+        tmp_path):
+    """**The whole licence for the table is that a human looked at that leaf.**
+    Re-box it and the entry is a claim about a page that no longer exists, so
+    the zones are checked against `gt/fig/` on every run — the same reason `#gt`
+    and `#mz` are re-derived rather than believed."""
+    from harness import figures as F
+    _two_o_six_eight(tmp_path)
+    _patches(tmp_path,
+             {"n": "240", "ref": "2-068", "keys": ["009"], "why": "the lump"})
+    assert [b["rule"] for b in F.check_number_patches(tmp_path)] == \
+        ["no such picture zone: 009"]
+
+
+def test_a_patch_has_to_say_what_the_rule_saw(tmp_path):
+    """`why` is not decoration: an override with no account of itself is
+    indistinguishable from a guess by the time anyone reads it."""
+    from harness import figures as F
+    _two_o_six_eight(tmp_path)
+    _patches(tmp_path, {"n": "240", "ref": "2-068", "keys": ["002"]})
+    assert any("no `why`" in b["rule"] for b in F.check_number_patches(tmp_path))
+
+
+def test_two_patches_for_one_number_is_an_error(tmp_path):
+    """A number names one figure. Two entries would resolve by whichever the
+    loader read last, which is the kind of silent arbitration this store exists
+    to refuse."""
+    from harness import figures as F
+    _two_o_six_eight(tmp_path)
+    _patches(tmp_path,
+             {"n": "240", "ref": "2-068", "keys": ["002"], "why": "x"},
+             {"n": "240", "ref": "2-068", "keys": ["004"], "why": "y"})
+    assert any("2 entries patch" in b["rule"]
+               for b in F.check_number_patches(tmp_path))
+
+
+def test_no_patch_table_is_not_an_error(tmp_path):
+    """A corpus whose printers behaved needs none, and an absent store is empty
+    rather than a failure."""
+    from harness import figures as F
+    _two_o_six_eight(tmp_path)
+    assert F.number_patches(tmp_path) == []
+    assert F.check_number_patches(tmp_path) == []
+
+
+def test_the_repositorys_own_patches_hold():
+    """The live gate, over the real store: three entries, each naming zones
+    `gt/fig/` still holds."""
+    from harness import figures as F
+    root = Path(__file__).resolve().parent.parent.parent
+    assert {p["n"] for p in F.number_patches(root)} == {"1", "239", "240"}
+    assert F.check_number_patches(root) == []
