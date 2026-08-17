@@ -445,18 +445,90 @@ def property_rows(rec: dict, store: dict, root: Path) -> list[dict]:
         )
 
     if rec["authority"]:
-        from . import authorities
+        rows.extend(_authority_rows(rec["authority"], root))
 
-        got = authorities.record(authorities.load(root), rec["authority"])
-        rows.append(
-            {
-                "kind": "authority",
-                "label": "authority",
-                "id": rec["authority"],
-                "title": got.get("title", "") if got else "",
-            }
-        )
+    return rows
 
+
+#: Every plain field of an `authorities.json` record, in reading order, and the
+#: label the card gives it. The rest are handled by name: `key` and `cited_as`
+#: and `printed` have shapes of their own, `doi` and `url` carry a rank, and
+#: `author_printed` / `year_printed` qualify the field above them rather than
+#: standing alone. `test_edition.py` holds all of that against the live store,
+#: so a field added to the bibliography cannot arrive invisible on the one page
+#: that transcludes it.
+AUTHORITY_FIELDS = (
+    ("author", "author"), ("title", "title"), ("title_en", "title (English)"),
+    ("container", "in"), ("in", "in"), ("place", "place"), ("year", "year"),
+    ("lang", "language"), ("ref", "listed on"), ("note", "note"),
+)
+
+#: The two fields whose value is `{url, provenance}` — a reading with a rank on
+#: it, which is shown and never flattened away.
+AUTHORITY_SOURCED = (("doi", "DOI"), ("url", "copy"))
+
+
+def _authority_rows(key: str, root: Path) -> list[dict]:
+    """The bibliography record this entry *is*, whole, as rows.
+
+    **A transcluded store is still a store, and the no-invisible-fields rule
+    reaches it.** The card used to print the key and the title and stop, which
+    left `cited_as` — the field that says how the book *names* the work, and so
+    the only one a reader holding a footnote can match against — nowhere in the
+    encyclopedia at all. The rest were no better off; they were merely less
+    missed.
+
+    **`printed` is the record**, which is `find authority`'s rule and this
+    follows it: the block a human copied off the page comes first and the parsed
+    fields ride beneath, so the two can be read against each other rather than
+    one standing in for the other. A work the printer set twice — the Russian
+    entry and Bogoras's own English rendering — shows both, because the page did.
+    """
+    from . import authorities
+
+    got = authorities.record(authorities.load(root), key)
+    rows = [{"kind": "authority", "label": "authority", "id": key,
+             "title": got.get("title", "") if got else ""}]
+    if not got:
+        return rows
+    if got.get("cited_as"):
+        # **The siglum is the field a reader arrives holding.** `Maydell, I` is
+        # what the footnote printed; everything else on this card is what the
+        # bibliography says about it, and is no use until this line matches.
+        rows.append({"kind": "plain", "label": "cited as",
+                     "value": " · ".join(
+                         authorities.siglum_forms(got["cited_as"])
+                         or [authorities.siglum_name(got["cited_as"])])})
+    for field, label in AUTHORITY_FIELDS:
+        v = got.get(field)
+        if not v:
+            continue
+        if field == "author" and got.get("author_printed") == "rule":
+            # Not a fact the page states: the list runs several works under one
+            # author's name and prints it once, so the attribution here is the
+            # store's inference from the layout and says so.
+            v = f"{v} — carried down from the entry above, not printed again"
+        if field == "year" and got.get("year_printed"):
+            # **Printed wins, and here it is a range the parsed int flattens.**
+            # `1834, 1835, 1836` became `1834`, which is right for sorting and
+            # wrong as a statement about the book.
+            v = f"{got['year_printed']} — printed; {v} as the store sorts it"
+        if field == "ref" and got.get("folio"):
+            v = f"{v} (folio {got['folio']})"
+        rows.append({"kind": "plain", "label": label, "value": str(v)})
+    for field, label in AUTHORITY_SOURCED:
+        v = got.get(field)
+        if not v:
+            continue
+        # The rank rides with the reading, here as everywhere: a scan a model
+        # found is a proposal until somebody opens it.
+        rows.append({"kind": "sourced", "label": label,
+                     "value": v.get("url", ""),
+                     "resp": v.get("provenance", "")})
+    for b in got.get("printed", []):
+        rows.append({"kind": "printed", "label": "printed",
+                     "value": b.get("text", ""), "lang": b.get("lang") or "en",
+                     "block": b.get("kind") or ""})
     return rows
 
 

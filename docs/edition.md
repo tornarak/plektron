@@ -426,12 +426,37 @@ volume or short title the store itself records. **Not a full stop** — that is 
 whole of `Nelson. Fig. 22` — and not a lower-case word, which is what refuses
 `Boas and Kroeber; for instance, compare Fig. 199`.
 
-Measured over the 274 generated pages: **123 citations resolve** (119 in
-footnotes, 4 in body prose), 181 mentions of the same names stay prose, and 5
-refuse because the page prints a discriminator the store does not match. Those
-five are worth reading as a worklist for the *store*, not the sentence:
-`Hough, Armor` three times against the store's `Armour`, a `Boas, Indianische
-Sagen` in no authority entry, and `Bogoras, American Anthropologist`.
+### The siglum is a name, so it belongs in the alias table
+
+`Maydell 1893` is a string printed nowhere in the volume. Every footnote citing
+that work sets `Maydell, I`, and the entry was titled and aliased in a currency
+the book does not use — so a reader holding a footnote had nothing in the
+encyclopedia to match, and the generator, matching on the bare surname alone, put
+the mark on half the siglum: `<rs>Maydell</rs> I, p. 331.`
+
+`harness entity sigla` carries `Authorities Quoted`'s `cited_as` onto the
+`source:` entries, as the entry's name and as alias rows. The name is what
+`[Cited, MAYDELL, I, II.]` prints — a two-volume work is one work — and the
+aliases split the volumes, because a footnote cites one at a time. Each volume
+yields two rows, comma and no comma: `Maydell I, p. 331.` and `Maydell, I,
+pp. 627-680.` sit in the same apparatus, which is the fact `parse_citation` was
+built around, so the comma carries no information and both spellings are the
+store's.
+
+**A bare surname yields no alias**, and that is the division of labour. It is
+already the entry's row and it is the contested one — `person:maydell` claims it
+too — so no spelling of it tells the man from the book. What the sigla add is the
+uncontested half: `Boas, Central Eskimo` is claimed by one entry, so it links by
+the ordinary rule with no citation evidence needed, and the mark covers the
+siglum whole. 56 rows over 47 works; `auto: yes` only where nothing else in the
+store claims the form, which is condition 1 applied before the row is written.
+
+Measured over the 274 generated pages: **130 `#mz` links to a `source:` entry, 66
+of them the alias table's and 64 the citation rule's** — every one of the 64 a
+bare surname, `Nelson` alone 26 of them. Six citations refuse, and each is a
+worklist line for the *store* rather than the sentence: `Hough, Armor` four times
+against the store's `Armour`, a `Boas, Indianische Sagen` in no authority entry,
+and a `Bogoras, American Anthropologist` whose siglum the list does not carry.
 
 Matching is whole-word, case-sensitive, NFD, longest-first, and
 **whitespace-flexible across printed line breaks**: `1-021` sets "the Jesup
@@ -930,6 +955,21 @@ printed list poses, and each is **omitted rather than guessed** where it cannot.
 **Printed is the record**, `find authority`'s own rule: the Authorities run shows
 the block the store copied off the page, and the parsed fields ride beneath it
 rather than replacing it.
+
+**A transcluded store is still a store, so the no-invisible-fields rule reaches
+it.** A `source:` card printed two fields of its bibliography record — the key
+and the title — and the casualty that mattered was `cited_as`, the field that
+says how the *book* names the work and so the only one a reader holding a
+footnote can match against; it appeared nowhere in the encyclopedia at all. The
+whole record is on the card now, `printed` blocks first and the parsed fields
+beneath, `AUTHORITY_FIELDS` and `AUTHORITY_SOURCED` naming which is which and
+`test_edition.py` holding both against the live bibliography. Four fields are not
+plain strings and none of them is flattened: `doi` and `url` are `{url,
+provenance}` and **render with their rank**, since a scan a model found must not
+look like one somebody opened; `author_printed` and `year_printed` qualify the
+field above them, so an author the list carried down from the entry above says
+so, and Lütke's printed `1834, 1835, 1836` is shown beside the `1834` the store
+sorts on.
 
 ### An editor's own leaf
 

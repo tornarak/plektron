@@ -1,4 +1,4 @@
-# source:krause-1883 — Krause 1883
+# source:krause-1883 — Krause, III
 
 - status: ratified
 - authority: krause1883
@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Krause | | no | |
+| Krause, III | | yes | |
+| Krause III | | yes | |
 
 ## gloss
 

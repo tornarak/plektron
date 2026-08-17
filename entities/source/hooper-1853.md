@@ -1,4 +1,4 @@
-# source:hooper-1853 — Hooper 1853
+# source:hooper-1853 — Hooper
 
 - status: ratified
 - authority: hooper1853

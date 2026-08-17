@@ -1,4 +1,4 @@
-# source:sieroszevsky-1896 — Sieroszevsky 1896
+# source:sieroszevsky-1896 — Sieroszevsky
 
 - status: ratified
 - authority: sieroszevsky1896

@@ -1,4 +1,4 @@
-# source:melikoff-1896 — Melikoff 1896
+# source:melikoff-1896 — Melikoff
 
 - status: ratified
 - authority: melikoff1896

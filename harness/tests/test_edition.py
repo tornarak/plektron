@@ -865,6 +865,60 @@ def test_every_field_in_a_record_reaches_the_card(tmp_path):
     assert set(rec) <= covered, f"nothing displays {sorted(set(rec) - covered)}"
 
 
+#: Fields of an `authorities.json` record the card handles by name rather than
+#: through `AUTHORITY_FIELDS`, each because it is not a plain string: two carry a
+#: rank, two qualify the field above them, and three have shapes of their own.
+AUTHORITY_BY_NAME = {
+    "key", "cited_as", "printed", "doi", "url", "author_printed", "year_printed",
+    "folio",
+}
+
+
+def test_every_field_of_a_transcluded_authority_reaches_the_card():
+    """**The no-invisible-fields rule reaches a store the card borrows from.**
+
+    A `source:` entry is mostly its bibliography record, and the card printed
+    two fields of it — the key and the title. `cited_as` was the casualty that
+    mattered: it is how the *book* names the work, so it is the one field a
+    reader holding a footnote can match against, and it appeared nowhere in the
+    encyclopedia at all.
+
+    Corpus-facing on purpose. The shape being asserted is `data/authorities.json`'s
+    own, and a fixture would prove only that this test agrees with itself —
+    `year_printed`, which is on 3 records of 73, is exactly the field a fixture
+    would have been written without.
+    """
+    from harness import authorities
+    works = authorities.load(REPO)
+    assert works
+    shown = {f for f, _ in edition_ui.AUTHORITY_FIELDS} | AUTHORITY_BY_NAME
+    keys = {k for w in works for k in w}
+    assert keys <= shown, f"nothing displays {sorted(keys - shown)}"
+
+
+def test_a_ranked_url_carries_its_rank_onto_the_card():
+    """`doi` and `url` are `{url, provenance}` — a reading with a rank on it, and
+    the rank is shown. A card that printed the link bare would be the unmarked
+    span failure in a second store: a scan a model found, rendered exactly like
+    one somebody opened."""
+    rows = edition_ui._authority_rows("nelson1899", REPO)
+    ranked = [r for r in rows if r["kind"] == "sourced"]
+    assert ranked and all(r["resp"].startswith("#") for r in ranked)
+    assert all(r["value"].startswith("http") for r in ranked)
+
+
+def test_the_printed_block_is_on_the_card_and_the_siglum_with_it():
+    """`printed` is the record — `find authority`'s rule, kept here. The parsed
+    fields ride beneath it so the two can be read against each other, and the
+    siglum sits at the top because it is what a reader arrives holding."""
+    rows = edition_ui._authority_rows("maydell1893", REPO)
+    labels = [r["label"] for r in rows]
+    assert "cited as" in labels and "printed" in labels
+    assert labels.index("cited as") < labels.index("printed")
+    cited = next(r for r in rows if r["label"] == "cited as")
+    assert "Maydell, I" in cited["value"] and "Maydell, II" in cited["value"]
+
+
 def test_the_properties_block_shows_the_geography(tmp_path):
     """The three geography fields, on the card, where a reader can check them
     against the map beside it."""

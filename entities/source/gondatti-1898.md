@@ -1,4 +1,4 @@
-# source:gondatti-1898 — Gondatti 1898
+# source:gondatti-1898 — Gondatti
 
 - status: ratified
 - authority: gondatti1898

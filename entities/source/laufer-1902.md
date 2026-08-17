@@ -1,4 +1,4 @@
-# source:laufer-1902 — Laufer 1902
+# source:laufer-1902 — Laufer
 
 - status: ratified
 - authority: laufer1902

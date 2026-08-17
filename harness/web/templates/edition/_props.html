@@ -32,6 +32,18 @@
   {%- if row.title %} — {{ row.title }}
   {%- else %} — <span class='dangling'>no such key in
   data/authorities.json</span>{% endif %}
+{%- elif row.kind == 'printed' -%}
+  {# `printed` is the record — the block a human keyed off the page, set apart
+     from the parsed fields so the two can be read against each other. #}
+  <span class='printed' lang='{{ row.lang }}'>{{ row.value }}</span>
+  {%- if row.block == 'translation' %} <span class='dim'>(the book's own
+  English rendering)</span>{% endif %}
+{%- elif row.kind == 'sourced' -%}
+  {# A value that carries a rank. It is shown, never dropped: a link a model
+     found and nobody opened is a proposal, and a card that printed it bare
+     would be the unmarked-span failure in a second store. #}
+  <a href='{{ row.value }}' rel='noreferrer'>{{ row.value }}</a>
+  {%- if row.resp %} <span class='resp'>{{ row.resp }}</span>{% endif %}
 {%- elif row.kind == 'plain' -%}
   {{ row.value }}
 {%- else -%}

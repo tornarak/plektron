@@ -1,4 +1,4 @@
-# source:schrenck-1899 — Schrenck 1899
+# source:schrenck-1899 — Schrenck, II
 
 - status: ratified
 - authority: schrenck1899
@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Schrenck | | no | |
+| Schrenck, II | | yes | |
+| Schrenck II | | yes | |
 
 ## gloss
 

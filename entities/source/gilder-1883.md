@@ -1,4 +1,4 @@
-# source:gilder-1883 — Gilder 1883
+# source:gilder-1883 — Gilder
 
 - status: ratified
 - authority: gilder1883

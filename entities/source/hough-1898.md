@@ -1,4 +1,4 @@
-# source:hough-1898 — Hough 1898
+# source:hough-1898 — Hough, Lamp
 
 - status: ratified
 - authority: hough1898
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Hough | | no | |
 | Lamp | | no | |
+| Hough, Lamp | | yes | |
 
 ## gloss
 

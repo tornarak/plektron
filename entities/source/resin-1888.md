@@ -1,4 +1,4 @@
-# source:resin-1888 — Resin 1888
+# source:resin-1888 — Resin
 
 - status: ratified
 - authority: resin1888

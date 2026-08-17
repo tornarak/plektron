@@ -1,4 +1,4 @@
-# source:bogoras-1900 — Bogoras 1900
+# source:bogoras-1900 — Bogoras, Chukchee Materials
 
 - status: ratified
 - authority: bogoras1900
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Bogoras | | no | |
 | Chukchee Materials | | no | |
+| Bogoras, Chukchee Materials | | yes | |
 
 ## gloss
 

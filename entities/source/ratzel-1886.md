@@ -1,4 +1,4 @@
-# source:ratzel-1886 — Ratzel 1886
+# source:ratzel-1886 — Ratzel, Stäbchenpanzer
 
 - status: ratified
 - authority: ratzel1886
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Ratzel | | no | |
 | Stäbchenpanzer | | no | |
+| Ratzel, Stäbchenpanzer | | yes | |
 
 ## gloss
 

@@ -1,4 +1,4 @@
-# source:dyachkoff-1893 — Dyachkoff 1893
+# source:dyachkoff-1893 — Dyachkoff
 
 - status: ratified
 - authority: dyachkoff1893

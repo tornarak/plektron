@@ -364,6 +364,14 @@ table.props th { text-align:right; color:var(--dim); font-weight:400;
   padding:.1rem .5rem .1rem 0; border:none; vertical-align:top;
   white-space:nowrap }
 table.props td { border:none; padding:.1rem 0 }
+/* The bibliography block a human keyed off the page, on a `source:` card. Set
+   apart from the parsed fields around it because `printed` is the record and
+   the two are meant to be read against each other, not taken for one thing. */
+table.props .printed { font-style:italic }
+/* A rank on a value, and it is never quiet. The whole reason the field is on
+   the card is that a link a model found and nobody opened must not render like
+   one somebody checked. */
+.resp { font-size:.7rem; color:var(--mark); font-family:ui-monospace,monospace }
 .dim { color:var(--dim) }
 h4.tier1 { font-style:italic; font-size:1.1rem }
 #empty { color:var(--dim); font-size:.85rem; font-family:system-ui,sans-serif }

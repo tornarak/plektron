@@ -27,13 +27,19 @@ either lookup does not come back with exactly one answer, the citation stays
 unlinked and the generator's question stands, which is the rule the rest of this
 apparatus follows for the same reason.
 
-Measured over the 274 generated pages: **123 citations resolve** (119 in
-footnotes, 4 in body prose), 181 mentions of the same names are left alone as
-prose, and 5 refuse because the page prints a discriminator the store does not
-match — `Hough, Armor` against the store's `Armour`, a `Boas, Indianische Sagen`
-that is in no authority entry, `Bogoras, American Anthropologist`. Each of those
-five is a question about the store rather than about the sentence, which is where
-a refusal should send a reader.
+**Its remit narrowed when the sigla became aliases, and that is the right
+direction.** `entity sigla` carries `Authorities Quoted`'s printed sigla onto the
+`source:` entries, so `Boas, Central Eskimo` and `Maydell, I` are now forms one
+entry claims and the ordinary alias rule links them — with the whole siglum
+inside the mark, which this could never do. What is left here is the case no
+alias can reach: the **bare surname**, which the man and the book share.
+
+Measured over the 274 generated pages: 130 `#mz` links to a `source:` entry, of
+which **66 are the alias table's and 64 are this rule's** — every one of the 64 a
+bare surname, `Nelson` alone accounting for 26. Six citations refuse, and each is
+a question about the store rather than about the sentence: `Hough, Armor` four
+times, against the store's `Armour`; a `Boas, Indianische Sagen` in no authority
+entry; a `Bogoras, American Anthropologist` whose siglum the list does not carry.
 """
 
 from __future__ import annotations

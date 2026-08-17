@@ -1,4 +1,4 @@
-# source:wrangell-1840 — Wrangell 1840
+# source:wrangell-1840 — Wrangell
 
 - status: ratified
 - authority: wrangell1840

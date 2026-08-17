@@ -1,4 +1,4 @@
-# source:mason-1902 — Mason 1902
+# source:mason-1902 — Mason, Traps
 
 - status: ratified
 - authority: mason1902
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Mason | | no | |
 | Traps | | no | |
+| Mason, Traps | | yes | |
 
 ## gloss
 

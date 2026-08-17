@@ -1374,6 +1374,17 @@ Human-authored and tracked, so `--commit` gates the two actions that write.
 **Note** the class may change **only where the `<name @type>` does not**. What a page asserts is its `@type` — a reader saw a place-name — and whether that name denotes a point (`place:`) or a region (`land:`) is a fact about the store that no page ever recorded, so a move within one type leaves every collated page true. Across types it is refused: `place:` → `water:` is toponym to hydronym, the ref would contradict the type beside it, and that is a re-reading of the page rather than a rename. In practice the licence is exactly `place:`↔`land:` and `water:`↔`river:`, which is the split the geographical classes were made by; the 54 entries were migrated through this verb, one invocation each.
 **Note** this is cheap only while the corpus holds few `@ref`s. It is the verb that makes an identity decision reversible, which is why the modern-romanization pass could be made at all.
 
+### entity sigla
+**Does** carries `Authorities Quoted`'s printed sigla onto the `source:` entries — as the entry's name, and as alias rows. **The siglum is how the book names a work**: a footnote sets `Maydell, I`, and the entry was called `Maydell 1893`, a string printed nowhere in the volume. Adds and renames; never removes a row a human wrote.
+**Reads** `data/authorities.json`, `entities/`. **Writes** the `source:` entries under `--commit`, plus every page an added `auto` form links, exactly as `entity ratify` does. **Exit** 0.
+```
+--commit  write them; without this every change is reported and none made
+--root --json --toon --pager
+```
+**Note** **the name is `[Cited, MAYDELL, I, II.]`'s and the aliases are its spellings.** A two-volume work is one work, so the name joins the volumes; the aliases split them, because a footnote cites one volume at a time. Each volume yields two rows, comma and no comma — `Maydell I, p. 331.` and `Maydell, I, pp. 627-680.` sit in the same apparatus, which is the fact `parse_citation` was built around, so the comma carries no information and both spellings are the store's.
+**Note** **a bare surname yields no alias and is the whole reason `citations.py` exists.** It is already the entry's row, and it is the contested one — `person:nelson` claims `Nelson` too — so no spelling of it can tell the man from the book. What the sigla add is the *uncontested* half: `Boas, Central Eskimo` is claimed by one entry, so it links by the ordinary alias rule with no citation evidence needed, and the mark covers the siglum whole instead of stopping at the surname.
+**Note** `auto` is `yes` only where nothing else in the store already claims the form — `entity check`'s own rule, applied before the row is written rather than left for it to catch afterwards.
+
 ### entity ratify ID...
 **Does** `proposed` → `ratified`, **and applies the links that ratification licenses to every collated page**. **The human act**, and the only thing that lets a rule link the entry's forms without asking — so it means the entry has been read against the pages it claims, not that it looks plausible.
 **Reads** `entities/`, committed `tei/`. **Writes** the named files and every page that gained a link, under `--commit`. **Exit** 0.

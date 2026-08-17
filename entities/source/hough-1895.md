@@ -1,4 +1,4 @@
-# source:hough-1895 — Hough 1895
+# source:hough-1895 — Hough, Armour
 
 - status: ratified
 - authority: hough1895
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Armour | | no | |
 | Hough | | no | |
+| Hough, Armour | | yes | |
 
 ## gloss
 

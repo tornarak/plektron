@@ -683,3 +683,46 @@ def test_a_reported_alias_writes_nothing(tmp_path):
     before = p.read_text(encoding="utf-8")
     _alias(tmp_path, "place:x", "Y", commit=False)
     assert p.read_text(encoding="utf-8") == before
+
+
+class _NewArgs:
+    def __init__(self, root, ident, canonical):
+        self.root, self.ident, self.canonical = root, ident, canonical
+        self.aliases, self.lang = (), ""
+        self.within = self.part_of = self.authority = ""
+        self.geos = ()
+        self.commit = True
+        self.json = self.toon = self.pager = False
+
+
+def _scaffold(tmp_path, ident, canonical="X"):
+    from harness.cli._entity import run_new
+    run_new(_NewArgs(tmp_path, ident, canonical))
+    cls, slug = ident.split(":")
+    return tmp_path / "entities" / cls / f"{slug}.md"
+
+
+def test_the_scaffolds_placeholder_row_goes_when_a_real_one_arrives(tmp_path):
+    """`entity new` writes `| | | no | |` so the table has a body, and `parse`
+    reads it as nothing at all. Left standing under a form that *is* an alias it
+    reads as an alias whose form went missing — a worse claim than the empty
+    table it stood for, and one no human put there."""
+    p = _scaffold(tmp_path, "place:x")
+    assert "| | | no | |" in p.read_text(encoding="utf-8")
+    _alias(tmp_path, "place:x", "Markova")
+    text = p.read_text(encoding="utf-8")
+    assert "| | | no | |" not in text
+    assert "| Markova | | no | |" in text
+    assert [t["form"] for t in E.load(tmp_path)["place:x"]["aliases"]] == ["Markova"]
+
+
+def test_the_placeholder_is_the_only_empty_row_the_store_tolerates(tmp_path):
+    """Which is what makes dropping it safe: it cannot be carrying anything. Put
+    a note in that same row and `parse` refuses the file outright, so no row the
+    verb erases was ever a row someone wrote something in."""
+    p = entry(tmp_path, "place:x")
+    text = p.read_text(encoding="utf-8").replace(
+        "|---|---|---|---|\n", "|---|---|---|---|\n| | | no | the form is lost |\n")
+    p.write_text(text, encoding="utf-8")
+    with pytest.raises(E.Malformed, match="empty form"):
+        E.load(tmp_path)

@@ -1,4 +1,4 @@
-# source:bogoras-1902 — Bogoras 1902
+# source:bogoras-1902 — Bogoras, Anthropologist
 
 - status: ratified
 - authority: bogoras1902
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Anthropologist | | no | |
 | Bogoras | | no | |
+| Bogoras, Anthropologist | | yes | |
 
 ## gloss
 

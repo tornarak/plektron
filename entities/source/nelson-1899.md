@@ -1,4 +1,4 @@
-# source:nelson-1899 — Nelson 1899
+# source:nelson-1899 — Nelson
 
 - status: ratified
 - authority: nelson1899

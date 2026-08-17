@@ -1,4 +1,4 @@
-# source:hough-1892 — Hough 1892
+# source:hough-1892 — Hough, Fire-Making
 
 - status: ratified
 - authority: hough1892
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Fire-Making | | no | |
 | Hough | | no | |
+| Hough, Fire-Making | | yes | |
 
 ## gloss
 

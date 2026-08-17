@@ -1,4 +1,4 @@
-# source:nordenskiold-1882 — Nordenskiold 1882
+# source:nordenskiold-1882 — Nordenskiöld, I, II
 
 - status: ratified
 - authority: nordenskiold1882
@@ -8,6 +8,10 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Nordenskiöld | | no | |
+| Nordenskiöld, II | | yes | |
+| Nordenskiöld, I | | yes | |
+| Nordenskiöld II | | yes | |
+| Nordenskiöld I | | yes | |
 
 ## gloss
 

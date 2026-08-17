@@ -1,4 +1,4 @@
-# source:jackson-1902 — Jackson 1902
+# source:jackson-1902 — Jackson, II
 
 - status: ratified
 - authority: jackson1902
@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Jackson | | no | |
+| Jackson, II | | yes | |
+| Jackson II | | yes | |
 
 ## gloss
 

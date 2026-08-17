@@ -1,4 +1,4 @@
-# source:krause-1881 — Krause 1881
+# source:krause-1881 — Krause, I
 
 - status: ratified
 - authority: krause1881
@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Krause | | no | |
+| Krause, I | | yes | |
+| Krause I | | yes | |
 
 ## gloss
 

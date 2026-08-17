@@ -1,4 +1,4 @@
-# source:sauer-1802 — Sauer 1802
+# source:sauer-1802 — Sauer
 
 - status: ratified
 - authority: sauer1802

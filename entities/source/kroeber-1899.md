@@ -1,4 +1,4 @@
-# source:kroeber-1899 — Kroeber 1899
+# source:kroeber-1899 — Kroeber
 
 - status: ratified
 - authority: kroeber1899

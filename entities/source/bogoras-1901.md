@@ -1,4 +1,4 @@
-# source:bogoras-1901 — Bogoras 1901
+# source:bogoras-1901 — Bogoras, Chukchee Material Life
 
 - status: ratified
 - authority: bogoras1901
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Bogoras | | no | |
 | Chukchee Material Life | | no | |
+| Bogoras, Chukchee Material Life | | yes | |
 
 ## gloss
 

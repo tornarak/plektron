@@ -44,6 +44,11 @@ from ._common import (
     verdict,
 )
 
+#: The row `entity new` writes so the alias table has a body — no form, no
+#: language, no note. `parse` reads it as nothing at all; `entity alias`
+#: replaces it rather than writing under it.
+_EMPTY_ROW = re.compile(r"^\|\s*\|\s*\|\s*(?:yes|no)?\s*\|\s*\|\s*$")
+
 
 def register(cli):
     g = group(cli, "entity",
@@ -135,6 +140,19 @@ def register(cli):
         help="the note cell — where the form is attested, or why it is `no`")
     opt(p, "--commit", is_flag=True,
         help="write it. Without this the row is reported and not added")
+
+    p = action(g, "sigla", run_sigla,
+               help="carry `Authorities Quoted`'s printed sigla onto the "
+               "`source:` entries as their name and their aliases. **The "
+               "siglum is how the book names a work** — `Maydell, I` and not "
+               "`Maydell 1893` — so it is what a reader meets in a footnote "
+               "and what the alias table needs in order to link one. A bare "
+               "surname is left alone: it is already the entry's alias and it "
+               "is the ambiguous case, since `person:maydell` claims it too. "
+               "Adds and renames; never removes a row a human wrote, and never "
+               "touches an entry whose authority lists no siglum")
+    opt(p, "--commit", is_flag=True,
+        help="write them. Without this every change is reported and none made")
 
     p = action(g, "locate", run_locate,
                help="set or replace an existing entry's `geo:` members, its "
@@ -581,7 +599,16 @@ def run_alias(a) -> int:
     cells = " | ".join(str(v) for v in
                        (form, lang, "yes" if a.auto else "no", a.note or ""))
     row = f"| {cells} |".replace("|  |", "| |")
-    body = text[start:end].rstrip("\n")
+    # **The scaffold's placeholder row goes when a real one arrives.**
+    # `entity new` writes `| | | no | |` so the table has a body, and `parse`
+    # drops it on the floor — a row with no form is not an alias. Left in place
+    # under a form that *is* one, it reads as an alias whose form went missing,
+    # which is a different and worse claim than the empty table it stood for.
+    # Matched on the whole shape, `auto` apart, which is safe because it is the
+    # only empty-form row the store tolerates: put a note in one and `parse`
+    # refuses the file. So nothing dropped here was ever written by a human.
+    body = "\n".join(ln for ln in text[start:end].split("\n")
+                     if not _EMPTY_ROW.match(ln)).rstrip("\n")
     text = text[:start] + body + f"\n{row}\n\n" + text[end:]
 
     from ..entities import alias_index, auto_forms, parse
@@ -803,6 +830,90 @@ def run_rename(a) -> int:
         out(a, regenerated or [{**r, "regenerated": False, "why": ""}
                                for r in stale],
             "drafts holding the old ref", heading=True)
+    return 0
+
+
+def run_sigla(a) -> int:
+    """`Authorities Quoted`'s printed sigla, carried onto the `source:` entries.
+
+    **The siglum is the name the book uses, and the store was not saying it.**
+    `source:maydell-1893` was titled `Maydell 1893` — a name printed nowhere,
+    while every footnote citing the work sets `Maydell, I`. A reader who met the
+    siglum on a page had nothing in the encyclopedia to match it against, and
+    `tei generate` had only the bare surname to match on, so the mark stopped
+    short of the half that says *which* work: `<rs>Maydell</rs> I, p. 331.`
+
+    Both halves come from the same field. The name is what `[Cited, MAYDELL, I,
+    II.]` prints, a two-volume work being one work; the aliases are its
+    spellings, comma and no comma, because the book sets both in one apparatus.
+
+    **It adds and it renames.** A row a human wrote is never removed, and an
+    entry whose authority lists no siglum, or whose siglum is a bare surname, is
+    not touched at all — the bare name is already the alias, and it is the
+    contested one no rule may link. `auto` is `yes` only where nothing else in
+    the store claims the form, which is `entity check`'s rule applied ahead of
+    it rather than a judgement made here.
+    """
+    from .. import authorities
+    from ..entities import alias_index, parse
+
+    store = _store(a)
+    works = {w["key"]: w for w in authorities.load(a.root)}
+    idx = alias_index(store)
+    rows, renamed = [], []
+    for ident in sorted(store):
+        rec = store[ident]
+        work = works.get(rec.get("authority") or "")
+        if not work or not work["cited_as"]:
+            continue
+        forms = authorities.siglum_forms(work["cited_as"])
+        name = authorities.siglum_name(work["cited_as"])
+        have = {t["form"] for t in rec["aliases"]}
+        want = [f for f in forms if f not in have]
+        if not want and rec["canonical"] == name:
+            continue
+        p = Path(rec["path"])
+        text = p.read_text(encoding="utf-8")
+        if rec["canonical"] != name:
+            renamed.append({"id": ident, "was": rec["canonical"], "now": name,
+                            "wrote": bool(a.commit)})
+            text = text.replace(f"— {rec['canonical']}\n", f"— {name}\n", 1)
+        if want:
+            start, end = _alias_rows(text)
+            body = "\n".join(ln for ln in text[start:end].split("\n")
+                             if not _EMPTY_ROW.match(ln)).rstrip("\n")
+            new = []
+            for f in want:
+                # Contested here means contested in the file afterwards, which
+                # `entity check` gates and this must not walk into: a form two
+                # entries claim is a question for a human, not a licence.
+                auto = "no" if any(c["id"] != ident for c in idx.get(f, [])) else "yes"
+                note = "" if auto == "yes" else "auto: no — another entry claims it"
+                new.append(f"| {f} | | {auto} | {note} |".replace("|  |", "| |"))
+                rows.append({"id": ident, "form": f, "auto": auto == "yes",
+                             "wrote": bool(a.commit)})
+            text = text[:start] + body + "\n" + "\n".join(new) + "\n\n" + text[end:]
+        parse(text, where=str(p))
+        if a.commit:
+            p.write_text(text, encoding="utf-8")
+    out(a, rows, "aliases added")
+    out(a, renamed, "entries renamed", heading=True)
+    if not a.commit:
+        return verdict(a, 0, "reported; --commit writes")
+    # An added `auto` form is a licence, and `entity alias` brings the pages it
+    # licenses up to date for exactly this reason — the same event, in bulk.
+    from ..relink import apply_to_corpus, refresh_drafts
+
+    after = _store(a)
+    touched = sorted({r["id"] for r in rows if r["auto"]})
+    links, notes, _undo = apply_to_corpus(a.root, after, write=True)
+    drafts = refresh_drafts(a.root, after, touched, write=True)
+    if links:
+        out(a, links, "links applied to collated pages", heading=True)
+    if drafts:
+        out(a, [{"ref": r} for r in drafts], "drafts regenerated", heading=True)
+    if notes:
+        out(a, notes, "not applied", heading=True)
     return 0
 
 

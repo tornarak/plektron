@@ -239,6 +239,48 @@ def search(works: list[dict], query: str, volume=None,
     return out
 
 
+def siglum_forms(cited_as: list[dict]) -> list[str]:
+    """Every spelling of one work's printed siglum, longest first.
+
+    **The comma is not information and the book proves it twice.** `Maydell I,
+    p. 331.` and `Maydell, I, pp. 627-680.` are the same siglum in the same
+    apparatus, which is the fact `parse_citation` was built around; so a volume
+    yields both spellings and the alias table carries both. A short title is set
+    with the comma throughout the corpus's footnotes and yields the one.
+
+    A siglum that is only a surname yields nothing. It is already the entry's
+    alias, and it is the ambiguous case the citation rule exists for —
+    `person:nelson` claims `Nelson` too, and no spelling of a bare name can tell
+    the man from the book.
+    """
+    out: list[str] = []
+    for c in cited_as:
+        name, vol, title = c.get("name"), c.get("volume"), c.get("short_title")
+        if not name:
+            continue
+        if vol:
+            out += [f"{name}, {vol}", f"{name} {vol}"]
+        if title:
+            out.append(f"{name}, {title}")
+    return sorted(dict.fromkeys(out), key=len, reverse=True)
+
+
+def siglum_name(cited_as: list[dict]) -> str:
+    """The printed siglum as one name — `Maydell, I, II`, `Boas, Central Eskimo`.
+
+    What `Authorities Quoted` itself sets in its `[Cited, …]` line, which is
+    where a two-volume work becomes one name and not two: the printer wrote
+    `[Cited, MAYDELL, I, II.]`, and a work is one work however many volumes it
+    was bound in. Empty where the list records no siglum.
+    """
+    if not cited_as:
+        return ""
+    name = cited_as[0].get("name") or ""
+    parts = [c.get("volume") or c.get("short_title") or "" for c in cited_as
+             if (c.get("name") or "") == name]
+    return ", ".join([name, *[p for p in parts if p]])
+
+
 def sigla(works: list[dict], name: str | None = None) -> list[dict]:
     """The resolution table: one row per `cited_as` entry, not per work.
 

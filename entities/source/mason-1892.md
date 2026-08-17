@@ -1,4 +1,4 @@
-# source:mason-1892 — Mason 1892
+# source:mason-1892 — Mason, Woman’s Knife
 
 - status: ratified
 - authority: mason1892
@@ -9,6 +9,7 @@
 |---|---|---|---|
 | Mason | | no | |
 | Woman’s Knife | | no | |
+| Mason, Woman’s Knife | | yes | |
 
 ## gloss
 

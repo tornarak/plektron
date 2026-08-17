@@ -1,4 +1,4 @@
-# source:argentoff-1857a — Argentoff 1857a
+# source:argentoff-1857a — Argentoff, I
 
 - status: ratified
 - authority: argentoff1857a
@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Argentoff | | no | |
+| Argentoff, I | | yes | |
+| Argentoff I | | yes | |
 
 ## gloss
 

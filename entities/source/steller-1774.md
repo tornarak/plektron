@@ -1,4 +1,4 @@
-# source:steller-1774 — Steller 1774
+# source:steller-1774 — Steller
 
 - status: ratified
 - authority: steller1774

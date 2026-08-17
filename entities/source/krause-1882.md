@@ -1,4 +1,4 @@
-# source:krause-1882 — Krause 1882
+# source:krause-1882 — Krause, II
 
 - status: ratified
 - authority: krause1882
@@ -8,6 +8,8 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Krause | | no | |
+| Krause, II | | yes | |
+| Krause II | | yes | |
 
 ## gloss
 
