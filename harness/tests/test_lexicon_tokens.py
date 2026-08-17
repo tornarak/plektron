@@ -414,3 +414,151 @@ def test_a_russian_word_gets_no_tier1_handle(tmp_path):
     got = [t["text"] for t in tier1_terms("1-031", tmp_path)]
     assert nfd("čauˊču") in got
     assert not any("Ѐ" <= c <= "ӿ" for t in got for c in t)
+
+
+# --- the other question: every token, less the commonest ----------------------
+#
+# `--common N` exists because the dictionary arm above has a floor it cannot see
+# past. A proper noun English happens to spell the same way as a word — `Wolf`,
+# `Frost`, `Bering` — is accounted for by the dictionary and therefore never
+# reaches the miss list, which is exactly the class of entity candidate the
+# report is for. These hold the swap: the lexicon changes, the shape floor does
+# not, and the stoplist is auditable rather than imported.
+
+def _common(root: Path, n: int) -> dict:
+    return suggest_lexicon(root, common=n)
+
+
+def test_a_name_the_dictionary_spells_is_invisible_until_the_common_arm(tmp_path):
+    """The motivating case, both arms over one page.
+
+    `Wolf` is a headman here and a dictionary word everywhere, so the default
+    arm accounts for it and reports nothing. Nothing about the token changed;
+    what changed is which lexicon is allowed to account for it.
+    """
+    _extra(tmp_path, "wolf", "shaman", "answered")
+    _gt_page(tmp_path, "1-001", [
+        ("shaman answered shaman answered", 400, 1774),
+        ("shaman answered Wolf", 400, 1774),
+    ])
+    assert "Wolf" not in {r["token"] for r in suggest_lexicon(tmp_path)["tokens"]}
+    assert "Wolf" in {r["token"] for r in _common(tmp_path, 2)["tokens"]}
+
+
+def test_the_common_arm_reports_only_the_shape_the_dictionary_arm_would(tmp_path):
+    """One axis of change, not two. `of` and `sun` are under the floor and
+    `1904` is not alphabetic, so none of them appears however the lexicon is
+    asked — the flag widens what counts as *accounted for*, never what counts
+    as a word."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("of the sun 1904 Ulakhpen", 400, 1774)])
+    got = _common(tmp_path, 0)
+    assert {r["token"] for r in got["tokens"]} == {"Ulakhpen"}
+
+
+def test_the_cut_lands_on_a_frequency_boundary_and_says_so(tmp_path):
+    """A tie at the Nth place is not split by alphabet.
+
+    `sable` and `walrus` occur three times each; asking for the one commonest
+    word cuts both, because deciding between them would be deciding on nothing
+    but sort order. `scope.cut` reports the real number against the request.
+    """
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [
+        ("sable walrus sable walrus", 400, 1774),
+        ("sable walrus Ulakhpen", 400, 1774),
+    ])
+    got = _common(tmp_path, 1)
+    assert got["scope"][0]["asked"] == 1
+    assert got["scope"][0]["cut"] == 2
+    assert got["scope"][0]["floor"] == 3
+    assert {r["token"] for r in got["tokens"]} == {"Ulakhpen"}
+
+
+def test_the_stoplist_folds_case_where_the_rows_do_not(tmp_path):
+    """`The` at a sentence head and `the` are one word for a stoplist; `Frost`
+    and `frost` are two findings, one of which may be a person.
+
+    Discriminating, not decorative: folded, `frost` totals four and is the
+    single commonest form, so both spellings leave. Unfolded it would total
+    three, tie with `sable`, and `Frost` would be reported as a candidate on
+    the strength of its own capital — which is the opposite of the answer.
+    """
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [
+        ("frost sable frost sable", 400, 1774),
+        ("frost sable Frost", 400, 1774),
+    ])
+    got = _common(tmp_path, 1)
+    reported = {r["token"] for r in got["tokens"]}
+    assert "Frost" not in reported and "frost" not in reported
+    assert "sable" in reported
+
+
+def test_ranking_ignores_what_the_shape_floor_already_hides(tmp_path):
+    """N is spent on words that could have been reported, not on `the`.
+
+    `the` is printed five times and is never reportable at any N, so ranking
+    over raw tokens would spend the whole of a one-word request on a word that
+    was already invisible and report both of the real ones.
+    """
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [
+        ("the the the the the", 400, 1774),
+        ("walrus walrus walrus sable sable", 400, 1774),
+    ])
+    got = _common(tmp_path, 1)
+    assert got["scope"][0]["cut"] == 1
+    assert {r["token"] for r in got["tokens"]} == {"sable"}
+
+
+def test_the_entity_store_is_the_only_suppressor_under_the_common_arm(tmp_path):
+    """`lexicon_extra.txt` stops accounting for anything here — that is the
+    whole of the swap — and the entity store keeps its named list, so what it
+    absorbs is still visible rather than gone."""
+    _extra(tmp_path, "Ulakhpen")
+    entry(tmp_path, "person:gondatti", canonical="Nikolai Gondatti",
+          aliases=[("Gondatti", False)])
+    _gt_page(tmp_path, "1-001", [
+        ("shaman shaman shaman shaman", 400, 1774),
+        ("Gondatti reports the Ulakhpen", 400, 1774),
+    ])
+    got = _common(tmp_path, 1)
+    assert "Ulakhpen" in {r["token"] for r in got["tokens"]}
+    assert "Gondatti" in {r["token"] for r in got["suppressed"]}
+    assert "Gondatti" not in {r["token"] for r in got["tokens"]}
+
+
+def test_the_boundary_window_is_the_tail_of_the_cut(tmp_path):
+    """A stoplist nobody can see is the defect this group refuses in a
+    whitelist. The head is a count; the tail — the least frequent forms N
+    swallowed — is printed, because that is the part that says whether N was
+    well chosen."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [
+        ("sable sable sable walrus walrus", 400, 1774),
+        ("marten Ulakhpen", 400, 1774),
+    ])
+    got = _common(tmp_path, 2)
+    assert [b["form"] for b in got["boundary"]] == ["sable", "walrus"]
+    assert got["boundary"][-1]["count"] == got["scope"][0]["floor"]
+    assert "marten" in {r["token"] for r in got["tokens"]}
+
+
+def test_asking_for_more_words_than_the_corpus_has_reports_nothing(tmp_path):
+    """The honest answer to the question as asked. Reporting everything instead
+    would read as a full worklist on a corpus too small to have made a stoplist
+    of, which is the misleading direction."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("sable walrus marten", 400, 1774)])
+    got = _common(tmp_path, 1000)
+    assert got["scope"][0]["cut"] == got["scope"][0]["forms"] == 3
+    assert got["tokens"] == [] and got["suppressed"] == []
+
+
+def test_the_default_arm_keeps_its_shape(tmp_path):
+    """No `scope` and no `boundary` without the flag: the report a skill or a
+    script already reads is unchanged by the flag existing."""
+    _extra(tmp_path, "placeholder")
+    _gt_page(tmp_path, "1-001", [("the Ulakhpen", 400, 1774)])
+    assert set(suggest_lexicon(tmp_path)) == {"tokens", "suppressed"}

@@ -750,6 +750,18 @@ store suppressed, under `suppressed`, so the second source is never a silent one
 detection runs against the dictionary and the whitelist alone, and each hit is
 re-tested against the store.
 
+**What that arrangement cannot find is a name English already spells.** A
+dictionary accounts for `Wolf`, `Frost`, `Bering` and a man called `Ten`
+regardless of what they are on the page, so the miss list — which is how this
+store gets populated — is blindest to exactly the entity it exists to surface.
+The blind spot is a property of asking a dictionary, not a defect to be fixed
+inside one, so it is answered by asking a different question rather than by
+loosening the first: `lexicon misses --common N` drops the dictionary entirely
+and reports every token the corpus prints, less the corpus's own N commonest
+word forms and less what this store already accounts for. It is a worklist and
+not a finding — most of what comes back is ordinary English — and the flag's
+mechanics are `harness/VERBS.md`'s.
+
 Status is deliberately not consulted. `auto_forms` demands `ratified` because a
 machine link into committed TEI is at stake; suppression writes nothing and only
 removes a triage flag, so the higher bar would be that reason cargo-culted

@@ -899,7 +899,16 @@ def detect_all(lines: list[str], root: Path = Path("."),
     return {"tokens": flags, "balance": balance}
 
 
-def suggest_lexicon(root: Path = Path(".")) -> dict:
+# How much of the common cut to print back. The cut itself is a thousand rows of
+# `which`, `their`, `reindeer` — noise at a terminal every run — but a stoplist
+# nobody can see is the defect `_lexicon`'s docstring names about whitelists, and
+# the part a human actually has to judge is the *boundary*: the least frequent
+# words N happened to swallow. Twenty of them says whether N was chosen well and
+# costs a screenful, so the tail is printed and the head is a count.
+_BOUNDARY = 20
+
+
+def suggest_lexicon(root: Path = Path("."), common: int | None = None) -> dict:
     """Frequency-ranked `lexicon_miss` tokens across every hand-keyed page.
 
     Terms get approved in bulk from a real count, rather than one page at a time
@@ -926,12 +935,43 @@ def suggest_lexicon(root: Path = Path(".")) -> dict:
     file** that suppresses the very detector meant to catch them. The same rule as
     `normalize`'s scope and `zones check --store mz`: a machine store is measured,
     never allowed to decide.
+
+    **`common=N` swaps the dictionary out for the corpus's own N commonest
+    words**, and asks the other question. The dictionary is a *floor* here in the
+    sense CLAUDE.md means: it accounts for every token that is ordinary English,
+    which includes every proper noun English happens to spell the same way as a
+    word — `Wolf`, `Frost`, `Bering`, a headman called `Ten`. Those are exactly
+    the entity candidates this report exists to surface and exactly the ones it
+    cannot see, because a name is invisible to a detector that only asks whether
+    a dictionary carries the string. So the flag drops the dictionary and
+    `lexicon_extra.txt` entirely and reports **everything the corpus prints**,
+    less the N most frequent forms and less what the entity store already
+    accounts for. What is left is a worklist rather than a finding: most of it
+    will be ordinary English, and the human is reading for the proper nouns.
+
+    Three things about the cut, each because the alternative is a silent one:
+
+    - **N is a request and the cut lands on a frequency boundary.** Splitting a
+      tie by sort order would put one word of a pair inside the stoplist and its
+      equally frequent neighbour outside, on nothing but alphabet. So every form
+      as frequent as the Nth is cut, and `cut` reports how many that was.
+    - **Ranking is over reportable tokens only.** `the`, `of`, `and` are three
+      characters and never reach this report at all — ranking over raw tokens
+      would spend most of N on words that were already invisible, and N would
+      not mean what a caller thinks it means.
+    - **The cut folds case, the rows do not.** `The` at a sentence head and
+      `the` are one word for the purpose of a stoplist; `Frost` and `frost` are
+      two different findings, one of which may be a person.
+
+    The report gains a `scope` row and the boundary window; `tokens` and
+    `suppressed` keep their meaning, with the entity store as the only suppressor.
     """
     from .context import _draft_text, all_refs, stem_for
     from .lines import page_lines
 
     base, full = _base_lexicon(root), _lexicon(root)
     counts: dict[str, int] = {}
+    folded: dict[str, int] = {}
     where: dict[str, str] = {}
     for ref in all_refs(root, "gt/ocr"):
         ocr = root / "gt" / "ocr" / f"{stem_for(ref, root)}.xml"
@@ -946,20 +986,63 @@ def suggest_lexicon(root: Path = Path(".")) -> dict:
         lines = [t for t in join_broken_words(page_lines(ocr, root, ref=ref))
                  if t.strip()]
         draft = _draft_text(lines)
-        for f in detect_all(draft.split("\n"), root, lex=base)["tokens"]:
-            if f["type"] != "lexicon_miss":
+        if common is None:
+            for f in detect_all(draft.split("\n"), root, lex=base)["tokens"]:
+                if f["type"] != "lexicon_miss":
+                    continue
+                # No second strip: `detect_all` publishes the token already cut,
+                # so repeating `EDGE_PUNCT` here would be the "second strip
+                # downstream" that constant's own comment records as the thing
+                # to stop doing.
+                tok = f["token"]
+                counts[tok] = counts.get(tok, 0) + 1
+                where.setdefault(tok, ref)
+            continue
+        for m in TOKEN.finditer(draft):
+            # The one strip, here, because nothing upstream did it in this
+            # branch — `detect_all` is not in the loop and there is no already
+            # cut token to re-cut.
+            tok = m.group().strip(EDGE_PUNCT)
+            # The same shape floor the dictionary arm uses, asked with an empty
+            # lexicon so that only the shape is left: an ASCII alphabetic
+            # component longer than three characters, split on the internal
+            # hyphen and apostrophe exactly as `lexicon_miss` splits. Reusing
+            # the function is what keeps the two arms comparable — the flag
+            # widens what counts as *accounted for*, never what counts as a word.
+            if not lexicon_miss(tok, frozenset()):
                 continue
-            # No second strip: `detect_all` publishes the token already cut, so
-            # repeating `EDGE_PUNCT` here would be the "second strip downstream"
-            # that constant's own comment records as the thing to stop doing.
-            tok = f["token"]
             counts[tok] = counts.get(tok, 0) + 1
+            folded[tok.lower()] = folded.get(tok.lower(), 0) + 1
             where.setdefault(tok, ref)
     rows = [{"token": t, "count": c, "first_seen": where[t]}
             for t, c in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
-    return {"tokens": [r for r in rows if lexicon_miss(r["token"], full)],
-            "suppressed": [r for r in rows
-                           if not lexicon_miss(r["token"], full)]}
+    if common is None:
+        return {"tokens": [r for r in rows if lexicon_miss(r["token"], full)],
+                "suppressed": [r for r in rows
+                               if not lexicon_miss(r["token"], full)]}
+    ents = entity_forms(root)
+    ranked = sorted(folded.items(), key=lambda kv: (-kv[1], kv[0]))
+    # `min(common, len(ranked))`, so asking for more commonest words than the
+    # corpus has forms cuts all of them and reports nothing. That is the honest
+    # answer to the question as asked; reporting everything instead would read
+    # as a full worklist on a corpus too small to have made a stoplist of.
+    floor = ranked[min(common, len(ranked)) - 1][1] if ranked and common > 0 else 0
+    cut = {w for w, c in ranked if c >= floor} if common > 0 else set()
+    kept = [r for r in rows if r["token"].lower() not in cut]
+    boundary = [{"form": w, "count": c} for w, c in ranked if w in cut]
+    # `forms` and `spellings` count two different things and are both here
+    # because either alone reads as the other: the cut ranks folded forms, the
+    # rows are spellings, and 8,287 forms can keep 8,937 spellings without
+    # anything being wrong. Naming one number would make that look like one.
+    return {"scope": [{"asked": common, "cut": len(cut), "floor": floor,
+                       "forms": len(ranked), "spellings": len(kept),
+                       "means": "every token the corpus prints, less the "
+                                "commonest and less the entity store; `forms` "
+                                "folds case for the cut, `spellings` do not"}],
+            "boundary": boundary[-_BOUNDARY:],
+            "tokens": [r for r in kept if lexicon_miss(r["token"], ents)],
+            "suppressed": [r for r in kept
+                           if not lexicon_miss(r["token"], ents)]}
 
 
 # Marks that visibly attach after a base letter, for `mark_base_frequency`. Not

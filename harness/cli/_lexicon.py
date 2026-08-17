@@ -42,13 +42,28 @@ def register(cli):
               section="Apparatus and reports")
     add = lambda name, fn, **kw: action(g, name, lambda a: _emit(a, fn), **kw)
 
-    add("misses", suggest_lexicon, help="frequency-ranked lexicon_miss tokens across every "
-            "OCR'd page, for bulk approval — a proper noun into entities/, "
-            "anything else into data/lexicon_extra.txt. Both suppress "
-            "lexicon_miss and nothing else, and a Tier-1 form in either is "
-            "inert by construction, since the detector only ever tests ASCII "
-            "components. `suppressed` names what the entity store already "
-            "accounts for, so the second source is never a silent one")
+    p = action(g, "misses", run_misses,
+               help="frequency-ranked lexicon_miss tokens across every "
+               "OCR'd page, for bulk approval — a proper noun into entities/, "
+               "anything else into data/lexicon_extra.txt. Both suppress "
+               "lexicon_miss and nothing else, and a Tier-1 form in either is "
+               "inert by construction, since the detector only ever tests ASCII "
+               "components. `suppressed` names what the entity store already "
+               "accounts for, so the second source is never a silent one. "
+               "`--common` asks the other question: the dictionary accounts for "
+               "every proper noun English happens to spell as a word — `Wolf`, "
+               "`Frost`, `Bering` — which is the class of entity candidate this "
+               "report is blindest to, so that flag drops it")
+    opt(p, "--common", type=click.IntRange(min=0), is_flag=False,
+        flag_value=1000, default=None, metavar="N",
+        help="report every token the corpus prints instead of the dictionary "
+             "misses, less the N commonest word forms and less what entities/ "
+             "accounts for. The stoplist is the corpus's own frequency table "
+             "and not an imported list, N is a request rather than a count — "
+             "the cut lands on a frequency boundary so a tie is never split by "
+             "alphabet — and the least frequent words it swallowed are printed "
+             "back as `boundary`, which is what says whether N was well chosen. "
+             "Bare, it means 1000 [off]")
 
     add("native", suggest_native_forms,
         help="invert: the most frequent native (Tier-1) word forms "
@@ -298,6 +313,13 @@ def run_ipa(a) -> int:
         rows = [r for r in rows if r["state"] == "partial"]
     out(a, [scope], name="scope")
     out(a, rows, name="forms", heading=True)
+    return 0
+
+
+def run_misses(a) -> int:
+    # `--common`'s range is the parser's, per VERBS.md's Conventions: 0 is a
+    # legible request (cut nothing) and a negative is not a count at all.
+    out(a, suggest_lexicon(a.root, common=a.common))
     return 0
 
 
