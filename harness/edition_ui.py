@@ -475,7 +475,7 @@ def strip_markup(html: str) -> str:
 
 def map_context(
     idents, root: Path, base: str = BASE, store: dict | None = None, shape=None,
-    hidden=(),
+    hidden=(), dropped=(),
 ) -> dict:
     """A selection of entities on one map, with the tree that frames it.
 
@@ -520,6 +520,7 @@ def map_context(
     # against, and it costs a line to make impossible.
     sel = list(dict.fromkeys([idents] if isinstance(idents, str) else idents))
     hidden = {h for h in hidden if h}
+    dropped = {d for d in dropped if d}
     out: dict = {
         "ident": sel[0] if sel else "",
         "base": base,
@@ -537,20 +538,30 @@ def map_context(
     known = [i for i in sel if i in store]
     if not known:
         return out
-    # **A `geo:` member joins the selection.** The map of a people that names its
-    # villages *is* those villages, so they are subjects and not context: they
-    # frame it, they are pinned, they are named in the tree as chosen, and each
-    # can be taken off again. Faking the last of those in the tree was tried and
-    # is the reason this is here — a row that renders selected while the client's
-    # selection does not hold it cannot be clicked off, because the click reads
-    # the selection and the highlight read something else. One fact, one place.
+    # **A `geo:` member joins the selection, unless it was dropped.** The map of
+    # a people that names its villages *is* those villages, so they are subjects
+    # and not context: they frame it, they are pinned, they are named in the tree
+    # as chosen, and each can be taken off again. Faking the last of those in the
+    # tree was tried and is the reason this is here — a row that renders selected
+    # while the client's selection does not hold it cannot be clicked off,
+    # because the click reads the selection and the highlight read something
+    # else. One fact, one place.
+    #
+    # **`dropped` is why absence is not enough.** This function is asked afresh
+    # on every interaction and cannot remember, so "not in the selection" means
+    # both "never added" and "just taken off" — and expanding on the first
+    # reading undoes the second, which put a village back on the map the moment a
+    # reader clicked it away. So dismissal is said out loud, the way `hidden` is,
+    # and for the same reason: a rule that re-derives has to be told what a human
+    # decided, or it will re-derive over them.
     #
     # **One level, not transitively.** A member is what this record says about
     # where it is; what *its* members say is its own map's business, and
     # following the chain would put the Chukchee Peninsula's villages on a map of
     # the Yupik by way of two hops nobody asked for.
     known = list(dict.fromkeys(
-        known + [m for i in known for m in geo.geo_refs(store[i]) if m in store]))
+        known + [m for i in known for m in geo.geo_refs(store[i])
+                 if m in store and m not in dropped]))
 
     def _own(i):
         """How big this thing is — what a container sizes itself on.

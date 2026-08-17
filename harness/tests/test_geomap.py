@@ -1161,3 +1161,84 @@ def test_the_widening_stops_short_of_the_pole():
     assert n - s == 2 * geo.POINT_BOX
     assert (e - w) / 2 == pytest.approx(
         geo.POINT_BOX / math.cos(math.radians(geo.POINT_BOX_MAX_LAT)))
+
+
+# ------------------------------------- a `geo:` member on the map
+
+
+def _peopled(tmp_path):
+    """A people whose whole geography is two villages it names."""
+    return _store(
+        tmp_path,
+        ("land:coast", ""),
+        ("place:one", "- within: land:coast\n- geo: 66.0 -170.0\n"),
+        ("place:two", "- within: land:coast\n- geo: 65.0 -172.0\n"),
+        ("people:folk", "- geo: place:one\n- geo: place:two\n"),
+    )
+
+
+def test_a_named_member_is_a_subject_and_not_context(tmp_path):
+    """**The map of a people that names its villages is those villages.** They
+    frame it and they are pinned, so they are subjects: `map_context` expands a
+    `geo:` member into the selection rather than drawing it as something the
+    reader did not ask for.
+
+    That expansion is also what makes the tree honest. A row rendered selected
+    while the client's selection does not hold it cannot be clicked off — the
+    click reads the selection and the highlight read something else — so the two
+    are one fact here, and `subjects` is what the page hands back to the browser.
+    """
+    store = _peopled(tmp_path)
+    ctx = edition_ui.map_context("people:folk", tmp_path, "/e", store=store)
+    ids = [s["id"] for s in ctx["subjects"]]
+    assert ids == ["people:folk", "place:one", "place:two"]
+    assert ctx["svg"].count("<circle") == 2
+
+    def rows(ns):
+        for n in ns:
+            yield n
+            yield from rows(n["children"])
+            yield from rows(n["folded"])
+
+    chosen = {n["id"] for n in rows(ctx["tree"]) if n["selected"]}
+    assert {"place:one", "place:two"} <= chosen
+
+
+def test_a_dropped_member_stays_off_the_map(tmp_path):
+    """**Absence is not a dismissal, so the dismissal has to be said.**
+
+    `map_context` is asked afresh on every interaction and cannot remember, so
+    "not in the selection" means both "never added" and "just taken off" — and
+    the expansion above acts on the first reading. Without `dropped` a reader who
+    clicked a village away got it back on the next render, for ever.
+
+    The pin has to go with it, which is why `pins_under` no longer follows a
+    member of its own accord: a walk that re-derived the member saw a selection
+    and never a dismissal, and put the dot back under a tree row that had gone.
+    """
+    store = _peopled(tmp_path)
+    ctx = edition_ui.map_context("people:folk", tmp_path, "/e", store=store,
+                                 dropped={"place:two"})
+    assert [s["id"] for s in ctx["subjects"]] == ["people:folk", "place:one"]
+    assert ctx["svg"].count("<circle") == 1
+    assert "place:two" not in ctx["svg"]
+
+
+def test_a_non_geographical_child_sorts_first_and_is_never_folded(tmp_path):
+    """A people or a language is not another rung of the containment tree but an
+    overlay on it, and there are always few of them against many villages.
+    Sorted in among the settlements they cover they read as two more places, and
+    the fold — sized against the thirty-four villages of the Chukchee Peninsula —
+    put the divisions behind a summary on a map whose subject is the division.
+    """
+    store = _store(
+        tmp_path,
+        ("land:coast", ""),
+        ("place:vil", "- within: land:coast\n- geo: 66.0 -170.0\n"),
+        ("people:folk", "- geo: place:vil\n"),
+        ("people:sub", "- part-of: people:folk\n"),
+    )
+    ctx = edition_ui.map_context("people:folk", tmp_path, "/e", store=store)
+    top = next(n for n in ctx["tree"] if n["id"] == "people:folk")
+    assert [k["id"] for k in top["children"]] == ["people:sub"]
+    assert not top["folded"], "a division is not an offer to be folded away"

@@ -624,18 +624,20 @@ def pins_under(ent_id: str, store: dict, root: Path = Path("."),
     entity whose only geography is a point is highlighted by lighting its pin,
     and the label is a canonical name, which is not an identity.
 
-    **A `geo:` member is followed whatever the depth budget says, and a child is
-    not.** The budget exists to stop a map of the Russian Far East plotting every
-    village in the store — descendants nobody asked for. A member is the
-    opposite: somebody wrote it on this record, and it is the whole of what the
-    record says about where it is. `people:siberian-yupik` names six villages and
-    has no point of its own, so a walk that spent budget on them would draw an
-    empty map at the depth the atlas actually calls this (`depth=0`).
+    **"Below" is the containment tree, and a `geo:` member is not below.** It is
+    what the record *is* — `people:maritime-chukchi` does not contain its
+    villages, it is the people of them — so following one here was tried and
+    taken out. `edition_ui.map_context` expands a member into the selection
+    instead, which makes it a subject in its own right: it gets its own pin from
+    its own turn through this walk, it is named in the tree as chosen, and a
+    reader can take it off again. Followed from *here* it could not be taken off,
+    because this walk sees a selection and not a dismissal, and put the pin back
+    on every render.
 
-    **Cycle-guarded, which it did not need to be until now.** The old walk
-    followed `within:` children only, and `entity check` gates that chain
-    acyclic; following an authored member reaches a graph, and an unguarded
-    recursion inside a page render is a hang rather than a wrong picture.
+    The `seen` guard stays. It is no longer load-bearing — `entity check` gates
+    the containment chain acyclic — but it costs one set and this runs inside a
+    page render, where the wrong shape of loop is a hang rather than a wrong
+    picture.
     """
     idx = index(root)
     kids = children(store)
@@ -650,8 +652,6 @@ def pins_under(ent_id: str, store: dict, root: Path = Path("."),
             return
         for lat, lon in geo_points(rec):
             out.append((_shifted(lon, idx), lat, rec["canonical"], ident))
-        for m in geo_refs(rec):
-            walk(m, d)
         if d > 0:
             for k in kids.get(ident, []):
                 walk(k, d - 1)

@@ -935,7 +935,8 @@ def _ipa_ctx(form: str) -> dict | None:
     }
 
 
-def _map_ctx(idents, root: Path, store: dict | None = None, hidden=()) -> dict:
+def _map_ctx(idents, root: Path, store: dict | None = None, hidden=(),
+             dropped=()) -> dict:
     """`map_context` with the server's cached readers handed in.
 
     One map resolves six or more shapes out of `data/geo/`, and every one
@@ -948,6 +949,7 @@ def _map_ctx(idents, root: Path, store: dict | None = None, hidden=()) -> dict:
         store=store if store is not None else stores.load(root),
         shape=lambda i: stores.shape(i, root),
         hidden=hidden,
+        dropped=dropped,
     )
 
 
@@ -958,6 +960,7 @@ def _map_ctx(idents, root: Path, store: dict | None = None, hidden=()) -> dict:
 def map_pane(request: Request,
              at: Annotated[list[str], Query()] = (),
              hide: Annotated[list[str], Query()] = (),
+             drop: Annotated[list[str], Query()] = (),
              partial: str = ""):
     """The map as a *selection*, which is the shape the pane actually has.
 
@@ -967,11 +970,19 @@ def map_pane(request: Request,
     painted and what the frame may sit on, and it is deliberately not stored:
     nothing about it is written down, so there is nothing to undo but a click.
 
+    `drop` is the reader's "not this one *either*", and it exists because this
+    request is answered afresh every time. A `geo:` member joins the selection
+    by rule, so leaving it out of `at` says only "it is not here yet" — which the
+    rule then acts on, putting a village back the instant somebody clicked it
+    away. Dismissal has to be said out loud, exactly as `hide` is.
+
     `/map/{ident}` stays beside this as the one-place spelling — a permalink and
     what `a.mapref` points at — and goes through the same context.
     """
     refs = [_ident(i) for i in at if i]
-    ctx = _map_ctx(refs, _root(request), hidden={_ident(h) for h in hide if h})
+    ctx = _map_ctx(refs, _root(request),
+                   hidden={_ident(h) for h in hide if h},
+                   dropped={_ident(d) for d in drop if d})
     if partial:
         return templates.TemplateResponse(request, "edition/_map.html", ctx)
     title = refs[0] if len(refs) == 1 else f"{len(refs)} place(s)"
@@ -985,7 +996,7 @@ def map_pane(request: Request,
 
 @router.get("/map/{ident:path}")
 def map_view(request: Request, ident: str, partial: str = ""):
-    return map_pane(request, at=[ident], hide=[], partial=partial)
+    return map_pane(request, at=[ident], hide=[], drop=[], partial=partial)
 
 
 @router.get("/atlas")

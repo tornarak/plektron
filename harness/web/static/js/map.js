@@ -47,18 +47,20 @@
      are `localStorage` for the opposite reason: a pinned card is a deliberate
      act you expect to find again. */
   const KEY = 'edition-map';
-  let sel = [], hidden = new Set();
+  let sel = [], hidden = new Set(), dropped = new Set();
   try {
     const got = JSON.parse(sessionStorage.getItem(KEY) || '{}');
     sel = got.sel || [];
     hidden = new Set(got.hidden || []);
+    dropped = new Set(got.dropped || []);
   } catch (e) {}
   const save = () => sessionStorage.setItem(
-      KEY, JSON.stringify({sel, hidden: [...hidden]}));
+      KEY, JSON.stringify({sel, hidden: [...hidden], dropped: [...dropped]}));
 
   const url = () => B + '/map?partial=1'
       + sel.map(r => '&at=' + encodeURIComponent(r)).join('')
-      + [...hidden].map(r => '&hide=' + encodeURIComponent(r)).join('');
+      + [...hidden].map(r => '&hide=' + encodeURIComponent(r)).join('')
+      + [...dropped].map(r => '&drop=' + encodeURIComponent(r)).join('');
 
   /* Prefetch is best-effort and silent: it is a saving, and a failed one is
      just the click paying what it would have paid anyway. */
@@ -232,8 +234,8 @@
     if (!pane() || !refs.length) return 'card';
     const off = sel.includes(refs[0]);
     for (const r of refs) {
-      if (off) { sel = sel.filter(x => x != r); hidden.delete(r); }
-      else if (!sel.includes(r)) { sel.push(r); hidden.delete(r); }
+      if (off) { sel = sel.filter(x => x != r); hidden.delete(r); dropped.add(r); }
+      else { if (!sel.includes(r)) sel.push(r); hidden.delete(r); dropped.delete(r); }
     }
     save();
     if (sel.length) await paint(); else { pane().hidden = true; clearHidden(); }
@@ -262,12 +264,20 @@
          later frame is filtered against — a place put back on the map later
          would arrive unpainted, with the reason two interactions ago. */
       hidden.delete(ref);
+      /* **Dismissal is recorded, because dropping out of `sel` is not a
+         signal.** A `geo:` member joins the selection server-side by rule, so
+         the next request would put it straight back: leaving it out of `at`
+         says "not yet added", which is what the rule acts on. Saying `drop`
+         is how a click outranks a rule. Harmless for everything else — an id
+         nothing brings along is one nothing re-adds. */
+      dropped.add(ref);
       save();
       if (sel.length) await paint(); else { pane().hidden = true; clearHidden(); }
       return 'map';
     }
     sel.push(ref);
     hidden.delete(ref);
+    dropped.delete(ref);
     save();
     await paint();
     if (served().drawn.includes(ref)) return 'map';
@@ -284,6 +294,7 @@
 
   function clearHidden() {
     hidden.clear();
+    dropped.clear();
     folds = new Set();
     save();
     const css = document.getElementById('map-hidden');
@@ -381,7 +392,13 @@
   const p = pane();
   if (p) {
     const here = served();
-    const want = [...new Set([...sel, ...here.sel])];
+    /* **What the reader dropped does not come back on the next page.** The
+       pane the server put in this page was rendered without the sitting's
+       `drop` — it cannot read `sessionStorage` — so a village taken off the
+       map would arrive in `data-sel` again and be adopted straight back. The
+       filter is what makes the dismissal outlive a page turn; the comparison
+       below then differs from `here.sel` and repaints without it. */
+    const want = [...new Set([...sel, ...here.sel.filter(r => !dropped.has(r))])];
     if (want.length && (want.length != here.sel.length
                         || want.some((r, i) => r != here.sel[i]))) {
       sel = want;
