@@ -381,10 +381,10 @@ def test_a_field_that_is_missing_is_inserted_where_the_scaffold_puts_it():
 
     text = ("# place:x — X\n\n- status: ratified\n"
             "- link: wikidata:Q1\n\n## gloss\n\nx\n")
-    got = _set_field(text, "area", "watershed:anadyr")
+    got = _set_field(text, "geo", "watershed:anadyr")
     fields = [line[2:].split(":")[0] for line in got.splitlines()
               if line.startswith("- ")]
-    assert fields == ["status", "area", "link"]
+    assert fields == ["status", "geo", "link"]
     assert fields == sorted(fields, key=FIELD_ORDER.index)
 
 
@@ -404,14 +404,20 @@ def test_a_field_is_never_written_into_the_gloss():
 def test_a_set_field_round_trips_through_the_parser(tmp_path):
     """The guarantee `locate` rests on: it re-parses before it writes, so a bad
     value fails as a message and not as a file."""
-    from harness.cli._entity import _set_field
+    from harness.cli._entity import _set_field, _set_lines
 
     p = entry(tmp_path, "place:x", extra="- within: place:y\n")
     base = p.read_text(encoding="utf-8")
     assert E.geo_points(E.parse(_set_field(base, "geo", "66.0 -170.0"))) \
         == [(66.0, -170.0)]
-    got = _set_field(base, "area", "watershed:anadyr,marine:chaun-bay")
-    assert E.parse(got)["area"] == "marine:chaun-bay,watershed:anadyr"
+
+    # `_set_lines` is the repeatable sibling, and the reason it has to be one:
+    # `_set_field` replaces a single line, so on a union it would overwrite the
+    # first member and leave the rest.
+    got = _set_lines(base, "geo", ["watershed:anadyr", "marine:chaun-bay"])
+    assert E.geo_shapes(E.parse(got)) == ["watershed:anadyr", "marine:chaun-bay"]
+    assert E.geo_shapes(E.parse(_set_lines(got, "geo", ["marine:chaun-bay"]))) \
+        == ["marine:chaun-bay"], "it replaces the run rather than appending"
 
     # And the guarantee working: a member that is neither two degrees nor a
     # `kind:slug` fails as a message, so `locate` reports it instead of writing

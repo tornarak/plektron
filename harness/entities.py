@@ -75,7 +75,6 @@ import re
 import unicodedata
 from pathlib import Path
 
-from .geo import canonical_area, split_area
 from .geo import index as geo_index
 from .langs import ALIAS_LANGS
 
@@ -165,7 +164,7 @@ _FIELD = re.compile(r"^-\s+([a-z][a-z-]*):\s*(.*?)\s*$", re.M)
 #: makes the first unnecessary next time. A typo'd `- withn:` used to parse
 #: cleanly into nothing.
 KNOWN_FIELDS = frozenset({
-    "status", "within", "part-of", "area", "geo", "frame", "link", "authority",
+    "status", "within", "part-of", "geo", "frame", "link", "authority",
 })
 
 #: Fields this store used to have. **Tolerated and inert**, never an error: a
@@ -173,7 +172,14 @@ KNOWN_FIELDS = frozenset({
 #: would turn removing a field into a migration of every record that ever had
 #: one. Named here rather than passed over silently, so the difference between
 #: "we dropped this" and "you typed it wrong" is written down.
-RETIRED_FIELDS = frozenset({"since"})
+#:
+#: `area:` named a shape while `geo:` held a point, and the two answered one
+#: question — which is why `parse` used to refuse a record carrying both. It is
+#: a `geo:` member now. Inert rather than refused for the reason above, and the
+#: reason has teeth here: 66 records carried one, `tools/migrate_geo_field.py`
+#: rewrote every one, and a copy of this store from before that run should read
+#: as out of date rather than as broken.
+RETIRED_FIELDS = frozenset({"since", "area"})
 _SECTION = re.compile(r"^##\s+(\S+)\s*$", re.M)
 _ROW = re.compile(r"^\|(.*)\|\s*$", re.M)
 #: An alias boundary. `\w` alone is not enough on NFD text: a combining mark is
@@ -397,33 +403,6 @@ def parse(text: str, where: str = "") -> dict:
     if part_of:
         split_id(part_of)
 
-    # `area:` names one or more shapes in `data/geo/`, not an entity. Each is
-    # `kind:slug` — the same shape an identity has, and that resemblance is
-    # exactly why the shape kinds are held disjoint from `ENTITY_CLASSES`
-    # (`langarea:`, never `language:`): the two appear two lines apart in this
-    # file, and a reader who cannot tell them apart by looking is one keystroke
-    # from an `area:` that quietly resolves as an entity ref.
-    #
-    # **Several, comma-separated, is a composite** — a shape the store does not
-    # hold, resolved from members that it does. Held here as its canonical
-    # spelling so two orderings of the same union are one thing, with the
-    # members beside it in `areas` for anything that wants them apart.
-    areas = split_area(one("area"))
-    for a in areas:
-        kind, _, name = a.partition(":")
-        if not name or not kind:
-            raise Malformed(
-                f"{at}`area: …{a}…` — a shape id is `kind:slug`, e.g. "
-                f"`watershed:anadyr`, and several are comma-separated. "
-                f"`harness geo list` names them")
-        if kind in ENTITY_CLASSES:
-            raise Malformed(
-                f"{at}`area: …{a}…` — {kind!r} is an entity class, so this "
-                f"reads as an entity reference. Shape kinds are held disjoint "
-                f"from entity classes for that reason; a language area is "
-                f"`langarea:`")
-    area = canonical_area(areas)
-
     sections: dict[str, str] = {}
     marks = list(_SECTION.finditer(text))
     for i, s in enumerate(marks):
@@ -482,14 +461,6 @@ def parse(text: str, where: str = "") -> dict:
     # Deliberately **not** put through `one()`: several members is the ordinary
     # case now, not a defect.
     geo = [_geo_member(raw, at) for raw in fields.get("geo", [])]
-    # **`area:` is folded in here while it is being retired**, so that one
-    # implementation reads both spellings and every consumer downstream can be
-    # moved to the accessors in one step rather than being broken for the length
-    # of a migration. It is also what makes the migration checkable: `extent_of`
-    # is computed by the same code before and after a file is rewritten, so
-    # "nothing moved" is an assertion rather than a comparison of two program
-    # versions. Removed with the field.
-    geo += [{"kind": "shape", "id": a} for a in areas]
 
     # **A frame is not an extent.** It says where the map should *look*, which is
     # a different question from where the entity *is*, and the default answer is
@@ -551,12 +522,6 @@ def parse(text: str, where: str = "") -> dict:
         "part_of": part_of,
         "geo": geo,
         "frame": box,
-        # Canonical, and **one field, not two**. The member list is
-        # `geo.split_area(rec["area"])` at every call site rather than a second
-        # record key: a record key is a field of the file by the store's own
-        # gate, and a restatement of `area:` that no card displays would be an
-        # invisible field — which is exactly the shape that gate exists to stop.
-        "area": area,
         "links": fields.get("link", []),
         "authority": one("authority"),
         "aliases": aliases,

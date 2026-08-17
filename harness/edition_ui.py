@@ -643,17 +643,17 @@ def map_context(
         "own": {i: _rect_str(frame.rect(b)) for i, b in boxes.items() if b},
     }
 
-    def _kind(area: str) -> str:
-        """The shape kind an `area:` names — `watershed`, `marine`, `region`, …
+    def _kind(sid: str) -> str:
+        """The shape kind an id names — `watershed`, `marine`, `region`, …
 
-        A composite takes its first member's, which is all a composite can
-        honestly say: the two unclaimed language areas that make up
-        `people:inupiat` are both `langarea:`, and a union of two *different*
-        kinds would be a claim about the world nobody has made. Read off the
-        declared id and never inferred from the geometry.
+        Read off the declared id and never inferred from the geometry. It took
+        a whole `area:` and split off the first member's kind while several
+        shapes were one comma-joined string; each member is now passed in on its
+        own, and is drawn in its own kind's hue rather than in the first one's —
+        which is the honest answer where a record names two kinds, and identical
+        to the old one where it does not.
         """
-        got = geo.split_area(area)
-        return got[0].partition(":")[0] if got else ""
+        return sid.partition(":")[0]
 
     # **Every record the map draws, collected as it is drawn.** The tree below is
     # built from this set and not from a second walk of the store, because the

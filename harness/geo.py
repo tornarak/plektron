@@ -10,41 +10,36 @@ window, so what is left is arithmetic. The heavy work — clipping, welding a
 shape its publisher cut at the antimeridian, simplification — happened once, at
 build time, where a library was available.
 
-**A shape kind is not an entity class**, and `entities.parse` refuses one that
-is. `langarea:chuk1273`, never `language:chuk1273`: an entity file carries
-`within: place:chukotka` two lines from `area: langarea:chuk1273`, and a reader
-who cannot tell the two apart by looking is one keystroke from an `area:` that
-resolves as an entity reference.
+**A SHAPE KIND IS NOT AN ENTITY CLASS**, and this is now load-bearing rather
+than merely tidy. `langarea:chuk1273`, never `language:chuk1273` — the two are
+held disjoint so that a reader looking at an entity file cannot mistake one for
+the other. That disjointness is what lets one field hold both: a `geo:` member
+is a point if it is two numbers, a shape if its kind is not an entity class, and
+an entity if it is. No flag, and no wrong guess available. `geo bounds` has told
+them apart this way since it was written; `entities._geo_member` is the same
+rule one store lower down.
 
-**AN `area:` MAY NAME SEVERAL SHAPES, COMMA-SEPARATED**, and the result is a
-*composite* whose identity is the canonical comma-joined member list. A
-composite is deliberately **not a row in the store**: it is synthesized at
-lookup from members that are, so it is re-derived on every run and fails rather
-than goes stale, exactly as `#gt` and `#mz` do in the TEI. `index()["shapes"]`
-therefore still enumerates precisely what the build wrote — `geo list` and
-`verify`'s `unclaimed` census the store and not the entity files — while
-`.get()` and `in` resolve a composite all of whose members exist, and refuse one
-whose members do not. Nothing downstream had to learn a second kind of identity.
+**`area:` was a second location field and is retired.** It named a shape while
+`geo:` held a point, and a record was forbidden to carry both — a rule against
+two fields contradicting each other, which is a rule two fields should not have
+needed. `geo:` repeats now and the field is the union of its members, so an
+entity drawn as two polygons names two, and the whole comma-joined composite
+apparatus that let a single-valued field hold a union is gone with it.
+`index()["shapes"]` is a plain dict of exactly what the build wrote, and every
+member is looked up in it directly.
 
-**A composite exists only by being named**, so it always has at least one
-claimant and is displayed under that entity's canonical name. Two entities may
-name the same one, as `people:chukchi` and `language:chukchi` already share
-`langarea:chuk1273`, so the label names every claimant rather than picking one.
+**A union still gets a row of its own in `listing`**, after the store's rows and
+never among them: two polygons being one speaker area is a human's assertion
+about `entities/`, not a shape `data/geo/` holds. It is synthesized for display
+and claims nothing. Two entities may name the same pair, as `people:chukchi` and
+`language:chukchi` do, so the label names every claimant rather than picking one.
 
 THE CHECKS HERE REPORT AND DO NOT GATE. `verify` compares an authored `within:`
 against containment: a basin delineated from a tributary's outlet is contained
 in its trunk's by construction, so it is a real check — but a disagreement says
 *one of two authored facts is wrong* and the geometry cannot say which, so the
-row names the pair rather than a culprit.
-
-**A `geo:` point against its own shape was a third check and is gone**, because
-the case it measured is now refused outright: `entities.parse` will not accept a
-record carrying both. It was tolerated for the river's sake — a basin plus its
-mouth, the mouth sitting on the boundary the basin was delineated from, which is
-why `POINT_SLACK` was the width of the thing being measured and not slack. But
-that is two things and not one, and if the mouth is worth naming it is worth an
-entry: `place:anadyr` *is* that entry. A shape is the location, `extent_of`
-never reads a point beside one, and a field nothing reads can only drift.
+row names the pair rather than a culprit. Where either end names several shapes
+it emits a row per pair; the best pair would launder the disagreement.
 """
 from __future__ import annotations
 
@@ -80,30 +75,18 @@ def geodir(root: Path = Path(".")) -> Path:
     return root / GEODIR
 
 
-def split_area(spec: str) -> list[str]:
-    """`"langarea:a, langarea:b"` → `["langarea:a", "langarea:b"]`.
-
-    Order as authored, duplicates and empties dropped. A single id round-trips
-    unchanged, which is what keeps every existing caller honest.
-    """
-    out: list[str] = []
-    for part in str(spec).split(AREA_SEP):
-        part = part.strip()
-        if part and part not in out:
-            out.append(part)
-    return out
-
-
-def canonical_area(spec) -> str:
-    """The lookup key for an `area:` — members sorted, comma-joined, no spaces.
-
-    Sorted so `a, b` and `b,a` are one composite and not two. An ordering
-    carries no meaning a reader could have intended, and a store where the same
-    union had two spellings would report the same member shape as claimed and
-    unclaimed at once.
-    """
-    ids = split_area(spec) if isinstance(spec, str) else list(spec)
-    return AREA_SEP.join(sorted(dict.fromkeys(ids)))
+# **The composite is gone, and it was a way of spelling.** `area:` held one
+# value, so an entity drawn as two shapes had to name them in one string —
+# comma-joined, sorted into a canonical order so the same union could not exist
+# under two spellings, resolved back into members by `split_area` at every call
+# site, and synthesized into an index row that did not exist in the store. All
+# of that machinery served one purpose: letting a single-valued field hold two
+# things. `geo:` repeats, so it holds them, and each member is an ordinary
+# shape id that `index()["shapes"]` either has or has not.
+#
+# What is kept is the *reporting*: `composite_claims` still names an entity that
+# draws several shapes, because "these two polygons are one speaker area" is
+# still a human's assertion and still worth a row of its own.
 
 
 def _composite_row(members: list[str], rows: list[dict]) -> dict:
@@ -136,40 +119,13 @@ def _composite_row(members: list[str], rows: list[dict]) -> dict:
     }
 
 
-class Shapes(dict):
-    """The rows the build wrote, plus the composites an `area:` may compose.
-
-    Iteration, `len` and `keys()` are the plain dict's — **the census is what
-    the store holds**, and a union some entity happens to have authored is not a
-    shape the atlas has. Only `.get()` and `in` resolve a composite, and only
-    when every member is a real row; a composite naming a shape that does not
-    exist is simply absent, so `entity check` still refuses it and its message
-    can name the member that failed.
-    """
-
-    def __contains__(self, key) -> bool:
-        return self.get(key) is not None
-
-    def get(self, key, default=None):
-        row = dict.get(self, key)
-        if row is not None:
-            return row
-        if not isinstance(key, str) or AREA_SEP not in key:
-            return default
-        members = sorted(split_area(key))
-        rows = [dict.get(self, m) for m in members]
-        if not members or any(r is None for r in rows):
-            return default
-        return _composite_row(members, rows)
-
-
 @lru_cache(maxsize=8)
 def _index_cached(path: str, mtime: float) -> dict:
     doc = json.loads(Path(path).read_text(encoding="utf-8"))
     return {"window": doc.get("window", []),
             "lon_base": doc.get("lon_base", LON_BASE),
             "absent": doc.get("absent", {}),
-            "shapes": Shapes((s["id"], s) for s in doc.get("shapes", []))}
+            "shapes": {s["id"]: s for s in doc.get("shapes", [])}}
 
 
 def index(root: Path = Path(".")) -> dict:
@@ -189,32 +145,21 @@ def index(root: Path = Path(".")) -> dict:
     try:
         return _index_cached(str(p), p.stat().st_mtime)
     except OSError:
-        return {"window": [], "lon_base": LON_BASE, "absent": {}, "shapes": Shapes()}
+        return {"window": [], "lon_base": LON_BASE, "absent": {}, "shapes": {}}
 
 
 def shape(ident: str, root: Path = Path(".")) -> dict:
     """One shape's FeatureCollection, or `{}`.
 
-    A composite id returns its members' features **concatenated**, not
-    geometrically unioned: this module imports no geometry library on purpose,
-    and every operation downstream — drawing, bounds, `in_shape` — is already
-    per-polygon, so a two-polygon collection reads exactly as a MultiPolygon
-    does. What the concatenation must not do is make an overlap disappear, and
-    since the parity fix it does not.
+    **One id, one row, one file.** It used to accept a composite as well and
+    concatenate its members' features, because `area:` could name several shapes
+    in one string and every caller passed that string through whole. A caller
+    that wants several now asks for several — `geo_shapes(rec)` is the list —
+    and each call is this, which is a dictionary lookup and a file read.
     """
     row = index(root)["shapes"].get(ident)
     if not row:
         return {}
-    if row.get("composite"):
-        feats, props = [], []
-        for m in row["members"].split():
-            doc = shape(m, root)
-            feats += doc.get("features", [])
-            props.append(doc.get("properties", {}))
-        merged = _composite_row(row["members"].split(), props or [{}])
-        merged["id"] = row["id"]
-        return {"type": "FeatureCollection", "properties": merged,
-                "features": feats}
     try:
         return json.loads((geodir(root) / row["file"]).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
@@ -737,13 +682,16 @@ def listing(root: Path = Path(".")) -> dict:
             "source": s.get("source", ""),
         })
     absent = [absent_row(k, v) for k, v in sorted(idx["absent"].items())]
-    # The composites some entity has authored, listed after the store's own
-    # rows and never among them: a union is a fact about `entities/` and the
-    # census above is a fact about `data/geo/`.
+    # The unions some entity has authored, listed after the store's own rows and
+    # never among them: a union is a fact about `entities/` and the census above
+    # is a fact about `data/geo/`. **Synthesized here rather than looked up**,
+    # since a composite stopped being a resolvable id the day `geo:` began
+    # holding its members apart — and the row was only ever built for display.
     comp = []
     for spec, ids in sorted(composite_claims(store).items()):
-        row = idx["shapes"].get(spec)
-        if row:
+        rows_for = [idx["shapes"].get(m) for m in spec.split(AREA_SEP)]
+        if all(rows_for):
+            row = _composite_row(spec.split(AREA_SEP), rows_for)
             comp.append({"id": spec, "name": row["name"],
                          "members": row["members"],
                          "claimed_by": " ".join(ids)})
@@ -776,13 +724,18 @@ def absent_row(what: str, why) -> dict:
 
 
 def member_claims(store: dict) -> dict[str, list[str]]:
-    """`{shape id: [entity ids]}`, a composite `area:` counted against **each of
-    its members**.
+    """`{shape id: [entity ids]}` — every shape member of every `geo:`.
 
-    A union is not a thing the store holds, so an entity claiming one has to
-    count as a claim on the shapes it is made of — otherwise the members read as
-    unclaimed *and* the union reads as a shape `data/geo/` does not contain,
-    which is two wrong answers out of one right authored field.
+    **A claim is one hop.** An entity that reaches a shape only through another
+    entity's `geo:` does not claim it: `people:naukans` names `place:naukan`,
+    and counting that as a claim on whatever the village claims would make
+    `unclaimed` go quiet about shapes nobody has actually pointed at.
+
+    It used to have to split a composite back into members to say this at all,
+    which is where the argument in its old docstring came from — that an entity
+    claiming a union must count against each of its parts, or the members read
+    as unclaimed *and* the union read as a shape `data/geo/` does not hold. The
+    field holds them apart now, so the rule needs no recovery step.
     """
     claims: dict[str, list[str]] = {}
     for rec in sorted(store.values(), key=lambda r: r["id"]):
@@ -792,12 +745,21 @@ def member_claims(store: dict) -> dict[str, list[str]]:
 
 
 def composite_claims(store: dict) -> dict[str, list[str]]:
-    """`{composite id: [entity ids]}` for every `area:` naming more than one."""
+    """`{shapes joined: [entity ids]}` for every `geo:` naming more than one.
+
+    **Sorted, which is all that is left of the canonical spelling.** It used to
+    be the composite's *identity* — an id that had to be resolvable, so two
+    orderings of one union could not exist and report the same member as claimed
+    and unclaimed at once. Nothing resolves it now; it is a grouping key for a
+    report, and sorting it is what keeps two entities that named the same pair
+    in either order on one row.
+    """
     out: dict[str, list[str]] = {}
     for rec in sorted(store.values(), key=lambda r: r["id"]):
         shapes = geo_shapes(rec)
         if len(shapes) > 1:
-            out.setdefault(canonical_area(shapes), []).append(rec["id"])
+            key = AREA_SEP.join(sorted(dict.fromkeys(shapes)))
+            out.setdefault(key, []).append(rec["id"])
     return out
 
 

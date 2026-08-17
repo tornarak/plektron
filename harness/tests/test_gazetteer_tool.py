@@ -40,10 +40,10 @@ def test_the_parent_shape_is_the_nearest_ancestor_that_has_one(tmp_path):
     """Reading `within:` once would report "no parent shape" for most of the
     store and throw the check away: a village's parent is Chukotka, which no
     source draws, and *its* parent is Northeast Siberia, which none draws
-    either. The first ancestor with an `area:` is what a candidate coordinate
-    should fall inside."""
+    either. The first ancestor with a shape member is what a candidate
+    coordinate should fall inside."""
     w = _tool()
-    entry(tmp_path, "land:kamchatka", extra="- area: region:kamchatka\n")
+    entry(tmp_path, "land:kamchatka", extra="- geo: region:kamchatka\n")
     entry(tmp_path, "land:olutora", extra="- within: land:kamchatka\n")
     entry(tmp_path, "place:golyghina", extra="- within: land:olutora\n")
     from harness.entities import load
@@ -86,7 +86,7 @@ def test_a_frame_is_taken_where_no_ancestor_carries_a_shape(tmp_path):
 
     # An `area:` anywhere up the chain still wins: a polygon says more than a box.
     entry(tmp_path, "land:chukotka", extra="- within: land:northeast-siberia\n"
-                                           "- area: region:chukchi-peninsula\n")
+                                           "- geo: region:chukchi-peninsula\n")
     assert w._parent_shape("place:x", load(tmp_path)) == \
         ("region:chukchi-peninsula", None)
 

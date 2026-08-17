@@ -62,70 +62,90 @@ def test_longitudes_are_continuous_across_the_antimeridian():
     assert min(xs) > 0
 
 
-def test_an_area_naming_an_entity_class_is_refused():
-    """The collision this guards is silent: `area: language:chukchee` parses as
-    a well-formed id and resolves to nothing, in a file whose next field is a
-    genuine entity reference."""
-    text = ("# place:x — X\n\n- status: proposed\n- since: 1-021\n"
-            "- area: language:chukchee\n\n## aliases\n\n| form | lang | auto | note |\n"
-            "|---|---|---|---|\n\n## gloss\n\nx\n")
-    with pytest.raises(entities.Malformed, match="entity class"):
-        entities.parse(text)
-
-
-def test_a_wellformed_area_parses_and_is_carried():
-    text = ("# place:x — X\n\n- status: proposed\n- since: 1-021\n"
-            "- area: watershed:anadyr\n\n## aliases\n\n| form | lang | auto | note |\n"
-            "|---|---|---|---|\n\n## gloss\n\nx\n")
-    assert entities.parse(text)["area"] == "watershed:anadyr"
-
-
-def _entity_text(area: str) -> str:
+def _entity_text(*members: str) -> str:
+    lines = "".join(f"- geo: {m}\n" for m in members)
     return ("# place:x — X\n\n- status: proposed\n- since: 1-021\n"
-            f"- area: {area}\n\n## aliases\n\n| form | lang | auto | note |\n"
+            f"{lines}\n## aliases\n\n| form | lang | auto | note |\n"
             "|---|---|---|---|\n\n## gloss\n\nx\n")
 
 
-def test_a_composite_area_is_parsed_and_stored_canonically():
-    """Several shapes, comma-separated, and the field holds one spelling of the
-    union however the author typed it."""
-    rec = entities.parse(_entity_text("watershed:anadyr, langarea:chuk1273"))
-    assert rec["area"] == "langarea:chuk1273,watershed:anadyr"
-    assert geo.split_area(rec["area"]) == ["langarea:chuk1273", "watershed:anadyr"]
+def test_a_member_whose_kind_is_an_entity_class_is_read_as_a_reference():
+    """**The inversion at the centre of the change.** `area: language:chukchee`
+    used to be refused, because a shape id whose kind was an entity class parsed
+    as a well-formed shape and resolved to nothing, in a file whose next field
+    was a genuine entity reference. It *is* a reference now: the same
+    disjointness that made the collision worth refusing is what makes the
+    reading unambiguous, and the field takes all three kinds because of it."""
+    rec = entities.parse(_entity_text("language:chukchee"))
+    assert entities.geo_refs(rec) == ["language:chukchee"]
+    assert entities.geo_shapes(rec) == []
 
 
-def test_every_member_of_a_composite_is_held_to_the_same_rule():
-    """The kind check is per member, not on the first one. A composite whose
-    second member is an entity class is the same silent collision as a lone one,
-    and the message names the member rather than the whole field."""
-    with pytest.raises(entities.Malformed, match="language:chukchee"):
-        entities.parse(_entity_text("watershed:anadyr, language:chukchee"))
-    with pytest.raises(entities.Malformed, match="kind:slug"):
-        entities.parse(_entity_text("watershed:anadyr, bare-slug"))
+def test_a_member_of_each_kind_parses_and_is_carried():
+    """One field, three readings, told apart by the member's own spelling."""
+    rec = entities.parse(_entity_text(
+        "watershed:anadyr", "66.05 -169.6", "place:uelen"))
+    assert entities.geo_shapes(rec) == ["watershed:anadyr"]
+    assert entities.geo_points(rec) == [(66.05, -169.6)]
+    assert entities.geo_refs(rec) == ["place:uelen"]
+    # And back out as authored, which is what the CLI reports and a migration
+    # diffs — no caller has to know how a point is spelled to print one.
+    assert entities.spell_geo(rec) == [
+        "watershed:anadyr", "66.05 -169.6", "place:uelen"]
 
 
-# --------------------------------------------------- a composite `area:`
+def test_several_members_are_kept_apart_and_in_the_order_authored():
+    """Where a composite `area:` sorted its members into one canonical string so
+    the union could not exist under two spellings, a repeatable field has no
+    union to name: the members are separate lines and stay in the order somebody
+    wrote them."""
+    rec = entities.parse(_entity_text("watershed:anadyr", "langarea:chuk1273"))
+    assert entities.geo_shapes(rec) == ["watershed:anadyr", "langarea:chuk1273"]
 
-def test_a_composite_id_is_canonical_however_it_was_typed():
-    """`a, b` and `b,a` are one composite. An ordering carries no meaning a
-    reader could have intended, and a store where one union had two spellings
-    would report the same member as claimed and unclaimed at once."""
-    assert geo.canonical_area("langarea:b, langarea:a") == \
-        geo.canonical_area("langarea:a,langarea:b")
-    assert geo.split_area("watershed:anadyr") == ["watershed:anadyr"]
-    assert geo.split_area(" a:1 ,, a:1 , b:2 ") == ["a:1", "b:2"]
+
+def test_every_member_is_held_to_the_same_rule():
+    """Per member, not on the first one, and the message names the member. A
+    member that is neither two degrees nor a `kind:slug` is refused outright:
+    the three forms are exhaustive, so anything else is a typo rather than a
+    fourth kind nobody has implemented yet."""
+    with pytest.raises(entities.Malformed, match="three things"):
+        entities.parse(_entity_text("watershed:anadyr", "bare-slug"))
+    with pytest.raises(entities.Malformed, match="not two WGS84"):
+        entities.parse(_entity_text("66.05 north"))
+
+
+# ------------------------------------- several shapes on one entity
+
+def test_a_union_is_reported_under_a_key_that_ignores_the_order_typed():
+    """`composite_claims` is the last of the composite machinery, and it is a
+    *report*: two entities that named the same pair in either order belong on
+    one row. Nothing resolves the key — it was an identity when a union had to
+    be a lookupable id, and is a grouping now."""
+    store = {
+        "place:a": {"id": "place:a", "geo": [
+            {"kind": "shape", "id": "langarea:b"},
+            {"kind": "shape", "id": "langarea:a"}]},
+        "place:b": {"id": "place:b", "geo": [
+            {"kind": "shape", "id": "langarea:a"},
+            {"kind": "shape", "id": "langarea:b"}]},
+    }
+    assert geo.composite_claims(store) == {
+        "langarea:a,langarea:b": ["place:a", "place:b"]}
 
 
 @built
-def test_a_composite_resolves_but_is_not_a_row_in_the_store():
+def test_a_union_is_not_a_row_in_the_store():
     """**The census is what the build wrote.** A union some entity happened to
     author is a fact about `entities/`, and minting a row for it would make the
-    atlas claim a shape no source drew."""
+    atlas claim a shape no source drew. It used to *resolve* through `.get()`
+    while staying out of iteration, which took a dict subclass to arrange; the
+    members are named separately now, so there is nothing to resolve and the
+    index is a plain dict."""
     idx = geo.index(ROOT)["shapes"]
-    spec = geo.canonical_area("langarea:chuk1273,base:chukotka-east-of-meridian")
-    assert spec in idx and idx.get(spec)["composite"]
-    assert spec not in set(idx)          # iteration is the plain dict's
-    assert spec not in list(idx.keys())
+    spec = "base:chukotka-east-of-meridian,langarea:chuk1273"
+    assert spec not in idx and idx.get(spec) is None
+    for m in spec.split(","):
+        assert m in idx
 
 
 @built
@@ -138,16 +158,18 @@ def test_a_composite_naming_a_shape_that_does_not_exist_is_absent():
 
 
 @built
-def test_a_composite_shape_is_its_members_features_together():
-    """Concatenated rather than geometrically unioned — this module imports no
-    geometry library, and every operation downstream is per-polygon."""
-    spec = geo.canonical_area("langarea:chuk1273,base:chukotka-east-of-meridian")
-    doc = geo.shape(spec, ROOT)
-    n = sum(len(geo.shape(m, ROOT)["features"]) for m in spec.split(","))
-    assert len(doc["features"]) == n
-    # And the union reaches past the meridian where the Asher polygon alone
-    # stops dead at it — the whole point of item 7.
-    assert max(x for r in geo.rings(doc) for x, _ in r) > 180.0
+def test_the_members_of_a_union_are_drawn_one_by_one():
+    """`geo.shape` takes one id and reads one file. It used to accept a
+    composite and concatenate its members' features, because every caller passed
+    a whole `area:` through; a caller that wants several asks for several now.
+
+    The pair is still the case that matters — the Asher polygon stops dead at
+    the antimeridian and the Natural Earth land east of it is what carries the
+    drawing past, which is the whole of item 7."""
+    members = ["base:chukotka-east-of-meridian", "langarea:chuk1273"]
+    docs = [geo.shape(m, ROOT) for m in members]
+    assert all(d.get("features") for d in docs)
+    assert max(x for d in docs for r in geo.rings(d) for x, _ in r) > 180.0
     assert max(x for r in geo.rings(geo.shape("langarea:chuk1273", ROOT))
                for x, _ in r) == 180.0
 
@@ -509,7 +531,7 @@ def test_a_framed_descendant_is_on_the_map_and_nothing_else_is():
     store = entities.load(ROOT)
     got = dict(geo.member_extents("land:russian-far-east", store, ROOT))
     assert "land:chukotka" in got
-    assert not any(store[e]["area"] or store[e]["geo"] for e in got)
+    assert not any(store[e]["geo"] for e in got)
     layer = re.search(r"<g class='extents'>.*?</g>",
                       edition_ui.map_context("land:russian-far-east", ROOT,
                                              "/e", store=store)["svg"], re.S)
@@ -760,7 +782,7 @@ def test_a_framed_entity_with_nothing_else_still_draws():
     there is one."""
     store = entities.load(ROOT)
     rec = store.get("land:parapolsky-dol")
-    assert rec and rec["frame"] and not rec["area"] and not rec["geo"]
+    assert rec and rec["frame"] and not rec["geo"]
     ctx = edition_ui.map_context("land:parapolsky-dol", ROOT, "/e", store=store)
     assert ctx["svg"], "a framed entity should have a map of its own"
 
@@ -787,7 +809,7 @@ def test_a_framed_entity_with_nothing_else_still_draws():
     # one is the hazard this repo names elsewhere; `land:chukotka` is framed and
     # densely populated, so the two halves stay two.
     framed_parent = store["land:chukotka"]
-    assert framed_parent["frame"] and not framed_parent["area"]
+    assert framed_parent["frame"] and not geo.geo_shapes(framed_parent)
     live = dict(geo.member_extents(framed_parent["within"], store, ROOT))
     derived = geo.extent_of("land:chukotka", store, ROOT)
     assert derived is not None, "the fixture must have something to derive from"
@@ -1121,7 +1143,8 @@ def test_a_keyed_point_is_boxed_square_on_the_ground():
     store = entities.load(ROOT)
     for ident in ("place:uelen", "place:markovo"):
         rec = store[ident]
-        assert rec["geo"] and not rec["area"], f"{ident} is not a bare point"
+        assert entities.geo_points(rec) and not entities.geo_shapes(rec), \
+            f"{ident} is not a bare point"
         w, s, e, n = geo.extent_of(ident, store, ROOT)
         lat0 = (s + n) / 2
         x0, y0 = geomap.project(w, s, w, lat0)
