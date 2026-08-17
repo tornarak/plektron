@@ -798,6 +798,72 @@ def test_the_wrapped_link_still_re_derives_at_the_gate(tmp_path):
                           "toc_window": []}).errors
     assert not any("no longer derives" in e or "resolves the form" in e
                    for e in errs)
+
+
+# --- `auto: once` -------------------------------------------------------------
+
+
+def test_a_once_form_is_linked_at_its_first_occurrence_only(tmp_path):
+    """The reader's convention, and the reason the third state exists: `Chukchee`
+    is set some five thousand times and is not doubtful, so a link on every
+    instance is a page nobody can read the prose through."""
+    entry(tmp_path, "people:chukchi", canonical="Chukchi",
+          aliases=[("Chukchee", "once")])
+    blocks = [("MainZone-P", lines_at(["The Chukchee say so.",
+                                       "A Chukchee man told me."]))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert doc.count('<rs ref="people:chukchi"') == 1
+    assert rep["links"] == 1
+
+
+def test_a_once_forms_later_occurrences_ask_nothing_either(tmp_path):
+    """Not linked *and* not commented. A candidate on the fourth `Chukchee` of a
+    page is exactly the interruption `once` exists to remove — 423 of them, a
+    third of the whole collation inbox, all re-asking a question the link above
+    already answered."""
+    entry(tmp_path, "people:chukchi", canonical="Chukchi",
+          aliases=[("Chukchee", "once")])
+    blocks = [("MainZone-P", lines_at(["The Chukchee say so.",
+                                       "A Chukchee man told me."]))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert "entity candidate" not in doc and rep["candidates"] == 0
+
+
+def test_the_once_count_is_the_page_and_not_the_block(tmp_path):
+    """`rendered` marks up one block at a time, so the set has to outlive the call
+    that spends it. Per block is not a convention anyone reads by — and a quote
+    after a paragraph is two calls for certain, where two `MainZone-P` bands in a
+    row are one paragraph and would prove nothing."""
+    entry(tmp_path, "people:chukchi", canonical="Chukchi",
+          aliases=[("Chukchee", "once")])
+    blocks = [("MainZone-P", lines_at(["The Chukchee say so."])),
+              ("MainZone-Quote", lines_at(["The Chukchee again."],
+                                          y0=200 + LINE_H))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "<quote>" in doc
+    assert doc.count('<rs ref="people:chukchi"') == 1
+
+
+def test_a_second_rule_link_on_a_once_form_fails_the_gate(tmp_path):
+    """`#mz` asserts nothing on its own, so the count is re-derived rather than
+    trusted. This is the failure that is otherwise silent: two links on one form,
+    which is `once` having quietly become twice."""
+    from harness.validate import validate
+    entry(tmp_path, "people:chukchi", canonical="Chukchi",
+          aliases=[("Chukchee", "once")])
+    blocks = [("MainZone-P", lines_at(["The Chukchee say so.",
+                                       "A Chukchee man told me."]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    doubled = doc.replace(
+        "A Chukchee man",
+        'A <rs ref="people:chukchi" resp="#mz">Chukchee</rs> man')
+    out = tmp_path / "tei" / "chukchi-1-021.xml"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(doubled, encoding="utf-8")
+    errs = validate(out, {"page_ref": "1-021", "root": str(tmp_path),
+                          "figures_on_page": [], "ocr_lines": [],
+                          "toc_window": []}).errors
+    assert any("already links it" in e for e in errs)
     assert not any("never carries a glyph" in e for e in errs)
 
 

@@ -125,6 +125,37 @@ def test_an_auto_no_alias_is_not_applied(tmp_path):
     assert applied == []
 
 
+def test_a_once_alias_takes_the_first_occurrence_and_leaves_the_rest(tmp_path):
+    s = store(tmp_path, auto="once")
+    got, applied, _ = relink.relink(
+        f"{HEAD}<p>Markova, and again Markova, and Markova.</p>{FOOT}", s)
+    assert got.count("<rs ") == 1 and len(applied) == 1
+
+
+def test_a_once_alias_counts_the_links_the_page_already_has(tmp_path):
+    """**The trap this module is uniquely exposed to.** Everything else here works
+    on unlinked text, because linked text is done. Counting a `once` form that
+    way finds the second occurrence with the first hidden inside an `<rs>`, reads
+    it as the first, and links it — turning once per page into twice, on exactly
+    the pages this module exists to fix."""
+    s = store(tmp_path, auto="once")
+    src = (f'{HEAD}<p><rs ref="place:markovo" resp="#mz">Markova</rs> and '
+           f"then Markova again.</p>{FOOT}")
+    got, applied, _ = relink.relink(src, s)
+    assert got == src and applied == []
+
+
+def test_a_once_alias_sees_through_the_markup_of_an_existing_link(tmp_path):
+    """The first occurrence may be a Tier-1 handle wrapped by the reference, which
+    is what `tei generate` writes. The count is over what the element *says*, so
+    the tags between do not hide it."""
+    s = store(tmp_path, auto="once")
+    src = (f'{HEAD}<p><rs ref="place:markovo" resp="#mz"><name>Markova</name>'
+           f"</rs> and then Markova again.</p>{FOOT}")
+    _got, applied, _ = relink.relink(src, s)
+    assert applied == []
+
+
 def test_nothing_outside_the_body_is_touched(tmp_path):
     """The header names the edition and its people; a title reading "Markova"
     is not a mention of the place."""
@@ -289,7 +320,7 @@ def _alias(root, ident, form, **kw):
     from harness.cli import _entity
 
     _entity.run_alias(_args(root, ident=ident, form=form,
-                            **{"lang": "", "auto": True, "note": "", **kw}))
+                            **{"lang": "", "auto": "yes", "note": "", **kw}))
 
 
 def _draft(root, ref, body):
@@ -411,9 +442,9 @@ def test_an_alias_row_has_no_double_space_in_any_cell(tmp_path):
     without a note failed `corpus normalize` from the moment it was written —
     on a defect no rendering of the table shows."""
     p = entry(tmp_path, "place:markovo", status="ratified", canonical="Markovo")
-    for form, kw in (("Markova", {"lang": "ckt", "auto": True, "note": ""}),
-                     ("Markovskoye", {"lang": "", "auto": False, "note": ""}),
-                     ("Markovo", {"lang": "ru", "auto": False, "note": "1-021"})):
+    for form, kw in (("Markova", {"lang": "ckt", "auto": "yes", "note": ""}),
+                     ("Markovskoye", {"lang": "", "auto": "no", "note": ""}),
+                     ("Markovo", {"lang": "ru", "auto": "no", "note": "1-021"})):
         _alias(tmp_path, "place:markovo", form, commit=True, **kw)
     text = p.read_text(encoding="utf-8")
     assert "|  |" not in text

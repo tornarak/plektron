@@ -28,10 +28,14 @@ def entry(root: Path, ident: str, *, status: str = "ratified",
     """One store file. An alias is `(form, auto)` or `(form, auto, lang)` — the
     two-tuple stays legal because the language is optional in the store too, and
     a helper that forced it would make every caller state a fact the schema
-    calls unstated."""
+    calls unstated.
+
+    `auto` is a bool for the two states that predate `once`, or the column's own
+    string where a caller means the third."""
     cls, slug = ident.split(":")
     rows = "\n".join(f"| {a[0]} | {a[2] if len(a) > 2 else ''} | "
-                     f"{'yes' if a[1] else 'no'} | |" for a in aliases)
+                     f"{a[1] if isinstance(a[1], str) else ('yes' if a[1] else 'no')}"
+                     f" | |" for a in aliases)
     p = root / "entities" / cls / f"{slug}.md"
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(
@@ -77,7 +81,8 @@ def test_a_record_parses(tmp_path):
     rec = E.load(tmp_path)["place:markova"]
     assert rec["class"] == "place" and rec["status"] == "ratified"
     assert rec["aliases"] == [
-        {"form": "Markova", "lang": "", "auto": True, "note": ""}]
+        {"form": "Markova", "lang": "", "auto": True, "scope": "all",
+         "note": ""}]
 
 
 def test_the_file_is_read_as_nfd(tmp_path):
@@ -266,8 +271,14 @@ def test_two_entities_may_not_both_claim_a_form_unconditionally(tmp_path):
 # -------------------------------------------------------------- the matcher
 
 def idx(*specs):
-    return {form: [{"id": i, "auto": a, "status": s} for i, a, s in claims]
-            for form, claims in specs}
+    """An alias index by hand. A claim is `(id, auto, status)` or, where the
+    scope matters, `(id, "once"|"yes"|"no", status)` — the string spelling is the
+    alias column's own, so a test that means `once` says the word the store does."""
+    def claim(i, a, s):
+        scope = a if isinstance(a, str) else ("all" if a else "")
+        scope = {"yes": "all", "once": "first", "no": ""}.get(scope, scope)
+        return {"id": i, "auto": bool(scope), "scope": scope, "status": s}
+    return {form: [claim(*c) for c in claims] for form, claims in specs}
 
 
 def test_an_alias_matches_whole_words_only():
@@ -357,6 +368,72 @@ def test_a_proposed_entity_is_never_auto_linked():
 def test_the_three_conditions_together_are_what_licenses_a_link():
     i = idx(("Markova", [("place:markova", True, "ratified")]))
     assert E.auto_forms(i) == {"Markova": "place:markova"}
+
+
+# --------------------------------------------------------- `auto: once`
+
+def test_once_parses_as_a_licence_with_a_narrower_scope(tmp_path):
+    """`auto` stays the boolean "a rule may link this at all" and the scope is a
+    second key. Eight call sites test `claim["auto"]` for truthiness; a
+    tri-valued string there would make `"no"` true in all eight silently."""
+    entry(tmp_path, "people:chukchi", aliases=[("Chukchee", "once")])
+    t = E.load(tmp_path)["people:chukchi"]["aliases"][0]
+    assert t["auto"] is True and t["scope"] == "first"
+
+
+def test_once_licenses_a_link_exactly_as_yes_does():
+    """The two differ in how many of a page's occurrences take the link, never in
+    which entity the form resolves to — which is why the scope is `rule_links`'
+    business and not this function's."""
+    i = idx(("Chukchee", [("people:chukchi", "once", "ratified")]))
+    assert E.auto_forms(i) == {"Chukchee": "people:chukchi"}
+
+
+def test_the_auto_column_offers_all_three_when_it_refuses_one(tmp_path):
+    """A message naming two of three states is how an author learns the third does
+    not exist."""
+    p = entry(tmp_path, "place:markova")
+    p.write_text(p.read_text(encoding="utf-8").replace(
+        "|---|---|---|---|\n", "|---|---|---|---|\n| Markova | | maybe | |\n"),
+        encoding="utf-8")
+    with pytest.raises(E.Malformed, match="`yes`, `once` or `no`"):
+        E.load(tmp_path)
+
+
+def test_once_collides_with_a_second_claim_exactly_as_yes_does(tmp_path):
+    """`once` narrows how many links a page gets, not which entity a form means, so
+    it contests a form as fully as `yes`. A gate that let it through would license
+    a rule to link a string that is genuinely ambiguous — just less often."""
+    entry(tmp_path, "people:chukchi", aliases=[("Chukchee", "once")])
+    entry(tmp_path, "language:chukchi", aliases=[("Chukchee", "yes")])
+    errs = E.check(tmp_path)["errors"]
+    assert any("rule-linked for" in e and "Chukchee" in e for e in errs)
+
+
+def test_rule_links_reduces_a_once_form_to_the_pages_first_occurrence():
+    i = idx(("Chukchee", [("people:chukchi", "once", "ratified")]))
+    autos = E.auto_forms(i)
+    hits = E.match("The Chukchee say. A Chukchee man. The Chukchee again.", i)
+    assert len(hits) == 3
+    kept = E.rule_links(hits, autos)
+    assert [h["start"] for h in kept] == [hits[0]["start"]]
+
+
+def test_rule_links_passes_a_yes_form_through_whole():
+    i = idx(("Chukchee", [("people:chukchi", True, "ratified")]))
+    hits = E.match("The Chukchee say. A Chukchee man.", i)
+    assert len(E.rule_links(hits, E.auto_forms(i))) == 2
+
+
+def test_the_once_count_is_the_callers_and_spans_the_whole_page():
+    """`generate` marks up one block at a time, so the set has to outlive the call
+    that spends it — a page whose second paragraph re-linked every ethnonym would
+    be `once` per paragraph, which is not a convention anyone reads by."""
+    i = idx(("Chukchee", [("people:chukchi", "once", "ratified")]))
+    autos, seen = E.auto_forms(i), set()
+    first = E.rule_links(E.match("The Chukchee say.", i), autos, seen)
+    second = E.rule_links(E.match("The Chukchee again.", i), autos, seen)
+    assert len(first) == 1 and second == []
 
 
 # --------------------------------------------------- setting a field in place
@@ -613,7 +690,7 @@ def test_the_committed_store_checks_out():
 # ------------------------------------------------------------- adding an alias
 
 class _AliasArgs:
-    def __init__(self, root, ident, form, lang="", auto=False, note="",
+    def __init__(self, root, ident, form, lang="", auto="no", note="",
                  commit=True):
         self.root, self.ident, self.form = root, ident, form
         self.lang, self.auto, self.note, self.commit = lang, auto, note, commit
@@ -670,12 +747,18 @@ def test_the_language_is_checked_and_blank_is_legal(tmp_path):
 def test_auto_has_no_default_and_the_flag_is_the_declaration(tmp_path):
     """`auto` is the author's declaration that a form is safe out of context —
     the store's own words — so the flag's absence is `no` and says so in the
-    file rather than leaving the cell to be guessed at."""
+    file rather than leaving the cell to be guessed at. All three states write
+    the column's own word, which is what makes the file the record of the
+    declaration rather than a rendering of a flag."""
     entry(tmp_path, "place:x", aliases=[("X", False)])
-    _alias(tmp_path, "place:x", "Loud", auto=True)
+    _alias(tmp_path, "place:x", "Loud", auto="yes")
+    _alias(tmp_path, "place:x", "Sometimes", auto="once")
     _alias(tmp_path, "place:x", "Quiet")
-    got = {t["form"]: t["auto"] for t in E.load(tmp_path)["place:x"]["aliases"]}
-    assert got["Loud"] is True and got["Quiet"] is False
+    got = {t["form"]: (t["auto"], t["scope"])
+           for t in E.load(tmp_path)["place:x"]["aliases"]}
+    assert got["Loud"] == (True, "all")
+    assert got["Sometimes"] == (True, "first")
+    assert got["Quiet"] == (False, "")
 
 
 def test_a_reported_alias_writes_nothing(tmp_path):

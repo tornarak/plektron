@@ -498,7 +498,7 @@ def _cited_owner(h: dict, full: str, sigla: list[dict], store: dict) -> str | No
 
 
 def _entity_spans(full: str, taken: list[tuple], ents: dict, autos: dict,
-                  sigla: list[dict], store: dict
+                  sigla: list[dict], store: dict, once: set[str]
                   ) -> tuple[list[tuple], list[tuple], list[dict]]:
     """Trigger hits over the block: the ones a rule may link, and the ones it may not.
 
@@ -548,15 +548,32 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict, autos: dict,
     where the form ends. It used to be dropped in silence, which cost the page
     the shorter alias's link too — `match` is non-overlapping, so the longer
     hit had already taken the span — leaving neither a link nor a question.
+
+    **`once` spends its link on the page's first occurrence, and every later one
+    goes bare *and silent*.** `once` is a set the caller owns for the length of
+    the page — this function marks up one block at a time and the convention is
+    per page, not per paragraph — and which hits it admits is
+    `entities.rule_links`' decision rather than this function's, so that the
+    placer here and the re-deriver in `validate` cannot drift apart. A spent hit
+    is skipped whole: not linked, and not recorded as a candidate either, since
+    a comment on the fourth `Chukchee` of a page is precisely the interruption
+    `once` exists to remove. It is skipped before the straddle test too, so a
+    later occurrence that also straddles a handle asks nothing — the question
+    was already put where the link is.
     """
-    from .entities import match
+    from .entities import match, rule_links
 
     by_bounds = {(s[0], s[1]): i for i, s in enumerate(taken)}
     tier1 = list(taken)
     links, candidates = [], []
-    for h in match(full, ents):
+    hits = match(full, ents)
+    allowed = {(h["start"], h["end"]) for h in rule_links(hits, autos, once)}
+    for h in hits:
         at = by_bounds.get((h["start"], h["end"]))
         owner = None if h["hyphenated"] else autos.get(h["form"])
+        if (owner is not None and h["scope"] == "first"
+                and (h["start"], h["end"]) not in allowed):
+            continue
         if owner is None and not h["hyphenated"]:
             owner = _cited_owner(h, full, sigla, store)
         over = [s for s in taken if h["start"] < s[1] and s[0] < h["end"]]
@@ -727,6 +744,13 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     # names the figure guard reads out of the same store.
     sigla = apparatus.sigla(root)
     pending: list[dict] = []          # candidates, to be commented after the block
+    # **Which `once` forms this page has already spent its link on.** Page-scoped
+    # because the convention is, and mutable across `rendered` calls because a
+    # block is not the unit. That makes placement order-dependent, which is safe
+    # only because `rendered` is called in reading order: the band loop walks the
+    # page top to bottom, and the footnotes go through `_mark_notes` afterwards,
+    # which is where the print puts them too.
+    once: set[str] = set()
 
     def rendered(rows: list[tuple[int, str]], indent: str = "") -> str:
         """One block of lines, marked up whole. Records its candidates in `pending`."""
@@ -740,7 +764,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         full = "\n".join(texts)
         spans = _tier1_spans(rows, by_line, offsets)
         spans, links, cands = _entity_spans(full, spans, ents, autos,
-                                            sigla, store)
+                                            sigla, store, once)
         pending.extend(cands)
         return _emit(full, spans + links + _figref_spans(full, cited), indent)
 

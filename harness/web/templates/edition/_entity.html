@@ -33,7 +33,12 @@
        as nothing rather than as "unknown": most of these are the book's own
        English, and a column of "unknown" would read as a defect per row. #}
     <td class='meta'>{{ t.lang_name }}</td>
-    <td>{{ 'auto' if t.auto else 'suggest' }}</td>
+    {# Three states, and the middle one is not a shade of the other two: `once`
+       links the first occurrence on a page and leaves the rest bare, which is
+       what a name set thousands of times wants. Spelt out rather than folded
+       into `auto`, since a reader looking at the text wants to know why one
+       "Chukchee" is a link and the next is not. #}
+    <td>{{ {'all': 'auto', 'first': 'once a page'}.get(t.scope, 'suggest') }}</td>
     {# The notes carry `[[…]]` too — they are where an author explains *why* a
        form is suggest-only, and the explanation is almost always "it is also
        that other entity", which wants to be clickable. #}

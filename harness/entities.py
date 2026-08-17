@@ -136,6 +136,27 @@ ENTITY_CLASSES = {
 #: nothing to do with whether a thing can contain another.
 GEO_CLASSES = ("place", "land", "water", "river")
 
+#: The alias column's three values → how widely a rule may apply the form.
+#:
+#: **`once` is what most of the store's ethnonyms want and neither of the other
+#: two gives them.** `Chukchee` is not doubtful — it means one people wherever
+#: the book sets it — but it is set some five thousand times, and a link on
+#: every instance is a page the reader cannot see the prose through. Marking it
+#: `no` to keep the text readable made the store say the opposite of what its
+#: author meant, and cost 423 candidate comments, a third of the whole
+#: collation inbox, asking a reader to re-decide a question nobody had.
+#:
+#: The reader's convention answers it: link the **first occurrence on the page**
+#: and leave the rest bare. That is mechanical, so it stays `#mz` and
+#: re-derives; the page is the unit because the page is what a reader has in
+#: front of them, and because it is the unit `generate` already works in.
+#:
+#: `auto` stays the boolean "a rule may link this at all" — true for `yes` and
+#: `once` alike — and the scope is a second key, because eight call sites test
+#: `claim["auto"]` for truthiness and a tri-valued string would make `"no"`
+#: true in all eight at once, silently.
+AUTO_VALUES = {"yes": "all", "once": "first", "no": ""}
+
 #: `proposed` is what `entity new` writes and what a browser audit clears.
 #: Only a human moves an entry to `ratified`, and only a ratified entry may be
 #: linked by rule — a machine link resting on an unaudited entry would be the
@@ -443,12 +464,13 @@ def parse(text: str, where: str = "") -> dict:
                 f"same string a collator writes in `xml:lang`, so it is `ru` "
                 f"and never `rus`")
         auto = cells[2].lower()
-        if auto not in ("yes", "no"):
+        if auto not in AUTO_VALUES:
             raise Malformed(
-                f"{at}alias {form!r}: `auto` is `yes` or `no` (got {auto!r}). "
-                f"It is the author's declaration that the form is safe out of "
-                f"context, so there is no default for it")
-        aliases.append({"form": form, "lang": lang, "auto": auto == "yes",
+                f"{at}alias {form!r}: `auto` is `yes`, `once` or `no` (got "
+                f"{auto!r}). It is the author's declaration that the form is "
+                f"safe out of context, so there is no default for it")
+        aliases.append({"form": form, "lang": lang, "auto": auto != "no",
+                        "scope": AUTO_VALUES[auto],
                         "note": cells[3] if len(cells) > 3 else ""})
 
     # **One location field, repeatable, and the field is the union of its
@@ -707,7 +729,7 @@ def roots(store: dict) -> list[str]:
 
 
 def alias_index(store: dict[str, dict]) -> dict[str, list[dict]]:
-    """`{form: [{id, lang, auto, status}, …]}` — every claim on every form.
+    """`{form: [{id, lang, auto, scope, status}, …]}` — every claim on every form.
 
     A form appears once whoever claims it, so a collision is visible here and
     nowhere else: no single entity file can see that another one claims its
@@ -718,7 +740,7 @@ def alias_index(store: dict[str, dict]) -> dict[str, list[dict]]:
         for t in rec["aliases"]:
             idx.setdefault(t["form"], []).append(
                 {"id": rec["id"], "lang": t["lang"], "auto": t["auto"],
-                 "status": rec["status"]})
+                 "scope": t["scope"], "status": rec["status"]})
     return idx
 
 
@@ -732,10 +754,12 @@ def auto_forms(idx: dict[str, list[dict]]) -> dict[str, str]:
       where the string is genuinely both and only the sentence around it decides.
       Neither author can fix that from their own file, which is why the rule
       reads the whole store and not the entry.
-    - **that claim says `auto: yes`.** The author's declaration that the form
+    - **that claim is not `auto: no`.** The author's declaration that the form
       means this entity wherever it appears. Bare "Jesup" does not qualify even
       though one entity claims it, because the man it is named after is in the
-      book too.
+      book too. `yes` and `once` both qualify: they differ in how many of a
+      page's occurrences get the link, which is `rule_links`' business and not
+      this function's — the identity a form resolves to is the same either way.
     - **the entity is ratified.** A machine link resting on a proposed entry
       would let the store's unaudited half into committed TEI.
 
@@ -825,9 +849,45 @@ def match(text: str, idx: dict[str, list[dict]]) -> list[dict]:
             "start": m.start(), "end": m.end(), "text": m.group(0), "form": form,
             "ids": [c["id"] for c in claims],
             "auto": (not hyphenated and len(claims) == 1 and claims[0]["auto"]),
+            "scope": claims[0]["scope"] if len(claims) == 1 else "",
             "hyphenated": hyphenated,
             "status": claims[0]["status"] if len(claims) == 1 else "",
         })
+    return out
+
+
+def rule_links(hits: list[dict], autos: dict[str, str],
+               seen: set[str] | None = None) -> list[dict]:
+    """The hits a rule may actually link, `scope: first` reduced to the first one.
+
+    **One predicate, four callers, and that is the whole reason it exists.**
+    `generate` places these links, `validate` re-derives the ones a page has,
+    `relink` writes the ones an entry ratified after collation adds, and
+    `relink.missing` reports them. Three of the four had no notion of position
+    before `once`; each computing "is this the first occurrence" for itself
+    would let them disagree, and a disagreement between the placer and the
+    re-deriver surfaces as a stale-stamp error on a page nobody edited.
+
+    `hits` must be in document order — `match` returns them that way — and
+    `seen` is the forms already linked earlier *on this page*. `generate` marks
+    up one block at a time and passes a set it owns for the length of the page;
+    a caller holding the whole body at once can leave it out.
+
+    **`seen` is keyed on the store's form, not the page's spelling**, so
+    `Chukchee` and a line-broken `Chuk-chee` are one form for the count. A
+    hyphenated hit is never `auto` in the first place, so it neither takes the
+    one link nor consumes it.
+    """
+    seen = set() if seen is None else seen
+    out = []
+    for h in hits:
+        if not h["auto"] or autos.get(h["form"]) is None:
+            continue
+        if h["scope"] == "first":
+            if h["form"] in seen:
+                continue
+            seen.add(h["form"])
+        out.append(h)
     return out
 
 
@@ -1094,10 +1154,12 @@ def check(root: Path = Path(".")) -> dict:
                            "auto": len(autos)})
         if len(autos) > 1:
             errors.append(
-                f"alias {form!r} is `auto: yes` for {' and '.join(sorted(autos))}. "
-                f"Two entities cannot both own a form unconditionally — set all "
-                f"but one to `auto: no` and let the reader choose, or narrow the "
-                f"forms until they no longer collide")
+                f"alias {form!r} is rule-linked for "
+                f"{' and '.join(sorted(autos))}. Two entities cannot both own a "
+                f"form unconditionally — set all but one to `auto: no` and let "
+                f"the reader choose, or narrow the forms until they no longer "
+                f"collide. `once` collides exactly as `yes` does: it narrows how "
+                f"many links a page gets, not which entity the form means")
 
     # **A worklist, never a gate.** An alias whose language nobody has stated is
     # not a defect — most of the store's forms are the book's own English and

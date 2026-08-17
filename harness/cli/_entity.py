@@ -20,6 +20,8 @@ import re
 import unicodedata
 from pathlib import Path
 
+import click
+
 from ..entities import (
     _SECTION,
     ALIASES,
@@ -70,7 +72,8 @@ def register(cli):
              "spells it in running prose are different questions")
     opt(p, "--alias", "aliases", multiple=True, metavar="FORM",
         help="a form that means this entity, added at `auto: no`. Raising one "
-             "to `auto: yes` is a separate act, done in the file or the browser, "
+             "to `auto: once` or `auto: yes` is a separate act, done in the "
+             "file or the browser, "
              "because it licenses a link nobody will be asked about. A native "
              "form is the NFD surface spelling, never a lexicon handle key — "
              "the key is a fold and collides on purpose")
@@ -129,13 +132,17 @@ def register(cli):
         help="the language the form is a name in, from `harness/langs.py`. "
              "Omitted means *unstated*, which most of the store says and which "
              "is a different claim from a wrong code")
-    opt(p, "--auto", is_flag=True,
-        help="the form is safe to link out of context. **No default and no "
-             "inverse**: `auto` is the author's declaration, so the flag's "
-             "absence is `no` and says so in the file. Where the entry is "
-             "already ratified this licenses a link, so the pages it licenses "
-             "it over are brought up to date — collated pages relinked, drafts "
-             "regenerated, exactly as `entity ratify` does")
+    opt(p, "--auto", type=click.Choice(["yes", "once", "no"]), default="no",
+        show_default=True,
+        help="how widely a rule may link the form. `yes` every occurrence; "
+             "`once` the first on each page and the rest bare, which is what a "
+             "name the book sets thousands of times wants; `no` never, and a "
+             "reader is asked on every hit. **`auto` is the author's "
+             "declaration**, so the default is the one that claims least. "
+             "Where the entry is already ratified `yes` and `once` license a "
+             "link, so the pages they license it over are brought up to date — "
+             "collated pages relinked, drafts regenerated, exactly as `entity "
+             "ratify` does")
     opt(p, "--note", metavar="TEXT",
         help="the note cell — where the form is attested, or why it is `no`")
     opt(p, "--commit", is_flag=True,
@@ -191,7 +198,7 @@ def register(cli):
     action(g, "check", run_check,
            help="the store gate: every file parses, every class is known, every "
            "heading agrees with its directory, every `within:` resolves and the "
-           "chain is acyclic, and no form is `auto: yes` for two entities at "
+           "chain is acyclic, and no form is rule-linked for two entities at "
            "once — which would be a rule licensed to link a string that is "
            "genuinely ambiguous. Exit 1 on any of it. Collisions that are not "
            "errors are still reported: an ambiguous form is the normal state and "
@@ -597,7 +604,7 @@ def run_alias(a) -> int:
     # the table. Building both the same way is what stops that recurring: a rule
     # stated once and applied in one place cannot be applied to one of two.
     cells = " | ".join(str(v) for v in
-                       (form, lang, "yes" if a.auto else "no", a.note or ""))
+                       (form, lang, a.auto, a.note or ""))
     row = f"| {cells} |".replace("|  |", "| |")
     # **The scaffold's placeholder row goes when a real one arrives.**
     # `entity new` writes `| | | no | |` so the table has a body, and `parse`
@@ -627,7 +634,7 @@ def run_alias(a) -> int:
     #
     # **The trigger is `auto_forms`' own answer, not the three conditions
     # restated.** A form is rule-linkable when exactly one entity claims it,
-    # that claim says `auto: yes`, and the entity is ratified; asking whether
+    # that claim is not `auto: no`, and the entity is ratified; asking whether
     # the form came out the other side of `auto_forms` tests all three at once
     # and cannot drift from them. A form that fails any — a collision, an entry
     # still proposed — changes nothing on any page, so the pass is skipped
@@ -635,7 +642,7 @@ def run_alias(a) -> int:
     after = {**store, ident: {**rec, **after_rec}}
     licensed = auto_forms(alias_index(after)).get(form) == ident
     out(a, {"id": ident, "form": form, "lang": lang or "—",
-            "auto": bool(a.auto), "expanded": form != str(a.form),
+            "auto": a.auto, "expanded": form != str(a.form),
             "licensed": licensed, "wrote": bool(a.commit)})
     if licensed:
         from ..relink import apply_to_corpus, refresh_drafts

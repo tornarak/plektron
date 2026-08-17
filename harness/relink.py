@@ -46,6 +46,10 @@ _OPAQUE = ("rs", "name", "foreign", "term")
 
 _TAG = re.compile(r"<\s*(/?)\s*([A-Za-z][\w:.-]*)([^>]*?)(/?)\s*>", re.S)
 
+#: An existing reference and what it encloses, for the `once` count below.
+_LINKED = re.compile(r"<rs\b[^>]*>(.*?)</rs>", re.S)
+_INNER_TAGS = re.compile(r"<[^>]*>")
+
 
 def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
     """`(new_text, applied, skipped)` — the page with every missing rule link in it.
@@ -58,6 +62,24 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
     autos = auto_forms(idx)
     if not autos:
         return text, [], []
+
+    # **`once` is counted over the links the page already has, not over the text
+    # this pass can see.** Everything else here works on unlinked text, because
+    # linked text is by definition done; counting a `once` form that way would
+    # find the second occurrence with the first one hidden inside an `<rs>`,
+    # read it as the first, and link it — turning "once per page" into twice on
+    # exactly the pages this module exists to fix.
+    once = {" ".join(_INNER_TAGS.sub("", m.group(1)).split())
+            for m in _LINKED.finditer(text)}
+
+    def spend(form: str) -> bool:
+        """May a rule link this occurrence? Consumes a `once` form's one link."""
+        if idx[form][0]["scope"] != "first":
+            return True
+        if form in once:
+            return False
+        once.add(form)
+        return True
 
     out: list[str] = []
     applied: list[dict] = []
@@ -107,6 +129,8 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
                 "why": f"a hit inside <{frame['tag']}> that is not its whole "
                        f"content — enclosing would have to pick where the span "
                        f"ends, which is `tei generate`'s to do and not this"})
+            return
+        if not spend(whole[0]["form"]):
             return
         owner = autos[whole[0]["form"]]
         out[frame["at"]] = f'<rs ref="{owner}" resp="#mz">' + out[frame["at"]]
@@ -159,7 +183,7 @@ def relink(text: str, store: dict) -> tuple[str, list[dict], list[dict]]:
         pieces = []
         for h in match(seg, idx):
             owner = None if h["hyphenated"] else autos.get(h["form"])
-            if not owner:
+            if not owner or not spend(h["form"]):
                 continue
             pieces.append(seg[pos:h["start"]])
             pieces.append(f'<rs ref="{owner}" resp="#mz">'

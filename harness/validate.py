@@ -1407,6 +1407,14 @@ def validate(tei_path: Path, ctx: dict | None = None,
     sigla = apparatus.sigla(
         Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
     names = untyped = refs = ruled = 0
+    # **The `once` forms this page has already spent its rule-link on.** Filled
+    # in document order, `root.iter` yielding it. This checks the *count* and not
+    # the position — that the link sits on the page's first occurrence rather
+    # than its third is `tei diff` against the freshly generated baseline, which
+    # is where a placement disagreement belongs and where a reader can see it.
+    # What is checked here is the failure that is silent otherwise: two `#mz`
+    # links on one form, which is `once` having quietly become twice.
+    spent: dict[str, str] = {}
     for el in root.iter(q("name"), q("rs")):
         local = etree.QName(el).localname
         kind = el.get("type")
@@ -1486,6 +1494,14 @@ def validate(tei_path: Path, ctx: dict | None = None,
             # a machine-applied rank is admissible at all.
             form = " ".join(span.split())
             owner = autos.get(form)
+            if owner is not None and idx[form][0]["scope"] == "first":
+                # The second `#mz` link on a `once` form derives from nothing:
+                # the rule spent this page's link higher up. Recorded before the
+                # `owner is None` cascade so the message below can name where.
+                if form in spent:
+                    owner = None
+                else:
+                    spent[form] = owner
             if owner is None and _cites(el, form, ref, sigla, store, idx):
                 # **The printed citation form is the other way a rule may resolve
                 # a name**, and it is re-derived exactly as the alias table is:
@@ -1506,6 +1522,11 @@ def validate(tei_path: Path, ctx: dict | None = None,
                            f"it is ambiguous and no rule may resolve it")
                 elif not claims[0]["auto"]:
                     why = f"{form!r} is `auto: no` — it needs a reader, not a rule"
+                elif claims[0]["scope"] == "first" and form in spent:
+                    why = (f"{form!r} is `auto: once` and this page already "
+                           f"links it to {spent[form]}. The convention is one "
+                           f"link per page, on the first occurrence; the rest "
+                           f"stay bare")
                 else:
                     why = (f"{claims[0]['id']} is {store[claims[0]['id']]['status']}"
                            f", and a rule may only apply a ratified entry")

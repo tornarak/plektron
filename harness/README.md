@@ -295,10 +295,16 @@ made under it.
 read, absence is `{}`); an identity is `class:slug` and lives twice, as the
 directory and in the heading, so `check` can compare them — a file's role must not
 live only in its directory name. `auto_forms` is the whole bar for a machine link:
-one claimant, `auto: yes`, ratified. **`match` is called by three modules** —
+one claimant, not `auto: no`, ratified. **`match` is called by three modules** —
 `generate` links with it, `context` reports with it, `validate` re-derives `#mz`
 against it — because three implementations of one rule would be three witnesses
-that are one. `children`/`relatives`/`roots` walk the tree — which is
+that are one. **`rule_links` is the same argument one step on**, for the
+positional half `auto: once` added: it reduces a `once` form to the page's first
+occurrence, and `generate`, `validate`, `relink` and `relink.missing` all go
+through it, because a placer and a re-deriver that computed "first" separately
+would disagree as a stale-stamp error on a page nobody edited. The count is over
+the links a page *already has* — `relink` works on unlinked text, where the
+first occurrence is invisible inside its `<rs>` and the second reads as first. `children`/`relatives`/`roots` walk the tree — which is
 containment in general and not the geography's: they read no coordinate and no
 shape, and they lived in `geo.py` until a caller wanting a people inside a
 people had to import the atlas to get one. `geo` re-exports the first two.

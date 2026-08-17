@@ -183,6 +183,7 @@ refers to that entity", not "the page marked a proper noun".
     |---|---|---|---|
     | Jesup North Pacific Expedition | en | yes | the full printed title |
     | Jesup | | no | also Morris K. Jesup the man |
+    | the Expedition | en | once | set on nearly every page of part 1 |
 
     ## gloss
 
@@ -387,7 +388,7 @@ are mechanical:
    `language:chukchi` both claim "Chukchee" and both are right; only the
    sentence decides, and neither author can see the other's claim. This is why
    the rule reads the whole store and not the entry.
-2. **That claim says `auto: yes`** — the author's declaration that the form
+2. **That claim is not `auto: no`** — the author's declaration that the form
    means this entity wherever it appears. Bare "Jesup" does not qualify even
    though one entity claims it, because the man it is named after is in the book.
 3. **The entity is ratified.** A link resting on an unaudited entry would let
@@ -397,6 +398,57 @@ Everything failing any of the three is still surfaced — as an `<!-- entity
 candidate -->` comment in the generated page and a row in `tei context` — because
 a suggestion a reader disposes of is the point. What is refused is the *silent*
 link.
+
+### `auto: once`, and the third state the column needed
+
+The column has three values, not two: `yes` links every occurrence, `no` links
+none and asks on each, and **`once` links the first occurrence on a page and
+leaves the rest bare and silent.**
+
+The two-state column made the store say things its authors did not mean.
+`Chukchee` is not doubtful — it means one people wherever the book sets it —
+but the book sets it some five thousand times, and a link on every instance is
+a page the reader cannot see the prose through. The only way to keep the text
+readable was `auto: no`, which says the form *needs a reader*; the generator
+believed it and asked, 423 times over the drafts, a third of the entire
+collation inbox, every one of them re-putting a question nobody had. Seven
+ethnonyms accounted for 730 of 1363 candidates on that footing alone.
+
+The reader's convention answers it, and answers it *mechanically*, which is
+what lets the link stay `#mz`: **first mention on the page carries it.** The
+page is the unit because the page is what a reader has in front of them, and
+because it is the unit `tei generate` already works in.
+
+`auto` stays the boolean "a rule may link this at all", true for `yes` and
+`once` alike, and the scope is a second key on the parsed row. Eight call sites
+test `claim["auto"]` for truthiness and a tri-valued string in that key would
+make `"no"` true in all eight at once, silently — which is the class of defect
+this store is organised against.
+
+**`once` contests a form exactly as `yes` does.** Two entities both claiming one
+form is `entity check`'s error whichever of the two they say: `once` narrows how
+many links a page gets, never which entity the form means.
+
+**One predicate, four callers.** `tei generate` places these links, `tei
+validate` re-derives the ones a page has, `relink` writes the ones an entry
+ratified after collation adds, and `relink.missing` reports them. Three of the
+four had no notion of position before `once`, and each computing "is this the
+first occurrence" for itself would let them drift — a disagreement between the
+placer and the re-deriver surfaces as a stale-stamp error on a page nobody
+edited. So the rule is `entities.rule_links` and they all go through it.
+
+**The count is over the links a page already has, not over the text a pass can
+see.** This is `relink`'s trap specifically: everything else there works on
+unlinked text, because linked text is by definition done, and counting a `once`
+form that way finds the second occurrence with the first one hidden inside an
+`<rs>`, reads it as the first, and links it — turning once per page into twice,
+on exactly the pages that module exists to fix.
+
+`tei validate` checks the *count* and not the position. That the link sits on
+the page's first occurrence rather than its third is `tei diff` against a fresh
+baseline, which is where a placement disagreement belongs and where a reader can
+see it; what the gate catches is the failure that is otherwise silent, two `#mz`
+links on one form.
 
 ### The one thing that resolves an ambiguity, because the printer wrote it down
 
