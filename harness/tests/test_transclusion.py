@@ -39,7 +39,15 @@ def blocks(text: str) -> list[tuple[str, str]]:
 CARRIES = {
     AGENT: {"keying_spec.md",
             ".claude/skills/rebuild-groundtruth/checklist.md"},
-    COLLATOR: {"keying_spec.md"},
+    # **The collator carries nothing, and that is the finding.** It carried the
+    # spec whole — 883 lines — from when the pass authored Tier-1 text out of a
+    # plaintext draft. A rule copies the adjudicated form in now, `tei expand`
+    # confirms it against `gt/ocr/` and `tei validate` gates it whole-token
+    # against `tier1_terms`, so the glyphs are never the collator's to originate
+    # and the inventory answered a question it is no longer asked. The reader
+    # still keeps it: it reads glyphs off the raster, which is what the spec is
+    # for.
+    COLLATOR: set(),
 }
 
 
@@ -47,9 +55,12 @@ CARRIES = {
 def test_each_agent_carries_the_texts_it_says_it_does(agent):
     """Named, so removing one is a failure rather than a quiet economy.
 
-    Both bodies tell their agent not to open the spec because it already has it. If
-    a block went missing, that instruction would send agents into a page with no
-    spec and nothing would say so.
+    The reader's body tells it not to open the spec because it already has it. If
+    that block went missing, the instruction would send it into a page with no
+    spec and nothing would say so. The collator's empty set is the same rule
+    pointing the other way: it is refused the spec *and* carries none, so a copy
+    reappearing here would be an unasked-for 883 lines nothing in its contract
+    reads.
     """
     got = {src for src, _ in blocks((REPO / agent).read_text(encoding="utf-8"))}
     assert got == CARRIES[agent]

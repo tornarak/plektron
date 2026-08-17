@@ -15,9 +15,11 @@ description: Collate pages of Bogoras into TEI — dispatch a batch of collators
 > down to ~50k.
 
 So `.claude/agents/collator.md` carries the loop, the output contract, the firewall,
-language spans, structural ids, the self-check — and, transcluded whole and gated by
-`harness/tests/test_transclusion.py`, `keying_spec.md`. **Do not restate any of it
-here.** The division is by audience: that file is read by collators, this one by
+language spans, structural ids and the self-check. **Do not restate any of it here.**
+It carries **no** transcluded text, which is a decision and is gated as one by
+`harness/tests/test_transclusion.py`: it held `keying_spec.md` whole while the pass
+authored Tier-1 text from a plaintext draft, and a rule copies the adjudicated form
+in now. The reader still carries the spec, because it reads glyphs off the raster. The division is by audience: that file is read by collators, this one by
 whoever dispatches them.
 
 `dispatch.md`, beside this file, is the procedure and the two rendered texts.

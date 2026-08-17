@@ -584,9 +584,15 @@ def test_the_raw_alto_is_refused_in_favour_of_context(path):
     assert "tei context" in err
 
 
-def test_the_transcluded_spec_is_refused_by_name():
+def test_the_keying_spec_is_refused_by_name():
+    """**The refusal outlived the transclusion, and its reason changed.** It used
+    to read "you already have it"; the collator no longer carries the spec and no
+    longer needs it, because the glyphs reach the page adjudicated and are gated
+    whole-token. A guard whose stated reason has gone stale is one an agent can
+    argue its way past, so the message is asserted and not just the block."""
     err = blocked(COLLATOR_GUARD, "Read", file_path="keying_spec.md")
-    assert "TRANSCLUDED" in err
+    assert "never yours to originate" in err
+    assert "TRANSCLUDED" not in err
 
 
 @pytest.mark.parametrize("path", [
