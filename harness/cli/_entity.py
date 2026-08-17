@@ -32,7 +32,6 @@ from ..entities import (
     spell_geo,
     split_id,
 )
-from ..geo import canonical_area, split_area
 from ..geo import index as geo_index
 from ._common import (
     action,
@@ -86,16 +85,15 @@ def register(cli):
              "larger work. Nothing drawing a map reads it; a people with no "
              "geography of its own falls back along it for a bound, which is "
              "the one place the two meet")
-    opt(p, "--area", metavar="KIND:SLUG",
-        help="the shape in data/geo/ this entity is drawn as, e.g. "
-             "`watershed:anadyr`. **Identifying a name Bogoras wrote in 1904 "
-             "with a polygon a modern service returned is a human's act**, "
-             "which is why it is typed here and never matched by name: "
-             "`watershed:main` and the English word are one keystroke apart. "
-             "Several, comma-separated, is a composite — the union of shapes "
-             "no single source draws together, and the assertion that they "
-             "belong together is likewise the human's. `harness geo list` "
-             "names every shape")
+    opt(p, "--geo", "geos", multiple=True, metavar="MEMBER",
+        help="where this entity is: a point `LAT LON`, a shape in data/geo/ "
+             "`kind:slug`, or another entity `class:slug` whose extent it "
+             "takes. Repeatable, and the field is the union of its members. "
+             "**Identifying a name Bogoras wrote in 1904 with a polygon a "
+             "modern service returned is a human's act**, which is why a shape "
+             "is typed here and never matched by name: `watershed:main` and the "
+             "English word are one keystroke apart. `harness geo list` names "
+             "every shape")
     opt(p, "--authority", metavar="KEY",
         help="the entry in data/authorities.json this entity is the work of, "
              "e.g. `steller1774`. What puts the full printed title on the card "
@@ -139,9 +137,8 @@ def register(cli):
         help="write it. Without this the row is reported and not added")
 
     p = action(g, "locate", run_locate,
-               help="set or replace an existing entry's `geo:` point, its "
-               "`area:` shape, its `frame:` box, or any of them. **The act that "
-               "puts a name on the "
+               help="set or replace an existing entry's `geo:` members, its "
+               "`frame:` box, or both. **The act that puts a name on the "
                "map**, and it is a human's: a coordinate for a toponym Bogoras "
                "wrote in 1904, or the judgement that two sourced polygons are "
                "one speaker area, is an assertion about the world that no rule "
@@ -149,19 +146,17 @@ def register(cli):
                "this answers a row of. One ID, because the flags name one "
                "entity's fields"
                "\n\nID: `class:slug`, e.g. `place:chukchi-peninsula`",
-               constraints=(require_any("geo", "area", "frame"),))
+               constraints=(require_any("geos", "frame"),))
     arg(p, "ident", metavar="ID")
-    opt(p, "--geo", metavar="LAT LON",
-        help="two WGS84 decimal degrees, latitude then longitude, "
-             "space-separated — `66.05 -169.6`. Negative longitudes are west, "
-             "as the store's sources write them; the shift into the atlas's "
-             "continuous window is the reader's, not the author's")
-    opt(p, "--area", metavar="KIND:SLUG",
-        help="the shape this entity is drawn as, or several comma-separated "
-             "for a composite. **A composite is not a shape the store holds** "
-             "— it is resolved from its members on every run, so the union "
-             "cannot go stale, and the claim that the members belong together "
-             "lives here in the entity file where a reader can see whose it is")
+    opt(p, "--geo", "geos", multiple=True, metavar="MEMBER",
+        help="a point `LAT LON` — two WGS84 decimal degrees, latitude then "
+             "longitude, `66.05 -169.6`, negative longitudes west as the "
+             "store's sources write them; or a shape in data/geo/ `kind:slug`; "
+             "or another entity `class:slug`, whose extent this one takes. "
+             "**Repeatable, and it replaces rather than appends** — every "
+             "`--geo` on one run is the complete new member list, because a "
+             "flag that only added would have no way to take a member off. The "
+             "field is the union of what it holds")
     opt(p, "--frame", metavar="W S E N",
         help="four WGS84 decimal degrees — west south east north — saying where "
              "the map should *look*, which is a different question from where "
@@ -293,9 +288,12 @@ def run_new(a) -> int:
     cell = f" {(a.lang or '').strip()} ".replace("  ", " ")
     rows = "\n".join(f"| {unicodedata.normalize('NFD', t)} |{cell}| no | |"
                      for t in a.aliases) or f"| |{cell}| no | |"
+    # In `FIELD_ORDER`, and `geo` is the one that may repeat — one line per
+    # member, since the field is the union of what it holds.
     extra = "".join(f"- {k}: {v}\n" for k, v in
-                    (("within", a.within), ("part-of", a.part_of),
-                     ("area", a.area), ("authority", a.authority)) if v)
+                    [("within", a.within), ("part-of", a.part_of)]
+                    + [("geo", g) for g in a.geos]
+                    + [("authority", a.authority)] if v)
     text = TEMPLATE.format(ident=ident, canonical=a.canonical,
                            extra=extra, rows=rows)
     # Parsed before it is written, so a bad `--within`, an unknown `--lang` or
@@ -368,6 +366,40 @@ def _set_field(text: str, key: str, value: str) -> str:
     return head[:at] + f"- {key}: {value}\n" + head[at:] + rest
 
 
+def _set_lines(text: str, key: str, values) -> str:
+    """`- key: …` — the whole run of them replaced by one line per value.
+
+    `_set_field`'s sibling for a repeatable field, and it has to be a sibling
+    rather than a loop over it: that function replaces *one* line and would
+    overwrite the first member of a union while leaving the rest, which is the
+    silent half-write this store is organised against.
+
+    The run is replaced **where it starts**, so a field does not migrate down
+    the block on every edit — `_set_field`'s reason, and the same scoping to the
+    text above the first `##`.
+    """
+    values = list(values)
+    sect = _SECTION.search(text)
+    head_end = sect.start() if sect else len(text)
+    head, rest = text[:head_end], text[head_end:]
+
+    pat = re.compile(rf"^-\s+{re.escape(key)}:.*(?:\n-\s+{re.escape(key)}:.*)*$",
+                     re.M)
+    block = "\n".join(f"- {key}: {v}" for v in values)
+    m = pat.search(head)
+    if m:
+        # An empty list removes the field outright, newline and all.
+        if not values:
+            return head[:m.start()] + head[m.end() + 1:] + rest
+        return head[:m.start()] + block + head[m.end():] + rest
+    if not values:
+        return text
+    # Absent: insert the whole block at the key's `FIELD_ORDER` slot, which is
+    # `_set_field`'s insertion with N lines instead of one.
+    return _set_field(head, key, values[0]).replace(
+        f"- {key}: {values[0]}", block, 1) + rest
+
+
 def run_locate(a) -> int:
     store = _store(a)
     ident = str(a.ident)
@@ -380,32 +412,40 @@ def run_locate(a) -> int:
     p = Path(rec["path"])
     text = p.read_text(encoding="utf-8")
     rows = []
-    for key, given, before in (
-            ("geo", a.geo, ", ".join(spell_geo(rec))),
-            ("area", a.area, rec["area"]),
-            ("frame", a.frame,
-             " ".join(f"{v:g}" for v in rec["frame"]) if rec["frame"] else "")):
-        if not given:
-            continue
-        # Normalized on the way in so the file holds one spelling of a union
-        # and `geo verify` cannot see the same composite as two.
-        value = canonical_area(given) if key == "area" else " ".join(str(given).split())
-        text = _set_field(text, key, value)
-        rows.append({"id": ident, "field": key, "was": before or "—",
+    if a.geos:
+        # **Replaces the whole member list**, which is why the "was" column
+        # joins every member rather than printing one: an author reading the row
+        # has to be able to see what is going away.
+        members = [" ".join(str(v).split()) for v in a.geos]
+        rows.append({"id": ident, "field": "geo",
+                     "was": ", ".join(spell_geo(rec)) or "—",
+                     "now": ", ".join(members), "wrote": bool(a.commit)})
+        text = _set_lines(text, "geo", members)
+    if a.frame:
+        value = " ".join(str(a.frame).split())
+        rows.append({"id": ident, "field": "frame",
+                     "was": " ".join(f"{v:g}" for v in rec["frame"])
+                     if rec["frame"] else "—",
                      "now": value, "wrote": bool(a.commit)})
+        text = _set_field(text, "frame", value)
 
     # Parsed before it is written, as `entity new` does: a malformed coordinate
-    # or a shape kind that collides with an entity class fails as a message
-    # here, rather than as a file the next `check` has to explain.
-    from ..entities import parse
+    # or a member that is none of the three things fails as a message here,
+    # rather than as a file the next `check` has to explain.
+    from ..entities import geo_refs, geo_shapes, parse
     got = parse(text, where=str(p))
-    unknown = [m for m in split_area(got["area"])
+    unknown = [m for m in geo_shapes(got)
                if m not in geo_index(a.root)["shapes"]]
     if unknown:
         raise ValueError(
             f"{ident}: {', '.join(unknown)} names nothing in data/geo/. "
-            f"`harness geo list` names every shape — and a composite resolves "
-            f"only when every member does")
+            f"`harness geo list` names every shape")
+    dangling = [m for m in geo_refs(got) if m not in store]
+    if dangling:
+        raise ValueError(
+            f"{ident}: {', '.join(dangling)} names no entity. A `geo:` member "
+            f"whose kind is an entity class is a reference, and this one "
+            f"resolves to nothing")
     if a.commit:
         p.write_text(text, encoding="utf-8")
     out(a, rows)

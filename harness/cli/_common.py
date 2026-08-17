@@ -697,6 +697,11 @@ RENAMED_FLAGS = {
     # of them, which is why it names the corpus form rather than a substitute.
     ("tei", "--all"): "tei ledger  (the corpus form of `state`; `context` and "
                       "`seam` have none by design)",
+    # `area:` was a second spelling of `geo:` — a shape where the other held a
+    # point, with a rule forbidding a record to carry both. One entry covers
+    # `entity new` and `entity locate`, which both took it.
+    ("entity", "--area"): "entity locate ID --geo KIND:SLUG  (--geo takes a "
+                          "point, a shape or another entity, and repeats)",
 }
 
 # Retired *positional values*, keyed by group and value. The flag table cannot
