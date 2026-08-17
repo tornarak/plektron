@@ -246,6 +246,9 @@ class Renderer:
         self.ref = ref
         self.tabindex = tabindex_offset
         self.notes: list[dict] = []
+        #: Note numbers already referenced on this page, so the first
+        #: reference to each can carry the id the foot links back to.
+        self.noterefs: set[str] = set()
         self.refs: list[str] = []
         self.forms: list[str] = []
         #: `{n, i}` per `<figure>`, in document order — the handles the route
@@ -332,6 +335,23 @@ class Renderer:
         # into `seen`, and the guard reads what stands *in front of* a reference.
         before = self.seen[-160:]
         body = self.inline(el)
+        # **A note reference is this book's own and resolves on this page.** It
+        # goes to `#note-N` and never through `figrefs`, whose handle is a join
+        # over `gt/fig/`; there is nothing to join here, the number the printer
+        # set being the whole of the address. The marker itself is the body — the
+        # character the compositor put in the sentence — so nothing is drawn that
+        # the page does not print.
+        if el.get("type") == "note" and not self.in_ref and not self.in_figdesc:
+            n = el.get("n") or ""
+            # **The first reference carries the id the foot links back to.** A
+            # note may be referenced more than once — `1-147` prints one against
+            # two markers — so "the" reference does not exist; the first is where
+            # the reader met it, and every later one still links forward.
+            first = n not in self.noterefs
+            self.noterefs.add(n)
+            back = f' id="ref-{escape(n)}"' if first else ""
+            return (f'<a class="noteref"{back} href="#note-{escape(n)}" '
+                    f'data-note="{escape(n)}">{body}</a>')
         handle = figrefs.unmark(el.get("type"), el.get("n"), el.get("cRef"))
         if handle is None or self.in_ref or self.in_figdesc:
             return body
@@ -527,20 +547,22 @@ class Renderer:
         return f"<em>{self.inline(el)}</em>"
 
     def el_note(self, el) -> str:
-        """A note becomes a marker here and a body at the foot.
+        """A note is a body at the foot, and contributes nothing where it stands.
 
-        The print set them at the foot and the reader wants them both places: a
-        superscript to keep the sentence readable, and the text where the eye
-        goes. The stack gets it too, so a note read once stays put while you keep
-        reading.
+        The print set them at the foot and the page now encodes them there, so
+        this collects the text and emits no markup in the flow: the marker is a
+        `<ref type="note">` back in the sentence, and `el_ref` draws it.
+
+        **It used to emit the marker from here**, because the generator spliced
+        each note into the prose at the character it anchored to. Left as it was,
+        the superscripts would now all render *at the foot*, in a row, in front
+        of their own note bodies — the one arrangement that is wrong in both
+        places at once.
         """
         n = el.get("n") or str(len(self.notes) + 1)
         i = len(self.notes) + 1
         self.notes.append({"n": n, "i": i, "html": self.inline(el)})
-        return (
-            f'<a class="noteref" id="ref-{i}" href="#note-{i}" '
-            f'data-note="{i}">{escape(n)}</a>'
-        )
+        return ""
 
     def el_figure(self, el) -> str:
         """A figure becomes a real block with its caption, and no geometry.

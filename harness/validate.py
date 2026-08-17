@@ -694,20 +694,17 @@ def _figref_flat(el) -> tuple[str, list[tuple[int, int, object]]]:
         nonlocal at
         if not top and etree.QName(node).localname in (
                 FIGREF_BLOCKS + FIGREF_OPAQUE):
-            # **A note stands in for the marker the printer set, and the marker
-            # goes back.** The generator scanned this paragraph before
-            # `_place_notes` swapped that one character for the element, so
-            # dropping it here reads a different string than the rule read — and
-            # the difference is not cosmetic. `1-143` sets "illustrated by
-            # Nelson.¹ Fig. 22, b": remove the superscript and the authority
-            # guard sees `Nelson.` immediately in front of a reference to this
-            # book's own figure, and refuses a mark the rule correctly wrote. One
-            # character out, one character back, so the offsets align too.
-            n = node.get("n")
-            if (etree.QName(node).localname == "note" and n
-                    and n.isdigit() and int(n) < len(NOTE_MARKERS)):
-                out.append(NOTE_MARKERS[int(n)])
-                at += 1
+            # **The marker used to have to be put back here, and does not now.**
+            # The generator once spliced a `<note>` into the prose *at* its
+            # marker and deleted the character, so this had to re-insert it —
+            # one character out, one character back — or it read a different
+            # string than the rule read. That was not cosmetic: `1-143` sets
+            # "illustrated by Nelson.¹ Fig. 22, b", and without the superscript
+            # the authority guard sees `Nelson.` immediately in front of a
+            # reference to this book's own figure and refuses a mark the rule
+            # correctly wrote. Notes are not spliced any more — the marker stays
+            # in the text where the printer set it, wrapped in a `<ref>` — so the
+            # string is the print's without anything being restored to it.
             return
         start = at
         if node.text:
@@ -794,7 +791,38 @@ def _figrefs(root, r: Report, ctx: dict | None) -> tuple[int, int]:
         seen.update(id(el) for _, _, el in marks)
         want = {(s["start"], s["end"]): s for s in figrefs.scan(flat)
                 if not figrefs.foreign_citation(flat[:s["start"]], cited)}
+        # **A footnote reference is re-derived here too, by its own rule.** It is
+        # a `<ref>` and carries `#mz`, so it may not pass unexamined — but it is
+        # not a cross-reference and `figrefs.unmark` rightly refuses it: what a
+        # figure number resolves to is a join over `gt/fig/`, and what `¹`
+        # resolves to is note 1 on this page. Two things are checked, and both
+        # read the text this block already holds. The mark must wrap exactly the
+        # marker `@n` names — `keying_spec.md` §2.10 fixes that character
+        # corpus-wide — and it must not fall inside a figure's locant run, which
+        # is the same exclusion the generator applies and computed from the same
+        # two objects rather than from a second copy of the rule.
+        locants = []
+        for sp in figrefs.scan(flat):
+            tail = figrefs.LOCANTS.match(flat, sp["end"])
+            if tail is not None and tail.end() > sp["end"]:
+                locants.append((sp["end"], tail.end()))
         for start, end, el in marks:
+            if el.get("type") == "note":
+                n, span = el.get("n"), "".join(el.itertext())
+                want_char = (NOTE_MARKERS[int(n)]
+                             if n and n.isdigit() and int(n) < len(NOTE_MARKERS)
+                             else None)
+                if span != want_char:
+                    r.errors.append(
+                        f"<ref type='note' n={n!r}> wraps {span!r}, which is not "
+                        f"the marker that number is printed as. The mark stands "
+                        f"over the printed superscript and nothing else")
+                elif any(a <= start < b for a, b in locants):
+                    r.errors.append(
+                        f"<ref type='note' n={n!r}> marks a superscript inside a "
+                        f"figure's sub-part locants — `(Fig. 155, d², e¹)` names "
+                        f"details of one picture and anchors no note")
+                continue
             marked += 1
             resp = el.get("resp")
             handle = figrefs.unmark(el.get("type"), el.get("n"), el.get("cRef"))
@@ -984,37 +1012,21 @@ def validate(tei_path: Path, ctx: dict | None = None,
     # files as text and cannot see that the space precedes a <note> rather than a
     # word.
     #
-    # **A note that is a direct child of `<body>` is not anchored at all**, and the
-    # whitespace rule has nothing to say about it: there is no character it sets
-    # tight against. It gets its own error, because the two proxy complaints it
-    # used to draw (a stray space, a missing `@n`) both described symptoms of being
-    # unanchored while naming something else, and a reviewer who fixes what the
-    # message says has not fixed the page.
-    #
-    # **This is no longer the state a generated page ordinarily arrives in.** The
-    # generator splits the apparatus at the printed markers and anchors each note
-    # at the matching marker in the prose, both being the printer's own marks. What
-    # reaches here is what it refused: a marker that reads nowhere in the body, or
-    # one that reads in more than one place. So the error names a page where the
-    # evidence ran out rather than the ordinary case — which is what makes it worth
-    # reading — and the generator has left a comment beside each one saying which
-    # of the two happened.
-    for note in root.iter(q("note")):
-        if etree.QName(note.getparent()).localname == "body":
-            r.errors.append(
-                f"<note n={note.get('n')!r}> is a child of <body> — it has not been "
-                "anchored. The generator could not find its marker in the prose, "
-                "or found it more than once; the comment beside it says which. "
-                "Read the page, move it inline to the character its printed marker "
-                "follows, and set @n from that marker")
-            continue
-        prev = note.getprevious()
-        before = prev.tail if prev is not None else note.getparent().text
-        if before and before != before.rstrip():
-            r.errors.append(
-                f"space before <note n={note.get('n')!r}> — the marker sets tight "
-                "against the character it anchors to; the print's thin space is "
-                "typesetting, like the French spacing at keying spec 2.9")
+    # **A note at the foot is where a note goes**, and the error that used to sit
+    # here said the opposite. It read: a `<note>` that is a direct child of
+    # `<body>` "has not been anchored", move it inline to the character its
+    # printed marker follows. That was right while the generator spliced notes
+    # into the prose; it splices none now. The marker stays in the text where the
+    # printer set it and carries a `<ref type="note">`, the note stays at the
+    # foot, and a marker printed twice is simply two references — which is what
+    # `1-147` and `1-226` do, and what the old shape had to call ambiguous
+    # because a spliced note can only be in one place.
+    # The whitespace rule above it went the same way and for the same reason. It
+    # read "space before <note …> — the marker sets tight against the character
+    # it anchors to", which was a rule about an element standing *in place of* a
+    # marker. Nothing stands in place of one now: the thin space the book sets
+    # ahead of a raised digit (`1-100`: `[albino] ¹)`) is simply the print, kept
+    # as printed, and there is no element beside it to set tight against.
     if root.find(f".//{q('lb')}") is not None:
         r.errors.append("<lb/> present — ALTO holds the line record")
     if root.find(f".//{q('div')}") is not None:

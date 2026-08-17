@@ -164,15 +164,19 @@ def test_a_note_is_scanned_as_its_own_block(tmp_path):
                                 '</note> except that</p>')
 
 
-def test_an_anchored_note_puts_its_printed_marker_back(tmp_path):
-    """`1-143` sets "illustrated by Nelson.¹ Fig. 22, b", and the generator
-    scanned that paragraph *before* `_place_notes` swapped the superscript for the
-    element. Read without it, the text says `Nelson.` immediately in front of a
-    reference to this page's own figure, and the authority guard refuses a mark
-    the rule correctly wrote — three pages of the corpus, all this shape.
+def test_a_marker_between_a_name_and_a_reference_is_simply_in_the_text(tmp_path):
+    """`1-143` sets "illustrated by Nelson.¹ Fig. 22, b". Read *without* the
+    superscript the text says `Nelson.` immediately in front of a reference to
+    this page's own figure, and the authority guard refuses a mark the rule
+    correctly wrote — three pages of the corpus, all this shape.
 
-    One character out and one character back, which also keeps the offsets equal
-    to the ones the generator scanned at.
+    **It used to have to be put back.** The generator spliced the note into the
+    prose at its marker and deleted the character, so `_figref_flat`
+    re-inserted one before re-scanning: one character out, one character back,
+    keeping the offsets equal to the ones the rule scanned at. Notes are not
+    spliced now — the marker stays in the sentence under a `<ref type="note">` —
+    so the string the gate reads is the print's without anything being restored
+    to it, and this pins that the guard still clears.
     """
     (tmp_path / "data").mkdir(parents=True, exist_ok=True)
     (tmp_path / "data" / "authorities.json").write_text(json.dumps({
@@ -185,9 +189,11 @@ def test_an_anchored_note_puts_its_printed_marker_back(tmp_path):
         {"id": "authorities", "kind": "authorities",
          "title": "Authorities Quoted", "refs": ["1-023"],
          "source": "data/authorities.json"}]}), encoding="utf-8")
-    body = ('<p>which is illustrated by Nelson.<note n="1" place="bottom">'
-            'Nelson, Plate LXXVI, Fig. 1, p. 208.</note>\nFig. '
-            '<ref type="figure" n="22" resp="#mz">22</ref>, b, shows a sled</p>')
+    body = ('<p>which is illustrated by Nelson.'
+            '<ref type="note" n="1" resp="#mz">¹</ref>\nFig. '
+            '<ref type="figure" n="22" resp="#mz">22</ref>, b, shows a sled</p>'
+            '<note n="1" place="bottom">Nelson, Plate LXXVI, Fig. 1, p. 208.'
+            '</note>')
     assert not errors(tmp_path, body)
 
 

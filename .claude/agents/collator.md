@@ -109,13 +109,6 @@ is a comment in your file**, and clearing those is what this pass is:
   headings, tables, verse and captions alike, and its `rank: null` says it declines
   to tell them apart. Give the block its real shape: a heading (check `toc_window`
   for a milestone), a `<list type="gloss">`, a `<table>`, or prose.
-- `<!-- note … -->` — a note the generator would **not** place, and the comment
-  says which of the two reasons. The apparatus arrives split at its printed
-  markers and each note anchored at the matching marker in the prose, both being
-  the printer's own marks; what is left at the foot is a marker that reads nowhere
-  in the body, or one that reads in more than one place. Read the page, anchor it,
-  and set `@n`. **A note already anchored is not yours to move** unless the page
-  says the rule got it wrong — it is the same character in both places.
 - `<foreign index="N">…</foreign>` with no `xml:lang` — the word is there and
   adjudicated; the language is not. See the firewall sections below.
 - `<!-- figure placed where its box sits … -->` — the `<figure n="N">` is already
@@ -455,33 +448,29 @@ boundary -->`.
 
 ## Footnotes
 
-**Most of this is already done in your file.** The generator splits the apparatus
-at its printed markers and anchors each note at the matching marker in the prose —
-character identity, not judgement — so what you meet is usually a page whose notes
-are in place. What follows is the standard they were built to, and the cases they
-were not built for.
+**Nothing.** The apparatus arrives split at its printed markers, every note at the
+foot carrying its `@n`, and every printed marker in the prose wrapped in
+`<ref type="note" n="N" resp="#mz">` — all of it character identity and none of it
+judgement. The rule reads the superscripts the compositor set and the recognizer
+adjudicated; a superscript inside a figure's sub-part locants (`Fig. 155, d², e¹`)
+is excluded, and `tei validate` re-derives every mark on every run.
 
-- `<note n="{marker}" place="bottom">`, the marker exactly as printed (an integer
-  in this book). Copy it; do not renumber, do not infer it from position. The
-  generator writes the digit, not the raised glyph: `¹` on the page is `n="1"`.
-- **Anchor every note at its exact marker position** in the running text — not
-  gathered at the foot, not moved to the nearest sentence boundary. If the marker
-  falls mid-clause or inside a parenthetical, the note goes there, however awkward
-  the nesting.
-- **A note the generator anchored is not yours to move** on stylistic grounds. It
-  sits where the same character stands in the body; move it only if the page shows
-  the rule was wrong, and say so in your report if you do.
-- **No whitespace immediately before a `<note>`.** The element stands in for the
-  printed marker, and the book sets a thin space before the raised digit
-  (`1-100`: `[albino] ¹)`). That is the same class of thing as the French spacing
-  before `;` and `:` that keying spec §2.9 already overrides — typesetting with no
-  lexical content, which leaves a stray space in the reading text of anything that
-  strips the marker. Key it tight. The gate errors on it.
-- **Orphan foot-text** (a note run over from the previous page, no marker here):
-  emit as `<note>` with **no** `@n`, after the last `<p>`, preceded by exactly
-  `<!-- footnote continuation, no marker on this page: the note it continues is
-  unresolved -->`. Do not guess which note it continues. A note running across a
-  seam has no markup yet and is deliberately left unresolved.
+**A marker printed twice is two references to one note**, which is why there is
+nothing here to decide. The pass used to splice each note into the prose at its
+marker and delete the character, so a note could be referenced only once — and
+`1-147` and `1-226` print one against two. Those two pages were the last footnote
+questions in the corpus and they were never questions about the book.
+
+If a note reaches you with no `@n`, its printed marker did not read. That is a
+question about the page and the comment beside it says so — read the page, and
+either set `@n` from the marker you find or confirm the other reading:
+
+- **Orphan foot-text** (a note run over from the previous page, no marker on this
+  one): leave it as `<note>` with **no** `@n`, after the last `<p>`, preceded by
+  exactly `<!-- footnote continuation, no marker on this page: the note it
+  continues is unresolved -->`. Do not guess which note it continues. A note
+  running across a seam has no markup yet and is deliberately left unresolved,
+  and the gate reads that comment as the licence for the missing `@n`.
 
 ## Figures
 

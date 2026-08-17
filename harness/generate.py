@@ -180,79 +180,71 @@ def _figures_with_geometry(ref: str, root: Path) -> list[dict]:
             for f in figure_boxes(ref, root)]
 
 
-def _place_notes(body: list[str], rows: list[tuple[int, str]], rendered) \
-        -> tuple[int, list[tuple[str, str, str]]]:
-    """Splice each note into the prose at its marker. Returns how many were placed
-    and the ones that could not be, as `(marker, rendered text, why not)`.
+def _mark_notes(body: list[str], rows: list[tuple[int, str]], rendered) \
+        -> tuple[int, int, list[tuple[str, str]]]:
+    """Mark each printed footnote marker in the prose, and render the notes.
 
-    **Every site is found before any note is inserted**, and that is the whole of
-    why this is two loops. Splicing note ¹ changes the string note ² is then
-    searched in, and a note whose text cites another note's marker — this book
-    does it — would anchor inside the note just placed. Sites first, then edits
-    applied from the back so the earlier offsets stay valid.
+    Returns `(marked, refs, notes)` — how many distinct notes were referenced at
+    least once, how many references were marked in all, and the notes themselves
+    as `(n attribute, rendered text)` in printed order, for the caller to emit at
+    the foot.
+
+    **Nothing moves.** The note stays where the printer set it and the marker
+    stays where the printer set *that*; what the rule adds is a `<ref>` over the
+    marker, which is the same act as marking a cross-reference and carries the
+    same `#mz`. This used to splice the `<note>` into the prose at its marker and
+    delete the marker in the process, and three things followed from that one
+    decision:
+
+    - **A note could be referenced only once.** `1-147` and `1-226` print one
+      note against two markers, and a spliced note has to pick one; the pass
+      reported them as ambiguous — "which one anchors it is a reading" — when the
+      reading is that both do.
+    - **The body lost a character the ground-truth pass had adjudicated.** The
+      superscript is inventory (`keying_spec.md` §2.10) and it was replaced by an
+      element standing in for it, so the page's text and the page's markup said
+      the same thing in two ways and only one of them was the print's.
+    - **And downstream had to undo it.** `validate._figref_flat` put the marker
+      back before re-scanning a block, character for character, so the string it
+      read matched the string the rule had read. That reinsertion goes with this.
+
+    A marker outside a figure's locant run is a reference, which is what §2.10
+    settles corpus-wide; `_marker_sites` holds the exclusion. A note whose head
+    carries no marker is emitted with no `@n` and a comment, as before — that is
+    a question about the page and not about anchoring.
     """
     parts = _split_notes(rows)
-    sites: dict[int, list[tuple[int, str]]] = {}
-    unplaced: list[tuple[str, str, str]] = []
+    notes: list[tuple[str, str]] = []
+    edits: dict[int, list[tuple[int, int, str]]] = {}
+    marked = refs = 0
     for marker, note_rows in parts:
         text = rendered(note_rows)
-        # The printed marker moves to `@n` and comes out of the text, where it
-        # would otherwise be set twice: once as the attribute the renderer draws
-        # the marker from, once as a stray character at the head of the note.
-        # Stripped from the rendered string rather than from the row, because the
-        # Tier-1 spans are offsets into the row's own text and shortening it
-        # underneath them would shift every one by the width of the marker.
+        # The marker comes off the *note's* head, where `@n` records it and the
+        # renderer draws it from — it would otherwise be set twice at the foot.
+        # It stays in the body, which is the one place the print puts it as part
+        # of a sentence. Stripped from the rendered string rather than the row,
+        # because the Tier-1 spans are offsets into the row's own text.
         if marker and text.startswith(marker):
             text = text[len(marker):].lstrip()
         if not marker:
-            unplaced.append((marker, text,
-                             "no marker at the head of this note. Either the "
-                             "recognizer dropped it, or this is foot-text running "
-                             "over from the previous page — which the book does "
-                             "once or twice. Read the page: if it is a note, set "
-                             "@n and anchor it; if it is a continuation, leave it "
-                             "here with no @n"))
+            notes.append(("", text))
             continue
-        hits = _marker_sites(body, marker)
-        if len(hits) == 1:
-            i, at = hits[0]
-            sites.setdefault(i, []).append(
-                (at, len(marker),
-                 f'<note n="{NOTE_N[marker]}" place="bottom">{text}</note>'))
-        elif not hits:
-            unplaced.append((marker, text,
-                             f"nothing in this page's prose reads {marker}, so "
-                             f"there is nothing to anchor it to — the marker did "
-                             f"not read. Find it on the page and place it"))
-        else:
-            unplaced.append((marker, text,
-                             f"{len(hits)} places in this page's prose read "
-                             f"{marker}. Which one anchors it is a reading"))
-    placed = 0
-    for i, edits in sites.items():
-        # Back to front, so an earlier edit cannot move a later one's offset.
-        for at, width, element in sorted(edits, reverse=True):
-            # **The printed marker is replaced by the note, not preceded by it.**
-            # `@n` already records it and the reading view draws its marker from
-            # there — so leaving the original in the text puts two superscript
-            # ones side by side, which is the display half of the bug this pass is
-            # fixing.
-            #
-            # **And the space before it goes too.** The book sets a thin space
-            # ahead of the raised digit (`1-100`: `[albino] ¹)`), which is
-            # typesetting rather than lexical — the same class as the French
-            # spacing keying spec §2.9 already overrides. Consuming the marker and
-            # not the space would strand it, and `validate` errors on exactly that
-            # ("space before <note>"): the element stands in for the marker, so it
-            # sets tight against the character the marker followed.
-            # Spaces and tabs only. A bare `rstrip()` would eat a newline where the
-            # compositor broke the line before the marker, silently joining two
-            # printed lines — and those breaks are kept on purpose, so a reviewer
-            # can read the file against the raster a line at a time.
-            head = body[i][:at - width].rstrip(" \t")
-            body[i] = head + element + body[i][at:]
-            placed += 1
-    return placed, unplaced
+        n = NOTE_N[marker]
+        notes.append((n, text))
+        sites = _marker_sites(body, marker)
+        if sites:
+            marked += 1
+            refs += len(sites)
+        for i, at in sites:
+            edits.setdefault(i, []).append(
+                (at - len(marker), at,
+                 f'<ref type="note" n="{n}" resp="#mz">{marker}</ref>'))
+    # Back to front within each block, so an earlier edit cannot move a later
+    # one's offsets — the same discipline the splice needed, for the same reason.
+    for i, per_block in edits.items():
+        for start, end, element in sorted(per_block, reverse=True):
+            body[i] = body[i][:start] + element + body[i][end:]
+    return marked, refs, notes
 
 
 def _marker_sites(body: list[str], marker: str) -> list[tuple[int, int]]:
@@ -761,7 +753,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
            "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
            "handles": 0, "links": 0, "figrefs": 0, "candidates": 0,
            "outside_zones": 0, "unknown_labels": "",
-           "figures": 0, "notes_anchored": 0}
+           "figures": 0, "notes_anchored": 0, "noterefs": 0}
 
     def flush_candidates() -> None:
         """One comment per distinct unlinked alias, after the block it sits in.
@@ -1016,31 +1008,39 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     emit_figures(None)          # anything below the last band of prose
 
     if notes:
-        # **Split at the printed marker, anchored at the matching one, and only on
-        # an exact unique match.** The zone is one band for the whole page, so the
-        # old shape was every note in a single unanchored `<note>` — which the
-        # reading view renders as one marker at the foot carrying three notes'
-        # text, and which left the collator retyping structure the page states
-        # plainly.
+        # **Split at the printed marker, and the marker is marked where it
+        # stands.** The zone is one band for the whole page, so the oldest shape
+        # was every note in a single unanchored `<note>` — one marker at the foot
+        # carrying three notes' text. The shape after that spliced each note into
+        # the prose at its marker and deleted the marker; this marks the marker
+        # and moves nothing.
         #
-        # Both halves are mechanical. A note begins where the printer set its
-        # superscript; it anchors where the *same character* stands in the prose.
-        # That is character identity, not inference — the compositor put both
-        # marks there and the recognizer read both. What it is not allowed to do
-        # is settle a case where the evidence is short: no match, or more than
-        # one, and the note stays at the foot saying which of the two happened.
+        # Both halves are mechanical and neither is a reading. A note begins
+        # where the printer set its superscript; a reference is where the same
+        # character stands in the prose, excluding a figure's locant run. The
+        # compositor put every one of those marks there and the recognizer read
+        # them, so what is left for a reviewer is whether the rule read them the
+        # same way — which the text still says, because the characters are all
+        # still in it.
         #
-        # Notes in this book anchor on their own page, so an unmatched marker
-        # means the marker did not read — not that it belongs to a facing page.
-        # The comment says that, because the two send a reader to different
-        # places.
-        placed, unplaced = _place_notes(body, notes, rendered)
-        rep["notes"] = placed + len(unplaced)
-        rep["notes_anchored"] = placed
-        for marker, text, why in unplaced:
-            n = f' n="{NOTE_N[marker]}"' if marker else ""
-            body.append(f'      <!-- note {marker or "(no marker)"}: {why} -->')
-            body.append(f'      <note{n} place="bottom">{text}</note>')
+        # **A marker printed twice is two references to one note**, which is what
+        # `1-147` and `1-226` do and what the splice could not express: it had to
+        # choose, so it refused and called the page ambiguous instead.
+        marked, refs, made = _mark_notes(body, notes, rendered)
+        rep["notes"] = len(made)
+        rep["notes_anchored"] = marked
+        rep["noterefs"] = refs
+        for n, text in made:
+            if not n:
+                body.append(
+                    '      <!-- note (no marker): no marker at the head of this '
+                    'note. Either the recognizer dropped it, or this is '
+                    'foot-text running over from the previous page — which the '
+                    'book does once or twice. Read the page: if it is a note, '
+                    'set @n from its printed marker; if it is a continuation, '
+                    'leave it here with no @n -->')
+            body.append(f'      <note{f' n="{n}"' if n else ""} '
+                        f'place="bottom">{text}</note>')
         flush_candidates()
 
     if buckets[-1]:
@@ -1231,5 +1231,5 @@ def skipped(ref: str, why: str = "") -> dict:
             "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
             "handles": 0, "links": 0, "figrefs": 0, "candidates": 0,
             "outside_zones": 0, "unknown_labels": "",
-            "figures": 0, "notes_anchored": 0,
+            "figures": 0, "notes_anchored": 0, "noterefs": 0,
             "written": False, "why": why}

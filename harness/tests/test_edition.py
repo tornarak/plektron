@@ -217,10 +217,30 @@ def test_an_editorial_comment_survives_as_a_flag(tmp_path):
     assert 'class="flag question"' in got["html"]
 
 
-def test_a_note_becomes_a_marker_and_a_body(tmp_path):
-    got = render(tmp_path, '<p>x<note n="1" place="bottom">See Boas.</note></p>')
-    assert 'class="noteref"' in got["html"]
+def test_a_note_is_a_body_at_the_foot_and_its_marker_is_where_the_print_set_it(tmp_path):
+    """The marker used to be drawn by `el_note`, because the note element stood
+    where the marker had been. It stands at the foot now, so drawing one there
+    would print every superscript in a row in front of its own note text — wrong
+    in both places at once. The `<ref type="note">` in the sentence draws it, and
+    the first reference carries the id the foot links back to."""
+    got = render(tmp_path, '<p>x<ref type="note" n="1" resp="#mz">¹</ref></p>'
+                           '<note n="1" place="bottom">See Boas.</note>')
+    assert 'class="noteref"' in got["html"] and 'href="#note-1"' in got["html"]
+    assert 'id="ref-1"' in got["html"]
     assert got["notes"][0]["n"] == "1" and "See Boas." in got["notes"][0]["html"]
+
+
+def test_a_note_referenced_twice_draws_two_markers_and_one_body(tmp_path):
+    """`1-147` and `1-226` print one note against two markers. The old encoding
+    could not say it — a spliced note is in one place — and reported the page as
+    ambiguous instead."""
+    got = render(tmp_path,
+                 '<p>a<ref type="note" n="1" resp="#mz">¹</ref> and '
+                 'b<ref type="note" n="1" resp="#mz">¹</ref></p>'
+                 '<note n="1" place="bottom">Once.</note>')
+    assert got["html"].count('class="noteref"') == 2
+    assert got["html"].count('id="ref-1"') == 1, "only the first carries the id"
+    assert len(got["notes"]) == 1
 
 
 def test_an_unfilled_handle_is_shown_as_one(tmp_path):

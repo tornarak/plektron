@@ -464,35 +464,24 @@ def test_entry_state_no_longer_carries_boundary_in(tmp_path):
 
 # ------------------------------------------------------ no space before a <note>
 
-def test_a_space_before_a_note_is_an_error(tmp_path):
-    """The print sets a thin space before the raised digit ("[albino] ¹)"), which
-    is typesetting exactly as the French spacing at keying spec 2.9 is, and it
-    leaves a stray space in the reading text of anything that strips the marker."""
+def test_the_whitespace_rule_around_a_note_is_gone_with_the_splice(tmp_path):
+    """**Four tests stood here and all four were about an element standing *in
+    place of* a printed marker.** The generator spliced each note into the prose
+    at its marker and deleted the character, so the `<note>` had to set tight
+    against whatever the marker had followed: the book prints a thin space ahead
+    of a raised digit (`1-100`: `[albino] ¹)`), and consuming the glyph while
+    leaving the space stranded it. `validate` errored on that, on the space seen
+    through an intervening element, and passed a tight note and a note opening
+    its parent.
+
+    Nothing stands in place of a marker now. The note is at the foot, the marker
+    is in the sentence under a `<ref type="note">`, and the thin space is simply
+    the print — kept as printed, like the French spacing at keying spec 2.9, with
+    no element beside it to be tight against.
+    """
     page(tmp_path, "1-010",
-         '<pb n="1"/><p>[albino] <note n="1" place="bottom">Pink eyes.</note>)</p>')
-    assert any("space before <note" in e for e in gate(tmp_path, "1-010").errors)
-
-
-def test_a_tight_note_passes(tmp_path):
-    page(tmp_path, "1-010",
-         '<pb n="1"/><p>[albino]<note n="1" place="bottom">Pink eyes.</note>)</p>')
-    assert not [e for e in gate(tmp_path, "1-010").errors if "<note" in e]
-
-
-def test_the_space_is_seen_after_an_intervening_element(tmp_path):
-    """The text before a <note> is its previous sibling's tail, not the parent's,
-    wherever any inline markup sits between them."""
-    page(tmp_path, "1-010",
-         '<pb n="1"/><p><term xml:lang="ckt" resp="#llm">x</term> '
-         '<note n="1" place="bottom">Pink eyes.</note></p>')
-    assert any("space before <note" in e for e in gate(tmp_path, "1-010").errors)
-
-
-def test_a_note_opening_its_parent_has_nothing_before_it(tmp_path):
-    """No preceding text at all is not a space. Guards against reading None as
-    whitespace and reporting every note that opens an element."""
-    page(tmp_path, "1-010",
-         '<pb n="1"/><p><note n="1" place="bottom">Pink eyes.</note> after</p>')
+         '<pb n="1"/><p>[albino] <ref type="note" n="1" resp="#mz">¹</ref>)</p>'
+         '<note n="1" place="bottom">Pink eyes.</note>')
     assert not [e for e in gate(tmp_path, "1-010").errors if "<note" in e]
 
 

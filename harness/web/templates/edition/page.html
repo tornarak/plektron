@@ -71,7 +71,7 @@ no <code>@resp</code> on it claims anything.</p>
 {% if doc.notes %}
 <div id='foot'><ol>
 {% for n in doc.notes %}
-<li id='note-{{ n.i }}' data-n='{{ n.n }}'><a href='#ref-{{ n.i }}'>{{ n.n }}</a>
+<li id='note-{{ n.n }}' data-n='{{ n.n }}'><a href='#ref-{{ n.n }}'>{{ n.n }}</a>
 {{ n.html | safe }}</li>
 {% endfor %}
 </ol></div>

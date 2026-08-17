@@ -229,45 +229,53 @@ def test_an_unparsed_folio_is_a_hole_not_a_guess(tmp_path):
     assert "<pb/>" in doc and "no folio parsed" in doc
 
 
-def test_a_note_is_split_at_its_marker_and_anchored_at_the_matching_one(tmp_path):
+def test_a_note_is_split_at_its_marker_and_the_marker_is_marked_in_place(tmp_path):
     """Both halves are the printer's own marks, so both are rules rather than
-    readings. The note begins where its superscript is set; it anchors where the
-    same character stands in the prose.
+    readings. The note begins where its superscript is set; a reference is where
+    the same character stands in the prose.
 
-    The character is then *replaced* by the note rather than preceded by it —
-    `@n` records which note it is, and the reading view raises the marker from
-    there, so leaving the glyph would set it twice. `@n` is the **digit**: the
-    collator contract has always specified an integer, and `.noteref` superscripts
-    whatever it holds."""
+    **Nothing moves.** The note stays at the foot and the marker stays in the
+    sentence, wrapped in a `<ref>` — the same act as marking a cross-reference,
+    carrying the same `#mz`. It used to be spliced into the prose *at* the marker
+    with the character deleted, which cost a note the ability to be referenced
+    twice and cost the body a glyph the ground-truth pass had adjudicated.
+
+    `@n` is the **digit**: the collator contract has always specified an integer,
+    and `.noteref` superscripts whatever it holds."""
     blocks = [("MainZone-P", lines_at(["Body text.¹"])),
               ("MarginTextZone-Notes",
                lines_at(["¹ See the authorities quoted."], 245))]
     doc, rep = page(tmp_path, "1-021", blocks)
     assert rep["notes"] == 1 and rep["notes_anchored"] == 1
-    assert ('<p>Body text.<note n="1" place="bottom">See the authorities '
-            'quoted.</note></p>') in doc
+    assert rep["noterefs"] == 1
+    assert '<p>Body text.<ref type="note" n="1" resp="#mz">¹</ref></p>' in doc
+    assert '<note n="1" place="bottom">See the authorities quoted.</note>' in doc
 
 
-def test_the_thin_space_before_a_marker_goes_with_it(tmp_path):
-    """The book sets a space ahead of the raised digit (`1-100`: `[albino] ¹)`).
-    The `<note>` stands in for the marker, so it sets tight against the character
-    the marker followed — consuming the glyph and leaving the space would strand
-    it, and `validate` errors on precisely that."""
+def test_the_thin_space_before_a_marker_is_left_exactly_as_printed(tmp_path):
+    """The book sets a space ahead of the raised digit (`1-100`: `[albino] ¹)`),
+    and it stays. **The rule that used to eat it is gone with the splice.** A
+    `<note>` standing *in place of* a marker had to set tight against the
+    character the marker followed, or the space it left behind was stranded and
+    `validate` errored on it; nothing stands in place of a marker now, so the
+    typesetting is simply the print, kept as printed."""
     blocks = [("MainZone-P", lines_at(["the albino ¹ was taken."])),
               ("MarginTextZone-Notes", lines_at(["¹ A note."], 245))]
     doc, _ = page(tmp_path, "1-021", blocks)
-    assert '<p>the albino<note n="1" place="bottom">A note.</note> was taken.</p>' in doc
+    assert ('<p>the albino <ref type="note" n="1" resp="#mz">¹</ref> '
+            'was taken.</p>') in doc
 
 
 def test_a_line_break_before_a_marker_is_not_eaten(tmp_path):
-    """Only spaces and tabs are consumed with the marker. The printed line breaks
-    are kept on purpose — they are what lets a reviewer read the file against the
-    raster a line at a time — so a marker the compositor pushed onto the next line
-    must not silently join the two."""
+    """The printed line breaks are kept — they are what lets a reviewer read the
+    file against the raster a line at a time — so a marker the compositor pushed
+    onto the next line must not silently join the two. Nothing consumes anything
+    around a marker now, so this holds by construction rather than by a rule
+    about which whitespace may be eaten."""
     blocks = [("MainZone-P", lines_at(["the albino", "¹ was taken."])),
               ("MarginTextZone-Notes", lines_at(["¹ A note.", "and more."], 290))]
     doc, _ = page(tmp_path, "1-021", blocks)
-    assert "the albino\n<note" in doc
+    assert 'the albino\n<ref type="note" n="1" resp="#mz">¹</ref> was taken.' in doc
 
 
 def test_several_notes_in_one_zone_become_several_notes(tmp_path):
@@ -293,19 +301,26 @@ def test_a_marker_that_reads_nowhere_in_the_prose_stays_at_the_foot(tmp_path):
               ("MarginTextZone-Notes", lines_at(["¹ An orphan."], 245))]
     doc, rep = page(tmp_path, "1-021", blocks)
     assert rep["notes"] == 1 and rep["notes_anchored"] == 0
-    assert "the marker did not read" in doc
+    assert rep["noterefs"] == 0
     assert '<note n="1" place="bottom">An orphan.</note>' in doc
+    assert "<ref type=\"note\"" not in doc
 
 
-def test_a_marker_printed_twice_is_a_reading_and_is_refused(tmp_path):
-    """Two candidate anchors is not a near miss to be resolved by taking the
-    first: which one the note belongs to is exactly the judgement a rule may not
-    make."""
+def test_a_marker_printed_twice_is_two_references_to_one_note(tmp_path):
+    """**This is the inversion.** Two markers reading `¹` used to be refused —
+    "which one anchors it is a reading" — because a spliced note can only be in
+    one place, so the pass had to choose and would not. It is not a choice: the
+    printer set both, and both refer to the one note at the foot. `1-147` and
+    `1-226` are the corpus's instances, and they were the last two note flags in
+    it."""
     blocks = [("MainZone-P", lines_at(["First¹ and again¹ here."])),
               ("MarginTextZone-Notes", lines_at(["¹ Ambiguous."], 245))]
     doc, rep = page(tmp_path, "1-021", blocks)
-    assert rep["notes_anchored"] == 0
-    assert "2 places in this page's prose read ¹" in doc
+    assert rep["notes"] == 1 and rep["notes_anchored"] == 1
+    assert rep["noterefs"] == 2
+    assert doc.count('<ref type="note" n="1" resp="#mz">¹</ref>') == 2
+    assert doc.count('<note n="1" place="bottom">Ambiguous.</note>') == 1
+    assert "is a reading" not in doc
 
 
 def test_a_note_whose_marker_did_not_read_gets_no_n(tmp_path):
@@ -578,14 +593,20 @@ def test_an_anchored_note_draws_no_complaint(tmp_path):
     assert not [e for e in errs if "without n=" in e]
 
 
-def test_a_note_the_generator_could_not_place_is_still_named_as_such(tmp_path):
-    """The rule has not gone away, it has stopped firing on the ordinary case. A
-    note left at the foot draws one error naming the anchoring, not the two proxy
-    complaints — a stray space, a missing `@n` — that used to describe symptoms of
-    being unanchored while naming something else."""
+def test_a_note_at_the_foot_is_not_an_error(tmp_path):
+    """**The rule that used to sit here is gone, and it said the opposite.** A
+    `<note>` that is a direct child of `<body>` drew an error reading "it has not
+    been anchored — move it inline to the character its printed marker follows".
+    That was right while the generator spliced notes into the prose. It splices
+    none now: every note is at the foot, where the printer set it, and the marker
+    stays in the sentence carrying a `<ref type="note">`.
+
+    A note whose marker is printed nowhere on the page is still an ordinary note
+    with an ordinary `@n`; what it lacks is a reference, and that is visible in
+    the text rather than as a gate."""
     errs = _validated(tmp_path, body=["no marker anywhere in this line."])
-    anchor = [e for e in errs if "has not been anchored" in e]
-    assert len(anchor) == 1 and "@n from that marker" in anchor[0]
+    assert not [e for e in errs if "has not been anchored" in e]
+    assert not [e for e in errs if "space before <note" in e]
 
 
 def test_the_missing_opens_witness_is_the_error_that_remains(tmp_path):
