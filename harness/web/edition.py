@@ -1041,13 +1041,13 @@ def atlas(request: Request, at: str = ""):
     # **Grouped by class, because two different relations were sharing one
     # level.** `place` and `water` nest — a tributary inside its trunk, a
     # village inside its basin — and that containment forest is what the atlas
-    # was built to walk. A people or a language nests in neither: it has an
-    # extent and no parent, so once every ethnicity carried its sprachraum all
-    # nine of each landed flat at the top, beside the one `place` root and above
-    # the rivers. Worse, they landed in pairs drawing the same polygon —
-    # `people:koryak` and `language:koryak` both point at `langarea:kory1246`,
-    # which the store allows on purpose and which reads as a duplicate when the
-    # two sit adjacent with nothing saying why.
+    # was built to walk. A people nests in neither: it has an extent and no
+    # parent, so once every ethnicity carried its sprachraum they all landed
+    # flat at the top, beside the one `place` root and above the rivers. Worse,
+    # a `language:` class then held a second entry per people drawing the very
+    # same polygon, which reads as a duplicate when the two sit adjacent with
+    # nothing saying why. That class is retired; the flattening it made obvious
+    # was never its fault and is still here.
     #
     # So the class is the heading and the containment tree lives under it. The
     # encyclopedia index does the same thing for the same reason; what differs

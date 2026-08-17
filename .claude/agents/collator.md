@@ -185,9 +185,9 @@ tell you which entry to look at first, and the page decides.
 
 # 1. Entity candidates
 
-    <!-- entity candidate: 'Chukchee' — several entities claim this form:
-         people:chukchi, language:chukchi. Wrap the one this sentence means,
-         or delete this comment -->
+    <!-- entity candidate: 'Eskimo' — several entities claim this form:
+         people:eskimo, people:inupiat, people:yupik. Wrap the one this
+         sentence means, or delete this comment -->
 
 The rules found a form and are not allowed to resolve it — either several entities
 claim it, or its author marked it unsafe out of context. Read

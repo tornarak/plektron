@@ -414,8 +414,6 @@
                  replacementPattern="entities/being/$1.md"/>
       <prefixDef ident="event" matchPattern="(.+)"
                  replacementPattern="entities/event/$1.md"/>
-      <prefixDef ident="language" matchPattern="(.+)"
-                 replacementPattern="entities/language/$1.md"/>
       <prefixDef ident="taxon" matchPattern="(.+)"
                  replacementPattern="entities/taxon/$1.md"/>
       <prefixDef ident="institution" matchPattern="(.+)"

@@ -8,6 +8,7 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Yakut | | no | |
+| Yakut language | | no | the language, which in this book is the people |
 
 ## gloss
 

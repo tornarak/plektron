@@ -1,12 +1,14 @@
-# language:aleut — Aleut language
+# people:aleut — Aleut
 
-- status: ratified
+- status: proposed
 - geo: langarea:aleu1260
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
+| Aleut | | no | |
+| Aleuts | | no | |
 | Aleut language | | no | |
 
 ## gloss

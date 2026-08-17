@@ -1,11 +1,12 @@
-# language:russian — Russian language
+# people:russians — Russians
 
-- status: ratified
+- status: proposed
 
 ## aliases
 
 | form | lang | auto | note |
 |---|---|---|---|
+| Russians | | no | |
 | Russian language | | no | |
 
 ## gloss

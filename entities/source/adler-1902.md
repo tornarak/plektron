@@ -10,6 +10,7 @@
 | Adler | | no | |
 | Adler, II | | yes | |
 | Adler II | | yes | |
+| Dr. Adler (II) | | yes | |
 
 ## gloss
 

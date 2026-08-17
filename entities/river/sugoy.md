@@ -19,4 +19,4 @@
 
 ## gloss
 
-1-359's footnote 5: Shoudon is [[language:yukaghir]] for "stony"; Сухая means "dry river"; Buks˙unda is the [[language:even]] name, "icy river." Buyunda is a travellers' mispronunciation of the last, and names a different river to the south.
+1-359's footnote 5: Shoudon is [[people:yukaghir]] for "stony"; Сухая means "dry river"; Buks˙unda is the [[people:even]] name, "icy river." Buyunda is a travellers' mispronunciation of the last, and names a different river to the south.

@@ -21,8 +21,8 @@ built = pytest.mark.skipif(
 @built
 def test_an_entity_and_a_shape_are_told_apart_by_their_prefix():
     """Decidable only because a shape kind may never be an entity class — the
-    rule `entities.parse` enforces so `area: language:x` cannot read as an
-    entity reference. So this needs no flag and can make no wrong guess."""
+    rule `entities.parse` enforces so a member spelt `kind:slug` cannot read as
+    an entity reference. So this needs no flag and can make no wrong guess."""
     got = geo.boxes(["land:kamchatka", "region:kamchatka"], ROOT)
     assert [r["kind"] for r in got["rows"]] == ["entity", "shape"]
 

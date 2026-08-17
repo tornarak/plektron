@@ -12,6 +12,7 @@
 | Nordenskiöld, I | | yes | |
 | Nordenskiöld II | | yes | |
 | Nordenskiöld I | | yes | |
+| Nordenskiöld, Vol. II | | yes | |
 
 ## gloss
 

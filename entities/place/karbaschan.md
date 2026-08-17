@@ -13,6 +13,6 @@
 
 ## gloss
 
-A Yukaghir village bearing a [[language:even]] name, per 1-359's footnote 4.
+A Yukaghir village bearing a [[people:even]] name, per 1-359's footnote 4.
 Bogoras's map puts it at the fork in the middle [[river:omolon]]; the
 coordinate above is the editor's reading of that map.

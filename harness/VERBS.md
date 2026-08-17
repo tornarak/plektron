@@ -1423,7 +1423,7 @@ is the provenance record and carries the one licence condition — Asher 2007 is
 CC BY 4.0, so its citation is in the corpus `teiHeader` as well.
 
 **A shape id is `kind:slug` and a kind is never an entity class.** `langarea:`,
-not `language:`: an entity file carries `within: place:chukotka` two lines from
+not any live entity class: an entity file carries `within: place:chukotka` two lines from
 `area: langarea:chuk1273`, and a reader who cannot tell the two apart by looking
 is one keystroke from an `area:` that resolves as an entity reference.
 `entities.parse` refuses a kind that collides.
@@ -1435,7 +1435,7 @@ is one keystroke from an `area:` that resolves as an entity reference.
 --margin DEG  degrees added on all four sides of the union
 --root --json --toon --pager
 ```
-**Note** the two vocabularies are told apart **by their prefix, with no flag**, and that is decidable only because a shape kind may never be an entity class — the rule `entities.parse` enforces so that `area: language:x` cannot quietly read as an entity reference. The invariant pays for itself here.
+**Note** the two vocabularies are told apart **by their prefix, with no flag**, and that is decidable only because a shape kind may never be an entity class — the rule `entities.parse` enforces so that a member spelt `kind:slug` cannot quietly read as an entity reference. The invariant pays for itself here.
 **Note** `--margin` is **content, not breathing room**: `geomap.Frame` already pads a drawn map on every side, so this answers the different question of how much more of the world to show. Degrees rather than a percentage, because a percentage of a box 60° wide and 20° tall is two distances and the caller would have to know which.
 **Note** longitudes are the store's shifted window — the same one `--frame` and `frame:` read — so the printed string pastes straight through.
 **Note** an id with no extent is a **row reading null, not a silence**, and it does not enter the union. `place:cape-prince-of-wales` is named by the book and located by nothing, and it is the east edge of `place:northeast-siberia`'s frame: that edge was estimated by hand, and a tool that dropped the row would have made the estimate look like a measurement. An unknown id says which vocabulary it was looked for in.
@@ -1466,7 +1466,7 @@ is one keystroke from an `area:` that resolves as an entity reference.
 **Note** **containment names the pair, never a culprit.** A basin delineated from a tributary's outlet is contained in its trunk's by construction, so this is a real second witness on the river chain — but a disagreement says one of two authored facts is wrong and the geometry cannot say which.
 **Note** **the reading respects the source's own declaration of precision.** The delineator reverts to a coarse DEM above 50,000 km² and says so in the file; a coarse parent's boundary wanders by tens of kilometres, and a true tributary measured against one lands at 0.70–0.87 rather than 1.00. Every containment pair in the store today has such a member. Measured on the real shapes: relations the book and the map both support land at 0.68–0.82, and a river paired with a basin it has nothing to do with lands at 0.00–0.11 — so the floor sits in the gap, and `coarse` names the member that put it there.
 **Note** a `geo:` point outside its own shape is reported **with the distance and is not a defect by itself**: a river's natural point is its mouth, which sits *on* the boundary the basin was delineated from. `water:anadyr` is 0.59° out, at the estuary.
-**Note** a shape two entities claim is legal and reported. `people:chukchi` and `language:chukchi` both point at the one Asher polygon; forcing a choice would be this edition deciding something the source does not.
+**Note** a shape two entities claim is legal and reported — a people and a subgroup inside it may both point at one Asher polygon, and forcing a choice would be this edition deciding something the source does not. Nothing in the store shares one today: every case was a `language:` entry duplicating its people's claim, and that class is retired.
 
 ---
 

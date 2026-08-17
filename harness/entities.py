@@ -91,9 +91,19 @@ ENTDIR = "entities"
 #: The four with no name-type are the reason `<rs>` exists here. `NAME_TYPES` is
 #: scoped to what a reader of a page can see and record — it excludes `taxon`
 #: outright ("the binomials are Latin in English prose and out of scope") and has
-#: no member for a language or an institution. Those are exactly the entities
+#: no member for an institution or a work. Those are exactly the entities
 #: an alias table can find reliably, and linking them says "this string refers to
 #: that entity", not "the page marked a proper noun here".
+#:
+#: **There is no `language:`.** There was, and it earned nothing: nine of its ten
+#: entries claimed the very polygon their `people:` counterpart already claimed,
+#: nine of ten glosses were unwritten, and nothing in the code path that matters
+#: consulted it — `langs.py` is the language table that binds `xml:lang` and the
+#: lexicon index, and it names its witnesses as a `people:` entry, a `langarea:`
+#: shape or an authority's `lang`. What it did do was make "Chukchee" ambiguous
+#: by construction, which cost 423 candidate comments, a third of the whole
+#: collation inbox, over a distinction this book does not draw: every language in
+#: it is its people's. The lexicon is the language's encyclopedia here.
 #:
 #: **Four geographical classes, not two, and the cut is by what a map draws.**
 #: `place:` used to hold a village and a peninsula alike and `water:` a river and
@@ -123,7 +133,6 @@ ENTITY_CLASSES = {
     "animal": "zoonym",
     "being": "mythonym",
     "event": "event",
-    "language": None,
     "taxon": None,
     "institution": None,
     "source": None,
@@ -150,6 +159,15 @@ GEO_CLASSES = ("place", "land", "water", "river")
 #: and leave the rest bare. That is mechanical, so it stays `#mz` and
 #: re-derives; the page is the unit because the page is what a reader has in
 #: front of them, and because it is the unit `generate` already works in.
+#:
+#: **Once per *form*, not per entity**, which is worth stating because the name
+#: reads the other way. The alias table is keyed on forms and `once` is a
+#: property of a row, so a page setting both `Chukchee` and `Chukchee tribe`
+#: links each. Measured: 204 pages take one link, four take two, and one takes
+#: seven — `1-031`, where Bogoras enumerates the people's names in five
+#: languages and every one of them is exactly the form a reader would follow.
+#: Per entity would also make a row's meaning depend on its neighbours, a `once`
+#: form then competing with some other row's `yes`.
 #:
 #: `auto` stays the boolean "a rule may link this at all" — true for `yes` and
 #: `once` alike — and the scope is a second key, because eight call sites test
@@ -283,8 +301,8 @@ def _geo_member(raw: str, at: str = "") -> dict:
 
     **The disjointness of shape kinds from `ENTITY_CLASSES` is what makes this
     decidable**, and that invariant is older than this field: a shape kind is
-    `langarea:` and never `language:`, held apart on purpose so that an entity
-    file carrying two ids two lines from each other cannot be misread. It used
+    `langarea:` and never any live entity class, held apart on purpose so that
+    an entity file carrying two ids two lines from each other cannot be misread. It used
     to be enforced negatively — an `area:` naming an entity class was refused
     outright, because it *looked* like a reference — and here the same fact is
     read positively: it *is* one. `geo bounds` has told the two apart by prefix
@@ -750,8 +768,8 @@ def auto_forms(idx: dict[str, list[dict]]) -> dict[str, str]:
     Three conditions, all mechanical, all checkable from the store alone:
 
     - **exactly one entity claims the form.** Two claims make it ambiguous *by
-      construction* — this is the `people:chukchi` / `language:chukchi` case,
-      where the string is genuinely both and only the sentence around it decides.
+      construction* — "Eskimo" is `people:eskimo`, `people:inupiat` and
+      `people:yupik`, and only the sentence around it decides which.
       Neither author can fix that from their own file, which is why the rule
       reads the whole store and not the entry.
     - **that claim is not `auto: no`.** The author's declaration that the form

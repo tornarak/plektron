@@ -34,9 +34,13 @@ def test_an_unbuilt_store_is_empty_rather_than_an_error(tmp_path):
 
 @built
 def test_the_shape_kinds_are_disjoint_from_the_entity_classes():
-    """`langarea:`, never `language:`. An entity file carries `within:
-    land:chukotka` two lines from `area: langarea:chuk1273`, and a kind that
-    was also a class would make the second readable as the first."""
+    """**This is what makes one `geo:` field able to hold three kinds of member.**
+    A member is a point if it is two numbers, a shape if its kind is not an
+    entity class, and an entity if it is — decidable by prefix alone, with no
+    flag and no wrong guess available, and only because the two vocabularies are
+    held apart. An entity file carries `within: land:chukotka` two lines from
+    `geo: langarea:chuk1273`, and a kind that was also a class would make the
+    second readable as the first."""
     kinds = {i.split(":")[0] for i in geo.index(ROOT)["shapes"]}
     assert kinds and not (kinds & set(entities.ENTITY_CLASSES))
 
@@ -70,14 +74,14 @@ def _entity_text(*members: str) -> str:
 
 
 def test_a_member_whose_kind_is_an_entity_class_is_read_as_a_reference():
-    """**The inversion at the centre of the change.** `area: language:chukchee`
+    """**The inversion at the centre of the change.** `area: place:chukchee`
     used to be refused, because a shape id whose kind was an entity class parsed
     as a well-formed shape and resolved to nothing, in a file whose next field
     was a genuine entity reference. It *is* a reference now: the same
     disjointness that made the collision worth refusing is what makes the
     reading unambiguous, and the field takes all three kinds because of it."""
-    rec = entities.parse(_entity_text("language:chukchee"))
-    assert entities.geo_refs(rec) == ["language:chukchee"]
+    rec = entities.parse(_entity_text("place:chukchee"))
+    assert entities.geo_refs(rec) == ["place:chukchee"]
     assert entities.geo_shapes(rec) == []
 
 
@@ -318,13 +322,19 @@ def test_unlocated_is_scoped_by_the_tree_and_not_by_class(tmp_path):
 
 
 @built
-def test_two_entities_may_share_one_shape():
-    """`people:chukchi` and `language:chukchi` both point at the one Asher
-    polygon. Forcing a choice would be this edition deciding something the
-    source does not — so it is reported, not refused."""
+def test_a_shape_two_entities_claim_is_reported_and_not_refused():
+    """Legal, because forcing a choice would be this edition deciding something
+    the source does not — a people and a subgroup inside it may both name one
+    Asher polygon.
+
+    **The store currently shares nothing, and that is itself the assertion.**
+    Every one of the nine shared claims was a `language:` entry pointing at the
+    very polygon its `people:` counterpart already held; retiring that class
+    left the report empty. What `shared` guards now is the other direction — a
+    duplicate claim reappearing unremarked — so the row is checked to exist and
+    to be empty rather than deleted along with its examples."""
     assert entities.check(ROOT)["ok"]
-    assert any(row["shape"] == "langarea:chuk1273"
-               for row in geo.verify(ROOT)["shared"])
+    assert geo.verify(ROOT)["shared"] == []
 
 
 # ------------------------------------------------------------ the extent
@@ -555,9 +565,9 @@ def test_what_is_warmed_is_wider_than_what_is_drawn():
 
 @built
 def test_a_member_is_named_by_its_entity_and_not_by_its_shape():
-    """Two entities may share one polygon — `people:chukchee` and
-    `language:chukchee` both point at the one Asher shape — so the shape cannot
-    identify the member even in principle."""
+    """Two entities may share one polygon — a people and a subgroup inside it
+    may both point at one Asher shape — so the shape cannot identify the member
+    even in principle."""
     store = entities.load(ROOT)
     pairs = geo.member_shapes("river:kolyma", store)
     assert pairs and all(e in store and s.startswith("watershed:") for e, s in pairs)

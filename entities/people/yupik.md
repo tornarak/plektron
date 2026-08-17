@@ -11,3 +11,5 @@
 | form | lang | auto | note |
 |---|---|---|---|
 | Eskimo | | no | Ambiguous; but the most common referent of this word by far. See [[people:eskimo]] |
+| Eskimo language | | no | the language, which in this book is the people. Bogoras's term, so his word for it |
+

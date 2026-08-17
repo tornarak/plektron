@@ -91,7 +91,7 @@ have been a model's recall, which is the one thing this store does not accept
 for an identity.
 
 **That reason stopped being true, and it is worth being exact about when.** The
-moment the `language:` entries were filed against their `langarea:` shapes, the
+moment those peoples were filed against their `langarea:` shapes, the
 repo did attest the mapping: `data/geo/` names its own shape *Even (Lamut)*, and
 `langarea:itel1242` is West Itelmen. The four moved on the editor's word, with
 the shape store agreeing. `Indighirka`/Indigirka still has no witness and still
@@ -114,7 +114,7 @@ none of the book's, which is precisely what the alias rule is for.
     person → anthroponym    people → ethnonym     place → toponym
     land   → toponym        water  → hydronym     river → hydronym
     animal → zoonym         being  → mythonym     event → event
-    language, taxon, institution, source → (none)
+    taxon, institution, source → (none)
 
 The vocabulary is its own rather than `NAME_TYPES` verbatim, because a class is
 written into every `@ref` in the corpus and wants to be `person:`, not
@@ -163,9 +163,46 @@ by a pass over the files.
 
 **The four with no name-type are why `<rs>` exists here.** `NAME_TYPES` is
 scoped to what a reader of a page can see and record; it excludes `taxon`
-outright and has no member for a language or an institution. Those are exactly
+outright and has no member for an institution or a work. Those are exactly
 the entities an alias table finds reliably, and linking them says "this string
 refers to that entity", not "the page marked a proper noun".
+
+### There is no `language:`, and retiring it is the largest single saving
+
+There was one, with ten entries, and it earned nothing three separate ways.
+
+**Geographically inert.** Nine of the ten held one `geo:` member and it was the
+very `langarea:` polygon their `people:` counterpart already claimed — chukchi,
+koryak, evenki, even, itelmen, yakut, yukaghir and yupik twice over. `geo.py`
+had grown explicit handling for that co-claiming, machinery built to *tolerate*
+a redundancy rather than to express anything with it. The tenth, `language:aleut`,
+was a polygon's only claimant purely because no `people:aleut` had been written.
+
+**Unread by the code that matters.** `harness/langs.py` is the language table —
+it binds `xml:lang`, `entity check`'s alias-language refusal and the lexicon
+index — and it names its witnesses as a `people:` entry, a `langarea:` shape or
+an authority's `lang`. The class was not among them, and nothing imported it.
+The lexicon is the language's encyclopedia here in the way that counts: `/lexicon`
+serves every attested form and derives each one's language from committed TEI,
+resolved through `langs.py`. Nine of the ten glosses were `(unwritten)`.
+
+**And it was the single largest cost in the collation pass.** The
+`people:chukchi` / `language:chukchi` split made "Chukchee" ambiguous *by
+construction*, generating **423 of 1363 entity candidates — 31% of the whole
+inbox**, 1.5 judgements a page, every one asking a reader to choose between two
+entries that drew the identical map and one of which had nothing on its card.
+
+The distinction was the edition's and not the book's: **every language Bogoras
+names is its people's**, coextensive with the ethnicity, and an edition that
+splits them invents a question the source does not pose. So the class is gone,
+each `X language` alias moved onto the people it names, and `people:aleut` and
+`people:russians` written — both `proposed`, because ratifying is a human act
+and neither has been read against its pages. `people:aleut` carries
+`langarea:aleu1260`, which would otherwise have gone unclaimed.
+
+What genuinely goes with it: a sentence meaning the language and not the people
+now links to the people. That is the cost, it is small, and the alternative was
+paying 423 questions for it.
 
 ## The file
 
@@ -205,7 +242,7 @@ corpus, on every load.
 is not.** So the field was the weaker of the two witnesses, and the cost of
 keeping it was real — it kept out entries the book plainly contains whose
 attesting page happens to be among the 558 not yet transcribed, which is how the
-`language:` and unclaimed-watershed seeding stalled. `entity occurrences --all`
+sprachraum and unclaimed-watershed seeding stalled. `entity occurrences --all`
 is where an unwitnessed entry shows up now, as a row reading 0 and 0, and that
 row cannot be answered by writing a number in a file.
 
@@ -384,9 +421,9 @@ block ones, since a `<p>` or a `<ul>` inside a table cell would be wrong.
 are mechanical:
 
 1. **Exactly one entity claims the form.** Two claims make it ambiguous *by
-   construction*, whatever either file says. `people:chukchi` and
-   `language:chukchi` both claim "Chukchee" and both are right; only the
-   sentence decides, and neither author can see the other's claim. This is why
+   construction*, whatever either file says. `people:eskimo`, `people:inupiat`
+   and `people:yupik` all claim "Eskimo" and all three are right; only the
+   sentence decides, and no author can see the others' claims. This is why
    the rule reads the whole store and not the entry.
 2. **That claim is not `auto: no`** — the author's declaration that the form
    means this entity wherever it appears. Bare "Jesup" does not qualify even
@@ -1201,7 +1238,7 @@ running text — lights up its shape. That identity has to be carried because
 nothing about a path recovers it: a drawn member is the nearest descendant
 *with* a shape, found by descending through those without, so it is not reliably
 the child whose name you are on; and two entities may share one polygon outright
-(`people:chukchi` and `language:chukchi` point at the one Asher shape), so the
+— a people and a subgroup inside it may both name one Asher shape — so the
 shape could not name the member even in principle. `geo.member_shapes` and
 `geo.pins_under` return the entity beside the thing to draw for this reason, and
 `geomap.owned` is what attaches it. The coastline claims nothing, which is
@@ -1898,7 +1935,7 @@ guess this project is arranged against. `watershed:main` and the English word
 are one keystroke apart in that file listing.
 
 **It is decidable because a shape kind is held disjoint from `ENTITY_CLASSES`**
-— `langarea:`, never `language:`. That invariant is older than this field and
+— `langarea:`, never any live entity class. That invariant is older than this field and
 used to be enforced *negatively*: an `area:` naming an entity class was refused
 outright, because it looked like a reference and resolved to nothing. It is read
 positively now — it *is* one — which is the same fact doing more work.
@@ -1965,7 +2002,7 @@ cannot express it), asserting **nothing whatever about speech**.
 The join is then one human act, in the entity file, where a reader can see whose
 it is:
 
-    harness entity locate language:chukchi \
+    harness entity locate people:chukchi \
         --geo langarea:chuk1273 --geo base:chukotka-east-of-meridian --commit
 
 That separation is the design. Sourced geometry in the store; the inference in
@@ -2011,9 +2048,11 @@ an entry; `place:anadyr` is that entry. So `entity check` now refuses a record
 carrying both, the check has nothing left to measure, and the section is gone
 rather than left as a row that can never fire.
 
-A shape two entities claim is legal — `people:chukchi` and
-`language:chukchi` both point at the one Asher polygon, and forcing a choice
-would be this edition deciding something the source does not.
+A shape two entities claim is legal — a people and a subgroup inside it may
+both point at one Asher polygon, and forcing a choice would be this edition
+deciding something the source does not. Nothing in the store shares one today:
+every case was a `language:` entry duplicating its people's claim, and that
+class is retired.
 
 ### The map: server-rendered SVG, no tiles, ever
 
@@ -2067,13 +2106,13 @@ index is the whole store by class, this is the located part by containment.
 **It is grouped by class, because two relations were sharing one level.**
 `place` and `water` nest — a tributary inside its trunk, a village inside its
 basin — and that containment forest is what the atlas was built to walk. A
-people or a language nests in neither: it has an extent and no parent. So once
-every ethnicity carried its sprachraum, all nine peoples and all nine languages
-landed flat at the top beside the one `place` root, **in pairs drawing the same
-polygon** — `people:koryak` and `language:koryak` both point at
-`langarea:kory1246`, which the store allows on purpose and which reads as a
-duplicate when the two sit adjacent with nothing saying why. The class heading
-is what says those are overlays rather than another rung of the tree.
+people nests in neither: it has an extent and no parent. So once every
+ethnicity carried its sprachraum, the peoples landed flat at the top beside the
+one `place` root — and, while a `language:` class still held a second entry per
+people, **in pairs drawing the same polygon**, which read as a duplicate when
+the two sat adjacent with nothing saying why. That class is retired; the
+flattening was never its fault and is still here. The class heading is what says
+these are overlays rather than another rung of the tree.
 
 The encyclopedia index nests too, now that `within:` is not read as the
 geography's. Inside a class an entry sits under its parent — the Maritime and

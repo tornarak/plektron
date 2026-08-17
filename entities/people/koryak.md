@@ -13,3 +13,5 @@
 | Reindeer Koryak | | yes | |
 | Maritime Koryak | | yes | |
 | Taˊn˙ñɪt | ckt | yes | |
+| Koryak language | | no | the language, which in this book is the people |
+

@@ -18,7 +18,8 @@
 | oraˊwêʟ̣at | ckt | yes | |
 | lɪˊê-oraˊwêʟ̣at | ckt | yes | |
 | Luoravetlan | | yes | see above |
-| Chukchee | | no | also the language — only the sentence decides. See [[language:chukchi]] |
+| Chukchee | | once | `no` while a separate language entry claimed it; the ambiguity was the edition's, not the book's |
+| Chukchee language | | no | the language, which in this book is the people |
 
 ## gloss
 
@@ -28,5 +29,12 @@ throughout into the [[people:reindeer-chukchi]] of the interior and the
 organising fact of their material life (1-021). Those two carry their own
 triggers; this entry is the people as a whole.
 
-The bare form is deliberately not auto-linked: “Chukchee” is equally the people,
-the language and, in “Chukchee Peninsula”, the place. A reader decides which.
+The bare form is `once` rather than `yes`, and the reason is readability and not
+doubt. Bogoras sets “Chukchee” some five thousand times; a link on every
+instance is a page the prose cannot be read through, so the first mention on
+each page carries it and the rest stay bare. It was `no` for as long as a
+separate `language:` entry claimed the same string — an ambiguity the edition
+had invented and the book does not have, every language here being its people's.
+“Chukchee Peninsula” is a real second referent and needs no rule of its own:
+[[land:chukchi-peninsula]] carries it whole, and the matcher takes the longest
+form first.

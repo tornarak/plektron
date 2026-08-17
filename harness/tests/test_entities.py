@@ -249,20 +249,20 @@ def test_a_within_cycle_is_an_error(tmp_path):
 
 
 def test_two_entities_may_share_a_form_and_that_is_reported_not_refused(tmp_path):
-    """"Chukchee" really is the people and the language. The store's job is to say
+    """"Eskimo" really is three peoples in this book. The store's job is to say
     so, and the generator's is to ask rather than resolve it."""
-    entry(tmp_path, "people:chukchee", aliases=[("Chukchee", False)])
-    entry(tmp_path, "language:chukchee", aliases=[("Chukchee", False)])
+    entry(tmp_path, "people:eskimo", aliases=[("Eskimo", False)])
+    entry(tmp_path, "people:yupik", aliases=[("Eskimo", False)])
     rep = E.check(tmp_path)
     assert rep["ok"]
-    assert rep["collisions"][0]["claimed_by"] == "language:chukchee people:chukchee"
+    assert rep["collisions"][0]["claimed_by"] == "people:eskimo people:yupik"
 
 
 def test_two_entities_may_not_both_claim_a_form_unconditionally(tmp_path):
     """`auto: yes` asserts the form means this entity wherever it appears. Two such
     claims on one form are a contradiction, and one of them is wrong."""
-    entry(tmp_path, "people:chukchee", aliases=[("Chukchee", True)])
-    entry(tmp_path, "language:chukchee", aliases=[("Chukchee", True)])
+    entry(tmp_path, "people:eskimo", aliases=[("Eskimo", True)])
+    entry(tmp_path, "people:yupik", aliases=[("Eskimo", True)])
     rep = E.check(tmp_path)
     assert not rep["ok"]
     assert any("cannot both own a form" in e for e in rep["errors"])
@@ -348,8 +348,8 @@ def test_matching_is_case_sensitive():
 def test_a_form_two_entities_claim_is_never_auto_linked():
     """Ambiguous **by construction**, whatever either file says: no author can see
     the other's claim, so the rule reads the whole store and not the entry."""
-    i = idx(("Chukchee", [("people:chukchee", True, "ratified"),
-                          ("language:chukchee", True, "ratified")]))
+    i = idx(("Eskimo", [("people:eskimo", True, "ratified"),
+                        ("people:yupik", True, "ratified")]))
     assert E.auto_forms(i) == {}
 
 
@@ -404,10 +404,10 @@ def test_once_collides_with_a_second_claim_exactly_as_yes_does(tmp_path):
     """`once` narrows how many links a page gets, not which entity a form means, so
     it contests a form as fully as `yes`. A gate that let it through would license
     a rule to link a string that is genuinely ambiguous — just less often."""
-    entry(tmp_path, "people:chukchi", aliases=[("Chukchee", "once")])
-    entry(tmp_path, "language:chukchi", aliases=[("Chukchee", "yes")])
+    entry(tmp_path, "people:eskimo", aliases=[("Eskimo", "once")])
+    entry(tmp_path, "people:yupik", aliases=[("Eskimo", "yes")])
     errs = E.check(tmp_path)["errors"]
-    assert any("rule-linked for" in e and "Chukchee" in e for e in errs)
+    assert any("rule-linked for" in e and "Eskimo" in e for e in errs)
 
 
 def test_rule_links_reduces_a_once_form_to_the_pages_first_occurrence():
@@ -417,6 +417,20 @@ def test_rule_links_reduces_a_once_form_to_the_pages_first_occurrence():
     assert len(hits) == 3
     kept = E.rule_links(hits, autos)
     assert [h["start"] for h in kept] == [hits[0]["start"]]
+
+
+def test_once_is_spent_per_form_and_not_per_entity():
+    """The name reads the other way, so this is worth pinning. The alias table is
+    keyed on forms and `once` is a property of a row: a page setting both
+    "Chukchee" and "Chukchee tribe" links each, which is right on `1-031`, where
+    Bogoras enumerates the people's names in five languages. Per entity would
+    also make a row's meaning depend on its neighbours."""
+    i = idx(("Chukchee", [("people:chukchi", "once", "ratified")]),
+            ("Chukchee tribe", [("people:chukchi", "once", "ratified")]))
+    autos, seen = E.auto_forms(i), set()
+    kept = E.rule_links(E.match("The Chukchee tribe, and a Chukchee man.", i),
+                        autos, seen)
+    assert sorted(h["form"] for h in kept) == ["Chukchee", "Chukchee tribe"]
 
 
 def test_rule_links_passes_a_yes_form_through_whole():

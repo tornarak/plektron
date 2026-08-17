@@ -7,7 +7,7 @@
 
 | form | lang | auto | note |
 |---|---|---|---|
-| | | no | |
+| Murdoch, Eskimo Bows | | yes | |
 
 ## gloss
 

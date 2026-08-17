@@ -11,9 +11,13 @@ shape its publisher cut at the antimeridian, simplification — happened once, a
 build time, where a library was available.
 
 **A SHAPE KIND IS NOT AN ENTITY CLASS**, and this is now load-bearing rather
-than merely tidy. `langarea:chuk1273`, never `language:chuk1273` — the two are
-held disjoint so that a reader looking at an entity file cannot mistake one for
-the other. That disjointness is what lets one field hold both: a `geo:` member
+than merely tidy. `langarea:chuk1273`, never `people:chuk1273` — the two
+vocabularies are held disjoint so that a reader looking at an entity file cannot
+mistake one for the other. (The example used to be `language:`, which was an
+entity class until the class was retired for saying nothing `people:` did not;
+that it is now a *legal* shape kind is the invariant working, not failing —
+nothing is disjoint from a set it has left.) That disjointness is what lets one
+field hold both: a `geo:` member
 is a point if it is two numbers, a shape if its kind is not an entity class, and
 an entity if it is. No flag, and no wrong guess available. `geo bounds` has told
 them apart this way since it was written; `entities._geo_member` is the same
@@ -31,8 +35,9 @@ member is looked up in it directly.
 **A union still gets a row of its own in `listing`**, after the store's rows and
 never among them: two polygons being one speaker area is a human's assertion
 about `entities/`, not a shape `data/geo/` holds. It is synthesized for display
-and claims nothing. Two entities may name the same pair, as `people:chukchi` and
-`language:chukchi` do, so the label names every claimant rather than picking one.
+and claims nothing. Two entities may name the same pair — a people and the
+subgroup inside it are the standing case — so the label names every claimant
+rather than picking one.
 
 THE CHECKS HERE REPORT AND DO NOT GATE. `verify` compares an authored `within:`
 against containment: a basin delineated from a tributary's outlet is contained
@@ -464,9 +469,9 @@ def member_shapes(ent_id: str, store: dict, _seen=None) -> list[tuple[str, str]]
     shape ids alone, which is all a renderer needs to draw them — but a reader
     hovering a child's name wants that child lit up on the map, and the descent
     above is exactly what makes the drawn member *not* reliably a direct child.
-    Two entities may also share one shape (`people:chukchi` and
-    `language:chukchi` both point at the one Asher polygon), so the shape
-    cannot identify the member even in principle.
+    Two entities may also share one shape — a people and a subgroup inside it
+    may both name the one Asher polygon — so the shape cannot identify the
+    member even in principle.
     """
     seen = _seen or set()
     if ent_id in seen:
@@ -878,9 +883,9 @@ def verify(root: Path = Path(".")) -> dict:
     - **containment**, where a child and its `within:` parent both have a
       shape. Named as a *pair*: the geometry says the two authored facts
       disagree and cannot say which of them is wrong.
-    - **a shape two entities claim**, which is legal — `people:chukchi` and
-      `language:chukchi` may both point at the one Asher polygon, and forcing
-      a choice would be this edition deciding something the source does not.
+    - **a shape two entities claim**, which is legal — a people and a subgroup
+      inside it may both point at the one Asher polygon, and forcing a choice
+      would be this edition deciding something the source does not.
     - **a shape nothing claims**, and its inverse, **an entity nothing locates**.
 
     The last pair is the store's two-sided worklist. `unclaimed` has always
@@ -1086,7 +1091,7 @@ def boxes(idents, root: Path = Path("."), margin: float = 0.0) -> dict:
     **Entity ids and shape ids in one list**, told apart by their prefix. That
     is only decidable because the two vocabularies are held disjoint — a shape
     kind may never be an entity class, the rule `entities.parse` enforces so
-    that `area: language:x` cannot quietly read as an entity reference — so
+    that a member spelt `kind:slug` cannot quietly read as an entity reference — so
     this needs no flag and can make no wrong guess.
 
     An entity's box is `extent_of`: its shape, else its point, else the union of

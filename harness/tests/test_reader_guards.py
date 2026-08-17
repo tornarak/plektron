@@ -550,8 +550,8 @@ def test_normalize_is_measurement_here_and_never_a_write():
 
 
 def test_the_encyclopedia_is_readable_and_not_hand_editable():
-    """Judging whether a page means people:chukchi or language:chukchi *is*
-    reading the two glosses, so the entries are open. Editing them is not: the verb
+    """Judging whether a page means people:eskimo, people:inupiat or people:yupik
+    *is* reading the three glosses, so the entries are open. Editing them is not: the verb
     parses before it writes and can only mint at `proposed`, while a hand-written
     file can be malformed or can say `ratified`, which is a human's word."""
     allowed(COLLATOR_GUARD, "Read", file_path="entities/people/chukchi.md")
