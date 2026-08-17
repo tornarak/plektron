@@ -41,6 +41,7 @@ from . import geo, geomap
 from .cli._entity import TEMPLATE
 from .context import norm_ref
 from .entities import (
+    GEO_CLASSES,
     WIKILINK,
     check,
     load,
@@ -536,6 +537,20 @@ def map_context(
     known = [i for i in sel if i in store]
     if not known:
         return out
+    # **A `geo:` member joins the selection.** The map of a people that names its
+    # villages *is* those villages, so they are subjects and not context: they
+    # frame it, they are pinned, they are named in the tree as chosen, and each
+    # can be taken off again. Faking the last of those in the tree was tried and
+    # is the reason this is here — a row that renders selected while the client's
+    # selection does not hold it cannot be clicked off, because the click reads
+    # the selection and the highlight read something else. One fact, one place.
+    #
+    # **One level, not transitively.** A member is what this record says about
+    # where it is; what *its* members say is its own map's business, and
+    # following the chain would put the Chukchee Peninsula's villages on a map of
+    # the Yupik by way of two hops nobody asked for.
+    known = list(dict.fromkeys(
+        known + [m for i in known for m in geo.geo_refs(store[i]) if m in store]))
 
     def _own(i):
         """How big this thing is — what a container sizes itself on.
@@ -909,6 +924,17 @@ def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
     frame on it", which is only useful if there is something left to click to
     undo it. Dismissing is the other control, and it takes a place out of the
     selection entirely.
+
+    **A `geo:` member needs nothing here.** It is drawn because the subject named
+    it — the forty-one villages of `people:maritime-chukchi` *are* its map — and
+    it reaches this function already in `sel`, because `map_context` puts it
+    there. That is what makes it selected and unfolded without this function
+    knowing the field exists, and it is also what makes it *clickable off*: the
+    row's highlight and the client's selection are one fact, so a reader who
+    clicks a village they did not ask for gets it off the map rather than added
+    to it a second time. Hanging them under the naming entity instead was tried
+    and taken out — it moved forty-one villages out of the geography, which is
+    where a reader looks for them, to say something the selection already said.
     """
     from .entities import ancestors
 
@@ -937,11 +963,22 @@ def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
         if up in nodes:
             kids.setdefault(up, []).append(n)
 
+    def rank(ident: str) -> tuple:
+        # **The non-geographical rows come first**, and then by what the reader
+        # sees rather than by id: `place:` sorts before `water:`, so id order
+        # interleaves the classes and puts the Anadyr after every village on it.
+        #
+        # A people or a language is not another rung of the containment tree —
+        # it is an overlay on it, and there are always few of them against many
+        # villages. Sorted in among the settlements they cover, the Naukans and
+        # the Sireniks land in the middle of a list of forty and read as two more
+        # places. At the top they read as what they are: the divisions, and then
+        # the ground.
+        rec = store[ident]
+        return (rec["class"] in GEO_CLASSES, rec["canonical"], ident)
+
     def by_name(ids):
-        # By what the reader sees, not by id: `place:` sorts before `water:`, so
-        # id order interleaves the classes and puts the Anadyr after every
-        # village on it.
-        return sorted(ids, key=lambda k: (store[k]["canonical"], k))
+        return sorted(ids, key=rank)
 
     def build(ident: str) -> dict:
         rec = store[ident]
@@ -959,10 +996,20 @@ def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
         # folded whatever else is true of it, or a place the reader chose could
         # end up buried in a closed summary, drawn on the map with no name
         # anywhere to light it.
+        #
+        # **A non-geographical child is never folded either.** The fold is sized
+        # against the thirty-four villages of the Chukchee Peninsula, and a
+        # people or a language is the opposite case: there are two of them under
+        # the Siberian Yupik and they are what the node *is divided into*.
+        # Folding them put the divisions behind a "2 more" summary on a map whose
+        # subject is the division, which is the one row a reader opened it for.
         out_kids, folded = [], []
         for c in below:
-            (out_kids if c["carries"] or c["drawn"] else folded).append(c)
-        out_kids.sort(key=lambda c: (not c["selected"], c["canonical"]))
+            keep = (c["carries"] or c["drawn"]
+                    or c["cls"] not in GEO_CLASSES)
+            (out_kids if keep else folded).append(c)
+        out_kids.sort(key=lambda c: (c["cls"] in GEO_CLASSES,
+                                     not c["selected"], c["canonical"]))
         return {
             "id": ident,
             "canonical": rec["canonical"],
@@ -977,7 +1024,8 @@ def _map_tree(sel: list[str], hidden: set, store: dict, order: list[str],
 
     roots = by_name(n for n in nodes if tree_parent(store[n]) not in nodes)
     built = [build(r) for r in roots]
-    built.sort(key=lambda c: (not c["selected"], c["canonical"]))
+    built.sort(key=lambda c: (c["cls"] in GEO_CLASSES,
+                              not c["selected"], c["canonical"]))
     return built
 
 
