@@ -29,15 +29,15 @@ The 9 that do not are the cases where the evidence is short: a marker that reads
 nowhere in the prose, or reads in two places. Those stay at the foot saying which,
 which is what a rule that will not guess looks like when it declines.
 
-**Figures are the mirror case: emitted here, positioned wrongly on purpose.** The
-box's position is real evidence and puts the figure on the right part of the right
-page, but the anchor the edition wants is where the prose says "(Fig. 87, a)". So
-the figure and its caption arrive complete and the placement is explicitly a
-first draft, with a comment at each one. Note that `context._figures_on_page`
-withholds geometry from the *model* deliberately — placing a figure is not the
-collator's competence — and this reads it anyway. Not an inconsistency: a rule
-cannot be talked into anything by what it sees, so it may use what a model may
-not.
+**Figures arrive placed, and the placement is final.** The box's position is real
+evidence and puts the figure on the right part of the right page; the anchor the
+edition wants — where the prose says "(Fig. 87, a)" — is a *link*, written by
+`figrefs` at generation and resolved when the page is served. Those are two
+different facts and both are now recorded, so the pass no longer asks a reader to
+trade one for the other. Note that `context._figures_on_page` withholds geometry
+from the *model* deliberately — placing a figure is not the collator's competence
+— and this reads it anyway. Not an inconsistency: a rule cannot be talked into
+anything by what it sees, so it may use what a model may not.
 
 **`mz/tei/` is to `tei/` what `mz/zones/` is to `gt/zones/`**, and the pairing is
 the point: the generated file stays on disk, so `harness tei diff` can say what
@@ -876,10 +876,17 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
         figure before the prose that discusses it rather than after, which is the
         order the book itself uses whenever the reference is forward-looking.
 
-        That the placement is approximate is the point rather than a defect: this
-        is a first draft for a reader who moves it. The anchor the edition wants
-        is where the prose says "(Fig. 87, a)", which is a reading, and the
-        comment says so at every figure.
+        **The placement stands, and used to be commented as a draft to move.**
+        Every figure carried `<!-- … not where it belongs: anchor it where the
+        prose first refers to it -->`, from a pass that placed figures nowhere in
+        particular and had no other anchor to offer. It has one now: `figrefs`
+        marks every printed "Fig. 87" as `<ref type="figure">` and the edition
+        resolves it, so the reference is a link and the figure's position is
+        typographic. Against that, moving it cost the one positional fact
+        anybody has — and the prose that first names a figure is routinely on
+        another page, so the instruction could not be followed where it was
+        cited most confidently. 197 comments, one question, and the question was
+        already answered elsewhere.
         """
         nonlocal fig_at
         out: list[str] = []
@@ -887,11 +894,16 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             f = figs[fig_at]
             fig_at += 1
             n = f["n"]
-            out.append(
-                f'      <!-- figure placed where its box sits on the page, which '
-                f'is not where it belongs: anchor it where the prose first refers '
-                f'to it{"" if n else ", and read its number off the page — this "
-                        "caption prints none"} -->')
+            if not n:
+                # The one figure question left, and it is about the store rather
+                # than the page: `1-037`'s caption ends "Fig. 1." and the number
+                # never parsed, while `1-254`'s artwork prints none at all. Two
+                # pages, and neither is fixable from here — `data/readings.md` is
+                # off the collator's surface — so it asks for a report line.
+                out.append(
+                    '      <!-- figure with no number: data/readings.md parsed '
+                    'none from this caption. Say in your report whether the page '
+                    'prints one -->')
             attr = f' n="{escape(n)}"' if n else ""
             if f["caption"]:
                 out.append(f'      <figure{attr}>\n'
@@ -1116,9 +1128,12 @@ GEN_MARKS = ("generated:", "zone-opens:", "unresolved zone",
              # names which of the two refusals happened.
              "note ",
              # Was "figures printed on this page", a comment standing in for
-             # figures that were not emitted at all. Now one per figure, and the
-             # figure is really there.
-             "figure placed where its box sits",
+             # figures that were not emitted at all; then one per figure, telling
+             # a reader to move it to the first textual reference. Neither
+             # survives: the figure is really there, and `<ref type="figure">`
+             # is the anchor that instruction was reaching for. What is left
+             # fires on 2 pages, and asks about the caption store.
+             "figure with no number",
              "line(s) inside no zone", "unknown zone label",
              "entity candidate")
 

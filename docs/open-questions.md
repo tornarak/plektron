@@ -222,3 +222,34 @@ in for an unread glyph.
   membership check and `expand`'s re-check both assume one store — and doing it now
   would be building a mechanism against no attested case. It leaves this list when a
   Tier-1 correction actually exists, and the entry will say which page made it.
+- **Who marks value and who draws a citation's boundary.** `<measure>`,
+  `<measureGrp>` and `<bibl>` came out of the collation contract, where they were
+  144 lines — a fifth of the rules — instrumented by nothing. No generator comment
+  asks for one, so a collator either went looking for them on every page or forgot
+  they existed, and the measured answer over the corpus is the second: **zero of
+  either emitted**, against 1387 entity candidates and 908 language questions the
+  rules do ask about.
+
+  The test that moved them is the one that now scopes the whole contract: **that
+  pass carries what needs the page in front of it.** A `<bibl>` boundary is drawn
+  by reading a note, and the note's text is in the TEI; the barter/currency/weight
+  distinction is drawn by reading a sentence, and the sentence is in the TEI too.
+  Neither needs the raster. Both are also concentrated rather than spread — the
+  value registers are essentially one chapter (*Units and Prices*, `1-079`–`1-094`)
+  and citations sit inside `<note>`, which is a query — so a pass that goes looking
+  for them will find them without reading 730 pages, which is what asking the
+  collator costs.
+
+  What is not deferred: `validate.MEASURE_TYPES`, `MEASURE_IDENTITY_ATTRS`,
+  `BIBL_IDENTITY_ATTRS` and the `<measureGrp>`-needs-a-`<measure>` rule stay in the
+  gate, unchanged. The vocabulary was never the problem and a later pass will want
+  it exactly as written. What was deferred is the *asking*. The reasoning that
+  produced the vocabulary — three registers because the book names three, "is this
+  thing doing money's job here" as the firing rule, `<measureGrp>` read as "one
+  priced object" rather than "these are equal" — is in the git history of
+  `.claude/agents/collator.md` and should be recovered from there rather than
+  re-derived, since it was settled against pages (`1-079`, `1-093`, `1-094`) and
+  the settling is the expensive part.
+
+  It leaves this list when the pass exists, or when a generator comment makes the
+  question a collator's again.

@@ -704,9 +704,12 @@ def test_a_figure_heads_the_paragraph_it_is_adjacent_to(tmp_path):
     i = blocks.index("figure")
     assert blocks[i + 1:i + 2] == ["p"], (
         f"a figure heads a paragraph; got {blocks[i:i + 2]}")
-    # And the comment that says to move it travels with it rather than being
-    # stranded where the figure used to be.
-    assert body.index("figure placed where its box sits") < body.index("<figure")
+    # And a numbered figure carries no comment at all. The placement used to be
+    # captioned "move me to the first textual reference", which spent the one
+    # positional fact measured off the page to restate a reference
+    # `<ref type="figure">` already carries — and that reference is routinely on
+    # another page, where the instruction could not be followed.
+    assert "<!--" not in body[body.index("<figure"):body.index("</figure>")]
 
 
 def test_a_figure_inside_the_last_paragraph_still_heads_it(tmp_path):

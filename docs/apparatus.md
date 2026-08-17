@@ -507,9 +507,13 @@ could.
 **The generated TEI now carries the figures themselves**, `<figure n><figDesc>`
 with the caption from `data/readings.md`, one per printed figure on the same
 dedupe as `_figures_on_page` — 197 of them over 131 pages. They are positioned
-where their boxes physically sit, which is deliberately not where they belong: the
-anchor is the first textual reference and that is a reading, so each carries a
-comment saying move me. A figure whose box falls inside a paragraph is emitted at
+where their boxes physically sit, and that placement is final. It used to carry a
+comment saying move me to the first textual reference; that spent the one
+positional fact measured off the page to restate something `<ref type="figure">`
+now records, and the prose first naming a figure is routinely on another page, so
+the instruction could not be followed where it was stated most confidently. Two
+figures carry a comment now, both asking whether the caption store missed a
+printed number. A figure whose box falls inside a paragraph is emitted at
 the **head** of that paragraph rather than splitting it, since splitting would
 undo what `MainZone-Continued` records.
 
