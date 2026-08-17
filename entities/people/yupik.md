@@ -1,7 +1,8 @@
 # people:yupik — Yupik
 
 - status: ratified
-- area: langarea:cent2127,langarea:paci1278
+- geo: langarea:cent2127
+- geo: langarea:paci1278
 - link: wikipedia:Yupik_peoples
 - link: wikidata:Q37014
 

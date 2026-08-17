@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:northeast-siberia
-- area: watershed:bolshaya-chukochka-or-large-chukchee
+- geo: watershed:bolshaya-chukochka-or-large-chukchee
 - link: geonames:2126618
 
 ## aliases

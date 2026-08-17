@@ -1,7 +1,7 @@
 # source:elendi-and-his-sons — Elendi and his Sons
 
 - status: ratified
-- within: source:bogoras-1900
+- part-of: source:bogoras-1900
 
 ## aliases
 

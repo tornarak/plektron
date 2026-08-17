@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:northeast-siberia
-- area: watershed:yana
+- geo: watershed:yana
 
 ## aliases
 

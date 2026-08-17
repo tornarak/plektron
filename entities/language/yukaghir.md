@@ -1,7 +1,7 @@
 # language:yukaghir — Yukaghir language
 
 - status: ratified
-- area: langarea:sout2750
+- geo: langarea:sout2750
 
 ## aliases
 

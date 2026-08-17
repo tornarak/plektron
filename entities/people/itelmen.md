@@ -1,7 +1,7 @@
 # people:itelmen — Itelmen
 
 - status: ratified
-- area: langarea:itel1242
+- geo: langarea:itel1242
 
 ## aliases
 

@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:kamchatka
-- area: watershed:shestakova-or-egach
+- geo: watershed:shestakova-or-egach
 
 ## aliases
 

@@ -687,7 +687,12 @@ def run_rename(a) -> int:
         # `[^\S\n]*`, not `\s*`: `\s` eats newlines, so a greedy trailing run
         # swallows the blank line before `## aliases` and the field block runs
         # into the section heading.
-        t1 = re.sub(rf"^(-[^\S\n]+(?:within|part-of):[^\S\n]*)"
+        # **`geo:` too, now that a member may name an entity.** Safe without
+        # testing what kind of member it is: a point line's value is two numbers
+        # and can never equal an identity, and a shape id can never equal one
+        # either — shape kinds are held disjoint from the entity classes, which
+        # is the same invariant that lets the field mix the three at all.
+        t1 = re.sub(rf"^(-[^\S\n]+(?:within|part-of|geo):[^\S\n]*)"
                     rf"{re.escape(old)}[^\S\n]*$",
                     rf"\g<1>{new}", t1, flags=re.M)
         if t1 != t0:

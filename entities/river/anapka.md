@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:kamchatka
-- area: watershed:anapka
+- geo: watershed:anapka
 - link: geonames:2127185
 
 ## aliases

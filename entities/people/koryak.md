@@ -1,7 +1,7 @@
 # people:koryak — Koryak
 
 - status: ratified
-- area: langarea:kory1246
+- geo: langarea:kory1246
 - link: wikipedia:Koryaks
 - link: wikidata:Q281117
 

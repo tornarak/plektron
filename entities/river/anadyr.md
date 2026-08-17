@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: watershed:anadyr
+- geo: watershed:anadyr
 - link: wikipedia:Anadyr_(river)
 
 ## aliases

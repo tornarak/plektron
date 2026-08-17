@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:kamchatka
-- area: watershed:kichiga-or-kichin
+- geo: watershed:kichiga-or-kichin
 
 ## aliases
 

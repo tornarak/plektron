@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:bolshoy-anyuy
-- area: watershed:angarka
+- geo: watershed:angarka
 - link: geonames:2127158
 
 ## aliases

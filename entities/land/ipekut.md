@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: water:bering-strait
-- area: region:ipekut
+- geo: region:ipekut
 
 ## aliases
 

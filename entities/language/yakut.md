@@ -1,7 +1,7 @@
 # language:yakut — Yakut language
 
 - status: ratified
-- area: langarea:yaku1245
+- geo: langarea:yaku1245
 
 ## aliases
 

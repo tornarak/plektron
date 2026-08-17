@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:kolyma
-- area: watershed:bolshoy-anyuy-or-large
+- geo: watershed:bolshoy-anyuy-or-large
 
 ## aliases
 

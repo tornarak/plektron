@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: watershed:kanchalan
+- geo: watershed:kanchalan
 
 ## aliases
 

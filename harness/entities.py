@@ -1032,6 +1032,24 @@ def check(root: Path = Path(".")) -> dict:
             errors.append(
                 f"{rec['path']}: `part-of: {p}` points at a place. `part-of:` is "
                 f"what a thing belongs to; where it *is* goes in `within:`")
+        # **`within:` is geography's and nothing else's.** It answers "what
+        # terrestrial thing contains this one", which `geo.NESTING` can check
+        # and the atlas walks; on anything else it was the encyclopedia's
+        # hierarchy wearing the atlas's field, and the store's three instances
+        # were exactly that — two peoples filed inside a village to borrow its
+        # extent, and a tale filed inside the collection that prints it. The
+        # first is a `geo:` member now and the second is what `part-of:` is for.
+        #
+        # It also cost the thing it was borrowed for: a people hanging from a
+        # village hung there in the atlas tree too, so its extent never rolled
+        # up to its ethnicity and the Yupik map excluded two Yupik peoples.
+        if w and w in store and (rec["class"] not in GEO_CLASSES
+                                 or store[w]["class"] not in GEO_CLASSES):
+            errors.append(
+                f"{rec['path']}: `within: {w}` — `within:` is containment among "
+                f"the four geographical classes ({', '.join(GEO_CLASSES)}), and "
+                f"one end of this is not one. What a thing belongs to is "
+                f"`part-of:`; whose extent it takes is a `geo:` member")
         # Per member, so the message names the one that failed: "langarea:a,
         # marine:b resolves to nothing" sends a reader to check the one that
         # was fine. Written for a composite `area:` and now simply the ordinary

@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:anadyr
-- area: watershed:shchuchya-or-pike
+- geo: watershed:shchuchya-or-pike
 
 ## aliases
 

@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:northeast-siberia
-- area: region:kamchatka
+- geo: region:kamchatka
 
 ## aliases
 

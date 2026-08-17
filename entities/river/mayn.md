@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:anadyr
-- area: watershed:main
+- geo: watershed:main
 
 ## aliases
 

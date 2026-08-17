@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:kamchatka
-- area: watershed:khatyrka-or-ilpi
+- geo: watershed:khatyrka-or-ilpi
 - link: wikipedia:Khatyrka_(river)
 - link: wikidata:Q4496598
 

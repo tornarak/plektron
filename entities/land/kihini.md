@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: water:bering-strait
-- area: region:kihini
+- geo: region:kihini
 
 ## aliases
 

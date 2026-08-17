@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:kolyma
-- area: watershed:omolon
+- geo: watershed:omolon
 
 ## aliases
 

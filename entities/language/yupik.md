@@ -1,7 +1,8 @@
 # language:yupik — Yupik language
 
 - status: ratified
-- area: langarea:cent2127,langarea:paci1278
+- geo: langarea:cent2127
+- geo: langarea:paci1278
 
 ## aliases
 

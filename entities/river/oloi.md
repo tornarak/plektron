@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:kolyma
-- area: watershed:oloi
+- geo: watershed:oloi
 
 ## aliases
 

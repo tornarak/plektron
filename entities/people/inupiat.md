@@ -1,7 +1,8 @@
 # people:inupiat — Iñupiat
 
 - status: ratified
-- area: langarea:nort2943,langarea:nort2945
+- geo: langarea:nort2943
+- geo: langarea:nort2945
 - link: wikipedia:Iñupiat
 - link: wikidata:Q1417088
 

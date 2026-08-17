@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:anadyr
-- area: watershed:belaya-or-white
+- geo: watershed:belaya-or-white
 
 ## aliases
 

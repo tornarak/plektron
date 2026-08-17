@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:anadyr
-- area: watershed:krasnaya-or-red-river
+- geo: watershed:krasnaya-or-red-river
 
 ## aliases
 

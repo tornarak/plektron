@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: watershed:tumanskaya-or-telqap
+- geo: watershed:tumanskaya-or-telqap
 
 ## aliases
 

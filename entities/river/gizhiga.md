@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:kamchatka
-- area: watershed:gizhiga
+- geo: watershed:gizhiga
 
 ## aliases
 

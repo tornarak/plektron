@@ -1,7 +1,7 @@
 # people:evenki — Evenki
 
 - status: ratified
-- area: langarea:even1259
+- geo: langarea:even1259
 
 ## aliases
 

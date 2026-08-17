@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: watershed:opuka
+- geo: watershed:opuka
 
 ## aliases
 

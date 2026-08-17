@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:kolyma
-- area: watershed:maliy-anyuy-or-dry
+- geo: watershed:maliy-anyuy-or-dry
 
 ## aliases
 

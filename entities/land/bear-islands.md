@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:northeast-siberia
-- area: region:bear-islands
+- geo: region:bear-islands
 
 ## aliases
 

@@ -441,18 +441,37 @@ def _rename(tmp_path, old, new, **kw):
 
 
 def test_a_rename_repoints_within_and_wikilinks(tmp_path):
-    """The two ways one entry points at another, and `entity check` gates both —
-    so a rename that missed one would fail the gate rather than go quiet."""
+    """The three ways one entry points at another, and `entity check` gates all
+    of them — so a rename that missed one would fail the gate rather than go
+    quiet.
+
+    **A `geo:` member is the third, and it was nearly the one that got away.**
+    The substitution matched `within|part-of` and had done since there were only
+    two fields to point with; a member naming an entity is a fourth reference in
+    the same shape, and a missed one dangles. It is safe to rewrite without
+    asking what kind of member it is, because neither of the other two kinds can
+    collide with an identity: a point is two numbers, and a shape kind may never
+    be an entity class.
+
+    The `within:` pair is geographical on both ends, which is now the only thing
+    `within:` may be — a village filed inside a *people* was the spelling this
+    fixture used, and the spelling the gate exists to refuse."""
     entry(tmp_path, "people:chukchee", aliases=[("Chukchee tribe", True)])
-    entry(tmp_path, "place:markova", extra="- within: people:chukchee\n",
+    entry(tmp_path, "land:chukotka-old")
+    entry(tmp_path, "place:markova", extra="- within: land:chukotka-old\n",
           gloss="home of the [[people:chukchee]]")
+    entry(tmp_path, "people:reindeer", extra="- geo: people:chukchee\n")
     _rename(tmp_path, "people:chukchee", "people:chukchi")
 
     store = E.load(tmp_path)
     assert "people:chukchi" in store and "people:chukchee" not in store
     assert not (tmp_path / "entities" / "people" / "chukchee.md").exists()
-    assert store["place:markova"]["within"] == "people:chukchi"
     assert "[[people:chukchi]]" in store["place:markova"]["gloss"]
+    assert E.geo_refs(store["people:reindeer"]) == ["people:chukchi"]
+    assert E.check(tmp_path)["ok"]
+
+    _rename(tmp_path, "land:chukotka-old", "land:chukotka")
+    assert E.load(tmp_path)["place:markova"]["within"] == "land:chukotka"
     assert E.check(tmp_path)["ok"]
 
 

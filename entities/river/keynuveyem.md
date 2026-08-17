@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:northeast-siberia
-- area: watershed:keynuveyem-or-bear
+- geo: watershed:keynuveyem-or-bear
 - link: geonames:2124828
 
 ## aliases

@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: watershed:baranikha-or-rauchua
+- geo: watershed:baranikha-or-rauchua
 
 ## aliases
 

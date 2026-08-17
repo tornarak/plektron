@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:anadyr
-- area: watershed:yeropol
+- geo: watershed:yeropol
 
 ## aliases
 

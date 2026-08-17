@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: water:bering-strait
-- area: region:st-lawrence-island
+- geo: region:st-lawrence-island
 - link: wikipedia:St._Lawrence_Island
 - link: wikidata:Q638407
 

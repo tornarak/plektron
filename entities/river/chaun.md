@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: watershed:chaun
+- geo: watershed:chaun
 - link: wikipedia:Chaun
 - link: wikidata:Q2045664
 

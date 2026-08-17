@@ -1,7 +1,7 @@
 # language:aleut — Aleut language
 
 - status: ratified
-- area: langarea:aleu1260
+- geo: langarea:aleu1260
 
 ## aliases
 

@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: marine:anadyr-bay
+- geo: marine:anadyr-bay
 
 ## aliases
 

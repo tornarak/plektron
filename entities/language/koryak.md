@@ -1,7 +1,7 @@
 # language:koryak — Koryak language
 
 - status: ratified
-- area: langarea:kory1246
+- geo: langarea:kory1246
 
 ## aliases
 

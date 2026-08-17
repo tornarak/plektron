@@ -1,7 +1,8 @@
 # people:chukchi — Chukchi
 
 - status: ratified
-- area: base:chukotka-east-of-meridian,langarea:chuk1273
+- geo: base:chukotka-east-of-meridian
+- geo: langarea:chuk1273
 - link: wikipedia:Chukchi_people
 
 ## aliases

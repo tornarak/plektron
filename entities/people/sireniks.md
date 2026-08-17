@@ -1,8 +1,8 @@
 # people:sireniks — Sireniks
 
 - status: ratified
-- within: place:sirenik
 - part-of: people:yupik
+- geo: place:sirenik
 - link: wikipedia:Sireniks
 - link: wikidata:Q4811111
 

@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:kamchatka
-- area: marine:karagha-bay
+- geo: marine:karagha-bay
 
 ## aliases
 

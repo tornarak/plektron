@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: river:kolyma
-- area: watershed:sugoy-or-shoudon
+- geo: watershed:sugoy-or-shoudon
 - link: wikipedia:Sugoy
 - link: wikidata:Q2301488
 

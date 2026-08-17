@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: water:karaginsky-gulf
-- area: region:karagha-island
+- geo: region:karagha-island
 
 ## aliases
 

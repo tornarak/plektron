@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:russian-far-east
-- area: watershed:amur
+- geo: watershed:amur
 
 ## aliases
 

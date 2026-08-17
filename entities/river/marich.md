@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukchi-peninsula
-- area: watershed:marich
+- geo: watershed:marich
 
 ## aliases
 

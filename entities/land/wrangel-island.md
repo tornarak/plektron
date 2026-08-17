@@ -2,7 +2,7 @@
 
 - status: ratified
 - within: land:chukotka
-- area: region:wrangel-island
+- geo: region:wrangel-island
 
 ## aliases
 

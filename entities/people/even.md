@@ -1,7 +1,7 @@
 # people:even — Even
 
 - status: ratified
-- area: langarea:even1260
+- geo: langarea:even1260
 
 ## aliases
 
