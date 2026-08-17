@@ -24,6 +24,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from . import authorities, figrefs
 from .context import all_scans, norm_ref, parse_ref
 from .state import _tei_facts, load_toc
 
@@ -139,6 +140,44 @@ def store_for(run: dict, root: Path = Path(".")) -> dict:
     for key in (KINDS.get(run.get("kind")) or {}).get("entries", ()):
         entries.extend(doc.get(key) or [])
     return {"source": doc.get("source") or {}, "entries": entries}
+
+
+def _authorities(root: Path) -> list[dict]:
+    """The works `Authorities Quoted` records, or none.
+
+    **Through the run rather than through `authorities.load`**, which raises on a
+    missing file — rightly, since a CLI standing in the wrong directory must not
+    read as an empty bibliography. The rules below are a different case: they run
+    against whatever stores a tree holds, and a page generated where no
+    bibliography exists should carry no citation links rather than fail to build.
+    """
+    run = next((r for r in runs(root) if r.get("kind") == "authorities"), {})
+    return store_for(run, root)["entries"] if run else []
+
+
+def sigla(root: Path = Path(".")) -> list[dict]:
+    """The printed resolution table: `(name, volume, short title)` → work.
+
+    What the List of Authorities Quoted *is*, and the table `citations.cited`
+    resolves a footnote against. Read here for `authority_names`' reason — one
+    store, one reader — and 51 rows over 47 printed sigla, because a siglum
+    printed across several volumes is a row per volume.
+    """
+    return authorities.sigla(_authorities(root))
+
+
+def authority_names(root: Path = Path(".")) -> frozenset[str]:
+    """The names Bogoras cites other people's work under.
+
+    A cross-reference is only this book's if no authority stands in front of it,
+    and `Authorities Quoted` is the store of exactly those names. Three callers
+    need the same answer — `tei generate`, which refuses to mark another author's
+    plate; `tei validate`, which re-derives that refusal; and the resolver, which
+    declines to point a marked one at this book's leaf — so the store is read
+    here rather than in each of them. `web/stores.authority_names` wraps this in
+    the render cache and is where the keying lives.
+    """
+    return frozenset(figrefs.authority_names(_authorities(root)))
 
 
 def entries_for(ref: str, root: Path = Path(".")) -> list[dict]:

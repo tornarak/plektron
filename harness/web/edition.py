@@ -192,8 +192,10 @@ def _figref_state(doc: dict, root) -> list[dict]:
     **Another author's plate is not a link at all.** Bogoras cites Nelson,
     Schrenck, Murdoch and Sauer by plate number in his footnotes, in the same
     words he uses for his own, and `Sauer, Plate XIV` collides with this book's
-    Plate XIV outright. 114 references are suppressed this way, on the authority
-    store's own names.
+    Plate XIV outright. `tei generate` refuses to *mark* one, so a generated page
+    reaches here carrying none; the guard stays because a mark a collator wrote
+    by hand is not bound by what the generator would have done, and pointing it
+    at this book's leaf is the failure it exists to prevent either way.
     """
     handles = doc.get("figrefs") or []
     if not handles:

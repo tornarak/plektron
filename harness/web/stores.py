@@ -16,7 +16,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from .. import alphabet, apparatus, entities, figrefs, figures, geo, lexicon, lookup, tei_html
+from .. import alphabet, apparatus, entities, figures, geo, lexicon, lookup, tei_html
 from ..context import norm_ref
 from .cache import MAXSIZE, by_file, stamp
 
@@ -218,10 +218,7 @@ def loi_run(root: Path) -> dict:
 
 @lru_cache(maxsize=MAXSIZE)
 def _authority_names(root: str, _key: bytes) -> frozenset:
-    run = next((r for r in apparatus.runs(Path(root))
-                if r.get("kind") == "authorities"), {})
-    doc = apparatus.store_for(run, Path(root)) if run else {"entries": []}
-    return frozenset(figrefs.authority_names(doc["entries"]))
+    return apparatus.authority_names(Path(root))
 
 
 def authority_names(root: Path) -> frozenset:

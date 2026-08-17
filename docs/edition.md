@@ -398,6 +398,41 @@ candidate -->` comment in the generated page and a row in `tei context` — beca
 a suggestion a reader disposes of is the point. What is refused is the *silent*
 link.
 
+### The one thing that resolves an ambiguity, because the printer wrote it down
+
+`Nelson` is a man and a book, and the store says so: `person:nelson` and
+`source:nelson-1899` both claim the form, so condition 1 fails and the generator
+asks. It asked 250 times over the corpus, and most of those questions have the
+same answer — **a page locator attached to a name is what a citation is.**
+`Nelson, pp. 27, 28` is the book. `Nelson. Fig. 22, b, shows a sled` is the man,
+and the figure it then names is this book's own.
+
+So `harness/citations.py` resolves that case and nothing else. Two human-keyed
+tables have to agree: `Authorities Quoted`'s printed sigla resolve
+`(name, volume, short title)` to one work — that list *is* a resolution table —
+and the `authority:` field on a `source:` entry says which work it is. Where
+either lookup returns other than exactly one answer, the citation stays unlinked
+and the question stands.
+
+**It chooses among the store's claims and never adds one.** The work must
+already be an entity claiming the printed form, so the alias table stays the gate
+on what a string may name and the citation form only says which claimant the
+sentence means. Every siglum in the store is claimed by its own `source:` entry,
+so the requirement costs nothing today and keeps the licence narrow.
+
+What separates a citation from a sentence is what may stand in the gap: citation
+punctuation, a possessive (`Boas’s Central Eskimo, p. 569`), `op. cit.`, and the
+volume or short title the store itself records. **Not a full stop** — that is the
+whole of `Nelson. Fig. 22` — and not a lower-case word, which is what refuses
+`Boas and Kroeber; for instance, compare Fig. 199`.
+
+Measured over the 274 generated pages: **123 citations resolve** (119 in
+footnotes, 4 in body prose), 181 mentions of the same names stay prose, and 5
+refuse because the page prints a discriminator the store does not match. Those
+five are worth reading as a worklist for the *store*, not the sentence:
+`Hough, Armor` three times against the store's `Armour`, a `Boas, Indianische
+Sagen` in no authority entry, and `Bogoras, American Anthropologist`.
+
 Matching is whole-word, case-sensitive, NFD, longest-first, and
 **whitespace-flexible across printed line breaks**: `1-021` sets "the Jesup
 North / Pacific Expedition" across two lines, and a matcher that stopped at a
@@ -420,7 +455,10 @@ is false. The responsible act happened one artifact upstream.
 
 **It is not taken on trust, and that is its whole licence.** Every `#mz` link is
 re-derived on every validation run — entry present, still ratified, alias
-intact, still uncontested, element text still matching. Weaken the entry, delete
+intact, still uncontested, element text still matching; and for a link the
+citation rule made, that the page still prints a locator after the name, that
+the sigla still resolve it to one work, and that the entry still says it is that
+work. Weaken the entry, delete
 the alias, or let a second entity claim the form, and every link resting on it
 fails. `harness/tests/test_entity_links.py` pins each of those failure modes,
 because a rank that quietly stopped being checked would look exactly like one
@@ -1230,6 +1268,46 @@ finds them and `web/edition._figref_state` says which. A resolved reference
 becomes `a.fig`, which is the List of Illustrations' own class, so it opens a
 stack card through `openFigure` and the behaviour is not written twice.
 
+### The mark is in the page, because a link nobody reviews is not an assertion
+
+**`tei generate` writes the reference into the TEI and the collator sees it**, as
+`<ref type="figure" n="3" cRef="Plate XXVII" resp="#mz">3</ref>` — the same rank,
+the same licence and the same re-derivation as an entity link. `validate` scans
+each block's own text on every run and checks both directions: a mark the text no
+longer supports is an error, and a printed reference carrying no mark is a
+worklist line, since deleting one is exactly what the collator is shown it for.
+
+It was found in the renderer until then, and the asymmetry was not principled.
+The link existed only in served HTML: no collator met one, `tei validate` had
+nothing to say about it, and the failure it can produce is not a dead link but a
+*working* one — a number scoped to the wrong plate opens a real leaf whose
+caption reads correctly under the wrong picture. The only witness was a reader
+who clicked.
+
+**What is in the page is the scan; what is not is the resolution.** Which
+numerals the page prints as a reference is a fact about a string that no store
+can invalidate. Which picture each names is a join over `gt/fig/` that a moved
+box invalidates at once, and `stores.render` caches on the TEI's bytes alone — so
+a `ref/key` written into the page would go on being served after the box moved.
+The two halves of `figrefs` fall either side of that line, and the same cut
+already governs `<figure>` and `_figure_state`.
+
+The authority guard moved with the scan, for the same reason in the other
+direction: `tei generate` refuses to mark another author's plate at all, rather
+than marking one the edition is bound to decline and putting a question to the
+collator that `Authorities Quoted` had already answered. `apparatus.authority_names`
+is the one home of that lookup now — the generator, the validator and the
+resolver ask it the same question.
+
+**The guard reads what stands in front of a reference, and that is a real
+limit.** `Kroeber’s Fig. 52` is caught — the possessive is the printed evidence
+and the store holds the name, and both instances of it were marked as this book's
+until the mark went where somebody could read it. `Fig. 525, a, in Boas’s Central
+Eskimo` is not: the name comes *after* the number, and nothing in front of it
+says whose figure it is. That one is now a `<ref>` in the page rather than a link
+in the HTML, which is the point — a collator with the sentence open can delete
+it, and before this there was nothing to delete.
+
 **The stack, not the lightbox**, which inverts the rule everywhere else and for
 that rule's own reason: a picture goes to the lightbox because it is already on
 the page, and a cross-reference is precisely a picture that is *not* here. The
@@ -1250,6 +1328,16 @@ Scope ends at punctuation, and only punctuation. `Plate XXIII, Fig. 2; also Fig.
 177` is two references: the `;` is what says the second is a text figure. Getting
 this wrong is not cosmetic — it points a reader at a different leaf, with a
 caption that reads correctly under the wrong picture.
+
+**The same `;` also joins, inside one run**, and the two are not in tension: it
+separates *members* and ends a *scope*, and what tells them apart is whether a
+numeral follows it. `Figs. 44, a¹; 46, a¹; 46, b` (1-171) and `Figs. 188, a, i;
+190, b; also Plate XXVIII` (1-334) are runs whose members carry sub-letters, so
+the comma is spoken for inside a member and the printer raises the separator a
+rank; `; also`, `; see also Fig. 177` and `Fig. 69; b` are not runs, and each
+ends where it stops naming numbers. The licence is the figure run's alone — a
+semicolon in the roman loop would read `Plate II; I have seen` as two plates,
+`I` being a numeral.
 
 The same fact runs the other way for a *bare* number. A plate's figure number
 means nothing away from its plate, so it is never cited alone; a bare `Fig. 2` is

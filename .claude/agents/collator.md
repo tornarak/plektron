@@ -874,10 +874,22 @@ It returns **every** match, ranked by which field caught it, because 51 sigla sh
 **What the lookup is for is the reading, not the record.** It settles whether a
 bare name is a citation at all, how the diaeresis in `Nordenskiöld` is set, whether
 a footnote naming two works is one `<bibl>` or two. **Nothing about the result is
-written into the file** — no key, no `@corresp`, no comment. `steller1774` is an
-identity, and identity is the annotation pass's, which will redo this lookup with
-the whole corpus in view and can do it better. What this pass leaves behind is the
-`<bibl>` boundary, which is the part that needed a reader.
+written into the file by you** — no key, no `@corresp`, no comment. What this pass
+leaves behind is the `<bibl>` boundary, which is the part that needed a reader.
+
+**The name inside a citation arrives linked, and that is a rule's doing, not
+yours.** `Nelson` is a man and a book, and the entity store says so — but a page
+locator attached to a name is what a citation *is*, so the generator writes
+
+    <bibl><rs ref="source:nelson-1899" resp="#mz">Nelson</rs>, pp. 27, 28.</bibl>
+
+and leaves no candidate comment for it. It is the `#mz` case exactly: two
+human-keyed tables — the printed sigla and the entry's own `authority:` — agreeing,
+and re-derived on every validation run. The same name with **no** locator arrives
+unlinked with both claimants named (`as Nelson found. The sled is short`), because
+there the sentence is the only evidence and reading it is what you are for. Delete
+a link the sentence contradicts, as with any other `<rs>`. The `<bibl>` is still
+yours to draw and still carries no key of its own.
 
 **The list is open and says so.** Its closing line is "For other authorities see
 references in the text," so a citation with no entry is expected and is not a
@@ -1382,7 +1394,8 @@ identity is a different scheme and does not exist yet.
 - Every personal name marked, whatever its language — the book's sources included,
   which are the ones easiest to read past? Every citation wrapped in `<bibl>` over
   its whole extent, with no key, `@corresp` or comment recording what `find
-  authority` returned?
+  authority` returned? Every `<rs ref="source:…">` the rule put inside one still
+  the work that sentence cites?
 - Every `<measure>`: typed from the three, and doing money's job in its sentence
   rather than just being counted? Any `@unit`, `@quantity` or `@commodity`? (Always
   no.) Every priced thing's valuations gathered in one `<measureGrp>`, the ones the

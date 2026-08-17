@@ -21,8 +21,10 @@ from pathlib import Path
 
 from lxml import etree
 
+from . import apparatus, citations, figrefs
 from .detectors import unlicensed_marks
 from .entities import ENTITY_CLASSES, alias_index, auto_forms, load, split_id
+from .generate import NOTE_MARKERS
 from .langs import TIER1
 from .state import load_toc
 
@@ -660,6 +662,213 @@ def _opening_witness(body, q, r) -> None:
             "dispatching the pass was meant to stop.")
 
 
+#: What a cross-reference is re-derived *within*. The generator marks one block
+#: of prose at a time, so the check has to cut the page the same way or it would
+#: read a paragraph's last word into the next one's first. A nested block is left
+#: to its own turn — an anchored `<note>` inside a `<p>` is scanned as a note,
+#: exactly as `_place_notes` scanned it — which is what keeps a footnote's text
+#: out of the middle of the paragraph it hangs in.
+FIGREF_BLOCKS = ("p", "quote", "note", "head", "item", "label", "cell",
+                 "trailer", "l")
+
+#: A block whose text is **not** scanned, and which still stops the walk. A
+#: caption reading `Fig. 101. Reindeer-Harness` is the picture's own name and not
+#: a pointer at it — the generator marks none and the renderer linked none — so a
+#: `<figDesc>` is cut out of its figure's text rather than left to be read as a
+#: reference nobody marked.
+FIGREF_OPAQUE = ("figDesc",)
+
+
+def _figref_flat(el) -> tuple[str, list[tuple[int, int, object]]]:
+    """One block's own text, and where each `<ref>` in it starts and ends.
+
+    The same string the generator scanned: the text of this block and of the
+    inline elements inside it, with the printed line breaks kept, and without the
+    text of any nested block.
+    """
+    out: list[str] = []
+    marks: list[tuple[int, int, object]] = []
+    at = 0
+
+    def walk(node, top: bool) -> None:
+        nonlocal at
+        if not top and etree.QName(node).localname in (
+                FIGREF_BLOCKS + FIGREF_OPAQUE):
+            # **A note stands in for the marker the printer set, and the marker
+            # goes back.** The generator scanned this paragraph before
+            # `_place_notes` swapped that one character for the element, so
+            # dropping it here reads a different string than the rule read — and
+            # the difference is not cosmetic. `1-143` sets "illustrated by
+            # Nelson.¹ Fig. 22, b": remove the superscript and the authority
+            # guard sees `Nelson.` immediately in front of a reference to this
+            # book's own figure, and refuses a mark the rule correctly wrote. One
+            # character out, one character back, so the offsets align too.
+            n = node.get("n")
+            if (etree.QName(node).localname == "note" and n
+                    and n.isdigit() and int(n) < len(NOTE_MARKERS)):
+                out.append(NOTE_MARKERS[int(n)])
+                at += 1
+            return
+        start = at
+        if node.text:
+            out.append(node.text)
+            at += len(node.text)
+        for kid in node:
+            if isinstance(kid.tag, str):
+                walk(kid, False)
+            if kid.tail:
+                out.append(kid.tail)
+                at += len(kid.tail)
+        if not top and etree.QName(node).localname == "ref":
+            marks.append((start, at, node))
+
+    walk(el, True)
+    return "".join(out), marks
+
+
+def _text_after(el, limit: int = 80) -> str:
+    """The prose that follows an element, across whatever markup comes next.
+
+    The citation rule reads what stands after a name, and the locator is
+    routinely on the far side of an element boundary — `Nelson, Plate LXXVI,
+    Fig. 1` puts a figure reference between the name and its page. So this is
+    the element's tail plus its following siblings' text, not `@tail` alone.
+    """
+    out = [el.tail or ""]
+    for sib in el.itersiblings():
+        if isinstance(sib.tag, str):
+            out.append("".join(sib.itertext()))
+        out.append(sib.tail or "")
+        if sum(len(s) for s in out) >= limit:
+            break
+    return "".join(out)[:limit]
+
+
+def _cites(el, form: str, ref: str, sigla: list[dict], store: dict,
+           idx: dict) -> bool:
+    """Does the page cite this name here, as the work this link names?
+
+    Three tables and all three must agree: the entity store claims the form for
+    this entry, `Authorities Quoted` resolves the printed siglum to one work, and
+    that work's `source:` entry is this one. It is the same call the generator
+    made, over the same text, which is what makes the mark re-derivable rather
+    than merely re-readable.
+    """
+    if not any(c["id"] == ref for c in idx.get(form, [])):
+        return False
+    key = citations.cited(form, _text_after(el), sigla)
+    return bool(key) and citations.work_of(key, store) == ref
+
+
+def _figrefs(root, r: Report, ctx: dict | None) -> tuple[int, int]:
+    """Every `<ref>` mark re-derived from the page's own text, both directions.
+
+    **This is `#mz`'s licence, applied to the second thing that carries it.** A
+    figure cross-reference is a rule reading printed text — the numerals after
+    `Fig.`, the plate that scopes them, and the `Authorities Quoted` store's
+    answer to whose plate it is. So it is re-derived here on every run exactly as
+    an entity link is: edit the text under a mark, or add the citing author to
+    the store, and the mark fails rather than going quietly stale.
+
+    The failure it exists to catch is not a broken link. It is a *working* link
+    to the wrong picture — the book restarts figure numbering at 1 on every
+    plate, so a number scoped to the wrong plate opens a real leaf with a caption
+    that reads correctly under it.
+
+    Returns `(marked, unmarked)`. **A printed reference with no mark is a
+    worklist line and not an error**, on entity-link terms and for a sharper
+    reason: deleting a mark the sentence does not support is precisely what a
+    collator is being shown it for. The count says how many, so a page nobody has
+    read is not indistinguishable from one where every deletion was somebody's.
+    """
+    cited = apparatus.authority_names(
+        Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
+    marked = unmarked = 0
+    seen = set()
+    for block in root.iter():
+        if not isinstance(block.tag, str):
+            continue
+        if etree.QName(block).localname not in FIGREF_BLOCKS:
+            continue
+        flat, marks = _figref_flat(block)
+        seen.update(id(el) for _, _, el in marks)
+        want = {(s["start"], s["end"]): s for s in figrefs.scan(flat)
+                if not figrefs.foreign_citation(flat[:s["start"]], cited)}
+        for start, end, el in marks:
+            marked += 1
+            resp = el.get("resp")
+            handle = figrefs.unmark(el.get("type"), el.get("n"), el.get("cRef"))
+            span = " ".join("".join(el.itertext()).split())
+            if handle is None:
+                r.errors.append(
+                    f"<ref type={el.get('type')!r} n={el.get('n')!r} "
+                    f"cRef={el.get('cRef')!r}> {span[:24]!r} is not a "
+                    f"cross-reference this corpus can read. @type is one of "
+                    f"{', '.join(figrefs.KINDS)}, @n is the number the page "
+                    f"prints, and @cRef — only on a figure — is the plate that "
+                    f"scopes it, spelt `Plate XXI`")
+                continue
+            if resp is not None and resp not in RESP_RANKS:
+                r.errors.append(f"<ref n={el.get('n')!r}> carries resp={resp!r}, "
+                                f"which is not a declared rank")
+            # Taken off the expected set whatever the rank, because the other
+            # direction asks whether a printed reference is *marked* and a
+            # collator's own `#llm` mark answers that as well as a rule's. Only
+            # the re-derivation below is `#mz`'s: a reading is not re-derivable,
+            # which is the whole difference between the two ranks.
+            hit = want.pop((start, end), None)
+            if resp != RULED:
+                continue
+            # The whole licence of #mz, re-derived: the page still prints this
+            # reference, at this extent, scoped to this plate, and no authority
+            # in front of it says the plate is somebody else's.
+            if hit is None:
+                r.errors.append(
+                    f'<ref n={el.get("n")!r} resp="{RULED}"> {span[:24]!r} no '
+                    f"longer derives: the page's text no longer prints a "
+                    f"cross-reference here. Re-run `harness tei generate` for "
+                    f'this page, or judge the span yourself and set '
+                    f'resp="{PROPOSED}"')
+            elif (hit["kind"], hit["number"], hit["plate"]) != (
+                    handle["kind"], handle["number"], handle["plate"]):
+                says = f"{hit['kind']} {hit['number']}"
+                if hit["plate"]:
+                    says += f", on Plate {hit['plate']}"
+                r.errors.append(
+                    f'<ref n={el.get("n")!r} resp="{RULED}"> — the page prints '
+                    f"{says} here. A rule-applied mark that disagrees with the "
+                    f"rule is the stale stamp {RULED} exists to prevent")
+        # The other direction: what the page prints and no mark covers. A page is
+        # collated after it is generated, so a rule that widened afterwards leaves
+        # a reference plain here — indistinguishable, from outside, from one a
+        # collator deleted on purpose.
+        unmarked += len(want)
+        for s in sorted(want.values(), key=lambda s: s["start"]):
+            printed = ("Plate " if s["kind"] == "plate" else "Fig. ") + s["number"]
+            if s["plate"]:
+                printed += f" (Plate {s['plate']})"
+            r.worklist.append(
+                f"{printed} is printed here and carries no <ref> mark. Either it was "
+                f"generated before the rule found it — `harness tei generate "
+                f"--force` — or a collator judged it not a reference")
+
+    # **A mark the check never reached is the state this whole arrangement
+    # exists to refuse.** An unchecked `#mz` is indistinguishable from a checked
+    # one to anything that does not check, so a `<ref>` outside every scanned
+    # block — inside a `<figDesc>`, or loose in the body — is an error rather
+    # than a silent pass.
+    for el in root.iter(f"{{{TEI_NS}}}ref"):
+        if id(el) in seen:
+            continue
+        marked += 1
+        r.errors.append(
+            f"<ref n={el.get('n')!r}> stands outside every block this gate "
+            f"scans, so nothing re-derives it. A cross-reference belongs in the "
+            f"prose that prints it; a caption names its own picture and carries "
+            f"none")
+    return marked, unmarked
+
+
 def validate(tei_path: Path, ctx: dict | None = None,
              ratified: bool = False, schema: bool = False) -> Report:
     """Gate one page's TEI. `ratified` switches which provenance rank is expected.
@@ -1181,6 +1390,10 @@ def validate(tei_path: Path, ctx: dict | None = None,
     store = load(Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
     idx = alias_index(store)
     autos = auto_forms(idx)
+    # The printed resolution table, for the names the alias table cannot resolve
+    # alone: `Nelson` is a man and a book, and a locator after it says which.
+    sigla = apparatus.sigla(
+        Path(ctx["root"]) if ctx and ctx.get("root") else Path("."))
     names = untyped = refs = ruled = 0
     for el in root.iter(q("name"), q("rs")):
         local = etree.QName(el).localname
@@ -1261,6 +1474,15 @@ def validate(tei_path: Path, ctx: dict | None = None,
             # a machine-applied rank is admissible at all.
             form = " ".join(span.split())
             owner = autos.get(form)
+            if owner is None and _cites(el, form, ref, sigla, store, idx):
+                # **The printed citation form is the other way a rule may resolve
+                # a name**, and it is re-derived exactly as the alias table is:
+                # the page still prints a locator after this name, the sigla
+                # still say which work, and the entry still says it is that work.
+                # Edit any of the three and the link fails. It is checked here
+                # rather than accepted on the attribute's word for `#mz`'s only
+                # reason for existing.
+                owner = ref
             if owner is None:
                 claims = idx.get(form, [])
                 if not claims:
@@ -1303,6 +1525,8 @@ def validate(tei_path: Path, ctx: dict | None = None,
             f"here: {'; '.join(forms[:6])}"
             f"{' …' if len(forms) > 6 else ''}. The page was collated before the "
             f"store said so; `harness entity ratify` applies them")
+
+    figrefs_marked, figrefs_missing = _figrefs(root, r, ctx)
 
     # A citation's extent, and nothing about which work it names. Counted rather
     # than gated for presence: a page citing nothing is the ordinary page.
@@ -1385,6 +1609,12 @@ def validate(tei_path: Path, ctx: dict | None = None,
         # numbers are equal has had no entity judged by anybody.
         "entity_refs": refs,
         "ruled_links": ruled,
+        # Cross-references marked, and printed ones carrying no mark. The second
+        # is not a defect count: a collator who deleted a mark the sentence does
+        # not support is doing the job this element was put in the page for, and
+        # a page generated before the rule changed shows here too.
+        "figrefs": figrefs_marked,
+        "figrefs_unmarked": figrefs_missing,
         "bibls": bibls,
         "measures": measures,
         "measure_groups": groups,

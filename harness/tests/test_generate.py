@@ -17,12 +17,14 @@ a generator that leaves a marked hole produces a worklist.
 """
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
 from conftest import write_scan
 
 from harness import generate as gen
+from harness.detectors import join_broken_words
 from harness.tests.test_entities import entry
 from harness.tests.test_lexicon_tokens import nfd
 from harness.zones import save_zones
@@ -804,3 +806,224 @@ def test_an_unratified_owner_is_named_as_unratified_and_not_as_auto_no(tmp_path)
     assert "still `proposed`" in doc
     assert "harness entity ratify place:markova" in doc
     assert "auto: no" not in doc
+
+
+# ------------------------------------------------------ cross-reference marks
+#
+# The pointing at the book's own pictures used to be found in the renderer, so it
+# existed only in served HTML: no collator saw a link, `tei validate` had nothing
+# to say about one, and the failure it produces is not a dead link but a working
+# link to the wrong picture. It is marked in the page now, on entity-link terms.
+
+
+def test_a_printed_cross_reference_is_marked_in_the_page(tmp_path):
+    """The numeral alone, because `Figs. 214, 215` names two pictures and one
+    element over the run would have to pick one of them."""
+    blocks = [("MainZone-P", lines_at(["as shown in Fig. 87 above"]))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert 'Fig. <ref type="figure" n="87" resp="#mz">87</ref> above' in doc
+    assert rep["figrefs"] == 1
+
+
+def test_a_plate_scoped_number_carries_the_plate_that_scopes_it(tmp_path):
+    """**The one attribute that cannot be recovered from the numeral.** The book
+    restarts figure numbering at 1 on every plate, so `Fig. 3` scoped wrongly
+    opens a real leaf whose caption reads correctly under the wrong picture."""
+    blocks = [("MainZone-P", lines_at(["(see Plate XXVII, Fig. 3)"]))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert '<ref type="plate" n="XXVII" resp="#mz">XXVII</ref>' in doc
+    assert '<ref type="figure" n="3" cRef="Plate XXVII" resp="#mz">3</ref>' in doc
+    assert rep["figrefs"] == 2
+
+
+def test_another_authors_plate_is_not_marked(tmp_path):
+    """`Sauer, Plate XIV` is Sauer's and this book has a Plate XIV too. Marking it
+    would put a question to the collator that `Authorities Quoted` has already
+    answered, and the edition is bound to decline the link anyway."""
+    (tmp_path / "data").mkdir(exist_ok=True)
+    (tmp_path / "data" / "authorities.json").write_text(json.dumps({
+        "source": {"refs": ["1-023"]},
+        "authorities": [{"key": "sauer1802", "ref": "1-023", "folio": "3",
+                         "cited_as": [{"name": "Sauer"}],
+                         "printed": [{"ref": "1-023", "text": "SAUER."}]}]}),
+        encoding="utf-8")
+    (tmp_path / "data" / "runs.json").write_text(json.dumps({"runs": [
+        {"id": "authorities", "kind": "authorities", "title": "Authorities Quoted",
+         "refs": ["1-023"], "source": "data/authorities.json"}]}), encoding="utf-8")
+    blocks = [("MainZone-P", lines_at(["compare Sauer, Plate XIV, p. 321",
+                                       "and Plate XIV of this book"], 200))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["figrefs"] == 1                      # the second one, not Sauer's
+    assert 'Sauer, Plate XIV' in doc
+
+
+def test_prose_naming_no_picture_is_marked_nowhere(tmp_path):
+    """The ordinary page. `figrefs` is 0 and the count is in the report on every
+    page, so a run of them reads as a census rather than as a key that appears
+    when something happened."""
+    blocks = [("MainZone-P", lines_at(["The paddle is short and broad."]))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert "<ref" not in doc
+    assert rep["figrefs"] == 0
+
+
+# ------------------------------------------------------------ cited works
+#
+# `Nelson` is a man and a book, and the store says so — both entries claim the
+# form, so the alias table alone can only ask. The printed citation form answers
+# it, and `harness/citations.py` is the rule.
+
+
+def _authorities(tmp_path: Path) -> None:
+    """The printed resolution table, as `Authorities Quoted` holds it."""
+    (tmp_path / "data").mkdir(exist_ok=True)
+    (tmp_path / "data" / "authorities.json").write_text(json.dumps({
+        "source": {"refs": ["1-023"]},
+        "authorities": [{"key": "nelson1899", "ref": "1-023", "folio": "3",
+                         "author": "E. W. Nelson", "year": 1899,
+                         "title": "The Eskimo about Bering Strait",
+                         "cited_as": [{"name": "Nelson"}],
+                         "printed": [{"ref": "1-023", "text": "NELSON."}]}]}),
+        encoding="utf-8")
+    (tmp_path / "data" / "runs.json").write_text(json.dumps({"runs": [
+        {"id": "authorities", "kind": "authorities",
+         "title": "Authorities Quoted", "refs": ["1-023"],
+         "source": "data/authorities.json"}]}), encoding="utf-8")
+
+
+def _both_nelsons(tmp_path: Path) -> None:
+    entry(tmp_path, "person:nelson", canonical="E. W. Nelson",
+          aliases=[("Nelson", False)])
+    entry(tmp_path, "source:nelson-1899", canonical="The Eskimo about Bering Strait",
+          aliases=[("Nelson", False)], extra="- authority: nelson1899\n")
+
+
+def test_a_cited_name_is_linked_to_the_work(tmp_path):
+    """A locator attached to the name is what a citation is, and it resolves an
+    ambiguity `auto_forms` is right to refuse."""
+    _authorities(tmp_path)
+    _both_nelsons(tmp_path)
+    blocks = [("MainZone-P", lines_at(["Compare Nelson, pp. 27, 28."]))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert '<rs ref="source:nelson-1899" resp="#mz">Nelson</rs>, pp. 27, 28.' in doc
+    assert rep["links"] == 1
+    assert "entity candidate" not in doc          # the question is answered
+
+
+def test_the_same_name_without_a_locator_stays_a_question(tmp_path):
+    """`Nelson. Fig. 22, b, shows a sled` is the man, and the store's two claims
+    on the form stand unresolved — which is the honest state, and the comment
+    says both."""
+    _authorities(tmp_path)
+    _both_nelsons(tmp_path)
+    blocks = [("MainZone-P", lines_at(["as Nelson found. The sled is short."]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "<rs" not in doc
+    assert "person:nelson or source:nelson-1899" in doc
+
+
+def test_a_citation_the_store_cannot_resolve_stays_a_question(tmp_path):
+    """The entry has to *be* the work. Without `authority:` nothing joins the
+    printed siglum to an entry, and the rule declines rather than picking the
+    only `source:` in sight."""
+    _authorities(tmp_path)
+    entry(tmp_path, "person:nelson", aliases=[("Nelson", False)])
+    entry(tmp_path, "source:nelson-1899", aliases=[("Nelson", False)])
+    blocks = [("MainZone-P", lines_at(["Compare Nelson, pp. 27, 28."]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "<rs" not in doc
+    assert "entity candidate" in doc
+
+
+def test_the_rule_chooses_among_the_stores_claims_and_never_adds_one(tmp_path):
+    """**The licence, stated as a test.** A work whose entry does not claim the
+    printed form is not linked by it: the alias table stays the gate on what a
+    string may name, and the citation form only says which of its claimants the
+    sentence means."""
+    _authorities(tmp_path)
+    entry(tmp_path, "source:nelson-1899", canonical="The Eskimo",
+          aliases=[("Bering Strait", False)], extra="- authority: nelson1899\n")
+    blocks = [("MainZone-P", lines_at(["Compare Nelson, pp. 27, 28."]))]
+    doc, _ = page(tmp_path, "1-021", blocks)
+    assert "<rs" not in doc
+
+
+def test_a_broken_word_does_not_continue_into_the_footnotes():
+    """**One join corrupting two texts, and it looked like a recognizer error.**
+
+    `1-075`, `1-091`, `1-203` and `1-243` each end their last body line on a
+    broken word, and the next non-empty line is the first footnote. The join took
+    its first token — the printed marker — so the body read `…the Kolyma west-¹`
+    and the note it was stolen from opened with no marker at its head. The
+    generator then reported "no marker at the head of this note" on exactly those
+    four pages, blaming the recognizer for a defect one function downstream.
+
+    **The zone label is not the geometric guard this function threw out.** That
+    one asked whether a box sat too far away — arithmetic over coordinates, which
+    moved 22 joins and corrupted 20 of them. This reads what a human keyed. And
+    it is measured the same way: 523 joins over `gt/ocr/`, of which **4** cross a
+    zone, all four `MainZone-P` into `MarginTextZone-Notes`, and all four are
+    this. The rule refuses those and nothing else in the corpus.
+    """
+    recs = [
+        {"text": "sailed from the mouth of the Kolyma west-", "zone": "MainZone-P"},
+        {"text": "¹ Bogoras, Chukchee Materials, p. 345.",
+         "zone": "MarginTextZone-Notes"},
+    ]
+    got = join_broken_words(recs)
+    assert got[0].endswith("west-"), "the stem keeps its hyphen and takes nothing"
+    assert got[1].startswith("¹"), "the note keeps the marker at its head"
+
+
+def test_a_broken_word_still_joins_inside_one_zone():
+    """The guard is a zone test and not a new reluctance to join. Absence of a
+    label on either side is not a barrier either — a caller handing in records
+    with no zones must still get its joins.
+
+    The hyphen survives the join, which is this function's one judgement and not
+    an oversight here: dropping it manufactured nine words the book does not
+    contain (`reindeerowner`, `treetrunk`), because a real compound hyphen at a
+    line end is indistinguishable from a break."""
+    same = [{"text": "at a consider-", "zone": "MainZone-P"},
+            {"text": "able distance", "zone": "MainZone-P"}]
+    assert join_broken_words(same) == ["at a consider-able", "distance"]
+    bare = [{"text": "at a consider-"}, {"text": "able distance"}]
+    assert join_broken_words(bare) == ["at a consider-able", "distance"]
+
+
+def test_a_figure_locant_is_not_a_footnote_marker():
+    """**`1-285` set one marker per note and the pass called all three
+    ambiguous.** It prints `(Fig. 155, d², e¹)`, `(Fig. 155, d³)` and `(Fig. 155,
+    a², c²)`, so a raw count found four places reading `²` where the page has one
+    real reference, and the notes went unanchored — appended after the two that
+    did anchor, which is why the page's notes came out `4, 5, 1, 2, 3`.
+
+    `keying_spec.md` §2.10 already excludes a locant and bounds it textually: "a
+    lone letter carries the superscript and a close-paren follows". In the run
+    above that is true of `e¹` and false of `d²`, so it caught the last member
+    and missed every earlier one. The bound is structural now — whatever
+    `figrefs.LOCANTS` consumes after a figure reference, which is the same
+    pattern that decided where the reference ended, so one definition governs
+    both and a comma-separated list is no harder than a single letter.
+
+    A superscript *outside* a run is still a marker, which is what §2.10 settles
+    corpus-wide; this only says where the runs are.
+    """
+    ref = '<ref type="figure" n="155" resp="#mz">155</ref>'
+    body = [f'      <p>They are long, thin tubes¹ (Fig. {ref}, d², '
+            f'e¹), inside of which the needles sit; figured by Nelson.²</p>']
+    assert gen._marker_sites(body, "¹") == [(0, body[0].index("¹") + 1)], \
+        "tubes¹ is the only ¹ that is not a locant"
+    assert len(gen._marker_sites(body, "²")) == 1, \
+        "d² is a locant however the run is punctuated; Nelson.² is the marker"
+
+
+def test_a_locant_run_is_bounded_by_the_reference_that_produced_it():
+    """The span is what `figrefs.LOCANTS` matches after the emitted `<ref>`, and
+    it stops where the printer stops: `Fig. 53, a, a narwhal` consumes `a` and
+    leaves the prose alone, the word after it failing the `\\b`."""
+    ref = '<ref type="figure" n="53" resp="#mz">53</ref>'
+    spans = gen._locant_spans(f'(Fig. {ref}, a, a narwhal) and a note¹')
+    assert len(spans) == 1
+    a, b = spans[0]
+    assert f'(Fig. {ref}, a, a narwhal) and a note¹'[a:b] == ", a, a"

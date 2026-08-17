@@ -67,9 +67,11 @@ collator clears by looking at the page.
 from __future__ import annotations
 
 import hashlib
+import re
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from . import apparatus, citations, figrefs
 from .context import (
     APPARATUS_ZONES,
     _running_title,
@@ -85,7 +87,7 @@ from .zones import read_zones
 #: different artifact rather than an older copy of the same one. It rides in the
 #: stamp, so `tei diff` can say "this baseline predates the current rules" instead
 #: of reporting the difference as something review did.
-VERSION = 3
+VERSION = 4
 
 GENDIR = "mz/tei"
 
@@ -125,10 +127,18 @@ def _split_notes(rows: list[tuple[int, str]]) \
     so — which makes the cut mechanical and auditable: the character is either at
     the head of the line or it is not.
 
-    The four blocks that open without one lost it to the recognizer at the very
-    start of the zone (`1-075`, `1-091`, `1-203`, `1-243`). Those become a note
-    with **no `@n`** rather than being folded into the note after them, because a
-    marker nobody read is a question and folding would answer it.
+    A block that opens without one becomes a note with **no `@n`** rather than
+    being folded into the note after it, because a marker nobody read is a
+    question and folding would answer it.
+
+    **Four blocks used to arrive that way and the recognizer was not to blame.**
+    `1-075`, `1-091`, `1-203` and `1-243` each end their last body line on a
+    broken word — `…the Kolyma west-` — and `join_broken_words` took the first
+    token of the next non-empty line, which was the footnote below. The body got
+    `Kolyma west-¹` and the note lost the marker off its head, so this function
+    was handed a markerless block and said so. Two texts corrupted by one join,
+    and the comment it produced sent a reader to look for a recognizer error that
+    was not there. The join now refuses to cross a zone.
     """
     out: list[tuple[str, list[tuple[int, str]]]] = []
     for idx, text in rows:
@@ -265,11 +275,49 @@ def _marker_sites(body: list[str], marker: str) -> list[tuple[int, int]]:
         head = block.lstrip()
         if head.startswith("<!--") or head.startswith("<figure"):
             continue
+        skip = _locant_spans(block)
         at = block.find(marker)
         while at != -1:
-            out.append((i, at + len(marker)))
+            if not any(a <= at < b for a, b in skip):
+                out.append((i, at + len(marker)))
             at = block.find(marker, at + 1)
     return out
+
+
+#: A figure reference as this file has just written it. Matched on the emitted
+#: markup rather than on the plain text because that is where `_marker_sites`
+#: looks: the body strings already carry their `<ref>`s, and a plain-text offset
+#: would have moved under every element inserted before it.
+_FIG_REF = re.compile(r'<ref type="figure"[^>]*>\d+</ref>')
+
+
+def _locant_spans(block: str) -> list[tuple[int, int]]:
+    """Where this block's figure **sub-part locants** sit: `(start, end)` pairs.
+
+    **A raised numeral after a figure number is not a footnote marker.**
+    `1-285` prints `(Fig. 155, d², e¹)`, `(Fig. 155, d³)` and `(Fig. 155, a²,
+    c²)`, and every one of those superscripts was counted as a reference to a
+    note — four places reading `²` on a page setting one real marker, three
+    reading `¹` where there is one, and the pass reported all three notes as
+    ambiguous and anchored none of them.
+
+    `keying_spec.md` §2.10 already excludes a locant, and bounds it textually:
+    "a lone letter carries the superscript and a close-paren follows". That is
+    true of `e¹` and false of `d²` in the same parenthesis, so the rule caught
+    the last member of a run and missed every earlier one. Here the bound is
+    structural — the run is whatever `figrefs.LOCANTS` consumes after a figure
+    reference, which is the same pattern that decided where the reference ended —
+    so a comma-separated list is no harder than a single letter.
+
+    Nothing is guessed at. A superscript outside a locant run is a marker, which
+    is what §2.10 settles corpus-wide, and this only says where the runs are.
+    """
+    spans = []
+    for m in _FIG_REF.finditer(block):
+        tail = figrefs.LOCANTS.match(block, m.end())
+        if tail is not None and tail.end() > m.end():
+            spans.append((m.end(), tail.end()))
+    return spans
 
 
 def gen_path(ref: str, root: Path = Path(".")) -> Path:
@@ -433,8 +481,33 @@ def _tier1_spans(rows: list[tuple[int, str]], by_line: dict[int, list[dict]],
     return spans
 
 
-def _entity_spans(full: str, taken: list[tuple], ents: dict,
-                  autos: dict) -> tuple[list[tuple], list[tuple], list[dict]]:
+def _cited_owner(h: dict, full: str, sigla: list[dict], store: dict) -> str | None:
+    """The work an ambiguous name means where the page *cites* it, or None.
+
+    **The printed citation form is the second witness the alias table has not
+    got.** `Nelson` is claimed by `person:nelson` and `source:nelson-1899`, so
+    `auto_forms` withholds a link and the generator asks — correctly, since the
+    name alone does not say which. A page locator attached to it does:
+    `Nelson, pp. 27, 28` is the book, `Nelson. Fig. 22, b, shows a sled` is the
+    man, and `citations.cited` refuses the second.
+
+    **It chooses among the store's own claims and never adds one.** The work has
+    to be an entity that already claims this form — every siglum in `Authorities
+    Quoted` is claimed by its `source:` entry, so this costs nothing and keeps
+    the alias table the gate on what a string may name. Two human-keyed tables
+    have to agree before anything is written: the printed sigla, and the
+    `authority:` on the entry.
+    """
+    key = citations.cited(h["form"], full[h["end"]:h["end"] + 80], sigla)
+    if not key:
+        return None
+    work = citations.work_of(key, store)
+    return work if work and work in h["ids"] else None
+
+
+def _entity_spans(full: str, taken: list[tuple], ents: dict, autos: dict,
+                  sigla: list[dict], store: dict
+                  ) -> tuple[list[tuple], list[tuple], list[dict]]:
     """Trigger hits over the block: the ones a rule may link, and the ones it may not.
 
     Returns `(tier1, links, candidates)` — the Tier-1 spans back, because a hit
@@ -492,6 +565,8 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
     for h in match(full, ents):
         at = by_bounds.get((h["start"], h["end"]))
         owner = None if h["hyphenated"] else autos.get(h["form"])
+        if owner is None and not h["hyphenated"]:
+            owner = _cited_owner(h, full, sigla, store)
         over = [s for s in taken if h["start"] < s[1] and s[0] < h["end"]]
         if at is None and over:
             held = all(h["start"] <= s[0] and s[1] <= h["end"] for s in over)
@@ -516,6 +591,37 @@ def _entity_spans(full: str, taken: list[tuple], ents: dict,
         tier1[at] = (start, end, f'<rs ref="{owner}" resp="#mz">{open_}',
                      f"{close}</rs>")
     return tier1, links, candidates
+
+
+def _figref_spans(full: str, names: set[str]) -> list[tuple]:
+    """The block's cross-references, marked where a rule may mark them.
+
+    **This is the same class of act as an entity link and is recorded the same
+    way.** A rule reads a printed string, applies a table a human keyed, and
+    stamps `#mz` on what it wrote; `validate` re-derives every one of them from
+    the page's own text on every run, so a mark whose text was edited afterwards
+    fails rather than going stale. It used to happen in the renderer instead,
+    where the collator could not see it and nothing checked it — the whole reason
+    for moving it here.
+
+    **Another author's plate is not marked at all.** Bogoras cites Nelson,
+    Murdoch and Sauer by plate number in his footnotes, in the words he uses for
+    his own, and `Sauer, Plate XIV` collides with this book's Plate XIV outright.
+    Refusing is the safe direction and it belongs here rather than downstream: a
+    mark the edition is bound to decline is a question put to the collator that
+    the store had already answered.
+
+    `before` is the block up to the reference, which is where the citing name
+    stands — `Murdoch, Eskimo Bows, Plate X, Fig. 27` is one footnote, and the
+    guard reads 160 characters back.
+    """
+    out = []
+    for span in figrefs.scan(full):
+        if figrefs.foreign_citation(full[:span["start"]], names):
+            continue
+        out.append((span["start"], span["end"],
+                    f'<ref{figrefs.mark(span)} resp="#mz">', "</ref>"))
+    return out
 
 
 def _emit(full: str, spans: list, indent: str) -> str:
@@ -623,6 +729,11 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     store = load(root)
     ents = alias_index(store)
     autos = auto_forms(ents)
+    cited = apparatus.authority_names(root)
+    # The printed resolution table: `(name, volume, short title)` → work, which is
+    # what the List of Authorities Quoted *is*. Loaded once per page, beside the
+    # names the figure guard reads out of the same store.
+    sigla = apparatus.sigla(root)
     pending: list[dict] = []          # candidates, to be commented after the block
 
     def rendered(rows: list[tuple[int, str]], indent: str = "") -> str:
@@ -636,9 +747,10 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
             at += len(t) + 1                  # +1 for the joining newline
         full = "\n".join(texts)
         spans = _tier1_spans(rows, by_line, offsets)
-        spans, links, cands = _entity_spans(full, spans, ents, autos)
+        spans, links, cands = _entity_spans(full, spans, ents, autos,
+                                            sigla, store)
         pending.extend(cands)
-        return _emit(full, spans + links, indent)
+        return _emit(full, spans + links + _figref_spans(full, cited), indent)
 
     body: list[str] = []
     # Every key present from the start, `figures` and `notes_anchored` included:
@@ -647,7 +759,7 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     # table to the nested form (`skipped`, same argument).
     rep = {"ref": ref, "folio": None, "folio_from": "",
            "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
-           "handles": 0, "links": 0, "candidates": 0,
+           "handles": 0, "links": 0, "figrefs": 0, "candidates": 0,
            "outside_zones": 0, "unknown_labels": "",
            "figures": 0, "notes_anchored": 0}
 
@@ -947,7 +1059,12 @@ def build(ref: str, root: Path = Path(".")) -> tuple[str, dict]:
     # alongside can disagree with it.
     doc_body = "\n".join(body)
     rep["handles"] = doc_body.count("<foreign index=")
-    rep["links"] = doc_body.count('resp="#mz"')
+    # Two things now carry `#mz` and they are two different acts, so they are
+    # counted apart: `links` is the entity store applied to a name, `figrefs` the
+    # printed cross-references marked. Counting the rank alone would have folded
+    # them into one number that answers neither question.
+    rep["links"] = doc_body.count('<rs ref=')
+    rep["figrefs"] = doc_body.count("<ref type=")
 
     src = f"see corpus teiHeader; page {folio}" if folio is not None \
         else "see corpus teiHeader; folio not parsed"
@@ -1112,7 +1229,7 @@ def skipped(ref: str, why: str = "") -> dict:
     """
     return {"ref": norm_ref(ref), "folio": None, "folio_from": "",
             "paragraphs": 0, "quotes": 0, "notes": 0, "unresolved": 0,
-            "handles": 0, "links": 0, "candidates": 0,
+            "handles": 0, "links": 0, "figrefs": 0, "candidates": 0,
             "outside_zones": 0, "unknown_labels": "",
             "figures": 0, "notes_anchored": 0,
             "written": False, "why": why}

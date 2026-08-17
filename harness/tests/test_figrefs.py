@@ -54,6 +54,56 @@ def test_every_numeral_of_a_run_is_its_own_reference():
         "figure::214", "figure::215", "figure::216"]
 
 
+def test_one_numeral_may_carry_several_sub_letters():
+    """`Figs. 188, a, i` is one picture and two of its details. Consuming only
+    the first left `i` where the next member should be, and the run ended
+    there."""
+    assert _printed("(Figs. 188, a, i)") == ["figure::188"]
+
+
+def test_the_sub_letters_stop_at_the_first_word():
+    """`1-358` sets a gloss inside the run: `Fig. 53, a, a narwhal`. The second
+    `a` is a sub-letter and `narwhal` is not, so the repeat has to stop — a
+    letter followed by more letters fails the word boundary."""
+    assert _printed("(Fig. 53, a, a narwhal; Fig. 52, a, a dog)") == [
+        "figure::53", "figure::52"]
+
+
+def test_a_semicolon_separates_the_members_of_a_lettered_run():
+    """`1-171`. The comma is already spoken for inside a member — `44, a¹` is one
+    picture and its detail — so the printer raises the separator a rank. Stopping
+    at the first member printed the other two plain."""
+    assert _printed("(Figs. 44, a¹; 46, a¹; 46, b)") == [
+        "figure::44", "figure::46", "figure::46"]
+
+
+def test_a_semicolon_run_carries_the_plate_scope_to_every_member():
+    """One run, one scope: the members after the semicolon are the same plate's,
+    which is what `Plates X, Fig. 4` means when the run continues."""
+    assert _printed("(Plate XXI, Figs. 2, a; 4, b)") == [
+        "plate::XXI", "figure:XXI:2", "figure:XXI:4"]
+
+
+def test_a_semicolon_still_ends_a_run_before_anything_but_a_numeral():
+    """`1-334` sets both halves of the rule in one reference: the semicolon
+    carries the run to `190` and ends it at `also`. `; see also Fig. 177` and
+    `Fig. 69; b` end it too — a sub-letter with no number before it is not a
+    member — so the separator never reaches past what it separates."""
+    assert _printed("(Figs. 188, a, i; 190, b; also Plate XXVIII)") == [
+        "figure::188", "figure::190", "plate::XXVIII"]
+    assert _printed("(Fig. 87; see also Fig. 177)") == [
+        "figure::87", "figure::177"]
+    assert _printed("Detail of Bow represented in Fig. 69; b (??/????)") == [
+        "figure::69"]
+
+
+def test_the_semicolon_is_the_figure_run_s_alone():
+    """`I` is a roman numeral, so a semicolon in the plate loop would read a
+    second plate out of a pronoun. Nothing in the corpus separates two plates
+    with one, and the licence stays as narrow as its evidence."""
+    assert _printed("(Plate II; I have seen it)") == ["plate::II"]
+
+
 def test_a_range_names_the_numerals_it_prints():
     """`Figs. 2-4` links 2 and 4, the numerals actually set. Expanding to 3 would
     put a link on text the page does not have."""
@@ -107,6 +157,16 @@ def test_a_short_title_between_the_name_and_the_plate():
     citation name in its own right, so either answer is the same finding."""
     assert figrefs.foreign_citation("W. Hough, in Lamp (", NAMES) in NAMES
     assert figrefs.foreign_citation("Hough, Armor, ", NAMES) == "Hough"
+
+
+def test_a_possessive_is_the_word_that_says_whose_figure_it_is():
+    """`1-358` sets `with Kroeber’s Fig. 52, a, a dog` twice, and both were
+    marked as this book's until the mark moved into the page where somebody could
+    read it. The apostrophe is the printed evidence and the store holds the name.
+    """
+    assert figrefs.foreign_citation("with Kroeber’s ", NAMES | {"Kroeber"}) \
+        == "Kroeber"
+    assert figrefs.foreign_citation("with Nelson's ", NAMES) == "Nelson"
 
 
 def test_a_sentence_ends_the_citation():

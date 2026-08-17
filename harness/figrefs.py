@@ -7,11 +7,27 @@ and says which.
 
 **Two halves, kept apart on purpose.** `scan` reads a string and reports what the
 *page* prints; `resolve` takes those spans plus the stores and says where each
-one points. The renderer calls the first and never the second, because
+one points. Nothing calls the first and then the second in one place, because
 `stores.render` is cached on the TEI's bytes alone: a `ref/key` baked into that
 HTML would go on being served after `gt/fig/` moved the box, with nothing to
 signal it. Same division, and the same reason, as `<figure>` and
 `web/edition._figure_state`.
+
+**The scan is written into the page; the resolution never is.** `tei generate`
+marks each reference it finds — `<ref type="figure" n="44" resp="#mz">44</ref>`,
+`mark` below — and the renderer reads those marks instead of re-scanning the
+served text. The two halves fall either side of that line for the reason they
+were split in the first place: which numerals the page *prints* as a reference is
+a fact about a string that no store can invalidate, and where each one *points*
+is a join over `gt/fig/` that a moved box invalidates at once.
+
+**Which is what makes a cross-reference auditable.** It used to be found in the
+renderer, so it existed only in served HTML: the collator reviewing the page
+never saw it, `tei validate` had nothing to say about it, and a reference scoped
+to the wrong plate — a working link to a picture on another leaf, with a caption
+that reads correctly under it — had no witness but a reader who clicked. In the
+page it is an `#mz` claim like an entity link, re-derived from the printed text
+on every validation run and deletable by the collator who can see it is wrong.
 
 **Nothing here is a reading.** A cross-reference is set in ASCII by the printer
 and names a number the book assigned; matching one is not a judgement about a
@@ -43,13 +59,48 @@ _PLATE_HEAD = re.compile(r"\bPlates?\.?\s+(?=[IVXLC])")
 #: the store keys pictures, not parts. Its superscript variant (`a¹`, `c¹`) is
 #: consumed with it — a superscript here distinguishes two details of one figure
 #: and changes nothing about which picture is meant.
-_NUM = re.compile(r"(\d+)(\s*,?\s*[a-z][¹²³⁴⁵⁶⁷⁸⁹0-9]?\b)?")
+#:
+#: **Several of them may follow one numeral**: `Figs. 188, a, i; 190, b` (1-334)
+#: cites two details of the same picture, and consuming only the first left `i`
+#: standing where the next member should be, which ended the run one member
+#: early. The repeat cannot run away into the prose — `Fig. 53, a, a narwhal`
+#: stops at the second `a`, the word after it failing the `\b`.
+#:
+#: **Exported as its own pattern, because a second reader needs it.** A raised
+#: numeral inside this tail is a *locant* and never a footnote marker, and the
+#: note-anchoring pass in `generate.py` has to know that or it reads `d²` in
+#: `(Fig. 155, d², e¹)` as a reference to note 2. `keying_spec.md` §2.10 states
+#: the exclusion in prose and bounds it textually — "a lone letter carries the
+#: superscript and a close-paren follows" — which catches the last locant of a
+#: run and misses every earlier one. This is the same fact structurally, and one
+#: definition rather than two.
+_LOCANTS = r"(?:\s*,?\s*[a-z][¹²³⁴⁵⁶⁷⁸⁹0-9]?\b)*"
+LOCANTS = re.compile(_LOCANTS)
+_NUM = re.compile(r"(\d+)" + _LOCANTS)
 _ROMAN = re.compile(r"([IVXLC]+)\b")
 
 #: What may stand between two members of one run. A `,` that is followed by
 #: anything but another member ends it, which is what keeps `Fig. 74, k, p. 156`
 #: from reading `156` as a third figure.
 _SEP = re.compile(r"\s*(?:,|and|&|[-–—])\s*")
+
+#: The same between two numerals of one **figure** run, plus the semicolon.
+#: `(Figs. 44, a¹; 46, a¹; 46, b)` (1-171) and `(Figs. 188, a, i; 190, b; also
+#: Plate XXVIII)` (1-334) are single runs, and the printer raises the separator a
+#: rank because the comma is already spoken for *inside* a member: `188, a, i` is
+#: one picture and its two details, so a comma between members could not be told
+#: from the one before a sub-letter. Without this the run stopped at its first
+#: member and the rest of it printed plain.
+#:
+#: **Figures only, on the evidence.** Both attestations are numeral runs, and the
+#: roman loop carries a hazard the numeral loop does not: `I` is a roman, so
+#: `Plate II; I have seen` would read a second plate out of a pronoun.
+#:
+#: It does not disturb `_ATTACHED`, which is what makes a `;` end a plate's
+#: scope. A member is a numeral or the run is over — `; also Plate`, `; see also
+#: Fig. 177` and `Fig. 69; b` all end it, the last because a sub-letter with no
+#: number before it is not a member.
+_FIG_SEP = re.compile(r"\s*(?:[,;]|and|&|[-–—])\s*")
 
 #: What may stand between a plate and a figure number that belongs to it.
 #: **Punctuation only.** `Plate XXVII, Fig. 3` and `Plates V (Fig. 1` are one
@@ -101,12 +152,68 @@ def scan(text: str) -> list[dict]:
             out.append({"start": n.start(1), "end": n.end(1), "kind": "figure",
                         "number": n.group(1), "plate": scope})
             pos = n.end()
-            if (s := _SEP.match(text, pos)) is None:
+            if (s := _FIG_SEP.match(text, pos)) is None:
                 break
             pos = s.end()
 
     out.sort(key=lambda s: s["start"])
     return out
+
+
+#: The plate a scoped figure number hangs off, as the mark spells it. Written
+#: the way the page writes it, so the attribute reads as the citation it records
+#: rather than as a code — and matched strictly, because a `@cRef` this cannot
+#: parse is a mark nothing can re-derive and `validate` says so.
+_CREF = re.compile(r"^Plate ([IVXLC]+)$")
+
+#: What a `<ref>` may be. `figure` and `plate` are the two things the printer
+#: cites, and a third value would be a kind of picture this book does not have.
+KINDS = ("figure", "plate")
+
+
+def mark(span: dict) -> str:
+    """The attributes one scanned reference is written into the page with.
+
+    `<ref type="figure" n="44" resp="#mz">44</ref>`, and for a plate-scoped
+    number `<ref type="figure" n="2" cRef="Plate XXI" resp="#mz">2</ref>`. The
+    element wraps the numeral alone, as `scan` bounds it — `Fig.` is the
+    printer's furniture, and a run of three numerals is three marks.
+
+    **Three atomic attributes and no fourth.** `@type` and `@n` are what the page
+    prints; `@cRef` is the plate that scopes the number, which is the one part of
+    a reference that is not in the numeral itself and the one that goes silently
+    wrong — the book restarts its figure numbering at 1 on every plate, so a
+    scope dropped here points a reader at a different leaf. Nothing about *which
+    picture* is written: that is `resolve`'s, over a store this file cannot see
+    from here.
+    """
+    out = f' type="{span["kind"]}" n="{span["number"]}"'
+    if span["plate"]:
+        out += f' cRef="Plate {span["plate"]}"'
+    return out
+
+
+def unmark(kind: str | None, n: str | None, cref: str | None) -> dict | None:
+    """One marked reference read back as a scan span, or `None` if it is not one.
+
+    The inverse of `mark`, and the reader for both callers that meet a marked
+    page: the renderer, which turns it into a handle, and `validate`, which
+    re-derives it against the text. `None` means the attributes do not spell a
+    reference — a `@type` outside `KINDS`, a missing `@n`, a `@cRef` that is not
+    a plate — and every caller treats that as an error rather than as an absence,
+    because a mark nobody can read is indistinguishable from one nobody checked.
+    """
+    if kind not in KINDS or not n:
+        return None
+    plate = ""
+    if cref is not None:
+        m = _CREF.match(cref)
+        if m is None:
+            return None
+        plate = m.group(1)
+    if kind == "plate" and plate:
+        return None                 # a plate is not scoped to a plate
+    return {"kind": kind, "number": n, "plate": plate}
 
 
 def authority_names(authorities: Iterable[dict]) -> set[str]:
@@ -153,6 +260,12 @@ def foreign_citation(before: str, names: set[str]) -> str:
     for name in names:
         for m in re.finditer(rf"(?:^|[^\w]){re.escape(name)}\b", tail):
             rest = tail[m.end():]
+            # `Kroeber’s Fig. 52` is Kroeber's figure, and the possessive is the
+            # word that says so. Two instances, both on `1-358`, and both were
+            # linked to this book's Fig. 52 until the mark went into the page
+            # where somebody could see it.
+            if rest[:2] in ("’s", "'s"):
+                rest = rest[2:]
             if re.fullmatch(
                 r"[\s,.]*(?:(?:in|op\.\s*cit\.|l\.\s*c\.)[\s,]*"
                 r"|[A-Z][\w’']*[\s,.]*|[(\[])*",

@@ -256,9 +256,11 @@ class Renderer:
         #: An anchor inside an anchor is not markup HTML has, so the entity link
         #: is the one that survives and a Tier-1 handle inside it renders flat.
         self.in_ref = False
-        #: `{kind, number, plate}` per figure or plate cross-reference in the
-        #: prose, in document order. **Handles, not answers** — where each one
-        #: points is `web/edition._figref_state`'s, for `el_figure`'s reason.
+        #: `{kind, number, plate}` per marked cross-reference in the prose, in
+        #: document order. **Handles, not answers** — where each one points is
+        #: `web/edition._figref_state`'s, for `el_figure`'s reason. Read off the
+        #: page's own `<ref>` marks by `el_ref`, never scanned out of the served
+        #: text: a link nobody could review is the thing that arrangement fixed.
         self.figrefs: list[dict] = []
         #: True while rendering a `<figDesc>`. A caption reading `Fig. 101.
         #: Reindeer-Harness` is the figure's own name, not a pointer at it, and
@@ -290,45 +292,52 @@ class Renderer:
         return "".join(out)
 
     def text(self, s: str) -> str:
-        """A text node, escaped, with its cross-references made into handles.
+        """A text node, escaped, and accumulated for what looks back through it.
 
-        **The handle says what the page prints and nothing more** — `data-kind`,
-        `data-n`, and the plate that scopes it. Which picture that is depends on
-        `gt/fig/`, which `stores.render`'s cache does not key on, so resolving
-        here would go on serving a link to a box somebody has since moved. Same
-        division as `<figure>`: the renderer emits the handle and
-        `web/edition._figref_state` joins it, where both keys are in hand.
-
-        A reference inside an entity link is left alone — an anchor inside an
-        anchor is not markup HTML has, and `_referring`'s note applies
-        unchanged. Inside a `<figDesc>` it is left alone too, a caption being
-        the picture's name rather than a pointer at it.
-
-        **`before` rides along, and that is what keeps this store-free.** Some
-        of these plates are other people's — `Sauer, Plate XIV` is Sauer's, and
-        this book has a Plate XIV too — and telling them apart takes the
-        `Authorities Quoted` store. Carrying the prose that precedes the
-        reference lets the route make that call with every other one, instead of
-        this method reading a second store the cache does not key on.
+        **The cross-references are not found here any more.** They are marked in
+        the page by `tei generate` and rendered by `el_ref`, which is what makes
+        one auditable: found here they existed only in served HTML, where the
+        collator reviewing the page never met one and `tei validate` had nothing
+        to say about it. `self.seen` is still kept, because the authority guard
+        downstream reads the prose in front of a reference and the name is often
+        in an element of its own — `<bibl>Sauer</bibl>, Plate XIV`.
         """
-        if self.in_ref or self.in_figdesc:
-            self.seen += s
-            return escape(s)
-        out, at = [], 0
-        for span in figrefs.scan(s):
-            i = len(self.figrefs)
-            self.figrefs.append({
-                "kind": span["kind"], "number": span["number"],
-                "plate": span["plate"],
-                "before": (self.seen + s[:span["start"]])[-160:],
-            })
-            out.append(escape(s[at:span["start"]]))
-            out.append(f'<a class="figref" data-fr="{i}" tabindex="0">'
-                       f'{escape(s[span["start"]:span["end"]])}</a>')
-            at = span["end"]
-        out.append(escape(s[at:]))
         self.seen += s
-        return "".join(out)
+        return escape(s)
+
+    def el_ref(self, el) -> str:
+        """A marked cross-reference, as a handle the route points somewhere.
+
+        **The handle says what the page marked and nothing more** — the kind, the
+        number, and the plate that scopes it, read straight off the attributes
+        `figrefs.mark` wrote. Which picture that is depends on `gt/fig/`, which
+        `stores.render`'s cache does not key on, so resolving here would go on
+        serving a link to a box somebody has since moved. Same division as
+        `<figure>`: the renderer emits the handle and `web/edition._figref_state`
+        joins it, where both keys are in hand.
+
+        **`before` rides along, and that is what keeps this store-free.** Some of
+        these plates are other people's — `Sauer, Plate XIV` is Sauer's, and this
+        book has a Plate XIV too. `tei generate` already refuses to *mark* one,
+        so a marked page carries none; a page a collator marked by hand is not
+        bound by that, and the route makes the same call with the store in hand.
+
+        A reference inside an entity link renders flat: an anchor inside an
+        anchor is not markup HTML has, and `_referring`'s note applies unchanged.
+        So does one whose attributes do not spell a reference — `validate` errors
+        on that, so it reaches no collated page, and a draft showing it as text
+        is the honest rendering of a mark nothing can read.
+        """
+        # Taken before the body is rendered: `inline` feeds the numeral itself
+        # into `seen`, and the guard reads what stands *in front of* a reference.
+        before = self.seen[-160:]
+        body = self.inline(el)
+        handle = figrefs.unmark(el.get("type"), el.get("n"), el.get("cRef"))
+        if handle is None or self.in_ref or self.in_figdesc:
+            return body
+        i = len(self.figrefs)
+        self.figrefs.append(dict(handle, before=before))
+        return f'<a class="figref" data-fr="{i}" tabindex="0">{body}</a>'
 
     def comment(self, node) -> str:
         """An editorial comment, as a flag that opens rather than as invisible text.
