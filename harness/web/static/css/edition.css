@@ -765,3 +765,13 @@ a.figref { color:inherit; text-decoration:none;
 a.figref:hover, a.figref:focus { color:var(--link); border-bottom-color:var(--link) }
 a.figref.unresolved { border-bottom-style:none; cursor:help; color:inherit }
 .reader a.figref.unresolved { cursor:default }
+
+/* A page cross-reference — `See p. 15.` — set like a figure reference, because
+   it is the same act: the book pointing at itself, over the numeral the printer
+   set and nothing more. It carries no `unresolved` state, and the difference is
+   real rather than an omission: a figure handle is a join that can come back
+   empty, and a folio is an address that always leads somewhere — to the leaf, or
+   to `/folio/{n}`'s own page saying which folios have a witness yet. */
+a.pageref { color:inherit; text-decoration:none;
+  border-bottom:1px dotted var(--dim); cursor:pointer }
+a.pageref:hover, a.pageref:focus { color:var(--link); border-bottom-color:var(--link) }

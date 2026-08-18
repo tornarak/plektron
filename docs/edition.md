@@ -1458,7 +1458,7 @@ naming the joined form and its line, reads the page, and wraps the span across
 the break — `_emit` keeps printed line breaks *inside* an element for exactly
 this. After collation it links like anything else.
 
-## The prose points at its own pictures, and now the pointing works
+## The prose points at itself, and now the pointing works
 
 The book cross-references constantly — `(Plate XXVII, Fig. 3)`, `(see Plate
 XXIII, Fig. 2; also Fig. 177)`, `Fig. 87 represents a knife used for` — and every
@@ -1466,6 +1466,11 @@ one of those names a picture the figure store already holds. `harness/figrefs.py
 finds them and `web/edition._figref_state` says which. A resolved reference
 becomes `a.fig`, which is the List of Illustrations' own class, so it opens a
 stack card through `openFigure` and the behaviour is not written twice.
+
+It points at its own **leaves** too — `See p. 15.`, `Compare pp. 33, 161.` — and
+those go through the folio index rather than through `gt/fig/`. Three kinds of
+`<ref>` and one scan, but the page is not found on the same terms as the other
+two, and the section below is about why.
 
 ### The mark is in the page, because a link nobody reviews is not an assertion
 
@@ -1561,6 +1566,61 @@ refuse.** The 114 are Nelson (62), Schrenck, Murdoch, Boas, Laufer, Ratzel, Saue
 and Teit. Every refusal names the store that declined, and shows it on hover: a
 reader has to be able to tell a gap in `gt/fig/` from an edition that does not
 link.
+
+### A page reference proves itself in the scan, because the guard cannot save it
+
+`See p. 15.` is the same act as `Fig. 87` — the book pointing at itself — and it
+carries the same mark, `<ref type="page" n="15" resp="#mz">15</ref>`, re-derived
+by `validate` on the same terms. What differs is **where the discrimination
+happens**, and it had to move.
+
+A plate reference can be scanned permissively and disqualified afterwards,
+because `Plate XIV` is the printer's furniture and the name in front of it is the
+whole question. A page locator has no furniture at all. `p. 24` is `p. 24`
+whoever's page it is, and in these footnotes it is usually not this book's: **268
+page locators are printed across the generated corpus and only about a quarter
+point here.** The rest close a citation — `Nelson, Fig. 93, p. 271`, `Ibid.,
+p. 115`, `See Vol. VI, The Koryak, p. 123`, a `p. 1275` that is Middendorff's.
+
+Handing those to the authority guard was measured rather than assumed, and it
+does not hold: **155 of the 268 survive it.** The guard was built for plates,
+where the author stands immediately in front; a page locator stands at the *end*
+of the citation with `Plate LXXVI, Fig. 1,` in between, and the gap pattern
+stops at the first full stop. Widening the gap to admit a figure run recovered
+some of it and never all — and the residue is not noise. It is the failure this
+whole apparatus is organised against: a mark on `Nelson, …, p. 271` opens leaf
+271 **of this book**, under prose that reads perfectly well there, with no error
+signal anywhere.
+
+So the *construction* is matched instead of the locator. A cue — `See`,
+`Compare`, `cf.` — opening its own clause, optionally `also`, and reaching the
+locator with nothing between. That is a sentence pointing at this book, and it is
+not a fact about Bogoras: it is how a self-reference is set in any monograph,
+which is the part worth having. Anything richer is a citation and prints plain.
+
+**71 marked, and the whole 71 were read against the printed text: no foreign
+citation among them.** The cost is about fifteen page references that *are* this
+book's and stay unmarked — `See Fig. 110, p. 190`, `Compare the Oˊnmɪlɪn Group,
+p. 26` — which is the direction the List of Illustrations already takes on a
+collision, and for its reason. An unmarked reference is a worklist line a
+collator can add by hand. A wrongly marked one is a working link nobody can see
+is wrong.
+
+Two near-misses fixed the "nothing between" clause and are pinned as tests,
+because both print a bare parenthesised locator that a looser rule would have
+taken: `1-066`'s *He even asserts (p. 77)*, where the *He* is Maydell and the
+sentence before it named his volume; and `1-068`'s *one of the texts published in
+my “Chukchee Materials” (p. 52)*, which is Bogoras's other book.
+
+**Resolution is an address, not a join**, which is why the renderer links it
+directly to `/folio/{n}` — the route every other folio link in the edition goes
+through — instead of building a handle for `_figref_state`. Nothing about it is
+invalidated by a moved box, because no box is involved. 70 of the 71 reach a
+witnessed folio today; the one that does not, `2-070`'s *Compare p. 339*, lands
+on the folio route's own refusal page, which names 337 and 344 as the nearest
+leaves that have a witness. That is the same reason there is no `unresolved`
+state on `a.pageref` and there is one on `a.figref`: a figure handle can come
+back empty, and a folio always leads somewhere.
 
 ### A figure is not a box
 

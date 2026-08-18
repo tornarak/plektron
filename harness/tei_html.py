@@ -384,6 +384,16 @@ class Renderer:
         handle = figrefs.unmark(el.get("type"), el.get("n"), el.get("cRef"))
         if handle is None or self.in_ref or self.in_figdesc:
             return body
+        # **A page reference is an address, not a join, so it links from here.**
+        # `/folio/{n}` is the route every other folio link in the edition already
+        # goes through, and it answers for itself: a folio no leaf witnesses gets
+        # the route's refusal page, which says so, rather than a link this
+        # renderer had to consult a store to decide not to draw. That is what
+        # keeps the division `el_ref` opens with intact — nothing here is
+        # invalidated by a box moving, because no box is involved.
+        if handle["kind"] == "page":
+            return (f'<a class="pageref" href="{BASE}/folio/'
+                    f'{escape(handle["number"])}">{body}</a>')
         i = len(self.figrefs)
         self.figrefs.append(dict(handle, before=before))
         return f'<a class="figref" data-fr="{i}" tabindex="0">{body}</a>'

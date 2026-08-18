@@ -1,9 +1,11 @@
-"""Figure and plate cross-references in the prose, found and resolved.
+"""The book's cross-references to itself — figure, plate and page.
 
 The book points at its own pictures constantly — `(Plate XXVII, Fig. 3)`,
 `(see Plate XXIII, Fig. 2; also Fig. 177)`, `Fig. 87 represents a knife` — and
 every one of those is a picture the figure store already holds. This finds them
-and says which.
+and says which. It points at its own leaves too — `See p. 15.`, `Compare
+pp. 33, 161.` — and those resolve through the folio index instead, `_PAGE_HEAD`
+and `KINDS` carrying why the two are not found on the same terms.
 
 **Two halves, kept apart on purpose.** `scan` reads a string and reports what the
 *page* prints; `resolve` takes those spans plus the stores and says where each
@@ -53,6 +55,45 @@ _FIG_HEAD = re.compile(r"\bFigs?\.\s*(?=\d)")
 
 #: A printed plate reference: `Plate XIV`, `Plates XVII and XVIII`, `Plate V.`.
 _PLATE_HEAD = re.compile(r"\bPlates?\.?\s+(?=[IVXLC])")
+
+#: A page reference to **this book**: `See p. 15.`, `Compare pp. 33, 161.`,
+#: `(cf. p. 30)`, `. Compare also p. 312, Footnote 4.`
+#:
+#: **The deictic is inside the pattern, and that is the whole design.** A page
+#: locator is the commonest thing in these footnotes and it is nearly always
+#: somebody else's: 268 are printed across the 325 generated pages, and only
+#: about a quarter point at this book. The rest close a citation — `Nelson,
+#: Fig. 93, p. 271`, `Ibid., p. 115`, `See Vol. VI, The Koryak, p. 123`, and a
+#: `p. 1275` that is Middendorff's. A plate reference could be scanned
+#: permissively and filtered afterwards by `foreign_citation`, because the plate
+#: is the printer's furniture and the name in front of it is the discriminator.
+#: A page locator has no furniture at all: `p. 24` is `p. 24` whoever's page it
+#: is, so a permissive scan would hand the guard 268 spans of which it correctly
+#: judged **113**, and the residue is not noise but working links into the wrong
+#: book.
+#:
+#: So the *construction* is matched instead of the locator. The reference has to
+#: open its own clause and reach the number with nothing between: a cue verb,
+#: optionally `also`, then the locator. That is a sentence pointing at this book
+#: and it is not book-specific — it is how a cross-reference is set in any
+#: monograph. Anything richer than the cue is a citation and prints plain,
+#: including several that *are* this book's (`See Fig. 110, p. 190`,
+#: `Compare the Oˊnmɪlɪn Group, p. 26`). **Refusing them is the safe direction**
+#: and the same one the List of Illustrations takes on a collision: an unmarked
+#: reference is a worklist line a collator can add, and a wrongly marked one is a
+#: link that opens a real leaf and reads correctly under it.
+#:
+#: Measured: 69 marked, and reading all 69 against the printed text found no
+#: foreign citation among them. The two that a bare-deictic rule *would* have
+#: caught are what fixed the "nothing between" clause — `He even asserts
+#: (p. 77)` on `1-066`, where the *He* is Maydell, and `one of the texts
+#: published in my “Chukchee Materials” (p. 52)` on `1-068`, which is Bogoras's
+#: other book. Both print a bare `(p. N)` and both are excluded because no cue
+#: opens them.
+_PAGE_HEAD = re.compile(
+    r"(?:^|[.;:—]|\()\s*[¹²³⁴⁵⁶⁷⁸⁹]?\s*"
+    r"(?:[Ss]ee|[Cc]ompare|[Cc]f\.)\s+(?:also\s+)?"
+    r"pp?\.\s*(?=\d)")
 
 #: One numeral in a run, and the sub-letter that may follow it. **The sub-letter
 #: is consumed and never linked**: `Fig. 190, a` names a part of one picture, and
@@ -111,17 +152,28 @@ _FIG_SEP = re.compile(r"\s*(?:[,;]|and|&|[-–—])\s*")
 _ATTACHED = re.compile(r"^[\s,(]*$")
 
 
+#: One page in a locator's run. No locants — a folio has no sub-parts — and no
+#: roman, this index being the arabic folio `apparatus.folio_index` is keyed by.
+_FOLIO = re.compile(r"(\d+)")
+
+
 def scan(text: str) -> list[dict]:
-    """Every figure and plate reference one string prints, in order.
+    """Every figure, plate and page reference one string prints, in order.
 
     Returns `{start, end, kind, number, plate}` per **linkable numeral**:
-    `kind` is `"plate"` or `"figure"`, `number` is what the page prints, and
-    `plate` is the roman of the plate a figure number is scoped to, or `""`.
+    `kind` is `"plate"`, `"figure"` or `"page"`, `number` is what the page
+    prints, and `plate` is the roman of the plate a figure number is scoped to,
+    or `""` — always `""` on a page, a folio being scoped to nothing.
 
-    `start`/`end` bound the numeral alone, never the `Fig.` before it. The word
-    is the printer's furniture and the numeral is the handle; underlining
-    `Fig. 87` entire would also mean that `Figs. 214, 215, 216` had to be one
-    link or four overlapping ones.
+    `start`/`end` bound the numeral alone, never the `Fig.` or the `See p.`
+    before it. The word is the printer's furniture and the numeral is the
+    handle; underlining `Fig. 87` entire would also mean that
+    `Figs. 214, 215, 216` had to be one link or four overlapping ones.
+
+    **The three kinds are not found on equal terms**, and `_PAGE_HEAD` carries
+    why: a figure reference is scanned permissively and disqualified afterwards
+    by the name in front of it, and a page reference has to prove itself here
+    because there is nothing about `p. 24` for a guard downstream to read.
     """
     out: list[dict] = []
     plates: list[tuple[int, int, str]] = []  # (start, end, roman)
@@ -156,6 +208,21 @@ def scan(text: str) -> list[dict]:
                 break
             pos = s.end()
 
+    for m in _PAGE_HEAD.finditer(text):
+        pos = m.end()
+        while (n := _FOLIO.match(text, pos)) is not None:
+            out.append({"start": n.start(1), "end": n.end(1), "kind": "page",
+                        "number": n.group(1), "plate": ""})
+            pos = n.end()
+            # `_SEP` and not `_FIG_SEP`: a semicolon does not continue a page
+            # run, and a comma only does where a numeral follows it. That is
+            # what keeps `See p. 141, footnote.` and `Compare p. 19, Footnote 2`
+            # to the one folio each prints — the matter after the comma is a
+            # place *on* that page and not a second one.
+            if (s := _SEP.match(text, pos)) is None:
+                break
+            pos = s.end()
+
     out.sort(key=lambda s: s["start"])
     return out
 
@@ -167,8 +234,17 @@ def scan(text: str) -> list[dict]:
 _CREF = re.compile(r"^Plate ([IVXLC]+)$")
 
 #: What a `<ref>` may be. `figure` and `plate` are the two things the printer
-#: cites, and a third value would be a kind of picture this book does not have.
-KINDS = ("figure", "plate")
+#: cites by picture; `page` is the book pointing at its own leaf. A fourth value
+#: would be a kind of thing this book does not cross-refer to.
+#:
+#: **A page is not resolved through `resolve` and that is deliberate.** A figure
+#: handle is a join over `gt/fig/` and can point at a box somebody has moved; a
+#: folio is an address, and `apparatus.folio_index` already answers it for every
+#: other folio link the edition draws. So the renderer sends it to `/folio/{n}`
+#: directly, as it does a note marker, and the route's own refusal page is what
+#: an unwitnessed folio meets — 280 of the book's 732 have a witness today, so
+#: that path is the common one and not an edge.
+KINDS = ("figure", "plate", "page")
 
 
 def mark(span: dict) -> str:
@@ -211,8 +287,8 @@ def unmark(kind: str | None, n: str | None, cref: str | None) -> dict | None:
         if m is None:
             return None
         plate = m.group(1)
-    if kind == "plate" and plate:
-        return None                 # a plate is not scoped to a plate
+    if kind in ("plate", "page") and plate:
+        return None                 # neither is scoped to a plate
     return {"kind": kind, "number": n, "plate": plate}
 
 

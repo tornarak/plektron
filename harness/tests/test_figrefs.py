@@ -272,3 +272,70 @@ def test_an_unresolved_reference_always_says_which_store_declined():
                  {"kind": "figure", "number": "999", "plate": ""},
                  {"kind": "figure", "number": "2", "plate": "V"}):
         assert _resolve(**span)["why"]
+
+
+# --- scan: a page reference, which has to prove itself ------------------------
+
+def test_the_deictic_page_reference():
+    """The commonest shape in the footnotes, and the one the rule is for."""
+    assert _printed("See p. 15.") == ["page::15"]
+    assert _printed("Compare p. 221.") == ["page::221"]
+    assert _printed("añqaˊlɪt (see p. 11).") == ["page::11"]
+    assert _printed("called Kiˊhi (cf. p. 30): hence") == ["page::30"]
+    assert _printed("from twelve to fifteen years. See also p. 75.") == ["page::75"]
+
+
+def test_a_page_run_is_a_link_each():
+    """The List of Illustrations' rule, unchanged: one link for `pp. 33, 161`
+    would have to pick one of two."""
+    assert _printed("Compare pp. 33, 161.") == ["page::33", "page::161"]
+    assert _printed("See pp. 13 and 311.") == ["page::13", "page::311"]
+
+
+def test_what_follows_a_folio_is_a_place_on_it_not_a_second_folio():
+    """`_SEP` continues a run only where a numeral follows, so the matter after
+    the comma stays out — it locates something *on* the page just named."""
+    assert _printed("See p. 141, footnote.") == ["page::141"]
+    assert _printed("Compare p. 19, Footnote 2.") == ["page::19"]
+    assert _printed("Compare also p. 312, Footnote 4.") == ["page::312"]
+
+
+def test_a_page_locator_closing_a_citation_is_not_scanned():
+    """**The failure this rule exists to refuse.** 268 page locators are printed
+    across the generated corpus and only about a quarter are this book's; every
+    one of these names somebody else's page, and a mark on one would open a real
+    leaf of *this* book with prose that reads correctly under it."""
+    for s in ("Nelson, Fig. 93, p. 271.",
+              "Ibid., p. 115.",
+              "Compare Nelson, Plate LXX, Fig. 12, p. 184.",
+              "Boas, Baffin-Land Eskimo, Fig. 44, a, c-e, p. 34.",
+              "Middendorff, IV, Part 2, p. 1105.",
+              "W. H. Hooper, Ten Months among the Tents of the Tuski, p. 100."):
+        assert not [x for x in figrefs.scan(s) if x["kind"] == "page"], s
+
+
+def test_a_cue_the_locator_does_not_immediately_follow_is_not_one():
+    """The clause that separates the deictic from a citation, and the two cases
+    that fixed it. `1-066` — the *He* is Maydell, whose volume the sentence
+    before it named; `1-068` — Bogoras's other book, named in the same breath.
+    Both print a bare parenthesised locator and neither opens on a cue."""
+    assert _printed("Maydell, I, pp. 627-680. He even asserts (p. 77) that") == []
+    assert _printed("published in my “Chukchee Materials” (p. 52), a man") == []
+    assert _printed("See Vol. VI, The Koryak, p. 123.") == []
+    assert _printed("See Fig. 110, p. 190.") == ["figure::110"]
+
+
+def test_a_page_is_never_scoped_to_a_plate():
+    """`unmark` refuses a `@cRef` here for the reason it refuses one on a plate:
+    a folio is an address and nothing scopes it."""
+    assert figrefs.unmark("page", "15", None) == {
+        "kind": "page", "number": "15", "plate": ""}
+    assert figrefs.unmark("page", "15", "Plate XXI") is None
+
+
+def test_page_is_a_kind_a_marked_page_can_carry():
+    """`validate` names `KINDS` in its refusal, so a kind the scan emits and the
+    reader does not is a mark nothing downstream could read."""
+    assert "page" in figrefs.KINDS
+    assert figrefs.mark({"kind": "page", "number": "15", "plate": ""}) == (
+        ' type="page" n="15"')
