@@ -1467,10 +1467,11 @@ finds them and `web/edition._figref_state` says which. A resolved reference
 becomes `a.fig`, which is the List of Illustrations' own class, so it opens a
 stack card through `openFigure` and the behaviour is not written twice.
 
-It points at its own **leaves** too — `See p. 15.`, `Compare pp. 33, 161.` — and
-those go through the folio index rather than through `gt/fig/`. Three kinds of
-`<ref>` and one scan, but the page is not found on the same terms as the other
-two, and the section below is about why.
+It points at its own **leaves** and its own **chapters** too — `See p. 15.`,
+`Compare pp. 33, 161.`, `See Chapter XII.` — and those go through the folio index
+rather than through `gt/fig/`. Four kinds of `<ref>` and one scan; the page is
+the one not found on the same terms as the other three, and the section below is
+about why.
 
 ### The mark is in the page, because a link nobody reviews is not an assertion
 
@@ -1621,6 +1622,39 @@ on the folio route's own refusal page, which names 337 and 344 as the nearest
 leaves that have a witness. That is the same reason there is no `unresolved`
 state on `a.pageref` and there is one on `a.figref`: a figure handle can come
 back empty, and a folio always leads somewhere.
+
+### A chapter reference is scanned on the plate's terms, not the page's
+
+`See Chapter XII.` is the fourth kind, and it goes back to the permissive scan:
+`Chapter` is the printer's furniture, the roman is the handle, and the name in
+front of it is once again the whole discriminator. `Compare Bogdanovitch,
+Chapter V.` is Bogdanovitch's fifth chapter and `foreign_citation` catches it
+standing exactly where it stands in front of a plate. **That is the difference
+from a page locator in one sentence:** a plate and a chapter have furniture for a
+name to govern, and `p. 24` has none.
+
+19 chapter references printed across the generated corpus, 1 behind an authority,
+and **every one of the remaining 18 names a roman `data/toc.json` holds as a
+chapter** — no misses, and no ambiguity to resolve.
+
+Resolution is `/chapter/{roman}`, which looks the id up rather than building it.
+`chXII` is the ToC's own spelling and concatenating `ch` with the roman would be
+the route asserting the store's key scheme from outside it; the entry whose
+`chapter` is that roman at the chapter level is what the store *says*. A roman
+the ToC does not hold refuses at serve time rather than at scan time — the
+reference is a fact about the printed page and where it points is a fact about a
+store that can be incomplete, which is the division `figrefs` is built on
+throughout. It inherits the locator's precursor property with it: the link
+resolves today wherever a witness places the chapter's first folio, and keeps
+resolving unchanged the day that chapter becomes a run with a page of its own.
+
+**A chapter named by its title is deliberately not matched.** `See chapter on
+shamanism.` would resolve — `Shamanism` is a level-1 title and nothing else — but
+`See chapter on charms.` would have to choose among six entries carrying
+*Charms*, of which `Charms and Sacred Objects` is merely the one that happens to
+be a chapter. A rule that resolves the first and guesses the second is worse than
+one that leaves both as worklist lines, and two attestations do not pay for the
+machinery.
 
 ### A figure is not a box
 

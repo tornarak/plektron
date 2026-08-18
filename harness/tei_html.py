@@ -394,6 +394,12 @@ class Renderer:
         if handle["kind"] == "page":
             return (f'<a class="pageref" href="{BASE}/folio/'
                     f'{escape(handle["number"])}">{body}</a>')
+        # A chapter, the same way and for the same reason — `/chapter/{roman}`
+        # looks the id up in `data/toc.json` and locates its opening folio, so
+        # nothing about the store's key scheme is written into the page.
+        if handle["kind"] == "chapter":
+            return (f'<a class="chapref" href="{BASE}/chapter/'
+                    f'{quote(handle["number"], safe="")}">{body}</a>')
         i = len(self.figrefs)
         self.figrefs.append(dict(handle, before=before))
         return f'<a class="figref" data-fr="{i}" tabindex="0">{body}</a>'

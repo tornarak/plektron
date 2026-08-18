@@ -56,6 +56,33 @@ _FIG_HEAD = re.compile(r"\bFigs?\.\s*(?=\d)")
 #: A printed plate reference: `Plate XIV`, `Plates XVII and XVIII`, `Plate V.`.
 _PLATE_HEAD = re.compile(r"\bPlates?\.?\s+(?=[IVXLC])")
 
+#: A chapter reference: `See Chapter XII.`, `Compare Chapter XI.`, `They will be
+#: discussed at length, in Chapter XIII.`
+#:
+#: **Scanned permissively, on the plate's terms and not the page's.** `Chapter`
+#: is the printer's furniture and the roman is the handle, so the name in front
+#: of it is once again the whole discriminator — `Compare Bogdanovitch,
+#: Chapter V.` is Bogdanovitch's fifth chapter, and `foreign_citation` catches it
+#: standing right where it stands in front of a plate. That is the difference
+#: from `_PAGE_HEAD` in one line: a page locator has no furniture for a name to
+#: govern, and this has.
+#:
+#: Measured over the corpus: 19 printed, 1 behind an authority, and **every one
+#: of the remaining 18 names a roman `data/toc.json` holds as a chapter.**
+#:
+#: `Chapters?\.?` tolerates the stop `2-004` sets in `Compare Chapter. XIII.` —
+#: adjudicated ground truth, so it is what the leaf prints. The mark covers the
+#: roman alone and a stop before it changes nothing about which chapter is meant.
+#:
+#: **What is deliberately not matched is a chapter named by its title** — `See
+#: chapter on shamanism.` and `See chapter on charms.`, one page each. The first
+#: would resolve: `Shamanism` is a level-1 title and nothing else. The second
+#: would have to choose among six entries whose titles carry *Charms*, of which
+#: `Charms and Sacred Objects` is merely the one that happens to be a chapter. A
+#: rule that resolves one and guesses the other is worse than a rule that leaves
+#: both as worklist lines, and two attestations do not pay for the machinery.
+_CHAP_HEAD = re.compile(r"\bChapters?\.?\s+(?=[IVXLC])")
+
 #: A page reference to **this book**: `See p. 15.`, `Compare pp. 33, 161.`,
 #: `(cf. p. 30)`, `. Compare also p. 312, Footnote 4.`
 #:
@@ -208,6 +235,16 @@ def scan(text: str) -> list[dict]:
                 break
             pos = s.end()
 
+    for m in _CHAP_HEAD.finditer(text):
+        pos = m.end()
+        while (r := _ROMAN.match(text, pos)) is not None:
+            out.append({"start": r.start(1), "end": r.end(1), "kind": "chapter",
+                        "number": r.group(1), "plate": ""})
+            pos = r.end()
+            if (s := _SEP.match(text, pos)) is None:
+                break
+            pos = s.end()
+
     for m in _PAGE_HEAD.finditer(text):
         pos = m.end()
         while (n := _FOLIO.match(text, pos)) is not None:
@@ -244,7 +281,11 @@ _CREF = re.compile(r"^Plate ([IVXLC]+)$")
 #: directly, as it does a note marker, and the route's own refusal page is what
 #: an unwitnessed folio meets — 280 of the book's 732 have a witness today, so
 #: that path is the common one and not an edge.
-KINDS = ("figure", "plate", "page")
+#: `chapter` resolves through `data/toc.json` and the same folio index behind it,
+#: and it refuses at serve time rather than at scan time — a roman the ToC does
+#: not hold is a question about the store, which is the answer `resolve` already
+#: gives for a plate with no leaf.
+KINDS = ("figure", "plate", "page", "chapter")
 
 
 def mark(span: dict) -> str:
@@ -287,8 +328,8 @@ def unmark(kind: str | None, n: str | None, cref: str | None) -> dict | None:
         if m is None:
             return None
         plate = m.group(1)
-    if kind in ("plate", "page") and plate:
-        return None                 # neither is scoped to a plate
+    if kind in ("plate", "page", "chapter") and plate:
+        return None                 # none of the three is scoped to a plate
     return {"kind": kind, "number": n, "plate": plate}
 
 

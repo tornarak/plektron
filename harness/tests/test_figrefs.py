@@ -339,3 +339,52 @@ def test_page_is_a_kind_a_marked_page_can_carry():
     assert "page" in figrefs.KINDS
     assert figrefs.mark({"kind": "page", "number": "15", "plate": ""}) == (
         ' type="page" n="15"')
+
+
+# --- scan: a chapter, which is scanned on the plate's terms --------------------
+
+def test_a_chapter_reference():
+    """`Chapter` is furniture and the roman is the handle, so this is scanned
+    permissively — the name in front of it is the discriminator, exactly as for
+    a plate, and that is what a page locator has no room for."""
+    assert _printed("See Chapter XII.") == ["chapter::XII"]
+    assert _printed("They will be discussed at length, in Chapter XIII.") == [
+        "chapter::XIII"]
+    assert _printed("See Chapter VI, section on armor.") == ["chapter::VI"]
+
+
+def test_a_chapter_reference_tolerates_the_stop_the_page_sets():
+    """`2-004` prints `Compare Chapter. XIII.` in adjudicated ground truth, so
+    it is what the leaf sets. The mark covers the roman and a stop before it
+    changes nothing about which chapter is meant."""
+    assert _printed("Compare Chapter. XIII.") == ["chapter::XIII"]
+
+
+def test_another_author_s_chapter_is_scanned_and_the_guard_declines_it():
+    """`Compare Bogdanovitch, Chapter V.` — the one of the corpus's 19 chapter
+    references that is not this book's. It is *found* here, because what the page
+    prints is a fact about the string; `foreign_citation` is what refuses it, and
+    that division is the whole shape of this module."""
+    assert _printed("Compare Bogdanovitch, Chapter V.") == ["chapter::V"]
+    assert figrefs.foreign_citation("Compare Bogdanovitch, ", {"Bogdanovitch"})
+
+
+def test_a_chapter_named_by_its_title_is_not_matched():
+    """Deliberate. `See chapter on shamanism.` would resolve — `Shamanism` is a
+    level-1 title and nothing else — but `See chapter on charms.` would have to
+    choose among six entries carrying *Charms*. A rule that resolves one and
+    guesses the other is worse than one that leaves both as worklist lines."""
+    assert _printed("See chapter on shamanism.") == []
+    assert _printed("See chapter on charms.") == []
+
+
+def test_the_two_kinds_can_stand_in_one_note():
+    """`1-243` sets both: a chapter and a page in one footnote."""
+    assert _printed("See Chapter XII; cf. also p. 101.") == [
+        "chapter::XII", "page::101"]
+
+
+def test_a_chapter_is_never_scoped_to_a_plate():
+    assert figrefs.unmark("chapter", "XII", None) == {
+        "kind": "chapter", "number": "XII", "plate": ""}
+    assert figrefs.unmark("chapter", "XII", "Plate XXI") is None

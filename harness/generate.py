@@ -140,6 +140,30 @@ def _split_notes(rows: list[tuple[int, str]]) \
     was handed a markerless block and said so. Two texts corrupted by one join,
     and the comment it produced sent a reader to look for a recognizer error that
     was not there. The join now refuses to cross a zone.
+
+    **A line head is not the only place the printer starts a note**, and reading
+    it as one lost three of them silently. Where two notes are short the
+    compositor sets them on one line — `2-018` prints `¹ Regarding deceased
+    people … see Chapter XVII. ² See p. 42.`, and `2-038` runs three that way.
+    The cut ran at line heads only, so the second and third notes' words stayed
+    inside the first note's element and the notes themselves never existed.
+
+    **What made it worth fixing over the other note faults is that nothing said
+    so.** The body's `²` was left plain, because `_mark_notes` only anchors a
+    marker a note was made for; the page then held notes 1 and 3, with no
+    dangling reference and no comment. `validate` compares the marks against the
+    notes and both sides were missing note 2 identically — a comparison whose two
+    witnesses were one witness. A page that has lost a footnote read exactly like
+    a page that never printed one.
+
+    **The interior cut carries a second witness the head cut does not need.** A
+    marker at a line head is unambiguous; a superscript mid-line can be a
+    figure's locant (`Fig. 155, d²`) or a numeral in the note's own prose. So an
+    interior marker opens a note only when it is set off by whitespace on both
+    sides *and* its digit is exactly one more than the note currently open. The
+    sequence is the printer's own, and it is what a locant can never satisfy: `d²`
+    is not preceded by a space, and a `²` that does not follow note 1 is not a
+    note opening. Measured over the corpus, this cuts on 3 pages and nowhere else.
     """
     out: list[tuple[str, list[tuple[int, str]]]] = []
     for idx, text in rows:
@@ -148,8 +172,37 @@ def _split_notes(rows: list[tuple[int, str]]) \
             out.append((head[0], []))
         elif not out:
             out.append(("", []))
-        out[-1][1].append((idx, text))
+        pos = 0
+        while (cut := _run_on_note(text, pos, out[-1][0])) is not None:
+            out[-1][1].append((idx, text[pos:cut].rstrip()))
+            out.append((text[cut], []))
+            pos = cut
+        out[-1][1].append((idx, text[pos:]))
     return out
+
+
+#: A note marker the printer set inside a line rather than at its head. Space on
+#: both sides, which is what a figure's locant never has.
+_RUN_ON = re.compile(rf"(?<=\s)([{NOTE_MARKERS}])(?=\s)")
+
+
+def _run_on_note(text: str, pos: int, open_marker: str) -> int | None:
+    """Where the next note starts inside this line, or None.
+
+    `open_marker` is the note the line is currently in. Without one there is no
+    sequence to be next in and nothing is cut — a markerless block is already a
+    question, and answering it by finding a `²` in its text would be the guess
+    this whole function refuses.
+    """
+    if not open_marker:
+        return None
+    want = int(NOTE_N[open_marker]) + 1
+    if want >= len(NOTE_MARKERS):
+        return None
+    for m in _RUN_ON.finditer(text, pos):
+        if m.group(1) == NOTE_MARKERS[want]:
+            return m.start()
+    return None
 
 
 def _figures_with_geometry(ref: str, root: Path) -> list[dict]:

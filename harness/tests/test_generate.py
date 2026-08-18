@@ -293,6 +293,40 @@ def test_several_notes_in_one_zone_become_several_notes(tmp_path):
             'runs to a second line.</note>') in doc
 
 
+def test_two_notes_the_printer_set_on_one_line_are_two_notes(tmp_path):
+    """**The cut used to run at line heads only, and lost three notes silently.**
+    Where two notes are short the compositor sets them on one line — `2-018`
+    prints `¹ Regarding deceased people … see Chapter XVII. ² See p. 42.`, and
+    `2-038` runs three that way. The second note's words stayed inside the
+    first's element, the body's `²` was left unmarked because no note was made
+    for it, and *nothing said so*: the page held notes 1 and 3 with no dangling
+    reference and no comment, so `validate` compared marks against notes with
+    both sides missing note 2 identically.
+    """
+    blocks = [("MainZone-P", lines_at(["One\u00b9 and two\u00b2 here."])),
+              ("MarginTextZone-Notes",
+               lines_at(["\u00b9 First note. \u00b2 Second note."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["notes"] == 2 and rep["notes_anchored"] == 2
+    assert '<note n="1" place="bottom">First note.</note>' in doc
+    assert '<note n="2" place="bottom">Second note.</note>' in doc
+
+
+def test_an_interior_marker_opens_a_note_only_next_in_the_printer_s_sequence(tmp_path):
+    """The second witness the head cut does not need. A superscript mid-line can
+    be a figure's locant or a numeral in the note's own prose, so an interior
+    marker cuts only when it is set off by whitespace *and* its digit is one
+    more than the note currently open. `\u00b3` after note 1 is not note 2 and
+    does not cut; `d\u00b2` has no space in front of it and never could.
+    """
+    blocks = [("MainZone-P", lines_at(["One\u00b9 here."])),
+              ("MarginTextZone-Notes",
+               lines_at(["\u00b9 See (Fig. 155, d\u00b2, e\u00b9) and \u00b3 elsewhere."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["notes"] == 1
+    assert "\u00b3 elsewhere" in doc
+
+
 def test_a_marker_that_reads_nowhere_in_the_prose_stays_at_the_foot(tmp_path):
     """The refusal half. Notes in this book anchor on their own page, so a marker
     with no match means it did not read — and the comment says that rather than

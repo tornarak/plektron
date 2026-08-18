@@ -29,6 +29,7 @@ from .. import apparatus, entities, figrefs, geo, ipa, langs, lexicon, speech, t
 from .. import edition_ui as ui
 from .. import figures as F
 from ..entities import ENTITY_CLASSES, alias_index, split_id
+from ..state import MILESTONE_UNITS, load_toc
 from . import Editor, register, stores, templates
 from .files import send_file
 
@@ -512,6 +513,30 @@ def folio(request: Request, n: int):
     root = _root(request)
     out = apparatus.locate(root, folio=n, index=stores.folio_index(root))
     return _resolved(out) or _refusal(request, out, f"folio {n}")
+
+
+@router.get("/chapter/{roman}")
+def chapter(request: Request, roman: str):
+    """A chapter, by the roman the prose prints — `See Chapter XII.`
+
+    **The id is looked up, never built.** `chXII` is `data/toc.json`'s own
+    spelling and concatenating `ch` with the roman would be this route asserting
+    the store's key scheme from outside it; the entry whose `chapter` is this
+    roman *and* whose level is the chapter level is what the store says. A roman
+    the ToC does not hold refuses here rather than at scan time, which is the
+    answer `figrefs.resolve` already gives for a plate with no leaf: the
+    reference is a fact about the printed page, and where it points is a fact
+    about a store that can be incomplete.
+    """
+    root = _root(request)
+    entry = next((e for e in load_toc(root)
+                  if e.get("chapter") == roman and e.get("level") == 1
+                  and e.get("id")), None)
+    if entry is None:
+        return _refusal(request, {"nearest": []}, f"Chapter {roman}")
+    out = apparatus.locate(root, toc_id=entry["id"],
+                           index=stores.folio_index(root))
+    return _resolved(out) or _refusal(request, out, f"Chapter {roman}")
 
 
 @router.get("/toc/{toc_id}")
