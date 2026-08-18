@@ -15,9 +15,10 @@ from pathlib import Path
 from harness.lines import _overlap_fraction, reading_order
 
 
-def rec(index, hpos, vpos, width=100, height=44, text=""):
+def rec(index, hpos, vpos, width=100, height=44, text="", baseline=None):
     return {"index": index, "hpos": hpos, "vpos": vpos, "width": width,
-            "height": height, "text": text, "line_id": f"l{index}"}
+            "height": height, "text": text, "line_id": f"l{index}",
+            "baseline": baseline}
 
 
 def test_index_is_preserved_not_reassigned():
@@ -76,6 +77,84 @@ def test_skew_does_not_accumulate_across_a_band():
     out = [r["text"] for r in reading_order(recs)]
     assert out == ["c2", "c1", "c0", "c5", "c4", "c3"], (
         "expected two bands; a single band would have sorted all six by hpos")
+
+
+def test_a_line_beside_a_figure_is_not_banded_with_the_line_below_it():
+    """`1-234`, real geometry — a silent translocation of body text.
+
+    Text wraps around Fig. 100, so three short lines run beside the picture before
+    the column resumes full width. Under a purely vertical test the last short
+    line and the first full-width one are 32 px apart against a tolerance of 33.5:
+    they banded, and the full-width line sorted first because it starts 1156 px
+    further left. "stone served as a support" was emitted *after* the line that
+    continues it, and the prose read as plausible nonsense.
+
+    They overlap in `x` — the short line lies wholly inside the long one's span —
+    so no vertical measurement gets a say.
+    """
+    recs = [
+        rec(18, 1882, 1615, 513, 54, "In the centre of the", "1884 1656 2395 1652"),
+        rec(19, 1778, 1673, 617, 67, "living-room a large flat", "1778 1717 2395 1717"),
+        rec(20, 1778, 1747, 617, 54, "stone served as a support", "1778 1777 2395 1777"),
+        rec(21, 622, 1779, 1771, 74, "for a large lamp,", "624 1823 2393 1836"),
+        rec(22, 626, 1849, 1767, 67, "was placed a vertebra", "628 1881 2393 1894"),
+    ]
+    out = [r["text"] for r in reading_order(recs)]
+    assert out == ["In the centre of the", "living-room a large flat",
+                   "stone served as a support", "for a large lamp,",
+                   "was placed a vertebra"]
+
+
+def test_consecutive_footnotes_are_not_banded_by_a_two_pixel_left_edge():
+    """`2-049`, real geometry — the same fault at its worst.
+
+    Two consecutive footnotes, 28 px apart against a tolerance of 31.5. They
+    banded, and were then ordered left-to-right on a **2 px** difference in `hpos`
+    between lines that are not side by side at all, so note 2 was printed first.
+
+    `_mark_notes` now sorts notes by the printer's own numbering, so this page's
+    output no longer depends on the answer here — but every other consumer of
+    `reading_order` still does.
+    """
+    recs = [
+        rec(41, 544, 2929, 309, 53, "¹ Compare p. 282.", "546 2959 853 2955"),
+        rec(42, 542, 2957, 1663, 60, "² The word an˙ñaˊarkɪn", "544 3000 2205 2982"),
+        rec(43, 434, 3009, 829, 53, "shamanistic performance.", "436 3047 1263 3033"),
+    ]
+    out = [r["text"] for r in reading_order(recs)]
+    assert out == ["¹ Compare p. 282.", "² The word an˙ñaˊarkɪn",
+                   "shamanistic performance."]
+
+
+def test_an_oversized_polygon_does_not_move_the_line():
+    """`1-191`'s note 3 carries a 132 px box around ~50 px of type, on a page
+    whose median line height is 74. Its top edge is far too high and its centre
+    far too low, so a rule anchored on either misplaces that one line and no
+    other. The baseline is written from the segmenter's own baseline and does not
+    move with the box.
+
+    The page sets notes 2 and 3 side by side — baselines 3184 and 3182, two pixels
+    apart — with the tail of note 1 on the line above at 3148.
+
+    **The body lines are load-bearing and not scenery.** They are the page's only
+    horizontally-overlapping pairs, so they are where the line pitch is measured
+    from; without them the tolerance falls back to the polygon heights this test
+    exists to distrust, and note 1's tail joins note 3's row. That is the argument
+    for measuring pitch off pairs that cannot share a row, written as a test.
+    """
+    recs = [
+        rec(6, 362, 1719, 1416, 65, "body a", "364 1764 1778 1760"),
+        rec(7, 364, 1777, 1050, 74, "body b", "366 1827 1414 1823"),
+        rec(8, 479, 1840, 1299, 69, "body c", "481 1888 1778 1881"),
+        rec(9, 364, 1903, 1412, 69, "body d", "366 1944 1776 1937"),
+        rec(29, 364, 3115, 230, 82, "Pacific Ocean.", "364 3148 594 3148"),
+        rec(30, 1449, 3130, 604, 132, "3 Nordenskiold", "1451 3187 2053 3178"),
+        rec(31, 479, 3137, 801, 78, "2 Compare Nelson", "481 3184 1280 3187"),
+    ]
+    out = [r["text"] for r in reading_order(recs)][4:]
+    assert out == ["Pacific Ocean.", "2 Compare Nelson", "3 Nordenskiold"], (
+        "notes 2 and 3 share a printed line and order left to right; the tail of "
+        "note 1 is the line above and must not join them")
 
 
 def test_records_without_geometry_sort_last_in_index_order():

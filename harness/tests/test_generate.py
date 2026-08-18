@@ -312,6 +312,38 @@ def test_two_notes_the_printer_set_on_one_line_are_two_notes(tmp_path):
     assert '<note n="2" place="bottom">Second note.</note>' in doc
 
 
+def test_notes_are_emitted_in_the_printer_s_numbering_not_the_order_read(tmp_path):
+    """The number the printer set is a better witness than where the line landed.
+
+    Reading order is geometry, and geometry is what goes wrong at the foot of a
+    page: `1-191` is scanned askew and sets two notes side by side on one line,
+    `2-049` sets two consecutive notes 28 px apart. Both came out with a later
+    note first — `2-049` decided by a **2 px** difference in left edge between
+    lines that are not side by side at all.
+
+    Nothing about a note's position can beat its own number, so the numbered notes
+    are sorted by it. Here the rows arrive in the order the page was read, note 2
+    ahead of note 1, and the output is still 1 then 2.
+    """
+    blocks = [("MainZone-P", lines_at(["One¹ and two² here."])),
+              ("MarginTextZone-Notes",
+               lines_at(["² Second note.", "¹ First note."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert rep["notes"] == 2
+    assert doc.index('<note n="1"') < doc.index('<note n="2"')
+
+
+def test_a_note_with_no_marker_keeps_its_read_position_after_the_numbered_ones(tmp_path):
+    """It has no number to sort by, and inventing one would be worse than the
+    order it was read in. `1-191`'s Nordenskiöld note is the standing case for a
+    head whose marker did not read."""
+    blocks = [("MainZone-P", lines_at(["One¹ here."])),
+              ("MarginTextZone-Notes",
+               lines_at(["Jackson, II, p. 17.", "¹ First note."], 245))]
+    doc, rep = page(tmp_path, "1-021", blocks)
+    assert doc.index('<note n="1"') < doc.index('<note place="bottom">')
+
+
 def test_an_interior_marker_opens_a_note_only_next_in_the_printer_s_sequence(tmp_path):
     """The second witness the head cut does not need. A superscript mid-line can
     be a figure's locant or a numeral in the note's own prose, so an interior

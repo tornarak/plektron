@@ -312,6 +312,67 @@ def _line_text(tl) -> str:
     return unicodedata.normalize("NFD", text)
 
 
+def _baseline_y(r: dict) -> float | None:
+    """Where a line's type actually sits: the mean `y` of its ALTO `BASELINE`.
+
+    **Not the polygon**, and `1-191` is why. That page's note 3 carries a 132 px
+    box around ~50 px of type, so its top edge is 30 px too high and its centre 30
+    px too low; every threshold measured against either is wrong for that line and
+    right for its neighbours. The baseline is the one anchor an oversized box does
+    not move, because it is written from the segmenter's own baseline rather than
+    derived from the polygon around it.
+
+    A record with no baseline falls back to the box's bottom edge, which is the
+    nearest thing to it.
+    """
+    bl = r.get("baseline")
+    if bl:
+        ys = [float(t) for i, t in enumerate(bl.split()) if i % 2]
+        if ys:
+            return sum(ys) / len(ys)
+    return None if r.get("vpos") is None else r["vpos"] + (r.get("height") or 0)
+
+
+def _x_disjoint(a: dict, b: dict) -> bool:
+    """Do two lines occupy separate horizontal extents? Touching does not overlap.
+
+    A record missing an extent is treated as overlapping everything, so it never
+    joins a row: without a width there is no evidence it sits *beside* anything,
+    and banding it would license a reorder on none.
+    """
+    for r in (a, b):
+        if r.get("hpos") is None or not r.get("width"):
+            return False
+    return (min(a["hpos"] + a["width"], b["hpos"] + b["width"])
+            - max(a["hpos"], b["hpos"])) <= 0
+
+
+def _line_pitch(ordered: list[dict]) -> float:
+    """The page's printed line pitch, measured from pairs that cannot share a row.
+
+    Two lines that overlap horizontally are on different printed lines by
+    construction — that is the same fact the banding rule is built on, read the
+    other way — so the gap between consecutive such pairs is a *line pitch* and
+    never a within-row wobble. Taking the median of those gaps gives a scale
+    measured off the page's own type, with no constant and no dependence on the
+    polygon heights that `1-191` shows cannot be trusted.
+
+    The alternative, a median over *all* consecutive gaps, is self-defeating on
+    exactly the pages that need it: a two-column table is mostly within-row pairs,
+    so the median collapses toward the wobble it is supposed to be tolerant of.
+
+    Falls back to the median polygon height on a page with no such pair — a page
+    of one line, or one with no geometry to speak of.
+    """
+    gaps = sorted(_baseline_y(b) - _baseline_y(a)
+                  for a, b in zip(ordered, ordered[1:], strict=False)
+                  if not _x_disjoint(a, b))
+    if gaps:
+        return gaps[len(gaps) // 2]
+    heights = sorted(r["height"] for r in ordered if r.get("height"))
+    return heights[len(heights) // 2] if heights else 0
+
+
 def reading_order(recs: list[dict]) -> list[dict]:
     """Order line records the way a human reads them: banded rows, left to right.
 
@@ -321,28 +382,49 @@ def reading_order(recs: list[dict]) -> list[dict]:
     on four rows of six -- `Mother-in-law.` at vpos 2378 ahead of its own
     `Ñaw-mataˊlɪn` at 2382. That is worse than the segmenter's own order.
 
-    So: group lines into rows whose `vpos` differs by no more than half the
-    page's *median line height*, then order each row by `hpos`. The tolerance is
-    derived from the page rather than tuned -- on these scans it lands near 30 px
-    against a row pitch of ~44 and an observed wobble of <=6, so there is wide
-    margin on both sides, and a page set in a different size carries its own
-    threshold with it.
+    So lines are grouped into rows and each row ordered by `hpos`. **A row is a
+    set of lines that are horizontally disjoint and vertically level**, and both
+    halves are load-bearing:
 
-    Each line is compared against the **band's first** `vpos`, never the previous
-    line's, so a skewed scan cannot accumulate drift and swallow a genuine row.
+      * **Disjoint.** Cells of a printed row do not overlap in `x` — that is what
+        makes them cells. Two lines that *do* overlap are one above the other, and
+        no vertical measurement may put them in a row however close they land.
+        This is the safety property: within a column, output order is the order
+        the lines are printed in, and no threshold can trade it away.
+      * **Level**, within half the page's measured line pitch (`_line_pitch`) of
+        the band's first baseline. Compared against the band's *first*, never the
+        previous line's, so a skewed scan cannot accumulate drift and swallow a
+        genuine row.
+
+    Both anchors are baselines (`_baseline_y`), not polygon edges.
+
+    **The failure this replaces was a silent translocation of prose.** With a
+    vertical test alone, `1-234`'s "stone served as a support" — a short line
+    beside Fig. 100 — banded with the full-width line below it, 32 px away against
+    a tolerance of 33.5, and sorted second because it starts 1156 px further
+    right. `2-049` is the same fault at its worst: two consecutive footnotes 28 px
+    apart, banded, and then ordered by a **2 px** difference in left edge, so note
+    2 was printed before note 1. Wherever the tolerance swallowed a real line
+    pitch, order became noise.
+
+    **The trade is deliberate and it is not symmetrical.** A table whose rows fail
+    to band is set out of alignment, which the collation pass reads off the scan
+    and repairs; body text and footnotes silently rearranged are fluent nonsense
+    that carries no signal at all. So where the two conflict, the table loses.
 
     Records with no geometry sort last, in index order: they cannot be placed, and
     guessing a position for them would be worse than admitting it.
     """
     placed = [r for r in recs if r.get("vpos") is not None]
     unplaced = [r for r in recs if r.get("vpos") is None]
-    heights = sorted(r["height"] for r in placed if r.get("height"))
-    tol = (heights[len(heights) // 2] / 2) if heights else 0
+    ordered = sorted(placed, key=_baseline_y)
+    tol = _line_pitch(ordered) / 2
 
     out: list[dict] = []
     band: list[dict] = []
-    for r in sorted(placed, key=lambda r: r["vpos"]):
-        if band and r["vpos"] - band[0]["vpos"] > tol:
+    for r in ordered:
+        if band and (_baseline_y(r) - _baseline_y(band[0]) > tol
+                     or not all(_x_disjoint(r, b) for b in band)):
             out += sorted(band, key=lambda r: (r["hpos"] if r["hpos"] is not None else 0))
             band = []
         band.append(r)

@@ -298,6 +298,18 @@ def _mark_notes(body: list[str], rows: list[tuple[int, str]], rendered) \
     for i, per_block in edits.items():
         for start, end, element in sorted(per_block, reverse=True):
             body[i] = body[i][:start] + element + body[i][end:]
+    # **Numbered notes are emitted in numeric order, not the order they were read
+    # off the page.** The printer's own numbering is the witness to the sequence,
+    # and it is exact where geometry is inference: `1-191` is scanned askew and
+    # sets two notes side by side on one line, `2-049` sets two consecutive notes
+    # 28 px apart, and on both the reading-order rules put a later note first — on
+    # `2-049` by a 2 px difference in left edge. Nothing about a note's position
+    # can be more reliable than the number the printer set on it.
+    #
+    # A note whose head carries no marker cannot be placed this way and is not
+    # given a position it has not got: those keep their read order, after the
+    # numbered ones, and each already carries the comment that asks about it.
+    notes.sort(key=lambda t: int(t[0]) if t[0] else float("inf"))
     return marked, refs, notes
 
 
